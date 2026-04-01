@@ -69,6 +69,7 @@ skills:
   memory-flush: { enabled: false, schedule: "0 18 * * *" }
   action-converter: { enabled: false, schedule: "0 18 * * *" }
   startup-idea: { enabled: false, schedule: "0 18 * * *" }
+  skill-discover: { enabled: false, schedule: "0 18 * * 0" }
 
   # --- Weekly (Monday only) ---
   weekly-review: { enabled: false, schedule: "0 19 * * 1" }
