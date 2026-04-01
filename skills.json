@@ -2,7 +2,7 @@
   "version": "1.0",
   "generated": "2026-03-28T00:00:00Z",
   "repo": "aaronjmars/aeon",
-  "total": 50,
+  "total": 51,
   "categories": {
     "research": "Research & Content",
     "dev": "Dev & Code",
@@ -510,6 +510,16 @@
       "var": "",
       "files": 0,
       "install": "./add-skill aaronjmars/aeon startup-idea"
+    },
+    {
+      "slug": "skill-discover",
+      "name": "Skill Discover",
+      "description": "Search SkillsMP and GitHub for trending skills that fill gaps in Aeon's catalog — scores, security-checks, and ranks candidates",
+      "category": "productivity",
+      "schedule": "0 18 * * 0",
+      "var": "",
+      "files": 0,
+      "install": "./add-skill aaronjmars/aeon skill-discover"
     }
   ],
   "install_all": "./add-skill aaronjmars/aeon --all",
