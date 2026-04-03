@@ -38,6 +38,7 @@ skills:
   article: { enabled: false, schedule: "0 14 * * *" }
   digest: { enabled: false, schedule: "0 14 * * *" }
   research-brief: { enabled: false, schedule: "0 14 * * *" }
+  deep-research: { enabled: false, schedule: "" }  # on-demand only — trigger via Telegram or workflow_dispatch
   paper-pick: { enabled: false, schedule: "0 14 * * *" }
   search-papers: { enabled: false, schedule: "0 14 * * *" }
   search-skill: { enabled: false, schedule: "0 14 * * *" }
