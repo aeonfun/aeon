@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+# add-mcp — Install the Aeon MCP server so Claude Code and Claude Desktop
+# can invoke any Aeon skill directly from the Claude interface.
+#
+# Usage:
+#   ./add-mcp                  Build the MCP server and register it with Claude Code
+#   ./add-mcp --desktop        Also print Claude Desktop config snippet
+#   ./add-mcp --build-only     Build without registering (useful for CI)
+#   ./add-mcp --uninstall      Remove the Aeon MCP server from Claude Code
+#   ./add-mcp --help           Show this help
+#
+# After running, every Aeon skill appears as an 'aeon-<name>' tool in Claude.
+# Skills run locally via `claude -p -` exactly as they do on GitHub Actions.
+
+set -euo pipefail
+
+DIR="$(cd "$(dirname "$0")" && pwd)"
+MCP_DIR="$DIR/mcp-server"
+
+usage() {
+  sed -n '3,12p' "$0" | sed 's/^# //'
+  exit 0
+}
+
+err() { echo "Error: $*" >&2; exit 1; }
+info() { printf '\033[0;34m%s\033[0m\n' "$*"; }
+ok() { printf '\033[0;32m✓ %s\033[0m\n' "$*"; }
+warn() { printf '\033[0;33m⚠ %s\033[0m\n' "$*"; }
+
+BUILD_ONLY=false
+SHOW_DESKTOP=false
+UNINSTALL=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --build-only) BUILD_ONLY=true ;;
+    --desktop) SHOW_DESKTOP=true ;;
+    --uninstall) UNINSTALL=true ;;
+    --help|-h) usage ;;
+    *) err "Unknown option: $arg" ;;
+  esac
+done
+
+# ── Uninstall ────────────────────────────────────────────────────────────────
+
+if [[ "$UNINSTALL" == "true" ]]; then
+  if ! command -v claude &>/dev/null; then
+    err "'claude' CLI not found. Nothing to uninstall."
+  fi
+  info "Removing Aeon MCP server from Claude Code..."
+  if claude mcp remove aeon 2>/dev/null; then
+    ok "Removed 'aeon' from Claude Code MCP servers"
+  else
+    warn "No 'aeon' MCP server was registered (already removed?)"
+  fi
+  exit 0
+fi
+
+# ── Pre-flight checks ────────────────────────────────────────────────────────
+
+info "Checking prerequisites..."
+
+if ! command -v node &>/dev/null; then
+  err "Node.js not found. Install it from https://nodejs.org (v18 or later required)"
+fi
+
+NODE_VERSION=$(node --version | sed 's/v//' | cut -d. -f1)
+if [[ "$NODE_VERSION" -lt 18 ]]; then
+  err "Node.js v18 or later required (found v$NODE_VERSION). Upgrade at https://nodejs.org"
+fi
+ok "Node.js $(node --version)"
+
+if ! command -v npm &>/dev/null; then
+  err "npm not found. It should come with Node.js."
+fi
+ok "npm $(npm --version)"
+
+if [[ ! -d "$MCP_DIR" ]]; then
+  err "mcp-server/ directory not found at $MCP_DIR"
+fi
+
+if [[ ! -f "$DIR/skills.json" ]]; then
+  err "skills.json not found at $DIR/skills.json. Run this script from the repo root."
+fi
+
+# ── Build ────────────────────────────────────────────────────────────────────
+
+info "Installing MCP server dependencies..."
+(cd "$MCP_DIR" && npm install --silent)
+ok "Dependencies installed"
+
+info "Building TypeScript..."
+(cd "$MCP_DIR" && npm run build)
+ok "Build complete → mcp-server/dist/index.js"
+
+SERVER_PATH="$MCP_DIR/dist/index.js"
+if [[ ! -f "$SERVER_PATH" ]]; then
+  err "Build failed: $SERVER_PATH not found"
+fi
+
+if [[ "$BUILD_ONLY" == "true" ]]; then
+  ok "Build complete (--build-only: skipping registration)"
+  exit 0
+fi
+
+# ── Register with Claude Code ─────────────────────────────────────────────────
+
+if ! command -v claude &>/dev/null; then
+  warn "'claude' CLI not found — skipping Claude Code registration."
+  warn "Install it with: npm install -g @anthropic-ai/claude-code"
+  warn "Then run: claude mcp add aeon node \"$SERVER_PATH\""
+else
+  info "Registering with Claude Code..."
+  # Remove existing entry to avoid duplicates, then re-add
+  claude mcp remove aeon 2>/dev/null || true
+  claude mcp add aeon node "$SERVER_PATH"
+  ok "Aeon MCP server registered with Claude Code"
+fi
+
+# ── Count skills ─────────────────────────────────────────────────────────────
+
+SKILL_COUNT=$(node -e "const s=JSON.parse(require('fs').readFileSync('$DIR/skills.json','utf8')); console.log(s.skills.length);" 2>/dev/null || echo "?")
+
+echo ""
+echo "┌──────────────────────────────────────────────────────────┐"
+echo "│  ⚡ Aeon MCP Server installed                            │"
+echo "│                                                          │"
+printf "│  %d skills now available as aeon-* tools in Claude       │\n" "$SKILL_COUNT"
+echo "│                                                          │"
+echo "│  Example usage in Claude:                                │"
+echo "│    Use the aeon-hn-digest tool to get today's HN top     │"
+echo "│    Use aeon-token-movers with var=\"bitcoin\"              │"
+echo "│    Run aeon-deep-research with var=\"AI agent frameworks\" │"
+echo "└──────────────────────────────────────────────────────────┘"
+echo ""
+
+# ── Claude Desktop config snippet ────────────────────────────────────────────
+
+if [[ "$SHOW_DESKTOP" == "true" ]]; then
+  echo "Claude Desktop configuration:"
+  echo "Add the following to your Claude Desktop config file:"
+  echo ""
+  if [[ "$(uname)" == "Darwin" ]]; then
+    echo "  ~/Library/Application Support/Claude/claude_desktop_config.json"
+  else
+    echo "  %APPDATA%\\Claude\\claude_desktop_config.json"
+  fi
+  echo ""
+  cat <<EOF
+{
+  "mcpServers": {
+    "aeon": {
+      "command": "node",
+      "args": ["$SERVER_PATH"]
+    }
+  }
+}
+EOF
+  echo ""
+  echo "Then restart Claude Desktop — Aeon skills will appear as tools."
+fi
+
+echo "To verify, run: claude mcp list"
+echo "To remove:      ./add-mcp --uninstall"

@@ -194,6 +194,37 @@ Non-Claude models are available in the workflow dispatch dropdown and per-skill 
 
 ---
 
+## Use with Claude (MCP)
+
+Aeon's skills are available as tools in Claude Desktop and Claude Code via the MCP server bundled in `mcp-server/`.
+
+```bash
+./add-mcp
+```
+
+That's it. Every Aeon skill appears as an `aeon-<name>` tool in your Claude interface — no GitHub Actions required. Skills run locally via `claude -p -`, identical to how they run in Actions.
+
+**Example usage in Claude:**
+
+> Use the `aeon-hacker-news-digest` tool to get today's top HN stories
+
+> Run `aeon-deep-research` with `var="AI agent frameworks"` and write a summary
+
+> Use `aeon-token-movers` to get today's top crypto movers
+
+**Options:**
+
+| Flag | Effect |
+|------|--------|
+| `./add-mcp` | Build and register with Claude Code |
+| `./add-mcp --desktop` | Also print Claude Desktop config snippet |
+| `./add-mcp --build-only` | Build without registering (CI use) |
+| `./add-mcp --uninstall` | Remove the MCP server |
+
+Skills that need API keys (CoinGecko, Alchemy, etc.) read from the same environment variables they use in Actions — set them in your shell or a `.env` file in the repo root. Notification channels (Telegram, Discord, Slack) are optional; if not set, output is returned directly to Claude.
+
+---
+
 ## GitHub Pages Gallery
 
 Aeon publishes articles to a browsable gallery via GitHub Pages. After merging, enable it in **Settings → Pages** → source `Deploy from a branch`, branch `main`, folder `/docs`.
