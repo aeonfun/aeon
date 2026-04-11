@@ -145,6 +145,9 @@ jobs:
     steps:
       - name: Extract message
         id: msg
+        env:
+          _INPUT_MESSAGE: ${{ inputs.message }}
+          _INPUT_SOURCE: ${{ inputs.source }}
         run: |
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
             MESSAGE=$(echo '${{ toJson(github.event.client_payload.message) }}' | jq -r '.')
@@ -156,8 +159,8 @@ jobs:
               slack-message) SOURCE="slack" ;;
             esac
           else
-            MESSAGE="${{ inputs.message }}"
-            SOURCE="${{ inputs.source }}"
+            MESSAGE="$_INPUT_MESSAGE"
+            SOURCE="$_INPUT_SOURCE"
           fi
 
           if [ -n "$MESSAGE" ] && [ "$MESSAGE" != "null" ]; then
@@ -208,6 +211,8 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
+          _MSG_SOURCE: ${{ steps.msg.outputs.source }}
+          _MSG_MESSAGE: ${{ steps.msg.outputs.message }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
@@ -242,8 +247,8 @@ jobs:
           ALLOWED="$ALLOWED,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
           ALLOWED="$ALLOWED,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"
 
-          SOURCE="${{ steps.msg.outputs.source }}"
-          MESSAGE="${{ steps.msg.outputs.message }}"
+          SOURCE="$_MSG_SOURCE"
+          MESSAGE="$_MSG_MESSAGE"
           PROMPT="Today is $TODAY. You received this message from the user on ${SOURCE}:
 
           \"$MESSAGE\"
@@ -284,13 +289,20 @@ jobs:
 
       - name: Log token usage
         if: steps.msg.outputs.source != ''
+        env:
+          _LOG_SOURCE: ${{ steps.msg.outputs.source }}
+          _LOG_INPUT: ${{ steps.run.outputs.SKILL_INPUT_TOKENS }}
+          _LOG_OUTPUT: ${{ steps.run.outputs.SKILL_OUTPUT_TOKENS }}
+          _LOG_CACHE_READ: ${{ steps.run.outputs.SKILL_CACHE_READ_TOKENS }}
+          _LOG_CACHE_CREATION: ${{ steps.run.outputs.SKILL_CACHE_CREATION_TOKENS }}
+          _LOG_TOTAL: ${{ steps.run.outputs.SKILL_TOTAL_TOKENS }}
         run: |
-          SOURCE="${{ steps.msg.outputs.source }}"
-          INPUT="${{ steps.run.outputs.SKILL_INPUT_TOKENS }}"
-          OUTPUT="${{ steps.run.outputs.SKILL_OUTPUT_TOKENS }}"
-          CACHE_READ="${{ steps.run.outputs.SKILL_CACHE_READ_TOKENS }}"
-          CACHE_CREATION="${{ steps.run.outputs.SKILL_CACHE_CREATION_TOKENS }}"
-          TOTAL="${{ steps.run.outputs.SKILL_TOTAL_TOKENS }}"
+          SOURCE="$_LOG_SOURCE"
+          INPUT="$_LOG_INPUT"
+          OUTPUT="$_LOG_OUTPUT"
+          CACHE_READ="$_LOG_CACHE_READ"
+          CACHE_CREATION="$_LOG_CACHE_CREATION"
+          TOTAL="$_LOG_TOTAL"
           echo "## Token Usage: message ($SOURCE)" >> "$GITHUB_STEP_SUMMARY"
           echo "| Metric | Tokens |" >> "$GITHUB_STEP_SUMMARY"
           echo "|--------|--------|" >> "$GITHUB_STEP_SUMMARY"
@@ -302,13 +314,15 @@ jobs:
 
       - name: Commit results
         if: steps.msg.outputs.source != ''
+        env:
+          _COMMIT_SOURCE: ${{ steps.msg.outputs.source }}
         run: |
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"
           rm -f ./notify
 
           CURRENT_BRANCH=$(git branch --show-current)
-          SOURCE="${{ steps.msg.outputs.source }}"
+          SOURCE="$_COMMIT_SOURCE"
 
           # If Claude created a feature branch, push it then switch back to main
           if [ "$CURRENT_BRANCH" != "main" ] && [ -n "$CURRENT_BRANCH" ]; then
