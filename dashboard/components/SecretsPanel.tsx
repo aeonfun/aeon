@@ -29,7 +29,7 @@ export function SecretsPanel({ secrets, busy, onSave, onDelete }: SecretsPanelPr
   return (
     <div className="max-w-2xl mx-auto space-y-[var(--space-lg)]">
       <h2 className="font-display text-2xl">Access Credentials</h2>
-      {['Core', 'Telegram', 'Discord', 'Slack', 'Skill Keys'].map(group => {
+      {['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Skill Keys'].map(group => {
         const gs = secrets.filter(s => s.group === group); if (!gs.length) return null
         return (
           <div key={group}>
