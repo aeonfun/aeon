@@ -17,6 +17,7 @@ skills:
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: false, schedule: "0 9 * * *" }
   pr-review: { enabled: false, schedule: "0 9 * * *" }
+  auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
   github-monitor: { enabled: false, schedule: "0 9 * * *" }
   github-issues: { enabled: false, schedule: "0 9 * * *" }
   github-trending: { enabled: false, schedule: "0 9 * * *" }
