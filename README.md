@@ -71,6 +71,8 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`
 
+**Dependency graph:** [`docs/skill-graph.md`](docs/skill-graph.md) — visual map of how skills connect, grouped by category with the self-healing loop and content pipeline highlighted
+
 ---
 
 ### Instance Fleet

@@ -125,6 +125,7 @@ skills:
   weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
+  skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
 
   # --- Utilities ---
   auto-workflow: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: URL to analyze
