@@ -63,6 +63,7 @@ skills:
   repo-article: { enabled: false, schedule: "0 15 * * *" }
   repo-actions: { enabled: false, schedule: "0 15 * * *" }
   repo-pulse: { enabled: false, schedule: "0 15 * * *" }
+  star-milestone: { enabled: false, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
   project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
   repo-scanner: { enabled: false, schedule: "0 15 * * 0", model: "claude-sonnet-4-6", var: "" } # catalog all GitHub repos — set var to username
 

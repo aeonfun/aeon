@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-04-15T16:31:31Z",
+    "generated": "2026-04-18T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 91,
+    "total": 92,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -874,6 +874,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon spawn-instance"
+        },
+        {
+            "slug": "star-milestone",
+            "name": "star-milestone",
+            "description": "Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a highlight reel of recent work",
+            "category": "dev",
+            "schedule": "15 15 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-04-18",
+            "install": "./add-skill aaronjmars/aeon star-milestone"
         },
         {
             "slug": "startup-idea",

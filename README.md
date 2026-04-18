@@ -63,7 +63,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 | Category | Skills |
 |----------|--------|
 | **Research & Content** (17) | `article`, `digest`, `rss-digest`, `hacker-news-digest`, `paper-digest`, `paper-pick`, `last30`, `deep-research`, `technical-explainer`, `list-digest`, `research-brief`, `fetch-tweets`, `reddit-digest`, `telegram-digest`, `security-digest`, `channel-recap`, `vibecoding-digest` |
-| **Dev & Code** (28) | `pr-review`, `github-monitor`, `github-issues`, `github-releases`, `issue-triage`, `auto-merge`, `changelog`, `code-health`, `skill-security-scan`, `github-trending`, `push-recap`, `repo-pulse`, `repo-article`, `repo-actions`, `repo-scanner`, `project-lens`, `external-feature`, `create-skill`, `autoresearch`, `search-skill`, `auto-workflow`, `deploy-prototype`, `vuln-scanner`, `workflow-security-audit`, `vercel-projects`, `spawn-instance`, `fleet-control`, `fork-fleet` |
+| **Dev & Code** (29) | `pr-review`, `github-monitor`, `github-issues`, `github-releases`, `issue-triage`, `auto-merge`, `changelog`, `code-health`, `skill-security-scan`, `github-trending`, `push-recap`, `repo-pulse`, `star-milestone`, `repo-article`, `repo-actions`, `repo-scanner`, `project-lens`, `external-feature`, `create-skill`, `autoresearch`, `search-skill`, `auto-workflow`, `deploy-prototype`, `vuln-scanner`, `workflow-security-audit`, `vercel-projects`, `spawn-instance`, `fleet-control`, `fork-fleet` |
 | **Crypto & Markets** (16) | `token-alert`, `token-movers`, `token-report`, `token-pick`, `monitor-runners`, `on-chain-monitor`, `defi-monitor`, `defi-overview`, `market-context-refresh`, `narrative-tracker`, `monitor-polymarket`, `monitor-kalshi`, `polymarket-comments`, `unlock-monitor`, `treasury-info`, `distribute-tokens` |
 | **Social & Writing** (7) | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `tweet-roundup`, `agent-buzz`, `farcaster-digest` |
 | **Productivity** (12) | `morning-brief`, `daily-routine`, `evening-recap`, `weekly-review`, `weekly-shiplog`, `goal-tracker`, `idea-capture`, `action-converter`, `tool-builder`, `startup-idea`, `deal-flow`, `reg-monitor` |
@@ -266,7 +266,7 @@ Claude only installs and runs when a skill actually matches.
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 aeon.yml                 ← skill schedules, chains, reactive triggers, and enabled flags
-skills.json              ← machine-readable skill catalog (91 skills)
+skills.json              ← machine-readable skill catalog (92 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
 ./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
@@ -281,7 +281,7 @@ skills/                  ← each skill is a SKILL.md prompt file
   article/
   digest/
   heartbeat/
-  ...                    ← 91 skills total
+  ...                    ← 92 skills total
 workflows/               ← GitHub Agentic Workflow templates (.md)
 mcp-server/              ← MCP server — exposes skills as Claude tools
 a2a-server/              ← A2A protocol gateway — exposes skills to any agent framework
