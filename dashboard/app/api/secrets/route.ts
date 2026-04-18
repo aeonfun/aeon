@@ -16,6 +16,8 @@ const BUILTIN_SECRETS = [
   { name: 'SENDGRID_API_KEY', group: 'Email', description: 'SendGrid API key — create at sendgrid.com/settings/api_keys' },
   { name: 'NOTIFY_EMAIL_TO', group: 'Email', description: 'Recipient email address for skill notifications' },
   { name: 'DEVTO_API_KEY', group: 'Distribution', description: 'Dev.to API key — generate at dev.to/settings/extensions' },
+  { name: 'NEYNAR_API_KEY', group: 'Distribution', description: 'Neynar API key — used by farcaster-digest (read) and syndicate-article (cast)' },
+  { name: 'NEYNAR_SIGNER_UUID', group: 'Distribution', description: 'Neynar managed signer UUID — required to publish Farcaster casts' },
   { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI/Grok API key (for tweet skills)' },
   { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key (for crypto skills)' },
   { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key (for on-chain skills)' },

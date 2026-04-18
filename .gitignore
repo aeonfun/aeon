@@ -16,6 +16,8 @@
 .pending-replicate/
 .pending-supernotes/
 .pending-deploy/
+.pending-devto/
+.pending-farcaster/
 .tg_cache/
 
 # Skill provenance lock (per-repo, not committed)
