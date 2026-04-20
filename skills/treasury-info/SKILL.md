@@ -10,9 +10,9 @@ tags: [crypto]
 
 If `${var}` is set, only check the wallet with that label (exact match, case-insensitive).
 
-## Config
+## Configuration
 
-Reads watched addresses from `memory/on-chain-watches.yml`. Format:
+Reads watched addresses from `memory/on-chain-watches.yml` (auto-created on first run if missing — see Bootstrap below). Minimal schema:
 
 ```yaml
 watches:
@@ -20,6 +20,7 @@ watches:
     address: "0x1234...abcd"
     chain: base            # base, ethereum, optimism, arbitrum, polygon, solana
     type: wallet           # only type:wallet is processed here
+protocols: []              # reserved for future protocol-level watches; safe to omit
 ```
 
 ### Bootstrap (file missing)
