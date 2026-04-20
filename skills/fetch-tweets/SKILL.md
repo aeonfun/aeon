@@ -101,6 +101,10 @@ Today is ${today}. Search X for tweets matching **${var}** and produce a *curate
    - The signal one-liner goes in italics (`_..._`) directly under the title.
    - Cluster headers use `*bold*`.
 
+## Output shape note
+
+This skill has no chain consumers as of this commit (no `consume: [fetch-tweets]` references). If a downstream chain step starts consuming this output, emit a flat list of URLs before the clustered output so consumers aren't broken by cluster headers.
+
 ## Sandbox note
 
 Sandbox may block outbound curl. Path A (cache) avoids the issue entirely. If Path B is needed and curl fails, fall back to Path C (WebSearch) — it's a built-in Claude tool and bypasses the sandbox.
