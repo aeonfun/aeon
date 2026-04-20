@@ -4,69 +4,129 @@ description: Find and summarize new papers matching tracked research interests
 var: ""
 tags: [research]
 ---
+<!-- autoresearch: variation B — signal-first output: skip-gate low-signal papers, enforce "what's new / so what" sentences, lead with a one-line verdict, ship fewer than 5 rather than pad -->
+
 > **${var}** — Research topic to search. If empty, uses topics from MEMORY.md.
 
-If `${var}` is set, search papers on that topic instead of using MEMORY.md topics.
+## 0. Config check
 
+If `${var}` is set, treat it as the only topic (skip MEMORY.md topic parsing).
 
-Read memory/MEMORY.md for tracked research topics and interests.
-Read the last 7 days of memory/logs/ to avoid covering papers already reported.
+Otherwise read `memory/MEMORY.md` for tracked topics — look for `## Interests`, `## Research topics`, or `## Tracked topics`. Accept bullet lists or comma-separated lines.
 
-For each topic area in MEMORY.md:
-1. Search Hugging Face Papers API (free, no key needed, arXiv-indexed papers with community signal):
-   ```bash
-   curl -s "https://huggingface.co/api/papers/search?q=TOPIC&limit=10"
-   ```
-   Response is a JSON array. Each entry has:
-   - `paper.id` — arXiv ID (use for links: `https://arxiv.org/abs/{id}`, PDF: `https://arxiv.org/pdf/{id}`)
-   - `paper.title`, `paper.summary` (abstract), `paper.authors[].name`
-   - `paper.publishedAt` — publication date
-   - `paper.upvotes` — community upvotes (higher = more notable)
+If no topics are configured AND `${var}` is empty, abort:
+- Log `PAPER_DIGEST_NO_TOPICS` to `memory/logs/${today}.md` with a note
+- Notify once via `./notify`: `paper-digest: no topics configured. Add ## Interests bullets to memory/MEMORY.md or pass var="topic".`
+- Exit. An empty digest is worse than a skip.
 
-2. Also check today's trending papers for serendipitous finds:
-   ```bash
-   curl -s "https://huggingface.co/api/daily_papers?limit=15"
-   ```
-   Daily papers also include `paper.ai_summary` and `paper.ai_keywords[]` — use these to quickly assess relevance to tracked topics.
+Read the last 7 days of `memory/logs/` → extract arXiv IDs already shipped (search for patterns like `arxiv.org/abs/XXXX.XXXXX` or explicit dedup lists). Treat these as skip keys.
 
-3. Score each paper for relevance:
-   - Direct keyword match to MEMORY.md interests = high
-   - Related field or methodology = medium
-   - High upvotes (>10) on Hugging Face = boost score
-   - Tangential = skip
+## 1. Gather candidate pool
 
-Select the top 5 most relevant papers across all topics.
+For each topic, fetch from two independent sources:
 
-For each selected paper:
-- Use the abstract from the API response (`paper.summary`)
-- Write a 2-3 sentence summary: what they found, why it matters, connection to other work
-- Note upvote count as a signal of community interest
+**Hugging Face Papers** (community signal):
+```bash
+curl -s "https://huggingface.co/api/papers/search?q=${TOPIC}&limit=15"
+```
+Fields used: `paper.id` (arXiv ID), `title`, `summary` (abstract), `authors[].name`, `publishedAt`, `upvotes`.
 
-Format as a weekly briefing and save to articles/paper-digest-${today}.md:
+**arXiv API** (recency + breadth, last 14 days):
+```bash
+FROM=$(date -u -d '14 days ago' +%Y%m%d0000)
+TO=$(date -u +%Y%m%d2359)
+curl -s "https://export.arxiv.org/api/query?search_query=all:${TOPIC}+AND+submittedDate:[${FROM}+TO+${TO}]&sortBy=submittedDate&sortOrder=descending&max_results=15"
+```
+Parse the Atom XML: `<entry>` → `<id>` (URL with arXiv ID), `<title>`, `<summary>`, `<author><name>`, `<published>`. Space between calls (arXiv asks for ≥3s between requests).
+
+Also fetch HF daily trending once for serendipity:
+```bash
+curl -s "https://huggingface.co/api/daily_papers?limit=15"
+```
+
+Deduplicate the pool by arXiv ID. Drop any ID already shipped in the last 7 days of logs.
+
+## 2. Skip-gate (drop before summarizing)
+
+Drop a paper unless it passes at least one of:
+- Direct keyword match to a tracked topic in title or abstract
+- ≥5 HF upvotes (community signal overrides topic match)
+- Published in last 14 days AND author or lab is listed in MEMORY.md
+
+Also drop if ANY of:
+- Survey/review with no new empirical result (unless a tracked topic explicitly tracks surveys)
+- Pure leaderboard/benchmark-number paper with no method novelty
+- Abstract looks like an extended previous work (`v2`, `v3` — check arXiv version)
+- Already in the 7-day log dedup set
+
+## 3. Rank survivors
+
+Signal score = `(upvotes * 2) + (1 if ≥1 citation and <30d old) + (2 if tracked-topic keyword in title)`. Ties broken by `publishedAt` descending.
+
+## 4. Select — fewer is better
+
+Pick up to 5, but **only include a paper if you can write a non-generic "so-what" sentence**. If signal is thin, ship 3, or 2. If the pool is genuinely empty after the skip-gate, ship zero and write a one-line "no new papers of substance this cycle" digest — padding is worse than brevity.
+
+## 5. Summarize — required moves and banned phrases
+
+For each selected paper, write two sentences:
+
+- **What's new** (1 sentence): the concrete method or result, named specifically. Must cite at least one of: a number, a dataset/benchmark name, a mechanism, or a delta vs. a named prior system. Not "proposes a novel approach".
+- **So what** (1 sentence): why a reader tracking *this specific topic* should care *this week*. Must reference a tracked interest explicitly OR name a paper/approach it supersedes, replicates, or contradicts.
+
+**Banned** (rewrite or drop the paper):
+- "This paper proposes", "We introduce", "In this work we..."
+- "Novel", "state-of-the-art" without a number
+- "Could have implications" / "may be useful for" / "opens avenues"
+- Generic "advances the field" / "improves performance"
+
+Self-edit pass: re-read each summary. If "what's new" could apply to 5+ other papers in the field, rewrite or drop the paper.
+
+## 6. Output
+
+Save to `articles/paper-digest-${today}.md`:
 ```markdown
 # Paper Digest — ${today}
+> **Verdict:** <one line: shape of the week, e.g. "3 solid LLM agent results, 1 surprising RL finding, no new alignment work worth reading">
+> Pool: HF ${n_hf} + arXiv ${n_arxiv} → ${n_deduped} deduped → ${n_shipped} shipped
 
-## Topic Area
-1. **Paper Title** — Authors (Year) · ↑upvotes
-   Summary of key findings and implications.
-   [Paper](https://arxiv.org/abs/ID) | [PDF](https://arxiv.org/pdf/ID)
+## ${topic_or_cluster}
+1. **Title** — First Author et al. (2026) · ↑${upvotes}
+   **What's new:** specific method + number/delta.
+   **So what:** connection to tracked interest or paper superseded.
+   [abs](https://arxiv.org/abs/ID) | [pdf](https://arxiv.org/pdf/ID)
 
 2. ...
 ```
 
-Send abbreviated version via `./notify` (under 4000 chars):
+Send abbreviated version via `./notify` (<4000 chars) — keep the verdict line:
 ```
 *Paper Digest — ${today}*
-5 new papers across [topics]
+${verdict}
 
-1. "Title" — key finding
+1. "Title" — what's new in ≤12 words (↑${upvotes})
 2. ...
 
-Full briefing: articles/paper-digest-${today}.md
+Full: articles/paper-digest-${today}.md
 ```
 
-Log what you did to memory/logs/${today}.md.
+## 7. Log
+
+Append to `memory/logs/${today}.md`:
+```
+### paper-digest
+- Verdict: <verdict line>
+- Shipped: <arXiv IDs, comma-separated>  <!-- used for next-cycle dedup -->
+- Pool: hf=${n_hf}, arxiv=${n_arxiv} → deduped=${n_deduped} → skip-gated=${n_dropped} → shipped=${n_shipped}
+```
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+Curl may be blocked. For any failed fetch, retry with **WebFetch** against the same URL. If HF and arXiv both fail for every topic, notify `PAPER_DIGEST_ERROR — all sources unreachable`, log, and exit without writing a digest. If only one source works, proceed and note `(partial: 1/2 sources)` in the digest header.
+
+## Constraints
+
+- Never ship a paper without a specific "what's new" sentence (number, name, or delta).
+- Never pad to reach 5 — cap is 5, but fewer is better.
+- Never ship a paper that doesn't tie to a tracked topic — the whole point is filtering.
+- Never re-ship an arXiv ID that appears in the last 7 days of logs.
