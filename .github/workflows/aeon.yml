@@ -163,12 +163,15 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          SKILL_VAR: ${{ inputs.var }}
         run: |
           # Run all scripts/prefetch-*.sh before Claude starts (outside sandbox).
           # Each script receives the skill name and var as arguments.
           # Scripts should check their own env vars and exit 0 if not configured.
+          # SKILL_VAR comes through env (not template interpolation) so embedded
+          # $TOKEN / $VAR references in the user input aren't eaten by bash.
           SKILL="${{ steps.skill.outputs.name }}"
-          VAR="${{ inputs.var }}"
+          VAR="$SKILL_VAR"
           for script in scripts/prefetch-*.sh; do
             [ -f "$script" ] || continue
             chmod +x "$script"

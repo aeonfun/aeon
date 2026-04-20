@@ -49,13 +49,20 @@ xai_search() {
     '{model: $model, input: [{role: "user", content: $prompt}], tools: $tools}')
   local attempt=1
   while : ; do
-    response=$(curl -s --max-time 60 -w "\n__HTTP_CODE__%{http_code}" -X POST "https://api.x.ai/v1/responses" \
+    local curl_exit=0
+    response=$(curl -s --max-time 180 -w "\n__HTTP_CODE__%{http_code}" -X POST "https://api.x.ai/v1/responses" \
       -H "Content-Type: application/json" \
       -H "Authorization: Bearer $XAI_API_KEY" \
-      -d "$body" 2>&1) || {
-      echo "::warning::xai-prefetch: FAILED $outfile (curl error: $?)"
+      -d "$body" 2>&1) || curl_exit=$?
+    if [ "$curl_exit" -ne 0 ]; then
+      if [ "$curl_exit" = "28" ] && [ "$attempt" -lt 2 ]; then
+        echo "xai-prefetch: curl timeout on $outfile (attempt $attempt), retrying once"
+        attempt=$((attempt + 1))
+        continue
+      fi
+      echo "::warning::xai-prefetch: FAILED $outfile (curl error: $curl_exit)"
       return 1
-    }
+    fi
     http_code=$(echo "$response" | grep '__HTTP_CODE__' | sed 's/__HTTP_CODE__//')
     response=$(echo "$response" | grep -v '__HTTP_CODE__')
     if [ "$http_code" = "429" ] && [ "$attempt" -lt 2 ]; then
