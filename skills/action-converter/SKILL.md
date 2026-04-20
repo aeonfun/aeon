@@ -17,6 +17,8 @@ Read `articles/` (last 7 days, filenames only — peek at the 2 most recent for 
 If `soul/SOUL.md` exists, read it for identity, voice, focus areas.
 Run `gh pr list --state open --limit 20 --json number,title,createdAt,isDraft,reviewDecision,headRefName 2>/dev/null` to get open PRs (used to anchor "ship" / "review" / "merge" loops).
 
+**Graceful bootstrap** — each of the reads above may be missing on cold starts. For every source, if the file/directory is missing or empty (including `memory/topics/*.md`, `memory/cron-state.json`, and `gh pr list` returning empty or erroring), skip it and record `BOOTSTRAP: <resource> not yet populated` in the run's working notes. Continue with whatever signals are available — the skill must degrade gracefully, never fail. If every single source is empty, fall through to the `ACTION_CONVERTER_NO_CONTEXT` mode below.
+
 ## Steps
 
 ### 1. Detect mode
