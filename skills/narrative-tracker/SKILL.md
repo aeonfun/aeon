@@ -22,7 +22,7 @@ Produce a *decision-grade* narrative map: every narrative gets a mindshare score
 
 **a. XAI pre-fetched cache (primary source).** The workflow pre-fetches Grok x_search results to `.xai-cache/narratives.json`. Read it. If the file exists and contains usable results, use that as the primary signal.
 
-**b. If cache is missing or empty**, attempt the direct API call:
+**b. If cache is missing or empty**, log a `NARRATIVE_CACHE_MISS` line to `memory/logs/${today}.md` (so skill-health can spot the pattern — never silently fall through), then attempt the direct API call:
 ```bash
 FROM_DATE=$(date -u -d "3 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-3d +%Y-%m-%d)
 TO_DATE=$(date -u +%Y-%m-%d)
@@ -121,7 +121,7 @@ Append a `### narrative-tracker` section with the full structured output (not ju
 - Quantitative over vibes. Every narrative gets mindshare 1-5 and a velocity arrow — no exceptions. If you can't score it, drop it.
 - Transitions > classification. A daily tracker's value is catching moves, not listing the weather.
 - Named drivers only. "Crypto Twitter is excited about X" is not a driver. "@handle + @handle + @fund" is.
-- Position calls are mandatory for Emerging/Rising/Peak narratives. If you can't decide, say WATCH — but don't omit.
+- Position calls are mandatory for Emerging/Rising/Peak narratives. If signals are genuinely ambiguous or contradictory, **WATCH** is an acceptable call — but never omit a position entirely and never invent conviction you don't have.
 - Ruthless dedup. Same narrative under two labels = one narrative. Merge, don't split.
 - Call out cope. Manufactured narratives, coordinated shilling, and dead-cat bounces get tagged explicitly.
 - Prioritize topics tracked in MEMORY.md over generic market chatter.
