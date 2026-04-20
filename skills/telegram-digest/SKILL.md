@@ -65,13 +65,15 @@ For each surviving post, compute **signal_score**:
 ```
 signal_score =
     log(views + 1) * 1.0
-  + reactions      * 2.0
-  + reply_count    * 1.5
-  + has_link       * 3      // +3 flat if external link
+  + reactions      * 2.0    // heuristic — adjust if top-post selection looks off
+  + reply_count    * 1.5    // heuristic — adjust if top-post selection looks off
+  + has_link       * 3      // heuristic — +3 flat if external link; adjust if top-post selection looks off
   + has_media      * 1      // +1 flat if media
   + recency_bonus            // +3 if <6h, +1 if <24h, 0 otherwise
-  - forward_penalty          // -2 if forwarded_from set AND post text <80 chars (pure rebroadcast)
+  - forward_penalty          // heuristic — -2 if forwarded_from set AND post text <80 chars (pure rebroadcast); adjust if top-post selection looks off
 ```
+
+The weights above (2× reactions, 1.5× replies, +3 link, -2 forward penalty) are empirical defaults tuned against typical public-channel signal patterns. Keep values as-is unless the output consistently elevates the wrong posts — in which case tune one constant at a time and note the change in the log.
 
 Use best-effort integer values; if views not visible, substitute median of other posts in that channel.
 
