@@ -84,7 +84,9 @@ Today is ${today}. Generate a leaderboard of the most popular Aeon skills across
    Consensus: [list of skills enabled by >50% of forks, or "none yet"]
    Adoption gaps: [skills with zero fork enables]
 
-   Full leaderboard: articles/skill-leaderboard-${today}.md
+   Full leaderboard: https://github.com/${GITHUB_REPOSITORY}/blob/main/articles/skill-leaderboard-${today}.md
+
+   Use the `$GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo`) to build the URL. Do NOT use the watched repo — the article lives in this running instance's repo.
    ```
    **Only send a notification if at least 2 active forks were found with readable aeon.yml files.** Otherwise log "SKILL_LEADERBOARD_INSUFFICIENT_DATA" and stop.
 

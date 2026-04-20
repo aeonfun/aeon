@@ -123,7 +123,9 @@ The `tweet-allocator` skill rewards social mentions with $AEON. Code contributor
    Rising: @login (↑N), @login (new entry)
    Most-merged: @login with N upstream PRs
 
-   Full leaderboard: articles/fork-contributor-leaderboard-${today}.md
+   Full leaderboard: https://github.com/${GITHUB_REPOSITORY}/blob/main/articles/fork-contributor-leaderboard-${today}.md
+
+   Use the `$GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo`) to build the URL. Do NOT use the watched repo — the article lives in this running instance's repo.
    ```
 
    **Only send a notification if at least 2 contributors qualify** (otherwise the signal is not meaningful). If fewer than 2 qualify, log `FORK_CONTRIBUTOR_LEADERBOARD_INSUFFICIENT_DATA` and stop.
