@@ -71,11 +71,13 @@ For each post with an external URL:
 
 Group posts into clusters:
 - **URL clusters:** posts sharing the exact same canonical URL.
-- **Title clusters:** posts across different subs whose titles share ≥50% Jaccard similarity on normalized word sets (lowercase, strip punctuation, drop stopwords like `a/the/of/to/is/are/and/or`).
+- **Title clusters:** posts across different subs whose titles share ≥50% Jaccard similarity on normalized word sets (lowercase, strip punctuation, drop stopwords like `a/the/of/to/is/are/and/or`).  <!-- heuristic — tune if cluster over/undersplits -->
 
 A **narrative** = a cluster with ≥2 posts from ≥2 distinct subreddits. Single-sub clusters are not narratives.
 
-Dedup narratives against the last 2 days of logs: if any post ID in the cluster, or a ≥70%-similar title, was already surfaced, drop the whole narrative.
+Dedup narratives against the last 2 days of logs: if any post ID in the cluster, or a ≥70%-similar title, was already surfaced, drop the whole narrative.  <!-- heuristic — tune if dedup is too aggressive/loose -->
+
+**Cluster-count fallback:** if clustering produces **fewer than 2** narratives (rare — usually a quiet day or too-strict threshold) **or more than 5** (over-fragmented), skip the narrative format and fall back to a **flat ranked list** of the top individual posts by signal score. Log the fallback reason in the source-status footer.
 
 ### 5. Score narratives
 
