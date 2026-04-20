@@ -79,7 +79,7 @@ Skip a PR if any of the following hold (record the skip reason for the run summa
    - `blocked: <one-phrase reason>` — at least one CRITICAL
    - `discussion-needed` — ISSUE findings but no CRITICAL
 
-6. **Post the review**. Use inline comments for line-specific findings and a short review body for the verdict.
+6. **Post the review**. Send **both** a consolidated summary comment *and* inline line-specific comments — inline for precision, summary for consumers that parse review bodies.
 
    For each line-specific finding:
    ```bash
@@ -91,10 +91,14 @@ Skip a PR if any of the following hold (record the skip reason for the run summa
      -f side="RIGHT"
    ```
 
-   Then the overall verdict as a review:
+   Then the consolidated summary as a review — include the verdict **and** a bulleted recap of every inline finding (severity + `file:line` + one-sentence rationale), so downstream body-parsers don't miss them:
    ```bash
    gh pr review NUMBER -R owner/repo --comment --body "**Verdict**: <verdict>
-<one-line rationale if blocked or discussion-needed; omit if approve-ready>"
+<one-line rationale if blocked or discussion-needed; omit if approve-ready>
+
+**Findings** (mirrored as inline comments):
+- [CRITICAL] path/to/file:LINE — why it matters
+- [ISSUE] path/to/file:LINE — why it matters"
    ```
 
    If there are no CRITICAL/ISSUE findings, skip inline comments and post a single-line review: `**Verdict**: approve-ready — no blockers.`
