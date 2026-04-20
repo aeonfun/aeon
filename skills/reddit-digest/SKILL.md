@@ -1,81 +1,162 @@
 ---
 name: Reddit Digest
-description: Fetch and summarize top Reddit posts from tracked subreddits
+description: Detect cross-subreddit narratives — stories surfacing in multiple unrelated subs at once
 var: ""
 tags: [news]
 ---
-> **${var}** — Topic filter or subreddit name. If empty, checks all tracked subreddits.
+<!-- autoresearch: variation D — rethink: cross-sub narrative detector, not per-sub summary -->
 
-If `${var}` is set, only check that subreddit or filter posts by that topic.
+> **${var}** — Optional topic filter or single subreddit name. If empty, scans all tracked subs.
 
+If `${var}` is set, restrict candidates to that subreddit or filter narratives by that topic.
+
+## Thesis
+
+A per-subreddit top-10 competes with everyone's own Reddit scroll and loses. The signal Reddit *uniquely* provides that no single feed does: **the same story surfacing in multiple unrelated subs at once**. That's the narrative detector. This skill is built around that — not around per-sub digests.
 
 ## Config
 
-This skill reads subreddits from `memory/subreddits.yml`. If the file doesn't exist yet, create it or skip this skill.
+Read `memory/subreddits.yml`. If missing, bootstrap it with ≥8 diverse subs seeded from MEMORY.md interests (spread across unrelated communities — narratives are only meaningful if the subs don't normally overlap). Example default:
 
 ```yaml
-# memory/subreddits.yml
 subreddits:
-  - name: r/ExampleSub
-    subreddit: ExampleSub
-  - name: r/AnotherSub
-    subreddit: AnotherSub
+  - { name: r/MachineLearning, subreddit: MachineLearning }
+  - { name: r/programming,      subreddit: programming }
+  - { name: r/LocalLLaMA,       subreddit: LocalLLaMA }
+  - { name: r/netsec,           subreddit: netsec }
+  - { name: r/rust,             subreddit: rust }
+  - { name: r/technology,       subreddit: technology }
+  - { name: r/science,          subreddit: science }
+  - { name: r/cryptocurrency,   subreddit: cryptocurrency }
 ```
 
----
-
-Read memory/MEMORY.md for tracked topics and interests.
-Read memory/subreddits.yml for the list of subreddits to monitor.
-Read the last 2 days of memory/logs/ to avoid repeating posts.
+Read `memory/MEMORY.md` for tracked interests (influences standout selection and narrative labelling).
+Read the last 2 days of `memory/logs/` to avoid repeating narratives already surfaced.
 
 ## Steps
 
-1. **Fetch posts from each subreddit.** For each subreddit in subreddits.yml, fetch the top/hot posts using Reddit's public JSON API:
-   ```bash
-   curl -sL -H "User-Agent: aeon-bot/1.0" "https://www.reddit.com/r/${SUBREDDIT}/hot.json?limit=15&t=day"
-   ```
-   Parse the JSON response — posts are under `data.children[].data`. Extract:
-   - `title`
-   - `url` (external link) and `permalink` (Reddit discussion link)
-   - `score` (upvotes)
-   - `num_comments`
-   - `created_utc` (filter to last 24h)
-   - `selftext` (for text posts)
+### 1. Fetch broadly
 
-2. **Filter for relevance.** From all fetched posts:
-   - Keep posts from the last 24h only
-   - Prioritize posts matching topics tracked in MEMORY.md (AI, crypto, neuroscience, programming, etc.)
-   - Also include any post with 100+ upvotes regardless of topic
-   - Deduplicate against recent logs — skip any post title already mentioned
+For each subreddit, fetch the top of the last 24h (note: `t=day` only applies to `top`, **not** `hot` — original skill had this bug):
 
-3. **Summarize top posts.** Select the 5-8 most interesting posts across all subreddits:
-   - If a post links to an external article, use WebFetch to get more context
-   - For text posts (self posts), use the `selftext` field
-   - Write a 1-2 sentence summary of why it matters
+```bash
+curl -sL -H "User-Agent: aeon-bot/1.0 (by /u/aeon)" \
+  "https://www.reddit.com/r/${SUBREDDIT}/top.json?t=day&limit=25"
+```
 
-4. **Format and send via `./notify`** (keep under 4000 chars):
-   ```
-   *Reddit Digest — ${today}*
+Unauthenticated Reddit JSON API rate limits at ~10 req/min. **Pace requests ≥7s apart** (sequential, not inside parallel tool calls). If curl returns 429 or a network error, retry once after 15s; if still failing, fall back to **WebFetch** on the same URL. If both fail, mark the source `error` and continue — never abort the whole run for one dead sub.
 
-   *r/subreddit*
-   - [Title](url) (150 pts, 42 comments)
-     Summary of the post.
-     [Discussion](https://reddit.com${permalink})
+Record a per-source status: `{sub: ok | empty | error}`.
 
-   *r/subreddit*
-   - [Title](url) (300 pts, 120 comments)
-     Summary of the post.
-   ```
+### 2. Clean candidates
 
-5. **Log to memory/logs/${today}.md.** Record which posts were included.
+For each post under `data.children[].data`, drop if any of:
+- `stickied == true` or `pinned == true`
+- `removed_by_category` non-null, or `selftext ∈ {"[removed]", "[deleted]"}`
+- `over_18 == true` (unless the sub is explicitly NSFW-tracked)
+- `created_utc` > 24h old
+- `upvote_ratio < 0.80` (drama/brigaded — the "controversial" signal, not the "interesting" signal)
 
-If no relevant posts are found across all subreddits, log "REDDIT_DIGEST_OK" and end.
+Extract: `id`, `title`, `url` (external), `permalink` (Reddit), `subreddit`, `score`, `num_comments`, `upvote_ratio`, `selftext` (first 500 chars), `is_self`.
+
+### 3. Normalize URLs
+
+For each post with an external URL:
+- Lowercase scheme + host
+- Strip `www.`, trailing slashes, URL fragments (`#...`)
+- Drop query params: `utm_*`, `ref`, `ref_src`, `source`, `fbclid`, `gclid`
+- For self posts, use `self:${subreddit}/${id}` as the canonical key (so they never cluster with anything)
+
+### 4. Detect cross-sub narratives
+
+Group posts into clusters:
+- **URL clusters:** posts sharing the exact same canonical URL.
+- **Title clusters:** posts across different subs whose titles share ≥50% Jaccard similarity on normalized word sets (lowercase, strip punctuation, drop stopwords like `a/the/of/to/is/are/and/or`).
+
+A **narrative** = a cluster with ≥2 posts from ≥2 distinct subreddits. Single-sub clusters are not narratives.
+
+Dedup narratives against the last 2 days of logs: if any post ID in the cluster, or a ≥70%-similar title, was already surfaced, drop the whole narrative.
+
+### 5. Score narratives
+
+```
+narrative_signal = Σ log10(score_i + 1) × 1.5
+                 + Σ log10(num_comments_i + 1)
+                 + 0.5 × (distinct_sub_count − 1)    # cross-community bonus
+```
+
+The cross-community bonus makes a 3-sub narrative strictly beat an equal-engagement 2-sub one.
+
+### 6. Standouts (single-sub big stories)
+
+A narrative-only digest is too restrictive on slow days. Also surface up to **2** single-sub standouts — posts with:
+- `score ≥ 1000` AND `num_comments ≥ 200` AND `upvote_ratio ≥ 0.90`
+- Not already part of a narrative cluster
+
+Rank standouts by `log10(score+1)×3 + log10(comments+1)×2`.
+
+### 7. Summarize — insight, not paraphrase
+
+Pick the top 3-5 narratives by signal + up to 2 standouts (cap at 6 items total). For each:
+
+- If the canonical is an external URL, **WebFetch** it to ground the insight (skip paywalled or failed fetches — fall back to the Reddit discussion).
+- For self posts, use `selftext`.
+- For discussion-heavy items (`num_comments > score`), identify the *disagreement axis* rather than summarizing the OP.
+
+Write ONE line per item. **Never paraphrase the title. Never write "This post discusses…"** Write the *claim*, the *surprise*, or the *disagreement* — something a reader couldn't derive from just reading the title.
+
+### 8. Format and send via `./notify`
+
+Keep under 4000 chars. Lead with a one-sentence shape signal (e.g., "Quiet AI news; heavy open-source drama.").
+
+```
+*Reddit Narratives — 2026-04-20*
+_Shape: Quiet AI news; heavy open-source drama crossing rust + programming._
+
+🔗 *OpenAI retracts jailbreak paper 14 days post-publication*
+   Spread: r/MachineLearning (450↑ 120💬) · r/OpenAI (220↑ 60💬) · r/ChatGPT (80↑ 30💬)
+   Insight: Retraction cites internal safety review, not author request — unusual for a peer-reviewed venue.
+   [Canonical](https://example.com/article)
+
+🔗 *Rust 1.83 async-trait ergonomics split*
+   Spread: r/rust (880↑ 340💬) · r/programming (310↑ 95💬)
+   Disagreement axis: dyn-safe async now vs. waiting for variance fixes.
+   [Canonical](https://example.com/rfc)
+
+📍 *Standout — r/netsec*
+   • [Title](https://reddit.com/...) — 2100↑ 900💬
+     Insight: First CVE confirmed exploited via the Linux eBPF verifier since 2024's bug class.
+
+_sources: 7 ok · 1 empty · 0 error · 12 narratives considered · 3 surfaced_
+```
+
+### 9. Suppression
+
+If **zero narratives** AND **zero standouts** pass filters: log `REDDIT_DIGEST_OK (quiet day)` with the source-status line and send **nothing**. Digests that fire every day get tuned out. Only fire when there's signal.
+
+If **all sources errored**: log `REDDIT_DIGEST_ERROR` and send a short alert `"Reddit digest: all N sources errored — check rate limits / API"`.
+
+### 10. Log
+
+Append to `memory/logs/${today}.md`:
+```
+### reddit-digest
+- Sources: 7 ok, 1 empty, 0 error
+- Narratives considered: 12
+- Surfaced: 3 narratives + 1 standout
+- Post IDs: abc123, def456, ... (for cross-day dedup)
+```
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+Outbound curl may be blocked in the GitHub Actions sandbox. **Always** fall back to WebFetch on the identical URL for any failed curl. If rate-limited often, drop `scripts/prefetch-reddit.sh` that fetches all configured subs before Claude runs (see CLAUDE.md's pre-fetch pattern) — the skill should read from `.reddit-cache/` first if present.
+
+## Why this skill is different from "what you'd see scrolling"
+
+Per-sub top-10 = noise you can get yourself in two minutes.
+Cross-sub narrative = signal that only an aggregator watching ≥8 subs at once can produce.
+The skill's job is the thing a human can't do cheaply.
 
 ## Environment Variables
 
-No environment variables required — uses Reddit's public JSON API (no authentication needed).
-A custom User-Agent header is set to avoid rate limiting.
+None required — Reddit's public JSON API is unauthenticated. A custom User-Agent (`aeon-bot/1.0 (by /u/aeon)`) is required to avoid shared-bucket throttling.
