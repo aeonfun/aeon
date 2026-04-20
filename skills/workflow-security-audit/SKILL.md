@@ -25,10 +25,15 @@ Try in order; if both fail, exit with `WORKFLOW_AUDIT_TOOL_FAIL`.
 
 ```bash
 # zizmor (Trail of Bits, SARIF-capable GH Actions auditor)
+# Pin to a specific version for reproducibility — bump this when upgrading.
+ZIZMOR_VERSION="1.24.1"
 if ! command -v zizmor >/dev/null 2>&1; then
-  pipx install zizmor 2>/dev/null || python3 -m pip install --user zizmor 2>/dev/null || true
+  pipx install "zizmor==${ZIZMOR_VERSION}" 2>/dev/null \
+    || python3 -m pip install --user "zizmor==${ZIZMOR_VERSION}" 2>/dev/null \
+    || true
   export PATH="$HOME/.local/bin:$PATH"
 fi
+# TODO: bump ZIZMOR_VERSION to the latest stable on the next audit of this skill.
 # actionlint (Rhymond's syntax-level workflow linter)
 if ! command -v actionlint >/dev/null 2>&1; then
   bash <(curl -sL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash) 2>/dev/null || true
