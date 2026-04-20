@@ -290,24 +290,58 @@ jobs:
 
           # Telegram: 4096 char limit, strict Markdown parsing
           if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
-            TG_MSG="$MSG"
-            if [ ${#TG_MSG} -gt 4000 ]; then
-              TG_MSG="${TG_MSG:0:3990}
-
-          ...(truncated)"
-            fi
-            TG_RESULT=$(curl -s -w "\n%{http_code}" -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-              -H "Content-Type: application/json" \
-              -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text, parse_mode: "Markdown"}')" 2>/dev/null) || true
-            TG_HTTP=$(echo "$TG_RESULT" | tail -1)
-            TG_OK=$(echo "$TG_RESULT" | sed '$d' | jq -r '.ok // false' 2>/dev/null || echo "false")
-            if [ "$TG_HTTP" = "200" ] && [ "$TG_OK" = "true" ]; then
-              DELIVERED=true
-            else
-              curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            # Split $MSG into chunks ≤3900 chars (Telegram cap 4096, leaves room for
+            # "[i/N]" suffix). Prefer paragraph (\n\n) then line (\n) boundaries,
+            # hard-split only if a single paragraph/line exceeds the limit.
+            # Chunks emitted one per line as base64 to preserve embedded newlines.
+            TG_CHUNKS_B64=$(printf '%s' "$MSG" | python3 -c '
+          import sys, base64
+          LIMIT = 3900
+          text = sys.stdin.read()
+          def pack(parts, sep):
+              out, cur = [], ""
+              for p in parts:
+                  glue = sep if cur else ""
+                  if len(cur) + len(glue) + len(p) <= LIMIT:
+                      cur += glue + p
+                  else:
+                      if cur:
+                          out.append(cur); cur = ""
+                      if len(p) > LIMIT and sep == "\n\n":
+                          out.extend(pack(p.split("\n"), "\n"))
+                      elif len(p) > LIMIT:
+                          while len(p) > LIMIT:
+                              out.append(p[:LIMIT]); p = p[LIMIT:]
+                          cur = p
+                      else:
+                          cur = p
+              if cur:
+                  out.append(cur)
+              return out
+          chunks = [text] if len(text) <= LIMIT else pack(text.split("\n\n"), "\n\n")
+          N = len(chunks)
+          for i, c in enumerate(chunks):
+              suffix = f"\n\n[{i+1}/{N}]" if N > 1 else ""
+              sys.stdout.write(base64.b64encode((c + suffix).encode()).decode() + "\n")
+          ')
+            while IFS= read -r TG_CHUNK_B64; do
+              [ -z "$TG_CHUNK_B64" ] && continue
+              TG_MSG=$(printf '%s' "$TG_CHUNK_B64" | base64 -d)
+              TG_RESULT=$(curl -s -w "\n%{http_code}" -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
                 -H "Content-Type: application/json" \
-                -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text}')" > /dev/null 2>&1 && DELIVERED=true || true
-            fi
+                -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text, parse_mode: "Markdown"}')" 2>/dev/null) || true
+              TG_HTTP=$(echo "$TG_RESULT" | tail -1)
+              TG_OK=$(echo "$TG_RESULT" | sed '$d' | jq -r '.ok // false' 2>/dev/null || echo "false")
+              if [ "$TG_HTTP" = "200" ] && [ "$TG_OK" = "true" ]; then
+                DELIVERED=true
+              else
+                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                  -H "Content-Type: application/json" \
+                  -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text}')" > /dev/null 2>&1 && DELIVERED=true || true
+              fi
+              # Preserve chunk ordering in the Telegram channel
+              sleep 0.3
+            done <<< "$TG_CHUNKS_B64"
           fi
 
           if [ -n "${DISCORD_WEBHOOK_URL:-}" ]; then
