@@ -12,7 +12,7 @@ If `${var}` is set, focus curation on that topic or channel.
 
 Read `memory/MEMORY.md` for current interests.
 Read the last 2 days of `memory/logs/` for recency context.
-Load persistent dedup state from `memory/state/farcaster-seen-hashes.json` (create the file with `{"hashes": [], "updated": null}` if missing). This stores cast hashes seen in the last 7 days — casts present here are skipped even if they re-appear in algorithmic feeds.
+Load persistent dedup state from `memory/state/farcaster-seen-hashes.json` (auto-created; safe to delete to reset dedup). The file starts as `{"hashes": [], "updated": null}` and stores cast hashes seen in the last 7 days — casts present here are skipped even if they re-appear in algorithmic feeds.
 
 ## Thesis
 
@@ -113,7 +113,7 @@ insight: ...
 sources: search=ok trending=ok channels=ok | new casts: 7 | seen-cache: 142 hashes
 ```
 
-**Insight discipline:** the `insight:` line must add something — implication, counter-argument, context the cast assumes, or a connection to another cast in the digest. If the best you can write is a paraphrase of the cast, drop the cast.
+**Insight discipline:** prefer casts where the `insight:` line adds something — implication, counter-argument, context the cast assumes, or a connection to another cast in the digest — over casts where the best you can write is a paraphrase. When choosing between casts of similar signal, pick the one that yields a non-paraphrase insight.
 
 ### 6. Send via `./notify`
 
