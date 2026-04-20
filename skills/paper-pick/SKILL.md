@@ -1,52 +1,84 @@
 ---
 name: Paper Pick
-description: Find the one paper you should read today from Hugging Face Papers
+description: Pick the one paper most worth reading today, scored by relevance × novelty × influence
 var: ""
 tags: [research]
 ---
-> **${var}** — Research topic to search for (e.g. "transformer architectures", "memory consolidation", "RL agents"). If empty, browses today's trending papers.
+> **${var}** — Optional research topic (e.g. "transformer architectures"). If empty, picks based on `memory/MEMORY.md` interests; if those are absent, falls back to broad ML/AI candidates.
 
-Read memory/MEMORY.md for context.
-Read the last 7 days of memory/logs/ to avoid recommending papers already covered.
+<!-- autoresearch: variation D — relevance-driven personal pick using interest profile × novelty × influence across HF Papers + Semantic Scholar -->
+
+Read `memory/MEMORY.md` and capture explicit interests / topics / research focus lines. If MEMORY.md is template/empty, treat the user as a generalist ML reader.
+Read the last 30 days of `memory/logs/` and collect every arXiv ID previously picked — this is the **exclusion set**. Never re-recommend.
+
+## Goal
+Pick the single paper most worth reading today for THIS user. Not the most upvoted, not the most recent — the one that maximizes `relevance × novelty × influence` and is not in the exclusion set.
 
 ## Steps
 
-1. Search for recent papers using Hugging Face Papers API (free, no key needed, no rate limits):
+### 1. Gather candidates from multiple sources
 
-   **If `${var}` is set** — search for that topic:
-   ```bash
-   curl -s "https://huggingface.co/api/papers/search?q=${var}&limit=15"
-   ```
+Use curl with **WebFetch fallback** (see Sandbox note). For each call, log which source returned data so failures surface.
 
-   **If `${var}` is empty** — browse today's trending papers:
-   ```bash
-   curl -s "https://huggingface.co/api/daily_papers?limit=15"
-   ```
+**A. HF daily papers — last 7 days** (community-curated signal, nested shape):
+```bash
+for i in 0 1 2 3 4 5 6; do
+  d=$(date -u -d "$i days ago" +%F)
+  curl -s "https://huggingface.co/api/daily_papers?date=$d&limit=20"
+done
+```
+Each entry nests under `paper.*`: `paper.id` (arXiv), `paper.title`, `paper.summary`, `paper.upvotes`, `paper.ai_summary`, `paper.publishedAt`, `paper.authors[].name`.
 
-   Response is a JSON array. Each entry has:
-   - `paper.id` — arXiv ID (use for links: `https://arxiv.org/abs/{id}`, PDF: `https://arxiv.org/pdf/{id}`)
-   - `paper.title`, `paper.summary` (abstract), `paper.authors[].name`
-   - `paper.publishedAt` — publication date
-   - `paper.upvotes` — community upvotes (higher = more notable)
-   - `paper.ai_summary` — AI-generated summary (on daily papers)
+**B. HF papers search — only if `${var}` is set** (flat shape):
+```bash
+curl -s "https://huggingface.co/api/papers/search?q=${var}&limit=20"
+```
+This endpoint returns a **flat shape** (`id`, `title`, `summary`, `upvotes` at top level — NOT nested under `paper.`). Normalize before merging with source A.
 
-2. If the search returned thin results or `${var}` is a niche topic, also try **WebSearch** for "[topic] paper $(date +%Y) site:arxiv.org" to catch papers the API missed.
+**C. Semantic Scholar — TLDR + influential-citation signal:**
+Build a query: `${var}` if set, else first interest from MEMORY.md, else `"machine learning"`. Filter to last ~6 months:
+```bash
+QUERY=$(printf %s "<query>" | jq -sRr @uri)
+curl -s "https://api.semanticscholar.org/graph/v1/paper/search?query=${QUERY}&limit=20&fields=title,abstract,authors,year,publicationDate,citationCount,influentialCitationCount,tldr,externalIds&publicationDateOrYear=2025-10:"
+```
+Each entry has `externalIds.ArXiv` (when available), `tldr.text` (AI summary), `influentialCitationCount`. Free, no key required (5000 req / 5 min unauth).
 
-3. From all results, pick **the single best paper** — the one most worth reading today. Criteria: novelty, relevance, practical implications, community signal (upvotes). Skip anything already mentioned in recent logs.
+### 2. Normalize, merge, dedupe
+Build a single list with fields: `arxivId`, `title`, `authors`, `summary`, `tldr` (Semantic Scholar) or `aiSummary` (HF), `upvotes` (HF only), `influentialCitations` (Semantic Scholar only), `publishedAt`, `sources[]`.
+Dedupe by `arxivId`. Drop anything in the exclusion set. Drop entries without a usable arXiv ID.
 
-4. Send via `./notify`:
-   ```
-   *Paper Pick — ${today}*
+### 3. Score (0-10 per candidate)
+- **Relevance** (0-4): match to user interests / `${var}`. Title hit on the topic = 4; strong abstract hit = 3; tangential = 1-2; off-topic = 0. For generalist mode, score broad foundational ML/AI work higher than niche subfield work.
+- **Novelty** (0-3): `publishedAt` within 7 days = 3, within 14 days = 2, within 30 days = 1, older = 0.
+- **Influence** (0-3): take the **max** of (a) HF upvotes normalized within today's batch — top decile = 3, top tertile = 2, else 0-1; and (b) Semantic Scholar `influentialCitationCount` — ≥5 = 3, 1-4 = 2, 0 = 0.
 
-   "Paper Title" — Authors · ↑upvotes
-   One sentence: why this paper is worth your time.
-   [Read](https://arxiv.org/abs/ID) | [PDF](https://arxiv.org/pdf/ID)
-   ```
+Sum. Tie-breaker: influence > novelty > relevance.
 
-5. Log to memory/logs/${today}.md.
+### 4. Decide
+If the top candidate scores **≥ 4**, ship it.
+If no candidate scores ≥ 4, notify `"Paper Pick — ${today}: no standout paper today, exclusion set already covers the field"` and log `PAPER_PICK_NO_PICK`. Stop.
 
-If nothing interesting found, log "PAPER_PICK_OK" and end.
+### 5. Notify via `./notify`
+```
+*Paper Pick — ${today}*
+
+"Title" — Authors · ↑upvotes · ★N influential cites
+*Why for you:* one sentence tying the paper to a user interest or `${var}`.
+*TL;DR:* one sentence — prefer Semantic Scholar `tldr.text` if present, else HF `ai_summary`, else first sentence of abstract.
+[Read](https://arxiv.org/abs/ID) | [PDF](https://arxiv.org/pdf/ID)
+```
+Omit a metric (upvotes or cites) if zero/unknown. Keep total under ~700 chars.
+
+### 6. Log
+Append to `memory/logs/${today}.md`:
+```
+### paper-pick
+- Pick: arxiv:ID — Title
+- Score: rel/nov/inf = X/Y/Z (total N)
+- Sources: <which of hf-daily, hf-search, semantic-scholar matched>
+- Why: brief reason
+- Runners-up: arxiv:ID1 (N), arxiv:ID2 (N)
+```
 
 ## Sandbox note
-
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+The sandbox may block outbound curl. For each source above: if `curl` returns empty/error, call **WebFetch** on the same URL with the prompt `"Return the raw JSON response verbatim, no commentary"`. Do not silently skip a failing source — log which one failed so it can be diagnosed.
