@@ -25,7 +25,7 @@ If no soul files exist (or the bodies are empty placeholders), write replies tha
 
 ### 1. Gather candidate tweets
 
-Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-leverage reply window — algorithm rewards early replies, and the OP is still likely to engage back).
+Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-leverage reply window — algorithm rewards early replies, and the OP is still likely to engage back). **Recency fallback:** if the 6h window yields fewer than 3 candidates after the skip gate, widen to **12h** and retry before failing the run.
 
 For every candidate, capture: `@handle`, full tweet text, tweet URL, `posted_at` (ISO), engagement counts (likes, replies, retweets if available), and a one-line **why-this-tweet** note.
 
@@ -92,7 +92,7 @@ For each of the 5 selected tweets, draft **two reply options** with distinct ang
 #### Hard reply rules (apply to both A and B)
 
 - **≤ 280 characters** including any handle prefix
-- **No sycophancy** — banned openings: "Great point", "Love this", "100%", "This 👆", "Couldn't agree more", "So well said", "💯". Banned closings: "Curious to hear your thoughts!" (engagement-hook noise)
+- **No sycophancy** — see the `## Banned sycophancy phrases` section below. Any draft containing a banned phrase must be rewritten.
 - **No hedging stacks** — "It could be argued that…", "Just my two cents but…", "Maybe I'm wrong but…" — pick a position
 - **Specifics, not gestures** — names, projects, numbers, links. If you can't cite one, don't write the reply
 - **Stand alone** — readers may not see the original tweet; reply must make sense on its own
@@ -144,6 +144,13 @@ If zero candidates survive the skip gate from any source, send a single `REPLY_M
 ```
 
 The `Tweet URLs` line is what tomorrow's run reads to avoid duplicate replies — keep it consistent.
+
+## Banned sycophancy phrases
+
+Edit this list as tastes change — any draft reply containing one of these (openings or closings) must be rewritten:
+
+- Openings: "Great point", "Love this", "100%", "This 👆", "Couldn't agree more", "So well said", "💯"
+- Closings: "Curious to hear your thoughts!" (engagement-hook noise)
 
 ## Sandbox note
 
