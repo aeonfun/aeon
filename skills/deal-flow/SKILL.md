@@ -20,20 +20,30 @@ Produce a weekly funding-round digest that tells the reader **what the capital r
 
 Run searches in parallel. Use the **current month + year** in queries. Aim for ≥25 candidate deals before filtering. If a source fails, record `source=fail` for the footer; do not abort.
 
+**Source fetch rule (applies to every WebFetch below):** if the fetch returns 404, 403, is rate-limited, or times out, log `DEAL_FLOW_SOURCE_MISS: <url> (<reason>)` and continue with remaining sources. Never abort the run on a single source miss — the tiered design is specifically so that any one source can fail.
+
 **Tier 1 — broad aggregators (always run):**
 - WebSearch: `"biggest funding rounds" week ${month} ${year} site:news.crunchbase.com`
 - WebSearch: `funding round ${month} ${year} site:techcrunch.com`
 - WebSearch: `"Series A" OR "Series B" OR "seed" raised ${month} ${year} startup`
-- WebFetch `https://news.crunchbase.com/sections/venture/` — extract this week's roundup if present
+- WebFetch `https://news.crunchbase.com/sections/venture/` — extract this week's roundup if present (apply source-miss rule above)
 
 **Tier 2 — vertical-specific (run for verticals in MEMORY.md; defaults: AI, crypto, infra/devtools):**
 - AI: WebFetch `https://aifundingtracker.com/`; WebSearch `"AI startup" "raised" Series ${month} ${year}`
-- Crypto: WebFetch `https://crypto-fundraising.info/` and `https://cryptorank.io/funding-rounds`; WebSearch `crypto funding round ${month} ${year}`
+- Crypto: WebFetch `https://crypto-fundraising.info/` and `https://cryptorank.io/funding-rounds` (apply source-miss rule); WebSearch `crypto funding round ${month} ${year}`
 - Infra/devtools: WebSearch `developer tools OR infrastructure OR compute startup raised ${month} ${year}`
 
 **Tier 3 — signal flags (always include if found, regardless of size):**
 - Prediction markets, coordination markets, agentic payments, x402, autonomous-agent infra, on-chain identity
 - WebSearch: `prediction market OR agentic payment OR x402 funding ${month} ${year}`
+
+**X/Twitter fallback signal path (always run, especially when Tier 1/2 sources miss):**
+- Use `fetch-tweets` outputs or direct X search for the following queries — these surface deals that aggregators miss or haven't indexed yet:
+  - `funding-announcement` (literal hashtag and phrase)
+  - `"announcing our Series" OR "we raised" ${month} ${year}`
+  - `"led by @<tier1_fund>" raised` (substitute a16z, paradigm, sequoia, etc.)
+  - `"thrilled to announce" funding ${month} ${year}`
+- Treat tweets from verified founder/investor accounts as primary-source candidates; still dedup by company name and verify amount/lead from a second source before including.
 
 ### 2. Dedup and enrich
 
