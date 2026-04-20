@@ -114,10 +114,10 @@ After ingestion, build the synthesis matrix:
 - **Recency signals** — findings from the last 3 months that may supersede older consensus
 - **Single-source claims** — anything resting on a single source; either corroborate or downgrade in the report
 
-Assign **confidence** to every finding before writing it:
-- **High** — corroborated by ≥3 sources including ≥2 T1, with no credible T1/T2 contradiction
-- **Medium** — corroborated by ≥2 sources with at least 1 T1, OR ≥4 T2 sources, no major contradiction
-- **Low** — single source, only T3 corroboration, OR active contradiction among T1/T2 sources
+Assign **confidence** to every finding before writing it. These are preferences, not hard gates — when a topic is nascent or underreported, T1 sources may not exist; state this in the confidence line rather than suppressing the finding:
+- **High** — prefer ≥3 sources including ≥2 T1 with no credible contradiction. If ≥2 T1 aren't available on the topic, explicitly say so (e.g. "High — topic underreported in T1; leaning on best available T2 consensus").
+- **Medium** — corroborated by ≥2 sources with at least 1 T1, OR ≥4 T2 sources, no major contradiction.
+- **Low** — single source, only T3 corroboration, OR active contradiction among T1/T2 sources.
 
 A "Low" confidence finding can still be reported but **must** be flagged inline.
 
@@ -239,7 +239,7 @@ The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL 
 
 - **No hallucination:** Every factual claim, statistic, or quote must trace back to a fetched source cited inline. Do not invent data or attribute findings to unnamed sources.
 - **Tier honestly:** Do not promote a tertiary source to T1 because the claim is convenient. The whole point of tiering is to surface uncertainty.
-- **Confidence calibration:** If you find yourself writing "High confidence" without ≥2 T1 corroborations, downgrade. Over-confidence is worse than admitting Low.
+- **Confidence calibration:** Prefer ≥2 T1 corroborations for "High". If T1 is genuinely unavailable on the topic, state that in the confidence line rather than force-downgrading a well-supported T2 consensus finding to Low.
 - **Context budget:** 30 full-page fetches will consume substantial context. Prioritize quality — 20 excellent sources beat 50 thin ones. If you hit context pressure, drop T3 sources first.
 - **Deduplication:** If multiple URLs say the same thing, count them once and note "(corroborated by N similar sources)".
 - **Timeliness:** State the newest source date in the Executive Summary. If newest source is >6 months old, flag it explicitly.
