@@ -55,11 +55,11 @@ Use `WebSearch` for 2 headlines in the user's tracked areas (AI and crypto by de
 ```
 
 Style rules:
-- Every focus item must state *why now* in ≤12 words. If you can't, demote it.
+- Every focus item should state *why now* in ≤12 words. If you can't, demote it.
 - "Since yesterday" is ≤5 bullets; merge duplicates across PR/issue/log sources.
 - No throat-clearing ("here's your briefing…"). Lead with Focus.
 - No empty sections — omit rather than print "(none)".
-- If fewer than 3 candidates survive ranking, show fewer. Do not invent items to hit 3.
+- If fewer than 3 candidates survive the why-now bar, allow **up to 1 background item** (tagged `background:` instead of `why now:`) so the brief still surfaces something worth knowing on quiet days. Never invent items, and never include more than 1 background item.
 - If soul files under `soul/` are populated, match that voice; otherwise keep it direct and neutral (per CLAUDE.md).
 
 ### 4. Send via `./notify` and log
