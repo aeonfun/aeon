@@ -40,18 +40,18 @@ Today is ${today}. Your task is to generate a complete, production-ready skill f
    - **Near-duplicate exists** → exit `CREATE_SKILL_DUPLICATE`. Notify with the existing skill name and a one-line suggestion ("use existing `{skill}` with `var={...}` instead"). Stop.
    - **Functionally adjacent** → design the new skill to complement (different angle/cadence/output). Document the boundary in the PR body.
 
-3. **Research the data sources (≥3 sources, current as of ${today}).** For every API or data source the new skill needs:
-   - **WebSearch** for the current API documentation. Cross-check against ≥1 secondary source (a recent GitHub repo using it, an official changelog, or a Stack Overflow answer dated ≥2026) to confirm the endpoint isn't deprecated.
+3. **Research the data sources.** For every API or data source the new skill needs:
+   - **WebSearch** for the current API documentation. Cross-check against a secondary source when feasible (a recent GitHub repo using it, an official changelog, or a Stack Overflow answer dated ≥2026) to confirm the endpoint isn't deprecated.
    - **WebFetch** the canonical docs URL — record it as a comment in the SKILL.md and in the PR body's "Sources researched" section.
    - Identify exact endpoints, required headers, auth scheme, response schema, and rate limits.
    - Note every required environment variable / API key.
    - Determine fallback strategy when an optional API key isn't set (WebSearch / WebFetch / cached data / public endpoint).
 
-   If you cannot confirm at least one working data source for the request, exit `CREATE_SKILL_INSUFFICIENT_RESEARCH` with a notify listing what you tried and why each source failed.
+   **Research bar (soft):** at least one confirmed source URL or exemplar (a working docs page or a public repo using the API). If none, do **not** hard-abort — log `CREATE_SKILL_INSUFFICIENT_RESEARCH`, ask the operator via `./notify` with what was tried and why each source failed, and stop. The operator can re-dispatch with a clearer prompt or a source hint.
 
-4. **New-secret guard.** Open `aeon.yml` and the GitHub Actions workflow secrets actually wired in. For each env var the new skill needs:
-   - **Available** → continue.
-   - **Missing** → record as `NEW_SECRET_REQUIRED`. The generated skill **must** gracefully degrade or skip when the secret is absent (no hard crash). Add a `### Required secrets` section to the PR body listing what the operator must add to GitHub Actions secrets before enabling.
+4. **New-secret guard.** Secrets values are never inspectable from the workflow — only names are listed. Use `gh api repos/:owner/:repo/actions/secrets --jq '.secrets[].name'` to read the **names** of secrets already configured (this endpoint returns names only, never values). Cross-reference with env-var usage in `aeon.yml` and existing workflows. For each env var the new skill needs:
+   - **Name present** → continue.
+   - **Name missing** → record as `NEW_SECRET_REQUIRED`. The generated skill **must** gracefully degrade or skip when the secret is absent (no hard crash). Add a `### Required secrets` section to the PR body listing what the operator must add to GitHub Actions secrets before enabling.
 
    If the secret has no graceful fallback, the generated skill's step 1 must do:
    ```bash
