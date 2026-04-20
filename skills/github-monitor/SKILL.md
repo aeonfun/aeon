@@ -54,6 +54,8 @@ If any single `gh` call fails (network, auth, 404), record it as `gh_error(<code
 
 Walk every collected item and assign it to exactly one tier. Drop items that match no tier.
 
+**Tier precedence (when multiple criteria qualify, pick the highest):** `ACT NOW > REVIEW > INFO`. Evaluate ACT NOW rules first; if any match, lock the tier and skip further checks for that item. Only fall through to REVIEW if no ACT NOW rule matched, and to INFO only if neither matched.
+
 **ACT NOW** — needs a human decision today:
 - Open PR, not draft, with any `statusCheckRollup[].conclusion == "FAILURE"`
 - Open PR, not draft, `reviewRequests` non-empty, `updatedAt` older than 72h (reviewer ghosted)
@@ -77,13 +79,13 @@ Cap each tier at 5 items. If a tier would exceed 5, keep the top 5 by (tier rank
 
 ## 3. Dedup
 
-Before alerting, match each item against the last 48h of `memory/logs/` using these stable identifiers:
+Keep dedup simple — no escalation-history tracking:
 
-- PRs: `${repo}#${number}` — re-alert only if its tier **escalates** (INFO → REVIEW → ACT NOW). A PR that was ACT NOW yesterday and is still ACT NOW today is skipped.
-- Issues: `${repo}!${number}` — alert once, never again.
-- Releases: `${repo}@${tagName}` — alert once, never again.
+- PRs: every run emits the PR's **current tier**. If an operator sees the same PR listed at the same tier day after day, that repetition is the intended signal (it has been sitting unresolved) — not noise.
+- Issues: `${repo}!${number}` — alert once, then skip in subsequent runs within the last 48h of logs.
+- Releases: `${repo}@${tagName}` — alert once, then skip in subsequent runs within the last 48h of logs.
 
-Record the identifier plus assigned tier in the log (step 5) so next-day dedup can see it.
+Record each PR identifier and its assigned tier in the log (step 5) for traceability, but do not consult prior runs to gate PR re-emission.
 
 ## 4. Notify
 
