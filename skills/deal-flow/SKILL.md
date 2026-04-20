@@ -5,63 +5,120 @@ var: ""
 tags: [research]
 ---
 
-Read memory/MEMORY.md for context.
-Read the last 2 days of memory/logs/ to avoid repeating deals.
+<!-- autoresearch: variation B — sharper output via leverage scoring, valuation context, and banned-phrase quality gates -->
+
+Read `memory/MEMORY.md` for context (tracked verticals, active theses).
+Read the last 14 days of `memory/logs/` and extract company names from prior `### deal-flow` entries to build the dedup set.
+
+## Goal
+
+Produce a weekly funding-round digest that tells the reader **what the capital reveals**, not just what closed. A flat list of rounds is noise; a ranked, contextualized read is signal.
 
 ## Steps
 
-1. **Search for recent funding rounds** across verticals tracked in MEMORY.md (default: AI, crypto, infrastructure). Read MEMORY.md for tracked verticals, then run WebSearches in parallel using those verticals. If no verticals are configured, use these defaults:
+### 1. Gather candidates from tiered sources
 
-   - `"AI startup funding round ${month} ${year}"` — frontier AI, agents, infra
-   - `"crypto funding round ${month} ${year}"` — DeFi, tokens, exchanges, wallets
-   - `"infrastructure funding round ${year}" OR "developer tools funding ${year}"` — infra, devtools, compute
+Run searches in parallel. Use the **current month + year** in queries. Aim for ≥25 candidate deals before filtering. If a source fails, record `source=fail` for the footer; do not abort.
 
-   Also check:
-   - `crypto-fundraising.info` for the latest crypto-specific rounds
-   - `aifundingtracker.com` for AI-specific rounds
+**Tier 1 — broad aggregators (always run):**
+- WebSearch: `"biggest funding rounds" week ${month} ${year} site:news.crunchbase.com`
+- WebSearch: `funding round ${month} ${year} site:techcrunch.com`
+- WebSearch: `"Series A" OR "Series B" OR "seed" raised ${month} ${year} startup`
+- WebFetch `https://news.crunchbase.com/sections/venture/` — extract this week's roundup if present
 
-2. **Filter and rank deals.** From all results, select the top 10 most relevant deals based on:
-   - **Relevance to tracked verticals in MEMORY.md**
-   - **Signal strength:** unusually large rounds, notable investors (a16z, Paradigm, Founders Fund, etc.), contrarian plays, first-of-kind categories
-   - **Recency:** prioritize last 7 days, include up to 14 days if slow week
-   - **Deduplicate** against previous logs
+**Tier 2 — vertical-specific (run for verticals in MEMORY.md; defaults: AI, crypto, infra/devtools):**
+- AI: WebFetch `https://aifundingtracker.com/`; WebSearch `"AI startup" "raised" Series ${month} ${year}`
+- Crypto: WebFetch `https://crypto-fundraising.info/` and `https://cryptorank.io/funding-rounds`; WebSearch `crypto funding round ${month} ${year}`
+- Infra/devtools: WebSearch `developer tools OR infrastructure OR compute startup raised ${month} ${year}`
 
-3. **For each deal, capture:**
-   - Company name and one-line description
-   - Round type (pre-seed, seed, Series A/B/C, etc.)
-   - Amount raised and valuation if available
-   - Lead investors
-   - Why it matters (one sentence — what signal does this send?)
+**Tier 3 — signal flags (always include if found, regardless of size):**
+- Prediction markets, coordination markets, agentic payments, x402, autonomous-agent infra, on-chain identity
+- WebSearch: `prediction market OR agentic payment OR x402 funding ${month} ${year}`
 
-4. **Add editorial commentary.** After listing deals, write 2-3 sentences of editorial commentary:
-   - What's the capital telling us? Where is smart money clustering?
-   - What's overfunded vs underfunded?
-   - Any deals that validate or contradict emerging theses?
+### 2. Dedup and enrich
 
-5. **Send via `./notify`** (under 4000 chars):
-   ```
-   *Deal Flow — ${today}*
+- Drop any deal whose company name (case-insensitive) appears in the last-14-days dedup set, **unless** the new round is materially different (later stage, >2× larger, or new lead).
+- For each surviving candidate, capture:
+  - **Company** + ≤12-word description
+  - **Round** (pre-seed / seed / A / B / C / strategic)
+  - **Amount** in USD
+  - **Valuation** (post-money) if disclosed
+  - **Prior valuation** if known → flag **UP / FLAT / DOWN** vs prior round
+  - **Lead investor(s)** + notable co-leads
+  - **Source URL**
 
-   1. **Company** — one-line description
-      Round: Series X, $XXM | Lead: Investor
-      Signal: why it matters
+If valuation or prior is unknown, write `n/d`. **Never hallucinate numbers.**
 
-   2. ...
+### 3. Score for leverage (1–5 each)
 
-   *Reading the capital:* 2-3 sentences of commentary.
-   ```
+| Dimension | 5 (high) | 3 (mid) | 1 (low) |
+|---|---|---|---|
+| **Magnitude** | Round size unusual for stage (Series A >$50M; seed >$15M) | Standard for stage | Below median |
+| **Investor signal** | Lead is a16z, Paradigm, Founders Fund, Sequoia, Benchmark, Pantera, USV, Lightspeed | Reputable but not top-tier | Unknown / pure syndicate |
+| **Thesis fit** | Validates a tracked vertical/thesis directly | Adjacent | Off-thesis |
+| **Narrative weight** | First-of-kind, contrarian, or category-defining | Confirmation of existing trend | Me-too |
+| **Valuation signal** | UP >2× prior, OR DOWN (down rounds are signal) | FLAT or UP <2× | n/d |
 
-6. **Log to memory/logs/${today}.md.**
+Sum the five. Keep the **top 8** deals by total. Ties broken by recency.
+
+### 4. Quality gates (drop if any fail)
+
+- Acqui-hire, grant <$1M, or token sale → drop (token-pick covers tokens)
+- Round older than 14 days → drop
+- Amount or lead unverifiable → drop (no rumors)
+- Total leverage score <12 → drop **unless** it carries a Tier-3 signal flag
+- Cannot write a non-vague "Why it matters" line (see banned phrases below) → drop
+
+### 5. Write the digest
+
+```
+*Deal Flow — ${today}*
+
+**Read:** [1 sentence: what this week's capital signals — where smart money clustered, what's overfunded/underfunded, which thesis got validated or broken]
+
+1. **Company** — what they do (≤12 words)
+   $XXM ${round} @ $YYM post (${UP|FLAT|DOWN|n/d} vs prior) | Lead: ${investor}
+   *Why it matters:* [≤20 words; must name the specific signal]
+
+2. ...
+
+*Sources:* crunchbase=ok|fail, techcrunch=ok|fail, cryptorank=ok|fail, aift=ok|fail | candidates=${N} → kept=${K}
+```
+
+**Hard rules for "Why it matters":**
+- Banned phrases (drop the deal if you can't avoid them): *"interesting", "growing", "exciting", "potential", "could be", "watch this space", "important space", "validates the trend"*
+- Must reference at least one of: a named thesis, a competitive dynamic, a valuation anomaly, an investor-pattern shift, a regulatory/macro trigger, or a first-of-kind structural detail.
+
+Cap total at 4000 chars. If everything gets dropped, send:
+`*Deal Flow — ${today}* — No deals cleared signal threshold this week. Sources: ...`
+
+### 6. Log to `memory/logs/${today}.md`
+
+```
+### deal-flow
+- Candidates: ${N} → Kept: ${K}
+- Top deal: ${company} ($${amount} ${round}, lead ${investor}) — score ${score}/25
+- Themes: [1–2 sentence cluster summary]
+- Source health: [any source=fail with reason]
+- Dedup: ${count} candidates dropped as already-covered
+- Deals (for next-week dedup):
+  - ${company1}, ${company2}, ...
+```
+
+### 7. Send via `./notify`
+
+Run `./notify "<digest>"`. The fan-out handles channels.
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+The sandbox may block outbound curl. Use **WebFetch** (built-in Claude tool) for any URL fetch — it bypasses the sandbox. WebSearch is always available.
 
-## Guidelines
+## Constraints
 
-- Skip acqui-hires, grants under $1M, and token sales (token-pick covers those)
-- Flag any deal in prediction markets, coordination markets, or agentic payments — these are always relevant regardless of size
-- Compare week-over-week: is capital accelerating or decelerating in each vertical?
+- Never invent numbers. `n/d` is acceptable; fabrication is not.
+- Never include the same deal as last week unless materially different (later stage, >2× bigger, or new lead).
+- Compare week-over-week implicitly via the **Read:** lead — is capital accelerating or decelerating in each vertical?
+- Quality over completeness: if only 3 deals clear the threshold, ship 3.
 
 ## Environment Variables Required
-- None (uses WebSearch)
+- None (uses WebSearch + WebFetch)
