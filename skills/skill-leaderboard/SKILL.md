@@ -110,10 +110,12 @@ If the file is missing or stale (>14 days), set deltas to "first ranked snapshot
 
 ### 8. Compute the three actionable categories
 
-- **Consensus skills**: `pct_of_configured > 0.50`. The fleet has converged on these — upstream should treat them as canonical examples and ensure they're well-documented.
-- **Promote candidates**: `pct_of_configured ≥ 0.25` AND upstream default is `enabled: false` AND the skill is not a `workflow_dispatch`-only skill. The fleet found these worth running; upstream may want to flip the default or feature them more prominently.
-- **Match candidates**: skills where ≥2 CONFIGURED forks override `model:` to the same value (e.g., both pick `claude-sonnet-4-6`). The fleet has independently found a cheaper model sufficient — upstream should consider matching the override.
-- **Sunset candidates**: skills present in `UPSTREAM_SKILLS` with `forks_enabled == 0` AND `with_var == 0` AND not a meta/dev skill (skip skills tagged `meta` or `dev` — those are operator-tools, fork adoption isn't the point). Review for removal or better discoverability.
+> Every tier below is a **heuristic — operator overrides take precedence**. Thresholds are starting points, not hard rules; the operator's call always wins. **When in doubt, classify as Match** rather than forcing Promote or Sunset.
+
+- **Consensus skills**: `pct_of_configured > 0.50` (heuristic — operator overrides take precedence). The fleet has converged on these — upstream should treat them as canonical examples and ensure they're well-documented.
+- **Promote candidates**: `pct_of_configured ≥ 0.25` AND upstream default is `enabled: false` AND the skill is not a `workflow_dispatch`-only skill (heuristic — operator overrides take precedence). The fleet found these worth running; upstream may want to flip the default or feature them more prominently.
+- **Match candidates**: skills where ≥2 CONFIGURED forks override `model:` to the same value (e.g., both pick `claude-sonnet-4-6`) (heuristic — operator overrides take precedence). The fleet has independently found a cheaper model sufficient — upstream should consider matching the override.
+- **Sunset candidates**: skills present in `UPSTREAM_SKILLS` with `forks_enabled == 0` AND `with_var == 0` AND not a meta/dev skill (heuristic — operator overrides take precedence; skip skills tagged `meta` or `dev` — those are operator-tools, fork adoption isn't the point). Review for removal or better discoverability.
 - **Fleet-only skills**: any `is_fork_only: true` skill enabled in ≥1 fork. Surface for review — the fleet built something upstream doesn't have.
 
 ### 9. Write the article
