@@ -227,6 +227,17 @@ Today is ${today}. Catalog all GitHub repos under `${var}` into a structured ref
 - **Fallback:** if `gh api graphql` fails persistently, fall back to `gh repo list "$OWNER" --limit 500 --json name,description,pushedAt,primaryLanguage,isArchived,isFork,stargazerCount,url,defaultBranchRef,repositoryTopics,licenseInfo` plus per-repo `gh api "repos/$OWNER/$NAME/contents/PATH" --silent 2>/dev/null` probes for file existence. Slower (~1 req/file/repo) but same auth path.
 - **WebFetch** is not useful here — GitHub's HTML doesn't expose the same structured metadata and the sandbox fallback is already served by `gh`.
 
+## Output schema (stable)
+
+Downstream consumers (`external-feature`, `pr-review`, `code-health`, `repo-pulse`, `vercel-projects`) grep against `memory/topics/repos.md` for these exact fields. **Do not rename or remove these without a coordinated update** across every consumer skill:
+
+- Section headings: `## Top 5 fleet opportunities`, `## Active (≤30d)`, `## Maintained (≤90d)`, `## Stale (>90d)`, `## Delta since last scan`, `### Repo Details`
+- Per-repo heading: `#### {name}`
+- Per-repo labelled fields: `**What:**`, `**Stack:**`, `**Status:**`, `**Topics:**`, `**License:**`, `**Numbers:**`, `**Opportunities:**`
+- Machine block delimiters: `<!-- repo-scanner-state` … `-->` and the `name|pushedAt|category` pipe-schema inside
+- Opportunity taxonomy codes (see step 4 table): `MISSING_CI`, `MISSING_LICENSE`, `MISSING_DEPENDABOT`, `MISSING_CLAUDE_MD`, `MISSING_CONTRIBUTING`, `README_STUB`, `EMPTY_DESCRIPTION`, `OPEN_ISSUE_BACKLOG:N`, `STALE_PRS:N`, `GOOD_FIRST_ISSUES:N`, `ABANDON_RISK`. Adding new codes is fine; renaming existing ones breaks consumers.
+- Status codes: `REPO_SCANNER_OK`, `REPO_SCANNER_EMPTY`, `REPO_SCANNER_NO_USERNAME`, `REPO_SCANNER_API_FAIL`.
+
 ## Constraints
 
 - Do **not** rename the following schema elements — downstream skills grep for them: `## Active`, `## Maintained`, `## Stale`, `#### {name}`, `**Opportunities:**`, `## Top 5 fleet opportunities`, `<!-- repo-scanner-state`.
