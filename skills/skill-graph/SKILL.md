@@ -1,56 +1,152 @@
 ---
 name: Skill Dependency Graph
-description: Generate a Mermaid dependency map of all skills grouped by category
+description: Generate a navigable Mermaid dependency map of all skills with change detection, per-category drill-downs, and enabled overlay
 var: ""
 tags: [meta, dev]
 ---
 > **${var}** — Output path override. If empty, writes to `docs/skill-graph.md`.
 
-Today is ${today}. Generate a self-updating Mermaid dependency map of all Aeon skills.
+<!-- autoresearch: variation B — sharper output via change detection + per-category diagrams + enabled overlay + click-through + diff-vs-prior -->
+
+Today is ${today}. Generate a navigable, decision-ready Mermaid map of all Aeon skills. Skip notify and PR when nothing changed.
 
 ## Steps
 
-1. **Parse `aeon.yml`** — extract all skill entries, their schedules, and enabled status. Parse `chains:` for `consume:` and `parallel:` relationships. Parse `reactive:` for trigger dependencies.
+### 1. Fingerprint inputs and check for change
 
-2. **Scan all `skills/*/SKILL.md` files** — for each skill, extract:
-   - `name` and `tags` from YAML frontmatter
-   - `depends_on: [...]` from frontmatter (direct dependencies)
-   - Inline references to other skills (patterns: `skills/X/SKILL.md`, `read skills/X`, skill names in backticks that match known skill slugs)
-   - References to shared state files (`memory/cron-state.json`, `memory/skill-health/`, `memory/issues/`)
+Build an input fingerprint:
 
-3. **Read `skills.json`** for the canonical category mapping:
-   - `research` → Research & Content
-   - `dev` → Dev & Code
-   - `crypto` → Crypto & Markets
-   - `social` → Social
-   - `productivity` → Productivity & Meta
+```bash
+{
+  sha1sum aeon.yml skills.json
+  for f in skills/*/SKILL.md; do
+    awk '/^---$/{n++;next} n==1{print FILENAME": "$0}' "$f"   # frontmatter only
+    grep -hE '^depends_on:|^- skill:|consume:|parallel:|trigger:' "$f" || true
+    grep -hoE 'memory/(topics|state)/[a-zA-Z0-9_.-]+' "$f" | sort -u
+  done | sha1sum
+} > /tmp/skill-graph.fingerprint
+```
 
-4. **Build the dependency graph** with these edge types:
-   - **Solid arrows** (`-->`) for `depends_on` relationships
-   - **Dashed arrows** (`-.->`) for chain `consume:` relationships
-   - **Dotted arrows** (`-..->`) for reactive trigger relationships
+Compare against `memory/topics/skill-graph-state.json` (key `input_fingerprint`). If identical:
+- Append `## skill-graph` block to `memory/logs/${today}.md`: `SKILL_GRAPH_NO_CHANGE — N skills, identical fingerprint`
+- **Exit silently. No notify. No PR. No file rewrite.**
 
-5. **Generate the Mermaid diagram** as `flowchart LR`:
-   - Group skills into `subgraph` blocks by category
-   - Style each category subgraph with a distinct color
-   - Highlight the self-healing loop: `heartbeat` → `skill-health` → `skill-evals` → `skill-repair` → `self-improve`
-   - Include a legend explaining edge types
+If state file is missing → mode = `SKILL_GRAPH_NEW`. Otherwise → mode = `SKILL_GRAPH_OK`.
 
-6. **Write the output** to `docs/skill-graph.md` (or `${var}` if set) with:
-   - Title and generation timestamp
-   - The Mermaid diagram
-   - A summary table: total skills, dependencies by type, categories
-   - Notes on key architectural patterns (self-healing loop, hub skills, data providers)
+### 2. Parse all inputs (explicit + derived)
 
-7. **Update the README** — if `docs/skill-graph.md` is new, add a "Skill Architecture" link in the README under the Skills table:
-   ```markdown
-   **Dependency graph:** [`docs/skill-graph.md`](docs/skill-graph.md) — visual map of how skills connect
+**Explicit edges:**
+- `aeon.yml` → per-skill `enabled`, `schedule`, `var`, `model`; `chains:` blocks (`steps:`, `consume:`, `parallel:`); `reactive:` blocks (`trigger:`, `on:`, `when:`)
+- Each `skills/*/SKILL.md` → frontmatter `name`, `tags`, `depends_on:` array
+
+**Derived edges (this is the leverage):**
+- For each skill, grep `memory/topics/*.md` and `memory/state/*.json` references. Classify as **write** if surrounding 3 lines match `(write|save|append|>|update)\b.*(topics|state)/`, else **read**. A `write→topic` from skill A and a `read→same topic` from skill B yields a shared-state edge `A -..-> B`.
+- Skills tagged `research` writing to `articles/*.md` (or having `articles/` in their output description) → automatic content-pipeline edges to `syndicate-article`, `rss-feed`, `update-gallery`.
+- Every skill writes `memory/cron-state.json` — collapse this into a single legend note rather than 90 edges to `heartbeat/skill-health/skill-repair`.
+
+### 3. Categorize via `skills.json`
+
+Use `skills.json` as the canonical category map (`research`, `dev`, `crypto`, `social`, `productivity`). For skills not in `skills.json`, fall back to the first matching tag.
+
+### 4. Lint before write
+
+Before writing any Mermaid, validate:
+- Every `[label]` declaration has matching brackets
+- Every edge `A --> B` references nodes declared in some subgraph
+- Every `click X "..."` directive references a declared node and a path that exists on disk
+- Every subgraph block opens with `subgraph` and closes with `end`
+
+If any lint check fails → mode = `SKILL_GRAPH_ERROR`, abort write, notify with the failing rule, exit.
+
+### 5. Generate the multi-diagram document
+
+Write to `docs/skill-graph.md` (or `${var}`). Structure:
+
+1. **Header** — title, `Auto-generated by skill-graph on ${today}`, current mode
+2. **Verdict line** — one of: `ARCHITECTURE_OK` (no structural change) / `NEW_SKILLS: a, b` / `RETIRED_SKILLS: c` / `NEW_DEPS: A→B, ...` / `NEW_ENABLED: x`
+3. **What changed since last run** — diff against prior `docs/skill-graph.md`: added/removed nodes, added/removed edges, enabled-state flips. Skip section on `SKILL_GRAPH_NEW`.
+4. **Overview diagram** — `flowchart LR` with 5 category subgraph boxes (no inner nodes) + cross-category edges + edge counts as labels
+5. **Self-healing loop callout** — small dedicated `flowchart LR` showing `heartbeat → skill-health → skill-evals → skill-repair → self-improve` with the shared `cron-state.json` as a labeled state node
+6. **Per-category mini-diagrams** — one `flowchart LR` per category. Inside: all nodes for that category, intra-category edges as solid/dashed/dotted, cross-category dependencies shown as faded `:::external` ghost nodes pointing into a side cluster
+7. **Click-through directives** — every node in every diagram gets `click slug "../skills/slug/SKILL.md"` (Mermaid renders as hyperlinks on github.com)
+8. **Enabled overlay** — Mermaid classes: `class slug enabled` (bold border, schedule annotation in label) for skills with `enabled: true`; `class slug disabled` (faded grey) for the rest. Class definitions:
    ```
+   classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
+   classDef disabled fill:#f5f5f5,stroke:#bbb,color:#888
+   classDef external fill:none,stroke:#bbb,stroke-dasharray:3 3,color:#888
+   ```
+9. **Legend** — edge types (`-->` depends_on, `-.->` consume, `-..->` reactive/shared-state); enabled vs disabled visual; click-to-source note
+10. **Summary table** — total skills, by category, by status (enabled/disabled), edges by type
+11. **Source-status footer** — `skills parsed: N · depends_on: X · consume: Y · reactive: Z · shared-state derived: W · enabled: E/N · mode: SKILL_GRAPH_{OK,NEW,NO_CHANGE,ERROR}`
 
-8. **Create a branch and PR** with the updated graph.
+### 6. Update README idempotently
 
-9. **Log** to `memory/logs/${today}.md`.
+```bash
+if ! grep -q 'docs/skill-graph.md' README.md; then
+  # insert under "Skills" header if present, else append
+  ...
+fi
+```
+
+Never re-insert. Never reformat existing lines.
+
+### 7. Persist state
+
+Write `memory/topics/skill-graph-state.json`:
+```json
+{
+  "generated_at": "${today}",
+  "input_fingerprint": "<sha1>",
+  "skills_total": 96,
+  "enabled_count": 1,
+  "edges": { "depends_on": 4, "consume": 4, "reactive": 1, "shared_state": 12 },
+  "node_list_sha": "<sha1 of sorted slugs>",
+  "edge_list_sha": "<sha1 of sorted edge tuples>"
+}
+```
+
+Used next run for change detection (step 1).
+
+### 8. Branch, commit, PR
+
+```bash
+git checkout -b skill-graph/${today} 2>/dev/null || git checkout skill-graph/${today}
+git add docs/skill-graph.md memory/topics/skill-graph-state.json README.md
+git commit -m "docs(skill-graph): regenerate map (${verdict_one_line})"
+git push -u origin skill-graph/${today}
+gh pr create --title "docs(skill-graph): ${verdict_one_line}" --body "..."
+```
+
+PR body includes: verdict line, what-changed diff, summary table, source-status footer.
+
+### 9. Notify (gated)
+
+- `SKILL_GRAPH_NO_CHANGE` → no notify (already exited at step 1)
+- `SKILL_GRAPH_NEW` → notify: `*Skill Graph initialized* — ${N} skills mapped across 5 categories. PR: ${url}`
+- `SKILL_GRAPH_OK` → notify only if verdict is not `ARCHITECTURE_OK`: `*Skill Graph updated* — ${verdict_one_line}. PR: ${url}`
+- `SKILL_GRAPH_ERROR` → notify: `*Skill Graph FAILED* — lint: ${rule}. No PR opened.`
+
+### 10. Log
+
+Append to `memory/logs/${today}.md`:
+```
+### skill-graph
+- Mode: SKILL_GRAPH_{OK|NEW|NO_CHANGE|ERROR}
+- Verdict: ${verdict_one_line}
+- Skills: ${N} (enabled: ${E})
+- Edges: depends_on=${X}, consume=${Y}, reactive=${Z}, shared_state=${W}
+- PR: ${url or "—"}
+- Source-status: ${footer}
+```
 
 ## Sandbox note
 
-No external APIs needed — all data comes from local files. No sandbox workarounds required.
+No external APIs needed — all inputs come from local files. Standard `git` + `gh` CLI for branch/PR creation (already authenticated via `GITHUB_TOKEN`).
+
+## Constraints
+
+- Never silently regress an already-good output. If lint fails, abort with `SKILL_GRAPH_ERROR` rather than commit a broken diagram.
+- `SKILL_GRAPH_NO_CHANGE` is the most common path on a stable architecture and **must** be silent — no PR, no notify, just a log line. Operator trains to trust the silence.
+- Click-through paths must be **relative from the output file's directory** (e.g. `../skills/X/SKILL.md` from `docs/skill-graph.md`) so they resolve on github.com.
+- Enabled state comes from `aeon.yml` only — never infer from cron-state or recent runs (a skill can be enabled but not yet run).
+- Do not expand `every skill writes cron-state.json` into N edges — collapse into one legend note. The graph is a map, not an audit log.
