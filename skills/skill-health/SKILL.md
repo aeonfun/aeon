@@ -63,6 +63,8 @@ Group non-HEALTHY skills by shared `api_host` OR shared `last_error` signature. 
 
 ### 4. Reconcile with memory/issues/
 
+**Precondition guard:** only perform issue filing/resolution if `memory/issues/INDEX.md` already exists. If it is missing, the operator has not opted into the issue-tracker contract yet — log `SKILL_HEALTH_ISSUE_TRACKER_MISSING` to `memory/logs/${today}.md`, skip this entire step (and the reconciliation side of step 5), and continue with classification + notification only. Do **not** auto-create `INDEX.md`.
+
 For each CRITICAL or FLAPPING skill, check if an open issue already exists with this skill in `affected_skills` AND a matching `root_cause` signature:
 
 - **Open issue exists, same root cause** → do nothing (no new file, no notification for this skill).
