@@ -35,10 +35,10 @@ If curl fails or returns empty JSON, retry once with **WebFetch** against the sa
 
 ### 2. Filter before ranking
 
-Before picking winners/losers, drop noise:
+Before picking winners/losers, drop noise. All numeric thresholds below are starting points — tune as needed if the output consistently feels too loose or too strict:
 
 - **Stablecoins**: exclude symbols/ids that peg to fiat — `tether`, `usd-coin`, `dai`, `first-digital-usd`, `usde`, `tusd`, `usdd`, `pyusd`, `fdusd`, `paxg` (gold-pegged), and anything whose symbol starts with `USD`/`EUR`/`GBP` or name contains "stablecoin".
-- **Illiquid tokens**: drop coins with 24h `total_volume` < **$1,000,000**. Sub-$1M volume on a top-250 coin is a pump/wash-trading target and generates misleading % moves.
+- **Illiquid tokens**: drop coins with 24h `total_volume` < **$1,000,000** (tune as needed). Sub-$1M volume on a top-250 coin is a pump/wash-trading target and generates misleading % moves.
 - **Wrapped dupes** (optional): if a wrapped version (e.g. `wbtc`, `weth`, `steth`) would otherwise dominate a list, keep only one representative.
 
 ### 3. Pick the lists
@@ -53,7 +53,7 @@ From the trending endpoint, take the top 7 trending coins with: name, symbol, ra
 
 ### 4. Enrich with signal + risk tags
 
-For every entry in the three lists, compute tags. Attach at most 2 tags per coin to keep the output clean:
+For every entry in the three lists, compute tags. Attach at most 2 tags per coin to keep the output clean. All numeric thresholds below are starting heuristics — tune as needed:
 
 - **[TRENDING+UP]** — appears in trending AND is a top winner. Strong positive signal.
 - **[TRENDING+DOWN]** — appears in trending AND is a top loser. Capitulation / bad-news signal.
