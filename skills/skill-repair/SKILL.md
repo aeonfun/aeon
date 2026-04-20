@@ -1,99 +1,257 @@
 ---
 name: Skill Repair
-description: Diagnose and fix failing or degraded skills automatically
+description: Diagnose and fix failing or degraded skills automatically — systemic-first triage, per-category playbooks, verification plan
 var: ""
 tags: [meta, dev]
 depends_on: [skill-health]
 ---
-> **${var}** — Skill name to repair. If empty, finds the worst-performing skill automatically.
+<!-- autoresearch: variation D — systemic-first triage + per-category playbooks + verification (folds A's regression hunter, B's structured PR + risk class + verdict, C's exit taxonomy + preflight + cooldown) -->
 
-If `${var}` is set, repair that specific skill instead of auto-selecting.
+> **${var}** — Skill name to repair. If empty, runs systemic triage and picks the worst fixable target.
+> **`${var}` modifiers**: prefix `dry-run:` to diagnose only without writing a PR (e.g. `dry-run:digest`).
 
-Today is ${today}. Your task is to diagnose and fix a failing or degraded skill.
+Today is ${today}. Your task is to diagnose and repair the worst-impact failing or degraded skill — preferring a single shared fix over N per-skill patches when failures cluster.
 
-## Steps
+## Phases
 
-1. **Identify the target skill.** If `${var}` is empty:
-   - Read `memory/issues/INDEX.md` for open issues — prioritize by severity (critical > high > medium > low).
-   - Also read `memory/cron-state.json` and find skills with:
-     - `consecutive_failures >= 2`, OR
-     - `success_rate < 0.5` (with at least 3 total runs), OR
-     - `last_error` set from a recent failure
-   - Prefer skills that have an open issue (already diagnosed) over raw cron-state signals.
-   - Skip issues with category `permanent-limitation` — these can't be fixed by prompt changes.
-   - Sort by severity: critical issues first, then consecutive failures, then lowest success rate.
-   - Pick the worst fixable one. If everything is healthy, log "all skills healthy" and exit.
+`PREFLIGHT → TRIAGE → DIAGNOSE → REPAIR → VERIFY → LOG`
 
-2. **Gather diagnostic context:**
-   - Read the skill file: `skills/{name}/SKILL.md`
-   - Read `memory/cron-state.json` entry for the skill (last_error, success_rate, run counts)
-   - Read last 3 days of `memory/logs/` and search for the skill name — look for error patterns
-   - Check recent GitHub Actions runs for the skill:
-     ```bash
-     gh run list --workflow=aeon.yml --limit 5 --json status,conclusion,name,createdAt \
-       | jq '[.[] | select(.name | contains("SKILL_NAME"))]'
-     ```
-   - If the run failed, check its logs:
-     ```bash
-     RUN_ID=$(gh run list --workflow=aeon.yml --limit 5 --json databaseId,name \
-       | jq -r '[.[] | select(.name | contains("SKILL_NAME"))][0].databaseId')
-     gh run view "$RUN_ID" --log 2>&1 | grep -iE "error|fail|missing|denied|timeout" | tail -20
-     ```
+Stop early at the appropriate exit code if any phase finds nothing actionable.
 
-3. **Diagnose the root cause.** Common failure modes:
-   - **Missing secret** — skill references an env var that isn't set
-   - **API change** — external API changed format, URL, or auth
-   - **Bad prompt** — skill instructions are ambiguous or reference stale data
-   - **Rate limiting** — skill hits an API too frequently
-   - **Timeout** — skill takes too long (>30 min)
-   - **Output format** — skill produces output that fails quality scoring
+## Exit taxonomy
 
-4. **Fix it.** Based on diagnosis:
-   - Edit `skills/{name}/SKILL.md` to fix the prompt, update API usage, clarify instructions
-   - If a secret is missing, note it in the notification (you can't set secrets)
-   - If an API changed, update the skill to use the new format
-   - If the skill is fundamentally broken beyond a prompt fix, disable it in `aeon.yml` and note why
+Pick exactly one before notifying.
 
-5. **Create a branch and PR:**
+| Code | Meaning |
+|---|---|
+| `REPAIR_OK_FIXED` | Per-skill fix applied, PR opened |
+| `REPAIR_OK_SYSTEMIC` | Shared root cause across N skills — single shared fix or shared issue filed |
+| `REPAIR_DIAGNOSED_NO_FIX` | Root cause known but requires operator action (e.g. missing secret, upstream API down). Issue updated, no PR |
+| `REPAIR_NO_TARGETS` | All tracked skills healthy and no open fixable issues |
+| `REPAIR_DRY_RUN` | `var=dry-run:NAME` — diagnostic only, no PR |
+| `REPAIR_BLOCKED` | Preflight failed (gh auth, missing files) or cooldown active |
+
+## 1. PREFLIGHT
+
+Bail early with `REPAIR_BLOCKED` (and notify with the reason) if any of these fails:
+
+- `gh auth status` succeeds.
+- `memory/cron-state.json` exists and parses as JSON.
+- `memory/issues/INDEX.md` exists. If absent, bootstrap a minimal one (Open + Resolved tables, no rows).
+- `memory/state/skill-repair-history.json` exists. If absent, create `{}`.
+
+**Cooldown / idempotency** (skip target with `REPAIR_BLOCKED` if any matches; don't loop on a fix that didn't take):
+- The chosen target appears in `memory/state/skill-repair-history.json` with `last_repair_at` within 24h. (Operator can override by deleting the entry.)
+- An open PR already exists matching `fix/skill-repair-{name}-*` — `gh pr list --state open --search "head:fix/skill-repair-{name}"`.
+- More than 3 skill-repair PRs already opened in the current UTC day — rate-limit our own PRs.
+
+If `${var}` starts with `dry-run:`, strip the prefix to get the target name and skip the cooldown.
+
+## 2. TRIAGE
+
+Identify the target. Two paths:
+
+**Path A — `${var}` set explicitly:** repair that skill. Skip step 2's clustering.
+
+**Path B — `${var}` empty (auto-select):**
+
+1. Read `memory/issues/INDEX.md`. Extract open issues. Skip `permanent-limitation`.
+2. Read `memory/cron-state.json`. Compute candidates where any of:
+   - `consecutive_failures >= 2`, OR
+   - `success_rate < 0.5` AND `total_runs >= 3`, OR
+   - `last_status == "failed"` AND `last_failed` within 48h, OR
+   - `last_quality_score <= 2` (degraded output even when "successful").
+3. **Cluster by error signature.** Group candidates by normalized `last_error` (lowercase, strip timestamps/ids/digits) AND by issue `category`. If 2+ skills share a signature OR a non-trivial category (`api-change`, `rate-limit`, `missing-secret`, `sandbox-limitation`):
+   - This is **systemic**. Switch to systemic mode:
+     - File or update a single shared issue (`affected_skills: [list]`) instead of N per-skill issues.
+     - If the shared root cause is fixable in one place (e.g., a shared script under `scripts/`, a CLAUDE.md pattern, a shared config), open one PR addressing that. Otherwise emit `REPAIR_DIAGNOSED_NO_FIX` with the systemic finding.
+     - Exit with `REPAIR_OK_SYSTEMIC` after step 5.
+4. **Pick worst single target.** Sort: critical issue > high issue > consecutive_failures desc > lowest success_rate > stalest `last_success`. Skip `permanent-limitation` and any target whose preflight cooldown blocks it. If nothing remains: `REPAIR_NO_TARGETS`.
+
+## 3. DIAGNOSE
+
+Build a diagnostic dossier for the target before touching any file. Sources are independent — each one's status feeds the source-status footer (`ok`/`empty`/`fail`).
+
+a. **Skill file**: read `skills/{name}/SKILL.md`. Note frontmatter, declared data sources, env-var references.
+
+b. **Cron-state entry**: extract `last_error`, `last_failed`, `last_success`, `success_rate`, `consecutive_failures`, `last_quality_score`.
+
+c. **Regression hunter**: if `last_success` exists, run
+
    ```bash
-   git checkout -b fix/skill-repair-{name}-${today}
-   git add skills/{name}/SKILL.md aeon.yml  # if changed
-   git commit -m "fix({name}): [description of fix]"
+   git log --oneline --since="$LAST_SUCCESS" -- skills/{name}/SKILL.md aeon.yml scripts/
    ```
-   Open a PR with diagnosis and fix details:
+
+   Any commit listed is a candidate regression source. If exactly one commit touched the skill file in this window, it is the prime suspect — record its SHA + subject in the dossier.
+
+d. **Recent failed runs (last 5, not just 1)**:
+
    ```bash
-   gh pr create --title "fix({name}): [short description]" \
-     --body "## Diagnosis\n[what was wrong]\n\n## Fix\n[what was changed]\n\n## Evidence\n- success_rate: X\n- consecutive_failures: Y\n- last_error: Z"
+   gh run list --workflow=aeon.yml --limit 50 --json databaseId,name,conclusion,createdAt \
+     | jq -r '[.[] | select(.name | contains("{name}")) | select(.conclusion=="failure")] | .[0:5]'
    ```
 
-6. **Notify.** Send via `./notify`:
-   ```
-   skill-repair: fixed {name} — [one-line description of fix]
-   diagnosis: [root cause]
-   PR: [url]
-   ```
+   For each, prefer `gh run view "$RUN_ID" --log-failed` (already filtered to failed steps) over the full log; fall back to `gh run view "$RUN_ID" --log` only if `--log-failed` returns nothing. Then:
 
-7. **Update issue tracker** (`memory/issues/`):
-   - Read `memory/issues/INDEX.md` — find if there's an open issue for this skill.
-   - If an issue exists:
-     - If the fix was applied: update the issue file — set `status: resolved`, `resolved_at: ${today}`, `fix_pr: [PR url]`. Move the row from Open to Resolved in INDEX.md.
-     - If you couldn't fix it: add a `## Repair Attempt` section to the issue file with the date, diagnosis, and why the fix failed.
-   - If no issue exists but you found and fixed a real problem: create a new issue file with status already set to `resolved`.
-
-8. **Log.** Append to `memory/logs/${today}.md`:
-   ```
-   ## Skill Repair
-   - **Target:** {name}
-   - **Diagnosis:** [root cause]
-   - **Fix:** [what was changed]
-   - **PR:** [url or "disabled"]
-   - **Issue:** [ISS-NNN resolved/updated/created]
+   ```bash
+   gh api "repos/{owner}/{repo}/actions/runs/$RUN_ID/check-runs" \
+     | jq -r '.check_runs[].output.annotations[]? | "\(.path):\(.start_line) \(.annotation_level): \(.message)"'
    ```
 
-## Guidelines
+   Annotations give clean error rows; logs give context. Distinguish **consistent** (same signature 4-5/5 runs → likely deterministic bug, secret, API change) from **intermittent** (1-2/5 → rate limit, flaky upstream).
 
-- Only fix one skill per run. Pick the worst offender.
-- Don't rewrite skills from scratch — make minimal, targeted fixes.
-- If you can't determine the root cause, log the diagnostic info and notify. Don't guess.
-- If a skill has been failing for 7+ days with no clear fix, disable it and recommend manual review.
-- Never modify secrets or workflow files — only skill files and aeon.yml.
+e. **Logs**: search last 3 days of `memory/logs/*.md` for `{name}` mentions. Surface any prior diagnoses.
+
+f. **Quality history**: if `memory/skill-health/{name}.json` exists, note `avg_score` trend.
+
+g. **Output expectations**: if `skills/skill-evals/evals.json` has an entry for `{name}`, extract its `min_words`, `required_patterns`, `forbidden_patterns`. A passing run that fails these is `quality-regression`.
+
+h. **Issue**: if `memory/issues/INDEX.md` lists an open issue for this skill, read the file — its `category` and `root_cause` short-circuit the playbook lookup below.
+
+## 4. REPAIR — per-category playbook
+
+Categories follow `CLAUDE.md`. Pick the **most specific** category that fits the diagnostic dossier (issue category if present > error-signature pattern match > best inference). Apply the matching playbook.
+
+| Category | Playbook |
+|---|---|
+| **`api-change`** | WebFetch the live API spec / status page / release notes. Update endpoints, payload shape, headers, error codes in the skill. Cite the spec URL in the PR body. Never guess — if WebFetch fails, drop to `REPAIR_DIAGNOSED_NO_FIX`. |
+| **`rate-limit`** | Add backoff (`sleep`), reduce request count, or add a fallback endpoint. Never raise the limit from the skill side. If the skill's `schedule` is too aggressive, propose a less-frequent cron in the PR body but **don't edit `aeon.yml`** unless the issue file already authorizes it. |
+| **`timeout`** | Split work into stages, add early-return on partial success, downgrade `model:` to `claude-sonnet-4-6` or `claude-haiku-4-5-20251001` for the skill that doesn't need Opus. |
+| **`sandbox-limitation`** | Convert auth-required curls to the prefetch (`scripts/prefetch-{name}.sh`) or postprocess (`.pending-{name}/` + `scripts/postprocess-{name}.sh`) pattern from `CLAUDE.md`. Add a "Sandbox note" section to the skill. |
+| **`prompt-bug`** | Minimum-edit specificity insertion. Don't rewrite — add the missing constraint, a forbidden phrase, a required output structure, or a clarifying example. Diff should be < 30 added/removed lines. |
+| **`output-format`** / **`quality-regression`** | Cross-reference `skills/skill-evals/evals.json` for the failing assertion. Edit the skill so the next run satisfies that exact pattern. Cite the assertion in the PR body. |
+| **`missing-secret`** | **Do not modify `aeon.yml` or the workflow.** File or update the issue with `status: open`, `category: missing-secret`, naming the secret. Notify operator with the env-var name. Exit `REPAIR_DIAGNOSED_NO_FIX`. |
+| **`config`** | Reversible aeon.yml edits only — `schedule`, `var`, `model`, `enabled: false`. **Never** add or remove top-level structure or chains. Keep diff < 5 lines in aeon.yml. |
+| **`permanent-limitation`** | Skip — should not have reached repair. Update issue, exit `REPAIR_DIAGNOSED_NO_FIX`. |
+| **`unknown`** | Do **not** edit blindly. Append the full diagnostic dossier (regression candidates, top error lines, source-status) to the issue file as a `## Diagnosis Notes` section, exit `REPAIR_DIAGNOSED_NO_FIX`. Operator triages. |
+
+**Risk classification** (pick one, gate the PR):
+- **LOW** — clarifying prompt, adding fallback, comment-only changes, single-section edit (< 30 lines diff).
+- **MED** — changes a data source, adds a new env-var reference (must already be in workflow), or modifies output format.
+- **HIGH** — touches `aeon.yml`, removes existing features, disables a skill, modifies a `scripts/*.sh` file. **HIGH risk PRs must add the label `manual-review` and must NOT be auto-mergeable** (skip `auto-merge`-friendly framing in the PR body).
+
+**Frontmatter integrity check**: after editing `skills/{name}/SKILL.md`, re-read it. Confirm the YAML frontmatter still has `name`, `description`, `var`, `tags`. If broken, abort the edit and exit `REPAIR_BLOCKED`.
+
+## 5. VERIFY — append a verification plan to the PR
+
+Every PR (except `REPAIR_DIAGNOSED_NO_FIX`) must include a Verification section the operator can execute. Use this template:
+
+```markdown
+## Verification
+
+**Manual trigger:** [Run skill](https://github.com/{owner}/{repo}/actions/workflows/aeon.yml) with `skill={name}` and `var={var}`.
+
+**Expected result:**
+- Workflow conclusion: `success`
+- Output file matches `{evals.json output_pattern or "memory/logs/${today}.md mentions {name}"}`
+- {category-specific signal — e.g. "no `rate limit` strings in run logs" / "produces ≥ {min_words} words" / "annotation count ≤ 0"}
+
+**If still failing after this PR:** delete `memory/state/skill-repair-history.json[{name}]` to remove the cooldown, then re-dispatch `skill-repair` with `var={name}` for a second pass.
+```
+
+Record the chosen verification command in the issue file's `## Repair Attempt` section so the next skill-repair run can read prior outcomes.
+
+## 6. Branch, commit, PR
+
+```bash
+TODAY="${today}"
+BRANCH="fix/skill-repair-{name}-${TODAY}"
+git checkout -b "$BRANCH"
+git add skills/{name}/SKILL.md  # plus aeon.yml or scripts/* iff in playbook
+git commit -m "fix({name}): [one-line root cause → fix]"
+git push -u origin "$BRANCH"
+
+gh pr create --title "fix({name}): [short]" --body "$(cat <<'EOF'
+## Symptom
+[what failed — error signature, run URL]
+
+## Diagnosis
+[dossier summary: regression commit if any, consistent vs intermittent, category]
+
+## Root cause
+[one paragraph]
+
+## Fix
+[what changed and why]
+
+## Risk
+LOW | MED | HIGH — [rationale]
+
+## Verification
+[copy from step 5]
+
+## Source status
+cron_state=ok | issues_index=ok | gh_runs=ok | gh_logs=ok | git_log=ok | check_runs=ok
+EOF
+)"
+```
+
+If risk is HIGH, also: `gh pr edit "$PR_URL" --add-label manual-review`.
+
+## 7. Update issue tracker (`memory/issues/`)
+
+- If an open issue for this skill exists:
+  - Fix applied → set `status: resolved`, `resolved_at: ${today}`, `fix_pr: <url>`. Move row from Open → Resolved in `INDEX.md`.
+  - No fix possible → append `## Repair Attempt — ${today}` with the dossier and reason.
+- If no issue exists but a real problem was found and fixed → create `memory/issues/ISS-{NNN}.md` with status already `resolved` (NNN = next free number from INDEX.md).
+- If systemic clustering fired in step 2 → ensure `affected_skills:` lists every skill matched by the signature.
+
+## 8. Persist cooldown
+
+Update `memory/state/skill-repair-history.json`:
+
+```json
+{
+  "{name}": {
+    "last_repair_at": "${today}T...Z",
+    "exit_code": "REPAIR_OK_FIXED",
+    "fix_pr": "https://github.com/.../pull/N",
+    "issue": "ISS-NNN"
+  }
+}
+```
+
+## 9. Notify
+
+Send via `./notify` (one-paragraph max — verdict line first):
+
+```
+*skill-repair — {EXIT_CODE}*
+Target: {name} (or systemic: skill-a, skill-b, ...)
+Root cause: [one line]
+Fix: [one line] (risk: LOW|MED|HIGH)
+PR: {url}  Issue: {ISS-NNN}
+Verify: workflow_dispatch skill={name}
+```
+
+## 10. Log
+
+Append to `memory/logs/${today}.md`:
+
+```markdown
+### skill-repair
+- Exit: {EXIT_CODE}
+- Target: {name} (or systemic group)
+- Category: {category}
+- Diagnosis: [root cause]
+- Fix: [what changed] (risk: {LOW|MED|HIGH})
+- Regression suspect: {commit SHA or "none in window"}
+- Failures observed: {N}/5 recent runs ({consistent|intermittent})
+- PR: {url or "—"}
+- Issue: {ISS-NNN created|updated|resolved or "—"}
+- Source status: cron_state | issues_index | gh_runs | gh_logs | git_log | check_runs
+```
+
+## Sandbox note
+
+`gh` and `git` work inside the sandbox. The diagnostic curls go through `gh api` (auth handled). For any external API spec lookup in the `api-change` playbook, prefer **WebFetch** over `curl` — see `CLAUDE.md`.
+
+## Constraints
+
+- One target per run (or one systemic cluster). Never bundle unrelated repairs.
+- Minimum-edit principle: keep diffs as small as possible. The original failure mode is rarely "the skill needs a rewrite".
+- Never modify secrets, the workflow file (`.github/workflows/aeon.yml`), or `messages.yml`.
+- Never push to `main`. Always branch + PR.
+- Never auto-merge HIGH-risk PRs. They carry the `manual-review` label.
+- If a skill has been failing > 7 days with no clear root cause and the category is `unknown`, recommend (in the issue and notify) `enabled: false` in `aeon.yml` — but **do not apply that change** without an explicit operator-approved issue.
+- Skip when `${var}` matches a skill that has been repaired in the last 24h unless operator clears the cooldown entry. This prevents repair loops on fixes that didn't take.
