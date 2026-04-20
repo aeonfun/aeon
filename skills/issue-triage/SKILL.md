@@ -45,7 +45,7 @@ Read the last 7 days of `memory/logs/` as a fallback dedup signal.
 
 If `${var}` is set → `targets = [${var}]`. Else `targets = ` non-comment, non-blank lines from `memory/watched-repos.md` with `- ` prefix stripped.
 
-Per-run budget: **≤10 new issues per repo**. If more, triage the 10 oldest and log the overflow.
+Per-run budget: **≤10 new issues per repo** (tunable — raise/lower as repo volume demands). If more, triage the N oldest and log the overflow.
 
 ### 2. Fetch repo label schema + candidate issues
 
@@ -120,11 +120,15 @@ Collect the full label set for the issue. For each label:
 | `wontfix`, `invalid` | `#e4e669` | declined |
 
 ```bash
-gh label create "<name>" -R owner/repo --color <hex> --description "<text>"   # only if missing
-gh issue edit <N> -R owner/repo --add-label "<comma-separated-set>"            # one call per issue
+# Wrap label creation in try/log — if the API returns 422 (already-exists race, protected label, etc.),
+# log ISSUE_TRIAGE_LABEL_SKIPPED: <name> and continue rather than aborting the whole run.
+gh label create "<name>" -R owner/repo --color <hex> --description "<text>" \
+  || echo "ISSUE_TRIAGE_LABEL_SKIPPED: <name>"                                # only if missing
+gh issue edit <N> -R owner/repo --add-label "<comma-separated-set>" \
+  || echo "ISSUE_TRIAGE_LABEL_SKIPPED: issue=<N>"                             # one call per issue
 ```
 
-Batch all labels for an issue into one `--add-label` call to save API quota.
+Batch all labels for an issue into one `--add-label` call to save API quota. A failure on a single label skips only that label (or that issue's labeling) — the rest of the triage (comment, state update) proceeds.
 
 ### 6. Post one triage comment per issue
 
