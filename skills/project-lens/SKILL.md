@@ -4,94 +4,170 @@ description: Write an article about the project through a surprising lens — co
 var: ""
 tags: [content, dev]
 ---
-> **${var}** — Specific angle or lens to use (e.g. "unix philosophy", "regulation wave", "open source funding"). If empty, auto-selects based on what's trending and what hasn't been covered recently.
+<!-- autoresearch: variation B — editorial discipline (research → falsifiable thesis → draft → self-edit with hard gates) -->
 
-Read memory/MEMORY.md and the last 7 days of memory/logs/ for context.
-Read memory/watched-repos.md for the repo to cover.
+> **${var}** — Specific angle or lens (e.g. "unix philosophy", "regulation wave", "open source funding"). If empty, auto-select from trending topics + angle rotation.
 
-## What This Skill Does
+Read `memory/MEMORY.md`, the last 7 days of `memory/logs/`, `memory/watched-repos.md`, and `memory/project-lens-angles.md` (may not exist on first run — treat absence as empty history).
 
-This is NOT a repo progress update. `repo-article` and `push-recap` already cover that. This skill writes articles that explain the project through a **different lens each time** — connecting it to something bigger happening in the world. The goal is to make someone who's never heard of the project understand why it matters, through a frame they already care about.
+## What this skill does
 
-## Angle Selection
+Writes articles that explain the project through a **different lens each time** — framed so a reader who's never heard of the project understands why it matters, via something they already care about. NOT a repo progress update (that's `repo-article` / `push-recap`).
 
-If `${var}` is empty, pick from the angle categories below. **Never repeat an angle used in the last 14 days** — check recent `articles/project-lens-*.md` files and memory logs to see what's been done.
+**Why models fail at this by default:** they slide into feature-listing wrapped in philosophical language, forced parallels with no mechanism, and marketing tone. This skill prevents that with a research → thesis → draft → self-edit pipeline where each phase has hard gates. If the gates can't pass, abort — don't publish a weak article.
 
-### Angle categories (rotate through these):
+## Phase 1 — Context
 
-1. **Current events** — Connect to something happening right now in tech, crypto, AI, regulation, culture. "What [current event] tells us about why projects like this exist."
-2. **Philosophy / big ideas** — Unix philosophy, cathedral vs bazaar, autonomous systems, digital organisms, swarm intelligence, composability, anti-fragility, skin in the game.
-3. **Industry comparison** — Compare the project's approach to how a well-known company or project solved a similar problem differently. "What Kubernetes got right that AI agents are still figuring out."
-4. **User story** — Write from the perspective of someone who would use this. A solo developer, a DAO, a research lab, a crypto community. What does their day look like with and without this tool?
-5. **Contrarian take** — Challenge a common assumption about AI agents, open source, crypto tokens, or autonomous systems — and use the project as evidence.
-6. **Technical deep-dive for non-technical readers** — Explain one architectural decision in plain language and why it's a bigger deal than it sounds. "Why running on GitHub Actions instead of a server changes everything."
-7. **Historical parallel** — Connect to something from computing history, internet history, or even non-tech history. "The printing press didn't just copy books — it created pamphleteers."
-8. **Ecosystem map** — Where does this project sit in the broader landscape? What's adjacent, what's complementary, what's competing? Written as a guide for someone orienting themselves.
+Read before deciding anything:
+- Last 14 days of `articles/project-lens-*.md` and `memory/project-lens-angles.md` — know which angle categories and theses are exhausted.
+- 2-3 most recent `articles/repo-article-*.md` and `articles/push-recap-*.md` — know what shipped lately.
+- Repo state: `gh api repos/{owner}/{repo} --jq '{name, description, stargazers_count, forks_count, open_issues_count, updated_at}'`. If unreachable, continue with memory only and log the gap.
 
-## Steps
+If `memory/watched-repos.md` is empty or missing, abort and notify: "project-lens: no watched repo configured."
 
-1. **Understand the project's current state** — read recent articles, push-recaps, and repo metadata:
-   ```bash
-   gh api repos/owner/repo --jq '{name, description, stargazers_count, forks_count, open_issues_count, updated_at}'
-   ```
-   Also read 2-3 recent `articles/repo-article-*.md` and `articles/push-recap-*.md` to know what's been shipped lately.
+## Phase 2 — Pick the lens
 
-2. **Check what angles have been used recently** — read any `articles/project-lens-*.md` from the last 14 days. Pick a different angle category.
+**If `${var}` is set**, use it verbatim. Classify into one of the 8 categories below for logging.
 
-3. **Research the external connection**:
-   - Use WebSearch to find 3-5 current articles, discussions, or events related to the chosen angle
-   - Use WebFetch on the 1-2 most relevant sources to get detail
-   - Find specific quotes, data points, or examples that make the connection concrete
+**If `${var}` is empty**:
+1. Run 2-3 WebSearch queries on what's being debated right now in tech, crypto, AI, regulation, open source, or philosophy (e.g., `"AI agents" autonomy debate last 7 days`, `crypto regulation April 2026`, `open source funding model 2026`).
+2. From results, identify 3 candidate angles with non-obvious connections to the project.
+3. Pick the one that (a) hasn't appeared in the last 14 days **and** (b) has the strongest concrete connection. Record the choice and the rejected candidates with one-line reasons.
 
-4. **Research the project side** — find the specific features, design decisions, or recent developments that connect to the chosen lens. Use actual code, commits, or architecture details — not vague claims.
+### Angle categories (no repeat within 14 days)
 
-5. **Write a 700-1000 word article** to `articles/project-lens-${today}.md`:
+1. **Current events** — Something happening this week/month.
+2. **Philosophy / big ideas** — Unix philosophy, cathedral vs bazaar, composability, anti-fragility, skin in the game, swarm intelligence, etc.
+3. **Industry comparison** — How a well-known company/project solved a similar problem differently.
+4. **User story** — POV of a specific persona (solo dev, DAO, research lab, crypto community) with and without this tool.
+5. **Contrarian take** — Challenge a common assumption; use project as evidence.
+6. **Technical deep-dive for non-technical readers** — One architectural decision, plain language, bigger implications.
+7. **Historical parallel** — Computing / internet / non-tech history with a concrete mechanism (not surface resemblance).
+8. **Ecosystem map** — Where the project sits: adjacent, complementary, competing.
+
+## Phase 3 — Research (gate: collect evidence before drafting)
+
+**External side — required minimums:**
+- 3+ WebSearch queries on the lens topic (different framings, not rewordings)
+- WebFetch on the 2+ most relevant sources
+- ≥3 **distinct domains** across cited sources
+- ≥3 concrete facts extracted: names, numbers, dollar amounts, dated quotes, specific events
+- Recency: ≤30 days old for "current events"; ≤180 days for industry comparison / contrarian / ecosystem; ≤5 years for philosophy / historical
+- Log every URL consulted
+
+**Project side — required minimums:**
+- 2+ recent articles in `articles/` read end-to-end
+- `gh api repos/{owner}/{repo}/commits --jq '.[0:10] | .[] | {sha: .sha[0:7], msg: (.commit.message|split("\n")[0])}'` — last 10 commits
+- ≥3 specific project references you plan to use: named features, file paths, commit hashes, architectural choices. **Not** vague claims like "the project uses AI" or "it has good UX."
+
+**If you cannot hit these minimums, abandon the angle and re-run Phase 2 with a different category.** Log the abandoned angle and why.
+
+## Phase 4 — Thesis lock (hard gate)
+
+Before drafting, write **ONE falsifiable claim in ≤30 words** that links the lens to the project. Example:
+
+> "Running agents as scheduled GitHub Actions — rather than as persistent servers — trades a few seconds of latency for a property the AI industry barely has: versioned, audit-trailed, publicly forkable autonomy."
+
+Rules:
+- **Falsifiable**: a reasonable critic could argue the opposite.
+- **Specific**: names concrete things (cron jobs, not "infrastructure"; audit-trailed, not "better").
+- Not a tautology. Not marketing. Not "this is cool because X."
+
+**If you can't state the thesis in one sentence, the angle isn't working — return to Phase 2.** Do not proceed with a fuzzy thesis.
+
+## Phase 5 — Draft (700-1000 words)
+
+Save to `articles/project-lens-${today}.md` with this structure:
+
+```markdown
+# [Title: leads with the lens, works for a reader who doesn't know the project]
+
+[¶1-2: external hook. Start with the trend/idea/event/question the reader already cares about. Do NOT name the project yet.]
+
+## [Section: establishes the external frame]
+[Build the lens with one or more of your concrete facts — a quote, a number, a specific event.]
+
+## [Section: introduces the project through the frame]
+[Project enters here — but through the lens, not as a feature list. Describe how it embodies, challenges, or extends the idea with specific code/design references.]
+
+## [Section: one non-obvious technical or strategic detail]
+[Where the article earns its existence. Point to something in the code, architecture, or approach a reader wouldn't get from the README.]
+
+## [Section: zoom back out]
+[A concrete forward claim — specific enough to be wrong. Not "this is exciting." Something like "this suggests X won't happen for 2-3 years because Y" or "this is the same mistake [named case] made, and it took [duration] to recover."]
+
+---
+*Sources:*
+- [source title](url) — what it was used for
+- ...
+```
+
+**Draft requirements:**
+- Title must work for a reader who doesn't know the project name.
+- ≥3 external citations rendered as inline links.
+- ≥3 specific project references (named features, file paths, commit hashes, named decisions).
+- 700-1000 words (count before submitting).
+
+## Phase 6 — Self-edit (hard gates — all must pass)
+
+Go through this checklist after the first draft. If any gate fails, rewrite the affected section **once**. If the second pass still fails, **abort and log** — do not publish a weak article.
+
+- [ ] Title does NOT name the project
+- [ ] First 2 paragraphs do NOT name the project
+- [ ] ≥3 external citations with URLs (inline)
+- [ ] ≥3 specific project references (named, not vague)
+- [ ] Falsifiable thesis visible in the article text
+- [ ] 700-1000 words
+- [ ] No banned phrases: *revolutionary*, *groundbreaking*, *game-changing*, *paradigm shift*, *disrupting*, *unlocks*, *empowers*, *the future of X*, *leverage / leveraging*, *at scale*, *democratize* (unless quoting a source that used the word)
+- [ ] Every parallel/comparison states a concrete mechanism — not surface resemblance
+- [ ] Closing section makes a specific forward claim (not generic optimism or "time will tell")
+- [ ] No feature-list paragraphs ("the project does X, Y, Z") — if found, cut and keep ONE element
+
+## Phase 7 — Output
+
+1. **Save** `articles/project-lens-${today}.md`.
+2. **Append** to `memory/project-lens-angles.md` (create if missing):
    ```markdown
-   # [Title that leads with the lens, not the project]
-
-   [Opening hook — start with the external thing, the trend, the question. The project enters in paragraph 2 or 3, not paragraph 1. Draw the reader in with something they already care about.]
-
-   ## [Section that establishes the external context]
-   [The trend, the event, the idea, the comparison. Build the frame before filling it.]
-
-   ## [Section that introduces the project through that frame]
-   [Now bring in the project — but through the lens you've established. Don't describe features; describe how the project embodies, challenges, or extends the idea.]
-
-   ## [Section that goes deeper]
-   [Specific technical or strategic detail that makes the connection non-obvious. This is where the article earns its existence — the insight that someone wouldn't get from a README.]
-
-   ## [Section that zooms back out]
-   [What does this mean for the space? For builders? For the future of this kind of tool/project/approach?]
-
-   ---
-   *Sources: [links to external sources used]*
+   ## ${today}
+   - Angle: [category]
+   - Thesis: [one-line falsifiable claim]
+   - Title: [article title]
+   - Sources: [3-5 URLs]
    ```
-
-   **Writing guidelines:**
-   - Lead with the lens, not the project. The title should work even if you don't know what the project is.
-   - No marketing language. No "revolutionary", "groundbreaking", "game-changing". Let the specifics speak.
-   - Include at least 2 concrete external references (data, quotes, examples).
-   - Include at least 2 concrete project references (specific features, code patterns, design choices).
-   - Write for a smart reader who doesn't know this project but cares about the topic.
-
-6. **Send notification** via `./notify`:
+3. **Notify** via `./notify`:
    ```
    *New Article: [title]*
 
-   [3-4 sentence summary that captures both the lens and the project connection]
+   [3-4 sentence summary: the external thing the article connects to, the thesis claim, one specific project detail.]
 
-   Read: [link to articles/project-lens-${today}.md — use `git remote get-url origin` for THIS repo]
+   Read: [URL to articles/project-lens-${today}.md — use `git remote get-url origin` for this repo]
    ```
-
-7. **Log** to `memory/logs/${today}.md`:
+4. **Log** to `memory/logs/${today}.md`:
    ```
    ## Project Lens
-   - **Angle category:** [which of the 8 categories]
-   - **Title:** [article title]
-   - **External hook:** [what trend/event/idea was used]
-   - **Notification sent:** yes
+   - Angle: [category]
+   - Thesis: [one-line]
+   - External sources: [count] across [N] distinct domains
+   - Project references: [count]
+   - Self-edit gates: all passed | failed at [gate name] → rewrite → [passed | aborted]
+   - Status: published | aborted
+   - Notification: sent | skipped
    ```
+
+## Anti-patterns (prevention beats self-edit catch)
+
+- **Forced parallels** — every comparison needs a concrete mechanism, not surface resemblance. "X is like Y because both are new" fails; "X is like Y because both decoupled [specific function] from [specific bottleneck]" passes.
+- **Feature-dump via the lens** — pick ONE architectural decision and interrogate it, don't list what the project does.
+- **Marketing tone** — aim for trade-publication prose, not a company blog.
+- **False novelty** — if you can't point to what's actually new, name what's old that still works and why.
+- **Vague closings** — the final section must make a claim specific enough that a reader could come back in six months and say "you were wrong" or "you were right."
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+Use **WebFetch** if curl fails for any URL. The `gh` CLI handles GitHub API auth internally — prefer it over raw curl for repo metadata.
+
+## Constraints
+
+- Never publish if Phase 6 self-edit fails twice — abort cleanly.
+- Never reuse an angle category within 14 days (check `memory/project-lens-angles.md`).
+- Never invent facts to fill the citation minimum — if research is thin, abandon the angle.
