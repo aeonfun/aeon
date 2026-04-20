@@ -145,6 +145,7 @@ No external APIs needed — all inputs come from local files. Standard `git` + `
 
 ## Constraints
 
+- **State file**: `memory/topics/skill-graph-state.json` — auto-created on first run; safe to delete to force a full regeneration (next run will fall through to `SKILL_GRAPH_NEW`).
 - Never silently regress an already-good output. If lint fails, abort with `SKILL_GRAPH_ERROR` rather than commit a broken diagram.
 - `SKILL_GRAPH_NO_CHANGE` is the most common path on a stable architecture and **must** be silent — no PR, no notify, just a log line. Operator trains to trust the silence.
 - Click-through paths must be **relative from the output file's directory** (e.g. `../skills/X/SKILL.md` from `docs/skill-graph.md`) so they resolve on github.com.
