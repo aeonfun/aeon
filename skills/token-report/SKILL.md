@@ -54,6 +54,8 @@ Use DexScreener for two things only:
 
 If DexScreener fails, continue with GT only (`ds=fail` in footer). Never abort on DS failure.
 
+**Low-liquidity pair addendum:** the 3% deviation threshold above is calibrated for liquid pairs. On thin pairs it produces false `ds=divergent` flags from harmless tick noise. **If the pair's 24h volume is below $100k, raise the DS deviation threshold to 10% instead of 3%** before flagging `ds=divergent`. The deep-pool-wins rule still applies when the larger threshold is exceeded.
+
 ### 3. Compute true deltas
 
 From the `TOKEN_REPORT_STATE:` key=value lines in prior logs, load:
