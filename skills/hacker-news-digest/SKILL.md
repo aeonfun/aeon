@@ -13,7 +13,7 @@ If `${var}` is set, weight stories matching that topic more heavily but still in
 ## Context
 
 1. Read `memory/MEMORY.md` for tracked topics and interests.
-2. Read the last 2 days of `memory/logs/` and `.cache/hn-seen-ids.json` (if present) to skip stories already covered.
+2. Read the last 2 days of `memory/logs/` and `.cache/hn-seen-ids.json` (if present) to skip stories already covered. The cache file is auto-created; safe to delete to reset dedup.
 
 ## 1. Gather candidates
 
@@ -76,24 +76,19 @@ If the comment thread is thin (<10 comments), skip the HN take and add a 1-line 
 
 Lead with a one-line **signal line** describing the day's shape (e.g. _"Heavy AI-tooling day — 3 of 7 are agent infra; one acquisition story and a kernel CVE round it out."_).
 
-Per theme:
+Output is a **flat numbered list** (not nested per-theme sections) — each entry carries its cluster label inline so downstream consumers can parse it linearly:
 
 ```
 *HN Digest — ${today}*
 
 _${signal_line}_
 
-**AI & agents**
-
-1. [Title](url) — 412 pts · 287 comments
+1. **[AI & agents]** [Title](url) — 412 pts · 287 comments
    Why it matters: 1 sentence on the actual claim or news.
    HN take: "single quoted insight from a top comment" — _commenter_
    [Discussion](https://news.ycombinator.com/item?id=ID)
 
-2. ...
-
-**Infra & devtools**
-...
+2. **[Infra & devtools]** ...
 ```
 
 Hard constraints:
@@ -106,7 +101,7 @@ Send via `./notify "$(cat digest.md)"` (or pipe directly).
 
 ## 6. Persist and log
 
-Write all included story ids to `.cache/hn-seen-ids.json` as `{ "id": <unix_ts>, ... }`. On each run, prune entries older than 7 days before writing.
+Write all included story ids to `.cache/hn-seen-ids.json` as `{ "id": <unix_ts>, ... }` (auto-created; safe to delete to reset dedup). On each run, prune entries older than 7 days before writing.
 
 Append to `memory/logs/${today}.md`:
 
