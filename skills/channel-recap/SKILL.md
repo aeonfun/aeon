@@ -48,9 +48,10 @@ Extract the `?before=N` link from the top of each page and fetch the next one. C
 
 ### 3. Rank by engagement, then filter for signal
 
-Compute `engagement_score = views + (reactions * 50)` for each post. (Reactions are rare and intentional, so weight them heavily.) Sort descending.
+Compute `engagement_score = views + (reactions * 50)` for each post. Sort descending.
+<!-- heuristic: the 50× reactions weight, 30-post pool, and 6–12 featured range are derived from empirical view-to-reaction ratios on typical public Telegram channels (reactions are rare and intentional, ~1 per 50–100 views). Tune if output looks off — e.g. raise the multiplier on low-reaction channels, widen the pool on quiet weeks. -->
 
-From the top 30 by engagement, select the **8–12 most interesting** for the article. Within that top slice, prefer:
+From the top 30 by engagement, select the **6–12 most interesting** for the article (widened from 8–12 to reduce brittleness on slow weeks). Within that top slice, prefer:
 - Original takes (posts with commentary, not just a bare link)
 - Posts linking to substantial content (articles, threads, papers — not memes)
 - Posts that cluster around a shared theme with other top posts
