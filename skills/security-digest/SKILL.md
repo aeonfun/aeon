@@ -65,7 +65,7 @@ CVSS measures theoretical severity. Most critical CVEs are never exploited. A se
    Verdict: 1 actively exploited, 2 likely soon, 3 to schedule. _Sources: KEV, GH Advisory, EPSS_
 
    *PATCH TODAY*
-   - [CVE-2026-12345](url) — Acme Router firmware · KEV added 2026-04-18 · EPSS 0.94
+   - [CVE-2026-12345](url) — Acme Router firmware · KEV added 2026-04-18 · EPSS 0.94 · CVSS 9.8
      RCE via unauth'd admin panel. Exploited per CISA.
      → patch firmware to ≥3.7.2 today.
 
@@ -77,6 +77,8 @@ CVSS measures theoretical severity. Most critical CVEs are never exploited. A se
    - [GHSA-yyyy](url) — gin (Go) · CVSS 7.8 · no fix yet · EPSS 0.02
      Header smuggling. → watch for patched release; avoid exposing admin routes.
    ```
+
+   **Always include CVSS alongside KEV/EPSS** on every line so readers see both the ranking-signal (KEV/EPSS) and the traditional severity score (CVSS) — this preserves backward-compatibility for consumers used to the old CVSS-first format.
 
    If `PATCH TODAY` is empty, change the verdict line to `Verdict: nothing urgent today. N to schedule, M to monitor.` Drop empty sections entirely rather than printing "(none)".
 
