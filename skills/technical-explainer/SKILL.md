@@ -97,7 +97,7 @@ A numbered walkthrough of the mechanism in **3-7 steps**. Each step is one or tw
 
 Use Replicate's Nano Banana Pro (Gemini 3 Pro Image). It renders **text labels well** — exploit that by writing prompts that ask for labeled diagrams or schematics, not stock-photo metaphors.
 
-1. **Preflight**: if `$REPLICATE_API_TOKEN` is empty, skip to step 5 (no-image path) and proceed without an image. Log this clearly.
+1. **Preflight**: if `$REPLICATE_API_TOKEN` is empty **or unset**, log `IMAGE_SKIPPED reason=no-token` to `memory/logs/${today}.md` and jump directly to step 5 (no-image path). Do not attempt any Replicate call. The explainer must ship without an image in this case.
 
 2. **Craft the prompt**. Aim for technical illustration energy, not marketing. Strong prompt templates:
    - *Schematic*: "Technical schematic illustration of <mechanism>, dark navy background, thin cyan and amber lines, labeled boxes reading '<label1>', '<label2>', '<label3>', arrows showing data flow from <A> to <B> to <C>, blueprint aesthetic, 16:9"
@@ -134,7 +134,7 @@ Use Replicate's Nano Banana Pro (Gemini 3 Pro Image). It renders **text labels w
      || (echo "curl failed — retry via WebFetch or skip"; exit 0)
    ```
 
-5. **No-image path** (token missing, API down, or download failed): proceed with the article. Add a one-line note at the top of the article: `<!-- hero image skipped: <reason> -->`. The text must stand on its own — that's the whole point of the structure above.
+5. **No-image path** (token missing, API down, rate-limited, or download failed): log `IMAGE_SKIPPED reason=<concrete reason>` and proceed with the article. Add a one-line note at the top of the article: `<!-- hero image skipped: <reason> -->`. The text must stand on its own — that's the whole point of the structure above. Never fail the whole skill because of an image problem.
 
 ## Save & Notify
 
