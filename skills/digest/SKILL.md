@@ -68,8 +68,8 @@ _TL;DR: <one sentence covering the day's gravity. Concrete, no adjectives.>_
 **Format rules:**
 - Markdown only. No emoji. No "Here's your digest" preamble.
 - Total length: **≤3000 chars** (the old 4000 was too loose — discipline forces cuts).
-- Every item: title + summary + "Why it matters" + link. The "Why it matters" line is non-negotiable; if you can't write it without hand-waving, the item is too weak — replace it.
-- "Why it matters" must reference a concrete consequence: a price impact, a user-facing change, an upstream dependency, a deadline, a precedent. Never "this could be significant" or "watch this space".
+- Every item: title + summary + link. Include a "Why it matters" line whenever you can state a concrete consequence (price impact, user-facing change, upstream dependency, deadline, precedent). If you can't write one without hand-waving, **omit the line** — do not replace it with filler like "this could be significant" or "watch this space".
+- On thin-news days where fewer than 3 items clear the bar: log `DIGEST_FETCH_EMPTY` (or `DIGEST_THIN` if 1–2 items survived) in the run log and **skip the notification** rather than padding.
 
 ## Phase 4 — Sanity-check (last pass before sending)
 
