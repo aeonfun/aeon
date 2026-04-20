@@ -1,97 +1,241 @@
 ---
 name: Update Gallery
-description: Sync articles, activity logs, and memory to the GitHub Pages site
+description: Publish new or changed articles to the GitHub Pages gallery with change detection, silent on no-op weeks
 var: ""
 tags: [content]
 ---
-> **${var}** — Optional single article filename to sync (e.g. `article-2026-04-01.md`). If empty, syncs all articles.
+<!-- autoresearch: variation B — sharper output via hash-based dedup + exit taxonomy + noise-gated notify, folds A's excerpt/category and C's YAML-safe title + stable hash filename -->
 
-Publish Aeon's article outputs to the GitHub Pages gallery at `docs/_posts/`.
+> **${var}** — Optional single article filename (e.g. `article-2026-04-01.md`) to sync. Empty = sync every file in `articles/`.
+
+Publish article outputs from `articles/` to the Jekyll gallery at `docs/_posts/` with hash-based dedup, a clear exit taxonomy, and notifications gated on real changes.
 
 ## Steps
 
-1. Read `memory/MEMORY.md` for context on recent articles.
+### 1. Load context
 
-2. Run the site data sync script to populate `docs/_data/` with logs, memory, topics, and article metadata:
-   ```bash
-   bash scripts/sync-site-data.sh
-   ```
+- Read `memory/MEMORY.md` for recent-article context.
+- Load prior state from `memory/state/update-gallery-state.json` if it exists (map of `source_file` → `{sha256, post_path, title, date, category, excerpt, processed_at}`). If the file is missing or malformed, treat every article as new (recoverable bootstrap).
+- Set `today="$(date -u +%Y-%m-%d)"`.
 
-3. List all markdown files in `articles/` (excluding `.gitkeep` and `feed.xml`):
-   ```bash
-   ls articles/*.md 2>/dev/null | grep -v feed.xml | sort
-   ```
+### 2. Sync site data
 
-4. For each article file (or just the one in `${var}` if set), process it into a Jekyll post:
+Refresh `docs/_data/`:
+```bash
+bash scripts/sync-site-data.sh
+```
+Capture whether this mutated any file under `docs/_data/` (compare `git status docs/_data/` before and after).
 
-   **a) Parse the filename to extract date and slug.**
-   Filenames follow patterns like:
-   - `article-2026-04-01.md` → date `2026-04-01`, slug `article`
-   - `changelog-2026-03-19.md` → date `2026-03-19`, slug `changelog`
-   - `repo-actions-2026-03-30.md` → date `2026-03-30`, slug `repo-actions`
-   - `token-report-2026-04-02.md` → date `2026-04-02`, slug `token-report`
+### 3. Enumerate candidate articles
 
-   The date is the YYYY-MM-DD portion extracted from the filename using regex `([0-9]{4}-[0-9]{2}-[0-9]{2})`.
-   The slug is everything before the date pattern, with trailing hyphens removed.
+```bash
+ls articles/*.md 2>/dev/null | grep -v '/feed.xml$' | grep -v '\.gitkeep$' | sort
+```
+If `${var}` is set, restrict to that single filename; abort with `UPDATE_GALLERY_ERROR: var points to missing file` if it doesn't exist.
 
-   **b) Extract the title** from the first `# Heading` in the file. If no heading exists, convert the filename slug to title case (e.g., `repo-actions` → `Repo Actions`).
+Initialise counters: `added=0 updated=0 skipped_unchanged=0 skipped_invalid=0 orphaned=0`.
 
-   **c) Determine the category** from the slug:
-   - `article`, `research-brief`, `repo-article` → `article`
-   - `changelog`, `push-recap`, `code-health` → `changelog`
-   - `token-report`, `token-alert`, `defi-overview` → `crypto`
-   - `digest`, `rss-digest`, `hacker-news` → `digest`
-   - Everything else → `article`
+### 4. Per-article pipeline
 
-   **d) Check if the article already has Jekyll frontmatter** (starts with `---`). If it does, preserve existing frontmatter and skip re-adding.
+For each article:
 
-   **e) Build the Jekyll post filename:** `docs/_posts/YYYY-MM-DD-<slug>-<sanitized-title-excerpt>.md`
-   where the title excerpt is the title lowercased, spaces replaced with hyphens, special chars removed, truncated to 50 chars.
+**a) Gate (skip on):**
+- Size > 500 KB → `skipped_invalid++`, log reason.
+- Binary content (non-UTF8, or first 1024 bytes contain `\x00`) → `skipped_invalid++`.
+- Empty body after stripping frontmatter → `skipped_invalid++`.
 
-   **f) Write the post file** with this structure:
-   ```markdown
-   ---
-   title: "<extracted title>"
-   date: YYYY-MM-DD
-   categories: [<category>]
-   source_file: "<original-filename>"
-   ---
-   <article body — everything after the frontmatter if present, or the full content>
-   ```
+**b) Compute body SHA-256**: hash the entire file. Compare against `state[source_file].sha256`:
+- Match → `skipped_unchanged++`, continue to next article. **Do not rewrite the post.**
+- Miss (new or changed) → proceed.
 
-5. After processing all articles, check if any new files were added to `docs/_posts/` or `docs/_data/`:
-   ```bash
-   git status docs/
-   ```
+**c) Parse date** (priority order):
+1. Filename regex `([0-9]{4}-[0-9]{2}-[0-9]{2})`.
+2. Jekyll frontmatter `date:` field if article starts with `---`.
+3. `git log -1 --format="%as" -- articles/<filename>` fallback.
+4. Last resort: today's UTC date; log the fallback use.
 
-6. If there are new or changed files, create a branch, stage, commit, and open a PR:
-   ```bash
-   BRANCH="chore/gallery-sync-$(date +%Y-%m-%d)"
-   git checkout -b "$BRANCH"
-   git add docs/_posts/ docs/_data/
-   git diff --cached --quiet || git commit -m "chore(gallery): sync articles and site data $(date +%Y-%m-%d)"
-   ```
+**d) Parse slug**: everything in filename before the date pattern, trailing hyphens stripped. If no date in filename, slug = basename without `.md`.
 
-7. Push the branch and open a PR:
-   ```bash
-   git push -u origin "$BRANCH"
-   gh pr create --title "chore(gallery): sync articles and site data $(date +%Y-%m-%d)" \
-     --body "Automated gallery sync — new articles and site data updates."
-   ```
+**e) Parse title**: from frontmatter `title:` if present, else first `# ` heading in body, else title-cased slug (`repo-actions` → `Repo Actions`).
 
-8. Update `memory/logs/${today}.md` with:
-   - How many articles were processed
-   - How many new posts were added to `docs/_posts/`
-   - Any articles that were skipped (already present)
-   - Whether site data (logs, memory, topics) was synced
+**f) Parse excerpt**: first non-empty, non-heading, non-code-block, non-bullet, non-quote paragraph after the title/frontmatter. Strip markdown emphasis/links to plain text. Truncate at 240 chars on word boundary. Excerpt is used in Jekyll frontmatter so `articles.md`'s `post.excerpt | strip_html | truncate: 130` renders content instead of the title fallback.
 
-9. Send a notification via `./notify`:
-   "Gallery updated: N articles published to GitHub Pages."
+**g) Category** (expanded map — check slug prefix, longest match wins):
+
+| Category | Slug prefixes |
+|---|---|
+| `article` | `article`, `research-brief`, `repo-article`, `technical-explainer`, `deep-research`, `project-lens`, `paper-pick`, `idea-capture` |
+| `changelog` | `changelog`, `push-recap`, `code-health`, `repo-actions`, `repo-pulse` |
+| `crypto` | `token-report`, `token-alert`, `token-movers`, `token-pick`, `defi-overview`, `defi-monitor`, `treasury-info`, `on-chain-monitor`, `polymarket`, `kalshi`, `market-context`, `narrative-tracker`, `unlock-monitor` |
+| `digest` | `digest`, `rss-digest`, `hacker-news`, `reddit-digest`, `telegram-digest`, `farcaster-digest`, `vibecoding-digest`, `agent-buzz`, `list-digest`, `tweet-roundup`, `channel-recap` |
+| `security` | `security-digest`, `vuln-scanner`, `workflow-security-audit`, `skill-security-scan` |
+| `repo` | `repo-scanner`, `vercel-projects`, `github-monitor`, `github-issues`, `github-trending`, `github-releases`, `star-milestone`, `external-feature` |
+| `social` | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `fetch-tweets`, `syndicate-article` |
+| `governance` | `deal-flow`, `reg-monitor`, `paper-digest` |
+| `meta` | `skill-leaderboard`, `autoresearch`, `heartbeat` |
+
+Default for unmatched slug: `article`.
+
+**h) Compute stable post filename**:
+```
+docs/_posts/<date>-<slug>-<hash4>.md
+```
+where `hash4` = first 4 hex chars of `sha256(source_file)`. Using the source filename (not the title or body) makes the post filename stable across title edits and body rewrites — no duplicate posts from the same source file. Slug is truncated to 40 chars after ASCII-only lowercase and non-alphanum → hyphen.
+
+**i) Build YAML-safe frontmatter**. Escape for Jekyll/kramdown:
+- Title: wrap in double quotes; escape `\` → `\\`, `"` → `\"`; replace control chars with space; if title contains `${` or `{%`, escape with `{% raw %}…{% endraw %}` around the value instead of quoting (prevents Liquid injection from upstream article titles).
+- Categories: YAML list form `[<category>]`.
+- Source_file / date / tags: quoted strings.
+
+Write:
+```yaml
+---
+title: "<escaped title>"
+date: <YYYY-MM-DD>
+categories: [<category>]
+source_file: "<original-filename>"
+excerpt: "<escaped excerpt>"
+---
+<body — everything after the source's frontmatter if present, else full content>
+```
+
+If the source already has Jekyll frontmatter, merge: preserve source fields but overwrite `source_file`, `date`, and `categories` (our parse wins, since these are canonical); set `excerpt` only if source didn't define it.
+
+**j) Classify write**:
+- Post file doesn't exist → `added++`.
+- Post file exists, content differs → `updated++`.
+- Post file exists, content identical → `skipped_unchanged++` (don't touch mtime).
+
+Write the file only when added or updated.
+
+**k) Update state**: record `state[source_file] = {sha256, post_path, title, date, category, excerpt, processed_at: <UTC ISO8601>}`.
+
+### 5. Orphan detection
+
+For every entry in `state` whose `source_file` no longer exists in `articles/`:
+- Append one line to `memory/topics/gallery-orphans.md` (create file with `# Orphaned articles` header if absent): `- YYYY-MM-DD: <source_file> → <post_path> (last seen <processed_at>)`.
+- Increment `orphaned++`. **Do not delete the Jekyll post.** Orphaning is a record, not a cleanup.
+
+### 6. Persist state
+
+Write `memory/state/update-gallery-state.json` (create `memory/state/` if absent). Only entries for articles still present plus newly recorded ones.
+
+### 7. Classify run
+
+Compute mode:
+- `UPDATE_GALLERY_OK` — `added > 0 || updated > 0`.
+- `UPDATE_GALLERY_DATA_ONLY` — posts unchanged but `docs/_data/` changed.
+- `UPDATE_GALLERY_NO_CHANGE` — posts unchanged and `docs/_data/` unchanged.
+- `UPDATE_GALLERY_ERROR` — any article hit an invalid-write condition (post path collision with a different source_file hash, YAML escape failed, file-system error). Surface which article failed in the notification body.
+
+### 8. Branch + commit
+
+If mode is `UPDATE_GALLERY_NO_CHANGE`: skip git entirely, go to step 10.
+
+Otherwise:
+```bash
+TS=$(date -u +%Y-%m-%d-%H%M%S)
+BRANCH="chore/gallery-sync-${TS}"
+git checkout -b "$BRANCH"
+git add docs/_posts/ docs/_data/ memory/state/update-gallery-state.json memory/topics/gallery-orphans.md 2>/dev/null || true
+git diff --cached --quiet && { git checkout - 2>/dev/null; git branch -D "$BRANCH" 2>/dev/null; exit 0; }
+git commit -m "chore(gallery): +${added} new · ±${updated} updated · ${skipped_unchanged} unchanged (${today})"
+git push -u origin "$BRANCH"
+```
+
+The timestamped branch avoids collision when the skill runs twice on the same day (e.g. retry after a transient failure).
+
+### 9. Open PR
+
+Title: `chore(gallery): sync ${today} — +${added} / ±${updated}` (drop the last segment when it's zero).
+
+Body:
+
+```markdown
+## Mode
+`UPDATE_GALLERY_OK` | `UPDATE_GALLERY_DATA_ONLY`
+
+## Changes
+- **Added:** N posts
+- **Updated:** N posts
+- **Unchanged:** N posts
+- **Skipped (invalid):** N
+- **Orphaned (logged, not deleted):** N
+- **Site data:** changed | unchanged
+
+## Added posts
+| Date | Category | Title | Source file |
+|---|---|---|---|
+| 2026-04-11 | security | Workflow Security Audit — 2026-04-11 | workflow-security-audit-2026-04-11.md |
+
+## Updated posts
+(same columns)
+
+## Skipped (invalid)
+- `<filename>` — reason
+
+## Preview
+Once merged: https://<pages-url>/articles/
+```
+
+### 10. Notify
+
+**Gate by mode**:
+- `UPDATE_GALLERY_NO_CHANGE` → do nothing, no notify.
+- `UPDATE_GALLERY_DATA_ONLY` → commit the data refresh but **do not notify** (site data refreshes are operational noise, not reader-facing news).
+- `UPDATE_GALLERY_OK` → notify.
+- `UPDATE_GALLERY_ERROR` → always notify (ops alert).
+
+On `OK`:
+```
+*Gallery updated*
++${added} new · ±${updated} updated
+Categories: <cat1> ×N, <cat2> ×N
+PR: <url>
+```
+Keep it one paragraph. Use `./notify "…"`.
+
+On `ERROR`:
+```
+*Gallery sync error*
+Mode: UPDATE_GALLERY_ERROR
+Details: <short reason>
+Counters: +${added} ±${updated} skip_invalid=${skipped_invalid}
+```
+
+### 11. Log
+
+Append to `memory/logs/${today}.md`:
+
+```markdown
+### update-gallery
+- Mode: UPDATE_GALLERY_OK | UPDATE_GALLERY_DATA_ONLY | UPDATE_GALLERY_NO_CHANGE | UPDATE_GALLERY_ERROR
+- Added: N (list filenames)
+- Updated: N (list filenames)
+- Unchanged: N
+- Skipped invalid: N (list w/ reason)
+- Orphaned: N (list)
+- Site data changed: yes|no
+- PR: <url or "none (no-change)">
+- Source-status: articles_dir=ok|empty, state_file=loaded|bootstrapped, sync_script=ok|failed
+```
 
 ## Notes
 
-- Jekyll post filenames must start with `YYYY-MM-DD-` and end with `.md`.
-- Frontmatter values with colons or special chars must be quoted.
-- If an article already exists in `docs/_posts/` (same source_file), skip it unless the source has changed (compare file sizes or first 100 bytes).
-- Articles that have no date in their filename: fall back to the git commit date using `git log -1 --format="%as" -- articles/<filename>`.
-- Never delete posts from `docs/_posts/` — only add or update.
+- Jekyll post filenames must start with `YYYY-MM-DD-` and end with `.md`. The `<hash4>` suffix on the slug keeps the filename stable across title edits — critical because Jekyll URLs derive from the filename slug (`permalink: /articles/:year/:month/:day/:title/`), and renaming a post changes its URL.
+- Never delete posts from `docs/_posts/`. Orphan detection only records.
+- YAML titles with colons/quotes must be escaped. A title like `"Can't Stop": Why …` must render as a valid single YAML string; the escape routine in 4i is mandatory.
+- The `workflow-security-audit-*` articles map to the `security` category in the new map (they used to default to `article`).
+- Use `./notify` for notifications (fan-out to Telegram/Discord/Slack); never call channel-specific scripts directly.
+- `${var}` semantics: empty = sync all; set = sync a single filename (must exist under `articles/`).
+
+## Sandbox note
+
+All operations are local file reads/writes + `git`/`gh`. No outbound HTTP. No secrets required beyond the standard `GITHUB_TOKEN` used by `gh pr create`. If `gh pr create` fails (permission block), log the branch name and push status in the summary so the operator can open the PR manually — don't abort the skill.
+
+## Constraints
+
+- Don't downgrade: if this version would produce fewer posts than the previous version would have, prefer the previous version's behaviour (never orphan a real article).
+- Preserve `docs/_posts/` files that are not mapped to any `source_file` in state (manual posts like `2026-03-25-aeon-is-the-anti-openclaw.md` and `2026-03-28-the-agent-that-fixes-itself.md`): they must be left untouched.
+- Do not introduce new env vars or secrets.
+- Do not change `scripts/sync-site-data.sh` — if that script's output shape needs to change, open a separate PR.
