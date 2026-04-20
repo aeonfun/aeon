@@ -106,6 +106,21 @@ Keep only items that would change a trader's positioning today. Discard recap/ex
 
 This is the core output — everything above is input to this line.
 
+**Market Take format (exactly 3 lines)** — this is the concrete template the rest of the file leads with:
+
+```
+Take: <regime> — <one-sentence why, citing 2 concrete numbers>.
+Conviction: <high | medium | low> — <which signals agree; which disagree>.
+Evidence: <one sentence naming the single strongest datum behind this call>.
+```
+
+Example:
+```
+Take: risk-on — BTC +3.1% 24h with 17/20 top-cap majors green.
+Conviction: high — F&G, breadth, and 7d TVL all point up; only BTC dominance disagrees (flat).
+Evidence: DEX 24h volume $7.8B, highest since March and +42% vs 7d avg.
+```
+
 Score the regime using these inputs:
 - **BTC 24h%** (±2% threshold)
 - **Breadth** (top-20 green count)
@@ -245,6 +260,6 @@ hot market: "[polymarket q]" YES X%
 
 - **No data-dump output.** If the file has no Take or the Take is a tautology ("market moved"), the run failed the quality bar.
 - **No fabricated numbers.** If a source fails and there's no prior value, write `n/a` — never guess.
-- **Preserve token-picks history.** Never truncate the Token Picks Made table.
+- **Preserve token-picks history.** "Never truncate" applies specifically to the **Token Picks Made** table: when overwriting `market-context.md`, copy the existing Token Picks Made table verbatim into the new version before adding new rows. The rest of the file is overwritten; only this table is carried forward. Never drop rows, never reorder them.
 - **Concrete evidence only.** Every narrative phase claim must cite a number or signal; otherwise drop the narrative.
 - **Deltas must be real.** "What Changed" only lists material moves (≥±1% BTC, ≥±5 F&G, ≥±2% TVL, or a new regime label). No filler.
