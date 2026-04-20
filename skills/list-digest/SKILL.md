@@ -121,6 +121,8 @@ Each narrative gets a **narrative score** = sum of constituent tweet scores. Pic
 
 For each narrative, pick the **anchor tweet** (highest individual score) and up to 2 supporting tweets.
 
+**Cluster-count cap**: if clustering produces fewer than 2 or more than 4 clusters, fall back to a flat ranked list with cluster labels inline (prepend each item with `[cluster-name]` when grouping would be informative, but do not emit the "🔗 Cross-list narratives" section).
+
 ### 6. Compose the digest
 
 **Notification budget** (cap 4000 chars total):
