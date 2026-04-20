@@ -78,9 +78,9 @@ Default for unmatched slug: `article`.
 
 **h) Compute stable post filename**:
 ```
-docs/_posts/<date>-<slug>-<hash4>.md
+docs/_posts/<date>-<slug>-<hash6>.md
 ```
-where `hash4` = first 4 hex chars of `sha256(source_file)`. Using the source filename (not the title or body) makes the post filename stable across title edits and body rewrites — no duplicate posts from the same source file. Slug is truncated to 40 chars after ASCII-only lowercase and non-alphanum → hyphen.
+where `hash6` = first 6 hex chars of `sha1(source_file)` (i.e. the short hash suffix `-{sha1[:6]}`). Using the source filename (not the title or body) makes the post filename stable across title edits and body rewrites — no duplicate posts from the same source file. Slug is truncated to 40 chars after ASCII-only lowercase and non-alphanum → hyphen; the 6-char hash suffix ensures long titles that collide after truncation still hash apart (16M-slot namespace). Previously-written posts with a 4-char hash remain valid — the skill treats any `<date>-<slug>-<hex>.md` matching the same `source_file` frontmatter as the canonical post for that source and updates in place rather than creating a duplicate.
 
 **i) Build YAML-safe frontmatter**. Escape for Jekyll/kramdown:
 - Title: wrap in double quotes; escape `\` → `\\`, `"` → `\"`; replace control chars with space; if title contains `${` or `{%`, escape with `{% raw %}…{% endraw %}` around the value instead of quoting (prevents Liquid injection from upstream article titles).
