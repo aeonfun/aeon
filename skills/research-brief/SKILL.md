@@ -6,9 +6,9 @@ tags: [research]
 ---
 <!-- autoresearch: variation B — sharper output: BLUF + falsifiable thesis + every claim cited + explicit disconfirmation -->
 
-> **${var}** — Topic to research. Required.
+> **${var}** — Topic to research. Optional; if empty, a hot topic from MEMORY.md is chosen.
 
-If `${var}` is empty, abort with `./notify "research-brief requires a topic (via trigger message or var=)"` and exit.
+If `${var}` is empty, log `RESEARCH_BRIEF_EMPTY_VAR` to `memory/logs/${today}.md` and fall back to the top hot-topic / active-interest listed in `memory/MEMORY.md`. If MEMORY.md has no usable hot-topic either, log the same marker and end gracefully **without** calling `./notify` (no topic = no brief, but no noisy failure either).
 
 Read `memory/MEMORY.md` for context on prior research, interests, and topics already covered.
 
