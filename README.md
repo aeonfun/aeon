@@ -67,7 +67,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 | **Crypto & Markets** (16) | `token-alert`, `token-movers`, `token-report`, `token-pick`, `monitor-runners`, `on-chain-monitor`, `defi-monitor`, `defi-overview`, `market-context-refresh`, `narrative-tracker`, `monitor-polymarket`, `monitor-kalshi`, `polymarket-comments`, `unlock-monitor`, `treasury-info`, `distribute-tokens` |
 | **Social & Writing** (7) | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `tweet-roundup`, `agent-buzz`, `farcaster-digest` |
 | **Productivity** (12) | `morning-brief`, `daily-routine`, `evening-recap`, `weekly-review`, `weekly-shiplog`, `goal-tracker`, `idea-capture`, `action-converter`, `tool-builder`, `startup-idea`, `deal-flow`, `reg-monitor` |
-| **Meta / Agent** (11) | `heartbeat`, `reflect`, `self-improve`, `skill-health`, `skill-evals`, `skill-repair`, `skill-leaderboard`, `skill-update-check`, `cost-report`, `rss-feed`, `update-gallery` |
+| **Meta / Agent** (12) | `heartbeat`, `reflect`, `self-improve`, `skill-health`, `skill-evals`, `skill-repair`, `skill-leaderboard`, `fork-contributor-leaderboard`, `skill-update-check`, `cost-report`, `rss-feed`, `update-gallery` |
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`
 
