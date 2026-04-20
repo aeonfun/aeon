@@ -63,6 +63,8 @@ From the commit list, find the most-frequently-touched files. Read the top 2-3 o
 - no release in the last 30 days, AND
 - no external mentions surfaced in step 3.
 
+**Quiet-repo exception**: if the repo has historical importance but is currently slow (e.g. only 1-2 commits this week, no release), do **not** skip — instead narrow the article's focus to the single most substantive recent change (a specific commit, a contested issue thread, a roadmap update) and write a shorter piece around *that*. Prefer publishing a tight 600-word piece on one real change over skipping.
+
 ## Phase 2 — Thesis
 
 Write one **falsifiable claim** in ≤25 words. The claim must be disprovable by specific evidence — not a vibe.
@@ -106,7 +108,7 @@ Run this checklist. Rewrite any line that fails. Target: 8/8 passing.
 
 1. **Thesis visible in first 100 words?** If not, rewrite the hook.
 2. **Every section has ≥1 specific number, SHA, PR#, filename, or date?** (generic adjectives don't count)
-3. **Zero banned phrases**: "in today's fast-paced world", "leveraging", "robust", "game-changer", "under the hood" (unless actually explaining internals), "taking X to the next level", "at the end of the day", "diving into", "delving into", "comprehensive suite", "cutting-edge", "seamlessly", "empowers".
+3. **Zero banned phrases** (see *Banned phrase lexicon* section below — check against that explicit list).
 4. **Counter-evidence is real** — not a strawman like "some might say it's complex".
 5. **Sources ≥4 links, ≥1 in-repo, ≥1 external.**
 6. **Title asserts something** (not "A look at X" / "Exploring Y").
@@ -141,6 +143,31 @@ If any item still fails after one rewrite pass, publish with status `REPO_ARTICL
 ## Sandbox note
 
 The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md). `gh api` handles GitHub auth internally.
+
+## Banned phrase lexicon
+
+Reject a draft that contains any of these. Match case-insensitively, whole phrase or obvious variant:
+
+- "in today's fast-paced world"
+- "leveraging" / "leverage" (as a verb meaning "use")
+- "robust"
+- "game-changer" / "game-changing"
+- "under the hood" (unless the section actually walks through internals)
+- "taking X to the next level"
+- "at the end of the day"
+- "diving into" / "deep dive"
+- "delving into" / "delve"
+- "comprehensive suite"
+- "cutting-edge"
+- "seamlessly" / "seamless"
+- "empowers" / "empowering"
+- "revolutionize" / "revolutionary"
+- "unlock" (metaphorical, e.g. "unlocks new possibilities")
+- "streamline" (as filler)
+- "best-in-class"
+- "paradigm shift"
+
+If a banned phrase is the *most accurate* word in a technical context (e.g. actually describing leverage in a derivatives article), keep it and note the exemption in the log.
 
 ## Constraints
 
