@@ -74,13 +74,15 @@ Tag each surviving repo with one of:
 
 ### 6. Cluster into categories
 
+Buckets are **heuristic and author-inferred** — classify by the repo's primary utility, not by author self-description. Cap total buckets at **5** (merge adjacent ones if you hit 6+; e.g. fold Data into Infra).
+
 Group survivors into these buckets (omit empty ones):
 - **AI/ML** (models, inference, agents, training, prompts)
 - **Devtools** (CLIs, build systems, dev servers, debuggers, IDEs)
 - **Infra** (databases, networking, observability, orchestration)
 - **Web/Apps** (frameworks, UI libs, user-facing apps)
 - **Data** (pipelines, analytics, notebooks, viz)
-- **Other** (keep tight; if Other ≥ 3, reconsider whether your buckets fit)
+- **Other** — if a repo fits none of the above, put it under Other with a **one-line reason** why none of the named buckets fit. Keep Other tight; if Other ≥ 3, reconsider whether your buckets fit.
 
 Aim for 5-8 total picks. If fewer than 3 survive, send a short note (see step 8) rather than padding.
 
