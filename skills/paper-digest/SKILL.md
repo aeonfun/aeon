@@ -50,8 +50,10 @@ Deduplicate the pool by arXiv ID. Drop any ID already shipped in the last 7 days
 
 Drop a paper unless it passes at least one of:
 - Direct keyword match to a tracked topic in title or abstract
-- ≥5 HF upvotes (community signal overrides topic match)
+- ≥**5** HF upvotes (community signal overrides topic match) — *`5` is a tunable threshold; adjust if HF upvote distributions shift or if the digest is consistently over/under-selecting. Values of 3–10 are reasonable.*
 - Published in last 14 days AND author or lab is listed in MEMORY.md
+
+**HF fallback**: if the Hugging Face API fails (curl + WebFetch both error) or returns an empty result set across every topic, skip the upvote gate entirely and fall back to **arXiv recent: top 5 from `cs.LG` and top 5 from `cs.AI` submitted in the last 7 days, sorted by `submittedDate` descending**. Note `(HF unavailable — arXiv-only fallback)` in the digest header.
 
 Also drop if ANY of:
 - Survey/review with no new empirical result (unless a tracked topic explicitly tracks surveys)
