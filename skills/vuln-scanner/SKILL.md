@@ -246,7 +246,9 @@ Append to `memory/logs/${today}.md`:
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or the pre-fetch/post-process pattern (see CLAUDE.md). Scanner binaries that fail to download → record `tool=fail` in `sources.txt` and continue; an all-scanners-fail run must report **error**, not **clean**.
+Scanner binaries (`semgrep`, `trufflehog`, `osv-scanner`, `slither`) are **not pre-installed** in the GitHub Actions sandbox, and outbound `pip install` / `curl | sh` downloads may be blocked. Operators should pre-cache them via `scripts/prefetch-vuln-scanner.sh` (runs before Claude starts, with full network access — see CLAUDE.md prefetch pattern). If any scanner binary is still missing at runtime, log `VULN_SCANNER_SKIPPED: <tool> not available`, record `tool=fail` in `sources.txt`, and continue with the remaining scanners rather than aborting the whole run.
+
+General sandbox rules: use **WebFetch** as a fallback for any plain URL fetch. For anything requiring a token, use `gh api` (handles auth internally) or the pre-fetch/post-process pattern (see CLAUDE.md). An all-scanners-fail run must report **error**, not **clean**.
 
 ## Environment variables
 
