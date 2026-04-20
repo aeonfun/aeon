@@ -1,6 +1,6 @@
 ---
 name: Unlock Monitor
-description: Weekly token unlock and vesting tracker — flag major supply events before they move markets
+description: Weekly token unlock and vesting tracker — quantify supply pressure via absorption ratio, classify cliff vs linear, deliver one-line market reads
 schedule: "0 10 * * 1"
 commits: true
 tags: [crypto]
@@ -8,83 +8,152 @@ permissions:
   - contents:write
 ---
 
+<!-- autoresearch: variation B — sharper output via Absorption Ratio (unlock $ / avg daily volume), Cliff vs Linear classification, and a one-line market-read verdict per unlock. Replaces qualitative HIGH/MED/LOW tiers with quantitative liquidity-strain thresholds backed by Keyrock's 16k-unlock study. Folds in source-status observability (from C) and CoinGecko volume enrichment (from A) as cheap wins. -->
+
 Read memory/MEMORY.md for context on market positions and active narratives.
-Read the last 3 days of memory/logs/ to avoid repeating events.
+Read the last 7 days of memory/logs/ to dedup against any unlock already covered.
+Read `memory/state/unlock-monitor-seen.json` if present — a list of `${ticker}:${unlock_date}` keys already shipped. Skip exact matches; if file is absent, treat as empty.
+
+## Core thesis
+
+The original skill ranked unlocks by **% of circulating supply**. That's a weak proxy. The right metric is **Absorption Ratio = unlock_dollar_value / 7-day avg daily volume**. Keyrock's analysis of 16k+ unlocks shows that ratios above ~2.4× consistently strain liquidity and produce measurable price drawdown. Below ~0.5× the market typically yawns. This skill ranks by absorption ratio first, supply % second, and folds in cliff-vs-linear structure plus pre-unlock price action to produce a per-event verdict.
 
 ## Steps
 
-1. **Search for upcoming token unlocks.** Run these WebSearches in parallel:
+### 1. Gather candidate unlocks
 
-   - `"token unlock schedule this week" site:tokenomist.ai OR site:defillama.com`
-   - `"major token unlock ${today} crypto vesting"`
-   - `"token unlock" AND ("cliff" OR "vesting" OR "team unlock" OR "investor unlock") this week`
-   - `"FTX distribution" OR "bankruptcy distribution" OR "creditor payout" crypto ${current_year}` (court-ordered supply shocks count)
+Run these WebSearches in parallel:
 
-   Also search:
-   - `tokenomist.ai` — source-verified unlock data across 500+ tokens
-   - `defillama.com/unlocks` — DeFi protocol unlock calendar
-   - `coingecko.com/en/highlights/incoming-token-unlocks` — upcoming unlock highlights
+- `"token unlock schedule" "${week_of}" site:tokenomist.ai OR site:defillama.com`
+- `"token unlock" "this week" cliff vesting team investor ${current_year}`
+- `"upcoming unlocks" cryptorank OR dropstab ${current_year}`
+- `"FTX distribution" OR "Mt. Gox" OR "Celsius" OR "creditor payout" crypto ${current_year}` (court-ordered supply shocks count)
+- `"$10M" OR "$50M" OR "$100M" token unlock ${week_of}` (dollar-value angle catches what supply % misses)
 
-2. **Filter for high-impact events.** From all results, select the top 8-10 unlocks based on:
-   - **Size relative to circulating supply:** unlocks > 3% of circulating supply are high-impact
-   - **Dollar value:** prioritize unlocks > $10M
-   - **Recipient type:** team/investor unlocks > ecosystem/community unlocks (selling pressure signal)
-   - **Relevance to tracked verticals in MEMORY.md:** AI agents, DeFi, prediction markets, L1/L2 infra, cross-chain
-   - **Deduplicate** against previous logs
+Also fetch (WebFetch fallback if any URL fails):
 
-3. **For each unlock, capture:**
-   - Token name and ticker
-   - Unlock date
-   - Number of tokens and % of circulating supply
-   - Dollar value at current price
-   - Recipient category (team, investor, ecosystem, community, creditor)
-   - Price action context (has the market front-run this? any pre-unlock dump?)
+- `https://tokenomist.ai` — primary, source-verified across 500+ tokens with cliff/linear labeling
+- `https://defillama.com/unlocks` — DeFi protocols, with $ values
+- `https://cryptorank.io/token-unlock` — broad coverage, recipient-category labeled
+- `https://dropstab.com/vesting` — alternative cross-source verification
+- `https://www.coingecko.com/en/highlights/incoming-token-unlocks` — Tokenomist-powered
 
-4. **Classify supply impact** for each event:
-   - **HIGH** — >5% of circulating supply, team/investor recipients, >$50M value
-   - **MEDIUM** — 2-5% of circulating supply or $10-50M value
-   - **LOW** — <2% or community/ecosystem allocation (less likely to sell)
+Record which sources returned data → emit a `sources:` line in the log (see step 7).
 
-5. **Add editorial commentary.** After listing unlocks, write 2-3 sentences of commentary:
-   - Is the market pricing these in or sleepwalking?
-   - Which unlocks create real sell pressure vs which are noise?
-   - Any patterns? (e.g. infra tokens all unlocking same week = sector rotation trigger)
-   - Court-ordered distributions (FTX, Celsius, etc.) are different beasts — forced sellers, not strategic ones
+### 2. Enrich each candidate with volume + structure
 
-6. **Send via `./notify`** (under 4000 chars):
-   ```
-   *Unlock Monitor — week of ${date}*
+For each candidate unlock, fetch from CoinGecko search results or WebFetch on `https://www.coingecko.com/en/coins/${slug}`:
 
-   HIGH IMPACT
-   - **$TOKEN** — unlock date — X tokens (Y% circ supply, $ZM)
-     Recipients: team/investor/etc | Market: front-run/sleepwalking
+- **7-day average daily volume** (USD) — denominator for the absorption ratio
+- **Spot price** at fetch time
+- **30-day price change %** — input to the market-read verdict
+- **Vesting structure**: `cliff` (lump-sum unlock) vs `linear` (gradual) vs `mixed` — usually labeled by tokenomist / cryptorank
+- **Recipient category**: `team`, `investor`, `ecosystem`, `community`, `creditor`
 
-   MEDIUM IMPACT
-   - **$TOKEN** — details
+If volume data is unavailable, mark the unlock `vol=unknown` and tier it conservatively — do not skip it, but flag the gap in the output.
 
-   LOW IMPACT
-   - **$TOKEN** — details
+### 3. Compute Absorption Ratio and tier
 
-   *Supply read:* 2-3 sentences. What's real, what's noise, what's already priced in.
-   ```
+For each unlock with known volume:
 
-7. **Log to memory/logs/${today}.md.**
+```
+absorption_ratio = unlock_usd_value / avg_daily_volume_usd_7d
+```
+
+Tier the events:
+
+| Tier | Absorption Ratio | Meaning |
+|------|------------------|---------|
+| **CRISIS** | > 2.4× | Liquidity cannot absorb without significant slippage |
+| **STRAIN** | 1.0× – 2.4× | Will require multiple sessions to digest |
+| **DIGESTIBLE** | 0.3× – 1.0× | Notable but absorbable |
+| **TRIVIAL** | < 0.3× | Background noise, skip unless recipient flag elevates it |
+
+**Recipient override**: a `team` or `investor` unlock with absorption ratio one tier lower than CRISIS gets bumped up one tier (cost-basis-zero sellers act differently than airdrop recipients). A `community` or `staking-reward` unlock with ratio one tier higher gets bumped *down* one tier.
+
+**Court-ordered distributions** (FTX, Mt. Gox, Celsius) bypass the tier system — always include, label `forced`, note the legal timeline.
+
+### 4. Classify pre-unlock market read
+
+For each event, set a one-line `market_read` based on 30d price change and vesting type:
+
+- **`priced in`** — token is down >20% over 30d AND ratio ≤ STRAIN. Selling has already happened; unlock day may mark a bottom.
+- **`market asleep`** — token is flat or up over 30d AND tier is STRAIN or CRISIS. Asymmetric downside; the move hasn't started.
+- **`fade pump`** — token is up >15% over 30d AND tier is CRISIS. Classic pre-cliff bid-then-dump pattern.
+- **`forced sellers`** — court-ordered. Different beast — legal timeline, not market-driven.
+- **`absorbable`** — TRIVIAL or DIGESTIBLE with no recipient flag. Nothing to see here.
+
+For cliff unlocks: weakness usually starts ~30 days before; vol peaks at unlock; recovery 10–14 days later. Note this pattern explicitly when relevant.
+
+### 5. Rank and select
+
+Sort by absorption ratio descending, then by recipient flag (team/investor first), then by dollar value. Take the top 8 (drop TRIVIAL unless a court-order or recipient flag elevates them).
+
+Deduplicate against `memory/state/unlock-monitor-seen.json` and the last 7 days of logs.
+
+If the resulting list is empty, that's a real signal — output `UNLOCK_MONITOR_QUIET` and a one-line note explaining why (e.g. "No unlocks above 0.3× absorption ratio this week — supply side is calm").
+
+### 6. Send via `./notify` (under 4000 chars)
+
+Lead with the headline — the single most-leveraged unlock — then tiered groups, then the read.
+
+```
+*Unlock Monitor — week of ${date}*
+
+This week's most leveraged: **$TOKEN** unlocks Wed at $XM (Y× daily vol). [market read]
+
+CRISIS (> 2.4× daily vol)
+- **$TOKEN** — Mon Apr 22 — X tokens (Z% supply, $YM)
+  cliff · investor · 3.1× vol · 30d -8% → market asleep
+  Note: cliff pattern — expect weakness running into the date
+
+STRAIN (1.0×–2.4×)
+- **$TOKEN** — details · 1.6× vol · 30d -25% → priced in
+
+DIGESTIBLE (0.3×–1.0×)
+- **$TOKEN** — details · 0.6× vol · linear · ecosystem → absorbable
+
+FORCED
+- **$TOKEN** — Mon — court-ordered creditor batch, $XM, no schedule discretion
+
+*Supply read:* 2-3 sentences. Where's the real pressure, where's the noise, where's the asymmetry. Reference any cliff timing patterns. If the week is quiet, say so plainly.
+
+sources: tokenomist=ok, defillama=ok, cryptorank=ok, dropstab=fail, coingecko=ok
+```
+
+### 7. Persist state and log
+
+Append every shipped event's key (`${ticker}:${unlock_date}`) to `memory/state/unlock-monitor-seen.json` (create the file and `memory/state/` directory if absent). Trim the file to the last 90 days of keys.
+
+Log to `memory/logs/${today}.md`:
+
+```
+### unlock-monitor
+- Week of: ${date}
+- Shipped: N events (X CRISIS, Y STRAIN, Z DIGESTIBLE)
+- Top leverage: $TOKEN at A.A× daily vol
+- Verdict mix: K priced-in, L asleep, M fade-pump, N forced
+- Sources: tokenomist=ok|fail, defillama=ok|fail, cryptorank=ok|fail, dropstab=ok|fail, coingecko=ok|fail
+- Status: UNLOCK_MONITOR_OK | UNLOCK_MONITOR_QUIET | UNLOCK_MONITOR_DEGRADED (if 2+ sources failed) | UNLOCK_MONITOR_ERROR (if all failed)
+```
 
 ## Guidelines
 
-- This is a supply-side signal tracker, not a price prediction tool. Focus on *who* is receiving tokens and *whether they'll sell*.
-- Team and investor unlocks carry the strongest sell signal — these are entities with cost basis near zero.
-- Ecosystem and community unlocks (airdrops, staking rewards, grants) are weaker signals — recipients are more distributed.
-- Court-ordered distributions (FTX, Celsius, Mt. Gox) are unique — forced liquidation with legal timelines, not market-driven.
-- Cross-reference with narrative-tracker output when possible — unlocks during a fading narrative hit harder.
-- Be direct. No hedging. "this one's priced in" or "market's asleep on this" — say it plainly.
-- If nothing significant is unlocking, say so. A quiet week on supply is a signal too.
+- The Absorption Ratio is the headline metric. % of circulating supply is secondary — useful for context but not for ranking.
+- Team and investor unlocks at low cost basis are the strongest sell signals. Bias the recipient override toward overstating their impact, not understating.
+- Linear unlocks rarely produce single-day shocks — say so explicitly when one shows up high in the list. The danger from linear is cumulative, not pointwise.
+- Cliff unlocks have a recognizable pattern: weakness ~30 days prior, peak vol on the date, recovery 10–14 days later. Reference this pattern when timing matters.
+- Pre-unlock price action is the cheapest signal of whether the market has done its work already. A token bleeding for 30 days into a known unlock is *priced in*. A token ripping into a known cliff is a *fade pump*.
+- Court-ordered distributions are unique — forced liquidation under legal timelines, no strategic discretion. Tier them separately.
+- Be direct. "this one's priced in", "market's asleep on this", "fade the pump" — say it plainly. No hedging.
+- A quiet week on supply is a signal too. Ship `UNLOCK_MONITOR_QUIET` with one sentence, don't pad.
+- Cross-reference active narratives in MEMORY.md — unlocks during a fading narrative hit harder; unlocks into a hot narrative get absorbed.
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs, use the pre-fetch/post-process pattern (see CLAUDE.md).
+The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch — all data sources here are public, no auth required. If WebFetch on a specific source also fails, mark it `fail` in the source-status line and proceed with whatever sources returned data. Only emit `UNLOCK_MONITOR_ERROR` if *all* sources failed.
 
 ## Environment Variables Required
 
-- None (uses WebSearch)
+- None (uses WebSearch + WebFetch only)
 - Notification channels configured via repo secrets (see CLAUDE.md)
