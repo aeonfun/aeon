@@ -1,0 +1,87 @@
+# skills/schedule-ads/config.yaml
+#
+# Copy this file to `config.yaml` (same dir) and fill it in.
+# The skill does NOT read this `.example.yaml` file — it only reads `config.yaml`.
+#
+# This config drives the schedule-ads skill. Every entry must be intentional —
+# this spends real money on ad platforms. Safety defaults are paranoid on purpose.
+#
+# Populate `defaults` from:
+#   - `GET /v1/adaccounts`           — adAccountId
+#   - `GET /v1/workspaces`           — workspaceId
+#   - `GET /v1/profiles?businessId=` — page (Facebook) + insta (Instagram)
+#   - `GET /v1/adsets?adAccountId=`  — adSets[].value + .label
+#
+# One-time bootstrap command you can run outside the sandbox:
+#
+#   curl -s "https://api.admanage.ai/v1/adaccounts" \
+#     -H "Authorization: Bearer $ADMANAGE_API_KEY" | jq
+
+defaults:
+  # ── required ──────────────────────────────────────────────────────────────
+  adAccountId: act_XXXXXXXXXXXXXXX
+  workspaceId: XXXXXXXXXXXXXXXXXXX
+  page: XXXXXXXXXXXXXXX            # Meta Page ID
+  insta: XXXXXXXXXXXXXXXX          # Instagram user ID (Meta launches only)
+
+  # ── safety (change only with intent) ──────────────────────────────────────
+  launchPaused: true               # never flip without a good reason
+  dailySpendCap: 50                # USD. Postprocess skips launches if today's
+                                   # spend across all accounts is >= this.
+  dryRun: false                    # true = build payloads, don't call API
+
+  # ── convenience defaults ──────────────────────────────────────────────────
+  cta: LEARN_MORE                  # default CTA if ad doesn't override
+  # utmTags: "utm_source=meta&utm_medium=paid&utm_campaign={{campaign.name}}"
+
+schedules:
+  # ── example 1: weekly promo on Mondays ───────────────────────────────────
+  - name: weekly-promo
+    platform: meta
+    when: { dayOfWeek: monday }
+    adSets:
+      - { value: "120XXXXXXXXXXXXXXX", label: "US Broad 25-55" }
+    ads:
+      - adName: "Weekly promo — {date}"
+        title: "Headline copy here"
+        description: "Supporting copy in a sentence or two."
+        cta: LEARN_MORE
+        link: https://example.com
+        media:
+          - url: https://media.admanage.ai/your-account/hero.mp4
+
+  # ── example 2: one-off launch for a specific date ────────────────────────
+  # - name: launch-day-push
+  #   platform: meta
+  #   when: { date: "2026-05-01" }
+  #   adSets:
+  #     - { value: "120YYYYYYYYYYYYYYY", label: "Builders / Devs US+EU" }
+  #   ads:
+  #     - adName: "Launch — {date}"
+  #       title: "Launch day headline"
+  #       description: "One-line pitch."
+  #       link: https://example.com/launch
+  #       media:
+  #         - url: https://media.admanage.ai/your-account/launch-hero.mp4
+
+  # ── example 3: TikTok daily test (commented out) ─────────────────────────
+  # - name: tiktok-daily-ab
+  #   platform: tiktok
+  #   when: { everyDay: true }
+  #   adAccountId: "7XXXXXXXXXXXXXXXXXX"   # overrides default (TikTok ≠ Meta)
+  #   adSets:
+  #     - { value: "18XXXXXXXXXXXXXXX", label: "US Smart+ Sales" }
+  #   ads:
+  #     - adName: "TT UGC V1 — {date}"
+  #       title: "Try it today"
+  #       description: "Short pitch."
+  #       cta: LEARN_MORE
+  #       link: https://example.com
+  #       media:
+  #         - url: https://media.admanage.ai/your-account/ugc-v1.mp4
+  #     - adName: "TT UGC V2 — {date}"
+  #       title: "Alternate hook"
+  #       description: "Different angle."
+  #       link: https://example.com
+  #       media:
+  #         - url: https://media.admanage.ai/your-account/ugc-v2.mp4

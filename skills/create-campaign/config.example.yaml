@@ -1,0 +1,99 @@
+# skills/create-campaign/config.yaml
+#
+# Copy to `config.yaml` (same dir) and fill in.
+# The skill only reads `config.yaml`, never this example.
+#
+# Provisions Meta campaigns + ad sets. PAUSED by default. Idempotent —
+# entries already in .admanage-state/campaigns.json are skipped.
+#
+# One-time bootstrap (outside sandbox, with ADMANAGE_API_KEY set):
+#
+#   curl -s "https://api.admanage.ai/v1/adaccounts" \
+#     -H "Authorization: Bearer $ADMANAGE_API_KEY" | jq
+#
+#   curl -s "https://api.admanage.ai/v1/conversions/pixels?businessId=act_XXX" \
+#     -H "Authorization: Bearer $ADMANAGE_API_KEY" | jq
+
+defaults:
+  adAccountId: act_XXXXXXXXXXXXXXX
+  workspaceId: XXXXXXXXXXXXXXXXXXX
+  launchPaused: true               # never flip without a reason
+  dryRun: false                    # true = build, don't call
+
+campaigns:
+  # ── example 1: traffic prospecting campaign with one ad set ──────────────
+  - name: "Prospecting — Q2 2026"
+    objective: OUTCOME_TRAFFIC
+    dailyBudget: 50                # USD
+    bidStrategy: LOWEST_COST_WITHOUT_CAP
+    # specialAdCategories: []      # use [] or omit. Required when running
+                                   # credit/housing/employment/political ads.
+    promotedObject:
+      pixel_id: "123456789012345"  # from GET /v1/conversions/pixels
+
+    adSets:
+      - name: "US Broad 25-54"
+        dailyBudget: 15
+        billingEvent: IMPRESSIONS
+        optimizationGoal: LANDING_PAGE_VIEWS
+        destinationType: WEBSITE
+        targeting:
+          geo_locations:
+            countries: ["US"]
+          age_min: 25
+          age_max: 54
+          publisher_platforms: [facebook, instagram]
+        # attributionSpec:         # optional
+        #   - { event_type: CLICK_THROUGH, window_days: 7 }
+
+      - name: "EU Builders 21-45"
+        dailyBudget: 10
+        billingEvent: IMPRESSIONS
+        optimizationGoal: LANDING_PAGE_VIEWS
+        destinationType: WEBSITE
+        targeting:
+          geo_locations:
+            countries: ["GB", "DE", "FR", "NL"]
+          age_min: 21
+          age_max: 45
+          publisher_platforms: [facebook, instagram]
+
+  # ── example 2: sales campaign with website purchases ─────────────────────
+  # - name: "Sales — Q2"
+  #   objective: OUTCOME_SALES
+  #   dailyBudget: 150
+  #   bidStrategy: LOWEST_COST_WITHOUT_CAP
+  #   promotedObject:
+  #     pixel_id: "123456789012345"
+  #     custom_event_type: PURCHASE
+  #
+  #   adSets:
+  #     - name: "US Purchasers 25-54"
+  #       dailyBudget: 50
+  #       billingEvent: IMPRESSIONS
+  #       optimizationGoal: OFFSITE_CONVERSIONS
+  #       destinationType: WEBSITE
+  #       targeting:
+  #         geo_locations: { countries: ["US"] }
+  #         age_min: 25
+  #         age_max: 54
+  #       promotedObject:
+  #         pixel_id: "123456789012345"
+  #         custom_event_type: PURCHASE
+
+  # ── example 3: leads campaign (requires a lead form) ─────────────────────
+  # - name: "Waitlist — Leads"
+  #   objective: OUTCOME_LEADS
+  #   dailyBudget: 30
+  #   bidStrategy: LOWEST_COST_WITHOUT_CAP
+  #
+  #   adSets:
+  #     - name: "US Broad Leads"
+  #       dailyBudget: 15
+  #       billingEvent: IMPRESSIONS
+  #       optimizationGoal: LEAD_GENERATION
+  #       destinationType: ON_AD              # Meta instant form
+  #       targeting:
+  #         geo_locations: { countries: ["US"] }
+  #         age_min: 22
+  #         age_max: 55
