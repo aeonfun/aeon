@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aeon": {
+      "command": "node",
+      "args": ["/ABSOLUTE/PATH/TO/aeon/mcp-server/dist/index.js"]
+    }
+  }
+}

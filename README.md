@@ -436,6 +436,21 @@ Aeon skills work outside GitHub Actions too — use them from Claude or any AI a
 
 Skills run locally via `claude -p -`, identical to Actions. API keys read from your environment or a `.env` file in the repo root.
 
+### Integration examples
+
+Working client scripts for every supported stack live in [`examples/`](examples/) — each one is &lt;100 lines, talks to a running A2A gateway or MCP server, and calls a real Aeon skill end-to-end:
+
+| Stack | File | Skill called |
+|-------|------|--------------|
+| LangChain | [`examples/a2a/langchain_client.py`](examples/a2a/langchain_client.py) | `aeon-fetch-tweets` |
+| AutoGen | [`examples/a2a/autogen_workflow.py`](examples/a2a/autogen_workflow.py) | `aeon-deep-research` |
+| CrewAI | [`examples/a2a/crewai_task.py`](examples/a2a/crewai_task.py) | `aeon-pr-review` |
+| OpenAI Agents SDK | [`examples/a2a/openai_agents_client.py`](examples/a2a/openai_agents_client.py) | `aeon-token-report` |
+| MCP (stdio) | [`examples/mcp/test_connection.py`](examples/mcp/test_connection.py) | `aeon-cost-report` |
+| Claude Desktop | [`examples/mcp/claude_desktop_config.json`](examples/mcp/claude_desktop_config.json) | — |
+
+Start with [`examples/README.md`](examples/README.md) for the full setup walk-through.
+
 ---
 
 ## Two-repo strategy
