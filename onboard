@@ -1,0 +1,315 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# onboard — Validate that this Aeon fork is set up correctly.
+#
+# Runs a series of checks against the local repo and (when authenticated to gh)
+# the remote secrets/workflows. Prints a colored checklist with a one-line fix
+# instruction for every gap.
+#
+# Usage:
+#   ./onboard                  Run every check, print summary, exit 0/1
+#   ./onboard --remote         Also run a workflow_dispatch of the onboard skill
+#                              so the same checklist arrives in your notification
+#                              channel.
+#   ./onboard --quiet          Suppress per-check output, print summary only
+#   ./onboard --json           Machine-readable JSON output (no colors, no fixes)
+#   ./onboard --help           Show this help
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$ROOT"
+
+REMOTE=false
+QUIET=false
+JSON=false
+
+for arg in "$@"; do
+  case "$arg" in
+    --remote) REMOTE=true ;;
+    --quiet)  QUIET=true ;;
+    --json)   JSON=true; QUIET=true ;;
+    --help|-h)
+      sed -n '3,17p' "$0" | sed 's/^# \{0,1\}//'
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $arg" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# --- terminal colors -------------------------------------------------------
+if [[ -t 1 ]] && [[ "$JSON" != "true" ]]; then
+  C_GREEN=$'\033[32m'; C_RED=$'\033[31m'; C_YELLOW=$'\033[33m'
+  C_BLUE=$'\033[34m'; C_DIM=$'\033[2m'; C_RESET=$'\033[0m'; C_BOLD=$'\033[1m'
+else
+  C_GREEN=""; C_RED=""; C_YELLOW=""; C_BLUE=""; C_DIM=""; C_RESET=""; C_BOLD=""
+fi
+
+# --- check accumulator -----------------------------------------------------
+PASS_COUNT=0
+WARN_COUNT=0
+FAIL_COUNT=0
+JSON_ROWS=()
+
+emit() {
+  # emit <status> <name> <detail> <fix>
+  local status="$1" name="$2" detail="$3" fix="$4"
+  case "$status" in
+    pass) PASS_COUNT=$((PASS_COUNT + 1)); icon="${C_GREEN}✓${C_RESET}" ;;
+    warn) WARN_COUNT=$((WARN_COUNT + 1)); icon="${C_YELLOW}!${C_RESET}" ;;
+    fail) FAIL_COUNT=$((FAIL_COUNT + 1)); icon="${C_RED}✗${C_RESET}" ;;
+    *)    icon="?" ;;
+  esac
+
+  if [[ "$JSON" == "true" ]]; then
+    # Escape quotes for JSON
+    local n="${name//\"/\\\"}" d="${detail//\"/\\\"}" f="${fix//\"/\\\"}"
+    JSON_ROWS+=("{\"status\":\"$status\",\"check\":\"$n\",\"detail\":\"$d\",\"fix\":\"$f\"}")
+  elif [[ "$QUIET" != "true" ]]; then
+    printf "  %s %s${C_DIM} — %s${C_RESET}\n" "$icon" "$name" "$detail"
+    if [[ "$status" != "pass" && -n "$fix" ]]; then
+      printf "      ${C_BLUE}fix:${C_RESET} %s\n" "$fix"
+    fi
+  fi
+}
+
+# --- helpers ---------------------------------------------------------------
+
+repo_slug() {
+  # Resolve owner/repo from git remote. Falls back to "" if not a github remote.
+  local url
+  url="$(git config --get remote.origin.url 2>/dev/null || echo "")"
+  if [[ "$url" == git@github.com:* ]]; then
+    echo "${url#git@github.com:}" | sed 's/\.git$//'
+  elif [[ "$url" == https://github.com/* ]]; then
+    echo "${url#https://github.com/}" | sed 's/\.git$//'
+  else
+    echo ""
+  fi
+}
+
+REPO_SLUG="$(repo_slug)"
+
+has_secret() {
+  # has_secret <NAME> — true if the secret is configured on the remote repo.
+  # Requires `gh` authenticated. Returns 2 if gh isn't available (caller decides).
+  local name="$1"
+  if ! command -v gh >/dev/null 2>&1; then return 2; fi
+  if [[ -z "$REPO_SLUG" ]]; then return 2; fi
+  if ! gh auth status >/dev/null 2>&1; then return 2; fi
+  gh secret list -R "$REPO_SLUG" --json name --jq '.[].name' 2>/dev/null \
+    | grep -qx "$name"
+}
+
+# --- header ----------------------------------------------------------------
+
+if [[ "$JSON" != "true" && "$QUIET" != "true" ]]; then
+  printf "\n${C_BOLD}Aeon onboarding check${C_RESET}"
+  if [[ -n "$REPO_SLUG" ]]; then
+    printf " ${C_DIM}— %s${C_RESET}" "$REPO_SLUG"
+  fi
+  printf "\n\n"
+fi
+
+# --- 1. workflow files exist ----------------------------------------------
+
+for wf in aeon.yml messages.yml chain-runner.yml; do
+  if [[ -f ".github/workflows/$wf" ]]; then
+    emit pass "workflow .github/workflows/$wf" "present" ""
+  else
+    emit fail "workflow .github/workflows/$wf" "missing" \
+      "Re-sync from upstream: git remote add upstream https://github.com/aaronjmars/aeon.git && git fetch upstream && git checkout upstream/main -- .github/workflows/$wf"
+  fi
+done
+
+# --- 2. aeon.yml structure -------------------------------------------------
+
+if [[ -f aeon.yml ]]; then
+  enabled_count=$(grep -cE '^\s*[a-z][a-z0-9_-]+: \{ *enabled: true' aeon.yml || true)
+  enabled_count=${enabled_count//[!0-9]/}
+  : "${enabled_count:=0}"
+  if [[ "$enabled_count" -ge 1 ]]; then
+    emit pass "aeon.yml" "$enabled_count skill(s) enabled" ""
+  else
+    emit warn "aeon.yml" "no skills enabled" \
+      "Open aeon.yml and flip 'enabled: false' → 'enabled: true' on at least one skill (heartbeat is enabled by default in the template)."
+  fi
+else
+  emit fail "aeon.yml" "missing" \
+    "Restore from upstream: git checkout upstream/main -- aeon.yml"
+fi
+
+# --- 3. memory writable ----------------------------------------------------
+
+if [[ ! -d memory ]]; then
+  emit fail "memory/" "directory missing" \
+    "mkdir -p memory/{logs,topics,issues} && touch memory/MEMORY.md"
+elif ! ( touch memory/.onboard-write-test 2>/dev/null && rm memory/.onboard-write-test 2>/dev/null ); then
+  emit fail "memory/ writable" "permission denied" \
+    "chmod -R u+w memory/"
+else
+  if [[ -f memory/MEMORY.md ]]; then
+    emit pass "memory/" "writable, MEMORY.md present" ""
+  else
+    emit warn "memory/" "writable but MEMORY.md missing" \
+      "Create with: printf '# Long-term Memory\\n' > memory/MEMORY.md"
+  fi
+fi
+
+# --- 4. authentication secret (Claude) ------------------------------------
+
+claude_secret_state="unknown"
+if has_secret ANTHROPIC_API_KEY; then
+  emit pass "auth secret" "ANTHROPIC_API_KEY configured" ""
+  claude_secret_state="ok"
+elif has_secret CLAUDE_CODE_OAUTH_TOKEN; then
+  emit pass "auth secret" "CLAUDE_CODE_OAUTH_TOKEN configured" ""
+  claude_secret_state="ok"
+else
+  case "$?" in
+    1)
+      emit fail "auth secret" "neither ANTHROPIC_API_KEY nor CLAUDE_CODE_OAUTH_TOKEN configured" \
+        "gh secret set ANTHROPIC_API_KEY --body 'sk-ant-...' -R $REPO_SLUG  (or run 'claude setup-token' and set CLAUDE_CODE_OAUTH_TOKEN)"
+      claude_secret_state="missing"
+      ;;
+    *)
+      emit warn "auth secret" "could not verify (gh not authenticated for $REPO_SLUG)" \
+        "Authenticate with 'gh auth login' to verify, or check Settings → Secrets and variables → Actions for ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
+      claude_secret_state="unverified"
+      ;;
+  esac
+fi
+
+# --- 5. at least one notification channel ---------------------------------
+
+channels_found=()
+channels_unverified=false
+
+check_channel() {
+  local label="$1"; shift
+  local all_present=true
+  local any_unverified=false
+  for s in "$@"; do
+    if has_secret "$s"; then
+      :
+    else
+      case "$?" in
+        1) all_present=false ;;
+        *) any_unverified=true ;;
+      esac
+    fi
+  done
+  if [[ "$all_present" == "true" && "$any_unverified" == "false" ]]; then
+    channels_found+=("$label")
+  elif [[ "$any_unverified" == "true" && "$all_present" == "true" ]]; then
+    channels_unverified=true
+  fi
+}
+
+check_channel "Telegram" TELEGRAM_BOT_TOKEN TELEGRAM_CHAT_ID
+check_channel "Discord"  DISCORD_WEBHOOK_URL
+check_channel "Slack"    SLACK_WEBHOOK_URL
+check_channel "Email"    SENDGRID_API_KEY NOTIFY_EMAIL_TO
+
+if [[ ${#channels_found[@]} -ge 1 ]]; then
+  joined=$(printf "%s, " "${channels_found[@]}")
+  joined=${joined%, }
+  emit pass "notification channel" "$joined configured" ""
+elif [[ "$channels_unverified" == "true" ]]; then
+  emit warn "notification channel" "could not verify (gh not authenticated)" \
+    "Authenticate with 'gh auth login' or check Settings → Secrets for one of: TELEGRAM_BOT_TOKEN+TELEGRAM_CHAT_ID, DISCORD_WEBHOOK_URL, SLACK_WEBHOOK_URL, SENDGRID_API_KEY+NOTIFY_EMAIL_TO."
+else
+  emit fail "notification channel" "no channel configured" \
+    "Pick one — Telegram is fastest. See README → Notifications for the @BotFather + chat_id walk-through, then: gh secret set TELEGRAM_BOT_TOKEN -R $REPO_SLUG && gh secret set TELEGRAM_CHAT_ID -R $REPO_SLUG"
+fi
+
+# --- 6. GitHub Actions has actually run -----------------------------------
+
+if [[ -n "$REPO_SLUG" ]] && command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+  run_count=$(gh run list -R "$REPO_SLUG" --workflow=messages.yml --limit 1 --json status --jq 'length' 2>/dev/null || echo "0")
+  if [[ "${run_count:-0}" -ge 1 ]]; then
+    emit pass "GitHub Actions" "messages.yml has run at least once" ""
+  else
+    emit warn "GitHub Actions" "no runs yet for messages.yml" \
+      "Enable Actions: gh workflow enable messages.yml -R $REPO_SLUG  (or visit Settings → Actions → General and allow workflows)."
+  fi
+else
+  emit warn "GitHub Actions" "could not query run history" \
+    "Run 'gh auth login' and rerun ./onboard to verify."
+fi
+
+# --- 7. local memory log evidence -----------------------------------------
+
+if compgen -G "memory/logs/*.md" > /dev/null 2>&1; then
+  log_count=$(find memory/logs -maxdepth 1 -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+  emit pass "skill activity log" "$log_count daily log file(s) under memory/logs/" ""
+else
+  emit warn "skill activity log" "no entries under memory/logs/ yet" \
+    "Logs appear after the first scheduled skill run. Trigger one manually: gh workflow run aeon.yml -f skill=heartbeat -R $REPO_SLUG"
+fi
+
+# --- 8. optional cross-repo PAT -------------------------------------------
+
+if has_secret GH_GLOBAL; then
+  emit pass "GH_GLOBAL (cross-repo PAT)" "configured" ""
+else
+  case "$?" in
+    1)
+      emit warn "GH_GLOBAL (cross-repo PAT)" "not configured (optional)" \
+        "Only needed if you want skills like github-monitor / pr-review / external-feature to read repos outside this one. Create a fine-grained PAT and: gh secret set GH_GLOBAL -R $REPO_SLUG"
+      ;;
+    *)
+      :  # gh unavailable — skip silently to avoid noise
+      ;;
+  esac
+fi
+
+# --- summary ---------------------------------------------------------------
+
+if [[ "$JSON" == "true" ]]; then
+  printf '{"summary":{"pass":%d,"warn":%d,"fail":%d},"checks":[' "$PASS_COUNT" "$WARN_COUNT" "$FAIL_COUNT"
+  first=true
+  for row in "${JSON_ROWS[@]}"; do
+    if [[ "$first" == "true" ]]; then first=false; else printf ','; fi
+    printf '%s' "$row"
+  done
+  printf ']}\n'
+else
+  printf "\n${C_BOLD}Summary${C_RESET}: ${C_GREEN}%d pass${C_RESET}, ${C_YELLOW}%d warn${C_RESET}, ${C_RED}%d fail${C_RESET}\n" \
+    "$PASS_COUNT" "$WARN_COUNT" "$FAIL_COUNT"
+  if [[ "$FAIL_COUNT" -eq 0 && "$WARN_COUNT" -eq 0 ]]; then
+    printf "\nAll set. Aeon should run on its next cron tick.\n\n"
+  elif [[ "$FAIL_COUNT" -eq 0 ]]; then
+    printf "\nAeon will run, but some optional pieces are missing (warnings above).\n\n"
+  else
+    printf "\nFix the ${C_RED}✗${C_RESET} items above, then rerun ${C_BOLD}./onboard${C_RESET}.\n\n"
+  fi
+fi
+
+# --- optional remote dispatch ---------------------------------------------
+
+if [[ "$REMOTE" == "true" ]]; then
+  if [[ -z "$REPO_SLUG" ]]; then
+    echo "Cannot dispatch remote check — no GitHub remote configured." >&2
+    exit 1
+  fi
+  if ! command -v gh >/dev/null 2>&1; then
+    echo "Cannot dispatch remote check — gh CLI not installed." >&2
+    exit 1
+  fi
+  echo "Dispatching onboard skill on $REPO_SLUG ..."
+  if gh workflow run aeon.yml -R "$REPO_SLUG" -f skill=onboard >/dev/null 2>&1; then
+    echo "Dispatched. Check your notification channel within ~2 minutes."
+  else
+    echo "Failed to dispatch. Verify Actions are enabled and that aeon.yml workflow exists." >&2
+    exit 1
+  fi
+fi
+
+# Exit code: 0 if no failures, 1 otherwise.
+if [[ "$FAIL_COUNT" -gt 0 ]]; then
+  exit 1
+fi
+exit 0

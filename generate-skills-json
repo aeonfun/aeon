@@ -48,7 +48,7 @@ get_category() {
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
     deal-flow|reg-monitor|heartbeat|reflect|self-improve) echo "productivity" ;;
     skill-health|skill-evals|skill-repair|skill-leaderboard|skill-update-check) echo "productivity" ;;
-    cost-report|rss-feed|update-gallery) echo "productivity" ;;
+    cost-report|rss-feed|update-gallery|onboard) echo "productivity" ;;
     *) echo "other" ;;
   esac
 }
