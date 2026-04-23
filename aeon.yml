@@ -126,6 +126,7 @@ skills:
   weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
+  fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
 
