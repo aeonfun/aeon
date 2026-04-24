@@ -1,6 +1,7 @@
-HEARTBEAT_OK.
+HEARTBEAT_OK
 
 ## Summary
-- Ran heartbeat checks: all four priority tiers clean (no failed/stuck skills, no open PRs, no flagged memory items, no missing scheduled skills).
-- Appended today's 14:xx UTC run entry to `memory/logs/2026-04-24.md`.
+- Ran heartbeat checks: no failed/stuck skills, no degradation, no stalled PRs, no flagged memory items.
+- Cron state: heartbeat 8/8 successes, last success 2026-04-24T14:01:19Z.
+- Appended run entry to `memory/logs/2026-04-24.md`.
 - No notification sent.
