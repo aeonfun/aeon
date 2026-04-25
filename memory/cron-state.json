@@ -359,5 +359,49 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "fetch-tweets": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "refresh-x": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "list-digest": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "write-tweet": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "reply-maker": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "remix-tweets": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "tweet-roundup": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "agent-buzz": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "farcaster-digest": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "vibecoding-digest": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
+  },
+  "rss-feed": {
+    "last_dispatch": "2026-04-25T17:49:54Z",
+    "last_status": "dispatched"
   }
 }
