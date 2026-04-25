@@ -1,0 +1,398 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview",
+        "description": "2026-04-25 — Mixed: TVL flat post-unwind, DEX vol −24% / fees −18%, stables holding"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-tvl",
+        "sep-1",
+        "heading-chains",
+        "table-chains",
+        "sep-2",
+        "heading-movers",
+        "stack-movers",
+        "sep-3",
+        "heading-fees",
+        "table-fees",
+        "sep-4",
+        "heading-fees-beating",
+        "stack-fees-beating",
+        "sep-5",
+        "heading-dex",
+        "stat-dex",
+        "table-dex",
+        "sep-6",
+        "heading-stables",
+        "stat-stables",
+        "stack-stables-moves",
+        "sep-7",
+        "heading-real-yield",
+        "table-real-yield",
+        "sep-8",
+        "heading-incentive",
+        "table-incentive",
+        "sep-9",
+        "text-sources"
+      ]
+    },
+    "stat-tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$84.4B",
+        "delta": "+0.3% 24h / −15.2% 7d — Apr-17 leverage unwind"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-chains": {
+      "type": "Heading",
+      "props": {
+        "text": "Top chains",
+        "level": "h3"
+      }
+    },
+    "table-chains": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Chain",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "1",
+            "Ethereum",
+            "$45.4B"
+          ],
+          [
+            "2",
+            "BSC",
+            "$5.6B"
+          ],
+          [
+            "3",
+            "Solana",
+            "$5.6B"
+          ]
+        ]
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-movers": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — protocols",
+        "level": "h3"
+      }
+    },
+    "stack-movers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-cooler",
+        "text-etherfi"
+      ]
+    },
+    "text-cooler": {
+      "type": "Text",
+      "props": {
+        "text": "↑ Cooler Loans +15% ($199M → $229M) — no obvious catalyst"
+      }
+    },
+    "text-etherfi": {
+      "type": "Text",
+      "props": {
+        "text": "↓ ether.fi Liquid −17% ($380M → $316M) — vault AUM bleeding from week-old USDe/Aave unwind"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-fees": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "table-fees": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Protocol",
+          "Fees"
+        ],
+        "rows": [
+          [
+            "1",
+            "Tether",
+            "$16.7M (+1% vs 7d avg)"
+          ],
+          [
+            "2",
+            "Circle USDC",
+            "$6.7M (flat)"
+          ],
+          [
+            "3",
+            "Aave V3",
+            "$2.4M (−33% vs 7d avg, fee spike fading)"
+          ]
+        ]
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-fees-beating": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees beating TVL",
+        "level": "h3"
+      }
+    },
+    "stack-fees-beating": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-aave-fees",
+        "text-polymarket-fees"
+      ]
+    },
+    "text-aave-fees": {
+      "type": "Text",
+      "props": {
+        "text": "• Aave V3 — fees +42% / TVL −47% (7d) — utilisation spike as deposits fled"
+      }
+    },
+    "text-polymarket-fees": {
+      "type": "Text",
+      "props": {
+        "text": "• Polymarket US — fees +76% / TVL n/a — election-cycle handle persisting"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-dex": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX vol (24h)",
+        "level": "h3"
+      }
+    },
+    "stat-dex": {
+      "type": "Stat",
+      "props": {
+        "label": "Total DEX Volume",
+        "value": "$5.6B",
+        "delta": "−24%",
+        "trend": "down"
+      }
+    },
+    "table-dex": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "Volume"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$615M"
+          ],
+          [
+            "PancakeSwap V3",
+            "$554M"
+          ],
+          [
+            "Uniswap V3",
+            "$383M"
+          ]
+        ]
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-stables": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stat-stables": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Stablecoins",
+        "value": "$319.5B",
+        "delta": "+0.2% 1d"
+      }
+    },
+    "stack-stables-moves": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-rlusd",
+        "text-usde",
+        "text-avusd"
+      ]
+    },
+    "text-rlusd": {
+      "type": "Text",
+      "props": {
+        "text": "• RLUSD +5.6%"
+      }
+    },
+    "text-usde": {
+      "type": "Text",
+      "props": {
+        "text": "• USDe −3.1%"
+      }
+    },
+    "text-avusd": {
+      "type": "Text",
+      "props": {
+        "text": "• avUSD −16% notable single-issuer move"
+      }
+    },
+    "sep-7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-real-yield": {
+      "type": "Heading",
+      "props": {
+        "text": "Real yield (sustainable, ≥$10M, filtered)",
+        "level": "h3"
+      }
+    },
+    "table-real-yield": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Asset",
+          "APY",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "APYUSD (Pendle, ETH)",
+            "15.4% apyBase",
+            "$10.4M"
+          ],
+          [
+            "APT (Amnis, Aptos)",
+            "14.8% apyBase",
+            "$17.4M"
+          ],
+          [
+            "APXUSD (Pendle, ETH)",
+            "14.3% apyBase",
+            "$13.7M"
+          ]
+        ]
+      }
+    },
+    "sep-8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-incentive": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive yield (points / emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "table-incentive": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Asset",
+          "APY",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "cvxCRV (Convex, ETH)",
+            "27.9% apy via CRV/CVX rewards",
+            "$33.2M"
+          ],
+          [
+            "sdCRV (Stake DAO, ETH)",
+            "21.6% apy via CRV/PRISMA rewards",
+            "$27.3M"
+          ]
+        ]
+      }
+    },
+    "sep-9": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none | chain c1d derived from historical (live endpoint omits deltas)",
+        "variant": "caption"
+      }
+    }
+  }
+}
