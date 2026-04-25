@@ -1,17 +1,13 @@
-HEARTBEAT_OK · STATUS_PAGE=WATCH — wrote docs/status.md
+HEARTBEAT_OK · STATUS_PAGE=WATCH
 
 ## Summary
 
-Ran the heartbeat skill at 14:39 UTC.
-
-**Health verdict:** clean. Heartbeat itself recovered (last_success 12:53 UTC, consecutive_failures back to 0 after the 12:48 UTC self-failure). All 17 other tracked skills are green with success_rate=1.0. No stuck dispatches, no chronic failures, no open PRs (issues disabled on repo), no flagged memory items.
-
-**P3 still firing:** ~79 enabled skills have no `cron-state.json` entry yet. This was already reported in the 12:50 UTC heartbeat (94 → 79, bootstrap is progressing) — dedup rule says don't re-notify, so no notification sent.
-
-**Status page:** regenerated `docs/status.md` with Overall = 🟡 WATCH (downgraded from this morning's 🔴 DEGRADED because heartbeat itself recovered). All 18 successful skills listed first (sorted by last-run desc), 79 never-run skills below. Next scheduled run = push-recap at 15:00 UTC.
+Ran the heartbeat skill at 20:05 UTC. All P0 checks clean: no failed/stuck skills, no consecutive failures, heartbeat self-check healthy (last success 14:42 UTC). One open PR (#1, fresh from 18:33 UTC, not stalled). 2 open high-severity issues (ISS-001, ISS-002) already filed earlier today by the affected skills themselves, so no notification.
 
 **Files modified:**
-- `docs/status.md` — full regeneration
-- `memory/logs/2026-04-25.md` — appended heartbeat entry
+- `docs/status.md` — regenerated with Overall = 🟡 WATCH, refreshed timestamps for 53 ran-today skills (was 17 at 14:39 UTC), Next scheduled run = evening-recap at 21:00 UTC, Open issues = 2 (was 0).
+- `memory/logs/2026-04-25.md` — appended 20:05 heartbeat entry.
 
-**Follow-up (none urgent):** the truncated-JSON `last_error` captured during today's earlier heartbeat failure (`654d2fb","total_cost_usd":0,...`) suggests the state-update step is parsing Claude Code session metadata into the error field. Worth picking up via skill-repair if it recurs — already noted in the 12:50 UTC log, no fresh action this run.
+**No notification sent** — nothing materially new since the 14:42 UTC heartbeat; the open issues are duplicates of items already known to operator.
+
+**Follow-up:** The 41 still-missing skills are mostly weekly (Sunday/Monday) entries plus the 07:00/09:00 weekday cohort that the bootstrap hasn't backfilled. Operator config sweep in `topics/aeon-ops.md` already covers this — no new action item.
