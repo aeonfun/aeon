@@ -4,4 +4,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,narrative-tracker,claude-opus-4-7,1125,22420,1998766,93974
 2026-04-25,deep-research,claude-opus-4-7,549,40713,3771718,138581
 2026-04-25,research-brief,claude-opus-4-7,150,25951,1271945,105245
-2026-04-25,repo-pulse,claude-opus-4-7,233,6756,559026,44491
+2026-04-25,repo-article,claude-opus-4-7,38,14800,1697205,117571

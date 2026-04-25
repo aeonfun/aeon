@@ -60,6 +60,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 | Date | Title | Topic |
 |------|-------|-------|
 | 2026-04-25 | Autonomous Agents Got an Open Stack in April 2026 | DeepSeek V4 + agent-wallet stack (World AgentKit, Adobe Commerce MCP, Trust Wallet Agent Kit) |
+| 2026-04-25 | Aeon Stopped Shipping Single-Instance Features Four Days Ago | aaronjmars/aeon repo-article — fleet-operations pivot (PRs #139–#142) |
 
 ## Recent Digests
 | Date | Type | Key Topics |
