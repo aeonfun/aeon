@@ -480,7 +480,13 @@
   },
   "self-improve": {
     "last_dispatch": "2026-04-25T18:30:50Z",
-    "last_status": "dispatched"
+    "last_status": "success",
+    "last_success": "2026-04-25T18:34:36Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1
   },
   "reflect": {
     "last_dispatch": "2026-04-25T18:30:50Z",
