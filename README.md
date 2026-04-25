@@ -9,6 +9,7 @@
   <a href="https://github.com/aaronjmars/aeon/network/members"><img src="https://img.shields.io/github/forks/aaronjmars/aeon?style=flat-square&logo=github" alt="GitHub forks"></a>
   <a href="https://x.com/aeonframework"><img src="https://img.shields.io/badge/Follow-%40aeonframework-black?style=flat-square&logo=x&labelColor=000000" alt="Follow on X"></a>
   <a href="https://bankr.bot/discover/0xbf8e8f0e8866a7052f948c16508644347c57aba3"><img src="https://img.shields.io/badge/Aeon%20on-Bankr-orange?style=flat-square&labelColor=1a1a2e" alt="Aeon on Bankr"></a>
+  <a href="https://aaronjmars.github.io/aeon/status/"><img src="https://img.shields.io/badge/agent-status-brightgreen?style=flat-square&logo=githubactions&logoColor=white&labelColor=1a1a2e" alt="Agent status"></a>
 </p>
 
 <p align="center">
@@ -60,6 +61,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 2. **Add a channel** — set up [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you (and you can talk back)
 3. **Pick skills** — toggle on what you want, set a schedule, and optionally set a `var` to focus each skill
 4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
+5. **Verify** — run `./onboard` to confirm secrets, workflows, memory, and notifications are wired up correctly. Add `--remote` to fire the check inside Actions and have the checklist arrive in your notification channel.
 
 ---
 
@@ -74,7 +76,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 | **Crypto & Markets** (16) | `token-alert`, `token-movers`, `token-report`, `token-pick`, `monitor-runners`, `on-chain-monitor`, `defi-monitor`, `defi-overview`, `market-context-refresh`, `narrative-tracker`, `monitor-polymarket`, `monitor-kalshi`, `polymarket-comments`, `unlock-monitor`, `treasury-info`, `distribute-tokens` |
 | **Social & Writing** (7) | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `tweet-roundup`, `agent-buzz`, `farcaster-digest` |
 | **Productivity** (12) | `morning-brief`, `daily-routine`, `evening-recap`, `weekly-review`, `weekly-shiplog`, `goal-tracker`, `idea-capture`, `action-converter`, `tool-builder`, `startup-idea`, `deal-flow`, `reg-monitor` |
-| **Meta / Agent** (12) | `heartbeat`, `reflect`, `self-improve`, `skill-health`, `skill-evals`, `skill-repair`, `skill-leaderboard`, `fork-contributor-leaderboard`, `skill-update-check`, `cost-report`, `rss-feed`, `update-gallery` |
+| **Meta / Agent** (14) | `heartbeat`, `reflect`, `self-improve`, `skill-health`, `skill-evals`, `skill-repair`, `skill-leaderboard`, `fork-contributor-leaderboard`, `fork-skill-digest`, `skill-update-check`, `cost-report`, `rss-feed`, `update-gallery`, `onboard` |
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`
 
@@ -275,6 +277,7 @@ CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 aeon.yml                 ← skill schedules, chains, reactive triggers, and enabled flags
 skills.json              ← machine-readable skill catalog (92 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
+./onboard                ← validate the fork's setup (secrets, workflows, channels) — see Quick start
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
 ./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
 ./add-skill              ← import skills from GitHub repos (with security scanning)

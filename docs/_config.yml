@@ -19,6 +19,7 @@ header_pages:
   - activity.md
   - memory.md
   - skills.md
+  - status.md
 
 # Permalinks
 permalink: /articles/:year/:month/:day/:title/
