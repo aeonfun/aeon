@@ -1,0 +1,114 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Heartbeat self-failure"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "main_content"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Self-failure detected",
+        "message": "Previous run (2026-04-25 12:48 UTC) failed in 22s",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "main_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "error_section",
+        "sep2",
+        "bootstrap_section",
+        "sep3",
+        "status_badge"
+      ]
+    },
+    "error_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "error_heading",
+        "error_detail"
+      ]
+    },
+    "error_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Error Details",
+        "level": "h4"
+      }
+    },
+    "error_detail": {
+      "type": "Text",
+      "props": {
+        "text": "last_error in cron-state.json shows truncated JSON metadata, suggesting state-update parser captured Claude Code session output.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "bootstrap_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bootstrap_heading",
+        "bootstrap_detail"
+      ]
+    },
+    "bootstrap_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bootstrap State",
+        "level": "h4"
+      }
+    },
+    "bootstrap_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Only heartbeat has run; 94 other enabled skills have no entries yet.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED",
+        "variant": "destructive"
+      }
+    }
+  }
+}

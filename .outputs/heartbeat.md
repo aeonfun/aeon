@@ -1,0 +1,1 @@
+🔴 Heartbeat self-failure: previous run (2026-04-25 12:48 UTC) failed in 22s — last_error in cron-state.json shows truncated JSON metadata, suggesting state-update parser captured Claude Code session output. Bootstrap state: only heartbeat has run; 94 other enabled skills have no entries yet. Status: DEGRADED.
