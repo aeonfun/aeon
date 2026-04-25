@@ -1,14 +1,11 @@
 HEARTBEAT_OK · STATUS_PAGE=OK
 
 ## Summary
-Ran heartbeat checks — all priority tiers clean:
-- **P0**: heartbeat 9/9 successes, last_success ~12h ago (within self-check window). No failed/stuck/degraded skills.
-- **P1**: 0 open PRs; issues disabled on repo.
-- **P2**: No flagged memory items.
-- **P3**: `github-trending` was just enabled today in commit 86ee193 (08:25 UTC); its first scheduled run is at 09:00 UTC, so the missing cron-state entry is expected — not flagged.
-
-**Files modified:**
-- `docs/status.md` — regenerated with current fleet health (🟢 OK, 2 enabled skills, next run github-trending 09:00 UTC)
-- `memory/logs/2026-04-25.md` — appended heartbeat log entry
-
-**No notification sent** (nothing actionable). Next heartbeat: 14:00 UTC.
+- **P0 (skills):** heartbeat 10/10 ✅, github-trending 1/1 ✅ — no failed/stuck/degraded skills, no chronic failures, self-check fresh (last success ~6h ago).
+- **P1 (PRs/issues):** 0 open PRs; repo issues disabled.
+- **P2 (memory):** no flagged follow-ups.
+- **P3 (missing skills):** both enabled skills (heartbeat, github-trending) present in `memory/cron-state.json` with current entries.
+- **Files modified:**
+  - `docs/status.md` — regenerated, Overall 🟢 OK, next run heartbeat at 20:00 UTC.
+  - `memory/logs/2026-04-25.md` — appended 14:xx heartbeat run entry.
+- **Notification:** none sent (nothing needs attention).
