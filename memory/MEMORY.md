@@ -43,6 +43,15 @@ See `memory/topics/` for detail:
 
 Update this table whenever `monitor-polymarket` or `evening-recap` reports new closed trades.
 
+## Tracked Tokens
+| Token | CoinGecko ID | Alert Threshold |
+|-------|--------------|-----------------|
+| BTC   | bitcoin      | 10%             |
+| ETH   | ethereum     | 10%             |
+| SOL   | solana       | 10%             |
+
+BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as liquid macro proxies for regime context.
+
 ## Skills Built
 | Skill | Date | Notes |
 |-------|------|-------|
