@@ -1,0 +1,322 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-04-25)"
+      },
+      "children": [
+        "text-header",
+        "text-note",
+        "separator-1",
+        "heading-perps-launch",
+        "tweet-1-stack",
+        "tweet-2-stack",
+        "separator-2",
+        "heading-perps-analysis",
+        "tweet-3-stack",
+        "tweet-4-stack",
+        "tweet-5-stack",
+        "separator-3",
+        "heading-insider",
+        "tweet-6-stack",
+        "tweet-7-stack",
+        "separator-4",
+        "heading-token",
+        "tweet-8-stack"
+      ]
+    },
+    "text-header": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket shipped perps Apr 21, beat Kalshi's Apr 27 \"Timeless\" launch; Apr 23 DOJ filed the first prediction-market insider-trading case (sgt won $409K betting on the Maduro raid he planned). Both venues now leaning hard on compliance.",
+        "variant": "body"
+      }
+    },
+    "text-note": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch fallback — engagement counts unavailable, ranked by signal not likes.",
+        "variant": "caption"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-perps-launch": {
+      "type": "Heading",
+      "props": {
+        "text": "perps-launch-news",
+        "level": "h3"
+      }
+    },
+    "tweet-1-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-1-card",
+        "link-1"
+      ]
+    },
+    "tweet-1-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "handle": "Polymarket",
+        "text": "Official launch: \"We price the future. Now you can lever it.\" 10x leverage on BTC, NVDA, gold; waitlist only.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-1": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2046653304810156283"
+      }
+    },
+    "tweet-2-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-2-card",
+        "link-2"
+      ]
+    },
+    "tweet-2-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "DustinGouker",
+        "handle": "DustinGouker",
+        "text": "RT of Emily Nicolle: Kalshi's \"Timeless\" perps slipped from Monday to \"coming weeks\" — first public signal Kalshi missed its window.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-2": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/DustinGouker/status/2046675365930942475"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-perps-analysis": {
+      "type": "Heading",
+      "props": {
+        "text": "perps-analysis",
+        "level": "h3"
+      }
+    },
+    "tweet-3-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-3-card",
+        "link-3"
+      ]
+    },
+    "tweet-3-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "cryptounfolded",
+        "handle": "cryptounfolded",
+        "text": "Frames perps as continuous funded positions that should tighten event probabilities and pull sophisticated capital. Directly load-bearing for the Revenant thesis on binary calibration.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-3": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/cryptounfolded/status/2046654048632291808"
+      }
+    },
+    "tweet-4-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-4-card",
+        "link-4"
+      ]
+    },
+    "tweet-4-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "PANONYGroup",
+        "handle": "PANONYGroup",
+        "text": "Comparative read on Polymarket vs Kalshi moving from event contracts to derivatives; useful framing for LP narrative.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-4": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PANONYGroup/status/2046887620157079674"
+      }
+    },
+    "tweet-5-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-5-card",
+        "link-5"
+      ]
+    },
+    "tweet-5-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "PeanutTrade",
+        "handle": "PeanutTrade",
+        "text": "Argues both venues are converging on Coinbase/Robinhood territory and event-only platforms get squeezed.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-5": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PeanutTrade/status/2047215103284523374"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-insider": {
+      "type": "Heading",
+      "props": {
+        "text": "insider-trading-fallout",
+        "level": "h3"
+      }
+    },
+    "tweet-6-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-6-card",
+        "link-6"
+      ]
+    },
+    "tweet-6-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "shayne_coplan",
+        "handle": "shayne_coplan",
+        "text": "\"We flagged this, referred it, cooperated throughout.\" Onchain markets make compliance more effective — every trade public, permanent, auditable. The regulator-meeting line.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-6": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/shayne_coplan/status/2047712706342326496"
+      }
+    },
+    "tweet-7-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-7-card",
+        "link-7"
+      ]
+    },
+    "tweet-7-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Kalshi",
+        "handle": "Kalshi",
+        "text": "\"We know what it looks like.. but Kalshi doesn't set the odds.\" Distancing — Kalshi separately confirmed it blocked the Van Dyke account.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-7": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Kalshi/status/2046985917810786736"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-token": {
+      "type": "Heading",
+      "props": {
+        "text": "token-speculation",
+        "level": "h3"
+      }
+    },
+    "tweet-8-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-8-card",
+        "link-8"
+      ]
+    },
+    "tweet-8-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "degenbrody",
+        "handle": "degenbrody",
+        "text": "Gate.io pre-market perps: Kalshi $20.5B, Polymarket $14.35B implied valuation. Treat as positioning sentiment ahead of any token event, not price.",
+        "likes": 0,
+        "retweets": 0
+      }
+    },
+    "link-8": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/degenbrody/status/2043812357437088112"
+      }
+    }
+  }
+}
