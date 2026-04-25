@@ -1,0 +1,7 @@
+*Paper Pick (PhD-prep) — 2026-04-25*
+
+"Scaling Open-Ended Reasoning to Predict the Future" — Chandak, Goel, Prabhu, Hardt, Geiping (Dec 31 2025) · ↑20
+
+OpenForecaster 8B trained via RL on synthesized forecasting questions matches frontier proprietary models on accuracy AND calibration — and the calibration gain transfers across benchmarks. Direct grounding for a Stanford PhD pitch on prediction-market calibration; Hardt/Geiping authorship is committee-legible.
+
+[Read](https://arxiv.org/abs/2512.25070) | [PDF](https://arxiv.org/pdf/2512.25070)
