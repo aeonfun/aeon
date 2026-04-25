@@ -1,0 +1,178 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health"
+      },
+      "children": [
+        "date-header",
+        "sep1",
+        "warning-section",
+        "sep2",
+        "nodata-section",
+        "sep3",
+        "healthy-stat",
+        "sep4",
+        "issues-section"
+      ]
+    },
+    "date-header": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-04-25 — WARNING(1)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "warning-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "warning-heading",
+        "heartbeat-alert",
+        "heartbeat-progress"
+      ]
+    },
+    "warning-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "WARNING",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "heartbeat-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "heartbeat",
+        "message": "67% success (3 runs, 1 failure recovered) — INVESTIGATE",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "heartbeat-progress": {
+      "type": "Progress",
+      "props": {
+        "value": 67,
+        "max": 100,
+        "label": "Success rate"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "nodata-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "nodata-heading",
+        "nodata-list"
+      ]
+    },
+    "nodata-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NO DATA (13)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "nodata-list": {
+      "type": "Text",
+      "props": {
+        "text": "morning-brief, rss-digest, hacker-news-digest, paper-digest, reddit-digest, +8 more — daily skills with no cron-state entry — DISPATCH-SKILL",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "healthy-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "HEALTHY",
+        "value": "46"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "issues-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues-stats",
+        "note-text"
+      ]
+    },
+    "issues-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "open-issues",
+        "resolved-issues"
+      ]
+    },
+    "open-issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Open issues",
+        "value": "2"
+      },
+      "children": []
+    },
+    "resolved-issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved this run",
+        "value": "0"
+      },
+      "children": []
+    },
+    "note-text": {
+      "type": "Text",
+      "props": {
+        "text": "skill-runs unavailable (sandbox); cron-state only. ISS-001/ISS-002 still open — sandbox-limit, repair skill owns close.",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

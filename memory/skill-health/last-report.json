@@ -1,0 +1,31 @@
+{
+  "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "last_notified_at": "2026-04-25T18:33:47Z",
+  "last_run_at": "2026-04-25T18:33:47Z",
+  "classification": {
+    "critical": [],
+    "degraded": [],
+    "flapping": [],
+    "warning": ["heartbeat"],
+    "healthy_count": 46,
+    "no_data": [
+      "morning-brief",
+      "rss-digest",
+      "hacker-news-digest",
+      "paper-digest",
+      "reddit-digest",
+      "telegram-digest",
+      "issue-triage",
+      "pr-review",
+      "github-monitor",
+      "github-issues",
+      "github-trending",
+      "github-releases",
+      "syndicate-article"
+    ]
+  },
+  "notes": [
+    "SKILL_HEALTH_PARTIAL — skill-runs unavailable (sandbox blocked); used cron-state only.",
+    "ISS-001 (vuln-scanner) and ISS-002 (vibecoding-digest) remain open; cron-state shows skills as success because they correctly emit error notifications (workflow exits clean). detected_by != skill-health, so not auto-resolving — repair skills own closure."
+  ]
+}
