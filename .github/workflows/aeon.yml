@@ -503,7 +503,7 @@ jobs:
           SKILL="${{ steps.skill.outputs.name }}"
 
           # Skip analysis for meta skills (they don't produce scorable output)
-          case "$SKILL" in heartbeat|skill-health|reflect|memory-flush|self-review|cost-report) echo "Skipping analysis for meta skill"; exit 0;; esac
+          case "$SKILL" in heartbeat|skill-health|skill-analytics|reflect|memory-flush|self-review|cost-report) echo "Skipping analysis for meta skill"; exit 0;; esac
 
           # Route through gateway if configured
           if [ "${{ steps.run.outputs.GATEWAY }}" = "bankr" ] && [ -n "${BANKR_LLM_KEY:-}" ]; then
