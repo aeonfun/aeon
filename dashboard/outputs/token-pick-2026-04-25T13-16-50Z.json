@@ -1,0 +1,281 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-04-25"
+      },
+      "children": [
+        "header-stack",
+        "separator-1",
+        "price-section",
+        "separator-2",
+        "breakdown-section",
+        "separator-3",
+        "catalyst-section",
+        "separator-4",
+        "risk-section",
+        "separator-5",
+        "comparison-section",
+        "separator-6",
+        "sources-section"
+      ]
+    },
+    "header-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-name",
+        "signal-badge",
+        "score-badge"
+      ]
+    },
+    "token-name": {
+      "type": "Heading",
+      "props": {
+        "text": "APE",
+        "level": "h2"
+      }
+    },
+    "signal-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH signal",
+        "variant": "default"
+      }
+    },
+    "score-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "10/10",
+        "variant": "default"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "price-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price-stat",
+        "mcap-stat",
+        "vol-stat",
+        "vol-mcap-ratio-stat"
+      ]
+    },
+    "price-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.162",
+        "delta": "+39.6% 24h / +51.1% 7d",
+        "trend": "up"
+      }
+    },
+    "mcap-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$161M"
+      }
+    },
+    "vol-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$1098M"
+      }
+    },
+    "vol-mcap-ratio-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/Mcap Ratio",
+        "value": "6.84"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "breakdown-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "breakdown-heading",
+        "breakdown-text"
+      ]
+    },
+    "breakdown-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Score Breakdown",
+        "level": "h3"
+      }
+    },
+    "breakdown-text": {
+      "type": "Text",
+      "props": {
+        "text": "[24h+, 7d+, both>5%, trending+2, vol/mcap6.84+3, RS+2] = 10/10",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "Yuga Labs named Michael Figge CEO on April 24, BAYC's 5th anniversary; with ~90% of APE supply now circulating, the multi-year unlock overhang is off.",
+        "variant": "body"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk-section": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "vol/mcap of 6.84x means almost the full cap is changing hands daily — and a named $1M whale running 5x long on Hyperliquid means a single liquidation can unwind the move fast.",
+        "type": "warning"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "comparison-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comparison-heading",
+        "comparison-text"
+      ]
+    },
+    "comparison-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vs Recent Picks",
+        "level": "h3"
+      }
+    },
+    "comparison-text": {
+      "type": "Text",
+      "props": {
+        "text": "First time.",
+        "variant": "body"
+      }
+    },
+    "separator-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources-heading",
+        "sources-badges",
+        "disclaimer-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "sources-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "cg-badge",
+        "dex-badge",
+        "poly-badge"
+      ]
+    },
+    "cg-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "cg: OK",
+        "variant": "secondary"
+      }
+    },
+    "dex-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "dex: OK",
+        "variant": "secondary"
+      }
+    },
+    "poly-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "poly: OK",
+        "variant": "secondary"
+      }
+    },
+    "disclaimer-text": {
+      "type": "Text",
+      "props": {
+        "text": "Not financial advice — pattern-matching only",
+        "variant": "muted"
+      }
+    }
+  }
+}
