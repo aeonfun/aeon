@@ -1,0 +1,124 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets",
+        "description": "Configuration Error"
+      },
+      "children": [
+        "alert-error",
+        "sep-1",
+        "stack-resolution",
+        "sep-2",
+        "stack-fix"
+      ]
+    },
+    "alert-error": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured",
+        "type": "error"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-resolution": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-resolution",
+        "text-res-1",
+        "text-res-2",
+        "text-res-3"
+      ]
+    },
+    "heading-resolution": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution Order",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-res-1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE env (unset)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-res-2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity (no @handle present)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-res-3": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml var (skill takes time-window only)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-fix",
+        "text-fix-1",
+        "text-fix-2"
+      ]
+    },
+    "heading-fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-fix-1": {
+      "type": "Text",
+      "props": {
+        "text": "Add X_HANDLE to workflow env",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-fix-2": {
+      "type": "Text",
+      "props": {
+        "text": "Or add @handle to soul/SOUL.md Identity",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}

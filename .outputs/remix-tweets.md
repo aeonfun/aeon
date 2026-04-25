@@ -1,0 +1,1 @@
+REMIX_TWEETS_ERROR — no handle configured. Resolve order: $X_HANDLE env (unset), soul/SOUL.md Identity (no @handle present), aeon.yml var (skill takes time-window only). Fix: add X_HANDLE to workflow env or @handle to soul/SOUL.md Identity.
