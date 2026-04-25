@@ -1,0 +1,597 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending",
+        "description": "2026-04-25"
+      },
+      "children": [
+        "top_pick_section",
+        "sep1",
+        "ai_ml_section",
+        "sep2",
+        "devtools_section",
+        "sep3",
+        "infra_section",
+        "sep4",
+        "web_apps_section",
+        "sep5",
+        "sources_section"
+      ]
+    },
+    "top_pick_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_pick_label",
+        "top_pick_item"
+      ]
+    },
+    "top_pick_label": {
+      "type": "Text",
+      "props": {
+        "text": "Top pick",
+        "variant": "lead"
+      }
+    },
+    "top_pick_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top_pick_link",
+        "top_pick_desc"
+      ]
+    },
+    "top_pick_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "huggingface/ml-intern",
+        "href": "https://github.com/huggingface/ml-intern"
+      }
+    },
+    "top_pick_desc": {
+      "type": "Text",
+      "props": {
+        "text": "HuggingFace just open-sourced an autonomous ML engineer that reads papers, trains models, and ships them — the agents-for-research thesis getting real."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "ai_ml_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai_ml_title",
+        "aiml_item1",
+        "aiml_item2",
+        "aiml_item3"
+      ]
+    },
+    "ai_ml_title": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      }
+    },
+    "aiml_item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml1_link",
+        "aiml1_meta",
+        "aiml1_desc"
+      ]
+    },
+    "aiml1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "huggingface/ml-intern",
+        "href": "https://github.com/huggingface/ml-intern"
+      }
+    },
+    "aiml1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml1_stars",
+        "aiml1_lang",
+        "aiml1_status"
+      ]
+    },
+    "aiml1_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 2,985 today (5.8k total)",
+        "variant": "caption"
+      }
+    },
+    "aiml1_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python"
+      }
+    },
+    "aiml1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "aiml1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "HF dropped an end-to-end ML research agent — not a wrapper, the actual training/eval loop in one repo."
+      }
+    },
+    "aiml_item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml2_link",
+        "aiml2_meta",
+        "aiml2_desc"
+      ]
+    },
+    "aiml2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "zilliztech/claude-context",
+        "href": "https://github.com/zilliztech/claude-context"
+      }
+    },
+    "aiml2_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml2_stars",
+        "aiml2_lang",
+        "aiml2_status"
+      ]
+    },
+    "aiml2_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 706 today (9.2k total)",
+        "variant": "caption"
+      }
+    },
+    "aiml2_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript"
+      }
+    },
+    "aiml2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "aiml2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Indexes your whole codebase and serves it to Claude Code over MCP — practical fix for context-window starvation."
+      }
+    },
+    "aiml_item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml3_link",
+        "aiml3_meta",
+        "aiml3_desc"
+      ]
+    },
+    "aiml3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "deepseek-ai/DeepEP",
+        "href": "https://github.com/deepseek-ai/DeepEP"
+      }
+    },
+    "aiml3_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml3_stars",
+        "aiml3_lang",
+        "aiml3_status"
+      ]
+    },
+    "aiml3_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 52 today (9.4k total)",
+        "variant": "caption"
+      }
+    },
+    "aiml3_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Cuda"
+      }
+    },
+    "aiml3_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "aiml3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "DeepSeek's expert-parallel collective-comms lib used to train V3/R1 — finally runnable outside their cluster."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "devtools_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "devtools_title",
+        "devtools_item1",
+        "devtools_item2"
+      ]
+    },
+    "devtools_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      }
+    },
+    "devtools_item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "devtools1_link",
+        "devtools1_meta",
+        "devtools1_desc"
+      ]
+    },
+    "devtools1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "microsoft/typescript-go",
+        "href": "https://github.com/microsoft/typescript-go"
+      }
+    },
+    "devtools1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "devtools1_stars",
+        "devtools1_lang",
+        "devtools1_status"
+      ]
+    },
+    "devtools1_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 38 today (25k total)",
+        "variant": "caption"
+      }
+    },
+    "devtools1_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Go"
+      }
+    },
+    "devtools1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "devtools1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Microsoft's native Go port of tsc — early runs benchmark roughly 10x faster than the TS-on-Node compiler."
+      }
+    },
+    "devtools_item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "devtools2_link",
+        "devtools2_meta",
+        "devtools2_desc"
+      ]
+    },
+    "devtools2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "google/osv-scanner",
+        "href": "https://github.com/google/osv-scanner"
+      }
+    },
+    "devtools2_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "devtools2_stars",
+        "devtools2_lang",
+        "devtools2_status"
+      ]
+    },
+    "devtools2_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 141 today (9.7k total)",
+        "variant": "caption"
+      }
+    },
+    "devtools2_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Go"
+      }
+    },
+    "devtools2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "outline"
+      }
+    },
+    "devtools2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Google CLI matches your lockfile against osv.dev's CVE feed — eats a chunk of paid SCA tooling."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "infra_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "infra_title",
+        "infra_item1"
+      ]
+    },
+    "infra_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Infra",
+        "level": "h3"
+      }
+    },
+    "infra_item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "infra1_link",
+        "infra1_meta",
+        "infra1_desc"
+      ]
+    },
+    "infra1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "open-metadata/OpenMetadata",
+        "href": "https://github.com/open-metadata/OpenMetadata"
+      }
+    },
+    "infra1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "infra1_stars",
+        "infra1_lang",
+        "infra1_status"
+      ]
+    },
+    "infra1_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 530 today (13k total)",
+        "variant": "caption"
+      }
+    },
+    "infra1_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript"
+      }
+    },
+    "infra1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "outline"
+      }
+    },
+    "infra1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Open Apache-2 alternative to Atlan/Collibra — catalog, lineage, and governance in one stack."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "web_apps_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "web_apps_title",
+        "web_apps_item1"
+      ]
+    },
+    "web_apps_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Web/Apps",
+        "level": "h3"
+      }
+    },
+    "web_apps_item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "web_apps1_link",
+        "web_apps1_meta",
+        "web_apps1_desc"
+      ]
+    },
+    "web_apps1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "dani-garcia/vaultwarden",
+        "href": "https://github.com/dani-garcia/vaultwarden"
+      }
+    },
+    "web_apps1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "web_apps1_stars",
+        "web_apps1_lang",
+        "web_apps1_status"
+      ]
+    },
+    "web_apps1_stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 268 today (59k total)",
+        "variant": "caption"
+      }
+    },
+    "web_apps1_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Rust"
+      }
+    },
+    "web_apps1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "outline"
+      }
+    },
+    "web_apps1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rust reimplementation of the Bitwarden server — self-hostable on a Pi instead of running the .NET original."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_label",
+        "sources_text"
+      ]
+    },
+    "sources_label": {
+      "type": "Text",
+      "props": {
+        "text": "sources:",
+        "variant": "caption"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "trending=ok · gh_api=ok · kept 7/12",
+        "variant": "muted"
+      }
+    }
+  }
+}
