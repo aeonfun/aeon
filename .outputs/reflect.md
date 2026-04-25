@@ -1,0 +1,1 @@
+Memory consolidated — 2026-04-25. Created memory/topics/polymarket.md (settlement-basis, LOOP paper, decay numbers, builder code, +76% w/w fees) and memory/topics/aeon-ops.md (sandbox limits, notify hook-block bug, prefetch gaps, operator config-gap action list). MEMORY.md refreshed: 9 articles, 3 digests, lessons updated. 0 pruned (bootstrap day).

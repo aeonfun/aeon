@@ -1,0 +1,256 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "reflect",
+        "description": "Memory consolidated — 2026-04-25"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "created_section",
+        "sep1",
+        "refresh_section"
+      ]
+    },
+    "created_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "created_heading",
+        "polymarket_file",
+        "aeon_ops_file"
+      ]
+    },
+    "created_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Created Files",
+        "level": "h3"
+      }
+    },
+    "polymarket_file": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "poly_title",
+        "poly_tags"
+      ]
+    },
+    "poly_title": {
+      "type": "StoryLink",
+      "props": {
+        "title": "memory/topics/polymarket.md",
+        "href": "memory/topics/polymarket.md"
+      }
+    },
+    "poly_tags": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "poly_tag1",
+        "poly_tag2",
+        "poly_tag3",
+        "poly_tag4",
+        "poly_tag5"
+      ]
+    },
+    "poly_tag1": {
+      "type": "Badge",
+      "props": {
+        "text": "settlement-basis",
+        "variant": "outline"
+      }
+    },
+    "poly_tag2": {
+      "type": "Badge",
+      "props": {
+        "text": "LOOP paper",
+        "variant": "outline"
+      }
+    },
+    "poly_tag3": {
+      "type": "Badge",
+      "props": {
+        "text": "decay numbers",
+        "variant": "outline"
+      }
+    },
+    "poly_tag4": {
+      "type": "Badge",
+      "props": {
+        "text": "builder code",
+        "variant": "outline"
+      }
+    },
+    "poly_tag5": {
+      "type": "Badge",
+      "props": {
+        "text": "+76% w/w fees",
+        "variant": "outline"
+      }
+    },
+    "aeon_ops_file": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aeon_title",
+        "aeon_tags"
+      ]
+    },
+    "aeon_title": {
+      "type": "StoryLink",
+      "props": {
+        "title": "memory/topics/aeon-ops.md",
+        "href": "memory/topics/aeon-ops.md"
+      }
+    },
+    "aeon_tags": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "aeon_tag1",
+        "aeon_tag2",
+        "aeon_tag3",
+        "aeon_tag4"
+      ]
+    },
+    "aeon_tag1": {
+      "type": "Badge",
+      "props": {
+        "text": "sandbox limits",
+        "variant": "outline"
+      }
+    },
+    "aeon_tag2": {
+      "type": "Badge",
+      "props": {
+        "text": "notify hook-block bug",
+        "variant": "outline"
+      }
+    },
+    "aeon_tag3": {
+      "type": "Badge",
+      "props": {
+        "text": "prefetch gaps",
+        "variant": "outline"
+      }
+    },
+    "aeon_tag4": {
+      "type": "Badge",
+      "props": {
+        "text": "operator config-gap action list",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "refresh_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "refresh_heading",
+        "stats_grid",
+        "refresh_notes"
+      ]
+    },
+    "refresh_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "MEMORY.md Refreshed",
+        "level": "h3"
+      }
+    },
+    "stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_articles",
+        "stat_digests",
+        "stat_pruned"
+      ]
+    },
+    "stat_articles": {
+      "type": "Stat",
+      "props": {
+        "label": "Articles",
+        "value": "9"
+      }
+    },
+    "stat_digests": {
+      "type": "Stat",
+      "props": {
+        "label": "Digests",
+        "value": "3"
+      }
+    },
+    "stat_pruned": {
+      "type": "Stat",
+      "props": {
+        "label": "Pruned",
+        "value": "0"
+      }
+    },
+    "refresh_notes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "lessons_text",
+        "bootstrap_badge"
+      ]
+    },
+    "lessons_text": {
+      "type": "Text",
+      "props": {
+        "text": "Lessons updated",
+        "variant": "caption"
+      }
+    },
+    "bootstrap_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "bootstrap day",
+        "variant": "secondary"
+      }
+    }
+  }
+}
