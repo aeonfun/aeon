@@ -469,5 +469,29 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "goal-tracker": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
+  },
+  "skill-health": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
+  },
+  "self-improve": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
+  },
+  "reflect": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
+  },
+  "action-converter": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
+  },
+  "startup-idea": {
+    "last_dispatch": "2026-04-25T18:30:50Z",
+    "last_status": "dispatched"
   }
 }
