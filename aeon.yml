@@ -6,13 +6,13 @@
 
 skills:
   # --- Morning aggregation (7 AM UTC) ---
-  morning-brief: { enabled: false, schedule: "0 7 * * *" }
-  daily-routine: { enabled: false, schedule: "0 7 * * *" }
-  rss-digest: { enabled: false, schedule: "0 7 * * *" }
-  hacker-news-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
-  paper-digest: { enabled: false, schedule: "0 7 * * *" }
+  morning-brief: { enabled: true, schedule: "0 7 * * *" }
+  daily-routine: { enabled: true, schedule: "0 7 * * *" }
+  rss-digest: { enabled: true, schedule: "0 7 * * *" }
+  hacker-news-digest: { enabled: true, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
+  paper-digest: { enabled: true, schedule: "0 7 * * *" }
 
-  reddit-digest: { enabled: false, schedule: "0 7 * * *" }
+  reddit-digest: { enabled: true, schedule: "0 7 * * *" }
   telegram-digest: { enabled: true, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # digest from tracked Telegram channels
 
   # --- Mid-morning (9 AM UTC) ---
@@ -22,7 +22,7 @@ skills:
   github-monitor: { enabled: true, schedule: "0 9 * * *" }
   github-issues: { enabled: true, schedule: "0 9 * * *" }
   github-trending: { enabled: true, schedule: "0 9 * * *" }
-  github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
+  github-releases: { enabled: true, schedule: "30 9 * * *" } # track new releases from watched repos
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: true, schedule: "0 12 * * *" }
@@ -44,27 +44,27 @@ skills:
   unlock-monitor: { enabled: true, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
 
   # --- Afternoon (2 PM UTC) ---
-  article: { enabled: false, schedule: "0 14 * * *" }
-  technical-explainer: { enabled: false, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
-  digest: { enabled: false, schedule: "0 14 * * *" }
-  research-brief: { enabled: false, schedule: "0 14 * * *" }
+  article: { enabled: true, schedule: "0 14 * * *" }
+  technical-explainer: { enabled: true, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
+  digest: { enabled: true, schedule: "0 14 * * *" }
+  research-brief: { enabled: true, schedule: "0 14 * * *" }
   deep-research: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
-  last30: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
-  paper-pick: { enabled: false, schedule: "0 14 * * *" }
-  search-skill: { enabled: false, schedule: "0 14 * * *" }
+  last30: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
+  paper-pick: { enabled: true, schedule: "0 14 * * *" }
+  search-skill: { enabled: true, schedule: "0 14 * * *" }
 
   security-digest: { enabled: true, schedule: "0 14 * * *" }
   idea-capture: { enabled: true, schedule: "0 14 * * *" }
-  deal-flow: { enabled: false, schedule: "0 14 * * 1" } # weekly funding round tracker
+  deal-flow: { enabled: true, schedule: "0 14 * * 1" } # weekly funding round tracker
   reg-monitor: { enabled: true, schedule: "0 14 * * 3" } # regulatory developments tracker
 
   # --- Repo intelligence (3 PM UTC) ---
   push-recap: { enabled: true, schedule: "0 15 * * *" }
-  repo-article: { enabled: false, schedule: "0 15 * * *" }
+  repo-article: { enabled: true, schedule: "0 15 * * *" }
   repo-actions: { enabled: true, schedule: "0 15 * * *" }
-  repo-pulse: { enabled: false, schedule: "0 15 * * *" }
+  repo-pulse: { enabled: true, schedule: "0 15 * * *" }
   star-milestone: { enabled: true, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
-  project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
+  project-lens: { enabled: true, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
   repo-scanner:
     {
       enabled: true,
@@ -79,33 +79,33 @@ skills:
   changelog: { enabled: true, schedule: "0 16 * * *" }
   external-feature: { enabled: true, schedule: "30 16 * * *", var: "" } # proactively enhance watched repos — set var to owner/repo or owner/repo#N
   vuln-scanner: { enabled: true, schedule: "0 16 * * 6", var: "" } # Saturday — audit repos for security vulns, PR fixes
-  deploy-prototype: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
+  deploy-prototype: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
   autoresearch: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
   create-skill: { enabled: true, schedule: "workflow_dispatch", var: "" } # one-shot skill creator — set var to a description prompt
 
   # --- X / social (5 PM UTC) ---
   fetch-tweets: { enabled: true, schedule: "0 17 * * *" }
   refresh-x: { enabled: true, schedule: "0 17 * * *" }
-  list-digest: { enabled: false, schedule: "0 17 * * *" }
-  write-tweet: { enabled: false, schedule: "0 17 * * *" }
-  reply-maker: { enabled: false, schedule: "0 17 * * *" }
-  remix-tweets: { enabled: false, schedule: "30 17 * * *" } # 10 rephrased versions of random past tweets
+  list-digest: { enabled: true, schedule: "0 17 * * *" }
+  write-tweet: { enabled: true, schedule: "0 17 * * *" }
+  reply-maker: { enabled: true, schedule: "0 17 * * *" }
+  remix-tweets: { enabled: true, schedule: "30 17 * * *" } # 10 rephrased versions of random past tweets
   tweet-roundup: { enabled: true, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
   agent-buzz: { enabled: true, schedule: "30 17 * * *" } # top AI agent tweets by influence
   farcaster-digest: { enabled: true, schedule: "0 17 * * *" } # trending Farcaster casts
-  vibecoding-digest: { enabled: false, schedule: "30 17 * * *" } # r/vibecoding trending posts
-  channel-recap: { enabled: false, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
+  vibecoding-digest: { enabled: true, schedule: "30 17 * * *" } # r/vibecoding trending posts
+  channel-recap: { enabled: true, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
   # --- Feed generation (5:30 PM UTC, after content skills) ---
-  rss-feed: { enabled: false, schedule: "30 17 * * *" }
+  rss-feed: { enabled: true, schedule: "30 17 * * *" }
 
   # --- Gallery update (Sunday 6 PM UTC, after content week) ---
-  update-gallery: { enabled: false, schedule: "0 18 * * 0" }
+  update-gallery: { enabled: true, schedule: "0 18 * * 0" }
 
   # --- Content distribution (runs 30 min after article-generating skills) ---
   syndicate-article:
     {
-      enabled: false,
+      enabled: true,
       schedule: "30 15 * * *",
       model: "claude-sonnet-4-6",
       var: ""
@@ -116,13 +116,13 @@ skills:
   skill-health: { enabled: true, schedule: "0 18 * * *" }
 
   self-improve: { enabled: true, schedule: "0 18 1/2 * *" } # every other day — improve agent skills/prompts/config
-  reflect: { enabled: false, schedule: "0 18 * * *" }
+  reflect: { enabled: true, schedule: "0 18 * * *" }
 
   action-converter: { enabled: true, schedule: "0 18 * * *" }
   startup-idea: { enabled: true, schedule: "0 18 * * *" }
-  tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
-  skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
-  evening-recap: { enabled: false, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
+  tool-builder: { enabled: true, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
+  skill-repair: { enabled: true, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
+  evening-recap: { enabled: true, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
   vercel-projects:
     {
       enabled: true,
@@ -136,16 +136,16 @@ skills:
 
   # --- Weekly (Monday only) ---
   fork-fleet: { enabled: true, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
-  skill-evals: { enabled: false, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
+  skill-evals: { enabled: true, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
   skill-update-check: { enabled: true, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
-  spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
+  spawn-instance: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: true, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
-  weekly-review: { enabled: false, schedule: "0 19 * * 1" }
-  weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
-  skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
-  fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
-  fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
-  workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
+  weekly-review: { enabled: true, schedule: "0 19 * * 1" }
+  weekly-shiplog: { enabled: true, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
+  skill-leaderboard: { enabled: true, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
+  fork-contributor-leaderboard: { enabled: true, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
+  fork-skill-digest: { enabled: true, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
+  workflow-security-audit: { enabled: true, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: true, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
 
   # --- Utilities ---
