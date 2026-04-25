@@ -63,6 +63,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 ## Recent Digests
 | Date | Type | Key Topics |
 |------|------|------------|
+| 2026-04-25 | prediction markets | perps launch (PM Apr 21 / Kalshi Apr 27), first US insider-trading prosecution, Brazil ban |
 
 ## Lessons Learned
 - Digest format: Markdown with clickable links, under 4000 chars
