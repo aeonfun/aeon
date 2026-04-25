@@ -1,0 +1,247 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Vuln Scanner"
+      },
+      "children": [
+        "alert_error",
+        "stack_main"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "ERROR",
+        "message": "All three scanners blocked by sandbox"
+      },
+      "children": []
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "stack_metrics",
+        "section_scanners",
+        "section_blockers",
+        "section_status",
+        "section_issue",
+        "section_fix"
+      ]
+    },
+    "stack_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_findings",
+        "stat_triaged"
+      ]
+    },
+    "stat_findings": {
+      "type": "Stat",
+      "props": {
+        "label": "Confirmed Findings",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat_triaged": {
+      "type": "Stat",
+      "props": {
+        "label": "Candidates Triaged",
+        "value": "0"
+      },
+      "children": []
+    },
+    "section_scanners": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_scanners",
+        "badge_semgrep",
+        "badge_trufflehop",
+        "badge_osv"
+      ]
+    },
+    "heading_scanners": {
+      "type": "Heading",
+      "props": {
+        "text": "Scanners Affected",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "badge_semgrep": {
+      "type": "Badge",
+      "props": {
+        "text": "semgrep",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_trufflehop": {
+      "type": "Badge",
+      "props": {
+        "text": "trufflehop",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_osv": {
+      "type": "Badge",
+      "props": {
+        "text": "osv-scanner",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "section_blockers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_blockers",
+        "text_blocker_1",
+        "text_blocker_2",
+        "text_blocker_3"
+      ]
+    },
+    "heading_blockers": {
+      "type": "Heading",
+      "props": {
+        "text": "Sandbox Blockers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_blocker_1": {
+      "type": "Text",
+      "props": {
+        "text": "pip install denied"
+      },
+      "children": []
+    },
+    "text_blocker_2": {
+      "type": "Text",
+      "props": {
+        "text": "Binary execution denied"
+      },
+      "children": []
+    },
+    "text_blocker_3": {
+      "type": "Text",
+      "props": {
+        "text": "scripts/prefetch-vuln-scanner.sh does not exist"
+      },
+      "children": []
+    },
+    "section_status": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_spec",
+        "text_disclosure"
+      ]
+    },
+    "text_spec": {
+      "type": "Text",
+      "props": {
+        "text": "Per skill spec all-scanners-fail = ERROR"
+      },
+      "children": []
+    },
+    "text_disclosure": {
+      "type": "Text",
+      "props": {
+        "text": "Nothing was forked or disclosed"
+      },
+      "children": []
+    },
+    "section_issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_issue",
+        "text_issue_id",
+        "text_issue_details"
+      ]
+    },
+    "heading_issue": {
+      "type": "Heading",
+      "props": {
+        "text": "Issue Filed",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_issue_id": {
+      "type": "Text",
+      "props": {
+        "text": "memory/issues/ISS-001"
+      },
+      "children": []
+    },
+    "text_issue_details": {
+      "type": "Text",
+      "props": {
+        "text": "Severity: high | Category: sandbox-limitation"
+      },
+      "children": []
+    },
+    "section_fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_fix",
+        "text_fix_approach",
+        "text_fix_consequence"
+      ]
+    },
+    "heading_fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix Required",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_fix_approach": {
+      "type": "Text",
+      "props": {
+        "text": "Create a prefetch script modeled on prefetch-xai.sh"
+      },
+      "children": []
+    },
+    "text_fix_consequence": {
+      "type": "Text",
+      "props": {
+        "text": "Until it lands, every Saturday run will exit with VULN_SCANNER_ERROR"
+      },
+      "children": []
+    }
+  }
+}
