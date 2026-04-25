@@ -1,0 +1,341 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-polymarket — 2026-04-25"
+      },
+      "children": [
+        "section_mexico",
+        "sep1",
+        "section_btc",
+        "sep2",
+        "section_rep",
+        "sep3",
+        "section_dem",
+        "sep4",
+        "section_alerts"
+      ]
+    },
+    "section_mexico": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_mexico",
+        "mexico_data",
+        "mexico_comment"
+      ]
+    },
+    "h_mexico": {
+      "type": "Heading",
+      "props": {
+        "text": "MEXICO WORLD CUP (Revenant first order, market 558945)",
+        "level": "h3"
+      }
+    },
+    "mexico_data": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "mexico_yes",
+        "mexico_vol",
+        "mexico_liq",
+        "mexico_status"
+      ]
+    },
+    "mexico_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.05%",
+        "delta": "0pp",
+        "trend": "neutral"
+      }
+    },
+    "mexico_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$34.3K"
+      }
+    },
+    "mexico_liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$2.26M"
+      }
+    },
+    "mexico_status": {
+      "type": "Badge",
+      "props": {
+        "text": "stable"
+      }
+    },
+    "mexico_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Event leader: France 17%, Spain 16%. Mexico at tournament-range consensus.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_btc",
+        "btc_data",
+        "btc_comment1",
+        "btc_comment2",
+        "btc_related"
+      ]
+    },
+    "h_btc": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC HIT $1M BEFORE GTA VI (market 540844)",
+        "level": "h3"
+      }
+    },
+    "btc_data": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "btc_yes",
+        "btc_vol",
+        "btc_status"
+      ]
+    },
+    "btc_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "49.45%",
+        "delta": "-0.2pp",
+        "trend": "down"
+      }
+    },
+    "btc_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$8.4K"
+      }
+    },
+    "btc_status": {
+      "type": "Badge",
+      "props": {
+        "text": "stable"
+      }
+    },
+    "btc_comment1": {
+      "type": "Text",
+      "props": {
+        "text": "GTA VI confirmed Nov 19 2026, past the Jul 31 deadline. Neither event by deadline = 50/50 resolution. Mechanics bet, not a BTC call.",
+        "variant": "body"
+      }
+    },
+    "btc_comment2": {
+      "type": "Text",
+      "props": {
+        "text": "-0.2pp drift is rational sellers collecting the edge vs 50c.",
+        "variant": "caption"
+      }
+    },
+    "btc_related": {
+      "type": "Text",
+      "props": {
+        "text": "Related: GTA VI before June 2026 — YES 1.05% ($84.9K 24h vol, spiked 1.55% intraday then reverted). NO accumulation as Nov date holds.",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_rep": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_rep",
+        "rep_table",
+        "rep_comment1",
+        "rep_comment2"
+      ]
+    },
+    "h_rep": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 REP NOMINATION (event 31875)",
+        "level": "h3"
+      }
+    },
+    "rep_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "Odds",
+          "Change",
+          "Volume"
+        ],
+        "rows": [
+          [
+            "Vance",
+            "39.3%",
+            "-0.15pp",
+            "$14.5K"
+          ],
+          [
+            "Rubio",
+            "20.25%",
+            "-0.1pp",
+            "$65.2K"
+          ],
+          [
+            "Carlson",
+            "~5.1%",
+            "-",
+            "-"
+          ]
+        ]
+      }
+    },
+    "rep_comment1": {
+      "type": "Text",
+      "props": {
+        "text": "Rubio trading 4x Vance volume despite 19pp gap — watch for narrative shift.",
+        "variant": "body"
+      }
+    },
+    "rep_comment2": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment: \"Trump can't stand watching Vance become his own man\"",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_dem": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_dem",
+        "dem_table",
+        "dem_comment1",
+        "dem_comment2"
+      ]
+    },
+    "h_dem": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 DEM NOMINATION (event 30829)",
+        "level": "h3"
+      }
+    },
+    "dem_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "Odds",
+          "Change",
+          "Volume"
+        ],
+        "rows": [
+          [
+            "Newsom",
+            "26.1%",
+            "-",
+            "-"
+          ],
+          [
+            "AOC",
+            "8.3%",
+            "-",
+            "-"
+          ],
+          [
+            "Ossoff",
+            "5.3%",
+            "+0.1pp",
+            "$462K vol SPIKE"
+          ],
+          [
+            "Booker",
+            "0.95%",
+            "-",
+            "$231K"
+          ],
+          [
+            "Sanders",
+            "0.65%",
+            "-",
+            "$112K"
+          ]
+        ]
+      }
+    },
+    "dem_comment1": {
+      "type": "Text",
+      "props": {
+        "text": "Ossoff catalyst: Viral Mar-a-Lago Mafia speech, 1K+ supporters in Augusta GA. Publicly said zero interest in 2028 — markets moved him up anyway. Kalshi has him at 8%. Two-way narrative trade.",
+        "variant": "body"
+      }
+    },
+    "dem_comment2": {
+      "type": "Text",
+      "props": {
+        "text": "Booker $231K and Sanders $112K trading as narrative chasers.",
+        "variant": "caption"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_alerts": {
+      "type": "Alert",
+      "props": {
+        "title": "Alerts (>5pp)",
+        "message": "NONE — all quiet on price. Ossoff is today's narrative break.",
+        "type": "info"
+      }
+    }
+  }
+}
