@@ -8,5 +8,9 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "github-trending": {
+    "last_dispatch": "2026-04-25T09:32:32Z",
+    "last_status": "dispatched"
   }
 }
