@@ -13,7 +13,7 @@ skills:
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
   reddit-digest: { enabled: false, schedule: "0 7 * * *" }
-  telegram-digest: { enabled: false, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # digest from tracked Telegram channels
+  telegram-digest: { enabled: true, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # digest from tracked Telegram channels
 
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: true, schedule: "0 9 * * *" }
@@ -48,12 +48,12 @@ skills:
   technical-explainer: { enabled: false, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
   digest: { enabled: false, schedule: "0 14 * * *" }
   research-brief: { enabled: false, schedule: "0 14 * * *" }
-  deep-research: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
+  deep-research: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
   last30: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
   paper-pick: { enabled: false, schedule: "0 14 * * *" }
   search-skill: { enabled: false, schedule: "0 14 * * *" }
 
-  security-digest: { enabled: false, schedule: "0 14 * * *" }
+  security-digest: { enabled: true, schedule: "0 14 * * *" }
   idea-capture: { enabled: true, schedule: "0 14 * * *" }
   deal-flow: { enabled: false, schedule: "0 14 * * 1" } # weekly funding round tracker
   reg-monitor: { enabled: true, schedule: "0 14 * * 3" } # regulatory developments tracker
@@ -85,7 +85,7 @@ skills:
 
   # --- X / social (5 PM UTC) ---
   fetch-tweets: { enabled: true, schedule: "0 17 * * *" }
-  refresh-x: { enabled: false, schedule: "0 17 * * *" }
+  refresh-x: { enabled: true, schedule: "0 17 * * *" }
   list-digest: { enabled: false, schedule: "0 17 * * *" }
   write-tweet: { enabled: false, schedule: "0 17 * * *" }
   reply-maker: { enabled: false, schedule: "0 17 * * *" }
@@ -113,7 +113,7 @@ skills:
 
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: true, schedule: "0 18 * * *" }
-  skill-health: { enabled: false, schedule: "0 18 * * *" }
+  skill-health: { enabled: true, schedule: "0 18 * * *" }
 
   self-improve: { enabled: true, schedule: "0 18 1/2 * *" } # every other day — improve agent skills/prompts/config
   reflect: { enabled: false, schedule: "0 18 * * *" }
