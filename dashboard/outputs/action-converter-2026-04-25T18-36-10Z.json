@@ -1,0 +1,531 @@
+{
+  "root": "mainCard",
+  "state": {},
+  "elements": {
+    "mainCard": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter",
+        "description": "5 Actions — 2026-04-25"
+      },
+      "children": [
+        "shapeText",
+        "sep0",
+        "action1Stack",
+        "sep1",
+        "action2Stack",
+        "sep2",
+        "action3Stack",
+        "sep3",
+        "action4Stack",
+        "sep4",
+        "action5Stack",
+        "sep5",
+        "sourcesText"
+      ]
+    },
+    "shapeText": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Publish queued tweet, fix notify hook, push 2 grant filings, unblock 3 prefetch cases.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep0": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "action1Stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1h",
+        "a1sep",
+        "a1whySection",
+        "a1doneSection",
+        "a1loop"
+      ]
+    },
+    "a1h": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Publish tweet draft #4a from .pending-notify/1777139610.md to X (Polymarket × Kalshi convergence + Gebele/Matthes 2601.01706 + 12.3s→2.7s decay numbers).",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "a1sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "a1whySection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a1whyLabel",
+        "a1whyText"
+      ]
+    },
+    "a1whyLabel": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a1whyText": {
+      "type": "Text",
+      "props": {
+        "text": "Operator-grade draft already passed the lint gate today and ties directly to the grant narrative anchor."
+      },
+      "children": []
+    },
+    "a1doneSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a1doneLabel",
+        "a1doneText"
+      ]
+    },
+    "a1doneLabel": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a1doneText": {
+      "type": "Text",
+      "props": {
+        "text": "tweet posted; URL appended to memory/tweet-roundup-seen.txt and noted in memory/topics/grants.md."
+      },
+      "children": []
+    },
+    "a1loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: tweet-pending-4a",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "action2Stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2h",
+        "a2sep",
+        "a2whySection",
+        "a2doneSection",
+        "a2loop"
+      ]
+    },
+    "a2h": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Patch ./notify to accept multi-line $(cat <<EOF…EOF) payloads — kill the \"Unhandled node type: string\" hook block.",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "a2sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "a2whySection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a2whyLabel",
+        "a2whyText"
+      ]
+    },
+    "a2whyLabel": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a2whyText": {
+      "type": "Text",
+      "props": {
+        "text": "5 skills queued .pending-notify/ fallbacks today (polymarket-comments, narrative-tracker, daily-routine, write-tweet, agent-buzz) — recurring drag."
+      },
+      "children": []
+    },
+    "a2doneSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a2doneLabel",
+        "a2doneText"
+      ]
+    },
+    "a2doneLabel": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a2doneText": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened on tomscaria/aeon; smoke test ./notify \"$(cat <<EOF…EOF)\" exits 0 with hash logged in .notify-sent-hashes."
+      },
+      "children": []
+    },
+    "a2loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: notify-hook-bug",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "action3Stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3h",
+        "a3sep",
+        "a3whySection",
+        "a3doneSection",
+        "a3loop"
+      ]
+    },
+    "a3h": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Submit Polymarket Verified-status (KYC) for proxy 0x0a10…52B1 — gates the builder@polymarket.com introduction.",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "a3sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "a3whySection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a3whyLabel",
+        "a3whyText"
+      ]
+    },
+    "a3whyLabel": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a3whyText": {
+      "type": "Text",
+      "props": {
+        "text": "Builders Program is a rolling $2.5M+ pool and Verified is the only thing standing between Revenant attribution and the email path."
+      },
+      "children": []
+    },
+    "a3doneSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a3doneLabel",
+        "a3doneText"
+      ]
+    },
+    "a3doneLabel": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a3doneText": {
+      "type": "Text",
+      "props": {
+        "text": "KYC submitted on Polymarket; confirmation screenshot referenced in memory/topics/grants.md."
+      },
+      "children": []
+    },
+    "a3loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: polymarket-builders",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "action4Stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4h",
+        "a4sep",
+        "a4whySection",
+        "a4doneSection",
+        "a4loop"
+      ]
+    },
+    "a4h": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Submit AWS Activate Research Credits application — Layer 1 of the four-layer playbook (Research → Activate Portfolio → Gen AI Accelerator → Fintech).",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "a4sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "a4whySection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a4whyLabel",
+        "a4whyText"
+      ]
+    },
+    "a4whyLabel": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a4whyText": {
+      "type": "Text",
+      "props": {
+        "text": "Pitch is \"ready\" per memory/topics/grants.md; first layer unblocks the next three. Closes a $25k–$100k credit gap."
+      },
+      "children": []
+    },
+    "a4doneSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a4doneLabel",
+        "a4doneText"
+      ]
+    },
+    "a4doneLabel": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a4doneText": {
+      "type": "Text",
+      "props": {
+        "text": "application submitted; confirmation # appended to memory/topics/grants.md open-table notes."
+      },
+      "children": []
+    },
+    "a4loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: aws-activate",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "action5Stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5h",
+        "a5sep",
+        "a5whySection",
+        "a5doneSection",
+        "a5loop"
+      ]
+    },
+    "a5h": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Add reply-maker, agent-buzz, farcaster-digest cases to scripts/prefetch-xai.sh (model on the existing tweet-roundup block); wire farcaster path to read .neynar-cache/ once NEYNAR_API_KEY lands.",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "a5sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "a5whySection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a5whyLabel",
+        "a5whyText"
+      ]
+    },
+    "a5whyLabel": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a5whyText": {
+      "type": "Text",
+      "props": {
+        "text": "Three skills today fell through to WebSearch/empty fallbacks because of missing prefetch cases; same pattern hit four runs."
+      },
+      "children": []
+    },
+    "a5doneSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a5doneLabel",
+        "a5doneText"
+      ]
+    },
+    "a5doneLabel": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "a5doneText": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened with three new cases; dry run produces .xai-cache/reply-maker.json, .xai-cache/agent-buzz.json, and the farcaster stub."
+      },
+      "children": []
+    },
+    "a5loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: prefetch-xai-cases",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sourcesText": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=81 logs=2 topics=4 prs=0 cron_failing=0 mode=OK",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
