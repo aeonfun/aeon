@@ -1,0 +1,178 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "date_info",
+        "sep1",
+        "narrative_section",
+        "sep2",
+        "tweets_stack",
+        "sep3",
+        "footer_text"
+      ]
+    },
+    "date_info": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-25 • Source: cache:0 websearch:1 failed:2",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "topic_heading",
+        "topic_text"
+      ]
+    },
+    "topic_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI / LLM / agents",
+        "level": "h3"
+      }
+    },
+    "topic_text": {
+      "type": "Text",
+      "props": {
+        "text": "Two frontier launches in 24h: OpenAI's GPT-5.5 (Apr 23) and DeepSeek V4 (Apr 24). Agent-native is the new positioning fight.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweets_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "tweet1_group",
+        "tweet2_group",
+        "tweet3_group"
+      ]
+    },
+    "tweet1_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1_card",
+        "link1"
+      ]
+    },
+    "tweet1_card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "OpenAI",
+        "handle": "OpenAI",
+        "text": "Frames GPT-5.5 as a \"new class of intelligence\" built for agents: tool use, self-checking, end-to-end task completion. Live now in ChatGPT and Codex."
+      }
+    },
+    "link1": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/OpenAI/status/2047376561205325845"
+      }
+    },
+    "tweet2_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2_card",
+        "link2"
+      ]
+    },
+    "tweet2_card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "DeepSeek",
+        "handle": "deepseek_ai",
+        "text": "V4 Preview live and open-sourced. Pro 1.6T/49B-active, Flash 284B/13B-active, both 1M-token context. Pitch is cost-effective long-context, not just frontier intelligence."
+      }
+    },
+    "link2": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/deepseek_ai/status/2047516922263285776"
+      }
+    },
+    "tweet3_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet3_card",
+        "link3"
+      ]
+    },
+    "tweet3_card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Axel bitblaze69",
+        "handle": "Axel_bitblaze69",
+        "text": "Reads GPT-5.5's positioning as aimed squarely at Claude Code: same \"built for agents, uses tools, checks its own work\" language, with Codex as the head-on competitor in the IDE."
+      }
+    },
+    "link3": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/Axel_bitblaze69/status/2047403622703747198"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer_text": {
+      "type": "Text",
+      "props": {
+        "text": "Crypto and startups/OSS topics: no fresh tweets surfaced via WebSearch within 48h — dropped rather than padded.",
+        "variant": "muted"
+      }
+    }
+  }
+}
