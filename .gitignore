@@ -49,3 +49,4 @@ node_modules/
 # Stale artifacts
 .external-work
 .vuln-scan/
+.repo-audit/
