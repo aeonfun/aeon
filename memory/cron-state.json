@@ -529,5 +529,13 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "chain:evening-rollup": {
+    "last_dispatch": "2026-04-25T21:34:54Z",
+    "last_status": "dispatched"
+  },
+  "evening-rollup": {
+    "last_dispatch": "2026-04-25T21:34:54Z",
+    "last_status": "dispatched"
   }
 }
