@@ -1,0 +1,170 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "research-brief"
+      },
+      "children": [
+        "overview",
+        "sep1",
+        "research",
+        "sep2",
+        "thesis",
+        "sep3",
+        "relevance",
+        "sep4",
+        "references"
+      ]
+    },
+    "overview": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket and Kalshi political markets are systematically miscalibrated at long horizons: prices compressed toward 50%, persistently understating favorites' true probability.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "research": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "research-heading",
+        "research-paper",
+        "research-summary",
+        "calibration-stats"
+      ]
+    },
+    "research-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Research Findings",
+        "level": "h3"
+      }
+    },
+    "research-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Decomposition of calibration variance across prediction markets",
+        "href": "https://arxiv.org/abs/2602.19520",
+        "source": "Le, Feb 2026"
+      }
+    },
+    "research-summary": {
+      "type": "Text",
+      "props": {
+        "text": "87.3% of cross-market calibration variance attributed to four stable components. Politics is the dominant miscalibrated domain."
+      }
+    },
+    "calibration-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-politics",
+        "stat-sports",
+        "stat-crypto"
+      ]
+    },
+    "stat-politics": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket politics mean slope",
+        "value": "1.31"
+      }
+    },
+    "stat-sports": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket sports mean slope",
+        "value": "1.08"
+      }
+    },
+    "stat-crypto": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket crypto mean slope",
+        "value": "1.05"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "thesis": {
+      "type": "Alert",
+      "props": {
+        "title": "Thesis",
+        "message": "That slope will not flatten to within ±0.05 of 1.0 across the 2026 cycle, because the bias is structural—bounded liquidity, capital cost, behavioral 50%-compression—not informational error that arbitrage can close.",
+        "type": "info"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "relevance": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "relevance-heading",
+        "relevance-text"
+      ]
+    },
+    "relevance-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters for Swarm-Fund",
+        "level": "h3"
+      }
+    },
+    "relevance-text": {
+      "type": "Text",
+      "props": {
+        "text": "Direct academic justification for CalibrationGap/Revenant's premise. If Revenant is under-indexed on long-horizon politics, it's leaving edge on the table."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "references": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "references-heading",
+        "ref-article"
+      ]
+    },
+    "references-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Full Article",
+        "level": "h3"
+      }
+    },
+    "ref-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "research-brief-prediction-market-calibration-2026-04-25.md",
+        "href": "articles/research-brief-prediction-market-calibration-2026-04-25.md"
+      }
+    }
+  }
+}

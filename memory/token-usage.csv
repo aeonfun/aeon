@@ -3,4 +3,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,monitor-runners,claude-opus-4-7,273,53803,6788383,141375
 2026-04-25,narrative-tracker,claude-opus-4-7,1125,22420,1998766,93974
 2026-04-25,deep-research,claude-opus-4-7,549,40713,3771718,138581
-2026-04-25,security-digest,claude-opus-4-7,65,31173,3139443,124505
+2026-04-25,research-brief,claude-opus-4-7,150,25951,1271945,105245
