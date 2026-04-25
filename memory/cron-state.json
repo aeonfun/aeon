@@ -318,5 +318,17 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "code-health": {
+    "last_dispatch": "2026-04-25T16:05:58Z",
+    "last_status": "dispatched"
+  },
+  "changelog": {
+    "last_dispatch": "2026-04-25T16:05:58Z",
+    "last_status": "dispatched"
+  },
+  "vuln-scanner": {
+    "last_dispatch": "2026-04-25T16:05:58Z",
+    "last_status": "dispatched"
   }
 }
