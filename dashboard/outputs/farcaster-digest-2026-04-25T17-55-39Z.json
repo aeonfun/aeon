@@ -1,0 +1,92 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_skip",
+        "sources_section",
+        "reason_section"
+      ]
+    },
+    "alert_skip": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Skill execution skipped"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_label",
+        "sources_badges"
+      ]
+    },
+    "sources_label": {
+      "type": "Text",
+      "props": {
+        "text": "Sources",
+        "variant": "muted"
+      }
+    },
+    "sources_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_search",
+        "badge_trending",
+        "badge_channels"
+      ]
+    },
+    "badge_search": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    },
+    "reason_section": {
+      "type": "Text",
+      "props": {
+        "text": "NEYNAR_API_KEY not configured",
+        "variant": "caption"
+      }
+    }
+  }
+}
