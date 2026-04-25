@@ -1,0 +1,289 @@
+{
+  "root": "card-ideas",
+  "state": {},
+  "elements": {
+    "card-ideas": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-04-25"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "idea-1",
+        "sep-1",
+        "idea-2",
+        "sep-2",
+        "tarpit-section",
+        "sep-3",
+        "memo-section"
+      ]
+    },
+    "idea-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea1-header",
+        "idea1-body"
+      ]
+    },
+    "idea1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "idea1-title",
+        "idea1-status"
+      ]
+    },
+    "idea1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Realized",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "idea1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "executable",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "idea1-body": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-desc",
+        "idea1-icp",
+        "idea1-wedge",
+        "idea1-why",
+        "idea1-mvp",
+        "idea1-kill"
+      ]
+    },
+    "idea1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "calibration-grade tick dataset for resolved Polymarket+Kalshi binaries with Brier scoring. Bloomberg historical for the AI-forecasting + agent-trading stack.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea1-icp": {
+      "type": "Text",
+      "props": {
+        "text": "ICP: Quant at YC W26 AI-hedge-fund who hits the /prices-history 12-hour-granularity wall.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea1-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge: realized.fyi paid REST + Parquet + free public calibration leaderboard.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea1-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why now: Polymarket acquired Dome in Q1; surviving APIs are live-stream-shaped, none calibration-research-shaped.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea1-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test: Ingest 90d PM+Kalshi ticks (already running for swarm-fund-mvp), score top-100 resolved markets, ship Show HN. Metric: 10 paid signups in 30d.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea1-kill": {
+      "type": "Text",
+      "props": {
+        "text": "Kill: <10 signups in 60d OR <$2k MRR by d90.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "idea-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea2-header",
+        "idea2-body"
+      ]
+    },
+    "idea2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "idea2-title",
+        "idea2-status"
+      ]
+    },
+    "idea2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Postmortem",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "idea2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "idea2-body": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-desc",
+        "idea2-icp",
+        "idea2-wedge",
+        "idea2-why",
+        "idea2-mvp",
+        "idea2-kill"
+      ]
+    },
+    "idea2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "replay-grade audit chain for autonomous trading agents. OSS Python lib + hosted SaaS that reconstructs any agent trade for an auditor in 30s.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea2-icp": {
+      "type": "Text",
+      "props": {
+        "text": "ICP: CTO at YC W26 AI-hedge-fund / CFTC-reg CTA at first compliance review.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea2-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge: @postmortem.trace decorator captures features+regime+sizing+risk-veto, hash-chained, single-button SOX/AI-Act report.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea2-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why now: EU AI Act high-risk obligations enforceable Aug 2026; Stanford 89%-never-prod gap is a compliance gap; Petual raised $20M in adjacent enterprise audit.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea2-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test: pip install postmortem-trade, wire onto 3 swarm-fund strategies, cold-pitch 10 W26 AI funds. Metric: 1 LOI in 60d.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "idea2-kill": {
+      "type": "Text",
+      "props": {
+        "text": "Kill: <3 paid pilots in 90d.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "tarpit-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tarpit-label",
+        "tarpit-list"
+      ]
+    },
+    "tarpit-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Tarpit-rejected this pass",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "tarpit-list": {
+      "type": "Text",
+      "props": {
+        "text": "agent-wallet spending-limit SDKs (Coinbase/Trust/Privy/Nunchuk crowding it), AI meeting notetakers, generic AI-for-X.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "memo-section": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-04-25.md. 8 permalinks cited.",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
