@@ -1,0 +1,99 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-04-25"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper_link",
+        "sep1",
+        "dataset_stat",
+        "finding_text",
+        "sep2",
+        "relevance_text",
+        "sep3",
+        "links_stack"
+      ]
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Semantic Non-Fungibility and Violations of the Law of One Price in Prediction Markets",
+        "href": "https://arxiv.org/abs/2601.01706",
+        "source": "Gebele & Matthes (TUM) · Jan 2026"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "dataset_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Dataset",
+        "value": "100,000+ aligned prediction markets",
+        "delta": "10 platforms, 2018-2025"
+      }
+    },
+    "finding_text": {
+      "type": "Text",
+      "props": {
+        "text": "First human-validated cross-venue dataset. Finds persistent 2-4% execution-aware price deviations between semantically equivalent markets, even in liquid settings — driven by structural frictions, not info disagreement.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "relevance_text": {
+      "type": "Text",
+      "props": {
+        "text": "Direct empirical baseline for hermes-arb's edge thesis (Kalshi↔Polymarket 5-min BTC). The semantic-alignment framework (NL description + resolution semantics + temporal scope) is the same matching problem hermes-arb must solve to map Kalshi range → PM binary.",
+        "variant": "lead"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "links_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link_abstract",
+        "link_pdf"
+      ]
+    },
+    "link_abstract": {
+      "type": "Link",
+      "props": {
+        "label": "arXiv Abstract",
+        "href": "https://arxiv.org/abs/2601.01706"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2601.01706"
+      }
+    }
+  }
+}
