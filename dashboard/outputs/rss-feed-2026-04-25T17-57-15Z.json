@@ -1,0 +1,104 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "RSS feed updated",
+        "description": "11 entries"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry_1",
+        "entry_2_container",
+        "entry_3",
+        "entry_4",
+        "entry_5",
+        "more_text",
+        "separator",
+        "subscribe_link"
+      ]
+    },
+    "entry_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Workflow Security Audit",
+        "source": "2026-04-11"
+      }
+    },
+    "entry_2_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "entry_2",
+        "error_badge"
+      ]
+    },
+    "entry_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Vuln Scanner",
+        "source": "2026-04-25"
+      }
+    },
+    "error_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ERROR",
+        "variant": "destructive"
+      }
+    },
+    "entry_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "research-brief-prediction-market-calibration-2026-04-25"
+      }
+    },
+    "entry_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Aeon Stopped Shipping Single-Instance Features Four Days Ago"
+      }
+    },
+    "entry_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Repo Actions",
+        "source": "aaronjmars/aeon — 2026-04-25"
+      }
+    },
+    "more_text": {
+      "type": "Text",
+      "props": {
+        "text": "(+6 more entries)",
+        "variant": "muted"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "subscribe_link": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe to RSS feed",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
