@@ -1,0 +1,1 @@
+external-feature: tomscaria/swarm-fund-mvp — fix(bankr_bridge): validate --max arg, reject NaN/non-positive cleanly. Caught reading the recently-shipped x402 bridge: invalid --max would crash with uncaught BigInt(NaN) RangeError outside the try block, breaking the Python adapter's {ok:false,...} contract. PR: https://github.com/tomscaria/swarm-fund-mvp/pull/18
