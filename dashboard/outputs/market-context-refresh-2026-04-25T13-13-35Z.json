@@ -1,0 +1,279 @@
+{
+  "root": "card-market-context",
+  "state": {},
+  "elements": {
+    "card-market-context": {
+      "type": "Card",
+      "props": {
+        "title": "market context — 2026-04-25"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "take-section",
+        "sep-1",
+        "prices-section",
+        "sep-2",
+        "breadth-section",
+        "sep-3",
+        "narrative-section",
+        "sep-4",
+        "hot-market-section"
+      ]
+    },
+    "take-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text-take",
+        "badge-chop"
+      ]
+    },
+    "text-take": {
+      "type": "Text",
+      "props": {
+        "text": "Take:",
+        "variant": "body"
+      }
+    },
+    "badge-chop": {
+      "type": "Badge",
+      "props": {
+        "text": "chop (conviction medium)",
+        "variant": "secondary"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "prices-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-prices",
+        "grid-prices"
+      ]
+    },
+    "heading-prices": {
+      "type": "Heading",
+      "props": {
+        "text": "Prices",
+        "level": "h3"
+      }
+    },
+    "grid-prices": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-btc",
+        "stat-eth",
+        "stat-fg"
+      ]
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$77,610",
+        "delta": "−1%",
+        "trend": "down"
+      }
+    },
+    "stat-eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,317",
+        "delta": "−0.5%",
+        "trend": "down"
+      }
+    },
+    "stat-fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "31",
+        "delta": "−8 pts",
+        "trend": "down"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "breadth-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-breadth",
+        "grid-breadth"
+      ]
+    },
+    "heading-breadth": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Metrics",
+        "level": "h3"
+      }
+    },
+    "grid-breadth": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-breadth",
+        "stat-dex-vol",
+        "stat-etf"
+      ]
+    },
+    "stat-breadth": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "8/20"
+      }
+    },
+    "stat-dex-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume",
+        "value": "$5.6B"
+      }
+    },
+    "stat-etf": {
+      "type": "Stat",
+      "props": {
+        "label": "ETF Inflows",
+        "value": "$2.43B",
+        "delta": "8-day streak, Apr"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-narrative",
+        "badge-narrative",
+        "grid-tokens"
+      ]
+    },
+    "heading-narrative": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Narrative",
+        "level": "h3"
+      }
+    },
+    "badge-narrative": {
+      "type": "Badge",
+      "props": {
+        "text": "GameFi revival (emerging)",
+        "variant": "outline"
+      }
+    },
+    "grid-tokens": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-axs",
+        "stat-ape"
+      ]
+    },
+    "stat-axs": {
+      "type": "Stat",
+      "props": {
+        "label": "AXS",
+        "value": "+37%",
+        "delta": "24h",
+        "trend": "up"
+      }
+    },
+    "stat-ape": {
+      "type": "Stat",
+      "props": {
+        "label": "APE",
+        "value": "+43%",
+        "delta": "24h",
+        "trend": "up"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hot-market-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-hot",
+        "text-hot-question",
+        "stat-hot-odds"
+      ]
+    },
+    "heading-hot": {
+      "type": "Heading",
+      "props": {
+        "text": "Hot Market",
+        "level": "h3"
+      }
+    },
+    "text-hot-question": {
+      "type": "Text",
+      "props": {
+        "text": "US × Iran peace deal by Apr 30",
+        "variant": "lead"
+      }
+    },
+    "stat-hot-odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES odds",
+        "value": "6.5%"
+      }
+    }
+  }
+}
