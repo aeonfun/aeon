@@ -1,0 +1,368 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse",
+        "description": "aaronjmars/aeon — 2026-04-25"
+      },
+      "children": [
+        "surge-badge",
+        "separator-1",
+        "repo-stats",
+        "separator-2",
+        "notable-section",
+        "separator-3",
+        "other-section",
+        "separator-4",
+        "forks-section",
+        "separator-5",
+        "source-text"
+      ]
+    },
+    "surge-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SURGE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "repo-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-stars",
+        "stat-forks"
+      ]
+    },
+    "stat-stars": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "237",
+        "delta": "+8",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-forks": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "36",
+        "delta": "+1",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "notable-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-heading",
+        "notable-users"
+      ]
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "notable-users": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "user-jeffreylean",
+        "user-codebytelabs",
+        "user-wepobid",
+        "user-jkilzi",
+        "user-sr4p"
+      ]
+    },
+    "user-jeffreylean": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-jeffreylean",
+        "followers-jeffreylean"
+      ]
+    },
+    "link-jeffreylean": {
+      "type": "Link",
+      "props": {
+        "label": "jeffreylean",
+        "href": "https://github.com/jeffreylean"
+      },
+      "children": []
+    },
+    "followers-jeffreylean": {
+      "type": "Badge",
+      "props": {
+        "text": "26 followers",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "user-codebytelabs": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-codebytelabs",
+        "followers-codebytelabs"
+      ]
+    },
+    "link-codebytelabs": {
+      "type": "Link",
+      "props": {
+        "label": "codebytelabs",
+        "href": "https://github.com/codebytelabs"
+      },
+      "children": []
+    },
+    "followers-codebytelabs": {
+      "type": "Badge",
+      "props": {
+        "text": "3 followers",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "user-wepobid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-wepobid",
+        "followers-wepobid"
+      ]
+    },
+    "link-wepobid": {
+      "type": "Link",
+      "props": {
+        "label": "wepobid",
+        "href": "https://github.com/wepobid"
+      },
+      "children": []
+    },
+    "followers-wepobid": {
+      "type": "Badge",
+      "props": {
+        "text": "15 followers",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "user-jkilzi": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-jkilzi",
+        "followers-jkilzi"
+      ]
+    },
+    "link-jkilzi": {
+      "type": "Link",
+      "props": {
+        "label": "jkilzi",
+        "href": "https://github.com/jkilzi"
+      },
+      "children": []
+    },
+    "followers-jkilzi": {
+      "type": "Badge",
+      "props": {
+        "text": "7 followers",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "user-sr4p": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-sr4p",
+        "followers-sr4p"
+      ]
+    },
+    "link-sr4p": {
+      "type": "Link",
+      "props": {
+        "label": "sr4p",
+        "href": "https://github.com/sr4p"
+      },
+      "children": []
+    },
+    "followers-sr4p": {
+      "type": "Badge",
+      "props": {
+        "text": "11 followers",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "other-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "other-heading",
+        "other-users"
+      ]
+    },
+    "other-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "other-users": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "user-nodegptjs",
+        "user-gsdeupi1716",
+        "user-dryftr"
+      ]
+    },
+    "user-nodegptjs": {
+      "type": "Link",
+      "props": {
+        "label": "NodeGPTjs",
+        "href": "https://github.com/NodeGPTjs"
+      },
+      "children": []
+    },
+    "user-gsdeupi1716": {
+      "type": "Link",
+      "props": {
+        "label": "GsDeupi1716",
+        "href": "https://github.com/GsDeupi1716"
+      },
+      "children": []
+    },
+    "user-dryftr": {
+      "type": "Link",
+      "props": {
+        "label": "dryftr",
+        "href": "https://github.com/dryftr"
+      },
+      "children": []
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "forks-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "forks-heading",
+        "forks-list"
+      ]
+    },
+    "forks-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "forks-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fork-tomscaria"
+      ]
+    },
+    "fork-tomscaria": {
+      "type": "Link",
+      "props": {
+        "label": "tomscaria/aeon",
+        "href": "https://github.com/tomscaria/aeon"
+      },
+      "children": []
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
