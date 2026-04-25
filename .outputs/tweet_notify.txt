@@ -1,0 +1,23 @@
+tweet drafts: polymarket × kalshi crypto-perps launch convergence
+
+— one-liner —
+1a. Polymarket shipped perps Apr 21. Kalshi ships them Apr 27. The basis trade just got an order book.
+1b. Same product, two crowds, six days apart. hermes-arb's home turf just doubled.
+
+— two-punch —
+2a. Polymarket Apr 21. Kalshi Apr 27. Two venues, one instrument, six days apart — and two different settlement oracles. The basis isn't a bug. It's the trade.
+2b. Kalshi and Polymarket both shipped crypto perps this week. Same instrument, different oracles, different crowds. Calling that a coincidence is generous.
+
+— paragraph —
+3a. Polymarket launched crypto perps Apr 21. Kalshi follows Apr 27. Same instrument, two venues, six days apart. PM settles sub-second on Chainlink. Kalshi settles on a 60s trimmed mean across 8 exchanges. The basis between those oracles is the residual edge and the residual noise.
+3b. Everyone's calling Polymarket and Kalshi perps a "CFTC win." That's the framing, not the trade. The trade is a six-day-old basis between two oracles — Chainlink sub-second on PM, 60s trimmed mean across 8 exchanges on Kalshi. Same product, different prints. Window is 60 days.
+
+— long tweet —
+4a. Polymarket shipped crypto perps Apr 21. Kalshi ships them Apr 27. Six days, same instrument, two settlement regimes. PM uses Chainlink Data Streams (sub-second). Kalshi uses a 60s trimmed mean across 8 exchanges. Gebele & Matthes (Jan 2026) measured persistent 2-4% LOOP violations across 100k concurrent events — structural, not informational. Opportunity duration compressed from 12.3s in 2024 to 2.7s in early 2026; 73% of arb profits already go to sub-100ms bots. Window for hermes-arb's basis recorder is 60 days, not 6 months.
+4b. Two weeks ago hermes-arb was a scaffold pricing one product across two venues that didn't formally exist for that product. Today both do. Polymarket shipped perps Apr 21. Kalshi ships them Apr 27. Six days. Same instrument, different oracles, crowds, liquidation regimes. The trade is the gap between PM's sub-second Chainlink prints and Kalshi's 60s trimmed-mean RTI. Math says gate floor is 7.5-8pp net of costs, not 7pp. We're moving the gate this week.
+
+— thread opener —
+5a. Polymarket shipped crypto perps Apr 21. Kalshi ships them Apr 27. Same product, two oracles, six days apart. Most under-covered structural shift in prediction markets this quarter. Why this is a basis trade, not a category bet.
+5b. Polymarket and Kalshi both ship crypto perps within six days of each other. Different crowds, same instrument, different settlement oracles. Why isn't anyone pricing this as a category-level event for hermes-arb-style basis traders? Five reasons it is.
+
+best: #4a — named paper, named decay numbers, named gate values, ends on an action. canonical operator format.
