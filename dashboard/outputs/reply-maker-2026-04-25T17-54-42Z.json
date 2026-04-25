@@ -1,0 +1,178 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "No fresh tweets available"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "content-stack"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "Unable to source fresh tweets within 6h window"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "issues-section",
+        "sep2",
+        "action-section"
+      ]
+    },
+    "issues-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issue-heading",
+        "xai-issue",
+        "webfetch-issue",
+        "websearch-issue"
+      ]
+    },
+    "issue-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Data Sources",
+        "level": "h3"
+      }
+    },
+    "xai-issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "xai-label",
+        "xai-text"
+      ]
+    },
+    "xai-label": {
+      "type": "Badge",
+      "props": {
+        "text": "XAI x_search",
+        "variant": "destructive"
+      }
+    },
+    "xai-text": {
+      "type": "Text",
+      "props": {
+        "text": "Blocked: sandbox env-var expansion",
+        "variant": "body"
+      }
+    },
+    "webfetch-issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "webfetch-label",
+        "webfetch-text"
+      ]
+    },
+    "webfetch-label": {
+      "type": "Badge",
+      "props": {
+        "text": "WebFetch (x.com profiles)",
+        "variant": "destructive"
+      }
+    },
+    "webfetch-text": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 error",
+        "variant": "body"
+      }
+    },
+    "websearch-issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "websearch-label",
+        "websearch-text"
+      ]
+    },
+    "websearch-label": {
+      "type": "Badge",
+      "props": {
+        "text": "WebSearch",
+        "variant": "destructive"
+      }
+    },
+    "websearch-text": {
+      "type": "Text",
+      "props": {
+        "text": "Indexed only days/weeks-old tweets — 6h window cannot be honored",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action-heading",
+        "action-text",
+        "collision-text"
+      ]
+    },
+    "action-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Next Steps",
+        "level": "h3"
+      }
+    },
+    "action-text": {
+      "type": "Text",
+      "props": {
+        "text": "Re-run after prefetch-xai.sh wires reply-maker",
+        "variant": "body"
+      }
+    },
+    "collision-text": {
+      "type": "Text",
+      "props": {
+        "text": "Note: daily-routine and tweet-roundup hit the same wall",
+        "variant": "caption"
+      }
+    }
+  }
+}

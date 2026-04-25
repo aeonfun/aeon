@@ -1,0 +1,1 @@
+REPLY_MAKER_EMPTY — no fresh tweets sourceable: XAI x_search blocked (sandbox env-var expansion), WebFetch on x.com profiles 402, WebSearch indexed only days/weeks-old tweets. 6h window cannot be honored without XAI. Re-run after prefetch-xai.sh wires reply-maker (today's daily-routine and tweet-roundup hit the same wall).

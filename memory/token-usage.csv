@@ -7,4 +7,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,repo-actions,claude-opus-4-7,34,22901,1836434,135378
 2026-04-25,vuln-scanner,claude-opus-4-7,67,18030,4313216,128524
 2026-04-25,external-feature,claude-opus-4-7,127,22768,4321922,121666
-2026-04-25,write-tweet,claude-opus-4-7,18,20305,754686,60129
+2026-04-25,reply-maker,claude-opus-4-7,5695,12655,2216593,171982
