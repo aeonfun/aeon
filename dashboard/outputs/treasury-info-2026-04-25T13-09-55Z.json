@@ -1,0 +1,24 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "treasury-info"
+      },
+      "children": [
+        "alert_main"
+      ]
+    },
+    "alert_main": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "No watches configured",
+        "message": "Edit memory/on-chain-watches.yml to enable"
+      },
+      "children": []
+    }
+  }
+}

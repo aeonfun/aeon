@@ -1,0 +1,31 @@
+# On-chain watches — addresses tracked by treasury-info and related skills.
+#
+# Schema:
+#   watches:
+#     - label: <human-readable name>            # e.g. Treasury, Ops, Cold-Storage
+#       address: "0x..."                        # checksummed EVM address, or base58 for Solana
+#       chain: <base|ethereum|optimism|arbitrum|polygon|solana>
+#       type: wallet                            # only type:wallet is processed by treasury-info
+#
+# Uncomment and edit the template below to enable. No real addresses are checked in by default.
+#
+# watches:
+#   - label: Treasury
+#     address: "0x0000000000000000000000000000000000000000"
+#     chain: base
+#     type: wallet
+#   - label: Ops
+#     address: "0x0000000000000000000000000000000000000000"
+#     chain: ethereum
+#     type: wallet
+#   - label: Solana-Hot
+#     address: "11111111111111111111111111111111"
+#     chain: solana
+#     type: wallet
+#
+# Reserved for future protocol-level watches (LP positions, vaults, perp accounts).
+# Safe to leave empty.
+# protocols: []
+
+watches: []
+protocols: []
