@@ -17,7 +17,7 @@ skills:
 
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: true, schedule: "0 9 * * *" }
-  pr-review: { enabled: true, schedule: "0 9 * * *" }
+  pr-review: { enabled: true, schedule: "0 9 * * *", var: "tomscaria/swarm-fund-mvp — review parallel-session PRs against ADRs in DECISIONS.md and the conventions in CLAUDE.md. Block on: untested logic, hardcoded secrets, schema changes without migration, removal of risk gates." }
   auto-merge: { enabled: true, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
   github-monitor: { enabled: true, schedule: "0 9 * * *" }
   github-issues: { enabled: true, schedule: "0 9 * * *" }
@@ -33,14 +33,14 @@ skills:
   distribute-tokens: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
   defi-overview: { enabled: true, schedule: "0 12 * * *" }
 
-  monitor-polymarket: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
+  monitor-polymarket: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6", var: "Track Revenant builder-attributed markets and high-liquidity political/crypto markets. Watched: will-mexico-win-the-2026-fifa-world-cup-529 (Revenant first order, builder code 0xcddc4ba3...8286f), will-bitcoin-hit-1m-before-gta-vi-872, top 5 active US 2028 election markets. Surface 24h price moves > 5pp, volume spikes > 3x 7-day-average, and narrative shifts." } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume
   monitor-runners: { enabled: true, schedule: "0 12 * * *" }
   token-pick: { enabled: true, schedule: "0 12 * * *" }
   token-report: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   market-context-refresh: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
   narrative-tracker: { enabled: true, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
-  polymarket-comments: { enabled: true, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
+  polymarket-comments: { enabled: true, schedule: "0 13 * * *", var: "Mine high-volume Polymarket comment threads for narrative-shift signals — info-asymmetry alpha that doesn't show up in CalibrationGap's quantitative scanner. Focus: politics + crypto verticals. Surface user names with track records, recurring claims, citation chains pointing at upcoming catalysts." } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: true, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
 
   # --- Afternoon (2 PM UTC) ---
@@ -50,7 +50,7 @@ skills:
   research-brief: { enabled: true, schedule: "0 14 * * *" }
   deep-research: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
   last30: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
-  paper-pick: { enabled: true, schedule: "0 14 * * *" }
+  paper-pick: { enabled: true, schedule: "0 14 * * *", var: "Stanford PhD prep (target: Dec 2026). Focus areas: prediction market calibration, agentic finance, multi-agent reinforcement learning, regime-switching trading, Polymarket microstructure, Becker-style trade-level calibration, Darwinian agent selection, FinCon-style verbal reinforcement. Prefer NeurIPS/ICML/SSRN over hype." }
   search-skill: { enabled: true, schedule: "0 14 * * *" }
 
   security-digest: { enabled: true, schedule: "0 14 * * *" }
@@ -122,7 +122,7 @@ skills:
   startup-idea: { enabled: true, schedule: "0 18 * * *" }
   tool-builder: { enabled: true, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: true, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
-  evening-recap: { enabled: true, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
+  evening-recap: { enabled: true, schedule: "0 21 * * *", model: "claude-sonnet-4-6", var: "End-of-day Telegram digest: trading-loop scan count, signals fired, Revenant order activity, NAV delta, any aeon skill failures, top 3 papers/comments/PRs surfaced today. Keep under 200 words." } # end-of-day ops summary
   vercel-projects:
     {
       enabled: true,
@@ -141,7 +141,7 @@ skills:
   spawn-instance: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: true, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
   weekly-review: { enabled: true, schedule: "0 19 * * 1" }
-  weekly-shiplog: { enabled: true, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
+  weekly-shiplog: { enabled: true, schedule: "0 9 * * 1", var: "tomscaria/swarm-fund-mvp — synthesize last week's commits + DECISIONS.md ADR adds + memory updates into an LP-ready narrative. Lead with shipped milestones, lifecycle progress (Birth/Canary/Apex/Revenant counts), trade tape highlights. Suitable for forwarding to investors and grant committees." } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: true, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: true, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
   fork-skill-digest: { enabled: true, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
