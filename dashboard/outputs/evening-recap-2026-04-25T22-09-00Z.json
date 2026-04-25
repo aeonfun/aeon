@@ -1,0 +1,385 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-04-25"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trading_section",
+        "sep1",
+        "revenant_section",
+        "sep2",
+        "nav_section",
+        "sep3",
+        "failures_section",
+        "sep4",
+        "papers_section",
+        "sep5",
+        "comment_section",
+        "sep6",
+        "prs_section",
+        "sep7",
+        "sources_section"
+      ]
+    },
+    "trading_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trading_heading",
+        "trading_scans",
+        "trading_markets",
+        "trading_signals",
+        "trading_intraday",
+        "trading_404"
+      ]
+    },
+    "trading_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading Loop",
+        "level": "h2"
+      }
+    },
+    "trading_scans": {
+      "type": "Text",
+      "props": {
+        "text": "2 scans (PM 4 events / Kalshi 5 events)"
+      }
+    },
+    "trading_markets": {
+      "type": "Stat",
+      "props": {
+        "label": "Markets",
+        "value": "20"
+      }
+    },
+    "trading_signals": {
+      "type": "Stat",
+      "props": {
+        "label": "Signals fired",
+        "value": "0"
+      }
+    },
+    "trading_intraday": {
+      "type": "Text",
+      "props": {
+        "text": "all <1pp intraday"
+      }
+    },
+    "trading_404": {
+      "type": "Alert",
+      "props": {
+        "message": "Kalshi candlestick + orderbook endpoints 404d",
+        "type": "warning"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "revenant_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "revenant_heading",
+        "revenant_position",
+        "revenant_stats"
+      ]
+    },
+    "revenant_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h2"
+      }
+    },
+    "revenant_position": {
+      "type": "Text",
+      "props": {
+        "text": "Mexico World Cup YES 1.05%, flat all day, no fill"
+      }
+    },
+    "revenant_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "revenant_closed",
+        "revenant_win",
+        "revenant_pnl",
+        "revenant_sharpe"
+      ]
+    },
+    "revenant_closed": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "29"
+      }
+    },
+    "revenant_win": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "76%"
+      }
+    },
+    "revenant_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      }
+    },
+    "revenant_sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "nav_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "nav_heading",
+        "nav_alert"
+      ]
+    },
+    "nav_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV",
+        "level": "h2"
+      }
+    },
+    "nav_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "no data — on-chain-watches.yml not configured",
+        "type": "info"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "failures_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "failures_heading",
+        "failure_1",
+        "failure_2",
+        "failure_3"
+      ]
+    },
+    "failures_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failures",
+        "level": "h2"
+      }
+    },
+    "failure_1": {
+      "type": "Alert",
+      "props": {
+        "title": "chain:evening-rollup FAILED 21:36 UTC",
+        "message": "rollup skill ran OK; chain runner failed",
+        "type": "error"
+      }
+    },
+    "failure_2": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-001 vuln-scanner",
+        "message": "prefetch-vuln-scanner.sh missing, scanners blocked",
+        "type": "error"
+      }
+    },
+    "failure_3": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-002 vibecoding-digest",
+        "message": "Reddit 403 on GHA IPs",
+        "type": "error"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "papers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "papers_heading",
+        "paper_1",
+        "paper_2",
+        "paper_3"
+      ]
+    },
+    "papers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Papers",
+        "level": "h2"
+      }
+    },
+    "paper_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "2601.01706 Gebele & Matthes — 2-4% persistent cross-platform gaps, structural not informational. Hermes-arb load-bearing.",
+        "href": "https://arxiv.org/abs/2601.01706",
+        "source": "arXiv"
+      }
+    },
+    "paper_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "2512.25070 Chandak, Hardt, Geiping — calibration RL generalizes on forecasting benchmarks; PhD anchor.",
+        "href": "https://arxiv.org/abs/2512.25070",
+        "source": "arXiv"
+      }
+    },
+    "paper_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "2505.17989 Turtel — RLVR on PM binary Qs, +10% sim ROI; read next.",
+        "href": "https://arxiv.org/abs/2505.17989",
+        "source": "arXiv"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "comment_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comment_heading",
+        "comment_text"
+      ]
+    },
+    "comment_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Comment",
+        "level": "h2"
+      }
+    },
+    "comment_text": {
+      "type": "Text",
+      "props": {
+        "text": "@Ignorant-Case (PM Iran book) — \"Jalili added / Qalibaf removed = quick deal DEAD. INARA 30+ days.\" Cleanest NO thesis."
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "prs_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "prs_heading",
+        "pr_1",
+        "pr_2"
+      ]
+    },
+    "prs_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PRs",
+        "level": "h2"
+      }
+    },
+    "pr_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "swarm-fund-mvp #18 (bankr_bridge --max fix)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/18",
+        "source": "GitHub"
+      }
+    },
+    "pr_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aeon PR #1 (disable list-digest/channel-recap)",
+        "href": "https://github.com/tomscaria/aeon/pull/1",
+        "source": "GitHub"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "log=ok cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
