@@ -4,4 +4,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,narrative-tracker,claude-opus-4-7,1125,22420,1998766,93974
 2026-04-25,deep-research,claude-opus-4-7,549,40713,3771718,138581
 2026-04-25,research-brief,claude-opus-4-7,150,25951,1271945,105245
-2026-04-25,fleet-control,claude-opus-4-7,26,3707,648496,63976
+2026-04-25,star-milestone,claude-opus-4-7,26,8709,620715,73405
