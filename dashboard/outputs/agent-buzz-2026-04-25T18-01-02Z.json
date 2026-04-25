@@ -1,0 +1,162 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz · 2026-04-25"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-main",
+        "text-summary",
+        "stack-tech",
+        "separator-1",
+        "heading-sources",
+        "stack-links",
+        "separator-2",
+        "stack-metadata"
+      ]
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "Harness wars: three labs shipped agent runtime infra in 24h",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Harness emerging as product cluster with filesystem-mounted memory and multi-call deploy patterns becoming standard across platforms.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "stack-tech": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-openai",
+        "badge-anthropic",
+        "badge-aws"
+      ]
+    },
+    "badge-openai": {
+      "type": "Badge",
+      "props": {
+        "text": "OpenAI GPT-5.5",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-anthropic": {
+      "type": "Badge",
+      "props": {
+        "text": "Anthropic memory for Managed Agents",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-aws": {
+      "type": "Badge",
+      "props": {
+        "text": "AWS Bedrock AgentCore three-call deploy",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "stack-links": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-claudeai",
+        "story-awsdevelopers"
+      ]
+    },
+    "story-claudeai": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Claude AI: filesystem-mounted memory layer",
+        "href": "https://x.com/claudeai/status/2047421844311949513",
+        "source": "@claudeai"
+      },
+      "children": []
+    },
+    "story-awsdevelopers": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AWS Developers: three-call deploy",
+        "href": "https://x.com/awsdevelopers/status/2047443165393670410",
+        "source": "@awsdevelopers"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text-source",
+        "text-ratio"
+      ]
+    },
+    "text-source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: websearch",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "2 of 15 candidates kept",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
