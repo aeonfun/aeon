@@ -1,0 +1,14 @@
+{
+  "skill": "changelog",
+  "last_analyzed": "2026-04-25T16:08:19Z",
+  "quality_score": 4,
+  "assessment": "Well-structured weekly changelog with intelligent aggregation (92 commits collapsed to 15 entries), proper categorization, files created and logged, notification sent cleanly, top story highlighted",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-04-25",
+      "score": 4
+    }
+  ]
+}

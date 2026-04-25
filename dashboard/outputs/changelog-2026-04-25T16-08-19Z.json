@@ -1,0 +1,110 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-04-25"
+      },
+      "children": [
+        "mainStack"
+      ]
+    },
+    "mainStack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summarySection",
+        "statsTable",
+        "separator1",
+        "topSection",
+        "fullLink"
+      ]
+    },
+    "summarySection": {
+      "type": "Text",
+      "props": {
+        "text": "1 repo",
+        "variant": "body"
+      }
+    },
+    "statsTable": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Category",
+          "Count"
+        ],
+        "rows": [
+          [
+            "User-facing changes",
+            "15"
+          ],
+          [
+            "Added",
+            "9"
+          ],
+          [
+            "Changed",
+            "1"
+          ],
+          [
+            "Fixed",
+            "5"
+          ],
+          [
+            "Breaking",
+            "0"
+          ],
+          [
+            "Security",
+            "0"
+          ]
+        ]
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "topSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "topHeading",
+        "topText"
+      ]
+    },
+    "topHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Change",
+        "level": "h3"
+      }
+    },
+    "topText": {
+      "type": "Text",
+      "props": {
+        "text": "Every Aeon fork now ships a live /status/ health dashboard (#141)",
+        "variant": "body"
+      }
+    },
+    "fullLink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Changelog",
+        "href": "articles/changelog-2026-04-25.md",
+        "source": "articles"
+      }
+    }
+  }
+}
