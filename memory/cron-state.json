@@ -258,5 +258,29 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "push-recap": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
+  },
+  "repo-article": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
+  },
+  "repo-actions": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
+  },
+  "repo-pulse": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
+  },
+  "star-milestone": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
+  },
+  "fleet-control": {
+    "last_dispatch": "2026-04-25T15:26:40Z",
+    "last_status": "dispatched"
   }
 }
