@@ -1,0 +1,28 @@
+*Daily Routine — 2026-04-25*
+
+*Winners (24h)*
+APE +39.3% · AXS +38.3% · OHM +11.3% · BinanceLife +8.9% · GALA +7.5% · DEXE +6.9% · ALGO +6.4% · DYDX +6.2% · MANA +5.3% · IMX +4.8%
+
+*Losers (24h)*
+CHIP −21.5% · GRASS −14.1% · CFG −12.2% · TRUMP −9.7% · RAVE −8.9% · GENIUS −8.8% · PIEVERSE −8.8% · ASTEROID −6.8% · FF −5.5% · PYTH −5.3%
+Pulse: BTC flat $77.6k, top-100 quietly red, sharp gaming/metaverse rotation (Ronin trending; MANA/GALA/IMX/DYDX all green).
+
+*Tweet Roundup*
+*Crypto:* BTC steady $77.5k, ETF inflows $2B over 8 days, Morgan Stanley launches $1 stablecoin fund, SEC CLARITY Act roundtable May 3.
+*AI:* DeepSeek-V4 Preview ships with 1M-token context; Aurora Mobile + GPTBots.ai integrate it; Morgan Stanley sees AI shopping agents at ~25% of consumer spend by 2030.
+*Dev:* Cursor + Claude Code + Codex converging into composable AI coding stack (orchestrate / execute / review); Bun and Biome (100x ESLint) gain mainstream JS share.
+
+*Paper of the Day*
+"Co-Evolving LLM Decision and Skill Bank Agents for Long-Horizon Tasks" (COSPLAY) — 8B base model gets +25.1% reward across six game environments by co-evolving a skill bank with the decision agent. Maps cleanly onto swarm-fund's Birth → Canary → Apex lifecycle and Aeon's own skill bank.
+[Read](https://arxiv.org/abs/2604.20987) | [PDF](https://arxiv.org/pdf/2604.20987)
+
+*GitHub Issues*
+No new issues across tomscaria repos in the last 24h.
+
+*HN Digest*
+1. [DeepSeek v4](https://api-docs.deepseek.com/news/news260424) (1979pts) — frontier OSS LLM release with 1M-token context. [Discuss](https://news.ycombinator.com/item?id=47884971)
+2. [Google plans up to $40B in Anthropic](https://www.bloomberg.com/news/articles/2026-04-24/google-plans-to-invest-up-to-40-billion-in-anthropic) (664pts) — second mega-round; reshapes the model-vendor power map. [Discuss](https://news.ycombinator.com/item?id=47892074)
+3. [Karpathy-style LLM wiki your agents maintain](https://github.com/nex-crm/wuphf) (130pts) — Markdown+Git memory layer for agent fleets. [Discuss](https://news.ycombinator.com/item?id=47899844)
+4. [Open source memory layer for AI agents](https://alash3al.github.io/stash) (95pts) — minimal stash any agent can mount. [Discuss](https://news.ycombinator.com/item?id=47897790)
+5. [There Will Be a Scientific Theory of Deep Learning](https://arxiv.org/abs/2604.21691) (286pts) — Jamie Simon argues a unified theory is coming. [Discuss](https://news.ycombinator.com/item?id=47893779)
+6. [My audio interface has SSH enabled by default](https://hhh.hn/rodecaster-duo-fw/) (275pts) — Rodecaster Duo ships dropbear; supply-chain hygiene reminder. [Discuss](https://news.ycombinator.com/item?id=47894747)

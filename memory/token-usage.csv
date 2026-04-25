@@ -2,4 +2,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,heartbeat,claude-opus-4-7,15,9587,406159,35005
 2026-04-25,monitor-runners,claude-opus-4-7,273,53803,6788383,141375
 2026-04-25,narrative-tracker,claude-opus-4-7,1125,22420,1998766,93974
-2026-04-25,paper-pick,claude-opus-4-7,34,12537,1443460,48685
+2026-04-25,daily-routine,claude-opus-4-7,60,18263,3419337,123365
