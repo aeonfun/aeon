@@ -1,0 +1,13 @@
+*Repo Action Ideas — aaronjmars/aeon — 2026-04-25*
+Five HIGH-priority structural-file gaps; all anchor to MISSING repo-meta the project's own skills would consume. Top pick is dependabot.yml — today's security-digest flagged a live CVE in @anthropic-ai/claude-code that dependabot would catch.
+
+Top pick: Add .github/dependabot.yml covering Actions + npm in dashboard/ and mcp-server/ (Security, Small, Priority HIGH)
+ → Dependabot opens PRs automatically when a dependency goes unsafe; today's GHSA-q5hj-mxqh-vv77 / CVE-2026-40068 in @anthropic-ai/claude-code would have surfaced as a PR.
+
+1. Add .github/dependabot.yml covering Actions + npm (HIGH, Security, Small)
+2. Add .github/ISSUE_TEMPLATE/ with bug_report.yml, feature_request.yml, ai_build.yml (HIGH, DX, Small)
+3. Generate CHANGELOG.md from last ~20 merged PRs and wire weekly-shiplog (HIGH, DX, Small)
+4. Add CONTRIBUTING.md with fork-flow, skill-add CLI, smoke-test contract (HIGH, Community, Small/Medium)
+5. Add SECURITY.md with disclosure path and self-scanning reference (MED, Security, Small)
+
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-25.md
