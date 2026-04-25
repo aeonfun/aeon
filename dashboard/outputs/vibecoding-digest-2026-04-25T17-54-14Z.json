@@ -1,0 +1,24 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest",
+        "description": "Digest generation failed"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "All Reddit endpoints failed",
+        "message": "HTTP 403 'Blocked due to network policy' on top/hot/rising via curl and WebFetch. GitHub Actions IPs are filtered by Reddit. No digest for 2026-04-25.",
+        "type": "error"
+      }
+    }
+  }
+}
