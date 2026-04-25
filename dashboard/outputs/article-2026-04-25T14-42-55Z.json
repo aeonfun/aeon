@@ -1,0 +1,24 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Article"
+      },
+      "children": [
+        "story_article"
+      ]
+    },
+    "story_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Autonomous Agents Got an Open Stack in April 2026",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-04-25.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
