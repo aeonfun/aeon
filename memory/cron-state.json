@@ -325,7 +325,14 @@
   },
   "changelog": {
     "last_dispatch": "2026-04-25T16:05:58Z",
-    "last_status": "dispatched"
+    "last_status": "success",
+    "last_success": "2026-04-25T16:08:49Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1,
+    "last_quality_score": 4
   },
   "vuln-scanner": {
     "last_dispatch": "2026-04-25T16:05:58Z",
