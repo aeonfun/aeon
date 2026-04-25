@@ -139,5 +139,9 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "narrative-tracker": {
+    "last_dispatch": "2026-04-25T13:53:42Z",
+    "last_status": "dispatched"
   }
 }
