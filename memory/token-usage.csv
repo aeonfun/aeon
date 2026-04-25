@@ -1,3 +1,3 @@
 date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,heartbeat,claude-opus-4-7,15,9587,406159,35005
-2026-04-25,market-context-refresh,claude-sonnet-4-6,1913,11092,344410,48095
+2026-04-25,monitor-kalshi,claude-sonnet-4-6,57,12062,557593,37086
