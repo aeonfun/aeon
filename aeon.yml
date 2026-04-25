@@ -188,12 +188,33 @@ reactive:
 #         - parallel: [skill-a, skill-b]
 #         - skill: skill-c, consume: [skill-a, skill-b]
 chains:
-  # daily-routine:
-  #   schedule: "0 7 * * *"
-  #   on_error: fail-fast
-  #   steps:
-  #     - parallel: [token-movers, paper-pick, github-issues, hacker-news-digest]
-  #     - skill: daily-routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]
+  # Morning aggregation: pull all the relevant signals in parallel, then have
+  # morning-brief synthesize them into one digest. Beats getting 6 separate
+  # notifications.
+  morning-brief:
+    schedule: "0 7 * * *"
+    on_error: continue
+    steps:
+      - parallel: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker]
+      - skill: morning-brief, consume: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker]
+
+  # Evening rollup: digest of trade activity + repo activity + agent buzz,
+  # then evening-recap pushes a Telegram summary.
+  evening-rollup:
+    schedule: "0 21 * * *"
+    on_error: continue
+    steps:
+      - parallel: [push-recap, monitor-polymarket, agent-buzz, code-health]
+      - skill: evening-recap, consume: [push-recap, monitor-polymarket, agent-buzz, code-health]
+
+  # Weekly grant-update narrative: pull weekly shipped + paper picks + repo pulse,
+  # then weekly-shiplog synthesizes into LP/grant-committee-ready prose.
+  weekly-grant-update:
+    schedule: "0 9 * * 1"
+    on_error: continue
+    steps:
+      - parallel: [paper-pick, repo-pulse, push-recap, narrative-tracker]
+      - skill: weekly-shiplog, consume: [paper-pick, repo-pulse, push-recap, narrative-tracker]
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
