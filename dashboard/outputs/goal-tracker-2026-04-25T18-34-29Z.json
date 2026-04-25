@@ -1,0 +1,333 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-04-25"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-text",
+        "sep-1",
+        "at-risk-heading",
+        "at-risk-goals-container",
+        "sep-2",
+        "needs-att-heading",
+        "needs-att-goals-container",
+        "sep-3",
+        "on-track-heading",
+        "on-track-goals-container",
+        "sep-4",
+        "sources-text"
+      ]
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "Summary: 4 goals — 1 at risk, 1 needs attention, 2 on track, 0 blocked, 0 done (no prior snapshot)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "at-risk-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AT RISK",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "at-risk-goals-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "goal-weekly-shiplog"
+      ]
+    },
+    "goal-weekly-shiplog": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-weekly-shiplog-header",
+        "goal-weekly-shiplog-desc",
+        "goal-weekly-shiplog-action"
+      ]
+    },
+    "goal-weekly-shiplog-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-at-risk",
+        "heading-weekly-shiplog"
+      ]
+    },
+    "badge-at-risk": {
+      "type": "Badge",
+      "props": {
+        "text": "AT RISK",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-weekly-shiplog": {
+      "type": "Heading",
+      "props": {
+        "text": "weekly-shiplog",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "goal-weekly-shiplog-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Mondays → forward to grant committees — never run, 0 activity/14d (new)"
+      },
+      "children": []
+    },
+    "goal-weekly-shiplog-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Verify weekly-shiplog cron fires Monday 2026-04-27 and produces a digest.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "needs-att-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NEEDS ATTENTION",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "needs-att-goals-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "goal-external-feature"
+      ]
+    },
+    "goal-external-feature": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-external-feature-header",
+        "goal-external-feature-desc",
+        "goal-external-feature-action"
+      ]
+    },
+    "goal-external-feature-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-needs-att",
+        "heading-external-feature"
+      ]
+    },
+    "badge-needs-att": {
+      "type": "Badge",
+      "props": {
+        "text": "NEEDS ATTENTION",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "heading-external-feature": {
+      "type": "Heading",
+      "props": {
+        "text": "external-feature",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "goal-external-feature-desc": {
+      "type": "Text",
+      "props": {
+        "text": "should PR enhancements to tomscaria/swarm-fund-mvp proactively — 0d idle, 1 activity/14d (new)"
+      },
+      "children": []
+    },
+    "goal-external-feature-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Open second swarm-fund-mvp PR this week to establish cadence beyond bootstrap.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "on-track-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "on-track-goals-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "goal-pre-apex",
+        "goal-paper-pick"
+      ]
+    },
+    "goal-pre-apex": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-pre-apex-header",
+        "goal-pre-apex-desc"
+      ]
+    },
+    "goal-pre-apex-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-on-track-1",
+        "heading-pre-apex"
+      ]
+    },
+    "badge-on-track-1": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "heading-pre-apex": {
+      "type": "Heading",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket and polymarket-comments",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "goal-pre-apex-desc": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 4 activity/14d (new)"
+      },
+      "children": []
+    },
+    "goal-paper-pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-paper-pick-header",
+        "goal-paper-pick-desc"
+      ]
+    },
+    "goal-paper-pick-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-on-track-2",
+        "heading-paper-pick"
+      ]
+    },
+    "badge-on-track-2": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "heading-paper-pick": {
+      "type": "Heading",
+      "props": {
+        "text": "paper-pick daily → build PhD reading list",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "goal-paper-pick-desc": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 3 activity/14d (new)"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: logs=ok, git=ok, gh_pr=ok, gh_issue=disabled, cron-state=ok",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
