@@ -835,12 +835,12 @@
   },
   "skill-update-check": {
     "last_status": "failed",
-    "last_failed": "2026-04-26T20:10:19Z",
-    "total_runs": 2,
+    "last_failed": "2026-04-26T20:59:32Z",
+    "total_runs": 3,
     "total_successes": 0,
-    "total_failures": 2,
-    "consecutive_failures": 2,
+    "total_failures": 3,
+    "consecutive_failures": 3,
     "success_rate": 0,
-    "last_error": "272862a\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_error": "73c8af5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   }
 }
