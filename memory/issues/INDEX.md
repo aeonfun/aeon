@@ -15,6 +15,7 @@
 | [ISS-009](ISS-009.md) | polymarket: no_file_match — evals.json key likely mismatches monitor-polymarket | high | output-format | 2026-04-26 | polymarket |
 | [ISS-010](ISS-010.md) | token-alert: no_file_match — absent despite cron-state success | high | output-format | 2026-04-26 | token-alert |
 | [ISS-011](ISS-011.md) | skill-health: no_file_match — absent despite cron-state success | high | output-format | 2026-04-26 | skill-health |
+| [ISS-012](ISS-012.md) | reddit-digest cannot run on JSON API — Reddit blocks GHA IPs (same root as ISS-002) | high | sandbox-limitation | 2026-04-26 | reddit-digest |
 
 ## Resolved
 

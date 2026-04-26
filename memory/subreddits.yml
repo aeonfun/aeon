@@ -1,0 +1,11 @@
+subreddits:
+  - { name: r/MachineLearning,   subreddit: MachineLearning }
+  - { name: r/LocalLLaMA,        subreddit: LocalLLaMA }
+  - { name: r/programming,       subreddit: programming }
+  - { name: r/rust,              subreddit: rust }
+  - { name: r/netsec,            subreddit: netsec }
+  - { name: r/science,           subreddit: science }
+  - { name: r/cryptocurrency,    subreddit: cryptocurrency }
+  - { name: r/algotrading,       subreddit: algotrading }
+  - { name: r/ethfinance,        subreddit: ethfinance }
+  - { name: r/singularity,       subreddit: singularity }

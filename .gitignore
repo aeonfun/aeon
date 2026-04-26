@@ -12,6 +12,15 @@
 # Caches (regenerated per run)
 .xai-cache/
 .bankr-cache/
+.reddit-cache/
+.reddit-*.rss
+.reddit-*.json
+.reddit-parse.js
+.reddit-parse.py
+.reddit-debug.js
+reddit-*.json
+reddit-*.rss
+reddit-ml.rss
 .pending-notify/
 .pending-replicate/
 .pending-supernotes/
