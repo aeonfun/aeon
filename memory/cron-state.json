@@ -63,13 +63,13 @@
     "last_dispatch": "2026-04-25T13:08:46Z",
     "last_status": "failed",
     "last_success": "2026-04-25T13:10:10Z",
-    "total_runs": 20,
+    "total_runs": 21,
     "total_successes": 1,
-    "total_failures": 19,
-    "consecutive_failures": 19,
+    "total_failures": 20,
+    "consecutive_failures": 20,
     "success_rate": 0.05,
-    "last_failed": "2026-04-26T23:04:04Z",
-    "last_error": "a91c3a0\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_failed": "2026-04-26T23:53:46Z",
+    "last_error": "ff1979b\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-overview": {
     "last_dispatch": "2026-04-25T13:08:46Z",
