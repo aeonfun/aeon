@@ -27,13 +27,13 @@
     "last_dispatch": "2026-04-25T13:08:46Z",
     "last_status": "failed",
     "last_success": "2026-04-25T13:18:54Z",
-    "total_runs": 7,
+    "total_runs": 8,
     "total_successes": 1,
-    "total_failures": 6,
-    "consecutive_failures": 6,
-    "success_rate": 0.14,
-    "last_failed": "2026-04-26T15:26:56Z",
-    "last_error": "17a6797\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 7,
+    "consecutive_failures": 7,
+    "success_rate": 0.13,
+    "last_failed": "2026-04-26T16:07:28Z",
+    "last_error": "66a6ba8\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "on-chain-monitor": {
     "last_dispatch": "2026-04-25T13:08:46Z",
