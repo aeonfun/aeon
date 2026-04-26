@@ -815,13 +815,13 @@
   },
   "update-gallery": {
     "last_status": "failed",
-    "last_failed": "2026-04-26T20:59:12Z",
-    "total_runs": 5,
+    "last_failed": "2026-04-26T21:44:23Z",
+    "total_runs": 7,
     "total_successes": 0,
-    "total_failures": 5,
-    "consecutive_failures": 5,
+    "total_failures": 7,
+    "consecutive_failures": 7,
     "success_rate": 0,
-    "last_error": "cfb4858\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_error": "46ca47e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "fork-skill-digest": {
     "last_status": "failed",
