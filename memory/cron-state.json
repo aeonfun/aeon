@@ -171,13 +171,13 @@
     "last_dispatch": "2026-04-25T13:53:42Z",
     "last_status": "failed",
     "last_success": "2026-04-25T14:00:56Z",
-    "total_runs": 6,
+    "total_runs": 7,
     "total_successes": 1,
-    "total_failures": 5,
-    "consecutive_failures": 5,
-    "success_rate": 0.17,
-    "last_failed": "2026-04-26T17:02:00Z",
-    "last_error": "b85ef0e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 6,
+    "consecutive_failures": 6,
+    "success_rate": 0.14,
+    "last_failed": "2026-04-26T17:53:17Z",
+    "last_error": "f94e64a\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "paper-pick": {
     "last_status": "failed",
