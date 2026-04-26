@@ -182,14 +182,14 @@
   "paper-pick": {
     "last_status": "failed",
     "last_success": "2026-04-26T08:06:50Z",
-    "total_runs": 10,
+    "total_runs": 11,
     "total_successes": 3,
-    "total_failures": 7,
-    "consecutive_failures": 7,
-    "success_rate": 0.3,
+    "total_failures": 8,
+    "consecutive_failures": 8,
+    "success_rate": 0.27,
     "last_dispatch": "2026-04-25T14:38:53Z",
-    "last_failed": "2026-04-26T19:35:14Z",
-    "last_error": "3bf2ae0\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_failed": "2026-04-26T20:08:56Z",
+    "last_error": "81c1402\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "daily-routine": {
     "last_status": "success",
