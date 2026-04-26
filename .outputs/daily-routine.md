@@ -1,18 +1,27 @@
 ## Summary
 
-Executed `skills/daily-routine/SKILL.md` for 2026-04-25 in standalone fallback mode (no chain context provided).
+Executed `skills/daily-routine/SKILL.md` for 2026-04-26 in standalone fallback mode (no chain context — yesterday's `.outputs/*.md` were stale).
 
-**What I did:**
-- Reused the existing `### token-movers` output already in today's log and `.outputs/token-movers.md` instead of re-running it.
-- Ran paper-pick inline against the Hugging Face daily-papers feed; picked **COSPLAY (Co-Evolving LLM Decision and Skill Bank Agents)**, arXiv 2604.20987, over the higher-upvote LLaTiSA paper because it maps directly onto swarm-fund's Birth → Canary → Apex lifecycle.
-- Ran github-issues inline via `gh search issues --owner tomscaria` — 0 new issues in the 24h window. Logged `GITHUB_ISSUES_OK`.
-- Ran hn-digest inline via the Algolia front_page endpoint; selected 6 stories led by DeepSeek v4 (1979pts) and Google×Anthropic $40B (664pts).
-- Tweet roundup ran via WebSearch fallback — `XAI_API_KEY` is not reachable from sandbox bash (env-var expansion is blocked).
+**Headlines:**
+- **Token movers — gaming rotation flipped:** APE went from yesterday's +39.3% BREAKOUT/PUMP-RISK winner to today's -17.2% CAPITULATION loser. CHIP also held its capitulation move (-15.3%). New BREAKOUT face: BSB +27.2% / 7d +206%, also trending. Tape mixed: 48/100 top-100 green, BTC flat at $78.1k.
+- **Paper of the day:** LLaTiSA (arXiv 2604.17295, ↑80) — hierarchical TSR taxonomy + 83k HiTSR dataset + VLM that fuses chart-images with numerical tables. Direct read for hermes-arb temporal alignment and CalibrationGap historical features.
+- **GitHub issues:** 0 new across `user:tomscaria` repos. GITHUB_ISSUES_OK.
+- **HN digest:** 6 stories — Erdős+ChatGPT (325/192), coding-assistance to revive projects (263/55), iPhone silent-install Tell HN (221/99), Alzheimer's progress (205/108), EU Age Control digital-ID trojan (140/49), DeepSeek-V4 Day 0 with SGLang verified-RL (47).
+- **Tweets:** PM/Kalshi at ~$20B both pushing perps; Claude Opus 4.6 leading LMSYS + 65.3% SWE-bench; Apoorva Mehta launches Abundance ($100M AI-agent hedge fund); Bun mainstream / PostgreSQL 55.6% / Zed gaining.
 
 **Files written:**
-- `.outputs/daily-routine.txt` — combined digest (2,734 chars, under the 4,000 cap)
-- `.pending-notify/1777130000.md` — outbound notification queued for postprocess-notify.sh
-- `memory/logs/2026-04-25.md` — appended `## Daily Routine` log entry
+- `.outputs/daily-routine.md` — combined notification body (3,339 chars)
+- `.outputs/cg-markets.json`, `.outputs/cg-trending.json`, `.outputs/hf-daily.json`, `.outputs/hn-front.json` — raw fetches
+- `.outputs/movers.js` — node-based mover analyzer (python3 blocked under this sandbox config; switched to node)
+- `.pending-notify/1777191079.md` — outbound queued for postprocess-notify.sh delivery
+- `memory/logs/2026-04-26.md` — appended `## Daily Routine` log entry
 
 **Follow-ups:**
-- `./notify` direct call returned "Unhandled node type: string" again — same hook bug seen in today's polymarket-comments and narrative-tracker runs. Worth filing under `memory/issues/` as a recurring pattern. Postprocess-notify.sh fallback covers actual delivery.
+- `./notify` "Unhandled node type: string" hook-block recurs (same pattern as yesterday across multiple skills) — postprocess fallback covers actual delivery, but worth a `memory/issues/` entry.
+- `python3` is fully blocked in this sandbox — node is the only scripting fallback. Existing `.outputs/parse_papers.py` / `.outputs/parse_pp.py` would also fail today; worth porting to node if those skills run unattended.
+
+Sources:
+- [PANews — Polymarket vs Kalshi: Perps battle](https://x.com/PANONYGroup/status/2046887620157079674)
+- [WSJ — Kalshi & Polymarket at $20B valuations](https://x.com/WSJ/status/2030062898295328916)
+- [LLM News April 2026](https://llm-stats.com/ai-news)
+- [Top Open Source Projects 2026](https://dev.to/jaysaadana/top-open-source-projects-that-will-dominate-2026-2moa)
