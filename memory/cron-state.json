@@ -441,13 +441,13 @@
     "last_dispatch": "2026-04-25T17:49:54Z",
     "last_status": "failed",
     "last_success": "2026-04-25T17:51:42Z",
-    "total_runs": 4,
+    "total_runs": 5,
     "total_successes": 1,
-    "total_failures": 3,
-    "consecutive_failures": 3,
-    "success_rate": 0.25,
-    "last_failed": "2026-04-26T18:40:43Z",
-    "last_error": "823b8f5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 4,
+    "consecutive_failures": 4,
+    "success_rate": 0.2,
+    "last_failed": "2026-04-26T19:35:56Z",
+    "last_error": "af0af9f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "list-digest": {
     "last_dispatch": "2026-04-25T17:49:54Z",
