@@ -43,6 +43,7 @@
 | `vibecoding-digest` | Reddit blocks GHA IPs (ISS-002) | Land `scripts/prefetch-reddit.sh` w/ Reddit OAuth |
 | `on-chain-monitor` / `treasury-info` / `defi-monitor` | `memory/on-chain-watches.yml` empty | Populate watches (HL bridge, PM CTF, Kalshi) |
 | `tweet-roundup` | No `## Tweet Roundup Topics` in MEMORY.md | Add topics or wire prefetch-xai.sh case |
+| `rss-digest` | `memory/feeds.yml` does not exist | Create with feeds for prediction-market microstructure (Polymarket blog, Kalshi blog), calibration/agentic-RL research (arXiv cs.LG, cs.AI), grants (AWS, Anthropic, Uniswap Foundation), and crypto market structure (Galaxy, Delphi, Coindesk) |
 
 ## Cron-state / fleet bootstrap progress
 - 2026-04-25 12:50 UTC: 94 enabled skills had no entry in `cron-state.json`.
