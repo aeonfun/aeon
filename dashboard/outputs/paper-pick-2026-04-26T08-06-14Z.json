@@ -1,0 +1,82 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "title",
+        "metadata",
+        "description",
+        "links"
+      ]
+    },
+    "title": {
+      "type": "Heading",
+      "props": {
+        "text": "LLaTiSA: Towards Difficulty-Stratified Time Series Reasoning from Visual Perception to Semantics",
+        "level": "h2"
+      }
+    },
+    "metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "authors-date",
+        "score"
+      ]
+    },
+    "authors-date": {
+      "type": "Text",
+      "props": {
+        "text": "Ding, Zhang, Dai, Wang, Zong, Liu, Chu (Apr 19)",
+        "variant": "caption"
+      }
+    },
+    "score": {
+      "type": "Badge",
+      "props": {
+        "text": "↑80",
+        "variant": "default"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "First TSR taxonomy across four cognitive complexity levels + 83k-sample HiTSR dataset with verified CoT — gives swarm-fund a ready-made benchmark scaffold for stratifying CalibrationGap regime-detection difficulty, and the visualized-pattern + numerical-table hybrid is a direct cheap-to-replicate input format for the agent loop.",
+        "variant": "body"
+      }
+    },
+    "links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "read-link",
+        "pdf-link"
+      ]
+    },
+    "read-link": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.17295"
+      }
+    },
+    "pdf-link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.17295"
+      }
+    }
+  }
+}

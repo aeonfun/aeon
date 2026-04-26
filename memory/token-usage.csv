@@ -13,4 +13,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-25,push-recap,claude-opus-4-7,84,5410,712248,52460
 2026-04-25,evening-recap,claude-sonnet-4-6,256,10601,770201,66923
 2026-04-26,skill-evals,claude-sonnet-4-6,22,24809,994617,51180
-2026-04-26,paper-digest,claude-opus-4-7,283,4412,354145,38077
+2026-04-26,paper-pick,claude-opus-4-7,25,8324,742358,37653
