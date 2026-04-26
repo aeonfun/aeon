@@ -1,0 +1,237 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Evals"
+      },
+      "children": [
+        "alert_status",
+        "sep_1",
+        "metrics_stack",
+        "sep_2",
+        "action_section",
+        "sep_3",
+        "regressions_section",
+        "sep_4",
+        "article_link"
+      ]
+    },
+    "alert_status": {
+      "type": "Alert",
+      "props": {
+        "title": "SKILL_EVALS_REGRESSED",
+        "message": "9 new failures detected",
+        "type": "error"
+      }
+    },
+    "sep_1": {
+      "type": "Separator"
+    },
+    "metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_failures",
+        "stat_fixed",
+        "stat_coverage"
+      ]
+    },
+    "stat_failures": {
+      "type": "Stat",
+      "props": {
+        "label": "New Failures",
+        "value": "9"
+      }
+    },
+    "stat_fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "0"
+      }
+    },
+    "stat_coverage": {
+      "type": "Stat",
+      "props": {
+        "label": "Coverage",
+        "value": "14.4%",
+        "delta": "BOOTSTRAP"
+      }
+    },
+    "sep_2": {
+      "type": "Separator"
+    },
+    "action_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action_heading",
+        "action_target",
+        "action_steps",
+        "action_badge"
+      ]
+    },
+    "action_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Action",
+        "level": "h3"
+      }
+    },
+    "action_target": {
+      "type": "Text",
+      "props": {
+        "text": "Patch evals.json:polymarket",
+        "variant": "lead"
+      }
+    },
+    "action_steps": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "step_1",
+        "step_2"
+      ]
+    },
+    "step_1": {
+      "type": "Text",
+      "props": {
+        "text": "Rename key to monitor-polymarket"
+      }
+    },
+    "step_2": {
+      "type": "Text",
+      "props": {
+        "text": "Fix output_pattern"
+      }
+    },
+    "action_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-009 (mission-critical)",
+        "variant": "destructive"
+      }
+    },
+    "sep_3": {
+      "type": "Separator"
+    },
+    "regressions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "regressions_heading",
+        "reg_polymarket",
+        "reg_hn_digest",
+        "reg_token_alert"
+      ]
+    },
+    "regressions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Regressions",
+        "level": "h3"
+      }
+    },
+    "reg_polymarket": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reg_pm_name",
+        "reg_pm_error"
+      ]
+    },
+    "reg_pm_name": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket",
+        "variant": "lead"
+      }
+    },
+    "reg_pm_error": {
+      "type": "Badge",
+      "props": {
+        "text": "no_file_match (spec mismatch)",
+        "variant": "outline"
+      }
+    },
+    "reg_hn_digest": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reg_hn_name",
+        "reg_hn_error"
+      ]
+    },
+    "reg_hn_name": {
+      "type": "Text",
+      "props": {
+        "text": "hn-digest",
+        "variant": "lead"
+      }
+    },
+    "reg_hn_error": {
+      "type": "Badge",
+      "props": {
+        "text": "no_file_match (spec mismatch)",
+        "variant": "outline"
+      }
+    },
+    "reg_token_alert": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reg_ta_name",
+        "reg_ta_error"
+      ]
+    },
+    "reg_ta_name": {
+      "type": "Text",
+      "props": {
+        "text": "token-alert",
+        "variant": "lead"
+      }
+    },
+    "reg_ta_error": {
+      "type": "Badge",
+      "props": {
+        "text": "no_file_match despite cron-state success",
+        "variant": "outline"
+      }
+    },
+    "sep_4": {
+      "type": "Separator"
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Skill Evals Report",
+        "href": "articles/skill-evals-2026-04-26.md",
+        "source": "skill-evals"
+      }
+    }
+  }
+}
