@@ -1,0 +1,207 @@
+{
+  "root": "card_heartbeat",
+  "state": {},
+  "elements": {
+    "card_heartbeat": {
+      "type": "Card",
+      "props": {
+        "title": "Heartbeat",
+        "description": "08:05 UTC — DEGRADED"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_status",
+        "sep_1",
+        "heading_chains",
+        "stack_chains",
+        "text_suspect",
+        "sep_2",
+        "heading_issues",
+        "stack_issues",
+        "stat_open_issues"
+      ]
+    },
+    "alert_status": {
+      "type": "Alert",
+      "props": {
+        "title": "Both chain wrappers failing",
+        "type": "error"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_chains": {
+      "type": "Heading",
+      "props": {
+        "text": "Chain Failures",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_chains": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "chain_morning",
+        "chain_evening"
+      ]
+    },
+    "chain_morning": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_morning",
+        "text_morning"
+      ]
+    },
+    "badge_morning": {
+      "type": "Badge",
+      "props": {
+        "text": "chain:morning-brief",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "text_morning": {
+      "type": "Text",
+      "props": {
+        "text": "Died at 08:04 UTC. Step 1 dispatch never emitted, no skills launched.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "chain_evening": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_evening",
+        "text_evening"
+      ]
+    },
+    "badge_evening": {
+      "type": "Badge",
+      "props": {
+        "text": "chain:evening-rollup",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "text_evening": {
+      "type": "Text",
+      "props": {
+        "text": "Failed last night at 21:36 UTC. Underlying skills succeeded, wrapper exit 1.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_suspect": {
+      "type": "Text",
+      "props": {
+        "text": "Suspect: chain-runner.yml dispatch_skill or yaml-parse path",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_issues": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues Opened Today",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_opened",
+        "text_issue_ids",
+        "text_severity",
+        "text_category",
+        "text_note"
+      ]
+    },
+    "stat_opened": {
+      "type": "Stat",
+      "props": {
+        "label": "Opened by skill-evals",
+        "value": "9"
+      },
+      "children": []
+    },
+    "text_issue_ids": {
+      "type": "Text",
+      "props": {
+        "text": "Issue IDs: ISS-003 through ISS-011",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_severity": {
+      "type": "Text",
+      "props": {
+        "text": "Severity: High",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_category": {
+      "type": "Text",
+      "props": {
+        "text": "Category: no_file_match. Mostly bootstrap skills that never dispatched, not real regressions.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_note": {
+      "type": "Text",
+      "props": {
+        "text": "Status page updated.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stat_open_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Total open issues",
+        "value": "11"
+      },
+      "children": []
+    }
+  }
+}
