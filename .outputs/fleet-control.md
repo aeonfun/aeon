@@ -1,16 +1,16 @@
 ## Summary
 
-Ran `fleet-control` in Health Check mode (var empty, default).
+Ran `fleet-control` in default Health Check Mode (var empty).
 
-**Outcome:** `FLEET_EMPTY` — no managed instances; silent stop per skill spec.
+**Pre-flight:** gh auth ok (`tomscaria`), rate limit 4988/5000.
 
-**Files created/modified:**
-- `memory/instances.json` — bootstrapped to `{"instances": []}` (was missing).
-- `memory/state/fleet-control-state.json` — bootstrapped to `{"instances": {}, "last_full_summary_date": ""}` (was missing).
-- `memory/logs/2026-04-25.md` — appended fleet-control health-check entry with `FLEET_EMPTY` verdict.
+**Result:** `FLEET_EMPTY` — `memory/instances.json` contains `{"instances": []}`. Per skill spec (step 3), this is a silent stop: log only, no notification.
 
-**Pre-flight signals:** `gh auth status` ok (account `tomscaria`, GH_TOKEN), `rate_remaining=4953` — well above the 50 floor.
+**Files modified:**
+- `memory/logs/2026-04-26.md` — appended fleet-control health-check entry (`FLEET_EMPTY`).
 
-**Notification:** none sent. Per spec, an empty fleet is a silent no-op so the operator isn't paged on every 09:00/15:00 UTC tick.
+**Files unchanged (per spec):**
+- `memory/instances.json` — registry stays empty; skill never deletes/auto-populates.
+- `memory/state/fleet-control-state.json` — `last_full_summary_date` only advances on runs that notify; this run did not.
 
-**Follow-up (operator action required):** Aeon does not yet manage any child instances. To populate the fleet, append entries to `memory/instances.json` of the form `{name, repo, purpose, parent, created, skills_enabled}`. Next health check will begin classifying them automatically.
+**Operator follow-up:** to make this skill productive, populate `memory/instances.json` with managed child Aeons (each entry needing at least `name`, `repo`, `purpose`, `parent`, `created`). Until then, every Health Check / Status / Dispatch run will short-circuit at this step.
