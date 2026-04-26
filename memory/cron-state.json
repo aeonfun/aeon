@@ -647,6 +647,13 @@
   },
   "github-trending": {
     "last_dispatch": "2026-04-26T09:12:02Z",
-    "last_status": "dispatched"
+    "last_status": "failed",
+    "last_failed": "2026-04-26T09:14:32Z",
+    "total_runs": 1,
+    "total_successes": 0,
+    "total_failures": 1,
+    "consecutive_failures": 1,
+    "success_rate": 0,
+    "last_error": "s\":1078,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.028125999999999998,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":16,\""
   }
 }
