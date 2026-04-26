@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "paper-digest"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "No topics configured — aborted",
+        "message": "Add ## Interests bullets to memory/MEMORY.md or pass var=\"topic\".",
+        "type": "warning"
+      }
+    }
+  }
+}
