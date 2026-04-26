@@ -807,13 +807,13 @@
   },
   "fork-contributor-leaderboard": {
     "last_status": "failed",
-    "last_failed": "2026-04-26T22:24:27Z",
-    "total_runs": 8,
+    "last_failed": "2026-04-26T23:06:27Z",
+    "total_runs": 10,
     "total_successes": 0,
-    "total_failures": 8,
-    "consecutive_failures": 8,
+    "total_failures": 10,
+    "consecutive_failures": 10,
     "success_rate": 0,
-    "last_error": "3375549\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_error": "3ee1e8d\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "update-gallery": {
     "last_status": "failed",
