@@ -274,13 +274,13 @@
     "last_dispatch": "2026-04-25T14:38:53Z",
     "last_status": "failed",
     "last_success": "2026-04-25T14:40:56Z",
-    "total_runs": 6,
+    "total_runs": 8,
     "total_successes": 1,
-    "total_failures": 5,
-    "consecutive_failures": 5,
-    "success_rate": 0.17,
-    "last_failed": "2026-04-26T15:28:04Z",
-    "last_error": "a1f15a7\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 7,
+    "consecutive_failures": 7,
+    "success_rate": 0.13,
+    "last_failed": "2026-04-26T16:08:23Z",
+    "last_error": "f880bbd\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "security-digest": {
     "last_dispatch": "2026-04-25T14:38:53Z",
