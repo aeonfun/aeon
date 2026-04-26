@@ -757,13 +757,13 @@
   "github-releases": {
     "last_dispatch": "2026-04-26T11:50:40Z",
     "last_status": "failed",
-    "last_failed": "2026-04-26T22:21:49Z",
-    "total_runs": 17,
+    "last_failed": "2026-04-26T23:03:45Z",
+    "total_runs": 18,
     "total_successes": 0,
-    "total_failures": 17,
-    "consecutive_failures": 17,
+    "total_failures": 18,
+    "consecutive_failures": 18,
     "success_rate": 0,
-    "last_error": "e0a3019\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_error": "7e4922a\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "workflow-security-audit": {
     "last_status": "failed",
