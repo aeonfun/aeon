@@ -765,13 +765,13 @@
   },
   "channel-recap": {
     "last_status": "failed",
-    "last_failed": "2026-04-26T17:54:46Z",
-    "total_runs": 2,
+    "last_failed": "2026-04-26T18:41:13Z",
+    "total_runs": 3,
     "total_successes": 0,
-    "total_failures": 2,
-    "consecutive_failures": 2,
+    "total_failures": 3,
+    "consecutive_failures": 3,
     "success_rate": 0,
-    "last_error": "39a7531\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "last_error": "d7e3cd1\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "skill-leaderboard": {
     "last_status": "failed",
