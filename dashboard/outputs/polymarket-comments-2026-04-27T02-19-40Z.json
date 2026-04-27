@@ -1,0 +1,148 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments",
+        "description": "2026-04-27"
+      },
+      "children": [
+        "stat_markets",
+        "alert_upgrade",
+        "sep1",
+        "stack_markets"
+      ]
+    },
+    "stat_markets": {
+      "type": "Stat",
+      "props": {
+        "label": "Markets covered",
+        "value": "5",
+        "delta": "4 politics, 1 crypto"
+      }
+    },
+    "alert_upgrade": {
+      "type": "Alert",
+      "props": {
+        "title": "OPS ALERT: Polymarket platform upgrade Tue Apr 28",
+        "message": "Wipes ALL limit orders (taerv534, no migration)",
+        "type": "warning"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_markets": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market_iran",
+        "market_tamil",
+        "market_megaeth",
+        "sep2",
+        "digest"
+      ]
+    },
+    "market_iran": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_iran",
+        "text_iran_1",
+        "text_iran_2"
+      ]
+    },
+    "heading_iran": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran ceasefire",
+        "level": "h3"
+      }
+    },
+    "text_iran_1": {
+      "type": "Text",
+      "props": {
+        "text": "UMA-disputed — whales doubling, rules-lawyer thread"
+      }
+    },
+    "text_iran_2": {
+      "type": "Text",
+      "props": {
+        "text": "Peace deal: NYT 60-day memo + Ghalibaf quote = NO"
+      }
+    },
+    "market_tamil": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_tamil",
+        "text_tamil"
+      ]
+    },
+    "heading_tamil": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu DMK",
+        "level": "h3"
+      }
+    },
+    "text_tamil": {
+      "type": "Text",
+      "props": {
+        "text": "80% flagged as mispriced by 4 local voices (May 4 res)"
+      }
+    },
+    "market_megaeth": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_megaeth",
+        "text_megaeth"
+      ]
+    },
+    "heading_megaeth": {
+      "type": "Heading",
+      "props": {
+        "text": "MegaETH",
+        "level": "h3"
+      }
+    },
+    "text_megaeth": {
+      "type": "Text",
+      "props": {
+        "text": "1B FDV pre-market ATL 1.20B, insider-manipulation claim"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "digest": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full digest queued",
+        "href": ".pending-notify/1777256250.md",
+        "source": "polymarket-comments"
+      }
+    }
+  }
+}
