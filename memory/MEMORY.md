@@ -55,6 +55,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 ## Recent Articles (last 7 days)
 | Date | Title | Topic |
 |------|-------|-------|
+| 2026-04-27 | Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up. | bot-dominance + insider-trading conduct rules |
 | 2026-04-25 | Settlement-Basis Risk: Why the Same BTC Binary Resolves Differently on Polymarket and Kalshi | technical-explainer |
 | 2026-04-25 | Deep Research: Kalshi↔Polymarket BTC Binary Arbitrage | hermes-arb backtest |
 | 2026-04-25 | Aeon Stopped Shipping Single-Instance Features Four Days Ago | repo-article on aaronjmars/aeon fleet pivot |

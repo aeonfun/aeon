@@ -1,0 +1,22 @@
+{
+  "root": "card-article",
+  "state": {},
+  "elements": {
+    "card-article": {
+      "type": "Card",
+      "props": {
+        "title": "article"
+      },
+      "children": [
+        "story-link-1"
+      ]
+    },
+    "story-link-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-04-27.md"
+      }
+    }
+  }
+}
