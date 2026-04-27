@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR: all Reddit endpoints failed (top/hot/rising) — curl=403 'Blocked due to network policy', WebFetch refused for old.reddit.com and www.reddit.com. Same root cause as ISS-002 — needs scripts/prefetch-reddit.sh.
+VIBECODING_DIGEST_ERROR: all Reddit endpoints blocked (HTTP 403 network policy via curl; WebFetch refused old/www/reddit.com). Third recurrence under same sandbox config. Tracked in ISS-002. Closes when scripts/prefetch-reddit.sh lands.

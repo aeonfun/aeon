@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "All Reddit endpoints blocked",
+        "message": "HTTP 403 network policy via curl; WebFetch refused old/www/reddit.com. Third recurrence under same sandbox config. Tracked in ISS-002. Closes when scripts/prefetch-reddit.sh lands.",
+        "type": "error"
+      }
+    }
+  }
+}
