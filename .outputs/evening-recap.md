@@ -1,27 +1,30 @@
-*Evening Recap — 2026-04-27*
-_TL;DR: heavy ship day on aaronjmars/aeon — 3 user-visible PRs merged — but evening-rollup chain itself is still wrapper-failed for the 3rd run and Revenant book gets wiped in 14h._
+Done. Here is the recap that was composed and queued:
 
-*Headlines:*
-- aaronjmars/aeon — PRs #142 skill-analytics, #144 contributor-reward, #145 SHOWCASE.md merged · https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-04-27.md
-- weekly-review fired (Mon 20:09 UTC, commit 5e1701a) · articles/weekly-review-2026-04-27.md
-- polymarket-comments — UMA dispute concentration + Tamil Nadu DMK 80% mispricing (May 4) + 9 new handles · memory/logs/2026-04-27.md
-- ISS-014 filed — reply-maker XAI prefetch case missing · memory/issues/ISS-014.md
-- code-health addendum — shell-injection in dashboard/app/api/secrets/route.ts:96 · articles/code-health-2026-04-27.md
+---
 
-*Notable:*
-- 3 paper-pick runs (PhD-prep + 2 daily) — LLaTiSA + Le 2026 four-component
-- narrative-tracker refinement — Kalshi launch=Apr 27, HL/Aster split, Alpenglow Q4 2026
-- security-digest — Kentico / MS Defender / Cisco SD-WAN trio (PATCH TODAY)
-- unlock-monitor — EIGEN $6.56M May 1; FTX preferred-equity record date Apr 30
-- cost-report — $118 / 19 runs / $506 mo projected
+**Evening Recap — 2026-04-27**
 
-*Decisions for tomorrow:*
-- Flatten Revenant resting-quote book before 2026-04-28 07 UTC — V2 cutover at 11 UTC wipes ALL limit orders
-- Fix chain-runner.yml dispatch_skill() — 3 chains wrapper-failed today despite skills succeeding (evening-rollup, morning-brief, weekly-grant-update)
-- Decide on PR tomscaria/aeon#1 (~44h stalled — list-digest/channel-recap var-disable)
+**Trading loop:** 1 monitor-polymarket scan (02:18Z, direct dispatch). Chain-runner DEGRADED → no subsequent scheduled scans fired today.
 
-*Blockers:*
-- chain:evening-rollup, chain:morning-brief, chain:weekly-grant-update — wrapper failed (chain-runner.yml dispatch_skill bug)
-- agent-buzz — all sources failed (sandbox curl env-var + WebFetch GET-only)
+**Signals fired:** none logged. Revenant: 29 closed / 76% win / +$415 / Sharpe 0.31 — no new trades.
 
-_+~30 routine runs collapsed · sources: log=ok cron-state=ok_
+**Revenant orders:** URGENT. V2 cutover 2026-04-28 11 UTC wipes ALL resting limit orders. Flatten book before 07 UTC.
+
+**NAV delta:** no closes. Macro: BTC +2.1%, ETH +3.2%, SOL +1.9%.
+
+**Skill failures:** chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update wrapper-failed (same dispatch\_skill() bug). 59 skills DEGRADED historically from Apr-26 ISS-013 storm, recovering naturally.
+
+**Top 3 today:**
+1. arXiv:2511.03628 LiveTradeBench — "LMArena scores ≠ trading outcomes"; PM as primary LLM eval env (PhD-track).
+2. PM comments: Tamil Nadu DMK ~80% → est. 55% fair value (May 4 resolution); UMA-dispute concentration risk flagged.
+3. PRs #142/#144/#145 merged (aaronjmars/aeon) + PR #20 shipped to swarm-fund-mvp (markdown image-strip regex fix).
+
+---
+
+## Summary
+
+- Read `memory/MEMORY.md`, today's log (1784 lines), `memory/cron-state.json`, and `memory/issues/INDEX.md`
+- Composed trading-loop-focused Telegram digest per var override (under 200 words)
+- Queued full message at `.pending-notify/2026-04-27T21-45-00Z-evening-recap-var.md` — `./notify` calls blocked by hook ("Contains simple_expansion"); delivery depends on workflow-side pickup
+- Appended log entry to `memory/logs/2026-04-27.md`
+- Follow-up: V2 cutover is the immediate critical action — Revenant orderbook must be flattened before 07 UTC 2026-04-28
