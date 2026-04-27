@@ -1,20 +1,22 @@
 ## Summary
 
-Ran `defi-overview` for 2026-04-27, full market read (var=none).
+Ran `defi-overview` (var=none, full market read) — second run of the day, after a ~02:11 UTC AM slot from chain-runner.
 
-**Verdict: Mixed** — TVL flat (+0.3% 24h, $85.5B), DEX volume bouncing +9% off weekend lows, stables idle. Real-demand contraction signal flagged: Aave V3 fees -60% / TVL -20% (7d) and Hyperliquid Perps fees -47% w/w.
+**Verdict: Mixed** — DEX vol +13% but TVL flat ($84.1B, +0.1% 24h) and stables zero ($318.8B). Speculative chase, no real inflows. Big 7d aftershock (-2.3% TVL) from the Apr-17 Ethena/Aave unwind is cooling vs yesterday's -15.2% reading.
 
-**Sections shipped:**
-- Top chains: Ethereum $46.1B / BSC $5.6B / Solana $5.6B
-- Protocol movers: only ↑ Bedrock uniBTC +11% cleared the 10%/$100M gate; no chain cleared 5%/$500M (largest 1d Sui +2.6%); Plasma 7d -57% noted as no-confirmed-catalyst flag
-- Fees leaders (24h): Tether $16.5M, Circle $6.6M, Canton $2.1M (-10%)
-- DEX vol: $4.28B (+9.4% 1d); Uniswap V4 $640M, Pancake V3 $358M, Uniswap V3 $312M (+55%)
-- Stables: $319B flat; only single-issuer 1d notable USDe -1.6% (7d -32%)
-- Real yield top 3 by apyBase: USDC-CBBTC (UniV3, Base) 17.1%, APT (Amnis) 14.8%, APXUSD (Pendle) 14.4%
-- Incentive yield: CVXCRV 25.9% via CRV ($33M), SDCRV 21.6% via CRV ($27M)
+**Key shipped sections:**
+- Top chains: Ethereum $45.3B / BSC $5.5B / Solana $5.5B (no |c1d|≥1% to show)
+- Chain movers: dropped — none cleared 5%/$500M (largest: Plasma +2.4%; Plasma still flags 7d -57.7% incentive-unwind)
+- Protocol movers: dropped — none cleared 10%/$100M today; AM's Bedrock uniBTC +10.5% rolled below threshold by PM (quick-fade)
+- Fees leaders: Tether $16.5M / Circle $6.6M / Canton $2.1M (all flat vs 7d avg). Aave V3 -36% and HL Perps -43% vs 7d avg — real-demand contraction signal still on.
+- Fees beating TVL: dropped (zero passed vs 2 yesterday — Apr-17 unwind cooling)
+- DEX vol: $4.4B (+13% 1d, -49% 7d). Uniswap V4 $0.79B (+26%), Aerodrome Slipstream $0.39B (+145%), PancakeSwap V3 $0.36B. Kalshi $250M (+38%) — second-day Kalshi crypto-perps absorption, supports hermes-arb basis thesis.
+- Stables: USDe -1.7% ($3.69B, Ethena multi-week unwind aftershock), USDD +1.3%, crvUSD -2.0%
+- Real yield: top-3 by apyBase all DEX-LP (Uniswap v3/v4 USDC pairs, 16-25%, $11-20M TVL, ilRisk). Pendle APYUSD (yesterday's #1) dropped on confidence collapse (binnedConfidence 2→1), not APY.
+- Incentive yield: Convex cvxCRV 26.9% / StakeDAO sdCRV 21.7% — identical pair to yesterday.
 
-**Files:** `.outputs/defi-overview.md`, `.pending-notify/1777256294.md`, `memory/logs/2026-04-27.md`, plus `.gitignore` updates for scratch artifacts.
+**Files:** `.outputs/defi-overview.md` (overwrote AM summary), `.pending-notify/1777291774.md` (1936 chars), `memory/logs/2026-04-27.md`, scratch JSON in `.audit-tmp/`.
 
-**Notification:** queued at `.pending-notify/1777256294.md` (1553 chars). Direct `./notify` invocation hook-blocked again (`Unhandled node type: file_redirect` and `Unhandled node type: string` for both `MSG=$(<file)` and `$(cat file)` forms — same recurring sandbox bug as 2026-04-26 daily-routine, polymarket-comments, narrative-tracker). Pending-file fallback used; workflow post-run delivery should pick it up.
+**Notification:** queued at `.pending-notify/1777291774.md` — direct `./notify "$(cat ...)"` hook-blocked again ("Unhandled node type: string") same recurring bug as AM and prior days. Workflow post-run pickup will deliver.
 
-**Follow-up:** the recurring `./notify` hook-block is now the most consistent skill-execution friction across daily skills. Worth promoting from log-only mention into `memory/issues/` so skill-repair targets it (the existing logs already capture every workaround attempted, so a one-line filing should suffice).
+**Follow-up:** the `./notify` multi-line hook-block has now hit AM defi-overview, PM defi-overview, daily-routine, polymarket-comments, narrative-tracker over multiple days — should be promoted from log mention into `memory/issues/` as the highest-frequency skill-execution friction in the system.
