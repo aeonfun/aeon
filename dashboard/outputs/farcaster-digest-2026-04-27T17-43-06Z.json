@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Skipped — Configuration Missing",
+        "message": "NEYNAR_API_KEY unset. Sources failed: search=fail, trending=fail, channels=fail. Operator config gap — see memory/topics/aeon-ops.md",
+        "type": "error"
+      }
+    }
+  }
+}
