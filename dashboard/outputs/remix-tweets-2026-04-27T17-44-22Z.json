@@ -1,0 +1,165 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "error-alert",
+        "sep0",
+        "details"
+      ]
+    },
+    "error-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No X handle configured (3rd repeat)",
+        "type": "error"
+      }
+    },
+    "sep0": {
+      "type": "Separator",
+      "props": {}
+    },
+    "details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "occurs-block",
+        "causes-block",
+        "fixes-block",
+        "rec-block"
+      ]
+    },
+    "occurs-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "occurs-label",
+        "occurs-1",
+        "occurs-2",
+        "occurs-3"
+      ]
+    },
+    "occurs-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Occurrences",
+        "level": "h4"
+      }
+    },
+    "occurs-1": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-25",
+        "variant": "body"
+      }
+    },
+    "occurs-2": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-27 17:30",
+        "variant": "body"
+      }
+    },
+    "occurs-3": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-27 (re-run)",
+        "variant": "body"
+      }
+    },
+    "causes-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "causes-label",
+        "cause-1",
+        "cause-2",
+        "cause-3"
+      ]
+    },
+    "causes-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h4"
+      }
+    },
+    "cause-1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE unset",
+        "variant": "body"
+      }
+    },
+    "cause-2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md has no @handle",
+        "variant": "body"
+      }
+    },
+    "cause-3": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml line 92 has no var",
+        "variant": "body"
+      }
+    },
+    "fixes-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fixes-label",
+        "fix-1",
+        "fix-2"
+      ]
+    },
+    "fixes-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix",
+        "level": "h4"
+      }
+    },
+    "fix-1": {
+      "type": "Text",
+      "props": {
+        "text": "Add X_HANDLE to env in .github/workflows/aeon.yml",
+        "variant": "body"
+      }
+    },
+    "fix-2": {
+      "type": "Text",
+      "props": {
+        "text": "Add @handle to soul/SOUL.md Identity",
+        "variant": "body"
+      }
+    },
+    "rec-block": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommendation",
+        "message": "Pause cron until resolved",
+        "type": "warning"
+      }
+    }
+  }
+}
