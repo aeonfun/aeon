@@ -1,0 +1,185 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health",
+        "description": "Code health re-run on aaronjmars/aeon (addendum to morning sweep)"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "affected-file",
+        "sep2",
+        "vuln-details",
+        "sep3",
+        "fix-section",
+        "sep4",
+        "coverage-gap",
+        "sep5",
+        "reference"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell Injection Vulnerability",
+        "message": "Defense-in-depth shell-injection in dashboard/app/api/secrets/route.ts:96",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "affected-file": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "file-label",
+        "file-path"
+      ]
+    },
+    "file-label": {
+      "type": "Text",
+      "props": {
+        "text": "Affected File:",
+        "variant": "lead"
+      }
+    },
+    "file-path": {
+      "type": "Badge",
+      "props": {
+        "text": "dashboard/app/api/secrets/route.ts:96",
+        "variant": "destructive"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "vuln-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "vuln-heading",
+        "vuln-text"
+      ]
+    },
+    "vuln-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vulnerability Details",
+        "level": "h3"
+      }
+    },
+    "vuln-text": {
+      "type": "Text",
+      "props": {
+        "text": "Secret value interpolated into gh secret set with only double-quotes escaped",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fix-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fix-heading",
+        "fix-approach",
+        "pattern-label",
+        "existing-pattern"
+      ]
+    },
+    "fix-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommended Fix",
+        "level": "h3"
+      }
+    },
+    "fix-approach": {
+      "type": "Text",
+      "props": {
+        "text": "Two-line fix: switch to stdin via execSync input pattern",
+        "variant": "body"
+      }
+    },
+    "pattern-label": {
+      "type": "Text",
+      "props": {
+        "text": "Pattern already in use:",
+        "variant": "lead"
+      }
+    },
+    "existing-pattern": {
+      "type": "Badge",
+      "props": {
+        "text": "app/api/auth/route.ts:46",
+        "variant": "secondary"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "coverage-gap": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "gap-heading",
+        "gap-file",
+        "gap-status"
+      ]
+    },
+    "gap-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Coverage Gap",
+        "level": "h3"
+      }
+    },
+    "gap-file": {
+      "type": "Badge",
+      "props": {
+        "text": "dashboard/a2a-server/mcp-server",
+        "variant": "outline"
+      }
+    },
+    "gap-status": {
+      "type": "Text",
+      "props": {
+        "text": "Unchanged",
+        "variant": "muted"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "reference": {
+      "type": "Link",
+      "props": {
+        "label": "Full report: articles/code-health-2026-04-27.md (addendum)",
+        "href": "articles/code-health-2026-04-27.md"
+      }
+    }
+  }
+}
