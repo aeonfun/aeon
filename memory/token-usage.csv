@@ -23,4 +23,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,defi-overview,claude-opus-4-7,62,40286,3824077,121012
 2026-04-27,polymarket-comments,claude-opus-4-7,102,36093,5982159,117440
 2026-04-27,push-recap,claude-opus-4-7,39,14780,2229855,71328
-2026-04-27,refresh-x,claude-opus-4-7,17,3186,398070,20396
+2026-04-27,list-digest,claude-opus-4-7,17,4342,495194,29347
