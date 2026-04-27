@@ -1,10 +1,5 @@
-No tracked token is configured in `memory/MEMORY.md` (no `## Tracked Token` table) and no contract address was passed via `var`. The skill spec requires a silent abort in this case — no article, no notification.
+Skill aborted per spec. The token-report skill expects a `## Tracked Token` section in MEMORY.md with `Contract` and `Chain` columns (e.g. an AEON token on Base). The current MEMORY.md has `## Tracked Tokens` with BTC/ETH/SOL via CoinGecko IDs — that format is for a different skill.
 
-## Summary
-
-- Ran `skills/token-report/SKILL.md` for 2026-04-25.
-- Found no `Tracked Token` in `MEMORY.md`; `${var}` is empty.
-- Aborted silently per skill spec — no article written, no notification sent.
-- Logged the abort in `memory/logs/2026-04-25.md`.
-
-To activate this skill, add a `## Tracked Token` section to `memory/MEMORY.md` with the token contract address and chain, or pass the contract address as `var` when dispatching.
+To activate token-report, either:
+1. Add a section to MEMORY.md: `## Tracked Token` with `| Token | Contract | Chain |` and a Base chain contract address.
+2. Pass a contract address via `var:` in the workflow dispatch.
