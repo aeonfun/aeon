@@ -1,0 +1,23 @@
+{
+  "updated_at": "2026-04-27T02:10:40Z",
+  "repos": {
+    "anthropics/anthropic-sdk-python": { "last_tag": "v0.97.0", "last_published_at": "2026-04-23T20:51:59Z" },
+    "anthropics/anthropic-sdk-typescript": { "last_tag": "sdk-v0.91.1", "last_published_at": "2026-04-24T23:26:44Z" },
+    "anthropics/claude-code": { "last_tag": "v2.1.119", "last_published_at": "2026-04-23T23:24:19Z" },
+    "anthropics/claude-agent-sdk-python": { "last_tag": "v0.1.68", "last_published_at": "2026-04-25T02:07:39Z" },
+    "openai/openai-python": { "last_tag": "v2.32.0", "last_published_at": "2026-04-15T22:27:40Z" },
+    "openai/openai-node": { "last_tag": "v6.34.0", "last_published_at": "2026-04-08T21:26:04Z" },
+    "openai/openai-agents-python": { "last_tag": "v0.14.6", "last_published_at": "2026-04-25T02:31:29Z" },
+    "BerriAI/litellm": { "last_tag": "v1.83.13-nightly", "last_published_at": "2026-04-24T05:47:31Z" },
+    "langchain-ai/langchain": { "last_tag": "langchain-openai==1.2.1", "last_published_at": "2026-04-24T19:46:59Z" },
+    "run-llama/llama_index": { "last_tag": "v0.14.21", "last_published_at": "2026-04-21T00:18:51Z" },
+    "vercel/next.js": { "last_tag": "v16.3.0-canary.2", "last_published_at": "2026-04-18T23:44:17Z" },
+    "supabase/supabase": { "last_tag": "v1.26.04", "last_published_at": "2026-04-09T14:38:08Z" },
+    "ggerganov/llama.cpp": { "last_tag": "b8941", "last_published_at": "2026-04-26T17:42:41Z" },
+    "huggingface/transformers": { "last_tag": "v5.6.2", "last_published_at": "2026-04-23T18:36:03Z" },
+    "anza-xyz/agave": { "last_tag": "v4.0.0-rc.0", "last_published_at": "2026-04-24T17:34:39Z" },
+    "ethereum/go-ethereum": { "last_tag": "v1.17.2", "last_published_at": "2026-03-30T11:24:52Z" },
+    "uniswap/v4-core": { "last_tag": "v4.0.0", "last_published_at": "2025-01-23T19:00:03Z" },
+    "aave/aave-v3-core": { "last_tag": "v1.19.4", "last_published_at": "2024-06-25T17:57:27Z" }
+  }
+}

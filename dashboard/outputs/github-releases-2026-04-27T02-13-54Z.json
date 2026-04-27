@@ -1,0 +1,130 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases — 2026-04-27",
+        "description": "2 updates · 0 asap · 0 soon · 2 fyi · 0 skipped"
+      },
+      "children": [
+        "mainStack"
+      ]
+    },
+    "mainStack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fyiSection",
+        "separator",
+        "sourceStats"
+      ]
+    },
+    "fyiSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fyiHeading",
+        "release1",
+        "release2"
+      ]
+    },
+    "fyiHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI",
+        "level": "h3"
+      }
+    },
+    "release1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b8941",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8941",
+        "source": "GitHub",
+        "score": "Adds register-tile and subgroup matmul tuning"
+      }
+    },
+    "release2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b8940",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8940",
+        "source": "GitHub",
+        "score": "Adds register-tile and subgroup matmul tuning"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sourceStats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "statsLabel",
+        "statsRow"
+      ]
+    },
+    "statsLabel": {
+      "type": "Text",
+      "props": {
+        "text": "sources",
+        "variant": "muted"
+      }
+    },
+    "statsRow": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "statOk",
+        "statNotfound",
+        "statRatelimited",
+        "statError"
+      ]
+    },
+    "statOk": {
+      "type": "Stat",
+      "props": {
+        "label": "ok",
+        "value": "18"
+      }
+    },
+    "statNotfound": {
+      "type": "Stat",
+      "props": {
+        "label": "notfound",
+        "value": "0"
+      }
+    },
+    "statRatelimited": {
+      "type": "Stat",
+      "props": {
+        "label": "ratelimited",
+        "value": "0"
+      }
+    },
+    "statError": {
+      "type": "Stat",
+      "props": {
+        "label": "error",
+        "value": "0"
+      }
+    }
+  }
+}
