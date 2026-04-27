@@ -1,0 +1,270 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health 2026-04-27",
+        "description": "aaronjmars/aeon"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "delta-section",
+        "sep1",
+        "metrics-section",
+        "sep2",
+        "findings-section",
+        "sep3",
+        "actions-section",
+        "sep4",
+        "full-report"
+      ]
+    },
+    "delta-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "delta-heading",
+        "commit-stat",
+        "pr-details"
+      ]
+    },
+    "delta-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Delta vs 2026-04-25",
+        "level": "h3"
+      }
+    },
+    "commit-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Commits",
+        "value": "1"
+      }
+    },
+    "pr-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pr-label",
+        "pr-badge-number",
+        "pr-badge-type",
+        "pr-badge-scope"
+      ]
+    },
+    "pr-label": {
+      "type": "Text",
+      "props": {
+        "text": "PR #144",
+        "variant": "body"
+      }
+    },
+    "pr-badge-number": {
+      "type": "Badge",
+      "props": {
+        "text": "contributor-reward",
+        "variant": "secondary"
+      }
+    },
+    "pr-badge-type": {
+      "type": "Badge",
+      "props": {
+        "text": "markdown only",
+        "variant": "outline"
+      }
+    },
+    "pr-badge-scope": {
+      "type": "Badge",
+      "props": {
+        "text": "zero runtime code",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "metrics-heading",
+        "metrics-grid"
+      ]
+    },
+    "metrics-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Code Metrics",
+        "level": "h3"
+      }
+    },
+    "metrics-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "todos-stat",
+        "secrets-stat",
+        "large-files-stat"
+      ]
+    },
+    "todos-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TODOs",
+        "value": "0"
+      }
+    },
+    "secrets-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Secrets",
+        "value": "0"
+      }
+    },
+    "large-files-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Files >500 lines",
+        "value": "1"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "findings-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "findings-heading",
+        "file-info",
+        "coverage-alert"
+      ]
+    },
+    "findings-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Findings",
+        "level": "h3"
+      }
+    },
+    "file-info": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "file-text",
+        "file-size-badge",
+        "file-status-badge"
+      ]
+    },
+    "file-text": {
+      "type": "Text",
+      "props": {
+        "text": "a2a-server/src/index.ts",
+        "variant": "body"
+      }
+    },
+    "file-size-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "578 lines",
+        "variant": "secondary"
+      }
+    },
+    "file-status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "unchanged",
+        "variant": "outline"
+      }
+    },
+    "coverage-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "P1: Test Coverage Gap",
+        "message": "dashboard/a2a-server/mcp-server coverage still zero — same priority as last week",
+        "type": "warning"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "actions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "actions-heading",
+        "action-item"
+      ]
+    },
+    "actions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Items",
+        "level": "h3"
+      }
+    },
+    "action-item": {
+      "type": "Alert",
+      "props": {
+        "title": "New ask",
+        "message": "Add skill-evals line for contributor-reward before first scheduled run 2026-05-04",
+        "type": "info"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full-report": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Code Health Report",
+        "href": "articles/code-health-2026-04-27.md",
+        "source": "code-health"
+      }
+    }
+  }
+}

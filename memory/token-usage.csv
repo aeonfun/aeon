@@ -15,5 +15,5 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-26,skill-evals,claude-sonnet-4-6,22,24809,994617,51180
 2026-04-26,reddit-digest,claude-opus-4-7,92,39903,5707860,121213
 2026-04-26,github-issues,claude-opus-4-7,25,4590,638071,49723
-2026-04-27,treasury-info,claude-opus-4-7,3340,1229,177978,20108
-2026-04-27,fetch-tweets,claude-opus-4-7,4298,17943,1323542,100152
+2026-04-27,token-alert,claude-opus-4-7,20,4401,433741,51631
+2026-04-27,code-health,claude-opus-4-7,71,26255,3765069,134452
