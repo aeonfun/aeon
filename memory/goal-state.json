@@ -1,10 +1,25 @@
 {
-  "run_at": "2026-04-25T18:32:25Z",
+  "run_at": "2026-04-27T02:30:00Z",
   "goals": {
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
-      "activity_count_14d": 4,
+      "activity_count_14d": 2,
       "last_activity_date": "2026-04-25"
+    },
+    "hermes-arb-gate-adjustment-bump-min-gap": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 4,
+      "last_activity_date": "2026-04-26"
+    },
+    "operator-config-sweep": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-04-27"
+    },
+    "external-feature-should-pr-enhancements-to-tomscaria-swarm-fund-mvp-proactively": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 2,
+      "last_activity_date": "2026-04-26"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
       "status": "AT_RISK",
@@ -14,12 +29,7 @@
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
       "activity_count_14d": 3,
-      "last_activity_date": "2026-04-25"
-    },
-    "external-feature-should-pr-enhancements-to-tomscaria-swarm-fund-mvp-proactively": {
-      "status": "NEEDS_ATTENTION",
-      "activity_count_14d": 1,
-      "last_activity_date": "2026-04-25"
+      "last_activity_date": "2026-04-26"
     }
   }
 }

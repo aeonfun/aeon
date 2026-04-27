@@ -1,0 +1,420 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker"
+      },
+      "children": [
+        "content"
+      ]
+    },
+    "content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "date_info",
+        "summary_stats",
+        "summary_trend",
+        "sep1",
+        "at_risk_section",
+        "sep2",
+        "on_track_section",
+        "sep3",
+        "sources_section"
+      ]
+    },
+    "date_info": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-27",
+        "variant": "caption"
+      }
+    },
+    "summary_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_total",
+        "stat_at_risk",
+        "stat_on_track"
+      ]
+    },
+    "stat_total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Goals",
+        "value": "6"
+      }
+    },
+    "stat_at_risk": {
+      "type": "Stat",
+      "props": {
+        "label": "At Risk",
+        "value": "1"
+      }
+    },
+    "stat_on_track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "5"
+      }
+    },
+    "summary_trend": {
+      "type": "Text",
+      "props": {
+        "text": "Overall: flat (1 ↑, 1 ↓, 2 new, 2 →)",
+        "variant": "muted"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "at_risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "at_risk_heading",
+        "at_risk_goal_1"
+      ]
+    },
+    "at_risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "At Risk",
+        "level": "h2"
+      }
+    },
+    "at_risk_goal_1": {
+      "type": "Alert",
+      "props": {
+        "title": "weekly-shiplog",
+        "message": "Mondays → forward to grant committees. Never run, 0 activity/14d. Today IS Monday — scheduled 09:00 UTC slot still pending or already missed. Action: Manually dispatch weekly-shiplog workflow today to seed first run.",
+        "type": "warning"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "on_track_heading",
+        "goal_1",
+        "goal_2",
+        "goal_3",
+        "goal_4",
+        "goal_5"
+      ]
+    },
+    "on_track_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "On Track",
+        "level": "h2"
+      }
+    },
+    "goal_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_1_title",
+        "goal_1_meta",
+        "goal_1_detail"
+      ]
+    },
+    "goal_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments",
+        "variant": "lead"
+      }
+    },
+    "goal_1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal_1_idle",
+        "goal_1_activity"
+      ]
+    },
+    "goal_1_idle": {
+      "type": "Badge",
+      "props": {
+        "text": "2d idle",
+        "variant": "outline"
+      }
+    },
+    "goal_1_activity": {
+      "type": "Badge",
+      "props": {
+        "text": "2 activity/14d",
+        "variant": "outline"
+      }
+    },
+    "goal_1_detail": {
+      "type": "Text",
+      "props": {
+        "text": "↓ degrading (was 4 — both skills have 15+ consecutive cron failures since chain-runner bug 2026-04-26)",
+        "variant": "caption"
+      }
+    },
+    "goal_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_2_title",
+        "goal_2_meta",
+        "goal_2_detail"
+      ]
+    },
+    "goal_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment (min-gap 7pp → 7.5–8pp)",
+        "variant": "lead"
+      }
+    },
+    "goal_2_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal_2_idle",
+        "goal_2_activity"
+      ]
+    },
+    "goal_2_idle": {
+      "type": "Badge",
+      "props": {
+        "text": "1d idle",
+        "variant": "outline"
+      }
+    },
+    "goal_2_activity": {
+      "type": "Badge",
+      "props": {
+        "text": "4 activity/14d",
+        "variant": "outline"
+      }
+    },
+    "goal_2_detail": {
+      "type": "Text",
+      "props": {
+        "text": "new — deep-research recommended bump 2026-04-25",
+        "variant": "caption"
+      }
+    },
+    "goal_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_3_title",
+        "goal_3_meta",
+        "goal_3_detail"
+      ]
+    },
+    "goal_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep (on-chain-watches.yml, var: gaps, NEYNAR_API_KEY, prefetch-vuln/reddit)",
+        "variant": "lead"
+      }
+    },
+    "goal_3_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal_3_idle",
+        "goal_3_activity"
+      ]
+    },
+    "goal_3_idle": {
+      "type": "Badge",
+      "props": {
+        "text": "0d idle",
+        "variant": "outline"
+      }
+    },
+    "goal_3_activity": {
+      "type": "Badge",
+      "props": {
+        "text": "7 activity/14d",
+        "variant": "outline"
+      }
+    },
+    "goal_3_detail": {
+      "type": "Text",
+      "props": {
+        "text": "new — every day surfacing a new gap",
+        "variant": "caption"
+      }
+    },
+    "goal_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_4_title",
+        "goal_4_meta",
+        "goal_4_detail"
+      ]
+    },
+    "goal_4_title": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature → tomscaria/swarm-fund-mvp PRs",
+        "variant": "lead"
+      }
+    },
+    "goal_4_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal_4_idle",
+        "goal_4_activity"
+      ]
+    },
+    "goal_4_idle": {
+      "type": "Badge",
+      "props": {
+        "text": "1d idle",
+        "variant": "outline"
+      }
+    },
+    "goal_4_activity": {
+      "type": "Badge",
+      "props": {
+        "text": "2 activity/14d",
+        "variant": "outline"
+      }
+    },
+    "goal_4_detail": {
+      "type": "Text",
+      "props": {
+        "text": "↑ improving (was NEEDS_ATTENTION — PR #18 open)",
+        "variant": "caption"
+      }
+    },
+    "goal_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_5_title",
+        "goal_5_meta",
+        "goal_5_detail"
+      ]
+    },
+    "goal_5_title": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily → PhD reading list",
+        "variant": "lead"
+      }
+    },
+    "goal_5_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal_5_idle",
+        "goal_5_activity"
+      ]
+    },
+    "goal_5_idle": {
+      "type": "Badge",
+      "props": {
+        "text": "1d idle",
+        "variant": "outline"
+      }
+    },
+    "goal_5_activity": {
+      "type": "Badge",
+      "props": {
+        "text": "3 activity/14d",
+        "variant": "outline"
+      }
+    },
+    "goal_5_detail": {
+      "type": "Text",
+      "props": {
+        "text": "→ flat",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok, git=ok, gh_pr=ok, gh_issue=fail (issues disabled on tomscaria/aeon), cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
