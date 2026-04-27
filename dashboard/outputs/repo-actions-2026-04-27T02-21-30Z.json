@@ -1,0 +1,391 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_header",
+        "text_intro",
+        "sep1",
+        "heading_toppick",
+        "stack_toppick_badges",
+        "text_toppick_detail",
+        "sep2",
+        "heading_list",
+        "stack_items",
+        "sep3",
+        "storylink_details"
+      ]
+    },
+    "text_header": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — 2026-04-27",
+        "variant": "muted"
+      }
+    },
+    "text_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Three HIGH-priority structural gaps anchor this cycle, all in .github/. Top pick: TypeScript CI workflow — three TS subprojects ship to main with zero compile-time checks."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_toppick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick: typescript-check.yml workflow",
+        "level": "h3"
+      }
+    },
+    "stack_toppick_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_toppick_dx",
+        "badge_toppick_small_1",
+        "badge_toppick_high"
+      ]
+    },
+    "badge_toppick_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_toppick_small_1": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "badge_toppick_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "text_toppick_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Catches type errors in dashboard/, mcp-server/, a2a-server/ before they land on main."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_list": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Items",
+        "level": "h3"
+      }
+    },
+    "stack_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item1_title",
+        "stack_item1_badges"
+      ]
+    },
+    "text_item1_title": {
+      "type": "Text",
+      "props": {
+        "text": "1. typescript-check.yml workflow"
+      }
+    },
+    "stack_item1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item1_high",
+        "badge_item1_dx",
+        "badge_item1_small"
+      ]
+    },
+    "badge_item1_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_item1_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_item1_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item2_title",
+        "stack_item2_badges"
+      ]
+    },
+    "text_item2_title": {
+      "type": "Text",
+      "props": {
+        "text": "2. PULL_REQUEST_TEMPLATE.md"
+      }
+    },
+    "stack_item2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item2_high",
+        "badge_item2_dx",
+        "badge_item2_small"
+      ]
+    },
+    "badge_item2_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_item2_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_item2_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item3_title",
+        "stack_item3_badges"
+      ]
+    },
+    "text_item3_title": {
+      "type": "Text",
+      "props": {
+        "text": "3. release.yml for autogen notes"
+      }
+    },
+    "stack_item3_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item3_high",
+        "badge_item3_dx",
+        "badge_item3_small"
+      ]
+    },
+    "badge_item3_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_item3_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_item3_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item4_title",
+        "stack_item4_badges"
+      ]
+    },
+    "text_item4_title": {
+      "type": "Text",
+      "props": {
+        "text": "4. FUNDING.yml routing Bankr URL"
+      }
+    },
+    "stack_item4_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item4_med",
+        "badge_item4_growth",
+        "badge_item4_small"
+      ]
+    },
+    "badge_item4_med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      }
+    },
+    "badge_item4_growth": {
+      "type": "Badge",
+      "props": {
+        "text": "Growth",
+        "variant": "secondary"
+      }
+    },
+    "badge_item4_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item5_title",
+        "stack_item5_badges"
+      ]
+    },
+    "text_item5_title": {
+      "type": "Text",
+      "props": {
+        "text": "5. CodeQL JS/TS workflow"
+      }
+    },
+    "stack_item5_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item5_med",
+        "badge_item5_security",
+        "badge_item5_small"
+      ]
+    },
+    "badge_item5_med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      }
+    },
+    "badge_item5_security": {
+      "type": "Badge",
+      "props": {
+        "text": "Security",
+        "variant": "secondary"
+      }
+    },
+    "badge_item5_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "storylink_details": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-27.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
