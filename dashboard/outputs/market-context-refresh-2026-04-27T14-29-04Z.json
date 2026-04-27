@@ -1,0 +1,227 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context — 2026-04-27"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "conviction_badge",
+        "prices_metrics_stack",
+        "sep1",
+        "analysis_stack",
+        "sep2",
+        "polymarket_text"
+      ]
+    },
+    "conviction_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Chop | Medium conviction",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "prices_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "prices_row",
+        "metrics_row"
+      ]
+    },
+    "prices_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "btc_stat",
+        "eth_stat",
+        "fg_section"
+      ]
+    },
+    "btc_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "7.9K",
+        "delta": "−0.27%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "eth_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "2,313",
+        "delta": "−1.49%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "fg_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "fg_stat",
+        "fg_badge"
+      ]
+    },
+    "fg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "F&G",
+        "value": "47"
+      },
+      "children": []
+    },
+    "fg_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Neutral",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "metrics_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "breadth_progress",
+        "dex_vol_text"
+      ]
+    },
+    "breadth_progress": {
+      "type": "Progress",
+      "props": {
+        "value": 6,
+        "max": 20,
+        "label": "Breadth (↓ from 16/20)"
+      },
+      "children": []
+    },
+    "dex_vol_text": {
+      "type": "Text",
+      "props": {
+        "text": "DEX volume: 0.42B",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "analysis_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "resistance_text",
+        "narrative_section"
+      ]
+    },
+    "resistance_text": {
+      "type": "Text",
+      "props": {
+        "text": "0K resistance rejected on oil spike — FOMC week begins",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "narrative_header",
+        "privacy_alts_row"
+      ]
+    },
+    "narrative_header": {
+      "type": "Text",
+      "props": {
+        "text": "Top narrative: Privacy alts",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "privacy_alts_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "xmr_stat",
+        "zec_stat"
+      ]
+    },
+    "xmr_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "XMR",
+        "value": "+10.3%",
+        "delta": "7d",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "zec_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ZEC",
+        "value": "+16.1%",
+        "delta": "7d",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "polymarket_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket: all crypto markets settled, no live signals",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
