@@ -59,3 +59,20 @@ node_modules/
 .external-work
 .vuln-scan/
 .osv-scanner
+
+# defi-overview scratch (rm blocked under sandbox)
+chains.json
+chains2.json
+protocols.json
+dexs.json
+fees.json
+stables.json
+pools.json
+histtvl.json
+chain_*.json
+chains_calc.js
+stables_calc.js
+movers_calc.js
+fees_beat_tvl.js
+yields_calc.js
+fetch_chains.sh

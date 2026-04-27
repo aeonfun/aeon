@@ -1,36 +1,20 @@
-*DeFi — 2026-04-25* — Mixed: TVL flat post-unwind, DEX vol −24% / fees −18%, stables holding
+## Summary
 
-*TVL:* $84.4B (+0.3% 24h, −15.2% 7d — Apr-17 leverage unwind)
+Ran `defi-overview` for 2026-04-27, full market read (var=none).
 
-*Top chains*
-1. Ethereum — $45.4B
-2. BSC — $5.6B
-3. Solana — $5.6B
+**Verdict: Mixed** — TVL flat (+0.3% 24h, $85.5B), DEX volume bouncing +9% off weekend lows, stables idle. Real-demand contraction signal flagged: Aave V3 fees -60% / TVL -20% (7d) and Hyperliquid Perps fees -47% w/w.
 
-*Movers — protocols*
-↑ Cooler Loans +15% ($199M → $229M) — no obvious catalyst
-↓ ether.fi Liquid −17% ($380M → $316M) — vault AUM bleeding from week-old USDe/Aave unwind
+**Sections shipped:**
+- Top chains: Ethereum $46.1B / BSC $5.6B / Solana $5.6B
+- Protocol movers: only ↑ Bedrock uniBTC +11% cleared the 10%/$100M gate; no chain cleared 5%/$500M (largest 1d Sui +2.6%); Plasma 7d -57% noted as no-confirmed-catalyst flag
+- Fees leaders (24h): Tether $16.5M, Circle $6.6M, Canton $2.1M (-10%)
+- DEX vol: $4.28B (+9.4% 1d); Uniswap V4 $640M, Pancake V3 $358M, Uniswap V3 $312M (+55%)
+- Stables: $319B flat; only single-issuer 1d notable USDe -1.6% (7d -32%)
+- Real yield top 3 by apyBase: USDC-CBBTC (UniV3, Base) 17.1%, APT (Amnis) 14.8%, APXUSD (Pendle) 14.4%
+- Incentive yield: CVXCRV 25.9% via CRV ($33M), SDCRV 21.6% via CRV ($27M)
 
-*Fees leaders (24h)*
-1. Tether — $16.7M (+1% vs 7d avg)
-2. Circle USDC — $6.7M (flat)
-3. Aave V3 — $2.4M (−33% vs 7d avg, fee spike fading)
+**Files:** `.outputs/defi-overview.md`, `.pending-notify/1777256294.md`, `memory/logs/2026-04-27.md`, plus `.gitignore` updates for scratch artifacts.
 
-*Fees beating TVL*
-• Aave V3 — fees +42% / TVL −47% (7d) — utilisation spike as deposits fled
-• Polymarket US — fees +76% / TVL n/a — election-cycle handle persisting
+**Notification:** queued at `.pending-notify/1777256294.md` (1553 chars). Direct `./notify` invocation hook-blocked again (`Unhandled node type: file_redirect` and `Unhandled node type: string` for both `MSG=$(<file)` and `$(cat file)` forms — same recurring sandbox bug as 2026-04-26 daily-routine, polymarket-comments, narrative-tracker). Pending-file fallback used; workflow post-run delivery should pick it up.
 
-*DEX vol (24h):* $5.6B (−24%) — Uniswap V4 $615M, PancakeSwap V3 $554M, Uniswap V3 $383M
-
-*Stables:* $319.5B (+0.2% 1d) — RLUSD +5.6%, USDe −3.1%, avUSD −16% notable single-issuer moves
-
-*Real yield (sustainable, ≥$10M, filtered)*
-• APYUSD (Pendle, ETH) — 15.4% apyBase ($10.4M TVL)
-• APT (Amnis, Aptos) — 14.8% apyBase ($17.4M TVL)
-• APXUSD (Pendle, ETH) — 14.3% apyBase ($13.7M TVL)
-
-*Incentive yield (points / emissions, ≥$25M)*
-• cvxCRV (Convex, ETH) — 27.9% apy via CRV/CVX rewards ($33.2M TVL)
-• sdCRV (Stake DAO, ETH) — 21.6% apy via CRV/PRISMA rewards ($27.3M TVL)
-
-_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none | chain c1d derived from historical (live endpoint omits deltas)_
+**Follow-up:** the recurring `./notify` hook-block is now the most consistent skill-execution friction across daily skills. Worth promoting from log-only mention into `memory/issues/` so skill-repair targets it (the existing logs already capture every workaround attempted, so a one-line filing should suffice).
