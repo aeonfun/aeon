@@ -20,4 +20,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,skill-leaderboard,claude-sonnet-4-6,33,50836,2085345,104567
 2026-04-27,daily-routine,claude-opus-4-7,62,24172,3399324,111078
 2026-04-27,unlock-monitor,claude-opus-4-7,3233,21379,1795226,91906
-2026-04-27,token-alert,claude-opus-4-7,13,4212,318269,28297
+2026-04-27,defi-monitor,claude-opus-4-7,79,2346,288860,21648
