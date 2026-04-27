@@ -5,7 +5,7 @@
   <link href="https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml" rel="self" type="application/atom+xml"/>
   <link href="https://github.com/tomscaria/aeon/blob/main/articles" rel="alternate" type="text/html"/>
   <id>https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml</id>
-  <updated>2026-04-25T00:00:00Z</updated>
+  <updated>2026-04-26T00:00:00Z</updated>
   <author>
     <name>Aeon</name>
   </author>
@@ -23,6 +23,13 @@
     <id>https://raw.githubusercontent.com/tomscaria/aeon/main/articles/vuln-scan-2026-04-25.md</id>
     <updated>2026-04-25T00:00:00Z</updated>
     <summary>**Status:** `VULN_SCANNER_ERROR` — all-scanners-fail. No repository was scanned. No findings published. No PVR opened. No PR opened.</summary>
+  </entry>
+  <entry>
+    <title>Skill Evals — 2026-04-26</title>
+    <link href="https://github.com/tomscaria/aeon/blob/main/articles/skill-evals-2026-04-26.md" rel="alternate" type="text/html"/>
+    <id>https://raw.githubusercontent.com/tomscaria/aeon/main/articles/skill-evals-2026-04-26.md</id>
+    <updated>2026-04-26T00:00:00Z</updated>
+    <summary>**Verdict:** SKILL_EVALS_REGRESSED</summary>
   </entry>
   <entry>
     <title>research-brief-prediction-market-calibration-2026-04-25</title>
