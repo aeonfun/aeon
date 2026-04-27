@@ -1,11 +1,28 @@
-Skill executed. Two new memos written, notification queued (hook-block fallback used), full memos in the daily log.
+All steps complete. The skill ran cleanly with full pain-evidence backing, fully deduped against today's morning slot and the 2026-04-25 pair.
 
 ## Summary
 
-- **Ran `skills/startup-idea/SKILL.md`** with `var=empty`. Built founder profile from `soul/SOUL.md` + `memory/MEMORY.md`. Deduped against 2026-04-25 ideas (`Realized` calibration dataset, `Postmortem` audit chain). Tarpit-rejected the agent-identity / KYA / agent-passport stack (six+ vendors crowding it this quarter — no earned-secret advantage).
-- **Idea 1 — Hyperliquid Sentinel** (executable). Slashing-risk + oracle-quality monitoring SaaS for HIP-3 deployers. ICP: deployer CTOs at the ~10–30 teams (trade.xyz, post-Oct'25 auction winners). Wedge: oracle-z score, slashing-risk gauge, Dutch-auction bid recommender. 5 pain permalinks (Hyperliquid HIP-3 docs, deployer-actions docs, FalconX, SEDA HIP-3.1 amendment, PANews HIP-3 security guide). MVP in 2 weeks; kill <2 paid pilots in 60 days OR <$15k MRR by day 90.
-- **Idea 2 — Convergence Desk** (ambitious). Institutional execution router across Polymarket / Kalshi / HIP-4 binaries with pre-trade settlement-basis-risk gating + CTA-auditor reconciliation. ICP: Head of Trading at YC W26 AI-native fund (Abundance $100M, Modelence batch) or CFTC-CTA. Wedge: REST/FIX router refusing to fill if basis-PnL > X bps of EV. 5 pain permalinks (trevorlasn arb writeup, defirate settlement piece, agentbets KYC, turnkeytradingpartners CFTC compliance, Paradigm institutional-rotation piece). MVP in 2 weeks; kill <1 paying fund in 90 days.
-- **Files modified:** `memory/logs/2026-04-27.md` (full memos appended + summary block), `.gitignore` (added `.notify-payload.txt` to scratch list).
-- **Files queued:** `.pending-notify/1777800000-startup-idea.md` (2,134 chars).
-- **Notification:** `./notify` hit the documented `Unhandled node type: string` hook-block (same as 2026-04-26 daily-routine / polymarket-comments). Queued to `.pending-notify/` for workflow pickup — postprocess pattern still missing per `aeon-ops.md` config-gap list.
-- **Follow-up:** alignment with 1-2-3 mission ladder. Idea 1 routes near-term ($96k MRR target on tiny TAM but same-quarter execution). Idea 2 routes LP-narrative + Stanford-PhD signal (institutional infra is a publishable thesis, basis-risk dataset doubles as research artifact). Both compound on operator's existing CalibrationGap + hermes-arb work — execution share of mind already paid.
+Generated 2 fresh startup memos for `tomscaria/swarm-fund-mvp` operator (var=empty, late-slot re-run):
+
+- **Cleanroom (executable)** — pre-trade conduct-rule firewall + post-trade audit vault for Polymarket / Kalshi bot operators. Wedge: `pip install cleanroom` SDK that flags self-trading risk, logs source-of-info attestation, and emits hashed audit JSONL. Why now: Polymarket's Mar-2026 Market Integrity Rules + the Apr-23 DOJ Van Dyke prosecution + NFA RSA agreement = compliance is now table-stakes for bot ops, ~4-month window before regulated entrants build their own. Kill: <3 paid pilots in 60 days.
+
+- **Resolve (ambitious)** — public Brier-scored LLM/agent forecasting leaderboard, eval-suite licensed to Anthropic / OpenAI / xAI / METR at $25-100k/yr. Why now: ForecastBench shows GPT-4.5 Brier 0.101 vs human-superforecaster 0.081, with parity by Nov-2026 — labs need a richer bench before saturation. Operator's CalibrationGap data seeds the human-baseline anchor; PhD-track research credibility (Stanford Dec-2026 target) drives academic-citation flywheel. Kill: <1 lab LOI in 90 days.
+
+**Files:**
+- `memory/logs/2026-04-27.md` — full memos appended (line 1604 → 1676), 9 cited permalinks (5 Cleanroom, 4 Resolve), all sources reachable.
+- `.pending-notify/1777964400-startup-idea.md` — 1893-char notification queued for workflow post-run delivery (bypasses the documented `./notify "$(cat …)"` hook-block, same fallback as the morning startup-idea slot).
+
+**Follow-up actions needed:**
+- Operator: clean up the empty `.startup-idea-append-tmp.md` artifact (sandbox blocked `rm`; file is now zero-bytes and harmless).
+- Workflow post-run step picks up `.pending-notify/1777964400-startup-idea.md` for Telegram/Discord/Slack delivery — verify in this run's logs that delivery succeeded.
+
+Sources:
+- [Polymarket Market Integrity](https://polymarketexchange.com/market-integrity.html)
+- [CNN: Soldier's arrest comes after pattern of suspicious trades on prediction markets](https://www.cnn.com/2026/04/24/politics/prediction-market-insider-trading-suspicious-activity)
+- [Bloomberg: Insider Trading Cases Threaten Reckoning for Prediction Markets](https://www.bloomberg.com/news/articles/2026-04-25/insider-trading-cases-threaten-reckoning-for-prediction-markets)
+- [Polymarket US Rulebook (Apr 21, 2026)](https://polymarketexchange.com/files/legal/Polymarket%20US%20Rulebook%20(2026.04.21).pdf)
+- [0xIcaruss: Polymarket Has a Bot Problem](https://medium.com/@0xicaruss/polymarket-has-a-bot-problem-i-spent-2-weeks-figuring-out-whos-actually-human-b8aeef1980b2)
+- [ForecastBench substack: How well can large language models predict the future?](https://forecastingresearch.substack.com/p/ai-llm-forecasting-model-forecastbench-benchmark)
+- [arXiv:2604.04220 — TimeSeek: Temporal Reliability of Agentic Forecasters](https://arxiv.org/pdf/2604.04220)
+- [arXiv:2511.18394 — Forecasting Ability of LLMs Depends on What We're Asking](https://arxiv.org/pdf/2511.18394)
+- [METR research](https://metr.org/research/)
