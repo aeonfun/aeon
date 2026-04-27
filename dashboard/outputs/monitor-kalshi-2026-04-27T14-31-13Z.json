@@ -1,0 +1,232 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor 2026-04-27"
+      },
+      "children": [
+        "stack1"
+      ]
+    },
+    "stack1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert1",
+        "sep1",
+        "heading_topvol",
+        "market1",
+        "market2",
+        "market3",
+        "sep2",
+        "alert2",
+        "sep3",
+        "heading_setup",
+        "stack_setup"
+      ]
+    },
+    "alert1": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "MONITOR_KALSHI_NO_CONFIG",
+        "message": "Watchlist empty, discovery run"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading_topvol": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Volume Markets",
+        "level": "h2"
+      }
+    },
+    "market1": {
+      "type": "Card",
+      "props": {
+        "title": "KXBTC-26MAY0117",
+        "description": "BTC May1"
+      },
+      "children": [
+        "stack_m1"
+      ]
+    },
+    "stack_m1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_m1_vol",
+        "stat_m1_oi",
+        "text_m1_flow"
+      ]
+    },
+    "stat_m1_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h USD Volume",
+        "value": "$423"
+      }
+    },
+    "stat_m1_oi": {
+      "type": "Stat",
+      "props": {
+        "label": "Peak OI",
+        "value": "$77k"
+      }
+    },
+    "text_m1_flow": {
+      "type": "Text",
+      "props": {
+        "text": "Peak OI at $77k; today flow into $79-82k (vs BTC $79,142)",
+        "variant": "caption"
+      }
+    },
+    "market2": {
+      "type": "Card",
+      "props": {
+        "title": "KXWARMING-50"
+      },
+      "children": [
+        "stack_m2"
+      ]
+    },
+    "stack_m2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "progress_m2",
+        "stat_m2_vol"
+      ]
+    },
+    "progress_m2": {
+      "type": "Progress",
+      "props": {
+        "value": 74,
+        "max": 100,
+        "label": "Warming"
+      }
+    },
+    "stat_m2_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h USD Volume",
+        "value": "$468"
+      }
+    },
+    "market3": {
+      "type": "Card",
+      "props": {
+        "title": "KXNEXTISRAELPM"
+      },
+      "children": [
+        "stack_m3"
+      ]
+    },
+    "stack_m3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_m3"
+      ]
+    },
+    "badge_m3": {
+      "type": "Badge",
+      "props": {
+        "text": "Bennett 50%",
+        "variant": "default"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "alert2": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "MONITOR_KALSHI_DEGRADED",
+        "message": "Candlesticks degraded (empty)"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading_setup": {
+      "type": "Heading",
+      "props": {
+        "text": "Setup Required",
+        "level": "h2"
+      }
+    },
+    "stack_setup": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_setup_path",
+        "heading_suggests",
+        "stack_suggests"
+      ]
+    },
+    "text_setup_path": {
+      "type": "Text",
+      "props": {
+        "text": "Populate: skills/monitor-kalshi/watchlist.md",
+        "variant": "lead"
+      }
+    },
+    "heading_suggests": {
+      "type": "Heading",
+      "props": {
+        "text": "Suggested Watchlist",
+        "level": "h3"
+      }
+    },
+    "stack_suggests": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_suggest1",
+        "badge_suggest2"
+      ]
+    },
+    "badge_suggest1": {
+      "type": "Badge",
+      "props": {
+        "text": "KXBTC-26MAY0117",
+        "variant": "outline"
+      }
+    },
+    "badge_suggest2": {
+      "type": "Badge",
+      "props": {
+        "text": "KXFED-26MAY",
+        "variant": "outline"
+      }
+    }
+  }
+}
