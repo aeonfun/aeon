@@ -1,0 +1,113 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker 2026-04-27"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "total-stat",
+        "sep1",
+        "breakdown-stack",
+        "sep2",
+        "alert",
+        "sep3",
+        "trend-stack",
+        "sep4",
+        "report-link"
+      ]
+    },
+    "total-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Goals",
+        "value": "8"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "breakdown-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "attention-stat",
+        "on-track-stat"
+      ]
+    },
+    "attention-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Needs Attention",
+        "value": "1"
+      }
+    },
+    "on-track-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "7"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Action Required",
+        "message": "weekly-shiplog: forward today's 10:15Z output to grant committees",
+        "type": "warning"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "trend-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trend-text"
+      ]
+    },
+    "trend-text": {
+      "type": "Text",
+      "props": {
+        "text": "Trend: improving",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "report-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full report: .pending-notify/1777347900-goal-tracker.md",
+        "href": ".pending-notify/1777347900-goal-tracker.md"
+      }
+    }
+  }
+}
