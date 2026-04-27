@@ -192,14 +192,14 @@
     "last_error": "c52eff4\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "daily-routine": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_success": "2026-04-26T08:12:57Z",
     "total_runs": 2,
     "total_successes": 2,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
-    "last_dispatch": "2026-04-26T08:03:17Z"
+    "last_dispatch": "2026-04-27T07:54:52Z"
   },
   "deep-research": {
     "last_status": "success",
@@ -665,13 +665,13 @@
     "success_rate": 1
   },
   "chain:morning-brief": {
-    "last_dispatch": "2026-04-26T08:03:17Z",
-    "last_status": "failed",
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T08:04:35Z"
   },
   "rss-digest": {
-    "last_dispatch": "2026-04-26T08:03:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-26T08:04:59Z",
     "total_runs": 1,
     "total_successes": 1,
@@ -680,8 +680,8 @@
     "success_rate": 1
   },
   "paper-digest": {
-    "last_dispatch": "2026-04-26T08:03:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-26T08:05:13Z",
     "total_runs": 1,
     "total_successes": 1,
@@ -690,8 +690,8 @@
     "success_rate": 1
   },
   "reddit-digest": {
-    "last_dispatch": "2026-04-26T08:03:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-26T08:16:15Z",
     "total_runs": 1,
     "total_successes": 1,
@@ -700,8 +700,8 @@
     "success_rate": 1
   },
   "telegram-digest": {
-    "last_dispatch": "2026-04-26T08:03:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-26T08:04:46Z",
     "total_runs": 1,
     "total_successes": 1,
@@ -854,5 +854,9 @@
     "success_rate": 0.13,
     "last_error": "04141f9\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
     "last_success": "2026-04-27T02:20:24Z"
+  },
+  "cost-report": {
+    "last_dispatch": "2026-04-27T07:54:52Z",
+    "last_status": "dispatched"
   }
 }
