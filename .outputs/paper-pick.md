@@ -1,7 +1,1 @@
-*Paper Pick — 2026-04-27 (late slot)*
-
-"AgentSearchBench: A Benchmark for AI Agent Search in the Wild" — Bin Wu, Mammadli, Zhang, Yilmaz · ↑5 HF Daily
-
-10K real-world agents, retrieval+reranking eval under executable and high-level queries. Headline: semantic similarity ≠ actual performance — execution-aware probing closes the gap. Direct map onto Aeon's 97-skill dispatch problem and swarm-fund's 30–60 hermes-variant routing per template.
-
-Read https://arxiv.org/abs/2604.22436 | PDF https://arxiv.org/pdf/2604.22436
+Paper Pick — 2026-04-27 (PhD-prep #2): TruthTensor — Shahabi/Graham/Isah, arXiv:2601.13545 (↑10, Jan 2026). Forward-looking eval on 500+ live prediction markets scoring models along accuracy, calibration, drift, and risk-sensitivity as separate axes — the multi-axis frame CalibrationGap needs for Apex-gate eval design and the natural PhD-prep follow-up to today's LiveTradeBench pick. https://arxiv.org/abs/2601.13545

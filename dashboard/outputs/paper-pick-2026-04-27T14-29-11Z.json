@@ -1,0 +1,75 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-04-27"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "badges",
+        "storylink",
+        "description"
+      ]
+    },
+    "badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "phd_prep_badge",
+        "citations_badge",
+        "date_badge"
+      ]
+    },
+    "phd_prep_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "PhD-prep #2",
+        "variant": "secondary"
+      }
+    },
+    "citations_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "↑10 citations",
+        "variant": "outline"
+      }
+    },
+    "date_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Jan 2026",
+        "variant": "outline"
+      }
+    },
+    "storylink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TruthTensor",
+        "href": "https://arxiv.org/abs/2601.13545",
+        "source": "Shahabi/Graham/Isah — arXiv:2601.13545"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "Forward-looking eval on 500+ live prediction markets scoring models along accuracy, calibration, drift, and risk-sensitivity as separate axes — the multi-axis frame CalibrationGap needs for Apex-gate eval design and the natural PhD-prep follow-up to today's LiveTradeBench pick.",
+        "variant": "body"
+      }
+    }
+  }
+}
