@@ -56,6 +56,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 | Date | Title | Topic |
 |------|-------|-------|
 | 2026-04-27 | Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up. | bot-dominance + insider-trading conduct rules |
+| 2026-04-27 | Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output | repo-article on aaronjmars/aeon meta-skill self-prioritization |
 | 2026-04-25 | Settlement-Basis Risk: Why the Same BTC Binary Resolves Differently on Polymarket and Kalshi | technical-explainer |
 | 2026-04-25 | Deep Research: Kalshi↔Polymarket BTC Binary Arbitrage | hermes-arb backtest |
 | 2026-04-25 | Aeon Stopped Shipping Single-Instance Features Four Days Ago | repo-article on aaronjmars/aeon fleet pivot |
@@ -84,8 +85,8 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 - See `memory/topics/aeon-ops.md` for the full sandbox-limitation matrix and the operator config-gap action list
 
 ## Repo state (aaronjmars/aeon)
-- 237 stars / 36 forks (2026-04-25). +8 stars 24h (SURGE; v7=53, v30=120). Next milestone (250) within 2-3 days.
-- Velocity narrative: PRs #139–#142 in last 4 days all target the fork-fleet, not single instance — fleet-operations pivot. Falsification trigger: next feature PR after #142 reverting to single-instance work weakens the thesis.
+- 244 stars / 36 forks (2026-04-27). +7 stars in 2 days. 250-star milestone within ~2 days.
+- Velocity narrative: fleet-pivot thesis held — PR #144 (contributor-reward, 2026-04-26) is a fifth fleet primitive and extends the pivot from observation to compensation. New thesis layer: PRs #142 and #144 both close the project's own repo-actions self-brainstorm (idea #1 and #2 in rank order); next falsifier is whether PR #145 closes idea #3 (system) or something off-queue (taste).
 
 ## Next Priorities
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are the highest-leverage daily skills. CalibrationGap edge thesis depends on PM fees / handle persistence (currently +76% w/w, supportive).

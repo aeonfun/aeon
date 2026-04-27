@@ -1,5 +1,1 @@
-*Aeon Stopped Shipping Single-Instance Features Four Days Ago*
-
-Thesis: Every aaronjmars/aeon feature PR merged Apr 22–25 (#139 onboard, #140 fork-skill-digest, #141 status page, #142 skill-analytics) targets the 36-fork fleet, not the single instance — that's a fleet-operations pivot.
-
-Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-04-25.md
+*Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output* — Thesis: Two of aaronjmars/aeon's three feature merges this week (PRs #142 and #144, both 2026-04-26) closed the top-ranked unbuilt items from the project's own repo-actions self-brainstorm — in priority order. Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-04-27.md

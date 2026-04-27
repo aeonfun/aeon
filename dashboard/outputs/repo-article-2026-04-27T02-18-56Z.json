@@ -1,0 +1,40 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "repo-article"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink",
+        "thesis"
+      ]
+    },
+    "storylink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-04-27.md",
+        "source": "GitHub"
+      }
+    },
+    "thesis": {
+      "type": "Text",
+      "props": {
+        "text": "Two of aaronjmars/aeon's three feature merges this week (PRs #142 and #144, both 2026-04-26) closed the top-ranked unbuilt items from the project's own repo-actions self-brainstorm — in priority order."
+      }
+    }
+  }
+}
