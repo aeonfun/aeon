@@ -1,0 +1,195 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "technical-explainer"
+      },
+      "children": [
+        "heading-main",
+        "stack-intro",
+        "separator-1",
+        "stack-components",
+        "separator-2",
+        "stats-stack",
+        "separator-3",
+        "links-stack"
+      ]
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "One Calibration Slope Hides Four",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-intro": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-intro",
+        "text-author"
+      ]
+    },
+    "text-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Decomposes prediction-market β into 4 additive components explaining 87.3% of variance across 292M trades on Kalshi+Polymarket"
+      },
+      "children": []
+    },
+    "text-author": {
+      "type": "Text",
+      "props": {
+        "text": "Le 2026",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-components": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-components-title",
+        "badge-horizon",
+        "badge-intercept",
+        "badge-domain-horizon",
+        "badge-domain-size"
+      ]
+    },
+    "text-components-title": {
+      "type": "Text",
+      "props": {
+        "text": "Components:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "badge-horizon": {
+      "type": "Badge",
+      "props": {
+        "text": "Universal horizon",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge-intercept": {
+      "type": "Badge",
+      "props": {
+        "text": "Domain intercept",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge-domain-horizon": {
+      "type": "Badge",
+      "props": {
+        "text": "Domain×horizon",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge-domain-size": {
+      "type": "Badge",
+      "props": {
+        "text": "Domain×size",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stats-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-variance",
+        "stat-trades",
+        "stat-moat"
+      ]
+    },
+    "stat-variance": {
+      "type": "Stat",
+      "props": {
+        "label": "Variance explained",
+        "value": "87.3%"
+      },
+      "children": []
+    },
+    "stat-trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Trades analyzed",
+        "value": "292M"
+      },
+      "children": []
+    },
+    "stat-moat": {
+      "type": "Stat",
+      "props": {
+        "label": "CalibrationGap moat",
+        "value": "56.2%"
+      },
+      "children": []
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "links-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-paper",
+        "link-explainer"
+      ]
+    },
+    "link-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "arXiv: 2602.19520",
+        "href": "https://arxiv.org/abs/2602.19520",
+        "source": "arXiv"
+      },
+      "children": []
+    },
+    "link-explainer": {
+      "type": "Link",
+      "props": {
+        "label": "Read explainer",
+        "href": "articles/explainer-2026-04-27.md"
+      },
+      "children": []
+    }
+  }
+}
