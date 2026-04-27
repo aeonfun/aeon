@@ -1,0 +1,40 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo_badge",
+        "fix_story"
+      ]
+    },
+    "repo_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp"
+      }
+    },
+    "fix_story": {
+      "type": "StoryLink",
+      "props": {
+        "title": "fix(ssrn_harvest): use cursor.rowcount, not connection.total_changes",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/19",
+        "source": "GitHub PR #19"
+      }
+    }
+  }
+}
