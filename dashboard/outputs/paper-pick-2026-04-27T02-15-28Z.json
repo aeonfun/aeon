@@ -1,0 +1,66 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_header",
+        "story_link",
+        "text_metadata",
+        "text_description",
+        "text_finding"
+      ]
+    },
+    "text_header": {
+      "type": "Text",
+      "props": {
+        "text": "Paper Pick 2026-04-27 (PhD-prep)",
+        "variant": "lead"
+      }
+    },
+    "story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "LiveTradeBench",
+        "source": "arXiv",
+        "score": "↑13",
+        "href": "https://arxiv.org/abs/2511.03628"
+      }
+    },
+    "text_metadata": {
+      "type": "Text",
+      "props": {
+        "text": "Yu/Li/You, Nov 2025",
+        "variant": "caption"
+      }
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "50-day live eval of 21 LLMs across US stocks + Polymarket",
+        "variant": "body"
+      }
+    },
+    "text_finding": {
+      "type": "Text",
+      "props": {
+        "text": "Finding 'LMArena scores ≠ trading outcomes' = exact calibration-vs-benchmark gap swarm-fund is built on",
+        "variant": "body"
+      }
+    }
+  }
+}
