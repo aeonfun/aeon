@@ -1,0 +1,31 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "telegram-digest"
+      },
+      "children": [
+        "alert_1",
+        "text_instruction"
+      ]
+    },
+    "alert_1": {
+      "type": "Alert",
+      "props": {
+        "title": "No channels configured",
+        "message": "Telegram Digest has no channels configured.",
+        "type": "warning"
+      }
+    },
+    "text_instruction": {
+      "type": "Text",
+      "props": {
+        "text": "Add usernames to skills/telegram-digest/channels.md (one per line) or pass var=<channel>.",
+        "variant": "body"
+      }
+    }
+  }
+}
