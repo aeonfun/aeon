@@ -1,0 +1,159 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert",
+        "separator1",
+        "endpoints_section",
+        "errors_section",
+        "separator2",
+        "resolution_section"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "All Reddit endpoints failed",
+        "type": "error"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "endpoints_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "endpoints_label",
+        "endpoints_badges"
+      ]
+    },
+    "endpoints_label": {
+      "type": "Text",
+      "props": {
+        "text": "Failed endpoints:",
+        "variant": "body"
+      }
+    },
+    "endpoints_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "top_badge",
+        "hot_badge",
+        "rising_badge"
+      ]
+    },
+    "top_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "top",
+        "variant": "secondary"
+      }
+    },
+    "hot_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "hot",
+        "variant": "secondary"
+      }
+    },
+    "rising_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "rising",
+        "variant": "secondary"
+      }
+    },
+    "errors_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "errors_label",
+        "curl_error",
+        "webfetch_error"
+      ]
+    },
+    "errors_label": {
+      "type": "Text",
+      "props": {
+        "text": "Error details:",
+        "variant": "body"
+      }
+    },
+    "curl_error": {
+      "type": "Text",
+      "props": {
+        "text": "curl: 403 'Blocked due to network policy'",
+        "variant": "muted"
+      }
+    },
+    "webfetch_error": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch: refused for old.reddit.com and www.reddit.com",
+        "variant": "muted"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "resolution_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "root_cause",
+        "solution"
+      ]
+    },
+    "root_cause": {
+      "type": "Text",
+      "props": {
+        "text": "Root cause: Same as ISS-002",
+        "variant": "caption"
+      }
+    },
+    "solution": {
+      "type": "Text",
+      "props": {
+        "text": "Solution: needs scripts/prefetch-reddit.sh",
+        "variant": "lead"
+      }
+    }
+  }
+}

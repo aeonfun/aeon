@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR: all Reddit endpoints failed (HTTP 403 'Blocked due to network policy' on top/hot/rising via curl and WebFetch). GitHub Actions IPs are filtered by Reddit. No digest for 2026-04-25.
+VIBECODING_DIGEST_ERROR: all Reddit endpoints failed (top/hot/rising) — curl=403 'Blocked due to network policy', WebFetch refused for old.reddit.com and www.reddit.com. Same root cause as ISS-002 — needs scripts/prefetch-reddit.sh.
