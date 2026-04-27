@@ -867,7 +867,8 @@
   },
   "chain:weekly-grant-update": {
     "last_dispatch": "2026-04-27T10:13:56Z",
-    "last_status": "dispatched"
+    "last_status": "failed",
+    "last_failed": "2026-04-27T10:15:15Z"
   },
   "unlock-monitor": {
     "last_dispatch": "2026-04-27T10:13:56Z",
