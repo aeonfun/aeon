@@ -1,0 +1,228 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief: US Prediction Market Insider-Trading Enforcement"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_doj",
+        "section_cftc",
+        "section_circuit",
+        "section_thesis",
+        "section_implications",
+        "sep1",
+        "article_link"
+      ]
+    },
+    "section_doj": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_doj",
+        "text_doj",
+        "stat_van_dyke",
+        "badge_first_case"
+      ]
+    },
+    "heading_doj": {
+      "type": "Heading",
+      "props": {
+        "text": "DOJ Indictment",
+        "level": "h2"
+      }
+    },
+    "text_doj": {
+      "type": "Text",
+      "props": {
+        "text": "Army Master Sgt Van Dyke indicted April 23 on five felonies for insider trading on Polymarket using classified Maduro-capture intelligence.",
+        "variant": "body"
+      }
+    },
+    "stat_van_dyke": {
+      "type": "Stat",
+      "props": {
+        "label": "Trading returns",
+        "value": "$33K → $400K"
+      }
+    },
+    "badge_first_case": {
+      "type": "Badge",
+      "props": {
+        "text": "First US prediction-market insider-trading prosecution",
+        "variant": "destructive"
+      }
+    },
+    "section_cftc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_cftc",
+        "text_cftc_1",
+        "text_cftc_2"
+      ]
+    },
+    "heading_cftc": {
+      "type": "Heading",
+      "props": {
+        "text": "CFTC Enforcement Priority",
+        "level": "h2"
+      }
+    },
+    "text_cftc_1": {
+      "type": "Text",
+      "props": {
+        "text": "Same week: CFTC named misappropriation enforcement on event contracts a top priority.",
+        "variant": "body"
+      }
+    },
+    "text_cftc_2": {
+      "type": "Text",
+      "props": {
+        "text": "Regulatory framework: Section 6(c)(1), Rule 180.1, Rule 10b-5 modeled.",
+        "variant": "caption"
+      }
+    },
+    "section_circuit": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_circuit",
+        "text_circuit"
+      ]
+    },
+    "heading_circuit": {
+      "type": "Heading",
+      "props": {
+        "text": "Third Circuit: KalshiEX v. Flaherty",
+        "level": "h2"
+      }
+    },
+    "text_circuit": {
+      "type": "Text",
+      "props": {
+        "text": "Third Circuit preempted state gambling law over event contracts.",
+        "variant": "body"
+      }
+    },
+    "section_thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_thesis",
+        "text_thesis_1",
+        "text_thesis_2",
+        "stat_bifurcation",
+        "text_thesis_3"
+      ]
+    },
+    "heading_thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Bifurcation Thesis",
+        "level": "h2"
+      }
+    },
+    "text_thesis_1": {
+      "type": "Text",
+      "props": {
+        "text": "The US prediction-market stack will bifurcate within 6 months:",
+        "variant": "lead"
+      }
+    },
+    "text_thesis_2": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi: onshore-compliant DCM. Polymarket: offshore-styled.",
+        "variant": "body"
+      }
+    },
+    "stat_bifurcation": {
+      "type": "Stat",
+      "props": {
+        "label": "Basis widening (Kalshi ↔ Polymarket on shared binaries)",
+        "value": "≥1.5pp average"
+      }
+    },
+    "text_thesis_3": {
+      "type": "Text",
+      "props": {
+        "text": "Convergence-trade window will lengthen.",
+        "variant": "body"
+      }
+    },
+    "section_implications": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_implications",
+        "alert_hermes",
+        "alert_calibrationgap"
+      ]
+    },
+    "heading_implications": {
+      "type": "Heading",
+      "props": {
+        "text": "Tactical Implications",
+        "level": "h2"
+      }
+    },
+    "alert_hermes": {
+      "type": "Alert",
+      "props": {
+        "title": "Hermes-Arb",
+        "message": "Direct read on min-gap calibration (positive impact).",
+        "type": "success"
+      }
+    },
+    "alert_calibrationgap": {
+      "type": "Alert",
+      "props": {
+        "title": "CalibrationGap",
+        "message": "Negative read on binaries with classified-info event risk.",
+        "type": "warning"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Research Brief",
+        "href": "articles/research-brief-us-prediction-market-insider-trading-enforcement-2026-04-27.md",
+        "source": "Internal Analysis"
+      }
+    }
+  }
+}
