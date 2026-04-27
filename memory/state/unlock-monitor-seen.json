@@ -1,0 +1,13 @@
+{
+  "_comment": "Keys are ${ticker}:${unlock_date}. Trim to last 90 days.",
+  "seen": [
+    "EIGEN:2026-05-01",
+    "SUI:2026-05-01",
+    "JUP:2026-04-28",
+    "SIGN:2026-04-28",
+    "RON:2026-04-27",
+    "YGG:2026-04-27",
+    "HOPR:2026-04-27"
+  ],
+  "last_run": "2026-04-27"
+}
