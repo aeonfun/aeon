@@ -1,19 +1,11 @@
-*Startup Ideas — 2026-04-25*
+Skill executed. Two new memos written, notification queued (hook-block fallback used), full memos in the daily log.
 
-*1. Realized* (executable) — calibration-grade tick dataset for resolved Polymarket+Kalshi binaries with Brier scoring. Bloomberg historical for the AI-forecasting + agent-trading stack.
-ICP: Quant at YC W26 AI-hedge-fund who hits the /prices-history 12-hour-granularity wall.
-Wedge: realized.fyi paid REST + Parquet + free public calibration leaderboard.
-Why now: Polymarket acquired Dome in Q1; surviving APIs are live-stream-shaped, none calibration-research-shaped.
-MVP test: Ingest 90d PM+Kalshi ticks (already running for swarm-fund-mvp), score top-100 resolved markets, ship Show HN. Metric: 10 paid signups in 30d.
-Kill: <10 signups in 60d OR <$2k MRR by d90.
+## Summary
 
-*2. Postmortem* (ambitious) — replay-grade audit chain for autonomous trading agents. OSS Python lib + hosted SaaS that reconstructs any agent trade for an auditor in 30s.
-ICP: CTO at YC W26 AI-hedge-fund / CFTC-reg CTA at first compliance review.
-Wedge: @postmortem.trace decorator captures features+regime+sizing+risk-veto, hash-chained, single-button SOX/AI-Act report.
-Why now: EU AI Act high-risk obligations enforceable Aug 2026; Stanford 89%-never-prod gap is a compliance gap; Petual raised $20M in adjacent enterprise audit.
-MVP test: pip install postmortem-trade, wire onto 3 swarm-fund strategies, cold-pitch 10 W26 AI funds. Metric: 1 LOI in 60d.
-Kill: <3 paid pilots in 90d.
-
-Tarpit-rejected this pass: agent-wallet spending-limit SDKs (Coinbase/Trust/Privy/Nunchuk crowding it), AI meeting notetakers, generic AI-for-X.
-
-Full memos in memory/logs/2026-04-25.md. 8 permalinks cited.
+- **Ran `skills/startup-idea/SKILL.md`** with `var=empty`. Built founder profile from `soul/SOUL.md` + `memory/MEMORY.md`. Deduped against 2026-04-25 ideas (`Realized` calibration dataset, `Postmortem` audit chain). Tarpit-rejected the agent-identity / KYA / agent-passport stack (six+ vendors crowding it this quarter — no earned-secret advantage).
+- **Idea 1 — Hyperliquid Sentinel** (executable). Slashing-risk + oracle-quality monitoring SaaS for HIP-3 deployers. ICP: deployer CTOs at the ~10–30 teams (trade.xyz, post-Oct'25 auction winners). Wedge: oracle-z score, slashing-risk gauge, Dutch-auction bid recommender. 5 pain permalinks (Hyperliquid HIP-3 docs, deployer-actions docs, FalconX, SEDA HIP-3.1 amendment, PANews HIP-3 security guide). MVP in 2 weeks; kill <2 paid pilots in 60 days OR <$15k MRR by day 90.
+- **Idea 2 — Convergence Desk** (ambitious). Institutional execution router across Polymarket / Kalshi / HIP-4 binaries with pre-trade settlement-basis-risk gating + CTA-auditor reconciliation. ICP: Head of Trading at YC W26 AI-native fund (Abundance $100M, Modelence batch) or CFTC-CTA. Wedge: REST/FIX router refusing to fill if basis-PnL > X bps of EV. 5 pain permalinks (trevorlasn arb writeup, defirate settlement piece, agentbets KYC, turnkeytradingpartners CFTC compliance, Paradigm institutional-rotation piece). MVP in 2 weeks; kill <1 paying fund in 90 days.
+- **Files modified:** `memory/logs/2026-04-27.md` (full memos appended + summary block), `.gitignore` (added `.notify-payload.txt` to scratch list).
+- **Files queued:** `.pending-notify/1777800000-startup-idea.md` (2,134 chars).
+- **Notification:** `./notify` hit the documented `Unhandled node type: string` hook-block (same as 2026-04-26 daily-routine / polymarket-comments). Queued to `.pending-notify/` for workflow pickup — postprocess pattern still missing per `aeon-ops.md` config-gap list.
+- **Follow-up:** alignment with 1-2-3 mission ladder. Idea 1 routes near-term ($96k MRR target on tiny TAM but same-quarter execution). Idea 2 routes LP-narrative + Stanford-PhD signal (institutional infra is a publishable thesis, basis-risk dataset doubles as research artifact). Both compound on operator's existing CalibrationGap + hermes-arb work — execution share of mind already paid.

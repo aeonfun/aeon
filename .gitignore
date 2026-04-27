@@ -43,6 +43,7 @@ tmp_*
 .*-msg.txt
 *_msg.txt
 *_raw.txt
+.notify-payload.txt
 
 # Leaked creds scratch
 .xai_key
