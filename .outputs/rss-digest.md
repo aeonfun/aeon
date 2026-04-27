@@ -1,9 +1,8 @@
 ## Summary
 
-Skipped `rss-digest` — `memory/feeds.yml` is not configured. Per the skill's own instruction ("If the file doesn't exist yet, create it or skip this skill"), I chose skip rather than guessing feed URLs without operator input.
+Skipped `rss-digest` skill: `memory/feeds.yml` does not exist, and the skill spec explicitly says to create or skip when missing. Logged `RSS_DIGEST_SKIPPED` to `memory/logs/2026-04-27.md` with the operator action to populate `memory/feeds.yml` with curated feed URLs to activate this skill.
 
 **Files modified:**
-- `memory/logs/2026-04-26.md` — appended skip entry pointing to the config gap.
-- `memory/topics/aeon-ops.md` — added `rss-digest` to the operator config-gap action list, with a suggested feed scope (PM microstructure, calibration/RL research, grants, crypto market structure) aligned to the three mission goals in CLAUDE.md.
+- `memory/logs/2026-04-27.md` — appended skip entry
 
-**Operator action needed:** Create `memory/feeds.yml` with feed URLs in the schema shown in `skills/rss-digest/SKILL.md:16-23`. Until then this skill remains NO DATA every run.
+**Follow-up:** operator should add `memory/feeds.yml` with feeds aligned to the three priority lanes (Polymarket microstructure, calibration research, agentic-finance / prediction markets). Suggested seed feeds: Polymarket blog, Kalshi news, arXiv `q-fin.TR` and `cs.MA`, Variant Fund / Paradigm research. No notification sent.
