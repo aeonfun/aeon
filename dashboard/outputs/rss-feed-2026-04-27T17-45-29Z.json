@@ -1,0 +1,104 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "RSS Feed Updated"
+      },
+      "children": [
+        "stat_entries",
+        "sep1",
+        "heading_new",
+        "stack_entries",
+        "text_more",
+        "sep2",
+        "link_feed"
+      ]
+    },
+    "stat_entries": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Entries",
+        "value": "26"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_new": {
+      "type": "Heading",
+      "props": {
+        "text": "New Articles",
+        "level": "h3"
+      }
+    },
+    "stack_entries": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_1",
+        "badge_2",
+        "badge_3",
+        "badge_4",
+        "badge_5"
+      ]
+    },
+    "badge_1": {
+      "type": "Badge",
+      "props": {
+        "text": "Kalshi and Polymarket Filed Crypto Perps the Same Day"
+      }
+    },
+    "badge_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket's Top 20 Is 70% Bots"
+      }
+    },
+    "badge_3": {
+      "type": "Badge",
+      "props": {
+        "text": "Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output"
+      }
+    },
+    "badge_4": {
+      "type": "Badge",
+      "props": {
+        "text": "One Calibration Slope Hides Four (Le 2026)"
+      }
+    },
+    "badge_5": {
+      "type": "Badge",
+      "props": {
+        "text": "Aeon Cost Report 2026-04-27"
+      }
+    },
+    "text_more": {
+      "type": "Text",
+      "props": {
+        "text": "+ 9 additional new entries"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_feed": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe to feed",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
