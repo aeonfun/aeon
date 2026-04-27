@@ -1,40 +1,24 @@
-*Top Tweets — prediction markets (2026-04-25)*
-_Polymarket shipped perps Apr 21, beat Kalshi's Apr 27 "Timeless" launch; Apr 23 DOJ filed the first prediction-market insider-trading case (sgt won $409K betting on the Maduro raid he planned). Both venues now leaning hard on compliance._
+## Summary
 
-_WebSearch fallback — engagement counts unavailable, ranked by signal not likes._
+Ran `fetch-tweets` for `prediction markets` (var empty in `aeon.yml` — defaulted per 2026-04-25 precedent and the swarm-fund-mvp mission alignment).
 
-*perps-launch-news*
-1. x.com/Polymarket — Official launch: "We price the future. Now you can lever it." 10x leverage on BTC, NVDA, gold; waitlist only.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/Polymarket/status/2046653304810156283)
+**Path used:** WebSearch (Path C) — no `.xai-cache/` and `XAI_API_KEY` not visible in sandbox. Engagement counts unavailable; ranked by signal/recency/source authority.
 
-2. x.com/DustinGouker — RT of Emily Nicolle: Kalshi's "Timeless" perps slipped from Monday to "coming weeks" — first public signal Kalshi missed its window.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/DustinGouker/status/2046675365930942475)
+**Curation:** 8 tweets across 4 clusters, deduped against the 8 entries in `memory/fetch-tweets-seen.txt` (0 collisions):
+- *Federalism showdown* — Reuters on CFTC suing NY (Apr 24), Selig on defending federal jurisdiction
+- *Kalshi insider-trading enforcement & blowback* — Engadget on the three suspended candidates, Mark Moran's on-record pushback
+- *Polymarket-falling-behind narrative* — Bloomberg long-read + reporter Emily Nicolle's amplifier
+- *Critical / abolitionist voices* — Dave Troy calling for outright ban, Trump's "world is a casino" quote
 
-*perps-analysis*
-3. x.com/cryptounfolded — Frames perps as continuous funded positions that should tighten event probabilities and pull sophisticated capital. Directly load-bearing for the Revenant thesis on binary calibration.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/cryptounfolded/status/2046654048632291808)
+**Signal one-liner:** Regulatory pressure compressed both venues from two sides — federal-vs-state jurisdictional war on one flank, Kalshi's insider-trading enforcement (with the first public pushback from a suspended candidate) on the other. The Bloomberg "Polymarket is losing" framing is now load-bearing.
 
-4. x.com/PANONYGroup — Comparative read on Polymarket vs Kalshi moving from event contracts to derivatives; useful framing for LP narrative.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/PANONYGroup/status/2046887620157079674)
+**Files modified:**
+- `memory/logs/2026-04-27.md` — full clustered log entry with source-path / quality-note
+- `memory/fetch-tweets-seen.txt` — appended 8 new URLs (now 16 total)
+- `.pending-notify/1777256424-fetch-tweets.md` — notification queued (workflow post-run delivery)
 
-5. x.com/PeanutTrade — Argues both venues are converging on Coinbase/Robinhood territory and event-only platforms get squeezed.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/PeanutTrade/status/2047215103284523374)
+**Notify path:** `./notify "$(cat …)"` tripped the documented `Unhandled node type: string` hook-block; wrote directly to `.pending-notify/` per the MEMORY.md workaround.
 
-*insider-trading-fallout*
-6. x.com/shayne_coplan — "We flagged this, referred it, cooperated throughout." Onchain markets make compliance more effective — every trade public, permanent, auditable. The regulator-meeting line.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/shayne_coplan/status/2047712706342326496)
-
-7. x.com/Kalshi — "We know what it looks like.. but Kalshi doesn't set the odds." Distancing — Kalshi separately confirmed it blocked the Van Dyke account.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/Kalshi/status/2046985917810786736)
-
-*token-speculation*
-8. x.com/degenbrody — Gate.io pre-market perps: Kalshi $20.5B, Polymarket $14.35B implied valuation. Treat as positioning sentiment ahead of any token event, not price.
-Likes: 0 | RTs: 0 | Replies: 0
-[View tweet](https://x.com/degenbrody/status/2043812357437088112)
+**Open follow-ups for the operator (both pre-existing, not new):**
+1. Add `var: "Polymarket OR Kalshi OR \"prediction markets\""` to the `fetch-tweets:` line in `aeon.yml` so the skill stops defaulting.
+2. Fix the multi-line `$(cat …)` hook-block on `./notify` so skills don't have to bypass into `.pending-notify/`.
