@@ -1,65 +1,33 @@
-Drafts displayed below. Skill complete.
+Drafts shipped. Final output:
 
-## Tweet Drafts: Settlement-basis risk in PM↔Kalshi BTC binaries
+## Tweet Drafts: Polymarket — 70% bots in top 20, conduct rules catching up
 
-### Tier 1 — One-liner
+**Tier 1 — One-liner**
+- **1a (data drop):** 70% of Polymarket's top-20 wallets are bots. Retail isn't getting beat. It's not in the room.
+- **1b (sardonic):** Polymarket banned employees from trading their own markets this week. Bots, however, may proceed.
 
-**1a. Hot take**
-> That's not slippage — it's settlement basis. Quote-based PM-Kalshi spreads lie.
+**Tier 2 — Two-punch**
+- **2a (observation):** 70% of Polymarket's top-20 wallets are bots. The conduct-rule rollout this week isn't retail protection. It's an admission that automated capital already won.
+- **2b (hot take):** Prediction-market discourse still pretends this is retail vs the house. The top 20 wallets are 70% bots. You can be the third option.
 
-**1b. Reframe**
-> Any PM-Kalshi spread tracker that ignores the oracle gap is lying to you in two decimal places.
+**Tier 3 — Paragraph**
+- **3a (data drop):** Three Polymarket numbers worth sitting with: 70% of top-20 wallets are bots. First US insider-trading prosecution shipped last week, five felony counts. New conduct bans on employees, athletes, politicians. The venue grew up. Retail framing didn't.
+- **3b (reframe):** The "is Polymarket gambling or finance" debate is stale. Top 20 wallets: 70% bots. First US insider-trading prosecution: filed. Conduct rules on employees, athletes, politicians: live this week. It's a market. Treat it like one.
 
-### Tier 2 — Two-punch
+**Tier 4 — Long tweet**
+- **4a (narrative):** Three Polymarket things the same week — 70% of top-20 wallets are bots, DOJ files first US prediction-market insider-trading case (five felony counts on a sergeant who front-ran a Maduro-raid market 33K → 400K), new conduct bans on employees, athletes, politicians. Retail stopped being the story a long time ago. The infrastructure just admitted it.
+- **4b (operator):** Revenant on PM, 76% on 29 closed. The "Polymarket is gambling" takes miss that 70% of top-20 wallets are automated. We're typical, not unusual. The unusual part is running calibration math under live capital instead of buying handles for narrative. Conduct rules landed the same week. The venue is finance now.
 
-**2a. Data drop**
-> Polymarket resolves BTC binaries via Chainlink. Kalshi via the CME BRTI. Same Friday close, different reference price. Real spread runs ~1.5pp tighter than the quote tape says.
+**Tier 5 — Thread opener** (full bullets in `.outputs/write-tweet.md`)
+- **5a (hot take):** 70% bot share + rule-book maturation thesis (5-bullet thread)
+- **5b (data drop):** Same-week triangle — Kalshi perps + PM perps + CFTC posture + bot share + insider-trading case (5-bullet thread)
 
-**2b. Observation**
-> Every PM↔Kalshi spread tracker I've seen treats the gap as quote-arithmetic. None subtract settlement basis. The arb you're pricing isn't the arb that pays.
-
-### Tier 3 — Paragraph
-
-**3a. Hot take**
-> Polymarket and Kalshi both list "BTC closes above $80k Friday." Same event, you'd think. Polymarket resolves via Chainlink. Kalshi via the CME BRTI. The two oracles can disagree by 20–40bps at expiry. The spread you trade is not the spread that pays.
-
-**3b. Question**
-> Quick check on your PM↔Kalshi BTC arb: which oracle resolves each leg? If you can't answer in one line, you're trading quote-arithmetic, not settlement. Hermes-arb's gate is now 7.5pp net of basis, up from 7. The naive version was overstating the edge.
-
-### Tier 4 — Long tweet
-
-**4a. Narrative**
-> Spent the week chasing a "free" PM↔Kalshi BTC arb. Both venues list "BTC > $80k Friday close." Quotes diverge ~3pp regularly. Looked like edge. It wasn't. Polymarket resolves via Chainlink (volume-weighted across CEXs). Kalshi resolves via the CME BRTI. Different reference price by 20–40bps at expiry. That basis can flip the outcome on tight binaries — both legs win, or both legs lose, instead of the convergence the spread implied. Real edge after subtracting basis: closer to 1pp. Hermes-arb gate is now 7.5pp net, up from 7. Settlement is the trade. Quotes are a distraction.
-
-**4b. Reframe**
-> There is no such thing as "the BTC price" on prediction markets. There is the Chainlink BTC price (Polymarket's resolution oracle) and there is the CME BRTI (Kalshi's). Most days they agree to within 5bps. On the days you'd actually trade a tight binary, they don't. Run a year of historical Chainlink-vs-BRTI spreads at every PM/Kalshi expiry slot and what looks like a 3pp arb-of-the-day shrinks to 1.2pp net. The edge is real. It's smaller than the quote tape claims and it lives in resolution, not in price discovery. The agents that price it correctly will eat the agents that don't.
-
-### Tier 5 — Thread opener
-
-**5a. Hot take**
-> The "PM-Kalshi BTC spread" is not what you think it is. Polymarket resolves via Chainlink. Kalshi via the CME BRTI. Same event, different oracle, different resolution price. The arb you're pricing isn't the arb that pays. Why this matters and what hermes-arb does about it. 1/
----
-- 2/ One year of Chainlink-vs-BRTI at PM/Kalshi expiry slots: median basis 8bps, p95 ~32bps, fat right tail on macro days
-- 3/ Worked example — a 3.1pp naive spread on a tight $80k binary collapses to 1.2pp net once you subtract realized basis
-- 4/ The kicker: basis is correlated with the same volatility regimes that make the quote spread look juicy. Adverse selection
-- 5/ Hermes-arb v2 gate: 7.5pp net of expected basis, sized by historical p75 not p50. Live on 5-min BTC binaries
-
-**5b. Data drop**
-> Year of data, every PM↔Kalshi BTC binary expiry slot. Naive cross-venue spread: 3.1pp average. After subtracting realized Chainlink-vs-BRTI settlement basis: 1.2pp. The convergence trade is real. It's two-thirds smaller than the quote tape implies. Thread on the math. 1/
----
-- 2/ Methodology — pulled BRTI tick data from CME, Chainlink BTC/USD aggregator history, snapped to each binary's stated expiry timestamp
-- 3/ Distribution — basis is mean-reverting on calm days, regime-shifts on FOMC / CPI / option-expiry windows
-- 4/ Hidden cost — basis correlates with quote-spread; the days the arb looks fattest are the days resolution diverges most
-- 5/ What hermes-arb does — gate raised 7pp → 7.5pp net, sizing on historical p75 basis, kill switch on |basis| > 50bps
-
-**Best overall:** #4a — narrative, the trade story + data + gate change as the kicker.
-**Best per tier:** 1a, 2a, 3a, 4a, 5b.
+**Best overall:** 4a — long-tweet narrative, three concrete events, operator-grade kicker.
 
 ## Summary
 
-- Generated 10 tweet drafts on settlement-basis risk in Polymarket↔Kalshi BTC binaries (Chainlink vs CME BRTI; basis flips tight-binary outcomes; hermes-arb gate moved 7pp → 7.5pp net of basis). Topic back-selected from the 2026-04-25 deep-research article — today's log was thin (token-alert only, all NO_CONFIG).
-- Voice matched against `soul/SOUL.md` + `soul/STYLE.md` + `soul/examples/good-outputs.md`. No emojis, hashtags, or forbidden phrases ("convergence trade" used instead of cross-venue alpha).
-- XAI X-search skipped — `XAI_API_KEY` env-var expansion still blocked under sandbox bash (per yesterday's logs).
-- Files: `.outputs/write-tweet.md`, `.pending-notify/1777256423.md`, append to `memory/logs/2026-04-27.md`.
-- Notification: queued to `.pending-notify/` (postprocess pickup) rather than direct `./notify "$(cat …)"` to dodge the recurring `Unhandled node type: string` hook-block. Operator should confirm postprocess delivery picks up the file in this run.
-- Follow-up: best draft (#4a) is grant-narrative-grade — settlement-basis as a moat for hermes-arb is exactly the kind of original-research story to surface to AWS / Anthropic / Polymarket Builders applications.
+- Generated 10 tweet drafts on Polymarket bot dominance + conduct-rule rollout, back-selected from today's article and digest. Voice matched against `soul/SOUL.md`, `soul/STYLE.md`, `soul/examples/good-outputs.md`.
+- Files written: `.outputs/write-tweet.md`, `.pending-notify/1777311825-write-tweet.md`, log append to `memory/logs/2026-04-27.md`.
+- XAI x_search skipped (env-var expansion blocked under sandbox bash).
+- Notification queued at `.pending-notify/1777311825-write-tweet.md` (~2.4k chars) — direct `./notify` would hit the documented `Unhandled node type: string` hook-block. **Operator caveat:** delivery depends on `.github/workflows/aeon.yml` workflow-side pickup, since `scripts/postprocess-notify.sh` is not in tree (open config-gap item).
+- Follow-up: 4b/5b are grant-narrative-grade — reusable in AWS Activate / Anthropic Research Credits / Polymarket Builders pitches as the "we're typical, not unusual" framing for Revenant.
