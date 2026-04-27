@@ -1,22 +1,23 @@
-Sandbox blocks rm, so the `.token-movers-tmp/` working dir stays as untracked scratch (not committed). Notification was written to `.pending-notify/1745586900.md` for the workflow's post-run delivery step.
-
 ## Summary
 
-Executed `skills/token-movers/SKILL.md` for 2026-04-25.
+Token-movers run for **2026-04-27** completed.
 
-**Pulse:** BTC flat at $77.6k, broader tape quietly red (median top-100 −0.5%, 28/75 green) — but a sharp gaming/metaverse rotation lifts APE/AXS +38%, with MANA/GALA/IMX/DYDX all green and Ronin (the Axie chain) trending alongside.
+**Pulse:** Broad risk-on tape — 90/100 top coins green, median +2.0%; BTC $79.1k +2.0%, ETH +3.1%, SOL +1.9% with mid-cap rotation leading.
 
-**Top winners (24h):** APE +39.3%, AXS +38.3%, OHM +11.3%, BinanceLife +8.9%, GALA +7.5%, DEXE +6.9%, ALGO +6.4%, DYDX +6.2%, MANA +5.3%, IMX +4.8%.
+**Winners (top 5):** UMXM +35.4%, GWEI +24.8%, LUNC +21.4% [TRENDING+UP, BREAKOUT], LDO +21.3%, ZBCN +16.4% [TRENDING+UP, BREAKOUT].
 
-**Top losers (24h):** CHIP/USD.AI −21.5% (CAPITULATION, vol/mcap 4.4×), GRASS −14.1%, CFG −12.2%, TRUMP −9.7%, RAVE −8.9%, GENIUS −8.8%, PIEVERSE −8.8%, ASTEROID Shiba −6.8% (after +745% 7d), FF −5.5%, PYTH −5.3%.
+**Losers (top 5):** RAY -9.3%, APE -5.6%, RAVE -4.2%, H -2.9%, DYDX -2.2% — shallow tape, deepest fall under 10%.
 
-**Trending:** AXS, APE, HYPER (+69% rank-447 → PUMP-RISK), SLP, RON, PENGU, TRADOOR (rank-999 −88%, post-listing noise).
+**Trending:** PENGU, LUNC, NOCK, ASTEROID, AAVE, BTC, ZBCN.
 
-**Notable signals:** APE & AXS both flagged BREAKOUT+PUMP-RISK (sustained 7d but sub-rank-150). Gaming rotation confirmed by Ronin trending and MANA/GALA/IMX/DYDX following. CHIP capitulation flush. HYPER classic low-cap PUMP-RISK.
+**Notable signals:**
+- **LUNC + ZBCN** both BREAKOUT + TRENDING+UP (Terra-Classic legacy bid; Solana payments rail).
+- **LDO** +21% catalyst-driven — mid-cap real liquidity, no PUMP-RISK.
+- **NOCK** trending at rank #536 with +64% — pump-risk profile despite the trending source.
+- **RAY direction flip** — yesterday's +13% winner is today's -9% loser; watch follow-through.
+- **APE** continued fading from Apr-25 +39% → Apr-26 -17% capitulation → today -5.6%.
+- **BSB** second consecutive winners-list day (yesterday +27%, today +14% — decelerating continuation).
 
-**Files:**
-- `.pending-notify/1745586900.md` — outbound notification (workflow post-run will deliver).
-- `memory/logs/2026-04-25.md` — appended `### token-movers` log entry.
-- `.token-movers-tmp/` — scratch working files (sandbox blocked rm; ignored locally, not committed).
+**Files written:** `.outputs/cg-markets.json`, `.outputs/cg-trending.json`, `.outputs/movers.js`, `.outputs/token-movers.md`, `.pending-notify/1777256000.md`, `memory/logs/2026-04-27.md`.
 
-**Follow-ups:** None required. Next run can dedup against today's log if APE/AXS are still leading the tape.
+**Follow-up:** `./notify` direct call hit the recurring "Unhandled node type: string" hook-block (third+ day in a row across multiple skills); message queued to `.pending-notify/` for the workflow's post-run delivery step. Pattern is already noted in `memory/MEMORY.md` lessons — worth filing under `memory/issues/` if not already done.
