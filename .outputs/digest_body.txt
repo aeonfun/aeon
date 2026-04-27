@@ -1,0 +1,25 @@
+*prediction markets — 2026-04-27*
+
+_TL;DR: Kalshi flips on crypto perps in NYC today, completing the PM/Kalshi derivatives duopoly. DOJ files five felonies on the named Maduro-raid soldier. CFTC sits at a 15-year staffing low as event-contract listings explode._
+
+1. *Kalshi launches "Timeless" perpetual futures in NYC today*
+   The CFTC-regulated venue goes live with no-expiration crypto perps on April 27, six days behind Polymarket's April 21 launch. Kalshi's monthly crypto volume crossed $1B in March; stablecoin collateral is queued for Q2.
+   Why it matters: The Polymarket↔Kalshi BTC basis becomes a tradable two-venue tape inside US-regulated rails — Chainlink sub-second vs Kalshi-BRTI 60s settlement asymmetry is now a live convergence signal.
+   https://bitcoinmagazine.com/news/kalshi-and-polymarket-enter-the-crypto
+
+2. *DOJ files five felony counts on named soldier in Polymarket Maduro-raid case*
+   On April 26, DOJ charged Master Sgt. Gannon Ken Van Dyke with commodities fraud, wire fraud, theft of nonpublic government information, and unlawful use of classified intelligence. He allegedly turned $33K into ~$400K betting the January Maduro raid would happen. Polymarket says it flagged and referred the case.
+   Why it matters: First named US prediction-market insider-trading prosecution — the venue-cooperation pattern sets the DOJ template for the next batch.
+   https://www.npr.org/2026/04/26/nx-s1-5786856/u-s-looks-into-regulating-prediction-market-sites-like-kalshi-and-polymarket
+
+3. *CFTC at a 15-year staffing low while event-contract listings hit ~1,600/year*
+   CNN reports agency headcount fell 24% under Trump to 535; the Chicago enforcement office lost its last trial attorney. Event-contract certifications jumped from ~5/year in 2006–2020 to ~1,600 in 2025.
+   Why it matters: Enforcement bandwidth is the binding constraint — expect venue-side cooperation to substitute for direct CFTC prosecution for the next 12+ months.
+   https://www.cnn.com/2026/04/26/politics/commodity-futures-trading-commission-shrinking-prediction-markets
+
+4. *Kalshi and Polymarket co-roll new self-trading bans*
+   Both venues simultaneously banned politicians from trading their own campaigns, athletes from trading their own leagues, and employees from trading employer-tied contracts. The week prior, Kalshi issued first-ever insider-trading bans against three congressional candidates (5-year suspensions; fines $539–$6,229 plus disgorgement).
+   Why it matters: A compliance ratchet under regulatory pressure — every named ban reshapes the noise floor on calibration signals.
+   https://www.cnn.com/2026/04/22/politics/kalshi-prediction-site-suspend-political-candidates
+
+*Also worth a glance:* Kalshi's Third Circuit win (April 6) advances toward SCOTUS — circuit split likely if the Ninth rules the other way. https://www.cnbc.com/2026/04/07/new-jersey-cannot-regulate-kalshis-prediction-market-us-appeals-court-rules.html
