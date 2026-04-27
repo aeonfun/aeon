@@ -1,0 +1,508 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker — 2026-04-27"
+      },
+      "children": [
+        "heading-run",
+        "refinements-section",
+        "separator1",
+        "reflexivity-section",
+        "separator2",
+        "positions-section",
+        "separator3",
+        "map-section",
+        "separator4",
+        "market-context-section"
+      ]
+    },
+    "heading-run": {
+      "type": "Text",
+      "props": {
+        "text": "Refinement run, 14:23 UTC",
+        "variant": "caption"
+      }
+    },
+    "refinements-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "refinements-heading",
+        "kalshi-refinement",
+        "perp-dex-refinement",
+        "alpenglow-refinement"
+      ]
+    },
+    "refinements-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Refinements vs 14:00 baseline",
+        "level": "h2"
+      }
+    },
+    "kalshi-refinement": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "kalshi-label",
+        "kalshi-text"
+      ]
+    },
+    "kalshi-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Kalshi crypto perps",
+        "variant": "default"
+      }
+    },
+    "kalshi-text": {
+      "type": "Text",
+      "props": {
+        "text": "Launching TODAY in NYC (Apr 27, codename \"Timeless\"), not yesterday — basis trade goes live; first 24h volume opens the Hermes-arb falsifier window. 14:00 log had wrong launch date.",
+        "variant": "body"
+      }
+    },
+    "perp-dex-refinement": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "perp-dex-label",
+        "perp-dex-text",
+        "perp-dex-stats",
+        "perp-dex-narrative"
+      ]
+    },
+    "perp-dex-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Perp DEX narrative splits",
+        "variant": "default"
+      }
+    },
+    "perp-dex-text": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid 44% mcap-share / Aster 15% (vs Aster's 70% peak Sept 2025); HL OI $5.15B, Aster $899M.",
+        "variant": "body"
+      }
+    },
+    "perp-dex-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "sm"
+      },
+      "children": [
+        "hl-share",
+        "aster-share",
+        "aster-peak",
+        "oi-stack"
+      ]
+    },
+    "hl-share": {
+      "type": "Stat",
+      "props": {
+        "label": "HL mcap-share",
+        "value": "44%"
+      }
+    },
+    "aster-share": {
+      "type": "Stat",
+      "props": {
+        "label": "ASTER mcap-share",
+        "value": "15%"
+      }
+    },
+    "aster-peak": {
+      "type": "Stat",
+      "props": {
+        "label": "ASTER peak (Sept 2025)",
+        "value": "70%"
+      }
+    },
+    "oi-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "hl-oi",
+        "aster-oi"
+      ]
+    },
+    "hl-oi": {
+      "type": "Stat",
+      "props": {
+        "label": "HL OI",
+        "value": "$5.15B"
+      }
+    },
+    "aster-oi": {
+      "type": "Stat",
+      "props": {
+        "label": "ASTER OI",
+        "value": "$899M"
+      }
+    },
+    "perp-dex-narrative": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "hl-ride-badge",
+        "aster-fade-badge"
+      ]
+    },
+    "hl-ride-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HL stays RIDE",
+        "variant": "secondary"
+      }
+    },
+    "aster-fade-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ASTER opens as FADE on incentive cliff",
+        "variant": "destructive"
+      }
+    },
+    "alpenglow-refinement": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alpenglow-label",
+        "alpenglow-text"
+      ]
+    },
+    "alpenglow-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Solana Alpenglow",
+        "variant": "outline"
+      }
+    },
+    "alpenglow-text": {
+      "type": "Text",
+      "props": {
+        "text": "Demoted Emerging -> WATCH — mainnet activation slated late 2026 (post-Agave 4.1 Q3 + audits Q4), not imminent. The 98.27% validator vote was Sept 2025, not fresh — mis-tagged in 14:00 run.",
+        "variant": "body"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "reflexivity-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "reflexivity-heading",
+        "reflexivity-text"
+      ]
+    },
+    "reflexivity-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Reflexivity",
+        "level": "h2"
+      }
+    },
+    "reflexivity-text": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi launch live: token-side perp-DEX surge and PM-side attention-market rotation both pricing the launch hours before any volume confirmation.",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "positions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "positions-heading",
+        "front-run-position",
+        "fade-position",
+        "watch-position"
+      ]
+    },
+    "positions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Positions (delta only)",
+        "level": "h2"
+      }
+    },
+    "front-run-position": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "front-run-badge",
+        "front-run-title",
+        "front-run-details",
+        "front-run-bear"
+      ]
+    },
+    "front-run-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FRONT-RUN",
+        "variant": "secondary"
+      }
+    },
+    "front-run-title": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-BRTI vs PM-Chainlink BTC settlement basis",
+        "variant": "body"
+      }
+    },
+    "front-run-details": {
+      "type": "Text",
+      "props": {
+        "text": "Mindshare 2, velocity ++, Bull thesis — Hermes-arb watches first 24h",
+        "variant": "caption"
+      }
+    },
+    "front-run-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear case: thin launch-week liquidity collapses the spread before convergence builds"
+      }
+    },
+    "fade-position": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fade-badge",
+        "fade-title",
+        "fade-details",
+        "fade-bear"
+      ]
+    },
+    "fade-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      }
+    },
+    "fade-title": {
+      "type": "Text",
+      "props": {
+        "text": "ASTER (perp DEX)",
+        "variant": "body"
+      }
+    },
+    "fade-details": {
+      "type": "Text",
+      "props": {
+        "text": "Incentive-driven 70%→15% share collapse; OI $899M vs HL $5.15B",
+        "variant": "caption"
+      }
+    },
+    "fade-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear case priced; further downside is structural, not narrative"
+      }
+    },
+    "watch-position": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watch-badge",
+        "watch-title",
+        "watch-details"
+      ]
+    },
+    "watch-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "outline"
+      }
+    },
+    "watch-title": {
+      "type": "Text",
+      "props": {
+        "text": "Solana Alpenglow",
+        "variant": "body"
+      }
+    },
+    "watch-details": {
+      "type": "Text",
+      "props": {
+        "text": "Q4 2026 timing dampens short-term price catalyst",
+        "variant": "caption"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "map-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "map-heading",
+        "map-text",
+        "map-grid"
+      ]
+    },
+    "map-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Position Map",
+        "level": "h2"
+      }
+    },
+    "map-text": {
+      "type": "Text",
+      "props": {
+        "text": "Unchanged from 14:00 run otherwise",
+        "variant": "caption"
+      }
+    },
+    "map-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "map-front-run",
+        "map-ride",
+        "map-watch",
+        "map-fade"
+      ]
+    },
+    "map-front-run": {
+      "type": "Stat",
+      "props": {
+        "label": "FRONT-RUN",
+        "value": "1"
+      }
+    },
+    "map-ride": {
+      "type": "Stat",
+      "props": {
+        "label": "RIDE",
+        "value": "5"
+      }
+    },
+    "map-watch": {
+      "type": "Stat",
+      "props": {
+        "label": "WATCH",
+        "value": "4"
+      }
+    },
+    "map-fade": {
+      "type": "Stat",
+      "props": {
+        "label": "FADE",
+        "value": "4"
+      }
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-context-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market-heading",
+        "btc-stat",
+        "eth-stat",
+        "etf-text"
+      ]
+    },
+    "market-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Context",
+        "level": "h2"
+      }
+    },
+    "btc-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$79.1k",
+        "delta": "+2.04%",
+        "trend": "up"
+      }
+    },
+    "eth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,370",
+        "delta": "+2.2%",
+        "trend": "up"
+      }
+    },
+    "etf-text": {
+      "type": "Text",
+      "props": {
+        "text": "6th consecutive day of positive BTC ETF inflows",
+        "variant": "body"
+      }
+    }
+  }
+}
