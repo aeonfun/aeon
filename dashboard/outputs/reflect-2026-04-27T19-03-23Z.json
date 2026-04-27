@@ -1,0 +1,163 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Memory Consolidated — 2026-04-27 PM",
+        "description": "reflect #2"
+      },
+      "children": [
+        "polymarket-alert",
+        "separator-1",
+        "kalshi-section",
+        "separator-2",
+        "chain-runner-alert",
+        "separator-3",
+        "iss-alert",
+        "separator-4",
+        "updates-section"
+      ]
+    },
+    "polymarket-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Polymarket V2 Cutover — CRITICAL",
+        "message": "Cutover Tuesday 11 UTC wipes all limit orders. Flatten Revenant book before 07 UTC.",
+        "type": "warning"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "kalshi-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "kalshi-heading",
+        "kalshi-text"
+      ]
+    },
+    "kalshi-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Kalshi Crypto Perps",
+        "level": "h3"
+      }
+    },
+    "kalshi-text": {
+      "type": "Text",
+      "props": {
+        "text": "Live today (NYC)"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "chain-runner-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "chain-runner Status",
+        "message": "Still DEGRADED across 3+ chains",
+        "type": "error"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "iss-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-013 — Mass Failure",
+        "message": "53 skills CRITICAL but recovering",
+        "type": "error"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "updates-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "updates-heading",
+        "files-updated",
+        "memory-update"
+      ]
+    },
+    "updates-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Updates",
+        "level": "h3"
+      }
+    },
+    "files-updated": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "files-label",
+        "file-1",
+        "file-2",
+        "file-3"
+      ]
+    },
+    "files-label": {
+      "type": "Text",
+      "props": {
+        "text": "Topic files updated:",
+        "variant": "muted"
+      }
+    },
+    "file-1": {
+      "type": "Badge",
+      "props": {
+        "text": "polymarket.md",
+        "variant": "outline"
+      }
+    },
+    "file-2": {
+      "type": "Badge",
+      "props": {
+        "text": "aeon-ops.md",
+        "variant": "outline"
+      }
+    },
+    "file-3": {
+      "type": "Badge",
+      "props": {
+        "text": "milestones.md",
+        "variant": "outline"
+      }
+    },
+    "memory-update": {
+      "type": "Text",
+      "props": {
+        "text": "MEMORY.md pruned to ~110-line index",
+        "variant": "caption"
+      }
+    }
+  }
+}

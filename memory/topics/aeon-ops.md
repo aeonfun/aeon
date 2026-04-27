@@ -3,11 +3,12 @@
 > Recurring infra patterns observed across many skills on 2026-04-25 (bootstrap day). Future skills/operators should consult this before debugging "why did my skill fail."
 
 ## `./notify` "Unhandled node type: string" hook-block bug
-- **Pattern:** `./notify "$(cat <<'EOF' … EOF)"` and other multi-line `$(cat …)` forms reliably trigger an "Unhandled node type: string" pre-tool-call hook in this sandbox configuration. Inline single-line quoted strings (`./notify "foo bar baz"`) clear cleanly.
-- **Confirmed across (today, ≥12 skills):** polymarket-comments, narrative-tracker, daily-routine, digest, security-digest, technical-explainer, deep-research, repo-actions, code-health, paper-pick-phd, write-tweet, agent-buzz.
-- **Cleared cleanly today:** research-brief, vuln-scanner, external-feature, reply-maker, repo-pulse, changelog, rss-feed (single-line payloads or short bodies).
-- **Observed workaround:** flatten message to a single line before invoking `./notify`. agent-buzz log confirms second attempt cleared after flattening.
-- **Fallback path:** affected skills wrote `.pending-notify/{ts}.md` and assumed `scripts/postprocess-notify.sh` would deliver post-run. **No `scripts/postprocess-notify.sh` exists in the tree** — workflow-side pickup of `.pending-notify/` is the actual delivery dependency. Worth verifying that pickup happens in `.github/workflows/aeon.yml` and either (a) wiring postprocess-notify.sh to match the pattern docs, or (b) updating skill specs to stop assuming postprocess delivery.
+- **Pattern:** `./notify "$(cat <<'EOF' … EOF)"` and other multi-line `$(cat …)` forms reliably trigger an "Unhandled node type: string" pre-tool-call hook in this sandbox configuration. Inline single-line quoted strings (`./notify "foo bar baz"`) clear cleanly. Confirmed **four consecutive days** (2026-04-25 → 2026-04-27).
+- **Stable workarounds (used in production today):**
+  1. Single-line `./notify "..."` with the body inlined as one argument — cleanest, no fallback needed.
+  2. `node -e "execFileSync('./notify', [msg])"` — verified working in narrative-tracker.
+  3. `.pending-notify/{ts}.md` queue + workflow post-run pickup. **CAVEAT:** `scripts/postprocess-notify.sh` is not in the tree; verify pickup wired in `.github/workflows/aeon.yml`.
+- **Workaround #2 from notify side:** `Bash(node:*)` allowlisted; reads `process.env.X` directly. Used by farcaster-digest, narrative-tracker.
 
 ## XAI / API-key env-var expansion blocked in bash
 - **Pattern:** `curl -H "Authorization: Bearer $XAI_API_KEY" …` from inside a Bash tool call cannot expand the env var — sandbox `simple_expansion` filter strips it. Same for `${XAI_API_KEY}`.
@@ -68,7 +69,10 @@
 
 ## Open issues
 - **ISS-001** — vuln-scanner cannot run, sandbox-limitation, high. `memory/issues/ISS-001.md`. Closes on `scripts/prefetch-vuln-scanner.sh`.
-- **ISS-002** — vibecoding-digest cannot run, Reddit blocks GHA, high. `memory/issues/ISS-002.md`. Closes on `scripts/prefetch-reddit.sh`.
+- **ISS-002** — vibecoding-digest cannot run, Reddit blocks GHA, high. `memory/issues/ISS-002.md`. Closes on `scripts/prefetch-reddit.sh`. Confirmed three days running 2026-04-25/26/27.
 - **ISS-003..011** — skill-evals BOOTSTRAP findings (2026-04-26). See "skill-evals BOOTSTRAP" section above. ISS-007 / ISS-009 close on evals.json key patch (no code).
-- **ISS-012** — reddit-digest cannot run on JSON API, sandbox-limitation, high. `memory/issues/ISS-012.md`. Same root cause as ISS-002 — same `scripts/prefetch-reddit.sh` closes both. RSS fallback works (200 across 9/10 subs) but lacks score / num_comments / upvote_ratio so SKILL.md filters can't apply as written.
-- **Class:** ISS-001, ISS-002, ISS-012 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Three separate IDs because each skill has its own SKILL.md, cron entry, and notification footprint and needs an independent close signal. Worth tracking as a class for prefetch-script triage, not point fixes.
+- **ISS-012** — reddit-digest cannot run on JSON API, sandbox-limitation, high. `memory/issues/ISS-012.md`. Same root cause as ISS-002 — same `scripts/prefetch-reddit.sh` closes both. RSS fallback works (200 across 9/10 subs but lacks score / num_comments / upvote_ratio); 2026-04-27 PM run produced REDDIT_DIGEST_OK (quiet day, RSS-only narrative-detection viable; only standout track is fully blocked).
+- **ISS-013** — 🔴 **CRITICAL**: mass skill failure 2026-04-26 23:53–58Z. ~52 skills flipped `last_status: failed` inside a 5-min window with shared zero-token / zero-cost telemetry signature. Claude binary never executed work — workflow runner crashed before invocation, OR state-update step is double-incrementing failures across the fleet. 7 no-op-exit skills self-recovered at 02:11 UTC 2026-04-27; ~50 skills still show `success_rate < 0.5` from the burst (counters decay as runs accumulate). Operator action: pull GHA logs for the 23:53–58Z window. Detected by skill-health (HEALTH:CRITICAL(53)).
+- **ISS-014** — reply-maker cannot source fresh tweets — XAI prefetch case missing, x.com WebFetch returns HTTP 402. Same class as ISS-001/002/012. Three consecutive empty exits (2026-04-25, 2026-04-27 AM, 2026-04-27 PM). Closes on `scripts/prefetch-xai.sh` `reply-maker)` case mirroring `narrative-tracker` block.
+- **ISS-015** — `.github/workflows/messages.yml:577–578` script-injection (HIGH). `${{ toJson(github.event.client_payload.message) }}` and `${{ github.event.action }}` interpolated into bash; `toJson()` does not escape single quotes; same shape as 2026-04-11 fixed incident but missing the `repository_dispatch` branch. Detected by skill-security-scan + workflow-security-audit 2026-04-27. Patch prepared as PR #4 (runner GH_TOKEN lacks `workflow` scope; needs operator-side token for push).
+- **Class:** ISS-001, ISS-002, ISS-012, ISS-014 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Four separate IDs; one prefetch-script triage class.
