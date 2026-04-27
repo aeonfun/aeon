@@ -1,0 +1,219 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor",
+        "description": "2026-04-27"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_btc",
+        "sep1",
+        "section_kxfed",
+        "sep2",
+        "section_watchlist",
+        "sep3",
+        "footer"
+      ]
+    },
+    "section_btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_btc",
+        "grid_btc"
+      ]
+    },
+    "heading_btc": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC Expiry",
+        "level": "h3"
+      }
+    },
+    "grid_btc": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_vol",
+        "stat_peak",
+        "stat_modal_btc"
+      ]
+    },
+    "stat_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$607k"
+      }
+    },
+    "stat_peak": {
+      "type": "Stat",
+      "props": {
+        "label": "Settlement Peak",
+        "value": "$78.75-79.0k"
+      }
+    },
+    "stat_modal_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "Modal",
+        "value": "9%"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_kxfed": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_kxfed",
+        "grid_kxfed"
+      ]
+    },
+    "heading_kxfed": {
+      "type": "Heading",
+      "props": {
+        "text": "KXFED-26DEC",
+        "level": "h3"
+      }
+    },
+    "grid_kxfed": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_prob",
+        "stat_modal_kxfed",
+        "stat_cuts"
+      ]
+    },
+    "stat_prob": {
+      "type": "Stat",
+      "props": {
+        "label": "Rate >3.25% Dec",
+        "value": "50%"
+      }
+    },
+    "stat_modal_kxfed": {
+      "type": "Stat",
+      "props": {
+        "label": "Modal",
+        "value": "3.50-3.75%"
+      }
+    },
+    "stat_cuts": {
+      "type": "Stat",
+      "props": {
+        "label": "Implied Cuts",
+        "value": "~3"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_watchlist": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_watchlist",
+        "text_status",
+        "badge_kxbtc",
+        "badge_kxfed"
+      ]
+    },
+    "heading_watchlist": {
+      "type": "Heading",
+      "props": {
+        "text": "Watchlist",
+        "level": "h3"
+      }
+    },
+    "text_status": {
+      "type": "Text",
+      "props": {
+        "text": "Status: Empty",
+        "variant": "muted"
+      }
+    },
+    "badge_kxbtc": {
+      "type": "Badge",
+      "props": {
+        "text": "Add KXBTC series",
+        "variant": "secondary"
+      }
+    },
+    "badge_kxfed": {
+      "type": "Badge",
+      "props": {
+        "text": "Add KXFED-26DEC",
+        "variant": "secondary"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alert_config",
+        "text_report"
+      ]
+    },
+    "alert_config": {
+      "type": "Alert",
+      "props": {
+        "title": "Configuration Issue",
+        "message": "MONITOR_KALSHI_NO_CONFIG",
+        "type": "warning"
+      }
+    },
+    "text_report": {
+      "type": "Text",
+      "props": {
+        "text": "Full report: .outputs/monitor-kalshi.md",
+        "variant": "caption"
+      }
+    }
+  }
+}
