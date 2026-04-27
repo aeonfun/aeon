@@ -1,0 +1,469 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Unlock Monitor — Apr 27 2026"
+      },
+      "children": [
+        "status_alert",
+        "content_stack"
+      ]
+    },
+    "status_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "UNLOCK_MONITOR_DEGRADED",
+        "type": "warning"
+      }
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "most_leveraged_section",
+        "sep1",
+        "strain_section",
+        "sep2",
+        "digestible_section",
+        "sep3",
+        "flagged_section",
+        "sep4",
+        "forced_section",
+        "sep5",
+        "analysis_section",
+        "sep6",
+        "sources_section",
+        "sep7",
+        "detail_section"
+      ]
+    },
+    "most_leveraged_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "most_leveraged_heading",
+        "eigen_stat",
+        "eigen_details_text"
+      ]
+    },
+    "most_leveraged_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Most Leveraged",
+        "level": "h3"
+      }
+    },
+    "eigen_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "EIGEN unlock (Fri May 1)",
+        "value": "$6.56M",
+        "delta": "-40%",
+        "trend": "down"
+      }
+    },
+    "eigen_details_text": {
+      "type": "Text",
+      "props": {
+        "text": "0.63x daily vol • 100% insider/investor cliff • Priced in"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "strain_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "strain_heading",
+        "strain_badge"
+      ]
+    },
+    "strain_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Strain",
+        "level": "h3"
+      }
+    },
+    "strain_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "EIGEN",
+        "variant": "destructive"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "digestible_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "digestible_heading",
+        "digestible_items"
+      ]
+    },
+    "digestible_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Digestible",
+        "level": "h3"
+      }
+    },
+    "digestible_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ron_item",
+        "sign_item"
+      ]
+    },
+    "ron_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ron_badge",
+        "ron_details"
+      ]
+    },
+    "ron_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RON",
+        "variant": "secondary"
+      }
+    },
+    "ron_details": {
+      "type": "Text",
+      "props": {
+        "text": "$2.9M • 0.66x vol on $4M-daily • Watch post-unlock vol"
+      }
+    },
+    "sign_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sign_badge",
+        "sign_details"
+      ]
+    },
+    "sign_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SIGN",
+        "variant": "secondary"
+      }
+    },
+    "sign_details": {
+      "type": "Text",
+      "props": {
+        "text": "$7.05M • 0.52x"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "flagged_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "flagged_heading",
+        "flagged_items"
+      ]
+    },
+    "flagged_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Flagged (Trivial)",
+        "level": "h3"
+      }
+    },
+    "flagged_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sui_item",
+        "jup_item"
+      ]
+    },
+    "sui_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sui_badge",
+        "sui_stat",
+        "sui_details"
+      ]
+    },
+    "sui_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SUI",
+        "variant": "outline"
+      }
+    },
+    "sui_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Unlock amount",
+        "value": "$40M",
+        "delta": "-2.5%",
+        "trend": "down"
+      }
+    },
+    "sui_details": {
+      "type": "Text",
+      "props": {
+        "text": "0.16x vs $260M daily • Biggest $ but absorbed • Series B + early contrib cliff • Watch distribution into strength"
+      }
+    },
+    "jup_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "jup_badge",
+        "jup_stat",
+        "jup_details"
+      ]
+    },
+    "jup_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "JUP",
+        "variant": "outline"
+      }
+    },
+    "jup_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Monthly team cliff",
+        "value": "$9.77M",
+        "delta": "+32.6%",
+        "trend": "up"
+      }
+    },
+    "jup_details": {
+      "type": "Text",
+      "props": {
+        "text": "Fade-pump candidate"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "forced_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "forced_heading",
+        "ftx_item"
+      ]
+    },
+    "forced_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Forced",
+        "level": "h3"
+      }
+    },
+    "ftx_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ftx_badge",
+        "ftx_details"
+      ]
+    },
+    "ftx_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FTX",
+        "variant": "outline"
+      }
+    },
+    "ftx_details": {
+      "type": "Text",
+      "props": {
+        "text": "Preferred-equity record date Apr 30 • Payout May 29"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "analysis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "analysis_heading",
+        "analysis_note1",
+        "analysis_note2"
+      ]
+    },
+    "analysis_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Analysis",
+        "level": "h3"
+      }
+    },
+    "analysis_note1": {
+      "type": "Text",
+      "props": {
+        "text": "Quiet on liquidity-strain math"
+      }
+    },
+    "analysis_note2": {
+      "type": "Text",
+      "props": {
+        "text": "Real asymmetry is JUP fade-pump shape"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_items"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Data Sources",
+        "level": "h3"
+      }
+    },
+    "sources_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "source_tokenomist",
+        "source_defillama",
+        "source_cryptorank",
+        "source_dropstab",
+        "source_coingecko"
+      ]
+    },
+    "source_tokenomist": {
+      "type": "Text",
+      "props": {
+        "text": "tokenomist: partial",
+        "variant": "caption"
+      }
+    },
+    "source_defillama": {
+      "type": "Text",
+      "props": {
+        "text": "defillama: fail",
+        "variant": "caption"
+      }
+    },
+    "source_cryptorank": {
+      "type": "Text",
+      "props": {
+        "text": "cryptorank: ok",
+        "variant": "caption"
+      }
+    },
+    "source_dropstab": {
+      "type": "Text",
+      "props": {
+        "text": "dropstab: fail",
+        "variant": "caption"
+      }
+    },
+    "source_coingecko": {
+      "type": "Text",
+      "props": {
+        "text": "coingecko: fail",
+        "variant": "caption"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "detail_section": {
+      "type": "Text",
+      "props": {
+        "text": "Full detail in .pending-notify/unlock-monitor-2026-04-27-1018.md",
+        "variant": "muted"
+      }
+    }
+  }
+}
