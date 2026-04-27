@@ -1,0 +1,111 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap 2026-04-27",
+        "description": "aaronjmars/aeon — SHIPPING: two new fleet-ops skills + Showcase"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_prs",
+        "separator_1",
+        "stack_stats",
+        "separator_2",
+        "story_recap"
+      ]
+    },
+    "stack_prs": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr_142",
+        "pr_144",
+        "pr_145"
+      ]
+    },
+    "pr_142": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#142 skill-analytics",
+        "href": "https://github.com/aaronjmars/aeon/pull/142",
+        "source": "Wed 18:30 fleet audit, 6 anomaly flags"
+      }
+    },
+    "pr_144": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#144 contributor-reward",
+        "href": "https://github.com/aaronjmars/aeon/pull/144",
+        "source": "Mon 09:30 tier-priced plan: 1=25/2=15/3=10/4-5=5 USDC + 5 first-PR, plan-only/disabled"
+      }
+    },
+    "pr_145": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#145 SHOWCASE.md",
+        "href": "https://github.com/aaronjmars/aeon/pull/145",
+        "source": "6 forks + AutoGen/CrewAI/n8n/LangGraph table, linked from README"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_shape",
+        "stat_volume"
+      ]
+    },
+    "stat_shape": {
+      "type": "Stat",
+      "props": {
+        "label": "Shape",
+        "value": "3 user-visible / 3 merged PRs"
+      }
+    },
+    "stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "7 files +647/-1"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story_recap": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-04-27.md",
+        "source": "aaronjmars/aeon"
+      }
+    }
+  }
+}
