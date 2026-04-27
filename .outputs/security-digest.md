@@ -1,19 +1,24 @@
 ## Summary
 
-Ran `security-digest` for 2026-04-25. Sources: CISA KEV (14 entries since 2026-04-18), GitHub Advisory DB (7 critical + 19 high since 2026-04-23), FIRST EPSS (19/27 CVEs scored).
+Ran the security-digest skill for 2026-04-27. Exploitation-signal-first ranking: KEV → EPSS → CVSS, with the tracked-stack (npm/pip/Go) filter overridden by KEV.
 
-**Output tiers (3 / 5 / 3):**
-- **PATCH TODAY:** CVE-2024-27199 (JetBrains TeamCity, EPSS 0.91), CVE-2023-27351 (PaperCut NG/MF, EPSS 0.86), CVE-2024-7399 (Samsung MagicINFO 9, EPSS 0.82) — all KEV-listed.
-- **PATCH THIS WEEK:** CVE-2026-39987 (marimo pre-auth RCE, exploited <10h post-disclosure), CVE-2026-40068 (@anthropic-ai/claude-code worktree-spoofing RCE — **Aeon runs on this**, fix ≥2.1.84), GHSA-wpqr-6v78-jr5g (@google/gemini-cli RCE, CVSS 10), CVE-2026-41492 (dgraph auth bypass), CVE-2025-48700 (Zimbra XSS).
-- **MONITOR:** litellm SQLi, ray Parquet-Arrow RCE, electerm cmd injection.
+**Tier counts:** PATCH TODAY=3, PATCH THIS WEEK=5, MONITOR=3 (within caps).
 
-**Files written:**
-- `.outputs/kev.json`, `.outputs/epss.json`, `.outputs/security_digest_msg.md`
-- `.pending-notify/security-digest-2026-04-25.md` (2,908 chars)
-- Log entry appended to `memory/logs/2026-04-25.md`
+**PATCH TODAY** (KEV adds, ranked by EPSS):
+- CVE-2025-29635 — D-Link DIR-823X cmd injection (EPSS 0.59, EoL → replace)
+- CVE-2024-57726 / CVE-2024-57728 — SimpleHelp authz + zip-slip RCE chain (≥5.5.8)
 
-**Notification status:** `./notify` direct call failed with the same "Unhandled node type: string" sandbox bug seen across three other skills today. Message queued in `.pending-notify/`. There is no `scripts/postprocess-notify.sh` — post-run delivery requires the workflow's pickup step to drain `.pending-notify/`.
+**PATCH THIS WEEK:** CVE-2025-32975 (Quest KACE), note-mark, GitPython pair → 3.1.47, zrok/v2 → 2.0.2.
 
-**Follow-up for operator:**
-- **Aeon-critical:** pin `@anthropic-ai/claude-code` to ≥2.1.84 in any pinned-version contexts; the worktree-spoofing trust-dialog bypass is RCE-capable.
-- The recurring `./notify` "Unhandled node type: string" failure across 5 skills today (polymarket-comments, narrative-tracker, daily-routine, deep-research, security-digest) deserves an entry in `memory/issues/` — pattern-level, not skill-specific.
+**MONITOR:** Heimdall trio (no patch yet), cilium (1.17.15/1.18.9/1.19.3), litellm (1.83.7 — Aeon-relevant if any agent stack consumes it).
+
+**Sources:** KEV ok, GH Advisory ok, EPSS ok.
+
+**Files:**
+- Modified `memory/logs/2026-04-27.md` (appended security-digest entry).
+- Queued `.pending-notify/security-digest-20260427.md` (3046 chars). Used file-drop into `.pending-notify/` instead of `./notify "$(cat …)"` to dodge the documented multi-line hook-block bug — workflow's post-run delivery step picks it up.
+- Untracked artifact `kev.json` left in workdir (sandbox blocked rm; not git-tracked, won't be committed).
+
+**Dedupe:** 5 KEV items already in 2026-04-25 digest (TeamCity, PaperCut, Samsung MagicINFO, Marimo, Zimbra) dropped before ranking.
+
+**Follow-ups:** None blocking. If GitPython is in any swarm-fund-mvp tooling chain, prioritize the 3.1.47 bump — high-likelihood target for supply-chain abuse.
