@@ -1,0 +1,67 @@
+{
+  "root": "card_paper_pick",
+  "state": {},
+  "elements": {
+    "card_paper_pick": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-04-27"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink_paper",
+        "text_description",
+        "stack_links"
+      ]
+    },
+    "storylink_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Agentic World Modeling: Foundations, Capabilities, Laws, and Beyond",
+        "href": "https://arxiv.org/abs/2604.22748",
+        "source": "S-Lab/NUS/HKU/Oxford (47 authors)",
+        "score": "↑62 on HF Daily"
+      }
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "A levels-x-laws taxonomy (L1 Predictor / L2 Simulator / L3 Evolver across physical / digital / social / scientific regimes) that synthesizes 400+ works — maps cleanly onto swarm-fund's Birth → Canary → Apex lifecycle, with Apex reframed as an L3 Evolver under the social-law regime (adversarial markets)."
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.22748"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.22748"
+      }
+    }
+  }
+}
