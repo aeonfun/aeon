@@ -1,0 +1,136 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Action Converter — 2026-04-27"
+      },
+      "children": [
+        "text_score",
+        "separator_1",
+        "heading_shape",
+        "stack_tasks",
+        "separator_2",
+        "heading_notes",
+        "stack_fullbody",
+        "text_hook_note"
+      ]
+    },
+    "text_score": {
+      "type": "Text",
+      "props": {
+        "text": "5/5, avg 4.6",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_shape": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h4"
+      }
+    },
+    "stack_tasks": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "task_1",
+        "task_2",
+        "task_3",
+        "task_4",
+        "task_5"
+      ]
+    },
+    "task_1": {
+      "type": "Text",
+      "props": {
+        "text": "pre-cutover order guard",
+        "variant": "body"
+      }
+    },
+    "task_2": {
+      "type": "Text",
+      "props": {
+        "text": "ship audit PR #4",
+        "variant": "body"
+      }
+    },
+    "task_3": {
+      "type": "Text",
+      "props": {
+        "text": "scaffold TruthTensor eval",
+        "variant": "body"
+      }
+    },
+    "task_4": {
+      "type": "Text",
+      "props": {
+        "text": "drain stale PR #1",
+        "variant": "body"
+      }
+    },
+    "task_5": {
+      "type": "Text",
+      "props": {
+        "text": "verify metrics.json",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_notes": {
+      "type": "Heading",
+      "props": {
+        "text": "Notes",
+        "level": "h4"
+      }
+    },
+    "stack_fullbody": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_fullbody_label",
+        "link_pending"
+      ]
+    },
+    "text_fullbody_label": {
+      "type": "Text",
+      "props": {
+        "text": "Full body queued at:",
+        "variant": "body"
+      }
+    },
+    "link_pending": {
+      "type": "Link",
+      "props": {
+        "label": ".pending-notify/1777262580.md",
+        "href": ".pending-notify/1777262580.md"
+      }
+    },
+    "text_hook_note": {
+      "type": "Text",
+      "props": {
+        "text": "multi-line hits the documented hook-block; single-line summary via direct notify cleared",
+        "variant": "caption"
+      }
+    }
+  }
+}
