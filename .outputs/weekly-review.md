@@ -1,0 +1,1 @@
+Weekly Review 2026-04-27 — Top action: land scripts/postprocess-notify.sh by 2026-04-30. 15 new issues, 26 articles, Apex gate stalled at 29/100 (chain-runner blocker). Full: articles/weekly-review-2026-04-27.md

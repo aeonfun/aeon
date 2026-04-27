@@ -1,0 +1,85 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Weekly Review 2026-04-27"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action_alert",
+        "metrics_grid",
+        "blocker_alert",
+        "link_full"
+      ]
+    },
+    "action_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Top Action",
+        "message": "Land scripts/postprocess-notify.sh by 2026-04-30",
+        "type": "warning"
+      }
+    },
+    "metrics_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_issues",
+        "stat_articles",
+        "stat_apex"
+      ]
+    },
+    "stat_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "New Issues",
+        "value": "15"
+      }
+    },
+    "stat_articles": {
+      "type": "Stat",
+      "props": {
+        "label": "Articles",
+        "value": "26"
+      }
+    },
+    "stat_apex": {
+      "type": "Stat",
+      "props": {
+        "label": "Apex Gate Progress",
+        "value": "29/100"
+      }
+    },
+    "blocker_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Blocker",
+        "message": "Apex gate stalled — chain-runner issue",
+        "type": "error"
+      }
+    },
+    "link_full": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Weekly Review",
+        "href": "articles/weekly-review-2026-04-27.md",
+        "source": "weekly-review"
+      }
+    }
+  }
+}
