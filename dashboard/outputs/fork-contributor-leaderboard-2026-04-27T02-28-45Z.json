@@ -1,0 +1,110 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Fork Contributor Leaderboard — 2026-04-27"
+      },
+      "children": [
+        "description",
+        "separator1",
+        "table",
+        "separator2",
+        "prs_text",
+        "reviewer_text",
+        "separator3",
+        "link"
+      ]
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "gcampton and Xedphilia tied #1 with 5 new skills each — both forks contain original skill inventories (memory-flush, self-review, tweet-digest, wallet-digest and more) that upstream hasn't seen yet."
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Contributor",
+          "Score",
+          "Details"
+        ],
+        "rows": [
+          [
+            "1",
+            "@gcampton",
+            "25",
+            "5 new skills, 781 ahead"
+          ],
+          [
+            "2",
+            "@Xedphilia",
+            "25",
+            "5 new skills, 20 ahead"
+          ],
+          [
+            "3",
+            "@0xfreddy",
+            "10",
+            "5 fork commits, 1 new skill: macos-apps"
+          ],
+          [
+            "4",
+            "@davenamovich",
+            "7",
+            "7 fork commits"
+          ],
+          [
+            "5",
+            "@pezetel",
+            "5",
+            "1 open PR upstream, 2 fork commits"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "prs_text": {
+      "type": "Text",
+      "props": {
+        "text": "First PRs this week: none"
+      },
+      "children": []
+    },
+    "reviewer_text": {
+      "type": "Text",
+      "props": {
+        "text": "Top reviewer: none (0 review comments)"
+      },
+      "children": []
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full leaderboard",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/fork-contributor-leaderboard-2026-04-27.md"
+      },
+      "children": []
+    }
+  }
+}
