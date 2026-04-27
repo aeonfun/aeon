@@ -1,0 +1,238 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context Refresh",
+        "description": "2026-04-27"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stance_section",
+        "sep1",
+        "prices_section",
+        "sep2",
+        "sentiment_section",
+        "sep3",
+        "metrics_section",
+        "sep4",
+        "narratives_section",
+        "sep5",
+        "markets_section"
+      ]
+    },
+    "stance_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_risk_on",
+        "badge_conviction"
+      ]
+    },
+    "badge_risk_on": {
+      "type": "Badge",
+      "props": {
+        "text": "risk-on",
+        "variant": "default"
+      }
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction medium",
+        "variant": "secondary"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "prices_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "79139",
+        "delta": "+2.0%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "2389",
+        "delta": "+3.1%",
+        "trend": "up"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sentiment_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_fg",
+        "text_fg_previous"
+      ]
+    },
+    "stat_fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed Index",
+        "value": "47 Neutral",
+        "delta": "+14pts",
+        "trend": "up"
+      }
+    },
+    "text_fg_previous": {
+      "type": "Text",
+      "props": {
+        "text": "was 33 Fear",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "metrics_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_breadth",
+        "stat_tvl"
+      ]
+    },
+    "stat_breadth": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "16/20"
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH TVL",
+        "value": "46.1B",
+        "delta": "+1.5%",
+        "trend": "up"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "narratives_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_narrative_label",
+        "badge_narrative",
+        "stat_etf",
+        "stat_ibit"
+      ]
+    },
+    "text_narrative_label": {
+      "type": "Text",
+      "props": {
+        "text": "Top narrative",
+        "variant": "caption"
+      }
+    },
+    "badge_narrative": {
+      "type": "Badge",
+      "props": {
+        "text": "institutional BTC accumulation (rising)",
+        "variant": "default"
+      }
+    },
+    "stat_etf": {
+      "type": "Stat",
+      "props": {
+        "label": "ETF (last week)",
+        "value": "996M"
+      }
+    },
+    "stat_ibit": {
+      "type": "Stat",
+      "props": {
+        "label": "IBIT",
+        "value": "284M/day"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "markets_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_market_label",
+        "stat_market",
+        "text_market_volume"
+      ]
+    },
+    "text_market_label": {
+      "type": "Text",
+      "props": {
+        "text": "Hot market",
+        "variant": "caption"
+      }
+    },
+    "stat_market": {
+      "type": "Stat",
+      "props": {
+        "label": "Lakers vs Rockets YES",
+        "value": "45.5%"
+      }
+    },
+    "text_market_volume": {
+      "type": "Text",
+      "props": {
+        "text": "vol 7.5M",
+        "variant": "muted"
+      }
+    }
+  }
+}

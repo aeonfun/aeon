@@ -1,7 +1,1 @@
-market context — 2026-04-25
-
-take: chop (conviction medium)
-BTC $77,610 (−1%) / ETH $2,317 (−0.5%) · F&G 31 (Fear, −8 pts)
-breadth 8/20 · DEX vol $5.6B · ETF inflows 8-day streak $2.43B Apr
-top narrative: GameFi revival (emerging) — AXS +37%, APE +43% 24h
-hot market: "US × Iran peace deal by Apr 30" YES 6.5%
+market context — 2026-04-27 | take: risk-on (conviction medium) | BTC 79139 (+2.0%) / ETH 2389 (+3.1%) F&G 47 Neutral (was 33 Fear, +14pts) | breadth 16/20 ETH TVL 46.1B (+1.5%) | top narrative: institutional BTC accumulation (rising) — ETF 996M last week IBIT 284M/day | hot market: Lakers vs Rockets YES 45.5% vol 7.5M
