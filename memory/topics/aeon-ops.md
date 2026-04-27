@@ -51,7 +51,24 @@
 - Heartbeat at 14:39 UTC: P0 clean; 17 tracked skills all `last_status=success`, `success_rate=1.0`, no consecutive failures, no stuck dispatches.
 - One self-failure at 12:48 UTC (heartbeat itself, 22s run, `last_error` captured truncated JSON fragment from session metadata). Recovered same hour. Re-investigate if it recurs (likely a state-update parser bug, not a real failure).
 
+## chain-runner.yml `dispatch_skill()` silent failure (DEGRADED 2026-04-26)
+- **Pattern:** `chain:morning-brief` and `chain:evening-rollup` wrappers exit 1 even when underlying skills succeed. Logs show `=== Step 1/2: parallel […] ===` then exit ~70s later with **no `Dispatching: …` lines emitted**. Cron-state is never updated, dispatch never reaches `gh workflow run`.
+- **Confirmed runs:** morning-brief 2026-04-26 08:04 UTC (run 24951796599) — 6 morning skills missed slot (paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker). evening-rollup 2026-04-25 21:36 UTC (run 24941211898) — chain wrapper failed *post-success* of underlying evening-rollup (21:35) and evening-recap (22:09).
+- **Suspected:** `dispatch_skill()` helper failing under `set -euo pipefail` (likely yq/jq parse on the chain block, or `gh workflow run` returning empty for one of the morning skills); for the evening case, the final `git pull --rebase`/`push` round in the wait loop, or a non-zero conclusion read on a skill that did succeed.
+- **Recommended trace:** add an `echo` per dispatched skill before each `gh workflow run` so the next failure produces a useful trace.
+- **Operator impact:** until fixed, daily morning aggregation (digest, paper-pick, polymarket monitoring) won't dispatch on schedule and Apex-gate progress tracking goes dark. Manual workflow_dispatch is the workaround.
+
+## skill-evals BOOTSTRAP — eval-spec drift, not real regressions
+- 2026-04-26 first run: 14/97 coverage, 9 NEW_FAIL, 0 fixed, 0 still-failing, 5 stable. Filed ISS-003..011.
+- **Two structural patterns dominate the failures (8 of 9):**
+  - **Spec key mismatches** (ISS-007, ISS-009): `hn-digest` and `polymarket` keys in `evals.json` don't match the skill names in `aeon.yml` (`hacker-news-digest`, `monitor-polymarket`). Patching the keys + output_pattern clears the failure without a code change. Lowest-effort highest-signal fix on the action queue.
+  - **No-cron-yet** (ISS-003..006, ISS-008): `repo-pulse`, `push-recap`, `fork-fleet`, `cost-report`, `rss-digest` have evals.json entries but no `articles/*-*.md` output yet — most have never dispatched, or are weekly-Monday skills (fork-fleet, cost-report) that resolve on 2026-04-28.
+- **Output-location drift** (ISS-010, ISS-011): `token-alert` and `skill-health` show cron-state success but no articles/ output — evals.json may need to point to `memory/skill-health/last-report.json` for skill-health, or the skill writes to a non-articles path.
+- **Coverage gap:** 83 enabled skills uncovered. Top candidates to add specs for: monitor-polymarket, narrative-tracker, paper-pick, security-digest, code-health, hacker-news-digest, evening-recap, polymarket-comments, deep-research, vuln-scanner.
+
 ## Open issues
-- **ISS-001** — vuln-scanner cannot run, sandbox-limitation, high. `memory/issues/ISS-001.md`.
-- **ISS-002** — vibecoding-digest cannot run, Reddit blocks GHA, high. `memory/issues/ISS-002.md`.
-- Both share the same shape: skill needs a network-fetch step that must run pre-sandbox. Worth tracking as a **class** of problem, not point fixes.
+- **ISS-001** — vuln-scanner cannot run, sandbox-limitation, high. `memory/issues/ISS-001.md`. Closes on `scripts/prefetch-vuln-scanner.sh`.
+- **ISS-002** — vibecoding-digest cannot run, Reddit blocks GHA, high. `memory/issues/ISS-002.md`. Closes on `scripts/prefetch-reddit.sh`.
+- **ISS-003..011** — skill-evals BOOTSTRAP findings (2026-04-26). See "skill-evals BOOTSTRAP" section above. ISS-007 / ISS-009 close on evals.json key patch (no code).
+- **ISS-012** — reddit-digest cannot run on JSON API, sandbox-limitation, high. `memory/issues/ISS-012.md`. Same root cause as ISS-002 — same `scripts/prefetch-reddit.sh` closes both. RSS fallback works (200 across 9/10 subs) but lacks score / num_comments / upvote_ratio so SKILL.md filters can't apply as written.
+- **Class:** ISS-001, ISS-002, ISS-012 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Three separate IDs because each skill has its own SKILL.md, cron entry, and notification footprint and needs an independent close signal. Worth tracking as a class for prefetch-script triage, not point fixes.

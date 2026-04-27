@@ -1,0 +1,85 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Reflect",
+        "description": "2026-04-27"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status-text",
+        "sep-1",
+        "alerts-section",
+        "sep-2",
+        "priority-text"
+      ]
+    },
+    "status-text": {
+      "type": "Text",
+      "props": {
+        "text": "Memory consolidated"
+      }
+    },
+    "sep-1": {
+      "type": "Separator"
+    },
+    "alerts-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert-chain-runner",
+        "alert-skill-evals",
+        "alert-iss-012"
+      ]
+    },
+    "alert-chain-runner": {
+      "type": "Alert",
+      "props": {
+        "title": "chain-runner DEGRADED",
+        "message": "dispatch_skill silent fail blocked morning-brief",
+        "type": "warning"
+      }
+    },
+    "alert-skill-evals": {
+      "type": "Alert",
+      "props": {
+        "title": "skill-evals BOOTSTRAP",
+        "message": "eval-spec drift (8 of 9 NEW_FAIL clear without code)",
+        "type": "warning"
+      }
+    },
+    "alert-iss-012": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-012 filed",
+        "message": "reddit-digest, same shape as ISS-002",
+        "type": "info"
+      }
+    },
+    "sep-2": {
+      "type": "Separator"
+    },
+    "priority-text": {
+      "type": "Text",
+      "props": {
+        "text": "Next priority: fix .github/workflows/chain-runner.yml dispatch_skill echo trace",
+        "variant": "lead"
+      }
+    }
+  }
+}
