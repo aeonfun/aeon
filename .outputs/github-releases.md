@@ -1,7 +1,1 @@
-*GitHub Releases — 2026-04-27* — 2 updates · 0 asap · 0 soon · 2 fyi · 0 skipped
-
-FYI:
-- [ggml-org/llama.cpp b8941](https://github.com/ggml-org/llama.cpp/releases/tag/b8941) — Adds register-tile and subgroup matmul tuning
-- [ggml-org/llama.cpp b8940](https://github.com/ggml-org/llama.cpp/releases/tag/b8940) — Adds register-tile and subgroup matmul tuning
-
-_sources: ok=18 notfound=0 ratelimited=0 error=0_
+*GitHub Releases — 2026-04-27* — 3 updates · 🔴 0 asap · 🟡 0 soon · 🔵 3 fyi · ⚪ 0 skipped · 🔵 [ggml-org/llama.cpp b8946](https://github.com/ggml-org/llama.cpp/releases/tag/b8946) — Fixes duplicate wo_s scale after build_attn for Qwen3 and LLaMA · 🔵 [ggml-org/llama.cpp b8944](https://github.com/ggml-org/llama.cpp/releases/tag/b8944) — Aligns ggml tile buffers to 64 bytes; 1-2% TG/PP gain on Qwen35 · 🔵 [ggml-org/llama.cpp b8943](https://github.com/ggml-org/llama.cpp/releases/tag/b8943) — Fixes missing exports in llama-common; pimpl refactor of debug.h · _sources: ok=18 notfound=0 ratelimited=0 error=0_

@@ -1,0 +1,206 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases — 2026-04-27"
+      },
+      "children": [
+        "summary_stack",
+        "sep1",
+        "releases_stack",
+        "sep2",
+        "sources_stack"
+      ]
+    },
+    "summary_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_asap",
+        "badge_soon",
+        "badge_fyi",
+        "badge_skipped"
+      ]
+    },
+    "badge_asap": {
+      "type": "Badge",
+      "props": {
+        "text": "0 asap",
+        "variant": "destructive"
+      }
+    },
+    "badge_soon": {
+      "type": "Badge",
+      "props": {
+        "text": "0 soon",
+        "variant": "secondary"
+      }
+    },
+    "badge_fyi": {
+      "type": "Badge",
+      "props": {
+        "text": "3 fyi",
+        "variant": "default"
+      }
+    },
+    "badge_skipped": {
+      "type": "Badge",
+      "props": {
+        "text": "0 skipped",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "releases_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "release_1",
+        "release_2",
+        "release_3"
+      ]
+    },
+    "release_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story_1",
+        "desc_1"
+      ]
+    },
+    "story_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b8946",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8946",
+        "source": "GitHub",
+        "score": "FYI"
+      }
+    },
+    "desc_1": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes duplicate wo_s scale after build_attn for Qwen3 and LLaMA",
+        "variant": "body"
+      }
+    },
+    "release_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story_2",
+        "desc_2"
+      ]
+    },
+    "story_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b8944",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8944",
+        "source": "GitHub",
+        "score": "FYI"
+      }
+    },
+    "desc_2": {
+      "type": "Text",
+      "props": {
+        "text": "Aligns ggml tile buffers to 64 bytes; 1-2% TG/PP gain on Qwen35",
+        "variant": "body"
+      }
+    },
+    "release_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story_3",
+        "desc_3"
+      ]
+    },
+    "story_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b8943",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8943",
+        "source": "GitHub",
+        "score": "FYI"
+      }
+    },
+    "desc_3": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes missing exports in llama-common; pimpl refactor of debug.h",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_ok",
+        "stat_notfound",
+        "stat_ratelimited",
+        "stat_error"
+      ]
+    },
+    "stat_ok": {
+      "type": "Stat",
+      "props": {
+        "label": "Sources OK",
+        "value": "18"
+      }
+    },
+    "stat_notfound": {
+      "type": "Stat",
+      "props": {
+        "label": "Not Found",
+        "value": "0"
+      }
+    },
+    "stat_ratelimited": {
+      "type": "Stat",
+      "props": {
+        "label": "Rate Limited",
+        "value": "0"
+      }
+    },
+    "stat_error": {
+      "type": "Stat",
+      "props": {
+        "label": "Errors",
+        "value": "0"
+      }
+    }
+  }
+}

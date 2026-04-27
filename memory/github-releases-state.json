@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-27T02:10:40Z",
+  "updated_at": "2026-04-27T10:14:54Z",
   "repos": {
     "anthropics/anthropic-sdk-python": { "last_tag": "v0.97.0", "last_published_at": "2026-04-23T20:51:59Z" },
     "anthropics/anthropic-sdk-typescript": { "last_tag": "sdk-v0.91.1", "last_published_at": "2026-04-24T23:26:44Z" },
@@ -13,7 +13,7 @@
     "run-llama/llama_index": { "last_tag": "v0.14.21", "last_published_at": "2026-04-21T00:18:51Z" },
     "vercel/next.js": { "last_tag": "v16.3.0-canary.2", "last_published_at": "2026-04-18T23:44:17Z" },
     "supabase/supabase": { "last_tag": "v1.26.04", "last_published_at": "2026-04-09T14:38:08Z" },
-    "ggerganov/llama.cpp": { "last_tag": "b8941", "last_published_at": "2026-04-26T17:42:41Z" },
+    "ggerganov/llama.cpp": { "last_tag": "b8946", "last_published_at": "2026-04-27T10:02:13Z" },
     "huggingface/transformers": { "last_tag": "v5.6.2", "last_published_at": "2026-04-23T18:36:03Z" },
     "anza-xyz/agave": { "last_tag": "v4.0.0-rc.0", "last_published_at": "2026-04-24T17:34:39Z" },
     "ethereum/go-ethereum": { "last_tag": "v1.17.2", "last_published_at": "2026-03-30T11:24:52Z" },
