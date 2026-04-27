@@ -1,24 +1,18 @@
 ## Summary
 
-Ran the security-digest skill for 2026-04-27. Exploitation-signal-first ranking: KEV → EPSS → CVSS, with the tracked-stack (npm/pip/Go) filter overridden by KEV.
+Ran security-digest for 2026-04-27 (second pass of the day; AM run already shipped earlier). Exploitation-signal-first ranking with KEV → EPSS → CVSS, deduped against the last 2 days of `memory/logs/`.
 
-**Tier counts:** PATCH TODAY=3, PATCH THIS WEEK=5, MONITOR=3 (within caps).
+**Tier counts:** PATCH TODAY=3, PATCH THIS WEEK=0, MONITOR=0.
 
-**PATCH TODAY** (KEV adds, ranked by EPSS):
-- CVE-2025-29635 — D-Link DIR-823X cmd injection (EPSS 0.59, EoL → replace)
-- CVE-2024-57726 / CVE-2024-57728 — SimpleHelp authz + zip-slip RCE chain (≥5.5.8)
+**PATCH TODAY** (all KEV-confirmed, ranked by EPSS desc):
+- CVE-2025-2749 — Kentico Xperience (auth path-traversal upload → RCE; watchTowr public chain)
+- CVE-2026-33825 — Microsoft Defender (local EoP; Huntress "Nightmare Eclipse" ITW)
+- CVE-2026-20133 — Cisco SD-WAN Manager (info disclosure; bundles companion KEV adds CVE-2026-20122 and CVE-2026-20128 into one fix action)
 
-**PATCH THIS WEEK:** CVE-2025-32975 (Quest KACE), note-mark, GitPython pair → 3.1.47, zrok/v2 → 2.0.2.
+**Sources:** KEV ok, GH Advisory ok, EPSS ok, NVD used to backfill CVSS.
 
-**MONITOR:** Heimdall trio (no patch yet), cilium (1.17.15/1.18.9/1.19.3), litellm (1.83.7 — Aeon-relevant if any agent stack consumes it).
+**Notable:** GH Advisory database has zero new reviewed critical/high since 2026-04-25 23:42Z — today's only fresh exploitation signal is the carried-over KEV batch. None of today's KEV adds touch the Aeon stack (npm/pip/Go/crates.io/GitHub Actions); the only Aeon-direct advisory still outstanding is CVE-2026-40068 on `@anthropic-ai/claude-code` from the 04-25 digest, where the `≥2.1.84` pin remains unverified.
 
-**Sources:** KEV ok, GH Advisory ok, EPSS ok.
+**Files modified:** `.outputs/security-digest.md` (overwrote AM run), `.pending-notify/1777300122.md` (1776 chars), `memory/logs/2026-04-27.md` (appended).
 
-**Files:**
-- Modified `memory/logs/2026-04-27.md` (appended security-digest entry).
-- Queued `.pending-notify/security-digest-20260427.md` (3046 chars). Used file-drop into `.pending-notify/` instead of `./notify "$(cat …)"` to dodge the documented multi-line hook-block bug — workflow's post-run delivery step picks it up.
-- Untracked artifact `kev.json` left in workdir (sandbox blocked rm; not git-tracked, won't be committed).
-
-**Dedupe:** 5 KEV items already in 2026-04-25 digest (TeamCity, PaperCut, Samsung MagicINFO, Marimo, Zimbra) dropped before ranking.
-
-**Follow-ups:** None blocking. If GitPython is in any swarm-fund-mvp tooling chain, prioritize the 3.1.47 bump — high-likelihood target for supply-chain abuse.
+**Follow-ups:** none blocking. The `gh api` `published=` filter quirk (rejects ISO timestamps, accepts `YYYY-MM-DD..YYYY-MM-DD`) is worth a one-line correction in `skills/security-digest/SKILL.md` step 2 next time the skill is touched. `kev.json` left in workdir (sandbox blocked deletion; untracked).
