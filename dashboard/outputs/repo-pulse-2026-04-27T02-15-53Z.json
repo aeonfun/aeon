@@ -1,0 +1,258 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse",
+        "description": "2026-04-27 [SURGE]"
+      },
+      "children": [
+        "repo-link",
+        "stats-container",
+        "sep1",
+        "notable-section",
+        "sep2",
+        "other-section",
+        "sep3",
+        "source-text"
+      ]
+    },
+    "repo-link": {
+      "type": "Link",
+      "props": {
+        "label": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      }
+    },
+    "stats-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stars-stat",
+        "forks-stat"
+      ]
+    },
+    "stars-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "244",
+        "delta": "+6",
+        "trend": "up"
+      }
+    },
+    "forks-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "36",
+        "delta": "+0",
+        "trend": "neutral"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-heading",
+        "notable-list"
+      ]
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      }
+    },
+    "notable-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable-item-1",
+        "notable-item-2",
+        "notable-item-3",
+        "notable-item-4"
+      ]
+    },
+    "notable-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link-fzn0x",
+        "followers-fzn0x"
+      ]
+    },
+    "link-fzn0x": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/fzn0x",
+        "href": "https://github.com/fzn0x"
+      }
+    },
+    "followers-fzn0x": {
+      "type": "Text",
+      "props": {
+        "text": "(584 followers)",
+        "variant": "muted"
+      }
+    },
+    "notable-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link-lacrimae0rerum",
+        "followers-lacrimae0rerum"
+      ]
+    },
+    "link-lacrimae0rerum": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/lacrimae0rerum",
+        "href": "https://github.com/lacrimae0rerum"
+      }
+    },
+    "followers-lacrimae0rerum": {
+      "type": "Text",
+      "props": {
+        "text": "(23 followers)",
+        "variant": "muted"
+      }
+    },
+    "notable-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link-baustin27",
+        "followers-baustin27"
+      ]
+    },
+    "link-baustin27": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/baustin27",
+        "href": "https://github.com/baustin27"
+      }
+    },
+    "followers-baustin27": {
+      "type": "Text",
+      "props": {
+        "text": "(6 followers)",
+        "variant": "muted"
+      }
+    },
+    "notable-item-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link-solserer-labs",
+        "followers-solserer-labs"
+      ]
+    },
+    "link-solserer-labs": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/solserer-labs",
+        "href": "https://github.com/solserer-labs"
+      }
+    },
+    "followers-solserer-labs": {
+      "type": "Text",
+      "props": {
+        "text": "(19 followers)",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "other-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "other-heading",
+        "other-list"
+      ]
+    },
+    "other-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      }
+    },
+    "other-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "other-item-1",
+        "other-item-2"
+      ]
+    },
+    "other-item-1": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/0x-ultra",
+        "href": "https://github.com/0x-ultra"
+      }
+    },
+    "other-item-2": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/adinull",
+        "href": "https://github.com/adinull"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}
