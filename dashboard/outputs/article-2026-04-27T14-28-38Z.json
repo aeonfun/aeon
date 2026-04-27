@@ -1,0 +1,22 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "article"
+      },
+      "children": [
+        "story"
+      ]
+    },
+    "story": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Kalshi and Polymarket Filed Crypto Perps the Same Day. The CFTC Invited Them.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-04-27-kalshi-polymarket-crypto-perps.md"
+      }
+    }
+  }
+}

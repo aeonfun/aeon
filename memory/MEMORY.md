@@ -55,6 +55,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 ## Recent Articles (last 7 days)
 | Date | Title | Topic |
 |------|-------|-------|
+| 2026-04-27 | Kalshi and Polymarket Filed Crypto Perps the Same Day. The CFTC Invited Them. | Kalshi/PM crypto perp launch — direct hermes-arb impact |
 | 2026-04-27 | Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up. | bot-dominance + insider-trading conduct rules |
 | 2026-04-27 | Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output | repo-article on aaronjmars/aeon meta-skill self-prioritization |
 | 2026-04-26 | Skill Evals — 2026-04-26 | BOOTSTRAP: 14/97 coverage, 9 NEW_FAIL (mostly spec drift, not real regressions) |
