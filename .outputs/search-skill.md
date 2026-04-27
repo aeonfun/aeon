@@ -1,14 +1,16 @@
 ## Summary
 
-Ran `search-skill`. Exit mode: **SEARCH_SKILL_NO_GAP** — no concrete capability gap derivable from any of the four sources, so no catalog search and no notification per spec.
+Executed `skills/search-skill/SKILL.md`. Derived exit mode **SEARCH_SKILL_NO_GAP** — none of the four sources (failing skills, open issues, non-template priorities, log signals) yielded a concrete capability word for a new external skill.
 
-**Sources checked (all yielded nothing):**
-- Failing skills: no skill has `total_runs ≥ 3` with `consecutive_failures ≥ 2` or `success_rate < 0.6` (fleet still in bootstrap; only `heartbeat` has > 1 run)
-- Open issues: `memory/issues/INDEX.md` open table is empty
-- Next Priorities in MEMORY.md: all four (Pre-Apex push, weekly-shiplog, paper-pick, external-feature) reference already-installed skills
-- Log signals: only `*_NO_CONFIG` bootstrap markers and an internal swarm-fund engineering task — no Aeon-skill capability gaps
+**Why no gap:**
+- Failing skills in `cron-state.json` are dispatch-infrastructure failures (zero-token error pattern), not missing capabilities.
+- All 12 open issues fall under `sandbox-limitation` / `missing-secret-or-cron` / `output-format` — none in the spec's allowed categories.
+- "Next Priorities" in MEMORY.md are operator config tasks (NEYNAR_API_KEY, on-chain-watches.yml, prefetch scripts) or work covered by existing skills.
+- Zero log matches for "no skill for", "can't do", "would help if", "missing skill".
 
 **Files modified:**
-- `memory/logs/2026-04-25.md` — appended `## search-skill` section with mode, sources checked, and rationale
+- `memory/logs/2026-04-27.md` — appended `## search-skill` block with mode + reasoning per spec step 8.
 
-**Follow-up:** Re-run after a skill develops a sustained failure pattern, an open issue lands in `memory/issues/INDEX.md`, or a new non-template priority is added. No further action needed today.
+**Per spec:** silent on NO_GAP — no notification sent, no catalogs searched, no install attempted.
+
+**Follow-up:** None for this skill. The dispatch-failure pattern in cron-state is upstream of this skill; route to `skill-repair` / `skill-health` instead.
