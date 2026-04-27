@@ -1,0 +1,182 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "alert_error",
+        "sep1",
+        "stack_root_causes",
+        "sep2",
+        "stack_fixes",
+        "sep3",
+        "stack_reconciliation",
+        "sep4",
+        "alert_impact"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured. Same blocker as 2026-04-25.",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_root_causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_causes",
+        "text_cause_env",
+        "text_cause_soul",
+        "text_cause_aeon",
+        "text_note_var"
+      ]
+    },
+    "heading_causes": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h3"
+      }
+    },
+    "text_cause_env": {
+      "type": "Text",
+      "props": {
+        "text": "X_HANDLE env unset"
+      }
+    },
+    "text_cause_soul": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity has no @handle"
+      }
+    },
+    "text_cause_aeon": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml remix-tweets has no var"
+      }
+    },
+    "text_note_var": {
+      "type": "Text",
+      "props": {
+        "text": "Note: var is reserved for time window per SKILL.md",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_fixes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_fixes",
+        "text_fix_1",
+        "text_fix_or",
+        "text_fix_2"
+      ]
+    },
+    "heading_fixes": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix Options",
+        "level": "h3"
+      }
+    },
+    "text_fix_1": {
+      "type": "Text",
+      "props": {
+        "text": "Set X_HANDLE in .github/workflows/aeon.yml env block"
+      }
+    },
+    "text_fix_or": {
+      "type": "Text",
+      "props": {
+        "text": "OR",
+        "variant": "muted"
+      }
+    },
+    "text_fix_2": {
+      "type": "Text",
+      "props": {
+        "text": "Add @handle to soul/SOUL.md ## Identity"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_reconciliation": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_reconciliation",
+        "text_reconciliation"
+      ]
+    },
+    "heading_reconciliation": {
+      "type": "Heading",
+      "props": {
+        "text": "Additional Work Needed",
+        "level": "h3"
+      }
+    },
+    "text_reconciliation": {
+      "type": "Text",
+      "props": {
+        "text": "Reconcile prefetch-xai.sh (reads handle from $VAR) vs SKILL.md (var = time window)"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_impact": {
+      "type": "Alert",
+      "props": {
+        "title": "Impact",
+        "message": "No remixes drafted; skill will error every fire until resolved.",
+        "type": "warning"
+      }
+    }
+  }
+}

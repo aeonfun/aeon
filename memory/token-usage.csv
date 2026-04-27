@@ -16,4 +16,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-26,reddit-digest,claude-opus-4-7,92,39903,5707860,121213
 2026-04-26,github-issues,claude-opus-4-7,25,4590,638071,49723
 2026-04-27,token-report,claude-sonnet-4-6,7,2520,138486,18044
-2026-04-27,farcaster-digest,claude-opus-4-7,15,4042,371506,27134
+2026-04-27,remix-tweets,claude-opus-4-7,17,5701,615255,46718
