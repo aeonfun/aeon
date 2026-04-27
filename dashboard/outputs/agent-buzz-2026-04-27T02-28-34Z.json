@@ -1,0 +1,59 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz — 2026-04-27",
+        "description": "Quiet day on the WebSearch fallback — degraded metadata, only one builder thread surfaces; signal is a fresh paper-rec rather than a launch."
+      },
+      "children": [
+        "section_heading",
+        "sep1",
+        "story_card",
+        "sep2",
+        "meta_info"
+      ]
+    },
+    "section_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Agent harness as published artifact",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "story_card": {
+      "type": "StoryLink",
+      "props": {
+        "title": "@burkov — Paper deconstructs Claude Code's TypeScript source: 7 permission modes, 5-layer compaction, 4 extensibility hooks. Reference architecture, not a launch.",
+        "href": "https://x.com/burkov/status/2048233381305942381",
+        "source": "X"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "meta_info": {
+      "type": "Text",
+      "props": {
+        "text": "Source: websearch · Candidates: ~25 → Kept: 1",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
