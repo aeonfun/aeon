@@ -1,2 +1,1 @@
-*Changelog — Week of 2026-04-25*
-1 repo: 15 user-facing changes (0 breaking, 9 added, 1 changed, 5 fixed, 0 security). Top: every Aeon fork now ships a live /status/ health dashboard (#141). Full: articles/changelog-2026-04-25.md
+*Changelog — Week of 2026-04-27* — 1 repo (aaronjmars/aeon): 13 user-facing changes (0 breaking, 9 added, 1 changed, 3 fixed, 0 security). Top: new `contributor-reward` skill turns the weekly leaderboard into a tier-priced on-chain payout plan (#144). Full: articles/changelog-2026-04-27.md

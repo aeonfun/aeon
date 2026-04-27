@@ -1,0 +1,178 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-04-27",
+        "description": "aaronjmars/aeon"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-info",
+        "sep-1",
+        "stats-row",
+        "changes-row",
+        "sep-2",
+        "top-change-heading",
+        "top-change-group",
+        "sep-3",
+        "article-link"
+      ]
+    },
+    "repo-info": {
+      "type": "Text",
+      "props": {
+        "text": "1 repo",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stats-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-total",
+        "stat-added",
+        "stat-changed",
+        "stat-fixed"
+      ]
+    },
+    "stat-total": {
+      "type": "Stat",
+      "props": {
+        "label": "User-Facing Changes",
+        "value": "13"
+      },
+      "children": []
+    },
+    "stat-added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "9"
+      },
+      "children": []
+    },
+    "stat-changed": {
+      "type": "Stat",
+      "props": {
+        "label": "Changed",
+        "value": "1"
+      },
+      "children": []
+    },
+    "stat-fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "3"
+      },
+      "children": []
+    },
+    "changes-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-breaking",
+        "badge-security"
+      ]
+    },
+    "badge-breaking": {
+      "type": "Badge",
+      "props": {
+        "text": "Breaking: 0",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge-security": {
+      "type": "Badge",
+      "props": {
+        "text": "Security: 0",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "top-change-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Change",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "top-change-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "top-change-text",
+        "issue-link"
+      ]
+    },
+    "top-change-text": {
+      "type": "Text",
+      "props": {
+        "text": "new `contributor-reward` skill turns the weekly leaderboard into a tier-priced on-chain payout plan"
+      },
+      "children": []
+    },
+    "issue-link": {
+      "type": "Link",
+      "props": {
+        "label": "#144",
+        "href": "https://github.com/aaronjmars/aeon/issues/144"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "article-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full changelog",
+        "href": "https://github.com/aaronjmars/aeon/blob/main/articles/changelog-2026-04-27.md",
+        "source": "aaronjmars/aeon"
+      },
+      "children": []
+    }
+  }
+}
