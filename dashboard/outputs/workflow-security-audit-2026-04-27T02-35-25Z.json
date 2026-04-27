@@ -1,0 +1,165 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Workflow Security Audit",
+        "description": "WORKFLOW_AUDIT_NEW_CRITICAL — 2026-04-27"
+      },
+      "children": [
+        "severity_stats",
+        "sep1",
+        "critical_alert",
+        "sep2",
+        "high_issues",
+        "sep3",
+        "patch_section",
+        "sep4",
+        "pr_section",
+        "sep5",
+        "degradation_alert"
+      ]
+    },
+    "severity_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_critical",
+        "stat_high"
+      ]
+    },
+    "stat_critical": {
+      "type": "Stat",
+      "props": {
+        "label": "New Critical",
+        "value": "1"
+      }
+    },
+    "stat_high": {
+      "type": "Stat",
+      "props": {
+        "label": "New High",
+        "value": "4"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "critical_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "Critical: toJson-into-shell",
+        "message": "Location: messages.yml:577 — Exact pattern from Apr 11 that was missed"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "high_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_high"
+      ]
+    },
+    "heading_high": {
+      "type": "Heading",
+      "props": {
+        "text": "4 New High Severity Issues Detected",
+        "level": "h4"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_patch",
+        "patch_status_alert",
+        "patch_instruction"
+      ]
+    },
+    "heading_patch": {
+      "type": "Heading",
+      "props": {
+        "text": "Patch Status",
+        "level": "h3"
+      }
+    },
+    "patch_status_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Patches Prepared but NOT Pushed",
+        "message": "Reason: runner GH_TOKEN lacks workflow scope"
+      }
+    },
+    "patch_instruction": {
+      "type": "Text",
+      "props": {
+        "text": "Apply: git am articles/0001-fix-security-workflow-audit-2026-04-27-NEW_CRITICAL.patch from workflow-scoped checkout. Until applied, injection paths are live on main.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_pr"
+      ]
+    },
+    "link_pr": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #4: Security Audit Fixes",
+        "href": "https://github.com/tomscaria/aeon/pull/4"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "degradation_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Tool Degradation",
+        "message": "zizmor + actionlint install blocked by sandbox"
+      }
+    }
+  }
+}
