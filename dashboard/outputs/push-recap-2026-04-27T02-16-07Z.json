@@ -1,0 +1,281 @@
+{
+  "root": "root_card",
+  "state": {},
+  "elements": {
+    "root_card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-04-27"
+      },
+      "children": [
+        "header_info",
+        "separator1",
+        "shipped_section",
+        "separator2",
+        "metrics_section"
+      ]
+    },
+    "header_info": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_heading",
+        "skill_analytics",
+        "skill_contributor_reward"
+      ]
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "skill_analytics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill1_header",
+        "skill1_desc"
+      ]
+    },
+    "skill1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill1_name",
+        "pr142_badge"
+      ]
+    },
+    "skill1_name": {
+      "type": "Text",
+      "props": {
+        "text": "skill-analytics",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pr142_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "#142"
+      },
+      "children": []
+    },
+    "skill1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Wed 18:30 UTC fleet-wide skill-run audit (168h window, 6 anomaly flags incl. SILENT/ALL_FAIL/CONSECUTIVE_FAILURES, notifies only on flag)"
+      },
+      "children": []
+    },
+    "skill_contributor_reward": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill2_header",
+        "skill2_desc"
+      ]
+    },
+    "skill2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill2_name",
+        "pr144_badge"
+      ]
+    },
+    "skill2_name": {
+      "type": "Text",
+      "props": {
+        "text": "contributor-reward",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pr144_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "#144"
+      },
+      "children": []
+    },
+    "skill2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Mon 09:30 UTC tier-priced rewards plan (1=25 / 2=15 / 3=10 / 4-5=5 USDC + 5 first-PR bonus, plan-only, ships disabled)"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "metrics_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "shape_section",
+        "volume_section",
+        "recap_section"
+      ]
+    },
+    "shape_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape_heading",
+        "shape_table"
+      ]
+    },
+    "shape_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shape_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Type",
+          "Count"
+        ],
+        "rows": [
+          [
+            "User-visible",
+            "2"
+          ],
+          [
+            "Internal",
+            "0"
+          ],
+          [
+            "Infra",
+            "0"
+          ],
+          [
+            "Bot-filtered",
+            "0"
+          ],
+          [
+            "Merged PRs",
+            "2"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "volume_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "volume_heading",
+        "volume_metrics"
+      ]
+    },
+    "volume_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "volume_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "volume_files",
+        "volume_changes"
+      ]
+    },
+    "volume_files": {
+      "type": "Stat",
+      "props": {
+        "label": "Files",
+        "value": "5"
+      },
+      "children": []
+    },
+    "volume_changes": {
+      "type": "Stat",
+      "props": {
+        "label": "Changes",
+        "value": "+573 / -1"
+      },
+      "children": []
+    },
+    "recap_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "recap_heading",
+        "recap_link"
+      ]
+    },
+    "recap_heading": {
+      "type": "Text",
+      "props": {
+        "text": "Full recap",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "articles/push-recap-2026-04-27.md",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-27.md"
+      },
+      "children": []
+    }
+  }
+}

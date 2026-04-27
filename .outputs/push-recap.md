@@ -1,16 +1,1 @@
-## Summary
-
-**PUSH_RECAP_QUIET** — significance gate hit, stopped per skill spec.
-
-- **Watched repo:** aaronjmars/aeon (only one in `memory/watched-repos.md`)
-- **Window:** last 24h (since 2026-04-24T21:35:32Z)
-- **Commits:** 0 (commits API returned `[]`)
-- **Merged PRs:** 0
-- **Most recent PushEvent:** 2026-04-24T13:20:23Z — outside window, and `commit_count=0` (empty payload, likely a force-push artifact)
-
-Per skill spec, with the entire window empty across every watched repo: no article written, no notification sent. Logged the quiet outcome to `memory/logs/2026-04-25.md` with full source-status footer so future debugging can distinguish quiet from error.
-
-Files modified:
-- `memory/logs/2026-04-25.md` — appended `### push-recap` section ending in `PUSH_RECAP_QUIET`
-
-Follow-ups: none. If aaronjmars/aeon stays quiet for several days while velocity narrative claims active fleet-operations work, that's a falsification signal worth flagging — but a single quiet day is normal.
+Push Recap — 2026-04-27 | aaronjmars/aeon — SHIPPING: two new fleet-ops skills landed (#142 skill-analytics, #144 contributor-reward). Shipped: skill-analytics — Wed 18:30 UTC fleet-wide skill-run audit (168h window, 6 anomaly flags incl. SILENT/ALL_FAIL/CONSECUTIVE_FAILURES, notifies only on flag); contributor-reward — Mon 09:30 UTC tier-priced rewards plan (1=25 / 2=15 / 3=10 / 4-5=5 USDC + 5 first-PR bonus, plan-only, ships disabled). Shape: 2 user-visible · 0 internal · 0 infra · 0 bot-filtered · 2 merged PRs. Volume: 5 files, +573/-1 lines. Full recap: https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-27.md
