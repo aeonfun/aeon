@@ -1,10 +1,9 @@
 ## Summary
 
-Executed `on-chain-monitor`. Config file `memory/on-chain-watches.yml` is missing, which the skill spec defines as a clean exit condition (`ON_CHAIN_NO_CONFIG` — empty config is not an error, do not notify).
+Ran `on-chain-monitor` against `memory/on-chain-watches.yml`. The file has `watches: []` (template only — no real addresses configured), so per the skill spec I logged `ON_CHAIN_NO_CONFIG` and exited without notifying. Empty config is not an error condition.
 
-**Outcome:** logged `ON_CHAIN_NO_CONFIG` to `memory/logs/2026-04-25.md`. No notification sent. No state file written (nothing to track).
+**Files created:**
+- `memory/logs/2026-04-27.md` — log entry recording the no-op run
 
-**Files modified:**
-- `memory/logs/2026-04-25.md` — appended on-chain-monitor section
-
-**Follow-up to activate the skill:** create `memory/on-chain-watches.yml` with at least one watch entry. Given the swarm-fund-mvp mission, the highest-value first watches would be addresses tied to active execution venues — Polymarket CTF wallet (where Revenant trades), Hyperliquid bridge, Kalshi-related addresses. Schema is documented at `skills/on-chain-monitor/SKILL.md:17-31`.
+**Follow-up (not new — already tracked):**
+- Populate `memory/on-chain-watches.yml` with at least the swarm-fund-mvp treasury / Polymarket settlement / Hyperliquid hot wallets to make this skill productive. Already on the operator config-gap action list in `memory/topics/aeon-ops.md` and surfaced in `MEMORY.md` Next Priorities.
