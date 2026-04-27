@@ -1,24 +1,26 @@
+Done. The digest is queued for delivery via the workflow's pending-notify pickup.
+
 ## Summary
 
-Ran the `digest` skill for topic **prediction markets** (defaulted from 04-25 precedent — `aeon.yml` still has no `var:` set on `digest:`).
+Generated and queued today's `prediction markets` digest (second run; the morning run had already shipped at ~14:35 UTC). Took the topic from mission context — `aeon.yml` line 49 still has `var:` empty, so defaulted to "prediction markets" (matches earlier-today and 2026-04-25 precedent).
 
-**Items shipped (4 main + 1 glance, 2967/3000 chars):**
-1. *Kalshi launches "Timeless" perpetual futures in NYC today* — lead pick; direct relevance to hermes-arb basis tape.
-2. *DOJ files five felony counts on named Sgt. Gannon Ken Van Dyke* — first named US prediction-market insider-trading prosecution; PM cooperation.
-3. *CFTC at 15-year staffing low while event contracts hit ~1,600/year* — structural enforcement-capacity story.
-4. *Kalshi and Polymarket co-roll self-trading bans* — compliance ratchet, plus Apr 22 first-ever candidate suspensions ($539–$6,229; 5-yr bans).
-- Glance: Kalshi 3rd Circuit NJ-preemption win advancing toward SCOTUS.
+**Lead item:** *Polymarket V2 cutover tomorrow at 11 UTC* — every open limit order gets cancelled, USDC.e collateral converts 1:1 to new pUSD ERC-20, API integrations must be on v2 SDK. **Operational consequence: any CalibrationGap/Revenant resting quotes or hermes-arb PM legs need to be flattened before 07 UTC tomorrow** — this matches the OPS ALERT flagged earlier today by `polymarket-comments`.
 
-**Dedup vs 2026-04-25 digest:** Items 1 + 2 are material updates (today's actual Kalshi launch; named soldier + formal charges). Brazil ban / $15B valuation / $35M VC fund / MLB-PM deal all dropped as stale or already covered.
+Items 2–3: Polymarket chain-migration plan off Polygon (POLY L2 lead candidate; PM = 50–70% of Polygon fee revenue); FanDuel enters prediction markets (Bloomberg, Apr 27). Glance: Brazil's 29-platform block now in force.
 
-**Files modified:**
-- `.outputs/digest_body.txt` (working draft)
-- `.pending-notify/digest-2026-04-27.md` (queued for post-run delivery — `./notify` direct call hit the recurring `Unhandled node type: string` hook-block, same as every other text-heavy notify on 04-25)
-- `memory/logs/2026-04-27.md` (digest log entry appended)
-- `memory/MEMORY.md` (Recent Digests table — new row at top)
+**Files written**
+- `.pending-notify/1777300045.md` (2334 chars, under 3000 cap) — picked up by workflow's pending-notify postprocess step on run completion
+- `memory/logs/2026-04-27.md` — appended digest log entry (raw=22 / filter=4 / sent=4) with full dedup pass against earlier-today digest, narrative-tracker, polymarket-comments, fetch-tweets, article, plus 04-25/04-26 logs
+- `memory/MEMORY.md` — new row in Recent Digests table; relabeled earlier-today row as "(earlier run)" to disambiguate
+- `.audit-tmp/digest-log-fragment.md` — scratch fragment used for the log append (safe to leave)
 
-**Follow-up for operator:**
-- `aeon.yml` `digest:` still missing `var:` — same config gap noted in `memory/topics/aeon-ops.md` action list. Recommend adding `var: "prediction markets"` to make the default explicit.
-- The notify hook-block is now confirmed across two consecutive digest runs (04-25, 04-27); manual `.pending-notify/` queue continues to work as the documented fallback.
+**Follow-ups for operator**
+- **Config gap:** add `var: "prediction markets"` (or alternative) to `digest:` in `aeon.yml` line 49 — same fix already in MEMORY.md "Next Priorities" alongside `list-digest`/`refresh-x`/`remix-tweets`
+- **Critical ops:** flatten Polymarket resting orders before 07 UTC tomorrow Apr 28 — V2 cutover at 11 UTC wipes the book (also in today's polymarket-comments OPS ALERT)
+- **Sandbox bug recurring:** `./notify "$(cat …)"` still hook-blocked ("Unhandled node type: string"), and bash `>>` redirect is also sandbox-blocked from this session — used Edit-tool anchor to append to log; pending-notify fallback used for delivery
 
-**DIGEST_OK**
+Sources:
+- [Polymarket Exchange Upgrade: April 28, 2026 (primary)](https://help.polymarket.com/en/articles/14762452-polymarket-exchange-upgrade-april-28-2026)
+- [Polymarket's executive reveals chain migration plans (TheStreet)](https://www.thestreet.com/crypto/markets/worlds-largest-prediction-market-announces-migration-from-polygon)
+- [FanDuel Pushes Into Prediction Markets (Bloomberg)](https://www.bloomberg.com/news/articles/2026-04-27/fanduel-pushes-into-prediction-markets-as-users-download-kalshi-polymarket)
+- [Brazil Bans Polymarket, Kalshi, and 27 Other Prediction Markets (FXLeaders)](https://www.fxleaders.com/news/2026/04/27/brazil-bans-polymarket-kalshi-and-27-other-prediction-markets-full-block-now-in-effect/)

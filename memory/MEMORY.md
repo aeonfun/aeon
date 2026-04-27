@@ -70,8 +70,9 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 ## Recent Digests
 | Date | Type | Key Topics |
 |------|------|------------|
+| 2026-04-27 | prediction markets (PM-ops re-run, 14:27 UTC) | Polymarket V2 cutover at 11 UTC Tue Apr 28 (orderbook wiped, USDC.e→pUSD, builder codes on-chain — flatten resting orders before 07 UTC); Polymarket chain-migration off Polygon, POLY L2 lead candidate (Stevens Apr 25; PM = 50-70% Polygon fees); FanDuel enters prediction markets (Bloomberg Apr 27); Brazil block of 29 platforms now in force (glance) |
 | 2026-04-27 | narrative-tracker | Kalshi crypto perps LIVE (Apr 26) → FRONT-RUN PM-Chainlink vs Kalshi-BRTI BTC settlement basis; US Strategic BTC Reserve framework; Solana Alpenglow validator-approved; Aave/DeFi governance critique; GameFi/Ronin demoted, HYPER dead |
-| 2026-04-27 | prediction markets | Kalshi Timeless perps live, DOJ five-felony charges on named Sgt. Van Dyke, CFTC 15-year staffing low, co-rolled self-trading bans |
+| 2026-04-27 | prediction markets (earlier run) | Kalshi Timeless perps live, DOJ five-felony charges on named Sgt. Van Dyke, CFTC 15-year staffing low, co-rolled self-trading bans |
 | 2026-04-26 | paper-pick | arXiv:2604.17295 LLaTiSA (HF Daily ↑80) — difficulty-stratified TSR, applicable to CalibrationGap eval design |
 | 2026-04-26 | hn-digest (via daily-routine) | Erdős+ChatGPT proof, EU age-control trojan, DeepSeek V4 Day 0, iPhone silent install |
 | 2026-04-26 | token-movers | APE reverse flop: yesterday +39% BREAKOUT → today -17% CAPITULATION (FADE thesis from 04-25 played out) |
