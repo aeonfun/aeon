@@ -1,0 +1,168 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert-status",
+        "stack-stats",
+        "separator-1",
+        "stack-tokens"
+      ]
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "message": "Tape flipped to risk-off intraday",
+        "type": "info"
+      }
+    },
+    "stack-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-green",
+        "stat-btc"
+      ]
+    },
+    "stat-green": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Green",
+        "value": "32/100"
+      }
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "-0.3%",
+        "trend": "down"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "row-xcn",
+        "row-asteroid"
+      ]
+    },
+    "row-xcn": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-xcn-symbol",
+        "stat-xcn",
+        "badge-xcn-trending",
+        "badge-xcn-up",
+        "badge-xcn-breakout"
+      ]
+    },
+    "badge-xcn-symbol": {
+      "type": "Badge",
+      "props": {
+        "text": "XCN",
+        "variant": "outline"
+      }
+    },
+    "stat-xcn": {
+      "type": "Stat",
+      "props": {
+        "value": "+42%",
+        "trend": "up"
+      }
+    },
+    "badge-xcn-trending": {
+      "type": "Badge",
+      "props": {
+        "text": "TRENDING",
+        "variant": "secondary"
+      }
+    },
+    "badge-xcn-up": {
+      "type": "Badge",
+      "props": {
+        "text": "UP",
+        "variant": "secondary"
+      }
+    },
+    "badge-xcn-breakout": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "row-asteroid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-asteroid-symbol",
+        "stat-asteroid",
+        "badge-asteroid-capitulation",
+        "text-asteroid-note"
+      ]
+    },
+    "badge-asteroid-symbol": {
+      "type": "Badge",
+      "props": {
+        "text": "ASTEROID",
+        "variant": "outline"
+      }
+    },
+    "stat-asteroid": {
+      "type": "Stat",
+      "props": {
+        "value": "-14%",
+        "trend": "down"
+      }
+    },
+    "badge-asteroid-capitulation": {
+      "type": "Badge",
+      "props": {
+        "text": "CAPITULATION",
+        "variant": "destructive"
+      }
+    },
+    "text-asteroid-note": {
+      "type": "Text",
+      "props": {
+        "text": "flipped from yesterday's winner",
+        "variant": "caption"
+      }
+    }
+  }
+}
