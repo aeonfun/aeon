@@ -1,0 +1,125 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Gallery updated"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stats_stack",
+        "sep1",
+        "categories_section",
+        "sep2",
+        "pr_link"
+      ]
+    },
+    "stats_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_new",
+        "stat_updated"
+      ]
+    },
+    "stat_new": {
+      "type": "Stat",
+      "props": {
+        "label": "New",
+        "value": "11",
+        "delta": "+11",
+        "trend": "up"
+      }
+    },
+    "stat_updated": {
+      "type": "Stat",
+      "props": {
+        "label": "Updated",
+        "value": "1",
+        "delta": "±1",
+        "trend": "neutral"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "categories_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "categories_label",
+        "badges_stack"
+      ]
+    },
+    "categories_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Categories",
+        "level": "h4"
+      }
+    },
+    "badges_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_article",
+        "badge_changelog",
+        "badge_security"
+      ]
+    },
+    "badge_article": {
+      "type": "Badge",
+      "props": {
+        "text": "article x6"
+      }
+    },
+    "badge_changelog": {
+      "type": "Badge",
+      "props": {
+        "text": "changelog x4"
+      }
+    },
+    "badge_security": {
+      "type": "Badge",
+      "props": {
+        "text": "security x1"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr_link": {
+      "type": "Link",
+      "props": {
+        "label": "View PR",
+        "href": "https://github.com/tomscaria/aeon/pull/2"
+      }
+    }
+  }
+}
