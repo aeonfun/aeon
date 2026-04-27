@@ -1,1 +1,1 @@
-paper-digest: no topics configured. Add ## Interests bullets to memory/MEMORY.md or pass var="topic". Aborted today.
+paper-digest: PAPER_DIGEST_NO_TOPICS (day 2). aeon.yml var="" and MEMORY.md has no ## Interests section. Add bullets to memory/MEMORY.md OR set var: on paper-digest in aeon.yml. Suggested topics: prediction-market calibration, agentic finance, multi-agent RL, regime-switching, Polymarket microstructure, trade-level calibration, Darwinian agent selection, FinCon verbal reinforcement.

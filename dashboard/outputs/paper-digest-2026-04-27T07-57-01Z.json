@@ -1,0 +1,190 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "paper-digest",
+        "description": "Configuration required: no interest topics configured"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status-alert",
+        "sep-1",
+        "problem-section",
+        "action-section",
+        "sep-2",
+        "topics-section"
+      ]
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "PAPER_DIGEST_NO_TOPICS (day 2)",
+        "message": "Interest topics not configured",
+        "type": "warning"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "problem-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "problem-heading",
+        "problem-text"
+      ]
+    },
+    "problem-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Problem",
+        "level": "h3"
+      }
+    },
+    "problem-text": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml var=\"\" and MEMORY.md has no ## Interests section"
+      }
+    },
+    "action-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-heading",
+        "action-text"
+      ]
+    },
+    "action-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Action",
+        "level": "h3"
+      }
+    },
+    "action-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add bullets to memory/MEMORY.md OR set var: on paper-digest in aeon.yml"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "topics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "topics-heading",
+        "topics-grid"
+      ]
+    },
+    "topics-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Suggested Topics",
+        "level": "h3"
+      }
+    },
+    "topics-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "sm"
+      },
+      "children": [
+        "topic-1",
+        "topic-2",
+        "topic-3",
+        "topic-4",
+        "topic-5",
+        "topic-6",
+        "topic-7",
+        "topic-8"
+      ]
+    },
+    "topic-1": {
+      "type": "Badge",
+      "props": {
+        "text": "prediction-market calibration",
+        "variant": "outline"
+      }
+    },
+    "topic-2": {
+      "type": "Badge",
+      "props": {
+        "text": "agentic finance",
+        "variant": "outline"
+      }
+    },
+    "topic-3": {
+      "type": "Badge",
+      "props": {
+        "text": "multi-agent RL",
+        "variant": "outline"
+      }
+    },
+    "topic-4": {
+      "type": "Badge",
+      "props": {
+        "text": "regime-switching",
+        "variant": "outline"
+      }
+    },
+    "topic-5": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket microstructure",
+        "variant": "outline"
+      }
+    },
+    "topic-6": {
+      "type": "Badge",
+      "props": {
+        "text": "trade-level calibration",
+        "variant": "outline"
+      }
+    },
+    "topic-7": {
+      "type": "Badge",
+      "props": {
+        "text": "Darwinian agent selection",
+        "variant": "outline"
+      }
+    },
+    "topic-8": {
+      "type": "Badge",
+      "props": {
+        "text": "FinCon verbal reinforcement",
+        "variant": "outline"
+      }
+    }
+  }
+}
