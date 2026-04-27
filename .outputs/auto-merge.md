@@ -1,15 +1,9 @@
 ## Summary
 
-Ran `auto-merge` against `aaronjmars/aeon` (only entry in `memory/watched-repos.md`).
+Ran `auto-merge` against `aaronjmars/aeon` (only entry in `memory/watched-repos.md`). `gh pr list` returned an empty array — no open PRs to evaluate, so no safety policy was applied and no merges occurred.
 
-- **Open PRs found:** 0
-- **Merged:** 0
-- **Skipped:** 0
-- **Notifications:** none (no merges; per spec, no notify on zero-merge runs)
-
-PR #142 (skill-analytics) appears to have closed since yesterday's run, so the queue is empty.
-
-**Files modified:**
-- `memory/logs/2026-04-27.md` — created with `### auto-merge` entry
-
-**Follow-ups:** none. If `aaronjmars` should be auto-mergeable as the repo owner, add a `## Trusted Authors` section to `memory/watched-repos.md` listing them — but that's an operator decision, not a skill action.
+- **Mode:** live
+- **Considered:** 0 / **Qualified:** 0 / **Merged:** 0
+- **Notification:** none (skill only notifies on a real merge)
+- **Files modified:** `memory/logs/2026-04-27.md` — appended an `### auto-merge (re-run)` entry capturing the empty PR list.
+- **Follow-up:** none. Open PR `tomscaria/aeon#1` exists per the heartbeat log but `tomscaria/aeon` is not in `watched-repos.md`, so it's out of scope for this skill — operator can either add it to watched-repos with a `## Trusted Authors` allowlist or merge manually.
