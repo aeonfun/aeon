@@ -1,0 +1,87 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_message",
+        "separator_1",
+        "stack_details"
+      ]
+    },
+    "text_message": {
+      "type": "Text",
+      "props": {
+        "text": "verify-monitor-runners-pipeline-2026-04-25-distinct-message-now",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_action",
+        "stat_target",
+        "stat_date",
+        "stat_status"
+      ]
+    },
+    "stat_action": {
+      "type": "Stat",
+      "props": {
+        "label": "Action",
+        "value": "verify"
+      },
+      "children": []
+    },
+    "stat_target": {
+      "type": "Stat",
+      "props": {
+        "label": "Target",
+        "value": "monitor-runners-pipeline"
+      },
+      "children": []
+    },
+    "stat_date": {
+      "type": "Stat",
+      "props": {
+        "label": "Date",
+        "value": "2026-04-25"
+      },
+      "children": []
+    },
+    "stat_status": {
+      "type": "Stat",
+      "props": {
+        "label": "Status",
+        "value": "distinct message (new)"
+      },
+      "children": []
+    }
+  }
+}
