@@ -1,8 +1,15 @@
+This task is a single short step — no need for a todo list.
+
 ## Summary
 
-Executed `treasury-info` skill. `memory/on-chain-watches.yml` exists but has `watches: []` (zero `type: wallet` entries), so per skill spec the run logs `TREASURY_INFO_OK — no wallets configured` and exits 0 without notifying.
+Ran `treasury-info` skill. Per spec, exited cleanly without notifying:
 
-- Files created: `memory/logs/2026-04-27.md`
-- Files modified: none
-- Notification: none sent (suppressed by spec when zero wallets are configured)
-- Follow-up: operator action item already tracked in `memory/MEMORY.md` ("Operator config sweep") — populate `memory/on-chain-watches.yml` with real addresses to enable this skill.
+- **State:** `memory/on-chain-watches.yml` exists but holds `watches: []` (template still commented out, real addresses never added).
+- **Action taken:** logged `TREASURY_INFO_OK — no wallets configured` to `memory/logs/2026-04-27.md` and exited.
+- **No notification** sent (spec: "If the file exists but has zero `type: wallet` entries: log... and exit 0 without notifying").
+- **No snapshot persisted** (no wallets to snapshot).
+
+**Files modified:**
+- `memory/logs/2026-04-27.md` — appended `### treasury-info` log entry.
+
+**Follow-up:** to actually enable this skill, the operator needs to uncomment and populate the template in `memory/on-chain-watches.yml` with real wallet labels/addresses/chains. This is already tracked on the operator config-gap list in `memory/topics/aeon-ops.md` and surfaced in MEMORY.md's "Next Priorities" → "Operator config sweep".
