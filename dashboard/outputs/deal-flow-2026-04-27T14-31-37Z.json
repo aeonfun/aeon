@@ -1,0 +1,76 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Deal Flow",
+        "description": "2026-04-27 | queued"
+      },
+      "children": [
+        "stat-filter",
+        "sep1",
+        "heading-picks",
+        "table-deals"
+      ]
+    },
+    "stat-filter": {
+      "type": "Stat",
+      "props": {
+        "label": "Candidates Filtered",
+        "value": "50 → 8"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-picks": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Picks",
+        "level": "h3"
+      }
+    },
+    "table-deals": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Company",
+          "Amount",
+          "Context"
+        ],
+        "rows": [
+          [
+            "Anthropic",
+            "$5B",
+            "Amazon"
+          ],
+          [
+            "Factory",
+            "$150M",
+            "Khosla ($1.5B fund)"
+          ],
+          [
+            "Drift",
+            "$150M",
+            "recap"
+          ],
+          [
+            "Mintlify",
+            "$45M",
+            "a16z"
+          ],
+          [
+            "Cloudsmith",
+            "$72M",
+            "TCV"
+          ]
+        ]
+      }
+    }
+  }
+}

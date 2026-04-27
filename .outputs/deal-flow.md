@@ -1,0 +1,1 @@
+Deal Flow 2026-04-27 queued (.pending-notify/deal-flow-2026-04-27.md): top picks Anthropic 5B Amazon, Factory 150M Khosla 1.5B, Drift 150M recap, Mintlify 45M a16z, Cloudsmith 72M TCV. 50 candidates to 8.
