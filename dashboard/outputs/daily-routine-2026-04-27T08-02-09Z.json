@@ -1,0 +1,388 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine 2026-04-27"
+      },
+      "children": [
+        "section_tokens",
+        "sep1",
+        "section_prices",
+        "sep2",
+        "section_winners",
+        "sep3",
+        "section_losers",
+        "sep4",
+        "section_tweets",
+        "sep5",
+        "section_paper",
+        "sep6",
+        "section_github",
+        "sep7",
+        "section_hn"
+      ]
+    },
+    "section_tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_tokens",
+        "stat_tokens"
+      ]
+    },
+    "heading_tokens": {
+      "type": "Heading",
+      "props": {
+        "text": "Tokens (24h)",
+        "level": "h3"
+      }
+    },
+    "stat_tokens": {
+      "type": "Stat",
+      "props": {
+        "label": "Risk-on",
+        "value": "90/100",
+        "trend": "up"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_prices",
+        "grid_prices"
+      ]
+    },
+    "heading_prices": {
+      "type": "Heading",
+      "props": {
+        "text": "24h Price Movements",
+        "level": "h3"
+      }
+    },
+    "grid_prices": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth",
+        "stat_sol"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$79.1k",
+        "delta": "+2.0%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "—",
+        "delta": "+3.1%",
+        "trend": "up"
+      }
+    },
+    "stat_sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "—",
+        "delta": "+1.9%",
+        "trend": "up"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_winners": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_winners",
+        "table_winners"
+      ]
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Winners",
+        "level": "h3"
+      }
+    },
+    "table_winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Ticker",
+          "Change",
+          "Status"
+        ],
+        "rows": [
+          [
+            "UMXM",
+            "+35",
+            ""
+          ],
+          [
+            "GWEI",
+            "+25",
+            ""
+          ],
+          [
+            "LUNC",
+            "+21",
+            "BREAKOUT"
+          ],
+          [
+            "LDO",
+            "+21",
+            ""
+          ],
+          [
+            "ZBCN",
+            "+16",
+            "BREAKOUT"
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_losers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_losers",
+        "table_losers"
+      ]
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Losers (shallow)",
+        "level": "h3"
+      }
+    },
+    "table_losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Ticker",
+          "Change",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "RAY",
+            "-9.3",
+            ""
+          ],
+          [
+            "APE",
+            "-5.6",
+            "day-3 fade 39→-17→-5.6"
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_tweets": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tweets",
+        "alert_tweets"
+      ]
+    },
+    "heading_tweets": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweets",
+        "level": "h3"
+      }
+    },
+    "alert_tweets": {
+      "type": "Alert",
+      "props": {
+        "message": "empty (XAI blocked, WebSearch stale)",
+        "type": "info"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_paper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_paper",
+        "storylink_paper",
+        "text_paper_details"
+      ]
+    },
+    "heading_paper": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper",
+        "level": "h3"
+      }
+    },
+    "storylink_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "LiveTradeBench",
+        "href": "https://arxiv.org/abs/2511.03628",
+        "source": "arxiv.org"
+      }
+    },
+    "text_paper_details": {
+      "type": "Text",
+      "props": {
+        "text": "50-day live eval 21 LLMs US stocks + Polymarket; LMArena scores != trading outcomes (calibration gap)",
+        "variant": "caption"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_github": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_github",
+        "text_github"
+      ]
+    },
+    "heading_github": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub",
+        "level": "h3"
+      }
+    },
+    "text_github": {
+      "type": "Text",
+      "props": {
+        "text": "0 new tomscaria",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_hn": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_hn",
+        "table_hn"
+      ]
+    },
+    "heading_hn": {
+      "type": "Heading",
+      "props": {
+        "text": "Hacker News Top 5",
+        "level": "h3"
+      }
+    },
+    "table_hn": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Title",
+          "Score"
+        ],
+        "rows": [
+          [
+            "1",
+            "OpenAI Privacy Filter",
+            "197"
+          ],
+          [
+            "2",
+            "Simulacrum of Knowledge Work",
+            "143"
+          ],
+          [
+            "3",
+            "West Forgot How to Code",
+            "132"
+          ],
+          [
+            "4",
+            "Geothermal 150GW",
+            "107"
+          ],
+          [
+            "5",
+            "GnuPG PQC mainline",
+            "44"
+          ]
+        ]
+      }
+    }
+  }
+}
