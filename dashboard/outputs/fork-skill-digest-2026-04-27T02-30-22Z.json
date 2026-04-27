@@ -1,0 +1,316 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Fork Skill Digest — 2026-04-27"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "key-finding-block",
+        "sep-1",
+        "scan-block",
+        "sep-2",
+        "flip-block",
+        "sep-3",
+        "impact-block",
+        "sep-4",
+        "new-forks-block",
+        "sep-5",
+        "heaviest-block",
+        "sep-6",
+        "report-block"
+      ]
+    },
+    "key-finding-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-key-finding",
+        "text-key-finding"
+      ]
+    },
+    "heading-key-finding": {
+      "type": "Heading",
+      "props": {
+        "text": "rss-digest Noise Signal",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text-key-finding": {
+      "type": "Text",
+      "props": {
+        "text": "23 forks disable rss-digest (upstream defaults on) — fleet is voting it as noise.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "scan-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-scan",
+        "scan-stats"
+      ]
+    },
+    "heading-scan": {
+      "type": "Heading",
+      "props": {
+        "text": "Scan Results",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "scan-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-scanned",
+        "stat-configured"
+      ]
+    },
+    "stat-scanned": {
+      "type": "Stat",
+      "props": {
+        "label": "Active Forks Scanned",
+        "value": "24"
+      },
+      "children": []
+    },
+    "stat-configured": {
+      "type": "Stat",
+      "props": {
+        "label": "Configured",
+        "value": "23"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "flip-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-flip",
+        "flip-patterns-stack"
+      ]
+    },
+    "heading-flip": {
+      "type": "Heading",
+      "props": {
+        "text": "Disable Patterns (Upstream On → Fleet Off)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "flip-patterns-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-rss-digest",
+        "stat-morning-brief",
+        "stat-github-trending"
+      ]
+    },
+    "stat-rss-digest": {
+      "type": "Stat",
+      "props": {
+        "label": "rss-digest",
+        "value": "23/23 (100%)"
+      },
+      "children": []
+    },
+    "stat-morning-brief": {
+      "type": "Stat",
+      "props": {
+        "label": "morning-brief",
+        "value": "22/23 (95.7%)"
+      },
+      "children": []
+    },
+    "stat-github-trending": {
+      "type": "Stat",
+      "props": {
+        "label": "github-trending",
+        "value": "21/23 (91.3%)"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "impact-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-impact",
+        "stat-pattern-impact",
+        "text-impact-detail"
+      ]
+    },
+    "heading-impact": {
+      "type": "Heading",
+      "props": {
+        "text": "Pattern Impact",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stat-pattern-impact": {
+      "type": "Stat",
+      "props": {
+        "label": "Skills Affected",
+        "value": "87"
+      },
+      "children": []
+    },
+    "text-impact-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Onboarding signal, not noise confirmation.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "new-forks-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-new-forks",
+        "text-new-forks-list"
+      ]
+    },
+    "heading-new-forks": {
+      "type": "Heading",
+      "props": {
+        "text": "New Fork-Only Instances",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-new-forks-list": {
+      "type": "Text",
+      "props": {
+        "text": "0xfreddy/macos-apps, lordchildrey/hn-digest+tweet-digest, Xedphilia/tweet-digest+wallet-digest+feature+build-skill+self-review",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heaviest-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-heaviest",
+        "stat-heaviest"
+      ]
+    },
+    "heading-heaviest": {
+      "type": "Heading",
+      "props": {
+        "text": "Heaviest Override",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stat-heaviest": {
+      "type": "Stat",
+      "props": {
+        "label": "lordchildrey/aeon",
+        "value": "99 overrides"
+      },
+      "children": []
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "report-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "report-link"
+      ]
+    },
+    "report-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Report: fork-skill-digest-2026-04-27",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/fork-skill-digest-2026-04-27.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
