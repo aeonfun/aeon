@@ -1,8 +1,1 @@
-*Agent Buzz — 2026-04-27*
-_Quiet day on the WebSearch fallback — degraded metadata, only one builder thread surfaces; signal is a fresh paper-rec rather than a launch._
-
-**Agent harness as published artifact**
-• @burkov — Paper deconstructs Claude Code's TypeScript source: 7 permission modes, 5-layer compaction, 4 extensibility hooks. Reference architecture, not a launch.
-  https://x.com/burkov/status/2048233381305942381
-
-<!-- _src: websearch · candidates: ~25 → kept: 1_ -->
+Agent Buzz - 2026-04-27: all sources failed. curl env-var blocked by sandbox, WebFetch is GET-only so cannot POST to X.AI responses, WebSearch returned only stale or non-tweet results. No agent-buzz output today. ISS: prefetch case for agent-buzz needed in scripts/prefetch-xai.sh.
