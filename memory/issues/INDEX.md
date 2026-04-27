@@ -17,6 +17,8 @@
 | [ISS-011](ISS-011.md) | skill-health: no_file_match — absent despite cron-state success | high | output-format | 2026-04-26 | skill-health |
 | [ISS-012](ISS-012.md) | reddit-digest cannot run on JSON API — Reddit blocks GHA IPs (same root as ISS-002) | high | sandbox-limitation | 2026-04-26 | reddit-digest |
 | [ISS-013](ISS-013.md) | Mass skill failure 2026-04-26 23:53-58Z — 50+ skills exit with 0 tokens consumed | critical | unknown | 2026-04-27 | 53 skills (see file) |
+| [ISS-014](ISS-014.md) | messages.yml run-block interpolates ${{ github.event.action }} from repository_dispatch payload | high | quality-regression | 2026-04-27 | workflow:messages.yml |
+| [ISS-015](ISS-015.md) | messages.yml run-block interpolates toJson(github.event.client_payload.message) into single-quoted echo | high | quality-regression | 2026-04-27 | workflow:messages.yml |
 
 ## Resolved
 

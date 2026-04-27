@@ -1,0 +1,224 @@
+# Each entry suppresses a specific (file, line_range, pattern) match that a human has reviewed.
+# Format:
+#   - file: <path>
+#     pattern: <regex pattern from scan.sh HIGH_PATTERNS/MEDIUM_PATTERNS/LOW_PATTERNS>
+#     lines: "15-25"          # optional line range; omit to suppress across whole file
+#     reason: "documentation in threat model section"
+#     reviewed_by: "aaronjmars"
+#     reviewed_at: "2026-04-27"
+suppressions:
+  # Self-documenting matches in the security-scan skill itself — these are the threat
+  # categories described in prose, not payloads.
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Ii]gnore\s+(all\s+)?previous\s+instructions'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Ii]gnore\s+(all\s+)?prior\s+instructions'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Yy]ou\s+are\s+now\s+'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Ff]orget\s+(all\s+)?(your\s+)?instructions'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Dd]isregard\s+(all\s+)?previous'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: '[Oo]verride\s+(all\s+)?rules'
+    reason: "documentation in threat model / security section"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'curl.*\$[A-Z_]'
+    reason: "remediation example referencing $ENV_VAR pattern in prose"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'curl.*\$\{'
+    reason: "remediation example referencing ${{ github.event.* }} interpolation"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'wget.*\$[A-Z_]'
+    reason: "remediation example referencing curl/wget patterns"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'wget.*\$\{'
+    reason: "remediation example referencing curl/wget patterns"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'rm\s+-rf\s+/'
+    reason: "documentation listing destructive commands as a threat category"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'rm\s+-rf\s+~'
+    reason: "documentation listing destructive commands as a threat category"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'git\s+push\s+--force\s+origin\s+main'
+    reason: "documentation listing destructive commands as a threat category"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'eval\s'
+    reason: "documentation listing shell-injection patterns"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'eval\('
+    reason: "documentation listing shell-injection patterns"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/SKILL.md
+    pattern: 'base64\s+-d'
+    reason: "documentation listing obfuscation patterns"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  # Pattern library inside scan.sh itself — every pattern literal naturally trips its
+  # own scan. These are the source-of-truth patterns, not payloads.
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'eval\s'
+    reason: "pattern library — these strings define what the scanner looks for"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'eval\('
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'curl.*\$[A-Z_]'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'wget.*\$[A-Z_]'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'curl.*\$\{'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'wget.*\$\{'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Ii]gnore\s+(all\s+)?previous\s+instructions'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Ii]gnore\s+(all\s+)?prior\s+instructions'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Yy]ou\s+are\s+now\s+'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Ff]orget\s+(all\s+)?(your\s+)?instructions'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Dd]isregard\s+(all\s+)?previous'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '[Oo]verride\s+(all\s+)?rules'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'rm\s+-rf\s+/'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'rm\s+-rf\s+\*'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'rm\s+-rf\s+~'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'git\s+push\s+--force\s+origin\s+main'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'git\s+push\s+-f\s+origin\s+main'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'base64\s+-d'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: 'base64\s+--decode'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '\$TELEGRAM_BOT_TOKEN'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '\$DISCORD_BOT_TOKEN'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '\$SLACK_BOT_TOKEN'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '\$GITHUB_TOKEN.*curl'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/skill-security-scan/scan.sh
+    pattern: '\$GITHUB_TOKEN.*wget'
+    reason: "pattern library"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  # security-digest curl examples in fenced code blocks
+  - file: skills/security-digest/SKILL.md
+    pattern: 'curl.*\$[A-Z_]'
+    reason: "example usage inside fenced code block, not an executable instruction"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"
+  - file: skills/security-digest/SKILL.md
+    pattern: 'curl.*\$\{'
+    reason: "example usage inside fenced code block, not an executable instruction"
+    reviewed_by: "aaronjmars"
+    reviewed_at: "2026-04-27"

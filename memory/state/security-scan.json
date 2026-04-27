@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-04-27",
+  "scope": "full",
+  "scanner": "inline-grep-fallback",
+  "scan_sh_blocked_by_sandbox": true,
+  "baseline_bootstrapped": true,
+  "trusted_source_match": false,
+  "git_remote": "tomscaria/aeon",
+  "summary": {
+    "files_scanned_approx": 110,
+    "high_post_filter": 2,
+    "medium_post_filter": 2,
+    "low_post_filter": 0,
+    "suppressed_at_baseline": 41,
+    "code_fence_downgraded_high_to_medium": 42,
+    "new": 4,
+    "resolved": 0,
+    "persistent": 0
+  },
+  "findings": [
+    {
+      "file": ".github/workflows/messages.yml",
+      "line": 577,
+      "pattern": "github_event_interpolation_in_run_block",
+      "match": "MESSAGE=$(echo '${{ toJson(github.event.client_payload.message) }}' | jq -r '.')",
+      "severity": "high",
+      "fingerprint": "msg-yml-577-toJson-clientpayload",
+      "issue_id": "ISS-015"
+    },
+    {
+      "file": ".github/workflows/messages.yml",
+      "line": 578,
+      "pattern": "github_event_interpolation_in_run_block",
+      "match": "TYPE=\"${{ github.event.action }}\"",
+      "severity": "high",
+      "fingerprint": "msg-yml-578-action",
+      "issue_id": "ISS-014"
+    },
+    {
+      "file": "skills/monitor-runners/SKILL.md",
+      "line": 74,
+      "pattern": "eval\\s",
+      "match": "eval \"${N}_TREND_OK=1\" || eval \"${N}_TREND_OK=0\"",
+      "severity": "medium",
+      "raw_severity": "high",
+      "downgrade_reason": "fenced-code-block",
+      "fingerprint": "monitor-runners-74-eval"
+    },
+    {
+      "file": "skills/monitor-runners/SKILL.md",
+      "line": 77,
+      "pattern": "eval\\s",
+      "match": "eval \"${N}_VOL_OK=1\" || eval \"${N}_VOL_OK=0\"",
+      "severity": "medium",
+      "raw_severity": "high",
+      "downgrade_reason": "fenced-code-block",
+      "fingerprint": "monitor-runners-77-eval"
+    }
+  ],
+  "issues_filed": ["ISS-014", "ISS-015"],
+  "issues_resolved": [],
+  "exit_status": "SECURITY_SCAN_NEW"
+}
