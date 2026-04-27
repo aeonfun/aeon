@@ -18,4 +18,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,defi-monitor,claude-opus-4-7,10,1215,168040,22086
 2026-04-27,idea-capture,claude-opus-4-7,7,822,76096,17049
 2026-04-27,skill-leaderboard,claude-sonnet-4-6,33,50836,2085345,104567
-2026-04-27,paper-pick,claude-opus-4-7,57,14639,2355941,89611
+2026-04-27,reddit-digest,claude-opus-4-7,6493,22820,2821573,99752

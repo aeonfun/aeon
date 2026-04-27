@@ -18,6 +18,7 @@
 .reddit-parse.js
 .reddit-parse.py
 .reddit-debug.js
+.fetch-reddit-rss.sh
 reddit-*.json
 reddit-*.rss
 reddit-ml.rss
