@@ -16,7 +16,7 @@
 | [ISS-010](ISS-010.md) | token-alert: no_file_match — absent despite cron-state success | high | output-format | 2026-04-26 | token-alert |
 | [ISS-011](ISS-011.md) | skill-health: no_file_match — absent despite cron-state success | high | output-format | 2026-04-26 | skill-health |
 | [ISS-012](ISS-012.md) | reddit-digest cannot run on JSON API — Reddit blocks GHA IPs (same root as ISS-002) | high | sandbox-limitation | 2026-04-26 | reddit-digest |
-| [ISS-013](ISS-013.md) | reply-maker cannot run — XAI_API_KEY blocked + prefetch-xai.sh has no reply-maker case | high | sandbox-limitation | 2026-04-27 | reply-maker |
+| [ISS-013](ISS-013.md) | Mass skill failure 2026-04-26 23:53-58Z — 50+ skills exit with 0 tokens consumed | critical | unknown | 2026-04-27 | 53 skills (see file) |
 
 ## Resolved
 

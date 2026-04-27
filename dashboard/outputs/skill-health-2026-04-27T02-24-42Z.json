@@ -1,0 +1,228 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health 2026-04-27"
+      },
+      "children": [
+        "status-alert",
+        "critical-stat",
+        "systemic-issue",
+        "sep1",
+        "critical-heading",
+        "critical-table",
+        "more-info-link",
+        "sep2",
+        "degraded-heading",
+        "degraded-text",
+        "sep3",
+        "health-stats",
+        "sep4",
+        "action-heading",
+        "action-list"
+      ]
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "CRITICAL",
+        "message": "53 skills with systemic failure",
+        "type": "error"
+      }
+    },
+    "critical-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Skills in Critical Status",
+        "value": "53"
+      }
+    },
+    "systemic-issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "systemic-text1",
+        "systemic-text2"
+      ]
+    },
+    "systemic-text1": {
+      "type": "Text",
+      "props": {
+        "text": "Systemic Issue: 53 skills share zero-token last_error signature",
+        "variant": "lead"
+      }
+    },
+    "systemic-text2": {
+      "type": "Text",
+      "props": {
+        "text": "Mass-failure window: 2026-04-26 23:53-58Z UTC | Filed: ISS-013"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "critical-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Critical Skills",
+        "level": "h3"
+      }
+    },
+    "critical-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Failures",
+          "Last Down"
+        ],
+        "rows": [
+          [
+            "github-trending",
+            "23",
+            "Never succeeded"
+          ],
+          [
+            "github-releases",
+            "19",
+            "Never succeeded"
+          ],
+          [
+            "token-movers",
+            "23",
+            "2d"
+          ],
+          [
+            "search-skill",
+            "19",
+            "2d"
+          ],
+          [
+            "article",
+            "18",
+            "2d"
+          ],
+          [
+            "heartbeat",
+            "14",
+            "18h"
+          ],
+          [
+            "+47 more",
+            "",
+            ""
+          ]
+        ]
+      }
+    },
+    "more-info-link": {
+      "type": "Link",
+      "props": {
+        "label": "See full list in memory/issues/INDEX.md",
+        "href": "memory/issues/INDEX.md"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "degraded-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded Skills",
+        "level": "h3"
+      }
+    },
+    "degraded-text": {
+      "type": "Text",
+      "props": {
+        "text": "auto-merge, defi-monitor, on-chain-monitor, token-alert, token-report, treasury-info — all recovered at 02:11Z today with low historical success_rate"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "health-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "healthy-stat",
+        "open-issues-stat"
+      ]
+    },
+    "healthy-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy",
+        "value": "13"
+      }
+    },
+    "open-issues-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "13"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Required",
+        "level": "h3"
+      }
+    },
+    "action-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action1",
+        "action2",
+        "action3"
+      ]
+    },
+    "action1": {
+      "type": "Text",
+      "props": {
+        "text": "Pull GHA logs for any heartbeat run at 23:56Z 2026-04-26"
+      }
+    },
+    "action2": {
+      "type": "Text",
+      "props": {
+        "text": "Identify infra failure mode: key auth, gateway 5xx, or runner network"
+      }
+    },
+    "action3": {
+      "type": "Text",
+      "props": {
+        "text": "Skills will burn down their cf counters as they hit next cron slots"
+      }
+    }
+  }
+}

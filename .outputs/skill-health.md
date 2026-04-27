@@ -1,12 +1,1 @@
-*Skill Health — 2026-04-25*
-HEALTH: WARNING(1)
-
-WARNING
-- heartbeat — 67% success (3 runs, 1 failure recovered) — INVESTIGATE
-
-NO DATA (13): morning-brief, rss-digest, hacker-news-digest, paper-digest, reddit-digest +8 more — DISPATCH-SKILL (daily skills with no cron-state entry)
-
-HEALTHY: 46
-
-Open issues: 2 · Resolved this run: 0
-Note: skill-runs unavailable (sandbox); cron-state only. ISS-001/ISS-002 still open — sandbox-limit, repair skill owns close.
+Skill Health 2026-04-27 — HEALTH: CRITICAL(53) [SYSTEMIC: 53 skills share zero-token last_error signature; mass-failure window 2026-04-26 23:53-58Z UTC, filed ISS-013] Top CRITICAL: github-trending(23 fails, never succeeded), github-releases(19, never), token-movers(23 fails 2d down), search-skill(19, 2d), article(18, 2d), heartbeat(14, 18h). +47 more — see memory/issues/INDEX.md. DEGRADED: auto-merge, defi-monitor, on-chain-monitor, token-alert, token-report, treasury-info — all recovered at 02:11Z today, low historical success_rate. HEALTHY: 13. Open issues: 13 (filed: ISS-013). Action: pull GHA logs for any heartbeat run at 23:56Z 2026-04-26 to identify the infra failure mode (key auth, gateway 5xx, runner network). Skills will burn down their cf counters as they hit next cron slots.
