@@ -1,0 +1,203 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "Recurrence #3 — no fresh tweets sourceable"
+      },
+      "children": [
+        "alert-main",
+        "sep1",
+        "heading-causes",
+        "stack-causes",
+        "history-text",
+        "sep2",
+        "heading-fallback",
+        "stack-fallback",
+        "sep3",
+        "heading-issue",
+        "badge-issue",
+        "sep4",
+        "heading-action",
+        "text-action",
+        "sep5",
+        "heading-sources",
+        "table-sources"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "No fresh tweets sourceable in 6h or 12h window",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-causes": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h2"
+      }
+    },
+    "stack-causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cause1",
+        "cause2",
+        "cause3"
+      ]
+    },
+    "cause1": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY env-var blocked under sandbox (length=0 via node)"
+      }
+    },
+    "cause2": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch hits HTTP 402 on x.com profiles"
+      }
+    },
+    "cause3": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch surfaces stale URLs (snowflake IDs decode to Apr 18-26, all >12h old)"
+      }
+    },
+    "history-text": {
+      "type": "Text",
+      "props": {
+        "text": "Same root cause as 2026-04-25 and 2026-04-27-am runs",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-fallback": {
+      "type": "Heading",
+      "props": {
+        "text": "Fallback Data Available",
+        "level": "h2"
+      }
+    },
+    "stack-fallback": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fallback-text",
+        "fallback-link",
+        "fallback-status"
+      ]
+    },
+    "fallback-text": {
+      "type": "Text",
+      "props": {
+        "text": "One URL within fallback window:"
+      }
+    },
+    "fallback-link": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/arkham/status/2048665135485735020",
+        "href": "https://x.com/arkham/status/2048665135485735020"
+      }
+    },
+    "fallback-status": {
+      "type": "Text",
+      "props": {
+        "text": "Posted at 07:26 UTC (~10h old). Below 3-candidate floor for 12h fallback."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-issue": {
+      "type": "Heading",
+      "props": {
+        "text": "Issue Filing",
+        "level": "h2"
+      }
+    },
+    "badge-issue": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-014",
+        "variant": "destructive"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-action": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Action Required",
+        "level": "h2"
+      }
+    },
+    "text-action": {
+      "type": "Text",
+      "props": {
+        "text": "Add reply-maker case to scripts/prefetch-xai.sh"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h2"
+      }
+    },
+    "table-sources": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Source",
+          "Status"
+        ],
+        "rows": [
+          [
+            "XAI",
+            "skip"
+          ],
+          [
+            "Memory",
+            "stale"
+          ],
+          [
+            "WebSearch",
+            "fail"
+          ],
+          [
+            "WebFetch",
+            "fail-402"
+          ]
+        ]
+      }
+    }
+  }
+}
