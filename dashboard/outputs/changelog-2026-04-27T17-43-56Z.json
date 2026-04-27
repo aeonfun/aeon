@@ -1,0 +1,153 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-04-27"
+      },
+      "children": [
+        "repo_info",
+        "sep1",
+        "changes_section",
+        "sep2",
+        "top_section",
+        "sep3",
+        "full_link"
+      ]
+    },
+    "repo_info": {
+      "type": "Text",
+      "props": {
+        "text": "Repository: aaronjmars/aeon",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "changes_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "changes_title",
+        "stats_row",
+        "collapsed_info"
+      ]
+    },
+    "changes_title": {
+      "type": "Heading",
+      "props": {
+        "text": "8 User-Facing Changes",
+        "level": "h3"
+      }
+    },
+    "stats_row": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat_breaking",
+        "stat_added",
+        "stat_fixed",
+        "stat_security"
+      ]
+    },
+    "stat_breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "stat_added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "8"
+      }
+    },
+    "stat_fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "0"
+      }
+    },
+    "stat_security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "0"
+      }
+    },
+    "collapsed_info": {
+      "type": "Text",
+      "props": {
+        "text": "1 collapsed Changed entry covering ~35 autoresearch evolution PRs",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_heading",
+        "top_description",
+        "pr_badge"
+      ]
+    },
+    "top_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Change",
+        "level": "h3"
+      }
+    },
+    "top_description": {
+      "type": "Text",
+      "props": {
+        "text": "SHOWCASE.md adds a fork showcase + Aeon-vs-AutoGen/CrewAI/n8n/LangGraph comparison page",
+        "variant": "body"
+      }
+    },
+    "pr_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "#145",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full changelog",
+        "href": "articles/changelog-2026-04-27.md"
+      }
+    }
+  }
+}
