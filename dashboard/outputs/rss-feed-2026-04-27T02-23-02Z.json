@@ -1,0 +1,59 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "RSS feed updated"
+      },
+      "children": [
+        "stat_entries",
+        "separator_1",
+        "new_section"
+      ]
+    },
+    "stat_entries": {
+      "type": "Stat",
+      "props": {
+        "label": "Entries",
+        "value": "12"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "new_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "new_heading",
+        "skill_evals_item",
+        "subscribe_link"
+      ]
+    },
+    "new_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New"
+      }
+    },
+    "skill_evals_item": {
+      "type": "Text",
+      "props": {
+        "text": "Skill Evals — 2026-04-26"
+      }
+    },
+    "subscribe_link": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
