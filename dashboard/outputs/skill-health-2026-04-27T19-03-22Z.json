@@ -1,0 +1,581 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health — 2026-04-27 18:59Z"
+      },
+      "children": [
+        "status-alert",
+        "sep-1",
+        "state-change-section",
+        "sep-2",
+        "systemic-section",
+        "sep-3",
+        "top-5-section",
+        "sep-4",
+        "no-data-section",
+        "sep-5",
+        "summary-stats",
+        "sep-6",
+        "operator-alert"
+      ]
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "HEALTH: DEGRADED (59 skills)",
+        "message": "Recovery in progress",
+        "type": "warning"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "state-change-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "state-heading",
+        "state-item-1",
+        "state-item-2",
+        "state-item-3"
+      ]
+    },
+    "state-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "State Change since 02:30Z",
+        "level": "h3"
+      }
+    },
+    "state-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "53 skills moved CRITICAL→DEGRADED"
+      }
+    },
+    "state-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "All re-ran cleanly (cf=0, last_status=success)"
+      }
+    },
+    "state-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "DEGRADED is a math artifact — historical success_rate <0.6 from the 04-26 23:53-58Z burst"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "systemic-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "systemic-heading",
+        "systemic-item-1",
+        "systemic-item-2"
+      ]
+    },
+    "systemic-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "SYSTEMIC",
+        "level": "h3"
+      }
+    },
+    "systemic-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "systemic-text-1",
+        "systemic-link-1"
+      ]
+    },
+    "systemic-text-1": {
+      "type": "Text",
+      "props": {
+        "text": "59 skills share the zero-token last_error"
+      }
+    },
+    "systemic-link-1": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "systemic-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "systemic-text-2a",
+        "systemic-link-2",
+        "systemic-text-2b"
+      ]
+    },
+    "systemic-text-2a": {
+      "type": "Text",
+      "props": {
+        "text": "Auto-resolve gates on HEALTHY, not DEGRADED — so"
+      }
+    },
+    "systemic-link-2": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "systemic-text-2b": {
+      "type": "Text",
+      "props": {
+        "text": "stays open"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "top-5-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-5-heading",
+        "top-5-items"
+      ]
+    },
+    "top-5-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 DEGRADED (oldest last_success)",
+        "level": "h3"
+      }
+    },
+    "top-5-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-item-1",
+        "skill-item-2",
+        "skill-item-3",
+        "skill-item-4",
+        "skill-item-5",
+        "skill-more"
+      ]
+    },
+    "skill-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-1-badge",
+        "skill-1-metrics"
+      ]
+    },
+    "skill-1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "token-report",
+        "variant": "destructive"
+      }
+    },
+    "skill-1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-1-text",
+        "skill-1-link"
+      ]
+    },
+    "skill-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "succ 0.08, last_success 02:11Z →",
+        "variant": "caption"
+      }
+    },
+    "skill-1-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "skill-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-2-badge",
+        "skill-2-metrics"
+      ]
+    },
+    "skill-2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "star-milestone",
+        "variant": "destructive"
+      }
+    },
+    "skill-2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-2-text",
+        "skill-2-link"
+      ]
+    },
+    "skill-2-text": {
+      "type": "Text",
+      "props": {
+        "text": "succ 0.13, last_success 02:16Z →",
+        "variant": "caption"
+      }
+    },
+    "skill-2-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "skill-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-3-badge",
+        "skill-3-metrics"
+      ]
+    },
+    "skill-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-pulse",
+        "variant": "destructive"
+      }
+    },
+    "skill-3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-3-text",
+        "skill-3-link"
+      ]
+    },
+    "skill-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "succ 0.13, last_success 02:16Z →",
+        "variant": "caption"
+      }
+    },
+    "skill-3-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "skill-item-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-4-badge",
+        "skill-4-metrics"
+      ]
+    },
+    "skill-4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "technical-explainer",
+        "variant": "destructive"
+      }
+    },
+    "skill-4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-4-text",
+        "skill-4-link"
+      ]
+    },
+    "skill-4-text": {
+      "type": "Text",
+      "props": {
+        "text": "succ 0.10, last_success 02:17Z →",
+        "variant": "caption"
+      }
+    },
+    "skill-4-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "skill-item-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-5-badge",
+        "skill-5-metrics",
+        "skill-5-note"
+      ]
+    },
+    "skill-5-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "monitor-polymarket",
+        "variant": "destructive"
+      }
+    },
+    "skill-5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "skill-5-text",
+        "skill-5-link"
+      ]
+    },
+    "skill-5-text": {
+      "type": "Text",
+      "props": {
+        "text": "succ 0.11, last_success 02:18Z →",
+        "variant": "caption"
+      }
+    },
+    "skill-5-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "skill-5-note": {
+      "type": "Text",
+      "props": {
+        "text": "mission-critical for Revenant",
+        "variant": "muted"
+      }
+    },
+    "skill-more": {
+      "type": "Text",
+      "props": {
+        "text": "+54 more — see memory/issues/INDEX.md",
+        "variant": "muted"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "no-data-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "no-data-heading",
+        "no-data-note",
+        "no-data-skills"
+      ]
+    },
+    "no-data-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NO DATA (9 scheduled, unseen)",
+        "level": "h3"
+      }
+    },
+    "no-data-note": {
+      "type": "Text",
+      "props": {
+        "text": "Status: DISPATCH-SKILL"
+      }
+    },
+    "no-data-skills": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "nd-1",
+        "nd-2",
+        "nd-3",
+        "nd-4",
+        "nd-5",
+        "nd-6",
+        "nd-7",
+        "nd-8",
+        "nd-9"
+      ]
+    },
+    "nd-1": {
+      "type": "Badge",
+      "props": {
+        "text": "morning-brief",
+        "variant": "outline"
+      }
+    },
+    "nd-2": {
+      "type": "Badge",
+      "props": {
+        "text": "hacker-news-digest",
+        "variant": "outline"
+      }
+    },
+    "nd-3": {
+      "type": "Badge",
+      "props": {
+        "text": "reg-monitor",
+        "variant": "outline"
+      }
+    },
+    "nd-4": {
+      "type": "Badge",
+      "props": {
+        "text": "project-lens",
+        "variant": "outline"
+      }
+    },
+    "nd-5": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-scanner",
+        "variant": "outline"
+      }
+    },
+    "nd-6": {
+      "type": "Badge",
+      "props": {
+        "text": "syndicate-article",
+        "variant": "outline"
+      }
+    },
+    "nd-7": {
+      "type": "Badge",
+      "props": {
+        "text": "vercel-projects",
+        "variant": "outline"
+      }
+    },
+    "nd-8": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-review",
+        "variant": "outline"
+      }
+    },
+    "nd-9": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-shiplog",
+        "variant": "outline"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "summary-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-degraded",
+        "stat-healthy",
+        "stat-issues"
+      ]
+    },
+    "stat-degraded": {
+      "type": "Stat",
+      "props": {
+        "label": "DEGRADED",
+        "value": "59"
+      }
+    },
+    "stat-healthy": {
+      "type": "Stat",
+      "props": {
+        "label": "HEALTHY",
+        "value": "18"
+      }
+    },
+    "stat-issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "14"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "operator-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Operator Note",
+        "message": "chain-runner.yml dispatch_skill bug remains top priority — chain:morning-brief failed again at 07:56Z",
+        "type": "error"
+      }
+    }
+  }
+}
