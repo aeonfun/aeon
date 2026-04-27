@@ -1,5 +1,7 @@
-*Paper Pick — 2026-04-27*
+*Paper Pick — 2026-04-27 (late slot)*
 
-"Agentic World Modeling: Foundations, Capabilities, Laws, and Beyond" — Chu, Zhang, Lin et al. (47 authors, S-Lab/NUS/HKU/Oxford) · ↑62 on HF Daily
-A levels-x-laws taxonomy (L1 Predictor / L2 Simulator / L3 Evolver across physical / digital / social / scientific regimes) that synthesizes 400+ works — maps cleanly onto swarm-fund's Birth → Canary → Apex lifecycle, with Apex reframed as an L3 Evolver under the social-law regime (adversarial markets).
-[Read](https://arxiv.org/abs/2604.22748) | [PDF](https://arxiv.org/pdf/2604.22748)
+"AgentSearchBench: A Benchmark for AI Agent Search in the Wild" — Bin Wu, Mammadli, Zhang, Yilmaz · ↑5 HF Daily
+
+10K real-world agents, retrieval+reranking eval under executable and high-level queries. Headline: semantic similarity ≠ actual performance — execution-aware probing closes the gap. Direct map onto Aeon's 97-skill dispatch problem and swarm-fund's 30–60 hermes-variant routing per template.
+
+Read https://arxiv.org/abs/2604.22436 | PDF https://arxiv.org/pdf/2604.22436

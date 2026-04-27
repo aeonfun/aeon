@@ -1,0 +1,67 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story_link",
+        "text_desc",
+        "stack_links"
+      ]
+    },
+    "story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AgentSearchBench: A Benchmark for AI Agent Search in the Wild",
+        "href": "https://arxiv.org/abs/2604.22436",
+        "source": "Bin Wu, Mammadli, Zhang, Yilmaz",
+        "score": "↑5 HF Daily"
+      }
+    },
+    "text_desc": {
+      "type": "Text",
+      "props": {
+        "text": "10K real-world agents, retrieval+reranking eval under executable and high-level queries. Headline: semantic similarity ≠ actual performance — execution-aware probing closes the gap. Direct map onto Aeon's 97-skill dispatch problem and swarm-fund's 30–60 hermes-variant routing per template."
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_abstract",
+        "link_pdf"
+      ]
+    },
+    "link_abstract": {
+      "type": "Link",
+      "props": {
+        "label": "Read abstract",
+        "href": "https://arxiv.org/abs/2604.22436"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "Read PDF",
+        "href": "https://arxiv.org/pdf/2604.22436"
+      }
+    }
+  }
+}
