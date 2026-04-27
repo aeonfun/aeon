@@ -1,0 +1,24 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "idea-capture",
+        "description": "Skill execution"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Missing Required Input",
+        "message": "idea-capture called without an idea — pass the note as var="
+      }
+    }
+  }
+}
