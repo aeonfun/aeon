@@ -1,36 +1,40 @@
-*Kalshi monitor — 2026-04-25*
-verdict: all quiet — watchlist empty; 5 events discovered, all under $1k 24h vol, no price moves computable (candlestick API degraded)
+*Kalshi monitor — 2026-04-27*
+verdict: BTC expiry trading — $607k 24h vol concentrated around $78.3–79.0k, settlement distribution peaks $78.75–79.0k; macro markets zero action today.
 
-MONITOR_KALSHI_NO_CONFIG: watchlist at skills/monitor-kalshi/watchlist.md is empty. Add event tickers (one per line) to track specific markets. Near-term examples: KXBTC-26MAY0117, KXFED-26JUN, KXINFLATION-26MAR.
+MONITOR_KALSHI_NO_CONFIG: watchlist empty. Discovered top 5 by 24h vol. Add tickers to `skills/monitor-kalshi/watchlist.md` to persist.
 
-*Trending discovered events (not tracked)*
+**Bitcoin Price Range (Apr 27)** (KXBTC-26APR2717) — Crypto
+Expires 21:00 UTC tonight (BRTI settlement)
+| Market | prob | Δ24h | range | vol | spread |
+|--------|------|------|-------|-----|--------|
+| $78,250–78,499 | 5% | N/A* | N/A* | $437k | 5pp |
+| $78,500–78,749 | 8% | N/A* | N/A* | $129k | 5pp |
+| $79,000–79,249 | 7% | N/A* | N/A* | $41k | 4pp |
+mover: modal bin $78,750–78,999 at 9% implied; high-vol cluster at $78.3–78.5k is legacy positioning from earlier BTC spot level. Books thin (5pp spread).
+*First run — no prior log, Δ and range not computable.
 
-*1. Bitcoin price range Apr 25* (KXBTC-26APR2517) — Crypto
-Expires today 21:00 UTC. Most active bucket: $77,250–77,499.99.
-| Market | prob | vol 24h | spread |
-| $77,250–77,499 | 15% | $789 | 2pp loose |
-| $76,750–76,999 | 7% | $22 | 4pp loose |
-| $80,000–80,249 | 1% | $3 | n/a |
-note: cluster at $77.3k implies spot BTC near that level at 5pm EDT. No prior log; no intraday move computable.
+**Bitcoin Price Range (May 1)** (KXBTC-26MAY0117) — Crypto
+Expires 21:00 UTC Friday
+| Market | prob | Δ24h | range | vol | spread |
+|--------|------|------|-------|-----|--------|
+| $77,500–77,999 | 8% | N/A* | N/A* | $71k | 5pp |
+| $78,000–78,499 | 7% | N/A* | N/A* | $61k | 3pp |
+| $77,000–77,499 | 8% | N/A* | N/A* | $35k | 2pp |
+| $81,000–81,499 | 7% | N/A* | N/A* | $26k | 3pp |
+mover: $77,000–77,499 — 2pp spread, $35k vol; downside tail equally weighted vs $81k upside bucket — fat tails on Friday's close.
 
-*2. Xi Jinping successor* (KXXISUCCESSOR-45JAN01) — Elections
-| Candidate | prob | vol 24h | spread |
-| Ding Xuexiang | 24% | $41 | 3pp loose |
-| Others (<18%) | — | $0 | — |
+**Fed Funds Rate at Dec 2026 FOMC** (KXFED-26DEC) — Economics
+| Market | prob | Δ24h | vol | spread |
+|--------|------|------|-----|--------|
+| >3.50% | 37% | N/A* | <$1 | 4pp |
+| >3.25% | 50% | N/A* | <$1 | 4pp |
+| >3.75% | 15% | N/A* | <$1 | 2pp |
+mover: none — modal Dec 2026 rate = 3.50–3.75% (~23% mass); ~3 cuts from 4.25–4.50% implied. Zero 24h action.
 
-*3. Mars vs California high-speed rail* (KXMARSVRAIL-50) — Science
-Mars wins: 26% implied — $40 24h vol, 3pp loose
+**ALERTS** (>5pp, non-thin book): none — first run, no Δ available
 
-*4. Next Pope* (KXNEWPOPE-70) — Elections
-| Candidate | prob | vol 24h | spread |
-| Pietro Parolin | 5% | $10 | 3.4pp loose |
-| Luis Tagle | 5% | $4 | 2pp loose |
-| Pizzaballa | 4% | $2 | 3pp loose |
-Active conclave market; all candidates below 6%, thin books throughout.
+**Trending (not tracked)**
+- KXBTC (daily BRTI range series) — $607k 24h on today's close; add to watchlist immediately, load-bearing for hermes-arb gap signal
+- KXFED-26DEC — Dec terminal rate; CalibrationGap macro regime context
 
-*5. Elon Musk visits Mars before 2099* (KXELONMARS-99) — World
-8% implied — $8 24h vol, 2pp loose
-
-*API note:* Public events endpoint returned 11 events (all long-dated). Short-term economic markets (Fed, CPI, jobs) require specific series tickers — add them to the watchlist to track.
-
-sources: events=ok candlesticks=fail orderbook=fail
+sources: events=ok candlesticks=fail (400 batch; price_only) orderbook=degraded
