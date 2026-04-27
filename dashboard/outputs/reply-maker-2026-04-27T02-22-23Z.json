@@ -1,0 +1,73 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "2026-04-27"
+      },
+      "children": [
+        "alert_main",
+        "sep1",
+        "text_failure1",
+        "text_failure2",
+        "text_failure3",
+        "text_failure4",
+        "sep2",
+        "alert_rec"
+      ]
+    },
+    "alert_main": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "message": "No fresh tweets sourceable"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text_failure1": {
+      "type": "Text",
+      "props": {
+        "text": "xai=skip (XAI_API_KEY not accessible in sandbox; prefetch-xai.sh still has no reply-maker case)",
+        "variant": "body"
+      }
+    },
+    "text_failure2": {
+      "type": "Text",
+      "props": {
+        "text": "memory=stale (last tweet-roundup tweets are 4-7 days old, way outside 12h fallback)",
+        "variant": "body"
+      }
+    },
+    "text_failure3": {
+      "type": "Text",
+      "props": {
+        "text": "websearch=fail-recency (all surfaced status IDs decoded to April 18-23, none within 6h or 12h)",
+        "variant": "body"
+      }
+    },
+    "text_failure4": {
+      "type": "Text",
+      "props": {
+        "text": "webfetch=fail (HTTP 402 paywall on x.com profile)",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "alert_rec": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Recommend operator land scripts/prefetch-xai.sh reply-maker case before next fire"
+      }
+    }
+  }
+}
