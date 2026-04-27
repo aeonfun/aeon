@@ -1,0 +1,107 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "PR Review — 2026-04-27"
+      },
+      "children": [
+        "summary_stack",
+        "separator1",
+        "pr_section"
+      ]
+    },
+    "summary_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_reviewed",
+        "stat_skipped"
+      ]
+    },
+    "stat_reviewed": {
+      "type": "Stat",
+      "props": {
+        "label": "Reviewed",
+        "value": "1"
+      }
+    },
+    "stat_skipped": {
+      "type": "Stat",
+      "props": {
+        "label": "Skipped",
+        "value": "0"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr_link",
+        "status_and_issues",
+        "description"
+      ]
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp#19",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/19"
+      }
+    },
+    "status_and_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "status_badge",
+        "critical_badge",
+        "issues_badge"
+      ]
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "approve-ready",
+        "variant": "default"
+      }
+    },
+    "critical_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "0 critical",
+        "variant": "default"
+      }
+    },
+    "issues_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "0 issues",
+        "variant": "default"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "ssrn_harvest cur.rowcount fix matches sibling pattern",
+        "variant": "caption"
+      }
+    }
+  }
+}
