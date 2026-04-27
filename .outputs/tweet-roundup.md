@@ -1,9 +1,17 @@
 ## Summary
 
-Ran `tweet-roundup` with no `${var}`, no `## Tweet Roundup Topics` in MEMORY.md, and no `.xai-cache/` directory present, so fell back to built-in defaults via WebSearch (Path C).
+**Tweet Roundup — 2026-04-27 — TWEET_ROUNDUP_EMPTY**
 
-- **SEEN_TWEETS** unioned 3 URLs from `memory/tweet-roundup-seen.txt` and ~13 from logs of 2026-04-25 → 04-27.
-- **All three default topics** (AI/agents/LLM, crypto/bitcoin/DeFi, technology/startups/open source) returned only stale results — freshest x.com status IDs surfaced were ~2047712... (already in seen-file from yesterday's polymarket-comments) or much older (2007–2041xxx, well outside the 48h window). 0 survivors per topic after the 48h + dedup gates.
-- Per spec: never pad an empty roundup with filler — logged `TWEET_ROUNDUP_EMPTY` to `memory/logs/2026-04-27.md` and **did not** send a notification.
-- Files modified: `memory/logs/2026-04-27.md`.
-- Follow-up: the cache-path is the higher-quality source. If `tweet-roundup` keeps returning empty here, consider adding a prefetch entry in `scripts/prefetch-xai.sh` keyed to the swarm-fund mission topics (Polymarket microstructure, prediction-market regulation, calibration research) so this skill produces signal rather than silence.
+- **Topic resolution:** `${var}` empty, MEMORY.md has no `## Tweet Roundup Topics` section → fell back to built-in defaults (AI/LLM, crypto, technology/startups).
+- **Path A (cache):** miss on all three. `.xai-cache/` directory does not exist in tree.
+- **Path B (direct curl):** skipped per skill (sandbox blocks env-var auth).
+- **Path C (WebSearch):** ran for all three topics. ~30 candidate tweets returned, but every one had a snowflake ID below ~2048T (calibrated against Apr 25–27 URLs already in `memory/logs/`). Highest candidate `2045139481779696027` (~Apr 22) failed the 48h gate.
+- **Survivors per topic:** 0 / 0 / 0. Per skill rule, silence beats filler — **no notification sent**.
+- **Persisted:** TWEET_ROUNDUP_EMPTY entry appended to `memory/logs/2026-04-27.md` with source breakdown and operator note. `memory/tweet-roundup-seen.txt` unchanged (no new URLs reported).
+
+**Files modified**
+- `memory/logs/2026-04-27.md` — appended `## Tweet Roundup` section with empty-roundup details.
+
+**Follow-ups**
+- Cache miss is the proximate cause of the empty roundup. `scripts/prefetch-xai.sh` does not produce `roundup-*.json` outputs for the default topics; adding them would let Path A return real engagement-scored tweets instead of the stale WebSearch fallback.
+- Aligns with the operator config-gap action list already tracked in `memory/topics/aeon-ops.md`.
