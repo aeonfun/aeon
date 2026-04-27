@@ -1,0 +1,79 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "alert",
+        "separator",
+        "details"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Skipped",
+        "message": "NEYNAR_API_KEY missing in env",
+        "type": "error"
+      }
+    },
+    "separator": {
+      "type": "Separator"
+    },
+    "details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_label",
+        "badges_stack"
+      ]
+    },
+    "sources_label": {
+      "type": "Text",
+      "props": {
+        "text": "Failed sources:",
+        "variant": "muted"
+      }
+    },
+    "badges_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "search_badge",
+        "trending_badge",
+        "channels_badge"
+      ]
+    },
+    "search_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "trending_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "channels_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    }
+  }
+}
