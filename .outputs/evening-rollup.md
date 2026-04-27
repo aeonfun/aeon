@@ -1,1 +1,1 @@
-The closest match is `evening-recap`. Did you mean to run `evening-recap`? I can execute that if so — let me know and I'll proceed. Otherwise tell me which skill you intended.
+Evening Recap 2026-04-27: heavy ship day on aaronjmars/aeon (PRs #142/144/145 merged), but evening-rollup chain wrapper-failed for 3rd run. Decisions: flatten Revenant book before 2026-04-28 07 UTC (V2 cutover wipes orders); fix chain-runner.yml dispatch_skill (3 chains affected). Full recap in .outputs/evening-recap.md and .pending-notify/.

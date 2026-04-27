@@ -1,0 +1,165 @@
+{
+  "root": "card1",
+  "state": {},
+  "elements": {
+    "card1": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap 2026-04-27"
+      },
+      "children": [
+        "stack1"
+      ]
+    },
+    "stack1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section1_stack",
+        "separator1",
+        "section2_stack",
+        "separator2",
+        "section3_stack"
+      ]
+    },
+    "section1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text1",
+        "badges_stack"
+      ]
+    },
+    "text1": {
+      "type": "Text",
+      "props": {
+        "text": "Heavy ship day on aaronjmars/aeon",
+        "variant": "lead"
+      }
+    },
+    "badges_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge1",
+        "badge2",
+        "badge3",
+        "badge4"
+      ]
+    },
+    "badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "PR #142",
+        "variant": "default"
+      }
+    },
+    "badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "PR #144",
+        "variant": "default"
+      }
+    },
+    "badge3": {
+      "type": "Badge",
+      "props": {
+        "text": "PR #145",
+        "variant": "default"
+      }
+    },
+    "badge4": {
+      "type": "Badge",
+      "props": {
+        "text": "merged",
+        "variant": "secondary"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alert1"
+      ]
+    },
+    "alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "evening-rollup chain wrapper-failed",
+        "message": "3rd run",
+        "type": "warning"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading1",
+        "decisions_stack",
+        "text_references"
+      ]
+    },
+    "heading1": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions",
+        "level": "h3"
+      }
+    },
+    "decisions_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "decision1",
+        "decision2"
+      ]
+    },
+    "decision1": {
+      "type": "Text",
+      "props": {
+        "text": "Flatten Revenant book before 2026-04-28 07 UTC (V2 cutover wipes orders)",
+        "variant": "body"
+      }
+    },
+    "decision2": {
+      "type": "Text",
+      "props": {
+        "text": "Fix chain-runner.yml dispatch_skill (3 chains affected)",
+        "variant": "body"
+      }
+    },
+    "text_references": {
+      "type": "Text",
+      "props": {
+        "text": "Full recap in .outputs/evening-recap.md and .pending-notify/",
+        "variant": "muted"
+      }
+    }
+  }
+}
