@@ -1,22 +1,48 @@
-polymarket monitor — 2026-04-25
+---
 
-MEXICO WORLD CUP (Revenant first order, market 558945)
-YES 1.05% | 0pp | $34.3K vol | $2.26M liq | stable
-Event leader: France 17%, Spain 16%. Mexico at tournament-range consensus.
+## Summary
 
-BTC HIT $1M BEFORE GTA VI (market 540844)
-YES 49.45% | -0.2pp | $8.4K vol | stable
-Read: GTA VI confirmed Nov 19 2026, past the Jul 31 deadline. Neither event by deadline = 50/50 resolution. Mechanics bet, not a BTC call. -0.2pp drift is rational sellers collecting the edge vs 50c.
-Related: GTA VI before June 2026 — YES 1.05% ($84.9K 24h vol, spiked 1.55% intraday then reverted). NO accumulation as Nov date holds.
+**3 events monitored, 14 open markets tracked.**
 
-2028 REP NOMINATION (event 31875)
-Vance 39.3% (-0.15pp) $14.5K | Rubio 20.25% (-0.1pp) $65.2K | Carlson ~5.1%
-Rubio trading 4x Vance volume despite 19pp gap — watch for narrative shift.
-Top comment: "Trump can't stand watching Vance become his own man"
+---
 
-2028 DEM NOMINATION (event 30829)
-Newsom 26.1% | AOC 8.3% | Ossoff 5.3% (+0.1pp) $462K vol SPIKE
-Catalyst: Ossoff viral Mar-a-Lago Mafia speech, 1K+ supporters in Augusta GA. Publicly said zero interest in 2028 — markets moved him up anyway. Kalshi has him at 8%. Two-way narrative trade.
-Booker 0.95% $231K | Sanders 0.65% $112K (narrative chasers)
+**FIFA World Cup Winner** (event 30615)
 
-alerts (>5pp): NONE — all quiet on price. Ossoff is today's narrative break.
+| Market | YES | 24h Chg | 24h Vol |
+|--------|-----|---------|---------|
+| Mexico (Revenant first order) | 1.1% | 0.0pp | $41.2K |
+| USA | 1.3% | — | $1.3M |
+
+Mexico flat all day. Deep OTM, Revenant position unchanged. France leads the tournament market at 17%. No alert.
+
+---
+
+**BTC $1M before GTA VI** (event 23784)
+
+| Market | YES | 24h Chg | High/Low | 24h Vol |
+|--------|-----|---------|----------|---------|
+| Bitcoin $1m | 48.7% | -0.9pp ▼ | 49.6%–48.5% | $8.9K |
+
+**Narrative shift:** first close below 50% since recent surge. Not a 5pp alert, but directional. GTA VI delayed to Nov 19, 2026 — the July 31 deadline is the real clock. Structural mechanic: buying NO above 50¢ guarantees a loss if neither event triggers (50/50 fallback). Comments calling this a "scam" (6 upvotes, Apr 25). BTC at $78.1K — needs 12.8x to hit $1M.
+
+---
+
+**Democratic Presidential Nominee 2028** (event 30829) — top 5 by activity
+
+| Candidate | YES | 24h Chg | 24h Vol |
+|-----------|-----|---------|---------|
+| Gavin Newsom | 25.7% | — | — |
+| AOC | 8.5% | — | — |
+| Kamala Harris | 7.9% | — | — |
+| Jon Ossoff | 5.4% | -0.3pp | $286.2K |
+| Pete Buttigieg | 4.3% | — | $13.8K |
+
+**VOLUME SPIKE — Ossoff: ~7.4x estimated 7-day average.** Catalyst: went viral with anti-Trump Senate speech, briefly led "front-runner" coverage → then declared "zero interest in running for 2028" on MSNBC Apr 23 → massive two-way flow resolved to near-zero net price move. Market still prices him at 5.4% (non-candidacy declarations not taken at face value). Comment from DropsBot-Tracker (Apr 26): *"This is less about being right and more about not being the exit. Flow suggestive, not decisive: YES 5.3%, book $3.3k."*
+
+---
+
+**Alerts:**
+- VOLUME SPIKE (7.4x): Ossoff 2028 Dem Nominee — viral moment + non-candidacy clash driving 2-way flow
+- NARRATIVE SHIFT: BTC $1M drifted below 50% for first time → 48.7%
+
+**Revenant context:** Mexico first-order position unchanged (1.1%), no new trades visible. World Cup starts June 2026.
