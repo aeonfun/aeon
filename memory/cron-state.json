@@ -157,13 +157,13 @@
   },
   "polymarket-comments": {
     "last_dispatch": "2026-04-27T14:22:23Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-27T02:20:03Z",
-    "total_runs": 17,
-    "total_successes": 2,
+    "last_status": "success",
+    "last_success": "2026-04-27T14:34:20Z",
+    "total_runs": 18,
+    "total_successes": 3,
     "total_failures": 15,
     "consecutive_failures": 0,
-    "success_rate": 0.12,
+    "success_rate": 0.17,
     "last_failed": "2026-04-26T23:54:06Z",
     "last_error": "8473d14\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
