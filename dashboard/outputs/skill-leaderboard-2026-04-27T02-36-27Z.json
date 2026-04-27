@@ -1,0 +1,109 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Leaderboard — 2026-04-27",
+        "description": "6 configured forks; github-trending hit 50% — promote candidate"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "headline",
+        "table",
+        "sep1",
+        "alert",
+        "fleet-note",
+        "report-link"
+      ]
+    },
+    "headline": {
+      "type": "Text",
+      "props": {
+        "text": "Top 5 Skills across 6 configured forks (of 24 active):",
+        "variant": "lead"
+      }
+    },
+    "table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Skill",
+          "Forks",
+          "Adoption %"
+        ],
+        "rows": [
+          [
+            "1",
+            "heartbeat",
+            "6",
+            "100%"
+          ],
+          [
+            "2",
+            "github-trending",
+            "3",
+            "50%"
+          ],
+          [
+            "3",
+            "defi-overview",
+            "2",
+            "33%"
+          ],
+          [
+            "4",
+            "digest",
+            "2",
+            "33%"
+          ],
+          [
+            "5",
+            "evening-recap",
+            "2",
+            "33%"
+          ]
+        ]
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Promote",
+        "message": "github-trending (50% adoption)",
+        "type": "success"
+      }
+    },
+    "fleet-note": {
+      "type": "Text",
+      "props": {
+        "text": "Fleet-only: 0xfreddy/macos-apps",
+        "variant": "muted"
+      }
+    },
+    "report-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full report",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/skill-leaderboard-2026-04-27.md"
+      }
+    }
+  }
+}
