@@ -70,6 +70,7 @@ BTC is load-bearing for `hermes-arb` (Kalshi↔PM 5-min BTC). ETH/SOL serve as l
 ## Recent Digests
 | Date | Type | Key Topics |
 |------|------|------------|
+| 2026-04-27 | narrative-tracker | Kalshi crypto perps LIVE (Apr 26) → FRONT-RUN PM-Chainlink vs Kalshi-BRTI BTC settlement basis; US Strategic BTC Reserve framework; Solana Alpenglow validator-approved; Aave/DeFi governance critique; GameFi/Ronin demoted, HYPER dead |
 | 2026-04-27 | prediction markets | Kalshi Timeless perps live, DOJ five-felony charges on named Sgt. Van Dyke, CFTC 15-year staffing low, co-rolled self-trading bans |
 | 2026-04-25 | prediction markets | perps launch (PM Apr 21 / Kalshi Apr 27 slipped), first US insider-trading prosecution, Brazil ban |
 | 2026-04-25 | security-digest | 3 patch-today (TeamCity / PaperCut / Samsung MagicINFO), CVE-2026-40068 affects @anthropic-ai/claude-code (pin ≥2.1.84) |
