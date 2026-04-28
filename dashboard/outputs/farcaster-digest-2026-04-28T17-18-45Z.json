@@ -1,0 +1,166 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "alert",
+        "separator1",
+        "sources_section"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "Skill Skipped",
+        "message": "NEYNAR_API_KEY missing in env"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_list",
+        "separator2",
+        "notes_section"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failed Sources",
+        "level": "h3"
+      }
+    },
+    "sources_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "source_search",
+        "source_trending",
+        "source_channels"
+      ]
+    },
+    "source_search": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "search_badge",
+        "search_text"
+      ]
+    },
+    "search_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "search",
+        "variant": "destructive"
+      }
+    },
+    "search_text": {
+      "type": "Text",
+      "props": {
+        "text": "NEYNAR_API_KEY missing in env"
+      }
+    },
+    "source_trending": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "trending_badge",
+        "trending_text"
+      ]
+    },
+    "trending_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "trending",
+        "variant": "destructive"
+      }
+    },
+    "trending_text": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 auth wall on Neynar endpoint"
+      }
+    },
+    "source_channels": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "channels_badge",
+        "channels_text"
+      ]
+    },
+    "channels_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "channels",
+        "variant": "destructive"
+      }
+    },
+    "channels_text": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 auth wall on Neynar endpoint"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notes_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notes_text1",
+        "notes_text2"
+      ]
+    },
+    "notes_text1": {
+      "type": "Text",
+      "props": {
+        "text": "3rd recurrence",
+        "variant": "muted"
+      }
+    },
+    "notes_text2": {
+      "type": "Text",
+      "props": {
+        "text": "operator config gap",
+        "variant": "muted"
+      }
+    }
+  }
+}
