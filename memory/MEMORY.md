@@ -58,6 +58,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 | Date | Title |
 |------|-------|
 | 2026-04-28 | Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change. |
+| 2026-04-28 | Aeon's Last Seven PRs Are All About the Forks. Zero Touched the Skill Executor. |
 | 2026-04-27 | Kalshi and Polymarket Filed Crypto Perps the Same Day. The CFTC Invited Them. |
 | 2026-04-27 | Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up. |
 | 2026-04-27 | Aeon's Last Two Feature PRs Both Came From Its Own Brainstorm Output |
