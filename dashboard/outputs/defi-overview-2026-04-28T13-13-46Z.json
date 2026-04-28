@@ -1,0 +1,412 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview 2026-04-28"
+      },
+      "children": [
+        "verdict-text",
+        "separator-1",
+        "metrics-section",
+        "separator-2",
+        "majors-section",
+        "separator-3",
+        "protocol-movers-section",
+        "separator-4",
+        "token-updates-section",
+        "separator-5",
+        "real-yield-section",
+        "separator-6",
+        "reference-section"
+      ]
+    },
+    "verdict-text": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed verdict",
+        "variant": "lead"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-metrics",
+        "metrics-grid"
+      ]
+    },
+    "heading-metrics": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Metrics",
+        "level": "h3"
+      }
+    },
+    "metrics-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-tvl",
+        "stat-dex-vol",
+        "stat-stables"
+      ]
+    },
+    "stat-tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "83.0B",
+        "delta": "-2.6%",
+        "trend": "down"
+      }
+    },
+    "stat-dex-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume",
+        "value": "5.95B",
+        "delta": "+35%",
+        "trend": "up"
+      }
+    },
+    "stat-stables": {
+      "type": "Stat",
+      "props": {
+        "label": "Stables",
+        "value": "321B",
+        "delta": "0%",
+        "trend": "neutral"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "majors-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-majors",
+        "majors-badge"
+      ]
+    },
+    "heading-majors": {
+      "type": "Heading",
+      "props": {
+        "text": "Major Movements",
+        "level": "h3"
+      }
+    },
+    "majors-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "All -1.5% to -3.2% (broad de-risk)",
+        "variant": "destructive"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "protocol-movers-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-protocol-movers",
+        "protocol-movers-grid"
+      ]
+    },
+    "heading-protocol-movers": {
+      "type": "Heading",
+      "props": {
+        "text": "Protocol Movers",
+        "level": "h3"
+      }
+    },
+    "protocol-movers-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "mover-gauntlet",
+        "mover-blockchain-capital"
+      ]
+    },
+    "mover-gauntlet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-gauntlet",
+        "badge-gauntlet"
+      ]
+    },
+    "stat-gauntlet": {
+      "type": "Stat",
+      "props": {
+        "label": "Gauntlet",
+        "value": "1.49B",
+        "delta": "+58%",
+        "trend": "up"
+      }
+    },
+    "badge-gauntlet": {
+      "type": "Badge",
+      "props": {
+        "text": "Risk Curator",
+        "variant": "secondary"
+      }
+    },
+    "mover-blockchain-capital": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-blockchain-capital",
+        "badge-blockchain-capital"
+      ]
+    },
+    "stat-blockchain-capital": {
+      "type": "Stat",
+      "props": {
+        "label": "Blockchain Capital",
+        "value": "964M",
+        "delta": "+28%",
+        "trend": "up"
+      }
+    },
+    "badge-blockchain-capital": {
+      "type": "Badge",
+      "props": {
+        "text": "RWA zkSync",
+        "variant": "secondary"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "token-updates-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-token-updates",
+        "token-updates-stack"
+      ]
+    },
+    "heading-token-updates": {
+      "type": "Heading",
+      "props": {
+        "text": "Token Updates",
+        "level": "h3"
+      }
+    },
+    "token-updates-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-usde-24h",
+        "stat-usde-7d",
+        "text-ethena"
+      ]
+    },
+    "stat-usde-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "USDe (24h)",
+        "value": "USDe",
+        "delta": "+1%",
+        "trend": "up"
+      }
+    },
+    "stat-usde-7d": {
+      "type": "Stat",
+      "props": {
+        "label": "USDe (7d)",
+        "value": "USDe",
+        "delta": "-27%",
+        "trend": "down"
+      }
+    },
+    "text-ethena": {
+      "type": "Text",
+      "props": {
+        "text": "Reverses multi-week Ethena unwind",
+        "variant": "caption"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "real-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-real-yield",
+        "real-yield-grid"
+      ]
+    },
+    "heading-real-yield": {
+      "type": "Heading",
+      "props": {
+        "text": "Real-Yield Top",
+        "level": "h3"
+      }
+    },
+    "real-yield-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "real-yield-apt",
+        "real-yield-cvxcrv"
+      ]
+    },
+    "real-yield-apt": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-apt",
+        "progress-apt",
+        "stat-apt-tvl"
+      ]
+    },
+    "heading-apt": {
+      "type": "Text",
+      "props": {
+        "text": "APT Amnis",
+        "variant": "body"
+      }
+    },
+    "progress-apt": {
+      "type": "Progress",
+      "props": {
+        "value": 25.3,
+        "max": 100,
+        "label": "25.3% APY Base"
+      }
+    },
+    "stat-apt-tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "18M"
+      }
+    },
+    "real-yield-cvxcrv": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-cvxcrv",
+        "progress-cvxcrv",
+        "stat-cvxcrv-tvl"
+      ]
+    },
+    "heading-cvxcrv": {
+      "type": "Text",
+      "props": {
+        "text": "cvxCRV",
+        "variant": "body"
+      }
+    },
+    "progress-cvxcrv": {
+      "type": "Progress",
+      "props": {
+        "value": 24.2,
+        "max": 100,
+        "label": "24.2% Incentive"
+      }
+    },
+    "stat-cvxcrv-tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "33M"
+      }
+    },
+    "separator-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "reference-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-reference",
+        "link-full-read"
+      ]
+    },
+    "text-reference": {
+      "type": "Text",
+      "props": {
+        "text": "Full report queued at:",
+        "variant": "caption"
+      }
+    },
+    "link-full-read": {
+      "type": "Link",
+      "props": {
+        "label": ".pending-notify/1777381773.md",
+        "href": ".pending-notify/1777381773.md"
+      }
+    }
+  }
+}
