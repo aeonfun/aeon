@@ -1,0 +1,249 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context — 2026-04-28"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "take-section",
+        "sep1",
+        "prices-grid",
+        "sep2",
+        "sentiment-grid",
+        "sep3",
+        "tvl-stat",
+        "sep4",
+        "narrative-section",
+        "sep5",
+        "polymarket-section",
+        "sep6",
+        "v2-section"
+      ]
+    },
+    "take-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "take-text",
+        "risk-badge",
+        "conviction-badge"
+      ]
+    },
+    "take-text": {
+      "type": "Text",
+      "props": {
+        "text": "Market Take:",
+        "variant": "lead"
+      }
+    },
+    "risk-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "risk-off",
+        "variant": "destructive"
+      }
+    },
+    "conviction-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction high",
+        "variant": "default"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "prices-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "btc-stat",
+        "eth-stat"
+      ]
+    },
+    "btc-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "76343",
+        "delta": "-1.69%",
+        "trend": "down"
+      }
+    },
+    "eth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "2277",
+        "delta": "-1.60%",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sentiment-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "fg-stack",
+        "breadth-stat"
+      ]
+    },
+    "fg-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fg-stat",
+        "fg-context"
+      ]
+    },
+    "fg-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "33",
+        "delta": "-14",
+        "trend": "down"
+      }
+    },
+    "fg-context": {
+      "type": "Text",
+      "props": {
+        "text": "Fear (was 47 Neutral)",
+        "variant": "caption"
+      }
+    },
+    "breadth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "5/20"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL (Eth)",
+        "value": "44.70B",
+        "delta": "-1.4%",
+        "trend": "down"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "narrative-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "narrative-label",
+        "narrative-text"
+      ]
+    },
+    "narrative-label": {
+      "type": "Text",
+      "props": {
+        "text": "Top Narrative:",
+        "variant": "lead"
+      }
+    },
+    "narrative-text": {
+      "type": "Text",
+      "props": {
+        "text": "FOMC Apr 29 (no cut priced, guidance risk)"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "polymarket-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "poly-label",
+        "poly-text"
+      ]
+    },
+    "poly-label": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket:",
+        "variant": "lead"
+      }
+    },
+    "poly-text": {
+      "type": "Text",
+      "props": {
+        "text": "All top-vol markets settled, no signal"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "v2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "v2-label",
+        "v2-text"
+      ]
+    },
+    "v2-label": {
+      "type": "Text",
+      "props": {
+        "text": "V2 Cutover:",
+        "variant": "lead"
+      }
+    },
+    "v2-text": {
+      "type": "Text",
+      "props": {
+        "text": "11 UTC today"
+      }
+    }
+  }
+}
