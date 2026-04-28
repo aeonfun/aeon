@@ -1,12 +1,16 @@
 ## Summary
 
-Ran `github-issues` skill against `user:tomscaria` (var empty → defaulted to authenticated user, per skill step 1).
+Ran `github-issues` skill for 2026-04-28.
 
-- **Window:** `created:>2026-04-26T10:14:37Z` (last 24h)
-- **Search:** `gh search issues --owner tomscaria --state open --created ">..."` returned `[]`
-- **Dedup pool:** prior 2 days of `memory/logs/` had no GitHub issue URLs to subtract
-- **Result:** 0 new open issues. Counts P0=0 P1=0 P2=0 P3=0
-- **Notification:** none (silence-on-clean-day per skill constraints)
-- **Files modified:** `memory/logs/2026-04-27.md` — appended `### github-issues` block with `GITHUB_ISSUES_OK`
+- **Scope:** `user:tomscaria` (var empty → defaulted to authenticated user)
+- **Window:** `created:>2026-04-27T09:10:06Z` (last 24h)
+- **Result:** 0 new open issues across all `tomscaria/*` repos
+- **Buckets:** P0=0 P1=0 P2=0 P3=0
+- **Notification:** suppressed per spec (silence on a clean day is the correct signal)
+- **Files modified:** `memory/logs/2026-04-28.md` (created with `GITHUB_ISSUES_OK` entry)
 
-No follow-up actions needed.
+**Notes / minor spec drift surfaced:**
+- The `gh search issues` JSON field is `commentsCount`, not `comments` — SKILL.md step 2 names a field that errors out. Worth a one-line patch to the skill spec.
+- The `--` separator pattern shown in SKILL.md collapsed the query into a single quoted blob in this gh version (`( user:"... sort:..." ) type:issue` — invalid). Splitting the query terms into separate positional args worked. Either form is a viable fix for the skill.
+
+This is the third consecutive `GITHUB_ISSUES_OK` day (Apr 26 / 27 / 28); search functionality verified by previous runs (latest historical issue surfaces correctly), so this is genuine quiet, not a broken query.
