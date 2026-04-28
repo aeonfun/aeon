@@ -29,4 +29,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,evening-rollup,claude-opus-4-7,25,16414,1325156,82312
 2026-04-27,evening-recap,claude-sonnet-4-6,12,10877,602910,67982
 2026-04-28,heartbeat,claude-opus-4-7,28289,23587,1178261,116861
-2026-04-28,token-pick,claude-opus-4-7,2930,18744,2009837,95259
+2026-04-28,token-movers,claude-opus-4-7,33,22819,1679837,66069

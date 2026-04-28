@@ -1,0 +1,338 @@
+{
+  "pulse": {
+    "greenCount": 25,
+    "median24h": -0.723865,
+    "btc": -1.6874,
+    "eth": -1.58496,
+    "sol": -1.66401,
+    "btcPrice": 76347,
+    "ethPrice": 2277.24,
+    "solPrice": 83.66,
+    "btc7d": -0.173241632993552,
+    "eth7d": -1.9015112041350657,
+    "sol7d": -2.5898297469935025
+  },
+  "winners": [
+    {
+      "symbol": "BSB",
+      "name": "Block Street",
+      "price": 0.847628,
+      "ch24": 23.95476,
+      "ch7d": 178.9415009497328,
+      "ch1h": 5.301375524711488,
+      "vol": 39389382,
+      "mcap": 181506168,
+      "rank": 187,
+      "tags": [
+        "BREAKOUT"
+      ]
+    },
+    {
+      "symbol": "APE",
+      "name": "ApeCoin",
+      "price": 0.168838,
+      "ch24": 20.43695,
+      "ch7d": 62.33722642365183,
+      "ch1h": 1.3630784206164208,
+      "vol": 272626911,
+      "mcap": 168602343,
+      "rank": 203,
+      "tags": [
+        "BREAKOUT"
+      ]
+    },
+    {
+      "symbol": "H",
+      "name": "Humanity",
+      "price": 0.161935,
+      "ch24": 20.40851,
+      "ch7d": 56.963741097715136,
+      "ch1h": 1.627666996937438,
+      "vol": 40002129,
+      "mcap": 294696441,
+      "rank": 145,
+      "tags": [
+        "BREAKOUT"
+      ]
+    },
+    {
+      "symbol": "SIREN",
+      "name": "Siren",
+      "price": 0.700342,
+      "ch24": 12.74138,
+      "ch7d": 0.5138753325161513,
+      "ch1h": -0.6158601031183536,
+      "vol": 16487720,
+      "mcap": 510606534,
+      "rank": 101,
+      "tags": []
+    },
+    {
+      "symbol": "CHEEMS",
+      "name": "Cheems Token",
+      "price": 6.28614e-7,
+      "ch24": 9.19798,
+      "ch7d": 13.350964930696163,
+      "ch1h": 1.3891044810649051,
+      "vol": 1260436,
+      "mcap": 128510370,
+      "rank": 243,
+      "tags": []
+    },
+    {
+      "symbol": "币安人生",
+      "name": "币安人生 (BinanceLife)",
+      "price": 0.373011,
+      "ch24": 7.02937,
+      "ch7d": -25.54217900404396,
+      "ch1h": 2.222195672019488,
+      "vol": 39111064,
+      "mcap": 373653524,
+      "rank": 121,
+      "tags": []
+    },
+    {
+      "symbol": "CFG",
+      "name": "Centrifuge",
+      "price": 0.21286,
+      "ch24": 6.93506,
+      "ch7d": -15.654379451871975,
+      "ch1h": 0.608466035120924,
+      "vol": 8075393,
+      "mcap": 123117731,
+      "rank": 247,
+      "tags": []
+    },
+    {
+      "symbol": "PI",
+      "name": "Pi Network",
+      "price": 0.194671,
+      "ch24": 6.84337,
+      "ch7d": 15.483932878616274,
+      "ch1h": 1.0477303759475574,
+      "vol": 36924103,
+      "mcap": 2000574525,
+      "rank": 46,
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "symbol": "UB",
+      "name": "Unibase",
+      "price": 0.052447,
+      "ch24": 6.63968,
+      "ch7d": 24.429686518402885,
+      "ch1h": 0.6629192556566514,
+      "vol": 10163012,
+      "mcap": 131273281,
+      "rank": 241,
+      "tags": []
+    },
+    {
+      "symbol": "XTZ",
+      "name": "Tezos",
+      "price": 0.392472,
+      "ch24": 6.59882,
+      "ch7d": 6.687473229780398,
+      "ch1h": 0.9130824525223905,
+      "vol": 22551081,
+      "mcap": 425113806,
+      "rank": 112,
+      "tags": []
+    }
+  ],
+  "losers": [
+    {
+      "symbol": "GWEI",
+      "name": "ETHGas",
+      "price": 0.092004,
+      "ch24": -13.66895,
+      "ch7d": -8.585199309945965,
+      "ch1h": -0.1527994143625565,
+      "vol": 15853060,
+      "mcap": 191821849,
+      "rank": 182,
+      "tags": []
+    },
+    {
+      "symbol": "TIBBIR",
+      "name": "Ribbita by Virtuals",
+      "price": 0.142894,
+      "ch24": -12.09945,
+      "ch7d": 1.11121141560604,
+      "ch1h": -3.937808368263107,
+      "vol": 1815547,
+      "mcap": 142916542,
+      "rank": 223,
+      "tags": []
+    },
+    {
+      "symbol": "XCN",
+      "name": "Onyxcoin",
+      "price": 0.00573879,
+      "ch24": -11.74997,
+      "ch7d": 22.49753836705425,
+      "ch1h": 0.2540480705689864,
+      "vol": 100689799,
+      "mcap": 217676206,
+      "rank": 168,
+      "tags": [
+        "CAPITULATION"
+      ]
+    },
+    {
+      "symbol": "M",
+      "name": "MemeCore",
+      "price": 3.62,
+      "ch24": -10.15103,
+      "ch7d": -9.343667243482798,
+      "ch1h": -1.7857676314487516,
+      "vol": 17631681,
+      "mcap": 4698583562,
+      "rank": 22,
+      "tags": []
+    },
+    {
+      "symbol": "GRASS",
+      "name": "Grass",
+      "price": 0.337019,
+      "ch24": -9.32445,
+      "ch7d": 0.20370161958076605,
+      "ch1h": 0.9305028216698952,
+      "vol": 16996632,
+      "mcap": 190272814,
+      "rank": 183,
+      "tags": []
+    },
+    {
+      "symbol": "SKYAI",
+      "name": "SkyAI",
+      "price": 0.158042,
+      "ch24": -8.35078,
+      "ch7d": -2.3482099326221553,
+      "ch1h": 0.26976713434634975,
+      "vol": 17089798,
+      "mcap": 157547504,
+      "rank": 208,
+      "tags": []
+    },
+    {
+      "symbol": "CHIP",
+      "name": "USD.AI",
+      "price": 0.070644,
+      "ch24": -8.076,
+      "ch7d": 3.657426714384167,
+      "ch1h": 1.4094059508892895,
+      "vol": 406070704,
+      "mcap": 141677389,
+      "rank": 224,
+      "tags": [
+        "TRENDING+DOWN"
+      ]
+    },
+    {
+      "symbol": "MON",
+      "name": "Monad",
+      "price": 0.02904222,
+      "ch24": -7.99773,
+      "ch7d": -12.717871407018214,
+      "ch1h": 0.3609238408430666,
+      "vol": 76646631,
+      "mcap": 344278303,
+      "rank": 129,
+      "tags": []
+    },
+    {
+      "symbol": "ZBCN",
+      "name": "Zebec Network",
+      "price": 0.00358759,
+      "ch24": -7.36863,
+      "ch7d": 33.06492822663581,
+      "ch1h": -0.48412926342443174,
+      "vol": 13051663,
+      "mcap": 350873931,
+      "rank": 125,
+      "tags": []
+    },
+    {
+      "symbol": "CRCLON",
+      "name": "Circle Internet Group (Ondo Tokenized Stock)",
+      "price": 92.8,
+      "ch24": -6.0681,
+      "ch7d": -12.63824737121581,
+      "ch1h": 0.5041116835391187,
+      "vol": 15306678,
+      "mcap": 137255900,
+      "rank": 229,
+      "tags": []
+    }
+  ],
+  "trending": [
+    {
+      "symbol": "ZKJ",
+      "name": "Polyhedra Network",
+      "id": "polyhedra-network",
+      "rank": 884,
+      "price": 0.037584348659451615,
+      "ch24": 220.01414403401108,
+      "tags": []
+    },
+    {
+      "symbol": "PENGU",
+      "name": "Pudgy Penguins",
+      "id": "pudgy-penguins",
+      "rank": 89,
+      "price": 0.01001264,
+      "ch24": 2.45793,
+      "tags": []
+    },
+    {
+      "symbol": "PRL",
+      "name": "Perle",
+      "id": "perle",
+      "rank": 390,
+      "price": 0.38904666598929966,
+      "ch24": 24.830891595634615,
+      "tags": []
+    },
+    {
+      "symbol": "PI",
+      "name": "Pi Network",
+      "id": "pi-network",
+      "rank": 46,
+      "price": 0.194671,
+      "ch24": 6.84337,
+      "tags": []
+    },
+    {
+      "symbol": "CHIP",
+      "name": "USD.AI",
+      "id": "chip-2",
+      "rank": 225,
+      "price": 0.070644,
+      "ch24": -8.076,
+      "tags": []
+    },
+    {
+      "symbol": "SOL",
+      "name": "Solana",
+      "id": "solana",
+      "rank": 7,
+      "price": 83.66,
+      "ch24": -1.66401,
+      "tags": [
+        "MAJOR"
+      ]
+    },
+    {
+      "symbol": "LUNC",
+      "name": "Terra Luna Classic",
+      "id": "terra-luna",
+      "rank": 128,
+      "price": 0.00006287,
+      "ch24": 1.37379,
+      "tags": []
+    }
+  ]
+}

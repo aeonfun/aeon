@@ -1,0 +1,431 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers 2026-04-28",
+        "description": "Daily market overview and top movers"
+      },
+      "children": [
+        "stack_overview",
+        "separator1",
+        "stack_indices",
+        "separator2",
+        "stack_winners",
+        "separator3",
+        "stack_losers",
+        "separator4",
+        "stack_trending",
+        "separator5",
+        "link_full"
+      ]
+    },
+    "stack_overview": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_market_status",
+        "text_green_coins"
+      ]
+    },
+    "text_market_status": {
+      "type": "Text",
+      "props": {
+        "text": "risk-off reversal",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "text_green_coins": {
+      "type": "Text",
+      "props": {
+        "text": "25/100 top coins green"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "stack_indices": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_indices",
+        "grid_btc_eth_sol"
+      ]
+    },
+    "heading_indices": {
+      "type": "Heading",
+      "props": {
+        "text": "Major Indices",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "grid_btc_eth_sol": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth",
+        "stat_sol"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "-1.7%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "-1.6%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat_sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "-1.7%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "stack_winners": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_winners",
+        "stack_winner_items"
+      ]
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Winners",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_winner_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_bsb",
+        "stack_ape",
+        "stack_h"
+      ]
+    },
+    "stack_bsb": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_bsb",
+        "text_bsb_note"
+      ]
+    },
+    "stat_bsb": {
+      "type": "Stat",
+      "props": {
+        "label": "BSB",
+        "value": "+24%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "text_bsb_note": {
+      "type": "Text",
+      "props": {
+        "text": "day-3, 7d +179%",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "stack_ape": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_ape",
+        "text_ape_note"
+      ]
+    },
+    "stat_ape": {
+      "type": "Stat",
+      "props": {
+        "label": "APE",
+        "value": "+20%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "text_ape_note": {
+      "type": "Text",
+      "props": {
+        "text": "BREAKOUT (day-4 whipsaw)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "stack_h": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_h"
+      ]
+    },
+    "stat_h": {
+      "type": "Stat",
+      "props": {
+        "label": "H",
+        "value": "+20%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "stack_losers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_losers",
+        "stack_loser_items"
+      ]
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Losers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_loser_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_gwei",
+        "stack_xcn",
+        "stack_m"
+      ]
+    },
+    "stack_gwei": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_gwei"
+      ]
+    },
+    "stat_gwei": {
+      "type": "Stat",
+      "props": {
+        "label": "GWEI",
+        "value": "-14%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stack_xcn": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_xcn",
+        "text_xcn_note"
+      ]
+    },
+    "stat_xcn": {
+      "type": "Stat",
+      "props": {
+        "label": "XCN",
+        "value": "-12%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "text_xcn_note": {
+      "type": "Text",
+      "props": {
+        "text": "CAPITULATION",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "stack_m": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_m",
+        "text_m_note"
+      ]
+    },
+    "stat_m": {
+      "type": "Stat",
+      "props": {
+        "label": "M",
+        "value": "-10%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "text_m_note": {
+      "type": "Text",
+      "props": {
+        "text": "MAJOR",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "stack_trending": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_trending",
+        "stack_trending_items"
+      ]
+    },
+    "heading_trending": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_trending_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_zkj",
+        "stack_chip"
+      ]
+    },
+    "stack_zkj": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_zkj",
+        "text_zkj_note"
+      ]
+    },
+    "stat_zkj": {
+      "type": "Stat",
+      "props": {
+        "label": "ZKJ",
+        "value": "+220%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "text_zkj_note": {
+      "type": "Text",
+      "props": {
+        "text": "PUMP-RISK at rank 884",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "stack_chip": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_chip"
+      ]
+    },
+    "text_chip": {
+      "type": "Text",
+      "props": {
+        "text": "CHIP TRENDING+DOWN second day",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator5": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "link_full": {
+      "type": "Link",
+      "props": {
+        "label": "Full report",
+        "href": ".pending-notify/1777381486-token-movers.md"
+      },
+      "children": []
+    }
+  }
+}
