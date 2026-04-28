@@ -721,10 +721,10 @@
   },
   "pr-review": {
     "last_dispatch": "2026-04-28T09:08:57Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-27T10:17:13Z",
-    "total_runs": 2,
-    "total_successes": 2,
+    "last_status": "success",
+    "last_success": "2026-04-28T09:11:53Z",
+    "total_runs": 3,
+    "total_successes": 3,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
