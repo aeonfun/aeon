@@ -1,0 +1,47 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink-pr",
+        "text-added",
+        "text-impact"
+      ]
+    },
+    "storylink-pr": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp PR #22",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/22",
+        "source": "GitHub"
+      }
+    },
+    "text-added": {
+      "type": "Text",
+      "props": {
+        "text": "Added missing privy-loader, WaitlistCTAAuth, api stubs"
+      }
+    },
+    "text-impact": {
+      "type": "Text",
+      "props": {
+        "text": "Vite build unblocked, /learn deploy can ship"
+      }
+    }
+  }
+}

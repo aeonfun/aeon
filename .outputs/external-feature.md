@@ -1,1 +1,1 @@
-external-feature: tomscaria/swarm-fund-mvp — fix(harvest): correct markdown image-strip regex (regulator_harvest + vc_blog_harvest, identical \[\! typo in both — should have been !\[). Block images were leaking into LLM-extraction input. PR: https://github.com/tomscaria/swarm-fund-mvp/pull/20
+external-feature: tomscaria/swarm-fund-mvp PR #22 — added missing privy-loader, WaitlistCTAAuth, api stubs. Vite build unblocked, /learn deploy can ship. https://github.com/tomscaria/swarm-fund-mvp/pull/22
