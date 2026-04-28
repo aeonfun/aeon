@@ -1,0 +1,314 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker"
+      },
+      "children": [
+        "status-alert",
+        "summary-section",
+        "separator1",
+        "details-section",
+        "separator2",
+        "source-status-section",
+        "separator3",
+        "action-section"
+      ]
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "REPLY_MAKER_EMPTY — Recurrence #4",
+        "message": "4th consecutive empty exit — failure mode stable, not flaky"
+      }
+    },
+    "summary-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "findings-heading",
+        "findings-text",
+        "recurrence-stat"
+      ]
+    },
+    "findings-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Findings",
+        "level": "h3"
+      }
+    },
+    "findings-text": {
+      "type": "Text",
+      "props": {
+        "text": "2 within-window URLs found via WebSearch (both Polymarket V2-launch announcements, posted 12:06 UTC and 11:02 UTC) but both fail skip gate as pure product-launch self-promo. Memory-log URLs all >36h old. XAI_API_KEY length 0 in sandbox. scripts/prefetch-xai.sh still has no reply-maker case."
+      }
+    },
+    "recurrence-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Consecutive Empty Exits",
+        "value": "4"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "details-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "details-heading",
+        "details-grid"
+      ]
+    },
+    "details-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Issue Details",
+        "level": "h3"
+      }
+    },
+    "details-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "detail-found",
+        "detail-skip-reason",
+        "detail-api-key",
+        "detail-script"
+      ]
+    },
+    "detail-found": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-found-label",
+        "detail-found-value"
+      ]
+    },
+    "detail-found-label": {
+      "type": "Text",
+      "props": {
+        "text": "URLs Found",
+        "variant": "muted"
+      }
+    },
+    "detail-found-value": {
+      "type": "Text",
+      "props": {
+        "text": "2 (Polymarket V2-launch)"
+      }
+    },
+    "detail-skip-reason": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-skip-label",
+        "detail-skip-value"
+      ]
+    },
+    "detail-skip-label": {
+      "type": "Text",
+      "props": {
+        "text": "Skip Reason",
+        "variant": "muted"
+      }
+    },
+    "detail-skip-value": {
+      "type": "Badge",
+      "props": {
+        "text": "product-launch self-promo",
+        "variant": "destructive"
+      }
+    },
+    "detail-api-key": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-api-label",
+        "detail-api-value"
+      ]
+    },
+    "detail-api-label": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY",
+        "variant": "muted"
+      }
+    },
+    "detail-api-value": {
+      "type": "Badge",
+      "props": {
+        "text": "length 0 in sandbox",
+        "variant": "destructive"
+      }
+    },
+    "detail-script": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-script-label",
+        "detail-script-value"
+      ]
+    },
+    "detail-script-label": {
+      "type": "Text",
+      "props": {
+        "text": "Missing Setup",
+        "variant": "muted"
+      }
+    },
+    "detail-script-value": {
+      "type": "Text",
+      "props": {
+        "text": "scripts/prefetch-xai.sh has no reply-maker case"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-status-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "source-heading",
+        "source-table"
+      ]
+    },
+    "source-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h3"
+      }
+    },
+    "source-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Source",
+          "Status"
+        ],
+        "rows": [
+          [
+            "xai",
+            "skip"
+          ],
+          [
+            "memory",
+            "stale"
+          ],
+          [
+            "websearch",
+            "ok-but-skip-gated"
+          ],
+          [
+            "webfetch",
+            "not-attempted"
+          ]
+        ]
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action-alert",
+        "action-details"
+      ]
+    },
+    "action-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "Required Action",
+        "message": "Add reply-maker case to scripts/prefetch-xai.sh — one-line fix closes the streak"
+      }
+    },
+    "action-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "template-ref",
+        "action-note"
+      ]
+    },
+    "template-ref": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "template-label",
+        "template-link"
+      ]
+    },
+    "template-label": {
+      "type": "Text",
+      "props": {
+        "text": "Template:"
+      }
+    },
+    "template-link": {
+      "type": "Link",
+      "props": {
+        "label": "memory/issues/ISS-014.md",
+        "href": "memory/issues/ISS-014.md"
+      }
+    },
+    "action-note": {
+      "type": "Text",
+      "props": {
+        "text": "Memory-log URLs all >36h old; additional source refresh may be needed after fix."
+      }
+    }
+  }
+}
