@@ -78,6 +78,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 ## Recent Digests (terse)
 | Date | Type | Key Topics |
 |------|------|------------|
+| 2026-04-28 | digest (PM) | Polymarket CLOB v2 LIVE (pUSD + builder codes + $1M LP) · Kalshi $3.91B w/w (2:1 over PM) · 3-issuer SEC queue for prediction-ETFs |
 | 2026-04-27 PM | digest (PM) | V2 cutover Tue 11 UTC + Polygon-deprecation tension + FanDuel entering + Brazil block in force |
 | 2026-04-27 PM | narrative-tracker (refinement) | Kalshi launch=Apr 27 (not 26); HL/Aster split (HL 44% vs Aster 70%→15%); Alpenglow timing-corrected to Q4 2026 |
 | 2026-04-27 PM | polymarket-comments | UMA-dispute concentration risk (Iran ↔ Hezbollah identical playbook); Tamil Nadu DMK 80% mispricing flag (May 4); 9 new tracked handles |

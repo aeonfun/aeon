@@ -1,0 +1,254 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "digest",
+        "description": "prediction markets — 2026-04-28"
+      },
+      "children": [
+        "tldr_section",
+        "sep1",
+        "item1",
+        "sep2",
+        "item2",
+        "sep3",
+        "item3",
+        "sep4",
+        "also_worth"
+      ]
+    },
+    "tldr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tldr_heading",
+        "tldr_text"
+      ]
+    },
+    "tldr_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "TL;DR",
+        "level": "h3"
+      }
+    },
+    "tldr_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket CLOB v2 went live at 11 UTC with pUSD collateral, on-chain builder codes, and a $1M LP rewards program; Kalshi just printed a record $3.91B week, lapping Polymarket by ~$2B; three issuers are now in the SEC queue to wrap event contracts into 401(k)-eligible ETFs.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1_link",
+        "item1_desc",
+        "item1_why"
+      ]
+    },
+    "item1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket CLOB v2 live: pUSD collateral, on-chain builder codes, $1M LP rewards",
+        "href": "https://crypto.news/polymarket-rolls-out-clob-v2-with-1m-liquidity-rewards-to-harden-prediction-markets/",
+        "source": "crypto.news"
+      }
+    },
+    "item1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "The April 28 cutover (11:00 UTC, ~1h downtime) cleared every resting order, swapped USDC.e for pUSD (1:1 ERC-20 on Polygon), and shipped on-chain attribution for builders plus EIP-1271 signatures. v1 client libraries are dead — bots that didn't migrate by today went silent.",
+        "variant": "body"
+      }
+    },
+    "item1_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_why_label",
+        "item1_why_text"
+      ]
+    },
+    "item1_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters:",
+        "variant": "lead"
+      }
+    },
+    "item1_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "the $1M LP program reopens the maker queue from zero, and on-chain builder codes are the first time PM has paid attribution at the contract layer — this is the new live-tape baseline for any quote strategy or two-venue convergence trade.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item2_link",
+        "item2_desc",
+        "item2_why"
+      ]
+    },
+    "item2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Kalshi prints $3.91B weekly volume — widest lead over Polymarket on record",
+        "href": "https://defirate.com/news/kalshi-posts-record-3-9b-volume-extends-lead-over-polymarket-parlays-surge/",
+        "source": "defirate.com"
+      }
+    },
+    "item2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi +27.8% w/w to $3.91B; Polymarket +4% to $1.96B. Kalshi now ~67% of combined weekly volume; over 85% of its tape is sports parlays. Polymarket's mix: $959M sports / $507M politics / $416M crypto.",
+        "variant": "body"
+      }
+    },
+    "item2_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_why_label",
+        "item2_why_text"
+      ]
+    },
+    "item2_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters:",
+        "variant": "lead"
+      }
+    },
+    "item2_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "the gap blew open the same week Kalshi shipped Timeless perps and Polymarket was offline for the stack swap. Two-venue arb sizing assumptions need to be redrawn off the new ratio, not the March $12B/$12B parity.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item3_link",
+        "item3_desc",
+        "item3_why"
+      ]
+    },
+    "item3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Three issuers now in SEC queue to wrap prediction markets into retirement-account ETFs",
+        "href": "https://www.cnbc.com/2026/04/24/prediction-markets-could-soon-be-available-in-your-retirement-account.html",
+        "source": "cnbc.com"
+      }
+    },
+    "item3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Bitwise, Roundhill, and GraniteShares have each filed identical six-fund structures — Dem/Rep pairs for the 2028 presidency, 2026 House, 2026 Senate — each holding ≥80% of NAV in CFTC event contracts. Bitwise's brand is PredictionShares on NYSE Arca. None approved yet; the CFTC×SEC MOU signed March 11 is the regulatory path.",
+        "variant": "body"
+      }
+    },
+    "item3_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_why_label",
+        "item3_why_text"
+      ]
+    },
+    "item3_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters:",
+        "variant": "lead"
+      }
+    },
+    "item3_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "DOL's parallel proposal to let 401(k)s hold alternatives is in a 60-day comment window. If both threads land, predictions get a passive-flow channel they've never had — the demand side stops being purely retail discretionary.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "also_worth": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "also_worth_heading",
+        "also_worth_text"
+      ]
+    },
+    "also_worth_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Also worth a glance",
+        "level": "h3"
+      }
+    },
+    "also_worth_text": {
+      "type": "Text",
+      "props": {
+        "text": "FOMC Apr 28–29 priced 99–100% no-change on both Kalshi and Polymarket; high OI either side means a surprise prints sharp two-way volume.",
+        "variant": "body"
+      }
+    }
+  }
+}
