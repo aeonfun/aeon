@@ -1,0 +1,134 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "PR Review 2026-04-28"
+      },
+      "children": [
+        "stack_summary",
+        "separator1",
+        "stack_pr_details"
+      ]
+    },
+    "stack_summary": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_summary",
+        "grid_skip_breakdown"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "Reviewed 1, skipped 2"
+      }
+    },
+    "grid_skip_breakdown": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_drafts",
+        "stat_dup_sha"
+      ]
+    },
+    "stat_drafts": {
+      "type": "Stat",
+      "props": {
+        "label": "Skipped (drafts)",
+        "value": "1"
+      }
+    },
+    "stat_dup_sha": {
+      "type": "Stat",
+      "props": {
+        "label": "Skipped (dup-SHA)",
+        "value": "1"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_pr_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr_link",
+        "stack_status",
+        "grid_issues"
+      ]
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp#20",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/20"
+      }
+    },
+    "stack_status": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_status_label",
+        "badge_approve_ready"
+      ]
+    },
+    "text_status_label": {
+      "type": "Text",
+      "props": {
+        "text": "Status:",
+        "variant": "caption"
+      }
+    },
+    "badge_approve_ready": {
+      "type": "Badge",
+      "props": {
+        "text": "approve-ready",
+        "variant": "secondary"
+      }
+    },
+    "grid_issues": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_critical",
+        "stat_issues"
+      ]
+    },
+    "stat_critical": {
+      "type": "Stat",
+      "props": {
+        "label": "Critical",
+        "value": "0"
+      }
+    },
+    "stat_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Issues",
+        "value": "0"
+      }
+    }
+  }
+}
