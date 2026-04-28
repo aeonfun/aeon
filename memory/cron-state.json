@@ -12,8 +12,8 @@
     "last_dispatch": "2026-04-28T09:08:57Z"
   },
   "token-alert": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:02:40Z",
     "total_runs": 22,
     "total_successes": 3,
@@ -24,8 +24,8 @@
     "last_error": "eb0164d\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-movers": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:07:11Z",
     "total_runs": 26,
     "total_successes": 3,
@@ -36,8 +36,8 @@
     "last_error": "d8ad7ce\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "on-chain-monitor": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:02:36Z",
     "total_runs": 26,
     "total_successes": 3,
@@ -48,8 +48,8 @@
     "last_error": "3500471\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-monitor": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:02:43Z",
     "total_runs": 21,
     "total_successes": 3,
@@ -60,8 +60,8 @@
     "last_error": "a0b8a82\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "treasury-info": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:02:48Z",
     "total_runs": 23,
     "total_successes": 3,
@@ -72,8 +72,8 @@
     "last_error": "ff1979b\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-overview": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:11:39Z",
     "total_runs": 19,
     "total_successes": 3,
@@ -84,8 +84,8 @@
     "last_error": "2b30ebd\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-polymarket": {
-    "last_dispatch": "2026-04-25T13:08:46Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T02:18:56Z",
     "total_runs": 19,
     "total_successes": 2,
@@ -96,8 +96,8 @@
     "last_error": "24f4f95\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-kalshi": {
-    "last_dispatch": "2026-04-27T14:22:23Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T14:31:54Z",
     "total_runs": 20,
     "total_successes": 3,
@@ -108,8 +108,8 @@
     "last_error": "cca2d1f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-runners": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:08:54Z",
     "total_runs": 19,
     "total_successes": 3,
@@ -120,8 +120,8 @@
     "last_error": "c658144\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-pick": {
-    "last_dispatch": "2026-04-27T12:01:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T12:07:14Z",
     "total_runs": 19,
     "total_successes": 3,
@@ -132,8 +132,8 @@
     "last_error": "1e996d2\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-report": {
-    "last_dispatch": "2026-04-25T13:08:46Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T02:11:59Z",
     "total_runs": 24,
     "total_successes": 2,
@@ -144,8 +144,8 @@
     "last_error": "d9e0a6a\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "market-context-refresh": {
-    "last_dispatch": "2026-04-27T14:22:23Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T14:30:06Z",
     "total_runs": 19,
     "total_successes": 3,
@@ -156,8 +156,8 @@
     "last_error": "0e981d7\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "polymarket-comments": {
-    "last_dispatch": "2026-04-27T14:22:23Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-28T13:00:49Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-27T14:34:20Z",
     "total_runs": 18,
     "total_successes": 3,
