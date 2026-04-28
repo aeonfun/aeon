@@ -1,5 +1,1 @@
-Skill aborted per spec. The token-report skill expects a `## Tracked Token` section in MEMORY.md with `Contract` and `Chain` columns (e.g. an AEON token on Base). The current MEMORY.md has `## Tracked Tokens` with BTC/ETH/SOL via CoinGecko IDs — that format is for a different skill.
-
-To activate token-report, either:
-1. Add a section to MEMORY.md: `## Tracked Token` with `| Token | Contract | Chain |` and a Base chain contract address.
-2. Pass a contract address via `var:` in the workflow dispatch.
+No tracked Base-chain token is configured in `memory/MEMORY.md` — the `Tracked Tokens` table lists BTC/ETH/SOL by CoinGecko ID, not by on-chain contract address, which is what this skill requires. `var` is also empty. Aborted silently per spec: no article, no notification. Run logged to `memory/logs/2026-04-28.md`.
