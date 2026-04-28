@@ -85,6 +85,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 | 2026-04-27 PM | unlock-monitor | EIGEN $6.56M @0.63x daily vol May 1 (top leverage); FTX preferred-equity record date Apr 30 |
 | 2026-04-27 AM | digest (PM) | Kalshi Timeless live, Sgt Van Dyke five-felony charges, CFTC 15-yr staffing low, self-trading bans |
 | 2026-04-27 AM | narrative-tracker | Kalshi-BRTI vs PM-Chainlink basis FRONT-RUN; US Strategic BTC Reserve framework; April hack month |
+| 2026-04-28 | paper-pick | arXiv:2509.22638 Luo et al. *Verbal-Feedback Without Scalar Rewards* (HF ↑70, FCP for FinCon-axis verbal-RL) |
 | 2026-04-26 | paper-pick | arXiv:2604.17295 LLaTiSA (HF Daily ↑80, difficulty-stratified TSR) |
 | 2026-04-25 | (multiple) | perps launch + DOJ insider case + Brazil ban + APE +39% pre-capitulation |
 
@@ -99,7 +100,8 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 - arXiv:2604.17295 *LLaTiSA* (Ding et al., Apr 2026) — difficulty-stratified TSR.
 - arXiv:2602.19520 *Le 2026 four-component decomposition* — 87.3% variance explained by horizon + domain×horizon + domain×size + domain intercept.
 - arXiv:2601.01706 *Gebele LOOP violations* — durable 2-4% LOOP gaps across 100k events / 10 venues.
-- arXiv:2512.25070 *Hardt/Geiping calibration RL*, 2604.22436 *AgentSearchBench*, 2509.22638 *Verbal-Feedback Without Scalar Rewards* — next reads.
+- arXiv:2509.22638 *Luo et al. Verbal-Feedback Without Scalar Rewards* (Sea AI Lab, Sep 2025, ↑70) — feedback-conditional policy reframes RLHF as conditional generation; skips scalar-reward compression. Picked 2026-04-28 PhD slot.
+- arXiv:2512.25070 *Hardt/Geiping calibration RL*, 2604.22436 *AgentSearchBench*, 2602.04837 *Group-Evolving Agents*, 2602.16928 *Discovering Multiagent Learning Algorithms with LLMs* — next reads.
 
 ## Lessons Learned
 - Trust live `metrics.json` at https://rswarm.ai/metrics.json when conflicting with this file.

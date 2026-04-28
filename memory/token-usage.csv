@@ -30,4 +30,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,evening-recap,claude-sonnet-4-6,12,10877,602910,67982
 2026-04-28,heartbeat,claude-opus-4-7,28289,23587,1178261,116861
 2026-04-28,polymarket-comments,claude-opus-4-7,59,43483,4946367,153171
-2026-04-28,heartbeat,claude-opus-4-7,29018,18395,377373,99272
+2026-04-28,paper-pick,claude-opus-4-7,28,15329,1527814,67899

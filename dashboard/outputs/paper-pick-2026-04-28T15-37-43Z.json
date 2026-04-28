@@ -1,0 +1,85 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick",
+        "description": "2026-04-28"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story-paper",
+        "text-authors",
+        "text-description",
+        "stack-links"
+      ]
+    },
+    "story-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Language Models Can Learn from Verbal Feedback Without Scalar Rewards",
+        "href": "https://arxiv.org/abs/2509.22638",
+        "source": "arXiv",
+        "score": "↑70"
+      }
+    },
+    "text-authors": {
+      "type": "Text",
+      "props": {
+        "text": "Luo, Liu, Liu, Du, Lin, Chen, Lu, Pang (Sea AI Lab / Waterloo / SUTD)",
+        "variant": "caption"
+      }
+    },
+    "text-description": {
+      "type": "Text",
+      "props": {
+        "text": "Reframes RLHF as conditional generation: a feedback-conditional policy (FCP) trains directly on response-feedback pairs, skipping the scalar-reward bottleneck that compresses nuance and induces scale imbalance. Direct fit for the FinCon-style verbal-RL axis on the PhD-prep list, and a clean primary for swapping CalibrationGap's reflection-log loop off scalar updates.",
+        "variant": "body"
+      }
+    },
+    "stack-links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-read",
+        "link-pdf",
+        "link-code"
+      ]
+    },
+    "link-read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2509.22638"
+      }
+    },
+    "link-pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2509.22638"
+      }
+    },
+    "link-code": {
+      "type": "Link",
+      "props": {
+        "label": "Code",
+        "href": "https://github.com/sail-sg/feedback-conditional-policy"
+      }
+    }
+  }
+}
