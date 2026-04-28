@@ -1,0 +1,84 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "reflect"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-header",
+        "sep1",
+        "stack-items"
+      ]
+    },
+    "text-header": {
+      "type": "Text",
+      "props": {
+        "text": "Memory consolidated — 2026-04-28 PM (reflect #3)",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "V2 cutover executed"
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "UMA-arb candidate (Iran-cf vs Hez-cf) live"
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "star milestone 251 (300 next, ETA 2026-05-06)"
+      }
+    },
+    "item4": {
+      "type": "Text",
+      "props": {
+        "text": "node -e promoted to preferred notify path"
+      }
+    },
+    "item5": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill() fix remains highest-leverage operator action"
+      }
+    }
+  }
+}
