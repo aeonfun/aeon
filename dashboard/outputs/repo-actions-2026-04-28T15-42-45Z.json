@@ -1,0 +1,175 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas"
+      },
+      "children": [
+        "heading-main",
+        "text-summary",
+        "sep1",
+        "section-top-pick",
+        "sep2",
+        "section-actions"
+      ]
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "Repo Action Ideas — aaronjmars/aeon — 2026-04-28",
+        "level": "h2"
+      }
+    },
+    "text-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Five fresh anchors after two cycles exhausted the .github/* meta-file set. Top pick is a 4-line evals.json key fix that closes two real NEW_FAIL classes across the fleet.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section-top-pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-top-pick",
+        "text-top-pick-details",
+        "badges-top-pick"
+      ]
+    },
+    "heading-top-pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick: Patch skills/skill-evals/evals.json keys",
+        "level": "h3"
+      }
+    },
+    "text-top-pick-details": {
+      "type": "Text",
+      "props": {
+        "text": "hn-digest → hacker-news-digest, polymarket → monitor-polymarket — assertion patterns finally match output files; weekly skill-evals stops logging the same drift."
+      }
+    },
+    "badges-top-pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-high",
+        "badge-dx",
+        "badge-small"
+      ]
+    },
+    "badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section-actions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-actions",
+        "table-actions",
+        "sep3",
+        "link-full"
+      ]
+    },
+    "heading-actions": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Items",
+        "level": "h3"
+      }
+    },
+    "table-actions": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "#",
+          "Description",
+          "Priority",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "1",
+            "Patch evals.json keys hn-digest/polymarket → canonical names",
+            "HIGH",
+            "DX, Small"
+          ],
+          [
+            "2",
+            "Add engines.node \">=20\" + lint script to dashboard/package.json",
+            "MED",
+            "DX, Small"
+          ],
+          [
+            "3",
+            "Add CODE_OF_CONDUCT.md (Contributor Covenant 2.1)",
+            "MED",
+            "Community, Small"
+          ],
+          [
+            "4",
+            "Add .github/workflows/markdown-link-check.yml",
+            "MED",
+            "DX, Small"
+          ],
+          [
+            "5",
+            "Add .github/workflows/examples-validate.yml (py_compile across A2A+MCP)",
+            "MED",
+            "DX, Small"
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "link-full": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-28.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}

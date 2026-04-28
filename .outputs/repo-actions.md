@@ -1,13 +1,13 @@
-*Repo Action Ideas — aaronjmars/aeon — 2026-04-27*
-Three HIGH-priority structural gaps anchor this cycle, all in .github/. Top pick: TypeScript CI workflow — three TS subprojects ship to main with zero compile-time checks.
+*Repo Action Ideas — aaronjmars/aeon — 2026-04-28*
+Five fresh anchors after two cycles exhausted the .github/* meta-file set. Top pick is a 4-line evals.json key fix that closes two real NEW_FAIL classes across the fleet.
 
-Top pick: typescript-check.yml workflow (DX, Small, HIGH)
- → Catches type errors in dashboard/, mcp-server/, a2a-server/ before they land on main.
+Top pick: Patch skills/skill-evals/evals.json keys (DX, Small, Priority HIGH)
+ → hn-digest → hacker-news-digest, polymarket → monitor-polymarket — assertion patterns finally match output files; weekly skill-evals stops logging the same drift.
 
-1. typescript-check.yml workflow (HIGH, DX, Small)
-2. PULL_REQUEST_TEMPLATE.md (HIGH, DX, Small)
-3. release.yml for autogen notes (HIGH, DX, Small)
-4. FUNDING.yml routing Bankr URL (MED, Growth, Small)
-5. CodeQL JS/TS workflow (MED, Security, Small)
+1. Patch evals.json keys hn-digest/polymarket → canonical names (HIGH, DX, Small)
+2. Add engines.node ">=20" + lint script to dashboard/package.json (MED, DX, Small)
+3. Add CODE_OF_CONDUCT.md (Contributor Covenant 2.1) (MED, Community, Small)
+4. Add .github/workflows/markdown-link-check.yml (MED, DX, Small)
+5. Add .github/workflows/examples-validate.yml (py_compile across A2A+MCP) (MED, DX, Small)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-27.md
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-28.md

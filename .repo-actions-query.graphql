@@ -1,0 +1,48 @@
+query($owner:String!, $name:String!) {
+  repository(owner:$owner, name:$name) {
+    name description homepageUrl stargazerCount forkCount
+    pushedAt updatedAt isArchived hasIssuesEnabled licenseInfo { spdxId }
+    repositoryTopics(first:20) { nodes { topic { name } } }
+    defaultBranchRef { name target { ... on Commit { history(first:30) { nodes { oid messageHeadline committedDate } } } } }
+    issues(states:OPEN, first:30, orderBy:{field:UPDATED_AT, direction:DESC}) {
+      totalCount nodes { number title labels(first:5){nodes{name}} createdAt updatedAt comments{totalCount} }
+    }
+    pullRequests(states:OPEN, first:20, orderBy:{field:UPDATED_AT, direction:DESC}) {
+      totalCount nodes { number title author{login} createdAt updatedAt headRefName isDraft }
+    }
+    closedIssues: issues(states:CLOSED, first:20, orderBy:{field:UPDATED_AT, direction:DESC}) {
+      nodes { number title closedAt }
+    }
+    mergedPRs: pullRequests(states:MERGED, first:20, orderBy:{field:UPDATED_AT, direction:DESC}) {
+      nodes { number title mergedAt }
+    }
+    readme: object(expression:"HEAD:README.md") { ... on Blob { text byteSize } }
+    roadmap: object(expression:"HEAD:ROADMAP.md") { ... on Blob { text } }
+    changelog: object(expression:"HEAD:CHANGELOG.md") { ... on Blob { text } }
+    todoFile: object(expression:"HEAD:TODO.md") { ... on Blob { text } }
+    claude: object(expression:"HEAD:CLAUDE.md") { ... on Blob { text } }
+    pkgJson: object(expression:"HEAD:package.json") { ... on Blob { text } }
+    cargoToml: object(expression:"HEAD:Cargo.toml") { ... on Blob { text } }
+    pyproject: object(expression:"HEAD:pyproject.toml") { ... on Blob { text } }
+    goMod: object(expression:"HEAD:go.mod") { ... on Blob { text } }
+    contributing: object(expression:"HEAD:CONTRIBUTING.md") { ... on Blob { byteSize } }
+    coc: object(expression:"HEAD:CODE_OF_CONDUCT.md") { ... on Blob { byteSize } }
+    security: object(expression:"HEAD:SECURITY.md") { ... on Blob { byteSize } }
+    license: object(expression:"HEAD:LICENSE") { ... on Blob { byteSize } }
+    dependabot: object(expression:"HEAD:.github/dependabot.yml") { ... on Blob { byteSize } }
+    ciTree: object(expression:"HEAD:.github/workflows") { ... on Tree { entries { name type } } }
+    issueTemplates: object(expression:"HEAD:.github/ISSUE_TEMPLATE") { ... on Tree { entries { name } } }
+    funding: object(expression:"HEAD:.github/FUNDING.yml") { ... on Blob { byteSize } }
+    prTemplate: object(expression:"HEAD:.github/PULL_REQUEST_TEMPLATE.md") { ... on Blob { byteSize } }
+    codeql: object(expression:"HEAD:.github/workflows/codeql.yml") { ... on Blob { byteSize } }
+    tsCheck: object(expression:"HEAD:.github/workflows/typescript-check.yml") { ... on Blob { byteSize } }
+    releaseYml: object(expression:"HEAD:.github/release.yml") { ... on Blob { byteSize } }
+    codeowners: object(expression:"HEAD:.github/CODEOWNERS") { ... on Blob { byteSize } }
+    dashboardPkg: object(expression:"HEAD:dashboard/package.json") { ... on Blob { text } }
+    mcpPkg: object(expression:"HEAD:mcp-server/package.json") { ... on Blob { text } }
+    a2aPkg: object(expression:"HEAD:a2a-server/package.json") { ... on Blob { text } }
+    rootTree: object(expression:"HEAD:") { ... on Tree { entries { name type } } }
+    skillsTree: object(expression:"HEAD:skills") { ... on Tree { entries { name type } } }
+    docsTree: object(expression:"HEAD:docs") { ... on Tree { entries { name type } } }
+  }
+}
