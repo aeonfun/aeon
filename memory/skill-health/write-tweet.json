@@ -1,0 +1,14 @@
+{
+  "skill": "write-tweet",
+  "last_analyzed": "2026-04-28T17:20:41Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured output: 10 ranked drafts with documented reasoning; voice-matched against soul files; best pick identified with grant-narrative reuse value; proper file tracking and notification delivery; caveats documented",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-04-28",
+      "score": 4
+    }
+  ]
+}

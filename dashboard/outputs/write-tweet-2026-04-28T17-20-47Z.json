@@ -1,0 +1,239 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet",
+        "description": "Polymarket V2 cutover tweet drafts"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading-oneliner",
+        "stack-oneliner",
+        "separator-1",
+        "heading-twopunch",
+        "stack-twopunch",
+        "separator-2",
+        "heading-paragraph",
+        "stack-paragraph",
+        "separator-3",
+        "heading-longtweet",
+        "stack-longtweet",
+        "separator-4",
+        "heading-threadopener",
+        "stack-threadopener",
+        "separator-5",
+        "alert-recommendation"
+      ]
+    },
+    "heading-oneliner": {
+      "type": "Heading",
+      "props": {
+        "text": "One-liner",
+        "level": "h2"
+      }
+    },
+    "stack-oneliner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-1a",
+        "tweet-1b"
+      ]
+    },
+    "tweet-1a": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "1a. Polymarket rebuilt the exchange today. Order-book wipe is the least interesting change."
+      }
+    },
+    "tweet-1b": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "1b. Everyone read the order-book wipe. The actual change is builder codes going on-chain."
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-twopunch": {
+      "type": "Heading",
+      "props": {
+        "text": "Two-punch",
+        "level": "h2"
+      }
+    },
+    "stack-twopunch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-2a",
+        "tweet-2b"
+      ]
+    },
+    "tweet-2a": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "2a. Polymarket V2 went live at 11 UTC. USDC.e → pUSD, builder codes on-chain, EIP-1271 signers, two audits. The order-book wipe is the part everyone is upset about."
+      }
+    },
+    "tweet-2b": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "2b. Polymarket nuked every resting order today. They also moved builder fees on-chain and swapped the collateral asset. Guess which one made the headline."
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-paragraph": {
+      "type": "Heading",
+      "props": {
+        "text": "Paragraph",
+        "level": "h2"
+      }
+    },
+    "stack-paragraph": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-3a",
+        "tweet-3b"
+      ]
+    },
+    "tweet-3a": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "3a. The Polymarket V2 cutover is the first prediction-market exchange to go hard-fork. Wiped orderbook, USDC.e → native pUSD, builder codes baked into every order, EIP-1271 for smart-contract signers. Two audits. ~1h offline. The wipe is the distraction."
+      }
+    },
+    "tweet-3b": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "3b. Reading the V2 cutover as \"they cleared my limit orders\" misses the architecture. Builder fees moved from a script you trust to a field on the order. Off-chain bookkeeping became contract guarantee. Wipe is the noise. Builder code field is the signal."
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-longtweet": {
+      "type": "Heading",
+      "props": {
+        "text": "Long tweet",
+        "level": "h2"
+      }
+    },
+    "stack-longtweet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-4a",
+        "tweet-4b"
+      ]
+    },
+    "tweet-4a": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "4a. Polymarket cutover at 11 UTC today. The Help Center calls it V2. Six things changed: (1) USDC.e → pUSD, 1:1 backed (2) builder codes baked into the order struct, on-chain (3) EIP-1271 unlocks smart-contract signers (4) match-time fees instead of post-fill (5) Cantina + Quantstamp audits (6) V1 SDK is forward-incompatible. The \"all open orders cleared\" headline is item zero. The first five are why every market-maker on PM is rewriting their stack this week, including ours."
+      }
+    },
+    "tweet-4b": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "4b. 11 UTC: Polymarket replaced its exchange. USDC.e is gone. pUSD is the new collateral. Builder codes — the affiliate-fee field — moved from off-chain bookkeeping to a struct on every order. EIP-1271 means a smart contract can sign for you. Match-time fees, Cantina + Quantstamp audited. The \"they wiped my limit orders\" headline is the smallest part of the migration. The biggest: builder codes are a contract guarantee now, not a trust-the-team promise. Builders just got pricing power. Agents got first-class signers. Revenant resting book is zero whether or not we flattened first."
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-threadopener": {
+      "type": "Heading",
+      "props": {
+        "text": "Thread opener",
+        "level": "h2"
+      }
+    },
+    "stack-threadopener": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-5a",
+        "tweet-5b"
+      ]
+    },
+    "tweet-5a": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "5a. The Polymarket V2 cutover is being read as \"they wiped the orderbook.\" That's the smallest of six changes. The biggest one is the change every protocol-touching builder now has to plan for."
+      }
+    },
+    "tweet-5b": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Swarm Fund",
+        "text": "5b. 11 UTC: Polymarket replaced its exchange stack. ~1h offline. Open orders zeroed. New collateral (pUSD), on-chain builder codes, EIP-1271 signers, two audits. The migration is six items deep. Only the wipe made the headline."
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert-recommendation": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "Recommended",
+        "message": "4b — operator narrative ties the architectural change to a specific live-capital footprint (Revenant); highest grant-narrative reuse value"
+      }
+    }
+  }
+}

@@ -21,4 +21,3 @@ tweet drafts: Polymarket V2 cutover — the order-book wipe is the smallest chan
 5b. 11 UTC: Polymarket replaced its exchange stack. ~1h offline. Open orders zeroed. New collateral (pUSD), on-chain builder codes, EIP-1271 signers, two audits. The migration is six items deep. Only the wipe made the headline.
 
 best: 4b — operator narrative ties the architectural change to a specific live-capital footprint (Revenant); highest grant-narrative reuse value
-
