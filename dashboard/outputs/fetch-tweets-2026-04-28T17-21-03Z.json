@@ -1,0 +1,114 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "fetch-tweets"
+      },
+      "children": [
+        "heading_date",
+        "stack_findings",
+        "separator1",
+        "stack_output",
+        "separator2",
+        "alert_limitations"
+      ]
+    },
+    "heading_date": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Tweets prediction markets — 2026-04-28",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_findings": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_v2",
+        "text_kalshi"
+      ]
+    },
+    "text_v2": {
+      "type": "Text",
+      "props": {
+        "text": "V2 cutover landed 11 UTC",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_kalshi": {
+      "type": "Text",
+      "props": {
+        "text": "Perp race vs Kalshi next front",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_output": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_curated",
+        "text_location",
+        "link_memory"
+      ]
+    },
+    "text_curated": {
+      "type": "Text",
+      "props": {
+        "text": "Curated 5 tweets across 3 clusters",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_location": {
+      "type": "Text",
+      "props": {
+        "text": "Location: .pending-notify/",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "link_memory": {
+      "type": "Link",
+      "props": {
+        "label": "memory/logs/2026-04-28.md fetch-tweets entry",
+        "href": "memory/logs/2026-04-28.md"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "alert_limitations": {
+      "type": "Alert",
+      "props": {
+        "title": "Engagement counts unavailable",
+        "message": "WebSearch path C and XAI key blocked",
+        "type": "warning"
+      },
+      "children": []
+    }
+  }
+}
