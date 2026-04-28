@@ -1,0 +1,24 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "refresh-x"
+      },
+      "children": [
+        "alert-content"
+      ]
+    },
+    "alert-content": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "REFRESH_X_NO_VAR",
+        "message": "set var to an X handle"
+      },
+      "children": []
+    }
+  }
+}
