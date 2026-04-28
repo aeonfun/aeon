@@ -1,0 +1,412 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-04-28"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "idea1",
+        "separator1",
+        "idea2",
+        "separator2",
+        "reference"
+      ]
+    },
+    "idea1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea1_header",
+        "idea1_desc",
+        "idea1_icp_section",
+        "idea1_wedge_section",
+        "idea1_why_section",
+        "idea1_mvp_section",
+        "idea1_kill_section"
+      ]
+    },
+    "idea1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "idea1_title",
+        "idea1_badge"
+      ]
+    },
+    "idea1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Receipts",
+        "level": "h2"
+      }
+    },
+    "idea1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "executable",
+        "variant": "default"
+      }
+    },
+    "idea1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "agent-runtime → SOC2 evidence pipeline; the compliance answer enterprise procurement is asking and AI-SaaS sellers can't ship.",
+        "variant": "body"
+      }
+    },
+    "idea1_icp_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1_icp_label",
+        "idea1_icp_text"
+      ]
+    },
+    "idea1_icp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea1_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "Sec / Eng lead at 50–300-person AI-native SaaS that just got a procurement gate (\"where are agent action logs / SOC2 mappings for autonomous decisions?\") in last 60 days.",
+        "variant": "body"
+      }
+    },
+    "idea1_wedge_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1_wedge_label",
+        "idea1_wedge_text"
+      ]
+    },
+    "idea1_wedge_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea1_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "drop-in OTel + lmnr / Langfuse collector → auditor-ready CC6.1 / CC7.2 / CC8.1 evidence rows; Drata + Vanta connectors.",
+        "variant": "body"
+      }
+    },
+    "idea1_why_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1_why_label",
+        "idea1_why_text"
+      ]
+    },
+    "idea1_why_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea1_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "AICPA SOC2 TSC update for agents in 2026; YC Summer RFS calls \"AI-native audit & compliance\"; procurement asks agent-specific control Qs and no template exists.",
+        "variant": "body"
+      }
+    },
+    "idea1_mvp_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1_mvp_label",
+        "idea1_mvp_text"
+      ]
+    },
+    "idea1_mvp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea1_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "lmnr → SOC2-CC7.2 pipeline + 5 design partners (rswarm.ai = customer zero); demand metric = 3+ LOIs at $1k+/mo in 2 weeks.",
+        "variant": "body"
+      }
+    },
+    "idea1_kill_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1_kill_label",
+        "idea1_kill_text"
+      ]
+    },
+    "idea1_kill_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill criteria",
+        "level": "h4"
+      }
+    },
+    "idea1_kill_text": {
+      "type": "Text",
+      "props": {
+        "text": "<3 paid pilots in 60 days at $1k+/mo → kill. Or Drata / Vanta ship native AI-agent module with no co-sell window → kill.",
+        "variant": "body"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea2_header",
+        "idea2_desc",
+        "idea2_icp_section",
+        "idea2_wedge_section",
+        "idea2_why_section",
+        "idea2_mvp_section",
+        "idea2_kill_section"
+      ]
+    },
+    "idea2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "idea2_title",
+        "idea2_badge"
+      ]
+    },
+    "idea2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Mandate",
+        "level": "h2"
+      }
+    },
+    "idea2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious",
+        "variant": "secondary"
+      }
+    },
+    "idea2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "signed-receipt registry as the settlement-confirmation layer of agentic commerce; whoever runs the registry takes bps fees and owns the cross-platform agent-reputation graph.",
+        "variant": "body"
+      }
+    },
+    "idea2_icp_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2_icp_label",
+        "idea2_icp_text"
+      ]
+    },
+    "idea2_icp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea2_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "CTO or General Counsel at 200–2000-person FS / healthcare / insurance / supply-chain co running agent procurement or RFP — trigger = legal asked \"who's liable for the agent's $250k contract\" within last 90 days and there's no answer.",
+        "variant": "body"
+      }
+    },
+    "idea2_wedge_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2_wedge_label",
+        "idea2_wedge_text"
+      ]
+    },
+    "idea2_wedge_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea2_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "open-spec hash-chained Agent Mandate Receipt (policy-version + input commit + rationale URI + approver) + Python / TS SDK + hosted public registry; auditors as Day-1 verifiers; signing-key custody on Lore MPC stack.",
+        "variant": "body"
+      }
+    },
+    "idea2_why_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2_why_label",
+        "idea2_why_text"
+      ]
+    },
+    "idea2_why_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea2_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "NIST agentic-AI standards convening April 2026; EU AI Act audit deadline; Mastercard / Visa / Shopify all building agentic-commerce protocols Q1–Q2; Reg E has no agentic dispute framework.",
+        "variant": "body"
+      }
+    },
+    "idea2_mvp_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2_mvp_label",
+        "idea2_mvp_text"
+      ]
+    },
+    "idea2_mvp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea2_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "v0.1 spec + reference verifier + 3 design partners publishing 100+ receipts each in 2 weeks; demand = 1 regulator / auditor acknowledges spec in 30 days.",
+        "variant": "body"
+      }
+    },
+    "idea2_kill_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2_kill_label",
+        "idea2_kill_text"
+      ]
+    },
+    "idea2_kill_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill criteria",
+        "level": "h4"
+      }
+    },
+    "idea2_kill_text": {
+      "type": "Text",
+      "props": {
+        "text": "<3 design partners shipping at 30 days → kill. Or Mastercard / Visa close-spec ships before Day 90 → pivot to verifier-only.",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "reference": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ref_label",
+        "ref_text"
+      ]
+    },
+    "ref_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Full details",
+        "level": "h4"
+      }
+    },
+    "ref_text": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos and 8 permalinks of pain evidence in memory/logs/2026-04-28.md",
+        "variant": "caption"
+      }
+    }
+  }
+}
