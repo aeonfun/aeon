@@ -1,0 +1,544 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners",
+        "description": "2026-04-28 — verdict: SPECULATIVE"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trade1",
+        "sep1",
+        "trade2",
+        "sep2",
+        "trade3",
+        "sep3",
+        "trade4",
+        "sep4",
+        "trade5",
+        "sep5",
+        "sources_section",
+        "sep6",
+        "vibe_section"
+      ]
+    },
+    "trade1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trade1_header",
+        "trade1_metrics",
+        "trade1_analysis"
+      ]
+    },
+    "trade1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge1",
+        "heading1",
+        "stat1"
+      ]
+    },
+    "badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "heading1": {
+      "type": "Heading",
+      "props": {
+        "text": "LUCA / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "stat1": {
+      "type": "Stat",
+      "props": {
+        "value": "+1572%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "trade1_metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Volume",
+            "$4.6m"
+          ],
+          [
+            "Liquidity",
+            "$68k"
+          ],
+          [
+            "FDV",
+            "$544k"
+          ],
+          [
+            "H1",
+            "+54%"
+          ],
+          [
+            "Buys:Sells",
+            "33138:30558"
+          ]
+        ]
+      }
+    },
+    "trade1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "7h-old pool, h1 still ramping (+54%) on 60k+ txns; real degen churn but $68k liq is one whale exit from collapse.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trade2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trade2_header",
+        "trade2_metrics",
+        "trade2_analysis"
+      ]
+    },
+    "trade2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge2",
+        "heading2",
+        "stat2"
+      ]
+    },
+    "badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "heading2": {
+      "type": "Heading",
+      "props": {
+        "text": "巨龍 / USDT (bsc)",
+        "level": "h3"
+      }
+    },
+    "stat2": {
+      "type": "Stat",
+      "props": {
+        "value": "+3419%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "trade2_metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Volume",
+            "$34.8m"
+          ],
+          [
+            "Liquidity",
+            "$92k"
+          ],
+          [
+            "FDV",
+            "$70k"
+          ],
+          [
+            "H1",
+            "+26%"
+          ],
+          [
+            "Buys:Sells",
+            "1099:844"
+          ]
+        ]
+      }
+    },
+    "trade2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "2h-old, $34.8m on $92k liq = ~378x turnover and $70k FDV. wash-trade signature, observe only.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trade3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trade3_header",
+        "trade3_metrics",
+        "trade3_analysis"
+      ]
+    },
+    "trade3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge3",
+        "heading3",
+        "stat3"
+      ]
+    },
+    "badge3": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "heading3": {
+      "type": "Heading",
+      "props": {
+        "text": "CMD / ETH (eth)",
+        "level": "h3"
+      }
+    },
+    "stat3": {
+      "type": "Stat",
+      "props": {
+        "value": "+1059%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "trade3_metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Volume",
+            "$5.7m"
+          ],
+          [
+            "Liquidity",
+            "$732k"
+          ],
+          [
+            "FDV",
+            "$2.5m (no mcap)"
+          ],
+          [
+            "H1",
+            "-0.4%"
+          ],
+          [
+            "Buys:Sells",
+            "4342:3887"
+          ]
+        ]
+      }
+    },
+    "trade3_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "cleanest setup on the board: $732k liq is closest to DEEP-LIQ, 21h old, h1 flat = post-pump consolidation. watch for a second leg or rollover.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trade4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trade4_header",
+        "trade4_metrics",
+        "trade4_analysis"
+      ]
+    },
+    "trade4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge4",
+        "heading4",
+        "stat4"
+      ]
+    },
+    "badge4": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION",
+        "variant": "outline"
+      }
+    },
+    "heading4": {
+      "type": "Heading",
+      "props": {
+        "text": "SCAMMAN / WETH 1% (eth)",
+        "level": "h3"
+      }
+    },
+    "stat4": {
+      "type": "Stat",
+      "props": {
+        "value": "+6175%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "trade4_metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Volume",
+            "$3.3m"
+          ],
+          [
+            "Liquidity",
+            "$102k"
+          ],
+          [
+            "FDV",
+            "$339k"
+          ],
+          [
+            "H1",
+            "+22%"
+          ],
+          [
+            "Buys:Sells",
+            "5146:3934"
+          ]
+        ]
+      }
+    },
+    "trade4_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "313d-old pool reactivated, h1 still climbing. coordinated wake-up on a \"scam\"-themed ticker — see also pick 5.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trade5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trade5_header",
+        "trade5_metrics",
+        "trade5_analysis"
+      ]
+    },
+    "trade5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge5",
+        "heading5",
+        "stat5"
+      ]
+    },
+    "badge5": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "heading5": {
+      "type": "Heading",
+      "props": {
+        "text": "SCAM / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "stat5": {
+      "type": "Stat",
+      "props": {
+        "value": "+1120%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "trade5_metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Volume",
+            "$4.1m"
+          ],
+          [
+            "Liquidity",
+            "$57k"
+          ],
+          [
+            "FDV",
+            "$402k"
+          ],
+          [
+            "H1",
+            "+26%"
+          ],
+          [
+            "Buys:Sells",
+            "24298:20459"
+          ]
+        ]
+      }
+    },
+    "trade5_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "20h-old SOL launch, h1 +26% still alive. paired with SCAMMAN/WETH = memetic \"scam\"-naming cluster trading on the joke itself.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok (all 12 endpoints clean after 4–15s sequential back-offs cleared 429s on base/bsc/arbitrum/new)",
+        "variant": "caption"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "vibe_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe_heading",
+        "vibe_text"
+      ]
+    },
+    "vibe_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "zero DEEP-LIQ for the 3rd straight run — micro-cap casino regime persists; 4/5 picks are <24h launches, the only \"older\" pool (SCAMMAN, 313d) is a coordinated reactivation, no repeat tokens from prior 2 days.",
+        "variant": "body"
+      }
+    }
+  }
+}

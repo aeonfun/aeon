@@ -1,24 +1,25 @@
-## Summary
+*runners — 2026-04-28* — verdict: SPECULATIVE
 
-Ran `monitor-runners` skill against GeckoTerminal across 5 chains + global + new-pools (12 endpoints, all `ok` after rate-limit back-offs).
+1. [BREAKOUT] LUCA / SOL (solana) +1572% 24h
+vol $4.6m | liq $68k | fdv $544k | h1 +54% | buys:sells 33138:30558
+— 7h-old pool, h1 still ramping (+54%) on 60k+ txns; real degen churn but $68k liq is one whale exit from collapse.
 
-**Verdict: SPECULATIVE.** 152 pools dedup'd → 55 cleared the quality gate → top 5 by Runner Score:
+2. [BREAKOUT] 巨龙 / USDT (bsc) +3419% 24h
+vol $34.8m | liq $92k | fdv $70k | h1 +26% | buys:sells 1099:844
+— 2h-old, $34.8m on $92k liq = ~378x turnover and $70k FDV. wash-trade signature, observe only.
 
-1. **[BREAKOUT] BASED / SOL** +1058% — score 86.6 — 17h-old, vol $3.6m on $60k liq (60x turnover), h1 still climbing.
-2. **[CONTINUATION] NICE / SOL** +3121% — 81.9 — 68-day-old ticker reactivating on $25k liq, h1 +4%.
-3. **[REVERSAL] DEBT / SOL** +732% — 81.6 — 277-day-old, h1 -18%, exit-liquidity event.
-4. **[BREAKOUT] SHIBA / WETH (eth)** +5973% — 80.2 — fresh launch already collapsing h1 -26%.
-5. **[BREAKOUT] WOFL / WETH (eth)** +798% — 79.3 — $25k FDV on $15k liq, casino-tier.
+3. [BREAKOUT] CMD / ETH (eth) +1059% 24h
+vol $5.7m | liq $732k | fdv $2.5m (no mcap) | h1 -0.4% | buys:sells 4342:3887
+— cleanest setup on the board: $732k liq is closest to DEEP-LIQ, 21h old, h1 flat = post-pump consolidation. watch for a second leg or rollover.
 
-**No repeat runners** vs 04-25 (LASTMAN/BOAR/PEACE/mexicanunc all gone; 04-26 missed its slot via chain-runner DEGRADED).
+4. [CONTINUATION] SCAMMAN / WETH 1% (eth) +6175% 24h
+vol $3.3m | liq $102k | fdv $339k | h1 +22% | buys:sells 5146:3934
+— 313d-old pool reactivated, h1 still climbing. coordinated wake-up on a "scam"-themed ticker — see also pick 5.
 
-**Notable second-iteration finding:** zero DEEP-LIQ tickers cleared into the top 5 again — same skew the 04-25 log flagged. Recommend a follow-up `self-improve` pass to cap `pct_pts` at 300% or add a soft DEEP-LIQ floor.
+5. [BREAKOUT] SCAM / SOL (solana) +1120% 24h
+vol $4.1m | liq $57k | fdv $402k | h1 +26% | buys:sells 24298:20459
+— 20h-old SOL launch, h1 +26% still alive. paired with SCAMMAN/WETH = memetic "scam"-naming cluster trading on the joke itself.
 
-**Files:**
-- `.runners-{global,solana-trend,solana-vol,eth-trend,eth-vol,base-trend,base-vol,bsc-trend,bsc-vol,arb-trend,arb-vol,new}.json` — raw GeckoTerminal data
-- `.runners-process.js`, `.runners-result.json` — pipeline + scored output
-- `.runners-notif.md` — formatted notification body
-- `.pending-notify/1777291626.md` — queued for workflow delivery (direct `./notify` hit the documented `Unhandled node type: string` hook-block, 4th instance today)
-- `memory/logs/2026-04-27.md` — appended `## Monitor Runners` section
+sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok (all 12 endpoints clean after 4–15s sequential back-offs cleared 429s on base/bsc/arbitrum/new)
+vibe: zero DEEP-LIQ for the 3rd straight run — micro-cap casino regime persists; 4/5 picks are <24h launches, the only "older" pool (SCAMMAN, 313d) is a coordinated reactivation, no repeat tokens from prior 2 days.
 
-**Follow-ups:** workflow-side postprocess will deliver the notification; consider a `self-improve` PR to add a DEEP-LIQ floor / cap pct weight in the scoring formula.
