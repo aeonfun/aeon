@@ -29,4 +29,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-27,evening-rollup,claude-opus-4-7,25,16414,1325156,82312
 2026-04-27,evening-recap,claude-sonnet-4-6,12,10877,602910,67982
 2026-04-28,heartbeat,claude-opus-4-7,28289,23587,1178261,116861
-2026-04-28,defi-monitor,claude-opus-4-7,5365,1305,194882,31307
+2026-04-28,on-chain-monitor,claude-opus-4-7,14,2416,352027,32864
