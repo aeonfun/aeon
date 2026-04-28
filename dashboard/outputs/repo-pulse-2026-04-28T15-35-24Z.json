@@ -1,0 +1,180 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header-stack",
+        "repo-link",
+        "stats-row",
+        "stargazers-section",
+        "source-text"
+      ]
+    },
+    "header-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "surge-badge",
+        "date-text"
+      ]
+    },
+    "surge-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SURGE",
+        "variant": "default"
+      }
+    },
+    "date-text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-28",
+        "variant": "muted"
+      }
+    },
+    "repo-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      }
+    },
+    "stats-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-stars",
+        "stat-forks"
+      ]
+    },
+    "stat-stars": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "251",
+        "delta": "+7",
+        "trend": "up"
+      }
+    },
+    "stat-forks": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "36",
+        "delta": "+0",
+        "trend": "neutral"
+      }
+    },
+    "stargazers-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stargazers-heading",
+        "stargazers-list"
+      ]
+    },
+    "stargazers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New Stargazers",
+        "level": "h3"
+      }
+    },
+    "stargazers-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "sg1",
+        "sg2",
+        "sg3",
+        "sg4",
+        "sg5",
+        "sg6",
+        "sg7"
+      ]
+    },
+    "sg1": {
+      "type": "Link",
+      "props": {
+        "label": "BBridgeers",
+        "href": "https://github.com/BBridgeers"
+      }
+    },
+    "sg2": {
+      "type": "Link",
+      "props": {
+        "label": "NicolasArnouts",
+        "href": "https://github.com/NicolasArnouts"
+      }
+    },
+    "sg3": {
+      "type": "Link",
+      "props": {
+        "label": "ElDamiano-777",
+        "href": "https://github.com/ElDamiano-777"
+      }
+    },
+    "sg4": {
+      "type": "Link",
+      "props": {
+        "label": "thinkrivan",
+        "href": "https://github.com/thinkrivan"
+      }
+    },
+    "sg5": {
+      "type": "Link",
+      "props": {
+        "label": "alovesoupreme",
+        "href": "https://github.com/alovesoupreme"
+      }
+    },
+    "sg6": {
+      "type": "Link",
+      "props": {
+        "label": "s62dads4-rgb",
+        "href": "https://github.com/s62dads4-rgb"
+      }
+    },
+    "sg7": {
+      "type": "Link",
+      "props": {
+        "label": "Kurt0ne",
+        "href": "https://github.com/Kurt0ne"
+      }
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}

@@ -1,10 +1,7 @@
-*Repo Pulse — 2026-04-27* — [SURGE]
-aaronjmars/aeon — stars 244 (+6) · forks 36 (+0)
-
-Notable new stargazers:
-github.com/fzn0x (584 followers) | github.com/lacrimae0rerum (23 followers) | github.com/baustin27 (6 followers) | github.com/solserer-labs (19 followers)
+*Repo Pulse — 2026-04-28* — [SURGE]
+[aaronjmars/aeon] — stars 251 (+7) · forks 36 (+0)
 
 Other new stargazers:
-github.com/0x-ultra | github.com/adinull
+github.com/BBridgeers | github.com/NicolasArnouts | github.com/ElDamiano-777 | github.com/thinkrivan | github.com/alovesoupreme | github.com/s62dads4-rgb | github.com/Kurt0ne
 
 Source: events
