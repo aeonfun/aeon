@@ -1,0 +1,263 @@
+{
+  "root": "card-goal-tracker",
+  "state": {},
+  "elements": {
+    "card-goal-tracker": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker",
+        "description": "2026-04-28: 11 goals — 0 at risk, 2 needs attention, 8 on track, 0 blocked, 1 done (overall ↑ improving)"
+      },
+      "children": [
+        "summary-stats",
+        "sep1",
+        "needs-attention-section",
+        "sep2",
+        "on-track-section",
+        "sep3",
+        "done-section",
+        "sep4",
+        "sources-section"
+      ]
+    },
+    "summary-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-at-risk",
+        "stat-needs-attention",
+        "stat-on-track",
+        "stat-blocked",
+        "stat-done"
+      ]
+    },
+    "stat-at-risk": {
+      "type": "Stat",
+      "props": {
+        "label": "At Risk",
+        "value": "0"
+      }
+    },
+    "stat-needs-attention": {
+      "type": "Stat",
+      "props": {
+        "label": "Needs Attention",
+        "value": "2"
+      }
+    },
+    "stat-on-track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "8"
+      }
+    },
+    "stat-blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "0"
+      }
+    },
+    "stat-done": {
+      "type": "Stat",
+      "props": {
+        "label": "Done",
+        "value": "1"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "needs-attention-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "needs-heading",
+        "needs-item-1",
+        "needs-item-2"
+      ]
+    },
+    "needs-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Needs Attention",
+        "level": "h3"
+      }
+    },
+    "needs-item-1": {
+      "type": "Alert",
+      "props": {
+        "title": "Flatten Revenant resting-quote book before 2026-04-28 07 UTC",
+        "message": "0d idle, 6 activity/14d (new); deadline expired, V2 cutover wiped book at 11 UTC\n\nAction: Confirm operator pre-07-UTC flatten or accept wipe, then archive goal",
+        "type": "warning"
+      }
+    },
+    "needs-item-2": {
+      "type": "Alert",
+      "props": {
+        "title": "weekly-shiplog Mondays → forward to grant committees",
+        "message": "1d idle, 1 activity/14d (→ flat); chain-runner DEGRADED has been the bottleneck\n\nAction: Verify 2026-04-27 shiplog landed in grant-committee inbox; queue manual forward if not",
+        "type": "warning"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "on-track-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "on-track-heading",
+        "on-track-item-1",
+        "on-track-item-2",
+        "on-track-item-3",
+        "on-track-item-4",
+        "on-track-item-5",
+        "on-track-item-6",
+        "on-track-item-7",
+        "on-track-item-8"
+      ]
+    },
+    "on-track-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "On Track",
+        "level": "h3"
+      }
+    },
+    "on-track-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Fix chain-runner.yml dispatch_skill() — 0d idle, 9 activity/14d (→ flat) — still discussed, no PR landed yet",
+        "variant": "body"
+      }
+    },
+    "on-track-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (↑ improving)",
+        "variant": "body"
+      }
+    },
+    "on-track-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment: bump min-gap 7pp → ~7.5–8pp — 1d idle, 3 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "on-track-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep — 0d idle, 9 activity/14d (↑ improving)",
+        "variant": "body"
+      }
+    },
+    "on-track-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (hn-digest / polymarket renames) — 0d idle, 4 activity/14d (↑ improving) — PR #5 open",
+        "variant": "body"
+      }
+    },
+    "on-track-item-6": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature PRs to swarm-fund-mvp — 0d idle, 5 activity/14d (↑ improving) — PR #22 today",
+        "variant": "body"
+      }
+    },
+    "on-track-item-7": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review (workflow-security-audit ISS-015 / PR #4) — 0d idle, 3 activity/14d (new)",
+        "variant": "body"
+      }
+    },
+    "on-track-item-8": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily → PhD reading list — 0d idle, 7 activity/14d (↑ improving)",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "done-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "done-heading",
+        "done-item-1"
+      ]
+    },
+    "done-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h3"
+      }
+    },
+    "done-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Wire Kalshi-BRTI vs PM-Chainlink basis recorder for hermes-arb — completed 2026-04-27",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-status"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-status": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok, git=ok, gh_pr=ok, gh_issue=fail (tomscaria/aeon issues disabled), cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}

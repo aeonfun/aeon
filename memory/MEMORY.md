@@ -116,7 +116,6 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 ## Next Priorities
 - **🔴 Flatten Revenant resting-quote book before 2026-04-28 07 UTC** (V2 cutover wipes orderbook at 11 UTC). Confirm via help.polymarket.com primary doc.
 - **🔴 Fix chain-runner.yml `dispatch_skill()`** — now 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`.
-- **Wire Kalshi-BRTI vs PM-Chainlink basis recorder** for hermes-arb — Kalshi crypto perps went live today (2026-04-27 NYC); first 24h tape is the load-bearing dataset.
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are the highest-leverage daily skills. Resume daily once chain-runner fix lands.
 - **Hermes-arb gate adjustment:** bump `min-gap` 7pp → ~7.5–8pp per deep-research finding.
 - **Operator config sweep** (see `memory/topics/aeon-ops.md`): populate `memory/on-chain-watches.yml`; add `var:` to digest/list-digest/refresh-x/remix-tweets in `aeon.yml`; add `NEYNAR_API_KEY` secret + `X_HANDLE` env; land `scripts/prefetch-vuln-scanner.sh` (ISS-001), `scripts/prefetch-reddit.sh` (ISS-002 + ISS-012), `reply-maker)` case in `scripts/prefetch-xai.sh` (ISS-014); verify `scripts/postprocess-notify.sh` exists or wire workflow-side pickup; merge or close PR `tomscaria/aeon#1` (~44h stalled).
@@ -125,3 +124,6 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 - **Stalin-tier review:** apply `articles/workflow-security-audit-2026-04-27.patch` with workflow-scoped token to land ISS-015 fix (PR #4).
 - **`weekly-shiplog` Mondays** → forward to grant committees. (Today's slot ran successfully under the chain consume step despite wrapper failure.)
 - **`paper-pick` daily** → builds PhD reading list (see Recent papers above).
+
+## Completed Goals
+- **Wire Kalshi-BRTI vs PM-Chainlink basis recorder** for hermes-arb — completed 2026-04-27 (Kalshi crypto perps live; recorder launched per 2026-04-28 hermes-arb log).
