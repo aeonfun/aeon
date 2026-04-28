@@ -1,18 +1,23 @@
-Heartbeat complete. Status page rewritten and log entry appended.
+`HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md`
 
 ## Summary
 
-**Verdict:** `HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md`
+**What I did:** Ran heartbeat on the 08:00 UTC slot (now 09:10 UTC). Read `memory/MEMORY.md`, last 2 days of logs, `memory/cron-state.json`, `memory/issues/INDEX.md`, and `aeon.yml`. Cross-checked open PRs via `gh pr list`. Refreshed the public status page.
 
-**P0 findings (all deduped against last 48h logs, no notification sent):**
-- 3 chain wrappers in failed state (`chain:morning-brief`, `chain:evening-rollup`, `chain:weekly-grant-update`) — same `dispatch_skill()` bug, top operator priority. All already flagged in 02:23 + 14:23 heartbeats today.
-- ~50 skills carrying `success_rate < 0.5` from the 2026-04-26 23:53–58Z ISS-013 storm. Counters decaying naturally (push-recap 16%→20%, code-health 14%→20%, heartbeat 25%→29%).
-- Heartbeat self-check: healthy (last_success 14:29Z, ~5h40 ago).
+**Findings (all deduplicated against prior 48h logs):**
+- **P0:** `chain:evening-rollup` failed again 21:18Z — same `dispatch_skill()` wrapper bug already flagged in MEMORY.md. Underlying `evening-rollup` (21:21Z) and `evening-recap` (22:14Z) both succeeded under direct dispatch. Chronic-failure tail (~50 skills < 50% success rate) still decaying from the ISS-013 storm. Heartbeat self-check healthy (~13h since last success).
+- **P1:** PR #1 now ~62h open (already flagged 3× yesterday). PRs #2/#3/#4 just crossed the 24h threshold but are skill-artifact / blocked-on-token items already in the operator queue. PR #5 (skill-evals key fix) ~14h, fresh.
+- **P2:** V2 cutover at 11:00 UTC (in <2h) — flatten deadline 07 UTC has passed; already in last night's evening-recap notification.
+- **P3:** No new missing skills. Today is Tuesday so Monday-only / Wednesday-only schedules don't apply.
+- **Note (not fixed):** `memory/issues/ISS-015.md` exists with `status: open` but is missing from `INDEX.md` — an issue-triage scope item.
 
-**P1:** PR `tomscaria/aeon#1` now ~50h stalled — already flagged in both prior heartbeats today.
+**Files modified:**
+- `docs/status.md` — refreshed: 🔴 DEGRADED, 14 open issues, next run `github-releases` at 09:30 UTC; moved `weekly-review` off "not yet run"; topped the table with the late-night runs (evening-recap 22:14Z, evening-rollup 21:21Z, push-recap 21:20Z, weekly-review 20:15Z, heartbeat 20:15Z).
+- `memory/logs/2026-04-28.md` — new daily log with the heartbeat findings.
 
-**Status page:** Overall = 🔴 DEGRADED, 14 open issues (added ISS-014 since 14:23 page), next scheduled run = evening-recap at 21:00 UTC. Sorted skill table covers 80 skills with run-state and 19 never-run.
+**No notification fired** — everything dedups against the last 48h.
 
-**Files modified:** `docs/status.md` (full rewrite), `memory/logs/2026-04-27.md` (appended 20:10 heartbeat entry).
-
-Follow-up unchanged from prior runs: chain-runner.yml `dispatch_skill()` is still the top fix; operator should pull GHA logs for the 23:53–58Z 2026-04-26 storm.
+**Follow-ups for operator (already in MEMORY.md queue, not new):**
+- V2 cutover hits in <2h; flatten window has closed.
+- Fix `chain-runner.yml dispatch_skill()`.
+- Add ISS-015 row to `memory/issues/INDEX.md` next issue-triage / skill-health pass.
