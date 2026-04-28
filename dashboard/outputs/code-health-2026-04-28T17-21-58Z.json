@@ -1,0 +1,114 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health 2026-04-28",
+        "description": "aaronjmars/aeon @4782c4a"
+      },
+      "children": [
+        "metrics_stack",
+        "separator1",
+        "issues_stack",
+        "separator2",
+        "full_report_link"
+      ]
+    },
+    "metrics_stack": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat_todos",
+        "stat_secrets",
+        "stat_large_files",
+        "stat_as_any"
+      ]
+    },
+    "stat_todos": {
+      "type": "Stat",
+      "props": {
+        "label": "TODOs",
+        "value": "0"
+      }
+    },
+    "stat_secrets": {
+      "type": "Stat",
+      "props": {
+        "label": "Secrets",
+        "value": "0"
+      }
+    },
+    "stat_large_files": {
+      "type": "Stat",
+      "props": {
+        "label": "Files >500 lines",
+        "value": "1"
+      }
+    },
+    "stat_as_any": {
+      "type": "Stat",
+      "props": {
+        "label": "as-any count",
+        "value": "2"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "issues_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_shell_injection",
+        "issue_test_coverage",
+        "note_as_any_correction"
+      ]
+    },
+    "alert_shell_injection": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell injection vulnerability",
+        "message": "dashboard/app/api/secrets/route.ts:96 shell-injection from 2026-04-27 still unpatched (recommend skill-security-scan files ISS-016)",
+        "type": "error"
+      }
+    },
+    "issue_test_coverage": {
+      "type": "Text",
+      "props": {
+        "text": "Test-coverage gap on dashboard/a2a-server/mcp-server now 3 weeks unaddressed",
+        "variant": "body"
+      }
+    },
+    "note_as_any_correction": {
+      "type": "Text",
+      "props": {
+        "text": "as-any count corrected to 2 (last week miscounted)",
+        "variant": "caption"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full_report_link": {
+      "type": "Link",
+      "props": {
+        "label": "Full report",
+        "href": "articles/code-health-2026-04-28.md"
+      }
+    }
+  }
+}
