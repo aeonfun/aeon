@@ -1,21 +1,23 @@
-*Skill Health — 2026-04-27 18:59Z*
-HEALTH: DEGRADED(59) — recovery in progress
+Skill executed. Decision: NOOP — no notify this run.
 
-State change since 02:30Z: 53 skills moved CRITICAL→DEGRADED. All re-ran cleanly (cf=0, last_status=success). DEGRADED is a math artifact — historical success_rate <0.6 from the 04-26 23:53-58Z burst.
+## Summary
 
-SYSTEMIC: 59 skills share the zero-token last_error (ISS-013). Auto-resolve gates on HEALTHY, not DEGRADED — so ISS-013 stays open.
+**Classification (from `memory/cron-state.json` + `memory/skill-health/*.json` + `memory/issues/INDEX.md`)**:
+- 0 CRITICAL · 0 FLAPPING · **59 DEGRADED** · **19 HEALTHY** · 8 NO DATA
+- Systemic: 59 DEGRADED skills all share the zero-token `last_error` from the 2026-04-26T23:53–58Z burst (ISS-013); all have since re-run successfully, DEGRADED is a math artifact of historical `success_rate < 0.6`.
 
-Top 5 DEGRADED (oldest last_success):
-- token-report — succ 0.08, last_success 02:11Z → ISS-013
-- star-milestone — succ 0.13, last_success 02:16Z → ISS-013
-- repo-pulse — succ 0.13, last_success 02:16Z → ISS-013
-- technical-explainer — succ 0.10, last_success 02:17Z → ISS-013
-- monitor-polymarket — succ 0.11, last_success 02:18Z → ISS-013 (mission-critical for Revenant)
-+54 more — see memory/issues/INDEX.md
+**Notify gate (step 5)**: hash unchanged from prior run (same 59 DEGRADED set, same systemic) AND only 23h59m30s elapsed since `last_notified_at=2026-04-27T18:59:29Z` (<24h) → **suppressed per spec**. Logged `SKILL_HEALTH_NOOP`.
 
-NO DATA (9, scheduled but unseen): morning-brief, hacker-news-digest, reg-monitor, project-lens, repo-scanner, syndicate-article, vercel-projects, weekly-review, weekly-shiplog → DISPATCH-SKILL
-HEALTHY: 18
+**Delta vs prev run**: only `weekly-review` flipped NO DATA → HEALTHY (healthy_count 18 → 19); hash-irrelevant.
 
-Open issues: 14 · Resolved: 0 · Filed: 0
+**Issue reconciliation (step 4)**: ISS-013 stays open. None of its 53 affected skills are HEALTHY yet (closest: `heartbeat` at sr=0.38) — spec auto-resolve only fires on HEALTHY, not DEGRADED. No new CRITICAL/FLAPPING → no new filings. INDEX.md unchanged.
 
-Operator: chain-runner.yml dispatch_skill bug remains top priority — chain:morning-brief failed again at 07:56Z.
+**Files modified**:
+- `memory/skill-health/last-report.json` — updated `last_run_at`, classification, notes; preserved `last_notified_at` and `hash`
+- `memory/logs/2026-04-28.md` — appended Skill Health section with NOOP entry
+
+**SKILL_HEALTH_PARTIAL** — `scripts/skill-runs` not invoked (sandbox); used cron-state + INDEX.md only.
+
+**Follow-ups (operator/external skills, not skill-health-owned)**:
+- chain-runner.yml `dispatch_skill()` bug (chain:morning-brief failed today at 07:56:08Z) — not classified here, but per MEMORY.md it's the top operator priority.
+- ISS-013 closure waits for ~5+ clean cron ticks per affected skill to drag historical sr above 0.6, or manual close by operator/skill-repair after burst confirmation.
