@@ -1,0 +1,88 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert_error",
+        "separator_1",
+        "stack_metadata"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "curl HTTP 403 on old.reddit.com (top/hot/rising); WebFetch refused old/www/reddit.com",
+        "type": "error"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_occurrence",
+        "text_history",
+        "text_resolution"
+      ]
+    },
+    "stack_occurrence": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_recurrence",
+        "text_date"
+      ]
+    },
+    "stat_recurrence": {
+      "type": "Stat",
+      "props": {
+        "label": "Recurrence",
+        "value": "4th"
+      },
+      "children": []
+    },
+    "text_date": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-28",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_history": {
+      "type": "Text",
+      "props": {
+        "text": "Same wall as 2026-04-25/27",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_resolution": {
+      "type": "Text",
+      "props": {
+        "text": "Tracked in ISS-002 · Closes when scripts/prefetch-reddit.sh lands",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

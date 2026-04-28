@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR: all Reddit endpoints blocked (HTTP 403 network policy via curl; WebFetch refused old/www/reddit.com). Third recurrence under same sandbox config. Tracked in ISS-002. Closes when scripts/prefetch-reddit.sh lands.
+VIBECODING_DIGEST_ERROR: 4th recurrence (2026-04-28). curl HTTP 403 on old.reddit.com top/hot/rising; WebFetch refused old/www/reddit.com. Same wall as 2026-04-25/27 — tracked in ISS-002. Closes when scripts/prefetch-reddit.sh lands.
