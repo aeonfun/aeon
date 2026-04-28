@@ -1,25 +1,16 @@
-Token-alert complete. All three tracked tokens (BTC, ETH, SOL) within thresholds; no notification needed.
-
 ## Summary
 
-Ran `skills/token-alert/SKILL.md` for the intraday slot.
+Ran `token-alert` for 2026-04-28 against the three tracked tokens in `memory/MEMORY.md` (BTC, ETH, SOL, 10% threshold each).
 
-**Tracked set (from `memory/MEMORY.md` § Tracked Tokens):** BTC, ETH, SOL @ 10% threshold each.
+**Prices (CoinGecko, no key, curl direct — first try ok):**
+- BTC: $76,350 (-1.68% 24h, $35.89B vol)
+- ETH: $2,277.54 (-1.57% 24h, $13.87B vol)
+- SOL: $83.66 (-1.66% 24h, $2.89B vol)
 
-**Current prices (CoinGecko public endpoint, single curl):**
-| Token | Price | 24h Change | 24h Volume |
-|-------|-------|------------|------------|
-| BTC | $77,840 | -0.31% | $33.61B |
-| ETH | $2,320.34 | -0.64% | $15.02B |
-| SOL | $85.23 | -1.39% | $3.55B |
+**Triggers checked:** 24h price >10% → none. Volume >3x prior → none. Threshold-cross → none.
 
-**Comparison vs morning sweep** (this morning's log: BTC $79,142 / ETH $2,389.21 / SOL $87.66): BTC -1.64%, ETH -2.88%, SOL -2.77% — modest intraday pullback, no token near 10%.
+**Verdict:** TOKEN_ALERT_OK. Continuation of yesterday's PM risk-off; ~3.5–4.7% off the 2026-04-27 AM peak but still under threshold and volumes normal-to-elevated (0.8–1.3x).
 
-**Vs 2026-04-25 baseline:** BTC +0.30%, ETH +0.17%, SOL -1.41% — 2-day net near flat after morning's risk-on retraced.
-
-**Volume:** all 1.2-1.4x recent comparables. None over 3x.
-
-**Result:** TOKEN_ALERT_OK. No notification dispatched.
-
-**Files modified:** `memory/logs/2026-04-27.md` (appended log entry).
-**Follow-up:** none.
+**Files modified:** `memory/logs/2026-04-28.md` (token-alert section appended).
+**Notification:** none sent (silent on OK per spec).
+**Follow-up:** none — only worth re-surfacing if the slide accelerates intraday or coincides with the Polymarket V2 cutover hitting at 11 UTC.
