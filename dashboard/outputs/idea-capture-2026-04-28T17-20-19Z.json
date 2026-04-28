@@ -1,0 +1,22 @@
+{
+  "root": "card-idea-capture",
+  "state": {},
+  "elements": {
+    "card-idea-capture": {
+      "type": "Card",
+      "props": {
+        "title": "idea-capture"
+      },
+      "children": [
+        "alert-usage"
+      ]
+    },
+    "alert-usage": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "idea-capture called without an idea — pass the note as var="
+      }
+    }
+  }
+}

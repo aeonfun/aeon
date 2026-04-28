@@ -1,0 +1,134 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup — 2026-04-28",
+        "description": "Source: cache:0 websearch:1 failed:2"
+      },
+      "children": [
+        "ai-section",
+        "separator-1",
+        "crypto-section",
+        "separator-2",
+        "tech-section"
+      ]
+    },
+    "ai-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai-heading",
+        "ai-subtitle",
+        "ai-content"
+      ]
+    },
+    "ai-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI agents / LLM",
+        "level": "h3"
+      }
+    },
+    "ai-subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "Single story dominating: OpenAI hardware play",
+        "variant": "lead"
+      }
+    },
+    "ai-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-link",
+        "detail-text"
+      ]
+    },
+    "story-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "OpenAI is building its own AI Agent Phone",
+        "source": "x.com/Alex18801493",
+        "href": "https://x.com/Alex18801493/status/2048643278266847672"
+      }
+    },
+    "detail-text": {
+      "type": "Text",
+      "props": {
+        "text": "OpenAI is building its own AI Agent Phone, partnering with MediaTek and Qualcomm on custom processors and Luxshare as exclusive manufacturer; mass production targeted for 2028. The 2028 timeline pegs OpenAI's hardware ambition to a 2-year cycle, not a scrappy 2025–26 launch.",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "crypto-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crypto-heading",
+        "crypto-status"
+      ]
+    },
+    "crypto-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "crypto / DeFi",
+        "level": "h3"
+      }
+    },
+    "crypto-status": {
+      "type": "Text",
+      "props": {
+        "text": "Dropped (no fresh signal in 48h window)",
+        "variant": "muted"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tech-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tech-heading",
+        "tech-status"
+      ]
+    },
+    "tech-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "tech / startups / open source",
+        "level": "h3"
+      }
+    },
+    "tech-status": {
+      "type": "Text",
+      "props": {
+        "text": "Dropped (no fresh signal in 48h window)",
+        "variant": "muted"
+      }
+    }
+  }
+}
