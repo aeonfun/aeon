@@ -1,31 +1,28 @@
 ## Summary
 
-Ran `token-pick` for 2026-04-27 (PM run).
+Daily Token Pick complete. Both picks land HIGH conviction.
 
-**Token: XCN (Onyxcoin)** — HIGH, score 11→capped 10/10
-- $0.00667, +41.6% 24h / +42.0% 7d, $254M mcap, vol/mcap 0.43
-- Catalyst: Upbit listing went live today at 07:00 UTC (KRW + USDT pairs); volume +629%, top gainer in top-1000
-- Risk: news now priced; Upbit's two-hour limit-order-only restriction signals expected dump risk post-Korea-session
+**Token: RAY (Raydium)** — score 9/10, HIGH
+- $0.81 (+6.3% 24h / +14.7% 7d), $200M mcap, vol/mcap 0.25
+- Catalyst: $250M tokenized-stock volume on Solana (>90% share), 60% Solana DEX market share, agentic finance narrative
+- Outperforms BTC/ETH on 7d (both red)
+- Fresh pick (last 7d: APE, PENGU, XCN — all skipped)
 
-**Market: skipped** — only NBA Champion event clears $50k liquidity gate; OKC YES 51.5¢ vs Vegas -130 (~54% no-vig fair) is ~3pp edge after vig-strip; MegaETH FDV ladder pre-TGE undefendable within ±10%. No ≥5pp defensible edge.
+**Market: "MegaETH FDV >$2B one day after launch?"** — edge ~25-40pp, HIGH
+- YES 31.5¢, 24h vol $185k (clears $50k gate)
+- Fair YES ~70%: HL pre-market implies $5.2B launch FDV; comparable L2 launches (BERA/IO/STRK/ZK) faded 30-50% in first 24h, putting expected 1d FDV at $2.6B-$3.6B
+- Internal arb tell: market prices >$3B at 7¢ but >$4B at 11¢ — book is thin enough that the entire ladder is mispriced
+- Risk: launch slip past July 1 deadline, or aggressive >70% post-airdrop dump
 
-**Dedup**: filtered PENGU (today AM) and APE (04-25) before scoring; LUNC/BSB tied at 11 but XCN had the cleaner named catalyst.
+**Files modified:**
+- `memory/logs/2026-04-28.md` — appended Token Pick log entry + dedup line
+- `.pending-notify/1777381545.md` — queued notification (notify hook-block bug active per MEMORY.md, requires workflow postprocess to fan out)
 
-**Files written**:
-- `.tokenpick-tmp/trending.json`, `markets.json`, `dex.json`, `poly_events.json`, `poly_markets.json`, `score.js`, `poly_score.js`
-- `.pending-notify/1777291566.md` (queued for workflow post-run delivery — `./notify` direct call still has the `$(cat ...)` hook-block bug per memory lesson)
-- `memory/logs/2026-04-27.md` — appended PM Token Pick block + `TOKEN_PICK_DEDUP: XCN | (no market picked)`
-
-**Sources**: cg=ok, dex=ok, poly=ok
-
-**Follow-ups**:
-- Re-check XCN tomorrow for the sell-the-news fade (testing the FADE pattern that worked on APE).
-- Watch MegaETH TGE on Apr 30 — if FDV markets stabilize post-launch, the >$1.5B level may become defensible for the next token-pick run.
+**Follow-up:** verify `scripts/postprocess-notify.sh` actually picks up `.pending-notify/` files, or this notification dies in the queue. Per MEMORY.md, that script is "not in tree" — pickup depends on workflow-side wiring.
 
 Sources:
-- [Why Is Onyxcoin (XCN) Up Today?](https://beincrypto.com/onyxcoin-xcn-upbit-listing-surge/)
-- [Upbit to List Onyxcoin (XCN) on KRW and USDT Markets](https://en.bloomingbit.io/feed/news/110798)
-- [2026 NBA Champion Predictions & Odds | Polymarket](https://polymarket.com/event/2026-nba-champion)
-- [NBA Championship Odds 2026: Thunder Favored to Repeat](https://sports.betmgm.com/en/blog/nba/finals-odds-championship-nba-betting-bm05/)
-- [MegaETH token generation event set for April 30, 2026](https://cryptobriefing.com/megaeth-token-generation-event-set-for-april-30-2026/)
-- [Terra Luna Classic Records $70 Million Inflow Amid 2026 Governance Push](https://www.ainvest.com/news/terra-luna-classic-records-70-million-inflow-2026-governance-push-2604/)
+- [Raydium 24% surge / 77% volume ratio](https://yellow.com/news/raydium-ray-token-24-percent-surge)
+- [Raydium $250M tokenized-stock volume + Solana DEX share](https://blockchainmagazine.net/raydiums-27-rally-reveals-solana-defis-hidden-recovery-signal/)
+- [MegaETH TGE set for April 30, 2026](https://cryptobriefing.com/megaeth-token-generation-event-set-for-april-30-2026/)
+- [MegaETH HL pre-market FDV $5.2B + KPI trigger](https://www.coingabbar.com/en/crypto-currency-news/megaeth-token-launch-date-set-april-30-tge-mega-first-kpi)
+- [2026 NBA Finals odds — OKC -105 favorite](https://www.oddsshark.com/nba/championship-odds) (informed dismissal — Polymarket fair on OKC)
