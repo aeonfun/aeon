@@ -1,0 +1,145 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Remix Tweets",
+        "description": "2026-04-28"
+      },
+      "children": [
+        "alert",
+        "main-stack"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured (4th consecutive ERROR fire)"
+      }
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "root-cause-section",
+        "separator1",
+        "action-section",
+        "separator2",
+        "recommendation"
+      ]
+    },
+    "root-cause-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "root-cause-heading",
+        "causes"
+      ]
+    },
+    "root-cause-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h4"
+      }
+    },
+    "causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause1",
+        "cause2"
+      ]
+    },
+    "cause1": {
+      "type": "Badge",
+      "props": {
+        "text": "X_HANDLE env unset",
+        "variant": "destructive"
+      }
+    },
+    "cause2": {
+      "type": "Badge",
+      "props": {
+        "text": "soul/SOUL.md Identity has no @handle",
+        "variant": "destructive"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-heading",
+        "action-items"
+      ]
+    },
+    "action-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Action Required",
+        "level": "h4"
+      }
+    },
+    "action-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action1",
+        "action2"
+      ]
+    },
+    "action1": {
+      "type": "Text",
+      "props": {
+        "text": "Add X_HANDLE to .github/workflows/aeon.yml env",
+        "variant": "body"
+      }
+    },
+    "action2": {
+      "type": "Text",
+      "props": {
+        "text": "Or add @handle to SOUL.md Identity",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Recommendation",
+        "message": "Pause 30 17 * * * cron until fixed"
+      }
+    }
+  }
+}
