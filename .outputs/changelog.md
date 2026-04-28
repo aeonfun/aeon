@@ -1,1 +1,1 @@
-Changelog — Week of 2026-04-27. 1 repo (aaronjmars/aeon): 8 user-facing changes (0 breaking, 8 added, 1 collapsed Changed entry covering ~35 autoresearch evolution PRs, 0 fixed, 0 security). Top: SHOWCASE.md adds a fork showcase + Aeon-vs-AutoGen/CrewAI/n8n/LangGraph comparison page (#145). Full: articles/changelog-2026-04-27.md
+*Changelog — Week of 2026-04-28* 1 repo: 8 user-facing changes (0 breaking, 8 added, 0 fixed, 0 security). Top: every fork now gets a public /status/ health dashboard, extended today with a Token Pulse row. Full: articles/changelog-2026-04-28.md
