@@ -1,18 +1,1 @@
-## Summary
-
-Executed `skills/research-brief/SKILL.md` with no `var` supplied. Logged `RESEARCH_BRIEF_EMPTY_VAR` and fell back to the top hot-topic from MEMORY: **Kalshi and Polymarket onshore crypto perpetual futures** (April 21, 2026 announcements) — directly upstream of the hermes-arb Next Priority.
-
-**Thesis (falsifiable):** Onshore CFTC-supervised BTC perps on Kalshi and Polymarket will capture ≥5% of US retail BTC perp volume away from offshore venues by Q4 2026. Falsified by Aug-2026 combined daily volume <$50M with Hyperliquid still >$1B/day, or by CFTC reversing Kalshi's margin license, or by NY lawsuit succeeding.
-
-**Sources:** 13 web (Bloomberg, Coindesk, CNBC, The Information, Marketplace, Unchained, The Block, crypto.news, Investing.com, PYMNTS, Yellow, Coinspectator, Benzinga — all 2026-04) + 1 academic (Alexander et al. 2020, *J. Financial Stability*, via OpenAlex). Source floor met.
-
-**Files written**
-- `articles/research-brief-kalshi-polymarket-crypto-perps-2026-04-27.md` (~1100 words incl. frontmatter, body in target band)
-- `.pending-notify/1745765400-research-brief.md` (notify queued — direct `./notify` hit the recurring "Unhandled node type: string" hook-block from MEMORY)
-- `memory/logs/2026-04-27.md` — appended `### research-brief` entry + `RESEARCH_BRIEF_OK`
-- `.outputs/openalex-perps.json`, `.outputs/openalex-funding.json`, `.outputs/openalex-calib.json` (cached search results)
-
-**Follow-ups**
-- Verify `.pending-notify/` workflow-side pickup (MEMORY flagged `scripts/postprocess-notify.sh` not in tree).
-- Track BTC perp volume on Kalshi/PM weekly to test the ≥5% thesis falsifier.
-- Bump hermes-arb `min-gap` 7pp → 7.5–8pp before the agent goes live (already in MEMORY Next Priorities).
+Research brief — Polymarket V2 cutover (2026-04-28). V2 cutover executed at ~11 UTC: new CTF Exchange contracts, EIP-1271 wallet support, on-chain builder codes, pUSD (1:1 USDC-backed) replacing USDC.e — every resting V1 order wiped. $1M maker-rebate program pre-loaded, $500k front-loaded into first two hours. V1 SDKs bricked; only clob-client-v2 / py-clob-client-v2 talk to live exchange. Thesis: V2 will durably tighten top-20 binary spreads vs the 7-day pre-cutover baseline within 14 days, because new contracts retire V1's balance-check race conditions and absent integrator revenue share — latter now solved via on-chain builder-code USDC rebates. Matters for Revenant: py-clob-client install blocker is now formally retired (V2 path is the only path), and V2's race-condition fix should mechanically lift agent match-rate. Settlement-layer (Chainlink Data Streams) unchanged — hermes-arb dual-clock gap vs Kalshi BRTI persists. Article: articles/research-brief-polymarket-v2-cutover-2026-04-28.md

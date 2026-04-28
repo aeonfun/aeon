@@ -1,0 +1,184 @@
+{
+  "root": "card-research-brief",
+  "state": {},
+  "elements": {
+    "card-research-brief": {
+      "type": "Card",
+      "props": {
+        "title": "Research brief — Polymarket V2 cutover (2026-04-28)"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-exec-time",
+        "sep-1",
+        "heading-technical",
+        "stack-technical-changes",
+        "text-v1-orders",
+        "text-rebate-program",
+        "text-sdk-status",
+        "sep-2",
+        "heading-thesis",
+        "text-thesis",
+        "sep-3",
+        "heading-revenant",
+        "text-revenant-1",
+        "text-revenant-2",
+        "sep-4",
+        "heading-settlement",
+        "text-settlement",
+        "sep-5",
+        "story-article"
+      ]
+    },
+    "text-exec-time": {
+      "type": "Text",
+      "props": {
+        "text": "Executed at ~11 UTC"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-technical": {
+      "type": "Heading",
+      "props": {
+        "text": "Technical Changes",
+        "level": "h3"
+      }
+    },
+    "stack-technical-changes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-ctf",
+        "badge-eip1271",
+        "badge-builder-codes",
+        "badge-pusd"
+      ]
+    },
+    "badge-ctf": {
+      "type": "Badge",
+      "props": {
+        "text": "New CTF Exchange contracts"
+      }
+    },
+    "badge-eip1271": {
+      "type": "Badge",
+      "props": {
+        "text": "EIP-1271 wallet support"
+      }
+    },
+    "badge-builder-codes": {
+      "type": "Badge",
+      "props": {
+        "text": "On-chain builder codes"
+      }
+    },
+    "badge-pusd": {
+      "type": "Badge",
+      "props": {
+        "text": "pUSD (1:1 USDC-backed) replacing USDC.e"
+      }
+    },
+    "text-v1-orders": {
+      "type": "Text",
+      "props": {
+        "text": "Every resting V1 order wiped"
+      }
+    },
+    "text-rebate-program": {
+      "type": "Text",
+      "props": {
+        "text": "$1M maker-rebate program pre-loaded, $500k front-loaded into first two hours"
+      }
+    },
+    "text-sdk-status": {
+      "type": "Text",
+      "props": {
+        "text": "V1 SDKs bricked; only clob-client-v2 and py-clob-client-v2 talk to live exchange"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h3"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "V2 will durably tighten top-20 binary spreads vs the 7-day pre-cutover baseline within 14 days, because new contracts retire V1's balance-check race conditions and absent integrator revenue share — latter now solved via on-chain builder-code USDC rebates."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-revenant": {
+      "type": "Heading",
+      "props": {
+        "text": "Impact on Revenant",
+        "level": "h3"
+      }
+    },
+    "text-revenant-1": {
+      "type": "Text",
+      "props": {
+        "text": "py-clob-client install blocker is now formally retired (V2 path is the only path)"
+      }
+    },
+    "text-revenant-2": {
+      "type": "Text",
+      "props": {
+        "text": "V2's race-condition fix should mechanically lift agent match-rate"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-settlement": {
+      "type": "Heading",
+      "props": {
+        "text": "Settlement Layer",
+        "level": "h3"
+      }
+    },
+    "text-settlement": {
+      "type": "Text",
+      "props": {
+        "text": "Chainlink Data Streams unchanged — hermes-arb dual-clock gap vs Kalshi BRTI persists"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "story-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Research brief: Polymarket V2 cutover analysis",
+        "href": "articles/research-brief-polymarket-v2-cutover-2026-04-28.md",
+        "source": "research-brief skill"
+      }
+    }
+  }
+}
