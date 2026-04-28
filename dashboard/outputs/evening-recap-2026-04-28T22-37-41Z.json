@@ -1,0 +1,459 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-04-28"
+      },
+      "children": [
+        "trading-loop-section",
+        "sep1",
+        "signals-section",
+        "sep2",
+        "revenant-section",
+        "sep3",
+        "nav-section",
+        "sep4",
+        "failures-section",
+        "sep5",
+        "top3-section",
+        "sep6",
+        "sources-section"
+      ]
+    },
+    "trading-loop-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trading-heading",
+        "trading-content"
+      ]
+    },
+    "trading-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading-loop",
+        "level": "h2"
+      }
+    },
+    "trading-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-pm-scanned",
+        "stat-pools-scored",
+        "text-kalshi"
+      ]
+    },
+    "stat-pm-scanned": {
+      "type": "Stat",
+      "props": {
+        "label": "PM markets scanned",
+        "value": "18"
+      }
+    },
+    "stat-pools-scored": {
+      "type": "Stat",
+      "props": {
+        "label": "Pools scored",
+        "value": "48 of 153"
+      }
+    },
+    "text-kalshi": {
+      "type": "Text",
+      "props": {
+        "text": "~100 Kalshi markets",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signals-heading",
+        "signals-content"
+      ]
+    },
+    "signals-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals fired",
+        "level": "h2"
+      }
+    },
+    "signals-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-kxbtc",
+        "text-monitor-status",
+        "text-v2-cutover"
+      ]
+    },
+    "text-kxbtc": {
+      "type": "Text",
+      "props": {
+        "text": "KXBTC mode -$2k → ~$77k May-1 implied, vol +167% d/d",
+        "variant": "body"
+      }
+    },
+    "text-monitor-status": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners SPECULATIVE, 0 DEEP-LIQ (3rd straight)",
+        "variant": "body"
+      }
+    },
+    "text-v2-cutover": {
+      "type": "Text",
+      "props": {
+        "text": "V2 cutover artifact spiked all PM markets ~50% at 12:00 UTC (false positive, reverted)",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "revenant-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "revenant-heading",
+        "revenant-status",
+        "revenant-stats"
+      ]
+    },
+    "revenant-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h2"
+      }
+    },
+    "revenant-status": {
+      "type": "Text",
+      "props": {
+        "text": "V2 orderbook wipe confirmed 11 UTC (polymarket-comments + monitor-polymarket independent). 0 new orders.",
+        "variant": "body"
+      }
+    },
+    "revenant-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-closed-trades",
+        "stat-win-rate",
+        "stat-pnl",
+        "stat-sharpe"
+      ]
+    },
+    "stat-closed-trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "29"
+      }
+    },
+    "stat-win-rate": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "76%"
+      }
+    },
+    "stat-pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      }
+    },
+    "stat-sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "nav-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "nav-heading",
+        "nav-content"
+      ]
+    },
+    "nav-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV delta",
+        "level": "h2"
+      }
+    },
+    "nav-content": {
+      "type": "Text",
+      "props": {
+        "text": "No live data post-wipe — metrics.json generated 05:42 UTC pre-cutover, shadow agents only",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "failures-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "failures-heading",
+        "alert-chainrunner",
+        "alert-farcaster",
+        "alert-vibecoding",
+        "alert-remix",
+        "alert-agentbuzz"
+      ]
+    },
+    "failures-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill failures",
+        "level": "h2"
+      }
+    },
+    "alert-chainrunner": {
+      "type": "Alert",
+      "props": {
+        "title": "chain-runner",
+        "message": "DEGRADED 5 days (3 chains)",
+        "type": "warning"
+      }
+    },
+    "alert-farcaster": {
+      "type": "Alert",
+      "props": {
+        "title": "farcaster-digest",
+        "message": "x3 (NEYNAR unset)",
+        "type": "warning"
+      }
+    },
+    "alert-vibecoding": {
+      "type": "Alert",
+      "props": {
+        "title": "vibecoding-digest",
+        "message": "x4 (Reddit blocked)",
+        "type": "warning"
+      }
+    },
+    "alert-remix": {
+      "type": "Alert",
+      "props": {
+        "title": "remix-tweets",
+        "message": "x4 (X_HANDLE unset)",
+        "type": "warning"
+      }
+    },
+    "alert-agentbuzz": {
+      "type": "Alert",
+      "props": {
+        "title": "agent-buzz",
+        "message": "x3 (XAI prefetch missing)",
+        "type": "warning"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top3-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top3-heading",
+        "top3-item-1",
+        "top3-item-2",
+        "top3-item-3"
+      ]
+    },
+    "top3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3",
+        "level": "h2"
+      }
+    },
+    "top3-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-1",
+        "story-arxiv"
+      ]
+    },
+    "badge-1": {
+      "type": "Badge",
+      "props": {
+        "text": "1",
+        "variant": "secondary"
+      }
+    },
+    "story-arxiv": {
+      "type": "StoryLink",
+      "props": {
+        "title": "arXiv:2509.22638 — verbal-RL FCP, hooks directly into CalibrationGap reflection-log loop",
+        "href": "https://arxiv.org/abs/2509.22638",
+        "source": "arXiv"
+      }
+    },
+    "top3-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-2",
+        "text-uma-arb"
+      ]
+    },
+    "badge-2": {
+      "type": "Badge",
+      "props": {
+        "text": "2",
+        "variant": "secondary"
+      }
+    },
+    "text-uma-arb": {
+      "type": "Text",
+      "props": {
+        "text": "UMA-arb: Iran-cf 0.25% NO vs Hez-cf 99.85% YES on identical clauses — not in quant scanner",
+        "variant": "body"
+      }
+    },
+    "top3-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-3",
+        "story-pr22"
+      ]
+    },
+    "badge-3": {
+      "type": "Badge",
+      "props": {
+        "text": "3",
+        "variant": "secondary"
+      }
+    },
+    "story-pr22": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #22 swarm-fund (privy-loader + WaitlistCTAAuth stubs, unblocks /learn deploy)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/22",
+        "source": "GitHub"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "source-badges"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "source-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-log-ok",
+        "badge-cron-ok"
+      ]
+    },
+    "badge-log-ok": {
+      "type": "Badge",
+      "props": {
+        "text": "log=ok",
+        "variant": "default"
+      }
+    },
+    "badge-cron-ok": {
+      "type": "Badge",
+      "props": {
+        "text": "cron-state=ok",
+        "variant": "default"
+      }
+    }
+  }
+}
