@@ -1,0 +1,301 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Milestone — 250 stars · SPIKE"
+      },
+      "children": [
+        "repo-name",
+        "separator-1",
+        "milestone-stat",
+        "separator-2",
+        "time-section",
+        "separator-3",
+        "pace-section",
+        "separator-4",
+        "highlights-section",
+        "separator-5",
+        "repo-link"
+      ]
+    },
+    "repo-name": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "variant": "lead"
+      }
+    },
+    "separator-1": {
+      "type": "Separator"
+    },
+    "milestone-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars (now)",
+        "value": "251",
+        "delta": "+51 in 3 days"
+      }
+    },
+    "separator-2": {
+      "type": "Separator"
+    },
+    "time-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "time-heading",
+        "time-detail-1",
+        "time-detail-2"
+      ]
+    },
+    "time-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Time to 250 stars",
+        "level": "h3"
+      }
+    },
+    "time-detail-1": {
+      "type": "Text",
+      "props": {
+        "text": "3 days from 200 (bootstrap)"
+      }
+    },
+    "time-detail-2": {
+      "type": "Text",
+      "props": {
+        "text": "Well above the 4.1/day 30-day baseline"
+      }
+    },
+    "separator-3": {
+      "type": "Separator"
+    },
+    "pace-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pace-heading",
+        "pace-stats"
+      ]
+    },
+    "pace-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pace & Projection",
+        "level": "h3"
+      }
+    },
+    "pace-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-current-pace",
+        "stat-baseline",
+        "stat-projection"
+      ]
+    },
+    "stat-current-pace": {
+      "type": "Stat",
+      "props": {
+        "label": "Current pace",
+        "value": "45/week"
+      }
+    },
+    "stat-baseline": {
+      "type": "Stat",
+      "props": {
+        "label": "30-day baseline",
+        "value": "4.1/day"
+      }
+    },
+    "stat-projection": {
+      "type": "Stat",
+      "props": {
+        "label": "Projected 300 stars by",
+        "value": "2026-05-06"
+      }
+    },
+    "separator-4": {
+      "type": "Separator"
+    },
+    "highlights-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "highlights-heading",
+        "highlights-list"
+      ]
+    },
+    "highlights-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Highlights since 2026-04-25",
+        "level": "h3"
+      }
+    },
+    "highlights-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "highlight-1",
+        "highlight-2",
+        "highlight-3"
+      ]
+    },
+    "highlight-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "h1-desc",
+        "h1-prs-container"
+      ]
+    },
+    "h1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Shipped 3 fleet-ops skills to aaronjmars/aeon"
+      }
+    },
+    "h1-prs-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "h1-pr1",
+        "h1-pr2",
+        "h1-pr3"
+      ]
+    },
+    "h1-pr1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #142 skill-analytics",
+        "href": "https://github.com/aaronjmars/aeon/pull/142"
+      }
+    },
+    "h1-pr2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #144 contributor-reward",
+        "href": "https://github.com/aaronjmars/aeon/pull/144"
+      }
+    },
+    "h1-pr3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #145 SHOWCASE.md",
+        "href": "https://github.com/aaronjmars/aeon/pull/145"
+      }
+    },
+    "highlight-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "h2-desc",
+        "h2-prs-container"
+      ]
+    },
+    "h2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Opened external-feature PRs on tomscaria/swarm-fund-mvp"
+      }
+    },
+    "h2-prs-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "h2-pr1",
+        "h2-pr2",
+        "h2-pr3"
+      ]
+    },
+    "h2-pr1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #18 bankr_bridge --max validator",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/18"
+      }
+    },
+    "h2-pr2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #19 ssrn_harvest rowcount fix",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/19"
+      }
+    },
+    "h2-pr3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #20 markdown image-strip regex",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/20"
+      }
+    },
+    "highlight-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "h3-alert",
+        "h3-pr"
+      ]
+    },
+    "h3-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-015",
+        "message": "workflows/messages.yml script-injection",
+        "type": "warning"
+      }
+    },
+    "h3-pr": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #4 (2-line patch, awaiting workflow-scoped token)",
+        "href": "https://github.com/aaronjmars/aeon/pull/4"
+      }
+    },
+    "separator-5": {
+      "type": "Separator"
+    },
+    "repo-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "View repository",
+        "href": "https://github.com/aaronjmars/aeon",
+        "source": "GitHub"
+      }
+    }
+  }
+}
