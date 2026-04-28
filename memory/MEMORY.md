@@ -35,6 +35,9 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 - **chain-runner.yml `dispatch_skill()` still DEGRADED.** Now confirmed across morning-brief, evening-rollup, AND weekly-grant-update (Mon Apr 27 09:00). Top fix.
 - **ISS-013 mass-failure** — 53 skills CRITICAL after 2026-04-26 23:53–58Z storm; counters decaying naturally. Operator should pull GHA logs.
 
+## Kalshi signals
+- **2026-04-28:** KXBTC-26MAY0117 BTC distribution modal ~$77k for May 1; yesterday spot $79,142 with flow into $79-82k, today peak vol at $77.5-78k (+167% vol). Distribution shifted ~$2k down. KXFED-27APR T4.00 at 57% (2-3 cuts priced by Apr 2027). Watchlist still empty — add KXBTC-26MAY0117 and KXETH-26MAY0117.
+
 ## Tracked Tokens
 | Token | CoinGecko ID | Alert Threshold |
 |-------|--------------|-----------------|
