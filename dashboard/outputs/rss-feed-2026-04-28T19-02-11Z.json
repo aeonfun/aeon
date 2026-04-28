@@ -1,0 +1,121 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "rss-feed",
+        "description": "RSS feed updated"
+      },
+      "children": [
+        "stat",
+        "separator1",
+        "content"
+      ]
+    },
+    "stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Entries",
+        "value": "36"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_new",
+        "entries_stack",
+        "more_text",
+        "separator2",
+        "subscribe_link"
+      ]
+    },
+    "heading_new": {
+      "type": "Heading",
+      "props": {
+        "text": "New:",
+        "level": "h3"
+      }
+    },
+    "entries_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry1",
+        "entry2",
+        "entry3",
+        "entry4",
+        "entry5"
+      ]
+    },
+    "entry1": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.",
+        "variant": "body"
+      }
+    },
+    "entry2": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-04-28",
+        "variant": "body"
+      }
+    },
+    "entry3": {
+      "type": "Text",
+      "props": {
+        "text": "Push Recap — 2026-04-28",
+        "variant": "body"
+      }
+    },
+    "entry4": {
+      "type": "Text",
+      "props": {
+        "text": "Repo Actions — aaronjmars/aeon — 2026-04-28",
+        "variant": "body"
+      }
+    },
+    "entry5": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-04-28",
+        "variant": "body"
+      }
+    },
+    "more_text": {
+      "type": "Text",
+      "props": {
+        "text": "(+5 more entries)",
+        "variant": "muted"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "subscribe_link": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
