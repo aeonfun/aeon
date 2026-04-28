@@ -1,0 +1,337 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter"
+      },
+      "children": [
+        "heading_main",
+        "text_shape",
+        "sep_1",
+        "stack_actions",
+        "sep_final",
+        "text_sources"
+      ]
+    },
+    "heading_main": {
+      "type": "Heading",
+      "props": {
+        "text": "5 Actions — 2026-04-28",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_shape": {
+      "type": "Text",
+      "props": {
+        "text": "Patch chain-runner, ship Kalshi basis recorder, merge PR #5, unblock reply-maker, cap runners scorer.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_actions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action_1",
+        "action_2",
+        "action_3",
+        "action_4",
+        "action_5"
+      ]
+    },
+    "action_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_1",
+        "text_1_desc",
+        "text_1_why",
+        "text_1_done",
+        "badge_1_loop"
+      ]
+    },
+    "heading_1": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Patch `.github/workflows/chain-runner.yml`",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Patch `.github/workflows/chain-runner.yml` `dispatch_skill()` to echo each dispatched skill name before the `gh workflow run` call — open PR on tomscaria/aeon."
+      },
+      "children": []
+    },
+    "text_1_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: 5 days running, blocks morning-brief + evening-rollup + weekly-grant-update; trace shows nothing today.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_1_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened against tomscaria/aeon with echo lines in `dispatch_skill` helper.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "badge_1_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "patch-chain-runner",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "action_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_2",
+        "text_2_desc",
+        "text_2_why",
+        "text_2_done",
+        "badge_2_loop"
+      ]
+    },
+    "heading_2": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Open a PR to tomscaria/swarm-fund-mvp adding `hermes_arb/basis_recorder.py`",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Open a PR to tomscaria/swarm-fund-mvp adding `hermes_arb/basis_recorder.py` that polls Kalshi-BRTI and PM-Chainlink top-of-book every 5s."
+      },
+      "children": []
+    },
+    "text_2_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: Kalshi crypto perps live since 2026-04-27 NYC — first 24h tape is the load-bearing falsifier window for hermes-arb.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_2_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on swarm-fund-mvp; recorder writes to QuestDB on first cron tick.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "badge_2_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "build-kalshi-pm-basis-recorder",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "action_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_3",
+        "text_3_desc",
+        "text_3_why",
+        "text_3_done",
+        "badge_3_loop"
+      ]
+    },
+    "heading_3": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Review and merge tomscaria/aeon#5",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Review and merge tomscaria/aeon#5 (rename `hn-digest` → `hacker-news-digest` and `polymarket` → `monitor-polymarket` in `skills/skill-evals/evals.json`)."
+      },
+      "children": []
+    },
+    "text_3_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: ~22h open, no review yet; clears ISS-007 + ISS-009 BOOTSTRAP NEW_FAIL noise without code.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_3_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR #5 merged; ISS-007 + ISS-009 marked resolved in `memory/issues/INDEX.md`.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "badge_3_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "merge-pr5-skill-evals-keys",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "action_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_4",
+        "text_4_desc",
+        "text_4_why",
+        "text_4_done",
+        "badge_4_loop"
+      ]
+    },
+    "heading_4": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Add the `reply-maker)` case to `scripts/prefetch-xai.sh`",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Add the `reply-maker)` case to `scripts/prefetch-xai.sh` per ISS-014 template — open PR on tomscaria/aeon."
+      },
+      "children": []
+    },
+    "text_4_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: 4 consecutive REPLY_MAKER_EMPTY exits, root cause is missing prefetch case (single-line fix); ISS-014 holds the template.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_4_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened with the new bash case; next reply-maker run lands a non-empty digest.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "badge_4_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "add-reply-maker-prefetch-case",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "action_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_5",
+        "text_5_desc",
+        "text_5_why",
+        "text_5_done",
+        "badge_5_loop"
+      ]
+    },
+    "heading_5": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Cap `pct_pts` at 300% in `skills/monitor-runners/SKILL.md`",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Cap `pct_pts` at 300% in `skills/monitor-runners/SKILL.md` scoring and add a soft floor that always promotes the highest-score DEEP-LIQ survivor."
+      },
+      "children": []
+    },
+    "text_5_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: 3rd straight zero-DEEP-LIQ top-5 (04-25, 04-27 PM, 04-28); micro-caps swallow every slot under current weights.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "text_5_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened with spec edit; next monitor-runners run yields >=1 DEEP-LIQ in top 5.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "badge_5_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "cap-monitor-runners-pct-pts",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep_final": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=128 logs=5 topics=9 prs=5 cron_failing=3 mode=OK",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
