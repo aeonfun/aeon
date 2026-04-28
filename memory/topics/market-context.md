@@ -1,67 +1,68 @@
-# Market Context (as of 2026-04-27)
+# Market Context (as of 2026-04-28)
 
-> **Take:** chop — BTC rejected $80K resistance intraday on oil-spike trigger, settling −0.27% 24h; breadth collapsed 16/20 → 6/20 green in 24 hours. Conviction: medium.
+> **Take:** risk-off — BTC −1.69% 24h with breadth at 5/20 and F&G dropping 14 pts to Fear (33). Conviction: high.
 
 ## Signal Snapshot
-- BTC $77,871 (−0.27% 24h, +3.43% 7d) · dominance 58.25% (+0.05pp 24h)
-- ETH $2,312.77 (−1.49% 24h, −0.04% 7d) · ETH/BTC 0.0297
-- SOL $85.24 (−1.21% 24h, −0.08% 7d)
-- Total mcap $2.68T (−0.47% 24h) · DEX vol $4.42B 24h
-- Breadth: 6/20 green 24h · 12/20 green 7d
-- Fear & Greed: 47 (Neutral) — yesterday 33 (Fear)
+- BTC $76,343 (−1.69% 24h, −0.18% 7d) · dominance 58.02% (−0.23pp 24h)
+- ETH $2,277 (−1.60% 24h, −1.92% 7d) · ETH/BTC 0.0298
+- SOL $83.65 (−1.68% 24h, −2.60% 7d)
+- Total mcap $2.64T (−1.32% 24h) · DEX vol $5.95B 24h
+- Breadth: 5/20 green 24h · 6/20 green 7d
+- Fear & Greed: 33 (Fear) — yesterday 47 (Neutral)
 
 ## What Changed Since Last Refresh
-- BTC pulled back $1,268 (−1.6%): $79,139 → $77,871 — intraday high $79,500 rejected at $80K on oil-surge trigger; regime label shifts risk-on → chop
-- Breadth halved: 16/20 → 6/20 green 24h — alts shedding faster than BTC; only privacy alts (XMR, ZEC) and HYPE sustained green
-- ETH underperforming BTC: −1.49% 24h vs −0.27%; ETH/BTC ratio slid 0.0302 → 0.0297
+- F&G dropped 14 pts in one session: 47 Neutral → 33 Fear — largest single-day sentiment shift in recent weeks; regime label chop → risk-off
+- BTC fell $77,871 → $76,343 (−2.0%) — broke below $77K ahead of FOMC tomorrow; 7d return swung from +3.43% to −0.18% as the Apr 21-24 rally base rolls off
+- 7d breadth halved: 12/20 → 6/20 green — medium-term trend now deteriorating alongside short-term; DEX vol spiked +34.5% vs prior day ($4.42B → $5.95B) but 7d trend still −20%, indicating selling-pressure spike not accumulation
 
 ## Active Narratives
-- **$80K BTC resistance / oil macro** — phase: rising (as headwind). Evidence: BTC intraday print $79,500 → $77,871 (−2.1%) confirmed by WebSearch; oil surge ($103/bbl Brent) cited as trigger; FOMC week begins with no cut priced but guidance risk live.
-- **Spot BTC ETF institutional accumulation** — phase: rising. Evidence: $824M net inflows week Apr 20-24 (4th consecutive positive week); BlackRock IBIT $733M of that haul; 9 straight inflow days Apr 14-24; total BTC ETF AUM $102B.
-- **Privacy alts (XMR, ZEC)** — phase: rising. Evidence: XMR +10.34% 7d and holding +0.03% 24h; ZEC +16.12% 7d and +1.34% 24h — both top-20 by mcap, strongest 7d performers in the index; bid persists through broad selloff.
-- **DeFi perps infrastructure (HYPE)** — phase: rising. Evidence: HYPE +3.99% 24h, +3.85% 7d — only top-10 name with meaningful green 24h; CoinGecko trending top-7; Kalshi crypto perps live Apr 26 adds venue tailwind.
-- **NFT floor resurgence** — phase: emerging. Evidence: Lil Pudgys floor +12.01% 24h, Meebits +9.68%, Chromie Squiggle +8.47%; NFT bid contradicts token breadth (6/20 green) — rotation signal, not sector confirmation yet.
+- **FOMC + oil macro** — phase: rising (as headwind). Evidence: FOMC decision Apr 29, zero cuts priced; CPI 3.3%, Brent ~$103/bbl; F&G fell 14pts to Fear (33) in the session ahead of the meeting.
+- **Spot BTC ETF institutional bid** — phase: rising. Evidence: $2.43B April inflows, BlackRock IBIT ~$3B recent inflows; 9 consecutive inflow days Apr 14-24; bid persists but price failing to hold ($76.3K) — structural support vs retail sentiment divergence.
+- **Privacy alts (XMR, ZEC)** — phase: fading. Evidence: ZEC −5.88% 24h, XMR −2.33% 24h — reversed from prior session's outperformance (+1.34%, +0.03%); sector no longer decoupling in broad sell.
+- **DeFi perps infrastructure (HYPE)** — phase: fading. Evidence: HYPE −5.32% 24h, $40.03 vs $42.2 prior session; Kalshi crypto perps tailwind insufficient to hold bid in risk-off environment.
+- **ZKJ (Polyhedra Network) pump** — phase: emerging. Evidence: +220.01% 24h from rank #884, trending #1 on CoinGecko; no fundamental driver identified — retail momentum event, not sector signal.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $21.65B (−0.61%)
-- SSV Network: $17.03B (−0.02%)
-- Aave V3: ~$14.06B (prior snapshot — stale; Aave V3 TVL data anomaly flagged from prior run)
+- Lido: $21.24B (−3.46%)
+- SSV Network: $16.74B (−2.68%)
+- Aave V3: ~$14.06B (prior snapshot — stale)
 - EigenCloud: ~$9.35B (prior snapshot — stale)
 - WBTC: ~$9.18B (prior snapshot — stale)
 
-## Chain Flow (top 3 by TVL, vs prior snapshot 2026-04-27 AM)
-- Ethereum: $45.33B (−$0.77B, −1.7%)
-- BSC: $5.53B (−$0.06B, −1.1%)
-- Solana: $5.52B (−$0.06B, −1.1%)
+## Chain Flow (top 3 by TVL, vs prior snapshot 2026-04-27)
+- Ethereum: $44.70B (−$0.63B, −1.4%)
+- BSC: $5.48B (−$0.05B, −0.9%)
+- Solana: $5.46B (−$0.06B, −1.1%)
 
 ## Stablecoins
-Total: ~$371B (prior aggregate; individual top-5 refreshed). USDT $189.73B · USDC $77.70B · USDS $8.33B · DAI $4.67B · USD1 $4.41B · combined share of mcap ~13.9%.
+Total: ~$385.2B. USDT $189.66B · USDC $77.64B · USDS $8.31B · DAI $4.65B · USD1 $4.44B · combined share of mcap ~14.6%.
 
 ## Trending (CoinGecko)
-- AAVE — DeFi blue chip, +2.68% 24h; rank #54; only trending coin with meaningful green 24h
-- LUNC (Terra Luna Classic) — +18.18% 24h; rank #131; speculative pump, no fundamental driver
-- Monad (MON) — +3.67% 24h; rank #123; EVM parallelization narrative; Parallelized EVM category +0.59% while most categories negative
-- SOL — −1.08% 24h; rank #7; in trending despite pullback — volume-driven, watch for rotation signal
-- SUI — −1.32% 24h; rank #29; losing ground vs broader L1s
+- ZKJ (Polyhedra Network) — rank #884, +220.01% 24h; no fundamental driver; pure speculative pump
+- ORCA (Orca) — rank #271, +45.22% 24h; Solana DEX token, benefiting from DEX vol spike
+- PRL (Perle) — rank #390, +24.83% 24h; low-cap, speculative
+- PI (Pi Network) — rank #46, +6.53% 24h; persistent retail interest
+- PENGU (Pudgy Penguins) — rank #89, +2.98% 24h; NFT ecosystem token, holding bid
 
-NFTs trending: Lil Pudgys floor +12.01% · Meebits +9.68% · Chromie Squiggle +8.47%
-
-## Prediction Markets (Polymarket, top by liquidity)
+## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Steve Kerr joins Boston Celtics (2026) | 45.5% | n/a | $10.0K |
-| Qatar wins Jun 13 2026 | 8.8% | $0.3K | $10.0K |
+| Fed no change April 2026 | 99.75% | $2.9M | $2.7M |
+| BTC $150K by Jun 30 | 1.35% | $5.8M | $19.8K |
+| USA wins 2026 FIFA WC | 1.35% | $3.6M | $3.5M |
+| Israel-Hezbollah ceasefire extended | 99.85% | $4.3M | $0.3M |
 
-Note: all top-volume crypto/macro markets are effectively settled — BTC $150K by Jun 30 YES=1.4%, US-Iran deal by Apr 30 YES=1.8%, Lakers/Rockets YES=0.05%. No actionable Polymarket signals in crypto/macro today.
+Note: all top-volume markets are effectively settled (<3% or >97% YES). The Fed no-change market at 99.75% confirms zero cuts fully priced for tomorrow. V2 cutover today (11 UTC) likely driving vol spike on near-settled markets as participants square positions. No actionable crypto/macro signal from Polymarket today.
 
 ## Macro Catalysts (next 48h)
-- **FOMC week (no cut expected)** — rate guidance matters more than the decision; hawkish signal hits alts first; CPI at 3.3%, energy +10.9% MoM. Fed chair Powell term expires May 2026, successor uncertainty adds policy risk.
-- **Oil spike risk** — BTC rejected $80K on oil-surge today; Brent ~$103/bbl; sustained oil bid extends chop range and delays risk-on resumption.
-- **BTC April monthly close (Apr 30)** — at current $77.9K, April still closes ~+12% from March. Close above $80K would print first $80K month-end close ever; close below $75K reverses recovery narrative entering May.
+- **FOMC decision Apr 29** — no cut expected; guidance is the market mover. Chair nominee uncertainty (Powell term expires May 2026) adds policy-continuity risk. Hawkish tone hits alts first given current breadth (5/20).
+- **Polymarket V2 cutover today (Apr 28, 11 UTC)** — USDC.e → pUSD migration; resting orderbooks wiped, ~1h offline. Operator: Revenant book should already be flattened before this runs.
+- **SEC Chair Atkins at Bitcoin 2026 (Las Vegas)** — first major public address on digital-asset market structure; binary catalyst for regulatory sentiment.
+- **BTC April monthly close Apr 30** — at $76.3K, April closes ~10% above March. Close below $75K reverses recovery narrative; close above $80K (unlikely at current rate) would print first $80K month-end.
 
 ## Implications for Downstream Skills
-- **token-pick:** favor privacy alts (XMR, ZEC) on sustained sector divergence; HYPE on perps infrastructure narrative; avoid broad alt exposure until breadth recovers above 10/20.
-- **narrative-tracker:** monitor FOMC guidance Tue-Wed for regime-shift trigger; NFT floor bid (3 collections +8-12% 24h) may signal emerging rotation — check sector follow-through over 48h before upgrading to rising.
+- **token-pick:** avoid broad alt exposure; breadth 5/20 and F&G in Fear favor cash or BTC-only positioning until FOMC resolves. ZKJ/ORCA pump not actionable — no fundamental anchor.
+- **narrative-tracker:** FOMC guidance Apr 29 is the regime-flip trigger; monitor ETF flow data post-decision for institutional response. Privacy alts and HYPE confirmed fading — downgrade both unless next-session reversal.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
