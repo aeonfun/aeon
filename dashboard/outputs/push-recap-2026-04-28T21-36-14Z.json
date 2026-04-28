@@ -1,0 +1,116 @@
+{
+  "root": "card-recap",
+  "state": {},
+  "elements": {
+    "card-recap": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-04-28"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-context",
+        "sep-1",
+        "heading-shipped",
+        "text-pr-item",
+        "sep-2",
+        "heading-under-hood",
+        "text-under-hood-item",
+        "sep-3",
+        "text-shape",
+        "text-volume",
+        "sep-4",
+        "link-full-recap"
+      ]
+    },
+    "text-context": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — SHIPPING: public /status/ page now ships a daily Token Pulse table",
+        "variant": "lead"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-shipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      }
+    },
+    "text-pr-item": {
+      "type": "Text",
+      "props": {
+        "text": "PR #146 (4782c4a) — heartbeat now lifts the latest articles/token-report-*.md into a one-row Price/24h/Liquidity/Volume/FDV block on docs/status.md, with both legacy 'Value | 24h Change' and new 'Now | 24h Δ' table layouts tolerated, 24h-stale fallback, and per-cell — when a value is missing.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-under-hood": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h3"
+      }
+    },
+    "text-under-hood-item": {
+      "type": "Text",
+      "props": {
+        "text": "None — the same 31-line PR is the entire window; tolerant regex extraction is the only future-rot risk.",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-shape": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 1 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR",
+        "variant": "body"
+      }
+    },
+    "text-volume": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: 2 files, +31/-3 lines",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-full-recap": {
+      "type": "Link",
+      "props": {
+        "label": "Full recap",
+        "href": "https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-04-28.md"
+      }
+    }
+  }
+}
