@@ -1,0 +1,234 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket-comments",
+        "description": "2026-04-28 — Post-V2 cutover digest"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "iran_section",
+        "sep_1",
+        "peace_section",
+        "sep_2",
+        "fed_section",
+        "sep_3",
+        "incidents_section"
+      ]
+    },
+    "iran_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "iran_heading",
+        "iran_cf_stack",
+        "iran_hez_stack",
+        "iran_note"
+      ]
+    },
+    "iran_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran",
+        "level": "h3"
+      }
+    },
+    "iran_cf_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "iran_cf_label",
+        "iran_cf_stat",
+        "iran_cf_uma"
+      ]
+    },
+    "iran_cf_label": {
+      "type": "Text",
+      "props": {
+        "text": "cf YES",
+        "variant": "lead"
+      }
+    },
+    "iran_cf_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "0.25%"
+      }
+    },
+    "iran_cf_uma": {
+      "type": "Text",
+      "props": {
+        "text": "Post-UMA: NO",
+        "variant": "caption"
+      }
+    },
+    "iran_hez_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "iran_hez_label",
+        "iran_hez_stat",
+        "iran_hez_badge"
+      ]
+    },
+    "iran_hez_label": {
+      "type": "Text",
+      "props": {
+        "text": "Hez cf YES",
+        "variant": "lead"
+      }
+    },
+    "iran_hez_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "99.85%"
+      }
+    },
+    "iran_hez_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "scam-callout",
+        "variant": "destructive"
+      }
+    },
+    "iran_note": {
+      "type": "Text",
+      "props": {
+        "text": "Opposite resolutions on identical clauses = UMA arb signal",
+        "variant": "caption"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "peace_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "peace_heading",
+        "peace_text"
+      ]
+    },
+    "peace_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Peace deal",
+        "level": "h3"
+      }
+    },
+    "peace_text": {
+      "type": "Text",
+      "props": {
+        "text": "Al-Arabiya counter-tape vs NYT NO"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fed_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fed_heading",
+        "fed_date",
+        "fed_stat",
+        "fed_badge"
+      ]
+    },
+    "fed_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed FOMC",
+        "level": "h3"
+      }
+    },
+    "fed_date": {
+      "type": "Text",
+      "props": {
+        "text": "Apr 28-29 tomorrow"
+      }
+    },
+    "fed_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Experienced-Carpeting fades",
+        "value": "99.85%"
+      }
+    },
+    "fed_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "no-change",
+        "variant": "secondary"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "incidents_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "v2_alert",
+        "security_alert",
+        "digest_note"
+      ]
+    },
+    "v2_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "V2 cutover incident",
+        "message": "Wiped Revenant orderbook at 11 UTC",
+        "type": "warning"
+      }
+    },
+    "security_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Security flag",
+        "message": "poly-us.pro phishing typosquat in peace-deal thread",
+        "type": "error"
+      }
+    },
+    "digest_note": {
+      "type": "Text",
+      "props": {
+        "text": "Full digest available in .pending-notify/",
+        "variant": "caption"
+      }
+    }
+  }
+}

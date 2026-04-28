@@ -32,11 +32,27 @@
 - **Valuation gap:** Polymarket $400M @ $15B (lead unconfirmed) vs Kalshi $1B @ $22B (Coatue). ~30% PM discount confirms Kalshi US-distribution moat is repricing the duopoly.
 - **Brazil block in force** Apr 27 — 29 PM platforms blocked; announcement Apr 24, technically enforced today.
 
-## Comments-side calibration signals (rolling — last refresh 2026-04-27 14:30 UTC)
+## Comments-side calibration signals (rolling — last refresh 2026-04-28 13:05 UTC)
 
 Recurring high-signal handles:
 - **@taerv534** — ops/migration alerts (flagged V2 cutover wipe ahead of operator)
-- **@Car** — single-counterparty whale across both Iran-ceasefire and Hezbollah-ceasefire UMA disputes; +127.5K YES on Iran (also flagged Hezbollah position closure)
+- **Car (0x7c3db723) ↔ Peppery-Capital** — IDENTITY UNIFIED 2026-04-28: same wallet, real-name "Car", bio "PredictFolio . Com". Single-counterparty YES whale across Iran-ceasefire-ext (28x + 22x followup) AND Iran-peace-deal (14x) books. Sustained YES-loading thru post-V2 cutover.
+- **magmaalpha (0xbdaacd34)** — Iran cf rules-lawyer, top-pinned 33x + 22x followup. Cites Guardian / Al Jazeera / CFR for "overwhelming consensus" YES argument against 0.25% pricing.
+- **ProfitMuhammedPBUH (0xae7c9823)** — Hezbollah-cf dual-evidence skeptic: CBS News "firmly rejects" cite + scam-callout, 14x x2.
+- **Panther-X (0x0a738ec9)** — Hez-cf "Hezbollah ≠ Lebanon" clause-resolution argument, 16x sustained.
+- **CHISCARU (0xa6adc93c)** — Hez-cf playbook-repeat referencing prior faulty-YES forced market, 12x.
+- **duhuabook (0xbf4d2023)** — Hez-cf scam-callout group-rally, 16x.
+- **ilovethisgameman (0xa20aa87b)** — links @real_clazzy/X scam writeups (status 2048836799821438996).
+- **Robin-HooDenizzCar (0x80c61719)** — explicit anti-Car commentator across Iran cf + Hez cf books.
+- **greeeeeeeeeeekboiiiiiiii (0x0e3ed3bb)** — +127,500 YES Iran cf builder, 19x react. Whale identified.
+- **Quarrelsome-Service** — Al-Arabiya source citation Apr 28 (peace deal YES tape, counters NYT 60-day-memo).
+- **Affectionate-Year** — Iranian-on-the-ground voice, peace-deal NO ("negotiation is a tool to weaken Iran"). Tamil-Nadu-style ground-truth.
+- **Dangerous-Sense + Strong-Parser** — Israeli + Lebanon-watcher on-the-ground, Hez-cf no-ceasefire-holding.
+- **Petty-Bran** — high-rep structural anti-UMA / "UMA IS RUN BY 7 PEOPLE" calibration-skeptic.
+- **Experienced-Carpeting** — Fed contrarian, "Fed always changes rate at beginning of war" thesis (fades 99.85% no-change toward -50bps OR +25bps tail).
+- **Our-Southeast** — Fed wallet-flow callouts (e.g., 0xa5ef...2966 $18m NO on rate-hike).
+- **Substantial-Deed** — UAE-OPEC rumor (untriaged) Apr 28 12:53 UTC.
+- **CommunityVoice-off** — binary-encoded "poly-us.pro" phishing typosquat farming reactions (security flag, do not click).
 - **@anon (8x)** — meta-pattern caller: flagged Hezbollah-ceasefire-ext UMA dispute as "exact duplicate of [Iran ceasefire]"
 - **@Clear-Corridor** — Hezbollah hostile-oracle takeover attempt, $36k YES
 - **@b4k9xj2wh / @anoin123** — Kharg Island NO whales ($464k / $398k positions)
@@ -50,13 +66,14 @@ Recurring high-signal handles:
 - **@maxdawg / @bartdump / @jessik-mw** — MegaETH thesis stack (structural No-edge if priced > 30c)
 
 Concrete tradable hooks (carry to CalibrationGap):
-1. Iran ceasefire-ext — UMA two-sided uncertainty, downweight quant signal
-2. Iran peace deal by Apr 30 — fade YES drift, NYT 60-day-memo + Ghalibaf = near-deterministic NO
-3. Hezbollah-ceasefire-ext UMA vote ~02:00 UTC Apr 28 — replicates Iran-ceasefire playbook line-for-line; near-deterministic NO if YES drifts
-4. Tamil Nadu Legislative Assembly (May 4) — DMK 80% mispricing flag from 4 independent local-Tamil voices
-5. MegaETH FDV $1B (June 30) — structural No-edge if priced > 30c
-6. **Apr 28 V2 platform upgrade — BLOCKING for Revenant resting orders**
-7. Iranian regime fall by Apr 30 — book only $30.5k, 4 comments — quant-scanner-invisible due to thin book; Crypto Briefing strikes/blockade headlines escalating
+1. Iran ceasefire-ext — UMA round-2 voted "Early Request" 99.5% (NO won on procedure not merits); current 0.25% YES; magmaalpha rules-lawyer YES argument cites Guardian/AJ/CFR consensus.
+2. Iran peace deal by Apr 30 — Al-Arabiya Apr 28 source counters NYT NO read; Iranian three-stage Hormuz proposal under Trump review. NO-tape and YES-tape contested.
+3. **Hezbollah-cf RESOLVED YES at 99.85%** — multiple high-rep skeptics (ProfitMuhammedPBUH, Panther-X, CHISCARU, duhuabook) call resolution faulty; clause says "Israel + Hezbollah" but Trump deal was Israel-Lebanon. **UMA-resolution arbitrage candidate**: Iran-cf and Hez-cf had ~identical clauses but resolved opposite. Calibration-gap not visible in CalibrationGap quant scanner.
+4. Tamil Nadu Legislative Assembly (May 4) — DMK 80% mispricing flag from 4 independent local-Tamil voices (carried from 2026-04-27 PM run).
+5. MegaETH FDV $1B (June 30) — structural No-edge if priced > 30c (carried from 2026-04-27 AM run).
+6. **V2 cutover EXECUTED 2026-04-28 11 UTC** — orderbook spike to 0.5 in Iran cf chart confirmed wipe; @Crooked-Setting + @Boring-Comportment confirmed all open orders cleared. Revenant resting-quote book is now zero.
+7. Iranian regime fall by Apr 30 / May 31 — quant-scanner-invisible due to thin book; series-level (3747 cmts) has historical context but fresh activity dormant.
+8. Fed Apr 28-29 FOMC — 99.85% no-change pricing; Experienced-Carpeting tail-risk fade is the rare contrarian voice ("Fed always changes rate at beginning of war" — -50bps OR +25bps).
 
 ## Open work / blockers
 - 100-trade Apex gate — 71 trades to go on CalibrationGap/Revenant (current 29 closed / 76% / +$415 / Sharpe 0.31). 2–3 weeks at current rate.
