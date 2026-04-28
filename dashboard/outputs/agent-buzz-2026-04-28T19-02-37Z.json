@@ -1,0 +1,134 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz — 2026-04-28"
+      },
+      "children": [
+        "status",
+        "separator1",
+        "attempts",
+        "separator2",
+        "context"
+      ]
+    },
+    "status": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Quiet day, no survivors. Data collection blocked by sandbox constraints."
+      }
+    },
+    "separator1": {
+      "type": "Separator"
+    },
+    "attempts": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "attempts_heading",
+        "attempts_table"
+      ]
+    },
+    "attempts_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Collection Attempts",
+        "level": "h3"
+      }
+    },
+    "attempts_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Step",
+          "Status"
+        ],
+        "rows": [
+          [
+            "Step 1 (curl X.AI)",
+            "Blocked — XAI_API_KEY unset in sandbox"
+          ],
+          [
+            "Step 2 (WebFetch X.AI POST)",
+            "Not viable"
+          ],
+          [
+            "Step 3 (WebSearch)",
+            "Returned only news-article framing, no fresh tweet URLs with verifiable engagement counts"
+          ]
+        ]
+      }
+    },
+    "separator2": {
+      "type": "Separator"
+    },
+    "context": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "history_block",
+        "fix_block"
+      ]
+    },
+    "history_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "history_heading",
+        "history_text"
+      ]
+    },
+    "history_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pattern",
+        "level": "h3"
+      }
+    },
+    "history_text": {
+      "type": "Text",
+      "props": {
+        "text": "Same wall encountered on 2026-04-25 and 2026-04-27",
+        "variant": "caption"
+      }
+    },
+    "fix_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fix_heading",
+        "fix_text"
+      ]
+    },
+    "fix_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix Required",
+        "level": "h3"
+      }
+    },
+    "fix_text": {
+      "type": "Text",
+      "props": {
+        "text": "Add agent-buzz case to scripts/prefetch-xai.sh",
+        "variant": "body"
+      }
+    }
+  }
+}
