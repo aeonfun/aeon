@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "article"
+      },
+      "children": [
+        "storylink"
+      ]
+    },
+    "storylink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-04-28.md",
+        "source": "aeon"
+      }
+    }
+  }
+}
