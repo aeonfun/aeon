@@ -1,11 +1,11 @@
+The skill is a single-step no-op (registry empty → silent stop), so a todo list adds no value here.
+
 ## Summary
 
-Ran `fleet-control` (15 UTC slot) in Health Check Mode.
+Ran `fleet-control` in default Health Check mode. Pre-flight passed (gh auth ok as `tomscaria`, rate_remaining=4986), but `memory/instances.json` contains `{"instances": []}` — no managed children. Per the skill's step 3, logged `FLEET_EMPTY` to `memory/logs/2026-04-29.md` and stopped without notifying (correct behavior — operator isn't trained to ignore noise on empty registries).
 
-- **Pre-flight:** gh auth ok (account `tomscaria`), rate limit 4967/5000.
-- **Registry:** `memory/instances.json` contains `{"instances": []}` — no managed children.
-- **Action:** per skill spec (`FLEET_EMPTY: no managed instances`), logged the empty-registry verdict and stopped silently. No notification sent — the spec gates notification on at least one instance existing.
-- **Files modified:** `memory/logs/2026-04-28.md` (appended 15 UTC fleet-control entry under the existing 09 UTC entry).
-- **State file:** `memory/state/fleet-control-state.json` already contains `{"instances": {}, "last_full_summary_date": ""}` — left untouched (skill only updates state when it notifies on a non-empty fleet, and there's no per-instance snapshot to record here).
-- **Terminal:** `FLEET_EMPTY`.
-- **Follow-up:** none — until the operator spawns child instances (e.g. via `spawn-instance` and adds them to `memory/instances.json`), this skill will continue to no-op silently. If you want me to bootstrap the registry with a known child repo, point me at it.
+**Files modified:** `memory/logs/2026-04-29.md` (appended fleet-control section).
+
+**No-ops:** registry unchanged, state file unchanged, no notification sent, no article written.
+
+**Follow-up:** This skill will keep firing as a no-op on its `0 9,15 * * *` cron until at least one instance is registered in `memory/instances.json`. If no fleet is intended, consider setting `enabled: false` for `fleet-control` in `aeon.yml` to stop the empty-registry log entries.
