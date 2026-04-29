@@ -1,7 +1,7 @@
 {
-  "hash": "c66c145c486286a4d07d02846c0edeb4f2c8cad774c3b14d118070d2cc4fd3f2",
-  "last_notified_at": "2026-04-27T18:59:29Z",
-  "last_run_at": "2026-04-28T18:58:59Z",
+  "hash": "30b3141c0ee58952fbb78d69d45cd3b7c87464549c186bba9290d0653e8c164f",
+  "last_notified_at": "2026-04-29T18:22:28Z",
+  "last_run_at": "2026-04-29T18:22:28Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -67,7 +67,7 @@
     ],
     "flapping": [],
     "warning": [],
-    "healthy_count": 19,
+    "healthy_count": 21,
     "healthy": [
       "cost-report",
       "daily-routine",
@@ -79,7 +79,9 @@
       "issue-triage",
       "paper-digest",
       "pr-review",
+      "project-lens",
       "reddit-digest",
+      "reg-monitor",
       "rss-digest",
       "self-improve",
       "skill-evals",
@@ -90,10 +92,8 @@
       "weekly-review"
     ],
     "no_data": [
-      "morning-brief",
       "hacker-news-digest",
-      "reg-monitor",
-      "project-lens",
+      "morning-brief",
       "repo-scanner",
       "syndicate-article",
       "vercel-projects",
@@ -106,12 +106,11 @@
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "NOOP this run — classification hash identical to 2026-04-27T18:59Z run (same 59 DEGRADED skills, no CRITICAL/FLAPPING, same systemic). Elapsed since last notify: 23h59m30s (gate: <24h AND same hash → no notify).",
-    "STATE DELTA vs last run: weekly-review NO DATA → HEALTHY (ran cleanly 2026-04-27T20:15:38Z, sr=1.0, total_runs=1). healthy_count 18 → 19. Hash-irrelevant.",
-    "ISS-013 stays open — none of the 53 affected skills are HEALTHY yet (heartbeat at sr=0.38, paper-pick 0.33, fleet-control 0.33 are the closest). DEGRADED→HEALTHY transition will take ~5+ clean cron ticks to drag historical success_rate above 0.6. Auto-resolve only fires on HEALTHY.",
-    "ISS-001/002/003-011/012/014/015 are not detected_by skill-health — repair skills (autoresearch, skill-repair) own closure.",
-    "chain:morning-brief failed today at 07:56:08Z (chain-runner.yml dispatch_skill bug — 3+ chains affected per MEMORY.md), but the chain wrapper isn't in skills: — not classified here. Top operator priority.",
-    "SKILL_HEALTH_PARTIAL — scripts/skill-runs not invoked (sandbox); used cron-state + memory/issues/INDEX.md only.",
-    "memory/issues/INDEX.md exists — issue reconciliation contract honored; INDEX.md unchanged this run (no filings, no resolutions)."
+    "NOTIFY this run — classification hash unchanged from 2026-04-28T18:58:59Z run (same 59 DEGRADED, no CRITICAL/FLAPPING, same systemic), but elapsed since last notify (2026-04-27T18:59:29Z) = 47.5h ≥ 24h, so the daily-cadence gate fired.",
+    "STATE DELTA vs last run: project-lens NO DATA → HEALTHY (ran 2026-04-29T15:34:33Z, sr=1.0). reg-monitor NO DATA → HEALTHY (ran 2026-04-29T14:00:25Z, sr=1.0). healthy_count 19 → 21. NO DATA 8 → 6. Hash-irrelevant (no CRIT/DEG/FLAP change).",
+    "ISS-013 stays open — none of the 53 affected skills are HEALTHY yet. Closest recovers: heartbeat sr=0.44, fleet-control sr=0.40, paper-pick sr=0.38. DEGRADED→HEALTHY transition still requires more clean cron ticks to drag historical success_rate above 0.6.",
+    "ISS-001/002/003-011/012/014/015 not detected_by skill-health — repair skills (autoresearch, skill-repair) own closure.",
+    "memory/issues/INDEX.md unchanged this run (no filings, no resolutions).",
+    "scripts/skill-runs ran cleanly under node -e wrapper (sandbox issue: bare invocation triggers approval gate). 940 runs in 168h window: 231 success / 693 failure / 16 in-progress — fleet-wide success rate 25%, dominated by lingering ISS-013 historical-window failures."
   ]
 }

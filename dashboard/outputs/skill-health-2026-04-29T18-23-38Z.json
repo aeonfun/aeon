@@ -1,0 +1,325 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health",
+        "description": "2026-04-29"
+      },
+      "children": [
+        "header-section",
+        "sep1",
+        "degraded-section",
+        "sep2",
+        "no-data-section",
+        "sep3",
+        "healthy-section",
+        "sep4",
+        "stats-section",
+        "sep5",
+        "explanation-section"
+      ]
+    },
+    "header-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status-heading",
+        "systemic-alert"
+      ]
+    },
+    "status-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEGRADED(59)",
+        "level": "h1"
+      },
+      "children": []
+    },
+    "systemic-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Systemic Issue",
+        "message": "2026-04-26 zero-token storm affecting 59 skills (ISS-013). State unchanged 47h, daily reminder.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "degraded-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "degraded-heading",
+        "degraded-table",
+        "degraded-more"
+      ]
+    },
+    "degraded-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded / Flapping (top 5 by days_since_success)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "degraded-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Success Rate",
+          "Days Since Success",
+          "Status"
+        ],
+        "rows": [
+          [
+            "channel-recap",
+            "8%",
+            "2.7d",
+            "INVESTIGATE → ISS-013"
+          ],
+          [
+            "skill-leaderboard",
+            "7%",
+            "2.7d",
+            "INVESTIGATE → ISS-013"
+          ],
+          [
+            "update-gallery",
+            "8%",
+            "2.7d",
+            "INVESTIGATE → ISS-013"
+          ],
+          [
+            "skill-update-check",
+            "13%",
+            "2.7d",
+            "INVESTIGATE → ISS-013"
+          ],
+          [
+            "fork-contributor-leaderboard",
+            "8%",
+            "2.7d",
+            "INVESTIGATE → ISS-013"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "degraded-more": {
+      "type": "Link",
+      "props": {
+        "label": "+54 more — memory/issues/INDEX.md",
+        "href": "memory/issues/INDEX.md"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "no-data-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "no-data-heading",
+        "no-data-grid",
+        "no-data-action"
+      ]
+    },
+    "no-data-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "No Data (6)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "no-data-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "sm"
+      },
+      "children": [
+        "nd-1",
+        "nd-2",
+        "nd-3",
+        "nd-4",
+        "nd-5",
+        "nd-6"
+      ]
+    },
+    "nd-1": {
+      "type": "Badge",
+      "props": {
+        "text": "morning-brief"
+      },
+      "children": []
+    },
+    "nd-2": {
+      "type": "Badge",
+      "props": {
+        "text": "hacker-news-digest"
+      },
+      "children": []
+    },
+    "nd-3": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-scanner"
+      },
+      "children": []
+    },
+    "nd-4": {
+      "type": "Badge",
+      "props": {
+        "text": "syndicate-article"
+      },
+      "children": []
+    },
+    "nd-5": {
+      "type": "Badge",
+      "props": {
+        "text": "vercel-projects"
+      },
+      "children": []
+    },
+    "nd-6": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-shiplog"
+      },
+      "children": []
+    },
+    "no-data-action": {
+      "type": "Badge",
+      "props": {
+        "text": "DISPATCH-SKILL",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "healthy-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "healthy-heading",
+        "healthy-stat",
+        "healthy-detail"
+      ]
+    },
+    "healthy-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Healthy",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "healthy-stat": {
+      "type": "Stat",
+      "props": {
+        "value": "21",
+        "delta": "+2 vs prior"
+      },
+      "children": []
+    },
+    "healthy-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Cleared from NO DATA: project-lens, reg-monitor",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stats-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-open",
+        "stat-resolved",
+        "stat-filed"
+      ]
+    },
+    "stat-open": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "14"
+      },
+      "children": []
+    },
+    "stat-resolved": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved This Run",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat-filed": {
+      "type": "Stat",
+      "props": {
+        "label": "Filed This Run",
+        "value": "0"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "explanation-section": {
+      "type": "Text",
+      "props": {
+        "text": "DEGRADED is decay from the 2026-04-26 23:53Z storm — cf=0 on all 59. Burns down with clean ticks."
+      },
+      "children": []
+    }
+  }
+}
