@@ -1,0 +1,303 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter"
+      },
+      "children": [
+        "header",
+        "subtitle",
+        "sep1",
+        "actions-stack",
+        "sep2",
+        "sources"
+      ]
+    },
+    "header": {
+      "type": "Heading",
+      "props": {
+        "text": "5 Actions — 2026-04-29",
+        "level": "h2"
+      }
+    },
+    "subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Instrument chain-runner, rebase PR #5, patch secrets shell-injection, index ISS-015, bump hermes-arb gate.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "actions-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "action1",
+        "action2",
+        "action3",
+        "action4",
+        "action5"
+      ]
+    },
+    "action1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1-heading",
+        "a1-title",
+        "a1-why",
+        "a1-done",
+        "a1-loop"
+      ]
+    },
+    "a1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Instrument chain-runner",
+        "level": "h3"
+      }
+    },
+    "a1-title": {
+      "type": "Text",
+      "props": {
+        "text": "Instrument `.github/workflows/chain-runner.yml` `dispatch_skill()` — add `echo \"Dispatching: $skill\"` before each `gh workflow run` so the next failure leaves a trace."
+      }
+    },
+    "a1-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: chain:morning-brief failed again 2026-04-29 07:13 UTC; 5 days running; 3 chains down (morning-brief, evening-rollup, weekly-grant-update).",
+        "variant": "caption"
+      }
+    },
+    "a1-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on tomscaria/aeon with echo lines visible inside dispatch_skill() body.",
+        "variant": "caption"
+      }
+    },
+    "a1-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: chain-runner-instrument",
+        "variant": "outline"
+      }
+    },
+    "action2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2-heading",
+        "a2-title",
+        "a2-why",
+        "a2-done",
+        "a2-loop"
+      ]
+    },
+    "a2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Rebase PR #5",
+        "level": "h3"
+      }
+    },
+    "a2-title": {
+      "type": "Text",
+      "props": {
+        "text": "Rebase `tomscaria/aeon#5` onto main and request operator review — patches `evals.json` keys (`hn-digest` → `hacker-news-digest`, `polymarket` → `monitor-polymarket`)."
+      }
+    },
+    "a2-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: PR open since 2026-04-27 18:59 UTC, ~46h stalled, cubic AI review SUCCESS, closes ISS-007 + ISS-009 with no code change.",
+        "variant": "caption"
+      }
+    },
+    "a2-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR #5 HEAD on top of main, review-requested marker on the PR.",
+        "variant": "caption"
+      }
+    },
+    "a2-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: rebase-PR-5",
+        "variant": "outline"
+      }
+    },
+    "action3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3-heading",
+        "a3-title",
+        "a3-why",
+        "a3-done",
+        "a3-loop"
+      ]
+    },
+    "a3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Patch secrets shell-injection",
+        "level": "h3"
+      }
+    },
+    "a3-title": {
+      "type": "Text",
+      "props": {
+        "text": "Patch `dashboard/app/api/secrets/route.ts:96` shell-injection — replace template-string shell-out with `spawnSync('gh', argv, { input: value })`."
+      }
+    },
+    "a3-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: today's code-health audit flagged it as \"third week running\"; HIGH severity; backticks and $(…) still reach the shell despite quote-escape.",
+        "variant": "caption"
+      }
+    },
+    "a3-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on aaronjmars/aeon with spawnSync swap plus a regression test for backtick injection.",
+        "variant": "caption"
+      }
+    },
+    "a3-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: patch-secrets-shell-injection",
+        "variant": "outline"
+      }
+    },
+    "action4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4-heading",
+        "a4-title",
+        "a4-why",
+        "a4-done",
+        "a4-loop"
+      ]
+    },
+    "a4-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Index ISS-015",
+        "level": "h3"
+      }
+    },
+    "a4-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add ISS-015 row to `memory/issues/INDEX.md` open table (workflows/messages.yml:577–578 script-injection; PR #4 holds the patch; severity HIGH)."
+      }
+    },
+    "a4-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: issue-triage gap flagged 2026-04-28 09:10 + 15:34 heartbeats; ISS-015 is the only open issue absent from INDEX; blocks audit completeness for grant-readiness.",
+        "variant": "caption"
+      }
+    },
+    "a4-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: INDEX.md committed with the ISS-015 row in the open table, status `open`.",
+        "variant": "caption"
+      }
+    },
+    "a4-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: index-iss-015",
+        "variant": "outline"
+      }
+    },
+    "action5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5-heading",
+        "a5-title",
+        "a5-why",
+        "a5-done",
+        "a5-loop"
+      ]
+    },
+    "a5-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Bump hermes-arb gate",
+        "level": "h3"
+      }
+    },
+    "a5-title": {
+      "type": "Text",
+      "props": {
+        "text": "Bump hermes-arb min-gap 7pp → 7.5pp in `tomscaria/swarm-fund-mvp` `strategies/hermes_arb/program.md` per ADR-038 noise-floor finding."
+      }
+    },
+    "a5-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: 04-25 deep-research said 7pp understates noise floor 50–100bp; carry-over 4 days; Kalshi crypto-perp tape now 3 days deep, falsifier window open.",
+        "variant": "caption"
+      }
+    },
+    "a5-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on swarm-fund-mvp with the program.md numeric edit plus an ADR-038 footer note citing the deep-research file.",
+        "variant": "caption"
+      }
+    },
+    "a5-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: bump-hermes-arb-mingap",
+        "variant": "outline"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=139 logs=5 topics=6 prs=5 cron_failing=3 mode=OK",
+        "variant": "muted"
+      }
+    }
+  }
+}
