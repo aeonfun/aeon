@@ -1,14 +1,15 @@
-*Evening Recap — 2026-04-28*
+*Evening Recap — 2026-04-29*
+_TL;DR: quiet recovery tape, Revenant flat with zero new orders, two papers picked, one swarm-fund fix shipped_
 
-*Trading-loop:* 18 PM markets scanned · 48 pools scored (of 153) · ~100 Kalshi markets
-*Signals fired:* KXBTC mode -$2k → ~$77k May-1 implied, vol +167% d/d · monitor-runners SPECULATIVE, 0 DEEP-LIQ (3rd straight) · V2 cutover artifact spiked all PM markets ~50% at 12:00 UTC (false positive, reverted)
-*Revenant:* V2 orderbook wipe confirmed 11 UTC (polymarket-comments + monitor-polymarket independent). 0 new orders. Historical: 29 closed / 76% win / +$415 / Sharpe 0.31
-*NAV delta:* no live data post-wipe — metrics.json generated 05:42 UTC pre-cutover, shadow agents only
-*Skill failures:* chain-runner DEGRADED 5 days (3 chains) · farcaster-digest x3 (NEYNAR unset) · vibecoding-digest x4 (Reddit blocked) · remix-tweets x4 (X_HANDLE unset) · agent-buzz x3 (XAI prefetch missing)
+*Trading:* Runners scanned 159 pools / 69 post-gate / SPECULATIVE (3 BREAKOUT, 1 CONTINUATION, 1 REVERSAL; DEEP-LIQ near-miss SKYAI/WBNB out of top-5 for third straight run). Token pick: DOGE 10/10. NAV: BTC +1.03% / ETH +1.66% / SOL +0.63%; no alerts fired.
 
-*Top 3:*
-1. arXiv:2509.22638 — verbal-RL FCP, hooks directly into CalibrationGap reflection-log loop
-2. UMA-arb: Iran-cf 0.25% NO vs Hez-cf 99.85% YES on identical clauses — not in quant scanner
-3. PR #22 swarm-fund (privy-loader + WaitlistCTAAuth stubs, unblocks /learn deploy) · https://github.com/tomscaria/swarm-fund-mvp/pull/22
+*Revenant:* Mexico builder market YES 1.05%, flat. 0 new orders. P&L unchanged — 29 trades / 76% / +$415 / Sharpe 0.31. 71 to Apex gate.
 
-_sources: log=ok cron-state=ok_
+*Top 3 today:*
+- Paper: arXiv:2510.25779 Magentic Marketplace (Rothschild/MSR) — CalibrationGap adversarial-eval scaffold · https://arxiv.org/abs/2510.25779
+- Comment: masnjr on PM GTA VI market — oracle integrity flag (68 reactions)
+- PR: tomscaria/swarm-fund-mvp#23 — pm-tail-risk fractional-days fix, 4 tests · https://github.com/tomscaria/swarm-fund-mvp/pull/23
+
+*Blockers:* chain wrappers (morning-brief, evening-rollup) broken 5+ days — dispatch_skill bug. reddit-digest / farcaster-digest / reply-maker blocked (ISS-002/012/014).
+
+_+14 routine runs collapsed · sources: log=ok cron-state=ok_
