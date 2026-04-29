@@ -1,0 +1,609 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Monitor — 2026-04-29"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section_mexico",
+        "sep1",
+        "section_bitcoin",
+        "sep2",
+        "section_elections",
+        "sep3",
+        "section_analysis",
+        "sep4",
+        "section_alerts"
+      ]
+    },
+    "section_mexico": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_mexico",
+        "mexico_id",
+        "mexico_prices",
+        "mexico_status",
+        "mexico_notes"
+      ]
+    },
+    "h_mexico": {
+      "type": "Heading",
+      "props": {
+        "text": "Mexico Win 2026 FIFA World Cup",
+        "level": "h2"
+      }
+    },
+    "mexico_id": {
+      "type": "Text",
+      "props": {
+        "text": "will-mexico-win-the-2026-fifa-world-cup-529 | event 30615",
+        "variant": "muted"
+      }
+    },
+    "mexico_prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "mexico_yes",
+        "mexico_change",
+        "mexico_vol"
+      ]
+    },
+    "mexico_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.1%"
+      }
+    },
+    "mexico_change": {
+      "type": "Stat",
+      "props": {
+        "value": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "mexico_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "85K"
+      }
+    },
+    "mexico_status": {
+      "type": "Badge",
+      "props": {
+        "text": "stable — no action signal",
+        "variant": "secondary"
+      }
+    },
+    "mexico_notes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mexico_note1",
+        "mexico_note2",
+        "mexico_note3"
+      ]
+    },
+    "mexico_note1": {
+      "type": "Text",
+      "props": {
+        "text": "Revenant builder-code market",
+        "variant": "caption"
+      }
+    },
+    "mexico_note2": {
+      "type": "Text",
+      "props": {
+        "text": "Croatia note: commenter flagged 1M→14M bid buildup at c1.0 on Apr 28 (same event)",
+        "variant": "caption"
+      }
+    },
+    "mexico_note3": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (Strict-Nonbeliever): Australia mispricing: casual bettors anchor on outdated perceptions",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_bitcoin": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_bitcoin",
+        "bitcoin_id",
+        "bitcoin_prices",
+        "bitcoin_mechanics",
+        "bitcoin_comment"
+      ]
+    },
+    "h_bitcoin": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin Hit $1M Before GTA VI",
+        "level": "h2"
+      }
+    },
+    "bitcoin_id": {
+      "type": "Text",
+      "props": {
+        "text": "will-bitcoin-hit-1m-before-gta-vi-872 | event 23784",
+        "variant": "muted"
+      }
+    },
+    "bitcoin_prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "bitcoin_yes",
+        "bitcoin_change",
+        "bitcoin_vol"
+      ]
+    },
+    "bitcoin_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "49.1%"
+      }
+    },
+    "bitcoin_change": {
+      "type": "Stat",
+      "props": {
+        "value": "+0.1pp",
+        "trend": "up"
+      }
+    },
+    "bitcoin_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "11K"
+      }
+    },
+    "bitcoin_mechanics": {
+      "type": "Text",
+      "props": {
+        "text": "Anchored to 50c: 50-50 resolution mechanic (if neither by Jul 31 → resolves 50/50)",
+        "variant": "caption"
+      }
+    },
+    "bitcoin_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (masnjr, 68 reactions): ATTENTION NEW USERS: This is a SCAM market...",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_elections": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "h_elections",
+        "market_pres",
+        "market_rep",
+        "market_dem"
+      ]
+    },
+    "h_elections": {
+      "type": "Heading",
+      "props": {
+        "text": "US 2028 Election — top 5 active markets",
+        "level": "h2"
+      }
+    },
+    "market_pres": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_pres",
+        "pres_data"
+      ]
+    },
+    "h_pres": {
+      "type": "Heading",
+      "props": {
+        "text": "Pres Winner 2028",
+        "level": "h3"
+      }
+    },
+    "pres_data": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pres_candidates",
+        "pres_meta"
+      ]
+    },
+    "pres_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "pres_vance_stat",
+        "pres_newsom_stat"
+      ]
+    },
+    "pres_vance_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "JD Vance",
+        "value": "19%"
+      }
+    },
+    "pres_newsom_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Gavin Newsom",
+        "value": "18%"
+      }
+    },
+    "pres_meta": {
+      "type": "Text",
+      "props": {
+        "text": "event 31552 | 1.44M vol24h | 22.3M liq",
+        "variant": "caption"
+      }
+    },
+    "market_rep": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_rep",
+        "rep_data"
+      ]
+    },
+    "h_rep": {
+      "type": "Heading",
+      "props": {
+        "text": "Rep Nominee 2028",
+        "level": "h3"
+      }
+    },
+    "rep_data": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rep_candidates",
+        "rep_meta"
+      ]
+    },
+    "rep_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rep_vance",
+        "rep_rubio"
+      ]
+    },
+    "rep_vance": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "rep_vance_stat",
+        "rep_vance_change",
+        "rep_vance_vol"
+      ]
+    },
+    "rep_vance_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "JD Vance",
+        "value": "38.8%"
+      }
+    },
+    "rep_vance_change": {
+      "type": "Stat",
+      "props": {
+        "value": "-0.1pp",
+        "trend": "down"
+      }
+    },
+    "rep_vance_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "19K"
+      }
+    },
+    "rep_rubio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "rep_rubio_stat",
+        "rep_rubio_change",
+        "rep_rubio_vol"
+      ]
+    },
+    "rep_rubio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Marco Rubio",
+        "value": "21.7%"
+      }
+    },
+    "rep_rubio_change": {
+      "type": "Stat",
+      "props": {
+        "value": "-0.1pp",
+        "trend": "down"
+      }
+    },
+    "rep_rubio_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "21K"
+      }
+    },
+    "rep_meta": {
+      "type": "Text",
+      "props": {
+        "text": "event 31875",
+        "variant": "caption"
+      }
+    },
+    "market_dem": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_dem",
+        "dem_data"
+      ]
+    },
+    "h_dem": {
+      "type": "Heading",
+      "props": {
+        "text": "Dem Nominee 2028",
+        "level": "h3"
+      }
+    },
+    "dem_data": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_candidates",
+        "dem_meta"
+      ]
+    },
+    "dem_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_ossoff",
+        "dem_oprah"
+      ]
+    },
+    "dem_ossoff": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "dem_ossoff_stat",
+        "dem_ossoff_change",
+        "dem_ossoff_vol"
+      ]
+    },
+    "dem_ossoff_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Jon Ossoff",
+        "value": "6.45%"
+      }
+    },
+    "dem_ossoff_change": {
+      "type": "Stat",
+      "props": {
+        "value": "+0.2pp",
+        "trend": "up"
+      }
+    },
+    "dem_ossoff_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "387K"
+      }
+    },
+    "dem_oprah": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "dem_oprah_stat",
+        "dem_oprah_vol"
+      ]
+    },
+    "dem_oprah_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Oprah Winfrey",
+        "value": "0.65%"
+      }
+    },
+    "dem_oprah_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "112K"
+      }
+    },
+    "dem_meta": {
+      "type": "Text",
+      "props": {
+        "text": "event 30829 | 50.2M liq",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_analysis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_analysis",
+        "analysis_mover",
+        "analysis_spike"
+      ]
+    },
+    "h_analysis": {
+      "type": "Heading",
+      "props": {
+        "text": "Analysis",
+        "level": "h3"
+      }
+    },
+    "analysis_mover": {
+      "type": "Text",
+      "props": {
+        "text": "Biggest mover: Jon Ossoff — 7d range 4.95–7.30%, recovered +1.5pp from trough",
+        "variant": "body"
+      }
+    },
+    "analysis_spike": {
+      "type": "Text",
+      "props": {
+        "text": "Ossoff spike: 387K vol24h vs ~65K daily avg = ~6x; driver unconfirmed, flag for follow-up",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_alerts": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_alerts",
+        "alert_quiet",
+        "alert_ossoff_spike",
+        "alert_eric_trump",
+        "alert_fomc"
+      ]
+    },
+    "h_alerts": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h3"
+      }
+    },
+    "alert_quiet": {
+      "type": "Alert",
+      "props": {
+        "message": "No watched markets moved >5pp in 24h — all quiet on Mexico + BTC 1M",
+        "type": "info"
+      }
+    },
+    "alert_ossoff_spike": {
+      "type": "Alert",
+      "props": {
+        "title": "Ossoff Vol Spike",
+        "message": "~6x estimated daily avg — possible news or whale repositioning",
+        "type": "warning"
+      }
+    },
+    "alert_eric_trump": {
+      "type": "Alert",
+      "props": {
+        "title": "Eric Trump (Rep Nom)",
+        "message": "96K vol on 0.85% YES — elevated without clear catalyst",
+        "type": "warning"
+      }
+    },
+    "alert_fomc": {
+      "type": "Alert",
+      "props": {
+        "title": "FOMC",
+        "message": "No-change 99.85% resolving today (7.71M vol24h) — experienced-carpeting tail expires",
+        "type": "info"
+      }
+    }
+  }
+}
