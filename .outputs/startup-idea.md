@@ -1,18 +1,17 @@
-*Startup Ideas — 2026-04-28*
+*Startup Ideas — 2026-04-29*
 
-*1. Receipts* (executable) — agent-runtime → SOC2 evidence pipeline; the compliance answer enterprise procurement is asking and AI-SaaS sellers can't ship.
-ICP: Sec / Eng lead at 50–300-person AI-native SaaS that just got a procurement gate ("where are agent action logs / SOC2 mappings for autonomous decisions?") in last 60 days.
-Wedge: drop-in OTel + lmnr / Langfuse collector → auditor-ready CC6.1 / CC7.2 / CC8.1 evidence rows; Drata + Vanta connectors.
-Why now: AICPA SOC2 TSC update for agents in 2026; YC Summer RFS calls "AI-native audit & compliance"; procurement asks agent-specific control Qs and no template exists.
-MVP test: lmnr → SOC2-CC7.2 pipeline + 5 design partners (rswarm.ai = customer zero); demand metric = 3+ LOIs at $1k+/mo in 2 weeks.
-Kill: <3 paid pilots in 60 days at $1k+/mo → kill. Or Drata / Vanta ship native AI-agent module with no co-sell window → kill.
+*1. Strikeline* (executable) — daily NAV strike + investor-grade ledger for crypto-native funds $5–50M AUM priced out of NAV / Stonegate, glued to spreadsheets today.
+ICP: ops lead at $5–50M crypto-native fund or DAO treasury hitting reconciliation breaks pre-audit, or finding CEX/DEX/perp/PM trades not tying out
+Wedge: daily NAV strike + capital-call workflow with venue-aware rec across Coinbase Prime, HL, PM, Kalshi, Fireblocks, on-chain
+Why now: Carta/AngelList tier cap leaves $3–50M gap NAV/Stonegate price out at the bottom; PM positions becoming material on fund balance sheets after CFTC US-trader push; AI agents at $1.22/run replace the controller's exception-resolution shift
+MVP test: CSV-in/NAV-out across Coinbase Prime + HL + PM, 5 small-fund operators, ≥99.5% strike accuracy
+Kill: <3 paid pilots in 60d OR <99% accuracy on 2+ venue combos
 
-*2. Mandate* (ambitious) — signed-receipt registry as the settlement-confirmation layer of agentic commerce; whoever runs the registry takes bps fees and owns the cross-platform agent-reputation graph.
-ICP: CTO or General Counsel at 200–2000-person FS / healthcare / insurance / supply-chain co running agent procurement or RFP — trigger = legal asked "who's liable for the agent's $250k contract" within last 90 days and there's no answer.
-Wedge: open-spec hash-chained Agent Mandate Receipt (policy-version + input commit + rationale URI + approver) + Python / TS SDK + hosted public registry; auditors as Day-1 verifiers; signing-key custody on Lore MPC stack.
-Why now: NIST agentic-AI standards convening April 2026; EU AI Act audit deadline; Mastercard / Visa / Shopify all building agentic-commerce protocols Q1–Q2; Reg E has no agentic dispute framework.
-MVP test: v0.1 spec + reference verifier + 3 design partners publishing 100+ receipts each in 2 weeks; demand = 1 regulator / auditor acknowledges spec in 30 days.
-Kill: <3 design partners shipping at 30 days → kill. Or Mastercard / Visa close-spec ships before Day 90 → pivot to verifier-only.
+*2. Cassandra* (ambitious) — continuous agentic red-team SaaS for live DeFi + PM protocols. Rent Claude/GPT-5 swarms to autonomously surface economic-invariant violations against forked mainnet; on-chain bounty escrow pays the protocol team before exploit ships.
+ICP: head of security at perp DEX or PM venue who just signed a 6-figure audit retainer and watched a peer drained 30d post-audit (Drift $285M Apr 1, Euler $197M after 6 firms / 10 audits)
+Wedge: continuous-scan SaaS + private exploit-candidate registry + bounty escrow; integrations into HIP-3 deployers, PM UMA resolvers, top-5 perp DEXs
+Why now: Anthropic red-team confirms $1.22/scan = $4.6M exploit revenue; April 2026 = $606M hacks (worst since Feb 25); "$1.22 attacker vs $250k auditor" asymmetry didn't exist 12mo ago
+MVP test: 2-week swarm-run on 2 HIP-3 markets + 2 PM resolution contracts; pitch as $25k/mo pilot
+Kill: <2 paid pilots in 90d OR zero novel exploit candidates in 60d
 
-Full memos + 8 permalinks of pain evidence in `memory/logs/2026-04-28.md`.
-
+Full memos in memory/logs/2026-04-29.md

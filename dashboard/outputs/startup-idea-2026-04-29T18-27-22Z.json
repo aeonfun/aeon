@@ -1,0 +1,432 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-04-29"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea1-section",
+        "sep1",
+        "idea2-section",
+        "sep2",
+        "footer-section"
+      ]
+    },
+    "idea1-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea1-title",
+        "idea1-content"
+      ]
+    },
+    "idea1-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-heading",
+        "idea1-badge"
+      ]
+    },
+    "idea1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Strikeline",
+        "level": "h2"
+      }
+    },
+    "idea1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "executable",
+        "variant": "default"
+      }
+    },
+    "idea1-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-desc",
+        "idea1-icp-block",
+        "idea1-wedge-block",
+        "idea1-whynow-block",
+        "idea1-mvp-block",
+        "idea1-kill-block"
+      ]
+    },
+    "idea1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "daily NAV strike + investor-grade ledger for crypto-native funds $5–50M AUM priced out of NAV / Stonegate, glued to spreadsheets today.",
+        "variant": "lead"
+      }
+    },
+    "idea1-icp-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-icp-label",
+        "idea1-icp-text"
+      ]
+    },
+    "idea1-icp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea1-icp-text": {
+      "type": "Text",
+      "props": {
+        "text": "ops lead at $5–50M crypto-native fund or DAO treasury hitting reconciliation breaks pre-audit, or finding CEX/DEX/perp/PM trades not tying out",
+        "variant": "body"
+      }
+    },
+    "idea1-wedge-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-wedge-label",
+        "idea1-wedge-text"
+      ]
+    },
+    "idea1-wedge-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea1-wedge-text": {
+      "type": "Text",
+      "props": {
+        "text": "daily NAV strike + capital-call workflow with venue-aware rec across Coinbase Prime, HL, PM, Kalshi, Fireblocks, on-chain",
+        "variant": "body"
+      }
+    },
+    "idea1-whynow-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-whynow-label",
+        "idea1-whynow-text"
+      ]
+    },
+    "idea1-whynow-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea1-whynow-text": {
+      "type": "Text",
+      "props": {
+        "text": "Carta/AngelList tier cap leaves $3–50M gap NAV/Stonegate price out at the bottom; PM positions becoming material on fund balance sheets after CFTC US-trader push; AI agents at $1.22/run replace the controller's exception-resolution shift",
+        "variant": "body"
+      }
+    },
+    "idea1-mvp-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-mvp-label",
+        "idea1-mvp-text"
+      ]
+    },
+    "idea1-mvp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea1-mvp-text": {
+      "type": "Text",
+      "props": {
+        "text": "CSV-in/NAV-out across Coinbase Prime + HL + PM, 5 small-fund operators, ≥99.5% strike accuracy",
+        "variant": "body"
+      }
+    },
+    "idea1-kill-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea1-kill-label",
+        "idea1-kill-text"
+      ]
+    },
+    "idea1-kill-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "idea1-kill-text": {
+      "type": "Text",
+      "props": {
+        "text": "<3 paid pilots in 60d OR <99% accuracy on 2+ venue combos",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea2-title",
+        "idea2-content"
+      ]
+    },
+    "idea2-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-heading",
+        "idea2-badge"
+      ]
+    },
+    "idea2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Cassandra",
+        "level": "h2"
+      }
+    },
+    "idea2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious",
+        "variant": "secondary"
+      }
+    },
+    "idea2-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-desc",
+        "idea2-icp-block",
+        "idea2-wedge-block",
+        "idea2-whynow-block",
+        "idea2-mvp-block",
+        "idea2-kill-block"
+      ]
+    },
+    "idea2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "continuous agentic red-team SaaS for live DeFi + PM protocols. Rent Claude/GPT-5 swarms to autonomously surface economic-invariant violations against forked mainnet; on-chain bounty escrow pays the protocol team before exploit ships.",
+        "variant": "lead"
+      }
+    },
+    "idea2-icp-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-icp-label",
+        "idea2-icp-text"
+      ]
+    },
+    "idea2-icp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea2-icp-text": {
+      "type": "Text",
+      "props": {
+        "text": "head of security at perp DEX or PM venue who just signed a 6-figure audit retainer and watched a peer drained 30d post-audit (Drift $285M Apr 1, Euler $197M after 6 firms / 10 audits)",
+        "variant": "body"
+      }
+    },
+    "idea2-wedge-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-wedge-label",
+        "idea2-wedge-text"
+      ]
+    },
+    "idea2-wedge-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea2-wedge-text": {
+      "type": "Text",
+      "props": {
+        "text": "continuous-scan SaaS + private exploit-candidate registry + bounty escrow; integrations into HIP-3 deployers, PM UMA resolvers, top-5 perp DEXs",
+        "variant": "body"
+      }
+    },
+    "idea2-whynow-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-whynow-label",
+        "idea2-whynow-text"
+      ]
+    },
+    "idea2-whynow-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea2-whynow-text": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic red-team confirms $1.22/scan = $4.6M exploit revenue; April 2026 = $606M hacks (worst since Feb 25); \"$1.22 attacker vs $250k auditor\" asymmetry didn't exist 12mo ago",
+        "variant": "body"
+      }
+    },
+    "idea2-mvp-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-mvp-label",
+        "idea2-mvp-text"
+      ]
+    },
+    "idea2-mvp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea2-mvp-text": {
+      "type": "Text",
+      "props": {
+        "text": "2-week swarm-run on 2 HIP-3 markets + 2 PM resolution contracts; pitch as $25k/mo pilot",
+        "variant": "body"
+      }
+    },
+    "idea2-kill-block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea2-kill-label",
+        "idea2-kill-text"
+      ]
+    },
+    "idea2-kill-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "idea2-kill-text": {
+      "type": "Text",
+      "props": {
+        "text": "<2 paid pilots in 90d OR zero novel exploit candidates in 60d",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "footer-text",
+        "footer-link"
+      ]
+    },
+    "footer-text": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in",
+        "variant": "caption"
+      }
+    },
+    "footer-link": {
+      "type": "Link",
+      "props": {
+        "label": "memory/logs/2026-04-29.md",
+        "href": "memory/logs/2026-04-29.md"
+      }
+    }
+  }
+}
