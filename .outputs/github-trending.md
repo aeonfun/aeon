@@ -1,9 +1,18 @@
-**GITHUB_TRENDING_OK** — 3 picks queued, 0 prior-2-day collisions.
+*GitHub Trending — 2026-04-29*
 
-## Summary
+*Top pick* — [iamgio/quarkdown](https://github.com/iamgio/quarkdown)
+Only fresh-release survivor today: v2.0.0 dropped Apr 23 and the trend is still building. Other picks are HOLDOVERs with new fixes.
 
-- Ran `github-trending` for 2026-04-28. WebFetch on `github.com/trending?since=daily` returned 13 repos; filtered to 3 after dedupe (yesterday's 4 picks all reappeared in today's feed) and noise filters.
-- **Top pick:** [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) v0.2.4 — multi-agent LLM trading framework with structured-output decisions and an outcome-grounded reflection log. Direct pattern-match to swarm-fund-mvp canary→apex calibration; worth a 30-min read on the changelog.
-- Other picks: `microsoft/VibeVoice` (open-weights frontier voice + Apple Silicon ASR), `davila7/claude-code-templates` (Opus 1M-context detection landed today).
-- Files: `.outputs/github-trending.md`, `.pending-notify/github-trending-2026-04-28.md`, `memory/logs/2026-04-28.md`.
-- **Follow-up:** `notify` hook-block on multi-line `$(cat …)` is now 5 days running. Queued via `.pending-notify/` as usual, but `scripts/postprocess-notify.sh` still not in tree — workflow-side pickup needs operator confirmation, otherwise queued notifications back up silently.
+*Devtools*
+• [iamgio/quarkdown](https://github.com/iamgio/quarkdown) — ★ 699 today (12k total) · Kotlin · [RETURNING]
+v2.0.0 (Apr 23) overhauled the typed-function layer; one .qmd compiles to LaTeX PDFs, Reveal slides, websites, and books.
+
+• [mattpocock/skills](https://github.com/mattpocock/skills) — ★ 7.3k today (40k total) · Shell · [HOLDOVER]
+Re-feature: GitLab as first-class issue tracker landed today + new `/setup-matt-pocock-skills` quickstart; stars 3x'd in 24h.
+
+• [abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus) — ★ 1.6k today (33k total) · TypeScript · [HOLDOVER]
+Re-feature: client-side Graph RAG over any GitHub repo, no server. v1.6.4-rc.22 today (Docker SSE healthcheck fix); 2.3x stars-today vs yesterday.
+
+---
+sources: trending=ok · gh_api=ok · kept 3/13
+

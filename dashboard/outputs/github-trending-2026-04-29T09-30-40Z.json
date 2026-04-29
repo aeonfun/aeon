@@ -1,0 +1,308 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-04-29"
+      },
+      "children": [
+        "top-pick-section",
+        "separator1",
+        "devtools-section",
+        "separator2",
+        "footer-section"
+      ]
+    },
+    "top-pick-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-pick-label",
+        "top-pick-repo",
+        "top-pick-desc"
+      ]
+    },
+    "top-pick-label": {
+      "type": "Text",
+      "props": {
+        "text": "Top pick",
+        "variant": "lead"
+      }
+    },
+    "top-pick-repo": {
+      "type": "StoryLink",
+      "props": {
+        "title": "iamgio/quarkdown",
+        "href": "https://github.com/iamgio/quarkdown"
+      }
+    },
+    "top-pick-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Only fresh-release survivor today: v2.0.0 dropped Apr 23 and the trend is still building. Other picks are HOLDOVERs with new fixes.",
+        "variant": "body"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "devtools-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "devtools-heading",
+        "devtools-list"
+      ]
+    },
+    "devtools-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      }
+    },
+    "devtools-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo1",
+        "repo2",
+        "repo3"
+      ]
+    },
+    "repo1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo1-header",
+        "repo1-meta",
+        "repo1-desc"
+      ]
+    },
+    "repo1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo1-link",
+        "repo1-status"
+      ]
+    },
+    "repo1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "iamgio/quarkdown",
+        "href": "https://github.com/iamgio/quarkdown"
+      }
+    },
+    "repo1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "secondary"
+      }
+    },
+    "repo1-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo1-stars",
+        "repo1-lang"
+      ]
+    },
+    "repo1-stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 699 today (12k total)",
+        "variant": "caption"
+      }
+    },
+    "repo1-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Kotlin",
+        "variant": "outline"
+      }
+    },
+    "repo1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "v2.0.0 (Apr 23) overhauled the typed-function layer; one .qmd compiles to LaTeX PDFs, Reveal slides, websites, and books.",
+        "variant": "body"
+      }
+    },
+    "repo2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo2-header",
+        "repo2-meta",
+        "repo2-desc"
+      ]
+    },
+    "repo2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo2-link",
+        "repo2-status"
+      ]
+    },
+    "repo2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "mattpocock/skills",
+        "href": "https://github.com/mattpocock/skills"
+      }
+    },
+    "repo2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "HOLDOVER",
+        "variant": "secondary"
+      }
+    },
+    "repo2-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo2-stars",
+        "repo2-lang"
+      ]
+    },
+    "repo2-stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 7.3k today (40k total)",
+        "variant": "caption"
+      }
+    },
+    "repo2-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Shell",
+        "variant": "outline"
+      }
+    },
+    "repo2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Re-feature: GitLab as first-class issue tracker landed today + new `/setup-matt-pocock-skills` quickstart; stars 3x'd in 24h.",
+        "variant": "body"
+      }
+    },
+    "repo3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo3-header",
+        "repo3-meta",
+        "repo3-desc"
+      ]
+    },
+    "repo3-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo3-link",
+        "repo3-status"
+      ]
+    },
+    "repo3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "abhigyanpatwari/GitNexus",
+        "href": "https://github.com/abhigyanpatwari/GitNexus"
+      }
+    },
+    "repo3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "HOLDOVER",
+        "variant": "secondary"
+      }
+    },
+    "repo3-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo3-stars",
+        "repo3-lang"
+      ]
+    },
+    "repo3-stars": {
+      "type": "Text",
+      "props": {
+        "text": "★ 1.6k today (33k total)",
+        "variant": "caption"
+      }
+    },
+    "repo3-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "outline"
+      }
+    },
+    "repo3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Re-feature: client-side Graph RAG over any GitHub repo, no server. v1.6.4-rc.22 today (Docker SSE healthcheck fix); 2.3x stars-today vs yesterday.",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer-section": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok · gh_api=ok · kept 3/13",
+        "variant": "muted"
+      }
+    }
+  }
+}
