@@ -1,0 +1,137 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "RSS feed updated"
+      },
+      "children": [
+        "stats",
+        "new_section",
+        "subscribe_section"
+      ]
+    },
+    "stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_total",
+        "stat_new"
+      ]
+    },
+    "stat_total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total entries",
+        "value": "45"
+      }
+    },
+    "stat_new": {
+      "type": "Stat",
+      "props": {
+        "label": "New",
+        "value": "9"
+      }
+    },
+    "new_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "new_heading",
+        "items",
+        "more_note"
+      ]
+    },
+    "new_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      }
+    },
+    "items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic's Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway."
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon's Forks Are Now Writing Its Roadmap. PR #147 Was Built So #143 Doesn't Happen Again."
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket's Builder Codes Are Just One `bytes32`. That's the Point."
+      }
+    },
+    "item4": {
+      "type": "Text",
+      "props": {
+        "text": "Hash Chains for AI Agents Shipped Twice This Month. Git Already Was One."
+      }
+    },
+    "item5": {
+      "type": "Text",
+      "props": {
+        "text": "UMA Optimistic Oracle / Polymarket resolution disputes (research brief 2026-04-29)"
+      }
+    },
+    "more_note": {
+      "type": "Text",
+      "props": {
+        "text": "(+4 more — daily code-health, push-recap, repo-actions, changelog)",
+        "variant": "caption"
+      }
+    },
+    "subscribe_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "subscribe_label",
+        "subscribe_link"
+      ]
+    },
+    "subscribe_label": {
+      "type": "Text",
+      "props": {
+        "text": "Subscribe:",
+        "variant": "muted"
+      }
+    },
+    "subscribe_link": {
+      "type": "Link",
+      "props": {
+        "label": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "self-improve"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat-prs",
+        "text-pr-ids",
+        "badge-status",
+        "badge-no-new"
+      ]
+    },
+    "stat-prs": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Improvement PRs",
+        "value": "3"
+      }
+    },
+    "text-pr-ids": {
+      "type": "Text",
+      "props": {
+        "text": "PRs: #1, #2, #5"
+      }
+    },
+    "badge-status": {
+      "type": "Badge",
+      "props": {
+        "text": "Waiting for review",
+        "variant": "outline"
+      }
+    },
+    "badge-no-new": {
+      "type": "Badge",
+      "props": {
+        "text": "No new PR created",
+        "variant": "secondary"
+      }
+    }
+  }
+}

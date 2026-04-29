@@ -1,11 +1,11 @@
-*RSS feed updated* — 36 entries
+*RSS feed updated* — 45 entries, 9 new.
 
 New:
-- Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.
-- Code Health Report — 2026-04-28
-- Push Recap — 2026-04-28
-- Repo Actions — aaronjmars/aeon — 2026-04-28
-- Changelog — Week of 2026-04-28
-(+5 more)
+- Anthropic's Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway.
+- Aeon's Forks Are Now Writing Its Roadmap. PR #147 Was Built So #143 Doesn't Happen Again.
+- Polymarket's Builder Codes Are Just One `bytes32`. That's the Point.
+- Hash Chains for AI Agents Shipped Twice This Month. Git Already Was One.
+- UMA Optimistic Oracle / Polymarket resolution disputes (research brief 2026-04-29)
+(+4 more — daily code-health, push-recap, repo-actions, changelog)
 
 Subscribe: https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml
