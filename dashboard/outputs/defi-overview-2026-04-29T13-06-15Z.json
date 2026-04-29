@@ -1,0 +1,427 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi — 2026-04-29"
+      },
+      "children": [
+        "text_summary",
+        "sep_1",
+        "heading_tvl",
+        "stat_tvl",
+        "text_tvl_detail",
+        "table_top_chains",
+        "sep_2",
+        "heading_movers",
+        "text_movers_maple",
+        "text_movers_superstate",
+        "text_chains_note",
+        "sep_3",
+        "heading_fees_leaders",
+        "table_fees_leaders",
+        "sep_4",
+        "heading_fees_beating",
+        "table_fees_beating",
+        "sep_5",
+        "heading_dex_vol",
+        "stat_dex_vol",
+        "text_dex_vol_context",
+        "table_dex_top",
+        "sep_6",
+        "heading_stables",
+        "stat_stables",
+        "table_stables",
+        "sep_7",
+        "heading_real_yield",
+        "table_real_yield",
+        "sep_8",
+        "heading_incentive",
+        "table_incentive_yield",
+        "sep_9",
+        "text_sources"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed: TVL drifting up after Mon dip, DEX vol bouncing, stables flat",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_tvl": {
+      "type": "Heading",
+      "props": {
+        "text": "TVL",
+        "level": "h2"
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Value Locked",
+        "value": "$84.8B",
+        "delta": "+1.0%",
+        "trend": "up"
+      }
+    },
+    "text_tvl_detail": {
+      "type": "Text",
+      "props": {
+        "text": "24h +1.0%, 7d −0.7% — partial reversal of yesterday's −2.6% 24h slide",
+        "variant": "caption"
+      }
+    },
+    "table_top_chains": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Chain",
+          "TVL",
+          "Change"
+        ],
+        "rows": [
+          [
+            "1",
+            "Ethereum",
+            "$45.7B",
+            "+1.7%"
+          ],
+          [
+            "2",
+            "BSC",
+            "$5.5B",
+            "—"
+          ],
+          [
+            "3",
+            "Solana",
+            "$5.5B",
+            "−1.5% 7d"
+          ]
+        ]
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_movers": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — Protocols",
+        "level": "h2"
+      }
+    },
+    "text_movers_maple": {
+      "type": "Text",
+      "props": {
+        "text": "↑ Maple +14.5% ($1.69B → $1.93B, Lending, ETH+SOL) — no obvious catalyst"
+      }
+    },
+    "text_movers_superstate": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Superstate USTB −10.6% ($924M → $826M, RWA, ETH+Plume+SOL) — no obvious catalyst"
+      }
+    },
+    "text_chains_note": {
+      "type": "Text",
+      "props": {
+        "text": "Chains: none cleared 5%/24h. Plasma 1d +3.1% but 7d −49% — incentive-unwind day 3.",
+        "variant": "muted"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_fees_leaders": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Leaders (24h)",
+        "level": "h2"
+      }
+    },
+    "table_fees_leaders": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Protocol",
+          "24h Fees",
+          "vs 7d Avg"
+        ],
+        "rows": [
+          [
+            "1",
+            "Tether",
+            "$16.5M",
+            "flat"
+          ],
+          [
+            "2",
+            "Circle USDC",
+            "$6.6M",
+            "flat"
+          ],
+          [
+            "3",
+            "Canton",
+            "$2.3M",
+            "+2.7%"
+          ]
+        ]
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_fees_beating": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Beating TVL (7d)",
+        "level": "h2"
+      }
+    },
+    "table_fees_beating": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees Change",
+          "TVL Change",
+          "Details"
+        ],
+        "rows": [
+          [
+            "Meteora DLMM",
+            "+31%",
+            "−11%",
+            "Solana DEX, real demand outrunning capital"
+          ],
+          [
+            "Centrifuge",
+            "+61%",
+            "−10%",
+            "RWA fees back on a $1.79B base"
+          ]
+        ]
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_dex_vol": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX Volume",
+        "level": "h2"
+      }
+    },
+    "stat_dex_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h DEX Volume",
+        "value": "$6.6B",
+        "delta": "+11%",
+        "trend": "up"
+      }
+    },
+    "text_dex_vol_context": {
+      "type": "Text",
+      "props": {
+        "text": "1d +11%, 7d −22%",
+        "variant": "caption"
+      }
+    },
+    "table_dex_top": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "24h Volume",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$974M",
+            "+45%"
+          ],
+          [
+            "BisonFi",
+            "$760M",
+            "7d-ago=0, Solana new entrant"
+          ],
+          [
+            "Uniswap V3",
+            "$400M",
+            "−29%"
+          ]
+        ]
+      }
+    },
+    "sep_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_stables": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h2"
+      }
+    },
+    "stat_stables": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Stables Market Cap",
+        "value": "$320.4B",
+        "delta": "+0.36%",
+        "trend": "up"
+      }
+    },
+    "table_stables": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Stablecoin",
+          "Market Cap",
+          "Change",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "USDe",
+            "$3.80B",
+            "+1.24%",
+            "recovery day 4 off the −20% 7d Ethena unwind"
+          ],
+          [
+            "USDG",
+            "—",
+            "+1.6%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep_7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_real_yield": {
+      "type": "Heading",
+      "props": {
+        "text": "Real Yield (sustainable, ≥$10M, filtered)",
+        "level": "h2"
+      }
+    },
+    "table_real_yield": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "APY",
+          "TVL",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "APT (Amnis, Aptos)",
+            "25.2%",
+            "$19M",
+            "mean30d 14.2%"
+          ],
+          [
+            "USDC-CBBTC (Uniswap V3, Base, IL)",
+            "17.7%",
+            "$11M",
+            ""
+          ],
+          [
+            "NOPAL (Nest Credit, Plume)",
+            "16.7%",
+            "$14M",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep_8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_incentive": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive Yield (points / emissions, ≥$25M)",
+        "level": "h2"
+      }
+    },
+    "table_incentive_yield": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "APY",
+          "TVL",
+          "Via"
+        ],
+        "rows": [
+          [
+            "CVXCRV (Convex, ETH)",
+            "24.4%",
+            "$33M",
+            "CRV/CVX/scrvUSD"
+          ],
+          [
+            "SDCRV (Stake DAO, ETH)",
+            "23.8%",
+            "$28M",
+            "CRV/scrvUSD"
+          ]
+        ]
+      }
+    },
+    "sep_9": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: llama_tvl=ok, llama_dex=ok, llama_fees=ok, llama_stables=ok, llama_yields=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}

@@ -38,4 +38,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-28,evening-recap,claude-sonnet-4-6,15,8213,881807,91631
 2026-04-29,daily-routine,claude-opus-4-7,73,19098,3909613,103168
 2026-04-29,github-trending,claude-opus-4-7,27,15097,1020877,97045
-2026-04-29,monitor-runners,claude-opus-4-7,70,26113,4000459,117744
+2026-04-29,defi-overview,claude-opus-4-7,58,27170,3101200,91713
