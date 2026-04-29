@@ -1,0 +1,313 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-04-29"
+      },
+      "children": [
+        "verdict-section",
+        "sep1",
+        "patch-heading",
+        "patch-cves",
+        "sep2",
+        "monitor-heading",
+        "coredns-section"
+      ]
+    },
+    "verdict-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "verdict-text",
+        "sources-text"
+      ]
+    },
+    "verdict-text": {
+      "type": "Text",
+      "props": {
+        "text": "2 actively exploited (KEV adds today), 0 to schedule, 5 to monitor (CoreDNS cluster)",
+        "variant": "lead"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: KEV ok, GH ok, EPSS ok",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH TODAY",
+        "level": "h2"
+      }
+    },
+    "patch-cves": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "cve-2024-1708-card",
+        "cve-2026-32202-card"
+      ]
+    },
+    "cve-2024-1708-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cve1-link",
+        "cve1-metrics",
+        "cve1-description",
+        "cve1-action"
+      ]
+    },
+    "cve1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2024-1708 — ConnectWise ScreenConnect path traversal",
+        "href": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2024-1708",
+        "source": "CISA"
+      }
+    },
+    "cve1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve1-kev-badge",
+        "cve1-epss",
+        "cve1-cvss"
+      ]
+    },
+    "cve1-kev-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "KEV added 2026-04-28",
+        "variant": "destructive"
+      }
+    },
+    "cve1-epss": {
+      "type": "Stat",
+      "props": {
+        "label": "EPSS",
+        "value": "0.82"
+      }
+    },
+    "cve1-cvss": {
+      "type": "Stat",
+      "props": {
+        "label": "CVSS",
+        "value": "8.4"
+      }
+    },
+    "cve1-description": {
+      "type": "Text",
+      "props": {
+        "text": "Bundled with the Feb-2024 auth-bypass kit; MSRC's Storm-1175/Medusa ransomware blog (Apr 2026) cites this exact CVE. CISA finally KEV-listed.",
+        "variant": "body"
+      }
+    },
+    "cve1-action": {
+      "type": "Alert",
+      "props": {
+        "title": "Action Required",
+        "message": "Patch ScreenConnect to ≥23.9.8 today. Aeon stack: not used; flag any operator-side ConnectWise instance.",
+        "type": "warning"
+      }
+    },
+    "cve-2026-32202-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cve2-link",
+        "cve2-metrics",
+        "cve2-description",
+        "cve2-action"
+      ]
+    },
+    "cve2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-32202 — Windows Shell spoofing",
+        "href": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-32202",
+        "source": "MSRC"
+      }
+    },
+    "cve2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve2-kev-badge",
+        "cve2-epss",
+        "cve2-cvss"
+      ]
+    },
+    "cve2-kev-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "KEV added 2026-04-28",
+        "variant": "destructive"
+      }
+    },
+    "cve2-epss": {
+      "type": "Stat",
+      "props": {
+        "label": "EPSS",
+        "value": "0.07"
+      }
+    },
+    "cve2-cvss": {
+      "type": "Stat",
+      "props": {
+        "label": "CVSS",
+        "value": "4.3"
+      }
+    },
+    "cve2-description": {
+      "type": "Text",
+      "props": {
+        "text": "Low CVSS but KEV-listed → MSRC has in-the-wild evidence. Network spoof, user-interaction required.",
+        "variant": "body"
+      }
+    },
+    "cve2-action": {
+      "type": "Alert",
+      "props": {
+        "title": "Action Required",
+        "message": "Apply April 2026 Windows cumulative update on any operator workstation today.",
+        "type": "warning"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "monitor-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "MONITOR",
+        "level": "h2"
+      }
+    },
+    "coredns-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "coredns-title",
+        "coredns-summary",
+        "coredns-advisories-list",
+        "coredns-context",
+        "coredns-action-alert"
+      ]
+    },
+    "coredns-title": {
+      "type": "Heading",
+      "props": {
+        "text": "coredns/coredns (Go)",
+        "level": "h3"
+      }
+    },
+    "coredns-summary": {
+      "type": "Text",
+      "props": {
+        "text": "5 high advisories published 2026-04-28, all CVSS 7.5, all fixed in v1.14.3",
+        "variant": "lead"
+      }
+    },
+    "coredns-advisories-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ghsa-1",
+        "ghsa-2",
+        "ghsa-3",
+        "ghsa-4",
+        "ghsa-5"
+      ]
+    },
+    "ghsa-1": {
+      "type": "Badge",
+      "props": {
+        "text": "GHSA-vp29-5652-4fw9 (TSIG bypass gRPC/QUIC)",
+        "variant": "secondary"
+      }
+    },
+    "ghsa-2": {
+      "type": "Badge",
+      "props": {
+        "text": "GHSA-qhmp-q7xh-99rh (TSIG bypass DoT/DoH/DoH3/DoQ/gRPC)",
+        "variant": "secondary"
+      }
+    },
+    "ghsa-3": {
+      "type": "Badge",
+      "props": {
+        "text": "GHSA-h8mm-c463-wjq3 (subzone ACL bypass)",
+        "variant": "secondary"
+      }
+    },
+    "ghsa-4": {
+      "type": "Badge",
+      "props": {
+        "text": "GHSA-63cw-r7xf-jmwr (DoH amplification DoS)",
+        "variant": "secondary"
+      }
+    },
+    "ghsa-5": {
+      "type": "Badge",
+      "props": {
+        "text": "GHSA-2wpx-qpw2-g5h5 (DoQ stream-backlog DoS)",
+        "variant": "secondary"
+      }
+    },
+    "coredns-context": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon stack: no CoreDNS dependency. Tracked because Go ecosystem; cluster is notable.",
+        "variant": "caption"
+      }
+    },
+    "coredns-action-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Future Action",
+        "message": "If any future deploy ships CoreDNS, pin ≥1.14.3.",
+        "type": "info"
+      }
+    }
+  }
+}
