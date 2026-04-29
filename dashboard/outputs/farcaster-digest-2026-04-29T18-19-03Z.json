@@ -1,0 +1,110 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest",
+        "description": "Skill execution skipped — configuration issue"
+      },
+      "children": [
+        "alert-section",
+        "status-section",
+        "history-section"
+      ]
+    },
+    "alert-section": {
+      "type": "Alert",
+      "props": {
+        "title": "Skill Skipped",
+        "message": "NEYNAR_API_KEY missing from environment. All Neynar endpoints returning HTTP 402 auth wall.",
+        "type": "error"
+      }
+    },
+    "status-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status-label",
+        "endpoints-stack"
+      ]
+    },
+    "status-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Endpoint Status",
+        "level": "h3"
+      }
+    },
+    "endpoints-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "endpoint-search",
+        "endpoint-trending",
+        "endpoint-channels"
+      ]
+    },
+    "endpoint-search": {
+      "type": "Badge",
+      "props": {
+        "text": "search: FAILED (HTTP 402)",
+        "variant": "destructive"
+      }
+    },
+    "endpoint-trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending: FAILED (HTTP 402)",
+        "variant": "destructive"
+      }
+    },
+    "endpoint-channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels: FAILED (HTTP 402)",
+        "variant": "destructive"
+      }
+    },
+    "history-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "history-label",
+        "recurrence-info",
+        "root-cause"
+      ]
+    },
+    "history-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Recurrence Pattern",
+        "level": "h3"
+      }
+    },
+    "recurrence-info": {
+      "type": "Text",
+      "props": {
+        "text": "4th consecutive failure: 2026-04-25, 2026-04-27, 2026-04-28, 2026-04-29",
+        "variant": "body"
+      }
+    },
+    "root-cause": {
+      "type": "Text",
+      "props": {
+        "text": "Root cause: Operator configuration gap (missing NEYNAR_API_KEY in environment). No code fix possible.",
+        "variant": "muted"
+      }
+    }
+  }
+}
