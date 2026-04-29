@@ -1,0 +1,261 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-04-29"
+      },
+      "children": [
+        "content"
+      ]
+    },
+    "content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "project-row",
+        "description",
+        "sep1",
+        "shipped-heading",
+        "shipped-items",
+        "sep2",
+        "trigger-heading",
+        "trigger-text",
+        "sep3",
+        "stats-heading",
+        "stats-grid",
+        "sep4",
+        "recap-link"
+      ]
+    },
+    "project-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "project-name",
+        "status-badge"
+      ]
+    },
+    "project-name": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SHIPPING",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "pr-triage skill goes live as first-touch layer for external PRs.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "shipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shipped-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item-1",
+        "item-2",
+        "item-3"
+      ]
+    },
+    "item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-1-title",
+        "item-1-detail"
+      ]
+    },
+    "item-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "e26e7a2 PR #147 — new skills/pr-triage/SKILL.md (+248)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Four-check rubric (scope/format/originality/size), four-rung verdict ladder (ACCEPTED/NEEDS-CHANGES/DEFER/OUT-OF-SCOPE), triage:* label namespace, idempotent state in memory/triaged-prs.json keyed on (PR, headRefOid).",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-2-title",
+        "item-2-detail"
+      ]
+    },
+    "item-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml — wired at 30 9 * * * mid-morning, disabled-by-default",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "var: accepts owner/repo or owner/repo#N.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-3-title",
+        "item-3-detail"
+      ]
+    },
+    "item-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "skills.json — catalog total bumps 92 → 93",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-3-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Install via ./add-skill aaronjmars/aeon pr-triage.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "trigger-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trigger",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "trigger-text": {
+      "type": "Text",
+      "props": {
+        "text": "External PR #143 (pezetel) sat 4 days untouched while fork count climbs toward 40.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stats-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape and Volume",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-shape",
+        "stat-volume"
+      ]
+    },
+    "stat-shape": {
+      "type": "Stat",
+      "props": {
+        "label": "Shape",
+        "value": "1 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR"
+      },
+      "children": []
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "4 files, +263/-2 lines"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "recap-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-29.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
