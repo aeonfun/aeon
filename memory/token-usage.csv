@@ -39,4 +39,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-29,daily-routine,claude-opus-4-7,73,19098,3909613,103168
 2026-04-29,github-trending,claude-opus-4-7,27,15097,1020877,97045
 2026-04-29,monitor-polymarket,claude-sonnet-4-6,2513,30085,2037005,87087
-2026-04-29,paper-pick,claude-opus-4-7,26,18208,1510444,84759
+2026-04-29,digest,claude-opus-4-7,1555,14822,1929148,140716

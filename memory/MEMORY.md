@@ -74,6 +74,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 ## Recent Digests (terse)
 | Date | Type | Key Topics |
 |------|------|------------|
+| 2026-04-29 | digest (PM) | Polymarket pushes CFTC for full US-trader access by August · CFTC v Wisconsin (5th state lawsuit this month) · Hyperliquid HIP-4 advances, 12% of PM volume already overlaps with HL traders · FOMC held 3.50–3.75% as priced |
 | 2026-04-28 | digest (PM) | Polymarket V2 LIVE (pUSD + on-chain builder codes + $1M LP) · Kalshi $3.91B w/w (2:1 over PM) · 3-issuer SEC queue for prediction-ETFs · FOMC priced 99-100% no-change |
 | 2026-04-28 | polymarket-comments | UMA-resolution arbitrage candidate (Iran-cf 0.25% NO vs Hez-cf 99.85% YES, ~identical clauses); 14 new tracked handles incl. Car↔Peppery-Capital identity unification; phishing typosquat security flag (poly-us.pro) |
 | 2026-04-28 | paper-pick PhD | arXiv:2509.22638 Luo et al. *Verbal-Feedback Without Scalar Rewards* (HF ↑70, FCP for FinCon-axis verbal-RL) |

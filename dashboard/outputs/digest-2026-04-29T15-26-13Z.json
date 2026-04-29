@@ -1,0 +1,241 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "prediction markets — 2026-04-29"
+      },
+      "children": [
+        "stack-tldr",
+        "sep-1",
+        "stack-stories",
+        "sep-2",
+        "heading-fomc",
+        "text-fomc"
+      ]
+    },
+    "stack-tldr": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-tldr",
+        "stack-tldr-points"
+      ]
+    },
+    "heading-tldr": {
+      "type": "Heading",
+      "props": {
+        "text": "TL;DR",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-tldr-points": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tldr-point-1",
+        "tldr-point-2",
+        "tldr-point-3"
+      ]
+    },
+    "tldr-point-1": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket pushes CFTC for full US-trader access by August"
+      },
+      "children": []
+    },
+    "tldr-point-2": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC sues Wisconsin (5th state lawsuit this month) defending federal jurisdiction"
+      },
+      "children": []
+    },
+    "tldr-point-3": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid's HIP-4 prediction-market proposal advances with 12% of Polymarket volume already overlapping its traders"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-stories": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "story-1",
+        "sep-story-1-2",
+        "story-2",
+        "sep-story-2-3",
+        "story-3"
+      ]
+    },
+    "story-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-1-link",
+        "story-1-desc",
+        "story-1-why"
+      ]
+    },
+    "story-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket asks CFTC to lift four-year US block — main exchange could reopen by August",
+        "href": "https://www.coindesk.com/policy/2026/04/28/polymarket-seeks-cftc-approval-to-reopen-main-exchange-to-u-s-traders",
+        "source": "CoinDesk"
+      },
+      "children": []
+    },
+    "story-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket is in active CFTC talks to remove the US-trader ban on its international exchange — distinct from its existing intermediated US clearance. CoinDesk reports approval possible as early as August.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "story-1-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: a full reopen re-rates liquidity on the main book, narrows the PM/Kalshi volume gap (Kalshi led PM 2:1 last week), and resets builder-code economics overnight.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-story-1-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "story-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-2-link",
+        "story-2-desc",
+        "story-2-why"
+      ]
+    },
+    "story-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CFTC sues Wisconsin — fifth state lawsuit this month defending federal prediction-market jurisdiction",
+        "href": "https://www.cftc.gov/PressRoom/PressReleases/9220-26",
+        "source": "CFTC"
+      },
+      "children": []
+    },
+    "story-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC filed Tuesday after Wisconsin AG Kaul brought three civil suits Apr 23 against Kalshi, Polymarket, Crypto.com, Robinhood, and Coinbase. CFTC has now sued Arizona, Connecticut, Illinois, New York, and Wisconsin in April alone. Chair Selig: \"if you interfere with the operation of federal law... we will sue you.\"",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "story-2-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: the five-state pattern is the durable signal — federal preemption case is broad enough to set precedent regardless of any single ruling.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-story-2-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "story-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-3-link",
+        "story-3-desc",
+        "story-3-why"
+      ]
+    },
+    "story-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hyperliquid HIP-4 prediction-market proposal advances — 12% of Polymarket volume overlaps with Hyperliquid traders",
+        "href": "https://www.bloomberg.com/news/articles/2026-04-29/kalshi-polymarket-face-new-rival-in-crypto-s-hottest-exchange",
+        "source": "Bloomberg"
+      },
+      "children": []
+    },
+    "story-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Bloomberg today: HIP-4 contracts are fully collateralized, no leverage, settle at 0/1, mainnet date still unconfirmed. 3.3% of Polymarket users already trade on Hyperliquid; that cohort drives 12% of PM volume.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "story-3-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Hyperliquid is the highest-velocity onchain venue ($219B March perp volume); a credible prediction-market product can fork the most price-sensitive PM cohort first.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-fomc": {
+      "type": "Heading",
+      "props": {
+        "text": "Also worth a glance",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text-fomc": {
+      "type": "Text",
+      "props": {
+        "text": "FOMC held 3.50–3.75% as priced 99-100% on PM/Kalshi — clean resolution, no calibration surprise.",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}

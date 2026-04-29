@@ -1,21 +1,21 @@
-*prediction markets — 2026-04-28*
+*prediction markets — 2026-04-29*
 
-_TL;DR: Polymarket CLOB v2 went live at 11 UTC with pUSD collateral, on-chain builder codes, and a $1M LP rewards program; Kalshi just printed a record $3.91B week, lapping Polymarket by ~$2B; three issuers are now in the SEC queue to wrap event contracts into 401(k)-eligible ETFs._
+_TL;DR: Polymarket pushes CFTC for full US-trader access by August; CFTC sues Wisconsin (5th state lawsuit this month) defending federal jurisdiction; Hyperliquid's HIP-4 prediction-market proposal advances with 12% of Polymarket volume already overlapping its traders._
 
-1. *Polymarket CLOB v2 live: pUSD collateral, on-chain builder codes, $1M LP rewards*
-   The April 28 cutover (11:00 UTC, ~1h downtime) cleared every resting order, swapped USDC.e for pUSD (1:1 ERC-20 on Polygon), and shipped on-chain attribution for builders plus EIP-1271 signatures. v1 client libraries are dead — bots that didn't migrate by today went silent.
-   Why it matters: the $1M LP program reopens the maker queue from zero, and on-chain builder codes are the first time PM has paid attribution at the contract layer — this is the new live-tape baseline for any quote strategy or two-venue convergence trade.
-   https://crypto.news/polymarket-rolls-out-clob-v2-with-1m-liquidity-rewards-to-harden-prediction-markets/
+1. *Polymarket asks CFTC to lift four-year US block — main exchange could reopen by August*
+   Polymarket is in active CFTC talks to remove the US-trader ban on its international exchange — distinct from its existing intermediated US clearance. CoinDesk reports approval possible as early as August.
+   Why it matters: a full reopen re-rates liquidity on the main book, narrows the PM/Kalshi volume gap (Kalshi led PM 2:1 last week), and resets builder-code economics overnight.
+   https://www.coindesk.com/policy/2026/04/28/polymarket-seeks-cftc-approval-to-reopen-main-exchange-to-u-s-traders
 
-2. *Kalshi prints $3.91B weekly volume — widest lead over Polymarket on record*
-   Kalshi +27.8% w/w to $3.91B; Polymarket +4% to $1.96B. Kalshi now ~67% of combined weekly volume; over 85% of its tape is sports parlays. Polymarket's mix: $959M sports / $507M politics / $416M crypto.
-   Why it matters: the gap blew open the same week Kalshi shipped Timeless perps and Polymarket was offline for the stack swap. Two-venue arb sizing assumptions need to be redrawn off the new ratio, not the March $12B/$12B parity.
-   https://defirate.com/news/kalshi-posts-record-3-9b-volume-extends-lead-over-polymarket-parlays-surge/
+2. *CFTC sues Wisconsin — fifth state lawsuit this month defending federal prediction-market jurisdiction*
+   CFTC filed Tuesday after Wisconsin AG Kaul brought three civil suits Apr 23 against Kalshi, Polymarket, Crypto.com, Robinhood, and Coinbase. CFTC has now sued Arizona, Connecticut, Illinois, New York, and Wisconsin in April alone. Chair Selig: "if you interfere with the operation of federal law... we will sue you."
+   Why it matters: the five-state pattern is the durable signal — federal preemption case is broad enough to set precedent regardless of any single ruling.
+   https://www.cftc.gov/PressRoom/PressReleases/9220-26
 
-3. *Three issuers now in SEC queue to wrap prediction markets into retirement-account ETFs*
-   Bitwise, Roundhill, and GraniteShares have each filed identical six-fund structures — Dem/Rep pairs for the 2028 presidency, 2026 House, 2026 Senate — each holding ≥80% of NAV in CFTC event contracts. Bitwise's brand is PredictionShares on NYSE Arca. None approved yet; the CFTC×SEC MOU signed March 11 is the regulatory path.
-   Why it matters: DOL's parallel proposal to let 401(k)s hold alternatives is in a 60-day comment window. If both threads land, predictions get a passive-flow channel they've never had — the demand side stops being purely retail discretionary.
-   https://www.cnbc.com/2026/04/24/prediction-markets-could-soon-be-available-in-your-retirement-account.html
+3. *Hyperliquid HIP-4 prediction-market proposal advances — 12% of Polymarket volume overlaps with Hyperliquid traders*
+   Bloomberg today: HIP-4 contracts are fully collateralized, no leverage, settle at 0/1, mainnet date still unconfirmed. 3.3% of Polymarket users already trade on Hyperliquid; that cohort drives 12% of PM volume.
+   Why it matters: Hyperliquid is the highest-velocity onchain venue ($219B March perp volume); a credible prediction-market product can fork the most price-sensitive PM cohort first.
+   https://www.bloomberg.com/news/articles/2026-04-29/kalshi-polymarket-face-new-rival-in-crypto-s-hottest-exchange
 
-*Also worth a glance:* FOMC Apr 28–29 priced 99–100% no-change on both Kalshi and Polymarket; high OI either side means a surprise prints sharp two-way volume.
+*Also worth a glance:* FOMC held 3.50–3.75% as priced 99-100% on PM/Kalshi — clean resolution, no calibration surprise.
 
