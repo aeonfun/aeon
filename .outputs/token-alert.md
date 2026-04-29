@@ -1,16 +1,16 @@
 ## Summary
 
-Ran `token-alert` for 2026-04-28 against the three tracked tokens in `memory/MEMORY.md` (BTC, ETH, SOL, 10% threshold each).
+Ran `token-alert` for BTC/ETH/SOL per MEMORY.md tracked-tokens set. CoinGecko free endpoint returned on first try (no WebFetch fallback needed).
 
-**Prices (CoinGecko, no key, curl direct — first try ok):**
-- BTC: $76,350 (-1.68% 24h, $35.89B vol)
-- ETH: $2,277.54 (-1.57% 24h, $13.87B vol)
-- SOL: $83.66 (-1.66% 24h, $2.89B vol)
+Current prices (2026-04-29):
+- BTC $77,127 (+1.03% 24h, $37.07B vol)
+- ETH $2,314.80 (+1.66% 24h, $14.75B vol)
+- SOL $84.19 (+0.63% 24h, $2.91B vol)
 
-**Triggers checked:** 24h price >10% → none. Volume >3x prior → none. Threshold-cross → none.
+vs yesterday's close (BTC $76,350 / ETH $2,277.54 / SOL $83.66): all three tokens up modestly day-over-day, BTC/ETH leading the bounce, SOL near-flat. Continuing the four-day risk-off drift, all majors still inside ±3% of the 04-25 baseline — SOL weakest at -2.61%.
 
-**Verdict:** TOKEN_ALERT_OK. Continuation of yesterday's PM risk-off; ~3.5–4.7% off the 2026-04-27 AM peak but still under threshold and volumes normal-to-elevated (0.8–1.3x).
+No triggers fired: max 24h move 1.66% (gate 10%), max volume 1.06x (gate 3x), no per-token thresholds set. **TOKEN_ALERT_OK** — silent run, no notification dispatched per skill spec.
 
-**Files modified:** `memory/logs/2026-04-28.md` (token-alert section appended).
-**Notification:** none sent (silent on OK per spec).
-**Follow-up:** none — only worth re-surfacing if the slide accelerates intraday or coincides with the Polymarket V2 cutover hitting at 11 UTC.
+Files modified: `memory/logs/2026-04-29.md` (appended `## token-alert` entry).
+
+Follow-ups: none. FOMC Apr 28-29 priced 99.85% no-change; if surprise prints, a same-day re-run would catch the move.
