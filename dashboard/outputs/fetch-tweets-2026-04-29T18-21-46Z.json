@@ -1,0 +1,202 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-04-29)"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "intro_text",
+        "separator_1",
+        "section_v2",
+        "tweet_1",
+        "engagement_1",
+        "link_1",
+        "tweet_2",
+        "engagement_2",
+        "link_2",
+        "separator_2",
+        "section_liquidity",
+        "tweet_3",
+        "engagement_3",
+        "link_3",
+        "tweet_4",
+        "engagement_4",
+        "link_4",
+        "separator_3",
+        "section_hip4",
+        "tweet_5",
+        "engagement_5",
+        "link_5"
+      ]
+    },
+    "intro_text": {
+      "type": "Text",
+      "props": {
+        "text": "All five are V2-aftermath operator-side updates — three Polymarket primary sources, one third-party Q1-traffic flip, one HIP-4 quant; zero criticism on day-1 tape.",
+        "variant": "muted"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_v2": {
+      "type": "Heading",
+      "props": {
+        "text": "V2 cutover post-mortem",
+        "level": "h3"
+      }
+    },
+    "tweet_1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "handle": "Polymarket",
+        "text": "Main-account go-live: upgraded exchange is live, $1M in liquidity rewards running, log in to convert balance to pUSD. Customer-facing cutover confirm."
+      }
+    },
+    "engagement_1": {
+      "type": "Text",
+      "props": {
+        "text": "Likes: N/A | RTs: N/A | Replies: N/A",
+        "variant": "caption"
+      }
+    },
+    "link_1": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2049102859971563896"
+      }
+    },
+    "tweet_2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "PolymarketTrade",
+        "handle": "PolymarketTrade",
+        "text": "Operator post-mortem: brief USDC↔pUSD swap fee bug post-CLOBv2 migration, refunds in flight, swaps now truly 1:1. First public bug + refund post on day-1 V2."
+      }
+    },
+    "engagement_2": {
+      "type": "Text",
+      "props": {
+        "text": "Likes: N/A | RTs: N/A | Replies: N/A",
+        "variant": "caption"
+      }
+    },
+    "link_2": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PolymarketTrade/status/2049221622284865723"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_liquidity": {
+      "type": "Heading",
+      "props": {
+        "text": "Liquidity rewards & post-cutover capital pull",
+        "level": "h3"
+      }
+    },
+    "tweet_3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "PolyAlertHub",
+        "handle": "PolyAlertHub",
+        "text": "LP-side framing of $1M rewards: Let's get the bread. Structural signal that resting-quote MM activity spikes post-V2 — directly affects Revenant fill rates."
+      }
+    },
+    "engagement_3": {
+      "type": "Text",
+      "props": {
+        "text": "Likes: N/A | RTs: N/A | Replies: N/A",
+        "variant": "caption"
+      }
+    },
+    "link_3": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PolyAlertHub/status/2048862721995931884"
+      }
+    },
+    "tweet_4": {
+      "type": "TweetCard",
+      "props": {
+        "author": "beincrypto",
+        "handle": "beincrypto",
+        "text": "Q1 2026 attention metric: Polymarket flips Robinhood as most-visited crypto site (122M vs 118M); PM+Kalshi combined 156.8M, nearly 2x Coinbase. First time PM tops Robinhood by visits."
+      }
+    },
+    "engagement_4": {
+      "type": "Text",
+      "props": {
+        "text": "Likes: N/A | RTs: N/A | Replies: N/A",
+        "variant": "caption"
+      }
+    },
+    "link_4": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/beincrypto/status/2049151419534512214"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_hip4": {
+      "type": "Heading",
+      "props": {
+        "text": "Hyperliquid HIP-4 cross-margin (perps battle next leg)",
+        "level": "h3"
+      }
+    },
+    "tweet_5": {
+      "type": "TweetCard",
+      "props": {
+        "author": "aixbt_agent",
+        "handle": "aixbt_agent",
+        "text": "HL/PM trader overlap: 14% of Polymarket's top traders already on Hyperliquid, $1.43b in PM volume. HIP-4 collapses the cross-venue split — hermes-arb thesis timeline."
+      }
+    },
+    "engagement_5": {
+      "type": "Text",
+      "props": {
+        "text": "Likes: N/A | RTs: N/A | Replies: N/A",
+        "variant": "caption"
+      }
+    },
+    "link_5": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/aixbt_agent/status/2043583764669006184"
+      }
+    }
+  }
+}
