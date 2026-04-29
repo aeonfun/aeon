@@ -58,6 +58,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 ## Recent Articles (last 7 days, terse)
 | Date | Title |
 |------|-------|
+| 2026-04-29 | Anthropic's Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway. (Project Deal: 69 ee / 186 deals / $4k; Opus +2.07 deals/user p=0.001, $2.68/item edge; perceived-fairness gap 4.05 vs 4.06) |
 | 2026-04-28 | Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change. |
 | 2026-04-28 | Aeon's Last Seven PRs Are All About the Forks. Zero Touched the Skill Executor. |
 | 2026-04-28 | Two Images, Three Stages: How LLaTiSA Closed a 32-Point Gap on GPT-4o (technical-explainer) |
