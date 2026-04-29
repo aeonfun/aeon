@@ -1,0 +1,163 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse",
+        "description": "2026-04-29"
+      },
+      "children": [
+        "header_stack",
+        "separator1",
+        "stargazers_section",
+        "separator2",
+        "notes_section",
+        "source"
+      ]
+    },
+    "header_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo_heading",
+        "status_and_stats"
+      ]
+    },
+    "repo_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "status_and_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "status_badge",
+        "stats_stack"
+      ]
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "STEADY",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "stats_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stars_stat",
+        "forks_text",
+        "releases_text"
+      ]
+    },
+    "stars_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "252",
+        "delta": "+1",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "forks_text": {
+      "type": "Text",
+      "props": {
+        "text": "Forks: 35"
+      },
+      "children": []
+    },
+    "releases_text": {
+      "type": "Text",
+      "props": {
+        "text": "Releases: +0"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stargazers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stargazers_label",
+        "stargazer_link"
+      ]
+    },
+    "stargazers_label": {
+      "type": "Text",
+      "props": {
+        "text": "New stargazers:",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "stargazer_link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/pmilford",
+        "href": "https://github.com/pmilford"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "notes_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "forks_note"
+      ]
+    },
+    "forks_note": {
+      "type": "Alert",
+      "props": {
+        "title": "Fork Activity",
+        "message": "Net -1 (one fork deleted; no new fork created)",
+        "type": "info"
+      },
+      "children": []
+    },
+    "source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
