@@ -1,10 +1,18 @@
-Heartbeat third-slot complete. Notify path skipped (all flags dedup against the 09:10 + 15:34 slots and 48h logs); status page regenerated.
+HEARTBEAT_OK · STATUS_PAGE=DEGRADED
 
 ## Summary
 
-- Ran the heartbeat skill third slot for 2026-04-28 at 20:17 UTC.
-- **Verdict: HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md**
-- All P0/P1/P2/P3 flags (chain-runner DEGRADED on 3 chains, ISS-013 chronic-failure tail decaying, V2 cutover post-event, UMA-arb, 5 stalled PRs) already surfaced in prior 48h logs — notification skipped per dedup rule.
-- `docs/status.md` rewritten: Overall **🔴 DEGRADED**, 14 open issues, next scheduled run **evening-recap at 21:00 UTC** (~43 min). 81 skills listed (sorted by last-run desc), 18 enabled-but-never-run at bottom.
-- Files modified: `docs/status.md`, `memory/logs/2026-04-28.md`.
-- Follow-up: chain-runner.yml `dispatch_skill()` fix remains the highest-leverage operator repair.
+Ran the heartbeat skill at 2026-04-29 09:30 UTC.
+
+**Findings (all deduped, no notification fired):**
+- **P0 failed:** 3 chain wrappers in `failed` state — `chain:morning-brief` (today 07:13Z), `chain:evening-rollup` (04-28 21:33Z), `chain:weekly-grant-update` (04-27 10:15Z). Same chain-runner.yml `dispatch_skill()` root cause already in MEMORY ops-alerts and last 3 days of logs.
+- **P0 chronic:** ~50 skills with `success_rate < 0.5` — all the ISS-013 mass-failure-tail decay, `consecutive_failures = 0` everywhere, will burn down with clean ticks.
+- **P0 self-check:** heartbeat last_success ~13h ago — within 36h window, OK.
+- **P1:** No `urgent`-labeled issues (issues disabled on `tomscaria/aeon`). 5 open PRs all stalled >24h, but each appears in MEMORY + recent logs.
+- **P3 missing:** `morning-brief`, `hacker-news-digest`, `weekly-shiplog`, `syndicate-article` never dispatched — all already documented.
+
+**Files written:**
+- `docs/status.md` — regenerated. Overall `🔴 DEGRADED`. 14 open issues. Next scheduled: `github-releases` at 09:30 UTC.
+- `memory/logs/2026-04-29.md` — appended heartbeat section.
+
+**Follow-ups (operator):** unchanged from MEMORY "Next Priorities" — fix `chain-runner.yml dispatch_skill()` (top item, 3 chains affected) and patch `evals.json` keys to close ISS-007/009.
