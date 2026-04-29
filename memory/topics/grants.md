@@ -29,6 +29,13 @@ Live tracker maintained at `swarm-fund-mvp/outputs/grants_tracker.md`.
 3. **Convergence-infra thesis** — not "this strategy works forever," but "infrastructure to rotate when each strategy decays"
 4. **OODA-loop velocity** — Aeon itself is the artifact. Watch it run.
 
+## Citation hooks (for grant-application body)
+
+- **arXiv:2601.01706** (Gebele & Matthes, Jan 2026) — primary LOOP-violation citation; durable 2-4% cross-platform price gaps over 100k events.
+- **arXiv:2602.19520** (Le 2026) — four-component decomposition of calibration variance; 87.3% explained by horizon × domain × size.
+- **arXiv:2510.25779** (Bansal/Hofman/Lucier/Mobius/Rothschild/Slivkins/Immorlica/Horvitz, MSR+ASU, Oct 2025) — *Magentic Marketplace*. Stanford-grade institutional anchor (Rothschild = canonical PM economist). Open-source agentic-marketplace simulator → reproducibility hook for any methodology claim.
+- **Anthropic Project Deal (Dec 2025, Anthropic blog Apr 25):** 69 employees / 186 deals / $4k / one week. Opus +2.07 deals/user p=0.001, $2.68 edge per item, 70% spread on broken-bike. **Perceived-fairness gap invisible (4.05 Opus vs 4.06 Haiku).** Primary citation for "capability gap not visible to losers" → maps onto why CalibrationGap edge persists in PM. Worth pulling for Anthropic Research Credits renewal narrative.
+
 ## Aeon's role here
 
 - `weekly-shiplog` Mondays = LP-ready narrative ammunition for grant updates

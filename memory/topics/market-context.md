@@ -1,74 +1,43 @@
-# Market Context (as of 2026-04-28)
+# Market Context (as of 2026-04-29)
 
-> **Take:** risk-off — BTC −1.69% 24h with breadth at 5/20 and F&G dropping 14 pts to Fear (33). Conviction: high.
+> **Take:** Quiet recovery — risk-off bottom on 04-28 (F&G 33 Fear) gave way to mild bounce 04-29 (BTC +1%, breadth 65/100). FOMC held 3.50–3.75% as priced. Conviction: medium.
 
-## Signal Snapshot
-- BTC $76,343 (−1.69% 24h, −0.18% 7d) · dominance 58.02% (−0.23pp 24h)
-- ETH $2,277 (−1.60% 24h, −1.92% 7d) · ETH/BTC 0.0298
-- SOL $83.65 (−1.68% 24h, −2.60% 7d)
-- Total mcap $2.64T (−1.32% 24h) · DEX vol $5.95B 24h
-- Breadth: 5/20 green 24h · 6/20 green 7d
-- Fear & Greed: 33 (Fear) — yesterday 47 (Neutral)
+## Signal Snapshot (2026-04-29)
+- BTC $77,127 (+1.03% 24h) · ETH $2,314.80 (+1.66% 24h) · SOL $84.19 (+0.63% 24h)
+- Breadth: 65/100 top coins green 24h (median +0.6%); flipped from 04-28's 25/100
+- DOGE +8.3% breakout on $3.27B vol; SKYAI +56% (BREAKOUT/PUMP-RISK); Gensyn -58% TRENDING+DOWN (listing-day distribution)
+- DeFi TVL $84.8B (+1.0% 1d, −0.7% 7d) — partial reversal of 04-28's −2.6%
+- DEX vol $6.61B (+11.3% 1d) · Uniswap V4 $974M (+45% 1d) · BisonFi (Solana) $760M new entrant flagged for monitoring
+- Stables: $320.4B (+0.36% 1d). USDe day-4 of recovery off Ethena unwind trough.
 
-## What Changed Since Last Refresh
-- F&G dropped 14 pts in one session: 47 Neutral → 33 Fear — largest single-day sentiment shift in recent weeks; regime label chop → risk-off
-- BTC fell $77,871 → $76,343 (−2.0%) — broke below $77K ahead of FOMC tomorrow; 7d return swung from +3.43% to −0.18% as the Apr 21-24 rally base rolls off
-- 7d breadth halved: 12/20 → 6/20 green — medium-term trend now deteriorating alongside short-term; DEX vol spiked +34.5% vs prior day ($4.42B → $5.95B) but 7d trend still −20%, indicating selling-pressure spike not accumulation
+## What Changed Since Last Refresh (04-28 → 04-29)
+- F&G regime: 33 Fear → mild relief bounce; FOMC decision absorbed without surprise (zero cuts, as priced 99-100%)
+- Aave V3 fees -27% vs 7d-avg, -55% 7d — real-demand contraction continues in lending stack
+- HL Perps fees -28% 7d
+- 2 protocols beat fees-vs-TVL filter (Meteora DLMM, Centrifuge) after 2 days of zero — small real-demand pockets re-emerging on RWA + Solana DEX
 
 ## Active Narratives
-- **FOMC + oil macro** — phase: rising (as headwind). Evidence: FOMC decision Apr 29, zero cuts priced; CPI 3.3%, Brent ~$103/bbl; F&G fell 14pts to Fear (33) in the session ahead of the meeting.
-- **Spot BTC ETF institutional bid** — phase: rising. Evidence: $2.43B April inflows, BlackRock IBIT ~$3B recent inflows; 9 consecutive inflow days Apr 14-24; bid persists but price failing to hold ($76.3K) — structural support vs retail sentiment divergence.
-- **Privacy alts (XMR, ZEC)** — phase: fading. Evidence: ZEC −5.88% 24h, XMR −2.33% 24h — reversed from prior session's outperformance (+1.34%, +0.03%); sector no longer decoupling in broad sell.
-- **DeFi perps infrastructure (HYPE)** — phase: fading. Evidence: HYPE −5.32% 24h, $40.03 vs $42.2 prior session; Kalshi crypto perps tailwind insufficient to hold bid in risk-off environment.
-- **ZKJ (Polyhedra Network) pump** — phase: emerging. Evidence: +220.01% 24h from rank #884, trending #1 on CoinGecko; no fundamental driver identified — retail momentum event, not sector signal.
+- **FOMC + macro** — phase: resolved (held as priced); next regime-flip vector is May-June meeting + Powell-term-expires-May-2026 chair-nominee uncertainty
+- **PM CFTC re-entry by August** — phase: emerging (CoinDesk 04-28 lead). Re-rates US prediction-market liquidity if August timeline holds
+- **DOGE futures-OI build** — phase: rising. Binance OI +40% in 5d ($2.31B → $3.23B), TDOG (Nasdaq) + 21Shares Xetra ETP + X Money DOGE-rails rumor stack
+- **AI/agentic BSC tokens** — phase: emerging (wash-print signature). Two "agentic"-themed BSC launches own monitor-runners slots 1 + 5 on 04-29
+- **Privacy alts (XMR, ZEC) / HYPE** — phase: faded; downgraded after 04-28 risk-off
 
-## Top DeFi Protocols (TVL, 7d change)
-- Lido: $21.24B (−3.46%)
-- SSV Network: $16.74B (−2.68%)
-- Aave V3: ~$14.06B (prior snapshot — stale)
-- EigenCloud: ~$9.35B (prior snapshot — stale)
-- WBTC: ~$9.18B (prior snapshot — stale)
-
-## Chain Flow (top 3 by TVL, vs prior snapshot 2026-04-27)
-- Ethereum: $44.70B (−$0.63B, −1.4%)
-- BSC: $5.48B (−$0.05B, −0.9%)
-- Solana: $5.46B (−$0.06B, −1.1%)
-
-## Stablecoins
-Total: ~$385.2B. USDT $189.66B · USDC $77.64B · USDS $8.31B · DAI $4.65B · USD1 $4.44B · combined share of mcap ~14.6%.
-
-## Trending (CoinGecko)
-- ZKJ (Polyhedra Network) — rank #884, +220.01% 24h; no fundamental driver; pure speculative pump
-- ORCA (Orca) — rank #271, +45.22% 24h; Solana DEX token, benefiting from DEX vol spike
-- PRL (Perle) — rank #390, +24.83% 24h; low-cap, speculative
-- PI (Pi Network) — rank #46, +6.53% 24h; persistent retail interest
-- PENGU (Pudgy Penguins) — rank #89, +2.98% 24h; NFT ecosystem token, holding bid
-
-## Prediction Markets (Polymarket, top by 24h vol)
-| Market | YES% | 24h Vol | Liquidity |
-|--------|------|---------|-----------|
-| Fed no change April 2026 | 99.75% | $2.9M | $2.7M |
-| BTC $150K by Jun 30 | 1.35% | $5.8M | $19.8K |
-| USA wins 2026 FIFA WC | 1.35% | $3.6M | $3.5M |
-| Israel-Hezbollah ceasefire extended | 99.85% | $4.3M | $0.3M |
-
-Note: all top-volume markets are effectively settled (<3% or >97% YES). The Fed no-change market at 99.75% confirms zero cuts fully priced for tomorrow. V2 cutover today (11 UTC) likely driving vol spike on near-settled markets as participants square positions. No actionable crypto/macro signal from Polymarket today.
-
-## Macro Catalysts (next 48h)
-- **FOMC decision Apr 29** — no cut expected; guidance is the market mover. Chair nominee uncertainty (Powell term expires May 2026) adds policy-continuity risk. Hawkish tone hits alts first given current breadth (5/20).
-- **Polymarket V2 cutover today (Apr 28, 11 UTC)** — USDC.e → pUSD migration; resting orderbooks wiped, ~1h offline. Operator: Revenant book should already be flattened before this runs.
-- **SEC Chair Atkins at Bitcoin 2026 (Las Vegas)** — first major public address on digital-asset market structure; binary catalyst for regulatory sentiment.
-- **BTC April monthly close Apr 30** — at $76.3K, April closes ~10% above March. Close below $75K reverses recovery narrative; close above $80K (unlikely at current rate) would print first $80K month-end.
+## Macro Catalysts (next 14 days)
+- **PM CFTC re-entry decision** — no fixed date, "by August" CoinDesk reporting
+- **Polymarket chain-migration off Polygon** — POLY/Solana/Sui/MegaETH bidding; no announcement date
+- **CFTC v Wisconsin** — fifth-state federal preemption suit; durable-precedent angle
+- **Hyperliquid HIP-4 mainnet** — TBD, Bloomberg framing 04-29 the new fact
 
 ## Implications for Downstream Skills
-- **token-pick:** avoid broad alt exposure; breadth 5/20 and F&G in Fear favor cash or BTC-only positioning until FOMC resolves. ZKJ/ORCA pump not actionable — no fundamental anchor.
-- **narrative-tracker:** FOMC guidance Apr 29 is the regime-flip trigger; monitor ETF flow data post-decision for institutional response. Privacy alts and HYPE confirmed fading — downgrade both unless next-session reversal.
+- **token-pick:** DOGE high-tier pick 04-29; futures-OI builds cut both ways near macro events. Quiet recovery + breadth restoration support continuation through tomorrow if no FOMC-hangover reversal.
+- **narrative-tracker:** "PM CFTC re-entry by August" is the new lead narrative; supersedes FOMC chair-uncertainty as primary axis.
+- **monitor-runners:** 3rd day in a row DEEP-LIQ candidate ranked just outside top 5 — score-formula self-improve patch now 3-in-a-row evidence; queued for next self-improve run.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
 |------|-------|-------|--------|
-| — | — | — | — |
+| 2026-04-29 | DOGE | $0.107 | Binance OI +40% 5d; TDOG (Nasdaq) + Xetra ETP + X Money rumor; vol/mcap 0.20; RS clearly beats BTC/ETH 7d |
 
 ---
-*Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket Gamma · catalysts: WebSearch*
-*Source status: coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok*
+*Sources — coingecko=ok defillama=ok polymarket=ok*

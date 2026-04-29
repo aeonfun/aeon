@@ -1,0 +1,165 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Reflect #4 - Memory Consolidated",
+        "description": "2026-04-29"
+      },
+      "children": [
+        "heading_main",
+        "stack_metrics",
+        "sep_1",
+        "section_recurring",
+        "sep_2",
+        "section_new"
+      ]
+    },
+    "heading_main": {
+      "type": "Heading",
+      "props": {
+        "text": "Memory Consolidation Status",
+        "level": "h2"
+      }
+    },
+    "stack_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_memory",
+        "badge_papers",
+        "badge_topics"
+      ]
+    },
+    "stat_memory": {
+      "type": "Stat",
+      "props": {
+        "label": "MEMORY.md",
+        "value": "67 lines",
+        "delta": "-52 lines",
+        "trend": "up"
+      }
+    },
+    "badge_papers": {
+      "type": "Badge",
+      "props": {
+        "text": "papers.md created",
+        "variant": "secondary"
+      }
+    },
+    "badge_topics": {
+      "type": "Badge",
+      "props": {
+        "text": "5 topic files refreshed",
+        "variant": "secondary"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_recurring": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_recurring",
+        "alert_degradation",
+        "text_gates"
+      ]
+    },
+    "heading_recurring": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Recurring",
+        "level": "h3"
+      }
+    },
+    "alert_degradation": {
+      "type": "Alert",
+      "props": {
+        "title": "chain-runner DEGRADED",
+        "message": "5+ days ongoing",
+        "type": "warning"
+      }
+    },
+    "text_gates": {
+      "type": "Text",
+      "props": {
+        "text": "gates ISS-013 decay + morning Apex dispatch impacted"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_new": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_new",
+        "stack_new_items"
+      ]
+    },
+    "heading_new": {
+      "type": "Heading",
+      "props": {
+        "text": "New Findings",
+        "level": "h3"
+      }
+    },
+    "stack_new_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_cftc",
+        "item_marketplace",
+        "item_pr23",
+        "alert_injection"
+      ]
+    },
+    "item_cftc": {
+      "type": "Text",
+      "props": {
+        "text": "PM CFTC re-entry push by August"
+      }
+    },
+    "item_marketplace": {
+      "type": "Text",
+      "props": {
+        "text": "Magentic Marketplace OSS env (Rothschild byline) usable as CalibrationGap eval scaffold"
+      }
+    },
+    "item_pr23": {
+      "type": "Text",
+      "props": {
+        "text": "PR #23 to swarm-fund (pm-tail-risk fractional days)"
+      }
+    },
+    "alert_injection": {
+      "type": "Alert",
+      "props": {
+        "title": "shell-injection unpatched",
+        "message": "3 weeks old — ISS-016 candidate",
+        "type": "error"
+      }
+    }
+  }
+}

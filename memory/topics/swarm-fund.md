@@ -55,6 +55,13 @@ Internal enum (`AgentLifecycle`): adds `DEMOTED` (drawdown / regime mismatch) an
 - Polymarket live order placement — `py-clob-client` install blocked in current env (paper mode only for now)
 - Tier-1 latency for PM leg blocked by PM datacenter/VPN ban — co-lo applies to HL only
 
+## Aeon-side PR pipeline to swarm-fund-mvp (external-feature)
+- **PR #18** — `bankr_bridge --max` validator
+- **PR #19** — `ssrn_harvest` rowcount fix
+- **PR #20** — markdown image-strip regex
+- **PR #22** — privy-loader + WaitlistCTAAuth + api.ts stubs (unblocks `/learn` Astro deploy). pr-review 04-29 verdict: **blocked** on untested logic at `swarm-lab-site/src/lib/privy-loader.ts:42` and missing provider-presence guard in `WaitlistCTAAuth.tsx:6`.
+- **PR #23** (2026-04-29) — `fix(runner): use fractional days for pm-tail-risk fair-prob horizon`. `pm_strategy_runner.py:174` was passing `(m.end_date - now).days` (truncates); switched to `total_seconds() / 86400.0` matching `pm_tail_risk.py:113`. Bug under-estimates fair_yes by up to ~24% of T near 3-day floor → could flip LONG/SHORT signal direction. 4 new tests in `python/tests/test_pm_strategy_runner.py`. +78/-1.
+
 ## Live infra
 - Trading loop: `python -m python.main` (PID varies, logs at `/tmp/swarm-main.log`)
 - API: `uvicorn python.api.server:app --port 8000`

@@ -68,6 +68,7 @@
 - **Coverage gap:** 83 enabled skills uncovered. Top candidates to add specs for: monitor-polymarket, narrative-tracker, paper-pick, security-digest, code-health, hacker-news-digest, evening-recap, polymarket-comments, deep-research, vuln-scanner.
 
 ## Open issues
+- **ISS-016 candidate** (code-health, 2026-04-29) — shell-injection at `dashboard/app/api/secrets/route.ts:96` unpatched 3 weeks running. Recommend skill-security-scan files on next run.
 - **ISS-001** — vuln-scanner cannot run, sandbox-limitation, high. `memory/issues/ISS-001.md`. Closes on `scripts/prefetch-vuln-scanner.sh`.
 - **ISS-002** — vibecoding-digest cannot run, Reddit blocks GHA, high. `memory/issues/ISS-002.md`. Closes on `scripts/prefetch-reddit.sh`. Confirmed three days running 2026-04-25/26/27.
 - **ISS-003..011** — skill-evals BOOTSTRAP findings (2026-04-26). See "skill-evals BOOTSTRAP" section above. ISS-007 / ISS-009 close on evals.json key patch (no code).
@@ -77,16 +78,38 @@
 - **ISS-015** — `.github/workflows/messages.yml:577–578` script-injection (HIGH). `${{ toJson(github.event.client_payload.message) }}` and `${{ github.event.action }}` interpolated into bash; `toJson()` does not escape single quotes; same shape as 2026-04-11 fixed incident but missing the `repository_dispatch` branch. Detected by skill-security-scan + workflow-security-audit 2026-04-27. Patch prepared as PR #4 (runner GH_TOKEN lacks `workflow` scope; needs operator-side token for push). **Still missing from `memory/issues/INDEX.md`** — issue-triage scope item (flagged 2026-04-28 09:10 + 15:34 heartbeat).
 - **Class:** ISS-001, ISS-002, ISS-012, ISS-014 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Four separate IDs; one prefetch-script triage class.
 
-## ISS-013 mass-failure decay status (2026-04-28)
-- 53 skills moved CRITICAL → DEGRADED on 2026-04-27 02:30Z run after subsequent cron slots cleared cleanly (12:01Z token/defi batch, 14:22Z monitor/research batch, 17:39Z content/social batch). cf=0 across the board.
-- 2026-04-28 12:00 batch lifted several rates one click (defi-overview 16% → 20%, polymarket-comments 17% → 21%, monitor-runners 16% → 20%, defi-monitor 14% → 18%, market-context-refresh 16% → 20%, treasury-info 13% → 17%, on-chain-monitor 12% → 15%, token-pick 16% → 20%).
-- 59 skills classified DEGRADED only because historical success_rate < 0.6. Will burn down to >0.6 only after several days of clean cron ticks.
-- ISS-013 stays open until either operator/skill-repair manually closes it, or all affected skills' historical rates climb back above 0.6.
+## ISS-013 mass-failure decay status (2026-04-29)
+- 53 skills moved CRITICAL → DEGRADED on 2026-04-27 02:30Z. cf=0 across the board, last_status=success.
+- 04-28 + 04-29 cron ticks have lifted several historical rates a click each. 59 skills classified DEGRADED only because historical success_rate < 0.6. Will burn down naturally as clean ticks accumulate.
+- ISS-013 stays open until skill-repair closes it or all affected rates climb back above 0.6.
+- Compounding factor: chain-runner.yml `dispatch_skill()` is still broken, so morning-brief / evening-rollup / weekly-grant-update chain wrappers fail nightly without dispatching their member skills — those member skills (paper-pick, monitor-polymarket, monitor-kalshi, etc.) miss their morning slot, blocking the burn-down. **Until chain-runner ships, ISS-013 decay is rate-limited.**
 
-## 4-stalled-PR list on tomscaria/aeon (2026-04-28 15:34Z)
-- PR #1 — ~67h open (oldest stall)
-- PR #2 — ~37h (auto-skill artifact, chore/docs)
-- PR #3 — ~37h (skill-graph, auto-skill artifact)
-- PR #4 — ~37h (workflow security audit, blocked on workflow-scoped token)
-- PR #5 — ~21h (skill-evals key fix; under 24h trigger)
+## 5-stalled-PR list on tomscaria/aeon (2026-04-29 15:22Z)
+- PR #1 — ~95h open (oldest stall, 4 days)
+- PR #2 — ~61h
+- PR #3 — ~61h (skill-graph, auto-skill artifact)
+- PR #4 — ~61h (workflow security audit, blocked on workflow-scoped token; ISS-015 patch carrier)
+- PR #5 — ~44h (skill-evals key fix, ISS-007 + ISS-009 closer)
 - Issues disabled on `tomscaria/aeon` — no urgent label scan possible.
+
+## search-skill: 4-of-5 NO_GAP / weak-fit runs (2026-04-25 → 2026-04-29)
+- 04-25 NO_GAP / 04-27 NO_GAP / 04-27 NO_GAP rerun / 04-28 OK_CANDIDATES with explicit "redundant" note / 04-29 NO_GAP.
+- Cron-state.json shows ~50 skills under success_rate 0.6 but cf=0, last_status=success — ISS-013 decay artifact, NOT a real capability gap.
+- Capability-level signal in cron-state will only return once chain-runner.yml `dispatch_skill()` is fixed and ISS-013 counters burn down.
+- Recommendation: leave search-skill on schedule; today's no-op run is the correct behavior.
+
+## Code-health carry-debt (3-week running)
+- **Shell-injection at `dashboard/app/api/secrets/route.ts:96`** — `value` only quote-escaped; backticks and `$(…)` still reach the shell. Fix: `spawnSync('gh', argv, { input: value })`. Flagged 2026-04-27 push-recap, 2026-04-28 dashboard digest, 2026-04-29 code-health. Three weeks unpatched. ISS-016 candidate filing for next skill-security-scan run.
+- Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — secrets POST is the only currently-exploitable one.
+- 1 file over 500 lines: `a2a-server/src/index.ts` (579).
+
+## monitor-runners scoring formula — 3-in-a-row DEEP-LIQ near-miss (2026-04-27 PM, 04-28, 04-29)
+- DEEP-LIQ candidate ranks just outside top 5 on three consecutive runs (04-29: SKYAI/WBNB at 54.0 vs slot-5's 57.3). pct-weighted score keeps a clean DEEP-LIQ pool out while admitting BREAKOUT/wash-print plays.
+- Recommended `self-improve` patch: cap `pct_pts` at 300% instead of 500% AND/OR add a soft DEEP-LIQ floor (always include the highest-score DEEP-LIQ pool that cleared the gate). Surface as explicit edit, not silent change.
+- Three-in-a-row evidence on the books — qualifies for self-improve queue.
+
+## defi-overview `/v2/chains` schema drift
+- DefiLlama `/v2/chains` no longer returns `change_1d`/`change_7d`. Backlog item: update fetch step to default to per-chain `/v2/historicalChainTvl/{chain}` against top-20 chains (95.8% TVL coverage); weighted aggregate.
+
+## github-monitor `gh release list --json url` schema drift
+- `url` is not a valid field for `gh release list --json` (available: tagName/publishedAt/name/createdAt/isDraft/isImmutable/isLatest/isPrerelease). Drop from spec on next skill edit.

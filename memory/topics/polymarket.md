@@ -21,16 +21,20 @@
 - **Hermes-arb ADR-038 gate:** 7pp min-gap = 2% PM taker + 5bps funding + 4.95pp buffer. Deep-research suggests gate likely understates noise floor by 50–100bp; bump to **~7.5–8pp** queued.
 - **Sister-paper backlog:** arXiv:2508.03474 (probabilistic-forest arbitrage), 2511.20606 (LOB dynamics in matching markets — Kalshi CLOB tick structure), 2512.02436 (semantic trading, agentic alignment).
 
-## Live market state (snapshot 2026-04-28)
-- **✅ V2 CUTOVER EXECUTED 2026-04-28 11 UTC** — Polymarket rebuilt CTF Exchange v2 + new orderbook + pUSD collateral (1:1 USDC-backed, on-chain Polygon) + on-chain builder codes (EIP-1271, native field) + match-time fees. ~1h offline. Audited by Cantina + Quantstamp. V1 SDK forward-incompatible. Confirmed live by two independent skill runs 2026-04-28: `monitor-polymarket` 12:00 UTC orderbook-spike-then-revert artifact + `polymarket-comments` 13:05 UTC orderbook-cleared confirmation (@Crooked-Setting + @Boring-Comportment 12:41–12:45 UTC). Revenant resting-quote book is now wiped whether or not operator-side flatten ran. $1M LP-rewards program now live; on-chain attribution is the new live-tape baseline for any quote strategy or two-venue convergence trade.
-- **Polymarket chain-migration off Polygon** (Stevens Apr 25): POLY L2 lead candidate; PM = 50–70% of Polygon fee revenue. Solana / Sui / Algorand / MegaETH / Sonic also pitching. Tension: pUSD goes live on Polygon Tuesday but Polygon itself is on a deprecation glide-path.
-- **Kalshi crypto perps LIVE 2026-04-27 NYC** (codename "Timeless"). Funding-rate perp; BTC + additional tokens at launch; USD collateral, stablecoin collateral added Q2. **First-day tape opens the hermes-arb falsifier window now.** Polymarket perps shipped Apr 21 (up to 10x leverage on BTC, NVDA, gold; sign-up waitlist only). FRONT-RUN narrative confirmed in narrative-tracker.
-- **Polymarket fees +76% w/w** (DeFiLlama, 2026-04-25) — confirms post-election handle persistence; high-volume binaries remain liquid → directly load-bearing for Revenant / CalibrationGap edge thesis. PM International fees +7.3% vs 7d-avg (PM defi-overview 2026-04-27) corroborates handle stickiness post-perps-launch.
-- **First US prediction-market insider-trading prosecution** (DOJ, Apr 23): Special Forces Sgt. Van Dyke (named in NPR Apr 27) — five felony charges; won $409K betting on the Maduro raid he planned. Coplan public response: "we flagged this, referred it, cooperated throughout the process." Both venues now leaning hard into compliance signaling.
-- **Conduct rules ratchet** (Apr 24–27): Kalshi suspended 3 political candidates for trading their own primary races (5-yr bans, $539–$6,229 fines); Mark Moran (US Senate candidate) publicly disputing — claims he was added to market *after* his run was public. PM Top-20 wallets are 70% bots (Finance Magnates / Coindesk). NY-AG sued Coinbase Financial Markets + Gemini Titan as gambling promoters; CFTC counter-sued NY (Apr 24, first time CFTC has sued a state directly).
-- **FanDuel entering predictions** (Bloomberg Apr 27): CEO Amy Howe at Semafor framing PM as the legal workaround for non-sportsbook states. DraftKings (Dec) and Fanatics (10 states) already in. Four-way structural battle (Kalshi / Polymarket / FanDuel-Predicts / CME).
-- **Valuation gap:** Polymarket $400M @ $15B (lead unconfirmed) vs Kalshi $1B @ $22B (Coatue). ~30% PM discount confirms Kalshi US-distribution moat is repricing the duopoly.
-- **Brazil block in force** Apr 27 — 29 PM platforms blocked; announcement Apr 24, technically enforced today.
+## Live market state (snapshot 2026-04-29)
+- **V2 CUTOVER EXECUTED 2026-04-28 11 UTC** — CTF Exchange v2 + new orderbook + pUSD (1:1 USDC-backed, on-chain Polygon) + on-chain builder codes (EIP-1271, native `bytes32 builder` field in EIP-712 order struct) + match-time fees. ~1h offline. Audited by Cantina + Quantstamp. V1 SDK forward-incompatible. **Revenant resting-quote book wiped at cutover whether or not operator-side flatten ran.** $1M LP-rewards program live; on-chain attribution is the new live-tape baseline. See `articles/explainer-2026-04-29.md` for builder-code mechanism walkthrough.
+- **PM CFTC re-entry push (CoinDesk 2026-04-28):** Polymarket asks CFTC to lift four-year US block — main exchange could reopen by August. **Most actionable lead 04-29 digest** — directly re-rates main-book liquidity, narrows PM/Kalshi gap, resets builder-code economics that CalibrationGap is attributed under. If August timeline holds, fee-and-liquidity assumptions for Apex push need updating.
+- **Polymarket chain-migration off Polygon** (Stevens Apr 25): POLY L2 lead candidate; PM = 50–70% of Polygon fee revenue. Solana / Sui / Algorand / MegaETH / Sonic also pitching. pUSD goes live on Polygon but Polygon itself is on a deprecation glide-path.
+- **Kalshi crypto perps LIVE 2026-04-27 NYC** ("Timeless"). Funding-rate perp; BTC + additional tokens; USD collateral, stablecoin collateral added Q2. **First-day tape opened the hermes-arb falsifier window.** Polymarket perps shipped Apr 21 (10x leverage BTC/NVDA/gold; waitlist).
+- **Hyperliquid HIP-4 advances (Bloomberg/Yahoo 2026-04-29):** 12% of PM volume already overlaps with HL traders + 3.3% of users. Mainnet date TBD but Bloomberg framing today is the new fact — competitive-risk read on PM/Kalshi duopoly.
+- **CFTC v Wisconsin (CFTC press 2026-04-28):** fifth-state federal preemption suit (AZ, CT, IL, NY, WI). Five-state pattern is the durable-precedent angle.
+- **FOMC Apr 28-29 — held 3.50–3.75% as priced (99-100% on PM/Kalshi).** Calibration-trivially-correct event resolution; Experienced-Carpeting tail thesis ("Fed always changes rate at beginning of war") expired without payoff.
+- **First US prediction-market insider-trading prosecution** (DOJ Apr 23, Van Dyke named NPR Apr 27): five felony charges, $409K winnings on Maduro-raid market he planned. Coplan: "we flagged this, referred it, cooperated." Compliance signaling now mandatory on both venues.
+- **Conduct rules ratchet** (Apr 24–27): Kalshi suspended 3 political candidates for trading own primary races; Moran (US Senate) publicly disputing. PM Top-20 wallets 70% bots. NY-AG sued Coinbase FM + Gemini Titan as gambling promoters; CFTC counter-sued NY (Apr 24, first time CFTC sued a state directly).
+- **FanDuel entering predictions** (Bloomberg Apr 27): CEO Amy Howe framing PM as legal workaround for non-sportsbook states. DraftKings + Fanatics already in. Four-way structural battle.
+- **Valuation gap:** Polymarket $400M @ $15B (lead unconfirmed) vs Kalshi $1B @ $22B (Coatue). ~30% PM discount confirms Kalshi US-distribution moat repricing the duopoly.
+- **Brazil block in force** Apr 27 — 29 PM platforms blocked.
+- **Polymarket fees +76% w/w** (DeFiLlama, 2026-04-25) — post-election handle persistence load-bearing for Revenant/CalibrationGap edge.
 
 ## Comments-side calibration signals (rolling — last refresh 2026-04-28 13:05 UTC)
 
@@ -84,7 +88,11 @@ Concrete tradable hooks (carry to CalibrationGap):
 ## Source-of-truth pointers
 - `articles/deep-research-2026-04-25.md` — Kalshi↔PM 5-min BTC arb deep-dive (32 sources)
 - `articles/explainer-2026-04-25.md` — settlement-basis dual-clock mechanism walkthrough
+- `articles/explainer-2026-04-29.md` — `bytes32 builder` field mechanism (V2 attribution)
 - `articles/research-brief-prediction-market-calibration-2026-04-25.md` — calibration-slope structural-bias thesis
+- `articles/research-brief-uma-optimistic-oracle-polymarket-resolution-disputes-2026-04-29.md` — six-month falsifier window on UMA managed-proposer fix vs interpretation gap
 - Live `metrics.json`: https://rswarm.ai/metrics.json (trust this over MEMORY.md when they conflict)
 - arXiv:2601.01706 (Gebele & Matthes) — primary LOOP-violation citation for grant applications
-- arXiv:2512.25070 (Chandak, Goel, Prabhu, Hardt, Geiping) — PhD-prep calibration-training paper
+- arXiv:2512.25070 (Chandak/Goel/Prabhu/Hardt/Geiping) — PhD-prep calibration-training paper
+- arXiv:2510.25779 (Bansal/Hofman/Lucier/Mobius/Rothschild/Slivkins/Immorlica/Horvitz et al., MSR+ASU, Oct 2025) — Magentic Marketplace OSS env; directly usable as CalibrationGap adversarial-eval scaffold ahead of next 71 live trades. Stanford-grade citation anchor (Rothschild = canonical PM economist).
+- arXiv:2604.15674 (Wen et al.) — LLM-UMA agreement 89.58% on disputed cases; bridge between CalibrationGap quant scanner and UMA-resolution-arbitrage hook
