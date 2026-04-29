@@ -1,0 +1,107 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health 2026-04-29",
+        "description": "aaronjmars/aeon @ e26e7a2"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_shell_injection",
+        "separator_1",
+        "stack_findings",
+        "separator_2",
+        "link_full_report"
+      ]
+    },
+    "alert_shell_injection": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell-injection at dashboard/app/api/secrets/route.ts:96",
+        "message": "STILL UNPATCHED — third week. value only quote-escaped; backticks reach the shell.",
+        "type": "error"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_findings": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_todo",
+        "stat_tests",
+        "stat_api_routes",
+        "stat_server_size",
+        "text_missing_scripts"
+      ]
+    },
+    "text_todo": {
+      "type": "Text",
+      "props": {
+        "text": "1 real TODO: workflow-security-audit:36, ZIZMOR bump",
+        "variant": "body"
+      }
+    },
+    "stat_tests": {
+      "type": "Stat",
+      "props": {
+        "label": "Dashboard tests",
+        "value": "0"
+      }
+    },
+    "stat_api_routes": {
+      "type": "Stat",
+      "props": {
+        "label": "API routes shell out via template strings",
+        "value": "8/14"
+      }
+    },
+    "stat_server_size": {
+      "type": "Stat",
+      "props": {
+        "label": "a2a-server/src/index.ts",
+        "value": "579 lines"
+      }
+    },
+    "text_missing_scripts": {
+      "type": "Text",
+      "props": {
+        "text": "postprocess-notify.sh + 3 prefetch scripts still missing (ISS-001/002/012/014)",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_full_report": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Code Health Report",
+        "href": "articles/code-health-2026-04-29.md",
+        "source": "Code Health"
+      }
+    }
+  }
+}
