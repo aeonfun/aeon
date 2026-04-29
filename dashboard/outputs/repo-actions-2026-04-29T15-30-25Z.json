@@ -1,0 +1,21 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "repo-actions"
+      },
+      "children": [
+        "text"
+      ]
+    },
+    "text": {
+      "type": "Text",
+      "props": {
+        "text": "probe 1777476569321"
+      }
+    }
+  }
+}
