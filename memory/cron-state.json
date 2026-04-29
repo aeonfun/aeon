@@ -672,10 +672,10 @@
   },
   "rss-digest": {
     "last_dispatch": "2026-04-29T07:11:45Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-27T07:56:08Z",
-    "total_runs": 2,
-    "total_successes": 2,
+    "last_status": "success",
+    "last_success": "2026-04-29T07:12:57Z",
+    "total_runs": 3,
+    "total_successes": 3,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
