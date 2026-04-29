@@ -1,0 +1,52 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "paper-digest"
+      },
+      "children": [
+        "alert",
+        "separator",
+        "options"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "No topics configured",
+        "message": "paper-digest cannot run without configured topics."
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {}
+    },
+    "options": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "option1",
+        "option2"
+      ]
+    },
+    "option1": {
+      "type": "Text",
+      "props": {
+        "text": "Add ## Interests bullets to memory/MEMORY.md"
+      }
+    },
+    "option2": {
+      "type": "Text",
+      "props": {
+        "text": "Or pass var=\"topic\""
+      }
+    }
+  }
+}
