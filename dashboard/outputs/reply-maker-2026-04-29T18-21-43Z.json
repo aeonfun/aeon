@@ -1,0 +1,239 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status",
+        "separator-1",
+        "issues",
+        "separator-2",
+        "fix"
+      ]
+    },
+    "status": {
+      "type": "Alert",
+      "props": {
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "Recurrence #5, ISS-014",
+        "type": "error"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues-title",
+        "issue-list"
+      ]
+    },
+    "issues-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues",
+        "level": "h3"
+      }
+    },
+    "issue-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issue-item-1",
+        "issue-item-2",
+        "issue-item-3",
+        "issue-item-4"
+      ]
+    },
+    "issue-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issue-1-badge",
+        "issue-1-detail"
+      ]
+    },
+    "issue-1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing Secret",
+        "variant": "destructive"
+      }
+    },
+    "issue-1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY len 0 in sandbox"
+      }
+    },
+    "issue-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issue-2-badge",
+        "issue-2-detail"
+      ]
+    },
+    "issue-2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Config Missing",
+        "variant": "outline"
+      }
+    },
+    "issue-2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "scripts/prefetch-xai.sh still has no reply-maker) case"
+      }
+    },
+    "issue-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issue-3-badge",
+        "issue-3-detail"
+      ]
+    },
+    "issue-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "No Input Data",
+        "variant": "outline"
+      }
+    },
+    "issue-3-detail": {
+      "type": "Text",
+      "props": {
+        "text": "memory/logs/2026-04-29.md has no fetch-tweets/tweet-roundup/list-digest output today"
+      }
+    },
+    "issue-item-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issue-4-badge",
+        "issue-4-detail-1",
+        "issue-4-detail-2"
+      ]
+    },
+    "issue-4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "No Search Results",
+        "variant": "destructive"
+      }
+    },
+    "issue-4-detail-1": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch surfaced 0 within-window URLs"
+      }
+    },
+    "issue-4-detail-2": {
+      "type": "Text",
+      "props": {
+        "text": "All decoded snowflake IDs are Apr 17–28, outside 6h+12h fallback",
+        "variant": "caption"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fix-title",
+        "fix-items"
+      ]
+    },
+    "fix-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Fix",
+        "level": "h3"
+      }
+    },
+    "fix-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fix-item-1",
+        "fix-item-2"
+      ]
+    },
+    "fix-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "6-line case block in prefetch-xai.sh"
+      }
+    },
+    "fix-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "fix-2-label",
+        "fix-2-link"
+      ]
+    },
+    "fix-2-label": {
+      "type": "Text",
+      "props": {
+        "text": "Template in"
+      }
+    },
+    "fix-2-link": {
+      "type": "Link",
+      "props": {
+        "label": "memory/issues/ISS-014.md",
+        "href": "memory/issues/ISS-014.md"
+      }
+    }
+  }
+}
