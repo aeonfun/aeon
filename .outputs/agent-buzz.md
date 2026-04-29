@@ -1,1 +1,1 @@
-Agent Buzz — 2026-04-28: quiet day, no survivors. Step 1 (curl X.AI) blocked — XAI_API_KEY unset in sandbox; step 2 (WebFetch X.AI POST) not viable; step 3 WebSearch returned only news-article framing, no fresh tweet URLs with verifiable engagement counts. Same wall as 2026-04-25 and 2026-04-27 — fix is adding agent-buzz case to scripts/prefetch-xai.sh.
+Agent Buzz — 2026-04-29: quiet day, no survivors. (src: websearch · candidates: ~10 → kept: 0 · XAI_API_KEY unset)

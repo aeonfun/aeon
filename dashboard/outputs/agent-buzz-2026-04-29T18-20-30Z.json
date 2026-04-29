@@ -1,0 +1,85 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz — 2026-04-29"
+      },
+      "children": [
+        "status-text",
+        "separator1",
+        "stats-stack",
+        "separator2",
+        "api-key-alert",
+        "separator3",
+        "source-text"
+      ]
+    },
+    "status-text": {
+      "type": "Text",
+      "props": {
+        "text": "quiet day, no survivors",
+        "variant": "lead"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stats-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "candidates-stat",
+        "kept-stat"
+      ]
+    },
+    "candidates-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Candidates",
+        "value": "~10"
+      }
+    },
+    "kept-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Kept",
+        "value": "0"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "api-key-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "XAI_API_KEY unset"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: websearch",
+        "variant": "caption"
+      }
+    }
+  }
+}
