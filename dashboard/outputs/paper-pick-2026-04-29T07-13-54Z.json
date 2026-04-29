@@ -1,0 +1,68 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-04-29"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story-link",
+        "text-findings",
+        "stack-links"
+      ]
+    },
+    "story-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TCOD: Temporal Curriculum in On-Policy Distillation for Multi-turn Autonomous Agents",
+        "href": "https://arxiv.org/abs/2604.24005",
+        "source": "Wang et al. (CUHK + Alibaba)",
+        "score": "4"
+      }
+    },
+    "text-findings": {
+      "type": "Text",
+      "props": {
+        "text": "Multi-turn OPD blows up via Trajectory-Level KL Instability; curriculum-scheduled trajectory depth fixes it, +18pp on ALFWorld/WebShop/ScienceWorld and student exceeds teacher. Curriculum maps cleanly onto Birth → Canary → Apex.",
+        "variant": "body"
+      }
+    },
+    "stack-links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-read",
+        "link-pdf"
+      ]
+    },
+    "link-read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.24005"
+      }
+    },
+    "link-pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.24005"
+      }
+    }
+  }
+}
