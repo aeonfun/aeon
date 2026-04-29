@@ -30,7 +30,7 @@ get_category() {
     list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
     deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
     # Dev & Code
-    pr-review|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
+    pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
     issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
     autoresearch|auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
