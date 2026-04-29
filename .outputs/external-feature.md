@@ -1,1 +1,1 @@
-external-feature: tomscaria/swarm-fund-mvp PR #22 — added missing privy-loader, WaitlistCTAAuth, api stubs. Vite build unblocked, /learn deploy can ship. https://github.com/tomscaria/swarm-fund-mvp/pull/22
+external-feature: tomscaria/swarm-fund-mvp — fix(runner): use fractional days for pm-tail-risk fair-prob horizon. .days truncation under-estimated T by up to 24% near 3d floor; could flip gap-direction filter. PR: https://github.com/tomscaria/swarm-fund-mvp/pull/23
