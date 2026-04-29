@@ -1,11 +1,14 @@
-The skill is a single-step no-op (registry empty → silent stop), so a todo list adds no value here.
-
 ## Summary
 
-Ran `fleet-control` in default Health Check mode. Pre-flight passed (gh auth ok as `tomscaria`, rate_remaining=4986), but `memory/instances.json` contains `{"instances": []}` — no managed children. Per the skill's step 3, logged `FLEET_EMPTY` to `memory/logs/2026-04-29.md` and stopped without notifying (correct behavior — operator isn't trained to ignore noise on empty registries).
+Ran `fleet-control` (health check mode, 15:22 UTC slot) — second cron firing of the day.
 
-**Files modified:** `memory/logs/2026-04-29.md` (appended fleet-control section).
+**Result: FLEET_EMPTY** — silent no-op per skill spec.
 
-**No-ops:** registry unchanged, state file unchanged, no notification sent, no article written.
+- Pre-flight passed: gh auth ok (account `tomscaria`), rate_remaining=4965.
+- `memory/instances.json` still `{"instances": []}` — no managed children to monitor.
+- Aborted at step 3 of pre-flight (registry empty branch). No notification sent (correct per spec — operator should not get spam on every cron firing of an unconfigured skill).
+- State file unchanged (`memory/state/fleet-control-state.json` still `{"instances": {}, "last_full_summary_date": ""}`).
 
-**Follow-up:** This skill will keep firing as a no-op on its `0 9,15 * * *` cron until at least one instance is registered in `memory/instances.json`. If no fleet is intended, consider setting `enabled: false` for `fleet-control` in `aeon.yml` to stop the empty-registry log entries.
+**Files modified:** `memory/logs/2026-04-29.md` (appended one log block + summary).
+
+**Follow-up:** unchanged from the 09 UTC slot's note — operator must register at least one managed instance with `{name, repo, purpose, parent, created}` in `memory/instances.json` before fleet-control produces any signal. Until then it remains a silent no-op on both daily firings.
