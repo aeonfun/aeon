@@ -1,7 +1,5 @@
-technical explainer: Two Images, Three Stages — How LLaTiSA Closed a 32-Point Gap on GPT-4o for Time-Series Reasoning
+technical explainer: Polymarket's Builder Codes Are Just One bytes32. That's the Point.
 
-LLaTiSA pairs the standard time-series plot with a second image rendering the data as an index-value table, then fine-tunes through three difficulty levels sequentially — and that two-change pair, not the model architecture, lifts an 8B Qwen3-VL backbone from 34.2% to 86.8% on numerical read-out, beating GPT-4o by 32.6 points.
+key idea: Polymarket's V2 order struct adds a single bytes32 builder field inside the EIP-712 signed payload, and that one field — not a backend system, not a partner contract, not an off-chain attribution table — is the entire mechanism that routes ~16% of Polymarket's monthly volume and ~$2.5M in grants to third-party apps.
 
-(no hero image — REPLICATE_API_TOKEN unset)
-
-read it: articles/explainer-2026-04-28.md
+read it: articles/explainer-2026-04-29.md

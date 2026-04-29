@@ -1,0 +1,56 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Technical Explainer"
+      },
+      "children": [
+        "title",
+        "key_idea",
+        "read_section"
+      ]
+    },
+    "title": {
+      "type": "Heading",
+      "props": {
+        "text": "Polymarket's Builder Codes Are Just One bytes32. That's the Point.",
+        "level": "h2"
+      }
+    },
+    "key_idea": {
+      "type": "Text",
+      "props": {
+        "text": "Key Idea: Polymarket's V2 order struct adds a single bytes32 builder field inside the EIP-712 signed payload, and that one field — not a backend system, not a partner contract, not an off-chain attribution table — is the entire mechanism that routes ~16% of Polymarket's monthly volume and ~$2.5M in grants to third-party apps.",
+        "variant": "body"
+      }
+    },
+    "read_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "read_label",
+        "read_link"
+      ]
+    },
+    "read_label": {
+      "type": "Text",
+      "props": {
+        "text": "Read it:",
+        "variant": "muted"
+      }
+    },
+    "read_link": {
+      "type": "Link",
+      "props": {
+        "label": "articles/explainer-2026-04-29.md",
+        "href": "articles/explainer-2026-04-29.md"
+      }
+    }
+  }
+}
