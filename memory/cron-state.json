@@ -12,8 +12,8 @@
     "last_dispatch": "2026-04-29T09:25:55Z"
   },
   "token-alert": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:02:17Z",
     "total_runs": 23,
     "total_successes": 4,
@@ -24,8 +24,8 @@
     "last_error": "eb0164d\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-movers": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:07:12Z",
     "total_runs": 27,
     "total_successes": 4,
@@ -36,8 +36,8 @@
     "last_error": "d8ad7ce\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "on-chain-monitor": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:02:12Z",
     "total_runs": 27,
     "total_successes": 4,
@@ -48,8 +48,8 @@
     "last_error": "3500471\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-monitor": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:02:05Z",
     "total_runs": 22,
     "total_successes": 4,
@@ -60,8 +60,8 @@
     "last_error": "a0b8a82\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "treasury-info": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:02:35Z",
     "total_runs": 24,
     "total_successes": 4,
@@ -72,8 +72,8 @@
     "last_error": "ff1979b\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-overview": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:14:20Z",
     "total_runs": 20,
     "total_successes": 4,
@@ -84,8 +84,8 @@
     "last_error": "2b30ebd\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-polymarket": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:09:28Z",
     "total_runs": 20,
     "total_successes": 3,
@@ -108,8 +108,8 @@
     "last_error": "cca2d1f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-runners": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:09:50Z",
     "total_runs": 20,
     "total_successes": 4,
@@ -120,8 +120,8 @@
     "last_error": "c658144\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-pick": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:06:56Z",
     "total_runs": 20,
     "total_successes": 4,
@@ -132,8 +132,8 @@
     "last_error": "1e996d2\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-report": {
-    "last_dispatch": "2026-04-28T13:00:49Z",
-    "last_status": "success",
+    "last_dispatch": "2026-04-29T12:57:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-28T13:02:49Z",
     "total_runs": 25,
     "total_successes": 3,
