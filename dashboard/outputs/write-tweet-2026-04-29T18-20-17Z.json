@@ -1,0 +1,413 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet: Anthropic Project Deal Tweet Drafts"
+      },
+      "children": [
+        "tagline",
+        "sep1",
+        "section_oneiner",
+        "sep2",
+        "section_twopunch",
+        "sep3",
+        "section_paragraph",
+        "sep4",
+        "section_longtweet",
+        "sep5",
+        "section_thread",
+        "sep6",
+        "alert_best"
+      ]
+    },
+    "tagline": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic Project Deal — capability gap measurable, invisible to losers",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_oneiner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_oneiner",
+        "variant_1a",
+        "variant_1b"
+      ]
+    },
+    "heading_oneiner": {
+      "type": "Heading",
+      "props": {
+        "text": "One-liner",
+        "level": "h3"
+      }
+    },
+    "variant_1a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_1a",
+        "text_1a"
+      ]
+    },
+    "badge_1a": {
+      "type": "Badge",
+      "props": {
+        "text": "1a",
+        "variant": "outline"
+      }
+    },
+    "text_1a": {
+      "type": "Text",
+      "props": {
+        "text": "The capability gap is real. The losing side doesn't see it. That's the equilibrium."
+      }
+    },
+    "variant_1b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_1b",
+        "text_1b"
+      ]
+    },
+    "badge_1b": {
+      "type": "Badge",
+      "props": {
+        "text": "1b",
+        "variant": "outline"
+      }
+    },
+    "text_1b": {
+      "type": "Text",
+      "props": {
+        "text": "Opus made $2.68 more per item than Haiku. The losers rated fairness 4.05 vs 4.06."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_twopunch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_twopunch",
+        "variant_2a",
+        "variant_2b"
+      ]
+    },
+    "heading_twopunch": {
+      "type": "Heading",
+      "props": {
+        "text": "Two-punch",
+        "level": "h3"
+      }
+    },
+    "variant_2a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_2a",
+        "text_2a"
+      ]
+    },
+    "badge_2a": {
+      "type": "Badge",
+      "props": {
+        "text": "2a",
+        "variant": "outline"
+      }
+    },
+    "text_2a": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic measured the AI capability gap with real money. The losing side rated the marketplace fair anyway. Same equilibrium that keeps Polymarket liquid."
+      }
+    },
+    "variant_2b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_2b",
+        "text_2b"
+      ]
+    },
+    "badge_2b": {
+      "type": "Badge",
+      "props": {
+        "text": "2b",
+        "variant": "outline"
+      }
+    },
+    "text_2b": {
+      "type": "Text",
+      "props": {
+        "text": "69 employees. 186 deals. One week. $4k of surplus. Opus took the edge, Haiku users still rated the marketplace fair. Gap visible in the P&L, invisible on the survey."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_paragraph": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_paragraph",
+        "variant_3a",
+        "variant_3b"
+      ]
+    },
+    "heading_paragraph": {
+      "type": "Heading",
+      "props": {
+        "text": "Paragraph",
+        "level": "h3"
+      }
+    },
+    "variant_3a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_3a",
+        "text_3a"
+      ]
+    },
+    "badge_3a": {
+      "type": "Badge",
+      "props": {
+        "text": "3a",
+        "variant": "outline"
+      }
+    },
+    "text_3a": {
+      "type": "Text",
+      "props": {
+        "text": "The Project Deal numbers say what every prediction-market operator already knows. The capability gap exists. The losers don't feel it. That's why they keep showing up. CalibrationGap on Polymarket is the same trade in a different venue."
+      }
+    },
+    "variant_3b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_3b",
+        "text_3b"
+      ]
+    },
+    "badge_3b": {
+      "type": "Badge",
+      "props": {
+        "text": "3b",
+        "variant": "outline"
+      }
+    },
+    "text_3b": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic ran a $4k internal marketplace last December. 69 employees, 186 deals, one week. Opus made $2.68 more per item sold. Haiku users rated fairness 4.06. Opus users rated it 4.05. The gap is real. The losing side rated it slightly higher."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_longtweet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_longtweet",
+        "variant_4a",
+        "variant_4b"
+      ]
+    },
+    "heading_longtweet": {
+      "type": "Heading",
+      "props": {
+        "text": "Long tweet",
+        "level": "h3"
+      }
+    },
+    "variant_4a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_4a",
+        "text_4a"
+      ]
+    },
+    "badge_4a": {
+      "type": "Badge",
+      "props": {
+        "text": "4a",
+        "variant": "outline"
+      }
+    },
+    "text_4a": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic's Project Deal experiment, December 2025: 69 employees, $100 each, one week, 186 deals worth $4k. Opus +2.07 deals/user (p=0.001), $2.68 more per item sold, $2.45 less per item bought. Broken bike: Opus paid $65, Haiku $38 — 70% spread. The punchline: perceived fairness was 4.05 for Opus users, 4.06 for Haiku users on a 1-7 scale. The losing side rated the marketplace slightly fairer than the winners did. Capability gap real in the P&L. Invisible to the losers. That's the equilibrium that keeps Polymarket liquid."
+      }
+    },
+    "variant_4b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_4b",
+        "text_4b"
+      ]
+    },
+    "badge_4b": {
+      "type": "Badge",
+      "props": {
+        "text": "4b",
+        "variant": "outline"
+      }
+    },
+    "text_4b": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic ran an internal Project Deal marketplace last December to measure the Opus-vs-Haiku capability gap. They got the gap: $2.68 more per item sold, +2.07 deals per user, p=0.001, 70% spread on a broken bike. Then they asked participants to rate fairness on a 1-7 scale. Opus users said 4.05. Haiku users said 4.06. The losing side rated it slightly fairer. The headline is that the gap is measurable. The footnote is that the losers don't notice. The footnote is the bigger finding."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_thread": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_thread",
+        "variant_5a",
+        "variant_5b"
+      ]
+    },
+    "heading_thread": {
+      "type": "Heading",
+      "props": {
+        "text": "Thread opener",
+        "level": "h3"
+      }
+    },
+    "variant_5a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_5a",
+        "text_5a"
+      ]
+    },
+    "badge_5a": {
+      "type": "Badge",
+      "props": {
+        "text": "5a",
+        "variant": "outline"
+      }
+    },
+    "text_5a": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic measured the Opus-vs-Haiku capability gap with real money last December. Opus made $2.68 more per item. The losers rated the marketplace 0.01 points fairer than the winners. So why don't agentic-finance edges decay the way trading textbooks say they should?"
+      }
+    },
+    "variant_5b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_5b",
+        "text_5b"
+      ]
+    },
+    "badge_5b": {
+      "type": "Badge",
+      "props": {
+        "text": "5b",
+        "variant": "outline"
+      }
+    },
+    "text_5b": {
+      "type": "Text",
+      "props": {
+        "text": "The Anthropic Project Deal paper has a footnote bigger than its headline. Opus beat Haiku by $2.68 per item sold, statistically significant. But Haiku users rated fairness 4.06 vs Opus's 4.05. The losing side felt the marketplace was fair. That's why this generalizes."
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_best": {
+      "type": "Alert",
+      "props": {
+        "title": "Best",
+        "message": "#4a — full operator-voice essay, every sentence pulls weight, ends on the equilibrium fact",
+        "type": "success"
+      }
+    }
+  }
+}

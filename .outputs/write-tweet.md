@@ -1,24 +1,24 @@
-tweet drafts: Polymarket V2 cutover — the order-book wipe is the smallest change
+tweet drafts: Anthropic Project Deal — capability gap measurable, invisible to losers
 
 — one-liner —
-1a. Polymarket rebuilt the exchange today. Order-book wipe is the least interesting change.
-1b. Everyone read the order-book wipe. The actual change is builder codes going on-chain.
+1a. The capability gap is real. The losing side doesn't see it. That's the equilibrium.
+1b. Opus made $2.68 more per item than Haiku. The losers rated fairness 4.05 vs 4.06.
 
 — two-punch —
-2a. Polymarket V2 went live at 11 UTC. USDC.e → pUSD, builder codes on-chain, EIP-1271 signers, two audits. The order-book wipe is the part everyone is upset about.
-2b. Polymarket nuked every resting order today. They also moved builder fees on-chain and swapped the collateral asset. Guess which one made the headline.
+2a. Anthropic measured the AI capability gap with real money. The losing side rated the marketplace fair anyway. Same equilibrium that keeps Polymarket liquid.
+2b. 69 employees. 186 deals. One week. $4k of surplus. Opus took the edge, Haiku users still rated the marketplace fair. Gap visible in the P&L, invisible on the survey.
 
 — paragraph —
-3a. The Polymarket V2 cutover is the first prediction-market exchange to go hard-fork. Wiped orderbook, USDC.e → native pUSD, builder codes baked into every order, EIP-1271 for smart-contract signers. Two audits. ~1h offline. The wipe is the distraction.
-3b. Reading the V2 cutover as "they cleared my limit orders" misses the architecture. Builder fees moved from a script you trust to a field on the order. Off-chain bookkeeping became contract guarantee. Wipe is the noise. Builder code field is the signal.
+3a. The Project Deal numbers say what every prediction-market operator already knows. The capability gap exists. The losers don't feel it. That's why they keep showing up. CalibrationGap on Polymarket is the same trade in a different venue.
+3b. Anthropic ran a $4k internal marketplace last December. 69 employees, 186 deals, one week. Opus made $2.68 more per item sold. Haiku users rated fairness 4.06. Opus users rated it 4.05. The gap is real. The losing side rated it slightly higher.
 
 — long tweet —
-4a. Polymarket cutover at 11 UTC today. The Help Center calls it V2. Six things changed: (1) USDC.e → pUSD, 1:1 backed (2) builder codes baked into the order struct, on-chain (3) EIP-1271 unlocks smart-contract signers (4) match-time fees instead of post-fill (5) Cantina + Quantstamp audits (6) V1 SDK is forward-incompatible. The "all open orders cleared" headline is item zero. The first five are why every market-maker on PM is rewriting their stack this week, including ours.
-4b. 11 UTC: Polymarket replaced its exchange. USDC.e is gone. pUSD is the new collateral. Builder codes — the affiliate-fee field — moved from off-chain bookkeeping to a struct on every order. EIP-1271 means a smart contract can sign for you. Match-time fees, Cantina + Quantstamp audited. The "they wiped my limit orders" headline is the smallest part of the migration. The biggest: builder codes are a contract guarantee now, not a trust-the-team promise. Builders just got pricing power. Agents got first-class signers. Revenant resting book is zero whether or not we flattened first.
+4a. Anthropic's Project Deal experiment, December 2025: 69 employees, $100 each, one week, 186 deals worth $4k. Opus +2.07 deals/user (p=0.001), $2.68 more per item sold, $2.45 less per item bought. Broken bike: Opus paid $65, Haiku $38 — 70% spread. The punchline: perceived fairness was 4.05 for Opus users, 4.06 for Haiku users on a 1-7 scale. The losing side rated the marketplace slightly fairer than the winners did. Capability gap real in the P&L. Invisible to the losers. That's the equilibrium that keeps Polymarket liquid.
+4b. Anthropic ran an internal Project Deal marketplace last December to measure the Opus-vs-Haiku capability gap. They got the gap: $2.68 more per item sold, +2.07 deals per user, p=0.001, 70% spread on a broken bike. Then they asked participants to rate fairness on a 1-7 scale. Opus users said 4.05. Haiku users said 4.06. The losing side rated it slightly fairer. The headline is that the gap is measurable. The footnote is that the losers don't notice. The footnote is the bigger finding.
 
 — thread opener —
-5a. The Polymarket V2 cutover is being read as "they wiped the orderbook." That's the smallest of six changes. The biggest one is the change every protocol-touching builder now has to plan for.
-5b. 11 UTC: Polymarket replaced its exchange stack. ~1h offline. Open orders zeroed. New collateral (pUSD), on-chain builder codes, EIP-1271 signers, two audits. The migration is six items deep. Only the wipe made the headline.
+5a. Anthropic measured the Opus-vs-Haiku capability gap with real money last December. Opus made $2.68 more per item. The losers rated the marketplace 0.01 points fairer than the winners. So why don't agentic-finance edges decay the way trading textbooks say they should?
+5b. The Anthropic Project Deal paper has a footnote bigger than its headline. Opus beat Haiku by $2.68 per item sold, statistically significant. But Haiku users rated fairness 4.06 vs Opus's 4.05. The losing side felt the marketplace was fair. That's why this generalizes.
 
-best: 4b — operator narrative ties the architectural change to a specific live-capital footprint (Revenant); highest grant-narrative reuse value
+best: #4a — full operator-voice essay, every sentence pulls weight, ends on the equilibrium fact
 
