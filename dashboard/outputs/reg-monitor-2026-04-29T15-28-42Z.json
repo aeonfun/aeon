@@ -1,0 +1,318 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Reg Monitor — 2026-04-29",
+        "description": "CFTC vs states preemption war: 4 active fronts in 7 days, plus first-ever event-contract insider trading prosecution. Direct line to Polymarket/Kalshi US access and CalibrationGap operating surface."
+      },
+      "children": [
+        "sep-1",
+        "heading-act",
+        "stack-act-items",
+        "sep-2",
+        "heading-watch",
+        "stack-watch-items",
+        "sep-3",
+        "text-metadata"
+      ]
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-act": {
+      "type": "Heading",
+      "props": {
+        "text": "ACT",
+        "level": "h3"
+      }
+    },
+    "stack-act-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item-wi",
+        "item-ny",
+        "item-ma",
+        "item-insider"
+      ]
+    },
+    "item-wi": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-wi",
+        "badge-wi",
+        "text-wi-desc",
+        "text-wi-angle"
+      ]
+    },
+    "link-wi": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CFTC v Wisconsin — federal preemption suit",
+        "href": "https://www.cftc.gov/PressRoom/PressReleases/9220-26",
+        "source": "US federal · active litigation"
+      }
+    },
+    "badge-wi": {
+      "type": "Badge",
+      "props": {
+        "text": "Federal litigation"
+      }
+    },
+    "text-wi-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC sued Wisconsin in federal court Apr 28 seeking injunctive + declaratory relief blocking AG Kaul's Apr 23 state suits against Kalshi, Polymarket, Crypto.com, Robinhood, Coinbase. Asserts exclusive federal jurisdiction over event contracts.",
+        "variant": "body"
+      }
+    },
+    "text-wi-angle": {
+      "type": "Text",
+      "props": {
+        "text": "PM angle: if Wisconsin prevails, every state can revive gambling enforcement against PM platforms — direct hit on US-adjacent access. Watch the AZ TRO (already granted) for the federal-court template.",
+        "variant": "caption"
+      }
+    },
+    "item-ny": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-ny",
+        "badge-ny",
+        "text-ny-desc",
+        "text-ny-angle"
+      ]
+    },
+    "link-ny": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CFTC + DOJ v New York — SDNY filing",
+        "href": "https://www.cftc.gov/PressRoom/PressReleases/9218-26",
+        "source": "US federal · active litigation"
+      }
+    },
+    "badge-ny": {
+      "type": "Badge",
+      "props": {
+        "text": "Federal litigation"
+      }
+    },
+    "text-ny-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC and DOJ co-filed Apr 24 in S.D.N.Y. seeking declaratory judgment + permanent injunction blocking NY from applying state gambling laws to CFTC-registered exchanges. Fifth such CFTC suit (after AZ, CT, IL, WI).",
+        "variant": "body"
+      }
+    },
+    "text-ny-angle": {
+      "type": "Text",
+      "props": {
+        "text": "PM angle: NY ruling sets precedent for the largest US state population and is the bellwether of the multi-state arc.",
+        "variant": "caption"
+      }
+    },
+    "item-ma": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-ma",
+        "badge-ma",
+        "text-ma-desc",
+        "text-ma-angle"
+      ]
+    },
+    "link-ma": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CFTC amicus in MA SJC — Commonwealth v KalshiEx",
+        "href": "https://www.cftc.gov/PressRoom/PressReleases/9219-26",
+        "source": "US state (MA) · active litigation"
+      }
+    },
+    "badge-ma": {
+      "type": "Badge",
+      "props": {
+        "text": "State court intervention"
+      }
+    },
+    "text-ma-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC filed amicus Apr 24 in MA SJC No. SJC-13906 asserting exclusive federal authority over PM. Distinct posture: state-court intervention rather than federal-court suit.",
+        "variant": "body"
+      }
+    },
+    "text-ma-angle": {
+      "type": "Text",
+      "props": {
+        "text": "PM angle: state-court win for CFTC accelerates jurisdictional resolution outside federal-court timeline.",
+        "variant": "caption"
+      }
+    },
+    "item-insider": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-insider",
+        "badge-insider",
+        "text-insider-desc",
+        "text-insider-angle",
+        "text-insider-action"
+      ]
+    },
+    "link-insider": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CFTC charges Army service member with event-contract insider trading",
+        "href": "https://www.cftc.gov/PressRoom/PressReleases/9217-26",
+        "source": "US federal · enforcement filed"
+      }
+    },
+    "badge-insider": {
+      "type": "Badge",
+      "props": {
+        "text": "Enforcement action"
+      }
+    },
+    "text-insider-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Gannon Ken Van Dyke (Polymarket handle \"Burdensome-Mix\") allegedly used classified Operation Absolute Resolve intel on Maduro to buy 436k YES shares on \"Maduro Out by Jan 31, 2026?\" — ~$404k profit. First-ever event-contract insider trading complaint, first \"Eddie Murphy Rule\" application to PM. Criminal indictment unsealed same day in SDNY.",
+        "variant": "body"
+      }
+    },
+    "text-insider-angle": {
+      "type": "Text",
+      "props": {
+        "text": "PM angle: establishes regulatory floor that strengthens Polymarket institutional legitimacy.",
+        "variant": "caption"
+      }
+    },
+    "text-insider-action": {
+      "type": "Text",
+      "props": {
+        "text": "Operator action: have polymarket-comments cross-check Burdensome-Mix against tracked-handle dossier; UMA-resolution arb thesis (Iran-cf vs Hez-cf) gains weight if precedent expands to misresolved contracts.",
+        "variant": "caption"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-watch": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCH",
+        "level": "h3"
+      }
+    },
+    "stack-watch-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item-moreno",
+        "item-nyse"
+      ]
+    },
+    "item-moreno": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-moreno",
+        "badge-moreno",
+        "text-moreno"
+      ]
+    },
+    "link-moreno": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Senate Moreno resolution to ban senators from PM trading",
+        "href": "https://bettorsinsider.com/news/2026/04/27/a-senate-resolution-would-ban-lawmakers-from-trading-on-prediction-markets-the-bipartisan-push-that-could-actually-stick/",
+        "source": "US federal · introduced"
+      }
+    },
+    "badge-moreno": {
+      "type": "Badge",
+      "props": {
+        "text": "Legislative"
+      }
+    },
+    "text-moreno": {
+      "type": "Text",
+      "props": {
+        "text": "Moreno (R-OH) introduced Apr 24, called for unanimous consent. Narrower than Merkley S. 4017 (senators only). Bipartisan tone, no committee referral yet.",
+        "variant": "body"
+      }
+    },
+    "item-nyse": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-nyse",
+        "badge-nyse",
+        "text-nyse"
+      ]
+    },
+    "link-nyse": {
+      "type": "StoryLink",
+      "props": {
+        "title": "NYSE LLC — trade securities in tokenized form, immediate effectiveness",
+        "href": "https://www.federalregister.gov/documents/2026/04/22/2026-07782/self-regulatory-organizations-new-york-stock-exchange-llc-notice-of-filing-and-immediate",
+        "source": "US federal · effective on filing"
+      }
+    },
+    "badge-nyse": {
+      "type": "Badge",
+      "props": {
+        "text": "Regulatory"
+      }
+    },
+    "text-nyse": {
+      "type": "Text",
+      "props": {
+        "text": "SRO filing effective on submission Apr 22. Tokenized securities trading at NYSE; structurally adjacent to PM/contract tokenization paths.",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text-metadata": {
+      "type": "Text",
+      "props": {
+        "text": "sources: federal-register=ok · sec=ok · cftc=ok · websearch=ok · congress=skip | 6 developments scored, 4 act / 2 watch / 0 context",
+        "variant": "muted"
+      }
+    }
+  }
+}
