@@ -1,0 +1,71 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Aeon's Forks Are Now Writing Its Roadmap. PR #147 Was Built So #143 Doesn't Happen Again."
+      },
+      "children": [
+        "thesis_text",
+        "separator1",
+        "metadata_stack",
+        "separator2",
+        "link_element"
+      ]
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis: aaronjmars/aeon's roadmap is now driven by fork friction — all 7 merged PRs this week ship contributor infrastructure, and #147 cites a 4-day-stale external PR (#143 from `pezetel`, a listed flagship fork).",
+        "variant": "lead"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metadata_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "word_count_stat",
+        "checks_stat"
+      ]
+    },
+    "word_count_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Word Count",
+        "value": "731"
+      }
+    },
+    "checks_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Self-Edit Checks",
+        "value": "8/8"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_element": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-article-2026-04-29.md",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-04-29.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
