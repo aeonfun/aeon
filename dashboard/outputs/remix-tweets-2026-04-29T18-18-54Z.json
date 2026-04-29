@@ -1,0 +1,202 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets",
+        "description": "REMIX_TWEETS_ERROR — no handle configured"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "status_section",
+        "sep2",
+        "root_cause_section",
+        "sep3",
+        "operator_section",
+        "sep4",
+        "recommendation_section"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Configuration Error",
+        "message": "5th consecutive ERROR fire",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "status_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status_heading",
+        "status_content"
+      ]
+    },
+    "status_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Status",
+        "level": "h3"
+      }
+    },
+    "status_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "date_item",
+        "fire_count_item",
+        "cache_item"
+      ]
+    },
+    "date_item": {
+      "type": "Text",
+      "props": {
+        "text": "Date: 2026-04-29"
+      }
+    },
+    "fire_count_item": {
+      "type": "Text",
+      "props": {
+        "text": "5th consecutive ERROR fire"
+      }
+    },
+    "cache_item": {
+      "type": "Text",
+      "props": {
+        "text": "Cache .xai-cache/remix-tweets.json absent"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "root_cause_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "root_cause_heading",
+        "root_cause_content"
+      ]
+    },
+    "root_cause_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "root_cause_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause_item_1",
+        "cause_item_2"
+      ]
+    },
+    "cause_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "X_HANDLE env unset"
+      }
+    },
+    "cause_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity has no @handle"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "operator_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "operator_heading",
+        "operator_content"
+      ]
+    },
+    "operator_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Action Required",
+        "level": "h3"
+      }
+    },
+    "operator_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_item_1",
+        "action_item_2"
+      ]
+    },
+    "action_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "Add X_HANDLE to .github/workflows/aeon.yml env"
+      }
+    },
+    "action_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "Add @handle to soul/SOUL.md Identity"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "recommendation_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "recommendation_heading",
+        "recommendation_content"
+      ]
+    },
+    "recommendation_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendation",
+        "level": "h3"
+      }
+    },
+    "recommendation_content": {
+      "type": "Text",
+      "props": {
+        "text": "Pause 30 17 * * * cron until fixed"
+      }
+    }
+  }
+}
