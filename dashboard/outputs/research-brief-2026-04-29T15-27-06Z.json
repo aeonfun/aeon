@@ -1,0 +1,233 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "research-brief"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_failure_modes",
+        "section_failure_modes",
+        "separator_1",
+        "heading_thesis",
+        "section_thesis",
+        "separator_2",
+        "heading_matters",
+        "section_matters",
+        "separator_3",
+        "section_research"
+      ]
+    },
+    "heading_failure_modes": {
+      "type": "Heading",
+      "props": {
+        "text": "UMA Optimistic-Oracle Failure Profile",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "section_failure_modes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_failure_intro",
+        "text_mode1_title",
+        "text_mode1_detail",
+        "text_mode2_title",
+        "text_mode2_detail",
+        "text_whitelist_context"
+      ]
+    },
+    "text_failure_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Two-mode failure profile invisible to quant calibration scanners:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "text_mode1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Concentrated whale voting",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_mode1_detail": {
+      "type": "Text",
+      "props": {
+        "text": "One address held 25% of votes in March 2025's $7M Ukraine-mineral resolution.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_mode2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Interpretive ambiguity",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_mode2_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Live April 2026: $77M US-Iran ceasefire trades 0.1–0.3c YES despite Trump+Pakistan confirmation.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_whitelist_context": {
+      "type": "Text",
+      "props": {
+        "text": "UMA's August 2025 managed-proposer whitelist cut disputes to ~1.3% but addresses neither failure mode—whitelist targets proposal quality, not interpretation.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Falsifiable Thesis",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "section_thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_thesis_claim"
+      ]
+    },
+    "text_thesis_claim": {
+      "type": "Text",
+      "props": {
+        "text": "At least one more interpretively-contested $10M+ Polymarket dispute reaches a DVM vote in the next six months, because the whitelist targets proposal quality not interpretation.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_matters": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "section_matters": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_risk_underpriced",
+        "text_scanner_limitation",
+        "text_candidate_solution"
+      ]
+    },
+    "text_risk_underpriced": {
+      "type": "Text",
+      "props": {
+        "text": "Resolution risk is structurally underpriced in any model (including CalibrationGap's scanner) that only watches the order book.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_scanner_limitation": {
+      "type": "Text",
+      "props": {
+        "text": "Current calibration-gap scanners miss interpretive resolution disputes entirely.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_candidate_solution": {
+      "type": "Text",
+      "props": {
+        "text": "Wen et al.'s LLM-UMA agreement method (89.58% accuracy on disputed cases) is a candidate scan to add at the Apex stage.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_research": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_sources",
+        "link_paper",
+        "link_full_brief"
+      ]
+    },
+    "heading_sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "link_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Wen et al. – LLM-UMA Agreement on Disputed Resolution Cases",
+        "href": "https://arxiv.org/abs/2604.15674",
+        "source": "arXiv"
+      },
+      "children": []
+    },
+    "link_full_brief": {
+      "type": "Link",
+      "props": {
+        "label": "Full Research Brief (articles/research-brief-uma-optimistic-oracle-polymarket-resolution-disputes-2026-04-29.md)",
+        "href": "articles/research-brief-uma-optimistic-oracle-polymarket-resolution-disputes-2026-04-29.md"
+      },
+      "children": []
+    }
+  }
+}
