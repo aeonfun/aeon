@@ -1,0 +1,311 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "runners — 2026-04-29"
+      },
+      "children": [
+        "verdict_alert",
+        "tokens_stack",
+        "sources_separator",
+        "sources_text",
+        "vibe_separator",
+        "vibe_text"
+      ]
+    },
+    "verdict_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "SPECULATIVE",
+        "type": "info"
+      }
+    },
+    "tokens_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "token1",
+        "token2",
+        "token3",
+        "token4",
+        "token5"
+      ]
+    },
+    "token1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token1_badge",
+        "token1_name",
+        "token1_stat",
+        "token1_data",
+        "token1_analysis"
+      ]
+    },
+    "token1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "token1_name": {
+      "type": "Heading",
+      "props": {
+        "text": "agentic money / USDT (bsc)",
+        "level": "h3"
+      }
+    },
+    "token1_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+3012%",
+        "label": "24h change"
+      }
+    },
+    "token1_data": {
+      "type": "Text",
+      "props": {
+        "text": "vol $57.0m | liq $107k | fdv $63k (no mcap) | h1 +3012% | buys:sells 1085:900",
+        "variant": "caption"
+      }
+    },
+    "token1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "1h-old pool churned $57m on $107k liq (~530x turnover) on a $63k FDV. wash-print signature, observe only.",
+        "variant": "body"
+      }
+    },
+    "token2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token2_badge",
+        "token2_name",
+        "token2_stat",
+        "token2_data",
+        "token2_analysis"
+      ]
+    },
+    "token2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "token2_name": {
+      "type": "Heading",
+      "props": {
+        "text": "ewon / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "token2_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+2129%",
+        "label": "24h change"
+      }
+    },
+    "token2_data": {
+      "type": "Text",
+      "props": {
+        "text": "vol $9.4m | liq $90k | fdv $773k (no mcap) | h1 +45% | buys:sells 59k:51k",
+        "variant": "caption"
+      }
+    },
+    "token2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "13h-old SOL launch with 110k+ txns and h1 still ramping +45% — degens sustaining bid, but $90k liq is one whale-exit from collapse.",
+        "variant": "body"
+      }
+    },
+    "token3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token3_badge",
+        "token3_name",
+        "token3_stat",
+        "token3_data",
+        "token3_analysis"
+      ]
+    },
+    "token3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION"
+      }
+    },
+    "token3_name": {
+      "type": "Heading",
+      "props": {
+        "text": "Goblin / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "token3_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+4639%",
+        "label": "24h change"
+      }
+    },
+    "token3_data": {
+      "type": "Text",
+      "props": {
+        "text": "vol $2.8m | liq $99k | fdv $1.2m (no mcap) | h1 +9.6% | buys:sells 15k:11k",
+        "variant": "caption"
+      }
+    },
+    "token3_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "4-day-old pool, h1 still positive — coordinated second-leg wake-up, watch for continuation or rollover into Asia open.",
+        "variant": "body"
+      }
+    },
+    "token4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token4_badge",
+        "token4_name",
+        "token4_stat",
+        "token4_data",
+        "token4_analysis"
+      ]
+    },
+    "token4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "REVERSAL",
+        "variant": "destructive"
+      }
+    },
+    "token4_name": {
+      "type": "Heading",
+      "props": {
+        "text": "MANIFESTOR / WETH (eth)",
+        "level": "h3"
+      }
+    },
+    "token4_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+3059%",
+        "label": "24h change"
+      }
+    },
+    "token4_data": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.6m | liq $25k | fdv $120k (no mcap) | h1 -24% | buys:sells 3031:2233",
+        "variant": "caption"
+      }
+    },
+    "token4_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "~351d-old token reactivated then rolling over; h1 -24% = exit-liquidity event in progress, mean-revert watch.",
+        "variant": "body"
+      }
+    },
+    "token5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token5_badge",
+        "token5_name",
+        "token5_stat",
+        "token5_data",
+        "token5_analysis"
+      ]
+    },
+    "token5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "token5_name": {
+      "type": "Heading",
+      "props": {
+        "text": "agentic / WBNB (bsc)",
+        "level": "h3"
+      }
+    },
+    "token5_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+133%",
+        "label": "24h change"
+      }
+    },
+    "token5_data": {
+      "type": "Text",
+      "props": {
+        "text": "vol $369k | liq $37k | fdv $150k (no mcap) | h1 +26% | buys:sells 13554:4095",
+        "variant": "caption"
+      }
+    },
+    "token5_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "11h-old \"agentic\"-themed BSC launch, sister to pick #1; 3.3:1 buys:sells is the only clean demand skew in the top 5.",
+        "variant": "body"
+      }
+    },
+    "sources_separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok (12/12, base/bsc/arbitrum-vol cleared after 429-retries)",
+        "variant": "caption"
+      }
+    },
+    "vibe_separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "vibe: AI/\"agentic\"-themed cluster on BSC owns 2 of 5 slots — coordinated narrative launch. Zero DEEP-LIQ for the third run in repo history; tape is rotating micro-caps, no real money on the board.",
+        "variant": "body"
+      }
+    }
+  }
+}

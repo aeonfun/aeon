@@ -1,25 +1,25 @@
-*runners — 2026-04-28* — verdict: SPECULATIVE
+*runners — 2026-04-29* — verdict: SPECULATIVE
 
-1. [BREAKOUT] LUCA / SOL (solana) +1572% 24h
-vol $4.6m | liq $68k | fdv $544k | h1 +54% | buys:sells 33138:30558
-— 7h-old pool, h1 still ramping (+54%) on 60k+ txns; real degen churn but $68k liq is one whale exit from collapse.
+1. [BREAKOUT] agentic money / USDT (bsc) +3012% 24h
+vol $57.0m | liq $107k | fdv $63k (no mcap) | h1 +3012% | buys:sells 1085:900
+— 1h-old pool churned $57m on $107k liq (~530x turnover) on a $63k FDV. wash-print signature, observe only.
 
-2. [BREAKOUT] 巨龙 / USDT (bsc) +3419% 24h
-vol $34.8m | liq $92k | fdv $70k | h1 +26% | buys:sells 1099:844
-— 2h-old, $34.8m on $92k liq = ~378x turnover and $70k FDV. wash-trade signature, observe only.
+2. [BREAKOUT] ewon / SOL (solana) +2129% 24h
+vol $9.4m | liq $90k | fdv $773k (no mcap) | h1 +45% | buys:sells 59k:51k
+— 13h-old SOL launch with 110k+ txns and h1 still ramping +45% — degens sustaining bid, but $90k liq is one whale-exit from collapse.
 
-3. [BREAKOUT] CMD / ETH (eth) +1059% 24h
-vol $5.7m | liq $732k | fdv $2.5m (no mcap) | h1 -0.4% | buys:sells 4342:3887
-— cleanest setup on the board: $732k liq is closest to DEEP-LIQ, 21h old, h1 flat = post-pump consolidation. watch for a second leg or rollover.
+3. [CONTINUATION] Goblin / SOL (solana) +4639% 24h
+vol $2.8m | liq $99k | fdv $1.2m (no mcap) | h1 +9.6% | buys:sells 15k:11k
+— 4-day-old pool, h1 still positive — coordinated second-leg wake-up, watch for continuation or rollover into Asia open.
 
-4. [CONTINUATION] SCAMMAN / WETH 1% (eth) +6175% 24h
-vol $3.3m | liq $102k | fdv $339k | h1 +22% | buys:sells 5146:3934
-— 313d-old pool reactivated, h1 still climbing. coordinated wake-up on a "scam"-themed ticker — see also pick 5.
+4. [REVERSAL] MANIFESTOR / WETH (eth) +3059% 24h
+vol $1.6m | liq $25k | fdv $120k (no mcap) | h1 -24% | buys:sells 3031:2233
+— ~351d-old token reactivated then rolling over; h1 -24% = exit-liquidity event in progress, mean-revert watch.
 
-5. [BREAKOUT] SCAM / SOL (solana) +1120% 24h
-vol $4.1m | liq $57k | fdv $402k | h1 +26% | buys:sells 24298:20459
-— 20h-old SOL launch, h1 +26% still alive. paired with SCAMMAN/WETH = memetic "scam"-naming cluster trading on the joke itself.
+5. [BREAKOUT] agentic / WBNB (bsc) +133% 24h
+vol $369k | liq $37k | fdv $150k (no mcap) | h1 +26% | buys:sells 13554:4095
+— 11h-old "agentic"-themed BSC launch, sister to pick #1; 3.3:1 buys:sells is the only clean demand skew in the top 5.
 
-sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok (all 12 endpoints clean after 4–15s sequential back-offs cleared 429s on base/bsc/arbitrum/new)
-vibe: zero DEEP-LIQ for the 3rd straight run — micro-cap casino regime persists; 4/5 picks are <24h launches, the only "older" pool (SCAMMAN, 313d) is a coordinated reactivation, no repeat tokens from prior 2 days.
+sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok (12/12, base/bsc/arbitrum-vol cleared after 429-retries)
+vibe: AI/"agentic"-themed cluster on BSC owns 2 of 5 slots — coordinated narrative launch. Zero DEEP-LIQ for the third run in repo history; tape is rotating micro-caps, no real money on the board.
 
