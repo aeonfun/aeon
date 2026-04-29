@@ -1,0 +1,77 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "project-lens"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "badge_new",
+        "heading_1",
+        "text_1",
+        "text_2",
+        "text_3",
+        "separator_1",
+        "storylink_1"
+      ]
+    },
+    "badge_new": {
+      "type": "Badge",
+      "props": {
+        "text": "New Article",
+        "variant": "default"
+      }
+    },
+    "heading_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Hash Chains for AI Agents Shipped Twice This Month. Git Already Was One.",
+        "level": "h2"
+      }
+    },
+    "text_1": {
+      "type": "Text",
+      "props": {
+        "text": "Microsoft (Apr 2) and Asqav (Apr 9) shipped hash-chained audit-trail SDKs to satisfy EU AI Act Article 12 — quantum-safe sigs (ML-DSA-65), RFC 3161 timestamps, sub-millisecond policy enforcement."
+      }
+    },
+    "text_2": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon, by running every agent as a scheduled GitHub Action, inherits the same tamper-evident property from git for free: PR #147 keys its decision log on (PR number, headRefOid)."
+      }
+    },
+    "text_3": {
+      "type": "Text",
+      "props": {
+        "text": "Forward call: by Q4 2026, at least one of LangChain/CrewAI/AutoGen/n8n ships or recommends a GitHub Actions execution mode for compliance."
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "storylink_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hash Chains for AI Agents Shipped Twice This Month. Git Already Was One.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/project-lens-2026-04-29.md",
+        "source": "project-lens"
+      }
+    }
+  }
+}
