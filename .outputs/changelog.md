@@ -1,1 +1,2 @@
-*Changelog — Week of 2026-04-28* 1 repo: 8 user-facing changes (0 breaking, 8 added, 0 fixed, 0 security). Top: every fork now gets a public /status/ health dashboard, extended today with a Token Pulse row. Full: articles/changelog-2026-04-28.md
+*Changelog — Week of 2026-04-29*
+1 repo: 7 user-facing changes (0 breaking, 7 added, 0 fixed, 0 security). Top: external PRs now get an automatic first-touch triage with verdict + label within minutes of opening (PR #147). Full: articles/changelog-2026-04-29.md

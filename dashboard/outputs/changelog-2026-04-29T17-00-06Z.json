@@ -1,0 +1,170 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog"
+      },
+      "children": [
+        "heading",
+        "stats_stack",
+        "separator1",
+        "breakdown_section",
+        "separator2",
+        "top_feature_section",
+        "separator3",
+        "full_changelog_link"
+      ]
+    },
+    "heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Changelog — Week of 2026-04-29",
+        "level": "h2"
+      }
+    },
+    "stats_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_repos",
+        "stat_changes"
+      ]
+    },
+    "stat_repos": {
+      "type": "Stat",
+      "props": {
+        "label": "Repos",
+        "value": "1"
+      }
+    },
+    "stat_changes": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "7"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "breakdown_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "breakdown_heading",
+        "breakdown_grid"
+      ]
+    },
+    "breakdown_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Change breakdown",
+        "level": "h4"
+      }
+    },
+    "breakdown_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat_breaking",
+        "stat_added",
+        "stat_fixed",
+        "stat_security"
+      ]
+    },
+    "stat_breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "stat_added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "7"
+      }
+    },
+    "stat_fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "0"
+      }
+    },
+    "stat_security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "0"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top_feature_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_heading",
+        "top_text",
+        "pr_link"
+      ]
+    },
+    "top_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top change",
+        "level": "h4"
+      }
+    },
+    "top_text": {
+      "type": "Text",
+      "props": {
+        "text": "External PRs now get an automatic first-touch triage with verdict + label within minutes of opening"
+      }
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #147",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/147"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full_changelog_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full changelog",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/blob/main/articles/changelog-2026-04-29.md"
+      }
+    }
+  }
+}
