@@ -1,0 +1,289 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-04-29",
+        "description": "Token selection with catalyst and risk assessment"
+      },
+      "children": [
+        "token-header",
+        "sep1",
+        "price-section",
+        "sep2",
+        "score-section",
+        "sep3",
+        "catalyst-section",
+        "sep4",
+        "risk-alert",
+        "sep5",
+        "recent-picks",
+        "sep6",
+        "market-section",
+        "sep7",
+        "sources-footer"
+      ]
+    },
+    "token-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-name",
+        "signal-badge"
+      ]
+    },
+    "token-name": {
+      "type": "Heading",
+      "props": {
+        "text": "DOGE",
+        "level": "h2"
+      }
+    },
+    "signal-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH signal 10/10",
+        "variant": "default"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "price-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price-stat",
+        "mcap-stat",
+        "vol-stat",
+        "vol-ratio-text"
+      ]
+    },
+    "price-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.107",
+        "delta": "+8.3% 24h / +9.1% 7d",
+        "trend": "up"
+      }
+    },
+    "mcap-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$16.5B"
+      }
+    },
+    "vol-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$3.27B"
+      }
+    },
+    "vol-ratio-text": {
+      "type": "Text",
+      "props": {
+        "text": "vol/mcap ratio: 0.20",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "score-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "score-heading",
+        "score-formula"
+      ]
+    },
+    "score-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Score Calculation",
+        "level": "h4"
+      }
+    },
+    "score-formula": {
+      "type": "Text",
+      "props": {
+        "text": "24h+1, 7d+1, both>5%+2, cgtrend+2, vol/mc>=0.10+2, RS vs BTC/ETH+2 = 10/10",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h4"
+      }
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "Binance DOGE futures OI +40% in five days (2.31B -> 3.23B DOGE since Apr 23) on top of TDOG ETF on Nasdaq + 21Shares Xetra ETP earlier this year; X Money beta DOGE-rails rumor still circulating.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "Heavy futures OI build cuts both ways - leveraged longs liquidate fast on a Fed-day reversal (FOMC prints today, no-change priced 99.9%; surprise prints sharp two-way vol).",
+        "type": "warning"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recent-picks": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "recent-heading",
+        "recent-text"
+      ]
+    },
+    "recent-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vs Recent Picks",
+        "level": "h4"
+      }
+    },
+    "recent-text": {
+      "type": "Text",
+      "props": {
+        "text": "First time (last 7d: RAY, PENGU, XCN, APE)",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market-heading",
+        "market-badge",
+        "market-detail"
+      ]
+    },
+    "market-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market",
+        "level": "h4"
+      }
+    },
+    "market-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SKIP today",
+        "variant": "outline"
+      }
+    },
+    "market-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Top liquid markets all match Vegas within ~2pp (OKC 51.5c vs -115, Spurs 17.1c vs +500, Carolina Cup 25.5c vs +285, Lakers 3.1c vs +3500). No defensible edge >=5pp.",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-footer": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-status",
+        "disclaimer"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources & Disclaimer",
+        "level": "h4"
+      }
+    },
+    "sources-status": {
+      "type": "Text",
+      "props": {
+        "text": "cg=ok, dex=ok, poly=ok",
+        "variant": "caption"
+      }
+    },
+    "disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "Not financial advice - pattern-matching only",
+        "variant": "muted"
+      }
+    }
+  }
+}

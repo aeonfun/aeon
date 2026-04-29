@@ -1,28 +1,14 @@
-## Summary
+*Daily Pick — 2026-04-29*
 
-Daily Token Pick complete. Both picks land HIGH conviction.
+*Token: DOGE*  HIGH  signal 10/10
+Price: $0.107 (+8.3% 24h / +9.1% 7d) | mcap $16.5B | vol $3.27B (vol/mcap 0.20)
+Score: [24h+1, 7d+1, both>5%+2, cgtrend+2, vol/mc>=0.10+2, RS vs BTC/ETH+2] = 10/10
+Catalyst: Binance DOGE futures OI +40% in five days (2.31B -> 3.23B DOGE since Apr 23) on top of TDOG ETF on Nasdaq + 21Shares Xetra ETP earlier this year; X Money beta DOGE-rails rumor still circulating.
+Risk: heavy futures OI build cuts both ways - leveraged longs liquidate fast on a Fed-day reversal (FOMC prints today, no-change priced 99.9%; surprise prints sharp two-way vol).
+Vs recent picks: first time (last 7d: RAY, PENGU, XCN, APE).
 
-**Token: RAY (Raydium)** — score 9/10, HIGH
-- $0.81 (+6.3% 24h / +14.7% 7d), $200M mcap, vol/mcap 0.25
-- Catalyst: $250M tokenized-stock volume on Solana (>90% share), 60% Solana DEX market share, agentic finance narrative
-- Outperforms BTC/ETH on 7d (both red)
-- Fresh pick (last 7d: APE, PENGU, XCN — all skipped)
+*Market:* SKIP today - top liquid markets all match Vegas within ~2pp (OKC 51.5c vs -115, Spurs 17.1c vs +500, Carolina Cup 25.5c vs +285, Lakers 3.1c vs +3500). No defensible edge >=5pp.
 
-**Market: "MegaETH FDV >$2B one day after launch?"** — edge ~25-40pp, HIGH
-- YES 31.5¢, 24h vol $185k (clears $50k gate)
-- Fair YES ~70%: HL pre-market implies $5.2B launch FDV; comparable L2 launches (BERA/IO/STRK/ZK) faded 30-50% in first 24h, putting expected 1d FDV at $2.6B-$3.6B
-- Internal arb tell: market prices >$3B at 7¢ but >$4B at 11¢ — book is thin enough that the entire ladder is mispriced
-- Risk: launch slip past July 1 deadline, or aggressive >70% post-airdrop dump
+sources: cg=ok, dex=ok, poly=ok
+not financial advice - pattern-matching only
 
-**Files modified:**
-- `memory/logs/2026-04-28.md` — appended Token Pick log entry + dedup line
-- `.pending-notify/1777381545.md` — queued notification (notify hook-block bug active per MEMORY.md, requires workflow postprocess to fan out)
-
-**Follow-up:** verify `scripts/postprocess-notify.sh` actually picks up `.pending-notify/` files, or this notification dies in the queue. Per MEMORY.md, that script is "not in tree" — pickup depends on workflow-side wiring.
-
-Sources:
-- [Raydium 24% surge / 77% volume ratio](https://yellow.com/news/raydium-ray-token-24-percent-surge)
-- [Raydium $250M tokenized-stock volume + Solana DEX share](https://blockchainmagazine.net/raydiums-27-rally-reveals-solana-defis-hidden-recovery-signal/)
-- [MegaETH TGE set for April 30, 2026](https://cryptobriefing.com/megaeth-token-generation-event-set-for-april-30-2026/)
-- [MegaETH HL pre-market FDV $5.2B + KPI trigger](https://www.coingabbar.com/en/crypto-currency-news/megaeth-token-launch-date-set-april-30-tge-mega-first-kpi)
-- [2026 NBA Finals odds — OKC -105 favorite](https://www.oddsshark.com/nba/championship-odds) (informed dismissal — Polymarket fair on OKC)
