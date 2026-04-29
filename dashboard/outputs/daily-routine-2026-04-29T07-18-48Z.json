@@ -1,0 +1,424 @@
+{
+  "root": "root",
+  "state": {},
+  "elements": {
+    "root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-04-29"
+      },
+      "children": [
+        "token-movers-stack",
+        "sep1",
+        "tweet-roundup-stack",
+        "sep2",
+        "paper-stack",
+        "sep3",
+        "github-stack",
+        "sep4",
+        "hn-stack"
+      ]
+    },
+    "token-movers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tm-heading",
+        "tm-summary",
+        "tm-winners",
+        "tm-losers",
+        "tm-trending"
+      ]
+    },
+    "tm-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Token Movers (24h)",
+        "level": "h2"
+      }
+    },
+    "tm-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-off reversal. 25/100 top coins green. BTC -1.7% / ETH -1.6% / SOL -1.7%."
+      }
+    },
+    "tm-winners": {
+      "type": "Text",
+      "props": {
+        "text": "Winners: BSB +24% (day-3, 7d +179%), APE +20% breakout (day-4 whipsaw), H +20%."
+      }
+    },
+    "tm-losers": {
+      "type": "Text",
+      "props": {
+        "text": "Losers: GWEI -14%, XCN -12% capitulation, M -10%."
+      }
+    },
+    "tm-trending": {
+      "type": "Text",
+      "props": {
+        "text": "Trending: ZKJ +220% pump-risk rank 884. CHIP trending+down 2nd day."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet-roundup-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tr-heading",
+        "crypto-stack",
+        "ai-stack",
+        "dev-stack"
+      ]
+    },
+    "tr-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h2"
+      }
+    },
+    "crypto-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "crypto-heading",
+        "crypto-text1",
+        "crypto-text2",
+        "crypto-text3"
+      ]
+    },
+    "crypto-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto",
+        "level": "h3"
+      }
+    },
+    "crypto-text1": {
+      "type": "Text",
+      "props": {
+        "text": "BTC sub-$80k into FOMC. Spot $76.5k, ETH $2.28k."
+      }
+    },
+    "crypto-text2": {
+      "type": "Text",
+      "props": {
+        "text": "Hayes: $125k EOY on wartime spend; Bitcoin Supercycle author wants $57k Oct retest."
+      }
+    },
+    "crypto-text3": {
+      "type": "Text",
+      "props": {
+        "text": "ETH Foundation swapped 21.3k aWETH→wstETH (Lido + Mellow deleveraging)."
+      }
+    },
+    "ai-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai-heading",
+        "ai-text1",
+        "ai-text2",
+        "ai-text3",
+        "ai-text4"
+      ]
+    },
+    "ai-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI",
+        "level": "h3"
+      }
+    },
+    "ai-text1": {
+      "type": "Text",
+      "props": {
+        "text": "OpenAI-MS exclusivity ended. AWS now serves OpenAI models + Codex via Bedrock."
+      }
+    },
+    "ai-text2": {
+      "type": "Text",
+      "props": {
+        "text": "GPT-5.5 debuted last week."
+      }
+    },
+    "ai-text3": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic Project Deal: 69 employees + Claude agents closed 186 deals / $4k in a one-week internal market."
+      }
+    },
+    "ai-text4": {
+      "type": "Text",
+      "props": {
+        "text": "OpenAI Workspace Agents plug Codex into Slack/Drive/365/Salesforce/Notion."
+      }
+    },
+    "dev-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dev-heading",
+        "dev-text1",
+        "dev-text2",
+        "dev-text3"
+      ]
+    },
+    "dev-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dev",
+        "level": "h3"
+      }
+    },
+    "dev-text1": {
+      "type": "Text",
+      "props": {
+        "text": "Ghostty leaving GitHub is the loudest signal — Hashimoto post 2283/677."
+      }
+    },
+    "dev-text2": {
+      "type": "Text",
+      "props": {
+        "text": "Warp open-sourced."
+      }
+    },
+    "dev-text3": {
+      "type": "Text",
+      "props": {
+        "text": "Claude Code: 30+ releases in 5 weeks."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paper-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper-heading",
+        "paper-storylink",
+        "paper-description"
+      ]
+    },
+    "paper-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h2"
+      }
+    },
+    "paper-storylink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Verbal Feedback Without Scalar Rewards",
+        "href": "https://arxiv.org/abs/2509.22638",
+        "source": "Sea AI Lab / Waterloo / SUTD",
+        "score": "70"
+      }
+    },
+    "paper-description": {
+      "type": "Text",
+      "props": {
+        "text": "Feedback-conditional policy reframes RLHF as conditional generation, skips the scalar-reward bottleneck. Direct fit for FinCon-axis verbal-RL on PhD list, swap target for CalibrationGap's reflection-log loop."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "github-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "github-heading",
+        "github-text"
+      ]
+    },
+    "github-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "github-text": {
+      "type": "Text",
+      "props": {
+        "text": "No new issues across tomscaria/* last 24h (3rd consecutive clean day)."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hn-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn-heading",
+        "hn-intro",
+        "hn-item1",
+        "hn-item1-context",
+        "hn-item2",
+        "hn-item2-context",
+        "hn-item3",
+        "hn-item3-context",
+        "hn-item4",
+        "hn-item4-context",
+        "hn-item5",
+        "hn-item5-context",
+        "hn-item6",
+        "hn-item6-context"
+      ]
+    },
+    "hn-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Digest",
+        "level": "h2"
+      }
+    },
+    "hn-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Heavy GitHub-discontent day — 4 of 6 are dev-platform takes; phone-rights story rounds it out.",
+        "variant": "caption"
+      }
+    },
+    "hn-item1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "1. [Devtools] Ghostty is leaving GitHub",
+        "href": "https://news.ycombinator.com/item?id=47939579",
+        "source": "mitchellh.com/writing/ghostty-leaving-github",
+        "score": "2283/677"
+      }
+    },
+    "hn-item1-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"Modern software businesses aren't encouraged to care about polishing products. Leaders only care about features shipped.\" — cogman10",
+        "variant": "caption"
+      }
+    },
+    "hn-item2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "2. [Security] Your phone is about to stop being yours",
+        "href": "https://news.ycombinator.com/item?id=47935853",
+        "source": "keepandroidopen.org",
+        "score": "1248/574"
+      }
+    },
+    "hn-item2-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"Banking here requires a bespoke phone app; the bank ID app hates rooted phones.\" — Anonyneko",
+        "variant": "caption"
+      }
+    },
+    "hn-item3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "3. [Security] GitHub RCE CVE-2026-3854",
+        "href": "https://news.ycombinator.com/item?id=47936479",
+        "source": "wiz.io",
+        "score": "317/73"
+      }
+    },
+    "hn-item3-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"babeld copies push-option values into X-Stat without sanitizing semicolons. Simplest possible thing wrong.\" — saghm",
+        "variant": "caption"
+      }
+    },
+    "hn-item4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "4. [AI] Who owns the code Claude Code wrote?",
+        "href": "https://news.ycombinator.com/item?id=47932937",
+        "source": "legallayer.substack.com",
+        "score": "347/350"
+      }
+    },
+    "hn-item4-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"Non-tech management treats code as extremely valuable IP. Almost passed on a contract requiring NDA-protected source disclosure.\" — freedomben",
+        "variant": "caption"
+      }
+    },
+    "hn-item5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "5. [AI/Cloud] OpenAI on Bedrock interview",
+        "href": "https://news.ycombinator.com/item?id=47939320",
+        "source": "stratechery.com",
+        "score": "228/80"
+      }
+    },
+    "hn-item5-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"Last I used Azure OAI it was a farce — provisioned-throughput quotas small, request process bureaucratic.\" — 7thpower",
+        "variant": "caption"
+      }
+    },
+    "hn-item6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "6. [Macro] UAE to leave OPEC",
+        "href": "https://news.ycombinator.com/item?id=47933983",
+        "source": "ft.com",
+        "score": "395/536"
+      }
+    },
+    "hn-item6-context": {
+      "type": "Text",
+      "props": {
+        "text": "HN: \"Pakistan isn't the cause; it's the canary. These moves invite questioning previous bloc assumptions.\" — JumpCrisscross",
+        "variant": "caption"
+      }
+    }
+  }
+}
