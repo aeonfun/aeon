@@ -1,0 +1,190 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-04-29"
+      },
+      "children": [
+        "subtitle",
+        "shipped_section",
+        "sep1",
+        "shape_section",
+        "sep2",
+        "volume_section",
+        "sep3",
+        "action_section",
+        "sep4",
+        "recap_link"
+      ]
+    },
+    "subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — SHIPPING — pr-triage skill goes live as first-touch layer for external PRs."
+      },
+      "children": []
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_heading",
+        "shipped_stack"
+      ]
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shipped_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "PR #147 / e26e7a2 — new `pr-triage` skill (skills/pr-triage/SKILL.md, +248): four-check rubric (scope/format/originality/size) emits ACCEPTED / NEEDS-CHANGES / DEFER / OUT-OF-SCOPE; templated welcome comment + triage:* label within minutes of open. Closes only on protected-path violations (.github/workflows/, root aeon binary)."
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml +1: pr-triage wired in at `30 9 * * *` (mid-morning band, disabled-by-default), supports `var: owner/repo` or `owner/repo#N` for one-shot dispatch."
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "skills.json +13: catalog total 92 → 93; new install `./add-skill aaronjmars/aeon pr-triage`."
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "shape_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape_heading",
+        "shape_text"
+      ]
+    },
+    "shape_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shape_text": {
+      "type": "Text",
+      "props": {
+        "text": "1 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "volume_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "volume_heading",
+        "volume_text"
+      ]
+    },
+    "volume_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "volume_text": {
+      "type": "Text",
+      "props": {
+        "text": "4 files, +263/-2"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "action_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_heading",
+        "action_text"
+      ]
+    },
+    "action_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator action",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "action_text": {
+      "type": "Text",
+      "props": {
+        "text": "pr-triage ships disabled — flip `enabled: true` (or workflow_dispatch with var) to start triaging external PRs. PR #143 (pezetel) is the trigger case still untouched."
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-29.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
