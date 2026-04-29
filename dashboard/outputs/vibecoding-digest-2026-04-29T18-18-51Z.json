@@ -1,0 +1,164 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "stack_details"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Reddit Blocked — 5th consecutive run",
+        "message": "Stable wall (not flaky) — closes when scripts/prefetch-reddit.sh lands",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_technical",
+        "curl_stack",
+        "fetch_stack",
+        "sep2",
+        "h_sources",
+        "sources_grid",
+        "sep3",
+        "issue_text"
+      ]
+    },
+    "h_technical": {
+      "type": "Heading",
+      "props": {
+        "text": "Technical Details",
+        "level": "h3"
+      }
+    },
+    "curl_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "curl_label",
+        "curl_value"
+      ]
+    },
+    "curl_label": {
+      "type": "Text",
+      "props": {
+        "text": "curl Request",
+        "variant": "muted"
+      }
+    },
+    "curl_value": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 403 on old.reddit.com/r/vibecoding/{top,hot,rising}.json with canonical UA",
+        "variant": "body"
+      }
+    },
+    "fetch_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fetch_label",
+        "fetch_value"
+      ]
+    },
+    "fetch_label": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch",
+        "variant": "muted"
+      }
+    },
+    "fetch_value": {
+      "type": "Text",
+      "props": {
+        "text": "Refused old.reddit.com host",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h3"
+      }
+    },
+    "sources_grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_top",
+        "badge_hot",
+        "badge_rising"
+      ]
+    },
+    "badge_top": {
+      "type": "Badge",
+      "props": {
+        "text": "top=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_hot": {
+      "type": "Badge",
+      "props": {
+        "text": "hot=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_rising": {
+      "type": "Badge",
+      "props": {
+        "text": "rising=fail",
+        "variant": "destructive"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "issue_text": {
+      "type": "Text",
+      "props": {
+        "text": "Issue: ISS-002 (open)",
+        "variant": "caption"
+      }
+    }
+  }
+}

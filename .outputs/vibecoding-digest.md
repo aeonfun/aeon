@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR: 4th recurrence (2026-04-28). curl HTTP 403 on old.reddit.com top/hot/rising; WebFetch refused old/www/reddit.com. Same wall as 2026-04-25/27 — tracked in ISS-002. Closes when scripts/prefetch-reddit.sh lands.
+VIBECODING_DIGEST_ERROR: Reddit blocked again (5th consecutive run). curl HTTP 403 on old.reddit.com/r/vibecoding/{top,hot,rising}.json with canonical UA; WebFetch refused old.reddit.com host. Stable wall, not flaky — closes when scripts/prefetch-reddit.sh lands. ISS-002 stays open. src: top=fail hot=fail rising=fail
