@@ -1,5 +1,6 @@
-*Paper Pick — 2026-04-29*
+*Paper Pick PhD-prep — 2026-04-29*
 
-"TCOD: Temporal Curriculum in On-Policy Distillation for Multi-turn Autonomous Agents" — Wang et al. (CUHK + Alibaba) · ↑4
-Multi-turn OPD blows up via Trajectory-Level KL Instability; curriculum-scheduled trajectory depth fixes it, +18pp on ALFWorld/WebShop/ScienceWorld and student exceeds teacher. Curriculum maps cleanly onto Birth → Canary → Apex.
-[Read](https://arxiv.org/abs/2604.24005) | [PDF](https://arxiv.org/pdf/2604.24005)
+"Magentic Marketplace: An Open-Source Environment for Studying Agentic Markets" — Bansal, Hua, Hofman, Lucier, Mobius, Rothschild, Slivkins, Goldstein, Immorlica, Horvitz, Amershi et al. (Microsoft Research + ASU, Oct 2025) · ↑11
+MSR + David Rothschild (the prediction-markets economist) ship the first OSS multi-agent marketplace sim with realistic competitive search, negotiation, and auction dynamics. Direct CalibrationGap adversarial-eval scaffold and a Stanford-grade citation anchor for the Polymarket-microstructure / agentic-finance axis.
+[Read](https://arxiv.org/abs/2510.25779) | [PDF](https://arxiv.org/pdf/2510.25779)
+

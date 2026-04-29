@@ -1,0 +1,619 @@
+[
+  {
+    "id": "2512.16301",
+    "title": "Adaptation of Agentic AI",
+    "authors": [
+      "Pengcheng Jiang",
+      "Jiacheng Lin",
+      "Zhiyi Shi",
+      "Zifeng Wang",
+      "Luxi He",
+      "Yichen Wu"
+    ],
+    "pub": "2025-12-18T08:38:51.000Z",
+    "up": 108,
+    "summary": "Cutting-edge agentic AI systems are built on foundation models that can be adapted to plan, reason, and interact with external tools to perform increasingly complex and specialized tasks. As these systems grow in capability and scope, adaptation becomes a central mechanism for improving performance, reliability, and generalization. In this paper, we unify the rapidly expanding research landscape into a systematic framework that spans both agent adaptations and tool adaptations. We further decompose these into tool-execution-signaled and agent-output-signaled forms of agent adaptation, as well ",
+    "hit": "darwin"
+  },
+  {
+    "id": "2508.07407",
+    "title": "A Comprehensive Survey of Self-Evolving AI Agents: A New Paradigm\n  Bridging Foundation Models and Lifelong Agentic Systems",
+    "authors": [
+      "Jinyuan Fang",
+      "Yanwen Peng",
+      "Xi Zhang",
+      "Yingxu Wang",
+      "Xinhao Yi",
+      "Guibin Zhang"
+    ],
+    "pub": "2025-08-10T16:07:32.000Z",
+    "up": 99,
+    "summary": "Recent advances in large language models have sparked growing interest in AI\nagents capable of solving complex, real-world tasks. However, most existing\nagent systems rely on manually crafted configurations that remain static after\ndeployment, limiting their ability to adapt to dynamic and evolving\nenvironments. To this end, recent research has explored agent evolution\ntechniques that aim to automatically enhance agent systems based on interaction\ndata and environmental feedback. This emerging direction lays the foundation\nfor self-evolving AI agents, which bridge the static capabilities of fo",
+    "hit": "darwin"
+  },
+  {
+    "id": "2507.21046",
+    "title": "A Survey of Self-Evolving Agents: On Path to Artificial Super\n  Intelligence",
+    "authors": [
+      "Huan-ang Gao",
+      "Jiayi Geng",
+      "Wenyue Hua",
+      "Mengkang Hu",
+      "Xinzhe Juan",
+      "Hongzhang Liu"
+    ],
+    "pub": "2025-07-28T17:59:05.000Z",
+    "up": 85,
+    "summary": "Large Language Models (LLMs) have demonstrated strong capabilities but remain\nfundamentally static, unable to adapt their internal parameters to novel tasks,\nevolving knowledge domains, or dynamic interaction contexts. As LLMs are\nincreasingly deployed in open-ended, interactive environments, this static\nnature has become a critical bottleneck, necessitating agents that can\nadaptively reason, act, and evolve in real time. This paradigm shift -- from\nscaling static models to developing self-evolving agents -- has sparked growing\ninterest in architectures and methods enabling continual learning ",
+    "hit": "darwin"
+  },
+  {
+    "id": "2508.11987",
+    "title": "FutureX: An Advanced Live Benchmark for LLM Agents in Future Prediction",
+    "authors": [
+      "Zhiyuan Zeng",
+      "Jiashuo Liu",
+      "Siyuan Chen",
+      "Tianci He",
+      "Yali Liao",
+      "Jinpeng Wang"
+    ],
+    "pub": "2025-08-16T08:54:08.000Z",
+    "up": 73,
+    "summary": "Future prediction is a complex task for LLM agents, requiring a high level of\nanalytical thinking, information gathering, contextual understanding, and\ndecision-making under uncertainty. Agents must not only gather and interpret\nvast amounts of dynamic information but also integrate diverse data sources,\nweigh uncertainties, and adapt predictions based on emerging trends, just as\nhuman experts do in fields like politics, economics, and finance. Despite its\nimportance, no large-scale benchmark exists for evaluating agents on future\nprediction, largely due to challenges in handling real-time upd",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2604.01658",
+    "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+    "authors": [
+      "Ao Qu",
+      "Han Zheng",
+      "Zijian Zhou",
+      "Yihao Yan",
+      "Yihong Tang",
+      "Shao Yong Ong"
+    ],
+    "pub": "2026-04-02T00:00:00.000Z",
+    "up": 55,
+    "summary": "Large language model (LLM)-based evolution is a promising approach for open-ended discovery, where progress requires sustained search and knowledge accumulation. Existing methods still rely heavily on fixed heuristics and hard-coded exploration rules, which limit the autonomy of LLM agents. We present CORAL, the first framework for autonomous multi-agent evolution on open-ended problems. CORAL replaces rigid control with long-running agents that explore, reflect, and collaborate through shared persistent memory, asynchronous multi-agent execution, and heartbeat-based interventions. It also pro",
+    "hit": "darwin"
+  },
+  {
+    "id": "2603.27771",
+    "title": "Emergent Social Intelligence Risks in Generative Multi-Agent Systems",
+    "authors": [
+      "Yue Huang",
+      "Yu Jiang",
+      "Wenjie Wang",
+      "Haomin Zhuang",
+      "Xiaonan Luo",
+      "Yuchen Ma"
+    ],
+    "pub": "2026-03-29T17:10:28.000Z",
+    "up": 52,
+    "summary": "Multi-agent systems composed of large generative models are rapidly moving from laboratory prototypes to real-world deployments, where they jointly plan, negotiate, and allocate shared resources to solve complex tasks. While such systems promise unprecedented scalability and autonomy, their collective interaction also gives rise to failure modes that cannot be reduced to individual agents. Understanding these emergent risks is therefore critical. Here, we present a pioneer study of such emergent multi-agent risk in workflows that involve competition over shared resources (e.g., computing resou",
+    "hit": "group"
+  },
+  {
+    "id": "2603.19461",
+    "title": "Hyperagents",
+    "authors": [
+      "Jenny Zhang",
+      "Bingchen Zhao",
+      "Wannan Yang",
+      "Jakob Foerster",
+      "Jeff Clune",
+      "Minqi Jiang"
+    ],
+    "pub": "2026-03-19T20:50:08.000Z",
+    "up": 50,
+    "summary": "Self-improving AI systems aim to reduce reliance on human engineering by learning to improve their own learning and problem-solving processes. Existing approaches to self-improvement rely on fixed, handcrafted meta-level mechanisms, fundamentally limiting how fast such systems can improve. The Darwin Gödel Machine (DGM) demonstrates open-ended self-improvement in coding by repeatedly generating and evaluating self-modified variants. Because both evaluation and self-modification are coding tasks, gains in coding ability can translate into gains in self-improvement ability. However, this alignme",
+    "hit": "darwin"
+  },
+  {
+    "id": "2412.20138",
+    "title": "TradingAgents: Multi-Agents LLM Financial Trading Framework",
+    "authors": [
+      "Yijia Xiao",
+      "Edward Sun",
+      "Di Luo",
+      "Wei Wang"
+    ],
+    "pub": "2024-12-28T12:54:06.000Z",
+    "up": 50,
+    "summary": "Significant progress has been made in automated problem-solving using\nsocieties of agents powered by large language models (LLMs). In finance,\nefforts have largely focused on single-agent systems handling specific tasks or\nmulti-agent frameworks independently gathering data. However, the multi-agent\nsystems' potential to replicate real-world trading firms' collaborative\ndynamics remains underexplored. TradingAgents proposes a novel stock trading\nframework inspired by trading firms, featuring LLM-powered agents in\nspecialized roles such as fundamental analysts, sentiment analysts, technical\nana",
+    "hit": "marl"
+  },
+  {
+    "id": "2510.02297",
+    "title": "Interactive Training: Feedback-Driven Neural Network Optimization",
+    "authors": [
+      "Wentao Zhang",
+      "Yang Young Lu",
+      "Yuntian Deng"
+    ],
+    "pub": "2025-10-02T17:59:00.000Z",
+    "up": 43,
+    "summary": "Traditional neural network training typically follows fixed, predefined\noptimization recipes, lacking the flexibility to dynamically respond to\ninstabilities or emerging training issues. In this paper, we introduce\nInteractive Training, an open-source framework that enables real-time,\nfeedback-driven intervention during neural network training by human experts or\nautomated AI agents. At its core, Interactive Training uses a control server to\nmediate communication between users or agents and the ongoing training process,\nallowing users to dynamically adjust optimizer hyperparameters, training d",
+    "hit": "group"
+  },
+  {
+    "id": "2506.15741",
+    "title": "OAgents: An Empirical Study of Building Effective Agents",
+    "authors": [
+      "He Zhu",
+      "Tianrui Qin",
+      "King Zhu",
+      "Heyuan Huang",
+      "Yeyi Guan",
+      "Jinxiang Xia"
+    ],
+    "pub": "2025-06-17T17:59:02.000Z",
+    "up": 35,
+    "summary": "Recently, Agentic AI has become an increasingly popular research field.\nHowever, we argue that current agent research practices lack standardization\nand scientific rigor, making it hard to conduct fair comparisons among methods.\nAs a result, it is still unclear how different design choices in agent\nframeworks affect effectiveness, and measuring their progress remains\nchallenging. In this work, we conduct a systematic empirical study on GAIA\nbenchmark and BrowseComp to examine the impact of popular design choices in key\nagent components in a fair and rigorous manner. We find that the lack of a\n",
+    "hit": "darwin"
+  },
+  {
+    "id": "2503.16252",
+    "title": "Fin-R1: A Large Language Model for Financial Reasoning through\n  Reinforcement Learning",
+    "authors": [
+      "Zhaowei Liu",
+      "Xin Guo",
+      "Fangqi Lou",
+      "Lingfeng Zeng",
+      "Jinyi Niu",
+      "Zixuan Wang"
+    ],
+    "pub": "2025-03-20T15:46:18.000Z",
+    "up": 32,
+    "summary": "Reasoning large language models are rapidly evolving across various domains.\nHowever, their capabilities in handling complex financial tasks still require\nin-depth exploration. In this paper, we introduce Fin-R1, a reasoning large\nlanguage model specifically designed for the financial sector. Fin-R1 is built\nusing a two-stage architecture, leveraging a financial reasoning dataset\ndistilled and processed based on DeepSeek-R1. Through supervised fine-tuning\n(SFT) and reinforcement learning (RL) training, it demonstrates performance\nclose to DeepSeek-R1 with a parameter size of 7 billion across a",
+    "hit": "fincon"
+  },
+  {
+    "id": "2406.04151",
+    "title": "AgentGym: Evolving Large Language Model-based Agents across Diverse\n  Environments",
+    "authors": [
+      "Zhiheng Xi",
+      "Yiwen Ding",
+      "Wenxiang Chen",
+      "Boyang Hong",
+      "Honglin Guo",
+      "Junzhe Wang"
+    ],
+    "pub": "2024-06-06T15:15:41.000Z",
+    "up": 24,
+    "summary": "Building generalist agents that can handle diverse tasks and evolve\nthemselves across different environments is a long-term goal in the AI\ncommunity. Large language models (LLMs) are considered a promising foundation\nto build such agents due to their generalized capabilities. Current approaches\neither have LLM-based agents imitate expert-provided trajectories step-by-step,\nrequiring human supervision, which is hard to scale and limits environmental\nexploration; or they let agents explore and learn in isolated environments,\nresulting in specialist agents with limited generalization. In this pap",
+    "hit": "darwin"
+  },
+  {
+    "id": "2601.07055",
+    "title": "Dr. Zero: Self-Evolving Search Agents without Training Data",
+    "authors": [
+      "Zhenrui Yue",
+      "Kartikeya Upasani",
+      "Xianjun Yang",
+      "Suyu Ge",
+      "Shaoliang Nie",
+      "Yuning Mao"
+    ],
+    "pub": "2026-01-11T20:27:55.000Z",
+    "up": 22,
+    "summary": "As high-quality data becomes increasingly difficult to obtain, data-free self-evolution has emerged as a promising paradigm. This approach allows large language models (LLMs) to autonomously generate and solve complex problems, thereby improving their reasoning capabilities. However, multi-turn search agents struggle in data-free self-evolution due to the limited question diversity and the substantial compute required for multi-step reasoning and tool using. In this work, we introduce Dr. Zero, a framework enabling search agents to effectively self-evolve without any training data. In particul",
+    "hit": "group"
+  },
+  {
+    "id": "2509.26354",
+    "title": "Your Agent May Misevolve: Emergent Risks in Self-evolving LLM Agents",
+    "authors": [
+      "Shuai Shao",
+      "Qihan Ren",
+      "Chen Qian",
+      "Boyi Wei",
+      "Dadi Guo",
+      "Jingyi Yang"
+    ],
+    "pub": "2025-09-30T14:55:55.000Z",
+    "up": 18,
+    "summary": "Advances in Large Language Models (LLMs) have enabled a new class of\nself-evolving agents that autonomously improve through interaction with the\nenvironment, demonstrating strong capabilities. However, self-evolution also\nintroduces novel risks overlooked by current safety research. In this work, we\nstudy the case where an agent's self-evolution deviates in unintended ways,\nleading to undesirable or even harmful outcomes. We refer to this as\nMisevolution. To provide a systematic investigation, we evaluate misevolution\nalong four key evolutionary pathways: model, memory, tool, and workflow. Our",
+    "hit": "evo"
+  },
+  {
+    "id": "2407.01231",
+    "title": "MIRAI: Evaluating LLM Agents for Event Forecasting",
+    "authors": [
+      "Chenchen Ye",
+      "Ziniu Hu",
+      "Yihe Deng",
+      "Zijie Huang",
+      "Mingyu Derek Ma",
+      "Yanqiao Zhu"
+    ],
+    "pub": "2024-07-01T12:22:46.000Z",
+    "up": 18,
+    "summary": "Recent advancements in Large Language Models (LLMs) have empowered LLM agents\nto autonomously collect world information, over which to conduct reasoning to\nsolve complex problems. Given this capability, increasing interests have been\nput into employing LLM agents for predicting international events, which can\ninfluence decision-making and shape policy development on an international\nscale. Despite such a growing interest, there is a lack of a rigorous benchmark\nof LLM agents' forecasting capability and reliability. To address this gap, we\nintroduce MIRAI, a novel benchmark designed to systemat",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2509.09995",
+    "title": "QuantAgent: Price-Driven Multi-Agent LLMs for High-Frequency Trading",
+    "authors": [
+      "Fei Xiong",
+      "Xiang Zhang",
+      "Aosong Feng",
+      "Siqi Sun",
+      "Chenyu You"
+    ],
+    "pub": "2025-09-12T06:35:40.000Z",
+    "up": 16,
+    "summary": "Recent advances in Large Language Models (LLMs) have demonstrated impressive\ncapabilities in financial reasoning and market understanding. Multi-agent LLM\nframeworks such as TradingAgent and FINMEM augment these models to long-horizon\ninvestment tasks, leveraging fundamental and sentiment-based inputs for\nstrategic decision-making. However, such systems are ill-suited for the\nhigh-speed, precision-critical demands of High-Frequency Trading (HFT). HFT\nrequires rapid, risk-aware decisions based on structured, short-horizon\nsignals, including technical indicators, chart patterns, and trend-based\n",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2603.08127",
+    "title": "EvoScientist: Towards Multi-Agent Evolving AI Scientists for End-to-End Scientific Discovery",
+    "authors": [
+      "Yougang Lyu",
+      "Xi Zhang",
+      "Xinhao Yi",
+      "Yuyue Zhao",
+      "Shuyu Guo",
+      "Wenxiang Hu"
+    ],
+    "pub": "2026-03-09T09:07:19.000Z",
+    "up": 14,
+    "summary": "The increasing adoption of Large Language Models (LLMs) has enabled AI scientists to perform complex end-to-end scientific discovery tasks requiring coordination of specialized roles, including idea generation and experimental execution. However, most state-of-the-art AI scientist systems rely on static, hand-designed pipelines and fail to adapt based on accumulated interaction histories. As a result, these systems overlook promising research directions, repeat failed experiments, and pursue infeasible ideas. To address this, we introduce EvoScientist, an evolving multi-agent AI scientist fram",
+    "hit": "darwin"
+  },
+  {
+    "id": "2603.08561",
+    "title": "RetroAgent: From Solving to Evolving via Retrospective Dual Intrinsic Feedback",
+    "authors": [
+      "Xiaoying Zhang",
+      "Zichen Liu",
+      "Yipeng Zhang",
+      "Xia Hu",
+      "Wenqi Shao"
+    ],
+    "pub": "2026-03-09T16:23:33.000Z",
+    "up": 12,
+    "summary": "Large language model (LLM)-based agents trained with reinforcement learning (RL) have shown strong potential on complex interactive tasks. However, standard RL paradigms favor static problem-solving over continuous adaptation: agents often converge to suboptimal strategies due to insufficient exploration, while learned knowledge remains implicit within parameters rather than explicitly retrievable, limiting effective experiential learning. To address these limitations, we introduce RetroAgent, an online RL framework that empowers agents to master complex interactive environments not just by so",
+    "hit": "group"
+  },
+  {
+    "id": "2504.15716",
+    "title": "DianJin-R1: Evaluating and Enhancing Financial Reasoning in Large\n  Language Models",
+    "authors": [
+      "Jie Zhu",
+      "Qian Chen",
+      "Huaixia Dou",
+      "Junhui Li",
+      "Lifan Guo",
+      "Feng Chen"
+    ],
+    "pub": "2025-04-22T09:01:04.000Z",
+    "up": 12,
+    "summary": "Effective reasoning remains a core challenge for large language models (LLMs)\nin the financial domain, where tasks often require domain-specific knowledge,\nprecise numerical calculations, and strict adherence to compliance rules. We\npropose DianJin-R1, a reasoning-enhanced framework designed to address these\nchallenges through reasoning-augmented supervision and reinforcement learning.\nCentral to our approach is DianJin-R1-Data, a high-quality dataset constructed\nfrom CFLUE, FinQA, and a proprietary compliance corpus (Chinese Compliance\nCheck, CCC), combining diverse financial reasoning scenar",
+    "hit": "fincon"
+  },
+  {
+    "id": "2602.16990",
+    "title": "Conv-FinRe: A Conversational and Longitudinal Benchmark for Utility-Grounded Financial Recommendation",
+    "authors": [
+      "Yan Wang",
+      "Yi Han",
+      "Lingfei Qian",
+      "Yueru He",
+      "Xueqing Peng",
+      "Dongji Feng"
+    ],
+    "pub": "2026-02-19T01:29:50.000Z",
+    "up": 11,
+    "summary": "Most recommendation benchmarks evaluate how well a model imitates user behavior. In financial advisory, however, observed actions can be noisy or short-sighted under market volatility and may conflict with a user's long-term goals. Treating what users chose as the sole ground truth, therefore, conflates behavioral imitation with decision quality. We introduce Conv-FinRe, a conversational and longitudinal benchmark for stock recommendation that evaluates LLMs beyond behavior matching. Given an onboarding interview, step-wise market context, and advisory dialogues, models must generate rankings ",
+    "hit": "fincon"
+  },
+  {
+    "id": "2510.25779",
+    "title": "Magentic Marketplace: An Open-Source Environment for Studying Agentic\n  Markets",
+    "authors": [
+      "Gagan Bansal",
+      "Wenyue Hua",
+      "Zezhou Huang",
+      "Adam Fourney",
+      "Amanda Swearngin",
+      "Will Epperson"
+    ],
+    "pub": "2025-10-27T18:35:59.000Z",
+    "up": 11,
+    "summary": "As LLM agents advance, they are increasingly mediating economic decisions,\nranging from product discovery to transactions, on behalf of users. Such\napplications promise benefits but also raise many questions about agent\naccountability and value for users. Addressing these questions requires\nunderstanding how agents behave in realistic market conditions. However,\nprevious research has largely evaluated agents in constrained settings, such as\nsingle-task marketplaces (e.g., negotiation) or structured two-agent\ninteractions. Real-world markets are fundamentally different: they require\nagents to h",
+    "hit": "polymarket"
+  },
+  {
+    "id": "2604.18131",
+    "title": "Training LLM Agents for Spontaneous, Reward-Free Self-Evolution via World Knowledge Exploration",
+    "authors": [
+      "Qifan Zhang",
+      "Dongyang Ma",
+      "Tianqing Fang",
+      "Jia Li",
+      "Jing Tang",
+      "Nuo Chen"
+    ],
+    "pub": "2026-04-20T00:00:00.000Z",
+    "up": 9,
+    "summary": "Most agents today ``self-evolve'' by following rewards and rules defined by humans. However, this process remains fundamentally dependent on external supervision; without human guidance, the evolution stops. In this work, we train agents to possess an intrinsic meta-evolution capability to spontaneously learn about unseen environments prior to task execution.\n  To instill this ability, we design an outcome-based reward mechanism that measures how much an agent's self-generated world knowledge improves its success rate on downstream tasks. This reward signal is used exclusively during the train",
+    "hit": "darwin"
+  },
+  {
+    "id": "2507.16802",
+    "title": "Agentar-Fin-R1: Enhancing Financial Intelligence through Domain\n  Expertise, Training Efficiency, and Advanced Reasoning",
+    "authors": [
+      "Yanjun Zheng",
+      "Xiyang Du",
+      "Longfei Liao",
+      "Xiaoke Zhao",
+      "Zhaowen Zhou",
+      "Jingze Song"
+    ],
+    "pub": "2025-07-22T17:52:16.000Z",
+    "up": 9,
+    "summary": "Large Language Models (LLMs) exhibit considerable promise in financial\napplications; however, prevailing models frequently demonstrate limitations\nwhen confronted with scenarios that necessitate sophisticated reasoning\ncapabilities, stringent trustworthiness criteria, and efficient adaptation to\ndomain-specific requirements. We introduce the Agentar-Fin-R1 series of\nfinancial large language models (8B and 32B parameters), specifically\nengineered based on the Qwen3 foundation model to enhance reasoning\ncapabilities, reliability, and domain specialization for financial\napplications. Our optimiza",
+    "hit": "fincon"
+  },
+  {
+    "id": "2506.16123",
+    "title": "FinCoT: Grounding Chain-of-Thought in Expert Financial Reasoning",
+    "authors": [
+      "Natapong Nitarach",
+      "Warit Sirichotedumrong",
+      "Panop Pitchayarthorn",
+      "Pittawat Taveekitworachai",
+      "Potsawee Manakul",
+      "Kunat Pipatanakul"
+    ],
+    "pub": "2025-06-19T08:18:55.000Z",
+    "up": 8,
+    "summary": "This paper presents FinCoT, a structured chain-of-thought (CoT) prompting framework that embeds domain-specific expert financial reasoning blueprints to guide large language models' behaviors. We identify three main prompting styles in financial NLP (FinNLP): (1) standard prompting (zero-shot), (2) unstructured CoT (free-form reasoning), and (3) structured CoT (with explicitly structured reasoning steps). Prior work has mainly focused on the first two, while structured CoT remains underexplored and lacks domain expertise incorporation. Therefore, we evaluate all three prompting approaches acro",
+    "hit": "fincon"
+  },
+  {
+    "id": "2507.13391",
+    "title": "Quantitative Risk Management in Volatile Markets with an Expectile-Based\n  Framework for the FTSE Index",
+    "authors": [
+      "Abiodun Finbarrs Oketunji"
+    ],
+    "pub": "2025-07-16T08:24:14.000Z",
+    "up": 6,
+    "summary": "This research presents a framework for quantitative risk management in\nvolatile markets, specifically focusing on expectile-based methodologies\napplied to the FTSE 100 index. Traditional risk measures such as Value-at-Risk\n(VaR) have demonstrated significant limitations during periods of market\nstress, as evidenced during the 2008 financial crisis and subsequent volatile\nperiods. This study develops an advanced expectile-based framework that\naddresses the shortcomings of conventional quantile-based approaches by\nproviding greater sensitivity to tail losses and improved stability in extreme\nmar",
+    "hit": "regime"
+  },
+  {
+    "id": "2508.15202",
+    "title": "Fin-PRM: A Domain-Specialized Process Reward Model for Financial\n  Reasoning in Large Language Models",
+    "authors": [
+      "Yuanchen Zhou",
+      "Shuo Jiang",
+      "Jie Zhu",
+      "Junhui Li",
+      "Lifan Guo",
+      "Feng Chen"
+    ],
+    "pub": "2025-08-21T03:31:11.000Z",
+    "up": 5,
+    "summary": "Process Reward Models (PRMs) have emerged as a promising framework for\nsupervising intermediate reasoning in large language models (LLMs), yet\nexisting PRMs are primarily trained on general or Science, Technology,\nEngineering, and Mathematics (STEM) domains and fall short in domain-specific\ncontexts such as finance, where reasoning is more structured, symbolic, and\nsensitive to factual and regulatory correctness. We introduce Fin-PRM,\na domain-specialized, trajectory-aware PRM tailored to evaluate intermediate\nreasoning steps in financial tasks. Fin-PRM integrates step-level and\ntrajectory-lev",
+    "hit": "fincon"
+  },
+  {
+    "id": "2604.17406",
+    "title": "EvoMaster: A Foundational Agent Framework for Building Evolving Autonomous Scientific Agents at Scale",
+    "authors": [
+      "Xinyu Zhu",
+      "Yuzhu Cai",
+      "Zexi Liu",
+      "Cheng Wang",
+      "Fengyang Li",
+      "Wenkai Jin"
+    ],
+    "pub": "2026-04-19T00:00:00.000Z",
+    "up": 4,
+    "summary": "The convergence of large language models and agents is catalyzing a new era of scientific discovery: Agentic Science. While the scientific method is inherently iterative, existing agent frameworks are predominantly static, narrowly scoped, and lack the capacity to learn from trial and error. To bridge this gap, we present EvoMaster, a foundational evolving agent framework engineered specifically for Agentic Science at Scale. Driven by the core principle of continuous self-evolution, EvoMaster empowers agents to iteratively refine hypotheses, self-critique, and progressively accumulate knowledg",
+    "hit": "evo"
+  },
+  {
+    "id": "2412.15270",
+    "title": "Baichuan4-Finance Technical Report",
+    "authors": [
+      "Hanyu Zhang",
+      "Boyu Qiu",
+      "Yuhao Feng",
+      "Shuqi Li",
+      "Qian Ma",
+      "Xiyuan Zhang"
+    ],
+    "pub": "2024-12-17T08:05:32.000Z",
+    "up": 4,
+    "summary": "Large language models (LLMs) have demonstrated strong capabilities in\nlanguage understanding, generation, and reasoning, yet their potential in\nfinance remains underexplored due to the complexity and specialization of\nfinancial knowledge. In this work, we report the development of the\nBaichuan4-Finance series, including a comprehensive suite of foundational\nBaichuan4-Finance-Base and an aligned language model Baichuan4-Finance, which\nare built upon Baichuan4-Turbo base model and tailored for finance domain.\nFirstly, we have dedicated significant effort to building a detailed pipeline\nfor impro",
+    "hit": "fincon"
+  },
+  {
+    "id": "2510.11695",
+    "title": "When Agents Trade: Live Multi-Market Trading Benchmark for LLM Agents",
+    "authors": [
+      "Lingfei Qian",
+      "Xueqing Peng",
+      "Yan Wang",
+      "Vincent Jim Zhang",
+      "Huan He",
+      "Hanley Smith"
+    ],
+    "pub": "2025-10-13T17:54:09.000Z",
+    "up": 3,
+    "summary": "Although Large Language Model (LLM)-based agents are increasingly used in\nfinancial trading, it remains unclear whether they can reason and adapt in live\nmarkets, as most studies test models instead of agents, cover limited periods\nand assets, and rely on unverified data. To address these gaps, we introduce\nAgent Market Arena (AMA), the first lifelong, real-time benchmark for\nevaluating LLM-based trading agents across multiple markets. AMA integrates\nverified trading data, expert-checked news, and diverse agent architectures\nwithin a unified trading framework, enabling fair and continuous comp",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2505.17989",
+    "title": "Outcome-based Reinforcement Learning to Predict the Future",
+    "authors": [
+      "Benjamin Turtel",
+      "Danny Franklin",
+      "Kris Skotheim",
+      "Luke Hewitt",
+      "Philipp Schoenegger"
+    ],
+    "pub": "2025-05-23T14:56:07.000Z",
+    "up": 3,
+    "summary": "Reinforcement Learning with Verifiable Rewards (RLVR) has been an effective approach for improving Large Language Models' reasoning in domains such as coding and mathematics. Here, we apply RLVR methods towards forecasting future real-world events - a challenging task for RL due to the very noisy (and delayed) outcomes involved. Using a novel dataset of recent questions from a prediction market, and accompanying relevant news headlines, we show that a compact (14B) reasoning model can be trained to match or surpass the predictive accuracy of frontier models like o1, while greatly improving pro",
+    "hit": "pmcalib"
+  },
+  {
+    "id": "2407.18957",
+    "title": "When AI Meets Finance (StockAgent): Large Language Model-based Stock\n  Trading in Simulated Real-world Environments",
+    "authors": [
+      "Chong Zhang",
+      "Xinyi Liu",
+      "Zhongmou Zhang",
+      "Mingyu Jin",
+      "Lingyao Li",
+      "Zhenting Wang"
+    ],
+    "pub": "2024-07-15T06:49:30.000Z",
+    "up": 3,
+    "summary": "Can AI Agents simulate real-world trading environments to investigate the\nimpact of external factors on stock trading activities (e.g., macroeconomics,\npolicy changes, company fundamentals, and global events)? These factors, which\nfrequently influence trading behaviors, are critical elements in the quest for\nmaximizing investors' profits. Our work attempts to solve this problem through\nlarge language model based agents. We have developed a multi-agent AI system\ncalled StockAgent, driven by LLMs, designed to simulate investors' trading\nbehaviors in response to the real stock market. The StockAg",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2602.23784",
+    "title": "TradeFM: A Generative Foundation Model for Trade-flow and Market Microstructure",
+    "authors": [
+      "Maxime Kawawa-Beaudan",
+      "Srijan Sood",
+      "Kassiani Papasotiriou",
+      "Daniel Borrajo",
+      "Manuela Veloso"
+    ],
+    "pub": "2026-02-27T08:26:53.000Z",
+    "up": 2,
+    "summary": "Foundation models have transformed domains from language to genomics by learning general-purpose representations from large-scale, heterogeneous data. We introduce TradeFM, a 524M-parameter generative Transformer that brings this paradigm to market microstructure, learning directly from billions of trade events across >9K equities. To enable cross-asset generalization, we develop scale-invariant features and a universal tokenization scheme that map the heterogeneous, multi-modal event stream of order flow into a unified discrete sequence -- eliminating asset-specific calibration. Integrated wi",
+    "hit": "polymarket"
+  },
+  {
+    "id": "2601.22607",
+    "title": "From Self-Evolving Synthetic Data to Verifiable-Reward RL: Post-Training Multi-turn Interactive Tool-Using Agents",
+    "authors": [
+      "Jiaxuan Gao",
+      "Jiaao Chen",
+      "Chuyi He",
+      "Wei-Chen Wang",
+      "Shusheng Xu",
+      "Hanrui Wang"
+    ],
+    "pub": "2026-01-30T06:01:23.000Z",
+    "up": 2,
+    "summary": "Interactive tool-using agents must solve real-world tasks via multi-turn interaction with both humans and external environments, requiring dialogue state tracking, multi-step tool execution, while following complex instructions. Post-training such agents is challenging because synthesis for high-quality multi-turn tool-use data is difficult to scale, and reinforcement learning (RL) could face noisy signals caused by user simulation, leading to degraded training efficiency. We propose a unified framework that combines a self-evolving data agent with verifier-based RL. Our system, EigenData, is ",
+    "hit": "group"
+  },
+  {
+    "id": "2505.07078",
+    "title": "Can LLM-based Financial Investing Strategies Outperform the Market in\n  Long Run?",
+    "authors": [
+      "Weixian Waylon Li",
+      "Hyeonjun Kim",
+      "Mihai Cucuringu",
+      "Tiejun Ma"
+    ],
+    "pub": "2025-05-11T18:02:21.000Z",
+    "up": 2,
+    "summary": "Large Language Models (LLMs) have recently been leveraged for asset pricing\ntasks and stock trading applications, enabling AI agents to generate investment\ndecisions from unstructured financial data. However, most evaluations of LLM\ntiming-based investing strategies are conducted on narrow timeframes and\nlimited stock universes, overstating effectiveness due to survivorship and\ndata-snooping biases. We critically assess their generalizability and\nrobustness by proposing FINSABER, a backtesting framework evaluating\ntiming-based strategies across longer periods and a larger universe of symbols.\n",
+    "hit": "regime"
+  },
+  {
+    "id": "2503.01861",
+    "title": "Towards Enterprise-Ready Computer Using Generalist Agent",
+    "authors": [
+      "Sami Marreed",
+      "Alon Oved",
+      "Avi Yaeli",
+      "Segev Shlomov",
+      "Ido Levy",
+      "Aviad Sela"
+    ],
+    "pub": "2025-02-24T09:31:56.000Z",
+    "up": 2,
+    "summary": "This paper presents our ongoing work toward developing an enterprise-ready\nComputer Using Generalist Agent (CUGA) system. Our research highlights the\nevolutionary nature of building agentic systems suitable for enterprise\nenvironments. By integrating state-of-the-art agentic AI techniques with a\nsystematic approach to iterative evaluation, analysis, and refinement, we have\nachieved rapid and cost-effective performance gains, notably reaching a new\nstate-of-the-art performance on the WebArena benchmark. We detail our\ndevelopment roadmap, the methodology and tools that facilitated rapid learning",
+    "hit": "evo"
+  },
+  {
+    "id": "2411.00782",
+    "title": "TradExpert: Revolutionizing Trading with Mixture of Expert LLMs",
+    "authors": [
+      "Qianggang Ding",
+      "Haochen Shi",
+      "Bang Liu"
+    ],
+    "pub": "2024-10-16T20:24:16.000Z",
+    "up": 2,
+    "summary": "The integration of Artificial Intelligence (AI) in the financial domain has\nopened new avenues for quantitative trading, particularly through the use of\nLarge Language Models (LLMs). However, the challenge of effectively\nsynthesizing insights from diverse data sources and integrating both structured\nand unstructured data persists. This paper presents TradeExpert, a novel\nframework that employs a mix of experts (MoE) approach, using four specialized\nLLMs, each analyzing distinct sources of financial data, including news\narticles, market data, alpha factors, and fundamental data. The insights of",
+    "hit": "llmtrade"
+  },
+  {
+    "id": "2408.06634",
+    "title": "Harnessing Earnings Reports for Stock Predictions: A QLoRA-Enhanced LLM\n  Approach",
+    "authors": [
+      "Haowei Ni",
+      "Shuchen Meng",
+      "Xupeng Chen",
+      "Ziqing Zhao",
+      "Andi Chen",
+      "Panfeng Li"
+    ],
+    "pub": "2024-08-13T04:53:31.000Z",
+    "up": 2,
+    "summary": "Accurate stock market predictions following earnings reports are crucial for\ninvestors. Traditional methods, particularly classical machine learning models,\nstruggle with these predictions because they cannot effectively process and\ninterpret extensive textual data contained in earnings reports and often\noverlook nuances that influence market movements. This paper introduces an\nadvanced approach by employing Large Language Models (LLMs) instruction\nfine-tuned with a novel combination of instruction-based techniques and\nquantized low-rank adaptation (QLoRA) compression. Our methodology integrat",
+    "hit": "bin"
+  },
+  {
+    "id": "2408.01005",
+    "title": "Enhancing Financial Market Predictions: Causality-Driven Feature\n  Selection",
+    "authors": [
+      "Wenhao Liang",
+      "Zhengyang Li",
+      "Weitong Chen"
+    ],
+    "pub": "2024-08-02T04:40:15.000Z",
+    "up": 2,
+    "summary": "This paper introduces the FinSen dataset that revolutionizes financial market\nanalysis by integrating economic and financial news articles from 197 countries\nwith stock market data. The dataset's extensive coverage spans 15 years from\n2007 to 2023 with temporal information, offering a rich, global perspective\nwith 160,000 records on financial market news. Our study leverages causally\nvalidated sentiment scores and LSTM models to enhance market forecast accuracy\nand reliability. Utilizing the FinSen dataset, we introduce an innovative Focal\nCalibration Loss, reducing Expected Calibration Error ",
+    "hit": "pmcalib"
+  },
+  {
+    "id": "2311.13743",
+    "title": "FinMem: A Performance-Enhanced LLM Trading Agent with Layered Memory and\n  Character Design",
+    "authors": [
+      "Yangyang Yu",
+      "Haohang Li",
+      "Zhi Chen",
+      "Yuechen Jiang",
+      "Yang Li",
+      "Denghui Zhang"
+    ],
+    "pub": "2023-11-23T00:24:40.000Z",
+    "up": 2,
+    "summary": "Recent advancements in Large Language Models (LLMs) have exhibited notable\nefficacy in question-answering (QA) tasks across diverse domains. Their prowess\nin integrating extensive web knowledge has fueled interest in developing\nLLM-based autonomous agents. While LLMs are efficient in decoding human\ninstructions and deriving solutions by holistically processing historical\ninputs, transitioning to purpose-driven agents requires a supplementary\nrational architecture to process multi-source information, establish reasoning\nchains, and prioritize critical tasks. Addressing this, we introduce\nFinMem",
+    "hit": "fincon"
+  },
+  {
+    "id": "2603.01059",
+    "title": "GroupGPT: A Token-efficient and Privacy-preserving Agentic Framework for Multi-User Chat Assistant",
+    "authors": [
+      "Zhuokang Shen",
+      "Yifan Wang",
+      "Hanyu Chen",
+      "Wenxuan Huang",
+      "Shaohui Lin"
+    ],
+    "pub": "2026-03-01T11:29:25.000Z",
+    "up": 1,
+    "summary": "Recent advances in large language models (LLMs) have enabled increasingly capable chatbots. However, most existing systems focus on single-user settings and do not generalize well to multi-user group chats, where agents require more proactive and accurate intervention under complex, evolving contexts. Existing approaches typically rely on LLMs for both reasoning and generation, leading to high token consumption, limited scalability, and potential privacy risks. To address these challenges, we propose GroupGPT, a token-efficient and privacy-preserving agentic framework for multi-user chat assis",
+    "hit": "group"
+  }
+]

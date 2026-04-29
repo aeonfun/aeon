@@ -1,0 +1,75 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick PhD-prep"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper_link",
+        "authors",
+        "description",
+        "metadata"
+      ]
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Magentic Marketplace: An Open-Source Environment for Studying Agentic Markets",
+        "href": "https://arxiv.org/abs/2510.25779",
+        "source": "Microsoft Research + ASU, Oct 2025"
+      }
+    },
+    "authors": {
+      "type": "Text",
+      "props": {
+        "text": "Bansal, Hua, Hofman, Lucier, Mobius, Rothschild, Slivkins, Goldstein, Immorlica, Horvitz, Amershi et al.",
+        "variant": "caption"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "MSR + David Rothschild (the prediction-markets economist) ship the first OSS multi-agent marketplace sim with realistic competitive search, negotiation, and auction dynamics. Direct CalibrationGap adversarial-eval scaffold and a Stanford-grade citation anchor for the Polymarket-microstructure / agentic-finance axis.",
+        "variant": "body"
+      }
+    },
+    "metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "upvote_badge",
+        "pdf_link"
+      ]
+    },
+    "upvote_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "↑11",
+        "variant": "default"
+      }
+    },
+    "pdf_link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2510.25779"
+      }
+    }
+  }
+}
