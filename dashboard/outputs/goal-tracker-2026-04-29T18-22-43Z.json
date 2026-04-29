@@ -1,0 +1,322 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-04-29"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-heading",
+        "stats-grid",
+        "trend-badge",
+        "separator-1",
+        "done-section",
+        "separator-2",
+        "on-track-section",
+        "separator-3",
+        "sources-section"
+      ]
+    },
+    "summary-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 6,
+        "gap": "md"
+      },
+      "children": [
+        "stat-total",
+        "stat-at-risk",
+        "stat-needs-attention",
+        "stat-on-track",
+        "stat-blocked",
+        "stat-done"
+      ]
+    },
+    "stat-total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Goals",
+        "value": "10"
+      },
+      "children": []
+    },
+    "stat-at-risk": {
+      "type": "Stat",
+      "props": {
+        "label": "At Risk",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat-needs-attention": {
+      "type": "Stat",
+      "props": {
+        "label": "Needs Attention",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat-on-track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "9"
+      },
+      "children": []
+    },
+    "stat-blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat-done": {
+      "type": "Stat",
+      "props": {
+        "label": "Done",
+        "value": "1"
+      },
+      "children": []
+    },
+    "trend-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Overall ↑ improving",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "done-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "done-heading",
+        "done-item-1"
+      ]
+    },
+    "done-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DONE",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "done-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Flatten Revenant resting-quote book before 2026-04-28 07 UTC — completed 2026-04-28",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "on-track-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "on-track-heading",
+        "on-track-item-1",
+        "on-track-item-2",
+        "on-track-item-3",
+        "on-track-item-4",
+        "on-track-item-5",
+        "on-track-item-6",
+        "on-track-item-7",
+        "on-track-item-8",
+        "on-track-item-9"
+      ]
+    },
+    "on-track-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "on-track-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Fix chain-runner.yml dispatch_skill() — 0d idle, 11 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment min-gap 7pp → 7.5–8pp — 0d idle, 4 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep — 0d idle, 12 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (ISS-007 / ISS-009) — 0d idle, 5 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-6": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature PRs to swarm-fund-mvp — 0d idle, 6 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-7": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review workflow-security-audit ISS-015 — 0d idle, 4 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-8": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays — 0d idle, 2 activity/14d (↑ improving)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "on-track-item-9": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily PhD reading list — 0d idle, 8 activity/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "source-logs",
+        "source-git",
+        "source-gh-pr",
+        "source-gh-issue",
+        "source-cron"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "source-logs": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "source-git": {
+      "type": "Text",
+      "props": {
+        "text": "git=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "source-gh-pr": {
+      "type": "Text",
+      "props": {
+        "text": "gh_pr=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "source-gh-issue": {
+      "type": "Text",
+      "props": {
+        "text": "gh_issue=fail (issues disabled)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "source-cron": {
+      "type": "Text",
+      "props": {
+        "text": "cron-state=ok",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

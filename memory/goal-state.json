@@ -1,60 +1,55 @@
 {
-  "run_at": "2026-04-28T18:55:00Z",
+  "run_at": "2026-04-29T18:30:00Z",
   "goals": {
     "flatten-revenant-resting-quote-book-before-v2-cutover": {
-      "status": "NEEDS_ATTENTION",
+      "status": "DONE",
       "activity_count_14d": 6,
       "last_activity_date": "2026-04-28"
     },
     "fix-chain-runner-yml-dispatch-skill": {
       "status": "ON_TRACK",
-      "activity_count_14d": 9,
-      "last_activity_date": "2026-04-28"
-    },
-    "wire-kalshi-brti-vs-pm-chainlink-basis-recorder-for-hermes-arb": {
-      "status": "DONE",
-      "activity_count_14d": 4,
-      "last_activity_date": "2026-04-27"
+      "activity_count_14d": 11,
+      "last_activity_date": "2026-04-29"
     },
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
       "activity_count_14d": 6,
-      "last_activity_date": "2026-04-28"
+      "last_activity_date": "2026-04-29"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
-      "activity_count_14d": 3,
-      "last_activity_date": "2026-04-27"
+      "activity_count_14d": 4,
+      "last_activity_date": "2026-04-29"
     },
     "operator-config-sweep": {
       "status": "ON_TRACK",
-      "activity_count_14d": 9,
-      "last_activity_date": "2026-04-28"
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-04-29"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 4,
-      "last_activity_date": "2026-04-28"
+      "activity_count_14d": 5,
+      "last_activity_date": "2026-04-29"
     },
     "external-feature-prs-to-swarm-fund-mvp": {
       "status": "ON_TRACK",
-      "activity_count_14d": 5,
-      "last_activity_date": "2026-04-28"
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-29"
     },
     "stalin-tier-review-workflow-security-audit-iss-015": {
       "status": "ON_TRACK",
-      "activity_count_14d": 3,
-      "last_activity_date": "2026-04-28"
+      "activity_count_14d": 4,
+      "last_activity_date": "2026-04-29"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
-      "status": "NEEDS_ATTENTION",
-      "activity_count_14d": 1,
-      "last_activity_date": "2026-04-27"
+      "status": "ON_TRACK",
+      "activity_count_14d": 2,
+      "last_activity_date": "2026-04-29"
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 7,
-      "last_activity_date": "2026-04-28"
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-04-29"
     }
   }
 }

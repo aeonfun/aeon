@@ -112,7 +112,6 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 - See `memory/topics/aeon-ops.md` for full sandbox-limitation matrix, chain-runner bug detail, and operator config-gap action list.
 
 ## Next Priorities
-- **🔴 Flatten Revenant resting-quote book before 2026-04-28 07 UTC** (V2 cutover wipes orderbook at 11 UTC). Confirm via help.polymarket.com primary doc.
 - **🔴 Fix chain-runner.yml `dispatch_skill()`** — now 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`.
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are the highest-leverage daily skills. Resume daily once chain-runner fix lands.
 - **Hermes-arb gate adjustment:** bump `min-gap` 7pp → ~7.5–8pp per deep-research finding.
@@ -124,6 +123,7 @@ This Aeon instance exists to accelerate **swarm-fund-mvp** toward grant funding 
 - **`paper-pick` daily** → builds PhD reading list (see Recent papers above).
 
 ## Completed Goals
+- **🔴 Flatten Revenant resting-quote book before 2026-04-28 07 UTC** — completed 2026-04-28 (V2 cutover EXECUTED at 11 UTC; orderbook wiped whether or not operator-side flatten ran; confirmed live by monitor-polymarket + polymarket-comments runs 12:00–13:05 UTC).
 - **Wire Kalshi-BRTI vs PM-Chainlink basis recorder** for hermes-arb — completed 2026-04-27 (Kalshi crypto perps live; recorder launched per 2026-04-28 hermes-arb log).
 - **🔴 Fix chain-runner.yml `dispatch_skill()`** — now 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`. Highest-leverage repair.
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are the highest-leverage daily skills. Resume daily once chain-runner fix lands. UMA-resolution arb (Iran-cf vs Hez-cf) is a fresh tradable hook for CalibrationGap.

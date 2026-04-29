@@ -1,24 +1,20 @@
-*Goal Tracker — 2026-04-28*
+*Goal Tracker — 2026-04-29*
 
-Summary: 11 goals — 0 at risk, 2 needs attention, 8 on track, 0 blocked, 1 done (overall ↑ improving)
-
-NEEDS ATTENTION
-• Flatten Revenant resting-quote book before 2026-04-28 07 UTC — 0d idle, 6 activity/14d (new); deadline expired, V2 cutover wiped book at 11 UTC
-  → Action: Confirm operator pre-07-UTC flatten or accept wipe, then archive goal
-• weekly-shiplog Mondays → forward to grant committees — 1d idle, 1 activity/14d (→ flat); chain-runner DEGRADED has been the bottleneck
-  → Action: Verify 2026-04-27 shiplog landed in grant-committee inbox; queue manual forward if not
-
-ON TRACK
-• Fix chain-runner.yml dispatch_skill() — 0d idle, 9 activity/14d (→ flat) — still discussed, no PR landed yet
-• Pre-Apex push: monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (↑ improving)
-• Hermes-arb gate adjustment: bump min-gap 7pp → ~7.5–8pp — 1d idle, 3 activity/14d (→ flat)
-• Operator config sweep — 0d idle, 9 activity/14d (↑ improving)
-• Skill-evals key fixes (hn-digest / polymarket renames) — 0d idle, 4 activity/14d (↑ improving) — PR #5 open
-• External-feature PRs to swarm-fund-mvp — 0d idle, 5 activity/14d (↑ improving) — PR #22 today
-• Stalin-tier review (workflow-security-audit ISS-015 / PR #4) — 0d idle, 3 activity/14d (new)
-• paper-pick daily → PhD reading list — 0d idle, 7 activity/14d (↑ improving)
+Summary: 10 goals — 0 at risk, 0 needs attention, 9 on track, 0 blocked, 1 done (overall ↑ improving)
 
 DONE
-• Wire Kalshi-BRTI vs PM-Chainlink basis recorder for hermes-arb — completed 2026-04-27
+• Flatten Revenant resting-quote book before 2026-04-28 07 UTC — completed 2026-04-28
 
-Sources: logs=ok, git=ok, gh_pr=ok, gh_issue=fail (tomscaria/aeon issues disabled), cron-state=ok
+ON TRACK
+• Fix chain-runner.yml dispatch_skill() — 0d idle, 11 activity/14d (→ flat)
+• Pre-Apex push monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (→ flat)
+• Hermes-arb gate adjustment min-gap 7pp → 7.5–8pp — 0d idle, 4 activity/14d (→ flat)
+• Operator config sweep — 0d idle, 12 activity/14d (→ flat)
+• Skill-evals key fixes (ISS-007 / ISS-009) — 0d idle, 5 activity/14d (→ flat)
+• External-feature PRs to swarm-fund-mvp — 0d idle, 6 activity/14d (→ flat)
+• Stalin-tier review workflow-security-audit ISS-015 — 0d idle, 4 activity/14d (→ flat)
+• weekly-shiplog Mondays — 0d idle, 2 activity/14d (↑ improving)
+• paper-pick daily PhD reading list — 0d idle, 8 activity/14d (→ flat)
+
+Sources: logs=ok, git=ok, gh_pr=ok, gh_issue=fail (issues disabled), cron-state=ok
+
