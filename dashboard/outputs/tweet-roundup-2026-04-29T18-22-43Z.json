@@ -1,0 +1,84 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup — 2026-04-29"
+      },
+      "children": [
+        "stack-all"
+      ]
+    },
+    "stack-all": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-source",
+        "separator-1",
+        "badge-filter",
+        "text-signal",
+        "separator-2",
+        "stack-tweet"
+      ]
+    },
+    "text-source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: cache:0 websearch:1 failed:2",
+        "variant": "caption"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "badge-filter": {
+      "type": "Badge",
+      "props": {
+        "text": "AI agents OR LLM"
+      }
+    },
+    "text-signal": {
+      "type": "Text",
+      "props": {
+        "text": "single low-volume signal: practitioner thread on Claude Pro session limits",
+        "variant": "muted"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack-tweet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-card",
+        "link-view"
+      ]
+    },
+    "tweet-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Atenov_D",
+        "handle": "Atenov_D",
+        "text": "Multi-agent VS Code architecture thread; replaced a marketing workflow with 5 specialized Claude Code agents to work around Claude Pro's 90-minute session ceiling. Implementation pattern, not announcement."
+      }
+    },
+    "link-view": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/Atenov_D/status/2049141876389977582"
+      }
+    }
+  }
+}
