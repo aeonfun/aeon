@@ -1,15 +1,5 @@
 ## Summary
 
-Ran `github-monitor` for 2026-04-28 against the single repo in `memory/watched-repos.md` (`aaronjmars/aeon`).
+Ran `github-monitor` for the single watched repo `aaronjmars/aeon`. All three `gh` calls succeeded; every collection was empty (0 open PRs, 0 issues in 24h, 0 releases in 24h). All tiers empty → no notification sent per spec. Logged `GITHUB_MONITOR_OK repos=1` to `memory/logs/2026-04-29.md`.
 
-- Open PRs: 0
-- New issues (last 24h): 0
-- Releases (last 24h): 0
-- All tiers empty → no notification sent (per spec, silence is the correct signal).
-- Logged `GITHUB_MONITOR_OK repos=1` to `memory/logs/2026-04-28.md`.
-
-**Files created:** `memory/logs/2026-04-28.md`
-
-**Note:** `gh release list --json url` is unsupported on this `gh` version (available fields don't include `url`); re-ran without it. The skill's `Collect` step references `url` — worth a doc/skill fix in a future pass, but not material here since the result was empty.
-
-**Follow-ups:** None.
+Minor spec drift surfaced: SKILL.md asks for `--json ...,url` on `gh release list`, but the gh CLI rejects `url` (available fields: tagName, publishedAt, name, createdAt, isDraft, isImmutable, isLatest, isPrerelease). Worked around by dropping `url`; worth fixing in the SKILL.md spec on a future edit.
