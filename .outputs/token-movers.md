@@ -1,45 +1,42 @@
-*Token Movers — 2026-04-29*
+*Token Movers — 2026-04-30*
 
-_Quiet tape recovering — 65/100 top coins green, median +0.6%; BTC $77,137 +1.0%, ETH $2,315 +1.7%, SOL $84.21 +0.7%; mid-caps split, Gensyn (trending) collapsed -58%._
+_Risk-off again — 16/100 top coins green, median −1.2%; BTC $76,181 −1.2%, ETH $2,262 −2.3%, SOL $83.19 −1.1%. Majors red; MegaETH listing-day collapse drags the trending board._
 
 *Top Winners (24h)*
-1. SKYAI (SkyAI) — $0.2464  +56.0% / 7d +45.6% / 1h -10.8%  •  $64.8M / #158  [BREAKOUT,PUMP-RISK]
-2. UB (Unibase) — $0.0637  +21.5% / 7d +35.4% / 1h -3.2%  •  $17.7M / #208  [BREAKOUT]
-3. H (Humanity) — $0.1817  +12.2% / 7d +47.6% / 1h +1.8%  •  $82.4M / #135
-4. LUNC (Terra Luna Classic) — $6.95e-5  +10.6% / 7d +50.6% / 1h +0.1%  •  $72.0M / #119
-5. B (BUILDon) — $0.1321  +9.2% / 7d +27.0% / 1h +2.0%  •  $5.7M / #238
-6. AKT (Akash Network) — $0.5097  +8.5% / 7d +5.8% / 1h +0.4%  •  $7.0M / #222
-7. DOGE (Dogecoin) — $0.107  +8.3% / 7d +9.1% / 1h -2.7%  •  $3.27B / #10  [TRENDING+UP,MAJOR]
-8. RAIN (Rain) — $0.00797  +7.2% / 7d +2.3% / 1h +7.4%  •  $12.9M / #28
-9. GWEI (ETHGas) — $0.0981  +7.0% / 7d -6.2% / 1h +0.9%  •  $13.2M / #176
-10. LIT (Lighter) — $0.902  +6.5% / 7d -2.1% / 1h +0.2%  •  $38.9M / #168
+1. SKYAI (SkyAI) — $0.318  +17.9% / 7d +75.7% / 1h +0.7%  •  $124M / #137  [BREAKOUT]
+2. ASTEROID (Asteroid Shiba) — $0.000326  +9.2% / 7d −0.8% / 1h +0.5%  •  $26M / #232 [MICROCAP]
+3. 9BIT (The9bit) — $0.0218  +5.7% / 7d −5.6% / 1h +18.0%  •  $4M / #199 [MICROCAP]
+4. APE (ApeCoin) — $0.155  +4.9% / 7d +54.9% / 1h −2.1%  •  $125M / #212
+5. RIVER — $6.52  +4.8% / 7d +11.0% / 1h −0.8%  •  $15M / #240 [MICROCAP]
+6. WBT (WhiteBIT Coin) — $57.1  +4.7% / 7d +4.3% / 1h −0.1%  •  $130M / #11  [MAJOR]
+7. POL (ex-MATIC) — $0.095  +4.0% / 7d +1.2% / 1h −0.2%  •  $72M / #67
+8. BTSE — $1.11  +3.5% / 7d −5.1% / 1h −0.5%  •  $3M / #189
+9. JTO (Jito) — $0.353  +3.3% / 7d +4.5% / 1h +0.3%  •  $10M / #200
+10. LUNC (Terra Luna Classic) — $0.000072  +3.0% / 7d +62.7% / 1h +1.3%  •  $92M / #117
 
 *Top Losers (24h)*
-1. DEXE (DeXe) — $12.07  -18.0% / 7d +0.4% / 1h -1.1%  •  $35.8M / #96
-2. APE (ApeCoin) — $0.148  -12.5% / 7d +40.4% / 1h -0.3%  •  $122.2M / #223  [CAPITULATION]
-3. CHIP (USD.AI) — $0.0640  -9.5% / 7d -24.9% / 1h +0.4%  •  $328.8M / #241  [TRENDING+DOWN]
-4. BSB (Block Street) — $0.7667  -8.9% / 7d +158.7% / 1h +0.3%  •  $45.0M / #203
-5. UMXM (Manadia) — $1.730  -8.5% / 1h -3.8%  •  $2.4M / #122
-6. RAVE (RaveDAO) — $0.802  -8.1% / 7d -40.3% / 1h +0.7%  •  $40.2M / #183  [TRENDING+DOWN]
-7. GENIUS (Genius) — $0.508  -6.9% / 7d -17.5% / 1h -0.1%  •  $11.9M / #197
-8. STABLE (Stable) — $0.0334  -6.3% / 7d +29.4% / 1h +0.0%  •  $18.5M / #81
-9. EDGE (edgeX) — $1.270  -5.7% / 7d -11.6% / 1h -0.1%  •  $6.0M / #108
-10. ZBCN (Zebec Network) — $0.00341  -4.7% / 7d +25.9% / 1h +0.4%  •  $10.6M / #130
+1. BSB (Block Street) — $0.575  −26.3% / 7d +45.9% / 1h +0.6%  •  $128M / #254  [CAPITULATION]
+2. MEGA (MegaETH) — $0.177  −21.5% / 7d n/a / 1h −4.7%  •  $99M / #182  [TRENDING+DOWN,CAPITULATION]
+3. WLFI (World Liberty Financial) — $0.060  −16.1% / 7d −22.2% / 1h −0.6%  •  $131M / #44
+4. GENIUS — $0.437  −14.6% / 7d −39.1% / 1h +1.9%  •  $22M / #222 [MICROCAP]
+5. RAVE (RaveDAO) — $0.740  −8.9% / 7d −35.0% / 1h −0.6%  •  $30M / #186 [MICROCAP]
+6. S (Sonic) — $0.043  −8.9% / 7d +1.0% / 1h −0.5%  •  $23M / #203 [MICROCAP]
+7. CHZ (Chiliz) — $0.041  −8.2% / 7d −11.9% / 1h −0.9%  •  $114M / #109
+8. PI (Pi Network) — $0.174  −7.9% / 7d +4.0% / 1h +0.0%  •  $33M / #46
+9. SKY — $0.079  −7.6% / 7d −4.0% / 1h +0.2%  •  $14M / #45
+10. H (Humanity) — $0.168  −7.5% / 7d +22.7% / 1h −2.8%  •  $48M / #143
 
 *Trending*
-1. AI (Gensyn) — #471, $0.0416, 24h -58.1%  [TRENDING+DOWN]
-2. ULTIMA (Ultima) — #265, $2,977, 24h -1.3%
-3. PENGU (Pudgy Penguins) — #90, $0.00978, 24h -2.1%
-4. PI (Pi Network) — #46, $0.189, 24h -2.8%
-5. AITECH (Solidus Ai Tech) — #875, $0.0113, 24h +17.8%
-6. DOGE (Dogecoin) — #10, $0.107, 24h +8.3%  [MAJOR]
-7. PUMP (Pump.fun) — #85, $0.00181, 24h +3.2%
+1. MegaETH (MEGA) — #182, $0.177, 24h −21.5%  [TRENDING+DOWN,CAPITULATION]
+2. Gensyn (AI) — #437, $0.044, 24h +21.2%
+3. Ultima (ULTIMA) — #273, $2,801, 24h −5.9%
+4. AITECH Cloud Network (ACN) — #836, $0.012, 24h +2.3%
+5. Monad (MON) — #135, $0.027, 24h −3.5%
+6. Bitcoin (BTC) — #1, $76,181, 24h −1.2%  [MAJOR]
 
 *Notable*
-• SKYAI: yesterday's -8.4% loser flipped to +56% top winner on rank #158 — BREAKOUT but PUMP-RISK; 1h already -10.8% rolling over.
-• AI (Gensyn): trending while -58% on day — listing-day distribution / unlock-style capitulation; rank #471 = trade with care.
-• DOGE: TRENDING+UP +8.3% on $3.27B vol — first major to break out cleanly this cycle, watch as risk-on tell.
-• APE: 5-day whipsaw +39/-17/-5.6/+20.4/-12.5 (today CAPITULATION) — direction-flip pattern unresolved, momentum trades getting chopped.
-• BSB: 7d +158.7% but -8.9% today — three-day continuation finally cooling.
-• LUNC: +21.4% Apr-27 → faded Apr-28 → +10.6% Apr-29 (7d +50.6%) — Terra-Classic narrative re-bidding.
+• MEGA: MegaETH listing-day collapse — −21.5% / 1h −4.7% on heavy v/m, day-1 distribution still bleeding; trending+capitulation stacked.
+• BSB: yesterday's −8.9% became −26.3% CAPITULATION today — full unwind of the +179% 7d run that 04-28/29 logs flagged cooling.
+• SKYAI: third-day continuation — was −8.4% (04-28) → +56% (04-29) → +17.9% today; 7d +76% holds despite broad red tape.
+• Gensyn (AI): trending bounce +21% after yesterday's −58% capitulation; below liquidity floor so off main lists, but worth watching for second-leg dump.
 

@@ -1,0 +1,399 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-04-30"
+      },
+      "children": [
+        "summary",
+        "sep1",
+        "winners_heading",
+        "winners_table",
+        "sep2",
+        "losers_heading",
+        "losers_table",
+        "sep3",
+        "trending_heading",
+        "trending_table",
+        "sep4",
+        "notable_heading",
+        "notable_stack"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-off again — 16/100 top coins green, median −1.2%; BTC $76,181 −1.2%, ETH $2,262 −2.3%, SOL $83.19 −1.1%. Majors red; MegaETH listing-day collapse drags the trending board.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h %",
+          "7d %",
+          "1h %",
+          "Market Cap / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "SKYAI (SkyAI)",
+            "$0.318",
+            "+17.9%",
+            "+75.7%",
+            "+0.7%",
+            "$124M / #137",
+            "BREAKOUT"
+          ],
+          [
+            "ASTEROID (Asteroid Shiba)",
+            "$0.000326",
+            "+9.2%",
+            "−0.8%",
+            "+0.5%",
+            "$26M / #232",
+            "MICROCAP"
+          ],
+          [
+            "9BIT (The9bit)",
+            "$0.0218",
+            "+5.7%",
+            "−5.6%",
+            "+18.0%",
+            "$4M / #199",
+            "MICROCAP"
+          ],
+          [
+            "APE (ApeCoin)",
+            "$0.155",
+            "+4.9%",
+            "+54.9%",
+            "−2.1%",
+            "$125M / #212",
+            ""
+          ],
+          [
+            "RIVER",
+            "$6.52",
+            "+4.8%",
+            "+11.0%",
+            "−0.8%",
+            "$15M / #240",
+            "MICROCAP"
+          ],
+          [
+            "WBT (WhiteBIT Coin)",
+            "$57.1",
+            "+4.7%",
+            "+4.3%",
+            "−0.1%",
+            "$130M / #11",
+            "MAJOR"
+          ],
+          [
+            "POL (ex-MATIC)",
+            "$0.095",
+            "+4.0%",
+            "+1.2%",
+            "−0.2%",
+            "$72M / #67",
+            ""
+          ],
+          [
+            "BTSE",
+            "$1.11",
+            "+3.5%",
+            "−5.1%",
+            "−0.5%",
+            "$3M / #189",
+            ""
+          ],
+          [
+            "JTO (Jito)",
+            "$0.353",
+            "+3.3%",
+            "+4.5%",
+            "+0.3%",
+            "$10M / #200",
+            ""
+          ],
+          [
+            "LUNC (Terra Luna Classic)",
+            "$0.000072",
+            "+3.0%",
+            "+62.7%",
+            "+1.3%",
+            "$92M / #117",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h %",
+          "7d %",
+          "1h %",
+          "Market Cap / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "BSB (Block Street)",
+            "$0.575",
+            "−26.3%",
+            "+45.9%",
+            "+0.6%",
+            "$128M / #254",
+            "CAPITULATION"
+          ],
+          [
+            "MEGA (MegaETH)",
+            "$0.177",
+            "−21.5%",
+            "n/a",
+            "−4.7%",
+            "$99M / #182",
+            "TRENDING+DOWN,CAPITULATION"
+          ],
+          [
+            "WLFI (World Liberty Financial)",
+            "$0.060",
+            "−16.1%",
+            "−22.2%",
+            "−0.6%",
+            "$131M / #44",
+            ""
+          ],
+          [
+            "GENIUS",
+            "$0.437",
+            "−14.6%",
+            "−39.1%",
+            "+1.9%",
+            "$22M / #222",
+            "MICROCAP"
+          ],
+          [
+            "RAVE (RaveDAO)",
+            "$0.740",
+            "−8.9%",
+            "−35.0%",
+            "−0.6%",
+            "$30M / #186",
+            "MICROCAP"
+          ],
+          [
+            "S (Sonic)",
+            "$0.043",
+            "−8.9%",
+            "+1.0%",
+            "−0.5%",
+            "$23M / #203",
+            "MICROCAP"
+          ],
+          [
+            "CHZ (Chiliz)",
+            "$0.041",
+            "−8.2%",
+            "−11.9%",
+            "−0.9%",
+            "$114M / #109",
+            ""
+          ],
+          [
+            "PI (Pi Network)",
+            "$0.174",
+            "−7.9%",
+            "+4.0%",
+            "+0.0%",
+            "$33M / #46",
+            ""
+          ],
+          [
+            "SKY",
+            "$0.079",
+            "−7.6%",
+            "−4.0%",
+            "+0.2%",
+            "$14M / #45",
+            ""
+          ],
+          [
+            "H (Humanity)",
+            "$0.168",
+            "−7.5%",
+            "+22.7%",
+            "−2.8%",
+            "$48M / #143",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "trending_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Rank",
+          "Price",
+          "24h %",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "MegaETH (MEGA)",
+            "#182",
+            "$0.177",
+            "−21.5%",
+            "TRENDING+DOWN,CAPITULATION"
+          ],
+          [
+            "Gensyn (AI)",
+            "#437",
+            "$0.044",
+            "+21.2%",
+            ""
+          ],
+          [
+            "Ultima (ULTIMA)",
+            "#273",
+            "$2,801",
+            "−5.9%",
+            ""
+          ],
+          [
+            "AITECH Cloud Network (ACN)",
+            "#836",
+            "$0.012",
+            "+2.3%",
+            ""
+          ],
+          [
+            "Monad (MON)",
+            "#135",
+            "$0.027",
+            "−3.5%",
+            ""
+          ],
+          [
+            "Bitcoin (BTC)",
+            "#1",
+            "$76,181",
+            "−1.2%",
+            "MAJOR"
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable1",
+        "notable2",
+        "notable3",
+        "notable4"
+      ]
+    },
+    "notable1": {
+      "type": "Alert",
+      "props": {
+        "title": "MEGA: MegaETH listing-day collapse",
+        "message": "−21.5% / 1h −4.7% on heavy v/m, day-1 distribution still bleeding; trending+capitulation stacked.",
+        "type": "warning"
+      }
+    },
+    "notable2": {
+      "type": "Alert",
+      "props": {
+        "title": "BSB: yesterday's −8.9% became −26.3% CAPITULATION today",
+        "message": "full unwind of the +179% 7d run that 04-28/29 logs flagged cooling.",
+        "type": "warning"
+      }
+    },
+    "notable3": {
+      "type": "Alert",
+      "props": {
+        "title": "SKYAI: third-day continuation",
+        "message": "was −8.4% (04-28) → +56% (04-29) → +17.9% today; 7d +76% holds despite broad red tape.",
+        "type": "info"
+      }
+    },
+    "notable4": {
+      "type": "Alert",
+      "props": {
+        "title": "Gensyn (AI): trending bounce +21% after yesterday's −58% capitulation",
+        "message": "below liquidity floor so off main lists, but worth watching for second-leg dump.",
+        "type": "warning"
+      }
+    }
+  }
+}
