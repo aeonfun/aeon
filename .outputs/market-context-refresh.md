@@ -1,1 +1,7 @@
-market context — 2026-04-28 | take: risk-off (conviction high) | BTC 76343 (-1.69%) / ETH 2277 (-1.60%) · F&G 33 (Fear, was 47 Neutral) | breadth 5/20 · TVL Eth 44.70B (-1.4%) | top narrative: FOMC Apr 29 (no cut priced, guidance risk) | polymarket: all top-vol markets settled, no signal | V2 cutover 11 UTC today
+market context — 2026-04-30
+
+take: chop (conviction low)
+BTC $76,210 (-0.65%) / ETH $2,253 (-2.22%) · F&G 29 (Fear)
+breadth 6/20 · TVL $83.4B (-2.83% 7d) · DEX vol $6.32B (-5.6% 1d)
+top narrative: DOGE momentum (rising, +10.26% 7d)
+signal: BTC $150k by Jun 30 = 1.35% YES on Polymarket

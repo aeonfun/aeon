@@ -1,0 +1,269 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "take_section",
+        "sep1",
+        "prices_section",
+        "sep2",
+        "indicators_section",
+        "sep3",
+        "narrative_section",
+        "sep4",
+        "signal_section"
+      ]
+    },
+    "take_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "take_label",
+        "badge_conviction"
+      ]
+    },
+    "take_label": {
+      "type": "Text",
+      "props": {
+        "text": "Take: chop",
+        "variant": "body"
+      }
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction low",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "prices_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$76,210",
+        "delta": "-0.65%",
+        "trend": "down"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,253",
+        "delta": "-2.22%",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "indicators_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "indicator_fg",
+        "indicator_breadth",
+        "stat_tvl",
+        "stat_dex_vol"
+      ]
+    },
+    "indicator_fg": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_fg_label",
+        "badge_fg"
+      ]
+    },
+    "text_fg_label": {
+      "type": "Text",
+      "props": {
+        "text": "Fear & Greed:",
+        "variant": "body"
+      }
+    },
+    "badge_fg": {
+      "type": "Badge",
+      "props": {
+        "text": "29 (Fear)",
+        "variant": "outline"
+      }
+    },
+    "indicator_breadth": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_breadth_label",
+        "text_breadth_value"
+      ]
+    },
+    "text_breadth_label": {
+      "type": "Text",
+      "props": {
+        "text": "Breadth:",
+        "variant": "body"
+      }
+    },
+    "text_breadth_value": {
+      "type": "Text",
+      "props": {
+        "text": "6/20",
+        "variant": "body"
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$83.4B",
+        "delta": "-2.83% 7d",
+        "trend": "down"
+      }
+    },
+    "stat_dex_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume",
+        "value": "$6.32B",
+        "delta": "-5.6% 1d",
+        "trend": "down"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "narrative_heading",
+        "narrative_detail"
+      ]
+    },
+    "narrative_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Narrative",
+        "level": "h3"
+      }
+    },
+    "narrative_detail": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "narrative_text",
+        "badge_status",
+        "badge_change"
+      ]
+    },
+    "narrative_text": {
+      "type": "Text",
+      "props": {
+        "text": "DOGE momentum",
+        "variant": "body"
+      }
+    },
+    "badge_status": {
+      "type": "Badge",
+      "props": {
+        "text": "rising",
+        "variant": "secondary"
+      }
+    },
+    "badge_change": {
+      "type": "Badge",
+      "props": {
+        "text": "+10.26% 7d",
+        "variant": "secondary"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signal_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signal_heading",
+        "signal_text"
+      ]
+    },
+    "signal_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signal",
+        "level": "h3"
+      }
+    },
+    "signal_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC $150k by Jun 30 = 1.35% YES on Polymarket",
+        "variant": "body"
+      }
+    }
+  }
+}
