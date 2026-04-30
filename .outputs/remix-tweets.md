@@ -1,1 +1,3 @@
-Remix Tweets — 2026-04-29 — REMIX_TWEETS_ERROR (no handle configured). 5th consecutive ERROR fire. Same blocker: X_HANDLE env unset, soul/SOUL.md Identity has no @handle. Cache .xai-cache/remix-tweets.json absent. Operator: add X_HANDLE to .github/workflows/aeon.yml env or @handle to soul/SOUL.md Identity. Recommend pausing 30 17 * * * cron until fixed.
+REMIX_TWEETS_ERROR — no handle configured (6th consecutive fire)
+Resolution order all empty: `$X_HANDLE` unset, `soul/SOUL.md` Identity has no @handle, no override.
+Fix: add `X_HANDLE` to repo Actions secrets/vars or insert `@tomscaria` into soul/SOUL.md Identity (per Operator config sweep in MEMORY.md). Skill will continue to no-op until then.

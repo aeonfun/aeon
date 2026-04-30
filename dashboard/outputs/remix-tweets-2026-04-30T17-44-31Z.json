@@ -1,0 +1,83 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "root-cause",
+        "sep2",
+        "fix"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured (6th consecutive fire)",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "root-cause": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rc-heading",
+        "rc-text"
+      ]
+    },
+    "rc-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "rc-text": {
+      "type": "Text",
+      "props": {
+        "text": "Resolution order all empty: `$X_HANDLE` unset, `soul/SOUL.md` Identity has no @handle, no override."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fix-heading",
+        "fix-text"
+      ]
+    },
+    "fix-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix",
+        "level": "h3"
+      }
+    },
+    "fix-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add `X_HANDLE` to repo Actions secrets/vars or insert `@tomscaria` into soul/SOUL.md Identity (per Operator config sweep in MEMORY.md). Skill will continue to no-op until then."
+      }
+    }
+  }
+}
