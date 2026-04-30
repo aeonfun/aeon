@@ -1,0 +1,218 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "error-alert",
+        "subreddit-badge",
+        "separator1",
+        "problem-section",
+        "separator2",
+        "context-section",
+        "separator3",
+        "fix-section"
+      ]
+    },
+    "error-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "All 3 Reddit endpoints failed"
+      }
+    },
+    "subreddit-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "r/vibecoding",
+        "variant": "outline"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "problem-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "problem-heading",
+        "curl-failure",
+        "webfetch-failures"
+      ]
+    },
+    "problem-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Endpoint Failures",
+        "level": "h3"
+      }
+    },
+    "curl-failure": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "curl-label",
+        "curl-badge"
+      ]
+    },
+    "curl-label": {
+      "type": "Text",
+      "props": {
+        "text": "curl:"
+      }
+    },
+    "curl-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "403 network-policy block",
+        "variant": "destructive"
+      }
+    },
+    "webfetch-failures": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "webfetch-label",
+        "webfetch-urls"
+      ]
+    },
+    "webfetch-label": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch refused:"
+      }
+    },
+    "webfetch-urls": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "webfetch-old",
+        "webfetch-www"
+      ]
+    },
+    "webfetch-old": {
+      "type": "Badge",
+      "props": {
+        "text": "old.reddit.com",
+        "variant": "destructive"
+      }
+    },
+    "webfetch-www": {
+      "type": "Badge",
+      "props": {
+        "text": "www.reddit.com",
+        "variant": "destructive"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "context-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "failure-history"
+      ]
+    },
+    "failure-history": {
+      "type": "Text",
+      "props": {
+        "text": "6th consecutive failure under same sandbox",
+        "variant": "muted"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fix-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fix-heading",
+        "fix-detail",
+        "issues-row",
+        "cron-alert"
+      ]
+    },
+    "fix-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution",
+        "level": "h3"
+      }
+    },
+    "fix-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Fix gated on: scripts/prefetch-reddit.sh"
+      }
+    },
+    "issues-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "issues-label",
+        "issue-002",
+        "issue-012"
+      ]
+    },
+    "issues-label": {
+      "type": "Text",
+      "props": {
+        "text": "Related issues:"
+      }
+    },
+    "issue-002": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-002",
+        "variant": "outline"
+      }
+    },
+    "issue-012": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-012",
+        "variant": "outline"
+      }
+    },
+    "cron-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Cron Status",
+        "message": "Cron should stay paused"
+      }
+    }
+  }
+}
