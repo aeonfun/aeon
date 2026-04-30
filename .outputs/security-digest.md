@@ -1,17 +1,19 @@
-*Security Digest — 2026-04-29*
-Verdict: 2 actively exploited (KEV adds today), 0 to schedule, 5 to monitor (CoreDNS cluster). _Sources: KEV ok, GH ok, EPSS ok_
+*Security Digest — 2026-04-30*
+Verdict: nothing urgent today. 5 to schedule, 1 to monitor. _Sources: KEV ok, GH ok, EPSS ok_
 
-*PATCH TODAY*
-- [CVE-2024-1708](https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2024-1708) — ConnectWise ScreenConnect path traversal · KEV added 2026-04-28 · EPSS 0.82 · CVSS 8.4
-  Bundled with the Feb-2024 auth-bypass kit; MSRC's Storm-1175/Medusa ransomware blog (Apr 2026) cites this exact CVE. CISA finally KEV-listed.
-  → patch ScreenConnect to ≥23.9.8 today. Aeon stack: not used; flag any operator-side ConnectWise instance.
-- [CVE-2026-32202](https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-32202) — Windows Shell spoofing · KEV added 2026-04-28 · EPSS 0.07 · CVSS 4.3
-  Low CVSS but KEV-listed → MSRC has in-the-wild evidence. Network spoof, user-interaction required.
-  → apply April 2026 Windows cumulative update on any operator workstation today.
+*PATCH THIS WEEK*
+- [CVE-2026-42232](https://github.com/advisories/GHSA-hqr4-h3xv-9m3r) — n8n (npm) · CVSS 10 · EPSS n/a · auth required, no public PoC
+  XML Node prototype pollution chains to RCE. → upgrade n8n to ≥1.123.32 / ≥2.17.4 / ≥2.18.1.
+- [CVE-2026-42231](https://github.com/advisories/GHSA-q5f4-99jv-pgg5) — n8n (npm) · CVSS 10 · EPSS n/a · auth required, no public PoC
+  xml2js prototype pollution in webhook body → RCE via Git node. → upgrade n8n to ≥1.123.32 / ≥2.17.4 / ≥2.18.1.
+- [CVE-2026-42352](https://github.com/advisories/GHSA-jgvc-94c8-3chc) — pygeoapi (pip) · CVSS 8.6 · EPSS n/a
+  Unauthenticated SSRF via OGC API Processes Subscriber. → upgrade pygeoapi to ≥0.23.3.
+- [CVE-2026-42226](https://github.com/advisories/GHSA-r4v6-9fqc-w5jr) — n8n (npm) · CVSS 8.5 · EPSS n/a
+  Credential auth bypass in dynamic-node-parameters lets foreign API keys be re-used. → upgrade n8n to ≥1.123.32 / ≥2.17.5.
+- [CVE-2026-42353](https://github.com/advisories/GHSA-jfgf-83c5-2c4m) — i18next-http-middleware (npm) · CVSS 8.2 · EPSS n/a
+  Path traversal / SSRF via user-controlled language and namespace. → upgrade to ≥3.9.3.
 
 *MONITOR*
-- coredns/coredns (Go) — 5 high advisories published 2026-04-28, all CVSS 7.5, all fixed in v1.14.3:
-  GHSA-vp29-5652-4fw9 (TSIG bypass gRPC/QUIC), GHSA-qhmp-q7xh-99rh (TSIG bypass DoT/DoH/DoH3/DoQ/gRPC), GHSA-h8mm-c463-wjq3 (subzone ACL bypass), GHSA-63cw-r7xf-jmwr (DoH amplification DoS), GHSA-2wpx-qpw2-g5h5 (DoQ stream-backlog DoS).
-  Aeon stack: no CoreDNS dependency. Tracked because Go ecosystem; cluster is notable.
-  → if any future deploy ships CoreDNS, pin ≥1.14.3.
+- [GHSA-wr32-99hh-6f35](https://github.com/advisories/GHSA-wr32-99hh-6f35) — Nginx-UI (Go) · CVSS 8.5 · no fix yet · EPSS n/a
+  SSRF via Cluster Proxy Middleware. → track for patched release; restrict cluster proxy access until then.
 

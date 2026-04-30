@@ -1,0 +1,385 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "stack_verdict",
+        "separator1",
+        "heading_patch",
+        "stack_cve_container",
+        "separator2",
+        "heading_monitor",
+        "stack_monitor_container"
+      ]
+    },
+    "stack_verdict": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_verdict",
+        "text_sources"
+      ]
+    },
+    "text_verdict": {
+      "type": "Text",
+      "props": {
+        "text": "Verdict: nothing urgent today. 5 to schedule, 1 to monitor.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: KEV ok, GH ok, EPSS ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_patch": {
+      "type": "Heading",
+      "props": {
+        "text": "Patch This Week",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_cve_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_cve1",
+        "stack_cve2",
+        "stack_cve3",
+        "stack_cve4",
+        "stack_cve5"
+      ]
+    },
+    "stack_cve1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve1",
+        "text_cve1_meta",
+        "text_cve1_desc",
+        "text_cve1_fix"
+      ]
+    },
+    "storylink_cve1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42232 — n8n (npm)",
+        "href": "https://github.com/advisories/GHSA-hqr4-h3xv-9m3r",
+        "source": "GHSA-hqr4-h3xv-9m3r",
+        "score": "CVSS 10"
+      },
+      "children": []
+    },
+    "text_cve1_meta": {
+      "type": "Text",
+      "props": {
+        "text": "EPSS n/a · auth required · no public PoC",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "XML Node prototype pollution chains to RCE.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve1_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade n8n to ≥1.123.32 / ≥2.17.4 / ≥2.18.1.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stack_cve2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve2",
+        "text_cve2_meta",
+        "text_cve2_desc",
+        "text_cve2_fix"
+      ]
+    },
+    "storylink_cve2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42231 — n8n (npm)",
+        "href": "https://github.com/advisories/GHSA-q5f4-99jv-pgg5",
+        "source": "GHSA-q5f4-99jv-pgg5",
+        "score": "CVSS 10"
+      },
+      "children": []
+    },
+    "text_cve2_meta": {
+      "type": "Text",
+      "props": {
+        "text": "EPSS n/a · auth required · no public PoC",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "xml2js prototype pollution in webhook body → RCE via Git node.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve2_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade n8n to ≥1.123.32 / ≥2.17.4 / ≥2.18.1.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stack_cve3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve3",
+        "text_cve3_meta",
+        "text_cve3_desc",
+        "text_cve3_fix"
+      ]
+    },
+    "storylink_cve3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42352 — pygeoapi (pip)",
+        "href": "https://github.com/advisories/GHSA-jgvc-94c8-3chc",
+        "source": "GHSA-jgvc-94c8-3chc",
+        "score": "CVSS 8.6"
+      },
+      "children": []
+    },
+    "text_cve3_meta": {
+      "type": "Text",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauthenticated SSRF via OGC API Processes Subscriber.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve3_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade pygeoapi to ≥0.23.3.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stack_cve4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve4",
+        "text_cve4_meta",
+        "text_cve4_desc",
+        "text_cve4_fix"
+      ]
+    },
+    "storylink_cve4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42226 — n8n (npm)",
+        "href": "https://github.com/advisories/GHSA-r4v6-9fqc-w5jr",
+        "source": "GHSA-r4v6-9fqc-w5jr",
+        "score": "CVSS 8.5"
+      },
+      "children": []
+    },
+    "text_cve4_meta": {
+      "type": "Text",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Credential auth bypass in dynamic-node-parameters lets foreign API keys be re-used.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve4_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade n8n to ≥1.123.32 / ≥2.17.5.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stack_cve5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve5",
+        "text_cve5_meta",
+        "text_cve5_desc",
+        "text_cve5_fix"
+      ]
+    },
+    "storylink_cve5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42353 — i18next-http-middleware (npm)",
+        "href": "https://github.com/advisories/GHSA-jfgf-83c5-2c4m",
+        "source": "GHSA-jfgf-83c5-2c4m",
+        "score": "CVSS 8.2"
+      },
+      "children": []
+    },
+    "text_cve5_meta": {
+      "type": "Text",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Path traversal / SSRF via user-controlled language and namespace.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve5_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade to ≥3.9.3.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_monitor": {
+      "type": "Heading",
+      "props": {
+        "text": "Monitor",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_monitor_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stack_cve_monitor"
+      ]
+    },
+    "stack_cve_monitor": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_cve_monitor",
+        "text_cve_monitor_meta",
+        "text_cve_monitor_desc",
+        "text_cve_monitor_fix"
+      ]
+    },
+    "storylink_cve_monitor": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-wr32-99hh-6f35 — Nginx-UI (Go)",
+        "href": "https://github.com/advisories/GHSA-wr32-99hh-6f35",
+        "source": "GHSA-wr32-99hh-6f35",
+        "score": "CVSS 8.5"
+      },
+      "children": []
+    },
+    "text_cve_monitor_meta": {
+      "type": "Text",
+      "props": {
+        "text": "no fix yet · EPSS n/a",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_cve_monitor_desc": {
+      "type": "Text",
+      "props": {
+        "text": "SSRF via Cluster Proxy Middleware.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cve_monitor_fix": {
+      "type": "Text",
+      "props": {
+        "text": "→ track for patched release; restrict cluster proxy access until then.",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
