@@ -1,0 +1,231 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-04-30"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tldr",
+        "sep1",
+        "headlines-section",
+        "sep2",
+        "notable-section",
+        "sep3",
+        "decisions-section",
+        "sep4",
+        "blockers-alert",
+        "sep5",
+        "footer"
+      ]
+    },
+    "tldr": {
+      "type": "Text",
+      "props": {
+        "text": "heavy ship day — 1 PR filed + 1 approved on swarm-fund-mvp, 2 articles shipped, first DEEP-LIQ slot-1 in monitor-runners history; chain-runner still 6+ days idle.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "headlines-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "headlines-title",
+        "hl1",
+        "hl2",
+        "hl3",
+        "hl4",
+        "hl5"
+      ]
+    },
+    "headlines-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h3"
+      }
+    },
+    "hl1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "external-feature — opened swarm-fund-mvp PR #24 (paper_triage defensive parsing)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/24"
+      }
+    },
+    "hl2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "pr-review — approved swarm-fund-mvp PR #23 (pm_strategy_runner fractional-days horizon)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/23"
+      }
+    },
+    "hl3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "article — LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.",
+        "href": "articles/2026-04-30.md"
+      }
+    },
+    "hl4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "research-brief — Tamil Nadu DMK→TVK migration; TVK 8.5c, fair 2-4c, 4-6c edge/share",
+        "href": "articles/research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30.md"
+      }
+    },
+    "hl5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-article — Aeon's Last Week Wasn't About the Agent. It Was About the Forks.",
+        "href": "articles/repo-article-2026-04-30.md"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "notable-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-title",
+        "notable1",
+        "notable2",
+        "notable3",
+        "notable4",
+        "notable5"
+      ]
+    },
+    "notable-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h3"
+      }
+    },
+    "notable1": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners — TTPA/WETH (base) first DEEP-LIQ slot 1 in repo history (+2678%, $10.6M liq); agentic money/USDT 2-day repeat watch"
+      }
+    },
+    "notable2": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket-comments — Iran-cf coordinated YES (Pedro1414) + Tamil Nadu pollster war; 12 new handles consolidated to topics/polymarket.md"
+      }
+    },
+    "notable3": {
+      "type": "Text",
+      "props": {
+        "text": "narrative-tracker — 7 NEW (HL HIP-4 FRONT-RUN, MegaETH MEGA, DeAI, Sky/Spark unwind, KelpDAO hack-month, DOGE OI peak, XRP-Rakuten)"
+      }
+    },
+    "notable4": {
+      "type": "Text",
+      "props": {
+        "text": "digest — CFTC ANPRM comment window closes today; Polymarket V2 TVL hits $514M"
+      }
+    },
+    "notable5": {
+      "type": "Text",
+      "props": {
+        "text": "reflect (#5) — MEMORY pruned 25 lines; 4 topic files refreshed; ISS-017 GHA cron-tick gap candidate"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "decisions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "decisions-title",
+        "dec1",
+        "dec2",
+        "dec3",
+        "dec4"
+      ]
+    },
+    "decisions-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for tomorrow",
+        "level": "h3"
+      }
+    },
+    "dec1": {
+      "type": "Text",
+      "props": {
+        "text": "merge or close 5 stalled PRs on tomscaria/aeon (oldest #1 ~118h)"
+      }
+    },
+    "dec2": {
+      "type": "Text",
+      "props": {
+        "text": "patch chain-runner.yml dispatch_skill() — blocks 3 chains, 6+ days idle"
+      }
+    },
+    "dec3": {
+      "type": "Text",
+      "props": {
+        "text": "re-run polymarket-comments + reply-maker on 05-03 (Tamil Nadu T-1)"
+      }
+    },
+    "dec4": {
+      "type": "Text",
+      "props": {
+        "text": "file ISS-017 if GHA cron-tick gap recurs 05-01"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "blockers-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Blockers",
+        "message": "chain:morning-brief / evening-rollup / weekly-grant-update — dispatch_skill bug (operator-side)",
+        "type": "warning"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "+15 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
