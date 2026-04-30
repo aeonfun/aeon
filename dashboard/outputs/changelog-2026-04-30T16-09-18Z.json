@@ -1,0 +1,106 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-04-30"
+      },
+      "children": [
+        "main"
+      ]
+    },
+    "main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary",
+        "top",
+        "full"
+      ]
+    },
+    "summary": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-line",
+        "changes"
+      ]
+    },
+    "repo-line": {
+      "type": "Text",
+      "props": {
+        "text": "1 repo"
+      }
+    },
+    "changes": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "md"
+      },
+      "children": [
+        "total-changes",
+        "breaking",
+        "added",
+        "fixed",
+        "security"
+      ]
+    },
+    "total-changes": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "7"
+      }
+    },
+    "breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "7"
+      }
+    },
+    "fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "0"
+      }
+    },
+    "security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "0"
+      }
+    },
+    "top": {
+      "type": "Text",
+      "props": {
+        "text": "Top: public /status/ dashboard now ships with every fork"
+      }
+    },
+    "full": {
+      "type": "Link",
+      "props": {
+        "label": "Full: articles/changelog-2026-04-30.md",
+        "href": "articles/changelog-2026-04-30.md"
+      }
+    }
+  }
+}
