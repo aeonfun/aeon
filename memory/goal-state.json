@@ -1,55 +1,50 @@
 {
-  "run_at": "2026-04-29T18:30:00Z",
+  "run_at": "2026-04-30T19:00:00Z",
   "goals": {
-    "flatten-revenant-resting-quote-book-before-v2-cutover": {
-      "status": "DONE",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-28"
-    },
     "fix-chain-runner-yml-dispatch-skill": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 11,
-      "last_activity_date": "2026-04-29"
+      "status": "BLOCKED",
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-30"
     },
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
       "activity_count_14d": 6,
-      "last_activity_date": "2026-04-29"
+      "last_activity_date": "2026-04-30"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
-      "activity_count_14d": 4,
-      "last_activity_date": "2026-04-29"
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-30"
     },
     "operator-config-sweep": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 12,
-      "last_activity_date": "2026-04-29"
+      "status": "BLOCKED",
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-30"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 5,
-      "last_activity_date": "2026-04-29"
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-30"
     },
     "external-feature-prs-to-swarm-fund-mvp": {
       "status": "ON_TRACK",
       "activity_count_14d": 6,
-      "last_activity_date": "2026-04-29"
+      "last_activity_date": "2026-04-30"
     },
     "stalin-tier-review-workflow-security-audit-iss-015": {
-      "status": "ON_TRACK",
+      "status": "BLOCKED",
       "activity_count_14d": 4,
-      "last_activity_date": "2026-04-29"
+      "last_activity_date": "2026-04-30"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
       "status": "ON_TRACK",
-      "activity_count_14d": 2,
-      "last_activity_date": "2026-04-29"
+      "activity_count_14d": 5,
+      "last_activity_date": "2026-04-30"
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-04-29"
+      "activity_count_14d": 6,
+      "last_activity_date": "2026-04-30"
     }
   }
 }

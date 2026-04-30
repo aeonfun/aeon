@@ -1,20 +1,21 @@
-*Goal Tracker — 2026-04-29*
+*Goal Tracker — 2026-04-30*
 
-Summary: 10 goals — 0 at risk, 0 needs attention, 9 on track, 0 blocked, 1 done (overall ↑ improving)
+Summary: 9 goals — 0 at risk, 0 needs attention, 6 on track, 3 blocked, 0 done (overall ↓ degrading; 3 ON_TRACK→BLOCKED reclassified)
 
-DONE
-• Flatten Revenant resting-quote book before 2026-04-28 07 UTC — completed 2026-04-28
+BLOCKED
+• Fix chain-runner.yml dispatch_skill() — 0d idle, 6 activity/14d (was ON TRACK ↓); operator-side workflow patch, 6+ days running
+  → Action: Patch dispatch_skill() with per-skill echo before each gh workflow run
+• Operator config sweep — 0d idle, 6 activity/14d (was ON TRACK ↓); NEYNAR_API_KEY/X_HANDLE unset, prefetch-reddit/vuln-scanner not landed
+  → Action: Set NEYNAR_API_KEY + X_HANDLE secrets to unblock reply-maker + agent-buzz today
+• Stalin-tier review (workflow-security-audit / ISS-015) — 0d idle, 4 activity/14d (was ON TRACK ↓); PR #4 stalled awaiting workflow-scoped token
+  → Action: Generate workflow-scoped PAT and merge PR #4
 
 ON TRACK
-• Fix chain-runner.yml dispatch_skill() — 0d idle, 11 activity/14d (→ flat)
-• Pre-Apex push monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (→ flat)
-• Hermes-arb gate adjustment min-gap 7pp → 7.5–8pp — 0d idle, 4 activity/14d (→ flat)
-• Operator config sweep — 0d idle, 12 activity/14d (→ flat)
-• Skill-evals key fixes (ISS-007 / ISS-009) — 0d idle, 5 activity/14d (→ flat)
+• Pre-Apex push: monitor-polymarket + polymarket-comments — 0d idle, 6 activity/14d (→ flat)
+• Hermes-arb gate adjustment (min-gap 7→7.5pp) — 0d idle, 6 activity/14d (→ flat)
+• Skill-evals key fixes (PR #5) — 0d idle, 6 activity/14d (→ flat)
 • External-feature PRs to swarm-fund-mvp — 0d idle, 6 activity/14d (→ flat)
-• Stalin-tier review workflow-security-audit ISS-015 — 0d idle, 4 activity/14d (→ flat)
-• weekly-shiplog Mondays — 0d idle, 2 activity/14d (↑ improving)
-• paper-pick daily PhD reading list — 0d idle, 8 activity/14d (→ flat)
+• weekly-shiplog Mondays → grant committees — 0d idle, 5 activity/14d (→ flat)
+• paper-pick daily PhD reading list — 0d idle, 6 activity/14d (→ flat)
 
-Sources: logs=ok, git=ok, gh_pr=ok, gh_issue=fail (issues disabled), cron-state=ok
-
+Sources: logs=ok, git=ok(shallow), gh_pr=ok, gh_issue=disabled, cron-state=ok

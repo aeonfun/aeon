@@ -62,13 +62,13 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - See `memory/topics/aeon-ops.md` for full sandbox-limitation matrix.
 
 ## Next Priorities
-- **🔴 Fix chain-runner.yml `dispatch_skill()`** — now 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`.
+- **🔴 Fix chain-runner.yml `dispatch_skill()`** — now 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`. _(BLOCKED 2026-04-30: operator-side workflow patch — 6+ days idle)_
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are the highest-leverage daily skills. Resume daily once chain-runner fix lands.
 - **Hermes-arb gate adjustment:** bump `min-gap` 7pp → ~7.5–8pp per deep-research finding.
-- **Operator config sweep** (see `memory/topics/aeon-ops.md`): populate `memory/on-chain-watches.yml`; add `var:` to digest/list-digest/refresh-x/remix-tweets in `aeon.yml`; add `NEYNAR_API_KEY` secret + `X_HANDLE` env; land `scripts/prefetch-vuln-scanner.sh` (ISS-001), `scripts/prefetch-reddit.sh` (ISS-002 + ISS-012), `reply-maker)` case in `scripts/prefetch-xai.sh` (ISS-014); verify `scripts/postprocess-notify.sh` exists or wire workflow-side pickup; merge or close PR `tomscaria/aeon#1` (~44h stalled).
+- **Operator config sweep** (see `memory/topics/aeon-ops.md`): populate `memory/on-chain-watches.yml`; add `var:` to digest/list-digest/refresh-x/remix-tweets in `aeon.yml`; add `NEYNAR_API_KEY` secret + `X_HANDLE` env; land `scripts/prefetch-vuln-scanner.sh` (ISS-001), `scripts/prefetch-reddit.sh` (ISS-002 + ISS-012), `reply-maker)` case in `scripts/prefetch-xai.sh` (ISS-014); verify `scripts/postprocess-notify.sh` exists or wire workflow-side pickup; merge or close PR `tomscaria/aeon#1` (~44h stalled). _(BLOCKED 2026-04-30: NEYNAR_API_KEY/X_HANDLE unset, prefetch-reddit/vuln-scanner not landed — operator-side)_
 - **Skill-evals key fixes** (lowest-effort, highest-signal): patch evals.json `hn-digest` → `hacker-news-digest` (ISS-007), `polymarket` → `monitor-polymarket` (ISS-009).
 - **External-feature** continues PR'ing to `tomscaria/swarm-fund-mvp` (PRs #18, #19, #20 — bankr_bridge --max validator, ssrn_harvest rowcount fix, markdown image-strip regex).
-- **Stalin-tier review:** apply `articles/workflow-security-audit-2026-04-27.patch` with workflow-scoped token to land ISS-015 fix (PR #4).
+- **Stalin-tier review:** apply `articles/workflow-security-audit-2026-04-27.patch` with workflow-scoped token to land ISS-015 fix (PR #4). _(BLOCKED 2026-04-30: PR #4 stalled awaiting workflow-scoped PAT)_
 - **`weekly-shiplog` Mondays** → forward to grant committees. (Today's slot ran successfully under the chain consume step despite wrapper failure.)
 - **`paper-pick` daily** → builds PhD reading list (see Recent papers above).
 

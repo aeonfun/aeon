@@ -1,0 +1,528 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "summary-section",
+        "sep1",
+        "blocked-section",
+        "sep2",
+        "ontrack-section",
+        "sep3",
+        "sources-section"
+      ]
+    },
+    "summary-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-text"
+      ]
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "9 goals — 0 at risk, 0 needs attention, 6 on track, 3 blocked, 0 done\nOverall ↓ degrading; 3 ON_TRACK→BLOCKED reclassified"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blocked-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked-heading",
+        "blocked-goals"
+      ]
+    },
+    "blocked-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h2"
+      }
+    },
+    "blocked-goals": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked-goal-1",
+        "blocked-goal-2",
+        "blocked-goal-3"
+      ]
+    },
+    "blocked-goal-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal1-title",
+        "goal1-meta",
+        "goal1-action"
+      ]
+    },
+    "goal1-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal1-title-text",
+        "goal1-badge"
+      ]
+    },
+    "goal1-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Fix chain-runner.yml dispatch_skill()"
+      }
+    },
+    "goal1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BLOCKED",
+        "variant": "destructive"
+      }
+    },
+    "goal1-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (was ON TRACK ↓); operator-side workflow patch, 6+ days running",
+        "variant": "caption"
+      }
+    },
+    "goal1-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Patch dispatch_skill() with per-skill echo before each gh workflow run",
+        "variant": "muted"
+      }
+    },
+    "blocked-goal-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal2-title",
+        "goal2-meta",
+        "goal2-action"
+      ]
+    },
+    "goal2-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal2-title-text",
+        "goal2-badge"
+      ]
+    },
+    "goal2-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep"
+      }
+    },
+    "goal2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BLOCKED",
+        "variant": "destructive"
+      }
+    },
+    "goal2-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (was ON TRACK ↓); NEYNAR_API_KEY/X_HANDLE unset, prefetch-reddit/vuln-scanner not landed",
+        "variant": "caption"
+      }
+    },
+    "goal2-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Set NEYNAR_API_KEY + X_HANDLE secrets to unblock reply-maker + agent-buzz today",
+        "variant": "muted"
+      }
+    },
+    "blocked-goal-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal3-title",
+        "goal3-meta",
+        "goal3-action"
+      ]
+    },
+    "goal3-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "goal3-title-text",
+        "goal3-badge"
+      ]
+    },
+    "goal3-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review (workflow-security-audit / ISS-015)"
+      }
+    },
+    "goal3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BLOCKED",
+        "variant": "destructive"
+      }
+    },
+    "goal3-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 4 activity/14d (was ON TRACK ↓); PR #4 stalled awaiting workflow-scoped token",
+        "variant": "caption"
+      }
+    },
+    "goal3-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Generate workflow-scoped PAT and merge PR #4",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "ontrack-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack-heading",
+        "ontrack-goals"
+      ]
+    },
+    "ontrack-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h2"
+      }
+    },
+    "ontrack-goals": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack-goal-1",
+        "ontrack-goal-2",
+        "ontrack-goal-3",
+        "ontrack-goal-4",
+        "ontrack-goal-5",
+        "ontrack-goal-6"
+      ]
+    },
+    "ontrack-goal-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack1-title",
+        "ontrack1-meta"
+      ]
+    },
+    "ontrack1-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack1-title-text",
+        "ontrack1-badge"
+      ]
+    },
+    "ontrack1-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments"
+      }
+    },
+    "ontrack1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack1-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "ontrack-goal-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack2-title",
+        "ontrack2-meta"
+      ]
+    },
+    "ontrack2-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack2-title-text",
+        "ontrack2-badge"
+      ]
+    },
+    "ontrack2-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment (min-gap 7→7.5pp)"
+      }
+    },
+    "ontrack2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack2-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "ontrack-goal-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack3-title",
+        "ontrack3-meta"
+      ]
+    },
+    "ontrack3-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack3-title-text",
+        "ontrack3-badge"
+      ]
+    },
+    "ontrack3-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5)"
+      }
+    },
+    "ontrack3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack3-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "ontrack-goal-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack4-title",
+        "ontrack4-meta"
+      ]
+    },
+    "ontrack4-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack4-title-text",
+        "ontrack4-badge"
+      ]
+    },
+    "ontrack4-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature PRs to swarm-fund-mvp"
+      }
+    },
+    "ontrack4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack4-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "ontrack-goal-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack5-title",
+        "ontrack5-meta"
+      ]
+    },
+    "ontrack5-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack5-title-text",
+        "ontrack5-badge"
+      ]
+    },
+    "ontrack5-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees"
+      }
+    },
+    "ontrack5-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack5-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 5 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "ontrack-goal-6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack6-title",
+        "ontrack6-meta"
+      ]
+    },
+    "ontrack6-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack6-title-text",
+        "ontrack6-badge"
+      ]
+    },
+    "ontrack6-title-text": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily PhD reading list"
+      }
+    },
+    "ontrack6-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ON TRACK",
+        "variant": "secondary"
+      }
+    },
+    "ontrack6-meta": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: logs=ok, git=ok(shallow), gh_pr=ok, gh_issue=disabled, cron-state=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
