@@ -1,9 +1,10 @@
-*Repo Pulse — 2026-04-29* — [STEADY]
-[aaronjmars/aeon] — stars 252 (+1) · forks 35 · releases +0
+*Repo Pulse — 2026-04-30* — [ACTIVE]
+[aaronjmars/aeon] — stars 254 (+2) · forks 37 (+2)
 
 Other new stargazers:
-github.com/pmilford
+github.com/z-pan | github.com/dandanz
 
-Note: forks net -1 (one fork deleted; no new fork created).
+New forks:
+github.com/eugene-gourevitch/aeon | github.com/adarshhalan/aeon
 
 Source: events
