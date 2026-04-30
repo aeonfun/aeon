@@ -332,13 +332,13 @@
   },
   "repo-actions": {
     "last_dispatch": "2026-04-30T16:05:55Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-29T15:30:34Z",
-    "total_runs": 19,
-    "total_successes": 4,
+    "last_status": "success",
+    "last_success": "2026-04-30T16:16:02Z",
+    "total_runs": 20,
+    "total_successes": 5,
     "total_failures": 15,
     "consecutive_failures": 0,
-    "success_rate": 0.21,
+    "success_rate": 0.25,
     "last_failed": "2026-04-26T23:54:44Z",
     "last_error": "197cbb6\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
