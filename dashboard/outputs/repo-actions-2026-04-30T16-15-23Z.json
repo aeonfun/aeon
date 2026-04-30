@@ -1,0 +1,374 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas — aaronjmars/aeon — 2026-04-30"
+      },
+      "children": [
+        "preamble",
+        "sep1",
+        "top_pick_heading",
+        "top_pick_text",
+        "sep2",
+        "items_heading",
+        "items_stack",
+        "sep3",
+        "details_link"
+      ]
+    },
+    "preamble": {
+      "type": "Text",
+      "props": {
+        "text": "Standard meta-file backlog already proposed across 04-25 → 04-29; today anchors on operational gaps the fleet actually hits — missing prefetch script, missing postprocess-notify, no skill template, no catalog-drift check, no CITATION.cff.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "top_pick_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "top_pick_text": {
+      "type": "Text",
+      "props": {
+        "text": "Add scripts/prefetch-reddit.sh mirroring the prefetch-xai.sh case-dispatch pattern (DX, Medium, Priority HIGH) → Every fork that turns on reddit-digest stops emitting REDDIT_DIGEST_ERROR daily; xai-prefetch precedent already proves the convention.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "items_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Items",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "items_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_title",
+        "item1_badges"
+      ]
+    },
+    "item1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add scripts/prefetch-reddit.sh",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge1_priority",
+        "badge1_category",
+        "badge1_size"
+      ]
+    },
+    "badge1_priority": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge1_category": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge1_size": {
+      "type": "Badge",
+      "props": {
+        "text": "Medium",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_title",
+        "item2_badges"
+      ]
+    },
+    "item2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add scripts/postprocess-notify.sh",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge2_priority",
+        "badge2_category",
+        "badge2_size"
+      ]
+    },
+    "badge2_priority": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge2_category": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge2_size": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_title",
+        "item3_badges"
+      ]
+    },
+    "item3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add CITATION.cff at repo root",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item3_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge3_priority",
+        "badge3_category",
+        "badge3_size"
+      ]
+    },
+    "badge3_priority": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge3_category": {
+      "type": "Badge",
+      "props": {
+        "text": "Community",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge3_size": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item4_title",
+        "item4_badges"
+      ]
+    },
+    "item4_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add skills/_template/SKILL.md scaffold",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item4_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge4_priority",
+        "badge4_category",
+        "badge4_size"
+      ]
+    },
+    "badge4_priority": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge4_category": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge4_size": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item5_title",
+        "item5_badges"
+      ]
+    },
+    "item5_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add .github/workflows/skills-json-drift.yml",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item5_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge5_priority",
+        "badge5_category",
+        "badge5_size"
+      ]
+    },
+    "badge5_priority": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge5_category": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge5_size": {
+      "type": "Badge",
+      "props": {
+        "text": "Medium",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "details_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-04-30.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
