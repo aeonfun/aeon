@@ -1,21 +1,21 @@
-*prediction markets — 2026-04-29*
+*prediction markets — 2026-04-30*
 
-_TL;DR: Polymarket pushes CFTC for full US-trader access by August; CFTC sues Wisconsin (5th state lawsuit this month) defending federal jurisdiction; Hyperliquid's HIP-4 prediction-market proposal advances with 12% of Polymarket volume already overlapping its traders._
+_TL;DR: CFTC's prediction-markets comment window closes today with 40+ Democrats pushing categorical bans, Polymarket TVL clears $514M two days into V2, and Ohio drafts a license-and-tax track that splits the state regulatory pattern in two._
 
-1. *Polymarket asks CFTC to lift four-year US block — main exchange could reopen by August*
-   Polymarket is in active CFTC talks to remove the US-trader ban on its international exchange — distinct from its existing intermediated US clearance. CoinDesk reports approval possible as early as August.
-   Why it matters: a full reopen re-rates liquidity on the main book, narrows the PM/Kalshi volume gap (Kalshi led PM 2:1 last week), and resets builder-code economics overnight.
-   https://www.coindesk.com/policy/2026/04/28/polymarket-seeks-cftc-approval-to-reopen-main-exchange-to-u-s-traders
+1. *CFTC ANPRM comment window closes today; Dems file aggressive ask*
+Today closes the CFTC's Advanced Notice of Proposed Rulemaking on prediction markets (~800 comments on file pre-deadline). Warren, Merkley and 40+ lawmakers urged the agency to prohibit event contracts on elections, war, sports, and government actions without a valid hedging interest, and to write insider-trading rules.
+Why it matters: shapes which binary-market categories survive on Polymarket and Kalshi; elections and sports are explicitly named.
+https://www.cnbc.com/2026/04/30/congress-kalshi-polymarket-prediction-markets-cftc.html
 
-2. *CFTC sues Wisconsin — fifth state lawsuit this month defending federal prediction-market jurisdiction*
-   CFTC filed Tuesday after Wisconsin AG Kaul brought three civil suits Apr 23 against Kalshi, Polymarket, Crypto.com, Robinhood, and Coinbase. CFTC has now sued Arizona, Connecticut, Illinois, New York, and Wisconsin in April alone. Chair Selig: "if you interfere with the operation of federal law... we will sue you."
-   Why it matters: the five-state pattern is the durable signal — federal preemption case is broad enough to set precedent regardless of any single ruling.
-   https://www.cftc.gov/PressRoom/PressReleases/9220-26
+2. *Polymarket TVL hits $514M two days into V2*
+Post-CLOB-v2 (live 04-28 11 UTC): TVL $514.19M, 24h actives 14,146, new addresses 7,385, transactions 291,365, OI $513.77M, 30-day DEX vol $4.49B. Orderbooks rebuilt cleanly and pUSD is taking the deposits.
+Why it matters: live-tape baseline for any V2 quote strategy and for the $1M LP rewards program is now a real $500M+ working set.
+https://www.cryptotimes.io/2026/04/30/polymarket-tvl-crosses-500m-following-clob-v2-rollout/
 
-3. *Hyperliquid HIP-4 prediction-market proposal advances — 12% of Polymarket volume overlaps with Hyperliquid traders*
-   Bloomberg today: HIP-4 contracts are fully collateralized, no leverage, settle at 0/1, mainnet date still unconfirmed. 3.3% of Polymarket users already trade on Hyperliquid; that cohort drives 12% of PM volume.
-   Why it matters: Hyperliquid is the highest-velocity onchain venue ($219B March perp volume); a credible prediction-market product can fork the most price-sensitive PM cohort first.
-   https://www.bloomberg.com/news/articles/2026-04-29/kalshi-polymarket-face-new-rival-in-crypto-s-hottest-exchange
+3. *Ohio SB 430: license-and-tax track, not ban*
+DeMora filed Ohio SB 430 on 04-28. It would require Kalshi, Polymarket and Robinhood to obtain OCCC licenses and pay the state 20% sports-betting tax on event-contract revenue, while expressly keeping the platforms operating in-state. Ohio joins Illinois (SB 4168) and Iowa (SF 2470, passed 45-1) on the license-track side; CFTC v Wisconsin sits on the ban-track side.
+Why it matters: states bifurcate into two regimes; license-track is a higher-tax but durable home for sports contracts even if CFTC preemption fails in court.
+https://sbcamericas.com/2026/04/28/ohio-senate-bill-prediction-markets-tax/
 
-*Also worth a glance:* FOMC held 3.50–3.75% as priced 99-100% on PM/Kalshi — clean resolution, no calibration surprise.
+*Also worth a glance:* Polymarket's Tamil Nadu Legislative Assembly market (resolves May 4) prints DMK ~75%; the operator hook list flagged 80%+ as fair from 4 local-Tamil voices — gap widened. https://polymarket.com/event/tamil-nadu-legislative-assembly-election-winner
 

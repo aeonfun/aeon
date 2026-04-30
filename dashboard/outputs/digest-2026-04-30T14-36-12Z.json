@@ -1,0 +1,161 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Prediction Markets — 2026-04-30"
+      },
+      "children": [
+        "tldr-text",
+        "sep1",
+        "item1-heading",
+        "item1-content",
+        "item1-why",
+        "item1-link",
+        "sep2",
+        "item2-heading",
+        "item2-content",
+        "item2-why",
+        "item2-link",
+        "sep3",
+        "item3-heading",
+        "item3-content",
+        "item3-why",
+        "item3-link",
+        "sep4",
+        "also-intro",
+        "also-link"
+      ]
+    },
+    "tldr-text": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC's prediction-markets comment window closes today with 40+ Democrats pushing categorical bans, Polymarket TVL clears $514M two days into V2, and Ohio drafts a license-and-tax track that splits the state regulatory pattern in two.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. CFTC ANPRM comment window closes today; Dems file aggressive ask",
+        "level": "h2"
+      }
+    },
+    "item1-content": {
+      "type": "Text",
+      "props": {
+        "text": "Today closes the CFTC's Advanced Notice of Proposed Rulemaking on prediction markets (~800 comments on file pre-deadline). Warren, Merkley and 40+ lawmakers urged the agency to prohibit event contracts on elections, war, sports, and government actions without a valid hedging interest, and to write insider-trading rules."
+      }
+    },
+    "item1-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: shapes which binary-market categories survive on Polymarket and Kalshi; elections and sports are explicitly named.",
+        "variant": "muted"
+      }
+    },
+    "item1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Congress urges CFTC to ban election prediction markets",
+        "href": "https://www.cnbc.com/2026/04/30/congress-kalshi-polymarket-prediction-markets-cftc.html",
+        "source": "CNBC"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Polymarket TVL hits $514M two days into V2",
+        "level": "h2"
+      }
+    },
+    "item2-content": {
+      "type": "Text",
+      "props": {
+        "text": "Post-CLOB-v2 (live 04-28 11 UTC): TVL $514.19M, 24h actives 14,146, new addresses 7,385, transactions 291,365, OI $513.77M, 30-day DEX vol $4.49B. Orderbooks rebuilt cleanly and pUSD is taking the deposits."
+      }
+    },
+    "item2-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: live-tape baseline for any V2 quote strategy and for the $1M LP rewards program is now a real $500M+ working set.",
+        "variant": "muted"
+      }
+    },
+    "item2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket TVL crosses $500M following CLOB V2 rollout",
+        "href": "https://www.cryptotimes.io/2026/04/30/polymarket-tvl-crosses-500m-following-clob-v2-rollout/",
+        "source": "CryptoTimes"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Ohio SB 430: license-and-tax track, not ban",
+        "level": "h2"
+      }
+    },
+    "item3-content": {
+      "type": "Text",
+      "props": {
+        "text": "DeMora filed Ohio SB 430 on 04-28. It would require Kalshi, Polymarket and Robinhood to obtain OCCC licenses and pay the state 20% sports-betting tax on event-contract revenue, while expressly keeping the platforms operating in-state. Ohio joins Illinois (SB 4168) and Iowa (SF 2470, passed 45-1) on the license-track side; CFTC v Wisconsin sits on the ban-track side."
+      }
+    },
+    "item3-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: states bifurcate into two regimes; license-track is a higher-tax but durable home for sports contracts even if CFTC preemption fails in court.",
+        "variant": "muted"
+      }
+    },
+    "item3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Ohio Senate Bill prediction markets tax",
+        "href": "https://sbcamericas.com/2026/04/28/ohio-senate-bill-prediction-markets-tax/",
+        "source": "SBC Americas"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "also-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Also worth a glance: Polymarket's Tamil Nadu Legislative Assembly market (resolves May 4) prints DMK ~75%; the operator hook list flagged 80%+ as fair from 4 local-Tamil voices — gap widened."
+      }
+    },
+    "also-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Tamil Nadu Legislative Assembly Election Winner",
+        "href": "https://polymarket.com/event/tamil-nadu-legislative-assembly-election-winner"
+      }
+    }
+  }
+}
