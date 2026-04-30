@@ -1,0 +1,60 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "PR Review",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "summary",
+        "separator1",
+        "pr-item"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Reviewed 1, skipped 4 (drafts: 1, dup-SHA: 3)."
+      }
+    },
+    "separator1": {
+      "type": "Separator"
+    },
+    "pr-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "pr-link",
+        "status-badge",
+        "metrics-text"
+      ]
+    },
+    "pr-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp#23",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/23"
+      }
+    },
+    "status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "approve-ready",
+        "variant": "default"
+      }
+    },
+    "metrics-text": {
+      "type": "Text",
+      "props": {
+        "text": "0 critical, 0 issues",
+        "variant": "muted"
+      }
+    }
+  }
+}
