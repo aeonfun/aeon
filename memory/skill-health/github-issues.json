@@ -1,0 +1,14 @@
+{
+  "skill": "github-issues",
+  "last_analyzed": "2026-04-30T09:03:04Z",
+  "quality_score": 4,
+  "assessment": "Skill executed successfully, followed spec correctly by silencing on clean days, logged state across 3 consecutive clean runs with clear tracking",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-04-30",
+      "score": 4
+    }
+  ]
+}
