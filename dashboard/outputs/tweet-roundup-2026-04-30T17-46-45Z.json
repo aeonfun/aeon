@@ -1,0 +1,143 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup — 2026-04-30",
+        "description": "Source: cache:0 websearch:3 failed:0"
+      },
+      "children": [
+        "ai_section",
+        "sep1",
+        "crypto_section",
+        "sep2",
+        "tech_section"
+      ]
+    },
+    "ai_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai_heading",
+        "ai_theme",
+        "ai_item"
+      ]
+    },
+    "ai_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI agents / LLM",
+        "level": "h3"
+      }
+    },
+    "ai_theme": {
+      "type": "Text",
+      "props": {
+        "text": "vertical-AI funding cycle holding — finance is the loud lane",
+        "variant": "muted"
+      }
+    },
+    "ai_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Rogo (junior-banker AI) closed $160M Series D led by Kleiner Perkins at $2B valuation, up from $750M in January — ~2.7x in 4 months",
+        "href": "https://x.com/MunshiPremChnd/status/2049482951734259777",
+        "source": "x.com/MunshiPremChnd"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "crypto_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crypto_heading",
+        "crypto_theme",
+        "crypto_item1",
+        "crypto_item2"
+      ]
+    },
+    "crypto_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto / Bitcoin / DeFi",
+        "level": "h3"
+      }
+    },
+    "crypto_theme": {
+      "type": "Text",
+      "props": {
+        "text": "split tape: BTC-conference bullish staging vs. DeFi-side bleed from KelpDAO fallout",
+        "variant": "muted"
+      }
+    },
+    "crypto_item1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Bitcoin 2026 Conference live in Las Vegas (Apr 27-29); headliners Saylor, Eric Trump, Lummis, Draper; BTC spiked above the level entering the event",
+        "href": "https://x.com/BiconomyCom/status/2049147627032264968",
+        "source": "x.com/BiconomyCom"
+      }
+    },
+    "crypto_item2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Aave TVL down ~40% in one week after April 18 KelpDAO $292-293M exploit; the largest DeFi lender absorbing the contagion, not the protocol that was hit",
+        "href": "https://x.com/BiconomyCom/status/2048724677338734597",
+        "source": "x.com/BiconomyCom"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tech_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tech_heading",
+        "tech_theme",
+        "tech_item"
+      ]
+    },
+    "tech_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Technology / startups / open source",
+        "level": "h3"
+      }
+    },
+    "tech_theme": {
+      "type": "Text",
+      "props": {
+        "text": "single story dominating — Ariane 6 / Amazon Leo constellation launch",
+        "variant": "muted"
+      }
+    },
+    "tech_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Ariane 6 VA268 mission scheduled today, 08:08 UTC, placing 32 Amazon Leo satellites into LEO; live broadcast from French Guiana",
+        "href": "https://x.com/Arianespace/status/2049607651881857410",
+        "source": "x.com/Arianespace"
+      }
+    }
+  }
+}
