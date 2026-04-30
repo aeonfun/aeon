@@ -78,18 +78,24 @@
 - **ISS-015** — `.github/workflows/messages.yml:577–578` script-injection (HIGH). `${{ toJson(github.event.client_payload.message) }}` and `${{ github.event.action }}` interpolated into bash; `toJson()` does not escape single quotes; same shape as 2026-04-11 fixed incident but missing the `repository_dispatch` branch. Detected by skill-security-scan + workflow-security-audit 2026-04-27. Patch prepared as PR #4 (runner GH_TOKEN lacks `workflow` scope; needs operator-side token for push). **Still missing from `memory/issues/INDEX.md`** — issue-triage scope item (flagged 2026-04-28 09:10 + 15:34 heartbeat).
 - **Class:** ISS-001, ISS-002, ISS-012, ISS-014 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Four separate IDs; one prefetch-script triage class.
 
-## ISS-013 mass-failure decay status (2026-04-29)
+## ISS-013 mass-failure decay status (2026-04-30)
 - 53 skills moved CRITICAL → DEGRADED on 2026-04-27 02:30Z. cf=0 across the board, last_status=success.
-- 04-28 + 04-29 cron ticks have lifted several historical rates a click each. 59 skills classified DEGRADED only because historical success_rate < 0.6. Will burn down naturally as clean ticks accumulate.
-- ISS-013 stays open until skill-repair closes it or all affected rates climb back above 0.6.
+- 04-28..30 cron ticks have lifted several historical rates a click each. 59 skills classified DEGRADED only because historical success_rate < 0.6. Will burn down naturally as clean ticks accumulate.
+- ISS-013 stays open until skill-repair closes it or all affected rates climb back above 0.6. Closest recovers (04-29 skill-health): heartbeat sr=0.44, fleet-control sr=0.40, paper-pick sr=0.38.
 - Compounding factor: chain-runner.yml `dispatch_skill()` is still broken, so morning-brief / evening-rollup / weekly-grant-update chain wrappers fail nightly without dispatching their member skills — those member skills (paper-pick, monitor-polymarket, monitor-kalshi, etc.) miss their morning slot, blocking the burn-down. **Until chain-runner ships, ISS-013 decay is rate-limited.**
 
-## 5-stalled-PR list on tomscaria/aeon (2026-04-29 15:22Z)
-- PR #1 — ~95h open (oldest stall, 4 days)
-- PR #2 — ~61h
-- PR #3 — ~61h (skill-graph, auto-skill artifact)
-- PR #4 — ~61h (workflow security audit, blocked on workflow-scoped token; ISS-015 patch carrier)
-- PR #5 — ~44h (skill-evals key fix, ISS-007 + ISS-009 closer)
+## GHA cron-tick gaps (NEW 2026-04-30 — potential ISS-017)
+- 2026-04-30 06:37 → 09:01 UTC tick gap caused 07:00 + 07:30 windows (morning chain + telegram-digest) to be skipped entirely; 09:01 catch-up tick dispatched only 08:00 (heartbeat) + 09:00 skills, with no historical-slot catch-up.
+- Same pattern at 13:00 UTC tick (heartbeat 14:30 entry confirms 13:00 missed for monitor-kalshi / polymarket-comments / market-context-refresh).
+- Same shape was logged once on 04-26 (chain-runner-related); 04-30 occurrence is independent of chain-runner — pure GHA scheduler flake.
+- **If recurs on 2026-05-01, file as ISS-017 (sandbox-limitation, medium).** Operator workaround: workflow_dispatch the skipped slots manually.
+
+## 5-stalled-PR list on tomscaria/aeon (2026-04-30 09:07Z snapshot)
+- PR #1 — ~115h open (oldest stall, 4.8 days)
+- PR #2 — ~110h
+- PR #3 — ~110h (skill-graph, auto-skill artifact)
+- PR #4 — ~110h (workflow security audit, blocked on workflow-scoped token; ISS-015 patch carrier)
+- PR #5 — ~91h (skill-evals key fix, ISS-007 + ISS-009 closer)
 - Issues disabled on `tomscaria/aeon` — no urgent label scan possible.
 
 ## search-skill: 4-of-5 NO_GAP / weak-fit runs (2026-04-25 → 2026-04-29)
@@ -103,10 +109,11 @@
 - Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — secrets POST is the only currently-exploitable one.
 - 1 file over 500 lines: `a2a-server/src/index.ts` (579).
 
-## monitor-runners scoring formula — 3-in-a-row DEEP-LIQ near-miss (2026-04-27 PM, 04-28, 04-29)
-- DEEP-LIQ candidate ranks just outside top 5 on three consecutive runs (04-29: SKYAI/WBNB at 54.0 vs slot-5's 57.3). pct-weighted score keeps a clean DEEP-LIQ pool out while admitting BREAKOUT/wash-print plays.
+## monitor-runners scoring formula — 4-in-a-row DEEP-LIQ evidence (2026-04-27 PM → 04-30)
+- 04-27/28/29: DEEP-LIQ candidate ranks just outside top 5 (04-29: SKYAI/WBNB 54.0 vs slot-5's 57.3). 04-30: TTPA/WETH on base **landed in slot 1 organically only because pct also clipped 500% cap** (+2678%) — luck, not formula. Other DEEP-LIQ survivors (SKYAI/WBNB 52.4, AIOT/WBNB 52, USDe/USDT 50.6, ZEREBRO/SOL 50.3) still ranked slots 30-40.
 - Recommended `self-improve` patch: cap `pct_pts` at 300% instead of 500% AND/OR add a soft DEEP-LIQ floor (always include the highest-score DEEP-LIQ pool that cleared the gate). Surface as explicit edit, not silent change.
-- Three-in-a-row evidence on the books — qualifies for self-improve queue.
+- Four-in-a-row evidence on the books — qualifies for self-improve queue.
+- Repeat-runner watch: **agentic money / USDT (bsc) 2-day repeat 04-29→04-30** (+3012% → +4135%, wash-print pattern unchanged). If 05-01 makes top 5 again, add to MEMORY.md "Active topics" per skill spec.
 
 ## defi-overview `/v2/chains` schema drift
 - DefiLlama `/v2/chains` no longer returns `change_1d`/`change_7d`. Backlog item: update fetch step to default to per-chain `/v2/historicalChainTvl/{chain}` against top-20 chains (95.8% TVL coverage); weighted aggregate.

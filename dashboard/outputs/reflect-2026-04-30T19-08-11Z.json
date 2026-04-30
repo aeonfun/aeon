@@ -1,0 +1,326 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "reflect"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_title",
+        "sep_1",
+        "text_memory",
+        "sep_2",
+        "heading_topics",
+        "stack_topics",
+        "sep_3",
+        "stack_ops",
+        "sep_4",
+        "alert_recommend"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Memory consolidated — 2026-04-30 (reflect #5)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text_memory": {
+      "type": "Text",
+      "props": {
+        "text": "MEMORY.md pruned 25 lines (duplicated Completed Goals removed)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_topics": {
+      "type": "Heading",
+      "props": {
+        "text": "Topic Files Updated",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_topics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_polymarket",
+        "section_swarmfund",
+        "section_aeonops",
+        "section_grants"
+      ]
+    },
+    "section_polymarket": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_polymarket",
+        "stack_polymarket_items"
+      ]
+    },
+    "heading_polymarket": {
+      "type": "Heading",
+      "props": {
+        "text": "polymarket.md",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "stack_polymarket_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_tvl",
+        "text_cftc",
+        "text_brazil",
+        "text_commenters",
+        "text_tamil"
+      ]
+    },
+    "text_tvl": {
+      "type": "Text",
+      "props": {
+        "text": "V2 TVL $514M",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_cftc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC ANPRM 04-30",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_brazil": {
+      "type": "Text",
+      "props": {
+        "text": "Brazil ban",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_commenters": {
+      "type": "Text",
+      "props": {
+        "text": "12 new commenter handles",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_tamil": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu DMK→TVK migration",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "section_swarmfund": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_swarmfund",
+        "text_swarmfund"
+      ]
+    },
+    "heading_swarmfund": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund.md",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "text_swarmfund": {
+      "type": "Text",
+      "props": {
+        "text": "PR #24 paper_triage",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "section_aeonops": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_aeonops",
+        "stack_aeonops_items"
+      ]
+    },
+    "heading_aeonops": {
+      "type": "Heading",
+      "props": {
+        "text": "aeon-ops.md",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "stack_aeonops_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_gha",
+        "text_deepliq"
+      ]
+    },
+    "text_gha": {
+      "type": "Text",
+      "props": {
+        "text": "GHA cron-tick gap potential ISS-017",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_deepliq": {
+      "type": "Text",
+      "props": {
+        "text": "4-in-a-row DEEP-LIQ evidence",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "section_grants": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_grants",
+        "stack_grants_items"
+      ]
+    },
+    "heading_grants": {
+      "type": "Heading",
+      "props": {
+        "text": "grants.md",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "stack_grants_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_tramer",
+        "text_papers"
+      ]
+    },
+    "text_tramer": {
+      "type": "Text",
+      "props": {
+        "text": "Tramèr citation",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_papers": {
+      "type": "Text",
+      "props": {
+        "text": "3 PolyBench/Prophet/Semantic papers",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_ops": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_ops",
+        "text_opsalerts"
+      ]
+    },
+    "heading_ops": {
+      "type": "Heading",
+      "props": {
+        "text": "Ops Alerts",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_opsalerts": {
+      "type": "Text",
+      "props": {
+        "text": "9 ops-alert items load-bearing 5+ days — all operator-blocked",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "alert_recommend": {
+      "type": "Alert",
+      "props": {
+        "message": "Recommend weekly bundle of recurring config-gap notifications",
+        "type": "info"
+      },
+      "children": []
+    }
+  }
+}
