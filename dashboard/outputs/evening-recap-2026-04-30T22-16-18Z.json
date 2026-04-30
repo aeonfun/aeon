@@ -1,0 +1,392 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-04-30",
+        "description": "heavy ship day — PR #24 filed + #23 approved on swarm-fund-mvp, first DEEP-LIQ slot-1 in monitor-runners history; chain-runner still dark 6+ days"
+      },
+      "children": [
+        "sep-1",
+        "scans-heading",
+        "scans-content",
+        "sep-2",
+        "signals-heading",
+        "signals-content",
+        "sep-3",
+        "revenant-heading",
+        "revenant-content",
+        "sep-4",
+        "nav-heading",
+        "nav-content",
+        "sep-5",
+        "failures-heading",
+        "failures-content",
+        "sep-6",
+        "top3-heading",
+        "top3-content",
+        "sep-7",
+        "footer-text"
+      ]
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "scans-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Scans",
+        "level": "h3"
+      }
+    },
+    "scans-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "scans-runners",
+        "scans-kalshi",
+        "scans-polymarket"
+      ]
+    },
+    "scans-runners": {
+      "type": "Text",
+      "props": {
+        "text": "runners 157→43 pools"
+      }
+    },
+    "scans-kalshi": {
+      "type": "Text",
+      "props": {
+        "text": "kalshi ~80 markets/4 events"
+      }
+    },
+    "scans-polymarket": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket skipped (chain-runner down)"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signals-deepliq",
+        "signals-kalshi",
+        "signals-token"
+      ]
+    },
+    "signals-deepliq": {
+      "type": "Text",
+      "props": {
+        "text": "DEEP-LIQ TTPA/WETH base +2678% $10.6m liq slot-1"
+      }
+    },
+    "signals-kalshi": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi ETH May-1 +8pp $153k, BTC +5pp $114k"
+      }
+    },
+    "signals-token": {
+      "type": "Text",
+      "props": {
+        "text": "token-pick LUNC 9/10 + Iran peace NO"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "revenant-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h3"
+      }
+    },
+    "revenant-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "revenant-orders",
+        "revenant-status",
+        "revenant-next"
+      ]
+    },
+    "revenant-orders": {
+      "type": "Text",
+      "props": {
+        "text": "no new orders today"
+      }
+    },
+    "revenant-status": {
+      "type": "Text",
+      "props": {
+        "text": "Status 29/76%/+$415/Sharpe 0.31"
+      }
+    },
+    "revenant-next": {
+      "type": "Text",
+      "props": {
+        "text": "TVK NO flagged as next entry (8.25c vs 2-4c fair, May 4 resolution)"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "nav-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV",
+        "level": "h3"
+      }
+    },
+    "nav-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "nav-note",
+        "nav-prices"
+      ]
+    },
+    "nav-note": {
+      "type": "Text",
+      "props": {
+        "text": "no metrics.json fetch"
+      }
+    },
+    "nav-prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "nav-btc",
+        "nav-eth",
+        "nav-sol"
+      ]
+    },
+    "nav-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "−1.2%",
+        "trend": "down"
+      }
+    },
+    "nav-eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "−2.3%",
+        "trend": "down"
+      }
+    },
+    "nav-sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "−1.1%",
+        "trend": "down"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "failures-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failures",
+        "level": "h3"
+      }
+    },
+    "failures-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "failures-chain",
+        "failures-config",
+        "failures-iss"
+      ]
+    },
+    "failures-chain": {
+      "type": "Alert",
+      "props": {
+        "title": "chain:evening-rollup",
+        "message": "dispatch_skill, 6+ days",
+        "type": "error"
+      }
+    },
+    "failures-config": {
+      "type": "Alert",
+      "props": {
+        "title": "Config gaps",
+        "message": "farcaster/vibecoding/remix-tweets/agent-buzz recurring config gaps",
+        "type": "warning"
+      }
+    },
+    "failures-iss": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-013 decay tail",
+        "message": "60 skills",
+        "type": "warning"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3",
+        "level": "h3"
+      }
+    },
+    "top3-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top3-item-1",
+        "top3-item-2",
+        "top3-item-3"
+      ]
+    },
+    "top3-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-badge-1",
+        "top3-link-1"
+      ]
+    },
+    "top3-badge-1": {
+      "type": "Badge",
+      "props": {
+        "text": "Paper",
+        "variant": "default"
+      }
+    },
+    "top3-link-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "LLM forecaster benchmark pitfalls",
+        "href": "https://arxiv.org/abs/2506.00723",
+        "source": "Paleka/Tramèr (ETH Zürich)",
+        "score": "temporal leakage"
+      }
+    },
+    "top3-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-badge-2",
+        "top3-text-2"
+      ]
+    },
+    "top3-badge-2": {
+      "type": "Badge",
+      "props": {
+        "text": "Comments",
+        "variant": "default"
+      }
+    },
+    "top3-text-2": {
+      "type": "Text",
+      "props": {
+        "text": "Pedro1414 Iran-cf YES coordinator (court threat + Disc org); TVK 8.25c per Chanakya poll (Alert-Identification, May 4)"
+      }
+    },
+    "top3-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-badge-3",
+        "top3-text-3"
+      ]
+    },
+    "top3-badge-3": {
+      "type": "Badge",
+      "props": {
+        "text": "PRs",
+        "variant": "default"
+      }
+    },
+    "top3-text-3": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp #24 paper_triage defensive parse (10 tests, +184/-15); #23 fractional-days fix approve-ready"
+      }
+    },
+    "sep-7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer-text": {
+      "type": "Text",
+      "props": {
+        "text": "+15 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
