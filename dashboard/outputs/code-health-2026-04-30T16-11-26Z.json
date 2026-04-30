@@ -1,0 +1,155 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert-critical",
+        "sep1",
+        "section-todos",
+        "sep2",
+        "section-issues",
+        "sep3",
+        "section-output"
+      ]
+    },
+    "alert-critical": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell Injection Vulnerability — Week 4 Unpatched",
+        "message": "dashboard/app/api/secrets/route.ts:96. Fix template available at auth/route.ts:46 (use stdin instead of -b template string).",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section-todos": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-todos",
+        "todo-badge",
+        "todo-item"
+      ]
+    },
+    "heading-todos": {
+      "type": "Heading",
+      "props": {
+        "text": "TODOs",
+        "level": "h3"
+      }
+    },
+    "todo-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "1 TODO",
+        "variant": "outline"
+      }
+    },
+    "todo-item": {
+      "type": "Text",
+      "props": {
+        "text": "workflow-security-audit/SKILL.md:36 (unchanged)"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section-issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-issues",
+        "issue-dashboard",
+        "issue-a2a",
+        "issue-numbers",
+        "issue-postprocess"
+      ]
+    },
+    "heading-issues": {
+      "type": "Heading",
+      "props": {
+        "text": "Open Issues",
+        "level": "h3"
+      }
+    },
+    "issue-dashboard": {
+      "type": "Text",
+      "props": {
+        "text": "Zero dashboard tests"
+      }
+    },
+    "issue-a2a": {
+      "type": "Text",
+      "props": {
+        "text": "a2a-server/src/index.ts: 578 lines (one line trim needed)"
+      }
+    },
+    "issue-numbers": {
+      "type": "Text",
+      "props": {
+        "text": "Open: ISS-001, ISS-002, ISS-012, ISS-014"
+      }
+    },
+    "issue-postprocess": {
+      "type": "Text",
+      "props": {
+        "text": "postprocess-notify.sh still missing"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section-output": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-output",
+        "output-article"
+      ]
+    },
+    "heading-output": {
+      "type": "Heading",
+      "props": {
+        "text": "Output",
+        "level": "h3"
+      }
+    },
+    "output-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Code Health Report",
+        "href": "articles/code-health-2026-04-30.md",
+        "source": "code-health"
+      }
+    }
+  }
+}
