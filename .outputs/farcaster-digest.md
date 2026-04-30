@@ -1,1 +1,1 @@
-farcaster digest skipped — sources: search=fail trending=fail channels=fail (NEYNAR_API_KEY still missing in env, HTTP 402 auth wall on all three Neynar endpoints; 4th consecutive recurrence after 2026-04-25/27/28 — operator config gap, no code fix possible)
+farcaster digest skipped — sources: search=fail trending=fail channels=fail (NEYNAR_API_KEY still missing in env, HTTP 402 on all three Neynar endpoints; 5th consecutive recurrence after 2026-04-25/27/28/29 — operator config gap, not a code fix). Recommend pausing schedule until secret is added.

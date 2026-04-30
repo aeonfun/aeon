@@ -48,4 +48,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-30,defi-overview,claude-opus-4-7,42,32635,2183145,103119
 2026-04-30,monitor-kalshi,claude-sonnet-4-6,1030,39170,1607848,107713
 2026-04-30,repo-actions,claude-opus-4-7,43,34429,2334258,81510
-2026-04-30,refresh-x,claude-opus-4-7,29,7108,990925,34175
+2026-04-30,farcaster-digest,claude-opus-4-7,37,6409,1138787,47927

@@ -1,0 +1,65 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Farcaster Digest"
+      },
+      "children": [
+        "alert-skip",
+        "stack-body"
+      ]
+    },
+    "alert-skip": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "Skipped",
+        "message": "NEYNAR_API_KEY missing in environment — HTTP 402 on all Neynar endpoints"
+      }
+    },
+    "stack-body": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-sources",
+        "text-history",
+        "text-classification",
+        "text-recommend"
+      ]
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "Failed sources: search=fail, trending=fail, channels=fail",
+        "variant": "body"
+      }
+    },
+    "text-history": {
+      "type": "Text",
+      "props": {
+        "text": "5th consecutive failure since 2026-04-25 (also 04-27, 04-28, 04-29)",
+        "variant": "caption"
+      }
+    },
+    "text-classification": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config gap, not a code fix",
+        "variant": "muted"
+      }
+    },
+    "text-recommend": {
+      "type": "Text",
+      "props": {
+        "text": "Recommend pausing schedule until secret is added",
+        "variant": "body"
+      }
+    }
+  }
+}
