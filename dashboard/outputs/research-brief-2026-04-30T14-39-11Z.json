@@ -1,0 +1,204 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief: Tamil Nadu DMK/TVK Calibration"
+      },
+      "children": [
+        "h_dmk",
+        "stat_dmk_price",
+        "text_dmk_context",
+        "sep1",
+        "h_tvk",
+        "text_tvk_intro",
+        "stat_tvk_market",
+        "stat_tvk_fair",
+        "stat_tvk_edge",
+        "sep2",
+        "h_exits",
+        "text_exits_consensus",
+        "text_axis_outlier",
+        "text_axis_bias",
+        "sep3",
+        "h_thesis",
+        "stat_dmk_prob",
+        "text_thesis_tvk",
+        "sep4",
+        "h_resolution",
+        "stat_market_size",
+        "text_count_date",
+        "sep5",
+        "article_link"
+      ]
+    },
+    "h_dmk": {
+      "type": "Heading",
+      "props": {
+        "text": "DMK Price Movement",
+        "level": "h2"
+      }
+    },
+    "stat_dmk_price": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK Contract",
+        "value": "86c",
+        "delta": "+8c",
+        "trend": "up"
+      }
+    },
+    "text_dmk_context": {
+      "type": "Text",
+      "props": {
+        "text": "Mar 26: 78c → today: 86c after exit polls landed. Original 04-27 underpricing flag is now ratified.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_tvk": {
+      "type": "Heading",
+      "props": {
+        "text": "TVK Opportunity",
+        "level": "h2"
+      }
+    },
+    "text_tvk_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Residual edge has migrated to TVK 8.5c contract.",
+        "variant": "lead"
+      }
+    },
+    "stat_tvk_market": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Price",
+        "value": "8.5c"
+      }
+    },
+    "stat_tvk_fair": {
+      "type": "Stat",
+      "props": {
+        "label": "Fair Value",
+        "value": "2-4c"
+      }
+    },
+    "stat_tvk_edge": {
+      "type": "Stat",
+      "props": {
+        "label": "Edge per Share",
+        "value": "4-6c"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_exits": {
+      "type": "Heading",
+      "props": {
+        "text": "Exit Polls Analysis",
+        "level": "h2"
+      }
+    },
+    "text_exits_consensus": {
+      "type": "Text",
+      "props": {
+        "text": "8 of 9 named exit polls give TVK 10-30 seats.",
+        "variant": "body"
+      }
+    },
+    "text_axis_outlier": {
+      "type": "Text",
+      "props": {
+        "text": "Only Axis My India is outlier: 98-120 seats.",
+        "variant": "body"
+      }
+    },
+    "text_axis_bias": {
+      "type": "Text",
+      "props": {
+        "text": "Axis My India (44,460 interviews): over-represents Brahmins 3x, halves OBC/MBC.",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h2"
+      }
+    },
+    "stat_dmk_prob": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK Wins Most Seats",
+        "value": ">92%"
+      }
+    },
+    "text_thesis_tvk": {
+      "type": "Text",
+      "props": {
+        "text": "TVK contract fair value 2-4c vs market 8.5c = 4-6c edge per share.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "h_resolution": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution",
+        "level": "h2"
+      }
+    },
+    "stat_market_size": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Size",
+        "value": "$19.9M"
+      }
+    },
+    "text_count_date": {
+      "type": "Text",
+      "props": {
+        "text": "Count resolves May 4.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Research Brief: Tamil Nadu DMK/TVK Calibration",
+        "href": "articles/research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30.md",
+        "source": "research-brief"
+      }
+    }
+  }
+}
