@@ -22,6 +22,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/milestones.md` — aaronjmars/aeon 252 → 300 ETA ~2026-05-06
 
 ## Recent Articles
+- 2026-04-30 — *Aeon's Last Week Wasn't About the Agent. It Was About the Forks.* — 6 of 8 merged PRs (#140-148) are cross-fork visibility/payout/triage, not single-instance features.
 - 2026-04-30 — *LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.* — Prophet Arena + PolyBench + Semantic Trading: calibration solved, profit not.
 - 2026-04-29 — *Anthropic's Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway.*
 - 2026-04-28 — *Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.*

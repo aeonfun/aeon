@@ -1,0 +1,56 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Aeon's Last Week Wasn't About the Agent. It Was About the Forks."
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "thesis-label",
+        "thesis-text",
+        "separator",
+        "article-link"
+      ]
+    },
+    "thesis-label": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis:",
+        "variant": "lead"
+      }
+    },
+    "thesis-text": {
+      "type": "Text",
+      "props": {
+        "text": "6 of 8 merged PRs into aaronjmars/aeon (2026-04-23 to 04-30) are fork-fleet infrastructure — cross-fork visibility, ranking, USDC payout, triage — not single-instance agent features.",
+        "variant": "body"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "article-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Read full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-04-30.md",
+        "source": "repo-article"
+      }
+    }
+  }
+}
