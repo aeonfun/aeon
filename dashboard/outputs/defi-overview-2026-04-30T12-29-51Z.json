@@ -1,0 +1,606 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview — 2026-04-30",
+        "description": "Mixed: TVL flat, DEX vol pulling back, Sky/USDS shedding $560M"
+      },
+      "children": [
+        "tvl-stat",
+        "sep1",
+        "chains-heading",
+        "chains-table",
+        "sep2",
+        "movers-heading",
+        "movers-stack",
+        "sep3",
+        "fees-heading",
+        "fees-table",
+        "fees-notes",
+        "sep4",
+        "fees-beat-heading",
+        "fees-beat-stack",
+        "sep5",
+        "dex-heading",
+        "dex-stat",
+        "dex-top-table",
+        "sep6",
+        "stables-heading",
+        "stables-stat",
+        "stables-items",
+        "sep7",
+        "real-heading",
+        "real-yield-stack",
+        "sep8",
+        "incentive-heading",
+        "incentive-stack",
+        "sep9",
+        "sources-text"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$83.4B",
+        "delta": "+0.2% 24h / −2.8% 7d"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Chains",
+        "level": "h3"
+      }
+    },
+    "chains-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$44.9B",
+            "+0.4%"
+          ],
+          [
+            "BSC",
+            "$5.45B",
+            "−0.7%"
+          ],
+          [
+            "Solana",
+            "$5.41B",
+            "−0.9%"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "movers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers",
+        "level": "h3"
+      }
+    },
+    "movers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "mover1",
+        "mover2",
+        "movers-note"
+      ]
+    },
+    "mover1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mover1-title",
+        "mover1-detail"
+      ]
+    },
+    "mover1-title": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Plasma −6.9% ($600M → $559M)"
+      }
+    },
+    "mover1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Day-4 incentive-unwind continuation, 7d −44%; no obvious catalyst",
+        "variant": "muted"
+      }
+    },
+    "mover2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mover2-title",
+        "mover2-detail"
+      ]
+    },
+    "mover2-title": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Spark Liquidity Layer −21% ($2.5B → $2.0B, Onchain Capital Allocator)"
+      }
+    },
+    "mover2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Sky ecosystem unwind, matches USDS supply −6.7% 1d",
+        "variant": "muted"
+      }
+    },
+    "movers-note": {
+      "type": "Text",
+      "props": {
+        "text": "No chain up cleared 5%/$500M gate; no protocol up cleared 10%/$100M",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fees-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.4M",
+            "flat 7d"
+          ],
+          [
+            "Circle USDC",
+            "$6.5M",
+            "flat 7d"
+          ],
+          [
+            "Hyperliquid Perps",
+            "$2.24M",
+            "+35% 1d, +3.7% 7d"
+          ],
+          [
+            "Aave V3",
+            "$1.67M",
+            "−52% 7d"
+          ]
+        ]
+      }
+    },
+    "fees-notes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fees-note1",
+        "fees-note2"
+      ]
+    },
+    "fees-note1": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid reverses yesterday's −28% 7d contraction",
+        "variant": "muted"
+      }
+    },
+    "fees-note2": {
+      "type": "Text",
+      "props": {
+        "text": "Aave V3 deeper than yesterday −27% → −52% 7d",
+        "variant": "muted"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fees-beat-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Beating TVL",
+        "level": "h3"
+      }
+    },
+    "fees-beat-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fb1",
+        "fb2"
+      ]
+    },
+    "fb1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fb1-main",
+        "fb1-detail"
+      ]
+    },
+    "fb1-main": {
+      "type": "Text",
+      "props": {
+        "text": "PumpSwap — fees +39% / TVL +1% (7d), $1.97M 24h"
+      }
+    },
+    "fb1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Solana memecoin venue heating",
+        "variant": "muted"
+      }
+    },
+    "fb2": {
+      "type": "Text",
+      "props": {
+        "text": "PancakeSwap AMM — fees +45% / TVL −0.2% (7d), $148k 24h"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "dex-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX Volume (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total DEX Volume",
+        "value": "$6.32B",
+        "delta": "−5.6% 1d / −25% 7d"
+      }
+    },
+    "dex-top-table": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dex-label",
+        "dex-venues"
+      ]
+    },
+    "dex-label": {
+      "type": "Text",
+      "props": {
+        "text": "Top venues:",
+        "variant": "caption"
+      }
+    },
+    "dex-venues": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Venue",
+          "Volume (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$737M",
+            "−29% 1d"
+          ],
+          [
+            "Uniswap V3",
+            "$595M",
+            "+49% 1d"
+          ],
+          [
+            "PancakeSwap V3",
+            "$512M",
+            "+46% 1d"
+          ]
+        ]
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stables-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Stablecoin Supply",
+        "value": "$317.1B",
+        "delta": "−0.5% 1d / −0.6% 7d"
+      }
+    },
+    "stables-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stable1",
+        "stable2",
+        "stable3"
+      ]
+    },
+    "stable1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "s1-main",
+        "s1-detail"
+      ]
+    },
+    "s1-main": {
+      "type": "Text",
+      "props": {
+        "text": "USDS −6.7% on $7.8B"
+      }
+    },
+    "s1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Sky unwind drives Spark Layer −21%",
+        "variant": "muted"
+      }
+    },
+    "stable2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "s2-main",
+        "s2-detail"
+      ]
+    },
+    "s2-main": {
+      "type": "Text",
+      "props": {
+        "text": "USDe +2.6% on $3.9B"
+      }
+    },
+    "s2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Day 5 off Ethena trough",
+        "variant": "muted"
+      }
+    },
+    "stable3": {
+      "type": "Text",
+      "props": {
+        "text": "PYUSD −2.3% on $3.4B"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {}
+    },
+    "real-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real Yield (sustainable, ≥$10M)",
+        "level": "h3"
+      }
+    },
+    "real-yield-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "real1",
+        "real2",
+        "real3"
+      ]
+    },
+    "real1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "real1-main",
+        "real1-detail"
+      ]
+    },
+    "real1-main": {
+      "type": "Text",
+      "props": {
+        "text": "USDC-CBBTC (Uniswap V3, Base) — 29.8% apyBase, $10.7M"
+      }
+    },
+    "real1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "IL, mean30d 29.9%",
+        "variant": "muted"
+      }
+    },
+    "real2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "real2-main",
+        "real2-detail"
+      ]
+    },
+    "real2-main": {
+      "type": "Text",
+      "props": {
+        "text": "APT (Amnis, Aptos) — 28.7% apyBase, $18.8M"
+      }
+    },
+    "real2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "No IL, mean30d 14.7% — spike persisting from 04-29",
+        "variant": "muted"
+      }
+    },
+    "real3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "real3-main",
+        "real3-detail"
+      ]
+    },
+    "real3-main": {
+      "type": "Text",
+      "props": {
+        "text": "WBTC-USDC (Uniswap V4, ETH) — 16.2% apyBase, $19.2M"
+      }
+    },
+    "real3-detail": {
+      "type": "Text",
+      "props": {
+        "text": "IL",
+        "variant": "muted"
+      }
+    },
+    "sep8": {
+      "type": "Separator",
+      "props": {}
+    },
+    "incentive-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive Yield (points/emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "inc1",
+        "inc2"
+      ]
+    },
+    "inc1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "inc1-main"
+      ]
+    },
+    "inc1-main": {
+      "type": "Text",
+      "props": {
+        "text": "SDCRV (Stake DAO, ETH) — 24.0% via CRV+CVX+scrvUSD, $27.8M"
+      }
+    },
+    "inc2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "inc2-main",
+        "inc2-detail"
+      ]
+    },
+    "inc2-main": {
+      "type": "Text",
+      "props": {
+        "text": "CVXCRV (Convex, ETH) — 23.9% via CRV+CVX+scrvUSD, $33.6M"
+      }
+    },
+    "inc2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "4th day same pair",
+        "variant": "muted"
+      }
+    },
+    "sep9": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: tvl=ok dex=ok fees=ok stables=ok yields=ok · /v2/chains schema-drift: used per-chain /v2/historicalChainTvl (top 20, Plume 404 dropped) | var: none",
+        "variant": "caption"
+      }
+    }
+  }
+}

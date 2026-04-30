@@ -1,39 +1,39 @@
-*DeFi — 2026-04-29* — Mixed: TVL drifting up after Mon dip, DEX vol bouncing, stables flat
+*DeFi — 2026-04-30* — Mixed: TVL flat, DEX vol pulling back, Sky/USDS shedding $560M
 
-*TVL:* $84.8B (+1.0% 24h, −0.7% 7d) — partial reversal of yesterday's −2.6% 24h slide
+*TVL:* $83.4B (+0.2% 24h, −2.8% 7d)
 
 *Top chains*
-1. Ethereum — $45.7B (+1.7%)
-2. BSC — $5.5B
-3. Solana — $5.5B (−1.5% 7d)
+1. Ethereum — $44.9B (+0.4%)
+2. BSC — $5.45B (−0.7%)
+3. Solana — $5.41B (−0.9%)
 
-*Movers — protocols*
-↑ Maple +14.5% ($1.69B → $1.93B, Lending, ETH+SOL) — no obvious catalyst
-↓ Superstate USTB −10.6% ($924M → $826M, RWA, ETH+Plume+SOL) — no obvious catalyst
-
-_Chains: none cleared 5%/24h. Plasma 1d +3.1% but 7d −49% — incentive-unwind day 3._
+*Movers*
+↓ Plasma −6.9% ($600M → $559M) — day-4 incentive-unwind continuation, 7d −44%; no obvious catalyst
+↓ Spark Liquidity Layer −21% ($2.5B → $2.0B, Onchain Capital Allocator) — Sky ecosystem unwind, matches USDS supply −6.7% 1d
+(no chain up cleared 5%/$500M gate; no protocol up cleared 10%/$100M)
 
 *Fees leaders (24h)*
-1. Tether — $16.5M (flat vs 7d avg)
-2. Circle USDC — $6.6M (flat)
-3. Canton — $2.3M (+2.7%)
+1. Tether — $16.4M (flat 7d)
+2. Circle USDC — $6.5M (flat)
+3. ↔ Hyperliquid Perps — $2.24M (+35% 1d, +3.7% 7d) — reverses yesterday's −28% 7d contraction
+   (Aave V3 $1.67M still −52% 7d, deeper than yesterday's −27%)
 
-*Fees beating TVL (7d)*
-• Meteora DLMM — fees +31% / TVL −11% — Solana DEX, real demand outrunning capital
-• Centrifuge — fees +61% / TVL −10% — RWA fees back on a $1.79B base
+*Fees beating TVL*
+• PumpSwap — fees +39% / TVL +1% (7d), $1.97M 24h — Solana memecoin venue heating
+• PancakeSwap AMM — fees +45% / TVL −0.2% (7d), $148k 24h
 
-*DEX vol (24h):* $6.6B (+11% 1d, −22% 7d)  top: Uniswap V4 $974M (+45%), BisonFi $760M (Solana new entrant, 7d-ago=0), Uniswap V3 $400M (−29%)
+*DEX vol (24h):* $6.32B (−5.6% 1d, −25% 7d) — top: Uniswap V4 $737M (−29% 1d), Uniswap V3 $595M (+49% 1d), PancakeSwap V3 $512M (+46% 1d)
 
-*Stables:* $320.4B (+0.36% 1d)  — USDe +1.24% on $3.80B (recovery day 4 off the −20% 7d Ethena unwind); USDG +1.6%
+*Stables:* $317.1B (−0.5% 1d, −0.6% 7d) — USDS −6.7% on $7.8B (Sky unwind drives Spark Layer −21%); USDe +2.6% on $3.9B (day 5 off Ethena trough); PYUSD −2.3% on $3.4B
 
 *Real yield (sustainable, ≥$10M, filtered)*
-• APT (Amnis, Aptos) — 25.2% apyBase ($19M, mean30d 14.2%)
-• USDC-CBBTC (Uniswap V3, Base, IL) — 17.7% apyBase ($11M)
-• NOPAL (Nest Credit, Plume) — 16.7% apyBase ($14M)
+• USDC-CBBTC (Uniswap V3, Base) — 29.8% apyBase, $10.7M (IL, mean30d 29.9%)
+• APT (Amnis, Aptos) — 28.7% apyBase, $18.8M (no IL, mean30d 14.7% — spike persisting from 04-29)
+• WBTC-USDC (Uniswap V4, ETH) — 16.2% apyBase, $19.2M (IL)
 
 *Incentive yield (points / emissions, ≥$25M)*
-• CVXCRV (Convex, ETH) — 24.4% via CRV/CVX/scrvUSD ($33M)
-• SDCRV (Stake DAO, ETH) — 23.8% via CRV/scrvUSD ($28M)
+• SDCRV (Stake DAO, ETH) — 24.0% via CRV+CVX+scrvUSD, $27.8M
+• CVXCRV (Convex, ETH) — 23.9% via CRV+CVX+scrvUSD, $33.6M (4th day same pair)
 
-_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none_
+_sources: tvl=ok dex=ok fees=ok stables=ok yields=ok · /v2/chains schema-drift: used per-chain /v2/historicalChainTvl (top 20, Plume 404 dropped) | var: none_
 
