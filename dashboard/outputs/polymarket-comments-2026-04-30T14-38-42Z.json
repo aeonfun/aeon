@@ -1,0 +1,676 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket-comments — 2026-04-30 (politics+crypto narrative-shift)"
+      },
+      "children": [
+        "market-1",
+        "sep-1",
+        "market-2",
+        "sep-2",
+        "market-3",
+        "sep-3",
+        "market-4",
+        "sep-4",
+        "market-5"
+      ]
+    },
+    "market-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1-title",
+        "m1-stats",
+        "m1-comment-1",
+        "m1-comment-2",
+        "m1-citation"
+      ]
+    },
+    "m1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "US x Iran ceasefire ext by Apr 22?",
+        "level": "h2"
+      }
+    },
+    "m1-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m1-stat-outcome",
+        "m1-stat-volume",
+        "m1-stat-round"
+      ]
+    },
+    "m1-stat-outcome": {
+      "type": "Stat",
+      "props": {
+        "label": "NO outcome",
+        "value": "99.85%"
+      }
+    },
+    "m1-stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (v24)",
+        "value": "$65.6M"
+      }
+    },
+    "m1-stat-round": {
+      "type": "Badge",
+      "props": {
+        "text": "UMA round-3",
+        "variant": "default"
+      }
+    },
+    "m1-comment-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1-c1-handle",
+        "m1-c1-text"
+      ]
+    },
+    "m1-c1-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Pedro1414 (Equatorial-Lung)",
+        "level": "h4"
+      }
+    },
+    "m1-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Coordinator of organized YES rally, \"media company\" + Disc channel + planned live broadcast on vote-count day; staying till end, \"$20M is worth it, will go to court if NO\" (38x+27x+24x+21x stack, recurring claim).",
+        "variant": "body"
+      }
+    },
+    "m1-comment-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1-c2-handle",
+        "m1-c2-text"
+      ]
+    },
+    "m1-c2-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "Dangerous-Sense",
+        "level": "h4"
+      }
+    },
+    "m1-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Previously Lebanon-watcher; now lead UMA-rules counsel — round-2 was ruled 99.5% \"Early Request\" so NO bond was forfeit; cites that as basis for round-3 reversal (28x).",
+        "variant": "body"
+      }
+    },
+    "m1-citation": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1-cit-label",
+        "m1-cit-text"
+      ]
+    },
+    "m1-cit-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Citation chain",
+        "level": "h4"
+      }
+    },
+    "m1-cit-text": {
+      "type": "Text",
+      "props": {
+        "text": "Blockonomi + CoinCentral writeups + Trump Truth Social Apr 21 + Iran's Apr 22 statement that US \"broke the ceasefire\" (implicit recognition).",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2-title",
+        "m2-stats",
+        "m2-comment-1",
+        "m2-comment-2",
+        "m2-fresh"
+      ]
+    },
+    "m2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Israel x Hez ceasefire ext by Apr 26?",
+        "level": "h2"
+      }
+    },
+    "m2-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m2-stat-outcome",
+        "m2-stat-volume",
+        "m2-stat-round"
+      ]
+    },
+    "m2-stat-outcome": {
+      "type": "Stat",
+      "props": {
+        "label": "YES outcome",
+        "value": "99.85%"
+      }
+    },
+    "m2-stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (v24)",
+        "value": "$4.0M"
+      }
+    },
+    "m2-stat-round": {
+      "type": "Badge",
+      "props": {
+        "text": "UMA round-2",
+        "variant": "default"
+      }
+    },
+    "m2-comment-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2-c1-handle",
+        "m2-c1-text"
+      ]
+    },
+    "m2-c1-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "Internal-Slope",
+        "level": "h4"
+      }
+    },
+    "m2-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "\"Supplementary info changed object of media consensus mid-market — should be Israel x Hezbollah, ruling cites Israel x Lebanon\"; pushing for vote extension. (21x, 10x)",
+        "variant": "body"
+      }
+    },
+    "m2-comment-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2-c2-handle",
+        "m2-c2-text"
+      ]
+    },
+    "m2-c2-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "Accomplished-Stain",
+        "level": "h4"
+      }
+    },
+    "m2-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Names @Clear-Corridor, 150,362 YES shares ($36k) — flags as hostile-oracle takeover playbook, same shape as prior faulty-YES forced market. (11x)",
+        "variant": "body"
+      }
+    },
+    "m2-fresh": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2-fresh-label",
+        "m2-fresh-text"
+      ]
+    },
+    "m2-fresh-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Fresh today",
+        "level": "h4"
+      }
+    },
+    "m2-fresh-text": {
+      "type": "Text",
+      "props": {
+        "text": "IDF chief on-record \"no ceasefire in south Lebanon\" (timesofisrael Apr 30); Hezbollah lawmaker \"rejects extension\" (CBS Apr 24).",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3-title",
+        "m3-stats",
+        "m3-section-1",
+        "m3-section-2",
+        "m3-section-3",
+        "m3-alert"
+      ]
+    },
+    "m3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu CM May 4",
+        "level": "h2"
+      }
+    },
+    "m3-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "m3-stat-dmk",
+        "m3-stat-tvk",
+        "m3-stat-admk"
+      ]
+    },
+    "m3-stat-dmk": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK",
+        "value": "87%"
+      }
+    },
+    "m3-stat-tvk": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK",
+        "value": "8.25%"
+      }
+    },
+    "m3-stat-admk": {
+      "type": "Stat",
+      "props": {
+        "label": "ADMK",
+        "value": "6.8%"
+      }
+    },
+    "m3-section-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3-s1-label",
+        "m3-s1-text"
+      ]
+    },
+    "m3-s1-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Pollster war kicked off Apr 29",
+        "level": "h4"
+      }
+    },
+    "m3-s1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Axis My India projecting DMK 35 / TVK 35 / ADMK 23 (cited 5x by Digital-Archaeologist with 2021+2024 calibration record; hit BJP Delhi 48 vs consensus AAP). Volume (v24) on TVK alone: $104K.",
+        "variant": "body"
+      }
+    },
+    "m3-section-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3-s2-label",
+        "m3-s2-text"
+      ]
+    },
+    "m3-s2-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Counter @French-Temptation (Apr 30)",
+        "level": "h4"
+      }
+    },
+    "m3-s2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Axis paid by Aadhav Arjuna; DMK polls paid by Sabareesan (Stalin son-in-law); JVC the realistic ≥94%-hit-rate pollster, calls ADMK.",
+        "variant": "body"
+      }
+    },
+    "m3-section-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3-s3-label",
+        "m3-s3-text"
+      ]
+    },
+    "m3-s3-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Today's Chanakya (per @Alert-Identification)",
+        "level": "h4"
+      }
+    },
+    "m3-s3-text": {
+      "type": "Text",
+      "props": {
+        "text": "TVK out, AIDMK + TVK cancel, DMK wins big — directly contradicts Axis.",
+        "variant": "body"
+      }
+    },
+    "m3-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Position alert",
+        "message": "DMK 80% → 87% in 48h; operator's contrarian DMK-fade hook from MEMORY.md is now 7pp deeper underwater.",
+        "type": "warning"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4-title",
+        "m4-badge",
+        "m4-comment-1",
+        "m4-comment-2",
+        "m4-comment-3"
+      ]
+    },
+    "m4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "US x Iran permanent peace deal Apr 30",
+        "level": "h2"
+      }
+    },
+    "m4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Resolves today",
+        "variant": "secondary"
+      }
+    },
+    "m4-comment-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4-c1-handle",
+        "m4-c1-text"
+      ]
+    },
+    "m4-c1-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Quarrelsome-Service (Apr 30 02:26)",
+        "level": "h4"
+      }
+    },
+    "m4-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pakistani mediators say \"talks much more positive than media portrays\" — same handle/source from Apr 28 Al-Arabiya tape, recurring.",
+        "variant": "body"
+      }
+    },
+    "m4-comment-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4-c2-handle",
+        "m4-c2-text"
+      ]
+    },
+    "m4-c2-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Grimy-Vibrissae",
+        "level": "h4"
+      }
+    },
+    "m4-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Explicit conditional — Trump won't lift blockade without deal, Iran won't get Hormuz resolution without blockade end, so timing-pressured on both sides.",
+        "variant": "body"
+      }
+    },
+    "m4-comment-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4-c3-handle",
+        "m4-c3-text"
+      ]
+    },
+    "m4-c3-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Constant-Optimization tail-risk",
+        "level": "h4"
+      }
+    },
+    "m4-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Bet that YES holders argue \"Trump leaving Iran + claiming win = bilateral permanent peace agreement\" — UMA-loophole resolution play.",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5-title",
+        "m5-stats",
+        "m5-comment-1",
+        "m5-comment-2",
+        "m5-comment-3"
+      ]
+    },
+    "m5-title": {
+      "type": "Heading",
+      "props": {
+        "text": "MegaETH FDV (TGE today ~11 UTC)",
+        "level": "h2"
+      }
+    },
+    "m5-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "m5-stat-1",
+        "m5-stat-2",
+        "m5-stat-vol"
+      ]
+    },
+    "m5-stat-1": {
+      "type": "Stat",
+      "props": {
+        "label": ">$1.5B",
+        "value": "67.5%"
+      }
+    },
+    "m5-stat-2": {
+      "type": "Stat",
+      "props": {
+        "label": ">$2B",
+        "value": "26.5%"
+      }
+    },
+    "m5-stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (v24)",
+        "value": "$1.2M"
+      }
+    },
+    "m5-comment-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5-c1-handle",
+        "m5-c1-text"
+      ]
+    },
+    "m5-c1-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Murky-Cowboy (Apr 30)",
+        "level": "h4"
+      }
+    },
+    "m5-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-market trading \"close to $2B+ FDV\" — suggests >$1.5B mispriced low.",
+        "variant": "body"
+      }
+    },
+    "m5-comment-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5-c2-handle",
+        "m5-c2-alert"
+      ]
+    },
+    "m5-c2-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Pink-Sound (Apr 30)",
+        "level": "h4"
+      }
+    },
+    "m5-c2-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Listing rumor",
+        "message": "BINANCE WILL NOW LIST MEGA — unverified.",
+        "type": "info"
+      }
+    },
+    "m5-comment-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5-c3-handle",
+        "m5-c3-text"
+      ]
+    },
+    "m5-c3-handle": {
+      "type": "Heading",
+      "props": {
+        "text": "@Lumbering-Analyst (Apr 26)",
+        "level": "h4"
+      }
+    },
+    "m5-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "@ArmageddonRewardsBilly is team insider, manipulating futures + buying NO. @Fearful-Concentrate confirms \"one of the most profitable FDV-after-launch traders\" — track-record handle to scrape on next launches.",
+        "variant": "body"
+      }
+    }
+  }
+}
