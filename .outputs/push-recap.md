@@ -1,11 +1,9 @@
-*Push Recap — 2026-04-30*
-aaronjmars/aeon — SHIPPING — thread-formatter skill auto-drafts a 5-tweet thread from each day's logs.
+## Summary
 
-Shipped to users:
-• `f07d975` — thread-formatter (PR #148): new opt-in skill that scores today's memory log on a fixed signal table (PR shipped +6, star milestone +5, ≥15% price move +5, skill built +4, notable PR +3, ≥20-like tweet +3) and emits a paste-ready 5-tweet thread to articles/thread-DATE.md. 280-char hard cap, no emojis/hashtags/numbering, 3-day topic dedup, NO_SIGNAL exit when top score < 3. Touches skills/thread-formatter/SKILL.md (+190), aeon.yml (registers at 30 17 * * * UTC, enabled:false), skills.json (catalog entry, category social).
+Ran `push-recap` for `aaronjmars/aeon` (sole repo in `memory/watched-repos.md`).
 
-Shape: 1 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR
-Volume: 3 files, +203/-0 lines
-
-Full recap: https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-30.md
-
+- **Window:** 2026-04-29T21:17 → 2026-04-30T21:17 UTC
+- **Result:** `PUSH_RECAP_DUPLICATE` — the 24h window contains exactly one commit (`f07d975`, PR #148 thread-formatter) which was already fully covered by the 16:07 UTC run today. Latest push to the repo is 2026-04-30T13:12:31Z; nothing new since.
+- **Action taken:** Logged a duplicate-run entry to `memory/logs/2026-04-30.md`. Did not overwrite `articles/push-recap-2026-04-30.md` (already substantive). Did not re-notify — the channel-discipline rule trumps a literal re-fire of the same recap.
+- **Sources:** all `ok` (gh events, commits, PR list).
+- **Follow-up:** The skill could grow an explicit dedup check ("if today's article exists and the commit/PR sets match, skip silently") to formalize this case rather than leaving it to the operator's interpretation of the high-signal-channel rule.
