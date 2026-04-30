@@ -1,0 +1,267 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-04-30"
+      },
+      "children": [
+        "intro",
+        "sep1",
+        "shipped-heading",
+        "shipped-detail",
+        "sep2",
+        "metrics-section",
+        "sep3",
+        "recap-link"
+      ]
+    },
+    "intro": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — SHIPPING — thread-formatter skill auto-drafts a 5-tweet thread from each day's logs."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "shipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users:",
+        "level": "h3"
+      }
+    },
+    "shipped-detail": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "commit-line",
+        "desc-stack",
+        "files-stack"
+      ]
+    },
+    "commit-line": {
+      "type": "Text",
+      "props": {
+        "text": "f07d975 — thread-formatter (PR #148)"
+      }
+    },
+    "desc-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "desc-main",
+        "desc-scoring",
+        "desc-constraints"
+      ]
+    },
+    "desc-main": {
+      "type": "Text",
+      "props": {
+        "text": "New opt-in skill that scores today's memory log on a fixed signal table and emits a paste-ready 5-tweet thread to articles/thread-DATE.md"
+      }
+    },
+    "desc-scoring": {
+      "type": "Text",
+      "props": {
+        "text": "Scoring: PR shipped +6, star milestone +5, ≥15% price move +5, skill built +4, notable PR +3, ≥20-like tweet +3"
+      }
+    },
+    "desc-constraints": {
+      "type": "Text",
+      "props": {
+        "text": "280-char hard cap, no emojis/hashtags/numbering, 3-day topic dedup, NO_SIGNAL exit when top score < 3"
+      }
+    },
+    "files-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "files-heading",
+        "file1",
+        "file2",
+        "file3"
+      ]
+    },
+    "files-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Files touched:",
+        "variant": "caption"
+      }
+    },
+    "file1": {
+      "type": "Text",
+      "props": {
+        "text": "skills/thread-formatter/SKILL.md (+190)"
+      }
+    },
+    "file2": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml (registers at 30 17 * * * UTC, enabled:false)"
+      }
+    },
+    "file3": {
+      "type": "Text",
+      "props": {
+        "text": "skills.json (catalog entry, category social)"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "shape-section",
+        "volume-section"
+      ]
+    },
+    "shape-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape-heading",
+        "shape-grid"
+      ]
+    },
+    "shape-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Shape:",
+        "variant": "lead"
+      }
+    },
+    "shape-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "md"
+      },
+      "children": [
+        "stat-uv",
+        "stat-int",
+        "stat-inf",
+        "stat-bot",
+        "stat-pr"
+      ]
+    },
+    "stat-uv": {
+      "type": "Stat",
+      "props": {
+        "label": "User-visible",
+        "value": "1"
+      }
+    },
+    "stat-int": {
+      "type": "Stat",
+      "props": {
+        "label": "Internal",
+        "value": "0"
+      }
+    },
+    "stat-inf": {
+      "type": "Stat",
+      "props": {
+        "label": "Infra",
+        "value": "0"
+      }
+    },
+    "stat-bot": {
+      "type": "Stat",
+      "props": {
+        "label": "Bot-filtered",
+        "value": "0"
+      }
+    },
+    "stat-pr": {
+      "type": "Stat",
+      "props": {
+        "label": "Merged PR",
+        "value": "1"
+      }
+    },
+    "volume-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "volume-heading",
+        "volume-grid"
+      ]
+    },
+    "volume-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Volume:",
+        "variant": "lead"
+      }
+    },
+    "volume-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-files",
+        "stat-lines"
+      ]
+    },
+    "stat-files": {
+      "type": "Stat",
+      "props": {
+        "label": "Files",
+        "value": "3"
+      }
+    },
+    "stat-lines": {
+      "type": "Stat",
+      "props": {
+        "label": "Lines changed",
+        "value": "+203/-0"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recap-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-04-30.md"
+      }
+    }
+  }
+}
