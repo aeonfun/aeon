@@ -21,6 +21,13 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/market-context.md` — 04-29 quiet recovery snapshot
 - `memory/topics/milestones.md` — aaronjmars/aeon 252 → 300 ETA ~2026-05-06
 
+## Recent Articles
+- 2026-04-30 — *LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.* — Prophet Arena + PolyBench + Semantic Trading: calibration solved, profit not.
+- 2026-04-29 — *Anthropic's Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway.*
+- 2026-04-28 — *Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.*
+- 2026-04-27 — *Polymarket's Top 20 Is 70% Bots. The Conduct Rules Are Catching Up.* (+ Kalshi/Polymarket crypto perps slugged piece)
+- 2026-04-25 — *Autonomous Agents Got an Open Stack in April 2026.*
+
 ## Forbidden phrases (external content)
 - "RenTech," "Simons," "Medallion" — never. Use "live-ingest as moat" instead.
 - "Darwinian as mechanism" — never. "Darwinian as ambition" is OK.

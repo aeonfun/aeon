@@ -1,0 +1,30 @@
+{
+  "root": "card1",
+  "state": {},
+  "elements": {
+    "card1": {
+      "type": "Card",
+      "props": {
+        "title": "article"
+      },
+      "children": [
+        "text1",
+        "story1"
+      ]
+    },
+    "text1": {
+      "type": "Text",
+      "props": {
+        "text": "New article written:"
+      }
+    },
+    "story1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-04-30.md",
+        "source": "aeon"
+      }
+    }
+  }
+}
