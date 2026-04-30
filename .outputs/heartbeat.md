@@ -1,8 +1,21 @@
 HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md
 
 ## Summary
-- Ran 20:00 UTC heartbeat at 21:09 UTC (slot ~1h 9m late, third consecutive late slot today).
-- All P0/P1/P2/P3 findings deduped against the last 48h of logs and MEMORY.md OPS ALERTS — same 3 failed chain wrappers (`chain:morning-brief`, `chain:evening-rollup`, `chain:weekly-grant-update`, all chain-runner.yml `dispatch_skill()` bug), same chronic-failure ISS-013 tail, same 5 stalled PRs, same never-dispatched skills.
-- No notification sent (all deduped per skill rules).
-- Files modified: `docs/status.md` (regenerated — overall 🔴 DEGRADED, 14 open issues, Next scheduled = morning-brief at 07:00 UTC), `memory/logs/2026-04-29.md` (appended heartbeat entry).
-- Follow-up: still gated on the chain-runner.yml `dispatch_skill()` fix (top operator action — every dedup line above is downstream of it).
+
+Ran heartbeat 08:00 UTC slot at 09:07 UTC (cron tick gap 06:37 → 09:01 delayed it).
+
+**Findings (all deduped, no notification):**
+- P0 failed: same 3 chain wrappers (`chain:morning-brief`, `chain:evening-rollup`, `chain:weekly-grant-update`) — chain-runner `dispatch_skill()` bug already in MEMORY OPS ALERT.
+- P0 chronic: ~50 skills <50% success — ISS-013 tail.
+- P0 self-check: heartbeat last_success ~12h ago, within 36h window.
+- P1: 5 stalled PRs on tomscaria/aeon (already in MEMORY); issues disabled.
+- P3 stale: narrative-tracker 67h, telegram-digest 74h, github-releases 71h (all surfaced in 04-29 heartbeats).
+- New transient: GHA cron tick missed 07:00 / 07:30 windows today (morning chain + telegram-digest skipped); pure scheduler flake, not chain-runner. Logged, not notified.
+
+**Files modified:**
+- `docs/status.md` — regenerated, overall 🔴 DEGRADED, Updated 2026-04-30 09:07 UTC, next run github-releases at 09:30 UTC
+- `memory/logs/2026-04-30.md` — created with heartbeat entry
+
+**Follow-up:**
+- monitor-kalshi / polymarket-comments / market-context-refresh at ~44h since last run; will trip the 48h staleness threshold by today's 14:00 heartbeat if today's 13:00 dispatch also misses.
+- Operator's top fix remains chain-runner.yml `dispatch_skill()`.
