@@ -47,3 +47,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-30,heartbeat,claude-opus-4-7,38,27722,1840122,141267
 2026-04-30,defi-overview,claude-opus-4-7,42,32635,2183145,103119
 2026-04-30,monitor-kalshi,claude-sonnet-4-6,1030,39170,1607848,107713
+2026-04-30,fleet-control,claude-opus-4-7,17,2627,479431,26540
