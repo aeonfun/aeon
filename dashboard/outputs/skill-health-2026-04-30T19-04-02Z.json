@@ -1,0 +1,256 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health — 2026-04-30"
+      },
+      "children": [
+        "status_alert",
+        "sep1",
+        "degraded_section",
+        "sep2",
+        "nodata_section",
+        "sep3",
+        "healthy_section",
+        "sep4",
+        "delta_section",
+        "sep5",
+        "issues_section"
+      ]
+    },
+    "status_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "DEGRADED(60)",
+        "message": "Systemic: ISS-013 zero-token burst tail — 60 skills affected",
+        "type": "warning"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "degraded_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "degraded_heading",
+        "degraded_table",
+        "degraded_more"
+      ]
+    },
+    "degraded_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded / Flapping (top 5 by stale success)",
+        "level": "h3"
+      }
+    },
+    "degraded_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Success Rate",
+          "Runs",
+          "Last OK",
+          "Issue"
+        ],
+        "rows": [
+          [
+            "channel-recap",
+            "8%",
+            "12",
+            "3d",
+            "ISS-013"
+          ],
+          [
+            "fork-contributor-leaderboard",
+            "8%",
+            "12",
+            "3d",
+            "ISS-013"
+          ],
+          [
+            "fork-skill-digest",
+            "9%",
+            "11",
+            "3d",
+            "ISS-013"
+          ],
+          [
+            "github-releases",
+            "10%",
+            "21",
+            "3d",
+            "ISS-013"
+          ],
+          [
+            "skill-graph",
+            "8%",
+            "13",
+            "3d",
+            "ISS-013"
+          ]
+        ]
+      }
+    },
+    "degraded_more": {
+      "type": "StoryLink",
+      "props": {
+        "title": "+55 more degraded skills",
+        "href": "memory/issues/INDEX.md",
+        "source": "skill-health"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "nodata_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "nodata_heading",
+        "nodata_text",
+        "nodata_action"
+      ]
+    },
+    "nodata_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "No Data (6)",
+        "level": "h3"
+      }
+    },
+    "nodata_text": {
+      "type": "Text",
+      "props": {
+        "text": "hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog",
+        "variant": "body"
+      }
+    },
+    "nodata_action": {
+      "type": "Badge",
+      "props": {
+        "text": "DISPATCH-SKILL",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "healthy_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "healthy_heading",
+        "healthy_stat"
+      ]
+    },
+    "healthy_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Healthy",
+        "level": "h3"
+      }
+    },
+    "healthy_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Skills",
+        "value": "22",
+        "delta": "+1 (weekly-grant-update)"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "delta_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "delta_heading",
+        "delta_alert"
+      ]
+    },
+    "delta_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "State Delta",
+        "level": "h3"
+      }
+    },
+    "delta_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "evening-rollup newly DEGRADED (sr 0.56). No CRITICAL/FLAPPING.",
+        "type": "warning"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues_heading",
+        "issues_stats"
+      ]
+    },
+    "issues_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues",
+        "level": "h3"
+      }
+    },
+    "issues_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "open_stat",
+        "resolved_stat"
+      ]
+    },
+    "open_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Open",
+        "value": "14"
+      }
+    },
+    "resolved_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved this run",
+        "value": "0"
+      }
+    }
+  }
+}

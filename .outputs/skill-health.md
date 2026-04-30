@@ -1,17 +1,16 @@
-*Skill Health — 2026-04-29*
-HEALTH: DEGRADED(59) — state unchanged 47h, daily reminder
-[systemic: 2026-04-26 zero-token storm — 59 skills, ISS-013]
+*Skill Health — 2026-04-30*
+HEALTH: DEGRADED(60)  [systemic: ISS-013 zero-token burst tail — 60 skills]
 
-🟡 DEGRADED / FLAPPING (top 5 by days_since_success)
-- channel-recap — sr 8% (historical), 2.7d since success — INVESTIGATE → ISS-013
-- skill-leaderboard — sr 7% (historical), 2.7d since success — INVESTIGATE → ISS-013
-- update-gallery — sr 8% (historical), 2.7d since success — INVESTIGATE → ISS-013
-- skill-update-check — sr 13% (historical), 2.7d since success — INVESTIGATE → ISS-013
-- fork-contributor-leaderboard — sr 8% (historical), 2.7d since success — INVESTIGATE → ISS-013
-+54 more — see memory/issues/INDEX.md
+🟡 DEGRADED / FLAPPING (top 5 by stale success)
+- channel-recap — 8% sr (12 runs), last ok 3d — INVESTIGATE → ISS-013
+- fork-contributor-leaderboard — 8% sr (12 runs), last ok 3d → ISS-013
+- fork-skill-digest — 9% sr (11 runs), last ok 3d → ISS-013
+- github-releases — 10% sr (21 runs), last ok 3d → ISS-013
+- skill-graph — 8% sr (13 runs), last ok 3d → ISS-013
++55 more — see memory/issues/INDEX.md
 
-⚪ NO DATA (6): morning-brief, hacker-news-digest, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL
-🟢 HEALTHY: 21 (+2 vs prior: project-lens, reg-monitor cleared NO DATA)
+⚪ NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL
+🟢 HEALTHY: 22 (+1: weekly-grant-update)
 
-Open issues: 14 · Resolved this run: 0 · Filed this run: 0
-DEGRADED is decay from the 2026-04-26 23:53Z storm — cf=0 on all 59. Burns down with clean ticks.
+State delta: evening-rollup newly DEGRADED (sr 0.56). No CRITICAL/FLAPPING.
+Open issues: 14 · Resolved this run: 0

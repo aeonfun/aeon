@@ -49,4 +49,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-30,monitor-kalshi,claude-sonnet-4-6,1030,39170,1607848,107713
 2026-04-30,repo-actions,claude-opus-4-7,43,34429,2334258,81510
 2026-04-30,external-feature,claude-opus-4-7,110,30103,8033666,153583
-2026-04-30,action-converter,claude-opus-4-7,24,19583,1023854,87528
+2026-04-30,skill-health,claude-opus-4-7,7256,19661,1223844,79579
