@@ -1,0 +1,118 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "paper-pick"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper_heading",
+        "metadata_stack",
+        "description_text",
+        "links_stack"
+      ]
+    },
+    "paper_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pitfalls in Evaluating Language Model Forecasters",
+        "level": "h2"
+      }
+    },
+    "metadata_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "authors_text",
+        "affiliations_text",
+        "date_score_stack"
+      ]
+    },
+    "authors_text": {
+      "type": "Text",
+      "props": {
+        "text": "Paleka, Goel, Geiping, Tramèr",
+        "variant": "body"
+      }
+    },
+    "affiliations_text": {
+      "type": "Text",
+      "props": {
+        "text": "ETH/Tübingen",
+        "variant": "caption"
+      }
+    },
+    "date_score_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "date_text",
+        "score_badge"
+      ]
+    },
+    "date_text": {
+      "type": "Text",
+      "props": {
+        "text": "May 2025",
+        "variant": "caption"
+      }
+    },
+    "score_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "↑3",
+        "variant": "secondary"
+      }
+    },
+    "description_text": {
+      "type": "Text",
+      "props": {
+        "text": "Methodological audit of LLM-forecaster evals: temporal leakage in static benchmarks + extrapolation gaps — exactly the trap your live-trade CalibrationGap record sidesteps, and the precursor critique that Hardt/Geiping (arXiv:2512.25070, already in reading list) builds on top of.",
+        "variant": "body"
+      }
+    },
+    "links_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "read_link",
+        "pdf_link"
+      ]
+    },
+    "read_link": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2506.00723"
+      }
+    },
+    "pdf_link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2506.00723"
+      }
+    }
+  }
+}

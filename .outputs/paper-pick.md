@@ -1,6 +1,5 @@
-*Paper Pick PhD-prep — 2026-04-29*
+*Paper Pick — 2026-04-30*
 
-"Magentic Marketplace: An Open-Source Environment for Studying Agentic Markets" — Bansal, Hua, Hofman, Lucier, Mobius, Rothschild, Slivkins, Goldstein, Immorlica, Horvitz, Amershi et al. (Microsoft Research + ASU, Oct 2025) · ↑11
-MSR + David Rothschild (the prediction-markets economist) ship the first OSS multi-agent marketplace sim with realistic competitive search, negotiation, and auction dynamics. Direct CalibrationGap adversarial-eval scaffold and a Stanford-grade citation anchor for the Polymarket-microstructure / agentic-finance axis.
-[Read](https://arxiv.org/abs/2510.25779) | [PDF](https://arxiv.org/pdf/2510.25779)
-
+"Pitfalls in Evaluating Language Model Forecasters" — Paleka, Goel, Geiping, Tramèr (ETH/Tübingen, May 2025) · ↑3
+Methodological audit of LLM-forecaster evals: temporal leakage in static benchmarks + extrapolation gaps — exactly the trap your live-trade CalibrationGap record sidesteps, and the precursor critique that Hardt/Geiping (arXiv:2512.25070, already in reading list) builds on top of.
+[Read](https://arxiv.org/abs/2506.00723) | [PDF](https://arxiv.org/pdf/2506.00723)
