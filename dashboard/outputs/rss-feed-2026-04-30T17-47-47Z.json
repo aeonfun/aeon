@@ -1,0 +1,143 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "rss-feed",
+        "description": "RSS feed updated"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stats_row",
+        "sep1",
+        "heading_new",
+        "stack_items",
+        "text_more",
+        "sep2",
+        "link_subscribe"
+      ]
+    },
+    "stats_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_total",
+        "stat_added",
+        "stat_removed"
+      ]
+    },
+    "stat_total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total entries",
+        "value": "52"
+      }
+    },
+    "stat_added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "7",
+        "trend": "up"
+      }
+    },
+    "stat_removed": {
+      "type": "Stat",
+      "props": {
+        "label": "Removed",
+        "value": "0"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_new": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      }
+    },
+    "stack_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon's Last Week Wasn't About the Agent. It Was About the Forks."
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money."
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30"
+      }
+    },
+    "item4": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-04-30"
+      }
+    },
+    "item5": {
+      "type": "Text",
+      "props": {
+        "text": "Repo Actions — aaronjmars/aeon — 2026-04-30"
+      }
+    },
+    "text_more": {
+      "type": "Text",
+      "props": {
+        "text": "(+2 more)",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_subscribe": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
