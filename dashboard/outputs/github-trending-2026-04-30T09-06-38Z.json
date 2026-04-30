@@ -1,0 +1,368 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending"
+      },
+      "children": [
+        "content_stack"
+      ]
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_top_pick",
+        "toppick_wrapper",
+        "separator1",
+        "heading_aiml",
+        "aiml_stack",
+        "separator2",
+        "heading_devtools",
+        "devtools_stack",
+        "separator3",
+        "footer_text"
+      ]
+    },
+    "heading_top_pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      }
+    },
+    "toppick_wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_warp",
+        "text_warp_explanation"
+      ]
+    },
+    "storylink_warp": {
+      "type": "StoryLink",
+      "props": {
+        "title": "warpdotdev/warp",
+        "href": "https://github.com/warpdotdev/warp",
+        "source": "GitHub"
+      }
+    },
+    "text_warp_explanation": {
+      "type": "Text",
+      "props": {
+        "text": "OpenAI taking founding-sponsor seat on a now-open-source Rust terminal is the cleanest read yet on their dev-stack ambitions — Anthropic has Claude Code, OpenAI now has Warp.",
+        "variant": "body"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_aiml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      }
+    },
+    "aiml_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item_stock_analysis"
+      ]
+    },
+    "item_stock_analysis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_stock",
+        "stock_meta_stack",
+        "text_stock_desc"
+      ]
+    },
+    "storylink_stock": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ZhuLinsen/daily_stock_analysis",
+        "href": "https://github.com/ZhuLinsen/daily_stock_analysis",
+        "source": "GitHub"
+      }
+    },
+    "stock_meta_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_stars_stock",
+        "badge_lang_stock",
+        "badge_status_stock"
+      ]
+    },
+    "badge_stars_stock": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 294 today (33k total)",
+        "variant": "outline"
+      }
+    },
+    "badge_lang_stock": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "secondary"
+      }
+    },
+    "badge_status_stock": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "default"
+      }
+    },
+    "text_stock_desc": {
+      "type": "Text",
+      "props": {
+        "text": "LLM-driven A/H/US stock analyzer with multi-source news, signals dashboard, zero-cost free-API stack.",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      }
+    },
+    "devtools_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item_superpowers",
+        "item_jcode",
+        "item_craft_agents"
+      ]
+    },
+    "item_superpowers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_superpowers",
+        "superpowers_meta_stack",
+        "text_superpowers_desc"
+      ]
+    },
+    "storylink_superpowers": {
+      "type": "StoryLink",
+      "props": {
+        "title": "obra/superpowers",
+        "href": "https://github.com/obra/superpowers",
+        "source": "GitHub"
+      }
+    },
+    "superpowers_meta_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_stars_sp",
+        "badge_lang_sp",
+        "badge_status_sp"
+      ]
+    },
+    "badge_stars_sp": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 1.7k today (174k total)",
+        "variant": "outline"
+      }
+    },
+    "badge_lang_sp": {
+      "type": "Badge",
+      "props": {
+        "text": "Shell",
+        "variant": "secondary"
+      }
+    },
+    "badge_status_sp": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "default"
+      }
+    },
+    "text_superpowers_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Skills framework enforcing brainstorm → design → TDD → review as mandatory agent workflows.",
+        "variant": "body"
+      }
+    },
+    "item_jcode": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_jcode",
+        "jcode_meta_stack",
+        "text_jcode_desc"
+      ]
+    },
+    "storylink_jcode": {
+      "type": "StoryLink",
+      "props": {
+        "title": "1jehuang/jcode",
+        "href": "https://github.com/1jehuang/jcode",
+        "source": "GitHub"
+      }
+    },
+    "jcode_meta_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_stars_jcode",
+        "badge_lang_jcode",
+        "badge_status_jcode"
+      ]
+    },
+    "badge_stars_jcode": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 411 today (1.6k total)",
+        "variant": "outline"
+      }
+    },
+    "badge_lang_jcode": {
+      "type": "Badge",
+      "props": {
+        "text": "Rust",
+        "variant": "secondary"
+      }
+    },
+    "badge_status_jcode": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "default"
+      }
+    },
+    "text_jcode_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rust coding-agent harness with semantic memory + swarm coordination; claims 14ms boot vs 3.4s for competitors.",
+        "variant": "body"
+      }
+    },
+    "item_craft_agents": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink_craft",
+        "craft_meta_stack",
+        "text_craft_desc"
+      ]
+    },
+    "storylink_craft": {
+      "type": "StoryLink",
+      "props": {
+        "title": "lukilabs/craft-agents-oss",
+        "href": "https://github.com/lukilabs/craft-agents-oss",
+        "source": "GitHub"
+      }
+    },
+    "craft_meta_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_stars_craft",
+        "badge_lang_craft",
+        "badge_status_craft"
+      ]
+    },
+    "badge_stars_craft": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 393 today (5.4k total)",
+        "variant": "outline"
+      }
+    },
+    "badge_lang_craft": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      }
+    },
+    "badge_status_craft": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "default"
+      }
+    },
+    "text_craft_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Multi-session agent desktop with Claude-Code-style streaming, document-centric workflow.",
+        "variant": "body"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer_text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok · gh_api=ok · kept 5/16",
+        "variant": "caption"
+      }
+    }
+  }
+}

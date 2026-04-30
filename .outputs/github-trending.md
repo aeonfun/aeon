@@ -1,18 +1,22 @@
-*GitHub Trending — 2026-04-29*
+*GitHub Trending — 2026-04-30*
 
-*Top pick* — [iamgio/quarkdown](https://github.com/iamgio/quarkdown)
-Only fresh-release survivor today: v2.0.0 dropped Apr 23 and the trend is still building. Other picks are HOLDOVERs with new fixes.
+*Top pick* — [warpdotdev/warp](https://github.com/warpdotdev/warp)
+OpenAI taking founding-sponsor seat on a now-open-source Rust terminal is the cleanest read yet on their dev-stack ambitions — Anthropic has Claude Code, OpenAI now has Warp.
+
+*AI/ML*
+• [ZhuLinsen/daily_stock_analysis](https://github.com/ZhuLinsen/daily_stock_analysis) — ★ 294 today (33k total) · Python · [ACCELERATING]
+LLM-driven A/H/US stock analyzer with multi-source news, signals dashboard, zero-cost free-API stack.
 
 *Devtools*
-• [iamgio/quarkdown](https://github.com/iamgio/quarkdown) — ★ 699 today (12k total) · Kotlin · [RETURNING]
-v2.0.0 (Apr 23) overhauled the typed-function layer; one .qmd compiles to LaTeX PDFs, Reveal slides, websites, and books.
+• [obra/superpowers](https://github.com/obra/superpowers) — ★ 1.7k today (174k total) · Shell · [ACCELERATING]
+Skills framework enforcing brainstorm → design → TDD → review as mandatory agent workflows.
 
-• [mattpocock/skills](https://github.com/mattpocock/skills) — ★ 7.3k today (40k total) · Shell · [HOLDOVER]
-Re-feature: GitLab as first-class issue tracker landed today + new `/setup-matt-pocock-skills` quickstart; stars 3x'd in 24h.
+• [1jehuang/jcode](https://github.com/1jehuang/jcode) — ★ 411 today (1.6k total) · Rust · [RETURNING]
+Rust coding-agent harness with semantic memory + swarm coordination; claims 14ms boot vs 3.4s for competitors.
 
-• [abhigyanpatwari/GitNexus](https://github.com/abhigyanpatwari/GitNexus) — ★ 1.6k today (33k total) · TypeScript · [HOLDOVER]
-Re-feature: client-side Graph RAG over any GitHub repo, no server. v1.6.4-rc.22 today (Docker SSE healthcheck fix); 2.3x stars-today vs yesterday.
+• [lukilabs/craft-agents-oss](https://github.com/lukilabs/craft-agents-oss) — ★ 393 today (5.4k total) · TypeScript · [ACCELERATING]
+Multi-session agent desktop with Claude-Code-style streaming, document-centric workflow.
 
 ---
-sources: trending=ok · gh_api=ok · kept 3/13
+sources: trending=ok · gh_api=ok · kept 5/16
 
