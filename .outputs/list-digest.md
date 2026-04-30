@@ -1,12 +1,14 @@
 ## Summary
 
-Ran `list-digest` per `skills/list-digest/SKILL.md`. Hit step-1 abort: the skill in `aeon.yml` has `{ enabled: true, schedule: "0 17 * * *" }` with **no `var:` field**, so the required X list IDs are absent.
+Executed `skills/list-digest/SKILL.md` and exited at step 1 with **`LIST_DIGEST_NO_CONFIG`**.
 
-Per skill spec, this is a `LIST_DIGEST_NO_CONFIG` outcome — log only, no notify, no API call. No `XAI_API_KEY` budget spent.
+**Why:** `aeon.yml` line 89 (`list-digest: { enabled: true, schedule: "0 17 * * *" }`) has no `var:` field. The skill requires comma-separated numeric X list IDs and explicitly logs-and-stops without notifying when `${var}` is empty (SKILL.md step 1).
 
 **Files modified:**
-- `memory/logs/2026-04-29.md` — appended `## list-digest` entry with `LIST_DIGEST_NO_CONFIG` status and pointer to the operator config-gap action.
+- `memory/logs/2026-04-30.md` — appended a `## list-digest` entry recording status, reason, and operator fix per SKILL.md step 8.
 
-**Operator follow-up (already tracked in `memory/topics/aeon-ops.md`):** add `var: "<comma-separated X list IDs>"` to `list-digest` in `aeon.yml`. List IDs are the numeric IDs in `https://x.com/i/lists/<ID>` URLs. Optionally append `|<topic-filter>` for a soft topic boost. This is in the same config-gap batch as `digest`, `refresh-x`, and `remix-tweets`.
+**Files NOT modified:**
+- `memory/list-digest-seen.txt` — not created/updated (no URLs reported, per spec).
+- No notification sent (`./notify` not invoked, per spec).
 
-**Status:** `LIST_DIGEST_NO_CONFIG` — third recurrence of this exact gap (consistent with the multi-day operator config sweep in MEMORY.md).
+**Follow-up (operator):** Add `var: "<LIST_ID1>,<LIST_ID2>"` to the `list-digest` entry in `aeon.yml`. This is a known item already on the "Operator config sweep" line in `memory/MEMORY.md` (alongside `digest`, `refresh-x`, `remix-tweets` — same root cause: missing `var:` after the var-config refactor). No other action required from this run.
