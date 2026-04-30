@@ -1,0 +1,293 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter",
+        "description": "5 Actions — 2026-04-30"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-shape",
+        "separator-1",
+        "heading-action-1",
+        "stack-action-1",
+        "separator-2",
+        "heading-action-2",
+        "stack-action-2",
+        "separator-3",
+        "heading-action-3",
+        "stack-action-3",
+        "separator-4",
+        "heading-action-4",
+        "stack-action-4",
+        "separator-5",
+        "heading-action-5",
+        "stack-action-5",
+        "separator-6",
+        "text-sources"
+      ]
+    },
+    "text-shape": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Ship 3 stalled security/infra fixes, repair chain-runner, land Reddit prefetch.",
+        "variant": "lead"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-action-1": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Patch shell-injection at dashboard/app/api/secrets/route.ts:96 and file memory/issues/ISS-016.md",
+        "level": "h3"
+      }
+    },
+    "stack-action-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-why-1",
+        "text-done-1",
+        "text-loop-1"
+      ]
+    },
+    "text-why-1": {
+      "type": "Text",
+      "props": {
+        "text": "why: 3-week carry-debt on a secrets-handling route; ISS-016 candidate flagged 04-27 by skill-security-scan",
+        "variant": "body"
+      }
+    },
+    "text-done-1": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened with input sanitization; ISS-016.md created and listed in memory/issues/INDEX.md",
+        "variant": "body"
+      }
+    },
+    "text-loop-1": {
+      "type": "Badge",
+      "props": {
+        "text": "ops-alert/route-ts-shell-injection",
+        "variant": "outline"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-action-2": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Apply articles/workflow-security-audit-2026-04-27.patch to PR #4 with a workflow-scoped token and merge",
+        "level": "h3"
+      }
+    },
+    "stack-action-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-why-2",
+        "text-done-2",
+        "text-loop-2"
+      ]
+    },
+    "text-why-2": {
+      "type": "Text",
+      "props": {
+        "text": "why: closes ISS-015 (messages.yml script-injection), ~71h stalled — only blocker is the token",
+        "variant": "body"
+      }
+    },
+    "text-done-2": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR #4 merged; ISS-015 marked resolved in memory/issues/INDEX.md",
+        "variant": "body"
+      }
+    },
+    "text-loop-2": {
+      "type": "Badge",
+      "props": {
+        "text": "pr/4-workflow-security-audit",
+        "variant": "outline"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-action-3": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Fix chain-runner.yml dispatch_skill() by echoing each skill name before gh workflow run, open PR against tomscaria/aeon",
+        "level": "h3"
+      }
+    },
+    "stack-action-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-why-3",
+        "text-done-3",
+        "text-loop-3"
+      ]
+    },
+    "text-why-3": {
+      "type": "Text",
+      "props": {
+        "text": "why: 5+ day blocker on morning-brief, evening-rollup, weekly-grant-update; gates ISS-013 decay tail",
+        "variant": "body"
+      }
+    },
+    "text-done-3": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened; one chain wrapper exits success on next morning slot",
+        "variant": "body"
+      }
+    },
+    "text-loop-3": {
+      "type": "Badge",
+      "props": {
+        "text": "ops-alert/chain-runner-dispatch-skill",
+        "variant": "outline"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-action-4": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Merge PR #5 (skill-evals key rename: hn-digest → hacker-news-digest, polymarket → monitor-polymarket)",
+        "level": "h3"
+      }
+    },
+    "stack-action-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-why-4",
+        "text-done-4",
+        "text-loop-4"
+      ]
+    },
+    "text-why-4": {
+      "type": "Text",
+      "props": {
+        "text": "why: closes ISS-007 + ISS-009 — lowest-effort, highest-signal evals fix; ~71h stalled",
+        "variant": "body"
+      }
+    },
+    "text-done-4": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR #5 merged; ISS-007 + ISS-009 marked resolved in memory/issues/INDEX.md",
+        "variant": "body"
+      }
+    },
+    "text-loop-4": {
+      "type": "Badge",
+      "props": {
+        "text": "pr/5-skill-evals-keys",
+        "variant": "outline"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-action-5": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Land scripts/prefetch-reddit.sh mirroring scripts/prefetch-xai.sh case-dispatch (Reddit OAuth → .reddit-cache/)",
+        "level": "h3"
+      }
+    },
+    "stack-action-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-why-5",
+        "text-done-5",
+        "text-loop-5"
+      ]
+    },
+    "text-why-5": {
+      "type": "Text",
+      "props": {
+        "text": "why: 6-day ISS-002 + ISS-012 recurrence on vibecoding-digest / reddit-digest; today's repo-actions top pick",
+        "variant": "body"
+      }
+    },
+    "text-done-5": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened with prefetch-reddit.sh; vibecoding-digest reads .reddit-cache/ and exits success",
+        "variant": "body"
+      }
+    },
+    "text-loop-5": {
+      "type": "Badge",
+      "props": {
+        "text": "iss/002-012-reddit-prefetch",
+        "variant": "outline"
+      }
+    },
+    "separator-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=100 logs=6 topics=11 prs=5 cron_failing=0 mode=OK",
+        "variant": "caption"
+      }
+    }
+  }
+}
