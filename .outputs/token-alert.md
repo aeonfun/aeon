@@ -1,16 +1,11 @@
+token-alert complete. No notification dispatched (silent on TOKEN_ALERT_OK).
+
 ## Summary
 
-Ran `token-alert` for BTC/ETH/SOL per MEMORY.md tracked-tokens set. CoinGecko free endpoint returned on first try (no WebFetch fallback needed).
-
-Current prices (2026-04-29):
-- BTC $77,127 (+1.03% 24h, $37.07B vol)
-- ETH $2,314.80 (+1.66% 24h, $14.75B vol)
-- SOL $84.19 (+0.63% 24h, $2.91B vol)
-
-vs yesterday's close (BTC $76,350 / ETH $2,277.54 / SOL $83.66): all three tokens up modestly day-over-day, BTC/ETH leading the bounce, SOL near-flat. Continuing the four-day risk-off drift, all majors still inside ±3% of the 04-25 baseline — SOL weakest at -2.61%.
-
-No triggers fired: max 24h move 1.66% (gate 10%), max volume 1.06x (gate 3x), no per-token thresholds set. **TOKEN_ALERT_OK** — silent run, no notification dispatched per skill spec.
-
-Files modified: `memory/logs/2026-04-29.md` (appended `## token-alert` entry).
-
-Follow-ups: none. FOMC Apr 28-29 priced 99.85% no-change; if surprise prints, a same-day re-run would catch the move.
+- Ran `token-alert` for BTC/ETH/SOL per `## Tracked Tokens` in `memory/MEMORY.md`.
+- CoinGecko free API returned all 3 prices in one call (sandbox curl worked, no WebFetch fallback needed).
+- Current: **BTC $76,179 (-1.18%) · ETH $2,261.59 (-2.29%) · SOL $83.18 (-1.14%)**.
+- Volumes 1.04x / 1.19x / 1.26x vs 04-29; nothing near the 3x or 10% thresholds.
+- Result: **TOKEN_ALERT_OK** — no notification sent.
+- Files modified: `memory/logs/2026-04-30.md` (appended snapshot for next-day comparison).
+- Follow-up: none. Worth noting ETH is the closest to triggering — already -5.3% vs the 04-27 AM print and -2.3% 24h. If the bleed accelerates, expect ETH to fire first.
