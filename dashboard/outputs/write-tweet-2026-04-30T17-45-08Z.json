@@ -1,0 +1,282 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet",
+        "description": "LLMs match Polymarket's calibration, still lose money"
+      },
+      "children": [
+        "heading_main",
+        "sep_1",
+        "section_oneliner",
+        "sep_2",
+        "section_twopunch",
+        "sep_3",
+        "section_paragraph",
+        "sep_4",
+        "section_longtweet",
+        "sep_5",
+        "section_threadopener",
+        "sep_6",
+        "best_recommendation"
+      ]
+    },
+    "heading_main": {
+      "type": "Heading",
+      "props": {
+        "text": "LLMs match Polymarket's calibration, still lose money",
+        "level": "h2"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_oneliner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_oneliner",
+        "stack_oneliner_content"
+      ]
+    },
+    "heading_oneliner": {
+      "type": "Heading",
+      "props": {
+        "text": "one-liner",
+        "level": "h3"
+      }
+    },
+    "stack_oneliner_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_1a",
+        "text_1b"
+      ]
+    },
+    "text_1a": {
+      "type": "Text",
+      "props": {
+        "text": "1a. Calibration is solved. Profit isn't. That gap is the trade.",
+        "variant": "lead"
+      }
+    },
+    "text_1b": {
+      "type": "Text",
+      "props": {
+        "text": "1b. GPT-5R Brier 0.184 vs market 0.187. PolyBench Sharpe ceiling: 0.02.",
+        "variant": "body"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_twopunch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_twopunch",
+        "stack_twopunch_content"
+      ]
+    },
+    "heading_twopunch": {
+      "type": "Heading",
+      "props": {
+        "text": "two-punch",
+        "level": "h3"
+      }
+    },
+    "stack_twopunch_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_2a",
+        "text_2b"
+      ]
+    },
+    "text_2a": {
+      "type": "Text",
+      "props": {
+        "text": "2a. Three 2026 benchmarks confirmed frontier LLMs match Polymarket's calibration. Two of seven posted positive PnL. Edge has moved below the prior.",
+        "variant": "lead"
+      }
+    },
+    "text_2b": {
+      "type": "Text",
+      "props": {
+        "text": "2b. \"We beat the market's Brier score.\" Cool. Did you cross the spread? Pay the gas? Stop researching when you should have stopped? No, you didn't.",
+        "variant": "body"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_paragraph": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_paragraph",
+        "stack_paragraph_content"
+      ]
+    },
+    "heading_paragraph": {
+      "type": "Heading",
+      "props": {
+        "text": "paragraph",
+        "level": "h3"
+      }
+    },
+    "stack_paragraph_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_3a",
+        "text_3b"
+      ]
+    },
+    "text_3a": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Three independent 2026 papers — PolyBench, Prophet Arena, Semantic Trading — all show frontier LLMs match or beat Polymarket's calibration. Two of seven posted positive CWR. Sharpe ceiling 0.02. Calibration is table stakes, not edge.",
+        "variant": "lead"
+      }
+    },
+    "text_3b": {
+      "type": "Text",
+      "props": {
+        "text": "3b. The LLM-forecaster literature finally produced calibrated models. Then they hit the order book like tourists. 2 of 7 profitable in PolyBench. Slippage and stopping rules ate the rest. The trade isn't being right — it's being right at the right size.",
+        "variant": "body"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_longtweet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_longtweet",
+        "stack_longtweet_content"
+      ]
+    },
+    "heading_longtweet": {
+      "type": "Heading",
+      "props": {
+        "text": "long tweet",
+        "level": "h3"
+      }
+    },
+    "stack_longtweet_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_4a",
+        "text_4b"
+      ]
+    },
+    "text_4a": {
+      "type": "Text",
+      "props": {
+        "text": "4a. Three 2026 benchmarks on Polymarket forecasting: Prophet Arena GPT-5R Brier 0.184 vs market 0.187; PolyBench Claude Sonnet 4R ECE 0.041 vs market 0.069; PolyBench profit 2 of 7 LLMs positive CWR, Sharpe ceiling 0.02. Calibration matches the market. Trading does not. The gap is regime selection, position sizing, and a sane tool-use stopping rule. Edge is no longer in the prior — it's in the microstructure discipline around it.",
+        "variant": "lead"
+      }
+    },
+    "text_4b": {
+      "type": "Text",
+      "props": {
+        "text": "4b. \"LLMs can forecast\" is the wrong claim now. They can. Brier and ECE on Polymarket binaries are market-equivalent across three 2026 benchmarks. The right claim is \"LLMs cannot trade their forecasts.\" Two of seven posted positive cumulative wealth in PolyBench. Sharpe ceiling 0.02. The tourists got the prior right and still hit the book like tourists. Calibration is solved. Profitability is the open problem, and it lives below the model layer.",
+        "variant": "body"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_threadopener": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_threadopener",
+        "stack_threadopener_content"
+      ]
+    },
+    "heading_threadopener": {
+      "type": "Heading",
+      "props": {
+        "text": "thread opener",
+        "level": "h3"
+      }
+    },
+    "stack_threadopener_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_5a",
+        "text_5b"
+      ]
+    },
+    "text_5a": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Three 2026 benchmarks just settled it: frontier LLMs match Polymarket's calibration. PolyBench, Prophet Arena, Semantic Trading. Brier parity. ECE parity. And then 2 of 7 models posted positive PnL. Sharpe ceiling 0.02. The forecast was never the edge.",
+        "variant": "lead"
+      }
+    },
+    "text_5b": {
+      "type": "Text",
+      "props": {
+        "text": "5b. 2026 reality check on LLMs forecasting Polymarket: GPT-5R hits Brier 0.184 vs market 0.187. Claude Sonnet 4R hits ECE 0.041 vs market 0.069. Three benchmarks, same answer — they call it. Then 2 of 7 made money. Sharpe ceiling 0.02. What's eating the rest:",
+        "variant": "body"
+      }
+    },
+    "sep_6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "best_recommendation": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "Best",
+        "message": "best: #4a — full thesis in 448 chars, three named benchmarks with numbers, lands on the architectural claim (edge below the model layer)."
+      }
+    }
+  }
+}
