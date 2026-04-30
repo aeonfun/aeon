@@ -1,6 +1,7 @@
 ## Summary
 
-- Ran `defi-monitor` for 2026-04-29. `memory/on-chain-watches.yml` has `watches: []` and `protocols: []` (only commented template entries). Per skill spec, logged `DEFI_MONITOR_OK` and ended at step 0.
-- No RPC calls, no contract reads, no notification (clean no-op is the correct signal).
-- Files modified: `memory/logs/2026-04-29.md` (defi-monitor entry appended).
-- Follow-up: operator must populate `memory/on-chain-watches.yml` with `type: pool` or `type: position` rows for this skill to produce signal. Same blocker as `treasury-info`'s empty-watches no-op, already in MEMORY "Next Priorities" config sweep.
+- Ran `defi-monitor` for 2026-04-30. `memory/on-chain-watches.yml` has empty `watches: []` and `protocols: []` — no DeFi positions configured.
+- No on-chain queries executed, no notification sent (per skill spec).
+- Files modified: `memory/logs/2026-04-30.md` (appended `defi-monitor` entry).
+- Follow-up: skill remains a no-op until pool/position entries are added to `memory/on-chain-watches.yml`.
+- DEFI_MONITOR_OK
