@@ -1,4 +1,5 @@
-*Daily Pick — 2026-04-30*
+const { execFileSync } = require('child_process');
+const msg = `*Daily Pick — 2026-04-30*
 
 *Token: LUNC (Terra Luna Classic)*  HIGH  signal 9/10
 Price: $0.0000727 (+3.4% 24h / +63.4% 7d) | mcap $0.40B | vol $92M (vol/mcap 0.23)
@@ -14,4 +15,12 @@ Thesis: ceasefire-extended-indefinitely is not a "permanent peace deal" — Trum
 Risk: Trump pulls a surprise mediator-driven headline (Pakistan/Qatar/Oman); a partial deal labelled "permanent" by either side resolves YES on a technicality.
 
 sources: cg=ok, dex=ok, poly=ok
-not financial advice — pattern-matching only
+not financial advice — pattern-matching only`;
+console.log('msg length:', msg.length);
+try {
+  execFileSync('./notify', [msg], { cwd: '/home/runner/work/aeon/aeon', stdio: 'inherit' });
+  console.log('notify OK');
+} catch (e) {
+  console.error('notify FAIL:', e.message);
+  process.exit(1);
+}

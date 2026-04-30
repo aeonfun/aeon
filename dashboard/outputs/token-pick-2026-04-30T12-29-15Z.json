@@ -1,0 +1,445 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-04-30"
+      },
+      "children": [
+        "lunc_section",
+        "separator_1",
+        "market_section",
+        "sources_note"
+      ]
+    },
+    "lunc_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "lunc_heading",
+        "lunc_header_row",
+        "lunc_price_stat",
+        "lunc_metrics",
+        "lunc_score",
+        "lunc_catalyst",
+        "lunc_risk",
+        "lunc_comparison"
+      ]
+    },
+    "lunc_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Token: LUNC (Terra Luna Classic)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "lunc_header_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_high",
+        "badge_signal"
+      ]
+    },
+    "badge_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_signal": {
+      "type": "Badge",
+      "props": {
+        "text": "signal 9/10",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "lunc_price_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.0000727",
+        "delta": "+3.4% 24h / +63.4% 7d",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "lunc_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_mcap",
+        "stat_vol"
+      ]
+    },
+    "stat_mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "mcap",
+        "value": "$0.40B"
+      },
+      "children": []
+    },
+    "stat_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$92M",
+        "delta": "vol/mcap 0.23"
+      },
+      "children": []
+    },
+    "lunc_score": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "score_label",
+        "score_text"
+      ]
+    },
+    "score_label": {
+      "type": "Text",
+      "props": {
+        "text": "Score breakdown:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "score_text": {
+      "type": "Text",
+      "props": {
+        "text": "[24h+1, 7d+1, cgtrend+2, v/mc>=0.20+3, RS vs BTC/ETH+2] = 9/10",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "lunc_catalyst": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst_label",
+        "catalyst_text"
+      ]
+    },
+    "catalyst_label": {
+      "type": "Text",
+      "props": {
+        "text": "Catalyst:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "176M LUNC burned April 27 alone (LUNCMetrics) on top of cumulative 6.43% supply already destroyed; net exchange outflows + Cosmos SDK v0.53 upgrade nearby.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "lunc_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "lunc_risk_label",
+        "lunc_risk_text"
+      ]
+    },
+    "lunc_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "lunc_risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "60-88% in a month is late-cycle chase territory — LUNC has a long history of dead-cat bounces fading inside a week once burn-momentum coverage tapers.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "lunc_comparison": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comparison_label",
+        "comparison_text"
+      ]
+    },
+    "comparison_label": {
+      "type": "Text",
+      "props": {
+        "text": "Vs recent picks:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "comparison_text": {
+      "type": "Text",
+      "props": {
+        "text": "not deduped (DOGE 04-29, RAY 04-28, PENGU/XCN 04-27, APE 04-25); same memecoin-revival rotation but LUNC has supply-side mechanics DOGE lacks.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market_heading",
+        "market_header_row",
+        "market_odds",
+        "market_details"
+      ]
+    },
+    "market_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market: \"US x Iran permanent peace deal by May 31, 2026?\"",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "market_header_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_market_high",
+        "badge_edge"
+      ]
+    },
+    "badge_market_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_edge": {
+      "type": "Badge",
+      "props": {
+        "text": "edge ~13pp",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "market_odds": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "odds_text",
+        "vol_text",
+        "resolve_text"
+      ]
+    },
+    "odds_text": {
+      "type": "Text",
+      "props": {
+        "text": "Current: YES 18.5¢ / NO 81.5¢",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "vol_text": {
+      "type": "Text",
+      "props": {
+        "text": "24h vol $416k",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "resolve_text": {
+      "type": "Text",
+      "props": {
+        "text": "resolves 2026-05-31",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "market_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fair_yes",
+        "thesis",
+        "market_risk"
+      ]
+    },
+    "fair_yes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fair_yes_label",
+        "fair_yes_text"
+      ]
+    },
+    "fair_yes_label": {
+      "type": "Text",
+      "props": {
+        "text": "Fair YES: ~5%",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "fair_yes_text": {
+      "type": "Text",
+      "props": {
+        "text": "inputs: Islamabad talks stalled, Iran's Apr-28 proposal \"unlikely to be accepted\" by Trump admin, US still blockading Iranian ports — Al Jazeera, NPR, CFR",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "thesis_label",
+        "thesis_text",
+        "thesis_action"
+      ]
+    },
+    "thesis_label": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "ceasefire-extended-indefinitely is not a \"permanent peace deal\" — Trump's bar is ending nuclear/missile/proxy programs simultaneously, gap is too wide for 31 days.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "thesis_action": {
+      "type": "Text",
+      "props": {
+        "text": "Buy NO at 81.5¢.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "market_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market_risk_label",
+        "market_risk_text"
+      ]
+    },
+    "market_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "market_risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump pulls a surprise mediator-driven headline (Pakistan/Qatar/Oman); a partial deal labelled \"permanent\" by either side resolves YES on a technicality.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sources_note": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_label",
+        "sources_text",
+        "disclaimer"
+      ]
+    },
+    "sources_label": {
+      "type": "Text",
+      "props": {
+        "text": "Sources:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "cg=ok, dex=ok, poly=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}

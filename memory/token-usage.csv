@@ -45,4 +45,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-29,heartbeat,claude-opus-4-7,24,23593,1163020,97021
 2026-04-29,evening-recap,claude-sonnet-4-6,23,9669,1714773,89380
 2026-04-30,heartbeat,claude-opus-4-7,38,27722,1840122,141267
-2026-04-30,monitor-runners,claude-opus-4-7,52,20843,2571391,107255
+2026-04-30,token-pick,claude-opus-4-7,1477,27213,3274244,115365
