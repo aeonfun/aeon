@@ -1,0 +1,22 @@
+{
+  "root": "card_refresh_x",
+  "state": {},
+  "elements": {
+    "card_refresh_x": {
+      "type": "Card",
+      "props": {
+        "title": "refresh-x"
+      },
+      "children": [
+        "alert_config_error"
+      ]
+    },
+    "alert_config_error": {
+      "type": "Alert",
+      "props": {
+        "message": "REFRESH_X_NO_VAR — set var to an X handle (e.g. var: \"@polymarket\" in aeon.yml)",
+        "type": "warning"
+      }
+    }
+  }
+}
