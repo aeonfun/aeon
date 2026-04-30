@@ -1,0 +1,939 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker",
+        "description": "2026-04-30"
+      },
+      "children": [
+        "transitions_section",
+        "sep1",
+        "reflexivity_section",
+        "sep2",
+        "positions_section",
+        "sep3",
+        "map_section"
+      ]
+    },
+    "transitions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trans_heading",
+        "trans_1",
+        "trans_2",
+        "trans_3",
+        "trans_4",
+        "trans_5",
+        "trans_6",
+        "trans_7",
+        "trans_8"
+      ]
+    },
+    "trans_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "TRANSITIONS (vs 04-27 baseline)",
+        "level": "h2"
+      }
+    },
+    "trans_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_1_badge",
+        "trans_1_text"
+      ]
+    },
+    "trans_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "trans_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid HIP-4 outcome contracts — fee structure published Apr 29 (zero-fee open, settle-only); third-venue threat to Polymarket+Kalshi."
+      }
+    },
+    "trans_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_2_badge",
+        "trans_2_text"
+      ]
+    },
+    "trans_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "trans_2_text": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH MEGA TGE today — Coinbase pre-listing, Vitalik-backed, Polymarket pricing 97.4% YES on launch; token already −21.5% listing-day in token-movers."
+      }
+    },
+    "trans_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_3_badge",
+        "trans_3_text"
+      ]
+    },
+    "trans_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "trans_3_text": {
+      "type": "Text",
+      "props": {
+        "text": "DeAI breaks out of \"AI agents\" — TAO +62% MTD on subnet growth (~120 active, $22k/day per-subnet revenue), RENDER on NVIDIA Blackwell B200 enterprise integration."
+      }
+    },
+    "trans_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_4_badge",
+        "trans_4_text"
+      ]
+    },
+    "trans_4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "trans_4_text": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark unwind — USDS supply −6.66% 1d ($7.8B base), Spark Liquidity Layer −21% ($2.0B), Spark Savings −24% ($1.5B). Largest single-issuer move all week."
+      }
+    },
+    "trans_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_5_badge",
+        "trans_5_text"
+      ]
+    },
+    "trans_5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "outline"
+      }
+    },
+    "trans_5_text": {
+      "type": "Text",
+      "props": {
+        "text": "Prediction-market meta — duopoly → 4-venue race (HL HIP-4 + XO Market $6M seed + Kalshi music/fashion expansion)."
+      }
+    },
+    "trans_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_6_badge",
+        "trans_6_text"
+      ]
+    },
+    "trans_6_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "outline"
+      }
+    },
+    "trans_6_text": {
+      "type": "Text",
+      "props": {
+        "text": "US Strategic BTC Reserve → quiet (BTC ETF outflows −$137.77M day-3 dominate macro tape)."
+      }
+    },
+    "trans_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_7_badge",
+        "trans_7_text"
+      ]
+    },
+    "trans_7_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "outline"
+      }
+    },
+    "trans_7_text": {
+      "type": "Text",
+      "props": {
+        "text": "Solana Alpenglow → off-tape (no fresh velocity since Apr 27 validator-approval)."
+      }
+    },
+    "trans_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "trans_8_badge",
+        "trans_8_text"
+      ]
+    },
+    "trans_8_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEAD",
+        "variant": "destructive"
+      }
+    },
+    "trans_8_text": {
+      "type": "Text",
+      "props": {
+        "text": "HYPER/Hyperlane interop (absent across all signals)."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "reflexivity_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "reflexivity_heading",
+        "refl_1",
+        "refl_2",
+        "refl_3"
+      ]
+    },
+    "reflexivity_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "REFLEXIVITY",
+        "level": "h2"
+      }
+    },
+    "refl_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "refl_1_title",
+        "refl_1_text"
+      ]
+    },
+    "refl_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH MEGA",
+        "variant": "lead"
+      }
+    },
+    "refl_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket 97.4% YES on launch confirmation while listing-day capitulation −21.5% prints simultaneously. Story IS the outcome."
+      }
+    },
+    "refl_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "refl_2_title",
+        "refl_2_text"
+      ]
+    },
+    "refl_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4",
+        "variant": "lead"
+      }
+    },
+    "refl_2_text": {
+      "type": "Text",
+      "props": {
+        "text": "fee structure published before mainnet date confirmed; HYPE +5.4% 24h on launch optionality alone (same shape as US BTC Reserve trade)."
+      }
+    },
+    "refl_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "refl_3_title",
+        "refl_3_text"
+      ]
+    },
+    "refl_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Sky→Spark rotation",
+        "variant": "lead"
+      }
+    },
+    "refl_3_text": {
+      "type": "Text",
+      "props": {
+        "text": "USDS −6.66% / Spark Liq −21% / Spark Savings −24% / Aave-V3 fees −52% 7d are one coherent capital-flight tape, not four separate stories."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "positions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "positions_heading",
+        "pos_1",
+        "pos_2",
+        "pos_3",
+        "pos_4",
+        "pos_5",
+        "pos_6",
+        "pos_7",
+        "pos_8"
+      ]
+    },
+    "positions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "POSITIONS",
+        "level": "h2"
+      }
+    },
+    "pos_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_1_header",
+        "pos_1_detail",
+        "pos_1_source",
+        "pos_1_bear"
+      ]
+    },
+    "pos_1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_1_badge",
+        "pos_1_name"
+      ]
+    },
+    "pos_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FRONT-RUN",
+        "variant": "secondary"
+      }
+    },
+    "pos_1_name": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4 outcome contracts",
+        "variant": "lead"
+      }
+    },
+    "pos_1_detail": {
+      "type": "Text",
+      "props": {
+        "text": "mindshare 3 ↑↑, Bull"
+      }
+    },
+    "pos_1_source": {
+      "type": "Text",
+      "props": {
+        "text": "@HyperliquidX, Apr 29 fee-structure post"
+      }
+    },
+    "pos_1_bear": {
+      "type": "Text",
+      "props": {
+        "text": "bear: testnet since Feb, no mainnet date."
+      }
+    },
+    "pos_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_2_header",
+        "pos_2_detail",
+        "pos_2_source",
+        "pos_2_bear"
+      ]
+    },
+    "pos_2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_2_badge",
+        "pos_2_name"
+      ]
+    },
+    "pos_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "outline"
+      }
+    },
+    "pos_2_name": {
+      "type": "Text",
+      "props": {
+        "text": "AI agents / DeAI",
+        "variant": "lead"
+      }
+    },
+    "pos_2_detail": {
+      "type": "Text",
+      "props": {
+        "text": "4 →, Bull"
+      }
+    },
+    "pos_2_source": {
+      "type": "Text",
+      "props": {
+        "text": "Bittensor subnets, TON agentic wallets, Tether QVAC voice"
+      }
+    },
+    "pos_2_bear": {
+      "type": "Text",
+      "props": {
+        "text": "bear: TAO/RENDER already +62% MTD, late-cycle entry."
+      }
+    },
+    "pos_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_3_header",
+        "pos_3_detail",
+        "pos_3_source",
+        "pos_3_bear"
+      ]
+    },
+    "pos_3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_3_badge",
+        "pos_3_name"
+      ]
+    },
+    "pos_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "outline"
+      }
+    },
+    "pos_3_name": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-BRTI vs PM-Chainlink basis",
+        "variant": "lead"
+      }
+    },
+    "pos_3_detail": {
+      "type": "Text",
+      "props": {
+        "text": "3 →, Bull"
+      }
+    },
+    "pos_3_source": {
+      "type": "Text",
+      "props": {
+        "text": "Day-4 falsifier window; load-bearing for Hermes-arb."
+      }
+    },
+    "pos_3_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_4_header",
+        "pos_4_detail",
+        "pos_4_source",
+        "pos_4_bear"
+      ]
+    },
+    "pos_4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_4_badge",
+        "pos_4_name"
+      ]
+    },
+    "pos_4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "outline"
+      }
+    },
+    "pos_4_name": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket × Kaito attention markets",
+        "variant": "lead"
+      }
+    },
+    "pos_4_detail": {
+      "type": "Text",
+      "props": {
+        "text": "3 →, Bull"
+      }
+    },
+    "pos_4_source": {
+      "type": "Text",
+      "props": {
+        "text": "pilot $1.3M+ vol; load-bearing for Revenant calibration edge."
+      }
+    },
+    "pos_4_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_5_header",
+        "pos_5_detail",
+        "pos_5_source",
+        "pos_5_bear"
+      ]
+    },
+    "pos_5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_5_badge",
+        "pos_5_name"
+      ]
+    },
+    "pos_5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      }
+    },
+    "pos_5_name": {
+      "type": "Text",
+      "props": {
+        "text": "USDS/Sky stablecoin",
+        "variant": "lead"
+      }
+    },
+    "pos_5_detail": {
+      "type": "Text",
+      "props": {
+        "text": "5 ↓, Cope"
+      }
+    },
+    "pos_5_source": {
+      "type": "Text",
+      "props": {
+        "text": "issuer can RIDE Spark expansion; tokenholder-side is the tape."
+      }
+    },
+    "pos_5_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_6_header",
+        "pos_6_detail",
+        "pos_6_source",
+        "pos_6_bear"
+      ]
+    },
+    "pos_6_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_6_badge",
+        "pos_6_name"
+      ]
+    },
+    "pos_6_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      }
+    },
+    "pos_6_name": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ETF flow narrative",
+        "variant": "lead"
+      }
+    },
+    "pos_6_detail": {
+      "type": "Text",
+      "props": {
+        "text": "4 ↓, Bear"
+      }
+    },
+    "pos_6_source": {
+      "type": "Text",
+      "props": {
+        "text": "IBIT/FBTC 3-day outflow streak; oil + 30Y at 5% real overhang."
+      }
+    },
+    "pos_6_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_7_header",
+        "pos_7_detail",
+        "pos_7_source",
+        "pos_7_bear"
+      ]
+    },
+    "pos_7_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_7_badge",
+        "pos_7_name"
+      ]
+    },
+    "pos_7_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "outline"
+      }
+    },
+    "pos_7_name": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH MEGA TGE",
+        "variant": "lead"
+      }
+    },
+    "pos_7_detail": {
+      "type": "Text",
+      "props": {
+        "text": "3 ↑↑, Mixed"
+      }
+    },
+    "pos_7_source": {
+      "type": "Text",
+      "props": {
+        "text": "listing-day −21.5% vs 97.4% YES on launch; canonical narrative-vs-tape divergence."
+      }
+    },
+    "pos_7_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "pos_8_header",
+        "pos_8_detail",
+        "pos_8_source",
+        "pos_8_bear"
+      ]
+    },
+    "pos_8_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_8_badge",
+        "pos_8_name"
+      ]
+    },
+    "pos_8_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "outline"
+      }
+    },
+    "pos_8_name": {
+      "type": "Text",
+      "props": {
+        "text": "DOGE +10% / OI yearly peak",
+        "variant": "lead"
+      }
+    },
+    "pos_8_detail": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "pos_8_source": {
+      "type": "Text",
+      "props": {
+        "text": "FOMO-zone trad signal; broke from BTC."
+      }
+    },
+    "pos_8_bear": {
+      "type": "Text",
+      "props": {
+        "text": ""
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "map_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "map_heading",
+        "map_emerging",
+        "map_rising",
+        "map_peak",
+        "map_fading"
+      ]
+    },
+    "map_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "MAP",
+        "level": "h2"
+      }
+    },
+    "map_emerging": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "map_emerging_label",
+        "map_emerging_text"
+      ]
+    },
+    "map_emerging_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Emerging",
+        "variant": "secondary"
+      }
+    },
+    "map_emerging_text": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4, MegaETH MEGA, XO Market, Kalshi-music/fashion."
+      }
+    },
+    "map_rising": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "map_rising_label",
+        "map_rising_text"
+      ]
+    },
+    "map_rising_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Rising",
+        "variant": "secondary"
+      }
+    },
+    "map_rising_text": {
+      "type": "Text",
+      "props": {
+        "text": "AI agents/DeAI, PM × Kaito, BTC-dominance \"no-altseason\"."
+      }
+    },
+    "map_peak": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "map_peak_label",
+        "map_peak_text"
+      ]
+    },
+    "map_peak_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Peak",
+        "variant": "secondary"
+      }
+    },
+    "map_peak_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid (HYPE), Stablecoins."
+      }
+    },
+    "map_fading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "map_fading_label",
+        "map_fading_text"
+      ]
+    },
+    "map_fading_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Fading",
+        "variant": "destructive"
+      }
+    },
+    "map_fading_text": {
+      "type": "Text",
+      "props": {
+        "text": "RWA tokenization, USDS/Sky, GameFi/Ronin, US BTC Reserve, Aave-governance (reframed as Spark-winning), meme-launchpad cope, US-Iran/Hormuz overhang, BTC ETF flows."
+      }
+    }
+  }
+}
