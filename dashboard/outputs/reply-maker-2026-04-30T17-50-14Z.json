@@ -1,0 +1,223 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Reply Maker — 2026-04-30",
+        "description": "REPLY_MAKER_DEGRADED (1/5)"
+      },
+      "children": [
+        "badge-status",
+        "separator-1",
+        "link-tweet",
+        "tweet-card",
+        "separator-2",
+        "stack-why",
+        "separator-3",
+        "stack-replies",
+        "separator-4",
+        "status-section"
+      ]
+    },
+    "badge-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED (1/5)",
+        "variant": "destructive"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-tweet": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/TodaysChanakya/status/2049828976781340740",
+        "href": "https://x.com/TodaysChanakya/status/2049828976781340740"
+      }
+    },
+    "tweet-card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "TodaysChanakya",
+        "handle": "@TodaysChanakya",
+        "text": "#TCAnalysis #Election2026 Tamil Nadu 2026 Vote Projection AIADMK+ 27% ± 3% DMK+ 39% ± 3% TVK 30% ± 3% Others 4% ± 3%"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-why",
+        "text-why-1",
+        "text-why-2",
+        "text-why-3"
+      ]
+    },
+    "heading-why": {
+      "type": "Heading",
+      "props": {
+        "text": "Why this matters",
+        "level": "h3"
+      }
+    },
+    "text-why-1": {
+      "type": "Text",
+      "props": {
+        "text": "TC is the calibration-track-record TN pollster."
+      }
+    },
+    "text-why-2": {
+      "type": "Text",
+      "props": {
+        "text": "TVK 30% diverges from Lok Poll 23.9% / Election Tracker 15% / AGNI 0-seats."
+      }
+    },
+    "text-why-3": {
+      "type": "Text",
+      "props": {
+        "text": "T-4d to May 4 catalyst; PM TVK sub-market is $104K v24, the largest in the event."
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-replies": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-replies",
+        "stack-reply-a",
+        "stack-reply-b"
+      ]
+    },
+    "heading-replies": {
+      "type": "Heading",
+      "props": {
+        "text": "Replies",
+        "level": "h3"
+      }
+    },
+    "stack-reply-a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-reply-a",
+        "text-reply-a"
+      ]
+    },
+    "badge-reply-a": {
+      "type": "Badge",
+      "props": {
+        "text": "A"
+      }
+    },
+    "text-reply-a": {
+      "type": "Text",
+      "props": {
+        "text": "Chanakya 2021/24 TN calls landed inside ±3pp on vote share. Seat conversion is where TVK breaks: 30% vote-share in a 3-corner with DMK+39 / ADMK+27 still lands ~8-12 seats under Duverger. PM TVK 8.25c is roughly fair on seats; mispricing is on ADMK ≥ 30."
+      }
+    },
+    "stack-reply-b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-reply-b",
+        "text-reply-b"
+      ]
+    },
+    "badge-reply-b": {
+      "type": "Badge",
+      "props": {
+        "text": "B"
+      }
+    },
+    "text-reply-b": {
+      "type": "Text",
+      "props": {
+        "text": "Vote share without cluster geography misreads TN. TVK 30% concentrated in urban Chennai-Coimbatore = ~8 seats max even at that share — same Brahmin-skew sampling oneindia flagged in Axis's TVK 35-seat call. DMK+ wins 180+ either way."
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "status-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-status",
+        "text-status-1",
+        "text-status-2",
+        "text-status-3",
+        "text-status-4"
+      ]
+    },
+    "heading-status": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h3"
+      }
+    },
+    "text-status-1": {
+      "type": "Text",
+      "props": {
+        "text": "xai=skip (key len 0, ISS-014 #6)",
+        "variant": "caption"
+      }
+    },
+    "text-status-2": {
+      "type": "Text",
+      "props": {
+        "text": "memory=stale (no in-window URLs in 04-29/04-30 logs)",
+        "variant": "caption"
+      }
+    },
+    "text-status-3": {
+      "type": "Text",
+      "props": {
+        "text": "websearch=ok (1 fresh)",
+        "variant": "caption"
+      }
+    },
+    "text-status-4": {
+      "type": "Text",
+      "props": {
+        "text": "webfetch=fail (X auth wall)",
+        "variant": "caption"
+      }
+    }
+  }
+}

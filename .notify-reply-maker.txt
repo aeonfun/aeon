@@ -7,4 +7,3 @@ A: Chanakya 2021/24 TN calls landed inside ±3pp on vote share. Seat conversion 
 B: Vote share without cluster geography misreads TN. TVK 30% concentrated in urban Chennai-Coimbatore = ~8 seats max even at that share — same Brahmin-skew sampling oneindia flagged in Axis's TVK 35-seat call. DMK+ wins 180+ either way.
 
 source-status: xai=skip (key len 0, ISS-014 #6), memory=stale (no in-window URLs in 04-29/04-30 logs), websearch=ok (1 fresh), webfetch=fail (X auth wall)
-
