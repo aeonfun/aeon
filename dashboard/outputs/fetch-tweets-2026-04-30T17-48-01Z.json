@@ -1,0 +1,240 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets"
+      },
+      "children": [
+        "text-summary",
+        "sep-1",
+        "heading-brazil",
+        "stack-brazil",
+        "sep-2",
+        "heading-whcd",
+        "tweet-4-wrapper",
+        "sep-3",
+        "heading-perps",
+        "stack-perps"
+      ]
+    },
+    "text-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Regulatory front widens overnight — Brazil bans 27 platforms incl Polymarket+Kalshi (CMN Res 5.298, eff May 4), WHCD shooting market reignites CFTC 40.11, both venues quietly racing insider-trading bans. Six of six are regulator-side; trader voices absent on Path C.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator"
+    },
+    "heading-brazil": {
+      "type": "Heading",
+      "props": {
+        "text": "Brazil regulatory blow (last 24h)",
+        "level": "h2"
+      }
+    },
+    "stack-brazil": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-1-wrapper",
+        "tweet-2-wrapper",
+        "tweet-3-wrapper"
+      ]
+    },
+    "tweet-1-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-1",
+        "link-1"
+      ]
+    },
+    "tweet-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "CoinGapeMedia",
+        "handle": "CoinGapeMedia",
+        "text": "Primary English breaking: Brazil blocks Kalshi + Polymarket as part of crackdown on 28 betting platforms; Finance Min Dario Durigan cites investor protection."
+      }
+    },
+    "link-1": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/CoinGapeMedia/status/2047845798927565293"
+      }
+    },
+    "tweet-2-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-2",
+        "link-2"
+      ]
+    },
+    "tweet-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "usePicnicBR",
+        "handle": "usePicnicBR",
+        "text": "Local-Portuguese with regulatory specifics: Resolução CMN nº 5.298, effective 2026-05-04, vedates derivatives on sporting + political events. Specific clause text other sources missed."
+      }
+    },
+    "link-2": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/usePicnicBR/status/2047721516851155278"
+      }
+    },
+    "tweet-3-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-3",
+        "link-3"
+      ]
+    },
+    "tweet-3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "CoinMarketCap",
+        "handle": "CoinMarketCap",
+        "text": "Scope expansion to 27 prediction platforms; framing 'event-based contracts effectively mirror gambling' — the rhetorical move other state regulators (MA, WA) will likely cite next."
+      }
+    },
+    "link-3": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/CoinMarketCap/status/2048664235362628082"
+      }
+    },
+    "sep-2": {
+      "type": "Separator"
+    },
+    "heading-whcd": {
+      "type": "Heading",
+      "props": {
+        "text": "WHCD shooting market — CFTC 40.11 in tension",
+        "level": "h2"
+      }
+    },
+    "tweet-4-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-4",
+        "link-4"
+      ]
+    },
+    "tweet-4": {
+      "type": "TweetCard",
+      "props": {
+        "author": "billsperos",
+        "handle": "billsperos",
+        "text": "Kalshi + Polymarket continued accepting trades on Trump leaving office early after the WHCD shooting incident — directly tests CFTC Reg 40.11 on terrorism/assassination event contracts."
+      }
+    },
+    "link-4": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/billsperos/status/2048228234349642233"
+      }
+    },
+    "sep-3": {
+      "type": "Separator"
+    },
+    "heading-perps": {
+      "type": "Heading",
+      "props": {
+        "text": "Pre-perps-launch market structure",
+        "level": "h2"
+      }
+    },
+    "stack-perps": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-5-wrapper",
+        "tweet-6-wrapper"
+      ]
+    },
+    "tweet-5-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-5",
+        "link-5"
+      ]
+    },
+    "tweet-5": {
+      "type": "TweetCard",
+      "props": {
+        "author": "valoreconomico",
+        "handle": "valoreconomico",
+        "text": "Portuguese coverage: Kalshi + Polymarket expandem investida em cripto com futuros perpétuos. Second-source angle on the perps push; both venues racing the same product launch into Brazil's exit timing."
+      }
+    },
+    "link-5": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/valoreconomico/status/2046907575380176948"
+      }
+    },
+    "tweet-6-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-6",
+        "link-6"
+      ]
+    },
+    "tweet-6": {
+      "type": "TweetCard",
+      "props": {
+        "author": "RiskCentre",
+        "handle": "RiskCentre",
+        "text": "GCRI flag: Kalshi + Polymarket racing to ban insider trading; the economist who built PM theory says insider flow is 'the whole point'. Calibration-relevant: rule changes on insider participation distort the price-signal CalibrationGap models off."
+      }
+    },
+    "link-6": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/RiskCentre/status/2048395737759965392"
+      }
+    }
+  }
+}
