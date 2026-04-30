@@ -1,0 +1,619 @@
+{
+  "root": "card-runners",
+  "state": {},
+  "elements": {
+    "card-runners": {
+      "type": "Card",
+      "props": {
+        "title": "runners — 2026-04-30"
+      },
+      "children": [
+        "verdict-section",
+        "tokens-section"
+      ]
+    },
+    "verdict-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "verdict-label",
+        "verdict-badge"
+      ]
+    },
+    "verdict-label": {
+      "type": "Text",
+      "props": {
+        "text": "Verdict:",
+        "variant": "lead"
+      }
+    },
+    "verdict-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MIXED",
+        "variant": "secondary"
+      }
+    },
+    "tokens-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "token-1",
+        "sep-1",
+        "token-2",
+        "sep-2",
+        "token-3",
+        "sep-3",
+        "token-4",
+        "sep-4",
+        "token-5",
+        "sep-5",
+        "sources-section",
+        "sep-6",
+        "vibe-section"
+      ]
+    },
+    "token-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t1-header",
+        "t1-metrics",
+        "t1-analysis"
+      ]
+    },
+    "t1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-badge",
+        "t1-title"
+      ]
+    },
+    "t1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEEP-LIQ",
+        "variant": "default"
+      }
+    },
+    "t1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "TTPA/WETH (base) +2678% 24h",
+        "level": "h3"
+      }
+    },
+    "t1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-vol",
+        "t1-liq",
+        "t1-fdv",
+        "t1-h1",
+        "t1-ratio"
+      ]
+    },
+    "t1-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$10.2m"
+      }
+    },
+    "t1-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$10.6m"
+      }
+    },
+    "t1-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV (no mcap)",
+        "value": "$34.2m"
+      }
+    },
+    "t1-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+5.9%",
+        "trend": "up"
+      }
+    },
+    "t1-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Buys:Sells 11231:9356",
+        "variant": "caption"
+      }
+    },
+    "t1-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "First DEEP-LIQ pick in top 5 in repo history; ~7d-old base pool already at $10.6m locked liq, h1 still positive — real money, not a meme print.",
+        "variant": "body"
+      }
+    },
+    "token-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t2-header",
+        "t2-metrics",
+        "t2-analysis"
+      ]
+    },
+    "t2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-badge",
+        "t2-title"
+      ]
+    },
+    "t2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "outline"
+      }
+    },
+    "t2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "agentic money/USDT (bsc) +4135% 24h ★ repeat",
+        "level": "h3"
+      }
+    },
+    "t2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-vol",
+        "t2-liq",
+        "t2-fdv",
+        "t2-h1",
+        "t2-ratio"
+      ]
+    },
+    "t2-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$57.1m"
+      }
+    },
+    "t2-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$126k"
+      }
+    },
+    "t2-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV (no mcap)",
+        "value": "$85k"
+      }
+    },
+    "t2-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+16%",
+        "trend": "up"
+      }
+    },
+    "t2-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Buys:Sells 1006:921",
+        "variant": "caption"
+      }
+    },
+    "t2-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "Same pool as 04-29 slot 1 (+3012% then). Vol/liq still ~450x, FDV barely moved — wash-print pattern persists, observe only.",
+        "variant": "body"
+      }
+    },
+    "token-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t3-header",
+        "t3-metrics",
+        "t3-analysis"
+      ]
+    },
+    "t3-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-badge",
+        "t3-title"
+      ]
+    },
+    "t3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "outline"
+      }
+    },
+    "t3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "STJUDE/SOL (solana) +1936% 24h",
+        "level": "h3"
+      }
+    },
+    "t3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-vol",
+        "t3-liq",
+        "t3-fdv",
+        "t3-h1",
+        "t3-ratio"
+      ]
+    },
+    "t3-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$13.0m"
+      }
+    },
+    "t3-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$91k"
+      }
+    },
+    "t3-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV (no mcap)",
+        "value": "$696k"
+      }
+    },
+    "t3-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+14%",
+        "trend": "up"
+      }
+    },
+    "t3-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Buys:Sells 68011:58508",
+        "variant": "caption"
+      }
+    },
+    "t3-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "18h-old SOL launch, 126k+ tx and h1 still climbing; charity-themed meme, momentum alive but $91k liq one whale-exit from collapse.",
+        "variant": "body"
+      }
+    },
+    "token-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t4-header",
+        "t4-metrics",
+        "t4-analysis"
+      ]
+    },
+    "t4-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-badge",
+        "t4-title"
+      ]
+    },
+    "t4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "outline"
+      }
+    },
+    "t4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "GDER/WETH (base) +1818% 24h",
+        "level": "h3"
+      }
+    },
+    "t4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-vol",
+        "t4-liq",
+        "t4-fdv",
+        "t4-h1",
+        "t4-ratio"
+      ]
+    },
+    "t4-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$5.7m"
+      }
+    },
+    "t4-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$91k"
+      }
+    },
+    "t4-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV (no mcap)",
+        "value": "$242k"
+      }
+    },
+    "t4-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+7.1%",
+        "trend": "up"
+      }
+    },
+    "t4-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Buys:Sells 7202:6722",
+        "variant": "caption"
+      }
+    },
+    "t4-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "19h-old base launch, balanced buy/sell with h1 positive — clean churn, but thin liq.",
+        "variant": "body"
+      }
+    },
+    "token-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t5-header",
+        "t5-metrics",
+        "t5-analysis"
+      ]
+    },
+    "t5-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-badge",
+        "t5-title"
+      ]
+    },
+    "t5-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "outline"
+      }
+    },
+    "t5-title": {
+      "type": "Heading",
+      "props": {
+        "text": "PUP/SOL (solana) +890% 24h",
+        "level": "h3"
+      }
+    },
+    "t5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-vol",
+        "t5-liq",
+        "t5-fdv",
+        "t5-h1",
+        "t5-ratio"
+      ]
+    },
+    "t5-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$4.4m"
+      }
+    },
+    "t5-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$59k"
+      }
+    },
+    "t5-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV (no mcap)",
+        "value": "$393k"
+      }
+    },
+    "t5-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+12%",
+        "trend": "up"
+      }
+    },
+    "t5-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Buys:Sells 25036:22962",
+        "variant": "caption"
+      }
+    },
+    "t5-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "18h-old SOL meme, h1 +12% = second-leg pump active; thinnest-liq slot in top 5.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok",
+        "variant": "caption"
+      }
+    },
+    "vibe-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe-heading",
+        "vibe-text"
+      ]
+    },
+    "vibe-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe-text": {
+      "type": "Text",
+      "props": {
+        "text": "First DEEP-LIQ slot-1 in repo history (TTPA on base) breaks the 3-run micro-cap drought — base is carrying the tape, but 4/5 still memes on <$130k liq.",
+        "variant": "body"
+      }
+    }
+  }
+}
