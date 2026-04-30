@@ -1,0 +1,336 @@
+{
+  "root": "card-startup-ideas",
+  "state": {},
+  "elements": {
+    "card-startup-ideas": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-04-30"
+      },
+      "children": [
+        "idea-1",
+        "separator-1",
+        "idea-2",
+        "separator-2",
+        "memo-note"
+      ]
+    },
+    "idea-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea-1-heading",
+        "idea-1-executive",
+        "idea-1-sep-1",
+        "idea-1-icp-label",
+        "idea-1-icp",
+        "idea-1-sep-2",
+        "idea-1-wedge-label",
+        "idea-1-wedge",
+        "idea-1-sep-3",
+        "idea-1-why-label",
+        "idea-1-why",
+        "idea-1-sep-4",
+        "idea-1-mvp-label",
+        "idea-1-mvp",
+        "idea-1-sep-5",
+        "idea-1-kill-label",
+        "idea-1-kill"
+      ]
+    },
+    "idea-1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Sourcebook",
+        "level": "h2"
+      }
+    },
+    "idea-1-executive": {
+      "type": "Text",
+      "props": {
+        "text": "(executable) — Newsroom surveillance dashboard for public-figure trades on Polymarket / Kalshi, $5k/yr per seat, riding the Apr-30 ACDC report + Bloomberg wallet-rename story.",
+        "variant": "body"
+      }
+    },
+    "idea-1-sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-icp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea-1-icp": {
+      "type": "Text",
+      "props": {
+        "text": "Investigative data reporter at NYT / Bloomberg / Politico whose desk just got asked \"did anyone in this race trade their own market\" and has no cross-venue tool.",
+        "variant": "body"
+      }
+    },
+    "idea-1-sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-wedge-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea-1-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "Curated 2,000-address registry + outlier alerting + per-address resolved P&L ledger.",
+        "variant": "body"
+      }
+    },
+    "idea-1-sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-why-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea-1-why": {
+      "type": "Text",
+      "props": {
+        "text": "ACDC quantified the demand (51.8% longshot win-rate in PM defense markets vs 14% baseline), Kalshi self-banned 3 federal candidates Apr 22, CFTC re-engaged.",
+        "variant": "body"
+      }
+    },
+    "idea-1-sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-mvp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea-1-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "200 curated addresses + Polygon alerting + daily newsroom Slack digest; metric ≥3 paid pilots ($5k each) in 60 days, 1 cited story by day 90.",
+        "variant": "body"
+      }
+    },
+    "idea-1-sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-kill-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "idea-1-kill": {
+      "type": "Text",
+      "props": {
+        "text": "<3 paid pilots in 60d OR <1 cited story in 90d → kill, pivot dataset to academic licensing.",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea-2-heading",
+        "idea-2-executive",
+        "idea-2-sep-1",
+        "idea-2-icp-label",
+        "idea-2-icp",
+        "idea-2-sep-2",
+        "idea-2-wedge-label",
+        "idea-2-wedge",
+        "idea-2-sep-3",
+        "idea-2-why-label",
+        "idea-2-why",
+        "idea-2-sep-4",
+        "idea-2-mvp-label",
+        "idea-2-mvp",
+        "idea-2-sep-5",
+        "idea-2-kill-label",
+        "idea-2-kill"
+      ]
+    },
+    "idea-2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Corridor",
+        "level": "h2"
+      }
+    },
+    "idea-2-executive": {
+      "type": "Text",
+      "props": {
+        "text": "(ambitious) — Agent-native FX prime brokerage for EM corridors (USD/MXN first), priced off stablecoin-bridged liquidity, undercutting Citi/JPM 2-7 bp markups for sub-$200M funds that just got cut.",
+        "variant": "body"
+      }
+    },
+    "idea-2-sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-icp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "idea-2-icp": {
+      "type": "Text",
+      "props": {
+        "text": "Quant PM at $20-200M crypto / EM-quant fund whose Citi-JPM USD/BRL line just got repriced 1.5 → 4 bp or capped at $250k/day after Q1-2026 risk-weighting changes.",
+        "variant": "body"
+      }
+    },
+    "idea-2-sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-wedge-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "idea-2-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "USD/MXN routing layer over Bridge / IFPE rails + offshore NDF + MXNB DEX, agent-friendly REST API, NFA-reportable post-trade.",
+        "variant": "body"
+      }
+    },
+    "idea-2-sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-why-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "idea-2-why": {
+      "type": "Text",
+      "props": {
+        "text": "Stablecoin EM volume $200B+/yr, CNBV opened IFPE API rails Q4-2025, Bridge MXN went live Apr 2026, agent-trader EM demand doubling.",
+        "variant": "body"
+      }
+    },
+    "idea-2-sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-mvp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "idea-2-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "USD↔MXN executable quote + one paid pilot routing ≥$1M notional in 60d at < 1.5 bp blended.",
+        "variant": "body"
+      }
+    },
+    "idea-2-sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-kill-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "idea-2-kill": {
+      "type": "Text",
+      "props": {
+        "text": "<1 paid pilot in 60d OR <$10M routed in 90d → kill, pivot to selling routing tape to incumbent EM broker.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "memo-note": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "memo-note-text",
+        "memo-note-details"
+      ]
+    },
+    "memo-note-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: 11 permalinks (6 Sourcebook / 5 Corridor).",
+        "variant": "caption"
+      }
+    },
+    "memo-note-details": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-04-30.md",
+        "variant": "muted"
+      }
+    }
+  }
+}
