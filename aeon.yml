@@ -93,6 +93,7 @@ skills:
 
   # --- Feed generation (5:30 PM UTC, after content skills) ---
   rss-feed: { enabled: false, schedule: "30 17 * * *" }
+  thread-formatter: { enabled: false, schedule: "30 17 * * *", var: "" } # score today's events from memory/logs and format the top one as a 5-tweet thread ready to paste; no-op silently on quiet days
 
   # --- Gallery update (Sunday 6 PM UTC, after content week) ---
   update-gallery: { enabled: false, schedule: "0 18 * * 0" }

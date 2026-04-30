@@ -936,6 +936,18 @@
             "install": "./add-skill aaronjmars/aeon telegram-digest"
         },
         {
+            "slug": "thread-formatter",
+            "name": "Thread Formatter",
+            "description": "Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste",
+            "category": "social",
+            "schedule": "30 17 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-04-30",
+            "install": "./add-skill aaronjmars/aeon thread-formatter"
+        },
+        {
             "slug": "token-alert",
             "name": "Token Alert",
             "description": "Notify on price or volume anomalies for tracked tokens",
