@@ -1,0 +1,192 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health",
+        "description": "2026-05-01"
+      },
+      "children": [
+        "alert_degraded",
+        "separator_1",
+        "heading_degraded",
+        "table_degraded",
+        "text_more_degraded",
+        "separator_2",
+        "heading_warning",
+        "text_evening_rollup",
+        "separator_3",
+        "heading_nodata",
+        "text_nodata",
+        "separator_4",
+        "heading_healthy",
+        "stat_healthy",
+        "separator_5",
+        "heading_issues",
+        "stack_issues"
+      ]
+    },
+    "alert_degraded": {
+      "type": "Alert",
+      "props": {
+        "title": "HEALTH: DEGRADED(59)",
+        "message": "Systemic: ISS-013 zero-token decay (59 skills) | ISS-017 GHA cron-tick gap, 3rd day",
+        "type": "error"
+      }
+    },
+    "separator_1": {
+      "type": "Separator"
+    },
+    "heading_degraded": {
+      "type": "Heading",
+      "props": {
+        "text": "DEGRADED (top 5 by sr)",
+        "level": "h3"
+      }
+    },
+    "table_degraded": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Success Rate",
+          "Last Success",
+          "Root Cause"
+        ],
+        "rows": [
+          [
+            "skill-leaderboard",
+            "0.07",
+            "4d ago",
+            "WAIT-API (ISS-013)"
+          ],
+          [
+            "workflow-security-audit",
+            "0.08",
+            "4d",
+            "WAIT-API (ISS-013)"
+          ],
+          [
+            "channel-recap",
+            "0.08",
+            "4d",
+            "WAIT-API (ISS-013)"
+          ],
+          [
+            "update-gallery",
+            "0.08",
+            "4d",
+            "WAIT-API (ISS-013)"
+          ],
+          [
+            "fork-contributor-leaderboard",
+            "0.08",
+            "4d",
+            "WAIT-API (ISS-013)"
+          ]
+        ]
+      }
+    },
+    "text_more_degraded": {
+      "type": "Text",
+      "props": {
+        "text": "+54 more — see memory/issues/INDEX.md",
+        "variant": "caption"
+      }
+    },
+    "separator_2": {
+      "type": "Separator"
+    },
+    "heading_warning": {
+      "type": "Heading",
+      "props": {
+        "text": "WARNING",
+        "level": "h3"
+      }
+    },
+    "text_evening_rollup": {
+      "type": "Text",
+      "props": {
+        "text": "evening-rollup — sr 0.6 (recovered from 0.56; ~4 clean runs to HEALTHY)"
+      }
+    },
+    "separator_3": {
+      "type": "Separator"
+    },
+    "heading_nodata": {
+      "type": "Heading",
+      "props": {
+        "text": "NO DATA (6)",
+        "level": "h3"
+      }
+    },
+    "text_nodata": {
+      "type": "Text",
+      "props": {
+        "text": "hacker-news-digest, morning-brief (chain wrappers); repo-scanner, vercel-projects (Sun); syndicate-article, weekly-shiplog (Mon)"
+      }
+    },
+    "separator_4": {
+      "type": "Separator"
+    },
+    "heading_healthy": {
+      "type": "Heading",
+      "props": {
+        "text": "HEALTHY",
+        "level": "h3"
+      }
+    },
+    "stat_healthy": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy Skills",
+        "value": "22"
+      }
+    },
+    "separator_5": {
+      "type": "Separator"
+    },
+    "heading_issues": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues Summary",
+        "level": "h3"
+      }
+    },
+    "stack_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_open_issues",
+        "stat_resolved_issues",
+        "stat_filed_issues"
+      ]
+    },
+    "stat_open_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Open",
+        "value": "15"
+      }
+    },
+    "stat_resolved_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved",
+        "value": "0"
+      }
+    },
+    "stat_filed_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Filed",
+        "value": "0"
+      }
+    }
+  }
+}

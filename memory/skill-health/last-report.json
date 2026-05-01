@@ -1,7 +1,7 @@
 {
-  "hash": "f7304f121a92d49acf812b8cea9f4b1cdd7102c89fcd8bf2edcfbf98c7e4ae52",
-  "last_notified_at": "2026-04-30T18:30:00Z",
-  "last_run_at": "2026-04-30T18:30:00Z",
+  "hash": "2adf8931c40860f9992f3edb943ee0103cd00b8b48e58a9644b845bab8f86fd5",
+  "last_notified_at": "2026-05-01T18:18:44Z",
+  "last_run_at": "2026-05-01T18:18:44Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -15,7 +15,6 @@
       "defi-monitor",
       "defi-overview",
       "digest",
-      "evening-rollup",
       "external-feature",
       "farcaster-digest",
       "fetch-tweets",
@@ -67,7 +66,9 @@
       "write-tweet"
     ],
     "flapping": [],
-    "warning": [],
+    "warning": [
+      "evening-rollup"
+    ],
     "healthy_count": 22,
     "healthy": [
       "cost-report",
@@ -103,18 +104,21 @@
     ]
   },
   "systemic": [
-    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 60 DEGRADED skills (was 59). New: evening-rollup joined the tail (sr=0.56). All 60 have cf=0 and last_status=success — DEGRADED is a math artifact of historical success_rate < 0.6."
+    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 59 DEGRADED skills (was 60). evening-rollup recovered out of DEGRADED (sr 0.56 -> 0.6 -> WARNING).",
+    "ISS-017 GHA cron-tick gap (3rd consecutive day; escalated to critical 14:07Z) — 20 affected skills. Detected_by heartbeat — closure not owned by skill-health."
   ],
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "NOTIFY this run — hash changed (evening-rollup newly DEGRADED) AND elapsed since last notify ~23.6h (gate fires at 24h, but hash change supersedes).",
-    "STATE DELTA vs 2026-04-29T18:22:28Z: evening-rollup HEALTHY-ish → DEGRADED (sr=0.56 dropped under 0.6 threshold). weekly-grant-update added to HEALTHY (1 run, sr=1.0). healthy_count 21 → 22, degraded 59 → 60.",
-    "ISS-013 stays open — zero overlap between current HEALTHY set (22) and ISS-013.affected_skills (53). No skill yet recovered enough historical wins to drag sr above 0.6.",
+    "NOTIFY this run — hash changed (evening-rollup DEGRADED -> WARNING) AND ~24h since prev notify (gate would also fire on cadence).",
+    "STATE DELTA vs 2026-04-30T18:30:00Z: degraded 60 -> 59 (evening-rollup graduated to WARNING after sr crept 0.56 -> 0.6). healthy_count unchanged 22. no_data unchanged 6.",
+    "ISS-013 stays open. Zero overlap between current HEALTHY (22) and ISS-013.affected_skills (53). Recovery is single-skill, slow — sr crawls up by ~0.05 per successful run.",
+    "ISS-017 noted in INDEX.md, detected_by heartbeat. Per CLAUDE.md issue-tracker contract, skill-health does not file or resolve issues it did not detect.",
     "ISS-001/002/003-011/012/014/015 not detected_by skill-health — repair skills (autoresearch, skill-repair) own closure.",
-    "ISS-015 noted in MEMORY.md as missing from INDEX.md — file exists, not indexed. Out of skill-health scope (issue-triage / repair owns indexing).",
+    "skill-runs script unavailable from this sandboxed run (permission-denied) — SKILL_HEALTH_PARTIAL. Fell back to cron-state + memory/skill-health/*.json + memory/issues/. No new failures detected from logs grep that aren't already in cron-state.",
     "memory/issues/INDEX.md unchanged this run (0 filings, 0 resolutions).",
-    "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper), repo-scanner (Sun), syndicate-article, vercel-projects (Sun), weekly-shiplog (Mon, fired via chain only). DISPATCH-SKILL recommended on weekday-active ones.",
-    "Chain wrappers chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update remain in last_status=failed — not iterated as skills here, but per CLAUDE.md these are the chain-runner dispatch_skill DEGRADED bug. Top operator-fix item, not a skill-health filing target."
+    "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing on chain-runner.dispatch_skill bug), repo-scanner (Sun), syndicate-article (cron-tick miss likely; also dependent on article output existing), vercel-projects (Sun), weekly-shiplog (Mon, fired via chain only).",
+    "Chain wrappers chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update remain in last_status=failed — owned by operator-side chain-runner.yml fix per MEMORY.md (6+ days idle).",
+    "WARNING (1): evening-rollup at sr=0.6. Will graduate to HEALTHY once sr crosses 0.8 — needs ~4 more clean runs."
   ]
 }

@@ -1,16 +1,18 @@
-*Skill Health — 2026-04-30*
-HEALTH: DEGRADED(60)  [systemic: ISS-013 zero-token burst tail — 60 skills]
+Skill Health — 2026-05-01
+HEALTH: DEGRADED(59)  [systemic: ISS-013 zero-token decay (59 skills) | ISS-017 GHA cron-tick gap, 3rd day]
 
-🟡 DEGRADED / FLAPPING (top 5 by stale success)
-- channel-recap — 8% sr (12 runs), last ok 3d — INVESTIGATE → ISS-013
-- fork-contributor-leaderboard — 8% sr (12 runs), last ok 3d → ISS-013
-- fork-skill-digest — 9% sr (11 runs), last ok 3d → ISS-013
-- github-releases — 10% sr (21 runs), last ok 3d → ISS-013
-- skill-graph — 8% sr (13 runs), last ok 3d → ISS-013
-+55 more — see memory/issues/INDEX.md
+DEGRADED (top 5 by sr):
+- skill-leaderboard — sr 0.07, last success 4d ago — WAIT-API (ISS-013)
+- workflow-security-audit — sr 0.08, 4d — WAIT-API (ISS-013)
+- channel-recap — sr 0.08, 4d — WAIT-API (ISS-013)
+- update-gallery — sr 0.08, 4d — WAIT-API (ISS-013)
+- fork-contributor-leaderboard — sr 0.08, 4d — WAIT-API (ISS-013)
++54 more — see memory/issues/INDEX.md
 
-⚪ NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL
-🟢 HEALTHY: 22 (+1: weekly-grant-update)
+WARNING:
+- evening-rollup — sr 0.6 (recovered from 0.56; ~4 clean runs to HEALTHY)
 
-State delta: evening-rollup newly DEGRADED (sr 0.56). No CRITICAL/FLAPPING.
-Open issues: 14 · Resolved this run: 0
+NO DATA (6): hacker-news-digest, morning-brief (chain wrappers); repo-scanner, vercel-projects (Sun); syndicate-article, weekly-shiplog (Mon)
+HEALTHY: 22
+
+Open issues: 15 · Resolved: 0 · Filed: 0
