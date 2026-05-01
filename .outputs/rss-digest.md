@@ -1,9 +1,9 @@
 ## Summary
 
-Skipped `rss-digest` — `memory/feeds.yml` is not present, and the skill instructs to skip when the config file is absent rather than guess at feed URLs. No notification sent (no items to summarize).
+**rss-digest**: SKIPPED. `memory/feeds.yml` does not exist, and per SKILL.md ("If the file doesn't exist yet, create it or skip this skill") I skipped rather than fabricating feeds. No notification sent.
 
 **Files modified:**
-- `memory/logs/2026-04-29.md` (created) — logged skip + RSS_DIGEST_OK status
+- `memory/logs/2026-05-01.md` — created with skip log entry
 
-**Follow-up for operator:**
-- Create `memory/feeds.yml` with the desired RSS/Atom feeds (`name` + `url` per entry) to activate this skill. Candidates that align with mission priorities: Polymarket blog, Kalshi blog, arXiv RSS for cs.LG/q-fin.TR, Anthropic news, dYdX Foundation, Uniswap Foundation announcements.
+**Follow-up:**
+- Operator config gap: populate `memory/feeds.yml` with desired feeds (already tracked in MEMORY.md "Operator config sweep" priority), or remove this skill from `aeon.yml` schedule. Each scheduled run with no feeds.yml is wasted compute.
