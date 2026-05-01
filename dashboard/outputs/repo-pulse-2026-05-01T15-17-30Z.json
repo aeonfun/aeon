@@ -1,0 +1,200 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse"
+      },
+      "children": [
+        "heading-title",
+        "badge-status",
+        "separator-1",
+        "link-repo",
+        "stats-grid",
+        "separator-2",
+        "heading-stargazers",
+        "stargazers-stack",
+        "separator-3",
+        "heading-forks",
+        "forks-stack",
+        "separator-4",
+        "text-source"
+      ]
+    },
+    "heading-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Repo Pulse — 2026-05-01",
+        "level": "h2"
+      }
+    },
+    "badge-status": {
+      "type": "Badge",
+      "props": {
+        "text": "STEADY",
+        "variant": "default"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-repo": {
+      "type": "Link",
+      "props": {
+        "label": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      }
+    },
+    "stats-grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-stars",
+        "stat-forks"
+      ]
+    },
+    "stat-stars": {
+      "type": "Stat",
+      "props": {
+        "label": "stars",
+        "value": "256",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "stat-forks": {
+      "type": "Stat",
+      "props": {
+        "label": "forks",
+        "value": "38",
+        "delta": "+1",
+        "trend": "up"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-stargazers": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      }
+    },
+    "stargazers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stargazer-1",
+        "stargazer-2"
+      ]
+    },
+    "stargazer-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-adamPoi",
+        "text-adamPoi-followers"
+      ]
+    },
+    "link-adamPoi": {
+      "type": "Link",
+      "props": {
+        "label": "AdamPoi",
+        "href": "https://github.com/AdamPoi"
+      }
+    },
+    "text-adamPoi-followers": {
+      "type": "Text",
+      "props": {
+        "text": "(40 followers)",
+        "variant": "caption"
+      }
+    },
+    "stargazer-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-cnzsmj",
+        "text-cnzsmj-followers"
+      ]
+    },
+    "link-cnzsmj": {
+      "type": "Link",
+      "props": {
+        "label": "CNZSMJ",
+        "href": "https://github.com/CNZSMJ"
+      }
+    },
+    "text-cnzsmj-followers": {
+      "type": "Text",
+      "props": {
+        "text": "(3 followers)",
+        "variant": "caption"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-forks": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      }
+    },
+    "forks-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-fork"
+      ]
+    },
+    "link-fork": {
+      "type": "Link",
+      "props": {
+        "label": "CNZSMJ/aeon",
+        "href": "https://github.com/CNZSMJ/aeon"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "muted"
+      }
+    }
+  }
+}
