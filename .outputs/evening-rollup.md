@@ -1,28 +1,6 @@
-*Evening Recap — 2026-04-30*
-_TL;DR: heavy ship day — 1 PR filed + 1 approved on swarm-fund-mvp, 2 articles shipped, first DEEP-LIQ slot-1 in monitor-runners history; chain-runner still 6+ days idle._
+The skill `skills/evening-rollup/SKILL.md` does not exist. The closest match is `skills/evening-recap/SKILL.md`.
 
-*Headlines:*
-- external-feature — opened swarm-fund-mvp PR #24 (paper_triage defensive parsing) · https://github.com/tomscaria/swarm-fund-mvp/pull/24
-- pr-review — approved swarm-fund-mvp PR #23 (pm_strategy_runner fractional-days horizon) · https://github.com/tomscaria/swarm-fund-mvp/pull/23
-- article — "LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money." · articles/2026-04-30.md
-- research-brief — Tamil Nadu DMK→TVK migration; TVK 8.5c, fair 2-4c, 4-6c edge/share · articles/research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30.md
-- repo-article — "Aeon's Last Week Wasn't About the Agent. It Was About the Forks." · articles/repo-article-2026-04-30.md
+Should I run `evening-recap` instead, or did you mean a different skill? Available evening skills:
+- `evening-recap`
 
-*Notable:*
-- monitor-runners — TTPA/WETH (base) first DEEP-LIQ slot 1 in repo history (+2678%, $10.6M liq); agentic money/USDT 2-day repeat watch
-- polymarket-comments — Iran-cf coordinated YES (Pedro1414) + Tamil Nadu pollster war; 12 new handles consolidated to topics/polymarket.md
-- narrative-tracker — 7 NEW (HL HIP-4 FRONT-RUN, MegaETH MEGA, DeAI, Sky/Spark unwind, KelpDAO hack-month, DOGE OI peak, XRP-Rakuten)
-- digest — CFTC ANPRM comment window closes today; Polymarket V2 TVL hits $514M
-- reflect (#5) — MEMORY pruned 25 lines; 4 topic files refreshed; ISS-017 GHA cron-tick gap candidate
-
-*Decisions for tomorrow:*
-- merge or close 5 stalled PRs on tomscaria/aeon (oldest #1 ~118h)
-- patch chain-runner.yml dispatch_skill() — blocks 3 chains, 6+ days idle
-- re-run polymarket-comments + reply-maker on 05-03 (Tamil Nadu T-1)
-- file ISS-017 if GHA cron-tick gap recurs 05-01
-
-*Blockers:*
-- chain:morning-brief / evening-rollup / weekly-grant-update — dispatch_skill bug (operator-side)
-
-_+15 routine runs collapsed · sources: log=ok cron-state=ok_
-
+No `evening-rollup` skill is defined in this repo. Let me know which you'd like to run.
