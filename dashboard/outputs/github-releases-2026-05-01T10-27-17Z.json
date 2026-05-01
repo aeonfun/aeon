@@ -1,0 +1,336 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary",
+        "sep1",
+        "asap-section",
+        "sep2",
+        "fyi-section",
+        "sep3",
+        "skip-section",
+        "sep4",
+        "stats"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "31 updates · 4 asap · 0 soon · 21 fyi · 6 skipped",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "asap-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "asap-heading",
+        "asap-stack"
+      ]
+    },
+    "asap-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "UPGRADE ASAP",
+        "level": "h2"
+      }
+    },
+    "asap-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap-1",
+        "asap-2",
+        "asap-3",
+        "asap-4"
+      ]
+    },
+    "asap-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BerriAI/litellm 1.84.0-dev.2",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/1.84.0-dev.2",
+        "source": "Hardens proxy security, adds GPT-image-2 and AIHubMix provider"
+      }
+    },
+    "asap-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.14.7",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.14.7",
+        "source": "Tightens tar/zip member validation, rejects symlinked LocalFile sources"
+      }
+    },
+    "asap-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-code v2.1.123",
+        "href": "https://github.com/anthropics/claude-code/releases/tag/v2.1.123",
+        "source": "Patches OAuth 401 retry loop under CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1"
+      }
+    },
+    "asap-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BerriAI/litellm v1.83.14.rc.1",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/v1.83.14.rc.1",
+        "source": "Hardens OAuth, adds GPT-5.5 support, guardrails, memory CRUD endpoints"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "fyi-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fyi-heading",
+        "fyi-stack",
+        "fyi-more"
+      ]
+    },
+    "fyi-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI",
+        "level": "h2"
+      }
+    },
+    "fyi-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi-1",
+        "fyi-2",
+        "fyi-3",
+        "fyi-4",
+        "fyi-5",
+        "fyi-6",
+        "fyi-7",
+        "fyi-8",
+        "fyi-9",
+        "fyi-10",
+        "fyi-11",
+        "fyi-12",
+        "fyi-13"
+      ]
+    },
+    "fyi-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.15.0",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.15.0",
+        "source": "Surfaces refusals as ModelRefusalError; needs run-error handler for empty outputs"
+      }
+    },
+    "fyi-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b8994",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8994",
+        "source": "Adds WebGPU upscale shader (nearest, bilinear, bicubic)"
+      }
+    },
+    "fyi-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-agent-sdk-python v0.1.72",
+        "href": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.72",
+        "source": "Bumps bundled Claude CLI to 2.1.126"
+      }
+    },
+    "fyi-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-code v2.1.126",
+        "href": "https://github.com/anthropics/claude-code/releases/tag/v2.1.126",
+        "source": "Adds gateway /v1/models picker, project-state purge, OAuth paste-code login"
+      }
+    },
+    "fyi-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b8992",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b8992",
+        "source": "Multi-platform release binaries for CUDA, Vulkan, ROCm, OpenVINO"
+      }
+    },
+    "fyi-6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-fireworks==1.2.1",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-fireworks%3D%3D1.2.1",
+        "source": "Translates canonical multimodal content blocks for chat completions"
+      }
+    },
+    "fyi-7": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain==1.2.17",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.2.17",
+        "source": "Adds respond decision to HITL middleware"
+      }
+    },
+    "fyi-8": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/anthropic-sdk-typescript bedrock-sdk-v0.29.1",
+        "href": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/bedrock-sdk-v0.29.1",
+        "source": "Fixes Bedrock APIError handling in chunk-frame error events"
+      }
+    },
+    "fyi-9": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/anthropic-sdk-typescript sdk-v0.92.0",
+        "href": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.92.0",
+        "source": "Adds CMA Memory APIs and env-driven custom headers"
+      }
+    },
+    "fyi-10": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-perplexity==1.2.0",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-perplexity%3D%3D1.2.0",
+        "source": "Adds PerplexityEmbeddings class"
+      }
+    },
+    "fyi-11": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain==1.2.16",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.2.16",
+        "source": "Stops inlining agent state into tool-dispatch Sends; perf gain"
+      }
+    },
+    "fyi-12": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-agent-sdk-python v0.1.71",
+        "href": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.71",
+        "source": "Adds sandbox network allowlist fields (allowedDomains, deniedDomains)"
+      }
+    },
+    "fyi-13": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.14.8",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.14.8",
+        "source": "Fixes MCP re-export import errors, delimits sandbox prompt sections"
+      }
+    },
+    "fyi-more": {
+      "type": "Alert",
+      "props": {
+        "message": "9 more FYI releases not shown",
+        "type": "info"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "skip-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "skip-heading",
+        "skip-stack",
+        "skip-more"
+      ]
+    },
+    "skip-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "SKIP",
+        "level": "h2"
+      }
+    },
+    "skip-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skip-1",
+        "skip-2",
+        "skip-3"
+      ]
+    },
+    "skip-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.7",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.7",
+        "source": "Test-suite plumbing; preserves Playwright traces; removes Turbopack manifests"
+      }
+    },
+    "skip-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.6",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.6",
+        "source": "Deprecates edge runtime; metadata-route HMR; Turbopack worker assetPrefix"
+      }
+    },
+    "skip-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BerriAI/litellm 1.84.0-dev.1",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/1.84.0-dev.1",
+        "source": "Adds Redis GCP IAM caching, MCP UI creds, uvicorn health flags"
+      }
+    },
+    "skip-more": {
+      "type": "Alert",
+      "props": {
+        "message": "3 more releases in SKIP category not shown",
+        "type": "info"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "stats": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
