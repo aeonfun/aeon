@@ -1,0 +1,40 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Aeon Just Built Its Way Off the Fork"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "thesis_text",
+        "link_article"
+      ]
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "PR #149 (smithery-manifest, +905 lines, merged 2026-05-01 13:44 UTC) is Aeon's first distribution channel that bypasses the fork model — six weeks after the MCP server shipped, the registry forms now write themselves.",
+        "variant": "body"
+      }
+    },
+    "link_article": {
+      "type": "Link",
+      "props": {
+        "label": "Read full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-01.md"
+      }
+    }
+  }
+}
