@@ -1,0 +1,81 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Security Fix: Shell Injection Closed",
+        "description": "aaronjmars/aeon"
+      },
+      "children": [
+        "alert_section",
+        "separator_1",
+        "details_section"
+      ]
+    },
+    "alert_section": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell Injection Vulnerability Closed",
+        "message": "execFileSync swap closes 3-week-old shell-injection at dashboard/app/api/secrets/route.ts (POST + DELETE methods)",
+        "type": "success"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "details_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "file_text",
+        "methods_text",
+        "issue_text",
+        "separator_2",
+        "pr_link"
+      ]
+    },
+    "file_text": {
+      "type": "Text",
+      "props": {
+        "text": "File: dashboard/app/api/secrets/route.ts",
+        "variant": "body"
+      }
+    },
+    "methods_text": {
+      "type": "Text",
+      "props": {
+        "text": "Methods: POST, DELETE",
+        "variant": "body"
+      }
+    },
+    "issue_text": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-empts ISS-016 filing on 2026-05-07",
+        "variant": "caption"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #150: execFileSync swap",
+        "href": "https://github.com/aaronjmars/aeon/pull/150",
+        "source": "GitHub"
+      }
+    }
+  }
+}
