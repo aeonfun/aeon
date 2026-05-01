@@ -19,4 +19,3 @@ _Tape is regulation-heavy: 4-of-5 fresh tweets are the Senate self-ban (sponsor 
 [View tweet](https://x.com/xomarket/status/2050152886857089536)
 
 _Source path: WebSearch (XAI_API_KEY len 0; .xai-cache/ absent — 7th consecutive run-day on path C). Engagement counts unavailable; ranked by signal/recency/source authority._
-

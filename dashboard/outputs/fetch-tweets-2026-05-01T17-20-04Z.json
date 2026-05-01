@@ -1,0 +1,232 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-05-01)"
+      },
+      "children": [
+        "intro-text",
+        "intro-analysis",
+        "sep-1",
+        "senate-section",
+        "sep-2",
+        "funding-section",
+        "sep-3",
+        "source-text"
+      ]
+    },
+    "intro-text": {
+      "type": "Text",
+      "props": {
+        "text": "Tape is regulation-heavy: 4-of-5 fresh tweets are the Senate self-ban (sponsor + Kalshi + Mansour + recap); only XO Market's $6M seed cuts through with non-regulatory news.",
+        "variant": "lead"
+      }
+    },
+    "intro-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket and Hyperliquid silent in this window despite CLOB v2 / TVL >$500M and Hayes's HIP-4 thesis.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "senate-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "senate-heading",
+        "tweet-1-group",
+        "tweet-2-group",
+        "tweet-3-group",
+        "tweet-4-group"
+      ]
+    },
+    "senate-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Senate self-ban resolution (Apr 30)",
+        "level": "h2"
+      }
+    },
+    "tweet-1-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-1",
+        "link-1"
+      ]
+    },
+    "tweet-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Bernie Moreno",
+        "handle": "berniemoreno",
+        "text": "my bill to ban members of Congress from insider trading on prediction markets just passed the Senate UNANIMOUSLY."
+      }
+    },
+    "link-1": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/berniemoreno/status/2049899149588418922"
+      }
+    },
+    "tweet-2-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-2",
+        "link-2"
+      ]
+    },
+    "tweet-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Kalshi",
+        "handle": "Kalshi",
+        "text": "JUST IN: Senate passes unanimous resolution to ban its members from trading prediction markets."
+      }
+    },
+    "link-2": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Kalshi/status/2049901518292136198"
+      }
+    },
+    "tweet-3-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-3",
+        "link-3"
+      ]
+    },
+    "tweet-3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Tarek Mansour",
+        "handle": "mansourtarek_",
+        "text": "Kalshi CEO Mansour applauds the Senate and frames Kalshi as the regulated venue that already proactively blocks members of Congress. First major prediction-market exec to take a public victory lap on a regulator action."
+      }
+    },
+    "link-3": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/mansourtarek_/status/2049902987426894143"
+      }
+    },
+    "tweet-4-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-4",
+        "link-4"
+      ]
+    },
+    "tweet-4": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Munshi Prem Chnd",
+        "handle": "MunshiPremChnd",
+        "text": "Senators just drew the line on prediction markets: no more trading on Kalshi or Polymarket amid insider-trading concerns."
+      }
+    },
+    "link-4": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/MunshiPremChnd/status/2050015283268432136"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "funding-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "funding-heading",
+        "tweet-5-group"
+      ]
+    },
+    "funding-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New entrants and funding (May 1)",
+        "level": "h2"
+      }
+    },
+    "tweet-5-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-5",
+        "link-5",
+        "calibration-note"
+      ]
+    },
+    "tweet-5": {
+      "type": "TweetCard",
+      "props": {
+        "author": "XO Market",
+        "handle": "xomarket",
+        "text": "XO Market closes $6M Seed led by 20VC + Picus, with Coinbase Ventures, Ventures Together, Foreword. Building conviction markets — permissionless event creation, the live alternative to Polymarket/Kalshi's curated paths."
+      }
+    },
+    "link-5": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/xomarket/status/2050152886857089536"
+      }
+    },
+    "calibration-note": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap-relevant for thin-book regime watchlist.",
+        "variant": "caption"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "Source path: WebSearch (XAI_API_KEY len 0; .xai-cache/ absent — 7th consecutive run-day on path C). Engagement counts unavailable; ranked by signal/recency/source authority.",
+        "variant": "caption"
+      }
+    }
+  }
+}
