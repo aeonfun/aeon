@@ -1,0 +1,89 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "project-lens"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "headline",
+        "separator1",
+        "description-stack",
+        "separator2",
+        "article-link"
+      ]
+    },
+    "headline": {
+      "type": "Heading",
+      "props": {
+        "text": "60% of AI Agent Incidents Are State Management. A 1989 Essay Said That Was Coming.",
+        "level": "h2"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "description-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "desc-p1",
+        "desc-p2",
+        "desc-p3"
+      ]
+    },
+    "desc-p1": {
+      "type": "Text",
+      "props": {
+        "text": "LangChain's State of Agent Engineering 2026 reports 60% of agent production incidents trace to state management — and the industry's answer is a $2.2B observability stack to wrap the state in more software.",
+        "variant": "body"
+      }
+    },
+    "desc-p2": {
+      "type": "Text",
+      "props": {
+        "text": "Richard Gabriel's 1989 essay on Unix and C predicted exactly this: simplicity beats correctness, and the technically-worse architecture wins by spreading first.",
+        "variant": "body"
+      }
+    },
+    "desc-p3": {
+      "type": "Text",
+      "props": {
+        "text": "The piece reads aeon's GitHub-Actions-cron architecture (PR #149's smithery-manifest schedule 0 6 1/7 * *, chain-runner.yml DEGRADED for six days, 95-tool MCP server now one-click from any Claude Desktop install) as the New Jersey side of that bet — worse on every LangSmith dashboard axis, and that's the point.",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "article-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "60% of AI Agent Incidents Are State Management. A 1989 Essay Said That Was Coming.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/project-lens-2026-05-01.md",
+        "source": "project-lens"
+      }
+    }
+  }
+}
