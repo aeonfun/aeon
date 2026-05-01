@@ -713,10 +713,10 @@
   },
   "issue-triage": {
     "last_dispatch": "2026-05-01T10:16:15Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-30T09:03:04Z",
-    "total_runs": 5,
-    "total_successes": 5,
+    "last_status": "success",
+    "last_success": "2026-05-01T10:17:41Z",
+    "total_runs": 6,
+    "total_successes": 6,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
