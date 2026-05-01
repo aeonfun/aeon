@@ -1,0 +1,411 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-01"
+      },
+      "children": [
+        "summary",
+        "sep1",
+        "winners-heading",
+        "winners-table",
+        "sep2",
+        "losers-heading",
+        "losers-table",
+        "sep3",
+        "trending-heading",
+        "trending-table",
+        "sep4",
+        "notable-heading",
+        "notable-stack"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Quiet tape — 66/100 top coins green, median 24h +0.6%; BTC $78,028 +2.3%, ETH $2,307 +1.8%, SOL $84.41 +1.4%."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "winners-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Market Cap",
+          "Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "UB (Unibase)",
+            "$0.1125",
+            "+90.8%",
+            "+141.2%",
+            "+15.2%",
+            "$87M",
+            "#154",
+            "BREAKOUT, PUMP-RISK"
+          ],
+          [
+            "B (BUILDon)",
+            "$0.220",
+            "+72.2%",
+            "+127.9%",
+            "-0.0%",
+            "$31M",
+            "#176",
+            "BREAKOUT, PUMP-RISK"
+          ],
+          [
+            "9BIT (The9bit)",
+            "$0.0305",
+            "+35.7%",
+            "+32.8%",
+            "+9.1%",
+            "$5M",
+            "#163",
+            "BREAKOUT, PUMP-RISK"
+          ],
+          [
+            "PENDLE (Pendle)",
+            "$1.57",
+            "+20.5%",
+            "+19.0%",
+            "+3.7%",
+            "$100M",
+            "#157",
+            ""
+          ],
+          [
+            "GENIUS (Genius)",
+            "$0.503",
+            "+17.4%",
+            "-20.9%",
+            "-3.1%",
+            "$30M",
+            "#198",
+            ""
+          ],
+          [
+            "SKYAI (SkyAI)",
+            "$0.374",
+            "+16.1%",
+            "+89.6%",
+            "-3.1%",
+            "$84M",
+            "#121",
+            "BREAKOUT"
+          ],
+          [
+            "H (Humanity)",
+            "$0.194",
+            "+15.2%",
+            "+34.1%",
+            "+0.8%",
+            "$35M",
+            "#128",
+            "BREAKOUT"
+          ],
+          [
+            "FLUID (Fluid)",
+            "$1.69",
+            "+12.3%",
+            "-2.7%",
+            "-0.1%",
+            "$30M",
+            "#240",
+            ""
+          ],
+          [
+            "ASTEROID (Asteroid Shiba)",
+            "$0.000359",
+            "+9.5%",
+            "+19.8%",
+            "-0.4%",
+            "$20M",
+            "#220",
+            ""
+          ],
+          [
+            "VVV (Venice Token)",
+            "$9.13",
+            "+8.9%",
+            "+6.7%",
+            "+0.7%",
+            "$15M",
+            "#113",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "losers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Market Cap",
+          "Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "MEGA (MegaETH)",
+            "$0.152",
+            "-12.9%",
+            "n/a",
+            "+0.6%",
+            "$372M",
+            "#197",
+            "TRENDING+DOWN, CAPITULATION"
+          ],
+          [
+            "RAVE (RaveDAO)",
+            "$0.657",
+            "-10.5%",
+            "-32.4%",
+            "-0.2%",
+            "$26M",
+            "#205",
+            ""
+          ],
+          [
+            "M (MemeCore)",
+            "$3.12",
+            "-8.7%",
+            "-33.8%",
+            "+0.5%",
+            "$12M",
+            "#25",
+            ""
+          ],
+          [
+            "WLFI (World Liberty Financial)",
+            "$0.0564",
+            "-7.1%",
+            "-25.6%",
+            "+0.4%",
+            "$100M",
+            "#46",
+            ""
+          ],
+          [
+            "PIEVERSE (Pieverse)",
+            "$0.676",
+            "-4.9%",
+            "-17.8%",
+            "-1.1%",
+            "$7M",
+            "#213",
+            ""
+          ],
+          [
+            "ZANO (Zano)",
+            "$9.14",
+            "-4.7%",
+            "-2.3%",
+            "+0.4%",
+            "$1M",
+            "#234",
+            ""
+          ],
+          [
+            "NIGHT (Midnight)",
+            "$0.0322",
+            "-3.2%",
+            "-14.4%",
+            "+0.2%",
+            "$9M",
+            "#98",
+            ""
+          ],
+          [
+            "ALGO (Algorand)",
+            "$0.108",
+            "-3.2%",
+            "+1.0%",
+            "-0.3%",
+            "$21M",
+            "#70",
+            ""
+          ],
+          [
+            "WLD (Worldcoin)",
+            "$0.239",
+            "-2.1%",
+            "-8.8%",
+            "+0.5%",
+            "$73M",
+            "#79",
+            ""
+          ],
+          [
+            "ZRO (LayerZero)",
+            "$1.42",
+            "-1.9%",
+            "-10.9%",
+            "-0.4%",
+            "$16M",
+            "#123",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "trending-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "trending-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Rank",
+          "Price",
+          "24h",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "PENGU (Pudgy Penguins)",
+            "#86",
+            "$0.00999",
+            "+2.9%",
+            ""
+          ],
+          [
+            "MEGA (MegaETH)",
+            "#197",
+            "$0.153",
+            "-14.4%",
+            "TRENDING+DOWN"
+          ],
+          [
+            "ACN (AITECH Cloud)",
+            "#849",
+            "$0.0121",
+            "+0.7%",
+            ""
+          ],
+          [
+            "TAO (Bittensor)",
+            "#37",
+            "$263.93",
+            "+5.5%",
+            ""
+          ],
+          [
+            "HYPE (Hyperliquid)",
+            "#13",
+            "$40.89",
+            "+4.8%",
+            "MAJOR"
+          ],
+          [
+            "LUNC (Terra Luna Classic)",
+            "#115",
+            "$7.32e-5",
+            "+0.7%",
+            ""
+          ],
+          [
+            "PROS (Pharos)",
+            "#329",
+            "$0.617",
+            "-20.3%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "UB: +90.8% with 7d +141% — escalating from yesterday's +21.5%, PUMP-RISK on $87M vol/#154"
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "B: +72.2% with 7d +128% — fresh BUILDon spike, PUMP-RISK on #176"
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "9BIT: +35.7% with 7d +33% — low-cap pump cluster, PUMP-RISK on $5M vol"
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "MEGA: 3rd straight red day post-listing, vol ($372M) > mcap ($173M), capitulation tape continuing"
+      }
+    }
+  }
+}
