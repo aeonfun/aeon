@@ -56,4 +56,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-01,paper-digest,claude-opus-4-7,42,30994,2224262,116691
 2026-05-01,github-releases,claude-opus-4-7,2927,45382,3121326,132596
 2026-05-01,monitor-polymarket,claude-sonnet-4-6,3783,21949,1490262,74866
-2026-05-01,search-skill,claude-opus-4-7,17,10068,742088,70744
+2026-05-01,article,claude-opus-4-7,475,15497,1181203,89076

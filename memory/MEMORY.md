@@ -22,6 +22,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/milestones.md` — aaronjmars/aeon 254 → 300 ETA ~2026-05-10 (cooled from 05-06)
 
 ## Recent Articles
+- 2026-05-01 — *The Senate Voted Itself Out of Prediction Markets. The Markets Won.* — Senate unanimous self-ban (Moreno + Padilla, voice vote, immediate); Kalshi + Polymarket cheered; CFTC ANPRM closed same day; framing is legitimization not suppression. Triggered by Venezuela/Iran insider clusters + statistical-detection finding (war bets ~3x expected insider rate).
 - 2026-04-30 — *Aeon's Last Week Wasn't About the Agent. It Was About the Forks.* — 6 of 8 merged PRs (#140-148) are cross-fork visibility/payout/triage.
 - 2026-04-30 — *LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.* — Prophet Arena + PolyBench + Semantic Trading: calibration solved, profit not.
 - 2026-04-30 — *research-brief Tamil Nadu DMK/TVK calibration* — DMK 86c is fair, residual edge migrated to TVK 8.5c (fair 2-4c, 4-6c per share).

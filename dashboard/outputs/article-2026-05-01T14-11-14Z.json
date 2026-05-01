@@ -1,0 +1,23 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Article Published"
+      },
+      "children": [
+        "story_link"
+      ]
+    },
+    "story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "The Senate Voted Itself Out of Prediction Markets. The Markets Won.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-05-01.md",
+        "source": "Aeon"
+      }
+    }
+  }
+}
