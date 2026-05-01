@@ -1,0 +1,216 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "heartbeat"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "main_stack"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "🔴 ISS-017 ESCALATED → critical (heartbeat 14:07 UTC)",
+        "message": "GHA cron-tick gap recurred at 13:00/13:30/14:00 UTC. No automatic dispatch fired between 12:39Z and now (14:07Z) — the 14:00 heartbeat slot itself missed (this run is operator-invoked). Per MEMORY directive, severity bumped high → critical.",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tiers_section",
+        "sep2",
+        "pattern_section",
+        "sep3",
+        "workaround_section",
+        "sep4",
+        "files_section"
+      ]
+    },
+    "tiers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tiers_heading",
+        "tier_items"
+      ]
+    },
+    "tiers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Today's missed cron tiers",
+        "level": "h3"
+      }
+    },
+    "tier_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tier1",
+        "tier2",
+        "tier3",
+        "tier4"
+      ]
+    },
+    "tier1": {
+      "type": "Text",
+      "props": {
+        "text": "07:00 morning chain (already filed this AM)"
+      }
+    },
+    "tier2": {
+      "type": "Text",
+      "props": {
+        "text": "13:00: monitor-kalshi, market-context-refresh, polymarket-comments"
+      }
+    },
+    "tier3": {
+      "type": "Text",
+      "props": {
+        "text": "13:30: narrative-tracker"
+      }
+    },
+    "tier4": {
+      "type": "Text",
+      "props": {
+        "text": "14:00: auto-merge, article, digest, research-brief, paper-pick, search-skill, security-digest, idea-capture, heartbeat"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pattern_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pattern_heading",
+        "pattern_text"
+      ]
+    },
+    "pattern_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pattern",
+        "level": "h3"
+      }
+    },
+    "pattern_text": {
+      "type": "Text",
+      "props": {
+        "text": "GHA scheduler fires irregular catch-up ticks (08:52 manual, 10:16, 12:39), then goes silent for hours. 24h SLAs on daily skills can no longer be guaranteed."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "workaround_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "workaround_heading",
+        "workaround_text"
+      ]
+    },
+    "workaround_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "External-watchdog workaround",
+        "level": "h3"
+      }
+    },
+    "workaround_text": {
+      "type": "Text",
+      "props": {
+        "text": "cron-job.org → workflow_dispatch on heartbeat hourly is now blocking. No aeon-side code can fix a scheduler that isn't ticking."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "files_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "files_heading",
+        "file_items"
+      ]
+    },
+    "files_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Files",
+        "level": "h3"
+      }
+    },
+    "file_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "file1",
+        "file2",
+        "file3"
+      ]
+    },
+    "file1": {
+      "type": "Text",
+      "props": {
+        "text": "memory/issues/ISS-017.md (severity → critical, 12 new affected skills added)"
+      }
+    },
+    "file2": {
+      "type": "Text",
+      "props": {
+        "text": "memory/issues/INDEX.md (row updated)"
+      }
+    },
+    "file3": {
+      "type": "Text",
+      "props": {
+        "text": "docs/status.md (regenerated, 15 open issues, 🔴 DEGRADED)"
+      }
+    }
+  }
+}
