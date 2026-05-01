@@ -668,8 +668,8 @@
   },
   "chain:morning-brief": {
     "last_dispatch": "2026-05-01T08:52:10Z",
-    "last_status": "dispatched",
-    "last_failed": "2026-04-29T07:13:14Z"
+    "last_status": "failed",
+    "last_failed": "2026-05-01T08:53:30Z"
   },
   "rss-digest": {
     "last_dispatch": "2026-05-01T08:52:10Z",
