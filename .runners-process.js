@@ -1,193 +1,183 @@
 #!/usr/bin/env node
 const fs = require('fs');
 
-const FILES = [
-  ['gt-global', '.runners-global.json'],
-  ['gt-solana-trend', '.runners-solana-trend.json'],
-  ['gt-solana-vol', '.runners-solana-vol.json'],
-  ['gt-eth-trend', '.runners-eth-trend.json'],
-  ['gt-eth-vol', '.runners-eth-vol.json'],
-  ['gt-base-trend', '.runners-base-trend.json'],
-  ['gt-base-vol', '.runners-base-vol.json'],
-  ['gt-bsc-trend', '.runners-bsc-trend.json'],
-  ['gt-bsc-vol', '.runners-bsc-vol.json'],
-  ['gt-arbitrum-trend', '.runners-arbitrum-trend.json'],
-  ['gt-arbitrum-vol', '.runners-arbitrum-vol.json'],
-  ['gt-new', '.runners-new.json'],
-];
+const sources = {
+  global: '.runners-global.json',
+  'solana-trend': '.runners-solana-trend.json',
+  'solana-vol': '.runners-solana-vol.json',
+  'eth-trend': '.runners-eth-trend.json',
+  'eth-vol': '.runners-eth-vol.json',
+  'base-trend': '.runners-base-trend.json',
+  'base-vol': '.runners-base-vol.json',
+  'bsc-trend': '.runners-bsc-trend.json',
+  'bsc-vol': '.runners-bsc-vol.json',
+  'arbitrum-trend': '.runners-arbitrum-trend.json',
+  'arbitrum-vol': '.runners-arbitrum-vol.json',
+  new: '.runners-new.json',
+};
 
-const sources = {};
+const status = {};
 const allPools = [];
-
-for (const [name, file] of FILES) {
+for (const [k, f] of Object.entries(sources)) {
   try {
-    const raw = fs.readFileSync(file, 'utf8');
+    const raw = fs.readFileSync(f, 'utf8');
     const j = JSON.parse(raw);
-    if (j.status && j.status.error_code) { sources[name] = 'fail'; continue; }
-    if (!Array.isArray(j.data)) { sources[name] = 'fail'; continue; }
-    sources[name] = 'ok';
-    for (const p of j.data) allPools.push(p);
+    if (j.status && j.status.error_code) {
+      status[k] = 'fail';
+      continue;
+    }
+    if (Array.isArray(j.data)) {
+      status[k] = 'ok';
+      for (const p of j.data) allPools.push(p);
+    } else {
+      status[k] = 'fail';
+    }
   } catch (e) {
-    sources[name] = 'fail';
+    status[k] = 'fail';
   }
 }
 
-// Dedupe by base_token id, keep highest h24 vol
 const byToken = new Map();
 for (const p of allPools) {
-  const tokId = p.relationships?.base_token?.data?.id;
+  const tokId = p.relationships && p.relationships.base_token && p.relationships.base_token.data && p.relationships.base_token.data.id;
   if (!tokId) continue;
-  const v = parseFloat(p.attributes?.volume_usd?.h24 || '0');
-  const ex = byToken.get(tokId);
-  if (!ex || v > parseFloat(ex.attributes?.volume_usd?.h24 || '0')) {
+  const vh24 = parseFloat(p.attributes.volume_usd && p.attributes.volume_usd.h24 || 0);
+  const prev = byToken.get(tokId);
+  if (!prev || parseFloat(prev.attributes.volume_usd && prev.attributes.volume_usd.h24 || 0) < vh24) {
     byToken.set(tokId, p);
   }
 }
+
 const preGate = byToken.size;
 
 const rejections = { thinVol: 0, negPct: 0, lowLiq: 0, dumping: 0, honeypot: 0, tooNew: 0, rugLike: 0 };
 const survivors = [];
 const now = Date.now();
-
 for (const p of byToken.values()) {
   const a = p.attributes;
-  const volH24 = parseFloat(a.volume_usd?.h24 || '0');
-  const pctH24 = parseFloat(a.price_change_percentage?.h24 || '0');
-  const liq = parseFloat(a.reserve_in_usd || '0');
-  const buys = parseInt(a.transactions?.h24?.buys || '0');
-  const sells = parseInt(a.transactions?.h24?.sells || '0');
-  const created = a.pool_created_at ? Date.parse(a.pool_created_at) : 0;
-  const ageH = created ? (now - created) / 3600_000 : 9999;
+  const vh24 = parseFloat(a.volume_usd && a.volume_usd.h24 || 0);
+  const ph24 = parseFloat(a.price_change_percentage && a.price_change_percentage.h24 || 0);
+  const ph1 = parseFloat(a.price_change_percentage && a.price_change_percentage.h1 || 0);
+  const liq = parseFloat(a.reserve_in_usd || 0);
+  const tx = a.transactions && a.transactions.h24 || { buys: 0, sells: 0 };
+  const buys = parseFloat(tx.buys || 0);
+  const sells = parseFloat(tx.sells || 0);
+  const created = a.pool_created_at ? Date.parse(a.pool_created_at) : null;
+  const ageH = created ? (now - created) / 3600000 : null;
 
-  if (volH24 < 50000) { rejections.thinVol++; continue; }
-  if (pctH24 <= 0) { rejections.negPct++; continue; }
+  if (vh24 < 50000) { rejections.thinVol++; continue; }
+  if (ph24 <= 0) { rejections.negPct++; continue; }
   if (liq < 10000) { rejections.lowLiq++; continue; }
-  if (buys > 0 && sells / buys > 10) { rejections.dumping++; continue; }
-  if (sells > 0 && buys / sells > 50) { rejections.honeypot++; continue; }
-  if (ageH < 1 && volH24 < 100000) { rejections.tooNew++; continue; }
-  if (pctH24 > 10000) { rejections.rugLike++; continue; }
-  survivors.push({ p, volH24, pctH24, liq, buys, sells, ageH });
+  if (buys > 0 && sells / Math.max(buys, 1) > 10) { rejections.dumping++; continue; }
+  if (sells > 0 && buys / Math.max(sells, 1) > 50) { rejections.honeypot++; continue; }
+  if (ageH !== null && ageH < 1 && vh24 < 100000) { rejections.tooNew++; continue; }
+  if (ph24 > 10000) { rejections.rugLike++; continue; }
+
+  survivors.push({ pool: p, vh24, ph24, ph1, liq, buys, sells, ageH, created });
 }
 
 const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
-function tagOf(s) {
-  const a = s.p.attributes;
-  if (s.liq >= 1_000_000 && s.volH24 >= 1_000_000) return 'DEEP-LIQ';
-  if (s.ageH <= 48 && s.volH24 >= 250_000) return 'BREAKOUT';
-  const pctH1 = parseFloat(a.price_change_percentage?.h1 || '0');
-  if (pctH1 > 2 && s.pctH24 > 50) return 'CONTINUATION';
-  if (pctH1 < -5 && s.pctH24 > 0) return 'REVERSAL';
-  return 'MICRO-SPEC';
+for (const s of survivors) {
+  const pct_pts = clamp(s.ph24 / 500, 0, 1);
+  const vol_pts = clamp(Math.log10(s.vh24 + 1) / 7, 0, 1);
+  const liq_pts = clamp(Math.log10(s.liq + 1) / 6, 0, 1);
+  const mom_pts = clamp((s.ph1 + 50) / 100, 0, 1);
+  const skew_pts = (s.buys + s.sells) > 0 ? clamp(s.buys / (s.buys + s.sells), 0, 1) : 0.5;
+  s.score = 40 * pct_pts + 25 * vol_pts + 15 * liq_pts + 10 * mom_pts + 10 * skew_pts;
+
+  let tag = 'MICRO-SPEC';
+  if (s.liq >= 1_000_000 && s.vh24 >= 1_000_000) tag = 'DEEP-LIQ';
+  else if (s.created && s.ageH !== null && s.ageH <= 48 && s.vh24 >= 250_000) tag = 'BREAKOUT';
+  else if (s.ph1 > 2 && s.ph24 > 50) tag = 'CONTINUATION';
+  else if (s.ph1 < -5 && s.ph24 > 0) tag = 'REVERSAL';
+  s.tag = tag;
 }
 
-const scored = survivors.map(s => {
-  const a = s.p.attributes;
-  const pctH1 = parseFloat(a.price_change_percentage?.h1 || '0');
-  const pctPts = clamp(s.pctH24 / 500, 0, 1);
-  const volPts = clamp(Math.log10(s.volH24 + 1) / 7, 0, 1);
-  const liqPts = clamp(Math.log10(s.liq + 1) / 6, 0, 1);
-  const momPts = clamp((pctH1 + 50) / 100, 0, 1);
-  const skewDen = s.buys + s.sells;
-  const skewPts = skewDen > 0 ? clamp(s.buys / skewDen, 0, 1) : 0.5;
-  const score = 40 * pctPts + 25 * volPts + 15 * liqPts + 10 * momPts + 10 * skewPts;
-  return { ...s, pctH1, score, tag: tagOf(s) };
-}).sort((x, y) => y.score - x.score);
+survivors.sort((a, b) => b.score - a.score);
 
-const top5 = scored.slice(0, 5);
+const top5 = survivors.slice(0, 5);
 
-function verdict(picks) {
-  if (picks.length < 5) return 'SLEEPY';
-  const tags = picks.map(p => p.tag);
-  const deepLiq = tags.filter(t => t === 'DEEP-LIQ').length;
-  const cont = tags.filter(t => t === 'CONTINUATION').length;
-  const microOrBreak = tags.filter(t => t === 'MICRO-SPEC' || t === 'BREAKOUT').length;
-  if (deepLiq >= 2) return 'STRONG';
-  if (deepLiq === 1 || cont >= 2) return 'MIXED';
-  if (microOrBreak >= 3) return 'SPECULATIVE';
-  return 'MIXED';
-}
+const tagCounts = top5.reduce((acc, s) => { acc[s.tag] = (acc[s.tag] || 0) + 1; return acc; }, {});
+let verdict;
+if (top5.length < 5) verdict = 'SLEEPY';
+else if ((tagCounts['DEEP-LIQ'] || 0) >= 2) verdict = 'STRONG';
+else if ((tagCounts['DEEP-LIQ'] || 0) === 1 || (tagCounts['CONTINUATION'] || 0) >= 2) verdict = 'MIXED';
+else if (((tagCounts['MICRO-SPEC'] || 0) + (tagCounts['BREAKOUT'] || 0)) >= 3) verdict = 'SPECULATIVE';
+else verdict = 'MIXED';
 
-const v = verdict(top5);
-
-function fmtUsd(n) {
+function fmtMoney(n) {
   if (n == null || isNaN(n)) return 'n/a';
+  if (n >= 1_000_000_000) return `$${(n / 1_000_000_000).toFixed(2)}b`;
   if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}m`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(0)}k`;
+  if (n >= 1_000) return `$${Math.round(n / 1_000)}k`;
   return `$${n.toFixed(0)}`;
 }
-function fmtPct(n) {
-  if (n == null || isNaN(n)) return 'n/a';
-  if (Math.abs(n) < 10) return `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`;
-  return `${n >= 0 ? '+' : ''}${Math.round(n)}%`;
+function fmtPct(p) {
+  if (Math.abs(p) < 10) return `${p >= 0 ? '+' : ''}${p.toFixed(1)}%`;
+  return `${p >= 0 ? '+' : ''}${Math.round(p)}%`;
 }
 
-const out = {
+const nearMiss = survivors.slice(5, 10);
+const deepLiqSurv = survivors.filter(s => s.tag === 'DEEP-LIQ').slice(0, 8);
+
+function chainOf(p) {
+  return p.relationships.network && p.relationships.network.data && p.relationships.network.data.id || p.id.split('_')[0];
+}
+
+const result = {
   preGate,
   postGate: survivors.length,
-  sources,
-  verdict: v,
   rejections,
-  top: top5.map(s => {
-    const a = s.p.attributes;
-    return {
-      name: a.name,
-      chain: s.p.relationships?.network?.data?.id || s.p.id?.split('_')[0],
-      tokenId: s.p.relationships?.base_token?.data?.id,
-      score: Math.round(s.score * 10) / 10,
-      pctH24: s.pctH24,
-      pctH1: s.pctH1,
-      volH24: s.volH24,
-      liq: s.liq,
-      fdv: a.fdv_usd ? parseFloat(a.fdv_usd) : null,
-      mcap: a.market_cap_usd ? parseFloat(a.market_cap_usd) : null,
-      buys: s.buys,
-      sells: s.sells,
-      ageH: s.ageH,
-      tag: s.tag,
-    };
-  }),
-  slot6to8: scored.slice(5, 8).map(s => {
-    const a = s.p.attributes;
-    return {
-      name: a.name,
-      chain: s.p.relationships?.network?.data?.id || s.p.id?.split('_')[0],
-      score: Math.round(s.score * 10) / 10,
-      pctH24: s.pctH24,
-      pctH1: parseFloat(a.price_change_percentage?.h1 || '0'),
-      volH24: s.volH24,
-      liq: s.liq,
-      fdv: a.fdv_usd ? parseFloat(a.fdv_usd) : null,
-      tag: s.tag,
-    };
-  }),
-  // Also surface highest-scoring DEEP-LIQ for self-improve evidence trail
-  deepLiqInSurvivors: scored.filter(s => s.tag === 'DEEP-LIQ').slice(0, 5).map(s => {
-    const a = s.p.attributes;
-    return {
-      name: a.name,
-      chain: s.p.relationships?.network?.data?.id || s.p.id?.split('_')[0],
-      score: Math.round(s.score * 10) / 10,
-      pctH24: s.pctH24,
-      volH24: s.volH24,
-      liq: s.liq,
-    };
-  }),
+  status,
+  verdict,
+  tagCounts,
+  top5: top5.map(s => ({
+    name: s.pool.attributes.name,
+    chain: chainOf(s.pool),
+    base_token_id: s.pool.relationships.base_token.data.id,
+    pool_id: s.pool.id,
+    score: Math.round(s.score * 10) / 10,
+    tag: s.tag,
+    vh24: s.vh24, ph24: s.ph24, ph1: s.ph1, liq: s.liq,
+    buys: s.buys, sells: s.sells,
+    fdv: parseFloat(s.pool.attributes.fdv_usd || 0),
+    mcap: s.pool.attributes.market_cap_usd ? parseFloat(s.pool.attributes.market_cap_usd) : null,
+    ageH: s.ageH,
+    fmtVol: fmtMoney(s.vh24),
+    fmtLiq: fmtMoney(s.liq),
+    fmtFdv: fmtMoney(parseFloat(s.pool.attributes.fdv_usd || 0)),
+    fmtMcap: s.pool.attributes.market_cap_usd && parseFloat(s.pool.attributes.market_cap_usd) > 0 ? fmtMoney(parseFloat(s.pool.attributes.market_cap_usd)) : null,
+    fmtH24: fmtPct(s.ph24),
+    fmtH1: fmtPct(s.ph1),
+  })),
+  nearMiss: nearMiss.map(s => ({
+    name: s.pool.attributes.name,
+    chain: chainOf(s.pool),
+    base_token_id: s.pool.relationships.base_token.data.id,
+    score: Math.round(s.score * 10) / 10,
+    tag: s.tag,
+    vh24: s.vh24, ph24: s.ph24, liq: s.liq,
+    fmtVol: fmtMoney(s.vh24),
+    fmtLiq: fmtMoney(s.liq),
+    fmtH24: fmtPct(s.ph24),
+  })),
+  deepLiqSurv: deepLiqSurv.map(s => ({
+    name: s.pool.attributes.name,
+    chain: chainOf(s.pool),
+    base_token_id: s.pool.relationships.base_token.data.id,
+    score: Math.round(s.score * 10) / 10,
+    fmtVol: fmtMoney(s.vh24),
+    fmtLiq: fmtMoney(s.liq),
+    fmtH24: fmtPct(s.ph24),
+  })),
 };
 
-fs.writeFileSync('.runners-result.json', JSON.stringify(out, null, 2));
-
-console.log(`pre-gate=${preGate} post-gate=${survivors.length} verdict=${v}`);
-console.log(`sources: ${Object.entries(sources).map(([k,v]) => `${k}=${v}`).join(' ')}`);
-console.log(`rejections: ${JSON.stringify(rejections)}`);
-console.log('top5:');
-for (const t of out.top) {
-  console.log(`  [${t.tag}] ${t.name} (${t.chain}) ${fmtPct(t.pctH24)} score=${t.score} vol=${fmtUsd(t.volH24)} liq=${fmtUsd(t.liq)} fdv=${fmtUsd(t.fdv)} h1=${fmtPct(t.pctH1)} buys:sells=${t.buys}:${t.sells} age=${t.ageH.toFixed(1)}h`);
-}
-console.log('slot6-8:');
-for (const t of out.slot6to8) {
-  console.log(`  [${t.tag}] ${t.name} (${t.chain}) ${fmtPct(t.pctH24)} score=${t.score} vol=${fmtUsd(t.volH24)} liq=${fmtUsd(t.liq)}`);
-}
-console.log(`deep-liq survivors: ${out.deepLiqInSurvivors.length}`);
-for (const t of out.deepLiqInSurvivors) {
-  console.log(`  [DEEP-LIQ] ${t.name} (${t.chain}) ${fmtPct(t.pctH24)} score=${t.score} vol=${fmtUsd(t.volH24)} liq=${fmtUsd(t.liq)}`);
-}
+fs.writeFileSync('.runners-result.json', JSON.stringify(result, null, 2));
+console.log(JSON.stringify({
+  preGate, postGate: survivors.length, verdict, tagCounts,
+  top5_names: top5.map(s => `[${s.tag}] ${s.pool.attributes.name} (${chainOf(s.pool)}) ${fmtPct(s.ph24)} score=${Math.round(s.score*10)/10} liq=${fmtMoney(s.liq)} vol=${fmtMoney(s.vh24)} h1=${fmtPct(s.ph1)} buys=${s.buys} sells=${s.sells} age=${s.ageH ? s.ageH.toFixed(1) + 'h' : 'n/a'}`),
+  rejections, status,
+  deepLiq_count: deepLiqSurv.length,
+  deepLiq_list: deepLiqSurv.map(s => `${s.pool.attributes.name} (${chainOf(s.pool)}) ${fmtPct(s.ph24)} score=${Math.round(s.score*10)/10} liq=${fmtMoney(s.liq)} vol=${fmtMoney(s.vh24)}`),
+  nearMiss_top: nearMiss.slice(0, 5).map(s => `${s.pool.attributes.name} (${chainOf(s.pool)}) ${fmtPct(s.ph24)} score=${Math.round(s.score*10)/10} tag=${s.tag} liq=${fmtMoney(s.liq)} vol=${fmtMoney(s.vh24)}`),
+}, null, 2));

@@ -1,0 +1,615 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "runners",
+        "description": "2026-05-01"
+      },
+      "children": [
+        "verdict-badge",
+        "token-1",
+        "sep-1",
+        "token-2",
+        "sep-2",
+        "token-3",
+        "sep-3",
+        "token-4",
+        "sep-4",
+        "token-5",
+        "sep-5",
+        "sources-section"
+      ]
+    },
+    "verdict-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SPECULATIVE",
+        "variant": "outline"
+      }
+    },
+    "token-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-1-header",
+        "token-1-metrics",
+        "token-1-desc"
+      ]
+    },
+    "token-1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token-1-type",
+        "token-1-name",
+        "token-1-change"
+      ]
+    },
+    "token-1-type": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token-1-name": {
+      "type": "Text",
+      "props": {
+        "text": "冲鸭 / USDT (bsc)",
+        "variant": "lead"
+      }
+    },
+    "token-1-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+3058%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "token-1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-1-vol",
+        "token-1-liq",
+        "token-1-fdv",
+        "token-1-h1",
+        "token-1-ratio"
+      ]
+    },
+    "token-1-vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $56.9m",
+        "variant": "caption"
+      }
+    },
+    "token-1-liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $108k",
+        "variant": "caption"
+      }
+    },
+    "token-1-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $64k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "token-1-h1": {
+      "type": "Text",
+      "props": {
+        "text": "h1 +3058%",
+        "variant": "caption"
+      }
+    },
+    "token-1-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 1003:914",
+        "variant": "caption"
+      }
+    },
+    "token-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "1h-old pool, $57m vol on $108k liq (~530x turnover) and $64k fdv. Identical wash-print signature to \"agentic money\" of 04-29/04-30 (same vol size, same $63-64k fdv, vanity addr ending in 4444) — almost certainly same actor cycling token names; observe only.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "token-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-2-header",
+        "token-2-metrics",
+        "token-2-desc"
+      ]
+    },
+    "token-2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token-2-type",
+        "token-2-name",
+        "token-2-change"
+      ]
+    },
+    "token-2-type": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token-2-name": {
+      "type": "Text",
+      "props": {
+        "text": "KLASSIC / WETH (eth)",
+        "variant": "lead"
+      }
+    },
+    "token-2-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+1312%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "token-2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-2-vol",
+        "token-2-liq",
+        "token-2-fdv",
+        "token-2-h1",
+        "token-2-ratio"
+      ]
+    },
+    "token-2-vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $8.4m",
+        "variant": "caption"
+      }
+    },
+    "token-2-liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $104k",
+        "variant": "caption"
+      }
+    },
+    "token-2-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $819k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "token-2-h1": {
+      "type": "Text",
+      "props": {
+        "text": "h1 -7.3%",
+        "variant": "caption"
+      }
+    },
+    "token-2-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 6281:4866",
+        "variant": "caption"
+      }
+    },
+    "token-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "23h-old eth launch, 11k tx but h1 already turning red — first-leg distribution underway.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "token-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-3-header",
+        "token-3-metrics",
+        "token-3-desc"
+      ]
+    },
+    "token-3-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token-3-type",
+        "token-3-name",
+        "token-3-repeat",
+        "token-3-change"
+      ]
+    },
+    "token-3-type": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token-3-name": {
+      "type": "Text",
+      "props": {
+        "text": "GDER / WETH 0.01% (base)",
+        "variant": "lead"
+      }
+    },
+    "token-3-repeat": {
+      "type": "Badge",
+      "props": {
+        "text": "★ repeat",
+        "variant": "secondary"
+      }
+    },
+    "token-3-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+2804%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "token-3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-3-vol",
+        "token-3-liq",
+        "token-3-fdv",
+        "token-3-h1",
+        "token-3-ratio"
+      ]
+    },
+    "token-3-vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $4.2m",
+        "variant": "caption"
+      }
+    },
+    "token-3-liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $133k",
+        "variant": "caption"
+      }
+    },
+    "token-3-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $354k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "token-3-h1": {
+      "type": "Text",
+      "props": {
+        "text": "h1 -10%",
+        "variant": "caption"
+      }
+    },
+    "token-3-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 8822:6605",
+        "variant": "caption"
+      }
+    },
+    "token-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "repeat from 04-30 slot 4 (was +1818% / $91k liq / +7.1% h1). Liq +45% but vol -27% and h1 flipped red — second-day rotation now selling.",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "token-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-4-header",
+        "token-4-metrics",
+        "token-4-desc"
+      ]
+    },
+    "token-4-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token-4-type",
+        "token-4-name",
+        "token-4-change"
+      ]
+    },
+    "token-4-type": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION",
+        "variant": "outline"
+      }
+    },
+    "token-4-name": {
+      "type": "Text",
+      "props": {
+        "text": "CLKCAT / WETH (base)",
+        "variant": "lead"
+      }
+    },
+    "token-4-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+507%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "token-4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-4-vol",
+        "token-4-liq",
+        "token-4-fdv",
+        "token-4-h1",
+        "token-4-ratio"
+      ]
+    },
+    "token-4-vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $249k",
+        "variant": "caption"
+      }
+    },
+    "token-4-liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $177k",
+        "variant": "caption"
+      }
+    },
+    "token-4-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $192k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "token-4-h1": {
+      "type": "Text",
+      "props": {
+        "text": "h1 +13%",
+        "variant": "caption"
+      }
+    },
+    "token-4-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 534:407",
+        "variant": "caption"
+      }
+    },
+    "token-4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "16d-old base token reactivated with fresh leg up, thin vol but live momentum (h1 +13%).",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "token-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-5-header",
+        "token-5-metrics",
+        "token-5-desc"
+      ]
+    },
+    "token-5-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token-5-type",
+        "token-5-name",
+        "token-5-change"
+      ]
+    },
+    "token-5-type": {
+      "type": "Badge",
+      "props": {
+        "text": "MICRO-SPEC",
+        "variant": "outline"
+      }
+    },
+    "token-5-name": {
+      "type": "Text",
+      "props": {
+        "text": "AD / USDT (arbitrum)",
+        "variant": "lead"
+      }
+    },
+    "token-5-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+1009%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "token-5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-5-vol",
+        "token-5-liq",
+        "token-5-fdv",
+        "token-5-h1",
+        "token-5-ratio"
+      ]
+    },
+    "token-5-vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $103k",
+        "variant": "caption"
+      }
+    },
+    "token-5-liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $116k",
+        "variant": "caption"
+      }
+    },
+    "token-5-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $23m (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "token-5-h1": {
+      "type": "Text",
+      "props": {
+        "text": "h1 +0.0%",
+        "variant": "caption"
+      }
+    },
+    "token-5-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 597:114",
+        "variant": "caption"
+      }
+    },
+    "token-5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "27h-old arbitrum micro-cap, 5.2:1 buy skew flirting with honeypot gate; $23m fdv on $103k vol = ~225x fdv/vol disconnect, very thin float trading.",
+        "variant": "body"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-title",
+        "sources-status",
+        "sources-vibe"
+      ]
+    },
+    "sources-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources & Vibe",
+        "level": "h4"
+      }
+    },
+    "sources-status": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok (after backoff retries on base-trend, bsc-trend, arbitrum-vol)",
+        "variant": "caption"
+      }
+    },
+    "sources-vibe": {
+      "type": "Text",
+      "props": {
+        "text": "88 survivors (2x yesterday's 43) — broader rotation tape. 8 DEEP-LIQ candidates today (TTPA, UB, B, ST, apxUSD, SKYAI, CARDS, WBTC) but zero cracked top 5 — pct-weighted score buries them. 5-in-a-row evidence for the soft DEEP-LIQ floor self-improve patch.",
+        "variant": "body"
+      }
+    }
+  }
+}

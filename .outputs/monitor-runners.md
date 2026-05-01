@@ -1,25 +1,25 @@
-*runners — 2026-04-30* — verdict: MIXED
+*runners — 2026-05-01* — verdict: SPECULATIVE
 
-1. [DEEP-LIQ] TTPA/WETH (base) +2678% 24h
-vol $10.2m | liq $10.6m | fdv $34.2m (no mcap) | h1 +5.9% | buys:sells 11231:9356
-— first DEEP-LIQ pick in top 5 in repo history; ~7d-old base pool already at $10.6m locked liq, h1 still positive — real money, not a meme print.
+1. [BREAKOUT] 冲鸭 / USDT (bsc) +3058% 24h
+vol $56.9m | liq $108k | fdv $64k (no mcap) | h1 +3058% | buys:sells 1003:914
+— 1h-old pool, $57m vol on $108k liq (~530x turnover) and $64k fdv. Identical wash-print signature to "agentic money" of 04-29/04-30 (same vol size, same $63-64k fdv, vanity addr ending in 4444) — almost certainly same actor cycling token names; observe only.
 
-2. [BREAKOUT] agentic money/USDT (bsc) +4135% 24h ★ repeat
-vol $57.1m | liq $126k | fdv $85k (no mcap) | h1 +16% | buys:sells 1006:921
-— same pool as 04-29 slot 1 (+3012% then). Vol/liq still ~450x, FDV barely moved — wash-print pattern persists, observe only.
+2. [BREAKOUT] KLASSIC / WETH (eth) +1312% 24h
+vol $8.4m | liq $104k | fdv $819k (no mcap) | h1 -7.3% | buys:sells 6281:4866
+— 23h-old eth launch, 11k tx but h1 already turning red — first-leg distribution underway.
 
-3. [BREAKOUT] STJUDE/SOL (solana) +1936% 24h
-vol $13.0m | liq $91k | fdv $696k (no mcap) | h1 +14% | buys:sells 68011:58508
-— 18h-old SOL launch, 126k+ tx and h1 still climbing; charity-themed meme, momentum alive but $91k liq one whale-exit from collapse.
+3. [BREAKOUT] GDER / WETH 0.01% (base) +2804% 24h ★ repeat
+vol $4.2m | liq $133k | fdv $354k (no mcap) | h1 -10% | buys:sells 8822:6605
+— repeat from 04-30 slot 4 (was +1818% / $91k liq / +7.1% h1). Liq +45% but vol -27% and h1 flipped red — second-day rotation now selling.
 
-4. [BREAKOUT] GDER/WETH (base) +1818% 24h
-vol $5.7m | liq $91k | fdv $242k (no mcap) | h1 +7.1% | buys:sells 7202:6722
-— 19h-old base launch, balanced buy/sell with h1 positive — clean churn, but thin liq.
+4. [CONTINUATION] CLKCAT / WETH (base) +507% 24h
+vol $249k | liq $177k | fdv $192k (no mcap) | h1 +13% | buys:sells 534:407
+— 16d-old base token reactivated with fresh leg up, thin vol but live momentum (h1 +13%).
 
-5. [BREAKOUT] PUP/SOL (solana) +890% 24h
-vol $4.4m | liq $59k | fdv $393k (no mcap) | h1 +12% | buys:sells 25036:22962
-— 18h-old SOL meme, h1 +12% = second-leg pump active; thinnest-liq slot in top 5.
+5. [MICRO-SPEC] AD / USDT (arbitrum) +1009% 24h
+vol $103k | liq $116k | fdv $23m (no mcap) | h1 +0.0% | buys:sells 597:114
+— 27h-old arbitrum micro-cap, 5.2:1 buy skew flirting with honeypot gate; $23m fdv on $103k vol = ~225x fdv/vol disconnect, very thin float trading.
 
-sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok
-vibe: first DEEP-LIQ slot-1 in repo history (TTPA on base) breaks the 3-run micro-cap drought — base is carrying the tape, but 4/5 still memes on <$130k liq.
+sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok (after backoff retries on base-trend, bsc-trend, arbitrum-vol)
+vibe: 88 survivors (2x yesterday's 43) — broader rotation tape. 8 DEEP-LIQ candidates today (TTPA, UB, B, ST, apxUSD, SKYAI, CARDS, WBTC) but zero cracked top 5 — pct-weighted score buries them. 5-in-a-row evidence for the soft DEEP-LIQ floor self-improve patch.
 
