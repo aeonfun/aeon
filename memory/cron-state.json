@@ -367,8 +367,8 @@
     "last_error": "3087f28\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "fleet-control": {
-    "last_dispatch": "2026-04-30T16:05:55Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-30T16:07:56Z",
     "total_runs": 22,
     "total_successes": 10,
@@ -712,8 +712,8 @@
     "success_rate": 1
   },
   "issue-triage": {
-    "last_dispatch": "2026-04-30T09:01:18Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-30T09:03:04Z",
     "total_runs": 5,
     "total_successes": 5,
@@ -722,8 +722,8 @@
     "success_rate": 1
   },
   "pr-review": {
-    "last_dispatch": "2026-04-30T09:01:18Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-30T09:04:32Z",
     "total_runs": 5,
     "total_successes": 5,
@@ -732,8 +732,8 @@
     "success_rate": 1
   },
   "github-monitor": {
-    "last_dispatch": "2026-04-30T09:01:18Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-30T09:02:43Z",
     "total_runs": 4,
     "total_successes": 4,
@@ -742,8 +742,8 @@
     "success_rate": 1
   },
   "github-issues": {
-    "last_dispatch": "2026-04-30T09:01:18Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-30T09:03:09Z",
     "total_runs": 5,
     "total_successes": 5,
@@ -753,8 +753,8 @@
     "last_quality_score": 4
   },
   "github-trending": {
-    "last_dispatch": "2026-04-30T09:01:18Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:53:21Z",
     "total_runs": 28,
     "total_successes": 5,
@@ -765,8 +765,8 @@
     "last_success": "2026-04-30T09:07:11Z"
   },
   "github-releases": {
-    "last_dispatch": "2026-04-27T10:13:56Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-01T10:16:15Z",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:53:25Z",
     "total_runs": 21,
     "total_successes": 2,
