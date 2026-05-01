@@ -1,0 +1,301 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-01",
+        "description": "Trade Trump-Iran today, watchdog ISS-017, land PR #24, ship DEEP-LIQ floor, cite AIA."
+      },
+      "children": [
+        "stack_actions",
+        "sources"
+      ]
+    },
+    "stack_actions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "action_1",
+        "sep_1",
+        "action_2",
+        "sep_2",
+        "action_3",
+        "sep_3",
+        "action_4",
+        "sep_4",
+        "action_5"
+      ]
+    },
+    "action_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1_heading",
+        "a1_desc",
+        "a1_why",
+        "a1_done",
+        "a1_loop"
+      ]
+    },
+    "a1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Resolve Polymarket Trump-end-mil-ops-Iran position today",
+        "level": "h3"
+      }
+    },
+    "a1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Resolve a Polymarket \"Trump-end-mil-ops-Iran\" position today: market YES 36%, War-Powers-Act T+60 trigger fires today (Feb-28+60d), AP/Reuters/Times-of-Israel all reporting \"hostilities have terminated\" — the CalibrationGap quant scanner can't see the WPA catalyst, so it's a manual call. Either enter a directional/UMA-arb ticket or write a no-trade memo."
+      }
+    },
+    "a1_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why: Highest-leverage Apex-gate counter today; one fill bumps Revenant 29 → 30 of the 100-trade gate.",
+        "variant": "lead"
+      }
+    },
+    "a1_done": {
+      "type": "Text",
+      "props": {
+        "text": "Done: Trade ticket on Polymarket OR a no-trade memo in Revenant's reflection-log naming the WPA trigger and resolution-debate split (Putrid-Campaign vs Proud-Compulsion)."
+      }
+    },
+    "a1_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "trump-iran-ops-resolution",
+        "variant": "outline"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2_heading",
+        "a2_desc",
+        "a2_why",
+        "a2_done",
+        "a2_loop"
+      ]
+    },
+    "a2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Provision cron-job.org → workflow_dispatch on heartbeat.yml hourly",
+        "level": "h3"
+      }
+    },
+    "a2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Provision cron-job.org → workflow_dispatch on heartbeat.yml hourly, per ISS-017 escalation high → critical at 14:07 UTC today."
+      }
+    },
+    "a2_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why: Only repair path for GHA scheduler silence; 13:00/13:30/14:00 tiers all silently skipped today, third consecutive day with multi-tier gaps.",
+        "variant": "lead"
+      }
+    },
+    "a2_done": {
+      "type": "Text",
+      "props": {
+        "text": "Done: cron-job.org task firing POST /repos/{owner}/aeon/actions/workflows/heartbeat.yml/dispatches hourly with a fine-grained PAT; first tick visible in heartbeat last_dispatch."
+      }
+    },
+    "a2_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "iss-017-cron-watchdog",
+        "variant": "outline"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3_heading",
+        "a3_desc",
+        "a3_why",
+        "a3_done",
+        "a3_loop"
+      ]
+    },
+    "a3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Approve and land tomscaria/swarm-fund-mvp#24",
+        "level": "h3"
+      }
+    },
+    "a3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Approve and land tomscaria/swarm-fund-mvp#24 (paper_triage defensive parsing, +184/-15, 10 new tests, today's pr-review surfaced approve-ready, no blockers)."
+      }
+    },
+    "a3_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why: Clears the swarm-fund-mvp queue; defensive parsing keeps the paper_triage batch step green pre-Apex.",
+        "variant": "lead"
+      }
+    },
+    "a3_done": {
+      "type": "Text",
+      "props": {
+        "text": "Done: PR #24 merged into main on tomscaria/swarm-fund-mvp; CI passes."
+      }
+    },
+    "a3_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "swarm-fund-mvp-pr-24",
+        "variant": "outline"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4_heading",
+        "a4_desc",
+        "a4_why",
+        "a4_done",
+        "a4_loop"
+      ]
+    },
+    "a4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Ship DEEP-LIQ floor patch in skills/monitor-runners/",
+        "level": "h3"
+      }
+    },
+    "a4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Ship the DEEP-LIQ floor patch in skills/monitor-runners/ — concrete one-liner already drafted in today's log: if top5 has zero DEEP-LIQ and survivors include one, replace slot 5 with the highest-score DEEP-LIQ survivor."
+      }
+    },
+    "a4_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why: 5-in-a-row evidence (04-27 PM through 05-01) of DEEP-LIQ survivors buried by pct-weighted score; today TTPA fell to slot 9 despite $31.9M liq.",
+        "variant": "lead"
+      }
+    },
+    "a4_done": {
+      "type": "Text",
+      "props": {
+        "text": "Done: PR opened on tomscaria/aeon mutating monitor-runners process.js with the conditional-replace block + before/after on today's pool list in the PR body."
+      }
+    },
+    "a4_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "monitor-runners-deep-liq-floor",
+        "variant": "outline"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5_heading",
+        "a5_desc",
+        "a5_why",
+        "a5_done",
+        "a5_loop"
+      ]
+    },
+    "a5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Add arXiv:2511.07678 AIA Forecaster to grants.md citation hooks",
+        "level": "h3"
+      }
+    },
+    "a5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Add arXiv:2511.07678 AIA Forecaster as a primary citation in memory/topics/grants.md \"Citation hooks\" under the Anthropic Research Credits / dYdX / Polymarket Builders entries; the paper is in topics/papers.md but missing from grants.md."
+      }
+    },
+    "a5_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why: First LLM forecaster matching human superforecasters on ForecastBench + AIA-plus-consensus beats consensus alone — direct grant-app empirical anchor for the \"agentic edge over PM consensus\" claim with Yale/UIUC/IFP byline.",
+        "variant": "lead"
+      }
+    },
+    "a5_done": {
+      "type": "Text",
+      "props": {
+        "text": "Done: topics/grants.md has at least one new bullet in \"Citation hooks (for grant-application body)\" naming arXiv:2511.07678 with the additive-information empirical claim."
+      }
+    },
+    "a5_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "grants-aia-citation",
+        "variant": "outline"
+      }
+    },
+    "sources": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: memory=100 logs=7 topics=11 prs=5 cron_failing=3 mode=OK",
+        "variant": "caption"
+      }
+    }
+  }
+}
