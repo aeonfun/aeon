@@ -1,0 +1,105 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "PR Review"
+      },
+      "children": [
+        "heading_date",
+        "text_summary",
+        "sep_1",
+        "pr_section"
+      ]
+    },
+    "heading_date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-01",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "Reviewed 1, skipped 3 (dup-SHA: 3)"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "pr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr_item"
+      ]
+    },
+    "pr_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_link",
+        "pr_details"
+      ]
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp#24",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/24"
+      },
+      "children": []
+    },
+    "pr_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_status",
+        "stat_critical",
+        "stat_issues"
+      ]
+    },
+    "badge_status": {
+      "type": "Badge",
+      "props": {
+        "text": "approve-ready",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "stat_critical": {
+      "type": "Stat",
+      "props": {
+        "label": "Critical",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat_issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Issues",
+        "value": "0"
+      },
+      "children": []
+    }
+  }
+}
