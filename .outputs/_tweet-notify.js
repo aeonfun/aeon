@@ -1,4 +1,5 @@
-tweet drafts: Senate prediction-markets self-ban — legitimization, not suppression
+const { execFileSync } = require('child_process');
+const msg = `tweet drafts: Senate prediction-markets self-ban — legitimization, not suppression
 
 — one-liner —
 1a. Senate banned itself from prediction markets. Both platforms cheered.
@@ -20,4 +21,5 @@ tweet drafts: Senate prediction-markets self-ban — legitimization, not suppres
 5a. Senate unanimously banned itself from prediction markets. Both Kalshi and Polymarket cheered within hours. Why does the regulated party endorse the regulator's move? Because this is legitimization, not suppression — and the platforms know it.
 5b. "Never allow Congress to turn into a casino where members can gamble on wars or economic crises." That's Schumer yesterday — about a market the CFTC called contrary to public interest in 2023. Same instrument, opposite valence. The arc is closing.
 
-best: #4a — full regulatory-arc thesis in 470 chars, anchored by the dual-track ANPRM/Senate timing.
+best: #4a — full regulatory-arc thesis in 470 chars, anchored by the dual-track ANPRM/Senate timing.`;
+execFileSync('./notify', [msg], { stdio: 'inherit' });

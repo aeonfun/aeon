@@ -1,0 +1,228 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Senate prediction-markets self-ban — legitimization, not suppression"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-oneliner",
+        "stack-oneliner",
+        "sep-1",
+        "heading-twopunch",
+        "stack-twopunch",
+        "sep-2",
+        "heading-paragraph",
+        "stack-paragraph",
+        "sep-3",
+        "heading-longtweet",
+        "stack-longtweet",
+        "sep-4",
+        "heading-threadopener",
+        "stack-threadopener",
+        "sep-5",
+        "alert-best"
+      ]
+    },
+    "heading-oneliner": {
+      "type": "Heading",
+      "props": {
+        "text": "one-liner",
+        "level": "h3"
+      }
+    },
+    "stack-oneliner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-1a",
+        "text-1b"
+      ]
+    },
+    "text-1a": {
+      "type": "Text",
+      "props": {
+        "text": "1a. Senate banned itself from prediction markets. Both platforms cheered."
+      }
+    },
+    "text-1b": {
+      "type": "Text",
+      "props": {
+        "text": "1b. Three years ago the CFTC said no to election contracts. Today the Senate banned itself from them."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-twopunch": {
+      "type": "Heading",
+      "props": {
+        "text": "two-punch",
+        "level": "h3"
+      }
+    },
+    "stack-twopunch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-2a",
+        "text-2b"
+      ]
+    },
+    "text-2a": {
+      "type": "Text",
+      "props": {
+        "text": "2a. Six Polymarket accounts cleared $1.2M during the Iran strikes. The Senate just unanimously banned itself from prediction markets and both platforms cheered."
+      }
+    },
+    "text-2b": {
+      "type": "Text",
+      "props": {
+        "text": "2b. Senators voted unanimously, by voice, to ban themselves from prediction markets. Kalshi and Polymarket said thank you. Read that sentence twice."
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-paragraph": {
+      "type": "Heading",
+      "props": {
+        "text": "paragraph",
+        "level": "h3"
+      }
+    },
+    "stack-paragraph": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-3a",
+        "text-3b"
+      ]
+    },
+    "text-3a": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Bipartisan unanimous votes don't happen unless the asset class is real enough to need rules. Yesterday the Senate banned its own members from prediction markets. Both platforms endorsed it. Three years ago the CFTC called these contracts contrary to public interest."
+      }
+    },
+    "text-3b": {
+      "type": "Text",
+      "props": {
+        "text": "3b. Insider-pattern profits on Polymarket war markets ran ~3x the expected rate. That's the load-bearing finding. Once insider trading is statistically detectable from order flow alone, the political pressure to act becomes unblockable. Both parties cited the same evidence."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-longtweet": {
+      "type": "Heading",
+      "props": {
+        "text": "long tweet",
+        "level": "h3"
+      }
+    },
+    "stack-longtweet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-4a",
+        "text-4b"
+      ]
+    },
+    "text-4a": {
+      "type": "Text",
+      "props": {
+        "text": "4a. Three years ago the CFTC told Kalshi that election contracts were contrary to the public interest. Yesterday the Senate, unanimously, by voice vote, treated election contracts as a venue serious enough that members couldn't be allowed near them. Same instrument, opposite valence. The CFTC's ANPRM comment window closed the same day. That's not coincidence — that's a coordinated front. The ban is the headline. The bipartisan consensus underneath is the durable change."
+      }
+    },
+    "text-4b": {
+      "type": "Text",
+      "props": {
+        "text": "4b. A U.S. special forces soldier was charged in January for using classified intel to bet on Maduro's capture on Polymarket. Six accounts cleared ~$1.2M during the Iran strikes. A separate analysis showed war-market insider-pattern profits running at ~3x the expected rate. That third one is load-bearing. Insider trading on prediction markets is now statistically detectable from order flow alone. The microstructure betrays itself. The Senate vote is downstream of that."
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-threadopener": {
+      "type": "Heading",
+      "props": {
+        "text": "thread opener",
+        "level": "h3"
+      }
+    },
+    "stack-threadopener": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-5a",
+        "text-5b"
+      ]
+    },
+    "text-5a": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Senate unanimously banned itself from prediction markets. Both Kalshi and Polymarket cheered within hours. Why does the regulated party endorse the regulator's move? Because this is legitimization, not suppression — and the platforms know it."
+      }
+    },
+    "text-5b": {
+      "type": "Text",
+      "props": {
+        "text": "5b. \"Never allow Congress to turn into a casino where members can gamble on wars or economic crises.\" That's Schumer yesterday — about a market the CFTC called contrary to public interest in 2023. Same instrument, opposite valence. The arc is closing."
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert-best": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommended",
+        "message": "best: #4a — full regulatory-arc thesis in 470 chars, anchored by the dual-track ANPRM/Senate timing.",
+        "type": "info"
+      }
+    }
+  }
+}
