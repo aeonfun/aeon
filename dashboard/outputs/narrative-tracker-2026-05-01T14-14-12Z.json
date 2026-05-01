@@ -1,0 +1,1286 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker — 2026-05-01"
+      },
+      "children": [
+        "transitions_section",
+        "reflexivity_section",
+        "positions_section",
+        "map_section"
+      ]
+    },
+    "transitions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "transitions_heading",
+        "new_items",
+        "promoted_items",
+        "demoted_items",
+        "dead_items"
+      ]
+    },
+    "transitions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "TRANSITIONS",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "new_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "new_1",
+        "new_2",
+        "new_3"
+      ]
+    },
+    "new_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "new_1_badge",
+        "new_1_text"
+      ]
+    },
+    "new_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "new_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill PM-ETFs launching May 5 — 6 funds (BLUP/REDP/BLUS/REDS/BLUH/REDH) swap-exposed to CFTC venues (Kalshi). Bitwise+GraniteShares filing too. Brokerage/retirement-account access to prediction markets."
+      },
+      "children": []
+    },
+    "new_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "new_2_badge",
+        "new_2_text"
+      ]
+    },
+    "new_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "new_2_text": {
+      "type": "Text",
+      "props": {
+        "text": "Gemini derivatives license — 5th venue stacked behind Kalshi/PM/HL/XO; stock surged on news."
+      },
+      "children": []
+    },
+    "new_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "new_3_badge",
+        "new_3_text"
+      ]
+    },
+    "new_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "new_3_text": {
+      "type": "Text",
+      "props": {
+        "text": "StarkNet STRK20s mainnet (Apr 30) — L2 fragmentation narrative gets fresh leg."
+      },
+      "children": []
+    },
+    "promoted_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "promoted_1"
+      ]
+    },
+    "promoted_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "promoted_1_badge",
+        "promoted_1_text"
+      ]
+    },
+    "promoted_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "promoted_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4 — Hayes (CoinDesk Apr 30) calls HYPE \"the prediction market weapon\"; HYPE +5.4% 24h on optionality alone (mainnet still TBD)."
+      },
+      "children": []
+    },
+    "demoted_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "demoted_1"
+      ]
+    },
+    "demoted_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "demoted_1_badge",
+        "demoted_1_text"
+      ]
+    },
+    "demoted_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "demoted_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ETF outflow frame — actually 9-day inflow streak Apr 14-24 ($3.7B over 8 weeks since Feb 24). Yesterday's bear read stale."
+      },
+      "children": []
+    },
+    "dead_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dead_1"
+      ]
+    },
+    "dead_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dead_1_badge",
+        "dead_1_text"
+      ]
+    },
+    "dead_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEAD",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "dead_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark \"durable unwind\" — fully reversed in single session (USDS supply +7.93%, Spark Savings +46.8%, Spark Liq Layer +25.9% per today's defi-overview). 04-30 print was a 1-day accounting blip."
+      },
+      "children": []
+    },
+    "reflexivity_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "reflexivity_heading",
+        "reflexivity_1",
+        "reflexivity_2",
+        "reflexivity_3"
+      ]
+    },
+    "reflexivity_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "REFLEXIVITY",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "reflexivity_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "refl_1_label",
+        "refl_1_text"
+      ]
+    },
+    "refl_1_label": {
+      "type": "Text",
+      "props": {
+        "text": "PM-ETFs",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "refl_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill swaps on Kalshi → ETF launch pulls volume → NAV moves → narrative reinforces. Clean self-reinforcing flywheel ahead of May 5."
+      },
+      "children": []
+    },
+    "reflexivity_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "refl_2_label",
+        "refl_2_text"
+      ]
+    },
+    "refl_2_label": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "refl_2_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hayes endorsement moves HYPE on pure optionality (no mainnet date). Same shape as US BTC Reserve trade pre-purchases."
+      },
+      "children": []
+    },
+    "reflexivity_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "refl_3_label",
+        "refl_3_text"
+      ]
+    },
+    "refl_3_label": {
+      "type": "Text",
+      "props": {
+        "text": "TAO",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "refl_3_text": {
+      "type": "Text",
+      "props": {
+        "text": "DeAI graduates from reflexive to fundamental: $43M Q1 revenue, $620M NVIDIA/Polychain (77% staked), Grayscale ETF SEC window Aug 2026."
+      },
+      "children": []
+    },
+    "positions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "positions_heading",
+        "positions_list"
+      ]
+    },
+    "positions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "POSITIONS",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "positions_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_1",
+        "pos_2",
+        "pos_3",
+        "pos_4",
+        "pos_5",
+        "pos_6",
+        "pos_7",
+        "pos_8",
+        "pos_9",
+        "pos_10",
+        "pos_11",
+        "pos_12",
+        "pos_13"
+      ]
+    },
+    "pos_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_1_header",
+        "pos_1_details",
+        "pos_1_bear"
+      ]
+    },
+    "pos_1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_1_direction",
+        "pos_1_conviction"
+      ]
+    },
+    "pos_1_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FRONT-RUN",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "pos_1_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "PM-ETFs (mindshare 3 ↑↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_1_details": {
+      "type": "Text",
+      "props": {
+        "text": "@Roundhill, James Seyffart"
+      },
+      "children": []
+    },
+    "pos_1_bear": {
+      "type": "Text",
+      "props": {
+        "text": "Bear: ETF wrapper takes a fee but no exclusive access; direct PM/Kalshi traders capture more spread.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "pos_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_2_header",
+        "pos_2_details",
+        "pos_2_bear"
+      ]
+    },
+    "pos_2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_2_direction",
+        "pos_2_conviction"
+      ]
+    },
+    "pos_2_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FRONT-RUN",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "pos_2_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4 (3 ↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_2_details": {
+      "type": "Text",
+      "props": {
+        "text": "@HyperliquidX, @CryptoHayes"
+      },
+      "children": []
+    },
+    "pos_2_bear": {
+      "type": "Text",
+      "props": {
+        "text": "Bear: testnet since Feb 2, mainnet TBD; two-phase rollout still canonical-only.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "pos_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_3_header",
+        "pos_3_text"
+      ]
+    },
+    "pos_3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_3_direction",
+        "pos_3_conviction"
+      ]
+    },
+    "pos_3_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_3_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "AI/DeAI (4 ↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_3_text": {
+      "type": "Text",
+      "props": {
+        "text": "TAO ETF + $43M Q1 rev + $620M institutional staked. Bear: TAO already +21.57% Q1, late-cycle entry."
+      },
+      "children": []
+    },
+    "pos_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_4_header",
+        "pos_4_text"
+      ]
+    },
+    "pos_4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_4_direction",
+        "pos_4_conviction"
+      ]
+    },
+    "pos_4_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_4_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "PM-meta (5 ↑↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_4_text": {
+      "type": "Text",
+      "props": {
+        "text": "6-venue race (Roundhill+Bitwise+GraniteShares+Gemini+HL+XO). Bear: liquidity dilution."
+      },
+      "children": []
+    },
+    "pos_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_5_header",
+        "pos_5_text"
+      ]
+    },
+    "pos_5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_5_direction",
+        "pos_5_conviction"
+      ]
+    },
+    "pos_5_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_5_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "PM × Kaito attention (3 →, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_5_text": {
+      "type": "Text",
+      "props": {
+        "text": "load-bearing for Revenant edge."
+      },
+      "children": []
+    },
+    "pos_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_6_header",
+        "pos_6_text"
+      ]
+    },
+    "pos_6_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_6_direction",
+        "pos_6_conviction"
+      ]
+    },
+    "pos_6_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_6_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-PM basis (3 →, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_6_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes Day-5 tape post-Kalshi-perps launch."
+      },
+      "children": []
+    },
+    "pos_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_7_header",
+        "pos_7_text"
+      ]
+    },
+    "pos_7_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_7_direction",
+        "pos_7_conviction"
+      ]
+    },
+    "pos_7_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_7_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE ecosystem (4 ↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_7_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hayes leg gives a fresh catalyst."
+      },
+      "children": []
+    },
+    "pos_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_8_header",
+        "pos_8_text"
+      ]
+    },
+    "pos_8_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_8_direction",
+        "pos_8_conviction"
+      ]
+    },
+    "pos_8_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "pos_8_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "PENDLE / fixed-income DeFi (3 ↑↑, Bull)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_8_text": {
+      "type": "Text",
+      "props": {
+        "text": "sPENDLE buyback + Aave V4 collateral. Bear: RSI 79, leveraged-long crowded."
+      },
+      "children": []
+    },
+    "pos_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_9_header",
+        "pos_9_text"
+      ]
+    },
+    "pos_9_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_9_direction",
+        "pos_9_conviction"
+      ]
+    },
+    "pos_9_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "pos_9_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH MEGA",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_9_text": {
+      "type": "Text",
+      "props": {
+        "text": "day-3 capitulation -12.9% (was 97.4% YES on launch confirm)."
+      },
+      "children": []
+    },
+    "pos_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_10_header",
+        "pos_10_text"
+      ]
+    },
+    "pos_10_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_10_direction",
+        "pos_10_conviction"
+      ]
+    },
+    "pos_10_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "pos_10_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ETF outflow narrative",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_10_text": {
+      "type": "Text",
+      "props": {
+        "text": "data-inverted, 9-day inflow streak."
+      },
+      "children": []
+    },
+    "pos_11": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_11_header",
+        "pos_11_text"
+      ]
+    },
+    "pos_11_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_11_direction",
+        "pos_11_conviction"
+      ]
+    },
+    "pos_11_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "pos_11_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark unwind",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_11_text": {
+      "type": "Text",
+      "props": {
+        "text": "invalidated by today's reversal."
+      },
+      "children": []
+    },
+    "pos_12": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_12_header",
+        "pos_12_text"
+      ]
+    },
+    "pos_12_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_12_direction",
+        "pos_12_conviction"
+      ]
+    },
+    "pos_12_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "pos_12_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "XRP-Rakuten",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_12_text": {
+      "type": "Text",
+      "props": {
+        "text": "local-top sentiment ratio (Santiment)."
+      },
+      "children": []
+    },
+    "pos_13": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_13_header",
+        "pos_13_text"
+      ]
+    },
+    "pos_13_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_13_direction",
+        "pos_13_conviction"
+      ]
+    },
+    "pos_13_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "pos_13_conviction": {
+      "type": "Text",
+      "props": {
+        "text": "Monitoring items",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "pos_13_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC dominance / no altseason, US-Iran/Hormuz, April hack month, STRK20s, MegaETH chain ($490M, near $500M gate)."
+      },
+      "children": []
+    },
+    "map_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "map_heading",
+        "map_emerging",
+        "map_rising",
+        "map_peak",
+        "map_fading"
+      ]
+    },
+    "map_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "MAP",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "map_emerging": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_emerging_label",
+        "map_emerging_items"
+      ]
+    },
+    "map_emerging_label": {
+      "type": "Text",
+      "props": {
+        "text": "Emerging",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "map_emerging_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_pm_etfs",
+        "badge_gemini",
+        "badge_strk20s",
+        "badge_hl_hip4"
+      ]
+    },
+    "badge_pm_etfs": {
+      "type": "Badge",
+      "props": {
+        "text": "PM-ETFs",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge_gemini": {
+      "type": "Badge",
+      "props": {
+        "text": "Gemini derivatives",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge_strk20s": {
+      "type": "Badge",
+      "props": {
+        "text": "STRK20s",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge_hl_hip4": {
+      "type": "Badge",
+      "props": {
+        "text": "HL HIP-4",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "map_rising": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_rising_label",
+        "map_rising_items"
+      ]
+    },
+    "map_rising_label": {
+      "type": "Text",
+      "props": {
+        "text": "Rising",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "map_rising_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_ai_deai",
+        "badge_pm_meta",
+        "badge_hermes",
+        "badge_pendle"
+      ]
+    },
+    "badge_ai_deai": {
+      "type": "Badge",
+      "props": {
+        "text": "AI/DeAI",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_pm_meta": {
+      "type": "Badge",
+      "props": {
+        "text": "PM-meta",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_hermes": {
+      "type": "Badge",
+      "props": {
+        "text": "Hermes basis",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_pendle": {
+      "type": "Badge",
+      "props": {
+        "text": "PENDLE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "map_peak": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_peak_label",
+        "map_peak_items"
+      ]
+    },
+    "map_peak_label": {
+      "type": "Text",
+      "props": {
+        "text": "Peak",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "map_peak_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_hype",
+        "badge_btc_dom",
+        "badge_stables"
+      ]
+    },
+    "badge_hype": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_btc_dom": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC dominance",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_stables": {
+      "type": "Badge",
+      "props": {
+        "text": "Stablecoins",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "map_fading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_fading_label",
+        "map_fading_items"
+      ]
+    },
+    "map_fading_label": {
+      "type": "Text",
+      "props": {
+        "text": "Fading",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "map_fading_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_megaeth",
+        "badge_xrp",
+        "badge_btc_etf",
+        "badge_sky_spark",
+        "badge_rwa",
+        "badge_gamefi",
+        "badge_aave",
+        "badge_us_btc"
+      ]
+    },
+    "badge_megaeth": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_xrp": {
+      "type": "Badge",
+      "props": {
+        "text": "XRP-Rakuten",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_btc_etf": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC ETF outflows",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_sky_spark": {
+      "type": "Badge",
+      "props": {
+        "text": "Sky/Spark unwind",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_rwa": {
+      "type": "Badge",
+      "props": {
+        "text": "RWA",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_gamefi": {
+      "type": "Badge",
+      "props": {
+        "text": "GameFi",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_aave": {
+      "type": "Badge",
+      "props": {
+        "text": "Aave-governance",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_us_btc": {
+      "type": "Badge",
+      "props": {
+        "text": "US BTC Reserve",
+        "variant": "destructive"
+      },
+      "children": []
+    }
+  }
+}
