@@ -84,18 +84,19 @@
 - ISS-013 stays open until skill-repair closes it or all affected rates climb back above 0.6. Closest recovers (04-29 skill-health): heartbeat sr=0.44, fleet-control sr=0.40, paper-pick sr=0.38.
 - Compounding factor: chain-runner.yml `dispatch_skill()` is still broken, so morning-brief / evening-rollup / weekly-grant-update chain wrappers fail nightly without dispatching their member skills — those member skills (paper-pick, monitor-polymarket, monitor-kalshi, etc.) miss their morning slot, blocking the burn-down. **Until chain-runner ships, ISS-013 decay is rate-limited.**
 
-## GHA cron-tick gaps (NEW 2026-04-30 — potential ISS-017)
-- 2026-04-30 06:37 → 09:01 UTC tick gap caused 07:00 + 07:30 windows (morning chain + telegram-digest) to be skipped entirely; 09:01 catch-up tick dispatched only 08:00 (heartbeat) + 09:00 skills, with no historical-slot catch-up.
-- Same pattern at 13:00 UTC tick (heartbeat 14:30 entry confirms 13:00 missed for monitor-kalshi / polymarket-comments / market-context-refresh).
-- Same shape was logged once on 04-26 (chain-runner-related); 04-30 occurrence is independent of chain-runner — pure GHA scheduler flake.
-- **If recurs on 2026-05-01, file as ISS-017 (sandbox-limitation, medium).** Operator workaround: workflow_dispatch the skipped slots manually.
+## GHA cron-tick gaps — ISS-017 (filed CRITICAL 2026-05-01)
+- 2026-04-30 06:37 → 09:01 UTC tick gap caused 07:00 + 07:30 windows (morning chain + telegram-digest) to be skipped entirely; 09:01 catch-up tick dispatched only 08:00 (heartbeat) + 09:00 skills.
+- 2026-05-01 RECURRED — at 08:53Z `cron-state.json` showed ZERO `last_dispatch` values with a 2026-05-01 prefix. 07:00 morning chain (chain:morning-brief, daily-routine, rss-digest, hacker-news-digest, paper-digest, reddit-digest), 07:30 telegram-digest, AND 08:00 heartbeat all silently skipped. 14:00 heartbeat slot also missed (operator-invoked at 14:07).
+- Per MEMORY directive ("if recurs 05-01, file as ISS-017"), filed 2026-05-01 08:53Z. Severity escalated to **critical** in INDEX.md (was scoped as medium; second consecutive day with full morning blackout justifies critical).
+- Independent of chain-runner.yml — pure GHA scheduler issue. Operator workaround: external watchdog (cron-job.org → workflow_dispatch on heartbeat hourly).
+- **Escalation trigger:** if 14:00 UTC slot also misses on 05-02, file as P0 follow-up.
 
-## 5-stalled-PR list on tomscaria/aeon (2026-04-30 09:07Z snapshot)
-- PR #1 — ~115h open (oldest stall, 4.8 days)
-- PR #2 — ~110h
-- PR #3 — ~110h (skill-graph, auto-skill artifact)
-- PR #4 — ~110h (workflow security audit, blocked on workflow-scoped token; ISS-015 patch carrier)
-- PR #5 — ~91h (skill-evals key fix, ISS-007 + ISS-009 closer)
+## 5-stalled-PR list on tomscaria/aeon (2026-05-01 snapshot)
+- PR #1 — ~120h+ open (oldest stall, ~5 days)
+- PR #2 — ~115h+
+- PR #3 — ~115h+ (skill-graph, auto-skill artifact)
+- PR #4 — ~115h+ (workflow security audit, blocked on workflow-scoped token; ISS-015 patch carrier)
+- PR #5 — ~96h+ (skill-evals key fix, ISS-007 + ISS-009 closer)
 - Issues disabled on `tomscaria/aeon` — no urgent label scan possible.
 
 ## search-skill: 4-of-5 NO_GAP / weak-fit runs (2026-04-25 → 2026-04-29)
@@ -104,8 +105,9 @@
 - Capability-level signal in cron-state will only return once chain-runner.yml `dispatch_skill()` is fixed and ISS-013 counters burn down.
 - Recommendation: leave search-skill on schedule; today's no-op run is the correct behavior.
 
-## Code-health carry-debt (3-week running)
-- **Shell-injection at `dashboard/app/api/secrets/route.ts:96`** — `value` only quote-escaped; backticks and `$(…)` still reach the shell. Fix: `spawnSync('gh', argv, { input: value })`. Flagged 2026-04-27 push-recap, 2026-04-28 dashboard digest, 2026-04-29 code-health. Three weeks unpatched. ISS-016 candidate filing for next skill-security-scan run.
+## Code-health carry-debt (4-week running)
+- **Shell-injection at `dashboard/app/api/secrets/route.ts:96`** — `value` only quote-escaped; backticks and `$(…)` still reach the shell. Fix: `execFileSync('gh', argv, { input: value })`. Flagged 2026-04-27 push-recap, 2026-04-28 dashboard digest, 2026-04-29 / 30 / 05-01 code-health (byte-identical at HEAD `c95478c`). Four weeks unpatched. **ISS-016 trigger date 2026-05-07** if not patched by then. Today's `external-feature` picked this as carrier — if PR lands before trigger, ISS-016 is pre-empted.
+- 9 of 19 dashboard route files use `execSync` (today added `dashboard/app/api/skills/route.ts`); only `secrets/route.ts:96` has user-controlled value reaching shell.
 - Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — secrets POST is the only currently-exploitable one.
 - 1 file over 500 lines: `a2a-server/src/index.ts` (579).
 

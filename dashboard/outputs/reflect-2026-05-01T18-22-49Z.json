@@ -1,0 +1,238 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Memory consolidated",
+        "description": "2026-05-01 (reflect #6)"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "memory_item",
+        "iss_item",
+        "hooks_item",
+        "comments_item",
+        "tvk_item",
+        "stars_item",
+        "replies_item",
+        "health_section",
+        "files_item"
+      ]
+    },
+    "memory_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "memory_stat",
+        "memory_desc"
+      ]
+    },
+    "memory_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "MEMORY.md",
+        "value": "83 lines",
+        "delta": "-17"
+      }
+    },
+    "memory_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Pruned Completed-Goals junk drawer",
+        "variant": "caption"
+      }
+    },
+    "iss_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "iss_status",
+        "iss_desc"
+      ]
+    },
+    "iss_status": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-017: conditional → filed-critical",
+        "variant": "body"
+      }
+    },
+    "iss_desc": {
+      "type": "Text",
+      "props": {
+        "text": "GHA cron-tick gap day-2",
+        "variant": "caption"
+      }
+    },
+    "hooks_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hooks_title",
+        "hooks_group"
+      ]
+    },
+    "hooks_title": {
+      "type": "Text",
+      "props": {
+        "text": "Tradable hooks rotated",
+        "variant": "lead"
+      }
+    },
+    "hooks_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hook1",
+        "hook2",
+        "hook3"
+      ]
+    },
+    "hook1": {
+      "type": "Text",
+      "props": {
+        "text": "Trump-Iran-ops resolving today",
+        "variant": "body"
+      }
+    },
+    "hook2": {
+      "type": "Text",
+      "props": {
+        "text": "RU-UA May-9 proposal",
+        "variant": "body"
+      }
+    },
+    "hook3": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH FDV resolved",
+        "variant": "body"
+      }
+    },
+    "comments_item": {
+      "type": "Badge",
+      "props": {
+        "text": "8 NEW comments-side handles",
+        "variant": "secondary"
+      }
+    },
+    "tvk_item": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK",
+        "value": "6.95c",
+        "delta": "-1.30c",
+        "trend": "down"
+      }
+    },
+    "stars_item": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "256",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "replies_item": {
+      "type": "Text",
+      "props": {
+        "text": "Reply-maker recurrence #7",
+        "variant": "body"
+      }
+    },
+    "health_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "skill_health_item",
+        "code_health_item"
+      ]
+    },
+    "skill_health_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skill_health_stat",
+        "degraded_badge"
+      ]
+    },
+    "skill_health_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Skill-health",
+        "value": "60",
+        "delta": "+1",
+        "trend": "down"
+      }
+    },
+    "degraded_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "code_health_item": {
+      "type": "Text",
+      "props": {
+        "text": "Code-health carry-debt week 3 → week 4",
+        "variant": "body"
+      }
+    },
+    "files_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "files_title",
+        "files_list"
+      ]
+    },
+    "files_title": {
+      "type": "Text",
+      "props": {
+        "text": "Files",
+        "variant": "lead"
+      }
+    },
+    "files_list": {
+      "type": "Text",
+      "props": {
+        "text": "MEMORY.md, topics/aeon-ops.md, topics/polymarket.md, topics/milestones.md, logs/2026-05-01.md",
+        "variant": "body"
+      }
+    }
+  }
+}

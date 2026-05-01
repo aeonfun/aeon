@@ -21,6 +21,13 @@
 - **Hermes-arb ADR-038 gate:** 7pp min-gap = 2% PM taker + 5bps funding + 4.95pp buffer. Deep-research suggests gate likely understates noise floor by 50–100bp; bump to **~7.5–8pp** queued.
 - **Sister-paper backlog:** arXiv:2508.03474 (probabilistic-forest arbitrage), 2511.20606 (LOB dynamics in matching markets — Kalshi CLOB tick structure), 2512.02436 (semantic trading, agentic alignment).
 
+## Live market state (snapshot 2026-05-01)
+- **Senate unanimous self-ban EFFECTIVE 2026-04-30** — Moreno (R-OH) wrote, Padilla (D-CA) amended to include staff. Schumer: "no-brainer." Same day CFTC ANPRM closed. Both Kalshi and Polymarket public-cheered the framing as legitimization. See `articles/2026-05-01.md` and `articles/research-brief-polymarket-regulatory-front-2026-2026-05-01.md` (thesis: by Dec 31 2026 CFTC issues NOPR excluding ≥1 of sports/elections/war-death from public-interest presumption).
+- **Trump end-mil-ops-Iran resolving TODAY (2026-05-01)** — War Powers Act T+60 from Feb 28. AP/Reuters/Times-of-Israel: "hostilities have terminated." Polymarket YES at 36%. Resolution-debate live: Putrid-Campaign "pause not end" vs Proud-Compulsion's NO-holder admission "termination of war ≠ end of military ops." Mirrors Iran-cf/Hez-cf clause-resolution arb already in CalibrationGap UMA-arb hook list. Quant scanner blind to War-Powers catalyst.
+- **Russia-Ukraine ceasefire (BREAKING 05-01)** — Putin proposed temporary ceasefire ~May 9 (Russia Victory Day) per Rich-Carotene; Trump agreed; Zelensky asked for precisions. By-May31 priced 6%. Market-rule-lawyer: "only general pause qualifies, energy-only doesn't." Abandoned-Kielbasa explicit info-asymmetry alpha callout: "look for big trades, definitely insider trading if anything happens."
+- **MegaETH FDV TGE RESOLVED 2026-05-01** — >$1B & >$1.5B → YES (1.0); >$2B → NO. Memory's >$1.5B 67.5% was directionally correct; pre-market $2B+ thesis (Murky-Cowboy 04-30) overstated. ArmageddonRewardsBilly insider thesis (NO on >$2B) confirmed paid; Lumbering-Analyst's futures-manipulation pattern callout validated. Petty-Bran public loser May 1.
+- **Tamil Nadu T-3 (May 4)** — TVK cooled 8.25c → 6.95c (residual edge cooling but still under 4-6c-fair); DMK 87.5%; ADMK 6.65%. Axis My India 2026 projects DMK35/TVK35/ADMK23 — three-way-tie outlier. Crafty-Kiss FLIPPED — once-TVK-bull (held from 5c) now says "DMK only +EV bet ngl." Re-run polymarket-comments + reply-maker on T-1 (May 3) and resolution morning (May 4).
+
 ## Live market state (snapshot 2026-04-30)
 - **V2 CUTOVER EXECUTED 2026-04-28 11 UTC** — CTF Exchange v2 + new orderbook + pUSD (1:1 USDC-backed, on-chain Polygon) + on-chain builder codes (EIP-1271, native `bytes32 builder` field in EIP-712 order struct) + match-time fees. ~1h offline. Audited by Cantina + Quantstamp. V1 SDK forward-incompatible. **Revenant resting-quote book wiped at cutover whether or not operator-side flatten ran.** $1M LP-rewards program live; on-chain attribution is the new live-tape baseline. See `articles/explainer-2026-04-29.md` for builder-code mechanism walkthrough.
 - **V2 TVL hits $514M two days in** (CryptoTimes 04-30): $514.19M TVL, 14,146 24h actives, 291,365 transactions, $513.77M OI, $4.49B 30d DEX vol. Material new fact answering "did orderbooks rebuild cleanly?" — yes. Resets `polymarket-comments` baseline for engagement scoring.
@@ -39,7 +46,17 @@
 - **Brazil block in force** Apr 27 — 29 PM platforms blocked.
 - **Polymarket fees +76% w/w** (DeFiLlama, 2026-04-25) — post-election handle persistence load-bearing for Revenant/CalibrationGap edge.
 
-## Comments-side calibration signals (rolling — last refresh 2026-04-30 14:35 UTC)
+## Comments-side calibration signals (rolling — last refresh 2026-05-01 14:12 UTC)
+
+NEW handles since 04-30 (from polymarket-comments 05-01):
+- **Gorgeous-Coffin** — Trump-Iran-ops citation-chain handle (AP/Reuters/Times-of-Israel URL stack); future-resolution-debate signal.
+- **Rich-Carotene** — RU-UA ground-reporter + market-rule-lawyer; flagged May-9 ceasefire-proposal first.
+- **Abandoned-Kielbasa** — RU-UA insider-trading watch flagger ("look for big trades"). Explicit info-asymmetry alpha callout pattern.
+- **Mixed-Sofa** — RU-UA contrarian; counters early-ceasefire optimism.
+- **Crafty-Kiss** — Tamil Nadu flipper (TVK→DMK), held TVK from 5c, public reversal "DMK only +EV bet ngl." Track-record handle for swing-flips.
+- **Remote-Presentation** — MegaETH FDV resolution-day commenter.
+- **Putrid-Campaign** — Iran-mil-ops "pause not end" YES-side argument (T-0 today).
+- **Proud-Compulsion** — Iran-mil-ops NO-holder admitted "termination of war ≠ end of military ops"; rare honest-loser tape.
 
 NEW handles since 04-28 (from polymarket-comments 04-30):
 - **Pedro1414** (Equatorial-Lung) — Iran-cf YES coordinator, organizational lead. 6+ comments above 19x in 48h. Disc channel + planned UMA vote-day live broadcast + court-threat. Folk-hero coordinator of YES rally; comparable to magmaalpha's procedural advocacy but with org structure.
