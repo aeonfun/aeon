@@ -1,1 +1,1 @@
-Agent Buzz — 2026-04-30: quiet day, no survivors. (src: websearch · candidates: ~12 → kept: 0 · XAI_API_KEY unset, 5th consecutive)
+Agent Buzz — 2026-05-01: quiet day, no survivors. (WebSearch fallback only — XAI_API_KEY unset; ~25 candidates surfaced, all failed staleness or missing engagement metadata.)

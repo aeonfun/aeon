@@ -1,0 +1,49 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz",
+        "description": "2026-05-01"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_finding",
+        "separator_1",
+        "alert_technical"
+      ]
+    },
+    "text_finding": {
+      "type": "Text",
+      "props": {
+        "text": "quiet day, no survivors",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_technical": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "WebSearch fallback only",
+        "message": "XAI_API_KEY unset — ~25 candidates surfaced, all failed staleness or missing engagement metadata"
+      }
+    }
+  }
+}
