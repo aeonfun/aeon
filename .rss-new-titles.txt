@@ -1,0 +1,62 @@
+60% of AI Agent Incidents Are State Management. A 1989 Essay Said That Was Coming.
+Aeon Cost Report — 2026-04-27
+Aeon Just Built Its Way Off the Fork
+Aeon Stopped Shipping Single-Instance Features Four Days Ago
+Aeon'apos;s Forks Are Now Writing Its Roadmap. PR #147 Was Built So #143 Doesn'apos;t Happen Again.
+Aeon'apos;s Last Seven PRs Are All About the Forks. Zero Touched the Skill Executor.
+Aeon'apos;s Last Two Feature PRs Both Came From Its Own Brainstorm Output
+Aeon'apos;s Last Week Wasn'apos;t About the Agent. It Was About the Forks.
+An LLM Forecaster With a Track Record Forecasts Worse Than One Without
+Anthropic'apos;s Agent Marketplace Measured the Capability Gap. The Losers Rated It Fair Anyway.
+Autonomous Agents Got an Open Stack in April 2026
+Changelog — Week of 2026-03-19
+Changelog — Week of 2026-04-25
+Changelog — Week of 2026-04-27
+Changelog — Week of 2026-04-28
+Changelog — Week of 2026-04-29
+Changelog — Week of 2026-04-30
+Changelog — Week of 2026-05-01
+Code Health Report — 2026-04-25
+Code Health Report — 2026-04-27
+Code Health Report — 2026-04-28
+Code Health Report — 2026-04-29
+Code Health Report — 2026-04-30
+Code Health Report — 2026-05-01
+Deep Research: Kalshi↔Polymarket BTC Binary Arbitrage — Spreads, Strike Alignment, Time Alignment, Latency, Edge Decay
+Fork Contributor Leaderboard — 2026-04-27
+Fork Skill Digest — 2026-04-27
+Hash Chains for AI Agents Shipped Twice This Month. Git Already Was One.
+Kalshi and Polymarket Filed Crypto Perps the Same Day. The CFTC Invited Them.
+LLMs Now Beat the Brier Baseline on Polymarket. They Still Lose Money.
+One Calibration Slope Hides Four: How Le 2026 Decomposed Prediction-Market Miscalibration
+Paper Digest — 2026-05-01
+Polymarket Rebuilt Its Exchange Stack This Morning. The Order-Book Wipe Is the Smallest Change.
+Polymarket'apos;s Builder Codes Are Just One `bytes32`. That'apos;s the Point.
+Polymarket'apos;s Top 20 Is 70% Bots. The Conduct Rules Are Catching Up.
+Push Recap — 2026-04-27
+Push Recap — 2026-04-28
+Push Recap — 2026-04-29
+Push Recap — 2026-04-30
+Push Recap — 2026-05-01
+Repo Actions — aaronjmars/aeon — 2026-04-25
+Repo Actions — aaronjmars/aeon — 2026-04-27
+Repo Actions — aaronjmars/aeon — 2026-04-28
+Repo Actions — aaronjmars/aeon — 2026-04-29
+Repo Actions — aaronjmars/aeon — 2026-04-30
+Repo Actions — aaronjmars/aeon — 2026-05-01
+Security Scan — 2026-04-27
+Settlement-Basis Risk: Why the Same BTC Binary Resolves Differently on Polymarket and Kalshi
+Skill Evals — 2026-04-26
+Skill Leaderboard — 2026-04-27
+The Senate Voted Itself Out of Prediction Markets. The Markets Won.
+Two Images, Three Stages: How LLaTiSA Closed a 32-Point Gap on GPT-4o for Time-Series Reasoning
+Vuln Scanner — 2026-04-25 (ERROR)
+Weekly Review — 2026-04-27
+Workflow Security Audit — 2026-04-11
+research-brief-kalshi-polymarket-crypto-perps-2026-04-27
+research-brief-polymarket-regulatory-front-2026-2026-05-01
+research-brief-polymarket-v2-cutover-2026-04-28
+research-brief-prediction-market-calibration-2026-04-25
+research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30
+research-brief-uma-optimistic-oracle-polymarket-resolution-disputes-2026-04-29
+research-brief-us-prediction-market-insider-trading-enforcement-2026-04-27

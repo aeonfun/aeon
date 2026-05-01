@@ -1,0 +1,123 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "rss-feed"
+      },
+      "children": [
+        "update_text",
+        "entry_count",
+        "separator1",
+        "new_heading",
+        "articles_stack",
+        "separator2",
+        "subscribe_link"
+      ]
+    },
+    "update_text": {
+      "type": "Text",
+      "props": {
+        "text": "RSS feed updated"
+      },
+      "children": []
+    },
+    "entry_count": {
+      "type": "Stat",
+      "props": {
+        "value": "62",
+        "label": "entries"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "new_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "articles_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "article1",
+        "article2",
+        "article3",
+        "article4",
+        "article5",
+        "more_articles"
+      ]
+    },
+    "article1": {
+      "type": "Text",
+      "props": {
+        "text": "60% of AI Agent Incidents Are State Management. A 1989 Essay Said That Was Coming."
+      },
+      "children": []
+    },
+    "article2": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon Just Built Its Way Off the Fork"
+      },
+      "children": []
+    },
+    "article3": {
+      "type": "Text",
+      "props": {
+        "text": "An LLM Forecaster With a Track Record Forecasts Worse Than One Without"
+      },
+      "children": []
+    },
+    "article4": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-05-01"
+      },
+      "children": []
+    },
+    "article5": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-05-01"
+      },
+      "children": []
+    },
+    "more_articles": {
+      "type": "Text",
+      "props": {
+        "text": "(+5 more)"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "subscribe_link": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe: https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      },
+      "children": []
+    }
+  }
+}

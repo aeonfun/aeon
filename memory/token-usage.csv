@@ -60,4 +60,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-01,repo-actions,claude-opus-4-7,47,41491,3577850,119477
 2026-05-01,code-health,claude-opus-4-7,62,25190,3454443,111618
 2026-05-01,reply-maker,claude-opus-4-7,60,16617,4148918,156713
-2026-05-01,reflect,claude-opus-4-7,58,28377,3841067,145030
+2026-05-01,rss-feed,claude-opus-4-7,75,20728,3420512,159230
