@@ -1,0 +1,179 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading_title",
+        "stack_status",
+        "sep_1",
+        "heading_shipped",
+        "stack_items",
+        "sep_2",
+        "heading_under",
+        "text_under",
+        "sep_3",
+        "heading_shape",
+        "text_shape",
+        "sep_4",
+        "heading_volume",
+        "text_volume",
+        "sep_5",
+        "story_recap"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Push Recap — 2026-05-01",
+        "level": "h2"
+      }
+    },
+    "stack_status": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_status",
+        "text_scope"
+      ]
+    },
+    "badge_status": {
+      "type": "Badge",
+      "props": {
+        "text": "SHIPPING"
+      }
+    },
+    "text_scope": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — smithery-manifest skill + Smithery/MCP Registry submission docs",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_shipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      }
+    },
+    "stack_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_pr_149",
+        "text_direct"
+      ]
+    },
+    "text_pr_149": {
+      "type": "Text",
+      "props": {
+        "text": "PR #149 (50eec0e) — new `smithery-manifest` skill regenerates three submission artifacts from skills.json + mcp-server/package.json + README.md (server.json, smithery.yaml, paste-ready submission body covering 95-tool catalog). Closes the 6-week-carried highest-priority growth play; ships enabled: false for maintainer review."
+      }
+    },
+    "text_direct": {
+      "type": "Text",
+      "props": {
+        "text": "c95478c — README.md drops the Shields.io agent-status badge linking to aaronjmars.github.io/aeon/status/. Direct push to main."
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_under": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h3"
+      }
+    },
+    "text_under": {
+      "type": "Text",
+      "props": {
+        "text": "(none — both commits are user-visible)",
+        "variant": "muted"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_shape": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      }
+    },
+    "text_shape": {
+      "type": "Text",
+      "props": {
+        "text": "2 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_volume": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      }
+    },
+    "text_volume": {
+      "type": "Text",
+      "props": {
+        "text": "7 files, +905/-3 lines"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story_recap": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-05-01.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}

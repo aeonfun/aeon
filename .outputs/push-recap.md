@@ -1,9 +1,14 @@
-## Summary
+*Push Recap — 2026-05-01*
+aaronjmars/aeon — SHIPPING — smithery-manifest skill + Smithery/MCP Registry submission docs
 
-Ran `push-recap` for `aaronjmars/aeon` (sole repo in `memory/watched-repos.md`).
+Shipped to users:
+• PR #149 (50eec0e) — new `smithery-manifest` skill regenerates three submission artifacts from skills.json + mcp-server/package.json + README.md (server.json, smithery.yaml, paste-ready submission body covering 95-tool catalog). Closes the 6-week-carried highest-priority growth play; ships enabled: false for maintainer review.
+• c95478c — README.md drops the Shields.io agent-status badge linking to aaronjmars.github.io/aeon/status/. Direct push to main.
 
-- **Window:** 2026-04-29T21:17 → 2026-04-30T21:17 UTC
-- **Result:** `PUSH_RECAP_DUPLICATE` — the 24h window contains exactly one commit (`f07d975`, PR #148 thread-formatter) which was already fully covered by the 16:07 UTC run today. Latest push to the repo is 2026-04-30T13:12:31Z; nothing new since.
-- **Action taken:** Logged a duplicate-run entry to `memory/logs/2026-04-30.md`. Did not overwrite `articles/push-recap-2026-04-30.md` (already substantive). Did not re-notify — the channel-discipline rule trumps a literal re-fire of the same recap.
-- **Sources:** all `ok` (gh events, commits, PR list).
-- **Follow-up:** The skill could grow an explicit dedup check ("if today's article exists and the commit/PR sets match, skip silently") to formalize this case rather than leaving it to the operator's interpretation of the high-signal-channel rule.
+Under the hood:
+• (none — both commits are user-visible)
+
+Shape: 2 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR
+Volume: 7 files, +905/-3 lines
+
+Full recap: https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-05-01.md
