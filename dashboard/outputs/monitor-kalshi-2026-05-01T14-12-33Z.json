@@ -1,0 +1,396 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor — 2026-05-01",
+        "description": "verdict: all quiet — watchlist empty (NO_CONFIG); 11 events discovered, 5 monitored; no moves worth flagging (all vol < $1k/day, candlesticks unavailable)"
+      },
+      "children": [
+        "verdict_section",
+        "sep1",
+        "config_section",
+        "sep2",
+        "federal_section",
+        "sep3",
+        "israel_section",
+        "sep4",
+        "pope_section",
+        "sep5",
+        "alerts_section",
+        "sep6",
+        "trending_section",
+        "sep7",
+        "sources_section"
+      ]
+    },
+    "verdict_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "verdict_heading",
+        "verdict_text"
+      ]
+    },
+    "verdict_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Verdict",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "verdict_text": {
+      "type": "Text",
+      "props": {
+        "text": "All quiet — watchlist empty (NO_CONFIG); 11 events discovered, 5 monitored; no moves worth flagging (all vol < $1k/day, candlesticks unavailable)"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "config_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "config_alert",
+        "config_text"
+      ]
+    },
+    "config_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "NO_CONFIG",
+        "message": "Watchlist is empty. Add event tickers to skills/monitor-kalshi/watchlist.md to enable regular monitoring."
+      },
+      "children": []
+    },
+    "config_text": {
+      "type": "Text",
+      "props": {
+        "text": "Suggested series: KXFED (Fed rate decisions), KXNEXTISRAELPM (Israel PM)."
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "federal_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "federal_heading",
+        "federal_table",
+        "federal_mover"
+      ]
+    },
+    "federal_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Federal Funds Rate — Apr 2027 FOMC (KXFED-27APR)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "federal_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Δ24h",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            ">3.50%",
+            "45%",
+            "n/a",
+            "$230",
+            "2pp"
+          ],
+          [
+            ">3.25%",
+            "45%",
+            "n/a",
+            "$198",
+            "2pp"
+          ],
+          [
+            ">4.00%",
+            "35%",
+            "n/a",
+            "$105",
+            "4pp"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "federal_mover": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: T3.50 — 511 contracts (~$230), tight book (2pp); market pricing 55% chance rate stays ≤3.50% by Apr 2027 (implied ~1-2 cuts from current ~4.25-4.50%)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "israel_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "israel_heading",
+        "israel_table",
+        "israel_mover"
+      ]
+    },
+    "israel_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Next PM of Israel (KXNEXTISRAELPM-45JAN01)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "israel_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Δ24h",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "Bennett (NBEN)",
+            "51%",
+            "n/a",
+            "$85",
+            "2pp"
+          ],
+          [
+            "Lieberman (ALIE)",
+            "9%",
+            "n/a",
+            "$127",
+            "8pp"
+          ],
+          [
+            "Sa'ar (GEIS)",
+            "17%",
+            "n/a",
+            "$9",
+            "n/a"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "israel_mover": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: ALIE — 1,351 contracts on $0.09 YES, but spread 8pp (thin book, skeptical pricing)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "pope_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pope_heading",
+        "pope_table",
+        "pope_note"
+      ]
+    },
+    "pope_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Next Pope (KXNEWPOPE-70)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pope_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Δ24h",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "Zuppi",
+            "4%",
+            "n/a",
+            "$4",
+            "wide"
+          ],
+          [
+            "Tagle",
+            "7%",
+            "n/a",
+            "$5",
+            "wide"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "pope_note": {
+      "type": "Text",
+      "props": {
+        "text": "Total event vol: ~$12 — noise floor only",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "alerts_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts_heading",
+        "alerts_text"
+      ]
+    },
+    "alerts_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts (moved >5pp on non-thin book)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "alerts_text": {
+      "type": "Text",
+      "props": {
+        "text": "none"
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "trending_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending_heading",
+        "trending_text"
+      ]
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "trending_text": {
+      "type": "Text",
+      "props": {
+        "text": "Full event universe is 11 events — all long-horizon speculative markets. Near-term liquid series (KXFED, KXBTC, KXCPI) exist but are not surfaced as events; they require direct series tickers in watchlist."
+      },
+      "children": []
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "events=ok candlesticks=fail (SRC=price_only all markets) orderbook=ok",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
