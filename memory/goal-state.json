@@ -1,50 +1,50 @@
 {
-  "run_at": "2026-04-30T19:00:00Z",
+  "run_at": "2026-05-01T17:50:00Z",
   "goals": {
     "fix-chain-runner-yml-dispatch-skill": {
       "status": "BLOCKED",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-05-01"
     },
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-05-01"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 5,
+      "last_activity_date": "2026-05-01"
     },
     "operator-config-sweep": {
       "status": "BLOCKED",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-05-01"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
       "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "last_activity_date": "2026-05-01"
     },
     "external-feature-prs-to-swarm-fund-mvp": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-05-01"
     },
     "stalin-tier-review-workflow-security-audit-iss-015": {
       "status": "BLOCKED",
-      "activity_count_14d": 4,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 5,
+      "last_activity_date": "2026-05-01"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
       "status": "ON_TRACK",
       "activity_count_14d": 5,
-      "last_activity_date": "2026-04-30"
+      "last_activity_date": "2026-04-27"
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-04-30"
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-05-01"
     }
   }
 }

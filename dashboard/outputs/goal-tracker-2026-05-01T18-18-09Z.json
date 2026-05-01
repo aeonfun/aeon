@@ -1,0 +1,456 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker",
+        "description": "2026-05-01"
+      },
+      "children": [
+        "summary_stack",
+        "sep_1",
+        "blocked_stack",
+        "sep_2",
+        "ontrack_stack",
+        "sep_3",
+        "sources_stack"
+      ]
+    },
+    "summary_stack": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_total",
+        "stat_risk",
+        "stat_attention",
+        "stat_ontrack",
+        "stat_blocked",
+        "stat_done"
+      ]
+    },
+    "stat_total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total",
+        "value": "9"
+      }
+    },
+    "stat_risk": {
+      "type": "Stat",
+      "props": {
+        "label": "At risk",
+        "value": "0"
+      }
+    },
+    "stat_attention": {
+      "type": "Stat",
+      "props": {
+        "label": "Needs attention",
+        "value": "0"
+      }
+    },
+    "stat_ontrack": {
+      "type": "Stat",
+      "props": {
+        "label": "On track",
+        "value": "6"
+      }
+    },
+    "stat_blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "3"
+      }
+    },
+    "stat_done": {
+      "type": "Stat",
+      "props": {
+        "label": "Done",
+        "value": "0"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blocked_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_heading",
+        "blocked_goal_1",
+        "blocked_goal_2",
+        "blocked_goal_3"
+      ]
+    },
+    "blocked_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED (3)",
+        "level": "h2"
+      }
+    },
+    "blocked_goal_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bg1_title",
+        "bg1_detail",
+        "bg1_action"
+      ]
+    },
+    "bg1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Fix chain-runner.yml dispatch_skill()",
+        "variant": "lead"
+      }
+    },
+    "bg1_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on operator-side workflow patch since 2026-04-25 (7 days)",
+        "variant": "body"
+      }
+    },
+    "bg1_action": {
+      "type": "Badge",
+      "props": {
+        "text": "Action: Mint workflow-scoped PAT and land echo-per-skill trace in dispatch_skill()",
+        "variant": "outline"
+      }
+    },
+    "blocked_goal_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bg2_title",
+        "bg2_detail",
+        "bg2_action"
+      ]
+    },
+    "bg2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep",
+        "variant": "lead"
+      }
+    },
+    "bg2_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on NEYNAR_API_KEY/X_HANDLE secrets + prefetch-reddit.sh / prefetch-vuln-scanner.sh / prefetch-xai reply-maker case",
+        "variant": "body"
+      }
+    },
+    "bg2_action": {
+      "type": "Badge",
+      "props": {
+        "text": "Action: Set NEYNAR_API_KEY + X_HANDLE and merge prefetch-reddit.sh shell",
+        "variant": "outline"
+      }
+    },
+    "blocked_goal_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bg3_title",
+        "bg3_detail",
+        "bg3_action"
+      ]
+    },
+    "bg3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review / ISS-015",
+        "variant": "lead"
+      }
+    },
+    "bg3_detail": {
+      "type": "Text",
+      "props": {
+        "text": "PR #4 stalled 4 days awaiting workflow-scoped PAT",
+        "variant": "body"
+      }
+    },
+    "bg3_action": {
+      "type": "Badge",
+      "props": {
+        "text": "Action: Mint workflow-scoped PAT and merge tomscaria/aeon#4",
+        "variant": "outline"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "ontrack_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ontrack_heading",
+        "ontrack_goal_1",
+        "ontrack_goal_2",
+        "ontrack_goal_3",
+        "ontrack_goal_4",
+        "ontrack_goal_5",
+        "ontrack_goal_6"
+      ]
+    },
+    "ontrack_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK (6)",
+        "level": "h2"
+      }
+    },
+    "ontrack_goal_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot1_title",
+        "ot1_detail"
+      ]
+    },
+    "ot1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push (monitor-polymarket + polymarket-comments)",
+        "variant": "lead"
+      }
+    },
+    "ot1_detail": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (flat)",
+        "variant": "body"
+      }
+    },
+    "ontrack_goal_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot2_title",
+        "ot2_detail"
+      ]
+    },
+    "ot2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb min-gap bump (7pp -> 7.5-8pp)",
+        "variant": "lead"
+      }
+    },
+    "ot2_detail": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 5 activity/14d (flat; recurring loop, no commit yet)",
+        "variant": "body"
+      }
+    },
+    "ontrack_goal_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot3_title",
+        "ot3_detail"
+      ]
+    },
+    "ot3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5 carrier, hn-digest / monitor-polymarket)",
+        "variant": "lead"
+      }
+    },
+    "ot3_detail": {
+      "type": "Text",
+      "props": {
+        "text": "4d idle on PR, 6 activity/14d (flat)",
+        "variant": "body"
+      }
+    },
+    "ontrack_goal_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot4_title",
+        "ot4_detail"
+      ]
+    },
+    "ot4_title": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature PRs to swarm-fund-mvp",
+        "variant": "lead"
+      }
+    },
+    "ot4_detail": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d (#22+#25 merged today; flat)",
+        "variant": "body"
+      }
+    },
+    "ontrack_goal_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot5_title",
+        "ot5_detail"
+      ]
+    },
+    "ot5_title": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays -> grant committees",
+        "variant": "lead"
+      }
+    },
+    "ot5_detail": {
+      "type": "Text",
+      "props": {
+        "text": "4d idle (last Mon 04-27), 5 activity/14d (flat; next Mon 05-04)",
+        "variant": "body"
+      }
+    },
+    "ontrack_goal_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot6_title",
+        "ot6_detail"
+      ]
+    },
+    "ot6_title": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily -> PhD reading list",
+        "variant": "lead"
+      }
+    },
+    "ot6_detail": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (flat)",
+        "variant": "body"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_badges"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h2"
+      }
+    },
+    "sources_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "src_logs",
+        "src_git",
+        "src_gh_pr",
+        "src_gh_issue",
+        "src_cron"
+      ]
+    },
+    "src_logs": {
+      "type": "Badge",
+      "props": {
+        "text": "logs=ok",
+        "variant": "default"
+      }
+    },
+    "src_git": {
+      "type": "Badge",
+      "props": {
+        "text": "git=ok (1 commit in window)",
+        "variant": "default"
+      }
+    },
+    "src_gh_pr": {
+      "type": "Badge",
+      "props": {
+        "text": "gh_pr=ok (5 open on aeon, 10 in-window on swarm-fund-mvp)",
+        "variant": "default"
+      }
+    },
+    "src_gh_issue": {
+      "type": "Badge",
+      "props": {
+        "text": "gh_issue=fail (issues disabled on aeon)",
+        "variant": "destructive"
+      }
+    },
+    "src_cron": {
+      "type": "Badge",
+      "props": {
+        "text": "cron-state=ok",
+        "variant": "default"
+      }
+    }
+  }
+}
