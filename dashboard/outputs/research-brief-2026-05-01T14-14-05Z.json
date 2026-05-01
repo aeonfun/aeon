@@ -1,0 +1,151 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Regulatory Front"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-shocks",
+        "text-intro",
+        "stack-events",
+        "sep-1",
+        "heading-assessment",
+        "text-assessment",
+        "sep-2",
+        "heading-thesis",
+        "text-thesis",
+        "sep-3",
+        "heading-revenant",
+        "text-revenant",
+        "sep-4",
+        "link-article"
+      ]
+    },
+    "heading-shocks": {
+      "type": "Heading",
+      "props": {
+        "text": "Three Regulatory Shocks in Nine Days",
+        "level": "h2"
+      }
+    },
+    "text-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Post-Jan-2025 permissive interlude for prediction markets has collapsed."
+      }
+    },
+    "stack-events": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "event-1",
+        "event-2",
+        "event-3"
+      ]
+    },
+    "event-1": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC ANPRM comment window closed Apr 30"
+      }
+    },
+    "event-2": {
+      "type": "Text",
+      "props": {
+        "text": "U.S. Senate unanimously banned its members from Polymarket/Kalshi on Apr 30"
+      }
+    },
+    "event-3": {
+      "type": "Text",
+      "props": {
+        "text": "Brazil's Anatel blocked 27-28 platforms including Polymarket and Kalshi on Apr 24-27"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-assessment": {
+      "type": "Heading",
+      "props": {
+        "text": "Assessment",
+        "level": "h2"
+      }
+    },
+    "text-assessment": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket's U.S. relegitimization is now a category-by-category fight, not settled."
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h2"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "By Dec 31, 2026, the CFTC will issue a NOPR that explicitly excludes at least one of sports, election, or war/death event contracts from the public-interest presumption."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-revenant": {
+      "type": "Heading",
+      "props": {
+        "text": "Impact: Revenant (CalibrationGap)",
+        "level": "h2"
+      }
+    },
+    "text-revenant": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap is 100% Polymarket, 100% USD-bridged. A sports/elections carve-out reshapes the tradable universe before Apex."
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Research Brief: Polymarket Regulatory Front",
+        "href": "articles/research-brief-polymarket-regulatory-front-2026-2026-05-01.md"
+      }
+    }
+  }
+}

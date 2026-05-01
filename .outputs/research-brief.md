@@ -1,1 +1,7 @@
-Polymarket Tamil Nadu DMK rerated 78c (Mar 26) -> 86c today after exit polls landed; original 04-27 underpricing flag is now ratified. Residual edge has migrated to TVK 8.5c contract — 8 of 9 named exit polls give TVK 10-30 seats, only Axis My India is the outlier (98-120) and its 44,460-interview base over-represents Brahmins 3x and halves OBC/MBC. Thesis: DMK wins most seats >92% prob, TVK contract fair value 2-4c vs market 8.5c (4-6c edge per share). May 4 count resolves a $19.9M market. articles/research-brief-tamil-nadu-2026-dmk-tvk-calibration-2026-04-30.md
+Three regulatory shocks in nine days collapsed the post-Jan-2025 permissive interlude for prediction markets: the CFTC ANPRM comment window closed Apr 30, the U.S. Senate unanimously banned its members from Polymarket/Kalshi the same day, and Brazil's Anatel blocked 27-28 platforms including both on Apr 24-27. Polymarket's U.S. relegitimization is now a category-by-category fight, not settled.
+
+Thesis: by Dec 31, 2026, the CFTC will issue a NOPR that explicitly excludes at least one of sports, election, or war/death event contracts from the public-interest presumption.
+
+For Revenant: CalibrationGap is 100% Polymarket, 100% USD-bridged — a sports/elections carve-out reshapes the tradable universe before Apex.
+
+articles/research-brief-polymarket-regulatory-front-2026-2026-05-01.md
