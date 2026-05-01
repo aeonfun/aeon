@@ -1,7 +1,6 @@
 ## Summary
 
-- Ran `defi-monitor` for 2026-04-30. `memory/on-chain-watches.yml` has empty `watches: []` and `protocols: []` — no DeFi positions configured.
-- No on-chain queries executed, no notification sent (per skill spec).
-- Files modified: `memory/logs/2026-04-30.md` (appended `defi-monitor` entry).
-- Follow-up: skill remains a no-op until pool/position entries are added to `memory/on-chain-watches.yml`.
-- DEFI_MONITOR_OK
+Executed `skills/defi-monitor/SKILL.md`. The watches file is template-only (`watches: []`, `protocols: []`) so per the skill's terminal guard the run ended at `DEFI_MONITOR_OK`. No RPC calls issued, no notification sent.
+
+- Files modified: `memory/logs/2026-05-01.md` (appended defi-monitor entry)
+- Follow-up: populating `memory/on-chain-watches.yml` is already on the open "Operator config sweep" punch-list in `MEMORY.md`. Until that lands, this skill will continue to no-op.

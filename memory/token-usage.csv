@@ -55,3 +55,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-30,evening-recap,claude-sonnet-4-6,994,6678,729603,91275
 2026-05-01,paper-digest,claude-opus-4-7,42,30994,2224262,116691
 2026-05-01,github-releases,claude-opus-4-7,2927,45382,3121326,132596
+2026-05-01,defi-monitor,claude-opus-4-7,12,2113,257399,21179
