@@ -1,0 +1,283 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-01"
+      },
+      "children": [
+        "header",
+        "shipping_desc",
+        "shipped_section",
+        "under_hood_section",
+        "shape_section",
+        "volume_section",
+        "recap_link"
+      ]
+    },
+    "header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "project_name",
+        "status_badge"
+      ]
+    },
+    "project_name": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "variant": "lead"
+      }
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SHIPPING",
+        "variant": "default"
+      }
+    },
+    "shipping_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Smithery / MCP Registry submission manifest lands after six weeks carried.",
+        "variant": "body"
+      }
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_heading",
+        "item_1",
+        "item_2",
+        "separator_1"
+      ]
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users:",
+        "level": "h3"
+      }
+    },
+    "item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_1_hash",
+        "item_1_text"
+      ]
+    },
+    "item_1_hash": {
+      "type": "Text",
+      "props": {
+        "text": "50eec0e PR #149",
+        "variant": "lead"
+      }
+    },
+    "item_1_text": {
+      "type": "Text",
+      "props": {
+        "text": "new `smithery-manifest` skill auto-generates server.json (MCP Registry schema, 95-tool catalog), smithery.yaml deployment config, and a paste-ready submission body from skills.json. Closes the highest-priority growth play unbuilt for six weeks.",
+        "variant": "body"
+      }
+    },
+    "item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_2_hash",
+        "item_2_text"
+      ]
+    },
+    "item_2_hash": {
+      "type": "Text",
+      "props": {
+        "text": "c95478c",
+        "variant": "lead"
+      }
+    },
+    "item_2_text": {
+      "type": "Text",
+      "props": {
+        "text": "README badge cleanup: removes the `agent-status` shields.io link from the header (visible to every fork pulling main).",
+        "variant": "body"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "under_hood_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under_hood_heading",
+        "under_hood_text",
+        "separator_2"
+      ]
+    },
+    "under_hood_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood:",
+        "level": "h3"
+      }
+    },
+    "under_hood_text": {
+      "type": "Text",
+      "props": {
+        "text": "None — both commits are user-visible.",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "shape_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shape_heading",
+        "shape_grid"
+      ]
+    },
+    "shape_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      }
+    },
+    "shape_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "md"
+      },
+      "children": [
+        "stat_user_visible",
+        "stat_internal",
+        "stat_infra",
+        "stat_bot_filtered",
+        "stat_merged_pr"
+      ]
+    },
+    "stat_user_visible": {
+      "type": "Stat",
+      "props": {
+        "label": "user-visible",
+        "value": "2"
+      }
+    },
+    "stat_internal": {
+      "type": "Stat",
+      "props": {
+        "label": "internal",
+        "value": "0"
+      }
+    },
+    "stat_infra": {
+      "type": "Stat",
+      "props": {
+        "label": "infra",
+        "value": "0"
+      }
+    },
+    "stat_bot_filtered": {
+      "type": "Stat",
+      "props": {
+        "label": "bot-filtered",
+        "value": "0"
+      }
+    },
+    "stat_merged_pr": {
+      "type": "Stat",
+      "props": {
+        "label": "merged PR",
+        "value": "1"
+      }
+    },
+    "volume_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "volume_heading",
+        "volume_grid"
+      ]
+    },
+    "volume_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      }
+    },
+    "volume_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_files",
+        "stat_additions",
+        "stat_deletions"
+      ]
+    },
+    "stat_files": {
+      "type": "Stat",
+      "props": {
+        "label": "files",
+        "value": "7"
+      }
+    },
+    "stat_additions": {
+      "type": "Stat",
+      "props": {
+        "label": "additions",
+        "value": "+905"
+      }
+    },
+    "stat_deletions": {
+      "type": "Stat",
+      "props": {
+        "label": "deletions",
+        "value": "-3"
+      }
+    },
+    "recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aaronjmars/aeon/blob/main/articles/push-recap-2026-05-01.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}

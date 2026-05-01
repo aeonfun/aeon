@@ -1,12 +1,12 @@
 *Push Recap — 2026-05-01*
-aaronjmars/aeon — SHIPPING — smithery-manifest skill + Smithery/MCP Registry submission docs
+aaronjmars/aeon — SHIPPING — Smithery / MCP Registry submission manifest lands after six weeks carried.
 
 Shipped to users:
-• PR #149 (50eec0e) — new `smithery-manifest` skill regenerates three submission artifacts from skills.json + mcp-server/package.json + README.md (server.json, smithery.yaml, paste-ready submission body covering 95-tool catalog). Closes the 6-week-carried highest-priority growth play; ships enabled: false for maintainer review.
-• c95478c — README.md drops the Shields.io agent-status badge linking to aaronjmars.github.io/aeon/status/. Direct push to main.
+• `50eec0e` PR #149 — new `smithery-manifest` skill auto-generates server.json (MCP Registry schema, 95-tool catalog), smithery.yaml deployment config, and a paste-ready submission body from skills.json. Closes the highest-priority growth play unbuilt for six weeks.
+• `c95478c` — README badge cleanup: removes the `agent-status` shields.io link from the header (visible to every fork pulling main).
 
 Under the hood:
-• (none — both commits are user-visible)
+• None — both commits are user-visible.
 
 Shape: 2 user-visible · 0 internal · 0 infra · 0 bot-filtered · 1 merged PR
 Volume: 7 files, +905/-3 lines
