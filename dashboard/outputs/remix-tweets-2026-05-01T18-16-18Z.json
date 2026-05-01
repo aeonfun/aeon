@@ -1,0 +1,151 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Remix Tweets — 2026-05-01"
+      },
+      "children": [
+        "alert_error",
+        "sep1",
+        "heading_resolution",
+        "stack_resolution",
+        "sep2",
+        "heading_note",
+        "text_note",
+        "sep3",
+        "heading_fix",
+        "stack_fix",
+        "sep4",
+        "text_stats"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "message": "REMIX_TWEETS_ERROR — no handle configured (5th consecutive fire)"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_resolution": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution Attempted",
+        "level": "h3"
+      }
+    },
+    "stack_resolution": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_res1",
+        "text_res2",
+        "text_res3"
+      ]
+    },
+    "text_res1": {
+      "type": "Text",
+      "props": {
+        "text": "`$X_HANDLE` env var: unset"
+      }
+    },
+    "text_res2": {
+      "type": "Text",
+      "props": {
+        "text": "`soul/SOUL.md` Identity: no @handle (only 'Thomas Scaria' / 'Lore' / 'Swarm Lab')"
+      }
+    },
+    "text_res3": {
+      "type": "Text",
+      "props": {
+        "text": "`aeon.yml` remix-tweets: no `var:` field (and var is reserved for time-window override per SKILL.md L9)"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_note": {
+      "type": "Heading",
+      "props": {
+        "text": "Also Noted",
+        "level": "h3"
+      }
+    },
+    "text_note": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY unset and `.xai-cache/` absent — even with a handle the fetch leg would have failed."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix",
+        "level": "h3"
+      }
+    },
+    "stack_fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_fix1",
+        "text_fix2",
+        "text_fix3"
+      ]
+    },
+    "text_fix1": {
+      "type": "Text",
+      "props": {
+        "text": "add `X_HANDLE` env to the workflow"
+      }
+    },
+    "text_fix2": {
+      "type": "Text",
+      "props": {
+        "text": "ensure XAI_API_KEY secret is present"
+      }
+    },
+    "text_fix3": {
+      "type": "Text",
+      "props": {
+        "text": "Already tracked under 'Operator config sweep' in MEMORY.md"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_stats": {
+      "type": "Text",
+      "props": {
+        "text": "cache=miss, xai=skipped, fetched=0, kept=0, drops=0",
+        "variant": "muted"
+      }
+    }
+  }
+}
