@@ -548,13 +548,13 @@
   },
   "rss-feed": {
     "last_dispatch": "2026-05-01T18:13:55Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-30T17:48:11Z",
-    "total_runs": 16,
-    "total_successes": 6,
+    "last_status": "success",
+    "last_success": "2026-05-01T18:26:04Z",
+    "total_runs": 17,
+    "total_successes": 7,
     "total_failures": 10,
     "consecutive_failures": 0,
-    "success_rate": 0.38,
+    "success_rate": 0.41,
     "last_failed": "2026-04-26T23:55:32Z",
     "last_error": "13e14a0\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
