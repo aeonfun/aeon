@@ -1,0 +1,93 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "An LLM Forecaster With a Track Record Forecasts Worse Than One Without"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_finding",
+        "sep1",
+        "story_paper",
+        "sep2",
+        "text_calibration",
+        "sep3",
+        "text_ablation",
+        "sep4",
+        "link_article"
+      ]
+    },
+    "text_finding": {
+      "type": "Text",
+      "props": {
+        "text": "In a controlled prediction-market experiment with Claude as the trader, feeding the agent its own past P&L between rounds makes it worse at aggregating private information — same model, same signals, lower profit, higher log-error on the closing price.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Galanis 2026, arXiv:2604.20050",
+        "href": "https://arxiv.org/abs/2604.20050",
+        "source": "arXiv"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_calibration": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap is 71 trades from the Apex gate and the canary loop currently feeds P&L into the prompt every round.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_ablation": {
+      "type": "Text",
+      "props": {
+        "text": "Cheap ablation: strip the running P&L for half the next 71 trades, score log-error of fill vs. resolution.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_article": {
+      "type": "Link",
+      "props": {
+        "label": "Read explainer: articles/explainer-2026-05-01.md",
+        "href": "articles/explainer-2026-05-01.md"
+      }
+    }
+  }
+}

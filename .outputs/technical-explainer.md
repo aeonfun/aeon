@@ -1,5 +1,8 @@
-technical explainer: Polymarket's Builder Codes Are Just One bytes32. That's the Point.
+technical explainer: An LLM Forecaster With a Track Record Forecasts Worse Than One Without
 
-key idea: Polymarket's V2 order struct adds a single bytes32 builder field inside the EIP-712 signed payload, and that one field — not a backend system, not a partner contract, not an off-chain attribution table — is the entire mechanism that routes ~16% of Polymarket's monthly volume and ~$2.5M in grants to third-party apps.
+In a controlled prediction-market experiment with Claude as the trader, feeding the agent its own past P&L between rounds makes it worse at aggregating private information — same model, same signals, lower profit, higher log-error on the closing price (Galanis 2026, arXiv:2604.20050).
 
-read it: articles/explainer-2026-04-29.md
+CalibrationGap is 71 trades from the Apex gate and the canary loop currently feeds P&L into the prompt every round. Cheap ablation: strip the running P&L for half the next 71 trades, score log-error of fill vs. resolution.
+
+read it: articles/explainer-2026-05-01.md
+
