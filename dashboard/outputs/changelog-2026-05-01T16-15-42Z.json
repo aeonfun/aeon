@@ -1,0 +1,141 @@
+{
+  "root": "card_changelog",
+  "state": {},
+  "elements": {
+    "card_changelog": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog",
+        "description": "Week of 2026-05-01"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_summary",
+        "grid_stats",
+        "separator_1",
+        "heading_top",
+        "text_top_change",
+        "link_full_changelog"
+      ]
+    },
+    "heading_summary": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "grid_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_repos",
+        "stat_changes",
+        "stat_breaking",
+        "stat_added",
+        "stat_changed",
+        "stat_fixed",
+        "stat_security"
+      ]
+    },
+    "stat_repos": {
+      "type": "Stat",
+      "props": {
+        "label": "Repos",
+        "value": "1"
+      },
+      "children": []
+    },
+    "stat_changes": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "8"
+      },
+      "children": []
+    },
+    "stat_breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat_added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "7"
+      },
+      "children": []
+    },
+    "stat_changed": {
+      "type": "Stat",
+      "props": {
+        "label": "Changed",
+        "value": "1"
+      },
+      "children": []
+    },
+    "stat_fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat_security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "0"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_top": {
+      "type": "Heading",
+      "props": {
+        "text": "Top change",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text_top_change": {
+      "type": "Text",
+      "props": {
+        "text": "smithery-manifest (#149) auto-generates MCP-Registry / Smithery submission docs — first 2026 release aimed at non-forkers"
+      },
+      "children": []
+    },
+    "link_full_changelog": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full changelog",
+        "href": "articles/changelog-2026-05-01.md"
+      },
+      "children": []
+    }
+  }
+}

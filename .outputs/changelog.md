@@ -1,1 +1,1 @@
-*Changelog — Week of 2026-04-30* | 1 repo: 7 user-facing changes (0 breaking, 7 added, 0 fixed, 0 security). Top: public /status/ dashboard now ships with every fork. Full: articles/changelog-2026-04-30.md
+*Changelog — Week of 2026-05-01*  1 repo: 8 user-facing changes (0 breaking, 7 added, 1 changed, 0 fixed, 0 security). Top: smithery-manifest (#149) auto-generates MCP-Registry / Smithery submission docs — first 2026 release aimed at non-forkers. Full: articles/changelog-2026-05-01.md
