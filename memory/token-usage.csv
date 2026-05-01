@@ -59,4 +59,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-01,polymarket-comments,claude-opus-4-7,79,28548,4981880,129778
 2026-05-01,repo-actions,claude-opus-4-7,47,41491,3577850,119477
 2026-05-01,code-health,claude-opus-4-7,62,25190,3454443,111618
-2026-05-01,list-digest,claude-opus-4-7,12,3565,286916,27498
+2026-05-01,refresh-x,claude-opus-4-7,13341,5410,586751,36120
