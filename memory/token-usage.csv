@@ -53,4 +53,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-04-30,heartbeat,claude-opus-4-7,39,26176,1978007,108056
 2026-04-30,evening-rollup,claude-opus-4-7,34,14065,1975607,164464
 2026-04-30,evening-recap,claude-sonnet-4-6,994,6678,729603,91275
-2026-05-01,rss-digest,claude-opus-4-7,11,1432,209624,20474
+2026-05-01,telegram-digest,claude-sonnet-4-6,7,1141,140022,16207
