@@ -1,13 +1,10 @@
-Per skill spec, registry is empty so I stop without notifying.
-
 ## Summary
 
-Executed `fleet-control` in default Health Check Mode (var empty). Pre-flight passed: `gh auth` ok, rate limit 4983/5000.
+Ran `fleet-control` (var empty → Health Check Mode). Stopped at the empty-registry gate per skill spec.
 
-**Outcome:** `FLEET_EMPTY: no managed instances`. `memory/instances.json` contains `{"instances": []}`, so per the skill's spec the run logs the empty-registry verdict and stops silently — no notification sent (operator hasn't onboarded any child Aeon instances yet).
-
-**Files modified:**
-- `memory/logs/2026-04-30.md` — appended the `fleet-control (health check)` block with `FLEET_EMPTY` verdict.
-
-**Follow-ups (operator action, not skill action):**
-- If you want fleet monitoring to actually do something, register the first managed instance in `memory/instances.json` with at least `{name, repo, purpose, created}`. Until then this skill no-ops twice daily on the 09/15 UTC cron.
+- **Pre-flight passed:** `gh auth status` → ok (account `tomscaria`); `gh api rate_limit` → 4986/5000 remaining (well above the 50 floor).
+- **Registry empty:** `memory/instances.json` is `{"instances": []}` — no managed Aeon children registered. Per skill rule: log `FLEET_EMPTY` and stop silently (no notification).
+- **State file:** `memory/state/fleet-control-state.json` already exists with `{"instances": {}, "last_full_summary_date": ""}`. Not rewritten — no current data to snapshot.
+- **Files modified:** `memory/logs/2026-05-01.md` (appended fleet-control entry with verdict `FLEET_EMPTY`).
+- **No notification sent** (correct — the silent-stop branch exists precisely so the operator isn't pinged twice a day about an empty fleet).
+- **Follow-up:** none required. If/when a child Aeon gets spawned and added to `memory/instances.json`, the next 09:00 or 15:00 UTC cron tick will pick it up and start health-classifying.
