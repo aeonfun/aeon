@@ -1,0 +1,81 @@
+{
+  "root": "card_paper_pick",
+  "state": {},
+  "elements": {
+    "card_paper_pick": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick",
+        "description": "2026-05-01"
+      },
+      "children": [
+        "storylink_aia",
+        "text_authors",
+        "sep1",
+        "text_description",
+        "sep2",
+        "links_stack"
+      ]
+    },
+    "storylink_aia": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AIA Forecaster: Technical Report",
+        "href": "https://arxiv.org/abs/2511.07678",
+        "source": "Yale + UIUC + IFP, Nov 2025",
+        "score": "↑0"
+      }
+    },
+    "text_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Authors: Alur, Stadie, Kang, ... Sekhon",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "First LLM judgmental forecaster to match human superforecasters on ForecastBench; on liquid prediction markets, AIA + market-consensus ensemble beats consensus alone — the empirical anchor for CalibrationGap's agentic-edge-over-PM thesis.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "links_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2511.07678"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2511.07678"
+      }
+    }
+  }
+}

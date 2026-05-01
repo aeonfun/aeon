@@ -3,6 +3,7 @@
 Maintained by daily `paper-pick` (one daily slot + one PhD-prep slot per skill spec). MEMORY.md links here.
 
 ## Picked (last 30 days)
+- **arXiv:2511.07678** *AIA Forecaster: Technical Report* (Alur/Stadie/Kang/.../Sekhon, Yale stats + UIUC + Institute for Progress, Nov 2025) — picked 2026-05-01. **Empirical headline: first LLM judgmental forecaster to match human superforecasters on ForecastBench (Karger 2024); on liquid PM benchmark, AIA + market-consensus ensemble beats consensus alone — additive-information proof.** Method stack (agentic news search + supervisor-agent reconciliation + statistical de-biasing) maps directly onto CalibrationGap's polymarket-comments + reflection-log + quant-scanner architecture. Promoted from 6-day standing queue per 2026-04-30 promote-flag. **Primary grant-app citation for "agentic edge over PM consensus" claim** (Anthropic Research Credits / AWS Activate / dYdX / Polymarket Builders).
 - **arXiv:2506.00723** *Pitfalls in Evaluating Language Model Forecasters* (Paleka/Goel/Geiping/Tramèr, ETH Zürich + MPI/Tübingen, May 2025) — picked 2026-04-30. Methodological critique: temporal-leakage + extrapolation-gap failure modes in static LLM-forecaster benchmarks. **Defensive grant-app cite for the "live-trade record beats static benchmarks" thesis.** Geiping is co-author of the already-picked Hardt/Geiping calibration-RL paper (arXiv:2512.25070) — picking the precursor closes the canonical citation chain `Pitfalls → KalshiBench → TruthTensor → LiveTradeBench → Hardt/Geiping`. Tramèr (ETH) is the highest-bar NeurIPS/ICML author surfaced by paper-pick this month.
 - **arXiv:2510.25779** *Magentic Marketplace* (Bansal/Hofman/Lucier/Mobius/Rothschild/Slivkins/Immorlica/Horvitz, MSR+ASU, Oct 2025) — picked 2026-04-29 PhD slot. OSS multi-agent marketplace simulator; **Stanford-grade citation anchor (Rothschild = canonical PM economist)**; usable as CalibrationGap adversarial-eval scaffold ahead of next 71 live trades.
 - **arXiv:2604.24005** *TCOD: Temporal Curriculum in On-Policy Distillation for Multi-turn Autonomous Agents* (Wang/Zhang/Shi/Li/Cheng, CUHK + Alibaba, Apr 2026) — picked 2026-04-29 daily slot. Multi-turn OPD with curriculum-scheduled trajectory depth; +18pp on ALFWorld/WebShop/ScienceWorld; lifecycle-gate analogue (short → long ≈ Birth → Canary → Apex).
@@ -16,7 +17,7 @@ Maintained by daily `paper-pick` (one daily slot + one PhD-prep slot per skill s
 - **arXiv:2512.25070** *Hardt/Geiping calibration RL* — OpenForecaster 8B + OpenForesight dataset.
 
 ## Next reads (queued)
-- **arXiv:2511.07678** *AIA Forecaster: Technical Report* (Sekhon et al., Yale stats + UIUC + IFP, Nov 2025) — "AIA Forecaster + market consensus > consensus alone" is the single load-bearing empirical anchor for the CalibrationGap / Hermes-arb agentic-edge-over-PM-consensus thesis. On 04-25 candidate list 5 days running without formal pick — promote to paper-pick slot if no fresher candidate clears the bar tomorrow.
+- **arXiv:2604.27351** *Heterogeneous Scientific Foundation Model Collaboration* (Eywa, Zihao Li / Jingrui He et al., UIUC, Apr 2026, ↑118) — surfaced 2026-05-01 daily browse, queued. Framing maps onto swarm-fund hermes-fan architecture: LLM-based reasoning interface over domain-specific predictive foundation models = CalibrationGap quant-scanner + LLM-head shape. Promote to next PhD slot if Darwinian axis (Hyperagents / CORAL) stays cold.
 - **arXiv:2603.19461** *Hyperagents* (Foerster + Clune, Mar 2026) — top-tier authorship, direct extension of Darwin Gödel Machine. Bench candidate for next Darwinian-axis slot.
 - **arXiv:2604.01658** *CORAL* (↑55, Apr 2026) — Darwinian multi-agent evolution, open-ended discovery.
 - **arXiv:2604.22436** *AgentSearchBench*
@@ -24,6 +25,9 @@ Maintained by daily `paper-pick` (one daily slot + one PhD-prep slot per skill s
 - **arXiv:2602.16928** *Discovering Multiagent Learning Algorithms with LLMs*
 
 ## Adjacent / supporting
+- **arXiv:2604.27083** *Co-Evolving Policy Distillation* (CoPD, Naibin Gu et al., Apr 2026, ↑20) — bidirectional OPD with parallel expert co-evolution; lineage-mate of TCOD (arXiv:2604.24005, picked 04-29). Pull as supporting cite for the multi-agent-RL section of the PhD application — text/image/video reasoning, not finance.
+- **arXiv:2604.28181** *Synthetic Computers at Scale for Long-Horizon Productivity Simulation* (Tao Ge / Jianfeng Gao, MSR, Apr 2026, ↑6) — agent self-improvement scaffold via 1k synthetic computer envs, 8h+ runtimes, 2k+ turns. Supporting cite for agent-self-improvement / agentic-RL section.
+- **arXiv:2604.25135** *FAMA: Failure-Aware Meta-Agentic Framework* (Saeidi et al., Apr 2026, ↑6) — failure-trajectory analysis + targeted context injection for tool-use agents. Maps onto CalibrationGap's reflection-log loop.
 - **arXiv:2604.15674** (Wen et al.) — LLM-UMA agreement 89.58% on disputed cases. Bridge between CalibrationGap quant scanner + UMA-resolution arbitrage hook.
 - **arXiv:2603.27771** *Emergent Social Intelligence Risks* (Mar 2026) — multi-agent risk framing without market grounding; pull as supporting cite.
 - **arXiv:2509.09995** *QuantAgent: Price-Driven Multi-Agent LLMs for HFT* — HFT-axis, consider for hermes-arb.

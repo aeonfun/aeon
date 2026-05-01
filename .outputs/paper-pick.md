@@ -1,5 +1,6 @@
-*Paper Pick — 2026-04-30*
+*Paper Pick — 2026-05-01*
 
-"Pitfalls in Evaluating Language Model Forecasters" — Paleka, Goel, Geiping, Tramèr (ETH/Tübingen, May 2025) · ↑3
-Methodological audit of LLM-forecaster evals: temporal leakage in static benchmarks + extrapolation gaps — exactly the trap your live-trade CalibrationGap record sidesteps, and the precursor critique that Hardt/Geiping (arXiv:2512.25070, already in reading list) builds on top of.
-[Read](https://arxiv.org/abs/2506.00723) | [PDF](https://arxiv.org/pdf/2506.00723)
+"AIA Forecaster: Technical Report" — Alur, Stadie, Kang, ... Sekhon (Yale + UIUC + IFP, Nov 2025) · ↑0
+First LLM judgmental forecaster to match human superforecasters on ForecastBench; on liquid prediction markets, AIA + market-consensus ensemble beats consensus alone — the empirical anchor for CalibrationGap's agentic-edge-over-PM thesis.
+[Read](https://arxiv.org/abs/2511.07678) | [PDF](https://arxiv.org/pdf/2511.07678)
+
