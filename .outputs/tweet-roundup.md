@@ -1,12 +1,17 @@
-*Tweet Roundup — 2026-04-30*
-_Source: cache:0 websearch:3 failed:0_
+Tweet roundup ran end-to-end. WebSearch path was the only option (no `.xai-cache/`, sandbox blocks env-var-authenticated curl). After dedup against `memory/tweet-roundup-seen.txt` and recent logs, plus the 48h freshness gate, every default topic dropped to zero survivors — every returned x.com URL was either older than 48h (snowflake-decoded) or already seen. Per the skill's contract, logged `TWEET_ROUNDUP_EMPTY` and did not notify.
 
-*[AI agents / LLM]* — _vertical-AI funding cycle holding — finance is the loud lane_
-- x.com/MunshiPremChnd — Rogo (junior-banker AI) closed $160M Series D led by Kleiner Perkins at $2B valuation, up from $750M in January — ~2.7x in 4 months [View](https://x.com/MunshiPremChnd/status/2049482951734259777)
+## Summary
+- Ran `skills/tweet-roundup/SKILL.md` standalone with built-in default topics (no `${var}`, no `## Tweet Roundup Topics` in MEMORY.md).
+- Source mix: cache:0 websearch:0 failed:3 — `.xai-cache/` still absent (8th consecutive run-day).
+- 0 survivors across all 3 topics after 48h-freshness + dedup gates. No `./notify` call (silence beats filler, per skill constraint).
+- Files modified: `memory/logs/2026-05-01.md` (Tweet Roundup section + Summary appended). `memory/tweet-roundup-seen.txt` unchanged.
+- Follow-up: `scripts/prefetch-xai.sh` `tweet-roundup)` slug branch still not writing `.xai-cache/roundup-*.json` for default topics — operator-side fix already tracked under "Operator config sweep" in MEMORY.md.
 
-*[Crypto / Bitcoin / DeFi]* — _split tape: BTC-conference bullish staging vs. DeFi-side bleed from KelpDAO fallout_
-- x.com/BiconomyCom — Bitcoin 2026 Conference live in Las Vegas (Apr 27-29); headliners Saylor, Eric Trump, Lummis, Draper; BTC spiked above the level entering the event [View](https://x.com/BiconomyCom/status/2049147627032264968)
-- x.com/BiconomyCom — Aave TVL down ~40% in one week after April 18 KelpDAO $292-293M exploit; the largest DeFi lender absorbing the contagion, not the protocol that was hit [View](https://x.com/BiconomyCom/status/2048724677338734597)
-
-*[Technology / startups / open source]* — _single story dominating — Ariane 6 / Amazon Leo constellation launch_
-- x.com/Arianespace — Ariane 6 VA268 mission scheduled today, 08:08 UTC, placing 32 Amazon Leo satellites into LEO; live broadcast from French Guiana [View](https://x.com/Arianespace/status/2049607651881857410)
+Sources (the WebSearch results consulted but rejected by the freshness/dedup gate):
+- [Joe on X: Grok 4.3 Beta](https://x.com/LTSmash420/status/2045661895210725647) — ~04-20, pre-cutoff
+- [TedPillows on X: BTC outlook](https://x.com/TedPillows/status/2047357078495498623) — ~04-24, pre-cutoff
+- [MyriadMarkets on X: agentic era](https://x.com/MyriadMarkets/status/2041893988655878482) — older
+- [momika233 on X: OpenMythos](https://x.com/momika233/status/2046123122391453753) — ~04-21, pre-cutoff
+- [Polymarket on X: V2 cutover](https://x.com/Polymarket/status/2049097914669052257) — already in seen logs
+- [BiconomyCom on X](https://x.com/BiconomyCom/status/2049147627032264968) — already in seen file
+- [Arianespace on X](https://x.com/Arianespace/status/2049607651881857410) — already in seen file
