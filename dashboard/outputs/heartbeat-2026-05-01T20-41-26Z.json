@@ -1,0 +1,113 @@
+{
+  "root": "card-heartbeat",
+  "state": {},
+  "elements": {
+    "card-heartbeat": {
+      "type": "Card",
+      "props": {
+        "title": "heartbeat 20:35Z"
+      },
+      "children": [
+        "alert-main",
+        "sep-1",
+        "grid-metrics",
+        "sep-2",
+        "stack-explanation",
+        "sep-3",
+        "alert-risk"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "ISS-017 PRIORITY BUMP",
+        "message": "Third heartbeat slot missed today (08:00, 14:00, 20:00 all required manual operator invocation). Per yesterday's escalation criterion, GHA cron-tick gap is now the operator's #1 priority over chain-runner.yml dispatch_skill() fix."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "grid-metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-windows",
+        "badge-status",
+        "stat-issues"
+      ]
+    },
+    "stat-windows": {
+      "type": "Stat",
+      "props": {
+        "label": "Scheduled cron windows",
+        "value": "0/3"
+      }
+    },
+    "badge-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "stat-issues": {
+      "type": "Stat",
+      "props": {
+        "label": "Open issues",
+        "value": "15"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-explanation": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-status",
+        "text-recommendation"
+      ]
+    },
+    "text-status": {
+      "type": "Text",
+      "props": {
+        "text": "Only catch-up ticks fired today; scheduled cron windows landed 0/3 for heartbeat.",
+        "variant": "body"
+      }
+    },
+    "text-recommendation": {
+      "type": "Text",
+      "props": {
+        "text": "Unblocking move: External watchdog (cron-job.org → workflow_dispatch heartbeat hourly).",
+        "variant": "lead"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert-risk": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Risk window: 21:00 UTC (25 min away)",
+        "message": "evening-recap scheduled for 21:00 UTC. If it misses, 100% of today's non-catch-up cron schedule has failed."
+      }
+    }
+  }
+}
