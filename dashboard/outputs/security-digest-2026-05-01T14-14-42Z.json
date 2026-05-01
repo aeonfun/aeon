@@ -1,0 +1,436 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-05-01",
+        "description": "Verdict: 1 actively exploited, 3 to schedule, 3 to monitor. Sources: KEV, GH Advisory, EPSS"
+      },
+      "children": [
+        "verdict",
+        "sep1",
+        "patch-today-header",
+        "patch-today",
+        "sep2",
+        "patch-week-header",
+        "patch-week",
+        "sep3",
+        "monitor-header",
+        "monitor",
+        "sep4",
+        "footer"
+      ]
+    },
+    "verdict": {
+      "type": "Text",
+      "props": {
+        "text": "Verdict: 1 actively exploited, 3 to schedule, 3 to monitor",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-today-header": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH TODAY",
+        "level": "h3"
+      }
+    },
+    "patch-today": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cve-2026-41940"
+      ]
+    },
+    "cve-2026-41940": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-41940-link",
+        "cve-2026-41940-product",
+        "cve-2026-41940-source",
+        "cve-2026-41940-desc",
+        "cve-2026-41940-remediation"
+      ]
+    },
+    "cve-2026-41940-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-41940",
+        "href": "https://nvd.nist.gov/vuln/detail/CVE-2026-41940",
+        "source": "KEV"
+      }
+    },
+    "cve-2026-41940-product": {
+      "type": "Text",
+      "props": {
+        "text": "cPanel/WHM/WP2"
+      }
+    },
+    "cve-2026-41940-source": {
+      "type": "Text",
+      "props": {
+        "text": "KEV added 2026-04-30 · EPSS 0.28 · CVSS 9.8"
+      }
+    },
+    "cve-2026-41940-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Auth bypass in login flow → unauth RCE. Public PoC (watchTowr) on GitHub."
+      }
+    },
+    "cve-2026-41940-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade cPanel/WHM to LTS-line patch (86.0.41 / 110.0.97 / 118.0.63 / 126.0.54 / 130.0.19 / 132.0.29 / 134.0.20 / 136.0.5); WP2 to ≥136.1.7. Operator-side only — no cPanel in Aeon stack."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-week-header": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH THIS WEEK",
+        "level": "h3"
+      }
+    },
+    "patch-week": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cve-2026-39383",
+        "cve-2026-42449",
+        "ghsa-rh99-wc69-c255"
+      ]
+    },
+    "cve-2026-39383": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-39383-link",
+        "cve-2026-39383-product",
+        "cve-2026-39383-source",
+        "cve-2026-39383-desc",
+        "cve-2026-39383-remediation"
+      ]
+    },
+    "cve-2026-39383-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-39383",
+        "href": "https://github.com/advisories/GHSA-5vh4-rgv7-p9g4"
+      }
+    },
+    "cve-2026-39383-product": {
+      "type": "Text",
+      "props": {
+        "text": "gotenberg/v8 (Go)"
+      }
+    },
+    "cve-2026-39383-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 8.6 · EPSS 0 · PoC in advisory"
+      }
+    },
+    "cve-2026-39383-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauth SSRF via Gotenberg-Webhook-Url header."
+      }
+    },
+    "cve-2026-39383-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade gotenberg to ≥8.31.0."
+      }
+    },
+    "cve-2026-42449": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-42449-link",
+        "cve-2026-42449-product",
+        "cve-2026-42449-source",
+        "cve-2026-42449-desc",
+        "cve-2026-42449-remediation"
+      ]
+    },
+    "cve-2026-42449-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42449",
+        "href": "https://github.com/advisories/GHSA-56c3-vfp2-5qqj"
+      }
+    },
+    "cve-2026-42449-product": {
+      "type": "Text",
+      "props": {
+        "text": "n8n-mcp (npm)"
+      }
+    },
+    "cve-2026-42449-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 8.5 · EPSS 0 · no public PoC"
+      }
+    },
+    "cve-2026-42449-desc": {
+      "type": "Text",
+      "props": {
+        "text": "IPv4-mapped IPv6 bypass of validateUrlSync → SSRF, cloud-metadata theft."
+      }
+    },
+    "cve-2026-42449-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade n8n-mcp to ≥2.47.14."
+      }
+    },
+    "ghsa-rh99-wc69-c255": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ghsa-rh99-wc69-c255-link",
+        "ghsa-rh99-wc69-c255-product",
+        "ghsa-rh99-wc69-c255-source",
+        "ghsa-rh99-wc69-c255-desc",
+        "ghsa-rh99-wc69-c255-remediation"
+      ]
+    },
+    "ghsa-rh99-wc69-c255-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-rh99-wc69-c255",
+        "href": "https://github.com/advisories/GHSA-rh99-wc69-c255"
+      }
+    },
+    "ghsa-rh99-wc69-c255-product": {
+      "type": "Text",
+      "props": {
+        "text": "edgelesssys/contrast (Go)"
+      }
+    },
+    "ghsa-rh99-wc69-c255-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 8.1 · EPSS 0 · no public PoC"
+      }
+    },
+    "ghsa-rh99-wc69-c255-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Symlink in CopyFile → arbitrary host→guest write."
+      }
+    },
+    "ghsa-rh99-wc69-c255-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade contrast to ≥1.19.1."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "monitor-header": {
+      "type": "Heading",
+      "props": {
+        "text": "MONITOR",
+        "level": "h3"
+      }
+    },
+    "monitor": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cve-2026-40281",
+        "cve-2026-40280",
+        "cve-2026-42354"
+      ]
+    },
+    "cve-2026-40281": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-40281-link",
+        "cve-2026-40281-product",
+        "cve-2026-40281-source",
+        "cve-2026-40281-desc",
+        "cve-2026-40281-remediation"
+      ]
+    },
+    "cve-2026-40281-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-40281",
+        "href": "https://github.com/advisories/GHSA-q7r4-hc83-hf2q"
+      }
+    },
+    "cve-2026-40281-product": {
+      "type": "Text",
+      "props": {
+        "text": "gotenberg/v8 (Go)"
+      }
+    },
+    "cve-2026-40281-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 10 · EPSS 0 · no fix yet"
+      }
+    },
+    "cve-2026-40281-desc": {
+      "type": "Text",
+      "props": {
+        "text": "ExifTool stdin arg injection (bypasses 8.30.x sanitization)."
+      }
+    },
+    "cve-2026-40281-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ block untrusted PDF metadata input; watch >8.30.1."
+      }
+    },
+    "cve-2026-40280": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-40280-link",
+        "cve-2026-40280-product",
+        "cve-2026-40280-source",
+        "cve-2026-40280-desc",
+        "cve-2026-40280-remediation"
+      ]
+    },
+    "cve-2026-40280-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-40280",
+        "href": "https://github.com/advisories/GHSA-5q7p-7jgv-ww56"
+      }
+    },
+    "cve-2026-40280-product": {
+      "type": "Text",
+      "props": {
+        "text": "gotenberg/v8 (Go)"
+      }
+    },
+    "cve-2026-40280-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.3 · EPSS 0 · no fix yet"
+      }
+    },
+    "cve-2026-40280-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Case-insensitive URL scheme bypasses webhook/downloadFrom deny-list."
+      }
+    },
+    "cve-2026-40280-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ enforce egress firewall on Gotenberg."
+      }
+    },
+    "cve-2026-42354": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-2026-42354-link",
+        "cve-2026-42354-product",
+        "cve-2026-42354-source",
+        "cve-2026-42354-desc",
+        "cve-2026-42354-remediation"
+      ]
+    },
+    "cve-2026-42354-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42354",
+        "href": "https://github.com/advisories/GHSA-rcmw-7mc7-3rj7"
+      }
+    },
+    "cve-2026-42354-product": {
+      "type": "Text",
+      "props": {
+        "text": "sentry (pip)"
+      }
+    },
+    "cve-2026-42354-source": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.1 · EPSS 0 · no fix yet"
+      }
+    },
+    "cve-2026-42354-desc": {
+      "type": "Text",
+      "props": {
+        "text": "SAML SSO improper auth → user identity linking."
+      }
+    },
+    "cve-2026-42354-remediation": {
+      "type": "Text",
+      "props": {
+        "text": "→ disable SAML or pin IdP until ≤26.4.0 fix lands."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon stack: zero direct exposure verified via package.json/go.mod/Cargo.toml grep.",
+        "variant": "muted"
+      }
+    }
+  }
+}
