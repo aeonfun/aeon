@@ -1,0 +1,200 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "digest — prediction markets — 2026-05-01"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tldr_section",
+        "separator_1",
+        "item_1_heading",
+        "item_1_desc",
+        "item_1_details",
+        "item_1_link",
+        "separator_2",
+        "item_2_heading",
+        "item_2_desc",
+        "item_2_details",
+        "item_2_link",
+        "separator_3",
+        "item_3_heading",
+        "item_3_desc",
+        "item_3_details",
+        "item_3_link",
+        "separator_4",
+        "also_worth",
+        "btc_text",
+        "btc_stat_1",
+        "btc_stat_2",
+        "btc_comment",
+        "btc_link"
+      ]
+    },
+    "tldr_section": {
+      "type": "Text",
+      "props": {
+        "text": "TL;DR: Senate banned its members and staff from prediction-market trading effective immediately; Kalshi and Polymarket cannot list 2026 Kentucky Derby contracts under federal horseracing IP law; Kalshi launched weekly streams trading on Drake, Taylor Swift, Bieber, Bad Bunny.",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Senate passes unanimous rule banning members and staff from trading prediction markets",
+        "level": "h2"
+      }
+    },
+    "item_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "The Senate adopted a rules change Apr 30 barring all senators and staff from trading on prediction markets, effective immediately. Resolution proposed by Bernie Moreno (R-OH), amended by Alex Padilla (D-CA), passed without a roll call. Both Kalshi and Polymarket publicly endorsed it."
+      }
+    },
+    "item_1_details": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: removes a named class of insider-information traders from venue order flow; one fewer adversary class for any binary-calibration scanner.",
+        "variant": "caption"
+      }
+    },
+    "item_1_link": {
+      "type": "Link",
+      "props": {
+        "label": "CNBC: Senate prediction markets trading ban",
+        "href": "https://www.cnbc.com/2026/04/30/senate-prediction-markets-trading-ban-kalshi-polymarket.html"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Kentucky Derby blocked from prediction markets — Interstate Horseracing Act, not CFTC",
+        "level": "h2"
+      }
+    },
+    "item_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi and Polymarket cannot list 2026 Derby (May 3) contracts. Polymarket briefly posted one and refunded all trades after Churchill Downs requested removal. The 1978 Interstate Horseracing Act gives track operators IP rights over racing content — a separate federal track from the CFTC framework that has protected other sports."
+      }
+    },
+    "item_2_details": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: IP-rights claims are a venue-side veto on event contracts no CFTC ruling resolves. Last year's Derby moved $234M pari-mutuel; PM cleared $1.2M on the 2025 Derby alone.",
+        "variant": "caption"
+      }
+    },
+    "item_2_link": {
+      "type": "Link",
+      "props": {
+        "label": "Sportshandle: Kentucky Derby blocked from prediction markets",
+        "href": "https://sportshandle.com/prediction-markets-kentucky-derby-kalshi-polymarket-blocked-interstate-horseracing-act-2026/"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Kalshi launches weekly-streams trading on individual artists",
+        "level": "h2"
+      }
+    },
+    "item_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi (COO Luana Lopes Lara) said music markets did $70M in 2025 and over $400M YTD in 2026, including $110M on the Super Bowl halftime opener alone. New markets cover weekly stream counts for Drake, Taylor Swift, Justin Bieber, Bad Bunny, plus album release timing and top-of-chart positions."
+      }
+    },
+    "item_3_details": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: pure-cultural-data verticals are now a 9-figure Kalshi lane separate from sports and politics — widens the product moat against Polymarket, which has no music-streams equivalent.",
+        "variant": "caption"
+      }
+    },
+    "item_3_link": {
+      "type": "Link",
+      "props": {
+        "label": "Musically: Kalshi adds trading for music streams",
+        "href": "https://musically.com/2026/04/30/prediction-market-firm-kalshi-adds-trading-for-music-streams/"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "also_worth": {
+      "type": "Heading",
+      "props": {
+        "text": "Also worth a glance",
+        "level": "h3"
+      }
+    },
+    "btc_text": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi prices:"
+      }
+    },
+    "btc_stat_1": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC closes above $76k by 5pm EDT today",
+        "value": "64%"
+      }
+    },
+    "btc_stat_2": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC closes above $76.5k by 5pm EDT today",
+        "value": "47%"
+      }
+    },
+    "btc_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Crypto tail thinning into next week's data.",
+        "variant": "caption"
+      }
+    },
+    "btc_link": {
+      "type": "Link",
+      "props": {
+        "label": "Finbold: Crypto markets predict Bitcoin price for May 1, 2026",
+        "href": "https://finbold.com/crypto-markets-predict-bitcoin-price-for-may-1-2026/"
+      }
+    }
+  }
+}
