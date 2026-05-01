@@ -1,69 +1,74 @@
-# Market Context (as of 2026-04-30)
+# Market Context (as of 2026-05-01)
 
-> **Take:** Chop — BTC -0.65% 24h with only 6/20 top-cap majors green; breadth at risk-off grade while ETF floor holds. Conviction: low.
+> **Take:** risk-on — BTC +2.81% 24h with 19/20 top-cap majors green; DOJ/Powell probe clearance removed the near-term institutional headwind. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $76,210 (-0.65% 24h, -1.71% 7d) · dominance 58.11% (n/a pp 24h, prior not captured)
-- ETH $2,253 (-2.22% 24h, -2.87% 7d) · ETH/BTC 0.0296
-- SOL $82.84 (-1.17% 24h, -3.59% 7d)
-- Total mcap $2.63T (-0.50% 24h) · DEX vol $6.32B 24h (-5.6% 1d, -25% 7d)
-- Breadth: 6/20 green 24h · 5/20 green 7d
-- Fear & Greed: 29 (Fear) — yesterday 26 (Fear)
+- BTC $78,627 (+2.81% 24h, +0.70% 7d) · dominance 58.54% (+0.43 pp 24h)
+- ETH $2,318.61 (+2.37% 24h, +0.07% 7d) · ETH/BTC 0.0295
+- SOL $84.55 (+1.66% 24h, -1.97% 7d)
+- Total mcap $2.69T (+2.39% 24h) · DEX vol $5.55B 24h
+- Breadth: 19/20 green 24h · 5/20 green 7d
+- Fear & Greed: 26 (Fear) — yesterday 29 (Fear)
 
 ## What Changed Since Last Refresh
-- Breadth compressed severely: 65/100 broad coins green on 04-29 vs 6/20 top-caps green today — heavy altcoin selling session
-- ETH decoupled further from BTC: ETH -2.22% vs BTC -0.65%; ETH/BTC ratio at 0.0296 (new recent low for this cycle)
-- BTC ETF April 2026 inflows confirmed at $2.4B (best month since Oct 2025); IBIT holds ~$62B AUM — institutional accumulation ongoing against price drift
+- BTC recovered +3.2% ($76,210 → $78,627) — regime trigger; breadth flipped from 6/20 to 19/20 green in a single session
+- Regime shift: chop → risk-on (tactical); DOJ dropping criminal probe into Powell is the immediate catalyst (cleared multi-week institutional caution overhang)
+- BTC spot ETF inflow streak now at 8 consecutive days, $823M past 7d, $2.43B in April (best month of 2026) — institutional bid accelerating, not yet visible in on-chain DEX vol
+- DEX vol declined further: $6.32B → $5.55B 24h (-12.3%) — recovery is spot/ETF-led, not DeFi-led
 
 ## Active Narratives
-- **DOGE momentum** — phase: rising. Evidence: DOGE +10.26% 7d vs BTC -1.71%; Binance OI build from prior (no new data to reverse the thesis); outperforming all top-20 alts on 7d.
-- **MegaETH / high-TPS L2** — phase: emerging. Evidence: MEGA trending #1 CoinGecko (rank 182); mainnet launch cycle driving attention above its market cap rank.
-- **AI blockchain infra** — phase: emerging. Evidence: Gensyn (AI, rank 429) trending #2 and AITECH Cloud (ACN, rank 839) trending #3 — two AI-infra tokens in top 3 CG trending simultaneously.
-- **BTC ETF institutional accumulation** — phase: rising. Evidence: April 2026 inflows $2.4B, best month since Oct 2025; IBIT ~$62B AUM; exchange supply at multi-year lows (supply crunch thesis intact).
-- **PM CFTC re-entry** — phase: emerging (no update since CoinDesk 04-28). US prediction-market liquidity re-rating catalyst, no fixed date.
+- **BTC ETF institutional bid** — phase: rising. Evidence: 8-day inflow streak, $823M 7d, BlackRock IBIT holds 806k BTC at $62B AUM.
+- **DOJ/Fed Chair clarity** — phase: emerging. Evidence: DOJ dropped Powell criminal probe; BTC +3.2% gap on news; Fed held 3.75% as priced; successor uncertainty clearing.
+- **DOGE community momentum** — phase: peak. Evidence: DOGE +11.83% 7d (only top-20 double-digit gainer), trending #2 CoinGecko; +2.93% today in an already broad green session — no new catalyst signals exhaustion.
+- **AI compute infra (TAO, HYPE)** — phase: emerging. Evidence: TAO +5.32% 24h (trending #5), HYPE +4.17% 24h and in top-20 by mcap; two AI-adjacent tokens outpacing BTC in today's session simultaneously.
+- **Liquid staking contraction** — phase: fading. Evidence: Lido -4.47% TVL 7d, EigenCloud -7.08% TVL 7d despite total chain TVL at $90.1B; institutional capital rotating from LSDs into direct ETF exposure.
 
 ## Top DeFi Protocols (TVL, 7d change)
-Total DeFi TVL: $83.4B (+0.18% 1d, -2.83% 7d)
-- Lido: $20.7B (-5.39% 7d)
-- SSV Network: $16.7B (-2.35% 7d)
-- Spark Liquidity Layer: $2.0B (-21.0% 1d) — Sky ecosystem unwind
-- Spark Savings: $1.54B (-24.0% 1d) — Sky ecosystem unwind
-- Hyperliquid Perps: fees +35% 1d (reversal of prior -28% 7d contraction)
+Total DeFi TVL: $84.12B (+0.76% 1d, -0.45% 7d) — fifth day in $83-85B band
+- Lido: $20.85B (-4.47% 7d)
+- SSV Network: $16.98B (-1.05% 7d)
+- Aave V3: $14.11B (+1.95% 7d)
+- EigenCloud: $8.47B (-7.08% 7d)
+- Morpho Blue: $7.20B (+6.64% 7d)
+- Sky Lending: $5.59B (+8.31% 7d)
 
-## Chain Flow (top 5 by TVL)
-- Ethereum: $44.99B
-- BSC: $5.45B
-- Solana: $5.41B
-- Bitcoin: $5.09B
-- Tron: $5.04B
+## Chain Flow (top 5 by TVL, 7d n/a — endpoint not returning deltas)
+- Ethereum: $45.17B
+- BSC: $5.48B
+- Solana: $5.46B
+- Bitcoin: $5.18B
+- Tron: $5.07B
 
 ## Stablecoins
-Total: $317.1B (-0.50% 1d, -0.63% 7d). USDT $188.0B · USDC $77.3B · USDS $7.79B (-6.66% 1d, Sky unwind) · USDe $3.89B (+2.60% 1d, day-5 of Ethena recovery) · combined share of total mcap ~12%.
-Note: USDS largest single-issuer daily move this week (-6.66%); USDe recovery confirmed across 5 sessions.
+Top 5 combined: ~$284B. USDT $189.5B (-0.05% 7d) · USDC $77.3B (-1.01% 7d) · USDS $8.4B (+1.87% 7d) · DAI $4.6B (-0.27% 7d) · USD1 $4.5B (+4.3% 7d) · combined share of mcap ~10.6%.
+Note: USD1 (World Liberty Financial) +4.3% 7d while USDC/DAI contract — political-adjacent stablecoin gaining share.
 
 ## Trending (CoinGecko)
-- MEGA (MegaETH) — #1 trending, rank 182; high-TPS L2 mainnet launch narrative
-- AI (Gensyn) — #2 trending, rank 429; decentralized ML compute
-- ACN (AITECH Cloud Network) — #3 trending, rank 839; AI infra BSC token
-- LUNC (Terra Luna Classic) — #4 trending, rank 111; recurring community-driven pump cycle
-- PENGU (Pudgy Penguins) — #6 trending, rank 88; NFT-to-token narrative
+- BTC (Bitcoin) — #1 trending, rank 1; macro catalyst day (DOJ/Powell), +3.12% 24h
+- DOGE (Dogecoin) — #2 trending, rank 10; momentum peak phase, +2.93% 24h
+- HYPE (Hyperliquid) — #3 trending, rank 13; perps/AI-adjacent outperformer, +4.45% 24h
+- SUI (Sui) — #4 trending, rank 31; L1 momentum, +1.96% 24h
+- TAO (Bittensor) — #5 trending, rank 37; AI compute infra narrative leader, +5.32% 24h
+- WLFI (World Liberty Financial) — #6 trending, rank 47; -7.53% 24h (underperforming broad market — distribution signal)
+- PENGU (Pudgy Penguins) — #7 trending, rank 86; NFT-to-token narrative, +4.02% 24h
 
-## Prediction Markets (Polymarket, top by 24h vol)
+## Prediction Markets (Polymarket, top by 24h vol, filtered <3%/>97%)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| All top-10 vol markets filtered | <3% or >97% | — | — |
+| US x Iran permanent peace deal by May 31, 2026? | 26.5% | $9.45m | $0.25m |
+| US x Iran permanent peace deal by May 15, 2026? | 10.5% | $0.73m | $0.10m |
+| Pistons vs. Magic | 59.5% | $0.63m | $0.87m |
 
-*Signal: all high-volume PM markets are effectively settled (Iran regime fall: 0.05%; BTC $150k by Jun 30: 1.35%; Hormuz traffic normal by Apr 30: 0.15%). Polymarket is pricing zero BTC recovery to $150k in 2 months (1.35% = 98.65% bearish on that target).*
+*Signal: High-volume non-sports PM is concentrated on Iran diplomacy. Iran May 31 at 26.5% YES is the most liquid active market with tradable signal — relevant to geopolitical-risk premium on risk assets. Iran May 15 at 10.5% implies market sees near-term breakthrough as remote.*
 
 ## Macro Catalysts (next 48h)
-- **US 30Y bond yield at 5%** — active headwind for risk assets; not yet resolved in BTC price
-- **Powell chair exit May 2026** — successor uncertainty adds near-term institutional caution; Fed held 3.75% as priced
-- **BTC exchange supply crunch** — multi-year low on exchange balances; if demand ticks up, fast move possible
-- **PM CFTC re-entry** — no fixed date, but "by August" per CoinDesk; watch for ruling signal
+- **DOJ/Powell clearance** — criminal probe dropped; tail risk on Fed leadership removed; watch for institutional re-rating of risk assets over next 48-72h
+- **BTC ETF follow-through** — 8-day streak needs day 9-10 to confirm regime shift vs. one-off reversal; check IBIT flow data 2026-05-02
+- **Iran diplomacy market** — May 15 deadline (10.5% YES) approaching; if talks collapse, expect geopolitical risk-off spike; Polymarket Iran May 31 at 26.5% is the cleanest live read
 
 ## Implications for Downstream Skills
-- **token-pick:** DOGE 7d momentum intact (+10.26%) and still the only top-20 alt with positive 7d. Breadth 6/20 is too weak to recommend broad altcoin exposure — stay single-name. WBT (+5.23% 24h) is an outlier worth scanning.
-- **narrative-tracker:** MegaETH + Gensyn trending simultaneously signals AI/L2 convergence phase; monitor for rising confirmation (price breakout + sector breadth). DOGE rising phase → watch for peak signals if OI continues building.
+- **token-pick:** DOGE at peak phase — only enter if 7d breadth expands above 8/20 and DOGE extends with new catalyst; current print looks like front-run fatigue. TAO/HYPE emerging — enter only on rising-phase confirmation (sector breadth + price > prior 7d high). Broad altcoin exposure premature: 7d breadth 5/20.
+- **narrative-tracker:** Monitor DOJ/Powell catalyst for follow-through (ETF day 9-10, BTC hold above $78k). AI/compute infra (TAO+HYPE simultaneously trending) is the emerging→rising transition to watch; any sector breadth expansion beyond 2 tokens = rising phase. DOGE: watch for failure to extend at open 2026-05-02 as peak confirmation.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -71,5 +76,5 @@ Note: USDS largest single-issuer daily move this week (-6.66%); USDe recovery co
 | 2026-04-29 | DOGE | $0.107 | Binance OI +40% 5d; TDOG (Nasdaq) + Xetra ETP + X Money rumor; vol/mcap 0.20; RS clearly beats BTC/ETH 7d |
 
 ---
-*Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
+*Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
 *Source status: coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok*

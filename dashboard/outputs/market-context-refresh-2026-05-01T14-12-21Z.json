@@ -1,0 +1,192 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "market context — 2026-05-01"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section-take",
+        "section-prices",
+        "section-metrics",
+        "sep-1",
+        "section-narrative",
+        "section-market"
+      ]
+    },
+    "section-take": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-risk-on",
+        "badge-conviction"
+      ]
+    },
+    "badge-risk-on": {
+      "type": "Badge",
+      "props": {
+        "text": "risk-on",
+        "variant": "default"
+      }
+    },
+    "badge-conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction medium",
+        "variant": "secondary"
+      }
+    },
+    "section-prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-btc",
+        "stat-eth",
+        "stat-fg"
+      ]
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,627",
+        "delta": "+2.81%",
+        "trend": "up"
+      }
+    },
+    "stat-eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,318.61",
+        "delta": "+2.37%",
+        "trend": "up"
+      }
+    },
+    "stat-fg": {
+      "type": "Stat",
+      "props": {
+        "label": "F&G",
+        "value": "26 (Fear)"
+      }
+    },
+    "section-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-breadth",
+        "stat-tvl"
+      ]
+    },
+    "stat-breadth": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "19/20"
+      }
+    },
+    "stat-tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$84.1B",
+        "delta": "-0.45%",
+        "trend": "down"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-narrative": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-narrative",
+        "text-narrative"
+      ]
+    },
+    "heading-narrative": {
+      "type": "Heading",
+      "props": {
+        "text": "Top narrative",
+        "level": "h3"
+      }
+    },
+    "text-narrative": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ETF institutional bid (rising) — 8-day streak, $823M 7d"
+      }
+    },
+    "section-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-market",
+        "market-content"
+      ]
+    },
+    "heading-market": {
+      "type": "Heading",
+      "props": {
+        "text": "Hot market",
+        "level": "h3"
+      }
+    },
+    "market-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "market-title",
+        "market-prob"
+      ]
+    },
+    "market-title": {
+      "type": "Text",
+      "props": {
+        "text": "US x Iran peace deal by May 31"
+      }
+    },
+    "market-prob": {
+      "type": "Progress",
+      "props": {
+        "value": 26.5,
+        "max": 100,
+        "label": "YES 26.5%"
+      }
+    }
+  }
+}

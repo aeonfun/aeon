@@ -1,7 +1,7 @@
-market context — 2026-04-30
+market context — 2026-05-01
 
-take: chop (conviction low)
-BTC $76,210 (-0.65%) / ETH $2,253 (-2.22%) · F&G 29 (Fear)
-breadth 6/20 · TVL $83.4B (-2.83% 7d) · DEX vol $6.32B (-5.6% 1d)
-top narrative: DOGE momentum (rising, +10.26% 7d)
-signal: BTC $150k by Jun 30 = 1.35% YES on Polymarket
+take: risk-on (conviction medium)
+BTC $78,627 (+2.81%) / ETH $2,318.61 (+2.37%) · F&G 26 (Fear)
+breadth 19/20 · TVL $84.1B (-0.45% 7d)
+top narrative: BTC ETF institutional bid (rising) — 8-day streak, $823M 7d
+hot market: "US x Iran peace deal by May 31" YES 26.5%
