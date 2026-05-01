@@ -1,0 +1,153 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Aeon heartbeat 05-01 08:53Z",
+        "description": "GHA cron stalled"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_cron",
+        "sep1",
+        "failed_tasks",
+        "sep2",
+        "details"
+      ]
+    },
+    "alert_cron": {
+      "type": "Alert",
+      "props": {
+        "title": "GHA cron stalled",
+        "message": "Zero scheduled dispatches today",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "failed_tasks": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tasks_heading",
+        "task1",
+        "task2",
+        "task3"
+      ]
+    },
+    "tasks_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Silently skipped",
+        "level": "h4"
+      }
+    },
+    "task1": {
+      "type": "Text",
+      "props": {
+        "text": "07:00 morning chain"
+      }
+    },
+    "task2": {
+      "type": "Text",
+      "props": {
+        "text": "07:30 telegram"
+      }
+    },
+    "task3": {
+      "type": "Text",
+      "props": {
+        "text": "08:00 heartbeat"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "badge_issue",
+        "text_recurrence",
+        "text_fix_status",
+        "workaround",
+        "text_dedup"
+      ]
+    },
+    "badge_issue": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-017 (high)",
+        "variant": "destructive"
+      }
+    },
+    "text_recurrence": {
+      "type": "Text",
+      "props": {
+        "text": "Recurrence of 04-30 gap",
+        "variant": "muted"
+      }
+    },
+    "text_fix_status": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon-side fix likely impossible"
+      }
+    },
+    "workaround": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "workaround_label",
+        "workaround_detail"
+      ]
+    },
+    "workaround_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Workaround",
+        "level": "h4"
+      }
+    },
+    "workaround_detail": {
+      "type": "Text",
+      "props": {
+        "text": "External watchdog hitting workflow_dispatch on heartbeat hourly"
+      }
+    },
+    "text_dedup": {
+      "type": "Text",
+      "props": {
+        "text": "All other P0/P1 items deduped from 04-30 logs",
+        "variant": "caption"
+      }
+    }
+  }
+}
