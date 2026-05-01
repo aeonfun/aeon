@@ -1,0 +1,103 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick (PhD-prep) — 2026-05-01"
+      },
+      "children": [
+        "stack1"
+      ]
+    },
+    "stack1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header",
+        "description",
+        "links"
+      ]
+    },
+    "header": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paperlink",
+        "authorsandrating"
+      ]
+    },
+    "paperlink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hyperagents",
+        "href": "https://arxiv.org/abs/2603.19461",
+        "source": "arXiv"
+      }
+    },
+    "authorsandrating": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "authors",
+        "rating"
+      ]
+    },
+    "authors": {
+      "type": "Text",
+      "props": {
+        "text": "Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, Shavrina",
+        "variant": "caption"
+      }
+    },
+    "rating": {
+      "type": "Stat",
+      "props": {
+        "value": "50",
+        "trend": "up"
+      }
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "First Darwin-Gödel-Machine extension that drops the coding-domain assumption: a single editable program holds task + meta agent, the meta-modification procedure is itself editable, and meta-level gains (memory, performance tracking) transfer across domains and accumulate across runs — the canonical Darwinian-axis citation for the Stanford application and a bench candidate for the next CalibrationGap meta-loop layer.",
+        "variant": "body"
+      }
+    },
+    "links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "readlink",
+        "pdflink"
+      ]
+    },
+    "readlink": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2603.19461"
+      }
+    },
+    "pdflink": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2603.19461"
+      }
+    }
+  }
+}
