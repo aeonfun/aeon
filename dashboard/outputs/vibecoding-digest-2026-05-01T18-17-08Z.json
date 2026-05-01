@@ -1,0 +1,159 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest — 2026-05-01",
+        "description": "Reddit endpoint failures (8th consecutive)"
+      },
+      "children": [
+        "alert_error",
+        "sep1",
+        "heading_details",
+        "text_source",
+        "text_pattern",
+        "stack_failures",
+        "sep2",
+        "heading_rootcause",
+        "text_cause1",
+        "text_cause2",
+        "sep3",
+        "heading_fix",
+        "text_script",
+        "text_issues",
+        "sep4",
+        "alert_rec"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "All 3 Reddit endpoints failed",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_details": {
+      "type": "Heading",
+      "props": {
+        "text": "Failure Details",
+        "level": "h3"
+      }
+    },
+    "text_source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: r/vibecoding | Scope: day",
+        "variant": "body"
+      }
+    },
+    "text_pattern": {
+      "type": "Text",
+      "props": {
+        "text": "Pattern: 8th consecutive failure (root cause unchanged)",
+        "variant": "lead"
+      }
+    },
+    "stack_failures": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_curl",
+        "badge_webfetch"
+      ]
+    },
+    "badge_curl": {
+      "type": "Badge",
+      "props": {
+        "text": "curl 403",
+        "variant": "destructive"
+      }
+    },
+    "badge_webfetch": {
+      "type": "Badge",
+      "props": {
+        "text": "WebFetch host blocked",
+        "variant": "destructive"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_rootcause": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "text_cause1": {
+      "type": "Text",
+      "props": {
+        "text": "Reddit blocks GHA egress IPs",
+        "variant": "body"
+      }
+    },
+    "text_cause2": {
+      "type": "Text",
+      "props": {
+        "text": "old.reddit.com / www.reddit.com not on WebFetch allowlist",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Fix Path",
+        "level": "h3"
+      }
+    },
+    "text_script": {
+      "type": "Text",
+      "props": {
+        "text": "scripts/prefetch-reddit.sh — Reddit OAuth, write JSON to .reddit-cache/",
+        "variant": "lead"
+      }
+    },
+    "text_issues": {
+      "type": "Text",
+      "props": {
+        "text": "One script closes ISS-002 + ISS-012",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_rec": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommendation",
+        "message": "Pause skill cron until prefetch lands",
+        "type": "warning"
+      }
+    }
+  }
+}
