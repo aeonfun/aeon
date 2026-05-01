@@ -1,14 +1,12 @@
 ## Summary
 
-Executed `skills/list-digest/SKILL.md` and exited at step 1 with **`LIST_DIGEST_NO_CONFIG`**.
+`list-digest` halted at Step 1 (`LIST_DIGEST_NO_CONFIG`) — the `var:` field is not set on the `list-digest` line in `aeon.yml`, and the skill requires at least one numeric X list ID. Per spec: log only, no notify.
 
-**Why:** `aeon.yml` line 89 (`list-digest: { enabled: true, schedule: "0 17 * * *" }`) has no `var:` field. The skill requires comma-separated numeric X list IDs and explicitly logs-and-stops without notifying when `${var}` is empty (SKILL.md step 1).
+**What I did:**
+- Read `skills/list-digest/SKILL.md`, `memory/MEMORY.md`, and confirmed `list-digest: { enabled: true, schedule: "0 17 * * *" }` in `aeon.yml` has no `var:` field.
+- Checked: no `.xai-cache/list-digest-*.json` exists, no `memory/list-digest-seen.txt` exists, today's log had no prior `list-digest` entry.
+- Appended a `## list-digest` block to `memory/logs/2026-05-01.md` with status `LIST_DIGEST_NO_CONFIG` and the operator fix.
 
-**Files modified:**
-- `memory/logs/2026-04-30.md` — appended a `## list-digest` entry recording status, reason, and operator fix per SKILL.md step 8.
+**Files modified:** `memory/logs/2026-05-01.md`
 
-**Files NOT modified:**
-- `memory/list-digest-seen.txt` — not created/updated (no URLs reported, per spec).
-- No notification sent (`./notify` not invoked, per spec).
-
-**Follow-up (operator):** Add `var: "<LIST_ID1>,<LIST_ID2>"` to the `list-digest` entry in `aeon.yml`. This is a known item already on the "Operator config sweep" line in `memory/MEMORY.md` (alongside `digest`, `refresh-x`, `remix-tweets` — same root cause: missing `var:` after the var-config refactor). No other action required from this run.
+**Follow-up:** This is the same gap MEMORY.md "Operator config sweep" already tracks — `var:` missing on `digest`, `list-digest`, `refresh-x`, `remix-tweets`. To activate this skill, add e.g. `var: "<LIST_ID_1>,<LIST_ID_2>"` to the `list-digest` line in `aeon.yml`.
