@@ -1,0 +1,322 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "XAI prefetch (ISS-014, day 7) skipped, memory logs and WebSearch produced 0 in-window candidates"
+      },
+      "children": [
+        "alert",
+        "timing-section",
+        "source-status-section",
+        "id-analysis",
+        "cross-skill-note",
+        "operator-fix"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "0 in-window candidates found across all sources",
+        "type": "error"
+      }
+    },
+    "timing-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "timing-heading",
+        "timing-details"
+      ]
+    },
+    "timing-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Timing",
+        "level": "h3"
+      }
+    },
+    "timing-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "timing-now",
+        "timing-window-6h",
+        "timing-window-12h"
+      ]
+    },
+    "timing-now": {
+      "type": "Text",
+      "props": {
+        "text": "now=2026-05-01T17:16Z"
+      }
+    },
+    "timing-window-6h": {
+      "type": "Text",
+      "props": {
+        "text": "6h window=11:16-17:16Z"
+      }
+    },
+    "timing-window-12h": {
+      "type": "Text",
+      "props": {
+        "text": "widened-12h=05:16-17:16Z"
+      }
+    },
+    "source-status-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "source-heading",
+        "source-xai",
+        "source-memory",
+        "source-websearch",
+        "source-webfetch"
+      ]
+    },
+    "source-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h3"
+      }
+    },
+    "source-xai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "xai-badge",
+        "xai-text1",
+        "xai-text2"
+      ]
+    },
+    "xai-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "xai=skip",
+        "variant": "destructive"
+      }
+    },
+    "xai-text1": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY len 0; .xai-cache/ absent; reply-maker case still missing in scripts/prefetch-xai.sh"
+      }
+    },
+    "xai-text2": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-014 recurrence #7"
+      }
+    },
+    "source-memory": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "memory-badge",
+        "memory-text1",
+        "memory-text2"
+      ]
+    },
+    "memory-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "memory=0",
+        "variant": "destructive"
+      }
+    },
+    "memory-text1": {
+      "type": "Text",
+      "props": {
+        "text": "No x.com URLs in 2026-05-01 logs"
+      }
+    },
+    "memory-text2": {
+      "type": "Text",
+      "props": {
+        "text": "Logs scanned: rss-digest, daily-routine, polymarket-comments, narrative-tracker, digest, monitor-polymarket, paper-pick, security-digest, code-health"
+      }
+    },
+    "source-websearch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "websearch-badge",
+        "websearch-text1",
+        "websearch-text2",
+        "websearch-text3"
+      ]
+    },
+    "websearch-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "websearch=ok-but-stale",
+        "variant": "secondary"
+      }
+    },
+    "websearch-text1": {
+      "type": "Text",
+      "props": {
+        "text": "8 queries executed: Polymarket/Kalshi Senate ban, Roundhill ETFs May 5, HL HIP-4, TN DMK/TVK, Trump-Iran-ops War Powers, prediction market today"
+      }
+    },
+    "websearch-text2": {
+      "type": "Text",
+      "props": {
+        "text": "All results ≤2049xxx ID range; news-aggregator URLs only, not in-window status IDs"
+      }
+    },
+    "websearch-text3": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch was only source with original-tweet shape"
+      }
+    },
+    "source-webfetch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "webfetch-badge",
+        "webfetch-text"
+      ]
+    },
+    "webfetch-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "webfetch=fail",
+        "variant": "destructive"
+      }
+    },
+    "webfetch-text": {
+      "type": "Text",
+      "props": {
+        "text": "x.com returned 402; nitter empty"
+      }
+    },
+    "id-analysis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "id-heading",
+        "id-text1",
+        "id-text2",
+        "id-text3",
+        "id-text4"
+      ]
+    },
+    "id-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Snowflake ID Analysis",
+        "level": "h3"
+      }
+    },
+    "id-text1": {
+      "type": "Text",
+      "props": {
+        "text": "04-30 baseline (12:31Z): 2049828976781340740 (now 29h stale)"
+      }
+    },
+    "id-text2": {
+      "type": "Text",
+      "props": {
+        "text": "All x.com URLs from WebSearch decode to ID range ≤2049xxx"
+      }
+    },
+    "id-text3": {
+      "type": "Text",
+      "props": {
+        "text": "In-window URLs at 17:16Z on 05-01 would need IDs ≥2050xxx"
+      }
+    },
+    "id-text4": {
+      "type": "Text",
+      "props": {
+        "text": "Root cause: page-authority ranking favors trending pages over just-posted content"
+      }
+    },
+    "cross-skill-note": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cross-heading",
+        "cross-text1",
+        "cross-text2"
+      ]
+    },
+    "cross-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Cross-skill Comparison",
+        "level": "h3"
+      }
+    },
+    "cross-text1": {
+      "type": "Text",
+      "props": {
+        "text": "2026-04-30: found 1/5 candidates (TodaysChanakya 12:31Z, ~5h12m old at run-time)"
+      }
+    },
+    "cross-text2": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-01: found 0/5 candidates even with same fallback chain"
+      }
+    },
+    "operator-fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fix-heading",
+        "fix-text"
+      ]
+    },
+    "fix-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Fix Required",
+        "level": "h3"
+      }
+    },
+    "fix-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add ~6-line reply-maker case to scripts/prefetch-xai.sh (unchanged across 7 runs)"
+      }
+    }
+  }
+}

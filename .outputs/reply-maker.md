@@ -1,10 +1,7 @@
-Reply Maker — 2026-04-30 — REPLY_MAKER_DEGRADED (1/5)
+REPLY_MAKER_EMPTY — XAI prefetch (ISS-014, day 7) skipped, memory logs and WebSearch produced 0 in-window candidates.
 
-1. https://x.com/TodaysChanakya/status/2049828976781340740  (@TodaysChanakya, ~5h ago, eng N/A)
-> #TCAnalysis #Election2026 Tamil Nadu 2026 Vote Projection AIADMK+ 27% ± 3% DMK+ 39% ± 3% TVK 30% ± 3% Others 4% ± 3%
-why: TC is the calibration-track-record TN pollster. TVK 30% diverges from Lok Poll 23.9% / Election Tracker 15% / AGNI 0-seats. T-4d to May 4 catalyst; PM TVK sub-market is $104K v24, the largest in the event.
-A: Chanakya 2021/24 TN calls landed inside ±3pp on vote share. Seat conversion is where TVK breaks: 30% vote-share in a 3-corner with DMK+39 / ADMK+27 still lands ~8-12 seats under Duverger. PM TVK 8.25c is roughly fair on seats; mispricing is on ADMK ≥ 30.
-B: Vote share without cluster geography misreads TN. TVK 30% concentrated in urban Chennai-Coimbatore = ~8 seats max even at that share — same Brahmin-skew sampling oneindia flagged in Axis's TVK 35-seat call. DMK+ wins 180+ either way.
+now=2026-05-01T17:16Z, 6h window=11:16-17:16Z, widened-12h=05:16-17:16Z. All x.com URLs surfaced by WebSearch decode to ID range ≤ 2049xxx (04-30 12:31Z baseline = yesterday's known-good 2049828976781340740, now ~29h stale). Today's logs (rss-digest, daily-routine, polymarket-comments, narrative-tracker, digest, monitor-polymarket, paper-pick, security-digest, code-health) carry zero x.com URLs — WebSearch path was the only one with original-tweet shape and it returned news-aggregator URLs only, not in-window status IDs.
 
-source-status: xai=skip (key len 0, ISS-014 #6), memory=stale (no in-window URLs in 04-29/04-30 logs), websearch=ok (1 fresh), webfetch=fail (X auth wall)
+Source status: xai=skip (XAI_API_KEY len 0; .xai-cache/ absent; reply-maker) case still missing in scripts/prefetch-xai.sh — ISS-014 recurrence #7), memory=0 (no x.com URLs in 2026-05-01 logs), websearch=ok-but-stale (8 queries: Polymarket/Kalshi Senate ban, Roundhill ETFs May 5, HL HIP-4, TN DMK/TVK, Trump-Iran-ops War Powers, prediction market today; all results ≤2049xxx ID range), webfetch=fail (x.com 402, nitter empty).
 
+Cross-skill note: yesterday found 1/5 (TodaysChanakya 12:31Z, ~5h12m old at run-time); today 0/5 even with same fallback chain. Snowflake-ID delta: at 17:16Z on 05-01, in-window URLs would need IDs ≥2050xxx; WebSearch consistently returns ≤2049xxx because page-authority ranking favors trending pages, not just-posted. Operator fix unchanged across 7 runs: ~6-line reply-maker) case in scripts/prefetch-xai.sh.
