@@ -1,0 +1,99 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "self-improve",
+        "description": "3+ open PRs waiting for review, skill execution blocked"
+      },
+      "children": [
+        "alert_status",
+        "stack_content"
+      ]
+    },
+    "alert_status": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Execution Blocked",
+        "message": "Skipping run due to PR review backlog"
+      },
+      "children": []
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_prs_header",
+        "stack_prs",
+        "text_age",
+        "text_action"
+      ]
+    },
+    "text_prs_header": {
+      "type": "Text",
+      "props": {
+        "text": "Open PRs waiting for review:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "stack_prs": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link_pr1",
+        "link_pr2",
+        "link_pr5"
+      ]
+    },
+    "link_pr1": {
+      "type": "Link",
+      "props": {
+        "label": "#1",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/1"
+      },
+      "children": []
+    },
+    "link_pr2": {
+      "type": "Link",
+      "props": {
+        "label": "#2",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/2"
+      },
+      "children": []
+    },
+    "link_pr5": {
+      "type": "Link",
+      "props": {
+        "label": "#5",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/5"
+      },
+      "children": []
+    },
+    "text_age": {
+      "type": "Text",
+      "props": {
+        "text": "Oldest PR: ~6 days",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action required: Merge or close one to unblock",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}

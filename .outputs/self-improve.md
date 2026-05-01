@@ -1,1 +1,1 @@
-self-improve: 3+ open improvement PRs (#1, #2, #5), waiting for review. No new PR created.
+self-improve: 3+ open PRs, waiting for review (#1, #2, #5 — oldest ~6 days). Skipping run; merge or close one to unblock.
