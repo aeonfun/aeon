@@ -1,0 +1,347 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-05-01"
+      },
+      "children": [
+        "intro-text",
+        "separator-1",
+        "idea-1-section",
+        "separator-2",
+        "idea-2-section",
+        "separator-3",
+        "sources-text"
+      ]
+    },
+    "intro-text": {
+      "type": "Text",
+      "props": {
+        "text": "Both ideas step outside crypto/PM (last 12 ran inside it). Idea 1 leans on the Wyre 50-state MTL operational tail; Idea 2 leans on Swarm Lab agent-lifecycle infra into enterprise non-trading deployments.",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-1-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea-1-heading",
+        "idea-1-icp",
+        "idea-1-wedge",
+        "idea-1-why-now",
+        "idea-1-mvp",
+        "idea-1-kill"
+      ]
+    },
+    "idea-1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Renew (executable)",
+        "level": "h2"
+      }
+    },
+    "idea-1-icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-1-icp-label",
+        "idea-1-icp-content"
+      ]
+    },
+    "idea-1-icp-label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP:",
+        "variant": "lead"
+      }
+    },
+    "idea-1-icp-content": {
+      "type": "Text",
+      "props": {
+        "text": "Compliance officer at a 30-250-person stablecoin/payment-rail fintech (15+ active state MTLs) who just ate a deficiency notice on a lapsed surety bond.",
+        "variant": "body"
+      }
+    },
+    "idea-1-wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-1-wedge-label",
+        "idea-1-wedge-content"
+      ]
+    },
+    "idea-1-wedge-label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge:",
+        "variant": "lead"
+      }
+    },
+    "idea-1-wedge-content": {
+      "type": "Text",
+      "props": {
+        "text": "5-state renewal calendar + NMLS Call Report assembler + bond expiry tracker, pre-filled from Stripe/Modern Treasury data. Not new applications -- the boring quarterly+biennial cadence.",
+        "variant": "body"
+      }
+    },
+    "idea-1-why-now": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-1-why-now-label",
+        "idea-1-why-now-content"
+      ]
+    },
+    "idea-1-why-now-label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now:",
+        "variant": "lead"
+      }
+    },
+    "idea-1-why-now-content": {
+      "type": "Text",
+      "props": {
+        "text": "GENIUS Act + state stablecoin regimes added 80-150 net-new MTL applicants hitting first renewal cycle in 2026-2027; CSBS moved Call Reports to stricter quarterly cadence Q1 2026.",
+        "variant": "body"
+      }
+    },
+    "idea-1-mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-1-mvp-label",
+        "idea-1-mvp-content"
+      ]
+    },
+    "idea-1-mvp-label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test:",
+        "variant": "lead"
+      }
+    },
+    "idea-1-mvp-content": {
+      "type": "Text",
+      "props": {
+        "text": "5-state MVP (NY/TX/CA/FL/NV) + 3 paid pilots @ $1,500/mo via Wyre/Polychain alumni network.",
+        "variant": "body"
+      }
+    },
+    "idea-1-kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-1-kill-label",
+        "idea-1-kill-content"
+      ]
+    },
+    "idea-1-kill-label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill:",
+        "variant": "lead"
+      }
+    },
+    "idea-1-kill-content": {
+      "type": "Text",
+      "props": {
+        "text": "<3 paid pilots in 60 days, OR <$10k MRR by day 120, OR pilot logo retention <90% past first cycle.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "idea-2-heading",
+        "idea-2-icp",
+        "idea-2-wedge",
+        "idea-2-why-now",
+        "idea-2-mvp",
+        "idea-2-kill"
+      ]
+    },
+    "idea-2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Foundry (ambitious)",
+        "level": "h2"
+      }
+    },
+    "idea-2-icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-2-icp-label",
+        "idea-2-icp-content"
+      ]
+    },
+    "idea-2-icp-label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP:",
+        "variant": "lead"
+      }
+    },
+    "idea-2-icp-content": {
+      "type": "Text",
+      "props": {
+        "text": "Director/VP AI Engineering at F1000 enterprise (FS, insurance, retail, healthcare) running a CS or procurement agent who just ate a six-figure prod incident (50%-discount-leak, runaway purchasing loop) and the EU AI Act audit deadline is <=12 months out.",
+        "variant": "body"
+      }
+    },
+    "idea-2-wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-2-wedge-label",
+        "idea-2-wedge-content"
+      ]
+    },
+    "idea-2-wedge-label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge:",
+        "variant": "lead"
+      }
+    },
+    "idea-2-wedge-content": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-prod sim CI pipeline -- agent runs 1k-10k turns against curated attacker personas + cost-overrun scenarios + governance-bypass probes; output is a Pass/Fail report with replay traces. Vertical-only, audit-grade -- not the Galileo or Inspect lane.",
+        "variant": "body"
+      }
+    },
+    "idea-2-why-now": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-2-why-now-label",
+        "idea-2-why-now-content"
+      ]
+    },
+    "idea-2-why-now-label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now:",
+        "variant": "lead"
+      }
+    },
+    "idea-2-why-now-content": {
+      "type": "Text",
+      "props": {
+        "text": "EU AI Act high-risk testing live August 2026; 79% of orgs deploying agents but only 14.4% with full security/IT approval; first wave of public six-figure agent incidents in 2025-2026.",
+        "variant": "body"
+      }
+    },
+    "idea-2-mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-2-mvp-label",
+        "idea-2-mvp-content"
+      ]
+    },
+    "idea-2-mvp-label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test:",
+        "variant": "lead"
+      }
+    },
+    "idea-2-mvp-content": {
+      "type": "Text",
+      "props": {
+        "text": "2 vertical packs (CS + procurement), 25 attacker personas, 10 cost-overrun scenarios, 8 governance-bypass probes. 3 design partners: 1 YC W26 vertical-AI startup, 1 mid-market, 1 F1000 via Lore investor warm intros.",
+        "variant": "body"
+      }
+    },
+    "idea-2-kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "idea-2-kill-label",
+        "idea-2-kill-content"
+      ]
+    },
+    "idea-2-kill-label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill:",
+        "variant": "lead"
+      }
+    },
+    "idea-2-kill-content": {
+      "type": "Text",
+      "props": {
+        "text": "<3 paid pilots @ >=$25k/yr in 120 days, OR sim-surfaced failures don't predict prod incidents within 6 months, OR EU AI Act enforcement slips past Q1 2027.",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: 6 permalinks (3 Renew / 3 Foundry). Full memos in memory/logs/2026-05-01.md.",
+        "variant": "caption"
+      }
+    }
+  }
+}
