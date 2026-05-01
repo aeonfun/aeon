@@ -951,10 +951,10 @@
   },
   "project-lens": {
     "last_dispatch": "2026-05-01T16:12:31Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-29T17:04:52Z",
-    "total_runs": 1,
-    "total_successes": 1,
+    "last_status": "success",
+    "last_success": "2026-05-01T16:18:52Z",
+    "total_runs": 2,
+    "total_successes": 2,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
