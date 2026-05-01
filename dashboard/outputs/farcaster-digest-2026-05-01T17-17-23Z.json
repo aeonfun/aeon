@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Skill skipped",
+        "message": "All sources failed: search=fail, trending=fail, channels=fail. Error: Neynar 402 (NEYNAR_API_KEY unset)",
+        "type": "error"
+      }
+    }
+  }
+}
