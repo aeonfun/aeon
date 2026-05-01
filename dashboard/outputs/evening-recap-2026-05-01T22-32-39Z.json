@@ -1,0 +1,510 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "evening-recap",
+        "description": "2026-05-01 EOD"
+      },
+      "children": [
+        "tl_dr_text",
+        "sep1",
+        "trading_section",
+        "sep2",
+        "signals_section",
+        "sep3",
+        "revenant_section",
+        "sep4",
+        "nav_alert",
+        "sep5",
+        "failures_section",
+        "sep6",
+        "papers_section",
+        "sep7",
+        "comments_section",
+        "sep8",
+        "prs_section"
+      ]
+    },
+    "tl_dr_text": {
+      "type": "Text",
+      "props": {
+        "text": "Heavy ship day — ISS-017 critical but Revenant skills ran clean",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "trading_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trading_h",
+        "pools_text",
+        "verdict_badge",
+        "actor_text"
+      ]
+    },
+    "trading_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading loop",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pools_text": {
+      "type": "Text",
+      "props": {
+        "text": "88 pools scanned (168 pre-gate), 3 BREAKOUT, 0 DEEP-LIQ in top 5"
+      },
+      "children": []
+    },
+    "verdict_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SPECULATIVE"
+      },
+      "children": []
+    },
+    "actor_text": {
+      "type": "Text",
+      "props": {
+        "text": "3-day wash-print actor on BSC confirmed (~$57M vol/day)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "signals_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signals_h",
+        "pendle_stat",
+        "pendle_details",
+        "mexico_text",
+        "crypto_grid",
+        "crypto_note"
+      ]
+    },
+    "signals_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pendle_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "PENDLE",
+        "value": "9/10 HIGH",
+        "delta": "+20.6%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "pendle_details": {
+      "type": "Text",
+      "props": {
+        "text": "sPENDLE buyback + Aave V4",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "mexico_text": {
+      "type": "Text",
+      "props": {
+        "text": "Mexico WC calibration gap: 1.05% PM vs 5-8% sportsbook — open, no execution signal yet"
+      },
+      "children": []
+    },
+    "crypto_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "btc_stat",
+        "eth_stat",
+        "sol_stat"
+      ]
+    },
+    "btc_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "+2.26%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "eth_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "+1.83%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "sol_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "+1.37%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "crypto_note": {
+      "type": "Text",
+      "props": {
+        "text": "All inside alert envelope",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "revenant_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "revenant_h",
+        "revenant_grid",
+        "revenant_note"
+      ]
+    },
+    "revenant_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "revenant_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "trades_stat",
+        "wr_stat",
+        "pnl_stat"
+      ]
+    },
+    "trades_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Trades",
+        "value": "29"
+      },
+      "children": []
+    },
+    "wr_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "76%"
+      },
+      "children": []
+    },
+    "pnl_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      },
+      "children": []
+    },
+    "revenant_note": {
+      "type": "Text",
+      "props": {
+        "text": "No new orders. Watchlist flat (<1pp moves). P&L unchanged.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "nav_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "NAV",
+        "message": "Wallets unconfigured",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "failures_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "failures_h",
+        "iss_017_alert",
+        "failure_list"
+      ]
+    },
+    "failures_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Failures",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "iss_017_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-017 Critical",
+        "message": "07:00/13:00/14:00 cron tiers all missed (3rd day). chain:morning-brief + chain:evening-rollup failed.",
+        "type": "error"
+      },
+      "children": []
+    },
+    "failure_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reddit_fail",
+        "reply_fail",
+        "remix_fail",
+        "farcaster_fail"
+      ]
+    },
+    "reddit_fail": {
+      "type": "Text",
+      "props": {
+        "text": "reddit × 8"
+      },
+      "children": []
+    },
+    "reply_fail": {
+      "type": "Text",
+      "props": {
+        "text": "reply-maker × 7"
+      },
+      "children": []
+    },
+    "remix_fail": {
+      "type": "Text",
+      "props": {
+        "text": "remix-tweets × 5"
+      },
+      "children": []
+    },
+    "farcaster_fail": {
+      "type": "Text",
+      "props": {
+        "text": "farcaster 402"
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "papers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "papers_h",
+        "paper1",
+        "paper2",
+        "paper3"
+      ]
+    },
+    "papers_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Papers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "paper1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AIA Forecaster",
+        "href": "https://arxiv.org/abs/2511.07678",
+        "source": "arXiv:2511.07678",
+        "score": "LLM matches superforecasters on ForecastBench"
+      },
+      "children": []
+    },
+    "paper2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hyperagents",
+        "href": "https://arxiv.org/abs/2603.19461",
+        "source": "arXiv:2603.19461",
+        "score": "Darwin Gödel Machine multi-domain"
+      },
+      "children": []
+    },
+    "paper3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Galanis",
+        "href": "https://arxiv.org/abs/2604.20050",
+        "source": "arXiv:2604.20050",
+        "score": "P&L feedback degrades LLM aggregation (CalibrationGap ablation candidate)"
+      },
+      "children": []
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "comments_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comments_h",
+        "trump_comment",
+        "ruua_comment",
+        "tvk_comment"
+      ]
+    },
+    "comments_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Comments",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "trump_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Trump-Iran-ops 36% YES resolving today (War Powers T+60)"
+      },
+      "children": []
+    },
+    "ruua_comment": {
+      "type": "Text",
+      "props": {
+        "text": "RU-UA by-May31 6% tail open (Putin May-9 proposal)"
+      },
+      "children": []
+    },
+    "tvk_comment": {
+      "type": "Text",
+      "props": {
+        "text": "TVK T-3 6.95c"
+      },
+      "children": []
+    },
+    "sep8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "prs_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "prs_h",
+        "pr150",
+        "pr149"
+      ]
+    },
+    "prs_h": {
+      "type": "Heading",
+      "props": {
+        "text": "PRs",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pr150": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#150 shell-injection fix at secrets/route.ts:96",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/150",
+        "source": "PR",
+        "score": "3-week carry, shipped"
+      },
+      "children": []
+    },
+    "pr149": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#149 smithery-manifest merged",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/149",
+        "source": "PR",
+        "score": "+905 lines"
+      },
+      "children": []
+    }
+  }
+}
