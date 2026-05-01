@@ -1,11 +1,7 @@
-No notification fired — nothing actionable per step 9 (no urgent/p0/security/duplicate-close).
-
 `ISSUE_TRIAGE_OK no-new-issues`
 
 ## Summary
-
-- Watched repos: `aaronjmars/aeon` (only entry in `memory/watched-repos.md`).
-- Fetched label schema and open issues in the last 48h. Result: zero candidates (`gh issue list` returned `[]`).
-- No labels applied, no comments posted, no issues closed, no notification fired.
-- Logged the run to `memory/logs/2026-04-30.md` with terminal status `ISSUE_TRIAGE_OK no-new-issues`.
-- `memory/triaged-issues.json` not touched (none to record). Cache file landed at `/tmp/labels-aaronjmars-aeon.json` instead of `.cache/` because the sandbox blocked creating `.cache/`. Follow-up: add `.cache/` (or pre-create it in the workflow) so the skill's documented per-repo label cache path works on future runs.
+- Ran issue-triage. Watched repo: `aaronjmars/aeon` (sole entry in `memory/watched-repos.md`). `gh issue list -R aaronjmars/aeon --search "created:>=2026-04-29"` returned `[]` — no issues opened in the last 48h, so classification/dedup/labeling steps were not needed.
+- Files modified: `memory/logs/2026-05-01.md` (issue-triage entry appended). `memory/triaged-issues.json` was not touched (no triage actions).
+- Notification: skipped per §9 (no urgent / p0 / security / duplicate-close items produced).
+- Follow-up: none. Re-run on next schedule; if `aaronjmars/aeon` issues stay sparse, consider widening the watched-repos list (e.g. `tomscaria/swarm-fund-mvp`) — currently issues are disabled there per MEMORY OPS notes, so this would be a no-op until that flips.
