@@ -1,0 +1,604 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview — 2026-05-01"
+      },
+      "children": [
+        "subtitle",
+        "tvl-stack",
+        "sep1",
+        "top-chains-section",
+        "sep2",
+        "movers-chains-section",
+        "sep3",
+        "movers-protocols-section",
+        "sep4",
+        "fees-section",
+        "sep5",
+        "dex-section",
+        "sep6",
+        "stables-section",
+        "sep7",
+        "yields-section",
+        "sep8",
+        "sources-section"
+      ]
+    },
+    "subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed: Sky/Spark stack reverses ↔, broader market grinds sideways",
+        "variant": "lead"
+      }
+    },
+    "tvl-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tvl-stat",
+        "tvl-note"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$84.12B",
+        "delta": "+0.76% 24h, −0.45% 7d",
+        "trend": "neutral"
+      }
+    },
+    "tvl-note": {
+      "type": "Text",
+      "props": {
+        "text": "Fifth day grinding $83-85B band",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "top-chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-chains-heading",
+        "top-chains-table"
+      ]
+    },
+    "top-chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top chains",
+        "level": "h3"
+      }
+    },
+    "top-chains-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$45.2B",
+            "+0.60%"
+          ],
+          [
+            "BSC",
+            "$5.47B",
+            "—"
+          ],
+          [
+            "Solana",
+            "$5.45B",
+            "+0.64%"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "movers-chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-chains-heading",
+        "plasma-down",
+        "movers-chains-context"
+      ]
+    },
+    "movers-chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — chains",
+        "level": "h3"
+      }
+    },
+    "plasma-down": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "plasma-text",
+        "plasma-detail"
+      ]
+    },
+    "plasma-text": {
+      "type": "Text",
+      "props": {
+        "text": "Plasma −9.0% ($609M → $554M; 7d −4%)",
+        "variant": "body"
+      }
+    },
+    "plasma-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Fifth consecutive down day, incentive-unwind continuation flagged 04-27/28/29/30",
+        "variant": "caption"
+      }
+    },
+    "movers-chains-context": {
+      "type": "Text",
+      "props": {
+        "text": "No chain up-mover cleared 5%/$500M gate; Polygon flipped from yesterday's +9.6% 7d to −4.5% 1d on $1.24B; MegaETH +60% 1d on $490M just under TVL gate",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "movers-protocols-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-protocols-heading",
+        "spark-up",
+        "polymarket-down"
+      ]
+    },
+    "movers-protocols-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — protocols",
+        "level": "h3"
+      }
+    },
+    "spark-up": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "spark-savings-line",
+        "spark-liquidity-line",
+        "spark-context"
+      ]
+    },
+    "spark-savings-line": {
+      "type": "Text",
+      "props": {
+        "text": "Spark Savings +46.8% ($1.54B → $2.26B, Yield) — full reversal of yesterday's −24% print",
+        "variant": "body"
+      }
+    },
+    "spark-liquidity-line": {
+      "type": "Text",
+      "props": {
+        "text": "Spark Liquidity Layer also +25.9% ($2.0B → $2.52B)",
+        "variant": "caption"
+      }
+    },
+    "spark-context": {
+      "type": "Text",
+      "props": {
+        "text": "Sky stack capital re-deposited in single session",
+        "variant": "caption"
+      }
+    },
+    "polymarket-down": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "polymarket-line",
+        "polymarket-context"
+      ]
+    },
+    "polymarket-line": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket International −17.4% ($546M → $451M, Polygon, Prediction Market)",
+        "variant": "body"
+      }
+    },
+    "polymarket-context": {
+      "type": "Text",
+      "props": {
+        "text": "No obvious catalyst beyond post-V2-launch normalization (V2 cutover 04-28 peaked $514M 04-30)",
+        "variant": "caption"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "fees-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-leaders-heading",
+        "fees-leaders-table",
+        "fees-leaders-context",
+        "sep-fees",
+        "fees-beating-heading",
+        "fees-beating-list"
+      ]
+    },
+    "fees-leaders-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-leaders-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees (24h)",
+          "7d Change"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.4M",
+            "flat"
+          ],
+          [
+            "Circle USDC",
+            "$6.5M",
+            "flat"
+          ],
+          [
+            "Canton",
+            "$2.2M",
+            "+13.7% 1d, +2% vs 7d avg"
+          ]
+        ]
+      }
+    },
+    "fees-leaders-context": {
+      "type": "Text",
+      "props": {
+        "text": "Aave V3 $1.85M now −39% 7d — deeper than yesterday's −51% read partially recovered. HL Perps $1.83M −18.6% 1d, reversing yesterday's +35% bounce.",
+        "variant": "caption"
+      }
+    },
+    "sep-fees": {
+      "type": "Separator"
+    },
+    "fees-beating-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees beating TVL (7d)",
+        "level": "h3"
+      }
+    },
+    "fees-beating-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "centrifuge-item",
+        "pumpswap-item"
+      ]
+    },
+    "centrifuge-item": {
+      "type": "Text",
+      "props": {
+        "text": "Centrifuge Protocol — fees +57% / TVL −14% — RWA real-demand outrunning capital (second day on this list)",
+        "variant": "body"
+      }
+    },
+    "pumpswap-item": {
+      "type": "Text",
+      "props": {
+        "text": "PumpSwap — fees +45% / TVL +1% — Solana memecoin venue, demand outpacing deposits",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "dex-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dex-heading",
+        "dex-stat",
+        "dex-table",
+        "dex-note"
+      ]
+    },
+    "dex-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX vol (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total DEX Volume",
+        "value": "$5.55B",
+        "delta": "−12% 1d, −25% 7d",
+        "trend": "down"
+      }
+    },
+    "dex-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "Volume (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$620M",
+            "−24%"
+          ],
+          [
+            "Uniswap V3",
+            "$483M",
+            "−19%"
+          ],
+          [
+            "PancakeSwap V3",
+            "$365M",
+            "−29%"
+          ]
+        ]
+      }
+    },
+    "dex-note": {
+      "type": "Text",
+      "props": {
+        "text": "Broad DEX pullback",
+        "variant": "caption"
+      }
+    },
+    "sep6": {
+      "type": "Separator"
+    },
+    "stables-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stables-heading",
+        "stables-stat",
+        "stables-list"
+      ]
+    },
+    "stables-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Stables TVL",
+        "value": "$318.7B",
+        "delta": "+0.22% 1d, −0.07% 7d",
+        "trend": "neutral"
+      }
+    },
+    "stables-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "usds-item",
+        "rlusd-item",
+        "usde-item"
+      ]
+    },
+    "usds-item": {
+      "type": "Text",
+      "props": {
+        "text": "USDS ↔ +7.93% on $8.4B — yesterday's −6.66% Sky-ecosystem unwind reversed in single session",
+        "variant": "body"
+      }
+    },
+    "rlusd-item": {
+      "type": "Text",
+      "props": {
+        "text": "RLUSD −7.26% on $1.44B",
+        "variant": "body"
+      }
+    },
+    "usde-item": {
+      "type": "Text",
+      "props": {
+        "text": "USDe +2.44% on $3.90B (day 6 of Ethena recovery — trend still firm)",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator"
+    },
+    "yields-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "real-yield-heading",
+        "real-yield-table",
+        "sep-yields",
+        "incentive-yield-heading",
+        "incentive-yield-table"
+      ]
+    },
+    "real-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real yield (sustainable, ≥$10M, filtered)",
+        "level": "h3"
+      }
+    },
+    "real-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Position",
+          "Chain/Protocol",
+          "APY Base",
+          "TVL",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "APT/Amnis",
+            "Aptos",
+            "28.67%",
+            "$18.9M",
+            "Mean 30d 15.2% — spike persists"
+          ],
+          [
+            "USDC-CBBTC v3",
+            "Base",
+            "17.37%",
+            "$11.0M",
+            "IL — half yesterday's 29.75% as cbBTC vol cooled"
+          ],
+          [
+            "APYUSD/Pendle",
+            "ETH",
+            "15.51%",
+            "$11.3M",
+            "Mean 30d 15.0%"
+          ]
+        ]
+      }
+    },
+    "sep-yields": {
+      "type": "Separator"
+    },
+    "incentive-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive yield (points / emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Position",
+          "Chain/Protocol",
+          "APY",
+          "TVL",
+          "Mechanism"
+        ],
+        "rows": [
+          [
+            "cvxCRV/Convex",
+            "ETH",
+            "24.17%",
+            "$33.5M",
+            "via CRV/CVX/FXS"
+          ],
+          [
+            "USDC-AERO/Aerodrome",
+            "Base",
+            "22.19%",
+            "$27.0M",
+            "via AERO"
+          ],
+          [
+            "sdCRV/StakeDAO",
+            "ETH",
+            "21.92%",
+            "$28.1M",
+            "via CRV/SDT"
+          ]
+        ]
+      }
+    },
+    "sep8": {
+      "type": "Separator"
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "llama_tvl=ok, llama_dex=ok, llama_fees=ok, llama_stables=ok, llama_yields=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}

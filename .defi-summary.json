@@ -1,0 +1,275 @@
+{
+  "totalTvl": 84380149699.87419,
+  "tvl_d": 0,
+  "tvl_7": 0,
+  "dexTotal": 5552356613,
+  "dexCh1d": -12.21,
+  "dexCh7d": -24.83,
+  "dexCh1m": -25.24,
+  "feesTotal": 54095991,
+  "feesCh1d": -2.76,
+  "totalStable": 318686964558.1659,
+  "stable_d": null,
+  "stable_7": null,
+  "verdict": "Mixed",
+  "verdictRead": "TVL flat, DEX vol pulling back, stables flat",
+  "topChains": [
+    {
+      "name": "Ethereum",
+      "tvl": 45297453705.469185
+    },
+    {
+      "name": "BSC",
+      "tvl": 5467157050.498667
+    },
+    {
+      "name": "Solana",
+      "tvl": 5447924563.808683
+    }
+  ],
+  "chainUp": null,
+  "chainDown": null,
+  "protUp": {
+    "name": "Spark Savings",
+    "tvl": 2259260646.412075,
+    "change_1d": 46.80213732155306,
+    "change_7d": 16.90830435944912,
+    "category": "Yield",
+    "chain": "Multi-Chain"
+  },
+  "protDown": {
+    "name": "Polymarket International",
+    "tvl": 451310697.38893354,
+    "change_1d": -17.406954372759202,
+    "change_7d": -2.3172178272660062,
+    "category": "Prediction Market",
+    "chain": "Polygon"
+  },
+  "feesLeaders": [
+    {
+      "name": "Tether",
+      "total24h": 16440427,
+      "total7d": 115433094,
+      "change_1d": -0.05,
+      "change_7d": 0.42
+    },
+    {
+      "name": "Circle USDC",
+      "total24h": 6524243,
+      "total7d": 46029701,
+      "change_1d": -0.32,
+      "change_7d": -1.36
+    },
+    {
+      "name": "Canton",
+      "total24h": 2204422,
+      "total7d": 15325564,
+      "change_1d": 13.7,
+      "change_7d": 2.17
+    },
+    {
+      "name": "Aave V3",
+      "total24h": 1847779,
+      "total7d": 14468267,
+      "change_1d": 6.61,
+      "change_7d": -39.27
+    },
+    {
+      "name": "Hyperliquid Perps",
+      "total24h": 1825340,
+      "total7d": 10606722,
+      "change_1d": -18.64,
+      "change_7d": -16.72
+    }
+  ],
+  "feesBeatTvl": [
+    {
+      "name": "Centrifuge Protocol",
+      "fees24h": 241156,
+      "feesCh7": 56.59,
+      "tvl": 1708779876.4196362,
+      "tvlCh7": -14.164358668660242
+    },
+    {
+      "name": "PumpSwap",
+      "fees24h": 1795043,
+      "feesCh7": 44.89,
+      "tvl": 217183520.68021947,
+      "tvlCh7": 0.8641492094680956
+    }
+  ],
+  "dexTop": [
+    {
+      "name": "Uniswap V4",
+      "total24h": 620357790,
+      "change_1d": -23.93,
+      "change_7d": -53.02
+    },
+    {
+      "name": "Uniswap V3",
+      "total24h": 482973357,
+      "change_1d": -18.86,
+      "change_7d": -24.13
+    },
+    {
+      "name": "PancakeSwap AMM V3",
+      "total24h": 364959281,
+      "change_1d": -28.67,
+      "change_7d": -42.5
+    },
+    {
+      "name": "Aerodrome Slipstream",
+      "total24h": 294964897,
+      "change_1d": -32.07,
+      "change_7d": -43.13
+    },
+    {
+      "name": "Curve DEX",
+      "total24h": 234201947,
+      "change_1d": 40.32,
+      "change_7d": 7.55
+    }
+  ],
+  "stableMovers": [
+    {
+      "name": "Sky Dollar",
+      "symbol": "USDS",
+      "c": 8437886229.245761,
+      "ch": 7.930568760040265
+    },
+    {
+      "name": "Ripple USD",
+      "symbol": "RLUSD",
+      "c": 1443996247.143443,
+      "ch": -7.255372589720488
+    },
+    {
+      "name": "Ethena USDe",
+      "symbol": "USDe",
+      "c": 3900443419.743324,
+      "ch": 2.437127780759796
+    }
+  ],
+  "realYield": [
+    {
+      "project": "amnis-finance",
+      "symbol": "APT",
+      "chain": "Aptos",
+      "apyBase": 28.67037,
+      "apyReward": null,
+      "apy": 28.67037,
+      "tvlUsd": 18909629,
+      "apyMean30d": 15.19067,
+      "ilRisk": "no"
+    },
+    {
+      "project": "uniswap-v3",
+      "symbol": "USDC-CBBTC",
+      "chain": "Base",
+      "apyBase": 17.37071,
+      "apyReward": null,
+      "apy": 17.37071,
+      "tvlUsd": 10972740,
+      "apyMean30d": 28.86579,
+      "ilRisk": "yes"
+    },
+    {
+      "project": "pendle",
+      "symbol": "APYUSD",
+      "chain": "Ethereum",
+      "apyBase": 15.50505,
+      "apyReward": null,
+      "apy": 15.50505,
+      "tvlUsd": 11298987,
+      "apyMean30d": 15.01855,
+      "ilRisk": "no"
+    },
+    {
+      "project": "pendle",
+      "symbol": "APXUSD",
+      "chain": "Ethereum",
+      "apyBase": 13.67822,
+      "apyReward": null,
+      "apy": 13.67822,
+      "tvlUsd": 16270400,
+      "apyMean30d": 14.41074,
+      "ilRisk": "no"
+    },
+    {
+      "project": "shmonad",
+      "symbol": "SHMON",
+      "chain": "Monad",
+      "apyBase": 13.10879,
+      "apyReward": null,
+      "apy": 13.10879,
+      "tvlUsd": 12741888,
+      "apyMean30d": 14.46208,
+      "ilRisk": "no"
+    }
+  ],
+  "incYield": [
+    {
+      "project": "convex-finance",
+      "symbol": "CVXCRV",
+      "chain": "Ethereum",
+      "apyBase": null,
+      "apyReward": 24.17,
+      "apy": 24.17,
+      "tvlUsd": 33530824,
+      "rewardTokens": [
+        "0xd533a949740bb3306d119cc777fa900ba034cd52",
+        "0x4e3fbd56cd56c3e72c1403e103b45db9da5b9d2b",
+        "0xf939e0a03fb07f59a73314e73794be0e57ac1b4e"
+      ]
+    },
+    {
+      "project": "aerodrome-v1",
+      "symbol": "USDC-AERO",
+      "chain": "Base",
+      "apyBase": null,
+      "apyReward": 22.19397,
+      "apy": 22.19397,
+      "tvlUsd": 27009256,
+      "rewardTokens": [
+        "0x940181a94A35A4569E4529A3CDfB74e38FD98631"
+      ]
+    },
+    {
+      "project": "stake-dao",
+      "symbol": "SDCRV",
+      "chain": "Ethereum",
+      "apyBase": 0,
+      "apyReward": 21.92018,
+      "apy": 21.92018,
+      "tvlUsd": 28094238,
+      "rewardTokens": [
+        "0xD533a949740bb3306d119CC777fa900bA034cd52",
+        "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E"
+      ]
+    },
+    {
+      "project": "dolomite",
+      "symbol": "USD1",
+      "chain": "Ethereum",
+      "apyBase": 3.42531,
+      "apyReward": 5.46223,
+      "apy": 8.88754,
+      "tvlUsd": 37011942,
+      "rewardTokens": [
+        "0xdA5e1988097297dCdc1f90D4dFE7909e847CBeF6"
+      ]
+    },
+    {
+      "project": "upshift",
+      "symbol": "EARNAUSD",
+      "chain": "Monad",
+      "apyBase": 5.93434,
+      "apyReward": 2.0363,
+      "apy": 7.97064,
+      "tvlUsd": 34729118,
+      "rewardTokens": [
+        "0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A"
+      ]
+    }
+  ]
+}
