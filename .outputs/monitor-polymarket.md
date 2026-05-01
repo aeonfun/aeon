@@ -1,32 +1,46 @@
-polymarket monitor — 2026-04-29
+polymarket monitor — 2026-05-01
 
-[Mexico Win 2026 FIFA World Cup] (event 30615)
-will-mexico-win-the-2026-fifa-world-cup-529 | YES 1.1% | 0.0pp | 85K vol
-stable — Revenant builder-code market, no action signal
-croatia note: commenter flagged 1M→14M bid buildup at c1.0 on Apr 28 (same event)
-top comment: Strict-Nonbeliever — "Australia mispricing: casual bettors anchor on outdated perceptions"
+**Mexico 2026 FIFA World Cup** (Revenant first order, builder 0xcddc4ba3...8286f)
+Will Mexico win the 2026 FIFA World Cup? [market 558945]
+YES 1.1% | 24h chg: 0.0pp (flat) | $119.9K 24h vol | $2.4M liq
+Direction: stable. No 24h move.
+Possible calibration hook: Polymarket 1.05% vs sportsbook consensus typically 5–8%. Field is wide open for the first North American World Cup — host-nation bounce plausible for USA/Mexico/Canada bracket games. No immediate catalyst today.
 
-[Bitcoin Hit $1M Before GTA VI] (event 23784)
-will-bitcoin-hit-1m-before-gta-vi-872 | YES 49.1% | +0.1pp | 11K vol
-anchored to 50c: 50-50 resolution mechanic (if neither by Jul 31 → resolves 50/50)
-top comment: masnjr — "ATTENTION NEW USERS: This is a SCAM market..." (68 rxn)
+top comment: 'Belgium's group is weak...' — Strict-Nonbeliever (5 react, Apr 7)
+recent: 'Czechia 0.003 trade opportunity' — Infinite-Kennel (Apr 29)
+crowd meta: England-skepticism dominant in top comments (8-react anti-England takes, x2)
 
-[US 2028 Election — top 5 active markets]
-Pres Winner 2028 (event 31552, 1.44M vol24h, 22.3M liq)
-  JD Vance ~19% | Gavin Newsom ~18%
-Rep Nominee 2028 (event 31875)
-  JD Vance 38.8% | -0.1pp | 19K
-  Marco Rubio 21.7% | -0.1pp | 21K
-Dem Nominee 2028 (event 30829, 50.2M liq)
-  Jon Ossoff 6.45% | +0.2pp | 387K <- VOLUME SPIKE
-  Oprah Winfrey 0.65% | 112K
+---
 
-biggest mover: Jon Ossoff — 7d range 4.95–7.30%, recovered +1.5pp from trough
-ossoff spike: 387K vol24h vs ~65K daily avg = ~6x; driver unconfirmed, flag for follow-up
+**Bitcoin $1M before GTA VI** [market 540844]
+YES 48.9% | 24h chg: 0.0pp (flat, range 48.85–48.90%) | $1.2K 24h vol | $119.7K liq
+Direction: stable. Dead volume.
+GTA VI release <June 2026: 1.1% — launch almost certainly NOT coming in June. Deadline on this market is July 31, 2026. BTC at ~$97K implies ~10x needed in <90 days. Market pricing this as ~coin flip suggests high variance / terminal branch thinking.
+No entry signal for Revenant. Monitor for GTA VI release-date catalyst.
 
-alerts:
-- no watched markets moved >5pp in 24h (all quiet on mexico + btc 1m)
-- ossoff vol spike: ~6x estimated daily avg — possible news or whale repositioning
-- eric trump (rep nom) 96K vol on 0.85% YES — elevated without clear catalyst
-- FOMC: no-change 99.85% resolving today (7.71M vol24h) — experienced-carpeting tail expires
+---
 
+**US 2028 Election — top 5 active markets**
+
+Which party wins 2028? [event 33228, $303K liq]
+Democrats: 60.5% | 0.0pp | $54 24h vol — locked
+Republicans: 38.5% | 0.0pp | $0 24h vol — locked
+
+GOP Nominee 2028 [event 31875, $18.5M liq, $595M all-time vol]
+Vance: 38.5% | -0.2pp 24h | $16K vol
+Rubio: 20.7% | — | $8K vol
+Eric Trump: 0.9% | — | $120K 24h vol [VOLUME ANOMALY: 15% daily turnover vs $793K liq]
+Tulsi Gabbard: 1.2% | — | $24K vol, $877K liq
+Top comment: 'JD Rubio!' — EverSupreme7 (11 react, Feb 10)
+
+Dem Nominee 2028 [event 30829, $48.4M liq, $1.12B all-time vol, $1.54M 24h vol]
+Newsom: ~27% (field leader per market consensus)
+Ossoff: 6.6% | 0.0pp | $9.5K vol
+Buttigieg: 4.1% | — | $8.1K vol
+Whitmer: 1.4% | — | $26.8K vol
+Top comment: 'flow been crazy on this market lately' — Some-Productivity (Feb 13)
+
+---
+
+biggest mover: none — all markets <1pp move in 24h.
+alerts: none. all quiet.

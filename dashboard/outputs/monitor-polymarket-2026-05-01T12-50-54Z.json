@@ -1,0 +1,711 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Monitor"
+      },
+      "children": [
+        "header",
+        "sep1",
+        "mexico_section",
+        "sep2",
+        "bitcoin_section",
+        "sep3",
+        "election_section",
+        "sep4",
+        "summary_section"
+      ]
+    },
+    "header": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket monitor — 2026-05-01",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "mexico_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "mexico_h1",
+        "mexico_context",
+        "mexico_stats",
+        "mexico_analysis",
+        "mexico_comments"
+      ]
+    },
+    "mexico_h1": {
+      "type": "Heading",
+      "props": {
+        "text": "Mexico 2026 FIFA World Cup",
+        "level": "h2"
+      }
+    },
+    "mexico_context": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mexico_question",
+        "mexico_builder"
+      ]
+    },
+    "mexico_question": {
+      "type": "Text",
+      "props": {
+        "text": "Will Mexico win the 2026 FIFA World Cup? [market 558945]"
+      }
+    },
+    "mexico_builder": {
+      "type": "Text",
+      "props": {
+        "text": "Revenant first order, builder 0xcddc4ba3...8286f",
+        "variant": "caption"
+      }
+    },
+    "mexico_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mexico_yes",
+        "mexico_change",
+        "mexico_vol",
+        "mexico_liq",
+        "mexico_direction"
+      ]
+    },
+    "mexico_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.1%"
+      }
+    },
+    "mexico_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h change",
+        "value": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "mexico_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h volume",
+        "value": "$119.9K"
+      }
+    },
+    "mexico_liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$2.4M"
+      }
+    },
+    "mexico_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "stable — no 24h move",
+        "variant": "outline"
+      }
+    },
+    "mexico_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "Possible calibration hook: Polymarket 1.05% vs sportsbook consensus typically 5–8%. Field is wide open for the first North American World Cup — host-nation bounce plausible for USA/Mexico/Canada bracket games. No immediate catalyst today."
+      }
+    },
+    "mexico_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mexico_comments_h",
+        "mexico_top_comment",
+        "mexico_recent_comment",
+        "mexico_crowd"
+      ]
+    },
+    "mexico_comments_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Comments",
+        "level": "h4"
+      }
+    },
+    "mexico_top_comment": {
+      "type": "Text",
+      "props": {
+        "text": "\"Belgium's group is weak...\" — Strict-Nonbeliever (5 react, Apr 7)"
+      }
+    },
+    "mexico_recent_comment": {
+      "type": "Text",
+      "props": {
+        "text": "\"Czechia 0.003 trade opportunity\" — Infinite-Kennel (Apr 29)"
+      }
+    },
+    "mexico_crowd": {
+      "type": "Text",
+      "props": {
+        "text": "Crowd meta: England-skepticism dominant in top comments (8-react anti-England takes, x2)"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "bitcoin_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "bitcoin_h1",
+        "bitcoin_question",
+        "bitcoin_stats",
+        "bitcoin_analysis"
+      ]
+    },
+    "bitcoin_h1": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin $1M before GTA VI",
+        "level": "h2"
+      }
+    },
+    "bitcoin_question": {
+      "type": "Text",
+      "props": {
+        "text": "[market 540844]"
+      }
+    },
+    "bitcoin_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bitcoin_yes",
+        "bitcoin_change",
+        "bitcoin_vol",
+        "bitcoin_liq",
+        "bitcoin_direction"
+      ]
+    },
+    "bitcoin_yes": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "48.9%"
+      }
+    },
+    "bitcoin_change": {
+      "type": "Text",
+      "props": {
+        "text": "24h change: 0.0pp (flat, range 48.85–48.90%)"
+      }
+    },
+    "bitcoin_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h volume",
+        "value": "$1.2K"
+      }
+    },
+    "bitcoin_liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$119.7K"
+      }
+    },
+    "bitcoin_direction": {
+      "type": "Badge",
+      "props": {
+        "text": "stable — dead volume",
+        "variant": "outline"
+      }
+    },
+    "bitcoin_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "GTA VI release <June 2026: 1.1% — launch almost certainly NOT coming in June. Deadline on this market is July 31, 2026. BTC at ~$97K implies ~10x needed in <90 days. Market pricing this as ~coin flip suggests high variance / terminal branch thinking. No entry signal for Revenant. Monitor for GTA VI release-date catalyst."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "election_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "election_h1",
+        "party_wins_market",
+        "gop_nominee_market",
+        "dem_nominee_market"
+      ]
+    },
+    "election_h1": {
+      "type": "Heading",
+      "props": {
+        "text": "US 2028 Election — top 5 active markets",
+        "level": "h2"
+      }
+    },
+    "party_wins_market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "party_wins_h",
+        "party_wins_meta",
+        "party_wins_stats"
+      ]
+    },
+    "party_wins_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Which party wins 2028?",
+        "level": "h3"
+      }
+    },
+    "party_wins_meta": {
+      "type": "Text",
+      "props": {
+        "text": "[event 33228, $303K liq]"
+      }
+    },
+    "party_wins_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "party_dems_group",
+        "party_gop_group"
+      ]
+    },
+    "party_dems_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "party_dems_stat",
+        "party_dems_vol"
+      ]
+    },
+    "party_dems_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Democrats",
+        "value": "60.5%",
+        "delta": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "party_dems_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$54 24h vol — locked",
+        "variant": "caption"
+      }
+    },
+    "party_gop_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "party_gop_stat",
+        "party_gop_vol"
+      ]
+    },
+    "party_gop_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Republicans",
+        "value": "38.5%",
+        "delta": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "party_gop_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$0 24h vol — locked",
+        "variant": "caption"
+      }
+    },
+    "gop_nominee_market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "gop_h",
+        "gop_meta",
+        "gop_candidates",
+        "gop_comment"
+      ]
+    },
+    "gop_h": {
+      "type": "Heading",
+      "props": {
+        "text": "GOP Nominee 2028",
+        "level": "h3"
+      }
+    },
+    "gop_meta": {
+      "type": "Text",
+      "props": {
+        "text": "[event 31875, $18.5M liq, $595M all-time vol]"
+      }
+    },
+    "gop_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gop_vance_group",
+        "gop_rubio_group",
+        "gop_eric_group",
+        "gop_tulsi_group"
+      ]
+    },
+    "gop_vance_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gop_vance_stat",
+        "gop_vance_vol"
+      ]
+    },
+    "gop_vance_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vance",
+        "value": "38.5%",
+        "delta": "-0.2pp 24h",
+        "trend": "down"
+      }
+    },
+    "gop_vance_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$16K vol",
+        "variant": "caption"
+      }
+    },
+    "gop_rubio_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gop_rubio_stat",
+        "gop_rubio_vol"
+      ]
+    },
+    "gop_rubio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Rubio",
+        "value": "20.7%"
+      }
+    },
+    "gop_rubio_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$8K vol",
+        "variant": "caption"
+      }
+    },
+    "gop_eric_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gop_eric_stat",
+        "gop_eric_anomaly"
+      ]
+    },
+    "gop_eric_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Eric Trump",
+        "value": "0.9%"
+      }
+    },
+    "gop_eric_anomaly": {
+      "type": "Alert",
+      "props": {
+        "title": "VOLUME ANOMALY",
+        "message": "$120K 24h vol — 15% daily turnover vs $793K liq",
+        "type": "warning"
+      }
+    },
+    "gop_tulsi_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gop_tulsi_stat",
+        "gop_tulsi_meta"
+      ]
+    },
+    "gop_tulsi_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Tulsi Gabbard",
+        "value": "1.2%"
+      }
+    },
+    "gop_tulsi_meta": {
+      "type": "Text",
+      "props": {
+        "text": "$24K vol, $877K liq",
+        "variant": "caption"
+      }
+    },
+    "gop_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment: \"JD Rubio!\" — EverSupreme7 (11 react, Feb 10)"
+      }
+    },
+    "dem_nominee_market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dem_h",
+        "dem_meta",
+        "dem_candidates",
+        "dem_comment"
+      ]
+    },
+    "dem_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Dem Nominee 2028",
+        "level": "h3"
+      }
+    },
+    "dem_meta": {
+      "type": "Text",
+      "props": {
+        "text": "[event 30829, $48.4M liq, $1.12B all-time vol, $1.54M 24h vol]"
+      }
+    },
+    "dem_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_newsom_group",
+        "dem_ossoff_group",
+        "dem_buttigieg_group",
+        "dem_whitmer_group"
+      ]
+    },
+    "dem_newsom_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_newsom_stat",
+        "dem_newsom_note"
+      ]
+    },
+    "dem_newsom_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Newsom",
+        "value": "~27%"
+      }
+    },
+    "dem_newsom_note": {
+      "type": "Text",
+      "props": {
+        "text": "field leader per market consensus",
+        "variant": "caption"
+      }
+    },
+    "dem_ossoff_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_ossoff_stat",
+        "dem_ossoff_vol"
+      ]
+    },
+    "dem_ossoff_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Ossoff",
+        "value": "6.6%",
+        "delta": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "dem_ossoff_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$9.5K vol",
+        "variant": "caption"
+      }
+    },
+    "dem_buttigieg_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_buttigieg_stat",
+        "dem_buttigieg_vol"
+      ]
+    },
+    "dem_buttigieg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Buttigieg",
+        "value": "4.1%"
+      }
+    },
+    "dem_buttigieg_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$8.1K vol",
+        "variant": "caption"
+      }
+    },
+    "dem_whitmer_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem_whitmer_stat",
+        "dem_whitmer_vol"
+      ]
+    },
+    "dem_whitmer_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Whitmer",
+        "value": "1.4%"
+      }
+    },
+    "dem_whitmer_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$26.8K vol",
+        "variant": "caption"
+      }
+    },
+    "dem_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment: \"flow been crazy on this market lately\" — Some-Productivity (Feb 13)"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers_h",
+        "movers_badge",
+        "alerts_h",
+        "alerts_badge"
+      ]
+    },
+    "movers_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Biggest mover",
+        "level": "h3"
+      }
+    },
+    "movers_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "none — all markets <1pp move in 24h",
+        "variant": "secondary"
+      }
+    },
+    "alerts_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h3"
+      }
+    },
+    "alerts_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "none — all quiet",
+        "variant": "secondary"
+      }
+    }
+  }
+}
