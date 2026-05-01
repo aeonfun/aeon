@@ -1,0 +1,183 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "code-health",
+        "description": "aaronjmars/aeon HEAD c95478c"
+      },
+      "children": [
+        "alert_critical",
+        "sep1",
+        "tests_section",
+        "sep2",
+        "size_section",
+        "sep3",
+        "todos_section",
+        "sep4",
+        "pr_section",
+        "sep5",
+        "alert_notify"
+      ]
+    },
+    "alert_critical": {
+      "type": "Alert",
+      "props": {
+        "title": "Shell-injection vulnerability unpatched",
+        "message": "dashboard/app/api/secrets/route.ts:96 (day 24+, byte-identical to last week). ISS-016 candidate filing 2026-05-07.",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tests_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tests_heading",
+        "tests_stat",
+        "execsync_stat"
+      ]
+    },
+    "tests_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Test Coverage",
+        "level": "h3"
+      }
+    },
+    "tests_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Dashboard tests",
+        "value": "0"
+      }
+    },
+    "execsync_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "API routes using execSync",
+        "value": "9/19"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "size_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "size_heading",
+        "large_file_stat"
+      ]
+    },
+    "size_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Code Size",
+        "level": "h3"
+      }
+    },
+    "large_file_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Large files (>500 lines)",
+        "value": "1",
+        "delta": "a2a-server/src/index.ts (578 lines)"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "todos_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "todos_heading",
+        "todos_stat"
+      ]
+    },
+    "todos_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Outstanding Items",
+        "level": "h3"
+      }
+    },
+    "todos_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Real TODOs",
+        "value": "1",
+        "delta": "workflow-security-audit:36 (3 days)"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr_heading",
+        "pr_link"
+      ]
+    },
+    "pr_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pull Requests",
+        "level": "h3"
+      }
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #149: smithery-manifest",
+        "href": "https://github.com/aaronjmars/aeon/pull/149",
+        "source": "clean"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_notify": {
+      "type": "Alert",
+      "props": {
+        "title": "Missing dependency: ./notify script",
+        "message": "./notify script absent at upstream root despite 5+ skill refs",
+        "type": "warning"
+      }
+    }
+  }
+}
