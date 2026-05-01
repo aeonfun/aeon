@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-01T00:00:00Z",
+    "generated": "2026-05-01T15:30:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 95,
+    "total": 96,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -802,6 +802,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon self-improve"
+        },
+        {
+            "slug": "show-hn-draft",
+            "name": "Show HN Draft",
+            "description": "Draft a Show HN post + r/MachineLearning + r/selfhosted variants from live repo state — ready for the operator to paste at launch time",
+            "category": "productivity",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-01",
+            "install": "./add-skill aaronjmars/aeon show-hn-draft"
         },
         {
             "slug": "skill-evals",
