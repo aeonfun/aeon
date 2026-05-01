@@ -1,0 +1,420 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.aaronjmars/aeon-mcp",
+  "title": "Aeon",
+  "description": "The most autonomous agent framework — give it a direction and it leverages 95 skills like deep research, PR reviews, market monitoring, and Vercel deploys.",
+  "version": "1.0.0",
+  "websiteUrl": "https://github.com/aaronjmars/aeon",
+  "repository": {
+    "url": "https://github.com/aaronjmars/aeon",
+    "source": "github",
+    "subfolder": "mcp-server"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "aeon-mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": []
+    }
+  ],
+  "_meta": {
+    "io.github.aaronjmars/aeon": {
+      "tools": [
+        {
+          "name": "aeon-action-converter",
+          "description": "[Aeon · Productivity] 5 concrete real-life actions for today based on recent signals and memory (cron: 0 18 * * *)"
+        },
+        {
+          "name": "aeon-agent-buzz",
+          "description": "[Aeon · Social] Top 10 tweets by influence mentioning AI agents (cron: 30 17 * * *)"
+        },
+        {
+          "name": "aeon-article",
+          "description": "[Aeon · Research] Research trending topics and write a publication-ready article (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-auto-merge",
+          "description": "[Aeon · Dev] Automatically merge open PRs that have passing CI, no blocking reviews, and no conflicts (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-auto-workflow",
+          "description": "[Aeon · Dev] Analyze a URL and generate a tailored aeon.yml schedule with skill suggestions (on-demand)"
+        },
+        {
+          "name": "aeon-autoresearch",
+          "description": "[Aeon · Dev] Evolve a skill by generating variations, evaluating them, and updating the best version (on-demand)"
+        },
+        {
+          "name": "aeon-changelog",
+          "description": "[Aeon · Dev] Generate a changelog from recent commits across watched repos (cron: 0 16 * * *)"
+        },
+        {
+          "name": "aeon-channel-recap",
+          "description": "[Aeon · Research] Weekly recap article from a public Telegram channel — expand on the best posts (cron: 0 17 * * 0)"
+        },
+        {
+          "name": "aeon-code-health",
+          "description": "[Aeon · Dev] Weekly report on TODOs, dead code, and test coverage gaps (cron: 0 16 * * *)"
+        },
+        {
+          "name": "aeon-cost-report",
+          "description": "[Aeon · Productivity] Weekly API cost report — reads token usage CSV, computes dollar costs per skill and model, reports trends (cron: 0 7 * * 1)"
+        },
+        {
+          "name": "aeon-create-skill",
+          "description": "[Aeon · Dev] Generate a complete new skill from a one-line prompt (on-demand)"
+        },
+        {
+          "name": "aeon-daily-routine",
+          "description": "[Aeon · Productivity] Morning briefing combining token movers, tweet roundup, paper pick, GitHub issues, and HN digest (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-deal-flow",
+          "description": "[Aeon · Productivity] Weekly funding round tracker across configurable verticals (cron: 0 14 * * 1)"
+        },
+        {
+          "name": "aeon-deep-research",
+          "description": "[Aeon · Research] Exhaustive multi-source synthesis on any topic using full-context ingestion — far beyond a digest (on-demand)"
+        },
+        {
+          "name": "aeon-defi-monitor",
+          "description": "[Aeon · Crypto] Check pool health, positions, and yield rates for tracked protocols (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-defi-overview",
+          "description": "[Aeon · Crypto] Daily overview of DeFi activity from DeFiLlama — TVL changes, top chains, top protocols (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-deploy-prototype",
+          "description": "[Aeon · Dev] Generate a small app or tool and deploy it live to Vercel via API (on-demand)"
+        },
+        {
+          "name": "aeon-digest",
+          "description": "[Aeon · Research] Generate and send a daily digest on a configurable topic (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-distribute-tokens",
+          "description": "[Aeon · Crypto] Send tokens to a list of contributors via Bankr Agent API (supports Twitter handles and EVM addresses) (on-demand)"
+        },
+        {
+          "name": "aeon-evening-recap",
+          "description": "[Aeon · Productivity] End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up (cron: 0 21 * * *)"
+        },
+        {
+          "name": "aeon-external-feature",
+          "description": "[Aeon · Dev] Proactively enhance watched repos — fix issues, add features, improve code (cron: 30 16 * * *)"
+        },
+        {
+          "name": "aeon-farcaster-digest",
+          "description": "[Aeon · Social] Trending and relevant Farcaster casts filtered by crypto, prediction markets, and coordination topics (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-fetch-tweets",
+          "description": "[Aeon · Research] Search X/Twitter for tweets by keyword, username, or both (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-fleet-control",
+          "description": "[Aeon · Dev] Monitor managed Aeon instances — check health, dispatch skills, aggregate status (cron: 0 9,15 * * *)"
+        },
+        {
+          "name": "aeon-fork-fleet",
+          "description": "[Aeon · Dev] Inventory active Aeon forks, detect diverged work, surface upstream contribution candidates (cron: 0 10 * * 1)"
+        },
+        {
+          "name": "aeon-github-issues",
+          "description": "[Aeon · Dev] Check all your repos for new open issues in the last 24 hours (cron: 0 9 * * *)"
+        },
+        {
+          "name": "aeon-github-monitor",
+          "description": "[Aeon · Dev] Watch repos for stale PRs, new issues, and new releases (cron: 0 9 * * *)"
+        },
+        {
+          "name": "aeon-github-releases",
+          "description": "[Aeon · Dev] Track new releases from key AI, crypto, and infra repos (cron: 30 9 * * *)"
+        },
+        {
+          "name": "aeon-github-trending",
+          "description": "[Aeon · Dev] Top 10 trending repos on GitHub right now (cron: 0 9 * * *)"
+        },
+        {
+          "name": "aeon-goal-tracker",
+          "description": "[Aeon · Productivity] Compare current progress against goals stored in MEMORY.md (cron: 0 18 * * *)"
+        },
+        {
+          "name": "aeon-hacker-news-digest",
+          "description": "[Aeon · Research] Top HN stories filtered by keywords relevant to your interests (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-heartbeat",
+          "description": "[Aeon · Productivity] Proactive ambient check — surface anything worth attention (cron: 0 8,14,20 * * *)"
+        },
+        {
+          "name": "aeon-idea-capture",
+          "description": "[Aeon · Productivity] Quick note capture triggered via Telegram — stores to memory (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-issue-triage",
+          "description": "[Aeon · Dev] Label and prioritize new GitHub issues on watched repos (cron: 0 9 * * *)"
+        },
+        {
+          "name": "aeon-last30",
+          "description": "[Aeon · Research] Cross-platform social research — what people are actually saying about a topic across Reddit, X, HN, Polymarket, and the web over the last 30 days (on-demand)"
+        },
+        {
+          "name": "aeon-list-digest",
+          "description": "[Aeon · Research] Top tweets from tracked X lists in the past 24 hours (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-market-context-refresh",
+          "description": "[Aeon · Crypto] Fetch live crypto macro data and update memory/topics/market-context.md (cron: 0 13 * * *)"
+        },
+        {
+          "name": "aeon-monitor-kalshi",
+          "description": "[Aeon · Crypto] Monitor specific Kalshi prediction markets for 24h price moves, volume changes, and top events (cron: 0 13 * * *)"
+        },
+        {
+          "name": "aeon-monitor-polymarket",
+          "description": "[Aeon · Crypto] Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments (cron: 30 12 * * *)"
+        },
+        {
+          "name": "aeon-monitor-runners",
+          "description": "[Aeon · Crypto] Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-morning-brief",
+          "description": "[Aeon · Productivity] Aggregated daily briefing — digests, priorities, and what's ahead (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-narrative-tracker",
+          "description": "[Aeon · Crypto] Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak (cron: 30 13 * * *)"
+        },
+        {
+          "name": "aeon-on-chain-monitor",
+          "description": "[Aeon · Crypto] Monitor blockchain addresses and contracts for notable activity (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-paper-digest",
+          "description": "[Aeon · Research] Find and summarize new papers matching tracked research interests (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-paper-pick",
+          "description": "[Aeon · Research] Find the one paper you should read today from Hugging Face Papers (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-polymarket-comments",
+          "description": "[Aeon · Crypto] Top trending Polymarket markets and the most interesting comments from them (cron: 0 13 * * *)"
+        },
+        {
+          "name": "aeon-pr-review",
+          "description": "[Aeon · Dev] Auto-review open PRs on watched repos and post summary comments (cron: 0 9 * * *)"
+        },
+        {
+          "name": "aeon-pr-triage",
+          "description": "[Aeon · Dev] First-touch triage for external pull requests — verdict + label + welcoming comment within minutes of open (cron: 30 9 * * *)"
+        },
+        {
+          "name": "aeon-project-lens",
+          "description": "[Aeon · Dev] Write an article about the project through a surprising lens — connecting it to current events, trends, philosophy, or comparable projects (cron: 30 15 * * 1,3,5)"
+        },
+        {
+          "name": "aeon-push-recap",
+          "description": "[Aeon · Dev] Daily deep-dive recap of all pushes — reads diffs, explains what changed and why (cron: 0 15 * * *)"
+        },
+        {
+          "name": "aeon-reddit-digest",
+          "description": "[Aeon · Research] Fetch and summarize top Reddit posts from tracked subreddits (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-reflect",
+          "description": "[Aeon · Productivity] Review recent activity, consolidate memory, and prune stale entries (cron: 0 18 * * *)"
+        },
+        {
+          "name": "aeon-refresh-x",
+          "description": "[Aeon · Social] Fetch a tracked X/Twitter account's latest tweets and save the gist to memory (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-reg-monitor",
+          "description": "[Aeon · Productivity] Track legislation, regulatory actions, and legal developments affecting prediction markets, crypto, and AI agents (cron: 0 14 * * 3)"
+        },
+        {
+          "name": "aeon-remix-tweets",
+          "description": "[Aeon · Social] Fetch 10 random past tweets from your account and craft 10 new rephrased versions in your voice (cron: 30 17 * * *)"
+        },
+        {
+          "name": "aeon-reply-maker",
+          "description": "[Aeon · Social] Generate two reply options for 5 tweets from tracked X accounts or topics (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-repo-actions",
+          "description": "[Aeon · Dev] Generate actionable ideas to improve the repo — features, integrations, community, and growth (cron: 0 15 * * *)"
+        },
+        {
+          "name": "aeon-repo-article",
+          "description": "[Aeon · Dev] Write an article about the current state, progress, and vision of the watched repo (cron: 0 15 * * *)"
+        },
+        {
+          "name": "aeon-repo-pulse",
+          "description": "[Aeon · Dev] Daily report on new stars, forks, and traffic for watched repos (cron: 0 15 * * *)"
+        },
+        {
+          "name": "aeon-repo-scanner",
+          "description": "[Aeon · Dev] Catalog all GitHub repos for a user or org (cron: 0 15 * * 0)"
+        },
+        {
+          "name": "aeon-research-brief",
+          "description": "[Aeon · Research] Deep dive on a topic combining web search, papers, and synthesis (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-rss-digest",
+          "description": "[Aeon · Research] Fetch, summarize, and deliver RSS feed highlights (cron: 0 7 * * *)"
+        },
+        {
+          "name": "aeon-rss-feed",
+          "description": "[Aeon · Productivity] Generate an Atom XML feed from articles in the repo (cron: 30 17 * * *)"
+        },
+        {
+          "name": "aeon-search-skill",
+          "description": "[Aeon · Dev] Search the open agent skills ecosystem for useful skills to install (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-security-digest",
+          "description": "[Aeon · Research] Monitor recent security advisories from the GitHub Advisory Database for tracked ecosystems (cron: 0 14 * * *)"
+        },
+        {
+          "name": "aeon-self-improve",
+          "description": "[Aeon · Productivity] Improve the agent itself — better skills, prompts, workflows, and config based on recent performance (cron: 0 18 1/2 * *)"
+        },
+        {
+          "name": "aeon-skill-evals",
+          "description": "[Aeon · Productivity] Evaluate skill output quality against assertion manifests — detects regressions before users notice (cron: 0 6 * * 0)"
+        },
+        {
+          "name": "aeon-skill-health",
+          "description": "[Aeon · Productivity] Audit skill quality metrics, detect API degradation, and report health trends (cron: 0 18 * * *)"
+        },
+        {
+          "name": "aeon-skill-leaderboard",
+          "description": "[Aeon · Productivity] Weekly ranking of which skills are most popular across all active forks (cron: 0 17 * * 0)"
+        },
+        {
+          "name": "aeon-skill-repair",
+          "description": "[Aeon · Productivity] Diagnose and fix failing or degraded skills automatically (on-demand)"
+        },
+        {
+          "name": "aeon-skill-security-scan",
+          "description": "[Aeon · Dev] Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run (cron: 0 16 * * 1)"
+        },
+        {
+          "name": "aeon-skill-update-check",
+          "description": "[Aeon · Productivity] Check imported skills for upstream changes and security regressions since the version in skills.lock (cron: 0 19 * * 0)"
+        },
+        {
+          "name": "aeon-smithery-manifest",
+          "description": "[Aeon · Productivity] Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server (cron: 0 6 1/7 * *)"
+        },
+        {
+          "name": "aeon-spawn-instance",
+          "description": "[Aeon · Dev] Clone this Aeon agent into a new GitHub repo — fork, configure skills, register in fleet (on-demand)"
+        },
+        {
+          "name": "aeon-star-milestone",
+          "description": "[Aeon · Dev] Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a highlight reel of recent work (cron: 15 15 * * *)"
+        },
+        {
+          "name": "aeon-startup-idea",
+          "description": "[Aeon · Productivity] 2 startup ideas tailored to the user's skills, interests, and context (cron: 0 18 * * *)"
+        },
+        {
+          "name": "aeon-technical-explainer",
+          "description": "[Aeon · Research] Generate a visual technical explanation of a recent topic using Replicate for the hero image (cron: 30 14 * * *)"
+        },
+        {
+          "name": "aeon-telegram-digest",
+          "description": "[Aeon · Research] Digest of recent posts from tracked public Telegram channels (cron: 30 7 * * *)"
+        },
+        {
+          "name": "aeon-thread-formatter",
+          "description": "[Aeon · Social] Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste (cron: 30 17 * * *)"
+        },
+        {
+          "name": "aeon-token-alert",
+          "description": "[Aeon · Crypto] Notify on price or volume anomalies for tracked tokens (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-token-movers",
+          "description": "[Aeon · Crypto] Top movers, losers, and trending coins from CoinGecko (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-token-pick",
+          "description": "[Aeon · Crypto] One token recommendation and one prediction market pick based on live data (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-token-report",
+          "description": "[Aeon · Crypto] Daily price performance report for the project's token — price, volume, liquidity, and context (cron: 30 12 * * *)"
+        },
+        {
+          "name": "aeon-tool-builder",
+          "description": "[Aeon · Productivity] Build automation scripts from action-converter suggestions and recurring manual tasks (on-demand)"
+        },
+        {
+          "name": "aeon-treasury-info",
+          "description": "[Aeon · Crypto] Show holdings overview for a wallet using Bankr API with block explorer fallback (cron: 0 12 * * *)"
+        },
+        {
+          "name": "aeon-tweet-roundup",
+          "description": "[Aeon · Social] Gist of the latest tweets on configurable topics (cron: 0 17 * * *)"
+        },
+        {
+          "name": "aeon-unlock-monitor",
+          "description": "[Aeon · Crypto] Weekly token unlock and vesting tracker — flag major supply events before they move markets (cron: 0 10 * * 1)"
+        },
+        {
+          "name": "aeon-update-gallery",
+          "description": "[Aeon · Productivity] Sync articles, activity logs, and memory to the GitHub Pages site (cron: 0 18 * * 0)"
+        },
+        {
+          "name": "aeon-vercel-projects",
+          "description": "[Aeon · Dev] Catalog all Vercel projects with deployment status, domains, and framework info (cron: 0 18 * * 0)"
+        },
+        {
+          "name": "aeon-vibecoding-digest",
+          "description": "[Aeon · Research] Monitor r/vibecoding for trending posts, interesting discussions, and notable projects shipped (cron: 30 17 * * *)"
+        },
+        {
+          "name": "aeon-vuln-scanner",
+          "description": "[Aeon · Dev] Fork trending repos, audit for security vulnerabilities, and PR fixes (cron: 0 16 * * 6)"
+        },
+        {
+          "name": "aeon-weekly-review",
+          "description": "[Aeon · Productivity] Synthesize the week's logs into a structured retrospective (cron: 0 19 * * 1)"
+        },
+        {
+          "name": "aeon-weekly-shiplog",
+          "description": "[Aeon · Productivity] Weekly narrative of everything shipped — features, fixes, and momentum, written as a compelling update (cron: 0 9 * * 1)"
+        },
+        {
+          "name": "aeon-workflow-security-audit",
+          "description": "[Aeon · Dev] Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. (cron: 0 16 * * 0)"
+        },
+        {
+          "name": "aeon-write-tweet",
+          "description": "[Aeon · Social] Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs (cron: 0 17 * * *)"
+        }
+      ],
+      "totalSkills": 95,
+      "categories": {
+        "crypto": 16,
+        "dev": 30,
+        "productivity": 24,
+        "research": 17,
+        "social": 8
+      },
+      "generated": "2026-05-01"
+    }
+  }
+}

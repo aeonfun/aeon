@@ -1,0 +1,281 @@
+---
+name: smithery-manifest
+description: Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server — turns the 6-week-stuck "submit Aeon to Smithery" idea into a copy-paste form
+var: ""
+tags: [meta]
+---
+
+> **${var}** — Optional. Set to `--dry-run` to regenerate the manifests but skip the notification (useful for checking diffs locally). Default: regenerate + notify if anything changed.
+
+Today is ${today}. Generate the submission artifacts that let an operator (or the maintainer) list `aeon-mcp` on Smithery.ai and the Model Context Protocol Registry without writing the files by hand. **The point of this skill is to remove every text-authoring obstacle between "Aeon has an MCP server" and "Aeon is discoverable from inside Claude Desktop's Smithery picker." The agent writes the files; a human pastes them into the form.**
+
+## Why this skill exists
+
+`mcp-server/` has been live since the integration-examples ship (Apr 21) but Aeon is still not listed on Smithery or the MCP Registry. Every day without those listings, inbound discovery from the growing MCP ecosystem misses Aeon entirely. The actual blocker is documented as Apr-22 repo-actions idea #1 (highest-priority growth unbuilt for 6 weeks): "submission requires a correctly-formatted manifest and a pre-filled submission document — none of which has been written." This skill writes both.
+
+## Steps
+
+### 1. Read the source-of-truth inputs
+
+```
+skills.json          — canonical skill catalog (slug, name, description, category, schedule, var)
+aeon.yml             — `enabled: true|false` flags per skill (skills surfaced as MCP tools follow `mcp-server/src/index.ts` which exposes ALL skills, not just enabled ones — match that behavior)
+mcp-server/package.json — name, version
+README.md            — first paragraph for the description, repo URL
+```
+
+If `skills.json` is missing or unparseable, log `SMITHERY_MANIFEST_NO_INPUT: skills.json missing or invalid` and stop with no notification.
+
+### 2. Generate `docs/smithery-manifest.json`
+
+Format: a server.json document compatible with the [MCP Registry schema](https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json) — Smithery accepts the same shape and supplements it with its own deployment hints (we add those in step 3 via `smithery.yaml`).
+
+```json
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.aaronjmars/aeon-mcp",
+  "title": "Aeon",
+  "description": "<one-sentence pull from README opening; <=200 chars>",
+  "version": "<from mcp-server/package.json>",
+  "websiteUrl": "https://github.com/aaronjmars/aeon",
+  "repository": {
+    "url": "https://github.com/aaronjmars/aeon",
+    "source": "github",
+    "subfolder": "mcp-server"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "aeon-mcp",
+      "version": "<from mcp-server/package.json>",
+      "transport": { "type": "stdio" },
+      "environmentVariables": []
+    }
+  ],
+  "_meta": {
+    "io.github.aaronjmars/aeon": {
+      "tools": [
+        { "name": "aeon-<slug>", "description": "[Aeon · <Category>] <skill description> (cron: <schedule>)" }
+      ],
+      "totalSkills": <count>,
+      "categories": { "research": <n>, "dev": <n>, "crypto": <n>, "social": <n>, "productivity": <n> },
+      "generated": "${today}"
+    }
+  }
+}
+```
+
+Rules:
+
+- **`name`** uses reverse-DNS form per MCP Registry naming convention: `io.github.aaronjmars/aeon-mcp` (matches the `aaronjmars/aeon` GitHub identity).
+- **`title`** is fixed: `"Aeon"`.
+- **`description`** is the first sentence after the bold strapline in `README.md` ("The most autonomous agent framework. Give it a direction…"), trimmed to ≤200 chars. Strip any leading "**" markdown.
+- **`version`** is read from `mcp-server/package.json` `.version` field — never hard-coded here.
+- **`packages[0].identifier`** is the npm name (`mcp-server/package.json` `.name`). The aeon-mcp package is not yet published — flag that in step 5.
+- **`_meta` namespace** uses `io.github.aaronjmars/aeon` (per registry "publisher-provided" convention). Tool list mirrors `mcp-server/src/index.ts:buildTools()` — every skill in `skills.json`, named `aeon-<slug>`, description follows `[Aeon · <Category>] <description> (cron: <schedule>)` (or `(on-demand)` when schedule is `workflow_dispatch` or `reactive`).
+- Sort tools alphabetically by `name` so the diff between runs only changes when skills are actually added/removed/described.
+
+### 3. Generate `docs/smithery.yaml`
+
+This is the file Smithery scans at the repo root or in `docs/` to know how to start the server. Aeon's MCP server is stdio-based and requires no API key at runtime (it shells out to the local `claude` CLI which uses `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN` from the user's environment).
+
+```yaml
+# Smithery configuration — https://smithery.ai/docs/config#smitheryyaml
+# Auto-generated by skills/smithery-manifest. Do not edit by hand.
+
+startCommand:
+  type: stdio
+
+configSchema:
+  type: object
+  properties:
+    repoPath:
+      type: string
+      description: >
+        Absolute path to a local clone of github.com/aaronjmars/aeon.
+        The MCP server reads skills.json from this path and dispatches `claude -p` from it.
+      default: ""
+  required: []
+
+commandFunction:
+  |-
+    config => ({
+      command: 'node',
+      args: [(config.repoPath || '.') + '/mcp-server/dist/index.js'],
+      env: process.env
+    })
+
+exampleConfig:
+  repoPath: "/Users/you/code/aeon"
+```
+
+Rules:
+
+- `startCommand.type` is `stdio` — the aeon-mcp server uses `StdioServerTransport`.
+- `configSchema.required` stays empty: the server tolerates `repoPath=""` by walking `__dirname/../..` per `mcp-server/src/index.ts:30`.
+- `commandFunction` body is a string (YAML pipe scalar) — Smithery evals it server-side; do not introduce template literals or backticks that break YAML.
+- `env: process.env` is required so the spawned `claude` CLI inherits `ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN` from Claude Desktop's environment.
+
+### 4. Generate `docs/smithery-submission.md`
+
+The paste-ready document. Every field the operator will be asked to type into the Smithery (or MCP Registry) submission form lives here, in the order the form asks for it.
+
+```markdown
+# Aeon — Smithery / MCP Registry Submission
+*Auto-generated ${today} by `skills/smithery-manifest`. Re-run the skill to refresh — do not edit by hand.*
+
+## Submission targets
+
+| Registry | Form URL | Manifest file to point at |
+|----------|----------|---------------------------|
+| Smithery | https://smithery.ai/server/new | `docs/smithery.yaml` (this repo) |
+| MCP Registry | https://github.com/modelcontextprotocol/registry → submit a PR adding `servers/io.github.aaronjmars/aeon-mcp.json` | `docs/smithery-manifest.json` (this repo) |
+
+## Field values (copy/paste)
+
+- **Name:** `io.github.aaronjmars/aeon-mcp`
+- **Title:** Aeon
+- **Version:** <version>
+- **Repository URL:** https://github.com/aaronjmars/aeon
+- **Subfolder:** `mcp-server`
+- **Website URL:** https://github.com/aaronjmars/aeon
+- **Transport:** stdio
+- **Auth required:** no (reads operator's `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN` from env)
+- **Tags:** `agent`, `automation`, `github-actions`, `crypto`, `research`, `social`, `dev`
+
+## Description (short — for the listing card)
+
+<one-sentence README pull>
+
+## Description (long — for the listing body)
+
+Aeon is an autonomous agent framework that runs on GitHub Actions and exposes its <total-skill-count> skills as MCP tools so any Claude Desktop or Claude Code session can invoke them directly. Skills cover <top-3-category-counts>: research and content generation, repo intelligence and PR review, crypto and prediction-market monitoring, social media drafting, and self-managing meta-skills (heartbeat, self-improve, skill-health). Each MCP tool maps 1:1 to an Aeon skill — calling `aeon-deep-research` from Claude Desktop runs the same prompt that the daily cron runs. The server is stdio, requires no extra API keys, and reuses whichever Claude credential is already configured for the operator.
+
+## Tool catalog (<count> tools)
+
+<one row per skill, sorted alphabetically by tool name>
+
+| Tool | Category | Description |
+|------|----------|-------------|
+| `aeon-action-converter` | Productivity | 5 concrete real-life actions for today based on recent signals and memory |
+| ... | ... | ... |
+
+## Install instructions for end users
+
+```bash
+# 1. Clone Aeon
+git clone https://github.com/aaronjmars/aeon
+cd aeon/mcp-server && npm install && npm run build
+
+# 2. Add to Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json on macOS)
+{
+  "mcpServers": {
+    "aeon": {
+      "command": "node",
+      "args": ["/absolute/path/to/aeon/mcp-server/dist/index.js"]
+    }
+  }
+}
+```
+
+## Notes for the maintainer
+
+- The `aeon-mcp` npm package referenced by `packages[0].identifier` in `smithery-manifest.json` is **not yet published**. Either publish it (`cd mcp-server && npm publish --access public`) or remove the `packages` block before submitting to the MCP Registry. Smithery's URL-based listing works without the npm publish.
+- This document is regenerated by the `smithery-manifest` skill — re-run after every `skills.json` change to keep the tool catalog accurate.
+```
+
+Field rules:
+
+- `<one-sentence README pull>` — same string used for `description` in step 2.
+- `<total-skill-count>` — `len(skills.json["skills"])`.
+- `<top-3-category-counts>` — categories sorted by skill count descending, top 3, formatted as `"research (17), dev (29), crypto (16)"`.
+- The tool catalog table includes every skill from `skills.json`, sorted alphabetically by tool name. Use the same Category labels as `mcp-server/src/index.ts:categoryName()` (Research, Dev, Crypto, Social, Productivity).
+
+### 5. Diff against the prior generation
+
+Before notifying, compare the new files against what's already in `docs/`. The skill exists to keep these artifacts up to date — silent re-runs on stable input must not spam the operator.
+
+- If all three target files (`docs/smithery-manifest.json`, `docs/smithery.yaml`, `docs/smithery-submission.md`) are byte-identical to what's already on disk: log `SMITHERY_MANIFEST_NO_CHANGE`, skip the notification, and return.
+- If `${var}` contains `--dry-run`: write the files, log `SMITHERY_MANIFEST_DRY_RUN: <N> files changed`, skip the notification.
+- Otherwise: continue to step 6.
+
+### 6. Open a PR
+
+```bash
+cd $REPO_ROOT  # the watched repo, not this agent repo
+git checkout -b chore/refresh-smithery-manifest-${today}
+git add docs/smithery-manifest.json docs/smithery.yaml docs/smithery-submission.md
+git commit -m "docs(smithery): refresh manifest + submission doc
+
+Auto-generated by skills/smithery-manifest from skills.json + aeon.yml.
+Tools: ${count}. Latest skill catalog change pulled in this run."
+git push -u origin chore/refresh-smithery-manifest-${today}
+gh pr create -R aaronjmars/aeon \
+  --title "docs(smithery): refresh manifest + submission doc" \
+  --body "Refreshes the Smithery + MCP Registry submission artifacts so the published listing reflects the current skill catalog.
+
+## What changed
+- \`docs/smithery-manifest.json\` — server.json compatible with the MCP Registry schema; tool list is the full \`skills.json\` catalog (${count} tools).
+- \`docs/smithery.yaml\` — Smithery deployment config (stdio + commandFunction).
+- \`docs/smithery-submission.md\` — paste-ready submission body for both forms.
+
+## Why now
+Apr-22 repo-actions idea #1 (Smithery + MCP Registry submission) has been the highest-priority unbuilt growth play for six weeks. The blocker was always 'manifest not written' — these three files remove that.
+
+## Next step (manual, one-shot)
+Open https://smithery.ai/server/new and submit \`docs/smithery.yaml\`. For the MCP Registry, open a PR at modelcontextprotocol/registry adding \`servers/io.github.aaronjmars/aeon-mcp.json\` (use the contents of \`docs/smithery-manifest.json\`).
+
+---
+*Auto-refreshed by Aeon's \`smithery-manifest\` skill.*"
+```
+
+If `gh pr create` fails because an open PR already exists for the same branch / day, do not retry — the prior PR already covers this generation. Log `SMITHERY_MANIFEST_PR_EXISTS` and notify with the existing PR URL (resolve via `gh pr list -R aaronjmars/aeon --search "smithery-manifest" --state open --json url --jq '.[0].url'`).
+
+### 7. Notify
+
+Send via `./notify` — one paragraph, links to both the PR and the submission doc:
+
+```
+*Smithery manifest refreshed — ${today}*
+
+${count} tools, ${changed_files} of 3 files changed since last run.
+
+The submission docs for Smithery.ai and the MCP Registry are now up to date with the current skill catalog. Apr-22 #1 (highest-priority growth unbuilt for 6 weeks) is now a copy-paste task: open https://smithery.ai/server/new and paste \`docs/smithery.yaml\`; for the MCP Registry, the server.json sits at \`docs/smithery-manifest.json\`.
+
+PR: ${pr_url}
+Submission doc: https://github.com/aaronjmars/aeon/blob/main/docs/smithery-submission.md
+```
+
+If running in `--dry-run` mode skip the `./notify` call entirely (the log entry is enough).
+
+### 8. Log to `memory/logs/${today}.md`
+
+```
+## Smithery Manifest Refresh
+- **Skill**: smithery-manifest
+- **Tools generated**: ${count}
+- **Files changed**: ${changed_files} of 3 (manifest.json, smithery.yaml, submission.md)
+- **PR**: ${pr_url|"none — no changes"}
+- **Status**: SMITHERY_MANIFEST_OK | SMITHERY_MANIFEST_NO_CHANGE | SMITHERY_MANIFEST_DRY_RUN | SMITHERY_MANIFEST_PR_EXISTS | SMITHERY_MANIFEST_NO_INPUT
+```
+
+## Edge cases
+
+- **`mcp-server/package.json` missing `version`** — fall back to `"0.0.0"` and add a NOTE in the submission doc: `"version: 0.0.0 (mcp-server/package.json missing version field — set it before submitting)"`. Do not abort.
+- **Skill in `skills.json` with empty description** — emit the tool entry with description `"[Aeon · <Category>] (no description in skills.json)"`. The catalog stays comprehensive even when a single skill is under-documented.
+- **Schedule is `workflow_dispatch` or `reactive`** — render as `(on-demand)` in tool descriptions, not the raw cron string.
+- **Categories not present in `skills.json["categories"]`** — fall back to title-case of the slug. Do not skip the tool.
+- **Two consecutive runs same day** — second run will hit `SMITHERY_MANIFEST_NO_CHANGE` and silently no-op (idempotent). The append-only log entry still records the run.
+
+## Sandbox note
+
+Pure local file I/O. Reads `skills.json`, `aeon.yml`, `mcp-server/package.json`, and `README.md`; writes three files under `docs/`; runs `gh pr create` (uses `gh`'s built-in auth). No `curl`, no env-var-in-headers expansion, no prefetch or postprocess scripts needed.
+
+## Constraints
+
+- **No invented tools.** Every entry in the tool catalog must correspond to an actual `slug` in `skills.json`. Do not add hypothetical or planned skills.
+- **No invented version strings.** `version` is read live from `mcp-server/package.json` — never bumped or fabricated by this skill.
+- **Idempotent.** Running multiple times with no changes to `skills.json` / `aeon.yml` / `mcp-server/package.json` / `README.md` produces identical output and triggers no PR and no notification.
+- **One PR per refresh.** Even if both manifest and submission doc change, both land in the same PR.
+- **Notify only on real change.** A no-op refresh is a successful run, not a notification-worthy event.

@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-04-18T00:00:00Z",
+    "generated": "2026-05-01T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 93,
+    "total": 95,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -874,6 +874,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon skill-update-check"
+        },
+        {
+            "slug": "smithery-manifest",
+            "name": "Smithery Manifest",
+            "description": "Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server",
+            "category": "productivity",
+            "schedule": "0 6 1/7 * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-01",
+            "install": "./add-skill aaronjmars/aeon smithery-manifest"
         },
         {
             "slug": "spawn-instance",
