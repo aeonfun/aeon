@@ -1,0 +1,927 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-01"
+      },
+      "children": [
+        "headline",
+        "sep1",
+        "winners_section",
+        "sep2",
+        "losers_section",
+        "sep3",
+        "roundup_section",
+        "sep4",
+        "paper_section",
+        "sep5",
+        "github_section",
+        "sep6",
+        "hn_section"
+      ]
+    },
+    "headline": {
+      "type": "Text",
+      "props": {
+        "text": "BTC bounce to $77k +2% off $75.5k overnight; Senate unanimous PM trading ban; Wasabi Protocol $5M exploit; XO Market $6M seed.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "winners_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "winners_heading",
+        "winners_list"
+      ]
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h, 04-30 close)",
+        "level": "h3"
+      }
+    },
+    "winners_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "winner_1",
+        "winner_2",
+        "winner_3",
+        "winner_4",
+        "winner_5",
+        "winner_6",
+        "winner_7",
+        "winner_8",
+        "winner_9",
+        "winner_10"
+      ]
+    },
+    "winner_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w1_stat",
+        "w1_text"
+      ]
+    },
+    "w1_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "SKYAI",
+        "value": "$0.318",
+        "delta": "+17.9%",
+        "trend": "up"
+      }
+    },
+    "w1_text": {
+      "type": "Text",
+      "props": {
+        "text": "7d +75.7% • $124M",
+        "variant": "caption"
+      }
+    },
+    "winner_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w2_stat",
+        "w2_text"
+      ]
+    },
+    "w2_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ASTEROID",
+        "value": "$0.000326",
+        "delta": "+9.2%",
+        "trend": "up"
+      }
+    },
+    "w2_text": {
+      "type": "Text",
+      "props": {
+        "text": "$26M",
+        "variant": "caption"
+      }
+    },
+    "winner_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w3_stat",
+        "w3_text"
+      ]
+    },
+    "w3_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "9BIT",
+        "value": "$0.0218",
+        "delta": "+5.7%",
+        "trend": "up"
+      }
+    },
+    "w3_text": {
+      "type": "Text",
+      "props": {
+        "text": "$4M",
+        "variant": "caption"
+      }
+    },
+    "winner_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w4_stat",
+        "w4_text"
+      ]
+    },
+    "w4_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "APE",
+        "value": "$0.155",
+        "delta": "+4.9%",
+        "trend": "up"
+      }
+    },
+    "w4_text": {
+      "type": "Text",
+      "props": {
+        "text": "7d +54.9% • $125M",
+        "variant": "caption"
+      }
+    },
+    "winner_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w5_stat",
+        "w5_text"
+      ]
+    },
+    "w5_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "RIVER",
+        "value": "$6.52",
+        "delta": "+4.8%",
+        "trend": "up"
+      }
+    },
+    "w5_text": {
+      "type": "Text",
+      "props": {
+        "text": "$15M",
+        "variant": "caption"
+      }
+    },
+    "winner_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w6_stat",
+        "w6_text"
+      ]
+    },
+    "w6_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "WBT",
+        "value": "$57.1",
+        "delta": "+4.7%",
+        "trend": "up"
+      }
+    },
+    "w6_text": {
+      "type": "Text",
+      "props": {
+        "text": "$130M",
+        "variant": "caption"
+      }
+    },
+    "winner_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w7_stat",
+        "w7_text"
+      ]
+    },
+    "w7_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "POL",
+        "value": "$0.095",
+        "delta": "+4.0%",
+        "trend": "up"
+      }
+    },
+    "w7_text": {
+      "type": "Text",
+      "props": {
+        "text": "$72M",
+        "variant": "caption"
+      }
+    },
+    "winner_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w8_stat",
+        "w8_text"
+      ]
+    },
+    "w8_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTSE",
+        "value": "$1.11",
+        "delta": "+3.5%",
+        "trend": "up"
+      }
+    },
+    "w8_text": {
+      "type": "Text",
+      "props": {
+        "text": "$3M",
+        "variant": "caption"
+      }
+    },
+    "winner_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w9_stat",
+        "w9_text"
+      ]
+    },
+    "w9_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "JTO",
+        "value": "$0.353",
+        "delta": "+3.3%",
+        "trend": "up"
+      }
+    },
+    "w9_text": {
+      "type": "Text",
+      "props": {
+        "text": "$10M",
+        "variant": "caption"
+      }
+    },
+    "winner_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "w10_stat",
+        "w10_text"
+      ]
+    },
+    "w10_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "LUNC",
+        "value": "$0.000072",
+        "delta": "+3.0%",
+        "trend": "up"
+      }
+    },
+    "w10_text": {
+      "type": "Text",
+      "props": {
+        "text": "7d +62.7% • $92M",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "losers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "losers_heading",
+        "losers_list"
+      ]
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h3"
+      }
+    },
+    "losers_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "loser_1",
+        "loser_2",
+        "loser_3",
+        "loser_4",
+        "loser_5",
+        "loser_6",
+        "loser_7",
+        "loser_8",
+        "loser_9",
+        "loser_10"
+      ]
+    },
+    "loser_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l1_stat",
+        "l1_badge",
+        "l1_text"
+      ]
+    },
+    "l1_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BSB",
+        "value": "$0.575",
+        "delta": "-26.3%",
+        "trend": "down"
+      }
+    },
+    "l1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "CAPITULATION",
+        "variant": "destructive"
+      }
+    },
+    "l1_text": {
+      "type": "Text",
+      "props": {
+        "text": "$128M",
+        "variant": "caption"
+      }
+    },
+    "loser_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l2_stat",
+        "l2_badge",
+        "l2_text"
+      ]
+    },
+    "l2_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "MEGA",
+        "value": "$0.177",
+        "delta": "-21.5%",
+        "trend": "down"
+      }
+    },
+    "l2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "TGE-day collapse",
+        "variant": "destructive"
+      }
+    },
+    "l2_text": {
+      "type": "Text",
+      "props": {
+        "text": "$99M",
+        "variant": "caption"
+      }
+    },
+    "loser_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l3_stat",
+        "l3_text"
+      ]
+    },
+    "l3_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "WLFI",
+        "value": "$0.060",
+        "delta": "-16.1%",
+        "trend": "down"
+      }
+    },
+    "l3_text": {
+      "type": "Text",
+      "props": {
+        "text": "$131M",
+        "variant": "caption"
+      }
+    },
+    "loser_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l4_stat",
+        "l4_text"
+      ]
+    },
+    "l4_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "GENIUS",
+        "value": "$0.437",
+        "delta": "-14.6%",
+        "trend": "down"
+      }
+    },
+    "l4_text": {
+      "type": "Text",
+      "props": {
+        "text": "$22M",
+        "variant": "caption"
+      }
+    },
+    "loser_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l5_stat",
+        "l5_text"
+      ]
+    },
+    "l5_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "RAVE",
+        "value": "$0.740",
+        "delta": "-8.9%",
+        "trend": "down"
+      }
+    },
+    "l5_text": {
+      "type": "Text",
+      "props": {
+        "text": "$30M",
+        "variant": "caption"
+      }
+    },
+    "loser_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l6_stat",
+        "l6_text"
+      ]
+    },
+    "l6_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "S",
+        "value": "$0.043",
+        "delta": "-8.9%",
+        "trend": "down"
+      }
+    },
+    "l6_text": {
+      "type": "Text",
+      "props": {
+        "text": "$23M",
+        "variant": "caption"
+      }
+    },
+    "loser_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l7_stat",
+        "l7_text"
+      ]
+    },
+    "l7_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "CHZ",
+        "value": "$0.041",
+        "delta": "-8.2%",
+        "trend": "down"
+      }
+    },
+    "l7_text": {
+      "type": "Text",
+      "props": {
+        "text": "$114M",
+        "variant": "caption"
+      }
+    },
+    "loser_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l8_stat",
+        "l8_text"
+      ]
+    },
+    "l8_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "PI",
+        "value": "$0.174",
+        "delta": "-7.9%",
+        "trend": "down"
+      }
+    },
+    "l8_text": {
+      "type": "Text",
+      "props": {
+        "text": "$33M",
+        "variant": "caption"
+      }
+    },
+    "loser_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l9_stat",
+        "l9_text"
+      ]
+    },
+    "l9_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "SKY",
+        "value": "$0.079",
+        "delta": "-7.6%",
+        "trend": "down"
+      }
+    },
+    "l9_text": {
+      "type": "Text",
+      "props": {
+        "text": "$14M",
+        "variant": "caption"
+      }
+    },
+    "loser_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "l10_stat",
+        "l10_text"
+      ]
+    },
+    "l10_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "H",
+        "value": "$0.168",
+        "delta": "-7.5%",
+        "trend": "down"
+      }
+    },
+    "l10_text": {
+      "type": "Text",
+      "props": {
+        "text": "$48M",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "roundup_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "roundup_heading",
+        "roundup_meta",
+        "roundup_crypto",
+        "roundup_ai",
+        "roundup_pm"
+      ]
+    },
+    "roundup_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Roundup",
+        "level": "h3"
+      }
+    },
+    "roundup_meta": {
+      "type": "Text",
+      "props": {
+        "text": "path: WebSearch — XAI key/cache absent, 7th day",
+        "variant": "caption"
+      }
+    },
+    "roundup_crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_crypto_head",
+        "roundup_crypto_text"
+      ]
+    },
+    "roundup_crypto_head": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto",
+        "level": "h4"
+      }
+    },
+    "roundup_crypto_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC reclaims $77k after $75.5k overnight wick; Wasabi Protocol drained ~$5M via deployer-key compromise across ETH/Base/Berachain/Blast; DPRK actors now 76% of 2026 crypto thefts ($577M YTD).",
+        "variant": "body"
+      }
+    },
+    "roundup_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_ai_head",
+        "roundup_ai_text"
+      ]
+    },
+    "roundup_ai_head": {
+      "type": "Heading",
+      "props": {
+        "text": "AI",
+        "level": "h4"
+      }
+    },
+    "roundup_ai_text": {
+      "type": "Text",
+      "props": {
+        "text": "Snowflake/OpenAI $200M agentic enterprise deal; OpenClaw 100k stars, creator → OpenAI; GitHub Copilot to usage-based billing June 1; Bedrock now serves GPT-5.4/5.5 preview.",
+        "variant": "body"
+      }
+    },
+    "roundup_pm": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_pm_head",
+        "roundup_pm_text"
+      ]
+    },
+    "roundup_pm_head": {
+      "type": "Heading",
+      "props": {
+        "text": "Prediction markets",
+        "level": "h4"
+      }
+    },
+    "roundup_pm_text": {
+      "type": "Text",
+      "props": {
+        "text": "Senate unanimously bans members+staff from Polymarket/Kalshi (Mansour applauds); Merkley-led Dems push CFTC for industry rule on insider/election/war contracts; Gemini scores derivatives license, eyes Kalshi challenge; XO Market $6M seed (20VC, Coinbase Ventures).",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "paper_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper_heading",
+        "paper_link",
+        "paper_attribution"
+      ]
+    },
+    "paper_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h3"
+      }
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Pitfalls in Evaluating Language Model Forecasters",
+        "href": "https://arxiv.org/abs/2506.00723",
+        "source": "arXiv"
+      }
+    },
+    "paper_attribution": {
+      "type": "Text",
+      "props": {
+        "text": "Paleka/Goel/Geiping/Tramèr (ETH/Tübingen). Audits temporal leakage in static LLM-forecaster evals — exactly the trap your live-trade CalibrationGap record sidesteps; precursor to Hardt/Geiping (2512.25070) already on reading list.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "github_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "github_heading",
+        "github_status"
+      ]
+    },
+    "github_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h3"
+      }
+    },
+    "github_status": {
+      "type": "Alert",
+      "props": {
+        "message": "No new issues — four days clean.",
+        "type": "success"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "hn_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn_heading",
+        "hn_list"
+      ]
+    },
+    "hn_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Front (top 5)",
+        "level": "h3"
+      }
+    },
+    "hn_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_1",
+        "hn_2",
+        "hn_3",
+        "hn_4",
+        "hn_5"
+      ]
+    },
+    "hn_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Cursor Camp",
+        "href": "https://news.ycombinator.com/item?id=47949939",
+        "source": "HN",
+        "score": "1177"
+      }
+    },
+    "hn_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Where the goblins came from / OpenAI",
+        "href": "https://news.ycombinator.com/item?id=47957688",
+        "source": "HN",
+        "score": "1031"
+      }
+    },
+    "hn_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Belgium halts nuclear decommissioning",
+        "href": "https://news.ycombinator.com/item?id=47961319",
+        "source": "HN",
+        "score": "810"
+      }
+    },
+    "hn_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Zig anti-AI contribution policy rationale",
+        "href": "https://news.ycombinator.com/item?id=47957294",
+        "source": "HN",
+        "score": "653"
+      }
+    },
+    "hn_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Mark Klein / Room 641A excerpt",
+        "href": "https://news.ycombinator.com/item?id=47965060",
+        "source": "HN",
+        "score": "581"
+      }
+    }
+  }
+}
