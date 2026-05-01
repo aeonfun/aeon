@@ -1,0 +1,708 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments — 2026-05-01",
+        "description": "politics+crypto narrative-shift sweep"
+      },
+      "children": [
+        "market-trump-iran",
+        "sep-1",
+        "market-russia-ukraine",
+        "sep-2",
+        "market-tamil-nadu",
+        "sep-3",
+        "market-megaeth",
+        "sep-4",
+        "market-iran-peace",
+        "sep-5",
+        "section-new-handles",
+        "sep-6",
+        "section-calibrationgap"
+      ]
+    },
+    "market-trump-iran": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-trump-iran",
+        "stats-trump-iran",
+        "comments-trump-iran"
+      ]
+    },
+    "heading-trump-iran": {
+      "type": "Heading",
+      "props": {
+        "text": "Trump-end-mil-ops-Iran by May31",
+        "level": "h2"
+      }
+    },
+    "stats-trump-iran": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-trump-odds",
+        "stat-trump-volume",
+        "stat-trump-comments",
+        "stat-trump-status"
+      ]
+    },
+    "stat-trump-odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "36%"
+      }
+    },
+    "stat-trump-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$1M"
+      }
+    },
+    "stat-trump-comments": {
+      "type": "Stat",
+      "props": {
+        "label": "Comments",
+        "value": "864"
+      }
+    },
+    "stat-trump-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RESOLVING TODAY (War Powers Act T+60 from Feb28)",
+        "variant": "destructive"
+      }
+    },
+    "comments-trump-iran": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comment-trump-1",
+        "comment-trump-2",
+        "comment-trump-3"
+      ]
+    },
+    "comment-trump-1": {
+      "type": "Text",
+      "props": {
+        "text": "Gorgeous-Coffin (May1): AP/Reuters/Times-of-Israel chain — \"Senior Trump admin officials: hostilities with Iran 'have terminated'.\" Citation-chain handle.",
+        "variant": "body"
+      }
+    },
+    "comment-trump-2": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed-Sofa (May1, 5x): \"damn i'm surprised no one disputed\" — UMA-ambiguity callout, mirrors Iran-cf/Hez-cf calibration-gap pattern.",
+        "variant": "body"
+      }
+    },
+    "comment-trump-3": {
+      "type": "Text",
+      "props": {
+        "text": "Putrid-Campaign vs Proud-Compulsion: \"pause not end\" vs NO-holder admits \"termination of war ≠ end of military ops.\" Resolution-debate live.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-russia-ukraine": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-russia-ukraine",
+        "stats-russia-ukraine",
+        "comments-russia-ukraine"
+      ]
+    },
+    "heading-russia-ukraine": {
+      "type": "Heading",
+      "props": {
+        "text": "Russia-Ukraine ceasefire end-2026",
+        "level": "h2"
+      }
+    },
+    "stats-russia-ukraine": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-ru-series",
+        "stat-ru-odds",
+        "stat-ru-status"
+      ]
+    },
+    "stat-ru-series": {
+      "type": "Stat",
+      "props": {
+        "label": "Series",
+        "value": "5422 comments"
+      }
+    },
+    "stat-ru-odds": {
+      "type": "Stat",
+      "props": {
+        "label": "By May 31",
+        "value": "6%"
+      }
+    },
+    "stat-ru-status": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKING",
+        "variant": "destructive"
+      }
+    },
+    "comments-russia-ukraine": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comment-ru-1",
+        "comment-ru-2",
+        "comment-ru-3"
+      ]
+    },
+    "comment-ru-1": {
+      "type": "Text",
+      "props": {
+        "text": "Rich-Carotene (May1): Putin-Trump phone-call yesterday — \"Putin proposed temporary ceasefire around 9.5.26, Trump agrees, Zelensky asked for precisions.\" Market-rule-lawyer cite: \"only general pause qualifies, energy-only doesn't.\" May 9 = Russia Victory Day, Putin's natural window.",
+        "variant": "body"
+      }
+    },
+    "comment-ru-2": {
+      "type": "Text",
+      "props": {
+        "text": "Abandoned-Kielbasa (Apr30): \"look for big trades on this — will definitely be insider trading if anything happens.\" Explicit info-asymmetry alpha callout.",
+        "variant": "body"
+      }
+    },
+    "comment-ru-3": {
+      "type": "Text",
+      "props": {
+        "text": "Demanding-Hearthside: Bloomberg cite Ukraine strikes on RU oil assets at 4-month high — anti-ceasefire counter.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-tamil-nadu": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-tamil-nadu",
+        "stats-tamil-nadu",
+        "axis-header",
+        "stats-tamil-nadu-axis",
+        "comments-tamil-nadu"
+      ]
+    },
+    "heading-tamil-nadu": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu Legis Assembly (May4 T-3)",
+        "level": "h2"
+      }
+    },
+    "stats-tamil-nadu": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-tn-dmk",
+        "stat-tn-tvk",
+        "stat-tn-admk"
+      ]
+    },
+    "stat-tn-dmk": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK",
+        "value": "87.5%"
+      }
+    },
+    "stat-tn-tvk": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK",
+        "value": "6.95%"
+      }
+    },
+    "stat-tn-admk": {
+      "type": "Stat",
+      "props": {
+        "label": "ADMK",
+        "value": "6.65%"
+      }
+    },
+    "axis-header": {
+      "type": "Text",
+      "props": {
+        "text": "Axis My India 2026 — three-way-tie outlier vs DMK-consensus elsewhere:",
+        "variant": "lead"
+      }
+    },
+    "stats-tamil-nadu-axis": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-tn-axis-dmk",
+        "stat-tn-axis-tvk",
+        "stat-tn-axis-admk"
+      ]
+    },
+    "stat-tn-axis-dmk": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK (Axis)",
+        "value": "35%"
+      }
+    },
+    "stat-tn-axis-tvk": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK (Axis)",
+        "value": "35%"
+      }
+    },
+    "stat-tn-axis-admk": {
+      "type": "Stat",
+      "props": {
+        "label": "ADMK (Axis)",
+        "value": "23%"
+      }
+    },
+    "comments-tamil-nadu": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comment-tn-1",
+        "comment-tn-2",
+        "comment-tn-3"
+      ]
+    },
+    "comment-tn-1": {
+      "type": "Text",
+      "props": {
+        "text": "Counter to memory-baseline \"lone Axis-MyIndia outlier inflates Brahmin-skew.\"",
+        "variant": "body"
+      }
+    },
+    "comment-tn-2": {
+      "type": "Text",
+      "props": {
+        "text": "Crafty-Kiss (Apr23, recurring high-rep): FLIPPED — \"DMK is only +EV bet ngl... TVK was +EV at 5c, still hold.\" Once-TVK-bull now DMK-anchor.",
+        "variant": "body"
+      }
+    },
+    "comment-tn-3": {
+      "type": "Text",
+      "props": {
+        "text": "Digital-Archaeologist (Apr29, 7x): historical Axis 2021 DMK48/NDA35→DMK45/NDA39.7; 2024 DMK45→DMK47.7. Pollster-calibration handle.",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-megaeth": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-megaeth",
+        "stats-megaeth",
+        "text-megaeth-timing",
+        "fdv-header",
+        "stats-megaeth-fdv",
+        "text-megaeth-baseline",
+        "comments-megaeth"
+      ]
+    },
+    "heading-megaeth": {
+      "type": "Heading",
+      "props": {
+        "text": "MegaETH FDV 1-day-after-launch",
+        "level": "h2"
+      }
+    },
+    "text-megaeth-timing": {
+      "type": "Badge",
+      "props": {
+        "text": "TGE LIVE TODAY 10-11 UTC",
+        "variant": "secondary"
+      }
+    },
+    "stats-megaeth": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-megaeth-volume",
+        "stat-megaeth-comments"
+      ]
+    },
+    "stat-megaeth-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$3.47M"
+      }
+    },
+    "stat-megaeth-comments": {
+      "type": "Stat",
+      "props": {
+        "label": "Comments",
+        "value": "360"
+      }
+    },
+    "fdv-header": {
+      "type": "Text",
+      "props": {
+        "text": "FDV Resolution Criteria:",
+        "variant": "lead"
+      }
+    },
+    "stats-megaeth-fdv": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-megaeth-1b",
+        "stat-megaeth-1-5b",
+        "stat-megaeth-2b"
+      ]
+    },
+    "stat-megaeth-1b": {
+      "type": "Stat",
+      "props": {
+        "label": ">$1B",
+        "value": "YES (1.0)"
+      }
+    },
+    "stat-megaeth-1-5b": {
+      "type": "Stat",
+      "props": {
+        "label": ">$1.5B",
+        "value": "YES (1.0)"
+      }
+    },
+    "stat-megaeth-2b": {
+      "type": "Stat",
+      "props": {
+        "label": ">$2B",
+        "value": "NO (0)"
+      }
+    },
+    "text-megaeth-baseline": {
+      "type": "Text",
+      "props": {
+        "text": "Memory-baseline: >$1.5B 67.5% → full YES; >$2B 26.5% → NO. Pre-market $2B+ thesis (Murky-Cowboy 04-30) was overstated.",
+        "variant": "caption"
+      }
+    },
+    "comments-megaeth": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comment-megaeth-1",
+        "comment-megaeth-2"
+      ]
+    },
+    "comment-megaeth-1": {
+      "type": "Text",
+      "props": {
+        "text": "Lumbering-Analyst (Apr26, 8x): \"ArmageddonRewardsBilly is insider on team, manipulates futures + buys NO\" — pattern confirmed.",
+        "variant": "body"
+      }
+    },
+    "comment-megaeth-2": {
+      "type": "Text",
+      "props": {
+        "text": "Petty-Bran public loser May1; counterparty-to-Billy emotional-trader pattern.",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market-iran-peace": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-iran-peace",
+        "stats-iran-peace",
+        "text-iran-status",
+        "comments-iran-peace"
+      ]
+    },
+    "heading-iran-peace": {
+      "type": "Heading",
+      "props": {
+        "text": "US-Iran permanent peace deal",
+        "level": "h2"
+      }
+    },
+    "stats-iran-peace": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-iran-may15",
+        "stat-iran-may31",
+        "stat-iran-volume",
+        "stat-iran-comments"
+      ]
+    },
+    "stat-iran-may15": {
+      "type": "Stat",
+      "props": {
+        "label": "May 15",
+        "value": "10%"
+      }
+    },
+    "stat-iran-may31": {
+      "type": "Stat",
+      "props": {
+        "label": "May 31",
+        "value": "26%"
+      }
+    },
+    "stat-iran-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$2M"
+      }
+    },
+    "stat-iran-comments": {
+      "type": "Stat",
+      "props": {
+        "label": "Comments",
+        "value": "1461"
+      }
+    },
+    "text-iran-status": {
+      "type": "Badge",
+      "props": {
+        "text": "Stale since 04-30",
+        "variant": "outline"
+      }
+    },
+    "comments-iran-peace": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comment-iran-1",
+        "comment-iran-2"
+      ]
+    },
+    "comment-iran-1": {
+      "type": "Text",
+      "props": {
+        "text": "Likable-Mule (Apr30): \"What wan123 knows?\" — wallet-flow callout pattern.",
+        "variant": "body"
+      }
+    },
+    "comment-iran-2": {
+      "type": "Text",
+      "props": {
+        "text": "Constant-Optimization (Apr30, recurring): cross-event YES persistence (also on Hez-cf mediator-chain).",
+        "variant": "body"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-new-handles": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-new-handles",
+        "handles-grid"
+      ]
+    },
+    "heading-new-handles": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW track-list handles (not in 04-30)",
+        "level": "h3"
+      }
+    },
+    "handles-grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "handle-1",
+        "handle-2",
+        "handle-3",
+        "handle-4",
+        "handle-5",
+        "handle-6"
+      ]
+    },
+    "handle-1": {
+      "type": "Text",
+      "props": {
+        "text": "Gorgeous-Coffin — Trump-Iran-ops citation-chain (AP/Reuters/TOI URL stack)",
+        "variant": "body"
+      }
+    },
+    "handle-2": {
+      "type": "Text",
+      "props": {
+        "text": "Rich-Carotene — RU-UA ground-reporter + market-rule-lawyer; May-9 ceasefire-proposal flag",
+        "variant": "body"
+      }
+    },
+    "handle-3": {
+      "type": "Text",
+      "props": {
+        "text": "Abandoned-Kielbasa — explicit insider-trading flagger",
+        "variant": "body"
+      }
+    },
+    "handle-4": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed-Sofa — UMA-dispute pattern caller",
+        "variant": "body"
+      }
+    },
+    "handle-5": {
+      "type": "Text",
+      "props": {
+        "text": "Crafty-Kiss — DMK-anchor flipped-from-TVK",
+        "variant": "body"
+      }
+    },
+    "handle-6": {
+      "type": "Text",
+      "props": {
+        "text": "Remote-Presentation — ADMK alliance-math contrarian",
+        "variant": "body"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-calibrationgap": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-calibrationgap",
+        "actionable-1",
+        "actionable-2",
+        "actionable-3"
+      ]
+    },
+    "heading-calibrationgap": {
+      "type": "Heading",
+      "props": {
+        "text": "CalibrationGap-actionable",
+        "level": "h3"
+      }
+    },
+    "actionable-1": {
+      "type": "Alert",
+      "props": {
+        "title": "Trump-Iran-ops 36% — War-Powers-Act trigger TODAY",
+        "message": "structural YES if AP/Reuters/TOI cite holds; NO if \"pause vs end\" UMA-dispute wins. Mirrors Iran-cf/Hez-cf clause-resolution arb in scanner.",
+        "type": "warning"
+      }
+    },
+    "actionable-2": {
+      "type": "Alert",
+      "props": {
+        "title": "RU-UA by-May31 at 6% — priced for no-deal",
+        "message": "but Putin May-9 proposal opens tail. Watch big-trades flag.",
+        "type": "info"
+      }
+    },
+    "actionable-3": {
+      "type": "Alert",
+      "props": {
+        "title": "TN TVK 6.95c — residual edge cooling",
+        "message": "from 8.25c; Axis-MyIndia three-way-tie is contra-data-point. Re-run T-1 May 3.",
+        "type": "info"
+      }
+    }
+  }
+}
