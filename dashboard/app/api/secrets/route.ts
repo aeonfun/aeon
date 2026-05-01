@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { execSync } from 'child_process'
+import { execFileSync, execSync } from 'child_process'
 
 const BUILTIN_SECRETS = [
   { name: 'CLAUDE_CODE_OAUTH_TOKEN', group: 'Core', description: 'Claude Code OAuth token (set via Authenticate button)', either: 'auth' },
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    execSync(`gh secret set ${name} -b "${value.replace(/"/g, '\\"')}"`, {
+    execFileSync('gh', ['secret', 'set', name, '-b', value], {
       stdio: 'pipe',
       cwd: process.cwd(),
     })
@@ -116,7 +116,7 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    execSync(`gh secret delete ${name}`, { stdio: 'pipe', cwd: process.cwd() })
+    execFileSync('gh', ['secret', 'delete', name], { stdio: 'pipe', cwd: process.cwd() })
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to delete secret'
