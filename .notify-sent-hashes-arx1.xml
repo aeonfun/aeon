@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/bSDtx+rFSTmtW4vF/wa0hlhbi40</id>
+  <title>arXiv Query: search_query=all:"prediction market" AND submittedDate:"202604170000 TO 202605012359"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-01T08:57:06Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22prediction+market%22+AND+submittedDate:%22202604170000+TO+202605012359%22&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>7</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27041v1</id>
+    <title>The Signal Credibility Index for Prediction Markets: A Microstructure-Grounded Diagnostic with Weighted and Time-Varying Extensions</title>
+    <updated>2026-04-29T17:19:45Z</updated>
+    <link href="https://arxiv.org/abs/2604.27041v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27041v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction-market price moves are widely treated as informationally equivalent: a price jump is read the same way regardless of whether it reflects durable Bayesian updating, transient liquidity pressure, strategic position adjustment, or genuine disagreement. This paper formalizes the Signal Credibility Index (SCI) introduced in Nechepurenko (2026) as a stand-alone diagnostic. We make four contributions: (i) a revised persistence component using the persistence ratio PR(t,w) on logit prices, well-defined on short rolling windows; (ii) a weighted Cobb-Douglas form SCI(ααα) with flow-based concentration HHI_flow; (iii) a time-varying specification SCI(t; w) for real-time monitoring; and (iv) Monte Carlo validation including an out-of-distribution stress test, coordinated multi-wallet manipulation, and a logistic-regression benchmark. The validation establishes discrimination among designed microstructure regimes, not external evidence of downstream coordination effects. We document two failure modes consistent with the index targeting coordination credibility rather than pure information content: a Type II error on informed-but-concentrated whale repricing, and a Type I error on coordinated multi-wallet manipulation.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T17:19:45Z</published>
+    <arxiv:comment>19 pages, 5 figures, 5 tables. Companion to arXiv:2604.24147. Replication code: https://github.com/ForesightFlow/signal-credibility-index</arxiv:comment>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24723v2</id>
+    <title>Efficient Multivariate Kelly Optimization Reveals Sigmoidal Scaling Laws</title>
+    <updated>2026-04-29T16:09:16Z</updated>
+    <link href="https://arxiv.org/abs/2604.24723v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24723v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>For a sequence of binary bets, the Kelly criterion provides a closed-form solution that maximizes the expected growth rate of wealth. In contrast, when multiple bets are placed simultaneously (e.g., in portfolio allocation or prediction markets), the optimal Kelly strategy generally requires numerical optimization over a joint outcome space. A naive formulation scales exponentially in the number of bets, requiring $O(2^N)$ time and memory for $N$ simultaneous wagers, which restricts existing methods to small problem sizes.
+  We present two complementary methods that dramatically extend the scale of multivariate Kelly problems that can be solved. First, in the case of independent bets, we introduce an integral transform formulation that eliminates explicit enumeration of outcomes, reducing the computational complexity of evaluating the objective from $O(2^N)$ to $O(N)$. Combined with numerically stable quadrature, this enables accurate solutions for problems involving hundreds of bets. Second, we develop a decomposition-based approach that constructs and solves carefully chosen subproblems, yielding feasible lower bounds and infeasible upper bounds on the optimal growth rate. This provides a practical mechanism for quantifying worst-case suboptimality as a function of subproblem size.
+  Together, these methods make it possible to study the large-$N$ regime of the multivariate Kelly problem. Using synthetic data inspired by prediction markets, we show that the relationship between subproblem size and solution accuracy follows a simple and highly regular scaling law. In particular, the shortfall ratio between the lower and upper bounds is well-approximated by a sigmoid function of the relative subproblem size, with parameters that can be predicted from low-dimensional summary statistics of the problem.</summary>
+    <category term="q-fin.MF" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T17:32:57Z</published>
+    <arxiv:primary_category term="q-fin.MF"/>
+    <author>
+      <name>Ruslan Tepelyan</name>
+    </author>
+    <author>
+      <name>Daniel Lam</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24366v1</id>
+    <title>The Anatomy of a Decentralized Prediction Market: Microstructure Evidence from the Polymarket Order Book</title>
+    <updated>2026-04-27T12:01:14Z</updated>
+    <link href="https://arxiv.org/abs/2604.24366v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24366v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study the microstructure of Polymarket, the largest on-chain prediction market, using a continuous tick-level archive of the public WebSocket order-book feed (30 billion events over 52 days) joined to the authoritative on-chain trade record. On a pre-registered stratified panel of 600 markets we report eight stylized facts: a longshot spread premium; a depth-concentration profile closer to a uniform geometric grid than to the top-of-book pattern often assumed for prediction markets; a null block-clock alignment effect; broad maker-wallet diversity with a concentrated tail; category-conditional differences in effective spread; a sub-50 ms median archive-ingestion delay with a multi-second tail; a self-counterparty wash share with median 1% and a 22% upper tail, well below the network-classifier benchmarks of Cong et al. (2023) for unregulated cryptocurrency token exchanges (a sanity bound, not an apples-to-apples reference, since the venues face different wash incentives); and a depth decay near resolution with a within-category slope of 0.55 on log seconds-to-close (t=3.85). The paper also contributes a measurement result: trade direction inferred from Polymarket's public order-book feed agrees with on-chain ground truth only ~59% of the time (panel mean 0.615, 95% CI [0.58, 0.65]), barely above the 50% chance baseline. On the comparable subset of the top-100 panel, the effective half-spread changes sign between feed- and on-chain directions on 67% of markets in a first 7-day window and 50% in a second non-overlapping window, with Kyle's lambda flipping on 60% and 43% respectively; neither window recovers the on-chain sign at anything close to the ~80% rate that Lee-Ready achieves on equity venues. Microstructure work on Polymarket therefore needs to source trade direction from on-chain OrderFilled events; we release a replication package that performs the join.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T12:01:14Z</published>
+    <arxiv:comment>15 pages, 9 figures, 4 tables. JEL: G14, G12, G19, C58, L86. Replication package and per-market panel artifacts: https://github.com/philippdubach/polymarket-microstructure ; Zenodo DOI 10.5281/zenodo.19811426</arxiv:comment>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Philipp D. Dubach</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24147v1</id>
+    <title>Price as Focal Point: Prediction Markets,Conditional Reflexivity, and the Politics of Common Knowledge</title>
+    <updated>2026-04-27T08:02:34Z</updated>
+    <link href="https://arxiv.org/abs/2604.24147v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24147v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets are widely treated as forecasting devices that reveal collective expectations about uncertain futures. This article argues that under specifiable conditions they also function as coordination mechanisms: public probabilities that organize the behavior of voters, donors, journalists, traders, and institutions in ways that can be self-fulfilling or self-defeating. Most existing work asks whether prediction markets forecast accurately; this paper asks whether accurate forecasting is even the right criterion for a market that has become a public coordination device. Drawing on transaction-level evidence from the 2024 U.S. presidential election, we show that the social force of a market signal depends less on its size than on its persistence, the breadth of responding trader types, and cross-platform consensus. We introduce a Signal Credibility Index (SCI) -- combining the variance ratio VR(6), a two-sidedness diagnostic, and a trader-concentration adjustment -- as a microstructure-grounded criterion for predicting when price moves acquire behavioral traction. Applied to three major 2024 political shocks, the framework reveals that superficially similar events generated qualitatively distinct signal types with different implications for elite coordination. A cross-platform comparison establishes a systematic decoupling of social authority from epistemic robustness: the most visible market produced the least accurate forecasts. The framework carries direct implications for regulating prediction markets as democratic information infrastructure.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T08:02:34Z</published>
+    <arxiv:comment>35 pages, 5 figures</arxiv:comment>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.20421v1</id>
+    <title>Unlocking the Forecasting Economy: A Suite of Datasets for the Full Lifecycle of Prediction Market: [Experiments \&amp; Analysis]</title>
+    <updated>2026-04-22T10:39:47Z</updated>
+    <link href="https://arxiv.org/abs/2604.20421v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.20421v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets are markets for trading claims on future events, such as presidential elections, and their prices provide continuously updated signals of collective beliefs. In decentralized platforms such as Polymarket, the market lifecycle spans market creation, token registration, trading, oracle interaction, dispute, and final settlement, yet the corresponding data are fragmented across heterogeneous off-chain and on-chain sources. We present the first continuously maintained dataset suite for the full lifecycle of decentralized prediction markets, built on Polymarket. To address the challenges of large-scale cross-source integration, incomplete linkage, and continuous synchronization, we build a unified relational data system that integrates three canonical layers: market metadata, fill-level trading records, and oracle-resolution events, through identifier resolution, on-chain recovery, and incremental updates. The resulting dataset spans October 2020 to March 2026 and comprises more than 770 thousand market records, over 943 million fill records, and nearly 2 million oracle events. We describe the data model, collection pipeline, and consistency mechanisms that make the dataset reproducible and extensible, and we demonstrate its utility through descriptive analyses of market activity and two downstream case studies: NBA outcome calibration and CPI expectation reconstruction.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-22T10:39:47Z</published>
+    <arxiv:comment>Project page: https://www.polymonitor.club/</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Huaiyu Jia</name>
+    </author>
+    <author>
+      <name>Luofeng Zhou</name>
+    </author>
+    <author>
+      <name>Wentao Zhang</name>
+    </author>
+    <author>
+      <name>Lin William Cong</name>
+    </author>
+    <author>
+      <name>Siguang Li</name>
+    </author>
+    <author>
+      <name>Shuo Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.20050v1</id>
+    <title>Information Aggregation with AI Agents</title>
+    <updated>2026-04-21T23:17:24Z</updated>
+    <link href="https://arxiv.org/abs/2604.20050v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.20050v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Can Large Language Models (AI agents) aggregate dispersed private information through trading and reason about the knowledge of others by observing price movements? We conduct a controlled experiment where AI agents trade in a prediction market after receiving private signals, measuring information aggregation by the log error of the last price. We find that although the median market is effective at aggregating information in the easy information structures, increasing the complexity has a significant and negative impact, suggesting that AI agents may suffer from the same limitations as humans when reasoning about others. Consistent with our theoretical predictions, information aggregation remains unaffected by allowing cheap talk communication, changing the duration of the market or initial price, and strategic prompting-thus demonstrating that prediction markets are robust. We establish that "smarter" AI agents perform better at aggregation and they are more profitable. Surprisingly, giving them feedback about past performance makes them worse at aggregation and reduces their profits.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-21T23:17:24Z</published>
+    <arxiv:comment>64 pages</arxiv:comment>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Spyros Galanis</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.15674v1</id>
+    <title>Can LLMs Help Decentralized Dispute Arbitration? A Case Study of UMA-Resolved Markets on Polymarket</title>
+    <updated>2026-04-17T03:54:02Z</updated>
+    <link href="https://arxiv.org/abs/2604.15674v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.15674v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Web3 prediction markets, exemplified by Polymarket, have gained prominence for leveraging collective intelligence to forecast a wide range of social, political, and sports events. However, among the thousands of prediction market events, consensus disputes still arise due to imperfections in market mechanisms. On Polymarket alone, the trading volume involving disputed events has reached $972,370,804.71, underscoring the critical need for objective and efficient dispute resolution. In this study, we introduce large language models (LLMs) to: (1) evaluate whether web-enabled LLMs can reproduce the decision quality of UMA's on-chain voting process once a dispute has been raised, and (2) predict, based on event rules, which market events are likely to face future disputes before they occur. Our findings show that LLMs are unable to reliably predict which events will become disputed in advance; however, once a dispute is initiated, web-enabled LLMs achieve 89.58% agreement with UMA's final resolutions and demonstrate strong stability.</summary>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T03:54:02Z</published>
+    <arxiv:primary_category term="cs.CY"/>
+    <author>
+      <name>Junhao Wen</name>
+    </author>
+    <author>
+      <name>Juncen Zhou</name>
+    </author>
+    <author>
+      <name>Junjie Huang</name>
+    </author>
+  </entry>
+</feed>

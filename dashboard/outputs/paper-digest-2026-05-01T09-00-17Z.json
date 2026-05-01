@@ -1,0 +1,234 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest — 2026-05-01"
+      },
+      "children": [
+        "text-intro",
+        "separator-1",
+        "stack-papers",
+        "separator-2",
+        "link-full"
+      ]
+    },
+    "text-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Heaviest PM-microstructure week: 2 Polymarket order-book studies, 1 dataset suite (Cong), 1 LLM-aggregation experiment, 1 Kalshi calibration benchmark.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "stack-papers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper-1",
+        "paper-2",
+        "paper-3",
+        "paper-4",
+        "paper-5"
+      ]
+    },
+    "paper-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-paper-1",
+        "badge-author-1",
+        "text-summary-1"
+      ]
+    },
+    "heading-paper-1": {
+      "type": "Heading",
+      "props": {
+        "text": "Anatomy of a DePM",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "badge-author-1": {
+      "type": "Badge",
+      "props": {
+        "text": "Dubach"
+      },
+      "children": []
+    },
+    "text-summary-1": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket public-feed trade direction only 59% vs on-chain",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "paper-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-paper-2",
+        "badge-author-2",
+        "text-summary-2"
+      ]
+    },
+    "heading-paper-2": {
+      "type": "Heading",
+      "props": {
+        "text": "Signal Credibility Index",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "badge-author-2": {
+      "type": "Badge",
+      "props": {
+        "text": "Nechepurenko ↑0"
+      },
+      "children": []
+    },
+    "text-summary-2": {
+      "type": "Text",
+      "props": {
+        "text": "SCI(t;w) discriminates whales vs wash",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "paper-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-paper-3",
+        "badge-author-3",
+        "text-summary-3"
+      ]
+    },
+    "heading-paper-3": {
+      "type": "Heading",
+      "props": {
+        "text": "Forecasting Economy datasets",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "badge-author-3": {
+      "type": "Badge",
+      "props": {
+        "text": "Cong et al."
+      },
+      "children": []
+    },
+    "text-summary-3": {
+      "type": "Text",
+      "props": {
+        "text": "770k mkts / 943M fills Oct-2020→Mar-2026",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "paper-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-paper-4",
+        "badge-author-4",
+        "text-summary-4"
+      ]
+    },
+    "heading-paper-4": {
+      "type": "Heading",
+      "props": {
+        "text": "Information Aggregation with AI Agents",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "badge-author-4": {
+      "type": "Badge",
+      "props": {
+        "text": "Galanis"
+      },
+      "children": []
+    },
+    "text-summary-4": {
+      "type": "Text",
+      "props": {
+        "text": "past-perf feedback makes LLM traders WORSE",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "paper-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-paper-5",
+        "badge-author-5",
+        "text-summary-5"
+      ]
+    },
+    "heading-paper-5": {
+      "type": "Heading",
+      "props": {
+        "text": "KalshiBench",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "badge-author-5": {
+      "type": "Badge",
+      "props": {
+        "text": "Nel"
+      },
+      "children": []
+    },
+    "text-summary-5": {
+      "type": "Text",
+      "props": {
+        "text": "only 1/5 frontier models clears positive Brier skill score",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "link-full": {
+      "type": "Link",
+      "props": {
+        "label": "Full: articles/paper-digest-2026-05-01.md",
+        "href": "articles/paper-digest-2026-05-01.md"
+      },
+      "children": []
+    }
+  }
+}
