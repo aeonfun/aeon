@@ -1,22 +1,18 @@
-*GitHub Trending — 2026-04-30*
+*GitHub Trending — 2026-05-01*
 
-*Top pick* — [warpdotdev/warp](https://github.com/warpdotdev/warp)
-OpenAI taking founding-sponsor seat on a now-open-source Rust terminal is the cleanest read yet on their dev-stack ambitions — Anthropic has Claude Code, OpenAI now has Warp.
+Thin slate: 6 of 13 trending repos repeat from the last 2 days (warp, mattpocock/skills, obra/superpowers, lukilabs/craft-agents-oss, 1jehuang/jcode, quarkdown). Sending the 2 fresh picks rather than padding.
+
+*Top pick* — [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
+The multi-agent LLM trading framework swarm-fund-mvp keeps converging toward — spiking ~17x baseline velocity six days after v0.2.4. Re-up, not a fresh release.
 
 *AI/ML*
-• [ZhuLinsen/daily_stock_analysis](https://github.com/ZhuLinsen/daily_stock_analysis) — ★ 294 today (33k total) · Python · [ACCELERATING]
-LLM-driven A/H/US stock analyzer with multi-source news, signals dashboard, zero-cost free-API stack.
+• [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) — ★ 2.0kt today (58k total) · Python · [RETURNING]
+v0.2.4's outcome-grounded reflection log is the closest public analog to our canary→apex calibration loop; no push since 04-25, today's spike is purely viral pickup.
 
 *Devtools*
-• [obra/superpowers](https://github.com/obra/superpowers) — ★ 1.7k today (174k total) · Shell · [ACCELERATING]
-Skills framework enforcing brainstorm → design → TDD → review as mandatory agent workflows.
-
-• [1jehuang/jcode](https://github.com/1jehuang/jcode) — ★ 411 today (1.6k total) · Rust · [RETURNING]
-Rust coding-agent harness with semantic memory + swarm coordination; claims 14ms boot vs 3.4s for competitors.
-
-• [lukilabs/craft-agents-oss](https://github.com/lukilabs/craft-agents-oss) — ★ 393 today (5.4k total) · TypeScript · [ACCELERATING]
-Multi-session agent desktop with Claude-Code-style streaming, document-centric workflow.
+• [browserbase/skills](https://github.com/browserbase/skills) — ★ 69t today (960 total) · JavaScript · [RETURNING]
+Browserbase shipped `autobrowse` (self-improving browser automation) 04-22 and `browser-trace` 04-27 — Claude Agent SDK skill pattern, directly comparable to Aeon's `skills/` layout.
 
 ---
-sources: trending=ok · gh_api=ok · kept 5/16
+sources: trending=ok · gh_api=ok · kept 2/13
 

@@ -1,0 +1,128 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending"
+      },
+      "children": [
+        "text-date",
+        "text-intro",
+        "sep-1",
+        "heading-top",
+        "story-trading-top",
+        "text-trading-desc-top",
+        "sep-2",
+        "heading-aiml",
+        "story-trading-aiml",
+        "text-aiml-desc",
+        "sep-3",
+        "heading-devtools",
+        "story-browserbase",
+        "text-devtools-desc",
+        "sep-4",
+        "text-sources"
+      ]
+    },
+    "text-date": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-01",
+        "variant": "caption"
+      }
+    },
+    "text-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Thin slate: 6 of 13 trending repos repeat from the last 2 days (warp, mattpocock/skills, obra/superpowers, lukilabs/craft-agents-oss, 1jehuang/jcode, quarkdown). Sending the 2 fresh picks rather than padding."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-top": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h2"
+      }
+    },
+    "story-trading-top": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TauricResearch/TradingAgents",
+        "href": "https://github.com/TauricResearch/TradingAgents"
+      }
+    },
+    "text-trading-desc-top": {
+      "type": "Text",
+      "props": {
+        "text": "The multi-agent LLM trading framework swarm-fund-mvp keeps converging toward — spiking ~17x baseline velocity six days after v0.2.4. Re-up, not a fresh release."
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-aiml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h2"
+      }
+    },
+    "story-trading-aiml": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TauricResearch/TradingAgents",
+        "href": "https://github.com/TauricResearch/TradingAgents",
+        "source": "★ 2.0kt today (58k total) · Python · [RETURNING]"
+      }
+    },
+    "text-aiml-desc": {
+      "type": "Text",
+      "props": {
+        "text": "v0.2.4's outcome-grounded reflection log is the closest public analog to our canary→apex calibration loop; no push since 04-25, today's spike is purely viral pickup."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h2"
+      }
+    },
+    "story-browserbase": {
+      "type": "StoryLink",
+      "props": {
+        "title": "browserbase/skills",
+        "href": "https://github.com/browserbase/skills",
+        "source": "★ 69t today (960 total) · JavaScript · [RETURNING]"
+      }
+    },
+    "text-devtools-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Browserbase shipped `autobrowse` (self-improving browser automation) 04-22 and `browser-trace` 04-27 — Claude Agent SDK skill pattern, directly comparable to Aeon's `skills/` layout."
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok · gh_api=ok · kept 2/13",
+        "variant": "caption"
+      }
+    }
+  }
+}
