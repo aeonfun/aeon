@@ -1,7 +1,10 @@
-## Summary
+Token-report skill aborted silently. `MEMORY.md` has a "Tracked Tokens" section for BTC/ETH/SOL (CoinGecko IDs), but the skill requires a "Tracked Token" section with a Base chain contract address — which isn't configured. `var` is also empty. Per spec: no article, no notification. Abort logged to `memory/logs/2026-05-01.md`.
 
-token-report aborted. No article written, no notification sent.
+To activate this skill, add a section to `memory/MEMORY.md` like:
 
-**Why:** `memory/MEMORY.md` lists BTC/ETH/SOL in a "Tracked Tokens" section using CoinGecko IDs — the skill needs a Base chain contract address to query GeckoTerminal. No contract address is configured and `${var}` is empty.
-
-**Operator action:** add a row to `memory/MEMORY.md` with columns `Token | Contract | Chain` for a Base-chain token (e.g., `| AEON | 0x... | base |`). Once that's present, the skill will fetch price/volume/liquidity data and produce a daily report.
+```markdown
+## Tracked Token
+| Token | Contract | Chain |
+|-------|----------|-------|
+| AEON  | 0x<contract_address> | base |
+```
