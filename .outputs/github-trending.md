@@ -1,18 +1,26 @@
-*GitHub Trending — 2026-05-01*
+*GitHub Trending — 2026-05-02*
 
-Thin slate: 6 of 13 trending repos repeat from the last 2 days (warp, mattpocock/skills, obra/superpowers, lukilabs/craft-agents-oss, 1jehuang/jcode, quarkdown). Sending the 2 fresh picks rather than padding.
-
-*Top pick* — [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
-The multi-agent LLM trading framework swarm-fund-mvp keeps converging toward — spiking ~17x baseline velocity six days after v0.2.4. Re-up, not a fresh release.
+*Top pick* — [cursor/cookbook](https://github.com/cursor/cookbook)
+Cursor open-sourced its official cookbook five days ago — first canonical look at their prompt + agent recipes, the cleanest competitor-reference text for anyone shipping with the Claude Agent SDK.
 
 *AI/ML*
-• [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) — ★ 2.0kt today (58k total) · Python · [RETURNING]
-v0.2.4's outcome-grounded reflection log is the closest public analog to our canary→apex calibration loop; no push since 04-25, today's spike is purely viral pickup.
+• [cursor/cookbook](https://github.com/cursor/cookbook) — ★ ~604/day · 3,019 total · TypeScript · [DEBUT]
+Cursor's official cookbook, no README description; 3k stars in 5 days, read the code.
 
 *Devtools*
-• [browserbase/skills](https://github.com/browserbase/skills) — ★ 69t today (960 total) · JavaScript · [RETURNING]
-Browserbase shipped `autobrowse` (self-improving browser automation) 04-22 and `browser-trace` 04-27 — Claude Agent SDK skill pattern, directly comparable to Aeon's `skills/` layout.
+• [t8y2/dbx](https://github.com/t8y2/dbx) — ★ ~217/day · 652 total · Vue · [DEBUT]
+Single binary covers MySQL/Postgres/SQLite/Redis/Mongo/DuckDB/ClickHouse/MSSQL — what TablePlus charges for.
+
+• [darrylmorley/whatcable](https://github.com/darrylmorley/whatcable) — ★ ~1,010 today · 1,010 total · Swift · [DEBUT]
+macOS menu bar tells you in plain English what each plugged-in USB-C cable can actually do.
+
+• [EvanBacon/serve-sim](https://github.com/EvanBacon/serve-sim) — ★ ~142/day · 427 total · TypeScript · [DEBUT]
+Evan Bacon (Expo) ships `npx serve-sim` — boots an Apple Simulator like a static site.
+
+*Security*
+• [theori-io/copy-fail-CVE-2026-31431](https://github.com/theori-io/copy-fail-CVE-2026-31431) — ★ ~904/day · 2,713 total · Python · [DEBUT]
+Theori PoC for CVE-2026-31431; 2.7k stars in 3 days flags active exploitation interest.
 
 ---
-sources: trending=ok · gh_api=ok · kept 2/13
+sources: trending=ok(9/25 returned) · gh_api=ok · kept 5/22 (search fallback supplied 4 of 5 picks; trending was heavy with last-2d HOLDOVERs)
 

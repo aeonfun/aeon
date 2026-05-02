@@ -1,0 +1,468 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-05-02"
+      },
+      "children": [
+        "heading-top-pick",
+        "story-cursor-top",
+        "text-cursor-top-desc",
+        "sep-1",
+        "heading-aiml",
+        "stack-aiml",
+        "sep-2",
+        "heading-devtools",
+        "stack-devtools",
+        "sep-3",
+        "heading-security",
+        "stack-security",
+        "sep-4",
+        "text-sources"
+      ]
+    },
+    "heading-top-pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h2"
+      }
+    },
+    "story-cursor-top": {
+      "type": "StoryLink",
+      "props": {
+        "title": "cursor/cookbook",
+        "href": "https://github.com/cursor/cookbook"
+      }
+    },
+    "text-cursor-top-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Cursor open-sourced its official cookbook five days ago — first canonical look at their prompt + agent recipes, the cleanest competitor-reference text for anyone shipping with the Claude Agent SDK.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-aiml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      }
+    },
+    "stack-aiml": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry-aiml-1"
+      ]
+    },
+    "entry-aiml-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-aiml-1",
+        "text-aiml-1-desc",
+        "stack-badges-aiml-1"
+      ]
+    },
+    "story-aiml-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "cursor/cookbook",
+        "href": "https://github.com/cursor/cookbook"
+      }
+    },
+    "text-aiml-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Cursor's official cookbook, no README description; 3k stars in 5 days, read the code.",
+        "variant": "body"
+      }
+    },
+    "stack-badges-aiml-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-ts",
+        "badge-604-day",
+        "badge-3019-total",
+        "badge-debut-1"
+      ]
+    },
+    "badge-ts": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      }
+    },
+    "badge-604-day": {
+      "type": "Badge",
+      "props": {
+        "text": "~604/day",
+        "variant": "default"
+      }
+    },
+    "badge-3019-total": {
+      "type": "Badge",
+      "props": {
+        "text": "3,019 ★",
+        "variant": "default"
+      }
+    },
+    "badge-debut-1": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      }
+    },
+    "stack-devtools": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry-devtools-1",
+        "entry-devtools-2",
+        "entry-devtools-3"
+      ]
+    },
+    "entry-devtools-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-devtools-1",
+        "text-devtools-1-desc",
+        "stack-badges-devtools-1"
+      ]
+    },
+    "story-devtools-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "t8y2/dbx",
+        "href": "https://github.com/t8y2/dbx"
+      }
+    },
+    "text-devtools-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Single binary covers MySQL/Postgres/SQLite/Redis/Mongo/DuckDB/ClickHouse/MSSQL — what TablePlus charges for.",
+        "variant": "body"
+      }
+    },
+    "stack-badges-devtools-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-vue",
+        "badge-217-day",
+        "badge-652-total",
+        "badge-debut-2"
+      ]
+    },
+    "badge-vue": {
+      "type": "Badge",
+      "props": {
+        "text": "Vue",
+        "variant": "secondary"
+      }
+    },
+    "badge-217-day": {
+      "type": "Badge",
+      "props": {
+        "text": "~217/day",
+        "variant": "default"
+      }
+    },
+    "badge-652-total": {
+      "type": "Badge",
+      "props": {
+        "text": "652 ★",
+        "variant": "default"
+      }
+    },
+    "badge-debut-2": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      }
+    },
+    "entry-devtools-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-devtools-2",
+        "text-devtools-2-desc",
+        "stack-badges-devtools-2"
+      ]
+    },
+    "story-devtools-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "darrylmorley/whatcable",
+        "href": "https://github.com/darrylmorley/whatcable"
+      }
+    },
+    "text-devtools-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "macOS menu bar tells you in plain English what each plugged-in USB-C cable can actually do.",
+        "variant": "body"
+      }
+    },
+    "stack-badges-devtools-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-swift",
+        "badge-1010-today",
+        "badge-1010-total",
+        "badge-debut-3"
+      ]
+    },
+    "badge-swift": {
+      "type": "Badge",
+      "props": {
+        "text": "Swift",
+        "variant": "secondary"
+      }
+    },
+    "badge-1010-today": {
+      "type": "Badge",
+      "props": {
+        "text": "~1,010 today",
+        "variant": "default"
+      }
+    },
+    "badge-1010-total": {
+      "type": "Badge",
+      "props": {
+        "text": "1,010 ★",
+        "variant": "default"
+      }
+    },
+    "badge-debut-3": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      }
+    },
+    "entry-devtools-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-devtools-3",
+        "text-devtools-3-desc",
+        "stack-badges-devtools-3"
+      ]
+    },
+    "story-devtools-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "EvanBacon/serve-sim",
+        "href": "https://github.com/EvanBacon/serve-sim"
+      }
+    },
+    "text-devtools-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Evan Bacon (Expo) ships `npx serve-sim` — boots an Apple Simulator like a static site.",
+        "variant": "body"
+      }
+    },
+    "stack-badges-devtools-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-ts-2",
+        "badge-142-day",
+        "badge-427-total",
+        "badge-debut-4"
+      ]
+    },
+    "badge-ts-2": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      }
+    },
+    "badge-142-day": {
+      "type": "Badge",
+      "props": {
+        "text": "~142/day",
+        "variant": "default"
+      }
+    },
+    "badge-427-total": {
+      "type": "Badge",
+      "props": {
+        "text": "427 ★",
+        "variant": "default"
+      }
+    },
+    "badge-debut-4": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-security": {
+      "type": "Heading",
+      "props": {
+        "text": "Security",
+        "level": "h3"
+      }
+    },
+    "stack-security": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry-security-1"
+      ]
+    },
+    "entry-security-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story-security-1",
+        "text-security-1-desc",
+        "stack-badges-security-1"
+      ]
+    },
+    "story-security-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "theori-io/copy-fail-CVE-2026-31431",
+        "href": "https://github.com/theori-io/copy-fail-CVE-2026-31431"
+      }
+    },
+    "text-security-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Theori PoC for CVE-2026-31431; 2.7k stars in 3 days flags active exploitation interest.",
+        "variant": "body"
+      }
+    },
+    "stack-badges-security-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-python",
+        "badge-904-day",
+        "badge-2713-total",
+        "badge-debut-5"
+      ]
+    },
+    "badge-python": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "secondary"
+      }
+    },
+    "badge-904-day": {
+      "type": "Badge",
+      "props": {
+        "text": "~904/day",
+        "variant": "default"
+      }
+    },
+    "badge-2713-total": {
+      "type": "Badge",
+      "props": {
+        "text": "2,713 ★",
+        "variant": "default"
+      }
+    },
+    "badge-debut-5": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "trending=ok(9/25 returned) · gh_api=ok · kept 5/22 (search fallback supplied 4 of 5 picks; trending was heavy with last-2d HOLDOVERs)",
+        "variant": "caption"
+      }
+    }
+  }
+}
