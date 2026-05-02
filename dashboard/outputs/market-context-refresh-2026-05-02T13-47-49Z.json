@@ -1,0 +1,225 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "market context — 2026-05-02"
+      },
+      "children": [
+        "take_section",
+        "prices_section",
+        "breadth_section",
+        "narrative_section",
+        "polymarket_section",
+        "regime_section"
+      ]
+    },
+    "take_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "take_label",
+        "chop_badge",
+        "conviction_badge"
+      ]
+    },
+    "take_label": {
+      "type": "Text",
+      "props": {
+        "text": "take:",
+        "variant": "muted"
+      }
+    },
+    "chop_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "chop",
+        "variant": "default"
+      }
+    },
+    "conviction_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction medium",
+        "variant": "secondary"
+      }
+    },
+    "prices_section": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "btc_stat",
+        "eth_stat",
+        "fg_stat"
+      ]
+    },
+    "btc_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,302",
+        "delta": "+0.17%",
+        "trend": "up"
+      }
+    },
+    "eth_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,307",
+        "delta": "-0.01%",
+        "trend": "down"
+      }
+    },
+    "fg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "39",
+        "delta": "+13 from 26",
+        "trend": "up"
+      }
+    },
+    "breadth_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "breadth_progress",
+        "dex_stat"
+      ]
+    },
+    "breadth_progress": {
+      "type": "Progress",
+      "props": {
+        "value": 9,
+        "max": 20,
+        "label": "breadth 9/20"
+      }
+    },
+    "dex_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX volume",
+        "value": "$5.32B",
+        "delta": "-4%",
+        "trend": "down"
+      }
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "narrative_label",
+        "narrative_grid"
+      ]
+    },
+    "narrative_label": {
+      "type": "Text",
+      "props": {
+        "text": "top narrative: AI/compute infra",
+        "variant": "lead"
+      }
+    },
+    "narrative_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "acn_stat",
+        "bio_stat",
+        "tao_stat"
+      ]
+    },
+    "acn_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ACN",
+        "value": "+26%",
+        "trend": "up"
+      }
+    },
+    "bio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BIO",
+        "value": "+48%",
+        "trend": "up"
+      }
+    },
+    "tao_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TAO",
+        "value": "+4% (rising)",
+        "trend": "up"
+      }
+    },
+    "polymarket_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "polymarket_label",
+        "polymarket_stat"
+      ]
+    },
+    "polymarket_label": {
+      "type": "Text",
+      "props": {
+        "text": "hot market: US x Iran peace by May 31 (YES)",
+        "variant": "body"
+      }
+    },
+    "polymarket_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "22.5%",
+        "delta": "-4pp",
+        "trend": "down"
+      }
+    },
+    "regime_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "regime_label",
+        "regime_text"
+      ]
+    },
+    "regime_label": {
+      "type": "Text",
+      "props": {
+        "text": "regime note:",
+        "variant": "muted"
+      }
+    },
+    "regime_text": {
+      "type": "Text",
+      "props": {
+        "text": "breadth collapsed 19/20 → 9/20 as DOJ/Powell catalyst fades; NFP live today",
+        "variant": "body"
+      }
+    }
+  }
+}
