@@ -1,0 +1,89 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "repo-badge",
+        "main-stack"
+      ]
+    },
+    "repo-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp",
+        "variant": "secondary"
+      }
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "description-heading",
+        "context-text",
+        "stats-group",
+        "separator",
+        "pr-link"
+      ]
+    },
+    "description-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "test coverage for canonical_regime_label()",
+        "level": "h3"
+      }
+    },
+    "context-text": {
+      "type": "Text",
+      "props": {
+        "text": "HMM-to-bandit regime normalization seam"
+      }
+    },
+    "stats-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "tests-stat",
+        "lines-stat"
+      ]
+    },
+    "tests-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Tests",
+        "value": "10"
+      }
+    },
+    "lines-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Lines added",
+        "value": "+76"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #28",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/28",
+        "source": "tomscaria/swarm-fund-mvp"
+      }
+    }
+  }
+}
