@@ -1,0 +1,134 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-05-02 (PhD slot)"
+      },
+      "children": [
+        "paper-info",
+        "sep1",
+        "desc-stack",
+        "sep2",
+        "metrics",
+        "sep3",
+        "links"
+      ]
+    },
+    "paper-info": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Group-Evolving Agents: Open-Ended Self-Improvement via Experience Sharing",
+        "href": "https://arxiv.org/abs/2602.04837",
+        "source": "Weng/Antoniades/Nathani/Zhang/Pu/Wang (UCSB, Feb 2026) ↑9"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "desc-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "desc-p1",
+        "desc-p2"
+      ]
+    },
+    "desc-p1": {
+      "type": "Text",
+      "props": {
+        "text": "Treats a group of agents as the fundamental evolutionary unit, with explicit experience sharing replacing tree-structured isolated branches — 71.0% SWE-bench Verified (vs 56.7% prior SoTA self-evolving) and 88.3% Polyglot (vs 68.3%); fixes framework-level bugs in 1.4 iterations vs 5."
+      }
+    },
+    "desc-p2": {
+      "type": "Text",
+      "props": {
+        "text": "Direct shape match for swarm-fund canary→apex with cross-agent reflection sharing. Closes the Darwinian-axis queue flag promoted in today's daily-slot log (CORAL → GEA)."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "metric-swe",
+        "metric-polyglot",
+        "metric-bugs"
+      ]
+    },
+    "metric-swe": {
+      "type": "Stat",
+      "props": {
+        "label": "SWE-bench Verified",
+        "value": "71.0%",
+        "delta": "+14.3%",
+        "trend": "up"
+      }
+    },
+    "metric-polyglot": {
+      "type": "Stat",
+      "props": {
+        "label": "Polyglot",
+        "value": "88.3%",
+        "delta": "+20.0%",
+        "trend": "up"
+      }
+    },
+    "metric-bugs": {
+      "type": "Stat",
+      "props": {
+        "label": "Framework-level bugs",
+        "value": "1.4 iter",
+        "delta": "-3.6 iter",
+        "trend": "up"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-read",
+        "link-pdf"
+      ]
+    },
+    "link-read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2602.04837"
+      }
+    },
+    "link-pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2602.04837"
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
-*Paper Pick — 2026-05-02*
+*Paper Pick — 2026-05-02 (PhD slot)*
 
-"CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery" — Qu/Zheng/Zhou et al. (MIT/CMU/NUS, Apr 2026) · ↑55
-Long-running multi-agent evolution with shared persistent memory, async execution, and heartbeat interventions — the same loop shape as swarm-fund's canary-cycle, with a concrete Anthropic-kernel-engineering benchmark (1363 → 1103 cycles, SoTA on 10 tasks) to cite. Closes yesterday's standing Darwinian-axis queue-flag.
-[Read](https://arxiv.org/abs/2604.01658) | [PDF](https://arxiv.org/pdf/2604.01658)
+"Group-Evolving Agents: Open-Ended Self-Improvement via Experience Sharing" — Weng/Antoniades/Nathani/Zhang/Pu/Wang (UCSB, Feb 2026) · ↑9
+Treats a group of agents as the fundamental evolutionary unit, with explicit experience sharing replacing tree-structured isolated branches — 71.0% SWE-bench Verified (vs 56.7% prior SoTA self-evolving) and 88.3% Polyglot (vs 68.3%); fixes framework-level bugs in 1.4 iterations vs 5. Direct shape match for swarm-fund canary→apex with cross-agent reflection sharing. Closes the Darwinian-axis queue flag promoted in today's daily-slot log (CORAL → GEA).
+[Read](https://arxiv.org/abs/2602.04837) | [PDF](https://arxiv.org/pdf/2602.04837)
 
