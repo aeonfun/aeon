@@ -20,4 +20,3 @@ Volume: ~227 files changed, +22,525 lines
 Open threads: swarm-fund-mvp #19/#20/#23/#24 stalled (oldest #19 from 04-27, all ai/* fix branches)
 
 Full recap: https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-02.md
-

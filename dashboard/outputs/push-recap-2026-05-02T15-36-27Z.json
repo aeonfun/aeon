@@ -1,0 +1,543 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-date",
+        "repos-section",
+        "sep-1",
+        "shipped-section",
+        "sep-2",
+        "under-hood-section",
+        "sep-3",
+        "summary-section"
+      ]
+    },
+    "heading-date": {
+      "type": "Heading",
+      "props": {
+        "text": "Push Recap — 2026-05-02",
+        "level": "h1"
+      },
+      "children": []
+    },
+    "repos-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-1",
+        "repo-2",
+        "repo-3"
+      ]
+    },
+    "repo-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-1-text",
+        "repo-1-badge",
+        "repo-1-desc"
+      ]
+    },
+    "repo-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "repo-1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SHIPPING",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "repo-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "32-article research surface, Discover product, per-strategy dashboard",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "repo-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-2-text",
+        "repo-2-desc"
+      ]
+    },
+    "repo-2-text": {
+      "type": "Text",
+      "props": {
+        "text": "lore-financial-teaser",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "repo-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "repo renamed to \"Lore Financial Teaser\" + Aeon wired in",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "repo-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-3-text",
+        "repo-3-badge",
+        "repo-3-desc"
+      ]
+    },
+    "repo-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "repo-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "empty",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "no commits in window",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "shipped-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped-heading",
+        "shipped-items"
+      ]
+    },
+    "shipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "shipped-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ship-1",
+        "ship-2",
+        "ship-3",
+        "ship-4",
+        "ship-5"
+      ]
+    },
+    "ship-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "ship-1-title",
+        "ship-1-desc"
+      ]
+    },
+    "ship-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm 9d0aab2",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ship-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "research surface restored from lost stash 552092c: 32 long-form articles, /research routes, sitemap (43 URLs) + RSS feed (32 items) + OG cards (32) re-emitted at build time",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ship-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "ship-2-title",
+        "ship-2-desc"
+      ]
+    },
+    "ship-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm e2afbda",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ship-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "varrd-style backtest guardrails ship: Bonferroni correction, sha256 factor fingerprint + k-tracker, OOS lock, AST lookahead lint, multi-horizon realized P&L replay, Karpathy-style autoresearch loop, 106 new tests (6-of-8 varrd guardrails)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ship-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "ship-3-title",
+        "ship-3-desc"
+      ]
+    },
+    "ship-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm fe904be + d5f902e",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ship-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "per-strategy admin lands: /strategy/[name] page (edge matrix, regime breakdown, realized P&L, lookahead findings, audit log) backed by 7 new /api/strategies* routes; first concrete win surfaced — mage SOL +9.95 bps Sharpe 0.307 vs ETH -3.06 bps",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ship-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "ship-4-title",
+        "ship-4-desc"
+      ]
+    },
+    "ship-4-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm 58407ee",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ship-4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Discover product committed (MarketScorer / CalibrationCodex / EdgeFeed / AuroraBackground, 992-line CSS) + framer-motion + d3-scale declared; unblocks Vercel deploy red since 18804b4",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ship-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "ship-5-title",
+        "ship-5-desc"
+      ]
+    },
+    "ship-5-title": {
+      "type": "Text",
+      "props": {
+        "text": "lore 120cb40 (PR #4)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ship-5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "repo + package.json renamed to lore-financial-teaser; SlideDeckNav + FloatingPitchProgressHUD strip \"Pre-Series A\" qualifier (Vercel deploy unaffected, tracks by project ID)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "under-hood-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under-hood-heading",
+        "under-hood-items"
+      ]
+    },
+    "under-hood-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "under-hood-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hood-1",
+        "hood-2"
+      ]
+    },
+    "hood-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "hood-1-title",
+        "hood-1-desc"
+      ]
+    },
+    "hood-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm 648725d",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "hood-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "variant bandit gains per-regime overlay (3-tier Kelly fallback), fleet cull joins t-test + Beta posterior, append-only JSONL posterior history; new Telegram /bandit_regime command",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "hood-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "hood-2-title",
+        "hood-2-desc"
+      ]
+    },
+    "hood-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm c76064d",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "hood-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Signal.fired_at = tick.ts (5 strategies); ADR-084 gate caught it: mage went from 1350/1350 dropped to 1645/1645 resolved at 60-min horizon",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "summary-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-heading",
+        "shape-grid",
+        "volume-grid",
+        "open-threads-text",
+        "recap-link"
+      ]
+    },
+    "summary-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "shape-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "sm"
+      },
+      "children": [
+        "stat-visible",
+        "stat-internal",
+        "stat-infra",
+        "stat-filtered",
+        "stat-prs"
+      ]
+    },
+    "stat-visible": {
+      "type": "Stat",
+      "props": {
+        "label": "user-visible",
+        "value": "14"
+      },
+      "children": []
+    },
+    "stat-internal": {
+      "type": "Stat",
+      "props": {
+        "label": "internal",
+        "value": "6"
+      },
+      "children": []
+    },
+    "stat-infra": {
+      "type": "Stat",
+      "props": {
+        "label": "infra",
+        "value": "1"
+      },
+      "children": []
+    },
+    "stat-filtered": {
+      "type": "Stat",
+      "props": {
+        "label": "bot-filtered",
+        "value": "96"
+      },
+      "children": []
+    },
+    "stat-prs": {
+      "type": "Stat",
+      "props": {
+        "label": "merged PRs",
+        "value": "4"
+      },
+      "children": []
+    },
+    "volume-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "sm"
+      },
+      "children": [
+        "stat-files",
+        "stat-lines"
+      ]
+    },
+    "stat-files": {
+      "type": "Stat",
+      "props": {
+        "label": "files changed",
+        "value": "~227"
+      },
+      "children": []
+    },
+    "stat-lines": {
+      "type": "Stat",
+      "props": {
+        "label": "lines added",
+        "value": "+22,525"
+      },
+      "children": []
+    },
+    "open-threads-text": {
+      "type": "Text",
+      "props": {
+        "text": "Open threads: swarm-fund-mvp #19/#20/#23/#24 stalled (oldest #19 from 04-27, all ai/* fix branches)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "recap-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full recap on GitHub",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-02.md"
+      },
+      "children": []
+    }
+  }
+}
