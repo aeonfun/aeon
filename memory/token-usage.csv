@@ -67,4 +67,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-02,paper-digest,claude-opus-4-7,46,26013,2882825,79072
 2026-05-02,github-trending,claude-opus-4-7,10879,19442,1625815,104170
 2026-05-02,github-releases,claude-opus-4-7,3261,30227,2525439,168977
-2026-05-02,treasury-info,claude-opus-4-7,11,2915,269054,45032
+2026-05-02,on-chain-monitor,claude-opus-4-7,5065,3819,407547,49304
