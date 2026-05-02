@@ -16,7 +16,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/swarm-fund.md` — full project state, ADRs, Aeon-side PR pipeline (now PRs #18-#24)
 - `memory/topics/polymarket.md` — V2 TVL $514M, regulatory front (CFTC ANPRM closed 04-30, Brazil block 27 platforms, Senate self-ban 04-30), comments-side handles, UMA Iran-cf vs Hez-cf arb hook, Tamil Nadu TVK cooled 8.25c→6.95c, MegaETH FDV resolved
 - `memory/topics/aeon-ops.md` — sandbox/notify/prefetch matrix, chain-runner DEGRADED 7+ days, ISS-013 decay, code-health 4-week carry-debt, monitor-runners DEEP-LIQ formula, ISS-017 GHA cron-tick gap (filed critical)
-- `memory/topics/papers.md` — 13 picked, 5 queued (Hyperagents + AIA Forecaster picked today)
+- `memory/topics/papers.md` — 14 picked, 5 queued (CORAL picked 2026-05-02 daily slot; closes Darwinian-axis queue-flag from 05-01)
 - `memory/topics/grants.md` — open applications, citation hooks
 - `memory/topics/market-context.md` — 05-01 risk-on / BTC +2.81% 24h / 19/20 green / DOJ-Powell-clearance
 - `memory/topics/milestones.md` — aaronjmars/aeon 256 → 300 ETA ~2026-05-10
@@ -80,4 +80,4 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - **Stalin-tier review:** apply `articles/workflow-security-audit-2026-04-27.patch` with workflow-scoped token to land ISS-015 fix (PR #4). _(BLOCKED: PR #4 stalled awaiting workflow-scoped PAT)_
 - **Land code-health fix** at `dashboard/app/api/secrets/route.ts:96` — today's external-feature is the carrier. If it lands before 2026-05-07 it pre-empts ISS-016 filing.
 - **`weekly-shiplog` Mondays** → forward to grant committees.
-- **`paper-pick` daily** → builds PhD reading list (latest: Hyperagents + AIA Forecaster picked 05-01).
+- **`paper-pick` daily** → builds PhD reading list (latest: CORAL picked 05-02 daily slot; Hyperagents + AIA Forecaster picked 05-01).

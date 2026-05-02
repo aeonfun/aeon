@@ -1,6 +1,6 @@
-*Paper Pick (PhD-prep) — 2026-05-01*
+*Paper Pick — 2026-05-02*
 
-"Hyperagents" — Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, Shavrina · ↑50
-First Darwin-Gödel-Machine extension that drops the coding-domain assumption: a single editable program holds task + meta agent, the meta-modification procedure is itself editable, and meta-level gains (memory, performance tracking) transfer across domains and accumulate across runs — the canonical Darwinian-axis citation for the Stanford application and a bench candidate for the next CalibrationGap meta-loop layer.
-[Read](https://arxiv.org/abs/2603.19461) | [PDF](https://arxiv.org/pdf/2603.19461)
+"CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery" — Qu/Zheng/Zhou et al. (MIT/CMU/NUS, Apr 2026) · ↑55
+Long-running multi-agent evolution with shared persistent memory, async execution, and heartbeat interventions — the same loop shape as swarm-fund's canary-cycle, with a concrete Anthropic-kernel-engineering benchmark (1363 → 1103 cycles, SoTA on 10 tasks) to cite. Closes yesterday's standing Darwinian-axis queue-flag.
+[Read](https://arxiv.org/abs/2604.01658) | [PDF](https://arxiv.org/pdf/2604.01658)
 

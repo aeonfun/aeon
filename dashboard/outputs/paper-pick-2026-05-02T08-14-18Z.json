@@ -1,0 +1,68 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story_paper",
+        "text_description",
+        "stack_links"
+      ]
+    },
+    "story_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
+        "href": "https://arxiv.org/abs/2604.01658",
+        "source": "Qu/Zheng/Zhou et al. (MIT/CMU/NUS, Apr 2026)",
+        "score": "↑55"
+      }
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "Long-running multi-agent evolution with shared persistent memory, async execution, and heartbeat interventions — the same loop shape as swarm-fund's canary-cycle, with a concrete Anthropic-kernel-engineering benchmark (1363 → 1103 cycles, SoTA on 10 tasks) to cite. Closes yesterday's standing Darwinian-axis queue-flag.",
+        "variant": "body"
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.01658"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.01658"
+      }
+    }
+  }
+}
