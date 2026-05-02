@@ -1,0 +1,402 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-02"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section-token",
+        "sep-1",
+        "section-market",
+        "sep-2",
+        "section-footer"
+      ]
+    },
+    "section-token": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header-token",
+        "grid-token-metrics",
+        "score-token",
+        "catalyst-token",
+        "risk-token",
+        "comparison-token"
+      ]
+    },
+    "header-token": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "heading-token",
+        "badge-high-1"
+      ]
+    },
+    "heading-token": {
+      "type": "Heading",
+      "props": {
+        "text": "UB (Unibase)",
+        "level": "h2"
+      }
+    },
+    "badge-high-1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "grid-token-metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-24h",
+        "stat-7d",
+        "text-ath",
+        "stat-mcap",
+        "stat-volume",
+        "stat-vmcratio",
+        "text-signal"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.141"
+      }
+    },
+    "stat-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "+26.1%",
+        "trend": "up"
+      }
+    },
+    "stat-7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d Change",
+        "value": "+224.9%",
+        "trend": "up"
+      }
+    },
+    "text-ath": {
+      "type": "Text",
+      "props": {
+        "text": "ATH today 10:05Z",
+        "variant": "caption"
+      }
+    },
+    "stat-mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$347M"
+      }
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume 24h",
+        "value": "$182M"
+      }
+    },
+    "stat-vmcratio": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume/Mcap",
+        "value": "0.524"
+      }
+    },
+    "text-signal": {
+      "type": "Text",
+      "props": {
+        "text": "signal 11/10 (capped 10)",
+        "variant": "lead"
+      }
+    },
+    "score-token": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-score",
+        "text-score-breakdown"
+      ]
+    },
+    "heading-score": {
+      "type": "Heading",
+      "props": {
+        "text": "Score Components",
+        "level": "h4"
+      }
+    },
+    "text-score-breakdown": {
+      "type": "Text",
+      "props": {
+        "text": "24h+1, 7d+1, both>5%+2, cgtrend+2, v/mc>=0.20+3, RS>BTC&ETH+2 = 11/10",
+        "variant": "body"
+      }
+    },
+    "catalyst-token": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-catalyst",
+        "text-catalyst-content"
+      ]
+    },
+    "heading-catalyst": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h4"
+      }
+    },
+    "text-catalyst-content": {
+      "type": "Text",
+      "props": {
+        "text": "OKX listed UB perpetuals (up to 20x leverage) — drove fresh ATH today; AIP 2.0 protocol release queued for Q2 (CoinGabbar).",
+        "variant": "body"
+      }
+    },
+    "risk-token": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "92%+ supply still locked with vesting cliffs into 2027 — accelerated unlocks could retest $0.035–$0.045 if AI-agent demand cools.",
+        "type": "warning"
+      }
+    },
+    "comparison-token": {
+      "type": "Text",
+      "props": {
+        "text": "Vs recent picks: first time (last 7d APE/PENGU/XCN/RAY/DOGE/LUNC/PENDLE — UB unrelated).",
+        "variant": "caption"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header-market",
+        "metrics-market",
+        "odds-section",
+        "thesis-section",
+        "risk-market"
+      ]
+    },
+    "header-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "heading-market",
+        "badge-high-2"
+      ]
+    },
+    "heading-market": {
+      "type": "Heading",
+      "props": {
+        "text": "Strait of Hormuz traffic returns to normal by end of June?",
+        "level": "h2"
+      }
+    },
+    "badge-high-2": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "metrics-market": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-edge",
+        "stat-market-vol",
+        "text-resolve-date"
+      ]
+    },
+    "stat-edge": {
+      "type": "Stat",
+      "props": {
+        "label": "Edge",
+        "value": "~33pp"
+      }
+    },
+    "stat-market-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$231k"
+      }
+    },
+    "text-resolve-date": {
+      "type": "Text",
+      "props": {
+        "text": "Resolves: 2026-06-30",
+        "variant": "caption"
+      }
+    },
+    "odds-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-odds",
+        "grid-odds",
+        "text-fair-yes"
+      ]
+    },
+    "heading-odds": {
+      "type": "Heading",
+      "props": {
+        "text": "Odds & Fair Value",
+        "level": "h4"
+      }
+    },
+    "grid-odds": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-yes-odds",
+        "stat-no-odds"
+      ]
+    },
+    "stat-yes-odds": {
+      "type": "Stat",
+      "props": {
+        "label": "Current YES",
+        "value": "45.5c"
+      }
+    },
+    "stat-no-odds": {
+      "type": "Stat",
+      "props": {
+        "label": "Current NO",
+        "value": "54.5c"
+      }
+    },
+    "text-fair-yes": {
+      "type": "Text",
+      "props": {
+        "text": "Fair YES: ~12% (inputs: CENTCOM 6mo mine-clearance estimate from Apr 11; Al Jazeera \"Iran lost track of mines\"; US naval blockade since Apr 13 still active per PBS/CNN; commercial transit currently <10% of normal per Lloyd's List)",
+        "variant": "body"
+      }
+    },
+    "thesis-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-thesis",
+        "text-thesis"
+      ]
+    },
+    "heading-thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h4"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "58d out is day ~80 of a 180-day clearance program AND US still blockades Iranian ports — traffic cannot be \"normal\" while both physical constraints persist. Buy NO at 54.5c.",
+        "variant": "body"
+      }
+    },
+    "risk-market": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "grand-bargain peace deal + blockade lift + Iran cooperating on mines could collapse fair to 30%+ on a single Trump tweet — binary headline risk.",
+        "type": "warning"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-footer": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-sources",
+        "text-disclaimer"
+      ]
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: cg=ok, dex=ok, poly=ok",
+        "variant": "caption"
+      }
+    },
+    "text-disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "muted"
+      }
+    }
+  }
+}
