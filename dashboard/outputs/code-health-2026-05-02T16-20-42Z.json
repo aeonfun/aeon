@@ -1,0 +1,153 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "code-health 2026-05-02",
+        "description": "first multi-repo report (swarm-fund-mvp, lore-teaser, aeon)"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-fixes",
+        "alert-1",
+        "alert-2",
+        "alert-3",
+        "separator-1",
+        "heading-scale",
+        "stat-files",
+        "text-server",
+        "stat-tests",
+        "stat-todos",
+        "text-todos-note",
+        "text-vendored",
+        "text-dashboard",
+        "report-link"
+      ]
+    },
+    "heading-fixes": {
+      "type": "Heading",
+      "props": {
+        "text": "Top fixes",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "alert-1": {
+      "type": "Alert",
+      "props": {
+        "title": "aeon dashboard/app/api/secrets/route.ts:96 shell-injection",
+        "message": "Day 12 unpatched (correcting yesterday's 24+ claim — file introduced 2026-04-20). ISS-016 filing 2026-05-07 if still open.",
+        "type": "error"
+      },
+      "children": []
+    },
+    "alert-2": {
+      "type": "Alert",
+      "props": {
+        "title": "lore-financial-teaser .env leak",
+        "message": "Tracks .env in violation of own .gitignore — values are publishable-anon (Vite-baked, Supabase RLS-gated) so low blast today, but next real secret leaks. Untrack + rename to .env.local.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "alert-3": {
+      "type": "Alert",
+      "props": {
+        "title": "swarm-fund-mvp hardcoded feed IDs",
+        "message": "3 'TODO: verify' hardcoded feed IDs in pyth_ws.py (XRP/USD) and birdeye_rest.py (bIB01, dSPY) — gate trading correctness.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-scale": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund-mvp scale",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stat-files": {
+      "type": "Stat",
+      "props": {
+        "label": "author files >500 lines",
+        "value": "24"
+      },
+      "children": []
+    },
+    "text-server": {
+      "type": "Text",
+      "props": {
+        "text": "server.py is the outlier at 3030 lines",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "stat-tests": {
+      "type": "Stat",
+      "props": {
+        "label": "test files",
+        "value": "106"
+      },
+      "children": []
+    },
+    "stat-todos": {
+      "type": "Stat",
+      "props": {
+        "label": "TODOs",
+        "value": "73"
+      },
+      "children": []
+    },
+    "text-todos-note": {
+      "type": "Text",
+      "props": {
+        "text": "mostly TASK-tagged Rust scaffolding, healthy",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text-vendored": {
+      "type": "Text",
+      "props": {
+        "text": "tools/kraken-cli-main/ is vendored krakenfx upstream",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text-dashboard": {
+      "type": "Text",
+      "props": {
+        "text": "Dashboard clean of the execSync pattern",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "report-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full report: articles/code-health-2026-05-02.md",
+        "href": "articles/code-health-2026-05-02.md"
+      },
+      "children": []
+    }
+  }
+}

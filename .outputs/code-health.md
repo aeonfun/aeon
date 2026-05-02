@@ -1,1 +1,8 @@
-code-health 2026-05-01: aaronjmars/aeon HEAD c95478c. Shell-injection at dashboard/app/api/secrets/route.ts:96 still unpatched (day 24+, byte-identical to last week). ISS-016 candidate filing 2026-05-07. Zero dashboard tests; 9/19 API routes use execSync. 1 real TODO (workflow-security-audit:36, 3 days). 1 file >500 lines (a2a-server/src/index.ts, 578). PR #149 smithery-manifest clean. New: ./notify script absent at upstream root despite 5+ skill refs.
+code-health 2026-05-02: first multi-repo report (swarm-fund-mvp, lore-teaser, aeon).
+
+Top fixes:
+1. aeon dashboard/app/api/secrets/route.ts:96 shell-injection — Day 12 unpatched (correcting yesterday's 24+ claim — file introduced 2026-04-20). ISS-016 filing 2026-05-07 if still open.
+2. lore-financial-teaser tracks .env in violation of own .gitignore — values are publishable-anon (Vite-baked, Supabase RLS-gated) so low blast today, but next real secret leaks. Untrack + rename to .env.local.
+3. swarm-fund-mvp has 3 "TODO: verify" hardcoded feed IDs in pyth_ws.py (XRP/USD) and birdeye_rest.py (bIB01, dSPY) — gate trading correctness.
+
+swarm-fund-mvp scale: 24 author files >500 lines (server.py 3030 is the outlier), 106 test files, 73 TODOs (mostly TASK-tagged Rust scaffolding, healthy). tools/kraken-cli-main/ is vendored krakenfx upstream. Dashboard clean of the execSync pattern. Full report: articles/code-health-2026-05-02.md.
