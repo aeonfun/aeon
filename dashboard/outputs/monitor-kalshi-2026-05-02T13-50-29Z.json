@@ -1,0 +1,352 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor — 2026-05-02"
+      },
+      "children": [
+        "verdict-text",
+        "setup-alert",
+        "sep1",
+        "market-may2-section",
+        "sep2",
+        "market-may8-section",
+        "sep3",
+        "alerts-section",
+        "sep4",
+        "trending-section",
+        "sep5",
+        "sources-section",
+        "sep6",
+        "hermes-note"
+      ]
+    },
+    "verdict-text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC intraday markets own all real volume today. KXBTC-26MAY0217 (5pm EDT close, ~7h out) has sharp concentration at $78k-$78.5k. B78375 surging +10pp in last 2h on top of +15pp 24h move — BTC pricing into $78,250-$78,500 ahead of today close.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "setup-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "MONITOR_KALSHI_NO_CONFIG",
+        "message": "Watchlist empty; discovered trending events for this run. Setup: add tickers to skills/monitor-kalshi/watchlist.md (e.g. KXBTC-26MAY0917, KXBTC-26MAY1617).",
+        "type": "info"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market-may2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-may2",
+        "badges-may2",
+        "market-may2-table",
+        "mover-analysis-may2"
+      ]
+    },
+    "heading-may2": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC Price at 5pm EDT — May 2 (KXBTC-26MAY0217)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "badges-may2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-crypto-may2"
+      ]
+    },
+    "badge-crypto-may2": {
+      "type": "Badge",
+      "props": {
+        "text": "crypto",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "market-may2-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Delta24h",
+          "Range",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "$78,000-$78,250",
+            "20%",
+            "+8pp up",
+            "8-30%",
+            "$1.1k",
+            "4pp"
+          ],
+          [
+            "$78,250-$78,500",
+            "28%",
+            "+15pp up",
+            "0-30%",
+            "$0.8k",
+            "6pp"
+          ],
+          [
+            "$77,750-$78,000",
+            "9%",
+            "n/a",
+            "--",
+            "$0.2k",
+            "1pp"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "mover-analysis-may2": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: $78,250-$78,500 — peak prob 28%, surging +10pp in last 2h; thin book. $78,000-$78,250 is the ALERT bucket: +8pp on loose 4pp book. Combined $78k-$78.5k zone: ~48% implied probability. BTC appears to be trading ~$78.3k.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market-may8-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-may8",
+        "badges-may8",
+        "market-may8-table",
+        "mover-analysis-may8"
+      ]
+    },
+    "heading-may8": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC Price at 5pm EDT — May 8 (KXBTC-26MAY0817)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "badges-may8": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-crypto-may8",
+        "badge-src-may8"
+      ]
+    },
+    "badge-crypto-may8": {
+      "type": "Badge",
+      "props": {
+        "text": "crypto",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-src-may8": {
+      "type": "Badge",
+      "props": {
+        "text": "SRC=price_only",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "market-may8-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Delta24h",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "$78,000-$78,250",
+            "7%",
+            "n/a",
+            "1pp"
+          ],
+          [
+            "$77,750-$78,000",
+            "7%",
+            "n/a",
+            "1pp"
+          ],
+          [
+            "$82,750+",
+            "2%",
+            "n/a",
+            "2pp"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "mover-analysis-may8": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: flat distribution (~7% per bucket), tight 1pp spreads. Much less conviction vs today as expected for 6-day forward. Peak is B78250 by vol (3,169 contracts).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "alerts-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts-heading",
+        "alert-item-1"
+      ]
+    },
+    "alerts-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS (moved >5pp on non-thin book)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "alert-item-1": {
+      "type": "Alert",
+      "props": {
+        "title": "KXBTC-26MAY0217 B78125",
+        "message": "12% to 20% (+8pp, loose book) — $1.1k vol confirms real positioning; BTC holding ~$78k ahead of today close.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "trending-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending-heading",
+        "trending-text"
+      ]
+    },
+    "trending-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "trending-text": {
+      "type": "Text",
+      "props": {
+        "text": "KXBTC daily price markets — by far the most active Kalshi series today (~$4k USD 24h vol across all buckets vs <$200 for every other open event). Add KXBTC daily tickers to watchlist.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-detail"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Data Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "sources-detail": {
+      "type": "Text",
+      "props": {
+        "text": "events=ok candlesticks=partial (B78125 ok, B78375 ok; others price_only) orderbook=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "hermes-note": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb note: Day-4 falsifier window — today $78.25k-$78.5k Kalshi pricing is live convergence signal vs PM 5-min BTC contracts.",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

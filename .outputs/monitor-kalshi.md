@@ -1,35 +1,32 @@
-*Kalshi monitor — 2026-05-01*
-verdict: all quiet — watchlist empty (NO_CONFIG); 11 events discovered, 5 monitored; no moves worth flagging (all vol < $1k/day, candlesticks unavailable)
+*Kalshi monitor — 2026-05-02*
+verdict: BTC intraday markets own all real volume today. KXBTC-26MAY0217 (5pm EDT close, ~7h out) has sharp concentration at $78k-$78.5k. B78375 surging +10pp in last 2h on top of +15pp 24h move — BTC pricing into $78,250-$78,500 ahead of today close.
 
-NO_CONFIG: watchlist is empty. Add event tickers to skills/monitor-kalshi/watchlist.md to enable regular monitoring. Suggested series: KXFED (Fed rate decisions), KXNEXTISRAELPM (Israel PM).
+MONITOR_KALSHI_NO_CONFIG — watchlist empty; discovered trending events for this run.
+Setup: add tickers to skills/monitor-kalshi/watchlist.md (e.g. KXBTC-26MAY0917, KXBTC-26MAY1617).
 
-**Federal Funds Rate — Apr 2027 FOMC** (KXFED-27APR) — Economics
-| Market | prob | Δ24h | vol | spread |
-|--------|------|------|-----|--------|
-| >3.50% | 45% | n/a | $230 | 2pp |
-| >3.25% | 45% | n/a | $198 | 2pp |
-| >4.00% | 35% | n/a | $105 | 4pp |
-mover: T3.50 — 511 contracts (~$230), tight book (2pp); market pricing 55% chance rate stays ≤3.50% by Apr 2027 (implied ~1-2 cuts from current ~4.25-4.50%)
+**BTC Price at 5pm EDT — May 2 (KXBTC-26MAY0217)** — crypto
+| Market | prob | delta24h | range | vol | spread |
+|--------|------|----------|-------|-----|--------|
+| $78,000-$78,250 | 20% | +8pp up | 8-30% | $1.1k | 4pp |
+| $78,250-$78,500 | 28% | +15pp up | 0-30% | $0.8k | 6pp |
+| $77,750-$78,000 | 9% | n/a | -- | $0.2k | 1pp |
+mover: $78,250-$78,500 -- peak prob 28%, surging +10pp in last 2h; thin book. $78,000-$78,250 is the ALERT bucket: +8pp on loose 4pp book.
+Combined $78k-$78.5k zone: ~48% implied probability. BTC appears to be trading ~$78.3k.
 
-**Next PM of Israel** (KXNEXTISRAELPM-45JAN01) — Elections
-| Market | prob | Δ24h | vol | spread |
-|--------|------|------|-----|--------|
-| Bennett (NBEN) | 51% | n/a | $85 | 2pp |
-| Lieberman (ALIE) | 9% | n/a | $127 | 8pp |
-| Sa'ar (GEIS) | 17% | n/a | $9 | n/a |
-mover: ALIE — 1,351 contracts on $0.09 YES, but spread 8pp (thin book, skeptical pricing)
-
-**Next Pope** (KXNEWPOPE-70) — Elections
-| Market | prob | Δ24h | vol | spread |
-|--------|------|------|-----|--------|
-| Zuppi | 4% | n/a | $4 | wide |
-| Tagle | 7% | n/a | $5 | wide |
-Total event vol: ~$12 — noise floor only
+**BTC Price at 5pm EDT — May 8 (KXBTC-26MAY0817)** — crypto (SRC=price_only)
+| Market | prob | delta24h | spread |
+|--------|------|----------|--------|
+| $78,000-$78,250 | 7% | n/a | 1pp |
+| $77,750-$78,000 | 7% | n/a | 1pp |
+| $82,750+ | 2% | n/a | 2pp |
+mover: flat distribution (~7% per bucket), tight 1pp spreads. Much less conviction vs today as expected for 6-day forward. Peak is B78250 by vol (3,169 contracts).
 
 **ALERTS** (moved >5pp on non-thin book)
-none
+- KXBTC-26MAY0217 B78125: 12% to 20% (+8pp, loose book) -- $1.1k vol confirms real positioning; BTC holding ~$78k ahead of today close.
 
 **Trending (not tracked)**
-Full event universe is 11 events — all long-horizon speculative markets. Near-term liquid series (KXFED, KXBTC, KXCPI) exist but are not surfaced as events; they require direct series tickers in watchlist.
+- KXBTC daily price markets -- by far the most active Kalshi series today (~$4k USD 24h vol across all buckets vs <$200 for every other open event). Add KXBTC daily tickers to watchlist.
 
-sources: events=ok candlesticks=fail (SRC=price_only all markets) orderbook=ok
+sources: events=ok candlesticks=partial (B78125 ok, B78375 ok; others price_only) orderbook=ok
+Hermes-arb note: Day-4 falsifier window -- today $78.25k-$78.5k Kalshi pricing is live convergence signal vs PM 5-min BTC contracts.
+
