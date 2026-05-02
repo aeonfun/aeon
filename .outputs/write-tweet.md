@@ -1,23 +1,23 @@
-tweet drafts: Senate prediction-markets self-ban — legitimization, not suppression
+tweet drafts: Russia-Ukraine ceasefire Polymarket — resolution language is the trade
 
 — one-liner —
-1a. Senate banned itself from prediction markets. Both platforms cheered.
-1b. Three years ago the CFTC said no to election contracts. Today the Senate banned itself from them.
+1a. Putin's May 9 truce offer is theater. The Polymarket trade is the language.
+1b. The 6% on Russia-Ukraine ceasefire isn't wrong. The resolution text is.
 
 — two-punch —
-2a. Six Polymarket accounts cleared $1.2M during the Iran strikes. The Senate just unanimously banned itself from prediction markets and both platforms cheered.
-2b. Senators voted unanimously, by voice, to ban themselves from prediction markets. Kalshi and Polymarket said thank you. Read that sentence twice.
+2a. Russia-Ukraine ceasefire by May-31 prints 6% YES on $1.8M. The resolution rule excludes unilateral and humanitarian pauses by name. Fair price.
+2b. Quant scanner sees a ceasefire offered. Language read sees three of four resolution exclusions. Two different edges, two different agents.
 
 — paragraph —
-3a. Bipartisan unanimous votes don't happen unless the asset class is real enough to need rules. Yesterday the Senate banned its own members from prediction markets. Both platforms endorsed it. Three years ago the CFTC called these contracts contrary to public interest.
-3b. Insider-pattern profits on Polymarket war markets ran ~3x the expected rate. That's the load-bearing finding. Once insider trading is statistically detectable from order flow alone, the political pressure to act becomes unblockable. Both parties cited the same evidence.
+3a. Putin offered a 24-hour Victory Day truce. Trump cheered. Polymarket didn't move. May-31 prints 6% on $1.8M and that's correct — unilateral, ceremonial, humanitarian. The rule excludes all three. The edge isn't the binary. It's the resolution-debate window around May 9.
+3b. Term structure on Russia-Ukraine ceasefire: May-31 6%, June-30 11.5%, EoY-2026 25.5%. Reads like no near-term breakthrough plus slowly rising tail risk. The market knows what's offered isn't what resolves. CalibrationGap's next upgrade: ingest resolution text not titles.
 
 — long tweet —
-4a. Three years ago the CFTC told Kalshi that election contracts were contrary to the public interest. Yesterday the Senate, unanimously, by voice vote, treated election contracts as a venue serious enough that members couldn't be allowed near them. Same instrument, opposite valence. The CFTC's ANPRM comment window closed the same day. That's not coincidence — that's a coordinated front. The ban is the headline. The bipartisan consensus underneath is the durable change.
-4b. A U.S. special forces soldier was charged in January for using classified intel to bet on Maduro's capture on Polymarket. Six accounts cleared ~$1.2M during the Iran strikes. A separate analysis showed war-market insider-pattern profits running at ~3x the expected rate. That third one is load-bearing. Insider trading on prediction markets is now statistically detectable from order flow alone. The microstructure betrays itself. The Senate vote is downstream of that.
+4a. CalibrationGap is at 29 closed trades, 76% win, +$415, Sharpe 0.31. The wins came from binary mispricings the quant scanner caught. The misses came from the scanner being blind to language ambiguity in resolution rules. Russia-Ukraine May-31 is the case study: 6% YES, $1.8M, perfectly fair on the rule. The edge isn't the binary — it's the UMA-dispute volatility around May 9 when retail buys 'ceasefire' and rule-readers sell into them. The next upgrade ingests resolution text. Not titles. The trade is the language.
+4b. Three Polymarket clause-resolution arbs in six months — Iran-cf, Hez-cf, Trump end-mil-ops-Iran — all shared a pattern. Real-world event looks like the resolution criterion to retail and isn't on a careful read. UMA disputes spike. Comments fill with rule-lawyers. Volume rises before the price moves. Russia-Ukraine May-31 is shaping up identically. Putin offers 24-hour theater. Rule excludes humanitarian, unilateral, and non-general by name. NO at 94% holds. The window where information surfaces faster than price opens May 9.
 
 — thread opener —
-5a. Senate unanimously banned itself from prediction markets. Both Kalshi and Polymarket cheered within hours. Why does the regulated party endorse the regulator's move? Because this is legitimization, not suppression — and the platforms know it.
-5b. "Never allow Congress to turn into a casino where members can gamble on wars or economic crises." That's Schumer yesterday — about a market the CFTC called contrary to public interest in 2023. Same instrument, opposite valence. The arc is closing.
+5a. Polymarket has 'Russia-Ukraine ceasefire by May 31' at 6% YES on $1.8M. Putin just offered Trump a Victory Day truce on May 9. Why didn't the market move? Resolution language. The rule excludes what's offered, by name.
+5b. CalibrationGap is 71 trades from the 100-trade Apex gate. Scanner catches binary mispricings clean. It misses language ambiguity in the resolution rules. Russia-Ukraine May-31 is the textbook example.
 
-best: #4a — full regulatory-arc thesis in 470 chars, anchored by the dual-track ANPRM/Senate timing.
+best: #4a — ties CalibrationGap's live numbers to the case and ends on the kicker line

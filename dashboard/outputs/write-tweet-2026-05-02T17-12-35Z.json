@@ -1,0 +1,266 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet",
+        "description": "Tweet drafts: Russia-Ukraine ceasefire Polymarket — resolution language is the trade"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "one_liner_section",
+        "sep1",
+        "two_punch_section",
+        "sep2",
+        "paragraph_section",
+        "sep3",
+        "long_tweet_section",
+        "sep4",
+        "thread_section",
+        "sep5",
+        "recommendation_section"
+      ]
+    },
+    "one_liner_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_one_liner",
+        "draft_1a",
+        "draft_1b"
+      ]
+    },
+    "h_one_liner": {
+      "type": "Heading",
+      "props": {
+        "text": "one-liner",
+        "level": "h3"
+      }
+    },
+    "draft_1a": {
+      "type": "Text",
+      "props": {
+        "text": "1a. Putin's May 9 truce offer is theater. The Polymarket trade is the language.",
+        "variant": "body"
+      }
+    },
+    "draft_1b": {
+      "type": "Text",
+      "props": {
+        "text": "1b. The 6% on Russia-Ukraine ceasefire isn't wrong. The resolution text is.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "two_punch_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_two_punch",
+        "draft_2a",
+        "draft_2b"
+      ]
+    },
+    "h_two_punch": {
+      "type": "Heading",
+      "props": {
+        "text": "two-punch",
+        "level": "h3"
+      }
+    },
+    "draft_2a": {
+      "type": "Text",
+      "props": {
+        "text": "2a. Russia-Ukraine ceasefire by May-31 prints 6% YES on $1.8M. The resolution rule excludes unilateral and humanitarian pauses by name. Fair price.",
+        "variant": "body"
+      }
+    },
+    "draft_2b": {
+      "type": "Text",
+      "props": {
+        "text": "2b. Quant scanner sees a ceasefire offered. Language read sees three of four resolution exclusions. Two different edges, two different agents.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paragraph_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_paragraph",
+        "draft_3a",
+        "draft_3b"
+      ]
+    },
+    "h_paragraph": {
+      "type": "Heading",
+      "props": {
+        "text": "paragraph",
+        "level": "h3"
+      }
+    },
+    "draft_3a": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Putin offered a 24-hour Victory Day truce. Trump cheered. Polymarket didn't move. May-31 prints 6% on $1.8M and that's correct — unilateral, ceremonial, humanitarian. The rule excludes all three. The edge isn't the binary. It's the resolution-debate window around May 9.",
+        "variant": "body"
+      }
+    },
+    "draft_3b": {
+      "type": "Text",
+      "props": {
+        "text": "3b. Term structure on Russia-Ukraine ceasefire: May-31 6%, June-30 11.5%, EoY-2026 25.5%. Reads like no near-term breakthrough plus slowly rising tail risk. The market knows what's offered isn't what resolves. CalibrationGap's next upgrade: ingest resolution text not titles.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "long_tweet_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_long_tweet",
+        "draft_4a_wrapper",
+        "draft_4b"
+      ]
+    },
+    "h_long_tweet": {
+      "type": "Heading",
+      "props": {
+        "text": "long tweet",
+        "level": "h3"
+      }
+    },
+    "draft_4a_wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "draft_4a",
+        "badge_best"
+      ]
+    },
+    "draft_4a": {
+      "type": "Text",
+      "props": {
+        "text": "4a. CalibrationGap is at 29 closed trades, 76% win, +$415, Sharpe 0.31. The wins came from binary mispricings the quant scanner caught. The misses came from the scanner being blind to language ambiguity in resolution rules. Russia-Ukraine May-31 is the case study: 6% YES, $1.8M, perfectly fair on the rule. The edge isn't the binary — it's the UMA-dispute volatility around May 9 when retail buys 'ceasefire' and rule-readers sell into them. The next upgrade ingests resolution text. Not titles. The trade is the language.",
+        "variant": "body"
+      }
+    },
+    "badge_best": {
+      "type": "Badge",
+      "props": {
+        "text": "BEST",
+        "variant": "secondary"
+      }
+    },
+    "draft_4b": {
+      "type": "Text",
+      "props": {
+        "text": "4b. Three Polymarket clause-resolution arbs in six months — Iran-cf, Hez-cf, Trump end-mil-ops-Iran — all shared a pattern. Real-world event looks like the resolution criterion to retail and isn't on a careful read. UMA disputes spike. Comments fill with rule-lawyers. Volume rises before the price moves. Russia-Ukraine May-31 is shaping up identically. Putin offers 24-hour theater. Rule excludes humanitarian, unilateral, and non-general by name. NO at 94% holds. The window where information surfaces faster than price opens May 9.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "thread_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_thread",
+        "draft_5a",
+        "draft_5b"
+      ]
+    },
+    "h_thread": {
+      "type": "Heading",
+      "props": {
+        "text": "thread opener",
+        "level": "h3"
+      }
+    },
+    "draft_5a": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Polymarket has 'Russia-Ukraine ceasefire by May 31' at 6% YES on $1.8M. Putin just offered Trump a Victory Day truce on May 9. Why didn't the market move? Resolution language. The rule excludes what's offered, by name.",
+        "variant": "body"
+      }
+    },
+    "draft_5b": {
+      "type": "Text",
+      "props": {
+        "text": "5b. CalibrationGap is 71 trades from the 100-trade Apex gate. Scanner catches binary mispricings clean. It misses language ambiguity in the resolution rules. Russia-Ukraine May-31 is the textbook example.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "recommendation_text"
+      ]
+    },
+    "recommendation_text": {
+      "type": "Text",
+      "props": {
+        "text": "best: #4a — ties CalibrationGap's live numbers to the case and ends on the kicker line",
+        "variant": "muted"
+      }
+    }
+  }
+}
