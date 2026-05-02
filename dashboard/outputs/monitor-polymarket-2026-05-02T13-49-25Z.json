@@ -1,0 +1,519 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Monitor"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "date-text",
+        "event1-stack",
+        "sep1",
+        "event2-stack",
+        "sep2",
+        "event3-stack",
+        "sep3",
+        "alerts-stack"
+      ]
+    },
+    "date-text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-02",
+        "variant": "muted"
+      }
+    },
+    "event1-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "event1-title",
+        "event1-meta",
+        "event1-stats",
+        "event1-market",
+        "event1-revenant-note",
+        "event1-comment"
+      ]
+    },
+    "event1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "2026 FIFA World Cup Winner",
+        "level": "h2"
+      }
+    },
+    "event1-meta": {
+      "type": "Text",
+      "props": {
+        "text": "event 30615"
+      }
+    },
+    "event1-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat1-vol",
+        "stat1-liq",
+        "stat1-mkts"
+      ]
+    },
+    "stat1-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$876.8M"
+      }
+    },
+    "stat1-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$196M"
+      }
+    },
+    "stat1-mkts": {
+      "type": "Stat",
+      "props": {
+        "label": "Markets",
+        "value": "47"
+      }
+    },
+    "event1-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market1-name",
+        "market1-stat",
+        "market1-vol",
+        "market1-price-note"
+      ]
+    },
+    "market1-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Mexico YES",
+        "level": "h4"
+      }
+    },
+    "market1-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "1.05%",
+        "delta": "+0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "market1-vol": {
+      "type": "Text",
+      "props": {
+        "text": "$78.5K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "market1-price-note": {
+      "type": "Text",
+      "props": {
+        "text": "flat 24h (24 identical price points)",
+        "variant": "caption"
+      }
+    },
+    "event1-revenant-note": {
+      "type": "Alert",
+      "props": {
+        "title": "Revenant first order",
+        "message": "Mexico at 1.05%, builder code 0xcddc4ba3...8286f",
+        "type": "info"
+      }
+    },
+    "event1-comment": {
+      "type": "Alert",
+      "props": {
+        "title": "Top comment (8 reactions)",
+        "message": "\"people really thinking england is one of the 2 top candidates...\"",
+        "type": "info"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "event2-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "event2-title",
+        "event2-meta",
+        "event2-stats",
+        "event2-market",
+        "event2-drought",
+        "event2-bidask",
+        "event2-comment",
+        "event2-flag"
+      ]
+    },
+    "event2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "What will happen before GTA VI?",
+        "level": "h2"
+      }
+    },
+    "event2-meta": {
+      "type": "Text",
+      "props": {
+        "text": "event 23784"
+      }
+    },
+    "event2-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat2-vol",
+        "stat2-liq"
+      ]
+    },
+    "stat2-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$4.07M"
+      }
+    },
+    "stat2-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$119.7K"
+      }
+    },
+    "event2-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market2-name",
+        "market2-stat",
+        "market2-vol"
+      ]
+    },
+    "market2-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin $1M YES",
+        "level": "h4"
+      }
+    },
+    "market2-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "48.85%",
+        "delta": "+0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "market2-vol": {
+      "type": "Text",
+      "props": {
+        "text": "$1.8K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "event2-drought": {
+      "type": "Alert",
+      "props": {
+        "title": "Volume drought",
+        "message": "$1.8K vs $6.6K/d 7d-avg (0.27x) — near-50/50 but market silent today",
+        "type": "warning"
+      }
+    },
+    "event2-bidask": {
+      "type": "Text",
+      "props": {
+        "text": "Bid/Ask: 0.488/0.489 | End: 2026-07-31",
+        "variant": "caption"
+      }
+    },
+    "event2-comment": {
+      "type": "Alert",
+      "props": {
+        "title": "Top comment (12 reactions)",
+        "message": "\"ATTENTION: This is a SCAM market. READ THE RULES before betting\"",
+        "type": "error"
+      }
+    },
+    "event2-flag": {
+      "type": "Alert",
+      "props": {
+        "title": "Flag",
+        "message": "Resolution-criteria concern circulating in event comments",
+        "type": "warning"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "event3-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "event3-title",
+        "event3-dem",
+        "event3-rep",
+        "event3-winner"
+      ]
+    },
+    "event3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 US Elections",
+        "level": "h2"
+      }
+    },
+    "event3-dem": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dem-heading",
+        "dem-vol",
+        "dem-newsom",
+        "dem-harris",
+        "dem-aoc",
+        "dem-kardashian-alert"
+      ]
+    },
+    "dem-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dem Nominee",
+        "level": "h3"
+      }
+    },
+    "dem-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$1.1B"
+      }
+    },
+    "dem-newsom": {
+      "type": "Text",
+      "props": {
+        "text": "Newsom: 26.25%"
+      }
+    },
+    "dem-harris": {
+      "type": "Text",
+      "props": {
+        "text": "Harris: 11.0%"
+      }
+    },
+    "dem-aoc": {
+      "type": "Text",
+      "props": {
+        "text": "AOC: 8.45%"
+      }
+    },
+    "dem-kardashian-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Anomaly",
+        "message": "Kim Kardashian 0.65% w/ $219K 24h vol (entertainment-trading signal)",
+        "type": "info"
+      }
+    },
+    "event3-rep": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rep-heading",
+        "rep-vol",
+        "rep-vance",
+        "rep-rubio",
+        "rep-haley-alert"
+      ]
+    },
+    "rep-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Rep Nominee",
+        "level": "h3"
+      }
+    },
+    "rep-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$596.7M"
+      }
+    },
+    "rep-vance": {
+      "type": "Text",
+      "props": {
+        "text": "Vance: 38.9%"
+      }
+    },
+    "rep-rubio": {
+      "type": "Text",
+      "props": {
+        "text": "Rubio: 20.65%"
+      }
+    },
+    "rep-haley-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Haley movement",
+        "message": "-0.10pp (0.95%→0.85%) $130K 24h vol [crossed 0.9% level w/ volume]",
+        "type": "info"
+      }
+    },
+    "event3-winner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "winner-heading",
+        "winner-vol",
+        "winner-vance",
+        "winner-newsom",
+        "winner-rubio",
+        "winner-trumpjr"
+      ]
+    },
+    "winner-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Winner",
+        "level": "h3"
+      }
+    },
+    "winner-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$562.5M"
+      }
+    },
+    "winner-vance": {
+      "type": "Text",
+      "props": {
+        "text": "Vance: 21.55%"
+      }
+    },
+    "winner-newsom": {
+      "type": "Text",
+      "props": {
+        "text": "Newsom: 17.25%"
+      }
+    },
+    "winner-rubio": {
+      "type": "Text",
+      "props": {
+        "text": "Rubio: 10.65%"
+      }
+    },
+    "winner-trumpjr": {
+      "type": "Text",
+      "props": {
+        "text": "Trump Jr. 0.85% $148K 24h vol (noise)",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alerts-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts-heading",
+        "alert-large-moves",
+        "alert-vol-anom",
+        "alert-narrative"
+      ]
+    },
+    "alerts-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts & Summary",
+        "level": "h2"
+      }
+    },
+    "alert-large-moves": {
+      "type": "Alert",
+      "props": {
+        "title": "Large moves (>5pp)",
+        "message": "None — all quiet on watched markets",
+        "type": "success"
+      }
+    },
+    "alert-vol-anom": {
+      "type": "Alert",
+      "props": {
+        "title": "Volume anomalies",
+        "message": "BTC $1M at 0.27x 7d-avg / Kim Kardashian $219K at 0.65%",
+        "type": "warning"
+      }
+    },
+    "alert-narrative": {
+      "type": "Alert",
+      "props": {
+        "title": "Narrative",
+        "message": "GTA VI resolution ambiguity circulating / Vance-Newsom dominant 2028 frame",
+        "type": "info"
+      }
+    }
+  }
+}

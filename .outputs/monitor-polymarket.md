@@ -1,46 +1,25 @@
-polymarket monitor — 2026-05-01
+polymarket monitor — 2026-05-02
 
-**Mexico 2026 FIFA World Cup** (Revenant first order, builder 0xcddc4ba3...8286f)
-Will Mexico win the 2026 FIFA World Cup? [market 558945]
-YES 1.1% | 24h chg: 0.0pp (flat) | $119.9K 24h vol | $2.4M liq
-Direction: stable. No 24h move.
-Possible calibration hook: Polymarket 1.05% vs sportsbook consensus typically 5–8%. Field is wide open for the first North American World Cup — host-nation bounce plausible for USA/Mexico/Canada bracket games. No immediate catalyst today.
+2026 FIFA World Cup Winner (event 30615) $876.8M vol / $196M liq / 47 mkts
+  Mexico YES 1.05% (+0.0pp) $78.5K 24h vol — flat 24h (24 identical price points)
+  [Revenant first order: Mexico at 1.05%, builder code 0xcddc4ba3...8286f]
+  top comment: "people really thinking england is one of the 2 top candidates..." (8 rxn)
 
-top comment: 'Belgium's group is weak...' — Strict-Nonbeliever (5 react, Apr 7)
-recent: 'Czechia 0.003 trade opportunity' — Infinite-Kennel (Apr 29)
-crowd meta: England-skepticism dominant in top comments (8-react anti-England takes, x2)
+What will happen before GTA VI? (event 23784) $4.07M vol / $119.7K liq
+  Bitcoin $1M YES 48.85% (+0.0pp) $1.8K 24h vol
+  vol drought: $1.8K vs $6.6K/d 7d-avg (0.27x) — near-50/50 but market silent today
+  bid/ask 0.488/0.489, end 2026-07-31
+  top comment (12 rxn): "ATTENTION: This is a SCAM market. READ THE RULES before betting"
+  flag: resolution-criteria concern circulating in event comments
 
----
+2028 US Elections
+  Dem Nominee ($1.1B vol): Newsom 26.25% / Harris 11.0% / AOC 8.45%
+    anomaly: Kim Kardashian 0.65% w/ $219K 24h vol (entertainment-trading signal)
+  Rep Nominee ($596.7M vol): Vance 38.9% / Rubio 20.65%
+    Haley -0.10pp (0.95%->0.85%) $130K 24h vol [crossed 0.9% level w/ volume]
+  Winner ($562.5M vol): Vance 21.55% / Newsom 17.25% / Rubio 10.65%
+    Trump Jr. 0.85% $148K 24h vol (noise)
 
-**Bitcoin $1M before GTA VI** [market 540844]
-YES 48.9% | 24h chg: 0.0pp (flat, range 48.85–48.90%) | $1.2K 24h vol | $119.7K liq
-Direction: stable. Dead volume.
-GTA VI release <June 2026: 1.1% — launch almost certainly NOT coming in June. Deadline on this market is July 31, 2026. BTC at ~$97K implies ~10x needed in <90 days. Market pricing this as ~coin flip suggests high variance / terminal branch thinking.
-No entry signal for Revenant. Monitor for GTA VI release-date catalyst.
-
----
-
-**US 2028 Election — top 5 active markets**
-
-Which party wins 2028? [event 33228, $303K liq]
-Democrats: 60.5% | 0.0pp | $54 24h vol — locked
-Republicans: 38.5% | 0.0pp | $0 24h vol — locked
-
-GOP Nominee 2028 [event 31875, $18.5M liq, $595M all-time vol]
-Vance: 38.5% | -0.2pp 24h | $16K vol
-Rubio: 20.7% | — | $8K vol
-Eric Trump: 0.9% | — | $120K 24h vol [VOLUME ANOMALY: 15% daily turnover vs $793K liq]
-Tulsi Gabbard: 1.2% | — | $24K vol, $877K liq
-Top comment: 'JD Rubio!' — EverSupreme7 (11 react, Feb 10)
-
-Dem Nominee 2028 [event 30829, $48.4M liq, $1.12B all-time vol, $1.54M 24h vol]
-Newsom: ~27% (field leader per market consensus)
-Ossoff: 6.6% | 0.0pp | $9.5K vol
-Buttigieg: 4.1% | — | $8.1K vol
-Whitmer: 1.4% | — | $26.8K vol
-Top comment: 'flow been crazy on this market lately' — Some-Productivity (Feb 13)
-
----
-
-biggest mover: none — all markets <1pp move in 24h.
-alerts: none. all quiet.
+alerts (>5pp): none — all quiet on watched markets
+vol anomalies: BTC $1M at 0.27x 7d-avg / Kim Kardashian $219K at 0.65%
+narrative: GTA VI resolution ambiguity circulating / Vance-Newsom dominant 2028 frame
