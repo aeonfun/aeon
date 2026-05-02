@@ -356,13 +356,13 @@
   },
   "star-milestone": {
     "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-01T16:15:48Z",
-    "total_runs": 19,
-    "total_successes": 6,
+    "last_status": "success",
+    "last_success": "2026-05-02T15:30:46Z",
+    "total_runs": 20,
+    "total_successes": 7,
     "total_failures": 13,
     "consecutive_failures": 0,
-    "success_rate": 0.32,
+    "success_rate": 0.35,
     "last_failed": "2026-04-26T23:54:51Z",
     "last_error": "3087f28\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
