@@ -1,13 +1,13 @@
-*Repo Action Ideas — aaronjmars/aeon — 2026-05-01*
-PR #149 (smithery-manifest, today) created an aeon-mcp npm/Smithery surface that needs README, npm hygiene, and a smoke test before first publish; ahead of all of it is a 3-week-old shell-injection in dashboard/app/api/secrets/route.ts:96.
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-02*
+Four HIGH-priority ideas this cycle, all anchored to the missing PR-time CI or autoresearch loop gaps. Top pick gives the four stale fix-PRs (#19/#20/#23/#24) the green-check signal they need to merge.
 
-Top pick: Patch shell-injection at dashboard/app/api/secrets/route.ts:96 (Security, Small, Priority HIGH)
- → Eliminates an RCE path via execSync interpolation; closes the next ISS-016 candidate before skill-security-scan files it 2026-05-07.
+Top pick: Add .github/workflows/ci.yml with ruff + pytest (both trees) + strategy_inventory --check (DX, Medium, Priority HIGH)
+ → Every PR gets a green-or-red signal in <10 min; the 'two test trees' footgun cannot recur silently.
 
-1. Patch shell-injection at dashboard/app/api/secrets/route.ts:96 (HIGH, Security, Small)
-2. Add mcp-server/README.md for npm + Smithery listing (HIGH, Content, Small)
-3. Bundle npm-publish hygiene into mcp-server/ — prepublishOnly + metadata + LICENSE + files (MED, DX, Small)
-4. Add mcp-server/test/smoke.test.ts + .github/workflows/mcp-smoke.yml (MED, DX, Medium)
-5. Add .github/CODEOWNERS for path-routed PR review (MED, DX, Small)
+1. Add .github/workflows/ci.yml — ruff + pytest + strategy_inventory --check (HIGH, DX, Medium)
+2. Upload watchdog_baseline.json artifact from swarm-watchdog.yml for grant/LP evidence trail (HIGH, Content, Small)
+3. Add python/tests/test_strategy_inventory_invariant.py pytest regression (HIGH, DX, Small)
+4. Replace hardcoded 5-strategy rotation in autoresearch.yml with dynamic _STRATEGY_REGISTRY read (HIGH, Feature, Small)
+5. Add .pre-commit-config.yaml — ruff + check-yaml + end-of-file-fixer (MED, DX, Small)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-01.md
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-02.md

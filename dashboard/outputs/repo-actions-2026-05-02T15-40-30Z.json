@@ -1,0 +1,388 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-02"
+      },
+      "children": [
+        "intro",
+        "sep1",
+        "top_pick_section",
+        "sep2",
+        "items_stack",
+        "sep3",
+        "link"
+      ]
+    },
+    "intro": {
+      "type": "Text",
+      "props": {
+        "text": "Four HIGH-priority ideas this cycle, all anchored to the missing PR-time CI or autoresearch loop gaps. Top pick gives the four stale fix-PRs (#19/#20/#23/#24) the green-check signal they need to merge.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "top_pick_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_heading",
+        "top_item_stack"
+      ]
+    },
+    "top_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      }
+    },
+    "top_item_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top_title",
+        "top_badges",
+        "top_desc"
+      ]
+    },
+    "top_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add .github/workflows/ci.yml with ruff + pytest (both trees) + strategy_inventory --check",
+        "variant": "lead"
+      }
+    },
+    "top_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_dx",
+        "badge_med",
+        "badge_high"
+      ]
+    },
+    "badge_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "badge_med": {
+      "type": "Badge",
+      "props": {
+        "text": "Medium",
+        "variant": "default"
+      }
+    },
+    "badge_high": {
+      "type": "Badge",
+      "props": {
+        "text": "Priority HIGH",
+        "variant": "destructive"
+      }
+    },
+    "top_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Every PR gets a green-or-red signal in <10 min; the 'two test trees' footgun cannot recur silently."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "items_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "i1_text",
+        "i1_badges"
+      ]
+    },
+    "i1_text": {
+      "type": "Text",
+      "props": {
+        "text": "1. Add .github/workflows/ci.yml — ruff + pytest + strategy_inventory --check"
+      }
+    },
+    "i1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "i1b1",
+        "i1b2",
+        "i1b3"
+      ]
+    },
+    "i1b1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "i1b2": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "i1b3": {
+      "type": "Badge",
+      "props": {
+        "text": "Medium",
+        "variant": "default"
+      }
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "i2_text",
+        "i2_badges"
+      ]
+    },
+    "i2_text": {
+      "type": "Text",
+      "props": {
+        "text": "2. Upload watchdog_baseline.json artifact from swarm-watchdog.yml for grant/LP evidence trail"
+      }
+    },
+    "i2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "i2b1",
+        "i2b2",
+        "i2b3"
+      ]
+    },
+    "i2b1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "i2b2": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "default"
+      }
+    },
+    "i2b3": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      }
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "i3_text",
+        "i3_badges"
+      ]
+    },
+    "i3_text": {
+      "type": "Text",
+      "props": {
+        "text": "3. Add python/tests/test_strategy_inventory_invariant.py pytest regression"
+      }
+    },
+    "i3_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "i3b1",
+        "i3b2",
+        "i3b3"
+      ]
+    },
+    "i3b1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "i3b2": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "i3b3": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      }
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "i4_text",
+        "i4_badges"
+      ]
+    },
+    "i4_text": {
+      "type": "Text",
+      "props": {
+        "text": "4. Replace hardcoded 5-strategy rotation in autoresearch.yml with dynamic _STRATEGY_REGISTRY read"
+      }
+    },
+    "i4_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "i4b1",
+        "i4b2",
+        "i4b3"
+      ]
+    },
+    "i4b1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "i4b2": {
+      "type": "Badge",
+      "props": {
+        "text": "Feature",
+        "variant": "default"
+      }
+    },
+    "i4b3": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      }
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "i5_text",
+        "i5_badges"
+      ]
+    },
+    "i5_text": {
+      "type": "Text",
+      "props": {
+        "text": "5. Add .pre-commit-config.yaml — ruff + check-yaml + end-of-file-fixer"
+      }
+    },
+    "i5_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "i5b1",
+        "i5b2",
+        "i5b3"
+      ]
+    },
+    "i5b1": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "secondary"
+      }
+    },
+    "i5b2": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "i5b3": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "default"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details: repo-actions-2026-05-02",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-02.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
