@@ -1,0 +1,133 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz — 2026-05-02"
+      },
+      "children": [
+        "alert-status",
+        "stack-details"
+      ]
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "message": "Quiet day, no survivors",
+        "type": "warning"
+      }
+    },
+    "stack-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section-fallback",
+        "section-candidates",
+        "section-pattern",
+        "section-missing"
+      ]
+    },
+    "section-fallback": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label-fallback",
+        "text-fallback"
+      ]
+    },
+    "label-fallback": {
+      "type": "Text",
+      "props": {
+        "text": "Fallback",
+        "variant": "caption"
+      }
+    },
+    "text-fallback": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch fallback only — XAI_API_KEY unset"
+      }
+    },
+    "section-candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label-candidates",
+        "text-candidates"
+      ]
+    },
+    "label-candidates": {
+      "type": "Text",
+      "props": {
+        "text": "Candidates Surfaced",
+        "variant": "caption"
+      }
+    },
+    "text-candidates": {
+      "type": "Text",
+      "props": {
+        "text": "~25 candidates surfaced, all failed staleness or missing engagement metadata"
+      }
+    },
+    "section-pattern": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label-pattern",
+        "badge-pattern"
+      ]
+    },
+    "label-pattern": {
+      "type": "Text",
+      "props": {
+        "text": "Failure Pattern",
+        "variant": "caption"
+      }
+    },
+    "badge-pattern": {
+      "type": "Badge",
+      "props": {
+        "text": "6th consecutive empty/error — agent-buzz",
+        "variant": "destructive"
+      }
+    },
+    "section-missing": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label-missing",
+        "text-missing"
+      ]
+    },
+    "label-missing": {
+      "type": "Text",
+      "props": {
+        "text": "Missing",
+        "variant": "caption"
+      }
+    },
+    "text-missing": {
+      "type": "Text",
+      "props": {
+        "text": "Prefetch case still missing"
+      }
+    }
+  }
+}
