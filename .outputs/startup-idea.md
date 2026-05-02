@@ -1,20 +1,19 @@
-*Startup Ideas -- 2026-05-01*
+*Startup Ideas — 2026-05-02*
 
-Both ideas step outside crypto/PM (last 12 ran inside it). Idea 1 leans on the Wyre 50-state MTL operational tail; Idea 2 leans on Swarm Lab agent-lifecycle infra into enterprise non-trading deployments.
+*1. Edgepack* (executable) — weekly auto-generated FINRA Rule 2111 suitability briefs + state injunction tracker for prediction-market ETFs.
+ICP: CCO at a 50-300-advisor RIA, $200M-$5B AUM, who fielded the first advisor question on Roundhill PRES May 5-14.
+Wedge: 1-page-per-product reasonable-basis memo, customer questionnaire, NV/MA/NY injunction status, refreshed inside 48h of every CFTC enforcement / SEC EDGAR amendment.
+Why now: Roundhill 6 PM-ETFs SEC-effective May 5; CFTC Mar 12 DMO advisory; CFTC Feb 25 insider-trading advisory; state injunctions still pending. Three forcing functions in one quarter.
+MVP test: hand-build briefs for Roundhill's six May-5 ETFs in week 1, LLM-template in week 2, demo to 30 NAPFA CCOs.
+Kill: <5 paid pilots in 60 days OR <$30k ARR by 2026-09-30 → kill.
+Price: $1.5k/firm/mo. CAC ~$400/firm at scale.
 
-*1. Renew* (executable) -- post-licensing operational copilot for the 700+ already-licensed MSBs/MTLs that Brico/Cornerstone abandon after onboarding.
-ICP: Compliance officer at a 30-250-person stablecoin/payment-rail fintech (15+ active state MTLs) who just ate a deficiency notice on a lapsed surety bond.
-Wedge: 5-state renewal calendar + NMLS Call Report assembler + bond expiry tracker, pre-filled from Stripe/Modern Treasury data. Not new applications -- the boring quarterly+biennial cadence.
-Why now: GENIUS Act + state stablecoin regimes added 80-150 net-new MTL applicants hitting first renewal cycle in 2026-2027; CSBS moved Call Reports to stricter quarterly cadence Q1 2026.
-MVP test: 5-state MVP (NY/TX/CA/FL/NV) + 3 paid pilots @ $1,500/mo via Wyre/Polychain alumni network.
-Kill: <3 paid pilots in 60 days, OR <$10k MRR by day 120, OR pilot logo retention <90% past first cycle.
+*2. Rateline* (ambitious) — Brier-validated macro signal feed (fed-funds curve, NFP shock, fiscal/war-risk premia) distilled from Polymarket + Kalshi, sold to macro hedge funds + sell-side rates desks.
+ICP: macro PM at $1B+ fund (Brevan, Caxton, Tudor, Citadel Macro) who lost an EM rates trade because PM priced the move 24-72h ahead of options-implied vol with no ingestion path; OR sell-side rates Head of Strategy whose CIO asked 'what does Kalshi say' last 60 days.
+Wedge: institutional-grade Brier-validated FFR-curve overlay, SFTP/HTTP CSV + Bloomberg-BBO, documented Brier history vs Bloomberg consensus on every FOMC since 2024.
+Why now: Fed working paper 2026010 'Kalshi and the Rise of Macro Markets' gives risk committees academic cover; CFTC Mar 12 DMO advisory legitimizes event contracts; Roundhill ETFs prove regulated-wrapper demand.
+MVP test: daily FFR-curve overlay published gated for FOMC June 17-18 over 14 days; metric = 3 inbound institutional inquiries.
+Kill: <2 paid pilots ($25k+) in 90 days → kill.
+Price: $50k/seat/yr. Target 50 seats Y2 = $2.5M ARR.
 
-*2. Foundry* (ambitious) -- adversarial multi-agent stress-test as a CI gate for enterprise agentic deployments. Hash-chained eval logs sized for EU AI Act audit-readiness.
-ICP: Director/VP AI Engineering at F1000 enterprise (FS, insurance, retail, healthcare) running a CS or procurement agent who just ate a six-figure prod incident (50%-discount-leak, runaway purchasing loop) and the EU AI Act audit deadline is <=12 months out.
-Wedge: Pre-prod sim CI pipeline -- agent runs 1k-10k turns against curated attacker personas + cost-overrun scenarios + governance-bypass probes; output is a Pass/Fail report with replay traces. Vertical-only, audit-grade -- not the Galileo or Inspect lane.
-Why now: EU AI Act high-risk testing live August 2026; 79% of orgs deploying agents but only 14.4% with full security/IT approval; first wave of public six-figure agent incidents in 2025-2026.
-MVP test: 2 vertical packs (CS + procurement), 25 attacker personas, 10 cost-overrun scenarios, 8 governance-bypass probes. 3 design partners: 1 YC W26 vertical-AI startup, 1 mid-market, 1 F1000 via Lore investor warm intros.
-Kill: <3 paid pilots @ >=$25k/yr in 120 days, OR sim-surfaced failures don't predict prod incidents within 6 months, OR EU AI Act enforcement slips past Q1 2027.
-
-Sources: 6 permalinks (3 Renew / 3 Foundry). Full memos in memory/logs/2026-05-01.md.
-
+Operator's Citi-FX + CFA + Series 7 + Wyre regulatory product is the earned secret behind both. Domain rotated off agentic-compliance / PM-surveillance / EM-FX / fund-accounting (saturated last 14 days). Full memos in memory/logs/2026-05-02.md.

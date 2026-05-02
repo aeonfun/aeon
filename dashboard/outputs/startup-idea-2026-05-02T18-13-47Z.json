@@ -1,0 +1,446 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-05-02"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "edgepack_section",
+        "sep1",
+        "rateline_section",
+        "sep2",
+        "closing_section"
+      ]
+    },
+    "edgepack_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "edgepack_header",
+        "edgepack_description",
+        "edgepack_icp_field",
+        "edgepack_wedge_field",
+        "edgepack_why_field",
+        "edgepack_mvp_field",
+        "edgepack_kill_field",
+        "edgepack_price_field"
+      ]
+    },
+    "edgepack_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "edgepack_heading",
+        "edgepack_badge"
+      ]
+    },
+    "edgepack_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Edgepack",
+        "level": "h2"
+      }
+    },
+    "edgepack_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "executable"
+      }
+    },
+    "edgepack_description": {
+      "type": "Text",
+      "props": {
+        "text": "weekly auto-generated FINRA Rule 2111 suitability briefs + state injunction tracker for prediction-market ETFs."
+      }
+    },
+    "edgepack_icp_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_icp_label",
+        "edgepack_icp_value"
+      ]
+    },
+    "edgepack_icp_label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP",
+        "variant": "muted"
+      }
+    },
+    "edgepack_icp_value": {
+      "type": "Text",
+      "props": {
+        "text": "CCO at a 50-300-advisor RIA, $200M-$5B AUM, who fielded the first advisor question on Roundhill PRES May 5-14."
+      }
+    },
+    "edgepack_wedge_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_wedge_label",
+        "edgepack_wedge_value"
+      ]
+    },
+    "edgepack_wedge_label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge",
+        "variant": "muted"
+      }
+    },
+    "edgepack_wedge_value": {
+      "type": "Text",
+      "props": {
+        "text": "1-page-per-product reasonable-basis memo, customer questionnaire, NV/MA/NY injunction status, refreshed inside 48h of every CFTC enforcement / SEC EDGAR amendment."
+      }
+    },
+    "edgepack_why_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_why_label",
+        "edgepack_why_value"
+      ]
+    },
+    "edgepack_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now",
+        "variant": "muted"
+      }
+    },
+    "edgepack_why_value": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill 6 PM-ETFs SEC-effective May 5; CFTC Mar 12 DMO advisory; CFTC Feb 25 insider-trading advisory; state injunctions still pending. Three forcing functions in one quarter."
+      }
+    },
+    "edgepack_mvp_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_mvp_label",
+        "edgepack_mvp_value"
+      ]
+    },
+    "edgepack_mvp_label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test",
+        "variant": "muted"
+      }
+    },
+    "edgepack_mvp_value": {
+      "type": "Text",
+      "props": {
+        "text": "hand-build briefs for Roundhill's six May-5 ETFs in week 1, LLM-template in week 2, demo to 30 NAPFA CCOs."
+      }
+    },
+    "edgepack_kill_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_kill_label",
+        "edgepack_kill_value"
+      ]
+    },
+    "edgepack_kill_label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill",
+        "variant": "muted"
+      }
+    },
+    "edgepack_kill_value": {
+      "type": "Text",
+      "props": {
+        "text": "<5 paid pilots in 60 days OR <$30k ARR by 2026-09-30 → kill."
+      }
+    },
+    "edgepack_price_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "edgepack_price_label",
+        "edgepack_price_value"
+      ]
+    },
+    "edgepack_price_label": {
+      "type": "Text",
+      "props": {
+        "text": "Price",
+        "variant": "muted"
+      }
+    },
+    "edgepack_price_value": {
+      "type": "Text",
+      "props": {
+        "text": "$1.5k/firm/mo. CAC ~$400/firm at scale."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "rateline_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rateline_header",
+        "rateline_description",
+        "rateline_icp_field",
+        "rateline_wedge_field",
+        "rateline_why_field",
+        "rateline_mvp_field",
+        "rateline_kill_field",
+        "rateline_price_field"
+      ]
+    },
+    "rateline_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "rateline_heading",
+        "rateline_badge"
+      ]
+    },
+    "rateline_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Rateline",
+        "level": "h2"
+      }
+    },
+    "rateline_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious"
+      }
+    },
+    "rateline_description": {
+      "type": "Text",
+      "props": {
+        "text": "Brier-validated macro signal feed (fed-funds curve, NFP shock, fiscal/war-risk premia) distilled from Polymarket + Kalshi, sold to macro hedge funds + sell-side rates desks."
+      }
+    },
+    "rateline_icp_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_icp_label",
+        "rateline_icp_value"
+      ]
+    },
+    "rateline_icp_label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP",
+        "variant": "muted"
+      }
+    },
+    "rateline_icp_value": {
+      "type": "Text",
+      "props": {
+        "text": "macro PM at $1B+ fund (Brevan, Caxton, Tudor, Citadel Macro) who lost an EM rates trade because PM priced the move 24-72h ahead of options-implied vol with no ingestion path; OR sell-side rates Head of Strategy whose CIO asked 'what does Kalshi say' last 60 days."
+      }
+    },
+    "rateline_wedge_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_wedge_label",
+        "rateline_wedge_value"
+      ]
+    },
+    "rateline_wedge_label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge",
+        "variant": "muted"
+      }
+    },
+    "rateline_wedge_value": {
+      "type": "Text",
+      "props": {
+        "text": "institutional-grade Brier-validated FFR-curve overlay, SFTP/HTTP CSV + Bloomberg-BBO, documented Brier history vs Bloomberg consensus on every FOMC since 2024."
+      }
+    },
+    "rateline_why_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_why_label",
+        "rateline_why_value"
+      ]
+    },
+    "rateline_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now",
+        "variant": "muted"
+      }
+    },
+    "rateline_why_value": {
+      "type": "Text",
+      "props": {
+        "text": "Fed working paper 2026010 'Kalshi and the Rise of Macro Markets' gives risk committees academic cover; CFTC Mar 12 DMO advisory legitimizes event contracts; Roundhill ETFs prove regulated-wrapper demand."
+      }
+    },
+    "rateline_mvp_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_mvp_label",
+        "rateline_mvp_value"
+      ]
+    },
+    "rateline_mvp_label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test",
+        "variant": "muted"
+      }
+    },
+    "rateline_mvp_value": {
+      "type": "Text",
+      "props": {
+        "text": "daily FFR-curve overlay published gated for FOMC June 17-18 over 14 days; metric = 3 inbound institutional inquiries."
+      }
+    },
+    "rateline_kill_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_kill_label",
+        "rateline_kill_value"
+      ]
+    },
+    "rateline_kill_label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill",
+        "variant": "muted"
+      }
+    },
+    "rateline_kill_value": {
+      "type": "Text",
+      "props": {
+        "text": "<2 paid pilots ($25k+) in 90 days → kill."
+      }
+    },
+    "rateline_price_field": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rateline_price_label",
+        "rateline_price_value"
+      ]
+    },
+    "rateline_price_label": {
+      "type": "Text",
+      "props": {
+        "text": "Price",
+        "variant": "muted"
+      }
+    },
+    "rateline_price_value": {
+      "type": "Text",
+      "props": {
+        "text": "$50k/seat/yr. Target 50 seats Y2 = $2.5M ARR."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "closing_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "closing_text1",
+        "closing_text2"
+      ]
+    },
+    "closing_text1": {
+      "type": "Text",
+      "props": {
+        "text": "Operator's Citi-FX + CFA + Series 7 + Wyre regulatory product is the earned secret behind both. Domain rotated off agentic-compliance / PM-surveillance / EM-FX / fund-accounting (saturated last 14 days)."
+      }
+    },
+    "closing_text2": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-05-02.md."
+      }
+    }
+  }
+}
