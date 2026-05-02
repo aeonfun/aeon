@@ -1,32 +1,16 @@
-*GitHub Releases — 2026-05-01* — 31 updates · 🔴 4 asap · 🟡 0 soon · 🔵 21 fyi · ⚪ 6 skipped
+*GitHub Releases — 2026-05-02* — 10 updates · 🔴 0 asap · 🟡 0 soon · 🔵 9 fyi · ⚪ 1 skipped
 
-🔴 UPGRADE ASAP
-🔴 [BerriAI/litellm 1.84.0-dev.2](https://github.com/BerriAI/litellm/releases/tag/1.84.0-dev.2) — Hardens proxy security, adds GPT-image-2 and AIHubMix provider.
-🔴 [openai/openai-agents-python v0.14.7](https://github.com/openai/openai-agents-python/releases/tag/v0.14.7) — Tightens tar/zip member validation, rejects symlinked LocalFile sources.
-🔴 [anthropics/claude-code v2.1.123](https://github.com/anthropics/claude-code/releases/tag/v2.1.123) — Patches OAuth 401 retry loop under CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1.
-🔴 [BerriAI/litellm v1.83.14.rc.1](https://github.com/BerriAI/litellm/releases/tag/v1.83.14.rc.1) — Hardens OAuth, adds GPT-5.5 support, guardrails, memory CRUD endpoints.
+🔵 [ggml-org/llama.cpp b9006](https://github.com/ggml-org/llama.cpp/releases/tag/b9006) — Adds Adreno OpenCL MoE-MxFP4 kernel with on-GPU router reorder
+🔵 [ggml-org/llama.cpp b9004](https://github.com/ggml-org/llama.cpp/releases/tag/b9004) — Empty release notes; superseded 13 minutes later by next build
+🔵 [BerriAI/litellm v1.83.14-stable](https://github.com/BerriAI/litellm/releases/tag/v1.83.14-stable) — Promotes 1.83.14 RC chain to stable docker tag (no notes)
+🔵 [openai/openai-agents-python v0.15.1](https://github.com/openai/openai-agents-python/releases/tag/v0.15.1) — Adds Responses WebSocket keepalive; restores PTY child signal defaults
+🔵 [langchain-ai/langchain langchain-openrouter==0.2.3](https://github.com/langchain-ai/langchain/releases/tag/langchain-openrouter%3D%3D0.2.3) — Fixes fragmented reasoning_details merge in streaming
+🔵 [langchain-ai/langchain langchain-mistralai==1.1.3](https://github.com/langchain-ai/langchain/releases/tag/langchain-mistralai%3D%3D1.1.3) — Adds image input support for human messages
+🔵 [langchain-ai/langchain langchain-fireworks==1.3.0](https://github.com/langchain-ai/langchain/releases/tag/langchain-fireworks%3D%3D1.3.0) — Adds service_tier init kwarg on ChatFireworks
+🔵 [langchain-ai/langchain langchain==1.3.0a1](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.3.0a1) — Adds stream_events v3 protocol; HITL respond decision (alpha)
+🔵 [langchain-ai/langchain langchain-openrouter==0.2.2](https://github.com/langchain-ai/langchain/releases/tag/langchain-openrouter%3D%3D0.2.2) — Adds session_id and trace fields for tracing
 
-🔵 FYI
-🔵 [openai/openai-agents-python v0.15.0](https://github.com/openai/openai-agents-python/releases/tag/v0.15.0) — Surfaces refusals as ModelRefusalError; needs run-error handler for empty outputs.
-🔵 [ggerganov/llama.cpp b8994](https://github.com/ggml-org/llama.cpp/releases/tag/b8994) — Adds WebGPU upscale shader (nearest, bilinear, bicubic).
-🔵 [anthropics/claude-agent-sdk-python v0.1.72](https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.72) — Bumps bundled Claude CLI to 2.1.126.
-🔵 [anthropics/claude-code v2.1.126](https://github.com/anthropics/claude-code/releases/tag/v2.1.126) — Adds gateway /v1/models picker, project-state purge, OAuth paste-code login.
-🔵 [ggerganov/llama.cpp b8992](https://github.com/ggml-org/llama.cpp/releases/tag/b8992) — Multi-platform release binaries for CUDA, Vulkan, ROCm, OpenVINO.
-🔵 [langchain-ai/langchain langchain-fireworks==1.2.1](https://github.com/langchain-ai/langchain/releases/tag/langchain-fireworks%3D%3D1.2.1) — Translates canonical multimodal content blocks for chat completions.
-🔵 [langchain-ai/langchain langchain==1.2.17](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.2.17) — Adds respond decision to HITL middleware.
-🔵 [anthropics/anthropic-sdk-typescript bedrock-sdk-v0.29.1](https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/bedrock-sdk-v0.29.1) — Fixes Bedrock APIError handling in chunk-frame error events.
-🔵 [anthropics/anthropic-sdk-typescript sdk-v0.92.0](https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.92.0) — Adds CMA Memory APIs and env-driven custom headers.
-🔵 [langchain-ai/langchain langchain-perplexity==1.2.0](https://github.com/langchain-ai/langchain/releases/tag/langchain-perplexity%3D%3D1.2.0) — Adds PerplexityEmbeddings class.
-🔵 [langchain-ai/langchain langchain==1.2.16](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.2.16) — Stops inlining agent state into tool-dispatch Sends; perf gain.
-🔵 [anthropics/claude-agent-sdk-python v0.1.71](https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.71) — Adds sandbox network allowlist fields (allowedDomains, deniedDomains).
-🔵 [openai/openai-agents-python v0.14.8](https://github.com/openai/openai-agents-python/releases/tag/v0.14.8) — Fixes MCP re-export import errors, delimits sandbox prompt sections.
-… +9 more
-
-⚪ SKIP
-⚪ [vercel/next.js v16.3.0-canary.7](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.7) — Test-suite plumbing; preserves Playwright traces; removes Turbopack manifests.
-⚪ [vercel/next.js v16.3.0-canary.6](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.6) — Deprecates edge runtime; metadata-route HMR; Turbopack worker assetPrefix.
-⚪ [BerriAI/litellm 1.84.0-dev.1](https://github.com/BerriAI/litellm/releases/tag/1.84.0-dev.1) — Adds Redis GCP IAM caching, MCP UI creds, uvicorn health flags.
-… +3 more
+⚪ [vercel/next.js v16.3.0-canary.8](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.8) — Reverts Node-streams forkpoint revert; fixes draft-mode cache streaming
 
 _sources: ok=18 notfound=0 ratelimited=0 error=0_
 

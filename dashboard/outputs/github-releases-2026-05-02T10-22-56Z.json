@@ -1,0 +1,329 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases",
+        "description": "2026-05-02"
+      },
+      "children": [
+        "summary",
+        "sep1",
+        "releases",
+        "sep2",
+        "footer"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "10 updates · 0 asap · 0 soon · 9 fyi · 1 skipped",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "releases": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rel_0",
+        "rel_1",
+        "rel_2",
+        "rel_3",
+        "rel_4",
+        "rel_5",
+        "rel_6",
+        "rel_7",
+        "rel_8",
+        "rel_9"
+      ]
+    },
+    "rel_0": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_0_link",
+        "rel_0_desc"
+      ]
+    },
+    "rel_0_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9006",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9006",
+        "source": "GitHub"
+      }
+    },
+    "rel_0_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Adreno OpenCL MoE-MxFP4 kernel with on-GPU router reorder",
+        "variant": "caption"
+      }
+    },
+    "rel_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_1_link",
+        "rel_1_desc"
+      ]
+    },
+    "rel_1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9004",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9004",
+        "source": "GitHub"
+      }
+    },
+    "rel_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Empty release notes; superseded 13 minutes later by next build",
+        "variant": "caption"
+      }
+    },
+    "rel_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_2_link",
+        "rel_2_desc"
+      ]
+    },
+    "rel_2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BerriAI/litellm v1.83.14-stable",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/v1.83.14-stable",
+        "source": "GitHub"
+      }
+    },
+    "rel_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Promotes 1.83.14 RC chain to stable docker tag (no notes)",
+        "variant": "caption"
+      }
+    },
+    "rel_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_3_link",
+        "rel_3_desc"
+      ]
+    },
+    "rel_3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.15.1",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.15.1",
+        "source": "GitHub"
+      }
+    },
+    "rel_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Responses WebSocket keepalive; restores PTY child signal defaults",
+        "variant": "caption"
+      }
+    },
+    "rel_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_4_link",
+        "rel_4_desc"
+      ]
+    },
+    "rel_4_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-openrouter==0.2.3",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-openrouter%3D%3D0.2.3",
+        "source": "GitHub"
+      }
+    },
+    "rel_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes fragmented reasoning_details merge in streaming",
+        "variant": "caption"
+      }
+    },
+    "rel_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_5_link",
+        "rel_5_desc"
+      ]
+    },
+    "rel_5_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-mistralai==1.1.3",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-mistralai%3D%3D1.1.3",
+        "source": "GitHub"
+      }
+    },
+    "rel_5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds image input support for human messages",
+        "variant": "caption"
+      }
+    },
+    "rel_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_6_link",
+        "rel_6_desc"
+      ]
+    },
+    "rel_6_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-fireworks==1.3.0",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-fireworks%3D%3D1.3.0",
+        "source": "GitHub"
+      }
+    },
+    "rel_6_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds service_tier init kwarg on ChatFireworks",
+        "variant": "caption"
+      }
+    },
+    "rel_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_7_link",
+        "rel_7_desc"
+      ]
+    },
+    "rel_7_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain==1.3.0a1",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D1.3.0a1",
+        "source": "GitHub"
+      }
+    },
+    "rel_7_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds stream_events v3 protocol; HITL respond decision (alpha)",
+        "variant": "caption"
+      }
+    },
+    "rel_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_8_link",
+        "rel_8_desc"
+      ]
+    },
+    "rel_8_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-openrouter==0.2.2",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-openrouter%3D%3D0.2.2",
+        "source": "GitHub"
+      }
+    },
+    "rel_8_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds session_id and trace fields for tracing",
+        "variant": "caption"
+      }
+    },
+    "rel_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rel_9_link",
+        "rel_9_desc",
+        "rel_9_badge"
+      ]
+    },
+    "rel_9_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.8",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.8",
+        "source": "GitHub"
+      }
+    },
+    "rel_9_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Reverts Node-streams forkpoint revert; fixes draft-mode cache streaming",
+        "variant": "caption"
+      }
+    },
+    "rel_9_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "skipped",
+        "variant": "secondary"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "muted"
+      }
+    }
+  }
+}
