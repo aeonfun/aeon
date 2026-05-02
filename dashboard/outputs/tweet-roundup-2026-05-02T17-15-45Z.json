@@ -1,0 +1,109 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup — 2026-05-02"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "text_source",
+        "section_crypto",
+        "alert_ai"
+      ]
+    },
+    "text_source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: cache:0 websearch:1 failed:2",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "section_crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_crypto",
+        "badge_note",
+        "tweet_stack"
+      ]
+    },
+    "heading_crypto": {
+      "type": "Heading",
+      "props": {
+        "text": "[crypto OR bitcoin OR DeFi]",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "badge_note": {
+      "type": "Badge",
+      "props": {
+        "text": "single Solana ecosystem story",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "tweet_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_author_intro",
+        "tweet_card",
+        "link_view"
+      ]
+    },
+    "text_author_intro": {
+      "type": "Text",
+      "props": {
+        "text": "x.com/SolanaSensei — Weekly digest:",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "tweet_card": {
+      "type": "TweetCard",
+      "props": {
+        "author": "SolanaSensei",
+        "handle": "SolanaSensei",
+        "text": "Solana RWA TVL hits new ATH above $2.5B; Accelerate USA on May 5 in Miami brings builders, institutions, policymakers post-Consensus."
+      },
+      "children": []
+    },
+    "link_view": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/SolanaSensei/status/2050205870198579353"
+      },
+      "children": []
+    },
+    "alert_ai": {
+      "type": "Alert",
+      "props": {
+        "title": "AI and tech/startups",
+        "message": "Topics dropped — no in-window survivors via WebSearch",
+        "type": "info"
+      },
+      "children": []
+    }
+  }
+}
