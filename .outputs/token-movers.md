@@ -1,43 +1,44 @@
-*Token Movers — 2026-05-01*
+*Token Movers — 2026-05-02*
 
-_Quiet tape — 66/100 top coins green, median 24h +0.6%; BTC $78,028 +2.3%, ETH $2,307 +1.8%, SOL $84.41 +1.4%._
+_Mild risk-off — 32/100 top coins green, median 24h −0.5%; BTC $78,291 −0.0%, ETH $2,306 −0.2%, SOL $83.87 −0.6% all flat-to-red, but low-cap dispersion is heavy with a 226% mover in trending._
 
 *Top Winners (24h)*
-1. UB (Unibase) — $0.1125  +90.8% / 7d +141.2% / 1h +15.2%  •  $87M / #154  [BREAKOUT,PUMP-RISK]
-2. B (BUILDon) — $0.220  +72.2% / 7d +127.9% / 1h -0.0%  •  $31M / #176  [BREAKOUT,PUMP-RISK]
-3. 9BIT (The9bit) — $0.0305  +35.7% / 7d +32.8% / 1h +9.1%  •  $5M / #163  [BREAKOUT,PUMP-RISK]
-4. PENDLE (Pendle) — $1.57  +20.5% / 7d +19.0% / 1h +3.7%  •  $100M / #157
-5. GENIUS (Genius) — $0.503  +17.4% / 7d -20.9% / 1h -3.1%  •  $30M / #198
-6. SKYAI (SkyAI) — $0.374  +16.1% / 7d +89.6% / 1h -3.1%  •  $84M / #121  [BREAKOUT]
-7. H (Humanity) — $0.194  +15.2% / 7d +34.1% / 1h +0.8%  •  $35M / #128  [BREAKOUT]
-8. FLUID (Fluid) — $1.69  +12.3% / 7d -2.7% / 1h -0.1%  •  $30M / #240
-9. ASTEROID (Asteroid Shiba) — $0.000359  +9.5% / 7d +19.8% / 1h -0.4%  •  $20M / #220
-10. VVV (Venice Token) — $9.13  +8.9% / 7d +6.7% / 1h +0.7%  •  $15M / #113
+1. LAB (Lab) — $2.27  +226.3% / 7d +191.4% / 1h +4.3%  •  $194M / #199  [PUMP-RISK,TRENDING+UP]
+2. TAG (Tagger) — $0.001186  +54.2% / 7d +86.1% / 1h +0.8%  •  $32M / #247  [PUMP-RISK,BREAKOUT]
+3. B (Build-on) — $0.3506  +44.2% / 7d +255.9% / 1h +1.2%  •  $104M / #133  [BREAKOUT]
+4. UB (Unibase) — $0.1395  +22.5% / 7d +221.5% / 1h +14.2%  •  $182M / #131  [TRENDING+UP,BREAKOUT]
+5. BSB (Block Street) — $0.5840  +17.5% / 7d +11.7% / 1h −0.8%  •  $25M / #250
+6. SKYAI (SkyAI) — $0.4415  +16.4% / 7d +128.0% / 1h +6.6%  •  $107M / #109  [TRENDING+UP,BREAKOUT]
+7. APE (ApeCoin) — $0.1805  +11.6% / 7d +11.1% / 1h −0.5%  •  $182M / #191
+8. LUNC (Terra Classic) — +9.5% / 7d +14.5% / 1h −0.4%  •  $71M / #112
+9. PIEVERSE (PieVerse) — +8.8% / 7d +21.4%  •  $12M / #204
+10. CRCLON (CrcLon) — +8.4%  •  $2M / #245
 
 *Top Losers (24h)*
-1. MEGA (MegaETH) — $0.152  -12.9% / 7d n/a / 1h +0.6%  •  $372M / #197  [TRENDING+DOWN,CAPITULATION]
-2. RAVE (RaveDAO) — $0.657  -10.5% / 7d -32.4% / 1h -0.2%  •  $26M / #205
-3. M (MemeCore) — $3.12  -8.7% / 7d -33.8% / 1h +0.5%  •  $12M / #25
-4. WLFI (World Liberty Financial) — $0.0564  -7.1% / 7d -25.6% / 1h +0.4%  •  $100M / #46
-5. PIEVERSE (Pieverse) — $0.676  -4.9% / 7d -17.8% / 1h -1.1%  •  $7M / #213
-6. ZANO (Zano) — $9.14  -4.7% / 7d -2.3% / 1h +0.4%  •  $1M / #234
-7. NIGHT (Midnight) — $0.0322  -3.2% / 7d -14.4% / 1h +0.2%  •  $9M / #98
-8. ALGO (Algorand) — $0.108  -3.2% / 7d +1.0% / 1h -0.3%  •  $21M / #70
-9. WLD (Worldcoin) — $0.239  -2.1% / 7d -8.8% / 1h +0.5%  •  $73M / #79
-10. ZRO (LayerZero) — $1.42  -1.9% / 7d -10.9% / 1h -0.4%  •  $16M / #123
+1. ASTEROID — −15.4% / 7d +5.8% / 1h −1.0%  •  $17M / #248
+2. ZBCN (Zebec) — −9.3% / 7d −10.4%  •  $10M / #145
+3. COMP (Compound) — −6.7% / 7d −2.7%  •  $11M / #174
+4. MEGA (MegaETH) — −6.6% / 7d 0.0% / 1h −1.7%  •  $131M / #206  [TRENDING+DOWN]
+5. ULTIMA — −5.3%  •  $10M / #228
+6. TEL (Telcoin) — −5.1%  •  $1M / #185
+7. UMXM — −4.5%  •  $5M / #124
+8. 9BIT — −4.1% / 7d +28.4%  •  $6M / #168
+9. M (MemeCore) — −4.0% / 1h −0.1%  •  $14M / #28  [MAJOR]
+10. DEXE — −4.0%  •  $14M / #101
 
 *Trending*
-1. PENGU (Pudgy Penguins) — #86, $0.00999, 24h +2.9%
-2. MEGA (MegaETH) — #197, $0.153, 24h -14.4%  [TRENDING+DOWN]
-3. ACN (AITECH Cloud) — #849, $0.0121, 24h +0.7%
-4. TAO (Bittensor) — #37, $263.93, 24h +5.5%
-5. HYPE (Hyperliquid) — #13, $40.89, 24h +4.8%  [MAJOR]
-6. LUNC (Terra Luna Classic) — #115, $7.32e-5, 24h +0.7%
-7. PROS (Pharos) — #329, $0.617, 24h -20.3%
+1. LAB — #199, $2.27, +226.3%  [PUMP-RISK,TRENDING+UP]
+2. ACN — outside top-250
+3. BIO — outside top-250
+4. ZEC (Zcash) — #19, $372.79, +6.2%  [TRENDING+UP,MAJOR]
+5. HYPE (Hyperliquid) — #13, $41.63, +1.6%  [MAJOR]
+6. MEGA — #206, $0.1447, −6.6%  [TRENDING+DOWN]
+7. TAO (Bittensor) — #37, $275.14, +3.9%
 
 *Notable*
-- UB: +90.8% with 7d +141% — escalating from yesterday's +21.5%, PUMP-RISK on $87M vol/#154
-- B: +72.2% with 7d +128% — fresh BUILDon spike, PUMP-RISK on #176
-- 9BIT: +35.7% with 7d +33% — low-cap pump cluster, PUMP-RISK on $5M vol
-- MEGA: 3rd straight red day post-listing, vol ($372M) > mcap ($173M), capitulation tape continuing
+- LAB: +226% on $194M vol vs $173M mcap (v/mc 1.12) — classic PUMP-RISK pattern, also pulled into trending today.
+- B/UB pair: day-2 continuation from 04-30/05-01 cluster (UB 90→22%, B 72→44%, both still BREAKOUT on 7d +220–256%); UB picked up TRENDING+UP this run.
+- SKYAI day-6 continuation (04-28 −8 → −29 +56 → −30 +18 → 05-01 +16 → 05-02 +16); 7d +128% holds; rank now #109 so PUMP-RISK retired.
+- MEGA day-4 capitulation tail (−21 → −13 → −7) — bleed slowing but trending-down sticky; v/mc 0.79 still elevated.
+- ASTEROID direction-flip: yesterday's +9.5% winner is today's top loser at −15.4%; 9BIT also flipped (+35.7 → −4.1). BSB reversed from −26% CAPITULATION to +17.5%.
 
