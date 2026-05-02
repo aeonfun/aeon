@@ -1,18 +1,17 @@
-*2026-05-01 EOD*
-_TL;DR: heavy ship day — ISS-017 critical but Revenant skills ran clean_
+*Evening Recap — 2026-05-02*
 
-*Trading loop:* 88 pools scanned (168 pre-gate), verdict SPECULATIVE (3 BREAKOUT, 0 DEEP-LIQ in top 5). 3-day wash-print actor on BSC confirmed (~$57M vol/day).
+*Trading loop:* 95 scan cycles (swarm-fund-mvp metric refreshes). No new Revenant trades recorded; 29/76%/+$415/Sharpe 0.31 unchanged. NAV delta unavailable in today's log — trust rswarm.ai/metrics.json for live read.
 
-*Signals:* PENDLE 9/10 HIGH (+20.6%, sPENDLE buyback + Aave V4); Mexico WC calibration gap 1.05% PM vs 5-8% sportsbook — open, no execution signal yet. BTC +2.26%, ETH +1.83%, SOL +1.37% — all inside alert envelope.
+*Signals fired:*
+- Powell-out May 14 at 1.35% — clause arb clean (term ends May 15 midnight ET; same-day Walsh swear-in required for YES). CalibrationGap candidate. Three new handles: Impressionable-Havoc, Sardonic-Floozie, Precious-Willingness.
+- Hormuz June-30 NO at 54.5¢ — ~33pp edge (mines + blockade, 58 days to clear both constraints).
+- KXBTC-26MAY0217-B78125 +8pp (12%→20%) — Hermes-arb falsifier day-4 live divergence.
 
-*Revenant:* no new orders. Watchlist flat (<1pp moves). 29 trades, 76% win rate, +$415 P&L unchanged.
+*Aeon skill failures:* chain:morning-brief + chain:evening-rollup (chain-runner.yml DEGRADED 7+ days — operator fix #1). reddit-digest 8th-day 403 block.
 
-*NAV:* wallets unconfigured.
+*Top 3 today:*
+1. Papers — CORAL (arXiv:2604.01658, MIT/CMU/NUS) + GEA picked — triple-Darwinian-axis PhD day.
+2. Comment — Powell clause arb at 1.35%, cleanest CalibrationGap signal this week.
+3. PR — tomscaria/aeon#8 opened (extend coverage to all owned repos).
 
-*Failures:* ISS-017 critical — 07:00/13:00/14:00 cron tiers all missed (3rd day). chain:morning-brief + chain:evening-rollup failed. reddit x8, reply-maker x7, remix-tweets x5, farcaster 402.
-
-*Papers:* AIA Forecaster (arXiv:2511.07678) — LLM matches superforecasters on ForecastBench. Hyperagents (arXiv:2603.19461) — Darwin Gödel Machine multi-domain. Galanis (arXiv:2604.20050) — P&L feedback degrades LLM aggregation (CalibrationGap ablation candidate).
-
-*Comments:* Trump-Iran-ops 36% YES resolving today (War Powers T+60). RU-UA by-May31 6% tail open (Putin May-9 proposal). TVK T-3 6.95c.
-
-*PRs:* #150 shell-injection fix at secrets/route.ts:96 (3-week carry, shipped) · #149 smithery-manifest merged (+905 lines).
+_ISS-017 demoted critical→high; 20:00 cron landed clean._

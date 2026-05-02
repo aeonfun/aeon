@@ -1,0 +1,360 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-02"
+      },
+      "children": [
+        "heading-trading",
+        "stack-trading",
+        "separator-1",
+        "heading-signals",
+        "stack-signals",
+        "separator-2",
+        "heading-failures",
+        "stack-failures",
+        "separator-3",
+        "heading-top3",
+        "stack-top3",
+        "separator-4",
+        "text-final"
+      ]
+    },
+    "heading-trading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading Loop",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-trading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat-cycles",
+        "stat-revenant",
+        "text-nav"
+      ]
+    },
+    "stat-cycles": {
+      "type": "Stat",
+      "props": {
+        "label": "Scan Cycles",
+        "value": "95"
+      },
+      "children": []
+    },
+    "stat-revenant": {
+      "type": "Stat",
+      "props": {
+        "label": "Revenant Trades",
+        "value": "29",
+        "delta": "76% win rate, +$415 P&L, Sharpe 0.31"
+      },
+      "children": []
+    },
+    "text-nav": {
+      "type": "Text",
+      "props": {
+        "text": "No new trades recorded. NAV delta unavailable in today's log — check rswarm.ai/metrics.json for live read.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-signals": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals Fired",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-signals": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item-powell",
+        "item-hormuz",
+        "item-kxbtc"
+      ]
+    },
+    "item-powell": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-powell",
+        "text-powell-condition",
+        "text-powell-candidate"
+      ]
+    },
+    "heading-powell": {
+      "type": "Heading",
+      "props": {
+        "text": "Powell-out May 14 at 1.35%",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-powell-condition": {
+      "type": "Text",
+      "props": {
+        "text": "Clause arb clean (term ends May 15 midnight ET; same-day Walsh swear-in required for YES)"
+      },
+      "children": []
+    },
+    "text-powell-candidate": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap candidate. Three new handles: Impressionable-Havoc, Sardonic-Floozie, Precious-Willingness"
+      },
+      "children": []
+    },
+    "item-hormuz": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-hormuz",
+        "text-hormuz"
+      ]
+    },
+    "heading-hormuz": {
+      "type": "Heading",
+      "props": {
+        "text": "Hormuz June-30 NO at 54.5¢",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-hormuz": {
+      "type": "Text",
+      "props": {
+        "text": "~33pp edge (mines + blockade, 58 days to clear both constraints)"
+      },
+      "children": []
+    },
+    "item-kxbtc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-kxbtc",
+        "text-kxbtc"
+      ]
+    },
+    "heading-kxbtc": {
+      "type": "Heading",
+      "props": {
+        "text": "KXBTC-26MAY0217-B78125 +8pp (12%→20%)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "text-kxbtc": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb falsifier day-4 live divergence"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-failures": {
+      "type": "Heading",
+      "props": {
+        "text": "Aeon Skill Failures",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-failures": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert-chains",
+        "alert-reddit"
+      ]
+    },
+    "alert-chains": {
+      "type": "Alert",
+      "props": {
+        "title": "chain:morning-brief + chain:evening-rollup",
+        "message": "chain-runner.yml DEGRADED 7+ days — operator fix #1",
+        "type": "error"
+      },
+      "children": []
+    },
+    "alert-reddit": {
+      "type": "Alert",
+      "props": {
+        "title": "reddit-digest",
+        "message": "8th-day 403 block",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-top3": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3 Today",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-top3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item-papers",
+        "item-comment",
+        "item-pr"
+      ]
+    },
+    "item-papers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-papers",
+        "storylink-coral",
+        "text-gea"
+      ]
+    },
+    "badge-papers": {
+      "type": "Badge",
+      "props": {
+        "text": "Papers",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "storylink-coral": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CORAL (MIT/CMU/NUS)",
+        "href": "https://arxiv.org/abs/2604.01658",
+        "source": "arXiv:2604.01658"
+      },
+      "children": []
+    },
+    "text-gea": {
+      "type": "Text",
+      "props": {
+        "text": "GEA picked — triple-Darwinian-axis PhD day"
+      },
+      "children": []
+    },
+    "item-comment": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-comment",
+        "text-comment"
+      ]
+    },
+    "badge-comment": {
+      "type": "Badge",
+      "props": {
+        "text": "Comment",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "text-comment": {
+      "type": "Text",
+      "props": {
+        "text": "Powell clause arb at 1.35%, cleanest CalibrationGap signal this week"
+      },
+      "children": []
+    },
+    "item-pr": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-pr",
+        "link-pr"
+      ]
+    },
+    "badge-pr": {
+      "type": "Badge",
+      "props": {
+        "text": "PR",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "link-pr": {
+      "type": "Link",
+      "props": {
+        "label": "tomscaria/aeon#8 opened (extend coverage to all owned repos)",
+        "href": "https://github.com/tomscaria/aeon/pull/8"
+      },
+      "children": []
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text-final": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-017 demoted critical→high; 20:00 cron landed clean.",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
