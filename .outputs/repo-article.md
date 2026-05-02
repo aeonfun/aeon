@@ -1,5 +1,5 @@
-*Aeon Just Built Its Way Off the Fork*
+*swarm-fund-mvp Stopped Adding Strategies. It's Building the Selector.*
 
-Thesis: PR #149 (smithery-manifest, +905 lines, merged 2026-05-01 13:44 UTC) is Aeon's first distribution channel that bypasses the fork model — six weeks after the MCP server shipped, the registry forms now write themselves.
+Thesis: swarm-fund-mvp's last 7 days shipped 7 ADRs (#084-091); six build the fleet-selection layer (varrd-style guardrails, per-regime bandits, cull corroboration). None add new alpha.
 
-Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-01.md
+Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-02.md

@@ -1,0 +1,42 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "repo-article"
+      },
+      "children": [
+        "heading_title",
+        "text_thesis",
+        "storylink_article"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund-mvp Stopped Adding Strategies. It's Building the Selector.",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_thesis": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis: swarm-fund-mvp's last 7 days shipped 7 ADRs (#084-091); six build the fleet-selection layer (varrd-style guardrails, per-regime bandits, cull corroboration). None add new alpha.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "storylink_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Read full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-02.md",
+        "source": "repo-article"
+      },
+      "children": []
+    }
+  }
+}
