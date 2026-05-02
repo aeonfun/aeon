@@ -1,0 +1,148 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Vuln Scanner — 2026-05-02"
+      },
+      "children": [
+        "alert_error",
+        "sep1",
+        "scanners_table",
+        "sep2",
+        "issues_stack",
+        "sep3",
+        "candidate_stack",
+        "sep4",
+        "article_link"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "title": "VULN_SCANNER_ERROR",
+        "message": "All scanners unavailable",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "scanners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Scanner",
+          "Status"
+        ],
+        "rows": [
+          [
+            "semgrep",
+            "fail"
+          ],
+          [
+            "trufflehog",
+            "fail"
+          ],
+          [
+            "osv-scanner",
+            "fail"
+          ],
+          [
+            "slither",
+            "not attempted"
+          ],
+          [
+            "docker",
+            "fail (gated)"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issues_heading",
+        "issue_1",
+        "issue_2",
+        "issue_3"
+      ]
+    },
+    "issues_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues",
+        "level": "h3"
+      }
+    },
+    "issue_1": {
+      "type": "Text",
+      "props": {
+        "text": "prefetch-vuln-scanner.sh workaround documented in skill is not in tree"
+      }
+    },
+    "issue_2": {
+      "type": "Text",
+      "props": {
+        "text": "Third ISS-001 recurrence, operator-blocked"
+      }
+    },
+    "issue_3": {
+      "type": "Text",
+      "props": {
+        "text": "No fork, no PVR, no PR, no dedup write"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "candidate_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "candidate_heading",
+        "candidate_text"
+      ]
+    },
+    "candidate_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Candidate",
+        "level": "h3"
+      }
+    },
+    "candidate_text": {
+      "type": "Text",
+      "props": {
+        "text": "t8y2/dbx — multi-DB connector, broad untrusted-input surface"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Vuln Scan 2026-05-02",
+        "href": "articles/vuln-scan-2026-05-02.md",
+        "source": "vuln-scanner"
+      }
+    }
+  }
+}

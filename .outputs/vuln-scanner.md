@@ -1,2 +1,3 @@
-*Vuln Scanner — ERROR*
-0 confirmed findings, 0 candidates triaged. All three scanners (semgrep, trufflehog, osv-scanner) blocked by sandbox: `pip install` and binary execution both denied, and `scripts/prefetch-vuln-scanner.sh` does not exist. Per skill spec all-scanners-fail = ERROR, nothing was forked or disclosed. Filed memory/issues/ISS-001 (high, sandbox-limitation). Fix is a prefetch script modeled on prefetch-xai.sh; until it lands every Saturday run will exit with VULN_SCANNER_ERROR.
+*Vuln Scanner — 2026-05-02*
+VULN_SCANNER_ERROR. All scanners unavailable: semgrep=fail, trufflehog=fail, osv-scanner=fail, slither=fail (not attempted), docker=fail (gated). The prefetch-vuln-scanner.sh workaround documented in the skill is still not in tree (third ISS-001 recurrence, operator-blocked). No fork, no PVR, no PR, no dedup write. Top candidate would have been t8y2/dbx (multi-DB connector, broad untrusted-input surface). Article: articles/vuln-scan-2026-05-02.md.
+
