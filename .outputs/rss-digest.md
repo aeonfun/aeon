@@ -1,9 +1,14 @@
 ## Summary
 
-**rss-digest**: SKIPPED. `memory/feeds.yml` does not exist, and per SKILL.md ("If the file doesn't exist yet, create it or skip this skill") I skipped rather than fabricating feeds. No notification sent.
+**rss-digest skipped** — `memory/feeds.yml` does not exist (recurrence #2 — also skipped on 2026-05-01).
+
+Per the skill spec (`skills/rss-digest/SKILL.md:14`): *"If the file doesn't exist yet, create it or skip this skill."* I followed the same pattern as yesterday's run rather than guess at operator-preferred feed URLs.
 
 **Files modified:**
-- `memory/logs/2026-05-01.md` — created with skip log entry
+- `memory/logs/2026-05-02.md` — created with rss-digest skip entry
 
-**Follow-up:**
-- Operator config gap: populate `memory/feeds.yml` with desired feeds (already tracked in MEMORY.md "Operator config sweep" priority), or remove this skill from `aeon.yml` schedule. Each scheduled run with no feeds.yml is wasted compute.
+**No notification sent** (RSS_DIGEST_SKIPPED is silent by yesterday's precedent).
+
+**Follow-up needed (operator-side):**
+- Populate `memory/feeds.yml` with priority feeds aligned with mission (Polymarket microstructure, calibration/agentic-finance research, prediction-market regulatory front, crypto markets). The `rss-feed` skill at `skills/rss-feed/SKILL.md` is a separate Atom-feed generator and is unrelated to this blocker.
+- If skip recurrence reaches ≥3 days, consider proposing a default `feeds.yml` PR for operator review (would unblock the skill without requiring inline operator config).
