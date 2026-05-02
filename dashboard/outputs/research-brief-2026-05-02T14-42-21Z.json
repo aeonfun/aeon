@@ -1,0 +1,194 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief",
+        "description": "Russia-Ukraine ceasefire prediction market analysis"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_market",
+        "text_market_intro",
+        "stack_stats",
+        "separator_1",
+        "heading_rules",
+        "text_rules_detail",
+        "alert_rule_problem",
+        "separator_2",
+        "heading_thesis",
+        "text_thesis_conditional",
+        "separator_3",
+        "heading_why",
+        "text_why_calibration",
+        "text_why_research",
+        "link_research",
+        "separator_4",
+        "text_brief_location"
+      ]
+    },
+    "heading_market": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Situation",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_market_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket's 'Russia-Ukraine ceasefire by May 31, 2026' market sits at 6% YES on $2.07M volume after Putin floated a May 9 Victory Day truce to Trump on April 29.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "stack_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_price",
+        "stat_volume"
+      ]
+    },
+    "stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Price (YES)",
+        "value": "6%"
+      },
+      "children": []
+    },
+    "stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$2.07M"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_rules": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution Rules",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_rules_detail": {
+      "type": "Text",
+      "props": {
+        "text": "The market's resolution rules require a 'general pause' that 'publicly and mutually' halts engagement — not a parade-day or humanitarian lull.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "alert_rule_problem": {
+      "type": "Alert",
+      "props": {
+        "title": "Resolution Rule Mismatch",
+        "message": "The proposal as stated cannot resolve YES; the 6% pays for a scope-expansion scenario nobody has announced.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_thesis_conditional": {
+      "type": "Text",
+      "props": {
+        "text": "Conditional on no Kremlin or White House statement before May 15 expanding the May 9 proposal beyond Victory Day, fair value is ≤2% — current 6% is a structurally short clause-arbitrage trade.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_why": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters for CalibrationGap",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_why_calibration": {
+      "type": "Text",
+      "props": {
+        "text": "Same family as Iran-cf vs Hez-cf clause-arb — quant scanner is blind to resolution-rule catalysts.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_why_research": {
+      "type": "Text",
+      "props": {
+        "text": "Wen et al. (April 2026) report 89.58% LLM-vs-UMA agreement on rule-text resolution, which puts a number on the parsing edge.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "link_research": {
+      "type": "Link",
+      "props": {
+        "label": "arXiv 2604.15674",
+        "href": "https://arxiv.org/abs/2604.15674"
+      },
+      "children": []
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text_brief_location": {
+      "type": "Text",
+      "props": {
+        "text": "Full brief: articles/research-brief-russia-ukraine-ceasefire-may2026-prediction-markets-2026-05-02.md",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
