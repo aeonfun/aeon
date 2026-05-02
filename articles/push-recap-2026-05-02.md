@@ -177,3 +177,24 @@ No commits or merged PRs in the 24h window.
 - gh pr list: ok
 - bot-filtered: 96 (`data: refresh site metrics` commits, all touching only `swarm-lab-site/public/metrics.json`)
 - diff-truncated: 0
+
+---
+
+## Tail re-run — 2026-05-02 21:40 UTC
+
+Skill re-invoked ~7h after the canonical run above. Window 2026-05-01T21:40Z → 2026-05-02T21:40Z.
+
+**Shape (this window):** 3 user-visible · 1 internal · 0 infra · 95 bot-filtered · 1 merged PR
+**Substantive deltas vs. canonical run:** none — the three user-visible commits in this narrower window (`58407ee`, `f2240a7`, `121ba3e`) are already in the canonical Top-impact list above. The merged PR (lore #5) is already listed in the header. Everything new since 14:39 UTC is `data: refresh site metrics` (95 commits, each touching only `swarm-lab-site/public/metrics.json`).
+
+**Verdict:** SHIPPING — same site-shipping verdict as the canonical run, no new substantive shape.
+
+**Notification:** suppressed. Re-sending the same Top-3 within 7h would degrade the channel's high-signal contract. Logged as `PUSH_RECAP_REPEAT_SAMEDAY`. Spec's significance gate (zero user-visible / ≤3 internal / zero PRs) does not literally trigger silence here, but its stated intent ("the gate exists so the channel stays high-signal") does.
+
+**Sources (this window):**
+- tomscaria/swarm-fund-mvp: ok (98 commits — 3 substantive + 95 metric-refresh)
+- tomscaria/lore-financial-teaser: ok (2 commits + 1 merged PR)
+- aaronjmars/aeon: empty
+- gh api commits / gh pr list: ok
+- bot-filtered (this window): 95
+- diff-truncated: 0

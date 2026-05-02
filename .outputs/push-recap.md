@@ -1,23 +1,19 @@
-*Push Recap — 2026-05-02*
-swarm-fund-mvp — SHIPPING — 32-article research surface, Discover product, per-strategy dashboard
-lore-financial-teaser — repo renamed to "Lore Financial Teaser" + Aeon wired in
-aaronjmars/aeon — empty (no commits in window)
+## Summary
 
-Shipped to users:
-• swarm `9d0aab2` — research surface restored from lost stash 552092c: 32 long-form articles, /research routes, sitemap (43 URLs) + RSS feed (32 items) + OG cards (32) re-emitted at build time
-• swarm `e2afbda` — varrd-style backtest guardrails ship: Bonferroni correction, sha256 factor fingerprint + k-tracker, OOS lock, AST lookahead lint, multi-horizon realized P&L replay, Karpathy-style autoresearch loop, 106 new tests (6-of-8 varrd guardrails)
-• swarm `fe904be` + `d5f902e` — per-strategy admin lands: /strategy/[name] page (edge matrix, regime breakdown, realized P&L, lookahead findings, audit log) backed by 7 new /api/strategies* routes; first concrete win surfaced — mage SOL +9.95 bps Sharpe 0.307 vs ETH -3.06 bps
-• swarm `58407ee` — Discover product committed (MarketScorer / CalibrationCodex / EdgeFeed / AuroraBackground, 992-line CSS) + framer-motion + d3-scale declared; unblocks Vercel deploy red since 18804b4
-• lore `120cb40` (PR #4) — repo + package.json renamed to lore-financial-teaser; SlideDeckNav + FloatingPitchProgressHUD strip "Pre-Series A" qualifier (Vercel deploy unaffected, tracks by project ID)
+Re-executed `push-recap` skill at 21:40 UTC, ~7h after today's canonical 14:39 UTC run. The current 24h window (2026-05-01T21:40Z → 2026-05-02T21:40Z) covers 100 commits across the three watched repos:
 
-Under the hood:
-• swarm `648725d` — variant bandit gains per-regime overlay (3-tier Kelly fallback), fleet cull joins t-test + Beta posterior, append-only JSONL posterior history; new Telegram /bandit_regime command
-• swarm `c76064d` — Signal.fired_at = tick.ts (5 strategies); ADR-084 gate caught it: mage went from 1350/1350 dropped to 1645/1645 resolved at 60-min horizon
+- **swarm-fund-mvp:** 3 user-visible commits (`58407ee` Discover folder, `f2240a7` api.ts exports, `121ba3e` voice rewrite) — **all already listed in the canonical run's Top-10**. Plus 95 bot-filtered `data: refresh site metrics` commits.
+- **lore-financial-teaser:** 1 internal docs commit (`d43722c`) + merged PR #5 — also already in the canonical run.
+- **aaronjmars/aeon:** empty.
 
-Shape: 14 user-visible · 6 internal · 1 infra · 96 bot-filtered (data: refresh site metrics) · 4 merged PRs
-Volume: ~227 files changed, +22,525 lines
+**Net-new content since canonical run:** 95 metric refreshes only. Zero new substantive commits.
 
-Open threads: swarm-fund-mvp #19/#20/#23/#24 stalled (oldest #19 from 04-27, all ai/* fix branches)
+**Decisions:**
+- Did not overwrite the comprehensive canonical article. Appended a `## Tail re-run — 2026-05-02 21:40 UTC` section noting no new substantive shape.
+- **Suppressed notification** with `PUSH_RECAP_REPEAT_SAMEDAY`. Spec's literal significance gate (zero user-visible / ≤3 internal / zero PRs) does not formally trigger silence (we have 3 user-visible + 1 PR), but the spec's stated intent — "the gate exists so the channel stays high-signal" — does. Re-sending the same Top-3 + same merged PR within 7h would be channel noise.
 
-Full recap: https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-02.md
+**Files modified:**
+- `articles/push-recap-2026-05-02.md` (appended tail-run section; canonical body untouched)
+- `memory/logs/2026-05-02.md` (appended tail-run log entry)
 
+**Follow-ups:** None. Tomorrow's first scheduled push-recap run will pick up cleanly with a fresh 24h window.
