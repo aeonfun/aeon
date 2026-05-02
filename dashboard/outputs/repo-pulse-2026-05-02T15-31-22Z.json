@@ -1,0 +1,250 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse — 2026-05-02"
+      },
+      "children": [
+        "header-group",
+        "stats-group",
+        "sep1",
+        "notable-group",
+        "sep2",
+        "other-group",
+        "sep3",
+        "forks-group",
+        "source-footer"
+      ]
+    },
+    "header-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "repo-link",
+        "status-badge"
+      ]
+    },
+    "repo-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      },
+      "children": []
+    },
+    "status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ACTIVE",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "stats-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stars-stat",
+        "forks-stat"
+      ]
+    },
+    "stars-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "261",
+        "delta": "+5",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "forks-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "39",
+        "delta": "+1",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "notable-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-heading",
+        "notable-items"
+      ]
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "notable-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable-1",
+        "notable-2"
+      ]
+    },
+    "notable-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "supermomonga",
+        "href": "https://github.com/supermomonga",
+        "score": "255 followers"
+      },
+      "children": []
+    },
+    "notable-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "rjgladish",
+        "href": "https://github.com/rjgladish",
+        "score": "9 followers"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "other-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "other-heading",
+        "other-items"
+      ]
+    },
+    "other-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "other-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "other-1",
+        "other-2",
+        "other-3"
+      ]
+    },
+    "other-1": {
+      "type": "Link",
+      "props": {
+        "label": "EVTKR",
+        "href": "https://github.com/EVTKR"
+      },
+      "children": []
+    },
+    "other-2": {
+      "type": "Link",
+      "props": {
+        "label": "romainquellec",
+        "href": "https://github.com/romainquellec"
+      },
+      "children": []
+    },
+    "other-3": {
+      "type": "Link",
+      "props": {
+        "label": "autoeverything",
+        "href": "https://github.com/autoeverything"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "forks-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "forks-heading",
+        "forks-items"
+      ]
+    },
+    "forks-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "forks-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "forks-1"
+      ]
+    },
+    "forks-1": {
+      "type": "Link",
+      "props": {
+        "label": "artlu99/aeon",
+        "href": "https://github.com/artlu99/aeon"
+      },
+      "children": []
+    },
+    "source-footer": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
