@@ -1,1 +1,2 @@
-*Changelog — Week of 2026-05-01*  1 repo: 8 user-facing changes (0 breaking, 7 added, 1 changed, 0 fixed, 0 security). Top: smithery-manifest (#149) auto-generates MCP-Registry / Smithery submission docs — first 2026 release aimed at non-forkers. Full: articles/changelog-2026-05-01.md
+*Changelog — Week of 2026-05-02*
+3 repos: 26 user-facing changes (0 breaking, 16 added, 5 changed, 7 fixed, 0 security). Top: rswarm.ai recovered from 3-day Vercel failure and shipped /learn + /research (32 articles) + /investors split. Full: articles/changelog-2026-05-02.md

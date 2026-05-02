@@ -1,0 +1,127 @@
+{
+  "root": "changelog-card",
+  "state": {},
+  "elements": {
+    "changelog-card": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-02"
+      },
+      "children": [
+        "stats-grid",
+        "separator1",
+        "highlight-heading",
+        "highlight-text",
+        "articles-stat",
+        "separator2",
+        "full-link"
+      ]
+    },
+    "stats-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "sm"
+      },
+      "children": [
+        "repos-stat",
+        "user-facing-stat",
+        "breaking-stat",
+        "added-stat",
+        "changed-stat",
+        "fixed-stat",
+        "security-stat"
+      ]
+    },
+    "repos-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Repos",
+        "value": "3"
+      }
+    },
+    "user-facing-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "26"
+      }
+    },
+    "breaking-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "added-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "16"
+      }
+    },
+    "changed-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Changed",
+        "value": "5"
+      }
+    },
+    "fixed-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "7"
+      }
+    },
+    "security-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "0"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "highlight-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Highlight",
+        "level": "h3"
+      }
+    },
+    "highlight-text": {
+      "type": "Text",
+      "props": {
+        "text": "rswarm.ai recovered from 3-day Vercel failure and shipped /learn + /research (32 articles) + /investors split",
+        "variant": "body"
+      }
+    },
+    "articles-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Articles shipped",
+        "value": "32"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Changelog",
+        "href": "articles/changelog-2026-05-02.md",
+        "source": "changelog"
+      }
+    }
+  }
+}
