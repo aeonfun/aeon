@@ -1,0 +1,170 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets",
+        "description": "2026-05-02"
+      },
+      "children": [
+        "alert_error",
+        "sep_1",
+        "fire_history",
+        "sep_2",
+        "resolution_section",
+        "sep_3",
+        "operator_section",
+        "sep_4",
+        "source_section"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "no handle configured"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fire_history": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fire_heading",
+        "fire_detail"
+      ]
+    },
+    "fire_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fire History",
+        "level": "h3"
+      }
+    },
+    "fire_detail": {
+      "type": "Text",
+      "props": {
+        "text": "6th consecutive fire (was 5th 05-01, 4th 04-30, 3rd 04-29, 2nd 04-28, 1st 04-27)"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "resolution_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "resolution_heading",
+        "res_item_1",
+        "res_item_2",
+        "res_item_3",
+        "res_item_4"
+      ]
+    },
+    "resolution_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution attempted",
+        "level": "h3"
+      }
+    },
+    "res_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE env: unset"
+      }
+    },
+    "res_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity: no @handle (Thomas Scaria / Lore / Swarm Lab only)"
+      }
+    },
+    "res_item_3": {
+      "type": "Text",
+      "props": {
+        "text": "$XAI_API_KEY: unset (would have blocked even with handle)"
+      }
+    },
+    "res_item_4": {
+      "type": "Text",
+      "props": {
+        "text": ".xai-cache/remix-tweets.json: missing (no prefetch ran)"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "operator_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "operator_heading",
+        "op_action_1",
+        "op_action_2",
+        "op_action_3"
+      ]
+    },
+    "operator_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator action (unchanged from 04-27 to 05-01 fires)",
+        "level": "h3"
+      }
+    },
+    "op_action_1": {
+      "type": "Text",
+      "props": {
+        "text": "1. Add X_HANDLE secret to workflow env for skills that need it"
+      }
+    },
+    "op_action_2": {
+      "type": "Text",
+      "props": {
+        "text": "2. Wire XAI_API_KEY repo secret + scripts/prefetch-xai.sh remix-tweets) case so .xai-cache/remix-tweets.json populates before Claude runs"
+      }
+    },
+    "op_action_3": {
+      "type": "Text",
+      "props": {
+        "text": "3. Or pause the 17:30 UTC cron until config sweep lands"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source_section": {
+      "type": "Text",
+      "props": {
+        "text": "source: cache=miss, xai=fail, fetched=0, kept=0, drops=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
