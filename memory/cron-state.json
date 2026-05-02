@@ -649,10 +649,10 @@
   },
   "evening-recap": {
     "last_dispatch": "2026-05-02T22:22:34Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-01T22:33:28Z",
-    "total_runs": 6,
-    "total_successes": 6,
+    "last_status": "success",
+    "last_success": "2026-05-02T22:27:04Z",
+    "total_runs": 7,
+    "total_successes": 7,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
