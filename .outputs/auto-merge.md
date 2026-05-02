@@ -1,9 +1,13 @@
-## Summary
+## Summary (auto-merge)
 
-Ran the auto-merge skill against the sole watched repo `aaronjmars/aeon`. `gh pr list` returned `[]` — zero open PRs, so the safety policy was not exercised, no merges performed, and no notification sent (per spec: notify only on real merge success).
+Ran auto-merge against the 3 watched repos in `memory/watched-repos.md`. 7 open PRs considered; **0 qualified, 0 merged.**
 
-- **Mode:** live
-- **Totals:** merged=0 qualified=0 considered=0
-- **Files modified:** `memory/logs/2026-05-01.md` (auto-merge log entry only)
-- **Pattern:** Third consecutive zero-PR run (04-29 / 04-30 / 05-01) — `aaronjmars/aeon` has been quiet 72h+.
-- **Follow-up:** None required. Operator could add `tomscaria/aeon` to `memory/watched-repos.md` if they want the 5 stalled-PR queue swept by this skill (currently out of scope).
+- **tomscaria/swarm-fund-mvp**: 4 PRs (#24, #23, #20, #19) — all by `tomscaria`, not in allowlist (and all have Vercel FAILURE checks)
+- **tomscaria/lore-financial-teaser**: 0 open PRs
+- **aaronjmars/aeon**: 3 PRs (#152, #151 by `aaronjmars`; #150 by `tomscaria` — also a cross-repo fork) — none allowlisted
+
+Verdict: 7/7 author-blocked. The default bot allowlist (dependabot/renovate/github-actions) is the only allowlist active because `memory/watched-repos.md` has no `## Trusted Authors` section. No notification sent (per spec — zero merges).
+
+Files modified: `memory/logs/2026-05-02.md` (single `### auto-merge` block appended).
+
+Follow-up for operator: if you want your own-authored PRs auto-mergeable, add a `## Trusted Authors` section listing `tomscaria` and `aaronjmars` to `memory/watched-repos.md`. Without it, every non-bot PR on every watched repo will keep skipping at the author gate.
