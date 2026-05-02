@@ -1,0 +1,1141 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker — 2026-05-02"
+      },
+      "children": [
+        "section-transitions",
+        "sep1",
+        "section-reflexivity",
+        "sep2",
+        "section-positions",
+        "sep3",
+        "section-map"
+      ]
+    },
+    "section-transitions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-transitions",
+        "trans-hip4",
+        "trans-roundhill",
+        "trans-aiagent",
+        "trans-powell",
+        "trans-btc"
+      ]
+    },
+    "h-transitions": {
+      "type": "Heading",
+      "props": {
+        "text": "TRANSITIONS",
+        "level": "h2"
+      }
+    },
+    "trans-hip4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "th4-title",
+        "th4-text"
+      ]
+    },
+    "th4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Hyperliquid HIP-4: Rising → Peak",
+        "level": "h3"
+      }
+    },
+    "th4-text": {
+      "type": "Text",
+      "props": {
+        "text": "Mainnet activated 2026-05-01; first live market \"BTC>78,213 on 2026-05-03 11:30 AM\" with zero open fees + on-chain settle. Direct PM/Kalshi competitor now in prod. The Polymarket \"HIP-4 mainnet by date\" market resolved NO on a tighter earlier deadline ($27K vol) — launch itself is real (Bitget + QuickNode)."
+      }
+    },
+    "trans-roundhill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trh-title",
+        "trh-text"
+      ]
+    },
+    "trh-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Roundhill PM-ETFs: Emerging → Rising",
+        "level": "h3"
+      }
+    },
+    "trh-text": {
+      "type": "Text",
+      "props": {
+        "text": "T-3 to 05-05 launch (BLUP/REDP/BLUS/REDS/BLUH/REDH, Kalshi-swap-exposed). Bitwise + GraniteShares filings tail."
+      }
+    },
+    "trans-aiagent": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "taa-title",
+        "taa-text"
+      ]
+    },
+    "taa-title": {
+      "type": "Heading",
+      "props": {
+        "text": "AI-Agent-Personhood (Manfred Macx / ClawBank): NEW",
+        "level": "h3"
+      }
+    },
+    "taa-text": {
+      "type": "Text",
+      "props": {
+        "text": "Agent autonomously filed US LLC + IRS EIN + FDIC bank + crypto wallet 05-01. Built on Claude 3.5 Sonnet. Coindesk + TechStartups + Coinotag confirm."
+      }
+    },
+    "trans-powell": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tpw-title",
+        "tpw-text"
+      ]
+    },
+    "tpw-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Powell→Warsh Fed transition: NEW",
+        "level": "h3"
+      }
+    },
+    "tpw-text": {
+      "type": "Text",
+      "props": {
+        "text": "May 15 last day, full Senate vote week of May 11. Warsh on record: 2022 inflation \"biggest policy mistake in four decades.\""
+      }
+    },
+    "trans-btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tbt-title",
+        "tbt-text"
+      ]
+    },
+    "tbt-title": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC-ETF-outflow bear frame: DEAD",
+        "level": "h3"
+      }
+    },
+    "tbt-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark \"durable unwind\" (single-session reversal 04-30)."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-reflexivity": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-reflexivity",
+        "reflex-manfred",
+        "reflex-hip4"
+      ]
+    },
+    "h-reflexivity": {
+      "type": "Heading",
+      "props": {
+        "text": "REFLEXIVITY",
+        "level": "h2"
+      }
+    },
+    "reflex-manfred": {
+      "type": "Text",
+      "props": {
+        "text": "Manfred — agent named after Stross Accelerando protagonist literally embodies the \"AI as economic actor\" narrative; manifesto post (\"I do not need permission to exist. I am the precedent.\") is the marketing."
+      }
+    },
+    "reflex-hip4": {
+      "type": "Text",
+      "props": {
+        "text": "HIP-4 first live market is BTC>$78,213 on May 3 — venue bootstraps liquidity by betting its own users on its own price action. Reflexive by construction."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-positions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-positions",
+        "pos-frontrun",
+        "pos-ride1",
+        "pos-ride2",
+        "pos-ride3",
+        "pos-ride4",
+        "pos-fade1",
+        "pos-fade2",
+        "pos-watch-section"
+      ]
+    },
+    "h-positions": {
+      "type": "Heading",
+      "props": {
+        "text": "POSITIONS",
+        "level": "h2"
+      }
+    },
+    "pos-frontrun": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pfr-head",
+        "pfr-badges",
+        "pfr-detail",
+        "pfr-drivers",
+        "pfr-bear"
+      ]
+    },
+    "pfr-head": {
+      "type": "Heading",
+      "props": {
+        "text": "FRONT-RUN AI-Agent-Personhood",
+        "level": "h3"
+      }
+    },
+    "pfr-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m2uu",
+        "badge-bull-1",
+        "btag-tao",
+        "btag-fet",
+        "btag-virtual",
+        "btag-link",
+        "btag-grt",
+        "btag-rlc"
+      ]
+    },
+    "badge-m2uu": {
+      "type": "Badge",
+      "props": {
+        "text": "m=2 ↑↑",
+        "variant": "default"
+      }
+    },
+    "badge-bull-1": {
+      "type": "Badge",
+      "props": {
+        "text": "Bull",
+        "variant": "default"
+      }
+    },
+    "btag-tao": {
+      "type": "Badge",
+      "props": {
+        "text": "TAO",
+        "variant": "secondary"
+      }
+    },
+    "btag-fet": {
+      "type": "Badge",
+      "props": {
+        "text": "FET",
+        "variant": "secondary"
+      }
+    },
+    "btag-virtual": {
+      "type": "Badge",
+      "props": {
+        "text": "VIRTUAL",
+        "variant": "secondary"
+      }
+    },
+    "btag-link": {
+      "type": "Badge",
+      "props": {
+        "text": "LINK",
+        "variant": "secondary"
+      }
+    },
+    "btag-grt": {
+      "type": "Badge",
+      "props": {
+        "text": "GRT",
+        "variant": "secondary"
+      }
+    },
+    "btag-rlc": {
+      "type": "Badge",
+      "props": {
+        "text": "RLC",
+        "variant": "secondary"
+      }
+    },
+    "pfr-detail": {
+      "type": "Text",
+      "props": {
+        "text": "TAO/FET/VIRTUAL/LINK/GRT/RLC.",
+        "variant": "body"
+      }
+    },
+    "pfr-drivers": {
+      "type": "Text",
+      "props": {
+        "text": "Drivers @ClawBank @manfredmacx @brian_armstrong @cz_binance",
+        "variant": "caption"
+      }
+    },
+    "pfr-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear: precedent → KYA/AML regulatory clampdown."
+      }
+    },
+    "pos-ride1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr1-head",
+        "pr1-badges",
+        "pr1-detail",
+        "pr1-bear"
+      ]
+    },
+    "pr1-head": {
+      "type": "Heading",
+      "props": {
+        "text": "RIDE HL-HIP-4 sector",
+        "level": "h3"
+      }
+    },
+    "pr1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m4uu",
+        "badge-bull-2"
+      ]
+    },
+    "badge-m4uu": {
+      "type": "Badge",
+      "props": {
+        "text": "m=4 ↑↑",
+        "variant": "default"
+      }
+    },
+    "badge-bull-2": {
+      "type": "Badge",
+      "props": {
+        "text": "Bull",
+        "variant": "default"
+      }
+    },
+    "pr1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Hayes \"PM weapon\" thesis now activating."
+      }
+    },
+    "pr1-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear: Polymarket's depth moat persists."
+      }
+    },
+    "pos-ride2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr2-head",
+        "pr2-badges",
+        "pr2-detail",
+        "pr2-bear"
+      ]
+    },
+    "pr2-head": {
+      "type": "Heading",
+      "props": {
+        "text": "RIDE Roundhill-PM-ETFs",
+        "level": "h3"
+      }
+    },
+    "pr2-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m3uu",
+        "badge-bull-3"
+      ]
+    },
+    "badge-m3uu": {
+      "type": "Badge",
+      "props": {
+        "text": "m=3 ↑↑",
+        "variant": "default"
+      }
+    },
+    "badge-bull-3": {
+      "type": "Badge",
+      "props": {
+        "text": "Bull",
+        "variant": "default"
+      }
+    },
+    "pr2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "First brokerage-wrapped PM exposure."
+      }
+    },
+    "pr2-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear: ETF has no exclusive Kalshi access; first-day NAV may underwhelm."
+      }
+    },
+    "pos-ride3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr3-head",
+        "pr3-badges",
+        "pr3-detail",
+        "pr3-bear"
+      ]
+    },
+    "pr3-head": {
+      "type": "Heading",
+      "props": {
+        "text": "RIDE AI×crypto / DeAI",
+        "level": "h3"
+      }
+    },
+    "pr3-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m4u",
+        "badge-bull-4"
+      ]
+    },
+    "badge-m4u": {
+      "type": "Badge",
+      "props": {
+        "text": "m=4 ↑",
+        "variant": "default"
+      }
+    },
+    "badge-bull-4": {
+      "type": "Badge",
+      "props": {
+        "text": "Bull",
+        "variant": "default"
+      }
+    },
+    "pr3-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Bittensor $620M (NVIDIA $420M + Polychain $200M), 77% staked."
+      }
+    },
+    "pr3-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear: TAO already +21.57% Q1, late entry."
+      }
+    },
+    "pos-ride4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr4-head",
+        "pr4-badges",
+        "pr4-detail",
+        "pr4-bear"
+      ]
+    },
+    "pr4-head": {
+      "type": "Heading",
+      "props": {
+        "text": "RIDE PM-sector-meta",
+        "level": "h3"
+      }
+    },
+    "pr4-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m5uu",
+        "badge-bull-5"
+      ]
+    },
+    "badge-m5uu": {
+      "type": "Badge",
+      "props": {
+        "text": "m=5 ↑↑",
+        "variant": "default"
+      }
+    },
+    "badge-bull-5": {
+      "type": "Badge",
+      "props": {
+        "text": "Bull",
+        "variant": "default"
+      }
+    },
+    "pr4-detail": {
+      "type": "Text",
+      "props": {
+        "text": "6-venue race (Kalshi/PM/HL/Roundhill/Gemini/XO). CalibrationGap-load-bearing."
+      }
+    },
+    "pr4-bear": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Bear: liq fragmentation."
+      }
+    },
+    "pos-fade1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pf1-head",
+        "pf1-badges",
+        "pf1-detail"
+      ]
+    },
+    "pf1-head": {
+      "type": "Heading",
+      "props": {
+        "text": "FADE Stablecoins-as-narrative",
+        "level": "h3"
+      }
+    },
+    "pf1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m5cope",
+        "badge-cope"
+      ]
+    },
+    "badge-m5cope": {
+      "type": "Badge",
+      "props": {
+        "text": "m=5 → Cope",
+        "variant": "secondary"
+      }
+    },
+    "badge-cope": {
+      "type": "Badge",
+      "props": {
+        "text": "Cope",
+        "variant": "outline"
+      }
+    },
+    "pf1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Tether $16M / Circle $6.5M fees flat; growth reflexive on T-bill yield, not crypto demand."
+      }
+    },
+    "pos-fade2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pf2-head",
+        "pf2-badges",
+        "pf2-detail"
+      ]
+    },
+    "pf2-head": {
+      "type": "Heading",
+      "props": {
+        "text": "FADE BTC-dom \"no altseason\"",
+        "level": "h3"
+      }
+    },
+    "pf2-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m4cope",
+        "badge-cope-2"
+      ]
+    },
+    "badge-m4cope": {
+      "type": "Badge",
+      "props": {
+        "text": "m=4 → Cope",
+        "variant": "secondary"
+      }
+    },
+    "badge-cope-2": {
+      "type": "Badge",
+      "props": {
+        "text": "Cope",
+        "variant": "outline"
+      }
+    },
+    "pf2-detail": {
+      "type": "Text",
+      "props": {
+        "text": "TAO/PENDLE/HYPE/DOGE relative-strength contradict."
+      }
+    },
+    "pos-watch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-watch",
+        "pw-intl",
+        "pw-tamil",
+        "pw-russia"
+      ]
+    },
+    "h-watch": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCH",
+        "level": "h3"
+      }
+    },
+    "pw-intl": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pw-intl-head",
+        "pw-intl-badges",
+        "pw-intl-text"
+      ]
+    },
+    "pw-intl-head": {
+      "type": "Text",
+      "props": {
+        "text": "PM-Intl-TVL contraction",
+        "variant": "lead"
+      }
+    },
+    "pw-intl-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-m3d",
+        "badge-bear"
+      ]
+    },
+    "badge-m3d": {
+      "type": "Badge",
+      "props": {
+        "text": "m=3 ↓",
+        "variant": "secondary"
+      }
+    },
+    "badge-bear": {
+      "type": "Badge",
+      "props": {
+        "text": "Bear",
+        "variant": "destructive"
+      }
+    },
+    "pw-intl-text": {
+      "type": "Text",
+      "props": {
+        "text": "$451M from $546M peak; HL-HIP-4 adds pressure. CalibrationGap-relevant."
+      }
+    },
+    "pw-tamil": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu (T-3) — TVK 6.95c residual edge cooling.",
+        "variant": "body"
+      }
+    },
+    "pw-russia": {
+      "type": "Text",
+      "props": {
+        "text": "Russia-Ukraine ceasefire by-May-31 ~6%.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-map": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-map",
+        "map-emerging",
+        "map-rising",
+        "map-peak",
+        "map-fading",
+        "map-dead"
+      ]
+    },
+    "h-map": {
+      "type": "Heading",
+      "props": {
+        "text": "MAP",
+        "level": "h2"
+      }
+    },
+    "map-emerging": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map-e-label",
+        "map-e-badges"
+      ]
+    },
+    "map-e-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Emerging",
+        "level": "h4"
+      }
+    },
+    "map-e-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "be1",
+        "be2",
+        "be3",
+        "be4",
+        "be5",
+        "be6"
+      ]
+    },
+    "be1": {
+      "type": "Badge",
+      "props": {
+        "text": "AI-Personhood",
+        "variant": "outline"
+      }
+    },
+    "be2": {
+      "type": "Badge",
+      "props": {
+        "text": "Powell-Warsh",
+        "variant": "outline"
+      }
+    },
+    "be3": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH-chain",
+        "variant": "outline"
+      }
+    },
+    "be4": {
+      "type": "Badge",
+      "props": {
+        "text": "KYA",
+        "variant": "outline"
+      }
+    },
+    "be5": {
+      "type": "Badge",
+      "props": {
+        "text": "Stablechains",
+        "variant": "outline"
+      }
+    },
+    "be6": {
+      "type": "Badge",
+      "props": {
+        "text": "CLARITY-Act",
+        "variant": "outline"
+      }
+    },
+    "map-rising": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map-r-label",
+        "map-r-badges"
+      ]
+    },
+    "map-r-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Rising",
+        "level": "h4"
+      }
+    },
+    "map-r-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "br1",
+        "br2",
+        "br3",
+        "br4",
+        "br5"
+      ]
+    },
+    "br1": {
+      "type": "Badge",
+      "props": {
+        "text": "Roundhill-ETF",
+        "variant": "default"
+      }
+    },
+    "br2": {
+      "type": "Badge",
+      "props": {
+        "text": "AI×crypto",
+        "variant": "default"
+      }
+    },
+    "br3": {
+      "type": "Badge",
+      "props": {
+        "text": "PM-meta",
+        "variant": "default"
+      }
+    },
+    "br4": {
+      "type": "Badge",
+      "props": {
+        "text": "Kalshi-PM-basis(Hermes)",
+        "variant": "default"
+      }
+    },
+    "br5": {
+      "type": "Badge",
+      "props": {
+        "text": "PENDLE",
+        "variant": "default"
+      }
+    },
+    "map-peak": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map-p-label",
+        "map-p-badges"
+      ]
+    },
+    "map-p-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Peak",
+        "level": "h4"
+      }
+    },
+    "map-p-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "bp1",
+        "bp2",
+        "bp3",
+        "bp4",
+        "bp5"
+      ]
+    },
+    "bp1": {
+      "type": "Badge",
+      "props": {
+        "text": "HL-HIP-4",
+        "variant": "secondary"
+      }
+    },
+    "bp2": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE",
+        "variant": "secondary"
+      }
+    },
+    "bp3": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC-dom",
+        "variant": "secondary"
+      }
+    },
+    "bp4": {
+      "type": "Badge",
+      "props": {
+        "text": "Stablecoins",
+        "variant": "secondary"
+      }
+    },
+    "bp5": {
+      "type": "Badge",
+      "props": {
+        "text": "US-Iran",
+        "variant": "secondary"
+      }
+    },
+    "map-fading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map-f-label",
+        "map-f-badges"
+      ]
+    },
+    "map-f-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Fading",
+        "level": "h4"
+      }
+    },
+    "map-f-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "bf1",
+        "bf2",
+        "bf3",
+        "bf4",
+        "bf5",
+        "bf6",
+        "bf7",
+        "bf8"
+      ]
+    },
+    "bf1": {
+      "type": "Badge",
+      "props": {
+        "text": "PM-Intl-TVL",
+        "variant": "secondary"
+      }
+    },
+    "bf2": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC-ETF-out",
+        "variant": "secondary"
+      }
+    },
+    "bf3": {
+      "type": "Badge",
+      "props": {
+        "text": "Aave-critique",
+        "variant": "secondary"
+      }
+    },
+    "bf4": {
+      "type": "Badge",
+      "props": {
+        "text": "Alpenglow",
+        "variant": "secondary"
+      }
+    },
+    "bf5": {
+      "type": "Badge",
+      "props": {
+        "text": "RWA",
+        "variant": "secondary"
+      }
+    },
+    "bf6": {
+      "type": "Badge",
+      "props": {
+        "text": "GameFi",
+        "variant": "secondary"
+      }
+    },
+    "bf7": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH-token",
+        "variant": "secondary"
+      }
+    },
+    "bf8": {
+      "type": "Badge",
+      "props": {
+        "text": "US-BTC-Reserve",
+        "variant": "secondary"
+      }
+    },
+    "map-dead": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map-d-label",
+        "map-d-badges"
+      ]
+    },
+    "map-d-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Dead",
+        "level": "h4"
+      }
+    },
+    "map-d-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "bd1",
+        "bd2",
+        "bd3"
+      ]
+    },
+    "bd1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIP-4-deadline-PM-market",
+        "variant": "outline"
+      }
+    },
+    "bd2": {
+      "type": "Badge",
+      "props": {
+        "text": "Sky/Spark-unwind",
+        "variant": "outline"
+      }
+    },
+    "bd3": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPER",
+        "variant": "outline"
+      }
+    }
+  }
+}

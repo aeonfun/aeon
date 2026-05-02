@@ -1,36 +1,33 @@
-*Narrative Tracker — 2026-05-01*
+*Narrative Tracker — 2026-05-02*
+(.xai-cache absent 9th day — WebSearch primary)
 
 TRANSITIONS
-• NEW: Roundhill PM-ETFs launching May 5 — 6 funds (BLUP/REDP/BLUS/REDS/BLUH/REDH) swap-exposed to CFTC venues (Kalshi). Bitwise+GraniteShares filing too. Brokerage/retirement-account access to prediction markets.
-• NEW: Gemini derivatives license — 5th venue stacked behind Kalshi/PM/HL/XO; stock surged on news.
-• NEW: StarkNet STRK20s mainnet (Apr 30) — L2 fragmentation narrative gets fresh leg.
-• PROMOTED: HL HIP-4 — Hayes (CoinDesk Apr 30) calls HYPE "the prediction market weapon"; HYPE +5.4% 24h on optionality alone (mainnet still TBD).
-• DEMOTED: BTC ETF outflow frame — actually 9-day inflow streak Apr 14-24 ($3.7B over 8 weeks since Feb 24). Yesterday's bear read stale.
-• DEAD: Sky/Spark "durable unwind" — fully reversed in single session (USDS supply +7.93%, Spark Savings +46.8%, Spark Liq Layer +25.9% per today's defi-overview). 04-30 print was a 1-day accounting blip.
+• PROMOTED Hyperliquid HIP-4: Rising → Peak. Mainnet activated 2026-05-01; first live market "BTC>78,213 on 2026-05-03 11:30 AM" with zero open fees + on-chain settle. Direct PM/Kalshi competitor now in prod. The Polymarket "HIP-4 mainnet by date" market resolved NO on a tighter earlier deadline ($27K vol) — launch itself is real (Bitget + QuickNode).
+• PROMOTED Roundhill PM-ETFs: Emerging → Rising. T-3 to 05-05 launch (BLUP/REDP/BLUS/REDS/BLUH/REDH, Kalshi-swap-exposed). Bitwise + GraniteShares filings tail.
+• NEW AI-Agent-Personhood (Manfred Macx / ClawBank): agent autonomously filed US LLC + IRS EIN + FDIC bank + crypto wallet 05-01. Built on Claude 3.5 Sonnet. Coindesk + TechStartups + Coinotag confirm.
+• NEW Powell→Warsh Fed transition: May 15 last day, full Senate vote week of May 11. Warsh on record: 2022 inflation "biggest policy mistake in four decades."
+• DEAD BTC-ETF-outflow bear frame; Sky/Spark "durable unwind" (single-session reversal 04-30).
 
 REFLEXIVITY
-• PM-ETFs — Roundhill swaps on Kalshi → ETF launch pulls volume → NAV moves → narrative reinforces. Clean self-reinforcing flywheel ahead of May 5.
-• HL HIP-4 — Hayes endorsement moves HYPE on pure optionality (no mainnet date). Same shape as US BTC Reserve trade pre-purchases.
-• TAO — DeAI graduates from reflexive to fundamental: $43M Q1 revenue, $620M NVIDIA/Polychain (77% staked), Grayscale ETF SEC window Aug 2026.
+• Manfred — agent named after Stross *Accelerando* protagonist literally embodies the "AI as economic actor" narrative; manifesto post ("I do not need permission to exist. I am the precedent.") is the marketing.
+• HIP-4 first live market is BTC>$78,213 on May 3 — venue bootstraps liquidity by betting its own users on its own price action. Reflexive by construction.
 
 POSITIONS
-• FRONT-RUN: PM-ETFs (mindshare 3 ↑↑, Bull) — @Roundhill, James Seyffart; bear: ETF wrapper takes a fee but no exclusive access; direct PM/Kalshi traders capture more spread.
-• FRONT-RUN: HL HIP-4 (3 ↑, Bull) — @HyperliquidX, @CryptoHayes; bear: testnet since Feb 2, mainnet TBD; two-phase rollout still canonical-only.
-• RIDE: AI/DeAI (4 ↑, Bull) — TAO ETF + $43M Q1 rev + $620M institutional staked; bear: TAO already +21.57% Q1, late-cycle entry.
-• RIDE: PM-meta (5 ↑↑, Bull) — 6-venue race (Roundhill+Bitwise+GraniteShares+Gemini+HL+XO); bear: liquidity dilution.
-• RIDE: PM × Kaito attention (3 →, Bull) — load-bearing for Revenant edge.
-• RIDE: Kalshi-PM basis (3 →, Bull) — Hermes Day-5 tape post-Kalshi-perps launch.
-• RIDE: HYPE ecosystem (4 ↑, Bull) — Hayes leg gives a fresh catalyst.
-• RIDE: PENDLE / fixed-income DeFi (3 ↑↑, Bull) — sPENDLE buyback + Aave V4 collateral; bear: RSI 79, leveraged-long crowded.
-• FADE: MegaETH MEGA — day-3 capitulation -12.9% (was 97.4% YES on launch confirm).
-• FADE: BTC ETF outflow narrative — data-inverted, 9-day inflow streak.
-• FADE: Sky/Spark unwind — invalidated by today's reversal.
-• FADE: XRP-Rakuten — local-top sentiment ratio (Santiment).
-• WATCH: BTC dominance / no altseason, US-Iran/Hormuz, April hack month, STRK20s, MegaETH chain ($490M, near $500M gate).
+• FRONT-RUN AI-Agent-Personhood (m=2 ↑↑, Bull) — TAO/FET/VIRTUAL/LINK/GRT/RLC. Drivers @ClawBank @manfredmacx @brian_armstrong @cz_binance. Bear: precedent → KYA/AML regulatory clampdown.
+• RIDE HL-HIP-4 sector (m=4 ↑↑, Bull) — Hayes "PM weapon" thesis now activating. Bear: Polymarket's depth moat persists.
+• RIDE Roundhill-PM-ETFs (m=3 ↑↑, Bull) — first brokerage-wrapped PM exposure. Bear: ETF has no exclusive Kalshi access; first-day NAV may underwhelm.
+• RIDE AI×crypto / DeAI (m=4 ↑, Bull) — Bittensor $620M (NVIDIA $420M + Polychain $200M), 77% staked. Bear: TAO already +21.57% Q1, late entry.
+• RIDE PM-sector-meta (m=5 ↑↑, Bull) — 6-venue race (Kalshi/PM/HL/Roundhill/Gemini/XO). CalibrationGap-load-bearing. Bear: liq fragmentation.
+• FADE Stablecoins-as-narrative (m=5 → Cope) — Tether $16M / Circle $6.5M fees flat; growth reflexive on T-bill yield, not crypto demand.
+• FADE BTC-dom "no altseason" (m=4 → Cope) — TAO/PENDLE/HYPE/DOGE relative-strength contradict.
+• WATCH PM-Intl-TVL contraction (m=3 ↓, Bear) — $451M from $546M peak; HL-HIP-4 adds pressure. CalibrationGap-relevant.
+• WATCH Tamil Nadu (T-3) — TVK 6.95c residual edge cooling.
+• WATCH Russia-Ukraine ceasefire by-May-31 ~6%.
 
 MAP
-Emerging: PM-ETFs, Gemini derivatives, STRK20s, HL HIP-4
-Rising: AI/DeAI, PM-meta, Hermes basis, PENDLE
-Peak: HYPE, BTC dominance, Stablecoins
-Fading: MegaETH, XRP-Rakuten, BTC ETF outflows, Sky/Spark unwind, RWA, GameFi, Aave-governance, US BTC Reserve
+Emerging: AI-Personhood, Powell-Warsh, MegaETH-chain, KYA, Stablechains, CLARITY-Act
+Rising: Roundhill-ETF, AI×crypto, PM-meta, Kalshi-PM-basis(Hermes), PENDLE
+Peak: HL-HIP-4, HYPE, BTC-dom, Stablecoins, US-Iran
+Fading: PM-Intl-TVL, BTC-ETF-out, Aave-critique, Alpenglow, RWA, GameFi, MegaETH-token, US-BTC-Reserve
+Dead: HIP-4-deadline-PM-market, Sky/Spark-unwind, HYPER
 
