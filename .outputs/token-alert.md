@@ -1,16 +1,15 @@
 ## Summary
 
-Ran `skills/token-alert/SKILL.md` for the tracked set (BTC, ETH, SOL) with `${var}` empty.
+Ran `token-alert` against the 3 tracked tokens in `memory/MEMORY.md` (BTC / ETH / SOL, all 10% threshold).
 
-**Prices (CoinGecko /simple/price, ~10:18 UTC):**
-- BTC $78,029 (+2.26% 24h, $31.29B vol)
-- ETH $2,306.73 (+1.83% 24h, $11.33B vol)
-- SOL $84.41 (+1.37% 24h, $2.31B vol)
+- **BTC**: $78,291 (-0.03% 24h), vol $28.60B
+- **ETH**: $2,306.18 (-0.23% 24h), vol $9.77B
+- **SOL**: $83.87 (-0.61% 24h), vol $2.15B
 
-**Result:** TOKEN_ALERT_OK. No 24h move >10%, no volume >3x, no threshold cross. All three majors are mid-bounce after yesterday's red close (04-30 was −1.18 / −2.29 / −1.14%); 24h volumes are 0.6–0.8x prior-day, consistent with a low-conviction relief bid rather than capitulation buying.
+All three under threshold; no volume spike (no 3x signal), no price breakouts. **TOKEN_ALERT_OK** — silent per spec, no `./notify` dispatched.
 
-**Files modified:** `memory/logs/2026-05-01.md` (appended `## token-alert` entry — provides 2026-05-02's baseline).
+CoinGecko free endpoint returned cleanly on first curl, no WebFetch fallback needed.
 
-**Notification:** none sent (per skill spec, log-only when no anomalies).
+**Files modified:** `memory/logs/2026-05-02.md` (appended `## token-alert` + `## Summary (token-alert)` sections).
 
-**Follow-up:** None required. ETH is closest to a directional trigger if the bounce fails — it's already lagging the recovery leg (still −0.35% vs 04-29 close while BTC and SOL printed green). curl direct succeeded; no WebFetch fallback was needed this run.
+**Follow-up:** none — third consecutive green run (04-30 / 05-01 / 05-02). Crypto tape staying quiet; the day's CalibrationGap-relevant catalysts (Russia-Ukraine ceasefire, Tamil Nadu T-3, Trump war-powers resolution debate) are landing on the prediction-market channel, not the major-token tape.
