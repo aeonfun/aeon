@@ -1,46 +1,41 @@
-*DeFi — 2026-05-01* — Mixed: Sky/Spark stack reverses ↔, broader market grinds sideways
+*DeFi — 2026-05-02* — Mixed: TVL grinds up to top of band, DEX vol still pulling back, stables idle
 
-*TVL:* $84.12B (+0.76% 24h, −0.45% 7d) — fifth day grinding $83-85B band
+*TVL:* $85.21B (+1.65% 24h, +1.98% 7d) — back to top of $83-86B 10-day band; first +1%+ 1d print since 04-27.
 
 *Top chains*
-1. Ethereum — $45.2B (+0.60%)
+1. Ethereum — $46.0B (+2.0%)
 2. BSC — $5.47B
-3. Solana — $5.45B (+0.64%)
+3. Solana — $5.42B
 
-*Movers — chains*
-↓ Plasma −9.0% ($609M → $554M; 7d −4%) — fifth consecutive down day, incentive-unwind continuation flagged 04-27/28/29/30
-(no chain up-mover cleared 5%/$500M gate; Polygon flipped from yesterday's +9.6% 7d to −4.5% 1d on $1.24B; MegaETH +60% 1d on $490M just under TVL gate)
-
-*Movers — protocols*
-↑↔ Spark Savings +46.8% ($1.54B → $2.26B, Yield) — full reversal of yesterday's −24% print; Spark Liquidity Layer also +25.9% ($2.0B → $2.52B). Sky stack capital re-deposited in single session.
-↓ Polymarket International −17.4% ($546M → $451M, Polygon, Prediction Market) — no obvious catalyst beyond post-V2-launch normalization (V2 cutover 04-28 peaked $514M 04-30)
+*Movers*
+↑ Hyperliquid L1 +5.2% ($1.43B → $1.51B) — HLP +7.7%, HyperLend Pooled +9.4%; HL ecosystem deposit accel into Day-5 Kalshi-perps falsifier window
+↑ WisdomTree +11.4% ($888M → $989M, RWA, ETH/Stellar) — no obvious catalyst; likely tokenized-fund subscription day
+↑ OnRe +14.8% ($146M → $167M, RWA, Solana) — no obvious catalyst
+↓ Meteora DLMM −16.3% ($272M → $227M, Solana DEX) — share migration to PumpSwap (4th day on fees-beating-TVL)
+_no chain down-mover cleared 5%/$500M gate; Plasma drift continues at −3% 1d / −6% 7d on $534M_
 
 *Fees leaders (24h)*
-1. Tether — $16.4M (flat 7d)
+1. Tether — $16.4M (flat vs 7d avg)
 2. Circle USDC — $6.5M (flat)
-3. Canton — $2.2M (+13.7% 1d, +2% vs 7d avg)
-(Aave V3 $1.85M now −39% 7d — deeper than yesterday's −51% read partially recovered. HL Perps $1.83M −18.6% 1d, reversing yesterday's +35% bounce.)
+3. Canton — $2.2M (flat)
 
-*Fees beating TVL (7d)*
-• Centrifuge Protocol — fees +57% / TVL −14% — RWA real-demand outrunning capital (second day on this list)
-• PumpSwap — fees +45% / TVL +1% — Solana memecoin venue, demand outpacing deposits
+*Fees beating TVL*
+• PumpSwap — fees7d +29% / TVL7d −0.4% ($1.63M 24h, $218M TVL) — 4th consecutive day on list, Solana memecoin demand persistent
+• PancakeSwap AMM — fees7d +50% / TVL7d −0.5% ($117k 24h, $1.74B TVL) — rejoined list after yesterday's miss
+• EtherFi Cash Liquid — fees7d +23% / TVL7d −2.9% ($129k 24h, $148M TVL) — NEW; debit-card spend rising
 
-*DEX vol (24h):* $5.55B (−12% 1d, −25% 7d) top: Uniswap V4 $620M (−24%), Uniswap V3 $483M (−19%), PancakeSwap V3 $365M (−29%) — broad DEX pullback
+*DEX vol (24h):* $5.32B (−4.1% 1d, −5.1% 7d, −37% 1m) — top: Uniswap V4 $551M (−12%), PancakeSwap V3 $498M (+36%, bouncing), Uniswap V3 $351M (−27%). Kalshi $188M flat (recovered top-5 slot from yesterday's miss).
 
-*Stables:* $318.7B (+0.22% 1d, −0.07% 7d)
-• USDS ↔ +7.93% on $8.4B — yesterday's −6.66% Sky-ecosystem unwind reversed in single session
-• RLUSD −7.26% on $1.44B
-• USDe +2.44% on $3.90B (day 6 of Ethena recovery — trend still firm)
+*Stables:* $319.9B (+0.46% 1d) — single-issuer notables: RLUSD +8.0% on $1.56B (Ripple-stable kept growing), USDC +1.4% on $78.3B (notable for absolute scale, +$1.05B 24h), crvUSD +5.8% on $0.33B.
 
-*Real yield (sustainable, ≥$10M, filtered)*
-• APT/Amnis (Aptos) — 28.67% apyBase ($18.9M, mean30d 15.2% — spike persists)
-• USDC-CBBTC v3 (Base) — 17.37% apyBase ($11.0M, IL — half yesterday's 29.75% as cbBTC vol cooled)
-• APYUSD/Pendle (ETH) — 15.51% apyBase ($11.3M, mean30d 15.0%)
+*Real yield (sustainable, ≥$10M)*
+• APT (Amnis Finance, Aptos) — 27.99% apyBase ($18M, mean30d 15.7% — 5th day spike continues)
+• USDC-CBBTC (Uniswap V3, Base) — 18.28% apyBase ($10M, mean30d 27.6% — partial decay from 29.75% yesterday)
+• APYUSD (Pendle, ETH) — 15.74% apyBase ($12M, mean30d 15.1%)
 
-*Incentive yield (points / emissions, ≥$25M)*
-• cvxCRV/Convex (ETH) — 24.17% apy via CRV/CVX/FXS ($33.5M)
-• USDC-AERO/Aerodrome (Base) — 22.19% apy via AERO ($27.0M)
-• sdCRV/StakeDAO (ETH) — 21.92% apy via CRV/SDT ($28.1M)
+*Incentive yield (≥$25M)*
+• USDC-AERO (Aerodrome v1, Base) — 22.07% apy via AERO ($27M) — moved to #1 from yesterday's outside-top-2
+• SDCRV (Stake DAO, ETH) — 22.04% apy via CRV+CVX+scrvUSD ($27M) — 5th day same pair; CVXCRV decayed to #5
 
-_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none_
+_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none | /v2/chains schema-drift workaround active 6+ days_
 

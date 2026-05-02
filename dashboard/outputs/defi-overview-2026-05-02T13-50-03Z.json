@@ -1,0 +1,448 @@
+{
+  "root": "defi-card",
+  "state": {},
+  "elements": {
+    "defi-card": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi — 2026-05-02",
+        "description": "Mixed: TVL grinds up to top of band, DEX vol still pulling back, stables idle"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "tvl-stat",
+        "tvl-context",
+        "sep1",
+        "chains-section",
+        "sep2",
+        "movers-section",
+        "sep3",
+        "fees-section",
+        "sep4",
+        "dex-section",
+        "sep5",
+        "stables-section",
+        "sep6",
+        "yields-section",
+        "sep7",
+        "sources-note"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$85.21B",
+        "delta": "+1.65% 24h, +1.98% 7d",
+        "trend": "up"
+      }
+    },
+    "tvl-context": {
+      "type": "Text",
+      "props": {
+        "text": "back to top of $83-86B 10-day band; first +1%+ 1d print since 04-27.",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "chains-heading",
+        "chains-table"
+      ]
+    },
+    "chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top chains",
+        "level": "h3"
+      }
+    },
+    "chains-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$46.0B (+2.0%)"
+          ],
+          [
+            "BSC",
+            "$5.47B"
+          ],
+          [
+            "Solana",
+            "$5.42B"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "movers-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-heading",
+        "movers-stack"
+      ]
+    },
+    "movers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers",
+        "level": "h3"
+      }
+    },
+    "movers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mover-hl",
+        "mover-wt",
+        "mover-onre",
+        "mover-meteora",
+        "mover-plasma"
+      ]
+    },
+    "mover-hl": {
+      "type": "Text",
+      "props": {
+        "text": "↑ Hyperliquid L1 +5.2% ($1.43B → $1.51B) — HLP +7.7%, HyperLend Pooled +9.4%; HL ecosystem deposit accel into Day-5 Kalshi-perps falsifier window"
+      }
+    },
+    "mover-wt": {
+      "type": "Text",
+      "props": {
+        "text": "↑ WisdomTree +11.4% ($888M → $989M, RWA, ETH/Stellar) — no obvious catalyst; likely tokenized-fund subscription day"
+      }
+    },
+    "mover-onre": {
+      "type": "Text",
+      "props": {
+        "text": "↑ OnRe +14.8% ($146M → $167M, RWA, Solana) — no obvious catalyst"
+      }
+    },
+    "mover-meteora": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Meteora DLMM −16.3% ($272M → $227M, Solana DEX) — share migration to PumpSwap (4th day on fees-beating-TVL)"
+      }
+    },
+    "mover-plasma": {
+      "type": "Text",
+      "props": {
+        "text": "no chain down-mover cleared 5%/$500M gate; Plasma drift continues at −3% 1d / −6% 7d on $534M",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fees-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-heading",
+        "fees-table",
+        "fees-beat-heading",
+        "fees-beat-stack"
+      ]
+    },
+    "fees-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "24h Fees",
+          "vs 7d"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.4M",
+            "flat"
+          ],
+          [
+            "Circle USDC",
+            "$6.5M",
+            "flat"
+          ],
+          [
+            "Canton",
+            "$2.2M",
+            "flat"
+          ]
+        ]
+      }
+    },
+    "fees-beat-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees beating TVL",
+        "level": "h4"
+      }
+    },
+    "fees-beat-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fees-beat-pump",
+        "fees-beat-pancake",
+        "fees-beat-efi"
+      ]
+    },
+    "fees-beat-pump": {
+      "type": "Text",
+      "props": {
+        "text": "PumpSwap — fees7d +29% / TVL7d −0.4% ($1.63M 24h, $218M TVL) — 4th consecutive day on list, Solana memecoin demand persistent"
+      }
+    },
+    "fees-beat-pancake": {
+      "type": "Text",
+      "props": {
+        "text": "PancakeSwap AMM — fees7d +50% / TVL7d −0.5% ($117k 24h, $1.74B TVL) — rejoined list after yesterday's miss"
+      }
+    },
+    "fees-beat-efi": {
+      "type": "Text",
+      "props": {
+        "text": "EtherFi Cash Liquid — fees7d +23% / TVL7d −2.9% ($129k 24h, $148M TVL) — NEW; debit-card spend rising"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "dex-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dex-heading",
+        "dex-stat",
+        "dex-context"
+      ]
+    },
+    "dex-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX vol (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total volume",
+        "value": "$5.32B",
+        "delta": "−4.1% 1d, −5.1% 7d, −37% 1m",
+        "trend": "down"
+      }
+    },
+    "dex-context": {
+      "type": "Text",
+      "props": {
+        "text": "Top venues: Uniswap V4 $551M (−12%), PancakeSwap V3 $498M (+36%, bouncing), Uniswap V3 $351M (−27%), Kalshi $188M flat (recovered top-5 slot from yesterday's miss)."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stables-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stables-heading",
+        "stables-stat",
+        "stables-notables"
+      ]
+    },
+    "stables-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total TVL",
+        "value": "$319.9B",
+        "delta": "+0.46% 1d",
+        "trend": "up"
+      }
+    },
+    "stables-notables": {
+      "type": "Text",
+      "props": {
+        "text": "Single-issuer notables: RLUSD +8.0% on $1.56B (Ripple-stable kept growing), USDC +1.4% on $78.3B (notable for absolute scale, +$1.05B 24h), crvUSD +5.8% on $0.33B."
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "yields-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "real-yield-section",
+        "incentive-yield-section"
+      ]
+    },
+    "real-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "real-yield-heading",
+        "real-yield-stack"
+      ]
+    },
+    "real-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real yield (sustainable, ≥$10M)",
+        "level": "h3"
+      }
+    },
+    "real-yield-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "yield-apt",
+        "yield-usdc-cbbtc",
+        "yield-apyusd"
+      ]
+    },
+    "yield-apt": {
+      "type": "Text",
+      "props": {
+        "text": "APT (Amnis Finance, Aptos) — 27.99% apyBase ($18M, mean30d 15.7% — 5th day spike continues)"
+      }
+    },
+    "yield-usdc-cbbtc": {
+      "type": "Text",
+      "props": {
+        "text": "USDC-CBBTC (Uniswap V3, Base) — 18.28% apyBase ($10M, mean30d 27.6% — partial decay from 29.75% yesterday)"
+      }
+    },
+    "yield-apyusd": {
+      "type": "Text",
+      "props": {
+        "text": "APYUSD (Pendle, ETH) — 15.74% apyBase ($12M, mean30d 15.1%)"
+      }
+    },
+    "incentive-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "incentive-yield-heading",
+        "incentive-yield-stack"
+      ]
+    },
+    "incentive-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive yield (≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-yield-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "incentive-aero",
+        "incentive-sdcrv"
+      ]
+    },
+    "incentive-aero": {
+      "type": "Text",
+      "props": {
+        "text": "USDC-AERO (Aerodrome v1, Base) — 22.07% apy via AERO ($27M) — moved to #1 from yesterday's outside-top-2"
+      }
+    },
+    "incentive-sdcrv": {
+      "type": "Text",
+      "props": {
+        "text": "SDCRV (Stake DAO, ETH) — 22.04% apy via CRV+CVX+scrvUSD ($27M) — 5th day same pair; CVXCRV decayed to #5"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources-note": {
+      "type": "Text",
+      "props": {
+        "text": "sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none | /v2/chains schema-drift workaround active 6+ days",
+        "variant": "caption"
+      }
+    }
+  }
+}
