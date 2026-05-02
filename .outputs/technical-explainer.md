@@ -1,8 +1,8 @@
-technical explainer: An LLM Forecaster With a Track Record Forecasts Worse Than One Without
+technical explainer: CORAL: four agents, one notebook, 24% off the kernel
 
-In a controlled prediction-market experiment with Claude as the trader, feeding the agent its own past P&L between rounds makes it worse at aggregating private information — same model, same signals, lower profit, higher log-error on the closing price (Galanis 2026, arXiv:2604.20050).
+Run four LLM agents in parallel sandboxes, give them a shared notebook with three columns (Attempts, Notes, Skills) and a periodic interrupt that forces them to write down what they learned, and a population beats a single long-running agent on hard search problems by 19-24%.
 
-CalibrationGap is 71 trades from the Apex gate and the canary loop currently feeds P&L into the prompt every round. Cheap ablation: strip the running P&L for half the next 71 trades, score log-error of fill vs. resolution.
+primary source: https://arxiv.org/abs/2604.01658
+hero image: queued post-process
 
-read it: articles/explainer-2026-05-01.md
-
+read it: articles/explainer-2026-05-02.md

@@ -1,0 +1,88 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "technical-explainer"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading",
+        "description",
+        "separator",
+        "stack-sources"
+      ]
+    },
+    "heading": {
+      "type": "Heading",
+      "props": {
+        "text": "CORAL: four agents, one notebook, 24% off the kernel",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "Run four LLM agents in parallel sandboxes, give them a shared notebook with three columns (Attempts, Notes, Skills) and a periodic interrupt that forces them to write down what they learned, and a population beats a single long-running agent on hard search problems by 19-24%.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "storylink-paper",
+        "text-image",
+        "link-article"
+      ]
+    },
+    "storylink-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CORAL paper",
+        "href": "https://arxiv.org/abs/2604.01658",
+        "source": "arxiv"
+      },
+      "children": []
+    },
+    "text-image": {
+      "type": "Text",
+      "props": {
+        "text": "Hero image: queued post-process",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "link-article": {
+      "type": "Link",
+      "props": {
+        "label": "Read explainer",
+        "href": "articles/explainer-2026-05-02.md"
+      },
+      "children": []
+    }
+  }
+}
