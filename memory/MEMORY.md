@@ -15,7 +15,8 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 ## Topic files
 - `memory/topics/swarm-fund.md` — full project state, ADRs, Aeon-side PR pipeline (now PRs #18-#24)
 - `memory/topics/polymarket.md` — V2 TVL $514M, regulatory front (CFTC ANPRM closed 04-30, Brazil block 27 platforms, Senate self-ban 04-30), comments-side handles, UMA Iran-cf vs Hez-cf arb hook, Tamil Nadu TVK cooled 8.25c→6.95c, MegaETH FDV resolved
-- `memory/topics/aeon-ops.md` — sandbox/notify/prefetch matrix, chain-runner DEGRADED 7+ days, ISS-013 decay, code-health 4-week carry-debt, monitor-runners DEEP-LIQ formula, ISS-017 GHA cron-tick gap (filed critical)
+- `memory/topics/aeon-ops.md` — sandbox/notify/prefetch matrix, chain-runner DEGRADED 7+ days, ISS-013 decay, code-health 4-week carry-debt, monitor-runners DEEP-LIQ formula (6-run evidence trail, soft-floor patch overdue), ISS-017 GHA cron-tick gap (filed critical)
+- **GDER on base — 3-in-a-row monitor-runners pick** (04-30 slot 4 → 05-01 slot 3 → 05-02 slot 5). Today's contract is a redeploy (`base_0x7e69…548102` vs prior `0x29ca…f15602`); actor signature is the name-pattern "GDER on base", not a single token. Watch tomorrow for 4-in-a-row.
 - `memory/topics/papers.md` — 14 picked, 5 queued (CORAL picked 2026-05-02 daily slot; closes Darwinian-axis queue-flag from 05-01)
 - `memory/topics/grants.md` — open applications, citation hooks
 - `memory/topics/market-context.md` — 05-01 risk-on / BTC +2.81% 24h / 19/20 green / DOJ-Powell-clearance

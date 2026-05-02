@@ -1,0 +1,410 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "runners — 2026-05-02",
+        "description": "verdict: SPECULATIVE"
+      },
+      "children": [
+        "stack_1",
+        "separator_1",
+        "stack_2",
+        "separator_2",
+        "stack_3",
+        "separator_3",
+        "stack_4",
+        "separator_4",
+        "stack_5",
+        "separator_5",
+        "summary_stack"
+      ]
+    },
+    "stack_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "finding_1_badge",
+        "finding_1_heading",
+        "finding_1_table",
+        "finding_1_analysis"
+      ]
+    },
+    "finding_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT"
+      }
+    },
+    "finding_1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PETS / SOL +840% 24h",
+        "level": "h3"
+      }
+    },
+    "finding_1_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Vol",
+            "$5.0m"
+          ],
+          [
+            "Liq",
+            "$55k"
+          ],
+          [
+            "FDV",
+            "$326k (no mcap)"
+          ],
+          [
+            "H1",
+            "+47%"
+          ],
+          [
+            "Buys:Sells",
+            "34750:28981"
+          ]
+        ]
+      }
+    },
+    "finding_1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "19h-old SOL meme, h1 +47% is the only top-5 still in active markup; thin $55k liq makes it one whale-sell from collapse.",
+        "variant": "body"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "finding_2_badge",
+        "finding_2_heading",
+        "finding_2_table",
+        "finding_2_analysis"
+      ]
+    },
+    "finding_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT"
+      }
+    },
+    "finding_2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "UNIPUMP / SOL +1564% 24h",
+        "level": "h3"
+      }
+    },
+    "finding_2_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Vol",
+            "$2.8m"
+          ],
+          [
+            "Liq",
+            "$68k"
+          ],
+          [
+            "FDV",
+            "$576k"
+          ],
+          [
+            "H1",
+            "-3.8%"
+          ],
+          [
+            "Buys:Sells",
+            "64103:25785"
+          ]
+        ]
+      }
+    },
+    "finding_2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "19h-old SOL launch, 2.5:1 buy skew on 90k tx but h1 already red — first-leg distribution starting.",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "finding_3_badge",
+        "finding_3_heading",
+        "finding_3_table",
+        "finding_3_analysis"
+      ]
+    },
+    "finding_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "REVERSAL",
+        "variant": "secondary"
+      }
+    },
+    "finding_3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "OCP404 / WETH +643% 24h",
+        "level": "h3"
+      }
+    },
+    "finding_3_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Vol",
+            "$529k"
+          ],
+          [
+            "Liq",
+            "$98k"
+          ],
+          [
+            "FDV",
+            "$175k"
+          ],
+          [
+            "H1",
+            "-7.2%"
+          ],
+          [
+            "Buys:Sells",
+            "782:531"
+          ]
+        ]
+      }
+    },
+    "finding_3_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "813-day-old eth token reactivated from dead, h1 -7% off the spike — bounce-and-fade, low conviction.",
+        "variant": "body"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "finding_4_badge",
+        "finding_4_heading",
+        "finding_4_table",
+        "finding_4_analysis"
+      ]
+    },
+    "finding_4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT"
+      }
+    },
+    "finding_4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "C0IN / SOL +393% 24h",
+        "level": "h3"
+      }
+    },
+    "finding_4_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Vol",
+            "$53.9m"
+          ],
+          [
+            "Liq",
+            "$600k"
+          ],
+          [
+            "FDV",
+            "$60.7m (no mcap)"
+          ],
+          [
+            "H1",
+            "+0.0%"
+          ],
+          [
+            "Buys:Sells",
+            "277:126"
+          ]
+        ]
+      }
+    },
+    "finding_4_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "9h-old SOL pool but only 403 trades for $53.9m vol = $134k avg tx, classic wash-print signature; $60m fdv on $600k liq is structurally hollow. Observe only.",
+        "variant": "body"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "finding_5_badge",
+        "finding_5_heading",
+        "finding_5_table",
+        "finding_5_analysis"
+      ]
+    },
+    "finding_5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT ★ repeat"
+      }
+    },
+    "finding_5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GDER / WETH 0.01% (base) +452% 24h",
+        "level": "h3"
+      }
+    },
+    "finding_5_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Vol",
+            "$4.0m"
+          ],
+          [
+            "Liq",
+            "$48k"
+          ],
+          [
+            "FDV",
+            "$65k (no mcap)"
+          ],
+          [
+            "H1",
+            "-1.4%"
+          ],
+          [
+            "Buys:Sells",
+            "4228:4578"
+          ]
+        ]
+      }
+    },
+    "finding_5_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "3rd day in a row as \"GDER on base\", but today's contract is a REDEPLOY (base_0x7e69…548102 vs prior base_0x29ca…f15602). Same name, different token — copycat or same actor cycling. Liq -64% vs yesterday. The \"GDER on base\" pattern is its own classifier now.",
+        "variant": "body"
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "summary_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary_heading",
+        "summary_sources",
+        "summary_vibe"
+      ]
+    },
+    "summary_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h2"
+      }
+    },
+    "summary_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: gt-global=ok, all 5 networks (trend+vol)=ok, gt-new=ok (12/12 after backoff retries on base-vol and arbitrum-trend)",
+        "variant": "caption"
+      }
+    },
+    "summary_vibe": {
+      "type": "Text",
+      "props": {
+        "text": "vibe: 4 BREAKOUT + 1 REVERSAL, zero DEEP-LIQ in top 5 for the 6th consecutive run. 8 DEEP-LIQ survivors today (LAB/USDT bsc +227% $69.5m vol / TAG/WBNB bsc +58% $12.2m vol / SKYAI/WBNB now 4-in-a-row near-miss) all buried by the score formula. BSC owns the real volume; SOL owns the casino. Score-formula floor patch is overdue.",
+        "variant": "body"
+      }
+    }
+  }
+}
