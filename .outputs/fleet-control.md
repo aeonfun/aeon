@@ -1,16 +1,11 @@
+Fleet Control complete — silent-stop branch (FLEET_EMPTY).
+
 ## Summary
 
-Fleet Control — Health Check Mode (default; `var` empty).
-
-**Pre-flight:**
-- `gh auth status`: ok (account `tomscaria`)
-- Rate limit: 4988 remaining (well above 50 threshold)
-- `memory/instances.json`: exists, `.instances == []` (no managed children)
-- `memory/state/fleet-control-state.json`: exists, no prior state
-
-**Outcome:** `FLEET_EMPTY` — registry has zero instances. Per the skill spec, this is a **silent stop**: log entry written, no notification sent.
-
-**Files modified:**
-- `memory/logs/2026-05-01.md` — appended `## fleet-control (health check)` block with `FLEET_EMPTY` exit code
-
-**Follow-up:** None required from this run. To onboard the first managed instance, add an entry to `memory/instances.json` with at least `{name, repo, purpose, parent, created}`; subsequent runs will then start health-checking it.
+- **Mode:** Health Check (default — `var:` empty).
+- **Pre-flight:** gh auth OK (account `tomscaria`), `gh api rate_limit` core remaining = **4988** (≫ 50 floor).
+- **Registry:** `memory/instances.json` = `{"instances": []}` — zero managed instances.
+- **Action taken:** Per SKILL.md step 3 of pre-flight, logged `FLEET_EMPTY: no managed instances` and **stopped without notifying** (documented silent-stop branch — prevents pager-noise on every 09:00 / 15:00 UTC tick of an unconfigured registry).
+- **Files modified:** `memory/logs/2026-05-02.md` (appended health-check entry + run summary). No writes to registry, state file, or articles (nothing to write; `last_full_summary_date` not advanced per spec's "only when this run notifies" rule).
+- **Follow-up:** none required from this run. To activate Fleet Control's actual purpose, the operator would need to populate `memory/instances.json` with one or more child-instance entries. Until then the skill correctly no-ops twice daily.
+- **Exit code logged:** `FLEET_EMPTY · FLEET_CONTROL_OK`.
