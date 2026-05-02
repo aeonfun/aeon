@@ -32,6 +32,11 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - 2026-04-30 — *research-brief Tamil Nadu DMK/TVK calibration* — DMK 86c is fair, residual edge migrated to TVK (T-3 today: TVK cooled 8.25c → 6.95c).
 - 2026-04-29 — *Anthropic's Agent Marketplace Measured the Capability Gap.*
 
+## Recent Digests
+| Date | Topic | Keywords |
+|------|-------|----------|
+| 2026-05-02 | prediction markets | hyperliquid-hip4-mainnet, nevada-prelim-injunction, roundhill-etfs |
+
 ## Forbidden phrases (external content)
 - "RenTech," "Simons," "Medallion" — never. Use "live-ingest as moat" instead.
 - "Darwinian as mechanism" — never. "Darwinian as ambition" is OK.
