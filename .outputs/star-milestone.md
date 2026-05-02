@@ -1,14 +1,17 @@
+No notifications today — all three watched repos are below the next unrecorded threshold.
+
 ## Summary
 
-Ran `star-milestone` skill against the single watched repo `aaronjmars/aeon`.
+Ran `star-milestone` against the three watched repos in `memory/watched-repos.md`. None warranted a notification.
 
-- **Stars**: 256
-- **Highest threshold ≤ 256**: 250 — already recorded on 2026-04-28 as `(spike)` in `memory/topics/milestones.md`. Gate 5a applies (already recorded → no action).
-- **Velocity**: v7=32, v30=120, baseline=4.00/day, last star 2026-05-01T13:29:18Z (today)
-- **Next**: 300 (44 to go), ETA ~2026-05-11 at v7-derived 4.57/day
-- **Notification sent**: no
-- **Status**: STAR_MILESTONE_QUIET
+- **tomscaria/swarm-fund-mvp**: 1 star — below the first threshold (25). `STAR_MILESTONE_QUIET`.
+- **tomscaria/lore-financial-teaser**: 1 star — below the first threshold (25). `STAR_MILESTONE_QUIET`.
+- **aaronjmars/aeon**: 261 stars (39 forks). Highest threshold ≤ 261 is 250, already recorded as `spike` on 2026-04-28. Gate 5a hit → no action. Next threshold 300 is +39 away (+5 since the 05-01 entry of 256). `STAR_MILESTONE_QUIET`.
 
-Files modified: `memory/logs/2026-05-01.md` (appended `## Star Milestone` block per skill step 9). `memory/topics/milestones.md` left untouched (no new milestone to append; per-run "current" / "Next milestone" projection lines there are written by other skills — skill constraint says append-only).
+**Files modified:**
+- `memory/logs/2026-05-02.md` — appended `## Star Milestone` section.
 
-Follow-up: at current pace, the next run that crosses 300 should land roughly 2026-05-11 — that will be the next real announcement opportunity.
+**Files unchanged:**
+- `memory/topics/milestones.md` — no threshold crossing, so no append per step 8 (preserving existing format/entries).
+
+**Follow-up:** aaronjmars/aeon is on track for the 300 threshold; that's the next live target for this skill (operator's soft deadline 2026-05-25 per the milestones.md note).
