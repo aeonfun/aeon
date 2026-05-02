@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "All Reddit endpoints failed",
+        "message": "curl 403 + WebFetch host-blocked — 9th consecutive recurrence. r/vibecoding top/hot/rising blocked. Land scripts/prefetch-reddit.sh to unblock.",
+        "type": "error"
+      }
+    }
+  }
+}
