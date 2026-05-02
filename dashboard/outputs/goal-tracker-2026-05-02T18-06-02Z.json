@@ -1,0 +1,442 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-05-02"
+      },
+      "children": [
+        "summary-header",
+        "sep-1",
+        "on-track-section",
+        "sep-2",
+        "blocked-section",
+        "sep-3",
+        "sources-line"
+      ]
+    },
+    "summary-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "summary-text",
+        "summary-stats"
+      ]
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "11 goals — 0 at risk, 0 needs attention, 8 on track, 3 blocked, 0 done",
+        "variant": "body"
+      }
+    },
+    "summary-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-on-track",
+        "stat-blocked",
+        "badge-trend"
+      ]
+    },
+    "stat-on-track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "8",
+        "trend": "up"
+      }
+    },
+    "stat-blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "3"
+      }
+    },
+    "badge-trend": {
+      "type": "Badge",
+      "props": {
+        "text": "Overall ↑ improving",
+        "variant": "default"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "on-track-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "on-track-heading",
+        "goal-ot-1",
+        "goal-ot-2",
+        "goal-ot-3",
+        "goal-ot-4",
+        "goal-ot-5",
+        "goal-ot-6",
+        "goal-ot-7",
+        "goal-ot-8"
+      ]
+    },
+    "on-track-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h3"
+      }
+    },
+    "goal-ot-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-1-title",
+        "goal-ot-1-details"
+      ]
+    },
+    "goal-ot-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-1-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-2-title",
+        "goal-ot-2-details"
+      ]
+    },
+    "goal-ot-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate: bump min-gap 7pp → ~7.5–8pp",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-2-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d (↑ improving)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-3-title",
+        "goal-ot-3-details"
+      ]
+    },
+    "goal-ot-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5 carrier)",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-3-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d (↑ improving)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-4-title",
+        "goal-ot-4-details"
+      ]
+    },
+    "goal-ot-4-title": {
+      "type": "Text",
+      "props": {
+        "text": "External-feature PRs to swarm-fund-mvp (#18-#24)",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-4-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-5-title",
+        "goal-ot-5-details"
+      ]
+    },
+    "goal-ot-5-title": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-017 cron-tick gap watch",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-5-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 3 activity/14d (new)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-6-title",
+        "goal-ot-6-details"
+      ]
+    },
+    "goal-ot-6-title": {
+      "type": "Text",
+      "props": {
+        "text": "Land code-health fix at dashboard/app/api/secrets/route.ts:96",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-6-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (new)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-7-title",
+        "goal-ot-7-details"
+      ]
+    },
+    "goal-ot-7-title": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-7-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (↑ improving)",
+        "variant": "caption"
+      }
+    },
+    "goal-ot-8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-ot-8-title",
+        "goal-ot-8-details"
+      ]
+    },
+    "goal-ot-8-title": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily PhD reading list",
+        "variant": "lead"
+      }
+    },
+    "goal-ot-8-details": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d (→ flat)",
+        "variant": "caption"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blocked-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "blocked-heading",
+        "goal-bl-1",
+        "goal-bl-2",
+        "goal-bl-3"
+      ]
+    },
+    "blocked-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h3"
+      }
+    },
+    "goal-bl-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-bl-1-title",
+        "goal-bl-1-context",
+        "goal-bl-1-action"
+      ]
+    },
+    "goal-bl-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill",
+        "variant": "lead"
+      }
+    },
+    "goal-bl-1-context": {
+      "type": "Text",
+      "props": {
+        "text": "operator-side workflow patch, 7+ days idle on PR side",
+        "variant": "body"
+      }
+    },
+    "goal-bl-1-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: post echo-per-dispatched-skill diff inline on PR thread to unblock operator review",
+        "variant": "muted"
+      }
+    },
+    "goal-bl-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-bl-2-title",
+        "goal-bl-2-context",
+        "goal-bl-2-action"
+      ]
+    },
+    "goal-bl-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep (aeon-ops.md checklist)",
+        "variant": "lead"
+      }
+    },
+    "goal-bl-2-context": {
+      "type": "Text",
+      "props": {
+        "text": "operator-side secrets/configs",
+        "variant": "body"
+      }
+    },
+    "goal-bl-2-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: bundle remaining 7 items into one operator checklist comment on tomscaria/aeon#1",
+        "variant": "muted"
+      }
+    },
+    "goal-bl-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal-bl-3-title",
+        "goal-bl-3-context",
+        "goal-bl-3-action"
+      ]
+    },
+    "goal-bl-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review: workflow-security-audit (PR #4)",
+        "variant": "lead"
+      }
+    },
+    "goal-bl-3-context": {
+      "type": "Text",
+      "props": {
+        "text": "awaiting workflow-scoped PAT",
+        "variant": "body"
+      }
+    },
+    "goal-bl-3-action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: request workflow-scoped PAT from operator on PR #4 thread today",
+        "variant": "muted"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-line": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: logs=ok, git=ok, gh_pr=ok, gh_issue=fail (issues disabled), cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
