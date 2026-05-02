@@ -1,0 +1,797 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments — 2026-05-02"
+      },
+      "children": [
+        "market1_section",
+        "sep1",
+        "market2_section",
+        "sep2",
+        "market3_section",
+        "sep3",
+        "market4_section",
+        "sep4",
+        "market5_section",
+        "sep5",
+        "handles_section",
+        "sep6",
+        "actionable_section"
+      ]
+    },
+    "market1_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1_title",
+        "m1_odds_stack",
+        "m1_comment_1",
+        "m1_comment_2",
+        "m1_context"
+      ]
+    },
+    "m1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Tamil Nadu CM (T-2)",
+        "level": "h3"
+      }
+    },
+    "m1_odds_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m1_tvk",
+        "m1_dmk",
+        "m1_admk",
+        "m1_vol"
+      ]
+    },
+    "m1_tvk": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK",
+        "value": "7.75"
+      }
+    },
+    "m1_dmk": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK",
+        "value": "86.5"
+      }
+    },
+    "m1_admk": {
+      "type": "Stat",
+      "props": {
+        "label": "ADMK",
+        "value": "6.35"
+      }
+    },
+    "m1_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$0.24M"
+      }
+    },
+    "m1_comment_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1_c1_badge",
+        "m1_c1_text"
+      ]
+    },
+    "m1_c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Starchy-Outset (NEW, 2x)",
+        "variant": "secondary"
+      }
+    },
+    "m1_c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "5-pollster stack — P-Marq DMK 125-145 / Today's Chanakya 145-160 / People's Pulse 125-145 / Matrize 122-132 / Political Lab 135-140; TVK 10-26 across all 5.",
+        "variant": "body"
+      }
+    },
+    "m1_comment_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1_c2_badge",
+        "m1_c2_text"
+      ]
+    },
+    "m1_c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Digital-Archaeologist (1x)",
+        "variant": "secondary"
+      }
+    },
+    "m1_c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "vote-split math — TVK 40% ADMK + 25% DMK + 50% DMK-alliance = single-largest. Quantified contra to 8/9-poll DMK consensus.",
+        "variant": "body"
+      }
+    },
+    "m1_context": {
+      "type": "Text",
+      "props": {
+        "text": "TVK +80bp 24h (6.95→7.75, oneDayPriceChange +0.4) reverses 04-30→05-01 cooling. Crafty-Kiss silent post-05-01 DMK flip.",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market2_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2_title",
+        "m2_odds_stack",
+        "m2_comment_1",
+        "m2_comment_2",
+        "m2_comment_3",
+        "m2_comment_4"
+      ]
+    },
+    "m2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Powell out as Fed Chair by May 14",
+        "level": "h3"
+      }
+    },
+    "m2_odds_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m2_odds",
+        "m2_vol"
+      ]
+    },
+    "m2_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.35%"
+      }
+    },
+    "m2_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$0.34M"
+      }
+    },
+    "m2_comment_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_c1_badge",
+        "m2_c1_text"
+      ]
+    },
+    "m2_c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Impressionable-Havoc (NEW, 3x, 00:01Z)",
+        "variant": "secondary"
+      }
+    },
+    "m2_c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Term legally ends May 15 midnight ET. Only May-15 YES path is Walsh sworn in May 15 before Powell's legal term-end — unlikely. Clean clause analysis.",
+        "variant": "body"
+      }
+    },
+    "m2_comment_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_c2_badge",
+        "m2_c2_text"
+      ]
+    },
+    "m2_c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Sardonic-Floozie (NEW, 2x)",
+        "variant": "secondary"
+      }
+    },
+    "m2_c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "announce-by-May-14 mkt and actual-step-down mkt priced identically → direct cross-market mispricing flag.",
+        "variant": "body"
+      }
+    },
+    "m2_comment_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_c3_badge",
+        "m2_c3_text"
+      ]
+    },
+    "m2_c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Precious-Willingness (NEW, 4x)",
+        "variant": "secondary"
+      }
+    },
+    "m2_c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "Powell quote \"After my term as chair ends on May 15, I'll continue as a governor.\" NOT May 14.",
+        "variant": "body"
+      }
+    },
+    "m2_comment_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_c4_badge",
+        "m2_c4_text"
+      ]
+    },
+    "m2_c4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Petty-Bran (MegaETH 05-01 loser carryover)",
+        "variant": "secondary"
+      }
+    },
+    "m2_c4_text": {
+      "type": "Text",
+      "props": {
+        "text": "flagging UMA-whale coordination on clav-pregnancy market. Retail-vs-whale narrative now 3+ markets.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market3_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3_title",
+        "m3_odds_stack",
+        "m3_comment_1",
+        "m3_comment_2",
+        "m3_comment_3",
+        "m3_note"
+      ]
+    },
+    "m3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "3. US x Iran permanent peace deal by May 31",
+        "level": "h3"
+      }
+    },
+    "m3_odds_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m3_odds",
+        "m3_vol"
+      ]
+    },
+    "m3_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "22.5%"
+      }
+    },
+    "m3_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$0.68M"
+      }
+    },
+    "m3_comment_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_c1_badge",
+        "m3_c1_text"
+      ]
+    },
+    "m3_c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Likable-Mule (NEW, 1x, 05-01 21:39Z)",
+        "variant": "secondary"
+      }
+    },
+    "m3_c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "if Trump doesn't go crazy and bomb this weekend, deal odds are higher — weekend-window catalyst.",
+        "variant": "body"
+      }
+    },
+    "m3_comment_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_c2_badge",
+        "m3_c2_link"
+      ]
+    },
+    "m3_c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Fortunate-Extension (NEW)",
+        "variant": "secondary"
+      }
+    },
+    "m3_c2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Trump-Iran conflict termination article",
+        "href": "https://rt.com/news/639349-trump-iran-conflict-terminated",
+        "source": "RT YES-support framing; adversarial citation"
+      }
+    },
+    "m3_comment_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_c3_badge",
+        "m3_c3_text"
+      ]
+    },
+    "m3_c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Valid-Bonding (15x)",
+        "variant": "secondary"
+      }
+    },
+    "m3_c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "NYT 60-day-negotiation memo cite — clock expired late April.",
+        "variant": "body"
+      }
+    },
+    "m3_note": {
+      "type": "Alert",
+      "props": {
+        "message": "\"Thank you got $3400\" cluster is coordinated promo/scam, dropped.",
+        "type": "warning"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market4_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4_title",
+        "m4_odds_stack",
+        "m4_comment_1",
+        "m4_comment_2",
+        "m4_comment_3",
+        "m4_comment_4"
+      ]
+    },
+    "m4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "4. US obtains Iranian enriched uranium by May 31",
+        "level": "h3"
+      }
+    },
+    "m4_odds_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m4_odds",
+        "m4_vol"
+      ]
+    },
+    "m4_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "8.5%"
+      }
+    },
+    "m4_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$0.43M"
+      }
+    },
+    "m4_comment_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4_c1_badge",
+        "m4_c1_text"
+      ]
+    },
+    "m4_c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Somber-Interviewer (NEW, 6x)",
+        "variant": "secondary"
+      }
+    },
+    "m4_c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump can just bluff he took uranium and this resolves YES — UMA-bluff arb thesis.",
+        "variant": "body"
+      }
+    },
+    "m4_comment_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4_c2_badge",
+        "m4_c2_text"
+      ]
+    },
+    "m4_c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Grown-Songbird (NEW, 6x)",
+        "variant": "secondary"
+      }
+    },
+    "m4_c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "if they say but don't prove, the claim is categorically false — counter rules-lawyer.",
+        "variant": "body"
+      }
+    },
+    "m4_comment_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4_c3_badge",
+        "m4_c3_text"
+      ]
+    },
+    "m4_c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Powerful-Election",
+        "variant": "secondary"
+      }
+    },
+    "m4_c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "multi-branch dispute path → consensus-of-credible-reporting clause.",
+        "variant": "body"
+      }
+    },
+    "m4_comment_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4_c4_badge",
+        "m4_c4_text"
+      ]
+    },
+    "m4_c4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Querulous-Hurt (NEW, 2x)",
+        "variant": "secondary"
+      }
+    },
+    "m4_c4_text": {
+      "type": "Text",
+      "props": {
+        "text": "cross-market — another good market is Israel Hez ceasefire ext, buy NO at 75% and watch Car fail to scam another market — explicit Robin-HooDenizzCar callout, MEMORY Hez-cf hostile-oracle thread still live.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market5_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5_title",
+        "m5_odds_stack",
+        "m5_anomaly",
+        "m5_signal"
+      ]
+    },
+    "m5_title": {
+      "type": "Heading",
+      "props": {
+        "text": "5. BTC $150k by June 30",
+        "level": "h3"
+      }
+    },
+    "m5_odds_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m5_odds",
+        "m5_vol"
+      ]
+    },
+    "m5_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.35%"
+      }
+    },
+    "m5_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$5.82M",
+        "delta": "#1 non-sport by volume"
+      }
+    },
+    "m5_anomaly": {
+      "type": "Alert",
+      "props": {
+        "title": "Anomaly: Dead Comments",
+        "message": "$5.8M v24, dead comments. Last signal Mundane-Wasting 04-24 rainbow chart. Recent thread is bday-spam (Abandoned-Tadpole — same scam handle on Iran-diplomatic-May5 + Iran-peace-deal) + phone-drops.",
+        "type": "warning"
+      }
+    },
+    "m5_signal": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap signal: high v24 + dead comments = quant-only, no info-asymmetry edge. NO 98.65% on BTC $76k→150k Jun30 is dead.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "handles_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "handles_title",
+        "handle_1",
+        "handle_2",
+        "handle_3",
+        "handle_4",
+        "handle_5",
+        "handle_6",
+        "handle_7",
+        "handle_8",
+        "handle_9"
+      ]
+    },
+    "handles_title": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW Handles",
+        "level": "h3"
+      }
+    },
+    "handle_1": {
+      "type": "Text",
+      "props": {
+        "text": "Starchy-Outset — TN poll aggregator",
+        "variant": "body"
+      }
+    },
+    "handle_2": {
+      "type": "Text",
+      "props": {
+        "text": "Impressionable-Havoc — Powell clause counsel",
+        "variant": "body"
+      }
+    },
+    "handle_3": {
+      "type": "Text",
+      "props": {
+        "text": "Sardonic-Floozie — parallel-mkt mispricing flagger",
+        "variant": "body"
+      }
+    },
+    "handle_4": {
+      "type": "Text",
+      "props": {
+        "text": "Precious-Willingness — Powell quote handle",
+        "variant": "body"
+      }
+    },
+    "handle_5": {
+      "type": "Text",
+      "props": {
+        "text": "Likable-Mule — Iran weekend-window",
+        "variant": "body"
+      }
+    },
+    "handle_6": {
+      "type": "Text",
+      "props": {
+        "text": "Somber-Interviewer — oracle-bluff arb",
+        "variant": "body"
+      }
+    },
+    "handle_7": {
+      "type": "Text",
+      "props": {
+        "text": "Grown-Songbird — counter rules-lawyer",
+        "variant": "body"
+      }
+    },
+    "handle_8": {
+      "type": "Text",
+      "props": {
+        "text": "Powerful-Election — counter rules-lawyer",
+        "variant": "body"
+      }
+    },
+    "handle_9": {
+      "type": "Text",
+      "props": {
+        "text": "Querulous-Hurt — Hez-cf Car-callout",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "actionable_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "actionable_title",
+        "action_1",
+        "action_2",
+        "action_3"
+      ]
+    },
+    "actionable_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Actionable",
+        "level": "h3"
+      }
+    },
+    "action_1": {
+      "type": "Text",
+      "props": {
+        "text": "Powell-May-14 at 1.35% — clause arb (term ends May 15 midnight ET); quant scanner sees price not clause text.",
+        "variant": "body"
+      }
+    },
+    "action_2": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-uranium 8.5% — UMA-bluff thesis vs counter-clause extends Iran-cf/Hez-cf arb pattern; Car-callout reconfirms hostile-oracle thread live.",
+        "variant": "body"
+      }
+    },
+    "action_3": {
+      "type": "Text",
+      "props": {
+        "text": "TN T-2 TVK +80bp rebound — 5-poll stack vs vote-split math; re-run T-1 (May 3).",
+        "variant": "body"
+      }
+    }
+  }
+}

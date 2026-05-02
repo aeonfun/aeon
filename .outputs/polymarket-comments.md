@@ -1,39 +1,36 @@
-polymarket comments — 2026-05-01 (politics+crypto narrative-shift sweep)
+polymarket comments — 2026-05-02 (politics+crypto narrative-shift)
 
-1. Trump-end-mil-ops-Iran by May31 — YES 36% ($1M v24, 864 cmt). RESOLVING TODAY (War Powers Act T+60 from Feb28).
-- Gorgeous-Coffin (May1): AP/Reuters/Times-of-Israel chain — "Senior Trump admin officials: hostilities with Iran 'have terminated'." Citation-chain handle.
-- Mixed-Sofa (May1, 5x): "damn i'm surprised no one disputed" — UMA-ambiguity callout, mirrors Iran-cf/Hez-cf calibration-gap pattern.
-- Putrid-Campaign vs Proud-Compulsion: "pause not end" vs NO-holder admits "termination of war ≠ end of military ops." Resolution-debate live.
+1. Tamil Nadu CM (T-2) — TVK 7.75 / DMK 86.5 / ADMK 6.35, $0.24M v24
+- Starchy-Outset (NEW, 2x): 5-pollster stack — P-Marq DMK 125-145 / Today's Chanakya 145-160 / People's Pulse 125-145 / Matrize 122-132 / Political Lab 135-140; TVK 10-26 across all 5.
+- Digital-Archaeologist (1x): vote-split math — TVK 40% ADMK + 25% DMK + 50% DMK-alliance = single-largest. Quantified contra to 8/9-poll DMK consensus.
+- TVK +80bp 24h (6.95→7.75, oneDayPriceChange +0.4) reverses 04-30→05-01 cooling. Crafty-Kiss silent post-05-01 DMK flip.
 
-2. Russia-Ukraine ceasefire end-2026 — series 5422 cmt; by-May31 at 6%. BREAKING.
-- Rich-Carotene (May1): Putin-Trump phone-call yesterday — "Putin proposed temporary ceasefire around 9.5.26, Trump agrees, Zelensky asked for precisions." Market-rule-lawyer cite: "only general pause qualifies, energy-only doesn't." May 9 = Russia Victory Day, Putin's natural window.
-- Abandoned-Kielbasa (Apr30): "look for big trades on this — will definitely be insider trading if anything happens." Explicit info-asymmetry alpha callout.
-- Demanding-Hearthside: Bloomberg cite Ukraine strikes on RU oil assets at 4-month high — anti-ceasefire counter.
+2. Powell out as Fed Chair by May 14 — YES 1.35%, $0.34M v24
+- Impressionable-Havoc (NEW, 3x, 00:01Z): "Term legally ends May 15 midnight ET. Only May-15 YES path is Walsh sworn in May 15 before Powell's legal term-end — unlikely." Clean clause analysis.
+- Sardonic-Floozie (NEW, 2x): announce-by-May-14 mkt and actual-step-down mkt priced identically → direct cross-market mispricing flag.
+- Precious-Willingness (NEW, 4x): Powell quote "After my term as chair ends on May 15, I'll continue as a governor." NOT May 14.
+- Petty-Bran (MegaETH 05-01 loser carryover): flagging UMA-whale coordination on clav-pregnancy market. Retail-vs-whale narrative now 3+ markets.
 
-3. Tamil Nadu Legis Assembly (May4 T-3) — DMK 87.5%, TVK 6.95% (cooled from 8.25c memory 04-30), ADMK 6.65%.
-- Axis My India 2026: DMK 35% / TVK 35% / ADMK 23% — three-way-tie outlier vs DMK-consensus elsewhere. Counter to memory-baseline "lone Axis-MyIndia outlier inflates Brahmin-skew."
-- Crafty-Kiss (Apr23, recurring high-rep): FLIPPED — "DMK is only +EV bet ngl... TVK was +EV at 5c, still hold." Once-TVK-bull now DMK-anchor.
-- Digital-Archaeologist (Apr29, 7x): historical Axis 2021 DMK48/NDA35→DMK45/NDA39.7; 2024 DMK45→DMK47.7. Pollster-calibration handle.
+3. US x Iran permanent peace deal by May 31 — YES 22.5%, $0.68M v24
+- Likable-Mule (NEW, 1x, 05-01 21:39Z): "if Trump doesn't go crazy and bomb this weekend, deal odds are higher" — weekend-window catalyst.
+- Fortunate-Extension (NEW): rt.com/news/639349-trump-iran-conflict-terminated — RT YES-support framing; adversarial citation.
+- Valid-Bonding (15x): NYT 60-day-negotiation memo cite — clock expired late April.
+- "Thank you got $3400" cluster is coordinated promo/scam, dropped.
 
-4. MegaETH FDV 1-day-after-launch — TGE LIVE TODAY 10-11 UTC. $3.47M v24, 360 cmt.
-- >$1B & >$1.5B resolved YES (=1.0); >$2B resolved NO (=0). Memory-baseline >$1.5B 67.5% → full YES; >$2B 26.5% → NO. Pre-market $2B+ thesis (Murky-Cowboy 04-30) was overstated.
-- Lumbering-Analyst (Apr26, 8x): "ArmageddonRewardsBilly is insider on team, manipulates futures + buys NO" — pattern confirmed.
-- Petty-Bran public loser May1; counterparty-to-Billy emotional-trader pattern.
+4. US obtains Iranian enriched uranium by May 31 — YES 8.5%, $0.43M v24
+- Somber-Interviewer (NEW, 6x): "Trump can just bluff he took uranium and this resolves YES" — UMA-bluff arb thesis.
+- Grown-Songbird (NEW, 6x): "if they say but don't prove, the claim is categorically false" — counter rules-lawyer.
+- Powerful-Election: multi-branch dispute path → consensus-of-credible-reporting clause.
+- Querulous-Hurt (NEW, 2x): cross-market — "another good market is Israel Hez ceasefire ext, buy NO at 75% and watch Car fail to scam another market" — explicit Robin-HooDenizzCar callout, MEMORY Hez-cf hostile-oracle thread still live.
 
-5. US-Iran permanent peace deal — May15 10%, May31 26% ($2M v24, 1461 cmt). Stale since 04-30.
-- Likable-Mule (Apr30): "What wan123 knows?" — wallet-flow callout pattern.
-- Constant-Optimization (Apr30, recurring): cross-event YES persistence (also on Hez-cf mediator-chain).
+5. BTC $150k by June 30 — YES 1.35%, $5.82M v24 (#1 non-sport by volume)
+- Anomaly: $5.8M v24, dead comments. Last signal Mundane-Wasting 04-24 rainbow chart. Recent thread is bday-spam (Abandoned-Tadpole — same scam handle on Iran-diplomatic-May5 + Iran-peace-deal) + phone-drops (drop).
+- Read: pure expiry/positioning flow, no narrative. NO 98.65% on BTC $76k→150k Jun30 is dead. CalibrationGap signal: high v24 + dead comments = quant-only, no info-asymmetry edge.
 
-NEW track-list handles (not in 04-30):
-- Gorgeous-Coffin — Trump-Iran-ops citation-chain (AP/Reuters/TOI URL stack).
-- Rich-Carotene — RU-UA ground-reporter + market-rule-lawyer; May-9 ceasefire-proposal flag.
-- Abandoned-Kielbasa — explicit insider-trading flagger.
-- Mixed-Sofa — UMA-dispute pattern caller.
-- Crafty-Kiss — DMK-anchor flipped-from-TVK.
-- Remote-Presentation — ADMK alliance-math contrarian.
+NEW handles: Starchy-Outset (TN poll aggregator), Impressionable-Havoc (Powell clause counsel), Sardonic-Floozie (parallel-mkt mispricing flagger), Precious-Willingness (Powell quote handle), Likable-Mule (Iran weekend-window), Somber-Interviewer (oracle-bluff arb), Grown-Songbird/Powerful-Election (counter rules-lawyers), Querulous-Hurt (Hez-cf Car-callout).
 
-CalibrationGap-actionable:
-- Trump-Iran-ops 36% with War-Powers-Act trigger TODAY: structural YES if AP/Reuters/TOI cite holds; NO if "pause vs end" UMA-dispute wins. Mirrors Iran-cf/Hez-cf clause-resolution arb in scanner.
-- RU-UA by-May31 at 6%: priced for no-deal, but Putin May-9 proposal opens tail. Watch big-trades flag.
-- TN TVK 6.95c (from 8.25c): residual edge cooling; Axis-MyIndia three-way-tie is contra-data-point. Re-run T-1 May 3.
+Actionable:
+1. Powell-May-14 at 1.35% — clause arb (term ends May 15 midnight ET); quant scanner sees price not clause text.
+2. Iran-uranium 8.5% — UMA-bluff thesis vs counter-clause extends Iran-cf/Hez-cf arb pattern; Car-callout reconfirms hostile-oracle thread live.
+3. TN T-2 TVK +80bp rebound — 5-poll stack vs vote-split math; re-run T-1 (May 3).
 
