@@ -71,4 +71,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-02,digest,claude-opus-4-7,71,25762,4645890,140052
 2026-05-02,repo-actions,claude-opus-4-7,70,45603,5060923,137852
 2026-05-02,code-health,claude-opus-4-7,6189,28645,3200862,110985
-2026-05-02,list-digest,claude-opus-4-7,16,4417,479660,33078
+2026-05-02,farcaster-digest,claude-opus-4-7,24,5140,597257,53931

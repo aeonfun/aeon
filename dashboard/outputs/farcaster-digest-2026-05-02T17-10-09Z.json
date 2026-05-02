@@ -1,0 +1,101 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "content_stack"
+      ]
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_main",
+        "sources_stack",
+        "error_details"
+      ]
+    },
+    "alert_main": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "Skill Skipped",
+        "message": "All data sources failed"
+      }
+    },
+    "sources_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_search",
+        "badge_trending",
+        "badge_channels"
+      ]
+    },
+    "badge_search": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge_channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    },
+    "error_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail_api",
+        "detail_key",
+        "detail_day"
+      ]
+    },
+    "detail_api": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 error",
+        "variant": "muted"
+      }
+    },
+    "detail_key": {
+      "type": "Text",
+      "props": {
+        "text": "NEYNAR_API_KEY unset",
+        "variant": "muted"
+      }
+    },
+    "detail_day": {
+      "type": "Text",
+      "props": {
+        "text": "Day 2 of failures",
+        "variant": "caption"
+      }
+    }
+  }
+}
