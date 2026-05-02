@@ -1,12 +1,17 @@
 ## Summary
 
-`list-digest` halted at Step 1 (`LIST_DIGEST_NO_CONFIG`) — the `var:` field is not set on the `list-digest` line in `aeon.yml`, and the skill requires at least one numeric X list ID. Per spec: log only, no notify.
+Ran `skills/list-digest/SKILL.md`. Skill exited at step 1 (`LIST_DIGEST_NO_CONFIG`) because `aeon.yml` configures `list-digest: { enabled: true, schedule: "0 17 * * *" }` with no `var:` set — the skill requires comma-separated X list IDs. Per SKILL.md, that's a log-only path, no notify.
 
-**What I did:**
-- Read `skills/list-digest/SKILL.md`, `memory/MEMORY.md`, and confirmed `list-digest: { enabled: true, schedule: "0 17 * * *" }` in `aeon.yml` has no `var:` field.
-- Checked: no `.xai-cache/list-digest-*.json` exists, no `memory/list-digest-seen.txt` exists, today's log had no prior `list-digest` entry.
-- Appended a `## list-digest` block to `memory/logs/2026-05-01.md` with status `LIST_DIGEST_NO_CONFIG` and the operator fix.
+**Pre-checks confirmed:**
+- `${var}` empty (no key in `aeon.yml` block)
+- No `.xai-cache/list-digest-*.json` (prefetch path A unavailable)
+- No `memory/list-digest-seen.txt` (no dedup state to update)
 
-**Files modified:** `memory/logs/2026-05-01.md`
+**Files modified:**
+- `memory/logs/2026-05-02.md` — appended `## list-digest` entry with status, recurrence count (#2 — also 05-01), and operator-fix options.
 
-**Follow-up:** This is the same gap MEMORY.md "Operator config sweep" already tracks — `var:` missing on `digest`, `list-digest`, `refresh-x`, `remix-tweets`. To activate this skill, add e.g. `var: "<LIST_ID_1>,<LIST_ID_2>"` to the `list-digest` line in `aeon.yml`.
+**Follow-ups (for operator):**
+- Merge stalled PR `tomscaria/aeon#1` (`fix(aeon.yml): disable list-digest + channel-recap until var configured`, ~7 days idle), OR
+- Add `var: "<list_id_1>,<list_id_2>"` to the `list-digest` line in `aeon.yml`. Same operator-side gap blocks `digest`, `refresh-x`, `remix-tweets` — all four can be unblocked in one config commit.
+
+No memory write — this is a known recurring no-config state already captured in `MEMORY.md` "Operator config sweep" priority.
