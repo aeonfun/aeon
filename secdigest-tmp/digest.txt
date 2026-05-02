@@ -18,4 +18,3 @@ Verdict: 1 actively exploited (Linux kernel, KEV add today), 3 to schedule, 0 to
   → upgrade Jupyter Notebook ≥7.5.6 and JupyterLab ≥4.5.7.
 
 Aeon stack relevance: zero direct (verified npm/Go grep — none of these packages in the tree).
-

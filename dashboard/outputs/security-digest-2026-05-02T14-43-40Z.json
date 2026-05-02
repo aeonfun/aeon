@@ -1,0 +1,223 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-05-02"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "verdict-text",
+        "sep1",
+        "patch-today-section",
+        "sep2",
+        "patch-week-section",
+        "sep3",
+        "relevance-note"
+      ]
+    },
+    "verdict-text": {
+      "type": "Text",
+      "props": {
+        "text": "Verdict: 1 actively exploited (Linux kernel, KEV add today), 3 to schedule, 0 to monitor. Sources: KEV, GH Advisory, EPSS",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-today-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "patch-today-heading",
+        "cve-2026-31431-link",
+        "cve-2026-31431-desc",
+        "cve-2026-31431-remedy"
+      ]
+    },
+    "patch-today-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH TODAY",
+        "level": "h2"
+      }
+    },
+    "cve-2026-31431-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-31431",
+        "href": "https://nvd.nist.gov/vuln/detail/CVE-2026-31431",
+        "source": "Linux Kernel"
+      }
+    },
+    "cve-2026-31431-desc": {
+      "type": "Text",
+      "props": {
+        "text": "KEV added 2026-05-01 · EPSS 0.02 · CVSS n/a\n\nIncorrect resource transfer between spheres → local privilege escalation. Public technical writeup at xint.io (copy-fail-linux-distributions). KEV due-date 2026-05-15."
+      }
+    },
+    "cve-2026-31431-remedy": {
+      "type": "Text",
+      "props": {
+        "text": "→ apply distro kernel security update on any self-hosted hosts; GH Actions runner images are GitHub's responsibility.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-week-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "patch-week-heading",
+        "ghsa-f6qq-stack",
+        "ghsa-w24r-stack",
+        "ghsa-rch3-stack"
+      ]
+    },
+    "patch-week-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH THIS WEEK",
+        "level": "h2"
+      }
+    },
+    "ghsa-f6qq-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ghsa-f6qq-link",
+        "ghsa-f6qq-desc",
+        "ghsa-f6qq-remedy"
+      ]
+    },
+    "ghsa-f6qq-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-f6qq-3m3h-4g42",
+        "href": "https://github.com/advisories/GHSA-f6qq-3m3h-4g42",
+        "source": "go-pkgz/auth (Go)"
+      }
+    },
+    "ghsa-f6qq-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.1 · EPSS 0 · CVE-2026-42560 · no public PoC\n\nPatreon OAuth provider assigns same local user.ID to every authenticated Patreon account → cross-account impersonation, subscription-state leakage."
+      }
+    },
+    "ghsa-f6qq-remedy": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade go-pkgz/auth to ≥1.25.2 (v1 line) or ≥2.1.2 (v2 line).",
+        "variant": "body"
+      }
+    },
+    "ghsa-w24r-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ghsa-w24r-link",
+        "ghsa-w24r-desc",
+        "ghsa-w24r-remedy"
+      ]
+    },
+    "ghsa-w24r-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-w24r-5266-9c3c",
+        "href": "https://github.com/advisories/GHSA-w24r-5266-9c3c",
+        "source": "@clerk/* (npm, broad)"
+      }
+    },
+    "ghsa-w24r-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS n/a · CVE-2026-42349 · no public PoC\n\nhas()/auth.protect() returns true for combined org+billing+reverification checks when it should be false. Sessions not compromised; bypass scoped to predicate."
+      }
+    },
+    "ghsa-w24r-remedy": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade @clerk/shared ≥3.47.5/4.8.3, @clerk/nextjs ≥6.39.3/7.2.4, @clerk/backend ≥2.33.3/3.2.14 (29 packages affected; full list per advisory).",
+        "variant": "body"
+      }
+    },
+    "ghsa-rch3-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ghsa-rch3-link",
+        "ghsa-rch3-desc",
+        "ghsa-rch3-remedy"
+      ]
+    },
+    "ghsa-rch3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-rch3-82jr-f9w9",
+        "href": "https://github.com/advisories/GHSA-rch3-82jr-f9w9",
+        "source": "@jupyter-notebook/help-extension (npm) + notebook (pip)"
+      }
+    },
+    "ghsa-rch3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS n/a · CVE-2026-40171 · no public PoC\n\nStored XSS in help-extension → steal auth token via single-click on disguised control → full Jupyter takeover (file read/write, kernel exec, terminal)."
+      }
+    },
+    "ghsa-rch3-remedy": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade Jupyter Notebook ≥7.5.6 and JupyterLab ≥4.5.7.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "relevance-note": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon stack relevance: zero direct (verified npm/Go grep — none of these packages in the tree).",
+        "variant": "muted"
+      }
+    }
+  }
+}
