@@ -694,10 +694,10 @@
   },
   "reddit-digest": {
     "last_dispatch": "2026-05-02T08:08:53Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-01T08:55:13Z",
-    "total_runs": 4,
-    "total_successes": 4,
+    "last_status": "success",
+    "last_success": "2026-05-02T08:11:26Z",
+    "total_runs": 5,
+    "total_successes": 5,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
