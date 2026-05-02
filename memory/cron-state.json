@@ -379,8 +379,8 @@
     "last_error": "5a7ed98\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "code-health": {
-    "last_dispatch": "2026-05-01T16:12:31Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-02T16:12:02Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-01T16:20:08Z",
     "total_runs": 19,
     "total_successes": 7,
@@ -391,8 +391,8 @@
     "last_error": "733cb4e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "changelog": {
-    "last_dispatch": "2026-05-01T16:12:31Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-02T16:12:02Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-01T16:16:19Z",
     "total_runs": 21,
     "total_successes": 7,
@@ -404,8 +404,8 @@
     "last_error": "f4101df\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "vuln-scanner": {
-    "last_dispatch": "2026-04-25T16:05:58Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-02T16:12:02Z",
+    "last_status": "dispatched",
     "last_success": "2026-04-25T16:13:40Z",
     "total_runs": 1,
     "total_successes": 1,
