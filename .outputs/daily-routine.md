@@ -1,47 +1,37 @@
-*Daily Routine — 2026-05-01*
+*Daily Routine — 2026-05-02*
 
-_BTC bounce to $77k +2% off $75.5k overnight; Senate unanimous PM trading ban; Wasabi Protocol $5M exploit; XO Market $6M seed._
+_Quiet tape (05-01 close): 66/100 top coins green, median +0.6%; BTC $78,028 +2.3%, ETH $2,307 +1.8%, SOL $84.41 +1.4%._
 
-*Top Winners (24h, 04-30 close)*
-1. SKYAI $0.318 +17.9% / 7d +75.7% • $124M
-2. ASTEROID $0.000326 +9.2% • $26M
-3. 9BIT $0.0218 +5.7% • $4M
-4. APE $0.155 +4.9% / 7d +54.9% • $125M
-5. RIVER $6.52 +4.8% • $15M
-6. WBT $57.1 +4.7% • $130M
-7. POL $0.095 +4.0% • $72M
-8. BTSE $1.11 +3.5% • $3M
-9. JTO $0.353 +3.3% • $10M
-10. LUNC $0.000072 +3.0% / 7d +62.7% • $92M
+*Top 5 Winners (24h)*
+1. UB $0.1125 +90.8% / 7d +141% • $87M [PUMP-RISK]
+2. B $0.220 +72.2% / 7d +128% • $31M [PUMP-RISK]
+3. 9BIT $0.0305 +35.7% • $5M [PUMP-RISK]
+4. PENDLE $1.57 +20.5% • $100M
+5. GENIUS $0.503 +17.4% • $30M
 
-*Top Losers (24h)*
-1. BSB $0.575 −26.3% • $128M [CAPITULATION]
-2. MEGA $0.177 −21.5% • $99M [TGE-day collapse]
-3. WLFI $0.060 −16.1% • $131M
-4. GENIUS $0.437 −14.6% • $22M
-5. RAVE $0.740 −8.9% • $30M
-6. S $0.043 −8.9% • $23M
-7. CHZ $0.041 −8.2% • $114M
-8. PI $0.174 −7.9% • $33M
-9. SKY $0.079 −7.6% • $14M
-10. H $0.168 −7.5% • $48M
+*Top 5 Losers (24h)*
+1. MEGA $0.152 −12.9% • $372M [CAPITULATION, post-FDV-resolve]
+2. RAVE $0.657 −10.5% / 7d −32% • $26M
+3. M (MemeCore) $3.12 −8.7% • $12M
+4. WLFI $0.0564 −7.1% / 7d −26% • $100M
+5. PIEVERSE $0.676 −4.9% • $7M
 
-*Roundup* (path: WebSearch — XAI key/cache absent, 7th day)
-*Crypto:* BTC reclaims $77k after $75.5k overnight wick; Wasabi Protocol drained ~$5M via deployer-key compromise across ETH/Base/Berachain/Blast; DPRK actors now 76% of 2026 crypto thefts ($577M YTD).
-*AI:* Snowflake/OpenAI $200M agentic enterprise deal; OpenClaw 100k stars, creator → OpenAI; GitHub Copilot to usage-based billing June 1; Bedrock now serves GPT-5.4/5.5 preview.
-*Prediction markets:* Senate unanimously bans members+staff from Polymarket/Kalshi (Mansour applauds); Merkley-led Dems push CFTC for industry rule on insider/election/war contracts; Gemini scores derivatives license, eyes Kalshi challenge; XO Market $6M seed (20VC, Coinbase Ventures).
+*Roundup* (path: WebSearch — XAI key/cache absent, 8th day)
+*Crypto:* BTC ~$78.2K after ~13% April gain; April logged ~28 DeFi hacks ~$651M, triggering ETH ETF outflows; Consensus 2026 Miami opens May 5.
+*AI:* Moonshot shipped Kimi-K2.6 (agent-oriented long-context coder); fresh GPT-5.5 vs Opus 4.7 benchmark rounds splitting roughly 4-6 across reasoning suites.
+*Prediction markets:* Senate Dems (Merkley) pressed CFTC on Kalshi/Polymarket insider-trading + March advance NOPR demanding real-time monitoring; Tamil Nadu T-2: DMK 87.5%, TVK cooled 6.95c (8.25c→6.95c); Russia-Ukraine by-May-31 priced ~6% post-Putin May-9 ceasefire proposal.
 
 *Paper of the Day*
-"Pitfalls in Evaluating Language Model Forecasters" — Paleka/Goel/Geiping/Tramèr (ETH/Tübingen). Audits temporal leakage in static LLM-forecaster evals — exactly the trap your live-trade CalibrationGap record sidesteps; precursor to Hardt/Geiping (2512.25070) already on reading list.
-https://arxiv.org/abs/2506.00723
+"Hyperagents" — Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, Shavrina (↑50). First Darwin-Goedel-Machine extension that drops the coding-domain assumption: a single editable program holds task + meta agent, the meta-modification procedure is itself editable, and meta-level gains transfer across domains and accumulate across runs. Canonical Darwinian-axis citation for Stanford app + bench candidate for the next CalibrationGap meta-loop layer.
+https://arxiv.org/abs/2603.19461
 
 *GitHub Issues*
-No new issues — four days clean.
+No new issues — five days clean.
 
 *HN Front (top 5)*
-1. Cursor Camp (1177) — https://news.ycombinator.com/item?id=47949939
-2. Where the goblins came from / OpenAI (1031) — https://news.ycombinator.com/item?id=47957688
-3. Belgium halts nuclear decommissioning (810) — https://news.ycombinator.com/item?id=47961319
-4. Zig anti-AI contribution policy rationale (653) — https://news.ycombinator.com/item?id=47957294
-5. Mark Klein / Room 641A excerpt (581) — https://news.ycombinator.com/item?id=47965060
+1. Ti-84 Evo (428) — https://news.ycombinator.com/item?id=47979583
+2. Practice skills while dreaming (321) — https://news.ycombinator.com/item?id=47977748
+3. Ask.com has closed (231) — https://news.ycombinator.com/item?id=47983226
+4. SWE job postings rapidly rising (186) — https://news.ycombinator.com/item?id=47982512
+5. Artemis II Photo Timeline (178) — https://news.ycombinator.com/item?id=47954394
 

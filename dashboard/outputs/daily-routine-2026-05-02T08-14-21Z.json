@@ -1,0 +1,457 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-02",
+        "description": "Quiet tape (05-01 close)"
+      },
+      "children": [
+        "market_summary_heading",
+        "market_stats",
+        "separator_1",
+        "winners_heading",
+        "winners_table",
+        "losers_heading",
+        "losers_table",
+        "separator_2",
+        "roundup_heading",
+        "roundup_metadata",
+        "roundup_content",
+        "separator_3",
+        "paper_heading",
+        "paper_stack",
+        "separator_4",
+        "github_heading",
+        "github_status",
+        "separator_5",
+        "hn_heading",
+        "hn_list"
+      ]
+    },
+    "market_summary_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Summary",
+        "level": "h2"
+      }
+    },
+    "market_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_coinsgreen",
+        "stat_btc",
+        "stat_eth",
+        "stat_sol"
+      ]
+    },
+    "stat_coinsgreen": {
+      "type": "Stat",
+      "props": {
+        "label": "Top coins green",
+        "value": "66/100",
+        "delta": "+0.6% (median)"
+      }
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,028",
+        "delta": "+2.3%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,307",
+        "delta": "+1.8%",
+        "trend": "up"
+      }
+    },
+    "stat_sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "$84.41",
+        "delta": "+1.4%",
+        "trend": "up"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Coin",
+          "Price",
+          "24h",
+          "7d",
+          "Cap",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "UB",
+            "$0.1125",
+            "+90.8%",
+            "+141%",
+            "$87M",
+            "PUMP-RISK"
+          ],
+          [
+            "B",
+            "$0.220",
+            "+72.2%",
+            "+128%",
+            "$31M",
+            "PUMP-RISK"
+          ],
+          [
+            "9BIT",
+            "$0.0305",
+            "+35.7%",
+            "—",
+            "$5M",
+            "PUMP-RISK"
+          ],
+          [
+            "PENDLE",
+            "$1.57",
+            "+20.5%",
+            "—",
+            "$100M",
+            ""
+          ],
+          [
+            "GENIUS",
+            "$0.503",
+            "+17.4%",
+            "—",
+            "$30M",
+            ""
+          ]
+        ]
+      }
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Coin",
+          "Price",
+          "24h",
+          "7d",
+          "Cap",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "MEGA",
+            "$0.152",
+            "−12.9%",
+            "—",
+            "$372M",
+            "CAPITULATION, post-FDV-resolve"
+          ],
+          [
+            "RAVE",
+            "$0.657",
+            "−10.5%",
+            "−32%",
+            "$26M",
+            ""
+          ],
+          [
+            "M (MemeCore)",
+            "$3.12",
+            "−8.7%",
+            "—",
+            "$12M",
+            ""
+          ],
+          [
+            "WLFI",
+            "$0.0564",
+            "−7.1%",
+            "−26%",
+            "$100M",
+            ""
+          ],
+          [
+            "PIEVERSE",
+            "$0.676",
+            "−4.9%",
+            "—",
+            "$7M",
+            ""
+          ]
+        ]
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "roundup_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Roundup",
+        "level": "h2"
+      }
+    },
+    "roundup_metadata": {
+      "type": "Text",
+      "props": {
+        "text": "path: WebSearch — XAI key/cache absent, 8th day",
+        "variant": "muted"
+      }
+    },
+    "roundup_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "roundup_crypto",
+        "roundup_ai",
+        "roundup_pm"
+      ]
+    },
+    "roundup_crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_crypto_label",
+        "roundup_crypto_text"
+      ]
+    },
+    "roundup_crypto_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Crypto",
+        "variant": "secondary"
+      }
+    },
+    "roundup_crypto_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ~$78.2K after ~13% April gain; April logged ~28 DeFi hacks ~$651M, triggering ETH ETF outflows; Consensus 2026 Miami opens May 5."
+      }
+    },
+    "roundup_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_ai_label",
+        "roundup_ai_text"
+      ]
+    },
+    "roundup_ai_label": {
+      "type": "Badge",
+      "props": {
+        "text": "AI",
+        "variant": "secondary"
+      }
+    },
+    "roundup_ai_text": {
+      "type": "Text",
+      "props": {
+        "text": "Moonshot shipped Kimi-K2.6 (agent-oriented long-context coder); fresh GPT-5.5 vs Opus 4.7 benchmark rounds splitting roughly 4-6 across reasoning suites."
+      }
+    },
+    "roundup_pm": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "roundup_pm_label",
+        "roundup_pm_text"
+      ]
+    },
+    "roundup_pm_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Prediction markets",
+        "variant": "secondary"
+      }
+    },
+    "roundup_pm_text": {
+      "type": "Text",
+      "props": {
+        "text": "Senate Dems (Merkley) pressed CFTC on Kalshi/Polymarket insider-trading + March advance NOPR demanding real-time monitoring; Tamil Nadu T-2: DMK 87.5%, TVK cooled 6.95c (8.25c→6.95c); Russia-Ukraine by-May-31 priced ~6% post-Putin May-9 ceasefire proposal."
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paper_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h2"
+      }
+    },
+    "paper_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper_card",
+        "paper_description"
+      ]
+    },
+    "paper_card": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hyperagents",
+        "href": "https://arxiv.org/abs/2603.19461",
+        "source": "Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, Shavrina",
+        "score": "↑50"
+      }
+    },
+    "paper_description": {
+      "type": "Text",
+      "props": {
+        "text": "First Darwin-Goedel-Machine extension that drops the coding-domain assumption: a single editable program holds task + meta agent, the meta-modification procedure is itself editable, and meta-level gains transfer across domains and accumulate across runs. Canonical Darwinian-axis citation for Stanford app + bench candidate for the next CalibrationGap meta-loop layer.",
+        "variant": "caption"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "github_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "github_status": {
+      "type": "Alert",
+      "props": {
+        "title": "No new issues",
+        "message": "Five days clean",
+        "type": "success"
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hn_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Front (top 5)",
+        "level": "h2"
+      }
+    },
+    "hn_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn_1",
+        "hn_2",
+        "hn_3",
+        "hn_4",
+        "hn_5"
+      ]
+    },
+    "hn_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Ti-84 Evo",
+        "href": "https://news.ycombinator.com/item?id=47979583",
+        "source": "Hacker News",
+        "score": "428"
+      }
+    },
+    "hn_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Practice skills while dreaming",
+        "href": "https://news.ycombinator.com/item?id=47977748",
+        "source": "Hacker News",
+        "score": "321"
+      }
+    },
+    "hn_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Ask.com has closed",
+        "href": "https://news.ycombinator.com/item?id=47983226",
+        "source": "Hacker News",
+        "score": "231"
+      }
+    },
+    "hn_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "SWE job postings rapidly rising",
+        "href": "https://news.ycombinator.com/item?id=47982512",
+        "source": "Hacker News",
+        "score": "186"
+      }
+    },
+    "hn_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Artemis II Photo Timeline",
+        "href": "https://news.ycombinator.com/item?id=47954394",
+        "source": "Hacker News",
+        "score": "178"
+      }
+    }
+  }
+}
