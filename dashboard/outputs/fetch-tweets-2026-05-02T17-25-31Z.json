@@ -1,0 +1,221 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-05-02)"
+      },
+      "children": [
+        "intro-text",
+        "sep1",
+        "section1-heading",
+        "tweets-section1",
+        "sep2",
+        "section2-heading",
+        "tweets-section2",
+        "sep3",
+        "section3-heading",
+        "tweets-section3"
+      ]
+    },
+    "intro-text": {
+      "type": "Text",
+      "props": {
+        "text": "Two-front day — Trump's 'hostilities have terminated' War Powers letter resolves Polymarket's end-mil-ops-Iran market YES while Senate-ban / Gemini-DCO regulatory plumbing keeps consolidating Kalshi+Polymarket's incumbents-with-rules positioning. Path C, no engagement counts.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran War-Powers resolution (CalibrationGap-relevant)",
+        "level": "h2"
+      }
+    },
+    "tweets-section1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet1-stack",
+        "tweet2-stack"
+      ]
+    },
+    "tweet1-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1",
+        "tweet1-link"
+      ]
+    },
+    "tweet1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "KristenhCNN",
+        "text": "Trump's formal letter to Speaker Johnson + Senate Pro Tem Grassley argues the Iran war 'hostilities,' begun with the Feb 28 strikes, 'have terminated.' Most upstream primary on the War Powers Act T+60 — directly resolves Polymarket's end-mil-ops market window."
+      }
+    },
+    "tweet1-link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/KristenhCNN/status/2050281947931234362"
+      }
+    },
+    "tweet2-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2",
+        "tweet2-link"
+      ]
+    },
+    "tweet2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "IranIntl_En",
+        "text": "White House principal deputy press sec confirms 'active conversations' with Congress as the 60-day War Powers Resolution deadline approaches. Posted ~24h before the Trump letter — pre-positions the resolution-debate spike that comments-side reply-maker should pick up next 48h."
+      }
+    },
+    "tweet2-link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/IranIntl_En/status/2049888459402236365"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Regulatory front (Senate self-ban + Gemini DCO)",
+        "level": "h2"
+      }
+    },
+    "tweets-section2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet3-stack",
+        "tweet4-stack"
+      ]
+    },
+    "tweet3-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet3",
+        "tweet3-link"
+      ]
+    },
+    "tweet3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "text": "Polymarket's flat-out endorsement of the Senate self-ban: 'Our Rulebook & ToS already prohibit such conduct, but codifying this into law is a step forward for the industry.' Completes both incumbents publicly endorsing the rule rather than treating it as a threat."
+      }
+    },
+    "tweet3-link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2049915691327803453"
+      }
+    },
+    "tweet4-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet4",
+        "tweet4-link"
+      ]
+    },
+    "tweet4": {
+      "type": "TweetCard",
+      "props": {
+        "author": "BitcoinNews",
+        "text": "Gemini receives DCO license from CFTC per @cameron, after Dec DCM approval. Olympus + Titan = full-stack venue + clearinghouse for predictions, futures, and options. Third regulated US prediction-market entrant — compresses Kalshi's offshore-perception advantage over Polymarket."
+      }
+    },
+    "tweet4-link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/BitcoinNews/status/2049867621835899328"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu (T-2 to vote 05-04)",
+        "level": "h2"
+      }
+    },
+    "tweets-section3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet5-stack"
+      ]
+    },
+    "tweet5-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet5",
+        "tweet5-link"
+      ]
+    },
+    "tweet5": {
+      "type": "TweetCard",
+      "props": {
+        "author": "businessline",
+        "text": "Most exit-poll surveys give MK Stalin's DMK-led alliance a clear majority in the 234-member Assembly. Anchors the consensus narrative going into 05-03 (T-1) and 05-04 resolution morning — confirms memory's DMK 87.5% / TVK cooled to 6.95c frame is still live."
+      }
+    },
+    "tweet5-link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/businessline/status/2049493965947146577"
+      }
+    }
+  }
+}

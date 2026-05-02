@@ -1,22 +1,26 @@
-*Top Tweets — prediction markets (2026-05-01)*
-_Tape is regulation-heavy: 4-of-5 fresh tweets are the Senate self-ban (sponsor + Kalshi + Mansour + recap); only XO Market's $6M seed cuts through with non-regulatory news. Polymarket and Hyperliquid silent in this window despite CLOB v2 / TVL >$500M and Hayes's HIP-4 thesis._
+*Top Tweets — prediction markets (2026-05-02)*
+_Two-front day — Trump's 'hostilities have terminated' War Powers letter resolves Polymarket's end-mil-ops-Iran market YES while Senate-ban / Gemini-DCO regulatory plumbing keeps consolidating Kalshi+Polymarket's incumbents-with-rules positioning. Path C, no engagement counts._
 
-*Senate self-ban resolution (Apr 30)*
-1. x.com/berniemoreno — Sponsor announces unanimous passage: "my bill to ban members of Congress from insider trading on prediction markets just passed the Senate UNANIMOUSLY." Most upstream primary source on the new rule.
-[View tweet](https://x.com/berniemoreno/status/2049899149588418922)
+*Iran War-Powers resolution (CalibrationGap-relevant)*
+1. x.com/KristenhCNN — Trump's formal letter to Speaker Johnson + Senate Pro Tem Grassley argues the Iran war 'hostilities,' begun with the Feb 28 strikes, 'have terminated.' Most upstream primary on the War Powers Act T+60 — directly resolves Polymarket's end-mil-ops market window.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/KristenhCNN/status/2050281947931234362)
 
-2. x.com/Kalshi — Platform's flat news-share, no spin, posted 6 minutes after Moreno: "JUST IN: Senate passes unanimous resolution to ban its members from trading prediction markets." Kalshi is treating this as a tailwind not a threat.
-[View tweet](https://x.com/Kalshi/status/2049901518292136198)
+2. x.com/IranIntl_En — White House principal deputy press sec confirms 'active conversations' with Congress as the 60-day War Powers Resolution deadline approaches. Posted ~24h before the Trump letter — pre-positions the resolution-debate spike that comments-side reply-maker should pick up next 48h.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/IranIntl_En/status/2049888459402236365)
 
-3. x.com/mansourtarek_ — Kalshi CEO Mansour applauds the Senate and frames Kalshi as the regulated venue that "already proactively blocks members of congress." First major prediction-market exec to take a public victory lap on a regulator action.
-[View tweet](https://x.com/mansourtarek_/status/2049902987426894143)
+*Regulatory front (Senate self-ban + Gemini DCO)*
+3. x.com/Polymarket — Polymarket's flat-out endorsement of the Senate self-ban: 'Our Rulebook & ToS already prohibit such conduct, but codifying this into law is a step forward for the industry.' Completes both incumbents publicly endorsing the rule rather than treating it as a threat.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/Polymarket/status/2049915691327803453)
 
-4. x.com/MunshiPremChnd — Analyst late-day recap: "Senators just drew the line on prediction markets: no more trading on Kalshi or Polymarket amid insider-trading concerns." Anchors the news-cycle interpretation for non-crypto-native readers.
-[View tweet](https://x.com/MunshiPremChnd/status/2050015283268432136)
+4. x.com/BitcoinNews — Gemini receives DCO license from CFTC per @cameron, after Dec DCM approval. Olympus + Titan = full-stack venue + clearinghouse for predictions, futures, and options. Third regulated US prediction-market entrant — compresses Kalshi's offshore-perception advantage over Polymarket.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/BitcoinNews/status/2049867621835899328)
 
-*New entrants and funding (May 1)*
-5. x.com/xomarket — XO Market closes $6M Seed led by 20VC + Picus, with Coinbase Ventures, Ventures Together, Foreword. Building "conviction markets" — permissionless event creation, the live alternative to Polymarket/Kalshi's curated paths. CalibrationGap-relevant for thin-book regime watchlist.
-[View tweet](https://x.com/xomarket/status/2050152886857089536)
-
-_Source path: WebSearch (XAI_API_KEY len 0; .xai-cache/ absent — 7th consecutive run-day on path C). Engagement counts unavailable; ranked by signal/recency/source authority._
+*Tamil Nadu (T-2 to vote 05-04)*
+5. x.com/businessline — Most exit-poll surveys give MK Stalin's DMK-led alliance a clear majority in the 234-member Assembly. Anchors the consensus narrative going into 05-03 (T-1) and 05-04 resolution morning — confirms memory's DMK 87.5% / TVK cooled to 6.95c frame is still live.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/businessline/status/2049493965947146577)
 
