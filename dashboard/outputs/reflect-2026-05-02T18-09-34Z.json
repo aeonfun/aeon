@@ -1,0 +1,237 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "reflect",
+        "description": "Memory consolidated — 2026-05-02 (reflect #7). MEMORY.md rewrite."
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_changes",
+        "heading_pruned",
+        "stack_pruned",
+        "heading_added",
+        "stack_added",
+        "sep1",
+        "heading_topics",
+        "stack_topics",
+        "sep2",
+        "heading_health",
+        "grid_health"
+      ]
+    },
+    "heading_changes": {
+      "type": "Heading",
+      "props": {
+        "text": "Changes",
+        "level": "h3"
+      }
+    },
+    "heading_pruned": {
+      "type": "Heading",
+      "props": {
+        "text": "Pruned",
+        "level": "h4"
+      }
+    },
+    "stack_pruned": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_iran",
+        "badge_megaeth",
+        "badge_articles",
+        "badge_tamil"
+      ]
+    },
+    "badge_iran": {
+      "type": "Badge",
+      "props": {
+        "text": "resolved Iran-mil-ops",
+        "variant": "outline"
+      }
+    },
+    "badge_megaeth": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH lines",
+        "variant": "outline"
+      }
+    },
+    "badge_articles": {
+      "type": "Badge",
+      "props": {
+        "text": "04-29/30 stale article entries",
+        "variant": "outline"
+      }
+    },
+    "badge_tamil": {
+      "type": "Badge",
+      "props": {
+        "text": "T-3 Tamil Nadu framing (now T-2)",
+        "variant": "outline"
+      }
+    },
+    "heading_added": {
+      "type": "Heading",
+      "props": {
+        "text": "Added",
+        "level": "h4"
+      }
+    },
+    "stack_added": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_hormuz",
+        "badge_kxbtc",
+        "badge_macx",
+        "badge_hl",
+        "badge_lesson"
+      ]
+    },
+    "badge_hormuz": {
+      "type": "Badge",
+      "props": {
+        "text": "Strait-of-Hormuz NO trade (edge ~33pp)",
+        "variant": "secondary"
+      }
+    },
+    "badge_kxbtc": {
+      "type": "Badge",
+      "props": {
+        "text": "KXBTC +8pp alert",
+        "variant": "secondary"
+      }
+    },
+    "badge_macx": {
+      "type": "Badge",
+      "props": {
+        "text": "Manfred Macx + Powell-Warsh new narratives",
+        "variant": "secondary"
+      }
+    },
+    "badge_hl": {
+      "type": "Badge",
+      "props": {
+        "text": "HL HIP-4 mainnet Peak",
+        "variant": "secondary"
+      }
+    },
+    "badge_lesson": {
+      "type": "Badge",
+      "props": {
+        "text": "ingest-resolution-text-not-titles lesson",
+        "variant": "secondary"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_topics": {
+      "type": "Heading",
+      "props": {
+        "text": "Topic Files Updated",
+        "level": "h3"
+      }
+    },
+    "stack_topics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_aeonops",
+        "text_polymarket",
+        "text_milestones"
+      ]
+    },
+    "text_aeonops": {
+      "type": "Text",
+      "props": {
+        "text": "aeon-ops: ISS-017 silent-skip → delayed-dispatch"
+      }
+    },
+    "text_polymarket": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket: live state 05-02"
+      }
+    },
+    "text_milestones": {
+      "type": "Text",
+      "props": {
+        "text": "milestones"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_health": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill Health",
+        "level": "h3"
+      }
+    },
+    "grid_health": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_degraded",
+        "stat_healthy",
+        "stat_warning"
+      ]
+    },
+    "stat_degraded": {
+      "type": "Stat",
+      "props": {
+        "label": "DEGRADED",
+        "value": "59"
+      }
+    },
+    "stat_healthy": {
+      "type": "Stat",
+      "props": {
+        "label": "HEALTHY",
+        "value": "22"
+      }
+    },
+    "stat_warning": {
+      "type": "Stat",
+      "props": {
+        "label": "WARNING",
+        "value": "1",
+        "delta": "evening-rollup graduating"
+      }
+    }
+  }
+}

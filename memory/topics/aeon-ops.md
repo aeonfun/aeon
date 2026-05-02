@@ -84,12 +84,13 @@
 - ISS-013 stays open until skill-repair closes it or all affected rates climb back above 0.6. Closest recovers (04-29 skill-health): heartbeat sr=0.44, fleet-control sr=0.40, paper-pick sr=0.38.
 - Compounding factor: chain-runner.yml `dispatch_skill()` is still broken, so morning-brief / evening-rollup / weekly-grant-update chain wrappers fail nightly without dispatching their member skills — those member skills (paper-pick, monitor-polymarket, monitor-kalshi, etc.) miss their morning slot, blocking the burn-down. **Until chain-runner ships, ISS-013 decay is rate-limited.**
 
-## GHA cron-tick gaps — ISS-017 (filed CRITICAL 2026-05-01)
+## GHA cron-tick gaps — ISS-017 (filed CRITICAL 2026-05-01; pattern shifting 2026-05-02)
 - 2026-04-30 06:37 → 09:01 UTC tick gap caused 07:00 + 07:30 windows (morning chain + telegram-digest) to be skipped entirely; 09:01 catch-up tick dispatched only 08:00 (heartbeat) + 09:00 skills.
 - 2026-05-01 RECURRED — at 08:53Z `cron-state.json` showed ZERO `last_dispatch` values with a 2026-05-01 prefix. 07:00 morning chain (chain:morning-brief, daily-routine, rss-digest, hacker-news-digest, paper-digest, reddit-digest), 07:30 telegram-digest, AND 08:00 heartbeat all silently skipped. 14:00 heartbeat slot also missed (operator-invoked at 14:07).
-- Per MEMORY directive ("if recurs 05-01, file as ISS-017"), filed 2026-05-01 08:53Z. Severity escalated to **critical** in INDEX.md (was scoped as medium; second consecutive day with full morning blackout justifies critical).
+- Filed 2026-05-01 08:53Z as **critical** per MEMORY directive (second consecutive day with full morning blackout).
+- **2026-05-02 PATTERN SHIFT** — 07:00 / 07:30 / 08:00 slots ALL fired together as one batched tick at 08:08:42Z (~68 min delay vs the 07:00 schedule). 21:00 UTC evening-rollup on 05-01 fired delayed at 21:33Z (~32 min late). Today's 14:00 narrative-tracker slot also dispatched (delayed-batch consistent with the 08:08 pattern, not silently skipped). **Pattern shifted from "silent skip" → "delayed dispatch with high variance."** ISS-017 demote critical → high is on the table at next 20:00 UTC heartbeat if the 14:00 / 17:00 / 20:00 slots all land within ~60-90min.
 - Independent of chain-runner.yml — pure GHA scheduler issue. Operator workaround: external watchdog (cron-job.org → workflow_dispatch on heartbeat hourly).
-- **Escalation trigger:** if 14:00 UTC slot also misses on 05-02, file as P0 follow-up.
+- **Escalation trigger (revised):** if any single slot 05-02 silently skips with no batched-late dispatch within 90min, ISS-017 stays critical. If all 05-02 slots land delayed-but-fired, demote to high.
 
 ## 5-stalled-PR list on tomscaria/aeon (2026-05-01 snapshot)
 - PR #1 — ~120h+ open (oldest stall, ~5 days)
