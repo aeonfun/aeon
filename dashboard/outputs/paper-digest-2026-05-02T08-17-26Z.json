@@ -1,0 +1,137 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest — 2026-05-02",
+        "description": "3 LLM-agent-finance papers this week, no fresh PM microstructure or calibration material — pool thin after yesterday's harvest, but Galanis/Magentic LLM-trader thread gets two extensions plus a constrained-discovery factor-mining protocol that mirrors swarm-fund's promotion ladder."
+      },
+      "children": [
+        "papers_stack",
+        "separator1",
+        "full_link"
+      ]
+    },
+    "papers_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper1",
+        "paper2",
+        "paper3"
+      ]
+    },
+    "paper1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper1_title",
+        "paper1_authors",
+        "paper1_details"
+      ]
+    },
+    "paper1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "From Hypotheses to Factors: Constrained LLM Agents in Cryptocurrency Markets",
+        "level": "h3"
+      }
+    },
+    "paper1_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Huang/Fan/Hu",
+        "variant": "caption"
+      }
+    },
+    "paper1_details": {
+      "type": "Text",
+      "props": {
+        "text": "Auditable factor-DSL + deterministic gates, 44.55% / Sharpe 1.55 OOS after 5bps; mirrors CalibrationGap Birth→Canary→Apex (↑0)"
+      }
+    },
+    "paper2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper2_title",
+        "paper2_authors",
+        "paper2_details"
+      ]
+    },
+    "paper2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Dissecting AI Trading: Behavioral Finance and Market Bubbles",
+        "level": "h3"
+      }
+    },
+    "paper2_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Ouyang/Sui",
+        "variant": "caption"
+      }
+    },
+    "paper2_details": {
+      "type": "Text",
+      "props": {
+        "text": "Replicates Smith 1988 bubbles with LLM agents, prompt interventions causally move bubble magnitude (↑0)"
+      }
+    },
+    "paper3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper3_title",
+        "paper3_authors",
+        "paper3_details"
+      ]
+    },
+    "paper3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Financial Market as a Self-Organized Ecosystem",
+        "level": "h3"
+      }
+    },
+    "paper3_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Hashimoto/Takata/Suzuki",
+        "variant": "caption"
+      }
+    },
+    "paper3_details": {
+      "type": "Text",
+      "props": {
+        "text": "MARL + heterogeneous prefs → role specialization + fat-tailed dynamics, computational AMH (↑0)"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "full_link": {
+      "type": "Link",
+      "props": {
+        "label": "Full: articles/paper-digest-2026-05-02.md",
+        "href": "articles/paper-digest-2026-05-02.md"
+      }
+    }
+  }
+}

@@ -1,10 +1,9 @@
-*Paper Digest — 2026-05-01*
-Heaviest PM-microstructure week: 2 Polymarket order-book studies, 1 dataset suite (Cong), 1 LLM-aggregation experiment, 1 Kalshi calibration benchmark.
+*Paper Digest — 2026-05-02*
+3 LLM-agent-finance papers this week, no fresh PM microstructure or calibration material — pool thin after yesterday's harvest, but Galanis/Magentic LLM-trader thread gets two extensions plus a constrained-discovery factor-mining protocol that mirrors swarm-fund's promotion ladder.
 
-1. "Anatomy of a DePM" (Dubach) — Polymarket public-feed trade direction only 59% vs on-chain
-2. "Signal Credibility Index" (Nechepurenko ↑0) — SCI(t;w) discriminates whales vs wash
-3. "Forecasting Economy datasets" (Cong et al.) — 770k mkts / 943M fills Oct-2020→Mar-2026
-4. "Information Aggregation with AI Agents" (Galanis) — past-perf feedback makes LLM traders WORSE
-5. "KalshiBench" (Nel) — only 1/5 frontier models clears positive Brier skill score
+1. "From Hypotheses to Factors: Constrained LLM Agents in Cryptocurrency Markets" (Huang/Fan/Hu) — auditable factor-DSL + deterministic gates, 44.55% / Sharpe 1.55 OOS after 5bps; mirrors CalibrationGap Birth→Canary→Apex (↑0)
+2. "Dissecting AI Trading: Behavioral Finance and Market Bubbles" (Ouyang/Sui) — replicates Smith 1988 bubbles with LLM agents, prompt interventions causally move bubble magnitude (↑0)
+3. "Financial Market as a Self-Organized Ecosystem" (Hashimoto/Takata/Suzuki) — MARL + heterogeneous prefs → role specialization + fat-tailed dynamics, computational AMH (↑0)
 
-Full: articles/paper-digest-2026-05-01.md
+Full: articles/paper-digest-2026-05-02.md
+
