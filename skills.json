@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-01T15:30:00Z",
+    "generated": "2026-05-03T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 96,
+    "total": 97,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -298,6 +298,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon fleet-control"
+        },
+        {
+            "slug": "fork-cohort",
+            "name": "fork-cohort",
+            "description": "Weekly fork-activation cohort tracker — buckets every fork by recent run activity (COLD / STALE / ACTIVE / POWER) with week-over-week deltas",
+            "category": "dev",
+            "schedule": "0 19 * * 0",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-02",
+            "install": "./add-skill aaronjmars/aeon fork-cohort"
         },
         {
             "slug": "fork-fleet",

@@ -35,7 +35,7 @@ get_category() {
     autoresearch|auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
     workflow-security-audit|skill-security-scan|vercel-projects) echo "dev" ;;
-    spawn-instance|fleet-control|fork-fleet|star-milestone) echo "dev" ;;
+    spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     # Crypto & Markets
     token-alert|token-movers|token-report|token-pick|monitor-runners) echo "crypto" ;;
     on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
