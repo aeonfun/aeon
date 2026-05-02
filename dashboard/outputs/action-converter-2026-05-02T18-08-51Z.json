@@ -1,0 +1,330 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-02"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_shape",
+        "sep_1",
+        "action_1_stack",
+        "sep_2",
+        "action_2_stack",
+        "sep_3",
+        "action_3_stack",
+        "sep_4",
+        "action_4_stack",
+        "sep_5",
+        "action_5_stack",
+        "sep_6",
+        "sources_text"
+      ]
+    },
+    "text_shape": {
+      "type": "Text",
+      "props": {
+        "text": "Configure Vercel bot-email, post Putin-truce tweet 4a, untrack lore .env, audit pyth feeds, demote ISS-017.",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator"
+    },
+    "action_1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_1_heading",
+        "action_1_desc",
+        "action_1_why",
+        "action_1_done",
+        "action_1_loop"
+      ]
+    },
+    "action_1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Configure aeonframework bot's git commit-email in Vercel project",
+        "level": "h3"
+      }
+    },
+    "action_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Current bot email isn't verified, blocking 3 Vercel preview deploys × 4 PRs (#19/#20/#23/#24). Today's github-monitor flagged all four as ACT NOW with identical setting-your-commit-email-address-in-git failure URL.",
+        "variant": "body"
+      }
+    },
+    "action_1_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: one config change unblocks 4 stalled PRs at once incl. #24 approve-ready since 05-01.",
+        "variant": "caption"
+      }
+    },
+    "action_1_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: gh pr checks 24 --repo tomscaria/swarm-fund-mvp shows Vercel SUCCESS on at least one check.",
+        "variant": "caption"
+      }
+    },
+    "action_1_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: vercel-bot-email-block",
+        "variant": "outline"
+      }
+    },
+    "sep_2": {
+      "type": "Separator"
+    },
+    "action_2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_2_heading",
+        "action_2_desc",
+        "action_2_source",
+        "action_2_why",
+        "action_2_done",
+        "action_2_loop"
+      ]
+    },
+    "action_2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Post draft 4a (Russia-Ukraine truce thesis) to @rswarmai",
+        "level": "h3"
+      }
+    },
+    "action_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Russia-Ukraine \"the trade is the language\" thesis, ties CalibrationGap 29/76%/+$415/Sharpe 0.31 to May-31 6% binary.",
+        "variant": "body"
+      }
+    },
+    "action_2_source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: articles/2026-05-02.md + write-tweet output in memory/logs/2026-05-02.md.",
+        "variant": "caption"
+      }
+    },
+    "action_2_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: May-9 Putin Victory-Day truce window opens the resolution-debate spike 05-08 to 05-10; today is the freshest the catalyst gets.",
+        "variant": "caption"
+      }
+    },
+    "action_2_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: tweet URL https://x.com/rswarmai/status/... captured + appended to memory/logs/2026-05-02.md.",
+        "variant": "caption"
+      }
+    },
+    "action_2_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: tweet-4a-russia-ukraine",
+        "variant": "outline"
+      }
+    },
+    "sep_3": {
+      "type": "Separator"
+    },
+    "action_3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_3_heading",
+        "action_3_desc",
+        "action_3_context",
+        "action_3_why",
+        "action_3_done",
+        "action_3_loop"
+      ]
+    },
+    "action_3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Untrack .env in tomscaria/lore-financial-teaser",
+        "level": "h3"
+      }
+    },
+    "action_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "git rm --cached .env, rename to .env.local, verify .gitignore lines 15-19 cover both.",
+        "variant": "body"
+      }
+    },
+    "action_3_context": {
+      "type": "Text",
+      "props": {
+        "text": "Today's code-health flagged the file is committed in violation of its own gitignore; current values are publishable-anon but the next real secret leaks silently.",
+        "variant": "body"
+      }
+    },
+    "action_3_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: pre-empt secret exposure on a fresh repo just brought into multi-repo coverage today.",
+        "variant": "caption"
+      }
+    },
+    "action_3_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on tomscaria/lore-financial-teaser removing .env from index.",
+        "variant": "caption"
+      }
+    },
+    "action_3_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: lore-env-untracked",
+        "variant": "outline"
+      }
+    },
+    "sep_4": {
+      "type": "Separator"
+    },
+    "action_4_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_4_heading",
+        "action_4_desc",
+        "action_4_why",
+        "action_4_done",
+        "action_4_loop"
+      ]
+    },
+    "action_4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Audit hardcoded feed-ID TODOs in swarm-fund-mvp",
+        "level": "h3"
+      }
+    },
+    "action_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Two hardcoded feed-ID TODOs: pipeline/ingestion/pyth_ws.py:36 (XRP/USD) + pipeline/ingestion/birdeye_rest.py:36-37 (bIB01, dSPY). Cross-check vs Pyth + Birdeye canonical IDs; commit a one-line fix or comment-out per pair.",
+        "variant": "body"
+      }
+    },
+    "action_4_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: today's code-health calls these \"gate CalibrationGap correctness\" — wrong feed-ID = wrong price = corrupted Revenant signal.",
+        "variant": "caption"
+      }
+    },
+    "action_4_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: commit pushed to tomscaria/swarm-fund-mvp resolving the two TODO lines.",
+        "variant": "caption"
+      }
+    },
+    "action_4_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: pyth-birdeye-feed-id-audit",
+        "variant": "outline"
+      }
+    },
+    "sep_5": {
+      "type": "Separator"
+    },
+    "action_5_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_5_heading",
+        "action_5_desc",
+        "action_5_why",
+        "action_5_done",
+        "action_5_loop"
+      ]
+    },
+    "action_5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Demote ISS-017 critical → high",
+        "level": "h3"
+      }
+    },
+    "action_5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Update memory/issues/INDEX.md + memory/issues/ISS-017.md frontmatter. Today's 07:00/07:30/08:00 morning chain dispatched batched at 08:08 UTC (~68 min late) and 14:00 heartbeat fired at 14:39 — pattern is delayed-batch dispatch, not silent skip.",
+        "variant": "body"
+      }
+    },
+    "action_5_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: keeping it critical mis-signals the operator's external-watchdog priority; today's evidence is degraded-but-functioning scheduler.",
+        "variant": "caption"
+      }
+    },
+    "action_5_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: both files show severity: high; INDEX.md timestamp 2026-05-02.",
+        "variant": "caption"
+      }
+    },
+    "action_5_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: iss-017-demote",
+        "variant": "outline"
+      }
+    },
+    "sep_6": {
+      "type": "Separator"
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=92 lines logs=7 dates topics=8 .md files prs=12 open (aeon=6, swarm-fund-mvp=6, lore=0) cron_failing=3 (chain wrappers, same root cause) mode=OK",
+        "variant": "muted"
+      }
+    }
+  }
+}
