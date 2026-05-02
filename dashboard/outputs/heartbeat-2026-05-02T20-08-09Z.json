@@ -1,0 +1,333 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "heartbeat",
+        "description": "Heartbeat status, timing analysis, priority ordering, and system health"
+      },
+      "children": [
+        "alert-demotion",
+        "sep-1",
+        "timing-section",
+        "sep-2",
+        "pattern-section",
+        "sep-3",
+        "priority-section",
+        "sep-4",
+        "watch-section",
+        "sep-5",
+        "status-section",
+        "sep-6",
+        "files-section"
+      ]
+    },
+    "alert-demotion": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-017 Severity Change",
+        "message": "Demoted from critical to high",
+        "type": "info"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "timing-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "timing-h3",
+        "stat-20utc",
+        "timing-pattern"
+      ]
+    },
+    "timing-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Heartbeat Timing",
+        "level": "h3"
+      }
+    },
+    "stat-20utc": {
+      "type": "Stat",
+      "props": {
+        "label": "20:00 UTC heartbeat",
+        "value": "~1 minute late",
+        "delta": "+1 min",
+        "trend": "down"
+      }
+    },
+    "timing-pattern": {
+      "type": "Text",
+      "props": {
+        "text": "Third consecutive slot today with shrinking variance. Previous: 08:08 (~9 min late), 14:34 (~34 min late), 20:01 (on time).",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pattern-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pattern-h3",
+        "pattern-label",
+        "pattern-badge"
+      ]
+    },
+    "pattern-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Identified Pattern",
+        "level": "h3"
+      }
+    },
+    "pattern-label": {
+      "type": "Text",
+      "props": {
+        "text": "Silent skips → delayed dispatch with collapsing variance",
+        "variant": "lead"
+      }
+    },
+    "pattern-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "No silent skips today",
+        "variant": "secondary"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "priority-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "priority-h3",
+        "priority-grid"
+      ]
+    },
+    "priority-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Priority Ordering",
+        "level": "h3"
+      }
+    },
+    "priority-grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "priority-1",
+        "priority-1-detail",
+        "priority-2",
+        "priority-note"
+      ]
+    },
+    "priority-1": {
+      "type": "Badge",
+      "props": {
+        "text": "#1: chain-runner.yml dispatch_skill()",
+        "variant": "default"
+      }
+    },
+    "priority-1-detail": {
+      "type": "Text",
+      "props": {
+        "text": "7+ days idle, 3 chain wrappers",
+        "variant": "caption"
+      }
+    },
+    "priority-2": {
+      "type": "Badge",
+      "props": {
+        "text": "#2: External watchdog",
+        "variant": "outline"
+      }
+    },
+    "priority-note": {
+      "type": "Text",
+      "props": {
+        "text": "Watch retained: re-escalates if cron window silently skips 2 days, heartbeat delay exceeds 90 min for 2 days, or 21:00 evening-rollup misses 2 days.",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "watch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "watch-h3",
+        "watch-cond-1",
+        "watch-cond-2",
+        "watch-cond-3"
+      ]
+    },
+    "watch-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Watch Escalation Triggers",
+        "level": "h3"
+      }
+    },
+    "watch-cond-1": {
+      "type": "Text",
+      "props": {
+        "text": "• Cron window silently skips 2 days running",
+        "variant": "body"
+      }
+    },
+    "watch-cond-2": {
+      "type": "Text",
+      "props": {
+        "text": "• Heartbeat delay exceeds 90 minutes for 2 days",
+        "variant": "body"
+      }
+    },
+    "watch-cond-3": {
+      "type": "Text",
+      "props": {
+        "text": "• 21:00 evening-rollup misses 2 days",
+        "variant": "body"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "status-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status-h3",
+        "status-alert",
+        "critical-issue"
+      ]
+    },
+    "status-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "System Status",
+        "level": "h3"
+      }
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "STATUS_PAGE=DEGRADED",
+        "message": "15 open issues requiring attention",
+        "type": "warning"
+      }
+    },
+    "critical-issue": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-013 critical",
+        "variant": "destructive"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "files-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "files-h3",
+        "files-stack"
+      ]
+    },
+    "files-h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Files Modified",
+        "level": "h3"
+      }
+    },
+    "files-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "file-status",
+        "file-iss017",
+        "file-index",
+        "file-memory"
+      ]
+    },
+    "file-status": {
+      "type": "Text",
+      "props": {
+        "text": "docs/status.md",
+        "variant": "body"
+      }
+    },
+    "file-iss017": {
+      "type": "Text",
+      "props": {
+        "text": "memory/issues/ISS-017.md",
+        "variant": "body"
+      }
+    },
+    "file-index": {
+      "type": "Text",
+      "props": {
+        "text": "memory/issues/INDEX.md",
+        "variant": "body"
+      }
+    },
+    "file-memory": {
+      "type": "Text",
+      "props": {
+        "text": "memory/MEMORY.md",
+        "variant": "body"
+      }
+    }
+  }
+}

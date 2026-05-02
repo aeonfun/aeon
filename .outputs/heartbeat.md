@@ -1,15 +1,1 @@
-Heartbeat complete.
-
-**HEARTBEAT_OK · STATUS_PAGE=DEGRADED**
-
-## Summary
-
-Ran `heartbeat` at 14:39 UTC (the 14:00 cron slot, ~39 min late — cleanest GHA delivery in the 48h ISS-017 window). All P0 / P1 / P2 / P3 findings already surfaced in last 48h logs → **no notification sent** per dedup rule.
-
-**Key new signal:** ISS-017 14:00 slot fired automatically within 60-min variance. Trajectory is shifting from "silent skips" → "delayed dispatch with improving variance" (08:08 +68min → 13:40 +100min → 14:39 +39min). Per morning heartbeat directive, the 20:00 UTC run should make the formal `critical → high` demotion proposal.
-
-**Files modified:**
-- `docs/status.md` — regenerated wholesale. Overall 🔴 DEGRADED, 15 open issues, Updated 2026-05-02 14:39 UTC, Next-scheduled `push-recap` at 15:00 UTC.
-- `memory/logs/2026-05-02.md` — appended heartbeat 14:39 entry.
-
-**Follow-up:** at 20:00 UTC, if that slot also lands within ~60 min variance, propose ISS-017 demotion formally and update `memory/issues/ISS-017.md`. Chain-runner.yml `dispatch_skill()` DEGRADED moves to operator priority #1 once ISS-017 demotes.
+🟢 ISS-017 demoted critical → high. 20:00 UTC heartbeat fired ~1 min late — third consecutive slot today landing automatically with shrinking variance (08:08 ~9min late, 14:34 ~34min late, 20:01 on time). Pattern: silent skips → delayed dispatch with collapsing variance. No silent skips today. Operator priority ordering flips: chain-runner.yml dispatch_skill() (7+ days idle, 3 chain wrappers) is now #1 ahead of external watchdog. Watch retained: re-escalates if any cron window silently skips 2 days running, heartbeat delay >90min 2 days, or 21:00 evening-rollup misses 2 days. STATUS_PAGE=DEGRADED (15 open issues, ISS-013 still critical). Files: docs/status.md, memory/issues/ISS-017.md, memory/issues/INDEX.md, memory/MEMORY.md.

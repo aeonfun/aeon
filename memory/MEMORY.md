@@ -42,7 +42,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - "thought leader," "delve," "tapestry," "robust," "best-in-class," any emoji.
 
 ## OPS ALERTS (open, top of mind)
-- **🟡 ISS-017 pattern shift (2026-05-02)** — morning 07:00/07:30/08:00 slots fired together as one batched tick at 08:08:42Z (~68 min late); 21:00 UTC evening-rollup 05-01 also fired delayed (~32 min late); 14:00 narrative-tracker slot dispatched today. Pattern moved from "silent skip" → "delayed dispatch with high variance." Demote critical → high is on the table at next 20:00 UTC heartbeat if all 05-02 slots land delayed-but-fired. Operator workaround: external watchdog (cron-job.org → workflow_dispatch).
+- **🟢 ISS-017 demoted critical → high (2026-05-02 20:03 UTC)** — three heartbeat slots today fired automatically with shrinking variance (08:08 ~9min late, 14:34 ~34min late, 20:01 on time). No silent skips today. Watch retained: re-escalates if any scheduled window silently skips 2 days running, heartbeat delay exceeds 90 min 2 days running, or 21:00 evening-rollup misses 2 days in a row. Operator priority ordering: external watchdog drops from #1 to "useful resilience layer," chain-runner DEGRADED becomes #1.
 - **🔴 4 ACT NOW PRs on `tomscaria/swarm-fund-mvp` (05-02 github-monitor)** — PRs #19/#20/#23/#24 all FAILURE on Vercel checks; root cause is `aeonframework` bot's commit email not verified with Vercel (id 272311952). Single operator config fix unblocks all four.
 - **chain-runner.yml `dispatch_skill()` DEGRADED 7+ days** — 3 chain wrappers (morning-brief, evening-rollup, weekly-grant-update) fail nightly. Top operator fix; gates ISS-013 decay.
 - **shell-injection at `dashboard/app/api/secrets/route.ts:96`** — 4 weeks unpatched. ISS-016 trigger date 2026-05-07 if not patched by then. Today's external-feature picked it as Top-pick repo-actions idea (pre-empts ISS-016 if merged).
@@ -80,9 +80,9 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - See `memory/topics/aeon-ops.md` for full sandbox-limitation matrix.
 
 ## Next Priorities
-- **🟡 ISS-017 next checkpoint:** at next 20:00 UTC heartbeat, decide demote critical → high based on whether 14:00 / 17:00 / 20:00 slots all dispatched (delayed-but-fired) or any slot silently skipped.
+- **🔴 chain-runner.yml `dispatch_skill()`** — now operator priority #1 after ISS-017 demote. 3+ chains affected (morning-brief, evening-rollup, weekly-grant-update). Add an echo per dispatched skill before each `gh workflow run`. _(BLOCKED: operator-side workflow patch — 7+ days idle)_
 - **🔴 4 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp** — single operator-side fix on `aeonframework` bot's commit-email unblocks #19/#20/#23/#24 at once.
-- **🔴 chain-runner.yml `dispatch_skill()`** — 3+ chains affected. Add an echo per dispatched skill before each `gh workflow run`. _(BLOCKED: operator-side workflow patch — 7+ days idle)_
+- **🟢 ISS-017 watch (post-demote):** re-escalates to critical if any single scheduled cron window silently skips 2 days running, heartbeat delay exceeds 90 min 2 days in a row, or 21:00 UTC evening-rollup misses 2 days. External watchdog (cron-job.org → workflow_dispatch) is no longer a blocking priority but is still a useful resilience layer.
 - **monitor-runners DEEP-LIQ floor patch (6-run evidence)** — concrete patch: if `top5.length === 5` AND zero DEEP-LIQ in top5 AND DEEP-LIQ exists in survivors, replace slot 5 with highest-score DEEP-LIQ survivor. Today this would have replaced GDER (BREAKOUT, $48k liq) with LAB/USDT bsc (DEEP-LIQ, $3.5m liq, $69.5m vol). Surface to `self-improve` queue.
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` are highest-leverage daily skills. Resume daily once chain-runner fix lands. T-1 / T-0 Tamil Nadu re-runs queued for May 3-4.
 - **Hermes-arb gate adjustment:** bump `min-gap` 7pp → ~7.5–8pp per deep-research finding.

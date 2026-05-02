@@ -18,7 +18,7 @@
 | [ISS-012](ISS-012.md) | reddit-digest cannot run on JSON API — Reddit blocks GHA IPs (same root as ISS-002) | high | sandbox-limitation | 2026-04-26 | reddit-digest |
 | [ISS-013](ISS-013.md) | Mass skill failure 2026-04-26 23:53-58Z — 50+ skills exit with 0 tokens consumed | critical | unknown | 2026-04-27 | 53 skills (see file) |
 | [ISS-014](ISS-014.md) | reply-maker cannot source fresh tweets — XAI prefetch case missing, WebFetch x.com paywall | high | sandbox-limitation | 2026-04-27 | reply-maker |
-| [ISS-017](ISS-017.md) | GHA cron-tick gap — multiple slots silently skipped, escalating across 05-01 | critical | unknown | 2026-05-01 | morning chain + 13:00/13:30/14:00 families (20 skills) |
+| [ISS-017](ISS-017.md) | GHA cron-tick gap — multiple slots silently skipped, escalating across 05-01 | high | unknown | 2026-05-01 | morning chain + 13:00/13:30/14:00 families (20 skills) |
 
 ## Resolved
 
