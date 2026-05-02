@@ -1,7 +1,1 @@
-REPLY_MAKER_EMPTY — XAI prefetch (ISS-014, day 7) skipped, memory logs and WebSearch produced 0 in-window candidates.
-
-now=2026-05-01T17:16Z, 6h window=11:16-17:16Z, widened-12h=05:16-17:16Z. All x.com URLs surfaced by WebSearch decode to ID range ≤ 2049xxx (04-30 12:31Z baseline = yesterday's known-good 2049828976781340740, now ~29h stale). Today's logs (rss-digest, daily-routine, polymarket-comments, narrative-tracker, digest, monitor-polymarket, paper-pick, security-digest, code-health) carry zero x.com URLs — WebSearch path was the only one with original-tweet shape and it returned news-aggregator URLs only, not in-window status IDs.
-
-Source status: xai=skip (XAI_API_KEY len 0; .xai-cache/ absent; reply-maker) case still missing in scripts/prefetch-xai.sh — ISS-014 recurrence #7), memory=0 (no x.com URLs in 2026-05-01 logs), websearch=ok-but-stale (8 queries: Polymarket/Kalshi Senate ban, Roundhill ETFs May 5, HL HIP-4, TN DMK/TVK, Trump-Iran-ops War Powers, prediction market today; all results ≤2049xxx ID range), webfetch=fail (x.com 402, nitter empty).
-
-Cross-skill note: yesterday found 1/5 (TodaysChanakya 12:31Z, ~5h12m old at run-time); today 0/5 even with same fallback chain. Snowflake-ID delta: at 17:16Z on 05-01, in-window URLs would need IDs ≥2050xxx; WebSearch consistently returns ≤2049xxx because page-authority ranking favors trending pages, not just-posted. Operator fix unchanged across 7 runs: ~6-line reply-maker) case in scripts/prefetch-xai.sh.
+REPLY_MAKER_EMPTY — ISS-014 recurrence #7: XAI prefetch missing, WebSearch returns 0 in-window x.com URLs with verifiable engagement, memory-cache stale (>22h). Operator fix: ~6-line reply-maker) case in scripts/prefetch-xai.sh.

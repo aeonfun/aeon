@@ -1,0 +1,23 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker"
+      },
+      "children": [
+        "alert_main"
+      ]
+    },
+    "alert_main": {
+      "type": "Alert",
+      "props": {
+        "title": "REPLY_MAKER_EMPTY — ISS-014 recurrence #7",
+        "message": "Root causes: XAI prefetch missing, WebSearch returns 0 in-window x.com URLs with verifiable engagement, memory-cache stale (>22h). Operator fix: ~6-line case in scripts/prefetch-xai.sh.",
+        "type": "error"
+      }
+    }
+  }
+}
