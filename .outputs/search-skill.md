@@ -1,8 +1,15 @@
-Executed `search-skill`. Exited as `SEARCH_SKILL_NO_GAP` per step 1 — no concrete capability word derived from any of the four spec-defined sources.
-
 ## Summary
-- **Mode:** `SEARCH_SKILL_NO_GAP` (silent — no notify, no search, no install per skill spec).
-- **Why:** (a) ~50 skills with `success_rate < 0.6` are all ISS-013 mass-failure decay artifacts (`cf=0`, `last_status=success`) — chain-runner.yml `dispatch_skill()` repair is the upstream fix, not an external capability gap. (b) 15 open issues, none in the spec's strict category set (`missing-secret`, `api-change`, `permanent-limitation`, `quality-regression`); ISS-017 (new today, GHA cron-tick gap) is a scheduler flake an external skill can't repair. (c) MEMORY "Next Priorities" all map to operator-side config or already-installed skills. (d) 7-day log grep returns operator config gaps (NEYNAR_API_KEY, prefetch scripts) or prior NO_GAP self-references.
-- **Pattern:** 6-of-7 search-skill runs since 04-25 ended NO_GAP-class (one 04-28 OK_CANDIDATES explicitly flagged "redundant"). Capability-level signal will return only after chain-runner.yml fix lands and ISS-013 counters burn down.
-- **Files modified:** `memory/logs/2026-05-01.md` (search-skill entry appended). No notification, no PR, no `./add-skill` invocation.
-- **Follow-up:** None from this skill. Highest-leverage action remains the operator-side chain-runner.yml `dispatch_skill()` patch, gating both ISS-013 decay and meaningful future runs of this skill.
+
+Ran `search-skill`. All four spec-defined gap sources came up empty:
+
+- (a) `memory/cron-state.json`: zero skills with `cf >= 2`; the ~60 below 0.6 success-rate are the ISS-013 decay artifact (cf=0, last_status=success), not real failures.
+- (b) `memory/issues/INDEX.md`: 15 open issues, but none in the spec's strict category set (`missing-secret`, `api-change`, `permanent-limitation`, `quality-regression`). The sandbox-limitation issues can't be filled by an external skill since a new install inherits the same sandbox.
+- (c) MEMORY "Next Priorities": all map to existing installed skills or operator-side config (chain-runner repair, prefetch scripts, evals.json key fixes, dashboard shell-injection fix).
+- (d) Log grep: only prior search-skill self-references.
+
+**Exit:** `SEARCH_SKILL_NO_GAP` — silent per spec (no `./notify`, no `./add-skill`, no PR). Logged to `memory/logs/2026-05-02.md`.
+
+This is the 7th NO_GAP-class run in the last 8. Capability signal will return only once chain-runner.yml `dispatch_skill()` is fixed and the ISS-013 success-rate counters burn down — both operator-side, neither solvable from this skill.
+
+**Files modified:** `memory/logs/2026-05-02.md` (one log entry).
+**Follow-up:** none — silence is the correct output for NO_GAP.

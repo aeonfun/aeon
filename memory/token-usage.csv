@@ -68,4 +68,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-02,github-trending,claude-opus-4-7,10879,19442,1625815,104170
 2026-05-02,github-releases,claude-opus-4-7,3261,30227,2525439,168977
 2026-05-02,polymarket-comments,claude-opus-4-7,82,44889,7808742,211146
-2026-05-02,auto-merge,claude-opus-4-7,19,6056,554189,34893
+2026-05-02,search-skill,claude-opus-4-7,23,8999,809329,40573
