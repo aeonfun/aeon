@@ -1,0 +1,49 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "self-improve"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_prs",
+        "text_reason",
+        "text_action"
+      ]
+    },
+    "alert_prs": {
+      "type": "Alert",
+      "props": {
+        "title": "3+ open improvement PRs",
+        "message": "PRs #1, #2, #5 — oldest 8d idle.",
+        "type": "warning"
+      }
+    },
+    "text_reason": {
+      "type": "Text",
+      "props": {
+        "text": "Back-pressuring per skill rule, no new fix opened.",
+        "variant": "body"
+      }
+    },
+    "text_action": {
+      "type": "Text",
+      "props": {
+        "text": "Operator-side review needed.",
+        "variant": "lead"
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-self-improve: 3+ open PRs, waiting for review (#1, #2, #5 — oldest ~6 days). Skipping run; merge or close one to unblock.
+self-improve: 3+ open improvement PRs (#1/#2/#5, oldest 8d idle) — back-pressuring per skill rule, no new fix opened. Operator-side review needed.
