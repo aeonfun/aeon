@@ -142,6 +142,27 @@ case "$SKILL" in
       "$THREE_DAYS_AGO"
     ;;
 
+  reply-maker)
+    if [ -z "$VAR" ]; then
+      echo "xai-prefetch: reply-maker has no var, skipping (skill falls back to memory logs + WebSearch)"
+      exit 0
+    fi
+    # Detect var shape: numeric → X list ID, @-prefixed → handle, anything else → topic
+    if echo "$VAR" | grep -Eq '^[0-9]+$'; then
+      xai_search "reply-maker.json" \
+        "Look at X list https://x.com/i/lists/${VAR}. Return the 12 most reply-worthy original posts (not retweets, not replies) by members of this list posted in the last 6 hours (between ${YESTERDAY} and ${TODAY}). Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."
+    elif [ "${VAR#@}" != "$VAR" ]; then
+      ACCOUNT="${VAR#@}"
+      xai_search "reply-maker.json" \
+        "Search X for the 12 most reply-worthy original posts (not retweets, not replies) by @${ACCOUNT} between ${YESTERDAY} and ${TODAY}, prioritizing the last 6 hours. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts." \
+        "$YESTERDAY" "$TODAY" \
+        "\"allowed_x_handles\": [\"${ACCOUNT}\"]"
+    else
+      xai_search "reply-maker.json" \
+        "Search X for 12 reply-worthy original posts on this topic: ${VAR}. Posted between ${YESTERDAY} and ${TODAY}, prioritizing the last 6 hours. Reply-worthy = has a take, claim, question, or framing worth engaging — NOT pure self-promo, breaking news without analysis, or threads already past 500 replies. Avoid threads already past 500 replies. For each: @handle, full tweet text, tweet URL, posted_at ISO timestamp, like/reply/retweet counts."
+    fi
+    ;;
+
   article)
     if [ -n "$VAR" ]; then
       xai_search "article-x.json" \

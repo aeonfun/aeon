@@ -29,6 +29,16 @@ Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-l
 
 For every candidate, capture: `@handle`, full tweet text, tweet URL, `posted_at` (ISO), engagement counts (likes, replies, retweets if available), and a one-line **why-this-tweet** note.
 
+**Path A — pre-fetched cache (preferred).** The workflow pre-fetches Grok x_search results to `.xai-cache/reply-maker.json` (via `scripts/prefetch-xai.sh`, which has full env access and runs outside the Claude sandbox). Read it first:
+
+```bash
+jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' .xai-cache/reply-maker.json
+```
+
+If parsing yields candidates, use them. The prefetch script already shapes the request based on `${var}` (numeric list ID, `@handle`, or topic) — see "Strategy depends on `${var}`" below for the contract it implements.
+
+**Path B — direct curl:** Skipped. The sandbox blocks env-var-authenticated curl; do not attempt at runtime.
+
 Strategy depends on `${var}`:
 
 **If `${var}` looks like an X list ID** (numeric):
@@ -52,7 +62,7 @@ curl -s -X POST "https://api.x.ai/v1/responses" \
 **If `${var}` is a topic** (or empty): same call with `${var}` (or top 2–3 topics from `memory/MEMORY.md`) as the search query. When empty, also pull tweet candidates surfaced in the last 2 days of `tweet-roundup` and `list-digest` logs as a backup pool.
 
 **Fallback chain** (use in order until you have ≥3 candidates):
-1. XAI x_search (above)
+1. Pre-fetched XAI cache at `.xai-cache/reply-maker.json` (Path A above)
 2. Recent `list-digest` + `tweet-roundup` outputs in `memory/logs/` — already have URLs and handles
 3. WebSearch for very recent posts on memory topics (filter: posted within last 6h, original post not reply)
 
@@ -154,7 +164,7 @@ Edit this list as tastes change — any draft reply containing one of these (ope
 
 ## Sandbox note
 
-The sandbox may block outbound curl. Use **WebFetch** as a fallback for any URL fetch. For auth-required APIs (XAI), use the pre-fetch pattern: write request JSON to `.xai-cache/reply-maker-${date}-${hour}.json` if you build a prefetch script later, or fall through to the memory/WebSearch fallback chain.
+The sandbox blocks outbound curl with `$XAI_API_KEY` in headers — always read the pre-fetched `.xai-cache/reply-maker.json` (populated by `scripts/prefetch-xai.sh`) or fall through to the memory/WebSearch fallback chain. Do not attempt direct curl to `api.x.ai` at runtime. Use **WebFetch** for any non-auth URL fetches.
 
 ## Environment Variables Required
 
