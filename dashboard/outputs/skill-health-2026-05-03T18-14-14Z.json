@@ -1,0 +1,306 @@
+{
+  "root": "health-card",
+  "state": {},
+  "elements": {
+    "health-card": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health — 2026-05-03",
+        "description": "DEGRADED(58) — Systemic: ISS-013 zero-token burst gates, ISS-017 cron-tick decay"
+      },
+      "children": [
+        "metrics-row",
+        "sep1",
+        "degraded-section",
+        "sep2",
+        "warning-section",
+        "sep3",
+        "nodata-section",
+        "sep4",
+        "stats-section",
+        "sep5",
+        "delta-section"
+      ]
+    },
+    "metrics-row": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat-degraded",
+        "stat-warning",
+        "stat-healthy",
+        "stat-nodata"
+      ]
+    },
+    "stat-degraded": {
+      "type": "Stat",
+      "props": {
+        "label": "Degraded",
+        "value": "58"
+      }
+    },
+    "stat-warning": {
+      "type": "Stat",
+      "props": {
+        "label": "Warning",
+        "value": "2"
+      }
+    },
+    "stat-healthy": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy",
+        "value": "22"
+      }
+    },
+    "stat-nodata": {
+      "type": "Stat",
+      "props": {
+        "label": "No Data",
+        "value": "6"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "degraded-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "degraded-h",
+        "degraded-table",
+        "degraded-more"
+      ]
+    },
+    "degraded-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded (Top 5, sr asc)",
+        "level": "h3"
+      }
+    },
+    "degraded-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "SR",
+          "Runs",
+          "Last Success",
+          "Issue"
+        ],
+        "rows": [
+          [
+            "fork-contributor-leaderboard",
+            "0.08",
+            "12",
+            "04-27",
+            "ISS-013"
+          ],
+          [
+            "update-gallery",
+            "0.08",
+            "13",
+            "04-27",
+            "ISS-013"
+          ],
+          [
+            "fork-skill-digest",
+            "0.09",
+            "11",
+            "04-27",
+            "ISS-013"
+          ],
+          [
+            "skill-leaderboard",
+            "0.13",
+            "15",
+            "—",
+            "ISS-013"
+          ],
+          [
+            "skill-update-check",
+            "0.13",
+            "8",
+            "04-27",
+            "ISS-013"
+          ]
+        ]
+      }
+    },
+    "degraded-more": {
+      "type": "Text",
+      "props": {
+        "text": "+53 more — see memory/issues/INDEX.md",
+        "variant": "caption"
+      }
+    },
+    "warning-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "warning-h",
+        "warning-table"
+      ]
+    },
+    "warning-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Warning (2)",
+        "level": "h3"
+      }
+    },
+    "warning-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "SR Change",
+          "Status",
+          "Issue"
+        ],
+        "rows": [
+          [
+            "heartbeat",
+            "0.59 → 0.62",
+            "DEGRADED → WARNING",
+            "ISS-017"
+          ],
+          [
+            "evening-rollup",
+            "0.64 → 0.67",
+            "still WARNING",
+            "—"
+          ]
+        ]
+      }
+    },
+    "nodata-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "nodata-h",
+        "nodata-items",
+        "nodata-reason"
+      ]
+    },
+    "nodata-h": {
+      "type": "Heading",
+      "props": {
+        "text": "No Data (6)",
+        "level": "h3"
+      }
+    },
+    "nodata-items": {
+      "type": "Text",
+      "props": {
+        "text": "hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog",
+        "variant": "body"
+      }
+    },
+    "nodata-reason": {
+      "type": "Text",
+      "props": {
+        "text": "Chain-runner gated or weekly cron",
+        "variant": "caption"
+      }
+    },
+    "stats-section": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-open",
+        "stat-resolved",
+        "stat-filed"
+      ]
+    },
+    "stat-open": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "15"
+      }
+    },
+    "stat-resolved": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved This Run",
+        "value": "0"
+      }
+    },
+    "stat-filed": {
+      "type": "Stat",
+      "props": {
+        "label": "Filed",
+        "value": "0"
+      }
+    },
+    "delta-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "delta-h",
+        "delta-text"
+      ]
+    },
+    "delta-h": {
+      "type": "Heading",
+      "props": {
+        "text": "State Delta",
+        "level": "h3"
+      }
+    },
+    "delta-text": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat DEGRADED → WARNING. First measurable ISS-017 progress. ISS-013 tail decayed 59 → 58.",
+        "variant": "body"
+      }
+    }
+  }
+}

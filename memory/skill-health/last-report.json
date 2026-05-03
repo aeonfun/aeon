@@ -1,7 +1,7 @@
 {
-  "hash": "2adf8931c40860f9992f3edb943ee0103cd00b8b48e58a9644b845bab8f86fd5",
-  "last_notified_at": "2026-05-01T18:18:44Z",
-  "last_run_at": "2026-05-02T18:03:48Z",
+  "hash": "654a0914e8bf7e21735be0351bbf3fd017bf243ea3087ae538b872d556ee3630",
+  "last_notified_at": "2026-05-03T18:05:00Z",
+  "last_run_at": "2026-05-03T18:05:00Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -24,7 +24,6 @@
       "github-releases",
       "github-trending",
       "goal-tracker",
-      "heartbeat",
       "idea-capture",
       "list-digest",
       "market-context-refresh",
@@ -67,7 +66,8 @@
     ],
     "flapping": [],
     "warning": [
-      "evening-rollup"
+      "evening-rollup",
+      "heartbeat"
     ],
     "healthy_count": 22,
     "healthy": [
@@ -104,19 +104,20 @@
     ]
   },
   "systemic": [
-    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 59 DEGRADED skills (unchanged vs 2026-05-01 run).",
-    "ISS-017 GHA cron-tick gap (4th day; detected_by heartbeat; closure not owned by skill-health). Today's 14:00 UTC slot landed delayed but did fire (per heartbeat log) — variance shrinking from silent-skip to delayed-dispatch."
+    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 58 DEGRADED skills (was 59 — heartbeat graduated DEGRADED→WARNING this run at sr=0.62).",
+    "ISS-017 GHA cron-tick gap (5th day; detected_by heartbeat; closure not owned by skill-health). Heartbeat success-rate creep (0.59 → 0.62) and prev-run note 'variance shrinking from silent-skip to delayed-dispatch' both tick toward closure."
   ],
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "NOOP this run — hash unchanged AND now-prev_notify=23h45m < 24h cadence gate. last_notified_at preserved.",
-    "STATE DELTA vs 2026-05-01T18:18:44Z: classification identical. degraded 59, warning 1 (evening-rollup at sr=0.64), healthy 22, no_data 6.",
-    "evening-rollup remains WARNING (sr=0.64). Needs ~3 more clean runs to cross 0.8 → HEALTHY.",
-    "ISS-013 stays open. Zero overlap between current HEALTHY (22) and ISS-013.affected_skills (53). No filings, no resolutions this run.",
-    "Per CLAUDE.md issue-tracker contract, skill-health does not file/resolve issues it did not detect — ISS-001/002/003-011/012/014/015/017 unchanged.",
-    "skill-runs script blocked by sandbox (permission-denied) — SKILL_HEALTH_PARTIAL. Fell back to cron-state + memory/skill-health/*.json + memory/issues/.",
-    "Chain wrappers chain:morning-brief (failed 05-02T08:10Z), chain:evening-rollup, chain:weekly-grant-update remain last_status=failed — owned by operator-side chain-runner.yml fix (8+ days idle, MEMORY OPS ALERT).",
-    "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing), repo-scanner (Sun cron), syndicate-article (chain-dependent), vercel-projects (Sun cron), weekly-shiplog (Mon, fired via chain only)."
+    "STATE DELTA vs 2026-05-02T18:03:48Z: heartbeat DEGRADED→WARNING (sr 0.59→0.62, no consec failures, last_success 2026-05-03T14:44Z). evening-rollup sr 0.64→0.67 (still WARNING). All other skills classification-stable.",
+    "NOTIFY this run — hash changed AND now-prev_notify ≈45h > 24h cadence gate.",
+    "evening-rollup remains WARNING. ~3 more clean runs to cross 0.8 → HEALTHY.",
+    "Per CLAUDE.md issue-tracker contract, skill-health does not file/resolve issues it did not detect — ISS-001/002/003-012/014/015/017/018/019 unchanged. Repair skills (skill-repair, autoresearch) own closures.",
+    "skill-runs script blocked by sandbox (permission denied — same as 05-02) → SKILL_HEALTH_PARTIAL. Fell back to cron-state + memory/skill-health/*.json + memory/issues/.",
+    "Chain wrappers chain:morning-brief (failed 05-03T08:23Z), chain:evening-rollup, chain:weekly-grant-update remain last_status=failed — operator-side chain-runner.yml fix (9+ days idle, MEMORY OPS ALERT, now operator priority #1).",
+    "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing), repo-scanner (Sun cron), syndicate-article (chain-dependent), vercel-projects (Sun cron), weekly-shiplog (Mon, fired via chain only).",
+    "Heartbeat decay (sr 0.59→0.62) is the first measurable progress on ISS-017 since detection. If it crosses 0.8 within ~6 clean runs, ISS-017 candidate for closure by heartbeat (the detector skill).",
+    "ISS-013 mass-failure tail decayed by 1: 59→58 DEGRADED. Affected_skills list in ISS-013.md should be updated by skill-repair on next reconciliation."
   ]
 }
