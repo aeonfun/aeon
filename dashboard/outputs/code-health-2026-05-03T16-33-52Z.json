@@ -1,0 +1,187 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Code health 05-03"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item_shell_injection",
+        "sep1",
+        "item_test_surface",
+        "sep2",
+        "item_lore_env",
+        "sep3",
+        "item_action",
+        "sep4",
+        "link_report"
+      ]
+    },
+    "item_shell_injection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_shell",
+        "text_shell_details",
+        "badge_patched",
+        "text_shell_location"
+      ]
+    },
+    "heading_shell": {
+      "type": "Heading",
+      "props": {
+        "text": "SHELL-INJECTION PATCHED",
+        "level": "h2"
+      }
+    },
+    "text_shell_details": {
+      "type": "Text",
+      "props": {
+        "text": "execFileSync argv-form, both POST+DELETE"
+      }
+    },
+    "badge_patched": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-016 pre-empted",
+        "variant": "secondary"
+      }
+    },
+    "text_shell_location": {
+      "type": "Text",
+      "props": {
+        "text": "dashboard/app/api/secrets/route.ts:96 • PR #150 • 09:30 UTC",
+        "variant": "muted"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_test_surface": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_test",
+        "stat_test_coverage",
+        "text_pyth_birdeye",
+        "badge_day2_carry"
+      ]
+    },
+    "heading_test": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund-mvp test surface",
+        "level": "h3"
+      }
+    },
+    "stat_test_coverage": {
+      "type": "Stat",
+      "props": {
+        "label": "Files covered",
+        "value": "139",
+        "delta": "+31%",
+        "trend": "up"
+      }
+    },
+    "text_pyth_birdeye": {
+      "type": "Text",
+      "props": {
+        "text": "3 Pyth/Birdeye TODO:verify feed IDs"
+      }
+    },
+    "badge_day2_carry": {
+      "type": "Badge",
+      "props": {
+        "text": "Day-2 carry",
+        "variant": "outline"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_lore_env": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_lore",
+        "text_lore_details",
+        "badge_lore_carry"
+      ]
+    },
+    "heading_lore": {
+      "type": "Heading",
+      "props": {
+        "text": "lore-financial-teaser .env STILL tracked",
+        "level": "h3"
+      }
+    },
+    "text_lore_details": {
+      "type": "Text",
+      "props": {
+        "text": "Estimated 5-min fix"
+      }
+    },
+    "badge_lore_carry": {
+      "type": "Badge",
+      "props": {
+        "text": "Day-2 carry",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item_action": {
+      "type": "Alert",
+      "props": {
+        "title": "Top action",
+        "message": "Regression test for secrets/route.ts to lock in today fix",
+        "type": "info"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_report": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full report: articles/code-health-2026-05-03.md",
+        "href": "articles/code-health-2026-05-03.md",
+        "source": "Code health"
+      }
+    }
+  }
+}
