@@ -1,17 +1,16 @@
-*Evening Recap — 2026-05-02*
+*Evening Digest — 2026-05-03*
 
-*Trading loop:* 95 scan cycles (swarm-fund-mvp metric refreshes). No new Revenant trades recorded; 29/76%/+$415/Sharpe 0.31 unchanged. NAV delta unavailable in today's log — trust rswarm.ai/metrics.json for live read.
+*Trading loop:* PM 12 markets / no >5pp move; monitor-runners 60 pools post-gate. TTPA/WETH base DEEP-LIQ slot 1 x4 today (10x liq jump, score 64.4↑91.5, liq $31.9m→$334.7m).
 
-*Signals fired:*
-- Powell-out May 14 at 1.35% — clause arb clean (term ends May 15 midnight ET; same-day Walsh swear-in required for YES). CalibrationGap candidate. Three new handles: Impressionable-Havoc, Sardonic-Floozie, Precious-Willingness.
-- Hormuz June-30 NO at 54.5¢ — ~33pp edge (mines + blockade, 58 days to clear both constraints).
-- KXBTC-26MAY0217-B78125 +8pp (12%→20%) — Hermes-arb falsifier day-4 live divergence.
+*Signals fired:* polymarket-comments surfaced 3 — (1) meta-censoring war-strike markets displacing flow to Iran-airspace; (2) Sinaloa-Rocha UMA resolution debate live (sister to Iran-cf/Hez-cf clause-arb); (3) Hormuz insider tape: blockade framed as revenue stream by Trump = YES-friendly for May-31 lift. No >5pp PM alert markets.
 
-*Aeon skill failures:* chain:morning-brief + chain:evening-rollup (chain-runner.yml DEGRADED 7+ days — operator fix #1). reddit-digest 8th-day 403 block.
+*Revenant:* no new orders logged. 29 / 76% / +$415 baseline. TN T-0 rerun queued May 4 04:00 UTC.
+
+*NAV delta:* BTC $78,604 +0.35% / ETH $2,322 +0.63% / SOL $84 +0.41%. F&G 47 neutral. AKT +26% token-pick (AI-compute).
+
+*Skill failures:* chain:morning-brief + chain:evening-rollup DEGRADED 8+ days (chain-runner ISS-013); reddit/vibecoding error day 10; farcaster error day 3; reply-maker EMPTY day 8.
 
 *Top 3 today:*
-1. Papers — CORAL (arXiv:2604.01658, MIT/CMU/NUS) + GEA picked — triple-Darwinian-axis PhD day.
-2. Comment — Powell clause arb at 1.35%, cleanest CalibrationGap signal this week.
-3. PR — tomscaria/aeon#8 opened (extend coverage to all owned repos).
-
-_ISS-017 demoted critical→high; 20:00 cron landed clean._
+1. PolySwarm arXiv:2604.03888 — multi-agent LLM for PM trading + latency-arb; line-for-line CalibrationGap + Hermes-arb match
+2. TradeFM arXiv:2602.23784 (JPMorgan / Veloso) — 524M-param foundation model for trade-flow microstructure; Stanford-tier cite
+3. PR #156 — reply-maker XAI prefetch opened (closes ISS-014 day-9 carry)

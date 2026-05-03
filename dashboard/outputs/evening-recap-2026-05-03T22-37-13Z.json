@@ -1,0 +1,378 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Digest — 2026-05-03"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_trading",
+        "sep_1",
+        "section_signals",
+        "sep_2",
+        "section_revenant",
+        "sep_3",
+        "section_nav",
+        "sep_4",
+        "section_failures",
+        "sep_5",
+        "section_top3"
+      ]
+    },
+    "section_trading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_trading",
+        "text_trading_1",
+        "text_trading_2"
+      ]
+    },
+    "heading_trading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading loop",
+        "level": "h3"
+      }
+    },
+    "text_trading_1": {
+      "type": "Text",
+      "props": {
+        "text": "PM 12 markets / no >5pp move; monitor-runners 60 pools post-gate."
+      }
+    },
+    "text_trading_2": {
+      "type": "Text",
+      "props": {
+        "text": "TTPA/WETH base DEEP-LIQ slot 1 x4 today (10x liq jump, score 64.4↑91.5, liq $31.9m→$334.7m)."
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_signals": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_signals",
+        "signal_1",
+        "signal_2",
+        "signal_3",
+        "text_signals_end"
+      ]
+    },
+    "heading_signals": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals fired",
+        "level": "h3"
+      }
+    },
+    "signal_1": {
+      "type": "Text",
+      "props": {
+        "text": "(1) meta-censoring war-strike markets displacing flow to Iran-airspace"
+      }
+    },
+    "signal_2": {
+      "type": "Text",
+      "props": {
+        "text": "(2) Sinaloa-Rocha UMA resolution debate live (sister to Iran-cf/Hez-cf clause-arb)"
+      }
+    },
+    "signal_3": {
+      "type": "Text",
+      "props": {
+        "text": "(3) Hormuz insider tape: blockade framed as revenue stream by Trump = YES-friendly for May-31 lift"
+      }
+    },
+    "text_signals_end": {
+      "type": "Text",
+      "props": {
+        "text": "No >5pp PM alert markets."
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_revenant": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_revenant",
+        "text_revenant_1",
+        "grid_revenant",
+        "text_revenant_2"
+      ]
+    },
+    "heading_revenant": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h3"
+      }
+    },
+    "text_revenant_1": {
+      "type": "Text",
+      "props": {
+        "text": "No new orders logged."
+      }
+    },
+    "grid_revenant": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_trades",
+        "stat_winrate",
+        "stat_pnl"
+      ]
+    },
+    "stat_trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "29"
+      }
+    },
+    "stat_winrate": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "76%"
+      }
+    },
+    "stat_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      }
+    },
+    "text_revenant_2": {
+      "type": "Text",
+      "props": {
+        "text": "TN T-0 rerun queued May 4 04:00 UTC."
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_nav": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_nav",
+        "grid_nav",
+        "text_nav_1",
+        "badge_nav_2"
+      ]
+    },
+    "heading_nav": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV delta",
+        "level": "h3"
+      }
+    },
+    "grid_nav": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth",
+        "stat_sol"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,604",
+        "delta": "+0.35%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,322",
+        "delta": "+0.63%",
+        "trend": "up"
+      }
+    },
+    "stat_sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "$84",
+        "delta": "+0.41%",
+        "trend": "up"
+      }
+    },
+    "text_nav_1": {
+      "type": "Text",
+      "props": {
+        "text": "F&G 47 neutral."
+      }
+    },
+    "badge_nav_2": {
+      "type": "Badge",
+      "props": {
+        "text": "AKT +26% (AI-compute)",
+        "variant": "secondary"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_failures": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_failures",
+        "alert_1",
+        "alert_2",
+        "alert_3",
+        "alert_4"
+      ]
+    },
+    "heading_failures": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill failures",
+        "level": "h3"
+      }
+    },
+    "alert_1": {
+      "type": "Alert",
+      "props": {
+        "title": "chain:morning-brief + chain:evening-rollup",
+        "message": "DEGRADED 8+ days (chain-runner ISS-013)",
+        "type": "warning"
+      }
+    },
+    "alert_2": {
+      "type": "Alert",
+      "props": {
+        "title": "reddit/vibecoding",
+        "message": "error day 10",
+        "type": "warning"
+      }
+    },
+    "alert_3": {
+      "type": "Alert",
+      "props": {
+        "title": "farcaster",
+        "message": "error day 3",
+        "type": "warning"
+      }
+    },
+    "alert_4": {
+      "type": "Alert",
+      "props": {
+        "title": "reply-maker",
+        "message": "EMPTY day 8",
+        "type": "warning"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_top3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_top3",
+        "story_1",
+        "story_2",
+        "story_3"
+      ]
+    },
+    "heading_top3": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3 today",
+        "level": "h3"
+      }
+    },
+    "story_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PolySwarm arXiv:2604.03888",
+        "href": "https://arxiv.org/abs/2604.03888",
+        "source": "arXiv",
+        "score": "multi-agent LLM for PM trading + latency-arb; line-for-line CalibrationGap + Hermes-arb match"
+      }
+    },
+    "story_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TradeFM arXiv:2602.23784",
+        "href": "https://arxiv.org/abs/2602.23784",
+        "source": "JPMorgan / Veloso",
+        "score": "524M-param foundation model for trade-flow microstructure; Stanford-tier cite"
+      }
+    },
+    "story_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #156 — reply-maker XAI prefetch",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/156",
+        "source": "GitHub",
+        "score": "closes ISS-014 day-9 carry"
+      }
+    }
+  }
+}
