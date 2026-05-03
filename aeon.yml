@@ -130,6 +130,7 @@ skills:
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
   contributor-reward: { enabled: false, schedule: "30 9 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
+  operator-scorecard: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
   fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map

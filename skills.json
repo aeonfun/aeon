@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-01T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 95,
+    "total": 96,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -526,6 +526,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon on-chain-monitor"
+        },
+        {
+            "slug": "operator-scorecard",
+            "name": "operator-scorecard",
+            "description": "Weekly plain-language synthesis of agent health + community growth + economic activity — answers \"was this week worth it?\" in one notification",
+            "category": "productivity",
+            "schedule": "30 10 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-05-03",
+            "install": "./add-skill aaronjmars/aeon operator-scorecard"
         },
         {
             "slug": "paper-digest",
