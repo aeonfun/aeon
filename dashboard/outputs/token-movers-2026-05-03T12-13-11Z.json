@@ -1,0 +1,360 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-03"
+      },
+      "children": [
+        "market-summary",
+        "sep-1",
+        "winners-heading",
+        "winners-table",
+        "winners-note",
+        "sep-2",
+        "losers-heading",
+        "losers-table",
+        "losers-note",
+        "sep-3",
+        "trending-heading",
+        "trending-table",
+        "sep-4",
+        "notable-heading",
+        "notable-stack"
+      ]
+    },
+    "market-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-on broadening — 73/100 top coins green (vs 66 yesterday), median +0.6%; BTC $78,740 +0.8%, ETH $2,323 +0.9%, SOL $84.01 +0.4%; AI-compute and DePIN-adjacent names lead, yesterday's pumps capitulating.",
+        "variant": "lead"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Market Cap / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "B (BUILDon)",
+            "$0.4308",
+            "+27.3%",
+            "+260.8%",
+            "+7.8%",
+            "$174.1M / #110",
+            "BREAKOUT"
+          ],
+          [
+            "AKT (Akash Network)",
+            "$0.6482",
+            "+26.4%",
+            "+31.6%",
+            "−1.7%",
+            "$60.6M / #189",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "LUNC (Terra Luna Classic)",
+            "$0.000086",
+            "+14.4%",
+            "+65.0%",
+            "+1.2%",
+            "$209.8M / #108",
+            "TRENDING+UP"
+          ],
+          [
+            "币安人生 (BinanceLife)",
+            "$0.4040",
+            "+12.7%",
+            "+18.4%",
+            "−1.0%",
+            "$59.3M / #119",
+            ""
+          ],
+          [
+            "ZK (ZKsync)",
+            "$0.0170",
+            "+10.0%",
+            "+7.1%",
+            "+2.9%",
+            "$49.3M / #206",
+            ""
+          ],
+          [
+            "GNO (Gnosis)",
+            "$137",
+            "+9.8%",
+            "+10.4%",
+            "+0.5%",
+            "$23.6M / #127",
+            ""
+          ],
+          [
+            "ALGO (Algorand)",
+            "$0.1162",
+            "+8.5%",
+            "−4.1%",
+            "+0.1%",
+            "$66.5M / #65",
+            ""
+          ]
+        ]
+      }
+    },
+    "winners-note": {
+      "type": "Text",
+      "props": {
+        "text": "(TAG +17.2%, BSB +18.2%, GENIUS +15.3% suppressed — 3rd-day repeats, no tag change)",
+        "variant": "caption"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Market Cap / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "SKYAI",
+            "$0.3344",
+            "−15.1%",
+            "+81.2%",
+            "−2.8%",
+            "$220.2M / #135",
+            "CAPITULATION"
+          ],
+          [
+            "UB (Unibase)",
+            "$0.1069",
+            "−14.1%",
+            "+135.6%",
+            "−10.6%",
+            "$131.1M / #159",
+            "CAPITULATION"
+          ],
+          [
+            "ORCA",
+            "$2.09",
+            "−8.6%",
+            "+21.8%",
+            "+0.3%",
+            "$118.3M / #247",
+            ""
+          ],
+          [
+            "APE (ApeCoin)",
+            "$0.1740",
+            "−5.1%",
+            "+12.1%",
+            "+1.2%",
+            "$77.2M / #199",
+            ""
+          ],
+          [
+            "AXS (Axie Infinity)",
+            "$1.33",
+            "−3.7%",
+            "−5.3%",
+            "−0.1%",
+            "$22.6M / #173",
+            ""
+          ],
+          [
+            "ARB (Arbitrum)",
+            "$0.1182",
+            "−3.0%",
+            "−10.6%",
+            "+0.8%",
+            "$74.6M / #82",
+            ""
+          ],
+          [
+            "CHZ (Chiliz)",
+            "$0.0401",
+            "−2.8%",
+            "−19.0%",
+            "+0.5%",
+            "$51.2M / #116",
+            ""
+          ]
+        ]
+      }
+    },
+    "losers-note": {
+      "type": "Text",
+      "props": {
+        "text": "(MEGA −14.4%, RAVE −6.9%, DEXE −5.4% suppressed — same-direction repeats, no new tags)",
+        "variant": "caption"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "trending-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Rank",
+          "Price",
+          "24h Change",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "LUNC",
+            "#108",
+            "$0.000086",
+            "+15.0%",
+            "TRENDING+UP"
+          ],
+          [
+            "LAB",
+            "#290",
+            "$1.37",
+            "−36.2%",
+            "CAPITULATION"
+          ],
+          [
+            "MEGA",
+            "#229",
+            "$0.1271",
+            "−14.1%",
+            "TRENDING+DOWN, CAPITULATION"
+          ],
+          [
+            "BABY (Babylon)",
+            "#311",
+            "$0.0242",
+            "+37.4%",
+            "PUMP-RISK"
+          ],
+          [
+            "XRP",
+            "#4",
+            "$1.40",
+            "+0.8%",
+            "MAJOR"
+          ],
+          [
+            "PENGU",
+            "#86",
+            "$0.009899",
+            "−0.9%",
+            ""
+          ],
+          [
+            "AKT",
+            "#189",
+            "$0.6495",
+            "+26.6%",
+            "TRENDING+UP"
+          ]
+        ]
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "B (BUILDon): 4-day BREAKOUT continuation, 7d +260.8% with 1h +7.8% fresh push — base accelerating, no fade signal yet on $174M vol."
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "Pump unwind day: SKYAI (+16% Sat → −15%), UB (+90% Sat / +22% late → −14%), LAB (+226% trending → −36%) all flipped CAPITULATION. Three of yesterday's top movers reversed on heavy volume."
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "AKT (Akash Network): TRENDING+UP + BREAKOUT, +26.4% on $60M vol, rank #189 / $189M mcap — AI-compute narrative, cleanest non-pump signal on the board."
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "BABY (Babylon, trending): rank #311 up +37.4% — PUMP-RISK low-cap; treat as noise, not a direction signal."
+      }
+    }
+  }
+}
