@@ -1,0 +1,368 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-03"
+      },
+      "children": [
+        "header_section",
+        "price_divider",
+        "price_section",
+        "score_divider",
+        "score_section",
+        "catalyst_divider",
+        "catalyst_section",
+        "risk_divider",
+        "risk_section",
+        "recent_divider",
+        "recent_section",
+        "market_divider",
+        "market_section",
+        "sources_divider",
+        "sources_section",
+        "disclaimer_divider",
+        "disclaimer"
+      ]
+    },
+    "header_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token_heading",
+        "signal_badge"
+      ]
+    },
+    "token_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AKT (Akash Network)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signal_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH SIGNAL 10/10",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "price_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "price_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price_heading",
+        "price_grid"
+      ]
+    },
+    "price_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Price",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "price_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "price_stat",
+        "change_stat",
+        "mcap_stat",
+        "volume_stat",
+        "ratio_stat"
+      ]
+    },
+    "price_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.648",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "change_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h / 7d Change",
+        "value": "+26.4% / +31.5%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "mcap_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$189M"
+      },
+      "children": []
+    },
+    "volume_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$61M"
+      },
+      "children": []
+    },
+    "ratio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/Mcap Ratio",
+        "value": "0.32"
+      },
+      "children": []
+    },
+    "score_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "score_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "score_heading",
+        "score_stat",
+        "score_breakdown"
+      ]
+    },
+    "score_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Score",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "score_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total",
+        "value": "11/10 (capped)"
+      },
+      "children": []
+    },
+    "score_breakdown": {
+      "type": "Text",
+      "props": {
+        "text": "24h +1, 7d +1, both>5% +2, cgtrend +2, v/mc>=0.20 +3, RS vs BTC/ETH +2",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "catalyst_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "BME deflationary tokenomics live 03-23 plus active leases >1,000 in last week and NVIDIA Blackwell B200/B300 integration — AI-compute demand spike with on-chain confirmation; next discrete catalyst is Lease-to-Lease Networking on 05-30.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "risk_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "risk_heading",
+        "risk_text"
+      ]
+    },
+    "risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "Cosmos licensing hurdles announced 04-15 are slowing the planned migration; +31% 7d after 5 straight green days sets up a profit-taking dip on the first BTC red candle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "recent_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "recent_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "recent_heading",
+        "recent_text"
+      ]
+    },
+    "recent_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vs Recent Picks",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "recent_text": {
+      "type": "Text",
+      "props": {
+        "text": "First-time pick (last 7d: APE, PENGU, XCN, RAY, DOGE, LUNC, PENDLE, UB)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market_heading",
+        "market_text"
+      ]
+    },
+    "market_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Section",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "market_text": {
+      "type": "Text",
+      "props": {
+        "text": "Omitted — top non-sports market Russia-NATO YES 2.5¢ gives only ~2pp edge NO, below 5pp gate; NBA/World Cup sub-markets either price-aligned with sportsbooks or outside defensible ±10% bands",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sources_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "cg=ok, dex=ok, poly=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "disclaimer_divider": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "disclaimer": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "Not financial advice — pattern-matching only"
+      },
+      "children": []
+    }
+  }
+}
