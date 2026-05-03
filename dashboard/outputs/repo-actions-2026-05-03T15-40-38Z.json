@@ -1,0 +1,394 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas"
+      },
+      "children": [
+        "heading_main",
+        "text_date",
+        "text_summary",
+        "separator_1",
+        "heading_top_pick",
+        "stack_top_pick",
+        "separator_2",
+        "heading_items",
+        "item_1",
+        "item_2",
+        "item_3",
+        "item_4",
+        "item_5",
+        "separator_3",
+        "link_details"
+      ]
+    },
+    "heading_main": {
+      "type": "Heading",
+      "props": {
+        "text": "Repo Action Ideas — tomscaria/swarm-fund-mvp",
+        "level": "h2"
+      }
+    },
+    "text_date": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-03",
+        "variant": "muted"
+      }
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "Two HIGH-priority autoresearch.yml fixes; top pick is a one-line YAML change closing the two-tree pytest footgun where it bites hardest (the unattended nightly)."
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_top_pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h3"
+      }
+    },
+    "stack_top_pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_top_pick_action",
+        "badges_top_pick",
+        "text_top_pick_impact"
+      ]
+    },
+    "text_top_pick_action": {
+      "type": "Text",
+      "props": {
+        "text": "Drop the tests/test_strategies.py path arg in autoresearch.yml:86 so pytest honors pyproject testpaths"
+      }
+    },
+    "badges_top_pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_high_1",
+        "badge_dx_1",
+        "badge_small_1"
+      ]
+    },
+    "badge_high_1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_dx_1": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_small_1": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "text_top_pick_impact": {
+      "type": "Text",
+      "props": {
+        "text": "Autoresearch nightly stops silently skipping ~313 of the suite; bad LLM variants fail the smoke gate at the bot step instead of post-merge.",
+        "variant": "caption"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_items": {
+      "type": "Heading",
+      "props": {
+        "text": "All Action Items",
+        "level": "h3"
+      }
+    },
+    "item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item_1",
+        "badges_item_1"
+      ]
+    },
+    "text_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "1. Drop tests/test_strategies.py path arg in autoresearch.yml:86"
+      }
+    },
+    "badges_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_h_1",
+        "badge_dx_1a",
+        "badge_s_1a"
+      ]
+    },
+    "badge_h_1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_dx_1a": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_s_1a": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item_2",
+        "badges_item_2"
+      ]
+    },
+    "text_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "2. Add .github/dependabot.yml for pip + github-actions weekly"
+      }
+    },
+    "badges_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_h_2",
+        "badge_sec_2",
+        "badge_s_2"
+      ]
+    },
+    "badge_h_2": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_sec_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Security",
+        "variant": "secondary"
+      }
+    },
+    "badge_s_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item_3",
+        "badges_item_3"
+      ]
+    },
+    "text_item_3": {
+      "type": "Text",
+      "props": {
+        "text": "3. Add .github/PULL_REQUEST_TEMPLATE.md enforcing ADR-084 stats checklist"
+      }
+    },
+    "badges_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_m_3",
+        "badge_dx_3",
+        "badge_s_3"
+      ]
+    },
+    "badge_m_3": {
+      "type": "Badge",
+      "props": {
+        "text": "MED"
+      }
+    },
+    "badge_dx_3": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_s_3": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item_4",
+        "badges_item_4"
+      ]
+    },
+    "text_item_4": {
+      "type": "Text",
+      "props": {
+        "text": "4. Notify Telegram on autoresearch.yml no-diff at line 95-96"
+      }
+    },
+    "badges_item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_m_4",
+        "badge_dx_4",
+        "badge_s_4"
+      ]
+    },
+    "badge_m_4": {
+      "type": "Badge",
+      "props": {
+        "text": "MED"
+      }
+    },
+    "badge_dx_4": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_s_4": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_item_5",
+        "badges_item_5"
+      ]
+    },
+    "text_item_5": {
+      "type": "Text",
+      "props": {
+        "text": "5. Replace autoresearch.yml inputs.strategy enum with type:string"
+      }
+    },
+    "badges_item_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_m_5",
+        "badge_dx_5",
+        "badge_s_5"
+      ]
+    },
+    "badge_m_5": {
+      "type": "Badge",
+      "props": {
+        "text": "MED"
+      }
+    },
+    "badge_dx_5": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      }
+    },
+    "badge_s_5": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_details": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-03.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}

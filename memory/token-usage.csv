@@ -82,4 +82,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,monitor-runners,claude-opus-4-7,50,25669,2339840,102525
 2026-05-03,monitor-polymarket,claude-sonnet-4-6,24,18087,1493072,145471
 2026-05-03,digest,claude-opus-4-7,1679,29048,2441945,131212
-2026-05-03,repo-article,claude-opus-4-7,75,27674,4573473,117678
+2026-05-03,repo-actions,claude-opus-4-7,55,42815,3739789,130233

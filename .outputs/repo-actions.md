@@ -1,13 +1,13 @@
-*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-02*
-Four HIGH-priority ideas this cycle, all anchored to the missing PR-time CI or autoresearch loop gaps. Top pick gives the four stale fix-PRs (#19/#20/#23/#24) the green-check signal they need to merge.
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-03*
+Two HIGH-priority autoresearch.yml fixes; top pick is a one-line YAML change closing the two-tree pytest footgun where it bites hardest (the unattended nightly).
 
-Top pick: Add .github/workflows/ci.yml with ruff + pytest (both trees) + strategy_inventory --check (DX, Medium, Priority HIGH)
- → Every PR gets a green-or-red signal in <10 min; the 'two test trees' footgun cannot recur silently.
+Top pick: Drop the tests/test_strategies.py path arg in autoresearch.yml:86 so pytest honors pyproject testpaths (DX, Small, Priority HIGH)
+ → Autoresearch nightly stops silently skipping ~313 of the suite; bad LLM variants fail the smoke gate at the bot step instead of post-merge.
 
-1. Add .github/workflows/ci.yml — ruff + pytest + strategy_inventory --check (HIGH, DX, Medium)
-2. Upload watchdog_baseline.json artifact from swarm-watchdog.yml for grant/LP evidence trail (HIGH, Content, Small)
-3. Add python/tests/test_strategy_inventory_invariant.py pytest regression (HIGH, DX, Small)
-4. Replace hardcoded 5-strategy rotation in autoresearch.yml with dynamic _STRATEGY_REGISTRY read (HIGH, Feature, Small)
-5. Add .pre-commit-config.yaml — ruff + check-yaml + end-of-file-fixer (MED, DX, Small)
+1. Drop tests/test_strategies.py path arg in autoresearch.yml:86 (HIGH, DX, Small)
+2. Add .github/dependabot.yml for pip + github-actions weekly (HIGH, Security, Small)
+3. Add .github/PULL_REQUEST_TEMPLATE.md enforcing ADR-084 stats checklist (MED, DX, Small)
+4. Notify Telegram on autoresearch.yml no-diff at line 95-96 (MED, DX, Small)
+5. Replace autoresearch.yml inputs.strategy enum with type:string (MED, DX, Small)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-02.md
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-03.md
