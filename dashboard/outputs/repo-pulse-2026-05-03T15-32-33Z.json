@@ -1,0 +1,168 @@
+{
+  "root": "card_repo_pulse",
+  "state": {},
+  "elements": {
+    "card_repo_pulse": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse",
+        "description": "2026-05-03 — ACTIVE"
+      },
+      "children": [
+        "repo_link",
+        "stats_stack",
+        "sep1",
+        "heading_notable",
+        "notable_stack",
+        "sep2",
+        "heading_other",
+        "other_stack",
+        "source_text"
+      ]
+    },
+    "repo_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon",
+        "source": "GitHub"
+      }
+    },
+    "stats_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_stars",
+        "stat_forks",
+        "stat_releases"
+      ]
+    },
+    "stat_stars": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "267",
+        "delta": "+6",
+        "trend": "up"
+      }
+    },
+    "stat_forks": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "39",
+        "delta": "+0",
+        "trend": "neutral"
+      }
+    },
+    "stat_releases": {
+      "type": "Stat",
+      "props": {
+        "label": "Releases",
+        "value": "+0"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h4"
+      }
+    },
+    "notable_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_grizonsky"
+      ]
+    },
+    "link_grizonsky": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/grizonsky (0 followers)",
+        "href": "https://github.com/grizonsky"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_other": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h4"
+      }
+    },
+    "other_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_intothemoonlite",
+        "link_stunmandaver",
+        "link_karmanya",
+        "link_moegilani",
+        "link_ezikqa"
+      ]
+    },
+    "link_intothemoonlite": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/intothemoonlite",
+        "href": "https://github.com/intothemoonlite"
+      }
+    },
+    "link_stunmandaver": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/StuntmanDaver",
+        "href": "https://github.com/StuntmanDaver"
+      }
+    },
+    "link_karmanya": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/KarmanyaIyer",
+        "href": "https://github.com/KarmanyaIyer"
+      }
+    },
+    "link_moegilani": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/moegilani",
+        "href": "https://github.com/moegilani"
+      }
+    },
+    "link_ezikqa": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/ezikqa",
+        "href": "https://github.com/ezikqa"
+      }
+    },
+    "source_text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}
