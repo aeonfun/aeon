@@ -78,4 +78,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-02,evening-recap,claude-sonnet-4-6,1073,6985,540304,71141
 2026-05-03,skill-evals,claude-sonnet-4-6,25,18267,1070159,48463
 2026-05-03,daily-routine,claude-opus-4-7,96,35047,6270486,145655
-2026-05-03,fleet-control,claude-opus-4-7,11,2479,235476,30300
+2026-05-03,issue-triage,claude-opus-4-7,28,5151,779635,58760

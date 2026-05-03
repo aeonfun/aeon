@@ -1,9 +1,17 @@
-ISSUE_TRIAGE_OK no-new-issues
-
 ## Summary
 
-- Ran `issue-triage` across all 3 watched repos: `tomscaria/swarm-fund-mvp`, `tomscaria/lore-financial-teaser`, `aaronjmars/aeon`.
-- Each repo's `gh issue list --state open --search "created:>=2026-04-30"` returned `[]` — zero open issues in the last 48h fleet-wide.
-- No classification, no duplicate pass, no labels, no comments, no closes. Skipped notify (nothing actionable per §9). No `memory/triaged-issues.json` write (no candidates to record).
-- Files modified: `memory/logs/2026-05-02.md` (appended `issue-triage` entry + summary).
-- Follow-up: none. Next scheduled `issue-triage` at the cron's next tick — chain-runner / cron-tick health (ISS-017) remains the live operator-side concern, not this skill.
+Ran `issue-triage` (var empty → all watched repos).
+
+**Verdict:** ISSUE_TRIAGE_OK no-new-issues
+
+- **Repos:** tomscaria/swarm-fund-mvp, tomscaria/lore-financial-teaser, aaronjmars/aeon
+- **Candidates (last 48h):** 0 across all 3 repos. `gh issue list` succeeded on each (empty arrays, no errors).
+- **Source status:** all 3 ok.
+- **Triaged this run:** 0. No labels applied, no comments posted, no closes.
+- **State file:** `memory/triaged-issues.json` is absent; not creating it since there's nothing to record.
+- **Notification:** skipped per skill step 9 (no urgent/p0/security/duplicate-close).
+- **Cross-check:** consistent with today's daily-routine entry at 08:23 UTC ("0 new issues on `tomscaria` scope, 6th consecutive clean day").
+
+**Files modified:** `memory/logs/2026-05-03.md` (appended `### issue-triage` block).
+
+**Follow-up:** none — no actionable items. Continue daily cron.
