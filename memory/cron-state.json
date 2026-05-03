@@ -487,8 +487,8 @@
     "last_error": "a995916\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "remix-tweets": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:05:12Z",
     "total_runs": 18,
     "total_successes": 8,
@@ -511,8 +511,8 @@
     "last_error": "cc2ee21\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "agent-buzz": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:08:21Z",
     "total_runs": 16,
     "total_successes": 8,
@@ -535,8 +535,8 @@
     "last_error": "668cb45\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "vibecoding-digest": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:04:19Z",
     "total_runs": 19,
     "total_successes": 8,
@@ -547,8 +547,8 @@
     "last_error": "06e8f30\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "rss-feed": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:09:19Z",
     "total_runs": 18,
     "total_successes": 8,
@@ -559,8 +559,8 @@
     "last_error": "13e14a0\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "goal-tracker": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:06:48Z",
     "total_runs": 18,
     "total_successes": 9,
@@ -572,8 +572,8 @@
     "last_quality_score": 4
   },
   "skill-health": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:05:35Z",
     "total_runs": 18,
     "total_successes": 8,
@@ -584,8 +584,8 @@
     "last_error": "09bf112\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "self-improve": {
-    "last_dispatch": "2026-05-01T18:13:55Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-01T18:16:21Z",
     "total_runs": 4,
     "total_successes": 4,
@@ -594,8 +594,8 @@
     "success_rate": 1
   },
   "reflect": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:10:28Z",
     "total_runs": 19,
     "total_successes": 8,
@@ -606,8 +606,8 @@
     "last_error": "b6037a6\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "action-converter": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:09:29Z",
     "total_runs": 16,
     "total_successes": 8,
@@ -618,8 +618,8 @@
     "last_error": "0ffe377\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "startup-idea": {
-    "last_dispatch": "2026-05-02T18:01:29Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T18:08:36Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T18:14:33Z",
     "total_runs": 19,
     "total_successes": 8,
@@ -827,7 +827,7 @@
     "last_dispatch": "2026-05-03T17:23:19Z"
   },
   "fork-contributor-leaderboard": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:56:00Z",
     "total_runs": 12,
     "total_successes": 1,
@@ -835,10 +835,11 @@
     "consecutive_failures": 0,
     "success_rate": 0.08,
     "last_error": "68d18d4\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
-    "last_success": "2026-04-27T02:29:10Z"
+    "last_success": "2026-04-27T02:29:10Z",
+    "last_dispatch": "2026-05-03T18:08:36Z"
   },
   "update-gallery": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:55:33Z",
     "total_runs": 13,
     "total_successes": 1,
@@ -846,7 +847,8 @@
     "consecutive_failures": 0,
     "success_rate": 0.08,
     "last_error": "57da9f5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
-    "last_success": "2026-04-27T02:27:51Z"
+    "last_success": "2026-04-27T02:27:51Z",
+    "last_dispatch": "2026-05-03T18:08:36Z"
   },
   "fork-skill-digest": {
     "last_status": "success",
