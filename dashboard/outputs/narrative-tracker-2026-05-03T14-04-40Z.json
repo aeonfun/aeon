@@ -1,0 +1,858 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker — 2026-05-03"
+      },
+      "children": [
+        "heading_transitions",
+        "sep_1",
+        "stack_transitions",
+        "sep_2",
+        "heading_reflexivity",
+        "stack_reflexivity",
+        "sep_3",
+        "heading_positions",
+        "stack_positions",
+        "sep_4",
+        "heading_map",
+        "stack_map"
+      ]
+    },
+    "heading_transitions": {
+      "type": "Heading",
+      "props": {
+        "text": "TRANSITIONS",
+        "level": "h2"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack_transitions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trans_1",
+        "trans_2",
+        "trans_3",
+        "trans_4",
+        "trans_5",
+        "trans_6",
+        "trans_7",
+        "trans_8",
+        "trans_9",
+        "trans_10",
+        "trans_11",
+        "trans_12"
+      ]
+    },
+    "trans_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_new_1",
+        "text_trans_1"
+      ]
+    },
+    "badge_new_1": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "text_trans_1": {
+      "type": "Text",
+      "props": {
+        "text": "DeSci/BIO — BIO +96% on BioXP upgrade + Ignition USDC sale; FRONT-RUN window"
+      }
+    },
+    "trans_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_new_2",
+        "text_trans_2"
+      ]
+    },
+    "badge_new_2": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "text_trans_2": {
+      "type": "Text",
+      "props": {
+        "text": "AI-compute (AKT) — +26% on 1k+ active leases + Blackwell integration; folds into AI/DeAI"
+      }
+    },
+    "trans_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_new_3",
+        "text_trans_3"
+      ]
+    },
+    "badge_new_3": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "text_trans_3": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark resilience — Spark Savings +35%, Liq Layer +15%, Cooler Loans +18% flip; counter to yesterday's \"durable unwind DEAD\" frame"
+      }
+    },
+    "trans_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_new_4",
+        "text_trans_4"
+      ]
+    },
+    "badge_new_4": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "secondary"
+      }
+    },
+    "text_trans_4": {
+      "type": "Text",
+      "props": {
+        "text": "Powell-out May-14 PM — 1.35% YES; structurally clean clause arb (term ends May-15 midnight ET)"
+      }
+    },
+    "trans_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted_1",
+        "text_trans_5"
+      ]
+    },
+    "badge_promoted_1": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "default"
+      }
+    },
+    "text_trans_5": {
+      "type": "Text",
+      "props": {
+        "text": "Manfred Macx Emerging→Rising (broad-coverage day-2; FRONT-RUN→RIDE)"
+      }
+    },
+    "trans_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted_2",
+        "text_trans_6"
+      ]
+    },
+    "badge_promoted_2": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "default"
+      }
+    },
+    "text_trans_6": {
+      "type": "Text",
+      "props": {
+        "text": "Powell→Warsh WATCH→RIDE (Senate panel 13-11 party-line 04-29; full vote week of May-11)"
+      }
+    },
+    "trans_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted_3",
+        "text_trans_7"
+      ]
+    },
+    "badge_promoted_3": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "default"
+      }
+    },
+    "text_trans_7": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill PM-ETFs Rising→Peak (T-2 to 05-05 launch)"
+      }
+    },
+    "trans_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted_4",
+        "text_trans_8"
+      ]
+    },
+    "badge_promoted_4": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "default"
+      }
+    },
+    "text_trans_8": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu Watch→Peak (T-1; results 05-04)"
+      }
+    },
+    "trans_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted_5",
+        "text_trans_9"
+      ]
+    },
+    "badge_promoted_5": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "default"
+      }
+    },
+    "text_trans_9": {
+      "type": "Text",
+      "props": {
+        "text": "MegaETH chain Emerging→Rising (chain TVL +566% 7d, 4 consec green)"
+      }
+    },
+    "trans_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_demoted_1",
+        "text_trans_10"
+      ]
+    },
+    "badge_demoted_1": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "destructive"
+      }
+    },
+    "text_trans_10": {
+      "type": "Text",
+      "props": {
+        "text": "BTC-dom \"no altseason\" Peak→Fading (73/100 green vs 66 / 16 prior days)"
+      }
+    },
+    "trans_11": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_demoted_2",
+        "text_trans_11"
+      ]
+    },
+    "badge_demoted_2": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "destructive"
+      }
+    },
+    "text_trans_11": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-PM basis (Hermes hook) Rising→Peak/cooling (HL Perps fees −60% 1d, day-6 falsifier)"
+      }
+    },
+    "trans_12": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_dead",
+        "text_trans_12"
+      ]
+    },
+    "badge_dead": {
+      "type": "Badge",
+      "props": {
+        "text": "DEAD",
+        "variant": "destructive"
+      }
+    },
+    "text_trans_12": {
+      "type": "Text",
+      "props": {
+        "text": "Sky/Spark \"durable unwind\" reconfirmed (Spark stack +35% / +15% rally inverts the bear frame)"
+      }
+    },
+    "heading_reflexivity": {
+      "type": "Heading",
+      "props": {
+        "text": "REFLEXIVITY ALERT",
+        "level": "h2"
+      }
+    },
+    "stack_reflexivity": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_refl_1",
+        "alert_refl_2",
+        "alert_refl_3"
+      ]
+    },
+    "alert_refl_1": {
+      "type": "Alert",
+      "props": {
+        "title": "HL HIP-4 Market Resolution",
+        "message": "HL HIP-4 first BTC market resolves 06:00 UTC TODAY — BTC $78,734 > $78,213 strike (YES at 62%). Venue bootstraps liq + pricing on near-the-money market.",
+        "type": "warning"
+      }
+    },
+    "alert_refl_2": {
+      "type": "Alert",
+      "props": {
+        "title": "Sky/Spark Stack Cascade",
+        "message": "Sky/Spark stack: USDS +4.39% mcap → Spark Savings +35% TVL → Spark Liq Layer +15% — same money three lenses, narrative-driven cascade.",
+        "type": "info"
+      }
+    },
+    "alert_refl_3": {
+      "type": "Alert",
+      "props": {
+        "title": "AKT Narrative Pull",
+        "message": "AKT +26% on AI-compute: 1k+ active leases real, but rally partly narrative-pull from DefiLlama AI sector mindshare.",
+        "type": "info"
+      }
+    },
+    "heading_positions": {
+      "type": "Heading",
+      "props": {
+        "text": "POSITIONS (CalibrationGap-first)",
+        "level": "h2"
+      }
+    },
+    "stack_positions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "pos_watch_header",
+        "pos_watch_stack",
+        "pos_frontrun_header",
+        "pos_frontrun_stack",
+        "pos_ride_header",
+        "pos_ride_stack",
+        "pos_fade_header",
+        "pos_fade_stack"
+      ]
+    },
+    "pos_watch_header": {
+      "type": "Text",
+      "props": {
+        "text": "WATCH",
+        "variant": "lead"
+      }
+    },
+    "pos_watch_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_watch_1",
+        "pos_watch_2",
+        "pos_watch_3",
+        "pos_watch_4"
+      ]
+    },
+    "pos_watch_1": {
+      "type": "Text",
+      "props": {
+        "text": "TN T-1 (DMK 86 / TVK 9 — rebounded 6.95→9c) — results 05-04; comments-side T-1 re-run queued"
+      }
+    },
+    "pos_watch_2": {
+      "type": "Text",
+      "props": {
+        "text": "RU-UA May-31 (6.2% YES) — comments-window 05-08-10"
+      }
+    },
+    "pos_watch_3": {
+      "type": "Text",
+      "props": {
+        "text": "Powell-out May-14 (1.35%) — clause arb structurally clean"
+      }
+    },
+    "pos_watch_4": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-uranium (8.5%) — UMA-bluff thesis vs counter-clause"
+      }
+    },
+    "pos_frontrun_header": {
+      "type": "Text",
+      "props": {
+        "text": "FRONT-RUN",
+        "variant": "lead"
+      }
+    },
+    "pos_frontrun_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_frontrun_1"
+      ]
+    },
+    "pos_frontrun_1": {
+      "type": "Text",
+      "props": {
+        "text": "DeSci/BIO — Ignition window"
+      }
+    },
+    "pos_ride_header": {
+      "type": "Text",
+      "props": {
+        "text": "RIDE",
+        "variant": "lead"
+      }
+    },
+    "pos_ride_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_ride_items"
+      ]
+    },
+    "pos_ride_items": {
+      "type": "Text",
+      "props": {
+        "text": "Manfred, Powell→Warsh, Roundhill T-2, AI/DeAI/AKT, HL-HIP-4, HYPE, PENDLE, PM-meta, MegaETH-chain"
+      }
+    },
+    "pos_fade_header": {
+      "type": "Text",
+      "props": {
+        "text": "FADE",
+        "variant": "lead"
+      }
+    },
+    "pos_fade_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pos_fade_items"
+      ]
+    },
+    "pos_fade_items": {
+      "type": "Text",
+      "props": {
+        "text": "Stablecoin-infra, BTC-dom-cope, MegaETH-token, RWA, GameFi, Meme-launchpad-wash, US-BTC-Reserve, DOGE"
+      }
+    },
+    "heading_map": {
+      "type": "Heading",
+      "props": {
+        "text": "MAP",
+        "level": "h2"
+      }
+    },
+    "stack_map": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "map_emerging_header",
+        "map_emerging_stack",
+        "map_rising_header",
+        "map_rising_stack",
+        "map_peak_header",
+        "map_peak_stack",
+        "map_fading_header",
+        "map_fading_stack"
+      ]
+    },
+    "map_emerging_header": {
+      "type": "Text",
+      "props": {
+        "text": "Emerging",
+        "variant": "lead"
+      }
+    },
+    "map_emerging_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_emerging_badge_1",
+        "map_emerging_badge_2",
+        "map_emerging_badge_3",
+        "map_emerging_badge_4",
+        "map_emerging_badge_5",
+        "map_emerging_badge_6"
+      ]
+    },
+    "map_emerging_badge_1": {
+      "type": "Badge",
+      "props": {
+        "text": "DeSci/BIO",
+        "variant": "outline"
+      }
+    },
+    "map_emerging_badge_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Sky/Spark resilience",
+        "variant": "outline"
+      }
+    },
+    "map_emerging_badge_3": {
+      "type": "Badge",
+      "props": {
+        "text": "AI-compute (AKT)",
+        "variant": "outline"
+      }
+    },
+    "map_emerging_badge_4": {
+      "type": "Badge",
+      "props": {
+        "text": "Powell-out May-14 PM",
+        "variant": "outline"
+      }
+    },
+    "map_emerging_badge_5": {
+      "type": "Badge",
+      "props": {
+        "text": "Stablechains",
+        "variant": "outline"
+      }
+    },
+    "map_emerging_badge_6": {
+      "type": "Badge",
+      "props": {
+        "text": "CLARITY-Act",
+        "variant": "outline"
+      }
+    },
+    "map_rising_header": {
+      "type": "Text",
+      "props": {
+        "text": "Rising",
+        "variant": "lead"
+      }
+    },
+    "map_rising_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_rising_badge_1",
+        "map_rising_badge_2",
+        "map_rising_badge_3",
+        "map_rising_badge_4",
+        "map_rising_badge_5",
+        "map_rising_badge_6"
+      ]
+    },
+    "map_rising_badge_1": {
+      "type": "Badge",
+      "props": {
+        "text": "Manfred",
+        "variant": "outline"
+      }
+    },
+    "map_rising_badge_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Powell→Warsh",
+        "variant": "outline"
+      }
+    },
+    "map_rising_badge_3": {
+      "type": "Badge",
+      "props": {
+        "text": "AI/DeAI",
+        "variant": "outline"
+      }
+    },
+    "map_rising_badge_4": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH-chain",
+        "variant": "outline"
+      }
+    },
+    "map_rising_badge_5": {
+      "type": "Badge",
+      "props": {
+        "text": "PENDLE",
+        "variant": "outline"
+      }
+    },
+    "map_rising_badge_6": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket×Kaito",
+        "variant": "outline"
+      }
+    },
+    "map_peak_header": {
+      "type": "Text",
+      "props": {
+        "text": "Peak",
+        "variant": "lead"
+      }
+    },
+    "map_peak_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_peak_badge_1",
+        "map_peak_badge_2",
+        "map_peak_badge_3",
+        "map_peak_badge_4",
+        "map_peak_badge_5",
+        "map_peak_badge_6",
+        "map_peak_badge_7",
+        "map_peak_badge_8"
+      ]
+    },
+    "map_peak_badge_1": {
+      "type": "Badge",
+      "props": {
+        "text": "HL-HIP-4",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_2": {
+      "type": "Badge",
+      "props": {
+        "text": "Roundhill T-2",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_3": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_4": {
+      "type": "Badge",
+      "props": {
+        "text": "PM-meta",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_5": {
+      "type": "Badge",
+      "props": {
+        "text": "Stablecoins",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_6": {
+      "type": "Badge",
+      "props": {
+        "text": "TN T-1",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_7": {
+      "type": "Badge",
+      "props": {
+        "text": "RU-UA",
+        "variant": "outline"
+      }
+    },
+    "map_peak_badge_8": {
+      "type": "Badge",
+      "props": {
+        "text": "US-Iran/Hormuz",
+        "variant": "outline"
+      }
+    },
+    "map_fading_header": {
+      "type": "Text",
+      "props": {
+        "text": "Fading",
+        "variant": "lead"
+      }
+    },
+    "map_fading_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "map_fading_badge_1",
+        "map_fading_badge_2",
+        "map_fading_badge_3",
+        "map_fading_badge_4",
+        "map_fading_badge_5",
+        "map_fading_badge_6",
+        "map_fading_badge_7",
+        "map_fading_badge_8",
+        "map_fading_badge_9"
+      ]
+    },
+    "map_fading_badge_1": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC-dom-cope",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_2": {
+      "type": "Badge",
+      "props": {
+        "text": "RWA",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_3": {
+      "type": "Badge",
+      "props": {
+        "text": "GameFi-Ronin",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_4": {
+      "type": "Badge",
+      "props": {
+        "text": "MegaETH-token",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_5": {
+      "type": "Badge",
+      "props": {
+        "text": "Meme-launchpad-wash",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_6": {
+      "type": "Badge",
+      "props": {
+        "text": "DOGE",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_7": {
+      "type": "Badge",
+      "props": {
+        "text": "US-BTC-Reserve",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_8": {
+      "type": "Badge",
+      "props": {
+        "text": "Aave-critique",
+        "variant": "outline"
+      }
+    },
+    "map_fading_badge_9": {
+      "type": "Badge",
+      "props": {
+        "text": "Kalshi-PM-basis",
+        "variant": "outline"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {}
+    }
+  }
+}
