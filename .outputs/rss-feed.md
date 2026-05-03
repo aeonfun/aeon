@@ -1,1 +1,11 @@
-*rss-feed BLOCKED* — sandbox rejected every variant of `bash scripts/generate-feed.sh` with 'requires approval'. Feed not regenerated; pre-run state preserved (sha=15f8b0b7, 62 entries). Operator action: add the generator to the Claude Code permissions allowlist. Three untracked dot-files left at repo root (.gf-tmp.sh, .run-feed.py, .rss-tmp-prev-titles.txt) — rm was also blocked. Logged to memory/logs/2026-05-02.md.
+*RSS feed updated* — 83 entries
+
+New:
+- An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't.
+- CORAL: four agents, one notebook, 24% off the kernel
+- Changelog — Week of 2026-05-02
+- Changelog — Week of 2026-05-03
+- Code Health Report — 2026-05-02
+(+16 more)
+
+Subscribe: https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml

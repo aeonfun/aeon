@@ -1,0 +1,110 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "RSS Feed Updated",
+        "description": "83 entries"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_new",
+        "stack_entries",
+        "text_more",
+        "sep",
+        "link_subscribe"
+      ]
+    },
+    "heading_new": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_entries": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry1",
+        "entry2",
+        "entry3",
+        "entry4",
+        "entry5"
+      ]
+    },
+    "entry1": {
+      "type": "Text",
+      "props": {
+        "text": "An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't."
+      },
+      "children": []
+    },
+    "entry2": {
+      "type": "Text",
+      "props": {
+        "text": "CORAL: four agents, one notebook, 24% off the kernel"
+      },
+      "children": []
+    },
+    "entry3": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-05-02"
+      },
+      "children": []
+    },
+    "entry4": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-05-03"
+      },
+      "children": []
+    },
+    "entry5": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-05-02"
+      },
+      "children": []
+    },
+    "text_more": {
+      "type": "Text",
+      "props": {
+        "text": "(+16 more)",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "link_subscribe": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      },
+      "children": []
+    }
+  }
+}
