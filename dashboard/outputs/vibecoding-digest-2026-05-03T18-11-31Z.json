@@ -1,0 +1,152 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert-main",
+        "sep1",
+        "tech-details",
+        "sep2",
+        "context-section",
+        "sep3",
+        "recommendation-section"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "All 3 r/vibecoding endpoints failed (10th consecutive day) — 2026-05-03",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "tech-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "curl-section",
+        "webfetch-section"
+      ]
+    },
+    "curl-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "curl-header",
+        "curl-detail"
+      ]
+    },
+    "curl-header": {
+      "type": "Heading",
+      "props": {
+        "text": "curl",
+        "level": "h3"
+      }
+    },
+    "curl-detail": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 403 network-policy block",
+        "variant": "body"
+      }
+    },
+    "webfetch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "webfetch-header",
+        "webfetch-detail"
+      ]
+    },
+    "webfetch-header": {
+      "type": "Heading",
+      "props": {
+        "text": "WebFetch",
+        "level": "h3"
+      }
+    },
+    "webfetch-detail": {
+      "type": "Text",
+      "props": {
+        "text": "host-blocked on old.reddit.com / www.reddit.com / reddit.com",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "context-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "context-header",
+        "context-detail"
+      ]
+    },
+    "context-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Root cause signature",
+        "level": "h3"
+      }
+    },
+    "context-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Same as ISS-002 / ISS-012",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "recommendation-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rec-header",
+        "rec-detail"
+      ]
+    },
+    "rec-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendation",
+        "level": "h3"
+      }
+    },
+    "rec-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Pause cron until scripts/prefetch-reddit.sh ships",
+        "variant": "body"
+      }
+    }
+  }
+}
