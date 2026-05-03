@@ -1,0 +1,215 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Memory consolidated — 2026-05-03 (reflect #8)"
+      },
+      "children": [
+        "section_resolved",
+        "sep_1",
+        "section_inprogress",
+        "sep_2",
+        "section_tradable"
+      ]
+    },
+    "section_resolved": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_resolved",
+        "item_iss016",
+        "badges_simple_resolved"
+      ]
+    },
+    "heading_resolved": {
+      "type": "Text",
+      "props": {
+        "text": "Resolved",
+        "variant": "lead"
+      }
+    },
+    "item_iss016": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_iss016",
+        "detail_iss016"
+      ]
+    },
+    "badge_iss016": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-016"
+      }
+    },
+    "detail_iss016": {
+      "type": "Text",
+      "props": {
+        "text": "secrets/route.ts patched via PR #150",
+        "variant": "caption"
+      }
+    },
+    "badges_simple_resolved": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_iss004",
+        "badge_iss006"
+      ]
+    },
+    "badge_iss004": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-004"
+      }
+    },
+    "badge_iss006": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-006"
+      }
+    },
+    "sep_1": {
+      "type": "Separator"
+    },
+    "section_inprogress": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_inprogress",
+        "item_iss014",
+        "badges_simple_inprogress"
+      ]
+    },
+    "heading_inprogress": {
+      "type": "Text",
+      "props": {
+        "text": "In Progress",
+        "variant": "lead"
+      }
+    },
+    "item_iss014": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_iss014",
+        "detail_iss014"
+      ]
+    },
+    "badge_iss014": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-014"
+      }
+    },
+    "detail_iss014": {
+      "type": "Text",
+      "props": {
+        "text": "closer in flight, PR #156",
+        "variant": "caption"
+      }
+    },
+    "badges_simple_inprogress": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_iss018",
+        "badge_iss019"
+      ]
+    },
+    "badge_iss018": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-018 (filed)"
+      }
+    },
+    "badge_iss019": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-019 (filed)"
+      }
+    },
+    "sep_2": {
+      "type": "Separator"
+    },
+    "section_tradable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tradable",
+        "tradable_title",
+        "odds_container",
+        "confirmation_text"
+      ]
+    },
+    "heading_tradable": {
+      "type": "Text",
+      "props": {
+        "text": "New Tradable Hook",
+        "variant": "lead"
+      }
+    },
+    "tradable_title": {
+      "type": "Text",
+      "props": {
+        "text": "Bengal counting eve PM flip"
+      }
+    },
+    "odds_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_bjp",
+        "stat_tmc"
+      ]
+    },
+    "stat_bjp": {
+      "type": "Stat",
+      "props": {
+        "label": "BJP",
+        "value": "51%"
+      }
+    },
+    "stat_tmc": {
+      "type": "Stat",
+      "props": {
+        "label": "TMC",
+        "value": "48.9%"
+      }
+    },
+    "confirmation_text": {
+      "type": "Text",
+      "props": {
+        "text": "Phalodi cross-venue confirmation",
+        "variant": "caption"
+      }
+    }
+  }
+}

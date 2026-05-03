@@ -74,7 +74,10 @@
 - **ISS-003..011** — skill-evals BOOTSTRAP findings (2026-04-26). See "skill-evals BOOTSTRAP" section above. ISS-007 / ISS-009 close on evals.json key patch (no code).
 - **ISS-012** — reddit-digest cannot run on JSON API, sandbox-limitation, high. `memory/issues/ISS-012.md`. Same root cause as ISS-002 — same `scripts/prefetch-reddit.sh` closes both. RSS fallback works (200 across 9/10 subs but lacks score / num_comments / upvote_ratio); 2026-04-27 PM run produced REDDIT_DIGEST_OK (quiet day, RSS-only narrative-detection viable; only standout track is fully blocked).
 - **ISS-013** — 🔴 **CRITICAL**: mass skill failure 2026-04-26 23:53–58Z. ~52 skills flipped `last_status: failed` inside a 5-min window with shared zero-token / zero-cost telemetry signature. Claude binary never executed work — workflow runner crashed before invocation, OR state-update step is double-incrementing failures across the fleet. 7 no-op-exit skills self-recovered at 02:11 UTC 2026-04-27; ~50 skills still show `success_rate < 0.5` from the burst (counters decay as runs accumulate). Operator action: pull GHA logs for the 23:53–58Z window. Detected by skill-health (HEALTH:CRITICAL(53)).
-- **ISS-014** — reply-maker cannot source fresh tweets — XAI prefetch case missing, x.com WebFetch returns HTTP 402. Same class as ISS-001/002/012. Three consecutive empty exits (2026-04-25, 2026-04-27 AM, 2026-04-27 PM). Closes on `scripts/prefetch-xai.sh` `reply-maker)` case mirroring `narrative-tracker` block.
+- **ISS-014** — reply-maker cannot source fresh tweets — XAI prefetch case missing, x.com WebFetch returns HTTP 402. Same class as ISS-001/002/012. **Closer PR #156 opened 2026-05-03** (`ai/reply-maker-xai-prefetch` → `aaronjmars:main`, +33 -2 across `scripts/prefetch-xai.sh` and `skills/reply-maker/SKILL.md`). EMPTY/DEGRADED recurrence count: 8 days running. Closes on merge.
+- **ISS-018** (filed 2026-05-03 by skill-evals) — heartbeat eval `forbidden_pattern:${var}` finds 3 occurrences in `memory/logs/2026-05-02.md` lines 652/733/904. Other skills logging "var empty" trigger heartbeat's shared-log assertion. Prompt-bug, not real failure. Fix: dedicated heartbeat output file or `skip_forbidden_in_log_context: true`.
+- **ISS-019** (filed 2026-05-03 by skill-evals) — repo-article `missing_pattern:Aeon|aeon` zero matches in `articles/repo-article-2026-05-02.md` (the swarm-fund-mvp selector-layer piece). Today's ClawBank-EIN article threads Aeon explicitly to close the assertion forward. Either narrow assertion or document drift.
+- **ISS-004 / ISS-006 RESOLVED 2026-05-03** by skill-evals — push-recap and cost-report now produce articles regularly.
 - **ISS-015** — `.github/workflows/messages.yml:577–578` script-injection (HIGH). `${{ toJson(github.event.client_payload.message) }}` and `${{ github.event.action }}` interpolated into bash; `toJson()` does not escape single quotes; same shape as 2026-04-11 fixed incident but missing the `repository_dispatch` branch. Detected by skill-security-scan + workflow-security-audit 2026-04-27. Patch prepared as PR #4 (runner GH_TOKEN lacks `workflow` scope; needs operator-side token for push). **Still missing from `memory/issues/INDEX.md`** — issue-triage scope item (flagged 2026-04-28 09:10 + 15:34 heartbeat).
 - **Class:** ISS-001, ISS-002, ISS-012, ISS-014 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Four separate IDs; one prefetch-script triage class.
 
@@ -106,10 +109,11 @@
 - Capability-level signal in cron-state will only return once chain-runner.yml `dispatch_skill()` is fixed and ISS-013 counters burn down.
 - Recommendation: leave search-skill on schedule; today's no-op run is the correct behavior.
 
-## Code-health carry-debt (4-week running)
-- **Shell-injection at `dashboard/app/api/secrets/route.ts:96`** — `value` only quote-escaped; backticks and `$(…)` still reach the shell. Fix: `execFileSync('gh', argv, { input: value })`. Flagged 2026-04-27 push-recap, 2026-04-28 dashboard digest, 2026-04-29 / 30 / 05-01 code-health (byte-identical at HEAD `c95478c`). Four weeks unpatched. **ISS-016 trigger date 2026-05-07** if not patched by then. Today's `external-feature` picked this as carrier — if PR lands before trigger, ISS-016 is pre-empted.
-- 9 of 19 dashboard route files use `execSync` (today added `dashboard/app/api/skills/route.ts`); only `secrets/route.ts:96` has user-controlled value reaching shell.
-- Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — secrets POST is the only currently-exploitable one.
+## Code-health carry-debt — CLEARED 2026-05-03
+- **Shell-injection at `dashboard/app/api/secrets/route.ts:96` PATCHED 2026-05-03 09:30 UTC via PR #150** (commit `6c07691`). `execFileSync('gh', [...])` argv-array form on both POST (line 96) and DELETE (line 119) handlers. 12 days from first flag to fix. **ISS-016 candidate filing pre-empted** (was scheduled 2026-05-07).
+- Template established for future dashboard route shell-outs: argv-array form, matches `auth/route.ts:46` template that this report series cited since 2026-04-25.
+- 9 of 19 dashboard route files use `execSync`; with secrets/route.ts patched, no remaining user-controlled value reaching shell.
+- Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — none currently exploitable.
 - 1 file over 500 lines: `a2a-server/src/index.ts` (579).
 
 ## monitor-runners scoring formula — 4-in-a-row DEEP-LIQ evidence (2026-04-27 PM → 04-30)
