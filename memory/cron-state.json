@@ -379,8 +379,8 @@
     "last_error": "5a7ed98\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "code-health": {
-    "last_dispatch": "2026-05-02T16:12:02Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T16:24:45Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T16:21:13Z",
     "total_runs": 20,
     "total_successes": 8,
@@ -391,8 +391,8 @@
     "last_error": "733cb4e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "changelog": {
-    "last_dispatch": "2026-05-02T16:12:02Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T16:24:45Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T16:17:32Z",
     "total_runs": 22,
     "total_successes": 8,
@@ -779,7 +779,7 @@
     "last_success": "2026-05-03T09:51:11Z"
   },
   "workflow-security-audit": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:58:27Z",
     "total_runs": 12,
     "total_successes": 1,
@@ -787,7 +787,8 @@
     "consecutive_failures": 0,
     "success_rate": 0.08,
     "last_error": "af41483\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
-    "last_success": "2026-04-27T02:35:59Z"
+    "last_success": "2026-04-27T02:35:59Z",
+    "last_dispatch": "2026-05-03T16:24:45Z"
   },
   "channel-recap": {
     "last_status": "success",
