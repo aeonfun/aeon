@@ -1,0 +1,281 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Fork Skill Digest"
+      },
+      "children": [
+        "date_text",
+        "main_stat",
+        "context_text",
+        "separator1",
+        "fleet_heading",
+        "scanned_stat",
+        "configured_stat",
+        "separator2",
+        "flipped_heading",
+        "table_flipped",
+        "separator3",
+        "new_skills_heading",
+        "stack_new_skills",
+        "separator4",
+        "customizers_heading",
+        "stack_customizers",
+        "separator5",
+        "story_report"
+      ]
+    },
+    "date_text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-03",
+        "variant": "muted"
+      }
+    },
+    "main_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks disabling monitor-polymarket",
+        "value": "27"
+      }
+    },
+    "context_text": {
+      "type": "Text",
+      "props": {
+        "text": "Upstream defaults on. Fleet is voting it as noise.",
+        "variant": "caption"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fleet_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fleet Configuration",
+        "level": "h3"
+      }
+    },
+    "scanned_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Active forks scanned",
+        "value": "28"
+      }
+    },
+    "configured_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Configured forks",
+        "value": "27"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "flipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Skills Flipped (Upstream on → Fleet off)",
+        "level": "h3"
+      }
+    },
+    "table_flipped": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Forks",
+          "Percentage"
+        ],
+        "rows": [
+          [
+            "monitor-polymarket",
+            "27",
+            "100%"
+          ],
+          [
+            "article",
+            "27",
+            "100%"
+          ],
+          [
+            "rss-digest",
+            "27",
+            "100%"
+          ]
+        ]
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "new_skills_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New Fork-Only Skills",
+        "level": "h3"
+      }
+    },
+    "stack_new_skills": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "new_skill_king",
+        "new_skill_adarsh",
+        "new_skill_lordchildrey"
+      ]
+    },
+    "new_skill_king": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_king_name",
+        "text_king_skills"
+      ]
+    },
+    "text_king_name": {
+      "type": "Text",
+      "props": {
+        "text": "KingKaonix",
+        "variant": "lead"
+      }
+    },
+    "text_king_skills": {
+      "type": "Text",
+      "props": {
+        "text": "skill-analytics, contributor-reward, pr-triage, +5 more",
+        "variant": "body"
+      }
+    },
+    "new_skill_adarsh": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_adarsh_name",
+        "text_adarsh_skills"
+      ]
+    },
+    "text_adarsh_name": {
+      "type": "Text",
+      "props": {
+        "text": "adarshhalan",
+        "variant": "lead"
+      }
+    },
+    "text_adarsh_skills": {
+      "type": "Text",
+      "props": {
+        "text": "skill-analytics, contributor-reward, pr-triage",
+        "variant": "body"
+      }
+    },
+    "new_skill_lordchildrey": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_lordchildrey_name",
+        "text_lordchildrey_skills"
+      ]
+    },
+    "text_lordchildrey_name": {
+      "type": "Text",
+      "props": {
+        "text": "lordchildrey",
+        "variant": "lead"
+      }
+    },
+    "text_lordchildrey_skills": {
+      "type": "Text",
+      "props": {
+        "text": "+8 new (memory-flush, polymarket, trending-coins...)",
+        "variant": "body"
+      }
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "customizers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Customizers",
+        "level": "h3"
+      }
+    },
+    "stack_customizers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_lord",
+        "stat_king",
+        "stat_adarsh"
+      ]
+    },
+    "stat_lord": {
+      "type": "Stat",
+      "props": {
+        "label": "lordchildrey/aeon (heaviest customizer)",
+        "value": "107 overrides",
+        "delta": "fork-only"
+      }
+    },
+    "stat_king": {
+      "type": "Stat",
+      "props": {
+        "label": "KingKaonix (new to top 5)",
+        "value": "104 overrides"
+      }
+    },
+    "stat_adarsh": {
+      "type": "Stat",
+      "props": {
+        "label": "adarshhalan (new to top 5)",
+        "value": "99 overrides"
+      }
+    },
+    "separator5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story_report": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full report",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/fork-skill-digest-2026-05-03.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
