@@ -1,1 +1,11 @@
-🟢 ISS-017 demoted critical → high. 20:00 UTC heartbeat fired ~1 min late — third consecutive slot today landing automatically with shrinking variance (08:08 ~9min late, 14:34 ~34min late, 20:01 on time). Pattern: silent skips → delayed dispatch with collapsing variance. No silent skips today. Operator priority ordering flips: chain-runner.yml dispatch_skill() (7+ days idle, 3 chain wrappers) is now #1 ahead of external watchdog. Watch retained: re-escalates if any cron window silently skips 2 days running, heartbeat delay >90min 2 days, or 21:00 evening-rollup misses 2 days. STATUS_PAGE=DEGRADED (15 open issues, ISS-013 still critical). Files: docs/status.md, memory/issues/ISS-017.md, memory/issues/INDEX.md, memory/MEMORY.md.
+HEARTBEAT_OK · STATUS_PAGE=DEGRADED
+
+## Summary
+
+- **Verdict:** HEARTBEAT_OK — every P0/P1/P2/P3 finding dedup'd against last 48h of logs + MEMORY.md OPS ALERTS, single notification suppressed.
+- **Slot timing:** 07:00 morning family fired ~82 min late (bundled with 08:00 heartbeat at ~22 min late). 82 < 90 min ISS-017 re-escalation threshold; holds at `high`. Tonight's 21:00 chain:evening-rollup is the next test point.
+- **P0 chronic flags:** chain:morning-brief failed today 08:22 UTC; chain:evening-rollup failed 05-02 21:40 UTC; ~30 skills with success_rate < 0.5 — all ISS-013 chain-runner DEGRADED tail, dedup'd, no fresh notify.
+- **Self-check:** last_success 2026-05-02T20:08:39Z (~12h ago), within 36h.
+- **Status page:** regenerated `docs/status.md` — verdict DEGRADED, open issues 15 (ISS-018/019 added by skill-evals at 06:35, ISS-004/006 closed), skill-evals bubbled to top at 06:41 UTC, evening-recap/evening-rollup/push-recap refreshed to 21:44–22:27 UTC.
+- **Files modified:** `docs/status.md`, `memory/logs/2026-05-03.md`.
+- **Follow-ups:** 14:00 UTC heartbeat confirms noon-batch variance; if 21:00 evening-rollup chain misses tonight, that's the second straight evening miss → ISS-017 re-escalation criterion fires.
