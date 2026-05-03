@@ -1,0 +1,51 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_description",
+        "separator_1",
+        "storylink_pr"
+      ]
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — wire reply-maker XAI prefetch case + cache-read path (parallel to tweet-roundup / narrative-tracker)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "storylink_pr": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #156",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
