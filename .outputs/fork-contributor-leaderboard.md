@@ -1,15 +1,7 @@
-Fork Contributor Leaderboard — 2026-04-27
+## Summary
 
-gcampton and Xedphilia tied #1 with 5 new skills each — both forks contain original skill inventories (memory-flush, self-review, tweet-digest, wallet-digest and more) that upstream hasn't seen yet.
+Skill `fork-contributor-leaderboard` ran against `tomscaria/swarm-fund-mvp` (first entry in `memory/watched-repos.md`).
 
-Top 5:
-1. @gcampton — score 25 (5 new skills, 781 ahead)
-2. @Xedphilia — score 25 (5 new skills, 20 ahead)
-3. @0xfreddy — score 10 (5 fork commits, 1 new skill: macos-apps)
-4. @davenamovich — score 7 (7 fork commits)
-5. @pezetel — score 5 (1 open PR upstream, 2 fork commits)
+`tomscaria/swarm-fund-mvp` has zero forks pushed in the last 30 days. Per skill instructions, execution stopped with no article written and no notification sent. Logged `FORK_CONTRIBUTOR_LEADERBOARD_NO_FORKS` to `memory/logs/2026-05-03.md`.
 
-First PRs this week: none
-Top reviewer: none (0 review comments)
-
-Full leaderboard: https://github.com/tomscaria/aeon/blob/main/articles/fork-contributor-leaderboard-2026-04-27.md
+Recommendation: move `aaronjmars/aeon` (256 stars, active fork fleet) to the first position in `memory/watched-repos.md` so this skill produces a live leaderboard next run.
