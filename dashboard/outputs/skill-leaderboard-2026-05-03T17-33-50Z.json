@@ -1,0 +1,136 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Leaderboard"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_title",
+        "text_summary",
+        "separator_1",
+        "heading_top5",
+        "table_ranking",
+        "separator_2",
+        "alert_promote",
+        "text_fleet",
+        "separator_3",
+        "link_fullreport"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill Leaderboard — 2026-05-03",
+        "level": "h2"
+      }
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "7 configured forks; github-trending hit 43% — promote candidate"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_top5": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 across 7 configured forks (of 28 active)",
+        "level": "h3"
+      }
+    },
+    "table_ranking": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Skill",
+          "Forks",
+          "Adoption %"
+        ],
+        "rows": [
+          [
+            "1",
+            "heartbeat",
+            "7",
+            "100%"
+          ],
+          [
+            "2",
+            "github-trending",
+            "3",
+            "43%"
+          ],
+          [
+            "3",
+            "defi-overview",
+            "2",
+            "29%"
+          ],
+          [
+            "4",
+            "digest",
+            "2",
+            "29%"
+          ],
+          [
+            "5",
+            "evening-recap",
+            "2",
+            "29%"
+          ]
+        ]
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_promote": {
+      "type": "Alert",
+      "props": {
+        "title": "Promote",
+        "message": "github-trending (43% adoption)",
+        "type": "info"
+      }
+    },
+    "text_fleet": {
+      "type": "Text",
+      "props": {
+        "text": "Fleet-only: 0xfreddy/macos-apps"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_fullreport": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full report",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/skill-leaderboard-2026-05-03.md"
+      }
+    }
+  }
+}
