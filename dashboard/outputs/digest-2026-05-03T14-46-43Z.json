@@ -1,0 +1,229 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "digest",
+        "description": "prediction markets — 2026-05-03"
+      },
+      "children": [
+        "tldr-text",
+        "sep1",
+        "india-item",
+        "sep2",
+        "volume-item",
+        "sep3",
+        "cftc-item",
+        "sep4",
+        "also-glance"
+      ]
+    },
+    "tldr-text": {
+      "type": "Text",
+      "props": {
+        "text": "$26M sits on Polymarket's India election book with results dropping Monday, the combined Polymarket + Kalshi volume curve plateaued for the first time in seven months, and Hyperliquid's policy arm filed a function-based CFTC ANPRM letter the same week HIP-4 hit mainnet.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "india-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "india-heading",
+        "india-details",
+        "india-why",
+        "india-link"
+      ]
+    },
+    "india-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "India election book on Polymarket hits $26M ahead of Monday's count",
+        "level": "h2"
+      }
+    },
+    "india-details": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu, West Bengal, Kerala, Assam, and Puducherry assembly results drop May 4. Tamil Nadu carries $20.5M of the $26M total with DMK at 88%; West Bengal $5.4M, TMC 53%; Assam BJP 98%; Kerala Congress 75%; Puducherry NDA 86%."
+      }
+    },
+    "india-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: First major non-US election book on Polymarket since the Brazil and Ukraine bans (platform now restricted in 34 countries). The 4-6c-fair tail bets (TVK, ADMK in Tamil Nadu) are still live tonight.",
+        "variant": "muted"
+      }
+    },
+    "india-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "What is Polymarket and why is it trending more than Phalodi satta bazaar",
+        "href": "https://www.businesstoday.in/elections/story/what-is-polymarket-and-why-is-it-trending-more-than-phalodi-satta-bazaar-ahead-of-assembly-election-results-528599-2026-05-03",
+        "source": "Business Today"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "volume-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "volume-heading",
+        "volume-details",
+        "volume-stats",
+        "volume-why",
+        "volume-link"
+      ]
+    },
+    "volume-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Polymarket + Kalshi combined April volume crosses $150B but ends a seven-month record streak",
+        "level": "h2"
+      }
+    },
+    "volume-details": {
+      "type": "Text",
+      "props": {
+        "text": "April was the first month since September 2025 without a new monthly volume record. Polymarket active traders fell to ~643K from ~733K in March; Kalshi continued growing."
+      }
+    },
+    "volume-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-volume",
+        "stat-traders"
+      ]
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "April Combined Volume",
+        "value": "$150B"
+      }
+    },
+    "stat-traders": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket Active Traders",
+        "value": "643K",
+        "delta": "-90K",
+        "trend": "down"
+      }
+    },
+    "volume-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: First plateau signal at the platform layer. The divergence — Polymarket cooling, Kalshi growing — fits the discount the $15B Polymarket round is taking to the $22B Kalshi/Coatue round.",
+        "variant": "muted"
+      }
+    },
+    "volume-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket and Kalshi volume analysis",
+        "href": "https://www.panewslab.com/en/articles/019de742-7622-70d3-9cdf-a39e46c1051a",
+        "source": "PA Newslab"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "cftc-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cftc-heading",
+        "cftc-details",
+        "cftc-why",
+        "cftc-link"
+      ]
+    },
+    "cftc-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Hyperliquid Policy Center files CFTC letter on ANPRM closing day",
+        "level": "h2"
+      }
+    },
+    "cftc-details": {
+      "type": "Text",
+      "props": {
+        "text": "HPC asked the CFTC for a flexible, function-based framework accommodating decentralized prediction markets and preserving US-citizen access to onchain venues. Filed Apr 30, the comment deadline."
+      }
+    },
+    "cftc-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Coordinated regulatory + product push two days before HIP-4's May 2 mainnet launch. Frames where the next round of decentralized-PM legal carve-outs will be argued.",
+        "variant": "muted"
+      }
+    },
+    "cftc-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "HPC pushes CFTC for clarity on decentralized prediction markets",
+        "href": "https://www.cryptotimes.io/2026/04/30/hpc-pushes-cftc-for-clarity-on-decentralized-prediction-markets/",
+        "source": "Crypto Times"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "also-glance": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "glance-heading",
+        "glance-item1",
+        "glance-item2"
+      ]
+    },
+    "glance-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Also worth a glance",
+        "level": "h3"
+      }
+    },
+    "glance-item1": {
+      "type": "Text",
+      "props": {
+        "text": "Indiana state-primary congressional races now drawing book on Polymarket and Kalshi — first off-cycle data point past presidential."
+      }
+    },
+    "glance-item2": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC ANPRM cleared 115K+ comments per yesterday's filing tally."
+      }
+    }
+  }
+}

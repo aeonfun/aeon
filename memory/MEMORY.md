@@ -35,6 +35,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 ## Recent Digests
 | Date | Topic | Keywords |
 |------|-------|----------|
+| 2026-05-03 | prediction markets | india-elections-$26M-T-1, pm-kalshi-$150B-streak-end, hpc-cftc-letter |
 | 2026-05-02 | prediction markets | hyperliquid-hip4-mainnet, manfred-clawbank, roundhill-etfs-t-3, powell-warsh-transition |
 
 ## Forbidden phrases (external content)
