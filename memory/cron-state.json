@@ -851,7 +851,7 @@
     "last_dispatch": "2026-05-03T18:08:36Z"
   },
   "fork-skill-digest": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:56:09Z",
     "total_runs": 11,
     "total_successes": 1,
@@ -859,10 +859,11 @@
     "consecutive_failures": 0,
     "success_rate": 0.09,
     "last_error": "a2e6ef5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
-    "last_success": "2026-04-27T02:31:11Z"
+    "last_success": "2026-04-27T02:31:11Z",
+    "last_dispatch": "2026-05-03T19:17:44Z"
   },
   "skill-update-check": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:58:06Z",
     "total_runs": 8,
     "total_successes": 1,
@@ -870,7 +871,8 @@
     "consecutive_failures": 0,
     "success_rate": 0.13,
     "last_error": "04141f9\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
-    "last_success": "2026-04-27T02:20:24Z"
+    "last_success": "2026-04-27T02:20:24Z",
+    "last_dispatch": "2026-05-03T19:17:44Z"
   },
   "cost-report": {
     "last_dispatch": "2026-04-27T07:54:52Z",
