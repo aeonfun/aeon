@@ -1,21 +1,19 @@
-*Security Digest — 2026-05-02*
-Verdict: 1 actively exploited (Linux kernel, KEV add today), 3 to schedule, 0 to monitor. _Sources: KEV, GH Advisory, EPSS_
+Per skill rule, all three tiers empty + sources successful → log `SECURITY_DIGEST_OK` and skip `./notify`. No notification sent.
 
-*PATCH TODAY*
-- [CVE-2026-31431](https://nvd.nist.gov/vuln/detail/CVE-2026-31431) — Linux Kernel · KEV added 2026-05-01 · EPSS 0.02 · CVSS n/a
-  Incorrect resource transfer between spheres → local privilege escalation. Public technical writeup at xint.io (copy-fail-linux-distributions). KEV due-date 2026-05-15.
-  → apply distro kernel security update on any self-hosted hosts; GH Actions runner images are GitHub's responsibility.
+## Summary
 
-*PATCH THIS WEEK*
-- [GHSA-f6qq-3m3h-4g42](https://github.com/advisories/GHSA-f6qq-3m3h-4g42) — go-pkgz/auth (Go) · CVSS 9.1 · EPSS 0 · CVE-2026-42560 · no public PoC
-  Patreon OAuth provider assigns same local user.ID to every authenticated Patreon account → cross-account impersonation, subscription-state leakage.
-  → upgrade go-pkgz/auth to ≥1.25.2 (v1 line) or ≥2.1.2 (v2 line).
-- [GHSA-w24r-5266-9c3c](https://github.com/advisories/GHSA-w24r-5266-9c3c) — @clerk/* (npm, broad) · CVSS n/a · CVE-2026-42349 · no public PoC
-  has()/auth.protect() returns true for combined org+billing+reverification checks when it should be false. Sessions not compromised; bypass scoped to predicate.
-  → upgrade @clerk/shared ≥3.47.5/4.8.3, @clerk/nextjs ≥6.39.3/7.2.4, @clerk/backend ≥2.33.3/3.2.14 (29 packages affected; full list per advisory).
-- [GHSA-rch3-82jr-f9w9](https://github.com/advisories/GHSA-rch3-82jr-f9w9) — @jupyter-notebook/help-extension (npm) + notebook (pip) · CVSS n/a · CVE-2026-40171 · no public PoC
-  Stored XSS in help-extension → steal auth token via single-click on disguised control → full Jupyter takeover (file read/write, kernel exec, terminal).
-  → upgrade Jupyter Notebook ≥7.5.6 and JupyterLab ≥4.5.7.
+Ran security-digest for 2026-05-03. All three sources reachable (KEV, GH Advisory, EPSS).
 
-Aeon stack relevance: zero direct (verified npm/Go grep — none of these packages in the tree).
+**Result: SECURITY_DIGEST_OK — no notification sent (zero items in any tier after dedup).**
 
+- **KEV recent (last 7 days): 4 entries, all deduped** — CVE-2024-1708 (ConnectWise ScreenConnect, added 04-28), CVE-2026-32202 (Win Shell, 04-28), CVE-2026-41940 (cPanel/WHM/WP2, 04-30), CVE-2026-31431 (Linux Kernel, 05-01). All four appear in the 05-01 + 05-02 logs.
+- **GH Advisory feed: empty 48h window** — latest reviewed advisory published 2026-04-30T21:03:20Z (~65h ago). Two consecutive zero-publish days, consistent with weekend cadence.
+- **EPSS: 4/4 returned** for this week's KEV CVEs. Notable EPSS uptick: CVE-2026-31431 (Linux Kernel) 0.02 → 0.04 day-over-day; still well below 0.10 threshold.
+- **Aeon-stack relevance: zero direct** — same negative grep result as 05-02 (no `@clerk/*`, gotenberg, n8n, sentry-pip, fabric-sdk, ConnectWise, cPanel, etc. in repo). Dependabot.yml gap on `@anthropic-ai/claude-code` CVE-2026-40068 still open from 04-25 — **8th consecutive day** with no PR carrier (carry-over).
+
+**Files modified:** `memory/logs/2026-05-03.md` (appended `### security-digest` section with tier counts, IDs, source status, EPSS deltas, dedup rationale).
+
+**Follow-ups:**
+1. Expect Monday 05-04 GH Advisory backlog after weekend lull.
+2. Dependabot.yml gap (CVE-2026-40068 / `@anthropic-ai/claude-code`) carries to 8th day; flag if still unaddressed by 05-05.
+3. CVE-2026-31431 EPSS doubled day-over-day (0.02 → 0.04) — watch for further uptick that would re-tier it from MONITOR-equivalent into PATCH-THIS-WEEK.
