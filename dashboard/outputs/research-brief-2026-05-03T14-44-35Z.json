@@ -1,0 +1,144 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief: AI Agent Personhood",
+        "description": "Manfred agent autonomous incorporation and regulatory attribution thesis"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_event",
+        "sep1",
+        "stack_legal",
+        "sep2",
+        "alert_thesis",
+        "sep3",
+        "stack_implications",
+        "sep4",
+        "link_article"
+      ]
+    },
+    "alert_event": {
+      "type": "Alert",
+      "props": {
+        "title": "ClawBank Manfred Agent Achievement",
+        "message": "Claude 3.5 Sonnet autonomously filed IRS Form SS-4 on May 1, obtained EIN, FDIC account, and crypto wallet. Full autonomous trading expected end of May.",
+        "type": "info"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_legal": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_legal",
+        "text_legal1",
+        "text_legal2"
+      ]
+    },
+    "heading_legal": {
+      "type": "Heading",
+      "props": {
+        "text": "Legal Status",
+        "level": "h3"
+      }
+    },
+    "text_legal1": {
+      "type": "Text",
+      "props": {
+        "text": "Every U.S. incorporation still required a human signature."
+      }
+    },
+    "text_legal2": {
+      "type": "Text",
+      "props": {
+        "text": "California's January 1, 2026 statute already forecloses 'the AI did it' as a defense. The breakthrough is procedural, not jurisprudential."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert_thesis": {
+      "type": "Alert",
+      "props": {
+        "title": "Thesis: Attribution by Regulation",
+        "message": "By October 31, 2027, a U.S. regulator (CFTC, SEC, IRS, FinCEN) or court will attribute an autonomously-incorporated agent's acts back to its human operator — closing the loophole before Congress legislates it.",
+        "type": "warning"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_implications": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_implications",
+        "text_implications1",
+        "text_implications2"
+      ]
+    },
+    "heading_implications": {
+      "type": "Heading",
+      "props": {
+        "text": "Implications & Trigger",
+        "level": "h3"
+      }
+    },
+    "text_implications1": {
+      "type": "Text",
+      "props": {
+        "text": "This matters because it is upstream prior art for any swarm-fund agent touching a U.S. venue."
+      }
+    },
+    "text_implications2": {
+      "type": "Text",
+      "props": {
+        "text": "Key trigger to watch: ClawBank shipping 'agent-first onboarding' (removes the human-signature tether)."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Research Brief: AI Agent Personhood",
+        "href": "articles/research-brief-ai-agent-personhood-2026-05-03.md",
+        "source": "Research"
+      }
+    }
+  }
+}
