@@ -1,0 +1,612 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-05-03"
+      },
+      "children": [
+        "section-topick",
+        "sep-1",
+        "section-aiml",
+        "sep-2",
+        "section-devtools",
+        "sep-3",
+        "section-security",
+        "sep-4",
+        "footer"
+      ]
+    },
+    "section-topick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-topick",
+        "link-ruflo-topick",
+        "text-ruflo-desc"
+      ]
+    },
+    "heading-topick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "link-ruflo-topick": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ruvnet/ruflo",
+        "href": "https://github.com/ruvnet/ruflo",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "text-ruflo-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Multi-agent Claude orchestration platform spiking 12x its baseline today; cleanest public mirror of swarm-fund-mvp's selector-layer architecture.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section-aiml": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-aiml",
+        "item-aiml-1",
+        "item-aiml-2",
+        "item-aiml-3"
+      ]
+    },
+    "heading-aiml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item-aiml-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-aiml-1",
+        "badges-aiml-1",
+        "desc-aiml-1"
+      ]
+    },
+    "link-aiml-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ruvnet/ruflo",
+        "href": "https://github.com/ruvnet/ruflo",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-aiml-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-aiml-1-stars",
+        "badge-aiml-1-lang",
+        "badge-aiml-1-status"
+      ]
+    },
+    "badge-aiml-1-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 1.3kt today (37k total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-aiml-1-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-aiml-1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-aiml-1": {
+      "type": "Text",
+      "props": {
+        "text": "Distributed swarm orchestration with native Claude Code / Codex integration; today's velocity is 12x its 336-day baseline.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-aiml-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-aiml-2",
+        "badges-aiml-2",
+        "desc-aiml-2"
+      ]
+    },
+    "link-aiml-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "mattpocock/dictionary-of-ai-coding",
+        "href": "https://github.com/mattpocock/dictionary-of-ai-coding",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-aiml-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-aiml-2-stars",
+        "badge-aiml-2-lang",
+        "badge-aiml-2-status"
+      ]
+    },
+    "badge-aiml-2-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 372/day (743 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-aiml-2-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-aiml-2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-aiml-2": {
+      "type": "Text",
+      "props": {
+        "text": "Mattpocock's glossary of agent / skill / harness / RAG terminology — first credible reference closing the lingua-franca gap.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-aiml-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-aiml-3",
+        "badges-aiml-3",
+        "desc-aiml-3"
+      ]
+    },
+    "link-aiml-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "noonghunna/club-3090",
+        "href": "https://github.com/noonghunna/club-3090",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-aiml-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-aiml-3-stars",
+        "badge-aiml-3-lang",
+        "badge-aiml-3-status"
+      ]
+    },
+    "badge-aiml-3-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 81/day (406 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-aiml-3-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Shell",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-aiml-3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-aiml-3": {
+      "type": "Text",
+      "props": {
+        "text": "Tested vLLM / llama.cpp / SGLang configs for 1×/2× RTX 3090 with Qwen3.6-27B — the missing recipe book for sub-A100 LLM serving.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section-devtools": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-devtools",
+        "item-devtools-1",
+        "item-devtools-2",
+        "item-devtools-3"
+      ]
+    },
+    "heading-devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item-devtools-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-devtools-1",
+        "badges-devtools-1",
+        "desc-devtools-1"
+      ]
+    },
+    "link-devtools-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tddworks/baguette",
+        "href": "https://github.com/tddworks/baguette",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-devtools-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-devtools-1-stars",
+        "badge-devtools-1-lang",
+        "badge-devtools-1-status"
+      ]
+    },
+    "badge-devtools-1-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 135/day (269 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-devtools-1-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Swift",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-devtools-1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-devtools-1": {
+      "type": "Text",
+      "props": {
+        "text": "Headless iOS-26 Simulator farm with multi-finger input injection and 60fps streaming — strict superset of last week's serve-sim.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-devtools-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-devtools-2",
+        "badges-devtools-2",
+        "desc-devtools-2"
+      ]
+    },
+    "link-devtools-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "b-nnett/codex-plusplus",
+        "href": "https://github.com/b-nnett/codex-plusplus",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-devtools-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-devtools-2-stars",
+        "badge-devtools-2-lang",
+        "badge-devtools-2-status"
+      ]
+    },
+    "badge-devtools-2-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 140/day (842 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-devtools-2-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-devtools-2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-devtools-2": {
+      "type": "Text",
+      "props": {
+        "text": "Userland tweak layer for OpenAI's Codex desktop app — first community extension surface to break 800 stars.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item-devtools-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-devtools-3",
+        "badges-devtools-3",
+        "desc-devtools-3"
+      ]
+    },
+    "link-devtools-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "appergb/openless",
+        "href": "https://github.com/appergb/openless",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-devtools-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-devtools-3-stars",
+        "badge-devtools-3-lang",
+        "badge-devtools-3-status"
+      ]
+    },
+    "badge-devtools-3-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 77/day (461 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-devtools-3-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "HTML",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-devtools-3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-devtools-3": {
+      "type": "Text",
+      "props": {
+        "text": "Hold-to-speak voice → AI-polished text at the cursor in any app, macOS + Windows; closes the dictation gap for non-Apple-Silicon users.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section-security": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-security",
+        "item-security-1"
+      ]
+    },
+    "heading-security": {
+      "type": "Heading",
+      "props": {
+        "text": "Security",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item-security-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-security-1",
+        "badges-security-1",
+        "desc-security-1"
+      ]
+    },
+    "link-security-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py",
+        "href": "https://github.com/watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py",
+        "source": "GitHub"
+      },
+      "children": []
+    },
+    "badges-security-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-security-1-stars",
+        "badge-security-1-lang",
+        "badge-security-1-status"
+      ]
+    },
+    "badge-security-1-stars": {
+      "type": "Badge",
+      "props": {
+        "text": "★ 75/day (302 total)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-security-1-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-security-1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "desc-security-1": {
+      "type": "Text",
+      "props": {
+        "text": "watchtowr ships a PoC chaining cPanel WHM auth-bypass into full RCE — patch your panels before the script kiddies do.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(8 visible, page truncated) · gh_api=ok · kept 7/35 (search fallback supplied 6 of 7 picks)",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}

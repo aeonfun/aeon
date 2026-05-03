@@ -1,26 +1,32 @@
-*GitHub Trending — 2026-05-02*
+*GitHub Trending — 2026-05-03*
 
-*Top pick* — [cursor/cookbook](https://github.com/cursor/cookbook)
-Cursor open-sourced its official cookbook five days ago — first canonical look at their prompt + agent recipes, the cleanest competitor-reference text for anyone shipping with the Claude Agent SDK.
+*Top pick* — [ruvnet/ruflo](https://github.com/ruvnet/ruflo)
+Multi-agent Claude orchestration platform spiking 12x its baseline today; cleanest public mirror of swarm-fund-mvp's selector-layer architecture.
 
 *AI/ML*
-• [cursor/cookbook](https://github.com/cursor/cookbook) — ★ ~604/day · 3,019 total · TypeScript · [DEBUT]
-Cursor's official cookbook, no README description; 3k stars in 5 days, read the code.
+• [ruvnet/ruflo](https://github.com/ruvnet/ruflo) — ★ 1.3kt today (37k total) · TypeScript · [RETURNING]
+Distributed swarm orchestration with native Claude Code / Codex integration; today's velocity is 12x its 336-day baseline.
+
+• [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) — ★ 372/day (743 total) · TypeScript · [DEBUT]
+Mattpocock's glossary of agent / skill / harness / RAG terminology — first credible reference closing the lingua-franca gap.
+
+• [noonghunna/club-3090](https://github.com/noonghunna/club-3090) — ★ 81/day (406 total) · Shell · [DEBUT]
+Tested vLLM / llama.cpp / SGLang configs for 1×/2× RTX 3090 with Qwen3.6-27B — the missing recipe book for sub-A100 LLM serving.
 
 *Devtools*
-• [t8y2/dbx](https://github.com/t8y2/dbx) — ★ ~217/day · 652 total · Vue · [DEBUT]
-Single binary covers MySQL/Postgres/SQLite/Redis/Mongo/DuckDB/ClickHouse/MSSQL — what TablePlus charges for.
+• [tddworks/baguette](https://github.com/tddworks/baguette) — ★ 135/day (269 total) · Swift · [DEBUT]
+Headless iOS-26 Simulator farm with multi-finger input injection and 60fps streaming — strict superset of last week's serve-sim.
 
-• [darrylmorley/whatcable](https://github.com/darrylmorley/whatcable) — ★ ~1,010 today · 1,010 total · Swift · [DEBUT]
-macOS menu bar tells you in plain English what each plugged-in USB-C cable can actually do.
+• [b-nnett/codex-plusplus](https://github.com/b-nnett/codex-plusplus) — ★ 140/day (842 total) · TypeScript · [DEBUT]
+Userland tweak layer for OpenAI's Codex desktop app — first community extension surface to break 800 stars.
 
-• [EvanBacon/serve-sim](https://github.com/EvanBacon/serve-sim) — ★ ~142/day · 427 total · TypeScript · [DEBUT]
-Evan Bacon (Expo) ships `npx serve-sim` — boots an Apple Simulator like a static site.
+• [appergb/openless](https://github.com/appergb/openless) — ★ 77/day (461 total) · HTML · [DEBUT]
+Hold-to-speak voice → AI-polished text at the cursor in any app, macOS + Windows; closes the dictation gap for non-Apple-Silicon users.
 
 *Security*
-• [theori-io/copy-fail-CVE-2026-31431](https://github.com/theori-io/copy-fail-CVE-2026-31431) — ★ ~904/day · 2,713 total · Python · [DEBUT]
-Theori PoC for CVE-2026-31431; 2.7k stars in 3 days flags active exploitation interest.
+• [watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py](https://github.com/watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py) — ★ 75/day (302 total) · Python · [DEBUT]
+watchtowr ships a PoC chaining cPanel WHM auth-bypass into full RCE — patch your panels before the script kiddies do.
 
 ---
-sources: trending=ok(9/25 returned) · gh_api=ok · kept 5/22 (search fallback supplied 4 of 5 picks; trending was heavy with last-2d HOLDOVERs)
+sources: trending=ok(8 visible, page truncated) · gh_api=ok · kept 7/35 (search fallback supplied 6 of 7 picks)
 
