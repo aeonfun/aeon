@@ -1,36 +1,45 @@
-*Daily Routine — 2026-05-02*
+*Daily Routine — 2026-05-03*
 
-_Quiet tape (05-01 close): 66/100 top coins green, median +0.6%; BTC $78,028 +2.3%, ETH $2,307 +1.8%, SOL $84.41 +1.4%._
+_Tape: 69/100 top coins green, top50 median +0.2%; BTC $78.4K +0.2%, ETH $2,309 +0.3%, SOL $84 +0.2%. Quiet drift, low dispersion at the top._
 
 *Top 5 Winners (24h)*
-1. UB $0.1125 +90.8% / 7d +141% • $87M [PUMP-RISK]
-2. B $0.220 +72.2% / 7d +128% • $31M [PUMP-RISK]
-3. 9BIT $0.0305 +35.7% • $5M [PUMP-RISK]
-4. PENDLE $1.57 +20.5% • $100M
-5. GENIUS $0.503 +17.4% • $30M
+1. B (BUILDon) $0.439 +34.8% / 7d +246% • $436M [BREAKOUT, day-3 cont]
+2. AKT (Akash) $0.641 +24.9% / 7d +31% • $186M [TRENDING+UP]
+3. BSB (Block Street) $0.659 +18.9% • $143M (day-2 reversal cont)
+4. GENIUS $0.576 +15.7% • $195M
+5. LUNC $0.000084 +13.5% / 7d +64% • $467M [TRENDING+UP]
 
 *Top 5 Losers (24h)*
-1. MEGA $0.152 −12.9% • $372M [CAPITULATION, post-FDV-resolve]
-2. RAVE $0.657 −10.5% / 7d −32% • $26M
-3. M (MemeCore) $3.12 −8.7% • $12M
-4. WLFI $0.0564 −7.1% / 7d −26% • $100M
-5. PIEVERSE $0.676 −4.9% • $7M
+1. MEGA (MegaETH) $0.130 −14.4% • $146M [TRENDING+DOWN, CAPITULATION, day-5 tail]
+2. UB (Unibase) $0.127 −13.7% / 7d +176% • $316M [CAPITULATION, direction-flip from yesterday's +22.5%]
+3. RAVE (RaveDAO) $0.633 −5.6% / 7d −31% • $157M
+4. JST (JUST) $0.082 −4.9% • $703M
+5. DEXE $10.27 −4.5% / 7d −26% • $480M
 
-*Roundup* (path: WebSearch — XAI key/cache absent, 8th day)
-*Crypto:* BTC ~$78.2K after ~13% April gain; April logged ~28 DeFi hacks ~$651M, triggering ETH ETF outflows; Consensus 2026 Miami opens May 5.
-*AI:* Moonshot shipped Kimi-K2.6 (agent-oriented long-context coder); fresh GPT-5.5 vs Opus 4.7 benchmark rounds splitting roughly 4-6 across reasoning suites.
-*Prediction markets:* Senate Dems (Merkley) pressed CFTC on Kalshi/Polymarket insider-trading + March advance NOPR demanding real-time monitoring; Tamil Nadu T-2: DMK 87.5%, TVK cooled 6.95c (8.25c→6.95c); Russia-Ukraine by-May-31 priced ~6% post-Putin May-9 ceasefire proposal.
+*Notable*
+- BABY (Babylon) trending at +80.1% / rank #260 — pump pattern, watch
+- LAB direction-flip: yesterday's +226% top winner now −40.5% in trending
+
+*Tweet Roundup* (WebSearch — 9th-day XAI gap, ISS-014 unfixed)
+*Crypto:* BTC ~$78.2K, +13% April; ETH ETF outflows continue; Carrot (Solana yield) shutting down post-Drift $285M exploit fallout; CLARITY Act Senate markup week of May 11.
+*AI:* Counterpoint Q1 LLM revenue: Anthropic 31.4% / OpenAI 29% — Anthropic's $16.20 ARPU vs OpenAI $2.20 with ~7x fewer users. Pentagon–Anthropic split: federal judge blocked the cutoff.
+*Prediction markets:* Kalshi officially overtook Polymarket in global volume. Indiana primary markets nearly all on Kalshi; Polymarket pulled Kentucky Derby contracts after Churchill Downs pushback. Minnesota legislature drafting a full PM ban.
 
 *Paper of the Day*
-"Hyperagents" — Zhang, Zhao, Yang, Foerster, Clune, Jiang, Devlin, Shavrina (↑50). First Darwin-Goedel-Machine extension that drops the coding-domain assumption: a single editable program holds task + meta agent, the meta-modification procedure is itself editable, and meta-level gains transfer across domains and accumulate across runs. Canonical Darwinian-axis citation for Stanford app + bench candidate for the next CalibrationGap meta-loop layer.
-https://arxiv.org/abs/2603.19461
+"Co-Evolving Policy Distillation" — Naibin Gu et al. (Apr 29 2026) ↑42. Trains multiple experts in parallel with bidirectional policy distillation during concurrent training rather than sequential. Experts mutually teach throughout training to preserve complementary knowledge. Direct shape match for swarm-fund canary→apex parallel-strategy distillation; mechanism Hyperagents/CORAL/GEA leave open.
+https://arxiv.org/abs/2604.27083
 
 *GitHub Issues*
-No new issues — five days clean.
+No new issues — 6th consecutive clean day on tomscaria scope.
 
 *HN Front (top 5)*
-1. Ti-84 Evo (428) — https://news.ycombinator.com/item?id=47979583
-2. Practice skills while dreaming (321) — https://news.ycombinator.com/item?id=47977748
-3. Ask.com has closed (231) — https://news.ycombinator.com/item?id=47983226
-4. SWE job postings rapidly rising (186) — https://news.ycombinator.com/item?id=47982512
-5. Artemis II Photo Timeline (178) — https://news.ycombinator.com/item?id=47954394
+1. VS Code inserting 'Co-Authored-by Copilot' into commits regardless of usage (1126 / 560c)
+   https://news.ycombinator.com/item?id=47989883
+2. Dav2d — VideoLAN AV2 decoder (456 / 123c)
+   https://news.ycombinator.com/item?id=47988504
+3. This Month in Ladybird — April 2026 (301 / 55c)
+   https://news.ycombinator.com/item?id=47990318
+4. Do_not_track (298 / 97c)
+   https://news.ycombinator.com/item?id=47988592
+5. Six Years Perfecting Maps on WatchOS (272 / 59c)
+   https://news.ycombinator.com/item?id=47990606

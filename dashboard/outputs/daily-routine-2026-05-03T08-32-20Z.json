@@ -1,0 +1,669 @@
+{
+  "root": "card_daily",
+  "state": {},
+  "elements": {
+    "card_daily": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-03"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "tape_section",
+        "sep1",
+        "winners_section",
+        "sep2",
+        "losers_section",
+        "sep3",
+        "notable_section",
+        "sep4",
+        "tweet_section",
+        "sep5",
+        "paper_section",
+        "sep6",
+        "github_section",
+        "sep7",
+        "hn_section"
+      ]
+    },
+    "tape_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tape",
+        "tape_text",
+        "tape_stats"
+      ]
+    },
+    "heading_tape": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Tape",
+        "level": "h2"
+      }
+    },
+    "tape_text": {
+      "type": "Text",
+      "props": {
+        "text": "69/100 top coins green, top50 median +0.2%. Quiet drift, low dispersion at the top."
+      }
+    },
+    "tape_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth",
+        "stat_sol"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78.4K",
+        "delta": "+0.2%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,309",
+        "delta": "+0.3%",
+        "trend": "up"
+      }
+    },
+    "stat_sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "$84",
+        "delta": "+0.2%",
+        "trend": "up"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_winners",
+        "table_winners"
+      ]
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "table_winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Symbol",
+          "Price",
+          "24h",
+          "7d",
+          "Market Cap",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "1",
+            "B (BUILDon)",
+            "$0.439",
+            "+34.8%",
+            "+246%",
+            "$436M",
+            "BREAKOUT, day-3 cont"
+          ],
+          [
+            "2",
+            "AKT (Akash)",
+            "$0.641",
+            "+24.9%",
+            "+31%",
+            "$186M",
+            "TRENDING+UP"
+          ],
+          [
+            "3",
+            "BSB (Block Street)",
+            "$0.659",
+            "+18.9%",
+            "—",
+            "$143M",
+            "day-2 reversal cont"
+          ],
+          [
+            "4",
+            "GENIUS",
+            "$0.576",
+            "+15.7%",
+            "—",
+            "$195M",
+            "—"
+          ],
+          [
+            "5",
+            "LUNC",
+            "$0.000084",
+            "+13.5%",
+            "+64%",
+            "$467M",
+            "TRENDING+UP"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_losers",
+        "table_losers"
+      ]
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 5 Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "table_losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Symbol",
+          "Price",
+          "24h",
+          "7d",
+          "Market Cap",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "1",
+            "MEGA (MegaETH)",
+            "$0.130",
+            "−14.4%",
+            "—",
+            "$146M",
+            "TRENDING+DOWN, CAPITULATION, day-5 tail"
+          ],
+          [
+            "2",
+            "UB (Unibase)",
+            "$0.127",
+            "−13.7%",
+            "+176%",
+            "$316M",
+            "CAPITULATION, direction-flip from yesterday's +22.5%"
+          ],
+          [
+            "3",
+            "RAVE (RaveDAO)",
+            "$0.633",
+            "−5.6%",
+            "−31%",
+            "$157M",
+            "—"
+          ],
+          [
+            "4",
+            "JST (JUST)",
+            "$0.082",
+            "−4.9%",
+            "—",
+            "$703M",
+            "—"
+          ],
+          [
+            "5",
+            "DEXE",
+            "$10.27",
+            "−4.5%",
+            "−26%",
+            "$480M",
+            "—"
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_notable",
+        "notable_baby",
+        "notable_lab"
+      ]
+    },
+    "heading_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable_baby": {
+      "type": "Text",
+      "props": {
+        "text": "BABY (Babylon) trending at +80.1% / rank #260 — pump pattern, watch"
+      }
+    },
+    "notable_lab": {
+      "type": "Text",
+      "props": {
+        "text": "LAB direction-flip: yesterday's +226% top winner now −40.5% in trending"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tweet",
+        "tweet_note",
+        "tweet_crypto",
+        "tweet_ai",
+        "tweet_pm"
+      ]
+    },
+    "heading_tweet": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h2"
+      }
+    },
+    "tweet_note": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch — 9th-day XAI gap, ISS-014 unfixed",
+        "variant": "muted"
+      }
+    },
+    "tweet_crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_crypto_label",
+        "tweet_crypto_text"
+      ]
+    },
+    "tweet_crypto_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto",
+        "level": "h3"
+      }
+    },
+    "tweet_crypto_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ~$78.2K, +13% April; ETH ETF outflows continue; Carrot (Solana yield) shutting down post-Drift $285M exploit fallout; CLARITY Act Senate markup week of May 11."
+      }
+    },
+    "tweet_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_ai_label",
+        "tweet_ai_text"
+      ]
+    },
+    "tweet_ai_label": {
+      "type": "Heading",
+      "props": {
+        "text": "AI",
+        "level": "h3"
+      }
+    },
+    "tweet_ai_text": {
+      "type": "Text",
+      "props": {
+        "text": "Counterpoint Q1 LLM revenue: Anthropic 31.4% / OpenAI 29% — Anthropic's $16.20 ARPU vs OpenAI $2.20 with ~7x fewer users. Pentagon–Anthropic split: federal judge blocked the cutoff."
+      }
+    },
+    "tweet_pm": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_pm_label",
+        "tweet_pm_text"
+      ]
+    },
+    "tweet_pm_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Prediction markets",
+        "level": "h3"
+      }
+    },
+    "tweet_pm_text": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi officially overtook Polymarket in global volume. Indiana primary markets nearly all on Kalshi; Polymarket pulled Kentucky Derby contracts after Churchill Downs pushback. Minnesota legislature drafting a full PM ban."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paper_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_paper",
+        "paper_item",
+        "paper_details"
+      ]
+    },
+    "heading_paper": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h2"
+      }
+    },
+    "paper_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Co-Evolving Policy Distillation",
+        "href": "https://arxiv.org/abs/2604.27083",
+        "source": "arXiv"
+      }
+    },
+    "paper_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper_meta",
+        "paper_desc",
+        "paper_relevance"
+      ]
+    },
+    "paper_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Naibin Gu et al. (Apr 29 2026) — 42 upvotes",
+        "variant": "caption"
+      }
+    },
+    "paper_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Trains multiple experts in parallel with bidirectional policy distillation during concurrent training rather than sequential. Experts mutually teach throughout training to preserve complementary knowledge."
+      }
+    },
+    "paper_relevance": {
+      "type": "Text",
+      "props": {
+        "text": "Direct shape match for swarm-fund canary→apex parallel-strategy distillation; mechanism Hyperagents/CORAL/GEA leave open.",
+        "variant": "muted"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "github_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_github",
+        "github_text"
+      ]
+    },
+    "heading_github": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "github_text": {
+      "type": "Text",
+      "props": {
+        "text": "No new issues — 6th consecutive clean day on tomscaria scope."
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hn_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_hn",
+        "hn_item1",
+        "hn_item2",
+        "hn_item3",
+        "hn_item4",
+        "hn_item5"
+      ]
+    },
+    "heading_hn": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Front (top 5)",
+        "level": "h2"
+      }
+    },
+    "hn_item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_link1",
+        "hn_stats1"
+      ]
+    },
+    "hn_link1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "VS Code inserting 'Co-Authored-by Copilot' into commits regardless of usage",
+        "href": "https://news.ycombinator.com/item?id=47989883",
+        "source": "Hacker News"
+      }
+    },
+    "hn_stats1": {
+      "type": "Text",
+      "props": {
+        "text": "1126 points / 560 comments",
+        "variant": "caption"
+      }
+    },
+    "hn_item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_link2",
+        "hn_stats2"
+      ]
+    },
+    "hn_link2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Dav2d — VideoLAN AV2 decoder",
+        "href": "https://news.ycombinator.com/item?id=47988504",
+        "source": "Hacker News"
+      }
+    },
+    "hn_stats2": {
+      "type": "Text",
+      "props": {
+        "text": "456 points / 123 comments",
+        "variant": "caption"
+      }
+    },
+    "hn_item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_link3",
+        "hn_stats3"
+      ]
+    },
+    "hn_link3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "This Month in Ladybird — April 2026",
+        "href": "https://news.ycombinator.com/item?id=47990318",
+        "source": "Hacker News"
+      }
+    },
+    "hn_stats3": {
+      "type": "Text",
+      "props": {
+        "text": "301 points / 55 comments",
+        "variant": "caption"
+      }
+    },
+    "hn_item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_link4",
+        "hn_stats4"
+      ]
+    },
+    "hn_link4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Do_not_track",
+        "href": "https://news.ycombinator.com/item?id=47988592",
+        "source": "Hacker News"
+      }
+    },
+    "hn_stats4": {
+      "type": "Text",
+      "props": {
+        "text": "298 points / 97 comments",
+        "variant": "caption"
+      }
+    },
+    "hn_item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_link5",
+        "hn_stats5"
+      ]
+    },
+    "hn_link5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Six Years Perfecting Maps on WatchOS",
+        "href": "https://news.ycombinator.com/item?id=47990606",
+        "source": "Hacker News"
+      }
+    },
+    "hn_stats5": {
+      "type": "Text",
+      "props": {
+        "text": "272 points / 59 comments",
+        "variant": "caption"
+      }
+    }
+  }
+}
