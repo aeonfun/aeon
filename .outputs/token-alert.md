@@ -1,15 +1,14 @@
 ## Summary
 
-Ran `token-alert` against the 3 tracked tokens in `memory/MEMORY.md` (BTC / ETH / SOL, all 10% threshold).
+Ran `token-alert` for BTC / ETH / SOL against the CoinGecko free API. All three majors well inside the 10% 24h threshold and volumes broadly down vs. yesterday — no anomalies, no alert fired. **TOKEN_ALERT_OK** logged silently per skill spec; no notification dispatched.
 
-- **BTC**: $78,291 (-0.03% 24h), vol $28.60B
-- **ETH**: $2,306.18 (-0.23% 24h), vol $9.77B
-- **SOL**: $83.87 (-0.61% 24h), vol $2.15B
+**Snapshot (2026-05-03):**
+- BTC: $78,734 (+0.76% 24h), vol $17.47B
+- ETH: $2,322.44 (+0.88% 24h), vol $7.05B
+- SOL: $84.01 (+0.41% 24h), vol $1.67B
 
-All three under threshold; no volume spike (no 3x signal), no price breakouts. **TOKEN_ALERT_OK** — silent per spec, no `./notify` dispatched.
+**Day-over-day** vs. 2026-05-02 morning print: BTC +0.57%, ETH +0.71%, SOL +0.17%. Mild green tilt back from yesterday's risk-off. Volumes: BTC 0.61x, ETH 0.72x, SOL 0.78x prior day — no 3x spike.
 
-CoinGecko free endpoint returned cleanly on first curl, no WebFetch fallback needed.
+**Files modified:** `memory/logs/2026-05-03.md` (token-alert entry appended).
 
-**Files modified:** `memory/logs/2026-05-02.md` (appended `## token-alert` + `## Summary (token-alert)` sections).
-
-**Follow-up:** none — third consecutive green run (04-30 / 05-01 / 05-02). Crypto tape staying quiet; the day's CalibrationGap-relevant catalysts (Russia-Ukraine ceasefire, Tamil Nadu T-3, Trump war-powers resolution debate) are landing on the prediction-market channel, not the major-token tape.
+**Follow-up:** None. Fourth consecutive `TOKEN_ALERT_OK` (04-30 → 05-03). Russia-Ukraine truce headlines and Tamil Nadu T-1 are off the BTC/ETH/SOL channel; CalibrationGap-relevant catalysts remain Polymarket-side.
