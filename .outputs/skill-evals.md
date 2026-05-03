@@ -1,1 +1,8 @@
-Skill Evals — SKILL_EVALS_REGRESSED. 9 new fail · 0 fixed · coverage 14.4% (BOOTSTRAP). Top action: Patch evals.json:polymarket — rename key to monitor-polymarket, fix output_pattern (ISS-009, mission-critical). Regressions: polymarket: no_file_match (spec mismatch); hn-digest: no_file_match (spec mismatch); token-alert: no_file_match despite cron-state success. Article: articles/skill-evals-2026-04-26.md
+*Skill Evals — SKILL_EVALS_REGRESSED*
+2 new fail · 2 fixed · coverage 14.0%
+Top action: Investigate repo-article — missing_pattern:Aeon|aeon (ISS-019)
+Article: articles/skill-evals-2026-05-03.md
+
+Regressions:
+- heartbeat: forbidden_pattern:${var} in shared log file (ISS-018)
+- repo-article: missing_pattern:Aeon|aeon — article is about swarm-fund-mvp (ISS-019)

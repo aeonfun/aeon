@@ -1,0 +1,213 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Evals — SKILL_EVALS_REGRESSED"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "metrics_stack",
+        "alert_top_action",
+        "separator_1",
+        "article_section",
+        "separator_2",
+        "regressions_heading",
+        "regressions_list"
+      ]
+    },
+    "metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_new_fail",
+        "stat_fixed",
+        "stat_coverage"
+      ]
+    },
+    "stat_new_fail": {
+      "type": "Stat",
+      "props": {
+        "label": "New Failures",
+        "value": "2"
+      }
+    },
+    "stat_fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "2"
+      }
+    },
+    "stat_coverage": {
+      "type": "Stat",
+      "props": {
+        "label": "Coverage",
+        "value": "14.0%"
+      }
+    },
+    "alert_top_action": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Top Action",
+        "message": "Investigate repo-article — missing_pattern:Aeon|aeon (ISS-019)"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "article_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "article_label",
+        "article_link"
+      ]
+    },
+    "article_label": {
+      "type": "Text",
+      "props": {
+        "text": "Article:",
+        "variant": "muted"
+      }
+    },
+    "article_link": {
+      "type": "Link",
+      "props": {
+        "label": "skill-evals-2026-05-03.md",
+        "href": "articles/skill-evals-2026-05-03.md"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "regressions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Regressions",
+        "level": "h3"
+      }
+    },
+    "regressions_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "regression_item_1",
+        "regression_item_2"
+      ]
+    },
+    "regression_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "regression_1_header",
+        "regression_1_desc"
+      ]
+    },
+    "regression_1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "regression_1_skill",
+        "regression_1_issue_badge"
+      ]
+    },
+    "regression_1_skill": {
+      "type": "Badge",
+      "props": {
+        "text": "heartbeat",
+        "variant": "outline"
+      }
+    },
+    "regression_1_issue_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-018",
+        "variant": "secondary"
+      }
+    },
+    "regression_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "forbidden_pattern:${var} in shared log file",
+        "variant": "body"
+      }
+    },
+    "regression_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "regression_2_header",
+        "regression_2_desc"
+      ]
+    },
+    "regression_2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "regression_2_skill",
+        "regression_2_issue_badge"
+      ]
+    },
+    "regression_2_skill": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-article",
+        "variant": "outline"
+      }
+    },
+    "regression_2_issue_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-019",
+        "variant": "secondary"
+      }
+    },
+    "regression_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "missing_pattern:Aeon|aeon — article is about swarm-fund-mvp",
+        "variant": "body"
+      }
+    }
+  }
+}
