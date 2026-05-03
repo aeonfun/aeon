@@ -43,6 +43,7 @@ get_category() {
     treasury-info|distribute-tokens) echo "crypto" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
+    show-hn-draft) echo "social" ;;
     # Productivity & Meta
     morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
