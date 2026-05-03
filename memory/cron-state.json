@@ -307,8 +307,8 @@
     "last_error": "c5f2301\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "push-recap": {
-    "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T21:44:46Z",
     "total_runs": 31,
     "total_successes": 15,
@@ -319,8 +319,8 @@
     "last_error": "0c4f36c\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-article": {
-    "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T15:35:45Z",
     "total_runs": 21,
     "total_successes": 7,
@@ -331,8 +331,8 @@
     "last_error": "6673ab5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-actions": {
-    "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T15:41:32Z",
     "total_runs": 22,
     "total_successes": 7,
@@ -343,8 +343,8 @@
     "last_error": "197cbb6\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-pulse": {
-    "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T15:32:07Z",
     "total_runs": 20,
     "total_successes": 7,
@@ -355,8 +355,8 @@
     "last_error": "403364f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "star-milestone": {
-    "last_dispatch": "2026-05-02T15:28:16Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T15:30:46Z",
     "total_runs": 20,
     "total_successes": 7,
@@ -367,8 +367,8 @@
     "last_error": "3087f28\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "fleet-control": {
-    "last_dispatch": "2026-05-03T09:45:00Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T15:29:00Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-03T09:46:32Z",
     "total_runs": 27,
     "total_successes": 15,
