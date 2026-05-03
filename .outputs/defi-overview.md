@@ -1,41 +1,41 @@
-*DeFi — 2026-05-02* — Mixed: TVL grinds up to top of band, DEX vol still pulling back, stables idle
+*DeFi — 2026-05-03* — Mixed: TVL grinds up to $84.75B, DEX vol −35% (weekend), stables idle, USDS leads.
 
-*TVL:* $85.21B (+1.65% 24h, +1.98% 7d) — back to top of $83-86B 10-day band; first +1%+ 1d print since 04-27.
+*TVL:* $84.75B (+0.44% 24h, +0.84% 7d)
 
 *Top chains*
-1. Ethereum — $46.0B (+2.0%)
-2. BSC — $5.47B
-3. Solana — $5.42B
+1. Ethereum — $45.7B (+1.2%)
+2. BSC — $5.48B
+3. Solana — $5.43B
 
-*Movers*
-↑ Hyperliquid L1 +5.2% ($1.43B → $1.51B) — HLP +7.7%, HyperLend Pooled +9.4%; HL ecosystem deposit accel into Day-5 Kalshi-perps falsifier window
-↑ WisdomTree +11.4% ($888M → $989M, RWA, ETH/Stellar) — no obvious catalyst; likely tokenized-fund subscription day
-↑ OnRe +14.8% ($146M → $167M, RWA, Solana) — no obvious catalyst
-↓ Meteora DLMM −16.3% ($272M → $227M, Solana DEX) — share migration to PumpSwap (4th day on fees-beating-TVL)
-_no chain down-mover cleared 5%/$500M gate; Plasma drift continues at −3% 1d / −6% 7d on $534M_
+*Movers — chains*
+↑ MegaETH +11% ($590M → $660M) — post-launch ramp continues; 7d +566%, narrative-tracker WATCH.
+↓ Provenance −22% ($1.64B → $1.28B) — Figure Markets Exchange drives entire chain TVL drop, no obvious catalyst.
+
+*Movers — protocols*
+↑ Spark Savings +35% ($2.21B → $2.99B) — Sky/Spark stack reverse-rally re-fires; durable-unwind narrative confirmed DEAD.
+↓ Obol −17% ($1.60B → $1.33B) — no obvious catalyst.
 
 *Fees leaders (24h)*
-1. Tether — $16.4M (flat vs 7d avg)
-2. Circle USDC — $6.5M (flat)
-3. Canton — $2.2M (flat)
+1. Tether — $16.4M (flat 7d)
+2. Circle USDC — $6.5M (flat 7d)
+3. Canton — $1.9M (−18% 7d, softening)
 
 *Fees beating TVL*
-• PumpSwap — fees7d +29% / TVL7d −0.4% ($1.63M 24h, $218M TVL) — 4th consecutive day on list, Solana memecoin demand persistent
-• PancakeSwap AMM — fees7d +50% / TVL7d −0.5% ($117k 24h, $1.74B TVL) — rejoined list after yesterday's miss
-• EtherFi Cash Liquid — fees7d +23% / TVL7d −2.9% ($129k 24h, $148M TVL) — NEW; debit-card spend rising
+• NEAR Intents — fees +169% / TVL +1% (7d) — usage scaling without deposit growth
+• PancakeSwap AMM — fees +140% / TVL +0.5% (7d) — V2 pool fee resurgence
 
-*DEX vol (24h):* $5.32B (−4.1% 1d, −5.1% 7d, −37% 1m) — top: Uniswap V4 $551M (−12%), PancakeSwap V3 $498M (+36%, bouncing), Uniswap V3 $351M (−27%). Kalshi $188M flat (recovered top-5 slot from yesterday's miss).
+*DEX vol (24h):* $3.44B (−35% 1d, −12% 7d, weekend on top of trend) — top: PancakeSwap V3 $415M, Uniswap V4 $385M, PancakeSwap Infinity $208M; Kalshi $200M (+7%, hermes-arb context)
 
-*Stables:* $319.9B (+0.46% 1d) — single-issuer notables: RLUSD +8.0% on $1.56B (Ripple-stable kept growing), USDC +1.4% on $78.3B (notable for absolute scale, +$1.05B 24h), crvUSD +5.8% on $0.33B.
+*Stables:* $319.1B (+0.18% 1d) — USDS +4.4% 1d the only notable single-issuer move (drives Spark-stack inflow)
 
-*Real yield (sustainable, ≥$10M)*
-• APT (Amnis Finance, Aptos) — 27.99% apyBase ($18M, mean30d 15.7% — 5th day spike continues)
-• USDC-CBBTC (Uniswap V3, Base) — 18.28% apyBase ($10M, mean30d 27.6% — partial decay from 29.75% yesterday)
-• APYUSD (Pendle, ETH) — 15.74% apyBase ($12M, mean30d 15.1%)
+*Real yield (sustainable, ≥$10M, filtered)*
+• APT (Amnis, Aptos) — 28.0% apyBase ($18M TVL, mean30d 16.2%)
+• SUSDAT (Saturn, ETH) — 24.3% apyBase ($60M TVL)
+• APYUSD (Pendle, ETH) — 15.9% apyBase ($12M TVL)
 
-*Incentive yield (≥$25M)*
-• USDC-AERO (Aerodrome v1, Base) — 22.07% apy via AERO ($27M) — moved to #1 from yesterday's outside-top-2
-• SDCRV (Stake DAO, ETH) — 22.04% apy via CRV+CVX+scrvUSD ($27M) — 5th day same pair; CVXCRV decayed to #5
+*Incentive yield (points / emissions, ≥$25M)*
+• SDCRV (Stake DAO, ETH) — 21.8% apy via CRV+CVX ($28M TVL)
+• USDC-AERO (Aerodrome v1, Base) — 21.8% apy via AERO ($27M TVL)
 
-_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none | /v2/chains schema-drift workaround active 6+ days_
+_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | schema-drift /v2/chains c1d/c7d still missing (day 7+; per-chain historical workaround); var: none_
 
