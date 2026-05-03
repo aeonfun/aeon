@@ -1,8 +1,7 @@
+**ON_CHAIN_NO_CONFIG** — `memory/on-chain-watches.yml` has `watches: []` (template unedited, all addresses commented out). Per the skill's documented end-state for missing/empty config, the run exits cleanly: no fetches, no `on-chain-state.json` written, no notification.
+
 ## Summary
 
-Ran `on-chain-monitor` skill. `memory/on-chain-watches.yml` contains only the template (`watches: []`), so per the skill spec I logged `ON_CHAIN_NO_CONFIG` and exited cleanly without sending a notification (empty config is not an error).
-
-- **Files modified:** `memory/logs/2026-05-02.md` (appended on-chain-monitor entry + summary).
-- **No state file written** (`memory/on-chain-state.json` not created — there's nothing to track).
-- **No API calls made** (Alchemy / Etherscan / CoinGecko all skipped — no watches to query).
-- **Follow-up:** blocked on operator-side config sweep already tracked in `MEMORY.md` Next Priorities — populate `memory/on-chain-watches.yml` with real watches before this skill produces output.
+- Ran `on-chain-monitor` for 2026-05-03. Result: `ON_CHAIN_NO_CONFIG` — 0 watches configured, skill no-op'd as specified.
+- Files modified: appended an `on-chain-monitor` section + summary to `memory/logs/2026-05-03.md`.
+- Follow-up: this remains blocked on the **operator config sweep** line in `memory/MEMORY.md` — `memory/on-chain-watches.yml` needs at least one uncommented watch (treasury / ops / cold-storage) before the skill can do real work. No new state file, no `./notify` call.
