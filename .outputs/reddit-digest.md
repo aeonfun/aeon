@@ -1,1 +1,1 @@
-Reddit digest: all 10 sources errored — curl HTTP 403 (Reddit IP-block, 190KB blocked.html) + WebFetch domain not allowlisted (www.reddit.com / old.reddit.com). 8th consecutive day. ISS-002 / ISS-012 still open. Fix is scripts/prefetch-reddit.sh — still not in tree. Recommend pausing cron until prefetch ships.
+Reddit digest: all 10 sources errored — curl 403 + WebFetch allowlist-block on reddit.com (10th consecutive day, ISS-002 / ISS-012). Pause cron until scripts/prefetch-reddit.sh ships.

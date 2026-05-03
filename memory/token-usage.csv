@@ -77,4 +77,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-02,push-recap,claude-opus-4-7,55,19178,2723673,103912
 2026-05-02,evening-recap,claude-sonnet-4-6,1073,6985,540304,71141
 2026-05-03,skill-evals,claude-sonnet-4-6,25,18267,1070159,48463
-2026-05-03,telegram-digest,claude-sonnet-4-6,8,1360,170012,17047
+2026-05-03,reddit-digest,claude-opus-4-7,31,6445,965162,54594
