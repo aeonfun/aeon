@@ -1,0 +1,167 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-05-03)"
+      },
+      "children": [
+        "intro_text",
+        "separator_1",
+        "section_polymarket_flip",
+        "separator_2",
+        "section_cross_venue",
+        "separator_3",
+        "section_agent_personhood",
+        "separator_4",
+        "footer_text"
+      ]
+    },
+    "intro_text": {
+      "type": "Text",
+      "props": {
+        "text": "Bengal counting eve — Polymarket flipped BJP 51% / TMC 48.9% with ~24h to vote-count, Phalodi Satta Bazar prices the same direction tight at 146-149 / 140-143; cross-venue convergence is the actual signal. CoinDesk picks up ClawBank/Manfred (agent-formed LLC + EIN + FDIC + wallet) — first Tier-1 outlet on the agent-personhood narrative.",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_polymarket_flip": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_polymarket_flip",
+        "tweet_1",
+        "tweet_2",
+        "tweet_3"
+      ]
+    },
+    "heading_polymarket_flip": {
+      "type": "Heading",
+      "props": {
+        "text": "Bengal counting eve — Polymarket flip",
+        "level": "h3"
+      }
+    },
+    "tweet_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket flips BJP 51% / TMC 48.9% ~24h to counting; TMC was favorite from market open. The flip itself is the signal.",
+        "href": "https://x.com/MeghUpdates/status/2050798583159591053",
+        "source": "x.com/MeghUpdates"
+      }
+    },
+    "tweet_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Mainstream Indian financial press first surfaces Polymarket as election-pricing venue; BJP 52% / TMC 47% with $2M+ bets.",
+        "href": "https://x.com/EconomicTimes/status/2047246453312258058",
+        "source": "x.com/EconomicTimes"
+      }
+    },
+    "tweet_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Earlier turnaround pre-flip — BJP 50.6% / TMC 46.6% after TMC led all cycle. Captures the moment market direction reversed.",
+        "href": "https://x.com/MeghUpdates/status/2046580426505118058",
+        "source": "x.com/MeghUpdates"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_cross_venue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_cross_venue",
+        "tweet_4",
+        "tweet_5",
+        "tweet_6"
+      ]
+    },
+    "heading_cross_venue": {
+      "type": "Heading",
+      "props": {
+        "text": "Bengal counting eve — cross-venue context",
+        "level": "h3"
+      }
+    },
+    "tweet_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Phalodi Satta Bazar (Indian grey-market) prices BJP 146-149 / TMC 140-143 — independent venue, same direction as Polymarket.",
+        "href": "https://x.com/TimesNow/status/2049469321651380573",
+        "source": "x.com/TimesNow"
+      }
+    },
+    "tweet_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BJP Port Area candidate Rakesh Singh going public with confidence on counting eve — primary-source sentiment matching the market flip.",
+        "href": "https://x.com/PTI_News/status/2050818063134859534",
+        "source": "x.com/PTI_News"
+      }
+    },
+    "tweet_6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Historical seat-count context (2011/2016/2021 Bengal tallies). Useful prior for sizing BJP odds against base rates.",
+        "href": "https://x.com/jgopikrishnan70/status/2050863706498859232",
+        "source": "x.com/jgopikrishnan70"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_agent_personhood": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_agent_personhood",
+        "tweet_7"
+      ]
+    },
+    "heading_agent_personhood": {
+      "type": "Heading",
+      "props": {
+        "text": "Agent-personhood mainstream pickup",
+        "level": "h3"
+      }
+    },
+    "tweet_7": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ClawBank/Manfred AI agent autonomously formed US corp + IRS EIN + FDIC bank + crypto wallet. First Tier-1 crypto-news pickup of the agent-personhood narrative.",
+        "href": "https://x.com/CoinDesk/status/2050245963197960580",
+        "source": "x.com/CoinDesk"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "footer_text": {
+      "type": "Text",
+      "props": {
+        "text": "source: websearch (XAI_API_KEY unavailable; engagement counts not surfaced — quality lower than usual)",
+        "variant": "caption"
+      }
+    }
+  }
+}

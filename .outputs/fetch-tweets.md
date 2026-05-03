@@ -1,26 +1,35 @@
-*Top Tweets — prediction markets (2026-05-02)*
-_Two-front day — Trump's 'hostilities have terminated' War Powers letter resolves Polymarket's end-mil-ops-Iran market YES while Senate-ban / Gemini-DCO regulatory plumbing keeps consolidating Kalshi+Polymarket's incumbents-with-rules positioning. Path C, no engagement counts._
+*Top Tweets — prediction markets (2026-05-03)*
+_Bengal counting eve — Polymarket flipped BJP 51% / TMC 48.9% with ~24h to vote-count, Phalodi Satta Bazar prices the same direction tight at 146-149 / 140-143; cross-venue convergence is the actual signal. CoinDesk picks up ClawBank/Manfred (agent-formed LLC + EIN + FDIC + wallet) — first Tier-1 outlet on the agent-personhood narrative._
 
-*Iran War-Powers resolution (CalibrationGap-relevant)*
-1. x.com/KristenhCNN — Trump's formal letter to Speaker Johnson + Senate Pro Tem Grassley argues the Iran war 'hostilities,' begun with the Feb 28 strikes, 'have terminated.' Most upstream primary on the War Powers Act T+60 — directly resolves Polymarket's end-mil-ops market window.
+*Bengal counting eve — Polymarket flip*
+1. x.com/MeghUpdates — Polymarket flips BJP 51% / TMC 48.9% ~24h to counting; TMC was favorite from market open. The flip itself is the signal.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/KristenhCNN/status/2050281947931234362)
+[View tweet](https://x.com/MeghUpdates/status/2050798583159591053)
 
-2. x.com/IranIntl_En — White House principal deputy press sec confirms 'active conversations' with Congress as the 60-day War Powers Resolution deadline approaches. Posted ~24h before the Trump letter — pre-positions the resolution-debate spike that comments-side reply-maker should pick up next 48h.
+2. x.com/EconomicTimes — Mainstream Indian financial press first surfaces Polymarket as election-pricing venue; BJP 52% / TMC 47% with $2M+ bets.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/IranIntl_En/status/2049888459402236365)
+[View tweet](https://x.com/EconomicTimes/status/2047246453312258058)
 
-*Regulatory front (Senate self-ban + Gemini DCO)*
-3. x.com/Polymarket — Polymarket's flat-out endorsement of the Senate self-ban: 'Our Rulebook & ToS already prohibit such conduct, but codifying this into law is a step forward for the industry.' Completes both incumbents publicly endorsing the rule rather than treating it as a threat.
+3. x.com/MeghUpdates — Earlier turnaround pre-flip — BJP 50.6% / TMC 46.6% after TMC led all cycle. Captures the moment market direction reversed.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/Polymarket/status/2049915691327803453)
+[View tweet](https://x.com/MeghUpdates/status/2046580426505118058)
 
-4. x.com/BitcoinNews — Gemini receives DCO license from CFTC per @cameron, after Dec DCM approval. Olympus + Titan = full-stack venue + clearinghouse for predictions, futures, and options. Third regulated US prediction-market entrant — compresses Kalshi's offshore-perception advantage over Polymarket.
+*Bengal counting eve — cross-venue context*
+4. x.com/TimesNow — Phalodi Satta Bazar (Indian grey-market) prices BJP 146-149 / TMC 140-143 — independent venue, same direction as Polymarket.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/BitcoinNews/status/2049867621835899328)
+[View tweet](https://x.com/TimesNow/status/2049469321651380573)
 
-*Tamil Nadu (T-2 to vote 05-04)*
-5. x.com/businessline — Most exit-poll surveys give MK Stalin's DMK-led alliance a clear majority in the 234-member Assembly. Anchors the consensus narrative going into 05-03 (T-1) and 05-04 resolution morning — confirms memory's DMK 87.5% / TVK cooled to 6.95c frame is still live.
+5. x.com/PTI_News — BJP Port Area candidate Rakesh Singh going public with confidence on counting eve — primary-source sentiment matching the market flip.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/businessline/status/2049493965947146577)
+[View tweet](https://x.com/PTI_News/status/2050818063134859534)
 
+6. x.com/jgopikrishnan70 — Historical seat-count context (2011/2016/2021 Bengal tallies). Useful prior for sizing BJP odds against base rates.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/jgopikrishnan70/status/2050863706498859232)
+
+*Agent-personhood mainstream pickup*
+7. x.com/CoinDesk — ClawBank/Manfred AI agent autonomously formed US corp + IRS EIN + FDIC bank + crypto wallet. First Tier-1 crypto-news pickup of the agent-personhood narrative.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/CoinDesk/status/2050245963197960580)
+
+_source: websearch (XAI_API_KEY unavailable; engagement counts not surfaced — quality lower than usual)_
