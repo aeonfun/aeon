@@ -1,0 +1,214 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Workflow Security Audit",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "heading-critical",
+        "separator-1",
+        "alert-critical",
+        "separator-2",
+        "findings-section",
+        "separator-3",
+        "patch-section",
+        "separator-4",
+        "action-section"
+      ]
+    },
+    "heading-critical": {
+      "type": "Heading",
+      "props": {
+        "text": "WORKFLOW_AUDIT_NEW_CRITICAL",
+        "level": "h3"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alert-critical": {
+      "type": "Alert",
+      "props": {
+        "title": "Critical Vulnerability Detected",
+        "message": "toJson-into-shell injection in messages.yml repository_dispatch path",
+        "type": "error"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "findings-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "findings-heading",
+        "severity-badges",
+        "vulnerability-heading",
+        "vuln-text-1",
+        "vuln-text-2",
+        "vuln-text-3"
+      ]
+    },
+    "findings-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Findings Summary",
+        "level": "h4"
+      }
+    },
+    "severity-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-critical",
+        "badge-high",
+        "badge-patch-size"
+      ]
+    },
+    "badge-critical": {
+      "type": "Badge",
+      "props": {
+        "text": "1 CRITICAL: messages.yml",
+        "variant": "destructive"
+      }
+    },
+    "badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "2 HIGH: chain-runner.yml",
+        "variant": "destructive"
+      }
+    },
+    "badge-patch-size": {
+      "type": "Badge",
+      "props": {
+        "text": "Patch: +8/-4 across 2 files",
+        "variant": "secondary"
+      }
+    },
+    "vulnerability-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vulnerability Details",
+        "level": "h4"
+      }
+    },
+    "vuln-text-1": {
+      "type": "Text",
+      "props": {
+        "text": "repository_dispatch payload escapes single-quoted shell",
+        "variant": "body"
+      }
+    },
+    "vuln-text-2": {
+      "type": "Text",
+      "props": {
+        "text": "Runs with full secret environment: GH_GLOBAL, ANTHROPIC_API_KEY, bot tokens",
+        "variant": "body"
+      }
+    },
+    "vuln-text-3": {
+      "type": "Text",
+      "props": {
+        "text": "Impact: Remote Code Execution (RCE) on the runner",
+        "variant": "lead"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "patch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "patch-heading",
+        "patch-status-badge",
+        "patch-blocker"
+      ]
+    },
+    "patch-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Patch Status",
+        "level": "h4"
+      }
+    },
+    "patch-status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Status: NOT APPLIED",
+        "variant": "outline"
+      }
+    },
+    "patch-blocker": {
+      "type": "Alert",
+      "props": {
+        "title": "Blocker",
+        "message": "Runner token still lacks workflow scope (same as PR #4) — cannot apply automatically",
+        "type": "warning"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action-heading",
+        "action-commands",
+        "pr-link"
+      ]
+    },
+    "action-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Actions",
+        "level": "h4"
+      }
+    },
+    "action-commands": {
+      "type": "Text",
+      "props": {
+        "text": "Apply from a workflow-scoped token:\ngit checkout fix/workflow-security-audit-2026-05-03\ngit am articles/0001-fix-security-workflow-audit-2026-05-03-NEW_CRITICAL.patch\ngit push",
+        "variant": "caption"
+      }
+    },
+    "pr-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Review and merge patch via PR #9",
+        "href": "https://github.com/tomscaria/aeon/pull/9",
+        "source": "GitHub"
+      }
+    }
+  }
+}
