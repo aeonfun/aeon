@@ -1,8 +1,7 @@
-technical explainer: CORAL: four agents, one notebook, 24% off the kernel
+technical explainer: PolySwarm reads two markets as one distribution. The gap is the trade.
 
-Run four LLM agents in parallel sandboxes, give them a shared notebook with three columns (Attempts, Notes, Skills) and a periodic interrupt that forces them to write down what they learned, and a population beats a single long-running agent on hard search problems by 19-24%.
+PolySwarm flags Polymarket mispricings by treating the swarm consensus as one probability distribution and the markets implied price as another, scoring the gap with Jensen-Shannon divergence — and on negation pairs (event E and its logical opposite), it just checks whether the two YES prices sum to 1.
 
-primary source: https://arxiv.org/abs/2604.01658
-hero image: queued post-process
+The paper publishes the formulas. It publishes zero result numbers.
 
-read it: articles/explainer-2026-05-02.md
+read it: articles/explainer-2026-05-03.md

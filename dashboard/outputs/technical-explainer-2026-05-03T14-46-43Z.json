@@ -1,0 +1,57 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "technical-explainer"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-1",
+        "text-1",
+        "text-2",
+        "story-1"
+      ]
+    },
+    "heading-1": {
+      "type": "Heading",
+      "props": {
+        "text": "PolySwarm reads two markets as one distribution. The gap is the trade.",
+        "level": "h2"
+      }
+    },
+    "text-1": {
+      "type": "Text",
+      "props": {
+        "text": "PolySwarm flags Polymarket mispricings by treating the swarm consensus as one probability distribution and the markets implied price as another, scoring the gap with Jensen-Shannon divergence — and on negation pairs (event E and its logical opposite), it just checks whether the two YES prices sum to 1.",
+        "variant": "body"
+      }
+    },
+    "text-2": {
+      "type": "Text",
+      "props": {
+        "text": "The paper publishes the formulas. It publishes zero result numbers.",
+        "variant": "body"
+      }
+    },
+    "story-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "explainer-2026-05-03",
+        "href": "articles/explainer-2026-05-03.md",
+        "source": "articles"
+      }
+    }
+  }
+}
