@@ -1,0 +1,237 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Monitor",
+        "description": "3 repos scanned, 5 need action"
+      },
+      "children": [
+        "alert_section",
+        "act_now_section",
+        "sources_section"
+      ]
+    },
+    "alert_section": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Single operator-side fix (verify aeonframework commit-email with Vercel) unblocks all 5 at once."
+      }
+    },
+    "act_now_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "act_now_heading",
+        "pr_28_item",
+        "pr_24_item",
+        "pr_23_item",
+        "pr_20_item",
+        "pr_19_item"
+      ]
+    },
+    "act_now_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ACT NOW",
+        "level": "h3"
+      }
+    },
+    "pr_28_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_28_link",
+        "pr_28_status",
+        "pr_28_details"
+      ]
+    },
+    "pr_28_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Review tomscaria/swarm-fund-mvp#28",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/28"
+      }
+    },
+    "pr_28_status": {
+      "type": "Badge",
+      "props": {
+        "text": "3× Vercel FAILURE",
+        "variant": "destructive"
+      }
+    },
+    "pr_28_details": {
+      "type": "Text",
+      "props": {
+        "text": "aeonframework bot-email config (filed 16h ago)",
+        "variant": "caption"
+      }
+    },
+    "pr_24_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_24_link",
+        "pr_24_status",
+        "pr_24_details"
+      ]
+    },
+    "pr_24_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Review tomscaria/swarm-fund-mvp#24",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/24"
+      }
+    },
+    "pr_24_status": {
+      "type": "Badge",
+      "props": {
+        "text": "3× Vercel FAILURE",
+        "variant": "destructive"
+      }
+    },
+    "pr_24_details": {
+      "type": "Text",
+      "props": {
+        "text": "bot-email config, idle 47h",
+        "variant": "caption"
+      }
+    },
+    "pr_23_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_23_link",
+        "pr_23_status",
+        "pr_23_details"
+      ]
+    },
+    "pr_23_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Unblock tomscaria/swarm-fund-mvp#23",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/23"
+      }
+    },
+    "pr_23_status": {
+      "type": "Badge",
+      "props": {
+        "text": "3× Vercel FAILURE",
+        "variant": "destructive"
+      }
+    },
+    "pr_23_details": {
+      "type": "Text",
+      "props": {
+        "text": "bot-email config, idle 72h",
+        "variant": "caption"
+      }
+    },
+    "pr_20_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_20_link",
+        "pr_20_status",
+        "pr_20_details"
+      ]
+    },
+    "pr_20_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Unblock tomscaria/swarm-fund-mvp#20",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/20"
+      }
+    },
+    "pr_20_status": {
+      "type": "Badge",
+      "props": {
+        "text": "3× Vercel FAILURE",
+        "variant": "destructive"
+      }
+    },
+    "pr_20_details": {
+      "type": "Text",
+      "props": {
+        "text": "bot-email config, idle 120h",
+        "variant": "caption"
+      }
+    },
+    "pr_19_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_19_link",
+        "pr_19_status",
+        "pr_19_details"
+      ]
+    },
+    "pr_19_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Unblock tomscaria/swarm-fund-mvp#19",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/19"
+      }
+    },
+    "pr_19_status": {
+      "type": "Badge",
+      "props": {
+        "text": "3× Vercel FAILURE",
+        "variant": "destructive"
+      }
+    },
+    "pr_19_details": {
+      "type": "Text",
+      "props": {
+        "text": "bot-email config, idle 143h",
+        "variant": "caption"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_list"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_list": {
+      "type": "Text",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp=ok  •  tomscaria/lore-financial-teaser=ok  •  aaronjmars/aeon=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
