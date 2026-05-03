@@ -1,0 +1,141 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-03"
+      },
+      "children": [
+        "summary_stack",
+        "separator1",
+        "changes_heading",
+        "changes_table",
+        "separator2",
+        "highlights_heading",
+        "highlights_list",
+        "separator3",
+        "footer"
+      ]
+    },
+    "summary_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "repos_stat",
+        "changes_stat"
+      ]
+    },
+    "repos_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Repositories",
+        "value": "3"
+      }
+    },
+    "changes_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing Changes",
+        "value": "35"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "changes_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Change Breakdown",
+        "level": "h3"
+      }
+    },
+    "changes_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Type",
+          "Count"
+        ],
+        "rows": [
+          [
+            "Added",
+            "22"
+          ],
+          [
+            "Changed",
+            "4"
+          ],
+          [
+            "Fixed",
+            "8"
+          ],
+          [
+            "Security",
+            "1"
+          ],
+          [
+            "Breaking",
+            "0"
+          ]
+        ]
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "highlights_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Highlights",
+        "level": "h3"
+      }
+    },
+    "highlights_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "highlight1",
+        "highlight2"
+      ]
+    },
+    "highlight1": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon-Narrative ingestion adapter wires tomscaria/aeon skill outputs into 30 of 38 net-new agents on swarm-fund-mvp"
+      }
+    },
+    "highlight2": {
+      "type": "Text",
+      "props": {
+        "text": "Vercel deploys unblocked after 3 days of stale rswarm.ai"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Link",
+      "props": {
+        "label": "View full changelog",
+        "href": "articles/changelog-2026-05-03.md"
+      }
+    }
+  }
+}
