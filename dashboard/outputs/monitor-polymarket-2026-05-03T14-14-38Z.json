@@ -1,0 +1,670 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket monitor — 2026-05-03"
+      },
+      "children": [
+        "fifa-section",
+        "sep1",
+        "btc-section",
+        "sep2",
+        "dem-section",
+        "sep3",
+        "rep-section",
+        "sep4",
+        "pres-section",
+        "sep5",
+        "alerts-section",
+        "sep6",
+        "comments-section"
+      ]
+    },
+    "fifa-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fifa-heading",
+        "fifa-meta",
+        "fifa-table",
+        "fifa-notes"
+      ]
+    },
+    "fifa-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "FIFA World Cup 2026",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "fifa-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "fifa-event",
+        "fifa-vol",
+        "fifa-liq"
+      ]
+    },
+    "fifa-event": {
+      "type": "Badge",
+      "props": {
+        "text": "event 30615"
+      },
+      "children": []
+    },
+    "fifa-vol": {
+      "type": "Badge",
+      "props": {
+        "text": "$881M vol"
+      },
+      "children": []
+    },
+    "fifa-liq": {
+      "type": "Badge",
+      "props": {
+        "text": "$196M liq"
+      },
+      "children": []
+    },
+    "fifa-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Outcome",
+          "Odds",
+          "Change",
+          "24h Vol",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "mexico YES",
+            "1.1%",
+            "0pp",
+            "$108k",
+            "Revenant first-order, $2.5M liq intact"
+          ],
+          [
+            "france YES",
+            "16.5%",
+            "0pp",
+            "$126k",
+            "top favorite"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "fifa-notes": {
+      "type": "Text",
+      "props": {
+        "text": "biggest mover: none; all FIFA markets flat",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "btc-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc-heading",
+        "btc-meta",
+        "btc-progress-container",
+        "btc-notes1",
+        "btc-notes2"
+      ]
+    },
+    "btc-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin $1M before GTA VI",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "btc-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "btc-market",
+        "btc-liq",
+        "btc-ends"
+      ]
+    },
+    "btc-market": {
+      "type": "Badge",
+      "props": {
+        "text": "market 540844"
+      },
+      "children": []
+    },
+    "btc-liq": {
+      "type": "Badge",
+      "props": {
+        "text": "$128k liq"
+      },
+      "children": []
+    },
+    "btc-ends": {
+      "type": "Badge",
+      "props": {
+        "text": "ends Jul 31"
+      },
+      "children": []
+    },
+    "btc-progress-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc-yes-label",
+        "btc-yes-progress",
+        "btc-yes-stats"
+      ]
+    },
+    "btc-yes-label": {
+      "type": "Text",
+      "props": {
+        "text": "YES"
+      },
+      "children": []
+    },
+    "btc-yes-progress": {
+      "type": "Progress",
+      "props": {
+        "value": 49.0,
+        "label": "49.0%"
+      },
+      "children": []
+    },
+    "btc-yes-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "btc-delta",
+        "btc-vol",
+        "btc-ratio"
+      ]
+    },
+    "btc-delta": {
+      "type": "Stat",
+      "props": {
+        "label": "change",
+        "value": "+0.15pp",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "btc-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h vol",
+        "value": "$3.6k"
+      },
+      "children": []
+    },
+    "btc-ratio": {
+      "type": "Stat",
+      "props": {
+        "label": "7d ratio",
+        "value": "0.74x (below avg)"
+      },
+      "children": []
+    },
+    "btc-notes1": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ~$97k needs 10x in 89d; near-coin-flip pricing implies GTA VI delay ambiguity",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "btc-notes2": {
+      "type": "Text",
+      "props": {
+        "text": "1wk: -0.55pp (drifting toward NO)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "dem-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dem-heading",
+        "dem-meta",
+        "dem-table",
+        "dem-notes"
+      ]
+    },
+    "dem-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 Democratic Nominee",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "dem-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "dem-event",
+        "dem-liq",
+        "dem-vol"
+      ]
+    },
+    "dem-event": {
+      "type": "Badge",
+      "props": {
+        "text": "event 30829"
+      },
+      "children": []
+    },
+    "dem-liq": {
+      "type": "Badge",
+      "props": {
+        "text": "$53.3M liq"
+      },
+      "children": []
+    },
+    "dem-vol": {
+      "type": "Badge",
+      "props": {
+        "text": "$1.66M 24h vol"
+      },
+      "children": []
+    },
+    "dem-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "Odds",
+          "Change",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "ossoff YES",
+            "6.5%",
+            "-0.05pp",
+            ""
+          ],
+          [
+            "buttigieg YES",
+            "4.1%",
+            "flat",
+            ""
+          ],
+          [
+            "kelly YES",
+            "2.6%",
+            "flat",
+            "Time100 link drove 7-rxn thread 4/16"
+          ],
+          [
+            "beshear YES",
+            "2.7%",
+            "flat",
+            ""
+          ]
+        ]
+      },
+      "children": []
+    },
+    "dem-notes": {
+      "type": "Text",
+      "props": {
+        "text": "field fully fragmented — no frontrunner",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "rep-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rep-heading",
+        "rep-meta",
+        "rep-table"
+      ]
+    },
+    "rep-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 Republican Nominee",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "rep-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "rep-event",
+        "rep-liq",
+        "rep-vol"
+      ]
+    },
+    "rep-event": {
+      "type": "Badge",
+      "props": {
+        "text": "event 31875"
+      },
+      "children": []
+    },
+    "rep-liq": {
+      "type": "Badge",
+      "props": {
+        "text": "$23.2M liq"
+      },
+      "children": []
+    },
+    "rep-vol": {
+      "type": "Badge",
+      "props": {
+        "text": "$1.47M 24h vol"
+      },
+      "children": []
+    },
+    "rep-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "Odds",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "vance YES",
+            "39.2%",
+            "frontrunner, 37pp gap to field"
+          ],
+          [
+            "desantis YES",
+            "2.4%",
+            ""
+          ],
+          [
+            "rand paul YES",
+            "1.2%",
+            ""
+          ],
+          [
+            "gaetz YES",
+            "0.75%",
+            ""
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "pres-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pres-heading",
+        "pres-meta",
+        "pres-table"
+      ]
+    },
+    "pres-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 Presidential Winner",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "pres-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pres-event",
+        "pres-liq"
+      ]
+    },
+    "pres-event": {
+      "type": "Badge",
+      "props": {
+        "text": "event 31552"
+      },
+      "children": []
+    },
+    "pres-liq": {
+      "type": "Badge",
+      "props": {
+        "text": "$25.9M liq"
+      },
+      "children": []
+    },
+    "pres-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Outcome",
+          "Odds",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "eric trump YES",
+            "0.65%",
+            "only named slot; 127 still Person XX"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "alerts-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts-heading",
+        "alerts-content"
+      ]
+    },
+    "alerts-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "alerts-content": {
+      "type": "Alert",
+      "props": {
+        "message": "none — no >5pp move; no vol spike >3x 7d avg",
+        "type": "info"
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "comments-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "comments-heading",
+        "comment1",
+        "comment2",
+        "comment3"
+      ]
+    },
+    "comments-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Comments",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "comment1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comment1-source",
+        "comment1-text"
+      ]
+    },
+    "comment1-source": {
+      "type": "Badge",
+      "props": {
+        "text": "2028 winner"
+      },
+      "children": []
+    },
+    "comment1-text": {
+      "type": "Text",
+      "props": {
+        "text": "\"I don't know who will win, but I know it won't be JD Vance\" · 21 reactions",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "comment2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comment2-source",
+        "comment2-text"
+      ]
+    },
+    "comment2-source": {
+      "type": "Badge",
+      "props": {
+        "text": "2028 dem"
+      },
+      "children": []
+    },
+    "comment2-text": {
+      "type": "Text",
+      "props": {
+        "text": "\"Dollars on sale for 28c. Newsom wins.\" · 9 reactions; Gavin thread today",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "comment3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comment3-source",
+        "comment3-text"
+      ]
+    },
+    "comment3-source": {
+      "type": "Badge",
+      "props": {
+        "text": "FIFA"
+      },
+      "children": []
+    },
+    "comment3-text": {
+      "type": "Text",
+      "props": {
+        "text": "\"England in top 3 is hilarious\" · 8 reactions",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
