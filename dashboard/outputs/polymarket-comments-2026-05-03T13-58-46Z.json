@@ -1,0 +1,444 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments",
+        "description": "2026-05-03 | politics+crypto info-asymmetry"
+      },
+      "children": [
+        "market1",
+        "sep1",
+        "market2",
+        "sep2",
+        "market3",
+        "sep3",
+        "market4",
+        "sep4",
+        "market5",
+        "sep5",
+        "crypto"
+      ]
+    },
+    "market1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1_title",
+        "m1_comments"
+      ]
+    },
+    "m1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran closes its airspace by May 8? — YES 13.5% ($311k v24) — T-5",
+        "level": "h3"
+      }
+    },
+    "m1_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1_c1",
+        "m1_c2",
+        "m1_c3",
+        "m1_pattern",
+        "m1_c4",
+        "m1_c5"
+      ]
+    },
+    "m1_c1": {
+      "type": "Text",
+      "props": {
+        "text": "Moses1 (13x) + taerv534 (6x, MEMORY V2-cutover handle reconfirmed): \"Polymarket is cooked, quietly completing the jump to being just another sportsbook.\"",
+        "variant": "body"
+      }
+    },
+    "m1_c2": {
+      "type": "Text",
+      "props": {
+        "text": "compute (7x): \"WHERE IS THE REGULAR STRIKE MARKET AND WHERES THE NUKE MARKET???\"",
+        "variant": "body"
+      }
+    },
+    "m1_c3": {
+      "type": "Text",
+      "props": {
+        "text": "zer0xfourd: \"guarantee it's a US-government cease-and-desist on markets that leak war plans.\"",
+        "variant": "body"
+      }
+    },
+    "m1_pattern": {
+      "type": "Alert",
+      "props": {
+        "title": "NEW META-PATTERN",
+        "message": "Polymarket meta-censoring war-strike markets; airspace mkt is the only venue for the strike narrative now, displaced flow invisible to CalibrationGap quant scanner.",
+        "type": "warning"
+      }
+    },
+    "m1_c4": {
+      "type": "Text",
+      "props": {
+        "text": "SuckMyDicck (NEW, 2x): \"Trump said it's possible US will strike IRAN AGAIN very soon, 14% is underrated.\"",
+        "variant": "body"
+      }
+    },
+    "m1_c5": {
+      "type": "Text",
+      "props": {
+        "text": "SakuraDevil: \"no war before Trump's visit to China.\"",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2_title",
+        "m2_comments"
+      ]
+    },
+    "m2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Trump announces US blockade of Hormuz lifted by May 31? — YES 28.5% ($180k v24)",
+        "level": "h3"
+      }
+    },
+    "m2_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_c1",
+        "m2_c2",
+        "m2_c3"
+      ]
+    },
+    "m2_c1": {
+      "type": "Text",
+      "props": {
+        "text": "Castwolffox (7x): \"Ending the blockade gives Iran SOH control — Marco Rubio said himself it's a red line.\"",
+        "variant": "body"
+      }
+    },
+    "m2_c2": {
+      "type": "Text",
+      "props": {
+        "text": "saneperson (NEW INSIDER-TAPE): \"Iran passed 50+ tankers through Iranian side yesterday + reports Pakistan opening road corridor — Trump will have to open the blockade to make it look like the embargo is the cause.\"",
+        "variant": "body"
+      }
+    },
+    "m2_c3": {
+      "type": "Text",
+      "props": {
+        "text": "compute (7x, 05-02 fresh): Trump on US blockade — \"It's a very profitable business. We're sort of like pirates.\" Direct quote alpha — frames blockade as revenue not strategy = YES-friendly catalyst.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3_title",
+        "m3_resolution",
+        "m3_comments"
+      ]
+    },
+    "m3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Ruben Rocha out as Governor of Sinaloa by May 31? — YES 18% ($238k v24)",
+        "level": "h3"
+      }
+    },
+    "m3_resolution": {
+      "type": "Badge",
+      "props": {
+        "text": "UMA RESOLUTION DEBATE LIVE",
+        "variant": "destructive"
+      }
+    },
+    "m3_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_c1",
+        "m3_c2",
+        "m3_c3",
+        "m3_c4",
+        "m3_c5",
+        "m3_c6",
+        "m3_note"
+      ]
+    },
+    "m3_c1": {
+      "type": "Text",
+      "props": {
+        "text": "Encimado (5x today): \"Rules state 'ceases to be Governor for any period of time.' Sinaloa Congress approved his licencia, interim governor sworn in → objectively YES.\"",
+        "variant": "body"
+      }
+    },
+    "m3_c2": {
+      "type": "Text",
+      "props": {
+        "text": "Helldiver15 (3x): cites Constitución Federal Art. 116 — licencia ≠ removal.",
+        "variant": "body"
+      }
+    },
+    "m3_c3": {
+      "type": "Text",
+      "props": {
+        "text": "SpilledWater (3x): \"by Mexican law he's still the governor, just took some vacations.\"",
+        "variant": "body"
+      }
+    },
+    "m3_c4": {
+      "type": "Text",
+      "props": {
+        "text": "0x084321 (3x): \"licencia ≠ resignation/removal — must resolve NO.\"",
+        "variant": "body"
+      }
+    },
+    "m3_c5": {
+      "type": "Text",
+      "props": {
+        "text": "0xBE5f88249721 (3x): cites SCJN Min. Arturo Zaldivar via X — \"Quien obtiene una licencia ya no ejerce la función\" = absolute YES.",
+        "variant": "body"
+      }
+    },
+    "m3_c6": {
+      "type": "Text",
+      "props": {
+        "text": "EmeraldEdge (3x): \"took profits, thesis stands; Sheinbaum might force resignation in coming days.\"",
+        "variant": "body"
+      }
+    },
+    "m3_note": {
+      "type": "Alert",
+      "props": {
+        "message": "UMA-resolution-arb sister to Iran-cf/Hez-cf — same clause-vs-fact pattern. Track Encimado + Helldiver15 + EmeraldEdge as Mexico-narco rules-lawyer handles.",
+        "type": "info"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4_title",
+        "m4_comments"
+      ]
+    },
+    "m4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "US x Iran permanent peace deal by May 31? — YES 18.5% ($338k v24, was 22.5% yest)",
+        "level": "h3"
+      }
+    },
+    "m4_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4_c1",
+        "m4_c2",
+        "m4_c3",
+        "m4_c4"
+      ]
+    },
+    "m4_c1": {
+      "type": "Text",
+      "props": {
+        "text": "compute (05-03 LIVE): Trump Truth Social — \"Iran has not yet paid a big enough price for what they've done to humanity. I will soon be reviewing the plan they sent us, but can't imagine it would be acceptable…\" Bearish; prices already moved -4pp.",
+        "variant": "body"
+      }
+    },
+    "m4_c2": {
+      "type": "Text",
+      "props": {
+        "text": "compute also drops Fars News (Iran semi-official): \"Iran through Pakistani mediator submitted response focusing on permanent end to war + guarantees of no new aggression.\" Pakistani-mediator citation chain extends MEMORY's Quarrelsome-Service Apr 28 thread.",
+        "variant": "body"
+      }
+    },
+    "m4_c3": {
+      "type": "Text",
+      "props": {
+        "text": "abdoohl (21x, 05-02): \"GIVE US MF STRIKE MARKETS!!!\" — same meta-censorship signal from market #1 echoing here.",
+        "variant": "body"
+      }
+    },
+    "m4_c4": {
+      "type": "Text",
+      "props": {
+        "text": "ItsCrashBandicoot (15x, MEMORY): NYT 60-day clock memo.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5_title",
+        "m5_comments"
+      ]
+    },
+    "m5_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu — TVK win most seats? — YES 7.75% ($141k v24) — T-1",
+        "level": "h3"
+      }
+    },
+    "m5_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5_c1",
+        "m5_c2",
+        "m5_c3",
+        "m5_note"
+      ]
+    },
+    "m5_c1": {
+      "type": "Text",
+      "props": {
+        "text": "Thin thread today vs 05-02 Starchy-Outset pollster-aggregator stack. orangexyz (11x today, NEW): \"Thank you Vijay Anna for making me 80k tomorrow\" — TVK YES whale flagging position pre-resolution.",
+        "variant": "body"
+      }
+    },
+    "m5_c2": {
+      "type": "Text",
+      "props": {
+        "text": "Kii0nX carryover (MEMORY): \"DMK is the only +EV bet ngl\" pinned from 04-29.",
+        "variant": "body"
+      }
+    },
+    "m5_c3": {
+      "type": "Text",
+      "props": {
+        "text": "Crafty-Kiss silent for 2nd day post-flip.",
+        "variant": "body"
+      }
+    },
+    "m5_note": {
+      "type": "Alert",
+      "props": {
+        "title": "Comment-thread degradation T-1",
+        "message": "retail hype replacing pollster-stack signal. May-4 resolution-morning re-run still warranted but expect noise dominance.",
+        "type": "warning"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crypto_title",
+        "crypto_text"
+      ]
+    },
+    "crypto_title": {
+      "type": "Heading",
+      "props": {
+        "text": "CRYPTO VERTICAL",
+        "level": "h3"
+      }
+    },
+    "crypto_text": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "crypto_c1",
+        "crypto_c2",
+        "crypto_c3"
+      ]
+    },
+    "crypto_c1": {
+      "type": "Text",
+      "props": {
+        "text": "BTC-150k-parent ($5.82M v24) and BTC-Up-or-Down-May-3 ($106k v24) both dead-comments today.",
+        "variant": "body"
+      }
+    },
+    "crypto_c2": {
+      "type": "Text",
+      "props": {
+        "text": "Birthday spam + Cambodia phone-number scam dominate.",
+        "variant": "body"
+      }
+    },
+    "crypto_c3": {
+      "type": "Alert",
+      "props": {
+        "message": "Confirms 05-02 finding: top-volume PM crypto = quant-only, zero comment-side info-asymmetry. Substituted with US-Iran peace deal #4.",
+        "type": "info"
+      }
+    }
+  }
+}

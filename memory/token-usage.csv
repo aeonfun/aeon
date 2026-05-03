@@ -80,4 +80,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,daily-routine,claude-opus-4-7,96,35047,6270486,145655
 2026-05-03,github-trending,claude-opus-4-7,1432,36612,2217727,144884
 2026-05-03,monitor-runners,claude-opus-4-7,50,25669,2339840,102525
-2026-05-03,monitor-kalshi,claude-sonnet-4-6,403,23954,1042225,56827
+2026-05-03,polymarket-comments,claude-opus-4-7,9999,33926,2594567,89611

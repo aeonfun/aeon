@@ -1,36 +1,24 @@
-polymarket comments — 2026-05-02 (politics+crypto narrative-shift)
+polymarket comments — 2026-05-03 (var=politics+crypto info-asymmetry)
 
-1. Tamil Nadu CM (T-2) — TVK 7.75 / DMK 86.5 / ADMK 6.35, $0.24M v24
-- Starchy-Outset (NEW, 2x): 5-pollster stack — P-Marq DMK 125-145 / Today's Chanakya 145-160 / People's Pulse 125-145 / Matrize 122-132 / Political Lab 135-140; TVK 10-26 across all 5.
-- Digital-Archaeologist (1x): vote-split math — TVK 40% ADMK + 25% DMK + 50% DMK-alliance = single-largest. Quantified contra to 8/9-poll DMK consensus.
-- TVK +80bp 24h (6.95→7.75, oneDayPriceChange +0.4) reverses 04-30→05-01 cooling. Crafty-Kiss silent post-05-01 DMK flip.
+1. "Iran closes its airspace by May 8?" — YES 13.5% ($311k v24) — T-5
+- Moses1 (13x) + taerv534 (6x, MEMORY V2-cutover handle reconfirmed): "Polymarket is cooked, quietly completing the jump to being just another sportsbook." compute (7x): "WHERE IS THE REGULAR STRIKE MARKET AND WHERES THE NUKE MARKET???" zer0xfourd: "guarantee it's a US-government cease-and-desist on markets that leak war plans." NEW META-PATTERN — Polymarket meta-censoring war-strike markets; airspace mkt is the only venue for the strike narrative now, displaced flow invisible to CalibrationGap quant scanner.
+- SuckMyDicck (NEW, 2x): "Trump said it's possible US will strike IRAN AGAIN very soon, 14% is underrated." SakuraDevil: "no war before Trump's visit to China."
 
-2. Powell out as Fed Chair by May 14 — YES 1.35%, $0.34M v24
-- Impressionable-Havoc (NEW, 3x, 00:01Z): "Term legally ends May 15 midnight ET. Only May-15 YES path is Walsh sworn in May 15 before Powell's legal term-end — unlikely." Clean clause analysis.
-- Sardonic-Floozie (NEW, 2x): announce-by-May-14 mkt and actual-step-down mkt priced identically → direct cross-market mispricing flag.
-- Precious-Willingness (NEW, 4x): Powell quote "After my term as chair ends on May 15, I'll continue as a governor." NOT May 14.
-- Petty-Bran (MegaETH 05-01 loser carryover): flagging UMA-whale coordination on clav-pregnancy market. Retail-vs-whale narrative now 3+ markets.
+2. "Trump announces US blockade of Hormuz lifted by May 31?" — YES 28.5% ($180k v24)
+- Castwolffox (7x): "Ending the blockade gives Iran SOH control — Marco Rubio said himself it's a red line." saneperson (NEW INSIDER-TAPE): "Iran passed 50+ tankers through Iranian side yesterday + reports Pakistan opening road corridor — Trump will have to open the blockade to make it look like the embargo is the cause."
+- compute (7x, 05-02 fresh): Trump on US blockade — "It's a very profitable business. We're sort of like pirates." Direct quote alpha — frames blockade as revenue not strategy = YES-friendly catalyst.
 
-3. US x Iran permanent peace deal by May 31 — YES 22.5%, $0.68M v24
-- Likable-Mule (NEW, 1x, 05-01 21:39Z): "if Trump doesn't go crazy and bomb this weekend, deal odds are higher" — weekend-window catalyst.
-- Fortunate-Extension (NEW): rt.com/news/639349-trump-iran-conflict-terminated — RT YES-support framing; adversarial citation.
-- Valid-Bonding (15x): NYT 60-day-negotiation memo cite — clock expired late April.
-- "Thank you got $3400" cluster is coordinated promo/scam, dropped.
+3. "Ruben Rocha out as Governor of Sinaloa by May 31?" — YES 18% ($238k v24) — UMA RESOLUTION DEBATE LIVE
+- Encimado (5x today): "Rules state 'ceases to be Governor for any period of time.' Sinaloa Congress approved his licencia, interim governor sworn in → objectively YES." Helldiver15 (3x): cites Constitución Federal Art. 116 — licencia ≠ removal. SpilledWater (3x): "by Mexican law he's still the governor, just took some vacations." 0x084321 (3x): "licencia ≠ resignation/removal — must resolve NO."
+- 0xBE5f88249721 (3x): cites SCJN Min. Arturo Zaldivar via X — "Quien obtiene una licencia ya no ejerce la función" = absolute YES. EmeraldEdge (3x): "took profits, thesis stands; Sheinbaum might force resignation in coming days." UMA-resolution-arb sister to Iran-cf/Hez-cf — same clause-vs-fact pattern. Track Encimado + Helldiver15 + EmeraldEdge as Mexico-narco rules-lawyer handles.
 
-4. US obtains Iranian enriched uranium by May 31 — YES 8.5%, $0.43M v24
-- Somber-Interviewer (NEW, 6x): "Trump can just bluff he took uranium and this resolves YES" — UMA-bluff arb thesis.
-- Grown-Songbird (NEW, 6x): "if they say but don't prove, the claim is categorically false" — counter rules-lawyer.
-- Powerful-Election: multi-branch dispute path → consensus-of-credible-reporting clause.
-- Querulous-Hurt (NEW, 2x): cross-market — "another good market is Israel Hez ceasefire ext, buy NO at 75% and watch Car fail to scam another market" — explicit Robin-HooDenizzCar callout, MEMORY Hez-cf hostile-oracle thread still live.
+4. "US x Iran permanent peace deal by May 31?" — YES 18.5% ($338k v24, was 22.5% yest)
+- compute (05-03 LIVE): Trump Truth Social — "Iran has not yet paid a big enough price for what they've done to humanity. I will soon be reviewing the plan they sent us, but can't imagine it would be acceptable…" Bearish; prices already moved -4pp.
+- compute also drops Fars News (Iran semi-official): "Iran through Pakistani mediator submitted response focusing on permanent end to war + guarantees of no new aggression." Pakistani-mediator citation chain extends MEMORY's Quarrelsome-Service Apr 28 thread.
+- abdoohl (21x, 05-02): "GIVE US MF STRIKE MARKETS!!!" — same meta-censorship signal from market #1 echoing here. ItsCrashBandicoot (15x, MEMORY): NYT 60-day clock memo.
 
-5. BTC $150k by June 30 — YES 1.35%, $5.82M v24 (#1 non-sport by volume)
-- Anomaly: $5.8M v24, dead comments. Last signal Mundane-Wasting 04-24 rainbow chart. Recent thread is bday-spam (Abandoned-Tadpole — same scam handle on Iran-diplomatic-May5 + Iran-peace-deal) + phone-drops (drop).
-- Read: pure expiry/positioning flow, no narrative. NO 98.65% on BTC $76k→150k Jun30 is dead. CalibrationGap signal: high v24 + dead comments = quant-only, no info-asymmetry edge.
+5. "Tamil Nadu — TVK win most seats?" — YES 7.75% ($141k v24) — T-1
+- Thin thread today vs 05-02 Starchy-Outset pollster-aggregator stack. orangexyz (11x today, NEW): "Thank you Vijay Anna for making me 80k tomorrow" — TVK YES whale flagging position pre-resolution. Kii0nX carryover (MEMORY): "DMK is the only +EV bet ngl" pinned from 04-29. Crafty-Kiss silent for 2nd day post-flip. **Comment-thread degradation T-1**: retail hype replacing pollster-stack signal. May-4 resolution-morning re-run still warranted but expect noise dominance.
 
-NEW handles: Starchy-Outset (TN poll aggregator), Impressionable-Havoc (Powell clause counsel), Sardonic-Floozie (parallel-mkt mispricing flagger), Precious-Willingness (Powell quote handle), Likable-Mule (Iran weekend-window), Somber-Interviewer (oracle-bluff arb), Grown-Songbird/Powerful-Election (counter rules-lawyers), Querulous-Hurt (Hez-cf Car-callout).
-
-Actionable:
-1. Powell-May-14 at 1.35% — clause arb (term ends May 15 midnight ET); quant scanner sees price not clause text.
-2. Iran-uranium 8.5% — UMA-bluff thesis vs counter-clause extends Iran-cf/Hez-cf arb pattern; Car-callout reconfirms hostile-oracle thread live.
-3. TN T-2 TVK +80bp rebound — 5-poll stack vs vote-split math; re-run T-1 (May 3).
+CRYPTO VERTICAL: BTC-150k-parent ($5.82M v24) and BTC-Up-or-Down-May-3 ($106k v24) both dead-comments today. Birthday spam + Cambodia phone-number scam dominate. Confirms 05-02 finding: top-volume PM crypto = quant-only, zero comment-side info-asymmetry. Substituted with US-Iran peace deal #4.
 
