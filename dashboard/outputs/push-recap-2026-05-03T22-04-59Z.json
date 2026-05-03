@@ -1,0 +1,282 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-03",
+        "description": "3 repos — SHIPPING: Aeon-tick adapter, lore brand-voice + bundle cut, 3 new aeon skills"
+      },
+      "children": [
+        "shipped_section",
+        "sep1",
+        "underthehood_section",
+        "sep2",
+        "shape_section",
+        "volume_section",
+        "sep3",
+        "recap_link"
+      ]
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_label",
+        "shipped_stack"
+      ]
+    },
+    "shipped_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shipped_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shipped_item_1",
+        "shipped_item_2",
+        "shipped_item_3"
+      ]
+    },
+    "shipped_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp dc1846e — Aeon-Narrative ingestion adapter ships (ADR-093, +180 LOC python/execution/aeon_adapter.py); polls tomscaria/aeon raw API every 15 min, emits MarketTicks with kind=aeon_signal",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "shipped_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp 1125deb — runner-swarm fleet 74→112 agents (+30 LH-sampled aeon-narrative variants = 79% of net-new capacity)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "shipped_item_3": {
+      "type": "Text",
+      "props": {
+        "text": "lore-financial-teaser 9b53f11 — main bundle 766 kB → 663 kB (gzip 226→202 kB) via lazy-load of 6 below-fold sections",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "underthehood_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "uth_label",
+        "uth_stack"
+      ]
+    },
+    "uth_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "uth_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "uth_item_1",
+        "uth_item_2",
+        "uth_item_3"
+      ]
+    },
+    "uth_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp d010846 — ADR-094 LLM router; paper_triage default opus-4-7 → sonnet-4-6 (~$70/run save); /router_suggestions Telegram cmd; 28 new tests",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "uth_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "aeon PR #150 — dashboard/secrets shell-injection closed via execFileSync (ISS-016 pre-empt, 4 days ahead of trigger)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "uth_item_3": {
+      "type": "Text",
+      "props": {
+        "text": "lore brand-voice — em-dashes banned site-wide; 13-file enforcement + 6 dead components removed + @tanstack/react-query uninstalled",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "shape_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shape_label",
+        "shape_metrics"
+      ]
+    },
+    "shape_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "shape_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_user_visible",
+        "stat_internal",
+        "stat_infra",
+        "stat_bot_filtered",
+        "stat_merged_prs"
+      ]
+    },
+    "stat_user_visible": {
+      "type": "Stat",
+      "props": {
+        "label": "User-visible",
+        "value": "14"
+      },
+      "children": []
+    },
+    "stat_internal": {
+      "type": "Stat",
+      "props": {
+        "label": "Internal",
+        "value": "19"
+      },
+      "children": []
+    },
+    "stat_infra": {
+      "type": "Stat",
+      "props": {
+        "label": "Infra",
+        "value": "0"
+      },
+      "children": []
+    },
+    "stat_bot_filtered": {
+      "type": "Stat",
+      "props": {
+        "label": "Bot-filtered",
+        "value": "88"
+      },
+      "children": []
+    },
+    "stat_merged_prs": {
+      "type": "Stat",
+      "props": {
+        "label": "Merged PRs",
+        "value": "8"
+      },
+      "children": []
+    },
+    "volume_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "volume_label",
+        "volume_metrics"
+      ]
+    },
+    "volume_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "volume_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_net_additions",
+        "stat_authors"
+      ]
+    },
+    "stat_net_additions": {
+      "type": "Stat",
+      "props": {
+        "label": "Net additions",
+        "value": "~28,500 lines"
+      },
+      "children": []
+    },
+    "stat_authors": {
+      "type": "Stat",
+      "props": {
+        "label": "Authors",
+        "value": "3"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-03.md",
+        "source": "aeon"
+      },
+      "children": []
+    }
+  }
+}
