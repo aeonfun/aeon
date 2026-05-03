@@ -1,0 +1,94 @@
+{
+  "root": "card_releases",
+  "state": {},
+  "elements": {
+    "card_releases": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases",
+        "description": "2026-05-03 · 3 updates · 🔴 0 asap · 🟡 0 soon · 🔵 2 fyi · ⚪ 1 skipped"
+      },
+      "children": [
+        "section_fyi",
+        "separator_1",
+        "section_skipped",
+        "separator_2",
+        "text_sources"
+      ]
+    },
+    "section_fyi": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_fyi",
+        "story_b9010",
+        "story_b9009"
+      ]
+    },
+    "heading_fyi": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI (2)",
+        "level": "h3"
+      }
+    },
+    "story_b9010": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9010",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9010",
+        "source": "Fixes CUDA PCI bus ID dedup bug causing OOM on multi-GPU rigs"
+      }
+    },
+    "story_b9009": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9009",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9009",
+        "source": "Ships routine binary build; body documents only multi-platform builds"
+      }
+    },
+    "separator_1": {
+      "type": "Separator"
+    },
+    "section_skipped": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_skipped",
+        "story_v16"
+      ]
+    },
+    "heading_skipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Skipped (1)",
+        "level": "h3"
+      }
+    },
+    "story_v16": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.9",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.9",
+        "source": "Drops once_cell deps; swaps Lazy<FxHashMap> statics to phf::Map"
+      }
+    },
+    "separator_2": {
+      "type": "Separator"
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
