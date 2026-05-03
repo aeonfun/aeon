@@ -1,0 +1,400 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-03"
+      },
+      "children": [
+        "shape",
+        "sep1",
+        "action1",
+        "sep2",
+        "action2",
+        "sep3",
+        "action3",
+        "sep4",
+        "action4",
+        "sep5",
+        "action5",
+        "sep6",
+        "sources"
+      ]
+    },
+    "shape": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Schedule TN-T0 comments, trim Hormuz NO, lock secrets fix, tighten Hermes gate, promote PM handles.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1-heading",
+        "a1-desc",
+        "a1-why-h",
+        "a1-why-t",
+        "a1-done-h",
+        "a1-done-t",
+        "a1-loop"
+      ]
+    },
+    "a1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Schedule polymarket-comments + reply-maker workflow_dispatch",
+        "level": "h3"
+      }
+    },
+    "a1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Schedule polymarket-comments + reply-maker workflow_dispatch for ~04:00 UTC 2026-05-04 (Tamil Nadu T-0 resolution morning), var=tamil-nadu — collect resolution-debate handles, not pre-resolution signal."
+      }
+    },
+    "a1-why-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Why",
+        "level": "h4"
+      }
+    },
+    "a1-why-t": {
+      "type": "Text",
+      "props": {
+        "text": "T-1 thread already noisy (orangexyz 80k whale flag, scams scaling); T-0 morning is the only window to capture Encimado/Helldiver15 archetype before close."
+      }
+    },
+    "a1-done-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h4"
+      }
+    },
+    "a1-done-t": {
+      "type": "Text",
+      "props": {
+        "text": "workflow_dispatch fired or aeon.yml one-time entry merged with cron `0 4 4 5 *`."
+      }
+    },
+    "a1-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: tn-resolution-morning-rerun"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2-heading",
+        "a2-desc",
+        "a2-why-h",
+        "a2-why-t",
+        "a2-done-h",
+        "a2-done-t",
+        "a2-loop"
+      ]
+    },
+    "a2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Trim Hormuz-by-end-of-June NO position",
+        "level": "h3"
+      }
+    },
+    "a2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Trim Hormuz-by-end-of-June NO position from 54.5¢ exposure on saneperson + compute insider tape (50+ tankers passed Iranian side, Trump \"very profitable business — like pirates\" quote)."
+      }
+    },
+    "a2-why-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Why",
+        "level": "h4"
+      }
+    },
+    "a2-why-t": {
+      "type": "Text",
+      "props": {
+        "text": "tape contradicts CENTCOM-mine + naval-blockade thesis floor; 33pp edge tightens to 15-20pp under monetized-blockade frame; headline-risk binary up."
+      }
+    },
+    "a2-done-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h4"
+      }
+    },
+    "a2-done-t": {
+      "type": "Text",
+      "props": {
+        "text": "position decision logged in memory/topics/polymarket.md Hormuz row + size delta sent."
+      }
+    },
+    "a2-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: hormuz-no-reposition"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3-heading",
+        "a3-desc",
+        "a3-why-h",
+        "a3-why-t",
+        "a3-done-h",
+        "a3-done-t",
+        "a3-loop"
+      ]
+    },
+    "a3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Open PR on aaronjmars/aeon adding regression test",
+        "level": "h3"
+      }
+    },
+    "a3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Open PR on aaronjmars/aeon adding regression test for dashboard/app/api/secrets/route.ts POST + DELETE — assert value=`x\\`whoami\\`` is stored verbatim, not executed."
+      }
+    },
+    "a3-why-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Why",
+        "level": "h4"
+      }
+    },
+    "a3-why-t": {
+      "type": "Text",
+      "props": {
+        "text": "code-health top action — locks today's PR #150 shell-injection fix permanently; dashboard tree currently has zero tests."
+      }
+    },
+    "a3-done-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h4"
+      }
+    },
+    "a3-done-t": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened, branch `tomscaria:test/secrets-route-regression`, single test file under dashboard/__tests__/."
+      }
+    },
+    "a3-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: secrets-route-regression-test"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4-heading",
+        "a4-desc",
+        "a4-why-h",
+        "a4-why-t",
+        "a4-done-h",
+        "a4-done-t",
+        "a4-loop"
+      ]
+    },
+    "a4-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Tighten Hermes-arb min-gap",
+        "level": "h3"
+      }
+    },
+    "a4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Tighten Hermes-arb min-gap 7pp → 7.5–8pp in tomscaria/swarm-fund-mvp strategies/hermes_arb/program.md per deep-research finding."
+      }
+    },
+    "a4-why-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Why",
+        "level": "h4"
+      }
+    },
+    "a4-why-t": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-perps falsifier-window day-4 is live (KXBTC-26MAY0217-B78125 +8pp on loose 4pp book) — bias toward fewer false positives before scaling capital."
+      }
+    },
+    "a4-done-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h4"
+      }
+    },
+    "a4-done-t": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened on swarm-fund-mvp, gate constant updated, falsifier-window note in PR body."
+      }
+    },
+    "a4-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: hermes-arb-min-gap"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5-heading",
+        "a5-desc",
+        "a5-why-h",
+        "a5-why-t",
+        "a5-done-h",
+        "a5-done-t",
+        "a5-loop"
+      ]
+    },
+    "a5-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Promote 10 newly-surfaced PM comment handles",
+        "level": "h3"
+      }
+    },
+    "a5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Promote 10 newly-surfaced PM comment handles (Moses1, Encimado, Helldiver15, EmeraldEdge, saneperson, Castwolffox, zer0xfourd, abdoohl, SakuraDevil, orangexyz) into memory/topics/polymarket.md handles section with archetype tags."
+      }
+    },
+    "a5-why-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Why",
+        "level": "h4"
+      }
+    },
+    "a5-why-t": {
+      "type": "Text",
+      "props": {
+        "text": "comments-side edge thesis hardening; reusable retrieval substrate for next 30 days of polymarket-comments runs (compute already cross-market 3-thread)."
+      }
+    },
+    "a5-done-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Done",
+        "level": "h4"
+      }
+    },
+    "a5-done-t": {
+      "type": "Text",
+      "props": {
+        "text": "topics/polymarket.md gains \"## Comments-side handles (newly surfaced 05-03)\" with each handle + role."
+      }
+    },
+    "a5-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: polymarket-handles-promote"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "memory=99 logs=7 topics=8 prs=14 cron_failing=3 mode=OK",
+        "variant": "caption"
+      }
+    }
+  }
+}

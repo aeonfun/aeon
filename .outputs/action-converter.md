@@ -1,30 +1,30 @@
-*5 Actions — 2026-05-02*
-Shape: Configure Vercel bot-email, post Putin-truce tweet 4a, untrack lore .env, audit pyth feeds, demote ISS-017.
+*5 Actions — 2026-05-03*
+Shape: Schedule TN-T0 comments, trim Hormuz NO, lock secrets fix, tighten Hermes gate, promote PM handles.
 
-1. Configure `aeonframework` bot's git commit-email in the `tomscaria/swarm-fund-mvp` Vercel project Git settings — current bot email isn't verified, blocking 3 Vercel preview deploys × 4 PRs (#19/#20/#23/#24). Today's github-monitor flagged all four as ACT NOW with identical `setting-your-commit-email-address-in-git` failure URL.
-why: one config change unblocks 4 stalled PRs at once incl. #24 approve-ready since 05-01.
-done: `gh pr checks 24 --repo tomscaria/swarm-fund-mvp` shows Vercel SUCCESS on at least one check.
-loop: vercel-bot-email-block
+1. Schedule polymarket-comments + reply-maker workflow_dispatch for ~04:00 UTC 2026-05-04 (Tamil Nadu T-0 resolution morning), var=tamil-nadu — collect resolution-debate handles, not pre-resolution signal.
+why: T-1 thread already noisy (orangexyz 80k whale flag, scams scaling); T-0 morning is the only window to capture Encimado/Helldiver15 archetype before close.
+done: workflow_dispatch fired or aeon.yml one-time entry merged with cron `0 4 4 5 *`.
+loop: tn-resolution-morning-rerun
 
-2. Post draft 4a (Russia-Ukraine "the trade is the language" thesis, ties CalibrationGap 29/76%/+$415/Sharpe 0.31 to May-31 6% binary) to @rswarmai. Source: `articles/2026-05-02.md` + write-tweet output in `memory/logs/2026-05-02.md`.
-why: May-9 Putin Victory-Day truce window opens the resolution-debate spike 05-08 to 05-10; today is the freshest the catalyst gets.
-done: tweet URL `https://x.com/rswarmai/status/...` captured + appended to `memory/logs/2026-05-02.md`.
-loop: tweet-4a-russia-ukraine
+2. Trim Hormuz-by-end-of-June NO position from 54.5¢ exposure on saneperson + compute insider tape (50+ tankers passed Iranian side, Trump "very profitable business — like pirates" quote).
+why: tape contradicts CENTCOM-mine + naval-blockade thesis floor; 33pp edge tightens to 15-20pp under monetized-blockade frame; headline-risk binary up.
+done: position decision logged in memory/topics/polymarket.md Hormuz row + size delta sent.
+loop: hormuz-no-reposition
 
-3. Untrack `.env` in `tomscaria/lore-financial-teaser` — `git rm --cached .env`, rename to `.env.local`, verify `.gitignore` lines 15-19 cover both. Today's code-health flagged the file is committed in violation of its own gitignore; current values are publishable-anon but the next real secret leaks silently.
-why: pre-empt secret exposure on a fresh repo just brought into multi-repo coverage today.
-done: PR opened on `tomscaria/lore-financial-teaser` removing `.env` from index.
-loop: lore-env-untracked
+3. Open PR on aaronjmars/aeon adding regression test for dashboard/app/api/secrets/route.ts POST + DELETE — assert value=`x\`whoami\`` is stored verbatim, not executed.
+why: code-health top action — locks today's PR #150 shell-injection fix permanently; dashboard tree currently has zero tests.
+done: PR opened, branch `tomscaria:test/secrets-route-regression`, single test file under dashboard/__tests__/.
+loop: secrets-route-regression-test
 
-4. Audit two hardcoded feed-ID TODOs in swarm-fund-mvp: `pipeline/ingestion/pyth_ws.py:36` (XRP/USD) + `pipeline/ingestion/birdeye_rest.py:36-37` (bIB01, dSPY). Cross-check vs Pyth + Birdeye canonical IDs; commit a one-line fix or comment-out per pair.
-why: today's code-health calls these "gate CalibrationGap correctness" — wrong feed-ID = wrong price = corrupted Revenant signal.
-done: commit pushed to `tomscaria/swarm-fund-mvp` resolving the two TODO lines.
-loop: pyth-birdeye-feed-id-audit
+4. Tighten Hermes-arb min-gap 7pp → 7.5–8pp in tomscaria/swarm-fund-mvp strategies/hermes_arb/program.md per deep-research finding.
+why: Kalshi-perps falsifier-window day-4 is live (KXBTC-26MAY0217-B78125 +8pp on loose 4pp book) — bias toward fewer false positives before scaling capital.
+done: PR opened on swarm-fund-mvp, gate constant updated, falsifier-window note in PR body.
+loop: hermes-arb-min-gap
 
-5. Demote ISS-017 critical → high in `memory/issues/INDEX.md` + `memory/issues/ISS-017.md` frontmatter. Today's 07:00/07:30/08:00 morning chain dispatched batched at 08:08 UTC (~68 min late) and 14:00 heartbeat fired at 14:39 — pattern is delayed-batch dispatch, not silent skip.
-why: keeping it critical mis-signals the operator's external-watchdog priority; today's evidence is degraded-but-functioning scheduler.
-done: both files show `severity: high`; INDEX.md timestamp 2026-05-02.
-loop: iss-017-demote
+5. Promote 10 newly-surfaced PM comment handles (Moses1, Encimado, Helldiver15, EmeraldEdge, saneperson, Castwolffox, zer0xfourd, abdoohl, SakuraDevil, orangexyz) into memory/topics/polymarket.md handles section with archetype tags.
+why: comments-side edge thesis hardening; reusable retrieval substrate for next 30 days of polymarket-comments runs (compute already cross-market 3-thread).
+done: topics/polymarket.md gains "## Comments-side handles (newly surfaced 05-03)" with each handle + role.
+loop: polymarket-handles-promote
 
-sources: memory=92 lines logs=7 dates topics=8 .md files prs=12 open (aeon=6, swarm-fund-mvp=6, lore=0) cron_failing=3 (chain wrappers, same root cause) mode=OK
+sources: memory=99 logs=7 topics=8 prs=14 cron_failing=3 mode=OK
 
