@@ -1,0 +1,143 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "status-row",
+        "alert-status",
+        "section-details"
+      ]
+    },
+    "status-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-status",
+        "text-streak"
+      ]
+    },
+    "badge-status": {
+      "type": "Badge",
+      "props": {
+        "text": "EMPTY/DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "text-streak": {
+      "type": "Text",
+      "props": {
+        "text": "Day 8 · Eighth consecutive EMPTY/DEGRADED",
+        "variant": "caption"
+      }
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "ISS-014",
+        "message": "XAI prefetch case missing and cached data stale"
+      }
+    },
+    "section-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "subsection-causes",
+        "subsection-fix"
+      ]
+    },
+    "subsection-causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-causes",
+        "cause-items"
+      ]
+    },
+    "heading-causes": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h3"
+      }
+    },
+    "cause-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause-1",
+        "cause-2",
+        "cause-3"
+      ]
+    },
+    "cause-1": {
+      "type": "Text",
+      "props": {
+        "text": "XAI prefetch case still missing for reply-maker (sandbox blocks env-var curl)"
+      }
+    },
+    "cause-2": {
+      "type": "Text",
+      "props": {
+        "text": "Memory-cached x.com URLs all >24h old (05-01/02 fetch-tweets cluster)"
+      }
+    },
+    "cause-3": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch returns topical articles but zero in-window x.com URLs with verifiable engagement"
+      }
+    },
+    "subsection-fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-fix",
+        "text-fix"
+      ]
+    },
+    "heading-fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Operator Fix",
+        "level": "h3"
+      }
+    },
+    "text-fix": {
+      "type": "Text",
+      "props": {
+        "text": "~6-line reply-maker case in scripts/prefetch-xai.sh"
+      }
+    }
+  }
+}
