@@ -1,0 +1,100 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick",
+        "description": "2026-05-03 (PhD-prep slot)"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink-paper",
+        "text-authors",
+        "separator-1",
+        "text-specs",
+        "text-analysis",
+        "text-connection",
+        "separator-2",
+        "stack-links"
+      ]
+    },
+    "storylink-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TradeFM: A Generative Foundation Model for Trade-flow and Market Microstructure",
+        "href": "https://arxiv.org/abs/2602.23784",
+        "source": "JPMorgan AI Research",
+        "score": "↑2 · Feb 2026"
+      }
+    },
+    "text-authors": {
+      "type": "Text",
+      "props": {
+        "text": "Kawawa-Beaudan / Sood / Papasotiriou / Borrajo / Veloso",
+        "variant": "muted"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text-specs": {
+      "type": "Text",
+      "props": {
+        "text": "524M-param Transformer trained on billions of order-flow events across >9K equities. Scale-invariant tokenization eliminates asset-specific calibration — the architectural primitive CalibrationGap is missing for cross-market PM ingestion. Zero-shot to APAC."
+      }
+    },
+    "text-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "Veloso byline = Stanford-tier citation. 2-3x lower distributional error than Compound Hawkes."
+      }
+    },
+    "text-connection": {
+      "type": "Text",
+      "props": {
+        "text": "Pairs with operator's \"ingest resolution text not titles\" thesis as the microstructure-side complement."
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack-links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link-read",
+        "link-pdf"
+      ]
+    },
+    "link-read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2602.23784"
+      }
+    },
+    "link-pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2602.23784"
+      }
+    }
+  }
+}

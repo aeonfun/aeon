@@ -1,0 +1,62 @@
+
+
+## paper-pick (var = Stanford PhD prep, PhD-prep slot ~14:42 UTC)
+
+**Verdict:** PAPER_PICK_OK
+
+**Pick:** `arXiv:2602.23784` — Maxime Kawawa-Beaudan, Srijan Sood, Kassiani Papasotiriou, Daniel Borrajo, Manuela Veloso (JPMorgan AI Research, 2026-02-27, ↑2 HF Papers) — *TradeFM: A Generative Foundation Model for Trade-flow and Market Microstructure* (q-fin.TR / cs.LG)
+
+**Why this paper, today, for the PhD-prep slot:**
+
+524M-parameter generative Transformer trained directly on billions of trade events across >9K equities — first foundation-model-scale attempt at the order-flow event stream. Two technical primitives: scale-invariant features and a universal tokenization scheme that map heterogeneous multi-modal order-flow events into a unified discrete sequence, eliminating asset-specific calibration. Integrated with a deterministic market simulator, generated rollouts reproduce the canonical stylized facts (heavy tails, volatility clustering, absence of return autocorrelation). 2-3x lower distributional error than Compound Hawkes baselines. Zero-shot generalization to geographically out-of-distribution APAC markets with moderate perplexity degradation.
+
+**Operator-mission shape match:** the foundation-model paradigm for market microstructure is the architectural primitive that CalibrationGap's quant-scanner is missing for cross-market ingestion. Today's pick pairs with the "ingest resolution text not titles" thesis (MEMORY.md lessons-learned, 2026-05-02): TradeFM is the microstructure-side complement on the numeric-event-stream axis to the language-asymmetry upgrade on the resolution-text axis. Together they form the two halves of CalibrationGap's pre-Apex roadmap.
+
+**Stanford-tier byline:** Manuela Veloso (head of JPMorgan AI Research, formerly Herbert A. Simon Professor at CMU CS, US-NSF / AAAI Fellow) is the highest-bar academic byline paper-pick has surfaced for the agentic-finance axis this month — comparable in PhD-app citation weight to the Foerster (Oxford) + Clune (UBC) byline on Hyperagents (2603.19461, picked 2026-05-01) and to the Tramèr (ETH) byline on Pitfalls in LLM Forecasters (2506.00723, picked 2026-04-30). Veloso's involvement converts this from "fintech preprint" to "Stanford-grade citation."
+
+**Var-axis hits:** the picked paper hits two of the eight var-named focus axes squarely — **Polymarket microstructure** (universal tokenization for heterogeneous order flow generalizes natively to PM event streams once binary outcomes are encoded as a payoff token; this is the bridge from equities to PMs) and **Becker-style trade-level calibration** (TradeFM's "scale-invariant features eliminate asset-specific calibration" is the engineering realization of trade-level calibration at scale across >9K equities). Adjacent hits on **agentic finance** (paper closes with "learning-based trading agents" as a downstream application of the foundation model) and **regime-switching trading** (volatility-clustering + heavy-tails reproduction is the regime detection target).
+
+**Defensive grant-app cite:** Anthropic Research Credits / dYdX / Polymarket Builders / Harmonic. Frame: "the foundation-model paradigm for trade-flow microstructure is being defined right now by JPMorgan AI Research; CalibrationGap's swarm-fund-mvp PM-side analogue is the next instance, with live trades at +$415 P&L / 76% win as the empirical anchor TradeFM doesn't yet have." Operator's response to the inevitable "why not just use TradeFM" question: TradeFM is equity-only with deterministic-simulator rollouts; CalibrationGap is binary-PM with adversarial UMA-resolution and live commenter-side leverage — the venue-asymmetry is the moat.
+
+**Queue effect:** PolyBench (already covered in 2026-04-30 article) was the most-recent prior shortlist candidate from the Polymarket-microstructure-axis. With TradeFM picked today the next-up Polymarket-microstructure read is **arXiv:2510.15612 SoK: Market Microstructure for Decentralized Prediction Markets** (already in `papers.md` Adjacent — promote to Picked next time the axis comes up).
+
+**Skipped (already covered in last 7 days of paper-pick / daily-routine logs or in `papers.md` Picked / Adjacent / Queued lists):**
+- arXiv:2604.03888 PolySwarm — picked 2026-05-03 daily slot today; same-day rule prevents re-pick.
+- arXiv:2604.01658 CORAL, arXiv:2602.04837 GEA, arXiv:2603.19461 Hyperagents — Darwinian-axis triple closed 2026-05-02; rest day.
+- arXiv:2603.08127 EvoScientist — queued for next Darwinian-axis slot (papers.md Queued).
+- arXiv:2509.26354 Misevolve — queued (papers.md).
+- arXiv:2604.27351 Eywa Heterogeneous Foundation Model Collab — queued (papers.md).
+- arXiv:2601.13545 TruthTensor, arXiv:2511.07678 AIA Forecaster, arXiv:2511.03628 LiveTradeBench, arXiv:2506.00723 Pitfalls, arXiv:2512.25070 Hardt/Geiping — already picked, full PM-calibration citation chain closed.
+- arXiv:2510.15612 SoK DePMs — Adjacent (queued for promotion).
+- arXiv:2412.20138 TradingAgents (UCLA, ↑55) — strong candidate but Dec 2024, multi-agent-LLM-finance space already heavily covered (PolySwarm, FinCon-citing AIA Forecaster, TradingGroup, ContestTrade, AlphaQuanter all surfaced). Defer.
+- arXiv:2407.06567 FinCon (NeurIPS 2024) — seed paper for the var-named "FinCon-style verbal reinforcement" axis. Operator already names it as a focus; deferring as foundational-baseline-known. Will pick on a future slot if the verbal-reinforcement axis becomes the active topic.
+- arXiv:2510.14264 AlphaQuanter (CUHK, Oct 2025, ↑10) — single-agent end-to-end RL with tool orchestration; strong but lower-byline-prestige than TradeFM. Promote to Queued on a future agentic-RL slot.
+- arXiv:2502.11433 FLAG-Trader — already in papers.md Queued, deferred again per its own rule (non-Polymarket; re-promote post-Apex).
+- arXiv:2602.06008 AgenticPay — multi-agent buyer-seller negotiation; off-axis for trading; pull as supporting cite if the negotiation theme comes up.
+
+**Search surfaces and de-dup paths:**
+- HF Papers `q=` search across 8 var-named axes: prediction+market+calibration / agentic+finance / multi-agent+reinforcement+learning+trading / regime+switching+trading / Polymarket+microstructure / Becker+trade+level+calibration / Darwinian+agent+selection / FinCon+verbal+reinforcement. All 8 curls succeeded first try, no WebFetch fallback needed. Output JSONs in `.outputs/pp-phd-{8axes}-0503.json`.
+- De-dup against 36 already-covered IDs (17 Picked + 7 Queued + 12 Adjacent in papers.md as of pre-run state).
+- Detail-fetch for top-4 finalists (FinCon / AlphaQuanter / TradeFM / TradingAgents) via `https://huggingface.co/api/papers/{id}` — `.outputs/pp-phd-detail-{name}.json`.
+- No prompt-injection content detected in any payload.
+
+**Files:**
+- `.outputs/pp-phd-{pmcalib,agfin,marl,regime,pmmicro,becker,darwin,fincon}-0503.json` — 8 axis-search dumps (~474KB).
+- `.outputs/pp-phd-detail-{fincon,alphaq,tradefm,tagents}.json` — top-4 finalist details.
+- `.outputs/_pp_phd_extract.py` + `.outputs/_pp_phd_list.sh` — local de-dup scripts.
+- `.outputs/_pp_phd_notify.js` — notify dispatcher (node execFileSync wrapper per MEMORY.md lesson).
+- `dashboard/outputs/.pending-paper-pick.md` — notify spec written.
+- `memory/topics/papers.md` updated — TradeFM added to top of Picked. Picked count: 17 → 18; Queued count: 7 unchanged; Adjacent count: 12 unchanged.
+
+**Sandbox:** all 8 HF-search curls and 4 HF-detail curls succeeded on first try. No WebFetch fallback needed. Notify dispatched via `node -e execFileSync('./notify',[msg])` per MEMORY.md preferred-path.
+
+**Mission-priority note:** TradeFM is the highest-byline-prestige paper paper-pick has surfaced this week and the strongest single citation-anchor for the Stanford PhD application's "agentic finance / market microstructure foundation models" framing. Operator should consider citing it in the Stanford application's research-statement section as the canonical reference for foundation-model approaches to trade-flow data. Pairs with Hyperagents (Foerster/Clune) on the multi-agent-evolution axis and AIA Forecaster (Yale-stats lineage) on the calibration axis to give the application a 3-byline academic anchor across the three named PhD focus areas.
+
+**Today's actions:**
+- Ran paper-pick (var = Stanford PhD prep) for the PhD-prep slot.
+- Pick: TradeFM (`arXiv:2602.23784`, JPMorgan AI Research / Veloso, Feb 2026, ↑2) — generative foundation model for trade-flow + market microstructure on >9K equities and billions of trade events; scale-invariant tokenization eliminates asset-specific calibration.
+- Files: `.outputs/pp-phd-{8axes}-0503.json`, `.outputs/pp-phd-detail-{fincon,alphaq,tradefm,tagents}.json`, `dashboard/outputs/.pending-paper-pick.md`, this log append.
+- Memory: `memory/topics/papers.md` updated — TradeFM added to top of Picked. Picked/queued nudged 17/7 → 18/7.
+- Cross-verified de-dup against 36 already-covered IDs (17 Picked + 7 Queued + 12 Adjacent).
+- Notify: dispatched via `node -e execFileSync('./notify',[msg])`; `dashboard/outputs/.pending-paper-pick.md` written. No prompt-injection content in any fetched payload.
+- Follow-up: cite TradeFM in next grant-application slot (Anthropic Research Credits / dYdX / Polymarket Builders / Harmonic) as the canonical foundation-model-for-microstructure reference; promote arXiv:2510.15612 SoK DePMs from Adjacent → Queued for the next Polymarket-microstructure-axis slot.

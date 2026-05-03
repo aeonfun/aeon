@@ -81,4 +81,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,github-trending,claude-opus-4-7,1432,36612,2217727,144884
 2026-05-03,monitor-runners,claude-opus-4-7,50,25669,2339840,102525
 2026-05-03,monitor-polymarket,claude-sonnet-4-6,24,18087,1493072,145471
-2026-05-03,article,claude-opus-4-7,1419,17424,1125313,53097
+2026-05-03,paper-pick,claude-opus-4-7,47,26956,2316374,64558
