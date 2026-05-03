@@ -1,15 +1,21 @@
+Logged. Per spec: NO_GAP exits silently — no notify, no catalog search, no install.
+
 ## Summary
 
-Ran `search-skill`. All four spec-defined gap sources came up empty:
+**Skill:** `search-skill` — find an external skill that fills a real repo gap.
 
-- (a) `memory/cron-state.json`: zero skills with `cf >= 2`; the ~60 below 0.6 success-rate are the ISS-013 decay artifact (cf=0, last_status=success), not real failures.
-- (b) `memory/issues/INDEX.md`: 15 open issues, but none in the spec's strict category set (`missing-secret`, `api-change`, `permanent-limitation`, `quality-regression`). The sandbox-limitation issues can't be filled by an external skill since a new install inherits the same sandbox.
-- (c) MEMORY "Next Priorities": all map to existing installed skills or operator-side config (chain-runner repair, prefetch scripts, evals.json key fixes, dashboard shell-injection fix).
-- (d) Log grep: only prior search-skill self-references.
+**Verdict:** `SEARCH_SKILL_NO_GAP`. All four gap-derivation gates fail to yield a concrete capability word:
 
-**Exit:** `SEARCH_SKILL_NO_GAP` — silent per spec (no `./notify`, no `./add-skill`, no PR). Logged to `memory/logs/2026-05-02.md`.
+- **Failing skills (a):** Sub-0.6 success rates are ISS-013 decay artifacts (`consecutive_failures: 0`); capabilities already exist; gated on operator chain-runner fix.
+- **Open issues (b):** All 14 categorized as `sandbox-limitation`, `output-format`, `missing-secret-or-cron`, `prompt-bug`, or `unknown` — none match the trigger set.
+- **Priorities (c):** All operator-side (chain-runner.yml patch, Vercel-FAILURE PRs, prefetch scripts, key fixes, code-health patch).
+- **Log signals (d):** Every "missing" hit is an operator-owned secret/script (NEYNAR_API_KEY, prefetch-reddit.sh, prefetch-xai.sh cases) — not external capability.
 
-This is the 7th NO_GAP-class run in the last 8. Capability signal will return only once chain-runner.yml `dispatch_skill()` is fixed and the ISS-013 success-rate counters burn down — both operator-side, neither solvable from this skill.
+Same pattern as 2026-05-01 NO_GAP exit. The fleet's external capability surface is saturated against current priorities; remaining work is operator-owned config that an external skill cannot fix.
 
-**Files modified:** `memory/logs/2026-05-02.md` (one log entry).
-**Follow-up:** none — silence is the correct output for NO_GAP.
+**Files modified:**
+- `memory/logs/2026-05-03.md` — appended `## search-skill` block per spec step 8.
+
+**Skipped per spec:** notify (silent on NO_GAP), catalog searches, `./add-skill`.
+
+**Follow-up:** Re-evaluates next run — exit will flip to OK_INSTALLED/OK_CANDIDATES the moment a new issue lands in `{missing-secret, api-change, permanent-limitation, quality-regression}` or a non-template Next Priority names an external capability.
