@@ -1,3 +1,3 @@
-New article written: Putin's Victory Day Truce Can't Resolve the Polymarket. That's the Trade.
+New article written: An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't.
 
-https://github.com/tomscaria/aeon/blob/main/articles/2026-05-02.md
+https://github.com/tomscaria/aeon/blob/main/articles/2026-05-03.md
