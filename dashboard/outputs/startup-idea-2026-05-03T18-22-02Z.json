@@ -1,0 +1,467 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas"
+      },
+      "children": [
+        "heading_main",
+        "sep1",
+        "codex_section",
+        "sep2",
+        "watershed_section",
+        "sep3",
+        "pain_section"
+      ]
+    },
+    "heading_main": {
+      "type": "Heading",
+      "props": {
+        "text": "Startup Ideas -- 2026-05-03",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "codex_heading",
+        "codex_badge",
+        "codex_desc",
+        "codex_subsep1",
+        "codex_icp",
+        "codex_subsep2",
+        "codex_wedge",
+        "codex_subsep3",
+        "codex_why",
+        "codex_subsep4",
+        "codex_mvp",
+        "codex_subsep5",
+        "codex_kill"
+      ]
+    },
+    "codex_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Codex",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "codex_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "executable"
+      },
+      "children": []
+    },
+    "codex_desc": {
+      "type": "Text",
+      "props": {
+        "text": "resolution-text NLP API for binary markets; canonicalize Polymarket / Kalshi rules + flag title-vs-rules language asymmetry, sold to the next 50 PM-operating quant funds behind CalibrationGap."
+      },
+      "children": []
+    },
+    "codex_subsep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "codex_icp_label",
+        "codex_icp_text"
+      ]
+    },
+    "codex_icp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "codex_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "quant lead at a 5-25-person crypto fund running a $1-5M binary book whose market resolved opposite the title in last 90 days (UMA whale, Russia-Ukraine \"ceasefire\" vs \"general pause,\" Iran-cf vs Hez-cf)."
+      },
+      "children": []
+    },
+    "codex_subsep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "codex_wedge_label",
+        "codex_wedge_text"
+      ]
+    },
+    "codex_wedge_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "codex_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "API + CLI returning canonical rule extraction, language-asymmetry score, UMA-vote-history risk, similar-precedent flags. $499-$4,999/mo."
+      },
+      "children": []
+    },
+    "codex_subsep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "codex_why_label",
+        "codex_why_text"
+      ]
+    },
+    "codex_why_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "codex_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "UMA whale governance attack + Polymarket V2 $514M TVL + PolyBench/Prophet Arena (LLMs beat Brier, lose money) + JPM TradeFM + PolySwarm arXiv:2604.03888 all converging."
+      },
+      "children": []
+    },
+    "codex_subsep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "codex_mvp_label",
+        "codex_mvp_text"
+      ]
+    },
+    "codex_mvp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "codex_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "50 active + 100 closed Polymarket markets covered in 2 weeks; >=30% precision on language-asymmetry flag; 3 paid pilots from operator's X network in 30 days."
+      },
+      "children": []
+    },
+    "codex_subsep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "codex_kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "codex_kill_label",
+        "codex_kill_alert"
+      ]
+    },
+    "codex_kill_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "codex_kill_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "<3 paid in 60 days OR <20% precision -> kill.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "watershed_heading",
+        "watershed_badge",
+        "watershed_desc",
+        "watershed_subsep1",
+        "watershed_icp",
+        "watershed_subsep2",
+        "watershed_wedge",
+        "watershed_subsep3",
+        "watershed_why",
+        "watershed_subsep4",
+        "watershed_mvp",
+        "watershed_subsep5",
+        "watershed_kill"
+      ]
+    },
+    "watershed_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Watershed",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "watershed_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious"
+      },
+      "children": []
+    },
+    "watershed_desc": {
+      "type": "Text",
+      "props": {
+        "text": "specialty prediction-market exchange for maritime / physical-supply-chain chokepoints (Hormuz, Suez, Red Sea, Panama); AIS-settled binaries as a real hedging instrument for commodity traders + Lloyd's syndicates."
+      },
+      "children": []
+    },
+    "watershed_subsep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watershed_icp_label",
+        "watershed_icp_text"
+      ]
+    },
+    "watershed_icp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "watershed_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "VP Risk at a tier-2 commodity trader ($100M-$2B AUM, Mercuria / Castleton / Hartree-tier) who lost >$5M Q1 2026 to phantom-blockade financing + refused letters of credit; or syndicate underwriter at Lloyd's pricing transit war-risk."
+      },
+      "children": []
+    },
+    "watershed_subsep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watershed_wedge_label",
+        "watershed_wedge_text"
+      ]
+    },
+    "watershed_wedge_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "watershed_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "3 flagship binaries (Hormuz transits >=100/day; Red Sea container vs pre-Houthi; Panama auction price). Settled against Lloyd's List Intelligence + MarineTraffic AIS. 1% per-side fee, $50M/mo target = $500k/mo gross."
+      },
+      "children": []
+    },
+    "watershed_subsep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watershed_why_label",
+        "watershed_why_text"
+      ]
+    },
+    "watershed_why_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "watershed_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "Hormuz transits collapsed 95% (130 -> 6/day) March 2026, war-risk premiums up 10x, CFTC ANPRM closed 05-01 opens specialty-DCM path, HL HIP-4 mainnet active provides on-chain binary precedent."
+      },
+      "children": []
+    },
+    "watershed_subsep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watershed_mvp_label",
+        "watershed_mvp_text"
+      ]
+    },
+    "watershed_mvp_label": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "watershed_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "PM-deployed \"Hormuz transits >=100 by Jul-31\" binary, $50k seed pool, >=$500k notional within 30 days."
+      },
+      "children": []
+    },
+    "watershed_subsep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "watershed_kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watershed_kill_label",
+        "watershed_kill_alert"
+      ]
+    },
+    "watershed_kill_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "watershed_kill_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "<$250k notional in 60 days OR <2 institutional LOIs in 90 days -> kill.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "pain_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pain_heading",
+        "pain_sources_list",
+        "pain_memo_link"
+      ]
+    },
+    "pain_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Pain",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pain_sources_list": {
+      "type": "Text",
+      "props": {
+        "text": "6 permalinks: defirate, theblock.co, polymarketguide gitbook, argusmedia, unctad, ballastmarkets",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "pain_memo_link": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-05-03.md",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

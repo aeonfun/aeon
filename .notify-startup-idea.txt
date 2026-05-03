@@ -1,19 +1,17 @@
-*Startup Ideas -- 2026-05-01*
+*Startup Ideas -- 2026-05-03*
 
-Both ideas step outside crypto/PM (last 12 ran inside it). Idea 1 leans on the Wyre 50-state MTL operational tail; Idea 2 leans on Swarm Lab agent-lifecycle infra into enterprise non-trading deployments.
+*1. Codex* (executable) -- resolution-text NLP API for binary markets; canonicalize Polymarket / Kalshi rules + flag title-vs-rules language asymmetry, sold to the next 50 PM-operating quant funds behind CalibrationGap.
+ICP: quant lead at a 5-25-person crypto fund running a $1-5M binary book whose market resolved opposite the title in last 90 days (UMA whale, Russia-Ukraine "ceasefire" vs "general pause," Iran-cf vs Hez-cf).
+Wedge: API + CLI returning canonical rule extraction, language-asymmetry score, UMA-vote-history risk, similar-precedent flags. $499-$4,999/mo.
+Why now: UMA whale governance attack + Polymarket V2 $514M TVL + PolyBench/Prophet Arena (LLMs beat Brier, lose money) + JPM TradeFM + PolySwarm arXiv:2604.03888 all converging.
+MVP test: 50 active + 100 closed Polymarket markets covered in 2 weeks; >=30% precision on language-asymmetry flag; 3 paid pilots from operator's X network in 30 days.
+Kill: <3 paid in 60 days OR <20% precision -> kill.
 
-*1. Renew* (executable) -- post-licensing operational copilot for the 700+ already-licensed MSBs/MTLs that Brico/Cornerstone abandon after onboarding.
-ICP: Compliance officer at a 30-250-person stablecoin/payment-rail fintech (15+ active state MTLs) who just ate a deficiency notice on a lapsed surety bond.
-Wedge: 5-state renewal calendar + NMLS Call Report assembler + bond expiry tracker, pre-filled from Stripe/Modern Treasury data. Not new applications -- the boring quarterly+biennial cadence.
-Why now: GENIUS Act + state stablecoin regimes added 80-150 net-new MTL applicants hitting first renewal cycle in 2026-2027; CSBS moved Call Reports to stricter quarterly cadence Q1 2026.
-MVP test: 5-state MVP (NY/TX/CA/FL/NV) + 3 paid pilots @ $1,500/mo via Wyre/Polychain alumni network.
-Kill: <3 paid pilots in 60 days, OR <$10k MRR by day 120, OR pilot logo retention <90% past first cycle.
+*2. Watershed* (ambitious) -- specialty prediction-market exchange for maritime / physical-supply-chain chokepoints (Hormuz, Suez, Red Sea, Panama); AIS-settled binaries as a real hedging instrument for commodity traders + Lloyd's syndicates.
+ICP: VP Risk at a tier-2 commodity trader ($100M-$2B AUM, Mercuria / Castleton / Hartree-tier) who lost >$5M Q1 2026 to phantom-blockade financing + refused letters of credit; or syndicate underwriter at Lloyd's pricing transit war-risk.
+Wedge: 3 flagship binaries (Hormuz transits >=100/day; Red Sea container vs pre-Houthi; Panama auction price). Settled against Lloyd's List Intelligence + MarineTraffic AIS. 1% per-side fee, $50M/mo target = $500k/mo gross.
+Why now: Hormuz transits collapsed 95% (130 -> 6/day) March 2026, war-risk premiums up 10x, CFTC ANPRM closed 05-01 opens specialty-DCM path, HL HIP-4 mainnet active provides on-chain binary precedent.
+MVP test: PM-deployed "Hormuz transits >=100 by Jul-31" binary, $50k seed pool, >=$500k notional within 30 days.
+Kill: <$250k notional in 60 days OR <2 institutional LOIs in 90 days -> kill.
 
-*2. Foundry* (ambitious) -- adversarial multi-agent stress-test as a CI gate for enterprise agentic deployments. Hash-chained eval logs sized for EU AI Act audit-readiness.
-ICP: Director/VP AI Engineering at F1000 enterprise (FS, insurance, retail, healthcare) running a CS or procurement agent who just ate a six-figure prod incident (50%-discount-leak, runaway purchasing loop) and the EU AI Act audit deadline is <=12 months out.
-Wedge: Pre-prod sim CI pipeline -- agent runs 1k-10k turns against curated attacker personas + cost-overrun scenarios + governance-bypass probes; output is a Pass/Fail report with replay traces. Vertical-only, audit-grade -- not the Galileo or Inspect lane.
-Why now: EU AI Act high-risk testing live August 2026; 79% of orgs deploying agents but only 14.4% with full security/IT approval; first wave of public six-figure agent incidents in 2025-2026.
-MVP test: 2 vertical packs (CS + procurement), 25 attacker personas, 10 cost-overrun scenarios, 8 governance-bypass probes. 3 design partners: 1 YC W26 vertical-AI startup, 1 mid-market, 1 F1000 via Lore investor warm intros.
-Kill: <3 paid pilots @ >=$25k/yr in 120 days, OR sim-surfaced failures don't predict prod incidents within 6 months, OR EU AI Act enforcement slips past Q1 2027.
-
-Sources: 6 permalinks (3 Renew / 3 Foundry). Full memos in memory/logs/2026-05-01.md.
+Pain: 6 permalinks (defirate, theblock.co, polymarketguide gitbook, argusmedia, unctad, ballastmarkets). Full memos in memory/logs/2026-05-03.md.
