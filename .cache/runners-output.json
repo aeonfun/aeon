@@ -1,0 +1,362 @@
+{
+  "sources": {
+    "global": "ok",
+    "solana-trend": "ok",
+    "solana-vol": "ok",
+    "eth-trend": "ok",
+    "eth-vol": "ok",
+    "base-trend": "ok",
+    "base-vol": "ok",
+    "bsc-trend": "ok",
+    "bsc-vol": "ok",
+    "arbitrum-trend": "ok",
+    "arbitrum-vol": "ok",
+    "new": "ok"
+  },
+  "pre_gate": 162,
+  "post_gate": 60,
+  "rejections": {
+    "thinVol": 27,
+    "negPct": 62,
+    "lowLiq": 7,
+    "dumping": 0,
+    "honeypot": 1,
+    "tooNew": 0,
+    "rugLike": 5
+  },
+  "tag_dist": {
+    "DEEP-LIQ": 1,
+    "BREAKOUT": 2,
+    "CONTINUATION": 1,
+    "REVERSAL": 1,
+    "MICRO-SPEC": 0
+  },
+  "verdict": "MIXED",
+  "top5": [
+    {
+      "rank": 1,
+      "tag": "DEEP-LIQ",
+      "name": "TTPA / WETH 0.05%",
+      "chain": "base",
+      "pct_h24": 859.115,
+      "pct_h1": 11.15,
+      "vol_h24": 10224169.2037358,
+      "reserve": 334690242.4062,
+      "fdv": 1129983995,
+      "mcap": null,
+      "buys": 10868,
+      "sells": 9191,
+      "age_hr": 231.43563,
+      "score": 91.53301685029163,
+      "token_id": "base_0x9d3695161c606ef124e6a468c48be7a102ba6ce2"
+    },
+    {
+      "rank": 2,
+      "tag": "REVERSAL",
+      "name": "MOGMAN / SOL",
+      "chain": "solana",
+      "pct_h24": 1261.327,
+      "pct_h1": -8.766,
+      "vol_h24": 7333521.08646008,
+      "reserve": 34315.5141,
+      "fdv": 103126.7536,
+      "mcap": null,
+      "buys": 30990,
+      "sells": 28306,
+      "age_hr": 107.67563,
+      "score": 85.20745368056163,
+      "token_id": "solana_9gBzMZ1oJ9wDTvzVrhaA7tKMmtWqg9SEmc1UuBPbpump"
+    },
+    {
+      "rank": 3,
+      "tag": "BREAKOUT",
+      "name": "TEMPO / SOL",
+      "chain": "solana",
+      "pct_h24": 807.539,
+      "pct_h1": -38.993,
+      "vol_h24": 2237072.31354189,
+      "reserve": 48162.4065,
+      "fdv": 309415.648,
+      "mcap": null,
+      "buys": 37839,
+      "sells": 24936,
+      "age_hr": 11.487574444444444,
+      "score": 81.51264037753215,
+      "token_id": "solana_3wL2KuTsaDUX33VvpwCn7st7yxGhY6KKqPkZtMQzpump"
+    },
+    {
+      "rank": 4,
+      "tag": "CONTINUATION",
+      "name": "熊猫头 / WBNB",
+      "chain": "bsc",
+      "pct_h24": 324.279,
+      "pct_h1": 6.505,
+      "vol_h24": 7186120.69825424,
+      "reserve": 297311.6284,
+      "fdv": 6997210.915,
+      "mcap": null,
+      "buys": 14693,
+      "sells": 12883,
+      "age_hr": 4982.869518888889,
+      "score": 75.09151791809283,
+      "token_id": "bsc_0xf3525965a4ad3ca0ac13f4d2f237113691194444"
+    },
+    {
+      "rank": 5,
+      "tag": "BREAKOUT",
+      "name": "WINNING / SOL",
+      "chain": "solana",
+      "pct_h24": 175.592,
+      "pct_h1": -4.129,
+      "vol_h24": 3271351.8717177,
+      "reserve": 28082.5534,
+      "fdv": 95266.796,
+      "mcap": null,
+      "buys": 32004,
+      "sells": 27242,
+      "age_hr": 21.38174111111111,
+      "score": 58.42435736221407,
+      "token_id": "solana_JAxMg5ErnK6ji37TnUh89yA2mouDkFVpiKGaEi1mpump"
+    }
+  ],
+  "nearMisses": [
+    {
+      "rank": 6,
+      "tag": "REVERSAL",
+      "name": "BabyAsteroid / WBNB",
+      "chain": "bsc",
+      "pct_h24": 123.058,
+      "pct_h1": -8.231,
+      "vol_h24": 2757950.67661914,
+      "reserve": 315484.0191,
+      "fdv": 5827199.0028,
+      "score": 57.80109699497544,
+      "token_id": "bsc_0xfecbda1b8dbd73c4eea7843c04db816107fa6666"
+    },
+    {
+      "rank": 7,
+      "tag": "BREAKOUT",
+      "name": "memeoids / SOL",
+      "chain": "solana",
+      "pct_h24": 157.907,
+      "pct_h1": -10.195,
+      "vol_h24": 1602766.50940506,
+      "reserve": 25675.663,
+      "fdv": 88936.71709,
+      "score": 55.99928821434084,
+      "token_id": "solana_5zA1r2LyA9UcShFoZ4DNVJXq1V5pSD4gmibDh5Zxpump"
+    },
+    {
+      "rank": 8,
+      "tag": "REVERSAL",
+      "name": "冲鸭 / WBNB",
+      "chain": "bsc",
+      "pct_h24": 152.234,
+      "pct_h1": -19.757,
+      "vol_h24": 1899047.33656263,
+      "reserve": 113663.9261,
+      "fdv": 1043552.729,
+      "score": 55.63853058455868,
+      "token_id": "bsc_0x7528f0abcb9e4fd65859c92255aa889d02094444"
+    },
+    {
+      "rank": 9,
+      "tag": "DEEP-LIQ",
+      "name": "B / USD1 0.01%",
+      "chain": "bsc",
+      "pct_h24": 28.811,
+      "pct_h1": 9.021,
+      "vol_h24": 100034913.497369,
+      "reserve": 3217101.3151,
+      "fdv": 433366968.592179,
+      "score": 53.045701489851425,
+      "token_id": "bsc_0x6bdcce4a559076e37755a78ce0c06214e59e4444"
+    },
+    {
+      "rank": 10,
+      "tag": "CONTINUATION",
+      "name": "IMOUT / SOL",
+      "chain": "solana",
+      "pct_h24": 120.592,
+      "pct_h1": 5.508,
+      "vol_h24": 375530.265009495,
+      "reserve": 142279.5093,
+      "fdv": 1051690.7572632,
+      "score": 52.18553293273392,
+      "token_id": "solana_DACYVx34V5aQaehN3MZGYxPfoyQYHZSnFAFw3T2Vbonk"
+    }
+  ],
+  "deepLiqAll": [
+    {
+      "name": "TTPA / WETH 0.05%",
+      "chain": "base",
+      "pct_h24": 859.115,
+      "vol_h24": 10224169.2037358,
+      "reserve": 334690242.4062,
+      "score": 91.53301685029163,
+      "token_id": "base_0x9d3695161c606ef124e6a468c48be7a102ba6ce2"
+    },
+    {
+      "name": "B / USD1 0.01%",
+      "chain": "bsc",
+      "pct_h24": 28.811,
+      "vol_h24": 100034913.497369,
+      "reserve": 3217101.3151,
+      "score": 53.045701489851425,
+      "token_id": "bsc_0x6bdcce4a559076e37755a78ce0c06214e59e4444"
+    },
+    {
+      "name": "TAG / WBNB 0.05%",
+      "chain": "bsc",
+      "pct_h24": 19.588,
+      "vol_h24": 45738319.1848864,
+      "reserve": 2665833.1251,
+      "score": 51.86580344333886,
+      "token_id": "bsc_0x208bf3e7da9639f1eaefa2de78c23396b0682025"
+    },
+    {
+      "name": "WBTC / WETH 0.05%",
+      "chain": "arbitrum",
+      "pct_h24": 0.608,
+      "vol_h24": 7300691.25611354,
+      "reserve": 46476186.7413,
+      "score": 50.747166097386994,
+      "token_id": "arbitrum_0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f"
+    },
+    {
+      "name": "WBTC / WETH 0.05%",
+      "chain": "eth",
+      "pct_h24": 0.429,
+      "vol_h24": 8314550.0390666,
+      "reserve": 65579882.2232,
+      "score": 50.46279227694804,
+      "token_id": "eth_0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+    },
+    {
+      "name": "cbBTC / WETH 0.05%",
+      "chain": "base",
+      "pct_h24": 0.841,
+      "vol_h24": 44693274.7591449,
+      "reserve": 23511389.3244,
+      "score": 50.341718827838825,
+      "token_id": "base_0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf"
+    },
+    {
+      "name": "USDC / WETH 0.05%",
+      "chain": "base",
+      "pct_h24": 0.087,
+      "vol_h24": 7291306.71504398,
+      "reserve": 14126689.4383,
+      "score": 50.06826383633055,
+      "token_id": "base_0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+    },
+    {
+      "name": "WETH / USDC 0.05%",
+      "chain": "eth",
+      "pct_h24": 0.611,
+      "vol_h24": 14775798.0085905,
+      "reserve": 102530993.0827,
+      "score": 50.02107759116761,
+      "token_id": "eth_0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+    },
+    {
+      "name": "ETH / USDC 0.01%",
+      "chain": "eth",
+      "pct_h24": 0.932,
+      "vol_h24": 10722145.7150272,
+      "reserve": 9766632.7171,
+      "score": 49.99552037514655,
+      "token_id": "eth_0x0000000000000000000000000000000000000000"
+    },
+    {
+      "name": "WETH / USDC 0.05%",
+      "chain": "base",
+      "pct_h24": 0.93,
+      "vol_h24": 49555283.9943074,
+      "reserve": 15296580.5723,
+      "score": 49.838397125165855,
+      "token_id": "base_0x4200000000000000000000000000000000000006"
+    },
+    {
+      "name": "TROLL / SOL",
+      "chain": "solana",
+      "pct_h24": 39.853,
+      "vol_h24": 2634581.640085,
+      "reserve": 1967556.783,
+      "score": 49.83200910920161,
+      "token_id": "solana_5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2"
+    },
+    {
+      "name": "SLX / ETH 1%",
+      "chain": "base",
+      "pct_h24": 1.194,
+      "vol_h24": 4942667.92998039,
+      "reserve": 1100102.6188,
+      "score": 48.851273386638255,
+      "token_id": "base_0xc049a8e43a9ec1a72c6348bbba4085810e5842e1"
+    },
+    {
+      "name": "WETH / USDT 0.05%",
+      "chain": "arbitrum",
+      "pct_h24": 0.93,
+      "vol_h24": 3206949.20364369,
+      "reserve": 11510945.1056,
+      "score": 48.53558563050275,
+      "token_id": "arbitrum_0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+    },
+    {
+      "name": "USDT / WBNB 0.01%",
+      "chain": "bsc",
+      "pct_h24": 0.011,
+      "vol_h24": 64587850.7919638,
+      "reserve": 17576230.6811,
+      "score": 48.175346420524754,
+      "token_id": "bsc_0x55d398326f99059ff775485246999027b3197955"
+    },
+    {
+      "name": "USDe / USDT",
+      "chain": "eth",
+      "pct_h24": 0.324,
+      "vol_h24": 25366104.7307958,
+      "reserve": 14629178.859,
+      "score": 48.07108153846154,
+      "token_id": "eth_0x4c9edd5852cd905f086c759e8383e09bff1e68b3"
+    },
+    {
+      "name": "ETH / USDC 0.05%",
+      "chain": "arbitrum",
+      "pct_h24": 0.913,
+      "vol_h24": 2568649.17985871,
+      "reserve": 6370246.4714,
+      "score": 47.91390108844841,
+      "token_id": "arbitrum_0x0000000000000000000000000000000000000000"
+    },
+    {
+      "name": "sUSDS / USDT",
+      "chain": "eth",
+      "pct_h24": 0.503,
+      "vol_h24": 18756851.9543622,
+      "reserve": 47076552.0013,
+      "score": 47.67681908496731,
+      "token_id": "eth_0xa3931d71877c0e7a3148cb7eb4463524fec27fbd"
+    },
+    {
+      "name": "PENDLE / WETH 0.3%",
+      "chain": "arbitrum",
+      "pct_h24": 2.922,
+      "vol_h24": 1255413.72626359,
+      "reserve": 1082336.4829,
+      "score": 47.41697594965481,
+      "token_id": "arbitrum_0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8"
+    },
+    {
+      "name": "Dory / USDC 1%",
+      "chain": "arbitrum",
+      "pct_h24": 4.434,
+      "vol_h24": 1040180.70614319,
+      "reserve": 8418083.2757,
+      "score": 45.17007903861648,
+      "token_id": "arbitrum_0x33b49f2264e85bb124d2730dc180182717d436ae"
+    }
+  ]
+}

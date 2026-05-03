@@ -22,4 +22,3 @@ vol $3.3m | liq $28k | fdv $176k (no mcap) | h1 -4.1% | buys:sells 32004:27242
 
 sources: gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok gt-new=ok (3× 429 cleared on backoff: base-trend, base-vol, arbitrum-trend)
 vibe: TTPA's $300m liq injection is the real story — biggest signal of the week. 4 of 5 other picks <$300k liq, BSC vanity-4444 actor still printing under new names. GDER's 3-in-a-row pattern broke (not in today's dataset).
-

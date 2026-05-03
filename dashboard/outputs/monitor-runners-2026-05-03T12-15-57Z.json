@@ -1,0 +1,632 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners — 2026-05-03"
+      },
+      "children": [
+        "verdict",
+        "sep1",
+        "token1",
+        "sep2",
+        "token2",
+        "sep3",
+        "token3",
+        "sep4",
+        "token4",
+        "sep5",
+        "token5",
+        "sep6",
+        "sources",
+        "sep7",
+        "vibe"
+      ]
+    },
+    "verdict": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "verdict-label",
+        "verdict-badge"
+      ]
+    },
+    "verdict-label": {
+      "type": "Text",
+      "props": {
+        "text": "Verdict:",
+        "variant": "lead"
+      }
+    },
+    "verdict-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MIXED"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "token1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t1-head",
+        "t1-metrics",
+        "t1-analysis"
+      ]
+    },
+    "t1-head": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-category",
+        "t1-name",
+        "t1-change",
+        "t1-note"
+      ]
+    },
+    "t1-category": {
+      "type": "Badge",
+      "props": {
+        "text": "DEEP-LIQ"
+      }
+    },
+    "t1-name": {
+      "type": "Text",
+      "props": {
+        "text": "TTPA / WETH (base)"
+      }
+    },
+    "t1-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+859%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t1-note": {
+      "type": "Badge",
+      "props": {
+        "text": "★ repeat 4-in-a-row",
+        "variant": "secondary"
+      }
+    },
+    "t1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-vol",
+        "t1-liq",
+        "t1-fdv",
+        "t1-h1",
+        "t1-ratio"
+      ]
+    },
+    "t1-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$10.2m"
+      }
+    },
+    "t1-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$335m"
+      }
+    },
+    "t1-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$1.13b (no mcap)"
+      }
+    },
+    "t1-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+11%",
+        "trend": "up"
+      }
+    },
+    "t1-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 10868:9191"
+      }
+    },
+    "t1-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "same token id 0x9d36…6ce2 as prior days; 04-30 slot 1 → 05-01/05-02 near-miss slot 9 → today slot 1 with 10x liq jump ($31.9m → $335m). Buy-skew 1.18:1 on 20k tx, h1 still green. Real institutional re-awakening, not a casino print. Watch h1 holding >+5% as continuation confirmation.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "token2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t2-head",
+        "t2-metrics",
+        "t2-analysis"
+      ]
+    },
+    "t2-head": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-category",
+        "t2-name",
+        "t2-change"
+      ]
+    },
+    "t2-category": {
+      "type": "Badge",
+      "props": {
+        "text": "REVERSAL"
+      }
+    },
+    "t2-name": {
+      "type": "Text",
+      "props": {
+        "text": "MOGMAN / SOL (solana)"
+      }
+    },
+    "t2-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+1261%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-vol",
+        "t2-liq",
+        "t2-fdv",
+        "t2-h1",
+        "t2-ratio"
+      ]
+    },
+    "t2-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$7.3m"
+      }
+    },
+    "t2-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$34k"
+      }
+    },
+    "t2-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$9.4m (no mcap)"
+      }
+    },
+    "t2-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-8.8%",
+        "trend": "down"
+      }
+    },
+    "t2-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 30990:28306"
+      }
+    },
+    "t2-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "4.5d-old SOL meme up 13x; h1 already rolling over. Late-stage distribution; $34k liq means one whale exit collapses the book. No edge either direction.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "token3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t3-head",
+        "t3-metrics",
+        "t3-analysis"
+      ]
+    },
+    "t3-head": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-category",
+        "t3-name",
+        "t3-change"
+      ]
+    },
+    "t3-category": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT"
+      }
+    },
+    "t3-name": {
+      "type": "Text",
+      "props": {
+        "text": "TEMPO / SOL (solana)"
+      }
+    },
+    "t3-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+808%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-vol",
+        "t3-liq",
+        "t3-fdv",
+        "t3-h1",
+        "t3-ratio"
+      ]
+    },
+    "t3-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$2.2m"
+      }
+    },
+    "t3-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$48k"
+      }
+    },
+    "t3-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$1.0m (no mcap)"
+      }
+    },
+    "t3-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-39%",
+        "trend": "down"
+      }
+    },
+    "t3-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 37839:24936"
+      }
+    },
+    "t3-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "11.5h-old launch, h1 -39% — top printed ~3h ago. Already in distribution; the score-formula h24 cap rewarded a coin that's already crashing. Skip.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "token4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t4-head",
+        "t4-metrics",
+        "t4-analysis"
+      ]
+    },
+    "t4-head": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-category",
+        "t4-name",
+        "t4-change"
+      ]
+    },
+    "t4-category": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION"
+      }
+    },
+    "t4-name": {
+      "type": "Text",
+      "props": {
+        "text": "熊猫头 / WBNB (bsc)"
+      }
+    },
+    "t4-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+324%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-vol",
+        "t4-liq",
+        "t4-fdv",
+        "t4-h1",
+        "t4-ratio"
+      ]
+    },
+    "t4-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$7.2m"
+      }
+    },
+    "t4-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$297k"
+      }
+    },
+    "t4-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$322k (no mcap)"
+      }
+    },
+    "t4-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+6.5%",
+        "trend": "up"
+      }
+    },
+    "t4-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 14693:12883"
+      }
+    },
+    "t4-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "vanity-0xf352…4444 BSC contract, same actor signature as the 冲鸭 wash-print series (04-29 → 04-30 → 05-01 slot-1 cycle). Live h1 momentum, but actor fingerprint says fade. The 冲鸭 successor pool also showed up today at +373% / $3.8k liq / h1 -97% — the actor is still active but liq is collapsing.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "token5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t5-head",
+        "t5-metrics",
+        "t5-analysis"
+      ]
+    },
+    "t5-head": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-category",
+        "t5-name",
+        "t5-change"
+      ]
+    },
+    "t5-category": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT"
+      }
+    },
+    "t5-name": {
+      "type": "Text",
+      "props": {
+        "text": "WINNING / SOL (solana)"
+      }
+    },
+    "t5-change": {
+      "type": "Stat",
+      "props": {
+        "value": "+176%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-vol",
+        "t5-liq",
+        "t5-fdv",
+        "t5-h1",
+        "t5-ratio"
+      ]
+    },
+    "t5-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$3.3m"
+      }
+    },
+    "t5-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$28k"
+      }
+    },
+    "t5-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$176k (no mcap)"
+      }
+    },
+    "t5-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-4.1%",
+        "trend": "down"
+      }
+    },
+    "t5-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 32004:27242"
+      }
+    },
+    "t5-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "21h-old SOL launch, $28k liq, h1 turning red. Standard sol-meme half-life pattern. Skip.",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator"
+    },
+    "sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-label",
+        "sources-text"
+      ]
+    },
+    "sources-label": {
+      "type": "Text",
+      "props": {
+        "text": "Sources:",
+        "variant": "lead"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok gt-new=ok (3× 429 cleared on backoff: base-trend, base-vol, arbitrum-trend)",
+        "variant": "caption"
+      }
+    },
+    "sep7": {
+      "type": "Separator"
+    },
+    "vibe": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe-label",
+        "vibe-text"
+      ]
+    },
+    "vibe-label": {
+      "type": "Text",
+      "props": {
+        "text": "Vibe:",
+        "variant": "lead"
+      }
+    },
+    "vibe-text": {
+      "type": "Text",
+      "props": {
+        "text": "TTPA's $300m liq injection is the real story — biggest signal of the week. 4 of 5 other picks <$300k liq, BSC vanity-4444 actor still printing under new names. GDER's 3-in-a-row pattern broke (not in today's dataset).",
+        "variant": "body"
+      }
+    }
+  }
+}
