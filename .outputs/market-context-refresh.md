@@ -1,8 +1,7 @@
-market context — 2026-05-02
+market context — 2026-05-03
 
-take: chop (conviction medium)
-BTC $78,302 (+0.17%) / ETH $2,307 (-0.01%) · F&G 39 (Fear, +13 from 26)
-breadth 9/20 · DEX vol $5.32B (-4% vs prior)
-top narrative: AI/compute infra — ACN +26%, BIO +48%, TAO +4% (rising)
-hot market: "US x Iran peace by May 31" YES 22.5% (-4pp)
-regime note: breadth collapsed 19/20 → 9/20 as DOJ/Powell catalyst fades; NFP live today
+take: rotation (conviction medium)
+BTC $78,604 (+0.35%) / ETH $2,322 (+0.63%) · F&G 47 (Neutral, was 39 Fear)
+breadth 18/20 · TVL $84.75B (+0.84% 7d)
+top narrative: AI compute infra (rising) — AKT +31%, Gensyn +37%, TAO +4%
+hot market: sports-dominated; Tamil Nadu elections resolve tomorrow (DMK 87.5%)

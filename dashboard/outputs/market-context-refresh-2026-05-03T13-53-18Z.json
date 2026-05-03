@@ -1,0 +1,309 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "market context",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "take_section",
+        "sep1",
+        "prices_section",
+        "sep2",
+        "metrics_section",
+        "sep3",
+        "narratives_section"
+      ]
+    },
+    "take_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_take",
+        "badge_rotation",
+        "badge_conviction"
+      ]
+    },
+    "text_take": {
+      "type": "Text",
+      "props": {
+        "text": "Take:",
+        "variant": "lead"
+      }
+    },
+    "badge_rotation": {
+      "type": "Badge",
+      "props": {
+        "text": "rotation",
+        "variant": "default"
+      }
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction medium",
+        "variant": "secondary"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "prices_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "grid_prices",
+        "fg_stat"
+      ]
+    },
+    "grid_prices": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,604",
+        "delta": "+0.35%",
+        "trend": "up"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,322",
+        "delta": "+0.63%",
+        "trend": "up"
+      }
+    },
+    "fg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "47 (Neutral)",
+        "delta": "+8 from 39 Fear"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "progress_breadth",
+        "stat_tvl"
+      ]
+    },
+    "progress_breadth": {
+      "type": "Progress",
+      "props": {
+        "label": "breadth",
+        "value": 18,
+        "max": 20
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL (7d)",
+        "value": "$84.75B",
+        "delta": "+0.84%",
+        "trend": "up"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narratives_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "narrative_label",
+        "ai_infra_section",
+        "sep4",
+        "hot_market_section"
+      ]
+    },
+    "narrative_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Top narrative",
+        "level": "h3"
+      }
+    },
+    "ai_infra_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "label_ai_infra",
+        "grid_tokens"
+      ]
+    },
+    "label_ai_infra": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_ai_infra",
+        "badge_rising"
+      ]
+    },
+    "text_ai_infra": {
+      "type": "Text",
+      "props": {
+        "text": "AI compute infra",
+        "variant": "body"
+      }
+    },
+    "badge_rising": {
+      "type": "Badge",
+      "props": {
+        "text": "rising",
+        "variant": "outline"
+      }
+    },
+    "grid_tokens": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_akt",
+        "stat_gensyn",
+        "stat_tao"
+      ]
+    },
+    "stat_akt": {
+      "type": "Stat",
+      "props": {
+        "label": "AKT",
+        "value": "+31%",
+        "trend": "up"
+      }
+    },
+    "stat_gensyn": {
+      "type": "Stat",
+      "props": {
+        "label": "Gensyn",
+        "value": "+37%",
+        "trend": "up"
+      }
+    },
+    "stat_tao": {
+      "type": "Stat",
+      "props": {
+        "label": "TAO",
+        "value": "+4%",
+        "trend": "up"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hot_market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_hot_label",
+        "text_sports",
+        "stack_elections"
+      ]
+    },
+    "text_hot_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Hot market",
+        "level": "h3"
+      }
+    },
+    "text_sports": {
+      "type": "Text",
+      "props": {
+        "text": "sports-dominated",
+        "variant": "body"
+      }
+    },
+    "stack_elections": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_elections_event",
+        "progress_dmk"
+      ]
+    },
+    "text_elections_event": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu elections resolve tomorrow",
+        "variant": "body"
+      }
+    },
+    "progress_dmk": {
+      "type": "Progress",
+      "props": {
+        "label": "DMK",
+        "value": 87.5,
+        "max": 100
+      }
+    }
+  }
+}
