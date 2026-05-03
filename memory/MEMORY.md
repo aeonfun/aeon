@@ -17,7 +17,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/polymarket.md` — V2 TVL $514M, Senate self-ban, regulatory front, comments-side handles, Russia-Ukraine resolution-text edge, Tamil Nadu T-2, HL HIP-4 mainnet active, Roundhill ETFs T-3, monitor-{polymarket,kalshi} 05-02 snapshots
 - `memory/topics/aeon-ops.md` — sandbox/notify/prefetch matrix, chain-runner DEGRADED 7+ days, ISS-013 decay, code-health 4-week carry-debt, monitor-runners DEEP-LIQ formula (6-run evidence), ISS-017 pattern shift "silent skip → delayed dispatch"
 - **GDER on base — 3-in-a-row monitor-runners pick** (04-30 slot 4 → 05-01 slot 3 → 05-02 slot 5). 05-02 is a contract redeploy (`base_0x7e69…548102` vs prior `0x29ca…f15602`); actor signature is the name pattern, not a single token. Watch 05-03 for 4-in-a-row.
-- `memory/topics/papers.md` — 16 picked, 5 queued (CORAL + GEA picked 05-02 forming triple-Darwinian day with Hyperagents 05-01; EvoScientist + Misevolve added to queue)
+- `memory/topics/papers.md` — 17 picked, 7 queued (PolySwarm `arXiv:2604.03888` picked 05-03 — multi-agent LLM swarm for Polymarket + latency-arb, line-for-line match to CalibrationGap + Hermes-arb; Lead-Lag PM Semantic Filtering + PredictionMarketBench added to queue. Darwinian-axis triple Hyperagents→CORAL→GEA closed 05-02; today is natural break)
 - `memory/topics/grants.md` — open applications, citation hooks
 - `memory/topics/market-context.md` — 05-02 chop / BTC +0.17% 24h / breadth 19/20→9/20 / DEX-vol 3-day downtrend
 - `memory/topics/milestones.md` — aaronjmars/aeon 256 stars 05-01
@@ -91,4 +91,4 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - **Stalin-tier review:** apply `articles/workflow-security-audit-2026-04-27.patch` with workflow-scoped token to land ISS-015 fix (PR #4). _(BLOCKED: PR #4 stalled awaiting workflow-scoped PAT)_
 - **Land code-health fix** at `dashboard/app/api/secrets/route.ts:96` — today's external-feature is the carrier. If it lands before 2026-05-07 it pre-empts ISS-016 filing.
 - **`weekly-shiplog` Mondays** → forward to grant committees.
-- **`paper-pick` daily** → builds PhD reading list. Triple-Darwinian-axis day 05-02 (Hyperagents → CORAL → GEA). Next queued read: EvoScientist (`arXiv:2603.08127`) for next Darwinian-axis slot.
+- **`paper-pick` daily** → builds PhD reading list. **05-03 daily-slot pick: PolySwarm (`arXiv:2604.03888`)** — direct architectural twin of CalibrationGap + Hermes-arb (50 LLM personas, quarter-Kelly, KL/JS negation-pair detection, latency-arb on stale PM prices). **Cite in next grant application as prior-art validation.** Triple-Darwinian-axis day 05-02 (Hyperagents → CORAL → GEA) closed; next queued Darwinian read: EvoScientist (`arXiv:2603.08127`).

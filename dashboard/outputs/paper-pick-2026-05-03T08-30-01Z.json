@@ -1,0 +1,65 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "paper",
+        "separator1",
+        "description",
+        "separator2",
+        "links"
+      ]
+    },
+    "paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PolySwarm: A Multi-Agent Large Language Model Framework for Prediction Market Trading and Latency Arbitrage",
+        "href": "https://arxiv.org/abs/2604.03888",
+        "source": "Barot & Borkhatariya (Apr 2026)",
+        "score": "↑0"
+      }
+    },
+    "separator1": {
+      "type": "Separator"
+    },
+    "description": {
+      "type": "Text",
+      "props": {
+        "text": "This is the operationalized full stack of CalibrationGap + Hermes-arb in one paper: 50 LLM personas evaluating binary markets concurrently, confidence-weighted Bayesian fusion of swarm consensus with market-implied probabilities, quarter-Kelly sizing, KL/JS divergence to detect negation-pair mispricings (Iran-cf vs Hez-cf shape), and a latency-arb module exploiting stale Polymarket prices via CEX-implied probabilities within human reaction time. Low community signal (↑0, 2-author), but the architecture maps line-for-line onto swarm-fund-mvp — read for both the validation and the named open challenges (hallucination in agent pools, regulatory exposure, feedback-loop risk)."
+      }
+    },
+    "separator2": {
+      "type": "Separator"
+    },
+    "links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "read_link",
+        "pdf_link"
+      ]
+    },
+    "read_link": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.03888"
+      }
+    },
+    "pdf_link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.03888"
+      }
+    }
+  }
+}

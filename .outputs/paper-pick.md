@@ -1,6 +1,6 @@
-*Paper Pick — 2026-05-02 (PhD slot)*
+*Paper Pick — 2026-05-03*
 
-"Group-Evolving Agents: Open-Ended Self-Improvement via Experience Sharing" — Weng/Antoniades/Nathani/Zhang/Pu/Wang (UCSB, Feb 2026) · ↑9
-Treats a group of agents as the fundamental evolutionary unit, with explicit experience sharing replacing tree-structured isolated branches — 71.0% SWE-bench Verified (vs 56.7% prior SoTA self-evolving) and 88.3% Polyglot (vs 68.3%); fixes framework-level bugs in 1.4 iterations vs 5. Direct shape match for swarm-fund canary→apex with cross-agent reflection sharing. Closes the Darwinian-axis queue flag promoted in today's daily-slot log (CORAL → GEA).
-[Read](https://arxiv.org/abs/2602.04837) | [PDF](https://arxiv.org/pdf/2602.04837)
+"PolySwarm: A Multi-Agent Large Language Model Framework for Prediction Market Trading and Latency Arbitrage" — Barot & Borkhatariya (Apr 2026) · ↑0
+This is the operationalized full stack of CalibrationGap + Hermes-arb in one paper: 50 LLM personas evaluating binary markets concurrently, confidence-weighted Bayesian fusion of swarm consensus with market-implied probabilities, quarter-Kelly sizing, KL/JS divergence to detect negation-pair mispricings (Iran-cf vs Hez-cf shape), and a latency-arb module exploiting stale Polymarket prices via CEX-implied probabilities within human reaction time. Low community signal (↑0, 2-author), but the architecture maps line-for-line onto swarm-fund-mvp — read for both the validation and the named open challenges (hallucination in agent pools, regulatory exposure, feedback-loop risk).
+[Read](https://arxiv.org/abs/2604.03888) | [PDF](https://arxiv.org/pdf/2604.03888)
 
