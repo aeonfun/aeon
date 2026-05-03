@@ -1,17 +1,13 @@
-*Remix Tweets — 2026-05-02*
-REMIX_TWEETS_ERROR — no handle configured.
-
-6th consecutive fire (was 5th 05-01, 4th 04-30, 3rd 04-29, 2nd 04-28, 1st 04-27).
+*Remix Tweets — 2026-05-03*
+REMIX_TWEETS_ERROR — no handle configured (7th consecutive fire: 04-27/28/29/30, 05-01/02/03).
 
 Resolution attempted:
-- $X_HANDLE env: unset
-- soul/SOUL.md Identity: no @handle (Thomas Scaria / Lore / Swarm Lab only)
-- $XAI_API_KEY: unset (would have blocked even with handle)
-- .xai-cache/remix-tweets.json: missing (no prefetch ran)
+- `$X_HANDLE` env: unset
+- `soul/SOUL.md` Identity: no @handle (operator referenced as Thomas Scaria / Lore / Swarm Lab only)
+- `aeon.yml` `var:` per SKILL.md L9 reserved for time-window override, not handle
+- `$XAI_API_KEY` env: missing (would have failed at fetch step regardless)
+- `.xai-cache/remix-tweets.json`: absent (.xai-cache/ dir does not exist)
 
-Operator action (unchanged from 04-27 to 05-01 fires):
-1. Add X_HANDLE secret to workflow env for skills that need it
-2. Wire XAI_API_KEY repo secret + scripts/prefetch-xai.sh remix-tweets) case so .xai-cache/remix-tweets.json populates before Claude runs
-3. Or pause the 17:30 UTC cron until config sweep lands
+Operator action — single commit unblocks: add X_HANDLE workflow env + XAI_API_KEY repo-secret wire-up. The `remix-tweets)` case in scripts/prefetch-xai.sh already exists (line 113) but requires VAR (handle). Strong recommendation: pause this cron until config sweep lands — daily fire is pure pager fatigue.
 
-source: cache=miss, xai=fail, fetched=0, kept=0, drops=0
+source: cache=miss, xai=fail (not attempted), fetched=0, kept=0, drops=0

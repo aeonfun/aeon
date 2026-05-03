@@ -1,0 +1,200 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_error",
+        "sep1",
+        "heading_resolution",
+        "stack_resolution",
+        "sep2",
+        "heading_operator",
+        "stack_operator",
+        "sep3",
+        "heading_source",
+        "stack_source"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "no handle configured (7th consecutive fire: 04-27/28/29/30, 05-01/02/03)",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_resolution": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolution attempted",
+        "level": "h3"
+      }
+    },
+    "stack_resolution": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_res_1",
+        "text_res_2",
+        "text_res_3",
+        "text_res_4",
+        "text_res_5"
+      ]
+    },
+    "text_res_1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE env: unset"
+      }
+    },
+    "text_res_2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity: no @handle (operator referenced as Thomas Scaria / Lore / Swarm Lab only)"
+      }
+    },
+    "text_res_3": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml `var:` per SKILL.md L9 reserved for time-window override, not handle"
+      }
+    },
+    "text_res_4": {
+      "type": "Text",
+      "props": {
+        "text": "$XAI_API_KEY env: missing (would have failed at fetch step regardless)"
+      }
+    },
+    "text_res_5": {
+      "type": "Text",
+      "props": {
+        "text": ".xai-cache/remix-tweets.json: absent (.xai-cache/ dir does not exist)"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_operator": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator action — single commit unblocks",
+        "level": "h3"
+      }
+    },
+    "stack_operator": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_op_1",
+        "text_op_2",
+        "text_op_3"
+      ]
+    },
+    "text_op_1": {
+      "type": "Text",
+      "props": {
+        "text": "add X_HANDLE workflow env + XAI_API_KEY repo-secret wire-up"
+      }
+    },
+    "text_op_2": {
+      "type": "Text",
+      "props": {
+        "text": "The `remix-tweets)` case in scripts/prefetch-xai.sh already exists (line 113) but requires VAR (handle)"
+      }
+    },
+    "text_op_3": {
+      "type": "Text",
+      "props": {
+        "text": "Strong recommendation: pause this cron until config sweep lands — daily fire is pure pager fatigue"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_source": {
+      "type": "Heading",
+      "props": {
+        "text": "Source",
+        "level": "h3"
+      }
+    },
+    "stack_source": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_source_cache",
+        "text_source_xai",
+        "text_source_fetched",
+        "text_source_kept",
+        "text_source_drops"
+      ]
+    },
+    "text_source_cache": {
+      "type": "Text",
+      "props": {
+        "text": "cache=miss"
+      }
+    },
+    "text_source_xai": {
+      "type": "Text",
+      "props": {
+        "text": "xai=fail (not attempted)"
+      }
+    },
+    "text_source_fetched": {
+      "type": "Text",
+      "props": {
+        "text": "fetched=0"
+      }
+    },
+    "text_source_kept": {
+      "type": "Text",
+      "props": {
+        "text": "kept=0"
+      }
+    },
+    "text_source_drops": {
+      "type": "Text",
+      "props": {
+        "text": "drops=0"
+      }
+    }
+  }
+}
