@@ -1,0 +1,144 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "source_info",
+        "sep1",
+        "ai_section",
+        "sep2",
+        "crypto_section",
+        "sep3",
+        "topics_note"
+      ]
+    },
+    "source_info": {
+      "type": "Text",
+      "props": {
+        "text": "Source: cache:0 websearch:2 failed:1",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "ai_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai_category",
+        "ai_story_wrapper"
+      ]
+    },
+    "ai_category": {
+      "type": "Badge",
+      "props": {
+        "text": "AI / LLM / agents",
+        "variant": "secondary"
+      }
+    },
+    "ai_story_wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai_context",
+        "ai_story_link",
+        "ai_story_content"
+      ]
+    },
+    "ai_context": {
+      "type": "Text",
+      "props": {
+        "text": "single story dominating: Anthropic eclipses OpenAI on revenue",
+        "variant": "lead"
+      }
+    },
+    "ai_story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Anthropic eclipses OpenAI on revenue",
+        "href": "https://x.com/NoLimitGains/status/2049213286311436597",
+        "source": "NoLimitGains"
+      }
+    },
+    "ai_story_content": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic ARR hit $30B in April 2026 vs OpenAI's $24B; first time Anthropic has outearned OpenAI, with growth $1B (Jan 2025) → $30B in 15 months. The ARR-leadership flip is real, but Register reporting frames it as fewer-but-larger enterprise customers vs. OpenAI's mass-market base — different revenue shapes, not a like-for-like overtake.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "crypto_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crypto_category",
+        "crypto_story_wrapper"
+      ]
+    },
+    "crypto_category": {
+      "type": "Badge",
+      "props": {
+        "text": "crypto / bitcoin / DeFi",
+        "variant": "secondary"
+      }
+    },
+    "crypto_story_wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "crypto_story_link",
+        "crypto_story_content"
+      ]
+    },
+    "crypto_story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ETF demand returns after 5-week outflow streak",
+        "href": "https://x.com/BitcoinNewsCom/status/2050296195398955369",
+        "source": "BitcoinNewsCom"
+      }
+    },
+    "crypto_story_content": {
+      "type": "Text",
+      "props": {
+        "text": "Spot Bitcoin ETFs drew $1.97B of inflows in April, the highest monthly flow YTD. Reverses the Feb-Mar outflow regime; relevant for the BTC $78k consolidation that's been stuck below the $80k psychological resistance.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "topics_note": {
+      "type": "Text",
+      "props": {
+        "text": "startups / open source topic dropped — no items inside the 48h window survived filter",
+        "variant": "muted"
+      }
+    }
+  }
+}
