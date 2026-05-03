@@ -1,0 +1,31 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "swarm-fund-mvp Just Made Aeon a Trading Signal"
+      },
+      "children": [
+        "thesis-text",
+        "article-link"
+      ]
+    },
+    "thesis-text": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp wired Aeon as a live data source this week — ADR-093 (commit dc1846e) ships a 15-min polling adapter against tomscaria/aeon's outputs/{skill}/{date}.json, and 30 of 38 net-new agents this week are aeon-narrative variants (79% of new fleet capacity).",
+        "variant": "lead"
+      }
+    },
+    "article-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-article-2026-05-03",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-03.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
