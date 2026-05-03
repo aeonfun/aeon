@@ -1,0 +1,224 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet",
+        "description": "ingest resolution text not titles (calibrationgap upgrade)"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "variant-1-section",
+        "sep-1",
+        "variant-2-section",
+        "sep-2",
+        "variant-3-section",
+        "sep-3",
+        "variant-4-section",
+        "sep-4",
+        "variant-5-section",
+        "sep-5",
+        "recommendation"
+      ]
+    },
+    "variant-1-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "variant-1-label",
+        "variant-1a-text",
+        "variant-1b-text"
+      ]
+    },
+    "variant-1-label": {
+      "type": "Badge",
+      "props": {
+        "text": "ONE-LINER"
+      }
+    },
+    "variant-1a-text": {
+      "type": "Text",
+      "props": {
+        "text": "1a. Quant scanners read titles. Markets resolve on text."
+      }
+    },
+    "variant-1b-text": {
+      "type": "Text",
+      "props": {
+        "text": "1b. Most calibration models lose to a kid with a comments tab."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "variant-2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "variant-2-label",
+        "variant-2a-text",
+        "variant-2b-text"
+      ]
+    },
+    "variant-2-label": {
+      "type": "Badge",
+      "props": {
+        "text": "TWO-PUNCH"
+      }
+    },
+    "variant-2a-text": {
+      "type": "Text",
+      "props": {
+        "text": "2a. Russia-Ukraine ceasefire May-31 sits at 6% YES. Resolution rule excludes humanitarian, unilateral, and non-general pauses by name. Putin's offer fails 3 of 4."
+      }
+    },
+    "variant-2b-text": {
+      "type": "Text",
+      "props": {
+        "text": "2b. The edge isn't predicting the war. It's reading the resolution clause. CalibrationGap was blind to language asymmetry until we ingested the text."
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "variant-3-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "variant-3-label",
+        "variant-3a-text",
+        "variant-3b-text"
+      ]
+    },
+    "variant-3-label": {
+      "type": "Badge",
+      "props": {
+        "text": "PARAGRAPH"
+      }
+    },
+    "variant-3a-text": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Quant scanners read market titles. They miss the one place edge actually lives: resolution text. Iran-cease-fire 0.25% NO. Hez-cease-fire 99.85% YES. Near-identical clauses, opposite resolutions. Same scanner, blind to both."
+      }
+    },
+    "variant-3b-text": {
+      "type": "Text",
+      "props": {
+        "text": "3b. Calibration-on-titles is a solved problem. Brier-beating LLMs still lose money on Polymarket because the alpha moved into the clause-level language a paragraph below the headline. Read the rules or punt the trade."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "variant-4-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "variant-4-label",
+        "variant-4a-text",
+        "variant-4b-text"
+      ]
+    },
+    "variant-4-label": {
+      "type": "Badge",
+      "props": {
+        "text": "LONG TWEET"
+      }
+    },
+    "variant-4a-text": {
+      "type": "Text",
+      "props": {
+        "text": "4a. Spent the week instrumenting CalibrationGap to ingest resolution clauses, not just market titles. Found the obvious thing in the obvious place: Russia-Ukraine ceasefire markets price the headline event ('truce announced') and ignore the legal bar ('general, bilateral, multi-day'). Putin's May 9 Victory Day pause fails three of four resolution criteria. May-31 6% YES is correctly priced. June-30 11.5%. EoY 25.5%. The trade is the comments-side leverage window 05-08 to 05-10."
+      }
+    },
+    "variant-4b-text": {
+      "type": "Text",
+      "props": {
+        "text": "4b. Everyone is building Brier-beating LLM forecasters. The 2026 papers converge on the same answer: calibration is solved, profit is not. Why? The Brier benchmark scores against the title. The market resolves against a 400-word legal clause attached to a UMA oracle. PolyBench, Prophet Arena, Semantic Trading — all measuring the wrong gap. The unsolved problem is reading the rules, not predicting the news."
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "variant-5-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "variant-5-label",
+        "variant-5a-text",
+        "variant-5b-text"
+      ]
+    },
+    "variant-5-label": {
+      "type": "Badge",
+      "props": {
+        "text": "THREAD OPENER"
+      }
+    },
+    "variant-5a-text": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Why do LLMs now beat the Brier baseline on Polymarket but still lose money? Looked at every binary CalibrationGap closed last month. The answer is unsexy and one paragraph long."
+      }
+    },
+    "variant-5b-text": {
+      "type": "Text",
+      "props": {
+        "text": "5b. 29 closed trades. 76% win. +$415 P&L. Sharpe 0.31. The single biggest upgrade we have queued for the last 71 trades to Apex isn't a model swap. It's reading the small print."
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation": {
+      "type": "Alert",
+      "props": {
+        "type": "success",
+        "title": "Recommended",
+        "message": "best: #4a — operator voice, concrete trade window, threads CalibrationGap thesis with a live Polymarket position"
+      }
+    }
+  }
+}
