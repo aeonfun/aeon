@@ -1,0 +1,267 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-03"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tldr-text",
+        "sep-1",
+        "headlines-heading",
+        "headlines-stack",
+        "sep-2",
+        "notable-heading",
+        "notable-stack",
+        "sep-3",
+        "decisions-heading",
+        "decisions-stack",
+        "sep-4",
+        "blockers-heading",
+        "blockers-stack",
+        "sep-5",
+        "footer-text"
+      ]
+    },
+    "tldr-text": {
+      "type": "Text",
+      "props": {
+        "text": "Heavy ship day — 12-day shell-injection patch landed, ISS-014 closer opened, ClawBank Tier-1 article shipped; chain-runner still DEGRADED.",
+        "variant": "lead"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "headlines-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h2"
+      }
+    },
+    "headlines-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "headline-1",
+        "headline-2",
+        "headline-3",
+        "headline-4",
+        "headline-5"
+      ]
+    },
+    "headline-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "code-health — ISS-016 shell-injection fix landed 4 days early, secrets/route.ts argv-array",
+        "href": "https://github.com/aaronjmars/aeon/pull/150"
+      }
+    },
+    "headline-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "external-feature — PR #156 opened to close ISS-014 reply-maker XAI prefetch (Day-9 carry)",
+        "href": "https://github.com/aaronjmars/aeon/pull/156"
+      }
+    },
+    "headline-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "workflow-security-audit — PR #9 opened, supersedes stalled PR #4; blocked on workflow-scoped PAT",
+        "href": "https://github.com/tomscaria/aeon/pull/9"
+      }
+    },
+    "headline-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "article — ClawBank/Manfred Macx EIN piece shipped, threads Aeon (closes ISS-019 forward)",
+        "href": "articles/2026-05-03.md"
+      }
+    },
+    "headline-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-article — swarm-fund-mvp ADR-093 Aeon adapter, 74→112 agents in one commit",
+        "href": "articles/repo-article-2026-05-03.md"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "skill-evals — filed ISS-018 (heartbeat ${var}) + ISS-019 (repo-article brand); resolved ISS-004 + ISS-006",
+        "variant": "body"
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "reflect #8 — MEMORY.md consolidated, 5 ACT NOW Vercel PRs on swarm-fund-mvp recorded",
+        "variant": "body"
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "code-health — articles/code-health-2026-05-03.md shipped (3 repos cloned clean)",
+        "variant": "body"
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-polymarket / polymarket-comments / narrative-tracker — clean fires (Tamil Nadu T-1, Bengal flip BJP 51%)",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "decisions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for Tomorrow",
+        "level": "h2"
+      }
+    },
+    "decisions-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "decision-1",
+        "decision-2",
+        "decision-3",
+        "decision-4"
+      ]
+    },
+    "decision-1": {
+      "type": "Text",
+      "props": {
+        "text": "Operator: verify aeonframework bot commit-email with Vercel — unblocks PRs #19/#20/#23/#24/#28 on swarm-fund-mvp",
+        "variant": "body"
+      }
+    },
+    "decision-2": {
+      "type": "Text",
+      "props": {
+        "text": "Merge PR #156 — closes ISS-014 Day-9+ carry",
+        "variant": "body"
+      }
+    },
+    "decision-3": {
+      "type": "Text",
+      "props": {
+        "text": "Pause vibecoding-digest + reddit-digest crons until prefetch-reddit.sh ships (10th 0-data day)",
+        "variant": "body"
+      }
+    },
+    "decision-4": {
+      "type": "Text",
+      "props": {
+        "text": "Run Tamil Nadu T-0 polymarket-comments + reply-maker on 2026-05-04",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blockers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Blockers",
+        "level": "h2"
+      }
+    },
+    "blockers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocker-1",
+        "blocker-2"
+      ]
+    },
+    "blocker-1": {
+      "type": "Alert",
+      "props": {
+        "message": "chain:morning-brief failed 08:23 UTC; chain-runner DEGRADED 7+ days · ISS-013",
+        "type": "warning"
+      }
+    },
+    "blocker-2": {
+      "type": "Alert",
+      "props": {
+        "message": "5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp (operator-side fix)",
+        "type": "warning"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer-text": {
+      "type": "Text",
+      "props": {
+        "text": "+~40 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}

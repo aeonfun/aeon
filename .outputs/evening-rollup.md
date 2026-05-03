@@ -1,31 +1,27 @@
-*Evening Recap — 2026-05-02*
-_TL;DR: heavy harvest — ISS-017 demoted critical→high (20:00 cron landed clean), 9 articles + PR #28 shipped, zero new failure modes._
+*Evening Recap — 2026-05-03*
+_TL;DR: heavy ship day — 12-day shell-injection patch landed, ISS-014 closer opened, ClawBank Tier-1 article shipped; chain-runner still DEGRADED._
 
 *Headlines:*
-- ISS-017 demoted critical→high at 20:03Z; chain-runner DEGRADED now operator #1 · memory/issues/ISS-017.md
-- external-feature PR #28 opened on swarm-fund-mvp · https://github.com/tomscaria/swarm-fund-mvp/pull/28
-- article: CalibrationGap = ingest resolution text not titles (Russia-UA truce can't resolve) · articles/2026-05-02.md
-- repo-article: swarm-fund-mvp shipped 7 ADRs in 7 days, all selector-layer · articles/repo-article-2026-05-02.md
-- github-issues: 4 ACT NOW Vercel-FAILURE PRs — bot-email fix unblocks #19/#20/#23/#24 · https://github.com/tomscaria/swarm-fund-mvp/pull/24
+- code-health — ISS-016 shell-injection fix landed 4 days early, secrets/route.ts argv-array · https://github.com/aaronjmars/aeon/pull/150
+- external-feature — PR #156 opened to close ISS-014 reply-maker XAI prefetch (Day-9 carry) · https://github.com/aaronjmars/aeon/pull/156
+- workflow-security-audit — PR #9 opened, supersedes stalled PR #4; blocked on workflow-scoped PAT · https://github.com/tomscaria/aeon/pull/9
+- article — ClawBank/Manfred Macx EIN piece shipped, threads Aeon (closes ISS-019 forward) · articles/2026-05-03.md
+- repo-article — swarm-fund-mvp ADR-093 Aeon adapter, 74→112 agents in one commit · articles/repo-article-2026-05-03.md
 
 *Notable:*
-- paper-digest: 3 papers shipped · articles/paper-digest-2026-05-02.md
-- paper-pick: triple-Darwinian-axis day (CORAL + GEA + Hyperagents 05-01)
-- research-brief: Russia-UA CFTC NOPR by Dec 31 2026 · articles/research-brief-russia-ukraine-ceasefire-may2026-prediction-markets-2026-05-02.md
-- token-pick: Strait of Hormuz NO at 54.5¢, fair ~12%
-- reflect #7 (MEMORY rewrite); code-health Day 12 secrets/route.ts:96 (ISS-016 T-5)
+- skill-evals — filed ISS-018 (heartbeat ${var}) + ISS-019 (repo-article brand); resolved ISS-004 + ISS-006
+- reflect #8 — MEMORY.md consolidated, 5 ACT NOW Vercel PRs on swarm-fund-mvp recorded
+- code-health — articles/code-health-2026-05-03.md shipped (3 repos cloned clean)
+- monitor-polymarket / polymarket-comments / narrative-tracker — clean fires (Tamil Nadu T-1, Bengal flip BJP 51%)
 
 *Decisions for tomorrow:*
-- Operator: fix aeonframework Vercel commit-email (id 272311952) — unblocks 4 swarm-fund PRs
-- Operator: patch chain-runner.yml dispatch_skill() — #1 post-demote
-- Patch dashboard/app/api/secrets/route.ts:96 before 2026-05-07 (ISS-016 T-5)
-- Merge or close PR tomscaria/aeon#1 (7+ days stalled)
+- Operator: verify aeonframework bot commit-email with Vercel — unblocks PRs #19/#20/#23/#24/#28 on swarm-fund-mvp
+- Merge PR #156 — closes ISS-014 Day-9+ carry
+- Pause vibecoding-digest + reddit-digest crons until prefetch-reddit.sh ships (10th 0-data day)
+- Run Tamil Nadu T-0 polymarket-comments + reply-maker on 2026-05-04
 
 *Blockers:*
-- chain:morning-brief failed 08:10Z, chain:evening-rollup failed 05-01 — chain-runner DEGRADED 7+d
-- reddit-digest 8th day ERROR — prefetch-reddit.sh missing (ISS-002/012)
-- reply-maker EMPTY #7, agent-buzz EMPTY #6, remix-tweets EMPTY #6 — XAI prefetch gaps (ISS-014)
-- list-digest SKIPPED #2 (var); farcaster-digest NEYNAR_API_KEY unset; vuln-scanner ERROR (ISS-001)
+- chain:morning-brief failed 08:23 UTC; chain-runner DEGRADED 7+ days · ISS-013
+- 5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp (operator-side fix)
 
-_~12 routine runs collapsed · sources: log=ok cron-state=ok_
-
+_+~40 routine runs collapsed · sources: log=ok cron-state=ok_
