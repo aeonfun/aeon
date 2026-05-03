@@ -84,8 +84,8 @@
     "last_error": "2b30ebd\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-polymarket": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:50:56Z",
     "total_runs": 23,
     "total_successes": 6,
@@ -96,8 +96,8 @@
     "last_error": "24f4f95\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-kalshi": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:51:00Z",
     "total_runs": 24,
     "total_successes": 7,
@@ -132,8 +132,8 @@
     "last_error": "1e996d2\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-report": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:42:03Z",
     "total_runs": 28,
     "total_successes": 6,
@@ -144,8 +144,8 @@
     "last_error": "d9e0a6a\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "market-context-refresh": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:48:31Z",
     "total_runs": 23,
     "total_successes": 7,
@@ -156,8 +156,8 @@
     "last_error": "0e981d7\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "polymarket-comments": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:55:32Z",
     "total_runs": 22,
     "total_successes": 7,
@@ -168,8 +168,8 @@
     "last_error": "8473d14\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "narrative-tracker": {
-    "last_dispatch": "2026-05-02T13:40:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-03T13:46:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-02T13:51:47Z",
     "total_runs": 23,
     "total_successes": 6,
