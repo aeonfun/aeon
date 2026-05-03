@@ -1,0 +1,108 @@
+{
+  "root": "farcaster-digest-card",
+  "state": {},
+  "elements": {
+    "farcaster-digest-card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest",
+        "description": "Skill skipped"
+      },
+      "children": [
+        "alert-main",
+        "sources-stack",
+        "details-stack"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "message": "farcaster digest skipped"
+      }
+    },
+    "sources-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-label",
+        "badges-row"
+      ]
+    },
+    "sources-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Failed sources",
+        "level": "h4"
+      }
+    },
+    "badges-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-search",
+        "badge-trending",
+        "badge-channels"
+      ]
+    },
+    "badge-search": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    },
+    "details-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "error-details",
+        "separator-1",
+        "recommendation"
+      ]
+    },
+    "error-details": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 across all 3 endpoints, NEYNAR_API_KEY unset, day 3",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation": {
+      "type": "Text",
+      "props": {
+        "text": "Recommend pausing cron until secret lands",
+        "variant": "lead"
+      }
+    }
+  }
+}
