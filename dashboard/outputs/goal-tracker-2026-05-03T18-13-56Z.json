@@ -1,0 +1,653 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-05-03"
+      },
+      "children": [
+        "summary_section",
+        "sep1",
+        "blocked_section",
+        "sep2",
+        "on_track_section",
+        "sep3",
+        "sources_section"
+      ]
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "summary_text",
+        "status_at_risk",
+        "status_needs_attn",
+        "status_on_track",
+        "status_blocked",
+        "status_done",
+        "trend_badge"
+      ]
+    },
+    "summary_text": {
+      "type": "Text",
+      "props": {
+        "text": "12 goals",
+        "variant": "lead"
+      }
+    },
+    "status_at_risk": {
+      "type": "Stat",
+      "props": {
+        "label": "at risk",
+        "value": "0"
+      }
+    },
+    "status_needs_attn": {
+      "type": "Stat",
+      "props": {
+        "label": "needs attention",
+        "value": "0"
+      }
+    },
+    "status_on_track": {
+      "type": "Stat",
+      "props": {
+        "label": "on track",
+        "value": "8"
+      }
+    },
+    "status_blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "blocked",
+        "value": "4"
+      }
+    },
+    "status_done": {
+      "type": "Stat",
+      "props": {
+        "label": "done",
+        "value": "0"
+      }
+    },
+    "trend_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "flat vs prior run",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blocked_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "blocked_heading",
+        "blocked_items"
+      ]
+    },
+    "blocked_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h2"
+      }
+    },
+    "blocked_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "blocked_item_1",
+        "blocked_item_2",
+        "blocked_item_3",
+        "blocked_item_4"
+      ]
+    },
+    "blocked_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b1_title",
+        "b1_desc",
+        "b1_action",
+        "b1_status"
+      ]
+    },
+    "b1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill()",
+        "level": "h3"
+      }
+    },
+    "b1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on operator-side workflow patch, 7+ days idle"
+      }
+    },
+    "b1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Add echo \"dispatching $skill\" before each gh workflow run in chain-runner.yml.",
+        "variant": "caption"
+      }
+    },
+    "b1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "blocked_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b2_title",
+        "b2_desc",
+        "b2_action",
+        "b2_status"
+      ]
+    },
+    "b2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "4 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp (#19/#20/#23/#24)",
+        "level": "h3"
+      }
+    },
+    "b2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on aeonframework bot commit-email verification with Vercel"
+      }
+    },
+    "b2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Verify aeonframework commit-email in Vercel dashboard to unblock all four PRs at once.",
+        "variant": "caption"
+      }
+    },
+    "b2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "new",
+        "variant": "destructive"
+      }
+    },
+    "blocked_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b3_title",
+        "b3_desc",
+        "b3_action",
+        "b3_status"
+      ]
+    },
+    "b3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator config sweep",
+        "level": "h3"
+      }
+    },
+    "b3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on operator-side prefetch + secret population"
+      }
+    },
+    "b3_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Land scripts/prefetch-reddit.sh to close ISS-002 + ISS-012 in one PR.",
+        "variant": "caption"
+      }
+    },
+    "b3_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "blocked_item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b4_title",
+        "b4_desc",
+        "b4_action",
+        "b4_status"
+      ]
+    },
+    "b4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Stalin-tier review (ISS-015 / workflow-security-audit)",
+        "level": "h3"
+      }
+    },
+    "b4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Waiting on workflow-scoped PAT for PR #4, ~6 days stalled"
+      }
+    },
+    "b4_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Mint workflow-scoped PAT and re-trigger PR #4.",
+        "variant": "caption"
+      }
+    },
+    "b4_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "on_track_heading",
+        "on_track_items"
+      ]
+    },
+    "on_track_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h2"
+      }
+    },
+    "on_track_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "track_item_1",
+        "track_item_2",
+        "track_item_3",
+        "track_item_4",
+        "track_item_5",
+        "track_item_6",
+        "track_item_7",
+        "track_item_8"
+      ]
+    },
+    "track_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t1_title",
+        "t1_activity",
+        "t1_status"
+      ]
+    },
+    "t1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "ISS-017 cron-tick-gap watch (post-demote)",
+        "level": "h3"
+      }
+    },
+    "t1_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 9 activity/14d"
+      }
+    },
+    "t1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t2_title",
+        "t2_activity",
+        "t2_status"
+      ]
+    },
+    "t2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch",
+        "level": "h3"
+      }
+    },
+    "t2_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d"
+      }
+    },
+    "t2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "new",
+        "variant": "secondary"
+      }
+    },
+    "track_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t3_title",
+        "t3_activity",
+        "t3_status"
+      ]
+    },
+    "t3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments",
+        "level": "h3"
+      }
+    },
+    "t3_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 9 activity/14d"
+      }
+    },
+    "t3_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t4_title",
+        "t4_activity",
+        "t4_status"
+      ]
+    },
+    "t4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Hermes-arb gate adjustment: bump min-gap 7pp → ~7.5–8pp",
+        "level": "h3"
+      }
+    },
+    "t4_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 9 activity/14d"
+      }
+    },
+    "t4_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t5_title",
+        "t5_activity",
+        "t5_status"
+      ]
+    },
+    "t5_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5 carrier)",
+        "level": "h3"
+      }
+    },
+    "t5_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 9 activity/14d"
+      }
+    },
+    "t5_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t6_title",
+        "t6_activity",
+        "t6_status"
+      ]
+    },
+    "t6_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Land code-health fix at dashboard/app/api/secrets/route.ts:96",
+        "level": "h3"
+      }
+    },
+    "t6_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 8 activity/14d"
+      }
+    },
+    "t6_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t7_title",
+        "t7_activity",
+        "t7_status"
+      ]
+    },
+    "t7_title": {
+      "type": "Heading",
+      "props": {
+        "text": "weekly-shiplog Mondays → forward to grant committees",
+        "level": "h3"
+      }
+    },
+    "t7_activity": {
+      "type": "Text",
+      "props": {
+        "text": "1d idle, 7 activity/14d"
+      }
+    },
+    "t7_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "track_item_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t8_title",
+        "t8_activity",
+        "t8_status"
+      ]
+    },
+    "t8_title": {
+      "type": "Heading",
+      "props": {
+        "text": "paper-pick daily → builds PhD reading list",
+        "level": "h3"
+      }
+    },
+    "t8_activity": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 9 activity/14d"
+      }
+    },
+    "t8_status": {
+      "type": "Badge",
+      "props": {
+        "text": "flat",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_items"
+      ]
+    },
+    "sources_heading": {
+      "type": "Text",
+      "props": {
+        "text": "Sources",
+        "variant": "muted"
+      }
+    },
+    "sources_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "source_logs",
+        "source_git",
+        "source_gh_pr",
+        "source_gh_issue",
+        "source_cron"
+      ]
+    },
+    "source_logs": {
+      "type": "Badge",
+      "props": {
+        "text": "logs: ok",
+        "variant": "default"
+      }
+    },
+    "source_git": {
+      "type": "Badge",
+      "props": {
+        "text": "git: ok",
+        "variant": "default"
+      }
+    },
+    "source_gh_pr": {
+      "type": "Badge",
+      "props": {
+        "text": "gh_pr: ok",
+        "variant": "default"
+      }
+    },
+    "source_gh_issue": {
+      "type": "Badge",
+      "props": {
+        "text": "gh_issue: fail (disabled)",
+        "variant": "destructive"
+      }
+    },
+    "source_cron": {
+      "type": "Badge",
+      "props": {
+        "text": "cron-state: ok",
+        "variant": "default"
+      }
+    }
+  }
+}

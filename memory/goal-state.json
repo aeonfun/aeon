@@ -1,50 +1,55 @@
 {
-  "run_at": "2026-05-02T18:05:00Z",
+  "run_at": "2026-05-03T18:12:00Z",
   "goals": {
-    "iss-017-cron-tick-gap-watch": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 3,
-      "last_activity_date": "2026-05-02"
-    },
     "fix-chain-runner-yml-dispatch-skill": {
       "status": "BLOCKED",
-      "activity_count_14d": 7,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
+    },
+    "4-act-now-vercel-failure-prs-on-swarm-fund-mvp": {
+      "status": "BLOCKED",
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-05-03"
+    },
+    "iss-017-cron-tick-gap-watch": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
+    },
+    "monitor-runners-deep-liq-floor-patch": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-05-03"
     },
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
     },
     "operator-config-sweep": {
       "status": "BLOCKED",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-02"
-    },
-    "external-feature-prs-to-swarm-fund-mvp": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 7,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
     },
     "stalin-tier-review-workflow-security-audit-iss-015": {
       "status": "BLOCKED",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 7,
+      "last_activity_date": "2026-05-03"
     },
     "land-code-health-fix-dashboard-secrets-route": {
       "status": "ON_TRACK",
-      "activity_count_14d": 7,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-05-03"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
       "status": "ON_TRACK",
@@ -53,8 +58,8 @@
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-02"
+      "activity_count_14d": 9,
+      "last_activity_date": "2026-05-03"
     }
   }
 }
