@@ -1,0 +1,113 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "alert-recurring",
+        "separator1",
+        "main-message",
+        "status-stack",
+        "separator2",
+        "results-section",
+        "separator3",
+        "config-alert"
+      ]
+    },
+    "alert-recurring": {
+      "type": "Alert",
+      "props": {
+        "title": "7th consecutive empty/error",
+        "type": "error"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "main-message": {
+      "type": "Text",
+      "props": {
+        "text": "quiet day, no survivors",
+        "variant": "lead"
+      }
+    },
+    "status-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-fallback",
+        "badge-api-key"
+      ]
+    },
+    "badge-fallback": {
+      "type": "Badge",
+      "props": {
+        "text": "WebSearch fallback only",
+        "variant": "secondary"
+      }
+    },
+    "badge-api-key": {
+      "type": "Badge",
+      "props": {
+        "text": "XAI_API_KEY unset",
+        "variant": "destructive"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "results-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-articles",
+        "stat-tweets"
+      ]
+    },
+    "stat-articles": {
+      "type": "Stat",
+      "props": {
+        "label": "article-level results surfaced",
+        "value": "~30"
+      }
+    },
+    "stat-tweets": {
+      "type": "Stat",
+      "props": {
+        "label": "fresh tweets with engagement metadata",
+        "value": "0"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "config-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Configuration missing",
+        "message": "prefetch case still missing in scripts/prefetch-xai.sh",
+        "type": "warning"
+      }
+    }
+  }
+}

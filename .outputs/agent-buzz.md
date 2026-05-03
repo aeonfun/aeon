@@ -1,1 +1,1 @@
-Agent Buzz — 2026-05-02: quiet day, no survivors. (WebSearch fallback only — XAI_API_KEY unset; ~25 candidates surfaced, all failed staleness or missing engagement metadata. 6th consecutive empty/error — agent-buzz) prefetch case still missing.)
+Agent Buzz — 2026-05-03: quiet day, no survivors. (WebSearch fallback only — XAI_API_KEY unset; ~30 article-level results surfaced, 0 fresh tweets with engagement metadata. 7th consecutive empty/error — agent-buzz) prefetch case still missing in scripts/prefetch-xai.sh.)
