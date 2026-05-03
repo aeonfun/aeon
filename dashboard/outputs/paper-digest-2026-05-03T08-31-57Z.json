@@ -1,0 +1,164 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest",
+        "description": "2026-05-03"
+      },
+      "children": [
+        "summary",
+        "market-alert",
+        "sep1",
+        "papers",
+        "sep2",
+        "full-link"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Thin week. 1 fresh self-evolution result, 1 multi-agent governance experiment with a 57pp gap, 1 replay-grade market simulator."
+      },
+      "children": []
+    },
+    "market-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "Zero new Polymarket microstructure since 05-01."
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "papers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper1",
+        "sep-p1",
+        "paper2",
+        "sep-p2",
+        "paper3"
+      ]
+    },
+    "paper1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p1-title",
+        "p1-desc"
+      ]
+    },
+    "p1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Spontaneous Reward-Free Self-Evolution",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "p1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Intrinsic outcome-reward, +20% on WebVoyager/WebWalker (↑9)"
+      },
+      "children": []
+    },
+    "sep-p1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "paper2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p2-title",
+        "p2-desc"
+      ]
+    },
+    "p2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "When Agents Evolve, Institutions Follow",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "p2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "7 historical institutions × 3 LLMs, 57pp gap best-vs-worst (↑1)"
+      },
+      "children": []
+    },
+    "sep-p2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "paper3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p3-title",
+        "p3-desc"
+      ]
+    },
+    "p3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "EvoMarket",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "p3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Oracle-guided in-run-calibrated multi-agent LOB sim, China A-share replay 5 days"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "full-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full digest",
+        "href": "articles/paper-digest-2026-05-03.md"
+      },
+      "children": []
+    }
+  }
+}
