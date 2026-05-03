@@ -36,14 +36,16 @@ get_category() {
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
     workflow-security-audit|skill-security-scan|vercel-projects) echo "dev" ;;
     spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
+    smithery-manifest) echo "dev" ;;
     # Crypto & Markets
     token-alert|token-movers|token-report|token-pick|monitor-runners) echo "crypto" ;;
     on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
-    treasury-info|distribute-tokens) echo "crypto" ;;
+    treasury-info|distribute-tokens|contributor-reward) echo "crypto" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
-    show-hn-draft) echo "social" ;;
+    show-hn-draft|syndicate-article) echo "social" ;;
+    schedule-ads|create-campaign) echo "social" ;;
     # Productivity & Meta
     morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
