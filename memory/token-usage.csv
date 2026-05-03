@@ -79,4 +79,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,skill-evals,claude-sonnet-4-6,25,18267,1070159,48463
 2026-05-03,daily-routine,claude-opus-4-7,96,35047,6270486,145655
 2026-05-03,github-trending,claude-opus-4-7,1432,36612,2217727,144884
-2026-05-03,token-alert,claude-opus-4-7,18,5491,513999,30610
+2026-05-03,treasury-info,claude-opus-4-7,6502,4334,458195,49671

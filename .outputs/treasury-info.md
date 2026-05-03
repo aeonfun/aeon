@@ -1,7 +1,10 @@
 ## Summary
 
-- Ran `treasury-info` for 2026-05-02. Read `memory/MEMORY.md` and inspected `memory/on-chain-watches.yml`. The watches file exists but is configured as `watches: []` (zero `type: wallet` entries).
-- Per SKILL.md spec: "If the file exists but has zero `type: wallet` entries: log `TREASURY_INFO_OK — no wallets configured` and exit 0 without notifying." Executed that silent-skip branch.
-- No notification sent. No source APIs queried. No snapshot written to `memory/topics/treasury-snapshots.md`.
-- Files modified: `memory/logs/2026-05-02.md` (appended `### treasury-info` entry + summary).
-- Follow-up: none required from this run. Operator-side config sweep item from MEMORY.md "Next Priorities" still open — populate `memory/on-chain-watches.yml` with real wallet entries (label/address/chain/type:wallet) to activate the skill.
+Ran `treasury-info` (var empty → all-watches mode) on 2026-05-03.
+
+- **Status:** `TREASURY_INFO_OK — no wallets configured`
+- **Config check:** `memory/on-chain-watches.yml` exists but has `watches: []` (bootstrap template, zero `type: wallet` entries). Per skill spec, this triggers the silent-exit branch — log only, no notification, distinct from the file-missing branch which does notify once.
+- **Sources:** none contacted (short-circuited at config load before any Alchemy/Bankr/CoinGecko call).
+- **Files modified:** `memory/logs/2026-05-03.md` only. `memory/topics/treasury-snapshots.md` not created (no wallets to snapshot).
+- **Notification:** suppressed per spec.
+- **Follow-up:** Blocked on operator-side population of `memory/on-chain-watches.yml`. Already tracked under "Operator config sweep" in MEMORY.md Next Priorities — no new follow-up surfaced.
