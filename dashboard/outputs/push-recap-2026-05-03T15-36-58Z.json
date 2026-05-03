@@ -1,0 +1,231 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-03"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "status_line",
+        "shipping_badge",
+        "sep1",
+        "shipped_heading",
+        "shipped_items",
+        "sep2",
+        "under_heading",
+        "under_details",
+        "sep3",
+        "shape_stats",
+        "volume_stats",
+        "sep4",
+        "full_recap_link"
+      ]
+    },
+    "status_line": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp + aaronjmars/aeon — Aeon-Narrative ingestion adapter, 3 new skills, ISS-016 shell-injection patched",
+        "variant": "lead"
+      }
+    },
+    "shipping_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SHIPPING",
+        "variant": "secondary"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "shipped_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_item_1",
+        "shipped_item_2",
+        "shipped_item_3"
+      ]
+    },
+    "shipped_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_ref_title",
+        "item1_desc",
+        "item1_stats"
+      ]
+    },
+    "item1_ref_title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp dc1846e: Aeon-Narrative ingestion adapter (ADR-093)",
+        "variant": "lead"
+      }
+    },
+    "item1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "New python/execution/aeon_adapter.py polls tomscaria/aeon raw GitHub API every 15 min, emits MarketTick(kind=\"aeon_signal\"); aeon_narrative.on_tick() unstubbed and now emits Signals through full gate chain.",
+        "variant": "body"
+      }
+    },
+    "item1_stats": {
+      "type": "Text",
+      "props": {
+        "text": "53 files, +4,430/-783",
+        "variant": "caption"
+      }
+    },
+    "shipped_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_ref_title",
+        "item2_desc"
+      ]
+    },
+    "item2_ref_title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp 1125deb: 5 strategies wrapped into runner-swarm",
+        "variant": "lead"
+      }
+    },
+    "item2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fleet jumps 74→112 agents, 30→34 strategies in one commit (aeon-narrative 30 LH-sampled variants + ta-bb-squeeze + ta-macd-cross + ta-rsi-divergence + swarm-fragility).",
+        "variant": "body"
+      }
+    },
+    "shipped_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_ref_title",
+        "item3_desc",
+        "item3_timing"
+      ]
+    },
+    "item3_ref_title": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon PR #150: ISS-016 pre-empt",
+        "variant": "lead"
+      }
+    },
+    "item3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Shell-injection at dashboard/app/api/secrets/route.ts:96 closed by switching execSync(`gh secret set ${name}…`) to execFileSync('gh', ['secret','set',name,'-b',value]).",
+        "variant": "body"
+      }
+    },
+    "item3_timing": {
+      "type": "Text",
+      "props": {
+        "text": "Landed 4 days ahead of the 2026-05-07 MEMORY.md trigger date.",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "under_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h2"
+      }
+    },
+    "under_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "under_skills",
+        "under_files"
+      ]
+    },
+    "under_skills": {
+      "type": "Text",
+      "props": {
+        "text": "3 new skills on aaronjmars/aeon (PR #151 show-hn-draft, PR #152 fork-cohort weekly activation tracker, PR #153 operator-scorecard) all merged inside a 15-min window.",
+        "variant": "body"
+      }
+    },
+    "under_files": {
+      "type": "Text",
+      "props": {
+        "text": "87 untracked source files (auth/billing/email_funnel packages, 6 v1_* API routes, 3 Alembic migrations) finally committed on swarm-fund-mvp — first time CI sees them.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "shape_stats": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 11 user-visible · 14 internal · 1 infra · 75 metrics-cron filtered · 7 merged PRs",
+        "variant": "body"
+      }
+    },
+    "volume_stats": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: ~24,000 lines net additions across ~30 substantive commits",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "full_recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-03.md",
+        "source": "github"
+      }
+    }
+  }
+}
