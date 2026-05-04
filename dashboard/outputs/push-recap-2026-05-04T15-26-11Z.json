@@ -1,0 +1,191 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-04"
+      },
+      "children": [
+        "summary-text",
+        "shipped-section",
+        "under-the-hood-section",
+        "stats-section",
+        "full-recap-section"
+      ]
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-094 LLM router, skill-freshness watchdog, and 5 stalled fix PRs all land",
+        "variant": "lead"
+      }
+    },
+    "shipped-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped-heading",
+        "item-1",
+        "item-2",
+        "item-3"
+      ]
+    },
+    "shipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-1-title",
+        "item-1-details"
+      ]
+    },
+    "item-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp d010846 — ADR-094 task-aware LLM router"
+      }
+    },
+    "item-1-details": {
+      "type": "Text",
+      "props": {
+        "text": "python/llm/router.py NEW +353: task=classify|extract|... picks cheapest tier; suggestion log catches over-tiered call sites without override; paper_triage opus→sonnet (~$70 saved per 3.5k-paper run); /router_suggestions Telegram cmd",
+        "variant": "caption"
+      }
+    },
+    "item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-2-title",
+        "item-2-details"
+      ]
+    },
+    "item-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "aeon #157 32c77d7 — skill-freshness"
+      }
+    },
+    "item-2-details": {
+      "type": "Text",
+      "props": {
+        "text": "skills/skill-freshness/SKILL.md NEW +286: walks aeon.yml + grep over enabled SKILL.md for articles/.outputs/topics refs, scores mtimes per class, sha1-fingerprint dedup. Closes silent-staleness gap heartbeat/skill-health cannot see",
+        "variant": "caption"
+      }
+    },
+    "item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-3-title",
+        "item-3-prs"
+      ]
+    },
+    "item-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp 5 PRs all merge 21:57 UTC within 4s"
+      }
+    },
+    "item-3-prs": {
+      "type": "Text",
+      "props": {
+        "text": "#19 ssrn rowcount, #20 image-strip regex, #23 fractional pm-tail-risk horizon, #24 triage defensive parse, #28 variant_bandit tests — operator unblocked aeonframework email on Vercel; closes yesterday's ACT NOW item",
+        "variant": "caption"
+      }
+    },
+    "under-the-hood-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under-the-hood-heading",
+        "hood-item"
+      ]
+    },
+    "under-the-hood-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h2"
+      }
+    },
+    "hood-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hood-item-title",
+        "hood-item-details"
+      ]
+    },
+    "hood-item-title": {
+      "type": "Text",
+      "props": {
+        "text": "lore-financial-teaser 9b53f11"
+      }
+    },
+    "hood-item-details": {
+      "type": "Text",
+      "props": {
+        "text": "perf(bundle): lazy-load 6 below-fold sections, main bundle -13%; brand-voice enforcement (#6) ships same day as swarm-fund-mvp design cleanup (bf21c22)",
+        "variant": "caption"
+      }
+    },
+    "stats-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape-text",
+        "volume-text"
+      ]
+    },
+    "shape-text": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 12 user-visible · 9 internal · 0 infra · 99 bot-filtered · 7 merged PRs"
+      }
+    },
+    "volume-text": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: ~30 files, +2,168/-167 lines"
+      }
+    },
+    "full-recap-section": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-04.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
