@@ -1,0 +1,386 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Prediction Markets — 2026-05-04"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tldr",
+        "text_tldr",
+        "sep1",
+        "story1_heading",
+        "link1",
+        "text1_narrative",
+        "stack1_stats",
+        "text1_why_title",
+        "text1_why",
+        "sep2",
+        "story2_heading",
+        "link2",
+        "text2_narrative",
+        "stack2_stats",
+        "text2_why_title",
+        "text2_why",
+        "sep3",
+        "story3_heading",
+        "link3",
+        "text3_narrative",
+        "stack3_features",
+        "text3_why_title",
+        "text3_why",
+        "sep4",
+        "glance_heading",
+        "text_glance1",
+        "text_glance2",
+        "text_glance3"
+      ]
+    },
+    "heading_tldr": {
+      "type": "Heading",
+      "props": {
+        "text": "TL;DR",
+        "level": "h3"
+      }
+    },
+    "text_tldr": {
+      "type": "Text",
+      "props": {
+        "text": "Counting day in India: Polymarket priced TVK at 6.95¢ Sunday, market closed Monday at 99% — 92pp swing on a $22M market. BJP sweeps Bengal at 99.4%. Kalshi ships SelfExclude + parents' portal + facial verification same week Gillibrand-McCormick file Prediction Market Act of 2026.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu closes 99% TVK after pricing it 6.95¢ the day before — $22.66M traded",
+        "level": "h3"
+      }
+    },
+    "link1": {
+      "type": "Link",
+      "props": {
+        "label": "Polymarket: Tamil Nadu Legislative Assembly Election Winner",
+        "href": "https://polymarket.com/event/tamil-nadu-legislative-assembly-election-winner"
+      }
+    },
+    "text1_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "TVK led 107 seats to DMK's 59 in its electoral debut, breaking six decades of Dravidian dominance; Polymarket priced DMK as 87.5% favorite Sunday with TVK at 6.95¢. Market flipped to TVK 99% / DMK 0% during counting — 92pp swing on the highest-volume Indian state-election market ever.",
+        "variant": "body"
+      }
+    },
+    "stack1_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat1_tvk_seats",
+        "stat1_dmk_seats",
+        "stat1_dmk_initial",
+        "stat1_tvk_initial",
+        "stat1_tvk_final",
+        "stat1_volume"
+      ]
+    },
+    "stat1_tvk_seats": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK Seats",
+        "value": "107"
+      }
+    },
+    "stat1_dmk_seats": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK Seats",
+        "value": "59"
+      }
+    },
+    "stat1_dmk_initial": {
+      "type": "Stat",
+      "props": {
+        "label": "DMK Initial",
+        "value": "87.5%"
+      }
+    },
+    "stat1_tvk_initial": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK Initial",
+        "value": "6.95¢"
+      }
+    },
+    "stat1_tvk_final": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK Final",
+        "value": "99%"
+      }
+    },
+    "stat1_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$22.66M"
+      }
+    },
+    "text1_why_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Why it matters",
+        "level": "h4"
+      }
+    },
+    "text1_why": {
+      "type": "Text",
+      "props": {
+        "text": "Clean calibration-failure case study on a $22M PM. Resolution data is now harvestable; the WB + TN double-flip dataset feeds straight into the binary-calibration evaluator the same day.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BJP crosses 200 seats in West Bengal; Polymarket settles 99.4% on $6.58M",
+        "level": "h3"
+      }
+    },
+    "link2": {
+      "type": "Link",
+      "props": {
+        "label": "Polymarket: West Bengal Legislative Assembly Election Winner",
+        "href": "https://polymarket.com/event/west-bengal-legislative-assembly-election-winner"
+      }
+    },
+    "text2_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Counting confirmed Sunday's T-1 flip — Polymarket BJP 51% / TMC 48.9% with Phalodi Satta Bazar BJP 146-149 the same direction independently. ECI tally has BJP at 200+, AITC at 91. The flip-direction trade printed.",
+        "variant": "body"
+      }
+    },
+    "stack2_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat2_bjp_seats",
+        "stat2_aitc_seats",
+        "stat2_bjp_pm_sunday",
+        "stat2_tmc_pm_sunday",
+        "stat2_phalodi",
+        "stat2_final",
+        "stat2_volume"
+      ]
+    },
+    "stat2_bjp_seats": {
+      "type": "Stat",
+      "props": {
+        "label": "BJP (ECI)",
+        "value": "200+"
+      }
+    },
+    "stat2_aitc_seats": {
+      "type": "Stat",
+      "props": {
+        "label": "AITC (ECI)",
+        "value": "91"
+      }
+    },
+    "stat2_bjp_pm_sunday": {
+      "type": "Stat",
+      "props": {
+        "label": "BJP (Polymarket)",
+        "value": "51%"
+      }
+    },
+    "stat2_tmc_pm_sunday": {
+      "type": "Stat",
+      "props": {
+        "label": "TMC (Polymarket)",
+        "value": "48.9%"
+      }
+    },
+    "stat2_phalodi": {
+      "type": "Stat",
+      "props": {
+        "label": "Phalodi Satta Bazar",
+        "value": "146-149"
+      }
+    },
+    "stat2_final": {
+      "type": "Stat",
+      "props": {
+        "label": "Final (Polymarket)",
+        "value": "99.4%"
+      }
+    },
+    "stat2_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$6.58M"
+      }
+    },
+    "text2_why_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Why it matters",
+        "level": "h4"
+      }
+    },
+    "text2_why": {
+      "type": "Text",
+      "props": {
+        "text": "Convergence-trade thesis held — single-venue level was noise, two-venue agreement was the signal. Every Indian state market for the next 12 months screens the same way the day before counting.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Kalshi ships SelfExclude + parent portal + selfie verification, same week Gillibrand-McCormick file Prediction Market Act of 2026",
+        "level": "h3"
+      }
+    },
+    "link3": {
+      "type": "Link",
+      "props": {
+        "label": "Axios: Kalshi Prediction Market Trading Rules",
+        "href": "https://www.axios.com/2026/05/04/kalshi-prediction-market-trading-rules"
+      }
+    },
+    "text3_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi + IC360 launch cross-platform self-exclusion, a parents' submission portal, mandatory facial verification at signup, and 2FA. Senate bill from Gillibrand (D-NY) and McCormick (R-PA) would mandate age verification and self-exclusion industry-wide.",
+        "variant": "body"
+      }
+    },
+    "stack3_features": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_selfexclude",
+        "badge_parent_portal",
+        "badge_facial_verify",
+        "badge_2fa"
+      ]
+    },
+    "badge_selfexclude": {
+      "type": "Badge",
+      "props": {
+        "text": "SelfExclude",
+        "variant": "default"
+      }
+    },
+    "badge_parent_portal": {
+      "type": "Badge",
+      "props": {
+        "text": "Parent Portal",
+        "variant": "default"
+      }
+    },
+    "badge_facial_verify": {
+      "type": "Badge",
+      "props": {
+        "text": "Facial Verification",
+        "variant": "default"
+      }
+    },
+    "badge_2fa": {
+      "type": "Badge",
+      "props": {
+        "text": "2FA",
+        "variant": "default"
+      }
+    },
+    "text3_why_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Why it matters",
+        "level": "h4"
+      }
+    },
+    "text3_why": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi is pre-empting the bill with the bill's exact scope. Polymarket has no equivalent rollout; the regulatory delta widens heading into the CFTC NOPR window.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "glance_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Also worth a glance",
+        "level": "h3"
+      }
+    },
+    "text_glance1": {
+      "type": "Text",
+      "props": {
+        "text": "Coinbase chief policy officer Shirzad files CFTC letter calling prediction markets \"maturing\".",
+        "variant": "body"
+      }
+    },
+    "text_glance2": {
+      "type": "Text",
+      "props": {
+        "text": "Coalition for Prediction Markets concedes \"gaming\" should mean casino-style only.",
+        "variant": "body"
+      }
+    },
+    "text_glance3": {
+      "type": "Text",
+      "props": {
+        "text": "Clear Street partners with Kalshi for Wall Street prime-broker access (Bloomberg, May 1).",
+        "variant": "body"
+      }
+    }
+  }
+}

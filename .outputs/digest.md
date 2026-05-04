@@ -1,20 +1,21 @@
-*prediction markets — 2026-05-03*
+*prediction markets — 2026-05-04*
 
-_TL;DR: $26M sits on Polymarket's India election book with results dropping Monday, the combined Polymarket + Kalshi volume curve plateaued for the first time in seven months, and Hyperliquid's policy arm filed a function-based CFTC ANPRM letter the same week HIP-4 hit mainnet._
+_TL;DR: Counting day in India: Polymarket priced TVK at 6.95¢ Sunday, market closed Monday at 99% — 92pp swing on a $22M market. BJP sweeps Bengal at 99.4%. Kalshi ships SelfExclude + parents' portal + facial verification same week Gillibrand-McCormick file Prediction Market Act of 2026._
 
-1. *India election book on Polymarket hits $26M ahead of Monday's count*
-Tamil Nadu, West Bengal, Kerala, Assam, and Puducherry assembly results drop May 4. Tamil Nadu carries $20.5M of the $26M total with DMK at 88%; West Bengal $5.4M, TMC 53%; Assam BJP 98%; Kerala Congress 75%; Puducherry NDA 86%.
-Why it matters: First major non-US election book on Polymarket since the Brazil and Ukraine bans (platform now restricted in 34 countries). The 4-6c-fair tail bets (TVK, ADMK in Tamil Nadu) are still live tonight.
-https://www.businesstoday.in/elections/story/what-is-polymarket-and-why-is-it-trending-more-than-phalodi-satta-bazaar-ahead-of-assembly-election-results-528599-2026-05-03
+1. *Tamil Nadu closes 99% TVK after pricing it 6.95¢ the day before — $22.66M traded*
+TVK led 107 seats to DMK's 59 in its electoral debut, breaking six decades of Dravidian dominance; Polymarket priced DMK as 87.5% favorite Sunday with TVK at 6.95¢. Market flipped to TVK 99% / DMK 0% during counting — 92pp swing on the highest-volume Indian state-election market ever.
+Why it matters: Clean calibration-failure case study on a $22M PM. Resolution data is now harvestable; the WB + TN double-flip dataset feeds straight into the binary-calibration evaluator the same day.
+https://polymarket.com/event/tamil-nadu-legislative-assembly-election-winner
 
-2. *Polymarket + Kalshi combined April volume crosses $150B but ends a seven-month record streak*
-April was the first month since September 2025 without a new monthly volume record. Polymarket active traders fell to ~643K from ~733K in March; Kalshi continued growing.
-Why it matters: First plateau signal at the platform layer. The divergence — Polymarket cooling, Kalshi growing — fits the discount the $15B Polymarket round is taking to the $22B Kalshi/Coatue round.
-https://www.panewslab.com/en/articles/019de742-7622-70d3-9cdf-a39e46c1051a
+2. *BJP crosses 200 seats in West Bengal; Polymarket settles 99.4% on $6.58M*
+Counting confirmed Sunday's T-1 flip — Polymarket BJP 51% / TMC 48.9% with Phalodi Satta Bazar BJP 146-149 the same direction independently. ECI tally has BJP at 200+, AITC at 91. The flip-direction trade printed.
+Why it matters: Convergence-trade thesis held — single-venue level was noise, two-venue agreement was the signal. Every Indian state market for the next 12 months screens the same way the day before counting.
+https://polymarket.com/event/west-bengal-legislative-assembly-election-winner
 
-3. *Hyperliquid Policy Center files CFTC letter on ANPRM closing day*
-HPC asked the CFTC for a flexible, function-based framework accommodating decentralized prediction markets and preserving US-citizen access to onchain venues. Filed Apr 30, the comment deadline.
-Why it matters: Coordinated regulatory + product push two days before HIP-4's May 2 mainnet launch. Frames where the next round of decentralized-PM legal carve-outs will be argued.
-https://www.cryptotimes.io/2026/04/30/hpc-pushes-cftc-for-clarity-on-decentralized-prediction-markets/
+3. *Kalshi ships SelfExclude + parent portal + selfie verification, same week Gillibrand-McCormick file Prediction Market Act of 2026*
+Kalshi + IC360 launch cross-platform self-exclusion, a parents' submission portal, mandatory facial verification at signup, and 2FA. Senate bill from Gillibrand (D-NY) and McCormick (R-PA) would mandate age verification and self-exclusion industry-wide.
+Why it matters: Kalshi is pre-empting the bill with the bill's exact scope. Polymarket has no equivalent rollout; the regulatory delta widens heading into the CFTC NOPR window.
+https://www.axios.com/2026/05/04/kalshi-prediction-market-trading-rules
 
-*Also worth a glance:* Indiana state-primary congressional races now drawing book on Polymarket and Kalshi — first off-cycle data point past presidential. · CFTC ANPRM cleared 115K+ comments per yesterday's filing tally.
+*Also worth a glance:* Coinbase chief policy officer Shirzad files CFTC letter calling prediction markets "maturing"; Coalition for Prediction Markets concedes "gaming" should mean casino-style only · Clear Street partners with Kalshi for Wall Street prime-broker access (Bloomberg, May 1).
+
