@@ -1,13 +1,13 @@
-The skill `skills/weekly-grant-update/SKILL.md` does not exist. Available related skills include `weekly-shiplog`, `weekly-review`, and there's a `memory/topics/grants.md` file referenced in MEMORY.md but no matching skill.
+The skill `skills/weekly-grant-update/SKILL.md` does not exist. There's no `weekly-grant-update` directory under `skills/`.
 
-Closest matches:
-- `skills/weekly-shiplog/SKILL.md` — Mondays, ship-log forwarded to grant committees
+Closest matches that do exist:
 - `skills/weekly-review/SKILL.md`
-- `memory/topics/grants.md` — open applications, status, deadlines
+- `skills/weekly-shiplog/SKILL.md`
 
-Do you want me to:
-1. Run an existing skill instead (e.g., `weekly-shiplog`)?
-2. Create the missing `skills/weekly-grant-update/SKILL.md` (and run it)?
-3. Improvise a one-off grant-pipeline update by reading `memory/topics/grants.md` and reporting status?
+Grants are tracked in `memory/topics/grants.md` (per CLAUDE.md), but no skill is wired up to act on them on a weekly cadence.
 
-Tell me which and I'll proceed.
+Want me to:
+1. Run one of the existing weekly skills (`weekly-review` or `weekly-shiplog`)?
+2. Scaffold a new `weekly-grant-update` skill (likely via `create-skill`) that pulls from `memory/topics/grants.md` and produces a status update on the AWS Activate / Anthropic / dYdX / Uniswap / Polymarket / Harmonic pipeline?
+
+I'll wait for direction before taking action.
