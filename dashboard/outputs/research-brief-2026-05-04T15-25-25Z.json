@@ -1,0 +1,278 @@
+{
+  "root": "root_card",
+  "state": {},
+  "elements": {
+    "root_card": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Microstructure Edge",
+        "description": "Research brief on the architectural fork between feed-only and OrderFilled-grounded bots"
+      },
+      "children": [
+        "key_findings_section",
+        "sep1",
+        "llm_problem_section",
+        "sep2",
+        "thesis_section",
+        "sep3",
+        "why_matters_section",
+        "sep4",
+        "sources_section"
+      ]
+    },
+    "key_findings_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "findings_heading",
+        "direction_stat",
+        "bench_comparison",
+        "wash_stat",
+        "asymmetries_text",
+        "fork_text"
+      ]
+    },
+    "findings_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Key Findings",
+        "level": "h2"
+      }
+    },
+    "direction_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "WebSocket vs on-chain agreement on trade direction",
+        "value": "59%",
+        "delta": "-21% vs ~80% equity baseline",
+        "trend": "down"
+      }
+    },
+    "bench_comparison": {
+      "type": "Text",
+      "props": {
+        "text": "Barely above a coin flip",
+        "variant": "caption"
+      }
+    },
+    "wash_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Upper-tail self-counterparty wash share",
+        "value": "22%"
+      }
+    },
+    "asymmetries_text": {
+      "type": "Text",
+      "props": {
+        "text": "Category-conditional spread asymmetries present additional complications",
+        "variant": "caption"
+      }
+    },
+    "fork_text": {
+      "type": "Text",
+      "props": {
+        "text": "The architectural fork between feed-only bots and OrderFilled-grounded bots is the load-bearing edge of the next 12 months",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "llm_problem_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "llm_heading",
+        "llm_text"
+      ]
+    },
+    "llm_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "The Problem with Current LLM Agents",
+        "level": "h2"
+      }
+    },
+    "llm_text": {
+      "type": "Text",
+      "props": {
+        "text": "The PolyBench/AIA-Forecaster generation of LLM agents beat Brier baselines on price but still lose money largely because they ingest the wrong primitive",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "thesis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "thesis_heading",
+        "thesis_statement",
+        "thesis_constraints"
+      ]
+    },
+    "thesis_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h2"
+      }
+    },
+    "thesis_statement": {
+      "type": "Text",
+      "props": {
+        "text": "By April 30 2027, every Polymarket strategy holding positive net P&L over ≥1,000 trades will source trade direction from on-chain OrderFilled events, not the public WebSocket",
+        "variant": "lead"
+      }
+    },
+    "thesis_constraints": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "date_badge",
+        "threshold_badge"
+      ]
+    },
+    "date_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "April 30 2027",
+        "variant": "secondary"
+      }
+    },
+    "threshold_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "≥1,000 trades, positive P&L",
+        "variant": "secondary"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "why_matters_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "why_heading",
+        "leverage_text",
+        "impact_list"
+      ]
+    },
+    "why_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters Now",
+        "level": "h2"
+      }
+    },
+    "leverage_text": {
+      "type": "Text",
+      "props": {
+        "text": "Highest-leverage upgrade for CalibrationGap pre-Apex, and an empirical-spine citation for the next Polymarket Builders / Anthropic Research Credits cycle",
+        "variant": "body"
+      }
+    },
+    "impact_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "calibration_badge",
+        "funding_badge",
+        "timing_badge"
+      ]
+    },
+    "calibration_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "CalibrationGap pre-Apex upgrade",
+        "variant": "default"
+      }
+    },
+    "funding_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket Builders / Anthropic Research Credits citation",
+        "variant": "default"
+      }
+    },
+    "timing_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "59% finding not yet propagated (8 days old)",
+        "variant": "outline"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "paper_link",
+        "article_link"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Dubach Anatomy paper",
+        "href": "https://arxiv.org/abs/2604.24366",
+        "source": "arXiv",
+        "score": "Apr 27 2026"
+      }
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "research-brief-polymarket-microstructure-agentic-edge-2026-05-04.md",
+        "href": "articles/research-brief-polymarket-microstructure-agentic-edge-2026-05-04.md",
+        "source": "Local"
+      }
+    }
+  }
+}
