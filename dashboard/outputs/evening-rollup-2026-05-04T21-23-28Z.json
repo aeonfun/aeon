@@ -1,0 +1,254 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-04"
+      },
+      "children": [
+        "tldr-alert",
+        "sep-1",
+        "headlines-section",
+        "sep-2",
+        "notable-section",
+        "sep-3",
+        "decisions-section",
+        "sep-4",
+        "blockers-alert",
+        "sep-5",
+        "footer"
+      ]
+    },
+    "tldr-alert": {
+      "type": "Alert",
+      "props": {
+        "message": "heavy ship day — 10 articles + reflect #9 consolidated memory, but chain-runner still DEGRADED day 9 and 9 stalled tomscaria/aeon PRs sit on operator.",
+        "type": "warning"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "headlines-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "headlines-heading",
+        "headline-1",
+        "headline-2",
+        "headline-3",
+        "headline-4",
+        "headline-5"
+      ]
+    },
+    "headlines-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h3"
+      }
+    },
+    "headline-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket Bengal-right / TN-wrong calibration tape",
+        "href": "articles/2026-05-04.md",
+        "source": "article"
+      }
+    },
+    "headline-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "reflect #9 — memory consolidated, TN thesis DEAD, cross-venue convergence rule updated",
+        "href": "memory/MEMORY.md",
+        "source": "reflect #9"
+      }
+    },
+    "headline-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Latin-Hypercube selector with KS-paired falsifier",
+        "href": "articles/explainer-2026-05-04.md",
+        "source": "explainer"
+      }
+    },
+    "headline-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "polymarket-microstructure code release importable into swarm-fund-mvp",
+        "href": "articles/research-brief-polymarket-microstructure-agentic-edge-2026-05-04.md",
+        "source": "research-brief"
+      }
+    },
+    "headline-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "cost-discipline projection $2,696/mo vs $40/wk",
+        "href": "articles/weekly-review-2026-05-04.md",
+        "source": "weekly-review"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-heading",
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4",
+        "notable-5"
+      ]
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h3"
+      }
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick ×3 — Cong dataset Stanford anchor picked; AEL + Prediction Arena queued"
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-polymarket / polymarket-comments — Hormuz live-tape, 8 new handles"
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "startup-idea — Bracket (agent-OTC dark pool) + Reflex (multi-venue PB); both pass quality bar"
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners / token-pick — TTPA DEEP-LIQ day 5, SKYAI day 7; DASH 10/10 HIGH"
+      }
+    },
+    "notable-5": {
+      "type": "Text",
+      "props": {
+        "text": "star-milestone / repo-pulse — aaronjmars/aeon 270 stars, ETA 300 ~05-11"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "decisions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "decisions-heading",
+        "decision-1",
+        "decision-2",
+        "decision-3",
+        "decision-4"
+      ]
+    },
+    "decisions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for tomorrow",
+        "level": "h3"
+      }
+    },
+    "decision-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "decision-1-text",
+        "decision-1-link"
+      ]
+    },
+    "decision-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Merge aaronjmars/aeon PR #156 — closes ISS-014 day 10"
+      }
+    },
+    "decision-1-link": {
+      "type": "Link",
+      "props": {
+        "label": "View PR",
+        "href": "https://github.com/aaronjmars/aeon/pull/156"
+      }
+    },
+    "decision-2": {
+      "type": "Text",
+      "props": {
+        "text": "Patch chain-runner.yml `dispatch_skill()` (day 9; 3 chains failing nightly)"
+      }
+    },
+    "decision-3": {
+      "type": "Text",
+      "props": {
+        "text": "Pause reddit-digest cron until `scripts/prefetch-reddit.sh` lands (ISS-002/012 day 11)"
+      }
+    },
+    "decision-4": {
+      "type": "Text",
+      "props": {
+        "text": "Land cost-downgrade self-improve PR by 05-08 (sonnet-4-6 on external-feature / repo-actions / heartbeat)"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "blockers-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Blockers",
+        "message": "chain:morning-brief / evening-rollup / weekly-grant-update — `dispatch_skill()` DEGRADED 9d",
+        "type": "error"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "+~30 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}

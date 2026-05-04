@@ -1,27 +1,28 @@
-*Evening Recap — 2026-05-03*
-_TL;DR: heavy ship day — 12-day shell-injection patch landed, ISS-014 closer opened, ClawBank Tier-1 article shipped; chain-runner still DEGRADED._
+*Evening Recap — 2026-05-04*
+_TL;DR: heavy ship day — 10 articles + reflect #9 consolidated memory, but chain-runner still DEGRADED day 9 and 9 stalled tomscaria/aeon PRs sit on operator._
 
 *Headlines:*
-- code-health — ISS-016 shell-injection fix landed 4 days early, secrets/route.ts argv-array · https://github.com/aaronjmars/aeon/pull/150
-- external-feature — PR #156 opened to close ISS-014 reply-maker XAI prefetch (Day-9 carry) · https://github.com/aaronjmars/aeon/pull/156
-- workflow-security-audit — PR #9 opened, supersedes stalled PR #4; blocked on workflow-scoped PAT · https://github.com/tomscaria/aeon/pull/9
-- article — ClawBank/Manfred Macx EIN piece shipped, threads Aeon (closes ISS-019 forward) · articles/2026-05-03.md
-- repo-article — swarm-fund-mvp ADR-093 Aeon adapter, 74→112 agents in one commit · articles/repo-article-2026-05-03.md
+- article — Polymarket Bengal-right / TN-wrong calibration tape · articles/2026-05-04.md
+- reflect #9 — memory consolidated, TN thesis DEAD, cross-venue convergence rule updated · memory/MEMORY.md
+- explainer — Latin-Hypercube selector with KS-paired falsifier · articles/explainer-2026-05-04.md
+- research-brief — polymarket-microstructure code release importable into swarm-fund-mvp · articles/research-brief-polymarket-microstructure-agentic-edge-2026-05-04.md
+- weekly-review — cost-discipline projection $2,696/mo vs $40/wk · articles/weekly-review-2026-05-04.md
 
 *Notable:*
-- skill-evals — filed ISS-018 (heartbeat ${var}) + ISS-019 (repo-article brand); resolved ISS-004 + ISS-006
-- reflect #8 — MEMORY.md consolidated, 5 ACT NOW Vercel PRs on swarm-fund-mvp recorded
-- code-health — articles/code-health-2026-05-03.md shipped (3 repos cloned clean)
-- monitor-polymarket / polymarket-comments / narrative-tracker — clean fires (Tamil Nadu T-1, Bengal flip BJP 51%)
+- paper-pick ×3 — Cong dataset Stanford anchor picked; AEL + Prediction Arena queued
+- monitor-polymarket / polymarket-comments — Hormuz live-tape, 8 new handles
+- startup-idea — Bracket (agent-OTC dark pool) + Reflex (multi-venue PB); both pass quality bar
+- monitor-runners / token-pick — TTPA DEEP-LIQ day 5, SKYAI day 7; DASH 10/10 HIGH
+- star-milestone / repo-pulse — aaronjmars/aeon 270 stars, ETA 300 ~05-11
 
 *Decisions for tomorrow:*
-- Operator: verify aeonframework bot commit-email with Vercel — unblocks PRs #19/#20/#23/#24/#28 on swarm-fund-mvp
-- Merge PR #156 — closes ISS-014 Day-9+ carry
-- Pause vibecoding-digest + reddit-digest crons until prefetch-reddit.sh ships (10th 0-data day)
-- Run Tamil Nadu T-0 polymarket-comments + reply-maker on 2026-05-04
+- Merge aaronjmars/aeon PR #156 — closes ISS-014 day 10 · https://github.com/aaronjmars/aeon/pull/156
+- Patch chain-runner.yml `dispatch_skill()` (day 9; 3 chains failing nightly)
+- Pause reddit-digest cron until `scripts/prefetch-reddit.sh` lands (ISS-002/012 day 11)
+- Land cost-downgrade self-improve PR by 05-08 (sonnet-4-6 on external-feature / repo-actions / heartbeat)
 
 *Blockers:*
-- chain:morning-brief failed 08:23 UTC; chain-runner DEGRADED 7+ days · ISS-013
-- 5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp (operator-side fix)
+- chain:morning-brief / evening-rollup / weekly-grant-update — `dispatch_skill()` DEGRADED 9d
 
-_+~40 routine runs collapsed · sources: log=ok cron-state=ok_
+_+~30 routine runs collapsed · sources: log=ok cron-state=ok_
+
