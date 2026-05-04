@@ -1,0 +1,202 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases",
+        "description": "2026-05-04"
+      },
+      "children": [
+        "summary_stats",
+        "sep_1",
+        "soon_section",
+        "sep_2",
+        "fyi_section",
+        "sep_3",
+        "footer"
+      ]
+    },
+    "summary_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_asap",
+        "stat_soon",
+        "stat_fyi",
+        "stat_skipped"
+      ]
+    },
+    "stat_asap": {
+      "type": "Stat",
+      "props": {
+        "label": "Asap",
+        "value": "0"
+      }
+    },
+    "stat_soon": {
+      "type": "Stat",
+      "props": {
+        "label": "Soon",
+        "value": "2"
+      }
+    },
+    "stat_fyi": {
+      "type": "Stat",
+      "props": {
+        "label": "FYI",
+        "value": "4"
+      }
+    },
+    "stat_skipped": {
+      "type": "Stat",
+      "props": {
+        "label": "Skipped",
+        "value": "0"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "soon_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "soon_heading",
+        "soon_releases"
+      ]
+    },
+    "soon_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Soon",
+        "level": "h3"
+      }
+    },
+    "soon_releases": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "release_1",
+        "release_2"
+      ]
+    },
+    "release_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-anthropic==1.4.3",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-anthropic%3D%3D1.4.3",
+        "source": "langchain-ai",
+        "score": "Patches httpx finalizer crash in anthropic adapter"
+      }
+    },
+    "release_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-classic==1.0.5",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-classic%3D%3D1.0.5",
+        "source": "langchain-ai",
+        "score": "Deprecates legacy chains; retargets to create_agent path"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fyi_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fyi_heading",
+        "fyi_releases"
+      ]
+    },
+    "fyi_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI",
+        "level": "h3"
+      }
+    },
+    "fyi_releases": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "release_3",
+        "release_4",
+        "release_5",
+        "release_6"
+      ]
+    },
+    "release_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9016",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9016",
+        "source": "ggml-org",
+        "score": "Documents --draft-max → --spec-draft-n-max CLI rename for speculative decoding"
+      }
+    },
+    "release_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9015",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9015",
+        "source": "ggml-org",
+        "score": "Removes dead GGML_VK_MAX_NODES def from Vulkan backend"
+      }
+    },
+    "release_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9014",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9014",
+        "source": "ggml-org",
+        "score": "Adds layer-norm ops shader to ggml-webgpu backend"
+      }
+    },
+    "release_6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggml-org/llama.cpp b9012",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9012",
+        "source": "ggml-org",
+        "score": "Fixes Mistral-format yarn apply_scale boolean parameters in convert script"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: ok=18, notfound=0, ratelimited=0, error=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
