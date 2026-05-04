@@ -1,0 +1,79 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-date",
+        "heading-paper",
+        "text-meta",
+        "badges-stack",
+        "alert-status"
+      ]
+    },
+    "text-date": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-04",
+        "variant": "caption"
+      }
+    },
+    "heading-paper": {
+      "type": "Heading",
+      "props": {
+        "text": "Anatomy of Polymarket microstructure",
+        "level": "h2"
+      }
+    },
+    "text-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Dubach, Apr 27 2026"
+      }
+    },
+    "badges-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-qfin",
+        "badge-csgt"
+      ]
+    },
+    "badge-qfin": {
+      "type": "Badge",
+      "props": {
+        "text": "q-fin.TR"
+      }
+    },
+    "badge-csgt": {
+      "type": "Badge",
+      "props": {
+        "text": "cs.GT"
+      }
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "message": "verifying delivery now",
+        "type": "info"
+      }
+    }
+  }
+}
