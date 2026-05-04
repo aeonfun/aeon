@@ -92,4 +92,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,push-recap,claude-opus-4-7,8540,36917,2160821,127938
 2026-05-03,evening-recap,claude-sonnet-4-6,1173,6312,1279119,120897
 2026-05-04,cost-report,claude-sonnet-4-6,45,67903,353311,101004
-2026-05-04,fleet-control,claude-opus-4-7,15,2659,440714,30481
+2026-05-04,pr-review,claude-opus-4-7,15,3943,460513,36480
