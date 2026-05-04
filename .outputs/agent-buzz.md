@@ -1,1 +1,1 @@
-Agent Buzz — 2026-05-03: quiet day, no survivors. (WebSearch fallback only — XAI_API_KEY unset; ~30 article-level results surfaced, 0 fresh tweets with engagement metadata. 7th consecutive empty/error — agent-buzz) prefetch case still missing in scripts/prefetch-xai.sh.)
+Agent Buzz — 2026-05-04: all sources failed (XAI: XAI_API_KEY unset; WebFetch: requires bearer auth XAI doesn't expose; WebSearch: returned articles not in-window tweets with engagement metadata).

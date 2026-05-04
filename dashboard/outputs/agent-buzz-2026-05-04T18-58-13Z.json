@@ -1,0 +1,68 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz — 2026-05-04"
+      },
+      "children": [
+        "alert-main",
+        "separator-1",
+        "stack-failures"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "message": "All sources failed"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-failures": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "failure-xai",
+        "failure-webfetch",
+        "failure-websearch"
+      ]
+    },
+    "failure-xai": {
+      "type": "Text",
+      "props": {
+        "text": "XAI: XAI_API_KEY unset",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "failure-webfetch": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch: requires bearer auth XAI doesn't expose",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "failure-websearch": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch: returned articles not in-window tweets with engagement metadata",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
