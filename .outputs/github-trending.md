@@ -1,32 +1,31 @@
-*GitHub Trending — 2026-05-03*
+*GitHub Trending — 2026-05-04*
 
-*Top pick* — [ruvnet/ruflo](https://github.com/ruvnet/ruflo)
-Multi-agent Claude orchestration platform spiking 12x its baseline today; cleanest public mirror of swarm-fund-mvp's selector-layer architecture.
+*Top pick* — [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
+Multi-agent LLM trading framework — direct architectural mirror of swarm-fund-mvp's selector layer; 25× baseline spike says this corner of the agent space just got a canonical repo.
 
 *AI/ML*
-• [ruvnet/ruflo](https://github.com/ruvnet/ruflo) — ★ 1.3kt today (37k total) · TypeScript · [RETURNING]
-Distributed swarm orchestration with native Claude Code / Codex integration; today's velocity is 12x its 336-day baseline.
+• [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) — ★ 3.3k today (66k total) · Python · [RETURNING]
+3,313 stars today on 66k base = 25× baseline; release-catalyst spike on the canonical multi-agent LLM trading repo.
 
-• [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding) — ★ 372/day (743 total) · TypeScript · [DEBUT]
-Mattpocock's glossary of agent / skill / harness / RAG terminology — first credible reference closing the lingua-franca gap.
+• [AIDC-AI/Pixelle-Video](https://github.com/AIDC-AI/Pixelle-Video) — ★ 497 today (10k total) · Python · [RETURNING]
+Full short-video pipeline (script → TTS → shots → edit) in one repo; 8.5× baseline today on a 10k-star base.
 
-• [noonghunna/club-3090](https://github.com/noonghunna/club-3090) — ★ 81/day (406 total) · Shell · [DEBUT]
-Tested vLLM / llama.cpp / SGLang configs for 1×/2× RTX 3090 with Qwen3.6-27B — the missing recipe book for sub-A100 LLM serving.
+• [simchowitzlabpublic/nano-world-model](https://github.com/simchowitzlabpublic/nano-world-model) — ★ 288 total · 72/day · Python · [DEBUT]
+Minimal world-model training kit from Simchowitz's lab — research-pipeline starting point, not another demo.
 
 *Devtools*
-• [tddworks/baguette](https://github.com/tddworks/baguette) — ★ 135/day (269 total) · Swift · [DEBUT]
-Headless iOS-26 Simulator farm with multi-finger input injection and 60fps streaming — strict superset of last week's serve-sim.
+• [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) — ★ 343 today (2.9k total) · Rust · [RETURNING]
+Rust terminal coding agent on DeepSeek — open-weight, native-binary answer to Claude Code.
 
-• [b-nnett/codex-plusplus](https://github.com/b-nnett/codex-plusplus) — ★ 140/day (842 total) · TypeScript · [DEBUT]
-Userland tweak layer for OpenAI's Codex desktop app — first community extension surface to break 800 stars.
+• [aattaran/deepclaude](https://github.com/aattaran/deepclaude) — ★ 520 total · 520/day · JavaScript · [DEBUT]
+Claude Code's autonomous loop, swapped backend for DeepSeek V4 Pro at 17× lower spend; born yesterday.
 
-• [appergb/openless](https://github.com/appergb/openless) — ★ 77/day (461 total) · HTML · [DEBUT]
-Hold-to-speak voice → AI-polished text at the cursor in any app, macOS + Windows; closes the dictation gap for non-Apple-Silicon users.
+• [browserbase/skills](https://github.com/browserbase/skills) — ★ 322 today (1.9k total) · JavaScript · [RETURNING]
+Browserbase ships an official Skills bundle for Claude Agent SDK — closest external read on Aeon's skills/ shape.
 
-*Security*
-• [watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py](https://github.com/watchtowrlabs/watchTowr-vs-cPanel-WHM-AuthBypass-to-RCE.py) — ★ 75/day (302 total) · Python · [DEBUT]
-watchtowr ships a PoC chaining cPanel WHM auth-bypass into full RCE — patch your panels before the script kiddies do.
+• [czlonkowski/n8n-mcp](https://github.com/czlonkowski/n8n-mcp) — ★ 282 today (20k total) · TypeScript · [RETURNING]
+MCP server lets Claude Desktop construct n8n workflows directly; 5× baseline after a major release.
 
 ---
-sources: trending=ok(8 visible, page truncated) · gh_api=ok · kept 7/35 (search fallback supplied 6 of 7 picks)
+sources: trending=ok(9 visible, page truncated) · gh_api=ok · kept 7/35
 

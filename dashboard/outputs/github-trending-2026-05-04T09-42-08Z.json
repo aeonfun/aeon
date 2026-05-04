@@ -1,0 +1,378 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-05-04"
+      },
+      "children": [
+        "section-top-pick",
+        "sep-1",
+        "section-ai-ml",
+        "sep-2",
+        "section-devtools",
+        "sep-3",
+        "footer"
+      ]
+    },
+    "section-top-pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-top-pick",
+        "story-top-pick",
+        "desc-top-pick"
+      ]
+    },
+    "heading-top-pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h2"
+      }
+    },
+    "story-top-pick": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TauricResearch/TradingAgents",
+        "href": "https://github.com/TauricResearch/TradingAgents"
+      }
+    },
+    "desc-top-pick": {
+      "type": "Text",
+      "props": {
+        "text": "Multi-agent LLM trading framework — direct architectural mirror of swarm-fund-mvp's selector layer; 25× baseline spike says this corner of the agent space just got a canonical repo.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-ai-ml": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-ai-ml",
+        "ai-ml-items"
+      ]
+    },
+    "heading-ai-ml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h2"
+      }
+    },
+    "ai-ml-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "ai-1",
+        "ai-2",
+        "ai-3"
+      ]
+    },
+    "ai-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai-1-link",
+        "ai-1-meta",
+        "ai-1-desc"
+      ]
+    },
+    "ai-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TauricResearch/TradingAgents",
+        "href": "https://github.com/TauricResearch/TradingAgents",
+        "source": "Python",
+        "score": "★ 3.3k today (66k total)"
+      }
+    },
+    "ai-1-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "ai-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "3,313 stars today on 66k base = 25× baseline; release-catalyst spike on the canonical multi-agent LLM trading repo.",
+        "variant": "caption"
+      }
+    },
+    "ai-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai-2-link",
+        "ai-2-meta",
+        "ai-2-desc"
+      ]
+    },
+    "ai-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AIDC-AI/Pixelle-Video",
+        "href": "https://github.com/AIDC-AI/Pixelle-Video",
+        "source": "Python",
+        "score": "★ 497 today (10k total)"
+      }
+    },
+    "ai-2-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "ai-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Full short-video pipeline (script → TTS → shots → edit) in one repo; 8.5× baseline today on a 10k-star base.",
+        "variant": "caption"
+      }
+    },
+    "ai-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai-3-link",
+        "ai-3-meta",
+        "ai-3-desc"
+      ]
+    },
+    "ai-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "simchowitzlabpublic/nano-world-model",
+        "href": "https://github.com/simchowitzlabpublic/nano-world-model",
+        "source": "Python",
+        "score": "★ 288 total · 72/day"
+      }
+    },
+    "ai-3-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT"
+      }
+    },
+    "ai-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Minimal world-model training kit from Simchowitz's lab — research-pipeline starting point, not another demo.",
+        "variant": "caption"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-devtools": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-devtools",
+        "devtools-items"
+      ]
+    },
+    "heading-devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h2"
+      }
+    },
+    "devtools-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "dt-1",
+        "dt-2",
+        "dt-3",
+        "dt-4"
+      ]
+    },
+    "dt-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt-1-link",
+        "dt-1-meta",
+        "dt-1-desc"
+      ]
+    },
+    "dt-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hmbown/DeepSeek-TUI",
+        "href": "https://github.com/Hmbown/DeepSeek-TUI",
+        "source": "Rust",
+        "score": "★ 343 today (2.9k total)"
+      }
+    },
+    "dt-1-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "dt-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rust terminal coding agent on DeepSeek — open-weight, native-binary answer to Claude Code.",
+        "variant": "caption"
+      }
+    },
+    "dt-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt-2-link",
+        "dt-2-meta",
+        "dt-2-desc"
+      ]
+    },
+    "dt-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aattaran/deepclaude",
+        "href": "https://github.com/aattaran/deepclaude",
+        "source": "JavaScript",
+        "score": "★ 520 total · 520/day"
+      }
+    },
+    "dt-2-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT"
+      }
+    },
+    "dt-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Claude Code's autonomous loop, swapped backend for DeepSeek V4 Pro at 17× lower spend; born yesterday.",
+        "variant": "caption"
+      }
+    },
+    "dt-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt-3-link",
+        "dt-3-meta",
+        "dt-3-desc"
+      ]
+    },
+    "dt-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "browserbase/skills",
+        "href": "https://github.com/browserbase/skills",
+        "source": "JavaScript",
+        "score": "★ 322 today (1.9k total)"
+      }
+    },
+    "dt-3-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "dt-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Browserbase ships an official Skills bundle for Claude Agent SDK — closest external read on Aeon's skills/ shape.",
+        "variant": "caption"
+      }
+    },
+    "dt-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt-4-link",
+        "dt-4-meta",
+        "dt-4-desc"
+      ]
+    },
+    "dt-4-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "czlonkowski/n8n-mcp",
+        "href": "https://github.com/czlonkowski/n8n-mcp",
+        "source": "TypeScript",
+        "score": "★ 282 today (20k total)"
+      }
+    },
+    "dt-4-meta": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "dt-4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "MCP server lets Claude Desktop construct n8n workflows directly; 5× baseline after a major release.",
+        "variant": "caption"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(9 visible, page truncated) · gh_api=ok · kept 7/35",
+        "variant": "muted"
+      }
+    }
+  }
+}
