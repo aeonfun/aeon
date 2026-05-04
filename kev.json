@@ -1,9 +1,69 @@
 {
     "title": "CISA Catalog of Known Exploited Vulnerabilities",
-    "catalogVersion": "2026.04.24",
-    "dateReleased": "2026-04-24T16:52:07.2233Z",
-    "count": 1583,
+    "catalogVersion": "2026.05.04",
+    "dateReleased": "2026-05-04T14:01:30.7566Z",
+    "count": 1587,
     "vulnerabilities": [
+        {
+            "cveID": "CVE-2026-31431",
+            "vendorProject": "Linux",
+            "product": "Kernel",
+            "vulnerabilityName": "Linux Kernel Incorrect Resource Transfer Between Spheres Vulnerability",
+            "dateAdded": "2026-05-01",
+            "shortDescription": "Linux Kernel contains an incorrect resource transfer between spheres vulnerability that could allow for privilege escalation.",
+            "requiredAction": "\"Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+            "dueDate": "2026-05-15",
+            "knownRansomwareCampaignUse": "Unknown",
+            "notes": "https:\/\/lore.kernel.org\/linux-cve-announce\/2026042214-CVE-2026-31431-3d65@gregkh\/; https:\/\/xint.io\/blog\/copy-fail-linux-distributions#the-fix-6 ; https:\/\/git.kernel.org\/pub\/scm\/linux\/kernel\/git\/stable\/linux.git\/about\/ ; https:\/\/nvd.nist.gov\/vuln\/detail\/CVE-2026-31431",
+            "cwes": [
+                "CWE-699"
+            ]
+        },
+        {
+            "cveID": "CVE-2026-41940",
+            "vendorProject": "WebPros",
+            "product": "cPanel & WHM and WP2 (WordPress Squared)",
+            "vulnerabilityName": "WebPros cPanel & WHM and WP2 (WordPress Squared) Missing Authentication for Critical Function Vulnerability",
+            "dateAdded": "2026-04-30",
+            "shortDescription": "WebPros cPanel & WHM (WebHost Manager) and WP2 (WordPress Squared) contain an authentication bypass vulnerability in the login flow that allows unauthenticated remote attackers to gain unauthorized access to the control panel.",
+            "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+            "dueDate": "2026-05-03",
+            "knownRansomwareCampaignUse": "Unknown",
+            "notes": "https:\/\/support.cpanel.net\/hc\/en-us\/articles\/40073787579671-cPanel-WHM-Security-Update-04-28-2026 ; https:\/\/docs.cpanel.net\/release-notes\/release-notes\/ ; https:\/\/docs.wpsquared.com\/changelogs\/versions\/changelog\/#13617 ; https:\/\/nvd.nist.gov\/vuln\/detail\/CVE-2026-41940\"",
+            "cwes": [
+                "CWE-306"
+            ]
+        },
+        {
+            "cveID": "CVE-2024-1708",
+            "vendorProject": "ConnectWise",
+            "product": "ScreenConnect",
+            "vulnerabilityName": "ConnectWise ScreenConnect Path Traversal Vulnerability",
+            "dateAdded": "2026-04-28",
+            "shortDescription": "ConnectWise ScreenConnect contains a path traversal vulnerability which could allow an attacker to execute remote code or directly impact confidential data and critical systems.",
+            "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+            "dueDate": "2026-05-12",
+            "knownRansomwareCampaignUse": "Unknown",
+            "notes": "https:\/\/www.connectwise.com\/company\/trust\/security-bulletins\/connectwise-screenconnect-23.9.8 ; https:\/\/nvd.nist.gov\/vuln\/detail\/CVE-2024-1708",
+            "cwes": [
+                "CWE-22"
+            ]
+        },
+        {
+            "cveID": "CVE-2026-32202",
+            "vendorProject": "Microsoft",
+            "product": "Windows",
+            "vulnerabilityName": "Microsoft Windows Protection Mechanism Failure Vulnerability",
+            "dateAdded": "2026-04-28",
+            "shortDescription": "Microsoft Windows Shell contains a protection mechanism failure vulnerability that allows an unauthorized attacker to perform spoofing over a network.",
+            "requiredAction": "Apply mitigations per vendor instructions, follow applicable BOD 22-01 guidance for cloud services, or discontinue use of the product if mitigations are unavailable.",
+            "dueDate": "2026-05-12",
+            "knownRansomwareCampaignUse": "Unknown",
+            "notes": "https:\/\/msrc.microsoft.com\/update-guide\/en-US\/vulnerability\/CVE-2026-32202 ; https:\/\/nvd.nist.gov\/vuln\/detail\/CVE-2026-32202",
+            "cwes": [
+                "CWE-693"
+            ]
+        },
         {
             "cveID": "CVE-2025-29635",
             "vendorProject": "D-Link",
