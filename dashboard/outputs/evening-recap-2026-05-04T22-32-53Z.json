@@ -1,0 +1,393 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-04"
+      },
+      "children": [
+        "tldr",
+        "sep1",
+        "revenant_section",
+        "sep2",
+        "picks_section",
+        "sep3",
+        "signals_section",
+        "sep4",
+        "prs_section",
+        "sep5",
+        "failures_section"
+      ]
+    },
+    "tldr": {
+      "type": "Text",
+      "props": {
+        "text": "TL;DR: heavy content day — 3 papers picked + 10 articles + reflect done; TN upset caught live; chain-runner DEGRADED day 9",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "revenant_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "revenant_title",
+        "revenant_metrics",
+        "revenant_config",
+        "nav_delta"
+      ]
+    },
+    "revenant_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant (canary)",
+        "level": "h3"
+      }
+    },
+    "revenant_metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_closed",
+        "stat_open",
+        "stat_win",
+        "stat_pnl",
+        "stat_sharpe",
+        "stat_strategies"
+      ]
+    },
+    "stat_closed": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "28"
+      }
+    },
+    "stat_open": {
+      "type": "Stat",
+      "props": {
+        "label": "Open trades",
+        "value": "14"
+      }
+    },
+    "stat_win": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "75%"
+      }
+    },
+    "stat_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$344"
+      }
+    },
+    "stat_sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.29"
+      }
+    },
+    "stat_strategies": {
+      "type": "Stat",
+      "props": {
+        "label": "Strategies",
+        "value": "47"
+      }
+    },
+    "revenant_config": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_loop",
+        "badge_regime",
+        "badge_kelly"
+      ]
+    },
+    "badge_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop running",
+        "variant": "default"
+      }
+    },
+    "badge_regime": {
+      "type": "Badge",
+      "props": {
+        "text": "regime 1",
+        "variant": "default"
+      }
+    },
+    "badge_kelly": {
+      "type": "Badge",
+      "props": {
+        "text": "kelly 1.0",
+        "variant": "default"
+      }
+    },
+    "nav_delta": {
+      "type": "Stat",
+      "props": {
+        "label": "NAV delta",
+        "value": "-$71",
+        "delta": "$415 → $344",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "picks_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "picks_title",
+        "pick_1",
+        "pick_2",
+        "pick_3"
+      ]
+    },
+    "picks_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3 picks",
+        "level": "h3"
+      }
+    },
+    "pick_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Anatomy PM Microstructure",
+        "href": "https://arxiv.org/abs/2604.24366",
+        "source": "arxiv:2604.24366",
+        "score": "Direction from public feed ~59% acc; use on-chain OrderFilled"
+      }
+    },
+    "pick_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Foresight Arena",
+        "href": "https://arxiv.org/abs/2605.00420",
+        "source": "arxiv:2605.00420",
+        "score": "350 trades for 80% power; 100-trade Apex gate is power-underspecified"
+      }
+    },
+    "pick_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Cong dataset",
+        "href": "https://arxiv.org/abs/2604.20421",
+        "source": "arxiv:2604.20421",
+        "score": "Cornell 770k markets × 943M fills; PhD anchor"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "signals_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signals_title",
+        "signals_list"
+      ]
+    },
+    "signals_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signal_1",
+        "signal_2",
+        "signal_3"
+      ]
+    },
+    "signal_1": {
+      "type": "Text",
+      "props": {
+        "text": "TN TVK 6.95c→99.65c resolved (CalibrationGap TN thesis DEAD)"
+      }
+    },
+    "signal_2": {
+      "type": "Text",
+      "props": {
+        "text": "WB BJP flip confirmed 99.55%"
+      }
+    },
+    "signal_3": {
+      "type": "Text",
+      "props": {
+        "text": "arsenelupin Hormuz live-tape claim — re-eval 54.5c NO before next entry"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "prs_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "prs_title",
+        "pr_list"
+      ]
+    },
+    "prs_title": {
+      "type": "Heading",
+      "props": {
+        "text": "PRs",
+        "level": "h3"
+      }
+    },
+    "pr_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_1",
+        "pr_2"
+      ]
+    },
+    "pr_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_1_link",
+        "pr_1_badge"
+      ]
+    },
+    "pr_1_link": {
+      "type": "Link",
+      "props": {
+        "label": "#30 variant_bandit corruption fallback",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/30"
+      }
+    },
+    "pr_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "shipped",
+        "variant": "default"
+      }
+    },
+    "pr_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "pr_2_link",
+        "pr_2_badge"
+      ]
+    },
+    "pr_2_link": {
+      "type": "Link",
+      "props": {
+        "label": "#157 skill-freshness",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/157"
+      }
+    },
+    "pr_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "merged",
+        "variant": "secondary"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "failures_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "failures_title",
+        "failures_list",
+        "routine_note"
+      ]
+    },
+    "failures_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill failures",
+        "level": "h3"
+      }
+    },
+    "failures_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "failure_1",
+        "failure_2"
+      ]
+    },
+    "failure_1": {
+      "type": "Alert",
+      "props": {
+        "title": "chain-runner DEGRADED",
+        "message": "Day 9 — 3 chains affected",
+        "type": "warning"
+      }
+    },
+    "failure_2": {
+      "type": "Alert",
+      "props": {
+        "title": "Multiple skills blocked",
+        "message": "reddit/farcaster/vibecoding/remix — missing secrets",
+        "type": "error"
+      }
+    },
+    "routine_note": {
+      "type": "Text",
+      "props": {
+        "text": "~30 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
