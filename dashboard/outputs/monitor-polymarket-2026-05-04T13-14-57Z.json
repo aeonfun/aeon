@@ -1,0 +1,528 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Monitor — 2026-05-04"
+      },
+      "children": [
+        "content_stack"
+      ]
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "mexico_section",
+        "sep_1",
+        "btc_section",
+        "sep_2",
+        "presidential_section",
+        "sep_3",
+        "rnom_section",
+        "sep_4",
+        "dnom_section",
+        "sep_5",
+        "alerts_section"
+      ]
+    },
+    "mexico_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "mexico_h",
+        "mexico_meta",
+        "mexico_price",
+        "mexico_vol",
+        "mexico_comment"
+      ]
+    },
+    "mexico_h": {
+      "type": "Heading",
+      "props": {
+        "text": "MEXICO FIFA",
+        "level": "h3"
+      }
+    },
+    "mexico_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Event 30615 · Revenant builder market",
+        "variant": "caption"
+      }
+    },
+    "mexico_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Mexico YES",
+        "value": "1.05%",
+        "delta": "0pp",
+        "trend": "neutral"
+      }
+    },
+    "mexico_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$71.3k",
+        "delta": "-34%",
+        "trend": "down"
+      }
+    },
+    "mexico_comment": {
+      "type": "Text",
+      "props": {
+        "text": "retail buying NO while 3 profitable wallets scaling into YES — Tart-Recommendation",
+        "variant": "body"
+      }
+    },
+    "btc_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc_h",
+        "btc_meta",
+        "btc_price",
+        "btc_vol",
+        "btc_rule",
+        "btc_edge",
+        "btc_comment"
+      ]
+    },
+    "btc_h": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC $1M / GTA VI",
+        "level": "h3"
+      }
+    },
+    "btc_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Event 23784",
+        "variant": "caption"
+      }
+    },
+    "btc_price": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC $1M YES",
+        "value": "49.05%",
+        "delta": "+0.05pp",
+        "trend": "up"
+      }
+    },
+    "btc_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$885"
+      }
+    },
+    "btc_rule": {
+      "type": "Text",
+      "props": {
+        "text": "50-50 resolution rule: if neither BTC hits $1M nor GTA VI releases by Jul 31, market resolves 50-50",
+        "variant": "body"
+      }
+    },
+    "btc_edge": {
+      "type": "Text",
+      "props": {
+        "text": "Edge: YES 49.05¢ underpriced by ~1¢ vs 50-50 outcome; converging path as deadline nears",
+        "variant": "body"
+      }
+    },
+    "btc_comment": {
+      "type": "Text",
+      "props": {
+        "text": "If neither occurs by July 31 this market resolves to 50-50. scam — Aching-East (14 rxn)",
+        "variant": "body"
+      }
+    },
+    "presidential_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pres_h",
+        "pres_meta",
+        "pres_alert",
+        "pres_price",
+        "pres_vol",
+        "pres_note"
+      ]
+    },
+    "pres_h": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 PRESIDENTIAL WINNER",
+        "level": "h3"
+      }
+    },
+    "pres_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Event 31552",
+        "variant": "caption"
+      }
+    },
+    "pres_alert": {
+      "type": "Badge",
+      "props": {
+        "text": "VOLUME ALERT",
+        "variant": "destructive"
+      }
+    },
+    "pres_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Eric Trump YES",
+        "value": "0.55%",
+        "delta": "-0.10pp",
+        "trend": "down"
+      }
+    },
+    "pres_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$2.04M"
+      }
+    },
+    "pres_note": {
+      "type": "Text",
+      "props": {
+        "text": "All other 35+ candidates zero volume. Single-market anomaly. Possible large NO build.",
+        "variant": "body"
+      }
+    },
+    "rnom_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rnom_h",
+        "rnom_meta",
+        "rnom_candidates",
+        "rnom_topvol"
+      ]
+    },
+    "rnom_h": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 R-NOM",
+        "level": "h3"
+      }
+    },
+    "rnom_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Event 31875",
+        "variant": "caption"
+      }
+    },
+    "rnom_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rnom_vance",
+        "rnom_rubio"
+      ]
+    },
+    "rnom_vance": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rnom_vance_stat",
+        "rnom_vance_vol"
+      ]
+    },
+    "rnom_vance_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vance YES",
+        "value": "39.05%",
+        "delta": "-0.10pp",
+        "trend": "down"
+      }
+    },
+    "rnom_vance_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$22.9k vol",
+        "variant": "caption"
+      }
+    },
+    "rnom_rubio": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rnom_rubio_stat",
+        "rnom_rubio_vol"
+      ]
+    },
+    "rnom_rubio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Rubio YES",
+        "value": "21.25%"
+      }
+    },
+    "rnom_rubio_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$17.4k vol",
+        "variant": "caption"
+      }
+    },
+    "rnom_topvol": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rnom_topvol_h",
+        "rnom_topvol_list"
+      ]
+    },
+    "rnom_topvol_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Volume",
+        "level": "h4"
+      }
+    },
+    "rnom_topvol_list": {
+      "type": "Text",
+      "props": {
+        "text": "Tulsi Gabbard $48.4k, MTG $46.7k, Rand Paul $36.3k (all <1.2%)",
+        "variant": "body"
+      }
+    },
+    "dnom_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dnom_h",
+        "dnom_meta",
+        "dnom_candidates"
+      ]
+    },
+    "dnom_h": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 D-NOM",
+        "level": "h3"
+      }
+    },
+    "dnom_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Event 30829",
+        "variant": "caption"
+      }
+    },
+    "dnom_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dnom_ossoff",
+        "dnom_whitmer",
+        "dnom_buttigieg"
+      ]
+    },
+    "dnom_ossoff": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dnom_ossoff_stat",
+        "dnom_ossoff_vol"
+      ]
+    },
+    "dnom_ossoff_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Ossoff YES",
+        "value": "6.75%",
+        "delta": "+0.30pp",
+        "trend": "up"
+      }
+    },
+    "dnom_ossoff_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$5.2k vol",
+        "variant": "caption"
+      }
+    },
+    "dnom_whitmer": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dnom_whitmer_stat",
+        "dnom_whitmer_vol",
+        "dnom_whitmer_note"
+      ]
+    },
+    "dnom_whitmer_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Whitmer YES",
+        "value": "1.30%",
+        "delta": "-0.05pp",
+        "trend": "down"
+      }
+    },
+    "dnom_whitmer_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$87k vol",
+        "variant": "caption"
+      }
+    },
+    "dnom_whitmer_note": {
+      "type": "Text",
+      "props": {
+        "text": "high two-way flow, contested at this level",
+        "variant": "muted"
+      }
+    },
+    "dnom_buttigieg": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dnom_buttigieg_stat",
+        "dnom_buttigieg_vol"
+      ]
+    },
+    "dnom_buttigieg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Buttigieg YES",
+        "value": "4.20%"
+      }
+    },
+    "dnom_buttigieg_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$14.5k vol",
+        "variant": "caption"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alerts_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts_h",
+        "alert_eric",
+        "alert_btc",
+        "alert_quiet"
+      ]
+    },
+    "alerts_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h3"
+      }
+    },
+    "alert_eric": {
+      "type": "Alert",
+      "props": {
+        "title": "Eric Trump Winner",
+        "message": "$2M 24h vol — anomalous for 0.55% market; unknown catalyst",
+        "type": "warning"
+      }
+    },
+    "alert_btc": {
+      "type": "Alert",
+      "props": {
+        "title": "BTC/GTA VI Mispricing",
+        "message": "YES 49.05¢ underpriced ~1¢ vs 50-50; CalibrationGap calendar arb drift",
+        "type": "info"
+      }
+    },
+    "alert_quiet": {
+      "type": "Alert",
+      "props": {
+        "title": "No Major Price Moves",
+        "message": "0 markets >5pp move in 24h (all quiet on price)",
+        "type": "info"
+      }
+    }
+  }
+}

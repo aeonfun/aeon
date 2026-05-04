@@ -1,30 +1,30 @@
-polymarket monitor — 2026-05-03
+polymarket monitor — 2026-05-04
 
-FIFA World Cup 2026 (event 30615, $881M vol, $196M liq)
-  mexico YES 1.1% (0pp) $108k 24h vol — Revenant first-order, $2.5M liq intact
-  france YES 16.5% (0pp) $126k 24h — top favorite
-  biggest mover: none; all FIFA markets flat
+MEXICO FIFA (event 30615, Revenant builder market)
+Mexico YES 1.05% (0pp flat) $71.3k vol (-34% vs yesterday $108k)
+Comment: "retail buying NO while 3 profitable wallets scaling into YES" — Tart-Recommendation
 
-Bitcoin $1M before GTA VI (market 540844, $128k liq, ends Jul 31)
-  YES 49.0% (+0.15pp) $3.6k 24h vol [7d ratio 0.74x — below avg]
-  note: BTC ~$97k needs 10x in 89d; near-coin-flip pricing implies GTA VI delay ambiguity
-  1wk: -0.55pp (drifting toward NO)
+BTC $1M / GTA VI (event 23784)
+BTC $1M YES 49.05% (+0.05pp) $885 vol
+50-50 resolution rule: if neither BTC hits $1M nor GTA VI releases by Jul 31, market resolves 50-50
+Edge: YES 49.05¢ underpriced by ~1¢ vs 50-50 outcome; converging path as deadline nears
+Comment: "If neither occurs by July 31 this market resolves to 50-50. scam" — Aching-East (14 rxn)
 
-2028 Democratic Nominee (event 30829, $53.3M liq, $1.66M 24h vol)
-  ossoff YES 6.5% (-0.05pp)
-  buttigieg YES 4.1% (flat)
-  kelly YES 2.6% (flat) [Time100 link drove 7-rxn thread 4/16]
-  beshear YES 2.7% (flat)
-  field fully fragmented — no frontrunner
+2028 PRESIDENTIAL WINNER (event 31552)
+Eric Trump YES 0.55% (-0.10pp) 24h vol $2.04M — VOLUME ALERT
+All other 35+ candidates zero volume. Single-market anomaly. Possible large NO build.
 
-2028 Republican Nominee (event 31875, $23.2M liq, $1.47M 24h vol)
-  vance YES 39.2% — frontrunner, 37pp gap to field
-  desantis YES 2.4% / rand paul YES 1.2% / gaetz YES 0.75%
+2028 R-NOM (event 31875)
+Vance YES 39.05% (-0.10pp) $22.9k vol
+Rubio YES 21.25% $17.4k vol
+Top vol: Tulsi Gabbard $48.4k, MTG $46.7k, Rand Paul $36.3k (all <1.2%)
 
-2028 Presidential Winner (event 31552, $25.9M liq)
-  eric trump YES 0.65% (only named slot; 127 still Person XX)
+2028 D-NOM (event 30829)
+Ossoff YES 6.75% (+0.30pp) $5.2k vol
+Whitmer YES 1.30% (-0.05pp) $87k vol — high two-way flow, contested at this level
+Buttigieg YES 4.20% $14.5k vol
 
-alerts: none — no >5pp move; no vol spike >3x 7d avg
-top comment (2028 winner): "I don't know who will win, but I know it won't be JD Vance" — 21 rxn
-top comment (2028 dem): "Dollars on sale for 28c. Newsom wins." — 9 rxn; Gavin thread today
-top comment (FIFA): "England in top 3 is hilarious" — 8 rxn
+alerts:
+- Eric Trump winner $2M 24h vol — anomalous for 0.55% market; unknown catalyst
+- BTC/GTA VI: YES 49.05¢ underpriced ~1¢ vs 50-50; CalibrationGap calendar arb drift
+- 0 markets >5pp move in 24h (all quiet on price)
