@@ -1,0 +1,203 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Remix Tweets",
+        "description": "2026-05-04"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "consecutive",
+        "sep2",
+        "cause_section",
+        "sep3",
+        "action_section",
+        "sep4",
+        "source_section"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "consecutive": {
+      "type": "Text",
+      "props": {
+        "text": "8th consecutive error fire (04-27 → 05-04). Same root cause every day."
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "cause_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cause_heading",
+        "cause_list"
+      ]
+    },
+    "cause_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "cause_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause1",
+        "cause2",
+        "cause3",
+        "cause4",
+        "cause5"
+      ]
+    },
+    "cause1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE env unset"
+      }
+    },
+    "cause2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity has no @handle"
+      }
+    },
+    "cause3": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml remix-tweets has no var: override (var: reserved for time-window per SKILL.md L9)"
+      }
+    },
+    "cause4": {
+      "type": "Text",
+      "props": {
+        "text": "$XAI_API_KEY unset"
+      }
+    },
+    "cause5": {
+      "type": "Text",
+      "props": {
+        "text": ".xai-cache/ directory absent — would have failed at fetch even if handle resolved"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "action_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action_heading",
+        "action_text"
+      ]
+    },
+    "action_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Action",
+        "level": "h3"
+      }
+    },
+    "action_text": {
+      "type": "Text",
+      "props": {
+        "text": "Add `X_HANDLE` + `XAI_API_KEY` to workflow env in `.github/workflows/skill-runner.yml` (or per-skill config), or wire `scripts/prefetch-xai.sh` to populate `.xai-cache/remix-tweets.json`"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "source_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "source_heading",
+        "source_metrics"
+      ]
+    },
+    "source_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Metrics",
+        "level": "h3"
+      }
+    },
+    "source_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "metric1",
+        "metric2",
+        "metric3",
+        "metric4",
+        "metric5"
+      ]
+    },
+    "metric1": {
+      "type": "Badge",
+      "props": {
+        "text": "cache: miss",
+        "variant": "secondary"
+      }
+    },
+    "metric2": {
+      "type": "Badge",
+      "props": {
+        "text": "xai: fail",
+        "variant": "destructive"
+      }
+    },
+    "metric3": {
+      "type": "Badge",
+      "props": {
+        "text": "fetched: 0",
+        "variant": "secondary"
+      }
+    },
+    "metric4": {
+      "type": "Badge",
+      "props": {
+        "text": "kept: 0",
+        "variant": "secondary"
+      }
+    },
+    "metric5": {
+      "type": "Badge",
+      "props": {
+        "text": "drops: 0",
+        "variant": "secondary"
+      }
+    }
+  }
+}
