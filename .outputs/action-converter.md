@@ -1,30 +1,30 @@
-*5 Actions — 2026-05-03*
-Shape: Schedule TN-T0 comments, trim Hormuz NO, lock secrets fix, tighten Hermes gate, promote PM handles.
+*5 Actions — 2026-05-04*
+Shape: Build Aeon outputs contract, validate Hormuz claim, draft TN-driven resolution-text ADR.
 
-1. Schedule polymarket-comments + reply-maker workflow_dispatch for ~04:00 UTC 2026-05-04 (Tamil Nadu T-0 resolution morning), var=tamil-nadu — collect resolution-debate handles, not pre-resolution signal.
-why: T-1 thread already noisy (orangexyz 80k whale flag, scams scaling); T-0 morning is the only window to capture Encimado/Helldiver15 archetype before close.
-done: workflow_dispatch fired or aeon.yml one-time entry merged with cron `0 4 4 5 *`.
-loop: tn-resolution-morning-rerun
+1. Build `outputs/{monitor-polymarket,polymarket-comments,narrative-tracker}/2026-05-04.json` on `tomscaria/aeon` and open PR exposing the JSON contract that swarm-fund-mvp's `python/execution/aeon_adapter.py` polls every 15 min.
+why: ADR-093 (commit dc1846e) shipped the consumer 05-03; tomscaria/aeon side has no outputs/ — every poll 404s; falsifier window ~2026-05-17.
+done: PR opened on tomscaria/aeon with at least `outputs/monitor-polymarket/2026-05-04.json` valid JSON; aeon_adapter.py poll returns 200.
+loop: aeon-outputs-contract
 
-2. Trim Hormuz-by-end-of-June NO position from 54.5¢ exposure on saneperson + compute insider tape (50+ tankers passed Iranian side, Trump "very profitable business — like pirates" quote).
-why: tape contradicts CENTCOM-mine + naval-blockade thesis floor; 33pp edge tightens to 15-20pp under monetized-blockade frame; headline-risk binary up.
-done: position decision logged in memory/topics/polymarket.md Hormuz row + size delta sent.
-loop: hormuz-no-reposition
+2. Validate arsenelupin's "Trump lifted Hormuz blockade today" claim against @realDonaldTrump Truth Social timeline; if real, reposition the 54.5c NO Hormuz-by-end-of-June position before fair re-prices to 30%+.
+why: live-tape chain saneperson - compute - arsenelupin - Hossein-m points at imminent move; 33pp MEMORY edge collapses on a single Trump tweet.
+done: Truth Social URL or screenshot attached to a trade note in `memory/topics/polymarket.md`; position size confirmed or trimmed by EOD.
+loop: hormuz-validate-arsenelupin
 
-3. Open PR on aaronjmars/aeon adding regression test for dashboard/app/api/secrets/route.ts POST + DELETE — assert value=`x\`whoami\`` is stored verbatim, not executed.
-why: code-health top action — locks today's PR #150 shell-injection fix permanently; dashboard tree currently has zero tests.
-done: PR opened, branch `tomscaria:test/secrets-route-regression`, single test file under dashboard/__tests__/.
+3. Draft `ADR-094 ingest-resolution-text` for `tomscaria/swarm-fund-mvp` using today's TN miss (TVK 6.95c -> 99.65c on $22M) + Cong dataset 3-layer schema (arXiv:2604.20421) as the architecture spec for `python/strategies/calibration_gap/` resolution-text ingestion.
+why: TN falsifier is the freshest empirical evidence for the operator's stated single-highest-leverage CalibrationGap upgrade; Cong byline anchors Stanford citation.
+done: `decisions/094-ingest-resolution-text.md` drafted with schema mapping, TN failure case, Cong citation, and falsifier criterion.
+loop: ingest-resolution-text-adr
+
+4. Delete `.env` from `tomscaria/lore-financial-teaser` git tracking with `git rm --cached .env`; verify `.gitignore` coverage; PR on branch `chore/untrack-env`.
+why: Day-3 secret-hygiene carry; the 8-commit cleanup pass on 05-03 (`92c7b06`/`9b53f11`/`bfaae50`) missed it; 5-min fix on a leak surface.
+done: PR merged removing tracked `.env`; `git ls-files | grep "\.env$"` empty on lore-financial-teaser main.
+loop: lore-env-delete
+
+5. Add regression test for `aaronjmars/aeon dashboard/app/api/secrets/route.ts` POST (line 96) + DELETE (line 119) asserting argv-array `execFileSync('gh', [...])` rejects backtick-injection payload such as `x\`whoami\``.
+why: Day-2 carry on code-health top recommendation; locks PR #150 shell-injection fix against silent regression.
+done: PR opened with `secrets-route.test.ts` covering both verbs; CI green.
 loop: secrets-route-regression-test
 
-4. Tighten Hermes-arb min-gap 7pp → 7.5–8pp in tomscaria/swarm-fund-mvp strategies/hermes_arb/program.md per deep-research finding.
-why: Kalshi-perps falsifier-window day-4 is live (KXBTC-26MAY0217-B78125 +8pp on loose 4pp book) — bias toward fewer false positives before scaling capital.
-done: PR opened on swarm-fund-mvp, gate constant updated, falsifier-window note in PR body.
-loop: hermes-arb-min-gap
-
-5. Promote 10 newly-surfaced PM comment handles (Moses1, Encimado, Helldiver15, EmeraldEdge, saneperson, Castwolffox, zer0xfourd, abdoohl, SakuraDevil, orangexyz) into memory/topics/polymarket.md handles section with archetype tags.
-why: comments-side edge thesis hardening; reusable retrieval substrate for next 30 days of polymarket-comments runs (compute already cross-market 3-thread).
-done: topics/polymarket.md gains "## Comments-side handles (newly surfaced 05-03)" with each handle + role.
-loop: polymarket-handles-promote
-
-sources: memory=99 logs=7 topics=8 prs=14 cron_failing=3 mode=OK
+sources: memory=112 logs=7 topics=8 prs=9 cron_failing=3 mode=OK
 

@@ -1,0 +1,257 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-04"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_shape",
+        "sep1",
+        "stack_action1",
+        "sep2",
+        "stack_action2",
+        "sep3",
+        "stack_action3",
+        "sep4",
+        "stack_action4",
+        "sep5",
+        "stack_action5",
+        "sep6",
+        "text_sources"
+      ]
+    },
+    "text_shape": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Build Aeon outputs contract, validate Hormuz claim, draft TN-driven resolution-text ADR."
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "stack_action1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action1",
+        "text_action1_why",
+        "text_action1_done",
+        "badge_action1_loop"
+      ]
+    },
+    "heading_action1": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Build `outputs/{monitor-polymarket,polymarket-comments,narrative-tracker}/2026-05-04.json` on `tomscaria/aeon` and open PR exposing the JSON contract that swarm-fund-mvp's `python/execution/aeon_adapter.py` polls every 15 min.",
+        "level": "h3"
+      }
+    },
+    "text_action1_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: ADR-093 (commit dc1846e) shipped the consumer 05-03; tomscaria/aeon side has no outputs/ — every poll 404s; falsifier window ~2026-05-17."
+      }
+    },
+    "text_action1_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on tomscaria/aeon with at least `outputs/monitor-polymarket/2026-05-04.json` valid JSON; aeon_adapter.py poll returns 200."
+      }
+    },
+    "badge_action1_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: aeon-outputs-contract"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "stack_action2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action2",
+        "text_action2_why",
+        "text_action2_done",
+        "badge_action2_loop"
+      ]
+    },
+    "heading_action2": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Validate arsenelupin's \"Trump lifted Hormuz blockade today\" claim against @realDonaldTrump Truth Social timeline; if real, reposition the 54.5c NO Hormuz-by-end-of-June position before fair re-prices to 30%+.",
+        "level": "h3"
+      }
+    },
+    "text_action2_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: live-tape chain saneperson - compute - arsenelupin - Hossein-m points at imminent move; 33pp MEMORY edge collapses on a single Trump tweet."
+      }
+    },
+    "text_action2_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: Truth Social URL or screenshot attached to a trade note in `memory/topics/polymarket.md`; position size confirmed or trimmed by EOD."
+      }
+    },
+    "badge_action2_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: hormuz-validate-arsenelupin"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "stack_action3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action3",
+        "text_action3_why",
+        "text_action3_done",
+        "badge_action3_loop"
+      ]
+    },
+    "heading_action3": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Draft `ADR-094 ingest-resolution-text` for `tomscaria/swarm-fund-mvp` using today's TN miss (TVK 6.95c -> 99.65c on $22M) + Cong dataset 3-layer schema (arXiv:2604.20421) as the architecture spec for `python/strategies/calibration_gap/` resolution-text ingestion.",
+        "level": "h3"
+      }
+    },
+    "text_action3_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: TN falsifier is the freshest empirical evidence for the operator's stated single-highest-leverage CalibrationGap upgrade; Cong byline anchors Stanford citation."
+      }
+    },
+    "text_action3_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: `decisions/094-ingest-resolution-text.md` drafted with schema mapping, TN failure case, Cong citation, and falsifier criterion."
+      }
+    },
+    "badge_action3_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: ingest-resolution-text-adr"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "stack_action4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action4",
+        "text_action4_why",
+        "text_action4_done",
+        "badge_action4_loop"
+      ]
+    },
+    "heading_action4": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Delete `.env` from `tomscaria/lore-financial-teaser` git tracking with `git rm --cached .env`; verify `.gitignore` coverage; PR on branch `chore/untrack-env`.",
+        "level": "h3"
+      }
+    },
+    "text_action4_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: Day-3 secret-hygiene carry; the 8-commit cleanup pass on 05-03 (`92c7b06`/`9b53f11`/`bfaae50`) missed it; 5-min fix on a leak surface."
+      }
+    },
+    "text_action4_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR merged removing tracked `.env`; `git ls-files | grep \"\\.env$\"` empty on lore-financial-teaser main."
+      }
+    },
+    "badge_action4_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: lore-env-delete"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "stack_action5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action5",
+        "text_action5_why",
+        "text_action5_done",
+        "badge_action5_loop"
+      ]
+    },
+    "heading_action5": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Add regression test for `aaronjmars/aeon dashboard/app/api/secrets/route.ts` POST (line 96) + DELETE (line 119) asserting argv-array `execFileSync('gh', [...])` rejects backtick-injection payload such as `x\\`whoami\\``.",
+        "level": "h3"
+      }
+    },
+    "text_action5_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: Day-2 carry on code-health top recommendation; locks PR #150 shell-injection fix against silent regression."
+      }
+    },
+    "text_action5_done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened with `secrets-route.test.ts` covering both verbs; CI green."
+      }
+    },
+    "badge_action5_loop": {
+      "type": "Badge",
+      "props": {
+        "text": "loop: secrets-route-regression-test"
+      }
+    },
+    "sep6": {
+      "type": "Separator"
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=112 logs=7 topics=8 prs=9 cron_failing=3 mode=OK"
+      }
+    }
+  }
+}
