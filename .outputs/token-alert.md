@@ -1,14 +1,17 @@
 ## Summary
 
-Ran `token-alert` for BTC / ETH / SOL against the CoinGecko free API. All three majors well inside the 10% 24h threshold and volumes broadly down vs. yesterday — no anomalies, no alert fired. **TOKEN_ALERT_OK** logged silently per skill spec; no notification dispatched.
+Ran `token-alert` against BTC / ETH / SOL per the tracked-tokens config in `memory/MEMORY.md` (10% 24h threshold).
 
-**Snapshot (2026-05-03):**
-- BTC: $78,734 (+0.76% 24h), vol $17.47B
-- ETH: $2,322.44 (+0.88% 24h), vol $7.05B
-- SOL: $84.01 (+0.41% 24h), vol $1.67B
+**Snapshot 2026-05-04** (CoinGecko, no-key tier — curl succeeded, no WebFetch fallback needed):
+- BTC: $78,677 (-0.04% 24h), vol $44.82B
+- ETH: $2,329.88 (+0.17% 24h), vol $19.50B
+- SOL: $83.77 (-0.42% 24h), vol $3.71B
 
-**Day-over-day** vs. 2026-05-02 morning print: BTC +0.57%, ETH +0.71%, SOL +0.17%. Mild green tilt back from yesterday's risk-off. Volumes: BTC 0.61x, ETH 0.72x, SOL 0.78x prior day — no 3x spike.
+**Result: `TOKEN_ALERT_OK`** — no notification dispatched.
+- 24h moves all <0.5%, well under the 10% trigger.
+- Volume 2.2–2.8x the prior day's print across all three; broad uniform lift suggests reporting-window difference rather than name-specific flow. Below the 3x trigger anyway.
+- Fifth consecutive green run (04-30 / 05-01 / 05-02 / 05-03 / 05-04). Crypto tape stays uneventful through the Russia-Ukraine truce, Tamil Nadu T-1, and Bengal counting-eve catalyst window — CalibrationGap-relevant action remains Polymarket-side, not majors.
 
-**Files modified:** `memory/logs/2026-05-03.md` (token-alert entry appended).
+**Files modified:** `memory/logs/2026-05-04.md` (appended).
 
-**Follow-up:** None. Fourth consecutive `TOKEN_ALERT_OK` (04-30 → 05-03). Russia-Ukraine truce headlines and Tamil Nadu T-1 are off the BTC/ETH/SOL channel; CalibrationGap-relevant catalysts remain Polymarket-side.
+**Follow-up:** none.
