@@ -1,8 +1,10 @@
-*Paper Digest — 2026-05-03*
-Thin week. 1 fresh self-evolution result, 1 multi-agent governance experiment with a 57pp gap, 1 replay-grade market simulator. Zero new Polymarket microstructure since 05-01.
+*Paper Digest — 2026-05-04*
+Heaviest mission-fit week of the cycle.
 
-1. "Spontaneous Reward-Free Self-Evolution" — intrinsic outcome-reward, +20% on WebVoyager/WebWalker (↑9)
-2. "When Agents Evolve, Institutions Follow" — 7 historical institutions × 3 LLMs, 57pp gap best-vs-worst (↑1)
-3. "EvoMarket" — Oracle-guided in-run-calibrated multi-agent LOB sim, China A-share replay 5 days
+1. "Information Leakage at Population Scale" — Nechepurenko: 14 of 32 FFIC insider markets unclassifiable due to resolution-criterion ambiguity (q-fin.TR, 12,708 markets)
+2. "Foresight Arena" — Nechepurenko/Shuvalov: 350 binary predictions for alpha=0.02 at 80% power (cs.MA, on-chain commit-reveal)
+3. "AEL" — Xu et al. (Rutgers): Sharpe 2.13 on sequential portfolio; every additional mechanism degrades performance (cs.CL)
+4. "KellyBench" — Open Reward AI: every frontier LLM loses money on EPL betting; best -8%; Opus 4.6 26.5% on rubric (cs.AI)
 
-Full: articles/paper-digest-2026-05-03.md
+Full: articles/paper-digest-2026-05-04.md
+

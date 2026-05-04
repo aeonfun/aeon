@@ -1,0 +1,172 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest — 2026-05-04",
+        "description": "Heaviest mission-fit week of the cycle."
+      },
+      "children": [
+        "content"
+      ]
+    },
+    "content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "paper1",
+        "paper2",
+        "paper3",
+        "paper4",
+        "footer-sep",
+        "footer"
+      ]
+    },
+    "paper1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p1-title",
+        "p1-meta",
+        "p1-text"
+      ]
+    },
+    "p1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Information Leakage at Population Scale",
+        "level": "h4"
+      }
+    },
+    "p1-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Nechepurenko · q-fin.TR · 12,708 markets",
+        "variant": "caption"
+      }
+    },
+    "p1-text": {
+      "type": "Text",
+      "props": {
+        "text": "14 of 32 FFIC insider markets unclassifiable due to resolution-criterion ambiguity"
+      }
+    },
+    "paper2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p2-title",
+        "p2-meta",
+        "p2-text"
+      ]
+    },
+    "p2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Foresight Arena",
+        "level": "h4"
+      }
+    },
+    "p2-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Nechepurenko/Shuvalov · cs.MA · on-chain commit-reveal",
+        "variant": "caption"
+      }
+    },
+    "p2-text": {
+      "type": "Text",
+      "props": {
+        "text": "350 binary predictions for alpha=0.02 at 80% power"
+      }
+    },
+    "paper3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p3-title",
+        "p3-meta",
+        "p3-text"
+      ]
+    },
+    "p3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "AEL",
+        "level": "h4"
+      }
+    },
+    "p3-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Xu et al. (Rutgers) · cs.CL",
+        "variant": "caption"
+      }
+    },
+    "p3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sharpe 2.13 on sequential portfolio; every additional mechanism degrades performance"
+      }
+    },
+    "paper4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "p4-title",
+        "p4-meta",
+        "p4-text"
+      ]
+    },
+    "p4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "KellyBench",
+        "level": "h4"
+      }
+    },
+    "p4-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Open Reward AI · cs.AI",
+        "variant": "caption"
+      }
+    },
+    "p4-text": {
+      "type": "Text",
+      "props": {
+        "text": "every frontier LLM loses money on EPL betting; best -8%; Opus 4.6 26.5% on rubric"
+      }
+    },
+    "footer-sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Link",
+      "props": {
+        "label": "Full: articles/paper-digest-2026-05-04.md",
+        "href": "articles/paper-digest-2026-05-04.md"
+      }
+    }
+  }
+}
