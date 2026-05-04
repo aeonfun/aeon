@@ -1,0 +1,462 @@
+{
+  "root": "card-kalshi",
+  "state": {},
+  "elements": {
+    "card-kalshi": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi monitor",
+        "description": "2026-05-04"
+      },
+      "children": [
+        "verdict-section",
+        "sep1",
+        "market1-section",
+        "sep2",
+        "market2-section",
+        "sep3",
+        "market3-section",
+        "sep4",
+        "alerts-section",
+        "sep5",
+        "trending-section",
+        "sep6",
+        "setup-section",
+        "sep7",
+        "source-section"
+      ]
+    },
+    "verdict-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "verdict-label",
+        "verdict-text"
+      ]
+    },
+    "verdict-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Verdict",
+        "level": "h3"
+      }
+    },
+    "verdict-text": {
+      "type": "Text",
+      "props": {
+        "text": "all quiet — watchlist empty; 3 events discovered; no market clears $1k USD vol gate; BTC implied spot $78.75–79k"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market1-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market1-header",
+        "market1-table",
+        "market1-mover"
+      ]
+    },
+    "market1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market1-heading",
+        "market1-badges"
+      ]
+    },
+    "market1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "KXBTC-26MAY0417 (BTC price today at 5pm EDT)",
+        "level": "h2"
+      }
+    },
+    "market1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-crypto1",
+        "badge-closes1"
+      ]
+    },
+    "badge-crypto1": {
+      "type": "Badge",
+      "props": {
+        "text": "Crypto",
+        "variant": "outline"
+      }
+    },
+    "badge-closes1": {
+      "type": "Badge",
+      "props": {
+        "text": "closes in hours",
+        "variant": "secondary"
+      }
+    },
+    "market1-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "vol_24h",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$78,750–$78,999 (B78875)",
+            "13%",
+            "~$144",
+            "2pp"
+          ],
+          [
+            "$79,250–$79,499 (B79375)",
+            "12%",
+            "~$183",
+            "4pp"
+          ],
+          [
+            "$78,500–$78,749 (B78625)",
+            "12%",
+            "~$134",
+            "3pp"
+          ]
+        ]
+      }
+    },
+    "market1-mover": {
+      "type": "Text",
+      "props": {
+        "text": "mover: B78875 — implied spot consistent with yesterday's $78,604 print; Hermes-arb falsifier day-5",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market2-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market2-heading",
+        "market2-badge",
+        "market2-table",
+        "market2-notes"
+      ]
+    },
+    "market2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "KXBTC-26MAY0817 (BTC price May 8 at 5pm EDT)",
+        "level": "h2"
+      }
+    },
+    "market2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Crypto",
+        "variant": "outline"
+      }
+    },
+    "market2-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "vol_24h",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$79,000–$79,499 (B79250)",
+            "5%",
+            "~$209",
+            "3pp"
+          ],
+          [
+            "$77,500–$77,999 (B77750)",
+            "6%",
+            "~$173",
+            "1pp"
+          ],
+          [
+            "$77,000–$77,499 (B77250)",
+            "7%",
+            "~$163",
+            "2pp"
+          ]
+        ]
+      }
+    },
+    "market2-notes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "market2-mover",
+        "market2-oi"
+      ]
+    },
+    "market2-mover": {
+      "type": "Text",
+      "props": {
+        "text": "mover: B79250 — highest 24h count; slight upward drift vs today; event aggregate ~$1.4k across 40 buckets",
+        "variant": "body"
+      }
+    },
+    "market2-oi": {
+      "type": "Text",
+      "props": {
+        "text": "note: B78250 has 5,434 OI (historical) and B79250 has 4,634 OI — large pre-existing positions",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market3-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market3-heading",
+        "market3-badge",
+        "market3-table",
+        "market3-rate"
+      ]
+    },
+    "market3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "KXFED-27APR (Fed funds rate after Apr 2027 FOMC)",
+        "level": "h2"
+      }
+    },
+    "market3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Economics",
+        "variant": "outline"
+      }
+    },
+    "market3-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "vol_24h",
+          "spread"
+        ],
+        "rows": [
+          [
+            ">4.25%",
+            "8%",
+            "~$22",
+            "wide"
+          ],
+          [
+            ">4.00%",
+            "35%",
+            "~$14",
+            "wide"
+          ],
+          [
+            ">3.75%",
+            "46%",
+            "~$27",
+            "wide"
+          ]
+        ]
+      }
+    },
+    "market3-rate": {
+      "type": "Text",
+      "props": {
+        "text": "rate curve: 54% prob below 3.50% by Apr 2027; ~80% prob 2+ cuts from current 4.25–4.50%; Warsh cut thesis priced in ahead of May 15 Powell departure",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alerts-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alerts-heading",
+        "alerts-text"
+      ]
+    },
+    "alerts-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS",
+        "level": "h3"
+      }
+    },
+    "alerts-text": {
+      "type": "Text",
+      "props": {
+        "text": "(>5pp on non-thin book): none",
+        "variant": "caption"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending-heading",
+        "trending-list"
+      ]
+    },
+    "trending-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h3"
+      }
+    },
+    "trending-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-item1",
+        "trending-item2"
+      ]
+    },
+    "trending-item1": {
+      "type": "Text",
+      "props": {
+        "text": "KXBTC-26MAY0817 — ~$1.4k aggregate 24h vol; add for Hermes-arb BTC context; watchlist starters: KXBTC-26MAY0817, KXFED-27APR",
+        "variant": "body"
+      }
+    },
+    "trending-item2": {
+      "type": "Text",
+      "props": {
+        "text": "KXFED-26MAY — 404 (May 6-7 FOMC market not found; rate decision 3 days out, no near-term rate market active)",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "setup-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "setup-heading",
+        "setup-text"
+      ]
+    },
+    "setup-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Setup",
+        "level": "h3"
+      }
+    },
+    "setup-text": {
+      "type": "Text",
+      "props": {
+        "text": "add tickers to skills/monitor-kalshi/watchlist.md (one per line)"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "source-heading",
+        "source-text",
+        "status-text"
+      ]
+    },
+    "source-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source & Status",
+        "level": "h3"
+      }
+    },
+    "source-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: events=ok candlesticks=skip orderbook=skip SRC=price_only (batch 400)",
+        "variant": "caption"
+      }
+    },
+    "status-text": {
+      "type": "Text",
+      "props": {
+        "text": "Status: MONITOR_KALSHI_NO_CONFIG",
+        "variant": "muted"
+      }
+    }
+  }
+}
