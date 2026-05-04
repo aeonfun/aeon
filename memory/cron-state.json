@@ -648,8 +648,8 @@
     "last_quality_score": 4
   },
   "evening-recap": {
-    "last_dispatch": "2026-05-03T22:34:44Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-04T22:29:54Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-03T22:37:45Z",
     "total_runs": 8,
     "total_successes": 8,
