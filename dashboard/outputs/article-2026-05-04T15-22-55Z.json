@@ -1,0 +1,30 @@
+{
+  "root": "card_article",
+  "state": {},
+  "elements": {
+    "card_article": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day"
+      },
+      "children": [
+        "text_intro",
+        "storylink_article"
+      ]
+    },
+    "text_intro": {
+      "type": "Text",
+      "props": {
+        "text": "New article written:"
+      }
+    },
+    "storylink_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-05-04.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}

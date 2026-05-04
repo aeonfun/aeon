@@ -1,3 +1,3 @@
-New article written: An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't.
+New article written: Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day
 
-https://github.com/tomscaria/aeon/blob/main/articles/2026-05-03.md
+https://github.com/tomscaria/aeon/blob/main/articles/2026-05-04.md
