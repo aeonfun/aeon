@@ -1,0 +1,227 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Drafts: Polymarket TN/WB Calibration Split",
+        "description": "Polymarket TN/WB same-day calibration split"
+      },
+      "children": [
+        "section-1",
+        "sep1",
+        "section-2",
+        "sep2",
+        "section-3",
+        "sep3",
+        "section-4",
+        "sep4",
+        "section-5",
+        "sep5",
+        "recommendation"
+      ]
+    },
+    "section-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1",
+        "v1a",
+        "v1b"
+      ]
+    },
+    "h1": {
+      "type": "Heading",
+      "props": {
+        "text": "One-liner",
+        "level": "h2"
+      }
+    },
+    "v1a": {
+      "type": "Text",
+      "props": {
+        "text": "1a. Same day, same venue. TVK 7c→99c. BJP 51→99. Calibration isn't market-level, it's venue-level."
+      }
+    },
+    "v1b": {
+      "type": "Text",
+      "props": {
+        "text": "1b. $22M priced TVK at 6.95¢. Closed 99.65¢. The prior was the bug, not the data."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h2",
+        "v2a",
+        "v2b"
+      ]
+    },
+    "h2": {
+      "type": "Heading",
+      "props": {
+        "text": "Two-punch",
+        "level": "h2"
+      }
+    },
+    "v2a": {
+      "type": "Text",
+      "props": {
+        "text": "2a. Polymarket got Bengal because Phalodi priced it too. Missed Tamil Nadu by 92pp because every Indian book ran the 1967 prior. Two venues, one blind spot."
+      }
+    },
+    "v2b": {
+      "type": "Text",
+      "props": {
+        "text": "2b. Single-venue confidence is a feature to fade. $22M priced TVK at 7¢ on a binary that asked \"DMK win.\" The structural question was \"can a debut party clear duopoly.\""
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h3",
+        "v3a",
+        "v3b"
+      ]
+    },
+    "h3": {
+      "type": "Heading",
+      "props": {
+        "text": "Paragraph",
+        "level": "h2"
+      }
+    },
+    "v3a": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Polymarket priced TVK at 6.95¢ on $22M of opinion. Closed 99.65¢. The market said \"DMK win.\" The structural question was \"can a debut party clear a duopoly held since 1967.\" Same ticker, different problem. The title was the bug."
+      }
+    },
+    "v3b": {
+      "type": "Text",
+      "props": {
+        "text": "3b. WB Polymarket: 51% → 99.55% in 24h, Phalodi priced same direction independently, late flip held. TN Polymarket: TVK 6.95¢ → 99.65¢ on $22M, every Indian book shared the 1967 Dravidian prior. One was different evidence. The other was the same blind spot."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h4",
+        "v4a",
+        "badge4a",
+        "v4b"
+      ]
+    },
+    "h4": {
+      "type": "Heading",
+      "props": {
+        "text": "Long tweet",
+        "level": "h2"
+      }
+    },
+    "v4a": {
+      "type": "Text",
+      "props": {
+        "text": "4a. CalibrationGap update from today's tape. Polymarket WB flipped 51% → 99.55% in 24h on the BJP take. Phalodi Satta Bazar priced it the same way. Two venues, same direction, late move held. Tamil Nadu did the opposite: $22M priced TVK at 6.95¢, closed 99.65¢. Every Indian book ran the same 1967 Dravidian-duopoly prior, including the Polymarket version. Convergence is only signal when venues price different evidence. Shared continuity prior is a shared blind spot. Ingest resolution text and structural priors, not titles and consensus probabilities."
+      }
+    },
+    "badge4a": {
+      "type": "Badge",
+      "props": {
+        "text": "best",
+        "variant": "secondary"
+      }
+    },
+    "v4b": {
+      "type": "Text",
+      "props": {
+        "text": "4b. A pseudonymous \"orangexyz\" called TVK on Polymarket by knocking on doors of watchman, friends, relatives, workers in Tamil Nadu. Bio: \"VETRI NICHAYAM.\" Made him 80k overnight. $22M market priced TVK at 6.95¢, closed 99.65¢. \"KairosHunter\" recovered $50k+ in losses catching the BJP flip on Bengal — Polymarket 51% → 99.55%, Phalodi priced the same direction. Two PM resolutions. One day. The information was on the ground in TN or in turnout-phase data in WB. Neither is in the order book."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h5",
+        "v5a",
+        "v5b"
+      ]
+    },
+    "h5": {
+      "type": "Heading",
+      "props": {
+        "text": "Thread opener",
+        "level": "h2"
+      }
+    },
+    "v5a": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Polymarket closed two Indian state markets today. WB flipped late and held: 51% → 99.55%. TN missed by 92pp: TVK 7¢ → 99¢ on $22M of priced opinion. Same day, same operator, opposite outcomes. Why?"
+      }
+    },
+    "v5b": {
+      "type": "Text",
+      "props": {
+        "text": "5b. Today's $22M Polymarket TN miss isn't a calibration story. It's a convergence story. Cross-venue convergence is only signal when venues price different evidence. Bengal was free convergence. Tamil Nadu was free blind spot."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommendation",
+        "message": "best: #4a — both data points, lands the operator-grade lesson, ends with the actionable upgrade",
+        "type": "info"
+      }
+    }
+  }
+}
