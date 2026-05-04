@@ -1,0 +1,339 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Code health 05-04"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "lore_section",
+        "sep1",
+        "swarm_section",
+        "sep2",
+        "aeon_section",
+        "sep3",
+        "issues_section",
+        "sep4",
+        "priority_section"
+      ]
+    },
+    "lore_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "lore_heading",
+        "lore_status",
+        "lore_grid",
+        "lore_details_stack"
+      ]
+    },
+    "lore_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "lore-financial-teaser",
+        "level": "h2"
+      }
+    },
+    "lore_status": {
+      "type": "Text",
+      "props": {
+        "text": "Broke 7-day standstill",
+        "variant": "lead"
+      }
+    },
+    "lore_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_commits",
+        "stat_files_removed",
+        "stat_bundle_cut",
+        "badge_env_day3"
+      ]
+    },
+    "stat_commits": {
+      "type": "Stat",
+      "props": {
+        "label": "Cleanup commits",
+        "value": "8"
+      }
+    },
+    "stat_files_removed": {
+      "type": "Stat",
+      "props": {
+        "label": "Dead component files removed",
+        "value": "6"
+      }
+    },
+    "stat_bundle_cut": {
+      "type": "Stat",
+      "props": {
+        "label": "Bundle cut via lazy-load",
+        "value": "13%"
+      }
+    },
+    "badge_env_day3": {
+      "type": "Badge",
+      "props": {
+        "text": ".env still tracked Day-3",
+        "variant": "outline"
+      }
+    },
+    "lore_details_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail_react_query",
+        "detail_vitest"
+      ]
+    },
+    "detail_react_query": {
+      "type": "Text",
+      "props": {
+        "text": "@tanstack/react-query ripped out",
+        "variant": "body"
+      }
+    },
+    "detail_vitest": {
+      "type": "Text",
+      "props": {
+        "text": "Real Vitest assertions added",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "swarm_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "swarm_heading",
+        "swarm_stats_grid",
+        "swarm_detail_text"
+      ]
+    },
+    "swarm_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund-mvp",
+        "level": "h2"
+      }
+    },
+    "swarm_stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_tests",
+        "stat_aeon_adapter_lines"
+      ]
+    },
+    "stat_tests": {
+      "type": "Stat",
+      "props": {
+        "label": "Tests total",
+        "value": "142",
+        "delta": "+3"
+      }
+    },
+    "stat_aeon_adapter_lines": {
+      "type": "Stat",
+      "props": {
+        "label": "test_aeon_adapter.py",
+        "value": "203 lines"
+      }
+    },
+    "swarm_detail_text": {
+      "type": "Text",
+      "props": {
+        "text": "Covers ADR-093",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "aeon_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "aeon_heading",
+        "aeon_content"
+      ]
+    },
+    "aeon_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "aeon",
+        "level": "h2"
+      }
+    },
+    "aeon_content": {
+      "type": "Text",
+      "props": {
+        "text": "Shipped skill-freshness #157",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "issues_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues_heading",
+        "issue_secrets",
+        "issue_reply_maker"
+      ]
+    },
+    "issues_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Outstanding",
+        "level": "h2"
+      }
+    },
+    "issue_secrets": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "issue_secrets_text",
+        "badge_secrets_day2"
+      ]
+    },
+    "issue_secrets_text": {
+      "type": "Text",
+      "props": {
+        "text": "secrets-route regression test still missing",
+        "variant": "body"
+      }
+    },
+    "badge_secrets_day2": {
+      "type": "Badge",
+      "props": {
+        "text": "Day-2",
+        "variant": "outline"
+      }
+    },
+    "issue_reply_maker": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "issue_reply_maker_text",
+        "badge_reply_maker_day10"
+      ]
+    },
+    "issue_reply_maker_text": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-014 reply-maker case",
+        "variant": "body"
+      }
+    },
+    "badge_reply_maker_day10": {
+      "type": "Badge",
+      "props": {
+        "text": "Day-10",
+        "variant": "outline"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "priority_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "priority_heading",
+        "priority_task_stack"
+      ]
+    },
+    "priority_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top priority",
+        "level": "h2"
+      }
+    },
+    "priority_task_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "priority_task_text",
+        "priority_context_text"
+      ]
+    },
+    "priority_task_text": {
+      "type": "Text",
+      "props": {
+        "text": "Verify Pyth/Birdeye feed IDs",
+        "variant": "lead"
+      }
+    },
+    "priority_context_text": {
+      "type": "Text",
+      "props": {
+        "text": "Day-3 — gates CalibrationGap ingestion",
+        "variant": "caption"
+      }
+    }
+  }
+}

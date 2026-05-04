@@ -61,6 +61,7 @@ node_modules/
 .external-work
 .vuln-scan/
 .osv-scanner
+.codehealth-tools/
 
 # defi-overview scratch (rm blocked under sandbox)
 chains.json
