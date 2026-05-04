@@ -1,0 +1,402 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners",
+        "description": "2026-05-04 — verdict: MIXED"
+      },
+      "children": [
+        "sep_top",
+        "tokens_stack",
+        "sep_bottom",
+        "footer_stack"
+      ]
+    },
+    "sep_top": {
+      "type": "Separator",
+      "props": {}
+    },
+    "tokens_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "token1_stack",
+        "sep1",
+        "token2_stack",
+        "sep2",
+        "token3_stack",
+        "sep3",
+        "token4_stack",
+        "sep4",
+        "token5_stack"
+      ]
+    },
+    "token1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token1_badge",
+        "token1_heading",
+        "token1_metrics_stack",
+        "token1_analysis"
+      ]
+    },
+    "token1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "sato / USDT (eth)",
+        "level": "h3"
+      }
+    },
+    "token1_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token1_24h_stat",
+        "token1_metrics_text"
+      ]
+    },
+    "token1_24h_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "643%",
+        "trend": "up"
+      }
+    },
+    "token1_metrics_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $10.6m | liq $451k | fdv n/a | h1 +15% | buys:sells 9915:6464 | age 21h",
+        "variant": "caption"
+      }
+    },
+    "token1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "21h-old ETH USDT 1% pool with sustained markup; vol-to-liq 23x and h1 still green is a rare ETH meme breakout shape. Fdv blank means metadata thin — verify liquidity isn't single-LP before any deeper read.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token2_badge",
+        "token2_heading",
+        "token2_metrics_stack",
+        "token2_analysis"
+      ]
+    },
+    "token2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEEP-LIQ ★ repeat",
+        "variant": "secondary"
+      }
+    },
+    "token2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "TTPA / WETH (base)",
+        "level": "h3"
+      }
+    },
+    "token2_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token2_24h_stat",
+        "token2_metrics_text"
+      ]
+    },
+    "token2_24h_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "849%",
+        "trend": "up"
+      }
+    },
+    "token2_metrics_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $9.9m | liq $3.35b | fdv $11.3b (no mcap) | h1 +0.0% | buys:sells 10579:8914 | age 11d",
+        "variant": "caption"
+      }
+    },
+    "token2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "5-in-a-row on token id base_0x9d3695...102ba6ce2. Liq jumped another 10x ($334.7m → $3.35b); fdv now $11.3b — institutional-scale base pool. h1 stalled at exactly 0% — pool hit local equilibrium after yesterday's reawakening. Continuation, not climax.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token3_badge",
+        "token3_heading",
+        "token3_metrics_stack",
+        "token3_analysis"
+      ]
+    },
+    "token3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BILL / USDT (bsc)",
+        "level": "h3"
+      }
+    },
+    "token3_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token3_24h_stat",
+        "token3_metrics_text"
+      ]
+    },
+    "token3_24h_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "4313%",
+        "trend": "up"
+      }
+    },
+    "token3_metrics_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $57.4m | liq $128k | fdv $89k (no mcap) | h1 +14% | buys:sells 1231:1004 | age 3.2h",
+        "variant": "caption"
+      }
+    },
+    "token3_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "wash-print actor signature reappeared. Contract bsc_0x94949a78...883754444 — vanity-4444 BSC USDT pattern matches the 04-29/04-30/05-01 actor cycle (agentic money → 冲鸭 → today BILL). After 2-day silence, same fingerprint: 1-3h pool age, ~$57m vol, ~$89k fdv. Treat the score as actor-noise, not signal.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token4_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token4_badge",
+        "token4_heading",
+        "token4_metrics_stack",
+        "token4_analysis"
+      ]
+    },
+    "token4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION",
+        "variant": "outline"
+      }
+    },
+    "token4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BELIEVE / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "token4_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token4_24h_stat",
+        "token4_metrics_text"
+      ]
+    },
+    "token4_24h_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "858%",
+        "trend": "up"
+      }
+    },
+    "token4_metrics_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.3m | liq $234k | fdv $8.5m | h1 +35% | buys:sells 5387:4109 | age ~200d",
+        "variant": "caption"
+      }
+    },
+    "token4_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "200-day-old SOL pool reactivated; h1 +35% means active markup, not the post-spike fade we usually see in this slot. Mcap matches fdv ($8.5m), 1.31:1 buy-skew — cleanest momentum read of the day.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token5_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token5_badge",
+        "token5_heading",
+        "token5_metrics_stack",
+        "token5_analysis"
+      ]
+    },
+    "token5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "token5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "SueaAuan / SOL (solana)",
+        "level": "h3"
+      }
+    },
+    "token5_metrics_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "token5_24h_stat",
+        "token5_metrics_text"
+      ]
+    },
+    "token5_24h_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "575%",
+        "trend": "up"
+      }
+    },
+    "token5_metrics_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $2.2m | liq $40k | fdv $224k (no mcap) | h1 +13% | buys:sells 20402:16912 | age 17h",
+        "variant": "caption"
+      }
+    },
+    "token5_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "17h SOL meme, $40k liq is one whale-exit from collapse. 37k tx with h1 still green is the standard pump.fun graduation shape. Speculative; expect h1 to roll inside 6h.",
+        "variant": "body"
+      }
+    },
+    "sep_bottom": {
+      "type": "Separator",
+      "props": {}
+    },
+    "footer_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text",
+        "vibe_heading",
+        "vibe_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok",
+        "variant": "caption"
+      }
+    },
+    "vibe_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "TTPA's 5-in-a-row on $3.35b liq locks the base/DEEP-LIQ axis as the durable signal of the series. BSC wash-print actor returns under new ticker. SOL retains 2 of 5 (down from 3). ETH gets a real BREAKOUT (sato) — first ETH top-5 entry in the series.",
+        "variant": "body"
+      }
+    }
+  }
+}

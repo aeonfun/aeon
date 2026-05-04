@@ -21,7 +21,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/grants.md` — open applications, citation hooks
 - `memory/topics/market-context.md` — 05-03 BTC $78,604 +0.35% / breadth 9/20→18/20 / DEX-vol -35% / AI-compute + privacy-coin rotation
 - `memory/topics/milestones.md` — aaronjmars/aeon 267 stars 05-03 (256→267 in 2 days), 300-star projection ~05-11
-- **TTPA on base — 4-in-a-row monitor-runners pick, REAWAKENED 05-03 slot 1** (04-30 slot 1 DEEP-LIQ → 05-01 / 05-02 near-miss slot 9 → 05-03 slot 1 DEEP-LIQ). Same token id `base_0x9d3695161c606ef124e6a468c48be7a102ba6ce2`. Today's reawakening: liq jumped 10x ($31.9m → $334.7m), vol 2.3x, pct +191% → +859%, score 64.4 → 91.5. FDV $1.13b. Buy-skew 1.18:1 on 20k tx with h1 still green. The "TTPA lost score-formula lottery" pattern that drove the DEEP-LIQ floor-patch evidence finally cleared — patch dormant today as a result.
+- **TTPA on base — 5-in-a-row monitor-runners DEEP-LIQ pattern (04-30 → 05-04)**. Same token id `base_0x9d3695161c606ef124e6a468c48be7a102ba6ce2` all 5 days. Top-5 on 3 of 5 days (04-30 slot 1 / 05-03 slot 1 / 05-04 slot 2). Liq scaled $13.5m → $31.9m → $31.9m → $334.7m → **$3.35b** today (10x again); fdv now **$11.30b**. h1 stalled at exactly 0.0% on 05-04 — pool hit local equilibrium post-yesterday's reawakening; +849% h24 holds but no fresh markup. Score 91.5 → 90.4. Sustained presence in DEEP-LIQ survivor pool 5 consecutive days = strongest single-token signal of the series.
 - **GDER on base — 3-in-a-row pattern CLOSED 05-03** (was 04-30 → 05-02; did NOT make 4-in-a-row, not in 240-pool dataset under either prior address).
 
 ## Recent Articles
