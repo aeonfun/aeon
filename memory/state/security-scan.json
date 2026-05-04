@@ -1,21 +1,22 @@
 {
-  "generated_at": "2026-04-27",
+  "generated_at": "2026-05-04",
   "scope": "full",
   "scanner": "inline-grep-fallback",
   "scan_sh_blocked_by_sandbox": true,
-  "baseline_bootstrapped": true,
+  "baseline_bootstrapped": false,
   "trusted_source_match": false,
   "git_remote": "tomscaria/aeon",
   "summary": {
-    "files_scanned_approx": 110,
+    "files_scanned_approx": 128,
     "high_post_filter": 2,
     "medium_post_filter": 2,
     "low_post_filter": 0,
     "suppressed_at_baseline": 41,
-    "code_fence_downgraded_high_to_medium": 42,
-    "new": 4,
+    "code_fence_downgraded_high_to_medium": 38,
+    "continuity_classified_known_design": 18,
+    "new": 0,
     "resolved": 0,
-    "persistent": 0
+    "persistent": 4
   },
   "findings": [
     {
@@ -34,13 +35,13 @@
       "match": "TYPE=\"${{ github.event.action }}\"",
       "severity": "high",
       "fingerprint": "msg-yml-578-action",
-      "issue_id": "ISS-014"
+      "issue_id": "ISS-015"
     },
     {
       "file": "skills/monitor-runners/SKILL.md",
       "line": 74,
       "pattern": "eval\\s",
-      "match": "eval \"${N}_TREND_OK=1\" || eval \"${N}_TREND_OK=0\"",
+      "match": "&& eval \"${N}_TREND_OK=1\" || eval \"${N}_TREND_OK=0\"",
       "severity": "medium",
       "raw_severity": "high",
       "downgrade_reason": "fenced-code-block",
@@ -50,14 +51,15 @@
       "file": "skills/monitor-runners/SKILL.md",
       "line": 77,
       "pattern": "eval\\s",
-      "match": "eval \"${N}_VOL_OK=1\" || eval \"${N}_VOL_OK=0\"",
+      "match": "&& eval \"${N}_VOL_OK=1\" || eval \"${N}_VOL_OK=0\"",
       "severity": "medium",
       "raw_severity": "high",
       "downgrade_reason": "fenced-code-block",
       "fingerprint": "monitor-runners-77-eval"
     }
   ],
-  "issues_filed": ["ISS-014", "ISS-015"],
+  "issues_filed": [],
   "issues_resolved": [],
-  "exit_status": "SECURITY_SCAN_NEW"
+  "exit_status": "SECURITY_SCAN_NOCHANGE",
+  "previous_run": "2026-04-27"
 }
