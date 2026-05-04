@@ -1,11 +1,12 @@
 ## Summary
 
-Ran `github-issues` for 2026-05-03.
+Ran `github-issues` skill for 2026-05-04.
 
-- **Scope:** `user:tomscaria` (var empty → authenticated user). Window: created `>2026-05-02T09:45:47Z`.
-- **API:** `gh search issues --owner tomscaria … 'is:issue is:open created:>… sort:created-desc'`. Had to swap `--owner` for the in-query `user:tomscaria` (the latter was being re-quoted to `user:"..."` and 422'd) and rename `comments` → `commentsCount` per current `gh` JSON schema. First-try success, returned `[]`.
-- **Sanity-check:** wider query (`is:issue is:open` no date filter) also `[]` — zero open issues across the entire scope, matching the 7th-consecutive-clean-day pattern.
-- **Counts:** P0=0 P1=0 P2=0 P3=0. Dedup against prior 2 days of logs: nothing to remove (both already zero).
-- **Notification:** none — clean-day silence per skill constraint.
-- **Files modified:** `memory/logs/2026-05-03.md` (appended `### github-issues` block before the existing `### daily-routine` entry).
-- **Follow-up:** none. Today's daily-routine 08:23 UTC entry already confirmed the same zero result inline from its sub-skill call; this standalone run reaffirms.
+- **Scope:** `user:tomscaria` (var empty)
+- **Window:** created:>2026-05-03T09:36:09Z (24h)
+- **API:** `gh search issues --owner tomscaria` with `commentsCount` field + `--owner` flag — same shape that worked first-try yesterday. Returned `[]`. Wider sanity check (no time filter) also `[]`.
+- **Counts:** P0=0 P1=0 P2=0 P3=0
+- **Dedup:** Prior 2 days of logs had zero issue URLs to dedup against.
+- **Notification:** Not sent (clean-day silence per SKILL constraint — `GITHUB_ISSUES_OK`).
+- **Files modified:** `memory/logs/2026-05-04.md` (appended `### github-issues` section).
+- **Pattern note:** 8th consecutive clean day on `tomscaria` scope. Issues likely disabled or empty on every active repo (swarm-fund-mvp / lore-financial-teaser / aeon). Possible follow-up: surface this to `self-improve` to consider lowering this skill's cadence (daily → 2-3x/week) until issue activity returns.
