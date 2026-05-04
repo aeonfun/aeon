@@ -1,18 +1,17 @@
-*Startup Ideas -- 2026-05-03*
+*Startup Ideas — 2026-05-04*
 
-*1. Codex* (executable) -- resolution-text NLP API for binary markets; canonicalize Polymarket / Kalshi rules + flag title-vs-rules language asymmetry, sold to the next 50 PM-operating quant funds behind CalibrationGap.
-ICP: quant lead at a 5-25-person crypto fund running a $1-5M binary book whose market resolved opposite the title in last 90 days (UMA whale, Russia-Ukraine "ceasefire" vs "general pause," Iran-cf vs Hez-cf).
-Wedge: API + CLI returning canonical rule extraction, language-asymmetry score, UMA-vote-history risk, similar-precedent flags. $499-$4,999/mo.
-Why now: UMA whale governance attack + Polymarket V2 $514M TVL + PolyBench/Prophet Arena (LLMs beat Brier, lose money) + JPM TradeFM + PolySwarm arXiv:2604.03888 all converging.
-MVP test: 50 active + 100 closed Polymarket markets covered in 2 weeks; >=30% precision on language-asymmetry flag; 3 paid pilots from operator's X network in 30 days.
-Kill: <3 paid in 60 days OR <20% precision -> kill.
+*1. Bracket* (executable) — agent-to-agent OTC dark pool for prediction-market binaries. Signed intent registry; matched off-book at midpoint; UMA-attested settlement.
+ICP: $5–50M crypto-native prop fund running ≥1 live agent on PM/Kalshi who took >35 bps on a tail-market forced exit in last 60 days
+Wedge: signed-intent matching for top 50 PM markets <$1M on-book depth; Telegram + dashboard; 100-line agent SDK
+Why now: BitGo+Susquehanna OTC + Greenlight Commodities first institutional Kalshi block trade (Mar–Apr 2026) prove demand at $100k+, but every match today is a phone call
+MVP test: broker 3 matches >$200k notional in 2 weeks via Polychain alumni + 1 YC W26 AI-native fund counterparty
+Kill: <5 matches / <$500k notional / <3 distinct counterparty pairs in first 60 days
 
-*2. Watershed* (ambitious) -- specialty prediction-market exchange for maritime / physical-supply-chain chokepoints (Hormuz, Suez, Red Sea, Panama); AIS-settled binaries as a real hedging instrument for commodity traders + Lloyd's syndicates.
-ICP: VP Risk at a tier-2 commodity trader ($100M-$2B AUM, Mercuria / Castleton / Hartree-tier) who lost >$5M Q1 2026 to phantom-blockade financing + refused letters of credit; or syndicate underwriter at Lloyd's pricing transit war-risk.
-Wedge: 3 flagship binaries (Hormuz transits >=100/day; Red Sea container vs pre-Houthi; Panama auction price). Settled against Lloyd's List Intelligence + MarineTraffic AIS. 1% per-side fee, $50M/mo target = $500k/mo gross.
-Why now: Hormuz transits collapsed 95% (130 -> 6/day) March 2026, war-risk premiums up 10x, CFTC ANPRM closed 05-01 opens specialty-DCM path, HL HIP-4 mainnet active provides on-chain binary precedent.
-MVP test: PM-deployed "Hormuz transits >=100 by Jul-31" binary, $50k seed pool, >=$500k notional within 30 days.
-Kill: <$250k notional in 60 days OR <2 institutional LOIs in 90 days -> kill.
+*2. Reflex* (ambitious) — agent-native cross-venue prime brokerage. Single collateral pool routes margin to PM, Kalshi, HL HIP-4 wherever an agent has a live position.
+ICP: $10–100M multi-venue fund CIO who turned down a convergence trade last week because collateral was sitting in the wrong venue. Fleck on-chain stat: 3.3% of PM users on HL = 12% of PM volume — concentrated cohort, no shared margin.
+Wedge: PM ↔ HL HIP-4 movement <60s end-to-end; Anchorage/BitGo unified pool; Phase-2 adds Kalshi
+Why now: HIP-4 mainnet 05-02 made 3-venue agent-active landscape concrete; YC W26 RFS underwriting AI-native funds = 8–12 new customers in 6 months
+MVP test: Swarm-Lab + Polychain-alumni fund convergence trade where margin posted ≤55% of un-netted sum
+Kill: <2 paid pilots / <$2M float / 6 months
 
-Pain: 6 permalinks (defirate, theblock.co, polymarketguide gitbook, argusmedia, unctad, ballastmarkets). Full memos in memory/logs/2026-05-03.md.
-
+Full memos in memory/logs/2026-05-04.md. 8 permalinks cited. Earned-secret moat: operator runs CalibrationGap + Hermes-arb live on the same three venues and lives the slippage + collateral-fragmentation pain personally.

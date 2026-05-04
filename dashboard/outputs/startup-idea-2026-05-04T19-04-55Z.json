@@ -1,0 +1,414 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-05-04"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "bracket_section",
+        "sep1",
+        "reflex_section",
+        "sep2",
+        "footer_section"
+      ]
+    },
+    "bracket_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "bracket_header",
+        "bracket_desc",
+        "bracket_icp",
+        "bracket_wedge",
+        "bracket_why",
+        "bracket_mvp",
+        "bracket_kill"
+      ]
+    },
+    "bracket_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "bracket_title",
+        "bracket_status"
+      ]
+    },
+    "bracket_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Bracket",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "bracket_status": {
+      "type": "Badge",
+      "props": {
+        "text": "executable",
+        "variant": "default"
+      }
+    },
+    "bracket_desc": {
+      "type": "Text",
+      "props": {
+        "text": "agent-to-agent OTC dark pool for prediction-market binaries. Signed intent registry; matched off-book at midpoint; UMA-attested settlement.",
+        "variant": "body"
+      }
+    },
+    "bracket_icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bracket_icp_label",
+        "bracket_icp_text"
+      ]
+    },
+    "bracket_icp_label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP:",
+        "variant": "caption"
+      }
+    },
+    "bracket_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "$5–50M crypto-native prop fund running ≥1 live agent on PM/Kalshi who took >35 bps on a tail-market forced exit in last 60 days",
+        "variant": "body"
+      }
+    },
+    "bracket_wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bracket_wedge_label",
+        "bracket_wedge_text"
+      ]
+    },
+    "bracket_wedge_label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge:",
+        "variant": "caption"
+      }
+    },
+    "bracket_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "signed-intent matching for top 50 PM markets <$1M on-book depth; Telegram + dashboard; 100-line agent SDK",
+        "variant": "body"
+      }
+    },
+    "bracket_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bracket_why_label",
+        "bracket_why_text"
+      ]
+    },
+    "bracket_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now:",
+        "variant": "caption"
+      }
+    },
+    "bracket_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "BitGo+Susquehanna OTC + Greenlight Commodities first institutional Kalshi block trade (Mar–Apr 2026) prove demand at $100k+, but every match today is a phone call",
+        "variant": "body"
+      }
+    },
+    "bracket_mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bracket_mvp_label",
+        "bracket_mvp_text"
+      ]
+    },
+    "bracket_mvp_label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test:",
+        "variant": "caption"
+      }
+    },
+    "bracket_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "broker 3 matches >$200k notional in 2 weeks via Polychain alumni + 1 YC W26 AI-native fund counterparty",
+        "variant": "body"
+      }
+    },
+    "bracket_kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bracket_kill_label",
+        "bracket_kill_text"
+      ]
+    },
+    "bracket_kill_label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill:",
+        "variant": "caption"
+      }
+    },
+    "bracket_kill_text": {
+      "type": "Text",
+      "props": {
+        "text": "<5 matches / <$500k notional / <3 distinct counterparty pairs in first 60 days",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "reflex_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "reflex_header",
+        "reflex_desc",
+        "reflex_icp",
+        "reflex_wedge",
+        "reflex_why",
+        "reflex_mvp",
+        "reflex_kill"
+      ]
+    },
+    "reflex_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "reflex_title",
+        "reflex_status"
+      ]
+    },
+    "reflex_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Reflex",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "reflex_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious",
+        "variant": "secondary"
+      }
+    },
+    "reflex_desc": {
+      "type": "Text",
+      "props": {
+        "text": "agent-native cross-venue prime brokerage. Single collateral pool routes margin to PM, Kalshi, HL HIP-4 wherever an agent has a live position.",
+        "variant": "body"
+      }
+    },
+    "reflex_icp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reflex_icp_label",
+        "reflex_icp_text"
+      ]
+    },
+    "reflex_icp_label": {
+      "type": "Text",
+      "props": {
+        "text": "ICP:",
+        "variant": "caption"
+      }
+    },
+    "reflex_icp_text": {
+      "type": "Text",
+      "props": {
+        "text": "$10–100M multi-venue fund CIO who turned down a convergence trade last week because collateral was sitting in the wrong venue. Fleck on-chain stat: 3.3% of PM users on HL = 12% of PM volume — concentrated cohort, no shared margin.",
+        "variant": "body"
+      }
+    },
+    "reflex_wedge": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reflex_wedge_label",
+        "reflex_wedge_text"
+      ]
+    },
+    "reflex_wedge_label": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge:",
+        "variant": "caption"
+      }
+    },
+    "reflex_wedge_text": {
+      "type": "Text",
+      "props": {
+        "text": "PM ↔ HL HIP-4 movement <60s end-to-end; Anchorage/BitGo unified pool; Phase-2 adds Kalshi",
+        "variant": "body"
+      }
+    },
+    "reflex_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reflex_why_label",
+        "reflex_why_text"
+      ]
+    },
+    "reflex_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "Why now:",
+        "variant": "caption"
+      }
+    },
+    "reflex_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "HIP-4 mainnet 05-02 made 3-venue agent-active landscape concrete; YC W26 RFS underwriting AI-native funds = 8–12 new customers in 6 months",
+        "variant": "body"
+      }
+    },
+    "reflex_mvp": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reflex_mvp_label",
+        "reflex_mvp_text"
+      ]
+    },
+    "reflex_mvp_label": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test:",
+        "variant": "caption"
+      }
+    },
+    "reflex_mvp_text": {
+      "type": "Text",
+      "props": {
+        "text": "Swarm-Lab + Polychain-alumni fund convergence trade where margin posted ≤55% of un-netted sum",
+        "variant": "body"
+      }
+    },
+    "reflex_kill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reflex_kill_label",
+        "reflex_kill_text"
+      ]
+    },
+    "reflex_kill_label": {
+      "type": "Text",
+      "props": {
+        "text": "Kill:",
+        "variant": "caption"
+      }
+    },
+    "reflex_kill_text": {
+      "type": "Text",
+      "props": {
+        "text": "<2 paid pilots / <$2M float / 6 months",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "footer_memos",
+        "footer_moat"
+      ]
+    },
+    "footer_memos": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-05-04.md. 8 permalinks cited.",
+        "variant": "caption"
+      }
+    },
+    "footer_moat": {
+      "type": "Text",
+      "props": {
+        "text": "Earned-secret moat: operator runs CalibrationGap + Hermes-arb live on the same three venues and lives the slippage + collateral-fragmentation pain personally.",
+        "variant": "muted"
+      }
+    }
+  }
+}
