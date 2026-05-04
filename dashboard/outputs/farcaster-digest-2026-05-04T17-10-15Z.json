@@ -1,0 +1,125 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest",
+        "description": "Skipped — operator-side blocker"
+      },
+      "children": [
+        "main-alert",
+        "sep1",
+        "endpoints-section",
+        "sep2",
+        "recommendation-section"
+      ]
+    },
+    "main-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Farcaster Digest Skipped",
+        "message": "NEYNAR_API_KEY unset — HTTP 402 across all endpoints",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "endpoints-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "endpoints-heading",
+        "badges-container",
+        "error-details"
+      ]
+    },
+    "endpoints-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failed Endpoints",
+        "level": "h3"
+      }
+    },
+    "badges-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-search",
+        "badge-trending",
+        "badge-channels"
+      ]
+    },
+    "badge-search": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    },
+    "error-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-http",
+        "detail-duration"
+      ]
+    },
+    "detail-http": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 across all 3 endpoints",
+        "variant": "body"
+      }
+    },
+    "detail-duration": {
+      "type": "Text",
+      "props": {
+        "text": "Day 4 of failures",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation-section": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommended Action",
+        "message": "Pause cron until NEYNAR_API_KEY secret is configured",
+        "type": "warning"
+      }
+    }
+  }
+}
