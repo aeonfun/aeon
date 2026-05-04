@@ -1,16 +1,18 @@
-## Summary
+*Cost Report — 2026-05-04 (last 7 days)*
 
-Cost report for 2026-04-27 complete.
+Spent $629.09 across 76 runs (no prior-week baseline); 1 anomaly flagged, projected monthly burn ~$2,696. ⚠ burn-rate watch.
 
-**Key numbers** (19 runs, 2026-04-25 → 2026-04-27, gateway: direct):
+Top 3 by cost:
+1. external-feature — $65.52 (4 runs)
+2. repo-actions — $64.83 (6 runs)
+3. heartbeat — $61.04 (8 runs)
 
-- Total spend: **$118.03**
-- Composition: Cache read $61.26 (52%) · Cache write $28.53 (24%) · Output $27.90 (24%) · Input $0.34 (<1%)
-- 97% of spend on claude-opus-4-7 ($114.74); 3% on claude-sonnet-4-6 ($3.28)
-- 30-day projection: **~$505.83** at 7-day daily avg (⚠ burn-rate watch); could reach ~$1,180/month at the 3-day actual daily rate
-- Anomalies: 0 (no skill has ≥ 3 runs yet; CSV too young for WoW)
-- Optimization levers: 0 (all 4 patterns checked — high output ratios, high cache utilization, no model drift, no long-tail loops)
+Actions this week (weekly cost 15x above $40 trigger — surface to next self-improve):
+• external-feature → Sonnet (~$52/wk savings)
+• repo-actions → Sonnet (~$52/wk savings)
+• heartbeat → Sonnet (~$45/wk savings)
 
-Top spenders: monitor-runners $16.87 · reddit-digest $13.83 · agent-buzz $13.24 — all driven by 5-7M cache-read tokens per run.
+⚠ 1 anomaly flagged — heartbeat 2026-05-02: $11.84 vs µ+2σ $11.29 (elevated cache_read 4.7M tokens)
 
-Files: `articles/cost-report-2026-04-27.md` · notification queued at `.pending-notify/1745706000-cost-report.md` · log appended to `memory/logs/2026-04-27.md`.
+30-day projection: $2,696
+Full: articles/cost-report-2026-05-04.md

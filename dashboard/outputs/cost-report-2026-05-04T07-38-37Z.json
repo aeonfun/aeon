@@ -1,0 +1,237 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Cost Report — 2026-05-04 (last 7 days)"
+      },
+      "children": [
+        "summary_section",
+        "separator1",
+        "top_costs_section",
+        "separator2",
+        "actions_section",
+        "separator3",
+        "anomaly_section",
+        "separator4",
+        "full_report_link"
+      ]
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "baseline_note",
+        "stats_grid",
+        "alert_burnrate"
+      ]
+    },
+    "baseline_note": {
+      "type": "Text",
+      "props": {
+        "text": "No prior-week baseline for comparison",
+        "variant": "caption"
+      }
+    },
+    "stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_spent",
+        "stat_runs",
+        "stat_anomalies",
+        "stat_projection"
+      ]
+    },
+    "stat_spent": {
+      "type": "Stat",
+      "props": {
+        "label": "Spent",
+        "value": "$629.09"
+      }
+    },
+    "stat_runs": {
+      "type": "Stat",
+      "props": {
+        "label": "Runs",
+        "value": "76"
+      }
+    },
+    "stat_anomalies": {
+      "type": "Stat",
+      "props": {
+        "label": "Anomalies flagged",
+        "value": "1"
+      }
+    },
+    "stat_projection": {
+      "type": "Stat",
+      "props": {
+        "label": "Monthly projection",
+        "value": "$2,696"
+      }
+    },
+    "alert_burnrate": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Burn-rate watch",
+        "message": "Weekly cost 15x above $40 trigger"
+      }
+    },
+    "separator1": {
+      "type": "Separator"
+    },
+    "top_costs_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_costs_heading",
+        "top_costs_table"
+      ]
+    },
+    "top_costs_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3 by cost",
+        "level": "h3"
+      }
+    },
+    "top_costs_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Cost",
+          "Runs"
+        ],
+        "rows": [
+          [
+            "external-feature",
+            "$65.52",
+            "4"
+          ],
+          [
+            "repo-actions",
+            "$64.83",
+            "6"
+          ],
+          [
+            "heartbeat",
+            "$61.04",
+            "8"
+          ]
+        ]
+      }
+    },
+    "separator2": {
+      "type": "Separator"
+    },
+    "actions_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "actions_heading",
+        "actions_context",
+        "actions_list"
+      ]
+    },
+    "actions_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Actions this week",
+        "level": "h3"
+      }
+    },
+    "actions_context": {
+      "type": "Text",
+      "props": {
+        "text": "Surface to next self-improve: model downgrades to Sonnet",
+        "variant": "caption"
+      }
+    },
+    "actions_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action_1",
+        "action_2",
+        "action_3"
+      ]
+    },
+    "action_1": {
+      "type": "Text",
+      "props": {
+        "text": "external-feature → Sonnet (~$52/wk savings)"
+      }
+    },
+    "action_2": {
+      "type": "Text",
+      "props": {
+        "text": "repo-actions → Sonnet (~$52/wk savings)"
+      }
+    },
+    "action_3": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat → Sonnet (~$45/wk savings)"
+      }
+    },
+    "separator3": {
+      "type": "Separator"
+    },
+    "anomaly_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "anomaly_heading",
+        "anomaly_alert"
+      ]
+    },
+    "anomaly_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Anomaly details",
+        "level": "h3"
+      }
+    },
+    "anomaly_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "heartbeat 2026-05-02",
+        "message": "$11.84 vs µ+2σ $11.29 — elevated cache_read 4.7M tokens"
+      }
+    },
+    "separator4": {
+      "type": "Separator"
+    },
+    "full_report_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full cost report",
+        "href": "articles/cost-report-2026-05-04.md"
+      }
+    }
+  }
+}
