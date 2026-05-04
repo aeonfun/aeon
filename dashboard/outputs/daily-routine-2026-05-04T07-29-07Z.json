@@ -1,0 +1,426 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-04"
+      },
+      "children": [
+        "tape_section",
+        "sep_1",
+        "winners_heading",
+        "winners_table",
+        "sep_2",
+        "losers_heading",
+        "losers_table",
+        "sep_3",
+        "pump_unwind_text",
+        "sep_4",
+        "tweets_heading",
+        "tweets_stack",
+        "sep_5",
+        "paper_heading",
+        "paper_stack",
+        "sep_6",
+        "github_heading",
+        "github_alert",
+        "sep_7",
+        "hn_heading",
+        "hn_stack",
+        "sep_8",
+        "hooks_heading",
+        "hooks_alert"
+      ]
+    },
+    "tape_section": {
+      "type": "Text",
+      "props": {
+        "text": "73/100 top coins green, breadth widening (66→73). BTC $78.7K +0.8%, ETH $2,323 +0.9%, SOL $84.0 +0.4%. AI-compute and DePIN lead; Saturday's pumps capitulating.",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator"
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Name",
+          "Price",
+          "24h%",
+          "7d%",
+          "Market Cap",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "B",
+            "BUILDon",
+            "$0.4308",
+            "+27.3%",
+            "+260.8%",
+            "$174M",
+            "BREAKOUT, day-4 cont"
+          ],
+          [
+            "AKT",
+            "Akash",
+            "$0.6482",
+            "+26.4%",
+            "+31.6%",
+            "$61M",
+            "TRENDING+UP, BREAKOUT — cleanest AI-compute signal"
+          ],
+          [
+            "LUNC",
+            "LUNC",
+            "$0.000086",
+            "+14.4%",
+            "+65.0%",
+            "$210M",
+            "TRENDING+UP"
+          ],
+          [
+            "BinanceLife",
+            "币安人生",
+            "$0.4040",
+            "+12.7%",
+            "",
+            "$59M",
+            ""
+          ],
+          [
+            "ZK",
+            "ZKsync",
+            "$0.0170",
+            "+10.0%",
+            "",
+            "$49M",
+            ""
+          ],
+          [
+            "GNO",
+            "Gnosis",
+            "$137",
+            "+9.8%",
+            "",
+            "$24M",
+            ""
+          ],
+          [
+            "ALGO",
+            "ALGO",
+            "$0.1162",
+            "+8.5%",
+            "",
+            "$67M",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep_2": {
+      "type": "Separator"
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Name",
+          "Price",
+          "24h%",
+          "7d%",
+          "Market Cap",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "SKYAI",
+            "SKYAI",
+            "$0.3344",
+            "−15.1%",
+            "+81.2%",
+            "$220M",
+            "CAPITULATION"
+          ],
+          [
+            "UB",
+            "Unibase",
+            "$0.1069",
+            "−14.1%",
+            "+135.6%",
+            "$131M",
+            "CAPITULATION"
+          ],
+          [
+            "ORCA",
+            "ORCA",
+            "$2.09",
+            "−8.6%",
+            "",
+            "$118M",
+            ""
+          ],
+          [
+            "APE",
+            "APE",
+            "$0.1740",
+            "−5.1%",
+            "",
+            "$77M",
+            ""
+          ],
+          [
+            "AXS",
+            "AXS",
+            "$1.33",
+            "−3.7%",
+            "",
+            "$23M",
+            ""
+          ],
+          [
+            "ARB",
+            "ARB",
+            "$0.1182",
+            "−3.0%",
+            "",
+            "$75M",
+            ""
+          ],
+          [
+            "CHZ",
+            "CHZ",
+            "$0.0401",
+            "−2.8%",
+            "",
+            "$51M",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep_3": {
+      "type": "Separator"
+    },
+    "pump_unwind_text": {
+      "type": "Text",
+      "props": {
+        "text": "Pump unwind: SKYAI, UB, LAB all flipped CAPITULATION on heavy volume; BABY trending +37% PUMP-RISK noise.",
+        "variant": "caption"
+      }
+    },
+    "sep_4": {
+      "type": "Separator"
+    },
+    "tweets_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h2"
+      }
+    },
+    "tweets_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pm_text",
+        "crypto_item",
+        "ai_item",
+        "ap_text"
+      ]
+    },
+    "pm_text": {
+      "type": "Text",
+      "props": {
+        "text": "Prediction markets: Bengal counting eve — Polymarket flipped BJP 51% / TMC 48.9% with ~24h to vote count after TMC led all cycle; Phalodi Satta Bazar (Indian grey-market) prices same direction at BJP 146-149 / TMC 140-143. Cross-venue convergence is the actual signal — flip itself > level. (CalibrationGap-shape; counting today.)",
+        "variant": "body"
+      }
+    },
+    "crypto_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Spot BTC ETFs drew $1.97B inflows in April — highest monthly flow YTD, reverses Feb-Mar outflow regime. Relevant for the $78K consolidation stuck below $80K psych resistance.",
+        "href": "https://x.com/BitcoinNewsCom/status/2050296195398955369",
+        "source": "Twitter"
+      }
+    },
+    "ai_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Anthropic ARR hit $30B in April vs OpenAI's $24B — first ARR-leadership flip; Register frames as fewer-but-larger enterprise base vs OpenAI mass-market — different revenue shapes, not like-for-like.",
+        "href": "https://x.com/NoLimitGains/status/2049213286311436597",
+        "source": "Twitter"
+      }
+    },
+    "ap_text": {
+      "type": "Text",
+      "props": {
+        "text": "Agent personhood: CoinDesk picks up ClawBank/Manfred — first Tier-1 outlet on agent-formed-LLC narrative. FinCEN AML/CFT comment period closes 06-09 — open regulatory window.",
+        "variant": "body"
+      }
+    },
+    "sep_5": {
+      "type": "Separator"
+    },
+    "paper_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day (PhD-prep)",
+        "level": "h2"
+      }
+    },
+    "paper_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper_link",
+        "paper_details"
+      ]
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TradeFM: A Generative Foundation Model for Trade-flow and Market Microstructure",
+        "href": "https://arxiv.org/abs/2602.23784",
+        "source": "JPMorgan AI Research, Feb 2026"
+      }
+    },
+    "paper_details": {
+      "type": "Text",
+      "props": {
+        "text": "Authors: Kawawa-Beaudan, Sood, Papasotiriou, Borrajo, Veloso. 524M-param Transformer on billions of order-flow events across >9K equities; scale-invariant tokenization eliminates asset-specific calibration — the architectural primitive CalibrationGap is missing for cross-market PM ingestion. Veloso byline = Stanford-tier citation.",
+        "variant": "caption"
+      }
+    },
+    "sep_6": {
+      "type": "Separator"
+    },
+    "github_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "github_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "No new issues — 7th consecutive clean day on tomscaria scope.",
+        "type": "success"
+      }
+    },
+    "sep_7": {
+      "type": "Separator"
+    },
+    "hn_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Top (current front page)",
+        "level": "h2"
+      }
+    },
+    "hn_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn_1",
+        "hn_2",
+        "hn_3",
+        "hn_4",
+        "hn_5"
+      ]
+    },
+    "hn_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Mercedes-Benz commits to bringing back physical buttons",
+        "href": "https://news.ycombinator.com/item?id=47997418",
+        "source": "Hacker News",
+        "score": "670 / 380 comments"
+      }
+    },
+    "hn_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "DeepClaude – Claude Code agent loop with DeepSeek V4 Pro",
+        "href": "https://news.ycombinator.com/item?id=48002136",
+        "source": "Hacker News",
+        "score": "386 / 146 comments"
+      }
+    },
+    "hn_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "OpenAI's o1 correctly diagnosed 67% of ER patients vs 50-55% by triage doctors",
+        "href": "https://news.ycombinator.com/item?id=47991981",
+        "source": "Hacker News",
+        "score": "374 / 311 comments"
+      }
+    },
+    "hn_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BYOMesh – New LoRa mesh radio offers 100x the bandwidth",
+        "href": "https://news.ycombinator.com/item?id=47999636",
+        "source": "Hacker News",
+        "score": "345 / 108 comments"
+      }
+    },
+    "hn_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Why TUIs are back",
+        "href": "https://news.ycombinator.com/item?id=48000028",
+        "source": "Hacker News",
+        "score": "315 / 328 comments"
+      }
+    },
+    "sep_8": {
+      "type": "Separator"
+    },
+    "hooks_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Today's high-leverage hooks (CalibrationGap)",
+        "level": "h2"
+      }
+    },
+    "hooks_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "High-leverage opportunities",
+        "message": "Bengal counting today — watch the flip, not the level. Two-venue convergence textbook. Tamil Nadu T-0 — re-run polymarket-comments + reply-maker on resolution morning (DMK 87.5%; TVK still 4-6c-fair).",
+        "type": "info"
+      }
+    }
+  }
+}

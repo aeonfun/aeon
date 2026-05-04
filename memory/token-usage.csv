@@ -91,4 +91,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-03,heartbeat,claude-opus-4-7,47,28308,2396428,131060
 2026-05-03,push-recap,claude-opus-4-7,8540,36917,2160821,127938
 2026-05-03,evening-recap,claude-sonnet-4-6,1173,6312,1279119,120897
-2026-05-04,reddit-digest,claude-opus-4-7,22,5570,547631,73006
+2026-05-04,daily-routine,claude-opus-4-7,60,15585,2734729,93593
