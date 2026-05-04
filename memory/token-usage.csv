@@ -94,4 +94,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,cost-report,claude-sonnet-4-6,45,67903,353311,101004
 2026-05-04,github-releases,claude-opus-4-7,1515,23181,2013399,156936
 2026-05-04,unlock-monitor,claude-opus-4-7,2570,23251,1426595,118066
-2026-05-04,defi-overview,claude-opus-4-7,69,46138,4097691,91336
+2026-05-04,polymarket-comments,claude-opus-4-7,57,40333,3733252,128483

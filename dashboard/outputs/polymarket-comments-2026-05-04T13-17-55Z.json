@@ -1,0 +1,915 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments",
+        "description": "2026-05-04 | politics + crypto narrative-shift / track records / citation chains"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q1_section",
+        "separator_1",
+        "q2_section",
+        "separator_2",
+        "q3_section",
+        "separator_3",
+        "q4_section",
+        "separator_4",
+        "q5_section",
+        "separator_5",
+        "summary_section"
+      ]
+    },
+    "q1_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q1_heading",
+        "q1_stats",
+        "q1_context",
+        "q1_comments"
+      ]
+    },
+    "q1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tamil Nadu Legislative Assembly winner?",
+        "level": "h2"
+      }
+    },
+    "q1_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "q1_odds",
+        "q1_volume",
+        "q1_status"
+      ]
+    },
+    "q1_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "TVK YES",
+        "value": "99.65%",
+        "trend": "up"
+      }
+    },
+    "q1_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$2.07M v24"
+      }
+    },
+    "q1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "T-0 RESOLUTION",
+        "variant": "secondary"
+      }
+    },
+    "q1_context": {
+      "type": "Alert",
+      "props": {
+        "title": "MASSIVE OVERNIGHT FLIP",
+        "message": "TVK was 6.95c yesterday. CalibrationGap 4-6c-fair MEMORY-thesis FALSIFIED on the tape.",
+        "type": "warning"
+      }
+    },
+    "q1_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q1_comment_orangexyz"
+      ]
+    },
+    "q1_comment_orangexyz": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q1_orangexyz_header",
+        "q1_orangexyz_quote1",
+        "q1_orangexyz_quote2",
+        "q1_orangexyz_insight"
+      ]
+    },
+    "q1_orangexyz_header": {
+      "type": "Badge",
+      "props": {
+        "text": "orangexyz - yesterday's track-list, bio \"VETRI NICHAYAM\"",
+        "variant": "default"
+      }
+    },
+    "q1_orangexyz_quote1": {
+      "type": "Text",
+      "props": {
+        "text": "\"Thank you Vijay Anna for making me 80k tomorrow\"",
+        "variant": "body"
+      }
+    },
+    "q1_orangexyz_quote2": {
+      "type": "Text",
+      "props": {
+        "text": "\"Surveyed my watchman, friends, relatives, workers — all said they voted for Vijay. Was a gamble but came out true.\"",
+        "variant": "body"
+      }
+    },
+    "q1_orangexyz_insight": {
+      "type": "Text",
+      "props": {
+        "text": "Door-to-door ground intel = alpha source quant scanner is blind to.",
+        "variant": "caption"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "q2_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q2_heading",
+        "q2_stats",
+        "q2_context",
+        "q2_comments"
+      ]
+    },
+    "q2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "West Bengal Legislative Assembly winner?",
+        "level": "h2"
+      }
+    },
+    "q2_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "q2_odds",
+        "q2_volume",
+        "q2_status"
+      ]
+    },
+    "q2_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "BJP YES",
+        "value": "99.55%",
+        "trend": "up"
+      }
+    },
+    "q2_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$1.36M v24"
+      }
+    },
+    "q2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "T-0 RESOLUTION",
+        "variant": "secondary"
+      }
+    },
+    "q2_context": {
+      "type": "Alert",
+      "props": {
+        "title": "MEMORY 'watch the flip not the level' Bengal thesis CONFIRMED",
+        "message": "51% T-1 → 99.55% T-0",
+        "type": "success"
+      }
+    },
+    "q2_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q2_comment_audacity",
+        "q2_comment_kolkata",
+        "q2_comment_marimo",
+        "q2_comment_shanto"
+      ]
+    },
+    "q2_comment_audacity": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q2_audacity_header",
+        "q2_audacity_quote",
+        "q2_audacity_note"
+      ]
+    },
+    "q2_audacity_header": {
+      "type": "Badge",
+      "props": {
+        "text": "audacity. - NEW",
+        "variant": "default"
+      }
+    },
+    "q2_audacity_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"Classic Exit Poll structure similar to 2021. I voted for TMC then and same today. TMC has confirmed 140 seats 3/3 last 3 elections\"",
+        "variant": "body"
+      }
+    },
+    "q2_audacity_note": {
+      "type": "Text",
+      "props": {
+        "text": "TMC-side calibration anchor.",
+        "variant": "caption"
+      }
+    },
+    "q2_comment_kolkata": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q2_kolkata_header",
+        "q2_kolkata_text",
+        "q2_kolkata_note"
+      ]
+    },
+    "q2_kolkata_header": {
+      "type": "Badge",
+      "props": {
+        "text": "0x7C544D...Kolkata-insider - NEW",
+        "variant": "default"
+      }
+    },
+    "q2_kolkata_text": {
+      "type": "Text",
+      "props": {
+        "text": "\"Once we migrate to CLOB v2 and Phase 2 ends, everything changes. Voter list verification + illegal migration action are going to have real impact.\"",
+        "variant": "body"
+      }
+    },
+    "q2_kolkata_note": {
+      "type": "Text",
+      "props": {
+        "text": "Structural infra call.",
+        "variant": "caption"
+      }
+    },
+    "q2_comment_marimo": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q2_marimo_header",
+        "q2_marimo_text"
+      ]
+    },
+    "q2_marimo_header": {
+      "type": "Badge",
+      "props": {
+        "text": "Marimo.li - 18+ replies",
+        "variant": "default"
+      }
+    },
+    "q2_marimo_text": {
+      "type": "Text",
+      "props": {
+        "text": "UMA-whale callout: \"PAC PAC community crying that someone bought a large amount of BJP YES shares, which is why odds favor BJP.\"",
+        "variant": "body"
+      }
+    },
+    "q2_comment_shanto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q2_shanto_header",
+        "q2_shanto_text"
+      ]
+    },
+    "q2_shanto_header": {
+      "type": "Badge",
+      "props": {
+        "text": "Shanto74",
+        "variant": "default"
+      }
+    },
+    "q2_shanto_text": {
+      "type": "Text",
+      "props": {
+        "text": "\"KairosHunter recovered all his 50k$+ loss in single trade\" — whale flipped TMC→BJP at right moment. Track.",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "q3_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q3_heading",
+        "q3_stats",
+        "q3_context",
+        "q3_comments"
+      ]
+    },
+    "q3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trump announces US blockade of Hormuz lifted by May 8?",
+        "level": "h2"
+      }
+    },
+    "q3_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "q3_odds",
+        "q3_volume"
+      ]
+    },
+    "q3_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "13.5%"
+      }
+    },
+    "q3_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$309k v24"
+      }
+    },
+    "q3_context": {
+      "type": "Alert",
+      "props": {
+        "title": "CITATION CHAIN ACTIVE",
+        "message": "Multiple sources quoting Trump on naval blockade and Hormuz Strait status",
+        "type": "info"
+      }
+    },
+    "q3_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q3_comment_compute",
+        "q3_comment_arsenelupin",
+        "q3_comment_hossein",
+        "q3_comment_rubio"
+      ]
+    },
+    "q3_comment_compute": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q3_compute_header",
+        "q3_compute_text"
+      ]
+    },
+    "q3_compute_header": {
+      "type": "Badge",
+      "props": {
+        "text": "compute - 3rd day cross-market, 'live-tape Trump-quote drop' archetype confirmed",
+        "variant": "default"
+      }
+    },
+    "q3_compute_text": {
+      "type": "Text",
+      "props": {
+        "text": "\"It's a very profitable business. We're sort of like pirates.\"",
+        "variant": "body"
+      }
+    },
+    "q3_comment_arsenelupin": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q3_arsenelupin_header",
+        "q3_arsenelupin_quote",
+        "q3_arsenelupin_link"
+      ]
+    },
+    "q3_arsenelupin_header": {
+      "type": "Badge",
+      "props": {
+        "text": "arsenelupin - NEW, live-tape archetype #2",
+        "variant": "default"
+      }
+    },
+    "q3_arsenelupin_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"Trump has lifted his blockade. US fleet 'Gerald Ford' has been called back. Today Iran will open the Strait.\"",
+        "variant": "body"
+      }
+    },
+    "q3_arsenelupin_link": {
+      "type": "Link",
+      "props": {
+        "label": "X-cite: rapidresponse47/2051038510115868802",
+        "href": "https://x.com/rapidresponse47/status/2051038510115868802"
+      }
+    },
+    "q3_comment_hossein": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q3_hossein_header",
+        "q3_hossein_quote"
+      ]
+    },
+    "q3_hossein_header": {
+      "type": "Badge",
+      "props": {
+        "text": "Hossein-m",
+        "variant": "default"
+      }
+    },
+    "q3_hossein_quote": {
+      "type": "Text",
+      "props": {
+        "text": "Trump Truth Social: \"STRAIT IS COMPLETELY OPEN AND READY FOR BUSINESS, BUT THE NAVAL BLOCKADE WILL REMAIN IN FULL FORCE…UNTIL OUR TRANSACTION WITH IRAN IS 100% COMPLETE\"",
+        "variant": "body"
+      }
+    },
+    "q3_comment_rubio": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q3_rubio_header",
+        "q3_rubio_text"
+      ]
+    },
+    "q3_rubio_header": {
+      "type": "Badge",
+      "props": {
+        "text": "Castwolffox + tilda89 - NEW",
+        "variant": "default"
+      }
+    },
+    "q3_rubio_text": {
+      "type": "Text",
+      "props": {
+        "text": "Both cite Marco Rubio \"Iran-controlled SOH = red line\" interview — recurring counter-claim.",
+        "variant": "body"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "q4_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q4_heading",
+        "q4_stats",
+        "q4_comments"
+      ]
+    },
+    "q4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran closes its airspace by May 8?",
+        "level": "h2"
+      }
+    },
+    "q4_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "q4_odds",
+        "q4_volume",
+        "q4_time"
+      ]
+    },
+    "q4_odds": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "21.5%"
+      }
+    },
+    "q4_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$863k v24"
+      }
+    },
+    "q4_time": {
+      "type": "Badge",
+      "props": {
+        "text": "T-4",
+        "variant": "secondary"
+      }
+    },
+    "q4_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q4_comment_wisewarrior"
+      ]
+    },
+    "q4_comment_wisewarrior": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q4_wisewarrior_header",
+        "q4_wisewarrior_quote",
+        "q4_wisewarrior_analysis"
+      ]
+    },
+    "q4_wisewarrior_header": {
+      "type": "Badge",
+      "props": {
+        "text": "WISEWARRIOR - NEW",
+        "variant": "default"
+      }
+    },
+    "q4_wisewarrior_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"Market finally realising yes on 8 may is undervalued. Sounds like 50-50 to me. If something goes down again, first thing iran does is close airspace. No brainer.\"",
+        "variant": "body"
+      }
+    },
+    "q4_wisewarrior_analysis": {
+      "type": "Alert",
+      "props": {
+        "title": "CalibrationGap candidate",
+        "message": "21.5% vs claimed 50% = 28pp gap. No cite provided — flag as 'loud-loser archetype' until track-record builds.",
+        "type": "warning"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "q5_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q5_heading",
+        "q5_stats",
+        "q5_context",
+        "q5_comments",
+        "q5_spam"
+      ]
+    },
+    "q5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "When will Bitcoin hit $150k? (event 36173)",
+        "level": "h2"
+      }
+    },
+    "q5_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "q5_volume"
+      ]
+    },
+    "q5_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$5.82M v24"
+      }
+    },
+    "q5_context": {
+      "type": "Alert",
+      "props": {
+        "title": "Only crypto thread with non-spam signal",
+        "message": "Resolution mechanics analysis applies across markets",
+        "type": "info"
+      }
+    },
+    "q5_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "q5_comment_sirnostalgia"
+      ]
+    },
+    "q5_comment_sirnostalgia": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "q5_sirnostalgia_header",
+        "q5_sirnostalgia_quote",
+        "q5_sirnostalgia_note"
+      ]
+    },
+    "q5_sirnostalgia_header": {
+      "type": "Badge",
+      "props": {
+        "text": "sirnostalgia",
+        "variant": "default"
+      }
+    },
+    "q5_sirnostalgia_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"if a market's rule states December 31, 2025 as cut-off and BTC hits the threshold any minute that day before 11:59 PM ET, THAT market resolves Yes. But that does not automatically [resolve other dates]…\"",
+        "variant": "body"
+      }
+    },
+    "q5_sirnostalgia_note": {
+      "type": "Text",
+      "props": {
+        "text": "Confirms MEMORY 'ingest resolution text not titles' thesis applies to crypto. Different cut-off dates do NOT cumulatively resolve YES on a hit.",
+        "variant": "caption"
+      }
+    },
+    "q5_spam": {
+      "type": "Alert",
+      "props": {
+        "title": "Spam detected",
+        "message": "Cambodia +855 96 982 9883 spam 3rd day. Alice2002 birthday spam on 4 markets today.",
+        "type": "warning"
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary_heading",
+        "new_handles_section",
+        "carryover_section",
+        "structural_finding"
+      ]
+    },
+    "summary_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Handle Track Records",
+        "level": "h2"
+      }
+    },
+    "new_handles_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "new_handles_label",
+        "new_handles_grid"
+      ]
+    },
+    "new_handles_label": {
+      "type": "Text",
+      "props": {
+        "text": "NEW handles (8):",
+        "variant": "body"
+      }
+    },
+    "new_handles_grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_orangexyz",
+        "badge_audacity",
+        "badge_kolkata",
+        "badge_kairosHunter",
+        "badge_arsenelupin",
+        "badge_tilda89",
+        "badge_wisewarrior",
+        "badge_god404"
+      ]
+    },
+    "badge_orangexyz": {
+      "type": "Badge",
+      "props": {
+        "text": "orangexyz (Vijay door-to-door, resolved-correct)",
+        "variant": "secondary"
+      }
+    },
+    "badge_audacity": {
+      "type": "Badge",
+      "props": {
+        "text": "audacity.",
+        "variant": "secondary"
+      }
+    },
+    "badge_kolkata": {
+      "type": "Badge",
+      "props": {
+        "text": "Kolkata-insider",
+        "variant": "secondary"
+      }
+    },
+    "badge_kairosHunter": {
+      "type": "Badge",
+      "props": {
+        "text": "KairosHunter (whale flip)",
+        "variant": "secondary"
+      }
+    },
+    "badge_arsenelupin": {
+      "type": "Badge",
+      "props": {
+        "text": "arsenelupin (Trump+X-cite, live-tape #2)",
+        "variant": "secondary"
+      }
+    },
+    "badge_tilda89": {
+      "type": "Badge",
+      "props": {
+        "text": "tilda89",
+        "variant": "secondary"
+      }
+    },
+    "badge_wisewarrior": {
+      "type": "Badge",
+      "props": {
+        "text": "WISEWARRIOR (loud-loser)",
+        "variant": "secondary"
+      }
+    },
+    "badge_god404": {
+      "type": "Badge",
+      "props": {
+        "text": "God404",
+        "variant": "secondary"
+      }
+    },
+    "carryover_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "carryover_label",
+        "carryover_grid"
+      ]
+    },
+    "carryover_label": {
+      "type": "Text",
+      "props": {
+        "text": "Carryover reconfirmed:",
+        "variant": "body"
+      }
+    },
+    "carryover_grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_compute",
+        "badge_castwolffox",
+        "badge_saneperson",
+        "badge_marimo"
+      ]
+    },
+    "badge_compute": {
+      "type": "Badge",
+      "props": {
+        "text": "compute (3rd day cross-market)",
+        "variant": "outline"
+      }
+    },
+    "badge_castwolffox": {
+      "type": "Badge",
+      "props": {
+        "text": "Castwolffox (Rubio cite, 2nd day)",
+        "variant": "outline"
+      }
+    },
+    "badge_saneperson": {
+      "type": "Badge",
+      "props": {
+        "text": "saneperson (Pakistan tanker corridor)",
+        "variant": "outline"
+      }
+    },
+    "badge_marimo": {
+      "type": "Badge",
+      "props": {
+        "text": "Marimo.li",
+        "variant": "outline"
+      }
+    },
+    "structural_finding": {
+      "type": "Alert",
+      "props": {
+        "title": "Crypto comment-vertical 3rd day dead",
+        "message": "1 resolution-text question + Cambodia scam + birthday spam. Structural finding.",
+        "type": "info"
+      }
+    }
+  }
+}
