@@ -1,7 +1,9 @@
-technical explainer: PolySwarm reads two markets as one distribution. The gap is the trade.
+technical explainer: Latin-Hypercube Sampling: One Strategy, Thirty Variants, Ten Dimensions
 
-PolySwarm flags Polymarket mispricings by treating the swarm consensus as one probability distribution and the markets implied price as another, scoring the gap with Jensen-Shannon divergence — and on negation pairs (event E and its logical opposite), it just checks whether the two YES prices sum to 1.
+Latin-Hypercube sampling stratifies an N-dim hyperparameter cube so every axis projection is uniformly covered with one sample per stratum — turning one strategy into thirty diverse-but-balanced variants without paying for grid search.
 
-The paper publishes the formulas. It publishes zero result numbers.
+This is the technique behind 30 of 38 net-new agents in this week swarm-fund-mvp fleet bump (commit 1125deb). 79% of new fleet capacity. Falsifier: paired live run vs IID-uniform — if Sharpe distributions match after 100 trades/variant, LHS bought nothing. Cauwet 2020 ICML predicts a constant-factor advantage; the constant matters, the asymptotic does not.
 
-read it: articles/explainer-2026-05-03.md
+Image skipped (no Replicate token). Text stands alone.
+
+read it: articles/explainer-2026-05-04.md

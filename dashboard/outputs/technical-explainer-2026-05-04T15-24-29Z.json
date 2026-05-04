@@ -1,0 +1,139 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Latin-Hypercube Sampling: One Strategy, Thirty Variants, Ten Dimensions"
+      },
+      "children": [
+        "intro",
+        "fleet",
+        "metrics",
+        "falsifier",
+        "academic",
+        "link"
+      ]
+    },
+    "intro": {
+      "type": "Text",
+      "props": {
+        "text": "Latin-Hypercube sampling stratifies an N-dim hyperparameter cube so every axis projection is uniformly covered with one sample per stratum — turning one strategy into thirty diverse-but-balanced variants without paying for grid search.",
+        "variant": "lead"
+      }
+    },
+    "fleet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fleet_heading",
+        "fleet_desc",
+        "commit_badge"
+      ]
+    },
+    "fleet_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Swarm Fund MVP Implementation",
+        "level": "h3"
+      }
+    },
+    "fleet_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Technique behind 30 of 38 net-new agents in this week's swarm-fund-mvp fleet bump."
+      }
+    },
+    "commit_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "commit 1125deb",
+        "variant": "secondary"
+      }
+    },
+    "metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat1",
+        "stat2"
+      ]
+    },
+    "stat1": {
+      "type": "Stat",
+      "props": {
+        "label": "Net-new agents",
+        "value": "30/38"
+      }
+    },
+    "stat2": {
+      "type": "Stat",
+      "props": {
+        "label": "New fleet capacity",
+        "value": "79%"
+      }
+    },
+    "falsifier": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "falsifier_heading",
+        "falsifier_desc"
+      ]
+    },
+    "falsifier_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Falsifier Test",
+        "level": "h3"
+      }
+    },
+    "falsifier_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Paired live run vs IID-uniform — if Sharpe distributions match after 100 trades/variant, LHS bought nothing."
+      }
+    },
+    "academic": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "academic_heading",
+        "academic_desc"
+      ]
+    },
+    "academic_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Academic Foundation",
+        "level": "h3"
+      }
+    },
+    "academic_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Cauwet 2020 ICML predicts a constant-factor advantage; the constant matters, the asymptotic does not."
+      }
+    },
+    "link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Read full explainer",
+        "href": "articles/explainer-2026-05-04.md"
+      }
+    }
+  }
+}
