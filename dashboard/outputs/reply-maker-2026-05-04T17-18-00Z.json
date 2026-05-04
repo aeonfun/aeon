@@ -1,0 +1,309 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Reply Maker DEGRADED",
+        "description": "2026-05-04"
+      },
+      "children": [
+        "status_badge",
+        "sep1",
+        "tweet1_section",
+        "sep2",
+        "tweet2_section",
+        "sep3",
+        "source_status"
+      ]
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "tweet1_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet1_link",
+        "tweet1_engagement",
+        "tweet1_quote",
+        "tweet1_why_section",
+        "tweet1_analysis_section"
+      ]
+    },
+    "tweet1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Chennai | TVK emerging as single largest leading party in Tamil Nadu elections",
+        "href": "https://x.com/ANI/status/2051259440989655443",
+        "source": "@ANI",
+        "score": "~6h ago"
+      }
+    },
+    "tweet1_engagement": {
+      "type": "Text",
+      "props": {
+        "text": "engagement n/a",
+        "variant": "caption"
+      }
+    },
+    "tweet1_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"Chennai | On TVK emerging as the single largest leading party in Tamil Nadu elections, party leader Adhav Arjuna says...\"",
+        "variant": "body"
+      }
+    },
+    "tweet1_why_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1_why_label",
+        "tweet1_why_text"
+      ]
+    },
+    "tweet1_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "tweet1_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "TVK victory dedication frames the upset as anti-cash-for-votes; reply-leverage is the calibration angle (Polymarket TN priced DMK 87.5% / TVK 6.95c into counting morning).",
+        "variant": "body"
+      }
+    },
+    "tweet1_analysis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet1_analysis_a",
+        "tweet1_analysis_b"
+      ]
+    },
+    "tweet1_analysis_a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1_a_label",
+        "tweet1_a_text"
+      ]
+    },
+    "tweet1_a_label": {
+      "type": "Text",
+      "props": {
+        "text": "A:",
+        "variant": "lead"
+      }
+    },
+    "tweet1_a_text": {
+      "type": "Text",
+      "props": {
+        "text": "Today's Chanakya already had TVK at 30% ± 3% on Apr 30. Polymarket sat at 6.95c through Saturday. The post-vote vote-share read existed for four days — only the binary venue missed it. Cross-venue divergence was the signal.",
+        "variant": "body"
+      }
+    },
+    "tweet1_analysis_b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1_b_label",
+        "tweet1_b_text"
+      ]
+    },
+    "tweet1_b_label": {
+      "type": "Text",
+      "props": {
+        "text": "B:",
+        "variant": "lead"
+      }
+    },
+    "tweet1_b_text": {
+      "type": "Text",
+      "props": {
+        "text": "Cash-for-votes \"eliminated\" is the candidate's framing. The pricing story is cleaner: Today's Chanakya put TVK at 30% on Apr 30 while Polymarket held 6.95c. The two venues never converged — that was the real signal, not the campaign narrative.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "tweet2_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet2_link",
+        "tweet2_engagement",
+        "tweet2_quote",
+        "tweet2_why_section",
+        "tweet2_analysis_section"
+      ]
+    },
+    "tweet2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "VIDEO | Tamil Nadu Election Results: Security heightened outside Chennai residence of TVK Chief Vijay",
+        "href": "https://x.com/PTI_News/status/2051164993975185785",
+        "source": "@PTI_News",
+        "score": "~12h ago"
+      }
+    },
+    "tweet2_engagement": {
+      "type": "Text",
+      "props": {
+        "text": "engagement n/a",
+        "variant": "caption"
+      }
+    },
+    "tweet2_quote": {
+      "type": "Text",
+      "props": {
+        "text": "\"VIDEO | Tamil Nadu Election Results: Security has been heightened outside the Chennai residence of TVK Chief Vijay as his party races ahead...\"",
+        "variant": "body"
+      }
+    },
+    "tweet2_why_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2_why_label",
+        "tweet2_why_text"
+      ]
+    },
+    "tweet2_why_label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "tweet2_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "Primary-source observation at Vijay residence as TVK takes single-largest spot; reply-leverage is the same Polymarket calibration miss vs Bengal cross-venue success.",
+        "variant": "body"
+      }
+    },
+    "tweet2_analysis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet2_analysis_a",
+        "tweet2_analysis_b"
+      ]
+    },
+    "tweet2_analysis_a": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2_a_label",
+        "tweet2_a_text"
+      ]
+    },
+    "tweet2_a_label": {
+      "type": "Text",
+      "props": {
+        "text": "A:",
+        "variant": "lead"
+      }
+    },
+    "tweet2_a_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket TN market traded $22M at DMK 87.5% / TVK 6.95c on Saturday. By the time security got to Vijay's residence today, TVK was leading 100+ seats. Worst single-venue calibration miss the platform's had this year.",
+        "variant": "body"
+      }
+    },
+    "tweet2_analysis_b": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2_b_label",
+        "tweet2_b_text"
+      ]
+    },
+    "tweet2_b_label": {
+      "type": "Text",
+      "props": {
+        "text": "B:",
+        "variant": "lead"
+      }
+    },
+    "tweet2_b_text": {
+      "type": "Text",
+      "props": {
+        "text": "Bengal worked because Phalodi Satta Bazar tracked Polymarket's BJP flip in real time — two venues converged. Tamil Nadu had no second venue confirming DMK 87.5%. Single-venue 90%+ on a regional poll without a corroborator is a fade.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "source_status": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "source_status_label",
+        "source_status_details"
+      ]
+    },
+    "source_status_label": {
+      "type": "Text",
+      "props": {
+        "text": "source-status:",
+        "variant": "lead"
+      }
+    },
+    "source_status_details": {
+      "type": "Text",
+      "props": {
+        "text": "xai=skip (ISS-014 day-9), memory=stale (only 05-03 URLs in cache), websearch=ok (1 in-window + 1 12h-fallback border)",
+        "variant": "caption"
+      }
+    }
+  }
+}
