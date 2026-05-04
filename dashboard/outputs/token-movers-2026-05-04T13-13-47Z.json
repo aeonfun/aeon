@@ -1,0 +1,384 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-04"
+      },
+      "children": [
+        "overview_text",
+        "sep1",
+        "winners_heading",
+        "winners_table",
+        "sep2",
+        "losers_heading",
+        "losers_table",
+        "sep3",
+        "trending_heading",
+        "trending_table",
+        "sep4",
+        "notable_heading",
+        "notable_stack"
+      ]
+    },
+    "overview_text": {
+      "type": "Text",
+      "props": {
+        "text": "Breadth halved overnight: 42/100 top coins green vs 73 yesterday, median top-50 24h −0.1%; majors flat (BTC $78.7K, ETH $2,330, SOL $83.76) but pump unwinds and a privacy-coin rotation (DASH +22%, ZEN +10%, FIRO trending) run underneath.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Coin",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "SKYAI (SkyAI)",
+            "$0.6897",
+            "+101.3%",
+            "+288.8%",
+            "+9.6%",
+            "$167M / #84",
+            "TRENDING+UP BREAKOUT"
+          ],
+          [
+            "TAG (TAGGER)",
+            "$0.001773",
+            "+49.4%",
+            "+152.1%",
+            "−1.2%",
+            "$68M / #189",
+            "PUMP-RISK BREAKOUT"
+          ],
+          [
+            "LAB (LAB)",
+            "$1.64",
+            "+28.0%",
+            "+117.2%",
+            "+12.6%",
+            "$194M / #246",
+            "TRENDING+UP BREAKOUT"
+          ],
+          [
+            "DASH (Dash)",
+            "$47.52",
+            "+22.6%",
+            "+34.8%",
+            "−0.3%",
+            "$363M / #90",
+            "TRENDING+UP BREAKOUT"
+          ],
+          [
+            "ASTEROID (Asteroid Shiba)",
+            "$0.0003748",
+            "+20.3%",
+            "+23.4%",
+            "+8.2%",
+            "$30M / #218",
+            "TRENDING+UP"
+          ],
+          [
+            "UB (Unibase)",
+            "$0.1298",
+            "+15.5%",
+            "+165.4%",
+            "+6.4%",
+            "$64M / #139",
+            "BREAKOUT"
+          ],
+          [
+            "PENDLE",
+            "$1.78",
+            "+12.8%",
+            "+32.9%",
+            "−0.1%",
+            "$95M / #147",
+            ""
+          ],
+          [
+            "ZEN (Horizen)",
+            "$7.27",
+            "+10.1%",
+            "+20.7%",
+            "+0.7%",
+            "$65M / #245",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Coin",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "B (BUILDon)",
+            "$0.3702",
+            "−12.1%",
+            "+164.5%",
+            "+23.0%",
+            "$118M / #118",
+            "CAPITULATION"
+          ],
+          [
+            "M (MemeCore)",
+            "$2.64",
+            "−11.5%",
+            "−36.0%",
+            "−1.6%",
+            "$48M / #32",
+            ""
+          ],
+          [
+            "GNO (Gnosis)",
+            "$131.58",
+            "−8.6%",
+            "+5.6%",
+            "+0.1%",
+            "$7M / #132",
+            ""
+          ],
+          [
+            "AKT (Akash)",
+            "$0.6149",
+            "−6.9%",
+            "+27.0%",
+            "+1.2%",
+            "$46M / #194",
+            ""
+          ],
+          [
+            "GENIUS",
+            "$0.5545",
+            "−6.2%",
+            "−2.5%",
+            "−0.8%",
+            "$14M / #191",
+            ""
+          ],
+          [
+            "RAY (Raydium)",
+            "$0.7897",
+            "−4.6%",
+            "+10.4%",
+            "+0.3%",
+            "$22M / #178",
+            ""
+          ],
+          [
+            "FET (ASI)",
+            "$0.2018",
+            "−4.2%",
+            "−2.8%",
+            "−0.1%",
+            "$59M / #110",
+            ""
+          ],
+          [
+            "APE",
+            "$0.1672",
+            "−3.3%",
+            "+19.2%",
+            "0.0%",
+            "$48M / #207",
+            ""
+          ],
+          [
+            "JST",
+            "$0.08153",
+            "−3.3%",
+            "−0.4%",
+            "−0.2%",
+            "$25M / #83",
+            ""
+          ],
+          [
+            "ARB",
+            "$0.1144",
+            "−3.0%",
+            "−9.2%",
+            "0.0%",
+            "$81M / #82",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "trending_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Coin",
+          "Rank",
+          "Price",
+          "24h",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "BILL (Billions Network)",
+            "#361",
+            "$0.0326",
+            "+44.8%",
+            "PUMP-RISK"
+          ],
+          [
+            "FIRO",
+            "#984",
+            "$0.910",
+            "+3.4%",
+            "MICROCAP (privacy co-rotation)"
+          ],
+          [
+            "MEGA (MegaETH)",
+            "#234",
+            "$0.126",
+            "+1.8%",
+            ""
+          ],
+          [
+            "TST (Test)",
+            "#800",
+            "$0.0270",
+            "+72.2%",
+            "PUMP-RISK MICROCAP"
+          ],
+          [
+            "BTC",
+            "#1",
+            "$78,683",
+            "−0.0%",
+            "MAJOR"
+          ],
+          [
+            "PENGU",
+            "#87",
+            "$0.00991",
+            "+0.9%",
+            ""
+          ],
+          [
+            "LUNC",
+            "#102",
+            "$0.0000934",
+            "+10.4%",
+            "TRENDING+UP"
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable_1",
+        "notable_2",
+        "notable_3",
+        "notable_4",
+        "notable_5"
+      ]
+    },
+    "notable_1": {
+      "type": "Text",
+      "props": {
+        "text": "SKYAI: +101% on $167M vol, 7d +289% — yesterday's −15% capitulation reversed straight into a new parabolic leg; vol/mc 0.24 = late-stage churn risk",
+        "variant": "body"
+      }
+    },
+    "notable_2": {
+      "type": "Text",
+      "props": {
+        "text": "LAB: round-trip — +226% (05-02) → −36% (05-03) → +28% today on $194M vol vs $130M mcap (1.5× mcap turnover, wash-trade signature)",
+        "variant": "body"
+      }
+    },
+    "notable_3": {
+      "type": "Text",
+      "props": {
+        "text": "B: yesterday's day-4 BREAKOUT broke (−12.1% CAPITULATION) but 1h +23% rebound — V-shape buyers stepping in mid-day",
+        "variant": "body"
+      }
+    },
+    "notable_4": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy-coin rotation: DASH +22.6% (#90 TRENDING+UP), ZEN +10.1%, FIRO trending — three privacy names co-moving for the first time in months",
+        "variant": "body"
+      }
+    },
+    "notable_5": {
+      "type": "Text",
+      "props": {
+        "text": "Suppressed same-direction repeats: LUNC (+10.4%, 4th day TRENDING+UP — kept in trending only), BSB (+16.6%, similar to 05-03 +18.2%)",
+        "variant": "body"
+      }
+    }
+  }
+}
