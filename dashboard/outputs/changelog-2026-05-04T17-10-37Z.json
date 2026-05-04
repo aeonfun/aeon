@@ -1,0 +1,168 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-04"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-grid",
+        "sep1",
+        "details-stack",
+        "sep2",
+        "link-full"
+      ]
+    },
+    "summary-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-repos",
+        "stat-changes",
+        "stat-breaking"
+      ]
+    },
+    "stat-repos": {
+      "type": "Stat",
+      "props": {
+        "label": "Repos",
+        "value": "3"
+      }
+    },
+    "stat-changes": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "35"
+      }
+    },
+    "stat-breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "details-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "change-types",
+        "sep-change",
+        "swarm-details"
+      ]
+    },
+    "change-types": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-added",
+        "badge-changed",
+        "badge-fixed",
+        "badge-security"
+      ]
+    },
+    "badge-added": {
+      "type": "Badge",
+      "props": {
+        "text": "Added: 22",
+        "variant": "default"
+      }
+    },
+    "badge-changed": {
+      "type": "Badge",
+      "props": {
+        "text": "Changed: 11",
+        "variant": "default"
+      }
+    },
+    "badge-fixed": {
+      "type": "Badge",
+      "props": {
+        "text": "Fixed: 14",
+        "variant": "default"
+      }
+    },
+    "badge-security": {
+      "type": "Badge",
+      "props": {
+        "text": "Security: 1",
+        "variant": "destructive"
+      }
+    },
+    "sep-change": {
+      "type": "Separator"
+    },
+    "swarm-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-swarm",
+        "stat-agents",
+        "stat-strategies"
+      ]
+    },
+    "text-swarm": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp: wired the Aeon-Narrative ingestion adapter",
+        "variant": "lead"
+      }
+    },
+    "stat-agents": {
+      "type": "Stat",
+      "props": {
+        "label": "Fleet (agents)",
+        "value": "112",
+        "delta": "+38",
+        "trend": "up"
+      }
+    },
+    "stat-strategies": {
+      "type": "Stat",
+      "props": {
+        "label": "Strategies",
+        "value": "34",
+        "delta": "+4",
+        "trend": "up"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "link-full": {
+      "type": "Link",
+      "props": {
+        "label": "Full changelog",
+        "href": "articles/changelog-2026-05-04.md"
+      }
+    }
+  }
+}
