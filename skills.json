@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-03T13:34:19Z",
     "repo": "aaronjmars/aeon",
-    "total": 108,
+    "total": 109,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -946,6 +946,18 @@
             "sha": "8f3d8d6",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon skill-evals"
+        },
+        {
+            "slug": "skill-freshness",
+            "name": "skill-freshness",
+            "description": "Audit every enabled skill's upstream file dependencies for staleness — flags chained skills about to consume yesterday's article or a long-dead topic file",
+            "category": "productivity",
+            "schedule": "0 8 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-04",
+            "install": "./add-skill aaronjmars/aeon skill-freshness"
         },
         {
             "slug": "skill-graph",

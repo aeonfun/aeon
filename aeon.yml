@@ -135,6 +135,7 @@ skills:
   fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
+  skill-freshness: { enabled: false, schedule: "0 8 * * *", model: "claude-sonnet-4-6", var: "" } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
   smithery-manifest: { enabled: false, schedule: "0 6 1/7 * *", model: "claude-sonnet-4-6" } # weekly — refresh docs/smithery-manifest.json + smithery.yaml + smithery-submission.md from skills.json + aeon-mcp; PR + notify only on diff
   show-hn-draft: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft Show HN post + r/MachineLearning + r/selfhosted variants from live repo state, ready for the operator to paste at launch time. Set var to one of {show-hn, r/MachineLearning, r/selfhosted} to regenerate that single variant.
 
