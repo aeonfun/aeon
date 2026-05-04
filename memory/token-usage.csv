@@ -94,4 +94,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,cost-report,claude-sonnet-4-6,45,67903,353311,101004
 2026-05-04,github-releases,claude-opus-4-7,1515,23181,2013399,156936
 2026-05-04,unlock-monitor,claude-opus-4-7,2570,23251,1426595,118066
-2026-05-04,monitor-runners,claude-opus-4-7,61,24855,3300959,129560
+2026-05-04,token-pick,claude-opus-4-7,44,27056,3103081,171388
