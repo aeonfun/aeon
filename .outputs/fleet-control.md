@@ -1,17 +1,19 @@
+Per the spec, FLEET_EMPTY is a silent stop — no notification.
+
 ## Summary
 
-**Mode:** Health Check (default — empty `var`)
+Ran `fleet-control` in Health Check Mode (default; `var=""`).
 
-**Pre-flight:** gh auth OK (`tomscaria`), rate_remaining 4981.
+**Pre-flight:**
+- `gh auth status` — OK (`tomscaria`, GH_TOKEN)
+- Rate limit — 4968 remaining (well above the 50 floor)
+- Registry `memory/instances.json` — `{"instances": []}` (empty)
+- Prior state `memory/state/fleet-control-state.json` — exists, empty instances map
 
-**Result:** `memory/instances.json` is `{"instances": []}` — no managed instances. Per skill spec, the registry-empty branch logs `FLEET_EMPTY` and stops silently (no notification — operator isn't trained to ignore mid-day no-ops).
+**Outcome:** `FLEET_EMPTY` — no managed instances in registry. Per skill spec, stop silently (no notification).
 
 **Files modified:**
-- `memory/logs/2026-05-03.md` — appended `fleet-control (health check)` entry with `FLEET_EMPTY` verdict.
+- `memory/logs/2026-05-04.md` — appended fleet-control health-check log block
 
-**No-ops** (per spec):
-- Registry not modified (no instances to update).
-- `memory/state/fleet-control-state.json` unchanged (no notify → `last_full_summary_date` does not advance).
-- No Telegram/Discord/Slack notification sent.
-
-**Follow-up:** This Aeon currently manages zero child instances. The skill is correctly idle until the operator registers child repos in `memory/instances.json` (each entry needs at minimum `name`, `repo`, `purpose`, plus optional `parent`, `created`, `skills_enabled`, `archived`). The 09:00/15:00 UTC cron will continue firing and remain silent until that file is populated.
+**Follow-up:**
+- The fleet registry has been empty for an extended period. If managed children are intended (the operator owns at least `tomscaria/swarm-fund-mvp` and `tomscaria/aeon` — the present repo), populate `memory/instances.json` with entries shaped like `{"name": "...", "repo": "owner/name", "purpose": "...", "parent": "...", "created": "...", "skills_enabled": [...]}` to activate fleet monitoring. Until then, every fleet-control run will silent-stop on `FLEET_EMPTY`.
