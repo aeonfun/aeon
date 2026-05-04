@@ -21,11 +21,13 @@
 - **Hermes-arb ADR-038 gate:** 7pp min-gap = 2% PM taker + 5bps funding + 4.95pp buffer. Deep-research suggests gate likely understates noise floor by 50–100bp; bump to **~7.5–8pp** queued.
 - **Sister-paper backlog:** arXiv:2508.03474 (probabilistic-forest arbitrage), 2511.20606 (LOB dynamics in matching markets — Kalshi CLOB tick structure), 2512.02436 (semantic trading, agentic alignment).
 
-## Live market state (snapshot 2026-05-03)
-- **West Bengal counting eve flip (T-1; counting May 4)** — Polymarket WB market FLIPPED bullish BJP 51% / TMC 48.9% just 24h before counting; TMC led all cycle until phase-2 turnout broke it. Phalodi Satta Bazar (Indian grey-market) prices BJP 146-149 / TMC 140-143 — independent venue same direction. Two-venue convergence is the highest-quality cross-venue signal fetch-tweets has surfaced in months. Mainstream Indian financial press (Economic Times) first surfaces Polymarket as election-pricing venue with $2M+ in bets. CalibrationGap-shape binary; clean resolution (largest single party in 294-seat Assembly). Worth surfacing to monitor-polymarket as a watched market on next run.
-- **monitor-polymarket 05-03 quiet:** No >5pp movers. Mexico FIFA YES 1.05% flat, $108k 24h vol (up from $78.5k 05-02). BTC $1M before GTA VI YES 49.0% (+0.15pp), $3.6k 24h vol, 7d ratio 0.74x (up from 0.27x). J.D. Vance 2028 R-nom YES 39.15% — clear frontrunner. Ossoff 2028 D-nom YES 6.45% (-0.05pp). BTC/GTA VI at 49% YES with BTC ~$97k needs 10x in 89d — potential NO edge (resolution ambiguity risk if GTA VI delays past Jul 31; rule-read required before entry).
-- **monitor-kalshi 05-03:** KXBTC daily binaries dominate. Hermes-arb falsifier-window day-4 still live.
-- **Tamil Nadu T-1 (counting May 4 tomorrow)** — DMK 87.5%; TVK 6.95c (cooled from 8.25c, still under 4-6c-fair); ADMK 6.65%. Crafty-Kiss flipped TVK→DMK. Re-run polymarket-comments + reply-maker on T-0 (May 4 morning).
+## Live market state (snapshot 2026-05-04 — counting day)
+- **Tamil Nadu RESOLVED — TVK closed 99.65% YES** ($22.66M traded). Reality: TVK 110 / AIADMK 59 / DMK 48; Stalin lost Kolathur by 7,731 votes to a TVK first-time candidate. **MEMORY's prior "TVK 4-6c-fair" thesis is FALSIFIED.** Quant-blind-spot lesson — single-venue confidence + Dravidian-duopoly continuity prior is exactly the surface CalibrationGap is structurally blind to. Source-class lesson: pseudonymous-on-PM ground intel (orangexyz door-to-door Vijay survey + KairosHunter TMC→BJP whale flip) is a class the quant scanner cannot ingest.
+- **West Bengal RESOLVED — BJP 51% T-1 → 99.55% YES at close.** Validated by 92.47%-turnout BJP-200+ blockbuster. Two-venue convergence (Polymarket + Phalodi) tracked observable phase-by-phase turnout — late flip held because both venues priced the same evidence. **"Watch the flip not the level" thesis CONFIRMED.** Cross-venue convergence works only when both venues price the same evidence; when both share a continuity prior (TN's Dravidian duopoly), agreement is shared blind spot, not signal.
+- **Hormuz blockade-lift live-tape (05-04)** — arsenelupin (NEW) + compute (3rd day, archetype CONFIRMED) + Hossein-m citing Trump Truth Social ("STRAIT OF HORMUZ COMPLETELY OPEN…"). Castwolffox + tilda89 counter-cite Rubio. **MEMORY's 54.5c NO Hormuz-end-of-June position at risk** — re-evaluate before next CalibrationGap entry; headline-risk binary, grand-bargain peace deal collapses fair to 30%+ on a single Trump tweet.
+- **Crypto comment-vertical dead 3rd consecutive day** — pin as structural finding for polymarket-comments routing.
+- **monitor-polymarket 05-03 quiet:** No >5pp movers. Mexico FIFA YES 1.05% flat, $108k 24h vol. BTC $1M before GTA VI YES 49.0%, $3.6k 24h vol. J.D. Vance 2028 R-nom YES 39.15%. Ossoff 2028 D-nom YES 6.45%. BTC/GTA VI 49% YES with BTC ~$97k needs 10x in 89d — potential NO edge (resolution ambiguity risk if GTA VI delays past Jul 31).
+- **monitor-kalshi 05-03:** KXBTC daily binaries dominate. Hermes-arb falsifier-window still live.
 - **AI-Agent-Personhood (Manfred Macx / ClawBank)** — CoinDesk Tier-1 mainstream pickup 05-03. First-of-kind precedent invites KYA/AML clampdown. FinCEN AML/CFT comment period closes 06-09.
 
 ## Live market state (snapshot 2026-05-02)
@@ -58,7 +60,17 @@
 - **Brazil block in force** Apr 27 — 29 PM platforms blocked.
 - **Polymarket fees +76% w/w** (DeFiLlama, 2026-04-25) — post-election handle persistence load-bearing for Revenant/CalibrationGap edge.
 
-## Comments-side calibration signals (rolling — last refresh 2026-05-01 14:12 UTC)
+## Comments-side calibration signals (rolling — last refresh 2026-05-04)
+
+NEW handles since 05-03 (from polymarket-comments 05-04):
+- **orangexyz** — TN ground-intel; door-to-door Vijay survey, single highest-leverage call against the priced consensus. Top track-record handle of the week.
+- **0x7C544D** — Kolkata-insider; phase-by-phase turnout reads on WB.
+- **KairosHunter** — TMC→BJP whale flipper; tracks own position publicly.
+- **arsenelupin** — Hormuz blockade-lift live-tape; new entry, watch-list.
+- **tilda89** — Hormuz NO-side, cites Rubio counter; pairs with Castwolffox.
+- **WISEWARRIOR** — loud-loser archetype (28pp claim no cite). Negative-signal handle.
+- **God404** — TN-resolution day commenter.
+- **audacity.** — TN T-0 commenter.
 
 NEW handles since 04-30 (from polymarket-comments 05-01):
 - **Gorgeous-Coffin** — Trump-Iran-ops citation-chain handle (AP/Reuters/Times-of-Israel URL stack); future-resolution-debate signal.

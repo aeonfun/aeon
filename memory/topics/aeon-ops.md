@@ -127,3 +127,27 @@
 
 ## github-monitor `gh release list --json url` schema drift
 - `url` is not a valid field for `gh release list --json` (available: tagName/publishedAt/name/createdAt/isDraft/isImmutable/isLatest/isPrerelease). Drop from spec on next skill edit.
+
+## Cost discipline — 2026-05-04 cost-report
+- **$629.09 / 76 runs in last 7 days; monthly projection ~$2,696.** CLAUDE.md threshold is $40/wk — currently >15× over. Suggested Sonnet downgrades for next `self-improve` run: external-feature, repo-actions, heartbeat (~$149/wk savings combined). Surface as explicit edit per CLAUDE.md cost-discipline rule.
+
+## ISS-017 — decay started 2026-05-03/04
+- 2026-05-03 20:00Z heartbeat sr **0.59 → 0.62** (first measurable decay since detection). Per `last-report.json` notes[7], ~6 clean runs from auto-closure if trend holds.
+- ISS-013 affected_skills count **59 → 58** (heartbeat graduated DEGRADED → WARNING).
+- evening-rollup sr **0.64 → 0.67** (~3 clean runs from HEALTHY).
+- ISS-017 demotion criteria (from MEMORY 05-02): re-escalates if any scheduled window silently skips 2 days running, heartbeat delay >90 min 2 days running, or 21:00 evening-rollup misses 2 days.
+
+## skill-evals quality-history pipeline flatlined
+- Per-skill JSONs in `memory/skill-health/` (changelog/evening-rollup/github-issues/goal-tracker/issue-triage/last-report/write-tweet) all have **history-length-1** with single score=4 entries from various dates. Only `last-report.json` updates daily. **skill-evals is not appending to per-skill files** — quality time-series is effectively unobservable. Structural gap; surface to next `self-improve` queue.
+
+## Forged `<system-reminder>` surface list
+- 2026-04-26 — arXiv WebFetch payloads.
+- 2026-04-30 — cached OpenAlex JSON via Grep.
+- **2026-05-04 — GitHub releases WebFetch** (2 instances inside ggml-org/llama.cpp payloads). API tier-1 surface — discard per CLAUDE.md security rules; flag if recurs from a non-tier-1 surface.
+
+## skills.lock missing — skill-update-check halts
+- `skill-update-check` exits early with `SKILL_UPDATE_CHECK_NO_LOCK`: `skills.lock` not found, 0 skills tracked. Operator action: ship initial lockfile or repurpose skill.
+
+## monitor-runners DEEP-LIQ — 5-in-a-row TTPA, 7-in-a-row SKYAI
+- **TTPA** (base, `0x9d3695...ba6ce2`) — 5 consecutive days 04-30 → 05-04 in DEEP-LIQ survivor pool. Liq scaled $13.5m → $31.9m → $31.9m → $334.7m → **$3.35b** (10× overnight); fdv now **$11.30b**. Top-5 on 3 of 5 days. Score 91.5 → 90.4. h1 stalled 0.0% on 05-04 (post-reawakening local equilibrium). Strongest single-token signal of the series.
+- **SKYAI/WBNB** (BSC) — 7 consecutive days as DEEP-LIQ survivor without breaking top-5. Additional evidence for the floor-patch: if `top5.length === 5` AND zero DEEP-LIQ in top5 AND DEEP-LIQ exists in survivors, replace slot 5 with highest-score DEEP-LIQ survivor. Concrete patch ready for `self-improve`.

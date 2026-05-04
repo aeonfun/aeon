@@ -29,6 +29,9 @@ Internal enum (`AgentLifecycle`): adds `DEMOTED` (drawdown / regime mismatch) an
 | Hermes-cascade / oracle / funding / fan | Spec only | Templates in `docs/` |
 
 ## Recent ADRs (last 30 days)
+- **ADR-094** (commit `d010846`, 2026-05-03 20:51 UTC, +1215/-39, 9 files) — LLM router shipped. `python/llm/router.py` (+353); `paper_triage` opus-4-7 → sonnet-4-6; `SWARM_LLM_CACHE_DEFAULT=on`; `MAX_THINKING_TOKENS` clamp; new `/router_suggestions` Telegram cmd; 28 new tests. Material compute-economics shift on the swarm side — mirrors the Aeon-side cost-discipline pressure.
+- **ADR-093** (commit `dc1846e`, 2026-05-03 12:31 UTC, +180) — `python/execution/aeon_adapter.py` ships. Polls `tomscaria/aeon` raw `outputs/{skill}/{date}.json` for monitor-polymarket / polymarket-comments / narrative-tracker on 15-min cadence; emits MarketTicks with `kind="aeon_signal"`. Same commit unstubs `aeon_narrative.on_tick()` through full gate chain. First test file `tests/test_aeon_adapter.py` (203 lines). **Falsifier window: tomscaria/aeon has no `outputs/` directory; every poll 404s. If Aeon side doesn't ship the JSON contract within ~2 weeks (~2026-05-17) the wire-up is aspirational.**
+- **Commit `1125deb`** — fleet bump 74 → 112 agents, 30 → 34 strategies via Latin-Hypercube sampling on 10-dim AeonNarrativeFactors. **30 of 38 net-new agents (79%) are aeon-narrative LH-sampled variants.**
 - **ADR-061** — three-tier MD structure (root / docs/active / docs/archive). 20 stale files moved.
 - **ADR-062 / 063** — critique-bundle rationalization: CG-centered organizing principle, "Prior Updating" not "fine-tuning"
 - **ADR-056** — Darwinian-as-ambition allowed in hero copy; Darwinian-as-mechanism still forbidden
@@ -56,12 +59,8 @@ Internal enum (`AgentLifecycle`): adds `DEMOTED` (drawdown / regime mismatch) an
 - Tier-1 latency for PM leg blocked by PM datacenter/VPN ban — co-lo applies to HL only
 
 ## Aeon-side PR pipeline to swarm-fund-mvp (external-feature)
-- **PR #18** — `bankr_bridge --max` validator
-- **PR #19** — `ssrn_harvest` rowcount fix
-- **PR #20** — markdown image-strip regex
-- **PR #22** — privy-loader + WaitlistCTAAuth + api.ts stubs (unblocks `/learn` Astro deploy). pr-review 04-29 verdict: **blocked** on untested logic at `swarm-lab-site/src/lib/privy-loader.ts:42` and missing provider-presence guard in `WaitlistCTAAuth.tsx:6`.
-- **PR #23** (2026-04-29) — `fix(runner): use fractional days for pm-tail-risk fair-prob horizon`. `pm_strategy_runner.py:174` was passing `(m.end_date - now).days` (truncates); switched to `total_seconds() / 86400.0` matching `pm_tail_risk.py:113`. Bug under-estimates fair_yes by up to ~24% of T near 3-day floor → could flip LONG/SHORT signal direction. 4 new tests in `python/tests/test_pm_strategy_runner.py`. +78/-1. pr-review 04-30 verdict: **approve-ready**.
-- **PR #24** (2026-04-30) — `fix(triage): defensive parsing of LLM scores + reasoning`. `paper_triage.triage_paper` was passing `float(parsed.get("relevance_score", 0.0))` — only defaults on missing key, but `null` value raises TypeError that bubbles past `run()`'s narrow `except (MissingApiKey, BudgetExceeded)` and kills the entire batch loop. Same bug class as 9865acb / 3f9a1af deepseek-tier counts KeyError fixes. Extracted decision-construction into `_decision_from_parsed()` + added `_safe_float()` helper. 10 new tests in `python/tests/test_paper_triage.py`. +184/-15.
+- **PRs #18 / #19 / #20 / #22 / #23 / #24 / #28 — all merged 2026-05-03 21:57 UTC.** Operator merged through Vercel-FAILURE checks (root cause: `aeonframework` bot commit-email not verified with Vercel) rather than fixing the bot config. 5-ACT-NOW ALERT cleared.
+- **PR #29** (eval-tagged) and **PR #30** (variant_bandit corruption-tail fallback, operator-led external-feature) — open as of 2026-05-04 evening.
 
 ## Live infra
 - Trading loop: `python -m python.main` (PID varies, logs at `/tmp/swarm-main.log`)

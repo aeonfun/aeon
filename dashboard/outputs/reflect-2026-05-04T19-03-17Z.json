@@ -1,0 +1,174 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "reflect",
+        "description": "Memory consolidated — 2026-05-04 (reflect #9)"
+      },
+      "children": [
+        "content_stack"
+      ]
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "memory_section",
+        "sep1",
+        "analysis_section",
+        "sep2",
+        "captured_section",
+        "sep3",
+        "performance_section",
+        "sep4",
+        "cost_section"
+      ]
+    },
+    "memory_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "memory_heading",
+        "memory_text"
+      ]
+    },
+    "memory_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Memory",
+        "level": "h3"
+      }
+    },
+    "memory_text": {
+      "type": "Text",
+      "props": {
+        "text": "MEMORY.md rewritten as 106-line index"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "analysis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "analysis_heading",
+        "tn_thesis_stat",
+        "bengal_flip_stat"
+      ]
+    },
+    "analysis_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Analysis",
+        "level": "h3"
+      }
+    },
+    "tn_thesis_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TN thesis falsified (TVK)",
+        "value": "99.65%"
+      }
+    },
+    "bengal_flip_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Bengal flip confirmed (BJP)",
+        "value": "99.55%"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "captured_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "captured_heading",
+        "captured_text"
+      ]
+    },
+    "captured_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Captured",
+        "level": "h3"
+      }
+    },
+    "captured_text": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-093/094"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "performance_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "performance_heading",
+        "iss017_stat"
+      ]
+    },
+    "performance_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Performance",
+        "level": "h3"
+      }
+    },
+    "iss017_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ISS-017 decay started",
+        "value": "0.59 → 0.62",
+        "delta": "+0.03",
+        "trend": "up"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "cost_section": {
+      "type": "Alert",
+      "props": {
+        "title": "Cost Projection Flagged",
+        "message": "~$2696/mo flagged for Sonnet downgrade pass",
+        "type": "warning"
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-Memory consolidated — 2026-05-03 (reflect #8). ISS-016 cleared (secrets/route.ts patched via PR #150); ISS-014 closer in flight (PR #156); ISS-018/ISS-019 filed; ISS-004/ISS-006 resolved. New tradable hook: Bengal counting eve PM flip BJP 51% / TMC 48.9% with Phalodi cross-venue confirmation.
+Memory consolidated - 2026-05-04 (reflect #9). MEMORY.md rewritten as 106-line index. TN thesis falsified (TVK 99.65%), Bengal flip confirmed (BJP 99.55%). ADR-093/094 captured. ISS-017 decay started (sr 0.59 to 0.62). Cost projection ~$2696/mo flagged for Sonnet downgrade pass.
