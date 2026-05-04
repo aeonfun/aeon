@@ -1,15 +1,17 @@
 *Push Recap — 2026-05-04*
-SHIPPING — ADR-094 LLM router, skill-freshness watchdog, and 5 stalled fix PRs all land
+HARDENING — five-PR robustness wave clears the swarm-fund-mvp research backlog; aeon adds a skill-freshness watchdog (disabled).
 
 Shipped to users:
-• swarm-fund-mvp d010846 — ADR-094 task-aware LLM router (python/llm/router.py NEW +353): `task=classify|extract|...` picks cheapest tier; suggestion log catches over-tiered call sites without override; paper_triage opus→sonnet (~$70 saved per 3.5k-paper run); /router_suggestions Telegram cmd
-• aeon #157 32c77d7 — skill-freshness (skills/skill-freshness/SKILL.md NEW +286): walks aeon.yml + grep over enabled SKILL.md for articles/.outputs/topics refs, scores mtimes per class, sha1-fingerprint dedup. Closes silent-staleness gap heartbeat/skill-health cannot see
-• swarm-fund-mvp 5 PRs all merge 21:57 UTC within 4s (#19 ssrn rowcount, #20 image-strip regex, #23 fractional pm-tail-risk horizon, #24 triage defensive parse, #28 variant_bandit tests) — operator unblocked aeonframework email on Vercel; closes yesterday's ACT NOW item
+- swarm-fund-mvp #23 (`aaf745b`): pm-tail-risk runner now uses fractional-day horizon (was integer-truncating via `timedelta.days`); `fair_yes_probability` for 3-7d horizons moves up to ~24% of T, polarity could flip the gap-direction filter — direct P&L impact on the strategy that feeds CalibrationGap-adjacent paths.
+- swarm-fund-mvp #24 (`f2e1e28`): `paper_triage` no longer crashes the batch when Opus 4.7 returns `null` for `relevance_score`; `_safe_float()` + extracted decision builder + 142-line test file.
+- aaronjmars/aeon #157 (`32c77d7`): new `skill-freshness` skill audits enabled-skill upstream file deps for staleness across `.outputs/` (4h) / daily articles (28h) / weekly (192h) / topics (7d) / state (30d), fingerprint dedup with 7-day re-emit; ships `enabled: false`.
 
 Under the hood:
-• lore-financial-teaser 9b53f11 — perf(bundle): lazy-load 6 below-fold sections, main bundle -13%; brand-voice enforcement (#6) ships same day as swarm-fund-mvp design cleanup (bf21c22)
+- swarm-fund-mvp #19/#20 (`36a998c`/`0d0ba40`): ssrn_harvest swaps `con.total_changes` → `cur.rowcount` (silent papers_new inflation since `2625a07` 04-26); harvest markdown image-strip regex `\[\!` → `!\[` (the wrong branch had been firing).
+- swarm-lab-site brand-voice + design-token cleanup (`bf21c22`): mid-paragraph `**bold**` → `*italic*` per `soul/STYLE.md`; `--bg-alt` promoted to system token; vestigial `index.css` deleted.
 
-Shape: 12 user-visible · 9 internal · 0 infra · 99 bot-filtered · 7 merged PRs
-Volume: ~30 files, +2,168/-167 lines
+Shape: 6 user-visible · 3 internal · 0 infra · 93 bot-filtered (cron metrics.json refresh) · 6 merged PRs
+Volume: ~16 files, +1,149/-213 lines across 9 substantive commits
 
 Full recap: https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-04.md
+

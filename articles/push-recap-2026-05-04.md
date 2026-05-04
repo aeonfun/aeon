@@ -1,147 +1,122 @@
 # Push Recap — 2026-05-04
 
 ## Verdict
-> SHIPPING — ADR-094 LLM router, skill-freshness watchdog, and 5 stalled fix PRs all land
+> HARDENING — five-PR robustness wave clears the swarm-fund-mvp research backlog; aeon adds a skill-freshness watchdog (disabled)
 
-**Shape:** 12 user-visible · 9 internal · 0 infra · 99 bot-filtered (data-refresh churn)
-**Volume:** ~30 files changed, +2,168 / -167 lines across 21 real commits by 3 authors
-**Merged PRs:** 7 — `tomscaria/swarm-fund-mvp` #19/#20/#23/#24/#28 (the five Vercel-blocked fix PRs flagged on 05-03), `tomscaria/lore-financial-teaser` #6 (brand-voice enforcement), `aaronjmars/aeon` #157 (skill-freshness)
+**Shape:** 6 user-visible · 3 internal · 0 infra · 93 bot-filtered (cron `data: refresh site metrics`)
+**Volume:** ~16 files changed, +1,149 / -213 lines across 9 substantive commits by 4 authors (`tomscaria`, `Claude`, `stewart-lore`, `@aaronjmars`)
+**Merged PRs:** 6 — `tomscaria/swarm-fund-mvp` #19/#20/#23/#24/#28 (the five Vercel-FAILURE PRs that operator unblocked at 21:57 UTC on 05-03), `aaronjmars/aeon` #157 (skill-freshness)
 
 ---
 
 ## Top impact today
 
-1. `d010846` — **swarm-fund-mvp / `llm: stronger task-aware tier router + suggestion surface (ADR-094)`**. New module `python/llm/router.py` (+353) defines a `TaskKind` literal (classify/extract/summarize/chat/judge/reason/generate) and a `TierName` ladder (local→flash→haiku→deepseek→sonnet→opus); `complete()` now accepts `task=` instead of `model=` and picks the cheapest tier known to handle that task. Explicit-model callers that look over-tiered get a row appended to `data/router_suggestions.jsonl` — never a silent override. `paper_triage.DEFAULT_TRIAGE_MODEL` migrates `claude-opus-4-7` → `claude-sonnet-4-6` on the back of this (~$70 saved on a 3,500-paper triage run). New `/router_suggestions` Telegram command surfaces the log. 9 files, +1,215 / -39.
-2. `32c77d7` — **aaronjmars/aeon / `feat(skill-freshness): audit enabled skills' upstream file deps for staleness (#157)`**. New skill at `skills/skill-freshness/SKILL.md` (+286). Walks every `enabled: true` skill in `aeon.yml`, parses both explicit `chains: consume:` edges and grep-discovered `articles/` / `.outputs/` / `memory/topics/` references inside SKILL.md files, scores each dependency against per-class freshness thresholds (4h for `.outputs/`, 28h for daily-producer articles, 8d for weekly, 7d for topic files, 30d for state JSON), rolls up to a fleet verdict, and notifies only on verdict change (sha1 fingerprint over flagged rows, 7-day re-emit). Closes the gap that `heartbeat`/`skill-analytics`/`skill-health` cannot — silent staleness when a producer skill quietly stopped writing but pass rate stays at 100%. 3 files, +300 / -1.
-3. `bf21c22` — **swarm-fund-mvp / `design: brand voice enforcement + design system cleanup`**. `swarm-lab-site/src/index.css` removed entirely (-69), `src/content/copy.tsx` rewritten in place (+21 / -21), `styles/components.css` and `styles/globals.css` adjusted. The marketing-site copy now matches the operator-voice rules already enforced on `lore-financial-teaser` (same day, see #4). 4 files, +30 / -97.
-4. `9b53f11` — **lore-financial-teaser / `perf(bundle): lazy-load 6 heavy below-fold sections, cut main bundle 13%`**. The headline number is the one that ships to users — page-1 weight drops 13% by deferring six below-fold sections behind dynamic imports.
-5. `f2e1e28` — **swarm-fund-mvp / `fix(triage): defensive parsing of LLM scores + reasoning (#24)`**. `python/research/papers/paper_triage.py` +42/-15 plus a +142-line test file. Triage no longer blows up on malformed LLM responses; this is the merge of one of yesterday's five Vercel-blocked FAILURE PRs.
+1. `32c77d7` — **aaronjmars/aeon / `feat(skill-freshness): audit enabled skills' upstream file deps for staleness (#157)`**. New `skills/skill-freshness/SKILL.md` (+286). Walks every `enabled: true` skill in `aeon.yml`, parses both explicit `chains: consume:` edges and grep-discovered `articles/` / `.outputs/` / `memory/topics/` / `memory/state/` references inside SKILL.md files, scores each dependency against per-class freshness thresholds (4h `.outputs/` · 28h daily-cadence articles · 192h weekly · 7d topics · 30d state), rolls up worst-of-deps to a consumer verdict and worst-of-consumers to a fleet verdict, and notifies only on fingerprint change with a 7-day re-emit window. Closes the gap that `heartbeat`/`skill-analytics`/`skill-health` cannot — silent staleness when a producer skill quietly stopped writing but pass rate stays at 100%. Ships `enabled: false` in `aeon.yml`. (3 files, +300 / -1)
+2. `f2e1e28` — **swarm-fund-mvp / `fix(triage): defensive parsing of LLM scores + reasoning (#24)`**. `paper_triage.triage_paper()` was building `TriageDecision` inline with `float()` on `parsed.get("relevance_score", 0.0)` — `.get()` only defaults on missing keys, not on `None` or non-numeric strings. Opus 4.7 occasionally returned `"relevance_score": null` on sparse abstracts, raising `TypeError` past `run()`'s narrow `except (MissingApiKey, BudgetExceeded)` clause and killing the entire batch. Fix extracts `_decision_from_parsed()` plus a `_safe_float()` helper that catches `None` / `ValueError` / `TypeError`, and coerces non-string `reasoning` (lists/dicts) instead of relying on implicit `str()`. Same bug class as the earlier deepseek-tier `KeyError` (commits `d85bccb`/`3f9a1af`). New `python/tests/test_paper_triage.py` covers numeric pass-through, string coercion, `None` fallback, unparseable strings, missing keys, invalid-tier-defaulting-to-flash, tier whitespace/case, and non-string reasoning — no LLM call needed. (2 files, +184 / -15)
+3. `4f82c36` — **swarm-fund-mvp / `kb: weekly quality review 2026-05-04`** *(internal)*. New `outputs/kb_quality_reviews/2026-05-04.md` (+319) plus `_coverage.json` (+30). Reviewed all 28 hand-stubs (`generated: false`). One BLOCKER (fair-value uses `N(d1)` instead of `N(d2)`), one HIGH (kl-divergence worked example off by ~2×), 5 MEDIUM, 7 LOW, 14 CLEAN. Drives next week's kb-extractor patch list; not a code change. (2 files, +349 / -0)
+4. `bf21c22` — **swarm-fund-mvp / `design: brand voice enforcement + design system cleanup`**. `swarm-lab-site/src/content/copy.tsx` rewritten to convert all mid-paragraph `**bold**` → `*italic*` (the operator-voice rule from `soul/STYLE.md`: mid-paragraph bolds are AI fingerprint pattern, italics only). `src/styles/globals.css` defines the `--bg-alt` token that components were inlining as a fallback; `src/styles/components.css` lifts the pillars/harvest lede color from `--text-dim` to `--text` and bumps `section-label` to 11px on `--brand-dim`. `src/index.css` deleted entirely — vestigial, never imported, shadowed `globals.css` token names with conflicting values. (4 files, +30 / -97)
+5. `aaf745b` — **swarm-fund-mvp / `fix(runner): use fractional days for pm-tail-risk fair-prob horizon (#23)`**. `_build_tail_risk_candidate` was passing `(m.end_date - now).days` into `_lognormal_yes_prob` — but `timedelta.days` truncates toward zero. A market resolving in 3d 23h was treated as 3.0 days; one in 12h as 0 (then clamped to the 0.1-day floor). The strategy itself (`pm_tail_risk.py:113`) already used `total_seconds() / 86400.0`; only the runner integer-truncated. Effect: `fair_yes_probability` under-estimated by up to ~24% of T near the 3-day floor — fairly-priced markets just past 3d looked mispriced; mispriced markets looked fair. Either polarity could flip the gap-direction filter in `PMTailRiskStrategy.on_candidate`. **This is the bug that most directly fed false signals into CalibrationGap-adjacent strategy paths.** (2 files, +78 / -1)
+6. `0c9d847` — **swarm-fund-mvp / `test(variant_bandit): cover canonical_regime_label() normalization (#28)`** *(internal)*. `canonical_regime_label()` is the single normalization seam between the HMM publisher (lowercase 3- or 5-state output) and the variant bandit's per-regime sub-posteriors, called twice per `python/main.py` iteration. A miss silently routes regime-tagged evidence to the wrong sub-posterior key (or drops the regime tag entirely), corrupting `kelly_multiplier(regime=...)` for that variant for as long as the bug runs — but had no direct test coverage. New cases cover all five canonical labels round-trip, lowercase normalization, present-participle forms, hyphen forms, legacy 3-state HMM `high_vol`/`high-vol`/`highvol` → CRISIS mapping, mixed-case + whitespace, `None` / empty / unknown → `None` (silent-drop contract), and an end-to-end check that the normalized output is the exact key `update_from_trade(regime=...)` writes into `regime_posteriors`. (1 file, +76 / -0)
 
 ---
 
 ## tomscaria/swarm-fund-mvp
 
-### Theme 1 — ADR-094: task-aware LLM router
+### Theme 1 — research-pipeline robustness (5-PR backlog clears at 21:57 UTC on 05-03)
 
-**What this is:** A reusable primitive that lets every call site say "I want to classify this paper" instead of "I want `claude-opus-4-7`." The router maps task→tier→cloud-model (with an `OLLAMA_LOCAL=1` swap for the high-volume tiers), and adds an opt-in `downtier_under_pressure=True` mode so cost-sensitive callers (autoresearch nightly, kb-extractor sweeps) downgrade one tier under budget pressure rather than throwing `BudgetExceeded`. Triggered by Opus 4.7's tokenizer producing up to 35% more tokens than Opus 4.6 — every Opus call quietly costs more even though the rate card looks identical. This is the cost-discipline lever that `CLAUDE.md` flagged as the right next move at the $40/week threshold.
-
-**Shipped to users**
-- `d010846` — `llm: stronger task-aware tier router + suggestion surface (ADR-094)`
-  - `python/llm/router.py` (NEW): `TaskKind` literal, `TierName` ladder, `TASK_TIER_DEFAULT` map, `TIER_MODEL_CLOUD` + `TIER_MODEL_OLLAMA`, `route_for_task` / `downtier` / `tier_for_model` / `estimate_savings_per_call_usd` / `maybe_log_suggestion` / `top_suggestions`. `SWARM_LLM_DEFAULT_TIER_FLOOR=cheap|aggressive` env clamps non-reasoning tasks at haiku/flash respectively; reasoning tasks ignore the floor. (+353 / -0)
-  - `python/llm/client.py`: `complete()` gains `task=`, `max_thinking_tokens=`, `downtier_under_pressure=` kwargs; `cache: bool | None = None` flips default to env-controlled (`SWARM_LLM_CACHE_DEFAULT`, default `"true"`, Anthropic-only). `_call_anthropic()` accepts `max_thinking_tokens` and emits `thinking={"type":"enabled","budget_tokens":N}` for `claude-opus-4-7` prefixes. (+161 / -24)
-  - `python/llm/__init__.py`: re-exports the router primitives. (+24 / -1)
-  - `python/research/papers/paper_triage.py:59` — `DEFAULT_TRIAGE_MODEL` migrates `claude-opus-4-7` → `claude-sonnet-4-6`. Same-rubric structured classification on abstract-only context; sonnet has matched opus on agreement rate at ~5× the cost. (+6 / -1)
-  - `python/alerting/telegram.py`: `render_router_suggestions()` + `cmd_router_suggestions()` + handler registration; `/router_suggestions [hours]` returns top 5 over-tiered call sites by total estimated savings. (+75 / -1)
-  - `DECISIONS.md`: ADR-094 entry — context (Opus 4.7 35% token bloat + 25-month-flat Sonnet 4.6 + viable Haiku 4.5 floor), decision (six layered changes, no provider plumbing changed), rationale, consequences, evidence pointers. (+28 / -0)
-  - `TASKS.md`: follow-on items (daily-brief integration of the suggestion log; migration of explicit-model call sites at human pace). (+23 / -1)
-
-**Under the hood**
-- `python/tests/test_router.py` (NEW, +209) — covers per-task tier defaults, `OLLAMA_LOCAL` swap, default-tier-floor cheap/aggressive, downtier ladder, `tier_for_model` round-trip + alias coverage + openrouter-prefix strip, savings estimate, suggestion-log writes/skips/aggregation.
-- `python/tests/test_llm_client.py` (+336 / -11) — task-only routing, suggestion log on overspec, pressure-downtier opt-in/off, thinking-token pass + clamp + skip-non-thinking, env cache default + non-Anthropic skip, requires-model-or-task.
-
-### Theme 2 — Stale-PR unblock: 5 fix PRs all merge in one batch
-
-**What this is:** PRs #19/#20/#23/#24/#28 had been blocked on Vercel preview-deploy checks because the `aeonframework` bot's commit-email was unverified with Vercel — flagged as the 🔴 ACT NOW item on yesterday's `github-monitor`. All five merged at 21:57 UTC within four seconds of each other, which is the signature of one operator config fix unblocking all of them at once. Two of the five (`#23` and `#24`) ship real bugfixes to the trading runner / triage pipeline; the other three (`#19`, `#20`, `#28`) are smaller correctness fixes.
+**What this is:** Five fix/test PRs queued behind the Vercel-FAILURE block on the `aeonframework` bot's commit-email verification — flagged in MEMORY as the "5 ACT NOW" priority on 05-03 — all merge in a 12-second window once the operator unblocked the bot. None ship a feature; collectively they patch four production bugs and one test-coverage hole, all of them silent-failure-class. The pm-tail-risk fractional-day fix (#23) is the only one with direct P&L consequences.
 
 **Shipped to users**
-- `f2e1e28` — `fix(triage): defensive parsing of LLM scores + reasoning (#24)`
-  - `python/research/papers/paper_triage.py`: triage no longer KeyErrors on malformed score/reasoning fields in the LLM response. (+42 / -15)
-  - `python/tests/test_paper_triage.py` (NEW, +142): regression cases for the malformed-response shapes that bit prod.
+
 - `aaf745b` — `fix(runner): use fractional days for pm-tail-risk fair-prob horizon (#23)`
-  - `python/research/runners/pm_strategy_runner.py`: tail-risk strategy was rounding the horizon to an integer day, which collapses a 0.5-day window to 0 (or 1) and corrupts the fair-prob estimate. Now uses fractional days. (+4 / -1)
-  - `python/tests/test_pm_strategy_runner.py` (NEW, +74): regression for fractional-day horizons.
+  - `python/research/runners/pm_strategy_runner.py`: `(m.end_date - now).days` → `(m.end_date - now).total_seconds() / 86400.0`. Same expression `pm_tail_risk.py:113` and the complete-set runner already use. (+4 / -1)
+  - `python/tests/test_pm_strategy_runner.py` (NEW): fractional-day repro (3d vs 3d 23h must yield distinct `fair_yes`), short-horizon clamp, log-normal `fair_prob` is monotone-increasing in horizon, input validation rejects spot=0 / target=0 / vol=0 / unknown direction. (+74 / -0)
+- `f2e1e28` — `fix(triage): defensive parsing of LLM scores + reasoning (#24)`
+  - `python/research/papers/paper_triage.py`: `_decision_from_parsed()` extracted; `_safe_float()` handles `None` / `ValueError` / `TypeError`; non-string `reasoning` coerced explicitly. (+42 / -15)
+  - `python/tests/test_paper_triage.py` (NEW): full parsing-path coverage, no LLM call. (+142 / -0)
 - `0d0ba40` — `fix(harvest): correct markdown image-strip regex bracket order (#20)`
-  - `python/research/papers/regulator_harvest.py` and `vc_blog_harvest.py` each had one byte wrong in the image-strip regex (bracket order). Two-character fix, two files. (+2 / -2)
+  - `python/research/papers/regulator_harvest.py` and `vc_blog_harvest.py`: body-cleaning regex was `\[\!alt](url)` (bracket before bang — not Markdown). Swap to `!\[` so block images at line start are stripped before the body excerpt is sliced for LLM extraction. Reduces noise tokens going into `tiered_extractor`; improves stored `abstract` quality in `papers.db`. Scope unchanged — leading-line images only, inline images mid-paragraph remain. (+1 / -1 in each file)
 - `36a998c` — `fix(ssrn_harvest): use cursor.rowcount, not connection.total_changes (#19)`
-  - `python/research/papers/ssrn_harvest.py`: SQLite row-count was being read off the connection (which counts across all cursors / lifetime) instead of the cursor (which counts the last execute). Two-line fix. (+2 / -2)
+  - `python/research/papers/ssrn_harvest.py`: `_upsert_paper` returned `con.total_changes > 0` — the cumulative count since the connection was opened, not the rows changed by the most recent execute. Once any paper had been inserted in a run, every subsequent `INSERT OR IGNORE` returned True regardless of whether the row was actually new. The `new` counter inflated, every-50-inserts commits fired too often, and `harvest_runs` recorded inflated `papers_new` totals. Sibling harvesters `arxiv_harvest.py:148` and `ssrn_search_harvest.py:109` already use `cur = con.execute(...); return cur.rowcount > 0` — this brings ssrn_harvest into line. Bug introduced in `2625a07` (2026-04-26). (+2 / -2)
 
 **Under the hood**
-- `0c9d847` — `test(variant_bandit): cover canonical_regime_label() normalization (#28)`. `python/tests/test_variant_bandit.py` +76 — coverage for the regime-label normalization helper that landed in last week's bandit-selector work; no production-code change.
 
-### Theme 3 — swarm-lab-site brand voice cleanup
+- `0c9d847` — `test(variant_bandit): cover canonical_regime_label() normalization (#28)`: 76-line test file plugging the only untested normalization seam between the HMM publisher and the variant bandit's per-regime sub-posteriors. No production code change.
 
-**What this is:** Marketing-site copy and design system aligned with the operator-voice rules already enforced on `lore-financial-teaser`. The `index.css` deletion is the load-bearing line — a 69-line stylesheet was redundant with `globals.css` + `components.css` and got removed wholesale.
+### Theme 2 — swarm-lab-site brand-voice + design-system cleanup
+
+**What this is:** A polish pass on the live marketing site. The copy edits enforce the operator-voice rule from `soul/STYLE.md` (mid-paragraph bolds are an AI fingerprint pattern, use italics for emphasis only). The CSS edits remove a dead file (`index.css`) that was never imported but shadowed `globals.css` token names with conflicting values, and promote `--bg-alt` from inline-fallback-only to a real system token. Reader-facing change is restyled emphasis + slightly higher-contrast pillars/harvest lede; structural cleanup pays down the design-token-shadowing tech debt.
 
 **Shipped to users**
+
 - `bf21c22` — `design: brand voice enforcement + design system cleanup`
-  - `swarm-lab-site/src/index.css` (DELETED, -69)
-  - `swarm-lab-site/src/content/copy.tsx` (+21 / -21): copy rewrites in place
-  - `swarm-lab-site/src/styles/components.css` (+7 / -7), `globals.css` (+2 / -0)
+  - `swarm-lab-site/src/content/copy.tsx`: every mid-paragraph `**X**` → `*X*`. (+21 / -21)
+  - `swarm-lab-site/src/styles/globals.css`: `--bg-alt` defined as a system token (was used as inline fallback in components). (+2 / -0)
+  - `swarm-lab-site/src/styles/components.css`: pillars/harvest lede color `--text-dim` → `--text`; `section-label` 10px → 11px on `--brand-dim`; remove `--bg-alt` hardcoded fallbacks now that the token exists. (+7 / -7)
+  - `swarm-lab-site/src/index.css` (DELETED): vestigial, never imported, shadowed `globals.css` token names with conflicting values. (-69)
 
-### Internal: data-refresh churn
+### Internal: kb quality review artifact
 
-99 commits authored by `tomscaria` with the message `data: refresh site metrics`, each touching only `swarm-lab-site/public/metrics.json`. Cron-driven 15-minute refresh of the live-metrics file that backs `rswarm.ai/metrics.json` (the operator-trusted source for CalibrationGap stats). Filtered as automation noise — they're the heartbeat of the live-metrics endpoint, not human work, and surfacing them swamps everything else.
+**What this is:** Weekly review of the 28 hand-stub knowledge-base entries; produces the punch-list that drives next week's kb-extractor patch queue. Surface for next `self-improve` to schedule the BLOCKER (Black-Scholes fair-value uses `N(d1)` where it should use `N(d2)`) and HIGH (KL-divergence worked example off by ~2×) fixes.
+
+- `4f82c36` — `kb: weekly quality review 2026-05-04`
+  - `outputs/kb_quality_reviews/2026-05-04.md` (NEW): 28 entries reviewed — 1 BLOCKER, 1 HIGH, 5 MEDIUM, 7 LOW, 14 CLEAN. (+319)
+  - `outputs/kb_quality_reviews/_coverage.json` (NEW): coverage tracker. (+30)
+
+### Cron: site-metrics publishes (bot-filtered, called out for completeness)
+
+93 commits authored by `tomscaria` matching `data: refresh site metrics`, each touching only `swarm-lab-site/public/metrics.json` with a single line changed. Treated as bot-class noise per the convention established in the 2026-05-03 push recap. Cadence held at the expected ~15-minute interval through the window with no gaps.
 
 ---
 
 ## tomscaria/lore-financial-teaser
 
-### Theme 4 — Brand-voice enforcement + perf shave
+### Internal: brand-voice smoke tests
 
-**What this is:** Same operator-voice push that hit `swarm-fund-mvp` today, applied across the lore-financial-teaser marketing site. `stewart-lore` (the deploy/build agent) staged the changes; `tomscaria` merged PR #6. The perf-bundle commit is the one users actually feel — main bundle drops 13% via lazy-loading six below-fold sections.
-
-**Shipped to users**
-- `9b53f11` — `perf(bundle): lazy-load 6 heavy below-fold sections, cut main bundle 13%`. Six dynamic imports for sections users only see if they scroll; main-bundle weight down 13%.
-- `bfaae50` — `copy(brand-voice-thomas): enforce voice rules across all marketing sections`. Voice-rule pass across every marketing section.
-- `035df48` — `copy(brand-voice): enforce Thomas Scaria voice rules across marketing sections (#6)` (merge commit for `bfaae50`).
-- `c77daac` — `copy: remove arrow glyph from Phase 2 description in Index.tsx`. Single glyph removed (the operator-voice anti-glyph rule).
-- `c2d6cb0` — `fix(review): remove duplicate SVG import, add aria-label to SectionNav buttons`. Accessibility fix on the section-nav buttons; one duplicate SVG import removed.
+**What this is:** Replaces a placeholder unit test with four small regression anchors for the brand-voice rules (banned-word list integrity, LTP definition structure, `$40M` AUM string format) on the same day that the swarm-lab-site brand-voice pass landed (see `bf21c22` above). Same operator, same voice rules, applied to the second marketing surface.
 
 **Under the hood**
-- `031ce8e` — `test: replace placeholder with meaningful brand-voice smoke tests`
-- `b1114a9` — `fix(lint): resolve all 5 ESLint errors across codebase`
-- `10f3895` — `chore: remove @tanstack/react-query (unused)`. Dependency removal; ships through to bundle weight as a side effect of #4's perf push.
-- `92c7b06` — `chore: remove 6 dead component files (never imported)`
 
-**Internal docs**
-- `3772010` — `docs(readme): update stack, commands, site structure, brand links`
-- `c77fb55` — `docs: update COPY_GUIDELINES with voice rules, mark VOICE_AND_TONE as canonical`
-- `8fcb43b` — `docs: update voice/copy guidelines to match enforced brand-voice-thomas rules`
-- `07dee08` — `docs(aeon): add AEON_DEPLOY_LORE.md and update CLAUDE.md with install status`
+- `031ce8e` — `test: replace placeholder with meaningful brand-voice smoke tests`
+  - `src/test/example.test.ts`: 4 new tests — banned-word list integrity, LTP definition structure, numeric AUM string format. (+33 / -2)
 
 ---
 
 ## aaronjmars/aeon
 
-### Theme 5 — `skill-freshness` lands
+### Theme — skill-freshness watchdog (ships disabled)
 
-**What this is:** A new health skill that closes the silent-staleness gap in Aeon's reliability stack. `heartbeat` (per-run pulse), `skill-analytics` (per-skill ranking), and `skill-health` (per-skill failure detection) all watch run history; none of them notices when a producer skill quietly stops writing and a downstream consumer keeps reading the cached file. `skill-freshness` watches the file mtimes themselves and rolls up to a single fleet verdict (`OK` / `WARN` / `STALE` / `MISSING`), with sha1 fingerprint dedup so the operator doesn't get pinged about the same stale file every day.
+**What this is:** New skill that closes the silent-staleness gap between `heartbeat` (catches workflow failure), `skill-analytics` (catches duration drift), and `skill-health` (catches API/format failures): none of them notice when a chained consumer reads a stale upstream artifact with no API errors and a 100% pass rate. Today there's no check that `tweet-allocator` reading `articles/token-report-*.md` is reading today's version vs last Tuesday's. Closes a backlog idea carried two `repo-actions` cycles (Apr-30 idea #4 / May-2 idea #2). Companion to `skill-update-check` (which only catches drift in *imported* SKILL.md files). Shipped enabled-false in `aeon.yml` — first run will be operator-gated.
 
 **Shipped to users**
+
 - `32c77d7` — `feat(skill-freshness): audit enabled skills' upstream file deps for staleness (#157)`
-  - `skills/skill-freshness/SKILL.md` (NEW, +286): freshness thresholds per path class, severity bands (OK/WARN/STALE/MISSING), explicit + implicit dependency discovery (chains-consume edges + grep over enabled SKILL.md files for `articles/` / `.outputs/` / `memory/topics/` / `memory/state/` references), per-consumer rollup, sha1 verdict fingerprint with 7-day re-emit on no-change.
-  - `aeon.yml` (+1 / -0): enable entry.
-  - `skills.json` (+13 / -1): catalog entry for MCP / Smithery exposure.
+  - `skills/skill-freshness/SKILL.md` (NEW, +286): walks `aeon.yml` for `enabled: true` consumers; gathers explicit deps from `chains: consume:` blocks (`.outputs/` class) plus implicit deps via SKILL.md grep over `articles/` / `.outputs/` / `memory/topics/` / `memory/state/` references; picks per-class threshold from producer cadence (4h `.outputs/` · 28h daily articles · 192h weekly · 7d topics · 30d state); severity bands OK / WARN (1×) / STALE (2×) / MISSING (canonical pattern only); worst-of-deps roll up to consumer verdict; worst-of-consumers to fleet; sha1 fingerprint dedup with 7-day re-emit window so chronic-stale isn't forgotten. Pure local file I/O — no curl, no `gh api`, no env-var-in-headers (sandbox-clean by construction).
+  - `aeon.yml` (+1): registers the skill at `enabled: false`.
+  - `skills.json` (+13 / -1): adds the metadata entry.
 
 ---
 
 ## Developer notes
 
-- **New dependencies:** none. ADR-094 reuses the existing 7-provider adapter; no provider plumbing changed.
-- **Removed dependencies:** `@tanstack/react-query` removed from `lore-financial-teaser` (`10f3895`).
-- **Breaking changes:** none with default-on impact. `python/llm/client.py:complete()` `cache: bool | None` default flipped from `False` to `None` (env-controlled, default `"true"` for Anthropic). Existing callers passing `cache=False` explicitly keep the old behavior; tests that relied on the implicit `False` default were updated to either pass `cache=False` or set `SWARM_LLM_CACHE_DEFAULT=false`.
-- **New public surface:**
-  - `python/llm.route_for_task`, `tier_for_model`, `downtier`, `TASK_TIER_DEFAULT`, `TIER_MODEL_CLOUD`, `TIER_MODEL_OLLAMA`, `TaskKind`, `TierName`, `load_suggestions`, `top_suggestions` (re-exports added in `python/llm/__init__.py`).
-  - `complete(task="...", max_thinking_tokens=N, downtier_under_pressure=True|False)` kwargs on the LLM client.
-  - Telegram `/router_suggestions [hours]` operator command.
-  - `data/router_suggestions.jsonl` (new append-only log, schema: `{ts, agent_id, task, requested_model, suggested_model, est_savings_per_call_usd}`).
-  - `data/process_audit.jsonl` gains `process="llm:pressure_downtier"` rows when an opted-in caller is downtiered.
-  - New env vars: `OLLAMA_LOCAL`, `SWARM_LLM_DEFAULT_TIER_FLOOR` (`cheap`|`aggressive`), `SWARM_LLM_CACHE_DEFAULT`, `MAX_THINKING_TOKENS`.
-  - New skill: `skill-freshness` on `aaronjmars/aeon` (registered in `aeon.yml` and `skills.json`).
-- **Tech debt added:** Telegram daily-brief integration of the router-suggestion log is deferred — the command works but no daily push yet. Tracked in `TASKS.md`.
+- **New dependencies:** none.
+- **Breaking changes:** none. PR #19 (`ssrn_harvest` rowcount) and PR #23 (`pm_strategy_runner` fractional days) silently change observable counts/probabilities — downstream `papers_new` totals may dip and `fair_yes_probability` for 3-7d horizons will move by up to ~24% of T, but neither breaks an interface.
+- **New public surface:** one new framework skill on `aaronjmars/aeon` (`skill-freshness`, ships disabled). No new HTTP routes, CLI flags, config keys, or migrations on `swarm-fund-mvp`.
+- **Tech debt added:** none visible in diffs. PR #20's harvest regex fix is scoped narrowly to leading-line images (`^\s*` anchor with `re.MULTILINE`); inline images mid-paragraph remain untouched, a deferred call-out.
 
 ## Open threads
 
-- **Migration of explicit-model call sites to `task=` is not done.** ADR-094's design choice was deliberately "suggest, don't override" — the suggestion log accumulates over 1–2 weeks and call sites migrate at human pace. Watch `data/router_suggestions.jsonl` and `/router_suggestions` to know when it's worth chasing.
-- **`deep_dive.py:55`** still pins `claude-opus-4-7` directly. The ADR explicitly leaves that one in place (full-text reasoning, opus earns its keep), but the suggestion log will tell us if that's still true.
-- **Aeon `outputs/` directory still missing** — counter-evidence to the swarm-fund-mvp ADR-093 wire-up from yesterday is unchanged today; today's aeon push is the skill-freshness watchdog, not the outputs contract. 2-week falsifier clock continues to tick toward 2026-05-17.
+- **`skill-freshness` enable** — shipped `enabled: false` on aaronjmars/aeon. Operator-side decision pending; first activation should be a manual `workflow_dispatch` so the initial baseline doesn't fire a wall of WARN/STALE notifications across the fleet.
+- **kb-extractor BLOCKER fix queue** — Black-Scholes fair-value `N(d1)` → `N(d2)` and KL-divergence worked example correction (from `outputs/kb_quality_reviews/2026-05-04.md`). Surface to next `self-improve`.
+- **`canonical_regime_label()` is now covered, but the call sites in `python/main.py` are not** — variant bandit's regime-tagged sub-posteriors are exercised end-to-end in production but not in tests. Possible follow-up.
 
 ## Sources
-- tomscaria/swarm-fund-mvp: ok (100 commits / 5 merged PRs)
-- tomscaria/lore-financial-teaser: ok (13 commits / 1 merged PR)
-- aaronjmars/aeon: ok (1 commit / 1 merged PR)
-- gh api events: not used (commits + PR list sufficient)
-- gh api commits: ok
+
+- tomscaria/swarm-fund-mvp: ok
+- tomscaria/lore-financial-teaser: ok
+- aaronjmars/aeon: ok
+- gh api events: ok
+- gh api commits: ok (since=2026-05-03T21:20:53Z)
 - gh pr list: ok
-- bot-filtered: 99 (data-refresh metrics autocommits on swarm-fund-mvp; author=tomscaria, message="data: refresh site metrics", file=swarm-lab-site/public/metrics.json — 15-minute cron-driven; treated as automation noise per skill-spec spirit even though they don't match the literal *-bot pattern)
+- bot-filtered: 93 (`data: refresh site metrics` × 93, single-file `swarm-lab-site/public/metrics.json` cron pattern matched per 2026-05-03 convention)
 - diff-truncated: 0
