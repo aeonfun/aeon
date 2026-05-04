@@ -1,0 +1,168 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Fork Fleet"
+      },
+      "children": [
+        "heading_date",
+        "sep1",
+        "text_headline",
+        "sep2",
+        "section_fleet",
+        "sep3",
+        "section_candidate_details",
+        "sep4",
+        "section_newskills",
+        "sep5",
+        "section_watch",
+        "sep6",
+        "link_fullreport"
+      ]
+    },
+    "heading_date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-04",
+        "level": "h3"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text_headline": {
+      "type": "Text",
+      "props": {
+        "text": "NEW UPSTREAM CANDIDATE: 0xfreddy/aeon ships skills/macos-apps (weekly Reddit + X digest of best new macOS apps, dedup index, 226-line skill).",
+        "variant": "lead"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_fleet": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_fleet",
+        "text_fleet_status"
+      ]
+    },
+    "heading_fleet": {
+      "type": "Heading",
+      "props": {
+        "text": "Fleet Status",
+        "level": "h3"
+      }
+    },
+    "text_fleet_status": {
+      "type": "Text",
+      "props": {
+        "text": "Fleet: 29 active / 41 total. Mostly just-cloned mirrors with one operator instance (tomscaria) and a handful of active runners; 0xfreddy is the only fork with a clean new skill upstream lacks."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_candidate_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_candidate",
+        "text_candidate_details"
+      ]
+    },
+    "heading_candidate": {
+      "type": "Heading",
+      "props": {
+        "text": "Upstream candidate: 0xfreddy/aeon",
+        "level": "h3"
+      }
+    },
+    "text_candidate_details": {
+      "type": "Text",
+      "props": {
+        "text": "Self-contained skill following aeon conventions (frontmatter, var, sandbox-aware fallback, config + index files). Cherry-pick is purely additive: skills/macos-apps/, memory/macos-apps-config.yml, memory/macos-apps-index.json. No aeon.yml cron change in the pick — schedule decision is yours."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_newskills": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_newskills",
+        "text_newskill_item"
+      ]
+    },
+    "heading_newskills": {
+      "type": "Heading",
+      "props": {
+        "text": "New skills landed this week",
+        "level": "h3"
+      }
+    },
+    "text_newskill_item": {
+      "type": "Text",
+      "props": {
+        "text": "0xfreddy/aeon → skills/macos-apps/SKILL.md"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_watch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_watch",
+        "text_watch"
+      ]
+    },
+    "heading_watch": {
+      "type": "Heading",
+      "props": {
+        "text": "Watch",
+        "level": "h3"
+      }
+    },
+    "text_watch": {
+      "type": "Text",
+      "props": {
+        "text": "yugo-engineer/aeon ships a Python xAI x_search prefetch in scripts/ — parallel approach to PR #156 (ISS-014 day-9). Worth a comparator if #156 stalls."
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "link_fullreport": {
+      "type": "Link",
+      "props": {
+        "label": "Full report: articles/fork-fleet-2026-05-04.md",
+        "href": "articles/fork-fleet-2026-05-04.md"
+      }
+    }
+  }
+}
