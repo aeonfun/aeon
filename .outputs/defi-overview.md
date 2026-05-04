@@ -1,41 +1,38 @@
-*DeFi — 2026-05-03* — Mixed: TVL grinds up to $84.75B, DEX vol −35% (weekend), stables idle, USDS leads.
+*DeFi — 2026-05-04* — Mixed: DEX vol +14% on UniV4/Aero spike, TVL & stables flat.
 
-*TVL:* $84.75B (+0.44% 24h, +0.84% 7d)
+*TVL:* $84.75B (-0.07% 24h, -0.58% 7d)
 
 *Top chains*
-1. Ethereum — $45.7B (+1.2%)
-2. BSC — $5.48B
-3. Solana — $5.43B
+1. Ethereum — $45.5B
+2. BSC — $5.5B
+3. Solana — $5.5B (+7.4% 7d)
 
-*Movers — chains*
-↑ MegaETH +11% ($590M → $660M) — post-launch ramp continues; 7d +566%, narrative-tracker WATCH.
-↓ Provenance −22% ($1.64B → $1.28B) — Figure Markets Exchange drives entire chain TVL drop, no obvious catalyst.
+_no chain mover cleared 5% gate today — top 10 chains all <1% 1d_
 
 *Movers — protocols*
-↑ Spark Savings +35% ($2.21B → $2.99B) — Sky/Spark stack reverse-rally re-fires; durable-unwind narrative confirmed DEAD.
-↓ Obol −17% ($1.60B → $1.33B) — no obvious catalyst.
+↑ xStocks +11% ($367M → $408M) — RWA/tokenized-equities; +4% 7d backs sustained inflow, no obvious specific catalyst
+↔ ↓ Cooler Loans −15% ($215M → $183M) — third alternation in 5 days (−10% 04-30 → +18% 05-03 → −15% today); the pattern is the read, no obvious specific catalyst
 
 *Fees leaders (24h)*
-1. Tether — $16.4M (flat 7d)
-2. Circle USDC — $6.5M (flat 7d)
-3. Canton — $1.9M (−18% 7d, softening)
+1. Tether — $16.4M (flat vs 7d avg)
+2. Circle USDC — $6.6M (+0.7% vs 7d avg)
+3. Canton — $2.2M (+0.4% vs 7d avg)
 
 *Fees beating TVL*
-• NEAR Intents — fees +169% / TVL +1% (7d) — usage scaling without deposit growth
-• PancakeSwap AMM — fees +140% / TVL +0.5% (7d) — V2 pool fee resurgence
+• Uniswap V4 — fees +61% / TVL +4% (7d) — concentrated-liquidity demand outrunning deposits
 
-*DEX vol (24h):* $3.44B (−35% 1d, −12% 7d, weekend on top of trend) — top: PancakeSwap V3 $415M, Uniswap V4 $385M, PancakeSwap Infinity $208M; Kalshi $200M (+7%, hermes-arb context)
+*DEX vol (24h):* $3.92B (+14% 1d, −12% 7d)  top: Uniswap V4 $0.50B (+30%), PancakeSwap V3 $0.42B (+2%), Aerodrome Slipstream $0.40B (+139%)
 
-*Stables:* $319.1B (+0.18% 1d) — USDS +4.4% 1d the only notable single-issuer move (drives Spark-stack inflow)
+*Stables:* $319.8B (−0.03% 1d, +0.47% 7d) — USDS −1.2% on $8.7B reverses yesterday's +4.4% (Sky-stack outflow); USDM −5.8% on $0.54B
 
 *Real yield (sustainable, ≥$10M, filtered)*
-• APT (Amnis, Aptos) — 28.0% apyBase ($18M TVL, mean30d 16.2%)
-• SUSDAT (Saturn, ETH) — 24.3% apyBase ($60M TVL)
-• APYUSD (Pendle, ETH) — 15.9% apyBase ($12M TVL)
+• USDC-CBBTC (Uniswap V3, Base) — 34.4% apyBase ($10M TVL)
+• APT (Amnis, Aptos) — 28.0% apyBase ($18M TVL)
+• USDC-WETH (Uniswap V3, ETH) — 14.8% apyBase ($26M TVL)
 
-*Incentive yield (points / emissions, ≥$25M)*
-• SDCRV (Stake DAO, ETH) — 21.8% apy via CRV+CVX ($28M TVL)
-• USDC-AERO (Aerodrome v1, Base) — 21.8% apy via AERO ($27M TVL)
+*Incentive yield (points/emissions, ≥$25M)*
+• USDC-AERO (Aerodrome v1, Base) — 21.9% apy via AERO ($27M TVL)
+• SDCRV (Stake DAO, ETH) — 21.6% apy via CRV/crvUSD ($28M TVL)
 
-_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | schema-drift /v2/chains c1d/c7d still missing (day 7+; per-chain historical workaround); var: none_
+_sources: tvl=ok dex=ok fees=ok stables=ok yields=ok | var: none_
 

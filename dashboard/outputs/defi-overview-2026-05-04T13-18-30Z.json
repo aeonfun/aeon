@@ -1,0 +1,621 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi — 2026-05-04"
+      },
+      "children": [
+        "text-subtitle",
+        "sep1",
+        "tvl-stat",
+        "sep2",
+        "chains-section",
+        "sep3",
+        "movers-section",
+        "sep4",
+        "fees-leaders-section",
+        "sep5",
+        "fees-beating-section",
+        "sep6",
+        "dex-section",
+        "sep7",
+        "stables-section",
+        "sep8",
+        "real-yield-section",
+        "sep9",
+        "incentive-section",
+        "sep10",
+        "sources-text"
+      ]
+    },
+    "text-subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "Mixed: DEX vol +14% on UniV4/Aero spike, TVL & stables flat.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$84.75B",
+        "delta": "-0.07% 24h, -0.58% 7d",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "chains-heading",
+        "eth-stat",
+        "bsc-stat",
+        "solana-stat",
+        "chains-note"
+      ]
+    },
+    "chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top chains",
+        "level": "h3"
+      }
+    },
+    "eth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Ethereum",
+        "value": "$45.5B"
+      }
+    },
+    "bsc-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BSC",
+        "value": "$5.5B"
+      }
+    },
+    "solana-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Solana",
+        "value": "$5.5B",
+        "delta": "+7.4% 7d",
+        "trend": "up"
+      }
+    },
+    "chains-note": {
+      "type": "Text",
+      "props": {
+        "text": "No chain mover cleared 5% gate today — top 10 chains all <1% 1d",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "movers-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-heading",
+        "xstocks-card",
+        "cooler-card"
+      ]
+    },
+    "movers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — protocols",
+        "level": "h3"
+      }
+    },
+    "xstocks-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "xstocks-name",
+        "xstocks-change-stat",
+        "xstocks-tvl-text",
+        "xstocks-detail"
+      ]
+    },
+    "xstocks-name": {
+      "type": "Heading",
+      "props": {
+        "text": "xStocks",
+        "level": "h4"
+      }
+    },
+    "xstocks-change-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Change",
+        "value": "+11%",
+        "trend": "up"
+      }
+    },
+    "xstocks-tvl-text": {
+      "type": "Text",
+      "props": {
+        "text": "TVL: $367M → $408M"
+      }
+    },
+    "xstocks-detail": {
+      "type": "Text",
+      "props": {
+        "text": "RWA/tokenized-equities; +4% 7d backs sustained inflow, no obvious specific catalyst",
+        "variant": "muted"
+      }
+    },
+    "cooler-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cooler-name",
+        "cooler-change-stat",
+        "cooler-tvl-text",
+        "cooler-detail"
+      ]
+    },
+    "cooler-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Cooler Loans",
+        "level": "h4"
+      }
+    },
+    "cooler-change-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Change",
+        "value": "-15%",
+        "trend": "down"
+      }
+    },
+    "cooler-tvl-text": {
+      "type": "Text",
+      "props": {
+        "text": "TVL: $215M → $183M"
+      }
+    },
+    "cooler-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Third alternation in 5 days (-10% 04-30 → +18% 05-03 → -15% today); the pattern is the read, no obvious specific catalyst",
+        "variant": "muted"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fees-leaders-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-leaders-heading",
+        "fees-table"
+      ]
+    },
+    "fees-leaders-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees (24h)",
+          "vs 7d avg"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.4M",
+            "flat"
+          ],
+          [
+            "Circle USDC",
+            "$6.6M",
+            "+0.7%"
+          ],
+          [
+            "Canton",
+            "$2.2M",
+            "+0.4%"
+          ]
+        ]
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fees-beating-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-beating-heading",
+        "uniswap-v4-card"
+      ]
+    },
+    "fees-beating-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees beating TVL",
+        "level": "h3"
+      }
+    },
+    "uniswap-v4-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "uniswap-v4-name",
+        "uniswap-v4-fees-stat",
+        "uniswap-v4-tvl-stat",
+        "uniswap-v4-detail"
+      ]
+    },
+    "uniswap-v4-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Uniswap V4",
+        "level": "h4"
+      }
+    },
+    "uniswap-v4-fees-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fees (7d)",
+        "value": "+61%",
+        "trend": "up"
+      }
+    },
+    "uniswap-v4-tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL (7d)",
+        "value": "+4%",
+        "trend": "up"
+      }
+    },
+    "uniswap-v4-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Concentrated-liquidity demand outrunning deposits",
+        "variant": "muted"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "dex-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dex-heading",
+        "dex-total-stat",
+        "dex-top-label",
+        "dex-table"
+      ]
+    },
+    "dex-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX volume (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-total-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total volume",
+        "value": "$3.92B",
+        "delta": "+14% 1d, -12% 7d"
+      }
+    },
+    "dex-top-label": {
+      "type": "Text",
+      "props": {
+        "text": "Top DEXs:",
+        "variant": "body"
+      }
+    },
+    "dex-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "Volume (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$0.50B",
+            "+30%"
+          ],
+          [
+            "PancakeSwap V3",
+            "$0.42B",
+            "+2%"
+          ],
+          [
+            "Aerodrome Slipstream",
+            "$0.40B",
+            "+139%"
+          ]
+        ]
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stables-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stables-heading",
+        "stables-total-stat",
+        "usds-card",
+        "usdm-card"
+      ]
+    },
+    "stables-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stables-total-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total market cap",
+        "value": "$319.8B",
+        "delta": "-0.03% 1d, +0.47% 7d"
+      }
+    },
+    "usds-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "usds-name",
+        "usds-stat",
+        "usds-market",
+        "usds-note"
+      ]
+    },
+    "usds-name": {
+      "type": "Text",
+      "props": {
+        "text": "USDS",
+        "variant": "body"
+      }
+    },
+    "usds-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Change",
+        "value": "-1.2%",
+        "trend": "down"
+      }
+    },
+    "usds-market": {
+      "type": "Text",
+      "props": {
+        "text": "Market cap: $8.7B"
+      }
+    },
+    "usds-note": {
+      "type": "Text",
+      "props": {
+        "text": "Reverses yesterday's +4.4% (Sky-stack outflow)",
+        "variant": "muted"
+      }
+    },
+    "usdm-card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "usdm-name",
+        "usdm-stat",
+        "usdm-market"
+      ]
+    },
+    "usdm-name": {
+      "type": "Text",
+      "props": {
+        "text": "USDM",
+        "variant": "body"
+      }
+    },
+    "usdm-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Change",
+        "value": "-5.8%",
+        "trend": "down"
+      }
+    },
+    "usdm-market": {
+      "type": "Text",
+      "props": {
+        "text": "Market cap: $0.54B"
+      }
+    },
+    "sep8": {
+      "type": "Separator",
+      "props": {}
+    },
+    "real-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "real-yield-heading",
+        "real-yield-filter",
+        "real-yield-table"
+      ]
+    },
+    "real-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real yield",
+        "level": "h3"
+      }
+    },
+    "real-yield-filter": {
+      "type": "Text",
+      "props": {
+        "text": "Sustainable, ≥$10M, filtered",
+        "variant": "caption"
+      }
+    },
+    "real-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Pool",
+          "APY",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "USDC-CBBTC (Uniswap V3, Base)",
+            "34.4%",
+            "$10M"
+          ],
+          [
+            "APT (Amnis, Aptos)",
+            "28.0%",
+            "$18M"
+          ],
+          [
+            "USDC-WETH (Uniswap V3, ETH)",
+            "14.8%",
+            "$26M"
+          ]
+        ]
+      }
+    },
+    "sep9": {
+      "type": "Separator",
+      "props": {}
+    },
+    "incentive-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "incentive-heading",
+        "incentive-filter",
+        "incentive-table"
+      ]
+    },
+    "incentive-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive yield",
+        "level": "h3"
+      }
+    },
+    "incentive-filter": {
+      "type": "Text",
+      "props": {
+        "text": "Points/emissions, ≥$25M",
+        "variant": "caption"
+      }
+    },
+    "incentive-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Pool",
+          "APY",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "USDC-AERO (Aerodrome v1, Base)",
+            "21.9% via AERO",
+            "$27M"
+          ],
+          [
+            "SDCRV (Stake DAO, ETH)",
+            "21.6% via CRV/crvUSD",
+            "$28M"
+          ]
+        ]
+      }
+    },
+    "sep10": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: tvl=ok dex=ok fees=ok stables=ok yields=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
