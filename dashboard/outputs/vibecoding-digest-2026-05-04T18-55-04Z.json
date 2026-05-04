@@ -1,0 +1,23 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert_error"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "All r/vibecoding endpoints failed",
+        "message": "curl 403 + WebFetch host-blocked — 12th consecutive run. ISS-002 unchanged. Pause cron until scripts/prefetch-reddit.sh ships."
+      }
+    }
+  }
+}
