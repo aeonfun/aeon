@@ -1,0 +1,202 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink-paper",
+        "text-metadata",
+        "stack-badges",
+        "sep-1",
+        "stack-findings",
+        "sep-2",
+        "stack-links"
+      ]
+    },
+    "storylink-paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Foresight Arena: An On-Chain Benchmark for Evaluating AI Forecasting Agents",
+        "href": "https://arxiv.org/abs/2605.00420",
+        "source": "arxiv"
+      }
+    },
+    "text-metadata": {
+      "type": "Text",
+      "props": {
+        "text": "Nechepurenko & Shuvalov · May 1 2026 · 27pp",
+        "variant": "caption"
+      }
+    },
+    "stack-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-ma",
+        "badge-lg",
+        "badge-qfin"
+      ]
+    },
+    "badge-ma": {
+      "type": "Badge",
+      "props": {
+        "text": "cs.MA"
+      }
+    },
+    "badge-lg": {
+      "type": "Badge",
+      "props": {
+        "text": "cs.LG"
+      }
+    },
+    "badge-qfin": {
+      "type": "Badge",
+      "props": {
+        "text": "q-fin.GN"
+      }
+    },
+    "sep-1": {
+      "type": "Separator"
+    },
+    "stack-findings": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-eval",
+        "text-power",
+        "text-reframes",
+        "text-edges",
+        "text-benchmark",
+        "stack-infra",
+        "stack-code"
+      ]
+    },
+    "text-eval": {
+      "type": "Text",
+      "props": {
+        "text": "50-round live eval of 5 frontier LLMs + random baseline"
+      }
+    },
+    "text-power": {
+      "type": "Text",
+      "props": {
+        "text": "Power-analysis result: ~350 binary predictions (50 rounds × 7 markets) for 80% power at α=0.02, 4x more for α=0.01"
+      }
+    },
+    "text-reframes": {
+      "type": "Text",
+      "props": {
+        "text": "Directly reframes CalibrationGap's 100-trade Apex gate"
+      }
+    },
+    "text-edges": {
+      "type": "Text",
+      "props": {
+        "text": "100 detects only the fattest edges, not sub-strategy-level edges",
+        "variant": "muted"
+      }
+    },
+    "text-benchmark": {
+      "type": "Text",
+      "props": {
+        "text": "Permissionless on-chain Brier benchmark with Solidity commit-reveal + Gnosis CTF resolution"
+      }
+    },
+    "stack-infra": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text-infra-label",
+        "link-infra"
+      ]
+    },
+    "text-infra-label": {
+      "type": "Text",
+      "props": {
+        "text": "Live infra at"
+      }
+    },
+    "link-infra": {
+      "type": "Link",
+      "props": {
+        "label": "foresightarena.xyz",
+        "href": "https://foresightarena.xyz"
+      }
+    },
+    "stack-code": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text-code-label",
+        "link-code"
+      ]
+    },
+    "text-code-label": {
+      "type": "Text",
+      "props": {
+        "text": "Code:"
+      }
+    },
+    "link-code": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/foresight-arena/contracts",
+        "href": "https://github.com/foresight-arena/contracts"
+      }
+    },
+    "sep-2": {
+      "type": "Separator"
+    },
+    "stack-links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "link-read",
+        "link-pdf"
+      ]
+    },
+    "link-read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2605.00420"
+      }
+    },
+    "link-pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2605.00420"
+      }
+    }
+  }
+}
