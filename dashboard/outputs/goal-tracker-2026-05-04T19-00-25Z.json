@@ -1,0 +1,324 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-05-04"
+      },
+      "children": [
+        "summary_section",
+        "sep1",
+        "done_section",
+        "sep2",
+        "blocked_section",
+        "sep3",
+        "on_track_section",
+        "sep4",
+        "sources_section"
+      ]
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary_text",
+        "stats_grid"
+      ]
+    },
+    "summary_text": {
+      "type": "Text",
+      "props": {
+        "text": "14 active goals — 0 at risk, 0 needs attention, 10 on track, 3 blocked, 1 done this run (overall improving)",
+        "variant": "lead"
+      }
+    },
+    "stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_total",
+        "stat_on_track",
+        "stat_blocked"
+      ]
+    },
+    "stat_total": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Active",
+        "value": "14"
+      }
+    },
+    "stat_on_track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "10"
+      }
+    },
+    "stat_blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "3"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "done_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "done_heading",
+        "done_item_1"
+      ]
+    },
+    "done_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DONE",
+        "level": "h3"
+      }
+    },
+    "done_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp — completed 2026-05-03 21:57 UTC (all 5 merged after operator unblocked aeonframework bot email verification; was BLOCKED)"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "blocked_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_heading",
+        "blocked_item_1",
+        "blocked_item_2",
+        "blocked_item_3"
+      ]
+    },
+    "blocked_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED (sorted by carry duration)",
+        "level": "h3"
+      }
+    },
+    "blocked_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocked_1_title",
+        "blocked_1_action"
+      ]
+    },
+    "blocked_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill() — operator-side workflow patch idle 7+ days, gates ISS-013 decay"
+      }
+    },
+    "blocked_1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: operator merges echo-per-dispatched-skill patch into chain-runner.yml",
+        "variant": "caption"
+      }
+    },
+    "blocked_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocked_2_title",
+        "blocked_2_action"
+      ]
+    },
+    "blocked_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep — operator-side carry since 2026-04-25"
+      }
+    },
+    "blocked_2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: operator lands prefetch-reddit.sh + NEYNAR_API_KEY + on-chain-watches.yml in one batch",
+        "variant": "caption"
+      }
+    },
+    "blocked_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocked_3_title",
+        "blocked_3_action"
+      ]
+    },
+    "blocked_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Stalin-tier review / ISS-015 (PR #4) — workflow-scoped PAT carry since 2026-04-27"
+      }
+    },
+    "blocked_3_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: operator issues workflow-scoped PAT so PR #4 carrier can push messages.yml fix",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "on_track_heading",
+        "on_track_items"
+      ]
+    },
+    "on_track_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h3"
+      }
+    },
+    "on_track_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "on_track_1",
+        "on_track_2",
+        "on_track_3",
+        "on_track_4",
+        "on_track_5",
+        "on_track_6",
+        "on_track_7",
+        "on_track_8",
+        "on_track_9",
+        "on_track_10"
+      ]
+    },
+    "on_track_1": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch — 0d idle, day-9 carry, OPEN at author gate (new)"
+      }
+    },
+    "on_track_2": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-017 cron-tick gap watch — 0d idle, post-demote stable (improving)"
+      }
+    },
+    "on_track_3": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch — 0d idle, 6-run evidence (improving)"
+      }
+    },
+    "on_track_4": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments — 0d idle (improving)"
+      }
+    },
+    "on_track_5": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment 7→7.5–8pp — 0d idle (flat)"
+      }
+    },
+    "on_track_6": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp tick-broker falsifier — 0d idle, 13-day clock to 2026-05-17 (new)"
+      }
+    },
+    "on_track_7": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5: hn-digest / polymarket renames) — 0d idle (flat)"
+      }
+    },
+    "on_track_8": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-018 / ISS-019 prompt-bug fixes — 0d idle (new)"
+      }
+    },
+    "on_track_9": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees — 0d idle (improving)"
+      }
+    },
+    "on_track_10": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily → PhD reading list — 0d idle (improving)"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok, git=ok, gh_pr=ok, gh_issue=fail (disabled on tomscaria/aeon), cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
