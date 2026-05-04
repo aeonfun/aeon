@@ -1,0 +1,329 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Unlock Monitor — week of May 4"
+      },
+      "children": [
+        "lead-section",
+        "sep1",
+        "crisis-section",
+        "sep2",
+        "strain-section",
+        "sep3",
+        "digestible-section",
+        "sep4",
+        "trivial-alert",
+        "sep5",
+        "forced-alert",
+        "sep6",
+        "analysis-section",
+        "sep7",
+        "sources-section"
+      ]
+    },
+    "lead-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "lead-text"
+      ]
+    },
+    "lead-text": {
+      "type": "Text",
+      "props": {
+        "text": "Most leveraged: CAPX unlocks Tue at $15.3M (~3-4× daily vol; 9.65% of supply nearly doubles 102.5M circulating float). Market asleep.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "crisis-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crisis-heading",
+        "capx-entry"
+      ]
+    },
+    "crisis-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "CRISIS (>2.4×)",
+        "level": "h2"
+      }
+    },
+    "capx-entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "capx-title",
+        "capx-details"
+      ]
+    },
+    "capx-title": {
+      "type": "Heading",
+      "props": {
+        "text": "CAPX — Tue May 5 — 96.5M tokens (9.65% supply, $15.3M)",
+        "level": "h3"
+      }
+    },
+    "capx-details": {
+      "type": "Text",
+      "props": {
+        "text": "cliff · investor/team-flavor · ~3-4× vol · 30d ATH-37% · → market asleep. First major unlock, near-doubles circulating float on a thin-book AI token. Classic mid-cycle crush setup."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "strain-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "strain-heading",
+        "hype-entry",
+        "sxt-entry"
+      ]
+    },
+    "strain-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "STRAIN (1.0×–2.4×)",
+        "level": "h2"
+      }
+    },
+    "hype-entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hype-title",
+        "hype-details"
+      ]
+    },
+    "hype-title": {
+      "type": "Heading",
+      "props": {
+        "text": "HYPE — Wed May 6 — ~9.9M cliff per whitepaper ($417M, 1.9× vol)",
+        "level": "h3"
+      }
+    },
+    "hype-details": {
+      "type": "Text",
+      "props": {
+        "text": "cliff · core-contributors · 30d +5% · → priced in via discretionary. Hyper Foundation announces actual claim on the 6th — historical claims ~0.18% of circ (~$18M) of the theoretical $417M ceiling. Market trained to discount headline."
+      }
+    },
+    "sxt-entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sxt-title",
+        "sxt-details"
+      ]
+    },
+    "sxt-title": {
+      "type": "Heading",
+      "props": {
+        "text": "SXT — Fri May 8 — 387M tokens (23% total supply / ~27% circ float, $6.5M)",
+        "level": "h3"
+      }
+    },
+    "sxt-details": {
+      "type": "Text",
+      "props": {
+        "text": "cliff · team+investor (yr-1 of 4yr linear, 15% cliff) · 0.72× vol · 30d -9% · → market asleep. Absorption ratio understates; one of Q2's largest single-day float dilutions on a $25M-mcap token."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "digestible-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "digestible-heading",
+        "red-entry",
+        "linea-entry"
+      ]
+    },
+    "digestible-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DIGESTIBLE (0.3×–1.0×)",
+        "level": "h2"
+      }
+    },
+    "red-entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "red-title",
+        "red-details"
+      ]
+    },
+    "red-title": {
+      "type": "Heading",
+      "props": {
+        "text": "RED — Wed May 6 — 40.9M (4.09% supply, $5.46M)",
+        "level": "h3"
+      }
+    },
+    "red-details": {
+      "type": "Text",
+      "props": {
+        "text": "0.95× vol · 30d -29% · → priced in"
+      }
+    },
+    "linea-entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "linea-title",
+        "linea-details"
+      ]
+    },
+    "linea-title": {
+      "type": "Heading",
+      "props": {
+        "text": "LINEA — Sun May 10 — 1.38B (~1.9% supply, $4.84M)",
+        "level": "h3"
+      }
+    },
+    "linea-details": {
+      "type": "Text",
+      "props": {
+        "text": "0.30× vol · ecosystem · linear-flavor · → absorbable"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trivial-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "TRIVIAL (skipped)",
+        "message": "JTO May 7 ($4M, 1.13% supply) · 0.29× vol · 30d +10.7% recovering — noise",
+        "type": "info"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "forced-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "FORCED (context, out of week)",
+        "message": "FTX Preferred Equity Holders class first direct payout May 29 (record date Apr 30 passed). Flag for May-end watch.",
+        "type": "warning"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "analysis-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "analysis-heading",
+        "analysis-text"
+      ]
+    },
+    "analysis-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Supply Read",
+        "level": "h2"
+      }
+    },
+    "analysis-text": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE is the loudest event but most priced in — discretionary-claim mechanism has trained the market to discount the headline. Real asymmetry is CAPX (AI small-cap doubling float into a thin book; mid-cycle crush pattern) and SXT (yr-1 cliff dilutes ~27% of circulating on a $25M-mcap token; absorption-ratio rank understates float impact). Both unhedged into the date. Cliff timing pattern says weakness should appear ~30d prior — neither showed it, which is the asymmetry tell."
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "tokenomist=ok, defillama=fail, cryptorank=ok, dropstab=partial, coingecko=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
