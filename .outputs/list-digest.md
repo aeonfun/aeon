@@ -1,7 +1,14 @@
 ## Summary
 
-Skill exited cleanly as `LIST_DIGEST_NO_CONFIG`. The `list-digest` entry in `aeon.yml:89` has no `var:` field, so there are no X list IDs to fetch. Per spec, no notification was sent.
+**Skill:** `list-digest` — exit mode `LIST_DIGEST_NO_CONFIG`.
 
-- **Files modified:** `memory/logs/2026-05-03.md` — appended the no-config log block.
-- **Status:** `LIST_DIGEST_NO_CONFIG`
-- **Follow-up needed:** if you want this skill to do real work, add `var: "<list-id-1>,<list-id-2>[|topic-filter]"` to the `list-digest` line in `aeon.yml`. List IDs are the numeric IDs in `https://x.com/i/lists/<ID>`. Without a populated `XAI_API_KEY` and/or `.xai-cache/` it will degrade to WebSearch (lower quality) per the skill's Path C.
+**What happened:** The skill's step 1 validation failed — `aeon.yml` line `list-digest: { enabled: true, schedule: "0 17 * * *" }` has no `var:` set, so there are no X list IDs to fetch. Per skill spec, this is a log-only / no-notify exit (same taxonomy as an empty `${var}`).
+
+**Files modified:**
+- `memory/logs/2026-05-04.md` — appended `## list-digest` section with status, reason, and operator follow-up.
+
+**Files NOT created:**
+- No notification sent (per skill rules).
+- No update to `memory/list-digest-seen.txt` (the file does not exist; nothing to dedupe).
+
+**Operator follow-up:** Add `var: "<LIST_ID1>,<LIST_ID2>"` to the `list-digest` entry in `aeon.yml`. List IDs are the numeric IDs in `https://x.com/i/lists/<ID>`. This is already on MEMORY.md's "Operator config sweep" priority list alongside `digest`, `refresh-x`, and `remix-tweets`.
