@@ -1,7 +1,7 @@
 {
-  "hash": "654a0914e8bf7e21735be0351bbf3fd017bf243ea3087ae538b872d556ee3630",
-  "last_notified_at": "2026-05-03T18:05:00Z",
-  "last_run_at": "2026-05-03T18:05:00Z",
+  "hash": "3ecdbaaeb8d9b0b331dc39a5996a3c358fc42dc81a42bba25a06483300640d26",
+  "last_notified_at": "2026-05-04T18:55:50Z",
+  "last_run_at": "2026-05-04T18:55:50Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -18,7 +18,6 @@
       "external-feature",
       "farcaster-digest",
       "fetch-tweets",
-      "fleet-control",
       "fork-contributor-leaderboard",
       "fork-skill-digest",
       "github-releases",
@@ -67,6 +66,7 @@
     "flapping": [],
     "warning": [
       "evening-rollup",
+      "fleet-control",
       "heartbeat"
     ],
     "healthy_count": 22,
@@ -104,20 +104,20 @@
     ]
   },
   "systemic": [
-    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 58 DEGRADED skills (was 59 — heartbeat graduated DEGRADED→WARNING this run at sr=0.62).",
-    "ISS-017 GHA cron-tick gap (5th day; detected_by heartbeat; closure not owned by skill-health). Heartbeat success-rate creep (0.59 → 0.62) and prev-run note 'variance shrinking from silent-skip to delayed-dispatch' both tick toward closure."
+    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 57 DEGRADED skills (was 58 — fleet-control graduated DEGRADED->WARNING this run at sr=0.60). Second graduate after heartbeat 05-02; tail decaying ~1 skill/day.",
+    "ISS-017 GHA cron-tick gap, day 6 since detection. Chain wrappers chain:morning-brief (failed 05-04T07:24Z), chain:evening-rollup (failed 05-03T21:54Z), chain:weekly-grant-update (failed 05-04T09:36Z) all last_status=failed. Detector heartbeat sr 0.62->0.64."
   ],
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "STATE DELTA vs 2026-05-02T18:03:48Z: heartbeat DEGRADED→WARNING (sr 0.59→0.62, no consec failures, last_success 2026-05-03T14:44Z). evening-rollup sr 0.64→0.67 (still WARNING). All other skills classification-stable.",
-    "NOTIFY this run — hash changed AND now-prev_notify ≈45h > 24h cadence gate.",
-    "evening-rollup remains WARNING. ~3 more clean runs to cross 0.8 → HEALTHY.",
-    "Per CLAUDE.md issue-tracker contract, skill-health does not file/resolve issues it did not detect — ISS-001/002/003-012/014/015/017/018/019 unchanged. Repair skills (skill-repair, autoresearch) own closures.",
-    "skill-runs script blocked by sandbox (permission denied — same as 05-02) → SKILL_HEALTH_PARTIAL. Fell back to cron-state + memory/skill-health/*.json + memory/issues/.",
-    "Chain wrappers chain:morning-brief (failed 05-03T08:23Z), chain:evening-rollup, chain:weekly-grant-update remain last_status=failed — operator-side chain-runner.yml fix (9+ days idle, MEMORY OPS ALERT, now operator priority #1).",
+    "STATE DELTA vs 2026-05-03T18:05Z: fleet-control DEGRADED->WARNING (sr 0.60 — strict <0.6 rule, 0.60 falls into WARNING tier). evening-rollup sr 0.67->0.69 (still WARNING). heartbeat sr 0.62->0.64 (still WARNING). All other skills classification-stable.",
+    "NOTIFY this run — hash changed (DEGRADED 58->57) AND now-prev_notify ≈25h crosses 24h cadence gate.",
+    "fleet-control graduation is the second measurable progress on ISS-013 since heartbeat demote 05-02. Pattern: ~1 skill/day naturally decays as 2026-04-26T23:53-58Z failure ages out of success_rate denominator.",
+    "Per CLAUDE.md issue-tracker contract, skill-health does not file/resolve issues it did not detect. No CRITICAL/FLAPPING this run so no filing required; fleet-control moved DEGRADED->WARNING (not HEALTHY), so no resolution candidate. ISS-001/002/003-012/014/015/017/018/019 unchanged. Repair skills (skill-repair, autoresearch) own closures.",
+    "skill-runs script blocked by sandbox (permission denied — same as 05-02, 05-03) → SKILL_HEALTH_PARTIAL. Fell back to cron-state + memory/skill-health/*.json + memory/issues/.",
+    "Chain wrappers chain:morning-brief / chain:evening-rollup / chain:weekly-grant-update remain last_status=failed — operator-side chain-runner.yml fix (10+ days idle, MEMORY OPS ALERT, operator priority #1).",
     "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing), repo-scanner (Sun cron), syndicate-article (chain-dependent), vercel-projects (Sun cron), weekly-shiplog (Mon, fired via chain only).",
-    "Heartbeat decay (sr 0.59→0.62) is the first measurable progress on ISS-017 since detection. If it crosses 0.8 within ~6 clean runs, ISS-017 candidate for closure by heartbeat (the detector skill).",
-    "ISS-013 mass-failure tail decayed by 1: 59→58 DEGRADED. Affected_skills list in ISS-013.md should be updated by skill-repair on next reconciliation."
+    "ISS-013 mass-failure tail decayed by 1: 58->57 DEGRADED. Affected_skills list in ISS-013.md should be updated by skill-repair on next reconciliation (now stale by 2 graduates: heartbeat 05-02, fleet-control 05-04).",
+    "If decay continues at 1/day, ISS-013 tail closes around mid-July 2026. Operator-side chain-runner fix would accelerate by surfacing whether new failures replenish the tail or it runs clean."
   ]
 }

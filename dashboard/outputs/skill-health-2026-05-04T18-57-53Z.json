@@ -1,0 +1,330 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health — 2026-05-04"
+      },
+      "children": [
+        "status_alert",
+        "sep1",
+        "summary_stats",
+        "sep2",
+        "degraded_section",
+        "sep3",
+        "warning_section",
+        "sep4",
+        "nodata_section",
+        "sep5",
+        "healthy_stat",
+        "sep6",
+        "delta_section",
+        "sep7",
+        "issues_stat"
+      ]
+    },
+    "status_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "System Status",
+        "message": "DEGRADED(57) — 57 skills affected by systemic issue ISS-013 zero-token burst",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "summary_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_degraded",
+        "stat_warning",
+        "stat_nodata",
+        "stat_healthy"
+      ]
+    },
+    "stat_degraded": {
+      "type": "Stat",
+      "props": {
+        "label": "Degraded/Flapping",
+        "value": "57"
+      }
+    },
+    "stat_warning": {
+      "type": "Stat",
+      "props": {
+        "label": "Warning",
+        "value": "3"
+      }
+    },
+    "stat_nodata": {
+      "type": "Stat",
+      "props": {
+        "label": "No Data",
+        "value": "6"
+      }
+    },
+    "stat_healthy": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy",
+        "value": "22"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "degraded_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "degraded_label",
+        "degraded_info"
+      ]
+    },
+    "degraded_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded / Flapping (57)",
+        "level": "h3"
+      }
+    },
+    "degraded_info": {
+      "type": "Text",
+      "props": {
+        "text": "See ISS-013; all consec_failures=0, decay-only. Tail: 58→57."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "warning_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "warning_label",
+        "warning_items"
+      ]
+    },
+    "warning_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Warning (3)",
+        "level": "h3"
+      }
+    },
+    "warning_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "warning_1",
+        "warning_2",
+        "warning_3"
+      ]
+    },
+    "warning_1": {
+      "type": "Text",
+      "props": {
+        "text": "evening-rollup sr=0.69"
+      }
+    },
+    "warning_2": {
+      "type": "Text",
+      "props": {
+        "text": "fleet-control sr=0.60"
+      }
+    },
+    "warning_3": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat sr=0.64"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "nodata_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "nodata_label",
+        "nodata_reason",
+        "nodata_items"
+      ]
+    },
+    "nodata_label": {
+      "type": "Heading",
+      "props": {
+        "text": "No Data (6)",
+        "level": "h3"
+      }
+    },
+    "nodata_reason": {
+      "type": "Text",
+      "props": {
+        "text": "DISPATCH-SKILL (chain-runner 10+ days idle)",
+        "variant": "muted"
+      }
+    },
+    "nodata_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "nodata_1",
+        "nodata_2",
+        "nodata_3",
+        "nodata_4",
+        "nodata_5",
+        "nodata_6"
+      ]
+    },
+    "nodata_1": {
+      "type": "Badge",
+      "props": {
+        "text": "hacker-news-digest",
+        "variant": "outline"
+      }
+    },
+    "nodata_2": {
+      "type": "Badge",
+      "props": {
+        "text": "morning-brief",
+        "variant": "outline"
+      }
+    },
+    "nodata_3": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-scanner",
+        "variant": "outline"
+      }
+    },
+    "nodata_4": {
+      "type": "Badge",
+      "props": {
+        "text": "syndicate-article",
+        "variant": "outline"
+      }
+    },
+    "nodata_5": {
+      "type": "Badge",
+      "props": {
+        "text": "vercel-projects",
+        "variant": "outline"
+      }
+    },
+    "nodata_6": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-shiplog",
+        "variant": "outline"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "healthy_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy Skills",
+        "value": "22"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "delta_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "delta_label",
+        "delta_items"
+      ]
+    },
+    "delta_label": {
+      "type": "Heading",
+      "props": {
+        "text": "State Delta vs 05-03",
+        "level": "h3"
+      }
+    },
+    "delta_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "delta_1",
+        "delta_2",
+        "delta_3",
+        "delta_4"
+      ]
+    },
+    "delta_1": {
+      "type": "Text",
+      "props": {
+        "text": "fleet-control DEGRADED→WARNING (sr→0.60)"
+      }
+    },
+    "delta_2": {
+      "type": "Text",
+      "props": {
+        "text": "evening-rollup 0.67→0.69"
+      }
+    },
+    "delta_3": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat 0.62→0.64"
+      }
+    },
+    "delta_4": {
+      "type": "Text",
+      "props": {
+        "text": "Second ISS-013 graduate after heartbeat 05-02; tail decaying ~1/day"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "16"
+      }
+    }
+  }
+}

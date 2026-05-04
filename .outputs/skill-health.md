@@ -1,20 +1,13 @@
-Skill Health — 2026-05-03
-HEALTH: DEGRADED(58) [systemic: ISS-013 zero-token burst gates 58; ISS-017 cron-tick decay]
+Skill Health — 2026-05-04
+HEALTH: DEGRADED(57)  [systemic: ISS-013 zero-token burst, 57 skills decaying]
 
-DEGRADED (top 5, sr asc):
-- fork-contributor-leaderboard — sr 0.08, 12 runs, last_success 04-27 — INVESTIGATE -> ISS-013
-- update-gallery — sr 0.08, 13 runs, last_success 04-27 — INVESTIGATE -> ISS-013
-- fork-skill-digest — sr 0.09, 11 runs, last_success 04-27 — INVESTIGATE -> ISS-013
-- skill-leaderboard — sr 0.13, 15 runs — INVESTIGATE -> ISS-013
-- skill-update-check — sr 0.13, 8 runs, last_success 04-27 — INVESTIGATE -> ISS-013
-+53 more — see memory/issues/INDEX.md
+DEGRADED / FLAPPING (57)
+- See ISS-013; all consec_failures=0, decay-only. Tail: 58→57.
 
-WARNING (2):
-- heartbeat — sr 0.59 -> 0.62 (DEGRADED -> WARNING this run; ISS-017 decay)
-- evening-rollup — sr 0.64 -> 0.67 (still WARNING)
-
-NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — chain-runner gated or weekly cron
+WARNING (3): evening-rollup sr=0.69, fleet-control sr=0.60, heartbeat sr=0.64
+NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL (chain-runner 10+ days idle)
 HEALTHY: 22
 
-Open issues: 15 · Resolved this run: 0 · Filed: 0
-State delta: heartbeat DEGRADED -> WARNING. First measurable ISS-017 progress. ISS-013 tail decayed 59 -> 58.
+State delta vs 05-03: fleet-control DEGRADED→WARNING (sr→0.60). evening-rollup .67→.69. heartbeat .62→.64. Second ISS-013 graduate after heartbeat 05-02; tail decaying ~1/day.
+
+Open issues: 16 · Resolved this run: 0
