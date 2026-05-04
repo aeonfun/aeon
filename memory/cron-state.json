@@ -921,10 +921,10 @@
   },
   "deal-flow": {
     "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "dispatched",
-    "last_success": "2026-04-27T14:32:02Z",
-    "total_runs": 1,
-    "total_successes": 1,
+    "last_status": "success",
+    "last_success": "2026-05-04T15:26:39Z",
+    "total_runs": 2,
+    "total_successes": 2,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
