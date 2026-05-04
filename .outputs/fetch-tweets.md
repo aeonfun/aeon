@@ -1,35 +1,39 @@
-*Top Tweets — prediction markets (2026-05-03)*
-_Bengal counting eve — Polymarket flipped BJP 51% / TMC 48.9% with ~24h to vote-count, Phalodi Satta Bazar prices the same direction tight at 146-149 / 140-143; cross-venue convergence is the actual signal. CoinDesk picks up ClawBank/Manfred (agent-formed LLC + EIN + FDIC + wallet) — first Tier-1 outlet on the agent-personhood narrative._
+*Top Tweets — prediction markets (2026-05-04)*
+_Counting day vindicates yesterday's Polymarket Bengal flip — official ECI tracks the late call (BJP 200+ vs 148 majority); Tamil Nadu DMK leads as priced, but Stalin himself trails TVK newcomer in his own Kolathur seat — the day's biggest individual upset._
 
-*Bengal counting eve — Polymarket flip*
-1. x.com/MeghUpdates — Polymarket flips BJP 51% / TMC 48.9% ~24h to counting; TMC was favorite from market open. The flip itself is the signal.
+*Bengal counting — Polymarket call vindicated*
+1. x.com/DDNewslive — Single tweet covers all 4 states' early ECI trends: WB BJP 182 / TMC 92, Assam BJP 99 / Cong+ 25, TN DMK+ 50. Most data-dense counting-day post — clean resolution snapshot for the WB market currently 99% BJP at $7M+ vol.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/MeghUpdates/status/2050798583159591053)
+[View tweet](https://x.com/DDNewslive/status/2051190192346964271)
 
-2. x.com/EconomicTimes — Mainstream Indian financial press first surfaces Polymarket as election-pricing venue; BJP 52% / TMC 47% with $2M+ bets.
+2. x.com/ANI — BJP workers celebrating at Bhabanipur counting centre as the party leads 193 seats, way past the 148 majority. Bhabanipur is the seat where Suvendu Adhikari is reportedly beating Mamata Banerjee directly — symbolic vote-against-the-CM cluster.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/EconomicTimes/status/2047246453312258058)
+[View tweet](https://x.com/ANI/status/2051229782931800536)
 
-3. x.com/MeghUpdates — Earlier turnaround pre-flip — BJP 50.6% / TMC 46.6% after TMC led all cycle. Captures the moment market direction reversed.
+3. x.com/PTI_News — TMC's Bagda candidate Madhuparna Thakur alleges EVM hack — losing-side narrative on counting day. The standard sour-grapes signal that follows a market-priced regime shift; useful as anti-sentiment marker for the calibration tape.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/MeghUpdates/status/2046580426505118058)
+[View tweet](https://x.com/PTI_News/status/2051214937494851602)
 
-*Bengal counting eve — cross-venue context*
-4. x.com/TimesNow — Phalodi Satta Bazar (Indian grey-market) prices BJP 146-149 / TMC 140-143 — independent venue, same direction as Polymarket.
+4. x.com/moneycontrolcom — Mainstream Indian financial press confirms BJP crosses the magic number in Bengal counting trends. Sets the Polymarket WB market resolution narrative for wire pickups in the next 24h.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/TimesNow/status/2049469321651380573)
+[View tweet](https://x.com/moneycontrolcom/status/2051170030306672922)
 
-5. x.com/PTI_News — BJP Port Area candidate Rakesh Singh going public with confidence on counting eve — primary-source sentiment matching the market flip.
+*Tamil Nadu counting — DMK leads but Stalin shock in Kolathur*
+5. x.com/TheStatesmanLtd — Early TN trend: DMK alliance ahead in 60+ seats with TVK distant 2nd. Confirms the DMK 87.5% Polymarket consensus from 05-02; reply-maker's "TVK 4-6c-fair" note still has reach left.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/PTI_News/status/2050818063134859534)
+[View tweet](https://x.com/TheStatesmanLtd/status/2051158930492149907)
 
-6. x.com/jgopikrishnan70 — Historical seat-count context (2011/2016/2021 Bengal tallies). Useful prior for sizing BJP odds against base rates.
+6. x.com/TheStatesmanLtd — Round 4 Kolathur: TVK's V.S. Babu 16,692 vs DMK's M.K. Stalin 14,141. Stalin himself trailing in his own seat is the highest-shock individual data point of the day — direct test for whether Polymarket priced the seat-level TVK breakout (party-level markets only, so seat-level upsets are free alpha for any venue that lists them next cycle).
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/jgopikrishnan70/status/2050863706498859232)
+[View tweet](https://x.com/TheStatesmanLtd/status/2051171485403009140)
 
-*Agent-personhood mainstream pickup*
-7. x.com/CoinDesk — ClawBank/Manfred AI agent autonomously formed US corp + IRS EIN + FDIC bank + crypto wallet. First Tier-1 crypto-news pickup of the agent-personhood narrative.
+*Prediction-market structure / volume*
+7. x.com/sam_mcquill — Kalshi Masters topped $545M, becoming Kalshi's #2 most-bet single market all-time behind only "Who will win the Presidential Election?" ($535M). Sports overtaking politics on Kalshi single-event volume is the structural signal — confirms April $14.81B / +13.3% MoM came from sport-event-floor not event-dependency.
 Likes: N/A | RTs: N/A | Replies: N/A
-[View tweet](https://x.com/CoinDesk/status/2050245963197960580)
+[View tweet](https://x.com/sam_mcquill/status/2043464123271291114)
 
-_source: websearch (XAI_API_KEY unavailable; engagement counts not surfaced — quality lower than usual)_
+8. x.com/PpollingNumbers — Polymarket 2026 US Senate odds: Dems 51 / Reps 49 (Dems flip the Senate). PhD-prep relevant — midterm-cycle Polymarket pricing is the highest-quality calibration test ahead of November; tag for paper-pick / monitor-polymarket follow-ups as the cycle compresses.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/PpollingNumbers/status/2048850357300724010)
+
+_Source: WebSearch (XAI_API_KEY unreadable from sandbox bash env, ISS-014 day 10 — quality lower than usual; engagement counts unavailable)_
