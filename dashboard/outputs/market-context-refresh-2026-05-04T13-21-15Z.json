@@ -1,0 +1,232 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "market context — 2026-05-04"
+      },
+      "children": [
+        "take_section",
+        "sep1",
+        "prices_section",
+        "sep2",
+        "metrics_section",
+        "sep3",
+        "narrative_section",
+        "sep4",
+        "market_section"
+      ]
+    },
+    "take_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "take_label",
+        "take_badge"
+      ]
+    },
+    "take_label": {
+      "type": "Text",
+      "props": {
+        "text": "take:",
+        "variant": "body"
+      }
+    },
+    "take_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "chop (conviction medium)",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "prices_section": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "btc_stat",
+        "eth_stat",
+        "fg_stat"
+      ]
+    },
+    "btc_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$78,682",
+        "delta": "-0.04%",
+        "trend": "down"
+      }
+    },
+    "eth_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,330",
+        "delta": "+0.17%",
+        "trend": "up"
+      }
+    },
+    "fg_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "40"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics_section": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "breadth_item",
+        "dex_stat"
+      ]
+    },
+    "breadth_item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "breadth_label",
+        "breadth_progress"
+      ]
+    },
+    "breadth_label": {
+      "type": "Text",
+      "props": {
+        "text": "breadth",
+        "variant": "body"
+      }
+    },
+    "breadth_progress": {
+      "type": "Progress",
+      "props": {
+        "value": 9,
+        "max": 20,
+        "label": "9/20"
+      }
+    },
+    "dex_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX vol",
+        "value": "$3.92B",
+        "delta": "+14% 1d, -18.6% 7d"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "narrative_header",
+        "narrative_items"
+      ]
+    },
+    "narrative_header": {
+      "type": "Text",
+      "props": {
+        "text": "top narrative: privacy coins (rising)",
+        "variant": "lead"
+      }
+    },
+    "narrative_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_stat",
+        "dash_stat",
+        "firo_badge"
+      ]
+    },
+    "zec_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ZEC (7d)",
+        "value": "+15.4%",
+        "trend": "up"
+      }
+    },
+    "dash_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "DASH",
+        "value": "+25.8%",
+        "trend": "up"
+      }
+    },
+    "firo_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "FIRO trending",
+        "variant": "secondary"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market_label",
+        "market_stat"
+      ]
+    },
+    "market_label": {
+      "type": "Text",
+      "props": {
+        "text": "hot market:",
+        "variant": "body"
+      }
+    },
+    "market_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Strait of Hormuz normal by end of May",
+        "value": "YES 21.5%"
+      }
+    }
+  }
+}

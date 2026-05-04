@@ -1,7 +1,7 @@
-market context — 2026-05-03
+market context — 2026-05-04
 
-take: rotation (conviction medium)
-BTC $78,604 (+0.35%) / ETH $2,322 (+0.63%) · F&G 47 (Neutral, was 39 Fear)
-breadth 18/20 · TVL $84.75B (+0.84% 7d)
-top narrative: AI compute infra (rising) — AKT +31%, Gensyn +37%, TAO +4%
-hot market: sports-dominated; Tamil Nadu elections resolve tomorrow (DMK 87.5%)
+take: chop (conviction medium)
+BTC $78,682 (-0.04%) / ETH $2,330 (+0.17%) · F&G 40 (Fear)
+breadth 9/20 · DEX vol $3.92B (+14% 1d, -18.6% 7d)
+top narrative: privacy coins (rising) — ZEC +15.4% 7d, DASH +25.8%, FIRO trending
+hot market: "Strait of Hormuz normal by end of May" YES 21.5%

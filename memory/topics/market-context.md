@@ -1,72 +1,76 @@
-# Market Context (as of 2026-05-03)
+# Market Context (as of 2026-05-04)
 
-> **Take:** rotation — BTC +0.35% flat while breadth surged 9/20 → 18/20 with privacy coins (ZEC +7.0%) and AI compute (AKT +30.9%, Gensyn +36.5%) driving the divergence; BTC dominance -0.02 pp. Conviction: medium.
+> **Take:** chop — BTC flat (-0.035% 24h) as yesterday's 18/20 breadth rally stalled to 9/20; F&G fell 7 pts back to Fear (40) in one session. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $78,604 (+0.35% 24h, +0.63% 7d) · dominance 58.45% (-0.02 pp 24h)
-- ETH $2,322.43 (+0.63% 24h, -0.59% 7d) · ETH/BTC 0.02954
-- SOL $84.01 (+0.10% 24h, -2.42% 7d)
-- Total mcap $2.69T (+0.35% 24h) · DEX vol $3.44B 24h
-- Breadth: 18/20 green 24h · 10/20 green 7d
-- Fear & Greed: 47 (Neutral) — yesterday 39 (Fear)
+- BTC $78,682 (-0.04% 24h, +1.35% 7d) · dominance 58.46% (+0.01 pp 24h)
+- ETH $2,329.92 (+0.17% 24h, +0.72% 7d) · ETH/BTC 0.02961
+- SOL $83.76 (-0.43% 24h, -1.59% 7d)
+- Total mcap $2.70T (+0.32% 24h) · DEX vol $3.92B 24h
+- Breadth: 9/20 green 24h · 9/20 green 7d
+- Fear & Greed: 40 (Fear) — yesterday 47 (Neutral)
 
 ## What Changed Since Last Refresh
-- Breadth doubled: 9/20 → 18/20 — Big Tech earnings above expectations pulled equities to ATH; alt rotation broadened across ZEC (+7%), AKT (+31%), Gensyn (+37%) while BTC barely moved
-- F&G crossed Fear → Neutral (+8 pts to 47): first Neutral reading in multiple sessions; sentiment catching up to the spot recovery, not yet a new bullish signal
-- DEX vol -35%: $5.32B → $3.44B — weekend lull on top of the multi-session DeFi downtrend (04-30 $6.32B → 05-01 $5.55B → 05-02 $5.32B → 05-03 $3.44B); recovery remains ETF/spot-led, DeFi a structural laggard
+- Breadth halved: 18/20 → 9/20 — the 05-03 alt rotation (AKT +31%, Gensyn +37%, ZEC +7%) could not sustain; only ZEC, LINK, BNB, DOGE, and TRX held green 24h today
+- F&G retreated 7 pts: 47 (Neutral) → 40 (Fear) — single-session reversal; the brief Neutral reading on 05-03 was not a trend inflection, regime is back in caution territory
+- DEX vol partial rebound: $3.44B → $3.92B (+14%) — one-day bounce inside a deteriorating 7d trend (-18.6% week-over-week per DeFiLlama)
 
 ## Active Narratives
-- **AI compute infra (AKT, Gensyn, TAO)** — phase: rising. Evidence: AKT +30.9% 24h, Gensyn (AI) +36.5% 24h, TAO +4.2% 24h — 3 AI-adjacent tokens in CG trending simultaneously on 2nd+ consecutive day; AKT picked today (05-03) on BME deflationary upgrade + 1,000+ active leases + Blackwell integration.
-- **Privacy coins (ZEC, XMR)** — phase: rising. Evidence: ZEC +7.0% 24h, +13.7% 7d, rank 18, 2nd straight day in top-trending; XMR +2.1% 24h; both outperforming BTC on a rotation day; two distinct privacy tokens moving together without a shared news catalyst.
-- **Bitcoin staking / BTC-L2 (Babylon/BABY)** — phase: emerging. Evidence: BABY +27.9% 24h, rank 329, first appearance in CG trending; Bitcoin chain TVL $5.25B holding as #4 chain. Single token, no sector breadth yet.
-- **BTC ETF institutional bid** — phase: rising. Evidence: May ETF inflows $600M+ in first 2 trading days; CoinShares 4-week inflow streak at $1.2B/week; BTC holding $78.6k despite 7d underperformance vs alts.
+- **Privacy coins (ZEC, XMR, DASH, FIRO)** — phase: rising. Evidence: ZEC +1.9% 24h / +15.4% 7d at rank 18; DASH +25.8% today in CG trending; FIRO +3.4% trending; Masternodes category +11.9% 24h; 3 distinct privacy tokens trending simultaneously for 2nd consecutive day.
+- **AI compute infra (SKYAI, LAB, TAO)** — phase: rising. Evidence: SKYAI +101.8% 24h (rank 84, Binance Alpha Spotlight entry today); LAB +39.9% 24h (new entry); TAO 4th consecutive trending day at $286.42 (-0.57% 24h); 3 AI tokens trending simultaneously. AKT leadership rotated out — sector widening to new entrants.
+- **BTC ETF institutional bid** — phase: rising. Evidence: $629M net inflow May 3 (CoinDesk); April was best ETF inflow month since Oct 2025; ETF inflows positive while funding rates are not confirming (Investing.com) — healthy non-levered structure, not euphoric.
+- **Meme / speculative froth (TST, BILL, LUNC, ASTEROID)** — phase: emerging. Evidence: TST +72.2% 24h (rank 800 four.meme meme), BILL +44.8% (rank 361); Four.meme BNB Memes category +7.4% 24h; 4 speculative tokens in CG trending with no fundamental anchor — consistent with chop-regime retail activity.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $21.09B (-3.55% 7d)
-- SSV Network: $17.10B (-0.58% 7d)
-- Aave V3: $14.54B (+4.98% 7d)
-- WBTC: $9.10B (+0.47% 7d)
-- Binance Staked ETH: $8.58B (-0.20% 7d)
+- Lido: $21.22B (-2.29% 7d)
+- SSV Network: $17.23B (+0.87% 7d)
+- Aave V3: $14.59B (+5.15% 7d)
+- WBTC: $9.10B (+1.11% 7d)
+- Binance Staked ETH: $8.63B (+0.83% 7d)
 
-## Chain Flow (top 6 by TVL, 7d delta n/a — endpoint not returning deltas)
-- Ethereum: $45.95B
-- BSC: $5.49B
-- Solana: $5.43B
-- Bitcoin: $5.25B
-- Tron: $5.13B
-- Base: $4.53B (replaces Hyperliquid L1 $1.51B vs prior snapshot)
+*Notable: EigenCloud $7.82B (-13.69% 7d) — largest TVL drop in top protocols; restaking narrative under pressure.*
+
+## Chain Flow (top 6 by TVL, vs prior snapshot)
+- Ethereum: $45.51B (-$440M vs 05-03)
+- BSC: $5.51B (+$20M)
+- Solana: $5.45B (+$20M)
+- Bitcoin: $5.27B (+$20M)
+- Tron: $5.18B (+$50M)
+- Base: $4.55B (+$20M)
 
 ## Stablecoins
-Total: ~$289.6B (flat vs ~$289B prior). USDT $189.51B · USDC $78.26B · USDS $8.79B (+$380M vs $8.41B prior — continuing expansion) · DAI $4.61B · USD1 $4.53B · combined share of mcap ~10.8%. USDS expansion (+$380M) is the only live stablecoin regime signal; USDC near-flat after prior-week flip back to growth.
+Total: ~$285.4B (prior ~$289.6B, -$4.2B — USDC -$113M, USDS -$123M contraction). USDT $189.5B · USDC $78.1B · USDS $8.7B · DAI $4.6B · USD1 $4.5B · combined share of mcap ~10.6%. USD1 (World Liberty Financial) at $4.5B is now 5th-largest stablecoin — politically sensitive, watch for Polymarket narrative.
 
 ## Trending (CoinGecko)
-- AKT (Akash Network) — +30.93% 24h; rank 182; AI distributed compute narrative
-- Gensyn (AI) — +36.48% 24h; rank 472; ML training compute, first appearance
-- BABY (Babylon) — +27.87% 24h; rank 329; Bitcoin staking/L2, first appearance
-- ZEC (Zcash) — +7.97% 24h; rank 18; privacy narrative, 2nd consecutive day
-- LUNC (Terra Luna Classic) — +7.85% 24h; rank 109; speculative, no identifiable catalyst
-- KAS (Kaspa) — +4.01% 24h; rank 74; PoW momentum
-- TAO (Bittensor) — +4.23% 24h; rank 36; AI subnet, 3rd consecutive day
+- SKYAI — +101.8% 24h; rank 84; AI compute, Binance Alpha Spotlight entry
+- TST (Test) — +72.2% 24h; rank 800; four.meme BNB meme, no catalyst
+- BILL (Billions Network) — +44.8% 24h; rank 361; speculative
+- LAB — +39.9% 24h; rank 251; AI narrative, new entry
+- DASH — +25.8% 24h; rank 90; privacy/masternode, Masternodes category +11.9%
+- LUNC (Terra Luna Classic) — +11.2% 24h; rank 102; speculative
+- MEGA (MegaETH) — +2.2% 24h; rank 234; L2 infrastructure
+- TAO (Bittensor) — -0.57% 24h; rank 36; AI subnet, 4th consecutive trending day (cooling)
 
 ## Prediction Markets (Polymarket, top by 24h vol, filtered <3%/>97%)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| AC Milan win vs Sassuolo (May 3) | 8.5% | $3.00m | $0.03m |
-| Man Utd win vs Liverpool (May 3) | 39.5% | $2.50m | $1.09m |
-| Liverpool win vs Man Utd (May 3) | 34.5% | $2.33m | $0.99m |
-| Iranian Regime Falls by May 31 | 3.1% | $1.21m | $1.12m |
-| Lille win vs Le Havre (May 3) | 61.5% | $0.91m | $0.05m |
+| Chelsea FC win (May 4) | 66.5% | $3.63m | $0.62m |
+| Strait of Hormuz normal by May 15 | 5.5% | $1.65m | $0.40m |
+| Strait of Hormuz normal by end of May | 21.5% | $1.23m | $0.33m |
+| Detroit Pistons win 2026 NBA Finals | 5.5% | $1.19m | $0.35m |
 
-*Signal: Today's high-vol Polymarket is sports-dominated; no macro-relevant binary with meaningful signal above the 3% floor. Iranian Regime Falls at 3.1% is near-settled (low signal). Key CalibrationGap-relevant event tomorrow: Tamil Nadu Legislative Assembly results (May 4) — DMK 87.5% YES, TVK 6.95c from prior monitoring. Hormuz-June-30 NO position (entered 05-02 at 54.5c) not in today's top-10 vol list — position holding, no new catalyst.*
+*Filtered out: QatarEnergy LNG 99.95% YES ($9.5m vol — near-settled), BTC $150k by June 30 1.35% YES ($5.8m vol — below floor), Eric Trump 2028 0.55% YES, US anti-cartel op 99.95% YES, Iranian regime fall 2.85% YES, Croatia FIFA 1.05% YES.*
+
+*Hormuz context: "end of May" YES 21.5% (NO 78.5%). Prior Hormuz position from MEMORY was June-30 market entered at NO 54.5¢ — distinct from these May-expiry markets. May-15 YES 5.5% is extremely low-probability signal, consistent with the no-movement-by-May-31 thesis. CalibrationGap edge: NO on the May-end market at 78.5% aligns with the 12%-fair-YES estimate from the 05-02 article.*
 
 ## Macro Catalysts (next 48h)
-- **Tamil Nadu Legislative Assembly (May 4, tomorrow)** — resolution morning; DMK 87.5% YES per prior monitoring; TVK 6.95c. Re-run polymarket-comments + reply-maker on resolution morning per queued T-0 task.
-- **CLARITY Act regulatory watch** — passage would clarify spot/security delineation for altcoin ETF approvals; active market catalyst if voted this week.
-- **Powell→Warsh Fed transition** — Senate vote week of May 11; dovish Warsh guidance leak = BTC bullish catalyst; watch for positioning ahead of Senate hearing.
+- **CLARITY Act Senate markup (May 2026)** — Lummis confirmed markup this month; passage delineates spot/security status, directly unlocks altcoin ETF approvals. Binary: pass = altcoin-long catalyst; delay = noise.
+- **Powell→Warsh Fed transition (May 15)** — 11 days out. Warsh "2022 inflation = biggest policy mistake in four decades" on record. ETF inflow structure healthy but underpowered for explosive move; dovish guidance leak pre-May 15 = BTC long catalyst. Prior analysis: J.P. Morgan reads as faster cuts.
+- **Tamil Nadu Legislative Assembly results (May 4, today)** — DMK 87.5% YES per prior monitoring; resolution morning. Run polymarket-comments + reply-maker on T-0.
 
 ## Implications for Downstream Skills
-- **token-pick:** AKT picked 05-03 (AI compute rising); ZEC/XMR privacy rising on 2nd day — watch for 3rd-day confirmation and sector breadth expansion (Render, GPU.net joining) before adding exposure. BABY emerging — no entry without 2+ BTC-L2 tokens in top trending. DOGE ($0.1086, +9.78% 7d from 04-29 entry at $0.107) now +1.8%; no new catalyst to extend — hold/monitor. UB (05-02 pick, ATH-day entry) — watch for round-trip on perp-listing profit-taking.
-- **narrative-tracker:** AI compute rising → breadth expanding (AKT+Gensyn+TAO simultaneously). Rising→peak transition would require 4+ AI tokens in trending with a large-cap AI leader (TAO $287, rank 36) making new highs. Privacy coins ZEC/XMR 2nd day — monitor for 3rd day or sector reversion.
+- **token-pick:** Chop regime — favor continuation in established risers (ZEC/DASH privacy continuation; SKYAI if it has a second day). Avoid fresh alt longs on 9/20 breadth; no new AI compute entry until AKT-style leader re-emerges or TAO reclaims momentum. DOGE +12% 7d from 04-29 entry — hold, no new catalyst. AKT (05-03 pick) — watch for continuation or mean-reversion given today's cooling.
+- **narrative-tracker:** Privacy coins on 3rd-consecutive trending cluster (ZEC/XMR/DASH/FIRO simultaneously) — monitor for emerging→rising confirmation with a large-cap anchor (XMR rank 17, ZEC rank 18 already qualify). AI compute: SKYAI burst suggests Binance Alpha Spotlight is the next attention-driver; monitor for 2nd-day confirmation.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
