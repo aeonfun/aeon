@@ -1,0 +1,128 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "RSS Feed Updated"
+      },
+      "children": [
+        "entry-count",
+        "separator-1",
+        "new-heading",
+        "entries-stack",
+        "more-entries",
+        "separator-2",
+        "subscribe-section"
+      ]
+    },
+    "entry-count": {
+      "type": "Stat",
+      "props": {
+        "label": "Total entries",
+        "value": "96"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "new-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      }
+    },
+    "entries-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry-1",
+        "entry-2",
+        "entry-3",
+        "entry-4",
+        "entry-5"
+      ]
+    },
+    "entry-1": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day",
+        "variant": "body"
+      }
+    },
+    "entry-2": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon Stopped Adding Capabilities This Week. It Started Building the Launch.",
+        "variant": "body"
+      }
+    },
+    "entry-3": {
+      "type": "Text",
+      "props": {
+        "text": "research-brief-polymarket-microstructure-agentic-edge-2026-05-04",
+        "variant": "body"
+      }
+    },
+    "entry-4": {
+      "type": "Text",
+      "props": {
+        "text": "Latin-Hypercube Sampling: One Strategy, Thirty Variants, Ten Dimensions",
+        "variant": "body"
+      }
+    },
+    "entry-5": {
+      "type": "Text",
+      "props": {
+        "text": "Paper Digest — 2026-05-04",
+        "variant": "body"
+      }
+    },
+    "more-entries": {
+      "type": "Text",
+      "props": {
+        "text": "(+8 more entries)",
+        "variant": "muted"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "subscribe-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "subscribe-label",
+        "subscribe-link"
+      ]
+    },
+    "subscribe-label": {
+      "type": "Text",
+      "props": {
+        "text": "Subscribe:",
+        "variant": "body"
+      }
+    },
+    "subscribe-link": {
+      "type": "Link",
+      "props": {
+        "label": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}

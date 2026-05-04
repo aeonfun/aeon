@@ -1,11 +1,11 @@
-*RSS feed updated* — 83 entries
+*RSS feed updated* — 96 entries
 
 New:
-- An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't.
-- CORAL: four agents, one notebook, 24% off the kernel
-- Changelog — Week of 2026-05-02
-- Changelog — Week of 2026-05-03
-- Code Health Report — 2026-05-02
-(+16 more)
+- Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day
+- Aeon Stopped Adding Capabilities This Week. It Started Building the Launch.
+- research-brief-polymarket-microstructure-agentic-edge-2026-05-04
+- Latin-Hypercube Sampling: One Strategy, Thirty Variants, Ten Dimensions
+- Paper Digest — 2026-05-04
+(+8 more)
 
 Subscribe: https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml
