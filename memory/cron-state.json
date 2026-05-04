@@ -631,8 +631,8 @@
   },
   "chain:evening-rollup": {
     "last_dispatch": "2026-05-04T21:20:11Z",
-    "last_status": "dispatched",
-    "last_failed": "2026-05-03T21:54:31Z"
+    "last_status": "failed",
+    "last_failed": "2026-05-04T21:21:29Z"
   },
   "evening-rollup": {
     "last_dispatch": "2026-05-04T21:20:11Z",
