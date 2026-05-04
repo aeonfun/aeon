@@ -1,13 +1,14 @@
-*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-03*
-Two HIGH-priority autoresearch.yml fixes; top pick is a one-line YAML change closing the two-tree pytest footgun where it bites hardest (the unattended nightly).
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-04*
+Yesterday's 5 ACT NOW PRs all merged 21:57 UTC; today's gaps are supply-chain (unpinned trading SDKs at the canary's surface) and contract-shape (the Aeon adapter polls a JSON shape Aeon doesn't yet emit).
 
-Top pick: Drop the tests/test_strategies.py path arg in autoresearch.yml:86 so pytest honors pyproject testpaths (DX, Small, Priority HIGH)
- → Autoresearch nightly stops silently skipping ~313 of the suite; bad LLM variants fail the smoke gate at the bot step instead of post-merge.
+Top pick: Pin py-clob-client>=0.34.6,<0.40 + py-builder-signing-sdk>=0.0.2,<0.1 in pyproject.toml (Security, Small, Priority HIGH)
+ → Cold installs stop drifting under CalibrationGap; the only canary's order-signing path locks to known-working SDK floors instead of whatever PyPI ships.
 
-1. Drop tests/test_strategies.py path arg in autoresearch.yml:86 (HIGH, DX, Small)
-2. Add .github/dependabot.yml for pip + github-actions weekly (HIGH, Security, Small)
-3. Add .github/PULL_REQUEST_TEMPLATE.md enforcing ADR-084 stats checklist (MED, DX, Small)
-4. Notify Telegram on autoresearch.yml no-diff at line 95-96 (MED, DX, Small)
-5. Replace autoresearch.yml inputs.strategy enum with type:string (MED, DX, Small)
+1. Pin py-clob-client + py-builder-signing-sdk floors and ceilings in pyproject.toml (HIGH, Security, Small)
+2. Write docs/contracts/aeon_signal_contract.md so the Aeon side has a JSON spec to ship against (HIGH, Content, Small)
+3. Add a Quickstart section to README.md (pip install -e ".[dev]" + python -m python.main) (MED, Content, Small)
+4. Add .github/workflows/uv-lock-drift.yml running uv lock --locked on every PR (MED, DX, Small)
+5. Add .github/workflows/weekly-eval-digest.yml cron'ing scripts/eval_one_shot.py Mondays 14:00 UTC (MED, DX, 1-2 days)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-03.md
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-04.md
+

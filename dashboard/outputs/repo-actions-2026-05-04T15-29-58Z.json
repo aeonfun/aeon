@@ -1,0 +1,419 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas"
+      },
+      "children": [
+        "mainStack"
+      ]
+    },
+    "mainStack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "context",
+        "sep1",
+        "topPickSection",
+        "sep2",
+        "itemsSection",
+        "footerLink"
+      ]
+    },
+    "context": {
+      "type": "Text",
+      "props": {
+        "text": "Yesterday's 5 ACT NOW PRs all merged 21:57 UTC; today's gaps are supply-chain (unpinned trading SDKs at the canary's surface) and contract-shape (the Aeon adapter polls a JSON shape Aeon doesn't yet emit).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "topPickSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "topPickHeading",
+        "topPickAlert",
+        "topPickBadges"
+      ]
+    },
+    "topPickHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "topPickAlert": {
+      "type": "Alert",
+      "props": {
+        "title": "Pin py-clob-client + py-builder-signing-sdk in pyproject.toml",
+        "message": "Pin py-clob-client>=0.34.6,<0.40 + py-builder-signing-sdk>=0.0.2,<0.1\n\nCold installs stop drifting under CalibrationGap; the only canary's order-signing path locks to known-working SDK floors instead of whatever PyPI ships.",
+        "type": "info"
+      },
+      "children": []
+    },
+    "topPickBadges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_security",
+        "badge_small",
+        "badge_high"
+      ]
+    },
+    "badge_security": {
+      "type": "Badge",
+      "props": {
+        "text": "Security",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_high": {
+      "type": "Badge",
+      "props": {
+        "text": "Priority HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "itemsSection": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "itemsHeading",
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "itemsHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Action Items",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1Title",
+        "item1Badges"
+      ]
+    },
+    "item1Title": {
+      "type": "Text",
+      "props": {
+        "text": "1. Pin py-clob-client + py-builder-signing-sdk floors and ceilings in pyproject.toml",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item1Badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_high",
+        "item1_security",
+        "item1_small"
+      ]
+    },
+    "item1_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item1_security": {
+      "type": "Badge",
+      "props": {
+        "text": "Security",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item1_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2Title",
+        "item2Badges"
+      ]
+    },
+    "item2Title": {
+      "type": "Text",
+      "props": {
+        "text": "2. Write docs/contracts/aeon_signal_contract.md so the Aeon side has a JSON spec to ship against",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item2Badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_high",
+        "item2_content",
+        "item2_small"
+      ]
+    },
+    "item2_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item2_content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item2_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3Title",
+        "item3Badges"
+      ]
+    },
+    "item3Title": {
+      "type": "Text",
+      "props": {
+        "text": "3. Add a Quickstart section to README.md (pip install -e \".[dev]\" + python -m python.main)",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item3Badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_med",
+        "item3_content",
+        "item3_small"
+      ]
+    },
+    "item3_med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item3_content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item3_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item4Title",
+        "item4Badges"
+      ]
+    },
+    "item4Title": {
+      "type": "Text",
+      "props": {
+        "text": "4. Add .github/workflows/uv-lock-drift.yml running uv lock --locked on every PR",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item4Badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item4_med",
+        "item4_dx",
+        "item4_small"
+      ]
+    },
+    "item4_med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item4_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item4_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item5Title",
+        "item5Badges"
+      ]
+    },
+    "item5Title": {
+      "type": "Text",
+      "props": {
+        "text": "5. Add .github/workflows/weekly-eval-digest.yml cron'ing scripts/eval_one_shot.py Mondays 14:00 UTC",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item5Badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item5_med",
+        "item5_dx",
+        "item5_time"
+      ]
+    },
+    "item5_med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item5_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item5_time": {
+      "type": "Badge",
+      "props": {
+        "text": "1-2 days",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "footerLink": {
+      "type": "Link",
+      "props": {
+        "label": "Full details",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-04.md"
+      },
+      "children": []
+    }
+  }
+}
