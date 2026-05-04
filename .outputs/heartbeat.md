@@ -1,18 +1,21 @@
-HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md
+Heartbeat done.
+
+`HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md`
 
 ## Summary
 
-**Action taken:** 20:00 UTC heartbeat slot. No new notification — all P0/P1/P2/P3 conditions deduped against last 48h.
+Ran heartbeat for the 08:00 UTC slot (fired 09:36 UTC).
 
-**Findings (all dedup'd):**
-- P0 failed (chronic): `chain:morning-brief` 08:23 UTC, `chain:evening-rollup` 2026-05-02 21:40 UTC, `chain:weekly-grant-update` 2026-04-27 10:15 UTC — all ISS-013 chain-runner DEGRADED children, already in MEMORY OPS ALERTS + earlier heartbeat entries today.
-- P0 stuck/degraded: 0 stuck, 0 consecutive_failures≥3.
-- Heartbeat self-check: last_success 5h22min ago — OK.
-- P3 missing: `hacker-news-digest`, `syndicate-article`, `repo-scanner`, `vercel-projects`, `weekly-shiplog`, standalone `morning-brief` — all noted in last 48h logs.
+**Findings (all in 48h log window — dedup suppressed notify):**
+- P0: 3 failed chain wrappers (`chain:morning-brief` today, `chain:evening-rollup` last night, `chain:weekly-grant-update`) — all trace to the chain-runner.yml `dispatch_skill()` regression already flagged in MEMORY.md as operator priority #1.
+- P0: ~50 skills with `success_rate < 0.5` — ISS-013 mass-failure-tail decay artifact, gated on the chain-runner fix.
+- P1: 6 PRs > 24h on `tomscaria/aeon` (#1/#2/#3/#4/#5/#8). Issues disabled on the repo.
+- P2: ISS-014 (PR #156 in flight, day-9), ISS-018, ISS-019, reddit-digest 11-day error chain — all in the today/yesterday logs already.
+- P3: 6 enabled-but-never-dispatched skills (hacker-news-digest, syndicate-article, morning-brief standalone, repo-scanner, weekly-shiplog, vercel-projects) — unchanged from prior status pages.
+- Heartbeat self-check: last_success ~13h ago, well within the 36h staleness threshold.
 
-**Files modified:**
-- `docs/status.md` — regenerated (🔴 DEGRADED, Updated 2026-05-03 20:06 UTC, 15 open issues, next run evening-recap @ 21:00 UTC, full skill table sorted by last-run desc).
-- `memory/logs/2026-05-03.md` — appended heartbeat 20:00 UTC entry.
-- `scripts/heartbeat-analyze.py` — new P0 analyzer helper (read-only over `memory/cron-state.json`).
+**Status page (always-runs step):** regenerated `docs/status.md` wholesale. Overall **🔴 DEGRADED**, 15 open issues, next scheduled run `unlock-monitor` / `fork-fleet` at 10:00 UTC (Monday slot). Updated stamp now 2026-05-04 09:36 UTC.
 
-**Follow-up:** 21:00 UTC `chain:evening-rollup` is tonight's ISS-017 re-escalation test point — if it misses for the second consecutive day, criterion fires.
+**Files modified:** `docs/status.md`, `memory/logs/2026-05-04.md`.
+
+**Follow-up:** none new — operator-side chain-runner.yml patch remains the unblock that clears both the chain failures and the chronic-failure tail.
