@@ -1,0 +1,51 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Aeon Stopped Adding Capabilities This Week. It Started Building the Launch."
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "thesis_text",
+        "separator",
+        "article_link"
+      ]
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis: Of aaronjmars/aeon's 9 feature PRs merged in the last 7 days, all 9 serve the meta-loop — 7 observability/manifest skills, 2 launch-text generators. Zero new market, research, or content-ingest skills shipped.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "article_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-04.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
