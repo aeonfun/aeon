@@ -1,21 +1,14 @@
-Logged. Per spec: NO_GAP exits silently — no notify, no catalog search, no install.
-
 ## Summary
 
-**Skill:** `search-skill` — find an external skill that fills a real repo gap.
+Ran `search-skill` for 2026-05-04 with `${var}` empty. Walked all four gap-derivation sources (failing skills, open issues, non-template priorities, recent log signals) and none yielded a concrete capability word that maps to a missing third-party skill:
 
-**Verdict:** `SEARCH_SKILL_NO_GAP`. All four gap-derivation gates fail to yield a concrete capability word:
+- **Failing skills** are ISS-013 mass-failure decay or sandbox-blocked APIs already on closer-PR pipelines (PR #156, `prefetch-reddit.sh`).
+- **Open issue** categories don't match the strict target set; the "missing-secret-or-cron" entries are output-format issues for already-installed skills.
+- **Priorities** are operator-side blocked, internal logic patches, or in-flight PRs.
+- **Log signals** flag prefetch scripts / secrets / config files — not capability gaps.
 
-- **Failing skills (a):** Sub-0.6 success rates are ISS-013 decay artifacts (`consecutive_failures: 0`); capabilities already exist; gated on operator chain-runner fix.
-- **Open issues (b):** All 14 categorized as `sandbox-limitation`, `output-format`, `missing-secret-or-cron`, `prompt-bug`, or `unknown` — none match the trigger set.
-- **Priorities (c):** All operator-side (chain-runner.yml patch, Vercel-FAILURE PRs, prefetch scripts, key fixes, code-health patch).
-- **Log signals (d):** Every "missing" hit is an operator-owned secret/script (NEYNAR_API_KEY, prefetch-reddit.sh, prefetch-xai.sh cases) — not external capability.
+**Exit mode: SEARCH_SKILL_NO_GAP** — silent per skill spec, no catalog search, no notify.
 
-Same pattern as 2026-05-01 NO_GAP exit. The fleet's external capability surface is saturated against current priorities; remaining work is operator-owned config that an external skill cannot fix.
+**Files modified:** `memory/logs/2026-05-04.md` (appended search-skill log block).
 
-**Files modified:**
-- `memory/logs/2026-05-03.md` — appended `## search-skill` block per spec step 8.
-
-**Skipped per spec:** notify (silent on NO_GAP), catalog searches, `./add-skill`.
-
-**Follow-up:** Re-evaluates next run — exit will flip to OK_INSTALLED/OK_CANDIDATES the moment a new issue lands in `{missing-secret, api-change, permanent-limitation, quality-regression}` or a non-template Next Priority names an external capability.
+**Follow-up:** Re-run after PR #156 merges (closes ISS-014) and after operator-side config sweep — once those clear, fresh capability gaps may surface (e.g. cross-venue grey-market betting venues like Phalodi Satta Bazar — flagged in MEMORY as a high-quality convergence signal but has no current skill coverage).
