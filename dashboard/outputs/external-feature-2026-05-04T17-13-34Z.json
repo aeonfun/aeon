@@ -1,0 +1,67 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature",
+        "description": "tomscaria/swarm-fund-mvp"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_commit",
+        "separator1",
+        "text_description",
+        "badge_tests",
+        "separator2",
+        "pr_link"
+      ]
+    },
+    "text_commit": {
+      "type": "Text",
+      "props": {
+        "text": "fix(variant_bandit): fall back past corrupt tail in latest_snapshot_date",
+        "variant": "lead"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "Half-written trailing snapshot row no longer wipes the date, which would re-fire ~150-row daily append on every 15-min refresh."
+      }
+    },
+    "badge_tests": {
+      "type": "Badge",
+      "props": {
+        "text": "+2 regression tests",
+        "variant": "default"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #30",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/30",
+        "source": "GitHub"
+      }
+    }
+  }
+}
