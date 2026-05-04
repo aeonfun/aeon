@@ -1,0 +1,214 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "repo-pulse",
+        "description": "2026-05-04"
+      },
+      "children": [
+        "status",
+        "sep0",
+        "repo-link",
+        "repo-stats",
+        "sep1",
+        "notable-heading",
+        "infrareactive-line",
+        "sep2",
+        "other-heading",
+        "other-users",
+        "sep3",
+        "forks-heading",
+        "forks-list",
+        "sep4",
+        "source"
+      ]
+    },
+    "status": {
+      "type": "Badge",
+      "props": {
+        "text": "STEADY",
+        "variant": "outline"
+      }
+    },
+    "sep0": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "repo-link": {
+      "type": "Link",
+      "props": {
+        "label": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      }
+    },
+    "repo-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stars-stat",
+        "forks-stat",
+        "releases-stat"
+      ]
+    },
+    "stars-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "stars",
+        "value": "270",
+        "delta": "+3",
+        "trend": "up"
+      }
+    },
+    "forks-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "forks",
+        "value": "41",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "releases-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "releases",
+        "value": "+0"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      }
+    },
+    "infrareactive-line": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "infrareactive-link",
+        "followers"
+      ]
+    },
+    "infrareactive-link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/infrareactive",
+        "href": "https://github.com/infrareactive"
+      }
+    },
+    "followers": {
+      "type": "Text",
+      "props": {
+        "text": "(48 followers)",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "other-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      }
+    },
+    "other-users": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "jota-link",
+        "craig-link"
+      ]
+    },
+    "jota-link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/JotaSXBR",
+        "href": "https://github.com/JotaSXBR"
+      }
+    },
+    "craig-link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/craig-halliday",
+        "href": "https://github.com/craig-halliday"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "forks-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      }
+    },
+    "forks-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "fork1-link",
+        "fork2-link"
+      ]
+    },
+    "fork1-link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/infrareactive/aeon",
+        "href": "https://github.com/infrareactive/aeon"
+      }
+    },
+    "fork2-link": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/KingKaonix/aeon",
+        "href": "https://github.com/KingKaonix/aeon"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}

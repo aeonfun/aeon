@@ -1,10 +1,13 @@
-*Repo Pulse — 2026-05-03* — [ACTIVE]
-[aaronjmars/aeon] — stars 267 (+6) · forks 39 (+0) · releases +0
+*Repo Pulse — 2026-05-04* — [STEADY]
+[aaronjmars/aeon] — stars 270 (+3) · forks 41 (+2) · releases +0
 
 Notable new stargazers:
-github.com/grizonsky (0 followers)
+github.com/infrareactive (48 followers)
 
 Other new stargazers:
-github.com/intothemoonlite | github.com/StuntmanDaver | github.com/KarmanyaIyer | github.com/moegilani | github.com/ezikqa
+github.com/JotaSXBR | github.com/craig-halliday
+
+New forks:
+github.com/infrareactive/aeon | github.com/KingKaonix/aeon
 
 Source: events
