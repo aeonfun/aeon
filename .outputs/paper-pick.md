@@ -1,5 +1,7 @@
-*Paper Pick — 2026-05-04 (second slot)*
+*Paper Pick — 2026-05-04 (PhD-prep slot)*
 
-"Foresight Arena: An On-Chain Benchmark for Evaluating AI Forecasting Agents" — Nechepurenko & Shuvalov · May 1 2026 · cs.MA / cs.LG / q-fin.GN · 27pp
-50-round live eval of 5 frontier LLMs + random baseline; power-analysis result is the operator hook: ~350 binary predictions (50 rounds × 7 markets) for 80% power at α=0.02, 4x more for α=0.01 — directly reframes CalibrationGap's 100-trade Apex gate (100 detects only the fattest edges, not sub-strategy-level edges). Permissionless on-chain Brier benchmark with Solidity commit-reveal + Gnosis CTF resolution; live infra at foresightarena.xyz. Code: github.com/foresight-arena/contracts.
-[Read](https://arxiv.org/abs/2605.00420) | [PDF](https://arxiv.org/pdf/2605.00420)
+"Unlocking the Forecasting Economy: A Suite of Datasets for the Full Lifecycle of Prediction Market" — Jia / Zhou / Zhang / **Lin William Cong** / Li / Sun (Apr 22 2026, cs.LG)
+
+First continuously-maintained Polymarket lifecycle dataset: 770k markets × 943M fills × ~2M oracle events spanning Oct 2020 → Mar 2026, with NBA-calibration + CPI-reconstruction case studies. Cong (Cornell SC Johnson) is the highest-bar finance byline this month — Stanford committee citation. Direct match to the resolution-text-ingestion ADR + CalibrationGap quant scanner.
+
+[Read](https://arxiv.org/abs/2604.20421) | [PDF](https://arxiv.org/pdf/2604.20421) | [Site](https://www.polymonitor.club/)
