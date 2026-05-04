@@ -1,0 +1,299 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Weekly Review — 2026-05-04"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_action",
+        "sep_1",
+        "section_health",
+        "sep_2",
+        "section_closedloop",
+        "sep_3",
+        "fullreview_link"
+      ]
+    },
+    "section_action": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_action",
+        "alert_action"
+      ]
+    },
+    "heading_action": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Action",
+        "level": "h2"
+      }
+    },
+    "alert_action": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "Set model: claude-sonnet-4-6",
+        "message": "Update SKILL.md frontmatter for external-feature/repo-actions/heartbeat via self-improve PR by 2026-05-08. Projected savings: ~$149/wk (vs $2,696/mo current burn)."
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_health": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_health",
+        "grid_health_stats",
+        "stack_new_issues",
+        "stack_resolved_issues",
+        "text_articles",
+        "alert_chain"
+      ]
+    },
+    "heading_health": {
+      "type": "Heading",
+      "props": {
+        "text": "Health",
+        "level": "h2"
+      }
+    },
+    "grid_health_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_open",
+        "stat_new",
+        "stat_resolved"
+      ]
+    },
+    "stat_open": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "16"
+      }
+    },
+    "stat_new": {
+      "type": "Stat",
+      "props": {
+        "label": "New This Week",
+        "value": "3"
+      }
+    },
+    "stat_resolved": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved",
+        "value": "2"
+      }
+    },
+    "stack_new_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_new_label",
+        "badge_new1",
+        "badge_new2",
+        "badge_new3"
+      ]
+    },
+    "text_new_label": {
+      "type": "Text",
+      "props": {
+        "text": "New issues:",
+        "variant": "caption"
+      }
+    },
+    "badge_new1": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-017"
+      }
+    },
+    "badge_new2": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-018"
+      }
+    },
+    "badge_new3": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-019"
+      }
+    },
+    "stack_resolved_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_resolved_label",
+        "badge_res1",
+        "badge_res2"
+      ]
+    },
+    "text_resolved_label": {
+      "type": "Text",
+      "props": {
+        "text": "Resolved:",
+        "variant": "caption"
+      }
+    },
+    "badge_res1": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-004",
+        "variant": "secondary"
+      }
+    },
+    "badge_res2": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-006",
+        "variant": "secondary"
+      }
+    },
+    "text_articles": {
+      "type": "Text",
+      "props": {
+        "text": "85 articles tracked"
+      }
+    },
+    "alert_chain": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Chain wrappers still BLOCKED operator-side"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_closedloop": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_closedloop",
+        "grid_closedloop_stats",
+        "stack_shipped_detail"
+      ]
+    },
+    "heading_closedloop": {
+      "type": "Heading",
+      "props": {
+        "text": "Closed-loop",
+        "level": "h2"
+      }
+    },
+    "grid_closedloop_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_shipped",
+        "stat_slipped",
+        "stat_reclassified"
+      ]
+    },
+    "stat_shipped": {
+      "type": "Stat",
+      "props": {
+        "label": "Shipped",
+        "value": "1/5"
+      }
+    },
+    "stat_slipped": {
+      "type": "Stat",
+      "props": {
+        "label": "Slipped",
+        "value": "3"
+      }
+    },
+    "stat_reclassified": {
+      "type": "Stat",
+      "props": {
+        "label": "Reclassified-Blocked",
+        "value": "1"
+      }
+    },
+    "stack_shipped_detail": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_shipped_detail",
+        "badge_iss015"
+      ]
+    },
+    "text_shipped_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Action shipped:",
+        "variant": "caption"
+      }
+    },
+    "badge_iss015": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-015 → INDEX",
+        "variant": "secondary"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fullreview_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Review",
+        "href": "articles/weekly-review-2026-05-04.md",
+        "source": "weekly-review"
+      }
+    }
+  }
+}
