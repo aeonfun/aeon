@@ -1,18 +1,19 @@
-Per spec, no notification is sent (silent stop on FLEET_EMPTY). State file already reflects empty registry; no updates needed.
-
 ## Summary
 
-Executed `skills/fleet-control/SKILL.md` in default Health Check mode (var empty).
+Ran fleet-control (default Health Check Mode, var empty) for 2026-05-05.
 
-**Result: FLEET_EMPTY — silent stop.**
+**Verdict: FLEET_EMPTY** — silent stop.
 
-Pre-flight passed (gh auth ok as `tomscaria`, rate_remaining=4966), but `memory/instances.json` contains `{"instances": []}`. Per the skill spec, when `.instances` is `[]` the skill logs `FLEET_EMPTY: no managed instances` and stops without notifying — explicitly documented to avoid spam when there are no children to monitor.
+**Pre-flight:**
+- `gh auth status` ok (account `tomscaria`, scopes include `repo`/`admin:org`).
+- `rate_limit.core.remaining` = 4983, well above the 50 floor.
 
-**Files modified:**
-- `memory/logs/2026-05-04.md` — appended fleet-control health-check log block with verdict, sources, and `FLEET_EMPTY` exit.
+**Registry & state:**
+- `memory/instances.json` = `{"instances": []}` — no managed Aeon children.
+- `memory/state/fleet-control-state.json` = `{"instances": {}, "last_full_summary_date": ""}` — already consistent. No writes to either file needed (the skill explicitly forbids notifying or churning state in the empty-registry branch).
 
-**Files unchanged (correctly):**
-- `memory/instances.json` — still `{"instances": []}`; spec forbids auto-deletion and there's nothing to write.
-- `memory/state/fleet-control-state.json` — already `{"instances": {}, "last_full_summary_date": ""}`; spec only updates `last_full_summary_date` when a notification is sent (not this run).
+**Notification:** suppressed per skill contract — empty registry is a silent no-op so the operator isn't trained to ignore daily "fleet of zero is fine" pings.
 
-**Follow-up:** None required from this skill. To make fleet-control non-trivial, the operator would add child Aeon instances to `memory/instances.json` with `{name, repo, purpose, parent, created, skills_enabled}` records.
+**Files modified:** `memory/logs/2026-05-05.md` (appended fleet-control health-check entry).
+
+**Follow-up:** none. The skill will stay silent on the next cron firing (15:00 UTC today and every firing thereafter) until the operator registers at least one managed instance under `.instances[]` in `memory/instances.json`.
