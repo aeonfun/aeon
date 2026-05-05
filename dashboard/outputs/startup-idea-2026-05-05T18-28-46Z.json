@@ -1,0 +1,175 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas — 2026-05-05"
+      },
+      "children": [
+        "ideas-container"
+      ]
+    },
+    "ideas-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "idea-1-container",
+        "separator-1",
+        "idea-2-container",
+        "footer-note"
+      ]
+    },
+    "idea-1-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "examline-header",
+        "examline-badge",
+        "examline-desc",
+        "examline-icp",
+        "examline-wedge",
+        "examline-why",
+        "examline-mvp",
+        "examline-kill"
+      ]
+    },
+    "examline-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Examline",
+        "level": "h2"
+      }
+    },
+    "examline-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "executable"
+      }
+    },
+    "examline-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Reg S-P 30-day deadline pack for sub-$1.5B AUM RIAs.",
+        "variant": "lead"
+      }
+    },
+    "examline-icp": {
+      "type": "Text",
+      "props": {
+        "text": "ICP: Solo CCO at Schwab/Fidelity-custodied RIA with no breach-response policy, 30 days from June 3 SEC deadline."
+      }
+    },
+    "examline-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge: Fixed-fee bundle — incident-response template, customer-notice letters, vendor-addendum library (top 10 custodians/CRMs/cloud), 90-min live tabletop drill, SEC-grade artifact log, 30-day delivery SLA."
+      }
+    },
+    "examline-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why now: Hard regulatory deadline June 3, 2026. Sub-$1.5B firms must implement same written policies + 72-hour vendor-notice clauses as the big firms."
+      }
+    },
+    "examline-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test: Build top-5 custodian addenda + drill SOP, pitch 25 named CCOs from IARD pull. 5 paid pilots ($7.5k each) in 14 days = signal."
+      }
+    },
+    "examline-kill": {
+      "type": "Text",
+      "props": {
+        "text": "Kill: <5 paid in 30 days kills it."
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea-2-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "caseworth-header",
+        "caseworth-badge",
+        "caseworth-desc",
+        "caseworth-icp",
+        "caseworth-wedge",
+        "caseworth-why",
+        "caseworth-mvp",
+        "caseworth-kill"
+      ]
+    },
+    "caseworth-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Caseworth",
+        "level": "h2"
+      }
+    },
+    "caseworth-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious"
+      }
+    },
+    "caseworth-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Bayesian portfolio-underwriting OS for litigation finance.",
+        "variant": "lead"
+      }
+    },
+    "caseworth-icp": {
+      "type": "Text",
+      "props": {
+        "text": "ICP: Underwriter at $50M–$500M PI funder who just lost a deal because a pari-passu funder closed faster."
+      }
+    },
+    "caseworth-wedge": {
+      "type": "Text",
+      "props": {
+        "text": "Wedge: Docket-number → 30-min Bayesian quantum + time-to-cash + judge-adjusted base rate + advance pricing. Every accepted deal sharpens the prior."
+      }
+    },
+    "caseworth-why": {
+      "type": "Text",
+      "props": {
+        "text": "Why now: PACER fees gone (Open Courts Act Dec 2025), NY funder-disclosure law live Jan 2026, frontier legal-NLP finally ingests dockets accurately."
+      }
+    },
+    "caseworth-mvp": {
+      "type": "Text",
+      "props": {
+        "text": "MVP test: 500 PI cases from CourtListener → ±25% calibration on 70%+ hold-out cases proves signal."
+      }
+    },
+    "caseworth-kill": {
+      "type": "Text",
+      "props": {
+        "text": "Kill: <60% calibration on 100-case backtest, or <2 funders @ $50k/yr by month 4."
+      }
+    },
+    "footer-note": {
+      "type": "Text",
+      "props": {
+        "text": "Domain pivot from 18 prior crypto/PM ideas. Full memos in log.",
+        "variant": "muted"
+      }
+    }
+  }
+}
