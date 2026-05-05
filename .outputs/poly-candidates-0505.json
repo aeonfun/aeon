@@ -1,0 +1,227 @@
+[
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Morocco win the 2026 FIFA World Cup?",
+    "yesp": 0.0165,
+    "mv24": 704673.566262,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Mexico win the 2026 FIFA World Cup?",
+    "yesp": 0.0105,
+    "mv24": 560838.6594759998,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Croatia win the 2026 FIFA World Cup?",
+    "yesp": 0.0095,
+    "mv24": 545576.3190599997,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the Minnesota Timberwolves win the 2026 NBA Finals?",
+    "yesp": 0.0435,
+    "mv24": 448349.1279600002,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the Philadelphia 76ers win the 2026 NBA Finals?",
+    "yesp": 0.0095,
+    "mv24": 385161.41240099986,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will New Zealand win the 2026 FIFA World Cup?",
+    "yesp": 0.0025,
+    "mv24": 294449.16449999996,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will France win the 2026 FIFA World Cup?",
+    "yesp": 0.1665,
+    "mv24": 291831.1255529997,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will South Korea win the 2026 FIFA World Cup?",
+    "yesp": 0.0045,
+    "mv24": 288588.81275000004,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Colombia win the 2026 FIFA World Cup?",
+    "yesp": 0.0165,
+    "mv24": 278242.16350200004,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Japan win the 2026 FIFA World Cup?",
+    "yesp": 0.0215,
+    "mv24": 273035.527346,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will USA win the 2026 FIFA World Cup?",
+    "yesp": 0.0155,
+    "mv24": 270491.9069230002,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the Cleveland Cavaliers win the 2026 NBA Finals?",
+    "yesp": 0.0375,
+    "mv24": 268577.71491399995,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will South Africa win the 2026 FIFA World Cup?",
+    "yesp": 0.0025,
+    "mv24": 213638.75033299995,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Congo DR win the 2026 FIFA World Cup?",
+    "yesp": 0.0025,
+    "mv24": 167786.584833,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the Oklahoma City Thunder win the 2026 NBA Finals?",
+    "yesp": 0.595,
+    "mv24": 166004.5454549999,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "MicroStrategy sells any Bitcoin by ___ ?",
+    "q": "MicroStrategy sells any Bitcoin by June 30, 2026?",
+    "yesp": 0.0195,
+    "mv24": 164586.78038499993,
+    "ev24": 175624.21224999992,
+    "endDate": "2026-07-01T04:00:00Z",
+    "daysLeft": 56.62245050925926
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the San Antonio Spurs win the 2026 NBA Finals?",
+    "yesp": 0.157,
+    "mv24": 156423.71013899994,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the New York Knicks win the 2026 NBA Finals?",
+    "yesp": 0.0985,
+    "mv24": 155269.85650300013,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Iran win the 2026 FIFA World Cup?",
+    "yesp": 0.0015,
+    "mv24": 148587.948,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 NBA Champion",
+    "q": "Will the Los Angeles Lakers win the 2026 NBA Finals?",
+    "yesp": 0.0275,
+    "mv24": 147647.746619,
+    "ev24": 1836299.4657130002,
+    "endDate": "2026-07-01T00:00:00Z",
+    "daysLeft": 56.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Saudi Arabia win the 2026 FIFA World Cup?",
+    "yesp": 0.0025,
+    "mv24": 147577.52783300003,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Uruguay win the 2026 FIFA World Cup?",
+    "yesp": 0.0105,
+    "mv24": 142780.07437699958,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Netherlands win the 2026 FIFA World Cup?",
+    "yesp": 0.0335,
+    "mv24": 127184.26347300007,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Australia win the 2026 FIFA World Cup?",
+    "yesp": 0.0025,
+    "mv24": 126753.10499500006,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  },
+  {
+    "event": "2026 FIFA World Cup Winner ",
+    "q": "Will Paraguay win the 2026 FIFA World Cup?",
+    "yesp": 0.0035,
+    "mv24": 126651.92397499998,
+    "ev24": 6659348.454210999,
+    "endDate": "2026-07-20T00:00:00Z",
+    "daysLeft": 75.45578383101852
+  }
+]

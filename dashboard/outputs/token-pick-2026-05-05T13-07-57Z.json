@@ -1,0 +1,367 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-05"
+      },
+      "children": [
+        "token_header",
+        "separator_1",
+        "metrics_grid",
+        "separator_2",
+        "catalyst_section",
+        "separator_3",
+        "risk_section",
+        "separator_4",
+        "recent_picks_section",
+        "separator_5",
+        "prediction_market_section",
+        "separator_6",
+        "sources_section",
+        "separator_7",
+        "disclaimer_alert"
+      ]
+    },
+    "token_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token_name",
+        "signal_badge",
+        "score_badge"
+      ]
+    },
+    "token_name": {
+      "type": "Heading",
+      "props": {
+        "text": "TON (Toncoin)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signal_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "score_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Signal 8/10",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "metrics_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_price",
+        "stat_24h",
+        "stat_7d",
+        "stat_mcap",
+        "stat_volume",
+        "stat_vol_mcap",
+        "score_detail"
+      ]
+    },
+    "stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$1.88"
+      },
+      "children": []
+    },
+    "stat_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "+36.0%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d Change",
+        "value": "+44.9%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$5.08B"
+      },
+      "children": []
+    },
+    "stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$443M"
+      },
+      "children": []
+    },
+    "stat_vol_mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume / MCap Ratio",
+        "value": "0.09"
+      },
+      "children": []
+    },
+    "score_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Score: [24h+1, 7d+1, both>5%+2, cgtrend+2, RS vs BTC/ETH+2] = 8/10",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text_1",
+        "catalyst_text_2"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "catalyst_text_1": {
+      "type": "Text",
+      "props": {
+        "text": "Pavel Durov announced 05-04 that Telegram replaces TON Foundation as primary driver, stakes ~2.2M TON to become largest validator, fees cut 6x to ~$0.0005 per transfer.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "catalyst_text_2": {
+      "type": "Text",
+      "props": {
+        "text": "Spillover effects: Dogs +90% / Notcoin +26%",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "risk_heading",
+        "risk_text_1",
+        "risk_text_2"
+      ]
+    },
+    "risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "risk_text_1": {
+      "type": "Text",
+      "props": {
+        "text": "Single-validator centralization risk (Telegram dominance).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "risk_text_2": {
+      "type": "Text",
+      "props": {
+        "text": "Post-news pop already +45% 7d — fade-the-rip is the natural reflex if Q2 dev roadmap underdelivers.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "recent_picks_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "recent_heading",
+        "recent_picks_text"
+      ]
+    },
+    "recent_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recent Picks (Last 7 Days)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "recent_picks_text": {
+      "type": "Text",
+      "props": {
+        "text": "APE, PENGU, XCN, RAY, DOGE, LUNC, PENDLE, UB, AKT, DASH (TON is first time in this period)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "prediction_market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pred_heading",
+        "pred_text_1",
+        "pred_text_2",
+        "pred_text_3"
+      ]
+    },
+    "pred_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Prediction Market Analysis",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "pred_text_1": {
+      "type": "Text",
+      "props": {
+        "text": "Top events scanned (FIFA $6.7M / NBA $1.8M / NHL $316k / MSTR-sells $176k / Russia-NATO $57k / Starmer-out $55k).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "pred_text_2": {
+      "type": "Text",
+      "props": {
+        "text": "Cleanest edge was Starmer-out-by-May-15 NO at 6.1¢ vs fair ~2%, only ~4pp — below 5pp gate.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "pred_text_3": {
+      "type": "Text",
+      "props": {
+        "text": "OKC NBA Champion @ 59.5¢ converges with sportsbooks ~60.8% (-155). Per spec, no forced market pick.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Data Sources",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "CoinGecko: ok | DEX aggregators: ok | Polymarket: ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator_7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "disclaimer_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "Not financial advice — pattern-matching only."
+      },
+      "children": []
+    }
+  }
+}

@@ -11,4 +11,3 @@ No prediction-market pick: top events scanned (FIFA $6.7M / NBA $1.8M / NHL $316
 
 sources: cg=ok, dex=ok, poly=ok
 not financial advice — pattern-matching only
-
