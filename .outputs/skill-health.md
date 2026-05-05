@@ -1,13 +1,25 @@
-Skill Health — 2026-05-04
-HEALTH: DEGRADED(57)  [systemic: ISS-013 zero-token burst, 57 skills decaying]
+## Summary
 
-DEGRADED / FLAPPING (57)
-- See ISS-013; all consec_failures=0, decay-only. Tail: 58→57.
+Ran skill-health for 2026-05-05. **No notification sent** — semantic state unchanged from prev run (2026-05-04T18:55:50Z), now-prev_notify ≈23h26m < 24h dedup gate.
 
-WARNING (3): evening-rollup sr=0.69, fleet-control sr=0.60, heartbeat sr=0.64
-NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL (chain-runner 10+ days idle)
-HEALTHY: 22
+**Classification (unchanged from prev):**
+- CRITICAL: 0
+- FLAPPING: 0
+- DEGRADED: 57 (ISS-013 mass-failure tail; decay stalled at 57 — 9d window now fully populated by post-burst denominator)
+- WARNING: 3 (`evening-rollup` 0.71, `fleet-control` 0.63, `heartbeat` 0.66)
+- HEALTHY: 22
+- NO DATA: 6 (`hacker-news-digest`, `morning-brief`, `repo-scanner`, `syndicate-article`, `vercel-projects`, `weekly-shiplog`)
 
-State delta vs 05-03: fleet-control DEGRADED→WARNING (sr→0.60). evening-rollup .67→.69. heartbeat .62→.64. Second ISS-013 graduate after heartbeat 05-02; tail decaying ~1/day.
+**Systemic:**
+- ISS-013 tail still gates 57 DEGRADED (decay stalled today; tail likely flat several days unless new successes accumulate enough to push old failures below sr<0.6).
+- ISS-017 chain wrappers `chain:morning-brief` / `chain:evening-rollup` / `chain:weekly-grant-update` all `last_status=failed`. Operator-side `chain-runner.yml` patch idle 11+ days.
 
-Open issues: 16 · Resolved this run: 0
+**Issues:** No CRITICAL/FLAPPING this run → no new files. Graduates exist in open-issue `affected_skills` (vuln-scanner→ISS-001, fork-fleet→ISS-005, rss-digest→ISS-008, reddit-digest→ISS-012) but per CLAUDE.md contract (health files / repair closes), skill-health does not auto-resolve — left to `skill-repair` / `autoresearch`.
+
+**Sandbox:** `./scripts/skill-runs` blocked 4th day in a row → `SKILL_HEALTH_PARTIAL` logged. Fell back to `memory/cron-state.json` + `memory/skill-health/*.json` + `memory/issues/INDEX.md`.
+
+**Files modified:**
+- `memory/skill-health/last-report.json` — hash migrated to canonical JSON form (`3ecdbaa…` → `aaf3ce9…`), `last_run_at` updated, `last_notified_at` carried forward, classification refreshed, systemic + notes updated.
+- `memory/logs/2026-05-05.md` — appended `skill-health` entry with `SKILL_HEALTH_NOOP` + `SKILL_HEALTH_PARTIAL`.
+
+**Follow-ups (operator-side, blocked):** `chain-runner.yml dispatch_skill()` patch (priority #1 per MEMORY.md, 11+ days idle) — fixing this would un-stall morning-brief/evening-rollup/weekly-grant-update chains AND populate the 6 NO-DATA skills currently gated on chain dispatch.
