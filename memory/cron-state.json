@@ -368,13 +368,13 @@
   },
   "fleet-control": {
     "last_dispatch": "2026-05-05T16:58:38Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-05T10:26:06Z",
-    "total_runs": 31,
-    "total_successes": 19,
+    "last_status": "success",
+    "last_success": "2026-05-05T17:00:26Z",
+    "total_runs": 32,
+    "total_successes": 20,
     "total_failures": 12,
     "consecutive_failures": 0,
-    "success_rate": 0.61,
+    "success_rate": 0.63,
     "last_failed": "2026-04-26T23:55:56Z",
     "last_error": "5a7ed98\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
