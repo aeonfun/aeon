@@ -1,0 +1,191 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Reply Maker — 2026-05-05"
+      },
+      "children": [
+        "status_badge",
+        "sep1",
+        "item1_stack",
+        "sep2",
+        "item2_stack",
+        "sep3",
+        "source_status"
+      ]
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "REPLY_MAKER_DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "item1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1_title",
+        "item1_link",
+        "item1_meta",
+        "item1_tweet",
+        "item1_why",
+        "item1_a",
+        "item1_b"
+      ]
+    },
+    "item1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Item 1",
+        "level": "h3"
+      }
+    },
+    "item1_link": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/INCIndia/status/2051686082467807401",
+        "href": "https://x.com/INCIndia/status/2051686082467807401"
+      }
+    },
+    "item1_meta": {
+      "type": "Text",
+      "props": {
+        "text": "@INCIndia, ~1h45m ago, in-window 6h",
+        "variant": "caption"
+      }
+    },
+    "item1_tweet": {
+      "type": "TweetCard",
+      "props": {
+        "author": "INCIndia",
+        "handle": "INCIndia",
+        "text": "TVK President Thiru Vijay has requested the Indian National Congress' (INC) support to form a government in Tamil Nadu. The INC is clear that the mandate in Tamil Nadu is for a secular government…"
+      }
+    },
+    "item1_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: Live kingmaker tape — TVK 108 vs 118 majority gate, Congress 5-seat conditional support is the unpriced post-resolution variable on the same TN-falsified market that closed 99% YES Saturday."
+      }
+    },
+    "item1_a": {
+      "type": "Text",
+      "props": {
+        "text": "A: TVK was pre-aligned on secular: SA Chandrasekhar signaled TVK-Congress alliance posture in a 2025 interview. INC's \"mandate\" matches a TVK position 12 months in the making. Polymarket priced TVK 99% on $22M Saturday."
+      }
+    },
+    "item1_b": {
+      "type": "Text",
+      "props": {
+        "text": "B: INC isn't gating TVK. Vijay has 108 + VCK/CPI/IUML pickups; Congress has 5 seats. The \"secular government\" line is post-hoc cover for joining a winner, not a precondition. Polymarket priced this 99% TVK on $22M Saturday — directional read held."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "item2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item2_title",
+        "item2_link",
+        "item2_meta",
+        "item2_tweet",
+        "item2_why",
+        "item2_a",
+        "item2_b"
+      ]
+    },
+    "item2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Item 2",
+        "level": "h3"
+      }
+    },
+    "item2_link": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/ANI/status/2051539423482015789",
+        "href": "https://x.com/ANI/status/2051539423482015789"
+      }
+    },
+    "item2_meta": {
+      "type": "Text",
+      "props": {
+        "text": "@ANI, ~11h30m ago, 12h-fallback border",
+        "variant": "caption"
+      }
+    },
+    "item2_tweet": {
+      "type": "TweetCard",
+      "props": {
+        "author": "ANI",
+        "handle": "ANI",
+        "text": "#WATCH | Chennai, Tamil Nadu: TVK Chief Vijay arrives at the party office. TVK won 108 out of 234 seats in the Tamil Nadu Assembly Elections, becoming the single-largest party."
+      }
+    },
+    "item2_why": {
+      "type": "Text",
+      "props": {
+        "text": "why: TN-aftermath establishing shot. Live anchor for the 10-seat majority shortfall + the same single-venue 99% TVK Polymarket close that the operator's TN-falsified-99.65% lesson treats as a feature to fade."
+      }
+    },
+    "item2_a": {
+      "type": "Text",
+      "props": {
+        "text": "A: Polymarket TN winner closed 99% TVK on $22M vol Saturday. Unpriced layer is post-result coalition math: 108 + VCK/CPI/IUML clears 118 without Congress. INC's \"secular government\" demand is the kingmaker frame that's actually loose."
+      }
+    },
+    "item2_b": {
+      "type": "Text",
+      "props": {
+        "text": "B: \"Single-largest party\" undersells what TVK did: 108-seat debut broke the DMK-AIADMK duopoly first time since 1967. Polymarket priced 99% TVK on $22M Saturday. The seat-level upset — Stalin trailing in his own Kolathur seat — was free read no venue priced."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "source_status": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "source_status_heading",
+        "source_status_text"
+      ]
+    },
+    "source_status_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h4"
+      }
+    },
+    "source_status_text": {
+      "type": "Text",
+      "props": {
+        "text": "xai=skip (ISS-014 day-12, .xai-cache/ absent, no reply-maker case in prefetch-xai.sh), memory=stale (no in-window x.com URLs in 05-04/05-05 logs after yesterday's dedup carry expired), websearch=ok (12 queries; 1 in-window 6h + 1 12h-border + many out-of-window confirmations)",
+        "variant": "caption"
+      }
+    }
+  }
+}
