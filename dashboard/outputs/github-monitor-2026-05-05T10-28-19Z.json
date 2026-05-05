@@ -1,0 +1,152 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Monitor",
+        "description": "3 repos scanned, 1 needs action"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "act_now_heading",
+        "pr_link",
+        "separator_1",
+        "repos_section"
+      ]
+    },
+    "act_now_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ACT NOW",
+        "level": "h3"
+      }
+    },
+    "pr_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tomscaria/swarm-fund-mvp#30 — Vercel CI failing 3×",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/30",
+        "source": "aeonframework bot commit-email config recurrence per MEMORY OPS ALERT"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "repos_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repos_heading",
+        "repos_list"
+      ]
+    },
+    "repos_heading": {
+      "type": "Text",
+      "props": {
+        "text": "Repository Status",
+        "variant": "muted"
+      }
+    },
+    "repos_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo1_row",
+        "repo2_row",
+        "repo3_row"
+      ]
+    },
+    "repo1_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_ok_1",
+        "text_repo1"
+      ]
+    },
+    "badge_ok_1": {
+      "type": "Badge",
+      "props": {
+        "text": "ok",
+        "variant": "secondary"
+      }
+    },
+    "text_repo1": {
+      "type": "Text",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp"
+      }
+    },
+    "repo2_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_ok_2",
+        "text_repo2"
+      ]
+    },
+    "badge_ok_2": {
+      "type": "Badge",
+      "props": {
+        "text": "ok",
+        "variant": "secondary"
+      }
+    },
+    "text_repo2": {
+      "type": "Text",
+      "props": {
+        "text": "tomscaria/lore-financial-teaser"
+      }
+    },
+    "repo3_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_ok_3",
+        "text_repo3"
+      ]
+    },
+    "badge_ok_3": {
+      "type": "Badge",
+      "props": {
+        "text": "ok",
+        "variant": "secondary"
+      }
+    },
+    "text_repo3": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon"
+      }
+    }
+  }
+}
