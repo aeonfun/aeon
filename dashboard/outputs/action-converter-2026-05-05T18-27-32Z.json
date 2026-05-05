@@ -1,0 +1,515 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-05"
+      },
+      "children": [
+        "shape-heading",
+        "sep1",
+        "action1",
+        "sep2",
+        "action2",
+        "sep3",
+        "action3",
+        "sep4",
+        "action4",
+        "sep5",
+        "action5",
+        "sep6",
+        "sources"
+      ]
+    },
+    "shape-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Clear top-of-stack PR backlog: merge #5, review #31, ship Hermes-arb gate + reddit pause.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1-title",
+        "a1-desc",
+        "a1-why-stack",
+        "a1-done-stack",
+        "a1-loop"
+      ]
+    },
+    "a1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Merge tomscaria/aeon#5",
+        "level": "h3"
+      }
+    },
+    "a1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rename evals.json keys hn-digest → hacker-news-digest and polymarket → monitor-polymarket so skill-evals stops missing those skills."
+      }
+    },
+    "a1-why-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a1-why-badge",
+        "a1-why-text"
+      ]
+    },
+    "a1-why-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Why",
+        "variant": "secondary"
+      }
+    },
+    "a1-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "Day 8 idle; closes ISS-007 + ISS-009 and the skill-evals quality-history flatline named in MEMORY OPS ALERTS.",
+        "variant": "caption"
+      }
+    },
+    "a1-done-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a1-done-badge",
+        "a1-done-text"
+      ]
+    },
+    "a1-done-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Done",
+        "variant": "default"
+      }
+    },
+    "a1-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "PR #5 merged into tomscaria/aeon main.",
+        "variant": "caption"
+      }
+    },
+    "a1-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop: pr-5-skill-evals-keys",
+        "variant": "outline"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2-title",
+        "a2-desc",
+        "a2-why-stack",
+        "a2-done-stack",
+        "a2-loop"
+      ]
+    },
+    "a2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Review tomscaria/swarm-fund-mvp#31",
+        "level": "h3"
+      }
+    },
+    "a2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "fix(aeon_adapter): clear _last_error after successful poll (29-LOC, 2 files, branch ai/aeon-adapter-clear-last-error, opened 17:08Z today)."
+      }
+    },
+    "a2-why-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a2-why-badge",
+        "a2-why-text"
+      ]
+    },
+    "a2-why-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Why",
+        "variant": "secondary"
+      }
+    },
+    "a2-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-093 falsifier closes 2026-05-17 (12 days); stale-error on the proof-of-freshness adapter is the highest-cost bug in the lane.",
+        "variant": "caption"
+      }
+    },
+    "a2-done-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a2-done-badge",
+        "a2-done-text"
+      ]
+    },
+    "a2-done-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Done",
+        "variant": "default"
+      }
+    },
+    "a2-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "gh pr review 31 --approve or --request-changes posted with one-line verdict.",
+        "variant": "caption"
+      }
+    },
+    "a2-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop: pr-31-aeon-adapter-recovery",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3-title",
+        "a3-desc",
+        "a3-why-stack",
+        "a3-done-stack",
+        "a3-loop"
+      ]
+    },
+    "a3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Open tomscaria/swarm-fund-mvp PR",
+        "level": "h3"
+      }
+    },
+    "a3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Raise Hermes-arb min-gap from 7pp to 7.5pp per the deep-research finding logged in MEMORY Next-Priorities."
+      }
+    },
+    "a3-why-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a3-why-badge",
+        "a3-why-text"
+      ]
+    },
+    "a3-why-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Why",
+        "variant": "secondary"
+      }
+    },
+    "a3-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi-perps day-8 post-launch; operator-noted gate adjustment is the only Hermes-arb config item carried in Next-Priorities, fits before the falsifier-window closes.",
+        "variant": "caption"
+      }
+    },
+    "a3-done-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a3-done-badge",
+        "a3-done-text"
+      ]
+    },
+    "a3-done-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Done",
+        "variant": "default"
+      }
+    },
+    "a3-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened with the min-gap config diff and a one-line cite of the deep-research finding in the body.",
+        "variant": "caption"
+      }
+    },
+    "a3-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop: hermes-arb-mingap-raise",
+        "variant": "outline"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4-title",
+        "a4-desc",
+        "a4-why-stack",
+        "a4-done-stack",
+        "a4-loop"
+      ]
+    },
+    "a4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Pause reddit-digest cron",
+        "level": "h3"
+      }
+    },
+    "a4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Pause reddit-digest cron in tomscaria/aeon aeon.yml (comment-out the schedule line) until scripts/prefetch-reddit.sh ships."
+      }
+    },
+    "a4-why-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a4-why-badge",
+        "a4-why-text"
+      ]
+    },
+    "a4-why-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Why",
+        "variant": "secondary"
+      }
+    },
+    "a4-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "12th consecutive all-sources-error today; HTTP 403 deterministic on every endpoint, WebFetch host-blocked — daily noise + pager fatigue per today's reddit-digest log.",
+        "variant": "caption"
+      }
+    },
+    "a4-done-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a4-done-badge",
+        "a4-done-text"
+      ]
+    },
+    "a4-done-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Done",
+        "variant": "default"
+      }
+    },
+    "a4-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened on tomscaria/aeon commenting out the reddit-digest schedule, body cites ISS-002 + ISS-012.",
+        "variant": "caption"
+      }
+    },
+    "a4-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop: reddit-digest-cron-pause",
+        "variant": "outline"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5-title",
+        "a5-desc",
+        "a5-why-stack",
+        "a5-done-stack",
+        "a5-loop"
+      ]
+    },
+    "a5-title": {
+      "type": "Heading",
+      "props": {
+        "text": "5. File aaronjmars/aeon PR",
+        "level": "h3"
+      }
+    },
+    "a5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Land the monitor-runners DEEP-LIQ floor patch (slot-5 replacement: if top5.length===5 AND zero DEEP-LIQ in top5 AND DEEP-LIQ exists in survivors, replace slot 5 with highest-score DEEP-LIQ survivor)."
+      }
+    },
+    "a5-why-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a5-why-badge",
+        "a5-why-text"
+      ]
+    },
+    "a5-why-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Why",
+        "variant": "secondary"
+      }
+    },
+    "a5-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "7th evidence run today — TTPA 5-in-a-row and SKYAI 7-in-a-row both closed 2026-05-05 with 8 DEEP-LIQ survivors but zero in top-5; patch would have fired and caught both.",
+        "variant": "caption"
+      }
+    },
+    "a5-done-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a5-done-badge",
+        "a5-done-text"
+      ]
+    },
+    "a5-done-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Done",
+        "variant": "default"
+      }
+    },
+    "a5-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened on aaronjmars/aeon with the slot-5 replacement logic in skills/monitor-runners/, body cites the 6-run evidence chain in MEMORY Next-Priorities.",
+        "variant": "caption"
+      }
+    },
+    "a5-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "Loop: monitor-runners-floor-patch",
+        "variant": "outline"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "memory=118 logs=7 topics=8 prs=15 cron_failing=3 mode=OK",
+        "variant": "caption"
+      }
+    }
+  }
+}
