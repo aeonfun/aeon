@@ -1,0 +1,396 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases",
+        "description": "2026-05-05 — 9 updates"
+      },
+      "children": [
+        "summary",
+        "sep1",
+        "fyi-section",
+        "sep2",
+        "skipped-section",
+        "sep3",
+        "sources"
+      ]
+    },
+    "summary": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-asap",
+        "badge-soon",
+        "badge-fyi",
+        "badge-skipped"
+      ]
+    },
+    "badge-asap": {
+      "type": "Badge",
+      "props": {
+        "text": "0 asap",
+        "variant": "destructive"
+      }
+    },
+    "badge-soon": {
+      "type": "Badge",
+      "props": {
+        "text": "0 soon",
+        "variant": "secondary"
+      }
+    },
+    "badge-fyi": {
+      "type": "Badge",
+      "props": {
+        "text": "8 fyi",
+        "variant": "default"
+      }
+    },
+    "badge-skipped": {
+      "type": "Badge",
+      "props": {
+        "text": "1 skipped",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "fyi-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fyi-heading",
+        "fyi-items"
+      ]
+    },
+    "fyi-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI",
+        "level": "h3"
+      }
+    },
+    "fyi-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rel1",
+        "rel2",
+        "rel3",
+        "rel4",
+        "rel5",
+        "rel6",
+        "rel7",
+        "rel8",
+        "rel9"
+      ]
+    },
+    "rel1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link1",
+        "desc1"
+      ]
+    },
+    "link1": {
+      "type": "Link",
+      "props": {
+        "label": "ggerganov/llama.cpp b9028",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9028"
+      }
+    },
+    "desc1": {
+      "type": "Text",
+      "props": {
+        "text": "Adds option to save memory in device buffers.",
+        "variant": "caption"
+      }
+    },
+    "rel2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link2",
+        "desc2"
+      ]
+    },
+    "link2": {
+      "type": "Link",
+      "props": {
+        "label": "anthropics/claude-agent-sdk-python v0.1.73",
+        "href": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.73"
+      }
+    },
+    "desc2": {
+      "type": "Text",
+      "props": {
+        "text": "Adds eager session_store flushing for live-tailing UIs.",
+        "variant": "caption"
+      }
+    },
+    "rel3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link3",
+        "desc3"
+      ]
+    },
+    "link3": {
+      "type": "Link",
+      "props": {
+        "label": "anthropics/claude-code v2.1.128",
+        "href": "https://github.com/anthropics/claude-code/releases/tag/v2.1.128"
+      }
+    },
+    "desc3": {
+      "type": "Text",
+      "props": {
+        "text": "Adds /mcp tool counts, --plugin-dir zip archives, OTEL_* subprocess isolation.",
+        "variant": "caption"
+      }
+    },
+    "rel4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link4",
+        "desc4"
+      ]
+    },
+    "link4": {
+      "type": "Link",
+      "props": {
+        "label": "anthropics/anthropic-sdk-python v0.98.1",
+        "href": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.98.1"
+      }
+    },
+    "desc4": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes example typo; chore-only patch.",
+        "variant": "caption"
+      }
+    },
+    "rel5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link5",
+        "desc5"
+      ]
+    },
+    "link5": {
+      "type": "Link",
+      "props": {
+        "label": "BerriAI/litellm v1.83.14-stable.patch.1",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/v1.83.14-stable.patch.1"
+      }
+    },
+    "desc5": {
+      "type": "Text",
+      "props": {
+        "text": "Patches stable line; cosign-signed rebuild without changelog notes.",
+        "variant": "caption"
+      }
+    },
+    "rel6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link6",
+        "desc6"
+      ]
+    },
+    "link6": {
+      "type": "Link",
+      "props": {
+        "label": "openai/openai-node v6.36.0",
+        "href": "https://github.com/openai/openai-node/releases/tag/v6.36.0"
+      }
+    },
+    "desc6": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Admin API Keys per endpoint, group_type/user metadata fields.",
+        "variant": "caption"
+      }
+    },
+    "rel7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link7",
+        "desc7"
+      ]
+    },
+    "link7": {
+      "type": "Link",
+      "props": {
+        "label": "openai/openai-python v2.34.0",
+        "href": "https://github.com/openai/openai-python/releases/tag/v2.34.0"
+      }
+    },
+    "desc7": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Admin API Keys per endpoint, external_key_id projects, in_memory cache enum fix.",
+        "variant": "caption"
+      }
+    },
+    "rel8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link8",
+        "desc8"
+      ]
+    },
+    "link8": {
+      "type": "Link",
+      "props": {
+        "label": "anthropics/anthropic-sdk-python v0.98.0",
+        "href": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.98.0"
+      }
+    },
+    "desc8": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Workload Identity Federation, interactive OAuth, auth profiles, env header config.",
+        "variant": "caption"
+      }
+    },
+    "rel9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link9",
+        "desc9"
+      ]
+    },
+    "link9": {
+      "type": "Link",
+      "props": {
+        "label": "anthropics/anthropic-sdk-typescript sdk-v0.93.0",
+        "href": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.93.0"
+      }
+    },
+    "desc9": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Workload Identity Federation, interactive OAuth, auth profiles.",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "skipped-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "skipped-heading",
+        "skipped-items"
+      ]
+    },
+    "skipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Skipped",
+        "level": "h3"
+      }
+    },
+    "skipped-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "skip1"
+      ]
+    },
+    "skip1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link-skip1",
+        "desc-skip1"
+      ]
+    },
+    "link-skip1": {
+      "type": "Link",
+      "props": {
+        "label": "vercel/next.js v16.3.0-canary.10",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.10"
+      }
+    },
+    "desc-skip1": {
+      "type": "Text",
+      "props": {
+        "text": "Skips canary; bundles SSRF-rejection error message and React bump.",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "muted"
+      }
+    }
+  }
+}
