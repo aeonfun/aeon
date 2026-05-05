@@ -1,0 +1,112 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "RSS feed updated"
+      },
+      "children": [
+        "stat-entries",
+        "separator-1",
+        "heading-new",
+        "stack-entries",
+        "text-more",
+        "separator-2",
+        "link-subscribe"
+      ]
+    },
+    "stat-entries": {
+      "type": "Stat",
+      "props": {
+        "label": "entries",
+        "value": "103"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "heading-new": {
+      "type": "Heading",
+      "props": {
+        "text": "New",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack-entries": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry-1",
+        "entry-2",
+        "entry-3",
+        "entry-4",
+        "entry-5"
+      ]
+    },
+    "entry-1": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-05-05"
+      },
+      "children": []
+    },
+    "entry-2": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-05-05"
+      },
+      "children": []
+    },
+    "entry-3": {
+      "type": "Text",
+      "props": {
+        "text": "Paper Digest — 2026-05-05"
+      },
+      "children": []
+    },
+    "entry-4": {
+      "type": "Text",
+      "props": {
+        "text": "Push Recap — 2026-05-05"
+      },
+      "children": []
+    },
+    "entry-5": {
+      "type": "Text",
+      "props": {
+        "text": "Repo Actions — tomscaria/swarm-fund-mvp — 2026-05-05"
+      },
+      "children": []
+    },
+    "text-more": {
+      "type": "Text",
+      "props": {
+        "text": "(+2 more)",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "link-subscribe": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      },
+      "children": []
+    }
+  }
+}
