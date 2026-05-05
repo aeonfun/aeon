@@ -1,0 +1,367 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners",
+        "description": "Runners — 2026-05-05 — Verdict: SPECULATIVE"
+      },
+      "children": [
+        "verdict_badge",
+        "sep1",
+        "entry1",
+        "sep2",
+        "entry2",
+        "sep3",
+        "entry3",
+        "sep4",
+        "entry4",
+        "sep5",
+        "entry5",
+        "sep6",
+        "final_section"
+      ]
+    },
+    "verdict_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SPECULATIVE",
+        "variant": "outline"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "e1_header",
+        "e1_metrics",
+        "e1_comment"
+      ]
+    },
+    "e1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "e1_badge",
+        "e1_title"
+      ]
+    },
+    "e1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "e1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "冲鸭 / USDT (bsc) +4325% 24h",
+        "level": "h3"
+      }
+    },
+    "e1_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "vol $57.4m | liq $127k | fdv $87k (no mcap) | h1 +11% | buys:sells 1300:1026 | age 3.6h",
+        "variant": "caption"
+      }
+    },
+    "e1_comment": {
+      "type": "Text",
+      "props": {
+        "text": "wash-print actor reappears at vanity-4444 BSC USDT (0x7784a573...11294444). Same fingerprint as 05-01 冲鸭 / 05-03 熊猫头 / 05-04 BILL. Pool 3.6h old, ~$25k avg tx-size on $57m vol. Score is actor-noise, not signal.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "e2_header",
+        "e2_metrics",
+        "e2_comment"
+      ]
+    },
+    "e2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "e2_badge",
+        "e2_title"
+      ]
+    },
+    "e2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "e2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Apple / SOL (solana) +5051% 24h",
+        "level": "h3"
+      }
+    },
+    "e2_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "vol $4.5m | liq $122k | fdv $1.8m (no mcap) | h1 +18% | buys:sells 36971:32593 | age 20h",
+        "variant": "caption"
+      }
+    },
+    "e2_comment": {
+      "type": "Text",
+      "props": {
+        "text": "20h SOL meme up 50x with h1 still +18% across 70k tx. Active markup, but $122k liq is one whale-exit from collapse. Standard pump.fun graduation shape with the buy-side still leaning in.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "e3_header",
+        "e3_metrics",
+        "e3_comment"
+      ]
+    },
+    "e3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "e3_badge",
+        "e3_title"
+      ]
+    },
+    "e3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "e3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "RogueAI / WETH 0.01% (base) +8938% 24h",
+        "level": "h3"
+      }
+    },
+    "e3_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "vol $6.0m | liq $56k | fdv $362k (no mcap) | h1 -0.3% | buys:sells 9210:7676 | age 19h",
+        "variant": "caption"
+      }
+    },
+    "e3_comment": {
+      "type": "Text",
+      "props": {
+        "text": "19h base launch up 90x. Sibling RogueAI pool at slot 8 (+1456%, $300k liq, contract 0xf530c629) — multi-pool fingerprint is actor-distribution shape, not organic discovery. h1 already flat.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "e4_header",
+        "e4_metrics",
+        "e4_comment"
+      ]
+    },
+    "e4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "e4_badge",
+        "e4_title"
+      ]
+    },
+    "e4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MICRO-SPEC",
+        "variant": "secondary"
+      }
+    },
+    "e4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "TONSKI / TON 1% (ton) +962% 24h",
+        "level": "h3"
+      }
+    },
+    "e4_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.1m | liq $92k | fdv $890k (no mcap) | h1 -1.6% | buys:sells 2173:1529 | age 160d",
+        "variant": "caption"
+      }
+    },
+    "e4_comment": {
+      "type": "Text",
+      "props": {
+        "text": "160-day-old TON pool reactivated. Second TON entry of the series after 05-04 MTONGA near-miss — TON casino tape building beneath the radar.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "e5_header",
+        "e5_metrics",
+        "e5_comment"
+      ]
+    },
+    "e5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "e5_badge",
+        "e5_title"
+      ]
+    },
+    "e5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "default"
+      }
+    },
+    "e5_title": {
+      "type": "Heading",
+      "props": {
+        "text": "CHIMP / SOL (solana) +1409% 24h",
+        "level": "h3"
+      }
+    },
+    "e5_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.8m | liq $60k | fdv $517k (no mcap) | h1 -5.1% | buys:sells 17059:12816 | age 9h",
+        "variant": "caption"
+      }
+    },
+    "e5_comment": {
+      "type": "Text",
+      "props": {
+        "text": "9h SOL launch already rolling (h1 -5%). Top printed; expect h1 to deepen inside 6h. Standard fade-the-late-listing read.",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "final_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text",
+        "vibe_heading",
+        "vibe_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok (4× 429s on free-tier cleared on backoff)",
+        "variant": "caption"
+      }
+    },
+    "vibe_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "TTPA's 5-day base DEEP-LIQ streak broke — token absent from today's 240-pool dataset entirely. SKYAI's 7-day BSC survivor streak also broke (-5% h24 gated). 8 DEEP-LIQ pools cleared the gate; zero made top 5. First SPECULATIVE verdict in 3 runs. Floor-patch evidence count: 6 → 7.",
+        "variant": "body"
+      }
+    }
+  }
+}

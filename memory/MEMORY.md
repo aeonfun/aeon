@@ -66,8 +66,9 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - **Powell→Warsh Fed transition** — May 15 last day; Senate vote week of May 11. **WATCH (FRONT-RUN if dovish guidance leaks).**
 
 ## Token tracker (multi-day patterns)
-- **TTPA on base** (`0x9d3695...ba6ce2`) — 5-in-a-row monitor-runners DEEP-LIQ pattern (04-30 → 05-04). Liq scaled $13.5m → $3.35b (10× overnight); fdv $11.30b. h1 stalled 0.0% on 05-04 (post-reawakening equilibrium). Score 91.5 → 90.4. Strongest single-token signal of the series.
-- **SKYAI/WBNB on BSC** — 7 consecutive days DEEP-LIQ survivor without breaking top-5. Additional evidence for floor-patch.
+- **TTPA on base** (`0x9d3695...ba6ce2`) — 5-in-a-row DEEP-LIQ pattern (04-30 → 05-04) **streak ended 2026-05-05**: token absent from entire 240-pool dataset across all 12 endpoints, not just gated. Final state 05-04: liq $3.35b / fdv $11.30b / score 90.4 / h1 stalled at 0%. Pool either drained or velocity collapsed below GeckoTerminal listing threshold. Strongest single-token signal of the series; closed pattern for now, watch for re-entry.
+- **SKYAI/WBNB on BSC** — 7-day DEEP-LIQ survivor streak (04-29 → 05-04) **also ended 2026-05-05**: token still active and DEEP-LIQ-tier ($17.4m liq, $42.4m vol) but red on h24 (-5.0%) so gated by negPct. Both streak-tokens broke same day — pattern signature for the closed-streak floor-patch evidence (8 DEEP-LIQ survivors in pool today, zero in top 5 — 7th run where the patch would fire).
+- **冲鸭 / vanity-4444 BSC wash-print actor** — 3 of last 4 days under vanity-`4444` USDT BSC contracts (05-04 BILL `0x9494…754444`, 05-05 冲鸭 `0x7784…11294444`, 05-03 sibling 熊猫头 `0xf352…194444`). 3.6h-pool / $25k avg-tx / $57m vol fingerprint. Daily cadence resumed.
 - **DASH** — 05-04 token-pick 10/10 HIGH (privacy-coin rotation, Evolution upgrade May 2; first DASH/ZEN/FIRO co-move in months).
 
 ## Tracked Tokens

@@ -1,25 +1,25 @@
-*runners — 2026-05-04* — verdict: MIXED
+*runners — 2026-05-05* — verdict: SPECULATIVE
 
-1. [BREAKOUT] sato / USDT (eth) +643% 24h
-vol $10.6m | liq $451k | fdv n/a | h1 +15% | buys:sells 9915:6464 | age 21h
-— 21h-old ETH USDT 1% pool with sustained markup; vol-to-liq 23x and h1 still green is a rare ETH meme breakout shape. Fdv blank means metadata thin — verify liquidity isn't single-LP before any deeper read.
+1. [BREAKOUT] 冲鸭 / USDT (bsc) +4325% 24h
+vol $57.4m | liq $127k | fdv $87k (no mcap) | h1 +11% | buys:sells 1300:1026 | age 3.6h
+— wash-print actor reappears at vanity-4444 BSC USDT (`0x7784a573...11294444`). Same fingerprint as 05-01 冲鸭 / 05-03 熊猫头 / 05-04 BILL. Pool 3.6h old, ~$25k avg tx-size on $57m vol. Score is actor-noise, not signal.
 
-2. [DEEP-LIQ] TTPA / WETH (base) +849% 24h ★ repeat
-vol $9.9m | liq $3.35b | fdv $11.3b (no mcap) | h1 +0.0% | buys:sells 10579:8914 | age 11d
-— 5-in-a-row on token id base_0x9d3695...102ba6ce2. Liq jumped another 10x ($334.7m → $3.35b); fdv now $11.3b — institutional-scale base pool. h1 stalled at exactly 0% — pool hit local equilibrium after yesterday's reawakening. Continuation, not climax.
+2. [BREAKOUT] Apple / SOL (solana) +5051% 24h
+vol $4.5m | liq $122k | fdv $1.8m (no mcap) | h1 +18% | buys:sells 36971:32593 | age 20h
+— 20h SOL meme up 50x with h1 still +18% across 70k tx. Active markup, but $122k liq is one whale-exit from collapse. Standard pump.fun graduation shape with the buy-side still leaning in.
 
-3. [BREAKOUT] BILL / USDT (bsc) +4313% 24h
-vol $57.4m | liq $128k | fdv $89k (no mcap) | h1 +14% | buys:sells 1231:1004 | age 3.2h
-— wash-print actor signature reappeared. Contract bsc_0x94949a78...883754444 — vanity-4444 BSC USDT pattern matches the 04-29/04-30/05-01 actor cycle (agentic money → 冲鸭 → today BILL). After 2-day silence, same fingerprint: 1-3h pool age, ~$57m vol, ~$89k fdv. Treat the score as actor-noise, not signal.
+3. [BREAKOUT] RogueAI / WETH 0.01% (base) +8938% 24h
+vol $6.0m | liq $56k | fdv $362k (no mcap) | h1 -0.3% | buys:sells 9210:7676 | age 19h
+— 19h base launch up 90x. Sibling RogueAI pool at slot 8 (+1456%, $300k liq, contract `0xf530c629`) — multi-pool fingerprint is actor-distribution shape, not organic discovery. h1 already flat.
 
-4. [CONTINUATION] BELIEVE / SOL (solana) +858% 24h
-vol $1.3m | liq $234k | fdv $8.5m | h1 +35% | buys:sells 5387:4109 | age ~200d
-— 200-day-old SOL pool reactivated; h1 +35% means active markup, not the post-spike fade we usually see in this slot. Mcap matches fdv ($8.5m), 1.31:1 buy-skew — cleanest momentum read of the day.
+4. [MICRO-SPEC] TONSKI / TON 1% (ton) +962% 24h
+vol $1.1m | liq $92k | fdv $890k (no mcap) | h1 -1.6% | buys:sells 2173:1529 | age 160d
+— 160-day-old TON pool reactivated. Second TON entry of the series after 05-04 MTONGA near-miss — TON casino tape building beneath the radar.
 
-5. [BREAKOUT] SueaAuan / SOL (solana) +575% 24h
-vol $2.2m | liq $40k | fdv $224k (no mcap) | h1 +13% | buys:sells 20402:16912 | age 17h
-— 17h SOL meme, $40k liq is one whale-exit from collapse. 37k tx with h1 still green is the standard pump.fun graduation shape. Speculative; expect h1 to roll inside 6h.
+5. [BREAKOUT] CHIMP / SOL (solana) +1409% 24h
+vol $1.8m | liq $60k | fdv $517k (no mcap) | h1 -5.1% | buys:sells 17059:12816 | age 9h
+— 9h SOL launch already rolling (h1 -5%). Top printed; expect h1 to deepen inside 6h. Standard fade-the-late-listing read.
 
-sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok
-vibe: TTPA's 5-in-a-row on $3.35b liq locks the base/DEEP-LIQ axis as the durable signal of the series. BSC wash-print actor returns under new ticker. SOL retains 2 of 5 (down from 3). ETH gets a real BREAKOUT (sato) — first ETH top-5 entry in the series.
+sources: gt-global=ok gt-{solana,eth,base,bsc,arbitrum}=ok gt-new=ok (4× 429s on free-tier cleared on backoff)
+vibe: TTPA's 5-day base DEEP-LIQ streak broke — token absent from today's 240-pool dataset entirely. SKYAI's 7-day BSC survivor streak also broke (-5% h24 gated). 8 DEEP-LIQ pools cleared the gate; zero made top 5. First SPECULATIVE verdict in 3 runs. Floor-patch evidence count: 6 → 7.
 
