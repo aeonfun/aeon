@@ -1,3 +1,10 @@
-TOKEN_REPORT_NO_DATA — fifth consecutive skip. No Base-chain contract address is configured in `memory/MEMORY.md` (the "Tracked Tokens" table has BTC/ETH/SOL with CoinGecko IDs, no `Contract`/`Chain` columns) and `var:` is empty. Aborted per spec: no article written, no notification sent, log entry appended to `memory/logs/2026-05-04.md`.
+`TOKEN_REPORT_NO_DATA` — sixth consecutive skip. No article, no notification.
 
-To activate this skill: add a row to MEMORY.md under a `## Tracked Token` heading with `Token | Contract | Chain` — e.g., `AEON | 0xbf8e... | base`.
+The skill requires a Base-chain token contract address in `memory/MEMORY.md` under a `## Tracked Token` heading (columns: `Token | Contract | Chain`). The current "Tracked Tokens" table has only CoinGecko IDs for BTC/ETH/SOL — no contract address, no chain field. `var:` is also empty. Logged to `memory/logs/2026-05-05.md`.
+
+## Summary
+
+- Checked `memory/MEMORY.md` for a tracked Base-chain token — none found.
+- Aborted per skill spec (`TOKEN_REPORT_NO_DATA` path): no article written, no notification sent.
+- Appended state log to `memory/logs/2026-05-05.md` (sixth consecutive skip recorded).
+- To activate: operator adds a `## Tracked Token` section to MEMORY.md with a Base-chain contract address and chain identifier.
