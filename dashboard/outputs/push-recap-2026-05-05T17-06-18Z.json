@@ -1,0 +1,175 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-05"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_project",
+        "sep1",
+        "heading_shipped",
+        "stack_commit1",
+        "stack_commit2",
+        "stack_commit3",
+        "sep2",
+        "heading_shape",
+        "text_shape",
+        "heading_volume",
+        "text_volume",
+        "sep3",
+        "link_recap"
+      ]
+    },
+    "text_project": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp — SHIPPING — /investors page goes live with six SVG viz, scroll progress, mobile PDF rescue",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_shipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "stack_commit1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_commit1",
+        "text_commit1"
+      ]
+    },
+    "badge_commit1": {
+      "type": "Badge",
+      "props": {
+        "text": "c8e0963",
+        "variant": "outline"
+      }
+    },
+    "text_commit1": {
+      "type": "Text",
+      "props": {
+        "text": "six SVG viz fill the /investors slots: StackArchitecture (sec-04), CycleTimeBars (sec-10), PositioningMatrix (sec-11, Revenant in the full-stack quadrant), RoadmapGantt (24m), ArrTrajectory (Y1→Y6 log), VisionTree (six radial revenue legs). New InvestorViz.tsx (+349), pure React+SVG, themed via Lore CSS variables."
+      }
+    },
+    "stack_commit2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_commit2",
+        "text_commit2"
+      ]
+    },
+    "badge_commit2": {
+      "type": "Badge",
+      "props": {
+        "text": "fe189cc",
+        "variant": "outline"
+      }
+    },
+    "text_commit2": {
+      "type": "Text",
+      "props": {
+        "text": "ScrollProgress.tsx (fixed 2px chartreuse top bar, RAF-throttled), CSS-counter section numbering (`01 ·`, `02 ·`…), and a real 201 deck shell — bare iframe replaced with .inv__doc-hero (italic display H1 + 64ch body + Download/Read-101 CTAs) wrapping the PDF embed."
+      }
+    },
+    "stack_commit3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_commit3",
+        "text_commit3"
+      ]
+    },
+    "badge_commit3": {
+      "type": "Badge",
+      "props": {
+        "text": "8f688ca",
+        "variant": "outline"
+      }
+    },
+    "text_commit3": {
+      "type": "Text",
+      "props": {
+        "text": "same-session /design-critique fix: SVG width/height defaults were collapsing viz to 300×150 inside the ~1056px slots; scopes `svg { width:100%; height:auto; min-width:600px }` + slot `overflow-x: auto`. Mobile (<768px) collapses 201 iframe to 200px and surfaces explicit \"Use the download button above\" copy via ::after."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_shape": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      }
+    },
+    "text_shape": {
+      "type": "Text",
+      "props": {
+        "text": "3 user-visible · 0 internal · 0 infra · 81 bot-filtered · 0 merged PRs"
+      }
+    },
+    "heading_volume": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      }
+    },
+    "text_volume": {
+      "type": "Text",
+      "props": {
+        "text": "5 unique files, +588 / -30 lines, all on swarm-fund-mvp main (lore-financial-teaser + aaronjmars/aeon empty)"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_recap": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full push recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-05.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
