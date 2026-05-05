@@ -1,0 +1,241 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-05",
+        "description": "research day — 3 tradable hooks, 1 PR on falsifier path, empirical anchor locked; chain-runner DEGRADED day 10"
+      },
+      "children": [
+        "section_headlines",
+        "sep_1",
+        "section_notable",
+        "sep_2",
+        "section_decisions",
+        "sep_3",
+        "section_blockers",
+        "sep_4",
+        "text_notes"
+      ]
+    },
+    "section_headlines": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_headlines",
+        "headline_1",
+        "headline_2",
+        "headline_3"
+      ]
+    },
+    "h_headlines": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h2"
+      }
+    },
+    "headline_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "external-feature — PR #31: aeon_adapter _last_error clears on recovery",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/31",
+        "source": "ADR-093, T-12 falsifier"
+      }
+    },
+    "headline_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "paper-pick — ILS-dl Iran-cluster empirical anchor (0.444-mag leakage shift)",
+        "href": "https://arxiv.org/abs/2605.02286",
+        "source": "arXiv"
+      }
+    },
+    "headline_3": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket-comments — 3 hooks: Trump-China NO-cluster (92.5% vs 3 absence-of-evidence handles), Iranian-uranium UMA-arb (4-handle bluff), Iran-airspace T-3 mediation-vs-strike",
+        "variant": "body"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_notable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_notable",
+        "text_monitor",
+        "stack_revenant"
+      ]
+    },
+    "h_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "text_monitor": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners: 85 pools scanned, SPECULATIVE verdict; TTPA + SKYAI streaks both ended; 0 DEEP-LIQ in top 5",
+        "variant": "body"
+      }
+    },
+    "stack_revenant": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_revenant_title",
+        "stat_trades",
+        "stat_winrate",
+        "stat_nav",
+        "text_revenant_note"
+      ]
+    },
+    "text_revenant_title": {
+      "type": "Text",
+      "props": {
+        "text": "Revenant",
+        "variant": "lead"
+      }
+    },
+    "stat_trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Trades",
+        "value": "29"
+      }
+    },
+    "stat_winrate": {
+      "type": "Stat",
+      "props": {
+        "label": "Win Rate",
+        "value": "76%"
+      }
+    },
+    "stat_nav": {
+      "type": "Stat",
+      "props": {
+        "label": "NAV",
+        "value": "+$415"
+      }
+    },
+    "text_revenant_note": {
+      "type": "Text",
+      "props": {
+        "text": "no new orders today; metrics.json authoritative",
+        "variant": "caption"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_decisions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_decisions",
+        "decision_1",
+        "decision_2"
+      ]
+    },
+    "h_decisions": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for tomorrow",
+        "level": "h2"
+      }
+    },
+    "decision_1": {
+      "type": "Text",
+      "props": {
+        "text": "Merge PR #156 reply-maker (day 11) → closes ISS-014",
+        "variant": "body"
+      }
+    },
+    "decision_2": {
+      "type": "Text",
+      "props": {
+        "text": "Review PR #158 (dashboard/skills/run) + PR #159 (star-momentum-alert), both opened today",
+        "variant": "body"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_blockers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_blockers",
+        "alert_chain",
+        "alert_heartbeat"
+      ]
+    },
+    "h_blockers": {
+      "type": "Heading",
+      "props": {
+        "text": "Blockers",
+        "level": "h2"
+      }
+    },
+    "alert_chain": {
+      "type": "Alert",
+      "props": {
+        "title": "Chain wrapper failures",
+        "message": "3 chain wrappers failed (morning-brief / evening-rollup / weekly-grant-update) — day 10 chain-runner DEGRADED",
+        "type": "warning"
+      }
+    },
+    "alert_heartbeat": {
+      "type": "Alert",
+      "props": {
+        "title": "Heartbeat skip",
+        "message": "14:00 heartbeat skipped; second consecutive skip tomorrow re-escalates ISS-017",
+        "type": "warning"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_notes": {
+      "type": "Text",
+      "props": {
+        "text": "+20 routine runs collapsed · sources: log=ok cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}

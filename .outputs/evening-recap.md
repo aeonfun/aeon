@@ -1,20 +1,21 @@
-*Evening Recap — 2026-05-04*
-_TL;DR: heavy content day — 3 papers picked + 10 articles + reflect done; TN upset caught live; chain-runner DEGRADED day 9_
+*Evening Recap — 2026-05-05*
+_TL;DR: research day — 3 tradable hooks, 1 PR on falsifier path, empirical anchor locked; chain-runner DEGRADED day 10_
 
-*Revenant (canary):* 28 closed · 14 open · 75% win · +$344 PnL · Sharpe 0.29
-Loop running · regime 1 · kelly 1.0 · 47 strategies
-NAV delta: -$71 vs last reflect ($415→$344)
+*Headlines:*
+- external-feature — PR #31 opened: aeon_adapter _last_error clears on recovery (ADR-093, T-12 falsifier) · https://github.com/tomscaria/swarm-fund-mvp/pull/31
+- paper-pick — ILS-dl Iran-cluster empirical anchor (0.444-mag leakage shift) · https://arxiv.org/abs/2605.02286
+- polymarket-comments — 3 hooks: Trump-China NO-cluster (92.5% vs 3 absence-of-evidence handles), Iranian-uranium UMA-arb (4-handle bluff), Iran-airspace T-3 mediation-vs-strike
 
-*Top 3 picks:*
-1. Anatomy PM Microstructure (2604.24366) — direction from public feed ~59% acc; use on-chain OrderFilled
-2. Foresight Arena (2605.00420) — 350 trades for 80% power; 100-trade Apex gate is power-underspecified
-3. Cong dataset (2604.20421) — Cornell 770k markets × 943M fills; PhD anchor
+*Notable:*
+- monitor-runners: 85 pools scanned, SPECULATIVE verdict; TTPA + SKYAI streaks both ended; 0 DEEP-LIQ in top 5
+- Revenant: 29 trades / 76% WR / +$415 NAV (no new orders today; metrics.json authoritative)
 
-*Signals:*
-TN TVK 6.95c→99.65c resolved (CalibrationGap TN thesis DEAD). WB BJP flip confirmed 99.55%. arsenelupin Hormuz live-tape claim — re-eval 54.5c NO before next entry.
+*Decisions for tomorrow:*
+- Merge PR #156 reply-maker (day 11) → closes ISS-014
+- Review PR #158 (dashboard/skills/run) + PR #159 (star-momentum-alert), both opened today
 
-*PRs:* #30 variant_bandit corruption fallback (shipped) · #157 skill-freshness (merged)
+*Blockers:*
+- 3 chain wrappers failed (morning-brief / evening-rollup / weekly-grant-update) — day 10 chain-runner DEGRADED
+- 14:00 heartbeat skipped; second consecutive skip tomorrow re-escalates ISS-017
 
-*Skill failures:* chain-runner DEGRADED day 9 (3 chains) · reddit/farcaster/vibecoding/remix blocked (missing secrets)
-
-_+~30 routine runs collapsed · sources: log=ok cron-state=ok_
+_+20 routine runs collapsed · sources: log=ok cron-state=ok_
