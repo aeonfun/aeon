@@ -1,1 +1,1 @@
-self-improve: 3+ open improvement PRs (#1/#2/#5, oldest 8d idle) — back-pressuring per skill rule, no new fix opened. Operator-side review needed.
+self-improve: 3+ open PRs (4), waiting for review — #11 #5 #2 #1, oldest 10 days. Skipped this cycle. Queue: DEEP-LIQ floor patch / ISS-018 / ISS-019 / cost-discipline downgrade.

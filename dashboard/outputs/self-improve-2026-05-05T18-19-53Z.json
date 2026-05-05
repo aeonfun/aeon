@@ -1,0 +1,129 @@
+{
+  "root": "card_self_improve",
+  "state": {},
+  "elements": {
+    "card_self_improve": {
+      "type": "Card",
+      "props": {
+        "title": "self-improve"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_status",
+        "stack_prs",
+        "text_age",
+        "separator_1",
+        "heading_queue",
+        "stack_queue"
+      ]
+    },
+    "text_status": {
+      "type": "Text",
+      "props": {
+        "text": "3+ open PRs (4) — waiting for review"
+      }
+    },
+    "stack_prs": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_pr11",
+        "badge_pr5",
+        "badge_pr2",
+        "badge_pr1"
+      ]
+    },
+    "badge_pr11": {
+      "type": "Badge",
+      "props": {
+        "text": "#11"
+      }
+    },
+    "badge_pr5": {
+      "type": "Badge",
+      "props": {
+        "text": "#5"
+      }
+    },
+    "badge_pr2": {
+      "type": "Badge",
+      "props": {
+        "text": "#2"
+      }
+    },
+    "badge_pr1": {
+      "type": "Badge",
+      "props": {
+        "text": "#1"
+      }
+    },
+    "text_age": {
+      "type": "Text",
+      "props": {
+        "text": "Oldest 10 days. Skipped this cycle."
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_queue": {
+      "type": "Heading",
+      "props": {
+        "text": "Next Queue",
+        "level": "h3"
+      }
+    },
+    "stack_queue": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "badge_queue1",
+        "badge_queue2",
+        "badge_queue3",
+        "badge_queue4"
+      ]
+    },
+    "badge_queue1": {
+      "type": "Badge",
+      "props": {
+        "text": "DEEP-LIQ floor patch"
+      }
+    },
+    "badge_queue2": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-018"
+      }
+    },
+    "badge_queue3": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-019"
+      }
+    },
+    "badge_queue4": {
+      "type": "Badge",
+      "props": {
+        "text": "cost-discipline downgrade"
+      }
+    }
+  }
+}
