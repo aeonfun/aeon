@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { execSync } from 'child_process'
+import { execFileSync } from 'child_process'
 import { resolve } from 'path'
 
 const REPO_ROOT = resolve(process.cwd(), '..')
@@ -29,11 +29,11 @@ export async function POST(
       }
     } catch { /* no body is fine */ }
 
-    let cmd = `gh workflow run aeon.yml -f skill=${name}`
-    if (skillVar) cmd += ` -f var=${JSON.stringify(skillVar)}`
-    if (model) cmd += ` -f model=${JSON.stringify(model)}`
+    const args = ['workflow', 'run', 'aeon.yml', '-f', `skill=${name}`]
+    if (skillVar) args.push('-f', `var=${skillVar}`)
+    if (model) args.push('-f', `model=${model}`)
 
-    execSync(cmd, { stdio: 'pipe', cwd: REPO_ROOT })
+    execFileSync('gh', args, { stdio: 'pipe', cwd: REPO_ROOT })
 
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
