@@ -1,0 +1,88 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-text",
+        "separator-1",
+        "commit-stack",
+        "explanation-text",
+        "separator-2",
+        "pr-link"
+      ]
+    },
+    "repo-text": {
+      "type": "Text",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp",
+        "variant": "muted"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "commit-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-fix",
+        "commit-message"
+      ]
+    },
+    "badge-fix": {
+      "type": "Badge",
+      "props": {
+        "text": "fix",
+        "variant": "secondary"
+      }
+    },
+    "commit-message": {
+      "type": "Text",
+      "props": {
+        "text": "aeon_adapter: clear _last_error after successful poll"
+      }
+    },
+    "explanation-text": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-093 ingestion adapter no longer looks permanently broken after a single transient blip clears",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #31",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/31",
+        "source": "GitHub"
+      }
+    }
+  }
+}
