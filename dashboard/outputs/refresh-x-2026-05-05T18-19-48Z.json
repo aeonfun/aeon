@@ -1,0 +1,24 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "refresh-x"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "REFRESH_X_NO_VAR",
+        "message": "Set var to an X handle in aeon.yml (skills.refresh-x.var) or pass at trigger"
+      },
+      "children": []
+    }
+  }
+}
