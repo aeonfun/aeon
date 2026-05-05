@@ -1,5 +1,5 @@
-*Aeon Stopped Adding Capabilities This Week. It Started Building the Launch.*
+*swarm-fund-mvp Just Spent 48 Hours on the Pitch, Not the Engine*
 
-Thesis: Of aaronjmars/aeon's 9 feature PRs merged in the last 7 days, all 9 serve the meta-loop — 7 observability/manifest skills, 2 launch-text generators. Zero new market, research, or content-ingest skills shipped.
+Thesis: May 4 11:28 UTC → May 5 00:53 UTC, swarm-fund-mvp merged zero strategy or runner code — every substantive commit (bf21c22, 4f82c36, fe189cc, c8e0963, 8f688ca) touched the investor-facing site surface. PR #29 draft-blocked on HL 403; PR #30 open. LP-pitch readiness, not capability, is the binding constraint this week.
 
-Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-04.md
+Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-05.md

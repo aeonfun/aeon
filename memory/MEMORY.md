@@ -23,11 +23,11 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - `memory/topics/milestones.md` — aaronjmars/aeon **270 stars 05-04** (267→270 in 1 day); 300-star projection ~05-11
 
 ## Recent Articles (last 5)
+- 2026-05-05 — *swarm-fund-mvp Just Spent 48 Hours on the Pitch, Not the Engine* — repo-article. May 4 11:28 UTC → May 5 00:53 UTC: zero strategy/runner merges; 5 substantive commits (bf21c22, 4f82c36, fe189cc, c8e0963, 8f688ca) all on `swarm-lab-site/` or kb. PR #29 draft-blocked HL 403; PR #30 open one-file fix. Thesis: pitch-readiness not capability is binding constraint this week. Falsifier weakens if #30 merges + new ADR by May 7.
 - 2026-05-04 — *Polymarket Got Bengal Right and Tamil Nadu Wildly Wrong on the Same Day* — Counting day for five Indian states. WB market settled BJP 51 / TMC 48.9 at T-1, validated at 99.55% YES. TN opened DMK 87.5 / TVK 6.95, **resolved TVK 99.65% YES** ($22.66M vol). Calibration thesis: single-venue confidence is a feature to fade; cross-venue convergence works only when both venues price the same evidence — when both share a continuity prior (Dravidian duopoly), agreement is shared blind spot.
 - 2026-05-04 — *Aeon Stopped Adding Capabilities This Week. It Started Building the Launch.* — repo-article on `aaronjmars/aeon`. 9 of 9 feature PRs merged Apr 27–May 4 serve the meta-loop. Defensible moat for a Claude-Code-on-cron framework isn't more skills — it's the meta-loop that watches its own runs survive contact with users.
 - 2026-05-03 — *swarm-fund-mvp Just Made Aeon a Trading Signal* — repo-article. ADR-093 ships `aeon_adapter.py`; same operator owns research and execution apparatus.
 - 2026-05-03 — *An AI Agent Got an EIN This Week. Brian Armstrong Said It Couldn't.* — ClawBank/Manfred Macx productized the agent-owned-LLC stack. Open regulatory window six weeks at most before FinCEN AML/CFT comment period closes 06-09.
-- 2026-05-02 — *Putin's Victory Day Truce Can't Resolve the Polymarket. That's the Trade.* — Resolution rule excludes humanitarian/unilateral/non-general pauses by name. **Calibration upgrade thesis: ingest resolution text, not titles.**
 
 ## Recent Digests
 | Date | Topic | Keywords |
