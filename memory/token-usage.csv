@@ -101,4 +101,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,weekly-review,claude-opus-4-7,46,23028,3089909,149932
 2026-05-04,push-recap,claude-opus-4-7,62,29947,3458886,107035
 2026-05-04,evening-recap,claude-sonnet-4-6,1245,6594,1304402,124545
-2026-05-05,rss-digest,claude-opus-4-7,10,1200,180602,20750
+2026-05-05,telegram-digest,claude-sonnet-4-6,7,1095,144865,17715
