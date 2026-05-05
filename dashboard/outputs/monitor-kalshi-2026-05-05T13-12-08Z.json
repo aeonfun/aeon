@@ -1,0 +1,408 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor — 2026-05-05"
+      },
+      "children": [
+        "verdict-alert",
+        "sep1",
+        "btc-today-section",
+        "sep2",
+        "btc-may8-section",
+        "sep3",
+        "fed-funds-section",
+        "sep4",
+        "alerts-section",
+        "sep5",
+        "trending-section",
+        "sep6",
+        "setup-section",
+        "sep7",
+        "sources-section"
+      ]
+    },
+    "verdict-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "title": "Verdict",
+        "message": "MONITOR_KALSHI_NO_CONFIG — watchlist empty; discovered 5 events. Thin books throughout; no market clears $1k 24h vol gate. Hermes-arb note: KXBTC falsifier window closed yesterday (day 7 ended 2026-05-04)."
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "btc-today-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc-today-heading",
+        "btc-today-subtitle",
+        "btc-today-table",
+        "btc-today-mover"
+      ]
+    },
+    "btc-today-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin Price Today (KXBTC-26MAY0517)",
+        "level": "h2"
+      }
+    },
+    "btc-today-subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "closes 21:00 UTC",
+        "variant": "muted"
+      }
+    },
+    "btc-today-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "vol_usd",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$80.1–80.4k",
+            "7%",
+            "−3pp ▼",
+            "~$814",
+            "73pp (thin)"
+          ],
+          [
+            "$80.6–80.9k",
+            "13%",
+            "n/a",
+            "~$200",
+            "price_only"
+          ],
+          [
+            "$80.9–81.1k",
+            "13%",
+            "n/a",
+            "~$178",
+            "price_only"
+          ]
+        ]
+      }
+    },
+    "btc-today-mover": {
+      "type": "Text",
+      "props": {
+        "text": "mover: $80.1–80.4k — fell −3pp (was 10%) as BTC rose from ~$80.4k to $80.8k; current in $80.6–80.9k bucket (13%), tied for most likely close.",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "btc-may8-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc-may8-heading",
+        "btc-may8-table",
+        "btc-may8-mover"
+      ]
+    },
+    "btc-may8-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin Price May 8 (KXBTC-26MAY0817)",
+        "level": "h2"
+      }
+    },
+    "btc-may8-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "vol_usd",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$79.0–79.3k",
+            "7%",
+            "−1pp",
+            "~$374",
+            "3pp (loose)"
+          ],
+          [
+            "$81.0–81.3k",
+            "9%",
+            "n/a",
+            "~$282",
+            "price_only"
+          ],
+          [
+            "$80.0–80.3k",
+            "8%",
+            "n/a",
+            "~$172",
+            "price_only"
+          ]
+        ]
+      }
+    },
+    "btc-may8-mover": {
+      "type": "Text",
+      "props": {
+        "text": "mover: $79.0–79.3k — stable −1pp as BTC lifted; May 8 mode ~$81.0–81.3k (9%).",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "fed-funds-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fed-funds-heading",
+        "fed-funds-table",
+        "fed-funds-implied"
+      ]
+    },
+    "fed-funds-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed Funds Rate Apr 2027 (KXFED-27APR)",
+        "level": "h2"
+      }
+    },
+    "fed-funds-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Strike",
+          "prob",
+          "vol_usd"
+        ],
+        "rows": [
+          [
+            ">3.50%",
+            "41%",
+            "~$130"
+          ],
+          [
+            ">3.25%",
+            "55%",
+            "~$182"
+          ],
+          [
+            ">3.00%",
+            "64%",
+            "~$228"
+          ]
+        ]
+      }
+    },
+    "fed-funds-implied": {
+      "type": "Text",
+      "props": {
+        "text": "implied: ~125–150bp cuts from 4.25–4.50% by Apr 2027; terminal rate mode ~3.00–3.25%.",
+        "variant": "caption"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "alerts-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts-heading",
+        "alerts-status"
+      ]
+    },
+    "alerts-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS",
+        "level": "h3"
+      }
+    },
+    "alerts-status": {
+      "type": "Text",
+      "props": {
+        "text": "None (>5pp on non-thin book)",
+        "variant": "muted"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "trending-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending-heading",
+        "trending-items"
+      ]
+    },
+    "trending-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h3"
+      }
+    },
+    "trending-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-1",
+        "trending-2"
+      ]
+    },
+    "trending-1": {
+      "type": "Text",
+      "props": {
+        "text": "KXBTC (BTC weekly) — top 24h vol; add KXBTC-26MAY0817 to watchlist"
+      }
+    },
+    "trending-2": {
+      "type": "Text",
+      "props": {
+        "text": "KXFED (Fed rate path) — add KXFED-26DEC + KXFED-27APR"
+      }
+    },
+    "sep6": {
+      "type": "Separator"
+    },
+    "setup-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "setup-heading",
+        "setup-text"
+      ]
+    },
+    "setup-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Setup",
+        "level": "h3"
+      }
+    },
+    "setup-text": {
+      "type": "Text",
+      "props": {
+        "text": "skills/monitor-kalshi/watchlist.md is empty. Add tickers above to activate daily tracking."
+      }
+    },
+    "sep7": {
+      "type": "Separator"
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources-heading",
+        "sources-status",
+        "verdict-codes"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "sources-status": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "source-events",
+        "source-candlesticks",
+        "source-orderbook"
+      ]
+    },
+    "source-events": {
+      "type": "Badge",
+      "props": {
+        "text": "events=ok",
+        "variant": "secondary"
+      }
+    },
+    "source-candlesticks": {
+      "type": "Badge",
+      "props": {
+        "text": "candlesticks=degraded",
+        "variant": "outline"
+      }
+    },
+    "source-orderbook": {
+      "type": "Badge",
+      "props": {
+        "text": "orderbook=degraded",
+        "variant": "outline"
+      }
+    },
+    "verdict-codes": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "code-1",
+        "code-2"
+      ]
+    },
+    "code-1": {
+      "type": "Badge",
+      "props": {
+        "text": "MONITOR_KALSHI_NO_CONFIG",
+        "variant": "outline"
+      }
+    },
+    "code-2": {
+      "type": "Badge",
+      "props": {
+        "text": "MONITOR_KALSHI_DEGRADED",
+        "variant": "outline"
+      }
+    }
+  }
+}

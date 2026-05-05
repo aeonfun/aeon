@@ -103,4 +103,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,evening-recap,claude-sonnet-4-6,1245,6594,1304402,124545
 2026-05-05,paper-digest,claude-opus-4-7,67,31660,4013939,103820
 2026-05-05,github-trending,claude-opus-4-7,26,19462,1027474,126104
-2026-05-05,monitor-runners,claude-opus-4-7,98,34820,5638434,137012
+2026-05-05,monitor-kalshi,claude-sonnet-4-6,23,32709,1304618,88183

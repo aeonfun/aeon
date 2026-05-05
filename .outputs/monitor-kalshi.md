@@ -1,38 +1,37 @@
-*Kalshi monitor — 2026-05-04*
-verdict: all quiet — watchlist empty; 3 events discovered; no market clears $1k USD vol gate; BTC implied spot $78.75–79k
+*Kalshi monitor — 2026-05-05*
+verdict: MONITOR_KALSHI_NO_CONFIG — watchlist empty; discovered 5 events. Thin books throughout; no market clears $1k 24h vol gate. Hermes-arb note: KXBTC falsifier window closed yesterday (day 7 ended 2026-05-04).
 
-**KXBTC-26MAY0417** (BTC price today at 5pm EDT) — Crypto [closes in hours]
-| Market | prob | vol_24h | spread |
-|--------|------|---------|--------|
-| $78,750–$78,999 (B78875) | 13% | ~$144 | 2pp |
-| $79,250–$79,499 (B79375) | 12% | ~$183 | 4pp |
-| $78,500–$78,749 (B78625) | 12% | ~$134 | 3pp |
-mover: B78875 — implied spot consistent with yesterday's $78,604 print; Hermes-arb falsifier day-5
+**Bitcoin Price Today (KXBTC-26MAY0517)** — closes 21:00 UTC
+| Market | prob | Δ24h | vol_usd | spread |
+|--------|------|------|---------|--------|
+| $80.1–80.4k | 7% | −3pp ▼ | ~$814 | 73pp (thin) |
+| $80.6–80.9k | 13% | n/a | ~$200 | price_only |
+| $80.9–81.1k | 13% | n/a | ~$178 | price_only |
+mover: $80.1–80.4k — fell −3pp (was 10%) as BTC rose from ~$80.4k to $80.8k; current in $80.6–80.9k bucket (13%), tied for most likely close.
 
-**KXBTC-26MAY0817** (BTC price May 8 at 5pm EDT) — Crypto
-| Market | prob | vol_24h | spread |
-|--------|------|---------|--------|
-| $79,000–$79,499 (B79250) | 5% | ~$209 | 3pp |
-| $77,500–$77,999 (B77750) | 6% | ~$173 | 1pp |
-| $77,000–$77,499 (B77250) | 7% | ~$163 | 2pp |
-mover: B79250 — highest 24h count; slight upward drift vs today; event aggregate ~$1.4k across 40 buckets
-note: B78250 has 5,434 OI (historical) and B79250 has 4,634 OI — large pre-existing positions
+**Bitcoin Price May 8 (KXBTC-26MAY0817)**
+| Market | prob | Δ24h | vol_usd | spread |
+|--------|------|------|---------|--------|
+| $79.0–79.3k | 7% | −1pp | ~$374 | 3pp (loose) |
+| $81.0–81.3k | 9% | n/a | ~$282 | price_only |
+| $80.0–80.3k | 8% | n/a | ~$172 | price_only |
+mover: $79.0–79.3k — stable −1pp as BTC lifted; May 8 mode ~$81.0–81.3k (9%).
 
-**KXFED-27APR** (Fed funds rate after Apr 2027 FOMC) — Economics
-| Market | prob | vol_24h | spread |
-|--------|------|---------|--------|
-| >4.25% | 8% | ~$22 | wide |
-| >4.00% | 35% | ~$14 | wide |
-| >3.75% | 46% | ~$27 | wide |
-rate curve: 54% prob below 3.50% by Apr 2027; ~80% prob 2+ cuts from current 4.25–4.50%; Warsh cut thesis priced in ahead of May 15 Powell departure
+**Fed Funds Rate Apr 2027 (KXFED-27APR)**
+| Strike | prob | vol_usd |
+|--------|------|---------|
+| >3.50% | 41% | ~$130 |
+| >3.25% | 55% | ~$182 |
+| >3.00% | 64% | ~$228 |
+implied: ~125–150bp cuts from 4.25–4.50% by Apr 2027; terminal rate mode ~3.00–3.25%.
 
 **ALERTS** (>5pp on non-thin book): none
 
 **Trending (not tracked)**
-- KXBTC-26MAY0817 — ~$1.4k aggregate 24h vol; add for Hermes-arb BTC context; watchlist starters: KXBTC-26MAY0817, KXFED-27APR
-- KXFED-26MAY — 404 (May 6-7 FOMC market not found; rate decision 3 days out, no near-term rate market active)
+- KXBTC (BTC weekly) — top 24h vol; add KXBTC-26MAY0817 to watchlist
+- KXFED (Fed rate path) — add KXFED-26DEC + KXFED-27APR
 
-Setup: add tickers to skills/monitor-kalshi/watchlist.md (one per line)
+Setup: skills/monitor-kalshi/watchlist.md is empty. Add tickers above to activate daily tracking.
 
-sources: events=ok candlesticks=skip orderbook=skip SRC=price_only (batch 400)
-Status: MONITOR_KALSHI_NO_CONFIG
+sources: events=ok candlesticks=degraded orderbook=degraded
+MONITOR_KALSHI_NO_CONFIG | MONITOR_KALSHI_DEGRADED
