@@ -1,8 +1,10 @@
 ## Summary
 
-Skipped rss-digest — `memory/feeds.yml` does not exist. Per the skill spec ("If the file doesn't exist yet, create it or skip this skill"), I logged `RSS_DIGEST_SKIP` to `memory/logs/2026-05-04.md` and ended without sending a notification. No feeds means no signal to propagate; creating an empty feeds.yml here would just defer the same skip to the next run.
+Skipped the rss-digest skill — `memory/feeds.yml` is not present. The SKILL.md Config section explicitly instructs to "create it or skip this skill" when the file is missing; I chose skip rather than fabricate feed URLs without operator config.
 
 **Files modified:**
-- `memory/logs/2026-05-04.md` (created)
+- `memory/logs/2026-05-05.md` — created with skip note
 
-**Follow-up:** Operator should populate `memory/feeds.yml` with feed URLs (Polymarket microstructure, calibration research, prediction-market regulatory) to activate this daily skill — currently RSS coverage is a gap in the daily-news mix vs. the more active hacker-news-digest / monitor-* skills.
+**Follow-up:**
+- Operator: populate `memory/feeds.yml` with `feeds: [{name, url}, ...]` to activate the skill. This is also called out in MEMORY.md's "Operator config sweep" priority block (line 106).
+- No notification sent — nothing actionable to send.
