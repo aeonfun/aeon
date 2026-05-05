@@ -1,0 +1,376 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending"
+      },
+      "children": [
+        "content"
+      ]
+    },
+    "content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "date_text",
+        "top_pick_section",
+        "sep1",
+        "ai_ml_section",
+        "sep2",
+        "devtools_section",
+        "sep3",
+        "web_apps_section",
+        "sep4",
+        "sources_text"
+      ]
+    },
+    "date_text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-05",
+        "variant": "muted"
+      }
+    },
+    "top_pick_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_pick_heading",
+        "top_pick_item",
+        "top_pick_desc"
+      ]
+    },
+    "top_pick_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h2"
+      }
+    },
+    "top_pick_item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "virattt/dexter",
+        "href": "https://github.com/virattt/dexter",
+        "source": "TypeScript · 409 today (23k total)"
+      }
+    },
+    "top_pick_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Solo-built autonomous deep-research agent on its 4th calver release in 10 days. 23k stars over 6 months, doing 3.5x baseline today — the most-active finance-agent comp on trending this week."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "ai_ml_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai_ml_heading",
+        "ai_ml_items"
+      ]
+    },
+    "ai_ml_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h2"
+      }
+    },
+    "ai_ml_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "aiml_repo1",
+        "aiml_repo2"
+      ]
+    },
+    "aiml_repo1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml_r1_link",
+        "aiml_r1_desc",
+        "aiml_r1_badge"
+      ]
+    },
+    "aiml_r1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "virattt/dexter",
+        "href": "https://github.com/virattt/dexter",
+        "source": "TypeScript · 409 today (23k total)"
+      }
+    },
+    "aiml_r1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Autonomous equity-research agent shipping calver releases every 2-3 days — fastest-iterating solo-built finance-agent stack on trending."
+      }
+    },
+    "aiml_r1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING"
+      }
+    },
+    "aiml_repo2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aiml_r2_link",
+        "aiml_r2_desc",
+        "aiml_r2_badge"
+      ]
+    },
+    "aiml_r2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "cocoindex-io/cocoindex",
+        "href": "https://github.com/cocoindex-io/cocoindex",
+        "source": "Python · 166 today (8k total)"
+      }
+    },
+    "aiml_r2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Incremental data engine for long-horizon agents — keeps context fresh when source data changes mid-task instead of restarting runs. v1.0.3 today."
+      }
+    },
+    "aiml_r2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "devtools_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "devtools_heading",
+        "devtools_items"
+      ]
+    },
+    "devtools_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h2"
+      }
+    },
+    "devtools_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dt_repo1",
+        "dt_repo2",
+        "dt_repo3"
+      ]
+    },
+    "dt_repo1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt_r1_link",
+        "dt_r1_desc",
+        "dt_r1_badge"
+      ]
+    },
+    "dt_r1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel-labs/deepsec",
+        "href": "https://github.com/vercel-labs/deepsec",
+        "source": "TypeScript · 675 in 5d (~135/d)"
+      }
+    },
+    "dt_r1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Vercel-Labs coding-agent security harness — agent-driven vuln scanning over your codebase, day-5 with active commits."
+      }
+    },
+    "dt_r1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT"
+      }
+    },
+    "dt_repo2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt_r2_link",
+        "dt_r2_desc",
+        "dt_r2_badge"
+      ]
+    },
+    "dt_r2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "tddworks/baguette",
+        "href": "https://github.com/tddworks/baguette",
+        "source": "Swift · 569 in 4d (~142/d)"
+      }
+    },
+    "dt_r2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Self-hosted iOS Simulator farm with 60 fps streaming and host-side gesture injection — closest thing to a self-hosted BrowserStack."
+      }
+    },
+    "dt_r2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT"
+      }
+    },
+    "dt_repo3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dt_r3_link",
+        "dt_r3_desc",
+        "dt_r3_badge"
+      ]
+    },
+    "dt_r3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "matthart1983/syswatch",
+        "href": "https://github.com/matthart1983/syswatch",
+        "source": "Rust · 348 in 3d (~116/d)"
+      }
+    },
+    "dt_r3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rust system-diagnostics TUI with twelve tabs, plain-English insights, and a session scrubber — sibling project to netwatch from the same author."
+      }
+    },
+    "dt_r3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEBUT"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "web_apps_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "web_apps_heading",
+        "web_apps_items"
+      ]
+    },
+    "web_apps_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Web/Apps",
+        "level": "h2"
+      }
+    },
+    "web_apps_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "wa_repo1"
+      ]
+    },
+    "wa_repo1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "wa_r1_link",
+        "wa_r1_desc",
+        "wa_r1_badge"
+      ]
+    },
+    "wa_r1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "docusealco/docuseal",
+        "href": "https://github.com/docusealco/docuseal",
+        "source": "Ruby · 535 today (13k total)"
+      }
+    },
+    "wa_r1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Self-hostable DocuSign alternative; v2.5.2 ships today, AGPL-licensed — only viable open-source e-sign stack for compliance-bound teams."
+      }
+    },
+    "wa_r1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(15 visible, page truncated) · gh_api=ok · kept 6/40",
+        "variant": "caption"
+      }
+    }
+  }
+}

@@ -1,31 +1,29 @@
-*GitHub Trending — 2026-05-04*
+*GitHub Trending — 2026-05-05*
 
-*Top pick* — [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents)
-Multi-agent LLM trading framework — direct architectural mirror of swarm-fund-mvp's selector layer; 25× baseline spike says this corner of the agent space just got a canonical repo.
+*Top pick* — [virattt/dexter](https://github.com/virattt/dexter)
+Solo-built autonomous deep-research agent on its 4th calver release in 10 days. 23k stars over 6 months, doing 3.5x baseline today — the most-active finance-agent comp on trending this week.
 
 *AI/ML*
-• [TauricResearch/TradingAgents](https://github.com/TauricResearch/TradingAgents) — ★ 3.3k today (66k total) · Python · [RETURNING]
-3,313 stars today on 66k base = 25× baseline; release-catalyst spike on the canonical multi-agent LLM trading repo.
+• [virattt/dexter](https://github.com/virattt/dexter) — ★ 409 today (23k total) · TypeScript · [ACCELERATING]
+Autonomous equity-research agent shipping calver releases every 2-3 days — fastest-iterating solo-built finance-agent stack on trending.
 
-• [AIDC-AI/Pixelle-Video](https://github.com/AIDC-AI/Pixelle-Video) — ★ 497 today (10k total) · Python · [RETURNING]
-Full short-video pipeline (script → TTS → shots → edit) in one repo; 8.5× baseline today on a 10k-star base.
-
-• [simchowitzlabpublic/nano-world-model](https://github.com/simchowitzlabpublic/nano-world-model) — ★ 288 total · 72/day · Python · [DEBUT]
-Minimal world-model training kit from Simchowitz's lab — research-pipeline starting point, not another demo.
+• [cocoindex-io/cocoindex](https://github.com/cocoindex-io/cocoindex) — ★ 166 today (8k total) · Python · [RETURNING]
+Incremental data engine for long-horizon agents — keeps context fresh when source data changes mid-task instead of restarting runs. v1.0.3 today.
 
 *Devtools*
-• [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) — ★ 343 today (2.9k total) · Rust · [RETURNING]
-Rust terminal coding agent on DeepSeek — open-weight, native-binary answer to Claude Code.
+• [vercel-labs/deepsec](https://github.com/vercel-labs/deepsec) — ★ 675 in 5d (~135/d) · TypeScript · [DEBUT]
+Vercel-Labs coding-agent security harness — agent-driven vuln scanning over your codebase, day-5 with active commits.
 
-• [aattaran/deepclaude](https://github.com/aattaran/deepclaude) — ★ 520 total · 520/day · JavaScript · [DEBUT]
-Claude Code's autonomous loop, swapped backend for DeepSeek V4 Pro at 17× lower spend; born yesterday.
+• [tddworks/baguette](https://github.com/tddworks/baguette) — ★ 569 in 4d (~142/d) · Swift · [DEBUT]
+Self-hosted iOS Simulator farm with 60 fps streaming and host-side gesture injection — closest thing to a self-hosted BrowserStack.
 
-• [browserbase/skills](https://github.com/browserbase/skills) — ★ 322 today (1.9k total) · JavaScript · [RETURNING]
-Browserbase ships an official Skills bundle for Claude Agent SDK — closest external read on Aeon's skills/ shape.
+• [matthart1983/syswatch](https://github.com/matthart1983/syswatch) — ★ 348 in 3d (~116/d) · Rust · [DEBUT]
+Rust system-diagnostics TUI with twelve tabs, plain-English insights, and a session scrubber — sibling project to netwatch from the same author.
 
-• [czlonkowski/n8n-mcp](https://github.com/czlonkowski/n8n-mcp) — ★ 282 today (20k total) · TypeScript · [RETURNING]
-MCP server lets Claude Desktop construct n8n workflows directly; 5× baseline after a major release.
+*Web/Apps*
+• [docusealco/docuseal](https://github.com/docusealco/docuseal) — ★ 535 today (13k total) · Ruby · [RETURNING]
+Self-hostable DocuSign alternative; v2.5.2 ships today, AGPL-licensed — only viable open-source e-sign stack for compliance-bound teams.
 
 ---
-sources: trending=ok(9 visible, page truncated) · gh_api=ok · kept 7/35
+sources: trending=ok(15 visible, page truncated) · gh_api=ok · kept 6/40
 
