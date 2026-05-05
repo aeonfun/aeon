@@ -104,4 +104,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-05,paper-digest,claude-opus-4-7,67,31660,4013939,103820
 2026-05-05,github-trending,claude-opus-4-7,26,19462,1027474,126104
 2026-05-05,polymarket-comments,claude-opus-4-7,11680,37972,3693225,148785
-2026-05-05,star-milestone,claude-opus-4-7,29,8706,1234756,53688
+2026-05-05,repo-pulse,claude-opus-4-7,22,9746,837750,42821
