@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-03T13:34:19Z",
+    "generated": "2026-05-05T11:30:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 109,
+    "total": 110,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1066,6 +1066,18 @@
             "sha": "04e6465",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon star-milestone"
+        },
+        {
+            "slug": "star-momentum-alert",
+            "name": "star-momentum-alert",
+            "description": "Project the date a watched repo crosses its next star milestone \u2014 alert only when projected date lands inside the Show HN dispatch window (7-14 days out, Tue/Wed/Thu)",
+            "category": "dev",
+            "schedule": "10 10 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-05",
+            "install": "./add-skill aaronjmars/aeon star-momentum-alert"
         },
         {
             "slug": "startup-idea",
