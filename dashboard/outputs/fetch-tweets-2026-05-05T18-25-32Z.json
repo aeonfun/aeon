@@ -1,0 +1,117 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets"
+      },
+      "children": [
+        "intro-text",
+        "sep1",
+        "heading-tn",
+        "tweets-section-1",
+        "sep2",
+        "heading-vijay",
+        "tweets-section-2"
+      ]
+    },
+    "intro-text": {
+      "type": "Text",
+      "props": {
+        "text": "Same day, two opposite calibration lessons: Tamil Nadu broke Polymarket (DMK 87.5% on counting eve → near-0 as TVK swept; $22.66M market) while Bengal validated the PM 51% flip-to-BJP at 99.55% YES. Continuity-prior fail + independent-evidence flip in one news cycle.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-tn": {
+      "type": "Heading",
+      "props": {
+        "text": "TN structural shock",
+        "level": "h3"
+      }
+    },
+    "tweets-section-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-1",
+        "tweet-2",
+        "tweet-3"
+      ]
+    },
+    "tweet-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TVK crosses 118 majority in Tamil Nadu while BJP leads 150+ in Bengal — single most data-dense same-day primary-press post; both calibration-lesson states in one frame.",
+        "href": "https://x.com/htTweets/status/2051173239360307480",
+        "source": "htTweets"
+      }
+    },
+    "tweet-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "YSR Congress MP frames TVK debut as \"South India creates space for credible non-partisan regional voices; legacy parties carry baggage\" — single elected-official post-mortem on why the continuity prior failed.",
+        "href": "https://x.com/VSReddy_MP/status/2051183262463336502",
+        "source": "VSReddy_MP"
+      }
+    },
+    "tweet-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Supporters at Vijay's Chennai residence \"as the party scripts history\" — first primary-press confirmation of historic-result framing rather than seat-tally framing.",
+        "href": "https://x.com/ThePrintIndia/status/2051256011743441008",
+        "source": "ThePrintIndia"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-vijay": {
+      "type": "Heading",
+      "props": {
+        "text": "Vijay ground-reaction primary source",
+        "level": "h3"
+      }
+    },
+    "tweets-section-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-4",
+        "tweet-5"
+      ]
+    },
+    "tweet-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Heightened security at Vijay's Chennai residence with TVK leading 107 of 234 — earliest in-day ground-reaction marker, before majority threshold crossed.",
+        "href": "https://x.com/ANI/status/2051245728727732707",
+        "source": "ANI"
+      }
+    },
+    "tweet-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TVK chief Vijay arrives at his parents' residence in Chennai — first physical-appearance-as-winner shot. Highest-shock visual primary source of the day for the upset narrative.",
+        "href": "https://x.com/ANI/status/2051290476251390194",
+        "source": "ANI"
+      }
+    }
+  }
+}
