@@ -1,0 +1,233 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "market context — 2026-05-05"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "stack_take",
+        "sep1",
+        "stack_prices",
+        "sep2",
+        "stack_metrics",
+        "sep3",
+        "stack_narratives",
+        "sep4",
+        "stack_hotmarket"
+      ]
+    },
+    "stack_take": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_take",
+        "badge_conviction"
+      ]
+    },
+    "text_take": {
+      "type": "Text",
+      "props": {
+        "text": "take: risk-on",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction high",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth",
+        "stat_fg"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$81,272",
+        "delta": "+3.40%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,389",
+        "delta": "+2.61%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "50",
+        "delta": "Neutral",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_breadth",
+        "stat_dexvol"
+      ]
+    },
+    "stat_breadth": {
+      "type": "Stat",
+      "props": {
+        "label": "breadth",
+        "value": "17/20"
+      },
+      "children": []
+    },
+    "stat_dexvol": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume",
+        "value": "$7.40B",
+        "delta": "+89%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_narratives": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_narratives_label",
+        "stack_narrative_badges"
+      ]
+    },
+    "text_narratives_label": {
+      "type": "Text",
+      "props": {
+        "text": "top narrative:",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "stack_narrative_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ton",
+        "badge_privacy"
+      ]
+    },
+    "badge_ton": {
+      "type": "Badge",
+      "props": {
+        "text": "TON breakout (emerging→rising)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_privacy": {
+      "type": "Badge",
+      "props": {
+        "text": "privacy coins (rising)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack_hotmarket": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_hotmarket_label",
+        "progress_iran"
+      ]
+    },
+    "text_hotmarket_label": {
+      "type": "Text",
+      "props": {
+        "text": "hot market:",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "progress_iran": {
+      "type": "Progress",
+      "props": {
+        "value": 15.5,
+        "max": 100,
+        "label": "Iran closes airspace by May 8 (YES)"
+      },
+      "children": []
+    }
+  }
+}
