@@ -1,0 +1,176 @@
+{
+  "root": "card-changelog",
+  "state": {},
+  "elements": {
+    "card-changelog": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-05"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-section",
+        "separator-1",
+        "breakdown-section",
+        "separator-2",
+        "highlights-section",
+        "separator-3",
+        "article-section"
+      ]
+    },
+    "summary-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-repos",
+        "stat-changes"
+      ]
+    },
+    "stat-repos": {
+      "type": "Stat",
+      "props": {
+        "label": "Repos",
+        "value": "3"
+      }
+    },
+    "stat-changes": {
+      "type": "Stat",
+      "props": {
+        "label": "User-facing changes",
+        "value": "39"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "breakdown-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-breakdown",
+        "breakdown-grid"
+      ]
+    },
+    "heading-breakdown": {
+      "type": "Heading",
+      "props": {
+        "text": "Change breakdown",
+        "level": "h3"
+      }
+    },
+    "breakdown-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "sm"
+      },
+      "children": [
+        "stat-added",
+        "stat-fixed",
+        "stat-security",
+        "stat-breaking"
+      ]
+    },
+    "stat-added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "18"
+      }
+    },
+    "stat-fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "11"
+      }
+    },
+    "stat-security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "1"
+      }
+    },
+    "stat-breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "highlights-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-top",
+        "highlight-1",
+        "highlight-2"
+      ]
+    },
+    "heading-top": {
+      "type": "Heading",
+      "props": {
+        "text": "Top highlights",
+        "level": "h3"
+      }
+    },
+    "highlight-1": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp fleet jumped 74→112 agents / 30→34 strategies"
+      }
+    },
+    "highlight-2": {
+      "type": "Text",
+      "props": {
+        "text": "Aeon-Narrative ingestion adapter (ADR-093) went live"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "article-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "article-link"
+      ]
+    },
+    "article-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full changelog",
+        "href": "articles/changelog-2026-05-05.md",
+        "source": "changelog"
+      }
+    }
+  }
+}
