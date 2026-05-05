@@ -103,4 +103,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,evening-recap,claude-sonnet-4-6,1245,6594,1304402,124545
 2026-05-05,paper-digest,claude-opus-4-7,67,31660,4013939,103820
 2026-05-05,github-trending,claude-opus-4-7,26,19462,1027474,126104
-2026-05-05,treasury-info,claude-opus-4-7,11,2214,255915,44444
+2026-05-05,on-chain-monitor,claude-opus-4-7,13,3149,361083,48493
