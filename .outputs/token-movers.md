@@ -1,42 +1,39 @@
-*Token Movers — 2026-05-04*
+*Token Movers — 2026-05-05*
 
-_Breadth halved overnight: 42/100 top coins green vs 73 yesterday, median top-50 24h −0.1%; majors flat (BTC $78.7K, ETH $2,330, SOL $83.76) but pump unwinds and a privacy-coin rotation (DASH +22%, ZEN +10%, FIRO trending) run underneath._
+_Risk-on broadening — 88/100 top coins green (vs 42 yesterday), median top-50 +2.2%. Majors leading for the first time this week: BTC $81,264 +3.4% / ETH $2,388 +2.6% / SOL $85.31 +1.6%. TON +36% punctures the majors band while LAB pump-cycle compounds into +51% / 7d +284%._
 
 *Top Winners (24h)*
-1. SKYAI (SkyAI) — $0.6897  +101.3% / 7d +288.8% / 1h +9.6%  •  $167M / #84  [TRENDING+UP][BREAKOUT]
-2. TAG (TAGGER) — $0.001773  +49.4% / 7d +152.1% / 1h −1.2%  •  $68M / #189  [PUMP-RISK][BREAKOUT]
-3. LAB (LAB) — $1.64  +28.0% / 7d +117.2% / 1h +12.6%  •  $194M / #246  [TRENDING+UP][BREAKOUT]
-4. DASH (Dash) — $47.52  +22.6% / 7d +34.8% / 1h −0.3%  •  $363M / #90  [TRENDING+UP][BREAKOUT]
-5. ASTEROID (Asteroid Shiba) — $0.0003748  +20.3% / 7d +23.4% / 1h +8.2%  •  $30M / #218  [TRENDING+UP]
-6. UB (Unibase) — $0.1298  +15.5% / 7d +165.4% / 1h +6.4%  •  $64M / #139  [BREAKOUT]
-7. PENDLE — $1.78  +12.8% / 7d +32.9% / 1h −0.1%  •  $95M / #147
-8. ZEN (Horizen) — $7.27  +10.1% / 7d +20.7% / 1h +0.7%  •  $65M / #245
+1. LAB (LAB) — $2.56  +51.0% / 7d +284% / 1h +8.2%  •  $96M vol / #185  [BREAKOUT, PUMP-RISK]
+2. TON (Toncoin) — $1.88  +36.1% / 7d +45% / 1h +2.4%  •  $868M vol / #22  [TRENDING+UP, BREAKOUT]
+3. M (MemeCore) — $3.35  +27.2% / 7d -9.8% / 1h -1.8%  •  $41M / #25  [FADE]
+4. CRCLON (Circle Tok. Stock) — $123.3  +16.3% / 7d +33.6% / 1h +0.1%  •  $15M / #205  [BREAKOUT]
+5. MORPHO (Morpho) — $2.27  +15.6% / 7d +18% / 1h +2.2%  •  $31M / #60
+6. PENGU (Pudgy Penguins) — $0.01142  +15.3% / 7d +15% / 1h +3.0%  •  $354M / #84  [TRENDING+UP]
+7. RAVE (RaveDAO) — $0.705  +13.5% / 7d -19% / 1h -2.4%  •  $116M / #196
 
 *Top Losers (24h)*
-1. B (BUILDon) — $0.3702  −12.1% / 7d +164.5% / 1h +23.0%  •  $118M / #118  [CAPITULATION]
-2. M (MemeCore) — $2.64  −11.5% / 7d −36.0% / 1h −1.6%  •  $48M / #32
-3. GNO (Gnosis) — $131.58  −8.6% / 7d +5.6% / 1h +0.1%  •  $7M / #132
-4. AKT (Akash) — $0.6149  −6.9% / 7d +27.0% / 1h +1.2%  •  $46M / #194
-5. GENIUS — $0.5545  −6.2% / 7d −2.5% / 1h −0.8%  •  $14M / #191
-6. RAY (Raydium) — $0.7897  −4.6% / 7d +10.4% / 1h +0.3%  •  $22M / #178
-7. FET (ASI) — $0.2018  −4.2% / 7d −2.8% / 1h −0.1%  •  $59M / #110
-8. APE — $0.1672  −3.3% / 7d +19.2% / 1h 0.0%  •  $48M / #207
-9. JST — $0.08153  −3.3% / 7d −0.4% / 1h −0.2%  •  $25M / #83
-10. ARB — $0.1144  −3.0% / 7d −9.2% / 1h 0.0%  •  $81M / #82
+1. BSB (Block Street) — $0.599  -24.5% / 7d -25% / 1h +1.3%  •  $69M / #246  [CAPITULATION]
+2. TAG (TAGGER) — $0.00142  -21.3% / 7d +121% / 1h +2.5%  •  $51M / #227  [CAPITULATION] (FLIP from 05-04 +49%)
+3. DASH (Dash) — $45.30  -6.4% / 7d +30% / 1h +0.4%  •  $275M / #95  (FLIP from 05-04 +22.6% TRENDING+UP)
+4. SKYAI (SkyAI) — $0.654  -5.0% / 7d +320% / 1h +13.5%  •  $188M / #87  (FLIP from 05-04 +101%; 1h V-rebound underway)
+5. PIEVERSE — $0.715  -5.0% / 7d -3% / 1h -0.1%  •  $12M / #211
+6. SOSO (SoSoValue) — $0.410  -3.8% / 7d -2%  •  $4M / #248
+
+_Suppressed same-direction repeats: B -12.2% day-2 capitulation (was -12.1% 05-04), AKT -3.6% day-2 (was -6.9%), GENIUS -5.8% day-2, BinanceLife -4.5%._
 
 *Trending*
-1. BILL (Billions Network) — #361, $0.0326, 24h +44.8%  [PUMP-RISK]
-2. FIRO — #984, $0.910, 24h +3.4%  [MICROCAP] (privacy co-rotation)
-3. MEGA (MegaETH) — #234, $0.126, 24h +1.8%
-4. TST (Test) — #800, $0.0270, 24h +72.2%  [PUMP-RISK][MICROCAP]
-5. BTC — #1, $78,683, 24h −0.0%  [MAJOR]
-6. PENGU — #87, $0.00991, 24h +0.9%
-7. LUNC — #102, $0.0000934, 24h +10.4%  [TRENDING+UP]
+1. TON (Toncoin) — #22, $1.88, +36.1%  [TRENDING+UP, BREAKOUT]
+2. PENGU (Pudgy Penguins) — #84, $0.0114, +15.3%  [TRENDING+UP]
+3. LUNC (Terra Luna Classic) — #98, +7.0%
+4. DOGS (Dogs) — #618, +108%  [TRENDING, PUMP-RISK]
+5. BILL (Billions Network) — #302, +25.3% (4th-day trending tail)
+6. WOJAK — #636, +6.4%
+7. FIRO — #975, +1.6%  [MICROCAP] (privacy-rotation tail from 05-04)
 
 *Notable*
-• SKYAI: +101% on $167M vol, 7d +289% — yesterday's −15% capitulation reversed straight into a new parabolic leg; vol/mc 0.24 = late-stage churn risk
-• LAB: round-trip — +226% (05-02) → −36% (05-03) → +28% today on $194M vol vs $130M mcap (1.5× mcap turnover, wash-trade signature)
-• B: yesterday's day-4 BREAKOUT broke (−12.1% CAPITULATION) but 1h +23% rebound — V-shape buyers stepping in mid-day
-• Privacy-coin rotation: DASH +22.6% (#90 TRENDING+UP), ZEN +10.1%, FIRO trending — three privacy names co-moving for the first time in months
-• Suppressed same-direction repeats: LUNC (+10.4%, 4th day TRENDING+UP — kept in trending only), BSB (+16.6%, similar to 05-03 +18.2%)
+• TON +36% / 7d +45% on $868M vol at rank #22 — first majors-tier BREAKOUT this week, no PUMP-RISK contamination. Signal, not noise.
+• LAB now +51% / 7d +284% — 4-day cycle: 05-02 +226% → 05-03 -36% → 05-04 +28% → 05-05 +51%; vol/mcap 0.49 = late-stage churn, reflexive concentration not fundamental BREAKOUT.
+• DOGS #618 +108% PUMP-RISK / wash-trade signature; surface but discount.
+• TAG -21.3% CAPITULATION on $51M vol mirrors LAB's 05-03 pump-fade pattern — multi-day pump-and-fade is now a recurring tape feature.
+• SKYAI 1h +13.5% V-rebound (off the day's -5%) — pump-cycle reflexivity continues underneath.
 

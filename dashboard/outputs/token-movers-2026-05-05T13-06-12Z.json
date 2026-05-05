@@ -1,0 +1,425 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-05"
+      },
+      "children": [
+        "summary_text",
+        "majors_stack",
+        "separator1",
+        "winners_heading",
+        "winners_table",
+        "separator2",
+        "losers_heading",
+        "losers_table",
+        "separator3",
+        "suppressed_text",
+        "separator4",
+        "trending_heading",
+        "trending_table",
+        "separator5",
+        "notable_heading",
+        "notable_stack"
+      ]
+    },
+    "summary_text": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-on broadening — 88/100 top coins green (vs 42 yesterday), median top-50 +2.2%. Majors leading for the first time this week: BTC $81,264 +3.4% / ETH $2,388 +2.6% / SOL $85.31 +1.6%. TON +36% punctures the majors band while LAB pump-cycle compounds into +51% / 7d +284%.",
+        "variant": "body"
+      }
+    },
+    "majors_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "btc_stat",
+        "eth_stat",
+        "sol_stat"
+      ]
+    },
+    "btc_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$81,264",
+        "delta": "+3.4%",
+        "trend": "up"
+      }
+    },
+    "eth_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,388",
+        "delta": "+2.6%",
+        "trend": "up"
+      }
+    },
+    "sol_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "$85.31",
+        "delta": "+1.6%",
+        "trend": "up"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h3"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "#",
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume/Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "1",
+            "LAB (LAB)",
+            "$2.56",
+            "+51.0%",
+            "+284%",
+            "+8.2%",
+            "$96M vol / #185",
+            "BREAKOUT, PUMP-RISK"
+          ],
+          [
+            "2",
+            "TON (Toncoin)",
+            "$1.88",
+            "+36.1%",
+            "+45%",
+            "+2.4%",
+            "$868M vol / #22",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "3",
+            "M (MemeCore)",
+            "$3.35",
+            "+27.2%",
+            "-9.8%",
+            "-1.8%",
+            "$41M / #25",
+            "FADE"
+          ],
+          [
+            "4",
+            "CRCLON (Circle Tok. Stock)",
+            "$123.3",
+            "+16.3%",
+            "+33.6%",
+            "+0.1%",
+            "$15M / #205",
+            "BREAKOUT"
+          ],
+          [
+            "5",
+            "MORPHO (Morpho)",
+            "$2.27",
+            "+15.6%",
+            "+18%",
+            "+2.2%",
+            "$31M / #60",
+            ""
+          ],
+          [
+            "6",
+            "PENGU (Pudgy Penguins)",
+            "$0.01142",
+            "+15.3%",
+            "+15%",
+            "+3.0%",
+            "$354M / #84",
+            "TRENDING+UP"
+          ],
+          [
+            "7",
+            "RAVE (RaveDAO)",
+            "$0.705",
+            "+13.5%",
+            "-19%",
+            "-2.4%",
+            "$116M / #196",
+            ""
+          ]
+        ]
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h3"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "#",
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume/Rank",
+          "Notes"
+        ],
+        "rows": [
+          [
+            "1",
+            "BSB (Block Street)",
+            "$0.599",
+            "-24.5%",
+            "-25%",
+            "+1.3%",
+            "$69M / #246",
+            "CAPITULATION"
+          ],
+          [
+            "2",
+            "TAG (TAGGER)",
+            "$0.00142",
+            "-21.3%",
+            "+121%",
+            "+2.5%",
+            "$51M / #227",
+            "CAPITULATION (FLIP from 05-04 +49%)"
+          ],
+          [
+            "3",
+            "DASH (Dash)",
+            "$45.30",
+            "-6.4%",
+            "+30%",
+            "+0.4%",
+            "$275M / #95",
+            "FLIP from 05-04 +22.6% TRENDING+UP"
+          ],
+          [
+            "4",
+            "SKYAI (SkyAI)",
+            "$0.654",
+            "-5.0%",
+            "+320%",
+            "+13.5%",
+            "$188M / #87",
+            "FLIP from 05-04 +101%; 1h V-rebound underway"
+          ],
+          [
+            "5",
+            "PIEVERSE",
+            "$0.715",
+            "-5.0%",
+            "-3%",
+            "-0.1%",
+            "$12M / #211",
+            ""
+          ],
+          [
+            "6",
+            "SOSO (SoSoValue)",
+            "$0.410",
+            "-3.8%",
+            "-2%",
+            "",
+            "$4M / #248",
+            ""
+          ]
+        ]
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "suppressed_text": {
+      "type": "Text",
+      "props": {
+        "text": "Suppressed same-direction repeats: B -12.2% day-2 capitulation (was -12.1% 05-04), AKT -3.6% day-2 (was -6.9%), GENIUS -5.8% day-2, BinanceLife -4.5%.",
+        "variant": "caption"
+      }
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h3"
+      }
+    },
+    "trending_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "#",
+          "Token",
+          "Rank",
+          "Price",
+          "24h Change",
+          "Tags/Notes"
+        ],
+        "rows": [
+          [
+            "1",
+            "TON (Toncoin)",
+            "#22",
+            "$1.88",
+            "+36.1%",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "2",
+            "PENGU (Pudgy Penguins)",
+            "#84",
+            "$0.0114",
+            "+15.3%",
+            "TRENDING+UP"
+          ],
+          [
+            "3",
+            "LUNC (Terra Luna Classic)",
+            "#98",
+            "",
+            "+7.0%",
+            ""
+          ],
+          [
+            "4",
+            "DOGS (Dogs)",
+            "#618",
+            "",
+            "+108%",
+            "TRENDING, PUMP-RISK"
+          ],
+          [
+            "5",
+            "BILL (Billions Network)",
+            "#302",
+            "",
+            "+25.3%",
+            "4th-day trending tail"
+          ],
+          [
+            "6",
+            "WOJAK",
+            "#636",
+            "",
+            "+6.4%",
+            ""
+          ],
+          [
+            "7",
+            "FIRO",
+            "#975",
+            "",
+            "+1.6%",
+            "MICROCAP (privacy-rotation tail from 05-04)"
+          ]
+        ]
+      }
+    },
+    "separator5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h3"
+      }
+    },
+    "notable_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable_1",
+        "notable_2",
+        "notable_3",
+        "notable_4",
+        "notable_5"
+      ]
+    },
+    "notable_1": {
+      "type": "Text",
+      "props": {
+        "text": "TON +36% / 7d +45% on $868M vol at rank #22 — first majors-tier BREAKOUT this week, no PUMP-RISK contamination. Signal, not noise.",
+        "variant": "body"
+      }
+    },
+    "notable_2": {
+      "type": "Text",
+      "props": {
+        "text": "LAB now +51% / 7d +284% — 4-day cycle: 05-02 +226% → 05-03 -36% → 05-04 +28% → 05-05 +51%; vol/mcap 0.49 = late-stage churn, reflexive concentration not fundamental BREAKOUT.",
+        "variant": "body"
+      }
+    },
+    "notable_3": {
+      "type": "Text",
+      "props": {
+        "text": "DOGS #618 +108% PUMP-RISK / wash-trade signature; surface but discount.",
+        "variant": "body"
+      }
+    },
+    "notable_4": {
+      "type": "Text",
+      "props": {
+        "text": "TAG -21.3% CAPITULATION on $51M vol mirrors LAB's 05-03 pump-fade pattern — multi-day pump-and-fade is now a recurring tape feature.",
+        "variant": "body"
+      }
+    },
+    "notable_5": {
+      "type": "Text",
+      "props": {
+        "text": "SKYAI 1h +13.5% V-rebound (off the day's -5%) — pump-cycle reflexivity continues underneath.",
+        "variant": "body"
+      }
+    }
+  }
+}

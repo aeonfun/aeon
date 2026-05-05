@@ -1,0 +1,426 @@
+{
+  "date": "2026-05-05",
+  "filteredCount": 189,
+  "pulse": {
+    "greenTop100": 88,
+    "redTop100": 12,
+    "medianTop50": 2.232,
+    "btc": {
+      "price": 81264,
+      "ch24": 3.38459,
+      "ch7d": 6.669466902513042
+    },
+    "eth": {
+      "price": 2388.27,
+      "ch24": 2.59798,
+      "ch7d": 5.011488827960022
+    },
+    "sol": {
+      "price": 85.31,
+      "ch24": 1.58503,
+      "ch7d": 2.3320945695121686
+    }
+  },
+  "winners": [
+    {
+      "id": "lab",
+      "name": "LAB",
+      "symbol": "LAB",
+      "rank": 185,
+      "price": 2.56,
+      "ch1h": 8.171287660259908,
+      "ch24": 51.02629,
+      "ch7d": 283.7593295620732,
+      "volume": 95996635,
+      "market_cap": 196860756,
+      "tags": [
+        "BREAKOUT",
+        "PUMP-RISK"
+      ],
+      "volMc": 0.4876372363418131
+    },
+    {
+      "id": "the-open-network",
+      "name": "Toncoin",
+      "symbol": "TON",
+      "rank": 22,
+      "price": 1.88,
+      "ch1h": 2.435542478436311,
+      "ch24": 36.11438,
+      "ch7d": 45.01168432001778,
+      "volume": 868021389,
+      "market_cap": 5075695854,
+      "tags": [
+        "TRENDING+UP",
+        "BREAKOUT"
+      ],
+      "volMc": 0.17101524873992183
+    },
+    {
+      "id": "memecore",
+      "name": "MemeCore",
+      "symbol": "M",
+      "rank": 25,
+      "price": 3.35,
+      "ch1h": -1.7874977271453178,
+      "ch24": 27.23725,
+      "ch7d": -9.822691716484188,
+      "volume": 40769938,
+      "market_cap": 4338864272,
+      "tags": [
+        "FADE"
+      ],
+      "volMc": 0.009396453874600481
+    },
+    {
+      "id": "circle-internet-group-ondo-tokenized-stock",
+      "name": "Circle Internet Group (Ondo Tokenized Stock)",
+      "symbol": "CRCLON",
+      "rank": 205,
+      "price": 123.31,
+      "ch1h": 0.08599779734340157,
+      "ch24": 16.29883,
+      "ch7d": 33.641596983354276,
+      "volume": 14690306,
+      "market_cap": 168679765,
+      "tags": [
+        "BREAKOUT"
+      ],
+      "volMc": 0.08708991265194138
+    },
+    {
+      "id": "morpho",
+      "name": "Morpho",
+      "symbol": "MORPHO",
+      "rank": 60,
+      "price": 2.27,
+      "ch1h": 2.2290787710749966,
+      "ch24": 15.58583,
+      "ch7d": 18.17119360943898,
+      "volume": 30776492,
+      "market_cap": 1386899739,
+      "tags": [],
+      "volMc": 0.022190855715490187
+    },
+    {
+      "id": "pudgy-penguins",
+      "name": "Pudgy Penguins",
+      "symbol": "PENGU",
+      "rank": 84,
+      "price": 0.01142476,
+      "ch1h": 3.005455744664309,
+      "ch24": 15.29399,
+      "ch7d": 15.200693102930419,
+      "volume": 354005351,
+      "market_cap": 718138600,
+      "tags": [
+        "TRENDING+UP"
+      ],
+      "volMc": 0.4929485074329663
+    },
+    {
+      "id": "ravedao",
+      "name": "RaveDAO",
+      "symbol": "RAVE",
+      "rank": 196,
+      "price": 0.705313,
+      "ch1h": -2.354865720510181,
+      "ch24": 13.47497,
+      "ch7d": -19.377074819556658,
+      "volume": 115705239,
+      "market_cap": 175820624,
+      "tags": [],
+      "volMc": 0.6580868408247715
+    },
+    {
+      "id": "riv-coin",
+      "name": "RIV Coin",
+      "symbol": "RIV",
+      "rank": 250,
+      "price": 0.03102187,
+      "ch1h": 0.040743777103152155,
+      "ch24": 10.31826,
+      "ch7d": 288.0012275988054,
+      "volume": 1534202,
+      "market_cap": 126291176,
+      "tags": [],
+      "volMc": 0.012148132978031656
+    },
+    {
+      "id": "spx6900",
+      "name": "SPX6900",
+      "symbol": "SPX",
+      "rank": 124,
+      "price": 0.40767,
+      "ch1h": 0.6444765623157811,
+      "ch24": 9.22279,
+      "ch7d": 11.336865150926952,
+      "volume": 8229386,
+      "market_cap": 379715838,
+      "tags": [],
+      "volMc": 0.021672485517973048
+    },
+    {
+      "id": "eigenlayer",
+      "name": "EigenCloud (prev. EigenLayer)",
+      "symbol": "EIGEN",
+      "rank": 238,
+      "price": 0.187947,
+      "ch1h": 1.145187952482563,
+      "ch24": 8.20475,
+      "ch7d": 7.288618943882312,
+      "volume": 18880219,
+      "market_cap": 138694785,
+      "tags": [],
+      "volMc": 0.13612782196533202
+    }
+  ],
+  "losers": [
+    {
+      "id": "block-street",
+      "name": "Block Street",
+      "symbol": "BSB",
+      "rank": 246,
+      "price": 0.59856,
+      "ch1h": 1.292932700703419,
+      "ch24": -24.51093,
+      "ch7d": -25.413771261725827,
+      "volume": 69435182,
+      "market_cap": 128909018,
+      "tags": [
+        "CAPITULATION"
+      ],
+      "volMc": 0.538637118467538
+    },
+    {
+      "id": "tagger",
+      "name": "TAGGER",
+      "symbol": "TAG",
+      "rank": 227,
+      "price": 0.00142052,
+      "ch1h": 2.4955308967748495,
+      "ch24": -21.26539,
+      "ch7d": 121.21033442646929,
+      "volume": 51468137,
+      "market_cap": 153195380,
+      "tags": [
+        "CAPITULATION"
+      ],
+      "volMc": 0.3359640284191338
+    },
+    {
+      "id": "build-on",
+      "name": "BUILDon",
+      "symbol": "B",
+      "rank": 132,
+      "price": 0.35857,
+      "ch1h": 3.1371333208068632,
+      "ch24": -12.17637,
+      "ch7d": 194.26613384273003,
+      "volume": 75731993,
+      "market_cap": 358570496,
+      "tags": [],
+      "volMc": 0.21120531065668047
+    },
+    {
+      "id": "dash",
+      "name": "Dash",
+      "symbol": "DASH",
+      "rank": 95,
+      "price": 45.3,
+      "ch1h": 0.41586384926899844,
+      "ch24": -6.42299,
+      "ch7d": 30.083365666139787,
+      "volume": 274706134,
+      "market_cap": 574760468,
+      "tags": [],
+      "volMc": 0.47794890096721127
+    },
+    {
+      "id": "genius-3",
+      "name": "Genius",
+      "symbol": "GENIUS",
+      "rank": 197,
+      "price": 0.522572,
+      "ch1h": -0.6675754941170708,
+      "ch24": -5.81533,
+      "ch7d": -3.366476038302883,
+      "volume": 11266283,
+      "market_cap": 175506258,
+      "tags": [],
+      "volMc": 0.06419305572568244
+    },
+    {
+      "id": "pieverse",
+      "name": "Pieverse",
+      "symbol": "PIEVERSE",
+      "rank": 211,
+      "price": 0.714783,
+      "ch1h": -0.07885951723553702,
+      "ch24": -5.03161,
+      "ch7d": -3.1738592718748624,
+      "volume": 12001874,
+      "market_cap": 164400024,
+      "tags": [],
+      "volMc": 0.07300408909915974
+    },
+    {
+      "id": "skyai",
+      "name": "SkyAI",
+      "symbol": "SKYAI",
+      "rank": 87,
+      "price": 0.654385,
+      "ch1h": 13.47592665295441,
+      "ch24": -5.01508,
+      "ch7d": 319.8001899616075,
+      "volume": 187529077,
+      "market_cap": 650504898,
+      "tags": [],
+      "volMc": 0.28828234433985767
+    },
+    {
+      "id": "bianrensheng",
+      "name": "币安人生 (BinanceLife)",
+      "symbol": "币安人生",
+      "rank": 122,
+      "price": 0.388209,
+      "ch1h": -0.42725498476387047,
+      "ch24": -4.48385,
+      "ch7d": 4.997274722117868,
+      "volume": 23173840,
+      "market_cap": 388079635,
+      "tags": [],
+      "volMc": 0.05971413573402273
+    },
+    {
+      "id": "sosovalue",
+      "name": "SoSoValue",
+      "symbol": "SOSO",
+      "rank": 248,
+      "price": 0.410335,
+      "ch1h": 0.014945239171013574,
+      "ch24": -3.83061,
+      "ch7d": -1.939975404481899,
+      "volume": 3874808,
+      "market_cap": 128036474,
+      "tags": [],
+      "volMc": 0.03026331387413871
+    },
+    {
+      "id": "akash-network",
+      "name": "Akash Network",
+      "symbol": "AKT",
+      "rank": 198,
+      "price": 0.59461,
+      "ch1h": -0.5721282517349724,
+      "ch24": -3.63486,
+      "ch7d": 27.133773713830173,
+      "volume": 8809115,
+      "market_cap": 174386562,
+      "tags": [],
+      "volMc": 0.050514872814569275
+    }
+  ],
+  "trending": [
+    {
+      "id": "zcoin",
+      "name": "Firo",
+      "symbol": "FIRO",
+      "rank": 975,
+      "price": 0.9247728621007473,
+      "ch24": 1.6480964238442148,
+      "ch7d": null,
+      "market_cap": null,
+      "total_volume": null,
+      "tags": [
+        "TRENDING"
+      ]
+    },
+    {
+      "id": "pudgy-penguins",
+      "name": "Pudgy Penguins",
+      "symbol": "PENGU",
+      "rank": 84,
+      "price": 0.01142476,
+      "ch24": 15.29399,
+      "ch7d": 15.200693102930419,
+      "market_cap": 718138600,
+      "total_volume": 354005351,
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "id": "the-open-network",
+      "name": "Toncoin",
+      "symbol": "TON",
+      "rank": 22,
+      "price": 1.88,
+      "ch24": 36.11438,
+      "ch7d": 45.01168432001778,
+      "market_cap": 5075695854,
+      "total_volume": 868021389,
+      "tags": [
+        "TRENDING+UP",
+        "BREAKOUT"
+      ]
+    },
+    {
+      "id": "wojak-5",
+      "name": "wojak",
+      "symbol": "WOJAK",
+      "rank": 636,
+      "price": 1.1482278961753666e-7,
+      "ch24": 6.387934697505751,
+      "ch7d": null,
+      "market_cap": null,
+      "total_volume": null,
+      "tags": [
+        "TRENDING"
+      ]
+    },
+    {
+      "id": "terra-luna",
+      "name": "Terra Luna Classic",
+      "symbol": "LUNC",
+      "rank": 98,
+      "price": 0.00010104,
+      "ch24": 7.02159,
+      "ch7d": 57.67326365567643,
+      "market_cap": 551794920,
+      "total_volume": 180414872,
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "id": "dogs-2",
+      "name": "Dogs",
+      "symbol": "DOGS",
+      "rank": 618,
+      "price": 0.0000702239740538468,
+      "ch24": 108.2774402817383,
+      "ch7d": null,
+      "market_cap": null,
+      "total_volume": null,
+      "tags": [
+        "TRENDING",
+        "PUMP-RISK"
+      ]
+    },
+    {
+      "id": "billions-network",
+      "name": "Billions Network",
+      "symbol": "BILL",
+      "rank": 302,
+      "price": 0.041004144438248014,
+      "ch24": 25.296815292604897,
+      "ch7d": null,
+      "market_cap": null,
+      "total_volume": null,
+      "tags": [
+        "TRENDING"
+      ]
+    }
+  ]
+}
