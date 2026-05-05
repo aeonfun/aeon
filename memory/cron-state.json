@@ -684,10 +684,10 @@
   },
   "paper-digest": {
     "last_dispatch": "2026-05-05T08:38:05Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-04T07:33:16Z",
-    "total_runs": 7,
-    "total_successes": 7,
+    "last_status": "success",
+    "last_success": "2026-05-05T08:48:36Z",
+    "total_runs": 8,
+    "total_successes": 8,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
