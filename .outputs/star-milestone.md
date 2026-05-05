@@ -1,16 +1,15 @@
 ## Summary
 
-Executed `star-milestone` skill for 2026-05-04. Checked all three watched repos; no notification fired.
+Ran `star-milestone` for 2026-05-05 across all 3 watched repos. **No notification dispatched** — no new canonical threshold crossed:
 
-**Results:**
-- **tomscaria/swarm-fund-mvp** — 1 star, below first threshold (25). `STAR_MILESTONE_QUIET`.
-- **tomscaria/lore-financial-teaser** — 1 star, below first threshold (25). `STAR_MILESTONE_QUIET`.
-- **aaronjmars/aeon** — 270 stars. Highest crossed threshold is 250, already recorded 2026-04-28 as `(spike)` in `memory/topics/milestones.md`. Gate 5a (already recorded) → no action. Next threshold 300 is 30 stars away; 267→270 in 1 day = 3/day, on-trend with v7≈4/day baseline, prior projection ~2026-05-11 still holds.
+- **aaronjmars/aeon** — 271 stars. Highest crossed threshold (250) already recorded 2026-04-28 (spike). Next canonical milestone is 300, 29 stars away.
+- **tomscaria/swarm-fund-mvp** — 1 star. Below first threshold (25). `STAR_MILESTONE_QUIET`.
+- **tomscaria/lore-financial-teaser** — 1 star. Below first threshold (25). `STAR_MILESTONE_QUIET`.
 
-**Files modified:**
-- `memory/logs/2026-05-04.md` — appended `## Star Milestone` section per step 9.
+**Velocity (aaronjmars/aeon):** v7=25, v30=132, baseline=4.4/day, last star 2026-05-05T14:59:38Z. v7-implied day-rate (3.57) is below v30 baseline (4.4) for the first time in this series — pace is cooling but still organic. Projected 300-star crossing ~2026-05-13, on-track vs the 2026-05-25 soft deadline (12 days headroom).
 
-**Files unchanged:**
-- `memory/topics/milestones.md` — no new threshold crossings to record.
+**Status:** `STAR_MILESTONE_QUIET` for all 3 repos.
 
-**Follow-up:** Next run that picks up the 300-star crossing for `aaronjmars/aeon` will be the first real-narrative announcement opportunity (likely ~2026-05-11 if pace holds). Sandbox blocked `mkdir .star-cache` and bash heredoc redirection — neither was load-bearing this run since velocity fetch was unnecessary (no repo passed gate 5a), but if a future run needs to cache stargazer pages the script will need to write to a pre-existing path.
+**Files modified:** `memory/logs/2026-05-05.md` (appended `## Star Milestone` + `## Summary (star-milestone)` sections). `memory/topics/milestones.md` untouched per spec — only canonical thresholds get appended, and 271 is not canonical.
+
+**Follow-up:** None. If v7 holds 25+/wk, the 300-milestone notification fires next run window in ~8 days; if v7 collapses below 0.5× baseline (≤2.2/day), the 300-crossing will earn a TRICKLE label per spec gate 6.
