@@ -1,0 +1,574 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-05-05"
+      },
+      "children": [
+        "summary_stack",
+        "sep1",
+        "blocked_section",
+        "sep2",
+        "on_track_section",
+        "sep3",
+        "done_section",
+        "sep4",
+        "sources_section"
+      ]
+    },
+    "summary_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_active",
+        "stat_at_risk",
+        "stat_attention",
+        "stat_on_track",
+        "stat_blocked",
+        "stat_done"
+      ]
+    },
+    "stat_active": {
+      "type": "Stat",
+      "props": {
+        "label": "Active",
+        "value": "13"
+      }
+    },
+    "stat_at_risk": {
+      "type": "Stat",
+      "props": {
+        "label": "At Risk",
+        "value": "0"
+      }
+    },
+    "stat_attention": {
+      "type": "Stat",
+      "props": {
+        "label": "Needs Attention",
+        "value": "0"
+      }
+    },
+    "stat_on_track": {
+      "type": "Stat",
+      "props": {
+        "label": "On Track",
+        "value": "11"
+      }
+    },
+    "stat_blocked": {
+      "type": "Stat",
+      "props": {
+        "label": "Blocked",
+        "value": "2"
+      }
+    },
+    "stat_done": {
+      "type": "Stat",
+      "props": {
+        "label": "Done",
+        "value": "2"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "blocked_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_h",
+        "blocked_1",
+        "blocked_2"
+      ]
+    },
+    "blocked_h": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h2"
+      }
+    },
+    "blocked_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b1_title",
+        "b1_desc",
+        "b1_action"
+      ]
+    },
+    "b1_title": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill()",
+        "variant": "lead"
+      }
+    },
+    "b1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "waiting on operator-side workflow patch (8+ days idle)",
+        "variant": "body"
+      }
+    },
+    "b1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Add echo per dispatched skill before each gh workflow run in chain-runner.yml.",
+        "variant": "caption"
+      }
+    },
+    "blocked_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "b2_title",
+        "b2_desc",
+        "b2_action"
+      ]
+    },
+    "b2_title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep",
+        "variant": "lead"
+      }
+    },
+    "b2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "waiting on operator-side config (NEYNAR/X_HANDLE/skills.lock/prefetch-reddit)",
+        "variant": "body"
+      }
+    },
+    "b2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Ship scripts/prefetch-reddit.sh to clear ISS-002/012 11-day failure streak.",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ot_h",
+        "ot_1",
+        "ot_2",
+        "ot_3",
+        "ot_4",
+        "ot_5",
+        "ot_6",
+        "ot_7",
+        "ot_8",
+        "ot_9",
+        "ot_10",
+        "ot_11"
+      ]
+    },
+    "ot_h": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h2"
+      }
+    },
+    "ot_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot1_t",
+        "ot1_s"
+      ]
+    },
+    "ot1_t": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch",
+        "variant": "lead"
+      }
+    },
+    "ot1_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 12 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot2_t",
+        "ot2_s"
+      ]
+    },
+    "ot2_t": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-017 cron-tick-gap watch",
+        "variant": "lead"
+      }
+    },
+    "ot2_s": {
+      "type": "Text",
+      "props": {
+        "text": "1d idle, 8 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot3_t",
+        "ot3_s"
+      ]
+    },
+    "ot3_t": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch",
+        "variant": "lead"
+      }
+    },
+    "ot3_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 14 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot4_t",
+        "ot4_s"
+      ]
+    },
+    "ot4_t": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push (monitor-polymarket + polymarket-comments)",
+        "variant": "lead"
+      }
+    },
+    "ot4_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 17 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot5_t",
+        "ot5_s"
+      ]
+    },
+    "ot5_t": {
+      "type": "Text",
+      "props": {
+        "text": "Cost-discipline sonnet downgrade pass",
+        "variant": "lead"
+      }
+    },
+    "ot5_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (new)",
+        "variant": "body"
+      }
+    },
+    "ot_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot6_t",
+        "ot6_s"
+      ]
+    },
+    "ot6_t": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment (min-gap 7→7.5–8pp)",
+        "variant": "lead"
+      }
+    },
+    "ot6_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 12 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot7_t",
+        "ot7_s"
+      ]
+    },
+    "ot7_t": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp tick-broker falsifier (deadline ~2026-05-17, 12 days)",
+        "variant": "lead"
+      }
+    },
+    "ot7_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 7 activity/14d (↑ improving)",
+        "variant": "body"
+      }
+    },
+    "ot_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot8_t",
+        "ot8_s"
+      ]
+    },
+    "ot8_t": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5 carrier)",
+        "variant": "lead"
+      }
+    },
+    "ot8_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 10 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot9_t",
+        "ot9_s"
+      ]
+    },
+    "ot9_t": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-018 / ISS-019 prompt-bug fixes",
+        "variant": "lead"
+      }
+    },
+    "ot9_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 6 activity/14d (↓ degrading)",
+        "variant": "body"
+      }
+    },
+    "ot_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot10_t",
+        "ot10_s"
+      ]
+    },
+    "ot10_t": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees",
+        "variant": "lead"
+      }
+    },
+    "ot10_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 10 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "ot_11": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ot11_t",
+        "ot11_s"
+      ]
+    },
+    "ot11_t": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily",
+        "variant": "lead"
+      }
+    },
+    "ot11_s": {
+      "type": "Text",
+      "props": {
+        "text": "0d idle, 17 activity/14d (→ flat)",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "done_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "done_h",
+        "done_1",
+        "done_2"
+      ]
+    },
+    "done_h": {
+      "type": "Heading",
+      "props": {
+        "text": "DONE (kept in Completed Goals)",
+        "level": "h2"
+      }
+    },
+    "done_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "d1_t",
+        "d1_d"
+      ]
+    },
+    "d1_t": {
+      "type": "Text",
+      "props": {
+        "text": "ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp",
+        "variant": "lead"
+      }
+    },
+    "d1_d": {
+      "type": "Text",
+      "props": {
+        "text": "completed 2026-05-03",
+        "variant": "body"
+      }
+    },
+    "done_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "d2_t",
+        "d2_d"
+      ]
+    },
+    "d2_t": {
+      "type": "Text",
+      "props": {
+        "text": "Dashboard secrets-route shell-injection (ISS-016 carrier)",
+        "variant": "lead"
+      }
+    },
+    "d2_d": {
+      "type": "Text",
+      "props": {
+        "text": "completed 2026-05-03",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "src_h",
+        "src_t"
+      ]
+    },
+    "src_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "src_t": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok, git=degraded (1 subject in 30d), gh_pr=ok, gh_issue=disabled, cron-state=ok",
+        "variant": "body"
+      }
+    }
+  }
+}
