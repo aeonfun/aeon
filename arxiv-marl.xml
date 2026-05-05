@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/yaPKANzBZXxsySrfhhsB3RE+E6w</id>
+  <title>arXiv Query: search_query=all:"multi-agent" AND all:"reinforcement learning" AND all:trading AND submittedDate:"202604210000 TO 202605052359"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-05T08:43:06Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22multi-agent%22+AND+(all:%22reinforcement+learning%22+AND+(all:trading+AND+submittedDate:%22202604210000+TO+202605052359%22))&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>5</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01457v1</id>
+    <title>CoFlow: Coordinated Few-Step Flow for Offline Multi-Agent Decision Making</title>
+    <updated>2026-05-02T14:12:04Z</updated>
+    <link href="https://arxiv.org/abs/2605.01457v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01457v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Generative models have emerged as a major paradigm for offline multi-agent reinforcement learning (MARL), but existing approaches require many iterative sampling steps. Recent few-step accelerations either distill a joint teacher into independent students or apply averaged velocities independently per agent, suggesting that few-step inference requires sacrificing inter-agent coordination. We show this trade-off is not necessary: single-pass multi-agent generation can preserve coordination when the velocity field is natively joint-coupled. We propose Coordinated few-step Flow (CoFlow), an architecture that combines Coordinated Velocity Attention (CVA) with Adaptive Coordination Gating. A finite-difference consistency surrogate further replaces memory-prohibitive Jacobian-vector product backpropagation through the averaged velocity field with two stop-gradient forward passes. Across 60 configurations spanning MPE, MA-MuJoCo, and SMAC, CoFlow matches or surpasses Gaussian / value-based, transformer, diffusion, and prior flow baselines on episodic return. Three independent coordination probes confirm that the gains flow through inter-agent coordination rather than per-agent capacity. A denoising-step sweep shows that single-pass inference suffices on every configuration. CoFlow reaches state-of-the-art coordination quality in 1-3 denoising steps under both centralized and decentralized execution. Project page: https://github.com/Guowei-Zou/coflow.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-02T14:12:04Z</published>
+    <arxiv:comment>30 pages, 13 figures, 9 tables. Project page: https://github.com/Guowei-Zou/coflow</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Guowei Zou</name>
+    </author>
+    <author>
+      <name>Haitao Wang</name>
+    </author>
+    <author>
+      <name>Beiwen Zhang</name>
+    </author>
+    <author>
+      <name>Boning Zhang</name>
+    </author>
+    <author>
+      <name>Hejun Wu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01362v1</id>
+    <title>Coordination Architecture Shapes Continuous Demand Response Outcomes in Building Districts</title>
+    <updated>2026-05-02T10:11:50Z</updated>
+    <link href="https://arxiv.org/abs/2605.01362v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01362v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Grid-integrated building districts must provide energy flexibility while preserving occupant comfort and equitable distribution of control burden. We study how coordination architecture influences the ability of building clusters to track aggregated load profiles, comparing four paradigms: centralized model predictive control (MPC), decentralized independent reinforcement learning (SAC), centralized-training-decentralized-execution multi-agent RL (MAPPO), and a hybrid MPC--SAC controller that separates district-level battery optimization from building-level HVAC regulation. A rule-based controller serves as a baseline. We evaluate a 25-building residential district across three metrics: aggregate load tracking, thermal comfort, and spatial variability of control actions. We find that architecture choice determines the trade-off structure. Centralized MPC achieves low tracking bias (8.8% NMBE) but concentrates actuation on a subset of buildings, causing elevated comfort violations (24.8% exceedance) and spatial imbalance. Decentralized RL distributes control effort more evenly but fails to sustain accurate tracking. The hybrid architecture achieves the best balance: accurate tracking (4.8% NMBE), moderate comfort impact (16.8% exceedance), and the lowest spatial variability. These findings demonstrate that architecture choice determines the trade-off structure between tracking and comfort.</summary>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-02T10:11:50Z</published>
+    <arxiv:primary_category term="eess.SY"/>
+    <arxiv:journal_ref>ACM BuildSys, 2026</arxiv:journal_ref>
+    <author>
+      <name>Ava Mohammadi</name>
+    </author>
+    <author>
+      <name>Rick Kramer</name>
+    </author>
+    <author>
+      <name>Zoltan Nagy</name>
+    </author>
+    <arxiv:doi>10.1145/3744256.3812578</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1145/3744256.3812578" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.23993v1</id>
+    <title>EPM-RL: Reinforcement Learning for On-Premise Product Mapping in E-Commerce</title>
+    <updated>2026-04-27T03:18:00Z</updated>
+    <link href="https://arxiv.org/abs/2604.23993v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.23993v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Product mapping, the task of deciding whether two e-commerce listings refer to the same product, is a core problem for price monitoring and channel visibility. In real marketplaces, however, sellers frequently inject promotional keywords, platform-specific tags, and bundle descriptions into titles, causing the same product to appear under many different names. Recent LLM-based and multi-agent frameworks improve robustness and interpretability on such hard cases, but they often rely on expensive external APIs, repeated retrieval, and complex inference-time orchestration, making large-scale deployment costly and difficult in privacy-sensitive enterprise settings. To address these issues, we present EPM-RL, a reinforcement-learning-based framework for building an accurate and efficient on-premise e-commerce product mapping model. Our central idea is to distill high-cost agentic reasoning into a trainable in-house model. Starting from a curated set of product pairs with LLM-generated rationales and human verification, we first perform parameter-efficient fine-tuning (PEFT) on a small student model using structured reasoning outputs. We then further optimize the model with Reinforcement Learning (RL) using an agent-based reward that jointly evaluates output-format compliance, label correctness, reasoning--preference scores from specially designed judge models. Preliminary results show that EPM-RL consistently improves over PEFT-only training and offers a stronger quality--cost trade-off than commercial API-based baselines, while enabling private deployment and lower operational cost. These findings suggest that reinforcement learning can turn product mapping from a high-latency agentic pipeline into a scalable, inspectable, and production-ready in-house system.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DB" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T03:18:00Z</published>
+    <arxiv:comment>preprint</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Minhyeong Yu</name>
+    </author>
+    <author>
+      <name>Wonduk Seo</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.23975v1</id>
+    <title>Financial Market as a Self-Organized Ecosystem: Simulation via Learning with Heterogeneous Preferences</title>
+    <updated>2026-04-27T02:38:38Z</updated>
+    <link href="https://arxiv.org/abs/2604.23975v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.23975v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agent-based models provide a constructive approach to studying emergent dynamics in life-like systems composed of interacting, adaptive agents. Financial markets serve as a canonical example of such systems, where collective price dynamics arise from individual decision-making. In this modeling tradition, investor behavior has typically been captured by two distinct mechanisms -- learning and heterogeneous preferences -- which have been explored as separate paradigms in prior studies. However, the impact of their joint modeling on the resulting collective dynamics remains largely unexplored. We develop a multi-agent reinforcement learning framework in which agents endowed with heterogeneous risk aversion, time discounting, and information access learn trading strategies interactively within an artificial market. The experiment reveals that (i) learning under heterogeneous preferences drives agents to develop functionally differentiated strategies through interaction, rather than trait-specific rules, resulting in role specialization, and (ii) the interactions by the differentiated agents are essential for the emergence of realistic market dynamics such as fat-tailed price fluctuations and volatility clustering. Overall, this study demonstrates that the joint design of heterogeneous preferences and learning mechanisms enables the synthesis of an artificial market in which adaptive interactions drive the self-organization of a market ecology, providing a computational realization of the Adaptive Market Hypothesis.</summary>
+    <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="nlin.AO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T02:38:38Z</published>
+    <arxiv:comment>arXiv admin note: substantial text overlap with arXiv:2511.05207</arxiv:comment>
+    <arxiv:primary_category term="q-fin.CP"/>
+    <author>
+      <name>Ryuji Hashimoto</name>
+    </author>
+    <author>
+      <name>Ryosuke Takata</name>
+    </author>
+    <author>
+      <name>Masahiro Suzuki</name>
+    </author>
+    <author>
+      <name>Yuki Tanaka</name>
+    </author>
+    <author>
+      <name>Kiyoshi Izumi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.20586v1</id>
+    <title>A Hierarchical MARL-Based Approach for Coordinated Retail P2P Trading and Wholesale Market Participation of DERs</title>
+    <updated>2026-04-22T14:02:56Z</updated>
+    <link href="https://arxiv.org/abs/2604.20586v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.20586v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The ongoing shift towards decentralization of the electric energy sector, driven by the growing electrification across end-use sectors, and widespread adoption of distributed energy resources (DERs), necessitates their active participation in the electricity markets to support grid operations. Furthermore, with bi-directional energy and communication flows becoming standard, intelligent, easy-to-deploy, resource-conservative demand-side participation is expected to play a critical role in securing power grid operational flexibility and market efficiency. This work proposes a market engagement framework that leverages a hierarchical multi-agent deep reinforcement learning (MARL) approach to enable individual prosumers to participate in peer-to-peer retail auctions and further aggregate these intelligent prosumers to facilitate effective DER participation in wholesale markets. Ultimately, a Stackelberg game is proposed to coordinate this hierarchical MARL-based DER market participation framework toward enhanced market performance.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="eess.SY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-22T14:02:56Z</published>
+    <arxiv:comment>11 pages, 6 figures, 7 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Patrick Wilk</name>
+    </author>
+    <author>
+      <name>Ethan Cantor</name>
+    </author>
+    <author>
+      <name>Yikui Liu</name>
+    </author>
+    <author>
+      <name>Jie Li</name>
+    </author>
+  </entry>
+</feed>

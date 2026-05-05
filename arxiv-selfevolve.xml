@@ -1,0 +1,521 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/kIW+Ki4jf4jzbU64evy+eN/KXHg</id>
+  <title>arXiv Query: search_query=all:"self-evolving" AND submittedDate:"202604210000 TO 202605052359"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-05T08:43:02Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22self-evolving%22+AND+submittedDate:%22202604210000+TO+202605052359%22&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>16</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.02396v1</id>
+    <title>HeavySkill: Heavy Thinking as the Inner Skill in Agentic Harness</title>
+    <updated>2026-05-04T09:37:04Z</updated>
+    <link href="https://arxiv.org/abs/2605.02396v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.02396v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Recent advances in agentic harness with orchestration frameworks that coordinate multiple agents with memory, skills, and tool use have achieved remarkable success in complex reasoning tasks. However, the underlying mechanism that truly drives performance remains obscured behind intricate system designs. In this paper, we propose HeavySkill, a perspective that views heavy thinking not only as a minimal execution unit in orchestration harness but also as an inner skill internalized within the model's parameters that drives the orchestrator to solve complex tasks. We identify this skill as a two-stage pipeline, i.e., parallel reasoning then summarization, which can operate beneath any agentic harness. We present a systematic empirical study of HeavySkill across diverse domains. Our results show that this inner skill consistently outperforms traditional Best-of-N (BoN) strategies; notably, stronger LLMs can even approach Pass@N performance. Crucially, we demonstrate that the depth and width of heavy thinking, as a learnable skill, can be further scaled via reinforcement learning, offering a promising path toward self-evolving LLMs that internalize complex reasoning without relying on brittle orchestration layers.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-04T09:37:04Z</published>
+    <arxiv:comment>18 pages, 10 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Jianing Wang</name>
+    </author>
+    <author>
+      <name>Linsen Guo</name>
+    </author>
+    <author>
+      <name>Zhengyu Chen</name>
+    </author>
+    <author>
+      <name>Qi Guo</name>
+    </author>
+    <author>
+      <name>Hongyu Zang</name>
+    </author>
+    <author>
+      <name>Wenjie Shi</name>
+    </author>
+    <author>
+      <name>Haoxiang Ma</name>
+    </author>
+    <author>
+      <name>Xiangyu Xi</name>
+    </author>
+    <author>
+      <name>Xiaoyu Li</name>
+    </author>
+    <author>
+      <name>Wei Wang</name>
+    </author>
+    <author>
+      <name>Xunliang Cai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01916v1</id>
+    <title>EAPFusion: Intrinsic Evolving Auxiliary Prior Guidance for Infrared and Visible Image Fusion</title>
+    <updated>2026-05-03T14:56:00Z</updated>
+    <link href="https://arxiv.org/abs/2605.01916v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01916v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Infrared-visible image fusion aims to create an information-rich fused image by integrating the complementary thermal saliency from infrared sensing and fine textures from visible imaging. Such accurate fusion is essential for real-world perception applications in complex scenes, including nighttime autonomous driving, search and rescue, and surveillance, and can further benefit downstream tasks such as semantic segmentation. However, most existing fusion methods rely upon static trained weights that cannot adapt to scene-specific content at inference time, and often suffer from a granularity mismatch when coarse auxiliary semantics are injected, which makes it difficult to simultaneously highlight targets and preserve details. In this work, we propose EAPFusion to address these issues by using self-evolving intrinsic priors instead of relying on external auxiliary models. Concretely, EAPFusion maintains a compact set of intrinsic priors and progressively updates them across scales. These evolved priors are utilized to dynamically generate convolutional kernels, shifting the paradigm from fixed, pre-trained filters to instance-adaptive parameters via prior-conditioned dynamic convolution. Furthermore, we design a channel-level fusion module that shuffles and interleaves infrared and visible channels, applying local channel mixing to boost cross-modal complementarity. Experiments on different datasets, including cross-dataset evaluation and semantic segmentation, show that the proposed method achieves state-of-the-art quantitative and qualitative fusion results, and consistently boosts downstream performance. Code is coming soon.</summary>
+    <category term="cs.CV" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-03T14:56:00Z</published>
+    <arxiv:comment>23 pages, 7 figures</arxiv:comment>
+    <arxiv:primary_category term="cs.CV"/>
+    <author>
+      <name>Zhenyu Sun</name>
+    </author>
+    <author>
+      <name>Luobin Zhang</name>
+    </author>
+    <author>
+      <name>Axi Niu</name>
+    </author>
+    <author>
+      <name>Haishen Wang</name>
+    </author>
+    <author>
+      <name>Qingsen Yan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01295v1</id>
+    <title>Autonomous Drift Learning in Data Streams: A Unified Perspective</title>
+    <updated>2026-05-02T07:11:38Z</updated>
+    <link href="https://arxiv.org/abs/2605.01295v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01295v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In the pursuit of autonomous learning systems, the foundational assumption of stationarity, the premise that data distributions and model behaviors remain constant, is fundamentally untenable. Historically, the research community has addressed non-stationary environments almost exclusively under the scope of concept drift, focusing primarily on temporal shifts in streams. However, as learning systems become increasingly autonomous and complex, merely adapting to temporal non-stationarity is no longer sufficient. Evolving beyond this traditional perspective, we propose a novel, three-dimensional taxonomy that systematizes the field based on the operational state of the system. First, time stream drift distinguishes between stochastic arbitrary patterns and structural rhythmic dynamics. Second, data stream drift disentangles shifts in feature representations, identified as representation drift, from changes in underlying semantics, recognized as semantic drift. Third, model stream drift characterizes the internal endogenous divergence of learning systems through the lenses of sequential plasticity, decentralized heterogeneity, and policy instability. Based on this framework, we systematically review 193 representative studies and identify key open challenges. By bridging the fragmented paradigms of drift adaptation, continual learning, and temporal generalization, this survey outlines a roadmap for building self-evolving intelligent systems capable of learning autonomously through continuous change.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-02T07:11:38Z</published>
+    <arxiv:comment>Survey Paper, 20 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Xiaoyu Yang</name>
+    </author>
+    <author>
+      <name>En Yu</name>
+    </author>
+    <author>
+      <name>Jie Lu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01293v1</id>
+    <title>Lifting Traces to Logic: Programmatic Skill Induction with Neuro-Symbolic Learning for Long-Horizon Agentic Tasks</title>
+    <updated>2026-05-02T07:06:01Z</updated>
+    <link href="https://arxiv.org/abs/2605.01293v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01293v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Foundation model-driven agents often struggle with long-horizon planning due to the transient nature of purely prompting-based reasoning. While existing skill induction methods mitigate this by distilling experience into state-blind parameterized scripts, they fail to capture the conditional logic required for robust execution in dynamic environments. In this paper, we propose Neuro-Symbolic Skill Induction (NSI), a framework that lifts interaction traces into modular, \textit{logic-grounded} programs. By synthesizing explicit control flows and dynamic variable binding, NSI empowers agents to discover \textit{when} and \textit{why} to act. This paradigm enables the efficient generalization, allowing agents to induce skills from few-shot examples and flexibly adapt to unseen goals. Experiments on a series of agentic tasks demonstrate that NSI consistently outperforms state-of-the-art baselines, empowering agents to self-evolve into architects of logic-grounded skills.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-02T07:06:01Z</published>
+    <arxiv:comment>ICML 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Jie-Jing Shao</name>
+    </author>
+    <author>
+      <name>Haiyan Yin</name>
+    </author>
+    <author>
+      <name>Yueming Lyu</name>
+    </author>
+    <author>
+      <name>Xingrui Yu</name>
+    </author>
+    <author>
+      <name>Lan-Zhe Guo</name>
+    </author>
+    <author>
+      <name>Ivor Tsang</name>
+    </author>
+    <author>
+      <name>James Kwok</name>
+    </author>
+    <author>
+      <name>Yu-Feng Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01191v1</id>
+    <title>Sentinel-VLA: A Metacognitive VLA Model with Active Status Monitoring for Dynamic Reasoning and Error Recovery</title>
+    <updated>2026-05-02T02:10:54Z</updated>
+    <link href="https://arxiv.org/abs/2605.01191v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01191v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Vision-language-action (VLA) models have advanced the field of embodied manipulation by harnessing broad world knowledge and strong generalization. However, current VLA models still face several key challenges, including limited reasoning capability, lack of status monitoring, and difficulty in self-correction. In this paper, we introduce \textbf{Sentinel-VLA}, a metacognitive VLA model equipped with an active ``sentinel'' module to monitor real-time execution status. Only when necessary, such as during initial planning or upon detecting an error, the model triggers a dynamic reasoning or formulate error recovery solutions. This on-demand reasoning mechanism ensures robust decision-making while minimizing computational overhead. Notably, all training data (spanning 44 tasks and over 2.6 million transitions) is automatically generated and annotated through our designed pipeline. We also propose the Self-Evolving Continual Learning (SECL) algorithm, which allows Sentinel-VLA to identify its capability boundaries and automatically collect data for expansion, paired with Orthogonal Continual Adapter (OC-Adapter) to constrain parameter updates to an orthogonal space, thereby preventing catastrophic forgetting. Real-world experiments demonstrate that Sentinel-VLA boosts the task success rate by over 30\% compared to the SOTA model, PI0. We will open-source all the code, weights, and data generation pipeline.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-02T02:10:54Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Wenhao Li</name>
+    </author>
+    <author>
+      <name>Xiu Su</name>
+    </author>
+    <author>
+      <name>Yichao Cao</name>
+    </author>
+    <author>
+      <name>Hongyan Xu</name>
+    </author>
+    <author>
+      <name>Xiaobo Xia</name>
+    </author>
+    <author>
+      <name>Shan You</name>
+    </author>
+    <author>
+      <name>Yi Chen</name>
+    </author>
+    <author>
+      <name>Chang Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.00974v1</id>
+    <title>SRTJ: Self-Evolving Rule-Driven Training-Free LLM Jailbreaking</title>
+    <updated>2026-05-01T17:27:45Z</updated>
+    <link href="https://arxiv.org/abs/2605.00974v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.00974v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLMs are increasingly equipped with safety alignment mechanisms, yet recent studies demonstrate that they remain vulnerable to jailbreaking attacks that elicit harmful behaviors without explicit policy violations. While a growing body of work has explored automated jailbreak strategies, existing methods face several fundamental challenges, including the lack of systematic utilization of both successful and failed attack experiences, as well as the absence of principled mechanisms for composing and selecting reusable attack rules under diverse constraints. As a result, existing methods struggle to accumulate transferable knowledge over time and to reliably adapt attack strategies across different targets and evolving safety mechanisms. To address these issues, we propose a Self-Evolving Rule-Driven Training-Free Jailbreak (SRTJ) framework that systematically discovers, composes, and refines attack strategies through interaction and feedback, without updating model parameters. Specifically, SRTJ couples experience-driven attack generation with answer set programming (ASP)-based rule selection and constraint-aware composition, where iterative verifier feedback is leveraged to jointly refine successful strategies and analyze failure patterns. The resulting rule memory evolves in a hierarchical multi-level manner, explicitly organizing distilled attack knowledge into long-term, middle-term, and short-term rules, thereby capturing both stable transferable strategies and transient adaptive behaviors to effectively balance exploration and exploitation across attack attempts. Extensive experiments on mainstream jailbreak benchmark (HarmBench) demonstrate that SRTJ achieves strong and stable attack performance across different target LLMs, while exhibiting improved robustness and generalization compared to existing jailbreak methods. The code is available at https://github.com/TheSolkatt/SRTJ.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-01T17:27:45Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Jindong Li</name>
+    </author>
+    <author>
+      <name>Ying Liu</name>
+    </author>
+    <author>
+      <name>Yali Fu</name>
+    </author>
+    <author>
+      <name>Jinjing Zhu</name>
+    </author>
+    <author>
+      <name>Leyao Wang</name>
+    </author>
+    <author>
+      <name>Menglin Yang</name>
+    </author>
+    <author>
+      <name>Rex Ying</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27691v1</id>
+    <title>When Agents Evolve, Institutions Follow</title>
+    <updated>2026-04-30T10:30:58Z</updated>
+    <link href="https://arxiv.org/abs/2604.27691v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27691v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Across millennia, complex societies have faced the same coordination problem of how to organize collective action among cognitively bounded and informationally incomplete individuals. Different civilizations developed different political institutions to answer the same basic questions of who proposes, who reviews, who executes, and how errors are corrected. We argue that multi-agent systems built on large language models face the same challenge. Their central problem is not only individual intelligence, but collective organization. Historical institutions therefore provide a structured design space for multi-agent architectures, making key trade-offs between efficiency and error correction, centralization and distribution, and specialization and redundancy empirically testable. We translate seven historical political institutions, spanning four canonical governance patterns, into executable multi-agent architectures and evaluate them under identical conditions across three large language models and two benchmarks. We find that governance topology strongly shapes collective performance. Within a single model, the gap between the best and worst institution exceeds 57 percentage points, while the optimal architecture shifts systematically with model capability and task characteristics. These results suggest that collective intelligence will not advance through a single optimal organizational form, but through governance mechanisms that can be reselected and reconfigured as tasks and capabilities evolve. More broadly, this points to a transition from \textbf{self-evolving agents} to the \textbf{self-evolving multi-agent system}. The code is available on \href{https://github.com/cf3i/SocialSystemArena}{GitHub}.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T10:30:58Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Chao Fei</name>
+    </author>
+    <author>
+      <name>Hongcheng Guo</name>
+    </author>
+    <author>
+      <name>Yanghua Xiao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27660v2</id>
+    <title>From Context to Skills: Can Language Models Learn from Context Skillfully?</title>
+    <updated>2026-05-03T14:10:15Z</updated>
+    <link href="https://arxiv.org/abs/2604.27660v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27660v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Many real-world tasks require language models (LMs) to reason over complex contexts that exceed their parametric knowledge. This calls for context learning, where LMs directly learn relevant knowledge from the given context. An intuitive solution is inference-time skill augmentation: extracting the rules and procedures from context into natural-language skills. However, constructing such skills for context learning scenarios faces two challenges: the prohibitive cost of manual skill annotation for long, technically dense contexts, and the lack of external feedback for automated skill construction. In this paper, we propose Ctx2Skill, a self-evolving framework that autonomously discovers, refines, and selects context-specific skills without human supervision or external feedback. At its core, a multi-agent self-play loop has a Challenger that generates probing tasks and rubrics, a Reasoner that attempts to solve them guided by an evolving skill set, and a neutral Judge that provides binary feedback. Crucially, both the Challenger and the Reasoner evolve through accumulated skills: dedicated Proposer and Generator agents analyze failure cases and synthesize them into targeted skill updates for both sides, enabling automated skill discovery and refinement. To prevent adversarial collapse caused by increasingly extreme task generation and over-specialized skill accumulation, we further introduce a Cross-time Replay mechanism that identifies the skill set achieving the best balance across representative cases for the Reasoner side, ensuring robust and generalizable skill evolution. The resulting skills can be plugged into any language model to obtain better context learning capability. Evaluated on four context learning tasks from CL-bench, Ctx2Skill consistently improves solving rates across backbone models.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T09:53:15Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Shuzheng Si</name>
+    </author>
+    <author>
+      <name>Haozhe Zhao</name>
+    </author>
+    <author>
+      <name>Yu Lei</name>
+    </author>
+    <author>
+      <name>Qingyi Wang</name>
+    </author>
+    <author>
+      <name>Dingwei Chen</name>
+    </author>
+    <author>
+      <name>Zhitong Wang</name>
+    </author>
+    <author>
+      <name>Zhenhailong Wang</name>
+    </author>
+    <author>
+      <name>Kangyang Luo</name>
+    </author>
+    <author>
+      <name>Zheng Wang</name>
+    </author>
+    <author>
+      <name>Gang Chen</name>
+    </author>
+    <author>
+      <name>Fanchao Qi</name>
+    </author>
+    <author>
+      <name>Minjia Zhang</name>
+    </author>
+    <author>
+      <name>Maosong Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27488v1</id>
+    <title>Skills-Coach: A Self-Evolving Skill Optimizer via Training-Free GRPO</title>
+    <updated>2026-04-30T06:39:37Z</updated>
+    <link href="https://arxiv.org/abs/2604.27488v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27488v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We introduce Skills-Coach, a novel automated framework designed to significantly enhance the self-evolution of skills within Large Language Model (LLM)-based agents. Addressing the current fragmentation of the skill ecosystem, Skills-Coach explores the boundaries of skill capabilities, thereby facilitating the comprehensive competency coverage essential for intelligent applications. The framework comprises four core modules: a Diverse Task Generation Module that systematically creates a comprehensive test suite for various skills; a Lightweight Optimization Module dedicated to optimizing skill prompts and their corresponding code; a Comparative Execution Module facilitating the execution and evaluation of both original and optimized skills; and a Traceable Evaluation Module, which rigorously evaluates performance against specified criteria. Skills-Coach offers flexible execution options through its virtual and real modes. To validate its efficacy, we introduce Skill-X, a comprehensive benchmark dataset consisting of 48 diverse skills. Experimental results demonstrate that Skills-Coach achieves significant performance improvements in skill capability across a wide range of categories, highlighting its potential to advance the development of more robust and adaptable LLM-based agents.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T06:39:37Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Yu Tian</name>
+    </author>
+    <author>
+      <name>Jiawei Chen</name>
+    </author>
+    <author>
+      <name>Lifan Zheng</name>
+    </author>
+    <author>
+      <name>Mingxiang Tao</name>
+    </author>
+    <author>
+      <name>Xinyi Zeng</name>
+    </author>
+    <author>
+      <name>Zhaoxia Yin</name>
+    </author>
+    <author>
+      <name>Hang Su</name>
+    </author>
+    <author>
+      <name>Xian Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27264v1</id>
+    <title>Self-Evolving Software Agents</title>
+    <updated>2026-04-29T23:31:51Z</updated>
+    <link href="https://arxiv.org/abs/2604.27264v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27264v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Autonomous agents can adapt their behaviour to changing environments, but remain bound to requirements, goals, and capabilities fixed at design time, preventing genuine software evolution. This paper introduces self-evolving software agents, combining BDI reasoning with LLMs to enable autonomous evolution of goals, reasoning, and executable code. We propose a BDI-LLM architecture in which an automated evolution module operates alongside the agent's reasoning loop, eliciting new requirements from experience and synthesizing corresponding design and code updates. A prototype evaluated in a dynamic multi-agent environment shows that agents can autonomously discover new goals and generate executable behaviours from minimal prior knowledge. The results indicate both the feasibility and current limits of LLM-driven evolution, particularly in terms of behavioural inheritance and stability.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T23:31:51Z</published>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Marco Robol</name>
+    </author>
+    <author>
+      <name>Paolo Giorgini</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27221v1</id>
+    <title>Web2BigTable: A Bi-Level Multi-Agent LLM System for Internet-Scale Information Search and Extraction</title>
+    <updated>2026-04-29T21:43:16Z</updated>
+    <link href="https://arxiv.org/abs/2604.27221v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27221v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic web search increasingly faces two distinct demands: deep reasoning over a single target, and structured aggregation across many entities and heterogeneous sources. Current systems struggle on both fronts. Breadth-oriented tasks demand schema-aligned outputs with wide coverage and cross-entity consistency, while depth-oriented tasks require coherent reasoning over long, branching search trajectories. We introduce \textbf{Web2BigTable}, a multi-agent framework for web-to-table search that supports both regimes. Web2BigTable adopts a bi-level architecture in which an upper-level orchestrator decomposes the task into sub-problems and lower-level worker agents solve them in parallel. Through a closed-loop run--verify--reflect process, the framework jointly improves decomposition and execution over time via persistent, human-readable external memory, with self-evolving updates to each single-agent. During execution, workers coordinate through a shared workspace that makes partial findings visible, allowing them to reduce redundant exploration, reconcile conflicting evidence, and adapt to emerging coverage gaps. Web2BigTable sets a new state of the art on WideSearch, reaching an Avg@4 Success Rate of \textbf{38.50} ($7.5\times$ the second best at 5.10), Row F1 of \textbf{63.53} (+25.03 over the second best), and Item F1 of \textbf{80.12} (+14.42 over the second best). It also generalises to depth-oriented search on XBench-DeepSearch, achieving 73.0 accuracy. Code is available at https://github.com/web2bigtable/web2bigtable.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T21:43:16Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yuxuan Huang</name>
+    </author>
+    <author>
+      <name>Yihang Chen</name>
+    </author>
+    <author>
+      <name>Zhiyuan He</name>
+    </author>
+    <author>
+      <name>Yuxiang Chen</name>
+    </author>
+    <author>
+      <name>Ka Yiu Lee</name>
+    </author>
+    <author>
+      <name>Huichi Zhou</name>
+    </author>
+    <author>
+      <name>Weilin Luo</name>
+    </author>
+    <author>
+      <name>Meng Fang</name>
+    </author>
+    <author>
+      <name>Jun Wang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.26805v1</id>
+    <title>Bian Que: An Agentic Framework with Flexible Skill Arrangement for Online System Operations</title>
+    <updated>2026-04-29T15:35:01Z</updated>
+    <link href="https://arxiv.org/abs/2604.26805v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.26805v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Operating and maintaining (O&amp;M) large-scale online engine systems (search, recommendation, advertising) demands substantial human effort for release monitoring, alert response, and root cause analysis. While LLM-based agents are a natural fit for these tasks, the deployment bottleneck is not reasoning capability but orchestration: selecting, for each operational event, the relevant data (metrics, logs, change events) and the applicable operational knowledge (handbook rules and practitioner experience). Feeding all signals indiscriminately causes dilution and hallucination, while manually curating the event-to-(data, knowledge) mapping is intractable under dozens of daily releases. We present Bian Que, an agentic framework with three contributions: (i) a \emph{unified operational paradigm} abstracting day-to-day O&amp;M into three canonical patterns: release interception, proactive inspection, and alert root cause analysis; (ii) \emph{Flexible Skill Arrangement}, where each Skill specifies which data and knowledge to retrieve for a given business-module context and can be automatically generated and updated by LLMs or iteratively refined through natural-language instructions from on-call engineers; (iii) a \emph{unified self-evolving mechanism} in which one correction signal drives two parallel pathways, case-memory-to-knowledge distillation and targeted Skill refinement. Deployed on the e-commerce search engine of KuaiShou, the major short-video platform in China, Bian Que reduces alert volume by 75%, achieves 80% root-cause analysis accuracy, and cuts mean time to resolution by over 50%. Our framework achieves 99.0% pass rate on offline evaluations. Our code is available at https://github.com/benchen4395/BianQue_Assistant.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T15:35:01Z</published>
+    <arxiv:comment>Codes are https://github.com/benchen4395/BianQue_Assistant</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Bochao Liu</name>
+    </author>
+    <author>
+      <name>Zhipeng Qian</name>
+    </author>
+    <author>
+      <name>Yang Zhao</name>
+    </author>
+    <author>
+      <name>Xinyuan Jiang</name>
+    </author>
+    <author>
+      <name>Zihan Liang</name>
+    </author>
+    <author>
+      <name>Yufei Ma</name>
+    </author>
+    <author>
+      <name>Junpeng Zhuang</name>
+    </author>
+    <author>
+      <name>Ben Chen</name>
+    </author>
+    <author>
+      <name>Shuo Yang</name>
+    </author>
+    <author>
+      <name>Hongen Wan</name>
+    </author>
+    <author>
+      <name>Yao Wu</name>
+    </author>
+    <author>
+      <name>Chenyi Lei</name>
+    </author>
+    <author>
+      <name>Xiao Liang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.26703v1</id>
+    <title>A self-evolving agent for explainable diagnosis of DFT-experiment band-gap mismatch</title>
+    <updated>2026-04-29T14:11:03Z</updated>
+    <link href="https://arxiv.org/abs/2604.26703v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.26703v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Standard density functional theory (DFT) routinely misclassifies the electronic ground state of correlated and structurally complex compounds, predicting metallic behaviour for materials that experiments report as semiconductors. Each such mismatch encodes a specific non-ideality -- magnetic ordering, electron correlation, an alternative polymorph, or a defect -- that the calculation excluded, but extracting that signal at scale has remained a manual exercise. Here we introduce XDFT, a closed-loop agent that diagnoses the mismatch automatically: it draws candidate hypotheses from a curated catalogue, executes the corresponding first-principles tests, and updates a global Bayesian posterior over hypothesis usefulness from each verdict. On a verified benchmark of 124 materials, XDFT identifies a resolving mechanism for 70 of 90 mismatch cases (78\%), an order of magnitude above a uniform-random baseline (19\%) and a static LLM ordering (20\%). The internal posterior aligns with empirical performance over the benchmark timeline, and resolved cases collapse into a tri-partite element-class taxonomy that we distil into a four-line static rule. Each diagnosed material is returned with a corrected protocol and a mechanistic attribution; failed cases are flagged as evidence-backed targets for experimental re-examination.</summary>
+    <category term="cond-mat.mtrl-sci" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="physics.comp-ph" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T14:11:03Z</published>
+    <arxiv:primary_category term="cond-mat.mtrl-sci"/>
+    <author>
+      <name>Yue Li</name>
+    </author>
+    <author>
+      <name>Bijun Tang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.25850v3</id>
+    <title>Agentic Harness Engineering: Observability-Driven Automatic Evolution of Coding-Agent Harnesses</title>
+    <updated>2026-04-30T17:34:17Z</updated>
+    <link href="https://arxiv.org/abs/2604.25850v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.25850v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Harnesses are now central to coding-agent performance, mediating how models interact with tools and execution environments. Yet harness engineering remains a manual craft, because automating it faces a heterogeneous action space across editable components, voluminous trajectories that bury actionable signal, and edits whose effect is hard to attribute. We introduce Agentic Harness Engineering (AHE), a closed loop that addresses these challenges through three matched observability pillars: (1) component observability gives every editable harness component a file-level representation so the action space is explicit and revertible; (2) experience observability distills millions of raw trajectory tokens into a layered, drill-down evidence corpus that an evolving agent can actually consume; and (3) decision observability pairs every edit with a self-declared prediction, later verified against the next round's task-level outcomes. Together, these pillars turn every edit into a falsifiable contract, so harness evolution proceeds autonomously without collapsing into trial-and-error. Empirically, ten AHE iterations lift pass@1 on Terminal-Bench 2 from 69.7% to 77.0%, surpassing the human-designed harness Codex-CLI (71.9%) and the self-evolving baselines ACE and TF-GRPO. The frozen harness transfers without re-evolution: on SWE-bench-verified it tops aggregate success at 12% fewer tokens than the seed, and on Terminal-Bench 2 it yields +5.1 to +10.1pp cross-family gains across three alternate model families, indicating the evolved components encode general engineering experience rather than benchmark-specific tuning. Ablations localize the gain to tools, middleware, and long-term memory rather than the system prompt, suggesting factual harness structure transfers while prose-level strategy does not.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-28T16:55:02Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Jiahang Lin</name>
+    </author>
+    <author>
+      <name>Shichun Liu</name>
+    </author>
+    <author>
+      <name>Chengjun Pan</name>
+    </author>
+    <author>
+      <name>Lizhi Lin</name>
+    </author>
+    <author>
+      <name>Shihan Dou</name>
+    </author>
+    <author>
+      <name>Xuanjing Huang</name>
+    </author>
+    <author>
+      <name>Hang Yan</name>
+    </author>
+    <author>
+      <name>Zhenhua Han</name>
+    </author>
+    <author>
+      <name>Tao Gui</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.26969v1</id>
+    <title>AgenticRecTune: Multi-Agent with Self-Evolving Skillhub for Recommendation System Optimization</title>
+    <updated>2026-04-21T23:15:58Z</updated>
+    <link href="https://arxiv.org/abs/2604.26969v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.26969v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Modern large-scale recommendation systems are typically constructed as multi-stage pipelines, encompassing pre-ranking, ranking, and re-ranking phases. While traditional recommendation research typically focuses on optimizing a specific model, such as improving the pre-ranking model structure or ranking models training algorithm, system-level configurations optimization play a crucial role, which integrates the output from each model head to get the final score in each stage. Due to the complexity of the system, the configuration optimization is highly important and challenging. Any model modification requires new optimal system-level configurations. But each experimental iteration requires significant tuning effort. Furthermore, models in different stage operates within a distinct context and optimizes for different targets, requiring specialized domain expertise. In addition, optimization success depends on balancing competing multiple online metrics and alignment with shifting production development objectives. To address these challenges, we propose AgenticRecTune, an agentic framework comprising five specialized agents, Actor, Critic, Insight, Skill, and Online, designed to manage the end-to-end configuration optimization workflow. By leveraging the advanced reasoning of Large Language Models (LLMs), specifically Gemini, AgenticRecTune explore the optimal configuration spaces. The Actor Agent proposes multiple candidates and Critic Agent filters out suboptimal proposals.Then Online Agent autonomously prepares A/B tests based on the proposed configurations set from the Critic Agent and captures the subsequencet experimental results. We also introduce a self-evolving Skillhub, which utilizes a collaboration between the Insight Agent and Skill Agent to summarize the history results, extract underlying mechanics of each task in recommendation system and update skills.</summary>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-21T23:15:58Z</published>
+    <arxiv:primary_category term="cs.IR"/>
+    <author>
+      <name>Xidong Wu</name>
+    </author>
+    <author>
+      <name>Yue Zhuan</name>
+    </author>
+    <author>
+      <name>Ruoqiao Wei</name>
+    </author>
+    <author>
+      <name>Hangxin Chen</name>
+    </author>
+    <author>
+      <name>Di Bai</name>
+    </author>
+    <author>
+      <name>Jintao Liu</name>
+    </author>
+    <author>
+      <name>Xinyi Wang</name>
+    </author>
+    <author>
+      <name>Xue Wang</name>
+    </author>
+    <author>
+      <name>Luoshu Wang</name>
+    </author>
+    <author>
+      <name>Xinwu Cheng</name>
+    </author>
+  </entry>
+</feed>

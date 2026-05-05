@@ -1,0 +1,90 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest",
+        "description": "Polymarket microstructure / informed-trading detection week — 4 fresh PM-axis (3 Nechepurenko ILS series + 1 NBA-arb LOB) + 1 multivariate Kelly scaling result. No new Darwinian work past dedup."
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper1",
+        "paper2",
+        "paper3",
+        "paper4",
+        "paper5",
+        "separator",
+        "link-full"
+      ]
+    },
+    "paper1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Empirical ILS-dl on Polymarket Insider Cases",
+        "href": "https://arxiv.org/abs/2605.02286",
+        "source": "arXiv",
+        "score": "Iran $269M contract: ILS-dl +0.113 vs proxy -0.331"
+      }
+    },
+    "paper2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Per-Market Leakage vs Order-Flow Skill",
+        "href": "https://arxiv.org/abs/2605.02287",
+        "source": "arXiv",
+        "score": "three layers, not competing methods"
+      }
+    },
+    "paper3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Polymarket NBA Arbitrage",
+        "href": "https://arxiv.org/abs/2605.00864",
+        "source": "arXiv",
+        "score": "75M LOB snapshots; 76.9% combinatorial opps depth-capped at 14.8 shares"
+      }
+    },
+    "paper4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Price as Focal Point",
+        "href": "https://arxiv.org/abs/2604.24147",
+        "source": "arXiv",
+        "score": "SCI applied to 2024 election; most-visible market = least accurate"
+      }
+    },
+    "paper5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Multivariate Kelly O(2^N)→O(N)",
+        "href": "https://arxiv.org/abs/2604.24723",
+        "source": "arXiv",
+        "score": "sigmoidal scaling laws for 100s of bets"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-full": {
+      "type": "Link",
+      "props": {
+        "label": "Full digest",
+        "href": "articles/paper-digest-2026-05-05.md"
+      }
+    }
+  }
+}
