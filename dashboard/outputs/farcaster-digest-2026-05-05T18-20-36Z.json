@@ -1,0 +1,161 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster digest"
+      },
+      "children": [
+        "main-alert",
+        "separator1",
+        "sources-section",
+        "error-section",
+        "history-section",
+        "recommendation-section"
+      ]
+    },
+    "main-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Skill skipped",
+        "message": "farcaster digest skipped",
+        "type": "warning"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources-label",
+        "sources-badges"
+      ]
+    },
+    "sources-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Failed sources",
+        "level": "h4"
+      }
+    },
+    "sources-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-search",
+        "badge-trending",
+        "badge-channels"
+      ]
+    },
+    "badge-search": {
+      "type": "Badge",
+      "props": {
+        "text": "search",
+        "variant": "destructive"
+      }
+    },
+    "badge-trending": {
+      "type": "Badge",
+      "props": {
+        "text": "trending",
+        "variant": "destructive"
+      }
+    },
+    "badge-channels": {
+      "type": "Badge",
+      "props": {
+        "text": "channels",
+        "variant": "destructive"
+      }
+    },
+    "error-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "error-label",
+        "error-details"
+      ]
+    },
+    "error-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Error details",
+        "level": "h4"
+      }
+    },
+    "error-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "error-http",
+        "error-key"
+      ]
+    },
+    "error-http": {
+      "type": "Text",
+      "props": {
+        "text": "HTTP 402 Neynar across all 3 endpoints",
+        "variant": "body"
+      }
+    },
+    "error-key": {
+      "type": "Text",
+      "props": {
+        "text": "NEYNAR_API_KEY unset",
+        "variant": "body"
+      }
+    },
+    "history-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "history-stat",
+        "history-context"
+      ]
+    },
+    "history-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Consecutive failures",
+        "value": "5"
+      }
+    },
+    "history-context": {
+      "type": "Text",
+      "props": {
+        "text": "Same operator-side blocker as days 1–4",
+        "variant": "caption"
+      }
+    },
+    "recommendation-section": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommended action",
+        "message": "cron pause still recommended until secret or scripts/prefetch-farcaster.sh lands",
+        "type": "info"
+      }
+    }
+  }
+}
