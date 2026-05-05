@@ -1,7 +1,5 @@
-*Paper Pick — 2026-05-04 (PhD-prep slot)*
+*Paper Pick — 2026-05-05*
 
-"Unlocking the Forecasting Economy: A Suite of Datasets for the Full Lifecycle of Prediction Market" — Jia / Zhou / Zhang / **Lin William Cong** / Li / Sun (Apr 22 2026, cs.LG)
-
-First continuously-maintained Polymarket lifecycle dataset: 770k markets × 943M fills × ~2M oracle events spanning Oct 2020 → Mar 2026, with NBA-calibration + CPI-reconstruction case studies. Cong (Cornell SC Johnson) is the highest-bar finance byline this month — Stanford committee citation. Direct match to the resolution-text-ingestion ADR + CalibrationGap quant scanner.
-
-[Read](https://arxiv.org/abs/2604.20421) | [PDF](https://arxiv.org/pdf/2604.20421) | [Site](https://www.polymonitor.club/)
+"Empirical Evaluation of Deadline-Resolved Information Leakage on Documented Polymarket Insider Cases" — Maksym Nechepurenko · arXiv 2605.02286 · 2026-05-04
+Tests the deadline-adjusted ILS framework on the 2026 US-Iran conflict cluster — the same near-clause-twin Iran markets at the core of the open UMA-resolution arbitrage hook — and on the largest contract finds a 0.444-magnitude leakage shift between public-event scoring (+0.113) and resolution-anchored scoring (-0.331), validating the 'ingest resolution text not titles' thesis against documented insider cases.
+[Read](https://arxiv.org/abs/2605.02286) | [PDF](https://arxiv.org/pdf/2605.02286)
