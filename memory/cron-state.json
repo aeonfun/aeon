@@ -307,8 +307,8 @@
     "last_error": "c5f2301\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "push-recap": {
-    "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T21:30:08Z",
     "total_runs": 35,
     "total_successes": 19,
@@ -319,8 +319,8 @@
     "last_error": "0c4f36c\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-article": {
-    "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T15:24:51Z",
     "total_runs": 23,
     "total_successes": 9,
@@ -331,8 +331,8 @@
     "last_error": "6673ab5\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-actions": {
-    "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T15:31:13Z",
     "total_runs": 24,
     "total_successes": 9,
@@ -343,8 +343,8 @@
     "last_error": "197cbb6\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "repo-pulse": {
-    "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T15:22:41Z",
     "total_runs": 22,
     "total_successes": 9,
@@ -355,8 +355,8 @@
     "last_error": "403364f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "star-milestone": {
-    "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T15:21:05Z",
     "total_runs": 22,
     "total_successes": 9,
@@ -367,8 +367,8 @@
     "last_error": "3087f28\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "fleet-control": {
-    "last_dispatch": "2026-05-05T10:24:26Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-05T10:26:06Z",
     "total_runs": 31,
     "total_successes": 19,
@@ -379,8 +379,8 @@
     "last_error": "5a7ed98\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "code-health": {
-    "last_dispatch": "2026-05-04T17:06:04Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T17:19:31Z",
     "total_runs": 22,
     "total_successes": 10,
@@ -391,8 +391,8 @@
     "last_error": "733cb4e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "changelog": {
-    "last_dispatch": "2026-05-04T17:06:04Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T17:11:17Z",
     "total_runs": 24,
     "total_successes": 10,
@@ -414,8 +414,8 @@
     "success_rate": 1
   },
   "external-feature": {
-    "last_dispatch": "2026-05-04T17:06:04Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T16:58:38Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T17:13:54Z",
     "total_runs": 20,
     "total_successes": 10,
