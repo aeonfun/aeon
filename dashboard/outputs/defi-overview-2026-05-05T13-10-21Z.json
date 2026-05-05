@@ -1,0 +1,517 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview",
+        "description": "2026-05-05 — Mixed: DEX vol +89% surge against TVL/stables modest drift up"
+      },
+      "children": [
+        "tvl-stat",
+        "sep1",
+        "top-chains-h",
+        "top-chains-tbl",
+        "sep2",
+        "movers-chains-h",
+        "movers-chains-txt",
+        "sep3",
+        "movers-proto-h",
+        "movers-proto-stk",
+        "sep4",
+        "fees-lead-h",
+        "fees-lead-tbl",
+        "sep5",
+        "fees-beating-h",
+        "fees-beating-stk",
+        "sep6",
+        "dex-vol-h",
+        "dex-vol-stat",
+        "dex-vol-tbl",
+        "sep7",
+        "stables-h",
+        "stables-stk",
+        "sep8",
+        "real-yield-h",
+        "real-yield-tbl",
+        "sep9",
+        "incentive-h",
+        "incentive-tbl",
+        "sep10",
+        "yesterday-h",
+        "yesterday-txt",
+        "sep11",
+        "sources-txt"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total Value Locked",
+        "value": "$85.85B",
+        "delta": "+0.90% 24h / +2.55% 7d",
+        "trend": "up"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top-chains-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Chains",
+        "level": "h3"
+      }
+    },
+    "top-chains-tbl": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$46.1B",
+            "—"
+          ],
+          [
+            "BSC",
+            "$5.56B",
+            "+1.5%"
+          ],
+          [
+            "Solana",
+            "$5.47B",
+            "—"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "movers-chains-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — Chains",
+        "level": "h3"
+      }
+    },
+    "movers-chains-txt": {
+      "type": "Text",
+      "props": {
+        "text": "None cleared the 5% gate (2nd day running). Bitcoin DeFi +3.1% 1d / +4.8% 7d strongest sustained large-chain move; sub-gate.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "movers-proto-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — Protocols",
+        "level": "h3"
+      }
+    },
+    "movers-proto-stk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "steakhouse-item",
+        "renzo-item"
+      ]
+    },
+    "steakhouse-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "steakhouse-badge",
+        "steakhouse-txt"
+      ]
+    },
+    "steakhouse-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "↑ Steakhouse Financial +24%",
+        "variant": "default"
+      }
+    },
+    "steakhouse-txt": {
+      "type": "Text",
+      "props": {
+        "text": "$1.49B → $1.85B (Risk Curators) — sustained 7d +20%, no obvious specific catalyst",
+        "variant": "body"
+      }
+    },
+    "renzo-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "renzo-badge",
+        "renzo-txt"
+      ]
+    },
+    "renzo-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "↓ Renzo −18%",
+        "variant": "destructive"
+      }
+    },
+    "renzo-txt": {
+      "type": "Text",
+      "props": {
+        "text": "$330M → $272M (Liquid Restaking) — sustained 7d −23%, LRT unwind class, no specific catalyst",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-lead-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-lead-tbl": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees (24h)",
+          "vs 7d Avg"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.4M",
+            "flat"
+          ],
+          [
+            "Circle USDC",
+            "$6.5M",
+            "flat"
+          ],
+          [
+            "Hyperliquid Perps",
+            "$2.7M",
+            "+60%"
+          ]
+        ]
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-beating-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Beating TVL",
+        "level": "h3"
+      }
+    },
+    "fees-beating-stk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pancakeswap-item",
+        "ondo-item"
+      ]
+    },
+    "pancakeswap-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pancakeswap-badge",
+        "pancakeswap-txt"
+      ]
+    },
+    "pancakeswap-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "PancakeSwap AMM",
+        "variant": "default"
+      }
+    },
+    "pancakeswap-txt": {
+      "type": "Text",
+      "props": {
+        "text": "Fees +338% / TVL +1% (7d) on $1.75B — V2 trading demand outrunning deposits",
+        "variant": "body"
+      }
+    },
+    "ondo-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ondo-badge",
+        "ondo-txt"
+      ]
+    },
+    "ondo-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Ondo Yield Assets",
+        "variant": "default"
+      }
+    },
+    "ondo-txt": {
+      "type": "Text",
+      "props": {
+        "text": "Fees +196% / TVL +0% (7d) on $2.74B — RWA treasury yield accrual",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dex-vol-h": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX Volume (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-vol-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Total DEX Volume",
+        "value": "$7.4B",
+        "delta": "+89%",
+        "trend": "up"
+      }
+    },
+    "dex-vol-tbl": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "Volume (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$833M",
+            "+108%"
+          ],
+          [
+            "Uniswap V3",
+            "$820M",
+            "+170%"
+          ],
+          [
+            "PancakeSwap V3",
+            "$815M",
+            "+93%"
+          ]
+        ]
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stables-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Stablecoins",
+        "level": "h3"
+      }
+    },
+    "stables-stk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stables-stat",
+        "stables-txt"
+      ]
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stablecoin TVL",
+        "value": "$321B",
+        "delta": "+0.65% 1d / +0.94% 7d",
+        "trend": "up"
+      }
+    },
+    "stables-txt": {
+      "type": "Text",
+      "props": {
+        "text": "USDC +1.7% on $79B base = +$1.4B daily mint, single notable issuer move",
+        "variant": "body"
+      }
+    },
+    "sep8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "real-yield-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Real Yield (Sustainable, ≥$10M)",
+        "level": "h3"
+      }
+    },
+    "real-yield-tbl": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Asset",
+          "Protocol",
+          "Chain",
+          "APY",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "APT",
+            "amnis-finance",
+            "Aptos",
+            "28.1%",
+            "$18M"
+          ],
+          [
+            "SUSDAT",
+            "saturn",
+            "Ethereum",
+            "27.6%",
+            "$62M"
+          ],
+          [
+            "APYUSD",
+            "pendle",
+            "Ethereum",
+            "17.0%",
+            "$12M"
+          ]
+        ]
+      }
+    },
+    "sep9": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "incentive-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive Yield (Points/Emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-tbl": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Asset Pair",
+          "Protocol",
+          "Chain",
+          "APY via",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "USDC-AERO",
+            "aerodrome-v1",
+            "Base",
+            "21.7% via AERO",
+            "$27M"
+          ],
+          [
+            "SDCRV",
+            "stake-dao",
+            "Ethereum",
+            "20.5% via CRV/SDT",
+            "$29M"
+          ]
+        ]
+      }
+    },
+    "sep10": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "yesterday-h": {
+      "type": "Heading",
+      "props": {
+        "text": "Yesterday Comparison",
+        "level": "h3"
+      }
+    },
+    "yesterday-txt": {
+      "type": "Text",
+      "props": {
+        "text": "USDC-CBBTC (Uniswap V3 Base, yesterday's #1 real-yield) dropped from list — TVL fell to $9.84M, below $10M filter; APY also slid 34.4% → 28.2%. Cooler Loans 5-day direction-flip series paused at −1.5%. Uniswap V4 still passes fees-beating-TVL but cooler (+22%/+3% 7d vs yesterday's +61%/+4%).",
+        "variant": "body"
+      }
+    },
+    "sep11": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-txt": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
