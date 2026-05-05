@@ -1,0 +1,485 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket monitor",
+        "description": "2026-05-05"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section_fifa",
+        "sep_1",
+        "section_btc",
+        "sep_2",
+        "section_election",
+        "sep_3",
+        "section_alerts",
+        "sep_4",
+        "section_sources"
+      ]
+    },
+    "section_fifa": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_fifa",
+        "stat_mexico",
+        "badge_mexico_vol",
+        "stack_fifa_others",
+        "text_italy",
+        "text_biggest_mover_mexico",
+        "text_top_comment_fifa"
+      ]
+    },
+    "heading_fifa": {
+      "type": "Heading",
+      "props": {
+        "text": "FIFA World Cup 2026 (event 30615)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stat_mexico": {
+      "type": "Stat",
+      "props": {
+        "label": "Mexico YES",
+        "value": "1.1%",
+        "delta": "+0.0pp",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "badge_mexico_vol": {
+      "type": "Badge",
+      "props": {
+        "text": "VOLUME SPIKE 5.2x (prev $108k 05-03) | $561k vol",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "stack_fifa_others": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_france",
+        "text_spain",
+        "text_england",
+        "text_brazil"
+      ]
+    },
+    "text_france": {
+      "type": "Text",
+      "props": {
+        "text": "France YES 16.7%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_spain": {
+      "type": "Text",
+      "props": {
+        "text": "Spain YES 15.4%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_england": {
+      "type": "Text",
+      "props": {
+        "text": "England YES 11.1%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_brazil": {
+      "type": "Text",
+      "props": {
+        "text": "Brazil YES 8.6%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_italy": {
+      "type": "Text",
+      "props": {
+        "text": "Italy RESOLVED NO (closed)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text_biggest_mover_mexico": {
+      "type": "Text",
+      "props": {
+        "text": "Biggest mover: Mexico — price flat at 1.1%, volume 5.2x spike, no comment catalyst",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_top_comment_fifa": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment: Croti (9 rxn): \"people thinking england is top 2 must be confusing with cricket or rugby\"",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "section_btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_btc",
+        "stat_btc",
+        "text_btc_vol",
+        "text_btc_note"
+      ]
+    },
+    "heading_btc": {
+      "type": "Heading",
+      "props": {
+        "text": "BTC $1M before GTA VI",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "49.1%",
+        "delta": "+0.1pp",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "text_btc_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$1.7k 24h vol — flat, all quiet",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_btc_note": {
+      "type": "Text",
+      "props": {
+        "text": "Note: resolves 50-50 split if neither condition met Jul 31; BTC $80,793 needs 12.4x in 87d",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "section_election": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_election",
+        "heading_rnom",
+        "stack_rnom",
+        "heading_dnom",
+        "stack_dnom",
+        "heading_vol_spikes",
+        "stack_vol_spikes",
+        "text_biggest_mover_eric",
+        "text_top_comment_election"
+      ]
+    },
+    "heading_election": {
+      "type": "Heading",
+      "props": {
+        "text": "2028 US Election Markets",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "heading_rnom": {
+      "type": "Heading",
+      "props": {
+        "text": "R-nom",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_rnom": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_vance",
+        "text_rubio",
+        "text_djt_jr",
+        "text_desantis"
+      ]
+    },
+    "text_vance": {
+      "type": "Text",
+      "props": {
+        "text": "Vance 39.3%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_rubio": {
+      "type": "Text",
+      "props": {
+        "text": "Rubio 21.2%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_djt_jr": {
+      "type": "Text",
+      "props": {
+        "text": "DJT Jr 3.7%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_desantis": {
+      "type": "Text",
+      "props": {
+        "text": "DeSantis 2.5%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "heading_dnom": {
+      "type": "Heading",
+      "props": {
+        "text": "D-nom",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_dnom": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_ossoff",
+        "text_buttigieg",
+        "text_talarico",
+        "text_beshear"
+      ]
+    },
+    "text_ossoff": {
+      "type": "Text",
+      "props": {
+        "text": "Ossoff 6.6%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_buttigieg": {
+      "type": "Text",
+      "props": {
+        "text": "Buttigieg 4.8%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_talarico": {
+      "type": "Text",
+      "props": {
+        "text": "Talarico 1.9%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_beshear": {
+      "type": "Text",
+      "props": {
+        "text": "Beshear 2.7%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "heading_vol_spikes": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume Spikes",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stack_vol_spikes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_eric_trump_vol",
+        "text_gaetz_vol",
+        "text_whitmer_vol"
+      ]
+    },
+    "text_eric_trump_vol": {
+      "type": "Text",
+      "props": {
+        "text": "Eric Trump R-nom: $490k 24h vol (YES 0.75% — speculative/meme)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_gaetz_vol": {
+      "type": "Text",
+      "props": {
+        "text": "Gaetz: $100k",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_whitmer_vol": {
+      "type": "Text",
+      "props": {
+        "text": "Whitmer: $92k",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_biggest_mover_eric": {
+      "type": "Text",
+      "props": {
+        "text": "Biggest mover: Eric Trump R-nom — $490k vol on 0.75% YES, no price move",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_top_comment_election": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (2028 R-nom): EverSupreme7 (11 rxn): \"JD Rubio!\" — ticket-combo narrative, Feb 2026",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "section_alerts": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_alerts",
+        "alert_no_big_moves",
+        "text_vol_spike_note"
+      ]
+    },
+    "heading_alerts": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "alert_no_big_moves": {
+      "type": "Alert",
+      "props": {
+        "title": "No >5pp price moves",
+        "message": "Market stable.",
+        "type": "info"
+      },
+      "children": []
+    },
+    "text_vol_spike_note": {
+      "type": "Text",
+      "props": {
+        "text": "Two volume spikes: Mexico FIFA 5.2x (no narrative catalyst), Eric Trump R-nom anomalous on near-zero price",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "section_sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_sources",
+        "link_gamma",
+        "link_clob"
+      ]
+    },
+    "heading_sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "link_gamma": {
+      "type": "Link",
+      "props": {
+        "label": "gamma-api.polymarket.com",
+        "href": "https://gamma-api.polymarket.com"
+      },
+      "children": []
+    },
+    "link_clob": {
+      "type": "Link",
+      "props": {
+        "label": "clob.polymarket.com",
+        "href": "https://clob.polymarket.com"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    }
+  }
+}

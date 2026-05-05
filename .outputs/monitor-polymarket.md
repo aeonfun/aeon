@@ -1,30 +1,23 @@
-polymarket monitor — 2026-05-04
+polymarket monitor — 2026-05-05
 
-MEXICO FIFA (event 30615, Revenant builder market)
-Mexico YES 1.05% (0pp flat) $71.3k vol (-34% vs yesterday $108k)
-Comment: "retail buying NO while 3 profitable wallets scaling into YES" — Tart-Recommendation
+FIFA World Cup 2026 (event 30615)
+Mexico YES 1.1% (+0.0pp) $561k vol — VOLUME SPIKE 5.2x (prev $108k 05-03)
+France YES 16.7% | Spain YES 15.4% | England YES 11.1% | Brazil YES 8.6%
+Italy RESOLVED NO (closed)
+biggest mover: Mexico — price flat at 1.1%, volume 5.2x spike, no comment catalyst
+top comment: Croti (9 rxn): "people thinking england is top 2 must be confusing with cricket or rugby"
 
-BTC $1M / GTA VI (event 23784)
-BTC $1M YES 49.05% (+0.05pp) $885 vol
-50-50 resolution rule: if neither BTC hits $1M nor GTA VI releases by Jul 31, market resolves 50-50
-Edge: YES 49.05¢ underpriced by ~1¢ vs 50-50 outcome; converging path as deadline nears
-Comment: "If neither occurs by July 31 this market resolves to 50-50. scam" — Aching-East (14 rxn)
+BTC $1M before GTA VI
+YES 49.1% (+0.1pp) $1.7k 24h vol — flat, all quiet
+note: resolves 50-50 split if neither condition met Jul 31; BTC $80,793 needs 12.4x in 87d
 
-2028 PRESIDENTIAL WINNER (event 31552)
-Eric Trump YES 0.55% (-0.10pp) 24h vol $2.04M — VOLUME ALERT
-All other 35+ candidates zero volume. Single-market anomaly. Possible large NO build.
+2028 US Election Markets
+R-nom: Vance 39.3% | Rubio 21.2% | DJT Jr 3.7% | DeSantis 2.5%
+D-nom: Ossoff 6.6% | Buttigieg 4.8% | Talarico 1.9% | Beshear 2.7%
+volume spikes: Eric Trump R-nom $490k 24h vol (YES 0.75% — speculative/meme), Gaetz $100k, Whitmer $92k
+biggest mover: Eric Trump R-nom — $490k vol on 0.75% YES, no price move
 
-2028 R-NOM (event 31875)
-Vance YES 39.05% (-0.10pp) $22.9k vol
-Rubio YES 21.25% $17.4k vol
-Top vol: Tulsi Gabbard $48.4k, MTG $46.7k, Rand Paul $36.3k (all <1.2%)
+top comment (2028 R-nom): EverSupreme7 (11 rxn): "JD Rubio!" — ticket-combo narrative, Feb 2026
 
-2028 D-NOM (event 30829)
-Ossoff YES 6.75% (+0.30pp) $5.2k vol
-Whitmer YES 1.30% (-0.05pp) $87k vol — high two-way flow, contested at this level
-Buttigieg YES 4.20% $14.5k vol
-
-alerts:
-- Eric Trump winner $2M 24h vol — anomalous for 0.55% market; unknown catalyst
-- BTC/GTA VI: YES 49.05¢ underpriced ~1¢ vs 50-50; CalibrationGap calendar arb drift
-- 0 markets >5pp move in 24h (all quiet on price)
+alerts: no >5pp price moves. two volume spikes — Mexico FIFA 5.2x (no narrative catalyst), Eric Trump R-nom anomalous on near-zero price
+sources: gamma-api.polymarket.com · clob.polymarket.com
