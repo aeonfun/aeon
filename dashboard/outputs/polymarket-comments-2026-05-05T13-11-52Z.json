@@ -1,0 +1,771 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket-comments — 2026-05-05",
+        "description": "politics + crypto / narrative-shift / track records / citation chains"
+      },
+      "children": [
+        "market1",
+        "sep1",
+        "market2",
+        "sep2",
+        "market3",
+        "sep3",
+        "market4",
+        "sep4",
+        "market5",
+        "sep5",
+        "citation-chain-section",
+        "sep6",
+        "takeaways-section"
+      ]
+    },
+    "market1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1-title",
+        "m1-stat",
+        "m1-comments"
+      ]
+    },
+    "m1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran closes airspace by May 8?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m1-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "15.5%",
+        "delta": "$2.58M v24, T-3"
+      },
+      "children": []
+    },
+    "m1-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1c1",
+        "m1c2",
+        "m1c3"
+      ]
+    },
+    "m1c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c1-handle",
+        "m1c1-text",
+        "m1c1-context"
+      ]
+    },
+    "m1c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Verifiable-Romance (NEW)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m1c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Iranian FM Araqchi is already in China, and Trump is about to arrive. With China's mediation, a ceasefire is imminent."
+      },
+      "children": []
+    },
+    "m1c1-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-05] — single live-tape that links 3 markets (Iran-air + US-Iran-peace + Trump-China)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m1c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c2-handle",
+        "m1c2-text",
+        "m1c2-context"
+      ]
+    },
+    "m1c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Watery-Boycott",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m1c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Hegseth and Caine both sound like they are ready to go and their edging Iran to make a small move so they can start shooting"
+      },
+      "children": []
+    },
+    "m1c2-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-05]",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m1c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c3-handle",
+        "m1c3-text",
+        "m1c3-context"
+      ]
+    },
+    "m1c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Other-Takeover",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m1c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Israel and US discussing new strikes on Iran. Source: CNN"
+      },
+      "children": []
+    },
+    "m1c3-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-05]",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2-title",
+        "m2-stat",
+        "m2-comments"
+      ]
+    },
+    "m2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Trump visits China by May 31?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m2-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "92.5%",
+        "delta": "$230k v24"
+      },
+      "children": []
+    },
+    "m2-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2c1",
+        "m2c2",
+        "m2c3"
+      ]
+    },
+    "m2c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c1-handle",
+        "m2c1-text",
+        "m2c1-context"
+      ]
+    },
+    "m2c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Glamorous-Eagle (NEW, 7x, 04-29)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m2c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Chinese state media is still running negative US coverage daily. If Trump were really going to visit, state media would be building public opinion in advance — there's absolutely no sign of that."
+      },
+      "children": []
+    },
+    "m2c1-context": {
+      "type": "Text",
+      "props": {
+        "text": "Cleanest absence-of-evidence NO argument against the 92.5% priced",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m2c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c2-handle",
+        "m2c2-text",
+        "m2c2-context"
+      ]
+    },
+    "m2c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Partial-Intestine",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m2c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "C-17 second time landing in Beijing this month"
+      },
+      "children": []
+    },
+    "m2c2-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-04] — flight-tracking insider callout, opposite-direction signal",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m2c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c3-handle",
+        "m2c3-text",
+        "m2c3-context"
+      ]
+    },
+    "m2c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Threadbare-Signal",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m2c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "US will respond, new phase of war starts, Donald cancels his China visit"
+      },
+      "children": []
+    },
+    "m2c3-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-04] — synthesis Iran-kinetic → China-cancel",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3-title",
+        "m3-stat",
+        "m3-alert",
+        "m3-comments"
+      ]
+    },
+    "m3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "US obtains Iranian enriched uranium by May 31?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m3-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "8.5%",
+        "delta": "$196k v24"
+      },
+      "children": []
+    },
+    "m3-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "UMA-RESOLUTION-ARB CANDIDATE",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "m3-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3c1",
+        "m3c2",
+        "m3c3"
+      ]
+    },
+    "m3c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c1-handle",
+        "m3c1-text",
+        "m3c1-context"
+      ]
+    },
+    "m3c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Grown-Songbird (6x, 04-02)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m3c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "What happens if they 'say' they have the uranium but don't actually provide proof of its possession?"
+      },
+      "children": []
+    },
+    "m3c1-context": {
+      "type": "Text",
+      "props": {
+        "text": "Resolution ambiguity question",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m3c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c2-handle",
+        "m3c2-text"
+      ]
+    },
+    "m3c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Somber-Interviewer (6x, 04-06)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m3c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "So Trump can just bluff that he took some uranium and this will be YES."
+      },
+      "children": []
+    },
+    "m3c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c3-handle",
+        "m3c3-text",
+        "m3c3-context"
+      ]
+    },
+    "m3c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Energetic-Folder (2x, 05-03) + Naughty-Completion (05-05)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m3c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump writes on Truth social 'we have the uranium' → resolves YES."
+      },
+      "children": []
+    },
+    "m3c3-context": {
+      "type": "Text",
+      "props": {
+        "text": "4-handle cluster across 4 weeks. Sister to Iran-cf/Hez-cf paradox; pull resolution text into clause-text scanner",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4-title",
+        "m4-stat",
+        "m4-comments",
+        "m4-security"
+      ]
+    },
+    "m4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "US x Iran permanent peace deal by May 15?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m4-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "3.35%",
+        "delta": "$347k v24, T-10"
+      },
+      "children": []
+    },
+    "m4-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4c1",
+        "m4c2"
+      ]
+    },
+    "m4c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4c1-handle",
+        "m4c1-text",
+        "m4c1-context"
+      ]
+    },
+    "m4c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Attentive-Algebra (23x, 05-02)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m4c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "WHY SHOULD WE BE TREATED LIKE CHILDREN GIVE US MF STRIKE MARKETS!!!"
+      },
+      "children": []
+    },
+    "m4c1-context": {
+      "type": "Text",
+      "props": {
+        "text": "meta-censorship complaint, sister to 05-03 strike-market-suppression finding",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m4c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4c2-handle",
+        "m4c2-text",
+        "m4c2-context"
+      ]
+    },
+    "m4c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Quarrelsome-Service (MEMORY hit)",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m4c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pakistanis saying negotiations are good. Don't trust Trump's comment on it though"
+      },
+      "children": []
+    },
+    "m4c2-context": {
+      "type": "Text",
+      "props": {
+        "text": "[05-04] — Pakistani-mediator citation chain durable",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "m4-security": {
+      "type": "Alert",
+      "props": {
+        "title": "SECURITY: Phishing Typosquat Detected",
+        "message": "Same-Epauliere (NEW pseudonym, 14x, 04-24): binary-encoded 'poly-us.pro' phishing typosquat. CommunityVoice-off archetype confirmed durable; security flag.",
+        "type": "error"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5-title",
+        "m5-stat",
+        "m5-alerts"
+      ]
+    },
+    "m5-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Will Bitcoin hit $150k by June 30, 2026?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m5-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.35%",
+        "delta": "$5.82M v24"
+      },
+      "children": []
+    },
+    "m5-alerts": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5-alert1",
+        "m5-alert2"
+      ]
+    },
+    "m5-alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "Crypto vertical dead — 4th consecutive day",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "m5-alert2": {
+      "type": "Alert",
+      "props": {
+        "title": "Cambodia phone scam recurring",
+        "message": "+855 96 982 9883 across 4 days (Great-Spree 05-02, Spry-Caliber 05-04). Spry-Caliber: 'Where TF is that +855 come from???' Birthday-spam (Abandoned-Tadpole) + scam-callout-by-confusion is the only signal pattern. Pin as durable structural finding.",
+        "type": "error"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "citation-chain-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "citation-heading",
+        "citation-text"
+      ]
+    },
+    "citation-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Citation Chain of the Day",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "citation-text": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-airspace (T-3) + Iranian-uranium + US-Iran-peace + Trump-China linked by Verifiable-Romance's 'Araqchi-in-China + Trump-arriving + China-as-mediator' claim. Comments-side narrative shift NOT visible to CalibrationGap quant scanner."
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "takeaways-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "takeaways-heading",
+        "takeaways-list"
+      ]
+    },
+    "takeaways-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "CalibrationGap-relevant takeaways",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "takeaways-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "takeaway1",
+        "takeaway2",
+        "takeaway3",
+        "takeaway4"
+      ]
+    },
+    "takeaway1": {
+      "type": "Text",
+      "props": {
+        "text": "Trump-China YES 92.5% with multi-handle NO arguments (Glamorous-Eagle absence-of-evidence + Partial-Intestine C-17 + Threadbare-Signal kinetic-spillover) = potential NO calibration entry."
+      },
+      "children": []
+    },
+    "takeaway2": {
+      "type": "Text",
+      "props": {
+        "text": "Iranian-uranium = fresh UMA-resolution-arb candidate (4-handle bluff-resolution cluster)."
+      },
+      "children": []
+    },
+    "takeaway3": {
+      "type": "Text",
+      "props": {
+        "text": "Strike-market suppression confirmed durable (Attentive-Algebra 23x + carry-over from 05-03). Structural binary-universe shrinkage."
+      },
+      "children": []
+    },
+    "takeaway4": {
+      "type": "Text",
+      "props": {
+        "text": "Crypto comments dead 4th day. var=crypto should default-substitute future runs unless non-spam material surfaces."
+      },
+      "children": []
+    }
+  }
+}

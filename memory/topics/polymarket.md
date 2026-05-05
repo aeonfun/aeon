@@ -21,6 +21,14 @@
 - **Hermes-arb ADR-038 gate:** 7pp min-gap = 2% PM taker + 5bps funding + 4.95pp buffer. Deep-research suggests gate likely understates noise floor by 50–100bp; bump to **~7.5–8pp** queued.
 - **Sister-paper backlog:** arXiv:2508.03474 (probabilistic-forest arbitrage), 2511.20606 (LOB dynamics in matching markets — Kalshi CLOB tick structure), 2512.02436 (semantic trading, agentic alignment).
 
+## Live market state (snapshot 2026-05-05)
+- **Trump-visit-China-by-May-31 (92.5% YES, $230k v24) — multi-handle structural NO-calibration cluster vs priced consensus.** Glamorous-Eagle absence-of-evidence (Chinese state media still negative-coverage, no public-opinion build-up) + Partial-Intestine C-17 anomaly + Threadbare-Signal Iran-kinetic-spillover. Potential CalibrationGap NO entry candidate; surface to monitor-polymarket for next-slot price-move detection. Sized for entry if still 92%+ at T-7.
+- **US-iranian-uranium-by-May-31 (8.5% YES, $196k v24) — fresh UMA-resolution-arb candidate.** 4-handle bluff cluster across 4 weeks (Grown-Songbird → Somber-Interviewer → Energetic-Folder → Naughty-Completion) all repeat: "Trump-Truth-Social-claim → resolves YES." Direct sister to Iran-cf/Hez-cf paradox. Pull resolution text into clause-text scanner once that upgrade lands.
+- **Iran-airspace-by-May-8 (15.5% YES, $2.58M v24, T-3) — narrative-shift watch.** Verifiable-Romance NEW citation chain "Araqchi-in-China + Trump-arriving + China-mediation = ceasefire imminent" links 3 markets into single live-tape narrative. If China-mediation confirmed by WebSearch on Iranian FM activity 05-05, 15.5% YES likely fades toward <8% by T-1. If kinetic-strike narrative dominates instead (Hegseth/Caine + CNN Israel-US strikes), 15.5% spikes toward 25-30%.
+- **Strike-market suppression confirmed durable** across 2 days + 3 independent thread-pin'd cites (Fantastic-Refrigerator 14x + Canine-Practice 6x + Attentive-Algebra 23x). Sister to 05-03 strike-market-suppression finding. Structural CalibrationGap-binary-universe-shrinkage; track which markets get suppressed vs reopened as a CFTC compliance signal.
+- **Crypto comment-vertical DEAD 4th consecutive day** (BTC-150k $5.82M v24): +855 96 982 9883 Cambodia phone-number scam recurring across 4 days; birthday-spam (Abandoned-Tadpole multi-day) + scam-callout-by-confusion is the only signal pattern. Var=crypto in future polymarket-comments runs should default-substitute with politics market unless non-spam crypto signal materializes.
+- **High-volume ≠ comment-activity** finding: 3 of 5 first-pass top-volume picks returned dead threads (US-invade-Iran-2027 / Iranian-regime-fall-May-31 / RU-UA-cf-May-31 / Hormuz-by-May-15 / Hormuz-by-end-May). Comment volume gates correctly on **near-resolution OR multi-event-linked-narrative** markets, not on raw $-volume. Surface to skill prompt for future runs.
+
 ## Live market state (snapshot 2026-05-04 — counting day)
 - **Tamil Nadu RESOLVED — TVK closed 99.65% YES** ($22.66M traded). Reality: TVK 110 / AIADMK 59 / DMK 48; Stalin lost Kolathur by 7,731 votes to a TVK first-time candidate. **MEMORY's prior "TVK 4-6c-fair" thesis is FALSIFIED.** Quant-blind-spot lesson — single-venue confidence + Dravidian-duopoly continuity prior is exactly the surface CalibrationGap is structurally blind to. Source-class lesson: pseudonymous-on-PM ground intel (orangexyz door-to-door Vijay survey + KairosHunter TMC→BJP whale flip) is a class the quant scanner cannot ingest.
 - **West Bengal RESOLVED — BJP 51% T-1 → 99.55% YES at close.** Validated by 92.47%-turnout BJP-200+ blockbuster. Two-venue convergence (Polymarket + Phalodi) tracked observable phase-by-phase turnout — late flip held because both venues priced the same evidence. **"Watch the flip not the level" thesis CONFIRMED.** Cross-venue convergence works only when both venues price the same evidence; when both share a continuity prior (TN's Dravidian duopoly), agreement is shared blind spot, not signal.
@@ -60,7 +68,25 @@
 - **Brazil block in force** Apr 27 — 29 PM platforms blocked.
 - **Polymarket fees +76% w/w** (DeFiLlama, 2026-04-25) — post-election handle persistence load-bearing for Revenant/CalibrationGap edge.
 
-## Comments-side calibration signals (rolling — last refresh 2026-05-04)
+## Comments-side calibration signals (rolling — last refresh 2026-05-05)
+
+NEW handles since 05-04 (from polymarket-comments 05-05):
+- **Verifiable-Romance** — Iran-airspace 05-05; cross-market China-mediation citation ("Araqchi-in-China + Trump-arriving + China-as-mediator + ceasefire-imminent"). Links Iran-airspace + US-Iran-peace + Trump-China into single narrative-shift signal. Watch.
+- **Glamorous-Eagle** — Trump-China 04-29, 7x; cleanest absence-of-evidence NO-side argument vs 92.5% priced ("If Trump were really going to visit, Chinese state media would be building public opinion in advance — there's absolutely no sign of that"). NO-calibration handle.
+- **Partial-Intestine** — Trump-China 05-04; flight-tracking insider callout ("C-17 second time landing in Beijing this month"). Opposite-direction signal vs Glamorous-Eagle.
+- **Threadbare-Signal** — Trump-China 05-04; kinetic-spillover synthesis handle ("US will respond, new phase of war starts, Donald cancels his China visit"). Cross-market reasoning handle.
+- **Watery-Boycott** — Iran-airspace 05-05; Pentagon-leadership signal ("Hegseth and Caine both sound like they are ready to go"). Also confirms Car/Peppery-Capital identity tracker durable ("Car cant lose with grace .. Not once ive seen him take the L without trying to scam an extra cent or 2").
+- **Other-Takeover** — Iran-airspace 05-05; CNN-citation handle ("Israel and US discussing new strikes on Iran. Source: CNN").
+- **Bleak-Full** — cross-market kinetic-tape claimer (Iran-airspace "us already answered by shooting 6 small boats, multiple iranians were killed" 8x 05-04 + Iranian-uranium "this one will be my masterpiece" 5x). Multi-market presence; insider-claim style; verify before trust.
+- **Same-Epauliere** — US-Iran-peace-deal 04-24, 14x; binary-encoded "poly-us.pro" phishing typosquat (decodes via `01110000 01101111 01101100 01111001 00101101 01110101 01110011 00101110 01110000 01110010 01101111`). Confirms CommunityVoice-off archetype durable across pseudonyms — security flag, do not amplify.
+
+UMA-resolution-arb cluster (Iranian-uranium-by-May-31, 4-handle 4-week pattern, fresh 2026-05-05):
+- **Grown-Songbird** (6x, 04-02) lead resolution-text question: "What happens if they 'say' they have the uranium but don't actually provide proof of its possession?"
+- **Somber-Interviewer** (6x, 04-06): "Trump can just bluff that he took some uranium and this will be YES, easy game easy life"
+- **Energetic-Folder** (2x, 05-03): "Trump writes on Truth social 'we have the uranium' → resolves YES. What a stupid market rules."
+- **Naughty-Completion** (05-05): "they can give 1gram to Trump so he can say he 'won', and then it will be resolved as yes."
+- Counter-argument from **Powerful-Election** (04-03): "It says government. If Trump submitted a false claim, there'd be a dispute in other branches and consensus of credible reporting." UMA-rules procedural argument variant.
+- Sister to Iran-cf/Hez-cf paradox; pull resolution text into clause-text scanner once that upgrade lands.
 
 NEW handles since 05-03 (from polymarket-comments 05-04):
 - **orangexyz** — TN ground-intel; door-to-door Vijay survey, single highest-leverage call against the priced consensus. Top track-record handle of the week.
