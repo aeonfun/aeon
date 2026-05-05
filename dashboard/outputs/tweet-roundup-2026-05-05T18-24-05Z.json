@@ -1,0 +1,306 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup",
+        "description": "2026-05-05 | Source: cache:0 websearch:3 failed:0"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section-ai",
+        "section-crypto",
+        "section-tech"
+      ]
+    },
+    "section-ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-ai",
+        "desc-ai",
+        "sep-ai",
+        "tweet-ai-1-wrapper"
+      ]
+    },
+    "heading-ai": {
+      "type": "Heading",
+      "props": {
+        "text": "AI agents / LLM",
+        "level": "h2"
+      }
+    },
+    "desc-ai": {
+      "type": "Text",
+      "props": {
+        "text": "single story dominating: Anthropic catching OpenAI on revenue",
+        "variant": "muted"
+      }
+    },
+    "sep-ai": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet-ai-1-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-ai-1",
+        "link-ai-1"
+      ]
+    },
+    "tweet-ai-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "aakashgupta",
+        "handle": "aakashgupta",
+        "text": "Anthropic added $35B ARR in twelve months ($9B EOY-2025 → $44B May 2026); $50B round at $900B+ valuation reportedly closing in 48h, would top OpenAI's implied mark."
+      }
+    },
+    "link-ai-1": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/aakashgupta/status/2050659110472040694"
+      }
+    },
+    "section-crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-crypto",
+        "desc-crypto",
+        "sep-crypto",
+        "tweets-crypto"
+      ]
+    },
+    "heading-crypto": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto / Bitcoin / DeFi",
+        "level": "h2"
+      }
+    },
+    "desc-crypto": {
+      "type": "Text",
+      "props": {
+        "text": "regulatory tailwind crowding out price talk",
+        "variant": "muted"
+      }
+    },
+    "sep-crypto": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweets-crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-crypto-1-wrapper",
+        "tweet-crypto-2-wrapper",
+        "tweet-crypto-3-wrapper"
+      ]
+    },
+    "tweet-crypto-1-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-crypto-1",
+        "link-crypto-1"
+      ]
+    },
+    "tweet-crypto-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "CoinGapeMedia",
+        "handle": "CoinGapeMedia",
+        "text": "Polymarket prices CLARITY Act passing in 2026 at 69%, sharp move higher; market is now the cleanest tape on the US crypto-policy clock."
+      }
+    },
+    "link-crypto-1": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/CoinGapeMedia/status/2051166919328424193"
+      }
+    },
+    "tweet-crypto-2-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-crypto-2",
+        "link-crypto-2"
+      ]
+    },
+    "tweet-crypto-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "alvinfoo",
+        "handle": "alvinfoo",
+        "text": "Q1 2026 saw $9.27B flow into crypto from Mastercard, JPMorgan, Morgan Stanley — institutional rotation, not retail melt-up."
+      }
+    },
+    "link-crypto-2": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/alvinfoo/status/2050521469005012992"
+      }
+    },
+    "tweet-crypto-3-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-crypto-3",
+        "link-crypto-3"
+      ]
+    },
+    "tweet-crypto-3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "latestly",
+        "handle": "latestly",
+        "text": "BTC consolidating at $78,281 on May 3 as traders watch resistance levels; consistent with the lab's $78,604 +0.35% market-context print."
+      }
+    },
+    "link-crypto-3": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/latestly/status/2050757903351717988"
+      }
+    },
+    "section-tech": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-tech",
+        "desc-tech",
+        "sep-tech",
+        "tweets-tech"
+      ]
+    },
+    "heading-tech": {
+      "type": "Heading",
+      "props": {
+        "text": "Technology / Startups / Open source",
+        "level": "h2"
+      }
+    },
+    "desc-tech": {
+      "type": "Text",
+      "props": {
+        "text": "open-source quant tooling rising; mega-cap AI beneficiaries hitting new highs",
+        "variant": "muted"
+      }
+    },
+    "sep-tech": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweets-tech": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweet-tech-1-wrapper",
+        "tweet-tech-2-wrapper"
+      ]
+    },
+    "tweet-tech-1-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-tech-1",
+        "link-tech-1"
+      ]
+    },
+    "tweet-tech-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "heynavtoor",
+        "handle": "heynavtoor",
+        "text": "10 free GitHub repos retail can use to trade hedge-fund-style (OpenBB and peers) — worth vetting against swarm-fund-mvp's existing stack."
+      }
+    },
+    "link-tech-1": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/heynavtoor/status/2051192535998173601"
+      }
+    },
+    "tweet-tech-2-wrapper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet-tech-2",
+        "link-tech-2"
+      ]
+    },
+    "tweet-tech-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "marketsday",
+        "handle": "marketsday",
+        "text": "US 52-week highs May 4: Tyson Foods on a Q2 earnings beat, Amazon at a fresh record on Big Tech AI tailwind — breadth still concentrated in mega-cap AI."
+      }
+    },
+    "link-tech-2": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/marketsday/status/2051473342222496234"
+      }
+    }
+  }
+}
