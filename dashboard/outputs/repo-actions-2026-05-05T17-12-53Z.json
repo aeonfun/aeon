@@ -1,0 +1,350 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas",
+        "description": "tomscaria/swarm-fund-mvp — 2026-05-05"
+      },
+      "children": [
+        "alert-inconsistent",
+        "sep-1",
+        "top-pick-heading",
+        "top-pick-text",
+        "top-pick-detail",
+        "sep-2",
+        "items-heading",
+        "items-stack",
+        "sep-3",
+        "story-full-details"
+      ]
+    },
+    "alert-inconsistent": {
+      "type": "Alert",
+      "props": {
+        "title": "Inconsistent State",
+        "message": "Last night's overnight commits left the investor page in an inconsistent state — six SVG components shipped in InvestorViz.tsx (c8e09632) but the matching slots added to Investors.tsx (fe189cc1) are still placeholder divs.",
+        "type": "warning"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "top-pick-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h3"
+      }
+    },
+    "top-pick-text": {
+      "type": "Text",
+      "props": {
+        "text": "Wire 6 InvestorViz components into the 6 unfilled data-slot placeholders in Investors.tsx",
+        "variant": "lead"
+      }
+    },
+    "top-pick-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Investor page flips from rendering 6 dashed-outline placeholders to 6 grant/LP-facing SVGs already on disk; closes the visible \"unfinished\" tell.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "items-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "All Action Items",
+        "level": "h3"
+      }
+    },
+    "items-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4",
+        "item-5"
+      ]
+    },
+    "item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-1-text",
+        "item-1-badges"
+      ]
+    },
+    "item-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Wire 6 InvestorViz components into 6 unfilled data-slot placeholders",
+        "variant": "lead"
+      }
+    },
+    "item-1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-1-high",
+        "badge-1-content",
+        "badge-1-small"
+      ]
+    },
+    "badge-1-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge-1-content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "default"
+      }
+    },
+    "badge-1-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-2-text",
+        "item-2-badges"
+      ]
+    },
+    "item-2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add .github/workflows/site-build.yml running npm ci + npm run build on site PRs",
+        "variant": "lead"
+      }
+    },
+    "item-2-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-2-high",
+        "badge-2-dx",
+        "badge-2-small"
+      ]
+    },
+    "badge-2-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge-2-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "badge-2-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-3-text",
+        "item-3-badges"
+      ]
+    },
+    "item-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add python/tests/test_aeon_adapter_contract.py with committed JSON fixture",
+        "variant": "lead"
+      }
+    },
+    "item-3-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-3-high",
+        "badge-3-dx",
+        "badge-3-small"
+      ]
+    },
+    "badge-3-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge-3-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "badge-3-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-4-text",
+        "item-4-badges"
+      ]
+    },
+    "item-4-text": {
+      "type": "Text",
+      "props": {
+        "text": "Switch swarm-lab-site/package.json build script to npm ci for learn-site/",
+        "variant": "lead"
+      }
+    },
+    "item-4-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-4-med",
+        "badge-4-dx",
+        "badge-4-small"
+      ]
+    },
+    "badge-4-med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      }
+    },
+    "badge-4-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "default"
+      }
+    },
+    "badge-4-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "item-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-5-text",
+        "item-5-badges"
+      ]
+    },
+    "item-5-text": {
+      "type": "Text",
+      "props": {
+        "text": "Add docs/12_operations/known_failure_modes.md documenting recurring Vercel-author-email pattern",
+        "variant": "lead"
+      }
+    },
+    "item-5-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-5-med",
+        "badge-5-content",
+        "badge-5-small"
+      ]
+    },
+    "badge-5-med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "outline"
+      }
+    },
+    "badge-5-content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "default"
+      }
+    },
+    "badge-5-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "secondary"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "story-full-details": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Repo Actions — Full Details",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/repo-actions-2026-05-05.md",
+        "source": "aeonframework/aeon"
+      }
+    }
+  }
+}

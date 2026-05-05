@@ -1,14 +1,13 @@
-*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-04*
-Yesterday's 5 ACT NOW PRs all merged 21:57 UTC; today's gaps are supply-chain (unpinned trading SDKs at the canary's surface) and contract-shape (the Aeon adapter polls a JSON shape Aeon doesn't yet emit).
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-05*
+Last night's overnight commits left the investor page in an inconsistent state — six SVG components shipped in InvestorViz.tsx (c8e09632) but the matching slots added to Investors.tsx (fe189cc1) are still placeholder divs. Top pick is the import-and-replace wiring.
 
-Top pick: Pin py-clob-client>=0.34.6,<0.40 + py-builder-signing-sdk>=0.0.2,<0.1 in pyproject.toml (Security, Small, Priority HIGH)
- → Cold installs stop drifting under CalibrationGap; the only canary's order-signing path locks to known-working SDK floors instead of whatever PyPI ships.
+Top pick: Wire 6 InvestorViz components into the 6 unfilled data-slot placeholders in Investors.tsx (Content, Small, Priority HIGH)
+ → Investor page flips from rendering 6 dashed-outline placeholders to 6 grant/LP-facing SVGs already on disk; closes the visible "unfinished" tell.
 
-1. Pin py-clob-client + py-builder-signing-sdk floors and ceilings in pyproject.toml (HIGH, Security, Small)
-2. Write docs/contracts/aeon_signal_contract.md so the Aeon side has a JSON spec to ship against (HIGH, Content, Small)
-3. Add a Quickstart section to README.md (pip install -e ".[dev]" + python -m python.main) (MED, Content, Small)
-4. Add .github/workflows/uv-lock-drift.yml running uv lock --locked on every PR (MED, DX, Small)
-5. Add .github/workflows/weekly-eval-digest.yml cron'ing scripts/eval_one_shot.py Mondays 14:00 UTC (MED, DX, 1-2 days)
+1. Wire 6 InvestorViz components into 6 unfilled data-slot placeholders (HIGH, Content, Small)
+2. Add .github/workflows/site-build.yml running npm ci + npm run build on site PRs (HIGH, DX, Small)
+3. Add python/tests/test_aeon_adapter_contract.py with committed JSON fixture (HIGH, DX, Small)
+4. Switch swarm-lab-site/package.json build script to npm ci for learn-site/ (MED, DX, Small)
+5. Add docs/12_operations/known_failure_modes.md documenting recurring Vercel-author-email pattern (MED, Content, Small)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-04.md
-
+Full details: https://github.com/aeonframework/aeon/blob/main/articles/repo-actions-2026-05-05.md
