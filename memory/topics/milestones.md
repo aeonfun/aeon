@@ -7,5 +7,6 @@
 - 256 stars — 2026-05-01 (post-PR-#149 smithery-manifest merge; fork count 37 → 38)
 - 267 stars — 2026-05-03 (v7=29, v30=127, baseline 4.23/day; pace ~2x prior interval — 250→256 took 3 days at 2/day, current v7 4.14/day)
 - 270 stars — 2026-05-04 (267→270 in 1 day; pace holds ~3-4/day)
-- Next milestone: 300 stars — projected ETA ~2026-05-11 (7 days at current pace)
-- 300 stars — soft deadline 2026-05-25 (per changelog Highlights line; load-bearing for HN/MCP-registry discoverability). On-track with ~2-week headroom.
+- 271 stars — 2026-05-05 (v7=25, v30=132, **v7/day (3.57) below v30 baseline (4.4) for first time in series — pace cooling but still organic**; last-star timestamp 2026-05-05T14:59:38Z)
+- Next milestone: 300 stars — projected ETA ~2026-05-13 (8.1 days at v7 pace 3.57/day; was ~05-11 yesterday)
+- 300 stars — soft deadline 2026-05-25 (per changelog Highlights line; load-bearing for HN/MCP-registry discoverability). On-track with ~12-day headroom.

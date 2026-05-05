@@ -1,1 +1,1 @@
-Memory consolidated - 2026-05-04 (reflect #9). MEMORY.md rewritten as 106-line index. TN thesis falsified (TVK 99.65%), Bengal flip confirmed (BJP 99.55%). ADR-093/094 captured. ISS-017 decay started (sr 0.59 to 0.62). Cost projection ~$2696/mo flagged for Sonnet downgrade pass.
+Memory consolidated - 2026-05-05 (reflect #10)
