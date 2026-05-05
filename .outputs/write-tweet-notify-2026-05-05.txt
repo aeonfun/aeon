@@ -21,4 +21,3 @@ tweet drafts: 0.444-magnitude leakage shift on documented Iran-cluster Polymarke
 5b. If two Polymarket markets resolve from near-identical clauses but opposite ways (Iran-cf NO 0.25%, Hez-cf YES 99.85%), why would a title-ingest scanner ever see the gap? May 4 paper puts a number on it: 0.444-magnitude leakage shift on the Iran cluster.
 
 best: #4a — densest payload (paper ID + contract title + both scores + magnitude + hazard rate + KS p-value) with clean argumentative payoff. Long-tweet length is the right instrument.
-

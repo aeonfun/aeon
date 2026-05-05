@@ -1,0 +1,265 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "write-tweet",
+        "description": "Tweet drafts on Polymarket geopolitics research"
+      },
+      "children": [
+        "paper-link",
+        "divider-1",
+        "intro-text",
+        "divider-2",
+        "one-liner-section",
+        "divider-3",
+        "two-punch-section",
+        "divider-4",
+        "paragraph-section",
+        "divider-5",
+        "long-tweet-section",
+        "divider-6",
+        "thread-section",
+        "divider-7",
+        "recommendation-section"
+      ]
+    },
+    "paper-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "arXiv:2605.02286 - Iran-cluster Polymarket analysis",
+        "href": "https://arxiv.org/abs/2605.02286",
+        "source": "arXiv"
+      }
+    },
+    "divider-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "intro-text": {
+      "type": "Text",
+      "props": {
+        "text": "0.444-magnitude leakage shift on documented Iran-cluster Polymarket case — empirical case for ingesting resolution text not titles"
+      }
+    },
+    "divider-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "one-liner-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "one-liner-heading",
+        "one-liner-1a",
+        "one-liner-1b"
+      ]
+    },
+    "one-liner-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "One-liner",
+        "level": "h3"
+      }
+    },
+    "one-liner-1a": {
+      "type": "Text",
+      "props": {
+        "text": "1a. \"No edge in Polymarket geopolitics\" usually means the scanner ingested titles."
+      }
+    },
+    "one-liner-1b": {
+      "type": "Text",
+      "props": {
+        "text": "1b. Same Iran trades, scored two ways: 0.444-magnitude leakage swing. The instrument matters."
+      }
+    },
+    "divider-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "two-punch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "two-punch-heading",
+        "two-punch-2a",
+        "two-punch-2b"
+      ]
+    },
+    "two-punch-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Two-punch",
+        "level": "h3"
+      }
+    },
+    "two-punch-2a": {
+      "type": "Text",
+      "props": {
+        "text": "2a. \"Quant scanner sees no edge in PM geopolitics.\" Wrong scanner. Score Iran-cluster trades on resolution text and leakage flips sign by 0.444 magnitude."
+      }
+    },
+    "two-punch-2b": {
+      "type": "Text",
+      "props": {
+        "text": "2b. Most PM backtests ingest titles. Resolution text is what resolves the contract. Nechepurenko's Iran-cluster paper puts the gap at 0.444 magnitude. Same data, scored two ways."
+      }
+    },
+    "divider-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paragraph-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paragraph-heading",
+        "paragraph-3a",
+        "paragraph-3b"
+      ]
+    },
+    "paragraph-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paragraph",
+        "level": "h3"
+      }
+    },
+    "paragraph-3a": {
+      "type": "Text",
+      "props": {
+        "text": "3a. Iran-cluster Polymarket case, 332 wallets. Score the trades by public-event windows: leakage +0.113. Score them by resolution-anchored windows: -0.331. Same trades, opposite-sign signals. Title-ingest backtests are why \"no edge\" claims keep misfiring."
+      }
+    },
+    "paragraph-3b": {
+      "type": "Text",
+      "props": {
+        "text": "3b. The reason a quant scanner sees no edge in language-asymmetry markets isn't that the edge isn't there. It's that the scanner ingests titles. Score documented Iran insider trades on resolution text and you get a 0.444-magnitude leakage swing. Same data."
+      }
+    },
+    "divider-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "long-tweet-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "long-tweet-heading",
+        "long-tweet-4a",
+        "long-tweet-4b"
+      ]
+    },
+    "long-tweet-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Long tweet",
+        "level": "h3"
+      }
+    },
+    "long-tweet-4a": {
+      "type": "Text",
+      "props": {
+        "text": "4a. arXiv:2605.02286 dropped May 4. Nechepurenko evaluates deadline-anchored ILS on documented Polymarket insider cases. Headline: on the largest 2026 Iran contract (\"US forces enter Iran by April 30\") leakage = +0.113 under public-event scoring, -0.331 under resolution-anchored scoring. Same trades. 0.444-magnitude swing. Hazard rate on military-geopolitics: half-life 2.3 days, KS p=0.609. The empirical case for ingesting resolution clauses, not headlines, is now on paper."
+      }
+    },
+    "long-tweet-4b": {
+      "type": "Text",
+      "props": {
+        "text": "4b. The recurring pattern: someone runs a quant scanner across Polymarket, finds no edge in geopolitics, declares the venue efficient. The scanner scored on public-event windows. Score the same documented Iran-cluster insider trades on resolution-anchored windows and you get a 0.444-magnitude leakage shift, opposite sign. The Iran-cf-NO vs Hez-cf-YES paradox lives in the same lane. Resolution-clause heterogeneity is the edge a title-ingest scanner can't see."
+      }
+    },
+    "divider-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "thread-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "thread-heading",
+        "thread-5a",
+        "thread-5b"
+      ]
+    },
+    "thread-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Thread opener",
+        "level": "h3"
+      }
+    },
+    "thread-5a": {
+      "type": "Text",
+      "props": {
+        "text": "5a. Most \"no edge in Polymarket geopolitics\" claims come from scanners that ingest titles. Score the same documented Iran-cluster trades on resolution text and leakage flips sign by 0.444 magnitude. Thread on why architecture beats alpha here:"
+      }
+    },
+    "thread-5b": {
+      "type": "Text",
+      "props": {
+        "text": "5b. If two Polymarket markets resolve from near-identical clauses but opposite ways (Iran-cf NO 0.25%, Hez-cf YES 99.85%), why would a title-ingest scanner ever see the gap? May 4 paper puts a number on it: 0.444-magnitude leakage shift on the Iran cluster."
+      }
+    },
+    "divider-7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "recommendation-heading",
+        "recommendation-text"
+      ]
+    },
+    "recommendation-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendation",
+        "level": "h3"
+      }
+    },
+    "recommendation-text": {
+      "type": "Text",
+      "props": {
+        "text": "Best: #4a — densest payload (paper ID + contract title + both scores + magnitude + hazard rate + KS p-value) with clean argumentative payoff. Long-tweet length is the right instrument."
+      }
+    }
+  }
+}
