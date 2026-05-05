@@ -1,4 +1,1 @@
-REMIX_TWEETS_ERROR — Remix Tweets 2026-05-04
-Cause: no handle configured. `$X_HANDLE` env unset, `soul/SOUL.md` Identity has no @handle, `aeon.yml` remix-tweets has no var: override (var: reserved for time-window per SKILL.md L9). `$XAI_API_KEY` also unset and `.xai-cache/` directory absent — would have failed at fetch even if handle resolved.
-8th consecutive ERROR fire (04-27 → 05-04). Same root cause every day. Operator action: add `X_HANDLE` + `XAI_API_KEY` to workflow env in `.github/workflows/skill-runner.yml` (or per-skill config), or wire `scripts/prefetch-xai.sh` to populate `.xai-cache/remix-tweets.json`.
-source: cache=miss, xai=fail, fetched=0, kept=0, drops=0
+REMIX_TWEETS_ERROR — 8th consecutive ERROR (04-27 → 05-05). No handle configured: $X_HANDLE unset, soul/SOUL.md has no @handle, aeon.yml remix-tweets has no var: override (and per SKILL.md L9, var: is reserved for time-window). $XAI_API_KEY also unset. Cache absent. Operator-side fix required: set X_HANDLE secret + XAI_API_KEY, OR add @handle line to soul/SOUL.md Identity. Skill remains a no-op until then.

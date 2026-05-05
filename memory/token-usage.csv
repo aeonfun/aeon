@@ -105,4 +105,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-05,github-trending,claude-opus-4-7,26,19462,1027474,126104
 2026-05-05,polymarket-comments,claude-opus-4-7,11680,37972,3693225,148785
 2026-05-05,repo-actions,claude-opus-4-7,76,49290,6873120,213811
-2026-05-05,farcaster-digest,claude-opus-4-7,74,7341,641322,65865
+2026-05-05,remix-tweets,claude-opus-4-7,33,7606,1096424,60122

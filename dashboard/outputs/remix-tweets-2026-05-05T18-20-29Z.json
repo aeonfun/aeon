@@ -1,0 +1,160 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "alert_error",
+        "sep_1",
+        "heading_missing",
+        "stack_issues",
+        "sep_2",
+        "heading_fixes",
+        "stack_fixes",
+        "sep_3",
+        "text_status"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "8 Consecutive Errors",
+        "message": "04-27 to 05-05 — skill non-operational"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading_missing": {
+      "type": "Heading",
+      "props": {
+        "text": "Missing Configuration",
+        "level": "h3"
+      }
+    },
+    "stack_issues": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_consecutive",
+        "text_handle_config",
+        "text_x_handle",
+        "text_soul",
+        "text_var_override",
+        "text_var_reserved",
+        "text_api_key",
+        "text_cache"
+      ]
+    },
+    "text_consecutive": {
+      "type": "Text",
+      "props": {
+        "text": "8th consecutive ERROR (04-27 → 05-05)"
+      }
+    },
+    "text_handle_config": {
+      "type": "Text",
+      "props": {
+        "text": "No handle configured"
+      }
+    },
+    "text_x_handle": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE unset"
+      }
+    },
+    "text_soul": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md has no @handle"
+      }
+    },
+    "text_var_override": {
+      "type": "Text",
+      "props": {
+        "text": "aeon.yml remix-tweets has no var: override"
+      }
+    },
+    "text_var_reserved": {
+      "type": "Text",
+      "props": {
+        "text": "(per SKILL.md L9, var: is reserved for time-window)",
+        "variant": "caption"
+      }
+    },
+    "text_api_key": {
+      "type": "Text",
+      "props": {
+        "text": "$XAI_API_KEY also unset"
+      }
+    },
+    "text_cache": {
+      "type": "Text",
+      "props": {
+        "text": "Cache absent"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading_fixes": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Fixes",
+        "level": "h3"
+      }
+    },
+    "stack_fixes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_fix_header",
+        "text_fix_option_1",
+        "text_fix_option_2"
+      ]
+    },
+    "text_fix_header": {
+      "type": "Text",
+      "props": {
+        "text": "Operator-side fix required:"
+      }
+    },
+    "text_fix_option_1": {
+      "type": "Text",
+      "props": {
+        "text": "Set X_HANDLE secret + XAI_API_KEY"
+      }
+    },
+    "text_fix_option_2": {
+      "type": "Text",
+      "props": {
+        "text": "OR add @handle line to soul/SOUL.md Identity"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "text_status": {
+      "type": "Text",
+      "props": {
+        "text": "Skill remains a no-op until then",
+        "variant": "muted"
+      }
+    }
+  }
+}
