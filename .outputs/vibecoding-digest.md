@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR: all r/vibecoding endpoints failed (curl 403 + WebFetch host-blocked) — 12th consecutive run. ISS-002 unchanged. Pause cron until scripts/prefetch-reddit.sh ships.
+VIBECODING_DIGEST_ERROR — r/vibecoding day window: all 3 endpoints (top/hot/rising) failed. curl 403 Blocked HTML on old.reddit.com; WebFetch host-blocked on old/www/reddit.com. 13th consecutive recurrence (since 2026-04-25). No data ingested; no IDs persisted. Skill is structurally blocked on GH Actions egress IP — needs scripts/prefetch-reddit.sh per ISS-002/ISS-012.

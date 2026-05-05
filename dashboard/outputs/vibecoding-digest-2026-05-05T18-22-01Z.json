@@ -1,0 +1,222 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert-error",
+        "sep-1",
+        "section-endpoints",
+        "sep-2",
+        "section-recurrence",
+        "sep-3",
+        "section-impact",
+        "sep-4",
+        "section-cause",
+        "sep-5",
+        "section-fix"
+      ]
+    },
+    "alert-error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "r/vibecoding Day Window: All Endpoints Failed",
+        "message": "top, hot, rising endpoints failed. No data ingested; no IDs persisted."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-endpoints": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-endpoints",
+        "text-curl-error",
+        "text-webfetch-error"
+      ]
+    },
+    "heading-endpoints": {
+      "type": "Heading",
+      "props": {
+        "text": "Endpoint Errors",
+        "level": "h3"
+      }
+    },
+    "text-curl-error": {
+      "type": "Text",
+      "props": {
+        "text": "curl 403 Blocked HTML on old.reddit.com",
+        "variant": "body"
+      }
+    },
+    "text-webfetch-error": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch host-blocked on old/www/reddit.com",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-recurrence": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-recurrence",
+        "text-recurrence"
+      ]
+    },
+    "heading-recurrence": {
+      "type": "Heading",
+      "props": {
+        "text": "Recurrence",
+        "level": "h3"
+      }
+    },
+    "text-recurrence": {
+      "type": "Text",
+      "props": {
+        "text": "13th consecutive failure since 2026-04-25",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-impact": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-impact",
+        "impact-items"
+      ]
+    },
+    "heading-impact": {
+      "type": "Heading",
+      "props": {
+        "text": "Impact",
+        "level": "h3"
+      }
+    },
+    "impact-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-impact-1",
+        "text-impact-2"
+      ]
+    },
+    "text-impact-1": {
+      "type": "Text",
+      "props": {
+        "text": "No data ingested",
+        "variant": "body"
+      }
+    },
+    "text-impact-2": {
+      "type": "Text",
+      "props": {
+        "text": "No IDs persisted",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-cause": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-cause",
+        "text-cause"
+      ]
+    },
+    "heading-cause": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "text-cause": {
+      "type": "Text",
+      "props": {
+        "text": "Skill is structurally blocked on GH Actions egress IP",
+        "variant": "body"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-fix": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-fix",
+        "text-fix-action",
+        "text-related-issues"
+      ]
+    },
+    "heading-fix": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Action",
+        "level": "h3"
+      }
+    },
+    "text-fix-action": {
+      "type": "Text",
+      "props": {
+        "text": "Implement scripts/prefetch-reddit.sh per ISS-002/ISS-012",
+        "variant": "body"
+      }
+    },
+    "text-related-issues": {
+      "type": "Text",
+      "props": {
+        "text": "Reference issues: ISS-002, ISS-012",
+        "variant": "caption"
+      }
+    }
+  }
+}
