@@ -1,6 +1,6 @@
 {
   "heartbeat": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-04-26T23:56:13Z",
     "total_runs": 44,
     "total_successes": 29,
@@ -9,7 +9,7 @@
     "success_rate": 0.66,
     "last_error": "ba942c0\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
     "last_success": "2026-05-05T08:45:15Z",
-    "last_dispatch": "2026-05-05T08:38:05Z"
+    "last_dispatch": "2026-05-05T21:00:13Z"
   },
   "token-alert": {
     "last_dispatch": "2026-05-05T13:00:13Z",
@@ -630,13 +630,13 @@
     "last_error": "c50219e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "chain:evening-rollup": {
-    "last_dispatch": "2026-05-04T21:20:11Z",
-    "last_status": "failed",
+    "last_dispatch": "2026-05-05T21:00:13Z",
+    "last_status": "dispatched",
     "last_failed": "2026-05-04T21:21:29Z"
   },
   "evening-rollup": {
-    "last_dispatch": "2026-05-04T21:20:11Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-05T21:00:13Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-04T21:24:37Z",
     "total_runs": 14,
     "total_successes": 10,
