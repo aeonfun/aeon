@@ -1,0 +1,846 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-05"
+      },
+      "children": [
+        "market-overview",
+        "sep-1",
+        "winners-section",
+        "losers-section",
+        "notable-section",
+        "tweets-section",
+        "paper-section",
+        "github-section",
+        "hn-section"
+      ]
+    },
+    "market-overview": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market-status",
+        "price-stats"
+      ]
+    },
+    "market-status": {
+      "type": "Text",
+      "props": {
+        "text": "Tape leans green: 63/100 top-100 coins up, top-50 median +0.6%; BTC reclaimed $80,793 (+1.4%) after Iran-warship rumour spike, ETH $2,378 (+0.8%), SOL flat $84.80.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "price-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat-btc",
+        "stat-eth",
+        "stat-sol"
+      ]
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$80,793",
+        "delta": "+1.4%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,378",
+        "delta": "+0.8%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-sol": {
+      "type": "Stat",
+      "props": {
+        "label": "SOL",
+        "value": "$84.80",
+        "delta": "0%",
+        "trend": "neutral"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "winners-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "winners-heading",
+        "winners-table"
+      ]
+    },
+    "winners-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "winners-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "Market Cap",
+          "Rank#",
+          "Tag"
+        ],
+        "rows": [
+          [
+            "1",
+            "TON",
+            "$1.86",
+            "+33.9%",
+            "+42.2%",
+            "$5.0B",
+            "#22",
+            "BREAKOUT"
+          ],
+          [
+            "2",
+            "M (MemeCore)",
+            "$3.55",
+            "+30.4%",
+            "+0.4%",
+            "$4.5B",
+            "#24",
+            ""
+          ],
+          [
+            "3",
+            "LAB",
+            "$2.33",
+            "+25.9%",
+            "+240.9%",
+            "$180M",
+            "#190",
+            "BREAKOUT"
+          ],
+          [
+            "4",
+            "CRCLON",
+            "$126.11",
+            "+20.1%",
+            "+33.8%",
+            "$171M",
+            "#201",
+            "BREAKOUT"
+          ],
+          [
+            "5",
+            "MORPHO",
+            "$2.19",
+            "+11.4%",
+            "+14.1%",
+            "$1.3B",
+            "#59",
+            ""
+          ],
+          [
+            "6",
+            "PENDLE",
+            "$1.84",
+            "+10.2%",
+            "+40.5%",
+            "$313M",
+            "#147",
+            ""
+          ],
+          [
+            "7",
+            "LUNC",
+            "$0.0001",
+            "+9.0%",
+            "+44.8%",
+            "$552M",
+            "#100",
+            ""
+          ],
+          [
+            "8",
+            "RAVE",
+            "$0.683",
+            "+9.0%",
+            "-21.3%",
+            "$169M",
+            "#204",
+            ""
+          ],
+          [
+            "9",
+            "WLFI",
+            "$0.0641",
+            "+8.0%",
+            "-12.7%",
+            "$2.0B",
+            "#44",
+            ""
+          ],
+          [
+            "10",
+            "PENGU",
+            "$0.0108",
+            "+6.8%",
+            "+7.0%",
+            "$678M",
+            "#84",
+            ""
+          ]
+        ]
+      },
+      "children": []
+    },
+    "losers-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "losers-heading",
+        "losers-table"
+      ]
+    },
+    "losers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "losers-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "Market Cap",
+          "Rank#",
+          "Tag"
+        ],
+        "rows": [
+          [
+            "1",
+            "BSB",
+            "$0.626",
+            "-36.5%",
+            "",
+            "$135M",
+            "#241",
+            "CAPITULATION"
+          ],
+          [
+            "2",
+            "TAG",
+            "$0.00158",
+            "-15.8%",
+            "+136.4%",
+            "$173M",
+            "#199",
+            "CAPITULATION"
+          ],
+          [
+            "3",
+            "SIREN",
+            "$0.763",
+            "-9.7%",
+            "",
+            "$554M",
+            "#99",
+            ""
+          ],
+          [
+            "4",
+            "DASH",
+            "$45.25",
+            "-8.4%",
+            "+29.0%",
+            "$575M",
+            "#94",
+            ""
+          ],
+          [
+            "5",
+            "APE",
+            "$0.162",
+            "-5.3%",
+            "",
+            "$161M",
+            "#215",
+            ""
+          ],
+          [
+            "6",
+            "GENIUS",
+            "$0.538",
+            "-5.2%",
+            "",
+            "$180M",
+            "#195",
+            ""
+          ],
+          [
+            "7",
+            "GWEI",
+            "$0.108",
+            "-5.1%",
+            "",
+            "$227M",
+            "#173",
+            ""
+          ],
+          [
+            "8",
+            "ZK",
+            "$0.0171",
+            "-5.1%",
+            "",
+            "$166M",
+            "#209",
+            ""
+          ],
+          [
+            "9",
+            "PIEVERSE",
+            "$0.710",
+            "-4.9%",
+            "",
+            "$163M",
+            "#211",
+            ""
+          ],
+          [
+            "10",
+            "SKYAI",
+            "$0.561",
+            "-4.3%",
+            "+249.7%",
+            "$559M",
+            "#97",
+            ""
+          ]
+        ]
+      },
+      "children": []
+    },
+    "notable-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-heading",
+        "notable-items"
+      ]
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "notable-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4",
+        "notable-5"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "TON +34% on $763M vol — first major-cap BREAKOUT in days; +42% 7d through #22 rank",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "BSB -36% CAPITULATION — closes 4-day pump cycle (was +18% on 05-03)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "SKYAI mean-reverting -4.3% after the +101% spike yesterday; 7d still +250%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "DASH stalled (-8.4%) after +22.6% privacy-coin rotation print yesterday — single-day rotation, not multi-day",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "notable-5": {
+      "type": "Text",
+      "props": {
+        "text": "Trending: Dogs (DOGS) +128%, BILL +29% — both PUMP-RISK rank tier",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "tweets-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tweets-heading",
+        "crypto-category",
+        "ai-category",
+        "dev-category"
+      ]
+    },
+    "tweets-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "crypto-category": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "crypto-subhead",
+        "crypto-1",
+        "crypto-2",
+        "crypto-3"
+      ]
+    },
+    "crypto-subhead": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "crypto-1": {
+      "type": "Text",
+      "props": {
+        "text": "BTC reversed off $80,594 high after Iran Fars-news warship rumour (US denied)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "crypto-2": {
+      "type": "Text",
+      "props": {
+        "text": "KelpDAO $292M restaking exploit cited as ongoing systemic-risk reminder",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "crypto-3": {
+      "type": "Text",
+      "props": {
+        "text": "Hegseth confirmed classified US Bitcoin strategic-edge effort vs China",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ai-category": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ai-subhead",
+        "ai-1",
+        "ai-2",
+        "ai-3",
+        "ai-4"
+      ]
+    },
+    "ai-subhead": {
+      "type": "Heading",
+      "props": {
+        "text": "AI",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "ai-1": {
+      "type": "Text",
+      "props": {
+        "text": "GPT-5.5 shipped",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ai-2": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket \"GPT-6 by April 30\" cratered, late-May→early-July window now defensible",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ai-3": {
+      "type": "Text",
+      "props": {
+        "text": "Claude 5 expectations: native multi-step tools + 90%+ SWE-bench Verified",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ai-4": {
+      "type": "Text",
+      "props": {
+        "text": "lukilabs released Craft Agents (Apache 2.0) 05-02",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "dev-category": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dev-subhead",
+        "dev-1",
+        "dev-2"
+      ]
+    },
+    "dev-subhead": {
+      "type": "Heading",
+      "props": {
+        "text": "Dev",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "dev-1": {
+      "type": "Text",
+      "props": {
+        "text": "Bun ports Zig→Rust (HN 475pts) — the year's biggest runtime-language pivot",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "dev-2": {
+      "type": "Text",
+      "props": {
+        "text": "Rolldown 1.0 RC replacing esbuild+Rollup in Vite at 10-30× speed",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "paper-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper-heading",
+        "paper-stack"
+      ]
+    },
+    "paper-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "paper-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "paper-link",
+        "paper-desc"
+      ]
+    },
+    "paper-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Per-Market Information Leakage and Order-Flow Skill",
+        "href": "https://arxiv.org/abs/2605.02287",
+        "source": "Hart, 2026-05-04, arXiv:2605.02287"
+      },
+      "children": []
+    },
+    "paper-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Methodological convergence paper synthesizing three approaches to detect informed Polymarket traders: Mitts-Ofir wallet screen (210K wallet-market pairs), Gomez-Cram event-level sign-randomization (3.14% \"skilled winners\", 1,950 \"insiders\"), and Nechepurenko's ILS framework. Direct CalibrationGap relevance — defines the surface of insider-edge detection that the quant scanner is competing against. Companion paper 2605.02286 evaluates ILS-dl on the U.S.-Iran cluster (military-geopolitics half-life 2.3 days, KS p=0.609).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "github-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "github-heading",
+        "github-text"
+      ]
+    },
+    "github-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "github-text": {
+      "type": "Text",
+      "props": {
+        "text": "No new issues across tomscaria/aaronjmars repos in the 24h window.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "hn-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn-heading",
+        "hn-items"
+      ]
+    },
+    "hn-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Digest",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "hn-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "hn-1-stack",
+        "hn-2-stack",
+        "hn-3-stack",
+        "hn-4-stack",
+        "hn-5-stack"
+      ]
+    },
+    "hn-1-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn-1",
+        "hn-1-desc"
+      ]
+    },
+    "hn-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Bun is being ported from Zig to Rust",
+        "href": "https://github.com/oven-sh/bun/commit/46d3bc29",
+        "source": "HN",
+        "score": "475"
+      },
+      "children": []
+    },
+    "hn-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Runtime-language pivot of the year; 331-comment thread debates Zig stability vs Rust ecosystem maturity",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "hn-2-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn-2",
+        "hn-2-desc"
+      ]
+    },
+    "hn-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "How OpenAI delivers low-latency voice AI at scale",
+        "href": "https://openai.com/index/delivering-low-latency-voice-ai-at-scale",
+        "source": "HN",
+        "score": "394"
+      },
+      "children": []
+    },
+    "hn-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Voice-AI architecture deep-dive",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "hn-3-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn-3",
+        "hn-3-desc"
+      ]
+    },
+    "hn-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Train Your Own LLM from Scratch",
+        "href": "https://github.com/angelos-p/llm-from-scratch",
+        "source": "HN",
+        "score": "210"
+      },
+      "children": []
+    },
+    "hn-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Pedagogical from-scratch repo",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "hn-4-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn-4",
+        "hn-4-desc"
+      ]
+    },
+    "hn-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-31431: Copy Fail vs rootless containers",
+        "href": "https://www.dragonsreach.it/2026/05/04/cve-2026-31431",
+        "source": "HN",
+        "score": "95"
+      },
+      "children": []
+    },
+    "hn-4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Rootless container CVE",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "hn-5-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn-5",
+        "hn-5-desc"
+      ]
+    },
+    "hn-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Chrome silently installs 4GB AI model without consent",
+        "href": "https://www.thatprivacyguy.com/blog/chrome-silent-nano-install",
+        "source": "HN",
+        "score": "93"
+      },
+      "children": []
+    },
+    "hn-5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy/disk-usage backlash",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

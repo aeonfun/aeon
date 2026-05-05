@@ -50,4 +50,3 @@ No new issues across tomscaria/aaronjmars repos in the 24h window.
 3. [Train Your Own LLM from Scratch](https://github.com/angelos-p/llm-from-scratch) (210pts) — pedagogical from-scratch repo
 4. [CVE-2026-31431: Copy Fail vs rootless containers](https://www.dragonsreach.it/2026/05/04/cve-2026-31431) (95pts) — rootless container CVE
 5. [Chrome silently installs 4GB AI model without consent](https://www.thatprivacyguy.com/blog/chrome-silent-nano-install) (93pts) — privacy/disk-usage backlash
-
