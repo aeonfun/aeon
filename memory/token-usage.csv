@@ -102,4 +102,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-04,push-recap,claude-opus-4-7,62,29947,3458886,107035
 2026-05-04,evening-recap,claude-sonnet-4-6,1245,6594,1304402,124545
 2026-05-05,paper-digest,claude-opus-4-7,67,31660,4013939,103820
-2026-05-05,issue-triage,claude-opus-4-7,24,4724,648138,58835
+2026-05-05,github-issues,claude-opus-4-7,23,4149,781135,37650
