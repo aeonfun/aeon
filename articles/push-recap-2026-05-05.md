@@ -3,7 +3,7 @@
 ## Verdict
 > SHIPPING — `/investors` page goes live with six SVG viz, scroll progress, mobile PDF rescue
 
-**Shape:** 3 user-visible · 0 internal · 0 infra · 81 bot-filtered (cron `data: refresh site metrics`, all touch only `swarm-lab-site/public/metrics.json` with a single timestamp diff and effectively bot-class even though authored by `tomscaria`)
+**Shape:** 3 user-visible · 0 internal · 0 infra · 96 bot-filtered (cron `data: refresh site metrics`, all touch only `swarm-lab-site/public/metrics.json` with a single timestamp diff and effectively bot-class even though authored by `tomscaria`)
 **Volume:** 5 unique files (8 file-revisions), +588 / -30 lines across 3 substantive commits by 1 author (`tomscaria`, all Sonnet 4.6 co-authored), all on `swarm-fund-mvp` `main`. `lore-financial-teaser` and `aaronjmars/aeon` had zero substantive activity in the window.
 **Merged PRs:** 0 — today's work landed via direct commits to `main`, not PRs.
 
@@ -65,8 +65,11 @@
 
 ## Open threads
 
-- No new branches pushed; today's three commits all land on `main` directly. The five PRs noted as open in yesterday's recap on the `/swarm-fund-mvp` repo were merged in the 21:57 UTC backlog clear on 05-03 — there are no other open swarm-fund-mvp PRs in the watched window.
-- The prior design pass referenced six `Owner: /create-viz` comments in `Investors.tsx` — five of those have been fulfilled (one comment block per slot has been replaced inline). The comments themselves remain in the source as section markers, but their owner contract is now satisfied.
+- Today's three substantive commits all land on `main` directly. Three open PRs sit on the repo:
+  - **PR #31** (`fix(aeon_adapter): clear _last_error after successful poll`) — opened 2026-05-05 17:08 UTC. New branch `ai/aeon-adapter-clear-last-error`. Single Python file plus a new test on `python/execution/aeon_adapter.py` — adds an `else` branch to the poll loop that nulls `_last_error` after a successful `_poll_once`, so a transient blip stops looking permanent. ADR-093-relevant: clears stale-error reporting on the side of the wire-up that's supposed to *prove* freshness before the falsifier window closes ~2026-05-17. Vercel checks `FAILED` on the unrelated `swarm-fund-mvp` and `swarm-fund-mvp-7ily` projects (the `swarm-lab-site` Vercel project deploys clean — touches no app code anyway).
+  - **PR #30** (`fix(variant_bandit): fall back past corrupt tail in latest_snapshot_date`) — open day 2 per MEMORY notes; one-file fix.
+  - **PR #29** (`eval: Phase B one-shot eval 2026-05-04 (HL 403 — remote IP block)`) — open day 2; draft-blocked on Hyperliquid 403 IP-block per MEMORY notes.
+- The prior design pass referenced six `Owner: /create-viz` comments in `Investors.tsx` — all six have been fulfilled (one comment block per slot has been replaced inline). The comments themselves remain in the source as section markers, but their owner contract is now satisfied.
 - The 201 page still embeds the static PDF rather than rendering React parity with `/101`. The updated doc-string ("v1 wraps the static PDF in a Lore-themed shell … A follow-up will port the full deck to React for parity with /101") preserves that as known follow-up work.
 
 ## Sources
@@ -76,5 +79,5 @@
 - `gh api events`: partial (one repo returned null commits arrays inside push events; commits API was authoritative)
 - `gh api commits`: ok
 - `gh pr list`: ok
-- bot-filtered: 81 (`tomscaria` cron commits with message `data: refresh site metrics`, all touch only `swarm-lab-site/public/metrics.json`, +1/-1 timestamp-and-one-line diff, occur on a 15-minute cadence — treated as bot-class per the spirit of the skill's bot-filter rule even though the author is not a literal `*-bot` user)
+- bot-filtered: 96 (`tomscaria` cron commits with message `data: refresh site metrics`, all touch only `swarm-lab-site/public/metrics.json`, +1/-1 timestamp-and-one-line diff, occur on a 15-minute cadence — treated as bot-class per the spirit of the skill's bot-filter rule even though the author is not a literal `*-bot` user)
 - diff-truncated: 0
