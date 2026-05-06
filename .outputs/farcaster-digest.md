@@ -1,1 +1,1 @@
-farcaster digest skipped — sources: search=fail trending=fail channels=fail (HTTP 402 Neynar across all 3 endpoints, NEYNAR_API_KEY unset, day 5). Same operator-side blocker as days 1–4; cron pause still recommended until secret or scripts/prefetch-farcaster.sh lands.
+farcaster digest skipped — sources: search=fail trending=fail channels=fail (Neynar API returned 402; NEYNAR_API_KEY not configured in workflow environment — gates all three feeds)

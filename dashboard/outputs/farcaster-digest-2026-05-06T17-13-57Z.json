@@ -1,0 +1,77 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "status",
+        "summary",
+        "sep1",
+        "sources-table",
+        "sep2",
+        "error"
+      ]
+    },
+    "status": {
+      "type": "Badge",
+      "props": {
+        "text": "skipped",
+        "variant": "outline"
+      }
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Neynar API returned 402; NEYNAR_API_KEY not configured in workflow environment",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Source",
+          "Status"
+        ],
+        "rows": [
+          [
+            "search",
+            "fail"
+          ],
+          [
+            "trending",
+            "fail"
+          ],
+          [
+            "channels",
+            "fail"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "error": {
+      "type": "Alert",
+      "props": {
+        "title": "Configuration Required",
+        "message": "NEYNAR_API_KEY not configured in workflow environment — gates all three feeds (search, trending, channels)",
+        "type": "error"
+      }
+    }
+  }
+}
