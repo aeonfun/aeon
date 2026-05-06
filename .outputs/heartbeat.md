@@ -1,17 +1,11 @@
-HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md
+HEARTBEAT_OK · STATUS_PAGE=DEGRADED
 
 ## Summary
 
-Ran heartbeat for the 20:00 UTC slot at 21:01 UTC (~61 min late). The 14:00 slot was silently skipped today — single-day occurrence, not yet re-escalating ISS-017 (gate is 2 consecutive days; watch tomorrow's 14:00).
-
-**P0 findings** — all in 48h log window, notification suppressed:
-- `chain:morning-brief` failed today at 08:39:30Z (2nd consecutive day; all underlying parallel skills succeeded). Same `dispatch_skill()` DEGRADED root cause, day 9.
-- `chain:evening-rollup` and `chain:weekly-grant-update` failed yesterday — both with underlying skills succeeding.
-- ISS-013 mass-failure tail: 41 skills with sr < 0.5 (was 46 at 08:39; rolling-window decay artifact).
-- No stuck skills, no consecutive_failures ≥ 3, heartbeat self-check fresh.
-
-**P1/P2/P3** — unchanged set (9 open PRs on tomscaria/aeon, MEMORY.md OPS ALERTS unchanged, 16 missing/on-demand skills tracked).
-
-**Files modified:** `docs/status.md` (96 skill rows + 16 open issues, Overall 🔴 DEGRADED, next run = evening-recap at 21:00 UTC), `memory/logs/2026-05-05.md` (heartbeat entry appended).
-
-**Follow-up:** watch tomorrow's 14:00 heartbeat slot for second consecutive skip; chain-runner operator patch remains the unblock for the 3 chain-wrapper failures and ISS-013 tail decay.
+- Ran heartbeat for the 08:00 UTC slot at 09:14 UTC (~74 min late, within 90-min ISS-017 gate).
+- **P0 — chain failures unchanged**: `chain:morning-brief`, `chain:evening-rollup`, `chain:weekly-grant-update` all failed in last 24h via the same `dispatch_skill()` DEGRADED root cause (operator priority #1, day 10). No stuck skills. No `consecutive_failures >= 3`. ISS-013 chronic tail = 41 sub-50% skills.
+- **P1/P2/P3 unchanged**: 9 stalled PRs on `tomscaria/aeon`, PR #156 day 12, all OPS ALERTS in MEMORY.md, 16 enabled-but-never-run skills.
+- **Notification suppressed** — every flag appears in the last 48h of `memory/logs/`.
+- **Today's 07:00 morning slot** has not yet recorded by 09:14 UTC; same late-firing pattern as 05-05 (eventually fired 08:38). Watch today's 14:00 heartbeat slot — yesterday's 14:00 was silently skipped; second consecutive skip would re-escalate ISS-017.
+- **Files modified**: `docs/status.md` (regenerated; 96 skill rows + 16 open-issue rows; Updated 2026-05-06 09:14 UTC; Next scheduled run: github-releases at 09:30 UTC), `memory/logs/2026-05-06.md` (heartbeat entry).
+- **Follow-up**: monitor 14:00 heartbeat slot for second-day 14:00 skip; chain-runner.yml operator patch remains the unblock for the 3 chain-wrapper failed entries.
