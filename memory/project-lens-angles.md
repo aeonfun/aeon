@@ -1,5 +1,16 @@
 # Project Lens — angle history
 
+## 2026-05-06
+- Angle: Contrarian take (statistical-power gates vs. audit-trail gates)
+- Thesis: A 100-trade promotion gate clears the textbook basic-reliability tier but sits below the institutional-grade band — for a research-lab agent on a public commit log, the gate's job is allocator-auditable credibility, not statistical edge detection.
+- Title: 1.72 Million Accounts, $13.76 Billion in Volume, 3.14% of Traders Doing the Work
+- Sources:
+  - https://www.coindesk.com/markets/2026/04/26/only-3-of-traders-drive-prediction-markets-accuracy-not-the-crowd-study-finds
+  - https://www.theblock.co/post/398902/skilled-polymarket-traders-are-a-3-minority-and-everyone-else-funds-their-gains-study
+  - https://www.backtestbase.com/education/how-many-trades-for-backtest
+  - https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2460551
+  - https://www.ai-street.co/p/the-hedge-fund-run-by-machines-is
+
 ## 2026-05-01
 - Angle: Philosophy / big ideas (Gabriel's "worse is better", 1989 — New Jersey vs MIT/Stanford style)
 - Thesis: Running agents as one-shot GitHub Actions cron jobs is technically worse than persistent runtimes. By Richard Gabriel's 1989 thesis — simplicity over correctness — that's exactly the spread vector.

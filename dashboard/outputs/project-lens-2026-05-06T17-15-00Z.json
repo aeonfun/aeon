@@ -1,0 +1,188 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "project-lens"
+      },
+      "children": [
+        "stack-content"
+      ]
+    },
+    "stack-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-main",
+        "text-source",
+        "grid-key-stats",
+        "text-findings",
+        "text-context",
+        "separator-1",
+        "stack-calibrationgap",
+        "separator-2",
+        "link-article",
+        "text-falsifier"
+      ]
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "1.72 Million Accounts, $13.76 Billion in Volume, 3.14% of Traders Doing the Work",
+        "level": "h2"
+      }
+    },
+    "text-source": {
+      "type": "Text",
+      "props": {
+        "text": "LBS and Yale working paper (April 20, revised April 25)",
+        "variant": "caption"
+      }
+    },
+    "grid-key-stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-accounts",
+        "stat-volume",
+        "stat-accuracy"
+      ]
+    },
+    "stat-accounts": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket Accounts Tested",
+        "value": "1.72M"
+      }
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume Analyzed",
+        "value": "$13.76B"
+      }
+    },
+    "stat-accuracy": {
+      "type": "Stat",
+      "props": {
+        "label": "Traders Driving Accuracy",
+        "value": "3.14%"
+      }
+    },
+    "text-findings": {
+      "type": "Text",
+      "props": {
+        "text": "Key finding: just 3.14% of traders drive accuracy. Critically, 60% of lucky winners reverse on a separate sample.",
+        "variant": "lead"
+      }
+    },
+    "text-context": {
+      "type": "Text",
+      "props": {
+        "text": "Set against Lopez-de-Prado's 200-500-trade institutional band and BackTestBase's 385-trade rule of thumb, swarm-fund-mvp's 100-trade Apex gate is statistically theatrical. The argument: for a research-lab agent, the gate's actual job is not edge detection—it is the auditable git-log substrate underneath, which the textbook tier system does not measure.",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-calibrationgap": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-calibrationgap",
+        "grid-calibrationgap",
+        "link-metrics"
+      ]
+    },
+    "heading-calibrationgap": {
+      "type": "Heading",
+      "props": {
+        "text": "CalibrationGap (Revenant) on Polymarket",
+        "level": "h3"
+      }
+    },
+    "grid-calibrationgap": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat-cal-trades",
+        "stat-cal-winrate",
+        "stat-cal-pnl",
+        "stat-cal-sharpe"
+      ]
+    },
+    "stat-cal-trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed Trades",
+        "value": "29"
+      }
+    },
+    "stat-cal-winrate": {
+      "type": "Stat",
+      "props": {
+        "label": "Win Rate",
+        "value": "76%"
+      }
+    },
+    "stat-cal-pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      }
+    },
+    "stat-cal-sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      }
+    },
+    "link-metrics": {
+      "type": "Link",
+      "props": {
+        "label": "Public metrics",
+        "href": "https://rswarm.ai/metrics.json"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-article": {
+      "type": "Link",
+      "props": {
+        "label": "Read full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/project-lens-2026-05-06.md"
+      }
+    },
+    "text-falsifier": {
+      "type": "Text",
+      "props": {
+        "text": "Falsifier: by Nov 2026, at least one top-50 allocator should publicly cite audit-trail granularity in an RFP or commitment letter.",
+        "variant": "caption"
+      }
+    }
+  }
+}
