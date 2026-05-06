@@ -1,0 +1,138 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "error_alert",
+        "sep1",
+        "missing_section",
+        "sep2",
+        "status_section",
+        "sep3",
+        "action_section"
+      ]
+    },
+    "error_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "No handle configured (9th consecutive)",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "missing_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "missing_heading",
+        "missing_items"
+      ]
+    },
+    "missing_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Missing Configuration",
+        "level": "h3"
+      }
+    },
+    "missing_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "$X_HANDLE unset",
+        "variant": "body"
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "soul/SOUL.md Identity has no @handle",
+        "variant": "body"
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY unset",
+        "variant": "body"
+      }
+    },
+    "item4": {
+      "type": "Text",
+      "props": {
+        "text": ".xai-cache/ absent",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "status_section": {
+      "type": "Text",
+      "props": {
+        "text": "Skill aborts at step 1.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action_heading",
+        "action_text"
+      ]
+    },
+    "action_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Required Action",
+        "level": "h3"
+      }
+    },
+    "action_text": {
+      "type": "Text",
+      "props": {
+        "text": "Pause cron until operator wires X_HANDLE + XAI_API_KEY repo secrets OR adds @handle to soul/SOUL.md.",
+        "variant": "body"
+      }
+    }
+  }
+}
