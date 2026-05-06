@@ -1,0 +1,304 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-06"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_tldr",
+        "separator_1",
+        "heading_headlines",
+        "stack_headlines",
+        "separator_2",
+        "heading_notable",
+        "stack_notable",
+        "separator_3",
+        "heading_decisions",
+        "stack_decisions",
+        "separator_4",
+        "heading_blockers",
+        "stack_blockers"
+      ]
+    },
+    "alert_tldr": {
+      "type": "Alert",
+      "props": {
+        "title": "TL;DR",
+        "message": "Heavy ship day — 7 articles, 1 PR opened, 1 critical issue filed; Iran-airspace 15.5%→4% crash falsifies the multi-handle NO cluster.",
+        "type": "info"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_headlines": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h2"
+      }
+    },
+    "stack_headlines": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "link_article_1",
+        "link_feature_2",
+        "link_health_3",
+        "link_paper_4",
+        "link_issue_5"
+      ]
+    },
+    "link_article_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "article — Iran-airspace ladder crashed 15.5%→4% on rising kinetic tape",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/2026-05-06.md",
+        "source": "aeonframework/aeon"
+      }
+    },
+    "link_feature_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "external-feature — PR #32 aeon_adapter null-signals guard",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/32",
+        "source": "tomscaria/swarm-fund-mvp"
+      }
+    },
+    "link_health_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "code-health — PR #158 dashboard execFileSync hardening shipped 24h after rec",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/code-health-2026-05-06.md",
+        "source": "aeonframework/aeon"
+      }
+    },
+    "link_paper_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "paper-pick — Coordination Layer arXiv:2605.03310 (Murphy decomposition for CalibrationGap entry logic)",
+        "href": "https://arxiv.org/abs/2605.03310",
+        "source": "arXiv"
+      }
+    },
+    "link_issue_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "heartbeat — ISS-020 critical: 17-skill mass-fail 15:32-35Z, post-exec state-write regression",
+        "href": "https://github.com/aeonframework/aeon/blob/main/memory/issues/ISS-020.md",
+        "source": "aeonframework/aeon"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "stack_notable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_shipped",
+        "text_digest",
+        "text_monitor",
+        "text_reflect_intro",
+        "stat_reflect",
+        "badge_reflect_status"
+      ]
+    },
+    "text_shipped": {
+      "type": "Text",
+      "props": {
+        "text": "repo-article + project-lens + research-brief + repo-actions + changelog all shipped (full daily slate)"
+      }
+    },
+    "text_digest": {
+      "type": "Text",
+      "props": {
+        "text": "digest — SnapMarkets 30s BTC binary launch, AZ federal injunction permanent, Kalshi Apr $5.42B taker overtakes PM"
+      }
+    },
+    "text_monitor": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-polymarket — quiet, no >5pp moves; NZL FIFA $408K vol anomaly at 0.25% YES"
+      }
+    },
+    "text_reflect_intro": {
+      "type": "Text",
+      "props": {
+        "text": "reflect #11 — memory consolidated"
+      }
+    },
+    "stat_reflect": {
+      "type": "Stat",
+      "props": {
+        "label": "stars",
+        "value": "276",
+        "delta": "+5",
+        "trend": "up"
+      }
+    },
+    "badge_reflect_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACTIVE but cooling 2nd day",
+        "variant": "secondary"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_decisions": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for tomorrow",
+        "level": "h2"
+      }
+    },
+    "stack_decisions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_decision_1",
+        "text_decision_2",
+        "text_decision_3",
+        "text_decision_4"
+      ]
+    },
+    "text_decision_1": {
+      "type": "Text",
+      "props": {
+        "text": "merge tomscaria/swarm-fund-mvp#31 (ADR-093 critical-path, falsifier T-11)"
+      }
+    },
+    "text_decision_2": {
+      "type": "Text",
+      "props": {
+        "text": "review aaronjmars/aeon#156 reply-maker XAI prefetch (day 13; gates 3 daily skills)"
+      }
+    },
+    "text_decision_3": {
+      "type": "Text",
+      "props": {
+        "text": "patch chain-runner.yml dispatch_skill (day 10; gates ISS-013 decay + 3 chain wrappers)"
+      }
+    },
+    "text_decision_4": {
+      "type": "Text",
+      "props": {
+        "text": "stand down on Trump-China-by-May-31 NO entry until clause-text ingest lands"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_blockers": {
+      "type": "Heading",
+      "props": {
+        "text": "Blockers",
+        "level": "h2"
+      }
+    },
+    "stack_blockers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_blocker_1",
+        "alert_blocker_2",
+        "alert_blocker_3",
+        "alert_blocker_4",
+        "alert_blocker_5",
+        "text_collapsed"
+      ]
+    },
+    "alert_blocker_1": {
+      "type": "Alert",
+      "props": {
+        "title": "chain:evening-rollup",
+        "message": "failed 05-05 21:01Z (dispatch_skill DEGRADED day 10)",
+        "type": "error"
+      }
+    },
+    "alert_blocker_2": {
+      "type": "Alert",
+      "props": {
+        "title": "vibecoding-digest",
+        "message": "14th ERROR",
+        "type": "warning"
+      }
+    },
+    "alert_blocker_3": {
+      "type": "Alert",
+      "props": {
+        "title": "agent-buzz",
+        "message": "3rd ERROR",
+        "type": "warning"
+      }
+    },
+    "alert_blocker_4": {
+      "type": "Alert",
+      "props": {
+        "title": "remix-tweets",
+        "message": "9th ERROR",
+        "type": "warning"
+      }
+    },
+    "alert_blocker_5": {
+      "type": "Alert",
+      "props": {
+        "title": "reply-maker",
+        "message": "DEGRADED 2/5",
+        "type": "warning"
+      }
+    },
+    "text_collapsed": {
+      "type": "Text",
+      "props": {
+        "text": "~25 routine runs collapsed · sources: log=ok cron-state=ok"
+      }
+    }
+  }
+}
