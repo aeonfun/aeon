@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-05T11:30:00Z",
+    "generated": "2026-05-06T11:30:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 110,
+    "total": 111,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1246,6 +1246,18 @@
             "sha": "0a43b79",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon update-gallery"
+        },
+        {
+            "slug": "v4-readiness",
+            "name": "v4-readiness",
+            "description": "Per-fork v4 upgrade readiness checklist \u2014 reads aeon.yml + skills.json + MEMORY.md against an embedded change manifest; emits Safe / Review / Custom / Action breakdown with effort tags",
+            "category": "productivity",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-06",
+            "install": "./add-skill aaronjmars/aeon v4-readiness"
         },
         {
             "slug": "vercel-projects",
