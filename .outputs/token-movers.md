@@ -1,39 +1,42 @@
-*Token Movers — 2026-05-05*
+*Token Movers — 2026-05-06*
 
-_Risk-on broadening — 88/100 top coins green (vs 42 yesterday), median top-50 +2.2%. Majors leading for the first time this week: BTC $81,264 +3.4% / ETH $2,388 +2.6% / SOL $85.31 +1.6%. TON +36% punctures the majors band while LAB pump-cycle compounds into +51% / 7d +284%._
+_Risk-on day 2 — 85/100 top coins green, median top-50 +2.8%; ZEC +34% / 7d +73% breaks out at rank #15 (first MAJOR-tier privacy rotation this cycle), TON day-2 +30.6% / 7d +80%, BILL #230 +53% on $246M vol = PUMP-RISK; majors split — BTC $82,084 +0.6%, ETH $2,396 flat, SOL $89.26 +3.8%._
 
 *Top Winners (24h)*
-1. LAB (LAB) — $2.56  +51.0% / 7d +284% / 1h +8.2%  •  $96M vol / #185  [BREAKOUT, PUMP-RISK]
-2. TON (Toncoin) — $1.88  +36.1% / 7d +45% / 1h +2.4%  •  $868M vol / #22  [TRENDING+UP, BREAKOUT]
-3. M (MemeCore) — $3.35  +27.2% / 7d -9.8% / 1h -1.8%  •  $41M / #25  [FADE]
-4. CRCLON (Circle Tok. Stock) — $123.3  +16.3% / 7d +33.6% / 1h +0.1%  •  $15M / #205  [BREAKOUT]
-5. MORPHO (Morpho) — $2.27  +15.6% / 7d +18% / 1h +2.2%  •  $31M / #60
-6. PENGU (Pudgy Penguins) — $0.01142  +15.3% / 7d +15% / 1h +3.0%  •  $354M / #84  [TRENDING+UP]
-7. RAVE (RaveDAO) — $0.705  +13.5% / 7d -19% / 1h -2.4%  •  $116M / #196
+1. BILL (Billions Network) — $0.0631  +53.2% / 7d n/a / 1h -7.8%  •  $246M / #230  [TRENDING+UP, PUMP-RISK]
+2. ZEC (Zcash) — $574.58  +34.1% / 7d +72.9% / 1h +0.0%  •  $1.71B / #15  [TRENDING+UP, BREAKOUT]
+3. TON (Toncoin) — $2.440  +30.6% / 7d +80.6% / 1h +5.6%  •  $1.14B / #20  [TRENDING+UP, BREAKOUT]
+4. DASH (Dash) — $57.120  +26.1% / 7d +63.5% / 1h +3.7%  •  $419M / #84  [BREAKOUT]
+5. SKYAI (SkyAI) — $0.7811  +25.8% / 7d +182.8% / 1h -2.8%  •  $155M / #81  [BREAKOUT]
+6. LAB — $3.170  +25.2% / 7d +381.5% / 1h -7.5%  •  $112M / #167  [TRENDING+UP, BREAKOUT]
+7. AR (Arweave) — $2.490  +17.8% / 7d +31.1% / 1h +0.2%  •  $106M / #211  [BREAKOUT]
+8. VVV (Venice Token) — $11.200  +16.8% / 7d +30.3% / 1h -0.9%  •  $37M / #108  [BREAKOUT]
+9. NEAR (NEAR Protocol) — $1.490  +15.0% / 7d +10.0% / 1h +0.4%  •  $309M / #46
+10. GWEI (ETHGas) — $0.1287  +14.2% / 7d +32.0% / 1h +0.7%  •  $18M / #162
 
 *Top Losers (24h)*
-1. BSB (Block Street) — $0.599  -24.5% / 7d -25% / 1h +1.3%  •  $69M / #246  [CAPITULATION]
-2. TAG (TAGGER) — $0.00142  -21.3% / 7d +121% / 1h +2.5%  •  $51M / #227  [CAPITULATION] (FLIP from 05-04 +49%)
-3. DASH (Dash) — $45.30  -6.4% / 7d +30% / 1h +0.4%  •  $275M / #95  (FLIP from 05-04 +22.6% TRENDING+UP)
-4. SKYAI (SkyAI) — $0.654  -5.0% / 7d +320% / 1h +13.5%  •  $188M / #87  (FLIP from 05-04 +101%; 1h V-rebound underway)
-5. PIEVERSE — $0.715  -5.0% / 7d -3% / 1h -0.1%  •  $12M / #211
-6. SOSO (SoSoValue) — $0.410  -3.8% / 7d -2%  •  $4M / #248
-
-_Suppressed same-direction repeats: B -12.2% day-2 capitulation (was -12.1% 05-04), AKT -3.6% day-2 (was -6.9%), GENIUS -5.8% day-2, BinanceLife -4.5%._
+1. B (BUILDon) — $0.3340  -7.8% / 7d +152.4% / 1h -16.5%  •  $81M / #137
+2. RAVE (RaveDAO) — $0.6493  -7.7% / 7d -19.1% / 1h +0.8%  •  $38M / #217
+3. BTSE (BTSE Token) — $0.9940  -7.2% / 7d -8.6% / 1h -0.5%  •  $7M / #218
+4. BLIFE (BinanceLife) — $0.3706  -4.6% / 7d +2.4% / 1h +0.1%  •  $24M / #128
+5. PENGU (Pudgy Penguins) — $0.0110  -4.1% / 7d +12.7% / 1h -1.1%  •  $404M / #87
+6. CC (Canton) — $0.1465  -2.6% / 7d -1.9% / 1h -1.4%  •  $9M / #21
+7. VSN (Vision) — $0.0495  -2.2% / 7d +2.6% / 1h -0.1%  •  $3M / #198
+8. ZBCN (Zebec Network) — $0.00336  -2.0% / 7d -1.2% / 1h -0.4%  •  $10M / #144
+9. SYRUP (Maple Finance) — $0.2537  -2.0% / 7d +4.4% / 1h -0.8%  •  $10M / #151
+10. APE (ApeCoin) — $0.1618  -2.0% / 7d +9.1% / 1h -0.6%  •  $53M / #216
 
 *Trending*
-1. TON (Toncoin) — #22, $1.88, +36.1%  [TRENDING+UP, BREAKOUT]
-2. PENGU (Pudgy Penguins) — #84, $0.0114, +15.3%  [TRENDING+UP]
-3. LUNC (Terra Luna Classic) — #98, +7.0%
-4. DOGS (Dogs) — #618, +108%  [TRENDING, PUMP-RISK]
-5. BILL (Billions Network) — #302, +25.3% (4th-day trending tail)
-6. WOJAK — #636, +6.4%
-7. FIRO — #975, +1.6%  [MICROCAP] (privacy-rotation tail from 05-04)
+1. FIRO (Firo) — #891, $1.133, 24h +21.3%  [TRENDING]
+2. TON (Toncoin) — #20, $2.440, 24h +30.6%  [TRENDING+UP, BREAKOUT]
+3. ZEC (Zcash) — #15, $574.58, 24h +34.1%  [TRENDING+UP, BREAKOUT]
+4. BILL (Billions Network) — #230, $0.0631, 24h +53.2%  [TRENDING+UP, PUMP-RISK]
+5. HYPE (Hyperliquid) — #13, $44.300, 24h +1.0%  [TRENDING, MAJOR]
+6. LUNC (Terra Luna Classic) — #99, $0.00010, 24h +2.7%  [TRENDING]
+7. LAB — #167, $3.170, 24h +25.2%  [TRENDING+UP, BREAKOUT]
 
 *Notable*
-• TON +36% / 7d +45% on $868M vol at rank #22 — first majors-tier BREAKOUT this week, no PUMP-RISK contamination. Signal, not noise.
-• LAB now +51% / 7d +284% — 4-day cycle: 05-02 +226% → 05-03 -36% → 05-04 +28% → 05-05 +51%; vol/mcap 0.49 = late-stage churn, reflexive concentration not fundamental BREAKOUT.
-• DOGS #618 +108% PUMP-RISK / wash-trade signature; surface but discount.
-• TAG -21.3% CAPITULATION on $51M vol mirrors LAB's 05-03 pump-fade pattern — multi-day pump-and-fade is now a recurring tape feature.
-• SKYAI 1h +13.5% V-rebound (off the day's -5%) — pump-cycle reflexivity continues underneath.
-
+• ZEC: MAJOR-tier #15 +34% / 7d +73% on $1.71B vol — first sustained privacy-coin MAJOR breakout this cycle; DASH +26% + FIRO +21% confirm rotation flagged 05-04 has legs
+• BILL: #230 +53% on $246M vol (1.6× v/mc turnover) — PUMP-RISK on rank tier; was trending tail yesterday at +25%, breakout-or-bust today
+• LAB: 7d +381% / 24h +25% — day-5 pump-cycle still compounding; rank #167 = manipulation surface wide
+• Pump-cycle FLIPS: SKYAI (-5% → +26% V-shape re-fire), DASH (-8% → +26%) — same low-cap mean-reversion-volatility signature flagged 05-04/05-05

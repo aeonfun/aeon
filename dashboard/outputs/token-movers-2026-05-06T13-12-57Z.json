@@ -1,0 +1,393 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-06"
+      },
+      "children": [
+        "summary_text",
+        "sep1",
+        "winners_heading",
+        "winners_table",
+        "sep2",
+        "losers_heading",
+        "losers_table",
+        "sep3",
+        "trending_heading",
+        "trending_stack",
+        "sep4",
+        "notable_heading",
+        "notable_stack"
+      ]
+    },
+    "summary_text": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-on day 2 — 85/100 top coins green, median top-50 +2.8%; ZEC +34% / 7d +73% breaks out at rank #15 (first MAJOR-tier privacy rotation this cycle), TON day-2 +30.6% / 7d +80%, BILL #230 +53% on $246M vol = PUMP-RISK; majors split — BTC $82,084 +0.6%, ETH $2,396 flat, SOL $89.26 +3.8%.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume/Rank",
+          "Status"
+        ],
+        "rows": [
+          [
+            "BILL (Billions Network)",
+            "$0.0631",
+            "+53.2%",
+            "n/a",
+            "-7.8%",
+            "$246M / #230",
+            "TRENDING+UP, PUMP-RISK"
+          ],
+          [
+            "ZEC (Zcash)",
+            "$574.58",
+            "+34.1%",
+            "+72.9%",
+            "+0.0%",
+            "$1.71B / #15",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "TON (Toncoin)",
+            "$2.440",
+            "+30.6%",
+            "+80.6%",
+            "+5.6%",
+            "$1.14B / #20",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "DASH (Dash)",
+            "$57.120",
+            "+26.1%",
+            "+63.5%",
+            "+3.7%",
+            "$419M / #84",
+            "BREAKOUT"
+          ],
+          [
+            "SKYAI (SkyAI)",
+            "$0.7811",
+            "+25.8%",
+            "+182.8%",
+            "-2.8%",
+            "$155M / #81",
+            "BREAKOUT"
+          ],
+          [
+            "LAB",
+            "$3.170",
+            "+25.2%",
+            "+381.5%",
+            "-7.5%",
+            "$112M / #167",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "AR (Arweave)",
+            "$2.490",
+            "+17.8%",
+            "+31.1%",
+            "+0.2%",
+            "$106M / #211",
+            "BREAKOUT"
+          ],
+          [
+            "VVV (Venice Token)",
+            "$11.200",
+            "+16.8%",
+            "+30.3%",
+            "-0.9%",
+            "$37M / #108",
+            "BREAKOUT"
+          ],
+          [
+            "NEAR (NEAR Protocol)",
+            "$1.490",
+            "+15.0%",
+            "+10.0%",
+            "+0.4%",
+            "$309M / #46",
+            ""
+          ],
+          [
+            "GWEI (ETHGas)",
+            "$0.1287",
+            "+14.2%",
+            "+32.0%",
+            "+0.7%",
+            "$18M / #162",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume/Rank",
+          "Status"
+        ],
+        "rows": [
+          [
+            "B (BUILDon)",
+            "$0.3340",
+            "-7.8%",
+            "+152.4%",
+            "-16.5%",
+            "$81M / #137",
+            ""
+          ],
+          [
+            "RAVE (RaveDAO)",
+            "$0.6493",
+            "-7.7%",
+            "-19.1%",
+            "+0.8%",
+            "$38M / #217",
+            ""
+          ],
+          [
+            "BTSE (BTSE Token)",
+            "$0.9940",
+            "-7.2%",
+            "-8.6%",
+            "-0.5%",
+            "$7M / #218",
+            ""
+          ],
+          [
+            "BLIFE (BinanceLife)",
+            "$0.3706",
+            "-4.6%",
+            "+2.4%",
+            "+0.1%",
+            "$24M / #128",
+            ""
+          ],
+          [
+            "PENGU (Pudgy Penguins)",
+            "$0.0110",
+            "-4.1%",
+            "+12.7%",
+            "-1.1%",
+            "$404M / #87",
+            ""
+          ],
+          [
+            "CC (Canton)",
+            "$0.1465",
+            "-2.6%",
+            "-1.9%",
+            "-1.4%",
+            "$9M / #21",
+            ""
+          ],
+          [
+            "VSN (Vision)",
+            "$0.0495",
+            "-2.2%",
+            "+2.6%",
+            "-0.1%",
+            "$3M / #198",
+            ""
+          ],
+          [
+            "ZBCN (Zebec Network)",
+            "$0.00336",
+            "-2.0%",
+            "-1.2%",
+            "-0.4%",
+            "$10M / #144",
+            ""
+          ],
+          [
+            "SYRUP (Maple Finance)",
+            "$0.2537",
+            "-2.0%",
+            "+4.4%",
+            "-0.8%",
+            "$10M / #151",
+            ""
+          ],
+          [
+            "APE (ApeCoin)",
+            "$0.1618",
+            "-2.0%",
+            "+9.1%",
+            "-0.6%",
+            "$53M / #216",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "trending_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending_1",
+        "trending_2",
+        "trending_3",
+        "trending_4",
+        "trending_5",
+        "trending_6",
+        "trending_7"
+      ]
+    },
+    "trending_1": {
+      "type": "Text",
+      "props": {
+        "text": "1. FIRO (Firo) — #891, $1.133, 24h +21.3% [TRENDING]"
+      }
+    },
+    "trending_2": {
+      "type": "Text",
+      "props": {
+        "text": "2. TON (Toncoin) — #20, $2.440, 24h +30.6% [TRENDING+UP, BREAKOUT]"
+      }
+    },
+    "trending_3": {
+      "type": "Text",
+      "props": {
+        "text": "3. ZEC (Zcash) — #15, $574.58, 24h +34.1% [TRENDING+UP, BREAKOUT]"
+      }
+    },
+    "trending_4": {
+      "type": "Text",
+      "props": {
+        "text": "4. BILL (Billions Network) — #230, $0.0631, 24h +53.2% [TRENDING+UP, PUMP-RISK]"
+      }
+    },
+    "trending_5": {
+      "type": "Text",
+      "props": {
+        "text": "5. HYPE (Hyperliquid) — #13, $44.300, 24h +1.0% [TRENDING, MAJOR]"
+      }
+    },
+    "trending_6": {
+      "type": "Text",
+      "props": {
+        "text": "6. LUNC (Terra Luna Classic) — #99, $0.00010, 24h +2.7% [TRENDING]"
+      }
+    },
+    "trending_7": {
+      "type": "Text",
+      "props": {
+        "text": "7. LAB — #167, $3.170, 24h +25.2% [TRENDING+UP, BREAKOUT]"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable_1",
+        "notable_2",
+        "notable_3",
+        "notable_4"
+      ]
+    },
+    "notable_1": {
+      "type": "Text",
+      "props": {
+        "text": "ZEC: MAJOR-tier #15 +34% / 7d +73% on $1.71B vol — first sustained privacy-coin MAJOR breakout this cycle; DASH +26% + FIRO +21% confirm rotation flagged 05-04 has legs"
+      }
+    },
+    "notable_2": {
+      "type": "Text",
+      "props": {
+        "text": "BILL: #230 +53% on $246M vol (1.6× v/mc turnover) — PUMP-RISK on rank tier; was trending tail yesterday at +25%, breakout-or-bust today"
+      }
+    },
+    "notable_3": {
+      "type": "Text",
+      "props": {
+        "text": "LAB: 7d +381% / 24h +25% — day-5 pump-cycle still compounding; rank #167 = manipulation surface wide"
+      }
+    },
+    "notable_4": {
+      "type": "Text",
+      "props": {
+        "text": "Pump-cycle FLIPS: SKYAI (-5% → +26% V-shape re-fire), DASH (-8% → +26%) — same low-cap mean-reversion-volatility signature flagged 05-04/05-05"
+      }
+    }
+  }
+}
