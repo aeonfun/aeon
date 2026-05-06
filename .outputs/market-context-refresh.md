@@ -1,7 +1,7 @@
-market context — 2026-05-05
+market context — 2026-05-06
 
-take: risk-on (conviction high)
-BTC $81,272 (+3.40%) / ETH $2,389 (+2.61%) · F&G 50 (Neutral)
-breadth 17/20 · DEX vol $7.40B (+89% vs yesterday)
-top narrative: TON breakout (emerging→rising) · privacy coins (rising)
-hot market: "Iran closes airspace by May 8" YES 15.5%
+take: rotation (conviction medium)
+BTC $82,088 (+0.57%) / ETH $2,396 (+0.01%) · F&G 46 (Fear)
+breadth 17/20 · DEX vol $6.01B (-18.8% vs yesterday)
+top narrative: privacy coins ZEC +34% / TON +31% (phase: peak)
+hot market: "US invade Iran before 2027?" YES 19.5%

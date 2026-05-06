@@ -1,73 +1,68 @@
-# Market Context (as of 2026-05-05)
+# Market Context (as of 2026-05-06)
 
-> **Take:** risk-on — BTC +3.40% 24h with breadth surging 9/20 → 17/20 and DEX volume nearly doubling to $7.40B. Conviction: high.
+> **Take:** rotation — BTC +0.57% 24h while ZEC +34% and TON +31% dominate; BTC dominance -0.21 pp with breadth holding 17/20. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $81,272 (+3.40% 24h, +6.46% 7d) · dominance 58.80% (+0.34 pp 24h)
-- ETH $2,388.66 (+2.61% 24h, +5.03% 7d) · ETH/BTC 0.02939
-- SOL $85.36 (+1.64% 24h, +2.38% 7d)
-- Total mcap $2.77T (+2.48% 24h) · DEX vol $7.40B 24h
-- Breadth: 17/20 green 24h · 18/20 green 7d
-- Fear & Greed: 50 (Neutral) — yesterday 40 (Fear)
+- BTC $82,088 (+0.57% 24h, +5.81% 7d) · dominance 58.59% (-0.21 pp 24h)
+- ETH $2,396 (+0.01% 24h, +2.78% 7d) · ETH/BTC 0.02919
+- SOL $89.26 (+3.81% 24h, +5.14% 7d)
+- Total mcap $2.81T (+1.36% 24h) · DEX vol $6.01B 24h
+- Breadth: 17/20 green 24h · 16/20 green 7d
+- Fear & Greed: 46 (Fear) — yesterday 50 (Neutral)
 
 ## What Changed Since Last Refresh
-- Regime flip chop → risk-on: BTC +$2,590 (+3.29%) in one session; breadth surged 9/20 → 17/20 — the 05-04 stall reversed cleanly
-- F&G +10 pts: Fear (40) → Neutral (50) — two-session reversal (47 → 40 → 50); now back to the 05-03 Neutral reading that briefly held
-- DEX 24h vol +89%: $3.92B → $7.40B — strongest single-day DEX volume in the snapshot series; 7d volume $38.64B implies today is running well above 7d avg ($5.52B)
+- Regime shift risk-on → rotation: BTC gained only $816 (+1.0%) while ZEC +34.06% and TON +30.63% took the tape; BTC dominance -0.21 pp confirms alt-rotation dynamic over continuation
+- DEX vol normalized: $7.40B → $6.01B (-18.8%); yesterday's spike doesn't compound; today near 7d avg ($5.42B/day), not a step-change continuation
+- F&G slipped Neutral (50) → Fear (46); first sub-50 print since May 1; sentiment cooling while alts accelerate — divergence between price and sentiment is a late-rotation signal
 
 ## Active Narratives
-- **Privacy coins (ZEC, XMR)** — phase: rising. Evidence: ZEC +27.70% 7d / +3.77% 24h rank 19; XMR +6.53% 24h rank 17; both in top-20 mcap for 3rd+ consecutive cluster day; Masternodes category and EU DAC8 enforcement as structural driver.
-- **AI infra (LAB, TAO, HYPE)** — phase: rising. Evidence: LAB +49.61% 24h (rank 184, CG trending); TAO 5th+ consecutive trending day (-0.33% 24h — cooling but holding); HYPE +5.87% 24h rank 13, Hyperliquid ecosystem widening.
-- **TON ecosystem** — phase: emerging→rising. Evidence: TON +36.36% 24h rank 22, top-3 CG trending; first MAJOR-tier breadth breakout this week per daily-routine; no fundamental catalyst cited — momentum-led.
-- **Meme / speculative froth (DOGS, BILL)** — phase: emerging. Evidence: DOGS +108.28% 24h rank 618 (top trending); BILL +25.30% 24h rank 302; four.meme / BNB Meme category; consistent risk-on retail rotation into lowest-quality assets — not actionable without fundamental anchor.
+- **Privacy coins (ZEC, XMR, FIRO)** — phase: peak. Evidence: ZEC +34.06% 24h now rank 15 with +72.86% 7d; XMR +5.23% 24h rank 18 +13.18% 7d; FIRO +21.32% 24h trending. Three major-cap or trending names in the same category; 73% 7d in a top-15 asset is peak-extension territory.
+- **TON ecosystem** — phase: peak. Evidence: TON +30.63% 24h, +80.61% 7d, rank 20 — second consecutive 30%+ session (05-05 was +36.36%). Telegram/Durov catalyst (staking + fee cut) confirmed; two-day 80% gain in a major-cap signals exhaustion risk.
+- **AI infra (HYPE, TAO, IO, NEAR)** — phase: rising. Evidence: HYPE +1.03% 24h +10.58% 7d rank 13; TAO +9.11% rank 35 trending; IO +33.32% rank 474 trending; NEAR +16.23% rank 46 trending — four-name breadth widening into mid-cap, not yet saturated.
+- **US-Iran binary** — phase: rising. Evidence: Iran cluster $6.25M combined 24h vol (US-invade YES 19.5% $3.20M + peace-May31 YES 26.0% $1.78M + Hormuz-May YES 30.5% $1.27M); macro search confirms BTC lifted alongside US-Iran MOU progress reports.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $21.55B (+0.80% 7d)
-- SSV Network: $17.52B (+4.68% 7d)
-- Aave V3: ~$14.59B (~+5% 7d, prior snapshot)
-- WBTC: ~$9.10B (~+1% 7d, prior snapshot)
-- Binance Staked ETH: ~$8.63B (~+0.8% 7d, prior snapshot)
+- Lido: $21.87B (+0.49%)
+- SSV Network: $17.77B (+3.50%)
+- Aave V3: $14.96B (+7.05%)
+- EigenCloud: $8.08B (-10.81%)
+- Morpho Blue: $7.62B (+11.19%)
 
-*DeFiLlama protocols API mixed CEX entries today; Lido/SSV confirmed clean. Aave/WBTC/BSC-ETH carried from 05-04.*
-
-## Chain Flow (top 5 by TVL, vs prior snapshot)
-- Ethereum: $46.18B (+$670M vs 05-04)
-- BSC: $5.56B (+$50M)
-- Solana: $5.47B (+$20M)
-- Bitcoin: $5.40B (+$130M)
-- Tron: $5.16B (-$20M)
+## Chain Flow (top 3 by TVL, vs prior snapshot)
+- Ethereum: $47.00B (+$820M vs 05-05)
+- BSC: $5.67B (+$110M)
+- Solana: $5.63B (+$160M)
 
 ## Stablecoins
-Total (USD-pegged top 5): ~$285.98B (flat vs prior ~$285.4B). USDT $189.46B · USDC $78.68B · USDS $8.68B · DAI $4.62B · USD1 $4.54B · combined share of mcap ~10.3%. Stablecoin base holding flat while mcap expanded = slight relative contraction, consistent with risk-on rotation into spot assets.
+Total: ~$325.49B (all tracked). USDT $189.52B · USDC $78.19B · USDS $8.63B · DAI $4.64B · combined share of mcap ~10.0%. Stablecoin base flat while mcap expanded — consistent with modest risk-on rotation; no meaningful stablecoin drawdown or fresh inflow.
 
 ## Trending (CoinGecko)
-- DOGS (Dogs) — +108.28% 24h; rank 618; speculative pump, top trending
-- TON (Toncoin) — +36.36% 24h; rank 22; major-cap breakout, 3rd trending slot
-- LAB — +49.61% 24h; rank 184; AI infra, 3-day round-trip volatility pattern
-- PENGU (Pudgy Penguins) — +13.67% 24h; rank 84; Visa card live, returning trending
-- BILL (Billions Network) — +25.30% 24h; rank 302; speculative, 2nd consecutive day trending
-- HYPE (Hyperliquid) — +5.75% 24h; rank 13; ecosystem breadth widening
-- LUNC (Terra Luna Classic) — +7.32% 24h; rank 98; speculative continuation
-- FIRO — +1.65% 24h; rank 975; privacy co-rotation, microcap
+- ZEC (Zcash) — +35.32% 24h; rank 15; privacy-coin peak narrative, co-trending with XMR and FIRO
+- TON (Toncoin) — +27.95% 24h; rank 20; 2nd consecutive major-cap 30%+ session; Telegram staking/fee-cut catalyst
+- IO (io.net) — +33.32% 24h; rank 474; AI compute mid-cap, AI-infra narrative breadth widening
+- NEAR (NEAR Protocol) — +16.23% 24h; rank 46; AI-infra L1 breadth
+- TAO (Bittensor) — +9.11% 24h; rank 35; AI infra holding; 5th+ consecutive trending day
+- HYPE (Hyperliquid) — +1.57% 24h; rank 13; ecosystem anchor, holding breadth
+- FIRO — +21.32% 24h; rank 891; privacy co-rotation microcap
 
-## Prediction Markets (Polymarket, top by 24h vol, filtered <3%/>97%)
+## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Iran closes its airspace by May 8? | 15.5% | $2.58m | $0.46m |
-| Will the U.S. invade Iran before 2027? | 30.5% | $1.15m | $1.10m |
-| US x Iran permanent peace deal by May 31? | 12.5% | $0.63m | $0.85m |
+| Will the U.S. invade Iran before 2027? | 19.5% | $3.20m | $0.70m |
+| US x Iran permanent peace deal by May 31? | 26.0% | $1.78m | $0.33m |
+| Strait of Hormuz traffic returns to normal by end of May? | 30.5% | $1.27m | $0.31m |
+| US x Iran permanent peace deal by June 30? | 47.0% | $0.80m | $0.31m |
 
-*Iran geopolitical cluster dominates Polymarket 24h volume. No Hormuz or Russia-Ukraine markets in today's top-12 (lower activity day on those fronts). CalibrationGap note: Iran-airspace May 8 at 15.5% YES is a short-fuse binary (3 days); UMA-resolution-arbitrage hook (Iran-cf vs Hez-cf) remains relevant — ingest resolution text, not the airspace-closure framing.*
+*Iran geopolitical cluster $6.25M combined 24h vol — dominant theme. Iran-airspace-by-May-8 (prev. 15.5% YES) absent from top-10 today — likely drifted to near-zero YES (effective NO heading into May 8 resolution) and filtered. CalibrationGap: US-invade YES 19.5% $3.20M is the new high-liquidity Iran binary; Hormuz-normal YES 30.5% directly relevant to existing Hormuz NO position (entry 54.5c, May 2).*
 
 ## Macro Catalysts (next 48h)
-- **US Jobs data (delayed, week of May 4-5)**: first labor market read after shutdown-driven gap; binary — weak data = alt-long catalyst; strong = ETF continuation bid; market watching for unemployment print vs 4.2% prior
-- **BTC ETF inflows**: $600M+ on Friday alone; 5-week consecutive positive inflow streak; April was strongest ETF inflow month of 2026 at $2.44B; cumulative $58.72B (below $61.19B Oct peak — room to re-break)
-- **Powell→Warsh transition (May 15)**: 10 days out; Warsh hawkish public record but J.P. Morgan reads as faster-cuts net; front-run window if dovish guidance leaks pre-May 15
-- **CLARITY Act markup (before May 21)**: Tim Scott committee scheduling is the binary; pass = altcoin ETF unlocking / XRP $1.80 retest catalyst
+- **US-Iran MOU progress**: BTC moved toward $82k alongside MOU reports; confirmed MOU narrows invasion probability and Hormuz premium; breakdown reverses both sharply — watch confirmation vs denial in next 24h
+- **BTC ETF inflows**: $532M May 4 (3rd consecutive positive day); $3.29B past 2 months; cumulative $58.72B (below $61.19B Oct peak — room to re-break); institutional bid intact
+- **Powell→Warsh transition May 15**: 9 days out; front-run window open if dovish guidance leaks pre-announcement
 
 ## Implications for Downstream Skills
-- **token-pick:** Risk-on day, 17/20 breadth — open for fresh alt entries. TON (rank 22, first MAJOR-tier breakout this week) is the cleanest new entry candidate given major-cap size and multi-day trending momentum. Privacy rotation (ZEC/XMR, both top-20 mcap) has 7d momentum but 3rd+ consecutive cluster = peak risk rising. DASH (05-04 pick) -8.4% today — watch for reversal vs capitulation; Evolution-upgrade thesis intact but rotation didn't compound. Avoid speculative froth (DOGS, BILL) — no fundamental anchor.
-- **narrative-tracker:** TON confirmed emerging→rising (first MAJOR-tier breakout per tape). Privacy coins elevated to rising phase with two top-20 anchors (XMR rank 17, ZEC rank 19) — monitor for peak signal (saturated attention or 7d breadth topping). AI infra (LAB/TAO) widening but TAO showing cooling; LAB 3-day round-trip volatility pattern (05-02 +226% → 05-03 -36% → 05-04 +28% → today +49.61%) = wash-trade-signature caution.
+- **token-pick:** Rotation regime — avoid adding to privacy names (ZEC/XMR/FIRO at peak; 34–73% 7d extension in major-caps). AI-infra breadth is the cleaner rising-phase play: IO (rank 474, +33% trending) and NEAR (rank 46, +16% trending) are mid-cap names still early. TON at peak after two 30%+ sessions — no new entry; watch for consolidation setup.
+- **narrative-tracker:** Privacy at peak — monitor for 7d breadth topping and funding-rate inversion as exit signals. US-Iran binary dominant on Polymarket; any MOU confirmation compresses CalibrationGap's Hormuz NO position; any breakdown spikes Iran-invasion YES back toward 25%+.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -80,7 +75,8 @@ Total (USD-pegged top 5): ~$285.98B (flat vs prior ~$285.4B). USDT $189.46B · U
 | 2026-05-02 | UB | $0.141 | OKX perp listing (up to 20x), fresh ATH day; AIP 2.0 Q2 protocol release queued; v/mc 0.524; AI-agent narrative anchor |
 | 2026-05-03 | AKT | $0.648 | BME deflationary tokenomics live 03-23 + 1,000+ active leases + NVIDIA Blackwell B200/B300 integration upcoming; Lease-to-Lease Networking catalyst 2026-05-30 |
 | 2026-05-04 | DASH | $47.37 | Evolution upgrade live May 2 (T-2) shipping smart contracts + cross-chain communication; Thorchain native-swap integration in pipeline; riding EU DAC8 + Grayscale ZCSH + Brazil stablecoin policy privacy-coin rotation; v/mc 0.60; score 10/10 |
+| 2026-05-05 | TON | $1.88 | Pavel Durov announced Telegram replaces TON Foundation as primary driver, stakes ~2.2M TON to become largest validator, fees cut 6x to ~$0.0005 per transfer; ecosystem spillover (Dogs +90%, Notcoin +26%) confirms participation depth; mcap $5.08B / v/mc 0.087 rank 22; score 8/10 HIGH |
 
 ---
 *Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
-*Source status: coingecko=ok defillama=partial(protocols CEX-mixed; chains ok) fng=ok polymarket=ok websearch=ok*
+*Source status: coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok*
