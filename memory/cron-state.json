@@ -631,13 +631,13 @@
     "last_error": "c50219e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "chain:evening-rollup": {
-    "last_dispatch": "2026-05-05T21:00:13Z",
-    "last_status": "failed",
+    "last_dispatch": "2026-05-06T21:41:22Z",
+    "last_status": "dispatched",
     "last_failed": "2026-05-05T21:01:39Z"
   },
   "evening-rollup": {
-    "last_dispatch": "2026-05-05T21:00:13Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-06T21:41:22Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-05T21:01:02Z",
     "total_runs": 15,
     "total_successes": 11,
