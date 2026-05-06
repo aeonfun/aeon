@@ -1,16 +1,19 @@
 ## Summary
 
-Executed `fleet-control` skill in default Health Check Mode.
+Executed `fleet-control` skill in Health Check Mode (var empty).
 
 **Pre-flight:**
-- gh auth: OK (tomscaria account)
-- Rate limit: 4982 remaining (well above 50 threshold)
-- Registry: `memory/instances.json` exists but `.instances` is `[]`
-- State file: `memory/state/fleet-control-state.json` present
+- `gh auth`: OK (tomscaria, GH_TOKEN)
+- Rate limit: 4986 remaining
+- Registry `memory/instances.json`: `{"instances": []}` — empty
 
-**Outcome:** `FLEET_EMPTY` — no managed instances registered. Per skill spec ("If `.instances` is absent or `[]`: Log `FLEET_EMPTY` to memory/logs/${today}.md. **Stop. Do NOT notify.**"), the run terminated silently without sending any notification.
+**Outcome:** `FLEET_EMPTY` — no managed instances registered. Per skill spec, stopped silently without notifying.
 
 **Files modified:**
-- `memory/logs/2026-05-05.md` — appended `## fleet-control (health check)` section with `FLEET_EMPTY` verdict.
+- `memory/logs/2026-05-06.md` — created with FLEET_EMPTY log entry
 
-**Follow-up:** None required. The fleet registry remains empty until instances are spawned via the spawn-instance skill or registered manually. No deltas, no actions, no fleet to manage.
+**Files unchanged (correctly):**
+- `memory/instances.json` — registry remains empty until operator registers instances
+- `memory/state/fleet-control-state.json` — no state update needed (no instances to track)
+
+**Follow-up:** None. Operator must populate `memory/instances.json` (with `name`, `repo`, `purpose`, `created`, etc. per skill conventions) before fleet-control has any work to do.
