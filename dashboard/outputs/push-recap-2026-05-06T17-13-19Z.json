@@ -1,0 +1,238 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-06"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo_info",
+        "sep1",
+        "shipped_section",
+        "sep2",
+        "under_hood_section",
+        "sep3",
+        "metrics_section",
+        "sep4",
+        "full_recap_link"
+      ]
+    },
+    "repo_info": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_text",
+        "subtitle_text"
+      ]
+    },
+    "repo_text": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — BUILDING",
+        "variant": "lead"
+      }
+    },
+    "subtitle_text": {
+      "type": "Text",
+      "props": {
+        "text": "registers dormant star-momentum-alert + hardens dashboard exec"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_heading",
+        "pr159_block",
+        "pr158_block"
+      ]
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "pr159_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr159_title",
+        "pr159_desc"
+      ]
+    },
+    "pr159_title": {
+      "type": "Text",
+      "props": {
+        "text": "#159 star-momentum-alert skill (3 files, +295/-2)",
+        "variant": "lead"
+      }
+    },
+    "pr159_desc": {
+      "type": "Text",
+      "props": {
+        "text": "daily Sonnet skill that walks 14d of repo-pulse logs, projects next star-milestone via 7d linear extrapolation, alerts only when crossing lands 7-14d out AND on Tue/Wed/Thu — the show-hn-draft dispatch window. Shipped registered, enabled: false."
+      }
+    },
+    "pr158_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pr158_title",
+        "pr158_desc"
+      ]
+    },
+    "pr158_title": {
+      "type": "Text",
+      "props": {
+        "text": "#158 dashboard skills/[name]/run execFileSync (1 file, +5/-5)",
+        "variant": "lead"
+      }
+    },
+    "pr158_desc": {
+      "type": "Text",
+      "props": {
+        "text": "swaps the last user-input execSync on the dashboard for argv-array execFileSync, mirroring #150. Defense-in-depth — whitelist already neutered metacharacters."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "under_hood_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under_hood_heading",
+        "under_hood_text"
+      ]
+    },
+    "under_hood_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h2"
+      }
+    },
+    "under_hood_text": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp pushed 95 commits in the window, all 'data: refresh site metrics' — sampled head and tail, each is +1/-1 on the generated_at timestamp only. Treated as automation-only, not bot-filtered. Zero substantive code on swarm-fund for the third straight day."
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "shape_block",
+        "volume_block"
+      ]
+    },
+    "shape_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape_heading",
+        "shape_text"
+      ]
+    },
+    "shape_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h3"
+      }
+    },
+    "shape_text": {
+      "type": "Text",
+      "props": {
+        "text": "2 user-visible · 0 internal · 0 infra · 95 automation-only · 0 bot-filtered · 2 merged PRs"
+      }
+    },
+    "volume_block": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "volume_heading",
+        "volume_text"
+      ]
+    },
+    "volume_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h3"
+      }
+    },
+    "volume_text": {
+      "type": "Text",
+      "props": {
+        "text": "4 files (substantive), +300/-7 lines"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full_recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-06.md"
+      }
+    }
+  }
+}
