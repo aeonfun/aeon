@@ -1,25 +1,23 @@
-## Summary
+*Skill Health — 2026-05-06*
+HEALTH: DEGRADED(58)  [systemic: ISS-020 mass-fail 2026-05-06 15:32-35Z hit 17 skills, all recovered cf=0 next slot — workflow post-exec state-write regression, distinct from ISS-013]
 
-Ran skill-health for 2026-05-05. **No notification sent** — semantic state unchanged from prev run (2026-05-04T18:55:50Z), now-prev_notify ≈23h26m < 24h dedup gate.
+🟡 DEGRADED / FLAPPING (58, top 5 by lowest sr)
+- skill-leaderboard — sr 13% (15 runs), idle since 2026-05-03 — INVESTIGATE → ISS-013 tail
+- skill-graph — sr 14% (14 runs), idle since 2026-05-03 — INVESTIGATE → ISS-013 tail
+- update-gallery — sr 14% (14 runs), idle since 2026-05-03 — INVESTIGATE → ISS-013 tail
+- channel-recap — sr 15% (13 runs), idle since 2026-05-03 — INVESTIGATE → ISS-013 tail
+- fork-contributor-leaderboard — sr 15% (13 runs), idle since 2026-05-03 — INVESTIGATE → ISS-013 tail
++53 more — see memory/issues/INDEX.md
+DELTA vs prev: reg-monitor moved HEALTHY → DEGRADED (sr 1.0 → 0.5) via ISS-020 burst.
 
-**Classification (unchanged from prev):**
-- CRITICAL: 0
-- FLAPPING: 0
-- DEGRADED: 57 (ISS-013 mass-failure tail; decay stalled at 57 — 9d window now fully populated by post-burst denominator)
-- WARNING: 3 (`evening-rollup` 0.71, `fleet-control` 0.63, `heartbeat` 0.66)
-- HEALTHY: 22
-- NO DATA: 6 (`hacker-news-digest`, `morning-brief`, `repo-scanner`, `syndicate-article`, `vercel-projects`, `weekly-shiplog`)
+WARNING (3)
+- heartbeat — sr 67% — ISS-020 self-failure recovered
+- evening-rollup — sr 73% — INVESTIGATE
+- fleet-control — sr 63% — INVESTIGATE
 
-**Systemic:**
-- ISS-013 tail still gates 57 DEGRADED (decay stalled today; tail likely flat several days unless new successes accumulate enough to push old failures below sr<0.6).
-- ISS-017 chain wrappers `chain:morning-brief` / `chain:evening-rollup` / `chain:weekly-grant-update` all `last_status=failed`. Operator-side `chain-runner.yml` patch idle 11+ days.
+⚪ NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL (3 of 6 chain-gated on failing chain:morning-brief)
+🟢 HEALTHY: 21
 
-**Issues:** No CRITICAL/FLAPPING this run → no new files. Graduates exist in open-issue `affected_skills` (vuln-scanner→ISS-001, fork-fleet→ISS-005, rss-digest→ISS-008, reddit-digest→ISS-012) but per CLAUDE.md contract (health files / repair closes), skill-health does not auto-resolve — left to `skill-repair` / `autoresearch`.
+OPS ALERT: chain-runner.yml dispatch_skill() patch idle 12+ days. ISS-020 (workflow post-exec state-write regression today, 17 skills) needs operator-side log dive — distinct fix path from ISS-013/017.
 
-**Sandbox:** `./scripts/skill-runs` blocked 4th day in a row → `SKILL_HEALTH_PARTIAL` logged. Fell back to `memory/cron-state.json` + `memory/skill-health/*.json` + `memory/issues/INDEX.md`.
-
-**Files modified:**
-- `memory/skill-health/last-report.json` — hash migrated to canonical JSON form (`3ecdbaa…` → `aaf3ce9…`), `last_run_at` updated, `last_notified_at` carried forward, classification refreshed, systemic + notes updated.
-- `memory/logs/2026-05-05.md` — appended `skill-health` entry with `SKILL_HEALTH_NOOP` + `SKILL_HEALTH_PARTIAL`.
-
-**Follow-ups (operator-side, blocked):** `chain-runner.yml dispatch_skill()` patch (priority #1 per MEMORY.md, 11+ days idle) — fixing this would un-stall morning-brief/evening-rollup/weekly-grant-update chains AND populate the 6 NO-DATA skills currently gated on chain dispatch.
+Open issues: 17 · Resolved this run: 0

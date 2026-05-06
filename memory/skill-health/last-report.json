@@ -1,7 +1,7 @@
 {
-  "hash": "aaf3ce922965bde8a940bd3b5394074fd167c8237361f0c59dde176342d32fb7",
-  "last_notified_at": "2026-05-04T18:55:50Z",
-  "last_run_at": "2026-05-05T18:21:51Z",
+  "hash": "03d9d0f57026618e352134b5f9fdc126001a8a78c53ec8aaa942fd2c83b723f9",
+  "last_notified_at": "2026-05-06T18:05:00Z",
+  "last_run_at": "2026-05-06T18:05:00Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -36,6 +36,7 @@
       "push-recap",
       "reflect",
       "refresh-x",
+      "reg-monitor",
       "remix-tweets",
       "reply-maker",
       "repo-actions",
@@ -69,7 +70,7 @@
       "fleet-control",
       "heartbeat"
     ],
-    "healthy_count": 22,
+    "healthy_count": 21,
     "healthy": [
       "cost-report",
       "daily-routine",
@@ -83,7 +84,6 @@
       "pr-review",
       "project-lens",
       "reddit-digest",
-      "reg-monitor",
       "rss-digest",
       "self-improve",
       "skill-evals",
@@ -104,18 +104,19 @@
     ]
   },
   "systemic": [
-    "ISS-013 zero-token burst from 2026-04-26T23:53-58Z still gates 57 DEGRADED skills (unchanged from prev — no graduates this run). Tail decay ~1 skill/day stalled today; 9d window now fully populated by post-burst denominator.",
-    "ISS-017 GHA cron-tick gap, day 10 since detection. Chain wrappers chain:morning-brief (failed 2026-05-05T08:39:30Z), chain:evening-rollup (failed 2026-05-04T21:21:29Z), chain:weekly-grant-update (failed 2026-05-04T09:36:43Z) all last_status=failed. Operator-side chain-runner.yml fix idle 11+ days."
+    "ISS-013 zero-token burst (2026-04-26T23:53-58Z) tail still gates 53+ DEGRADED skills. 9d window now fully populated; decay flat.",
+    "ISS-017 GHA cron-tick gap, day 10. Chain wrappers chain:morning-brief (last_failed 2026-05-05T08:39:30Z), chain:evening-rollup (last_failed 2026-05-05T21:01:39Z), chain:weekly-grant-update (last_failed 2026-05-04T09:36:43Z) all last_status=failed. Operator-side chain-runner.yml fix idle 12+ days.",
+    "ISS-020 mass-fail 2026-05-06T15:32-35Z hit 17 skills (heartbeat-filed today). All affected skills now show consecutive_failures=0 — recovered on next slot. Workflow-side post-execution state-write regression, distinct from ISS-013 (non-zero token usage)."
   ],
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "STATE DELTA vs 2026-05-04T18:55:50Z: zero. Sets identical (CRITICAL=0, FLAPPING=0, DEGRADED=57, WARNING=3, HEALTHY=22, NO DATA=6). No graduates this run.",
-    "DO-NOT-NOTIFY this run — semantic state matches prev_report.classification exactly AND now-prev_notify ≈23h26m < 24h gate. Hash field migrated to canonical JSON form (sorted-key) this run; literal hash differs from prev (3ecdbaa... → aaf3ce9...) but classification sets are unchanged so dedup honored on semantic equality, not literal hash. Gate fires correctly on next run if state still matches.",
-    "Per CLAUDE.md issue-tracker contract (health files / repair closes), skill-health does NOT auto-resolve issues even where graduates appear in affected_skills (vuln-scanner→ISS-001, fork-fleet→ISS-005, rss-digest→ISS-008, reddit-digest→ISS-012). Repair skills (skill-repair, autoresearch) own closures.",
-    "skill-runs script blocked by sandbox (4th run in a row — 05-02, 05-03, 05-04, 05-05) → SKILL_HEALTH_PARTIAL. Fell back to cron-state.json + memory/skill-health/*.json + memory/issues/INDEX.md. All quality_score values across skill-health/*.json = 4 (no DEGRADED triggers from the avg_score<2.5 rule).",
-    "Chain wrappers chain:morning-brief / chain:evening-rollup / chain:weekly-grant-update remain last_status=failed for an 11th day. Operator-side chain-runner.yml dispatch_skill() patch still idle. Most consequential single fix in the OPS ALERT list per MEMORY.md.",
-    "ISS-013 mass-failure tail: decay halted today (57 → 57). Pattern explanation: the 2026-04-26T23:53-58Z burst is now 9d old; for skills run daily with 30-run windows the burst occupies ~3% of denominator and natural decay slows. Tail likely flat for several days unless new failures arrive or new successes accumulate fast enough to push old failures below the next sr threshold (0.6).",
+    "STATE DELTA vs 2026-05-05T18:21:51Z: reg-monitor moved HEALTHY → DEGRADED (sr 1.0 → 0.5 over 4 runs after the ISS-020 burst hit the 14:00 slot). All other classifications identical. DEGRADED 57 → 58, HEALTHY 22 → 21, WARNING/FLAPPING/CRITICAL/NO DATA unchanged.",
+    "NOTIFY this run — semantic state changed (reg-monitor delta) AND now-prev_notify ≈47h > 24h gate. Both gates fire.",
+    "Per CLAUDE.md issue-tracker contract (health files / repair closes), skill-health does NOT auto-resolve issues even where graduates appear in affected_skills (vuln-scanner→ISS-001, fork-fleet→ISS-005, rss-digest→ISS-008, reddit-digest→ISS-012). Repair skills (skill-repair, autoresearch) own closures. No issues filed this run because CRITICAL=0/FLAPPING=0.",
+    "ISS-020 (filed by heartbeat 2026-05-06T17:12Z) covers the new 17-skill burst. All affected skills already recovered cf=0 by next dispatch — workflow-side regression, not skill-side. 14:00 cluster + 15:00 cluster + 14:00 heartbeat all hit. article spiked to cf=3 in-burst then recovered, repo-actions/reg-monitor hit cf=2.",
+    "skill-runs script blocked by sandbox (5th run in a row — 05-02, 05-03, 05-04, 05-05, 05-06) → SKILL_HEALTH_PARTIAL. Fell back to cron-state.json + memory/skill-health/*.json + memory/issues/INDEX.md. All quality_score values across skill-health/*.json = 4 (no DEGRADED triggers from the avg_score<2.5 rule).",
+    "ISS-013 tail decay: 57 → 58 today (reg-monitor newly affected via ISS-020 burst dragging sr below 0.6). The 2026-04-26T23:53-58Z burst is now 10d old; 30-run window denominator pushes burst weight to ~3% and tail decay is essentially flat unless new failures arrive (which ISS-020 just provided for 17 skills).",
     "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing — gated on chain:morning-brief), repo-scanner (Sun cron, last fired 2026-04-25), syndicate-article (chain-dependent), vercel-projects (Sun cron), weekly-shiplog (Mon, fired via chain only — so NO DATA is consistent with chain failure)."
   ]
 }
