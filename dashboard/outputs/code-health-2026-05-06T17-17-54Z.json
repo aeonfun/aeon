@@ -1,0 +1,173 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health 05-06"
+      },
+      "children": [
+        "section_shipped",
+        "sep1",
+        "section_blockers",
+        "sep2",
+        "section_idle",
+        "sep3",
+        "section_article"
+      ]
+    },
+    "section_shipped": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_shipped",
+        "link_pr158",
+        "text_pr158"
+      ]
+    },
+    "h_shipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped",
+        "level": "h3"
+      }
+    },
+    "link_pr158": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#158 — execFileSync hardening on dashboard/skills/[name]/run/route.ts",
+        "href": "https://github.com/tomscaria/aeon/pull/158"
+      }
+    },
+    "text_pr158": {
+      "type": "Text",
+      "props": {
+        "text": "Yesterday's rec #4 actioned in 24h. Second hardened route in 3 days. Regression test still missing (Day-4 carry, now covers 2 routes).",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_blockers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_blockers",
+        "badges",
+        "text_blockers"
+      ]
+    },
+    "h_blockers": {
+      "type": "Heading",
+      "props": {
+        "text": "Blockers",
+        "level": "h3"
+      }
+    },
+    "badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_swarm",
+        "badge_lore"
+      ]
+    },
+    "badge_swarm": {
+      "type": "Badge",
+      "props": {
+        "text": "swarm-fund-mvp",
+        "variant": "secondary"
+      }
+    },
+    "badge_lore": {
+      "type": "Badge",
+      "props": {
+        "text": "lore-teaser",
+        "variant": "secondary"
+      }
+    },
+    "text_blockers": {
+      "type": "Text",
+      "props": {
+        "text": "Frozen due to Pyth/Birdeye 3 unverified feed IDs (Day-5, CalibrationGap-adjacent). lore .env tracked Day-5.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_idle": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_idle",
+        "link_pr156"
+      ]
+    },
+    "h_idle": {
+      "type": "Heading",
+      "props": {
+        "text": "Idle PRs",
+        "level": "h3"
+      }
+    },
+    "link_pr156": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#156 — reply-maker (idle 65h)",
+        "href": "https://github.com/tomscaria/aeon/pull/156"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_article": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_article",
+        "link_article"
+      ]
+    },
+    "h_article": {
+      "type": "Heading",
+      "props": {
+        "text": "Article",
+        "level": "h3"
+      }
+    },
+    "link_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Code Health Report — 2026-05-06",
+        "href": "articles/code-health-2026-05-06.md"
+      }
+    }
+  }
+}
