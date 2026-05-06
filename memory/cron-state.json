@@ -574,13 +574,13 @@
   },
   "skill-health": {
     "last_dispatch": "2026-05-06T18:57:02Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-05T18:24:38Z",
-    "total_runs": 21,
-    "total_successes": 11,
+    "last_status": "success",
+    "last_success": "2026-05-06T19:03:12Z",
+    "total_runs": 22,
+    "total_successes": 12,
     "total_failures": 10,
     "consecutive_failures": 0,
-    "success_rate": 0.52,
+    "success_rate": 0.55,
     "last_failed": "2026-04-26T23:55:42Z",
     "last_error": "09bf112\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
