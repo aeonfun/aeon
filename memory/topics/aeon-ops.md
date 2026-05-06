@@ -109,12 +109,23 @@
 - Capability-level signal in cron-state will only return once chain-runner.yml `dispatch_skill()` is fixed and ISS-013 counters burn down.
 - Recommendation: leave search-skill on schedule; today's no-op run is the correct behavior.
 
-## Code-health carry-debt — CLEARED 2026-05-03
-- **Shell-injection at `dashboard/app/api/secrets/route.ts:96` PATCHED 2026-05-03 09:30 UTC via PR #150** (commit `6c07691`). `execFileSync('gh', [...])` argv-array form on both POST (line 96) and DELETE (line 119) handlers. 12 days from first flag to fix. **ISS-016 candidate filing pre-empted** (was scheduled 2026-05-07).
-- Template established for future dashboard route shell-outs: argv-array form, matches `auth/route.ts:46` template that this report series cited since 2026-04-25.
-- 9 of 19 dashboard route files use `execSync`; with secrets/route.ts patched, no remaining user-controlled value reaching shell.
+## Code-health carry-debt — defense-in-depth migration in motion 2026-05-06
+- **2026-05-06 01:02 UTC — PR #158 MERGED on `aaronjmars/aeon`**: `fix(dashboard/skills/run): use execFileSync to harden against shell injection`. Second hardened route in 3 days (after `secrets/route.ts` 2026-05-03 PR #150). Both routes that exec'd user-shaped input now use argv-array form with regex-validated input. Re-classified all 9 dashboard `child_process` callsites: 2 hardened (secrets, skills/run), 1 with user input but digit-only-gated (`runs/[id]/logs/route.ts`), 6 literal-only safe.
+- **2026-05-03 — PR #150 MERGED** (commit `6c07691`): `dashboard/app/api/secrets/route.ts:96` shell-injection patched. `execFileSync('gh', [...])` argv-array form on both POST (line 96) and DELETE (line 119) handlers. 12 days from first flag to fix. ISS-016 candidate filing pre-empted.
+- Template established for future dashboard route shell-outs: argv-array form, matches `auth/route.ts:46` template.
+- **Day-4 carry:** add Vitest regression file for `secrets/route.ts` + `skills/[name]/run/route.ts` (~30 lines, locks 2 hardened routes).
+- **Day-8 carry:** ZIZMOR_VERSION pinning in security-scan workflow.
 - Dashboard has zero unit/integration tests. 8/14 API routes shell out via template strings — none currently exploitable.
 - 1 file over 500 lines: `a2a-server/src/index.ts` (579).
+
+## swarm-fund-mvp Pyth/Birdeye feed-ID Day-5 carry (2026-05-06)
+- 3 unverified hardcoded feed IDs in `tomscaria/swarm-fund-mvp` ingestion layer, **byte-identical 2026-05-02 → 2026-05-06**:
+  - `pipeline/ingestion/pyth_ws.py:36` — XRP/USD Pyth feed ID `ec5d399b3b...` (unverified).
+  - `pipeline/ingestion/birdeye_rest.py:36` — Backed bIB01 mint `9n4nbM75...` (unverified).
+  - `pipeline/ingestion/birdeye_rest.py:37` — Dinari dSPY mint `FtgGSFAD...` (unverified).
+- Gates trading decisions in CalibrationGap-adjacent ingestion. The scanner is one feed-ID typo away from misrouted price reads. **Top blast-radius action across all three repos** per code-health 05-06.
+- Day-4 carry: `outputs/manual_tasks_thomas.md:276` Anthropic key partial fingerprint `sk-ant-api03-fpl...1wAA` — 1-line edit, untouched 4 days.
+- Day-4 carry: 4 unverified RSS feed URLs in `harvest_blogs.py:54-63`.
 
 ## monitor-runners scoring formula — 4-in-a-row DEEP-LIQ evidence (2026-04-27 PM → 04-30)
 - 04-27/28/29: DEEP-LIQ candidate ranks just outside top 5 (04-29: SKYAI/WBNB 54.0 vs slot-5's 57.3). 04-30: TTPA/WETH on base **landed in slot 1 organically only because pct also clipped 500% cap** (+2678%) — luck, not formula. Other DEEP-LIQ survivors (SKYAI/WBNB 52.4, AIOT/WBNB 52, USDe/USDT 50.6, ZEREBRO/SOL 50.3) still ranked slots 30-40.
@@ -131,10 +142,16 @@
 ## Cost discipline — 2026-05-04 cost-report
 - **$629.09 / 76 runs in last 7 days; monthly projection ~$2,696.** CLAUDE.md threshold is $40/wk — currently >15× over. Suggested Sonnet downgrades for next `self-improve` run: external-feature, repo-actions, heartbeat (~$149/wk savings combined). Surface as explicit edit per CLAUDE.md cost-discipline rule.
 
-## ISS-017 — decay status 2026-05-04
-- 2026-05-04 18:55Z snapshot: heartbeat sr **0.62 → 0.64**; evening-rollup sr **0.67 → 0.69**; **fleet-control graduated DEGRADED → WARNING (sr 0.60)** — second graduate after heartbeat 05-02. ISS-013 affected_skills count **58 → 57**. Decay rate ~1 skill/day; if it holds, ISS-013 tail closes around mid-July 2026.
-- 2026-05-03 20:00Z heartbeat sr **0.59 → 0.62** (first measurable decay since detection).
+## ISS-017 — decay status 2026-05-05 (snapshot 18:21Z)
+- **State delta vs 05-04 18:55Z snapshot: ZERO across all classification sets** (CRITICAL=0, FLAPPING=0, DEGRADED=57, WARNING=3 [evening-rollup, fleet-control, heartbeat], HEALTHY=22, NO DATA=6). No graduates this run.
+- Pattern explanation: 9-day post-burst window now occupies only ~3% of 30-run denominator → tail likely flat for several days unless new failures or fast new successes accumulate. Decay halted; mid-July 2026 closure horizon contingent on rate resuming.
+- Hash field migrated to canonical sorted-key JSON form this run; literal hash differs from prev (3ecdbaa... → aaf3ce9...) but classification sets are unchanged so dedup honored on **semantic equality**, not literal hash. Gate fires correctly on next run if state still matches.
 - ISS-017 demotion criteria (from MEMORY 05-02): re-escalates if any scheduled window silently skips 2 days running, heartbeat delay >90 min 2 days running, or 21:00 evening-rollup misses 2 days. **2026-05-05 08:00 heartbeat fired ~39 min late (within 90-min gate).**
+- **Skill-runs script blocked by sandbox 4th run in a row (05-02/03/04/05)** → SKILL_HEALTH_PARTIAL. Fell back to cron-state.json + memory/skill-health/*.json + memory/issues/INDEX.md. All quality_score values across skill-health/*.json = 4 (no DEGRADED triggers from avg_score<2.5 rule).
+
+## ISS-017 — decay status 2026-05-04 (historical)
+- 2026-05-04 18:55Z snapshot: heartbeat sr **0.62 → 0.64**; evening-rollup sr **0.67 → 0.69**; **fleet-control graduated DEGRADED → WARNING (sr 0.60)** — second graduate after heartbeat 05-02. ISS-013 affected_skills count **58 → 57**.
+- 2026-05-03 20:00Z heartbeat sr **0.59 → 0.62** (first measurable decay since detection).
 
 ## skill-evals quality-history pipeline flatlined
 - Per-skill JSONs in `memory/skill-health/` (changelog/evening-rollup/github-issues/goal-tracker/issue-triage/last-report/write-tweet) all have **history-length-1** with single score=4 entries from various dates. Only `last-report.json` updates daily. **skill-evals is not appending to per-skill files** — quality time-series is effectively unobservable. Structural gap; surface to next `self-improve` queue.

@@ -60,7 +60,9 @@ Internal enum (`AgentLifecycle`): adds `DEMOTED` (drawdown / regime mismatch) an
 
 ## Aeon-side PR pipeline to swarm-fund-mvp (external-feature)
 - **PRs #18 / #19 / #20 / #22 / #23 / #24 / #28 — all merged 2026-05-03 21:57 UTC.** Operator merged through Vercel-FAILURE checks (root cause: `aeonframework` bot commit-email not verified with Vercel) rather than fixing the bot config. 5-ACT-NOW ALERT cleared.
-- **PR #29** (eval-tagged) and **PR #30** (variant_bandit corruption-tail fallback, operator-led external-feature) — open as of 2026-05-04 evening.
+- **Open queue (2026-05-06):** PR #29 (Phase B one-shot eval, draft, HL 403 4d idle); PR #30 (variant_bandit fallback past corrupt tail in `latest_snapshot_date`, day 2); PR #31 (aeon_adapter clears `_last_error` after successful poll, day 1, +4/+25). Both PRs #30/#31 are single-file fixes against ADRs 089/093 from last week.
+- **swarm-fund-mvp 72h merge-cadence test (clock running)** — does new ADR open by 2026-05-09, OR do PRs #30/#31 stall? Discriminator between "healthy defect-hardening phase" (today's article framing) and "queue stagnation that looks like one" (yesterday's article framing). Tomscaria-authored PRs #29/#30/#31 may not inherit Vercel team membership the bot-email-fix covered for the prior batch — additional Vercel-FAILURE checks may need a second front of operator action.
+- **Code-frozen since 2026-05-05 00:53 UTC** — last substantive non-cron commit `8f688ca`. ~30 metric-refresh `data: refresh site metrics` commits per 24h on 15-min cron; 0 code commits in the audit window 05-05 → 05-06 (per code-health 05-06).
 
 ## Live infra
 - Trading loop: `python -m python.main` (PID varies, logs at `/tmp/swarm-main.log`)
