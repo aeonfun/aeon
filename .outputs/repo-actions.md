@@ -1,13 +1,13 @@
-*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-05*
-Last night's overnight commits left the investor page in an inconsistent state — six SVG components shipped in InvestorViz.tsx (c8e09632) but the matching slots added to Investors.tsx (fe189cc1) are still placeholder divs. Top pick is the import-and-replace wiring.
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-06*
+Yesterday's #1 (Investors.tsx InvestorViz wiring) shipped. Last 100 commits on main are all metrics-refresh churn — top pick attacks that surface with a script-level skip-when-noop guard.
 
-Top pick: Wire 6 InvestorViz components into the 6 unfilled data-slot placeholders in Investors.tsx (Content, Small, Priority HIGH)
- → Investor page flips from rendering 6 dashed-outline placeholders to 6 grant/LP-facing SVGs already on disk; closes the visible "unfinished" tell.
+Top pick: Skip-when-noop guard in scripts/refresh-site-metrics.sh (DX, Small, Priority HIGH)
+ → Cuts main-branch metrics commits from 96/day to 10-20/day; reclaims 75+ Vercel deploys/day; flips the public commit log from 'metrics-bot graveyard' to 'real activity' for grant-reviewer click-throughs.
 
-1. Wire 6 InvestorViz components into 6 unfilled data-slot placeholders (HIGH, Content, Small)
-2. Add .github/workflows/site-build.yml running npm ci + npm run build on site PRs (HIGH, DX, Small)
-3. Add python/tests/test_aeon_adapter_contract.py with committed JSON fixture (HIGH, DX, Small)
-4. Switch swarm-lab-site/package.json build script to npm ci for learn-site/ (MED, DX, Small)
-5. Add docs/12_operations/known_failure_modes.md documenting recurring Vercel-author-email pattern (MED, Content, Small)
+1. Skip-when-noop guard in scripts/refresh-site-metrics.sh (HIGH, DX, Small)
+2. .github/workflows/aeon-falsifier-canary.yml — daily probe + T-3 issue-open against ADR-093 deadline 2026-05-17 (HIGH, DX, Small)
+3. python/tests/test_aeon_adapter_recovery.py — locks in PR #31 _last_error clear-on-recovery via httpx.MockTransport (HIGH, DX, Small)
+4. tests/test_site_metrics_schema.py — JSON-shape regression for swarm-lab-site/public/metrics.json (MED, DX, Small)
+5. python/tests/test_aeon_signal_tickkind.py — regression that aeon_signal stays a recognized TickKind Literal (MED, DX, Small)
 
-Full details: https://github.com/aeonframework/aeon/blob/main/articles/repo-actions-2026-05-05.md
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-06.md

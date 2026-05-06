@@ -1,0 +1,383 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas"
+      },
+      "children": [
+        "date-text",
+        "summary-text",
+        "sep-1",
+        "toppick-section",
+        "sep-2",
+        "actions-list",
+        "sep-3",
+        "details-link"
+      ]
+    },
+    "date-text": {
+      "type": "Text",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp — 2026-05-06",
+        "variant": "muted"
+      }
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "Yesterday's #1 (Investors.tsx InvestorViz wiring) shipped. Last 100 commits on main are all metrics-refresh churn — top pick attacks that surface with a script-level skip-when-noop guard.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "toppick-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "toppick-heading",
+        "toppick-title",
+        "toppick-badges",
+        "toppick-details"
+      ]
+    },
+    "toppick-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h3"
+      }
+    },
+    "toppick-title": {
+      "type": "Text",
+      "props": {
+        "text": "Skip-when-noop guard in scripts/refresh-site-metrics.sh",
+        "variant": "lead"
+      }
+    },
+    "toppick-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "toppick-badge-high",
+        "toppick-badge-dx",
+        "toppick-badge-small"
+      ]
+    },
+    "toppick-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "Priority HIGH",
+        "variant": "destructive"
+      }
+    },
+    "toppick-badge-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "toppick-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "toppick-details": {
+      "type": "Text",
+      "props": {
+        "text": "Cuts main-branch metrics commits from 96/day to 10-20/day; reclaims 75+ Vercel deploys/day; flips the public commit log from 'metrics-bot graveyard' to 'real activity' for grant-reviewer click-throughs.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "actions-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "action-1",
+        "action-2",
+        "action-3",
+        "action-4",
+        "action-5"
+      ]
+    },
+    "action-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-1-text",
+        "action-1-badges"
+      ]
+    },
+    "action-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "1. Skip-when-noop guard in scripts/refresh-site-metrics.sh",
+        "variant": "body"
+      }
+    },
+    "action-1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "action-1-high",
+        "action-1-dx",
+        "action-1-small"
+      ]
+    },
+    "action-1-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "action-1-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "action-1-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "action-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-2-text",
+        "action-2-badges"
+      ]
+    },
+    "action-2-text": {
+      "type": "Text",
+      "props": {
+        "text": "2. .github/workflows/aeon-falsifier-canary.yml — daily probe + T-3 issue-open against ADR-093 deadline 2026-05-17",
+        "variant": "body"
+      }
+    },
+    "action-2-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "action-2-high",
+        "action-2-dx",
+        "action-2-small"
+      ]
+    },
+    "action-2-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "action-2-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "action-2-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "action-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-3-text",
+        "action-3-badges"
+      ]
+    },
+    "action-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "3. python/tests/test_aeon_adapter_recovery.py — locks in PR #31 _last_error clear-on-recovery via httpx.MockTransport",
+        "variant": "body"
+      }
+    },
+    "action-3-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "action-3-high",
+        "action-3-dx",
+        "action-3-small"
+      ]
+    },
+    "action-3-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "action-3-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "action-3-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "action-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-4-text",
+        "action-4-badges"
+      ]
+    },
+    "action-4-text": {
+      "type": "Text",
+      "props": {
+        "text": "4. tests/test_site_metrics_schema.py — JSON-shape regression for swarm-lab-site/public/metrics.json",
+        "variant": "body"
+      }
+    },
+    "action-4-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "action-4-med",
+        "action-4-dx",
+        "action-4-small"
+      ]
+    },
+    "action-4-med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED"
+      }
+    },
+    "action-4-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "action-4-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "action-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "action-5-text",
+        "action-5-badges"
+      ]
+    },
+    "action-5-text": {
+      "type": "Text",
+      "props": {
+        "text": "5. python/tests/test_aeon_signal_tickkind.py — regression that aeon_signal stays a recognized TickKind Literal",
+        "variant": "body"
+      }
+    },
+    "action-5-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "action-5-med",
+        "action-5-dx",
+        "action-5-small"
+      ]
+    },
+    "action-5-med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED"
+      }
+    },
+    "action-5-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX"
+      }
+    },
+    "action-5-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "details-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full details: repo-actions-2026-05-06.md",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-06.md"
+      }
+    }
+  }
+}
