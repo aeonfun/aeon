@@ -1,0 +1,149 @@
+{
+  "root": "card_digest",
+  "state": {},
+  "elements": {
+    "card_digest": {
+      "type": "Card",
+      "props": {
+        "title": "prediction markets — 2026-05-06"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_tldr",
+        "separator_1",
+        "item1_stack",
+        "separator_2",
+        "item2_stack",
+        "separator_3",
+        "item3_stack"
+      ]
+    },
+    "text_tldr": {
+      "type": "Text",
+      "props": {
+        "text": "TL;DR: Blockchain.com ships 30-second BTC binary contracts as a new 'skill-based' product, a federal judge permanently blocks Arizona from prosecuting Kalshi on preemption grounds, and Kalshi's April taker volume overtakes Polymarket for the first time at $5.42B vs $1.99B.",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator"
+    },
+    "item1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story1",
+        "text1_details",
+        "text1_why"
+      ]
+    },
+    "story1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Blockchain.com launches SnapMarkets — 30-second BTC binary contracts from $1",
+        "href": "https://www.coindesk.com/business/2026/05/06/blockchain-com-launches-snapmarkets-as-prediction-markets-move-into-faster-crypto-bets",
+        "source": "CoinDesk"
+      }
+    },
+    "text1_details": {
+      "type": "Text",
+      "props": {
+        "text": "Users wager whether bitcoin's price rises or falls in 30-second windows; live chat, streak tracking, global leaderboard; non-custodial wallet by default. Not available in the US or UK. Marketed as 'skill-based' — structurally a binary option, the class banned for retail in the EU/UK.",
+        "variant": "body"
+      }
+    },
+    "text1_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Second venue selling sub-minute BTC contracts after Kalshi KXBTC. More fast-resolution venues mean more cross-venue convergence data and more candidate legs for short-window arb.",
+        "variant": "muted"
+      }
+    },
+    "separator_2": {
+      "type": "Separator"
+    },
+    "item2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story2",
+        "text2_details",
+        "text2_why"
+      ]
+    },
+    "story2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Federal judge permanently blocks Arizona's criminal case against Kalshi",
+        "href": "https://defirate.com/news/federal-judge-permanently-blocks-arizona-criminal-case-vs-kalshi/",
+        "source": "Defirate"
+      }
+    },
+    "text2_details": {
+      "type": "Text",
+      "props": {
+        "text": "Judge Liburdi made permanent the April TRO, ruling federal law preempts state gambling statutes for CFTC-registered exchanges. Arizona AG Kris Mayes is barred from prosecuting the 20 misdemeanor counts; four of those targeted Kalshi's 2026/2028 election contracts. CFTC Chair Mike Selig: 'the CFTC has full jurisdiction over prediction markets.'",
+        "variant": "body"
+      }
+    },
+    "text2_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: First district-level permanent ruling on prediction-market preemption — sets the precedent every other state suit (Connecticut, Illinois, Nevada, NJ) will be measured against.",
+        "variant": "muted"
+      }
+    },
+    "separator_3": {
+      "type": "Separator"
+    },
+    "item3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "story3",
+        "text3_details",
+        "text3_why"
+      ]
+    },
+    "story3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Kalshi overtakes Polymarket on April monthly volume — $5.42B vs $1.99B taker",
+        "href": "https://news.bitcoin.com/prediction-market-traders-push-april-2026-volume-to-8-6b-kalshi-takes-the-lead/",
+        "source": "Bitcoin News"
+      }
+    },
+    "text3_details": {
+      "type": "Text",
+      "props": {
+        "text": "Sector taker volume hit $8.6B; in notional terms, Kalshi posted $14.8B vs Polymarket's $9B (plus $1.26B from Polymarket US). Polymarket still led on unique users — 678,342 vs Kalshi's roughly 80,000 — putting Kalshi's per-user volume near 8x Polymarket's. Sports drove most of the Kalshi lead.",
+        "variant": "body"
+      }
+    },
+    "text3_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: First month Kalshi has outrun Polymarket on monthly volume, compounding with the Arizona ruling. Liquidity weight is shifting to the regulated venue; convergence-trade fills get easier on the Kalshi side, thinner on Polymarket outside political and India-election books.",
+        "variant": "muted"
+      }
+    }
+  }
+}
