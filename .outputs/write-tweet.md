@@ -1,24 +1,23 @@
-tweet drafts: 0.444-magnitude leakage shift on documented Iran-cluster Polymarket case (arXiv:2605.02286) — empirical case for ingesting resolution text not titles
+tweet drafts: MSTR-sells-BTC Polymarket YES @ 47.5¢
 
 — one-liner —
-1a. "No edge in Polymarket geopolitics" usually means the scanner ingested titles.
-1b. Same Iran trades, scored two ways: 0.444-magnitude leakage swing. The instrument matters.
+1a. Saylor said the words. Polymarket's at 47.5. Fair is 75. The trade is YES.
+1b. MSTR Q1: "we will probably sell some bitcoin." Polymarket: 47.5¢ YES. Take the bid.
 
 — two-punch —
-2a. "Quant scanner sees no edge in PM geopolitics." Wrong scanner. Score Iran-cluster trades on resolution text and leakage flips sign by 0.444 magnitude.
-2b. Most PM backtests ingest titles. Resolution text is what resolves the contract. Nechepurenko's Iran-cluster paper puts the gap at 0.444 magnitude. Same data, scored two ways.
+2a. Markets call MicroStrategy selling BTC a 47.5% event. Saylor used the word "probably" on the call yesterday. One of these two is mispriced.
+2b. "Will MicroStrategy sell any Bitcoin by Dec 31?" Polymarket: 47.5¢. Saylor on Tuesday's call: "we will probably sell some." Hard market.
 
 — paragraph —
-3a. Iran-cluster Polymarket case, 332 wallets. Score the trades by public-event windows: leakage +0.113. Score them by resolution-anchored windows: -0.331. Same trades, opposite-sign signals. Title-ingest backtests are why "no edge" claims keep misfiring.
-3b. The reason a quant scanner sees no edge in language-asymmetry markets isn't that the edge isn't there. It's that the scanner ingests titles. Score documented Iran insider trades on resolution text and you get a 0.444-magnitude leakage swing. Same data.
+3a. Polymarket has "MSTR sells any Bitcoin by Dec 31, 2026" at 47.5¢ YES. Saylor on the Q1 call: "we will probably sell some bitcoin to pay a dividend just to inoculate the market." $1.5B/yr dividend obligation, 18mo coverage. Fair is ~75. The trade is YES.
+3b. "Will MicroStrategy sell any Bitcoin by Dec 31, 2026?" is at 47.5¢ YES. The CEO has now said "we will probably sell some" on a public earnings call. The market is pricing "probably" as a coin-flip. That's the trade.
 
 — long tweet —
-4a. arXiv:2605.02286 dropped May 4. Nechepurenko evaluates deadline-anchored ILS on documented Polymarket insider cases. Headline: on the largest 2026 Iran contract ("US forces enter Iran by April 30") leakage = +0.113 under public-event scoring, -0.331 under resolution-anchored scoring. Same trades. 0.444-magnitude swing. Hazard rate on military-geopolitics: half-life 2.3 days, KS p=0.609. The empirical case for ingesting resolution clauses, not headlines, is now on paper.
-4b. The recurring pattern: someone runs a quant scanner across Polymarket, finds no edge in geopolitics, declares the venue efficient. The scanner scored on public-event windows. Score the same documented Iran-cluster insider trades on resolution-anchored windows and you get a 0.444-magnitude leakage shift, opposite sign. The Iran-cf-NO vs Hez-cf-YES paradox lives in the same lane. Resolution-clause heterogeneity is the edge a title-ingest scanner can't see.
+4a. Polymarket "MSTR sells any Bitcoin by Dec 31, 2026" YES is at 47.5¢. Inputs: Saylor on Q1 (5/5): "we will probably sell some bitcoin to pay a dividend just to inoculate the market." $1.5B/yr dividend obligation. 18mo cash coverage. $2.2B unrealized tax benefits from high-cost-basis BTC. MSTR -4% AH on the announcement. The "probably" isn't strategic ambiguity — it's preview. Fair ~75%. Edge ~28pp YES. Resolution risk: UMA's read of "sells" if MSTR funds dividends via BTC-collateralized debt instead of an on-chain sale.
+4b. Saylor spent four years building a brand around "never sell." On Tuesday's earnings call he said: "we will probably sell some bitcoin to pay a dividend just to inoculate the market." Polymarket has "MSTR sells any BTC by Dec 31" at 47.5¢ YES. The market hasn't repriced because the line was buried in three minutes about high-cost-basis tax lots and dividend coverage ratios. Read the transcript. Fair is 75. Take the YES. The whole thesis fits in one sentence the CEO already said out loud.
 
 — thread opener —
-5a. Most "no edge in Polymarket geopolitics" claims come from scanners that ingest titles. Score the same documented Iran-cluster trades on resolution text and leakage flips sign by 0.444 magnitude. Thread on why architecture beats alpha here:
-5b. If two Polymarket markets resolve from near-identical clauses but opposite ways (Iran-cf NO 0.25%, Hez-cf YES 99.85%), why would a title-ingest scanner ever see the gap? May 4 paper puts a number on it: 0.444-magnitude leakage shift on the Iran cluster.
+5a. Polymarket "Does MSTR sell any Bitcoin by Dec 31, 2026?" is at 47.5¢ YES. Saylor told everyone the answer on Tuesday's call. The market hasn't moved. Quick thread on why this is one of the cleanest YES bids on the platform right now.
+5b. If a CEO says "we will probably sell some bitcoin" on a public earnings call, what should the binary "will they sell any" be priced at? Polymarket says 47.5¢. The honest answer is closer to 75. Why the gap, and how to size it:
 
-best: #4a — densest payload (paper ID + contract title + both scores + magnitude + hazard rate + KS p-value) with clean argumentative payoff. Long-tweet length is the right instrument.
-
+best: #4a — has the quote, the math, and the resolution risk in one container; long-tweet length carries the case without needing a thread.
