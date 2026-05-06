@@ -1,0 +1,305 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header_info",
+        "sep1",
+        "repo_stats",
+        "sep2",
+        "notable_heading",
+        "notable_stargazers",
+        "sep3",
+        "other_heading",
+        "other_stargazers",
+        "sep4",
+        "forks_heading",
+        "new_forks",
+        "sep5",
+        "source_text"
+      ]
+    },
+    "header_info": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "date_text",
+        "status_badge"
+      ]
+    },
+    "date_text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-06",
+        "variant": "muted"
+      }
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ACTIVE",
+        "variant": "default"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "repo_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_link",
+        "stats_row"
+      ]
+    },
+    "repo_link": {
+      "type": "Link",
+      "props": {
+        "label": "aaronjmars/aeon",
+        "href": "https://github.com/aaronjmars/aeon"
+      }
+    },
+    "stats_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stars_stat",
+        "forks_stat"
+      ]
+    },
+    "stars_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "276",
+        "delta": "+5",
+        "trend": "up"
+      }
+    },
+    "forks_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "43",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      }
+    },
+    "notable_stargazers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable_user1",
+        "notable_user2",
+        "notable_user3"
+      ]
+    },
+    "notable_user1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_hexsprite",
+        "followers_hexsprite"
+      ]
+    },
+    "link_hexsprite": {
+      "type": "Link",
+      "props": {
+        "label": "hexsprite",
+        "href": "https://github.com/hexsprite"
+      }
+    },
+    "followers_hexsprite": {
+      "type": "Text",
+      "props": {
+        "text": "55 followers",
+        "variant": "caption"
+      }
+    },
+    "notable_user2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_freyjasWrath",
+        "followers_freyjasWrath"
+      ]
+    },
+    "link_freyjasWrath": {
+      "type": "Link",
+      "props": {
+        "label": "FreyjasWrath",
+        "href": "https://github.com/FreyjasWrath"
+      }
+    },
+    "followers_freyjasWrath": {
+      "type": "Text",
+      "props": {
+        "text": "8 followers",
+        "variant": "caption"
+      }
+    },
+    "notable_user3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_lyknice23",
+        "followers_lyknice23"
+      ]
+    },
+    "link_lyknice23": {
+      "type": "Link",
+      "props": {
+        "label": "lyknice23",
+        "href": "https://github.com/lyknice23"
+      }
+    },
+    "followers_lyknice23": {
+      "type": "Text",
+      "props": {
+        "text": "47 followers",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "other_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      }
+    },
+    "other_stargazers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_gitpushnico",
+        "link_mightyjax"
+      ]
+    },
+    "link_gitpushnico": {
+      "type": "Link",
+      "props": {
+        "label": "gitpushnico",
+        "href": "https://github.com/gitpushnico"
+      }
+    },
+    "link_mightyjax": {
+      "type": "Link",
+      "props": {
+        "label": "MightyJax",
+        "href": "https://github.com/MightyJax"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "forks_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      }
+    },
+    "new_forks": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fork_link1",
+        "fork_link2"
+      ]
+    },
+    "fork_link1": {
+      "type": "Link",
+      "props": {
+        "label": "ether-btc/aeon",
+        "href": "https://github.com/ether-btc/aeon"
+      }
+    },
+    "fork_link2": {
+      "type": "Link",
+      "props": {
+        "label": "FreyjasWrath/aeon",
+        "href": "https://github.com/FreyjasWrath/aeon"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source_text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}
