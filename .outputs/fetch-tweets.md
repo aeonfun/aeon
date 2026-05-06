@@ -1,19 +1,15 @@
-*Top Tweets — prediction markets (2026-05-05)*
-_Same day, two opposite calibration lessons: Tamil Nadu broke Polymarket (DMK 87.5% on counting eve → near-0 as TVK swept; $22.66M market) while Bengal validated the PM 51% flip-to-BJP at 99.55% YES. Continuity-prior fail + independent-evidence flip in one news cycle._
+*Top Tweets — prediction markets (2026-05-06)*
+_Three structural moves, none priced into CalibrationGap or Hermes-arb dashboards yet — Polymarket's own Iran-airspace-end-of-month drifted to 64% (vs May-8 sub-market 15.5%); HIP-4 took 0.7% of total PM flow on day-one; Kalshi recession-this-year crashed 40→17% record-low in 4 days post-ceasefire-extension._
+_Source: WebSearch (XAI/cache unavailable, day 11). Engagement counts unavailable._
 
-*TN structural shock*
-1. x.com/htTweets — TVK crosses 118 majority in Tamil Nadu while BJP leads 150+ in Bengal — single most data-dense same-day primary-press post; both calibration-lesson states in one frame.
-[View tweet](https://x.com/htTweets/status/2051173239360307480)
+*Iran narrative-shift*
+1. x.com/Polymarket — Polymarket itself raises end-of-month airspace closure to 64%. Parent market drifting toward kinetic-strike narrative while May-8 sub-market still prices 15.5% — multi-horizon mispricing window.
+[View tweet](https://x.com/Polymarket/status/2051348357625323871)
 
-2. x.com/VSReddy_MP — YSR Congress MP frames TVK debut as "South India creates space for credible non-partisan regional voices; legacy parties carry baggage" — single elected-official post-mortem on why the continuity prior failed.
-[View tweet](https://x.com/VSReddy_MP/status/2051183262463336502)
+*HIP-4 cross-venue entry*
+2. x.com/PinkBrains_io — HIP-4 day-one: ~6.05M contracts ≈ 0.7% of total prediction-market flow. First quantified day-one anchor for Hermes-arb's gap-pricing calibration; below 2-3% third-venue-meaningful threshold but trending.
+[View tweet](https://x.com/PinkBrains_io/status/2051573596024426770)
 
-3. x.com/ThePrintIndia — Supporters at Vijay's Chennai residence "as the party scripts history" — first primary-press confirmation of historic-result framing rather than seat-tally framing.
-[View tweet](https://x.com/ThePrintIndia/status/2051256011743441008)
-
-*Vijay ground-reaction primary source*
-4. x.com/ANI — Heightened security at Vijay's Chennai residence with TVK leading 107 of 234 — earliest in-day ground-reaction marker, before majority threshold crossed.
-[View tweet](https://x.com/ANI/status/2051245728727732707)
-
-5. x.com/ANI — TVK chief Vijay arrives at his parents' residence in Chennai — first physical-appearance-as-winner shot. Highest-shock visual primary source of the day for the upset narrative.
-[View tweet](https://x.com/ANI/status/2051290476251390194)
+*US macro / Fed transition*
+3. x.com/Kalshi — "BREAKING: Odds of a recession this year plummet from 40% to 17% — a record low." 23-point swing in ~4 days reads as post-ceasefire-extension risk-off→risk-on rotation, frames Powell→Warsh transition (May 15) as priced for dovish continuity.
+[View tweet](https://x.com/Kalshi/status/2050244370922684865)

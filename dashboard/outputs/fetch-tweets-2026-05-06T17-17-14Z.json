@@ -1,0 +1,195 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Prediction Markets Tweets",
+        "description": "Top Tweets — prediction markets (2026-05-06)"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "intro_text",
+        "sep1",
+        "tweet1_stack",
+        "sep2",
+        "tweet2_stack",
+        "sep3",
+        "tweet3_stack",
+        "sep4",
+        "source_note"
+      ]
+    },
+    "intro_text": {
+      "type": "Text",
+      "props": {
+        "text": "Three structural moves, none priced into CalibrationGap or Hermes-arb dashboards yet — Polymarket's own Iran-airspace-end-of-month drifted to 64% (vs May-8 sub-market 15.5%); HIP-4 took 0.7% of total PM flow on day-one; Kalshi recession-this-year crashed 40→17% record-low in 4 days post-ceasefire-extension.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet1_heading",
+        "tweet1_source",
+        "tweet1_text",
+        "tweet1_link"
+      ]
+    },
+    "tweet1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran narrative-shift",
+        "level": "h3"
+      }
+    },
+    "tweet1_source": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket",
+        "variant": "secondary"
+      }
+    },
+    "tweet1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket itself raises end-of-month airspace closure to 64%. Parent market drifting toward kinetic-strike narrative while May-8 sub-market still prices 15.5% — multi-horizon mispricing window.",
+        "variant": "body"
+      }
+    },
+    "tweet1_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2051348357625323871"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet2_heading",
+        "tweet2_source",
+        "tweet2_text",
+        "tweet2_link"
+      ]
+    },
+    "tweet2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HIP-4 cross-venue entry",
+        "level": "h3"
+      }
+    },
+    "tweet2_source": {
+      "type": "Badge",
+      "props": {
+        "text": "PinkBrains_io",
+        "variant": "secondary"
+      }
+    },
+    "tweet2_text": {
+      "type": "Text",
+      "props": {
+        "text": "HIP-4 day-one: ~6.05M contracts ≈ 0.7% of total prediction-market flow. First quantified day-one anchor for Hermes-arb's gap-pricing calibration; below 2-3% third-venue-meaningful threshold but trending.",
+        "variant": "body"
+      }
+    },
+    "tweet2_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PinkBrains_io/status/2051573596024426770"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweet3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet3_heading",
+        "tweet3_source",
+        "tweet3_text",
+        "tweet3_link"
+      ]
+    },
+    "tweet3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "US macro / Fed transition",
+        "level": "h3"
+      }
+    },
+    "tweet3_source": {
+      "type": "Badge",
+      "props": {
+        "text": "Kalshi",
+        "variant": "secondary"
+      }
+    },
+    "tweet3_text": {
+      "type": "Text",
+      "props": {
+        "text": "BREAKING: Odds of a recession this year plummet from 40% to 17% — a record low. 23-point swing in ~4 days reads as post-ceasefire-extension risk-off→risk-on rotation, frames Powell→Warsh transition (May 15) as priced for dovish continuity.",
+        "variant": "body"
+      }
+    },
+    "tweet3_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Kalshi/status/2050244370922684865"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source_note": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "Source: WebSearch (XAI/cache unavailable, day 11). Engagement counts unavailable."
+      }
+    }
+  }
+}
