@@ -1,6 +1,6 @@
 {
   "heartbeat": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-05-06T15:33:00Z",
     "total_runs": 48,
     "total_successes": 32,
@@ -9,7 +9,7 @@
     "success_rate": 0.67,
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu",
     "last_success": "2026-05-06T17:17:46Z",
-    "last_dispatch": "2026-05-06T17:07:34Z"
+    "last_dispatch": "2026-05-06T20:27:03Z"
   },
   "token-alert": {
     "last_dispatch": "2026-05-06T13:05:40Z",
