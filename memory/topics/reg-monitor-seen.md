@@ -4,3 +4,8 @@ https://www.cftc.gov/PressRoom/PressReleases/9218-26
 https://www.cftc.gov/PressRoom/PressReleases/9217-26
 https://bettorsinsider.com/news/2026/04/27/a-senate-resolution-would-ban-lawmakers-from-trading-on-prediction-markets-the-bipartisan-push-that-could-actually-stick/
 https://www.federalregister.gov/documents/2026/04/22/2026-07782/self-regulatory-organizations-new-york-stock-exchange-llc-notice-of-filing-and-immediate
+https://www.foxnews.com/politics/senate-quietly-bans-lawmakers-betting-prediction-markets
+https://www.insurancejournal.com/news/east/2026/05/05/868519.htm
+https://sbcamericas.com/2026/05/01/minnesota-senate-prediction-markets/
+https://www.federalregister.gov/documents/2026/05/06/2026-08786/self-regulatory-organizations-nyse-arca-inc-notice-of-filing-and-immediate-effectiveness-of-proposed
+https://www.federalregister.gov/documents/2026/05/05/2026-08679/self-regulatory-organizations-nyse-texas-inc-notice-of-filing-and-immediate-effectiveness-of

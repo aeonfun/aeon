@@ -1,0 +1,411 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Reg Monitor — 2026-05-06"
+      },
+      "children": [
+        "text_summary",
+        "sep_1",
+        "heading_act",
+        "act_item_1",
+        "sep_2",
+        "act_item_2",
+        "sep_3",
+        "act_item_3",
+        "sep_4",
+        "heading_watch",
+        "watch_item_1",
+        "sep_5",
+        "watch_item_2",
+        "sep_6",
+        "metadata_section"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "3 items need a decision this week — Senate self-banned (effective immediately Apr 30), Mass. Supreme Court grilled Kalshi May 5 (ruling pending), Minnesota Senate passed felony PM ban 56-10.",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_act": {
+      "type": "Heading",
+      "props": {
+        "text": "ACT",
+        "level": "h2"
+      }
+    },
+    "act_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "act1_link",
+        "act1_badges",
+        "act1_details",
+        "act1_timeline",
+        "act1_analysis"
+      ]
+    },
+    "act1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Senate unanimously passes rule banning senators from prediction-market trading",
+        "href": "https://www.foxnews.com/politics/senate-quietly-bans-lawmakers-betting-prediction-markets",
+        "source": "Fox News"
+      }
+    },
+    "act1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "act1_badge_fed",
+        "act1_badge_enacted"
+      ]
+    },
+    "act1_badge_fed": {
+      "type": "Badge",
+      "props": {
+        "text": "US federal",
+        "variant": "outline"
+      }
+    },
+    "act1_badge_enacted": {
+      "type": "Badge",
+      "props": {
+        "text": "enacted (Senate rule)",
+        "variant": "default"
+      }
+    },
+    "act1_details": {
+      "type": "Text",
+      "props": {
+        "text": "Senators and their staff prohibited from betting on Kalshi/Polymarket; rule changed Senate procedure immediately. Sen. Moreno (R-OH) was lead; parallel House effort by Rep. Hinson; both Kalshi and Polymarket publicly supported it.",
+        "variant": "body"
+      }
+    },
+    "act1_timeline": {
+      "type": "Text",
+      "props": {
+        "text": "⏰ effective immediately (Apr 30, 2026)",
+        "variant": "caption"
+      }
+    },
+    "act1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "📊 prediction market angle: closes the Senate-self-trade leg already priced into the comments-side cluster. New tradable hook = \"House follows by EOY\" if a market opens — Schumer called on Speaker Johnson, Hinson leading.",
+        "variant": "body"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "act_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "act2_link",
+        "act2_badges",
+        "act2_details",
+        "act2_timeline",
+        "act2_analysis"
+      ]
+    },
+    "act2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Mass. SJC grills Kalshi over what gambling is",
+        "href": "https://www.insurancejournal.com/news/east/2026/05/05/868519.htm",
+        "source": "Insurance Journal"
+      }
+    },
+    "act2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "act2_badge_state",
+        "act2_badge_oral"
+      ]
+    },
+    "act2_badge_state": {
+      "type": "Badge",
+      "props": {
+        "text": "US state (MA)",
+        "variant": "outline"
+      }
+    },
+    "act2_badge_oral": {
+      "type": "Badge",
+      "props": {
+        "text": "oral argument · highest state court",
+        "variant": "default"
+      }
+    },
+    "act2_details": {
+      "type": "Text",
+      "props": {
+        "text": "SJC heard argument May 5; Kalshi pressed Dodd-Frank swaps-preemption, MA pressed consumer-protection deficit. Nearly 40 state AGs filed supporting MA. Kalshi currently barred in MA via preliminary injunction.",
+        "variant": "body"
+      }
+    },
+    "act2_timeline": {
+      "type": "Text",
+      "props": {
+        "text": "⏰ ruling pending (typical SJC turn 6-12 weeks)",
+        "variant": "caption"
+      }
+    },
+    "act2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "📊 prediction market angle: controlling-precedent on state-vs-CFTC. Loss for Kalshi unlocks copycat state suits; win shuts down the state-litigation channel CFTC is currently fighting in WI/NY/AZ.",
+        "variant": "body"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "act_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "act3_link",
+        "act3_badges",
+        "act3_details",
+        "act3_timeline"
+      ]
+    },
+    "act3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Minnesota Senate passes SF 4511 to ban prediction markets",
+        "href": "https://sbcamericas.com/2026/05/01/minnesota-senate-prediction-markets/",
+        "source": "SBC Americas"
+      }
+    },
+    "act3_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "act3_badge_state",
+        "act3_badge_passed"
+      ]
+    },
+    "act3_badge_state": {
+      "type": "Badge",
+      "props": {
+        "text": "US state (MN)",
+        "variant": "outline"
+      }
+    },
+    "act3_badge_passed": {
+      "type": "Badge",
+      "props": {
+        "text": "passed chamber 56-10",
+        "variant": "default"
+      }
+    },
+    "act3_details": {
+      "type": "Text",
+      "props": {
+        "text": "Operating or advertising a prediction market in MN would become a felony; touts also penalized. Bill must be reconciled with the House version and signed by the governor.",
+        "variant": "body"
+      }
+    },
+    "act3_timeline": {
+      "type": "Text",
+      "props": {
+        "text": "⏰ Aug 1, 2026 effective date if House concurs and gov signs",
+        "variant": "caption"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_watch": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCH",
+        "level": "h2"
+      }
+    },
+    "watch_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "watch1_link",
+        "watch1_badges",
+        "watch1_details"
+      ]
+    },
+    "watch1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "NYSE Arca rule change enables trading securities in tokenized form",
+        "href": "https://www.federalregister.gov/documents/2026/05/06/2026-08786/self-regulatory-organizations-nyse-arca-inc-notice-of-filing-and-immediate-effectiveness-of-proposed",
+        "source": "Federal Register"
+      }
+    },
+    "watch1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "watch1_badge_fed",
+        "watch1_badge_sec"
+      ]
+    },
+    "watch1_badge_fed": {
+      "type": "Badge",
+      "props": {
+        "text": "US federal",
+        "variant": "outline"
+      }
+    },
+    "watch1_badge_sec": {
+      "type": "Badge",
+      "props": {
+        "text": "SEC notice · immediate effectiveness",
+        "variant": "secondary"
+      }
+    },
+    "watch1_details": {
+      "type": "Text",
+      "props": {
+        "text": "First mainstream-equity SRO to authorize tokenized-form trading on its books — bridge between traditional SRO and tokenized rails.",
+        "variant": "body"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "watch_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "watch2_link",
+        "watch2_badges",
+        "watch2_details"
+      ]
+    },
+    "watch2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "NYSE Texas mirrors NYSE Arca tokenized-securities authorization",
+        "href": "https://www.federalregister.gov/documents/2026/05/05/2026-08679/self-regulatory-organizations-nyse-texas-inc-notice-of-filing-and-immediate-effectiveness-of",
+        "source": "Federal Register"
+      }
+    },
+    "watch2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "watch2_badge_fed",
+        "watch2_badge_sec"
+      ]
+    },
+    "watch2_badge_fed": {
+      "type": "Badge",
+      "props": {
+        "text": "US federal",
+        "variant": "outline"
+      }
+    },
+    "watch2_badge_sec": {
+      "type": "Badge",
+      "props": {
+        "text": "SEC notice · immediate effectiveness",
+        "variant": "secondary"
+      }
+    },
+    "watch2_details": {
+      "type": "Text",
+      "props": {
+        "text": "Same change one day earlier; signals coordinated rollout across Intercontinental Exchange venues.",
+        "variant": "body"
+      }
+    },
+    "sep_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metadata_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "metadata_sources",
+        "metadata_count"
+      ]
+    },
+    "metadata_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: federal-register=ok · sec=ok · cftc=ok · websearch=ok · congress=skip",
+        "variant": "muted"
+      }
+    },
+    "metadata_count": {
+      "type": "Text",
+      "props": {
+        "text": "5 developments scored, 3 act / 2 watch / 0 context",
+        "variant": "muted"
+      }
+    }
+  }
+}
