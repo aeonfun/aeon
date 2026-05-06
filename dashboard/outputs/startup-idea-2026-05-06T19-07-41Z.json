@@ -1,0 +1,301 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas",
+        "description": "2026-05-06"
+      },
+      "children": [
+        "stack_ideas"
+      ]
+    },
+    "stack_ideas": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "idea_1_group",
+        "separator_1",
+        "idea_2_group",
+        "separator_2",
+        "pivot_section"
+      ]
+    },
+    "idea_1_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_caplet",
+        "badge_caplet",
+        "text_caplet_desc",
+        "heading_icp_1",
+        "text_icp_1",
+        "heading_wedge_1",
+        "text_wedge_1",
+        "heading_why_1",
+        "text_why_1",
+        "heading_mvp_1",
+        "text_mvp_1",
+        "heading_kill_1",
+        "text_kill_1"
+      ]
+    },
+    "heading_caplet": {
+      "type": "Heading",
+      "props": {
+        "text": "Caplet",
+        "level": "h2"
+      }
+    },
+    "badge_caplet": {
+      "type": "Badge",
+      "props": {
+        "text": "executable",
+        "variant": "default"
+      }
+    },
+    "text_caplet_desc": {
+      "type": "Text",
+      "props": {
+        "text": "digital storefront quoting interest-rate-cap renewals from 4-6 dealer banks in <24h for sub-institutional CRE borrowers stuck paying 100-200 bps over fair value to no-name brokers.",
+        "variant": "body"
+      }
+    },
+    "heading_icp_1": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h3"
+      }
+    },
+    "text_icp_1": {
+      "type": "Text",
+      "props": {
+        "text": "indep CRE owner with $5-50M floating-rate bridge loan, cap expires in next 90 days; or equity sponsor mid-capital-call (Ashcroft pattern).",
+        "variant": "body"
+      }
+    },
+    "heading_wedge_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h3"
+      }
+    },
+    "text_wedge_1": {
+      "type": "Text",
+      "props": {
+        "text": "8-field intake → 3 executable bank quotes + lender consent letter; 50 bps placement fee, half of broker take.",
+        "variant": "body"
+      }
+    },
+    "heading_why_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h3"
+      }
+    },
+    "text_why_1": {
+      "type": "Text",
+      "props": {
+        "text": "$570B 2026 CRE maturity wall; caps that cost $50k in 2021 cost $500k-$2M today (Ashcroft $513k → $18.6M is the canonical case); borrowers cannot self-insure the rollover.",
+        "variant": "body"
+      }
+    },
+    "heading_mvp_1": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h3"
+      }
+    },
+    "text_mvp_1": {
+      "type": "Text",
+      "props": {
+        "text": "1 signed dealer ISDA + 10 manual quotes via Lima One / Velocity warm intros; 3 paid placements at $2k = $6k inside 14d.",
+        "variant": "body"
+      }
+    },
+    "heading_kill_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill criteria",
+        "level": "h3"
+      }
+    },
+    "text_kill_1": {
+      "type": "Text",
+      "props": {
+        "text": "<3 placements in 30d → kill; <$50k rev in 90d → kill.",
+        "variant": "body"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "idea_2_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_wattline",
+        "badge_wattline",
+        "text_wattline_desc",
+        "heading_icp_2",
+        "text_icp_2",
+        "heading_wedge_2",
+        "text_wedge_2",
+        "heading_why_2",
+        "text_why_2",
+        "heading_mvp_2",
+        "text_mvp_2",
+        "heading_kill_2",
+        "text_kill_2"
+      ]
+    },
+    "heading_wattline": {
+      "type": "Heading",
+      "props": {
+        "text": "Wattline",
+        "level": "h2"
+      }
+    },
+    "badge_wattline": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious",
+        "variant": "secondary"
+      }
+    },
+    "text_wattline_desc": {
+      "type": "Text",
+      "props": {
+        "text": "standardized PPA assignment + buyout marketplace. SunPower (Aug 2024) + Sunnova bankruptcies broke the call-your-installer workflow; 5M residential + 150k commercial properties have PPAs that increasingly kill real-estate closings.",
+        "variant": "body"
+      }
+    },
+    "heading_icp_2": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h3"
+      }
+    },
+    "text_icp_2": {
+      "type": "Text",
+      "props": {
+        "text": "title/escrow closing officer at regional title insurer with 5-10% of pipeline blocked by PPA transfer issues. Secondary: bankruptcy-trustee PPA portfolios needing tail-account liquidity.",
+        "variant": "body"
+      }
+    },
+    "heading_wedge_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h3"
+      }
+    },
+    "text_wedge_2": {
+      "type": "Text",
+      "props": {
+        "text": "60-sec credit-and-bind for buyer assumption + same-day NPV-derived buyout quote routed to escrow.",
+        "variant": "body"
+      }
+    },
+    "heading_why_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h3"
+      }
+    },
+    "text_why_2": {
+      "type": "Text",
+      "props": {
+        "text": "SunPower Ch.11 + Sunnova fragmented servicer stack; CA AB-1779 + multi-state solar disclosure laws force standardized buyer-credit decisions at sale 2026; UCC + state-SOS scrape now near-zero cost.",
+        "variant": "body"
+      }
+    },
+    "heading_mvp_2": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h3"
+      }
+    },
+    "text_mvp_2": {
+      "type": "Text",
+      "props": {
+        "text": "buyout calc + UCC lookup for SunStrong/Goodleap/Spruce; 5 title-agency pitches in FL+CA; 10 closings unstuck in 14d.",
+        "variant": "body"
+      }
+    },
+    "heading_kill_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill criteria",
+        "level": "h3"
+      }
+    },
+    "text_kill_2": {
+      "type": "Text",
+      "props": {
+        "text": "<10 closings in 30d → kill; <2 servicer APIs signed in 60d → kill.",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pivot_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_pivot",
+        "text_pivot_main",
+        "text_pivot_details"
+      ]
+    },
+    "heading_pivot": {
+      "type": "Heading",
+      "props": {
+        "text": "Strategic Pivot",
+        "level": "h2"
+      }
+    },
+    "text_pivot_main": {
+      "type": "Text",
+      "props": {
+        "text": "Pivot away from yesterday RIA-compliance + litigation-finance into rates-desk-adjacent CRE debt + energy-infra structured products.",
+        "variant": "body"
+      }
+    },
+    "text_pivot_details": {
+      "type": "Text",
+      "props": {
+        "text": "Both leverage operator earned secrets: Citi rates desk for Caplet; MPC custody + LTP structured-product math for Wattline. 8 cited permalinks. Full memos in memory/logs/2026-05-06.md.",
+        "variant": "body"
+      }
+    }
+  }
+}
