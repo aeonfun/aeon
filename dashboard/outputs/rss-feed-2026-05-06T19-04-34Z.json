@@ -1,0 +1,101 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "RSS feed updated",
+        "description": "112 entries"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-new",
+        "items-stack",
+        "text-more",
+        "separator-1",
+        "link-subscribe"
+      ]
+    },
+    "heading-new": {
+      "type": "Heading",
+      "props": {
+        "text": "New:",
+        "level": "h3"
+      }
+    },
+    "items-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4",
+        "item-5"
+      ]
+    },
+    "item-1": {
+      "type": "Text",
+      "props": {
+        "text": "1.72 Million Accounts, $13.76 Billion in Volume, 3.14% of Traders Doing the Work"
+      }
+    },
+    "item-2": {
+      "type": "Text",
+      "props": {
+        "text": "After ADR-094, swarm-fund-mvp's Whole Open Queue Is Two Single-File Fixes"
+      }
+    },
+    "item-3": {
+      "type": "Text",
+      "props": {
+        "text": "Changelog — Week of 2026-05-06"
+      }
+    },
+    "item-4": {
+      "type": "Text",
+      "props": {
+        "text": "Code Health Report — 2026-05-06"
+      }
+    },
+    "item-5": {
+      "type": "Text",
+      "props": {
+        "text": "Push Recap — 2026-05-06"
+      }
+    },
+    "text-more": {
+      "type": "Text",
+      "props": {
+        "text": "(+4 more)",
+        "variant": "muted"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-subscribe": {
+      "type": "Link",
+      "props": {
+        "label": "Subscribe to feed",
+        "href": "https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml"
+      }
+    }
+  }
+}
