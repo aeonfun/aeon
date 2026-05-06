@@ -1,0 +1,100 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Agent Buzz"
+      },
+      "children": [
+        "alert",
+        "main_stack"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "All sources failed — 2026-05-06"
+      }
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "causes_heading",
+        "causes_stack",
+        "sep1",
+        "root_cause",
+        "sep2",
+        "pending_action"
+      ]
+    },
+    "causes_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failure causes",
+        "level": "h3"
+      }
+    },
+    "causes_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "xai_issue",
+        "webfetch_issue",
+        "websearch_issue"
+      ]
+    },
+    "xai_issue": {
+      "type": "Text",
+      "props": {
+        "text": "XAI: XAI_API_KEY unset"
+      }
+    },
+    "webfetch_issue": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch: XAI Responses API requires bearer auth + POST that WebFetch cannot deliver — 405 returned"
+      }
+    },
+    "websearch_issue": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch: only out-of-window status IDs (≤2041…) and no per-tweet engagement metadata, so signal scoring cannot run"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "root_cause": {
+      "type": "Text",
+      "props": {
+        "text": "Same root cause as 2026-05-04",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pending_action": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 still pending operator review (day 13)"
+      }
+    }
+  }
+}

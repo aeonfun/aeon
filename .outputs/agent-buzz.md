@@ -1,1 +1,1 @@
-Agent Buzz — 2026-05-05: quiet day, no survivors.
+Agent Buzz — 2026-05-06: all sources failed (XAI: XAI_API_KEY unset; WebFetch: XAI Responses API requires bearer auth + POST that WebFetch cannot deliver — 405 returned; WebSearch: only out-of-window status IDs (≤2041…) and no per-tweet engagement metadata, so signal scoring cannot run). Same root cause as 2026-05-04. PR #156 still pending operator review (day 13).
