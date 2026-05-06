@@ -1,0 +1,534 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners — 2026-05-06"
+      },
+      "children": [
+        "badge-verdict",
+        "stack-items"
+      ]
+    },
+    "badge-verdict": {
+      "type": "Badge",
+      "props": {
+        "text": "SPECULATIVE",
+        "variant": "outline"
+      }
+    },
+    "stack-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item1",
+        "sep1",
+        "item2",
+        "sep2",
+        "item3",
+        "sep3",
+        "item4",
+        "sep4",
+        "item5",
+        "sep5",
+        "section-sources",
+        "section-vibe"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1-heading",
+        "item1-metrics",
+        "item1-analysis"
+      ]
+    },
+    "item1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "[BREAKOUT] 币安好友 / USDT (bsc) +2019% 24h",
+        "level": "h3"
+      }
+    },
+    "item1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item1-vol",
+        "item1-liq",
+        "item1-fdv",
+        "item1-h1",
+        "item1-ratio",
+        "item1-age"
+      ]
+    },
+    "item1-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$34m"
+      }
+    },
+    "item1-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "liq",
+        "value": "$59k"
+      }
+    },
+    "item1-fdv": {
+      "type": "Badge",
+      "props": {
+        "text": "fdv $43k (no mcap)",
+        "variant": "secondary"
+      }
+    },
+    "item1-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+95%",
+        "trend": "up"
+      }
+    },
+    "item1-ratio": {
+      "type": "Badge",
+      "props": {
+        "text": "buys:sells 654:558"
+      }
+    },
+    "item1-age": {
+      "type": "Badge",
+      "props": {
+        "text": "age 1.1h"
+      }
+    },
+    "item1-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "vanity-4444 BSC USDT wash-print actor reactivated, 4th appearance in 6 days (04-29 / 04-30 / 05-01 / 05-04 BILL / 05-05 冲鸭 / today). New token `0xc91ddefa…ab4444`; same fingerprint: 1h pool, $34m vol on $59k liq = 573x vol/liq, $28k avg-tx. Treat score as actor-noise, not signal.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item2-heading",
+        "item2-metrics",
+        "item2-analysis"
+      ]
+    },
+    "item2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "[BREAKOUT] MIRROR / WETH 0.01% (base) +5574% 24h",
+        "level": "h3"
+      }
+    },
+    "item2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item2-vol",
+        "item2-liq",
+        "item2-fdv",
+        "item2-h1",
+        "item2-ratio",
+        "item2-age"
+      ]
+    },
+    "item2-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$6.3m"
+      }
+    },
+    "item2-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "liq",
+        "value": "$35k"
+      }
+    },
+    "item2-fdv": {
+      "type": "Badge",
+      "props": {
+        "text": "fdv $164k (no mcap)",
+        "variant": "secondary"
+      }
+    },
+    "item2-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+20%",
+        "trend": "up"
+      }
+    },
+    "item2-ratio": {
+      "type": "Badge",
+      "props": {
+        "text": "buys:sells 7480:6178"
+      }
+    },
+    "item2-age": {
+      "type": "Badge",
+      "props": {
+        "text": "age 21.9h"
+      }
+    },
+    "item2-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "22h base launch up 56x with h1 still green and 1.21:1 buy skew. Markup phase intact but $35k liq is one whale-exit from collapse. Sibling MIRROR pool at slot 5 (different contract `0xcb682e7…`) — multi-pool same-name fingerprint is actor distribution shape, not organic.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item3-heading",
+        "item3-metrics",
+        "item3-analysis"
+      ]
+    },
+    "item3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "[BREAKOUT] NURTBAGLARD / WETH (base) +670% 24h",
+        "level": "h3"
+      }
+    },
+    "item3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item3-vol",
+        "item3-liq",
+        "item3-fdv",
+        "item3-h1",
+        "item3-ratio",
+        "item3-age"
+      ]
+    },
+    "item3-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$3.0m"
+      }
+    },
+    "item3-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "liq",
+        "value": "$171k"
+      }
+    },
+    "item3-fdv": {
+      "type": "Badge",
+      "props": {
+        "text": "fdv $199k (no mcap)",
+        "variant": "secondary"
+      }
+    },
+    "item3-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-5.2%",
+        "trend": "down"
+      }
+    },
+    "item3-ratio": {
+      "type": "Badge",
+      "props": {
+        "text": "buys:sells 4363:3126"
+      }
+    },
+    "item3-age": {
+      "type": "Badge",
+      "props": {
+        "text": "age 23.6h"
+      }
+    },
+    "item3-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "24h base meme already rolling over (h1 -5%); buy skew 1.40:1 still net-positive. Standard fade-the-late-listing read; expect h1 to deepen inside 6h.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item4-heading",
+        "item4-metrics",
+        "item4-analysis"
+      ]
+    },
+    "item4-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "[BREAKOUT] GME / SOL (solana) +2040% 24h",
+        "level": "h3"
+      }
+    },
+    "item4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item4-vol",
+        "item4-liq",
+        "item4-fdv",
+        "item4-h1",
+        "item4-ratio",
+        "item4-age"
+      ]
+    },
+    "item4-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$3.5m"
+      }
+    },
+    "item4-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "liq",
+        "value": "$76k"
+      }
+    },
+    "item4-fdv": {
+      "type": "Badge",
+      "props": {
+        "text": "fdv $681k (no mcap)",
+        "variant": "secondary"
+      }
+    },
+    "item4-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-3.9%",
+        "trend": "down"
+      }
+    },
+    "item4-ratio": {
+      "type": "Badge",
+      "props": {
+        "text": "buys:sells 32241:26165"
+      }
+    },
+    "item4-age": {
+      "type": "Badge",
+      "props": {
+        "text": "age 21.3h"
+      }
+    },
+    "item4-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "21h SOL meme exploiting GME equity-rotation narrative. 58k tx on $76k liq = aggressive churn; h1 stalling at -4% is the post-spike fade onset. SOL casino tape continues.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item5-heading",
+        "item5-metrics",
+        "item5-analysis"
+      ]
+    },
+    "item5-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "[BREAKOUT] MIRROR / WETH (base) +4487% 24h",
+        "level": "h3"
+      }
+    },
+    "item5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item5-vol",
+        "item5-liq",
+        "item5-fdv",
+        "item5-h1",
+        "item5-ratio",
+        "item5-age"
+      ]
+    },
+    "item5-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$3.9m"
+      }
+    },
+    "item5-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "liq",
+        "value": "$305k"
+      }
+    },
+    "item5-fdv": {
+      "type": "Badge",
+      "props": {
+        "text": "fdv $942k (no mcap)",
+        "variant": "secondary"
+      }
+    },
+    "item5-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-8.1%",
+        "trend": "down"
+      }
+    },
+    "item5-ratio": {
+      "type": "Badge",
+      "props": {
+        "text": "buys:sells 9629:12953"
+      }
+    },
+    "item5-age": {
+      "type": "Badge",
+      "props": {
+        "text": "age 22.1h"
+      }
+    },
+    "item5-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "second MIRROR pool (token `0xcb682e7…`, different from slot 2's `0xbc10de5b…`). Sells > buys + h1 -8% = late-listing markdown beginning. The two MIRROR pools confirm the fingerprint isn't organic.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-sources",
+        "text-sources"
+      ]
+    },
+    "heading-sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok gt-{solana,eth,base,bsc,arbitrum}-{trend,vol}=ok gt-new=ok (two 429s on first pass cleared via 15s back-off, no WebFetch fallback)",
+        "variant": "caption"
+      }
+    },
+    "section-vibe": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-vibe",
+        "text-vibe"
+      ]
+    },
+    "heading-vibe": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "text-vibe": {
+      "type": "Text",
+      "props": {
+        "text": "speculative casino tape — 5 BREAKOUT 0 DEEP-LIQ; SOL/base meme rotation; vanity-4444 BSC wash-print actor reactivated (4 of 6 days). Sub-tier worth watching: SKYAI/WBNB back in DEEP-LIQ pool (8 appearances with 05-05 gap), BILL/USDT continues DEEP-LIQ day 2.",
+        "variant": "body"
+      }
+    }
+  }
+}
