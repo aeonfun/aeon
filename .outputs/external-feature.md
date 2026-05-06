@@ -1,2 +1,1 @@
-external-feature: tomscaria/swarm-fund-mvp — fix(aeon_adapter): clear _last_error after successful poll. ADR-093 ingestion adapter no longer looks permanently broken after a single transient blip clears.
-PR: https://github.com/tomscaria/swarm-fund-mvp/pull/31
+external-feature: tomscaria/swarm-fund-mvp — fix(aeon_adapter): treat null signals/markets like missing keys (PR #32). One null payload field would have crashed _parse_payload and skipped the rest of the poll cycle; same one-bad-input-kills-batch class as #19/#20/#23/#24/#30. Hardens the consumer before the JSON contract locks ~2026-05-17. https://github.com/tomscaria/swarm-fund-mvp/pull/32
