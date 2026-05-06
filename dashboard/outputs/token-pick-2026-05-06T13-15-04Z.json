@@ -1,0 +1,280 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-06"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "zec-section",
+        "sep1",
+        "mstr-section",
+        "sep2",
+        "sources-text"
+      ]
+    },
+    "zec-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec-heading",
+        "zec-badges",
+        "zec-price",
+        "zec-market",
+        "zec-score",
+        "zec-catalyst",
+        "zec-risk",
+        "zec-comparison"
+      ]
+    },
+    "zec-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Token: ZEC",
+        "level": "h2"
+      }
+    },
+    "zec-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-high",
+        "badge-signal"
+      ]
+    },
+    "badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge-signal": {
+      "type": "Badge",
+      "props": {
+        "text": "signal 10/10",
+        "variant": "default"
+      }
+    },
+    "zec-price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$574.55",
+        "delta": "+34.1% 24h / +72.9% 7d",
+        "trend": "up"
+      }
+    },
+    "zec-market": {
+      "type": "Text",
+      "props": {
+        "text": "mcap $9.60B | vol $1.71B (vol/mcap 0.18)",
+        "variant": "body"
+      }
+    },
+    "zec-score": {
+      "type": "Text",
+      "props": {
+        "text": "Score: [24h+1, 7d+1, both>5%+2, cgtrend+2, v/mc 0.18+2, RS vs BTC/ETH+2] = 10/10",
+        "variant": "caption"
+      }
+    },
+    "zec-catalyst": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst-label",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h4"
+      }
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "Multicoin Capital disclosed large ZEC accumulation arguing shielded txs hedge gov tax-scrutiny; Kaiko 5/5 report flagged ZEC for Robinhood-listing front-running pattern; 30% of supply now in shielded addresses (record, on-chain demand-driven move not pure narrative chase).",
+        "variant": "body"
+      }
+    },
+    "zec-risk": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "RSI 82.5, +110% 30d — pullback to $457-$417 Fib zone if Robinhood listing doesn't materialize. DASH (05-04 privacy pick) faded -8.4% day-2; same rotation-cooling risk applies.",
+        "type": "warning"
+      }
+    },
+    "zec-comparison": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "comp-label",
+        "comp-text"
+      ]
+    },
+    "comp-label": {
+      "type": "Heading",
+      "props": {
+        "text": "vs recent",
+        "level": "h4"
+      }
+    },
+    "comp-text": {
+      "type": "Text",
+      "props": {
+        "text": "dedup-clear (ZEC ≠ DASH; new catalyst stack: Multicoin disclosure + Kaiko listing-front-running, not the Evolution upgrade that drove DASH).",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "mstr-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mstr-heading",
+        "mstr-badges",
+        "mstr-odds",
+        "mstr-vol",
+        "mstr-fair",
+        "mstr-thesis",
+        "mstr-risk-def"
+      ]
+    },
+    "mstr-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Market: MicroStrategy sells any Bitcoin by December 31, 2026?",
+        "level": "h2"
+      }
+    },
+    "mstr-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "mstr-badge-high",
+        "mstr-badge-edge"
+      ]
+    },
+    "mstr-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "mstr-badge-edge": {
+      "type": "Badge",
+      "props": {
+        "text": "edge ~28pp",
+        "variant": "default"
+      }
+    },
+    "mstr-odds": {
+      "type": "Text",
+      "props": {
+        "text": "Current: YES 47.5¢ / NO 52.5¢ | resolves 2026-12-31",
+        "variant": "body"
+      }
+    },
+    "mstr-vol": {
+      "type": "Text",
+      "props": {
+        "text": "24h vol $85k",
+        "variant": "caption"
+      }
+    },
+    "mstr-fair": {
+      "type": "Text",
+      "props": {
+        "text": "Fair YES: ~75% (inputs: (1) Saylor Q1 earnings 5/5/26 — \"we will probably sell some bitcoin to pay a dividend just to inoculate the market\"; (2) $1.5B annual dividend obligations vs ~18mo coverage + $2.2B unrealized tax benefits from high-cost-basis BTC; (3) Q1 net loss $12.54B / MSTR -4% AH on the announcement)",
+        "variant": "body"
+      }
+    },
+    "mstr-thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "thesis-label",
+        "thesis-text"
+      ]
+    },
+    "thesis-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h4"
+      }
+    },
+    "thesis-text": {
+      "type": "Text",
+      "props": {
+        "text": "stated sell-intent + structural dividend cash drain + tax-harvest incentive + 7+ months runway makes >=1 BTC sale by Dec 31 a high-prob event. Buy YES at 47.5c.",
+        "variant": "body"
+      }
+    },
+    "mstr-risk-def": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk: \"sale\" definition",
+        "message": "if Strategy funds dividends via BTC-collateralized debt (no on-chain transfer of bitcoin), UMA's read of \"sells\" could resolve NO.",
+        "type": "warning"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: cg=ok, dex=ok, poly=ok | not financial advice — pattern-matching only",
+        "variant": "caption"
+      }
+    }
+  }
+}
