@@ -1,14 +1,17 @@
-*Push Recap — 2026-05-06*
-aaronjmars/aeon — BUILDING — registers dormant star-momentum-alert + hardens dashboard exec
+*Push Recap — 2026-05-06 (refresh)*
+swarm-fund-mvp + aaronjmars/aeon — SHIPPING: paper_triage OLLAMA_LOCAL hatch + aeon star-momentum-alert + dashboard hardening
 
 Shipped to users:
-• #159 `star-momentum-alert` skill (3 files, +295/-2): daily Sonnet skill that walks 14d of repo-pulse logs, projects next star-milestone via 7d linear extrapolation, alerts only when crossing lands 7-14d out AND on Tue/Wed/Thu — the show-hn-draft dispatch window. Shipped registered, enabled: false.
-• #158 dashboard `skills/[name]/run` execFileSync (1 file, +5/-5): swaps the last user-input execSync on the dashboard for argv-array execFileSync, mirroring #150. Defense-in-depth — whitelist already neutered metacharacters.
+• paper_triage gets an OLLAMA_LOCAL escape hatch — when set, swarm-fund routes triage calls to local qwen2.5:7b instead of cloud Sonnet (lazy per-call resolver, monkeypatch-safe). First concrete cost lever after ADR-094; directly addresses the ~$2,696/mo overrun flag. (`42a5ba5`, +20/-2 in paper_triage.py + 48 lines of OLLAMA_LOCAL tests)
+• aeon ships star-momentum-alert (#159, registered enabled:false): walks 14d of repo-pulse logs, projects next milestone crossing, alerts only when the crossing lands Tue–Wed–Thu 7-14d out → tells operator when to dispatch show-hn-draft (300⭐ ETA ~05-13).
+• aeon hardens dashboard skills/run route (#158): execSync → execFileSync; closes the last user-input shell surface on the dashboard.
 
 Under the hood:
-• swarm-fund-mvp pushed 95 commits in the window, all 'data: refresh site metrics' — sampled head and tail, each is +1/-1 on the generated_at timestamp only. Treated as automation-only, not bot-filtered. Zero substantive code on swarm-fund for the third straight day.
+• Phase G knowledge-base build on swarm-fund — kb_concepts embedding index (3446 concepts, BAAI/bge-small-en-v1.5), scripts/run_analogy_synthesis.py runner (155 lines, dry-run mode), MIT OCW harvest verified (10 math sources inserted), router_suggestions Telegram tests added.
 
-Shape: 2 user-visible · 0 internal · 0 infra · 95 automation-only · 0 bot-filtered · 2 merged PRs
-Volume: 4 files (substantive), +300/-7 lines
+Shape: 3 user-visible · 4 internal · 0 infra · 96 automation-only · 2 merged PRs
+Volume: 8 files, +590/-9 lines
+
+Open thread: paper_triage diff cites `ADR-NNN (2026-05-06)` — placeholder ADR number, no ADR file in the commit set yet. The 72h merge-cadence falsifier (next ADR by 2026-05-09) is now active.
 
 Full recap: https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-06.md

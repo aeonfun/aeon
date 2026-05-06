@@ -1,0 +1,246 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-06 (refresh)",
+        "description": "swarm-fund-mvp + aaronjmars/aeon"
+      },
+      "children": [
+        "header_shipping",
+        "sep1",
+        "shipped_section",
+        "sep2",
+        "under_hood_section",
+        "sep3",
+        "metrics_section",
+        "sep4",
+        "open_thread",
+        "sep5",
+        "full_recap_link"
+      ]
+    },
+    "header_shipping": {
+      "type": "Heading",
+      "props": {
+        "text": "SHIPPING: paper_triage OLLAMA_LOCAL hatch + aeon star-momentum-alert + dashboard hardening",
+        "level": "h3"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "shipped_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped_heading",
+        "item1",
+        "item2",
+        "item3"
+      ]
+    },
+    "shipped_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users:",
+        "level": "h4"
+      }
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "paper_triage gets an OLLAMA_LOCAL escape hatch — when set, swarm-fund routes triage calls to local qwen2.5:7b instead of cloud Sonnet (lazy per-call resolver, monkeypatch-safe). First concrete cost lever after ADR-094; directly addresses the ~$2,696/mo overrun flag. (42a5ba5, +20/-2 in paper_triage.py + 48 lines of OLLAMA_LOCAL tests)",
+        "variant": "body"
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "aeon ships star-momentum-alert (#159, registered enabled:false): walks 14d of repo-pulse logs, projects next milestone crossing, alerts only when the crossing lands Tue–Wed–Thu 7-14d out → tells operator when to dispatch show-hn-draft (300⭐ ETA ~05-13).",
+        "variant": "body"
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "aeon hardens dashboard skills/run route (#158): execSync → execFileSync; closes the last user-input shell surface on the dashboard.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "under_hood_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under_hood_heading",
+        "under_hood_content"
+      ]
+    },
+    "under_hood_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood:",
+        "level": "h4"
+      }
+    },
+    "under_hood_content": {
+      "type": "Text",
+      "props": {
+        "text": "Phase G knowledge-base build on swarm-fund — kb_concepts embedding index (3446 concepts, BAAI/bge-small-en-v1.5), scripts/run_analogy_synthesis.py runner (155 lines, dry-run mode), MIT OCW harvest verified (10 math sources inserted), router_suggestions Telegram tests added.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "shape_heading",
+        "shape_stats_grid",
+        "volume_heading",
+        "volume_stats_grid"
+      ]
+    },
+    "shape_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shape",
+        "level": "h4"
+      }
+    },
+    "shape_stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "md"
+      },
+      "children": [
+        "stat_user_visible",
+        "stat_internal",
+        "stat_infra",
+        "stat_automation",
+        "stat_prs"
+      ]
+    },
+    "stat_user_visible": {
+      "type": "Stat",
+      "props": {
+        "label": "user-visible",
+        "value": "3"
+      }
+    },
+    "stat_internal": {
+      "type": "Stat",
+      "props": {
+        "label": "internal",
+        "value": "4"
+      }
+    },
+    "stat_infra": {
+      "type": "Stat",
+      "props": {
+        "label": "infra",
+        "value": "0"
+      }
+    },
+    "stat_automation": {
+      "type": "Stat",
+      "props": {
+        "label": "automation-only",
+        "value": "96"
+      }
+    },
+    "stat_prs": {
+      "type": "Stat",
+      "props": {
+        "label": "merged PRs",
+        "value": "2"
+      }
+    },
+    "volume_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Volume",
+        "level": "h4"
+      }
+    },
+    "volume_stats_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_files",
+        "stat_diff"
+      ]
+    },
+    "stat_files": {
+      "type": "Stat",
+      "props": {
+        "label": "files",
+        "value": "8"
+      }
+    },
+    "stat_diff": {
+      "type": "Stat",
+      "props": {
+        "label": "diff",
+        "value": "+590/-9 lines"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "open_thread": {
+      "type": "Alert",
+      "props": {
+        "title": "Open thread",
+        "message": "paper_triage diff cites `ADR-NNN (2026-05-06)` — placeholder ADR number, no ADR file in the commit set yet. The 72h merge-cadence falsifier (next ADR by 2026-05-09) is now active.",
+        "type": "info"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "full_recap_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-06.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
