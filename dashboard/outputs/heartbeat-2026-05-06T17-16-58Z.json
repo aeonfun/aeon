@@ -1,0 +1,379 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "heartbeat",
+        "description": "Mass failure detection across 17 skills on 2026-05-06"
+      },
+      "children": [
+        "alert-main",
+        "sep-1",
+        "summary-stats",
+        "sep-2",
+        "root-cause-section",
+        "sep-3",
+        "affected-details",
+        "sep-4",
+        "affected-skills-section"
+      ]
+    },
+    "alert-main": {
+      "type": "Alert",
+      "props": {
+        "title": "NEW mass-fail 2026-05-06 15:32-35Z",
+        "message": "17 skills failed in 3-min window across 14:00 + 15:00 cron clusters",
+        "type": "error"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "summary-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-failed",
+        "stat-cluster",
+        "stat-time"
+      ]
+    },
+    "stat-failed": {
+      "type": "Stat",
+      "props": {
+        "label": "Skills Failed",
+        "value": "17",
+        "trend": "down"
+      }
+    },
+    "stat-cluster": {
+      "type": "Text",
+      "props": {
+        "text": "Cron clusters: 14:00 + 15:00"
+      }
+    },
+    "stat-time": {
+      "type": "Text",
+      "props": {
+        "text": "Duration: 3 minutes (15:32-35Z)"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "root-cause-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "root-cause-header",
+        "root-cause-stack"
+      ]
+    },
+    "root-cause-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause Analysis",
+        "level": "h3"
+      }
+    },
+    "root-cause-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rc-type",
+        "rc-distinct",
+        "rc-tokens",
+        "rc-idea-success"
+      ]
+    },
+    "rc-type": {
+      "type": "Text",
+      "props": {
+        "text": "Classification: post-execution state-write regression (not pre-Claude infra outage)"
+      }
+    },
+    "rc-distinct": {
+      "type": "Text",
+      "props": {
+        "text": "Distinct from ISS-013 — tokens were consumed (haiku + opus usage in error tail)"
+      }
+    },
+    "rc-tokens": {
+      "type": "Text",
+      "props": {
+        "text": "Indicates post-execution state, not pre-execution outage"
+      }
+    },
+    "rc-idea-success": {
+      "type": "Text",
+      "props": {
+        "text": "Workflow infra confirmed up — idea-capture succeeded in same batch"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "affected-details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "affected-details-header",
+        "affected-details-stack"
+      ]
+    },
+    "affected-details-header": {
+      "type": "Heading",
+      "props": {
+        "text": "Most Severe Failures",
+        "level": "h3"
+      }
+    },
+    "affected-details-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "detail-article",
+        "detail-repo-actions",
+        "detail-reg-monitor",
+        "detail-heartbeat"
+      ]
+    },
+    "detail-article": {
+      "type": "Text",
+      "props": {
+        "text": "article — cf=3, P0 (highest severity)"
+      }
+    },
+    "detail-repo-actions": {
+      "type": "Text",
+      "props": {
+        "text": "repo-actions — cf=2"
+      }
+    },
+    "detail-reg-monitor": {
+      "type": "Text",
+      "props": {
+        "text": "reg-monitor — cf=2"
+      }
+    },
+    "detail-heartbeat": {
+      "type": "Text",
+      "props": {
+        "text": "heartbeat — 14:00 slot also failed"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "affected-skills-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "affected-skills-header",
+        "status-and-issue",
+        "affected-skills-grid"
+      ]
+    },
+    "affected-skills-header": {
+      "type": "Heading",
+      "props": {
+        "text": "All Affected Skills (17 total)",
+        "level": "h3"
+      }
+    },
+    "status-and-issue": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "status-badge",
+        "issue-link"
+      ]
+    },
+    "status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "status.md: DEGRADED",
+        "variant": "destructive"
+      }
+    },
+    "issue-link": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-020",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/issues/20"
+      }
+    },
+    "affected-skills-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "sm"
+      },
+      "children": [
+        "skill-heartbeat",
+        "skill-paper-pick",
+        "skill-auto-merge",
+        "skill-article",
+        "skill-technical-explainer",
+        "skill-digest",
+        "skill-research-brief",
+        "skill-search-skill",
+        "skill-security-digest",
+        "skill-push-recap",
+        "skill-repo-article",
+        "skill-repo-actions",
+        "skill-repo-pulse",
+        "skill-star-milestone",
+        "skill-fleet-control",
+        "skill-reg-monitor",
+        "skill-project-lens"
+      ]
+    },
+    "skill-heartbeat": {
+      "type": "Badge",
+      "props": {
+        "text": "heartbeat",
+        "variant": "destructive"
+      }
+    },
+    "skill-paper-pick": {
+      "type": "Badge",
+      "props": {
+        "text": "paper-pick",
+        "variant": "destructive"
+      }
+    },
+    "skill-auto-merge": {
+      "type": "Badge",
+      "props": {
+        "text": "auto-merge",
+        "variant": "destructive"
+      }
+    },
+    "skill-article": {
+      "type": "Badge",
+      "props": {
+        "text": "article",
+        "variant": "destructive"
+      }
+    },
+    "skill-technical-explainer": {
+      "type": "Badge",
+      "props": {
+        "text": "technical-explainer",
+        "variant": "destructive"
+      }
+    },
+    "skill-digest": {
+      "type": "Badge",
+      "props": {
+        "text": "digest",
+        "variant": "destructive"
+      }
+    },
+    "skill-research-brief": {
+      "type": "Badge",
+      "props": {
+        "text": "research-brief",
+        "variant": "destructive"
+      }
+    },
+    "skill-search-skill": {
+      "type": "Badge",
+      "props": {
+        "text": "search-skill",
+        "variant": "destructive"
+      }
+    },
+    "skill-security-digest": {
+      "type": "Badge",
+      "props": {
+        "text": "security-digest",
+        "variant": "destructive"
+      }
+    },
+    "skill-push-recap": {
+      "type": "Badge",
+      "props": {
+        "text": "push-recap",
+        "variant": "destructive"
+      }
+    },
+    "skill-repo-article": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-article",
+        "variant": "destructive"
+      }
+    },
+    "skill-repo-actions": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-actions",
+        "variant": "destructive"
+      }
+    },
+    "skill-repo-pulse": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-pulse",
+        "variant": "destructive"
+      }
+    },
+    "skill-star-milestone": {
+      "type": "Badge",
+      "props": {
+        "text": "star-milestone",
+        "variant": "destructive"
+      }
+    },
+    "skill-fleet-control": {
+      "type": "Badge",
+      "props": {
+        "text": "fleet-control",
+        "variant": "destructive"
+      }
+    },
+    "skill-reg-monitor": {
+      "type": "Badge",
+      "props": {
+        "text": "reg-monitor",
+        "variant": "destructive"
+      }
+    },
+    "skill-project-lens": {
+      "type": "Badge",
+      "props": {
+        "text": "project-lens",
+        "variant": "destructive"
+      }
+    }
+  }
+}
