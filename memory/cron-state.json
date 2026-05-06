@@ -964,13 +964,13 @@
   },
   "project-lens": {
     "last_dispatch": "2026-05-06T17:07:34Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-01T16:18:52Z",
-    "total_runs": 3,
-    "total_successes": 2,
+    "last_status": "success",
+    "last_success": "2026-05-06T17:15:38Z",
+    "total_runs": 5,
+    "total_successes": 4,
     "total_failures": 1,
-    "consecutive_failures": 1,
-    "success_rate": 0.67,
+    "consecutive_failures": 0,
+    "success_rate": 0.8,
     "last_failed": "2026-05-06T15:33:02Z",
     "last_error": "putTokens\":14,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000437,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":5,\"outputT"
   }
