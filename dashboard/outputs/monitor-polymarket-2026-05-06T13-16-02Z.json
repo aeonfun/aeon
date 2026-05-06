@@ -1,0 +1,767 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Monitor"
+      },
+      "children": [
+        "heading_date",
+        "sep_1",
+        "section_fifa",
+        "sep_2",
+        "section_gta",
+        "sep_3",
+        "section_election",
+        "sep_4",
+        "section_alerts"
+      ]
+    },
+    "heading_date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-06",
+        "level": "h4"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_fifa": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_fifa",
+        "text_fifa_subtitle",
+        "market_mexico",
+        "market_france",
+        "market_england",
+        "market_usa",
+        "market_nzl",
+        "text_fifa_comment"
+      ]
+    },
+    "heading_fifa": {
+      "type": "Heading",
+      "props": {
+        "text": "[2026 FIFA World Cup Winner]",
+        "level": "h2"
+      }
+    },
+    "text_fifa_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "Revenant builder market",
+        "variant": "muted"
+      }
+    },
+    "market_mexico": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_mexico_label",
+        "progress_mexico",
+        "text_mexico_details",
+        "badge_mexico"
+      ]
+    },
+    "text_mexico_label": {
+      "type": "Text",
+      "props": {
+        "text": "Mexico YES",
+        "variant": "lead"
+      }
+    },
+    "progress_mexico": {
+      "type": "Progress",
+      "props": {
+        "value": 1.05,
+        "max": 100
+      }
+    },
+    "text_mexico_details": {
+      "type": "Text",
+      "props": {
+        "text": "1.05% (0pp, flat) $103K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "badge_mexico": {
+      "type": "Badge",
+      "props": {
+        "text": "Revenant first order",
+        "variant": "default"
+      }
+    },
+    "market_france": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_france_label",
+        "progress_france",
+        "text_france_details"
+      ]
+    },
+    "text_france_label": {
+      "type": "Text",
+      "props": {
+        "text": "France YES",
+        "variant": "lead"
+      }
+    },
+    "progress_france": {
+      "type": "Progress",
+      "props": {
+        "value": 16.75,
+        "max": 100
+      }
+    },
+    "text_france_details": {
+      "type": "Text",
+      "props": {
+        "text": "16.75% | $288K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "market_england": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_england_label",
+        "progress_england",
+        "text_england_details"
+      ]
+    },
+    "text_england_label": {
+      "type": "Text",
+      "props": {
+        "text": "England YES",
+        "variant": "lead"
+      }
+    },
+    "progress_england": {
+      "type": "Progress",
+      "props": {
+        "value": 11.05,
+        "max": 100
+      }
+    },
+    "text_england_details": {
+      "type": "Text",
+      "props": {
+        "text": "11.05% | $198K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "market_usa": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_usa_label",
+        "progress_usa",
+        "text_usa_details"
+      ]
+    },
+    "text_usa_label": {
+      "type": "Text",
+      "props": {
+        "text": "USA YES",
+        "variant": "lead"
+      }
+    },
+    "progress_usa": {
+      "type": "Progress",
+      "props": {
+        "value": 1.55,
+        "max": 100
+      }
+    },
+    "text_usa_details": {
+      "type": "Text",
+      "props": {
+        "text": "1.55% | $141K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "market_nzl": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_nzl_label",
+        "progress_nzl",
+        "text_nzl_details",
+        "badge_nzl"
+      ]
+    },
+    "text_nzl_label": {
+      "type": "Text",
+      "props": {
+        "text": "New Zealand YES",
+        "variant": "lead"
+      }
+    },
+    "progress_nzl": {
+      "type": "Progress",
+      "props": {
+        "value": 0.25,
+        "max": 100
+      }
+    },
+    "text_nzl_details": {
+      "type": "Text",
+      "props": {
+        "text": "0.25% | $408K 24h vol",
+        "variant": "caption"
+      }
+    },
+    "badge_nzl": {
+      "type": "Badge",
+      "props": {
+        "text": "Volume anomaly (~4x peer average)",
+        "variant": "destructive"
+      }
+    },
+    "text_fifa_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (Solid-Imbalance, 9 upvotes, Feb 20): 'people really thinking england is one of the 2 top candidates might be confusing this with cricket or rugby'",
+        "variant": "muted"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_gta": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_gta",
+        "text_gta_subtitle",
+        "market_btc",
+        "text_gta_context",
+        "market_ru_ceasefire",
+        "text_gta_comment"
+      ]
+    },
+    "heading_gta": {
+      "type": "Heading",
+      "props": {
+        "text": "[What will happen before GTA VI?]",
+        "level": "h2"
+      }
+    },
+    "text_gta_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "BTC $1M",
+        "variant": "muted"
+      }
+    },
+    "market_btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_btc_label",
+        "progress_btc",
+        "stat_btc"
+      ]
+    },
+    "text_btc_label": {
+      "type": "Text",
+      "props": {
+        "text": "Bitcoin $1M before GTA VI YES",
+        "variant": "lead"
+      }
+    },
+    "progress_btc": {
+      "type": "Progress",
+      "props": {
+        "value": 49.15,
+        "max": 100
+      }
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "value": "49.15%",
+        "delta": "+0.10pp",
+        "trend": "up",
+        "label": "$3.1K vol"
+      }
+    },
+    "text_gta_context": {
+      "type": "Text",
+      "props": {
+        "text": "GTA VI confirmed Nov 19, 2026 console release. Resolves 50/50 if neither BTC $1M NOR GTA VI by Jul 31. Price converging to 50c = resolution arb, not BTC signal.",
+        "variant": "body"
+      }
+    },
+    "market_ru_ceasefire": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_ru_label",
+        "progress_ru",
+        "text_ru_details"
+      ]
+    },
+    "text_ru_label": {
+      "type": "Text",
+      "props": {
+        "text": "Russia-Ukraine ceasefire before GTA VI YES",
+        "variant": "lead"
+      }
+    },
+    "progress_ru": {
+      "type": "Progress",
+      "props": {
+        "value": 55.5,
+        "max": 100
+      }
+    },
+    "text_ru_details": {
+      "type": "Text",
+      "props": {
+        "text": "55.5% | $4.4K vol | vs standalone ceasefire ~18-20% by Nov 2026 (35pp gap, stale thin market)",
+        "variant": "caption"
+      }
+    },
+    "text_gta_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (Aching-East, 17 upvotes, Apr 25): 'If neither occurs by Jul 31, 11:59 PM ET, resolves 50-50. scam..'",
+        "variant": "muted"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_election": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_election",
+        "market_party",
+        "market_dem_nominee",
+        "market_pres_winner",
+        "text_election_comment"
+      ]
+    },
+    "heading_election": {
+      "type": "Heading",
+      "props": {
+        "text": "[US 2028 Election — top 5 active]",
+        "level": "h2"
+      }
+    },
+    "market_party": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_party_dem",
+        "text_party_rep",
+        "text_party_narrative"
+      ]
+    },
+    "text_party_dem": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_party_dem_label",
+        "progress_party_dem"
+      ]
+    },
+    "text_party_dem_label": {
+      "type": "Text",
+      "props": {
+        "text": "Party market: Democrats",
+        "variant": "lead"
+      }
+    },
+    "progress_party_dem": {
+      "type": "Progress",
+      "props": {
+        "value": 60.5,
+        "max": 100
+      }
+    },
+    "text_party_rep": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_party_rep_label",
+        "progress_party_rep"
+      ]
+    },
+    "text_party_rep_label": {
+      "type": "Text",
+      "props": {
+        "text": "Republicans",
+        "variant": "lead"
+      }
+    },
+    "progress_party_rep": {
+      "type": "Progress",
+      "props": {
+        "value": 38.5,
+        "max": 100
+      }
+    },
+    "text_party_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Narrative: Trump Iran op Feb 2026 driving D favorability",
+        "variant": "muted"
+      }
+    },
+    "market_dem_nominee": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_dem_nom_header",
+        "stack_dem_candidates"
+      ]
+    },
+    "text_dem_nom_header": {
+      "type": "Text",
+      "props": {
+        "text": "Dem Nominee (event 30829, $3.04M 24h vol)",
+        "variant": "lead"
+      }
+    },
+    "stack_dem_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cand_newsom",
+        "cand_ossoff",
+        "cand_whitmer",
+        "cand_warnock",
+        "text_dem_vol_flat"
+      ]
+    },
+    "cand_newsom": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_newsom_label",
+        "progress_newsom"
+      ]
+    },
+    "text_newsom_label": {
+      "type": "Text",
+      "props": {
+        "text": "Newsom",
+        "variant": "body"
+      }
+    },
+    "progress_newsom": {
+      "type": "Progress",
+      "props": {
+        "value": 25.7,
+        "max": 100
+      }
+    },
+    "cand_ossoff": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_ossoff_label",
+        "progress_ossoff"
+      ]
+    },
+    "text_ossoff_label": {
+      "type": "Text",
+      "props": {
+        "text": "Ossoff",
+        "variant": "body"
+      }
+    },
+    "progress_ossoff": {
+      "type": "Progress",
+      "props": {
+        "value": 6.5,
+        "max": 100
+      }
+    },
+    "cand_whitmer": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_whitmer_label",
+        "progress_whitmer"
+      ]
+    },
+    "text_whitmer_label": {
+      "type": "Text",
+      "props": {
+        "text": "Whitmer",
+        "variant": "body"
+      }
+    },
+    "progress_whitmer": {
+      "type": "Progress",
+      "props": {
+        "value": 1.25,
+        "max": 100
+      }
+    },
+    "cand_warnock": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_warnock_label",
+        "progress_warnock"
+      ]
+    },
+    "text_warnock_label": {
+      "type": "Text",
+      "props": {
+        "text": "Warnock",
+        "variant": "body"
+      }
+    },
+    "progress_warnock": {
+      "type": "Progress",
+      "props": {
+        "value": 0.75,
+        "max": 100
+      }
+    },
+    "text_dem_vol_flat": {
+      "type": "Text",
+      "props": {
+        "text": "$82K vol, flat",
+        "variant": "caption"
+      }
+    },
+    "market_pres_winner": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_pres_header",
+        "stack_pres_candidates"
+      ]
+    },
+    "text_pres_header": {
+      "type": "Text",
+      "props": {
+        "text": "Pres Winner (event 31552, $919K 24h vol)",
+        "variant": "lead"
+      }
+    },
+    "stack_pres_candidates": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cand_vance",
+        "cand_eric_trump",
+        "text_pres_vol"
+      ]
+    },
+    "cand_vance": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_vance_label",
+        "progress_vance"
+      ]
+    },
+    "text_vance_label": {
+      "type": "Text",
+      "props": {
+        "text": "Vance",
+        "variant": "body"
+      }
+    },
+    "progress_vance": {
+      "type": "Progress",
+      "props": {
+        "value": 20,
+        "max": 100
+      }
+    },
+    "cand_eric_trump": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "text_eric_trump_label",
+        "progress_eric_trump"
+      ]
+    },
+    "text_eric_trump_label": {
+      "type": "Text",
+      "props": {
+        "text": "Eric Trump",
+        "variant": "body"
+      }
+    },
+    "progress_eric_trump": {
+      "type": "Progress",
+      "props": {
+        "value": 0.55,
+        "max": 100
+      }
+    },
+    "text_pres_vol": {
+      "type": "Text",
+      "props": {
+        "text": "$146K vol",
+        "variant": "caption"
+      }
+    },
+    "text_election_comment": {
+      "type": "Text",
+      "props": {
+        "text": "Top comment (Pres Winner, apustaja, 1 upvote, May 5): 'rubio is a lock'",
+        "variant": "muted"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_alerts": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_alerts",
+        "alert_status",
+        "heading_flags",
+        "flag_1",
+        "flag_2",
+        "flag_3"
+      ]
+    },
+    "heading_alerts": {
+      "type": "Heading",
+      "props": {
+        "text": "Alerts",
+        "level": "h3"
+      }
+    },
+    "alert_status": {
+      "type": "Alert",
+      "props": {
+        "message": "No markets moved >5pp. All quiet.",
+        "type": "info"
+      }
+    },
+    "heading_flags": {
+      "type": "Heading",
+      "props": {
+        "text": "Flags",
+        "level": "h3"
+      }
+    },
+    "flag_1": {
+      "type": "Alert",
+      "props": {
+        "title": "(1) NZL FIFA $408K vol anomaly at 0.25%",
+        "message": "Position build or exit, watch price",
+        "type": "warning"
+      }
+    },
+    "flag_2": {
+      "type": "Alert",
+      "props": {
+        "title": "(2) Russia-Ukraine/GTA-VI stale 35pp premium",
+        "message": "vs standalone ceasefire — potential NO entry",
+        "type": "warning"
+      }
+    },
+    "flag_3": {
+      "type": "Alert",
+      "props": {
+        "title": "(3) Revenant Mexico market flat",
+        "message": "Group stage catalyst upcoming",
+        "type": "info"
+      }
+    }
+  }
+}
