@@ -236,15 +236,15 @@
   },
   "technical-explainer": {
     "last_dispatch": "2026-05-04T15:18:15Z",
-    "last_status": "success",
+    "last_status": "failed",
     "last_success": "2026-05-04T15:24:56Z",
-    "total_runs": 26,
+    "total_runs": 27,
     "total_successes": 8,
-    "total_failures": 18,
-    "consecutive_failures": 0,
-    "success_rate": 0.31,
-    "last_failed": "2026-04-26T23:54:21Z",
-    "last_error": "b7b5c48\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 19,
+    "consecutive_failures": 1,
+    "success_rate": 0.3,
+    "last_failed": "2026-05-06T15:32:19Z",
+    "last_error": "\":368,\"outputTokens\":13,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000433,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":"
   },
   "digest": {
     "last_dispatch": "2026-05-04T15:18:15Z",
