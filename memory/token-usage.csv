@@ -111,3 +111,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-06,heartbeat,claude-opus-4-7,30,35015,1392024,161110
 2026-05-06,monitor-runners,claude-opus-4-7,55,36824,2979527,208317
 2026-05-06,idea-capture,claude-opus-4-7,7,783,81436,22117
+2026-05-06,auto-merge,claude-opus-4-7,32,7652,1001728,70798

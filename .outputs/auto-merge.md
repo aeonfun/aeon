@@ -1,15 +1,13 @@
 ## Summary
 
-Ran **auto-merge** in live mode against the 3 watched repos. 1 PR considered, 0 qualified, 0 merged, no notification sent.
+Ran auto-merge across the 3 watched repos. 5 open PRs considered (swarm-fund-mvp #29/#30/#31, aaronjmars/aeon #156/#160; lore-financial-teaser empty). Zero qualified, zero merged, zero merge failures. No notification sent (live mode, but no real merges).
 
-**Results:**
-- `tomscaria/swarm-fund-mvp`: 0 open PRs (was 5 yesterday — #19/#20/#23/#24/#28 cleared externally)
-- `tomscaria/lore-financial-teaser`: 0 open PRs
-- `aaronjmars/aeon`: 1 open PR — `#156 fix(reply-maker): wire XAI prefetch case + cache-read path` by `tomscaria`
-  - **Verdict**: `SKIP:author-not-allowlisted:tomscaria` (also fails fork gate `isCrossRepository=true`; `mergeStateStatus=UNKNOWN`; size 33+/2-, base=main, no opt-out labels — author gate trips first)
+**Verdicts:**
+- swarm-fund-mvp #31, #30 — `SKIP:author-not-allowlisted:tomscaria` (also failing Vercel checks)
+- swarm-fund-mvp #29 — `SKIP:draft`
+- aaronjmars/aeon #160 — `SKIP:author-not-allowlisted:aaronjmars` (mergeStateStatus=CLEAN; would otherwise qualify)
+- aaronjmars/aeon #156 — `SKIP:author-not-allowlisted:tomscaria` (also fork)
 
-**Verdict breakdown**: `AUTO_MERGE_SKIP: 0/1 qualifying (behind=0 blocked=0 failing=0 draft=0 author-blocked=1 size-blocked=0)`
+**Files modified:** `memory/logs/2026-05-06.md` (appended `### auto-merge` section + summary).
 
-**Files modified**: `memory/logs/2026-05-04.md` (appended `### auto-merge` section)
-
-**Follow-up**: PR #156 (the ISS-014 closer) has two structural blockers — `tomscaria` not in allowlist AND `isCrossRepository=true`. Even adding a `## Trusted Authors` section would not unblock it; fork PRs are policy-refused independently. Closing ISS-014 still requires a human merge.
+**Follow-up:** Operator can unblock #160 by adding a `## Trusted Authors` section to `memory/watched-repos.md` listing `aaronjmars`. Without it, only the three default bot logins are eligible — none active on these repos. ISS-014 PR #156 still requires manual aaronjmars merge (fork gate is non-negotiable in policy).
