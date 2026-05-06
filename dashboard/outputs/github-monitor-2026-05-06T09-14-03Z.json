@@ -1,0 +1,135 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Monitor",
+        "description": "3 repos scanned, 2 need action"
+      },
+      "children": [
+        "separator-1",
+        "heading-act-now",
+        "stack-act-now",
+        "separator-2",
+        "heading-info",
+        "stack-info",
+        "separator-3",
+        "heading-sources",
+        "stack-sources"
+      ]
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-act-now": {
+      "type": "Heading",
+      "props": {
+        "text": "ACT NOW",
+        "level": "h3"
+      }
+    },
+    "stack-act-now": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr31",
+        "pr30"
+      ]
+    },
+    "pr31": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Review tomscaria/swarm-fund-mvp#31 — Vercel CI failing 2× on direct deploy (aeon_adapter clear-_last-error fix; non-bot commit so different root cause from the bot-email-config chain)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/31",
+        "source": "ACT NOW"
+      }
+    },
+    "pr30": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Review tomscaria/swarm-fund-mvp#30 — Vercel CI failing 3× on team-invite flow (variant_bandit corrupt-tail fix; aeonframework bot commit-email config recurrence per MEMORY OPS ALERT, day 2 ACT NOW)",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/30",
+        "source": "ACT NOW"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-info": {
+      "type": "Heading",
+      "props": {
+        "text": "INFO",
+        "level": "h3"
+      }
+    },
+    "stack-info": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pr156"
+      ]
+    },
+    "pr156": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Note aaronjmars/aeon#156 — non-draft, 64h since update, no FAILURE/REVIEW_REQUIRED (ISS-014 reply-maker XAI prefetch carrier, day 12)",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "INFO"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "heading-sources": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      }
+    },
+    "stack-sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-swarm-fund-mvp",
+        "badge-lore-financial",
+        "badge-aeon"
+      ]
+    },
+    "badge-swarm-fund-mvp": {
+      "type": "Badge",
+      "props": {
+        "text": "tomscaria/swarm-fund-mvp: ok",
+        "variant": "default"
+      }
+    },
+    "badge-lore-financial": {
+      "type": "Badge",
+      "props": {
+        "text": "tomscaria/lore-financial-teaser: ok",
+        "variant": "default"
+      }
+    },
+    "badge-aeon": {
+      "type": "Badge",
+      "props": {
+        "text": "aaronjmars/aeon: ok",
+        "variant": "default"
+      }
+    }
+  }
+}
