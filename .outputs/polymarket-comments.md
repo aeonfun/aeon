@@ -1,33 +1,39 @@
-polymarket comments — 2026-05-05 (politics + crypto / narrative-shift / track records / citation chains)
+polymarket comments — 2026-05-06 (var=politics narrative-shift / track records / citation chains)
 
-1. "Iran closes airspace by May 8?" — YES 15.5% ($2.58M v24, T-3)
-- Verifiable-Romance (NEW): "Iranian FM Araqchi is already in China, and Trump is about to arrive. With China's mediation, a ceasefire is imminent." [05-05] — single live-tape that links 3 markets (Iran-air + US-Iran-peace + Trump-China).
-- Watery-Boycott: "Hegseth and Caine both sound like they are ready to go and their edging Iran to make a small move so they can start shooting" [05-05].
-- Other-Takeover: "Israel and US discussing new strikes on Iran. Source: CNN" [05-05].
+CITATION CHAIN OF THE DAY: Trump TruthSocial post 116527444859592032 (today) cross-cited 12:37 → 12:43 across 3 Iran-cluster markets — peace-deal (May-15 jumped 3.35→14.5% YES intraday), Iran-airspace (faded 15.5→4.3% T-2), Hormuz-blockade (7.9% YES). Single tape, three different binary readings.
 
-2. "Trump visits China by May 31?" — YES 92.5% ($230k v24)
-- Glamorous-Eagle (NEW, 7x, 04-29): "Chinese state media is still running negative US coverage daily. If Trump were really going to visit, state media would be building public opinion in advance — there's absolutely no sign of that." Cleanest absence-of-evidence NO argument against the 92.5% priced.
-- Partial-Intestine: "C-17 second time landing in Beijing this month" [05-04] — flight-tracking insider callout, opposite-direction signal.
-- Threadbare-Signal: "US will respond, new phase of war starts, Donald cancels his China visit" [05-04] — synthesis Iran-kinetic → China-cancel.
+1. "US-Iran permanent peace deal by May 15?" — 14.5% YES ($1.91m v24, T-9, +11pp 24h)
+- US-Phenom (10:35 today): full Trump-Truth-Social verbatim "Based on the request of Pakistan and other Countries… mutually agreed [30-day pause]…" — price-mover.
+- soluble (10:45 today): "Why Yes for May 15 keep rising but May 31 not? so nuts" — sister-market divergence callout. May-15 14.5% / May-31 26% — within-event-tree clause-arb candidate (if 30-day-pause applies, May-15 should price below May-31, not above).
+- jsbo (10:51): "people are easier to act emotionally than logically… tomorrow the panic will die down" — narrative-fade caller.
 
-3. "US obtains Iranian enriched uranium by May 31?" — YES 8.5% ($196k v24) — UMA-RESOLUTION-ARB CANDIDATE
-- Grown-Songbird (6x, 04-02): "What happens if they 'say' they have the uranium but don't actually provide proof of its possession?"
-- Somber-Interviewer (6x, 04-06): "So Trump can just bluff that he took some uranium and this will be YES."
-- Energetic-Folder (2x, 05-03) + Naughty-Completion (05-05): "Trump writes on Truth social 'we have the uranium' → resolves YES." 4-handle cluster across 4 weeks. Sister to Iran-cf/Hez-cf paradox; pull resolution text into clause-text scanner.
+2. "Iran closes its airspace by May 8?" — 4.3% YES ($1.72m v24, T-2)
+- ithinkthisisgod (10:01 today): "They are about to sign a peacedeal, sell your YES while you can" — explicit narrative-shift signal handle.
+- 0xE2954… (09:47): "Pakistan says Iran and US are about to sign a memorandum so it's over guys" — Pakistani-mediator durable (sister to Quarrelsome-Service archetype).
+- popiye (12:10): "epic fury is over no more bombing, only economic pressure" — narrative consolidation.
+- ebrachai (13:07): "TACO" — Trump Always Chickens Out, log as comments-side calibration meme.
+- Strike-market suppression durable: Moses1 14x + taerv534 6x + zer0xfourd "legal threat / cease and desist by the US government" — explicit source claim.
 
-4. "US x Iran permanent peace deal by May 15?" — YES 3.35% ($347k v24, T-10)
-- Attentive-Algebra (23x, 05-02): "WHY SHOULD WE BE TREATED LIKE CHILDREN GIVE US MF STRIKE MARKETS!!!" — meta-censorship complaint, sister to 05-03 strike-market-suppression finding.
-- Quarrelsome-Service (MEMORY hit): "Pakistanis saying negotiations are good. Don't trust Trump's comment on it though" [05-04] — Pakistani-mediator citation chain durable.
-- Same-Epauliere (NEW pseudonym, 14x, 04-24): "01110000 01101111 01101100 01111001 00101101 01110101 01110011 00101110 01110000 01110010 01101111" — binary-encoded "poly-us.pro" phishing typosquat. CommunityVoice-off archetype confirmed durable; security flag.
+3. "Trump announces US blockade of Hormuz?" — 7.9% YES ($427k v24)
+- mrnomoremrniceguy (12:52 today): "THAT MEANS THE BLOCKADE IS STILL GOING TO BE ACTIVE EVEN IF IRAN ACCEPT THEIR PROPOSAL" — clause-text reading: blockade-lift ≠ peace-deal in resolution language. Comments-side info-asymmetry vs price.
+- Quanto22 (today, multiple): "Can someone tell him the deadline is Friday?" — clause-text watch handle.
+- Castwolffox (7x, 04-28, MEMORY hit): durable Rubio-cite NO-side, "Accepting Iranian control over SOH is a red line… biggest defeat ever for them."
+- compute (8x): Trump quote "It's a very profitable business. We're sort of like pirates" — track-record cite handle.
+- saneperson (5x): Pakistani-mediator + 50+ tankers passed iranian side + Pakistan road corridor — multi-cite handle.
 
-5. "Will Bitcoin hit $150k by June 30, 2026?" — YES 1.35% ($5.82M v24)
-- Crypto vertical DEAD 4th consecutive day. +855 96 982 9883 Cambodia phone scam recurring across 4 days (Great-Spree 05-02, Spry-Caliber 05-04 asking what it is). Spry-Caliber: "Where TF is that +855 come from???" Birthday-spam (Abandoned-Tadpole) + scam-callout-by-confusion is the only signal pattern. Pin as durable structural finding.
+4. "US obtains Iranian enriched uranium by May 31?" — 7.5% YES ($594k v24)
+- 0xd8b6E… (12:20 today): "Axios, citing two informed sources: Iran has agreed to remove the highly enriched uranium" — BREAKING news cite.
+- Hawk-x (09:41 today, 2x): "Axios" — second citer same anchor; new track-record handle.
+- ProbTrailblazer (09:31): "Feels like not all info is priced in yet" — info-asymmetry callout.
+- UMA-resolution-arb cluster carry confirmed durable (Glicha re-stated Naughty-Completion thesis 05-05).
 
-CITATION CHAIN OF THE DAY: Iran-airspace (T-3) + Iranian-uranium + US-Iran-peace + Trump-China linked by Verifiable-Romance's "Araqchi-in-China + Trump-arriving + China-as-mediator" claim. Comments-side narrative shift NOT visible to CalibrationGap quant scanner.
+5. "2028 Democratic presidential nominee?" — Newsom 28c / Harris 14c ($1.65m v24)
+- chromeeee (3x, 05-03): "Kamala true value is closer to 20/30c" — sharp NO-Harris pricing.
+- 0x1B7293… (2x, 05-03): "Harris is leading Newsom by 28 points in the polls. Why the hell is he still on top?" — sister poll-vs-market divergence callout.
+- PapyChampi (7x, 04-16): TIME 100 / Mark Kelly cite — long-shot YES-Kelly anchor.
 
-CalibrationGap-relevant takeaways:
-- Trump-China YES 92.5% with multi-handle NO arguments (Glamorous-Eagle absence-of-evidence + Partial-Intestine C-17 + Threadbare-Signal kinetic-spillover) = potential NO calibration entry.
-- Iranian-uranium = fresh UMA-resolution-arb candidate (4-handle bluff-resolution cluster).
-- Strike-market suppression confirmed durable (Attentive-Algebra 23x + carry-over from 05-03). Structural binary-universe shrinkage.
-- Crypto comments dead 4th day. var=crypto should default-substitute future runs unless non-spam material surfaces.
+NEW track-list handles surfaced (7): US-Phenom (Trump-TruthSocial verbatim quoter), soluble (sister-market divergence callout), ithinkthisisgod (narrative-shift signal), popiye (kinetic→economic narrative-fade), Hawk-x (Axios cite, sourced-info-asymmetry), mrnomoremrniceguy (cross-market clause-text reader), Quanto22 (Hormuz clause-text watch). Recurring: Car/Peppery YES-loading peace book "like if you are ready for peace" 14x, Castwolffox/tilda89 Rubio-cite NO-Hormuz, Moses1 strike-market-suppression top-pin.
 
+Crypto vertical DEAD 5th consecutive day — skipped; per 05-05 lesson default-substitute politics until non-spam crypto signal.
+
+sources: gamma=ok(20+8) · 5 events queried · ./notify ok

@@ -1,0 +1,1034 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Polymarket Comments",
+        "description": "2026-05-06 · politics narrative-shift / track records / citation chains"
+      },
+      "children": [
+        "header-info",
+        "sep-1",
+        "citation-section",
+        "sep-2",
+        "markets-container",
+        "sep-3",
+        "tracklist-section",
+        "sep-4",
+        "crypto-alert",
+        "sep-5",
+        "sources-text"
+      ]
+    },
+    "header-info": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "header-date"
+      ]
+    },
+    "header-date": {
+      "type": "Badge",
+      "props": {
+        "text": "politics narrative-shift / track records / citation chains",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "citation-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "citation-heading",
+        "citation-narrative"
+      ]
+    },
+    "citation-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "CITATION CHAIN OF THE DAY",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "citation-narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Trump TruthSocial post 116527444859592032 (today) cross-cited 12:37 → 12:43 across 3 Iran-cluster markets — peace-deal (May-15 jumped 3.35→14.5% YES intraday), Iran-airspace (faded 15.5→4.3% T-2), Hormuz-blockade (7.9% YES). Single tape, three different binary readings.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "markets-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "market-1",
+        "market-2",
+        "market-3",
+        "market-4",
+        "market-5"
+      ]
+    },
+    "market-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1-heading",
+        "m1-stats",
+        "m1-comments"
+      ]
+    },
+    "m1-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "1. US-Iran permanent peace deal by May 15?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m1-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m1-price",
+        "m1-volume",
+        "m1-time",
+        "m1-change"
+      ]
+    },
+    "m1-price": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "14.5%",
+        "delta": "+11pp",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "m1-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$1.91m"
+      },
+      "children": []
+    },
+    "m1-time": {
+      "type": "Badge",
+      "props": {
+        "text": "T-9",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m1-change": {
+      "type": "Badge",
+      "props": {
+        "text": "v24",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m1-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1-c1",
+        "m1-c2",
+        "m1-c3"
+      ]
+    },
+    "m1-c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1-c1-handle",
+        "m1-c1-text"
+      ]
+    },
+    "m1-c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "US-Phenom (10:35 today)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m1-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "full Trump-Truth-Social verbatim \"Based on the request of Pakistan and other Countries… mutually agreed [30-day pause]…\" — price-mover.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m1-c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1-c2-handle",
+        "m1-c2-text"
+      ]
+    },
+    "m1-c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "soluble (10:45 today)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m1-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Why Yes for May 15 keep rising but May 31 not? so nuts — sister-market divergence callout. May-15 14.5% / May-31 26% — within-event-tree clause-arb candidate (if 30-day-pause applies, May-15 should price below May-31, not above).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m1-c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1-c3-handle",
+        "m1-c3-text"
+      ]
+    },
+    "m1-c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "jsbo (10:51)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m1-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "people are easier to act emotionally than logically… tomorrow the panic will die down — narrative-fade caller.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2-heading",
+        "m2-stats",
+        "m2-comments"
+      ]
+    },
+    "m2-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Iran closes its airspace by May 8?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m2-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m2-price",
+        "m2-volume",
+        "m2-time"
+      ]
+    },
+    "m2-price": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "4.3%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "m2-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$1.72m"
+      },
+      "children": []
+    },
+    "m2-time": {
+      "type": "Badge",
+      "props": {
+        "text": "T-2",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "m2-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2-c1",
+        "m2-c2",
+        "m2-c3",
+        "m2-c4",
+        "m2-c5"
+      ]
+    },
+    "m2-c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2-c1-handle",
+        "m2-c1-text"
+      ]
+    },
+    "m2-c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "ithinkthisisgod (10:01 today)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m2-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "They are about to sign a peacedeal, sell your YES while you can — explicit narrative-shift signal handle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m2-c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2-c2-handle",
+        "m2-c2-text"
+      ]
+    },
+    "m2-c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "0xE2954… (09:47)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m2-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pakistan says Iran and US are about to sign a memorandum so it's over guys — Pakistani-mediator durable (sister to Quarrelsome-Service archetype).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m2-c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2-c3-handle",
+        "m2-c3-text"
+      ]
+    },
+    "m2-c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "popiye (12:10)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m2-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "epic fury is over no more bombing, only economic pressure — narrative consolidation.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m2-c4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2-c4-handle",
+        "m2-c4-text"
+      ]
+    },
+    "m2-c4-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "ebrachai (13:07)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m2-c4-text": {
+      "type": "Text",
+      "props": {
+        "text": "TACO — Trump Always Chickens Out, log as comments-side calibration meme.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m2-c5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2-c5-handle",
+        "m2-c5-text"
+      ]
+    },
+    "m2-c5-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Moses1 (14x) + taerv534 (6x) + zer0xfourd",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m2-c5-text": {
+      "type": "Text",
+      "props": {
+        "text": "legal threat / cease and desist by the US government — explicit source claim. Strike-market suppression durable.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3-heading",
+        "m3-stats",
+        "m3-comments"
+      ]
+    },
+    "m3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Trump announces US blockade of Hormuz?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m3-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m3-price",
+        "m3-volume"
+      ]
+    },
+    "m3-price": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "7.9%"
+      },
+      "children": []
+    },
+    "m3-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$427k"
+      },
+      "children": []
+    },
+    "m3-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3-c1",
+        "m3-c2",
+        "m3-c3",
+        "m3-c4",
+        "m3-c5"
+      ]
+    },
+    "m3-c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3-c1-handle",
+        "m3-c1-text"
+      ]
+    },
+    "m3-c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "mrnomoremrniceguy (12:52 today)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m3-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "THAT MEANS THE BLOCKADE IS STILL GOING TO BE ACTIVE EVEN IF IRAN ACCEPT THEIR PROPOSAL — clause-text reading: blockade-lift ≠ peace-deal in resolution language. Comments-side info-asymmetry vs price.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m3-c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3-c2-handle",
+        "m3-c2-text"
+      ]
+    },
+    "m3-c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Quanto22 (today, multiple)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m3-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Can someone tell him the deadline is Friday? — clause-text watch handle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m3-c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3-c3-handle",
+        "m3-c3-text"
+      ]
+    },
+    "m3-c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Castwolffox (7x, 04-28, MEMORY hit)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m3-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "durable Rubio-cite NO-side, \"Accepting Iranian control over SOH is a red line… biggest defeat ever for them.\"",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m3-c4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3-c4-handle",
+        "m3-c4-text"
+      ]
+    },
+    "m3-c4-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "compute (8x)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m3-c4-text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump quote \"It's a very profitable business. We're sort of like pirates\" — track-record cite handle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m3-c5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3-c5-handle",
+        "m3-c5-text"
+      ]
+    },
+    "m3-c5-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "saneperson (5x)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m3-c5-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pakistani-mediator + 50+ tankers passed iranian side + Pakistan road corridor — multi-cite handle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4-heading",
+        "m4-stats",
+        "m4-comments"
+      ]
+    },
+    "m4-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "4. US obtains Iranian enriched uranium by May 31?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m4-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m4-price",
+        "m4-volume"
+      ]
+    },
+    "m4-price": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "7.5%"
+      },
+      "children": []
+    },
+    "m4-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$594k"
+      },
+      "children": []
+    },
+    "m4-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4-c1",
+        "m4-c2",
+        "m4-c3",
+        "m4-c4"
+      ]
+    },
+    "m4-c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4-c1-handle",
+        "m4-c1-text"
+      ]
+    },
+    "m4-c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "0xd8b6E… (12:20 today)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m4-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Axios, citing two informed sources: Iran has agreed to remove the highly enriched uranium — BREAKING news cite.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m4-c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4-c2-handle",
+        "m4-c2-text"
+      ]
+    },
+    "m4-c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "Hawk-x (09:41 today, 2x)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m4-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Axios — second citer same anchor; new track-record handle.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m4-c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4-c3-handle",
+        "m4-c3-text"
+      ]
+    },
+    "m4-c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "ProbTrailblazer (09:31)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m4-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "Feels like not all info is priced in yet — info-asymmetry callout.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m4-c4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4-c4-label",
+        "m4-c4-text"
+      ]
+    },
+    "m4-c4-label": {
+      "type": "Badge",
+      "props": {
+        "text": "UMA-resolution-arb cluster",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "m4-c4-text": {
+      "type": "Text",
+      "props": {
+        "text": "carry confirmed durable (Glicha re-stated Naughty-Completion thesis 05-05).",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5-heading",
+        "m5-stats",
+        "m5-comments"
+      ]
+    },
+    "m5-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5. 2028 Democratic presidential nominee?",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "m5-stats": {
+      "type": "Text",
+      "props": {
+        "text": "Newsom 28c / Harris 14c ($1.65m v24)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m5-comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5-c1",
+        "m5-c2",
+        "m5-c3"
+      ]
+    },
+    "m5-c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m5-c1-handle",
+        "m5-c1-text"
+      ]
+    },
+    "m5-c1-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "chromeeee (3x, 05-03)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m5-c1-text": {
+      "type": "Text",
+      "props": {
+        "text": "Kamala true value is closer to 20/30c — sharp NO-Harris pricing.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m5-c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m5-c2-handle",
+        "m5-c2-text"
+      ]
+    },
+    "m5-c2-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "0x1B7293… (2x, 05-03)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m5-c2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Harris is leading Newsom by 28 points in the polls. Why the hell is he still on top? — sister poll-vs-market divergence callout.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "m5-c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m5-c3-handle",
+        "m5-c3-text"
+      ]
+    },
+    "m5-c3-handle": {
+      "type": "Badge",
+      "props": {
+        "text": "PapyChampi (7x, 04-16)",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "m5-c3-text": {
+      "type": "Text",
+      "props": {
+        "text": "TIME 100 / Mark Kelly cite — long-shot YES-Kelly anchor.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "tracklist-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tracklist-heading",
+        "tracklist-text"
+      ]
+    },
+    "tracklist-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW track-list handles (7)",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "tracklist-text": {
+      "type": "Text",
+      "props": {
+        "text": "US-Phenom (Trump-TruthSocial verbatim quoter), soluble (sister-market divergence callout), ithinkthisisgod (narrative-shift signal), popiye (kinetic→economic narrative-fade), Hawk-x (Axios cite, sourced-info-asymmetry), mrnomoremrniceguy (cross-market clause-text reader), Quanto22 (Hormuz clause-text watch). Recurring: Car/Peppery YES-loading peace book \"like if you are ready for peace\" 14x, Castwolffox/tilda89 Rubio-cite NO-Hormuz, Moses1 strike-market-suppression top-pin.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "crypto-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Crypto vertical DEAD",
+        "message": "5th consecutive day — skipped. Per 05-05 lesson: default-substitute politics until non-spam crypto signal.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources-text": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-detail"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "sources-detail": {
+      "type": "Text",
+      "props": {
+        "text": "gamma=ok(20+8) · 5 events queried · ./notify ok",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
