@@ -333,15 +333,15 @@
   },
   "repo-actions": {
     "last_dispatch": "2026-05-05T16:58:38Z",
-    "last_status": "success",
+    "last_status": "failed",
     "last_success": "2026-05-05T17:13:24Z",
-    "total_runs": 25,
+    "total_runs": 27,
     "total_successes": 10,
-    "total_failures": 15,
-    "consecutive_failures": 0,
-    "success_rate": 0.4,
-    "last_failed": "2026-04-26T23:54:44Z",
-    "last_error": "197cbb6\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
+    "total_failures": 17,
+    "consecutive_failures": 2,
+    "success_rate": 0.37,
+    "last_failed": "2026-05-06T15:33:05Z",
+    "last_error": "\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.00042699999999999997,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":7,\"outputT"
   },
   "repo-pulse": {
     "last_dispatch": "2026-05-05T16:58:38Z",
