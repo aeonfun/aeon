@@ -1,0 +1,23 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "article"
+      },
+      "children": [
+        "story_1"
+      ]
+    },
+    "story_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "The Iran Airspace Ladder Crashed From 15.5% to 4% While the Hormuz Tape Got Hotter",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-05-06.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
