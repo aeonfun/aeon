@@ -308,15 +308,15 @@
   },
   "push-recap": {
     "last_dispatch": "2026-05-05T16:58:38Z",
-    "last_status": "success",
+    "last_status": "failed",
     "last_success": "2026-05-05T21:06:46Z",
-    "total_runs": 37,
+    "total_runs": 38,
     "total_successes": 21,
-    "total_failures": 16,
-    "consecutive_failures": 0,
-    "success_rate": 0.57,
-    "last_failed": "2026-04-26T23:54:37Z",
-    "last_error": "0c4f36c\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\"",
+    "total_failures": 17,
+    "consecutive_failures": 1,
+    "success_rate": 0.55,
+    "last_failed": "2026-05-06T15:32:43Z",
+    "last_error": "putTokens\":15,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000442,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":5,\"outputT",
     "last_quality_score": 4
   },
   "repo-article": {
