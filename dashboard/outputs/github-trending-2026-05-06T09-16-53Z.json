@@ -1,0 +1,278 @@
+{
+  "root": "root",
+  "state": {},
+  "elements": {
+    "root": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-05-06"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-pick-section",
+        "sep-1",
+        "ai-ml-section",
+        "sep-2",
+        "devtools-section",
+        "sep-3",
+        "footer"
+      ]
+    },
+    "top-pick-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top-pick-heading",
+        "top-pick-repo",
+        "top-pick-desc"
+      ]
+    },
+    "top-pick-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      }
+    },
+    "top-pick-repo": {
+      "type": "StoryLink",
+      "props": {
+        "title": "forrestchang/andrej-karpathy-skills",
+        "href": "https://github.com/forrestchang/andrej-karpathy-skills"
+      }
+    },
+    "top-pick-desc": {
+      "type": "Text",
+      "props": {
+        "text": "The cleanest signal yet that CLAUDE.md has become its own viral content layer — a single-file repo derived from Karpathy's LLM-coding observations went 0→115k stars in 99 days.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "ai-ml-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "ai-ml-heading",
+        "ai-ml-repos"
+      ]
+    },
+    "ai-ml-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      }
+    },
+    "ai-ml-repos": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-ruflo",
+        "repo-context-mode",
+        "repo-local-deep-research"
+      ]
+    },
+    "repo-ruflo": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ruflo-link",
+        "ruflo-desc"
+      ]
+    },
+    "ruflo-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ruvnet/ruflo",
+        "href": "https://github.com/ruvnet/ruflo",
+        "source": "★ 2.4kt today (44k total) · TypeScript · [ACCELERATING]"
+      }
+    },
+    "ruflo-desc": {
+      "type": "Text",
+      "props": {
+        "text": "ruvnet's Claude swarm framework rebrand — native Claude Code + Codex hooks with self-learning coordination, direct mirror of swarm-fund-mvp selector layer.",
+        "variant": "body"
+      }
+    },
+    "repo-context-mode": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "context-mode-link",
+        "context-mode-desc"
+      ]
+    },
+    "context-mode-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "mksglu/context-mode",
+        "href": "https://github.com/mksglu/context-mode",
+        "source": "★ 276t today (13k total) · TypeScript · [ACCELERATING]"
+      }
+    },
+    "context-mode-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Sandboxes coding-agent tool output for 98% context reduction across 14 platforms — same problem class as Aeon compaction.",
+        "variant": "body"
+      }
+    },
+    "repo-local-deep-research": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "local-deep-research-link",
+        "local-deep-research-desc"
+      ]
+    },
+    "local-deep-research-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "LearningCircuit/local-deep-research",
+        "href": "https://github.com/LearningCircuit/local-deep-research",
+        "source": "★ 197t today (5.4k total) · Python · [RETURNING]"
+      }
+    },
+    "local-deep-research-desc": {
+      "type": "Text",
+      "props": {
+        "text": "v1.6.9 hits ~95% SimpleQA on a consumer 3090 with arXiv+PubMed search built in — local-private alternative to virattt/dexter's cloud stack.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "devtools-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "devtools-heading",
+        "devtools-repos"
+      ]
+    },
+    "devtools-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      }
+    },
+    "devtools-repos": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-karpathy-devtools",
+        "repo-scrapling"
+      ]
+    },
+    "repo-karpathy-devtools": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "karpathy-devtools-link",
+        "karpathy-devtools-desc"
+      ]
+    },
+    "karpathy-devtools-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "forrestchang/andrej-karpathy-skills",
+        "href": "https://github.com/forrestchang/andrej-karpathy-skills",
+        "source": "★ 2.4kt today (115k total) · Markdown · [ACCELERATING]"
+      }
+    },
+    "karpathy-devtools-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Single CLAUDE.md file capturing Karpathy's LLM-coding pitfalls — drop-in template for any Claude Code agent including Aeon.",
+        "variant": "body"
+      }
+    },
+    "repo-scrapling": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "scrapling-link",
+        "scrapling-desc"
+      ]
+    },
+    "scrapling-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "D4Vinci/Scrapling",
+        "href": "https://github.com/D4Vinci/Scrapling",
+        "source": "★ 914t today (46k total) · Python · [RETURNING]"
+      }
+    },
+    "scrapling-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adaptive selectors that auto-heal when site layouts change — operational fit for pseudonymous-comments scrapers that break on every Polymarket UI patch.",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(16) · gh_api=ok · kept 5/16",
+        "variant": "muted"
+      }
+    }
+  }
+}

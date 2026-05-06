@@ -1,29 +1,25 @@
-*GitHub Trending — 2026-05-05*
+*GitHub Trending — 2026-05-06*
 
-*Top pick* — [virattt/dexter](https://github.com/virattt/dexter)
-Solo-built autonomous deep-research agent on its 4th calver release in 10 days. 23k stars over 6 months, doing 3.5x baseline today — the most-active finance-agent comp on trending this week.
+*Top pick* — [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills)
+The cleanest signal yet that CLAUDE.md has become its own viral content layer — a single-file repo derived from Karpathy's LLM-coding observations went 0→115k stars in 99 days.
 
 *AI/ML*
-• [virattt/dexter](https://github.com/virattt/dexter) — ★ 409 today (23k total) · TypeScript · [ACCELERATING]
-Autonomous equity-research agent shipping calver releases every 2-3 days — fastest-iterating solo-built finance-agent stack on trending.
+• [ruvnet/ruflo](https://github.com/ruvnet/ruflo) — ★ 2.4kt today (44k total) · TypeScript · [ACCELERATING]
+ruvnet's Claude swarm framework rebrand — native Claude Code + Codex hooks with self-learning coordination, direct mirror of swarm-fund-mvp selector layer.
 
-• [cocoindex-io/cocoindex](https://github.com/cocoindex-io/cocoindex) — ★ 166 today (8k total) · Python · [RETURNING]
-Incremental data engine for long-horizon agents — keeps context fresh when source data changes mid-task instead of restarting runs. v1.0.3 today.
+• [mksglu/context-mode](https://github.com/mksglu/context-mode) — ★ 276t today (13k total) · TypeScript · [ACCELERATING]
+Sandboxes coding-agent tool output for 98% context reduction across 14 platforms — same problem class as Aeon compaction.
+
+• [LearningCircuit/local-deep-research](https://github.com/LearningCircuit/local-deep-research) — ★ 197t today (5.4k total) · Python · [RETURNING]
+v1.6.9 hits ~95% SimpleQA on a consumer 3090 with arXiv+PubMed search built in — local-private alternative to virattt/dexter's cloud stack.
 
 *Devtools*
-• [vercel-labs/deepsec](https://github.com/vercel-labs/deepsec) — ★ 675 in 5d (~135/d) · TypeScript · [DEBUT]
-Vercel-Labs coding-agent security harness — agent-driven vuln scanning over your codebase, day-5 with active commits.
+• [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) — ★ 2.4kt today (115k total) · Markdown · [ACCELERATING]
+Single CLAUDE.md file capturing Karpathy's LLM-coding pitfalls — drop-in template for any Claude Code agent including Aeon.
 
-• [tddworks/baguette](https://github.com/tddworks/baguette) — ★ 569 in 4d (~142/d) · Swift · [DEBUT]
-Self-hosted iOS Simulator farm with 60 fps streaming and host-side gesture injection — closest thing to a self-hosted BrowserStack.
-
-• [matthart1983/syswatch](https://github.com/matthart1983/syswatch) — ★ 348 in 3d (~116/d) · Rust · [DEBUT]
-Rust system-diagnostics TUI with twelve tabs, plain-English insights, and a session scrubber — sibling project to netwatch from the same author.
-
-*Web/Apps*
-• [docusealco/docuseal](https://github.com/docusealco/docuseal) — ★ 535 today (13k total) · Ruby · [RETURNING]
-Self-hostable DocuSign alternative; v2.5.2 ships today, AGPL-licensed — only viable open-source e-sign stack for compliance-bound teams.
+• [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) — ★ 914t today (46k total) · Python · [RETURNING]
+Adaptive selectors that auto-heal when site layouts change — operational fit for pseudonymous-comments scrapers that break on every Polymarket UI patch.
 
 ---
-sources: trending=ok(15 visible, page truncated) · gh_api=ok · kept 6/40
+sources: trending=ok(16) · gh_api=ok · kept 5/16
 
