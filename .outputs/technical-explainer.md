@@ -1,9 +1,5 @@
-technical explainer: Latin-Hypercube Sampling: One Strategy, Thirty Variants, Ten Dimensions
+technical explainer: The 0.444 Anchor Move — How ILS-dl Distinguishes Insider Trading from Proxy Noise on Polymarket
 
-Latin-Hypercube sampling stratifies an N-dim hyperparameter cube so every axis projection is uniformly covered with one sample per stratum — turning one strategy into thirty diverse-but-balanced variants without paying for grid search.
+ILS-dl computes pre-news price drift against the resolution deadline rather than the article timestamp — and on the $269M 'US forces enter Iran by April 30' contract, that single anchor change flips the leakage score from −0.331 to +0.113, isolating real insider flow from proxy artefact.
 
-This is the technique behind 30 of 38 net-new agents in this week swarm-fund-mvp fleet bump (commit 1125deb). 79% of new fleet capacity. Falsifier: paired live run vs IID-uniform — if Sharpe distributions match after 100 trades/variant, LHS bought nothing. Cauwet 2020 ICML predicts a constant-factor advantage; the constant matters, the asymptotic does not.
-
-Image skipped (no Replicate token). Text stands alone.
-
-read it: articles/explainer-2026-05-04.md
+read it: articles/explainer-2026-05-06.md

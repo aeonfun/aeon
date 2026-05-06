@@ -1,0 +1,41 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "technical-explainer"
+      },
+      "children": [
+        "heading_title",
+        "text_explanation",
+        "link_article"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "The 0.444 Anchor Move — How ILS-dl Distinguishes Insider Trading from Proxy Noise on Polymarket",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text_explanation": {
+      "type": "Text",
+      "props": {
+        "text": "ILS-dl computes pre-news price drift against the resolution deadline rather than the article timestamp — and on the $269M 'US forces enter Iran by April 30' contract, that single anchor change flips the leakage score from −0.331 to +0.113, isolating real insider flow from proxy artefact.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "link_article": {
+      "type": "Link",
+      "props": {
+        "label": "read it",
+        "href": "articles/explainer-2026-05-06.md"
+      },
+      "children": []
+    }
+  }
+}
