@@ -1,0 +1,706 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-05-06",
+        "description": "Verdict: nothing urgent today. 5 to schedule, 3 to monitor. Sources: KEV, GH Advisory, EPSS"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading-patch",
+        "sep1",
+        "stack-patch-items",
+        "sep2",
+        "heading-monitor",
+        "stack-monitor-items"
+      ]
+    },
+    "heading-patch": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH THIS WEEK",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stack-patch-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "patch-item-1",
+        "patch-item-2",
+        "patch-item-3",
+        "patch-item-4",
+        "patch-item-5"
+      ]
+    },
+    "patch-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-1-link",
+        "patch-1-meta",
+        "patch-1-desc",
+        "patch-1-action"
+      ]
+    },
+    "patch-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-29090 — rucio",
+        "href": "https://github.com/advisories/GHSA-6j7p-qjhg-9947",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "patch-1-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-1-pkg",
+        "patch-1-cvss",
+        "patch-1-epss",
+        "patch-1-poc"
+      ]
+    },
+    "patch-1-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "pip",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-1-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.9",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "patch-1-epss": {
+      "type": "Badge",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "patch-1-poc": {
+      "type": "Badge",
+      "props": {
+        "text": "no public PoC",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "SQL injection in FilterEngine PG/Oracle via DID Search API. Sister CVE-2026-29080 same package.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "patch-1-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade rucio to ≥35.8.5 / ≥38.5.5 / ≥39.4.2 / ≥40.1.1 by branch.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "patch-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-2-link",
+        "patch-2-meta",
+        "patch-2-desc",
+        "patch-2-action"
+      ]
+    },
+    "patch-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42864 — firefighter-incident",
+        "href": "https://github.com/advisories/GHSA-fqvv-jvhr-g5jc",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "patch-2-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-2-pkg",
+        "patch-2-cvss",
+        "patch-2-epss",
+        "patch-2-poc"
+      ]
+    },
+    "patch-2-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "pip",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-2-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.9",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "patch-2-epss": {
+      "type": "Badge",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "patch-2-poc": {
+      "type": "Badge",
+      "props": {
+        "text": "no public PoC",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauth SSRF in Raid jira_bot endpoint → IAM credential theft.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "patch-2-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade firefighter-incident to ≥0.0.54.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "patch-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-3-link",
+        "patch-3-meta",
+        "patch-3-desc",
+        "patch-3-action"
+      ]
+    },
+    "patch-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42238 — nginx-ui",
+        "href": "https://github.com/advisories/GHSA-4pvg-prr3-9cxr",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "patch-3-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-3-pkg",
+        "patch-3-cvss",
+        "patch-3-epss",
+        "patch-3-poc"
+      ]
+    },
+    "patch-3-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "Go",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-3-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.8",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "patch-3-epss": {
+      "type": "Badge",
+      "props": {
+        "text": "EPSS 0.002",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "patch-3-poc": {
+      "type": "Badge",
+      "props": {
+        "text": "no public PoC",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauth RCE via Backup Restore.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "patch-3-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade nginx-ui to ≥2.3.8.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "patch-item-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-4-link",
+        "patch-4-meta",
+        "patch-4-cves",
+        "patch-4-desc",
+        "patch-4-action"
+      ]
+    },
+    "patch-4-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vm2 cluster — vm2",
+        "href": "https://github.com/advisories/GHSA-ffh4-j6h5-pg66",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "patch-4-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-4-pkg",
+        "patch-4-cvss"
+      ]
+    },
+    "patch-4-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "npm",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-4-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.8",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "patch-4-cves": {
+      "type": "Text",
+      "props": {
+        "text": "5 CVEs: 26956, 26332, 24781, 24120, 24118",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "patch-4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Coordinated sandbox-escape disclosure; package re-patched after deprecation.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "patch-4-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade vm2 to ≥3.11.0, or migrate to isolated-vm.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "patch-item-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-5-link",
+        "patch-5-meta",
+        "patch-5-desc",
+        "patch-5-action"
+      ]
+    },
+    "patch-5-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42048 — langflow",
+        "href": "https://github.com/advisories/GHSA-9whx-c884-c68q",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "patch-5-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "patch-5-pkg",
+        "patch-5-cvss",
+        "patch-5-epss",
+        "patch-5-poc"
+      ]
+    },
+    "patch-5-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "pip",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-5-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.6",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "patch-5-epss": {
+      "type": "Badge",
+      "props": {
+        "text": "EPSS n/a",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "patch-5-poc": {
+      "type": "Badge",
+      "props": {
+        "text": "no public PoC",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "patch-5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Path traversal in Knowledge Bases API.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "patch-5-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ upgrade langflow to ≥1.9.0.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading-monitor": {
+      "type": "Heading",
+      "props": {
+        "text": "MONITOR",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack-monitor-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "monitor-item-1",
+        "monitor-item-2",
+        "monitor-item-3"
+      ]
+    },
+    "monitor-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-1-link",
+        "monitor-1-meta",
+        "monitor-1-desc",
+        "monitor-1-action"
+      ]
+    },
+    "monitor-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "GHSA-g38r-8gmr-ghrf — mysten-metrics + sui-execution-cut",
+        "href": "https://github.com/advisories/GHSA-g38r-8gmr-ghrf",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "monitor-1-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-1-pkg",
+        "monitor-1-type",
+        "monitor-1-status"
+      ]
+    },
+    "monitor-1-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "crates.io",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "monitor-1-type": {
+      "type": "Badge",
+      "props": {
+        "text": "malicious code",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "monitor-1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "already yanked",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "monitor-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Sui-ecosystem typosquats.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "monitor-1-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ audit Cargo.lock; remove if present.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "monitor-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-2-link",
+        "monitor-2-meta",
+        "monitor-2-desc",
+        "monitor-2-action"
+      ]
+    },
+    "monitor-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42601 — archivebox",
+        "href": "https://github.com/advisories/GHSA-3h23-7824-pj8r",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "monitor-2-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-2-pkg",
+        "monitor-2-type",
+        "monitor-2-status"
+      ]
+    },
+    "monitor-2-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "pip",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "monitor-2-type": {
+      "type": "Badge",
+      "props": {
+        "text": "critical RCE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "monitor-2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "no fix",
+        "variant": "warning"
+      },
+      "children": []
+    },
+    "monitor-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unvalidated per-crawl config overrides in AddView.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "monitor-2-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ track advisory; restrict /add exposure.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "monitor-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-3-link",
+        "monitor-3-meta",
+        "monitor-3-action"
+      ]
+    },
+    "monitor-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-25660 — codechecker",
+        "href": "https://github.com/advisories/GHSA-4v9x-cqc5-j645",
+        "source": "GitHub Advisory"
+      },
+      "children": []
+    },
+    "monitor-3-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "monitor-3-pkg",
+        "monitor-3-type",
+        "monitor-3-status"
+      ]
+    },
+    "monitor-3-pkg": {
+      "type": "Badge",
+      "props": {
+        "text": "pip",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "monitor-3-type": {
+      "type": "Badge",
+      "props": {
+        "text": "critical auth bypass",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "monitor-3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "no fix",
+        "variant": "warning"
+      },
+      "children": []
+    },
+    "monitor-3-action": {
+      "type": "Text",
+      "props": {
+        "text": "→ track advisory; require network ACL in front of CodeChecker server.",
+        "variant": "lead"
+      },
+      "children": []
+    }
+  }
+}

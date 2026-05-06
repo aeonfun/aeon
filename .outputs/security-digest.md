@@ -1,19 +1,27 @@
-## Summary
+*Security Digest — 2026-05-06*
+Verdict: nothing urgent today. 5 to schedule, 3 to monitor. _Sources: KEV, GH Advisory, EPSS_
 
-Ran security-digest for 2026-05-04. **SECURITY_DIGEST_OK** — notify skipped per skill rule.
+*PATCH THIS WEEK*
+- [CVE-2026-29090](https://github.com/advisories/GHSA-6j7p-qjhg-9947) — rucio (pip) · CVSS 9.9 · EPSS n/a · no public PoC
+  SQL injection in FilterEngine PG/Oracle via DID Search API. Sister CVE-2026-29080 same package.
+  → upgrade rucio to ≥35.8.5 / ≥38.5.5 / ≥39.4.2 / ≥40.1.1 by branch.
+- [CVE-2026-42864](https://github.com/advisories/GHSA-fqvv-jvhr-g5jc) — firefighter-incident (pip) · CVSS 9.9 · EPSS n/a · no public PoC
+  Unauth SSRF in Raid jira_bot endpoint → IAM credential theft.
+  → upgrade firefighter-incident to ≥0.0.54.
+- [CVE-2026-42238](https://github.com/advisories/GHSA-4pvg-prr3-9cxr) — nginx-ui (Go) · CVSS 9.8 · EPSS 0.002 · no public PoC
+  Unauth RCE via Backup Restore.
+  → upgrade nginx-ui to ≥2.3.8.
+- [vm2 cluster](https://github.com/advisories/GHSA-ffh4-j6h5-pg66) — vm2 (npm) · CVSS 9.8 · 5 CVEs (26956/26332/24781/24120/24118)
+  Coordinated sandbox-escape disclosure; package re-patched after deprecation.
+  → upgrade vm2 to ≥3.11.0, or migrate to isolated-vm.
+- [CVE-2026-42048](https://github.com/advisories/GHSA-9whx-c884-c68q) — langflow (pip) · CVSS 9.6 · EPSS n/a · no public PoC
+  Path traversal in Knowledge Bases API.
+  → upgrade langflow to ≥1.9.0.
 
-**Sources status:** kev=ok, gh=ok (via `gh api`), epss=ok.
-
-**KEV this week (2026-04-27..05-04):** 4 entries — all dedup'd against last 2 days of logs:
-- CVE-2024-1708 ConnectWise ScreenConnect (EPSS 0.85, flat)
-- CVE-2026-41940 cPanel/WHM/WP2 (EPSS 0.28, flat)
-- CVE-2026-32202 Windows Shell (EPSS 0.07, flat)
-- CVE-2026-31431 Linux Kernel priv-esc (EPSS 0.04, flat vs 05-03)
-
-**GH Advisory:** strict 48h window from 2026-05-02T15:20:11Z is empty (both critical and high). Confirmed via `sort=published&direction=desc` — most recent critical/high entries both stamped 2026-04-30, ~91h ago. The 04-30 batch was already covered in 05-02/05-03 logs.
-
-**Tier counts:** today=0, this-week=0, monitor=0.
-
-**Files:** `memory/logs/2026-05-04.md` (appended `### security-digest` block); transient `kev.json` left at repo root (not gitignored — sandbox blocked rm).
-
-**Follow-up (carried):** `@anthropic-ai/claude-code` CVE-2026-40068 advisory (logged 2026-04-25) still unaddressed — dependabot.yml gap is now on day 8. Surface to next reflect / operator-config sweep.
+*MONITOR*
+- [GHSA-g38r-8gmr-ghrf](https://github.com/advisories/GHSA-g38r-8gmr-ghrf) — mysten-metrics + sui-execution-cut (crates.io) · malicious code · already yanked
+  Sui-ecosystem typosquats. → audit Cargo.lock; remove if present.
+- [CVE-2026-42601](https://github.com/advisories/GHSA-3h23-7824-pj8r) — archivebox (pip) · critical RCE · no fix
+  Unvalidated per-crawl config overrides in AddView. → track advisory; restrict /add exposure.
+- [CVE-2026-25660](https://github.com/advisories/GHSA-4v9x-cqc5-j645) — codechecker (pip) · critical auth bypass · no fix
+  → track advisory; require network ACL in front of CodeChecker server.
