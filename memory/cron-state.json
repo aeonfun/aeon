@@ -13,13 +13,13 @@
   },
   "token-alert": {
     "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-05T13:02:12Z",
-    "total_runs": 30,
-    "total_successes": 11,
+    "last_status": "success",
+    "last_success": "2026-05-06T13:07:11Z",
+    "total_runs": 31,
+    "total_successes": 12,
     "total_failures": 19,
     "consecutive_failures": 0,
-    "success_rate": 0.37,
+    "success_rate": 0.39,
     "last_failed": "2026-04-26T23:53:27Z",
     "last_error": "eb0164d\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
