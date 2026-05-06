@@ -1,0 +1,167 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest",
+        "description": "r/vibecoding endpoint blocking — 2026-05-06"
+      },
+      "children": [
+        "alert",
+        "sep1",
+        "endpoints_stack",
+        "sep2",
+        "issues_stack",
+        "sep3",
+        "recommendation_stack"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "HTTP 403 Blocked",
+        "message": "All 3 endpoints blocked via curl and host-blocked via WebFetch",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "endpoints_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "endpoints_heading",
+        "endpoint_top",
+        "endpoint_hot",
+        "endpoint_rising",
+        "failure_badge"
+      ]
+    },
+    "endpoints_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Blocked Endpoints",
+        "level": "h3"
+      }
+    },
+    "endpoint_top": {
+      "type": "Text",
+      "props": {
+        "text": "top — HTTP 403",
+        "variant": "body"
+      }
+    },
+    "endpoint_hot": {
+      "type": "Text",
+      "props": {
+        "text": "hot — HTTP 403",
+        "variant": "body"
+      }
+    },
+    "endpoint_rising": {
+      "type": "Text",
+      "props": {
+        "text": "rising — HTTP 403",
+        "variant": "body"
+      }
+    },
+    "failure_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "14th consecutive failure",
+        "variant": "destructive"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues_heading",
+        "issues_row"
+      ]
+    },
+    "issues_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Related Issues (Carrier)",
+        "level": "h3"
+      }
+    },
+    "issues_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "issue_002",
+        "issue_012"
+      ]
+    },
+    "issue_002": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-002",
+        "variant": "outline"
+      }
+    },
+    "issue_012": {
+      "type": "Badge",
+      "props": {
+        "text": "ISS-012",
+        "variant": "outline"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "recommendation_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rec_heading",
+        "rec_text1",
+        "rec_text2"
+      ]
+    },
+    "rec_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendation",
+        "level": "h3"
+      }
+    },
+    "rec_text1": {
+      "type": "Text",
+      "props": {
+        "text": "Needs scripts/prefetch-reddit.sh",
+        "variant": "lead"
+      }
+    },
+    "rec_text2": {
+      "type": "Text",
+      "props": {
+        "text": "Pause cron until prefetch ships",
+        "variant": "body"
+      }
+    }
+  }
+}
