@@ -1,0 +1,250 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Reply Maker — 2026-05-06",
+        "description": "REPLY_MAKER_DEGRADED (2 < 5 floor)"
+      },
+      "children": [
+        "alert-status",
+        "item-1",
+        "sep-1",
+        "item-2",
+        "sep-2",
+        "source-status"
+      ]
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "REPLY_MAKER_DEGRADED",
+        "message": "2 < 5 floor"
+      }
+    },
+    "item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "link-1",
+        "meta-1",
+        "tweet-1",
+        "why-1",
+        "replies-1"
+      ]
+    },
+    "link-1": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/MansaTesla/status/2051945519962833355",
+        "href": "https://x.com/MansaTesla/status/2051945519962833355"
+      }
+    },
+    "meta-1": {
+      "type": "Text",
+      "props": {
+        "text": "@MansaTesla, ~7h30m ago, 12h-fallback",
+        "variant": "caption"
+      }
+    },
+    "tweet-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "MansaTesla",
+        "handle": "@MansaTesla",
+        "text": "IRAN WAR UPDATE — MAY 6, 2026 The war just entered its most delicate phase yet. One day after launching \"Project Freedom\"…"
+      }
+    },
+    "why-1": {
+      "type": "Text",
+      "props": {
+        "text": "Original analysis post on the Project-Freedom-pause tape; concrete claim (\"most delicate phase\") to either reinforce with PM pricing or flip with the resolution-clause read.",
+        "variant": "caption"
+      }
+    },
+    "replies-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reply-1a-label",
+        "reply-1a",
+        "reply-1b-label",
+        "reply-1b"
+      ]
+    },
+    "reply-1a-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Option A",
+        "variant": "secondary"
+      }
+    },
+    "reply-1a": {
+      "type": "Text",
+      "props": {
+        "text": "@MansaTesla Polymarket peace-deal-by-May-15 jumped 3.35% to 14.5% YES on the same Truth Social tape. Pause is price re-read, not progress. 30-day clause should price May-15 below May-31 (26%); it's above. Sister-market clause-arb in event 357807.",
+        "variant": "body"
+      }
+    },
+    "reply-1b-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Option B",
+        "variant": "secondary"
+      }
+    },
+    "reply-1b": {
+      "type": "Text",
+      "props": {
+        "text": "@MansaTesla \"Most delicate phase\" misreads the tape. Hormuz-blockade-lifted-by-May-31 sits at 37%, June-30 at 63%. Crowd already prices the pause as cosmetic. The trade is May-15 peace deal at 14.5% — bull on rhetoric, bear on resolution clause.",
+        "variant": "body"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "link-2",
+        "meta-2",
+        "tweet-2",
+        "why-2",
+        "replies-2"
+      ]
+    },
+    "link-2": {
+      "type": "Link",
+      "props": {
+        "label": "https://x.com/CMShehbaz/status/2051948418390786334",
+        "href": "https://x.com/CMShehbaz/status/2051948418390786334"
+      }
+    },
+    "meta-2": {
+      "type": "Text",
+      "props": {
+        "text": "@CMShehbaz, ~7h20m ago, 12h-fallback",
+        "variant": "caption"
+      }
+    },
+    "tweet-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "CMShehbaz",
+        "handle": "@CMShehbaz",
+        "text": "I am grateful to President Donald Trump for his courageous leadership and timely announcement regarding the pause in Project Freedom in the Strait of Hormuz…"
+      }
+    },
+    "why-2": {
+      "type": "Text",
+      "props": {
+        "text": "Pakistan PM official statement; high-attention thread on the same TruthSocial tape; room to add cross-venue read of how the diplomatic win is actually being priced.",
+        "variant": "caption"
+      }
+    },
+    "replies-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "reply-2a-label",
+        "reply-2a",
+        "reply-2b-label",
+        "reply-2b"
+      ]
+    },
+    "reply-2a-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Option A",
+        "variant": "secondary"
+      }
+    },
+    "reply-2a": {
+      "type": "Text",
+      "props": {
+        "text": "@CMShehbaz Polymarket has US-Iran-peace-deal-by-May-15 at 14.5% YES today vs 3.35% yesterday — full +11pp re-pricing of Pakistan's mediator role on the same Truth Social post. Crowd reads the pause as you do; the clause text reads narrower.",
+        "variant": "body"
+      }
+    },
+    "reply-2b-label": {
+      "type": "Badge",
+      "props": {
+        "text": "Option B",
+        "variant": "secondary"
+      }
+    },
+    "reply-2b": {
+      "type": "Text",
+      "props": {
+        "text": "@CMShehbaz The pause is the easy half. Polymarket prices Hormuz-blockade-lifted-by-May-31 at 37%, June-30 at 63%. Pakistan's leverage on the blockade clause — separate from peace deal — is what doesn't yet show in the resolution text. That's the harder ask.",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source-status": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "source-heading",
+        "source-xai",
+        "source-memory",
+        "source-websearch"
+      ]
+    },
+    "source-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Source Status",
+        "level": "h4"
+      }
+    },
+    "source-xai": {
+      "type": "Text",
+      "props": {
+        "text": "xai=skip (XAI_API_KEY unset, ISS-014 day 12, .xai-cache/ absent)",
+        "variant": "caption"
+      }
+    },
+    "source-memory": {
+      "type": "Text",
+      "props": {
+        "text": "memory=2 (today's polymarket-comments narrative anchored peace-deal/Hormuz; 05-05 fetch-tweets URLs all >24h)",
+        "variant": "caption"
+      }
+    },
+    "source-websearch": {
+      "type": "Text",
+      "props": {
+        "text": "websearch=ok-but-narrow (in-strict-6h x.com URLs not surfaced; 12h-fallback returned 3, 1 dropped at gate as news-repost-no-angle)",
+        "variant": "caption"
+      }
+    }
+  }
+}

@@ -13,4 +13,3 @@ A: @CMShehbaz Polymarket has US-Iran-peace-deal-by-May-15 at 14.5% YES today vs 
 B: @CMShehbaz The pause is the easy half. Polymarket prices Hormuz-blockade-lifted-by-May-31 at 37%, June-30 at 63%. Pakistan's leverage on the blockade clause — separate from peace deal — is what doesn't yet show in the resolution text. That's the harder ask.
 
 source-status: xai=skip (XAI_API_KEY unset, ISS-014 day 12, .xai-cache/ absent), memory=2 (today's polymarket-comments narrative anchored peace-deal/Hormuz; 05-05 fetch-tweets URLs all >24h), websearch=ok-but-narrow (in-strict-6h x.com URLs not surfaced; 12h-fallback returned 3, 1 dropped at gate as news-repost-no-angle)
-
