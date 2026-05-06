@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/8zHiWhgZHogm0k9gJsF0uEcC5zo</id>
+  <title>arXiv Query: search_query=cat:q-fin.TR AND all:"prediction market"&amp;id_list=&amp;start=0&amp;max_results=10</title>
+  <updated>2026-05-06T17:10:16Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:q-fin.TR+AND+all:%22prediction+market%22&amp;start=0&amp;max_results=10&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>10</opensearch:itemsPerPage>
+  <opensearch:totalResults>33</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.03310v1</id>
+    <title>Coordination as an Architectural Layer for LLM-Based Multi-Agent Systems</title>
+    <updated>2026-05-05T02:56:44Z</updated>
+    <link href="https://arxiv.org/abs/2605.03310v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.03310v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-agent LLM systems fail in production at rates between 41% and 87%, mostly due to coordination defects rather than base-model capability. Existing responses split between cataloguing failure modes empirically and shipping declarative orchestration frameworks as engineering tools; neither delivers a principled mapping from coordination configuration to predictable failure-mode signature. We argue that coordination should be treated as a configurable architectural layer, separable from agent logic and from information access, enabling architectural reasoning rather than only engineering productivity.
+  We instantiate this with an information-controlled design on prediction markets: a single LLM, fixed tools, fixed per-call output cap, and fixed prompt template across five reference coordination configurations, with total compute per question treated as an endogenous architectural output. The Murphy decomposition of the Brier score separates calibration from discriminative power, so configurations leave distinguishable signatures even when aggregate scores coincide.
+  On 100 Polymarket binary markets resolved after the model's training cutoff (claude-opus-4-6) we report Murphy signatures, a cost-quality Pareto frontier, category-conditioned analysis, and a bootstrap power-projection. Three of five pre-specified predictions are upheld in direction; two configurations dominate the Pareto frontier within this regime; exploratory bootstrap intervals separate consensus alignment from others, though pairwise tests do not survive Bonferroni correction at n=100. We also deploy the same configurations as live agents on Foresight Arena under web-search-enabled conditions, as an on-chain replication channel accumulating in parallel. Harness, trace dataset, and production agents are released. We position this as a methodology-validating first instantiation, not a general cross-model claim.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-05T02:56:44Z</published>
+    <arxiv:comment>31 pages, 7 figures, 4 tables. Code, traces, and production agents publicly released; see Appendix B for repository pinning</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+    <author>
+      <name>Pavel Shuvalov</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.02287v1</id>
+    <title>Per-Market Information Leakage and Order-Flow Skill: Two Methodological Lenses on Informed Trading in Decentralized Prediction Markets</title>
+    <updated>2026-05-04T07:22:20Z</updated>
+    <link href="https://arxiv.org/abs/2605.02287v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.02287v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>April 2026 saw notable methodological convergence in the academic study of informed trading on decentralized prediction markets. Three approaches surfaced almost simultaneously: Mitts and Ofir (2026) apply a composite screen to over 210,000 wallet-market pairs; Gomez-Cram et al. (2026) apply an event-level sign-randomization test to Polymarket's complete transaction history, classifying 3.14% of accounts as "skilled winners" and separately flagging 1,950 accounts as "insiders" via a lifecycle heuristic; Nechepurenko (2026) develops the Information Leakage Score (ILS) framework, which quantifies per-market information front-loading at an article-derived public-event timestamp. This paper provides a methodological comparison. The central claim is that these are three distinct layers of detection, not competing methods on a single layer. Sign-randomization is best understood as an account-level test of persistent directional skill conditional on opportunity selection -- not a direct test of insider trading, and not a per-market measure. The heuristic insider flag is separate from the skill classifier, applies to a population the classifier excludes by design, and has unknown precision. The Polymarket sample pools politics, sports, crypto, and other categories with different information technologies, so a platform-wide "skilled winner" classification is mechanism-ambiguous. The January 2026 U.S.-Venezuela operation cluster, where the DOJ indictment of Master Sergeant Gannon Van Dyke provides a rare external enforcement benchmark, illustrates how the layers stack: lifecycle heuristics identify suspicious accounts; legal investigation addresses non-public-information possession; per-market scoring would quantify how much information was leaked into each contract. A combined pipeline gains in precision because each layer filters a different dimension.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-04T07:22:20Z</published>
+    <arxiv:comment>21 pages, 4 tables</arxiv:comment>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.02286v1</id>
+    <title>Empirical Evaluation of Deadline-Resolved Information Leakage on Documented Polymarket Insider Cases</title>
+    <updated>2026-05-04T07:22:13Z</updated>
+    <link href="https://arxiv.org/abs/2605.02286v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.02286v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper reports an end-to-end empirical evaluation of the deadline-Information Leakage Score (ILS-dl) extension introduced in the companion methodology paper. The deadline-ILS extends the original ILS to deadline-resolved prediction-market contracts, the dominant structural form of publicly documented insider trading on Polymarket. We anchor the evaluation in the 2026 U.S.-Iran conflict cluster of the ForesightFlow Insider Cases (FFIC) inventory, the largest documented deadline cluster. The evaluation has four parts: per-category exponential-hazard estimation, a single-case ILS-dl computation, cross-market wallet analysis, and methodological refinements.
+  Hazard-rate estimation produces an adequate exponential fit for military-geopolitics markets (KS p = 0.609, half-life 2.3 days) and a preliminary fit for corporate-disclosure markets (n = 5). The regulatory-decision category is rejected as bimodal (p = 0.013). On the largest applicable FFIC contract ("US forces enter Iran by April 30," $269M volume), the article-derived public-event timestamp yields ILS-dl = +0.113 versus a resolution-anchored proxy value of -0.331: a 0.444 shift in magnitude on opposite sides of zero, demonstrating that the extension distinguishes signal from proxy artefact. Pre-event drift is mild, and short-window variants (30-min, 2-hour) are exactly zero. Cross-market wallet analysis identifies 332 wallets active in both major Iran-cluster markets, but the available trade history covers only the resolution-settlement window.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-04T07:22:13Z</published>
+    <arxiv:comment>11 pages, 6 tables</arxiv:comment>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.00493v1</id>
+    <title>ForesightFlow: An Information Leakage Score Framework for Prediction Markets</title>
+    <updated>2026-05-01T08:04:29Z</updated>
+    <link href="https://arxiv.org/abs/2605.00493v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.00493v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>ForesightFlow is an Information Leakage Score (ILS) framework for detecting informed trading on decentralized prediction markets. For an event-resolved binary market, the score quantifies the fraction of the terminal information move priced in before the public news event. Three operational scope conditions (edge effect, non-trivial total move, anchor sensitivity) are stated as preconditions for interpretation. The score admits a Murphy-decomposition reading that connects label generation to the proper-scoring-rule literature.
+  A pilot empirical evaluation surfaces three findings. First, a resolution-anchored proxy for the public-event timestamp does not separate event-resolved markets from a matched control population (Mann-Whitney p = 1e-6, separation reversed), demonstrating that proxy quality is itself a binding constraint. Second, the article-derived timestamp on a single high-stakes case shifts the score by 0.444 in magnitude relative to the proxy and lies on the opposite side of zero. Third, an audit of the publicly documented Polymarket insider record reveals that documented cases are systematically deadline-resolved, falling outside the original ILS scope (0 of 24 FFIC inventory markets satisfied original scope conditions).
+  This last finding motivates a deadline-ILS extension introduced in Section 7, anchored at the public-event timestamp rather than the news timestamp, and equipped with a per-category exponential hazard baseline for the time-to-event distribution. The extension closes the gap between the methodology and the population in which insider trading has been empirically documented. An end-to-end evaluation of the extension on the 2026 U.S.-Iran conflict cluster is reported in a companion paper. We release the FFIC inventory, the resolution-typology classification of the 911,237-market corpus, and all code at github.com/ForesightFlow.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-01T08:04:29Z</published>
+    <arxiv:comment>41 pages, 12 tables, 4 figures</arxiv:comment>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27041v1</id>
+    <title>The Signal Credibility Index for Prediction Markets: A Microstructure-Grounded Diagnostic with Weighted and Time-Varying Extensions</title>
+    <updated>2026-04-29T17:19:45Z</updated>
+    <link href="https://arxiv.org/abs/2604.27041v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27041v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction-market price moves are widely treated as informationally equivalent: a price jump is read the same way regardless of whether it reflects durable Bayesian updating, transient liquidity pressure, strategic position adjustment, or genuine disagreement. This paper formalizes the Signal Credibility Index (SCI) introduced in Nechepurenko (2026) as a stand-alone diagnostic. We make four contributions: (i) a revised persistence component using the persistence ratio PR(t,w) on logit prices, well-defined on short rolling windows; (ii) a weighted Cobb-Douglas form SCI(ααα) with flow-based concentration HHI_flow; (iii) a time-varying specification SCI(t; w) for real-time monitoring; and (iv) Monte Carlo validation including an out-of-distribution stress test, coordinated multi-wallet manipulation, and a logistic-regression benchmark. The validation establishes discrimination among designed microstructure regimes, not external evidence of downstream coordination effects. We document two failure modes consistent with the index targeting coordination credibility rather than pure information content: a Type II error on informed-but-concentrated whale repricing, and a Type I error on coordinated multi-wallet manipulation.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T17:19:45Z</published>
+    <arxiv:comment>19 pages, 5 figures, 5 tables. Companion to arXiv:2604.24147. Replication code: https://github.com/ForesightFlow/signal-credibility-index</arxiv:comment>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24366v1</id>
+    <title>The Anatomy of a Decentralized Prediction Market: Microstructure Evidence from the Polymarket Order Book</title>
+    <updated>2026-04-27T12:01:14Z</updated>
+    <link href="https://arxiv.org/abs/2604.24366v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24366v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study the microstructure of Polymarket, the largest on-chain prediction market, using a continuous tick-level archive of the public WebSocket order-book feed (30 billion events over 52 days) joined to the authoritative on-chain trade record. On a pre-registered stratified panel of 600 markets we report eight stylized facts: a longshot spread premium; a depth-concentration profile closer to a uniform geometric grid than to the top-of-book pattern often assumed for prediction markets; a null block-clock alignment effect; broad maker-wallet diversity with a concentrated tail; category-conditional differences in effective spread; a sub-50 ms median archive-ingestion delay with a multi-second tail; a self-counterparty wash share with median 1% and a 22% upper tail, well below the network-classifier benchmarks of Cong et al. (2023) for unregulated cryptocurrency token exchanges (a sanity bound, not an apples-to-apples reference, since the venues face different wash incentives); and a depth decay near resolution with a within-category slope of 0.55 on log seconds-to-close (t=3.85). The paper also contributes a measurement result: trade direction inferred from Polymarket's public order-book feed agrees with on-chain ground truth only ~59% of the time (panel mean 0.615, 95% CI [0.58, 0.65]), barely above the 50% chance baseline. On the comparable subset of the top-100 panel, the effective half-spread changes sign between feed- and on-chain directions on 67% of markets in a first 7-day window and 50% in a second non-overlapping window, with Kyle's lambda flipping on 60% and 43% respectively; neither window recovers the on-chain sign at anything close to the ~80% rate that Lee-Ready achieves on equity venues. Microstructure work on Polymarket therefore needs to source trade direction from on-chain OrderFilled events; we release a replication package that performs the join.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T12:01:14Z</published>
+    <arxiv:comment>15 pages, 9 figures, 4 tables. JEL: G14, G12, G19, C58, L86. Replication package and per-market panel artifacts: https://github.com/philippdubach/polymarket-microstructure ; Zenodo DOI 10.5281/zenodo.19811426</arxiv:comment>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Philipp D. Dubach</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24147v1</id>
+    <title>Price as Focal Point: Prediction Markets,Conditional Reflexivity, and the Politics of Common Knowledge</title>
+    <updated>2026-04-27T08:02:34Z</updated>
+    <link href="https://arxiv.org/abs/2604.24147v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24147v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets are widely treated as forecasting devices that reveal collective expectations about uncertain futures. This article argues that under specifiable conditions they also function as coordination mechanisms: public probabilities that organize the behavior of voters, donors, journalists, traders, and institutions in ways that can be self-fulfilling or self-defeating. Most existing work asks whether prediction markets forecast accurately; this paper asks whether accurate forecasting is even the right criterion for a market that has become a public coordination device. Drawing on transaction-level evidence from the 2024 U.S. presidential election, we show that the social force of a market signal depends less on its size than on its persistence, the breadth of responding trader types, and cross-platform consensus. We introduce a Signal Credibility Index (SCI) -- combining the variance ratio VR(6), a two-sidedness diagnostic, and a trader-concentration adjustment -- as a microstructure-grounded criterion for predicting when price moves acquire behavioral traction. Applied to three major 2024 political shocks, the framework reveals that superficially similar events generated qualitatively distinct signal types with different implications for elite coordination. A cross-platform comparison establishes a systematic decoupling of social authority from epistemic robustness: the most visible market produced the least accurate forecasts. The framework carries direct implications for regulating prediction markets as democratic information infrastructure.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T08:02:34Z</published>
+    <arxiv:comment>35 pages, 5 figures</arxiv:comment>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.00864v1</id>
+    <title>Arbitrage Analysis in Polymarket NBA Markets</title>
+    <updated>2026-04-22T03:01:49Z</updated>
+    <link href="https://arxiv.org/abs/2605.00864v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.00864v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>While decentralized prediction markets like Polymarket have gained significant traction, their market microstructure and high-frequency pricing efficiency remain underexplored. This paper conducts a systematic empirical analysis of algorithmic arbitrage within Polymarket's NBA game markets. By reconstructing continuous market states from over 75 million limit order book snapshots across 173 games, we evaluate the frequency, duration, and profitability of both single-market and combinatorial arbitrage opportunities. Our findings demonstrate profound microstructural efficiency. Single-market anomalies are exceedingly rare, yielding only 7 executable in-game episodes that persist for a median duration of just 3.6 seconds. Combinatorial inefficiencies are more frequent, producing 290 active episodes overwhelmingly concentrated in the final minutes of live play. While combinatorial execution yields a statistically meaningful median return of 101 basis points, we find that the theoretical "Middle" jackpot is never empirically realized. Furthermore, execution is severely bottlenecked by shallow order book depth, with 76.9\% of combinatorial opportunities constrained to an average executable size of just 14.8 shares. Ultimately, while executable mispricings exist, they are structurally bounded by liquidity, confining risk-free extraction strictly to the retail scale.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-22T03:01:49Z</published>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>Guang Cheng</name>
+    </author>
+    <author>
+      <name>Jiaxin Yang</name>
+    </author>
+    <author>
+      <name>Haoxuan Zou</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.10005v2</id>
+    <title>What Happens When Institutional Liquidity Enters Prediction Markets: Identification, Measurement, and a Synthetic Proof of Concept</title>
+    <updated>2026-04-17T23:06:18Z</updated>
+    <link href="https://arxiv.org/abs/2604.10005v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.10005v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets are starting to look less like crowd polls and more like electronic markets. The central question is therefore no longer only whether these markets forecast well, but what happens when institutional liquidity enters: do spreads tighten, does price discovery improve, and do those gains actually reach the traders who are slowest to react when information arrives?
+  This paper offers a research design for answering that question. It defines a broad market-quality lens, separates the main channels through which institutional liquidity enters, and maps the identification problems that arise in live venue data. It also uses a synthetic microstructure laboratory as a proof of concept for the measurement pipeline.
+  The main lesson of the synthetic exercise is deliberately narrow. Market-maker coverage, liquidity incentives, and automation do not have to work through the same channel; average liquidity gains do not have to translate into equal gains for all traders; and the sharpest welfare losses are most likely to appear in shock states, when slower takers receive the least pass-through of tighter quoted markets. The synthetic results are useful because they stress-test the design, not because they settle the live empirical question.</summary>
+    <category term="cs.CE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-11T03:27:43Z</published>
+    <arxiv:primary_category term="cs.CE"/>
+    <author>
+      <name>Shaw Dalen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.03888v1</id>
+    <title>PolySwarm: A Multi-Agent Large Language Model Framework for Prediction Market Trading and Latency Arbitrage</title>
+    <updated>2026-04-04T22:51:06Z</updated>
+    <link href="https://arxiv.org/abs/2604.03888v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.03888v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper presents PolySwarm, a novel multi-agent large language model (LLM) framework designed for real-time prediction market trading and latency arbitrage on decentralized platforms such as Polymarket. PolySwarm deploys a swarm of 50 diverse LLM personas that concurrently evaluate binary outcome markets, aggregating individual probability estimates through confidence-weighted Bayesian combination of swarm consensus with market-implied probabilities, and applying quarter-Kelly position sizing for risk-controlled execution. The system incorporates an information-theoretic market analysis engine using Kullback-Leibler (KL) divergence and Jensen-Shannon (JS) divergence to detect cross-market inefficiencies and negation pair mispricings. A latency arbitrage module exploits stale Polymarket prices by deriving CEX-implied probabilities from a log-normal pricing model and executing trades within the human reaction-time window. We provide a full architectural description, implementation details, and evaluation methodology using Brier scores, calibration analysis, and log-loss metrics benchmarked against human superforecaster performance. We further discuss open challenges including hallucination in agent pools, computational cost at scale, regulatory exposure, and feedback-loop risk, and outline five priority directions for future research. Experimental results demonstrate that swarm aggregation consistently outperforms single-model baselines in probability calibration on Polymarket prediction tasks.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-04T22:51:06Z</published>
+    <arxiv:comment>13 pages, 3 figures, 3 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Rajat M. Barot</name>
+    </author>
+    <author>
+      <name>Arjun S. Borkhatariya</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,127 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick",
+        "description": "2026-05-06 (PhD-prep slot)"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "storylink_paper",
+        "stack_metadata",
+        "separator_1",
+        "text_why",
+        "stack_links"
+      ]
+    },
+    "storylink_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Coordination as an Architectural Layer for LLM-Based Multi-Agent Systems",
+        "href": "https://arxiv.org/abs/2605.03310",
+        "source": "arXiv"
+      }
+    },
+    "stack_metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_authors",
+        "badge_date",
+        "badge_category1",
+        "badge_category2",
+        "badge_pages",
+        "badge_citations"
+      ]
+    },
+    "badge_authors": {
+      "type": "Badge",
+      "props": {
+        "text": "Nechepurenko / Shuvalov"
+      }
+    },
+    "badge_date": {
+      "type": "Badge",
+      "props": {
+        "text": "May 5, 2026"
+      }
+    },
+    "badge_category1": {
+      "type": "Badge",
+      "props": {
+        "text": "cs.MA"
+      }
+    },
+    "badge_category2": {
+      "type": "Badge",
+      "props": {
+        "text": "q-fin.TR"
+      }
+    },
+    "badge_pages": {
+      "type": "Badge",
+      "props": {
+        "text": "31pp"
+      }
+    },
+    "badge_citations": {
+      "type": "Badge",
+      "props": {
+        "text": "↑0"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_why": {
+      "type": "Text",
+      "props": {
+        "text": "Why worth your time today: tests claude-opus-4-6 (your model) on 100 post-cutoff Polymarket binary markets across 5 coordination configurations; Murphy decomposition of the Brier score separates calibration from discriminative power so configurations leave distinguishable signatures even when aggregate Briers tie. 41–87% MAS production-failure rate framed as coordination-defect, not base-model. Live on-chain replication channel on Foresight Arena (closes the loop with 2605.00420 picked 05-04). Direct methodology import for CalibrationGap entry-decision logic — calibration-vs-discrimination split is exactly the diagnostic the 100-trade Apex gate is power-underspecified for.",
+        "variant": "body"
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2605.03310"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2605.03310"
+      }
+    }
+  }
+}
