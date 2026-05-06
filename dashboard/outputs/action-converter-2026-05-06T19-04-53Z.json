@@ -1,0 +1,317 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "5 Actions — 2026-05-06"
+      },
+      "children": [
+        "actions-stack",
+        "sep-bottom",
+        "sources-text"
+      ]
+    },
+    "actions-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "action-1",
+        "sep-1",
+        "action-2",
+        "sep-2",
+        "action-3",
+        "sep-3",
+        "action-4",
+        "sep-4",
+        "action-5"
+      ]
+    },
+    "action-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1-1",
+        "desc-1",
+        "why-1",
+        "done-1",
+        "loop-1"
+      ]
+    },
+    "h1-1": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Pin Iran-airspace-by-May-8 falsifier-hit",
+        "level": "h3"
+      }
+    },
+    "desc-1": {
+      "type": "Text",
+      "props": {
+        "text": "(15.5%→4% in 24h) plus Threadbare-Signal/Glamorous-Eagle/Partial-Intestine multi-handle NO cluster to memory/topics/polymarket.md Lessons section.",
+        "variant": "body"
+      }
+    },
+    "why-1": {
+      "type": "Text",
+      "props": {
+        "text": "why: Cluster was correct against the kinetic tape; same handles run on Trump-China-by-May-31 — locks ground-truth for the clause-text scanner queue.",
+        "variant": "caption"
+      }
+    },
+    "done-1": {
+      "type": "Text",
+      "props": {
+        "text": "done: Commit pushed editing memory/topics/polymarket.md with a \"2026-05-06 Iran-airspace falsifier\" lesson + 3 handles tagged \"validated\".",
+        "variant": "caption"
+      }
+    },
+    "loop-1": {
+      "type": "Badge",
+      "props": {
+        "text": "iran-airspace-falsifier-pin",
+        "variant": "outline"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1-2",
+        "desc-2",
+        "why-2",
+        "done-2",
+        "loop-2"
+      ]
+    },
+    "h1-2": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Merge tomscaria/swarm-fund-mvp#31",
+        "level": "h3"
+      }
+    },
+    "desc-2": {
+      "type": "Text",
+      "props": {
+        "text": "fix(aeon_adapter): clear _last_error after successful poll",
+        "variant": "body"
+      }
+    },
+    "why-2": {
+      "type": "Text",
+      "props": {
+        "text": "why: pr-review approved 09:11Z today; ADR-093 critical-path defect; 11 days remain in the 2026-05-17 falsifier window.",
+        "variant": "caption"
+      }
+    },
+    "done-2": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR #31 merged into tomscaria/swarm-fund-mvp main.",
+        "variant": "caption"
+      }
+    },
+    "loop-2": {
+      "type": "Badge",
+      "props": {
+        "text": "pr-31-aeon-adapter-merge",
+        "variant": "outline"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1-3",
+        "desc-3",
+        "why-3",
+        "done-3",
+        "loop-3"
+      ]
+    },
+    "h1-3": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Scaffold ADR-095 (clause-text ingest)",
+        "level": "h3"
+      }
+    },
+    "desc-3": {
+      "type": "Text",
+      "props": {
+        "text": "on tomscaria/swarm-fund-mvp — open draft PR adding docs/adrs/095-clause-text-ingest.md with title, context (today's Iran-airspace 48pp divergence vs major-closure market $3.7M / 52% YES), and decision/consequences placeholders.",
+        "variant": "body"
+      }
+    },
+    "why-3": {
+      "type": "Text",
+      "props": {
+        "text": "why: Today's Iran-airspace article and yesterday's repo article both name ADR-095 as the surface; scaffolding now anchors the lane before the next merge cycle and inside the ADR-093 falsifier window.",
+        "variant": "caption"
+      }
+    },
+    "done-3": {
+      "type": "Text",
+      "props": {
+        "text": "done: Draft PR opened on tomscaria/swarm-fund-mvp containing the new ADR file with 4 section headings.",
+        "variant": "caption"
+      }
+    },
+    "loop-3": {
+      "type": "Badge",
+      "props": {
+        "text": "adr-095-clause-text-ingest",
+        "variant": "outline"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1-4",
+        "desc-4",
+        "why-4",
+        "done-4",
+        "loop-4"
+      ]
+    },
+    "h1-4": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Spec Russia-Ukraine May-31 ceasefire window",
+        "level": "h3"
+      }
+    },
+    "desc-4": {
+      "type": "Text",
+      "props": {
+        "text": "05-08 → 05-10 entry-trigger window (currently 6% YES) in memory/topics/polymarket.md: define which resolution-debate signals (UMA dispute filing, Trump TruthSocial post, Lavrov press) trigger entry, sizing per Quarter-Kelly, exit on resolution.",
+        "variant": "body"
+      }
+    },
+    "why-4": {
+      "type": "Text",
+      "props": {
+        "text": "why: MEMORY tradable-hooks flags 05-08 → 05-10 as the comments-side leverage window; opens day after tomorrow.",
+        "variant": "caption"
+      }
+    },
+    "done-4": {
+      "type": "Text",
+      "props": {
+        "text": "done: New ## Russia-Ukraine entry-spec section in memory/topics/polymarket.md with ≥3 trigger signals + sizing rule + exit rule.",
+        "variant": "caption"
+      }
+    },
+    "loop-4": {
+      "type": "Badge",
+      "props": {
+        "text": "russia-ukraine-window-spec",
+        "variant": "outline"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h1-5",
+        "desc-5",
+        "why-5",
+        "done-5",
+        "loop-5"
+      ]
+    },
+    "h1-5": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Add wash-filter to CalibrationGap quant-scanner",
+        "level": "h3"
+      }
+    },
+    "desc-5": {
+      "type": "Text",
+      "props": {
+        "text": "Drop fills where self-counterparty wash share >22% per arXiv:2604.24366 Anatomy paper finding (median 1%, 22% upper tail).",
+        "variant": "body"
+      }
+    },
+    "why-5": {
+      "type": "Text",
+      "props": {
+        "text": "why: Operator-actionable edge logged 05-04 paper-pick; CalibrationGap is the single-largest Apex-gate dependency (29/100); wash-skewed markets are the noisiest scanner input.",
+        "variant": "caption"
+      }
+    },
+    "done-5": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on tomscaria/swarm-fund-mvp adding wash_share <= 0.22 filter at the fill-aggregation layer with paper cite in body.",
+        "variant": "caption"
+      }
+    },
+    "loop-5": {
+      "type": "Badge",
+      "props": {
+        "text": "calibration-gap-wash-filter",
+        "variant": "outline"
+      }
+    },
+    "sep-bottom": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=118 logs=7 topics=8 prs=13 cron_failing=3 mode=OK",
+        "variant": "muted"
+      }
+    }
+  }
+}
