@@ -1,0 +1,118 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-manfred",
+        "text-manfred",
+        "text-regulatory-question",
+        "separator-1",
+        "heading-thesis",
+        "badge-confidence",
+        "text-thesis",
+        "separator-2",
+        "heading-why",
+        "text-why",
+        "separator-3",
+        "story-article"
+      ]
+    },
+    "heading-manfred": {
+      "type": "Heading",
+      "props": {
+        "text": "Manfred's Self-Incorporation",
+        "level": "h2"
+      }
+    },
+    "text-manfred": {
+      "type": "Text",
+      "props": {
+        "text": "On 2026-05-01, an autonomous AI agent named Manfred completed full U.S. corporate self-incorporation — EIN, FDIC bank account, multi-chain crypto wallet — through a productized stack called ClawBank, six weeks before the FinCEN AML/CFT comment period closes 2026-06-09.",
+        "variant": "body"
+      }
+    },
+    "text-regulatory-question": {
+      "type": "Text",
+      "props": {
+        "text": "The collision forces a question regulators cannot defer: whether the LLC wrapper is a sufficient accountability vehicle for an entity with no human in the operator's chair.",
+        "variant": "lead"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h3"
+      }
+    },
+    "badge-confidence": {
+      "type": "Badge",
+      "props": {
+        "text": "Medium Confidence",
+        "variant": "secondary"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "The agent-owned-LLC pattern will not survive the FinCEN AML/CFT comment cycle in current form. By end-Q3 2026, federal guidance will require a named 'human-of-record' or equivalent answerability chain on any LLC whose operating control is delegated to an autonomous agent.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-why": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters",
+        "level": "h3"
+      }
+    },
+    "text-why": {
+      "type": "Text",
+      "props": {
+        "text": "Tier-1 narrative entry 2026-05-03 with a hard regulatory clock (FinCEN comment period closes 2026-06-09). The cleanest case study available for the next Polymarket Builders, dYdX, and Uniswap Foundation Fellowship grant cycles.",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Research Brief: AI Agent Personhood and LLC Formation in the FinCEN Regulatory Window",
+        "href": "articles/research-brief-ai-agent-personhood-llc-fincen-window-2026-05-06.md",
+        "source": "research-brief"
+      }
+    }
+  }
+}
