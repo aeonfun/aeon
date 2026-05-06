@@ -1,0 +1,463 @@
+{
+  "root": "defi-card",
+  "state": {},
+  "elements": {
+    "defi-card": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi Overview",
+        "description": "2026-05-06 — Mixed: TVL +2.5% (BTC-led), DEX vol cools −19% from yesterday's spike."
+      },
+      "children": [
+        "tvl-stat",
+        "sep1",
+        "chains-heading",
+        "chains-table",
+        "sep2",
+        "movers-heading",
+        "movers-stack",
+        "sep3",
+        "fees-heading",
+        "fees-table",
+        "sep4",
+        "fees-beating-heading",
+        "fees-beating-stack",
+        "sep5",
+        "dex-stat",
+        "dex-venues-heading",
+        "dex-table",
+        "sep6",
+        "stables-section",
+        "sep7",
+        "real-yield-heading",
+        "real-yield-table",
+        "sep8",
+        "incentive-yield-heading",
+        "incentive-yield-table",
+        "sep9",
+        "sources-text"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL",
+        "value": "$87.27B",
+        "delta": "+2.48% 24h, +4.79% 7d",
+        "trend": "up"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Chains",
+        "level": "h3"
+      }
+    },
+    "chains-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL",
+          "24h Change"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$46.91B",
+            "+2.8%"
+          ],
+          [
+            "BSC",
+            "$5.67B",
+            "+2.4%"
+          ],
+          [
+            "Solana",
+            "$5.63B",
+            "+3.3%"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "movers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers",
+        "level": "h3"
+      }
+    },
+    "movers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-up-item",
+        "movers-down-item"
+      ]
+    },
+    "movers-up-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "movers-up-title",
+        "movers-up-detail"
+      ]
+    },
+    "movers-up-title": {
+      "type": "Text",
+      "props": {
+        "text": "↑ Tonstakers LSD +26% ($140M → $176M)",
+        "variant": "lead"
+      }
+    },
+    "movers-up-detail": {
+      "type": "Text",
+      "props": {
+        "text": "TON token-breakout day-2 lifts LSD via price + new stakers (7d +78%).",
+        "variant": "body"
+      }
+    },
+    "movers-down-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "movers-down-title",
+        "movers-down-detail"
+      ]
+    },
+    "movers-down-title": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Hyperliquid Spot Orderbook −15% ($159M → $135M)",
+        "variant": "lead"
+      }
+    },
+    "movers-down-detail": {
+      "type": "Text",
+      "props": {
+        "text": "2nd day decline; spot venue draining (7d −18%, no catalyst named).",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "24h Fees",
+          "vs 7d avg"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.48M",
+            "flat"
+          ],
+          [
+            "Circle USDC",
+            "$6.67M",
+            "+1.8%"
+          ],
+          [
+            "Canton",
+            "$2.26M",
+            "+6.6%"
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-beating-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees Beating TVL",
+        "level": "h3"
+      }
+    },
+    "fees-beating-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-beating-raydium",
+        "fees-beating-aerodrome"
+      ]
+    },
+    "fees-beating-raydium": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "raydium-title",
+        "raydium-detail"
+      ]
+    },
+    "raydium-title": {
+      "type": "Text",
+      "props": {
+        "text": "Raydium AMM — fees +49% / TVL +4.7% (7d) on $1.05B",
+        "variant": "lead"
+      }
+    },
+    "raydium-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Solana spot demand outrunning deposits.",
+        "variant": "body"
+      }
+    },
+    "fees-beating-aerodrome": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "aerodrome-title",
+        "aerodrome-detail"
+      ]
+    },
+    "aerodrome-title": {
+      "type": "Text",
+      "props": {
+        "text": "Aerodrome Slipstream — fees +46% / TVL +2.5% (7d) on $213M",
+        "variant": "lead"
+      }
+    },
+    "aerodrome-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Base CL-DEX demand outpacing capital.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dex-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume (24h)",
+        "value": "$6.01B",
+        "delta": "−18.8% 1d",
+        "trend": "down"
+      }
+    },
+    "dex-venues-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top DEX Venues",
+        "level": "h4"
+      }
+    },
+    "dex-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "24h Volume",
+          "Change"
+        ],
+        "rows": [
+          [
+            "UniswapV4",
+            "$763M",
+            "−9%"
+          ],
+          [
+            "Aerodrome Slipstream",
+            "$494M",
+            "−13%"
+          ],
+          [
+            "PancakeSwap V3",
+            "$480M",
+            "−41%"
+          ]
+        ]
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stables-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stables-stat",
+        "stables-detail"
+      ]
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stables TVL",
+        "value": "$320.5B",
+        "delta": "−0.06% 1d",
+        "trend": "neutral"
+      }
+    },
+    "stables-detail": {
+      "type": "Text",
+      "props": {
+        "text": "BUIDL +3.5% on $2.9B base only notable single-issuer move (~$98M new mint).",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "real-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real Yield (sustainable, ≥$10M)",
+        "level": "h3"
+      }
+    },
+    "real-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Chain",
+          "APY Base",
+          "TVL",
+          "Mean 30d"
+        ],
+        "rows": [
+          [
+            "APT (amnis-finance)",
+            "Aptos",
+            "33.8%",
+            "$22M",
+            "17.85%"
+          ],
+          [
+            "MUBOND (mu-digital)",
+            "ETH",
+            "22.6%",
+            "$11M",
+            "15.21%"
+          ],
+          [
+            "SUSDAT (saturn)",
+            "ETH",
+            "22.3%",
+            "$63M",
+            "24.24%"
+          ]
+        ]
+      }
+    },
+    "sep8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "incentive-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive Yield (points/emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Chain",
+          "APY",
+          "Rewards",
+          "TVL"
+        ],
+        "rows": [
+          [
+            "USDC-AERO",
+            "Base",
+            "22.6%",
+            "AERO rewards",
+            "$28M"
+          ],
+          [
+            "SDCRV",
+            "ETH",
+            "20.4%",
+            "CRV+SDT rewards",
+            "$30M"
+          ]
+        ]
+      }
+    },
+    "sep9": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
