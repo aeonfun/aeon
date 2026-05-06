@@ -1,21 +1,14 @@
-*Evening Recap — 2026-05-05*
-_TL;DR: research day — 3 tradable hooks, 1 PR on falsifier path, empirical anchor locked; chain-runner DEGRADED day 10_
+*EOD — 2026-05-06*
 
-*Headlines:*
-- external-feature — PR #31 opened: aeon_adapter _last_error clears on recovery (ADR-093, T-12 falsifier) · https://github.com/tomscaria/swarm-fund-mvp/pull/31
-- paper-pick — ILS-dl Iran-cluster empirical anchor (0.444-mag leakage shift) · https://arxiv.org/abs/2605.02286
-- polymarket-comments — 3 hooks: Trump-China NO-cluster (92.5% vs 3 absence-of-evidence handles), Iranian-uranium UMA-arb (4-handle bluff), Iran-airspace T-3 mediation-vs-strike
+*Trading loop:* PM 4 events/15+ markets · Kalshi 3 events/~79 markets · Runners 166 pools (5 chains). 1 signal: KXBTC $81.5-82k bucket +4pp (score 12). PM flat (<1pp all markets); Runners SPECULATIVE — 5/5 BREAKOUT, no DEEP-LIQ (vanity-4444 BSC wash-print actor 4th of 6 days).
 
-*Notable:*
-- monitor-runners: 85 pools scanned, SPECULATIVE verdict; TTPA + SKYAI streaks both ended; 0 DEEP-LIQ in top 5
-- Revenant: 29 trades / 76% WR / +$415 NAV (no new orders today; metrics.json authoritative)
+*Revenant:* 28 closed / 75% WR / +$344 PnL / Sharpe 0.29 / 14 open. HL_balance null (Hyperliquid unfunded). Mexico-FIFA YES 1.05¢ flat — no new fills. 72 trades to Apex gate.
 
-*Decisions for tomorrow:*
-- Merge PR #156 reply-maker (day 11) → closes ISS-014
-- Review PR #158 (dashboard/skills/run) + PR #159 (star-momentum-alert), both opened today
+*NAV delta:* unavailable (Polymarket-only equity; HL unfunded).
 
-*Blockers:*
-- 3 chain wrappers failed (morning-brief / evening-rollup / weekly-grant-update) — day 10 chain-runner DEGRADED
-- 14:00 heartbeat skipped; second consecutive skip tomorrow re-escalates ISS-017
+*Skill failures:* ISS-020 — 17-skill mass-fail 15:32-35Z, post-execution state-write (Claude ran, tokens consumed, success-marker dropped). Self-recovered by 17:00Z. article peaked cf=3. chain:evening-rollup failed again (day 11 chain-runner DEGRADED).
 
-_+20 routine runs collapsed · sources: log=ok cron-state=ok_
+*Top 3:*
+1. Paper — arXiv:2605.03310 Coordination Layer: claude-opus-4-6 × 100 PM markets, Murphy decomp → CalibrationGap entry-signal methodology import
+2. Comments — Iran-peace May-15 (14.5%) > May-31 (26%) inverted vs 30-day-pause clause → sister-market arb candidate
+3. PR — aaronjmars/aeon#160 v4-readiness CLEAN; add ## Trusted Authors to watched-repos.md to unblock auto-merge

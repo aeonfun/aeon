@@ -1,0 +1,299 @@
+{
+  "root": "card_eod",
+  "state": {},
+  "elements": {
+    "card_eod": {
+      "type": "Card",
+      "props": {
+        "title": "EOD — 2026-05-06"
+      },
+      "children": [
+        "heading_trading_loop",
+        "section_trading_loop",
+        "separator_1",
+        "heading_revenant",
+        "section_revenant",
+        "separator_2",
+        "heading_nav_delta",
+        "text_nav_delta",
+        "separator_3",
+        "heading_skill_failures",
+        "alert_iss020",
+        "separator_4",
+        "heading_top3",
+        "section_top3_items"
+      ]
+    },
+    "heading_trading_loop": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading Loop",
+        "level": "h3"
+      }
+    },
+    "section_trading_loop": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_markets_overview",
+        "text_signal",
+        "text_market_conditions"
+      ]
+    },
+    "text_markets_overview": {
+      "type": "Text",
+      "props": {
+        "text": "PM 4 events/15+ markets · Kalshi 3 events/~79 markets · Runners 166 pools (5 chains)"
+      }
+    },
+    "text_signal": {
+      "type": "Text",
+      "props": {
+        "text": "1 signal: KXBTC $81.5-82k bucket +4pp (score 12)"
+      }
+    },
+    "text_market_conditions": {
+      "type": "Text",
+      "props": {
+        "text": "PM flat (<1pp all markets); Runners SPECULATIVE — 5/5 BREAKOUT, no DEEP-LIQ (vanity-4444 BSC wash-print actor 4th of 6 days)"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_revenant": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h3"
+      }
+    },
+    "section_revenant": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "grid_revenant_stats",
+        "text_revenant_position",
+        "text_revenant_apex_gate"
+      ]
+    },
+    "grid_revenant_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_closed_trades",
+        "stat_win_rate",
+        "stat_pnl",
+        "stat_sharpe",
+        "stat_open_positions",
+        "stat_hl_balance"
+      ]
+    },
+    "stat_closed_trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "28"
+      }
+    },
+    "stat_win_rate": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "75%"
+      }
+    },
+    "stat_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "PnL",
+        "value": "+$344"
+      }
+    },
+    "stat_sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.29"
+      }
+    },
+    "stat_open_positions": {
+      "type": "Stat",
+      "props": {
+        "label": "Open positions",
+        "value": "14"
+      }
+    },
+    "stat_hl_balance": {
+      "type": "Stat",
+      "props": {
+        "label": "HL_balance",
+        "value": "null"
+      }
+    },
+    "text_revenant_position": {
+      "type": "Text",
+      "props": {
+        "text": "Mexico-FIFA YES 1.05¢ flat — no new fills"
+      }
+    },
+    "text_revenant_apex_gate": {
+      "type": "Text",
+      "props": {
+        "text": "72 trades to Apex gate"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_nav_delta": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV Delta",
+        "level": "h3"
+      }
+    },
+    "text_nav_delta": {
+      "type": "Text",
+      "props": {
+        "text": "Unavailable (Polymarket-only equity; HL unfunded)"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_skill_failures": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill Failures",
+        "level": "h3"
+      }
+    },
+    "alert_iss020": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-020 — 17-skill mass-fail 15:32-35Z",
+        "message": "Post-execution state-write (Claude ran, tokens consumed, success-marker dropped). Self-recovered by 17:00Z. article peaked cf=3. chain:evening-rollup failed again (day 11 chain-runner DEGRADED)",
+        "type": "warning"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_top3": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3",
+        "level": "h3"
+      }
+    },
+    "section_top3_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item_top1",
+        "item_top2",
+        "item_top3"
+      ]
+    },
+    "item_top1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item1",
+        "storylink_arxiv"
+      ]
+    },
+    "badge_item1": {
+      "type": "Badge",
+      "props": {
+        "text": "Paper",
+        "variant": "default"
+      }
+    },
+    "storylink_arxiv": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Coordination Layer: claude-opus-4-6 × 100 PM markets, Murphy decomp → CalibrationGap entry-signal methodology import",
+        "href": "https://arxiv.org/abs/2605.03310",
+        "source": "arXiv"
+      }
+    },
+    "item_top2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item2",
+        "text_iran_market"
+      ]
+    },
+    "badge_item2": {
+      "type": "Badge",
+      "props": {
+        "text": "Comments",
+        "variant": "default"
+      }
+    },
+    "text_iran_market": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-peace May-15 (14.5%) > May-31 (26%) inverted vs 30-day-pause clause → sister-market arb candidate"
+      }
+    },
+    "item_top3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item3",
+        "link_pr160"
+      ]
+    },
+    "badge_item3": {
+      "type": "Badge",
+      "props": {
+        "text": "PR",
+        "variant": "default"
+      }
+    },
+    "link_pr160": {
+      "type": "Link",
+      "props": {
+        "label": "aaronjmars/aeon#160 v4-readiness CLEAN; add ## Trusted Authors to watched-repos.md to unblock auto-merge",
+        "href": "https://github.com/aaronjmars/aeon/pull/160"
+      }
+    }
+  }
+}
