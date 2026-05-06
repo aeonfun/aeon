@@ -1,0 +1,398 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker — 2026-05-06",
+        "description": "12 goals — 0 at risk, 0 needs attention, 10 on track, 2 blocked, 0 done (overall → flat; no status changes vs 2026-05-05)"
+      },
+      "children": [
+        "summary_status_group",
+        "separator_1",
+        "blocked_section",
+        "separator_2",
+        "on_track_section",
+        "separator_3",
+        "notable_section",
+        "separator_4",
+        "sources_section"
+      ]
+    },
+    "summary_status_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_at_risk",
+        "badge_needs_attention",
+        "badge_on_track",
+        "badge_blocked",
+        "badge_done"
+      ]
+    },
+    "badge_at_risk": {
+      "type": "Badge",
+      "props": {
+        "text": "0 at risk",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_needs_attention": {
+      "type": "Badge",
+      "props": {
+        "text": "0 needs attention",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "badge_on_track": {
+      "type": "Badge",
+      "props": {
+        "text": "10 on track",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_blocked": {
+      "type": "Badge",
+      "props": {
+        "text": "2 blocked",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_done": {
+      "type": "Badge",
+      "props": {
+        "text": "0 done",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "blocked_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_heading",
+        "blocked_items"
+      ]
+    },
+    "blocked_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "blocked_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_item_1",
+        "blocked_item_2"
+      ]
+    },
+    "blocked_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocked_1_title",
+        "blocked_1_action"
+      ]
+    },
+    "blocked_1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill() — operator-side workflow patch, day 10 idle on the fix",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "blocked_1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Operator: add `echo` per dispatched skill before each `gh workflow run` in chain-runner.yml.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "blocked_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "blocked_2_title",
+        "blocked_2_action"
+      ]
+    },
+    "blocked_2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator config sweep — operator-side, blocked on yml + secrets + skills.lock",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "blocked_2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Operator: populate memory/on-chain-watches.yml, add NEYNAR_API_KEY + X_HANDLE, ship skills.lock.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "on_track_heading",
+        "on_track_items"
+      ]
+    },
+    "on_track_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK (sorted ascending by 14d activity)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "on_track_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ontrack_1",
+        "ontrack_2",
+        "ontrack_3",
+        "ontrack_4",
+        "ontrack_5",
+        "ontrack_6",
+        "ontrack_7",
+        "ontrack_8",
+        "ontrack_9",
+        "ontrack_10"
+      ]
+    },
+    "ontrack_1": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-018 / ISS-019 prompt-bug fixes — 0d idle, 4/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_2": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp tick-broker falsifier — 0d idle, 4/14d (→ flat; T-falsifier 2026-05-17, 11d remaining)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_3": {
+      "type": "Text",
+      "props": {
+        "text": "Cost-discipline sonnet downgrade pass — 0d idle, 8/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_4": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch — 0d idle, 11/14d (→ flat, PR day 12)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_5": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch — 0d idle, 11/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_6": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees — 0d idle, 11/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_7": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push (monitor-polymarket + polymarket-comments) — 0d idle, 12/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_8": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb gate adjustment (min-gap bump) — 0d idle, 12/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_9": {
+      "type": "Text",
+      "props": {
+        "text": "skill-evals key fixes (PR #5) — 0d idle, 12/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ontrack_10": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily PhD reading list — 0d idle, 12/14d (→ flat)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "notable_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable_heading",
+        "notable_content"
+      ]
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "notable_content": {
+      "type": "Text",
+      "props": {
+        "text": "tick-broker activity 7→4 (-43%), nearing degrading band; T-falsifier 11d remaining if Aeon side doesn't ship outputs/{skill}/{date}.json contract. PR #156 enters day 12 unmerged.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_logs",
+        "sources_git",
+        "sources_gh_pr",
+        "sources_gh_issue",
+        "sources_cron"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "sources_logs": {
+      "type": "Text",
+      "props": {
+        "text": "logs=ok (12 days)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sources_git": {
+      "type": "Text",
+      "props": {
+        "text": "git=ok (1 commit/14d in this repo)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sources_gh_pr": {
+      "type": "Text",
+      "props": {
+        "text": "gh_pr=ok (11 PRs on tomscaria/aeon)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sources_gh_issue": {
+      "type": "Text",
+      "props": {
+        "text": "gh_issue=fail (issues disabled on tomscaria/aeon)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sources_cron": {
+      "type": "Text",
+      "props": {
+        "text": "cron-state=skip",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

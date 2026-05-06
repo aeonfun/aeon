@@ -1,70 +1,65 @@
 {
-  "run_at": "2026-05-05T13:30:00Z",
+  "run_at": "2026-05-06T13:30:00Z",
   "goals": {
     "fix-chain-runner-yml-dispatch-skill": {
       "status": "BLOCKED",
       "activity_count_14d": 11,
-      "last_activity_date": "2026-05-05"
-    },
-    "pr-156-reply-maker-xai-prefetch": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 12,
-      "last_activity_date": "2026-05-05"
-    },
-    "iss-017-cron-tick-gap-watch": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-04"
-    },
-    "monitor-runners-deep-liq-floor-patch": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 14,
-      "last_activity_date": "2026-05-05"
-    },
-    "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 17,
-      "last_activity_date": "2026-05-05"
+      "last_activity_date": "2026-05-06"
     },
     "cost-discipline-sonnet-downgrade-pass": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 8,
+      "last_activity_date": "2026-05-06"
+    },
+    "pr-156-reply-maker-xai-prefetch": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 11,
+      "last_activity_date": "2026-05-06"
+    },
+    "monitor-runners-deep-liq-floor-patch": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 11,
+      "last_activity_date": "2026-05-06"
+    },
+    "swarm-fund-mvp-tick-broker-falsifier": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 4,
+      "last_activity_date": "2026-05-06"
+    },
+    "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-05-06"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
       "activity_count_14d": 12,
-      "last_activity_date": "2026-05-05"
-    },
-    "swarm-fund-mvp-tick-broker-falsifier": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 7,
-      "last_activity_date": "2026-05-05"
+      "last_activity_date": "2026-05-06"
     },
     "operator-config-sweep": {
       "status": "BLOCKED",
-      "activity_count_14d": 13,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-05-06"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 10,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-05-06"
     },
     "iss-018-iss-019-prompt-bug-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 4,
+      "last_activity_date": "2026-05-06"
     },
     "weekly-shiplog-mondays-forward-to-grant-committees": {
       "status": "ON_TRACK",
-      "activity_count_14d": 10,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 11,
+      "last_activity_date": "2026-05-06"
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 17,
-      "last_activity_date": "2026-05-05"
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-05-06"
     },
     "act-now-vercel-failure-prs-on-swarm-fund-mvp": {
       "status": "DONE",

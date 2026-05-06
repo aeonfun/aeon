@@ -1,28 +1,25 @@
-*Goal Tracker — 2026-05-05*
+*Goal Tracker — 2026-05-06*
 
-Summary: 13 active goals — 0 at risk, 0 needs attention, 11 on track, 2 blocked, 2 done (overall → flat vs prior run)
+Summary: 12 goals — 0 at risk, 0 needs attention, 10 on track, 2 blocked, 0 done (overall → flat; no status changes vs 2026-05-05)
 
 BLOCKED
-- chain-runner.yml dispatch_skill() — waiting on operator-side workflow patch (8+ days idle)
-  → Action: Add `echo` per dispatched skill before each `gh workflow run` in chain-runner.yml.
-- Operator config sweep — waiting on operator-side config (NEYNAR/X_HANDLE/skills.lock/prefetch-reddit)
-  → Action: Ship `scripts/prefetch-reddit.sh` to clear ISS-002/012 11-day failure streak.
+• chain-runner.yml dispatch_skill() — operator-side workflow patch, day 10 idle on the fix
+  → Action: Operator: add `echo` per dispatched skill before each `gh workflow run` in chain-runner.yml.
+• Operator config sweep — operator-side, blocked on yml + secrets + skills.lock
+  → Action: Operator: populate memory/on-chain-watches.yml, add NEYNAR_API_KEY + X_HANDLE, ship skills.lock.
 
-ON TRACK
-- PR #156 reply-maker XAI prefetch — 0d idle, 12 activity/14d (→ flat)
-- ISS-017 cron-tick-gap watch — 1d idle, 8 activity/14d (→ flat)
-- monitor-runners DEEP-LIQ floor patch — 0d idle, 14 activity/14d (→ flat)
-- Pre-Apex push (monitor-polymarket + polymarket-comments) — 0d idle, 17 activity/14d (→ flat)
-- Cost-discipline sonnet downgrade pass — 0d idle, 6 activity/14d (new)
-- Hermes-arb gate adjustment (min-gap 7→7.5–8pp) — 0d idle, 12 activity/14d (→ flat)
-- swarm-fund-mvp tick-broker falsifier (deadline ~2026-05-17, 12 days) — 0d idle, 7 activity/14d (↑ improving)
-- Skill-evals key fixes (PR #5 carrier) — 0d idle, 10 activity/14d (→ flat)
-- ISS-018 / ISS-019 prompt-bug fixes — 0d idle, 6 activity/14d (↓ degrading)
-- weekly-shiplog Mondays → grant committees — 0d idle, 10 activity/14d (→ flat)
-- paper-pick daily — 0d idle, 17 activity/14d (→ flat)
+ON TRACK (sorted ascending by 14d activity)
+• ISS-018 / ISS-019 prompt-bug fixes — 0d idle, 4/14d (→ flat)
+• swarm-fund-mvp tick-broker falsifier — 0d idle, 4/14d (→ flat; T-falsifier 2026-05-17, 11d remaining)
+• Cost-discipline sonnet downgrade pass — 0d idle, 8/14d (→ flat)
+• PR #156 reply-maker XAI prefetch — 0d idle, 11/14d (→ flat, PR day 12)
+• monitor-runners DEEP-LIQ floor patch — 0d idle, 11/14d (→ flat)
+• weekly-shiplog Mondays → grant committees — 0d idle, 11/14d (→ flat)
+• Pre-Apex push (monitor-polymarket + polymarket-comments) — 0d idle, 12/14d (→ flat)
+• Hermes-arb gate adjustment (min-gap bump) — 0d idle, 12/14d (→ flat)
+• skill-evals key fixes (PR #5) — 0d idle, 12/14d (→ flat)
+• paper-pick daily PhD reading list — 0d idle, 12/14d (→ flat)
 
-DONE (kept in Completed Goals)
-- ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp — completed 2026-05-03
-- Dashboard secrets-route shell-injection (ISS-016 carrier) — completed 2026-05-03
+Notable: tick-broker activity 7→4 (-43%), nearing degrading band; T-falsifier 11d remaining if Aeon side doesn't ship outputs/{skill}/{date}.json contract. PR #156 enters day 12 unmerged.
 
-Sources: logs=ok, git=degraded (1 subject in 30d), gh_pr=ok, gh_issue=disabled, cron-state=ok
+Sources: logs=ok (12 days), git=ok (1 commit/14d in this repo), gh_pr=ok (11 PRs on tomscaria/aeon), gh_issue=fail (issues disabled on tomscaria/aeon), cron-state=skip
