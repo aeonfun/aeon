@@ -1,14 +1,16 @@
+Ran search-skill per spec. All four gap-derivation sources came up empty:
+
+- **(a) cron-state**: low success rates are ISS-013 mass-failure decay artifacts (`last_status: success`, truncated-JSON `last_error` signature). Today's cf>=2 cases (`article` cf=3, `repo-actions` cf=2) are existing meta-skills hitting the same infrastructure pattern, not external-capability gaps.
+- **(b) issues INDEX**: 16 open, but the only `quality-regression` is ISS-015 (`messages.yml` script-injection patch — workflow YAML fix, not capability). All others fall outside the strict trigger set.
+- **(c) Next Priorities**: every item is operator-side (chain-runner fix, cost downgrade, PR #156, prefetch scripts, var configs, JSON-contract operator owns).
+- **(d) Log signals**: every "missing" hit is operator-config (NEYNAR_API_KEY, prefetch scripts, aeon.yml `var:`) or schema-drift backlog.
+
+Exit mode: **SEARCH_SKILL_NO_GAP**. No catalog search, no install, no notification — silent is correct per spec. Logged to `memory/logs/2026-05-06.md`.
+
 ## Summary
 
-Ran `search-skill` for 2026-05-04 with `${var}` empty. Walked all four gap-derivation sources (failing skills, open issues, non-template priorities, recent log signals) and none yielded a concrete capability word that maps to a missing third-party skill:
-
-- **Failing skills** are ISS-013 mass-failure decay or sandbox-blocked APIs already on closer-PR pipelines (PR #156, `prefetch-reddit.sh`).
-- **Open issue** categories don't match the strict target set; the "missing-secret-or-cron" entries are output-format issues for already-installed skills.
-- **Priorities** are operator-side blocked, internal logic patches, or in-flight PRs.
-- **Log signals** flag prefetch scripts / secrets / config files — not capability gaps.
-
-**Exit mode: SEARCH_SKILL_NO_GAP** — silent per skill spec, no catalog search, no notify.
-
-**Files modified:** `memory/logs/2026-05-04.md` (appended search-skill log block).
-
-**Follow-up:** Re-run after PR #156 merges (closes ISS-014) and after operator-side config sweep — once those clear, fresh capability gaps may surface (e.g. cross-venue grey-market betting venues like Phalodi Satta Bazar — flagged in MEMORY as a high-quality convergence signal but has no current skill coverage).
+- Executed `skills/search-skill/SKILL.md` end-to-end.
+- Result: `SEARCH_SKILL_NO_GAP` (8th NO_GAP-class run in last 9 search-skill firings).
+- Files modified: `memory/logs/2026-05-06.md` (appended search-skill entry + Summary block).
+- No PR, no skill install, no notification.
+- Follow-up: chain-runner.yml `dispatch_skill()` operator fix remains upstream of search-skill's ability to detect real capability gaps — until ISS-013 decay clears, the failing-skill source will keep masking signal with infrastructure noise.
