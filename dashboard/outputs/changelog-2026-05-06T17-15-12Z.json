@@ -1,0 +1,173 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-06"
+      },
+      "children": [
+        "summary-stack",
+        "separator-1",
+        "breakdown-stack",
+        "separator-2",
+        "highlights-stack",
+        "separator-3",
+        "link-stack"
+      ]
+    },
+    "summary-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-repos",
+        "stat-changes"
+      ]
+    },
+    "stat-repos": {
+      "type": "Stat",
+      "props": {
+        "value": "3",
+        "label": "Repos"
+      }
+    },
+    "stat-changes": {
+      "type": "Stat",
+      "props": {
+        "value": "23",
+        "label": "User-facing changes"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "breakdown-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "breakdown-title",
+        "breakdown-grid"
+      ]
+    },
+    "breakdown-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Change Breakdown",
+        "level": "h3"
+      }
+    },
+    "breakdown-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 5,
+        "gap": "md"
+      },
+      "children": [
+        "stat-breaking",
+        "stat-added",
+        "stat-changed",
+        "stat-fixed",
+        "stat-security"
+      ]
+    },
+    "stat-breaking": {
+      "type": "Stat",
+      "props": {
+        "value": "0",
+        "label": "Breaking"
+      }
+    },
+    "stat-added": {
+      "type": "Stat",
+      "props": {
+        "value": "18",
+        "label": "Added"
+      }
+    },
+    "stat-changed": {
+      "type": "Stat",
+      "props": {
+        "value": "3",
+        "label": "Changed"
+      }
+    },
+    "stat-fixed": {
+      "type": "Stat",
+      "props": {
+        "value": "4",
+        "label": "Fixed"
+      }
+    },
+    "stat-security": {
+      "type": "Stat",
+      "props": {
+        "value": "2",
+        "label": "Security"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "highlights-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "highlights-title",
+        "highlight-text"
+      ]
+    },
+    "highlights-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Highlights",
+        "level": "h3"
+      }
+    },
+    "highlight-text": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp shipped the per-strategy admin dashboard (ADR-084) and grew runner-swarm 20→112 agents across 30 strategies",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "full-changelog-link"
+      ]
+    },
+    "full-changelog-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full Changelog",
+        "href": "articles/changelog-2026-05-06.md"
+      }
+    }
+  }
+}
