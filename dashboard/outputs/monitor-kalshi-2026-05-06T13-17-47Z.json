@@ -1,0 +1,332 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor — 2026-05-06"
+      },
+      "children": [
+        "verdict_section",
+        "sep_1",
+        "btc_section",
+        "sep_2",
+        "fed_dec_section",
+        "sep_3",
+        "fed_apr_section",
+        "sep_4",
+        "alerts_section",
+        "sep_5",
+        "trending_section",
+        "sep_6",
+        "sources_section"
+      ]
+    },
+    "verdict_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "verdict_text"
+      ]
+    },
+    "verdict_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC May 8 distribution shifts $500 higher (mode now $81,000-82,000); Fed Dec 2026 freshly indexed — 49% on 3 cuts landing at 3.75%, 37% tail for 5+ cuts (recession/emergency path)."
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "btc_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc_header",
+        "btc_badge",
+        "btc_table",
+        "btc_details"
+      ]
+    },
+    "btc_header": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin price range May 8 at 5pm EDT (KXBTC-26MAY0817)",
+        "level": "h3"
+      }
+    },
+    "btc_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Crypto"
+      }
+    },
+    "btc_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "range",
+          "vol",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$81,500-82,000",
+            "9%",
+            "+4pp ▲",
+            "4-18%",
+            "$1,042",
+            "2pp"
+          ]
+        ]
+      }
+    },
+    "btc_details": {
+      "type": "Text",
+      "props": {
+        "text": "mover: $81,500-82,000 — rising on 11.5k contracts (5× next bucket), tight book; distinct directional concentration around BTC May 8 close in this range\nmode: $81,000-81,500 at 11% (+2pp from yesterday's 9%); next: $82,000-83,000 at 10% each — distribution center shifted ~$500 higher"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fed_dec_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fed_dec_header",
+        "fed_dec_badge",
+        "fed_dec_note",
+        "fed_dec_table",
+        "fed_dec_curve"
+      ]
+    },
+    "fed_dec_header": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds rate Dec 2026 (KXFED-26DEC)",
+        "level": "h3"
+      }
+    },
+    "fed_dec_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Economics"
+      }
+    },
+    "fed_dec_note": {
+      "type": "Text",
+      "props": {
+        "text": "first run, no chg baseline",
+        "variant": "caption"
+      }
+    },
+    "fed_dec_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "range",
+          "vol",
+          "spread"
+        ],
+        "rows": [
+          [
+            ">3.00%",
+            "73%",
+            "n/a",
+            "61-74%",
+            "$444",
+            "3pp"
+          ],
+          [
+            ">3.50%",
+            "63%",
+            "n/a",
+            "—",
+            "$37",
+            "2pp"
+          ]
+        ]
+      }
+    },
+    "fed_dec_curve": {
+      "type": "Text",
+      "props": {
+        "text": "curve: P(>3.25%)=63%, P(>3.50%)=62% — 1pp gap implies near-zero probability for the 3.25-3.50% bucket; modal outcome is exactly 3 cuts from 4.50% landing at 3.75% (49% weight); emergency tail (5+ cuts, below 3.25%) = 37%"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fed_apr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fed_apr_header",
+        "fed_apr_badge",
+        "fed_apr_table",
+        "fed_apr_details"
+      ]
+    },
+    "fed_apr_header": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds rate Apr 2027 (KXFED-27APR)",
+        "level": "h3"
+      }
+    },
+    "fed_apr_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Economics"
+      }
+    },
+    "fed_apr_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "range",
+          "vol",
+          "spread"
+        ],
+        "rows": [
+          [
+            ">3.50%",
+            "42%",
+            "+1pp ▲",
+            "—",
+            "$45",
+            "5pp"
+          ]
+        ]
+      }
+    },
+    "fed_apr_details": {
+      "type": "Text",
+      "props": {
+        "text": "stable; +1pp from yesterday's 41%; most Apr 2027 markets have 20-47pp spreads — unreliable; T3.50 is the only clean read; consistent with Dec 2026 3-cut consensus extended further"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alerts_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alerts_header",
+        "alerts_text"
+      ]
+    },
+    "alerts_header": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS (moved >5pp on non-thin book)",
+        "level": "h3"
+      }
+    },
+    "alerts_text": {
+      "type": "Text",
+      "props": {
+        "text": "none"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trending_header",
+        "trending_text"
+      ]
+    },
+    "trending_header": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h3"
+      }
+    },
+    "trending_text": {
+      "type": "Text",
+      "props": {
+        "text": "none above threshold — Kalshi API surfaced only long-horizon novelty markets (KXCOLONIZEMARS-50, KXMARSVRAIL-50, <$330 24h vol)"
+      }
+    },
+    "sep_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources_header",
+        "sources_text"
+      ]
+    },
+    "sources_header": {
+      "type": "Heading",
+      "props": {
+        "text": "sources",
+        "level": "h3"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "events=ok candlesticks=ok orderbook=ok"
+      }
+    }
+  }
+}
