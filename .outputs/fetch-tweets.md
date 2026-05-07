@@ -1,15 +1,20 @@
-*Top Tweets — prediction markets (2026-05-06)*
-_Three structural moves, none priced into CalibrationGap or Hermes-arb dashboards yet — Polymarket's own Iran-airspace-end-of-month drifted to 64% (vs May-8 sub-market 15.5%); HIP-4 took 0.7% of total PM flow on day-one; Kalshi recession-this-year crashed 40→17% record-low in 4 days post-ceasefire-extension._
-_Source: WebSearch (XAI/cache unavailable, day 11). Engagement counts unavailable._
+## Summary
 
-*Iran narrative-shift*
-1. x.com/Polymarket — Polymarket itself raises end-of-month airspace closure to 64%. Parent market drifting toward kinetic-strike narrative while May-8 sub-market still prices 15.5% — multi-horizon mispricing window.
-[View tweet](https://x.com/Polymarket/status/2051348357625323871)
+**Skill: `fetch-tweets`** — halted at step 2 (build search prompt) due to missing required input.
 
-*HIP-4 cross-venue entry*
-2. x.com/PinkBrains_io — HIP-4 day-one: ~6.05M contracts ≈ 0.7% of total prediction-market flow. First quantified day-one anchor for Hermes-arb's gap-pricing calibration; below 2-3% third-venue-meaningful threshold but trending.
-[View tweet](https://x.com/PinkBrains_io/status/2051573596024426770)
+**Diagnosis**
+- `aeon.yml:87` configures `fetch-tweets: { enabled: true, schedule: "0 17 * * *" }` with **no `var:` key**.
+- Skill frontmatter (`skills/fetch-tweets/SKILL.md:4-8`) marks `${var}` as **Required** — the X/Twitter search query.
+- `VAR` env var is also `undefined`.
+- All three search paths (A=cache, B=X.AI API, C=WebSearch) need a query string; none can run.
 
-*US macro / Fed transition*
-3. x.com/Kalshi — "BREAKING: Odds of a recession this year plummet from 40% to 17% — a record low." 23-point swing in ~4 days reads as post-ceasefire-extension risk-off→risk-on rotation, frames Powell→Warsh transition (May 15) as priced for dovish continuity.
-[View tweet](https://x.com/Kalshi/status/2050244370922684865)
+**Action taken (per skill's empty/error-handling rules, step 4)**
+- Logged `FETCH_TWEETS_ERROR (last_path=none, reason=missing_var)` to `memory/logs/2026-05-07.md` for skill-health to pick up.
+- **No notification sent** (skill explicitly forbids notifications on empty/error).
+- `memory/fetch-tweets-seen.txt` untouched (3,790 bytes — already populated from prior runs).
+
+**Files modified**
+- `memory/logs/2026-05-07.md` — appended `### fetch-tweets` error block.
+
+**Follow-up needed (operator)**
+- Add a `var:` to `fetch-tweets` in `aeon.yml`. This is the same operator-config sweep already flagged in `MEMORY.md:111` for `digest`, `list-digest`, `refresh-x`, `remix-tweets` — `fetch-tweets` should be added to the same sweep. Sister to ISS-018-class `forbidden_pattern:${var}` cross-talk.
