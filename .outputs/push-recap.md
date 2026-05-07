@@ -1,17 +1,17 @@
-*Push Recap — 2026-05-06 (refresh)*
-swarm-fund-mvp + aaronjmars/aeon — SHIPPING: paper_triage OLLAMA_LOCAL hatch + aeon star-momentum-alert + dashboard hardening
+*Push Recap — 2026-05-07*
+MIXED — aeon shipped v4-prep skill kit; swarm-fund wired a local-LLM canary
 
 Shipped to users:
-• paper_triage gets an OLLAMA_LOCAL escape hatch — when set, swarm-fund routes triage calls to local qwen2.5:7b instead of cloud Sonnet (lazy per-call resolver, monkeypatch-safe). First concrete cost lever after ADR-094; directly addresses the ~$2,696/mo overrun flag. (`42a5ba5`, +20/-2 in paper_triage.py + 48 lines of OLLAMA_LOCAL tests)
-• aeon ships star-momentum-alert (#159, registered enabled:false): walks 14d of repo-pulse logs, projects next milestone crossing, alerts only when the crossing lands Tue–Wed–Thu 7-14d out → tells operator when to dispatch show-hn-draft (300⭐ ETA ~05-13).
-• aeon hardens dashboard skills/run route (#158): execSync → execFileSync; closes the last user-input shell surface on the dashboard.
+• aaronjmars/aeon #161 — `./new-from-template` CLI + six runnable starter SKILL.mds (crypto-tracker, research-digest, code-reviewer, social-monitor, deploy-watcher, community-manager); first-touch fork operators no longer reverse-engineer SKILL.md
+• aaronjmars/aeon #160 — `v4-readiness` skill (workflow_dispatch, read-only) emits Safe/Review/Custom/Action breakdown of a fork's aeon.yml + skills.json + MEMORY.md against an embedded v4 manifest
+• swarm-fund-mvp eb18354 — fine-tuning pipeline (MLX LoRA on Qwen2.5-7B → GGUF → ollama swarm-triage) + `SWARM_TRIAGE_CANARY_PCT` stochastic A/B router; ADR-095 lands in DECISIONS.md alongside `OLLAMA_FULL=1` flag routing sonnet-tier to qwen2.5:14b
 
 Under the hood:
-• Phase G knowledge-base build on swarm-fund — kb_concepts embedding index (3446 concepts, BAAI/bge-small-en-v1.5), scripts/run_analogy_synthesis.py runner (155 lines, dry-run mode), MIT OCW harvest verified (10 math sources inserted), router_suggestions Telegram tests added.
+• swarm-fund-mvp caaec5a — opt-in `LLM_CALL_LOG` env var captures {ts, agent, task, model, prompt, completion}; raw material for the 3,462-pair triage dataset exported in e0ad1b5
 
-Shape: 3 user-visible · 4 internal · 0 infra · 96 automation-only · 2 merged PRs
-Volume: 8 files, +590/-9 lines
+Shape: 7 user-visible · 5 internal · 0 infra · 95 bot-filtered · 2 merged PRs
+Volume: 36 files, +2,361/−11 lines
+Note: every flag added today defaults off — canary chain built, not yet measured
 
-Open thread: paper_triage diff cites `ADR-NNN (2026-05-06)` — placeholder ADR number, no ADR file in the commit set yet. The 72h merge-cadence falsifier (next ADR by 2026-05-09) is now active.
+Full recap: https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-07.md
 
-Full recap: https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-06.md

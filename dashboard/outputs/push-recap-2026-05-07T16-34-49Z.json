@@ -1,0 +1,246 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header",
+        "status-alert",
+        "shipped-heading",
+        "shipped-items",
+        "sep1",
+        "under-hood-heading",
+        "under-hood-item",
+        "sep2",
+        "metrics-stack",
+        "sep3",
+        "note-alert",
+        "sep4",
+        "recap-link"
+      ]
+    },
+    "header": {
+      "type": "Heading",
+      "props": {
+        "text": "Push Recap — 2026-05-07",
+        "level": "h1"
+      }
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Status",
+        "message": "MIXED — aeon shipped v4-prep skill kit; swarm-fund wired a local-LLM canary",
+        "type": "info"
+      }
+    },
+    "shipped-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "shipped-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipped-1",
+        "shipped-2",
+        "shipped-3"
+      ]
+    },
+    "shipped-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shipped-1-link",
+        "shipped-1-desc"
+      ]
+    },
+    "shipped-1-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon #161",
+        "href": "https://github.com/aaronjmars/aeon/pull/161",
+        "source": "aeon"
+      }
+    },
+    "shipped-1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "`./new-from-template` CLI + six runnable starter SKILL.mds (crypto-tracker, research-digest, code-reviewer, social-monitor, deploy-watcher, community-manager); first-touch fork operators no longer reverse-engineer SKILL.md",
+        "variant": "body"
+      }
+    },
+    "shipped-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shipped-2-link",
+        "shipped-2-desc"
+      ]
+    },
+    "shipped-2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon #160",
+        "href": "https://github.com/aaronjmars/aeon/pull/160",
+        "source": "aeon"
+      }
+    },
+    "shipped-2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "`v4-readiness` skill (workflow_dispatch, read-only) emits Safe/Review/Custom/Action breakdown of a fork's aeon.yml + skills.json + MEMORY.md against an embedded v4 manifest",
+        "variant": "body"
+      }
+    },
+    "shipped-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shipped-3-link",
+        "shipped-3-desc"
+      ]
+    },
+    "shipped-3-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "swarm-fund-mvp eb18354",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/commit/eb18354",
+        "source": "swarm-fund-mvp"
+      }
+    },
+    "shipped-3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "fine-tuning pipeline (MLX LoRA on Qwen2.5-7B → GGUF → ollama swarm-triage) + `SWARM_TRIAGE_CANARY_PCT` stochastic A/B router; ADR-095 lands in DECISIONS.md alongside `OLLAMA_FULL=1` flag routing sonnet-tier to qwen2.5:14b",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "under-hood-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h2"
+      }
+    },
+    "under-hood-item": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "under-hood-link",
+        "under-hood-desc"
+      ]
+    },
+    "under-hood-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "swarm-fund-mvp caaec5a",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/commit/caaec5a",
+        "source": "swarm-fund-mvp"
+      }
+    },
+    "under-hood-desc": {
+      "type": "Text",
+      "props": {
+        "text": "opt-in `LLM_CALL_LOG` env var captures {ts, agent, task, model, prompt, completion}; raw material for the 3,462-pair triage dataset exported in e0ad1b5",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "metrics-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "shape-text",
+        "volume-text"
+      ]
+    },
+    "shape-text": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 7 user-visible · 5 internal · 0 infra · 95 bot-filtered · 2 merged PRs",
+        "variant": "body"
+      }
+    },
+    "volume-text": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: 36 files, +2,361/−11 lines",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "note-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Note",
+        "message": "Every flag added today defaults off — canary chain built, not yet measured",
+        "type": "info"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recap-link": {
+      "type": "Link",
+      "props": {
+        "label": "Full recap",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-07.md"
+      }
+    }
+  }
+}
