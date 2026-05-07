@@ -1,0 +1,144 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick — 2026-05-07"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_title",
+        "stack_metadata",
+        "text_authors",
+        "separator_1",
+        "text_methodology",
+        "separator_2",
+        "text_findings",
+        "separator_3",
+        "text_implications",
+        "separator_4",
+        "stack_links"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "TimeSeek: Temporal Reliability of Agentic Forecasters",
+        "level": "h2"
+      }
+    },
+    "stack_metadata": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_category",
+        "badge_date"
+      ]
+    },
+    "badge_category": {
+      "type": "Badge",
+      "props": {
+        "text": "cs.AI",
+        "variant": "secondary"
+      }
+    },
+    "badge_date": {
+      "type": "Badge",
+      "props": {
+        "text": "Apr 5 2026",
+        "variant": "secondary"
+      }
+    },
+    "text_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Mostafa / Shastri / Lee",
+        "variant": "muted"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_methodology": {
+      "type": "Text",
+      "props": {
+        "text": "10 frontier LLMs × 150 CFTC-regulated Kalshi binaries × 5 lifecycle checkpoints × {web-search, no-search} = 15,000 forecasts.",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_findings": {
+      "type": "Text",
+      "props": {
+        "text": "Headline: models strongest early-lifecycle and on high-uncertainty markets, weakest near resolution and on strong-consensus markets. Web search helps overall but hurts 12% of model-checkpoint pairs.",
+        "variant": "body"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_implications": {
+      "type": "Text",
+      "props": {
+        "text": "Argues for time-aware eval and selective-deference policies — direct entry-timing hook for CalibrationGap (when to fire) and Hermes-arb (Kalshi leg in the live falsifier window).",
+        "variant": "body"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.04220"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.04220"
+      }
+    }
+  }
+}
