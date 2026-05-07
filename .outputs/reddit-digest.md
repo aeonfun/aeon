@@ -1,1 +1,1 @@
-Reddit digest: all 10 sources errored (HTTP 403, day 12 streak). Reddit blocks GH Actions IPs; WebFetch host-blocked. Land scripts/prefetch-reddit.sh to unblock; recommend pausing daily cron until then. ISS-002 + ISS-012 unchanged.
+Reddit digest: all 10 sources errored — check rate limits / API (13th consecutive day, infra block on GitHub Actions egress IPs; pause cron until scripts/prefetch-reddit.sh ships, ISS-002/012)
