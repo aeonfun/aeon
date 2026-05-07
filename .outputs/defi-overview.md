@@ -1,37 +1,41 @@
-*DeFi — 2026-05-06* — Mixed: TVL +2.5% (BTC-led), DEX vol cools −19% from yesterday's spike.
+*DeFi — 2026-05-07* — Mixed: DEX vol +8% and Aave V3 fees spike vs flat TVL/stables
 
-*TVL:* $87.27B (+2.48% 24h, +4.79% 7d) — step up from yesterday's $85.85B.
+*TVL:* $85.75B (-0.04% 24h, +2.71% 7d)
 
 *Top chains*
-1. Ethereum — $46.91B (+2.8%)
-2. BSC — $5.67B (+2.4%)
-3. Solana — $5.63B (+3.3%)
+1. Ethereum — $45.82B
+2. Solana — $5.62B (+1.7%)
+3. BSC — $5.58B
 
-*Movers*
-↑ Tonstakers LSD +26% ($140M → $176M) — TON token-breakout day-2 lifts LSD via price + new stakers (7d +78%).
-↓ Hyperliquid Spot Orderbook −15% ($159M → $135M) — 2nd day decline; spot venue draining (7d −18%, no catalyst named).
+*Movers — chains*
+↑ MegaETH +10% ($729M → $802M) — post-launch ramp continues; 7d +162%
+↓ Arbitrum −7% ($1.71B → $1.59B) — LRT/restaking class bleed concentrated here (Renzo, ether.fi, Aura, Pendle all red 1d)
+
+*Movers — protocols*
+↑ Tonstakers LSD +14% ($170M → $194M, TON LSD) — Day-3 TON staking ramp; 7d crosses +102% matching MEMORY's TON major-cap breakout
+↓ Connext −35% ($165M → $108M, Bridge) — biggest single-day move; no obvious catalyst named in data
 
 *Fees leaders (24h)*
-1. Tether — $16.48M (flat vs 7d avg)
-2. Circle USDC — $6.67M (+1.8% vs 7d avg)
-3. Canton — $2.26M (+6.6% vs 7d avg)
+1. Tether — $16.5M (flat vs 7d-avg)
+2. Aave V3 — $16.2M (+341% vs 7d-avg, 1d +927%) — magnitude consistent with liquidation cascade or rate spike; no specific catalyst named
+3. Circle USDC — $6.7M (flat vs 7d-avg)
 
 *Fees beating TVL*
-• Raydium AMM — fees +49% / TVL +4.7% (7d) on $1.05B — Solana spot demand outrunning deposits.
-• Aerodrome Slipstream — fees +46% / TVL +2.5% (7d) on $213M — Base CL-DEX demand outpacing capital.
+- Aerodrome Slipstream — fees +85% / TVL +1.4% (7d) — Base CL-DEX demand outpacing capital
+- Jupiter Perp — fees +41% / TVL +2.5% (7d) — Solana perps demand outrunning deposits
 
-*DEX vol (24h):* $6.01B (−18.8% 1d) — top: UniswapV4 $763M (−9%), Aerodrome Slipstream $494M (−13%), PancakeSwap V3 $480M (−41%).
+*DEX vol (24h):* $6.49B (+8.05%)  top: Uniswap V4 $783M, PancakeSwap V3 $636M (+33%), Aerodrome Slipstream $532M (+19%)
 
-*Stables:* $320.5B (−0.06% 1d) — BUIDL +3.5% on $2.9B base only notable single-issuer move (~$98M new mint).
+*Stables:* $321.94B (+0.08%, +1.24% 7d) — Sky Dollar +1.13% / +$98M biggest absolute issuer-flow today
 
 *Real yield (sustainable, ≥$10M, filtered)*
-• APT (amnis-finance, Aptos) — 33.8% apyBase ($22M TVL; mean30d 17.85% — APT-price exposure).
-• MUBOND (mu-digital, ETH) — 22.6% apyBase ($11M TVL; mean30d 15.21%).
-• SUSDAT (saturn, ETH) — 22.3% apyBase ($63M TVL; mean30d 24.24%).
+- APT (amnis-finance, Aptos) — 34.6% apyBase ($22M TVL, mean30d 18.5%)
+- MUBOND (mu-digital, ETH) — 18.3% apyBase ($11M TVL)
+- APYUSD (pendle, ETH) — 18.2% apyBase ($12M TVL)
 
 *Incentive yield (points / emissions, ≥$25M)*
-• USDC-AERO (Aerodrome v1, Base) — 22.6% apy via AERO rewards ($28M TVL).
-• SDCRV (Stake DAO, ETH) — 20.4% apy via CRV+SDT rewards ($30M TVL).
+- USDC-AERO (aerodrome-v1, Base) — 24.5% apy via $AERO ($27M TVL)
+- SDCRV (stake-dao, ETH) — 20.7% apy via $CRV/$SDT ($29M TVL)
 
-_sources: llama_tvl=ok  llama_dex=ok  llama_fees=ok  llama_stables=ok  llama_yields=ok  | var: none_
+_sources: llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok | var: none_
 

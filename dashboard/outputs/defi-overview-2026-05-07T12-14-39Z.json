@@ -1,0 +1,578 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "DeFi — 2026-05-07",
+        "description": "Mixed: DEX vol +8% and Aave V3 fees spike vs flat TVL/stables"
+      },
+      "children": [
+        "tvl-section",
+        "sep-1",
+        "top-chains-section",
+        "sep-2",
+        "movers-chains-section",
+        "sep-3",
+        "movers-protocols-section",
+        "sep-4",
+        "fees-section",
+        "sep-5",
+        "fees-beating-section",
+        "sep-6",
+        "dex-section",
+        "sep-7",
+        "stables-section",
+        "sep-8",
+        "real-yield-section",
+        "sep-9",
+        "incentive-yield-section",
+        "sep-10",
+        "sources-section"
+      ]
+    },
+    "tvl-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tvl-heading",
+        "tvl-data-container"
+      ]
+    },
+    "tvl-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "TVL",
+        "level": "h3"
+      }
+    },
+    "tvl-data-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tvl-stat",
+        "tvl-7d-note"
+      ]
+    },
+    "tvl-stat": {
+      "type": "Stat",
+      "props": {
+        "value": "$85.75B",
+        "label": "24h",
+        "delta": "-0.04%",
+        "trend": "neutral"
+      }
+    },
+    "tvl-7d-note": {
+      "type": "Text",
+      "props": {
+        "text": "7d +2.71%",
+        "variant": "muted"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top-chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-chains-heading",
+        "top-chains-table"
+      ]
+    },
+    "top-chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top chains",
+        "level": "h3"
+      }
+    },
+    "top-chains-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Chain",
+          "TVL",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Ethereum",
+            "$45.82B",
+            ""
+          ],
+          [
+            "Solana",
+            "$5.62B",
+            "+1.7%"
+          ],
+          [
+            "BSC",
+            "$5.58B",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "movers-chains-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-chains-heading",
+        "movers-chains-list"
+      ]
+    },
+    "movers-chains-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — chains",
+        "level": "h3"
+      }
+    },
+    "movers-chains-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "megaeth-item",
+        "arbitrum-item"
+      ]
+    },
+    "megaeth-item": {
+      "type": "Text",
+      "props": {
+        "text": "↑ MegaETH +10% ($729M → $802M) — post-launch ramp continues; 7d +162%"
+      }
+    },
+    "arbitrum-item": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Arbitrum −7% ($1.71B → $1.59B) — LRT/restaking class bleed concentrated here (Renzo, ether.fi, Aura, Pendle all red 1d)"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "movers-protocols-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "movers-protocols-heading",
+        "movers-protocols-list"
+      ]
+    },
+    "movers-protocols-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Movers — protocols",
+        "level": "h3"
+      }
+    },
+    "movers-protocols-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tonstakers-item",
+        "connext-item"
+      ]
+    },
+    "tonstakers-item": {
+      "type": "Text",
+      "props": {
+        "text": "↑ Tonstakers LSD +14% ($170M → $194M, TON LSD) — Day-3 TON staking ramp; 7d crosses +102% matching MEMORY's TON major-cap breakout"
+      }
+    },
+    "connext-item": {
+      "type": "Text",
+      "props": {
+        "text": "↓ Connext −35% ($165M → $108M, Bridge) — biggest single-day move; no obvious catalyst named in data"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-heading",
+        "fees-table",
+        "fees-note"
+      ]
+    },
+    "fees-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees leaders (24h)",
+        "level": "h3"
+      }
+    },
+    "fees-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "Fees (24h)",
+          "vs 7d-avg"
+        ],
+        "rows": [
+          [
+            "Tether",
+            "$16.5M",
+            "flat"
+          ],
+          [
+            "Aave V3",
+            "$16.2M",
+            "+341% (1d +927%)"
+          ],
+          [
+            "Circle USDC",
+            "$6.7M",
+            "flat"
+          ]
+        ]
+      }
+    },
+    "fees-note": {
+      "type": "Text",
+      "props": {
+        "text": "Aave V3 magnitude consistent with liquidation cascade or rate spike; no specific catalyst named",
+        "variant": "muted"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fees-beating-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fees-beating-heading",
+        "fees-beating-list"
+      ]
+    },
+    "fees-beating-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fees beating TVL",
+        "level": "h3"
+      }
+    },
+    "fees-beating-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "aerodrome-item",
+        "jupiter-item"
+      ]
+    },
+    "aerodrome-item": {
+      "type": "Text",
+      "props": {
+        "text": "Aerodrome Slipstream — fees +85% / TVL +1.4% (7d) — Base CL-DEX demand outpacing capital"
+      }
+    },
+    "jupiter-item": {
+      "type": "Text",
+      "props": {
+        "text": "Jupiter Perp — fees +41% / TVL +2.5% (7d) — Solana perps demand outrunning deposits"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dex-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dex-heading",
+        "dex-stat",
+        "dex-table"
+      ]
+    },
+    "dex-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEX vol (24h)",
+        "level": "h3"
+      }
+    },
+    "dex-stat": {
+      "type": "Stat",
+      "props": {
+        "value": "$6.49B",
+        "delta": "+8.05%",
+        "trend": "up"
+      }
+    },
+    "dex-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "DEX",
+          "Volume (24h)",
+          "Change"
+        ],
+        "rows": [
+          [
+            "Uniswap V4",
+            "$783M",
+            ""
+          ],
+          [
+            "PancakeSwap V3",
+            "$636M",
+            "+33%"
+          ],
+          [
+            "Aerodrome Slipstream",
+            "$532M",
+            "+19%"
+          ]
+        ]
+      }
+    },
+    "sep-7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stables-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stables-heading",
+        "stables-data-container"
+      ]
+    },
+    "stables-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stables",
+        "level": "h3"
+      }
+    },
+    "stables-data-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stables-stat",
+        "stables-note"
+      ]
+    },
+    "stables-stat": {
+      "type": "Stat",
+      "props": {
+        "value": "$321.94B",
+        "label": "24h",
+        "delta": "+0.08%",
+        "trend": "neutral"
+      }
+    },
+    "stables-note": {
+      "type": "Text",
+      "props": {
+        "text": "7d +1.24% — Sky Dollar +1.13% / +$98M biggest absolute issuer-flow today",
+        "variant": "muted"
+      }
+    },
+    "sep-8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "real-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "real-yield-heading",
+        "real-yield-table"
+      ]
+    },
+    "real-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Real yield (sustainable, ≥$10M, filtered)",
+        "level": "h3"
+      }
+    },
+    "real-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Protocol",
+          "APY",
+          "TVL",
+          "Mean 30d"
+        ],
+        "rows": [
+          [
+            "APT (amnis-finance, Aptos)",
+            "34.6%",
+            "$22M",
+            "18.5%"
+          ],
+          [
+            "MUBOND (mu-digital, ETH)",
+            "18.3%",
+            "$11M",
+            ""
+          ],
+          [
+            "APYUSD (pendle, ETH)",
+            "18.2%",
+            "$12M",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep-9": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "incentive-yield-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "incentive-yield-heading",
+        "incentive-yield-table"
+      ]
+    },
+    "incentive-yield-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Incentive yield (points / emissions, ≥$25M)",
+        "level": "h3"
+      }
+    },
+    "incentive-yield-table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Pool",
+          "APY",
+          "TVL",
+          "Via"
+        ],
+        "rows": [
+          [
+            "USDC-AERO (aerodrome-v1, Base)",
+            "24.5%",
+            "$27M",
+            "$AERO"
+          ],
+          [
+            "SDCRV (stake-dao, ETH)",
+            "20.7%",
+            "$29M",
+            "$CRV/$SDT"
+          ]
+        ]
+      }
+    },
+    "sep-10": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-text"
+      ]
+    },
+    "sources-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "llama_tvl=ok llama_dex=ok llama_fees=ok llama_stables=ok llama_yields=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
