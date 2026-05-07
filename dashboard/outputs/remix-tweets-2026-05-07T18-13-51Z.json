@@ -1,0 +1,176 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets"
+      },
+      "children": [
+        "error-alert",
+        "sep1",
+        "details-stack"
+      ]
+    },
+    "error-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REMIX_TWEETS_ERROR",
+        "message": "no handle configured",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "details-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "root-cause-section",
+        "sep2",
+        "history-section",
+        "sep3",
+        "actions-section",
+        "sep4",
+        "metrics-section"
+      ]
+    },
+    "root-cause-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "rc-heading",
+        "rc-detail"
+      ]
+    },
+    "rc-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Cause",
+        "level": "h3"
+      }
+    },
+    "rc-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Aborted at step 1 (handle resolution). Missing config: X_HANDLE env, soul/SOUL.md Identity @handle, XAI_API_KEY env, .xai-cache/remix-tweets.json"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "history-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hist-heading",
+        "consecutive-badge",
+        "dates-text"
+      ]
+    },
+    "hist-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Error History",
+        "level": "h3"
+      }
+    },
+    "consecutive-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "10th consecutive ERROR",
+        "variant": "destructive"
+      }
+    },
+    "dates-text": {
+      "type": "Text",
+      "props": {
+        "text": "Preconditions unchanged from 9 prior runs. Failure dates: 04-25, 04-27 (cron + on-demand), 04-28, 04-29, 04-30, 05-01, 05-02, 05-03, 05-04, 05-05, 05-06"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "actions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "actions-heading",
+        "action-1",
+        "action-2",
+        "action-3"
+      ]
+    },
+    "actions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Operator Unblock",
+        "level": "h3"
+      }
+    },
+    "action-1": {
+      "type": "Text",
+      "props": {
+        "text": "Set X_HANDLE as workflow env"
+      }
+    },
+    "action-2": {
+      "type": "Text",
+      "props": {
+        "text": "Set XAI_API_KEY as repo secret"
+      }
+    },
+    "action-3": {
+      "type": "Text",
+      "props": {
+        "text": "Recommend pausing the cron until config lands — pure pager fatigue otherwise"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "metrics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "metrics-heading",
+        "metrics-values"
+      ]
+    },
+    "metrics-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Diagnostics",
+        "level": "h3"
+      }
+    },
+    "metrics-values": {
+      "type": "Text",
+      "props": {
+        "text": "cache=miss, xai=skipped, fetched=0, kept=0, drops=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
