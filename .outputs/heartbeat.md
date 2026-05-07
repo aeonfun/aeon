@@ -1,12 +1,8 @@
-HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote `docs/status.md`.
-
-**Findings (no notification — all in 48h log dedup window):**
-- **P0:** No stuck/failed-current skills. 3 chain wrappers still failed (morning-brief / evening-rollup / weekly-grant-update) — same `dispatch_skill()` operator-blocking carrier, day 10. ISS-020 (today's 15:32Z mass-fail) already filed; all 17 affected skills recovered cf=0 on the 17:07 dispatch. ISS-013 tail decay halted at 38 sub-50% skills. Heartbeat self-check fresh (last success 17:17Z).
-- **P1/P2/P3:** Nothing new — PR #156 day 13, 9 stalled PRs, all OPS ALERTS already in MEMORY.md.
-
-**Files modified:** `docs/status.md` (97 skill rows + 17 open issues, Updated 2026-05-06 20:28 UTC, Next: evening-recap 21:00 UTC), `memory/logs/2026-05-06.md` (heartbeat entry appended).
+HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md
 
 ## Summary
-- Heartbeat ran the P0–P3 priority sweep across `memory/cron-state.json`; nothing new beyond items already deduped in 48h logs.
-- Regenerated `docs/status.md` to reflect 17:07 / 18:57 dispatch waves where the ISS-020 cohort fully recovered to `last_status=success`, then logged the run.
-- Follow-up still gated on operator: chain-runner.yml `dispatch_skill()` patch (day 10) is upstream of every recurring failure cluster surfaced today.
+
+- Ran heartbeat 14:00 UTC slot. P0/P1/P3 findings exist (3 chain-runner failures, ~40-skill ISS-013 chronic tail, narrative-tracker 4-day stale, PR #156 day 13, 6 enabled-but-never-dispatched skills) — every finding present in 48h logs or MEMORY.md OPS ALERTS, so notification dedup'd per skill spec.
+- Regenerated `docs/status.md`: overall 🔴 DEGRADED, 17 open issues, next run push-recap at 15:00 UTC. Skill table sorted by last-run desc; 6 never-run skills sunk to bottom.
+- Files modified: `docs/status.md` (full rewrite), `memory/logs/2026-05-07.md` (heartbeat entry appended).
+- Follow-up: same operator-blocking trio in MEMORY.md (chain-runner `dispatch_skill()`, PR #156 XAI prefetch, `scripts/prefetch-reddit.sh`) — surface to next `self-improve`.
