@@ -1,0 +1,195 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse",
+        "description": "2026-05-07 — [STEADY]"
+      },
+      "children": [
+        "repo_heading",
+        "stats_section",
+        "separator1",
+        "notable_section",
+        "separator2",
+        "other_section",
+        "separator3",
+        "forks_section",
+        "separator4",
+        "source"
+      ]
+    },
+    "repo_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "aaronjmars/aeon",
+        "level": "h2"
+      }
+    },
+    "stats_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "stat_stars",
+        "stat_forks",
+        "stat_releases"
+      ]
+    },
+    "stat_stars": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "278",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "stat_forks": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "43",
+        "delta": "+1",
+        "trend": "up"
+      }
+    },
+    "stat_releases": {
+      "type": "Stat",
+      "props": {
+        "label": "Releases",
+        "value": "0",
+        "delta": "+0",
+        "trend": "neutral"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "notable_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable_heading",
+        "notable_user"
+      ]
+    },
+    "notable_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable new stargazers",
+        "level": "h3"
+      }
+    },
+    "notable_user": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "notable_user_link",
+        "notable_user_followers"
+      ]
+    },
+    "notable_user_link": {
+      "type": "Link",
+      "props": {
+        "label": "lukeanthony007",
+        "href": "https://github.com/lukeanthony007"
+      }
+    },
+    "notable_user_followers": {
+      "type": "Text",
+      "props": {
+        "text": "(7 followers)",
+        "variant": "caption"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "other_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "other_heading",
+        "other_user"
+      ]
+    },
+    "other_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Other new stargazers",
+        "level": "h3"
+      }
+    },
+    "other_user": {
+      "type": "Link",
+      "props": {
+        "label": "jacquelinegiale",
+        "href": "https://github.com/jacquelinegiale"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "forks_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "forks_heading",
+        "fork_user"
+      ]
+    },
+    "forks_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New forks",
+        "level": "h3"
+      }
+    },
+    "fork_user": {
+      "type": "Link",
+      "props": {
+        "label": "Aldine/aeon",
+        "href": "https://github.com/Aldine/aeon"
+      }
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "source": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}

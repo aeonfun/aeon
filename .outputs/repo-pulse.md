@@ -1,14 +1,13 @@
-*Repo Pulse — 2026-05-06* — [ACTIVE]
-[aaronjmars/aeon] — stars 276 (+5) · forks 43 (+2)
+*Repo Pulse — 2026-05-07* — [STEADY]
+[aaronjmars/aeon] — stars 278 (+2) · forks 43 (+1) · releases +0
 
 Notable new stargazers:
-github.com/hexsprite (55 followers) | github.com/FreyjasWrath (8 followers) | github.com/lyknice23 (47 followers)
+github.com/lukeanthony007 (7 followers)
 
 Other new stargazers:
-github.com/gitpushnico | github.com/MightyJax
+github.com/jacquelinegiale
 
 New forks:
-github.com/ether-btc/aeon | github.com/FreyjasWrath/aeon
+github.com/Aldine/aeon
 
 Source: events
-
