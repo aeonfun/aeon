@@ -1,0 +1,163 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "Status alert from skill run"
+      },
+      "children": [
+        "alert-status",
+        "sep-1",
+        "stack-root-causes",
+        "sep-2",
+        "stack-metrics",
+        "sep-3",
+        "stack-related"
+      ]
+    },
+    "alert-status": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "0 in-window x.com URLs surfaced today"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-root-causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-causes",
+        "item-cache",
+        "item-websearch",
+        "item-webfetch"
+      ]
+    },
+    "heading-causes": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h3"
+      }
+    },
+    "item-cache": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-cache-1",
+        "text-cache-2"
+      ]
+    },
+    "text-cache-1": {
+      "type": "Text",
+      "props": {
+        "text": "XAI cache absent (ISS-014, day 14)"
+      }
+    },
+    "text-cache-2": {
+      "type": "Link",
+      "props": {
+        "label": "PR #156 un-merged",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/156"
+      }
+    },
+    "item-websearch": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch returned only article-pages"
+      }
+    },
+    "item-webfetch": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch on x.com profiles: HTTP 402"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat-failure-rate",
+        "badge-tier"
+      ]
+    },
+    "stat-failure-rate": {
+      "type": "Stat",
+      "props": {
+        "label": "Failure Rate (last 14 runs)",
+        "value": "12/14",
+        "trend": "down"
+      }
+    },
+    "badge-tier": {
+      "type": "Badge",
+      "props": {
+        "text": "Operator-blocker",
+        "variant": "destructive"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-related": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-related",
+        "link-chain-runner",
+        "link-prefetch"
+      ]
+    },
+    "heading-related": {
+      "type": "Heading",
+      "props": {
+        "text": "Related",
+        "level": "h3"
+      }
+    },
+    "link-chain-runner": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill()",
+        "variant": "body"
+      }
+    },
+    "link-prefetch": {
+      "type": "Text",
+      "props": {
+        "text": "scripts/prefetch-reddit.sh",
+        "variant": "body"
+      }
+    }
+  }
+}
