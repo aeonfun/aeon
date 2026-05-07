@@ -1,0 +1,380 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health",
+        "description": "2026-05-07"
+      },
+      "children": [
+        "status_section",
+        "systemic_section",
+        "degraded_section",
+        "warning_section",
+        "no_data_section",
+        "summary_section"
+      ]
+    },
+    "status_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status_heading",
+        "status_stat",
+        "status_changes",
+        "iss013_update"
+      ]
+    },
+    "status_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Overall Health Status",
+        "level": "h2"
+      }
+    },
+    "status_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "DEGRADED Skills",
+        "value": "56",
+        "delta": "-2",
+        "trend": "down"
+      }
+    },
+    "status_changes": {
+      "type": "Text",
+      "props": {
+        "text": "state delta vs prev: DEGRADED 58 -> 56, WARNING 3 -> 5. agent-buzz + action-converter graduated DEGRADED -> WARNING (sr 0.578 -> 0.6 crossing).",
+        "variant": "body"
+      }
+    },
+    "iss013_update": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-013 Status",
+        "message": "Tail decay resumed after 2-day flat.",
+        "type": "warning"
+      }
+    },
+    "systemic_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "systemic_heading",
+        "iss013",
+        "iss020",
+        "iss017"
+      ]
+    },
+    "systemic_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Systemic Issues",
+        "level": "h2"
+      }
+    },
+    "iss013": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-013: Zero-token burst",
+        "message": "04-26 event still gates 56 DEGRADED skills (11d post-event).",
+        "type": "warning"
+      }
+    },
+    "iss020": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-020: 17-skill mass-fail",
+        "message": "05-06 event — all recovered cf=0 within next slot (workflow-side state-write regression, distinct from ISS-013).",
+        "type": "warning"
+      }
+    },
+    "iss017": {
+      "type": "Alert",
+      "props": {
+        "title": "ISS-017: GHA cron-tick gap",
+        "message": "Day 11 — chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update all last_status=failed; operator-side chain-runner.yml dispatch_skill() patch idle 13d.",
+        "type": "warning"
+      }
+    },
+    "degraded_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "degraded_heading",
+        "degraded_info",
+        "degraded_table",
+        "degraded_note"
+      ]
+    },
+    "degraded_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEGRADED Top-5",
+        "level": "h2"
+      }
+    },
+    "degraded_info": {
+      "type": "Text",
+      "props": {
+        "text": "All Sun-weekly cohort, ds=3, ISS-013 burst tail",
+        "variant": "caption"
+      }
+    },
+    "degraded_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Success Rate"
+        ],
+        "rows": [
+          [
+            "skill-leaderboard",
+            "0.13"
+          ],
+          [
+            "skill-graph",
+            "0.14"
+          ],
+          [
+            "update-gallery",
+            "0.14"
+          ],
+          [
+            "channel-recap",
+            "0.15"
+          ],
+          [
+            "fork-contributor-leaderboard",
+            "0.15"
+          ]
+        ]
+      }
+    },
+    "degraded_note": {
+      "type": "Text",
+      "props": {
+        "text": "+51 more — see memory/issues/INDEX.md",
+        "variant": "muted"
+      }
+    },
+    "warning_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "warning_heading",
+        "warning_badges"
+      ]
+    },
+    "warning_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "WARNING (5)",
+        "level": "h2"
+      }
+    },
+    "warning_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_action_converter",
+        "badge_agent_buzz",
+        "badge_evening_rollup",
+        "badge_fleet_control",
+        "badge_heartbeat"
+      ]
+    },
+    "badge_action_converter": {
+      "type": "Badge",
+      "props": {
+        "text": "action-converter",
+        "variant": "destructive"
+      }
+    },
+    "badge_agent_buzz": {
+      "type": "Badge",
+      "props": {
+        "text": "agent-buzz",
+        "variant": "destructive"
+      }
+    },
+    "badge_evening_rollup": {
+      "type": "Badge",
+      "props": {
+        "text": "evening-rollup",
+        "variant": "destructive"
+      }
+    },
+    "badge_fleet_control": {
+      "type": "Badge",
+      "props": {
+        "text": "fleet-control",
+        "variant": "destructive"
+      }
+    },
+    "badge_heartbeat": {
+      "type": "Badge",
+      "props": {
+        "text": "heartbeat",
+        "variant": "destructive"
+      }
+    },
+    "no_data_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "no_data_heading",
+        "no_data_note",
+        "no_data_badges"
+      ]
+    },
+    "no_data_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NO DATA (6)",
+        "level": "h2"
+      }
+    },
+    "no_data_note": {
+      "type": "Text",
+      "props": {
+        "text": "DISPATCH-SKILL (chain wrappers + Sun cron)",
+        "variant": "caption"
+      }
+    },
+    "no_data_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_hacker_news",
+        "badge_morning_brief",
+        "badge_repo_scanner",
+        "badge_syndicate_article",
+        "badge_vercel_projects",
+        "badge_weekly_shiplog"
+      ]
+    },
+    "badge_hacker_news": {
+      "type": "Badge",
+      "props": {
+        "text": "hacker-news-digest",
+        "variant": "secondary"
+      }
+    },
+    "badge_morning_brief": {
+      "type": "Badge",
+      "props": {
+        "text": "morning-brief",
+        "variant": "secondary"
+      }
+    },
+    "badge_repo_scanner": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-scanner",
+        "variant": "secondary"
+      }
+    },
+    "badge_syndicate_article": {
+      "type": "Badge",
+      "props": {
+        "text": "syndicate-article",
+        "variant": "secondary"
+      }
+    },
+    "badge_vercel_projects": {
+      "type": "Badge",
+      "props": {
+        "text": "vercel-projects",
+        "variant": "secondary"
+      }
+    },
+    "badge_weekly_shiplog": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-shiplog",
+        "variant": "secondary"
+      }
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sep1",
+        "summary_heading",
+        "healthy_stat",
+        "issues_stat",
+        "filed_stat",
+        "resolved_stat"
+      ]
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "summary_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h2"
+      }
+    },
+    "healthy_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "HEALTHY Skills",
+        "value": "21"
+      }
+    },
+    "issues_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Open Issues",
+        "value": "17"
+      }
+    },
+    "filed_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Filed This Run",
+        "value": "0"
+      }
+    },
+    "resolved_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolved This Run",
+        "value": "0"
+      }
+    }
+  }
+}
