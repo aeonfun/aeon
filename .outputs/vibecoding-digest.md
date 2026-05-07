@@ -1,1 +1,1 @@
-VIBECODING_DIGEST_ERROR — r/vibecoding 2026-05-06: all 3 endpoints (top/hot/rising) HTTP 403 Blocked via curl + host-blocked via WebFetch. 14th consecutive failure. ISS-002 / ISS-012 carrier — needs scripts/prefetch-reddit.sh. Recommend pausing cron until prefetch ships.
+VIBECODING_DIGEST_ERROR — r/vibecoding 2026-05-07: all 3 endpoints failed (15th consecutive). curl HTTP 403 on top/hot/rising; WebFetch host-blocked on old.reddit.com / www.reddit.com / reddit.com. ISS-002/ISS-012 carrier — operator must land scripts/prefetch-reddit.sh; recommend pausing cron until then.

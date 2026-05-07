@@ -1,0 +1,94 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "alert_error",
+        "separator_1",
+        "stack_details"
+      ]
+    },
+    "alert_error": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "VIBECODING_DIGEST_ERROR",
+        "message": "All 3 endpoints failed (15th consecutive)"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_subreddit",
+        "text_date",
+        "text_failure_details",
+        "separator_2",
+        "text_issues",
+        "separator_3",
+        "text_action_required"
+      ]
+    },
+    "text_subreddit": {
+      "type": "Text",
+      "props": {
+        "text": "Subreddit: r/vibecoding",
+        "variant": "body"
+      }
+    },
+    "text_date": {
+      "type": "Text",
+      "props": {
+        "text": "Date: 2026-05-07",
+        "variant": "body"
+      }
+    },
+    "text_failure_details": {
+      "type": "Text",
+      "props": {
+        "text": "curl HTTP 403 on top/hot/rising endpoints; WebFetch host-blocked on old.reddit.com / www.reddit.com / reddit.com",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_issues": {
+      "type": "Text",
+      "props": {
+        "text": "Related issues: ISS-002, ISS-012",
+        "variant": "body"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text_action_required": {
+      "type": "Text",
+      "props": {
+        "text": "Action required: Operator must land scripts/prefetch-reddit.sh. Recommendation: Pause cron until resolved.",
+        "variant": "lead"
+      }
+    }
+  }
+}
