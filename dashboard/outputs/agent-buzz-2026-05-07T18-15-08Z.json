@@ -1,0 +1,124 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "agent-buzz",
+        "description": "2026-05-07: All sources failed"
+      },
+      "children": [
+        "alert-error",
+        "sep-1",
+        "stack-main"
+      ]
+    },
+    "alert-error": {
+      "type": "Alert",
+      "props": {
+        "title": "All Sources Failed",
+        "message": "XAI, WebFetch, and WebSearch all returned errors. Signal scoring cannot run.",
+        "type": "error"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-causes",
+        "stack-causes",
+        "sep-2",
+        "heading-context",
+        "text-context",
+        "storylink-pr",
+        "stat-consecutive"
+      ]
+    },
+    "heading-causes": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h2"
+      }
+    },
+    "stack-causes": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause-xai",
+        "cause-webfetch",
+        "cause-websearch"
+      ]
+    },
+    "cause-xai": {
+      "type": "Text",
+      "props": {
+        "text": "XAI: XAI_API_KEY unset",
+        "variant": "body"
+      }
+    },
+    "cause-webfetch": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch: XAI Responses API requires POST + bearer auth that WebFetch cannot deliver — 405 returned",
+        "variant": "body"
+      }
+    },
+    "cause-websearch": {
+      "type": "Text",
+      "props": {
+        "text": "WebSearch: returned 2 in-window status URLs (higgsfield_ai/2052062…, ArtificialAnlys/2052145…) but no per-tweet engagement metadata, and WebFetch on x.com tweet URLs returns 402 — signal scoring cannot run",
+        "variant": "body"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-context": {
+      "type": "Heading",
+      "props": {
+        "text": "Context",
+        "level": "h2"
+      }
+    },
+    "text-context": {
+      "type": "Text",
+      "props": {
+        "text": "Same root cause as 2026-05-04 and 2026-05-06. PR #156 still pending operator review (day 14).",
+        "variant": "body"
+      }
+    },
+    "storylink-pr": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #156",
+        "href": "https://github.com/tomscaria/swarm-fund-mvp/pull/156",
+        "source": "GitHub"
+      }
+    },
+    "stat-consecutive": {
+      "type": "Stat",
+      "props": {
+        "label": "Consecutive Structural Failures",
+        "value": "4",
+        "trend": "up"
+      }
+    }
+  }
+}
