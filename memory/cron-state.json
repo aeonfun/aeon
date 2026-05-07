@@ -180,13 +180,13 @@
     "last_error": "ad27724\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "paper-pick": {
-    "last_status": "dispatched",
-    "last_success": "2026-05-07T07:42:26Z",
-    "total_runs": 40,
-    "total_successes": 23,
+    "last_status": "success",
+    "last_success": "2026-05-07T14:53:10Z",
+    "total_runs": 41,
+    "total_successes": 24,
     "total_failures": 17,
     "consecutive_failures": 0,
-    "success_rate": 0.57,
+    "success_rate": 0.59,
     "last_dispatch": "2026-05-07T14:44:17Z",
     "last_failed": "2026-05-06T15:32:10Z",
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu"
