@@ -1,36 +1,30 @@
-*Narrative Tracker — 2026-05-03*
+*Narrative Tracker — 2026-05-07*
 
-TRANSITIONS
-• NEW: DeSci/BIO — BIO +96% on BioXP upgrade + Ignition USDC sale; FRONT-RUN window
-• NEW: AI-compute (AKT) — +26% on 1k+ active leases + Blackwell integration; folds into AI/DeAI
-• NEW: Sky/Spark resilience — Spark Savings +35%, Liq Layer +15%, Cooler Loans +18% flip; counter to yesterday's "durable unwind DEAD" frame
-• NEW: Powell-out May-14 PM — 1.35% YES; structurally clean clause arb (term ends May-15 midnight ET)
-• PROMOTED: Manfred Macx Emerging→Rising (broad-coverage day-2; FRONT-RUN→RIDE)
-• PROMOTED: Powell→Warsh WATCH→RIDE (Senate panel 13-11 party-line 04-29; full vote week of May-11)
-• PROMOTED: Roundhill PM-ETFs Rising→Peak (T-2 to 05-05 launch)
-• PROMOTED: Tamil Nadu Watch→Peak (T-1; results 05-04)
-• PROMOTED: MegaETH chain Emerging→Rising (chain TVL +566% 7d, 4 consec green)
-• DEMOTED: BTC-dom "no altseason" Peak→Fading (73/100 green vs 66 / 16 prior days)
-• DEMOTED: Kalshi-PM basis (Hermes hook) Rising→Peak/cooling (HL Perps fees −60% 1d, day-6 falsifier)
-• DEAD: Sky/Spark "durable unwind" reconfirmed (Spark stack +35% / +15% rally inverts the bear frame)
+TRANSITIONS (vs 05-03 baseline; 4-day gap, ISS-013 tail)
+• NEW: Agentic Payments (Pay.sh / x402) — Solana × Google Cloud 05-05; Anchorage Agentic Banking; MoonPay MoonAgents; Elastics $2M pre-seed (FRST + a16z angels). Infra-layer race builds out under Manfred Macx narrative. FRONT-RUN.
+• DEMOTED: Roundhill PM-ETFs Peak→Fading. SEC paused 24 ETFs (Roundhill/Bitwise/GraniteShares) 05-04/06 over "binary contract" disclosure. Pure regulatory inversion of 05-03 RIDE call.
+• DEAD-resolved: Tamil Nadu — TVK 108 seats, broke 59-yr Dravidian duopoly. DMK 85.5% YES → resolved NO. CalibrationGap blind-spot post-mortem.
+• PROMOTED: AI-Agent-Personhood (Manfred) Rising→Peak (broad carry; conviction-decay FRONT→RIDE). RWA Fading→Rising (mcap $31.12B +3.9% 30d; Q1 perp vol $525B). BTC-dom "no altseason" Fading→Peak (BTC-D 60% from 58.5% 05-03; altseason idx 39/100 — cope re-fires).
 
-REFLEXIVITY ALERT
-• HL HIP-4 first BTC market resolves 06:00 UTC TODAY — BTC $78,734 > $78,213 strike (YES at 62%). Venue bootstraps liq + pricing on near-the-money market.
-• Sky/Spark stack: USDS +4.39% mcap → Spark Savings +35% TVL → Spark Liq Layer +15% — same money three lenses, narrative-driven cascade.
-• AKT +26% on AI-compute: 1k+ active leases real, but rally partly narrative-pull from DefiLlama AI sector mindshare.
+REFLEXIVITY
+• Pay.sh × Anchorage × MoonPay × Elastics same-week stack (05-05/06) is VCs + incumbents *manufacturing* the agentic-payments layer; a16z 2026 piece + Elastics pre-seed are legitimacy-prints, not derivative price action.
+• SEC ETF-pause = pure regulatory-narrative reflexivity. No product change; Peak→Fading on a disclosure letter alone.
+• HL HIP-4 first-market settlement validated the venue's pricing model; subsequent BTC markets ran 3× PM+Kalshi combined vol — story-as-product bootstrapped.
+• Tamil Nadu post-mortem: 5-of-5 polls + Polymarket DMK 85.5% shared the Dravidian-duopoly continuity prior. Single-venue confidence × shared blind-spot = CalibrationGap quant scanner can't see language-asymmetry markets (MEMORY 05-04 lesson reconfirmed).
 
 POSITIONS (CalibrationGap-first)
-• WATCH: TN T-1 (DMK 86 / TVK 9 — rebounded 6.95→9c) — results 05-04; comments-side T-1 re-run queued
-• WATCH: RU-UA May-31 (6.2% YES) — comments-window 05-08-10
-• WATCH: Powell-out May-14 (1.35%) — clause arb structurally clean
-• WATCH: Iran-uranium (8.5%) — UMA-bluff thesis vs counter-clause
-• FRONT-RUN: DeSci/BIO — Ignition window
-• RIDE: Manfred, Powell→Warsh, Roundhill T-2, AI/DeAI/AKT, HL-HIP-4, HYPE, PENDLE, PM-meta, MegaETH-chain
-• FADE: Stablecoin-infra, BTC-dom-cope, MegaETH-token, RWA, GameFi, Meme-launchpad-wash, US-BTC-Reserve, DOGE
+• WATCH: Iran-response-May-8 T-1 (PM ladder 4% YES; Trump Project-Freedom-pause 05-06)
+• WATCH: US-China tariff agreement by-May-31 (PM 50.5% NO; Trump-Xi summit Beijing 05-14/15 binary catalyst)
+• WATCH: Russia-Ukraine ceasefire by-May-31 (~6% YES; comments-window 05-08-10)
+• FRONT-RUN: Agentic Payments / x402 (FinCEN comment-window 06-09, 33d)
+• RIDE: HL HIP-4, HYPE, PM-meta-sector, Powell→Warsh, AI/DeAI/AKT, RWA, MegaETH-chain, PM×Kaito, DeSci/BIO, Manfred (decayed)
+• FADE: Roundhill ETFs (inverted), BTC-dom-cope (re-fired), Stablecoin-retail-infra, MegaETH-token, Meme-launchpad, US-BTC-Reserve
+• DEAD-resolved: Tamil Nadu
 
 MAP
-Emerging: DeSci/BIO, Sky/Spark resilience, AI-compute (AKT), Powell-out May-14 PM, Stablechains, CLARITY-Act
-Rising: Manfred, Powell→Warsh, AI/DeAI, MegaETH-chain, PENDLE, Polymarket×Kaito
-Peak: HL-HIP-4, Roundhill T-2, HYPE, PM-meta, Stablecoins, TN T-1, RU-UA, US-Iran/Hormuz
-Fading: BTC-dom-cope, RWA, GameFi-Ronin, MegaETH-token, Meme-launchpad-wash, DOGE, US-BTC-Reserve, Aave-critique, Kalshi-PM-basis
+Emerging: Iran-response-May-8, US-China-tariff-deal
+Rising: Agentic-Payments(Pay.sh), AI/DeAI, RWA, DeSci/BIO, PM×Kaito
+Peak: HL-HIP-4, HYPE, PM-meta, Manfred, Powell→Warsh, BTC-dom-cope, Stablecoins, MegaETH-chain
+Fading: Roundhill-ETFs, MegaETH-token, Meme, RU-UA-cf, Hormuz-overhang
+DEAD: Tamil Nadu (resolved 05-04)
 

@@ -1,0 +1,518 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Narrative Tracker — 2026-05-07"
+      },
+      "children": [
+        "sep_1",
+        "section_transitions",
+        "sep_2",
+        "section_reflexivity",
+        "sep_3",
+        "section_positions",
+        "sep_4",
+        "section_map"
+      ]
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_transitions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_transitions",
+        "transition_item_1",
+        "transition_item_2",
+        "transition_item_3",
+        "transition_item_4"
+      ]
+    },
+    "heading_transitions": {
+      "type": "Heading",
+      "props": {
+        "text": "TRANSITIONS (vs 05-03 baseline; 4-day gap, ISS-013 tail)",
+        "level": "h2"
+      }
+    },
+    "transition_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_new",
+        "text_transition_1"
+      ]
+    },
+    "badge_new": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "default"
+      }
+    },
+    "text_transition_1": {
+      "type": "Text",
+      "props": {
+        "text": "Agentic Payments (Pay.sh / x402) — Solana × Google Cloud 05-05; Anchorage Agentic Banking; MoonPay MoonAgents; Elastics $2M pre-seed (FRST + a16z angels). Infra-layer race builds out under Manfred Macx narrative. FRONT-RUN.",
+        "variant": "body"
+      }
+    },
+    "transition_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_demoted",
+        "text_transition_2"
+      ]
+    },
+    "badge_demoted": {
+      "type": "Badge",
+      "props": {
+        "text": "DEMOTED",
+        "variant": "secondary"
+      }
+    },
+    "text_transition_2": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill PM-ETFs Peak→Fading. SEC paused 24 ETFs (Roundhill/Bitwise/GraniteShares) 05-04/06 over \"binary contract\" disclosure. Pure regulatory inversion of 05-03 RIDE call.",
+        "variant": "body"
+      }
+    },
+    "transition_item_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_dead_res",
+        "text_transition_3"
+      ]
+    },
+    "badge_dead_res": {
+      "type": "Badge",
+      "props": {
+        "text": "DEAD-resolved",
+        "variant": "destructive"
+      }
+    },
+    "text_transition_3": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu — TVK 108 seats, broke 59-yr Dravidian duopoly. DMK 85.5% YES → resolved NO. CalibrationGap blind-spot post-mortem.",
+        "variant": "body"
+      }
+    },
+    "transition_item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_promoted",
+        "text_transition_4"
+      ]
+    },
+    "badge_promoted": {
+      "type": "Badge",
+      "props": {
+        "text": "PROMOTED",
+        "variant": "outline"
+      }
+    },
+    "text_transition_4": {
+      "type": "Text",
+      "props": {
+        "text": "AI-Agent-Personhood (Manfred) Rising→Peak (broad carry; conviction-decay FRONT→RIDE). RWA Fading→Rising (mcap $31.12B +3.9% 30d; Q1 perp vol $525B). BTC-dom \"no altseason\" Fading→Peak (BTC-D 60% from 58.5% 05-03; altseason idx 39/100 — cope re-fires).",
+        "variant": "body"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_reflexivity": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_reflexivity",
+        "reflexivity_item_1",
+        "reflexivity_item_2",
+        "reflexivity_item_3",
+        "reflexivity_item_4"
+      ]
+    },
+    "heading_reflexivity": {
+      "type": "Heading",
+      "props": {
+        "text": "REFLEXIVITY",
+        "level": "h2"
+      }
+    },
+    "reflexivity_item_1": {
+      "type": "Text",
+      "props": {
+        "text": "Pay.sh × Anchorage × MoonPay × Elastics same-week stack (05-05/06) is VCs + incumbents *manufacturing* the agentic-payments layer; a16z 2026 piece + Elastics pre-seed are legitimacy-prints, not derivative price action.",
+        "variant": "body"
+      }
+    },
+    "reflexivity_item_2": {
+      "type": "Text",
+      "props": {
+        "text": "SEC ETF-pause = pure regulatory-narrative reflexivity. No product change; Peak→Fading on a disclosure letter alone.",
+        "variant": "body"
+      }
+    },
+    "reflexivity_item_3": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4 first-market settlement validated the venue's pricing model; subsequent BTC markets ran 3× PM+Kalshi combined vol — story-as-product bootstrapped.",
+        "variant": "body"
+      }
+    },
+    "reflexivity_item_4": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu post-mortem: 5-of-5 polls + Polymarket DMK 85.5% shared the Dravidian-duopoly continuity prior. Single-venue confidence × shared blind-spot = CalibrationGap quant scanner can't see language-asymmetry markets (MEMORY 05-04 lesson reconfirmed).",
+        "variant": "body"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_positions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_positions",
+        "positions_watch",
+        "positions_front_run",
+        "positions_ride",
+        "positions_fade",
+        "positions_dead"
+      ]
+    },
+    "heading_positions": {
+      "type": "Heading",
+      "props": {
+        "text": "POSITIONS (CalibrationGap-first)",
+        "level": "h2"
+      }
+    },
+    "positions_watch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_watch",
+        "text_watch_1",
+        "text_watch_2",
+        "text_watch_3"
+      ]
+    },
+    "label_watch": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCH",
+        "level": "h3"
+      }
+    },
+    "text_watch_1": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-response-May-8 T-1 (PM ladder 4% YES; Trump Project-Freedom-pause 05-06)",
+        "variant": "body"
+      }
+    },
+    "text_watch_2": {
+      "type": "Text",
+      "props": {
+        "text": "US-China tariff agreement by-May-31 (PM 50.5% NO; Trump-Xi summit Beijing 05-14/15 binary catalyst)",
+        "variant": "body"
+      }
+    },
+    "text_watch_3": {
+      "type": "Text",
+      "props": {
+        "text": "Russia-Ukraine ceasefire by-May-31 (~6% YES; comments-window 05-08-10)",
+        "variant": "body"
+      }
+    },
+    "positions_front_run": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_front_run",
+        "text_front_run"
+      ]
+    },
+    "label_front_run": {
+      "type": "Heading",
+      "props": {
+        "text": "FRONT-RUN",
+        "level": "h3"
+      }
+    },
+    "text_front_run": {
+      "type": "Text",
+      "props": {
+        "text": "Agentic Payments / x402 (FinCEN comment-window 06-09, 33d)",
+        "variant": "body"
+      }
+    },
+    "positions_ride": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_ride",
+        "text_ride"
+      ]
+    },
+    "label_ride": {
+      "type": "Heading",
+      "props": {
+        "text": "RIDE",
+        "level": "h3"
+      }
+    },
+    "text_ride": {
+      "type": "Text",
+      "props": {
+        "text": "HL HIP-4, HYPE, PM-meta-sector, Powell→Warsh, AI/DeAI/AKT, RWA, MegaETH-chain, PM×Kaito, DeSci/BIO, Manfred (decayed)",
+        "variant": "body"
+      }
+    },
+    "positions_fade": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_fade",
+        "text_fade"
+      ]
+    },
+    "label_fade": {
+      "type": "Heading",
+      "props": {
+        "text": "FADE",
+        "level": "h3"
+      }
+    },
+    "text_fade": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill ETFs (inverted), BTC-dom-cope (re-fired), Stablecoin-retail-infra, MegaETH-token, Meme-launchpad, US-BTC-Reserve",
+        "variant": "body"
+      }
+    },
+    "positions_dead": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_dead_pos",
+        "text_dead_pos"
+      ]
+    },
+    "label_dead_pos": {
+      "type": "Heading",
+      "props": {
+        "text": "DEAD-resolved",
+        "level": "h3"
+      }
+    },
+    "text_dead_pos": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu",
+        "variant": "body"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_map": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_map",
+        "map_emerging",
+        "map_rising",
+        "map_peak",
+        "map_fading",
+        "map_dead"
+      ]
+    },
+    "heading_map": {
+      "type": "Heading",
+      "props": {
+        "text": "MAP",
+        "level": "h2"
+      }
+    },
+    "map_emerging": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_emerging",
+        "text_emerging"
+      ]
+    },
+    "label_emerging": {
+      "type": "Heading",
+      "props": {
+        "text": "Emerging",
+        "level": "h3"
+      }
+    },
+    "text_emerging": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-response-May-8, US-China-tariff-deal",
+        "variant": "body"
+      }
+    },
+    "map_rising": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_rising",
+        "text_rising"
+      ]
+    },
+    "label_rising": {
+      "type": "Heading",
+      "props": {
+        "text": "Rising",
+        "level": "h3"
+      }
+    },
+    "text_rising": {
+      "type": "Text",
+      "props": {
+        "text": "Agentic-Payments(Pay.sh), AI/DeAI, RWA, DeSci/BIO, PM×Kaito",
+        "variant": "body"
+      }
+    },
+    "map_peak": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_peak",
+        "text_peak"
+      ]
+    },
+    "label_peak": {
+      "type": "Heading",
+      "props": {
+        "text": "Peak",
+        "level": "h3"
+      }
+    },
+    "text_peak": {
+      "type": "Text",
+      "props": {
+        "text": "HL-HIP-4, HYPE, PM-meta, Manfred, Powell→Warsh, BTC-dom-cope, Stablecoins, MegaETH-chain",
+        "variant": "body"
+      }
+    },
+    "map_fading": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_fading",
+        "text_fading"
+      ]
+    },
+    "label_fading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fading",
+        "level": "h3"
+      }
+    },
+    "text_fading": {
+      "type": "Text",
+      "props": {
+        "text": "Roundhill-ETFs, MegaETH-token, Meme, RU-UA-cf, Hormuz-overhang",
+        "variant": "body"
+      }
+    },
+    "map_dead": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "label_dead_map",
+        "text_dead_map"
+      ]
+    },
+    "label_dead_map": {
+      "type": "Heading",
+      "props": {
+        "text": "DEAD",
+        "level": "h3"
+      }
+    },
+    "text_dead_map": {
+      "type": "Text",
+      "props": {
+        "text": "Tamil Nadu (resolved 05-04)",
+        "variant": "body"
+      }
+    }
+  }
+}
