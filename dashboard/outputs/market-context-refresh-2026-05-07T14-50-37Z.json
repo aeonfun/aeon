@@ -1,0 +1,168 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context",
+        "description": "2026-05-07"
+      },
+      "children": [
+        "stack_take",
+        "sep1",
+        "stack_prices",
+        "sep2",
+        "stack_metrics",
+        "sep3",
+        "stack_narratives"
+      ]
+    },
+    "stack_take": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "text_take",
+        "badge_conviction"
+      ]
+    },
+    "text_take": {
+      "type": "Text",
+      "props": {
+        "text": "Take: risk-off",
+        "variant": "lead"
+      }
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "conviction medium",
+        "variant": "secondary"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack_prices": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$80,163",
+        "delta": "-1.9%",
+        "trend": "down"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,296",
+        "delta": "-3.0%",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat_fg",
+        "stat_breadth",
+        "stat_tvl"
+      ]
+    },
+    "stat_fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "47",
+        "delta": "Neutral"
+      }
+    },
+    "stat_breadth": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "4/20"
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "TVL (ETH chain)",
+        "value": "$46.0B",
+        "delta": "-2.1%",
+        "trend": "down"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stack_narratives": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_narrative",
+        "stack_hotmarket"
+      ]
+    },
+    "text_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Top narrative: TON ecosystem (peak, sole outperformer)",
+        "variant": "body"
+      }
+    },
+    "stack_hotmarket": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_hotmarket_label",
+        "progress_odds"
+      ]
+    },
+    "text_hotmarket_label": {
+      "type": "Text",
+      "props": {
+        "text": "Hot market: \"US x Iran peace by May 15\" YES",
+        "variant": "body"
+      }
+    },
+    "progress_odds": {
+      "type": "Progress",
+      "props": {
+        "value": 25.8,
+        "max": 100,
+        "label": "25.8%"
+      }
+    }
+  }
+}
