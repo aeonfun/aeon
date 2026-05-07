@@ -1,0 +1,91 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Digest — 2026-05-07"
+      },
+      "children": [
+        "intro_text",
+        "papers_stack",
+        "full_link"
+      ]
+    },
+    "intro_text": {
+      "type": "Text",
+      "props": {
+        "text": "No new Polymarket microstructure paper (Nechepurenko run is past dedup wall); 5 mission-axis hits in adjacent areas."
+      },
+      "children": []
+    },
+    "papers_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "paper1",
+        "paper2",
+        "paper3",
+        "paper4",
+        "paper5"
+      ]
+    },
+    "paper1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Constrained LLM agents in cryptocurrency markets: factor-DSL + deterministic-engine, +44.55% / Sharpe 1.55 OOS 2024-2026 after 5bp cost",
+        "href": "https://arxiv.org/abs/2604.26747",
+        "source": "arXiv"
+      },
+      "children": []
+    },
+    "paper2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Dynamic collateral control for spot-perp basis trading: BTC needs least collateral, asymmetric sell-side wedges -- Hermes-arb sizing-model upgrade",
+        "href": "https://arxiv.org/abs/2605.05089",
+        "source": "arXiv (May 6)"
+      },
+      "children": []
+    },
+    "paper3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Manipulation-in-PMs ABM: whale price-distortion duration scales with herd learning-rate x herding-intensity",
+        "href": "https://arxiv.org/abs/2601.20452",
+        "source": "arXiv"
+      },
+      "children": []
+    },
+    "paper4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "OracleProto: leakage cut to <=1%, order of magnitude tighter than tool-only temporal filtering -- supersedes AIA Forecaster eval regime",
+        "href": "https://arxiv.org/abs/2605.03762",
+        "source": "arXiv (May 5)"
+      },
+      "children": []
+    },
+    "paper5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Reasoning models hurt behavioral simulation in multi-agent LLM negotiation -- defensive cite for ADR-094 opus->sonnet routing",
+        "href": "https://arxiv.org/abs/2604.11840",
+        "source": "arXiv"
+      },
+      "children": []
+    },
+    "full_link": {
+      "type": "Link",
+      "props": {
+        "label": "Full digest",
+        "href": "articles/paper-digest-2026-05-07.md"
+      },
+      "children": []
+    }
+  }
+}

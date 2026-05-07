@@ -1,0 +1,462 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api//be2TCA1Scxqb1D6JoEyySguAeE</id>
+  <title>arXiv Query: search_query=cat:cs.MA AND all:"LLM agent"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-07T07:38:04Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:cs.MA+AND+all:%22LLM+agent%22&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>300</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.02307v1</id>
+    <title>SOTOPIA-TOM: Evaluating Information Management in Multi-Agent Interaction with Theory of Mind</title>
+    <updated>2026-05-04T07:59:18Z</updated>
+    <link href="https://arxiv.org/abs/2605.02307v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.02307v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As LLM-based agents are increasingly interacting in multi-party settings, they need to properly handle information asymmetry, i.e., knowing when and to whom to disclose information is appropriate. Yet, existing benchmarks fail to measure this ability in realistic multi-party settings. Thus, we introduce SOTOPIA-TOM, a multi-dimensional benchmarking framework to evaluate LLM agents' ability to successfully navigate information asymmetric and privacy sensitive multi-party interactions. We create an interaction environment which enables both public (broadcast) and private (direct message) communication, and craft 160 human-reviewed scenarios across eight industry sectors, each involving 3 to 5 agents with partitioned private knowledge and channel-dependent sharing policies. To measure interaction abilities, we create a multi-dimensional evaluation framework to assess how well agents share useful information, seek missing details, coordinate efficiently, and protect privacy, which we also combine into a composite INFOMGMT metric. Results show that, across 6 LLM backbones and prompting strategies (vanilla, CoT-privacy, and ToM-based interventions), even the largest high-reasoning model (GPT-5) reaches only a 62% INFOMGMT score, which indicates persistent deficiencies in information seeking and privacy-aware decision-making. Additionally, ToM-based interventions more consistently improve the overall coordination-privacy balance (for example, relative to the vanilla baseline, ToM-Coach reduces critical privacy violations on GPT-4o from 9.9% to 2.2% while increasing the composite InfoMgmt score more than 2.5x from 15% to 40%). Overall, SOTOPIA-TOM exposes persistent limitations of current LLM agents in complex, information-asymmetric coordination and provides an extensible testbed for developing more privacy-aware, theory-of-mind capable multi-agent systems.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-04T07:59:18Z</published>
+    <arxiv:comment>37 pages, 22 Figures</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Yashwanth YS</name>
+    </author>
+    <author>
+      <name>Ruichen Wang</name>
+    </author>
+    <author>
+      <name>Shihua Zeng</name>
+    </author>
+    <author>
+      <name>Xuhui Zhou</name>
+    </author>
+    <author>
+      <name>Koichi Onoue</name>
+    </author>
+    <author>
+      <name>Vasudha Varadarajan</name>
+    </author>
+    <author>
+      <name>Maarten Sap</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.01920v1</id>
+    <title>A Language for Describing Agentic LLM Contexts</title>
+    <updated>2026-05-03T15:02:44Z</updated>
+    <link href="https://arxiv.org/abs/2605.01920v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.01920v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models are increasingly used within larger systems ("LLM agents"). These make a sequence of LLM calls, each call providing the LLM with a combination of instructions, observations, and interaction history. The design of the encoded information and its structure play a central role in the quality of the resulting system, leading to efforts spent on context engineering. It is therefore critical to communicate the composition of the LLM context in a system, and how it evolves over time. Yet, no standard exists for doing so: context construction is typically conveyed through informal prose, ad hoc diagrams, or direct inspection of code, none of which precisely capture how a prompt evolves across interaction steps or how two context representation strategies differ. To remedy this, we introduce the Agentic Context Description Language (ACDL), a language for specifying the structure and dynamics of LLM input contexts in a precise, readable, and standard manner, along with visualizations. ACDL provides constructs for specifying context aspects such as role message sequences, dynamic content, time-indexed references, and conditional or iterative structure, capturing the full architecture of a prompt independently of any particular implementation. ACDL diagrams can be hand drawn on a whiteboard, or written in formal language which can then be rendered. We describe the language, demonstrate it by documenting several existing systems and their variants, and encourage the community to adopt it for describing LLM systems context, both in day-to-day communication and in papers. Tooling, examples and documentation are available at www.acdlang.org.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-03T15:02:44Z</published>
+    <arxiv:comment>18 pages, 12 figures. Accepted at CAIS '26. Project page: www.acdlang.org</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <arxiv:journal_ref>CAIS '26: ACM Conference on AI and Agentic Systems, May 2026, San Jose, CA, USA</arxiv:journal_ref>
+    <author>
+      <name>Noga Peleg Pelc</name>
+    </author>
+    <author>
+      <name>Gal A. Kaminka</name>
+    </author>
+    <author>
+      <name>Yoav Goldberg</name>
+    </author>
+    <arxiv:doi>10.1145/3786335.3813126</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.1145/3786335.3813126" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.27820v1</id>
+    <title>ObjectGraph: From Document Injection to Knowledge Traversal -- A Native File Format for the Agentic Era</title>
+    <updated>2026-04-30T13:03:54Z</updated>
+    <link href="https://arxiv.org/abs/2604.27820v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.27820v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Every document format in existence was designed for a human reader moving linearly through text. Autonomous LLM agents do not read - they retrieve. This fundamental mismatch forces agents to inject entire documents into their context window, wasting tokens on irrelevant content, compounding state across multi-turn loops, and broadcasting information indiscriminately across agent roles. We argue this is not a prompt engineering problem, not a retrieval problem, and not a compression problem: it is a format problem.
+  We introduce OBJECTGRAPH (.og), a file format that reconceives the document as a typed, directed knowledge graph to be traversed rather than a string to be injected. OBJECTGRAPH is a strict superset of Markdown - every .md file is a valid .og file - requires no infrastructure beyond a two-primitive query protocol, and is readable by both humans and agents without tooling.
+  We formalize the Document Consumption Problem, characterise six structural properties no existing format satisfies simultaneously, and prove OBJECTGRAPH satisfies all six. We further introduce the Progressive Disclosure Model, the Role-Scoped Access Protocol, and Executable Assertion Nodes as native format primitives. Empirical evaluation across five document classes and eight agent task types demonstrates up to 95.3 percent token reduction with no statistically significant degradation in task accuracy (p &gt; 0.05). Transpiler fidelity reaches 98.7 percent content preservation on a held-out document benchmark.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.DB" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.IR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-30T13:03:54Z</published>
+    <arxiv:comment>12 pages, 4 figures, 4 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Mohit Dubey</name>
+    </author>
+    <author>
+      <name>Open Gigantic</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.00043v1</id>
+    <title>SiriusHelper: An LLM Agent-Based Operations Assistant for Big Data Platforms</title>
+    <updated>2026-04-29T06:18:07Z</updated>
+    <link href="https://arxiv.org/abs/2605.00043v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.00043v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Big data platforms are widely used in modern enterprises, and an in-production intelligent assistant is increasingly important to help users quickly find actionable guidance and reduce operational burden. While recent LLM+RAG assistants provide a natural interface, they face practical challenges in real deployments: limited scenario coverage across both general consultation and domain-specific troubleshooting workflows, inefficient knowledge access due to inadequate multi-hop retrieval and flat knowledge organization, and high maintenance cost because escalated tickets are unstructured and hard to convert into assistant improvements and reusable SOPs.
+  In this paper, we present SiriusHelper, a deployed intelligent assistant for big data platforms. SiriusHelper serves as a unified online assistant that automatically identifies user intent and routes queries to the right handling path, including dedicated expert workflows for specialized scenarios (e.g., SQL execution diagnosis). To support complex troubleshooting, SiriusHelper combines a DeepSearch-driven mechanism with a priority-based hierarchical knowledge base to enable multi-hop retrieval without context overload, thus improving answer reliability and latency. To reduce expert overhead, SiriusHelper further introduces automated ticket understanding and SOP distillation: it diagnoses the assistant failure reason (e.g., missing knowledge or wrong routing) and extracts domain-specific SOPs to continuously enrich the knowledge base. Experiments and online deployment on Tencent Big Data platform show that SiriusHelper outperforms representative alternatives and reduces online ticket volume by 20.8\%.</summary>
+    <category term="cs.DB" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-29T06:18:07Z</published>
+    <arxiv:primary_category term="cs.DB"/>
+    <author>
+      <name>Yu Shen</name>
+    </author>
+    <author>
+      <name>Shiyang Liu</name>
+    </author>
+    <author>
+      <name>Qihang He</name>
+    </author>
+    <author>
+      <name>Yihang Cheng</name>
+    </author>
+    <author>
+      <name>Haining Xie</name>
+    </author>
+    <author>
+      <name>Zhiming He</name>
+    </author>
+    <author>
+      <name>Huahua Fan</name>
+    </author>
+    <author>
+      <name>Xianzhi Tan</name>
+    </author>
+    <author>
+      <name>Teng Ma</name>
+    </author>
+    <author>
+      <name>Shaoquan Zhang</name>
+    </author>
+    <author>
+      <name>Danqing Huang</name>
+    </author>
+    <author>
+      <name>Fan Jiang</name>
+    </author>
+    <author>
+      <name>Yang Li</name>
+    </author>
+    <author>
+      <name>Chongqing Zhao</name>
+    </author>
+    <author>
+      <name>Peng Chen</name>
+    </author>
+    <author>
+      <name>Jie Jiang</name>
+    </author>
+    <author>
+      <name>Bin Cui</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.24807v1</id>
+    <title>From Prototype to Classroom: An Intelligent Tutoring System for Quantum Education</title>
+    <updated>2026-04-27T07:00:14Z</updated>
+    <link href="https://arxiv.org/abs/2604.24807v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.24807v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Quantum computing instructors face a compounding problem: the concepts are counterintuitive, the mathematical formalism is dense, and qualified faculty are scarce outside a small number of well-resourced institutions. Our prior work introduced a knowledge-graph-augmented tutoring prototype with two specialized LLM agents: a Teaching Agent for dynamic interaction and a Lesson Planning Agent for lesson generation. Validated on simulated runs rather than in a real course, that prototype left open whether more aggressive agent specialization would be needed to handle the full range of quantum education tasks under real student load. This paper answers the three questions that the prototype could not answer. Can agent specialization solve the reliability problem in a domain as technically demanding as quantum information science? Can the system run in a real course, not a demonstration? Does the instructor gain actionable intelligence from the deployment? We present ITAS (Intelligent Teaching Assistant System), a multi-agent tutoring system built around four contributions: a five-module QIS curriculum grounded in Watrous's information-first framework, a Spoke-and-Wheel teaching architecture with quantum-specialized agents, a cloud infrastructure designed for production use and regulatory compliance, and a conversational analytics layer for instructors and content developers. Piloted in a quantum computing course at Old Dominion University, the system supports all three answers: deployment evidence is consistent with specialization addressing the task-boundary failures observed in the prototype, cloud infrastructure supports classroom-scale concurrency at sub-textbook cost, and the analytics agent surfaces curriculum gaps the instructor could not otherwise see.</summary>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-27T07:00:14Z</published>
+    <arxiv:comment>10 pages, 6 figures, 1 table. Submitted to IEEE QCE 2026. Companion papers (in preparation): ITAS architecture and latency analysis</arxiv:comment>
+    <arxiv:primary_category term="cs.CY"/>
+    <author>
+      <name>Iizalaarab Elhaimeur</name>
+    </author>
+    <author>
+      <name>Nikos Chrisochoides</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.20582v1</id>
+    <title>Trust, Lies, and Long Memories: Emergent Social Dynamics and Reputation in Multi-Round Avalon with LLM Agents</title>
+    <updated>2026-04-22T14:00:56Z</updated>
+    <link href="https://arxiv.org/abs/2604.20582v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.20582v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study emergent social dynamics in LLM agents playing The Resistance: Avalon, a hidden-role deception game. Unlike prior work on single-game performance, our agents play repeated games while retaining memory of previous interactions, including who played which roles and how they behaved, enabling us to study how social dynamics evolve. Across 188 games, two key phenomena emerge. First, reputation dynamics emerge organically when agents retain cross-game memory: agents reference past behavior in statements like "I am wary of repeating last game's mistake of over-trusting early success." These reputations are role-conditional: the same agent is described as "straightforward" when playing good but "subtle" when playing evil, and high-reputation players receive 46% more team inclusions. Second, higher reasoning effort supports more strategic deception: evil players more often pass early missions to build trust before sabotaging later ones, 75% in high-effort games vs 36% in low-effort games. Together, these findings show that repeated interaction with memory gives rise to measurable reputation and deception dynamics among LLM agents.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-22T14:00:56Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Suveen Ellawela</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.19540v1</id>
+    <title>Mesh Memory Protocol: Semantic Infrastructure for Multi-Agent LLM Systems</title>
+    <updated>2026-04-21T15:00:25Z</updated>
+    <link href="https://arxiv.org/abs/2604.19540v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.19540v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Teams of LLM agents increasingly collaborate on tasks spanning days or weeks: multi-day data-generation sprints where generator, reviewer, and auditor agents coordinate in real time on overlapping batches; specialists carrying findings forward across session restarts; product decisions compounding over many review rounds. This requires agents to share, evaluate, and combine each other's cognitive state in real time across sessions. We call this cross-session agent-to-agent cognitive collaboration, distinct from parallel agent execution. To enable it, three problems must be solved together. (P1) Each agent decides field by field what to accept from peers, not accept or reject whole messages. (P2) Every claim is traceable to source, so returning claims are recognised as echoes of the receiver's own prior thinking. (P3) Memory that survives session restarts is relevant because of how it was stored, not how it is retrieved. These are protocol-level properties at the semantic layer of agent communication, distinct from tool-access and task-delegation protocols at lower layers. We call this missing protocol layer "semantic infrastructure," and the Mesh Memory Protocol (MMP) specifies it. Four composable primitives work together: CAT7, a fixed seven-field schema for every Cognitive Memory Block (CMB); SVAF, which evaluates each field against the receiver's role-indexed anchors and realises P1; inter-agent lineage, carried as parents and ancestors of content-hash keys and realising P2; and remix, which stores only the receiver's own role-evaluated understanding of each accepted CMB, never the raw peer signal, realising P3. MMP is specified, shipped, and running in production across three reference deployments, where each session runs an autonomous agent as a mesh peer with its own identity and memory, collaborating with other agents across the network for collective intelligence.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-21T15:00:25Z</published>
+    <arxiv:comment>23 pages, 2 figures, 2 listings, 1 table. MMP v0.2.3 specification at https://sym.bot/spec/mmp (CC BY 4.0). Reference implementations on npm (@sym-bot/sym, @sym-bot/mesh-channel; Apache 2.0)</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Hongwei Xu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.19278v2</id>
+    <title>Explicit Trait Inference for Multi-Agent Coordination</title>
+    <updated>2026-04-22T16:58:59Z</updated>
+    <link href="https://arxiv.org/abs/2604.19278v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.19278v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM-based multi-agent systems (MAS) show promise on complex tasks but remain prone to coordination failures such as goal drift, error cascades, and misaligned behaviors. We propose Explicit Trait Inference (ETI), a psychologically grounded method for improving coordination. ETI enables agents to infer and track partner characteristics along two established psychological dimensions--warmth (e.g., trust) and competence (e.g., skill)--from interaction histories to guide decisions. We evaluate ETI in controlled settings (economic games), where it reduces payoff loss by 45-77%, and in more realistic, complex multi-agent settings (MultiAgentBench), where it improves performance by 3-29% depending on the scenario and model, relative to a CoT baseline. Additional analysis shows that gains are closely linked to trait inference: ETI profiles predict agents' actions, and informative profiles drive improvements. These results highlight ETI as a lightweight and robust mechanism for improving coordination in diverse multi-agent settings, and provide the first systematic evidence that LLM agents can (i) reliably infer others' traits from interaction histories and (ii) leverage structured awareness of others' traits for coordination.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-21T09:48:23Z</published>
+    <arxiv:comment>Accepted at ACL 2026 Main Conference</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Suhaib Abdurahman</name>
+    </author>
+    <author>
+      <name>Etsuko Ishii</name>
+    </author>
+    <author>
+      <name>Katerina Margatina</name>
+    </author>
+    <author>
+      <name>Divya Bhargavi</name>
+    </author>
+    <author>
+      <name>Monica Sunkara</name>
+    </author>
+    <author>
+      <name>Yi Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.17948v1</id>
+    <title>RAVEN: Retrieval-Augmented Vulnerability Exploration Network for Memory Corruption Analysis in User Code and Binary Programs</title>
+    <updated>2026-04-20T08:29:48Z</updated>
+    <link href="https://arxiv.org/abs/2604.17948v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.17948v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) have demonstrated remarkable capabilities across various cybersecurity tasks, including vulnerability classification, detection, and patching. However, their potential in automated vulnerability report documentation and analysis remains underexplored. We present RAVEN (Retrieval Augmented Vulnerability Exploration Network), a framework leveraging LLM agents and Retrieval Augmented Generation (RAG) to synthesize comprehensive vulnerability analysis reports. Given vulnerable source code, RAVEN generates reports following the Google Project Zero Root Cause Analysis template. The framework uses four modules: an Explorer agent for vulnerability identification, a RAG engine retrieving relevant knowledge from curated databases including Google Project Zero reports and CWE entries, an Analyst agent for impact and exploitation assessment, and a Reporter agent for structured report generation. To ensure quality, RAVEN includes a task specific LLM Judge evaluating reports across structural integrity, ground truth alignment, code reasoning quality, and remediation quality. We evaluate RAVEN on 105 vulnerable code samples covering 15 CWE types from the NIST-SARD dataset. Results show an average quality score of 54.21%, supporting the effectiveness of our approach for automated vulnerability documentation.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-20T08:29:48Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Parteek Jamwal</name>
+    </author>
+    <author>
+      <name>Minghao Shao</name>
+    </author>
+    <author>
+      <name>Boyuan Chen</name>
+    </author>
+    <author>
+      <name>Achyuta Muthuvelan</name>
+    </author>
+    <author>
+      <name>Asini Subanya</name>
+    </author>
+    <author>
+      <name>Boubacar Ballo</name>
+    </author>
+    <author>
+      <name>Kashish Satija</name>
+    </author>
+    <author>
+      <name>Mariam Shafey</name>
+    </author>
+    <author>
+      <name>Mohamed Mahmoud</name>
+    </author>
+    <author>
+      <name>Moncif Dahaji Bouffi</name>
+    </author>
+    <author>
+      <name>Pasindu Wickramasinghe</name>
+    </author>
+    <author>
+      <name>Siyona Goel</name>
+    </author>
+    <author>
+      <name>Yaakulya Sabbani</name>
+    </author>
+    <author>
+      <name>Hakim Hacid</name>
+    </author>
+    <author>
+      <name>Mthandazo Ndhlovu</name>
+    </author>
+    <author>
+      <name>Eleanna Kafeza</name>
+    </author>
+    <author>
+      <name>Sanjay Rawat</name>
+    </author>
+    <author>
+      <name>Muhammad Shafique</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.17562v1</id>
+    <title>SafeAgent: A Runtime Protection Architecture for Agentic Systems</title>
+    <updated>2026-04-19T18:02:21Z</updated>
+    <link href="https://arxiv.org/abs/2604.17562v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.17562v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language model (LLM) agents are vulnerable to prompt-injection attacks that propagate through multi-step workflows, tool interactions, and persistent context, making input-output filtering alone insufficient for reliable protection. This paper presents SafeAgent, a runtime security architecture that treats agent safety as a stateful decision problem over evolving interaction trajectories. The proposed design separates execution governance from semantic risk reasoning through two coordinated components: a runtime controller that mediates actions around the agent loop and a context-aware decision core that operates over persistent session state. The core is formalized as a context-aware advanced machine intelligence and instantiated through operators for risk encoding, utility-cost evaluation, consequence modeling, policy arbitration, and state synchronization. Experiments on Agent Security Bench (ASB) and InjecAgent show that SafeAgent consistently improves robustness over baseline and text-level guardrail methods while maintaining competitive benign-task performance. Ablation studies further show that recovery confidence and policy weighting determine distinct safety-utility operating points.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-19T18:02:21Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Hailin Liu</name>
+    </author>
+    <author>
+      <name>Eugene Ilyushin</name>
+    </author>
+    <author>
+      <name>Jie Ni</name>
+    </author>
+    <author>
+      <name>Min Zhu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.16706v1</id>
+    <title>Evaluating Tool-Using Language Agents: Judge Reliability, Propagation Cascades, and Runtime Mitigation in AgentProp-Bench</title>
+    <updated>2026-04-17T21:15:35Z</updated>
+    <link href="https://arxiv.org/abs/2604.16706v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.16706v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Automated evaluation of tool-using large language model (LLM) agents is widely assumed to be reliable, but this assumption has rarely been validated against human annotation. We introduce AgentProp-Bench, a 2,000-task benchmark with 2,300 traces across four domains, nine production LLMs, and a 100-label human-validated subset. We quantify judge reliability, characterize error propagation, and evaluate a runtime mitigation. Substring-based judging agrees with human annotation at kappa=0.049 (chance-level); a three-LLM ensemble reaches kappa=0.432 (moderate) with a conservative bias. Under validated evaluation, a parameter-level injection propagates to a wrong final answer with human-calibrated probability approximately 0.62 (range 0.46-0.73 across models). Rejection (catching bad parameters) and recovery (correcting after acceptance) are independent model capabilities (Spearman rho=0.126, p=0.747). A tuned runtime interceptor reduces hallucination on GPT-4o-mini by 23.0 percentage points under a concurrent n=600 control, but shows no significant effect on Gemini-2.0-Flash, whose aggressive parameter rejection eliminates the target failure mode. All code, data, traces, and human labels are released at https://github.com/bhaskargurram-ai/agenthallu-bench.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T21:15:35Z</published>
+    <arxiv:comment>9 pages, 5 figures, 12 tables (8 main + 4 supplementary). Under review at Information Processing &amp; Management. Code and data: https://github.com/bhaskargurram-ai/agenthallu-bench</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Bhaskar Gurram</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.22820v1</id>
+    <title>Complete Cyclic Subtask Graphs for Tool-Using LLM Agents: Flexibility, Cost, and Bottlenecks in Multi-Agent Workflows</title>
+    <updated>2026-04-17T15:31:20Z</updated>
+    <link href="https://arxiv.org/abs/2604.22820v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.22820v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Long-horizon tool-using tasks sometimes benefit from revisiting earlier subtasks for recovery and exploration, but added multi-agent workflow flexibility can also introduce coordination overhead and substantial inference cost. We study complete cyclic subtask graphs, a deliberately maximally flexible multi-agent architecture in which executable subtask nodes are fully connected and a unified state-analysis-and-routing agent selects transitions using natural-language criteria. This makes unrestricted revisitation explicit and directly analyzable at the subtask level. We evaluate task-specific (Spec-Cyc) and benchmark-generic (Gen-Cyc) graphs on TextCraft, ALFWorld, and Finance-Agent, with ablations over planner/executor/router strength, tool exposure (generalist vs specialized), $n$-shot successful trajectory summaries, and fault-injected random subtask perturbations. The benchmarks expose three distinct regimes. ALFWorld highlights a setting where explicit revisitation supports recovery and exploration; TextCraft, a largely prerequisite-chain domain, often favors the efficiency of simpler forward execution; and Finance-Agent remains bottlenecked by retrieval, grounding, and evidence synthesis more than by workflow flexibility alone. Shared-win token comparisons further show that the added flexibility can be substantially more expensive than a single ReAct agent. Overall, we use complete cyclic subtask graphs as a maximally flexible experimental lens for measuring when multi-agent revisitation helps, when it mainly adds coordination cost, and when external task bottlenecks dominate.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T15:31:20Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Luay Gharzeddine</name>
+    </author>
+    <author>
+      <name>Samer Saab</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.16022v1</id>
+    <title>SocialGrid: A Benchmark for Planning and Social Reasoning in Embodied Multi-Agent Systems</title>
+    <updated>2026-04-17T12:51:46Z</updated>
+    <link href="https://arxiv.org/abs/2604.16022v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.16022v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As Large Language Models (LLMs) transition from text processors to autonomous agents, evaluating their social reasoning in embodied multi-agent settings becomes critical. We introduce SocialGrid, an embodied multi-agent environment inspired by Among Us that evaluates LLM agents on planning, task execution, and social reasoning. Our evaluations reveal that even the strongest open model (GPT-OSS-120B) achieves below 60% accuracy in task completion and planning, with agents getting stuck in repetitive behaviors or failing to navigate basic obstacles. Since poor navigation confounds evaluation of social intelligence, SocialGrid offers an optional Planning Oracle to isolate social reasoning from planning deficits. While planning assistance improves task completion, social reasoning remains a bottleneck: agents fail to detect deception at near-random chance regardless of scale, relying on shallow heuristics rather than accumulating behavioral evidence. SocialGrid provides automatic failure analysis and fine-grained metrics, enabling developers to diagnose and improve their agents. We also establish a competitive leaderboard using Elo ratings from adversarial league play.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T12:51:46Z</published>
+    <arxiv:comment>Preprint</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Hikaru Shindo</name>
+    </author>
+    <author>
+      <name>Hanzhao Lin</name>
+    </author>
+    <author>
+      <name>Lukas Helff</name>
+    </author>
+    <author>
+      <name>Patrick Schramowski</name>
+    </author>
+    <author>
+      <name>Kristian Kersting</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.15877v1</id>
+    <title>Experience Compression Spectrum: Unifying Memory, Skills, and Rules in LLM Agents</title>
+    <updated>2026-04-17T09:26:25Z</updated>
+    <link href="https://arxiv.org/abs/2604.15877v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.15877v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>As LLM agents scale to long-horizon, multi-session deployments, efficiently managing accumulated experience becomes a critical bottleneck. Agent memory systems and agent skill discovery both address this challenge -- extracting reusable knowledge from interaction traces -- yet a citation analysis of 1,136 references across 22 primary papers reveals a cross-community citation rate below 1%. We propose the \emph{Experience Compression Spectrum}, a unifying framework that positions memory, skills, and rules as points along a single axis of increasing compression (5--20$\times$ for episodic memory, 50--500$\times$ for procedural skills, 1,000$\times$+ for declarative rules), directly reducing context consumption, retrieval latency, and compute overhead. Mapping 20+ systems onto this spectrum reveals that every system operates at a fixed, predetermined compression level -- none supports adaptive cross-level compression, a gap we term the \emph{missing diagonal}. We further show that specialization alone is insufficient -- both communities independently solve shared sub-problems without exchanging solutions -- that evaluation methods are tightly coupled to compression levels, that transferability increases with compression at the cost of specificity, and that knowledge lifecycle management remains largely neglected. We articulate open problems and design principles for scalable, full-spectrum agent learning systems.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T09:26:25Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Xing Zhang</name>
+    </author>
+    <author>
+      <name>Guanghui Wang</name>
+    </author>
+    <author>
+      <name>Yanwei Cui</name>
+    </author>
+    <author>
+      <name>Wei Qiu</name>
+    </author>
+    <author>
+      <name>Ziyuan Li</name>
+    </author>
+    <author>
+      <name>Bing Zhu</name>
+    </author>
+    <author>
+      <name>Peiyang He</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.15267v1</id>
+    <title>CoopEval: Benchmarking Cooperation-Sustaining Mechanisms and LLM Agents in Social Dilemmas</title>
+    <updated>2026-04-16T17:40:30Z</updated>
+    <link href="https://arxiv.org/abs/2604.15267v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.15267v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>It is increasingly important that LLM agents interact effectively and safely with other goal-pursuing agents, yet, recent works report the opposite trend: LLMs with stronger reasoning capabilities behave _less_ cooperatively in mixed-motive games such as the prisoner's dilemma and public goods settings. Indeed, our experiments show that recent models -- with or without reasoning enabled -- consistently defect in single-shot social dilemmas.
+  To tackle this safety concern, we present the first comparative study of game-theoretic mechanisms that are designed to enable cooperative outcomes between rational agents _in equilibrium_. Across four social dilemmas testing distinct components of robust cooperation, we evaluate the following mechanisms: (1) repeating the game for many rounds, (2) reputation systems, (3) third-party mediators to delegate decision making to, and (4) contract agreements for outcome-conditional payments between players. Among our findings, we establish that contracting and mediation are most effective in achieving cooperative outcomes between capable LLM models, and that repetition-induced cooperation deteriorates drastically when co-players vary. Moreover, we demonstrate that these cooperation mechanisms become _more effective_ under evolutionary pressures to maximize individual payoffs.</summary>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-16T17:40:30Z</published>
+    <arxiv:comment>65 pages, 38 Figures, 8 Tables, 17 Listings</arxiv:comment>
+    <arxiv:primary_category term="cs.GT"/>
+    <author>
+      <name>Emanuel Tewolde</name>
+    </author>
+    <author>
+      <name>Xiao Zhang</name>
+    </author>
+    <author>
+      <name>David Guzman Piedrahita</name>
+    </author>
+    <author>
+      <name>Vincent Conitzer</name>
+    </author>
+    <author>
+      <name>Zhijing Jin</name>
+    </author>
+  </entry>
+</feed>

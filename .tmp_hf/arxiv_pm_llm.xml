@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/mInzQsSaJi8XLoHiggTw7umJHX4</id>
+  <title>arXiv Query: search_query=all:"prediction market" AND all:LLM&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-07T07:38:11Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:%22prediction+market%22+AND+all:LLM&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>23</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.03310v1</id>
+    <title>Coordination as an Architectural Layer for LLM-Based Multi-Agent Systems</title>
+    <updated>2026-05-05T02:56:44Z</updated>
+    <link href="https://arxiv.org/abs/2605.03310v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.03310v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-agent LLM systems fail in production at rates between 41% and 87%, mostly due to coordination defects rather than base-model capability. Existing responses split between cataloguing failure modes empirically and shipping declarative orchestration frameworks as engineering tools; neither delivers a principled mapping from coordination configuration to predictable failure-mode signature. We argue that coordination should be treated as a configurable architectural layer, separable from agent logic and from information access, enabling architectural reasoning rather than only engineering productivity.
+  We instantiate this with an information-controlled design on prediction markets: a single LLM, fixed tools, fixed per-call output cap, and fixed prompt template across five reference coordination configurations, with total compute per question treated as an endogenous architectural output. The Murphy decomposition of the Brier score separates calibration from discriminative power, so configurations leave distinguishable signatures even when aggregate scores coincide.
+  On 100 Polymarket binary markets resolved after the model's training cutoff (claude-opus-4-6) we report Murphy signatures, a cost-quality Pareto frontier, category-conditioned analysis, and a bootstrap power-projection. Three of five pre-specified predictions are upheld in direction; two configurations dominate the Pareto frontier within this regime; exploratory bootstrap intervals separate consensus alignment from others, though pairwise tests do not survive Bonferroni correction at n=100. We also deploy the same configurations as live agents on Foresight Arena under web-search-enabled conditions, as an on-chain replication channel accumulating in parallel. Harness, trace dataset, and production agents are released. We position this as a methodology-validating first instantiation, not a general cross-model claim.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-05T02:56:44Z</published>
+    <arxiv:comment>31 pages, 7 figures, 4 tables. Code, traces, and production agents publicly released; see Appendix B for repository pinning</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Maksym Nechepurenko</name>
+    </author>
+    <author>
+      <name>Pavel Shuvalov</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.15674v1</id>
+    <title>Can LLMs Help Decentralized Dispute Arbitration? A Case Study of UMA-Resolved Markets on Polymarket</title>
+    <updated>2026-04-17T03:54:02Z</updated>
+    <link href="https://arxiv.org/abs/2604.15674v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.15674v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Web3 prediction markets, exemplified by Polymarket, have gained prominence for leveraging collective intelligence to forecast a wide range of social, political, and sports events. However, among the thousands of prediction market events, consensus disputes still arise due to imperfections in market mechanisms. On Polymarket alone, the trading volume involving disputed events has reached $972,370,804.71, underscoring the critical need for objective and efficient dispute resolution. In this study, we introduce large language models (LLMs) to: (1) evaluate whether web-enabled LLMs can reproduce the decision quality of UMA's on-chain voting process once a dispute has been raised, and (2) predict, based on event rules, which market events are likely to face future disputes before they occur. Our findings show that LLMs are unable to reliably predict which events will become disputed in advance; however, once a dispute is initiated, web-enabled LLMs achieve 89.58% agreement with UMA's final resolutions and demonstrate strong stability.</summary>
+    <category term="cs.CY" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-17T03:54:02Z</published>
+    <arxiv:primary_category term="cs.CY"/>
+    <author>
+      <name>Junhao Wen</name>
+    </author>
+    <author>
+      <name>Juncen Zhou</name>
+    </author>
+    <author>
+      <name>Junjie Huang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.04220v1</id>
+    <title>TimeSeek: Temporal Reliability of Agentic Forecasters</title>
+    <updated>2026-04-05T18:38:39Z</updated>
+    <link href="https://arxiv.org/abs/2604.04220v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.04220v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We introduce TimeSeek, a benchmark for studying how the reliability of agentic LLM forecasters changes over a prediction market's lifecycle. We evaluate 10 frontier models on 150 CFTC-regulated Kalshi binary markets at five temporal checkpoints, with and without web search, for 15,000 forecasts total. Models are most competitive early in a market's life and on high-uncertainty markets, but much less competitive near resolution and on strong-consensus markets. Web search improves pooled Brier Skill Score (BSS) for every model overall, yet hurts in 12% of model-checkpoint pairs, indicating that retrieval is helpful on average but not uniformly so. Simple two-model ensembles reduce error without surpassing the market overall. These descriptive results motivate time-aware evaluation and selective-deference policies rather than a single market snapshot or a uniform tool-use setting.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-05T18:38:39Z</published>
+    <arxiv:comment>Workshop paper. 11 pages including references</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Hamza Mostafa</name>
+    </author>
+    <author>
+      <name>Om Shastri</name>
+    </author>
+    <author>
+      <name>Dennis Lee</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.03888v1</id>
+    <title>PolySwarm: A Multi-Agent Large Language Model Framework for Prediction Market Trading and Latency Arbitrage</title>
+    <updated>2026-04-04T22:51:06Z</updated>
+    <link href="https://arxiv.org/abs/2604.03888v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.03888v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper presents PolySwarm, a novel multi-agent large language model (LLM) framework designed for real-time prediction market trading and latency arbitrage on decentralized platforms such as Polymarket. PolySwarm deploys a swarm of 50 diverse LLM personas that concurrently evaluate binary outcome markets, aggregating individual probability estimates through confidence-weighted Bayesian combination of swarm consensus with market-implied probabilities, and applying quarter-Kelly position sizing for risk-controlled execution. The system incorporates an information-theoretic market analysis engine using Kullback-Leibler (KL) divergence and Jensen-Shannon (JS) divergence to detect cross-market inefficiencies and negation pair mispricings. A latency arbitrage module exploits stale Polymarket prices by deriving CEX-implied probabilities from a log-normal pricing model and executing trades within the human reaction-time window. We provide a full architectural description, implementation details, and evaluation methodology using Brier scores, calibration analysis, and log-loss metrics benchmarked against human superforecaster performance. We further discuss open challenges including hallucination in agent pools, computational cost at scale, regulatory exposure, and feedback-loop risk, and outline five priority directions for future research. Experimental results demonstrate that swarm aggregation consistently outperforms single-model baselines in probability calibration on Polymarket prediction tasks.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-04T22:51:06Z</published>
+    <arxiv:comment>13 pages, 3 figures, 3 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Rajat M. Barot</name>
+    </author>
+    <author>
+      <name>Arjun S. Borkhatariya</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2604.14199v1</id>
+    <title>PolyBench: Benchmarking LLM Forecasting and Trading Capabilities on Live Prediction Market Data</title>
+    <updated>2026-04-03T06:25:21Z</updated>
+    <link href="https://arxiv.org/abs/2604.14199v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2604.14199v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Predicting real-world events from live market signals demands systems that fuse qualitative news with quantitative order-book dynamics under strict temporal discipline -- a challenge existing benchmarks fail to capture. We present \textbf{PolyBench}, a multimodal benchmark derived from Polymarket that records point-in-time cross-sections of 38,666 binary prediction markets spanning 4,997 events, synchronously coupling each snapshot with a Central Limit Order Book (CLOB) state and a real-time news stream. Using PolyBench, we evaluate seven state-of-the-art Large Language Models -- spanning open- and closed-source families -- generating 36,165 predictions under identical, timestamp-locked market states collected between February 6 and 12, 2026. Our multidimensional framework assesses directional accuracy, our proposed Confidence-Weighted Return (CWR), Annualized Percentage Yield (APY), and Sharpe ratio via realistic order-book execution simulation. The results reveal a pronounced performance divergence: only two of seven models achieve positive financial returns -- MiMo-V2-Flash at \textbf{17.6%} CWR and Gemini-3-Flash at 6.2% CWR -- while the remaining five incur losses despite uniformly high stated confidence. These findings highlight the gap between surface-level language fluency and genuine probabilistic reasoning under live market uncertainty, and establish PolyBench as a contamination-proof, financially-grounded evaluation standard for future LLM research. Our dataset and code available at \underline{\href{https://github.com/PolyBench/PolyBench}{https://github.com/PolyBench/PolyBench}}.</summary>
+    <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-04-03T06:25:21Z</published>
+    <arxiv:comment>16 pages, 4 figures, 6 tables</arxiv:comment>
+    <arxiv:primary_category term="q-fin.CP"/>
+    <author>
+      <name>Pu Cheng</name>
+    </author>
+    <author>
+      <name>Juncheng Liu</name>
+    </author>
+    <author>
+      <name>Yunshen Long</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.21091v1</id>
+    <title>Can Interest-Bearing Positions Solve the Long-Horizon Problem in Prediction Markets?</title>
+    <updated>2026-02-24T16:52:15Z</updated>
+    <link href="https://arxiv.org/abs/2602.21091v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.21091v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets suffer from reduced liquidity and price accuracy for long-horizon events due to the opportunity cost of committed capital. Recently, major platforms have introduced interest-bearing positions to mitigate this "long-horizon problem." I evaluate this policy using agent-based simulations with large language model (LLM) traders in a 2 x 2 factorial design, varying time horizon (4 days vs. 2 years) and the presence of interest. While long horizons degrade accuracy, the observed pricing bias (0.72 percentage points) is significantly smaller than theoretical and prior empirical estimates. Paying interest eliminates approximately 83% of the horizon effect on accuracy and more than triples market participation (from 17% to 62% of wealth). These findings suggest the long-horizon problem may be overstated in existing literature and that interest-bearing positions are a highly effective intervention, primarily by incentivizing participation rather than correcting bias.</summary>
+    <category term="econ.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-24T16:52:15Z</published>
+    <arxiv:primary_category term="econ.GN"/>
+    <author>
+      <name>Caleb Maresca</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.21229v2</id>
+    <title>Forecasting Future Language: Context Design for Mention Markets</title>
+    <updated>2026-02-27T06:43:06Z</updated>
+    <link href="https://arxiv.org/abs/2602.21229v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.21229v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Mention markets, a type of prediction market in which contracts resolve based on whether a specified keyword is mentioned during a future public event, require accurate probabilistic forecasts of keyword-mention outcomes. While recent work shows that large language models (LLMs) can generate forecasts competitive with human forecasters, it remains unclear how input context should be designed to support accurate prediction. In this paper, we study this question through experiments on earnings-call mention markets, which require forecasting whether a company will mention a specified keyword during its upcoming call. We run controlled comparisons varying (i) which contextual information is provided (news and/or prior earnings-call transcripts) and (ii) how \textit{market probability}, (i.e., prediction market contract price) is used. We introduce Market-Conditioned Prompting (MCP), which explicitly treats the market-implied probability as a prior and instructs the LLM to update this prior using textual evidence, rather than re-predicting the base rate from scratch. In our experiments, we find three insights: (1) richer context consistently improves forecasting performance; (2) market-conditioned prompting (MCP), which treats the market probability as a prior and updates it using textual evidence, yields better-calibrated forecasts; and (3) a mixture of the market probability and MCP (MixMCP) outperforms the market baseline. By dampening the LLM's posterior update with the market prior, MixMCP yields more robust predictions than either the market or the LLM alone.</summary>
+    <category term="q-fin.GN" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-04T12:43:31Z</published>
+    <arxiv:comment>10 pages</arxiv:comment>
+    <arxiv:primary_category term="q-fin.GN"/>
+    <author>
+      <name>Sumin Kim</name>
+    </author>
+    <author>
+      <name>Jihoon Kwon</name>
+    </author>
+    <author>
+      <name>Yoon Kim</name>
+    </author>
+    <author>
+      <name>Nicole Kagan</name>
+    </author>
+    <author>
+      <name>Raffi Khatchadourian</name>
+    </author>
+    <author>
+      <name>Wonbin Ahn</name>
+    </author>
+    <author>
+      <name>Alejandro Lopez-Lira</name>
+    </author>
+    <author>
+      <name>Jaewon Lee</name>
+    </author>
+    <author>
+      <name>Yoontae Hwang</name>
+    </author>
+    <author>
+      <name>Oscar Levy</name>
+    </author>
+    <author>
+      <name>Yongjae Lee</name>
+    </author>
+    <author>
+      <name>Chanyeol Choi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.07048v2</id>
+    <title>LLM as a Risk Manager: LLM Semantic Filtering for Lead-Lag Trading in Prediction Markets</title>
+    <updated>2026-02-27T06:38:12Z</updated>
+    <link href="https://arxiv.org/abs/2602.07048v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.07048v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets provide a unique setting where event-level time series are directly tied to natural-language descriptions, yet discovering robust lead-lag relationships remains challenging due to spurious statistical correlations. We propose a hybrid two-stage causal screener to address this challenge: (i) a statistical stage that uses Granger causality to identify candidate leader-follower pairs from market-implied probability time series, and (ii) an LLM-based semantic stage that re-ranks these candidates by assessing whether the proposed direction admits a plausible economic transmission mechanism based on event descriptions. Because causal ground truth is unobserved, we evaluate the ranked pairs using a fixed, signal-triggered trading protocol that maps relationship quality into realized profit and loss (PnL). On Kalshi Economics markets, our hybrid approach consistently outperforms the statistical baseline. Across rolling evaluations, the win rate increases from 51.4% to 54.5%. Crucially, the average magnitude of losing trades decreases substantially from 649 USD to 347 USD. This reduction is driven by the LLM's ability to filter out statistically fragile links that are prone to large losses, rather than relying on rare gains. These improvements remain stable across different trading configurations, indicating that the gains are not driven by specific parameter choices. Overall, the results suggest that LLMs function as semantic risk managers on top of statistical discovery, prioritizing lead-lag relationships that generalize under changing market conditions.</summary>
+    <category term="q-fin.RM" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.ST" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-02-04T12:34:19Z</published>
+    <arxiv:comment>11 pages</arxiv:comment>
+    <arxiv:primary_category term="q-fin.RM"/>
+    <author>
+      <name>Sumin Kim</name>
+    </author>
+    <author>
+      <name>Minjae Kim</name>
+    </author>
+    <author>
+      <name>Jihoon Kwon</name>
+    </author>
+    <author>
+      <name>Yoon Kim</name>
+    </author>
+    <author>
+      <name>Nicole Kagan</name>
+    </author>
+    <author>
+      <name>Joo Won Lee</name>
+    </author>
+    <author>
+      <name>Oscar Levy</name>
+    </author>
+    <author>
+      <name>Alejandro Lopez-Lira</name>
+    </author>
+    <author>
+      <name>Yongjae Lee</name>
+    </author>
+    <author>
+      <name>Chanyeol Choi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.00182v1</id>
+    <title>EigenAI: Deterministic Inference, Verifiable Results</title>
+    <updated>2026-01-30T04:46:22Z</updated>
+    <link href="https://arxiv.org/abs/2602.00182v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.00182v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>EigenAI is a verifiable AI platform built on top of the EigenLayer restaking ecosystem. At a high level, it combines a deterministic large-language model (LLM) inference engine with a cryptoeconomically secured optimistic re-execution protocol so that every inference result can be publicly audited, reproduced, and, if necessary, economically enforced. An untrusted operator runs inference on a fixed GPU architecture, signs and encrypts the request and response, and publishes the encrypted log to EigenDA. During a challenge window, any watcher may request re-execution through EigenVerify; the result is then deterministically recomputed inside a trusted execution environment (TEE) with a threshold-released decryption key, allowing a public challenge with private data. Because inference itself is bit-exact, verification reduces to a byte-equality check, and a single honest replica suffices to detect fraud. We show how this architecture yields sovereign agents -- prediction-market judges, trading bots, and scientific assistants -- that enjoy state-of-the-art performance while inheriting security from Ethereum's validator base.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-30T04:46:22Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>David Ribeiro Alves</name>
+    </author>
+    <author>
+      <name>Vishnu Patankar</name>
+    </author>
+    <author>
+      <name>Matheus Pereira</name>
+    </author>
+    <author>
+      <name>Jamie Stephens</name>
+    </author>
+    <author>
+      <name>Nima Vaziri</name>
+    </author>
+    <author>
+      <name>Sreeram Kannan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2602.00133v1</id>
+    <title>PredictionMarketBench: A SWE-bench-Style Framework for Backtesting Trading Agents on Prediction Markets</title>
+    <updated>2026-01-28T06:41:12Z</updated>
+    <link href="https://arxiv.org/abs/2602.00133v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2602.00133v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Prediction markets offer a natural testbed for trading agents: contracts have binary payoffs, prices can be interpreted as probabilities, and realized performance depends critically on market microstructure, fees, and settlement risk. We introduce PredictionMarketBench, a SWE-bench-style benchmark for evaluating algorithmic and LLM-based trading agents on prediction markets via deterministic, event-driven replay of historical limit-order-book and trade data. PredictionMarketBench standardizes (i) episode construction from raw exchange streams (orderbooks, trades, lifecycle, settlement), (ii) an execution-realistic simulator with maker/taker semantics and fee modeling, and (iii) a tool-based agent interface that supports both classical strategies and tool-calling LLM agents with reproducible trajectories. We release four Kalshi-based episodes spanning cryptocurrency, weather, and sports. Baseline results show that naive trading agents can underperform due to transaction costs and settlement losses, while fee-aware algorithmic strategies remain competitive in volatile episodes.</summary>
+    <category term="q-fin.ST" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-28T06:41:12Z</published>
+    <arxiv:comment>10 pages, 5 figures. Code available at https://github.com/oddpool/PredictionMarketBench</arxiv:comment>
+    <arxiv:primary_category term="q-fin.ST"/>
+    <author>
+      <name>Avi Arora</name>
+    </author>
+    <author>
+      <name>Ritesh Malpani</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2601.13545v3</id>
+    <title>TruthTensor: Evaluating LLMs through Human Imitation on Prediction Market under Drift and Holistic Reasoning</title>
+    <updated>2026-01-25T16:11:15Z</updated>
+    <link href="https://arxiv.org/abs/2601.13545v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2601.13545v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Evaluating language models and AI agents remains fundamentally challenging because static benchmarks fail to capture real-world uncertainty, distribution shift, and the gap between isolated task accuracy and human-aligned decision-making under evolving conditions. This paper introduces TruthTensor, a novel, reproducible evaluation paradigm that measures reasoning models not only as prediction engines but as human-imitation systems operating in socially-grounded, high-entropy environments. Building on forward-looking, contamination-free tasks, our framework anchors evaluation to live prediction markets and combines probabilistic scoring to provide a holistic view of model behavior. TruthTensor complements traditional correctness metrics with drift-centric diagnostics and explicit robustness checks for reproducibility. It specify human vs. automated evaluation roles, annotation protocols, and statistical testing procedures to ensure interpretability and replicability of results. In experiments across 500+ real markets (political, economic, cultural, technological), TruthTensor demonstrates that models with similar forecast accuracy can diverge markedly in calibration, drift, and risk-sensitivity, underscoring the need to evaluate models along multiple axes (accuracy, calibration, narrative stability, cost, and resource efficiency). TruthTensor therefore operationalizes modern evaluation best practices, clear hypothesis framing, careful metric selection, transparent compute/cost reporting, human-in-the-loop validation, and open, versioned evaluation contracts, to produce defensible assessments of LLMs in real-world decision contexts. We publicly released TruthTensor at https://truthtensor.com.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.ET" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-01-20T03:11:47Z</published>
+    <arxiv:comment>16 pages, 6 figures, 2 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Shirin Shahabi</name>
+    </author>
+    <author>
+      <name>Spencer Graham</name>
+    </author>
+    <author>
+      <name>Haruna Isah</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.16030v1</id>
+    <title>Do Large Language Models Know What They Don't Know? Kalshibench: A New Benchmark for Evaluating Epistemic Calibration via Prediction Markets</title>
+    <updated>2025-12-17T23:23:06Z</updated>
+    <link href="https://arxiv.org/abs/2512.16030v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.16030v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>A well-calibrated model should express confidence that matches its actual accuracy -- when it claims 80\% confidence, it should be correct 80\% of the time. While large language models (LLMs) have achieved remarkable performance across diverse tasks, their epistemic calibration remains poorly understood. We introduce \textbf{KalshiBench}, a benchmark of 300 prediction market questions from Kalshi, a CFTC-regulated exchange, with verifiable real-world outcomes occurring after model training cutoffs. Unlike traditional benchmarks measuring accuracy on static knowledge, KalshiBench evaluates whether models can appropriately quantify uncertainty about genuinely unknown future events. We evaluate five frontier models -- Claude Opus 4.5, GPT-5.2, DeepSeek-V3.2, Qwen3-235B, and Kimi-K2 -- and find \textbf{systematic overconfidence across all models}. Even the best-calibrated model (Claude Opus 4.5, ECE=0.120) shows substantial calibration errors, while reasoning-enhanced models like GPT-5.2-XHigh exhibit \emph{worse} calibration (ECE=0.395) despite comparable accuracy. Critically, only one model achieves a positive Brier Skill Score, indicating most models perform worse than simply predicting base rates. Our findings suggest that scaling and enhanced reasoning do not automatically confer calibration benefits, highlighting epistemic calibration as a distinct capability requiring targeted development.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-17T23:23:06Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Lukas Nel</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2512.05998v1</id>
+    <title>Going All-In on LLM Accuracy: Fake Prediction Markets, Real Confidence Signals</title>
+    <updated>2025-12-01T19:04:25Z</updated>
+    <link href="https://arxiv.org/abs/2512.05998v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2512.05998v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models are increasingly used to evaluate other models, yet these judgments typically lack any representation of confidence. This pilot study tests whether framing an evaluation task as a betting game (a fictional prediction market with its own LLM currency) improves forecasting accuracy and surfaces calibrated confidence signals. We generated 100 math and logic questions with verifiable answers. Six Baseline models (three current-generation, three prior-generation) answered all items. Three Predictor models then forecasted, for each question-baseline pair, if the baseline would answer correctly. Each predictor completed matched runs in two conditions: Control (simple correct/incorrect predictions) and Incentive (predictions plus wagers of 1-100,000 LLMCoin under even odds, starting from a 1,000,000 LLMCoin bankroll). Across 5,400 predictions per condition, Incentive runs showed modestly higher accuracy (81.5% vs. 79.1%, p = .089, d = 0.86) and significantly faster learning across rounds (12.0 vs. 2.9 percentage-point improvement from Round 1 to Round 4, p = .011). Most notably, stake size tracked confidence. "Whale" bets of 40,000+ coins were correct ~99% of the time, while small bets (&lt;1,000 coins) showed only ~74% accuracy. The key finding is not that fictional money makes models smarter; accuracy gains were modest and did not reach statistical significance (p = .089) in this pilot. Rather, the betting mechanic created a legible confidence signal absent from binary yes/no outputs. This suggests that simple financial framing may help transform LLMs into risk-aware forecasters, making their internal beliefs visible and usable. The protocol offers a foundation for future work for meta-evaluation systems and what may become LLM-to-LLM prediction markets.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-12-01T19:04:25Z</published>
+    <arxiv:comment>25 pages, 8 tables, 2 figures. Pilot study. Data, prompts, and code available at https://osf.io/dc24t/</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Michael Todasco</name>
+      <arxiv:affiliation>Visiting Fellow at the James Silberrad Center for Artificial Intelligence, San Diego State University</arxiv:affiliation>
+    </author>
+    <arxiv:doi>10.17605/OSF.IO/DC24T</arxiv:doi>
+    <link rel="related" href="https://doi.org/10.17605/OSF.IO/DC24T" title="doi"/>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.13240v3</id>
+    <title>Knowing What You Know Is Not Enough: Large Language Model Confidences Don't Align With Their Actions</title>
+    <updated>2026-02-09T04:58:39Z</updated>
+    <link href="https://arxiv.org/abs/2511.13240v3" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.13240v3" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) are increasingly deployed in agentic and multi-turn workflows where they are tasked to perform actions of significant consequence. In order to deploy them reliably and manage risky outcomes in these settings, it is helpful to access model uncertainty estimates. However, confidence elicitation methods for LLMs are typically not evaluated directly in agentic settings; instead, they are evaluated on static datasets, such as Q&amp;A benchmarks. In this work we investigate the relationship between confidence estimates elicited in static settings and the behavior of LLMs in interactive settings. We uncover a significant action-belief gap -- LLMs frequently take actions that contradict their elicited confidences. In a prediction market setting, we find that models often bet against their own high-confidence predictions; in a tool-use setting, models fail to reliably invoke information-seeking tools when their internal confidence is low; and in a user-challenge setting, models change their answers when they have high confidence in them, whilst sticking to answers they have low confidence in. Crucially, we show that static calibration is an insufficient predictor of consistency in the above dynamic settings, as stronger, better calibrated models are somtimes less consistent than their smaller and weaker open-source counterparts. Our results highlight a critical blind spot in current evaluation methodologies: ensuring that a model knows what it knows does not guarantee that it will act rationally on that knowledge.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-17T11:04:00Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Arka Pal</name>
+    </author>
+    <author>
+      <name>Teo Kitanovski</name>
+    </author>
+    <author>
+      <name>Arthur Liang</name>
+    </author>
+    <author>
+      <name>Akilesh Potti</name>
+    </author>
+    <author>
+      <name>Micah Goldblum</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2511.07678v1</id>
+    <title>AIA Forecaster: Technical Report</title>
+    <updated>2025-11-10T22:45:07Z</updated>
+    <link href="https://arxiv.org/abs/2511.07678v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2511.07678v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This technical report describes the AIA Forecaster, a Large Language Model (LLM)-based system for judgmental forecasting using unstructured data. The AIA Forecaster approach combines three core elements: agentic search over high-quality news sources, a supervisor agent that reconciles disparate forecasts for the same event, and a set of statistical calibration techniques to counter behavioral biases in large language models. On the ForecastBench benchmark (Karger et al., 2024), the AIA Forecaster achieves performance equal to human superforecasters, surpassing prior LLM baselines. In addition to reporting on ForecastBench, we also introduce a more challenging forecasting benchmark sourced from liquid prediction markets. While the AIA Forecaster underperforms market consensus on this benchmark, an ensemble combining AIA Forecaster with market consensus outperforms consensus alone, demonstrating that our forecaster provides additive information. Our work establishes a new state of the art in AI forecasting and provides practical, transferable recommendations for future research. To the best of our knowledge, this is the first work that verifiably achieves expert-level forecasting at scale.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2025-11-10T22:45:07Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Rohan Alur</name>
+    </author>
+    <author>
+      <name>Bradly C. Stadie</name>
+    </author>
+    <author>
+      <name>Daniel Kang</name>
+    </author>
+    <author>
+      <name>Ryan Chen</name>
+    </author>
+    <author>
+      <name>Matt McManus</name>
+    </author>
+    <author>
+      <name>Michael Rickert</name>
+    </author>
+    <author>
+      <name>Tyler Lee</name>
+    </author>
+    <author>
+      <name>Michael Federici</name>
+    </author>
+    <author>
+      <name>Richard Zhu</name>
+    </author>
+    <author>
+      <name>Dennis Fogerty</name>
+    </author>
+    <author>
+      <name>Hayley Williamson</name>
+    </author>
+    <author>
+      <name>Nina Lozinski</name>
+    </author>
+    <author>
+      <name>Aaron Linsky</name>
+    </author>
+    <author>
+      <name>Jasjeet S. Sekhon</name>
+    </author>
+  </entry>
+</feed>
