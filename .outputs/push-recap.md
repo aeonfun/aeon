@@ -1,17 +1,18 @@
-*Push Recap — 2026-05-07*
-MIXED — aeon shipped v4-prep skill kit; swarm-fund wired a local-LLM canary
+## Summary
 
-Shipped to users:
-• aaronjmars/aeon #161 — `./new-from-template` CLI + six runnable starter SKILL.mds (crypto-tracker, research-digest, code-reviewer, social-monitor, deploy-watcher, community-manager); first-touch fork operators no longer reverse-engineer SKILL.md
-• aaronjmars/aeon #160 — `v4-readiness` skill (workflow_dispatch, read-only) emits Safe/Review/Custom/Action breakdown of a fork's aeon.yml + skills.json + MEMORY.md against an embedded v4 manifest
-• swarm-fund-mvp eb18354 — fine-tuning pipeline (MLX LoRA on Qwen2.5-7B → GGUF → ollama swarm-triage) + `SWARM_TRIAGE_CANARY_PCT` stochastic A/B router; ADR-095 lands in DECISIONS.md alongside `OLLAMA_FULL=1` flag routing sonnet-tier to qwen2.5:14b
+Executed `push-recap` for 2026-05-07 against the 24h window `2026-05-06T21:01:56Z → 2026-05-07T21:01:56Z`. Confirmed it was a re-run of an earlier cron-dispatched execution (15:00 UTC) and the window contents had not changed in substance.
 
-Under the hood:
-• swarm-fund-mvp caaec5a — opt-in `LLM_CALL_LOG` env var captures {ts, agent, task, model, prompt, completion}; raw material for the 3,462-pair triage dataset exported in e0ad1b5
+**Window contents (3 watched repos):**
+- `tomscaria/swarm-fund-mvp`: 105 commits — 10 substantive (ADR-095 OLLAMA_FULL=1, fine-tune pipeline + canary router, LLM_CALL_LOG, paper_triage routing fix, finetune dataset export, KB build steps, founder skill chips on the public site) + 95 collapsed metric-refresh cron commits on `swarm-lab-site/public/metrics.json`.
+- `aaronjmars/aeon`: 2 commits — PR #161 (skill template library + `./new-from-template` CLI, +755) and PR #160 (`v4-readiness` skill, +310/-7).
+- `tomscaria/lore-financial-teaser`: empty.
 
-Shape: 7 user-visible · 5 internal · 0 infra · 95 bot-filtered · 2 merged PRs
-Volume: 36 files, +2,361/−11 lines
-Note: every flag added today defaults off — canary chain built, not yet measured
+**Verdict (unchanged):** `MIXED — aeon shipped v4-prep skill kit; swarm-fund wired a local-LLM canary`.
 
-Full recap: https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-07.md
+**Action taken:**
+- Article `articles/push-recap-2026-05-07.md` already exists, byte-identical to what a fresh regen would produce — left in place.
+- Appended a `push-recap (re-run, 21:02 UTC)` entry to `memory/logs/2026-05-07.md` with status `PUSH_RECAP_RERUN_NOOP` and full window/source accounting.
+- Notification SKIPPED — re-firing on identical content would violate the skill's explicit high-signal-channel discipline (a duplicate of the 15:00 UTC dispatch).
 
+**Files changed:** `memory/logs/2026-05-07.md` (one log block appended).
+**Follow-ups:** None from this run. The 11-day `tomscaria/aeon` `outputs/{skill}/{date}.json` ADR-093 falsifier and the 14-day `OLLAMA_FULL=1` ADR-095 production-rollout falsifier remain on the clock per `MEMORY.md`.
