@@ -1,0 +1,617 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases — 2026-05-07",
+        "description": "34 updates · 4 asap · 1 soon · 24 fyi · 5 skipped"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "asap_section",
+        "sep1",
+        "soon_section",
+        "sep2",
+        "fyi_section",
+        "sep3",
+        "skip_section",
+        "sep4",
+        "stats"
+      ]
+    },
+    "asap_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap_heading",
+        "asap_1",
+        "asap_2",
+        "asap_3",
+        "asap_4"
+      ]
+    },
+    "asap_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "UPGRADE ASAP",
+        "level": "h2"
+      }
+    },
+    "asap_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap_1_link",
+        "asap_1_desc"
+      ]
+    },
+    "asap_1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.2.5",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.2.5"
+      }
+    },
+    "asap_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Patches DoS in Server Components, middleware/proxy bypass via segment-prefetch, Cache-Components connection exhaustion.",
+        "variant": "body"
+      }
+    },
+    "asap_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap_2_link",
+        "asap_2_desc"
+      ]
+    },
+    "asap_2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v15.5.16",
+        "href": "https://github.com/vercel/next.js/releases/tag/v15.5.16"
+      }
+    },
+    "asap_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Backports the same three GHSA fixes to the v15 line.",
+        "variant": "body"
+      }
+    },
+    "asap_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap_3_link",
+        "asap_3_desc"
+      ]
+    },
+    "asap_3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain==0.3.29",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D0.3.29"
+      }
+    },
+    "asap_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Restricts deserialization in storage._lc_store; hardens load() against untrusted manifests.",
+        "variant": "body"
+      }
+    },
+    "asap_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asap_4_link",
+        "asap_4_desc"
+      ]
+    },
+    "asap_4_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-core==1.3.3",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D1.3.3"
+      }
+    },
+    "asap_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Hardens load() against untrusted manifests; same fix mirrored in core.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "soon_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "soon_heading",
+        "soon_1"
+      ]
+    },
+    "soon_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "UPGRADE SOON",
+        "level": "h2"
+      }
+    },
+    "soon_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "soon_1_link",
+        "soon_1_desc"
+      ]
+    },
+    "soon_1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-python v2.35.0",
+        "href": "https://github.com/openai/openai-python/releases/tag/v2.35.0"
+      }
+    },
+    "soon_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Removes legacy python CLI entrypoint (renamed); ships image-2 API.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fyi_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_heading",
+        "fyi_1",
+        "fyi_2",
+        "fyi_3",
+        "fyi_4",
+        "fyi_5",
+        "fyi_6",
+        "fyi_7",
+        "fyi_8",
+        "fyi_9",
+        "fyi_10",
+        "fyi_more"
+      ]
+    },
+    "fyi_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "FYI",
+        "level": "h2"
+      }
+    },
+    "fyi_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_1_link",
+        "fyi_1_desc"
+      ]
+    },
+    "fyi_1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9050",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9050"
+      }
+    },
+    "fyi_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes missing ggml_backend_load_all() call on llama init.",
+        "variant": "body"
+      }
+    },
+    "fyi_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_2_link",
+        "fyi_2_desc"
+      ]
+    },
+    "fyi_2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.16.0",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.16.0"
+      }
+    },
+    "fyi_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Switches SDK default model to gpt-5.4-mini; pin a model to keep prior behavior.",
+        "variant": "body"
+      }
+    },
+    "fyi_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_3_link",
+        "fyi_3_desc"
+      ]
+    },
+    "fyi_3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-agent-sdk-python v0.1.76",
+        "href": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.76"
+      }
+    },
+    "fyi_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds api_error_status on ResultMessage; fixes ToolPermissionContext suggestions deserialization.",
+        "variant": "body"
+      }
+    },
+    "fyi_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_4_link",
+        "fyi_4_desc"
+      ]
+    },
+    "fyi_4_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-code v2.1.132",
+        "href": "https://github.com/anthropics/claude-code/releases/tag/v2.1.132"
+      }
+    },
+    "fyi_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds CLAUDE_CODE_SESSION_ID env and alt-screen-disable env; fixes external SIGINT graceful shutdown.",
+        "variant": "body"
+      }
+    },
+    "fyi_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_5_link",
+        "fyi_5_desc"
+      ]
+    },
+    "fyi_5_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9049",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9049"
+      }
+    },
+    "fyi_5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds MiniCPM-V 4.6 multimodal model support.",
+        "variant": "body"
+      }
+    },
+    "fyi_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_6_link",
+        "fyi_6_desc"
+      ]
+    },
+    "fyi_6_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-python v2.35.1",
+        "href": "https://github.com/openai/openai-python/releases/tag/v2.35.1"
+      }
+    },
+    "fyi_6_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes imagegen size enum regression from prior release.",
+        "variant": "body"
+      }
+    },
+    "fyi_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_7_link",
+        "fyi_7_desc"
+      ]
+    },
+    "fyi_7_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9048",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9048"
+      }
+    },
+    "fyi_7_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes crash on unsupported model architecture.",
+        "variant": "body"
+      }
+    },
+    "fyi_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_8_link",
+        "fyi_8_desc"
+      ]
+    },
+    "fyi_8_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9047",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9047"
+      }
+    },
+    "fyi_8_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes device-memory fit logic for unknown GPUs.",
+        "variant": "body"
+      }
+    },
+    "fyi_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_9_link",
+        "fyi_9_desc"
+      ]
+    },
+    "fyi_9_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/anthropic-sdk-python v0.100.0",
+        "href": "https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.100.0"
+      }
+    },
+    "fyi_9_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Managed Agents multiagents and outcomes, webhooks, and vault validation.",
+        "variant": "body"
+      }
+    },
+    "fyi_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fyi_10_link",
+        "fyi_10_desc"
+      ]
+    },
+    "fyi_10_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/anthropic-sdk-typescript sdk-v0.95.0",
+        "href": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.95.0"
+      }
+    },
+    "fyi_10_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Adds Managed Agents multiagents and outcomes, webhooks, and vault validation.",
+        "variant": "body"
+      }
+    },
+    "fyi_more": {
+      "type": "Text",
+      "props": {
+        "text": "… +14 more FYI items not shown in this output",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "skip_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skip_heading",
+        "skip_1",
+        "skip_2",
+        "skip_3",
+        "skip_more"
+      ]
+    },
+    "skip_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "SKIP",
+        "level": "h2"
+      }
+    },
+    "skip_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skip_1_link",
+        "skip_1_desc"
+      ]
+    },
+    "skip_1_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.14",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.14"
+      }
+    },
+    "skip_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Canary: shrinks JsValue from 64 to 32 bytes; loader-tree depth ordering.",
+        "variant": "body"
+      }
+    },
+    "skip_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skip_2_link",
+        "skip_2_desc"
+      ]
+    },
+    "skip_2_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.13",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.13"
+      }
+    },
+    "skip_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Canary: disables instant validations in draft mode.",
+        "variant": "body"
+      }
+    },
+    "skip_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "skip_3_link",
+        "skip_3_desc"
+      ]
+    },
+    "skip_3_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.12",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.12"
+      }
+    },
+    "skip_3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Canary: detects use-cache module-scope deadlocks early; React upstream bump.",
+        "variant": "body"
+      }
+    },
+    "skip_more": {
+      "type": "Text",
+      "props": {
+        "text": "… +2 more canary releases not shown in this output",
+        "variant": "muted"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stats": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "caption"
+      }
+    }
+  }
+}
