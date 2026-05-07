@@ -1,0 +1,233 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# new-from-template — Bootstrap a new skill from a local template under templates/.
+#
+# Usage:
+#   ./new-from-template --list                          List available templates
+#   ./new-from-template <template> --tokens             List replacement tokens for a template
+#   ./new-from-template <template> <skill-name> [--var KEY=VALUE]...
+#                                                       Copy template into skills/<skill-name>/,
+#                                                       replace [REPLACE: KEY] tokens, register
+#                                                       a disabled entry in aeon.yml.
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+TEMPLATES_DIR="$ROOT/templates"
+SKILLS_DIR="$ROOT/skills"
+AEON_YML="$ROOT/aeon.yml"
+
+usage() {
+  cat <<'EOF'
+Usage: ./new-from-template <template> <skill-name> [--var KEY=VALUE]...
+
+Bootstrap a new skill from a local template.
+
+Arguments:
+  <template>         Template name (a directory under templates/)
+  <skill-name>       Name for the new skill (becomes skills/<skill-name>/)
+
+Options:
+  --list             List available templates and exit
+  --tokens           Print the replacement tokens used by <template> and exit
+  --var KEY=VALUE    Provide a value for [REPLACE: KEY]. Repeatable.
+  --help, -h         Show this help
+
+Examples:
+  ./new-from-template --list
+  ./new-from-template crypto-tracker --tokens
+  ./new-from-template crypto-tracker my-eth-watch \
+    --var TOKEN_SYMBOL=ETH \
+    --var COINGECKO_ID=ethereum \
+    --var ALERT_THRESHOLD_PCT=10
+EOF
+}
+
+list_templates() {
+  if [[ ! -d "$TEMPLATES_DIR" ]]; then
+    echo "No templates/ directory found." >&2
+    return 1
+  fi
+  echo ""
+  echo "Available templates:"
+  echo ""
+  local count=0
+  while IFS= read -r skill_md; do
+    local dir name desc
+    dir="$(dirname "$skill_md")"
+    name="$(basename "$dir")"
+    desc=$(awk '/^description:/ { sub(/^description: */, ""); print; exit }' "$skill_md")
+    if [[ ${#desc} -gt 80 ]]; then
+      desc="${desc:0:77}..."
+    fi
+    printf "  %-22s %s\n" "$name" "$desc"
+    count=$((count + 1))
+  done < <(find "$TEMPLATES_DIR" -mindepth 2 -maxdepth 2 -name "SKILL.md" -type f | sort)
+  echo ""
+  echo "$count templates available."
+  echo ""
+  echo "See templates/TEMPLATE.md for the full contract."
+}
+
+list_tokens() {
+  local template="$1"
+  local skill_md="$TEMPLATES_DIR/$template/SKILL.md"
+  if [[ ! -f "$skill_md" ]]; then
+    echo "Template '$template' not found." >&2
+    return 1
+  fi
+  echo ""
+  echo "Replacement tokens in template '$template':"
+  echo ""
+  local tokens
+  tokens=$(grep -oE '\[REPLACE: [A-Z0-9_]+\]' "$skill_md" | sort -u | sed 's/^\[REPLACE: //;s/\]$//')
+  if [[ -z "$tokens" ]]; then
+    echo "  (none — template has no replacement tokens)"
+  else
+    while IFS= read -r tok; do
+      [[ -z "$tok" ]] && continue
+      if [[ "$tok" == "SKILL_NAME" ]]; then
+        printf "  %-22s (auto — set to <skill-name> argument)\n" "$tok"
+      else
+        printf "  %s\n" "$tok"
+      fi
+    done <<< "$tokens"
+  fi
+  echo ""
+}
+
+# Parse args
+if [[ $# -lt 1 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+  usage
+  exit 0
+fi
+
+if [[ "$1" == "--list" ]]; then
+  list_templates
+  exit 0
+fi
+
+TEMPLATE="$1"
+shift
+
+# Validate template
+TEMPLATE_DIR="$TEMPLATES_DIR/$TEMPLATE"
+TEMPLATE_FILE="$TEMPLATE_DIR/SKILL.md"
+if [[ ! -d "$TEMPLATE_DIR" ]] || [[ ! -f "$TEMPLATE_FILE" ]]; then
+  echo "Template '$TEMPLATE' not found in $TEMPLATES_DIR." >&2
+  echo "Run './new-from-template --list' to see what's available." >&2
+  exit 1
+fi
+
+# --tokens mode: print tokens and exit before requiring skill-name
+if [[ $# -ge 1 ]] && [[ "$1" == "--tokens" ]]; then
+  list_tokens "$TEMPLATE"
+  exit 0
+fi
+
+# Need skill name now
+if [[ $# -lt 1 ]]; then
+  echo "Missing <skill-name>. See './new-from-template --help'." >&2
+  exit 1
+fi
+
+SKILL_NAME="$1"
+shift
+
+# Validate skill name (alphanumeric, dashes, underscores)
+if [[ ! "$SKILL_NAME" =~ ^[a-z0-9][a-z0-9_-]*$ ]]; then
+  echo "Skill name '$SKILL_NAME' is invalid. Use lowercase letters, digits, dashes, underscores; must start with a letter or digit." >&2
+  exit 1
+fi
+
+DEST_DIR="$SKILLS_DIR/$SKILL_NAME"
+DEST_FILE="$DEST_DIR/SKILL.md"
+
+if [[ -e "$DEST_DIR" ]]; then
+  echo "skills/$SKILL_NAME already exists — refusing to overwrite. Choose a different name or rm -rf the existing directory first." >&2
+  exit 1
+fi
+
+# Collect --var assignments. Always include SKILL_NAME.
+declare -A VARS
+VARS["SKILL_NAME"]="$SKILL_NAME"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --var)
+      if [[ $# -lt 2 ]]; then
+        echo "--var requires a KEY=VALUE argument." >&2
+        exit 1
+      fi
+      pair="$2"
+      key="${pair%%=*}"
+      val="${pair#*=}"
+      if [[ -z "$key" ]] || [[ "$key" == "$pair" ]]; then
+        echo "Invalid --var '$pair' — expected KEY=VALUE." >&2
+        exit 1
+      fi
+      VARS["$key"]="$val"
+      shift 2
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
+# Copy + substitute
+mkdir -p "$DEST_DIR"
+
+# Build a sed pipeline of `s|...|...|g` replacements, one per token. The `|`
+# delimiter avoids URL-path conflicts in replacement values; `\`, `&`, and `|`
+# are escaped in values so they're treated as literals by sed.
+sed_args=()
+for key in "${!VARS[@]}"; do
+  val="${VARS[$key]}"
+  esc_val=$(printf '%s' "$val" | sed -e 's/[\\&|]/\\&/g')
+  sed_args+=(-e "s|\\[REPLACE:[[:space:]]*${key}\\]|${esc_val}|g")
+done
+
+sed "${sed_args[@]}" "$TEMPLATE_FILE" > "$DEST_FILE"
+
+# Detect any tokens that remain unreplaced
+remaining=$(grep -oE '\[REPLACE: [A-Z0-9_]+\]' "$DEST_FILE" | sort -u || true)
+
+# Register in aeon.yml if not already present and the fallback marker exists.
+registered=false
+if ! grep -qE "^[[:space:]]+${SKILL_NAME}:" "$AEON_YML" 2>/dev/null; then
+  if grep -q "# --- Fallback" "$AEON_YML"; then
+    awk -v entry="  ${SKILL_NAME}: { enabled: false, schedule: \"0 12 * * *\", var: \"\" } # bootstrapped from template '${TEMPLATE}'" \
+      '/^  # --- Fallback/ { print entry } { print }' \
+      "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
+    registered=true
+  fi
+fi
+
+# Report
+echo ""
+echo "✓ Created skills/$SKILL_NAME/SKILL.md from template '$TEMPLATE'."
+if [[ "$registered" == "true" ]]; then
+  echo "✓ Registered in aeon.yml (disabled, schedule: 0 12 * * *)."
+else
+  echo "  (Skipped aeon.yml registration — entry already exists or no fallback marker found.)"
+fi
+
+if [[ -n "$remaining" ]]; then
+  echo ""
+  echo "⚠ Unreplaced tokens — edit skills/$SKILL_NAME/SKILL.md before enabling:"
+  while IFS= read -r tok; do
+    [[ -z "$tok" ]] && continue
+    echo "    $tok"
+  done <<< "$remaining"
+fi
+
+echo ""
+echo "Next:"
+echo "  1. Open skills/$SKILL_NAME/SKILL.md and review the customised content."
+echo "  2. Toggle enabled: true in aeon.yml when ready, or run from the dashboard."
+echo "  3. (Optional) Set var: \"...\" on the aeon.yml entry to focus the skill."

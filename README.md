@@ -64,6 +64,8 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
 5. **Verify** — run `./onboard` to confirm secrets, workflows, memory, and notifications are wired up correctly. Add `--remote` to fire the check inside Actions and have the checklist arrive in your notification channel.
 
+**Need a skill for X?** Six pre-built starters live in [`templates/`](templates/TEMPLATE.md) — crypto tracker, research digest, code reviewer, social monitor, deploy watcher, community manager. Bootstrap one with `./new-from-template <template> <skill-name> --var KEY=VALUE...` and it lands in `skills/` with a disabled entry in `aeon.yml`, ready to enable.
+
 ---
 
 ## Skills
