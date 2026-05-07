@@ -52,7 +52,7 @@
 - Heartbeat at 14:39 UTC: P0 clean; 17 tracked skills all `last_status=success`, `success_rate=1.0`, no consecutive failures, no stuck dispatches.
 - One self-failure at 12:48 UTC (heartbeat itself, 22s run, `last_error` captured truncated JSON fragment from session metadata). Recovered same hour. Re-investigate if it recurs (likely a state-update parser bug, not a real failure).
 
-## chain-runner.yml `dispatch_skill()` silent failure (DEGRADED 2026-04-26 → day 9 as of 2026-05-05)
+## chain-runner.yml `dispatch_skill()` silent failure (DEGRADED 2026-04-26 → day 11 as of 2026-05-07)
 - **Pattern:** `chain:morning-brief` and `chain:evening-rollup` wrappers exit 1 even when underlying skills succeed. Logs show `=== Step 1/2: parallel […] ===` then exit ~70s later with **no `Dispatching: …` lines emitted**. Cron-state is never updated, dispatch never reaches `gh workflow run`.
 - **Confirmed runs:** morning-brief 2026-04-26 08:04 UTC (run 24951796599) — 6 morning skills missed slot (paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker). evening-rollup 2026-04-25 21:36 UTC (run 24941211898) — chain wrapper failed *post-success* of underlying evening-rollup (21:35) and evening-recap (22:09).
 - **Suspected:** `dispatch_skill()` helper failing under `set -euo pipefail` (likely yq/jq parse on the chain block, or `gh workflow run` returning empty for one of the morning skills); for the evening case, the final `git pull --rebase`/`push` round in the wait loop, or a non-zero conclusion read on a skill that did succeed.
@@ -77,6 +77,7 @@
 - **ISS-014** — reply-maker cannot source fresh tweets — XAI prefetch case missing, x.com WebFetch returns HTTP 402. Same class as ISS-001/002/012. **Closer PR #156 opened 2026-05-03** (`ai/reply-maker-xai-prefetch` → `aaronjmars:main`, +33 -2 across `scripts/prefetch-xai.sh` and `skills/reply-maker/SKILL.md`). EMPTY/DEGRADED recurrence count: 8 days running. Closes on merge.
 - **ISS-018** (filed 2026-05-03 by skill-evals) — heartbeat eval `forbidden_pattern:${var}` finds 3 occurrences in `memory/logs/2026-05-02.md` lines 652/733/904. Other skills logging "var empty" trigger heartbeat's shared-log assertion. Prompt-bug, not real failure. Fix: dedicated heartbeat output file or `skip_forbidden_in_log_context: true`.
 - **ISS-019** (filed 2026-05-03 by skill-evals) — repo-article `missing_pattern:Aeon|aeon` zero matches in `articles/repo-article-2026-05-02.md` (the swarm-fund-mvp selector-layer piece). Today's ClawBank-EIN article threads Aeon explicitly to close the assertion forward. Either narrow assertion or document drift.
+- **ISS-020** (filed 2026-05-06 by heartbeat) — mass skill failure 2026-05-06T15:32-35Z, 17 skills hit `consecutive_failures >= 1` in 14:00 / 15:00 heartbeat windows. article spiked cf=3 → recovered cf=0; repo-actions / reg-monitor peaked cf=2. All recovered on next dispatch. **Distinct from ISS-013** — non-zero token cost suggests workflow-side state-write regression (post-execution state file not cleared between runs), not token-emission. Contained.
 - **ISS-004 / ISS-006 RESOLVED 2026-05-03** by skill-evals — push-recap and cost-report now produce articles regularly.
 - **ISS-015** — `.github/workflows/messages.yml:577–578` script-injection (HIGH). `${{ toJson(github.event.client_payload.message) }}` and `${{ github.event.action }}` interpolated into bash; `toJson()` does not escape single quotes; same shape as 2026-04-11 fixed incident but missing the `repository_dispatch` branch. Detected by skill-security-scan + workflow-security-audit 2026-04-27. Patch prepared as PR #4 (runner GH_TOKEN lacks `workflow` scope; needs operator-side token for push). **Still missing from `memory/issues/INDEX.md`** — issue-triage scope item (flagged 2026-04-28 09:10 + 15:34 heartbeat).
 - **Class:** ISS-001, ISS-002, ISS-012, ISS-014 share the same shape — skill needs a network-fetch step that must run pre-sandbox. Four separate IDs; one prefetch-script triage class.
@@ -142,7 +143,13 @@
 ## Cost discipline — 2026-05-04 cost-report
 - **$629.09 / 76 runs in last 7 days; monthly projection ~$2,696.** CLAUDE.md threshold is $40/wk — currently >15× over. Suggested Sonnet downgrades for next `self-improve` run: external-feature, repo-actions, heartbeat (~$149/wk savings combined). Surface as explicit edit per CLAUDE.md cost-discipline rule.
 
-## ISS-017 — decay status 2026-05-05 (snapshot 18:21Z)
+## ISS-017 — decay status 2026-05-06 / 2026-05-07
+- **2026-05-07:** ISS-013 still 57 DEGRADED, no graduates since 05-05. ISS-013 affected_skills count holds at 57 (heartbeat sr 0.62→0.64 on 05-04 + fleet-control 0.60 graduate 05-04 = last decay events).
+- **2026-05-06 15:32-35Z:** ISS-020 mass-fail burst (17 skills cf>=1 in 4-min window) — distinct root cause from ISS-013 per heartbeat filing, all recovered by next dispatch.
+- ISS-017 (cron-tick gaps) pattern shifted from "silent skip" → "delayed-batch dispatch with high variance." Morning slots 68–134 min late; evening 30–61 min late. Trend is drift not recovery.
+- skill-runs script blocked 5 days running (05-02–05-06) → SKILL_HEALTH_PARTIAL.
+
+## ISS-017 — decay status 2026-05-05 (snapshot 18:21Z, historical)
 - **State delta vs 05-04 18:55Z snapshot: ZERO across all classification sets** (CRITICAL=0, FLAPPING=0, DEGRADED=57, WARNING=3 [evening-rollup, fleet-control, heartbeat], HEALTHY=22, NO DATA=6). No graduates this run.
 - Pattern explanation: 9-day post-burst window now occupies only ~3% of 30-run denominator → tail likely flat for several days unless new failures or fast new successes accumulate. Decay halted; mid-July 2026 closure horizon contingent on rate resuming.
 - Hash field migrated to canonical sorted-key JSON form this run; literal hash differs from prev (3ecdbaa... → aaf3ce9...) but classification sets are unchanged so dedup honored on **semantic equality**, not literal hash. Gate fires correctly on next run if state still matches.
