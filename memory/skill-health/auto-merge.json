@@ -1,0 +1,14 @@
+{
+  "skill": "auto-merge",
+  "last_analyzed": "2026-05-07T14:47:34Z",
+  "quality_score": 4,
+  "assessment": "Substantive verdicts with clear reasoning, identifies operator blocker (missing Trusted Authors section), tracks state changes and Vercel failure patterns.",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-07",
+      "score": 4
+    }
+  ]
+}
