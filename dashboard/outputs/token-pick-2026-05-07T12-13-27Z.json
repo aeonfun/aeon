@@ -1,0 +1,383 @@
+{
+  "root": "root_card",
+  "state": {},
+  "elements": {
+    "root_card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-07"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "token_section",
+        "separator1",
+        "market_section",
+        "footer_stack"
+      ]
+    },
+    "token_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token_header",
+        "price_stat",
+        "token_metrics",
+        "score_text",
+        "catalyst_section",
+        "risk_alert1",
+        "recent_picks_text"
+      ]
+    },
+    "token_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "token_name",
+        "signal_badge",
+        "signal_value"
+      ]
+    },
+    "token_name": {
+      "type": "Heading",
+      "props": {
+        "text": "JTO",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signal_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "signal_value": {
+      "type": "Text",
+      "props": {
+        "text": "signal 9/10"
+      },
+      "children": []
+    },
+    "price_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.508",
+        "delta": "+27.9% 24h / +44.7% 7d",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "token_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "mcap_stat",
+        "volume_stat",
+        "vol_ratio_stat"
+      ]
+    },
+    "mcap_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Mcap",
+        "value": "$243M"
+      },
+      "children": []
+    },
+    "volume_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$214M"
+      },
+      "children": []
+    },
+    "vol_ratio_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/mcap",
+        "value": "0.88"
+      },
+      "children": []
+    },
+    "score_text": {
+      "type": "Text",
+      "props": {
+        "text": "Score: 24h+1, 7d+1, both>5%+2, vol/mcap≥0.20+3, RS vs BTC/ETH 7d+2 = 9/10",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text",
+        "sources_text1"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "Jito Foundation x Solana Company (NASDAQ:HSDT) APAC strategic partnership announced May 6 — Pacific Backbone validators in HK/SG/JP/KR running Jito BAM, fees route 100% to DAO treasury via JIP-26 buyback"
+      },
+      "children": []
+    },
+    "sources_text1": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: GlobeNewswire, Stocktitan",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "risk_alert1": {
+      "type": "Alert",
+      "props": {
+        "title": "Supply Risk",
+        "message": "~5x circ supply locked, next major unlock Dec 7 2026 — vertical move into shallow liq before known cliff is textbook OTC distribution setup (Tokenomist)",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "recent_picks_text": {
+      "type": "Text",
+      "props": {
+        "text": "vs recent picks: first time; 7d ledger LUNC/PENDLE/UB/AKT/DASH/TON/ZEC",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market_header",
+        "market_odds",
+        "market_volume_stat",
+        "resolution_text",
+        "fair_value_section",
+        "thesis_section",
+        "risk_alert2"
+      ]
+    },
+    "market_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "market_question",
+        "market_badge",
+        "market_edge"
+      ]
+    },
+    "market_question": {
+      "type": "Heading",
+      "props": {
+        "text": "Will the U.S. invade Iran before 2027?",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "market_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "market_edge": {
+      "type": "Text",
+      "props": {
+        "text": "edge 13.5pp"
+      },
+      "children": []
+    },
+    "market_odds": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "yes_stat",
+        "no_stat"
+      ]
+    },
+    "yes_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "20.5¢"
+      },
+      "children": []
+    },
+    "no_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "NO",
+        "value": "79.5¢"
+      },
+      "children": []
+    },
+    "market_volume_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$921k"
+      },
+      "children": []
+    },
+    "resolution_text": {
+      "type": "Text",
+      "props": {
+        "text": "Resolves: 2026-12-31",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "fair_value_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "fair_yes_stat",
+        "fair_value_inputs"
+      ]
+    },
+    "fair_yes_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Fair YES",
+        "value": "~7%"
+      },
+      "children": []
+    },
+    "fair_value_inputs": {
+      "type": "Text",
+      "props": {
+        "text": "inputs: 2025 sister market resolved NO at 0% despite Feb 28 US-Israeli strikes; Hegseth May 5 'ceasefire holds'; Trump paused Project Freedom May 6 citing deal progress",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "thesis_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "thesis_heading",
+        "thesis_text",
+        "pick_text"
+      ]
+    },
+    "thesis_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "resolution text requires 'military offensive intended to establish control over Iran' — airstrikes/naval skirmishes don't trigger; market is pricing kinetic-tape headlines, not the rulebook bar."
+      },
+      "children": []
+    },
+    "pick_text": {
+      "type": "Text",
+      "props": {
+        "text": "Pick: NO at 79.5¢"
+      },
+      "children": []
+    },
+    "risk_alert2": {
+      "type": "Alert",
+      "props": {
+        "title": "Tail Risk",
+        "message": "UMA dispute on a Gulf-island seizure (Abu Musa, Tunbs) under 'establish control' is the live tail — size accordingly.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "footer_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_footer",
+        "disclaimer_text"
+      ]
+    },
+    "sources_footer": {
+      "type": "Text",
+      "props": {
+        "text": "sources: cg=ok, dex=ok, poly=ok",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "disclaimer_text": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
