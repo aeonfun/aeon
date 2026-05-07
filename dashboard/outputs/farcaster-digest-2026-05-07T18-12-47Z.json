@@ -1,0 +1,149 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "farcaster-digest"
+      },
+      "children": [
+        "main-alert",
+        "details"
+      ]
+    },
+    "main-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "Skill Skipped",
+        "message": "farcaster digest skipped"
+      }
+    },
+    "details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources-section",
+        "cause-section",
+        "context-section",
+        "action-alert"
+      ]
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-heading",
+        "sources-badges"
+      ]
+    },
+    "sources-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Failed sources:",
+        "variant": "lead"
+      }
+    },
+    "sources-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "search-badge",
+        "trending-badge",
+        "channels-badge"
+      ]
+    },
+    "search-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "search=fail",
+        "variant": "destructive"
+      }
+    },
+    "trending-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "trending=fail",
+        "variant": "destructive"
+      }
+    },
+    "channels-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "channels=fail",
+        "variant": "destructive"
+      }
+    },
+    "cause-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cause-heading",
+        "neynar-text",
+        "apikey-text"
+      ]
+    },
+    "cause-heading": {
+      "type": "Text",
+      "props": {
+        "text": "Root cause:",
+        "variant": "lead"
+      }
+    },
+    "neynar-text": {
+      "type": "Text",
+      "props": {
+        "text": "Neynar gated: 401/402"
+      }
+    },
+    "apikey-text": {
+      "type": "Text",
+      "props": {
+        "text": "NEYNAR_API_KEY still empty in workflow env"
+      }
+    },
+    "context-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "day2-text",
+        "blocker-text"
+      ]
+    },
+    "day2-text": {
+      "type": "Text",
+      "props": {
+        "text": "Day 2 of same-cause errors"
+      }
+    },
+    "blocker-text": {
+      "type": "Text",
+      "props": {
+        "text": "Same operator-blocker as yesterday"
+      }
+    },
+    "action-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Surface to next config sweep"
+      }
+    }
+  }
+}
