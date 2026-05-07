@@ -1,0 +1,11 @@
+const fs = require('fs');
+const data = JSON.parse(fs.readFileSync('/tmp/repo-actions-state.json', 'utf8'));
+const r = data.data.repository;
+console.log('===== README.md =====');
+console.log(r.readme.text);
+console.log('\n===== pyproject.toml =====');
+console.log(r.pyproject.text);
+console.log('\n===== CHANGELOG.md (head 100 lines) =====');
+console.log(r.changelog.text.split('\n').slice(0, 100).join('\n'));
+console.log('\n===== CLAUDE.md (head 80 lines) =====');
+console.log(r.claude.text.split('\n').slice(0, 80).join('\n'));

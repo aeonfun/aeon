@@ -11,4 +11,3 @@ Top pick: Add `outputs/research/CalibrationGap_apex_progress.md` 71-trade burndo
 5. Add `.github/workflows/lookahead-lint.yml` (HIGH, DX, Small)
 
 Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-07.md
-

@@ -1,0 +1,418 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-07"
+      },
+      "children": [
+        "text_summary",
+        "sep1",
+        "heading_top_pick",
+        "top_pick_content",
+        "sep2",
+        "heading_items",
+        "items_list",
+        "sep3",
+        "link_full"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "Five HIGH-priority ideas, all anchored to the post-ADR-095 head: two LP/grant/Stanford-readable Content adds, two CI gates capturing existing internal regression baselines, one cost-path narrative pin.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "heading_top_pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick: CalibrationGap Apex Progress",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "top_pick_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top_pick_text",
+        "top_pick_metrics"
+      ]
+    },
+    "top_pick_text": {
+      "type": "Text",
+      "props": {
+        "text": "Add outputs/research/CalibrationGap_apex_progress.md 71-trade burndown (Content, Small, HIGH). One markdown chart external-feature can publish in one shot for LP / dYdX / Uniswap Foundation Fellowship / Stanford reviewers."
+      },
+      "children": []
+    },
+    "top_pick_metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat_trades",
+        "stat_win",
+        "stat_pnl",
+        "stat_sharpe"
+      ]
+    },
+    "stat_trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Progress",
+        "value": "29/100 trades"
+      },
+      "children": []
+    },
+    "stat_win": {
+      "type": "Stat",
+      "props": {
+        "label": "Win Rate",
+        "value": "76%"
+      },
+      "children": []
+    },
+    "stat_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      },
+      "children": []
+    },
+    "stat_sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "heading_items": {
+      "type": "Heading",
+      "props": {
+        "text": "Five HIGH-Priority Ideas",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "items_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_text",
+        "item1_badges"
+      ]
+    },
+    "item1_text": {
+      "type": "Text",
+      "props": {
+        "text": "1. Add outputs/research/CalibrationGap_apex_progress.md Apex burndown"
+      },
+      "children": []
+    },
+    "item1_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item1_high",
+        "badge_item1_content",
+        "badge_item1_small"
+      ]
+    },
+    "badge_item1_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_item1_content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_item1_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_text",
+        "item2_badges"
+      ]
+    },
+    "item2_text": {
+      "type": "Text",
+      "props": {
+        "text": "2. Add docs/01_strategy/thesis.md post-ADR-095 cost-path subsection"
+      },
+      "children": []
+    },
+    "item2_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item2_high",
+        "badge_item2_content",
+        "badge_item2_small"
+      ]
+    },
+    "badge_item2_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_item2_content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_item2_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_text",
+        "item3_badges"
+      ]
+    },
+    "item3_text": {
+      "type": "Text",
+      "props": {
+        "text": "3. Add outputs/research/PROVENANCE.md 14-day paper-pick rollup"
+      },
+      "children": []
+    },
+    "item3_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item3_high",
+        "badge_item3_content",
+        "badge_item3_small"
+      ]
+    },
+    "badge_item3_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_item3_content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_item3_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item4_text",
+        "item4_badges"
+      ]
+    },
+    "item4_text": {
+      "type": "Text",
+      "props": {
+        "text": "4. Add .github/workflows/changelog-drift.yml"
+      },
+      "children": []
+    },
+    "item4_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item4_high",
+        "badge_item4_dx",
+        "badge_item4_small"
+      ]
+    },
+    "badge_item4_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_item4_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_item4_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item5_text",
+        "item5_badges"
+      ]
+    },
+    "item5_text": {
+      "type": "Text",
+      "props": {
+        "text": "5. Add .github/workflows/lookahead-lint.yml"
+      },
+      "children": []
+    },
+    "item5_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_item5_high",
+        "badge_item5_dx",
+        "badge_item5_small"
+      ]
+    },
+    "badge_item5_high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge_item5_dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge_item5_small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "link_full": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full details: repo-actions-2026-05-07",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-07.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
