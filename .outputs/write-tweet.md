@@ -1,23 +1,24 @@
-tweet drafts: MSTR-sells-BTC Polymarket YES @ 47.5¢
+tweet drafts: Iran-airspace-by-May-8 at 1.85% YES on T-1 — market reads Hegseth, not the kinetic feed
 
 — one-liner —
-1a. Saylor said the words. Polymarket's at 47.5. Fair is 75. The trade is YES.
-1b. MSTR Q1: "we will probably sell some bitcoin." Polymarket: 47.5¢ YES. Take the bid.
+1a. Iran-airspace-by-May-8 is at 1.85% YES on T-1. The market is reading Hegseth, not the kinetic feed.
+1b. Iran fired on US Navy. Polymarket Iran-airspace-by-May-8 still 1.85% YES on T-1.
 
 — two-punch —
-2a. Markets call MicroStrategy selling BTC a 47.5% event. Saylor used the word "probably" on the call yesterday. One of these two is mispriced.
-2b. "Will MicroStrategy sell any Bitcoin by Dec 31?" Polymarket: 47.5¢. Saylor on Tuesday's call: "we will probably sell some." Hard market.
+2a. Iran-airspace-by-May-8 faded 15.5% → 4% → 1.85% YES in 48h. Same window: Iran fired on US Navy, 7 boats sunk, Fujairah hit, South Korean freighter down. The market is pricing Hegseth's ceasefire frame, not the tape.
+2b. On Polymarket, headlines beat kinetic tape. Iran-airspace ladder lost 13.65pp in 48 hours of peak-since-truce escalation. The market reads the press release. The operator reads the feed.
 
 — paragraph —
-3a. Polymarket has "MSTR sells any Bitcoin by Dec 31, 2026" at 47.5¢ YES. Saylor on the Q1 call: "we will probably sell some bitcoin to pay a dividend just to inoculate the market." $1.5B/yr dividend obligation, 18mo coverage. Fair is ~75. The trade is YES.
-3b. "Will MicroStrategy sell any Bitcoin by Dec 31, 2026?" is at 47.5¢ YES. The CEO has now said "we will probably sell some" on a public earnings call. The market is pricing "probably" as a coin-flip. That's the trade.
+3a. Iran-airspace-by-May-8 sits at 1.85% YES on T-1. Same 48 hours: Tehran fired on US Navy, seven boats sunk, Fujairah hit, South Korean freighter damaged. Polymarket faded the ladder from 15.5% → 4% → 1.85% on Hegseth's ceasefire frame. Headline wins. Tape loses.
+3b. Iran-airspace-by-May-8 at 1.85% YES on T-1. The 48 hours leading in: Iran fired on US Navy, 7 boats sunk, Fujairah hit, South Korean freighter down. Resolution tomorrow. The market is wrong about the tape, the rulebook, or both.
 
 — long tweet —
-4a. Polymarket "MSTR sells any Bitcoin by Dec 31, 2026" YES is at 47.5¢. Inputs: Saylor on Q1 (5/5): "we will probably sell some bitcoin to pay a dividend just to inoculate the market." $1.5B/yr dividend obligation. 18mo cash coverage. $2.2B unrealized tax benefits from high-cost-basis BTC. MSTR -4% AH on the announcement. The "probably" isn't strategic ambiguity — it's preview. Fair ~75%. Edge ~28pp YES. Resolution risk: UMA's read of "sells" if MSTR funds dividends via BTC-collateralized debt instead of an on-chain sale.
-4b. Saylor spent four years building a brand around "never sell." On Tuesday's earnings call he said: "we will probably sell some bitcoin to pay a dividend just to inoculate the market." Polymarket has "MSTR sells any BTC by Dec 31" at 47.5¢ YES. The market hasn't repriced because the line was buried in three minutes about high-cost-basis tax lots and dividend coverage ratios. Read the transcript. Fair is 75. Take the YES. The whole thesis fits in one sentence the CEO already said out loud.
+4a. Iran-airspace-by-May-8 sits at 1.85% YES on T-1. Polymarket faded the ladder 15.5% → 4% → 1.85% over 48 hours. Same window: Tehran fired on US Navy, seven boats sunk, Fujairah hit, South Korean freighter damaged, Project Freedom paused 05-06. The market is pricing Hegseth's "ceasefire holds," not the kinetic feed. The "major closure" sister book on the same five-airport resolution clause has held a 48pp gap most of the week. The trade isn't predicting Iran. It's reading the rulebook the market hasn't.
+4b. The Tamil Nadu lesson, three days later. Five polls said DMK. Polymarket said DMK 85.5% YES on $22M. TVK won 108 seats, broke a 59-year Dravidian duopoly, market resolved NO. Polls and market both priced the same continuity prior. Today's version: Iran-airspace-by-May-8 at 1.85% YES on T-1 while the kinetic tape was peak-since-truce. Resolution-text-ingest is the next upgrade.
 
 — thread opener —
-5a. Polymarket "Does MSTR sell any Bitcoin by Dec 31, 2026?" is at 47.5¢ YES. Saylor told everyone the answer on Tuesday's call. The market hasn't moved. Quick thread on why this is one of the cleanest YES bids on the platform right now.
-5b. If a CEO says "we will probably sell some bitcoin" on a public earnings call, what should the binary "will they sell any" be priced at? Polymarket says 47.5¢. The honest answer is closer to 75. Why the gap, and how to size it:
+5a. What does Polymarket price an event at when the kinetic tape goes one way and the press conference goes the other? 1.85% YES, apparently. Iran-airspace-by-May-8 on T-1, faded from 15.5% over 48 hours of escalation. Walk through where the gap lives:
+5b. The biggest edge on Polymarket right now isn't predicting events. It's reading the resolution clause the market hasn't. Iran-airspace ladder at 1.85% YES on T-1 vs the sister "major closure" book at 52% on the same five-airport rule. Quick thread:
 
-best: #4a — has the quote, the math, and the resolution risk in one container; long-tweet length carries the case without needing a thread.
+best: #4a — full case in one container: price, kinetic tape, ceasefire frame, sister-book gap, operator close.
+
