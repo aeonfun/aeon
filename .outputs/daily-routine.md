@@ -1,53 +1,49 @@
-*Daily Routine — 2026-05-05*
+*Daily Routine — 2026-05-07*
 
-_Tape leans green: 63/100 top-100 coins up, top-50 median +0.6%; BTC reclaimed $80,793 (+1.4%) after Iran-warship rumour spike, ETH $2,378 (+0.8%), SOL flat $84.80._
+_Risk-on tape — 67/100 top coins green, median 24h +0.7%._
 
-*Top Winners (24h)*
-1. TON $1.86 +33.9% / 7d +42.2% • $5.0B #22 [BREAKOUT]
-2. M (MemeCore) $3.55 +30.4% / 7d +0.4% • $4.5B #24
-3. LAB $2.33 +25.9% / 7d +240.9% • $180M #190 [BREAKOUT]
-4. CRCLON $126.11 +20.1% / 7d +33.8% • $171M #201 [BREAKOUT]
-5. MORPHO $2.19 +11.4% / 7d +14.1% • $1.3B #59
-6. PENDLE $1.84 +10.2% / 7d +40.5% • $313M #147
-7. LUNC $0.0001 +9.0% / 7d +44.8% • $552M #100
-8. RAVE $0.683 +9.0% / 7d -21.3% • $169M #204
-9. WLFI $0.0641 +8.0% / 7d -12.7% • $2.0B #44
-10. PENGU $0.0108 +6.8% / 7d +7.0% • $678M #84
+*Top 10 Winners (24h)*
+1. LAB: $4.68 +46.6% [BREAKOUT]
+2. BILL: $0.0779 +45.8% [TRENDING+UP, PUMP-RISK]
+3. TON: $2.77 +30.5% [TRENDING+UP, BREAKOUT]
+4. KAIO: $0.1989 +25.9%
+5. CFG: $0.2767 +17.5% [BREAKOUT]
+6. GENIUS: $0.6029 +16.9% [BREAKOUT]
+7. VIRTUAL: $0.9639 +16.3% [TRENDING+UP, BREAKOUT]
+8. NEAR: $1.51 +13.0%
+9. VVV: $12.39 +11.8%
+10. SIREN: $0.8604 +11.4%
 
-*Top Losers (24h)*
-1. BSB $0.626 -36.5% • $135M #241 [CAPITULATION]
-2. TAG $0.00158 -15.8% / 7d +136.4% • $173M #199 [CAPITULATION]
-3. SIREN $0.763 -9.7% • $554M #99
-4. DASH $45.25 -8.4% / 7d +29.0% • $575M #94
-5. APE $0.162 -5.3% • $161M #215
-6. GENIUS $0.538 -5.2% • $180M #195
-7. GWEI $0.108 -5.1% • $227M #173
-8. ZK $0.0171 -5.1% • $166M #209
-9. PIEVERSE $0.710 -4.9% • $163M #211
-10. SKYAI $0.561 -4.3% / 7d +249.7% • $559M #97
-
-*Notable*
-• TON +34% on $763M vol — first major-cap BREAKOUT in days; +42% 7d through #22 rank
-• BSB -36% CAPITULATION — closes 4-day pump cycle (was +18% on 05-03)
-• SKYAI mean-reverting -4.3% after the +101% spike yesterday; 7d still +250%
-• DASH stalled (-8.4%) after +22.6% privacy-coin rotation print yesterday — single-day rotation, not multi-day
-• Trending: Dogs (DOGS) +128%, BILL +29% — both PUMP-RISK rank tier
+*Top 10 Losers (24h)*
+1. SKYAI: $0.6377 -19.7%
+2. B: $0.3472 -18.7%
+3. LUNC: $0.000096 -13.3% [CAPITULATION]
+4. ASTEROID: $0.000369 -11.9%
+5. BinanceLife: $0.3557 -6.3%
+6. WIF: $0.2178 -5.9%
+7. ZEN: $7.28 -5.8%
+8. AKT: $0.6307 -5.3%
+9. PENGU: $0.0106 -5.2%
+10. GWEI: $0.1336 -4.9%
 
 *Tweet Roundup*
-*Crypto:* BTC reversed off $80,594 high after Iran Fars-news warship rumour (US denied); KelpDAO $292M restaking exploit cited as ongoing systemic-risk reminder; Hegseth confirmed classified US Bitcoin strategic-edge effort vs China.
-*AI:* GPT-5.5 shipped; Polymarket "GPT-6 by April 30" cratered, late-May→early-July window now defensible. Claude 5 expectations: native multi-step tools + 90%+ SWE-bench Verified. lukilabs released Craft Agents (Apache 2.0) 05-02.
-*Dev:* Bun ports Zig→Rust (HN 475pts) — the year's biggest runtime-language pivot. Rolldown 1.0 RC replacing esbuild+Rollup in Vite at 10-30× speed.
+*Crypto/PM:* Kalshi vs Polymarket landgrab — Kalshi past $1.3B monthly vs PM under $800M; arb traders flag 12-20% YES/NO spreads.
+*AI:* Anthropic shipped Claude Managed Agents (public beta) + 10 finance-agent templates (pitchbooks, KYC, valuations) installable as Claude Code plugins.
+*Dev:* Claude Code went open source — community shipped 100+ agent/skill "App Store," Multica (Apache-2.0 GitHub-issue teammate), Pocock's Skills for Real Engineers.
 
 *Paper of the Day*
-"Per-Market Information Leakage and Order-Flow Skill" (Hart, 2026-05-04, arXiv:2605.02287) — methodological convergence paper synthesizing three approaches to detect informed Polymarket traders: Mitts-Ofir wallet screen (210K wallet-market pairs), Gomez-Cram event-level sign-randomization (3.14% "skilled winners", 1,950 "insiders"), and Nechepurenko's ILS framework. **Direct CalibrationGap relevance** — defines the surface of insider-edge detection that the quant scanner is competing against. Companion paper 2605.02286 evaluates ILS-dl on the U.S.-Iran cluster (military-geopolitics half-life 2.3 days, KS p=0.609). https://arxiv.org/abs/2605.02287
+"TimeSeek: Temporal Reliability of Agentic Forecasters" (arXiv:2604.04220) — 10 LLMs × 150 Kalshi binaries × multi-checkpoint = 15k forecasts; early-life competitive, late-life degraded on strong-consensus. Direct Hermes-arb Kalshi-leg + CalibrationGap entry-decision lifecycle hook. https://arxiv.org/abs/2604.04220
 
 *GitHub Issues*
-No new issues across tomscaria/aaronjmars repos in the 24h window.
+No new issues (11th clean day on tomscaria scope).
 
 *HN Digest*
-1. [Bun is being ported from Zig to Rust](https://github.com/oven-sh/bun/commit/46d3bc29) (475pts) — runtime-language pivot of the year; 331-comment thread debates Zig stability vs Rust ecosystem maturity
-2. [How OpenAI delivers low-latency voice AI at scale](https://openai.com/index/delivering-low-latency-voice-ai-at-scale) (394pts) — voice-AI architecture deep-dive
-3. [Train Your Own LLM from Scratch](https://github.com/angelos-p/llm-from-scratch) (210pts) — pedagogical from-scratch repo
-4. [CVE-2026-31431: Copy Fail vs rootless containers](https://www.dragonsreach.it/2026/05/04/cve-2026-31431) (95pts) — rootless container CVE
-5. [Chrome silently installs 4GB AI model without consent](https://www.thatprivacyguy.com/blog/chrome-silent-nano-install) (93pts) — privacy/disk-usage backlash
+_AI tooling dominates: agent infra, Anthropic compute, Chrome shipping a 4GB on-device model._
+1. Chrome silently installs 4GB AI model (1668pts) — Gemini Nano with no opt-in. https://news.ycombinator.com/item?id=48019219
+2. Anthropic + SpaceX compute deal (451pts) — orbital compute vs terrestrial DC economics. https://news.ycombinator.com/item?id=48037986
+3. Cloudflare agents create accounts, buy domains, deploy (634pts). https://news.ycombinator.com/item?id=48031684
+4. Vibe coding vs agentic engineering — Willison (561pts) — line is collapsing. https://news.ycombinator.com/item?id=48037128
+5. DNSSEC outage on .de (737pts) — DENIC signature failure cascaded silently. https://news.ycombinator.com/item?id=48027897
+6. Google Cloud fraud defense (285pts) — reCAPTCHA evolves as LLMs erode bot-detection. https://news.ycombinator.com/item?id=48039362
+7. Valve Steam Controller CAD under CC (1330pts) — external shell only. https://news.ycombinator.com/item?id=48037555
 

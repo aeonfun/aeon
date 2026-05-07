@@ -1,0 +1,9 @@
+
+### token-movers
+- Var: <none>
+- Pulse: Risk-on tape — 67/100 top coins green, median 24h +0.7%.
+- Winners: LAB (+46.6%), BILL (+45.8%), TON (+30.5%), KAIO (+25.9%), CFG (+17.5%), GENIUS (+16.9%)
+- Losers: SKYAI (-19.7%), B (-18.7%), LUNC (-13.3%), ASTEROID (-11.9%), 币安人生 (-6.3%), WIF (-5.9%)
+- Trending: B3, TON, DOGS, WOJAK, NOT, BILL, VIRTUAL
+- Notable: 4 signals (LAB: 24h +46.6% on top of 7d +608.3% — sustained breakout; BILL: trending and +45.8% 24h on $365M vol — corroborated signal; TON: trending and +30.5% 24h on $1.7B vol — corroborated signal; CFG: 24h +17.5% on top of 7d +39.7% — sustained breakout)
+- Files: `.outputs/token-movers.md` (overwrote 05-06), this log entry. Tape vs prior: green 67/100 vs 85 (05-06) vs 88 (05-05).

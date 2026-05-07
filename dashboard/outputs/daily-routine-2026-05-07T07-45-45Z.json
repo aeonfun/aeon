@@ -1,0 +1,559 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine",
+        "description": "2026-05-07"
+      },
+      "children": [
+        "text_sentiment",
+        "sep1",
+        "stack_winners",
+        "sep2",
+        "stack_losers",
+        "sep3",
+        "stack_tweets",
+        "sep4",
+        "stack_paper",
+        "sep5",
+        "stack_github",
+        "sep6",
+        "stack_hn"
+      ]
+    },
+    "text_sentiment": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-on tape — 67/100 top coins green, median 24h +0.7%.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_winners": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_winners",
+        "table_winners"
+      ]
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 10 Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "table_winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Symbol",
+          "Price",
+          "24h Change",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "1",
+            "LAB",
+            "$4.68",
+            "+46.6%",
+            "BREAKOUT"
+          ],
+          [
+            "2",
+            "BILL",
+            "$0.0779",
+            "+45.8%",
+            "TRENDING+UP, PUMP-RISK"
+          ],
+          [
+            "3",
+            "TON",
+            "$2.77",
+            "+30.5%",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "4",
+            "KAIO",
+            "$0.1989",
+            "+25.9%",
+            ""
+          ],
+          [
+            "5",
+            "CFG",
+            "$0.2767",
+            "+17.5%",
+            "BREAKOUT"
+          ],
+          [
+            "6",
+            "GENIUS",
+            "$0.6029",
+            "+16.9%",
+            "BREAKOUT"
+          ],
+          [
+            "7",
+            "VIRTUAL",
+            "$0.9639",
+            "+16.3%",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "8",
+            "NEAR",
+            "$1.51",
+            "+13.0%",
+            ""
+          ],
+          [
+            "9",
+            "VVV",
+            "$12.39",
+            "+11.8%",
+            ""
+          ],
+          [
+            "10",
+            "SIREN",
+            "$0.8604",
+            "+11.4%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_losers": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_losers",
+        "table_losers"
+      ]
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 10 Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "table_losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Symbol",
+          "Price",
+          "24h Change",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "1",
+            "SKYAI",
+            "$0.6377",
+            "-19.7%",
+            ""
+          ],
+          [
+            "2",
+            "B",
+            "$0.3472",
+            "-18.7%",
+            ""
+          ],
+          [
+            "3",
+            "LUNC",
+            "$0.000096",
+            "-13.3%",
+            "CAPITULATION"
+          ],
+          [
+            "4",
+            "ASTEROID",
+            "$0.000369",
+            "-11.9%",
+            ""
+          ],
+          [
+            "5",
+            "BinanceLife",
+            "$0.3557",
+            "-6.3%",
+            ""
+          ],
+          [
+            "6",
+            "WIF",
+            "$0.2178",
+            "-5.9%",
+            ""
+          ],
+          [
+            "7",
+            "ZEN",
+            "$7.28",
+            "-5.8%",
+            ""
+          ],
+          [
+            "8",
+            "AKT",
+            "$0.6307",
+            "-5.3%",
+            ""
+          ],
+          [
+            "9",
+            "PENGU",
+            "$0.0106",
+            "-5.2%",
+            ""
+          ],
+          [
+            "10",
+            "GWEI",
+            "$0.1336",
+            "-4.9%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_tweets": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_tweets",
+        "text_crypto",
+        "text_ai",
+        "text_dev"
+      ]
+    },
+    "heading_tweets": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h2"
+      }
+    },
+    "text_crypto": {
+      "type": "Text",
+      "props": {
+        "text": "Crypto/PM: Kalshi vs Polymarket landgrab — Kalshi past $1.3B monthly vs PM under $800M; arb traders flag 12-20% YES/NO spreads."
+      }
+    },
+    "text_ai": {
+      "type": "Text",
+      "props": {
+        "text": "AI: Anthropic shipped Claude Managed Agents (public beta) + 10 finance-agent templates (pitchbooks, KYC, valuations) installable as Claude Code plugins."
+      }
+    },
+    "text_dev": {
+      "type": "Text",
+      "props": {
+        "text": "Dev: Claude Code went open source — community shipped 100+ agent/skill \"App Store,\" Multica (Apache-2.0 GitHub-issue teammate), Pocock's Skills for Real Engineers."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_paper": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_paper",
+        "storylink_paper",
+        "text_paper_desc"
+      ]
+    },
+    "heading_paper": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day",
+        "level": "h2"
+      }
+    },
+    "storylink_paper": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TimeSeek: Temporal Reliability of Agentic Forecasters",
+        "source": "arXiv:2604.04220",
+        "href": "https://arxiv.org/abs/2604.04220"
+      }
+    },
+    "text_paper_desc": {
+      "type": "Text",
+      "props": {
+        "text": "10 LLMs × 150 Kalshi binaries × multi-checkpoint = 15k forecasts; early-life competitive, late-life degraded on strong-consensus. Direct Hermes-arb Kalshi-leg + CalibrationGap entry-decision lifecycle hook.",
+        "variant": "caption"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_github": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_github",
+        "text_github"
+      ]
+    },
+    "heading_github": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "text_github": {
+      "type": "Text",
+      "props": {
+        "text": "No new issues (11th clean day on tomscaria scope)."
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_hn": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_hn",
+        "hn_item_1",
+        "hn_item_2",
+        "hn_item_3",
+        "hn_item_4",
+        "hn_item_5",
+        "hn_item_6",
+        "hn_item_7"
+      ]
+    },
+    "heading_hn": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Digest",
+        "level": "h2"
+      }
+    },
+    "hn_item_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_1",
+        "hn_1_desc"
+      ]
+    },
+    "hn_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Chrome silently installs 4GB AI model",
+        "source": "HackerNews (1668 pts)",
+        "href": "https://news.ycombinator.com/item?id=48019219"
+      }
+    },
+    "hn_1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Gemini Nano with no opt-in.",
+        "variant": "caption"
+      }
+    },
+    "hn_item_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_2",
+        "hn_2_desc"
+      ]
+    },
+    "hn_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Anthropic + SpaceX compute deal",
+        "source": "HackerNews (451 pts)",
+        "href": "https://news.ycombinator.com/item?id=48037986"
+      }
+    },
+    "hn_2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "orbital compute vs terrestrial DC economics.",
+        "variant": "caption"
+      }
+    },
+    "hn_item_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Cloudflare agents create accounts, buy domains, deploy",
+        "source": "HackerNews (634 pts)",
+        "href": "https://news.ycombinator.com/item?id=48031684"
+      }
+    },
+    "hn_item_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_4",
+        "hn_4_desc"
+      ]
+    },
+    "hn_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Vibe coding vs agentic engineering — Willison",
+        "source": "HackerNews (561 pts)",
+        "href": "https://news.ycombinator.com/item?id=48037128"
+      }
+    },
+    "hn_4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "line is collapsing.",
+        "variant": "caption"
+      }
+    },
+    "hn_item_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_5",
+        "hn_5_desc"
+      ]
+    },
+    "hn_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "DNSSEC outage on .de",
+        "source": "HackerNews (737 pts)",
+        "href": "https://news.ycombinator.com/item?id=48027897"
+      }
+    },
+    "hn_5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "DENIC signature failure cascaded silently.",
+        "variant": "caption"
+      }
+    },
+    "hn_item_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_6",
+        "hn_6_desc"
+      ]
+    },
+    "hn_6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Google Cloud fraud defense",
+        "source": "HackerNews (285 pts)",
+        "href": "https://news.ycombinator.com/item?id=48039362"
+      }
+    },
+    "hn_6_desc": {
+      "type": "Text",
+      "props": {
+        "text": "reCAPTCHA evolves as LLMs erode bot-detection.",
+        "variant": "caption"
+      }
+    },
+    "hn_item_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hn_7",
+        "hn_7_desc"
+      ]
+    },
+    "hn_7": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Valve Steam Controller CAD under CC",
+        "source": "HackerNews (1330 pts)",
+        "href": "https://news.ycombinator.com/item?id=48037555"
+      }
+    },
+    "hn_7_desc": {
+      "type": "Text",
+      "props": {
+        "text": "external shell only.",
+        "variant": "caption"
+      }
+    }
+  }
+}
