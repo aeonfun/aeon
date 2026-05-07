@@ -12,8 +12,8 @@
     "last_dispatch": "2026-05-06T20:27:03Z"
   },
   "token-alert": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:07:11Z",
     "total_runs": 31,
     "total_successes": 12,
@@ -24,8 +24,8 @@
     "last_error": "eb0164d\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-movers": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:13:56Z",
     "total_runs": 35,
     "total_successes": 12,
@@ -36,8 +36,8 @@
     "last_error": "d8ad7ce\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "on-chain-monitor": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:07:21Z",
     "total_runs": 36,
     "total_successes": 13,
@@ -48,8 +48,8 @@
     "last_error": "3500471\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-monitor": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:07:04Z",
     "total_runs": 30,
     "total_successes": 12,
@@ -60,8 +60,8 @@
     "last_error": "a0b8a82\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "treasury-info": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:07:01Z",
     "total_runs": 32,
     "total_successes": 12,
@@ -72,8 +72,8 @@
     "last_error": "ff1979b\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "defi-overview": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:17:08Z",
     "total_runs": 28,
     "total_successes": 12,
@@ -108,8 +108,8 @@
     "last_error": "cca2d1f\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "monitor-runners": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:18:50Z",
     "total_runs": 28,
     "total_successes": 12,
@@ -120,8 +120,8 @@
     "last_error": "c658144\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "token-pick": {
-    "last_dispatch": "2026-05-06T13:05:40Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T12:02:59Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T13:15:52Z",
     "total_runs": 28,
     "total_successes": 12,
