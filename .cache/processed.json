@@ -1,0 +1,641 @@
+{
+  "pulse": {
+    "greens": 31,
+    "median": -1.05635,
+    "btc": {
+      "p": 80857,
+      "c": -1.863
+    },
+    "eth": {
+      "p": 2330.06,
+      "c": -3.27402
+    },
+    "sol": {
+      "p": 89.56,
+      "c": -0.32301
+    }
+  },
+  "winners": [
+    {
+      "sym": "SIREN",
+      "name": "Siren",
+      "price": "$0.9823",
+      "c24": "+28.2%",
+      "c7": "+45.1%",
+      "c1h": "-13.8%",
+      "vol": "$45M",
+      "rank": 85,
+      "mcap": "$714M",
+      "tags": [
+        "BREAKOUT"
+      ],
+      "raw": {
+        "c24": 28.2414292694814,
+        "c7": 45.09434363887687,
+        "c1h": -13.75635787321723,
+        "rank": 85,
+        "sym": "siren",
+        "vol": 45423796,
+        "mcap": 713926609
+      }
+    },
+    {
+      "sym": "JTO",
+      "name": "Jito",
+      "price": "$0.5088",
+      "c24": "+28.1%",
+      "c7": "+45.0%",
+      "c1h": "+8.9%",
+      "vol": "$213M",
+      "rank": 173,
+      "mcap": "$243M",
+      "tags": [
+        "BREAKOUT"
+      ],
+      "raw": {
+        "c24": 28.068458268847174,
+        "c7": 44.96366569018277,
+        "c1h": 8.89704493283904,
+        "rank": 173,
+        "sym": "jto",
+        "vol": 213403570,
+        "mcap": 242690779
+      }
+    },
+    {
+      "sym": "CFG",
+      "name": "Centrifuge",
+      "price": "$0.2924",
+      "c24": "+18.1%",
+      "c7": "+42.8%",
+      "c1h": "+4.0%",
+      "vol": "$41M",
+      "rank": 209,
+      "mcap": "$169M",
+      "tags": [
+        "BREAKOUT"
+      ],
+      "raw": {
+        "c24": 18.06691226923877,
+        "c7": 42.79694575218398,
+        "c1h": 3.9712916553379802,
+        "rank": 209,
+        "sym": "cfg",
+        "vol": 41002811,
+        "mcap": 168709142
+      }
+    },
+    {
+      "sym": "VVV",
+      "name": "Venice Token",
+      "price": "$12.81",
+      "c24": "+13.4%",
+      "c7": "+51.9%",
+      "c1h": "-1.0%",
+      "vol": "$61M",
+      "rank": 99,
+      "mcap": "$587M",
+      "tags": [],
+      "raw": {
+        "c24": 13.36330267794376,
+        "c7": 51.858241652331316,
+        "c1h": -0.9558198845907624,
+        "rank": 99,
+        "sym": "vvv",
+        "vol": 61474598,
+        "mcap": 586614768
+      }
+    },
+    {
+      "sym": "GENIUS",
+      "name": "Genius",
+      "price": "$0.5871",
+      "c24": "+9.6%",
+      "c7": "+34.2%",
+      "c1h": "-2.3%",
+      "vol": "$13M",
+      "rank": 187,
+      "mcap": "$197M",
+      "tags": [],
+      "raw": {
+        "c24": 9.619790588253602,
+        "c7": 34.16861718333654,
+        "c1h": -2.3272329965297716,
+        "rank": 187,
+        "sym": "genius",
+        "vol": 13190579,
+        "mcap": 196906279
+      }
+    },
+    {
+      "sym": "ICP",
+      "name": "Internet Computer",
+      "price": "$3.11",
+      "c24": "+9.6%",
+      "c7": "+29.4%",
+      "c1h": "+0.4%",
+      "vol": "$219M",
+      "rank": 53,
+      "mcap": "$1.7B",
+      "tags": [],
+      "raw": {
+        "c24": 9.577892548098395,
+        "c7": 29.439490177785384,
+        "c1h": 0.439580667655464,
+        "rank": 53,
+        "sym": "icp",
+        "vol": 218522819,
+        "mcap": 1714390471
+      }
+    },
+    {
+      "sym": "APEPE",
+      "name": "Ape and Pepe",
+      "price": "$0.000001",
+      "c24": "+9.5%",
+      "c7": "+8.2%",
+      "c1h": "+0.2%",
+      "vol": "$47M",
+      "rank": 154,
+      "mcap": "$306M",
+      "tags": [],
+      "raw": {
+        "c24": 9.506923513440615,
+        "c7": 8.195455620433535,
+        "c1h": 0.2078281593249999,
+        "rank": 154,
+        "sym": "apepe",
+        "vol": 46513411,
+        "mcap": 305554431
+      }
+    },
+    {
+      "sym": "WLFI",
+      "name": "World Liberty Financial",
+      "price": "$0.0733",
+      "c24": "+9.0%",
+      "c7": "+21.0%",
+      "c1h": "+1.0%",
+      "vol": "$100M",
+      "rank": 40,
+      "mcap": "$2.3B",
+      "tags": [],
+      "raw": {
+        "c24": 8.956469837855142,
+        "c7": 21.04591164324071,
+        "c1h": 1.0483413880449453,
+        "rank": 40,
+        "sym": "wlfi",
+        "vol": 99647992,
+        "mcap": 2322043643
+      }
+    },
+    {
+      "sym": "ULTIMA",
+      "name": "Ultima",
+      "price": "$3013",
+      "c24": "+8.9%",
+      "c7": "+6.8%",
+      "c1h": "+0.1%",
+      "vol": "$15M",
+      "rank": 221,
+      "mcap": "$156M",
+      "tags": [],
+      "raw": {
+        "c24": 8.915220083260733,
+        "c7": 6.784876451170466,
+        "c1h": 0.08286684120711774,
+        "rank": 221,
+        "sym": "ultima",
+        "vol": 15356474,
+        "mcap": 155730589
+      }
+    },
+    {
+      "sym": "ONDO",
+      "name": "Ondo",
+      "price": "$0.3491",
+      "c24": "+8.8%",
+      "c7": "+32.8%",
+      "c1h": "+1.5%",
+      "vol": "$190M",
+      "rank": 54,
+      "mcap": "$1.7B",
+      "tags": [],
+      "raw": {
+        "c24": 8.761748321391579,
+        "c7": 32.83623144968257,
+        "c1h": 1.4842251420455503,
+        "rank": 54,
+        "sym": "ondo",
+        "vol": 189663790,
+        "mcap": 1698704059
+      }
+    }
+  ],
+  "losers": [
+    {
+      "sym": "SKYAI",
+      "name": "SkyAI",
+      "price": "$0.6280",
+      "c24": "-21.9%",
+      "c7": "+97.3%",
+      "c1h": "+0.3%",
+      "vol": "$118M",
+      "rank": 92,
+      "mcap": "$625M",
+      "tags": [],
+      "raw": {
+        "c24": -21.854329268314295,
+        "c7": 97.26874416769614,
+        "c1h": 0.32136355550983814,
+        "rank": 92,
+        "sym": "skyai",
+        "vol": 118108519,
+        "mcap": 624975476
+      }
+    },
+    {
+      "sym": "ASTEROID",
+      "name": "Asteroid Shiba",
+      "price": "$0.000363",
+      "c24": "-15.8%",
+      "c7": "+11.2%",
+      "c1h": "-2.8%",
+      "vol": "$32M",
+      "rank": 223,
+      "mcap": "$153M",
+      "tags": [],
+      "raw": {
+        "c24": -15.816635919873331,
+        "c7": 11.19191697404954,
+        "c1h": -2.849974398254219,
+        "rank": 223,
+        "sym": "asteroid",
+        "vol": 32408666,
+        "mcap": 153263463
+      }
+    },
+    {
+      "sym": "B",
+      "name": "BUILDon",
+      "price": "$0.3496",
+      "c24": "-13.6%",
+      "c7": "+171.3%",
+      "c1h": "+1.7%",
+      "vol": "$63M",
+      "rank": 138,
+      "mcap": "$349M",
+      "tags": [],
+      "raw": {
+        "c24": -13.586276094495153,
+        "c7": 171.32257524645124,
+        "c1h": 1.673653961004816,
+        "rank": 138,
+        "sym": "b",
+        "vol": 63067018,
+        "mcap": 349371214
+      }
+    },
+    {
+      "sym": "LUNC",
+      "name": "Terra Luna Classic",
+      "price": "$0.000095",
+      "c24": "-9.9%",
+      "c7": "+33.1%",
+      "c1h": "-3.3%",
+      "vol": "$181M",
+      "rank": 106,
+      "mcap": "$526M",
+      "tags": [],
+      "raw": {
+        "c24": -9.881316963538831,
+        "c7": 33.14750505272529,
+        "c1h": -3.2526179456059596,
+        "rank": 106,
+        "sym": "lunc",
+        "vol": 181413805,
+        "mcap": 525964659
+      }
+    },
+    {
+      "sym": "CVX",
+      "name": "Convex Finance",
+      "price": "$1.75",
+      "c24": "-7.0%",
+      "c7": "+1.8%",
+      "c1h": "-0.7%",
+      "vol": "$8M",
+      "rank": 219,
+      "mcap": "$158M",
+      "tags": [],
+      "raw": {
+        "c24": -7.049473418689073,
+        "c7": 1.8253351083837424,
+        "c1h": -0.7150723764689295,
+        "rank": 219,
+        "sym": "cvx",
+        "vol": 8219747,
+        "mcap": 157720896
+      }
+    },
+    {
+      "sym": "BEAT",
+      "name": "Audiera",
+      "price": "$0.5133",
+      "c24": "-6.9%",
+      "c7": "-9.1%",
+      "c1h": "-0.3%",
+      "vol": "$3M",
+      "rank": 242,
+      "mcap": "$137M",
+      "tags": [],
+      "raw": {
+        "c24": -6.852230335704801,
+        "c7": -9.06963202995461,
+        "c1h": -0.2858303490204478,
+        "rank": 242,
+        "sym": "beat",
+        "vol": 3018700,
+        "mcap": 137047494
+      }
+    },
+    {
+      "sym": "AERO",
+      "name": "Aerodrome Finance",
+      "price": "$0.4512",
+      "c24": "-6.2%",
+      "c7": "-1.2%",
+      "c1h": "+0.4%",
+      "vol": "$16M",
+      "rank": 116,
+      "mcap": "$423M",
+      "tags": [],
+      "raw": {
+        "c24": -6.211980383144096,
+        "c7": -1.1968696736173152,
+        "c1h": 0.40577728250075207,
+        "rank": 116,
+        "sym": "aero",
+        "vol": 16379692,
+        "mcap": 422896673
+      }
+    },
+    {
+      "sym": "MORPHO",
+      "name": "Morpho",
+      "price": "$2.14",
+      "c24": "-5.9%",
+      "c7": "+9.3%",
+      "c1h": "-0.1%",
+      "vol": "$16M",
+      "rank": 60,
+      "mcap": "$1.4B",
+      "tags": [],
+      "raw": {
+        "c24": -5.941112602246079,
+        "c7": 9.323350792843419,
+        "c1h": -0.14402408314385456,
+        "rank": 60,
+        "sym": "morpho",
+        "vol": 15625444,
+        "mcap": 1352599429
+      }
+    },
+    {
+      "sym": "ZEN",
+      "name": "Horizen",
+      "price": "$7.27",
+      "c24": "-5.7%",
+      "c7": "+26.7%",
+      "c1h": "+0.5%",
+      "vol": "$31M",
+      "rank": 249,
+      "mcap": "$131M",
+      "tags": [],
+      "raw": {
+        "c24": -5.694485986349914,
+        "c7": 26.727911022366296,
+        "c1h": 0.48442127697070436,
+        "rank": 249,
+        "sym": "zen",
+        "vol": 31420180,
+        "mcap": 130901788
+      }
+    },
+    {
+      "sym": "PENGU",
+      "name": "Pudgy Penguins",
+      "price": "$0.0105",
+      "c24": "-5.2%",
+      "c7": "+10.3%",
+      "c1h": "+0.5%",
+      "vol": "$185M",
+      "rank": 90,
+      "mcap": "$662M",
+      "tags": [
+        "TRENDING+DOWN"
+      ],
+      "raw": {
+        "c24": -5.249488063407001,
+        "c7": 10.290274801788952,
+        "c1h": 0.5334892235785144,
+        "rank": 90,
+        "sym": "pengu",
+        "vol": 185010936,
+        "mcap": 662131482
+      }
+    }
+  ],
+  "trending": [
+    {
+      "name": "Firo",
+      "sym": "FIRO",
+      "rank": 864,
+      "price": "$1.20",
+      "c24": "+16.1%",
+      "tags": []
+    },
+    {
+      "name": "B3 (Base)",
+      "sym": "B3",
+      "rank": 381,
+      "price": "$0.001593",
+      "c24": "+218.5%",
+      "tags": []
+    },
+    {
+      "name": "LAB",
+      "sym": "LAB",
+      "rank": 163,
+      "price": "$3.46",
+      "c24": "+2.1%",
+      "market": {
+        "id": "lab",
+        "symbol": "lab",
+        "name": "LAB",
+        "image": "https://coin-images.coingecko.com/coins/images/70014/large/lab.png?1760352822",
+        "current_price": 3.46,
+        "market_cap": 257354171,
+        "market_cap_rank": 163,
+        "fully_diluted_valuation": 3362080805,
+        "total_volume": 232570713,
+        "high_24h": 4.75,
+        "low_24h": 2.34,
+        "price_change_24h": 0.071873,
+        "price_change_percentage_24h": 2.11856,
+        "market_cap_change_24h": -883611.6093577147,
+        "market_cap_change_percentage_24h": -0.34217,
+        "circulating_supply": 76546099.142,
+        "total_supply": 1000000000,
+        "max_supply": 1000000000,
+        "ath": 4.75,
+        "ath_change_percentage": -27.3915,
+        "ath_date": "2026-05-07T07:15:11.086Z",
+        "atl": 0.074235,
+        "atl_change_percentage": 4542.21814,
+        "atl_date": "2025-12-02T03:30:39.644Z",
+        "roi": null,
+        "last_updated": "2026-05-07T12:02:46.190Z",
+        "price_change_percentage_1h_in_currency": -22.19112384110182,
+        "price_change_percentage_24h_in_currency": 2.1185555959998332,
+        "price_change_percentage_7d_in_currency": 402.006131251069
+      },
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "name": "Toncoin",
+      "sym": "TON",
+      "rank": 20,
+      "price": "$2.45",
+      "c24": "+6.4%",
+      "market": {
+        "id": "the-open-network",
+        "symbol": "ton",
+        "name": "Toncoin",
+        "image": "https://coin-images.coingecko.com/coins/images/17980/large/photo_2024-09-10_17.09.00.jpeg?1725963446",
+        "current_price": 2.45,
+        "market_cap": 6567936693,
+        "market_cap_rank": 20,
+        "fully_diluted_valuation": 12683305485,
+        "total_volume": 1659175897,
+        "high_24h": 2.89,
+        "low_24h": 2.22,
+        "price_change_24h": 0.148326,
+        "price_change_percentage_24h": 6.44529,
+        "market_cap_change_24h": 439863687,
+        "market_cap_change_percentage_24h": 7.17785,
+        "circulating_supply": 2680082368.923156,
+        "total_supply": 5175491938.916415,
+        "max_supply": null,
+        "ath": 8.25,
+        "ath_change_percentage": -70.30821,
+        "ath_date": "2024-06-15T00:36:51.509Z",
+        "atl": 0.519364,
+        "atl_change_percentage": 371.8549,
+        "atl_date": "2021-09-21T00:33:11.092Z",
+        "roi": null,
+        "last_updated": "2026-05-07T12:02:41.945Z",
+        "price_change_percentage_1h_in_currency": -4.468901256813126,
+        "price_change_percentage_24h_in_currency": 6.445289749501423,
+        "price_change_percentage_7d_in_currency": 87.87367620896369
+      },
+      "tags": [
+        "TRENDING+UP",
+        "MAJOR"
+      ]
+    },
+    {
+      "name": "wojak",
+      "sym": "WOJAK",
+      "rank": 698,
+      "price": "$0.000000",
+      "c24": "-22.8%",
+      "tags": []
+    },
+    {
+      "name": "Billions Network",
+      "sym": "BILL",
+      "rank": 202,
+      "price": "$0.0731",
+      "c24": "+6.8%",
+      "market": {
+        "id": "billions-network",
+        "symbol": "bill",
+        "name": "Billions Network",
+        "image": "https://coin-images.coingecko.com/coins/images/68464/large/billions.png?1755828007",
+        "current_price": 0.073075,
+        "market_cap": 175379587,
+        "market_cap_rank": 202,
+        "fully_diluted_valuation": 730748280,
+        "total_volume": 312150811,
+        "high_24h": 0.079164,
+        "low_24h": 0.060673,
+        "price_change_24h": 0.00467675,
+        "price_change_percentage_24h": 6.83754,
+        "market_cap_change_24h": 5552699,
+        "market_cap_change_percentage_24h": 3.26962,
+        "circulating_supply": 2400000000,
+        "total_supply": 10000000000,
+        "max_supply": 10000000000,
+        "ath": 0.079164,
+        "ath_change_percentage": -7.77027,
+        "ath_date": "2026-05-06T22:35:45.427Z",
+        "atl": 0.02249091,
+        "atl_change_percentage": 224.63059,
+        "atl_date": "2026-05-04T07:05:09.274Z",
+        "roi": null,
+        "last_updated": "2026-05-07T12:02:45.234Z",
+        "price_change_percentage_1h_in_currency": -2.133516032722921,
+        "price_change_percentage_24h_in_currency": 6.837540454920473,
+        "price_change_percentage_7d_in_currency": null
+      },
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "name": "Pudgy Penguins",
+      "sym": "PENGU",
+      "rank": 90,
+      "price": "$0.0105",
+      "c24": "-5.2%",
+      "market": {
+        "id": "pudgy-penguins",
+        "symbol": "pengu",
+        "name": "Pudgy Penguins",
+        "image": "https://coin-images.coingecko.com/coins/images/52622/large/PUDGY_PENGUINS_PENGU_PFP.png?1733809110",
+        "current_price": 0.01054051,
+        "market_cap": 662131482,
+        "market_cap_rank": 90,
+        "fully_diluted_valuation": 838698023,
+        "total_volume": 185010936,
+        "high_24h": 0.01112449,
+        "low_24h": 0.01030787,
+        "price_change_24h": -0.000583978792754042,
+        "price_change_percentage_24h": -5.24949,
+        "market_cap_change_24h": -38629986.0060426,
+        "market_cap_change_percentage_24h": -5.51257,
+        "circulating_supply": 62860396090,
+        "total_supply": 79622992369.19281,
+        "max_supply": 88888888888,
+        "ath": 0.068447,
+        "ath_change_percentage": -84.60514,
+        "ath_date": "2024-12-17T13:05:22.873Z",
+        "atl": 0.00371517,
+        "atl_change_percentage": 183.62841,
+        "atl_date": "2025-04-09T01:31:57.832Z",
+        "roi": null,
+        "last_updated": "2026-05-07T12:02:43.956Z",
+        "price_change_percentage_1h_in_currency": 0.5334892235785144,
+        "price_change_percentage_24h_in_currency": -5.249488063407001,
+        "price_change_percentage_7d_in_currency": 10.290274801788952
+      },
+      "tags": [
+        "TRENDING+DOWN"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,572 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-07"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-summary",
+        "heading-winners",
+        "table-winners",
+        "separator-1",
+        "heading-losers",
+        "table-losers",
+        "separator-2",
+        "heading-trending",
+        "stack-trending",
+        "separator-3",
+        "heading-notable",
+        "stack-notable"
+      ]
+    },
+    "text-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-off rotation — 31/100 top coins green (vs 85 on 05-06), median top-50 −1.1%; BTC $80,857 −1.9% / ETH $2,330 −3.3% lead the unwind while RWA / Solana-DeFi names rotate in (JTO +28%, CFG +18%, ICP +9.6%, ONDO +8.8%).",
+        "variant": "lead"
+      }
+    },
+    "heading-winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "table-winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume",
+          "Rank",
+          "Tag"
+        ],
+        "rows": [
+          [
+            "SIREN (Siren)",
+            "$0.98",
+            "+28.2%",
+            "+45.1%",
+            "−13.8%",
+            "$45M",
+            "#85",
+            "BREAKOUT"
+          ],
+          [
+            "JTO (Jito)",
+            "$0.51",
+            "+28.1%",
+            "+45.0%",
+            "+8.9%",
+            "$213M",
+            "#173",
+            "BREAKOUT"
+          ],
+          [
+            "CFG (Centrifuge)",
+            "$0.29",
+            "+18.1%",
+            "+42.8%",
+            "+4.0%",
+            "$41M",
+            "#209",
+            "BREAKOUT"
+          ],
+          [
+            "VVV (Venice Token)",
+            "$12.81",
+            "+13.4%",
+            "+51.9%",
+            "−1.0%",
+            "$61M",
+            "#99",
+            ""
+          ],
+          [
+            "GENIUS",
+            "$0.59",
+            "+9.6%",
+            "+34.2%",
+            "−2.3%",
+            "$13M",
+            "#187",
+            ""
+          ],
+          [
+            "ICP (Internet Computer)",
+            "$3.11",
+            "+9.6%",
+            "+29.4%",
+            "+0.4%",
+            "$219M",
+            "#53",
+            ""
+          ],
+          [
+            "APEPE (Ape and Pepe)",
+            "$0.000001",
+            "+9.5%",
+            "+8.2%",
+            "",
+            "$47M",
+            "#154",
+            ""
+          ],
+          [
+            "WLFI (World Liberty Financial)",
+            "$0.073",
+            "+9.0%",
+            "+21.0%",
+            "",
+            "$100M",
+            "#40",
+            ""
+          ],
+          [
+            "ULTIMA",
+            "$3013",
+            "+8.9%",
+            "+6.8%",
+            "",
+            "$15M",
+            "#221",
+            ""
+          ],
+          [
+            "ONDO",
+            "$0.35",
+            "+8.8%",
+            "+32.8%",
+            "+1.5%",
+            "$190M",
+            "#54",
+            ""
+          ]
+        ]
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "table-losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Volume",
+          "Rank",
+          "Tag"
+        ],
+        "rows": [
+          [
+            "SKYAI",
+            "$0.63",
+            "−21.9%",
+            "+97.3%",
+            "+0.3%",
+            "$118M",
+            "#92",
+            ""
+          ],
+          [
+            "ASTEROID (Asteroid Shiba)",
+            "$0.000363",
+            "−15.8%",
+            "+11.2%",
+            "−2.8%",
+            "$32M",
+            "#223",
+            ""
+          ],
+          [
+            "B (BUILDon)",
+            "$0.35",
+            "−13.6%",
+            "+171.3%",
+            "+1.7%",
+            "$63M",
+            "#138",
+            ""
+          ],
+          [
+            "LUNC",
+            "$0.000095",
+            "−9.9%",
+            "+33.1%",
+            "−3.3%",
+            "$181M",
+            "#106",
+            ""
+          ],
+          [
+            "CVX (Convex Finance)",
+            "$1.75",
+            "−7.0%",
+            "+1.8%",
+            "",
+            "$8M",
+            "#219",
+            ""
+          ],
+          [
+            "BEAT (Audiera)",
+            "$0.51",
+            "−6.9%",
+            "−9.1%",
+            "",
+            "$3M",
+            "#242",
+            ""
+          ],
+          [
+            "AERO (Aerodrome)",
+            "$0.45",
+            "−6.2%",
+            "−1.2%",
+            "",
+            "$16M",
+            "#116",
+            ""
+          ],
+          [
+            "MORPHO",
+            "$2.14",
+            "−5.9%",
+            "+9.3%",
+            "",
+            "$16M",
+            "#60",
+            ""
+          ],
+          [
+            "ZEN (Horizen)",
+            "$7.27",
+            "−5.7%",
+            "+26.7%",
+            "",
+            "$31M",
+            "#249",
+            ""
+          ],
+          [
+            "PENGU (Pudgy Penguins)",
+            "$0.0105",
+            "−5.2%",
+            "+10.3%",
+            "",
+            "$185M",
+            "#90",
+            "TRENDING+DOWN"
+          ]
+        ]
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-trending": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "stack-trending": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-1",
+        "trending-2",
+        "trending-3",
+        "trending-4",
+        "trending-5",
+        "trending-6",
+        "trending-7"
+      ]
+    },
+    "trending-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-1-text",
+        "trending-1-badge"
+      ]
+    },
+    "trending-1-text": {
+      "type": "Text",
+      "props": {
+        "text": "FIRO — #864, $1.20, 24h +16.1%"
+      }
+    },
+    "trending-1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MICROCAP",
+        "variant": "secondary"
+      }
+    },
+    "trending-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-2-text",
+        "trending-2-badge1",
+        "trending-2-badge2"
+      ]
+    },
+    "trending-2-text": {
+      "type": "Text",
+      "props": {
+        "text": "B3 (B3 Base) — #381, $0.0016, 24h +218.5%"
+      }
+    },
+    "trending-2-badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "PUMP-RISK",
+        "variant": "destructive"
+      }
+    },
+    "trending-2-badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "MICROCAP",
+        "variant": "secondary"
+      }
+    },
+    "trending-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-3-text",
+        "trending-3-badge"
+      ]
+    },
+    "trending-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "LAB — #163, $3.46, 24h +2.1%"
+      }
+    },
+    "trending-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "TRENDING+UP",
+        "variant": "default"
+      }
+    },
+    "trending-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-4-text",
+        "trending-4-badge1",
+        "trending-4-badge2"
+      ]
+    },
+    "trending-4-text": {
+      "type": "Text",
+      "props": {
+        "text": "TON (Toncoin) — #20, $2.45, 24h +6.4%"
+      }
+    },
+    "trending-4-badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "TRENDING+UP",
+        "variant": "default"
+      }
+    },
+    "trending-4-badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "MAJOR",
+        "variant": "outline"
+      }
+    },
+    "trending-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-5-text",
+        "trending-5-badge"
+      ]
+    },
+    "trending-5-text": {
+      "type": "Text",
+      "props": {
+        "text": "WOJAK — #698, sub-cent, 24h −22.8%"
+      }
+    },
+    "trending-5-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MICROCAP",
+        "variant": "secondary"
+      }
+    },
+    "trending-6": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-6-text",
+        "trending-6-badge"
+      ]
+    },
+    "trending-6-text": {
+      "type": "Text",
+      "props": {
+        "text": "BILL (Billions Network) — #202, $0.073, 24h +6.8%"
+      }
+    },
+    "trending-6-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "TRENDING+UP",
+        "variant": "default"
+      }
+    },
+    "trending-7": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "trending-7-text",
+        "trending-7-badge"
+      ]
+    },
+    "trending-7-text": {
+      "type": "Text",
+      "props": {
+        "text": "PENGU — #90, $0.0105, 24h −5.2%"
+      }
+    },
+    "trending-7-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "TRENDING+DOWN",
+        "variant": "destructive"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "stack-notable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4",
+        "notable-5"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "B3 #381 trending at +218.5% — outside top-250, classic PUMP-RISK signature; first day on board.",
+        "variant": "body"
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "JTO +28% / 7d +45% on $213M vol at #173 — vol/mcap 0.88 = circulating-only mcap distortion (FDV much larger), real Solana liquid-staking rotation, not a wash print.",
+        "variant": "body"
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "SKYAI 3-day flip series continues: −5% (05-05) → +25.8% (05-06) → −21.9% today. Pump-cycle reflexivity is a stable feature now.",
+        "variant": "body"
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy/TON peaks cooling but holding 7d gains: ZEC #16 −0.4%/7d +72%, TON +6.4% (down from +30/+36 prior), DASH −3.5%/7d +55%, ZEN −5.7%/7d +27% — peak-extension confirmed; no new entry.",
+        "variant": "body"
+      }
+    },
+    "notable-5": {
+      "type": "Text",
+      "props": {
+        "text": "B (BUILDon) day-2 fade −13.6% but 7d still +171% — pump-and-fade depth deepening; classic LAB-shape multi-day cycle.",
+        "variant": "body"
+      }
+    }
+  }
+}
