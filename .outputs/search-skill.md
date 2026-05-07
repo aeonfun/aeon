@@ -1,16 +1,11 @@
-Ran search-skill per spec. All four gap-derivation sources came up empty:
-
-- **(a) cron-state**: low success rates are ISS-013 mass-failure decay artifacts (`last_status: success`, truncated-JSON `last_error` signature). Today's cf>=2 cases (`article` cf=3, `repo-actions` cf=2) are existing meta-skills hitting the same infrastructure pattern, not external-capability gaps.
-- **(b) issues INDEX**: 16 open, but the only `quality-regression` is ISS-015 (`messages.yml` script-injection patch — workflow YAML fix, not capability). All others fall outside the strict trigger set.
-- **(c) Next Priorities**: every item is operator-side (chain-runner fix, cost downgrade, PR #156, prefetch scripts, var configs, JSON-contract operator owns).
-- **(d) Log signals**: every "missing" hit is operator-config (NEYNAR_API_KEY, prefetch scripts, aeon.yml `var:`) or schema-drift backlog.
-
-Exit mode: **SEARCH_SKILL_NO_GAP**. No catalog search, no install, no notification — silent is correct per spec. Logged to `memory/logs/2026-05-06.md`.
-
 ## Summary
 
-- Executed `skills/search-skill/SKILL.md` end-to-end.
-- Result: `SEARCH_SKILL_NO_GAP` (8th NO_GAP-class run in last 9 search-skill firings).
-- Files modified: `memory/logs/2026-05-06.md` (appended search-skill entry + Summary block).
-- No PR, no skill install, no notification.
-- Follow-up: chain-runner.yml `dispatch_skill()` operator fix remains upstream of search-skill's ability to detect real capability gaps — until ISS-013 decay clears, the failing-skill source will keep masking signal with infrastructure noise.
+- **Mode:** SEARCH_SKILL_NO_GAP — silent, log-only per spec.
+- **Reasoning:** All four query-derivation sources walked; none yielded a concrete external-capability word.
+  - (a) cron-state.json: zero skills at `consecutive_failures >= 2`; ~30 sub-0.6 success-rates all carry `last_status: success` and trace to ISS-013/ISS-017/ISS-020 mass-failure decay (existing capabilities, infrastructure-gated, not external gaps).
+  - (b) issues/INDEX.md: 17 open issues, but only ISS-015 (quality-regression) matches the trigger-category set, and it's a `messages.yml` workflow injection patch — not a capability gap.
+  - (c) MEMORY Next Priorities: every line is operator-config / model-swap / param-tweak / in-flight PR — no external capability gap.
+  - (d) 7-day log grep for capability-gap phrases: every hit is operator-config or schema-drift maintenance backlog (e.g. today's `/v2/chains` drift in defi-overview is fix-in-place, not external).
+- **Action:** No catalog search, no install, no notify (per step 1 abort path).
+- **Files modified:** `memory/logs/2026-05-07.md` only (skill log entry appended).
+- **9th NO_GAP-class run in 10 firings.** Pattern will hold until chain-runner.yml `dispatch_skill()` lands and ISS-013/ISS-020 success-rate counters burn down.
