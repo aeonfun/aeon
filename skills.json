@@ -1,6 +1,6 @@
 {
     "version": "1.0",
-    "generated": "2026-05-06T11:30:00Z",
+    "generated": "2026-05-07T12:02:08Z",
     "repo": "aaronjmars/aeon",
     "total": 111,
     "categories": {
@@ -950,12 +950,12 @@
         {
             "slug": "skill-freshness",
             "name": "skill-freshness",
-            "description": "Audit every enabled skill's upstream file dependencies for staleness — flags chained skills about to consume yesterday's article or a long-dead topic file",
-            "category": "productivity",
+            "description": "Audit every enabled skill's upstream file dependencies for staleness \u2014 flags chained skills about to consume yesterday's article or a long-dead topic file",
+            "category": "other",
             "schedule": "0 8 * * *",
             "var": "",
             "files": 0,
-            "sha": "pending",
+            "sha": "32c77d7",
             "updated": "2026-05-04",
             "install": "./add-skill aaronjmars/aeon skill-freshness"
         },
@@ -1071,11 +1071,11 @@
             "slug": "star-momentum-alert",
             "name": "star-momentum-alert",
             "description": "Project the date a watched repo crosses its next star milestone \u2014 alert only when projected date lands inside the Show HN dispatch window (7-14 days out, Tue/Wed/Thu)",
-            "category": "dev",
+            "category": "other",
             "schedule": "10 10 * * *",
             "var": "",
             "files": 0,
-            "sha": "pending",
+            "sha": "1e167cf",
             "updated": "2026-05-05",
             "install": "./add-skill aaronjmars/aeon star-momentum-alert"
         },
@@ -1250,12 +1250,12 @@
         {
             "slug": "v4-readiness",
             "name": "v4-readiness",
-            "description": "Per-fork v4 upgrade readiness checklist \u2014 reads aeon.yml + skills.json + MEMORY.md against an embedded change manifest; emits Safe / Review / Custom / Action breakdown with effort tags",
+            "description": "Generate a per-fork v4 upgrade readiness checklist \u2014 reads the fork's aeon.yml, skills.json, and MEMORY.md, cross-references against the embedded v4 change manifest, emits Safe / Review / Custom / Action-items breakdown",
             "category": "productivity",
             "schedule": "workflow_dispatch",
             "var": "",
             "files": 0,
-            "sha": "pending",
+            "sha": "1e52b76",
             "updated": "2026-05-06",
             "install": "./add-skill aaronjmars/aeon v4-readiness"
         },

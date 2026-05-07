@@ -52,6 +52,7 @@ get_category() {
     deal-flow|reg-monitor|heartbeat|reflect|self-improve) echo "productivity" ;;
     skill-health|skill-evals|skill-repair|skill-leaderboard|skill-update-check) echo "productivity" ;;
     cost-report|rss-feed|update-gallery|onboard|operator-scorecard) echo "productivity" ;;
+    v4-readiness) echo "productivity" ;;
     *) echo "other" ;;
   esac
 }
