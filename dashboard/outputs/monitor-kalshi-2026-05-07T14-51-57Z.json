@@ -1,0 +1,291 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi monitor — 2026-05-07"
+      },
+      "children": [
+        "alert_verdict",
+        "sep1",
+        "bitcoin_section",
+        "fed_dec_section",
+        "fed_apr_section",
+        "sep2",
+        "alerts_section",
+        "trending_section",
+        "sep3",
+        "sources_section"
+      ]
+    },
+    "alert_verdict": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "all quiet — 3 events, low-vol day; KXFED-26DEC pricing anomaly flagged (T3.50 last=62% > T3.25 last=61%); no move above vol threshold"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "bitcoin_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "bitcoin_heading",
+        "bitcoin_table",
+        "bitcoin_mover",
+        "bitcoin_note"
+      ]
+    },
+    "bitcoin_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin May 8 close (KXBTC-26MAY0817) — Crypto",
+        "level": "h2"
+      }
+    },
+    "bitcoin_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "Δ24h",
+          "range",
+          "vol",
+          "spread"
+        ],
+        "rows": [
+          [
+            "$81,500-82k (B81750)",
+            "10%",
+            "0pp →",
+            "6-17% intra",
+            "~$345",
+            "1pp tight"
+          ]
+        ]
+      }
+    },
+    "bitcoin_mover": {
+      "type": "Text",
+      "props": {
+        "text": "mover: B81750 — stable at 10%; BTC at $80,853 makes bucket OTM; intraday spike to 17% faded as BTC sold from $82k; continued from yesterday (+4pp same direction) — demoted",
+        "variant": "body"
+      }
+    },
+    "bitcoin_note": {
+      "type": "Text",
+      "props": {
+        "text": "note: event API returned 4/~50 buckets (at-the-money ~$80k buckets absent)",
+        "variant": "caption"
+      }
+    },
+    "fed_dec_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fed_dec_heading",
+        "fed_dec_table",
+        "fed_dec_path",
+        "fed_dec_anomaly"
+      ]
+    },
+    "fed_dec_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds Dec 2026 (KXFED-26DEC) — Economics",
+        "level": "h2"
+      }
+    },
+    "fed_dec_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "vol_usd",
+          "spread"
+        ],
+        "rows": [
+          [
+            ">3.50% (T3.50)",
+            "62%",
+            "~$72",
+            "4pp loose"
+          ],
+          [
+            ">3.25% (T3.25)",
+            "61%",
+            "~$54",
+            "4pp loose"
+          ],
+          [
+            ">2.75% (T2.75)",
+            "84%",
+            "~$85",
+            "5pp thin"
+          ]
+        ]
+      }
+    },
+    "fed_dec_path": {
+      "type": "Text",
+      "props": {
+        "text": "path: modal terminal 3.50-3.75% (P(>3.75%)=13%)",
+        "variant": "body"
+      }
+    },
+    "fed_dec_anomaly": {
+      "type": "Text",
+      "props": {
+        "text": "anomaly: P(>3.50%)=62% > P(>3.25%)=61% — monotonicity violation, loose book, likely bid-ask bounce not hard arb",
+        "variant": "body"
+      }
+    },
+    "fed_apr_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "fed_apr_heading",
+        "fed_apr_table",
+        "fed_apr_path"
+      ]
+    },
+    "fed_apr_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds Apr 2027 (KXFED-27APR) — Economics",
+        "level": "h2"
+      }
+    },
+    "fed_apr_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "prob",
+          "vol_usd",
+          "spread"
+        ],
+        "rows": [
+          [
+            ">3.00% (T3.00)",
+            "49%",
+            "~$46",
+            "1pp tight"
+          ],
+          [
+            ">3.25% (T3.25)",
+            "40%",
+            "~$37",
+            "1pp tight"
+          ]
+        ]
+      }
+    },
+    "fed_apr_path": {
+      "type": "Text",
+      "props": {
+        "text": "path: 49% chance rates still above 3% by Apr 2027; Powell→Warsh Senate vote week of May 11 — hawkish confirmation = directional signal for this market; watch for move",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "alerts_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alerts_heading",
+        "alerts_content"
+      ]
+    },
+    "alerts_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS (moved >5pp on non-thin book)",
+        "level": "h3"
+      }
+    },
+    "alerts_content": {
+      "type": "Text",
+      "props": {
+        "text": "none",
+        "variant": "body"
+      }
+    },
+    "trending_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trending_heading",
+        "trending_content"
+      ]
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not tracked)",
+        "level": "h3"
+      }
+    },
+    "trending_content": {
+      "type": "Text",
+      "props": {
+        "text": "KXNEWPOPE-70 — Pope successor market, ~289 contracts 24h; consider adding for political prediction lens",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_content"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_content": {
+      "type": "Text",
+      "props": {
+        "text": "events=ok (KXBTC truncated 4/~50) candlesticks=degraded (batch 400; KXFED empty) orderbook=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
