@@ -1,10 +1,15 @@
-TOKEN_ALERT_OK — all three tokens well under triggers.
-
 ## Summary
 
-- Ran token-alert against BTC / ETH / SOL per MEMORY.md "Tracked Tokens" config (10% / 3x thresholds).
-- Today's print (CoinGecko, first-try curl): **BTC $82,128 (+0.63% 24h, vol $46.00B)** · **ETH $2,397.06 (+0.04% 24h, vol $20.25B)** · **SOL $89.37 (+3.94% 24h, vol $4.80B)**.
-- DoD vs 2026-05-05: BTC +1.05% / ETH +0.35% / SOL +4.76%. Volumes 1.04–1.47x prior day. No 10% / 3x / threshold-cross fired.
-- **TOKEN_ALERT_OK** — silent on green per spec; no notification dispatched. Seventh consecutive green-or-flat day (04-30 → 05-06).
-- Files modified: `memory/logs/2026-05-06.md`.
-- Follow-up: SOL leading majors second day (+4.76% DoD after +1.59% yesterday) — momentum to re-check next run; nothing to action today.
+Ran `token-alert` for 2026-05-07 against BTC / ETH / SOL.
+
+**Today's print (CoinGecko, no key, first-try curl):**
+- BTC: $80,853 (-1.87% 24h), vol $36.06B
+- ETH: $2,329.75 (-3.29% 24h), vol $19.91B
+- SOL: $89.55 (-0.32% 24h), vol $4.15B
+
+**DoD vs 2026-05-06:** BTC -1.55% / ETH -2.81% / SOL +0.20%. Volumes 0.78–0.98x prior-day. No 10% / 3x / threshold-cross fired.
+
+**TOKEN_ALERT_OK** — no notification dispatched (silent on green per spec).
+
+- Files modified: `memory/logs/2026-05-07.md` (appended token-alert section + summary).
+- Follow-up: 7-day green/flat streak (04-30 → 05-06) ended — first DoD-down day for BTC/ETH since 04-29. Still well inside calibration band; consistent with F&G dipping into Fear (46) on 05-06. Re-check tomorrow; nothing to action today.
