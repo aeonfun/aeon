@@ -1,8 +1,15 @@
 ## Summary
 
-Ran `defi-monitor` for 2026-05-06. `memory/on-chain-watches.yml` exists but is empty (`watches: []`, `protocols: []` — template comments only, no real addresses checked in). No DeFi positions of `type: pool` or `type: position` configured. Per the SKILL spec, no further action — terminal state `DEFI_MONITOR_OK`.
+Ran `defi-monitor` skill per `skills/defi-monitor/SKILL.md`.
 
-- **Files modified:** `memory/logs/2026-05-06.md` (appended a defi-monitor entry).
-- **Files created:** none.
-- **Notification:** not sent (nothing to report).
-- **Follow-up:** none from this skill. The empty on-chain-watches.yml is already tracked in MEMORY.md "Next Priorities" under the "Operator config sweep (BLOCKED)" line; no new flag.
+**Status:** `DEFI_MONITOR_OK no-positions-configured`
+
+**What I did:**
+- Read `memory/MEMORY.md` for context.
+- Read `memory/on-chain-watches.yml` — both `watches:` and `protocols:` arrays are empty (template only, no real positions checked in).
+- Per skill spec: with no DeFi positions configured, log `DEFI_MONITOR_OK` and end. No eth_call probes, no comparisons, no notifications sent.
+
+**Files modified:**
+- `memory/logs/2026-05-07.md` — appended `### defi-monitor` entry.
+
+**Follow-up:** Operator config sweep — populate `memory/on-chain-watches.yml` with `type: pool` or `type: position` entries to activate yield/TVL/liquidation monitoring. Already tracked under MEMORY.md → Next Priorities → "Operator config sweep (BLOCKED)".
