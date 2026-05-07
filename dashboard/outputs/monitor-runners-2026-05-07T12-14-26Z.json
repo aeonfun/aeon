@@ -1,0 +1,635 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners"
+      },
+      "children": [
+        "heading-date",
+        "sep-1",
+        "token-1",
+        "sep-2",
+        "token-2",
+        "sep-3",
+        "token-3",
+        "sep-4",
+        "token-4",
+        "sep-5",
+        "token-5",
+        "sep-6",
+        "sources",
+        "sep-7",
+        "vibe"
+      ]
+    },
+    "heading-date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-07 — verdict: SPECULATIVE",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "token-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-1-title",
+        "token-1-metrics",
+        "token-1-analysis"
+      ]
+    },
+    "token-1-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-breakout-1",
+        "heading-token-1",
+        "badge-repeat"
+      ]
+    },
+    "badge-breakout-1": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-token-1": {
+      "type": "Heading",
+      "props": {
+        "text": "冲鸭 / USDT (bsc) +4370% 24h",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "badge-repeat": {
+      "type": "Badge",
+      "props": {
+        "text": "repeat",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "token-1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-vol-1",
+        "stat-liq-1",
+        "stat-fdv-1",
+        "stat-h1-1",
+        "stat-buys-1"
+      ]
+    },
+    "stat-vol-1": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$57.2m"
+      },
+      "children": []
+    },
+    "stat-liq-1": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$128k"
+      },
+      "children": []
+    },
+    "stat-fdv-1": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$90k (no mcap)"
+      },
+      "children": []
+    },
+    "stat-h1-1": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+19%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-buys-1": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys:Sells",
+        "value": "1246:961"
+      },
+      "children": []
+    },
+    "token-1-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "vanity-4444 BSC USDT wash-print actor reactivated under same name as 05-05 slot 1 (different contract 0xf9cadd…854444); 1.87h pool, 446x vol/liq, ~$26k avg-tx — same fingerprint. Actor cycle now 5 of last 9 days. Score-as-noise.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "token-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-2-title",
+        "token-2-metrics",
+        "token-2-analysis"
+      ]
+    },
+    "token-2-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-breakout-2",
+        "heading-token-2"
+      ]
+    },
+    "badge-breakout-2": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-token-2": {
+      "type": "Heading",
+      "props": {
+        "text": "UNOS / SOL (solana) +651% 24h",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token-2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-vol-2",
+        "stat-liq-2",
+        "stat-fdv-2",
+        "stat-h1-2",
+        "stat-buys-2"
+      ]
+    },
+    "stat-vol-2": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$48.4m"
+      },
+      "children": []
+    },
+    "stat-liq-2": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$312k"
+      },
+      "children": []
+    },
+    "stat-fdv-2": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$205k (no mcap)"
+      },
+      "children": []
+    },
+    "stat-h1-2": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+2.8%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-buys-2": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys:Sells",
+        "value": "42780:40818"
+      },
+      "children": []
+    },
+    "token-2-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "8h pump.fun SOL launch with 84k tx and near-balanced skew (1.05:1) — high churn, low conviction. h1 barely green, markup likely topping.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "token-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-3-title",
+        "token-3-metrics",
+        "token-3-analysis"
+      ]
+    },
+    "token-3-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-breakout-3",
+        "heading-token-3"
+      ]
+    },
+    "badge-breakout-3": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-token-3": {
+      "type": "Heading",
+      "props": {
+        "text": "soothsayer / SOL (solana) +788% 24h",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token-3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-vol-3",
+        "stat-liq-3",
+        "stat-fdv-3",
+        "stat-h1-3",
+        "stat-buys-3"
+      ]
+    },
+    "stat-vol-3": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$4.35m"
+      },
+      "children": []
+    },
+    "stat-liq-3": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$54k"
+      },
+      "children": []
+    },
+    "stat-fdv-3": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$321k (no mcap)"
+      },
+      "children": []
+    },
+    "stat-h1-3": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "+18%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-buys-3": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys:Sells",
+        "value": "32180:28471"
+      },
+      "children": []
+    },
+    "token-3-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "10h pump.fun launch in active markup with h1 still firmly green. $54k liq is one whale-exit from collapse — fade-watch the next h1 print.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "token-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-4-title",
+        "token-4-metrics",
+        "token-4-analysis"
+      ]
+    },
+    "token-4-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-breakout-4",
+        "heading-token-4"
+      ]
+    },
+    "badge-breakout-4": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-token-4": {
+      "type": "Heading",
+      "props": {
+        "text": "GOP / WETH 0.01% (base) +6540% 24h",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token-4-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-vol-4",
+        "stat-liq-4",
+        "stat-fdv-4",
+        "stat-h1-4",
+        "stat-buys-4"
+      ]
+    },
+    "stat-vol-4": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$5.03m"
+      },
+      "children": []
+    },
+    "stat-liq-4": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$135k"
+      },
+      "children": []
+    },
+    "stat-fdv-4": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$595k (no mcap)"
+      },
+      "children": []
+    },
+    "stat-h1-4": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-6.6%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat-buys-4": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys:Sells",
+        "value": "7517:6076"
+      },
+      "children": []
+    },
+    "token-4-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "24h base meme up 65x, h1 already red; standard late-listing markdown onset. Republican-narrative tag.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "token-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-5-title",
+        "token-5-metrics",
+        "token-5-analysis"
+      ]
+    },
+    "token-5-title": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-breakout-5",
+        "heading-token-5"
+      ]
+    },
+    "badge-breakout-5": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "heading-token-5": {
+      "type": "Heading",
+      "props": {
+        "text": "DIAMOND / TON (ton) +908% 24h",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token-5-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "stat-vol-5",
+        "stat-liq-5",
+        "stat-fdv-5",
+        "stat-h1-5",
+        "stat-buys-5"
+      ]
+    },
+    "stat-vol-5": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "$1.82m"
+      },
+      "children": []
+    },
+    "stat-liq-5": {
+      "type": "Stat",
+      "props": {
+        "label": "Liq",
+        "value": "$204k"
+      },
+      "children": []
+    },
+    "stat-fdv-5": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$2.18m (no mcap)"
+      },
+      "children": []
+    },
+    "stat-h1-5": {
+      "type": "Stat",
+      "props": {
+        "label": "h1",
+        "value": "-5.9%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat-buys-5": {
+      "type": "Stat",
+      "props": {
+        "label": "Buys:Sells",
+        "value": "4859:4387"
+      },
+      "children": []
+    },
+    "token-5-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "20h TON meme, h1 -6% top printed. Third TON pool series day (TONSKI 05-05, MTONGA 05-04 near-miss); TON casino tape persists.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok gt-new=ok",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-7": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "vibe": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "vibe-label",
+        "vibe-text-1",
+        "vibe-text-2"
+      ]
+    },
+    "vibe-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "vibe-text-1": {
+      "type": "Text",
+      "props": {
+        "text": "3rd consecutive SPECULATIVE day; 5/5 BREAKOUT slate again; wash-print actor anchors slot 1 third day in a row under rotating names.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "vibe-text-2": {
+      "type": "Text",
+      "props": {
+        "text": "ZEREBRO ($7.1m vol/$2.84m liq, +12%, score 50) is the only fresh DEEP-LIQ AI-meme worth tracking but stays buried below floor.",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}

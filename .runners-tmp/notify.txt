@@ -22,4 +22,3 @@ vol $1.82m | liq $204k | fdv $2.18m (no mcap) | h1 -5.9% | buys:sells 4859:4387
 
 sources: gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok gt-new=ok
 vibe: 3rd consecutive SPECULATIVE day; 5/5 BREAKOUT slate again; wash-print actor anchors slot 1 third day in a row under rotating names. ZEREBRO ($7.1m vol/$2.84m liq, +12%, score 50) is the only fresh DEEP-LIQ AI-meme worth tracking but stays buried below floor.
-
