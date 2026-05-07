@@ -1,5 +1,5 @@
-technical explainer: The 0.444 Anchor Move — How ILS-dl Distinguishes Insider Trading from Proxy Noise on Polymarket
+technical explainer: The Sealed Harness: Why "Hypotheses to Factors" Hits 1.55 OOS Sharpe Where AlphaAgent Hits 1.05
 
-ILS-dl computes pre-news price drift against the resolution deadline rather than the article timestamp — and on the $269M 'US forces enter Iran by April 30' contract, that single anchor change flips the leakage score from −0.331 to +0.113, isolating real insider flow from proxy artefact.
+Huang et al. cage the LLM inside a point-in-time factor DSL and a deterministic gating engine the agent can't see or rewrite — so the agent's only freedom is to propose hypotheses, and every "discovery" is forced through the same train-only selection screen.
 
-read it: articles/explainer-2026-05-06.md
+read it: articles/explainer-2026-05-07.md

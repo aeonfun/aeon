@@ -1,0 +1,46 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "technical-explainer"
+      },
+      "children": [
+        "heading_title",
+        "text_body",
+        "separator1",
+        "link_article"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "The Sealed Harness: Why \"Hypotheses to Factors\" Hits 1.55 OOS Sharpe Where AlphaAgent Hits 1.05",
+        "level": "h2"
+      }
+    },
+    "text_body": {
+      "type": "Text",
+      "props": {
+        "text": "Huang et al. cage the LLM inside a point-in-time factor DSL and a deterministic gating engine the agent can't see or rewrite — so the agent's only freedom is to propose hypotheses, and every \"discovery\" is forced through the same train-only selection screen.",
+        "variant": "body"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link_article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "The Sealed Harness explainer",
+        "href": "articles/explainer-2026-05-07.md",
+        "source": "technical-explainer"
+      }
+    }
+  }
+}
