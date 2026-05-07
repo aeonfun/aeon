@@ -309,13 +309,13 @@
   },
   "push-recap": {
     "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-06T21:48:38Z",
-    "total_runs": 40,
-    "total_successes": 23,
+    "last_status": "success",
+    "last_success": "2026-05-07T16:36:26Z",
+    "total_runs": 41,
+    "total_successes": 24,
     "total_failures": 17,
     "consecutive_failures": 0,
-    "success_rate": 0.57,
+    "success_rate": 0.59,
     "last_failed": "2026-05-06T15:32:43Z",
     "last_error": "putTokens\":15,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000442,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":5,\"outputT",
     "last_quality_score": 4
