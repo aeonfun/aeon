@@ -1,0 +1,178 @@
+{
+  "root": "card-research-brief",
+  "state": {},
+  "elements": {
+    "card-research-brief": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief: Powell-Warsh Transition"
+      },
+      "children": [
+        "heading-status",
+        "stat-confirmation",
+        "stat-volume",
+        "heading-platform",
+        "stack-platform",
+        "text-platform-characterization",
+        "separator-1",
+        "heading-thesis",
+        "text-thesis",
+        "heading-signal",
+        "text-signal",
+        "separator-2",
+        "heading-impact",
+        "text-impact-1",
+        "text-impact-2",
+        "separator-3",
+        "story-article"
+      ]
+    },
+    "heading-status": {
+      "type": "Heading",
+      "props": {
+        "text": "Kevin Warsh Confirmation Status",
+        "level": "h2"
+      }
+    },
+    "stat-confirmation": {
+      "type": "Stat",
+      "props": {
+        "value": "96%",
+        "label": "Confirmation by May 15"
+      }
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "value": "$49.5M",
+        "label": "Polymarket trading volume"
+      }
+    },
+    "heading-platform": {
+      "type": "Heading",
+      "props": {
+        "text": "Stated Platform (Regime Shift)",
+        "level": "h2"
+      }
+    },
+    "stack-platform": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-forward-guidance",
+        "badge-dot-plot",
+        "badge-qt",
+        "badge-inflation"
+      ]
+    },
+    "badge-forward-guidance": {
+      "type": "Badge",
+      "props": {
+        "text": "Kill forward guidance"
+      }
+    },
+    "badge-dot-plot": {
+      "type": "Badge",
+      "props": {
+        "text": "Retire the dot plot"
+      }
+    },
+    "badge-qt": {
+      "type": "Badge",
+      "props": {
+        "text": "Accelerate quantitative tightening"
+      }
+    },
+    "badge-inflation": {
+      "type": "Badge",
+      "props": {
+        "text": "Revert to strict 2% inflation target"
+      }
+    },
+    "text-platform-characterization": {
+      "type": "Text",
+      "props": {
+        "text": "This stated platform reads as a regime change, not a personnel change. The binary risk Polymarket is not currently pricing is what kind of Fed Warsh runs, not whether he gets in.",
+        "variant": "body"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-thesis": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h2"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "Market is treating the handoff as continuity when Warsh's stated platform is a regime shift.",
+        "variant": "body"
+      }
+    },
+    "heading-signal": {
+      "type": "Heading",
+      "props": {
+        "text": "Observable Signal (Within 30 Days)",
+        "level": "h2"
+      }
+    },
+    "text-signal": {
+      "type": "Text",
+      "props": {
+        "text": "First observable signal — material change to FOMC forward-guidance language at the June 17-18 meeting — lands within 30 days of swearing-in.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-impact": {
+      "type": "Heading",
+      "props": {
+        "text": "Impact on CalibrationGap",
+        "level": "h2"
+      }
+    },
+    "text-impact-1": {
+      "type": "Text",
+      "props": {
+        "text": "June 17-18 FOMC is the single largest macro catalyst inside the 71-trades-to-Apex window.",
+        "variant": "body"
+      }
+    },
+    "text-impact-2": {
+      "type": "Text",
+      "props": {
+        "text": "A forward-guidance language change reprices every Polymarket Fed-rate / dollar / inflation binary in the 24h post-FOMC window.",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Powell-Warsh Fed Transition: Regime Change Analysis",
+        "href": "articles/research-brief-powell-warsh-fed-transition-regime-change-2026-05-07.md",
+        "source": "Research Brief"
+      }
+    }
+  }
+}
