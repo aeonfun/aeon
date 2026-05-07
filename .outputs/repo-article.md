@@ -1,5 +1,5 @@
-*After ADR-094, swarm-fund-mvp's Whole Open Queue Is Two Single-File Fixes*
+*swarm-fund-mvp Is Zeroing Its Non-Reasoning LLM Bill — Five ADRs, One Week*
 
-Thesis: swarm-fund-mvp has pivoted from architecture-shipping to defect-hardening — both open PRs fix code in ADRs 089/093 from last week, and no new ADR has opened since 2026-05-03.
+Thesis: ADR-095 plus a 3,462-pair fine-tune dataset and a canary router shipped in one 5-hour session — swarm-fund-mvp is zeroing its non-reasoning LLM cloud spend, only opus reasoning stays cloud by design.
 
-Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-06.md
+Read: https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-07.md
