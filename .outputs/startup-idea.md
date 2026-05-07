@@ -1,17 +1,17 @@
-*Startup Ideas — 2026-05-06*
+*Startup Ideas — 2026-05-07*
 
-*1. Caplet* (executable) — digital storefront quoting interest-rate-cap renewals from 4-6 dealer banks in <24h for sub-institutional CRE borrowers stuck paying 100-200 bps over fair value to no-name brokers.
-ICP: indep CRE owner with $5-50M floating-rate bridge loan, cap expires in next 90 days; or equity sponsor mid-capital-call (Ashcroft pattern).
-Wedge: 8-field intake → 3 executable bank quotes + lender consent letter; 50 bps placement fee, half of broker take.
-Why now: $570B 2026 CRE maturity wall; caps that cost $50k in 2021 cost $500k-$2M today (Ashcroft $513k → $18.6M is the canonical case); borrowers cannot self-insure the rollover.
-MVP test: 1 signed dealer ISDA + 10 manual quotes via Lima One / Velocity warm intros; 3 paid placements at $2k = $6k inside 14d.
-Kill: <3 placements in 30d → kill; <$50k rev in 90d → kill.
+*1. Holdback* (executable) — post-Stripe-ban concierge for high-risk DTC merchants. Bundles high-risk MID placement (Easy Pay Direct / PaymentCloud / Soar) + CE3.0 representment automation + MATCH-list rebuttal kit; existing chargeback SaaS won't touch the small high-risk MID portals.
+ICP: founder/COO at $1–10M-GMV DTC in CBD/supplements/coaching/dating who got a Stripe ban email in the last 7 days OR rolling reserve hiked to 15–20%.
+Wedge: 12-field intake → 72h underwriting + checkout swap + RPA-driven CE3.0 representment plumbed into new MID + MATCH letter library.
+Why now: Visa VAMP unification April 2026 ends MID-hopping evasion, so merchants must actually fight chargebacks; Stripe's RDR catch-22 manufactures a fresh banned-merchant cohort every quarter.
+MVP test: rescue 5 banned merchants from r/StripeMerchants in 14 days; metric = 3 paid $1.5k set-ups + 2 won representments.
+Kill: <3 paid set-ups in 30d; <50% representment-win at d60; <1 MID 1099 channel signed in 60d.
 
-*2. Wattline* (ambitious) — standardized PPA assignment + buyout marketplace. SunPower (Aug 2024) + Sunnova bankruptcies broke the call-your-installer workflow; 5M residential + 150k commercial properties have PPAs that increasingly kill real-estate closings.
-ICP: title/escrow closing officer at regional title insurer with 5-10% of pipeline blocked by PPA transfer issues. Secondary: bankruptcy-trustee PPA portfolios needing tail-account liquidity.
-Wedge: 60-sec credit-and-bind for buyer assumption + same-day NPV-derived buyout quote routed to escrow.
-Why now: SunPower Ch.11 + Sunnova fragmented servicer stack; CA AB-1779 + multi-state solar disclosure laws force standardized buyer-credit decisions at sale 2026; UCC + state-SOS scrape now near-zero cost.
-MVP test: buyout calc + UCC lookup for SunStrong/Goodleap/Spruce; 5 title-agency pitches in FL+CA; 10 closings unstuck in 14d.
-Kill: <10 closings in 30d → kill; <2 servicer APIs signed in 60d → kill.
+*2. Sliver* (ambitious) — peer-to-peer secondaries marketplace for sub-$50M crypto-native + emerging VC fund LP interests. Standardized data-room + bilateral-pricing + escrow + GP-staple structured-secondary layer. Sub-$50M tail is untradeable today (IMD); $94B secondaries market concentrates in top 50 names.
+ICP: family-office controller w/ $500k–$5M LP slice in sub-$50M fund post year-5 redemption notice; sell-side. GP w/ LP-redemption-pressure email; staple-secondary side. Buy-side: $25–250M secondary funds shut out of top-50 names by ticket size.
+Wedge: standardized LPA + capital-account + side-letter index data-room; 14-day price-discovery; LPA-assignment + escrow workflow. First market = crypto-native funds (Polychain alumni distribution).
+Why now: 14% NAV-distribution-per-year vs 25% historical; 40% of NA institutional LPs overallocated; 2018–2022 crypto-native vintage hitting year-5 exits in 2026.
+MVP test: 3 GP LOIs + 1 real sell ticket + 1 simulated price-discovery in 14 days.
+Kill: <3 GP LOIs in 30d; <2 buyer-side onboardings in 60d; <1 cleared transaction in 90d; <$500k volume month 6.
 
-Pivot away from yesterday RIA-compliance + litigation-finance into rates-desk-adjacent CRE debt + energy-infra structured products. Both leverage operator earned secrets (Citi rates desk for #1; MPC custody + LTP structured-product math for #2). 8 cited permalinks. Full memos in memory/logs/2026-05-06.md.
+Pivot logic: Wyre payments earned secret (#1) and Polychain EIR earned secret (#2) — neither tapped in last 14d's 24-idea corpus.
