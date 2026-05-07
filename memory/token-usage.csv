@@ -119,4 +119,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-07,daily-routine,claude-opus-4-7,15,8551,958339,15195
 2026-05-07,github-releases,claude-opus-4-7,54,39654,3706159,152872
 2026-05-07,defi-overview,claude-opus-4-7,50,38905,3311818,90617
-2026-05-07,paper-pick,claude-opus-4-7,57,19726,3882796,169963
+2026-05-07,security-digest,claude-opus-4-7,53,22337,2953446,71007

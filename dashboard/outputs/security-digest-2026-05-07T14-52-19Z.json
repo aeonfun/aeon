@@ -1,0 +1,634 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-05-07"
+      },
+      "children": [
+        "verdict",
+        "sep1",
+        "patch-today",
+        "sep2",
+        "patch-week",
+        "sep3",
+        "monitor"
+      ]
+    },
+    "verdict": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Security Verdict",
+        "message": "1 actively exploited (no patch yet), 5 to schedule, 3 to monitor. Sources: KEV, GH Advisory, EPSS"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "patch-today": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "patch-today-heading",
+        "cve-0300"
+      ]
+    },
+    "patch-today-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH TODAY",
+        "level": "h2"
+      }
+    },
+    "cve-0300": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-0300-header",
+        "cve-0300-meta",
+        "cve-0300-desc",
+        "cve-0300-fix"
+      ]
+    },
+    "cve-0300-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-0300-link",
+        "cve-0300-product",
+        "cve-0300-cvss"
+      ]
+    },
+    "cve-0300-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-0300",
+        "href": "https://nvd.nist.gov/vuln/detail/CVE-2026-0300"
+      }
+    },
+    "cve-0300-product": {
+      "type": "Badge",
+      "props": {
+        "text": "Palo Alto PAN-OS"
+      }
+    },
+    "cve-0300-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.8",
+        "variant": "destructive"
+      }
+    },
+    "cve-0300-meta": {
+      "type": "Text",
+      "props": {
+        "text": "KEV added 2026-05-06 · EPSS 0.149 (94.6 pct) · CISA due 2026-05-09",
+        "variant": "caption"
+      }
+    },
+    "cve-0300-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Out-of-bounds write in User-ID Captive Portal allows unauth RCE as root on PA-Series/VM-Series. No vendor patch yet.",
+        "variant": "body"
+      }
+    },
+    "cve-0300-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Restrict User-ID Authentication Portal to trusted zones or disable today (no fix released; CISA mitigation deadline 05-09).",
+        "variant": "lead"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "patch-week": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "patch-week-heading",
+        "cve-vm2",
+        "cve-44351",
+        "cve-44484",
+        "cve-42589",
+        "cve-41050"
+      ]
+    },
+    "patch-week-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH THIS WEEK",
+        "level": "h2"
+      }
+    },
+    "cve-vm2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-vm2-header",
+        "cve-vm2-cves",
+        "cve-vm2-desc",
+        "cve-vm2-fix"
+      ]
+    },
+    "cve-vm2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-vm2-link",
+        "cve-vm2-product",
+        "cve-vm2-cvss"
+      ]
+    },
+    "cve-vm2-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44006 + cluster",
+        "href": "https://github.com/advisories/GHSA-qcp4-v2jj-fjx8"
+      }
+    },
+    "cve-vm2-product": {
+      "type": "Badge",
+      "props": {
+        "text": "vm2 (npm)"
+      }
+    },
+    "cve-vm2-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 10.0",
+        "variant": "destructive"
+      }
+    },
+    "cve-vm2-cves": {
+      "type": "Text",
+      "props": {
+        "text": "5 sandbox-escape CVEs (44006, 43997, 44005, 43999, 44007) + 3 high (43998, 44004, 44001)",
+        "variant": "caption"
+      }
+    },
+    "cve-vm2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Coordinated disclosure: prototype proxy, host Buffer.alloc, builtin allowlist bypass. Vulnerable ≤3.10.5; vm2 is deprecated but emergency patch shipped at 3.11.0.",
+        "variant": "body"
+      }
+    },
+    "cve-vm2-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Upgrade vm2 to ≥3.11.0, or migrate to isolated-vm.",
+        "variant": "lead"
+      }
+    },
+    "cve-44351": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-44351-header",
+        "cve-44351-desc",
+        "cve-44351-fix"
+      ]
+    },
+    "cve-44351-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-44351-link",
+        "cve-44351-product",
+        "cve-44351-cvss"
+      ]
+    },
+    "cve-44351-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44351",
+        "href": "https://github.com/advisories/GHSA-gmvf-9v4p-v8jc"
+      }
+    },
+    "cve-44351-product": {
+      "type": "Badge",
+      "props": {
+        "text": "fast-jwt (npm)"
+      }
+    },
+    "cve-44351-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.1",
+        "variant": "destructive"
+      }
+    },
+    "cve-44351-desc": {
+      "type": "Text",
+      "props": {
+        "text": "JWT auth bypass: async key resolver accepts empty HMAC secret → forge-any-token. Vulnerable ≤6.2.3.",
+        "variant": "body"
+      }
+    },
+    "cve-44351-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Upgrade fast-jwt past 6.2.3 (check release feed for fixed version).",
+        "variant": "lead"
+      }
+    },
+    "cve-44484": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-44484-header",
+        "cve-44484-desc",
+        "cve-44484-fix"
+      ]
+    },
+    "cve-44484-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-44484-link",
+        "cve-44484-product"
+      ]
+    },
+    "cve-44484-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44484",
+        "href": "https://github.com/advisories/GHSA-w37p-236h-pfx3"
+      }
+    },
+    "cve-44484-product": {
+      "type": "Badge",
+      "props": {
+        "text": "pytorch-lightning (pip)"
+      }
+    },
+    "cve-44484-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Supply-chain compromise: PyPI package versions 2.6.2 + 2.6.3 compromised. ML-stack relevance for swarm-fund-mvp paper_triage.",
+        "variant": "body"
+      }
+    },
+    "cve-44484-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Unpin/downgrade off 2.6.2/2.6.3 today; reinstall from clean 2.6.1 or wait for clean re-release.",
+        "variant": "lead"
+      }
+    },
+    "cve-42589": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-42589-header",
+        "cve-42589-related",
+        "cve-42589-desc",
+        "cve-42589-fix"
+      ]
+    },
+    "cve-42589-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-42589-link",
+        "cve-42589-product",
+        "cve-42589-cvss"
+      ]
+    },
+    "cve-42589-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42589",
+        "href": "https://github.com/advisories/GHSA-rqgh-gxv4-6657"
+      }
+    },
+    "cve-42589-product": {
+      "type": "Badge",
+      "props": {
+        "text": "gotenberg/v8 (go)"
+      }
+    },
+    "cve-42589-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.8",
+        "variant": "destructive"
+      }
+    },
+    "cve-42589-related": {
+      "type": "Text",
+      "props": {
+        "text": "Vulnerable 8.29.1. Same vendor: SSRF (CVE-2026-42596 CVSS 9.4) + DoS (CVE-2026-42594 CVSS 7.5) + ExifTool bypass (CVE-2026-42590 CVSS 8.2).",
+        "variant": "caption"
+      }
+    },
+    "cve-42589-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauthenticated RCE via ExifTool metadata key injection.",
+        "variant": "body"
+      }
+    },
+    "cve-42589-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Upgrade gotenberg/v8 past 8.29.1.",
+        "variant": "lead"
+      }
+    },
+    "cve-41050": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-41050-header",
+        "cve-41050-desc",
+        "cve-41050-fix"
+      ]
+    },
+    "cve-41050-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-41050-link",
+        "cve-41050-product",
+        "cve-41050-cvss"
+      ]
+    },
+    "cve-41050-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-41050",
+        "href": "https://github.com/advisories/GHSA-765j-qfrp-hm3j"
+      }
+    },
+    "cve-41050-product": {
+      "type": "Badge",
+      "props": {
+        "text": "rancher/fleet (go)"
+      }
+    },
+    "cve-41050-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.9",
+        "variant": "destructive"
+      }
+    },
+    "cve-41050-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Helm impersonation bypass of RESTClientGetter retains cluster-admin during template rendering. Vulnerable across multiple ranges.",
+        "variant": "body"
+      }
+    },
+    "cve-41050-fix": {
+      "type": "Text",
+      "props": {
+        "text": "Upgrade Fleet to 0.15.1 / 0.14.5 / 0.13.10 / 0.12.14 / 0.11.13 (per branch).",
+        "variant": "lead"
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "monitor": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "monitor-heading",
+        "cve-44513",
+        "cve-42880",
+        "cve-44334"
+      ]
+    },
+    "monitor-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "MONITOR",
+        "level": "h2"
+      }
+    },
+    "cve-44513": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-44513-header",
+        "cve-44513-desc",
+        "cve-44513-action"
+      ]
+    },
+    "cve-44513-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-44513-link",
+        "cve-44513-product",
+        "cve-44513-cvss"
+      ]
+    },
+    "cve-44513-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44513",
+        "href": "https://github.com/advisories/GHSA-98h9-4798-4q5v"
+      }
+    },
+    "cve-44513-product": {
+      "type": "Badge",
+      "props": {
+        "text": "diffusers (pip)"
+      }
+    },
+    "cve-44513-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 8.8"
+      }
+    },
+    "cve-44513-desc": {
+      "type": "Text",
+      "props": {
+        "text": "trust_remote_code bypass via custom_pipeline.",
+        "variant": "body"
+      }
+    },
+    "cve-44513-action": {
+      "type": "Text",
+      "props": {
+        "text": "Audit any custom_pipeline usage in HF diffusers stack.",
+        "variant": "lead"
+      }
+    },
+    "cve-42880": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-42880-header",
+        "cve-42880-desc",
+        "cve-42880-action"
+      ]
+    },
+    "cve-42880-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-42880-link",
+        "cve-42880-product",
+        "cve-42880-cvss"
+      ]
+    },
+    "cve-42880-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42880",
+        "href": "https://github.com/advisories/GHSA-3v3m-wc6v-x4x3"
+      }
+    },
+    "cve-42880-product": {
+      "type": "Badge",
+      "props": {
+        "text": "argo-cd v3 (go)"
+      }
+    },
+    "cve-42880-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 9.6",
+        "variant": "destructive"
+      }
+    },
+    "cve-42880-desc": {
+      "type": "Text",
+      "props": {
+        "text": "ServerSideDiff Kubernetes Secret extraction.",
+        "variant": "body"
+      }
+    },
+    "cve-42880-action": {
+      "type": "Text",
+      "props": {
+        "text": "If running ArgoCD 3.2.x/3.3.x, upgrade to 3.2.11 / 3.3.9.",
+        "variant": "lead"
+      }
+    },
+    "cve-44334": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "cve-44334-header",
+        "cve-44334-desc",
+        "cve-44334-action"
+      ]
+    },
+    "cve-44334-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "cve-44334-link",
+        "cve-44334-product",
+        "cve-44334-cvss"
+      ]
+    },
+    "cve-44334-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44334",
+        "href": "https://github.com/advisories/GHSA-xcmw-grxf-wjhj"
+      }
+    },
+    "cve-44334-product": {
+      "type": "Badge",
+      "props": {
+        "text": "praisonai (pip)"
+      }
+    },
+    "cve-44334-cvss": {
+      "type": "Badge",
+      "props": {
+        "text": "CVSS 8.4"
+      }
+    },
+    "cve-44334-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauth RCE via tool_override.py (CVE-2026-40287 patch bypass).",
+        "variant": "body"
+      }
+    },
+    "cve-44334-action": {
+      "type": "Text",
+      "props": {
+        "text": "Avoid public-network exposure of PraisonAI agents.",
+        "variant": "lead"
+      }
+    }
+  }
+}
