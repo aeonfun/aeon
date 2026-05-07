@@ -147,9 +147,22 @@ if [[ -e "$DEST_DIR" ]]; then
   exit 1
 fi
 
-# Collect --var assignments. Always include SKILL_NAME.
-declare -A VARS
-VARS["SKILL_NAME"]="$SKILL_NAME"
+# Collect --var assignments using parallel arrays (bash 3.2 compatible — stock
+# macOS /bin/bash does not support `declare -A`). Always include SKILL_NAME.
+VAR_KEYS=()
+VAR_VALS=()
+set_var() {
+  local k="$1" v="$2" i
+  for i in "${!VAR_KEYS[@]}"; do
+    if [[ "${VAR_KEYS[$i]}" == "$k" ]]; then
+      VAR_VALS[$i]="$v"
+      return
+    fi
+  done
+  VAR_KEYS+=("$k")
+  VAR_VALS+=("$v")
+}
+set_var "SKILL_NAME" "$SKILL_NAME"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -165,7 +178,14 @@ while [[ $# -gt 0 ]]; do
         echo "Invalid --var '$pair' — expected KEY=VALUE." >&2
         exit 1
       fi
-      VARS["$key"]="$val"
+      # KEY must be a [REPLACE: ...] token name — uppercase, digits, underscore,
+      # leading letter/underscore. Rejecting anything else closes a sed-injection
+      # path through the s|\[REPLACE:…KEY…\]|val|g pipeline below.
+      if [[ ! "$key" =~ ^[A-Z_][A-Z0-9_]*$ ]]; then
+        echo "Invalid --var KEY '$key' — must match ^[A-Z_][A-Z0-9_]*$." >&2
+        exit 1
+      fi
+      set_var "$key" "$val"
       shift 2
       ;;
     --help|-h)
@@ -186,8 +206,9 @@ mkdir -p "$DEST_DIR"
 # delimiter avoids URL-path conflicts in replacement values; `\`, `&`, and `|`
 # are escaped in values so they're treated as literals by sed.
 sed_args=()
-for key in "${!VARS[@]}"; do
-  val="${VARS[$key]}"
+for i in "${!VAR_KEYS[@]}"; do
+  key="${VAR_KEYS[$i]}"
+  val="${VAR_VALS[$i]}"
   esc_val=$(printf '%s' "$val" | sed -e 's/[\\&|]/\\&/g')
   sed_args+=(-e "s|\\[REPLACE:[[:space:]]*${key}\\]|${esc_val}|g")
 done
