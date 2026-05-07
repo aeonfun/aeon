@@ -1,6 +1,6 @@
 {
   "heartbeat": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-05-06T15:33:00Z",
     "total_runs": 50,
     "total_successes": 34,
@@ -9,7 +9,7 @@
     "success_rate": 0.68,
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu",
     "last_success": "2026-05-07T14:51:32Z",
-    "last_dispatch": "2026-05-07T14:44:17Z"
+    "last_dispatch": "2026-05-07T21:00:58Z"
   },
   "token-alert": {
     "last_dispatch": "2026-05-07T12:02:59Z",
@@ -632,13 +632,13 @@
     "last_error": "c50219e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "chain:evening-rollup": {
-    "last_dispatch": "2026-05-06T21:41:22Z",
-    "last_status": "failed",
+    "last_dispatch": "2026-05-07T21:00:58Z",
+    "last_status": "dispatched",
     "last_failed": "2026-05-06T21:42:53Z"
   },
   "evening-rollup": {
-    "last_dispatch": "2026-05-06T21:41:22Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-07T21:00:58Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-06T21:46:10Z",
     "total_runs": 16,
     "total_successes": 12,
