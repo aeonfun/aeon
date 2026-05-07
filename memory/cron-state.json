@@ -334,13 +334,13 @@
   },
   "repo-actions": {
     "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-06T17:26:00Z",
-    "total_runs": 28,
-    "total_successes": 11,
+    "last_status": "success",
+    "last_success": "2026-05-07T16:43:14Z",
+    "total_runs": 29,
+    "total_successes": 12,
     "total_failures": 17,
     "consecutive_failures": 0,
-    "success_rate": 0.39,
+    "success_rate": 0.41,
     "last_failed": "2026-05-06T15:33:05Z",
     "last_error": "\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.00042699999999999997,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":7,\"outputT"
   },
