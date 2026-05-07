@@ -1,0 +1,437 @@
+{
+  "root": "recap-card",
+  "state": {},
+  "elements": {
+    "recap-card": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-07",
+        "description": "research-heavy day, trading loop dark, chain-runner degraded day 11"
+      },
+      "children": [
+        "loop-section",
+        "sep-1",
+        "failures-section",
+        "sep-2",
+        "top3-section",
+        "sep-3",
+        "decisions-section",
+        "sep-4",
+        "footer-section"
+      ]
+    },
+    "loop-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "loop-heading",
+        "loop-content"
+      ]
+    },
+    "loop-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Loop",
+        "level": "h2"
+      }
+    },
+    "loop-content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "scans-text",
+        "signals-text",
+        "revenant-label",
+        "revenant-stats",
+        "nav-label",
+        "nav-stats"
+      ]
+    },
+    "scans-text": {
+      "type": "Text",
+      "props": {
+        "text": "Scans: 0 (monitor-polymarket skipped; last ran 05-06)"
+      }
+    },
+    "signals-text": {
+      "type": "Text",
+      "props": {
+        "text": "Signals: 0 formal"
+      }
+    },
+    "revenant-label": {
+      "type": "Text",
+      "props": {
+        "text": "Revenant: 0 new orders; record flat"
+      }
+    },
+    "revenant-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "revenant-trades-stat",
+        "revenant-win-rate-stat",
+        "revenant-pnl-stat",
+        "revenant-sharpe-stat"
+      ]
+    },
+    "revenant-trades-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed Trades",
+        "value": "29"
+      }
+    },
+    "revenant-win-rate-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Win Rate",
+        "value": "76%"
+      }
+    },
+    "revenant-pnl-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "P&L",
+        "value": "+$415"
+      }
+    },
+    "revenant-sharpe-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      }
+    },
+    "nav-label": {
+      "type": "Text",
+      "props": {
+        "text": "NAV: PM positions USDC-flat"
+      }
+    },
+    "nav-stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "lg"
+      },
+      "children": [
+        "btc-stat",
+        "eth-stat",
+        "breadth-stat"
+      ]
+    },
+    "btc-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "-1.87%",
+        "trend": "down"
+      }
+    },
+    "eth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "-3.29%",
+        "trend": "down"
+      }
+    },
+    "breadth-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Breadth",
+        "value": "4/20 green"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "failures-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "failures-heading",
+        "failures-alert"
+      ]
+    },
+    "failures-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Skill Failures",
+        "level": "h2"
+      }
+    },
+    "failures-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "message": "chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update — dispatch_skill DEGRADED day 11 (operator-blocked)"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top3-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top3-heading",
+        "top3-item-1",
+        "top3-item-2",
+        "top3-item-3"
+      ]
+    },
+    "top3-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3",
+        "level": "h2"
+      }
+    },
+    "top3-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-1-badge",
+        "top3-1-papers",
+        "top3-1-comparison",
+        "top3-1-note"
+      ]
+    },
+    "top3-1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Papers",
+        "variant": "secondary"
+      }
+    },
+    "top3-1-papers": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "timeseek-link",
+        "plus-text",
+        "prediction-arena-link"
+      ]
+    },
+    "timeseek-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TimeSeek",
+        "href": "https://arxiv.org/abs/2604.04220",
+        "source": "arXiv"
+      }
+    },
+    "plus-text": {
+      "type": "Text",
+      "props": {
+        "text": "+",
+        "variant": "caption"
+      }
+    },
+    "prediction-arena-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Prediction Arena",
+        "href": "https://arxiv.org/abs/2604.07355",
+        "source": "arXiv"
+      }
+    },
+    "top3-1-comparison": {
+      "type": "Text",
+      "props": {
+        "text": "CalibrationGap 76% vs grok-4-20 71.4% PM win rate head-to-head"
+      }
+    },
+    "top3-1-note": {
+      "type": "Text",
+      "props": {
+        "text": "Four-paper PhD bench closed",
+        "variant": "muted"
+      }
+    },
+    "top3-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-2-badge",
+        "top3-2-text1",
+        "top3-2-text2",
+        "top3-2-text3"
+      ]
+    },
+    "top3-2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "polymarket-comments",
+        "variant": "secondary"
+      }
+    },
+    "top3-2-text1": {
+      "type": "Text",
+      "props": {
+        "text": "peace-deal-May-15 clause-arb 15pp spread deepening"
+      }
+    },
+    "top3-2-text2": {
+      "type": "Text",
+      "props": {
+        "text": "10 new track handles"
+      }
+    },
+    "top3-2-text3": {
+      "type": "Text",
+      "props": {
+        "text": "Operation Fauxios meme logged"
+      }
+    },
+    "top3-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3-3-badge",
+        "top3-3-list"
+      ]
+    },
+    "top3-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Articles × 4",
+        "variant": "secondary"
+      }
+    },
+    "top3-3-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "article-1",
+        "article-2",
+        "article-3",
+        "article-4"
+      ]
+    },
+    "article-1": {
+      "type": "Text",
+      "props": {
+        "text": "TimeSeek daily"
+      }
+    },
+    "article-2": {
+      "type": "Text",
+      "props": {
+        "text": "Hypotheses-to-Factors explainer"
+      }
+    },
+    "article-3": {
+      "type": "Text",
+      "props": {
+        "text": "Powell/Warsh research-brief"
+      }
+    },
+    "article-4": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-095 repo-article"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "decisions-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "decisions-heading",
+        "decisions-alert"
+      ]
+    },
+    "decisions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions",
+        "level": "h2"
+      }
+    },
+    "decisions-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Merge swarm-fund-mvp #30/#31/#32 (Vercel-FAILURE, author-blocked)"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "footer-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "footer-text",
+        "sources-text"
+      ]
+    },
+    "footer-text": {
+      "type": "Text",
+      "props": {
+        "text": "+34 collapsed",
+        "variant": "muted"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: log=ok cron-state=ok",
+        "variant": "muted"
+      }
+    }
+  }
+}
