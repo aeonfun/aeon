@@ -1,28 +1,29 @@
-*Evening Recap — 2026-05-06*
-_TL;DR: heavy ship day — 7 articles, 1 PR opened, 1 critical issue filed; Iran-airspace 15.5%→4% crash falsifies the multi-handle NO cluster._
+*Evening Recap — 2026-05-07*
+_TL;DR: heavy ship day — 5 articles + 2 paper-picks, but PR #156 hit day 14 idle and 6 X/Reddit skills still failing daily._
 
 *Headlines:*
-- article — Iran-airspace ladder crashed 15.5%→4% on rising kinetic tape · https://github.com/aeonframework/aeon/blob/main/articles/2026-05-06.md
-- external-feature — PR #32 aeon_adapter null-signals guard · https://github.com/tomscaria/swarm-fund-mvp/pull/32
-- code-health — PR #158 dashboard execFileSync hardening shipped 24h after rec · https://github.com/aeonframework/aeon/blob/main/articles/code-health-2026-05-06.md
-- paper-pick — Coordination Layer arXiv:2605.03310 (Murphy decomposition for CalibrationGap entry logic) · https://arxiv.org/abs/2605.03310
-- heartbeat — ISS-020 critical: 17-skill mass-fail 15:32-35Z, post-exec state-write regression · https://github.com/aeonframework/aeon/blob/main/memory/issues/ISS-020.md
+- daily-article — TimeSeek validates CalibrationGap weak-consensus filter · articles/2026-05-07.md
+- research-brief — Powell→Warsh regime-change, June FOMC falsifier · articles/research-brief-powell-warsh-fed-transition-regime-change-2026-05-07.md
+- repo-article — swarm-fund-mvp zeroing non-reasoning LLM bill (ADR-095 `80b1228`) · articles/repo-article-2026-05-07.md
+- code-health — MEMORY:18 ADR-095 wrong; ADR-093 outputs/ still 404 (10d to falsifier) · articles/code-health-2026-05-07.md
+- paper-pick ×2 — TimeSeek + Prediction Arena (grok-4-20 71.4% PM vs CalibrationGap 76%/29) · https://arxiv.org/abs/2604.07355
 
 *Notable:*
-- repo-article + project-lens + research-brief + repo-actions + changelog all shipped (full daily slate)
-- digest — SnapMarkets 30s BTC binary launch, AZ federal injunction permanent, Kalshi Apr $5.42B taker overtakes PM
-- monitor-polymarket — quiet, no >5pp moves; NZL FIFA $408K vol anomaly at 0.25% YES
-- reflect #11 — memory consolidated; 276 stars (+5, ACTIVE but cooling 2nd day)
+- pr-review — swarm-fund-mvp#32 approve-ready, 3rd defect-hardening on aeon_adapter
+- github-monitor — Vercel-FAILURE backlog 2→3 ACT NOW; #32 tomscaria commit-email root cause
+- polymarket-comments — peace-deal clause-arb spread 11.5pp→15.15pp (compounding daily)
+- defi-overview — Aave V3 fees +927% 1d anomaly; Tonstakers 7d +102%; LRT day-3 bleed
+- narrative-tracker — 33 narratives, 12 transitions; Pay.sh/x402 NEW FRONT-RUN
+- security-digest — CVE-2026-0300 PAN-OS KEV; 3 Next.js GHSAs (check aeon dashboard pin)
 
 *Decisions for tomorrow:*
-- merge tomscaria/swarm-fund-mvp#31 (ADR-093 critical-path, falsifier T-11)
-- review aaronjmars/aeon#156 reply-maker XAI prefetch (day 13; gates 3 daily skills)
-- patch chain-runner.yml dispatch_skill (day 10; gates ISS-013 decay + 3 chain wrappers)
-- stand down on Trump-China-by-May-31 NO entry until clause-text ingest lands
+- Merge or close aaronjmars/aeon#156 (d14, ~95h idle, closes ISS-014)
+- Open ADR-096 for resolution-text-ingest + fix MEMORY.md:18 attribution
+- Add `## Trusted Authors` to memory/watched-repos.md (unblocks auto-merge)
 
 *Blockers:*
-- chain:evening-rollup — failed 05-05 21:01Z (dispatch_skill DEGRADED day 10)
-- vibecoding-digest 14th ERROR; agent-buzz 3rd ERROR; remix-tweets 9th ERROR; reply-maker DEGRADED 2/5
+- chain-runner.yml `dispatch_skill()` d11 — blocks morning-brief / evening-rollup / weekly-grant-update
+- reddit d13 / vibecoding d15 / farcaster d2 / agent-buzz d4 / remix d10 / reply-maker EMPTY d14 — gated on missing prefetch + secrets
 
-_~25 routine runs collapsed · sources: log=ok cron-state=ok_
+_+12 routine runs collapsed · sources: log=ok cron-state=ok_
 
