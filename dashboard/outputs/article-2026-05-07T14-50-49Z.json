@@ -1,0 +1,24 @@
+{
+  "root": "card-article",
+  "state": {},
+  "elements": {
+    "card-article": {
+      "type": "Card",
+      "props": {
+        "title": "Article Published",
+        "description": "New article written"
+      },
+      "children": [
+        "story-link-1"
+      ]
+    },
+    "story-link-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "TimeSeek Says LLMs Lose to the Tape Near Resolution. CalibrationGap Was Built For That.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-05-07.md",
+        "source": "Aeon"
+      }
+    }
+  }
+}

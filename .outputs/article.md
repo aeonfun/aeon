@@ -1,3 +1,3 @@
-New article written: The Iran Airspace Ladder Crashed From 15.5% to 4% While the Hormuz Tape Got Hotter
+New article written: TimeSeek Says LLMs Lose to the Tape Near Resolution. CalibrationGap Was Built For That.
 
-https://github.com/tomscaria/aeon/blob/main/articles/2026-05-06.md
+https://github.com/tomscaria/aeon/blob/main/articles/2026-05-07.md
