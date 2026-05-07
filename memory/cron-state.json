@@ -212,15 +212,16 @@
   },
   "auto-merge": {
     "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-06T17:10:09Z",
-    "total_runs": 26,
-    "total_successes": 11,
+    "last_status": "success",
+    "last_success": "2026-05-07T14:47:37Z",
+    "total_runs": 27,
+    "total_successes": 12,
     "total_failures": 15,
     "consecutive_failures": 0,
-    "success_rate": 0.42,
+    "success_rate": 0.44,
     "last_failed": "2026-05-06T15:32:08Z",
-    "last_error": "putTokens\":13,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000432,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":6,\"outputT"
+    "last_error": "putTokens\":13,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000432,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":6,\"outputT",
+    "last_quality_score": 4
   },
   "article": {
     "last_dispatch": "2026-05-07T14:44:17Z",
