@@ -101,7 +101,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 ## Next Priorities
 - **🔴 chain-runner.yml `dispatch_skill()`** — operator priority #1, day 10 idle. Add echo per dispatched skill before each `gh workflow run`. Gates ISS-013 decay. _(BLOCKED: operator-side)_
 - **🔴 Cost-discipline downgrade pass** — sonnet-4-6 for external-feature / repo-actions / heartbeat (~$149/wk savings). Surface to next `self-improve`.
-- **🔴 PR #156 reply-maker XAI prefetch** (day 13, ~65h since last update) — closes ISS-014 on merge. Escalate to "operator-blocking" tier in next `self-improve` alongside chain-runner + reddit-prefetch.
+- **🔴 PR #156 reply-maker XAI prefetch** (day 13, ~65h since last update) — closes ISS-014 on merge. Escalate to "operator-blocking" tier in next `self-improve` alongside chain-runner + reddit-prefetch. _(BLOCKED: aaronjmars/aeon reviewer ~65h idle)_
 - **🟡 Add `## Trusted Authors` to `memory/watched-repos.md`** — listing `aaronjmars` (and optionally `tomscaria`) unblocks auto-merge for repo-owner PRs (PR #160 v4-readiness checklist is first cleanly-mergeable PR in 3 days, currently policy-blocked).
 - **monitor-runners DEEP-LIQ floor patch** — concrete patch (slot-5 replacement); 7-run evidence on the books (TTPA + SKYAI streaks ended 05-05), ready for `self-improve`.
 - **swarm-fund-mvp tick-broker falsifier (clock running)** — `tomscaria/aeon` must ship `outputs/{skill}/{date}.json` JSON contract by ~2026-05-17 or ADR-093 wire-up is aspirational. **11 days remaining.**

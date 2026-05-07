@@ -1,0 +1,635 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Goal Tracker"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary_text",
+        "separator_1",
+        "needs_attention_section",
+        "separator_2",
+        "blocked_section",
+        "separator_3",
+        "on_track_section",
+        "separator_4",
+        "done_section",
+        "separator_5",
+        "sources_text"
+      ]
+    },
+    "summary_text": {
+      "type": "Text",
+      "props": {
+        "text": "15 active — 0 at risk, 3 needs attention, 9 on track, 3 blocked (3 completed; overall → flat, 1 degrading)",
+        "variant": "lead"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "needs_attention_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "needs_attention_heading",
+        "goal_na_1",
+        "goal_na_2",
+        "goal_na_3"
+      ]
+    },
+    "needs_attention_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "NEEDS ATTENTION",
+        "level": "h3"
+      }
+    },
+    "goal_na_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_na_1_badge",
+        "goal_na_1_title",
+        "goal_na_1_action"
+      ]
+    },
+    "goal_na_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Needs Attention",
+        "variant": "outline"
+      }
+    },
+    "goal_na_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Add `## Trusted Authors` to memory/watched-repos.md — 0d idle (new)"
+      }
+    },
+    "goal_na_1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Add aaronjmars under `## Trusted Authors` in memory/watched-repos.md to unblock auto-merge",
+        "variant": "caption"
+      }
+    },
+    "goal_na_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_na_2_badge",
+        "goal_na_2_title",
+        "goal_na_2_action"
+      ]
+    },
+    "goal_na_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Needs Attention",
+        "variant": "outline"
+      }
+    },
+    "goal_na_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp 72h merge-cadence test — 1d idle (new)"
+      }
+    },
+    "goal_na_2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Watch PR #30 / #31 / new ADR; flag if no merge by 2026-05-09",
+        "variant": "caption"
+      }
+    },
+    "goal_na_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_na_3_badge",
+        "goal_na_3_title",
+        "goal_na_3_action"
+      ]
+    },
+    "goal_na_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Needs Attention",
+        "variant": "outline"
+      }
+    },
+    "goal_na_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Code-health Day-5 carry (Pyth/Birdeye feed IDs) — 1d idle (new)"
+      }
+    },
+    "goal_na_3_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Verify swarm-fund-mvp pyth_ws.py:36 and birdeye_rest.py:36-37 feed IDs",
+        "variant": "caption"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "blocked_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocked_heading",
+        "goal_blocked_1",
+        "goal_blocked_2",
+        "goal_blocked_3"
+      ]
+    },
+    "blocked_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BLOCKED",
+        "level": "h3"
+      }
+    },
+    "goal_blocked_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_blocked_1_badge",
+        "goal_blocked_1_title",
+        "goal_blocked_1_action"
+      ]
+    },
+    "goal_blocked_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Blocked",
+        "variant": "destructive"
+      }
+    },
+    "goal_blocked_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner.yml dispatch_skill — operator-side workflow patch, day 10 idle (→ flat)"
+      }
+    },
+    "goal_blocked_1_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Add `echo` per dispatched skill before each `gh workflow run` (operator-side)",
+        "variant": "caption"
+      }
+    },
+    "goal_blocked_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_blocked_2_badge",
+        "goal_blocked_2_title",
+        "goal_blocked_2_action"
+      ]
+    },
+    "goal_blocked_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Blocked",
+        "variant": "destructive"
+      }
+    },
+    "goal_blocked_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch — aaronjmars/aeon reviewer ~65h idle (was ON TRACK ↓)"
+      }
+    },
+    "goal_blocked_2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: Comment on aaronjmars/aeon PR #156 to nudge reviewer",
+        "variant": "caption"
+      }
+    },
+    "goal_blocked_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_blocked_3_badge",
+        "goal_blocked_3_title",
+        "goal_blocked_3_action"
+      ]
+    },
+    "goal_blocked_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Blocked",
+        "variant": "destructive"
+      }
+    },
+    "goal_blocked_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "Operator config sweep — operator-side env/secret inputs (→ flat)"
+      }
+    },
+    "goal_blocked_3_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: File one consolidated issue listing NEYNAR_API_KEY, X_HANDLE, on-chain-watches.yml asks",
+        "variant": "caption"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "on_track_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "on_track_heading",
+        "goal_ot_1",
+        "goal_ot_2",
+        "goal_ot_3",
+        "goal_ot_4",
+        "goal_ot_5",
+        "goal_ot_6",
+        "goal_ot_7",
+        "goal_ot_8",
+        "goal_ot_9"
+      ]
+    },
+    "on_track_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ON TRACK",
+        "level": "h3"
+      }
+    },
+    "goal_ot_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_1_badge",
+        "goal_ot_1_title"
+      ]
+    },
+    "goal_ot_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "Cost-discipline downgrade pass — 0d idle, 22 act/14d (↑ improving)"
+      }
+    },
+    "goal_ot_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_2_badge",
+        "goal_ot_2_title"
+      ]
+    },
+    "goal_ot_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch — 0d idle, 23 act/14d (→ flat)"
+      }
+    },
+    "goal_ot_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_3_badge",
+        "goal_ot_3_title"
+      ]
+    },
+    "goal_ot_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp tick-broker falsifier (10d to 2026-05-17 deadline) — 0d idle, 8 act/14d (↑ improving)"
+      }
+    },
+    "goal_ot_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_4_badge",
+        "goal_ot_4_title"
+      ]
+    },
+    "goal_ot_4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_4_title": {
+      "type": "Text",
+      "props": {
+        "text": "Pre-Apex push: monitor-polymarket + polymarket-comments — 0d idle, 6 act/14d (→ flat)"
+      }
+    },
+    "goal_ot_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_5_badge",
+        "goal_ot_5_title"
+      ]
+    },
+    "goal_ot_5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_5_title": {
+      "type": "Text",
+      "props": {
+        "text": "Hermes-arb min-gap bump 7pp → 7.5–8pp — 0d idle, 9 act/14d (→ flat)"
+      }
+    },
+    "goal_ot_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_6_badge",
+        "goal_ot_6_title"
+      ]
+    },
+    "goal_ot_6_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_6_title": {
+      "type": "Text",
+      "props": {
+        "text": "Skill-evals key fixes (PR #5 carrier) — 0d idle, 20 act/14d (→ flat)"
+      }
+    },
+    "goal_ot_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_7_badge",
+        "goal_ot_7_title"
+      ]
+    },
+    "goal_ot_7_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_7_title": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-018 / ISS-019 prompt-bug fixes — 0d idle, 8 act/14d (↑ improving)"
+      }
+    },
+    "goal_ot_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_8_badge",
+        "goal_ot_8_title"
+      ]
+    },
+    "goal_ot_8_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_8_title": {
+      "type": "Text",
+      "props": {
+        "text": "weekly-shiplog Mondays → grant committees — 0d idle, 2 act/14d (↑ improving)"
+      }
+    },
+    "goal_ot_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_ot_9_badge",
+        "goal_ot_9_title"
+      ]
+    },
+    "goal_ot_9_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "On Track",
+        "variant": "default"
+      }
+    },
+    "goal_ot_9_title": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick daily (PhD reading list) — 0d idle, 20 act/14d (→ flat)"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "done_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "done_heading",
+        "goal_done_1",
+        "goal_done_2",
+        "goal_done_3"
+      ]
+    },
+    "done_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DONE",
+        "level": "h3"
+      }
+    },
+    "goal_done_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_done_1_badge",
+        "goal_done_1_title"
+      ]
+    },
+    "goal_done_1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Completed",
+        "variant": "default"
+      }
+    },
+    "goal_done_1_title": {
+      "type": "Text",
+      "props": {
+        "text": "5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp — completed 2026-05-03"
+      }
+    },
+    "goal_done_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_done_2_badge",
+        "goal_done_2_title"
+      ]
+    },
+    "goal_done_2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Completed",
+        "variant": "default"
+      }
+    },
+    "goal_done_2_title": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-016 dashboard secrets-route shell-injection fix — completed 2026-05-03"
+      }
+    },
+    "goal_done_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "goal_done_3_badge",
+        "goal_done_3_title"
+      ]
+    },
+    "goal_done_3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Completed",
+        "variant": "default"
+      }
+    },
+    "goal_done_3_title": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-004 / ISS-006 push-recap + cost-report — completed 2026-05-03"
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: logs=ok, git=degraded(main-only-checkout), gh_pr=ok, gh_issue=disabled-on-tomscaria/aeon, cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}
