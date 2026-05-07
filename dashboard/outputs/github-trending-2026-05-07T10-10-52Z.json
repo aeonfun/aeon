@@ -1,0 +1,488 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending — 2026-05-07"
+      },
+      "children": [
+        "section_top_pick",
+        "sep1",
+        "section_ai_ml",
+        "sep2",
+        "section_devtools",
+        "sep3",
+        "section_infra",
+        "sep4",
+        "status_line"
+      ]
+    },
+    "section_top_pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_top_pick",
+        "repo_top_pick"
+      ]
+    },
+    "heading_top_pick": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "repo_top_pick": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_tp_link",
+        "repo_tp_desc"
+      ]
+    },
+    "repo_tp_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/financial-services",
+        "href": "https://github.com/anthropics/financial-services"
+      },
+      "children": []
+    },
+    "repo_tp_desc": {
+      "type": "Text",
+      "props": {
+        "text": "First Anthropic-published reference stack for Claude on financial workflows — closest first-party analogue to CalibrationGap's Polymarket scanner."
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_ai_ml": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_ai_ml",
+        "repo_1_ai",
+        "repo_2_ai",
+        "repo_3_ai",
+        "repo_4_ai"
+      ]
+    },
+    "heading_ai_ml": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "repo_1_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_1_ai_link",
+        "repo_1_ai_meta",
+        "repo_1_ai_desc"
+      ]
+    },
+    "repo_1_ai_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/financial-services",
+        "href": "https://github.com/anthropics/financial-services",
+        "score": "★ 641 today (9.6k total)"
+      },
+      "children": []
+    },
+    "repo_1_ai_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_1_ai_lang",
+        "repo_1_ai_status"
+      ]
+    },
+    "repo_1_ai_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_1_ai_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING"
+      },
+      "children": []
+    },
+    "repo_1_ai_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic-org reference repo for Claude on financial workflows — first-party comp class for trading-agent stacks."
+      },
+      "children": []
+    },
+    "repo_2_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_2_ai_link",
+        "repo_2_ai_meta",
+        "repo_2_ai_desc"
+      ]
+    },
+    "repo_2_ai_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "shiyu-coder/Kronos",
+        "href": "https://github.com/shiyu-coder/Kronos",
+        "score": "★ 234 today (23.3k total)"
+      },
+      "children": []
+    },
+    "repo_2_ai_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_2_ai_lang",
+        "repo_2_ai_status"
+      ]
+    },
+    "repo_2_ai_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_2_ai_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING"
+      },
+      "children": []
+    },
+    "repo_2_ai_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Decoder-only foundation model trained on K-line market sequences — financial-time-series LLM, not another prompt-wrapper."
+      },
+      "children": []
+    },
+    "repo_3_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_3_ai_link",
+        "repo_3_ai_meta",
+        "repo_3_ai_desc"
+      ]
+    },
+    "repo_3_ai_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "addyosmani/agent-skills",
+        "href": "https://github.com/addyosmani/agent-skills",
+        "score": "★ 800 today (32.0k total)"
+      },
+      "children": []
+    },
+    "repo_3_ai_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_3_ai_lang",
+        "repo_3_ai_status"
+      ]
+    },
+    "repo_3_ai_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Shell",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_3_ai_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING"
+      },
+      "children": []
+    },
+    "repo_3_ai_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Osmani's 32k-star catalog of Claude skills for shipping engineering agents — third Karpathy-class bundle this week."
+      },
+      "children": []
+    },
+    "repo_4_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_4_ai_link",
+        "repo_4_ai_meta",
+        "repo_4_ai_desc"
+      ]
+    },
+    "repo_4_ai_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "bytedance/deer-flow",
+        "href": "https://github.com/bytedance/deer-flow",
+        "score": "★ 337 today (65.8k total)"
+      },
+      "children": []
+    },
+    "repo_4_ai_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_4_ai_lang",
+        "repo_4_ai_status"
+      ]
+    },
+    "repo_4_ai_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_4_ai_status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      },
+      "children": []
+    },
+    "repo_4_ai_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Bytedance SuperAgent framework hits 65k on 1-year-anniversary push — sandboxes + memory + tools, ruflo-class scope."
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_devtools": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_devtools",
+        "repo_5_dt"
+      ]
+    },
+    "heading_devtools": {
+      "type": "Heading",
+      "props": {
+        "text": "Devtools",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "repo_5_dt": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_5_dt_link",
+        "repo_5_dt_meta",
+        "repo_5_dt_desc"
+      ]
+    },
+    "repo_5_dt_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Hmbown/DeepSeek-TUI",
+        "href": "https://github.com/Hmbown/DeepSeek-TUI",
+        "score": "★ 6.2k today (16.9k total)"
+      },
+      "children": []
+    },
+    "repo_5_dt_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_5_dt_lang",
+        "repo_5_dt_status"
+      ]
+    },
+    "repo_5_dt_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Rust",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_5_dt_status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING"
+      },
+      "children": []
+    },
+    "repo_5_dt_desc": {
+      "type": "Text",
+      "props": {
+        "text": "39× baseline (6,175 today) on a 108-day-old repo — DeepSeek-native terminal coding agent, almost certainly a release or HN front-page."
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_infra": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_infra",
+        "repo_6_inf"
+      ]
+    },
+    "heading_infra": {
+      "type": "Heading",
+      "props": {
+        "text": "Infra",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "repo_6_inf": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_6_inf_link",
+        "repo_6_inf_meta",
+        "repo_6_inf_desc"
+      ]
+    },
+    "repo_6_inf_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "InsForge/InsForge",
+        "href": "https://github.com/InsForge/InsForge",
+        "score": "★ 230 today (8.6k total)"
+      },
+      "children": []
+    },
+    "repo_6_inf_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo_6_inf_lang",
+        "repo_6_inf_status"
+      ]
+    },
+    "repo_6_inf_lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "repo_6_inf_status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING"
+      },
+      "children": []
+    },
+    "repo_6_inf_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Postgres-native backend for coding agents — auth, storage, compute, AI gateway in one box. Supabase-for-agents shape."
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "status_line": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(16) · gh_api=ok · kept 6/16",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}

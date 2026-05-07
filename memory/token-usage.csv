@@ -117,4 +117,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-06,push-recap,claude-opus-4-7,38,21222,1727141,113365
 2026-05-06,evening-recap,claude-sonnet-4-6,14392,7180,1125285,92449
 2026-05-07,daily-routine,claude-opus-4-7,15,8551,958339,15195
-2026-05-07,github-monitor,claude-opus-4-7,18,16608,756813,65373
+2026-05-07,github-trending,claude-opus-4-7,32,16462,1412750,106151

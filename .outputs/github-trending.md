@@ -1,25 +1,29 @@
-*GitHub Trending — 2026-05-06*
+*GitHub Trending — 2026-05-07*
 
-*Top pick* — [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills)
-The cleanest signal yet that CLAUDE.md has become its own viral content layer — a single-file repo derived from Karpathy's LLM-coding observations went 0→115k stars in 99 days.
+*Top pick* — [anthropics/financial-services](https://github.com/anthropics/financial-services)
+First Anthropic-published reference stack for Claude on financial workflows — closest first-party analogue to CalibrationGap's Polymarket scanner.
 
 *AI/ML*
-• [ruvnet/ruflo](https://github.com/ruvnet/ruflo) — ★ 2.4kt today (44k total) · TypeScript · [ACCELERATING]
-ruvnet's Claude swarm framework rebrand — native Claude Code + Codex hooks with self-learning coordination, direct mirror of swarm-fund-mvp selector layer.
+• [anthropics/financial-services](https://github.com/anthropics/financial-services) — ★ 641 today (9.6k total) · Python · [ACCELERATING]
+Anthropic-org reference repo for Claude on financial workflows — first-party comp class for trading-agent stacks.
 
-• [mksglu/context-mode](https://github.com/mksglu/context-mode) — ★ 276t today (13k total) · TypeScript · [ACCELERATING]
-Sandboxes coding-agent tool output for 98% context reduction across 14 platforms — same problem class as Aeon compaction.
+• [shiyu-coder/Kronos](https://github.com/shiyu-coder/Kronos) — ★ 234 today (23.3k total) · Python · [ACCELERATING]
+Decoder-only foundation model trained on K-line market sequences — financial-time-series LLM, not another prompt-wrapper.
 
-• [LearningCircuit/local-deep-research](https://github.com/LearningCircuit/local-deep-research) — ★ 197t today (5.4k total) · Python · [RETURNING]
-v1.6.9 hits ~95% SimpleQA on a consumer 3090 with arXiv+PubMed search built in — local-private alternative to virattt/dexter's cloud stack.
+• [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — ★ 800 today (32.0k total) · Shell · [ACCELERATING]
+Osmani's 32k-star catalog of Claude skills for shipping engineering agents — third Karpathy-class bundle this week.
+
+• [bytedance/deer-flow](https://github.com/bytedance/deer-flow) — ★ 337 today (65.8k total) · Python · [RETURNING]
+Bytedance SuperAgent framework hits 65k on 1-year-anniversary push — sandboxes + memory + tools, ruflo-class scope.
 
 *Devtools*
-• [forrestchang/andrej-karpathy-skills](https://github.com/forrestchang/andrej-karpathy-skills) — ★ 2.4kt today (115k total) · Markdown · [ACCELERATING]
-Single CLAUDE.md file capturing Karpathy's LLM-coding pitfalls — drop-in template for any Claude Code agent including Aeon.
+• [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) — ★ 6.2k today (16.9k total) · Rust · [RETURNING]
+39× baseline (6,175 today) on a 108-day-old repo — DeepSeek-native terminal coding agent, almost certainly a release or HN front-page.
 
-• [D4Vinci/Scrapling](https://github.com/D4Vinci/Scrapling) — ★ 914t today (46k total) · Python · [RETURNING]
-Adaptive selectors that auto-heal when site layouts change — operational fit for pseudonymous-comments scrapers that break on every Polymarket UI patch.
+*Infra*
+• [InsForge/InsForge](https://github.com/InsForge/InsForge) — ★ 230 today (8.6k total) · TypeScript · [ACCELERATING]
+Postgres-native backend for coding agents — auth, storage, compute, AI gateway in one box. Supabase-for-agents shape.
 
 ---
-sources: trending=ok(16) · gh_api=ok · kept 5/16
+sources: trending=ok(16) · gh_api=ok · kept 6/16
 
