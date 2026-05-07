@@ -1,0 +1,495 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket-comments",
+        "description": "2026-05-07 (var=politics+crypto narrative-shift / track records / citation chains)"
+      },
+      "children": [
+        "stack-root"
+      ]
+    },
+    "stack-root": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section-citation",
+        "sep-1",
+        "section-peace-deal",
+        "sep-2",
+        "section-hormuz",
+        "sep-3",
+        "section-airspace",
+        "sep-4",
+        "section-uranium",
+        "sep-5",
+        "section-btc",
+        "sep-6",
+        "section-handles",
+        "sep-7",
+        "section-meme",
+        "sep-8",
+        "section-insight"
+      ]
+    },
+    "section-citation": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-citation",
+        "text-citation-line1",
+        "text-citation-line2",
+        "text-citation-line3",
+        "text-same-tape"
+      ]
+    },
+    "heading-citation": {
+      "type": "Heading",
+      "props": {
+        "text": "CITATION CHAIN OF THE DAY: Saudi state TV vs Energy Sec Wright same-tape divergence",
+        "level": "h3"
+      }
+    },
+    "text-citation-line1": {
+      "type": "Text",
+      "props": {
+        "text": "12:18 UTC 0xCeC3BBF5eea (NEW): \"SAUDI STATE TV SAYS STRAIT OF HORMUZ SHIPPING BREAKTHROUGH EXPECTED WITHIN HOURS\""
+      }
+    },
+    "text-citation-line2": {
+      "type": "Text",
+      "props": {
+        "text": "14:40 UTC Quantollah (NEW): \"WRIGHT: WE DON'T HAVE DIRECT DIALOGUE WITH IRANIAN OFFICIALS\" — counters Axios via \"Operation Fauxios\""
+      }
+    },
+    "text-citation-line3": {
+      "type": "Text",
+      "props": {
+        "text": "Same tape feeds 4 books: Hormuz-blockade 372242, peace-deal May-15 25.35%, airspace-May8 1.85%, uranium 7.5%"
+      }
+    },
+    "text-same-tape": {
+      "type": "Text",
+      "props": {
+        "text": "",
+        "variant": "caption"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sep-8": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section-peace-deal": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-peace-deal",
+        "stat-peace-deal-may15",
+        "stat-peace-deal-may31",
+        "stat-peace-deal-jun30",
+        "text-peace-deal-meta",
+        "text-peace-comment-1",
+        "text-peace-comment-2",
+        "text-peace-comment-3",
+        "text-peace-comment-4"
+      ]
+    },
+    "heading-peace-deal": {
+      "type": "Heading",
+      "props": {
+        "text": "1. US-Iran peace deal",
+        "level": "h3"
+      }
+    },
+    "stat-peace-deal-may15": {
+      "type": "Stat",
+      "props": {
+        "label": "May-15",
+        "value": "25.35% YES",
+        "delta": "+11-14pp 24h",
+        "trend": "up"
+      }
+    },
+    "stat-peace-deal-may31": {
+      "type": "Stat",
+      "props": {
+        "label": "May-31",
+        "value": "40.5% YES"
+      }
+    },
+    "stat-peace-deal-jun30": {
+      "type": "Stat",
+      "props": {
+        "label": "Jun-30",
+        "value": "56.5% YES"
+      }
+    },
+    "text-peace-deal-meta": {
+      "type": "Text",
+      "props": {
+        "text": "$3.7M v24 | T-8 on May-15",
+        "variant": "caption"
+      }
+    },
+    "text-peace-comment-1": {
+      "type": "Text",
+      "props": {
+        "text": "morenaji (NEW today, 9x): \"8 days left vs MONTHS to negotiate. Former DefSec Esper on Yahoo Finance: real deal months away, NO unconditional surrender. 1-page MOU is a trap. YES = exit liquidity for whales.\" STRONGEST NO-cite of day"
+      }
+    },
+    "text-peace-comment-2": {
+      "type": "Text",
+      "props": {
+        "text": "WouldntYouWantToKnowWeatherBoy (NEW 13:21): clause-text reader echoing resolution rule verbatim (\"permanently cease...explicitly temporary do not\"); Kentastrof1 14:17 + Machaon 14:39 same-hour echo = clause-text-reader cluster forming at T-8"
+      }
+    },
+    "text-peace-comment-3": {
+      "type": "Text",
+      "props": {
+        "text": "Unmitigated-Wisdom (NEW 13:26): \"Trump manipulating oil markets. Google Barak Ravid oil futures\" — Axios-reporter pointer to upcoming catalyst"
+      }
+    },
+    "text-peace-comment-4": {
+      "type": "Text",
+      "props": {
+        "text": "generalVR (NEW 12:21, 3x): \"PM whales can't influence permanent peace between US-Iran\" — whale-pump-skeptic on +11pp"
+      }
+    },
+    "section-hormuz": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-hormuz",
+        "text-hormuz-meta",
+        "text-hormuz-comment-1",
+        "text-hormuz-comment-2",
+        "text-hormuz-comment-3",
+        "text-hormuz-comment-4",
+        "text-hormuz-comment-5"
+      ]
+    },
+    "heading-hormuz": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Trump-blockade-Hormuz event 372242 (LIVE TAPE)",
+        "level": "h3"
+      }
+    },
+    "text-hormuz-meta": {
+      "type": "Text",
+      "props": {
+        "text": "Market ID: 372242",
+        "variant": "caption"
+      }
+    },
+    "text-hormuz-comment-1": {
+      "type": "Text",
+      "props": {
+        "text": "0xCeC3BBF5eea (NEW 12:18, 2x): Saudi state TV breakthrough cite (citation chain above)"
+      }
+    },
+    "text-hormuz-comment-2": {
+      "type": "Text",
+      "props": {
+        "text": "Quantollah (NEW 14:40-41): counter-Axios \"Operation Fauxios\" + Wright cite. NEW comments-side calibration meme"
+      }
+    },
+    "text-hormuz-comment-3": {
+      "type": "Text",
+      "props": {
+        "text": "toutiege (NEW 14:08-15): \"Announcement is today\" + \"Trump plans blockade a year to collapse Iran economy\""
+      }
+    },
+    "text-hormuz-comment-4": {
+      "type": "Text",
+      "props": {
+        "text": "dkalagaev (NEW 14:10-11): \"spread till last minute, prob tomorrow\" — sourcing-skeptic"
+      }
+    },
+    "text-hormuz-comment-5": {
+      "type": "Text",
+      "props": {
+        "text": "compute (13:32): Trump TruthSocial chart cite \"Iran Excursion lasted six weeks\""
+      }
+    },
+    "section-airspace": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-airspace",
+        "stat-airspace",
+        "text-airspace-comment-1",
+        "text-airspace-comment-2",
+        "text-airspace-comment-3",
+        "text-airspace-comment-4"
+      ]
+    },
+    "heading-airspace": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Iran-airspace-by-May-8",
+        "level": "h3"
+      }
+    },
+    "stat-airspace": {
+      "type": "Stat",
+      "props": {
+        "label": "1.85% YES",
+        "value": "Faded 4% → 1.85% in 24h",
+        "trend": "down"
+      }
+    },
+    "text-airspace-comment-1": {
+      "type": "Text",
+      "props": {
+        "text": "0x23e68DaB67E (NEW, 6x at 08:31): \"It can burst at anytime\" + multi-msg 12:07 + 13:31 — anon T-1 multi-msg"
+      }
+    },
+    "text-airspace-comment-2": {
+      "type": "Text",
+      "props": {
+        "text": "Edvard9 (NEW 12:01, 3x): \"very mixed signals. Two sides far apart as ever but talking deal\" — narrative-state caller"
+      }
+    },
+    "text-airspace-comment-3": {
+      "type": "Text",
+      "props": {
+        "text": "abdoohl (yesterday): \"heard it's gonna happen on May 7th\" — verifiable today, calibration-test"
+      }
+    },
+    "text-airspace-comment-4": {
+      "type": "Text",
+      "props": {
+        "text": "Carry: NOIZYUV TruthSocial 116527444859592032 cite top-pinned 10x"
+      }
+    },
+    "section-uranium": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-uranium",
+        "stat-uranium",
+        "text-uranium-comment-1",
+        "text-uranium-comment-2",
+        "text-uranium-comment-3",
+        "text-uranium-comment-4"
+      ]
+    },
+    "heading-uranium": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Iranian-uranium-by-May-31",
+        "level": "h3"
+      }
+    },
+    "stat-uranium": {
+      "type": "Stat",
+      "props": {
+        "label": "7.5% YES",
+        "value": ""
+      }
+    },
+    "text-uranium-comment-1": {
+      "type": "Text",
+      "props": {
+        "text": "0xE29549Cc / busheo955 (today 14:56-15:06): \"Trump just announced uranium going to US\" — Trump-cite, BUT BlancheDevereaux12 counters \"but not by a specific date\" — clause-text gap"
+      }
+    },
+    "text-uranium-comment-2": {
+      "type": "Text",
+      "props": {
+        "text": "0xCb7FA482Cf38 (yesterday): \"OSINT suggests posture shift\" — terse-OSINT handle, NEW"
+      }
+    },
+    "text-uranium-comment-3": {
+      "type": "Text",
+      "props": {
+        "text": "snoopsol (yesterday, 4x): \"Bros risking money based on what Trump says\" — calibration-skeptic"
+      }
+    },
+    "text-uranium-comment-4": {
+      "type": "Text",
+      "props": {
+        "text": "Carry: Hawk-x + 0xd8b6E Axios cite + Glicha \"1gram-Trump\" UMA-arb thesis durable"
+      }
+    },
+    "section-btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-btc",
+        "stat-btc",
+        "alert-btc"
+      ]
+    },
+    "heading-btc": {
+      "type": "Heading",
+      "props": {
+        "text": "5. BTC-150k June-30 (event 36173)",
+        "level": "h3"
+      }
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "1.35% YES",
+        "value": "$5.82M v24"
+      }
+    },
+    "alert-btc": {
+      "type": "Alert",
+      "props": {
+        "title": "CRYPTO VERTICAL DEAD 6TH DAY",
+        "message": "Top-pin: birthday spam (Alice2002 4-day) + Cambodia +855 phone-scam (Introvert11). Single signal: BL- \"Funding rates diverge from the odds\" — lonely calibration in sea of spam. Lesson holds: skip crypto in next-rotation, default to politics",
+        "type": "warning"
+      }
+    },
+    "section-handles": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-handles",
+        "text-handles-1",
+        "text-handles-2"
+      ]
+    },
+    "heading-handles": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW handles",
+        "level": "h3"
+      }
+    },
+    "text-handles-1": {
+      "type": "Text",
+      "props": {
+        "text": "morenaji (Esper/Yahoo NO-cite) | Quantollah (Operation-Fauxios + Wright) | 0xCeC3BBF5eea (Saudi state TV)"
+      }
+    },
+    "text-handles-2": {
+      "type": "Text",
+      "props": {
+        "text": "WouldntYouWantToKnowWeatherBoy + Kentastrof1 + Machaon (clause-text reader cluster) | Unmitigated-Wisdom (Barak-Ravid pointer) | 0x23e68DaB67E (airspace-T-1) | 0xCb7FA482Cf38 (OSINT terse)"
+      }
+    },
+    "section-meme": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-meme",
+        "text-meme"
+      ]
+    },
+    "heading-meme": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW meme",
+        "level": "h3"
+      }
+    },
+    "text-meme": {
+      "type": "Text",
+      "props": {
+        "text": "\"Operation Fauxios\" (anti-Axios). Sister to TACO."
+      }
+    },
+    "section-insight": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading-insight",
+        "text-insight"
+      ]
+    },
+    "heading-insight": {
+      "type": "Heading",
+      "props": {
+        "text": "Single highest-leverage hook",
+        "level": "h3"
+      }
+    },
+    "text-insight": {
+      "type": "Text",
+      "props": {
+        "text": "morenaji's Esper/Yahoo NO-cite + clause-text-reader cluster on peace-deal-May-15 = strongest NO-anchor vs the +11pp pump. Info-asymmetry not visible to CalibrationGap quant scanner."
+      }
+    }
+  }
+}
