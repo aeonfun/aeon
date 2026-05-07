@@ -1,0 +1,99 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "slot-date",
+        "paper-link",
+        "metadata",
+        "experiment",
+        "findings",
+        "significance"
+      ]
+    },
+    "slot-date": {
+      "type": "Text",
+      "props": {
+        "text": "PhD-prep slot · 2026-05-07",
+        "variant": "caption"
+      }
+    },
+    "paper-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Prediction Arena: Benchmarking AI Models on Real-World Prediction Markets",
+        "href": "https://arxiv.org/abs/2604.07355",
+        "source": "cs.LG"
+      }
+    },
+    "metadata": {
+      "type": "Text",
+      "props": {
+        "text": "Zhang · Liu · Johansson · Yitayew · Ohly · Li · 18pp · Mar 28 2026",
+        "variant": "caption"
+      }
+    },
+    "experiment": {
+      "type": "Text",
+      "props": {
+        "text": "6 frontier models · $10k real capital · 57 days · Kalshi + Polymarket",
+        "variant": "body"
+      }
+    },
+    "findings": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "grok-result",
+        "calibration-result"
+      ]
+    },
+    "grok-result": {
+      "type": "Stat",
+      "props": {
+        "label": "grok-4-20-checkpoint Polymarket settlement win rate",
+        "value": "71.4%"
+      }
+    },
+    "calibration-result": {
+      "type": "Stat",
+      "props": {
+        "label": "CalibrationGap win rate (29 trades)",
+        "value": "76%"
+      }
+    },
+    "significance": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary-text",
+        "pdf-link"
+      ]
+    },
+    "summary-text": {
+      "type": "Text",
+      "props": {
+        "text": "Direct head-to-head comparable — the cleanest Stanford-application benchmark surfaced this month.",
+        "variant": "muted"
+      }
+    },
+    "pdf-link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.07355"
+      }
+    }
+  }
+}
