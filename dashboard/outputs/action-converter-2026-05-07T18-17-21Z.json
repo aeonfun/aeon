@@ -1,0 +1,527 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter — 2026-05-07",
+        "description": "5 Actions"
+      },
+      "children": [
+        "summary",
+        "sep-1",
+        "action-1",
+        "action-2",
+        "action-3",
+        "action-4",
+        "action-5",
+        "sep-2",
+        "sources-section"
+      ]
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Land outputs JSON, unblock auto-merge, validate Pyth XRP, queue cost downgrade, draft FinCEN post."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "action-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a1-head",
+        "a1-desc",
+        "a1-why",
+        "a1-done",
+        "a1-loop"
+      ]
+    },
+    "a1-head": {
+      "type": "Heading",
+      "props": {
+        "text": "1. Commit outputs/monitor-polymarket/2026-05-07.json to tomscaria/aeon main",
+        "level": "h3"
+      }
+    },
+    "a1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Commit outputs/monitor-polymarket/2026-05-07.json to tomscaria/aeon main with the MarketTick payload schema aeon_adapter._poll_once consumes (raw URL must return 200, not 404)."
+      }
+    },
+    "a1-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a1-why-label",
+        "a1-why-text"
+      ]
+    },
+    "a1-why-label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "a1-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-093 falsifier window closes ~2026-05-17 (10 days); poll layer 404s until first JSON ships."
+      }
+    },
+    "a1-done": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a1-done-label",
+        "a1-done-text"
+      ]
+    },
+    "a1-done-label": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "lead"
+      }
+    },
+    "a1-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "GET on raw github URL outputs/monitor-polymarket/2026-05-07.json returns 200."
+      }
+    },
+    "a1-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "outputs-contract-scaffold",
+        "variant": "outline"
+      }
+    },
+    "action-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a2-head",
+        "a2-desc",
+        "a2-why",
+        "a2-done",
+        "a2-loop"
+      ]
+    },
+    "a2-head": {
+      "type": "Heading",
+      "props": {
+        "text": "2. Add Trusted Authors section to memory/watched-repos.md",
+        "level": "h3"
+      }
+    },
+    "a2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Add ## Trusted Authors section to memory/watched-repos.md listing aaronjmars (and tomscaria); commit + push to main."
+      }
+    },
+    "a2-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a2-why-label",
+        "a2-why-text"
+      ]
+    },
+    "a2-why-label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "a2-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "First cleanly-mergeable PR on aaronjmars/aeon in 3 days (PR #160 v4-readiness) blocked solely by missing Trusted Authors policy line."
+      }
+    },
+    "a2-done": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a2-done-label",
+        "a2-done-text"
+      ]
+    },
+    "a2-done-label": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "lead"
+      }
+    },
+    "a2-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "## Trusted Authors appears in memory/watched-repos.md on main; next auto-merge cron tick clears PR #160."
+      }
+    },
+    "a2-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "trusted-authors-policy-unblock",
+        "variant": "outline"
+      }
+    },
+    "action-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a3-head",
+        "a3-desc",
+        "a3-why",
+        "a3-done",
+        "a3-loop"
+      ]
+    },
+    "a3-head": {
+      "type": "Heading",
+      "props": {
+        "text": "3. Open PR on tomscaria/swarm-fund-mvp for Pyth XRP verification",
+        "level": "h3"
+      }
+    },
+    "a3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Open PR on tomscaria/swarm-fund-mvp adding Pyth XRP/USD feed-ID verification entry to outputs/manual_tasks_thomas.md; either confirm ec5d399b3b... against the Pyth catalogue or fix pipeline/ingestion/pyth_ws.py:36."
+      }
+    },
+    "a3-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a3-why-label",
+        "a3-why-text"
+      ]
+    },
+    "a3-why-label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "a3-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "Top blast-radius across all 3 repos per code-health 2026-05-06; CalibrationGap-adjacent ingestion; byte-identical 4 days running."
+      }
+    },
+    "a3-done": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a3-done-label",
+        "a3-done-text"
+      ]
+    },
+    "a3-done-label": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "lead"
+      }
+    },
+    "a3-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "PR opened on tomscaria/swarm-fund-mvp with verification line + Pyth catalogue link."
+      }
+    },
+    "a3-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "pyth-feed-xrp-validate",
+        "variant": "outline"
+      }
+    },
+    "action-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a4-head",
+        "a4-desc",
+        "a4-why",
+        "a4-done",
+        "a4-loop"
+      ]
+    },
+    "a4-head": {
+      "type": "Heading",
+      "props": {
+        "text": "4. Draft FinCEN position post for Manfred-LLC",
+        "level": "h3"
+      }
+    },
+    "a4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Draft articles/position-fincen-manfred-2026-05-07.md — 240-char Manfred-LLC human-of-record post for X/Farcaster + 3-cite supporting paragraph (ClawBank EIN 2026-05-01, Sullivan & Cromwell, Federal Register)."
+      }
+    },
+    "a4-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a4-why-label",
+        "a4-why-text"
+      ]
+    },
+    "a4-why-label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "a4-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "33 days to FinCEN AML/CFT NPRM comment-window close 2026-06-09; fresh narrative; Polymarket Builders / dYdX / Uniswap Foundation Fellowship case-study fit."
+      }
+    },
+    "a4-done": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a4-done-label",
+        "a4-done-text"
+      ]
+    },
+    "a4-done-label": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "lead"
+      }
+    },
+    "a4-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "articles/position-fincen-manfred-2026-05-07.md exists with 240-char headline + 3-cite paragraph; queued for write-tweet."
+      }
+    },
+    "a4-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "fincen-manfred-position-post",
+        "variant": "outline"
+      }
+    },
+    "action-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "a5-head",
+        "a5-desc",
+        "a5-why",
+        "a5-done",
+        "a5-loop"
+      ]
+    },
+    "a5-head": {
+      "type": "Heading",
+      "props": {
+        "text": "5. Queue sonnet-4-6 model-downgrade patch for aeon.yml",
+        "level": "h3"
+      }
+    },
+    "a5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Queue sonnet-4-6 model-downgrade patch for external-feature / repo-actions / heartbeat in aeon.yml as the lead item for next self-improve (~$149/wk savings)."
+      }
+    },
+    "a5-why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a5-why-label",
+        "a5-why-text"
+      ]
+    },
+    "a5-why-label": {
+      "type": "Text",
+      "props": {
+        "text": "why:",
+        "variant": "lead"
+      }
+    },
+    "a5-why-text": {
+      "type": "Text",
+      "props": {
+        "text": "$2,696/mo projection vs $40/wk discipline — 15× over per 2026-05-04 cost-report; CLAUDE.md cost-discipline rule."
+      }
+    },
+    "a5-done": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "a5-done-label",
+        "a5-done-text"
+      ]
+    },
+    "a5-done-label": {
+      "type": "Text",
+      "props": {
+        "text": "done:",
+        "variant": "lead"
+      }
+    },
+    "a5-done-text": {
+      "type": "Text",
+      "props": {
+        "text": "memory/topics/aeon-ops.md has a \"Next self-improve queue\" subsection naming the 3 skills + 3 model-line replacements."
+      }
+    },
+    "a5-loop": {
+      "type": "Badge",
+      "props": {
+        "text": "cost-downgrade-aeon-yml",
+        "variant": "outline"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "sources-label",
+        "sources-grid"
+      ]
+    },
+    "sources-label": {
+      "type": "Text",
+      "props": {
+        "text": "sources",
+        "variant": "lead"
+      }
+    },
+    "sources-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-memory",
+        "stat-logs",
+        "stat-topics",
+        "stat-prs",
+        "stat-cron",
+        "stat-mode"
+      ]
+    },
+    "stat-memory": {
+      "type": "Stat",
+      "props": {
+        "label": "memory",
+        "value": "121"
+      }
+    },
+    "stat-logs": {
+      "type": "Stat",
+      "props": {
+        "label": "logs",
+        "value": "7"
+      }
+    },
+    "stat-topics": {
+      "type": "Stat",
+      "props": {
+        "label": "topics",
+        "value": "8"
+      }
+    },
+    "stat-prs": {
+      "type": "Stat",
+      "props": {
+        "label": "prs",
+        "value": "9"
+      }
+    },
+    "stat-cron": {
+      "type": "Stat",
+      "props": {
+        "label": "cron_failing",
+        "value": "3"
+      }
+    },
+    "stat-mode": {
+      "type": "Stat",
+      "props": {
+        "label": "mode",
+        "value": "OK"
+      }
+    }
+  }
+}
