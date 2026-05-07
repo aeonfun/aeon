@@ -33,6 +33,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 ## Recent Digests
 | Date | Topic | Keywords |
 |------|-------|----------|
+| 2026-05-07 | prediction markets | sec-paused-24-pm-etfs-roundhill-bitwise-graniteshares, roobet-prediction-launch-first-major-crypto-casino, kalshi-first-institutional-block-jump-houston-enviro-ca-carbon |
 | 2026-05-06 | prediction markets | snapmarkets-30s-btc-binary, az-kalshi-permanent-injunction, kalshi-april-$5.42B-overtakes-pm |
 | 2026-05-04 | prediction markets | tn-tvk-99.65-from-6.95, wb-bjp-99.55-flip-confirmed, hormuz-trump-truth-social, manfred-coindesk-tier1 |
 | 2026-05-03 | prediction markets | india-elections-$26M-T-1, pm-kalshi-$150B-streak-end, bengal-PM-flip-BJP-51 |

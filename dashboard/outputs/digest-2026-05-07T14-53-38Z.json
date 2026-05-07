@@ -1,0 +1,233 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "prediction markets — 2026-05-07"
+      },
+      "children": [
+        "tldr_text",
+        "separator1",
+        "items_stack"
+      ]
+    },
+    "tldr_text": {
+      "type": "Text",
+      "props": {
+        "text": "SEC freezes 24 prediction-market ETF launches, Roobet plugs prediction trading into a major crypto casino, and Kalshi clears its first institutional block trade — financial plumbing is outpacing the regulatory framework.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "items_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1_heading",
+        "item1_description",
+        "item1_why",
+        "item1_link"
+      ]
+    },
+    "item1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "SEC pauses 24 prediction-market ETFs days before Roundhill's May-7 launch",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item1_description": {
+      "type": "Text",
+      "props": {
+        "text": "The SEC invoked its 75-day extension on event-contract ETFs from Roundhill, Bitwise, and GraniteShares, freezing the retail-wrapper category before any product traded. Roundhill's first fund had been scheduled to launch May 7. No redo deadline; the SEC said it is \"actively engaged\" with sponsors."
+      },
+      "children": []
+    },
+    "item1_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1_why_label",
+        "item1_why_text"
+      ]
+    },
+    "item1_why_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Why it matters",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item1_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "ETF-mediated retail flow is blocked indefinitely; Kalshi and Polymarket's $20B+ funding talks priced this rail in.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "item1_link": {
+      "type": "Link",
+      "props": {
+        "label": "bettorsinsider.com",
+        "href": "https://bettorsinsider.com/news/2026/05/06/the-sec-just-paused-more-than-two-dozen-prediction-market-etfs-what-it-means-for-kalshi-and-polymarket/"
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item2_heading",
+        "item2_description",
+        "item2_why",
+        "item2_link"
+      ]
+    },
+    "item2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Roobet launches prediction markets — first major crypto casino to integrate the format",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item2_description": {
+      "type": "Text",
+      "props": {
+        "text": "Roobet, a licensed crypto casino founded 2019, opened roobet.com/predictions on May 6 with sports, culture, and macro contracts settled inside existing user balances. No new account, no new wallet."
+      },
+      "children": []
+    },
+    "item2_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2_why_label",
+        "item2_why_text"
+      ]
+    },
+    "item2_why_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Why it matters",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item2_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "Polymarket competitors have shipped new venues; Roobet ships event contracts as a feature inside a sportsbook with KYC'd, funded users — the cheapest path to scale yet attempted.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "item2_link": {
+      "type": "Link",
+      "props": {
+        "label": "benzinga.com",
+        "href": "https://www.benzinga.com/pressreleases/26/05/52332077/roobet-launches-prediction-markets-on-may-6-the-first-major-crypto-casino-to-integrate-the-format"
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item3_heading",
+        "item3_description",
+        "item3_why",
+        "item3_link"
+      ]
+    },
+    "item3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Kalshi clears its first institutional block trade — Jump and a Houston enviro fund on California carbon",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "item3_description": {
+      "type": "Text",
+      "props": {
+        "text": "A May-4 Bernstein note flagged Kalshi's first bespoke block, on the California May carbon auction clearing price. Jump Trading made the market; Greenlight Commodities brokered for a Houston environmental hedge fund. Size undisclosed."
+      },
+      "children": []
+    },
+    "item3_why": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3_why_label",
+        "item3_why_text"
+      ]
+    },
+    "item3_why_label": {
+      "type": "Badge",
+      "props": {
+        "text": "Why it matters",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item3_why_text": {
+      "type": "Text",
+      "props": {
+        "text": "bespoke blocks are how flow that won't fit screen liquidity gets absorbed — first concrete evidence prediction markets can carry non-retail size.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "item3_link": {
+      "type": "Link",
+      "props": {
+        "label": "crypto.news",
+        "href": "https://crypto.news/prediction-markets-enter-institutional-era-after-first-kalshi-block-trade/"
+      },
+      "children": []
+    }
+  }
+}
