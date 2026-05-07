@@ -1,0 +1,137 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog — Week of 2026-05-07"
+      },
+      "children": [
+        "heading",
+        "summary",
+        "statsStack",
+        "sep1",
+        "topHeading",
+        "changesStack",
+        "sep2",
+        "fullLink"
+      ]
+    },
+    "heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Changelog — Week of 2026-05-07",
+        "level": "h2"
+      }
+    },
+    "summary": {
+      "type": "Text",
+      "props": {
+        "text": "3 repos: 25 user-facing changes",
+        "variant": "lead"
+      }
+    },
+    "statsStack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "statBreaking",
+        "statAdded",
+        "statChanged",
+        "statFixed",
+        "statSecurity"
+      ]
+    },
+    "statBreaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "statAdded": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "16"
+      }
+    },
+    "statChanged": {
+      "type": "Stat",
+      "props": {
+        "label": "Changed",
+        "value": "3"
+      }
+    },
+    "statFixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "6"
+      }
+    },
+    "statSecurity": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "2"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "topHeading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Changes",
+        "level": "h3"
+      }
+    },
+    "changesStack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "change1",
+        "change2"
+      ]
+    },
+    "change1": {
+      "type": "Text",
+      "props": {
+        "text": "ADR-095 routes summarize/judge/generate/chat to local qwen2.5:14b under OLLAMA_FULL=1",
+        "variant": "body"
+      }
+    },
+    "change2": {
+      "type": "Text",
+      "props": {
+        "text": "Fine-tuning pipeline shipped on swarm-fund-mvp",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fullLink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Changelog",
+        "href": "articles/changelog-2026-05-07.md",
+        "source": "swarm-fund-mvp"
+      }
+    }
+  }
+}
