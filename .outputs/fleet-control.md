@@ -1,12 +1,17 @@
-Stopping per skill spec — no notification, no registry write (registry is already valid empty shape).
-
 ## Summary
 
-- **Skill executed:** `fleet-control` (Health Check Mode, default — `var` was empty).
-- **Pre-flight passed:** `gh auth status` ok (`tomscaria`, GH_TOKEN); core API rate_remaining = 4986 (well above the 50 floor).
-- **Registry state:** `memory/instances.json` already valid but empty (`{"instances": []}`).
-- **Action per SKILL.md:** logged `FLEET_EMPTY: no managed instances` and stopped silently — no notification (this is the spec-mandated behavior, not a skip).
-- **Files modified:** appended `## fleet-control (health check)` section to `memory/logs/2026-05-07.md`.
-- **Files unchanged:** `memory/instances.json`, `memory/state/fleet-control-state.json` (no instance health snapshots to record; spec only updates `last_full_summary_date` when a notification fires).
-- **Exit:** `FLEET_EMPTY`.
-- **Follow-up:** none required from me. Operator action to populate the fleet — register a child Aeon instance in `memory/instances.json` (with `repo`, `purpose`, `parent`, `created`, `skills_enabled`, etc.) before this skill produces useful output. Until then, every cron run will silently log `FLEET_EMPTY` and exit, which is the intended idle behavior.
+Executed `skills/fleet-control/SKILL.md` in default Health Check Mode (var empty).
+
+**Pre-flight results:**
+- gh auth: ok (account `tomscaria`, all required scopes)
+- Rate limit: 4984 remaining (well above 50 threshold)
+- Registry `memory/instances.json`: `{"instances": []}` — empty
+
+**Outcome:** Per skill spec section "Load the registry," when `.instances` is `[]` → log `FLEET_EMPTY: no managed instances` and **stop without notifying**. This is the silent-stop path; the operator is not spammed when there is nothing to manage.
+
+**Files modified:**
+- `memory/logs/2026-05-07.md` — appended `## fleet-control (health check)` entry with verdict `FLEET_EMPTY`, rate_remaining=4984, and rationale.
+
+**No state-file change** — skill spec says `last_full_summary_date` updates only when notifying, and an empty registry means no per-instance health snapshot to write. `memory/state/fleet-control-state.json` left untouched.
+
+**No follow-up actions** — registry stays empty until the operator manually adds a managed Aeon instance. Next scheduled run (cron `0 9,15 * * *`) will repeat the same silent stop until then.
