@@ -121,4 +121,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-07,defi-overview,claude-opus-4-7,50,38905,3311818,90617
 2026-05-07,polymarket-comments,claude-opus-4-7,15000,45719,5098945,189599
 2026-05-07,repo-actions,claude-opus-4-7,68,47075,4569094,150527
-2026-05-07,list-digest,claude-opus-4-7,18,5162,648657,42189
+2026-05-07,self-improve,claude-opus-4-7,17,3976,546193,33107

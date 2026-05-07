@@ -1,1 +1,1 @@
-self-improve: 3+ open PRs (4), waiting for review — #11 #5 #2 #1, oldest 10 days. Skipped this cycle. Queue: DEEP-LIQ floor patch / ISS-018 / ISS-019 / cost-discipline downgrade.
+self-improve: 3+ open PRs, waiting for review (#1 fix(aeon.yml), #2 chore(gallery), #5 fix(skill-evals), #11 chore(gallery)) — no new PR opened. Queued: sonnet-4-6 cost downgrade, monitor-runners DEEP-LIQ floor patch, ISS-018/019 prompt-bug fixes.

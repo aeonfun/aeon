@@ -1,0 +1,133 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "self-improve"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_summary",
+        "table_prs",
+        "sep1",
+        "text_new_pr",
+        "sep2",
+        "heading_queued",
+        "stack_queued"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "3+ open PRs waiting for review",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "table_prs": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "PR",
+          "Title"
+        ],
+        "rows": [
+          [
+            "#1",
+            "fix(aeon.yml)"
+          ],
+          [
+            "#2",
+            "chore(gallery)"
+          ],
+          [
+            "#5",
+            "fix(skill-evals)"
+          ],
+          [
+            "#11",
+            "chore(gallery)"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text_new_pr": {
+      "type": "Text",
+      "props": {
+        "text": "No new PR opened",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_queued": {
+      "type": "Heading",
+      "props": {
+        "text": "Queued",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_queued": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_sonnet",
+        "item_monitor",
+        "item_iss"
+      ]
+    },
+    "item_sonnet": {
+      "type": "Text",
+      "props": {
+        "text": "sonnet-4-6 cost downgrade",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item_monitor": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners DEEP-LIQ floor patch",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item_iss": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-018/019 prompt-bug fixes",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
