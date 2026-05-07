@@ -1,8 +1,12 @@
 ## Summary
 
-- Ran `skills/on-chain-monitor/SKILL.md` for 2026-05-06.
-- `memory/on-chain-watches.yml` has `watches: []` (template commented out, no real addresses configured). Per the skill's explicit handling — *"If the file is missing or `watches: []`, log `ON_CHAIN_NO_CONFIG` and exit cleanly (do not notify — empty config is not an error)"* — the run exited without making any external API calls and without sending a notification.
-- `memory/on-chain-state.json` does not exist, consistent with no watches having ever been configured.
-- Files modified: `memory/logs/2026-05-06.md` (added `### on-chain-monitor` entry + summary).
-- Terminal: `ON_CHAIN_NO_CONFIG` (n_watches=0, n_protocols=0).
-- Follow-up: skill stays a no-op until the operator populates `memory/on-chain-watches.yml` with real addresses.
+Executed `on-chain-monitor` skill. Hit the `ON_CHAIN_NO_CONFIG` end-state and exited cleanly without notification per spec.
+
+**Reason:** `memory/on-chain-watches.yml` exists but contains `watches: []` (template only, no real addresses). The skill spec is explicit: empty config is not an error — log and exit, do not notify.
+
+**No API calls made:** Alchemy, Etherscan v2, and CoinGecko were all skipped. No state file written (`memory/on-chain-state.json` does not exist; will only be created on first successful fetch). `memory/known-addresses.yml` also absent — would be needed once watches populate.
+
+**Files modified:**
+- `memory/logs/2026-05-07.md` — appended `### on-chain-monitor` entry recording the no-config exit and pointing to the open operator config gap.
+
+**Follow-up:** This is the "Operator config sweep (BLOCKED)" item already tracked in `memory/MEMORY.md` — operator must populate at least one watch (e.g. swarm-fund-mvp treasury or CalibrationGap funding wallet) before this skill can produce signal. No code change needed; pure config gap.
