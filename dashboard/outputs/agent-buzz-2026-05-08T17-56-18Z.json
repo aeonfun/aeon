@@ -1,0 +1,102 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "agent-buzz"
+      },
+      "children": [
+        "date_text",
+        "separator1",
+        "status_alert",
+        "errors_heading",
+        "errors_stack",
+        "separator2",
+        "consecutive_note",
+        "root_cause_alert"
+      ]
+    },
+    "date_text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-08"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "status_alert": {
+      "type": "Alert",
+      "props": {
+        "message": "All sources failed",
+        "type": "error"
+      }
+    },
+    "errors_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Failed sources",
+        "level": "h3"
+      }
+    },
+    "errors_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "error1",
+        "error2",
+        "error3"
+      ]
+    },
+    "error1": {
+      "type": "Badge",
+      "props": {
+        "text": "XAI 401 no key",
+        "variant": "destructive"
+      }
+    },
+    "error2": {
+      "type": "Badge",
+      "props": {
+        "text": "WebFetch XAI 400 no POST",
+        "variant": "destructive"
+      }
+    },
+    "error3": {
+      "type": "Badge",
+      "props": {
+        "text": "x.com tweet WebFetch 402 paywall",
+        "variant": "destructive"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "consecutive_note": {
+      "type": "Text",
+      "props": {
+        "text": "5th consecutive structural failure",
+        "variant": "lead"
+      }
+    },
+    "root_cause_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Root cause",
+        "message": "missing XAI_API_KEY + no agent-buzz prefetch case",
+        "type": "error"
+      }
+    }
+  }
+}
