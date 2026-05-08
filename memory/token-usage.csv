@@ -125,4 +125,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-07,heartbeat,claude-opus-4-7,35,25893,1851230,110692
 2026-05-07,evening-recap,claude-sonnet-4-6,22,9862,1684143,106134
 2026-05-08,paper-digest,claude-opus-4-7,81,35899,7215713,220851
-2026-05-08,morning-brief,claude-opus-4-7,1481,14512,1562270,103661
+2026-05-08,hacker-news-digest,claude-opus-4-7,95,37967,8224842,137898

@@ -1,0 +1,424 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "HN Digest — 2026-05-08",
+        "description": "AI-skepticism day. Slop killing forums, Cloudflare cuts 1,100 citing 600% internal AI, agent-control-flow critique, embargo-broken Linux LPE, ShinyHunters mid-finals."
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story-1",
+        "sep-1",
+        "story-2",
+        "sep-2",
+        "story-3",
+        "sep-3",
+        "story-4",
+        "sep-4",
+        "story-5",
+        "sep-5",
+        "story-6",
+        "sep-6",
+        "story-7"
+      ]
+    },
+    "story-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-1",
+        "storylink-1",
+        "text-1a",
+        "text-1b",
+        "link-1"
+      ]
+    },
+    "badge-1": {
+      "type": "Badge",
+      "props": {
+        "text": "AI & agents",
+        "variant": "default"
+      }
+    },
+    "storylink-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AI slop is killing online communities",
+        "href": "https://rmoff.net/2026/05/06/ai-slop-is-killing-online-communities/",
+        "score": "632 pts · 557c"
+      }
+    },
+    "text-1a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: LLM posts catalyzing trust collapse. Bullshit asymmetry — cheap to generate, expensive to refute.",
+        "variant": "body"
+      }
+    },
+    "text-1b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"HN is high-trust and low-volume — disproportionate ROI on ads/propaganda. I remember a release where 3 of the top 10 were variations of 'Foobar 2.1 New Model.'\" — spookymutation",
+        "variant": "caption"
+      }
+    },
+    "link-1": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48053203"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-2",
+        "storylink-2",
+        "text-2a",
+        "text-2b",
+        "link-2"
+      ]
+    },
+    "badge-2": {
+      "type": "Badge",
+      "props": {
+        "text": "AI & agents",
+        "variant": "default"
+      }
+    },
+    "storylink-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Agents need control flow, not more prompts",
+        "href": "https://bsuh.bearblog.dev/agents-need-control-flow/",
+        "score": "461 pts · 220c"
+      }
+    },
+    "text-2a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Critique of model-as-orchestrator. Deterministic harness around small LLM steps beats agent-managed control.",
+        "variant": "body"
+      }
+    },
+    "text-2b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"Letting the model orchestrate 200 files broke after ~30. A deterministic harness made it billions of times more reliable — but unrunnable on managed agent platforms gigapilled on 'the agent runs everything.'\" — 827a",
+        "variant": "caption"
+      }
+    },
+    "link-2": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48051562"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-3",
+        "storylink-3",
+        "text-3a",
+        "text-3b",
+        "link-3"
+      ]
+    },
+    "badge-3": {
+      "type": "Badge",
+      "props": {
+        "text": "AI & agents",
+        "variant": "default"
+      }
+    },
+    "storylink-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "DeepSeek 4 Flash local inference engine for Metal",
+        "href": "https://github.com/antirez/ds4",
+        "score": "379 pts · 102c"
+      }
+    },
+    "text-3a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: antirez ships a single-model Metal inference engine. Revives the case for ultra-specialized GPU+model engines over generic frameworks.",
+        "variant": "body"
+      }
+    },
+    "text-3b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"On a W7900 I autolooped ~800 iterations tuning W8A8-INT8 — prefill +20% and decode +50% faster than the best llama.cpp numbers for Qwen3.6 MoE.\" — lhl",
+        "variant": "caption"
+      }
+    },
+    "link-3": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48050751"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-4",
+        "storylink-4",
+        "text-4a",
+        "text-4b",
+        "link-4"
+      ]
+    },
+    "badge-4": {
+      "type": "Badge",
+      "props": {
+        "text": "Security & policy",
+        "variant": "default"
+      }
+    },
+    "storylink-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Dirtyfrag: Universal Linux LPE",
+        "href": "https://www.openwall.com/lists/oss-security/2026/05/07/8",
+        "score": "625 pts · 256c"
+      }
+    },
+    "text-4a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Embargo-broken LPE via xfrm-ESP page-cache write + rxrpc. Same sink as Copy Fail; bypasses the algif_aead mitigation; no distro patches.",
+        "variant": "body"
+      }
+    },
+    "text-4b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"No patches exist for any distribution. Mitigation: blacklist esp4/esp6/rxrpc in /etc/modprobe.d, rmmod the modules, drop_caches; reboot if exploited.\" — john_strinlai",
+        "variant": "caption"
+      }
+    },
+    "link-4": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48053623"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-5",
+        "storylink-5",
+        "text-5a",
+        "text-5b",
+        "link-5"
+      ]
+    },
+    "badge-5": {
+      "type": "Badge",
+      "props": {
+        "text": "Security & policy",
+        "variant": "default"
+      }
+    },
+    "storylink-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Canvas down as ShinyHunters threatens to leak schools' data",
+        "href": "https://www.theverge.com/tech/926458/canvas-shinyhunters-breach",
+        "score": "601 pts · 372c"
+      }
+    },
+    "text-5a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: Mid-finals Instructure outage. ShinyHunters claim breach + 12 May leak deadline. Brown, Harvard, MIT, Stanford hit.",
+        "variant": "body"
+      }
+    },
+    "text-5b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"They hijacked the screen via one stylesheet swap pointing at instructure-uploads.s3.amazonaws.com. The hack is crude — unlikely they have Instructure dev access.\" — swatson741",
+        "variant": "caption"
+      }
+    },
+    "link-5": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48055913"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-6",
+        "storylink-6",
+        "text-6a",
+        "text-6b",
+        "link-6"
+      ]
+    },
+    "badge-6": {
+      "type": "Badge",
+      "props": {
+        "text": "Business & funding",
+        "variant": "default"
+      }
+    },
+    "storylink-6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Cloudflare to cut about 20% workforce",
+        "href": "https://www.reuters.com/business/world-at-work/cloudflare-cut-over-1100-jobs-2026-05-07/",
+        "score": "680 pts · 428c"
+      }
+    },
+    "text-6a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: ~1,100 jobs cut. CEO cites 600% rise in internal AI use and \"thousands of agent sessions/day\" — first networking-tier firm pinning layoffs to agents.",
+        "variant": "body"
+      }
+    },
+    "text-6b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"The implication NOT said is that 20% of people were sitting around because AI was so efficient. Yet another case of economic downturn disguised as increasing velocity.\" — Snoozle",
+        "variant": "caption"
+      }
+    },
+    "link-6": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48054423"
+      }
+    },
+    "sep-6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-7",
+        "storylink-7",
+        "text-7a",
+        "text-7b",
+        "link-7"
+      ]
+    },
+    "badge-7": {
+      "type": "Badge",
+      "props": {
+        "text": "Science & culture",
+        "variant": "default"
+      }
+    },
+    "storylink-7": {
+      "type": "StoryLink",
+      "props": {
+        "title": "The map that keeps Burning Man honest",
+        "href": "https://www.not-ship.com/burning-man-moop/",
+        "score": "638 pts · 313c"
+      }
+    },
+    "text-7a": {
+      "type": "Text",
+      "props": {
+        "text": "Why it matters: The MOOP (Matter Out Of Place) map — public, per-camp accountability for cleanup.",
+        "variant": "body"
+      }
+    },
+    "text-7b": {
+      "type": "Text",
+      "props": {
+        "text": "HN take: \"There's a machine for this — the Barber Litter Picker. Big festivals get cleaned in a few hours with the heavy equipment used for beach cleanup.\" — Animats",
+        "variant": "caption"
+      }
+    },
+    "link-7": {
+      "type": "Link",
+      "props": {
+        "label": "Discussion",
+        "href": "https://news.ycombinator.com/item?id=48049653"
+      }
+    }
+  }
+}
