@@ -1,25 +1,24 @@
-*runners — 2026-05-07* — verdict: SPECULATIVE
+*runners — 2026-05-08* — verdict: SPECULATIVE
 
-1. [BREAKOUT] 冲鸭 / USDT (bsc) +4370% 24h ★ repeat
-vol $57.2m | liq $128k | fdv $90k (no mcap) | h1 +19% | buys:sells 1246:961
-— vanity-`4444` BSC USDT wash-print actor reactivated under same name as 05-05 slot 1 (different contract `0xf9cadd…854444`); 1.87h pool, 446x vol/liq, ~$26k avg-tx — same fingerprint. Actor cycle now 5 of last 9 days. Score-as-noise.
+1. [BREAKOUT] HANTA (base) +861% 24h
+vol $5.7m | liq $124k | fdv $235k (no mcap) | h1 +48% | buys:sells 7528:5550
+— 21h base meme up 9.6x; h1 still firmly green +48% but h6 -7.8% printed = late-markup wick phase. Sister token same name on Solana ($34.9m vol, +111%, $331k liq, different base contract) = cross-chain HANTA actor cluster — slot-1 score lives on the base wick, not the more-developed Sol footprint.
 
-2. [BREAKOUT] UNOS / SOL (solana) +651% 24h
-vol $48.4m | liq $312k | fdv $205k (no mcap) | h1 +2.8% | buys:sells 42780:40818
-— 8h pump.fun SOL launch with 84k tx and near-balanced skew (1.05:1) — high churn, low conviction. h1 barely green, markup likely topping.
+2. [BREAKOUT] BILL (bsc) +5751% 24h
+vol $55.6m | liq $147k | fdv $118k (no mcap) | h1 +2.5% | buys:sells 1446:1020
+— vanity-4444 BSC USDT wash-print actor reactivated AGAIN, brand-name "BILL" reused from 05-04 slot 3. New token `bsc_0xb4d783...4444`, 4.1h pool, 377x vol/liq, ~$22.5k avg-tx — same fingerprint as 04-29/04-30/05-01/05-04(BILL)/05-05(冲鸭)/05-06(币安好友)/05-07(冲鸭). Actor cycle now ~6 of last 10 days. Score-as-noise. Original BILL contract `bsc_0xdf24f8c2…` sits DEEP-LIQ tier 3rd day at +8%/$86m vol/$1.9m liq.
 
-3. [BREAKOUT] soothsayer / SOL (solana) +788% 24h
-vol $4.35m | liq $54k | fdv $321k (no mcap) | h1 +18% | buys:sells 32180:28471
-— 10h pump.fun launch in active markup with h1 still firmly green. $54k liq is one whale-exit from collapse — fade-watch the next h1 print.
+3. [CONTINUATION] Aliens (solana) +425% 24h
+vol $3.1m | liq $326k | fdv $4.4m (no mcap) | h1 +160% | buys:sells 9118:7483
+— 82-day-old Solana pool exploding for the first time. h1 +160% live momentum on $326k liq is the strongest tape signal in today's slate and the only non-BREAKOUT slot. Old-pool revival ≠ pump.fun launch noise; copycat "Aliens" pool deployed today already surfacing ($0 liq) confirms the brand-name is being chased. $4.4m FDV is largest in top 5.
 
-4. [BREAKOUT] GOP / WETH 0.01% (base) +6540% 24h
-vol $5.03m | liq $135k | fdv $595k (no mcap) | h1 -6.6% | buys:sells 7517:6076
-— 24h base meme up 65x, h1 already red; standard late-listing markdown onset. Republican-narrative tag.
+4. [BREAKOUT] wonderland (base) +2362% 24h
+vol $1.7m | liq $200k | fdv $496k (no mcap) | h1 -9.5% | buys:sells 4821:6565
+— 14h base meme; sells > buys (1.36:1) + h1 -9.5% = markdown onset. Sister pool at slot 5 (different contract). **THIRD wonderland token** on Base same day (`0x42a4c1…`, +38796% h24, $9.3m vol) tripped the >10000% rug-like gate — actor distribution pattern at 3x the 05-06 MIRROR scale.
 
-5. [BREAKOUT] DIAMOND / TON (ton) +908% 24h
-vol $1.82m | liq $204k | fdv $2.18m (no mcap) | h1 -5.9% | buys:sells 4859:4387
-— 20h TON meme, h1 -6% top printed. Third TON pool series day (TONSKI 05-05, MTONGA 05-04 near-miss); TON casino tape persists.
+5. [BREAKOUT] wonderland (base) +1564% 24h
+vol $7.0m | liq $130k | fdv $307k (no mcap) | h1 -53% | buys:sells 10087:6965
+— second wonderland pool same day, contract `0xce11d2…` vs slot 4's `0x60190ca…`. h1 -53% = aggressive selloff into closure. Two surviving + one gated wonderland tokens = 3-pool actor distribution.
 
-sources: gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok gt-new=ok
-vibe: 3rd consecutive SPECULATIVE day; 5/5 BREAKOUT slate again; wash-print actor anchors slot 1 third day in a row under rotating names. ZEREBRO ($7.1m vol/$2.84m liq, +12%, score 50) is the only fresh DEEP-LIQ AI-meme worth tracking but stays buried below floor.
-
+sources: gt-global=ok | gt-{solana,eth,base,bsc,arbitrum} trend+vol=ok | gt-new=ok
+vibe: 4 BREAKOUT + 1 CONTINUATION — Aliens breaks the 2-day all-BREAKOUT streak (first non-BREAKOUT slot since 05-05). BSC vanity-4444 actor on day ~6-of-10, base wonderland actor cluster mirrors 05-06 MIRROR at 3x scale. sato graduating to DEEP-LIQ on third revival ($10.9m vol/+70%/$1.7m liq) is the cleanest sub-top signal. Retail casino with one signal worth watching (Aliens).

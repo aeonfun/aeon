@@ -76,7 +76,7 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - **TON** — peak-extension/exhaustion after 2-day 80% major-cap breakout (05-05 +36% / 05-06 +30%). Watch for consolidation/mean-reversion. Pavel Durov / Telegram staking + 6× fee cut catalyst confirmed.
 - **Privacy coins (ZEC/XMR/FIRO)** — peak (ZEC +73% 7d in top-15 = peak territory). **No new entry; watch for cooling per 05-07 token-movers signals.**
 - **AI infra (HYPE/TAO/IO/NEAR)** — rising-phase. IO and NEAR cleaner mid-cap entries vs privacy/TON peak.
-- **冲鸭 / vanity-4444 BSC wash-print actor** — 3-of-4-day pattern under vanity-`4444` USDT BSC contracts. Watch for daily continuation.
+- **vanity-4444 BSC wash-print actor** — daily-redeploy under vanity-`4444` USDT BSC contracts; brand-name string rotates (BILL → 冲鸭 → 币安好友 → 冲鸭 → BILL again 05-08). Now ~7 of last 10 days (or ~8 of 11 since 04-29 origin). 05-08 NEW: actor recycling brand-name strings as well as contracts (today's BILL fresh-deploy on `bsc_…b4d783ea…4444` reuses 05-04 slot-3 brand). Original 05-04 BILL contract `bsc_…df24f8c2…1fa5` holds DEEP-LIQ tier 3rd consecutive day at +8%/$86m vol/$1.91m liq.
 - **TTPA / SKYAI streaks ENDED 05-05** — both DEEP-LIQ streak-tokens broke same day; concrete monitor-runners floor-patch evidence (7th run where the patch would fire). See `aeon-ops.md`.
 
 ## Tracked Tokens

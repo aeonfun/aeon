@@ -1,0 +1,644 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners",
+        "description": "2026-05-08"
+      },
+      "children": [
+        "verdict_badge",
+        "separator_after_header",
+        "entry1",
+        "sep1",
+        "entry2",
+        "sep2",
+        "entry3",
+        "sep3",
+        "entry4",
+        "sep4",
+        "entry5",
+        "sep5",
+        "sources",
+        "sep6",
+        "vibe"
+      ]
+    },
+    "verdict_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "SPECULATIVE",
+        "variant": "outline"
+      }
+    },
+    "separator_after_header": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry1_header",
+        "entry1_metrics",
+        "entry1_analysis"
+      ]
+    },
+    "entry1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "entry1_badge",
+        "entry1_title",
+        "entry1_change"
+      ]
+    },
+    "entry1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "entry1_title": {
+      "type": "Heading",
+      "props": {
+        "text": "HANTA (base)",
+        "level": "h3"
+      }
+    },
+    "entry1_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+861%",
+        "trend": "up"
+      }
+    },
+    "entry1_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry1_vol",
+        "entry1_liq",
+        "entry1_fdv",
+        "entry1_h1",
+        "entry1_bs"
+      ]
+    },
+    "entry1_vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $5.7m",
+        "variant": "body"
+      }
+    },
+    "entry1_liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $124k",
+        "variant": "body"
+      }
+    },
+    "entry1_fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $235k (no mcap)",
+        "variant": "body"
+      }
+    },
+    "entry1_h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "+48%",
+        "trend": "up"
+      }
+    },
+    "entry1_bs": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 7528:5550",
+        "variant": "body"
+      }
+    },
+    "entry1_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "21h base meme up 9.6x; h1 still firmly green +48% but h6 -7.8% printed = late-markup wick phase. Sister token same name on Solana ($34.9m vol, +111%, $331k liq, different base contract) = cross-chain HANTA actor cluster — slot-1 score lives on the base wick, not the more-developed Sol footprint.",
+        "variant": "body"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry2_header",
+        "entry2_metrics",
+        "entry2_analysis"
+      ]
+    },
+    "entry2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "entry2_badge",
+        "entry2_title",
+        "entry2_change"
+      ]
+    },
+    "entry2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "entry2_title": {
+      "type": "Heading",
+      "props": {
+        "text": "BILL (bsc)",
+        "level": "h3"
+      }
+    },
+    "entry2_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+5751%",
+        "trend": "up"
+      }
+    },
+    "entry2_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry2_vol",
+        "entry2_liq",
+        "entry2_fdv",
+        "entry2_h1",
+        "entry2_bs"
+      ]
+    },
+    "entry2_vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $55.6m",
+        "variant": "body"
+      }
+    },
+    "entry2_liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $147k",
+        "variant": "body"
+      }
+    },
+    "entry2_fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $118k (no mcap)",
+        "variant": "body"
+      }
+    },
+    "entry2_h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "+2.5%",
+        "trend": "up"
+      }
+    },
+    "entry2_bs": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 1446:1020",
+        "variant": "body"
+      }
+    },
+    "entry2_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "vanity-4444 BSC USDT wash-print actor reactivated AGAIN, brand-name \"BILL\" reused from 05-04 slot 3. New token `bsc_0xb4d783...4444`, 4.1h pool, 377x vol/liq, ~$22.5k avg-tx — same fingerprint as 04-29/04-30/05-01/05-04(BILL)/05-05(冲鸭)/05-06(币安好友)/05-07(冲鸭). Actor cycle now ~6 of last 10 days. Score-as-noise. Original BILL contract `bsc_0xdf24f8c2…` sits DEEP-LIQ tier 3rd day at +8%/$86m vol/$1.9m liq.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry3_header",
+        "entry3_metrics",
+        "entry3_analysis"
+      ]
+    },
+    "entry3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "entry3_badge",
+        "entry3_title",
+        "entry3_change"
+      ]
+    },
+    "entry3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION",
+        "variant": "secondary"
+      }
+    },
+    "entry3_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Aliens (solana)",
+        "level": "h3"
+      }
+    },
+    "entry3_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+425%",
+        "trend": "up"
+      }
+    },
+    "entry3_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry3_vol",
+        "entry3_liq",
+        "entry3_fdv",
+        "entry3_h1",
+        "entry3_bs"
+      ]
+    },
+    "entry3_vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $3.1m",
+        "variant": "body"
+      }
+    },
+    "entry3_liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $326k",
+        "variant": "body"
+      }
+    },
+    "entry3_fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $4.4m (no mcap)",
+        "variant": "body"
+      }
+    },
+    "entry3_h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "+160%",
+        "trend": "up"
+      }
+    },
+    "entry3_bs": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 9118:7483",
+        "variant": "body"
+      }
+    },
+    "entry3_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "82-day-old Solana pool exploding for the first time. h1 +160% live momentum on $326k liq is the strongest tape signal in today's slate and the only non-BREAKOUT slot. Old-pool revival ≠ pump.fun launch noise; copycat \"Aliens\" pool deployed today already surfacing ($0 liq) confirms the brand-name is being chased. $4.4m FDV is largest in top 5.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry4_header",
+        "entry4_metrics",
+        "entry4_analysis"
+      ]
+    },
+    "entry4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "entry4_badge",
+        "entry4_title",
+        "entry4_change"
+      ]
+    },
+    "entry4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "entry4_title": {
+      "type": "Heading",
+      "props": {
+        "text": "wonderland (base)",
+        "level": "h3"
+      }
+    },
+    "entry4_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+2362%",
+        "trend": "up"
+      }
+    },
+    "entry4_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry4_vol",
+        "entry4_liq",
+        "entry4_fdv",
+        "entry4_h1",
+        "entry4_bs"
+      ]
+    },
+    "entry4_vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.7m",
+        "variant": "body"
+      }
+    },
+    "entry4_liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $200k",
+        "variant": "body"
+      }
+    },
+    "entry4_fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $496k (no mcap)",
+        "variant": "body"
+      }
+    },
+    "entry4_h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "-9.5%",
+        "trend": "down"
+      }
+    },
+    "entry4_bs": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 4821:6565",
+        "variant": "body"
+      }
+    },
+    "entry4_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "14h base meme; sells > buys (1.36:1) + h1 -9.5% = markdown onset. Sister pool at slot 5 (different contract). THIRD wonderland token on Base same day (`0x42a4c1…`, +38796% h24, $9.3m vol) tripped the >10000% rug-like gate — actor distribution pattern at 3x the 05-06 MIRROR scale.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "entry5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "entry5_header",
+        "entry5_metrics",
+        "entry5_analysis"
+      ]
+    },
+    "entry5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "entry5_badge",
+        "entry5_title",
+        "entry5_change"
+      ]
+    },
+    "entry5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "entry5_title": {
+      "type": "Heading",
+      "props": {
+        "text": "wonderland (base)",
+        "level": "h3"
+      }
+    },
+    "entry5_change": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+1564%",
+        "trend": "up"
+      }
+    },
+    "entry5_metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "entry5_vol",
+        "entry5_liq",
+        "entry5_fdv",
+        "entry5_h1",
+        "entry5_bs"
+      ]
+    },
+    "entry5_vol": {
+      "type": "Text",
+      "props": {
+        "text": "vol $7.0m",
+        "variant": "body"
+      }
+    },
+    "entry5_liq": {
+      "type": "Text",
+      "props": {
+        "text": "liq $130k",
+        "variant": "body"
+      }
+    },
+    "entry5_fdv": {
+      "type": "Text",
+      "props": {
+        "text": "fdv $307k (no mcap)",
+        "variant": "body"
+      }
+    },
+    "entry5_h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h",
+        "value": "-53%",
+        "trend": "down"
+      }
+    },
+    "entry5_bs": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 10087:6965",
+        "variant": "body"
+      }
+    },
+    "entry5_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "second wonderland pool same day, contract `0xce11d2…` vs slot 4's `0x60190ca…`. h1 -53% = aggressive selloff into closure. Two surviving + one gated wonderland tokens = 3-pool actor distribution.",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_heading",
+        "sources_text"
+      ]
+    },
+    "sources_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok | gt-{solana,eth,base,bsc,arbitrum} trend+vol=ok | gt-new=ok",
+        "variant": "caption"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "vibe": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe_heading",
+        "vibe_text"
+      ]
+    },
+    "vibe_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "4 BREAKOUT + 1 CONTINUATION — Aliens breaks the 2-day all-BREAKOUT streak (first non-BREAKOUT slot since 05-05). BSC vanity-4444 actor on day ~6-of-10, base wonderland actor cluster mirrors 05-06 MIRROR at 3x scale. sato graduating to DEEP-LIQ on third revival ($10.9m vol/+70%/$1.7m liq) is the cleanest sub-top signal. Retail casino with one signal worth watching (Aliens).",
+        "variant": "body"
+      }
+    }
+  }
+}
