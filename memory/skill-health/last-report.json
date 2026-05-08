@@ -1,7 +1,7 @@
 {
-  "hash": "c5ee91b2a22d193c402a5923c8ce0d98d668b74c31e6ca8d039db26c4a40b92f",
-  "last_notified_at": "2026-05-07T17:00:00Z",
-  "last_run_at": "2026-05-07T17:00:00Z",
+  "hash": "b3b778001db9fe7de2beba6610327d422b073a5ab1d4c20f071ecbff5afcb492",
+  "last_notified_at": "2026-05-08T19:03:04Z",
+  "last_run_at": "2026-05-08T19:03:04Z",
   "classification": {
     "critical": [],
     "degraded": [
@@ -20,7 +20,6 @@
       "fork-skill-digest",
       "github-releases",
       "github-trending",
-      "goal-tracker",
       "idea-capture",
       "list-digest",
       "market-context-refresh",
@@ -29,9 +28,7 @@
       "monitor-runners",
       "narrative-tracker",
       "on-chain-monitor",
-      "paper-pick",
       "polymarket-comments",
-      "push-recap",
       "reflect",
       "refresh-x",
       "reg-monitor",
@@ -68,9 +65,12 @@
       "agent-buzz",
       "evening-rollup",
       "fleet-control",
-      "heartbeat"
+      "goal-tracker",
+      "heartbeat",
+      "paper-pick",
+      "push-recap"
     ],
-    "healthy_count": 21,
+    "healthy_count": 23,
     "healthy": [
       "cost-report",
       "daily-routine",
@@ -79,7 +79,9 @@
       "fork-fleet",
       "github-issues",
       "github-monitor",
+      "hacker-news-digest",
       "issue-triage",
+      "morning-brief",
       "paper-digest",
       "pr-review",
       "project-lens",
@@ -95,8 +97,6 @@
       "weekly-review"
     ],
     "no_data": [
-      "hacker-news-digest",
-      "morning-brief",
       "repo-scanner",
       "syndicate-article",
       "vercel-projects",
@@ -104,18 +104,18 @@
     ]
   },
   "systemic": [
-    "ISS-013 zero-token burst (2026-04-26T23:53-58Z) tail still gates 56 DEGRADED skills, 11d post-event. Decay resumed after 2-day flat: agent-buzz and action-converter graduated DEGRADED -> WARNING via 0.578 -> 0.6 sr crossings (12/20 sample). 30-run window denominator means burst weight ~3% of sample; full-flat plausible by 2026-05-15 baseline if no new mass-fails.",
-    "ISS-020 mass-fail 2026-05-06T15:32-35Z 17 skills all recovered cf=0 within next slot. Workflow-side post-execution state-write regression confirmed reversible (vs ISS-013 pre-Claude infra failure with zero token usage). Distinct burst signature.",
-    "ISS-017 GHA cron-tick gap day 11. Chain wrappers chain:morning-brief (last_failed 2026-05-07T07:36:06Z), chain:evening-rollup (last_failed 2026-05-06T21:42:53Z), chain:weekly-grant-update (last_failed 2026-05-04T09:36:43Z) all last_status=failed. Operator-side chain-runner.yml dispatch_skill() patch idle 13+ days. Gates morning-brief / hacker-news-digest / syndicate-article / weekly-shiplog NO DATA visibility."
+    "ISS-013 zero-token burst (2026-04-26T23:53-58Z) tail still gates 53 DEGRADED skills, 12d post-event. Decay continued: paper-pick, push-recap, goal-tracker graduated DEGRADED -> WARNING via sr crossings (0.6/0.6/0.61 from below 0.6). 30-run window denominator means full-flat plausible by 2026-05-15 baseline if no new mass-fails.",
+    "ISS-020 mass-fail 2026-05-06T15:32-35Z 17 skills cf=0 across all by next slot. Workflow-side post-execution state-write regression confirmed reversible (vs ISS-013 pre-Claude infra failure with zero token usage). Distinct burst signature.",
+    "ISS-017 GHA cron-tick gap day 12. Chain wrappers chain:morning-brief (last_failed 2026-05-08T07:14:30Z), chain:evening-rollup (last_failed 2026-05-07T21:02:20Z), chain:weekly-grant-update (last_failed 2026-05-04T09:36:43Z) all last_status=failed. Operator-side chain-runner.yml dispatch_skill() patch idle 14+ days. Direct-cron skills morning-brief and hacker-news-digest finally produced first cron-state writes (sr=1 each, 2 runs) — chain wrappers still failing but fan-out skills firing via direct dispatch."
   ],
   "filed_this_run": [],
   "resolved_this_run": [],
   "notes": [
-    "STATE DELTA vs 2026-05-06T18:05:00Z: agent-buzz and action-converter both crossed sr 0.578 -> 0.6 boundary, moving DEGRADED -> WARNING. DEGRADED 58 -> 56, WARNING 3 -> 5. CRITICAL/FLAPPING/NO DATA/HEALTHY counts unchanged. Hash differs from prev (semantic change in DEGRADED set composition).",
-    "NOTIFY this run — semantic state changed AND now-prev_notify ~23h gate elapsed. Both gates fire.",
-    "Per CLAUDE.md issue-tracker contract (health files / repair closes), skill-health does NOT auto-resolve issues. agent-buzz and action-converter still appear in ISS-013 affected_skills despite graduation to WARNING; only repair skills (skill-repair, autoresearch) own closures. No issues filed this run because CRITICAL=0 / FLAPPING=0.",
-    "Top-5 by tie-break (cf=0 across all DEGRADED, ds=3 for Sunday-weekly cohort): skill-leaderboard (0.13), skill-graph (0.14), update-gallery (0.14), channel-recap (0.15), fork-contributor-leaderboard (0.15). All weekly Sunday skills last fired 2026-05-03; next fire 2026-05-10. Their bad sr is pure ISS-013 burst tail — they have not had a chance to graduate since.",
-    "skill-runs script blocked by sandbox (6th run in a row — 05-02, 05-03, 05-04, 05-05, 05-06, 05-07) -> SKILL_HEALTH_PARTIAL. Fell back to cron-state.json + memory/skill-health/*.json + memory/issues/INDEX.md. All quality_score values in skill-health/*.json = 4 (no DEGRADED triggers from avg_score<2.5 rule).",
-    "NO DATA (6) unchanged: hacker-news-digest + morning-brief (chain wrapper failing — gated on chain:morning-brief), repo-scanner (Sun cron, last fired 2026-04-25), syndicate-article (chain-dependent, last fired pre-burst), vercel-projects (Sun cron), weekly-shiplog (Mon, fires via chain:weekly-grant-update which is failing)."
+    "STATE DELTA vs 2026-05-07T17:00:00Z: 3 graduations DEGRADED -> WARNING (paper-pick 0.6, push-recap 0.6, goal-tracker 0.61). 2 graduations NO DATA -> HEALTHY (morning-brief sr=1 / 2 runs, hacker-news-digest sr=1 / 1 run, both first-time cron-state writes). DEGRADED 56 -> 53, WARNING 5 -> 8, NO DATA 6 -> 4, HEALTHY 21 -> 23. Hash differs from prev (semantic change in DEGRADED set composition + NO DATA composition).",
+    "NOTIFY this run — semantic state changed AND now-prev_notify ~26h gate elapsed. Both gates fire.",
+    "Per CLAUDE.md issue-tracker contract (health files / repair closes), skill-health does NOT auto-resolve issues. paper-pick / push-recap / goal-tracker still appear in ISS-013 affected_skills despite graduation to WARNING; only repair skills (skill-repair, autoresearch) own closures. No issues filed this run because CRITICAL=0 / FLAPPING=0.",
+    "Top-5 by tie-break (cf=0 across all DEGRADED, weekly-Sunday cohort ds=5d for 2026-05-03 last-fire): skill-leaderboard (sr 0.13), skill-graph (sr 0.14), update-gallery (sr 0.14), channel-recap (sr 0.15), workflow-security-audit (sr 0.15). All weekly Sunday skills last fired 2026-05-03; next fire 2026-05-10. Their bad sr is pure ISS-013 burst tail.",
+    "skill-runs script blocked by sandbox (7th run in a row — 05-02 -> 05-08) -> SKILL_HEALTH_PARTIAL. Fell back to cron-state.json + memory/skill-health/*.json + memory/issues/INDEX.md. All 9 quality_score values in skill-health/*.json = 4 (no DEGRADED triggers from avg_score<2.5 rule).",
+    "NO DATA shrunk 6 -> 4: morning-brief and hacker-news-digest both wrote first cron-state entries today (direct-cron at 0 7 * * *). Remaining NO DATA (4): repo-scanner (Sun cron, last fired 2026-04-25), syndicate-article (chain-dependent), vercel-projects (Sun cron), weekly-shiplog (Mon cron, fires via chain:weekly-grant-update which is failing)."
   ]
 }

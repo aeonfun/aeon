@@ -1,21 +1,20 @@
-*Skill Health — 2026-05-07*
-HEALTH: DEGRADED(56) — state delta vs prev: DEGRADED 58 -> 56, WARNING 3 -> 5. agent-buzz + action-converter graduated DEGRADED -> WARNING (sr 0.578 -> 0.6 crossing). ISS-013 tail decay resumed after 2-day flat.
+*Skill Health — 2026-05-08*
+HEALTH: DEGRADED(53) [systemic: ISS-013 zero-token tail still gates 53 / ISS-020 05-06 burst recovered / ISS-017 chain wrappers d12]
 
-Systemic:
-- ISS-013 zero-token burst 04-26 still gates 56 DEGRADED skills (11d post-event)
-- ISS-020 17-skill mass-fail 05-06 — all recovered cf=0 within next slot (workflow-side state-write regression, distinct from ISS-013)
-- ISS-017 GHA cron-tick gap day 11 — chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update all last_status=failed; operator-side chain-runner.yml dispatch_skill() patch idle 13d
+🟡 DEGRADED (53) — top 5 by sr:
+- skill-leaderboard — sr 0.13, 5d since success — INVESTIGATE → ISS-013
+- skill-graph — sr 0.14, 5d since success — INVESTIGATE → ISS-013
+- update-gallery — sr 0.14, 5d since success — INVESTIGATE → ISS-013
+- channel-recap — sr 0.15, 5d since success — INVESTIGATE → ISS-013
+- workflow-security-audit — sr 0.15, 5d since success — INVESTIGATE → ISS-013
++48 more — see memory/issues/INDEX.md
 
-DEGRADED top-5 (all Sun-weekly cohort, ds=3, ISS-013 burst tail):
-- skill-leaderboard sr 0.13
-- skill-graph sr 0.14
-- update-gallery sr 0.14
-- channel-recap sr 0.15
-- fork-contributor-leaderboard sr 0.15
-+51 more — see memory/issues/INDEX.md
+🟠 WARNING (8): action-converter, agent-buzz, evening-rollup, fleet-control, goal-tracker(NEW), heartbeat, paper-pick(NEW), push-recap(NEW)
 
-WARNING (5): action-converter, agent-buzz, evening-rollup, fleet-control, heartbeat
-NO DATA (6): hacker-news-digest, morning-brief, repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL (chain wrappers + Sun cron)
-HEALTHY: 21
+⚪ NO DATA (4): repo-scanner, syndicate-article, vercel-projects, weekly-shiplog — DISPATCH-SKILL (chain:weekly-grant-update gates weekly-shiplog/syndicate-article)
 
-Open issues: 17 · Filed this run: 0 · Resolved this run: 0
+🟢 HEALTHY: 23 (+2 vs prev — morning-brief and hacker-news-digest first cron-state writes today)
+
+Delta vs 2026-05-07: 3 DEGRADED→WARNING graduations (sr crossings 0.6/0.6/0.61), 2 NO DATA→HEALTHY. Pure ISS-013 decay; no new mass-fails.
+
+Open issues: 17 · Resolved this run: 0

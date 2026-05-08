@@ -1,0 +1,444 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Skill Health — 2026-05-08"
+      },
+      "children": [
+        "status_section",
+        "sep1",
+        "systemic_section",
+        "sep2",
+        "degraded_section",
+        "sep3",
+        "warning_section",
+        "sep4",
+        "no_data_section",
+        "sep5",
+        "healthy_section",
+        "sep6",
+        "delta_section",
+        "sep7",
+        "issues_section"
+      ]
+    },
+    "status_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status_alert"
+      ]
+    },
+    "status_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Overall Status",
+        "message": "DEGRADED (53 skills affected)",
+        "type": "warning"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "systemic_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "systemic_heading",
+        "systemic_stack"
+      ]
+    },
+    "systemic_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Systemic Issues",
+        "level": "h3"
+      }
+    },
+    "systemic_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "iss013",
+        "iss020",
+        "iss017"
+      ]
+    },
+    "iss013": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-013 — zero-token tail still gates 53",
+        "href": "memory/issues/ISS-013.md"
+      }
+    },
+    "iss020": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-020 — 05-06 burst recovered",
+        "href": "memory/issues/ISS-020.md"
+      }
+    },
+    "iss017": {
+      "type": "Link",
+      "props": {
+        "label": "ISS-017 — chain wrappers d12",
+        "href": "memory/issues/ISS-017.md"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "degraded_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "degraded_heading",
+        "degraded_table",
+        "degraded_more"
+      ]
+    },
+    "degraded_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Degraded (53) — Top 5 by Success Rate",
+        "level": "h3"
+      }
+    },
+    "degraded_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Skill",
+          "Success Rate",
+          "Days Since Success",
+          "Issue"
+        ],
+        "rows": [
+          [
+            "skill-leaderboard",
+            "0.13",
+            "5d",
+            "ISS-013"
+          ],
+          [
+            "skill-graph",
+            "0.14",
+            "5d",
+            "ISS-013"
+          ],
+          [
+            "update-gallery",
+            "0.14",
+            "5d",
+            "ISS-013"
+          ],
+          [
+            "channel-recap",
+            "0.15",
+            "5d",
+            "ISS-013"
+          ],
+          [
+            "workflow-security-audit",
+            "0.15",
+            "5d",
+            "ISS-013"
+          ]
+        ]
+      }
+    },
+    "degraded_more": {
+      "type": "Text",
+      "props": {
+        "text": "+48 more — see memory/issues/INDEX.md",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "warning_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "warning_heading",
+        "warning_badges"
+      ]
+    },
+    "warning_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Warning (8)",
+        "level": "h3"
+      }
+    },
+    "warning_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_ac",
+        "badge_ab",
+        "badge_er",
+        "badge_fc",
+        "badge_gt",
+        "badge_hb",
+        "badge_pp",
+        "badge_pr"
+      ]
+    },
+    "badge_ac": {
+      "type": "Badge",
+      "props": {
+        "text": "action-converter",
+        "variant": "secondary"
+      }
+    },
+    "badge_ab": {
+      "type": "Badge",
+      "props": {
+        "text": "agent-buzz",
+        "variant": "secondary"
+      }
+    },
+    "badge_er": {
+      "type": "Badge",
+      "props": {
+        "text": "evening-rollup",
+        "variant": "secondary"
+      }
+    },
+    "badge_fc": {
+      "type": "Badge",
+      "props": {
+        "text": "fleet-control",
+        "variant": "secondary"
+      }
+    },
+    "badge_gt": {
+      "type": "Badge",
+      "props": {
+        "text": "goal-tracker (NEW)",
+        "variant": "secondary"
+      }
+    },
+    "badge_hb": {
+      "type": "Badge",
+      "props": {
+        "text": "heartbeat",
+        "variant": "secondary"
+      }
+    },
+    "badge_pp": {
+      "type": "Badge",
+      "props": {
+        "text": "paper-pick (NEW)",
+        "variant": "secondary"
+      }
+    },
+    "badge_pr": {
+      "type": "Badge",
+      "props": {
+        "text": "push-recap (NEW)",
+        "variant": "secondary"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "no_data_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "no_data_heading",
+        "no_data_badges",
+        "no_data_note"
+      ]
+    },
+    "no_data_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "No Data (4)",
+        "level": "h3"
+      }
+    },
+    "no_data_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_rs",
+        "badge_sa",
+        "badge_vp",
+        "badge_ws"
+      ]
+    },
+    "badge_rs": {
+      "type": "Badge",
+      "props": {
+        "text": "repo-scanner",
+        "variant": "outline"
+      }
+    },
+    "badge_sa": {
+      "type": "Badge",
+      "props": {
+        "text": "syndicate-article",
+        "variant": "outline"
+      }
+    },
+    "badge_vp": {
+      "type": "Badge",
+      "props": {
+        "text": "vercel-projects",
+        "variant": "outline"
+      }
+    },
+    "badge_ws": {
+      "type": "Badge",
+      "props": {
+        "text": "weekly-shiplog",
+        "variant": "outline"
+      }
+    },
+    "no_data_note": {
+      "type": "Text",
+      "props": {
+        "text": "DISPATCH-SKILL (chain:weekly-grant-update gates weekly-shiplog/syndicate-article)",
+        "variant": "caption"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "healthy_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "healthy_heading",
+        "healthy_stat",
+        "healthy_note"
+      ]
+    },
+    "healthy_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Healthy",
+        "level": "h3"
+      }
+    },
+    "healthy_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Healthy Skills",
+        "value": "23",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "healthy_note": {
+      "type": "Text",
+      "props": {
+        "text": "morning-brief and hacker-news-digest first cron-state writes today",
+        "variant": "caption"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "delta_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "delta_heading",
+        "delta_text"
+      ]
+    },
+    "delta_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Delta vs 2026-05-07",
+        "level": "h3"
+      }
+    },
+    "delta_text": {
+      "type": "Text",
+      "props": {
+        "text": "3 DEGRADED→WARNING graduations (sr crossings 0.6/0.6/0.61), 2 NO DATA→HEALTHY. Pure ISS-013 decay; no new mass-fails.",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "issues_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues_text"
+      ]
+    },
+    "issues_text": {
+      "type": "Text",
+      "props": {
+        "text": "Open issues: 17 · Resolved this run: 0",
+        "variant": "body"
+      }
+    }
+  }
+}
