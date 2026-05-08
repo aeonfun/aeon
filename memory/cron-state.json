@@ -1,14 +1,14 @@
 {
   "heartbeat": {
-    "last_status": "dispatched",
+    "last_status": "success",
     "last_failed": "2026-05-06T15:33:00Z",
-    "total_runs": 53,
-    "total_successes": 37,
+    "total_runs": 54,
+    "total_successes": 38,
     "total_failures": 16,
     "consecutive_failures": 0,
     "success_rate": 0.7,
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu",
-    "last_success": "2026-05-08T15:06:46Z",
+    "last_success": "2026-05-08T20:19:39Z",
     "last_dispatch": "2026-05-08T20:14:11Z"
   },
   "token-alert": {
