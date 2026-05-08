@@ -1,32 +1,26 @@
-*GitHub Releases — 2026-05-07* — 34 updates · 🔴 4 asap · 🟡 1 soon · 🔵 24 fyi · ⚪ 5 skipped
+*GitHub Releases — 2026-05-08* — 18 updates · 🔴 3 asap · 🟡 3 soon · 🔵 10 fyi · ⚪ 2 skipped
 
-🔴 UPGRADE ASAP
-🔴 [vercel/next.js v16.2.5](https://github.com/vercel/next.js/releases/tag/v16.2.5) — Patches DoS in Server Components, middleware/proxy bypass via segment-prefetch, Cache-Components connection exhaustion.
-🔴 [vercel/next.js v15.5.16](https://github.com/vercel/next.js/releases/tag/v15.5.16) — Backports the same three GHSA fixes to the v15 line.
-🔴 [langchain-ai/langchain langchain==0.3.29](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D0.3.29) — Restricts deserialization in storage._lc_store; hardens load() against untrusted manifests.
-🔴 [langchain-ai/langchain langchain-core==1.3.3](https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D1.3.3) — Hardens load() against untrusted manifests; same fix mirrored in core.
+🔴 [vercel/next.js v15.5.18](https://github.com/vercel/next.js/releases/tag/v15.5.18) — Patches DoS in Server Components and Middleware/Proxy bypass via segment-prefetch routes
+🔴 [vercel/next.js v16.2.6](https://github.com/vercel/next.js/releases/tag/v16.2.6) — Patches DoS in Server Components, Middleware/Proxy bypass, Cache Components connection exhaustion
+🔴 [langchain-ai/langchain langchain-core==0.3.86](https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D0.3.86) — Patches CVE-2026-34070 path-traversal backport (GHSA-qh6h-p6c9-ff54)
 
-🟡 UPGRADE SOON
-🟡 [openai/openai-python v2.35.0](https://github.com/openai/openai-python/releases/tag/v2.35.0) — Removes legacy python CLI entrypoint (renamed); ships image-2 API.
+🟡 [anthropics/claude-agent-sdk-python v0.1.77](https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.77) — Deprecates "Skill" in allowed_tools; switch to the skills option
+🟡 [langchain-ai/langchain langchain==0.3.30](https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D0.3.30) — Deprecates the hub module on the v0.3 release line
+🟡 [langchain-ai/langchain langchain-classic==1.0.7](https://github.com/langchain-ai/langchain/releases/tag/langchain-classic%3D%3D1.0.7) — Deprecates hub module and limits loads/dumps deserialization surface
 
-🔵 FYI
-🔵 [ggerganov/llama.cpp b9050](https://github.com/ggml-org/llama.cpp/releases/tag/b9050) — Fixes missing ggml_backend_load_all() call on llama init.
-🔵 [openai/openai-agents-python v0.16.0](https://github.com/openai/openai-agents-python/releases/tag/v0.16.0) — Switches SDK default model to gpt-5.4-mini; pin a model to keep prior behavior.
-🔵 [anthropics/claude-agent-sdk-python v0.1.76](https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.76) — Adds api_error_status on ResultMessage; fixes ToolPermissionContext suggestions deserialization.
-🔵 [anthropics/claude-code v2.1.132](https://github.com/anthropics/claude-code/releases/tag/v2.1.132) — Adds CLAUDE_CODE_SESSION_ID env and alt-screen-disable env; fixes external SIGINT graceful shutdown.
-🔵 [ggerganov/llama.cpp b9049](https://github.com/ggml-org/llama.cpp/releases/tag/b9049) — Adds MiniCPM-V 4.6 multimodal model support.
-🔵 [openai/openai-python v2.35.1](https://github.com/openai/openai-python/releases/tag/v2.35.1) — Fixes imagegen size enum regression from prior release.
-🔵 [ggerganov/llama.cpp b9048](https://github.com/ggml-org/llama.cpp/releases/tag/b9048) — Fixes crash on unsupported model architecture.
-🔵 [ggerganov/llama.cpp b9047](https://github.com/ggml-org/llama.cpp/releases/tag/b9047) — Fixes device-memory fit logic for unknown GPUs.
-🔵 [anthropics/anthropic-sdk-python v0.100.0](https://github.com/anthropics/anthropic-sdk-python/releases/tag/v0.100.0) — Adds Managed Agents multiagents and outcomes, webhooks, and vault validation.
-🔵 [anthropics/anthropic-sdk-typescript sdk-v0.95.0](https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.95.0) — Adds Managed Agents multiagents and outcomes, webhooks, and vault validation.
-… +14 more
+🔵 [ggerganov/llama.cpp b9071](https://github.com/ggml-org/llama.cpp/releases/tag/b9071) — Updates SCHED_DEBUG output to use ggml_op_desc()
+🔵 [openai/openai-agents-python v0.17.0](https://github.com/openai/openai-agents-python/releases/tag/v0.17.0) — Adds gpt-realtime-2 RealtimeAgent default; confines sandbox LocalFile/LocalDir paths
+🔵 [ggerganov/llama.cpp b9070](https://github.com/ggml-org/llama.cpp/releases/tag/b9070) — Ships standard multi-platform build artifacts
+🔵 [anthropics/claude-code v2.1.133](https://github.com/anthropics/claude-code/releases/tag/v2.1.133) — Adds worktree.baseRef setting; fixes credential race conditions and proxy handling
+🔵 [supabase/supabase v1.26.05](https://github.com/supabase/supabase/releases/tag/v1.26.05) — Adds custom OAuth/OIDC providers and stricter Data API exposure rules
+🔵 [BerriAI/litellm v1.83.14-stable.patch.3](https://github.com/BerriAI/litellm/releases/tag/v1.83.14-stable.patch.3) — Ships next cosign-signed stable patch on the 1.83.14 line
+🔵 [openai/openai-node v6.37.0](https://github.com/openai/openai-node/releases/tag/v6.37.0) — Adds web_search_call.results output; redacts api-key headers in debug logs
+🔵 [openai/openai-python v2.36.0](https://github.com/openai/openai-python/releases/tag/v2.36.0) — Adds realtime 2 API surface and manual API updates
+🔵 [anthropics/anthropic-sdk-typescript sdk-v0.95.1](https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.95.1) — Redacts api-key headers in debug logs
+🔵 [openai/openai-agents-python v0.16.1](https://github.com/openai/openai-agents-python/releases/tag/v0.16.1) — Fixes MCP approval policy validation and session history compaction recovery
 
-⚪ SKIP
-⚪ [vercel/next.js v16.3.0-canary.14](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.14) — Canary: shrinks JsValue from 64 to 32 bytes; loader-tree depth ordering.
-⚪ [vercel/next.js v16.3.0-canary.13](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.13) — Canary: disables instant validations in draft mode.
-⚪ [vercel/next.js v16.3.0-canary.12](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.12) — Canary: detects use-cache module-scope deadlocks early; React upstream bump.
-… +2 more
+⚪ [vercel/next.js v16.3.0-canary.16](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.16) — Canary; holds cacheSignal across unstable_cache foreground revalidation
+⚪ [vercel/next.js v16.3.0-canary.15](https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.15) — Canary; cherry-picks GHSA security commits to canary line
 
 _sources: ok=18 notfound=0 ratelimited=0 error=0_
 

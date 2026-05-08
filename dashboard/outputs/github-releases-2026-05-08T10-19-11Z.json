@@ -1,0 +1,662 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Releases — 2026-05-08"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_summary",
+        "sep_1",
+        "heading_asap",
+        "stack_asap",
+        "sep_2",
+        "heading_soon",
+        "stack_soon",
+        "sep_3",
+        "heading_fyi",
+        "stack_fyi",
+        "sep_4",
+        "heading_skipped",
+        "stack_skipped",
+        "sep_5",
+        "text_sources"
+      ]
+    },
+    "text_summary": {
+      "type": "Text",
+      "props": {
+        "text": "18 updates · 3 asap · 3 soon · 10 fyi · 2 skipped",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_asap": {
+      "type": "Heading",
+      "props": {
+        "text": "Critical (ASAP)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_asap": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "release_asap_1",
+        "release_asap_2",
+        "release_asap_3"
+      ]
+    },
+    "release_asap_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_asap_1",
+        "desc_asap_1"
+      ]
+    },
+    "link_asap_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v15.5.18",
+        "href": "https://github.com/vercel/next.js/releases/tag/v15.5.18"
+      },
+      "children": []
+    },
+    "desc_asap_1": {
+      "type": "Text",
+      "props": {
+        "text": "Patches DoS in Server Components and Middleware/Proxy bypass via segment-prefetch routes",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_asap_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_asap_2",
+        "desc_asap_2"
+      ]
+    },
+    "link_asap_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.2.6",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.2.6"
+      },
+      "children": []
+    },
+    "desc_asap_2": {
+      "type": "Text",
+      "props": {
+        "text": "Patches DoS in Server Components, Middleware/Proxy bypass, Cache Components connection exhaustion",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_asap_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_asap_3",
+        "desc_asap_3"
+      ]
+    },
+    "link_asap_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-core==0.3.86",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-core%3D%3D0.3.86"
+      },
+      "children": []
+    },
+    "desc_asap_3": {
+      "type": "Text",
+      "props": {
+        "text": "Patches CVE-2026-34070 path-traversal backport (GHSA-qh6h-p6c9-ff54)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_soon": {
+      "type": "Heading",
+      "props": {
+        "text": "Deprecations (SOON)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_soon": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "release_soon_1",
+        "release_soon_2",
+        "release_soon_3"
+      ]
+    },
+    "release_soon_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_soon_1",
+        "desc_soon_1"
+      ]
+    },
+    "link_soon_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-agent-sdk-python v0.1.77",
+        "href": "https://github.com/anthropics/claude-agent-sdk-python/releases/tag/v0.1.77"
+      },
+      "children": []
+    },
+    "desc_soon_1": {
+      "type": "Text",
+      "props": {
+        "text": "Deprecates \"Skill\" in allowed_tools; switch to the skills option",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_soon_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_soon_2",
+        "desc_soon_2"
+      ]
+    },
+    "link_soon_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain==0.3.30",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain%3D%3D0.3.30"
+      },
+      "children": []
+    },
+    "desc_soon_2": {
+      "type": "Text",
+      "props": {
+        "text": "Deprecates the hub module on the v0.3 release line",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_soon_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_soon_3",
+        "desc_soon_3"
+      ]
+    },
+    "link_soon_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "langchain-ai/langchain langchain-classic==1.0.7",
+        "href": "https://github.com/langchain-ai/langchain/releases/tag/langchain-classic%3D%3D1.0.7"
+      },
+      "children": []
+    },
+    "desc_soon_3": {
+      "type": "Text",
+      "props": {
+        "text": "Deprecates hub module and limits loads/dumps deserialization surface",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_fyi": {
+      "type": "Heading",
+      "props": {
+        "text": "Updates (FYI)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_fyi": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "release_fyi_1",
+        "release_fyi_2",
+        "release_fyi_3",
+        "release_fyi_4",
+        "release_fyi_5",
+        "release_fyi_6",
+        "release_fyi_7",
+        "release_fyi_8",
+        "release_fyi_9",
+        "release_fyi_10"
+      ]
+    },
+    "release_fyi_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_1",
+        "desc_fyi_1"
+      ]
+    },
+    "link_fyi_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9071",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9071"
+      },
+      "children": []
+    },
+    "desc_fyi_1": {
+      "type": "Text",
+      "props": {
+        "text": "Updates SCHED_DEBUG output to use ggml_op_desc()",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_2",
+        "desc_fyi_2"
+      ]
+    },
+    "link_fyi_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.17.0",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.17.0"
+      },
+      "children": []
+    },
+    "desc_fyi_2": {
+      "type": "Text",
+      "props": {
+        "text": "Adds gpt-realtime-2 RealtimeAgent default; confines sandbox LocalFile/LocalDir paths",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_3",
+        "desc_fyi_3"
+      ]
+    },
+    "link_fyi_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "ggerganov/llama.cpp b9070",
+        "href": "https://github.com/ggml-org/llama.cpp/releases/tag/b9070"
+      },
+      "children": []
+    },
+    "desc_fyi_3": {
+      "type": "Text",
+      "props": {
+        "text": "Ships standard multi-platform build artifacts",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_4",
+        "desc_fyi_4"
+      ]
+    },
+    "link_fyi_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/claude-code v2.1.133",
+        "href": "https://github.com/anthropics/claude-code/releases/tag/v2.1.133"
+      },
+      "children": []
+    },
+    "desc_fyi_4": {
+      "type": "Text",
+      "props": {
+        "text": "Adds worktree.baseRef setting; fixes credential race conditions and proxy handling",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_5",
+        "desc_fyi_5"
+      ]
+    },
+    "link_fyi_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "supabase/supabase v1.26.05",
+        "href": "https://github.com/supabase/supabase/releases/tag/v1.26.05"
+      },
+      "children": []
+    },
+    "desc_fyi_5": {
+      "type": "Text",
+      "props": {
+        "text": "Adds custom OAuth/OIDC providers and stricter Data API exposure rules",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_6": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_6",
+        "desc_fyi_6"
+      ]
+    },
+    "link_fyi_6": {
+      "type": "StoryLink",
+      "props": {
+        "title": "BerriAI/litellm v1.83.14-stable.patch.3",
+        "href": "https://github.com/BerriAI/litellm/releases/tag/v1.83.14-stable.patch.3"
+      },
+      "children": []
+    },
+    "desc_fyi_6": {
+      "type": "Text",
+      "props": {
+        "text": "Ships next cosign-signed stable patch on the 1.83.14 line",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_7": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_7",
+        "desc_fyi_7"
+      ]
+    },
+    "link_fyi_7": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-node v6.37.0",
+        "href": "https://github.com/openai/openai-node/releases/tag/v6.37.0"
+      },
+      "children": []
+    },
+    "desc_fyi_7": {
+      "type": "Text",
+      "props": {
+        "text": "Adds web_search_call.results output; redacts api-key headers in debug logs",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_8": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_8",
+        "desc_fyi_8"
+      ]
+    },
+    "link_fyi_8": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-python v2.36.0",
+        "href": "https://github.com/openai/openai-python/releases/tag/v2.36.0"
+      },
+      "children": []
+    },
+    "desc_fyi_8": {
+      "type": "Text",
+      "props": {
+        "text": "Adds realtime 2 API surface and manual API updates",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_9": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_9",
+        "desc_fyi_9"
+      ]
+    },
+    "link_fyi_9": {
+      "type": "StoryLink",
+      "props": {
+        "title": "anthropics/anthropic-sdk-typescript sdk-v0.95.1",
+        "href": "https://github.com/anthropics/anthropic-sdk-typescript/releases/tag/sdk-v0.95.1"
+      },
+      "children": []
+    },
+    "desc_fyi_9": {
+      "type": "Text",
+      "props": {
+        "text": "Redacts api-key headers in debug logs",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_fyi_10": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fyi_10",
+        "desc_fyi_10"
+      ]
+    },
+    "link_fyi_10": {
+      "type": "StoryLink",
+      "props": {
+        "title": "openai/openai-agents-python v0.16.1",
+        "href": "https://github.com/openai/openai-agents-python/releases/tag/v0.16.1"
+      },
+      "children": []
+    },
+    "desc_fyi_10": {
+      "type": "Text",
+      "props": {
+        "text": "Fixes MCP approval policy validation and session history compaction recovery",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "heading_skipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Pre-release (SKIPPED)",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "stack_skipped": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "release_skipped_1",
+        "release_skipped_2"
+      ]
+    },
+    "release_skipped_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_skipped_1",
+        "desc_skipped_1"
+      ]
+    },
+    "link_skipped_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.16",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.16"
+      },
+      "children": []
+    },
+    "desc_skipped_1": {
+      "type": "Text",
+      "props": {
+        "text": "Canary; holds cacheSignal across unstable_cache foreground revalidation",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "release_skipped_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_skipped_2",
+        "desc_skipped_2"
+      ]
+    },
+    "link_skipped_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel/next.js v16.3.0-canary.15",
+        "href": "https://github.com/vercel/next.js/releases/tag/v16.3.0-canary.15"
+      },
+      "children": []
+    },
+    "desc_skipped_2": {
+      "type": "Text",
+      "props": {
+        "text": "Canary; cherry-picks GHSA security commits to canary line",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: ok=18 notfound=0 ratelimited=0 error=0",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
