@@ -1,0 +1,184 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "vibecoding-digest"
+      },
+      "children": [
+        "status-alert",
+        "sep1",
+        "details-section",
+        "sep2",
+        "issues-section",
+        "sep3",
+        "recommendation-section"
+      ]
+    },
+    "status-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "VIBECODING_DIGEST_ERROR — 2026-05-08",
+        "message": "All 3 r/vibecoding endpoints failed (16th consecutive recurrence since 2026-04-25)",
+        "type": "error"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "details-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "details-heading",
+        "curl-detail",
+        "webfetch-detail",
+        "endpoints-row"
+      ]
+    },
+    "details-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Technical Details",
+        "level": "h3"
+      }
+    },
+    "curl-detail": {
+      "type": "Text",
+      "props": {
+        "text": "curl 403 anti-bot on top/hot/rising",
+        "variant": "body"
+      }
+    },
+    "webfetch-detail": {
+      "type": "Text",
+      "props": {
+        "text": "WebFetch host-blocked on old.reddit.com / www.reddit.com / reddit.com",
+        "variant": "body"
+      }
+    },
+    "endpoints-row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-top",
+        "badge-hot",
+        "badge-rising"
+      ]
+    },
+    "badge-top": {
+      "type": "Badge",
+      "props": {
+        "text": "top=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-hot": {
+      "type": "Badge",
+      "props": {
+        "text": "hot=fail",
+        "variant": "destructive"
+      }
+    },
+    "badge-rising": {
+      "type": "Badge",
+      "props": {
+        "text": "rising=fail",
+        "variant": "destructive"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues-heading",
+        "issue-list"
+      ]
+    },
+    "issues-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Related Issues",
+        "level": "h3"
+      }
+    },
+    "issue-list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "issue-002-text",
+        "issue-012-text"
+      ]
+    },
+    "issue-002-text": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-002: unresolved",
+        "variant": "body"
+      }
+    },
+    "issue-012-text": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-012: unresolved",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "recommendation-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rec-heading",
+        "rec-text",
+        "blocker-text"
+      ]
+    },
+    "rec-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendation",
+        "level": "h3"
+      }
+    },
+    "rec-text": {
+      "type": "Text",
+      "props": {
+        "text": "Pause cron until prefetch ships",
+        "variant": "body"
+      }
+    },
+    "blocker-text": {
+      "type": "Text",
+      "props": {
+        "text": "Blocker: scripts/prefetch-reddit.sh still not landed",
+        "variant": "body"
+      }
+    }
+  }
+}
