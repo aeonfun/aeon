@@ -1,29 +1,22 @@
-*GitHub Trending — 2026-05-07*
+*GitHub Trending — 2026-05-08*
 
-*Top pick* — [anthropics/financial-services](https://github.com/anthropics/financial-services)
-First Anthropic-published reference stack for Claude on financial workflows — closest first-party analogue to CalibrationGap's Polymarket scanner.
+*Top pick* — [z-lab/dflash](https://github.com/z-lab/dflash)
+Block diffusion stacked onto speculative decoding — fresh research code claiming meaningful LLM inference speedups beyond vanilla draft-verify. 22× baseline today on a 4-month-old repo.
 
 *AI/ML*
-• [anthropics/financial-services](https://github.com/anthropics/financial-services) — ★ 641 today (9.6k total) · Python · [ACCELERATING]
-Anthropic-org reference repo for Claude on financial workflows — first-party comp class for trading-agent stacks.
+• [z-lab/dflash](https://github.com/z-lab/dflash) — ★ 671 today (3.6k total) · Python · [ACCELERATING]
+Block-diffusion-style parallel decode fused with draft-verify; latency win for batched LLM serving, not another wrapper.
 
-• [shiyu-coder/Kronos](https://github.com/shiyu-coder/Kronos) — ★ 234 today (23.3k total) · Python · [ACCELERATING]
-Decoder-only foundation model trained on K-line market sequences — financial-time-series LLM, not another prompt-wrapper.
+• [VectifyAI/PageIndex](https://github.com/VectifyAI/PageIndex) — ★ 943 today (30.0k total) · Python · [ACCELERATING]
+Vectorless RAG — replaces embedding+ANN with LLM reasoning over a document table-of-contents tree. Bypasses vector-DB lock-in.
 
-• [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — ★ 800 today (32.0k total) · Shell · [ACCELERATING]
-Osmani's 32k-star catalog of Claude skills for shipping engineering agents — third Karpathy-class bundle this week.
+• [vercel-labs/open-agents](https://github.com/vercel-labs/open-agents) — ★ 131 today (5.2k total) · TypeScript · [ACCELERATING]
+Vercel's first-party cloud-agent template — sets the default deployment shape for serverless agents on its infra.
 
-• [bytedance/deer-flow](https://github.com/bytedance/deer-flow) — ★ 337 today (65.8k total) · Python · [RETURNING]
-Bytedance SuperAgent framework hits 65k on 1-year-anniversary push — sandboxes + memory + tools, ruflo-class scope.
-
-*Devtools*
-• [Hmbown/DeepSeek-TUI](https://github.com/Hmbown/DeepSeek-TUI) — ★ 6.2k today (16.9k total) · Rust · [RETURNING]
-39× baseline (6,175 today) on a 108-day-old repo — DeepSeek-native terminal coding agent, almost certainly a release or HN front-page.
-
-*Infra*
-• [InsForge/InsForge](https://github.com/InsForge/InsForge) — ★ 230 today (8.6k total) · TypeScript · [ACCELERATING]
-Postgres-native backend for coding agents — auth, storage, compute, AI gateway in one box. Supabase-for-agents shape.
+*Web/Apps*
+• [docusealco/docuseal](https://github.com/docusealco/docuseal) — ★ 900 today (15.8k total) · Ruby · [RETURNING]
+59× baseline spike on a 3-year-old DocuSign alternative — release-driven re-surface, check changelog if you self-host signing.
 
 ---
-sources: trending=ok(16) · gh_api=ok · kept 6/16
+sources: trending=ok(12) · gh_api=ok · kept 4/12
 

@@ -1,0 +1,356 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "GitHub Trending"
+      },
+      "children": [
+        "heading-date",
+        "top-pick-section",
+        "sep-1",
+        "ai-ml-heading",
+        "ai-ml-repos",
+        "sep-2",
+        "web-apps-heading",
+        "web-apps-repos",
+        "sep-3",
+        "sources-text"
+      ]
+    },
+    "heading-date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-08",
+        "level": "h4"
+      }
+    },
+    "top-pick-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-pick-label",
+        "top-pick-link",
+        "top-pick-desc"
+      ]
+    },
+    "top-pick-label": {
+      "type": "Heading",
+      "props": {
+        "text": "Top pick",
+        "level": "h3"
+      }
+    },
+    "top-pick-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "z-lab/dflash",
+        "href": "https://github.com/z-lab/dflash"
+      }
+    },
+    "top-pick-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Block diffusion stacked onto speculative decoding — fresh research code claiming meaningful LLM inference speedups beyond vanilla draft-verify. 22× baseline today on a 4-month-old repo."
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "ai-ml-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI/ML",
+        "level": "h2"
+      }
+    },
+    "ai-ml-repos": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "repo-dflash",
+        "repo-pageindex",
+        "repo-open-agents"
+      ]
+    },
+    "repo-dflash": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-dflash-header",
+        "repo-dflash-desc"
+      ]
+    },
+    "repo-dflash-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-dflash-link",
+        "repo-dflash-stats",
+        "repo-dflash-lang",
+        "repo-dflash-status"
+      ]
+    },
+    "repo-dflash-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "z-lab/dflash",
+        "href": "https://github.com/z-lab/dflash"
+      }
+    },
+    "repo-dflash-stats": {
+      "type": "Text",
+      "props": {
+        "text": "★ 671 today (3.6k total)",
+        "variant": "caption"
+      }
+    },
+    "repo-dflash-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "outline"
+      }
+    },
+    "repo-dflash-status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "repo-dflash-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Block-diffusion-style parallel decode fused with draft-verify; latency win for batched LLM serving, not another wrapper."
+      }
+    },
+    "repo-pageindex": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-pageindex-header",
+        "repo-pageindex-desc"
+      ]
+    },
+    "repo-pageindex-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-pageindex-link",
+        "repo-pageindex-stats",
+        "repo-pageindex-lang",
+        "repo-pageindex-status"
+      ]
+    },
+    "repo-pageindex-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "VectifyAI/PageIndex",
+        "href": "https://github.com/VectifyAI/PageIndex"
+      }
+    },
+    "repo-pageindex-stats": {
+      "type": "Text",
+      "props": {
+        "text": "★ 943 today (30.0k total)",
+        "variant": "caption"
+      }
+    },
+    "repo-pageindex-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Python",
+        "variant": "outline"
+      }
+    },
+    "repo-pageindex-status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "repo-pageindex-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Vectorless RAG — replaces embedding+ANN with LLM reasoning over a document table-of-contents tree. Bypasses vector-DB lock-in."
+      }
+    },
+    "repo-open-agents": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-open-agents-header",
+        "repo-open-agents-desc"
+      ]
+    },
+    "repo-open-agents-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-open-agents-link",
+        "repo-open-agents-stats",
+        "repo-open-agents-lang",
+        "repo-open-agents-status"
+      ]
+    },
+    "repo-open-agents-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vercel-labs/open-agents",
+        "href": "https://github.com/vercel-labs/open-agents"
+      }
+    },
+    "repo-open-agents-stats": {
+      "type": "Text",
+      "props": {
+        "text": "★ 131 today (5.2k total)",
+        "variant": "caption"
+      }
+    },
+    "repo-open-agents-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "TypeScript",
+        "variant": "outline"
+      }
+    },
+    "repo-open-agents-status": {
+      "type": "Badge",
+      "props": {
+        "text": "ACCELERATING",
+        "variant": "secondary"
+      }
+    },
+    "repo-open-agents-desc": {
+      "type": "Text",
+      "props": {
+        "text": "Vercel's first-party cloud-agent template — sets the default deployment shape for serverless agents on its infra."
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "web-apps-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Web/Apps",
+        "level": "h2"
+      }
+    },
+    "web-apps-repos": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "repo-docuseal"
+      ]
+    },
+    "repo-docuseal": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-docuseal-header",
+        "repo-docuseal-desc"
+      ]
+    },
+    "repo-docuseal-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "repo-docuseal-link",
+        "repo-docuseal-stats",
+        "repo-docuseal-lang",
+        "repo-docuseal-status"
+      ]
+    },
+    "repo-docuseal-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "docusealco/docuseal",
+        "href": "https://github.com/docusealco/docuseal"
+      }
+    },
+    "repo-docuseal-stats": {
+      "type": "Text",
+      "props": {
+        "text": "★ 900 today (15.8k total)",
+        "variant": "caption"
+      }
+    },
+    "repo-docuseal-lang": {
+      "type": "Badge",
+      "props": {
+        "text": "Ruby",
+        "variant": "outline"
+      }
+    },
+    "repo-docuseal-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RETURNING",
+        "variant": "default"
+      }
+    },
+    "repo-docuseal-desc": {
+      "type": "Text",
+      "props": {
+        "text": "59× baseline spike on a 3-year-old DocuSign alternative — release-driven re-surface, check changelog if you self-host signing."
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: trending=ok(12) · gh_api=ok · kept 4/12",
+        "variant": "muted"
+      }
+    }
+  }
+}
