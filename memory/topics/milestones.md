@@ -10,5 +10,6 @@
 - 271 stars — 2026-05-05 (v7=25, v30=132, **v7/day (3.57) below v30 baseline (4.4) for first time in series — pace cooling but still organic**; last-star timestamp 2026-05-05T14:59:38Z)
 - 276 stars — 2026-05-06 (v7=20 [05-29..05-06: not enumerated explicitly today; today_stars=5, avg7=2.86 from deltas 04-29..05-05: +1,+2,+2,+5,+6,+3,+1, verdict ACTIVE rule today (5) > 1.5*avg7 (4.29)]; v7/day continues to cool, second cooling day in series)
 - 278 stars — 2026-05-07 (v7=25, v30=133, baseline 4.43/day; today_stars=2; v7/day 3.57 still below v30 baseline 4.43 — **3rd cooling day in series**, but recovered +0.71/day off yesterday's 2.86 trough. Last-star timestamp 2026-05-07T08:37:15Z)
-- Next milestone: 300 stars — projected ETA ~2026-05-13 (~22 stars to go; ETA 6.2 days at v7 pace 3.57/day; ~12-day headroom vs operator soft-deadline 2026-05-25)
-- 300 stars — soft deadline 2026-05-25 (per changelog Highlights line; load-bearing for HN/MCP-registry discoverability). On-track with ~12-day headroom.
+- 280 stars — 2026-05-08 (today_stars=2; STAR_MILESTONE_QUIET — 250 already recorded; 280 between 250 and 300; star-milestone gate 5a fires no action. Last-star timestamp 2026-05-08T12:15:49Z)
+- Next milestone: 300 stars — projected ETA ~2026-05-13 (~20 stars to go; ~17-day headroom vs operator soft-deadline 2026-05-25)
+- 300 stars — soft deadline 2026-05-25 (per changelog Highlights line; load-bearing for HN/MCP-registry discoverability). On-track with ~17-day headroom.

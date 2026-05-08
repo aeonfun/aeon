@@ -74,7 +74,7 @@
 - **ISS-003..011** — skill-evals BOOTSTRAP findings (2026-04-26). See "skill-evals BOOTSTRAP" section above. ISS-007 / ISS-009 close on evals.json key patch (no code).
 - **ISS-012** — reddit-digest cannot run on JSON API, sandbox-limitation, high. `memory/issues/ISS-012.md`. Same root cause as ISS-002 — same `scripts/prefetch-reddit.sh` closes both. RSS fallback works (200 across 9/10 subs but lacks score / num_comments / upvote_ratio); 2026-04-27 PM run produced REDDIT_DIGEST_OK (quiet day, RSS-only narrative-detection viable; only standout track is fully blocked).
 - **ISS-013** — 🔴 **CRITICAL**: mass skill failure 2026-04-26 23:53–58Z. ~52 skills flipped `last_status: failed` inside a 5-min window with shared zero-token / zero-cost telemetry signature. Claude binary never executed work — workflow runner crashed before invocation, OR state-update step is double-incrementing failures across the fleet. 7 no-op-exit skills self-recovered at 02:11 UTC 2026-04-27; ~50 skills still show `success_rate < 0.5` from the burst (counters decay as runs accumulate). Operator action: pull GHA logs for the 23:53–58Z window. Detected by skill-health (HEALTH:CRITICAL(53)).
-- **ISS-014** — reply-maker cannot source fresh tweets — XAI prefetch case missing, x.com WebFetch returns HTTP 402. Same class as ISS-001/002/012. **Closer PR #156 opened 2026-05-03** (`ai/reply-maker-xai-prefetch` → `aaronjmars:main`, +33 -2 across `scripts/prefetch-xai.sh` and `skills/reply-maker/SKILL.md`). EMPTY/DEGRADED recurrence count: 8 days running. Closes on merge.
+- **ISS-014 RESOLVING 2026-05-08** — PR #156 (`ai/reply-maker-xai-prefetch` → `aaronjmars:main`, +33 -2 across `scripts/prefetch-xai.sh` and `skills/reply-maker/SKILL.md`) MERGED 2026-05-08T01:18:03 UTC after 13 days idle. INDEX.md flip pending next skill-health cycle.
 - **ISS-018** (filed 2026-05-03 by skill-evals) — heartbeat eval `forbidden_pattern:${var}` finds 3 occurrences in `memory/logs/2026-05-02.md` lines 652/733/904. Other skills logging "var empty" trigger heartbeat's shared-log assertion. Prompt-bug, not real failure. Fix: dedicated heartbeat output file or `skip_forbidden_in_log_context: true`.
 - **ISS-019** (filed 2026-05-03 by skill-evals) — repo-article `missing_pattern:Aeon|aeon` zero matches in `articles/repo-article-2026-05-02.md` (the swarm-fund-mvp selector-layer piece). Today's ClawBank-EIN article threads Aeon explicitly to close the assertion forward. Either narrow assertion or document drift.
 - **ISS-020** (filed 2026-05-06 by heartbeat) — mass skill failure 2026-05-06T15:32-35Z, 17 skills hit `consecutive_failures >= 1` in 14:00 / 15:00 heartbeat windows. article spiked cf=3 → recovered cf=0; repo-actions / reg-monitor peaked cf=2. All recovered on next dispatch. **Distinct from ISS-013** — non-zero token cost suggests workflow-side state-write regression (post-execution state file not cleared between runs), not token-emission. Contained.
@@ -143,11 +143,18 @@
 ## Cost discipline — 2026-05-04 cost-report
 - **$629.09 / 76 runs in last 7 days; monthly projection ~$2,696.** CLAUDE.md threshold is $40/wk — currently >15× over. Suggested Sonnet downgrades for next `self-improve` run: external-feature, repo-actions, heartbeat (~$149/wk savings combined). Surface as explicit edit per CLAUDE.md cost-discipline rule.
 
-## ISS-017 — decay status 2026-05-06 / 2026-05-07
+## 2026-05-08 ops state
+- **PR #156 reply-maker XAI prefetch MERGED 2026-05-08T01:18:03 UTC** (after 13 days idle). **ISS-014 carrier closes** on this merge per OPS ALERT linkage; INDEX.md mutation pending next skill-health 18:00Z cycle. One of three operator-blocking carriers cleared. Two remaining: chain-runner.yml `dispatch_skill()` patch + `scripts/prefetch-reddit.sh`.
+- **PR #162 added `huggingface-trending` skill 2026-05-08** — skills 112 → 113. Ships disabled; operator must flip `enabled: true` to activate the 09:30 UTC slot.
+- **chain-runner.yml `dispatch_skill()` DEGRADED day 12** (today's morning chain failed at 07:14:30Z, evening-rollup 05-07T21:02:20Z). Same pattern as 05-04→05-08.
+- **ISS-013 still 57 DEGRADED**, no graduates since 05-05. heartbeat 05-08 enumerates ~37 chronic-low success-rate skills carrying ISS-013 burst-tail + ISS-020 burst-tail; no fresh degradations. Decay halted.
+- ISS-017 (cron-tick gaps) pattern unchanged: "delayed-batch dispatch with high variance" (morning 68–134 min late; evening 30–61 min late). Trend is drift not recovery.
+- skill-runs script blocked 7 days running (05-02–05-08) → SKILL_HEALTH_PARTIAL persists.
+
+## ISS-017 — decay status 2026-05-06 / 2026-05-07 (historical)
 - **2026-05-07:** ISS-013 still 57 DEGRADED, no graduates since 05-05. ISS-013 affected_skills count holds at 57 (heartbeat sr 0.62→0.64 on 05-04 + fleet-control 0.60 graduate 05-04 = last decay events).
 - **2026-05-06 15:32-35Z:** ISS-020 mass-fail burst (17 skills cf>=1 in 4-min window) — distinct root cause from ISS-013 per heartbeat filing, all recovered by next dispatch.
-- ISS-017 (cron-tick gaps) pattern shifted from "silent skip" → "delayed-batch dispatch with high variance." Morning slots 68–134 min late; evening 30–61 min late. Trend is drift not recovery.
-- skill-runs script blocked 5 days running (05-02–05-06) → SKILL_HEALTH_PARTIAL.
+- ISS-017 pattern shifted "silent skip" → "delayed-batch dispatch with high variance" first observed 2026-05-02.
 
 ## ISS-017 — decay status 2026-05-05 (snapshot 18:21Z, historical)
 - **State delta vs 05-04 18:55Z snapshot: ZERO across all classification sets** (CRITICAL=0, FLAPPING=0, DEGRADED=57, WARNING=3 [evening-rollup, fleet-control, heartbeat], HEALTHY=22, NO DATA=6). No graduates this run.
