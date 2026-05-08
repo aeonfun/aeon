@@ -1,5 +1,13 @@
-`token-report` aborted silently — seventh consecutive skip. No article written, no notification sent.
+Skill executed and completed. The abort condition was met: no Base-chain token contract address is configured in `memory/MEMORY.md` and `${var}` is empty — this is the ninth consecutive skip on the same grounds. No article written, no notification sent. Log entry appended to `memory/logs/2026-05-08.md`.
 
-Condition: `memory/MEMORY.md` "Tracked Tokens" has BTC/ETH/SOL via CoinGecko IDs only. The skill requires a Base-chain contract address (`Contract | Chain` columns). `var` is empty. Per skill spec: no tracked token + empty var = silent exit.
+To activate this skill, add a `## Tracked Token` section to `memory/MEMORY.md` with the format:
+```markdown
+## Tracked Token
+| Token | Contract | Chain |
+|-------|----------|-------|
+| AEON  | 0x...    | base  |
+```
 
-To activate: add a row to MEMORY.md under `## Tracked Token` (singular) with format `| TOKEN | 0x... | base |`.
+## Summary
+
+Ran `token-report` for 2026-05-08. Abort condition met (no Base-chain contract configured, `${var}` empty) — silent exit per skill spec. Ninth consecutive skip. Log entry written to `memory/logs/2026-05-08.md`. No article, no notification.
