@@ -977,7 +977,13 @@
   },
   "morning-brief": {
     "last_dispatch": "2026-05-08T08:50:25Z",
-    "last_status": "dispatched"
+    "last_status": "success",
+    "last_success": "2026-05-08T08:55:42Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1
   },
   "hacker-news-digest": {
     "last_dispatch": "2026-05-08T08:50:25Z",
