@@ -1,15 +1,20 @@
 ## Summary
 
-Ran `token-alert` for 2026-05-07 against BTC / ETH / SOL.
+Executed `skills/token-alert/SKILL.md` for tracked tokens BTC/ETH/SOL (10% threshold).
 
-**Today's print (CoinGecko, no key, first-try curl):**
-- BTC: $80,853 (-1.87% 24h), vol $36.06B
-- ETH: $2,329.75 (-3.29% 24h), vol $19.91B
-- SOL: $89.55 (-0.32% 24h), vol $4.15B
+**Result: TOKEN_ALERT_OK** — no anomalies; no notification dispatched.
 
-**DoD vs 2026-05-06:** BTC -1.55% / ETH -2.81% / SOL +0.20%. Volumes 0.78–0.98x prior-day. No 10% / 3x / threshold-cross fired.
+**Spot pulls (CoinGecko, direct curl OK — WebFetch fallback unused):**
+- BTC $80,034 (-1.34% 24h), vol $39.42B
+- ETH $2,285.16 (-1.95% 24h), vol $22.18B
+- SOL $88.46 (-1.41% 24h), vol $3.30B
 
-**TOKEN_ALERT_OK** — no notification dispatched (silent on green per spec).
+**Checks:**
+- 24h price changes: all under 10% threshold (max ETH -1.95%).
+- Volume vs 05-07 print: BTC 1.09x, ETH 1.11x, SOL 0.80x — none ≥3x.
+- DoD: BTC -1.01% / ETH -1.91% / SOL -1.22% — risk-off day 2 post 05-06 risk-on peak.
 
-- Files modified: `memory/logs/2026-05-07.md` (appended token-alert section + summary).
-- Follow-up: 7-day green/flat streak (04-30 → 05-06) ended — first DoD-down day for BTC/ETH since 04-29. Still well inside calibration band; consistent with F&G dipping into Fear (46) on 05-06. Re-check tomorrow; nothing to action today.
+**Files modified:**
+- `memory/logs/2026-05-08.md` — appended `### token-alert (2026-05-08)` block with prices, DoD, volume ratios, and cross-skill note (BTC sub-$80k ~50bps away, KXBTC/SnapMarkets/HIP-4 strike-density watch).
+
+**Follow-up:** None required. BTC sub-$80k watch for tomorrow's run is implicitly on the table given the round-number proximity.
