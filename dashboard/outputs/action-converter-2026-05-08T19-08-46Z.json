@@ -1,0 +1,317 @@
+{
+  "root": "main-card",
+  "state": {},
+  "elements": {
+    "main-card": {
+      "type": "Card",
+      "props": {
+        "title": "action-converter"
+      },
+      "children": [
+        "main-stack"
+      ]
+    },
+    "main-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "header-heading",
+        "subtitle-text",
+        "sep1",
+        "action1",
+        "sep2",
+        "action2",
+        "sep3",
+        "action3",
+        "sep4",
+        "action4",
+        "sep5",
+        "action5",
+        "sep6",
+        "sources-text"
+      ]
+    },
+    "header-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "5 Actions — 2026-05-08",
+        "level": "h2"
+      }
+    },
+    "subtitle-text": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: Ship outputs JSON, log Iran resolution, lock auto-merge, downgrade three skills, open DEEP-LIQ patch."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "action1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a1-badge",
+        "a1-title",
+        "a1-why",
+        "a1-done",
+        "a1-loop"
+      ]
+    },
+    "a1-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Action 1"
+      }
+    },
+    "a1-title": {
+      "type": "Text",
+      "props": {
+        "text": "Ship the first `outputs/monitor-polymarket/2026-05-08.json` artifact on `tomscaria/aeon` with a `chain-runner.yml` post-skill hook that mkdir+writes; branch `feat/outputs-contract`."
+      }
+    },
+    "a1-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: ADR-093 falsifier 10 days remaining; producer-side wire-up still aspirational, gating swarm-fund-mvp tick-broker.",
+        "variant": "body"
+      }
+    },
+    "a1-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on `tomscaria/aeon` with the hook and the first JSON file committed.",
+        "variant": "body"
+      }
+    },
+    "a1-loop": {
+      "type": "Text",
+      "props": {
+        "text": "loop: outputs-contract-scaffold",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "action2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a2-badge",
+        "a2-title",
+        "a2-why",
+        "a2-done",
+        "a2-loop"
+      ]
+    },
+    "a2-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Action 2"
+      }
+    },
+    "a2-title": {
+      "type": "Text",
+      "props": {
+        "text": "Tonight after midnight ET, record Iran-airspace-May-8 settlement postmortem in `memory/topics/polymarket.md` — final % YES vs sister \"major closure\" 52% YES book, 48pp clause-text-divergence empirical anchor #2 for the ADR-096 queue."
+      }
+    },
+    "a2-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: today's resolution turns a standing 48pp gap into closed-loop empirical record for resolution-text-ingest.",
+        "variant": "body"
+      }
+    },
+    "a2-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: postmortem block appended to `memory/topics/polymarket.md` with settlement % and sister-book delta.",
+        "variant": "body"
+      }
+    },
+    "a2-loop": {
+      "type": "Text",
+      "props": {
+        "text": "loop: iran-airspace-postmortem-record",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "action3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a3-badge",
+        "a3-title",
+        "a3-why",
+        "a3-done",
+        "a3-loop"
+      ]
+    },
+    "a3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Action 3"
+      }
+    },
+    "a3-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add `## Trusted Authors` section to `memory/watched-repos.md` listing `aaronjmars` (and `tomscaria`) — one-line edit that unblocks `auto-merge` for next repo-owner PR on `aaronjmars/aeon`."
+      }
+    },
+    "a3-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: yesterday's #2 didn't land; 1-line config still gating auto-merge despite PR #156 closure overnight.",
+        "variant": "body"
+      }
+    },
+    "a3-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: file shows `## Trusted Authors` section with `aaronjmars` and `tomscaria` listed.",
+        "variant": "body"
+      }
+    },
+    "a3-loop": {
+      "type": "Text",
+      "props": {
+        "text": "loop: trusted-authors-policy-unblock",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "action4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a4-badge",
+        "a4-title",
+        "a4-why",
+        "a4-done",
+        "a4-loop"
+      ]
+    },
+    "a4-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Action 4"
+      }
+    },
+    "a4-title": {
+      "type": "Text",
+      "props": {
+        "text": "Switch `external-feature` / `repo-actions` / `heartbeat` in `aeon.yml` to `model: claude-sonnet-4-6` — three-line edit, ~$149/wk savings; branch `chore/cost-downgrade`."
+      }
+    },
+    "a4-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: $2,696/mo run-rate is ~67× over $40/wk discipline; these three are highest-spend Opus-tagged skills.",
+        "variant": "body"
+      }
+    },
+    "a4-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on `tomscaria/aeon` with three model flags flipped to `claude-sonnet-4-6`.",
+        "variant": "body"
+      }
+    },
+    "a4-loop": {
+      "type": "Text",
+      "props": {
+        "text": "loop: cost-downgrade-aeon-yml",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "action5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "a5-badge",
+        "a5-title",
+        "a5-why",
+        "a5-done",
+        "a5-loop"
+      ]
+    },
+    "a5-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Action 5"
+      }
+    },
+    "a5-title": {
+      "type": "Text",
+      "props": {
+        "text": "Open monitor-runners DEEP-LIQ slot-5 floor patch PR on `aaronjmars/aeon` — branch `fix/monitor-runners-deep-liq-floor`; cite TTPA + SKYAI streak-end 05-05 plus 7-run organic evidence."
+      }
+    },
+    "a5-why": {
+      "type": "Text",
+      "props": {
+        "text": "why: 7 organic-evidence runs banked since TTPA streak ended; aaronjmars/aeon queue cleared overnight (zero open PRs).",
+        "variant": "body"
+      }
+    },
+    "a5-done": {
+      "type": "Text",
+      "props": {
+        "text": "done: PR opened on `aaronjmars/aeon` with the slot-5 replacement diff and 7-run evidence in body.",
+        "variant": "body"
+      }
+    },
+    "a5-loop": {
+      "type": "Text",
+      "props": {
+        "text": "loop: monitor-runners-deep-liq-floor-patch",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "sources: memory=132 logs=15 topics=11 prs=9 cron_failing=3 mode=OK",
+        "variant": "muted"
+      }
+    }
+  }
+}
