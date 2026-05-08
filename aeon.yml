@@ -24,6 +24,7 @@ skills:
   github-issues: { enabled: false, schedule: "0 9 * * *" }
   github-trending: { enabled: false, schedule: "0 9 * * *" }
   github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
+  huggingface-trending: { enabled: false, schedule: "30 9 * * *", model: "claude-sonnet-4-6", var: "" } # daily — curated trending HF models/datasets/spaces with "why notable" lines, momentum tags, and bucket clustering. Set var to one of {models, datasets, spaces} to scope.
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: false, schedule: "0 12 * * *" }

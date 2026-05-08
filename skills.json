@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-07T12:02:08Z",
+    "generated": "2026-05-08T11:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 111,
+    "total": 112,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -466,6 +466,18 @@
             "sha": "4782c4a",
             "updated": "2026-04-28",
             "install": "./add-skill aaronjmars/aeon heartbeat"
+        },
+        {
+            "slug": "huggingface-trending",
+            "name": "Hugging Face Trending",
+            "description": "Curated trending Hugging Face models, datasets, and spaces \u2014 filtered, clustered, and labeled with a \"why notable\" line per pick",
+            "category": "research",
+            "schedule": "30 9 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-08",
+            "install": "./add-skill aaronjmars/aeon huggingface-trending"
         },
         {
             "slug": "idea-capture",

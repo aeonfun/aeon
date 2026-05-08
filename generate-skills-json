@@ -29,6 +29,7 @@ get_category() {
     article|digest|rss-digest|hacker-news-digest|paper-digest|paper-pick) echo "research" ;;
     list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
     deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
+    huggingface-trending) echo "research" ;;
     # Dev & Code
     pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
     issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
