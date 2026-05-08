@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "article",
+        "description": "New article written"
+      },
+      "children": [
+        "storylink"
+      ]
+    },
+    "storylink": {
+      "type": "StoryLink",
+      "props": {
+        "title": "The U.S. Hit Iranian Targets Yesterday. Polymarket Is Pricing Todays Airspace Closure At 3 Percent.",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/2026-05-08.md"
+      }
+    }
+  }
+}
