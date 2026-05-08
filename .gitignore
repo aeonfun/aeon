@@ -45,6 +45,7 @@ tmp_*
 *_msg.txt
 *_raw.txt
 .notify-payload.txt
+.rss-feed-prev-titles.txt
 
 # Leaked creds scratch
 .xai_key

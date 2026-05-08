@@ -1,11 +1,1 @@
-*RSS feed updated* — 121 entries
-
-New:
-- Changelog — Week of 2026-05-07
-- Code Health Report — 2026-05-07
-- Paper Digest — 2026-05-07
-- Push Recap — 2026-05-07
-- Repo Actions — tomscaria/swarm-fund-mvp — 2026-05-07
-(+4 more)
-
-Subscribe: https://raw.githubusercontent.com/tomscaria/aeon/main/articles/feed.xml
+RSS feed BLOCKED — bash scripts/generate-feed.sh denied by sandbox approval gate. articles/feed.xml unchanged (hash f860b168), but 10+ articles dated 2026-05-08 are on disk and absent from the feed. No commit, no XML validation possible. Re-run with bash pre-approved, or run the generator from a permitted shell.

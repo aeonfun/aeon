@@ -1,0 +1,125 @@
+{
+  "root": "card_rss",
+  "state": {},
+  "elements": {
+    "card_rss": {
+      "type": "Card",
+      "props": {
+        "title": "rss-feed",
+        "description": "RSS feed generation blocked"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert_blocked",
+        "sep1",
+        "stack_details",
+        "sep2",
+        "stack_actions"
+      ]
+    },
+    "alert_blocked": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "RSS Feed Generation Blocked",
+        "message": "bash scripts/generate-feed.sh denied by sandbox approval gate"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_details": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_file_status",
+        "text_articles_status",
+        "text_feed_sync",
+        "text_commit_status",
+        "text_validation_status"
+      ]
+    },
+    "text_file_status": {
+      "type": "Text",
+      "props": {
+        "text": "articles/feed.xml unchanged (hash f860b168)"
+      }
+    },
+    "text_articles_status": {
+      "type": "Text",
+      "props": {
+        "text": "10+ articles dated 2026-05-08 on disk"
+      }
+    },
+    "text_feed_sync": {
+      "type": "Text",
+      "props": {
+        "text": "Articles absent from feed"
+      }
+    },
+    "text_commit_status": {
+      "type": "Text",
+      "props": {
+        "text": "No commit made"
+      }
+    },
+    "text_validation_status": {
+      "type": "Text",
+      "props": {
+        "text": "XML validation not possible"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack_actions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_actions",
+        "text_action1",
+        "text_action2"
+      ]
+    },
+    "heading_actions": {
+      "type": "Heading",
+      "props": {
+        "text": "Recommendations",
+        "level": "h4"
+      }
+    },
+    "text_action1": {
+      "type": "Text",
+      "props": {
+        "text": "Re-run with bash pre-approved"
+      }
+    },
+    "text_action2": {
+      "type": "Text",
+      "props": {
+        "text": "Or run the generator from a permitted shell"
+      }
+    }
+  }
+}
