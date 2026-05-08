@@ -127,4 +127,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-08,paper-digest,claude-opus-4-7,81,35899,7215713,220851
 2026-05-08,hacker-news-digest,claude-opus-4-7,95,37967,8224842,137898
 2026-05-08,github-releases,claude-opus-4-7,1079,28456,1522180,191472
-2026-05-08,token-alert,claude-opus-4-7,19,4089,418480,63658
+2026-05-08,treasury-info,claude-opus-4-7,12,2554,331083,31891

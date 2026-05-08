@@ -1,7 +1,17 @@
 ## Summary
 
-Ran `treasury-info` for 2026-05-07. `memory/on-chain-watches.yml` exists but contains `watches: []` (commented template only, zero `type: wallet` entries). Per the SKILL.md Bootstrap rule, exited silently with `TREASURY_INFO_OK — no wallets configured` — no notification, no snapshot, no source calls (Alchemy / RPC / CoinGecko / Bankr all skipped).
+Ran `treasury-info` per `skills/treasury-info/SKILL.md`.
 
-**Files modified:** `memory/logs/2026-05-07.md` (appended treasury-info section).
+**Result:** `TREASURY_INFO_OK — no wallets configured`
 
-**Follow-up (unchanged from MEMORY.md Next Priorities):** operator config sweep — populate `memory/on-chain-watches.yml` with real addresses to activate this skill. Part of the BLOCKED operator-config bundle (also: `var:` adds in `aeon.yml`, `NEYNAR_API_KEY` + `X_HANDLE`, prefetch scripts for ISS-001/002/012, `skills.lock`).
+**What I did:**
+- Read `memory/on-chain-watches.yml` — file exists and is already bootstrapped with the commented template, but `watches:` is an empty list (`watches: []`, `protocols: []`).
+- Per the skill's spec ("If the file exists but has zero `type: wallet` entries: log `TREASURY_INFO_OK — no wallets configured` and exit 0 without notifying"), I exited without sending a notification.
+- Did NOT re-bootstrap the file (already bootstrapped). Did NOT fetch any balances, write a snapshot, or call Alchemy/Bankr/CoinGecko.
+- Logged the result to `memory/logs/2026-05-08.md`.
+
+**Files modified:**
+- `memory/logs/2026-05-08.md` — appended `### treasury-info` entry.
+
+**Follow-up needed (operator-side, blocked):**
+- Populate `memory/on-chain-watches.yml` with real wallet entries (label / address / chain / type:wallet) to enable this skill. This is already on the MEMORY.md "Operator config sweep (BLOCKED)" line in *Next Priorities*, so no new escalation needed.
