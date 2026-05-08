@@ -1,11 +1,14 @@
-HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote `docs/status.md`.
+HEARTBEAT_OK · STATUS_PAGE=DEGRADED — wrote docs/status.md
 
 ## Summary
 
-- Ran the heartbeat skill (14:00 UTC slot, executed 15:03 UTC — slightly delayed). Read MEMORY.md + cron-state.json + INDEX.md + aeon.yml + last-2-days logs.
-- **P0:** 3 chain wrappers in `failed` state (`chain:morning-brief` 07:14Z, `chain:evening-rollup` 21:02Z 05-07, `chain:weekly-grant-update` 05-04) — all deduped against today's 08:00 heartbeat + OPS ALERTS. No `dispatched`-stuck. No `consecutive_failures >= 3`. Chronic-failure tail unchanged (~37 skills denominator-locked from ISS-013 + ISS-020 bursts). Heartbeat self-check ✓ (6h since last success).
-- **P1/P2/P3:** All deduped. ISS-014 closed earlier today by github-monitor (aaronjmars/aeon#156 merged 01:18Z) — flagged for INDEX.md flip on next health-skill cycle. Never-dispatched list shrinks 6→4: `morning-brief` and `hacker-news-digest` first-dispatched at 09:01Z today.
-- **Notification:** none sent (all findings deduped).
-- **Status page:** regenerated `docs/status.md` — Overall 🔴 DEGRADED, 17 open issues, next run `star-milestone` at 15:15 UTC. Sort by last-run desc, 4 never-run rows at bottom.
-- **Files modified:** `docs/status.md` (wholesale overwrite), `memory/logs/2026-05-08.md` (heartbeat entry appended).
-- **Follow-up:** chain-runner.yml `dispatch_skill()` patch remains operator-priority #1 (day-12 idle); ISS-014 close needs INDEX.md update on next sweep.
+Ran the 20:00 UTC heartbeat slot. Read MEMORY.md, cron-state.json, INDEX.md, aeon.yml, and the last two days of logs.
+
+**P0:** 3 chain wrappers still failing (`chain:morning-brief`, `chain:evening-rollup`, `chain:weekly-grant-update`) — all the same Day-12 `dispatch_skill()` bug, all already covered by 08:00 + 14:00 heartbeats and OPS ALERT. No stuck dispatches, no `consecutive_failures ≥ 3`. Heartbeat self-check 5.1h ago, healthy.
+**P1:** 9 stalled PRs unchanged. **P2:** ISS-014 still open in INDEX.md despite PR #156 merge — skill-health 18:00 ran but didn't flip it (`filed: [], resolved: []`). **P3:** 4 never-dispatched skills (`weekly-shiplog`, `repo-scanner`, `syndicate-article`, `vercel-projects`) — same as 14:00. Nothing schedule-stale.
+
+**Notification:** none sent — full dedup against today's prior heartbeats + OPS ALERTS.
+
+**Status page:** regenerated `docs/status.md` (wholesale overwrite). Overall 🔴 DEGRADED, 17 open issues, next scheduled run `evening-recap` at 21:00 UTC. Skill table sorted last-run desc, 4 never-run rows at the bottom.
+
+**Files modified:** `docs/status.md`, `memory/logs/2026-05-08.md`. **Follow-up:** ISS-014 flip still pending; chain-runner.yml `dispatch_skill()` patch remains operator-priority #1 — the 21:00 chain:evening-rollup will likely fail on the same bug.
