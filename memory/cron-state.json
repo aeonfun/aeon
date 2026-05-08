@@ -454,13 +454,13 @@
   },
   "list-digest": {
     "last_dispatch": "2026-05-08T17:51:16Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-07T18:11:53Z",
-    "total_runs": 26,
-    "total_successes": 13,
+    "last_status": "success",
+    "last_success": "2026-05-08T17:53:23Z",
+    "total_runs": 27,
+    "total_successes": 14,
     "total_failures": 13,
     "consecutive_failures": 0,
-    "success_rate": 0.5,
+    "success_rate": 0.52,
     "last_failed": "2026-04-26T23:55:06Z",
     "last_error": "ff2e33e\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
