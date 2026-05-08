@@ -1,0 +1,266 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Startup Ideas"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading_date",
+        "separator_1",
+        "stack_pricecap",
+        "separator_2",
+        "stack_manifest",
+        "separator_3",
+        "text_footer"
+      ]
+    },
+    "heading_date": {
+      "type": "Heading",
+      "props": {
+        "text": "2026-05-08",
+        "level": "h4"
+      }
+    },
+    "separator_1": {
+      "type": "Separator"
+    },
+    "stack_pricecap": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_pricecap",
+        "badge_pricecap",
+        "text_pricecap_desc",
+        "heading_icp_1",
+        "text_icp_1",
+        "heading_wedge_1",
+        "text_wedge_1",
+        "heading_why_1",
+        "text_why_1",
+        "heading_mvp_1",
+        "text_mvp_1",
+        "heading_kill_1",
+        "text_kill_1"
+      ]
+    },
+    "heading_pricecap": {
+      "type": "Heading",
+      "props": {
+        "text": "Pricecap",
+        "level": "h2"
+      }
+    },
+    "badge_pricecap": {
+      "type": "Badge",
+      "props": {
+        "text": "executable"
+      }
+    },
+    "text_pricecap_desc": {
+      "type": "Text",
+      "props": {
+        "text": "HIP-3's 1%-per-tick oracle cap leaks risk-free arb out of every deployer's insurance fund. Sell defense-as-a-service to the 10-25 deployers (trade.xyz / Felix / Hyperunit / post-Growth-Mode cohort)."
+      }
+    },
+    "heading_icp_1": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "text_icp_1": {
+      "type": "Text",
+      "props": {
+        "text": "Head of Risk / CTO at a HIP-3 deployer who just took a >$50k oracle-skew hit OR is launching an earnings-day / FOMC-day / weekend-asset spec."
+      }
+    },
+    "heading_wedge_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "text_wedge_1": {
+      "type": "Text",
+      "props": {
+        "text": "Real-time external-vs-mark websocket monitor + skew-magnitude alert + insurance-fund attribution + optional auto-defense house-wallet. $3.5-10k/mo per deployer."
+      }
+    },
+    "heading_why_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "text_why_1": {
+      "type": "Text",
+      "props": {
+        "text": "HIP-3 mainnet Oct-2025 + Growth Mode Nov-2025 + trade.xyz's 90% OI concentration unwind has produced the first cohort of small-balance-sheet deployers who can't absorb a $500k skew event."
+      }
+    },
+    "heading_mvp_1": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "text_mvp_1": {
+      "type": "Text",
+      "props": {
+        "text": "5-market websocket monitor + 7-day attribution report hand-delivered to 4 deployers. 1 paid POC at $5k/mo in 14d = thesis validated."
+      }
+    },
+    "heading_kill_1": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "text_kill_1": {
+      "type": "Text",
+      "props": {
+        "text": "<1 paid POC in 30d, <3 paid deployers by month 4, or <60% retention at month 12."
+      }
+    },
+    "separator_2": {
+      "type": "Separator"
+    },
+    "stack_manifest": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_manifest",
+        "badge_manifest",
+        "text_manifest_desc",
+        "heading_icp_2",
+        "text_icp_2",
+        "heading_wedge_2",
+        "text_wedge_2",
+        "heading_why_2",
+        "text_why_2",
+        "heading_mvp_2",
+        "text_mvp_2",
+        "heading_kill_2",
+        "text_kill_2"
+      ]
+    },
+    "heading_manifest": {
+      "type": "Heading",
+      "props": {
+        "text": "Manifest",
+        "level": "h2"
+      }
+    },
+    "badge_manifest": {
+      "type": "Badge",
+      "props": {
+        "text": "ambitious"
+      }
+    },
+    "text_manifest_desc": {
+      "type": "Text",
+      "props": {
+        "text": "CFTC-regulated micro-FFA + port/strait-closure binary DCM for mid-market shippers locked out of $5-10M-line FFABA OTC. The 2026 Hormuz crisis, Suez 60% below normal, and \"top-down\" war-risk insurance cancellation made unhedged freight exposure painfully visible."
+      }
+    },
+    "heading_icp_2": {
+      "type": "Heading",
+      "props": {
+        "text": "ICP",
+        "level": "h4"
+      }
+    },
+    "text_icp_2": {
+      "type": "Text",
+      "props": {
+        "text": "VP-Logistics or CFO at $50-500M revenue NVOCC / freight forwarder / commodity importer who just rebooked a Cape rerouting at 3-5x premium; buy-side: crypto-native commodity-overlay funds + prop traders seeking uncorrelated short-tenor binaries."
+      }
+    },
+    "heading_wedge_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Wedge",
+        "level": "h4"
+      }
+    },
+    "text_wedge_2": {
+      "type": "Text",
+      "props": {
+        "text": "$5k-notional micro-FFA on TC5 / TC4 routes settling to Baltic Exchange daily fixings + Hormuz/Suez/port-closure binaries with Lloyd's-JWC-bulletin resolution text. Phase-1 co-list under Kalshi-style DCM-of-record; Phase-2 self-DCM."
+      }
+    },
+    "heading_why_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Why now",
+        "level": "h4"
+      }
+    },
+    "text_why_2": {
+      "type": "Text",
+      "props": {
+        "text": "Hormuz + Suez + Bab-el-Mandeb concurrent dislocations + Kalshi $185M Series F + KalshiEX DCM approval + Lloyd's parametric reinsurance market maturing."
+      }
+    },
+    "heading_mvp_2": {
+      "type": "Heading",
+      "props": {
+        "text": "MVP test",
+        "level": "h4"
+      }
+    },
+    "text_mvp_2": {
+      "type": "Text",
+      "props": {
+        "text": "25 shipper LOIs ($125k aggregate paper-trade demand) + 1 Lloyd's broker-of-record inbound on the binary leg in 14d."
+      }
+    },
+    "heading_kill_2": {
+      "type": "Heading",
+      "props": {
+        "text": "Kill",
+        "level": "h4"
+      }
+    },
+    "text_kill_2": {
+      "type": "Text",
+      "props": {
+        "text": "<10 shipper LOIs in 30d, <3 buy-side speculators in 60d, <$1M paper-trade notional in 90d, or no CFTC-affiliate path + no FCM partner in 6 months."
+      }
+    },
+    "separator_3": {
+      "type": "Separator"
+    },
+    "text_footer": {
+      "type": "Text",
+      "props": {
+        "text": "Full memos in memory/logs/2026-05-08.md. 9 cited permalinks.",
+        "variant": "caption"
+      }
+    }
+  }
+}
