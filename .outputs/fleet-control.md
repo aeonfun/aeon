@@ -1,17 +1,21 @@
 ## Summary
 
-Executed `skills/fleet-control/SKILL.md` in default Health Check Mode (var empty).
+**Skill:** `fleet-control` — Health Check Mode (var was empty → default mode).
 
-**Pre-flight results:**
-- gh auth: ok (account `tomscaria`, all required scopes)
-- Rate limit: 4984 remaining (well above 50 threshold)
-- Registry `memory/instances.json`: `{"instances": []}` — empty
+**Verdict:** `FLEET_EMPTY` — silent stop, no notification.
 
-**Outcome:** Per skill spec section "Load the registry," when `.instances` is `[]` → log `FLEET_EMPTY: no managed instances` and **stop without notifying**. This is the silent-stop path; the operator is not spammed when there is nothing to manage.
+**Pre-flight:**
+- `gh auth status`: ok (account `tomscaria`, GH_TOKEN active)
+- Rate limit: 4986 core requests remaining (well above 50 floor)
+- Registry: `memory/instances.json` contains `{"instances": []}` — no managed children
+
+Per skill spec, an empty registry triggers a silent stop: log `FLEET_EMPTY: no managed instances` and exit without notifying the operator.
 
 **Files modified:**
-- `memory/logs/2026-05-07.md` — appended `## fleet-control (health check)` entry with verdict `FLEET_EMPTY`, rate_remaining=4984, and rationale.
+- `memory/logs/2026-05-08.md` — appended `## fleet-control (health check)` block with verdict, pre-flight results, and `FLEET_EMPTY` exit code.
 
-**No state-file change** — skill spec says `last_full_summary_date` updates only when notifying, and an empty registry means no per-instance health snapshot to write. `memory/state/fleet-control-state.json` left untouched.
+**Files untouched (intentional):**
+- `memory/instances.json` — left as `{"instances": []}` (no instances to update).
+- `memory/state/fleet-control-state.json` — left as `{"instances": {}, "last_full_summary_date": ""}` (no instances to snapshot; `last_full_summary_date` only advances when this run notifies, which it didn't).
 
-**No follow-up actions** — registry stays empty until the operator manually adds a managed Aeon instance. Next scheduled run (cron `0 9,15 * * *`) will repeat the same silent stop until then.
+**Follow-up:** None. Operator must manually register a child Aeon by adding an entry to `memory/instances.json` before this skill produces meaningful output.
