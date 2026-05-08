@@ -1,0 +1,290 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Security Digest — 2026-05-08"
+      },
+      "children": [
+        "heading_verdict",
+        "text_sources",
+        "sep1",
+        "section_patch_today",
+        "sep2",
+        "section_patch_week"
+      ]
+    },
+    "heading_verdict": {
+      "type": "Heading",
+      "props": {
+        "text": "Verdict: 1 actively exploited (Ivanti EPMM), 5 to schedule",
+        "level": "h2"
+      }
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: KEV, GH Advisory, EPSS",
+        "variant": "muted"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_patch_today": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_patch_today",
+        "alert_ivanti"
+      ]
+    },
+    "heading_patch_today": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH TODAY",
+        "level": "h3"
+      }
+    },
+    "alert_ivanti": {
+      "type": "Alert",
+      "props": {
+        "type": "error",
+        "title": "CVE-2026-6973 — Ivanti EPMM",
+        "message": "Mobile MDM. KEV added 2026-05-07. CVSS 7.2. EPSS 0.05 (89.8 pct). Improper input validation in admin path → authed RCE. CISA-confirmed exploited. Action: upgrade Ivanti EPMM to ≥12.6.1.1 / 12.7.0.1 / 12.8.0.1 today."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "section_patch_week": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading_patch_week",
+        "vuln_vm2",
+        "vuln_intercom",
+        "vuln_gotenberg",
+        "vuln_notemark",
+        "vuln_wger"
+      ]
+    },
+    "heading_patch_week": {
+      "type": "Heading",
+      "props": {
+        "text": "PATCH THIS WEEK",
+        "level": "h3"
+      }
+    },
+    "vuln_vm2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_vm2",
+        "text_vm2_meta",
+        "text_vm2_desc",
+        "text_vm2_action"
+      ]
+    },
+    "link_vm2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "vm2 cluster",
+        "href": "https://github.com/advisories/GHSA-47x8-96vw-5wg6",
+        "source": "npm"
+      }
+    },
+    "text_vm2_meta": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 10/10/9.9/9.1 · no EPSS yet",
+        "variant": "caption"
+      }
+    },
+    "text_vm2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Four sandbox escapes published 2026-05-07: CVE-2026-43997 (host Object), 44005 (mutable proxies), 43999 (Module._load), 44007 (NodeVM nesting). Working PoCs in advisory bodies."
+      }
+    },
+    "text_vm2_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: upgrade vm2 to ≥3.11.1; if pinned, retire vm2 (project deprecated)."
+      }
+    },
+    "vuln_intercom": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_intercom",
+        "text_intercom_meta",
+        "text_intercom_desc",
+        "text_intercom_action"
+      ]
+    },
+    "link_intercom": {
+      "type": "StoryLink",
+      "props": {
+        "title": "intercom-client",
+        "href": "https://github.com/advisories/GHSA-54pg-9963-v8vg",
+        "source": "npm"
+      }
+    },
+    "text_intercom_meta": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.3 · supply-chain compromise",
+        "variant": "caption"
+      }
+    },
+    "text_intercom_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Malicious 7.0.4 published 04-30 from compromised dev account; preinstall hook harvests AWS/GCP/Azure creds + .env. intercom-php composer 5.0.2 hit same day."
+      }
+    },
+    "text_intercom_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: pin intercom-client ≤7.0.3 (skip 7.0.4); audit installs since 04-30, rotate cloud creds."
+      }
+    },
+    "vuln_gotenberg": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_gotenberg",
+        "text_gotenberg_meta",
+        "text_gotenberg_desc",
+        "text_gotenberg_action"
+      ]
+    },
+    "link_gotenberg": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-42596 — gotenberg/v8",
+        "href": "https://github.com/advisories/GHSA-4vmc-gm8v-m35h",
+        "source": "Go"
+      }
+    },
+    "text_gotenberg_meta": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.4 · no EPSS yet",
+        "variant": "caption"
+      }
+    },
+    "text_gotenberg_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Unauthenticated SSRF via deny-list bypass in downloadFrom + webhook."
+      }
+    },
+    "text_gotenberg_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: upgrade gotenberg/v8 to ≥8.32.0."
+      }
+    },
+    "vuln_notemark": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_notemark",
+        "text_notemark_meta",
+        "text_notemark_desc",
+        "text_notemark_action"
+      ]
+    },
+    "link_notemark": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-44523 — note-mark/backend",
+        "href": "https://github.com/advisories/GHSA-q6mh-rqwh-g786",
+        "source": "Go"
+      }
+    },
+    "text_notemark_meta": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 10 · no EPSS yet",
+        "variant": "caption"
+      }
+    },
+    "text_notemark_desc": {
+      "type": "Text",
+      "props": {
+        "text": "JWT secret weakness → token forgery → full account takeover."
+      }
+    },
+    "text_notemark_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: upgrade note-mark/backend to pseudo-version ≥0.0.0-20260501152247."
+      }
+    },
+    "vuln_wger": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_wger",
+        "text_wger_meta",
+        "text_wger_desc",
+        "text_wger_action"
+      ]
+    },
+    "link_wger": {
+      "type": "StoryLink",
+      "props": {
+        "title": "CVE-2026-43948 — wger",
+        "href": "https://github.com/advisories/GHSA-mhc8-p3jx-84mm",
+        "source": "pip"
+      }
+    },
+    "text_wger_meta": {
+      "type": "Text",
+      "props": {
+        "text": "CVSS 9.9 · no EPSS yet",
+        "variant": "caption"
+      }
+    },
+    "text_wger_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Cross-tenant password reset + plaintext disclosure via gym=None bypass."
+      }
+    },
+    "text_wger_action": {
+      "type": "Text",
+      "props": {
+        "text": "Action: upgrade wger to ≥2.6."
+      }
+    }
+  }
+}

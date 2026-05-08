@@ -128,4 +128,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-08,hacker-news-digest,claude-opus-4-7,95,37967,8224842,137898
 2026-05-08,github-releases,claude-opus-4-7,1079,28456,1522180,191472
 2026-05-08,monitor-runners,claude-opus-4-7,72,38830,4933797,116913
-2026-05-08,digest,claude-opus-4-7,3117,19421,2245917,115592
+2026-05-08,security-digest,claude-opus-4-7,54,24709,3019149,76356
