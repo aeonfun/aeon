@@ -1,0 +1,271 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Digest — 2026-05-08"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "trading_loop_section",
+        "sep1",
+        "revenant_section",
+        "sep2",
+        "nav_section",
+        "sep3",
+        "failures_section",
+        "sep4",
+        "top3_section",
+        "sep5",
+        "sources_section"
+      ]
+    },
+    "trading_loop_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "trading_h",
+        "trading_p1",
+        "trading_p2"
+      ]
+    },
+    "trading_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Trading-loop",
+        "level": "h3"
+      }
+    },
+    "trading_p1": {
+      "type": "Text",
+      "props": {
+        "text": "5 PM events scanned (~20 markets, 13:00 UTC). 0 signals fired — no >5pp movers."
+      }
+    },
+    "trading_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Vol spikes on Rand Paul R-nom ($415k NO accumulation) and Oprah D-nom ($342k YES buy) but no comment-side catalyst on either."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "revenant_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "revenant_h",
+        "revenant_p1",
+        "revenant_p2"
+      ]
+    },
+    "revenant_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Revenant",
+        "level": "h3"
+      }
+    },
+    "revenant_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Mexico FIFA (first order) flat 1.05% YES for 5th consecutive day, $662k liquid, no action taken."
+      }
+    },
+    "revenant_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-airspace-by-May-8 resolved NO at midnight ET as expected — 48pp clause-text divergence thesis confirmed, ADR-096+ anchor intact."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "nav_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "nav_h",
+        "nav_text",
+        "nav_stats"
+      ]
+    },
+    "nav_h": {
+      "type": "Heading",
+      "props": {
+        "text": "NAV delta",
+        "level": "h3"
+      }
+    },
+    "nav_text": {
+      "type": "Text",
+      "props": {
+        "text": "No new orders today."
+      }
+    },
+    "nav_stats": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "stat_pnl",
+        "stat_trades",
+        "stat_win",
+        "stat_sharpe",
+        "stat_apex"
+      ]
+    },
+    "stat_pnl": {
+      "type": "Stat",
+      "props": {
+        "label": "Lifetime P&L",
+        "value": "+$415"
+      }
+    },
+    "stat_trades": {
+      "type": "Stat",
+      "props": {
+        "label": "Closed trades",
+        "value": "29"
+      }
+    },
+    "stat_win": {
+      "type": "Stat",
+      "props": {
+        "label": "Win rate",
+        "value": "76%"
+      }
+    },
+    "stat_sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe",
+        "value": "0.31"
+      }
+    },
+    "stat_apex": {
+      "type": "Stat",
+      "props": {
+        "label": "Trades to Apex gate",
+        "value": "71"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "failures_section": {
+      "type": "Alert",
+      "props": {
+        "title": "Skill failures",
+        "message": "chain:morning-brief (07:14Z) + chain:evening-rollup (21:19Z) — day 12 DEGRADED, same dispatch_skill() bug. Operator fix still blocked.",
+        "type": "warning"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "top3_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "top3_h",
+        "top3_item1",
+        "top3_item2",
+        "top3_item3"
+      ]
+    },
+    "top3_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 3",
+        "level": "h3"
+      }
+    },
+    "top3_item1": {
+      "type": "Text",
+      "props": {
+        "text": "AEL 2604.21725 — Thompson-sampling retrieval-policy bandit, Sharpe 2.13, closes Darwinian queue flag (PhD slot)"
+      }
+    },
+    "top3_item2": {
+      "type": "Text",
+      "props": {
+        "text": "Per-Market ILS 2605.02287 — 3.14% skilled / 1,950 insider-flagged; ADR-096+ methodology anchor (daily slot)"
+      }
+    },
+    "top3_item3": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch merged 01:18Z — closes ISS-014 (day-13 carrier)"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources_h",
+        "sources_text"
+      ]
+    },
+    "sources_h": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources_text": {
+      "type": "Text",
+      "props": {
+        "text": "log=ok cron-state=ok"
+      }
+    }
+  }
+}
