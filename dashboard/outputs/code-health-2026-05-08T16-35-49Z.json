@@ -1,0 +1,224 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Code Health 2026-05-08"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "section_prs",
+        "sep_1",
+        "section_projects",
+        "sep_2",
+        "section_actions"
+      ]
+    },
+    "section_prs": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_prs",
+        "pr_156",
+        "pr_162"
+      ]
+    },
+    "heading_prs": {
+      "type": "Heading",
+      "props": {
+        "text": "Pull Requests",
+        "level": "h3"
+      }
+    },
+    "pr_156": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #156 merged 01:18 UTC",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "aaronjmars/aeon",
+        "score": "ISS-014 (Day-13 reply-maker XAI prefetch carry) CLOSED"
+      }
+    },
+    "pr_162": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #162 added huggingface-trending skill",
+        "href": "https://github.com/aaronjmars/aeon/pull/162",
+        "source": "aaronjmars/aeon",
+        "score": "skills 112→113"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_projects": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_projects",
+        "proj_swarmfund",
+        "proj_lore",
+        "proj_carry"
+      ]
+    },
+    "heading_projects": {
+      "type": "Heading",
+      "props": {
+        "text": "Project Status",
+        "level": "h3"
+      }
+    },
+    "proj_swarmfund": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_swarmfund_name",
+        "badge_swarmfund",
+        "text_swarmfund_details"
+      ]
+    },
+    "text_swarmfund_name": {
+      "type": "Heading",
+      "props": {
+        "text": "swarm-fund-mvp",
+        "level": "h4"
+      }
+    },
+    "badge_swarmfund": {
+      "type": "Badge",
+      "props": {
+        "text": "Stagnant (silent 24h)",
+        "variant": "destructive"
+      }
+    },
+    "text_swarmfund_details": {
+      "type": "Text",
+      "props": {
+        "text": "Went silent 24h after Tue ADR-095 burst. Only metric refreshes. 4 open PRs unchanged. 72h merge-cadence falsifier from yesterday tilts to stagnation.",
+        "variant": "body"
+      }
+    },
+    "proj_lore": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_lore_name",
+        "badge_lore"
+      ]
+    },
+    "text_lore_name": {
+      "type": "Heading",
+      "props": {
+        "text": "lore-financial-teaser",
+        "level": "h4"
+      }
+    },
+    "badge_lore": {
+      "type": "Badge",
+      "props": {
+        "text": "Frozen (5th day)",
+        "variant": "outline"
+      }
+    },
+    "proj_carry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_carry_name",
+        "stat_carry",
+        "text_carry_note"
+      ]
+    },
+    "text_carry_name": {
+      "type": "Heading",
+      "props": {
+        "text": "Carry ledger",
+        "level": "h4"
+      }
+    },
+    "stat_carry": {
+      "type": "Stat",
+      "props": {
+        "value": "7",
+        "label": "items",
+        "delta": "-1",
+        "trend": "down"
+      }
+    },
+    "text_carry_note": {
+      "type": "Text",
+      "props": {
+        "text": "ISS-014 drained",
+        "variant": "caption"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "section_actions": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "heading_actions",
+        "action_1",
+        "action_2"
+      ]
+    },
+    "heading_actions": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Priorities",
+        "level": "h3"
+      }
+    },
+    "action_1": {
+      "type": "Text",
+      "props": {
+        "text": "Verify swarm-fund Pyth/Birdeye feed IDs (Day-7, top blast radius)",
+        "variant": "body"
+      }
+    },
+    "action_2": {
+      "type": "Text",
+      "props": {
+        "text": "Land aeon dashboard regression test (Day-6, cleanest post-#156)",
+        "variant": "body"
+      }
+    }
+  }
+}
