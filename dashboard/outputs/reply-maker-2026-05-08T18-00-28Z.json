@@ -1,0 +1,258 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "reply-maker",
+        "description": "Status 2026-05-08"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "status_section",
+        "sep1",
+        "health_section",
+        "sep2",
+        "causes_section",
+        "sep3",
+        "next_section"
+      ]
+    },
+    "status_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "alert",
+        "status_detail"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "REPLY_MAKER_EMPTY",
+        "message": "0 in-window x.com URLs surfaced (3rd consecutive full EMPTY)",
+        "type": "warning"
+      }
+    },
+    "status_detail": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-08",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "health_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "health_heading",
+        "health_stat"
+      ]
+    },
+    "health_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Health Status",
+        "level": "h3"
+      }
+    },
+    "health_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Last 15 runs",
+        "value": "13 EMPTY/DEGRADED",
+        "trend": "down"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "causes_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "causes_heading",
+        "cause_xai",
+        "cause_memory",
+        "cause_websearch"
+      ]
+    },
+    "causes_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Root Causes",
+        "level": "h3"
+      }
+    },
+    "cause_xai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_xai",
+        "xai_detail",
+        "xai_link"
+      ]
+    },
+    "badge_xai": {
+      "type": "Badge",
+      "props": {
+        "text": "xai=skip",
+        "variant": "destructive"
+      }
+    },
+    "xai_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Repo lacks reply-maker case in scripts/prefetch-xai.sh. PR merged 01:18 UTC today but diff not yet ported.",
+        "variant": "body"
+      }
+    },
+    "xai_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon#156",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "GitHub"
+      }
+    },
+    "cause_memory": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_memory",
+        "memory_detail",
+        "memory_link"
+      ]
+    },
+    "badge_memory": {
+      "type": "Badge",
+      "props": {
+        "text": "memory=stale",
+        "variant": "destructive"
+      }
+    },
+    "memory_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Only x.com URL today is ~4 days old (out of window).",
+        "variant": "body"
+      }
+    },
+    "memory_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "MEPPonPM/2051546322046796143",
+        "href": "https://x.com/MEPPonPM/status/2051546322046796143",
+        "source": "X"
+      }
+    },
+    "cause_websearch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_websearch",
+        "websearch_detail"
+      ]
+    },
+    "badge_websearch": {
+      "type": "Badge",
+      "props": {
+        "text": "websearch=ok-but-zero",
+        "variant": "secondary"
+      }
+    },
+    "websearch_detail": {
+      "type": "Text",
+      "props": {
+        "text": "8 queries executed; article-prose register active, but no x.com/.../status URLs found.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "next_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "next_heading",
+        "next_list"
+      ]
+    },
+    "next_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Next Steps",
+        "level": "h3"
+      }
+    },
+    "next_list": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "next_1",
+        "next_2"
+      ]
+    },
+    "next_1": {
+      "type": "Text",
+      "props": {
+        "text": "Port aaronjmars/aeon#156 diff to scripts/prefetch-xai.sh",
+        "variant": "body"
+      }
+    },
+    "next_2": {
+      "type": "Text",
+      "props": {
+        "text": "Set XAI_API_KEY",
+        "variant": "body"
+      }
+    }
+  }
+}
