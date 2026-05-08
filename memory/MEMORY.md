@@ -104,16 +104,14 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 ## Next Priorities
 - **🔴 chain-runner.yml `dispatch_skill()`** — operator priority #1, day 11 idle. Add echo per dispatched skill before each `gh workflow run`. Gates ISS-013 decay. _(BLOCKED: operator-side)_
 - **🔴 Cost-discipline downgrade pass** — sonnet-4-6 for external-feature / repo-actions / heartbeat (~$149/wk savings). Surface to next `self-improve`.
-- **🔴 PR #156 reply-maker XAI prefetch** (day 13, ~65h since last update) — closes ISS-014 on merge. Escalate to "operator-blocking" tier in next `self-improve` alongside chain-runner + reddit-prefetch. _(BLOCKED: aaronjmars/aeon reviewer ~65h idle)_
-- **🟡 Add `## Trusted Authors` to `memory/watched-repos.md`** — listing `aaronjmars` (and optionally `tomscaria`) unblocks auto-merge for repo-owner PRs (PR #160 v4-readiness checklist is first cleanly-mergeable PR in 3 days, currently policy-blocked).
+- **🟡 Add `## Trusted Authors` to `memory/watched-repos.md`** — listing `aaronjmars` (and optionally `tomscaria`) unblocks auto-merge for repo-owner PRs (PR #160 v4-readiness checklist is first cleanly-mergeable PR in 3 days, currently policy-blocked). _(BLOCKED: operator memory edit)_
 - **monitor-runners DEEP-LIQ floor patch** — concrete patch (slot-5 replacement); 7-run evidence on the books (TTPA + SKYAI streaks ended 05-05), ready for `self-improve`.
 - **swarm-fund-mvp tick-broker falsifier (clock running)** — `tomscaria/aeon` must ship `outputs/{skill}/{date}.json` JSON contract by ~2026-05-17 or ADR-093 wire-up is aspirational. **11 days remaining.**
 - **swarm-fund-mvp 72h merge-cadence test** — does new ADR open by 2026-05-09, or do PRs #30/#31 stall? Decides whether this week is healthy defect-hardening (this week's article) or queue stagnation (yesterday's article framing).
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` highest-leverage daily skills. **05-06 → 05-10 priority targets:** Trump-China NO-calibration cluster (T-25, currently sized DOWN after Iran-airspace falsification — wait for clause-text ingest); Russia-Ukraine resolution-debate window 05-08 → 05-10; FinCEN Manfred-LLC narrative front-run window (06-09 close).
 - **Hermes-arb gate adjustment:** bump `min-gap` 7pp → ~7.5–8pp per deep-research finding.
-- **🔴 PR #156 reply-maker XAI prefetch** (day 13, idle ~95h) — closes ISS-014 on merge.
 - **🔴 Open ADR-096 for resolution-text-ingest on swarm-fund-mvp.** Highest-leverage CalibrationGap upgrade with no open ADR slot. Empirical anchors ready: Iran-airspace 48pp clause-text divergence, Iran-cf/Hez-cf paradox, ILS-dl Iran-cluster (`2605.02286`, 0.444-magnitude leakage shift), TimeSeek 12% web-search-hurts case.
-- **🟡 Add `## Trusted Authors` to `memory/watched-repos.md`** — `aaronjmars` (and optionally `tomscaria`) to unblock auto-merge for repo-owner PRs.
+- **🟡 Add `## Trusted Authors` to `memory/watched-repos.md`** — `aaronjmars` (and optionally `tomscaria`) to unblock auto-merge for repo-owner PRs. _(BLOCKED: operator memory edit)_
 - **swarm-fund-mvp tick-broker falsifier (clock running)** — `tomscaria/aeon` must ship `outputs/{skill}/{date}.json` JSON contract by ~2026-05-17 or ADR-093 wire-up is aspirational. **10 days remaining.**
 - **swarm-fund-mvp `OLLAMA_FULL=1` rollout falsifier** — flag must appear in production env files by 2026-05-21 or ADR-095 thesis is wrong about velocity. **14 days remaining.**
 - **Pre-Apex push:** `monitor-polymarket` + `polymarket-comments` highest-leverage daily skills. **05-08 → 05-12 priority targets:** Iran-airspace-May-8 resolution today; Trump-China NO-calibration cluster (sized DOWN after Iran-airspace falsification — wait for clause-text ingest); Russia-Ukraine resolution-debate window 05-08 → 05-10; Powell→Warsh Senate floor vote week of May 11; FinCEN Manfred-LLC narrative front-run window (06-09 close).
@@ -130,3 +128,4 @@ Accelerate **swarm-fund-mvp** toward (1) near-term grants/advisory income, (2) S
 - **🔴 5 ACT NOW Vercel-FAILURE PRs on swarm-fund-mvp** — _(completed 2026-05-03)_
 - **Land code-health fix on dashboard secrets-route shell-injection** — _(PR #150 landed 2026-05-03; PR #158 second hardened route 2026-05-06)_
 - **ISS-004 / ISS-006 RESOLVED 2026-05-03**
+- **🔴 PR #156 reply-maker XAI prefetch** — closes ISS-014 on merge. _(MERGED 2026-05-08T01:18:03Z on aaronjmars/aeon)_

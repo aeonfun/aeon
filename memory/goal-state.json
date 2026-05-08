@@ -1,90 +1,101 @@
 {
-  "run_at": "2026-05-07T18:30:00Z",
+  "run_at": "2026-05-08T15:30:00Z",
   "goals": {
     "fix-chain-runner-yml-dispatch-skill": {
       "status": "BLOCKED",
-      "activity_count_14d": 20,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 289,
+      "last_activity_date": "2026-05-08"
     },
     "cost-discipline-sonnet-downgrade-pass": {
       "status": "ON_TRACK",
-      "activity_count_14d": 22,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 34,
+      "last_activity_date": "2026-05-08"
     },
     "pr-156-reply-maker-xai-prefetch": {
-      "status": "BLOCKED",
-      "activity_count_14d": 29,
-      "last_activity_date": "2026-05-07"
+      "status": "DONE",
+      "activity_count_14d": 352,
+      "last_activity_date": "2026-05-08",
+      "completed_at": "2026-05-08T01:18:03Z"
     },
     "add-trusted-authors-to-watched-repos": {
-      "status": "NEEDS_ATTENTION",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-07"
+      "status": "BLOCKED",
+      "activity_count_14d": 48,
+      "last_activity_date": "2026-05-08"
     },
     "monitor-runners-deep-liq-floor-patch": {
       "status": "ON_TRACK",
-      "activity_count_14d": 23,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 184,
+      "last_activity_date": "2026-05-08"
     },
     "swarm-fund-mvp-tick-broker-falsifier": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 79,
+      "last_activity_date": "2026-05-08"
     },
     "swarm-fund-mvp-72h-merge-cadence-test": {
-      "status": "NEEDS_ATTENTION",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-07"
+      "status": "ON_TRACK",
+      "activity_count_14d": 37,
+      "last_activity_date": "2026-05-08"
     },
     "pre-apex-push-monitor-polymarket-and-polymarket-comments": {
       "status": "ON_TRACK",
-      "activity_count_14d": 6,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 234,
+      "last_activity_date": "2026-05-08"
     },
     "hermes-arb-gate-adjustment-bump-min-gap": {
       "status": "ON_TRACK",
-      "activity_count_14d": 9,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 153,
+      "last_activity_date": "2026-05-08"
+    },
+    "open-adr-096-resolution-text-ingest-swarm-fund-mvp": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 12,
+      "last_activity_date": "2026-05-08"
+    },
+    "swarm-fund-mvp-ollama-full-rollout-falsifier": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 65,
+      "last_activity_date": "2026-05-08"
     },
     "operator-config-sweep": {
       "status": "BLOCKED",
-      "activity_count_14d": 3,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 79,
+      "last_activity_date": "2026-05-08"
     },
     "skill-evals-key-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 20,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 98,
+      "last_activity_date": "2026-05-08"
     },
-    "code-health-day-5-carry": {
-      "status": "NEEDS_ATTENTION",
-      "activity_count_14d": 3,
-      "last_activity_date": "2026-05-07"
+    "code-health-day-6-carry": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 38,
+      "last_activity_date": "2026-05-08"
     },
     "iss-018-iss-019-prompt-bug-fixes": {
       "status": "ON_TRACK",
-      "activity_count_14d": 8,
-      "last_activity_date": "2026-05-07"
-    },
-    "weekly-shiplog-mondays-forward-to-grant-committees": {
-      "status": "ON_TRACK",
-      "activity_count_14d": 2,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 25,
+      "last_activity_date": "2026-05-08"
     },
     "paper-pick-daily-build-phd-reading-list": {
       "status": "ON_TRACK",
-      "activity_count_14d": 20,
-      "last_activity_date": "2026-05-07"
+      "activity_count_14d": 618,
+      "last_activity_date": "2026-05-08"
+    },
+    "cite-stack-for-grant-stanford-application": {
+      "status": "ON_TRACK",
+      "activity_count_14d": 25,
+      "last_activity_date": "2026-05-08"
     },
     "act-now-vercel-failure-prs-on-swarm-fund-mvp": {
       "status": "DONE",
-      "activity_count_14d": 18,
+      "activity_count_14d": 0,
       "last_activity_date": "2026-05-04",
       "completed_at": "2026-05-03T21:57:00Z"
     },
     "land-code-health-fix-dashboard-secrets-route": {
       "status": "DONE",
-      "activity_count_14d": 8,
+      "activity_count_14d": 0,
       "last_activity_date": "2026-05-03",
       "completed_at": "2026-05-03T09:30:00Z"
     },
