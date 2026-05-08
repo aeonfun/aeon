@@ -1,0 +1,139 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "remix-tweets",
+        "description": "Configuration Error"
+      },
+      "children": [
+        "status-badge",
+        "sep1",
+        "error-stack",
+        "sep2",
+        "missing-stack",
+        "sep3",
+        "recommendation"
+      ]
+    },
+    "status-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ERROR",
+        "variant": "destructive"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "error-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "error-title",
+        "consecutive-text"
+      ]
+    },
+    "error-title": {
+      "type": "Heading",
+      "props": {
+        "text": "No handle configured",
+        "level": "h3"
+      }
+    },
+    "consecutive-text": {
+      "type": "Text",
+      "props": {
+        "text": "11th consecutive identical fire (04-25 → 05-08)",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "missing-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "missing-title",
+        "missing-items"
+      ]
+    },
+    "missing-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Missing Configuration",
+        "level": "h3"
+      }
+    },
+    "missing-items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4"
+      ]
+    },
+    "item1": {
+      "type": "Text",
+      "props": {
+        "text": "X_HANDLE unset",
+        "variant": "body"
+      }
+    },
+    "item2": {
+      "type": "Text",
+      "props": {
+        "text": "XAI_API_KEY unset",
+        "variant": "body"
+      }
+    },
+    "item3": {
+      "type": "Text",
+      "props": {
+        "text": "no @handle in soul/SOUL.md Identity",
+        "variant": "body"
+      }
+    },
+    "item4": {
+      "type": "Text",
+      "props": {
+        "text": "no .xai-cache",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "recommendation": {
+      "type": "Alert",
+      "props": {
+        "title": "Recommended Action",
+        "message": "Pause remix-tweets cron until operator sets secrets or adds handle line",
+        "type": "warning"
+      }
+    }
+  }
+}
