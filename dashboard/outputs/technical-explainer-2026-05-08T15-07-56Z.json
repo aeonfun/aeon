@@ -1,0 +1,209 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Six-Judge Ensemble for SAC Controllers"
+      },
+      "children": [
+        "heading-main",
+        "text-concept",
+        "sep-1",
+        "section-judges",
+        "sep-2",
+        "section-results",
+        "sep-3",
+        "text-citation",
+        "text-ablation",
+        "text-scope",
+        "link-article"
+      ]
+    },
+    "heading-main": {
+      "type": "Heading",
+      "props": {
+        "text": "How a Six-Judge Ensemble Steers an SAC Controller to an 18% Sharpe Bump — Without Letting Any Judge Move the Wrong Knob",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "text-concept": {
+      "type": "Text",
+      "props": {
+        "text": "Score the agent's behavior on six named dimensions with three LLM judges, convert any sub-threshold dimension into a penalty term, and route that penalty to the specific SAC action subspace responsible — so when the regime-detection judge complains, only the regime-detection action gets punished.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section-judges": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-judges",
+        "judges-stack",
+        "text-alpha"
+      ]
+    },
+    "heading-judges": {
+      "type": "Heading",
+      "props": {
+        "text": "Judges & Consistency",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "judges-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge-gpt",
+        "badge-claude",
+        "badge-gemini"
+      ]
+    },
+    "badge-gpt": {
+      "type": "Badge",
+      "props": {
+        "text": "GPT 5.4",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-claude": {
+      "type": "Badge",
+      "props": {
+        "text": "Claude 4.6 Opus",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "badge-gemini": {
+      "type": "Badge",
+      "props": {
+        "text": "Gemini 3.1 Pro",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "text-alpha": {
+      "type": "Text",
+      "props": {
+        "text": "Krippendorff α = 0.85",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section-results": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-results",
+        "results-grid"
+      ]
+    },
+    "heading-results": {
+      "type": "Heading",
+      "props": {
+        "text": "Key Results",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "results-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat-sharpe",
+        "stat-mape"
+      ]
+    },
+    "stat-sharpe": {
+      "type": "Stat",
+      "props": {
+        "label": "Sharpe Improvement",
+        "value": "+18%",
+        "delta": "95% CI [8.2%, 27.4%]",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat-mape": {
+      "type": "Stat",
+      "props": {
+        "label": "MAPE",
+        "value": "0.54%",
+        "delta": "from 0.61% (p<0.001)",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "text-citation": {
+      "type": "Text",
+      "props": {
+        "text": "Al Ridhawi, Haj Ali, Al Osman 2026 (arXiv:2605.05739)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "text-ablation": {
+      "type": "Text",
+      "props": {
+        "text": "Targeted credit-assignment (Table II) is the load-bearing move — falsifier is the uniform-CA ablation. Mission angle: cleanest published twin of the CalibrationGap reflection-log loop the agent currently lacks.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text-scope": {
+      "type": "Text",
+      "props": {
+        "text": "Backtested on 20 S&P 500 names, 2017–2025.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "link-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Read full explainer",
+        "href": "articles/explainer-2026-05-08.md",
+        "source": "Technical Explainer"
+      },
+      "children": []
+    }
+  }
+}
