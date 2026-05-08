@@ -1,21 +1,18 @@
+Per spec, FLEET_EMPTY → silent stop, no notification. State file already has empty `instances` and empty `last_full_summary_date`, so no state update needed.
+
 ## Summary
 
-**Skill:** `fleet-control` — Health Check Mode (var was empty → default mode).
-
-**Verdict:** `FLEET_EMPTY` — silent stop, no notification.
+Executed `fleet-control` in Health Check Mode (default — var empty).
 
 **Pre-flight:**
-- `gh auth status`: ok (account `tomscaria`, GH_TOKEN active)
-- Rate limit: 4986 core requests remaining (well above 50 floor)
-- Registry: `memory/instances.json` contains `{"instances": []}` — no managed children
+- gh auth: OK (tomscaria, GH_TOKEN)
+- Rate limit: 4970 remaining
+- Registry `memory/instances.json`: `{"instances": []}` — no managed instances
+- Prior state file present and empty
 
-Per skill spec, an empty registry triggers a silent stop: log `FLEET_EMPTY: no managed instances` and exit without notifying the operator.
+**Verdict:** `FLEET_EMPTY` — no managed Aeon instances registered. Per skill spec, this is a silent stop: log entry written, no notification sent.
 
 **Files modified:**
-- `memory/logs/2026-05-08.md` — appended `## fleet-control (health check)` block with verdict, pre-flight results, and `FLEET_EMPTY` exit code.
+- `memory/logs/2026-05-08.md` — appended fleet-control health check entry
 
-**Files untouched (intentional):**
-- `memory/instances.json` — left as `{"instances": []}` (no instances to update).
-- `memory/state/fleet-control-state.json` — left as `{"instances": {}, "last_full_summary_date": ""}` (no instances to snapshot; `last_full_summary_date` only advances when this run notifies, which it didn't).
-
-**Follow-up:** None. Operator must manually register a child Aeon by adding an entry to `memory/instances.json` before this skill produces meaningful output.
+**Follow-up:** None until at least one instance is added to `memory/instances.json` (would need fields like `name`, `repo`, `purpose`, etc.).
