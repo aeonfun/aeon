@@ -273,13 +273,13 @@
   },
   "search-skill": {
     "last_dispatch": "2026-05-08T15:00:28Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-07T14:48:33Z",
-    "total_runs": 32,
-    "total_successes": 12,
+    "last_status": "success",
+    "last_success": "2026-05-08T15:05:31Z",
+    "total_runs": 33,
+    "total_successes": 13,
     "total_failures": 20,
     "consecutive_failures": 0,
-    "success_rate": 0.38,
+    "success_rate": 0.39,
     "last_failed": "2026-05-06T15:35:08Z",
     "last_error": "tool_use_id\":\"toolu_01Gj5DSQwDuuNy19ENPTVggJ\",\"tool_input\":{\"command\":\"/home/runner/work/aeon/aeon/add-skill aaronjmars/aeon --list 2>&1 | head -200\",\"description\":\"List skills inventory via add-skill"
   },
