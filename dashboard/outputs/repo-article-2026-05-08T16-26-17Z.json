@@ -1,0 +1,38 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Eight of Eleven PRs on swarm-fund-mvp Are the Same Class of Bug"
+      },
+      "children": [
+        "thesis",
+        "separator",
+        "story-link"
+      ]
+    },
+    "thesis": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp shifted from feature-shipping to single-bug-class defect-hardening — 8 of 11 PRs touched in the last 7 days target prior-week ADRs (089-095), and 3 of 4 open PRs share the one-bad-input-poisons-the-batch failure mode.",
+        "variant": "body"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "story-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Read full article",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-article-2026-05-08.md",
+        "source": "repo-article"
+      }
+    }
+  }
+}
