@@ -1,0 +1,352 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Morning Brief — 2026-05-08"
+      },
+      "children": [
+        "focus-section",
+        "separator-1",
+        "yesterday-section",
+        "separator-2",
+        "watch-section",
+        "separator-3",
+        "running-section"
+      ]
+    },
+    "focus-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "focus-heading",
+        "focus-item-1",
+        "focus-item-2",
+        "focus-item-3"
+      ]
+    },
+    "focus-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Focus today",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "focus-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-1-title",
+        "focus-1-why"
+      ]
+    },
+    "focus-1-title": {
+      "type": "Text",
+      "props": {
+        "text": "1. Iran-airspace-May-8 ladder resolves today",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "focus-1-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: clause-text-divergence anchor for ADR-096 lives or dies in the tape",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "focus-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-2-title",
+        "focus-2-why"
+      ]
+    },
+    "focus-2-title": {
+      "type": "Text",
+      "props": {
+        "text": "2. Russia-Ukraine resolution-debate window 05-08 → 05-10",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "focus-2-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: comments-side leverage window opens today, max 3 days",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "focus-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-3-title",
+        "focus-3-why"
+      ]
+    },
+    "focus-3-title": {
+      "type": "Text",
+      "props": {
+        "text": "3. Open ADR-096 resolution-text-ingest on swarm-fund-mvp",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "focus-3-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: 48pp Iran-airspace anchor + ILS-dl empirical stack ready",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "yesterday-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "yesterday-heading",
+        "yesterday-item-1",
+        "yesterday-item-2",
+        "yesterday-item-3",
+        "yesterday-item-4",
+        "yesterday-item-5"
+      ]
+    },
+    "yesterday-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Since yesterday",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "yesterday-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Picked Per-Market ILS (2605.02287) — closes 8-paper Nechepurenko run; methodology cite for ADR-096",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "yesterday-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "Iran-airspace-May-8 ladder repriced 4% → 12.5% YES on kinetic news re-assertion",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "yesterday-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "yesterday-3-text",
+        "yesterday-3-badge"
+      ]
+    },
+    "yesterday-3-text": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner dispatch_skill DEGRADED day 12; reddit-digest 14th consecutive ERROR (prefetch-reddit.sh still unshipped)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "yesterday-3-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEGRADED",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "yesterday-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "PR #156 reply-maker XAI prefetch idle ~95h+ on aaronjmars/aeon (day 14, ISS-014 carrier)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "yesterday-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "9 stalled PRs on tomscaria/aeon (#1 ~12d, #2/#3/#4/#5 ~10d, #8 ~5d, #9/#10/#11 ~4d)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "watch-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "watch-heading",
+        "watch-item-1"
+      ]
+    },
+    "watch-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Watch",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "watch-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "Senate floor vote on Warsh week of May 11; Powell term ends May 15 — comments-side leverage opens around vote, front-runs Powell→Warsh hook ($49.5M PM 100% YES on continuity, but Warsh platform = regime change)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "running-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "running-heading",
+        "running-item-1",
+        "running-item-2",
+        "running-item-3",
+        "running-item-4",
+        "running-item-5",
+        "running-item-6",
+        "running-item-7",
+        "running-item-8",
+        "running-item-9"
+      ]
+    },
+    "running-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Running today",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "running-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "07:00 UTC: daily-routine + paper-digest + hn-digest + reddit-digest",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "09:00–09:30 UTC: pr-review + auto-merge + github-*",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "12:00–13:00 UTC: monitor-polymarket + polymarket-comments + monitor-kalshi",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "14:00 UTC: paper-pick + article + research-brief + digest + security-digest",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "15:30 UTC: project-lens (Mon/Wed/Fri only)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-6": {
+      "type": "Text",
+      "props": {
+        "text": "16:00 UTC: code-health + changelog + external-feature",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-7": {
+      "type": "Text",
+      "props": {
+        "text": "17:00 UTC: write-tweet + reply-maker + tweet-roundup + farcaster-digest",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-8": {
+      "type": "Text",
+      "props": {
+        "text": "18:00 UTC: reflect + skill-health + goal-tracker + startup-idea",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "running-item-9": {
+      "type": "Text",
+      "props": {
+        "text": "21:00 UTC: evening-recap",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
