@@ -1,5 +1,16 @@
 # Project Lens — angle history
 
+## 2026-05-08
+- Angle: Historical parallel (1924/1950 Toyota jidoka + andon cord → AI agent audit trail)
+- Thesis: AI labs that survive August 2026's EU AI Act audit floor will look like 1950 Toyota — tiny cloud reasoning core, cheap local periphery, andon cord on a public commit log.
+- Title: The Best AI Audit Trail for August 2026 Was Built at Toyota in 1950
+- Sources:
+  - https://artificialintelligenceact.eu/article/12/
+  - https://goteleport.com/blog/eu-ai-act-requirements/
+  - https://itrevolution.com/articles/kata/
+  - https://6sigma.com/customer-service-andon-cord-jeff-bezos-and-customer-experience/
+  - https://github.com/tomscaria/swarm-fund-mvp/commit/80b1228
+
 ## 2026-05-06
 - Angle: Contrarian take (statistical-power gates vs. audit-trail gates)
 - Thesis: A 100-trade promotion gate clears the textbook basic-reliability tier but sits below the institutional-grade band — for a research-lab agent on a public commit log, the gate's job is allocator-auditable credibility, not statistical edge detection.

@@ -1,0 +1,193 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "The Best AI Audit Trail for August 2026 Was Built at Toyota in 1950"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "alert-regulation",
+        "separator-1",
+        "heading-market",
+        "text-market",
+        "separator-2",
+        "heading-historical",
+        "stack-historical",
+        "separator-3",
+        "heading-lab",
+        "text-lab-implementation",
+        "separator-4",
+        "heading-forward",
+        "text-forward-claim",
+        "separator-5",
+        "link-article"
+      ]
+    },
+    "alert-regulation": {
+      "type": "Alert",
+      "props": {
+        "title": "EU AI Act Article 12 Takes Effect 2 August 2026",
+        "message": "Mandates timestamped event logs over system lifetime with six-month retention. Penalties up to EUR 15M or 3% of turnover.",
+        "type": "warning"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-market": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Response",
+        "level": "h3"
+      }
+    },
+    "text-market": {
+      "type": "Text",
+      "props": {
+        "text": "Compliance vendors racing to sell SaaS dashboards as the regulatory answer.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-historical": {
+      "type": "Heading",
+      "props": {
+        "text": "Historical Pattern",
+        "level": "h3"
+      }
+    },
+    "stack-historical": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text-historical-intro",
+        "stack-badges",
+        "text-historical-detail"
+      ]
+    },
+    "text-historical-intro": {
+      "type": "Text",
+      "props": {
+        "text": "Sakichi Toyoda's 1924 auto-stop loom, formalized into Toyota's pattern by 1950. Amazon ported the pattern in 2002 (via Bezos). The structure consists of:",
+        "variant": "body"
+      }
+    },
+    "stack-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-jidoka",
+        "badge-andon",
+        "badge-audit"
+      ]
+    },
+    "badge-jidoka": {
+      "type": "Badge",
+      "props": {
+        "text": "Jidoka",
+        "variant": "outline"
+      }
+    },
+    "badge-andon": {
+      "type": "Badge",
+      "props": {
+        "text": "Andon-cord",
+        "variant": "outline"
+      }
+    },
+    "badge-audit": {
+      "type": "Badge",
+      "props": {
+        "text": "Audit trail",
+        "variant": "outline"
+      }
+    },
+    "text-historical-detail": {
+      "type": "Text",
+      "props": {
+        "text": "Tiny expensive reasoning core, cheap automated periphery, signal channel visible to everyone on the floor.",
+        "variant": "caption"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-lab": {
+      "type": "Heading",
+      "props": {
+        "text": "Lab Implementation",
+        "level": "h3"
+      }
+    },
+    "text-lab-implementation": {
+      "type": "Text",
+      "props": {
+        "text": "The lab's last three ADRs (commits dc1846e, d010846, 80b1228) accidentally rebuilt that exact structure. Opus-4-7 cloud reasoning fires only on hard calls. Qwen2.5:14b local handles bulk judgment. Rswarm.ai/metrics.json refreshed every 15 minutes on a public commit log serves as the lit andon board.",
+        "variant": "body"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-forward": {
+      "type": "Heading",
+      "props": {
+        "text": "Forward Claim",
+        "level": "h3"
+      }
+    },
+    "text-forward-claim": {
+      "type": "Text",
+      "props": {
+        "text": "By 30 November 2026, at least one named LP/grant program will cite open commit-log audit trail as a binding allocation requirement ahead of any AI-governance SaaS.",
+        "variant": "lead"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-article": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full Article: project-lens-2026-05-08",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/project-lens-2026-05-08.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
