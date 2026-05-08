@@ -1,11 +1,15 @@
 ## Summary
 
-- **Mode:** SEARCH_SKILL_NO_GAP — silent, log-only per spec.
-- **Reasoning:** All four query-derivation sources walked; none yielded a concrete external-capability word.
-  - (a) cron-state.json: zero skills at `consecutive_failures >= 2`; ~30 sub-0.6 success-rates all carry `last_status: success` and trace to ISS-013/ISS-017/ISS-020 mass-failure decay (existing capabilities, infrastructure-gated, not external gaps).
-  - (b) issues/INDEX.md: 17 open issues, but only ISS-015 (quality-regression) matches the trigger-category set, and it's a `messages.yml` workflow injection patch — not a capability gap.
-  - (c) MEMORY Next Priorities: every line is operator-config / model-swap / param-tweak / in-flight PR — no external capability gap.
-  - (d) 7-day log grep for capability-gap phrases: every hit is operator-config or schema-drift maintenance backlog (e.g. today's `/v2/chains` drift in defi-overview is fix-in-place, not external).
-- **Action:** No catalog search, no install, no notify (per step 1 abort path).
-- **Files modified:** `memory/logs/2026-05-07.md` only (skill log entry appended).
-- **9th NO_GAP-class run in 10 firings.** Pattern will hold until chain-runner.yml `dispatch_skill()` lands and ISS-013/ISS-020 success-rate counters burn down.
+Ran `search-skill` for 2026-05-08. Exit mode: **SEARCH_SKILL_NO_GAP** — silent, log-only per spec. No notify, no catalog search, no install.
+
+**Sources checked (all four):**
+- (a) `cron-state.json` — 0 skills at `consecutive_failures >= 2`. ~30 skills below 0.6 success rate, but every one carries `last_status: success` with `last_failed: 2026-04-26` (ISS-013 mass-failure decay artifact, not active gap).
+- (b) `issues/INDEX.md` — 17 open issues; none match the strict category set {missing-secret, api-change, permanent-limitation, quality-regression} pointing to an installable external capability.
+- (c) `MEMORY.md` "Next Priorities" — all internal infra / operator-config / separate-repo items.
+- (d) Recent log grep — every hit is operator-config or schema-drift, not capability gap.
+
+Same conclusion as 05-07 / 05-06 / 05-04 / 05-02 / 05-01 runs. The structural noise here remains gated on chain-runner.yml `dispatch_skill()` + reddit-prefetch + reply-maker XAI prefetch landing — none of which need an external skill install.
+
+**Files modified:** appended `## search-skill` section to `memory/logs/2026-05-08.md`.
+
+**Follow-up:** none from this skill. Unblocking the operator-side patches (chain-runner, prefetch scripts, skills.lock initial) would reduce the noise this skill detects.
