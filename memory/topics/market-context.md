@@ -1,63 +1,72 @@
-# Market Context (as of 2026-05-07)
+# Market Context (as of 2026-05-08)
 
-> **Take:** risk-off — BTC -1.9% 24h, breadth 4/20 as total mcap shed $66B to $2.74T. Conviction: medium.
+> **Take:** risk-off — BTC -1.3% 24h, F&G dropped 9 pts to 38 (Fear) as US military action in Iran sent oil above $100/bbl. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $80,163 (-1.9% 24h, +5.1% 7d) · dominance 58.46% (-0.13 pp 24h)
-- ETH $2,296 (-3.0% 24h, +1.5% 7d) · ETH/BTC 0.02864
-- SOL $87.92 (-0.7% 24h, +5.7% 7d)
-- Total mcap $2.74T (-1.46% 24h) · DEX vol $6.49B 24h
-- Breadth: 4/20 green 24h · 17/20 green 7d
-- Fear & Greed: 47 (Neutral) — yesterday 46 (Fear)
+- BTC $80,040 (-1.3% 24h, ~+4.9% 7d) · dominance 58.5% (+0.04 pp 24h)
+- ETH $2,285 (-2.0% 24h, ~+1.0% 7d) · ETH/BTC 0.02855
+- SOL $88.47 (-1.4% 24h, ~+6.3% 7d)
+- Total mcap $2.74T (-0.1% 24h) · DEX vol $7.33B 24h
+- Breadth: ~4/20 green 24h (est. from top-10 data) · ~16/20 green 7d
+- Fear & Greed: 38 (Fear) — yesterday 47 (Neutral)
 
 ## What Changed Since Last Refresh
-- Regime rotation → risk-off: BTC -$1,925 (-2.4% snapshot) with breadth 17/20 → 4/20; every top-20 asset down except TON (+6.7%) and TRX (+1.0%)
-- Ethereum chain TVL $47.00B → $46.02B (-2.1%); first material drawdown after 3-session inflow run
-- ETF bid absorbed the sell-off: $46M net inflow today (5-day streak total $1.69B); institutional floor holding at ~$80k
+- F&G collapsed 9 pts: 47 (Neutral) → 38 (Fear) — geopolitical re-pricing, not a price-action artifact; first Fear reading since May 1
+- Iran escalation catalyst: US military strikes on Iran reported; Iran rejected US peace proposal; oil above $100/bbl; $87.91M long liquidations 24h
+- Ethereum chain TVL: $46.02B → $45.07B (-$0.95B, -2.1%) — second consecutive drawdown, crosses the ≥2% material threshold
+- DEX vol up 13%: $6.49B → $7.33B — active repositioning not passive holding; consistent with geopolitical-risk flight
+- Polymarket Iran cluster repriced: US-Iran peace May-15 25.8% → 20.3% (-5.5pp); May-31 40.5% → 34.5% (-6pp)
 
 ## Active Narratives
-- **Privacy coins (ZEC, XMR)** — phase: peak. Evidence: ZEC -1.7% 24h after +34% yesterday; 7d +68.7% rank 15; XMR -3.0% 24h, +7.8% 7d. First 24h reversal; peak not yet broken (7d green) but 24h cooling in a broad sell-off; watch funding-rate inversion as exit signal.
-- **TON ecosystem** — phase: peak. Evidence: TON +6.7% 24h, +87.3% 7d rank 20; sole outperformer in a -2% BTC session; 3-day cumulative ~100% gain in major-cap. Telegram catalyst (Durov validator + 6x fee cut) sustained, but 3-day 100%+ extension = exhaustion risk elevated; no new entry.
-- **AI infra (HYPE, TAO, IO, NEAR)** — phase: rising. Evidence: HYPE -3.6% 24h rank 13 but +7.5% 7d; sector pulled lower with market, 7d breadth intact. Rising phase not broken; risk-off regime makes new entries premature until regime normalizes.
-- **Powell→Warsh Fed transition** — phase: emerging. Evidence: May 15 handoff (8 days); Warsh's Senate testimony ("room to cut rates without sparking inflation") directly contra Powell's stance. Front-run window: dovish pre-announcement would be a direct BTC catalyst reversing today's risk-off.
+- **Iran/Geopolitical Escalation** — phase: peak. Evidence: US strikes active; peace deal markets -5-6pp; oil >$100/bbl; $87.91M long liquidations 24h; BTC-S&P500 84% correlation dragging risk assets.
+- **AI Infra / L2s (STRK, ONDO)** — phase: rising. Evidence: STRK +29.74% trending #1 CoinGecko; ONDO +7.57% trending; AI Applications + AI Agents both in trending categories; sector holding momentum in risk-off tape.
+- **Privacy coins (ZEC, XMR)** — phase: fading. Evidence: absent from CoinGecko trending for second consecutive day; no 24h breakouts; 7d run not extended on second sell-off session.
+- **TON ecosystem** — phase: fading. Evidence: absent from CoinGecko trending; post-peak consolidation after 3-day ~100% extension; Telegram-catalyst exhausted, no new trigger.
+- **World Liberty Financial USD (USD1)** — phase: emerging. Evidence: entered top-5 stablecoins at $4.48B circulating, first appearance above USDS+DAI in supply ranking; Trump-linked issuer entering institutional tier.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $20.54B (-0.60%)
-- SSV Network: $17.12B (+2.68%)
-- Aave V3: ~$14.9B (n/a — DeFiLlama feed mixed CEX/DeFi; prior +7.05%)
-- EigenCloud: ~$8.1B (n/a; prior -10.81%)
-- Morpho Blue: ~$7.6B (n/a; prior +11.19%)
+- Lido: ~$20.5B (carried from 05-07; protocol endpoint not re-fetched this run)
+- SSV Network: ~$17.1B (carried)
+- Aave V3: ~$14.9B (carried)
+- EigenCloud: ~$8.1B (carried)
+- Morpho Blue: ~$7.6B (carried)
 
-## Chain Flow (top 3 by TVL, vs prior snapshot)
-- Ethereum: $46.02B (-$0.98B vs 05-06)
-- Solana: $5.63B (flat)
-- BSC: $5.59B (-$0.08B vs 05-06)
+## Chain Flow (top 5 by TVL, vs prior snapshot)
+- Ethereum: $45.07B (-$0.95B vs 05-07, -2.1%)
+- Solana: $5.61B (-$0.02B, flat)
+- BSC: $5.54B (-$0.05B, flat)
+- Tron: $5.11B (new entry tracked)
+- Arbitrum: $1.57B (new entry tracked)
 
 ## Stablecoins
-Total (top 4): $281.5B (~flat vs prior). USDT $189.6B · USDC $78.5B · USDS $8.8B · DAI $4.6B · combined share of mcap ~10.3%. Flat stablecoin base against contracting mcap — no dry-powder drawdown; stablecoin dominance edging up as risk assets fall.
+Total top-5: ~$284.7B. USDT $189.2B · USDC $78.4B · USDS $8.0B · DAI $4.6B · USD1 $4.5B · combined share of mcap ~10.4%. USDS -$0.8B vs prior (redemption or reallocation signal). USD1 surpassed USDS+DAI in circulating supply — Trump-linked issuer now in top tier.
 
 ## Trending (CoinGecko)
-- TON (Toncoin) — +6.7% 24h; rank 20; sole major-cap positive in risk-off session; 3-day Telegram catalyst
-- ZEC (Zcash) — -1.7% 24h; rank 15; privacy peak cooling, 7d +68.7% still dominant
-- XMR (Monero) — -3.0% 24h; rank 18; privacy co-rotation tail; 7d +7.8%
-- HYPE (Hyperliquid) — -3.6% 24h; rank 13; AI-infra anchor pulled lower with market
+- STRK (Starknet) — +29.74% trending #1; ZK L2 ecosystem breakout in risk-off tape; AI-adjacent narrative
+- PHRS (Pharos) — +50.10% trending #2; emerging ZK L2; early-stage, no major mcap yet
+- ONDO (Ondo Finance) — +7.57% trending; tokenized RWA / institutional DeFi; rising phase intact
+- Trending categories: AI Applications, AI Agents, Liquid Staking, Quantum-Resistant
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 15, 2026? | 25.8% | $1.73m | $0.21m |
-| US x Iran permanent peace deal by May 31, 2026? | 40.5% | $1.36m | $0.30m |
-| Strait of Hormuz traffic returns to normal by May 15? | 6.6% | $1.04m | $0.22m |
+| US x Iran permanent peace by May 15 | 20.3% | $2.94M | — |
+| US x Iran permanent peace by May 31 | 34.5% | $2.93M | — |
+| Hantavirus pandemic 2026 | 9.6% | $2.11M | — |
+| Knicks beat 76ers (series) | 48.5% | $1.59M | — |
+| US x Iran permanent peace by June 30 | 52.5% | $1.23M | — |
 
-*Iran geopolitical cluster $4.13M combined 24h vol. Iran-airspace-by-May-8 absent from top-10 — resolved near-zero YES (effective NO). Hormuz May 15 at 6.6% → supports CalibrationGap's end-of-May Hormuz NO position (entry 54.5c May 2). Trump-China-by-May-31 absent from top vol — still in stand-down per 05-06 multi-handle falsification.*
+*Bitcoin $150k by June 30 excluded (1.35% YES, <3% floor). Iran cluster $7.10M combined 24h vol — single largest cluster tracked. Iran-airspace-by-May-8 absent from top-10 by vol; resolves today. US strikes on Iran reported — verify actual clause-text resolution before acting on any Iran position.*
 
 ## Macro Catalysts (next 48h)
-- **Powell→Warsh transition May 15**: Warsh dovish ("room to cut rates without sparking inflation") contra Powell; Senate vote week of May 11. Front-run window open — any dovish pre-announcement flips regime back toward risk-on.
-- **BTC ETF streak**: 5 consecutive inflow days, $1.69B total; streak break would deepen risk-off; continuation signals institutional floor ~$80k holding.
+- **Iran-airspace-by-May-8 RESOLUTION TODAY**: Market was ~4% YES (near-certain NO) as of 05-06. US military strikes on Iran now reported (WebSearch). If Iranian airspace closed, resolves YES — opposite of prior pricing. Verify clause-text before any action; do not act on headline alone.
+- **Iran peace deal repricing**: May-15 slot down to 20.3%; May-31 34.5%; June-30 52.5% most uncertain. Iran rejection of US proposal is proximate catalyst. All three CalibrationGap-adjacent.
+- **BTC ETF 9-day inflow streak**: $2.7B total accumulated; institutional floor ~$80k holding. Streak break = next major downside catalyst; continuation = regime floor signal.
+- **Powell→Warsh transition (May 15 deadline)**: Senate floor vote week of May 11. Dovish pre-announcement is the clearest near-term risk-on flip catalyst. Comments-side leverage window opens around floor vote.
 
 ## Implications for Downstream Skills
-- **token-pick:** Risk-off regime — no new entries. Avoid privacy names (ZEC/XMR peak, reversing 24h) and TON (3-day ~100% extension, exhaustion risk). AI-infra rising phase intact; wait for regime reset before entry.
-- **narrative-tracker:** Watch TON for post-peak fade confirmation (24h reversal + rising funding rate). Monitor Warsh transition for dovish signal that flips regime. ETF streak break is the clearest near-term downside catalyst.
+- **token-pick**: Risk-off + active geopolitical escalation — no new entries. STRK (+29.74% trending) shows isolated L2/ZK strength; confirm regime reset before entry. Avoid TON (fading, post-peak) and privacy (fading, 2nd day off trending). Watch ONDO for RWA/institutional narrative phase transition.
+- **narrative-tracker**: Iran escalation at peak; ceasefire or de-escalation = sharp regime-flip trigger. Monitor USD1 growth as Trump-linked political-finance narrative. AI Applications + AI Agents trending categories = potential AI-infra phase transition emerging→rising.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -74,4 +83,4 @@ Total (top 4): $281.5B (~flat vs prior). USDT $189.6B · USDC $78.5B · USDS $8.
 
 ---
 *Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
-*Source status: coingecko=ok defillama=partial fng=ok polymarket=ok websearch=ok*
+*Source status: coingecko=ok defillama=partial(chains+dex,protocols-carried-from-05-07) fng=ok polymarket=ok websearch=ok*

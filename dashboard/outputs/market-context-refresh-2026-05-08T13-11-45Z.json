@@ -1,0 +1,235 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Market Context",
+        "description": "2026-05-08"
+      },
+      "children": [
+        "sentiment_section",
+        "sep_1",
+        "prices_section",
+        "sep_2",
+        "indicators_section",
+        "sep_3",
+        "narrative_section",
+        "sep_4",
+        "hotmarket_section"
+      ]
+    },
+    "sentiment_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "take_label",
+        "badge_risk_off",
+        "conviction_text"
+      ]
+    },
+    "take_label": {
+      "type": "Text",
+      "props": {
+        "text": "Take:",
+        "variant": "body"
+      }
+    },
+    "badge_risk_off": {
+      "type": "Badge",
+      "props": {
+        "text": "risk-off",
+        "variant": "destructive"
+      }
+    },
+    "conviction_text": {
+      "type": "Text",
+      "props": {
+        "text": "(conviction medium)",
+        "variant": "caption"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "prices_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "prices_grid"
+      ]
+    },
+    "prices_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc",
+        "stat_eth"
+      ]
+    },
+    "stat_btc": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC",
+        "value": "$80,040",
+        "delta": "-1.3%",
+        "trend": "down"
+      }
+    },
+    "stat_eth": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH",
+        "value": "$2,285",
+        "delta": "-2.0%",
+        "trend": "down"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "indicators_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "indicators_grid"
+      ]
+    },
+    "indicators_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_fg",
+        "stat_breadth",
+        "stat_tvl"
+      ]
+    },
+    "stat_fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "38 (Fear)",
+        "delta": "-9 pts",
+        "trend": "down"
+      }
+    },
+    "stat_breadth": {
+      "type": "Text",
+      "props": {
+        "text": "Breadth: ~4/20",
+        "variant": "body"
+      }
+    },
+    "stat_tvl": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH Chain TVL",
+        "value": "$45.1B",
+        "delta": "-2.1%",
+        "trend": "down"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "narrative_label",
+        "alert_iran"
+      ]
+    },
+    "narrative_label": {
+      "type": "Text",
+      "props": {
+        "text": "Top Narrative",
+        "variant": "lead"
+      }
+    },
+    "alert_iran": {
+      "type": "Alert",
+      "props": {
+        "title": "Iran Escalation",
+        "message": "Peak — US strikes, oil >$100",
+        "type": "warning"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hotmarket_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hotmarket_label",
+        "market_title",
+        "odds_progress",
+        "volume_text"
+      ]
+    },
+    "hotmarket_label": {
+      "type": "Text",
+      "props": {
+        "text": "Hot Market",
+        "variant": "lead"
+      }
+    },
+    "market_title": {
+      "type": "Text",
+      "props": {
+        "text": "US x Iran peace by May 15",
+        "variant": "body"
+      }
+    },
+    "odds_progress": {
+      "type": "Progress",
+      "props": {
+        "value": 20.3,
+        "max": 100,
+        "label": "YES"
+      }
+    },
+    "volume_text": {
+      "type": "Text",
+      "props": {
+        "text": "$2.94M volume",
+        "variant": "caption"
+      }
+    }
+  }
+}
