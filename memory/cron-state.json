@@ -737,10 +737,10 @@
   },
   "github-monitor": {
     "last_dispatch": "2026-05-08T10:12:32Z",
-    "last_status": "dispatched",
-    "last_success": "2026-05-07T10:10:03Z",
-    "total_runs": 11,
-    "total_successes": 11,
+    "last_status": "success",
+    "last_success": "2026-05-08T10:16:16Z",
+    "total_runs": 12,
+    "total_successes": 12,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
