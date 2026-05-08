@@ -1,20 +1,23 @@
-## Summary
+*Top Tweets — prediction markets (2026-05-08)*
+_Kalshi closed $1B Series F at $22B today (Coatue + Sequoia + a16z; institutional volume +800% in 6mo). Polymarket's reply is operational not financial — 4 fresh market launches in 48h. Fundraising gap widens, headline cycle still Polymarket's._
 
-**Skill: `fetch-tweets`** — halted at step 2 (build search prompt) due to missing required input.
+*Polymarket headline market launches*
+1. x.com/Polymarket — NEW POLYMARKET: "Hantavirus pandemic this year?" — fastest-launched market in today's set; cleanest empirical-anchor launch since the Iran-airspace ladder.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/Polymarket/status/2052053405221224574)
 
-**Diagnosis**
-- `aeon.yml:87` configures `fetch-tweets: { enabled: true, schedule: "0 17 * * *" }` with **no `var:` key**.
-- Skill frontmatter (`skills/fetch-tweets/SKILL.md:4-8`) marks `${var}` as **Required** — the X/Twitter search query.
-- `VAR` env var is also `undefined`.
-- All three search paths (A=cache, B=X.AI API, C=WebSearch) need a query string; none can run.
+2. x.com/Polymarket — JUST IN: Democrats & Republicans dead even on Senate at midterms — first 50/50 print since the contract opened.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/Polymarket/status/2051307670531887111)
 
-**Action taken (per skill's empty/error-handling rules, step 4)**
-- Logged `FETCH_TWEETS_ERROR (last_path=none, reason=missing_var)` to `memory/logs/2026-05-07.md` for skill-health to pick up.
-- **No notification sent** (skill explicitly forbids notifications on empty/error).
-- `memory/fetch-tweets-seen.txt` untouched (3,790 bytes — already populated from prior runs).
+3. x.com/Polymarket — JUST IN: Hormuz traffic returns to normal by end of next month — 52% chance — sister-market to today's article-of-the-day Iran-airspace ladder; Kalshi side prices Aug 44% / Sep 54% / Oct 62%.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/Polymarket/status/2050969768857841788)
 
-**Files modified**
-- `memory/logs/2026-05-07.md` — appended `### fetch-tweets` error block.
+*Sports vertical*
+4. x.com/PolymarketBlitz — "2027 Super Bowl Odds… What stands out?" — NFL-vertical 2027 cycle launches early while NBA/NFL hold out from Kalshi/Polymarket integrity deals.
+Likes: N/A | RTs: N/A | Replies: N/A
+[View tweet](https://x.com/PolymarketBlitz/status/2051377810296754602)
 
-**Follow-up needed (operator)**
-- Add a `var:` to `fetch-tweets` in `aeon.yml`. This is the same operator-config sweep already flagged in `MEMORY.md:111` for `digest`, `list-digest`, `refresh-x`, `remix-tweets` — `fetch-tweets` should be added to the same sweep. Sister to ISS-018-class `forbidden_pattern:${var}` cross-talk.
+_Source path: WebSearch (XAI_API_KEY env-block on manual run; .xai-cache/ absent — 10th run-day on path C). Engagement counts unavailable; ranked by signal/recency/source authority._
+

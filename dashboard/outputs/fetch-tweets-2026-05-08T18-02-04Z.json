@@ -1,0 +1,178 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Top Tweets — prediction markets (2026-05-08)"
+      },
+      "children": [
+        "intro_text",
+        "sep_1",
+        "markets_heading",
+        "tweet_1_group",
+        "tweet_2_group",
+        "tweet_3_group",
+        "sports_heading",
+        "tweet_4_group",
+        "sep_2",
+        "source_text"
+      ]
+    },
+    "intro_text": {
+      "type": "Text",
+      "props": {
+        "text": "Kalshi closed $1B Series F at $22B today (Coatue + Sequoia + a16z; institutional volume +800% in 6mo). Polymarket's reply is operational not financial — 4 fresh market launches in 48h. Fundraising gap widens, headline cycle still Polymarket's.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "markets_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Polymarket headline market launches",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "tweet_1_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_1",
+        "tweet_1_link"
+      ]
+    },
+    "tweet_1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "handle": "@Polymarket",
+        "text": "NEW POLYMARKET: \"Hantavirus pandemic this year?\" — fastest-launched market in today's set; cleanest empirical-anchor launch since the Iran-airspace ladder."
+      },
+      "children": []
+    },
+    "tweet_1_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2052053405221224574"
+      },
+      "children": []
+    },
+    "tweet_2_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_2",
+        "tweet_2_link"
+      ]
+    },
+    "tweet_2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "handle": "@Polymarket",
+        "text": "JUST IN: Democrats & Republicans dead even on Senate at midterms — first 50/50 print since the contract opened."
+      },
+      "children": []
+    },
+    "tweet_2_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2051307670531887111"
+      },
+      "children": []
+    },
+    "tweet_3_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_3",
+        "tweet_3_link"
+      ]
+    },
+    "tweet_3": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Polymarket",
+        "handle": "@Polymarket",
+        "text": "JUST IN: Hormuz traffic returns to normal by end of next month — 52% chance — sister-market to today's article-of-the-day Iran-airspace ladder; Kalshi side prices Aug 44% / Sep 54% / Oct 62%."
+      },
+      "children": []
+    },
+    "tweet_3_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/Polymarket/status/2050969768857841788"
+      },
+      "children": []
+    },
+    "sports_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Sports vertical",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "tweet_4_group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweet_4",
+        "tweet_4_link"
+      ]
+    },
+    "tweet_4": {
+      "type": "TweetCard",
+      "props": {
+        "author": "PolymarketBlitz",
+        "handle": "@PolymarketBlitz",
+        "text": "\"2027 Super Bowl Odds… What stands out?\" — NFL-vertical 2027 cycle launches early while NBA/NFL hold out from Kalshi/Polymarket integrity deals."
+      },
+      "children": []
+    },
+    "tweet_4_link": {
+      "type": "Link",
+      "props": {
+        "label": "View tweet",
+        "href": "https://x.com/PolymarketBlitz/status/2051377810296754602"
+      },
+      "children": []
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "source_text": {
+      "type": "Text",
+      "props": {
+        "text": "Source path: WebSearch (XAI_API_KEY env-block on manual run; .xai-cache/ absent — 10th run-day on path C). Engagement counts unavailable; ranked by signal/recency/source authority.",
+        "variant": "caption"
+      },
+      "children": []
+    }
+  }
+}
