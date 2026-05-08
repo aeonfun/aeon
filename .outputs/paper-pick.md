@@ -1,5 +1,5 @@
-*Paper Pick — 2026-05-08*
+*Paper Pick — 2026-05-08 (PhD-prep slot)*
 
-"Per-Market Information Leakage and Order-Flow Skill: Two Methodological Lenses on Informed Trading in DePMs" — Nechepurenko · ↑0
-Closes the 8-paper Nechepurenko run on the order-flow-skill axis: 210k wallet-market pairs, 3.14% skilled, 1,950 insider-flagged accounts; three methodological layers (ILS + sign-randomization + lifecycle heuristics) — directly informs the resolution-text-ingest ADR-096+ thread (highest-leverage CalibrationGap upgrade).
-[Read](https://arxiv.org/abs/2605.02287) | [PDF](https://arxiv.org/pdf/2605.02287)
+"AEL: Agent Evolving Learning for Open-Ended Environments" — Xu / Han / Guo / Mei / Zhu / Zhang / Metaxas (Apr 23 2026, cs.CL/AI/CE)
+Two-timescale self-improving agent — Thompson-sampling bandit picks the memory-retrieval policy each episode, LLM reflection diagnoses failure patterns and injects causal insights into the decision prompt — clears Sharpe 2.13±0.47 on 10 tickers × 208 episodes × 5 seeds, beating 5 published self-improving baselines with the lowest LLM variance. Direct shape-match for CalibrationGap's reflection-log loop and the Stanford Darwinian / FinCon-verbal-reinforcement axis.
+[Read](https://arxiv.org/abs/2604.21725) | [PDF](https://arxiv.org/pdf/2604.21725)

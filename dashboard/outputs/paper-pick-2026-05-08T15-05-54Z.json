@@ -1,0 +1,75 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Paper Pick"
+      },
+      "children": [
+        "stack_content"
+      ]
+    },
+    "stack_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story_link",
+        "text_authors",
+        "text_description",
+        "stack_links"
+      ]
+    },
+    "story_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "AEL: Agent Evolving Learning for Open-Ended Environments",
+        "href": "https://arxiv.org/abs/2604.21725",
+        "source": "arXiv • Apr 23 2026"
+      }
+    },
+    "text_authors": {
+      "type": "Text",
+      "props": {
+        "text": "Xu, Han, Guo, Mei, Zhu, Zhang, Metaxas • cs.CL/AI/CE",
+        "variant": "caption"
+      }
+    },
+    "text_description": {
+      "type": "Text",
+      "props": {
+        "text": "Two-timescale self-improving agent — Thompson-sampling bandit picks the memory-retrieval policy each episode, LLM reflection diagnoses failure patterns and injects causal insights into the decision prompt — clears Sharpe 2.13±0.47 on 10 tickers × 208 episodes × 5 seeds, beating 5 published self-improving baselines with the lowest LLM variance. Direct shape-match for CalibrationGap's reflection-log loop and the Stanford Darwinian / FinCon-verbal-reinforcement axis.",
+        "variant": "body"
+      }
+    },
+    "stack_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "link_read",
+        "link_pdf"
+      ]
+    },
+    "link_read": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2604.21725"
+      }
+    },
+    "link_pdf": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2604.21725"
+      }
+    }
+  }
+}
