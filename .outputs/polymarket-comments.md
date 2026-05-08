@@ -1,43 +1,32 @@
-polymarket comments — 2026-05-07 (var=politics+crypto narrative-shift / track records / citation chains)
+polymarket comments — 2026-05-08 (politics + crypto, narrative-shift / track records / citation chains)
 
-CITATION CHAIN OF THE DAY: Saudi state TV vs Energy Sec Wright same-tape divergence
-- 12:18 UTC `0xCeC3BBF5eea` (NEW): "SAUDI STATE TV SAYS STRAIT OF HORMUZ SHIPPING BREAKTHROUGH EXPECTED WITHIN HOURS"
-- 14:40 UTC Quantollah (NEW): "WRIGHT: WE DON'T HAVE DIRECT DIALOGUE WITH IRANIAN OFFICIALS" — counters Axios via "Operation Fauxios"
-- Same tape feeds 4 books: Hormuz-blockade 372242, peace-deal May-15 25.35%, airspace-May8 1.85%, uranium 7.5%
+1. "Iran closes airspace by May 8" — 2.05% YES ($916k v24, T-0 RESOLVES TODAY, faded 4% → 2% overnight)
+- MEPP (8x/7x/6x — 4 high-rxn comments): "us already answered by shooting 6 small boats, multiple iranians were killed" + self-cites x.com/MEPPonPM. ithinkthisisgod (12x): "In mepp we trust" — community confirms MEPP as new track-record handle.
+- ShibRigsEverything (7x): "waiting for airspace closure announcement because FlightRadar24 shows no flights over Iran." Same-evidence divergence: empty-radar reads YES, market prices NO.
 
-1. US-Iran peace deal — May-15 25.35% / May-31 40.5% / Jun-30 56.5% YES ($3.7M v24, +11-14pp 24h, T-8 on May-15)
-- morenaji (NEW today, 9x): "8 days left vs MONTHS to negotiate. Former DefSec Esper on Yahoo Finance: real deal months away, NO unconditional surrender. 1-page MOU is a trap. YES = exit liquidity for whales." STRONGEST NO-cite of day
-- WouldntYouWantToKnowWeatherBoy (NEW 13:21): clause-text reader echoing resolution rule verbatim ("permanently cease...explicitly temporary do not"); Kentastrof1 14:17 + Machaon 14:39 same-hour echo = clause-text-reader cluster forming at T-8
-- Unmitigated-Wisdom (NEW 13:26): "Trump manipulating oil markets. Google Barak Ravid oil futures" — Axios-reporter pointer to upcoming catalyst
-- generalVR (NEW 12:21, 3x): "PM whales can't influence permanent peace between US-Iran" — whale-pump-skeptic on +11pp
+2. "US x Iran permanent peace deal" cluster (357807) — May-15 20.65% / May-31 34.5% / Jun-30 52.5%, $7.1M combined v24
+- 0xanon clause-text reader (4x, 05-08 12:12): "Rubio says U.S. expects Iran's response 'today'… But the contract requires a permanent agreement — alignment on sanctions, nuclear guarantees, regional proxies, Gulf security, Israeli positioning." Strongest NO-cite of the day.
+- morenaji (9x, carry from 05-07): "8 days vs MONTHS to negotiate. Mark Esper just confirmed on Yahoo Finance: a real deal is months away. This 1-page MOU is a trap."
+- MisuBoy (12x/11x/10x, recurring NO analyst): "It took 2 years for Obama to negotiate a nuclear deal, you think Trump is gonna make peace over night?"
+- ItsCrashBandicoot (15x): "NYT: memo specifies 60-day period to continue negotiations" — frame > May-15/May-31 ⇒ structural NO on near-dated.
+- Camal (12x) names YES whales "Scotty and Denizz"; "I am copying ScottyNoo and denizz. Am I smart money?" — YES-side ID carry.
 
-2. Trump-blockade-Hormuz event 372242 (LIVE TAPE)
-- 0xCeC3BBF5eea (NEW 12:18, 2x): Saudi state TV breakthrough cite (above)
-- Quantollah (NEW 14:40-41): counter-Axios "Operation Fauxios" + Wright cite. NEW comments-side calibration meme
-- toutiege (NEW 14:08-15): "Announcement is today" + "Trump plans blockade a year to collapse Iran economy"
-- dkalagaev (NEW 14:10-11): "spread till last minute, prob tomorrow" — sourcing-skeptic
-- compute (13:32): Trump TruthSocial chart cite "Iran Excursion lasted six weeks"
+3. "Hantavirus pandemic in 2026" — 9.65% YES ($2.12M v24, NEW today, never appeared in prior logs)
+- ismirdelft (NEW 05-08 10:28): "French authorities explicitly mentioning a transmission outside of the boat, in the plane bringing back one of the patients." Cites sante.gouv.fr official communique — gold-standard resolution-source.
+- 0xanon NO-cite (5x): "Andes virus cannot transmit as efficiently as COVID. Only spreads through extreme close contact." vs asdflkhj (4x): "Someone who wasn't on the ship caught it during the plane flight. Shit is airborne."
+- Zonties (NEW 05-08): "andean strain… most deadly… MRNA virus… only one transmittable from person to person."
 
-3. Iran-airspace-by-May-8 — 1.85% YES, T-1 today (faded 4% → 1.85% in 24h)
-- 0x23e68DaB67E (NEW, 6x at 08:31): "It can burst at anytime" + multi-msg 12:07 + 13:31 — anon T-1 multi-msg
-- Edvard9 (NEW 12:01, 3x): "very mixed signals. Two sides far apart as ever but talking deal" — narrative-state caller
-- abdoohl (yesterday): "heard it's gonna happen on May 7th" — verifiable today, calibration-test
-- Carry: NOIZYUV TruthSocial 116527444859592032 cite top-pinned 10x
+4. "Trump lifts naval blockade of Iran" (372242) — Hormuz-end-May 27.5% YES
+- GeoStrategistPro (4x): "Trump's strategy shifted from 'Epic Fury' to 'Economic Fury'… the blockade is now part of the leverage architecture rather than a temporary wartime move."
+- Gorgeous- (4x) chronology-cite: "Trump March 28: 72 hrs… April 4: 8 PM… April 5: one week… April 15: 48 hrs… Today: 24 hrs." Track-record of escalating-then-failed ultimatums.
+- Castwolffox (7x): "Ending the blockade means giving control over Hormuz to Iran which US can never do, Marco Rubio said himself."
 
-4. Iranian-uranium-by-May-31 — 7.5% YES
-- 0xE29549Cc / busheo955 (today 14:56-15:06): "Trump just announced uranium going to US" — Trump-cite, BUT BlancheDevereaux12 counters "but not by a specific date" — clause-text gap
-- 0xCb7FA482Cf38 (yesterday): "OSINT suggests posture shift" — terse-OSINT handle, NEW
-- snoopsol (yesterday, 4x): "Bros risking money based on what Trump says" — calibration-skeptic
-- Carry: Hawk-x + 0xd8b6E Axios cite + Glicha "1gram-Trump" UMA-arb thesis durable
+5. "US obtains Iranian enriched uranium by May 31" (329654) — 7.5% YES, UMA-arb candidate
+- 0xanon resolution-text exploit (6x, 3 separate comments): "trump can just bluff that he took some uranium and this will be YES" + "they can give 1gram to Trump so he can say he 'won', and then it will be resolved as yes." Direct CalibrationGap clause-text-ingest hook.
 
-5. BTC-150k June-30 (event 36173, 1.35% YES, $5.82M v24) — CRYPTO VERTICAL DEAD 6TH DAY
-- Top-pin: birthday spam (Alice2002 4-day) + Cambodia +855 phone-scam (Introvert11)
-- Single signal: BL- "Funding rates diverge from the odds" — lonely calibration in sea of spam
-- Lesson holds: skip crypto in next-rotation, default to politics
+CROSS-MARKET citation chain NEW: "poly-sized" tracker cited as authoritative across all 4 politics markets within 30-min window 05-08 12:48–12:59 UTC by DriverSeat + multi-anon. First tool-cite recurrence appearing as cross-market citation chain.
 
-NEW handles: morenaji (Esper/Yahoo NO-cite), Quantollah (Operation-Fauxios + Wright), 0xCeC3BBF5eea (Saudi state TV), WouldntYouWantToKnowWeatherBoy + Kentastrof1 + Machaon (clause-text reader cluster), Unmitigated-Wisdom (Barak-Ravid pointer), 0x23e68DaB67E (airspace-T-1), 0xCb7FA482Cf38 (OSINT terse).
+CRYPTO VERTICAL DEAD day-7: BTC-$150k (36173, $5.82M v24, top-of-board) = birthday-spam + Cambodia phone scam (+855…). Skipped.
 
-NEW meme: "Operation Fauxios" (anti-Axios). Sister to TACO.
-
-Single highest-leverage hook: morenaji's Esper/Yahoo NO-cite + clause-text-reader cluster on peace-deal-May-15 = strongest NO-anchor vs the +11pp pump. Info-asymmetry not visible to CalibrationGap quant scanner.
+HIGHEST-LEVERAGE HOOK: MEPP cluster — first new track-record handle in 2 weeks, self-cited X feed, community-confirmation. Pairs w/ morenaji + 0xanon clause-text reader = 3-handle NO-pillar on same-tape Iran cluster.
 

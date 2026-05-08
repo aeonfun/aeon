@@ -1,0 +1,982 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket comments — 2026-05-08",
+        "description": "politics + crypto, narrative-shift / track records / citation chains"
+      },
+      "children": [
+        "market1_section",
+        "sep1",
+        "market2_section",
+        "sep2",
+        "market3_section",
+        "sep3",
+        "market4_section",
+        "sep4",
+        "market5_section",
+        "sep5",
+        "cross_market_section",
+        "sep6",
+        "crypto_section",
+        "sep7",
+        "hook_section"
+      ]
+    },
+    "market1_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m1_heading",
+        "m1_meta",
+        "m1_comments"
+      ]
+    },
+    "m1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Iran closes airspace by May 8",
+        "level": "h3"
+      }
+    },
+    "m1_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1_price_row",
+        "m1_status_row"
+      ]
+    },
+    "m1_price_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m1_stat_price",
+        "m1_stat_volume",
+        "m1_stat_trend"
+      ]
+    },
+    "m1_stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price (YES)",
+        "value": "2.05%"
+      }
+    },
+    "m1_stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$916k"
+      }
+    },
+    "m1_stat_trend": {
+      "type": "Stat",
+      "props": {
+        "label": "Change",
+        "value": "4% → 2%",
+        "trend": "down"
+      }
+    },
+    "m1_status_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "m1_resolves_today",
+        "m1_overnight_note"
+      ]
+    },
+    "m1_resolves_today": {
+      "type": "Badge",
+      "props": {
+        "text": "T-0 RESOLVES TODAY",
+        "variant": "destructive"
+      }
+    },
+    "m1_overnight_note": {
+      "type": "Badge",
+      "props": {
+        "text": "Faded overnight",
+        "variant": "outline"
+      }
+    },
+    "m1_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m1c1",
+        "m1c2",
+        "m1c3"
+      ]
+    },
+    "m1c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c1_badge",
+        "m1c1_text",
+        "m1c1_cite"
+      ]
+    },
+    "m1c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MEPP (8x/7x/6x — 4 high-rxn)",
+        "variant": "secondary"
+      }
+    },
+    "m1c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "us already answered by shooting 6 small boats, multiple iranians were killed",
+        "variant": "body"
+      }
+    },
+    "m1c1_cite": {
+      "type": "Link",
+      "props": {
+        "label": "Self-cites: x.com/MEPPonPM",
+        "href": "https://x.com/MEPPonPM"
+      }
+    },
+    "m1c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c2_badge",
+        "m1c2_text"
+      ]
+    },
+    "m1c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ithinkthisisgod (12x)",
+        "variant": "secondary"
+      }
+    },
+    "m1c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "In mepp we trust. Community confirms MEPP as new track-record handle.",
+        "variant": "body"
+      }
+    },
+    "m1c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m1c3_badge",
+        "m1c3_text",
+        "m1c3_note"
+      ]
+    },
+    "m1c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ShibRigsEverything (7x)",
+        "variant": "secondary"
+      }
+    },
+    "m1c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "waiting for airspace closure announcement because FlightRadar24 shows no flights over Iran.",
+        "variant": "body"
+      }
+    },
+    "m1c3_note": {
+      "type": "Text",
+      "props": {
+        "text": "Same-evidence divergence: empty-radar reads YES, market prices NO.",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market2_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m2_heading",
+        "m2_meta",
+        "m2_comments"
+      ]
+    },
+    "m2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "US × Iran permanent peace deal (357807)",
+        "level": "h3"
+      }
+    },
+    "m2_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2_prices_row",
+        "m2_vol_row"
+      ]
+    },
+    "m2_prices_row": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m2_may15",
+        "m2_may31",
+        "m2_jun30"
+      ]
+    },
+    "m2_may15": {
+      "type": "Stat",
+      "props": {
+        "label": "May 15 YES",
+        "value": "20.65%"
+      }
+    },
+    "m2_may31": {
+      "type": "Stat",
+      "props": {
+        "label": "May 31 YES",
+        "value": "34.5%"
+      }
+    },
+    "m2_jun30": {
+      "type": "Stat",
+      "props": {
+        "label": "Jun 30 YES",
+        "value": "52.5%"
+      }
+    },
+    "m2_vol_row": {
+      "type": "Stat",
+      "props": {
+        "label": "Combined volume (24h)",
+        "value": "$7.1M"
+      }
+    },
+    "m2_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m2c1",
+        "m2c2",
+        "m2c3",
+        "m2c4",
+        "m2c5"
+      ]
+    },
+    "m2c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c1_badge",
+        "m2c1_text",
+        "m2c1_note"
+      ]
+    },
+    "m2c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "0xanon (4x, 05-08 12:12, clause-text reader)",
+        "variant": "secondary"
+      }
+    },
+    "m2c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Rubio says U.S. expects Iran's response 'today'… But the contract requires a permanent agreement — alignment on sanctions, nuclear guarantees, regional proxies, Gulf security, Israeli positioning.",
+        "variant": "body"
+      }
+    },
+    "m2c1_note": {
+      "type": "Text",
+      "props": {
+        "text": "Strongest NO-cite of the day.",
+        "variant": "caption"
+      }
+    },
+    "m2c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c2_badge",
+        "m2c2_text"
+      ]
+    },
+    "m2c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "morenaji (9x, carry from 05-07)",
+        "variant": "secondary"
+      }
+    },
+    "m2c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "8 days vs MONTHS to negotiate. Mark Esper just confirmed on Yahoo Finance: a real deal is months away. This 1-page MOU is a trap.",
+        "variant": "body"
+      }
+    },
+    "m2c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c3_badge",
+        "m2c3_text"
+      ]
+    },
+    "m2c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "MisuBoy (12x/11x/10x, recurring NO analyst)",
+        "variant": "secondary"
+      }
+    },
+    "m2c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "It took 2 years for Obama to negotiate a nuclear deal, you think Trump is gonna make peace over night?",
+        "variant": "body"
+      }
+    },
+    "m2c4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c4_badge",
+        "m2c4_text"
+      ]
+    },
+    "m2c4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ItsCrashBandicoot (15x)",
+        "variant": "secondary"
+      }
+    },
+    "m2c4_text": {
+      "type": "Text",
+      "props": {
+        "text": "NYT: memo specifies 60-day period to continue negotiations. Frame > May-15/May-31 ⇒ structural NO on near-dated.",
+        "variant": "body"
+      }
+    },
+    "m2c5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m2c5_badge",
+        "m2c5_text"
+      ]
+    },
+    "m2c5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Camal (12x)",
+        "variant": "secondary"
+      }
+    },
+    "m2c5_text": {
+      "type": "Text",
+      "props": {
+        "text": "names YES whales 'Scotty and Denizz'; 'I am copying ScottyNoo and denizz. Am I smart money?' — YES-side ID carry.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market3_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m3_heading",
+        "m3_meta",
+        "m3_comments"
+      ]
+    },
+    "m3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Hantavirus pandemic in 2026",
+        "level": "h3"
+      }
+    },
+    "m3_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_price_vol",
+        "m3_flags"
+      ]
+    },
+    "m3_price_vol": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m3_stat_price",
+        "m3_stat_volume"
+      ]
+    },
+    "m3_stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price (YES)",
+        "value": "9.65%"
+      }
+    },
+    "m3_stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$2.12M"
+      }
+    },
+    "m3_flags": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "m3_new_badge",
+        "m3_novel_badge"
+      ]
+    },
+    "m3_new_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW today",
+        "variant": "outline"
+      }
+    },
+    "m3_novel_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "never appeared in prior logs",
+        "variant": "outline"
+      }
+    },
+    "m3_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m3c1",
+        "m3c2",
+        "m3c3",
+        "m3c4"
+      ]
+    },
+    "m3c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c1_badge",
+        "m3c1_text",
+        "m3c1_note"
+      ]
+    },
+    "m3c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ismirdelft (NEW 05-08 10:28)",
+        "variant": "secondary"
+      }
+    },
+    "m3c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "French authorities explicitly mentioning a transmission outside of the boat, in the plane bringing back one of the patients.",
+        "variant": "body"
+      }
+    },
+    "m3c1_note": {
+      "type": "Text",
+      "props": {
+        "text": "Cites sante.gouv.fr official communique — gold-standard resolution-source.",
+        "variant": "caption"
+      }
+    },
+    "m3c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c2_badge",
+        "m3c2_text"
+      ]
+    },
+    "m3c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "0xanon (5x, NO-cite)",
+        "variant": "secondary"
+      }
+    },
+    "m3c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "Andes virus cannot transmit as efficiently as COVID. Only spreads through extreme close contact.",
+        "variant": "body"
+      }
+    },
+    "m3c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c3_badge",
+        "m3c3_text"
+      ]
+    },
+    "m3c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "asdflkhj (4x)",
+        "variant": "secondary"
+      }
+    },
+    "m3c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "Someone who wasn't on the ship caught it during the plane flight. Shit is airborne.",
+        "variant": "body"
+      }
+    },
+    "m3c4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m3c4_badge",
+        "m3c4_text"
+      ]
+    },
+    "m3c4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Zonties (NEW 05-08)",
+        "variant": "secondary"
+      }
+    },
+    "m3c4_text": {
+      "type": "Text",
+      "props": {
+        "text": "andean strain… most deadly… MRNA virus… only one transmittable from person to person.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market4_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m4_heading",
+        "m4_meta",
+        "m4_comments"
+      ]
+    },
+    "m4_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trump lifts naval blockade of Iran (372242)",
+        "level": "h3"
+      }
+    },
+    "m4_meta": {
+      "type": "Stat",
+      "props": {
+        "label": "Hormuz-end-May YES",
+        "value": "27.5%"
+      }
+    },
+    "m4_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m4c1",
+        "m4c2",
+        "m4c3"
+      ]
+    },
+    "m4c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4c1_badge",
+        "m4c1_text"
+      ]
+    },
+    "m4c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "GeoStrategistPro (4x)",
+        "variant": "secondary"
+      }
+    },
+    "m4c1_text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump's strategy shifted from 'Epic Fury' to 'Economic Fury'… the blockade is now part of the leverage architecture rather than a temporary wartime move.",
+        "variant": "body"
+      }
+    },
+    "m4c2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4c2_badge",
+        "m4c2_text"
+      ]
+    },
+    "m4c2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Gorgeous- (4x, chronology-cite)",
+        "variant": "secondary"
+      }
+    },
+    "m4c2_text": {
+      "type": "Text",
+      "props": {
+        "text": "Trump March 28: 72 hrs… April 4: 8 PM… April 5: one week… April 15: 48 hrs… Today: 24 hrs. Track-record of escalating-then-failed ultimatums.",
+        "variant": "body"
+      }
+    },
+    "m4c3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m4c3_badge",
+        "m4c3_text"
+      ]
+    },
+    "m4c3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Castwolffox (7x)",
+        "variant": "secondary"
+      }
+    },
+    "m4c3_text": {
+      "type": "Text",
+      "props": {
+        "text": "Ending the blockade means giving control over Hormuz to Iran which US can never do, Marco Rubio said himself.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "market5_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "m5_heading",
+        "m5_meta",
+        "m5_comments"
+      ]
+    },
+    "m5_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "US obtains Iranian enriched uranium by May 31 (329654)",
+        "level": "h3"
+      }
+    },
+    "m5_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "m5_stat",
+        "m5_badge"
+      ]
+    },
+    "m5_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price (YES)",
+        "value": "7.5%"
+      }
+    },
+    "m5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "UMA-arb candidate",
+        "variant": "outline"
+      }
+    },
+    "m5_comments": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "m5c1"
+      ]
+    },
+    "m5c1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "xs"
+      },
+      "children": [
+        "m5c1_badge",
+        "m5c1_text1",
+        "m5c1_text2",
+        "m5c1_note"
+      ]
+    },
+    "m5c1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "0xanon (6x, 3 separate comments, resolution-text exploit)",
+        "variant": "secondary"
+      }
+    },
+    "m5c1_text1": {
+      "type": "Text",
+      "props": {
+        "text": "trump can just bluff that he took some uranium and this will be YES",
+        "variant": "body"
+      }
+    },
+    "m5c1_text2": {
+      "type": "Text",
+      "props": {
+        "text": "they can give 1gram to Trump so he can say he 'won', and then it will be resolved as yes.",
+        "variant": "body"
+      }
+    },
+    "m5c1_note": {
+      "type": "Text",
+      "props": {
+        "text": "Direct CalibrationGap clause-text-ingest hook.",
+        "variant": "caption"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "cross_market_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cross_heading",
+        "cross_meta",
+        "cross_text"
+      ]
+    },
+    "cross_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Cross-Market Citation Chain",
+        "level": "h3"
+      }
+    },
+    "cross_meta": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "outline"
+      }
+    },
+    "cross_text": {
+      "type": "Text",
+      "props": {
+        "text": "'poly-sized' tracker cited as authoritative across all 4 politics markets within 30-min window 05-08 12:48–12:59 UTC by DriverSeat + multi-anon. First tool-cite recurrence appearing as cross-market citation chain.",
+        "variant": "body"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "crypto_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "crypto_heading",
+        "crypto_meta",
+        "crypto_text"
+      ]
+    },
+    "crypto_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto Vertical",
+        "level": "h3"
+      }
+    },
+    "crypto_meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "crypto_dead_badge",
+        "crypto_skipped_badge"
+      ]
+    },
+    "crypto_dead_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "DEAD day-7",
+        "variant": "destructive"
+      }
+    },
+    "crypto_skipped_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Skipped",
+        "variant": "secondary"
+      }
+    },
+    "crypto_text": {
+      "type": "Text",
+      "props": {
+        "text": "BTC-$150k (36173, $5.82M v24, top-of-board) = birthday-spam + Cambodia phone scam (+855…).",
+        "variant": "body"
+      }
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hook_section": {
+      "type": "Alert",
+      "props": {
+        "title": "Highest-Leverage Hook",
+        "message": "MEPP cluster — first new track-record handle in 2 weeks, self-cited X feed, community-confirmation. Pairs w/ morenaji + 0xanon clause-text reader = 3-handle NO-pillar on same-tape Iran cluster.",
+        "type": "info"
+      }
+    }
+  }
+}
