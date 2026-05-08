@@ -1,0 +1,217 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Research Brief: Resolution-Text Ingest"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "finding",
+        "metrics",
+        "example",
+        "sep1",
+        "thesis",
+        "sep2",
+        "whymatters",
+        "article"
+      ]
+    },
+    "finding": {
+      "type": "Text",
+      "props": {
+        "text": "A clause-aware Polymarket agent now beats a title-only agent by a measurable margin.",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_volume",
+        "stat_divergence"
+      ]
+    },
+    "stat_volume": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket volume in disputed events",
+        "value": "$972.4M"
+      },
+      "children": []
+    },
+    "stat_divergence": {
+      "type": "Stat",
+      "props": {
+        "label": "Semantic divergence across venues",
+        "value": "2-4%"
+      },
+      "children": []
+    },
+    "example": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "example_heading",
+        "example_stats"
+      ]
+    },
+    "example_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Example: Cardi B Halftime Appearance (Super Bowl Night)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "example_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_cardi_pm",
+        "stat_cardi_kalshi"
+      ]
+    },
+    "stat_cardi_pm": {
+      "type": "Stat",
+      "props": {
+        "label": "Polymarket: YES settled",
+        "value": "$1.00"
+      },
+      "children": []
+    },
+    "stat_cardi_kalshi": {
+      "type": "Stat",
+      "props": {
+        "label": "Kalshi: NO settled",
+        "value": "$0.26"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "thesis_heading",
+        "thesis_text"
+      ]
+    },
+    "thesis_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Thesis",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "thesis_text": {
+      "type": "Text",
+      "props": {
+        "text": "A Polymarket agent that ingests full resolution-criteria text and routes around clauses with high historical dispute rates outperforms a title-only baseline by ≥3pp net on a rolling 100-trade window within 90 days.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "whymatters": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "whymatters_heading",
+        "whymatters_cite",
+        "whymatters_detail"
+      ]
+    },
+    "whymatters_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Why It Matters",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "whymatters_cite": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "whymatters_cite_text",
+        "adr_badge"
+      ]
+    },
+    "whymatters_cite_text": {
+      "type": "Text",
+      "props": {
+        "text": "This is the cite stack for",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "adr_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "ADR-096+ resolution-text-ingest",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "whymatters_detail": {
+      "type": "Text",
+      "props": {
+        "text": "Flagged in MEMORY.md as the single highest-leverage CalibrationGap upgrade. Iran-airspace 48pp clause-text divergence is the in-house empirical anchor; Wen et al. (UMA $972M) and Gebele & Matthes (2-4% LOOP violations) are the exogenous ones.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "article": {
+      "type": "Link",
+      "props": {
+        "label": "Full article: research-brief-resolution-text-ingest-prediction-markets-2026-05-08.md",
+        "href": "articles/research-brief-resolution-text-ingest-prediction-markets-2026-05-08.md"
+      },
+      "children": []
+    }
+  }
+}
