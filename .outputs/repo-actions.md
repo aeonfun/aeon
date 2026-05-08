@@ -1,14 +1,13 @@
-*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-07*
-Five HIGH-priority ideas, all anchored to the post-ADR-095 head: two LP/grant/Stanford-readable Content adds, two CI gates capturing existing internal regression baselines, one cost-path narrative pin.
+*Repo Action Ideas — tomscaria/swarm-fund-mvp — 2026-05-08*
+Four HIGH-priority ideas anchored to the post-ADR-095 head plus one .gitattributes cleanup. Top pick is a one-line edit that pre-empts the 2026-05-21 ADR-095 falsifier: `OLLAMA_FULL` is wired in router.py and tests but missing from .env.example.
 
-Top pick: Add `outputs/research/CalibrationGap_apex_progress.md` 71-trade burndown (Content, Small, HIGH)
- → 29/100 trades, 76% win, +$415, Sharpe 0.31 → one markdown chart `external-feature` can publish in one shot for LP / dYdX / Uniswap Foundation Fellowship / Stanford reviewers.
+Top pick: Add `OLLAMA_FULL=0` to `.env.example` (DX, Small, Priority HIGH)
+ → Ten seconds of work neutralises the 13-day-out ADR-095 production-env-file falsifier.
 
-1. Add `outputs/research/CalibrationGap_apex_progress.md` Apex burndown (HIGH, Content, Small)
-2. Add `docs/01_strategy/thesis.md` post-ADR-095 cost-path subsection (HIGH, Content, Small)
-3. Add `outputs/research/PROVENANCE.md` 14-day paper-pick rollup (HIGH, Content, Small)
-4. Add `.github/workflows/changelog-drift.yml` (HIGH, DX, Small)
-5. Add `.github/workflows/lookahead-lint.yml` (HIGH, DX, Small)
+1. Add `OLLAMA_FULL=0` to `.env.example` (HIGH, DX, Small)
+2. Write `outputs/2026-05-06_adr095_ollama_routing_session_summary.md` (HIGH, Content, Small)
+3. Add `python/tests/test_triage_prompt_drift.py` (HIGH, DX, Small)
+4. Fill `[Unreleased]` block in `CHANGELOG.md` (HIGH, Content, Small)
+5. Add `linguist-generated=true` to `.gitattributes` for autogen files (MED, DX, Small)
 
-Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-07.md
-
+Full details: https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-08.md

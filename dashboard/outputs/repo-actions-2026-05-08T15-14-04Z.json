@@ -1,0 +1,480 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Action Ideas — tomscaria/swarm-fund-mvp"
+      },
+      "children": [
+        "overview-section",
+        "top-pick-section",
+        "separator1",
+        "full-list-section",
+        "separator2",
+        "details-section"
+      ]
+    },
+    "overview-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "overview-text",
+        "date-text"
+      ]
+    },
+    "overview-text": {
+      "type": "Text",
+      "props": {
+        "text": "Four HIGH-priority ideas anchored to the post-ADR-095 head plus one .gitattributes cleanup. Top pick is a one-line edit that pre-empts the 2026-05-21 ADR-095 falsifier: OLLAMA_FULL is wired in router.py and tests but missing from .env.example.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "date-text": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-08",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "top-pick-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "top-pick-heading",
+        "top-pick-item-stack"
+      ]
+    },
+    "top-pick-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Pick",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "top-pick-item-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item-top-pick-title",
+        "item-top-pick-badges",
+        "item-top-pick-note"
+      ]
+    },
+    "item-top-pick-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add OLLAMA_FULL=0 to .env.example",
+        "variant": "lead"
+      },
+      "children": []
+    },
+    "item-top-pick-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-high-1",
+        "badge-dx-1",
+        "badge-small-1"
+      ]
+    },
+    "badge-high-1": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "badge-dx-1": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "badge-small-1": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item-top-pick-note": {
+      "type": "Text",
+      "props": {
+        "text": "Ten seconds of work neutralises the 13-day-out ADR-095 production-env-file falsifier.",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "full-list-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "full-list-heading",
+        "items-container"
+      ]
+    },
+    "full-list-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Full Priority List",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "items-container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item1",
+        "item2",
+        "item3",
+        "item4",
+        "item5"
+      ]
+    },
+    "item1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item1-title",
+        "item1-badges"
+      ]
+    },
+    "item1-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add OLLAMA_FULL=0 to .env.example",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item1-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item1-badge-high",
+        "item1-badge-dx",
+        "item1-badge-small"
+      ]
+    },
+    "item1-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item1-badge-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item1-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item2-title",
+        "item2-badges"
+      ]
+    },
+    "item2-title": {
+      "type": "Text",
+      "props": {
+        "text": "Write outputs/2026-05-06_adr095_ollama_routing_session_summary.md",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item2-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item2-badge-high",
+        "item2-badge-content",
+        "item2-badge-small"
+      ]
+    },
+    "item2-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item2-badge-content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item2-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item3-title",
+        "item3-badges"
+      ]
+    },
+    "item3-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add python/tests/test_triage_prompt_drift.py",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item3-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item3-badge-high",
+        "item3-badge-dx",
+        "item3-badge-small"
+      ]
+    },
+    "item3-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item3-badge-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item3-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item4-title",
+        "item4-badges"
+      ]
+    },
+    "item4-title": {
+      "type": "Text",
+      "props": {
+        "text": "Fill [Unreleased] block in CHANGELOG.md",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item4-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item4-badge-high",
+        "item4-badge-content",
+        "item4-badge-small"
+      ]
+    },
+    "item4-badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item4-badge-content": {
+      "type": "Badge",
+      "props": {
+        "text": "Content",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item4-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item5-title",
+        "item5-badges"
+      ]
+    },
+    "item5-title": {
+      "type": "Text",
+      "props": {
+        "text": "Add linguist-generated=true to .gitattributes for autogen files",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "item5-badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "item5-badge-med",
+        "item5-badge-dx",
+        "item5-badge-small"
+      ]
+    },
+    "item5-badge-med": {
+      "type": "Badge",
+      "props": {
+        "text": "MED",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item5-badge-dx": {
+      "type": "Badge",
+      "props": {
+        "text": "DX",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "item5-badge-small": {
+      "type": "Badge",
+      "props": {
+        "text": "Small",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "details-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "details-heading",
+        "details-link"
+      ]
+    },
+    "details-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Full Details",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "details-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-actions-2026-05-08",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/repo-actions-2026-05-08.md",
+        "source": "GitHub"
+      },
+      "children": []
+    }
+  }
+}
