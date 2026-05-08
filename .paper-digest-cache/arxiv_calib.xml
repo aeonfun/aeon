@@ -1,0 +1,458 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/nTNRrysI1Ys3FyMdeB/vtJFReGw</id>
+  <title>arXiv Query: search_query=all:calibration AND all:LLM AND submittedDate:"202604240000 TO 202605082359"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-08T07:26:05Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=all:calibration+AND+(all:LLM+AND+submittedDate:%22202604240000+TO+202605082359%22)&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>74</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06635v1</id>
+    <title>Cited but Not Verified: Parsing and Evaluating Source Attribution in LLM Deep Research Agents</title>
+    <updated>2026-05-07T17:46:45Z</updated>
+    <link href="https://arxiv.org/abs/2605.06635v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06635v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) power deep research agents that synthesize information from hundreds of web sources into cited reports, yet these citations cannot be reliably verified. Current approaches either trust models to self-cite accurately, risking bias, or employ retrieval-augmented generation (RAG) that does not validate source accessibility, relevance, or factual consistency. We introduce the first source attribution evaluation framework that uses a reproducible AST parser to extract and evaluate inline citations from LLM-generated Markdown reports at scale. Unlike methods that verify claims in isolation, our framework closes the loop by retrieving the actual cited content, enabling human or model evaluators to judge each citation against its source. Citations are evaluated along three dimensions. (1) Link Works verifies URL accessibility, (2) Relevant Content measures topical alignment, and (3) Fact Check validates factual accuracy against source content. We benchmark 14 closed-source and open-source LLMs across three evaluation dimensions using rubric-based LLM-as-a-judge evaluators calibrated through human review. Our results reveal that even the strongest frontier models maintain link validity above 94% and relevance above 80%, yet achieve only 39-77% factual accuracy, while fewer than half of open-source models successfully generate cited reports in a one-shot setting. Ablation studies on research depth show that Fact Check accuracy drops by approximately 42% on average across two frontier models as tool calls scale from 2 to 150, demonstrating that more retrieval does not produce more accurate citations. These findings reveal a critical disconnect between surface-level citation quality and factual reliability, and our framework provides the evaluation infrastructure to assess the disconnect.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T17:46:45Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Hailey Onweller</name>
+    </author>
+    <author>
+      <name>Elias Lumer</name>
+    </author>
+    <author>
+      <name>Austin Huber</name>
+    </author>
+    <author>
+      <name>Pia Ramchandani</name>
+    </author>
+    <author>
+      <name>Vamse Kumar Subbiah</name>
+    </author>
+    <author>
+      <name>Corey Feld</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06479v1</id>
+    <title>Risk-Controlled Post-Processing of Decision Policies</title>
+    <updated>2026-05-07T16:03:24Z</updated>
+    <link href="https://arxiv.org/abs/2605.06479v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06479v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Predictive models are often deployed through existing decision policies that stakeholders are reluctant to change unless a risk constraint requires intervention. We study risk-controlled post-processing: given a deterministic baseline policy, choose a new policy that maximizes agreement with the baseline subject to a chance constraint on a user-specified loss. At the population level, we show that the optimal policy has a threshold structure: it follows the baseline except on contexts where switching to the oracle fallback policy yields a large reduction in conditional violation risk. At the finite-sample level, given a fitted fallback policy and score, we develop a post-processing algorithm that uses calibration data to select a threshold. Leveraging tools from algorithmic stability and stochastic processes, we show that under regularity conditions, in the i.i.d. setting, the expected excess risk of the post-processed policy is $O(\log n/n)$. In the special case when an exact-safe fallback policy is available, the algorithm achieves precise expected risk control under exchangeability. In this setting, we also give high-probability near-optimality guarantees on the post-processed policy. Experiments on a COVID-19 radiograph diagnosis task, an LLM routing problem, and a synthetic multiclass decision task show that targeted post-processing can meet or nearly meet risk budgets while preserving substantially more agreement with the baseline than score-blind random mixing.</summary>
+    <category term="stat.ML" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="math.ST" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T16:03:24Z</published>
+    <arxiv:primary_category term="stat.ML"/>
+    <author>
+      <name>Sunay Joshi</name>
+    </author>
+    <author>
+      <name>Tao Wang</name>
+    </author>
+    <author>
+      <name>Hamed Hassani</name>
+    </author>
+    <author>
+      <name>Edgar Dobriban</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06213v1</id>
+    <title>Beyond Fixed Benchmarks and Worst-Case Attacks: Dynamic Boundary Evaluation for Language Models</title>
+    <updated>2026-05-07T13:15:31Z</updated>
+    <link href="https://arxiv.org/abs/2605.06213v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06213v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Evaluating large language models (LLMs) today rests on fixed benchmarks that apply the same set of items to any model, producing ceiling and floor effects that mask capability gaps. We argue that the most informative evaluation signal lies at the boundary, where the per-prompt pass probability is near $0.5$ under random-sampling decoding, and propose Dynamic Boundary Evaluation (DBE), which actively locates each model's boundary and places it on a globally comparable difficulty scale. DBE delivers three artifacts: (i) a calibrated item bank covering safety, capability, and truthfulness, with per-item difficulty labels validated across $9$ reference LLMs; (ii) Skill-Guided Boundary Search (SGBS), a search algorithm that finds boundary items for a given target LLM using only API-level query access; and (iii) an evaluation protocol that places a new LLM on a unified ability scale and grows the evaluation set adaptively when the target falls outside the bank's coverage. We instantiate DBE on four categories spanning safety (harmful request refusal and over-refusal), capability (constrained instruction following), and truthfulness (multi-turn sycophancy resistance). The resulting evaluation covers a broader model spectrum without saturation while remaining compatible with existing datasets.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T13:15:31Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Haoxiang Wang</name>
+    </author>
+    <author>
+      <name>Da Yu</name>
+    </author>
+    <author>
+      <name>Huishuai Zhang</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06161v1</id>
+    <title>Beyond Accuracy: Policy Invariance as a Reliability Test for LLM Safety Judges</title>
+    <updated>2026-05-07T12:49:09Z</updated>
+    <link href="https://arxiv.org/abs/2605.06161v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06161v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLM-as-a-Judge pipelines have become the de facto evaluator for agent safety, yet existing benchmarks treat their verdicts as ground-truth proxies without checking whether the verdicts depend on the agent's behavior or merely on how the evaluation policy happens to be worded. We argue that any trustworthy safety judge must satisfy a basic property we call policy invariance, and we operationalize it as three testable principles: rubric-semantics invariance under certified-equivalent rewrites, rubric-threshold invariance under intentional strict-to-lenient shifts, and ambiguity-aware calibration so that verdict instability concentrates on genuinely ambiguous cases. Instantiating these principles as a stress-test protocol with four agent-class judges on trajectories drawn from ASSEBench and R-Judge, we surface a previously unmeasured failure mode: today's judges respond to meaningful normative shifts and to meaningless structural rewrites with comparable strength, and cannot tell the two apart. Content-preserving policy rewrites flip up to 9.1% of verdicts above baseline jitter, and 18-43% of all observed flips occur on unambiguous cases under such rewrites, so existing safety scores conflate what the agent did with how the evaluator was prompted. Beyond the diagnosis, we contribute the Policy Invariance Score and the Judge Card reporting protocol, which expose an order-of-magnitude spread in judge reliability that is invisible to accuracy-only leaderboards. We release the protocol and code so that future agent-safety benchmarks can audit their own evaluators rather than trust them by default.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T12:49:09Z</published>
+    <arxiv:comment>9 pages</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Shihao Weng</name>
+    </author>
+    <author>
+      <name>Yang Feng</name>
+    </author>
+    <author>
+      <name>Xiaofei Xie</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06132v1</id>
+    <title>MemReranker: Reasoning-Aware Reranking for Agent Memory Retrieval</title>
+    <updated>2026-05-07T12:33:57Z</updated>
+    <link href="https://arxiv.org/abs/2605.06132v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06132v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>In agent memory systems, the reranking model serves as the critical bridge connecting user queries with long-term memory. Most systems adopt the "retrieve-then-rerank" two-stage paradigm, but generic reranking models rely on semantic similarity matching and lack genuine reasoning capabilities, leading to a problem where recalled results are semantically highly relevant yet do not contain the key information needed to answer the question. This deficiency manifests in memory scenarios as three specific problems. First, relevance scores are miscalibrated, making threshold-based filtering difficult. Second, ranking degrades when facing temporal constraints, causal reasoning, and other complex queries. Third, the model cannot leverage dialogue context for semantic disambiguation. This report introduces MemReranker, a reranking model family (0.6B/4B) built on Qwen3-Reranker through multi-stage LLM knowledge distillation. Multi-teacher pairwise comparisons generate calibrated soft labels, BCE pointwise distillation establishes well-distributed scores, and InfoNCE contrastive learning enhances hard-sample discrimination. Training data combines general corpora with memory-specific multi-turn dialogue data covering temporal constraints, causal reasoning, and coreference resolution. On the memory retrieval benchmark, MemReranker-0.6B substantially outperforms BGE-Reranker and matches open-source 4B/8B models as well as GPT-4o-mini on key metrics. MemReranker-4B further achieves 0.737 MAP, with several metrics on par with Gemini-3-Flash, while maintaining inference latency at only 10--20\% of large models. On finance and healthcare vertical-domain benchmarks, the models preserve generalization capabilities on par with mainstream large-parameter rerankers.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T12:33:57Z</published>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Chunyu Li</name>
+    </author>
+    <author>
+      <name>Jingyi Kang</name>
+    </author>
+    <author>
+      <name>Ding Chen</name>
+    </author>
+    <author>
+      <name>Mengyuan Zhang</name>
+    </author>
+    <author>
+      <name>Jiajun Shen</name>
+    </author>
+    <author>
+      <name>Bo Tang</name>
+    </author>
+    <author>
+      <name>Xuanhe Zhou</name>
+    </author>
+    <author>
+      <name>Feiyu Xiong</name>
+    </author>
+    <author>
+      <name>Zhiyu Li</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06116v1</id>
+    <title>Policy-Guided Stepwise Model Routing for Cost-Effective Reasoning</title>
+    <updated>2026-05-07T12:26:56Z</updated>
+    <link href="https://arxiv.org/abs/2605.06116v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06116v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Inference-time computation has greatly enhanced the performance of large language models (LLMs) on challenging reasoning tasks, but this strategy can incur high inference costs. One solution is to route intermediate chain-of-thought (CoT) states to language models of different sizes; however, existing approaches rely on handcrafted routing strategies that limit performance, or on training large process reward models that may be infeasible in many applications. We formulate stepwise model routing as a constrained decision-making problem, which we solve by training a small control policy using reinforcement learning in conjunction with threshold calibration to tune the performance-efficiency tradeoff. We validate our method on three math benchmarks (GSM8K, MATH500, and OmniMath) on both open and closed models. Our method consistently improves the accuracy-cost tradeoff compared to handcrafted approaches, while achieving a comparable tradeoff to methods that require training large process reward models.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T12:26:56Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Wenwen Si</name>
+    </author>
+    <author>
+      <name>Insup Lee</name>
+    </author>
+    <author>
+      <name>Osbert Bastani</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06111v1</id>
+    <title>Schedule-and-Calibrate: Utility-Guided Multi-Task Reinforcement Learning for Code LLMs</title>
+    <updated>2026-05-07T12:24:53Z</updated>
+    <link href="https://arxiv.org/abs/2605.06111v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06111v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Reinforcement learning (RL) with verifiable rewards has proven effective at post-training LLMs for coding, yet deploying separate task-specific specialists incurs costs that scale with the number of tasks, motivating a unified multi-task RL (MTRL) approach. However, existing MTRL methods treat all coding tasks uniformly, relying on fixed data curricula under a shared optimization strategy, ultimately limiting the effectiveness of multi-task training. To address these limitations, we propose ASTOR, a multi-tASk code reinforcement learning framework via uTility-driven coORdination. Centered on task utility, a signal capturing each task learning potential and cross-task synergy, ASTOR comprises two coupled modules: 1) Hierarchical Utility-Routed Data Scheduling module hierarchically allocates training budget and prioritizes informative prompts, steering training toward the most valuable data and 2) Adaptive Utility-Calibrated Policy Optimization module dynamically scales per-task KL regularization, matching update constraints to each tasks current training state. Experiments on two widely-used LLMs across four representative coding tasks demonstrate that ASTOR consistently improves a single model across all tasks, outperforming the best task-specific specialist by 9.0%-9.5% and surpassing the strongest MTRL baseline by 7.5%-12.8%.</summary>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T12:24:53Z</published>
+    <arxiv:primary_category term="cs.SE"/>
+    <author>
+      <name>Yujia Chen</name>
+    </author>
+    <author>
+      <name>Yang Ye</name>
+    </author>
+    <author>
+      <name>Xiao Chu</name>
+    </author>
+    <author>
+      <name>Yuchi Ma</name>
+    </author>
+    <author>
+      <name>Cuiyun Gao</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06066v1</id>
+    <title>Causal Reinforcement Learning for Complex Card Games: A Magic The Gathering Benchmark</title>
+    <updated>2026-05-07T11:53:56Z</updated>
+    <link href="https://arxiv.org/abs/2605.06066v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06066v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Causal reinforcement learning (RL) lacks benchmarks for complex systems that combine sequential decision making, hidden information, large masked action spaces, and explicit causal structure. We introduce MTG-Causal-RL, a Gymnasium benchmark built on Magic: The Gathering with a 3,077-dimensional partial observation, a 478-action masked discrete action space, five competitive Standard archetypes, three reward schemes, and a hand-specified Structural Causal Model (SCM) over strategic variables. Every episode exposes causal variables, SCM-predicted intervention effects, and per-factor credit traces, making causal credit assignment, leave-one-out cross-archetype transfer, and policy auditability first-class metrics. We adapt a panel of reference baselines: random, heuristic, masked PPO, a causal-world-model PPO variant, and an architecture-matched scalar control. We propose Causal Graph-Factored Advantage PPO (CGFA-PPO) as a reference causal agent that uses SCM parents of win probability as factor-aligned critic targets with an intervention-calibration loss. All comparisons use paired seeds, paired-bootstrap confidence intervals, and Holm-Bonferroni correction within pre-registered families. Masked PPO and CGFA-PPO reach competitive in-distribution win rates and exceed the random baseline; per-factor calibration trajectories and leave-one-out transfer gaps expose diagnostic structure that scalar win rate alone cannot. We release the benchmark, reference-baseline results, and full evaluation protocol openly. By coupling a strategically rich, partially observed domain with an explicit causal interface and statistical protocol, MTG-Causal-RL gives causal-RL, world-model, and LLM-agent research a shared testbed for questions current benchmarks cannot pose together: causal credit assignment under masked action spaces, structural transfer across archetypes, and SCM-grounded policy auditability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T11:53:56Z</published>
+    <arxiv:comment>21 pages, 8 figures, 9 tables, 1 algorithm</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Cristiano da Costa Cunha</name>
+    </author>
+    <author>
+      <name>Ajmal Mian</name>
+    </author>
+    <author>
+      <name>Tim French</name>
+    </author>
+    <author>
+      <name>Wei Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05957v1</id>
+    <title>Knowing but Not Correcting: Routine Task Requests Suppress Factual Correction in LLMs</title>
+    <updated>2026-05-07T10:04:39Z</updated>
+    <link href="https://arxiv.org/abs/2605.05957v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05957v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>LLMs reliably correct false claims when presented in isolation, yet when the same claims are embedded in task-oriented requests, they often comply rather than correct. We term this failure mode \emph{correction suppression} and construct a benchmark of 300 false premises to systematically evaluate it across eight models. Suppression rates range from 19\% to 90\%, with four models exceeding 80\%, establishing correction suppression as a prevalent and severe phenomenon. Mechanistic analysis reveals that suppression is not a knowledge failure: the model registers the error internally but task context diverts early-layer attention from the false claim as output intent crystallizes toward compliance at middle layers. We characterize this as \emph{knowing but not correcting} -- suppression occurs at response selection rather than knowledge encoding. Guided by this mechanism, we propose two training-free interventions. Correction Direction Steering (CDS) estimates a correction-compliance direction from matched pairs and injects it at middle layers before output intent crystallizes. Dynamic Payload Amplification (DPA) localizes payload tokens via attention divergence between early and late layers and amplifies their representation at the final layer, requiring no calibration data. Experiments on Qwen3.5-9B and LLaMA3.1-8B show both methods substantially improve factual strictness. CDS achieves the highest correction rate on Qwen3.5-9B (0\%$\to$58.2\%). DPA is the only method that preserves or improves reasoning capability on both models. These findings introduce \emph{factual strictness} -- the willingness to uphold accuracy against contextual pressures -- as a new dimension of model reliability.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T10:04:39Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Zixuan Chen</name>
+    </author>
+    <author>
+      <name>Hao Lin</name>
+    </author>
+    <author>
+      <name>Zizhe Chen</name>
+    </author>
+    <author>
+      <name>Yizhou Tian</name>
+    </author>
+    <author>
+      <name>Garry Yang</name>
+    </author>
+    <author>
+      <name>Depeng Wang</name>
+    </author>
+    <author>
+      <name>Ya Guo</name>
+    </author>
+    <author>
+      <name>Huijia Zhu</name>
+    </author>
+    <author>
+      <name>James Cheng</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05794v1</id>
+    <title>Revealing Modular Gradient Noise Imbalance in LLMs: Calibrating Adam via Signal-to-Noise Ratio</title>
+    <updated>2026-05-07T07:32:27Z</updated>
+    <link href="https://arxiv.org/abs/2605.05794v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05794v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>The impressive performance of large language models (LLMs) arises from their massive scale and heterogeneous module composition. However, this structural heterogeneity introduces additional optimization challenges. While adaptive optimizers such as Adam(W) provide per-parameter adaptivity, they do not explicitly account for module-level gradient heterogeneity, resulting in slower convergence, suboptimal performance, or training instability. Existing approaches typically rely on manually tuned module-specific learning rates or specific optimization strategies, which are computationally costly and difficult to generalize across tasks or models. To establish a more principled approach, we first analyze the noise-damping behavior of Adam in high-noise modules and introduce \textbf{Module-wise Learning Rate Scaling via SNR (MoLS)}. MoLS estimates module-level SNRs to scale Adam updates, allowing automated module-wise learning rate allocation without manual tuning. Empirical results through multiple LLM training benchmarks demonstrate that MoLS improves convergence speed and generalization, achieving performance comparable to carefully tuned module-specific learning rates, while remaining compatible with memory-efficient training algorithms.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T07:32:27Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Ziqing Wen</name>
+    </author>
+    <author>
+      <name>Zhouyang Liu</name>
+    </author>
+    <author>
+      <name>Jiahuan Wang</name>
+    </author>
+    <author>
+      <name>Ping Luo</name>
+    </author>
+    <author>
+      <name>Li Shen</name>
+    </author>
+    <author>
+      <name>Dongsheng Li</name>
+    </author>
+    <author>
+      <name>Tao Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05739v1</id>
+    <title>Multi-Dimensional Behavioral Evaluation of Agentic Stock Prediction Systems Using LLM Judges with Closed-Loop Reinforcement Learning Feedback</title>
+    <updated>2026-05-07T06:31:34Z</updated>
+    <link href="https://arxiv.org/abs/2605.05739v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05739v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Agentic stock prediction systems make sequences of interdependent decisions (regime detection, pathway routing, reinforcement learning control) whose individual quality is hidden by aggregate metrics such as mean absolute percentage error (MAPE) or directional accuracy. We present a behavioral evaluation framework that addresses this gap. Behavioral traces logged at every autonomous decision point are grouped into five-day episodes and scored along six domain-specific dimensions (regime detection, routing, adaptation, risk calibration, strategy coherence, error recovery) by an ensemble of three large language model (LLM) judges (GPT 5.4, Claude 4.6 Opus, Gemini 3.1 Pro). Perturbation-based validation on 420 episodes yields targeted score drops of $-1.6$ to $-2.4$ on intended dimensions versus an average of $-0.32$ on the remaining five, with cross-model agreement up to Krippendorff's $α= 0.85$. The composite behavioral score, used here only for cross-episode reporting, correlates at $ρ= 0.72$ with realized 20-day Sharpe ratio from offline backtesting. Closing the loop, the framework converts deficient per-dimension scores into a credit-assigned penalty term added to the Soft Actor-Critic (SAC) reward. Three short fine-tuning cycles, all confined to the validation period, produce on the held-out 2017-2025 test period a one-day MAPE reduction from 0.61% to 0.54% (an 11.5% relative reduction; $p&lt;0.001$, Cohen's $d=0.31$), a directional accuracy increase from 71% to 74%, and an 18% Sharpe ratio improvement (95% bootstrap CI [8.2%, 27.4%]), with gains concentrated in high-volatility episodes where the original system was most behaviorally deficient. Results are from offline backtesting and do not address effects specific to live deployment.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.CP" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T06:31:34Z</published>
+    <arxiv:comment>9 pages, 2 figures, 8 tables. Short Communication submitted to Knowledge-Based Systems (Elsevier)</arxiv:comment>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Mohammad Al Ridhawi</name>
+    </author>
+    <author>
+      <name>Mahtab Haj Ali</name>
+    </author>
+    <author>
+      <name>Hussein Al Osman</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05693v1</id>
+    <title>Saliency-Aware Regularized Quantization Calibration for Large Language Models</title>
+    <updated>2026-05-07T05:33:26Z</updated>
+    <link href="https://arxiv.org/abs/2605.05693v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05693v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Post-training quantization (PTQ) is an effective approach for deploying large language models (LLMs) under memory and latency constraints. Most existing PTQ methods determine quantization parameters by minimizing a layer-wise reconstruction error on a predetermined calibration dataset, usually optimized via either scale search or Gram-based methods. However, from the perspective of generalization risk, existing calibration objectives of PTQ based only on empirical reconstruction error on limited or unrepresentative calibration data could move the quantized weights away from the original weights. This may cause the generalization risk to diverge, potentially degrading downstream performance. To address this issue, we propose \emph{Saliency-Aware Regularized Quantization Calibration} (SARQC) a unified framework that augments the standard PTQ objective with a saliency-aware regularization term. This term encourages quantized weights to stay close to the original weights during calibration, leading to improved generalization during inference. SARQC integrates seamlessly into existing PTQ pipelines, enhancing both scale search and Gram-based methods under a unified formulation. Extensive experiments on dense and Mixture-of-Experts LLMs demonstrate consistent improvements in perplexity and zero-shot accuracy, without additional computational overhead during inference.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T05:33:26Z</published>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Yanlong Zhao</name>
+    </author>
+    <author>
+      <name>Xiaoyuan Cheng</name>
+    </author>
+    <author>
+      <name>Huihang Liu</name>
+    </author>
+    <author>
+      <name>Baihua He</name>
+    </author>
+    <author>
+      <name>Xinyu Zhang</name>
+    </author>
+    <author>
+      <name>Harrison Bo Hua Zhu</name>
+    </author>
+    <author>
+      <name>Wenlong Chen</name>
+    </author>
+    <author>
+      <name>Li Zeng</name>
+    </author>
+    <author>
+      <name>Zhuo Sun</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05626v1</id>
+    <title>When2Speak: A Dataset for Temporal Participation and Turn-Taking in Multi-Party Conversations for Large Language Models</title>
+    <updated>2026-05-07T03:27:45Z</updated>
+    <link href="https://arxiv.org/abs/2605.05626v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05626v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large Language Models (LLMs) excel at generating contextually appropriate responses but remain poorly calibrated for multi-party conversations, where deciding when to speak is as critical as what to say. In such settings, naively responding at every turn leads to excessive interruptions and degraded conversational coherence. We introduce When2Speak, a grounded synthetic dataset and four-stage generation pipeline for learning intervention timing in group interactions. The dataset comprises over 215,000 examples derived from 16,000 conversations involving 2-6 speakers, spanning diverse conversational styles, tones, and participant dynamics, and explicitly modeling SPEAK vs. SILENT decisions at each turn. Our pipeline combines real-world grounding, structured augmentation, controlled transcript synthesis, and fine-tuning-ready supervision, and is fully open-sourced to support reproducibility and adaptation to domain-specific conversational norms. Across multiple model families, supervised fine-tuning (SFT) on When2Speak significantly outperforms zero-shot baselines (e.g., the average Macro F1 increase across 4B+ parameter models was 60%, with the largest increase being 120%). However, SFT-trained models remain systematically over-conservative, missing nearly half of warranted interventions as seen through the Missed Intervention Rate (MIR), which was on average 0.50 and is noticed even at larger model sizes. To address this limitation, we apply reinforcement learning with asymmetric reward shaping, which reduces MIR to 0.186-0.218 and increases recall from 0.479 to 0.78-0.81. Our findings establish that temporal participation is a distinct and trainable dimension of conversational intelligence, and that grounded synthetic data provides an effective and scalable pathway for enabling LLMs to participate more naturally and appropriately in multi-party interactions.</summary>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T03:27:45Z</published>
+    <arxiv:comment>Currently under review. Dataset can be found: https://huggingface.co/datasets/duke-trust-lab/When2Speak</arxiv:comment>
+    <arxiv:primary_category term="cs.CL"/>
+    <author>
+      <name>Vihaan Nama</name>
+    </author>
+    <author>
+      <name>Shreya Mendi</name>
+    </author>
+    <author>
+      <name>Zian Ye</name>
+    </author>
+    <author>
+      <name>Brinnae Bent</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05573v1</id>
+    <title>AstroAlertBench: Evaluating the Accuracy, Reasoning, and Honesty of Multimodal LLMs in Astronomical Classification</title>
+    <updated>2026-05-07T01:36:27Z</updated>
+    <link href="https://arxiv.org/abs/2605.05573v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05573v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Modern astronomical observatories generate a massive volume of multimodal data, creating a critical bottleneck for expert human review. While multimodal large language models (LLMs) have shown promise in interpreting complex visual and textual inputs, their ability to perform specialized scientific classification while providing interpretable reasoning remains understudied. We introduce AstroAlertBench, a comprehensive multimodal benchmark designed to evaluate LLM performance in astronomical event review along a three-stage logical chain: metadata grounding, scientific reasoning, and hierarchical classification over five categories. We use a pilot sample of 1,500 real-world alerts from the Zwicky Transient Facility (ZTF), a wide-field survey that scans the northern sky to detect transient astronomical events. On this dataset, we benchmark 13 frontier closed-source and open-weight LLMs that support visual input. Our results reveal that high accuracy does not always align with model ``honesty,'' defined as the ability to self-evaluate its reasoning, which affects its reliability as a real-world assistant. We further initialize a human-in-the-loop evaluation protocol as a precursor to future community-scale participation. Together, AstroAlertBench provides a framework for developing calibrated and interpretable astronomical assistants.</summary>
+    <category term="astro-ph.IM" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T01:36:27Z</published>
+    <arxiv:primary_category term="astro-ph.IM"/>
+    <author>
+      <name>Claire Chen</name>
+    </author>
+    <author>
+      <name>Jiabao Sean Xiao</name>
+    </author>
+    <author>
+      <name>Shuze Daniel Liu</name>
+    </author>
+    <author>
+      <name>Facundo Perez Paolino</name>
+    </author>
+    <author>
+      <name>Luke Handley</name>
+    </author>
+    <author>
+      <name>Theophile Jegou du Laz</name>
+    </author>
+    <author>
+      <name>Ricky Nilsson</name>
+    </author>
+    <author>
+      <name>Alice Zou</name>
+    </author>
+    <author>
+      <name>Matthew Graham</name>
+    </author>
+    <author>
+      <name>Ashish Mahabal</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05482v1</id>
+    <title>FinRAG-12B: A Production-Validated Recipe for Grounded Question Answering in Banking</title>
+    <updated>2026-05-06T22:04:44Z</updated>
+    <link href="https://arxiv.org/abs/2605.05482v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05482v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) are rapidly being adopted across various domains. However, their adoption in banking industry faces resistance due to demands for high accuracy, regulatory compliance, and the need for verifiable and grounded responses. We present a unified, data-efficient framework for training grounded domain-specific LLMs that optimizes answer quality, citation grounding, and calibrated refusal under real-world deployment constraints. First, we describe a data generation pipeline that combines LLM-as-a-Judge filtering, citation annotation, and curriculum learning with only 143M tokens. The resulting 12B model achieves high answer quality outperforming GPT-4.1 on citation grounding, with a modest citation tradeoff versus the untuned base. Second, we propose a calibrated refusal mechanism: training on 22% unanswerable examples yield a 12% "I don't know" rate, substantially improving over the base model's unsafe 4.3% rate while avoiding GPT-4.1's over-refusal (20.2%). Third, we present an end-to-end methodology spanning from data curation to quantized serving. The system is deployed at 40+ financial institutions, achieving a 7.1 percentage point improvement in query resolution (p &lt; 0.001). Additionally, the model delivers 3-5x faster responses at 20-50x lower cost compared to GPT-4.1.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-06T22:04:44Z</published>
+    <arxiv:comment>7 pages, ACL 2026 conference</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Denys Katerenchuk</name>
+    </author>
+    <author>
+      <name>Pablo Duboue</name>
+    </author>
+    <author>
+      <name>Keelan Evanini</name>
+    </author>
+    <author>
+      <name>David Gondek</name>
+    </author>
+    <author>
+      <name>Nithin Govindugari</name>
+    </author>
+    <author>
+      <name>Olivier Allauzen</name>
+    </author>
+    <author>
+      <name>Joshua Baptiste</name>
+    </author>
+    <author>
+      <name>David J More</name>
+    </author>
+    <author>
+      <name>Joshua Schechter</name>
+    </author>
+  </entry>
+</feed>

@@ -1,10 +1,10 @@
-*Paper Digest — 2026-05-07*
-No new Polymarket microstructure paper (Nechepurenko run is past dedup wall); 5 mission-axis hits in adjacent areas.
+*Paper Digest — 2026-05-08*
+No new Polymarket microstructure paper (dedup wall day-2). 4 fresh mission-axis hits.
 
-1. Constrained LLM agents in cryptocurrency markets: factor-DSL + deterministic-engine, +44.55% / Sharpe 1.55 OOS 2024-2026 after 5bp cost (arXiv:2604.26747)
-2. Dynamic collateral control for spot-perp basis trading: BTC needs least collateral, asymmetric sell-side wedges -- Hermes-arb sizing-model upgrade (arXiv:2605.05089, May 6)
-3. Manipulation-in-PMs ABM: whale price-distortion duration scales with herd learning-rate x herding-intensity (arXiv:2601.20452)
-4. OracleProto: leakage cut to <=1%, order of magnitude tighter than tool-only temporal filtering -- supersedes AIA Forecaster eval regime (arXiv:2605.03762, May 5)
-5. Reasoning models hurt behavioral simulation in multi-agent LLM negotiation -- defensive cite for ADR-094 opus->sonnet routing (arXiv:2604.11840)
+1. "Multi-Dimensional Behavioral Eval of Agentic Stock Prediction" — LLM-judge ensemble + closed-loop SAC, α=0.85, 18% Sharpe lift (↑0)
+2. "Sustaining Cooperation in Populations Guided by AI: A Folk Theorem for LLMs" — Sarit Kraus, Stanford-grade theory anchor (↑0)
+3. "Structural Limits of OHLCV Intraday Signals: Systematic Falsification" — 14 signal families, all rejected, 947d MNQ (↑0)
+4. "From Agent Loops to Deterministic Graphs: Execution Lineage" — DAG replay vs loop, zero-churn intermediate-edit case (↑0)
 
-Full: articles/paper-digest-2026-05-07.md
+Pool: HF 71 + arXiv 56 → 112 deduped → 4 shipped.
+Full: articles/paper-digest-2026-05-08.md

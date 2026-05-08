@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/on82j5vIrF17t2Er2GbHt1aAOBc</id>
+  <title>arXiv Query: search_query=cat:q-fin.TR&amp;id_list=&amp;start=0&amp;max_results=1</title>
+  <updated>2026-05-08T05:19:20Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:q-fin.TR&amp;start=0&amp;max_results=1&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>1</opensearch:itemsPerPage>
+  <opensearch:totalResults>2211</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2012.10145v1</id>
+    <title>Heavy tailed distributions in closing auctions</title>
+    <updated>2020-12-18T10:12:41Z</updated>
+    <link href="https://arxiv.org/abs/2012.10145v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2012.10145v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study the tails of closing auction return distributions for a sample of liquid European stocks. We use the stochastic call auction model of Derksen et al. (2020a), to derive a relation between tail exponents of limit order placement distributions and tail exponents of the resulting closing auction return distribution and we verify this relation empirically. Counter-intuitively, large closing price fluctuations are typically not caused by large market orders, instead tails become heavier when market orders are removed. The model explains this by the observation that limit orders are submitted so as to counter existing market order imbalance.</summary>
+    <category term="q-fin.TR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-fin.ST" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2020-12-18T10:12:41Z</published>
+    <arxiv:primary_category term="q-fin.TR"/>
+    <author>
+      <name>M. Derksen</name>
+    </author>
+    <author>
+      <name>B. Kleijn</name>
+    </author>
+    <author>
+      <name>R. de Vilder</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,409 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/ykpfLKGx21pxBypuT/VJiUX+gEs</id>
+  <title>arXiv Query: search_query=cat:cs.MA AND submittedDate:"202604240000 TO 202605082359"&amp;id_list=&amp;start=0&amp;max_results=15</title>
+  <updated>2026-05-08T07:26:28Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:cs.MA+AND+submittedDate:%22202604240000+TO+202605082359%22&amp;start=0&amp;max_results=15&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>15</opensearch:itemsPerPage>
+  <opensearch:totalResults>126</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06639v1</id>
+    <title>Recursive Agent Optimization</title>
+    <updated>2026-05-07T17:49:09Z</updated>
+    <link href="https://arxiv.org/abs/2605.06639v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06639v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We introduce Recursive Agent Optimization (RAO), a reinforcement learning approach for training recursive agents: agents that can spawn and delegate sub-tasks to new instantiations of themselves recursively. Recursive agents implement an inference-time scaling algorithm that naturally allows agents to scale to longer contexts and generalize to more difficult problems via divide-and-conquer. RAO provides a method to train models to best take advantage of such recursive inference, teaching agents when and how to delegate and communicate. We find that recursive agents trained in this way enjoy better training efficiency, can scale to tasks that go beyond the model's context window, generalize to tasks much harder than the ones the agent was trained on, and can enjoy reduced wall-clock time compared to single-agent systems.</summary>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T17:49:09Z</published>
+    <arxiv:primary_category term="cs.LG"/>
+    <author>
+      <name>Apurva Gandhi</name>
+    </author>
+    <author>
+      <name>Satyaki Chakraborty</name>
+    </author>
+    <author>
+      <name>Xiangjun Wang</name>
+    </author>
+    <author>
+      <name>Aviral Kumar</name>
+    </author>
+    <author>
+      <name>Graham Neubig</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06595v1</id>
+    <title>Cross-Modal Navigation with Multi-Agent Reinforcement Learning</title>
+    <updated>2026-05-07T17:20:34Z</updated>
+    <link href="https://arxiv.org/abs/2605.06595v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06595v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Robust embodied navigation relies on complementary sensory cues. However, high-quality and well-aligned multi-modal data is often difficult to obtain in practice. Training a monolithic model is also challenging as rich multi-modal inputs induce complex representations and substantially enlarge the policy space. Cross-modal collaboration among lightweight modality-specialized agents offers a scalable paradigm. It enables flexible deployment and parallel execution, while preserving the strength of each modality. In this paper, we propose \textbf{CRONA}, a Multi-Agent Reinforcement Learning (MARL) framework for \textbf{Cro}ss-Modal \textbf{Na}vigation. CRONA improves collaboration by leveraging control-relevant auxiliary beliefs and a centralized multi-modal critic with global state. Experiments on visual-acoustic navigation tasks show that multi-agent methods significantly improve performance and efficiency over single-agent baselines. We find that homogeneous collaboration with limited modalities is sufficient for short-range navigation under salient cues; heterogeneous collaboration among agents with complementary modalities is generally efficient and effective; and navigation in large, complex environments requires both richer multi-modal perception and increased model capacity.</summary>
+    <category term="cs.RO" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T17:20:34Z</published>
+    <arxiv:primary_category term="cs.RO"/>
+    <author>
+      <name>Shuo Liu</name>
+    </author>
+    <author>
+      <name>Xinzichen Li</name>
+    </author>
+    <author>
+      <name>Christopher Amato</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06557v1</id>
+    <title>Coordination Matters: Evaluation of Cooperative Multi-Agent Reinforcement Learning</title>
+    <updated>2026-05-07T16:50:53Z</updated>
+    <link href="https://arxiv.org/abs/2605.06557v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06557v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Cooperative multi-agent reinforcement learning (MARL) benchmarks commonly emphasize aggregate outcomes such as return, success rate, or completion time. While essential, these metrics often fail to reveal how agents coordinate, particularly in settings where agents, tasks, and joint assignment choices scale combinatorially. We propose a coordination-aware evaluation perspective that supplements return with process-level diagnostics. We instantiate this perspective using STAT, a controlled commitment-constrained spatial task-allocation testbed that systematically varies agents, tasks, and environment size while holding observation access and task rules fixed. We evaluate six representative value-based MARL methods across varying levels of centralization. Our results show that similar return trends can reflect distinct coordination mechanisms, including differences in redundant assignment, assignment diversity, and task-completion efficiency. We find that in commitment-constrained task allocation, performance under scale is shaped not only by nominal action-space size, but also by assignment pressure, sparse decision opportunities, and redundant choices among interdependent agents. Our findings motivate coordination-aware evaluation as a necessary complement to return-based benchmarking for cooperative MARL.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T16:50:53Z</published>
+    <arxiv:comment>27 pages. Submitted and under review</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Maria Ana Cardei</name>
+    </author>
+    <author>
+      <name>Matthew Landers</name>
+    </author>
+    <author>
+      <name>Afsaneh Doryab</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06525v1</id>
+    <title>Sustaining Cooperation in Populations Guided by AI: A Folk Theorem for LLMs</title>
+    <updated>2026-05-07T16:31:12Z</updated>
+    <link href="https://arxiv.org/abs/2605.06525v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06525v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) are increasingly used to provide instructions to many agents who interact with one another. Such shared reliance couples agents who appear to act independently: they may in fact be guided by a common model. This coupling can change the prospects for cooperation among agents with misaligned incentives. We study settings in which multiple LLMs each advise a population of clients who participate in instances of an underlying game, creating strategic interaction at the level of the LLMs themselves. This induces a meta-game among the LLMs, mediated through clients. We first analyze the one-shot setting, where shared instructions can change equilibrium behavior only when an LLM may influence more than one role in the same interaction; in such cases, cooperation may emerge, and the effect of client share can be beneficial, harmful, or non-monotone, depending on the base game. Our main result concerns the repeated setting. We prove a folk theorem for LLMs: despite indirect observation and the clients' inability to identify which LLM advised their opponents, all feasible and individually rational outcomes can be sustained as $\varepsilon$-equilibria. The result does not follow from the standard folk theorem and requires new proof techniques. Together, these results show that shared LLM guidance can sustain cooperation among populations of agents even when the underlying incentives are misaligned.</summary>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="econ.TH" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T16:31:12Z</published>
+    <arxiv:primary_category term="cs.GT"/>
+    <author>
+      <name>Jonathan Shaki</name>
+    </author>
+    <author>
+      <name>Eden Hartman</name>
+    </author>
+    <author>
+      <name>Sarit Kraus</name>
+    </author>
+    <author>
+      <name>Yonatan Aumann</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06520v1</id>
+    <title>Optimizing Social Utility in Sequential Experiments</title>
+    <updated>2026-05-07T16:28:25Z</updated>
+    <link href="https://arxiv.org/abs/2605.06520v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06520v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Regulatory approval of products in high-stakes domains such as drug development requires statistical evidence of safety and efficacy through large-scale randomized controlled trials. However, the high financial cost of these trials may deter developers who lack absolute certainty in their product's efficacy, ultimately stifling the development of `moonshot' products that could offer high social utility. To address this inefficiency, in this paper, we introduce a statistical protocol for experimentation where the product developer (the agent) conducts a randomized controlled trial sequentially and the regulator (the principal) partially subsidizes its cost. By modeling the protocol using a belief Markov decision process, we show that the agent's optimal strategy can be found efficiently using dynamic programming. Further, we show that the social utility is a piecewise linear and convex function over the subsidy level the principal selects, and thus the socially optimal subsidy can also be found efficiently using divide-and-conquer. Simulation experiments using publicly available data on antibiotic development and approval demonstrate that our statistical protocol can be used to increase social utility by more than $35$$\%$ relative to standard, non-sequential protocols.</summary>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="stat.ME" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T16:28:25Z</published>
+    <arxiv:primary_category term="cs.GT"/>
+    <author>
+      <name>Ander Artola Velasco</name>
+    </author>
+    <author>
+      <name>Stratis Tsirtsis</name>
+    </author>
+    <author>
+      <name>Manuel Gomez-Rodriguez</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06443v1</id>
+    <title>AgenticPrecoding: LLM-Empowered Multi-Agent System for Precoding Optimization</title>
+    <updated>2026-05-07T15:43:12Z</updated>
+    <link href="https://arxiv.org/abs/2605.06443v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06443v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Precoding is a key technique for interference management and performance improvement in multi-antenna wireless systems. However, existing precoding methods are typically developed for specific system models, objectives, and constraint sets, which limits their adaptability to the heterogeneous and evolving scenarios expected in future 6G networks. To address this limitation, we propose AgenticPrecoding, a universal multi-agent framework that automates end-to-end precoding derivation directly from user-level communication requirements. Specifically, AgenticPrecoding decomposes the derivation process into four coordinated stages: problem formulation, solver selection, prompt upsampling, and code generation, assigning each stage to a specialized agent tailored to its specific reasoning demands. We employ two LoRA-adapted reasoning agents to inject precoding-specific domain knowledge for problem formulation and solver selection, while two general-purpose Large Language Models (LLMs) handle prompt refinement and executable code generation. Furthermore, a feedback-driven refinement mechanism is incorporated to enhance code executability, constraint feasibility, and solution quality. Extensive experiments across 10 representative precoding scenarios demonstrate that AgenticPrecoding achieves superior cross-scenario adaptability compared to conventional optimization-based and LLM-based baselines.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T15:43:12Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Zijiu Yang</name>
+    </author>
+    <author>
+      <name>Zixiang Zhang</name>
+    </author>
+    <author>
+      <name>Shunpu Tang</name>
+    </author>
+    <author>
+      <name>Qianqian Yang</name>
+    </author>
+    <author>
+      <name>Zhiguo Shi</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06377v1</id>
+    <title>Independent Learning of Nash Equilibria in Partially Observable Markov Potential Games with Decoupled Dynamics</title>
+    <updated>2026-05-07T14:56:56Z</updated>
+    <link href="https://arxiv.org/abs/2605.06377v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06377v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study Nash equilibrium learning in partially observable Markov games (POMGs), a multi-agent reinforcement learning framework in which agents cannot fully observe the underlying state. Prior work in this setting relies on centralization or information sharing, and suffers from sample and computational complexity that scales exponentially in the number of players. We focus on a subclass of POMGs with independent state transitions, where agents remain coupled through their rewards, and assume that the underlying fully observed Markov game is a Markov potential game. For this class, we present an independent learning algorithm in which players, observing only their own actions and observations and without communication, jointly converge to an approximate Nash equilibrium. Due to partial observability, optimal policies may in general depend on the full action-observation history. Under a filter stability assumption, we show that policies based on finite history windows provide sufficient approximation guarantees. This enables us to approximate the POMG by a surrogate Markov game that is near-potential, leading to quasi-polynomial sample and computational complexity for independent Nash equilibrium learning in the underlying POMG.</summary>
+    <category term="cs.GT" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T14:56:56Z</published>
+    <arxiv:primary_category term="cs.GT"/>
+    <author>
+      <name>Philip Jordan</name>
+    </author>
+    <author>
+      <name>Maryam Kamgarpour</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06365v1</id>
+    <title>From Agent Loops to Deterministic Graphs: Execution Lineage for Reproducible AI-Native Work</title>
+    <updated>2026-05-07T14:39:37Z</updated>
+    <link href="https://arxiv.org/abs/2605.06365v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06365v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language model systems are increasingly deployed as agentic workflows that interleave reasoning, tool use, memory, and iterative refinement. These systems are effective at producing answers, but they often rely on implicit conversational state, making it difficult to preserve stable work products, isolate irrelevant updates, or propagate changes through intermediate artifacts.
+  We introduce execution lineage: an execution model in which AI-native work is represented as a directed acyclic graph (DAG) of artifact-producing computations with explicit dependencies, stable intermediate boundaries, and identity-based replay. The goal is not to make the model a better one-shot writer, but to make evolving AI-generated work maintainable under change.
+  We compare execution-lineage replay against loop-centric update baselines on two controlled policy-memo update tasks. In an unrelated-branch update, DAG replay preserved the final memo exactly in all runs, with zero churn and zero unrelated-branch contamination, while loop baselines regenerated the memo and frequently imported unrelated context. In an intermediate-artifact edit, all systems reflected the new constraint in the final memo, but only DAG replay achieved perfect upstream preservation, downstream propagation, unaffected-artifact preservation, and cross-artifact consistency.
+  These results show that final answer quality and maintained-state quality are distinct. Strong loop baselines can remain competitive at producing polished final outputs when the task is a bounded synthesis/update problem and all current sources fit in context, but immediate task success can mask partial state inconsistency that may compound over future revisions. Execution lineage provides stronger guarantees about what should change, what should remain stable, and how work evolves across revisions.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T14:39:37Z</published>
+    <arxiv:comment>16 pages, 1 figure</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Josh Rosen</name>
+    </author>
+    <author>
+      <name>Seth Rosen</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06320v1</id>
+    <title>Improving the Efficiency of Language Agent Teams with Adaptive Task Graphs</title>
+    <updated>2026-05-07T14:19:17Z</updated>
+    <link href="https://arxiv.org/abs/2605.06320v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06320v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Large language models (LLMs) are increasingly deployed in teams, yet existing coordination approaches often occupy two extremes. Highly structured methods rely on fixed roles, pipelines, or task decompositions assigned a priori. In contrast, fully unstructured teams enable adaptability and exploration but suffer from inefficiencies such as error propagation, inter-agent conflicts, and wasted resources (measured in time, tokens, or file operations). We introduce Language Agent Teams for Task Evolution (LATTE), a framework for coordinating LLM teams inspired by distributed systems, where processors must operate under partial observability and communication constraints. In LATTE, a team of agents collaboratively construct and maintain a shared, evolving coordination graph which encodes sub-task dependencies, individual agent assignment, and the current state of sub-task progress. This protocol maintains consistency while empowering agents to dynamically allocate work, adapt coordination, and discover new tasks. Across multiple collaborative tasks and a variety of base models, we demonstrate how LATTE reduces token usage, wall-clock time, communication, and coordination failures (e.g. file conflicts and redundant outputs) while matching or exceeding the accuracy of standard designs including MetaGPT, decentralized teams, top-down Leader-Worker hierarchies, and static decompositions.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.CL" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T14:19:17Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Elizabeth Mieczkowski</name>
+    </author>
+    <author>
+      <name>Alexander Ku</name>
+    </author>
+    <author>
+      <name>Tiwalayo Eisape</name>
+    </author>
+    <author>
+      <name>Dilip Arumugam</name>
+    </author>
+    <author>
+      <name>John Matters</name>
+    </author>
+    <author>
+      <name>Katherine M. Collins</name>
+    </author>
+    <author>
+      <name>Ilia Sucholutsky</name>
+    </author>
+    <author>
+      <name>Thomas L. Griffiths</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06286v1</id>
+    <title>Power-Efficiency and Scalability Analysis of Magnetically-Actuated Satellite Swarms via Convex Optimization</title>
+    <updated>2026-05-07T13:56:27Z</updated>
+    <link href="https://arxiv.org/abs/2605.06286v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06286v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This correspondence presents a convex-optimization-based evaluation framework of satellite-swarm-based apertures maintained by magnetic-field interactions. Spaceborne distributed apertures are composed of multiple satellites and are attractive for scientific and commercial missions because their scalability enables high-gain, narrow-beam, and large-aperture capabilities beyond the launch-size limitations. A key challenge is that the long-term maintenance of such virtual structures requires consistent formation control amid unstable orbital dynamics, and magnetic interactions generated by satellite-mounted magnetorquers offer a desirable propellant-free position-control strategy. However, the nonlinearities of the electromagnetic force and torque model lead to a nonconvex power-consumption constraint, making system-level configuration analysis difficult. To address this issue, we develop a convex optimization-based framework to analyze the power consumption of large magnetically actuated satellite swarms. The resulting analysis shows that increasing the number of satellites can improve formation-keeping power efficiency. This indicates that magnetically actuated swarm architectures provide a power-efficient alternative to the conventional few-satellite electromagnetic formation-flight concept for constructing large-scale space systems.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T13:56:27Z</published>
+    <arxiv:comment>Submitted to IEEE Transactions on Aerospace and Electronic Systems (Correspondence)</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Yuta Takahashi</name>
+    </author>
+    <author>
+      <name>Seang Shim</name>
+    </author>
+    <author>
+      <name>Hiraku Sakamoto</name>
+    </author>
+    <author>
+      <name>Shin-ichiro Sakai</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.06056v1</id>
+    <title>Multiagent Stochastic Shortest Path Problem</title>
+    <updated>2026-05-07T11:41:33Z</updated>
+    <link href="https://arxiv.org/abs/2605.06056v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.06056v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We introduce and study the multi-agent stochastic shortest path (MSSP) problem, in which $k$ agents strive to reach a target state, aiming to minimize the expected time to reach the target by any agent. We analyze the computational and strategy-complexity of the problem in both autonomous and coordinated settings, and we design efficient strategy-synthesis algorithms. The algorithms are experimentally evaluated on instances of increasing size against natural baselines.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T11:41:33Z</published>
+    <arxiv:comment>A full version of the paper that was presented at IJCAI 2026</arxiv:comment>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Martin Jonáš</name>
+    </author>
+    <author>
+      <name>Antonín Kučera</name>
+    </author>
+    <author>
+      <name>Vojtěch Kůr</name>
+    </author>
+    <author>
+      <name>Jan Mačák</name>
+    </author>
+    <author>
+      <name>Vojtěch Řehák</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05985v1</id>
+    <title>BioResearcher: Scenario-Guided Multi-Agent for Translational Medicine</title>
+    <updated>2026-05-07T10:33:43Z</updated>
+    <link href="https://arxiv.org/abs/2605.05985v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05985v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Translational medicine turns underspecified development goals into evidence synthesis that must combine literature, trials, patents, and quantitative multi-omics analysis while preserving identifiers, uncertainty, and retrievable provenance. General-purpose foundation models and off-the-shelf tool-augmented or multi-agent systems are not built for this: they tend to produce single-shot answers or run open-endedly, and fall short on the auditable, scenario-specific workflows that heterogeneous biomedical sources demand.
+  This paper introduces Ingenix BioResearcher, a scenario-guided multi-agent system that maps queries to versioned research playbooks, delegates to specialized subagents over 30+ tools and machine-learning endpoints, mixes structured database access with sandboxed code for genome-scale analyses, and applies claim-level multi-model reconciliation before editorial assembly.
+  We evaluate BioResearcher across unit-level capabilities, open-ended biomedical reasoning, and end-to-end clinical discovery. It leads evaluated baselines on 109 single-step tests (83.49% pass rate; 0.892 average score), achieves strong biomedical benchmark performance (89.33% on BixBench-Verified-50 and the top 0.758 mean score on BaisBench Scientific Discovery), and leads on a 30-query clinical end-to-end benchmark with the highest positive hit rate (74.7% $\pm$ 3.3%) and negative clear rate (96.8% $\pm$ 0.2%). These results show broad, competitive performance across unit-level, open-ended, and end-to-end clinical evaluations.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="q-bio.QM" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T10:33:43Z</published>
+    <arxiv:comment>5 pages (main text), 21 pages (appendix), 8 figures, 11 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Remigiusz Kinas</name>
+    </author>
+    <author>
+      <name>Joanna Krawczyk</name>
+    </author>
+    <author>
+      <name>Rafał Powalski</name>
+    </author>
+    <author>
+      <name>Przemysław Pietrzak</name>
+    </author>
+    <author>
+      <name>Agnieszka Kowalewska</name>
+    </author>
+    <author>
+      <name>Krzysztof Kolmus</name>
+    </author>
+    <author>
+      <name>Maciej Sypetkowski</name>
+    </author>
+    <author>
+      <name>Łukasz Smoliński</name>
+    </author>
+    <author>
+      <name>Tomasz Jetka</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05724v1</id>
+    <title>Auto Research with Specialist Agents Develops Effective and Non-Trivial Training Recipes</title>
+    <updated>2026-05-07T06:13:43Z</updated>
+    <link href="https://arxiv.org/abs/2605.05724v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05724v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>We study auto research as a closed empirical loop driven by external measurement. Each submitted trial carries a hypothesis, an executable code edit, an evaluator-owned outcome, and feedback that shapes the next proposal. The output is not a generated paper or a single model checkpoint, but an auditable trajectory of proposals, code diffs, experiments, scores, and failure labels. We instantiate this loop with specialist agents that partition recipe surfaces and share measured lineage across trials. The central empirical finding is that lineage feedback lets agents turn evaluator outcomes, including crashes, budget overruns, size failures, and accuracy-gate misses, into later program-level recipe edits rather than one-shot suggestions. Across 1,197 headline-run trials plus 600 Parameter Golf control trials after one-time setup and launch, humans did not choose proposals, edit recipes, override scores, or repair failed trials during the search. In the three headline runs, the same submitted-trial loop reduces Parameter Golf validation bpb by $0.81\%$, raises NanoChat-D12 CORE by $38.7\%$, and reduces CIFAR-10 Airbench96 wallclock by $4.59\%$, with each task measured by its own external evaluator and legality checks. The trace includes a strict architecture-domain audit of 157 headline-run submissions and program rewrites such as a NanoChat attention-kernel path change. Within this scope the loop autonomously writes code, submits experiments, absorbs feedback, applies and combines known techniques inside each environment, and improves public starting recipes.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T06:13:43Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Jingjie Ning</name>
+    </author>
+    <author>
+      <name>Xiaochuan Li</name>
+    </author>
+    <author>
+      <name>Ji Zeng</name>
+    </author>
+    <author>
+      <name>Hao Kang</name>
+    </author>
+    <author>
+      <name>Chenyan Xiong</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05703v1</id>
+    <title>Active Learning for Communication Structure Optimization in LLM-Based Multi-Agent Systems</title>
+    <updated>2026-05-07T05:48:43Z</updated>
+    <link href="https://arxiv.org/abs/2605.05703v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05703v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Optimizing the communication structure of large language model based multi-agent systems (LLM-MAS) has been shown to improve downstream performance and reduce token usage. Existing methods typically rely on randomly sampled training tasks. However, tasks may differ substantially in difficulty and domain, and thus they are not equally informative for updating communication structure, making optimization under limited training budgets often unstable and highly sensitive to the particular training set. To actively identify the most valuable tasks for communication-structure optimization, we propose an ensemble-based information-theoretic task selection framework. The proposed method estimates task informativeness by how much a candidate task changes the distribution over graph parameters, using ensemble Kalman inversion as an efficient and derivative-free approximation of the corresponding Bayesian update. The resulting estimator is especially suitable for black-box and noisy multi-agent systems. To enhance scalability, we construct a compact candidate pool through embedding-based representative selection and combine the informative selection with surrogate modeling and batch Thompson sampling. We validate our method in both benign settings and settings with agent attacks, demonstrating its effectiveness for communication-structure optimization under constrained computational budgets.</summary>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.LG" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T05:48:43Z</published>
+    <arxiv:primary_category term="cs.MA"/>
+    <author>
+      <name>Huchen Yang</name>
+    </author>
+    <author>
+      <name>Xinghao Dong</name>
+    </author>
+    <author>
+      <name>Dan Negrut</name>
+    </author>
+    <author>
+      <name>Jin-Long Wu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2605.05657v1</id>
+    <title>Retrieval-Conditioned Topology Selection with Provable Budget Conservation for Multi-Agent Code Generation</title>
+    <updated>2026-05-07T04:18:53Z</updated>
+    <link href="https://arxiv.org/abs/2605.05657v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2605.05657v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Multi-agent LLM systems for code generation face a fundamental routing problem: the optimal orchestration topology depends on the structural complexity of the code under modification, yet existing systems select topologies without consulting the codebase. We present Retrieval-Guided Adaptive Orchestration (RGAO), an architecture that closes this loop by extracting a structural complexity vector from a hierarchical code index before selecting the orchestration topology. RGAO operates within Code-Agent, a multi-agent framework whose sub-agents are governed by formal contracts with six-dimensional budget vectors. Our headline contribution is the composition of two previously separate lines of work -- complexity-conditioned LLM routing and formal resource algebras -- yielding a property neither admits alone: provable budget conservation under retrieval-conditioned dynamic topology selection. Concretely we contribute: (1) a complexity-conditioned topology router that reduces proxy-measured misrouting from 30.1% to 8.2%; (2) a budget algebra with a structural-induction conservation theorem; and (3) a hierarchical code retrieval engine. Empirical evaluation demonstrates sub-millisecond DAG construction and linear tree-index scalability.</summary>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.MA" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-05-07T04:18:53Z</published>
+    <arxiv:comment>30 pages, 9 figures. NeurIPS 2026 Evaluations and Datasets Track Submission Under review</arxiv:comment>
+    <arxiv:primary_category term="cs.AI"/>
+    <author>
+      <name>Abhijit Talluri</name>
+    </author>
+    <author>
+      <name>Pujith Anne</name>
+    </author>
+    <author>
+      <name>Bhagavan Choudary Pendiyala</name>
+    </author>
+    <author>
+      <name>Raghavendra Chilukuri</name>
+    </author>
+  </entry>
+</feed>
