@@ -43,4 +43,3 @@ No new issues (12th clean day on tomscaria scope).
 3. Cloudflare agents create accounts, buy domains, deploy (634pts) — https://news.ycombinator.com/item?id=48031684
 4. Vibe coding vs agentic engineering — Willison (561pts) — https://news.ycombinator.com/item?id=48037128
 5. DNSSEC outage on .de (737pts) — DENIC signature failure — https://news.ycombinator.com/item?id=48027897
-

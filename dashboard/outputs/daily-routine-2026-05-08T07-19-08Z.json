@@ -1,0 +1,410 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Routine — 2026-05-08"
+      },
+      "children": [
+        "market_context",
+        "sep_1",
+        "winners_heading",
+        "winners_table",
+        "sep_2",
+        "losers_heading",
+        "losers_table",
+        "sep_3",
+        "tweets_heading",
+        "tweets_crypto",
+        "tweets_ai",
+        "tweets_dev",
+        "sep_4",
+        "paper_heading",
+        "paper_text",
+        "paper_link",
+        "sep_5",
+        "github_heading",
+        "github_status",
+        "sep_6",
+        "hn_heading",
+        "hn_1",
+        "hn_2",
+        "hn_3",
+        "hn_4",
+        "hn_5"
+      ]
+    },
+    "market_context": {
+      "type": "Text",
+      "props": {
+        "text": "Risk-off rotation — 31/100 top coins green, BTC $80,857 −1.9% / ETH $2,330 −3.3% lead the unwind while RWA / Solana-DeFi names rotate in.",
+        "variant": "lead"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "winners_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 10 Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "winners_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Price",
+          "Change",
+          "Status"
+        ],
+        "rows": [
+          [
+            "SIREN",
+            "$0.98",
+            "+28.2%",
+            "BREAKOUT"
+          ],
+          [
+            "JTO",
+            "$0.51",
+            "+28.1%",
+            "BREAKOUT"
+          ],
+          [
+            "CFG",
+            "$0.29",
+            "+18.1%",
+            "BREAKOUT"
+          ],
+          [
+            "VVV",
+            "$12.81",
+            "+13.4%",
+            ""
+          ],
+          [
+            "GENIUS",
+            "$0.59",
+            "+9.6%",
+            ""
+          ],
+          [
+            "ICP",
+            "$3.11",
+            "+9.6%",
+            ""
+          ],
+          [
+            "APEPE",
+            "$0.000001",
+            "+9.5%",
+            ""
+          ],
+          [
+            "WLFI",
+            "$0.073",
+            "+9.0%",
+            ""
+          ],
+          [
+            "ULTIMA",
+            "$3013",
+            "+8.9%",
+            ""
+          ],
+          [
+            "ONDO",
+            "$0.35",
+            "+8.8%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "losers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Top 10 Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "losers_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Symbol",
+          "Price",
+          "Change",
+          "Status"
+        ],
+        "rows": [
+          [
+            "SKYAI",
+            "$0.63",
+            "−21.9%",
+            ""
+          ],
+          [
+            "ASTEROID",
+            "$0.000363",
+            "−15.8%",
+            ""
+          ],
+          [
+            "B (BUILDon)",
+            "$0.35",
+            "−13.6%",
+            ""
+          ],
+          [
+            "LUNC",
+            "$0.000095",
+            "−9.9%",
+            ""
+          ],
+          [
+            "CVX",
+            "$1.75",
+            "−7.0%",
+            ""
+          ],
+          [
+            "BEAT",
+            "$0.51",
+            "−6.9%",
+            ""
+          ],
+          [
+            "AERO",
+            "$0.45",
+            "−6.2%",
+            ""
+          ],
+          [
+            "MORPHO",
+            "$2.14",
+            "−5.9%",
+            ""
+          ],
+          [
+            "ZEN",
+            "$7.27",
+            "−5.7%",
+            ""
+          ],
+          [
+            "PENGU",
+            "$0.0105",
+            "−5.2%",
+            "TRENDING+DOWN"
+          ]
+        ]
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "tweets_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Tweet Roundup",
+        "level": "h2"
+      }
+    },
+    "tweets_crypto": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweets_crypto_heading",
+        "tweets_crypto_text"
+      ]
+    },
+    "tweets_crypto_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Crypto/PM",
+        "level": "h3"
+      }
+    },
+    "tweets_crypto_text": {
+      "type": "Text",
+      "props": {
+        "text": "Aave LLC files emergency motion to vacate Arbitrum DAO restraining notice; 1inch LP Trusted Volumes exploited for $5.87M (5th DeFi exploit this month); Citrea launches CTR governance token (10B fixed supply, 60% community)."
+      }
+    },
+    "tweets_ai": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweets_ai_heading",
+        "tweets_ai_text"
+      ]
+    },
+    "tweets_ai_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "AI",
+        "level": "h3"
+      }
+    },
+    "tweets_ai_text": {
+      "type": "Text",
+      "props": {
+        "text": "Anthropic ships 10 preconfigured finance-agent templates (investment banking, asset mgmt, insurance); Ramp card data shows first-time business AI buyers picking Anthropic 3× the rate of OpenAI."
+      }
+    },
+    "tweets_dev": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tweets_dev_heading",
+        "tweets_dev_text"
+      ]
+    },
+    "tweets_dev_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dev",
+        "level": "h3"
+      }
+    },
+    "tweets_dev_text": {
+      "type": "Text",
+      "props": {
+        "text": "OpenClaw breakout open-source project (always-on personal agents); Bun 3× Node.js going mainstream; Docker now at 92% IT-pro adoption (largest single-year jump)."
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "paper_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Paper of the Day (PhD-prep slot)",
+        "level": "h2"
+      }
+    },
+    "paper_text": {
+      "type": "Text",
+      "props": {
+        "text": "Prediction Arena: Benchmarking AI Models on Real-World Prediction Markets — 6 frontier × $10k real × 57 days × Kalshi+PM. grok-4-20 hit 71.4% PM settlement-win — direct head-to-head for CalibrationGap 76%/29."
+      }
+    },
+    "paper_link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Prediction Arena: Benchmarking AI Models on Real-World Prediction Markets",
+        "href": "https://arxiv.org/abs/2604.07355",
+        "source": "arxiv.org"
+      }
+    },
+    "sep_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "github_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "GitHub Issues",
+        "level": "h2"
+      }
+    },
+    "github_status": {
+      "type": "Alert",
+      "props": {
+        "title": "No new issues",
+        "message": "12th clean day on tomscaria scope",
+        "type": "success"
+      }
+    },
+    "sep_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "hn_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "HN Digest",
+        "level": "h2"
+      }
+    },
+    "hn_1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Chrome silently installs 4GB Gemini Nano with no opt-in",
+        "href": "https://news.ycombinator.com/item?id=48019219",
+        "source": "Hacker News",
+        "score": "1668pts"
+      }
+    },
+    "hn_2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Anthropic + SpaceX compute deal + higher Claude limits",
+        "href": "https://news.ycombinator.com/item?id=48037986",
+        "source": "Hacker News",
+        "score": "451pts"
+      }
+    },
+    "hn_3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Cloudflare agents create accounts, buy domains, deploy",
+        "href": "https://news.ycombinator.com/item?id=48031684",
+        "source": "Hacker News",
+        "score": "634pts"
+      }
+    },
+    "hn_4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Vibe coding vs agentic engineering — Willison",
+        "href": "https://news.ycombinator.com/item?id=48037128",
+        "source": "Hacker News",
+        "score": "561pts"
+      }
+    },
+    "hn_5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "DNSSEC outage on .de — DENIC signature failure",
+        "href": "https://news.ycombinator.com/item?id=48027897",
+        "source": "Hacker News",
+        "score": "737pts"
+      }
+    }
+  }
+}
