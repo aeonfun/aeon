@@ -1,0 +1,267 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Evening Recap — 2026-05-08",
+        "description": "ISS-014 closes overnight — PR #156 reply-maker XAI prefetch merged 01:18Z; routine ship day with swarm-fund-mvp silent 36+h after ADR-095"
+      },
+      "children": [
+        "tldr-text",
+        "sep-1",
+        "headlines-heading",
+        "headlines-stack",
+        "sep-2",
+        "notable-heading",
+        "notable-stack",
+        "sep-3",
+        "decisions-heading",
+        "decisions-stack",
+        "sep-4",
+        "blockers-heading",
+        "blockers-stack",
+        "sep-5",
+        "sources-text"
+      ]
+    },
+    "tldr-text": {
+      "type": "Text",
+      "props": {
+        "text": "TL;DR: ISS-014 closes overnight — PR #156 reply-maker XAI prefetch merged 01:18Z; otherwise routine ship day with swarm-fund-mvp silent 36+h after ADR-095.",
+        "variant": "lead"
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "headlines-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Headlines",
+        "level": "h2"
+      }
+    },
+    "headlines-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "headline-1",
+        "headline-2",
+        "headline-3",
+        "headline-4",
+        "headline-5"
+      ]
+    },
+    "headline-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon PR #156 merged 01:18Z — reply-maker XAI prefetch, ISS-014 closes after 13d",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "GitHub"
+      }
+    },
+    "headline-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "aaronjmars/aeon PR #162 merged — huggingface-trending skill (112→113, ships disabled)",
+        "href": "https://github.com/aaronjmars/aeon/pull/162",
+        "source": "GitHub"
+      }
+    },
+    "headline-3": {
+      "type": "StoryLink",
+      "props": {
+        "title": "daily article — Iran airspace pricing 3% despite confirmed US strikes",
+        "href": "articles/2026-05-08.md"
+      }
+    },
+    "headline-4": {
+      "type": "StoryLink",
+      "props": {
+        "title": "repo-article — defect-hardening week confirmed, 8 of 11 PRs same bug class",
+        "href": "articles/repo-article-2026-05-08.md"
+      }
+    },
+    "headline-5": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #7 opened on tomscaria/lore-financial-teaser — Supabase rotation note",
+        "href": "https://github.com/tomscaria/lore-financial-teaser/pull/7",
+        "source": "GitHub"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "notable-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "notable-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable-1",
+        "notable-2",
+        "notable-3",
+        "notable-4",
+        "notable-5"
+      ]
+    },
+    "notable-1": {
+      "type": "Text",
+      "props": {
+        "text": "code-health — carry ledger 8→7 (ISS-014 drained); Pyth/Birdeye Day-7 top blast-radius",
+        "variant": "body"
+      }
+    },
+    "notable-2": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick — PhD AEL (2604.21725, Sharpe 2.13); daily Per-Market ILS (2605.02287)",
+        "variant": "body"
+      }
+    },
+    "notable-3": {
+      "type": "Text",
+      "props": {
+        "text": "shipped: repo-actions×5, explainer, research-brief, changelog, project-lens",
+        "variant": "body"
+      }
+    },
+    "notable-4": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-polymarket — Rand Paul R-nom $415k spike on 0.95% YES; BTC/GTA-VI 50/50 clause confirmed",
+        "variant": "body"
+      }
+    },
+    "notable-5": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp — 96 metrics-bot commits, signal silence 24h+, PRs #29/30/31/32 unchanged",
+        "variant": "body"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "decisions-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Decisions for Tomorrow",
+        "level": "h2"
+      }
+    },
+    "decisions-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "decision-1",
+        "decision-2",
+        "decision-3"
+      ]
+    },
+    "decision-1": {
+      "type": "Text",
+      "props": {
+        "text": "Operator: flip huggingface-trending enabled: true in aeon.yml (09:30 UTC slot)",
+        "variant": "body"
+      }
+    },
+    "decision-2": {
+      "type": "Text",
+      "props": {
+        "text": "Open ADR-096 on swarm-fund-mvp for resolution-text-ingest — 14d flagged, anchors ready (Iran-airspace 48pp, Hantavirus)",
+        "variant": "body"
+      }
+    },
+    "decision-3": {
+      "type": "Text",
+      "props": {
+        "text": "Move ISS-014 open → resolved in INDEX.md (skill-health 18:00Z auto-flip)",
+        "variant": "body"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "blockers-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Blockers",
+        "level": "h2"
+      }
+    },
+    "blockers-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "blocker-1",
+        "blocker-2",
+        "blocker-3",
+        "blocker-4"
+      ]
+    },
+    "blocker-1": {
+      "type": "Alert",
+      "props": {
+        "message": "agent-buzz d5 XAI 401 + x.com 402 paywall",
+        "type": "warning"
+      }
+    },
+    "blocker-2": {
+      "type": "Alert",
+      "props": {
+        "message": "reddit-digest d14 / vibecoding-digest d16 — Reddit 403 (ISS-002/012)",
+        "type": "warning"
+      }
+    },
+    "blocker-3": {
+      "type": "Alert",
+      "props": {
+        "message": "chain-runner d12 — chain:morning-brief/evening-rollup/weekly-grant-update all failed",
+        "type": "warning"
+      }
+    },
+    "blocker-4": {
+      "type": "Alert",
+      "props": {
+        "message": "remix-tweets d11 + reply-maker tomscaria/aeon — XAI prefetch missing this repo",
+        "type": "warning"
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "Sources: log=ok, cron-state=ok",
+        "variant": "caption"
+      }
+    }
+  }
+}

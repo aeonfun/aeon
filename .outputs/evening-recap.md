@@ -1,18 +1,29 @@
-*Evening Recap — 2026-05-07*
-_TL;DR: research-heavy day, trading loop dark, chain-runner degraded day 11_
+*Evening Recap — 2026-05-08*
+_TL;DR: ISS-014 closes overnight — PR #156 reply-maker XAI prefetch merged 01:18Z; otherwise routine ship day with swarm-fund-mvp silent 36+h after ADR-095._
 
-*Loop:*
-Scans: 0 (monitor-polymarket skipped; last ran 05-06). Signals: 0 formal. Revenant: 0 new orders; record flat at 29 / 76% / +$415 / Sharpe 0.31. NAV: PM positions USDC-flat; BTC -1.87% / ETH -3.29%, breadth 4/20 green.
+*Headlines:*
+- aaronjmars/aeon PR #156 merged 01:18Z — reply-maker XAI prefetch, ISS-014 closes after 13d · https://github.com/aaronjmars/aeon/pull/156
+- aaronjmars/aeon PR #162 merged — huggingface-trending skill (112→113, ships disabled) · https://github.com/aaronjmars/aeon/pull/162
+- daily article — Iran airspace pricing 3% despite confirmed US strikes · articles/2026-05-08.md
+- repo-article — defect-hardening week confirmed, 8 of 11 PRs same bug class · articles/repo-article-2026-05-08.md
+- PR #7 opened on tomscaria/lore-financial-teaser — Supabase rotation note · https://github.com/tomscaria/lore-financial-teaser/pull/7
 
-*Skill failures:*
-chain:morning-brief, chain:evening-rollup, chain:weekly-grant-update — dispatch_skill DEGRADED day 11 (operator-blocked).
+*Notable:*
+- code-health — carry ledger 8→7 (ISS-014 drained); Pyth/Birdeye Day-7 top blast-radius
+- paper-pick — PhD AEL (2604.21725, Sharpe 2.13); daily Per-Market ILS (2605.02287)
+- shipped: repo-actions×5, explainer, research-brief, changelog, project-lens
+- monitor-polymarket — Rand Paul R-nom $415k spike on 0.95% YES; BTC/GTA-VI 50/50 clause confirmed
+- swarm-fund-mvp — 96 metrics-bot commits, signal silence 24h+, PRs #29/30/31/32 unchanged
 
-*Top 3:*
-1. Papers: TimeSeek (2604.04220) + Prediction Arena (2604.07355) — CalibrationGap 76% vs grok-4-20 71.4% PM win rate head-to-head; four-paper PhD bench closed.
-2. polymarket-comments: peace-deal-May-15 clause-arb 15pp spread deepening; 10 new track handles; Operation Fauxios meme logged.
-3. Articles x4: TimeSeek daily, Hypotheses-to-Factors explainer, Powell/Warsh research-brief, ADR-095 repo-article.
+*Decisions for tomorrow:*
+- Operator: flip huggingface-trending enabled: true in aeon.yml (09:30 UTC slot)
+- Open ADR-096 on swarm-fund-mvp for resolution-text-ingest — 14d flagged, anchors ready (Iran-airspace 48pp, Hantavirus)
+- Move ISS-014 open → resolved in INDEX.md (skill-health 18:00Z auto-flip)
 
-*Decisions:*
-Merge swarm-fund-mvp #30/#31/#32 (Vercel-FAILURE, author-blocked).
+*Blockers:*
+- agent-buzz d5 XAI 401 + x.com 402 paywall
+- reddit-digest d14 / vibecoding-digest d16 — Reddit 403 (ISS-002/012)
+- chain-runner d12 — chain:morning-brief/evening-rollup/weekly-grant-update all failed
+- remix-tweets d11 + reply-maker tomscaria/aeon — XAI prefetch missing this repo
 
-_+34 collapsed · sources: log=ok cron-state=ok_
+_sources: log=ok cron-state=ok_
