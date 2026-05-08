@@ -1,0 +1,409 @@
+{
+  "root": "card-root",
+  "state": {},
+  "elements": {
+    "card-root": {
+      "type": "Card",
+      "props": {
+        "title": "polymarket monitor — 2026-05-08"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "stack-mexico",
+        "sep-1",
+        "stack-btc",
+        "sep-2",
+        "stack-rep",
+        "sep-3",
+        "stack-dem",
+        "sep-4",
+        "stack-pres",
+        "sep-5",
+        "stack-summary"
+      ]
+    },
+    "stack-mexico": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-mexico",
+        "stat-mexico",
+        "text-mexico-vol",
+        "text-mexico-analysis",
+        "comment-mexico"
+      ]
+    },
+    "heading-mexico": {
+      "type": "Heading",
+      "props": {
+        "text": "Mexico 2026 World Cup (event 30615 / Revenant builder 0xcddc4ba3...8286f)",
+        "level": "h3"
+      }
+    },
+    "stat-mexico": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "1.05%",
+        "delta": "0.0pp",
+        "trend": "neutral"
+      }
+    },
+    "text-mexico-vol": {
+      "type": "Text",
+      "props": {
+        "text": "Stable | $662k 24h vol | $2.4M liq",
+        "variant": "body"
+      }
+    },
+    "text-mexico-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "5th consecutive flat day. builder-attributed market has no edge signal.",
+        "variant": "body"
+      }
+    },
+    "comment-mexico": {
+      "type": "TweetCard",
+      "props": {
+        "author": "rebotsliaf",
+        "text": "footballs coming home (05-05)",
+        "likes": 6
+      }
+    },
+    "sep-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-btc",
+        "stat-btc",
+        "text-btc-vol",
+        "alert-btc",
+        "comment-btc"
+      ]
+    },
+    "heading-btc": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin $1m before GTA VI (event 23784)",
+        "level": "h3"
+      }
+    },
+    "stat-btc": {
+      "type": "Stat",
+      "props": {
+        "label": "YES",
+        "value": "49.25%",
+        "delta": "+0.10pp",
+        "trend": "up"
+      }
+    },
+    "text-btc-vol": {
+      "type": "Text",
+      "props": {
+        "text": "Stable | $2.7k 24h vol | $127k liq",
+        "variant": "body"
+      }
+    },
+    "alert-btc": {
+      "type": "Alert",
+      "props": {
+        "title": "Resolution Ambiguity Confirmed Today",
+        "message": "Vague-Kangaroo (12:35 UTC): 'gta 6 isn't gonna release on July 31' + Stiff-Secretariat explains 50-50 fallback clause. Price at 49.25% = market pricing the split, not a directional BTC bet. NO edge thesis from 05-02 entry-signal is now fully priced in — no edge either way.",
+        "type": "warning"
+      }
+    },
+    "comment-btc": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Entire-Hole",
+        "text": "how is jesus christ returns at 49% (09:43 UTC today)"
+      }
+    },
+    "sep-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-rep": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-rep",
+        "table-rep",
+        "alert-rep",
+        "text-rep-analysis"
+      ]
+    },
+    "heading-rep": {
+      "type": "Heading",
+      "props": {
+        "text": "Republican Presidential Nominee 2028 (event 31875)",
+        "level": "h3"
+      }
+    },
+    "table-rep": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "YES %",
+          "Change"
+        ],
+        "rows": [
+          [
+            "JD Vance",
+            "37.55%",
+            "-1.6pp (was 39.15% on 05-03)"
+          ],
+          [
+            "Rubio",
+            "24.25%",
+            "—"
+          ],
+          [
+            "Youngkin",
+            "1.55%",
+            "—"
+          ],
+          [
+            "Kim Kardashian",
+            "0.75%",
+            "—"
+          ],
+          [
+            "Rand Paul",
+            "0.95%",
+            "-1.0pp"
+          ]
+        ]
+      }
+    },
+    "alert-rep": {
+      "type": "Alert",
+      "props": {
+        "title": "Volume Spike: Rand Paul YES 0.95%",
+        "message": "$415k 24h vol (~7x est daily avg). Price fell on heavy volume = NO accumulation on tail candidate. Biggest mover: Rand Paul — falling on outsized flow. No comment-side narrative catalyst found.",
+        "type": "info"
+      }
+    },
+    "text-rep-analysis": {
+      "type": "Text",
+      "props": {
+        "text": "JD Vance down -1.6pp over 5 days.",
+        "variant": "muted"
+      }
+    },
+    "sep-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-dem": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-dem",
+        "table-dem",
+        "alert-dem",
+        "comment-dem-1",
+        "comment-dem-2"
+      ]
+    },
+    "heading-dem": {
+      "type": "Heading",
+      "props": {
+        "text": "Democratic Presidential Nominee 2028 (event 30829)",
+        "level": "h3"
+      }
+    },
+    "table-dem": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Candidate",
+          "YES %"
+        ],
+        "rows": [
+          [
+            "Ossoff",
+            "6.70%"
+          ],
+          [
+            "Buttigieg",
+            "4.75%"
+          ],
+          [
+            "Booker",
+            "2.80%"
+          ],
+          [
+            "Whitmer",
+            "1.25%"
+          ],
+          [
+            "Oprah",
+            "0.75%"
+          ]
+        ]
+      }
+    },
+    "alert-dem": {
+      "type": "Alert",
+      "props": {
+        "title": "Volume Spike: Oprah YES 0.75%",
+        "message": "+1.0pp from 0.65% | $342k 24h vol. Price rose on large flow — someone is buying YES on a 0.75% tail. Biggest mover: Oprah — rising on volume.",
+        "type": "info"
+      }
+    },
+    "comment-dem-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Giraffeee",
+        "text": "I'm with her (May 8)"
+      }
+    },
+    "comment-dem-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Some-Productivity",
+        "text": "flow been crazy on this market lately (Feb)"
+      }
+    },
+    "sep-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-pres": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-pres",
+        "stat-eric",
+        "text-pres-info",
+        "comment-pres-1",
+        "comment-pres-2"
+      ]
+    },
+    "heading-pres": {
+      "type": "Heading",
+      "props": {
+        "text": "Presidential Election Winner 2028 (event 31552)",
+        "level": "h3"
+      }
+    },
+    "stat-eric": {
+      "type": "Stat",
+      "props": {
+        "label": "Eric Trump YES",
+        "value": "0.55%",
+        "trend": "neutral"
+      }
+    },
+    "text-pres-info": {
+      "type": "Text",
+      "props": {
+        "text": "Flat | $173k 24h vol. Most slots still 'Person X' placeholders.",
+        "variant": "body"
+      }
+    },
+    "comment-pres-1": {
+      "type": "TweetCard",
+      "props": {
+        "author": "Treeman666",
+        "text": "I don't know who will win, but I know it won't be JD Vance",
+        "likes": 21
+      }
+    },
+    "comment-pres-2": {
+      "type": "TweetCard",
+      "props": {
+        "author": "briar2682",
+        "text": "Rubio presence increases as the war lasts longer (long-running thesis, Mar 2026)",
+        "likes": 10
+      }
+    },
+    "sep-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stack-summary": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading-summary",
+        "alert-summary",
+        "text-volume-summary",
+        "text-narrative-summary"
+      ]
+    },
+    "heading-summary": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h3"
+      }
+    },
+    "alert-summary": {
+      "type": "Alert",
+      "props": {
+        "title": "Price Alerts >5pp",
+        "message": "NONE — all quiet on price moves",
+        "type": "success"
+      }
+    },
+    "text-volume-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Volume spikes >3x daily avg: Rand Paul R-nom ($415k on 0.95% YES) | Oprah D-nom ($342k on 0.75% YES)",
+        "variant": "body"
+      }
+    },
+    "text-narrative-summary": {
+      "type": "Text",
+      "props": {
+        "text": "Narrative shift: BTC/GTA VI 50-50 clause now in live comment discourse (confirmed today)",
+        "variant": "body"
+      }
+    }
+  }
+}
