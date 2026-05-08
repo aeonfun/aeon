@@ -1,0 +1,361 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-08"
+      },
+      "children": [
+        "heading-ondo",
+        "stack-badges-ondo",
+        "stack-price-info",
+        "separator-1",
+        "heading-score",
+        "table-score",
+        "heading-catalyst",
+        "text-catalyst",
+        "heading-risk",
+        "alert-risk",
+        "heading-vs-recent",
+        "text-vs-recent",
+        "separator-2",
+        "heading-market",
+        "stack-badges-market",
+        "stack-market-info",
+        "heading-fair",
+        "stack-thesis",
+        "heading-market-risk",
+        "alert-market-risk",
+        "separator-3",
+        "text-sources"
+      ]
+    },
+    "heading-ondo": {
+      "type": "Heading",
+      "props": {
+        "text": "Token: ONDO",
+        "level": "h2"
+      }
+    },
+    "stack-badges-ondo": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-high",
+        "badge-signal"
+      ]
+    },
+    "badge-high": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "default"
+      }
+    },
+    "badge-signal": {
+      "type": "Badge",
+      "props": {
+        "text": "signal 10/10",
+        "variant": "secondary"
+      }
+    },
+    "stack-price-info": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stat-rank",
+        "stat-mcap",
+        "stat-24h",
+        "stat-7d",
+        "stat-volume",
+        "stat-vol-mcap"
+      ]
+    },
+    "stat-rank": {
+      "type": "Stat",
+      "props": {
+        "label": "Price Rank",
+        "value": "46"
+      }
+    },
+    "stat-mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$1.95B"
+      }
+    },
+    "stat-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "+6.8%",
+        "trend": "up"
+      }
+    },
+    "stat-7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d Change",
+        "value": "+49.9%",
+        "trend": "up"
+      }
+    },
+    "stat-volume": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$362M"
+      }
+    },
+    "stat-vol-mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/Mcap Ratio",
+        "value": "0.186"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-score": {
+      "type": "Heading",
+      "props": {
+        "text": "Score Breakdown",
+        "level": "h3"
+      }
+    },
+    "table-score": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Criterion",
+          "Points"
+        ],
+        "rows": [
+          [
+            "24h > 0",
+            "+1"
+          ],
+          [
+            "7d > 0",
+            "+1"
+          ],
+          [
+            "Both > +5%",
+            "+2"
+          ],
+          [
+            "Trending",
+            "+2"
+          ],
+          [
+            "Vol/Mcap >= 0.10",
+            "+2"
+          ],
+          [
+            "RS vs BTC(+2.65) and ETH(-0.76)",
+            "+2"
+          ],
+          [
+            "Total",
+            "10/10"
+          ]
+        ]
+      }
+    },
+    "heading-catalyst": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "text-catalyst": {
+      "type": "Text",
+      "props": {
+        "text": "May 6 Ondo + Ripple + Mastercard + JPMorgan Kinexys cross-border settlement pilot — OUSG cleared in <5s across XRPL/RLUSD/Mastercard MTN rails; Broadridge proxy-vote went live on 250+ tokenized stocks; Ondo joined DTCC tokenization working group."
+      }
+    },
+    "heading-risk": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      }
+    },
+    "alert-risk": {
+      "type": "Alert",
+      "props": {
+        "message": "DTCC production trades don't start until July — narrative needs fresh catalyst inside 60 days or it retraces; monthly linear unlocks ~1.9% of supply.",
+        "type": "warning"
+      }
+    },
+    "heading-vs-recent": {
+      "type": "Heading",
+      "props": {
+        "text": "vs Recent Picks",
+        "level": "h3"
+      }
+    },
+    "text-vs-recent": {
+      "type": "Text",
+      "props": {
+        "text": "First time. Last 7d (UB / AKT / DASH / TON / ZEC / JTO + 04-30 LUNC) sit on AI-infra / privacy / memecoin / DeFi / staking axes — RWA-institutional-rail is a distinct narrative axis."
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-market": {
+      "type": "Heading",
+      "props": {
+        "text": "Market: Will the US confirm that aliens exist before 2027?",
+        "level": "h2"
+      }
+    },
+    "stack-badges-market": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-high-market",
+        "badge-edge"
+      ]
+    },
+    "badge-high-market": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "default"
+      }
+    },
+    "badge-edge": {
+      "type": "Badge",
+      "props": {
+        "text": "edge 12.5pp",
+        "variant": "secondary"
+      }
+    },
+    "stack-market-info": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-current-odds",
+        "stat-market-vol",
+        "stat-liq",
+        "stat-resolve"
+      ]
+    },
+    "text-current-odds": {
+      "type": "Text",
+      "props": {
+        "text": "Current: YES 18.5c / NO 81.5c"
+      }
+    },
+    "stat-market-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$560k"
+      }
+    },
+    "stat-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$424k"
+      }
+    },
+    "stat-resolve": {
+      "type": "Stat",
+      "props": {
+        "label": "Resolves",
+        "value": "2026-12-31"
+      }
+    },
+    "heading-fair": {
+      "type": "Heading",
+      "props": {
+        "text": "Fair Price & Thesis",
+        "level": "h3"
+      }
+    },
+    "stack-thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text-fair-yes",
+        "text-thesis",
+        "badge-action"
+      ]
+    },
+    "text-fair-yes": {
+      "type": "Text",
+      "props": {
+        "text": "Fair YES: ~6% (inputs: [AARO 2026-04-20 still \"no verifiable evidence\"], [Trump 2026-02 UAP EO is a 300-day declassification window, not confirmation], [FY2026 NDAA mandates intercept briefings, not affirmation])"
+      }
+    },
+    "text-thesis": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis: Resolution requires explicit federal-agency or Cabinet-level affirmation of extraterrestrial life. Nothing in 2024-26 has met that bar; AARO actively denies. The 18.5c tag is retail lottery premium. Action: BUY NO at 81.5c."
+      }
+    },
+    "badge-action": {
+      "type": "Badge",
+      "props": {
+        "text": "BUY NO at 81.5c",
+        "variant": "secondary"
+      }
+    },
+    "heading-market-risk": {
+      "type": "Heading",
+      "props": {
+        "text": "Market Risk",
+        "level": "h3"
+      }
+    },
+    "alert-market-risk": {
+      "type": "Alert",
+      "props": {
+        "message": "AARO Volume II historical report (overdue) drops, or a Trump-directed declassification release contains a single sentence from a federal agency or Cabinet official explicitly stating non-human origin.",
+        "type": "warning"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-sources": {
+      "type": "Text",
+      "props": {
+        "text": "sources: cg=ok, dex=ok, poly=ok | not financial advice — pattern-matching only"
+      }
+    }
+  }
+}
