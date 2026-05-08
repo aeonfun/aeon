@@ -1,6 +1,6 @@
 {
   "heartbeat": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_failed": "2026-05-06T15:33:00Z",
     "total_runs": 52,
     "total_successes": 36,
@@ -9,7 +9,7 @@
     "success_rate": 0.69,
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu",
     "last_success": "2026-05-08T08:54:34Z",
-    "last_dispatch": "2026-05-08T08:50:25Z"
+    "last_dispatch": "2026-05-08T15:00:28Z"
   },
   "token-alert": {
     "last_dispatch": "2026-05-08T13:00:53Z",
@@ -180,14 +180,14 @@
     "last_error": "ad27724\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "paper-pick": {
-    "last_status": "success",
+    "last_status": "dispatched",
     "last_success": "2026-05-08T07:19:01Z",
     "total_runs": 42,
     "total_successes": 25,
     "total_failures": 17,
     "consecutive_failures": 0,
     "success_rate": 0.6,
-    "last_dispatch": "2026-05-07T14:44:17Z",
+    "last_dispatch": "2026-05-08T15:00:28Z",
     "last_failed": "2026-05-06T15:32:10Z",
     "last_error": "_tier\":\"standard\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inpu"
   },
@@ -211,8 +211,8 @@
     "success_rate": 1
   },
   "auto-merge": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:47:37Z",
     "total_runs": 27,
     "total_successes": 12,
@@ -224,8 +224,8 @@
     "last_quality_score": 4
   },
   "article": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:51:00Z",
     "total_runs": 33,
     "total_successes": 12,
@@ -236,8 +236,8 @@
     "last_error": "5,\"outputTokens\":16,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000445,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":11,\""
   },
   "technical-explainer": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:51:13Z",
     "total_runs": 29,
     "total_successes": 10,
@@ -248,8 +248,8 @@
     "last_error": "\":368,\"outputTokens\":13,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000433,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":"
   },
   "digest": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:54:08Z",
     "total_runs": 29,
     "total_successes": 12,
@@ -260,8 +260,8 @@
     "last_error": "acheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.00041999999999999996,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":57,\"outputTo"
   },
   "research-brief": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:56:39Z",
     "total_runs": 27,
     "total_successes": 12,
@@ -272,8 +272,8 @@
     "last_error": "rd\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":367,\""
   },
   "search-skill": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:48:33Z",
     "total_runs": 32,
     "total_successes": 12,
@@ -284,8 +284,8 @@
     "last_error": "tool_use_id\":\"toolu_01Gj5DSQwDuuNy19ENPTVggJ\",\"tool_input\":{\"command\":\"/home/runner/work/aeon/aeon/add-skill aaronjmars/aeon --list 2>&1 | head -200\",\"description\":\"List skills inventory via add-skill"
   },
   "security-digest": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:53:25Z",
     "total_runs": 29,
     "total_successes": 12,
@@ -296,8 +296,8 @@
     "last_error": "rd\",\"cache_creation\":{\"ephemeral_1h_input_tokens\":0,\"ephemeral_5m_input_tokens\":0},\"inference_geo\":\"\",\"iterations\":[],\"speed\":\"standard\"},\"modelUsage\":{\"claude-haiku-4-5-20251001\":{\"inputTokens\":367,\""
   },
   "idea-capture": {
-    "last_dispatch": "2026-05-07T14:44:17Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T14:46:07Z",
     "total_runs": 31,
     "total_successes": 14,
@@ -308,8 +308,8 @@
     "last_error": "c5f2301\",\"total_cost_usd\":0,\"usage\":{\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"output_tokens\":0,\"server_tool_use\":{\"web_search_requests\":0,\"web_fetch_requests\":0},\""
   },
   "push-recap": {
-    "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T21:06:59Z",
     "total_runs": 42,
     "total_successes": 25,
@@ -321,8 +321,8 @@
     "last_quality_score": 4
   },
   "repo-article": {
-    "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T16:36:51Z",
     "total_runs": 27,
     "total_successes": 12,
@@ -333,8 +333,8 @@
     "last_error": "cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.00042699999999999997,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":8,\"outputTo"
   },
   "repo-actions": {
-    "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T16:43:14Z",
     "total_runs": 29,
     "total_successes": 12,
@@ -345,8 +345,8 @@
     "last_error": "\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.00042699999999999997,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":7,\"outputT"
   },
   "repo-pulse": {
-    "last_dispatch": "2026-05-07T16:28:14Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-07T16:32:33Z",
     "total_runs": 26,
     "total_successes": 12,
@@ -369,8 +369,8 @@
     "last_error": ":367,\"outputTokens\":13,\"cacheReadInputTokens\":0,\"cacheCreationInputTokens\":0,\"webSearchRequests\":0,\"costUSD\":0.000432,\"contextWindow\":200000,\"maxOutputTokens\":32000},\"claude-opus-4-7\":{\"inputTokens\":1"
   },
   "fleet-control": {
-    "last_dispatch": "2026-05-08T10:12:32Z",
-    "last_status": "success",
+    "last_dispatch": "2026-05-08T15:00:28Z",
+    "last_status": "dispatched",
     "last_success": "2026-05-08T10:14:18Z",
     "total_runs": 38,
     "total_successes": 25,
