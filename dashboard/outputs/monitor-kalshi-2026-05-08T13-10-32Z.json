@@ -1,0 +1,316 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Kalshi Monitor — 2026-05-08"
+      },
+      "children": [
+        "main_stack"
+      ]
+    },
+    "main_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "verdict_heading",
+        "verdict_text",
+        "sep1",
+        "btc_heading",
+        "btc_badge",
+        "btc_table",
+        "btc_mover",
+        "sep2",
+        "fed_dec_heading",
+        "fed_dec_badge",
+        "fed_dec_table",
+        "fed_dec_text",
+        "sep3",
+        "fed_apr_heading",
+        "fed_apr_badge",
+        "fed_apr_table",
+        "fed_apr_mover",
+        "sep4",
+        "alerts_heading",
+        "alerts_text",
+        "sep5",
+        "trending_heading",
+        "trending_1",
+        "trending_2",
+        "sep6",
+        "sources_label",
+        "sources_items"
+      ]
+    },
+    "verdict_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Verdict",
+        "level": "h2"
+      }
+    },
+    "verdict_text": {
+      "type": "Text",
+      "props": {
+        "text": "KXBTC resolving in ~10h — market pricing BTC close ~$80k, ~$800 below morning spot ($80,857). Fed markets dormant; sub-$100 daily vol across all rate paths."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "btc_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin price range — May 8 5pm EDT (KXBTC-26MAY0817)",
+        "level": "h3"
+      }
+    },
+    "btc_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Crypto"
+      }
+    },
+    "btc_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Vol 24h",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "B80250 ($80k-$80.5k)",
+            "26%",
+            "$2.2k",
+            "4pp"
+          ],
+          [
+            "B79750 ($79.5k-$80k)",
+            "22%",
+            "$5.4k",
+            "4pp"
+          ],
+          [
+            "B79250 ($79k-$79.5k)",
+            "12%",
+            "$1.0k",
+            "1pp (tight)"
+          ]
+        ]
+      }
+    },
+    "btc_mover": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: B79750 — distribution peak shifted to $79.5-80k zone. P(close < $80k) ~40-50% on $5.4k leading-bucket vol. Spot $80.9k this morning; Kalshi pricing modest downside by bell. Hermes-arb: convergence exits timing-clean, not chased at resolution."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fed_dec_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds Dec 2026 (KXFED-26DEC)",
+        "level": "h3"
+      }
+    },
+    "fed_dec_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Economics"
+      }
+    },
+    "fed_dec_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Δ24h",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "T3.50",
+            "66%",
+            "+4pp*",
+            "$66",
+            "4pp"
+          ],
+          [
+            "T4.25",
+            "16%",
+            "0pp",
+            "$60",
+            "3pp"
+          ]
+        ]
+      }
+    },
+    "fed_dec_text": {
+      "type": "Text",
+      "props": {
+        "text": "* Thin-book noise — $66 vol. T3.50>T3.25 monotonicity anomaly from 05-07 persists.",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "fed_apr_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Fed funds Apr 2027 (KXFED-27APR)",
+        "level": "h3"
+      }
+    },
+    "fed_apr_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Economics"
+      }
+    },
+    "fed_apr_table": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Market",
+          "Prob",
+          "Δ24h",
+          "Vol",
+          "Spread"
+        ],
+        "rows": [
+          [
+            "T3.00",
+            "46%",
+            "−3pp",
+            "$31",
+            "5pp"
+          ],
+          [
+            "T3.50",
+            "39%",
+            "n/a",
+            "$28",
+            "1pp"
+          ]
+        ]
+      }
+    },
+    "fed_apr_mover": {
+      "type": "Text",
+      "props": {
+        "text": "Mover: T3.00 fell 49%→46%, conviction weakened (spread 1pp→5pp). $31 vol — real sentiment, not real money. Powell→Warsh Senate floor vote week of May 11; watch for repricing."
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "alerts_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "ALERTS",
+        "level": "h3"
+      }
+    },
+    "alerts_text": {
+      "type": "Text",
+      "props": {
+        "text": "(>5pp on non-thin book): none"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "trending_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending (not on watchlist)",
+        "level": "h3"
+      }
+    },
+    "trending_1": {
+      "type": "Text",
+      "props": {
+        "text": "KXNEXTROMANIAPM-45JAN01 — Next Romanian PM — $3.4k 24h vol (5x tracked KXFED median)"
+      }
+    },
+    "trending_2": {
+      "type": "Text",
+      "props": {
+        "text": "KXNEWPOPE-70 — Next Pope — $653 vol; active conclave, borderline threshold"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "sources_label": {
+      "type": "Text",
+      "props": {
+        "text": "Data sources:"
+      }
+    },
+    "sources_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "source_1",
+        "source_2",
+        "source_3"
+      ]
+    },
+    "source_1": {
+      "type": "Badge",
+      "props": {
+        "text": "events: ok",
+        "variant": "default"
+      }
+    },
+    "source_2": {
+      "type": "Badge",
+      "props": {
+        "text": "candlesticks: degraded (empty arrays, price_only)",
+        "variant": "secondary"
+      }
+    },
+    "source_3": {
+      "type": "Badge",
+      "props": {
+        "text": "orderbook: ok (KXBTC 4pp ATM confirmed)",
+        "variant": "default"
+      }
+    }
+  }
+}
