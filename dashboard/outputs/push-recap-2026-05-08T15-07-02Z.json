@@ -1,0 +1,156 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap - 2026-05-08",
+        "description": "aaronjmars/aeon - SHIPPING: huggingface-trending skill + reply-maker XAI prefetch fix"
+      },
+      "children": [
+        "separator1",
+        "shipping-section",
+        "separator2",
+        "under-hood-section",
+        "separator3",
+        "metrics-section",
+        "separator4",
+        "recap-link"
+      ]
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "shipping-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "shipping-heading",
+        "pr162-item",
+        "pr162-details",
+        "pr156-item",
+        "pr156-details"
+      ]
+    },
+    "shipping-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h3"
+      }
+    },
+    "pr162-item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#162 huggingface-trending - new daily research skill",
+        "href": "https://github.com/aaronjmars/aeon/pull/162",
+        "source": "GitHub"
+      }
+    },
+    "pr162-details": {
+      "type": "Text",
+      "props": {
+        "text": "5-8 curated HF models/datasets/spaces, six noise filters, momentum tags, 18-word 'why notable' line per pick. 09:30 UTC slot, sonnet-4-6, ships disabled.",
+        "variant": "caption"
+      }
+    },
+    "pr156-item": {
+      "type": "StoryLink",
+      "props": {
+        "title": "#156 reply-maker XAI prefetch",
+        "href": "https://github.com/aaronjmars/aeon/pull/156",
+        "source": "GitHub"
+      }
+    },
+    "pr156-details": {
+      "type": "Text",
+      "props": {
+        "text": "Adds reply-maker case to scripts/prefetch-xai.sh and rewrites SKILL.md to read .xai-cache/reply-maker.json as Path A. Closes day-13 carrier; ISS-014 should clear on tomorrow's run.",
+        "variant": "caption"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "under-hood-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "under-hood-heading",
+        "under-hood-content"
+      ]
+    },
+    "under-hood-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Under the hood",
+        "level": "h3"
+      }
+    },
+    "under-hood-content": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp: 96 automated metrics.json heartbeats; lore-financial-teaser silent",
+        "variant": "body"
+      }
+    },
+    "separator3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "metrics-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "metrics-heading",
+        "shape-metric",
+        "volume-metric"
+      ]
+    },
+    "metrics-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h3"
+      }
+    },
+    "shape-metric": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 2 user-visible | 0 internal | 0 infra | 96 automation-filtered | 2 merged PRs",
+        "variant": "body"
+      }
+    },
+    "volume-metric": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: 7 files, +229/-5 lines",
+        "variant": "body"
+      }
+    },
+    "separator4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "recap-link": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Full recap",
+        "href": "https://github.com/aeonframework/aeon/blob/main/articles/push-recap-2026-05-08.md",
+        "source": "GitHub"
+      }
+    }
+  }
+}
