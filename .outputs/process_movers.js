@@ -1,203 +1,200 @@
-// Token-movers processor for 2026-05-06
+#!/usr/bin/env node
 const fs = require('fs');
-const markets = JSON.parse(fs.readFileSync('.outputs/cg-markets.json', 'utf8'));
-const trending = JSON.parse(fs.readFileSync('.outputs/cg-trending.json', 'utf8'));
+
+const markets = JSON.parse(fs.readFileSync('.outputs/cg-markets.json','utf8'));
+const trending = JSON.parse(fs.readFileSync('.outputs/cg-trending.json','utf8'));
 
 const STABLE_IDS = new Set([
-  'tether','usd-coin','dai','first-digital-usd','ethena-usde','tusd','true-usd','usdd','pyusd','fdusd','paxg',
-  'paypal-usd','frax','usdp','gho','crvusd','lusd','susds','sky-dollar-usds','usds','ondo-us-dollar-yield',
-  'binance-usd','tether-gold','xaut','tether-eurt','euro-coin','eurc','eurs','jpy-coin',
-  'savings-dai','sdai','origin-dollar','reservoir','wrapped-usdr','usd-coin-pos','m-by-m0',
-  'frax-share','sfrax','staked-frax','usd1','wlfi-usd-1','susde','ethena-staked-usde',
-  'ousd','agdai','agora-dollar','agusd','usdg','usdf','dola-usd','sky-dollar','spark-usds',
-  'falcon-finance','usdo','usual-usd','usual','m-2','tether-zar','blackrock-usd','paxos-standard',
-  'reserve-rights-token','reserve','crvusd','mkusd','usdtb','usdt0','wenusdt','agora-dollar',
-  'global-dollar-network','liquity-bold','bold','blackrock-buidl','blackrock-usd-institutional-digital-liquidity-fund',
-  'tether-tokenized-stock-xstocks','susda','susdf','steakhouse-resolv-rlp','jpyc','m-0','m0',
-  'ripple-usd','rlusd','stasis-eurs','ageur','origin-defi','sweth-protocol','liquity-usd',
-  'mai','vai','husd','gusd','susd'
+  'tether','usd-coin','dai','first-digital-usd','ethena-usde','tusd','usdd','paypal-usd','pyusd','fdusd','paxg','true-usd',
+  'frax','lusd','usdb','usds','susds','crvusd','gho','susd','usdp','tether-eurt','tether-gold','sky-dollar-usds','wrapped-usdr','usde',
+  'paxos-standard','liquity-usd','staked-usds','usdr','rai','origin-dollar','reserve-rights-token','dola','feiusd'
 ]);
-const STABLE_SYMBOL_PREFIXES = ['USD','EUR','GBP','JPY','CHF','CAD','AUD'];
-
-function isStable(c) {
-  const id = (c.id||'').toLowerCase();
+function isStable(c){
+  if (STABLE_IDS.has(c.id)) return true;
   const sym = (c.symbol||'').toUpperCase();
+  if (/^USD/.test(sym) || /^EUR/.test(sym) || /^GBP/.test(sym)) return true;
+  if (sym==='USDE' || sym==='USDS' || sym==='SUSDS' || sym==='SUSD' || sym==='USDD') return true;
   const name = (c.name||'').toLowerCase();
-  if (STABLE_IDS.has(id)) return true;
-  if (STABLE_SYMBOL_PREFIXES.some(p => sym.startsWith(p))) return true;
   if (name.includes('stablecoin')) return true;
-  if (name.includes('staked usd') || name.includes('savings usd') || name.includes('savings dai')) return true;
-  if (name.endsWith(' usd') || / usd /.test(name)) return true;
-  if (name.includes('tokenized stock')) return true;
-  if (sym === 'PAXG' || sym === 'XAUT') return true;
   return false;
 }
 
-const WRAPPED_DUPES = new Set([
-  'wrapped-bitcoin','wrapped-eeth','staked-ether','wrapped-steth','rocket-pool-eth','wrapped-beacon-eth',
-  'wbnb','weth','wbtc','tbtc','lombard-staked-btc','solv-protocol-solvbtc','solv-protocol-solvbtc-bbn',
-  'coinbase-wrapped-staked-eth','coinbase-wrapped-btc','cbeth','cbbtc','sweth','reth','sfrxeth',
-  'frax-ether','steth','wsteth','msol','jitosol','bnsol','jupsol','binance-staked-sol','jito-staked-sol',
-  'marinade-staked-sol','renzo-restaked-eth','rseth','ezeth','wrapped-rseth','meeth','tbtc-v2',
-  'pirex-eth','pufeth','wmatic','stkbnb','clbtc','enzobtc','pumpbtc','renbtc','hbtc',
-  'eigenpie-meeth','swell-restaked-eth','ankreth','stakewise-v3-oseth','staked-frax-ether',
-  'liquid-staked-ether'
-]);
-function isWrappedDupe(c) { return WRAPPED_DUPES.has(c.id); }
+const WRAPPED = new Set(['wbtc','weth','steth','wsteth','wbeth','reth','cbeth','meth','tbtc','sweth','rseth','ezeth','renbtc','msol','jitosol']);
+function isWrapped(c){ return WRAPPED.has(c.id); }
 
 const filtered = markets.filter(c => {
+  if (!c) return false;
   if (isStable(c)) return false;
-  if ((c.total_volume || 0) < 1_000_000) return false;
-  if (c.price_change_percentage_24h_in_currency == null) return false;
+  if (isWrapped(c)) return false;
+  if ((c.total_volume||0) < 1_000_000) return false;
+  if (c.price_change_percentage_24h == null) return false;
   return true;
 });
 
-const trendingItems = (trending.coins || []).slice(0, 7).map(t => t.item);
-const trendingIds = new Set(trendingItems.map(t => t.id));
+const top100 = filtered.slice(0,100);
+const top50 = filtered.slice(0,50);
+const greenIn100 = top100.filter(c => (c.price_change_percentage_24h||0) > 0).length;
+const sortedTop50 = top50.map(c=>c.price_change_percentage_24h).sort((a,b)=>a-b);
+const median50 = sortedTop50.length ? sortedTop50[Math.floor(sortedTop50.length/2)] : 0;
 
-function tagsFor(c) {
-  const ch24 = c.price_change_percentage_24h_in_currency ?? 0;
-  const ch7d = c.price_change_percentage_7d_in_currency ?? 0;
-  const tags = [];
-  if (trendingIds.has(c.id)) {
-    if (ch24 >= 5) tags.push('TRENDING+UP');
-    else if (ch24 <= -5) tags.push('TRENDING+DOWN');
-    else tags.push('TRENDING');
-  }
-  if (ch24 > 15 && ch7d > 25) tags.push('BREAKOUT');
-  if (ch24 > 20 && ch7d < 0) tags.push('FADE');
-  const volMc = (c.total_volume || 0) / (c.market_cap || 1);
-  if (ch24 < -10 && volMc > 0.25) tags.push('CAPITULATION');
-  if ((c.market_cap_rank ?? 999) > 150 && ch24 > 30) tags.push('PUMP-RISK');
-  if ((c.market_cap || 0) < 50_000_000) tags.push('MICROCAP');
-  if ((c.market_cap_rank ?? 999) <= 20) tags.push('MAJOR');
-  // dedupe + cap to 2
-  const seen = new Set(); const out = [];
-  for (const t of tags) { if (!seen.has(t)) { seen.add(t); out.push(t); } }
-  return out.slice(0, 2);
-}
+const sortedByChange = [...filtered].sort((a,b)=>b.price_change_percentage_24h-a.price_change_percentage_24h);
+const winners = sortedByChange.slice(0,10);
+const losers = [...filtered].sort((a,b)=>a.price_change_percentage_24h-b.price_change_percentage_24h).slice(0,10);
 
-function fmtPrice(p) {
-  if (p == null) return 'n/a';
-  if (p >= 10000) return '$' + p.toLocaleString('en-US', {maximumFractionDigits:0});
-  if (p >= 100) return '$' + p.toFixed(2);
-  if (p >= 1) return '$' + p.toFixed(3);
-  if (p >= 0.01) return '$' + p.toFixed(4);
-  if (p >= 0.0001) return '$' + p.toFixed(5);
-  return '$' + p.toFixed(7);
-}
-function fmtBig(x) {
-  if (x == null) return 'n/a';
-  if (x >= 1e12) return '$' + (x/1e12).toFixed(2) + 'T';
-  if (x >= 1e9) return '$' + (x/1e9).toFixed(2) + 'B';
-  if (x >= 1e6) return '$' + (x/1e6).toFixed(1) + 'M';
-  if (x >= 1e3) return '$' + (x/1e3).toFixed(0) + 'K';
-  return '$' + (x||0).toFixed(0);
-}
-function pct(x) {
-  if (x == null || isNaN(x)) return 'n/a';
-  return (x>=0?'+':'') + x.toFixed(1) + '%';
-}
-
-const sorted24 = [...filtered].sort((a,b) => (b.price_change_percentage_24h_in_currency ?? -999) - (a.price_change_percentage_24h_in_currency ?? -999));
-
-function pickList(arr, n) {
-  const out = [];
-  const seenBase = new Set();
-  for (const c of arr) {
-    if (isWrappedDupe(c)) {
-      const sym = (c.symbol||'').toLowerCase();
-      const base = sym.replace(/^w/, '').replace(/^st/, '').replace(/^cb/, '').replace(/^r/,'');
-      if (seenBase.has(base)) continue;
-      seenBase.add(base);
-    }
-    out.push(c);
-    if (out.length >= n) break;
-  }
-  return out;
-}
-
-const winners = pickList(sorted24, 10);
-const losers = pickList([...sorted24].reverse(), 10);
-
-const trendingMarkets = trendingItems.map(t => {
-  const m = markets.find(mm => mm.id === t.id);
-  const ch24 = m?.price_change_percentage_24h_in_currency ?? (t.data?.price_change_percentage_24h?.usd ?? null);
-  const ch7d = m?.price_change_percentage_7d_in_currency ?? null;
-  const price = m?.current_price ?? (t.data?.price ?? null);
-  const tags = m ? tagsFor(m) : (() => {
-    const o = ['TRENDING'];
-    if ((t.market_cap_rank ?? 999) > 150 && (ch24 ?? 0) > 30) o.push('PUMP-RISK');
-    if ((m?.market_cap || 0) < 50_000_000 && m) o.push('MICROCAP');
-    return o.slice(0, 2);
-  })();
+const trendingList = (trending.coins||[]).slice(0,7).map(t=>{
+  const item = t.item || {};
+  const data = item.data || {};
   return {
-    id: t.id, name: t.name, symbol: (t.symbol||'').toUpperCase(),
-    rank: m?.market_cap_rank ?? t.market_cap_rank, price, ch24, ch7d,
-    market_cap: m?.market_cap ?? null, total_volume: m?.total_volume ?? null,
-    tags, inMarkets: !!m, vol_mc: m ? ((m.total_volume||0)/(m.market_cap||1)) : null
+    id: item.id,
+    name: item.name,
+    symbol: (item.symbol||'').toUpperCase(),
+    rank: item.market_cap_rank,
+    price: data.price ? Number(data.price) : null,
+    pct24: data.price_change_percentage_24h && data.price_change_percentage_24h.usd != null
+      ? data.price_change_percentage_24h.usd : null,
+    total_volume: data.total_volume || null,
+    market_cap: data.market_cap || null
   };
 });
+const trendingIds = new Set(trendingList.map(t => t.id));
+
+function tagsFor(c, isWinner, isLoser){
+  const tags = [];
+  const ch24 = c.price_change_percentage_24h || 0;
+  const ch7d = c.price_change_percentage_7d_in_currency || 0;
+  const rank = c.market_cap_rank || 9999;
+  const mcap = c.market_cap || 0;
+  const vol = c.total_volume || 0;
+  const inTrending = trendingIds.has(c.id);
+  if (inTrending && isWinner) tags.push('TRENDING+UP');
+  if (inTrending && isLoser) tags.push('TRENDING+DOWN');
+  if (ch24 > 15 && ch7d > 25) tags.push('BREAKOUT');
+  if (ch24 > 20 && ch7d < 0) tags.push('FADE');
+  if (ch24 < -10 && (mcap > 0 ? (vol/mcap) : 0) > 0.25) tags.push('CAPITULATION');
+  if (rank > 150 && ch24 > 30) tags.push('PUMP-RISK');
+  if (mcap < 50_000_000) tags.push('MICROCAP');
+  if (rank <= 20) tags.push('MAJOR');
+  const priority = ['TRENDING+UP','TRENDING+DOWN','BREAKOUT','PUMP-RISK','CAPITULATION','FADE','MAJOR','MICROCAP'];
+  return tags.sort((a,b)=>priority.indexOf(a)-priority.indexOf(b)).slice(0,2);
+}
+
+function fmtPrice(p){
+  if (p == null) return '?';
+  if (p >= 100) return '$' + p.toLocaleString('en-US', {maximumFractionDigits: 2});
+  if (p >= 1) return '$' + p.toPrecision(4);
+  if (p >= 0.01) return '$' + p.toPrecision(3);
+  return '$' + p.toFixed(6);
+}
+function fmtBig(n){
+  if (n == null) return '?';
+  if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(0) + 'M';
+  if (n >= 1e3) return '$' + (n/1e3).toFixed(0) + 'K';
+  return '$' + n.toFixed(0);
+}
+function fmtPct(p){
+  if (p == null) return '?';
+  const sign = p > 0 ? '+' : '';
+  return sign + p.toFixed(1) + '%';
+}
+
+function row(c, idx, isWinner, isLoser){
+  const tags = tagsFor(c, isWinner, isLoser);
+  const tagStr = tags.length ? '  [' + tags.join(',') + ']' : '';
+  const sym = (c.symbol||'').toUpperCase();
+  const ch1h = c.price_change_percentage_1h_in_currency;
+  const ch24 = c.price_change_percentage_24h;
+  const ch7d = c.price_change_percentage_7d_in_currency;
+  return `${idx+1}. ${sym} (${c.name}) — ${fmtPrice(c.current_price)}  ${fmtPct(ch24)} / 7d ${fmtPct(ch7d)} / 1h ${fmtPct(ch1h)}  •  ${fmtBig(c.total_volume)} / #${c.market_cap_rank||'?'}${tagStr}`;
+}
+
+const winnersOut = winners.map((c,i) => row(c,i,true,false));
+const losersOut = losers.map((c,i) => row(c,i,false,true));
+
+const trendOut = trendingList.map((t,i)=>{
+  const tags = [];
+  if (t.rank && t.rank <= 20) tags.push('MAJOR');
+  if (t.rank && t.rank > 250) tags.push('MICROCAP');
+  if (t.pct24 != null && t.pct24 > 30 && t.rank && t.rank > 150) tags.push('PUMP-RISK');
+  const tagStr = tags.length ? '  [' + tags.slice(0,2).join(',') + ']' : '';
+  const symPart = t.symbol ? `${t.name} (${t.symbol})` : t.name;
+  return `${i+1}. ${symPart} — #${t.rank||'?'}, ${fmtPrice(t.price)}, 24h ${fmtPct(t.pct24)}${tagStr}`;
+});
+
+// Notable
+const notables = [];
+for (const c of winners){
+  const tags = tagsFor(c,true,false);
+  const ch24 = c.price_change_percentage_24h;
+  const ch7d = c.price_change_percentage_7d_in_currency;
+  const sym = (c.symbol||'').toUpperCase();
+  if (tags.includes('TRENDING+UP')){
+    notables.push(`• ${sym}: trending and ${fmtPct(ch24)} on ${fmtBig(c.total_volume)} vol — corroborated signal`);
+  } else if (tags.includes('PUMP-RISK')){
+    notables.push(`• ${sym}: #${c.market_cap_rank} rank up ${ch24.toFixed(1)}% — PUMP-RISK, low-cap tier`);
+  } else if (tags.includes('BREAKOUT')){
+    notables.push(`• ${sym}: 24h ${fmtPct(ch24)} on top of 7d ${fmtPct(ch7d)} — sustained breakout`);
+  } else if (tags.includes('FADE')){
+    notables.push(`• ${sym}: 24h ${fmtPct(ch24)} but 7d ${fmtPct(ch7d)} — relief bounce in downtrend`);
+  }
+}
+for (const c of losers){
+  const tags = tagsFor(c,false,true);
+  const ch24 = c.price_change_percentage_24h;
+  const sym = (c.symbol||'').toUpperCase();
+  if (tags.includes('CAPITULATION')){
+    notables.push(`• ${sym}: 24h ${fmtPct(ch24)} on heavy turnover — CAPITULATION signal`);
+  } else if (tags.includes('TRENDING+DOWN')){
+    notables.push(`• ${sym}: trending and ${fmtPct(ch24)} — capitulation/news drawdown`);
+  }
+}
+const notableSet = [];
+const seenNotable = new Set();
+for (const n of notables){
+  if (!seenNotable.has(n)){ seenNotable.add(n); notableSet.push(n); }
+  if (notableSet.length >= 4) break;
+}
 
 // Pulse
-const top100 = filtered.slice().sort((a,b)=>(a.market_cap_rank||999)-(b.market_cap_rank||999)).slice(0,100);
-const greenCount = top100.filter(c => (c.price_change_percentage_24h_in_currency ?? 0) > 0).length;
-const top50 = top100.slice(0, 50);
-const t50 = top50.map(c => c.price_change_percentage_24h_in_currency ?? 0).sort((a,b)=>a-b);
-const median50 = t50.length ? (t50[Math.floor((t50.length-1)/2)] + t50[Math.ceil((t50.length-1)/2)])/2 : 0;
+let pulse;
+const pctGreen = greenIn100;
+let tone;
+if (pctGreen >= 65) tone = 'risk-on';
+else if (pctGreen <= 35) tone = 'risk-off';
+else tone = 'mixed';
+if (Math.abs(median50) < 1) {
+  pulse = `Quiet tape — ${pctGreen}/100 top coins green, median top-50 ${fmtPct(median50)}; trending dominated more by listings than price moves.`;
+} else if (tone === 'risk-on'){
+  pulse = `Risk-on tape — ${pctGreen}/100 top coins green, median top-50 ${fmtPct(median50)}.`;
+} else if (tone === 'risk-off'){
+  pulse = `Risk-off — ${pctGreen}/100 top coins green, median top-50 ${fmtPct(median50)}; losers dominate.`;
+} else {
+  pulse = `Mixed tape — ${pctGreen}/100 top coins green, median top-50 ${fmtPct(median50)}.`;
+}
 
-const btc = markets.find(m=>m.id==='bitcoin');
-const eth = markets.find(m=>m.id==='ethereum');
-const sol = markets.find(m=>m.id==='solana');
+const today = new Date().toISOString().slice(0,10);
 
-const result = {
-  date: '2026-05-06',
-  filteredCount: filtered.length,
-  pulse: {
-    greenTop100: greenCount, redTop100: 100 - greenCount,
-    medianTop50: median50,
-    btc: btc ? {price: btc.current_price, ch24: btc.price_change_percentage_24h_in_currency, ch7d: btc.price_change_percentage_7d_in_currency} : null,
-    eth: eth ? {price: eth.current_price, ch24: eth.price_change_percentage_24h_in_currency, ch7d: eth.price_change_percentage_7d_in_currency} : null,
-    sol: sol ? {price: sol.current_price, ch24: sol.price_change_percentage_24h_in_currency, ch7d: sol.price_change_percentage_7d_in_currency} : null,
-  },
-  winners: winners.map(c => ({
-    id: c.id, name: c.name, symbol: c.symbol.toUpperCase(), rank: c.market_cap_rank,
-    price: c.current_price, ch1h: c.price_change_percentage_1h_in_currency,
-    ch24: c.price_change_percentage_24h_in_currency, ch7d: c.price_change_percentage_7d_in_currency,
-    volume: c.total_volume, market_cap: c.market_cap, tags: tagsFor(c),
-    volMc: (c.total_volume||0)/(c.market_cap||1)
-  })),
-  losers: losers.map(c => ({
-    id: c.id, name: c.name, symbol: c.symbol.toUpperCase(), rank: c.market_cap_rank,
-    price: c.current_price, ch1h: c.price_change_percentage_1h_in_currency,
-    ch24: c.price_change_percentage_24h_in_currency, ch7d: c.price_change_percentage_7d_in_currency,
-    volume: c.total_volume, market_cap: c.market_cap, tags: tagsFor(c),
-    volMc: (c.total_volume||0)/(c.market_cap||1)
-  })),
-  trending: trendingMarkets,
+let msg = `*Token Movers — ${today}*\n\n_${pulse}_\n\n*Top Winners (24h)*\n${winnersOut.join('\n')}\n\n*Top Losers (24h)*\n${losersOut.join('\n')}\n\n*Trending*\n${trendOut.join('\n')}`;
+
+if (notableSet.length){
+  msg += `\n\n*Notable*\n${notableSet.join('\n')}`;
+}
+
+if (msg.length > 4000) {
+  msg = msg.slice(0, 3990) + '\n…';
+}
+
+fs.writeFileSync('.outputs/token-movers.md', msg);
+
+const payload = {
+  pulse, pctGreen, median50,
+  winners: winners.map(c => ({sym:(c.symbol||'').toUpperCase(),name:c.name,id:c.id,rank:c.market_cap_rank,price:c.current_price,ch24:c.price_change_percentage_24h,ch7d:c.price_change_percentage_7d_in_currency,ch1h:c.price_change_percentage_1h_in_currency,vol:c.total_volume,mcap:c.market_cap,tags:tagsFor(c,true,false)})),
+  losers: losers.map(c => ({sym:(c.symbol||'').toUpperCase(),name:c.name,id:c.id,rank:c.market_cap_rank,price:c.current_price,ch24:c.price_change_percentage_24h,ch7d:c.price_change_percentage_7d_in_currency,ch1h:c.price_change_percentage_1h_in_currency,vol:c.total_volume,mcap:c.market_cap,tags:tagsFor(c,false,true)})),
+  trending: trendingList,
+  notables: notableSet,
 };
+fs.writeFileSync('.outputs/movers-0508.json', JSON.stringify(payload, null, 2));
 
-fs.writeFileSync('.outputs/movers-0506.json', JSON.stringify(result, null, 2));
-
-// Human-readable summary
-const lines = [];
-lines.push(`PULSE: green=${greenCount}/100 red=${100-greenCount} median50=${median50.toFixed(2)}%`);
-lines.push(`BTC ${fmtPrice(btc.current_price)} ${pct(btc.price_change_percentage_24h_in_currency)} 7d ${pct(btc.price_change_percentage_7d_in_currency)}`);
-lines.push(`ETH ${fmtPrice(eth.current_price)} ${pct(eth.price_change_percentage_24h_in_currency)} 7d ${pct(eth.price_change_percentage_7d_in_currency)}`);
-lines.push(`SOL ${fmtPrice(sol.current_price)} ${pct(sol.price_change_percentage_24h_in_currency)} 7d ${pct(sol.price_change_percentage_7d_in_currency)}`);
-lines.push('');
-lines.push('--- WINNERS ---');
-for (const w of result.winners) {
-  lines.push(`${w.symbol} (${w.name}) #${w.rank} ${fmtPrice(w.price)} 24h ${pct(w.ch24)} 7d ${pct(w.ch7d)} 1h ${pct(w.ch1h)} vol ${fmtBig(w.volume)} mcap ${fmtBig(w.market_cap)} v/mc ${w.volMc.toFixed(3)} ${JSON.stringify(w.tags)}`);
-}
-lines.push('');
-lines.push('--- LOSERS ---');
-for (const l of result.losers) {
-  lines.push(`${l.symbol} (${l.name}) #${l.rank} ${fmtPrice(l.price)} 24h ${pct(l.ch24)} 7d ${pct(l.ch7d)} 1h ${pct(l.ch1h)} vol ${fmtBig(l.volume)} mcap ${fmtBig(l.market_cap)} v/mc ${l.volMc.toFixed(3)} ${JSON.stringify(l.tags)}`);
-}
-lines.push('');
-lines.push('--- TRENDING ---');
-for (const t of result.trending) {
-  lines.push(`${t.symbol} (${t.name}) #${t.rank ?? '?'} ${fmtPrice(t.price)} 24h ${pct(t.ch24)} 7d ${pct(t.ch7d)} mcap ${fmtBig(t.market_cap)} ${JSON.stringify(t.tags)}`);
-}
-console.log(lines.join('\n'));
+console.log(msg);
+console.log('\n---');
+console.log('Length:', msg.length, 'Green/100:', pctGreen, 'Median50:', median50.toFixed(2));

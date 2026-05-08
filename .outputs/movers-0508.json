@@ -1,0 +1,362 @@
+{
+  "pulse": "Risk-off — 31/100 top coins green, median top-50 -1.3%; losers dominate.",
+  "pctGreen": 31,
+  "median50": -1.29846,
+  "winners": [
+    {
+      "sym": "BSB",
+      "name": "Block Street",
+      "id": "block-street",
+      "rank": 237,
+      "price": 0.64469,
+      "ch24": 38.37403,
+      "ch7d": 34.79769814980886,
+      "ch1h": -2.394018233402834,
+      "vol": 32925508,
+      "mcap": 142748746,
+      "tags": [
+        "BREAKOUT",
+        "PUMP-RISK"
+      ]
+    },
+    {
+      "sym": "STRK",
+      "name": "Starknet",
+      "id": "starknet",
+      "rank": 143,
+      "price": 0.055433,
+      "ch24": 28.35662,
+      "ch7d": 41.57063205425647,
+      "ch1h": -0.6548879445992584,
+      "vol": 266613930,
+      "mcap": 327851624,
+      "tags": [
+        "TRENDING+UP",
+        "BREAKOUT"
+      ]
+    },
+    {
+      "sym": "CHIP",
+      "name": "USD.AI",
+      "id": "chip-2",
+      "rank": 246,
+      "price": 0.066848,
+      "ch24": 19.53573,
+      "ch7d": 6.638009563526888,
+      "ch1h": -3.34260889697695,
+      "vol": 205636826,
+      "mcap": 134461877,
+      "tags": []
+    },
+    {
+      "sym": "JTO",
+      "name": "Jito",
+      "id": "jito-governance-token",
+      "rank": 167,
+      "price": 0.55256,
+      "ch24": 15.68188,
+      "ch7d": 55.79232540993927,
+      "ch1h": -1.1806357790303934,
+      "vol": 371489732,
+      "mcap": 258551024,
+      "tags": [
+        "BREAKOUT"
+      ]
+    },
+    {
+      "sym": "LAB",
+      "name": "LAB",
+      "id": "lab",
+      "rank": 154,
+      "price": 4.09,
+      "ch24": 10.72328,
+      "ch7d": 488.82803988607753,
+      "ch1h": -6.883358025904404,
+      "vol": 112801477,
+      "mcap": 313276087,
+      "tags": []
+    },
+    {
+      "sym": "PENDLE",
+      "name": "Pendle",
+      "id": "pendle",
+      "rank": 136,
+      "price": 2.08,
+      "ch24": 10.17004,
+      "ch7d": 34.85507184866962,
+      "ch1h": 2.2401267905855513,
+      "vol": 85269183,
+      "mcap": 353117122,
+      "tags": []
+    },
+    {
+      "sym": "EIGEN",
+      "name": "EigenCloud (prev. EigenLayer)",
+      "id": "eigenlayer",
+      "rank": 211,
+      "price": 0.221787,
+      "ch24": 9.32637,
+      "ch7d": 23.130254465568278,
+      "ch1h": 2.0502104220355375,
+      "vol": 33857676,
+      "mcap": 163872261,
+      "tags": []
+    },
+    {
+      "sym": "TON",
+      "name": "Toncoin",
+      "id": "the-open-network",
+      "rank": 20,
+      "price": 2.58,
+      "ch24": 8.84752,
+      "ch7d": 92.77320848178205,
+      "ch1h": 1.013327823004425,
+      "vol": 1256237738,
+      "mcap": 6975788103,
+      "tags": [
+        "TRENDING+UP",
+        "MAJOR"
+      ]
+    },
+    {
+      "sym": "BILL",
+      "name": "Billions Network",
+      "id": "billions-network",
+      "rank": 187,
+      "price": 0.0834,
+      "ch24": 8.54294,
+      "ch7d": null,
+      "ch1h": -5.571548605332683,
+      "vol": 254578513,
+      "mcap": 201632165,
+      "tags": [
+        "TRENDING+UP"
+      ]
+    },
+    {
+      "sym": "B",
+      "name": "BUILDon",
+      "id": "build-on",
+      "rank": 130,
+      "price": 0.373498,
+      "ch24": 7.99702,
+      "ch7d": 69.86603114790142,
+      "ch1h": 2.8651815243007044,
+      "vol": 29244463,
+      "mcap": 373212056,
+      "tags": []
+    }
+  ],
+  "losers": [
+    {
+      "sym": "H",
+      "name": "Humanity",
+      "id": "humanity",
+      "rank": 148,
+      "price": 0.172219,
+      "ch24": -13.67669,
+      "ch7d": -11.361955430093689,
+      "ch1h": -12.4620316570142,
+      "vol": 28686132,
+      "mcap": 321828054,
+      "tags": []
+    },
+    {
+      "sym": "GENIUS",
+      "name": "Genius",
+      "id": "genius-3",
+      "rank": 199,
+      "price": 0.543371,
+      "ch24": -7.37118,
+      "ch7d": 4.231567230404732,
+      "ch1h": -0.3137823103503312,
+      "vol": 11713139,
+      "mcap": 182437094,
+      "tags": []
+    },
+    {
+      "sym": "COMP",
+      "name": "Compound",
+      "id": "compound-governance-token",
+      "rank": 183,
+      "price": 21.8,
+      "ch24": -7.22231,
+      "ch7d": -13.247179226558226,
+      "ch1h": -0.012173317905937541,
+      "vol": 32443772,
+      "mcap": 210868098,
+      "tags": []
+    },
+    {
+      "sym": "CFG",
+      "name": "Centrifuge",
+      "id": "centrifuge-2",
+      "rank": 212,
+      "price": 0.282136,
+      "ch24": -7.20209,
+      "ch7d": 35.50713467664538,
+      "ch1h": 1.1325031372384216,
+      "vol": 29013972,
+      "mcap": 163313122,
+      "tags": []
+    },
+    {
+      "sym": "PI",
+      "name": "Pi Network",
+      "id": "pi-network",
+      "rank": 51,
+      "price": 0.169202,
+      "ch24": -5.94072,
+      "ch7d": -6.255923536590934,
+      "ch1h": -0.7763407039269744,
+      "vol": 23014743,
+      "mcap": 1771547589,
+      "tags": []
+    },
+    {
+      "sym": "DASH",
+      "name": "Dash",
+      "id": "dash",
+      "rank": 90,
+      "price": 50.22,
+      "ch24": -5.5887,
+      "ch7d": 40.65613942190509,
+      "ch1h": 0.19961267176958922,
+      "vol": 167359469,
+      "mcap": 638432293,
+      "tags": []
+    },
+    {
+      "sym": "DCR",
+      "name": "Decred",
+      "id": "decred",
+      "rank": 142,
+      "price": 19.16,
+      "ch24": -5.43422,
+      "ch7d": 5.279177067590804,
+      "ch1h": 0.002969352795564681,
+      "vol": 1609776,
+      "mcap": 333325708,
+      "tags": []
+    },
+    {
+      "sym": "EDGE",
+      "name": "edgeX",
+      "id": "edgex",
+      "rank": 114,
+      "price": 1.28,
+      "ch24": -5.03757,
+      "ch7d": 5.599680980955929,
+      "ch1h": -0.37312586650062185,
+      "vol": 14706618,
+      "mcap": 446819004,
+      "tags": []
+    },
+    {
+      "sym": "FARTCOIN",
+      "name": "Fartcoin",
+      "id": "fartcoin",
+      "rank": 174,
+      "price": 0.244031,
+      "ch24": -4.66201,
+      "ch7d": 20.32050683377329,
+      "ch1h": -0.353508237076705,
+      "vol": 30172946,
+      "mcap": 243987186,
+      "tags": []
+    },
+    {
+      "sym": "XMR",
+      "name": "Monero",
+      "id": "monero",
+      "rank": 18,
+      "price": 397.8,
+      "ch24": -4.48801,
+      "ch7d": 4.9878705399013015,
+      "ch1h": 0.18120394915557433,
+      "vol": 164975690,
+      "mcap": 7341460702,
+      "tags": [
+        "MAJOR"
+      ]
+    }
+  ],
+  "trending": [
+    {
+      "id": "starknet",
+      "name": "Starknet",
+      "symbol": "STRK",
+      "rank": 145,
+      "price": 0.05577375977122681,
+      "pct24": 30.361682001795,
+      "total_volume": "$264,718,811",
+      "market_cap": "$328,157,257"
+    },
+    {
+      "id": "pharos-network",
+      "name": "Pharos",
+      "symbol": "PROS",
+      "rank": 258,
+      "price": 0.9180386616593099,
+      "pct24": 47.13911830987751,
+      "total_volume": "$38,468,216",
+      "market_cap": "$125,556,805"
+    },
+    {
+      "id": "ondo-finance",
+      "name": "Ondo",
+      "symbol": "ONDO",
+      "rank": 46,
+      "price": 0.3962484907235798,
+      "pct24": 7.927350216114122,
+      "total_volume": "$384,503,914",
+      "market_cap": "$1,928,572,371"
+    },
+    {
+      "id": "wojak-5",
+      "name": "wojak",
+      "symbol": "WOJAK",
+      "rank": 726,
+      "price": 9.58689258193187e-8,
+      "pct24": -1.7717796065899916,
+      "total_volume": "$7,360,790",
+      "market_cap": "$29,307,223"
+    },
+    {
+      "id": "billions-network",
+      "name": "Billions Network",
+      "symbol": "BILL",
+      "rank": 186,
+      "price": 0.08310335147362613,
+      "pct24": 8.636021875697827,
+      "total_volume": "$254,192,915",
+      "market_cap": "$204,252,548"
+    },
+    {
+      "id": "the-open-network",
+      "name": "Toncoin",
+      "symbol": "TON",
+      "rank": 20,
+      "price": 2.5959935027027394,
+      "pct24": 6.879119779295878,
+      "total_volume": "$1,260,188,210",
+      "market_cap": "$6,950,557,781"
+    },
+    {
+      "id": "pudgy-penguins",
+      "name": "Pudgy Penguins",
+      "symbol": "PENGU",
+      "rank": 88,
+      "price": 0.010384979660945747,
+      "pct24": -2.7810817392737093,
+      "total_volume": "$166,120,945",
+      "market_cap": "$652,908,991"
+    }
+  ],
+  "notables": [
+    "• BSB: #237 rank up 38.4% — PUMP-RISK, low-cap tier",
+    "• STRK: trending and +28.4% on $267M vol — corroborated signal",
+    "• JTO: 24h +15.7% on top of 7d +55.8% — sustained breakout",
+    "• TON: trending and +8.8% on $1.26B vol — corroborated signal"
+  ]
+}

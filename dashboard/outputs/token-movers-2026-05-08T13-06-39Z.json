@@ -1,0 +1,398 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers",
+        "description": "Risk-off — 31/100 top coins green, median top-50 -1.3%; losers dominate."
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_winners",
+        "table_winners",
+        "sep1",
+        "heading_losers",
+        "table_losers",
+        "sep2",
+        "heading_trending",
+        "table_trending",
+        "sep3",
+        "heading_notable",
+        "stack_notable"
+      ]
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "table_winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Vol / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "BSB (Block Street)",
+            "$0.645",
+            "+38.4%",
+            "+34.8%",
+            "-2.4%",
+            "$33M / #237",
+            "BREAKOUT, PUMP-RISK"
+          ],
+          [
+            "STRK (Starknet)",
+            "$0.0554",
+            "+28.4%",
+            "+41.6%",
+            "-0.7%",
+            "$267M / #143",
+            "TRENDING+UP, BREAKOUT"
+          ],
+          [
+            "CHIP (USD.AI)",
+            "$0.0668",
+            "+19.5%",
+            "+6.6%",
+            "-3.3%",
+            "$206M / #246",
+            ""
+          ],
+          [
+            "JTO (Jito)",
+            "$0.553",
+            "+15.7%",
+            "+55.8%",
+            "-1.2%",
+            "$371M / #167",
+            "BREAKOUT"
+          ],
+          [
+            "LAB (LAB)",
+            "$4.090",
+            "+10.7%",
+            "+488.8%",
+            "-6.9%",
+            "$113M / #154",
+            ""
+          ],
+          [
+            "PENDLE (Pendle)",
+            "$2.080",
+            "+10.2%",
+            "+34.9%",
+            "+2.2%",
+            "$85M / #136",
+            ""
+          ],
+          [
+            "EIGEN (EigenCloud)",
+            "$0.222",
+            "+9.3%",
+            "+23.1%",
+            "+2.1%",
+            "$34M / #211",
+            ""
+          ],
+          [
+            "TON (Toncoin)",
+            "$2.580",
+            "+8.8%",
+            "+92.8%",
+            "+1.0%",
+            "$1.26B / #20",
+            "TRENDING+UP, MAJOR"
+          ],
+          [
+            "BILL (Billions Network)",
+            "$0.0834",
+            "+8.5%",
+            "?",
+            "-5.6%",
+            "$255M / #187",
+            "TRENDING+UP"
+          ],
+          [
+            "B (BUILDon)",
+            "$0.373",
+            "+8.0%",
+            "+69.9%",
+            "+2.9%",
+            "$29M / #130",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "table_losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h",
+          "7d",
+          "1h",
+          "Vol / Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "H (Humanity)",
+            "$0.172",
+            "-13.7%",
+            "-11.4%",
+            "-12.5%",
+            "$29M / #148",
+            ""
+          ],
+          [
+            "GENIUS (Genius)",
+            "$0.543",
+            "-7.4%",
+            "+4.2%",
+            "-0.3%",
+            "$12M / #199",
+            ""
+          ],
+          [
+            "COMP (Compound)",
+            "$21.80",
+            "-7.2%",
+            "-13.2%",
+            "-0.0%",
+            "$32M / #183",
+            ""
+          ],
+          [
+            "CFG (Centrifuge)",
+            "$0.282",
+            "-7.2%",
+            "+35.5%",
+            "+1.1%",
+            "$29M / #212",
+            ""
+          ],
+          [
+            "PI (Pi Network)",
+            "$0.169",
+            "-5.9%",
+            "-6.3%",
+            "-0.8%",
+            "$23M / #51",
+            ""
+          ],
+          [
+            "DASH (Dash)",
+            "$50.22",
+            "-5.6%",
+            "+40.7%",
+            "+0.2%",
+            "$167M / #90",
+            ""
+          ],
+          [
+            "DCR (Decred)",
+            "$19.16",
+            "-5.4%",
+            "+5.3%",
+            "+0.0%",
+            "$2M / #142",
+            ""
+          ],
+          [
+            "EDGE (edgeX)",
+            "$1.280",
+            "-5.0%",
+            "+5.6%",
+            "-0.4%",
+            "$15M / #114",
+            ""
+          ],
+          [
+            "FARTCOIN (Fartcoin)",
+            "$0.244",
+            "-4.7%",
+            "+20.3%",
+            "-0.4%",
+            "$30M / #174",
+            ""
+          ],
+          [
+            "XMR (Monero)",
+            "$397.8",
+            "-4.5%",
+            "+5.0%",
+            "+0.2%",
+            "$165M / #18",
+            "MAJOR"
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_trending": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "table_trending": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Rank",
+          "Token",
+          "Rank / Price",
+          "24h Change",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "1",
+            "Starknet (STRK)",
+            "#145 / $0.0558",
+            "+30.4%",
+            ""
+          ],
+          [
+            "2",
+            "Pharos (PROS)",
+            "#258 / $0.918",
+            "+47.1%",
+            "MICROCAP, PUMP-RISK"
+          ],
+          [
+            "3",
+            "Ondo (ONDO)",
+            "#46 / $0.396",
+            "+7.9%",
+            ""
+          ],
+          [
+            "4",
+            "wojak (WOJAK)",
+            "#726 / $0.000000",
+            "-1.8%",
+            "MICROCAP"
+          ],
+          [
+            "5",
+            "Billions Network (BILL)",
+            "#186 / $0.0831",
+            "+8.6%",
+            ""
+          ],
+          [
+            "6",
+            "Toncoin (TON)",
+            "#20 / $2.596",
+            "+6.9%",
+            "MAJOR"
+          ],
+          [
+            "7",
+            "Pudgy Penguins (PENGU)",
+            "#88 / $0.0104",
+            "-2.8%",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "stack_notable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "notable_1",
+        "notable_2",
+        "notable_3",
+        "notable_4"
+      ]
+    },
+    "notable_1": {
+      "type": "Text",
+      "props": {
+        "text": "BSB: #237 rank up 38.4% — PUMP-RISK, low-cap tier",
+        "variant": "body"
+      }
+    },
+    "notable_2": {
+      "type": "Text",
+      "props": {
+        "text": "STRK: trending and +28.4% on $267M vol — corroborated signal",
+        "variant": "body"
+      }
+    },
+    "notable_3": {
+      "type": "Text",
+      "props": {
+        "text": "JTO: 24h +15.7% on top of 7d +55.8% — sustained breakout",
+        "variant": "body"
+      }
+    },
+    "notable_4": {
+      "type": "Text",
+      "props": {
+        "text": "TON: trending and +8.8% on $1.26B vol — corroborated signal",
+        "variant": "body"
+      }
+    }
+  }
+}
