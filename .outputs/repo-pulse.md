@@ -1,13 +1,7 @@
-*Repo Pulse — 2026-05-07* — [STEADY]
-[aaronjmars/aeon] — stars 278 (+2) · forks 43 (+1) · releases +0
-
-Notable new stargazers:
-github.com/lukeanthony007 (7 followers)
+*Repo Pulse — 2026-05-08* — [STEADY]
+[aaronjmars/aeon] — stars 280 (+2) · forks 43 (+0)
 
 Other new stargazers:
-github.com/jacquelinegiale
-
-New forks:
-github.com/Aldine/aeon
+github.com/fifield | github.com/onicolasidt
 
 Source: events

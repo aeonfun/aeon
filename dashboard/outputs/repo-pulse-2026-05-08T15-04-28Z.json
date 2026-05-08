@@ -1,0 +1,111 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Repo Pulse"
+      },
+      "children": [
+        "repo_info",
+        "status_badge",
+        "stats_section",
+        "sep1",
+        "stargazers_heading",
+        "stargazers_links",
+        "sep2",
+        "source_text"
+      ]
+    },
+    "repo_info": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — 2026-05-08"
+      }
+    },
+    "status_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "STEADY",
+        "variant": "default"
+      }
+    },
+    "stats_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stars_stat",
+        "forks_stat"
+      ]
+    },
+    "stars_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Stars",
+        "value": "280",
+        "delta": "+2",
+        "trend": "up"
+      }
+    },
+    "forks_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Forks",
+        "value": "43",
+        "delta": "+0",
+        "trend": "neutral"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "stargazers_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "New stargazers",
+        "level": "h3"
+      }
+    },
+    "stargazers_links": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "link_fifield",
+        "link_onicolasidt"
+      ]
+    },
+    "link_fifield": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/fifield",
+        "href": "https://github.com/fifield"
+      }
+    },
+    "link_onicolasidt": {
+      "type": "Link",
+      "props": {
+        "label": "github.com/onicolasidt",
+        "href": "https://github.com/onicolasidt"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "source_text": {
+      "type": "Text",
+      "props": {
+        "text": "Source: events",
+        "variant": "caption"
+      }
+    }
+  }
+}
