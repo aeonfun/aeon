@@ -133,4 +133,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-08,fetch-tweets,claude-opus-4-7,6895,26934,5473330,174051
 2026-05-08,startup-idea,claude-opus-4-7,1099,52255,3430477,162760
 2026-05-08,heartbeat,claude-opus-4-7,29,23704,1859575,103901
-2026-05-08,evening-rollup,claude-opus-4-7,32,17419,2244190,96051
+2026-05-08,push-recap,claude-opus-4-7,3274,16845,1459209,90836

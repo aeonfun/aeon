@@ -1,0 +1,111 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Push Recap — 2026-05-08"
+      },
+      "children": [
+        "text-header",
+        "separator-1",
+        "heading-shipped",
+        "shipped-item-1",
+        "shipped-item-2",
+        "separator-2",
+        "text-shape",
+        "text-volume",
+        "separator-3",
+        "text-swarm-fund",
+        "text-lore",
+        "separator-4",
+        "link-recap"
+      ]
+    },
+    "text-header": {
+      "type": "Text",
+      "props": {
+        "text": "aaronjmars/aeon — SHIPPING: huggingface-trending skill lands, reply-maker XAI prefetch unblocks day-13 carrier"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-shipped": {
+      "type": "Heading",
+      "props": {
+        "text": "Shipped to users",
+        "level": "h2"
+      }
+    },
+    "shipped-item-1": {
+      "type": "StoryLink",
+      "props": {
+        "title": "9c36154 (#162) feat: huggingface-trending — new daily skill pulls trending HF models/datasets/spaces from keyless `/api/{models,datasets,spaces}?sort=trendingScore`, applies six noise filters, tags DEBUT/ACCELERATING/RETURNING/HOLDOVER, clusters into five buckets, forces ≤18-word \"why notable\" line per pick. 09:30 UTC slot, ships disabled.",
+        "href": "https://github.com/aaronjmars/aeon/commit/9c36154",
+        "source": "aaronjmars/aeon"
+      }
+    },
+    "shipped-item-2": {
+      "type": "StoryLink",
+      "props": {
+        "title": "795a5a1 (#156) fix(reply-maker): adds `reply-maker)` case to `scripts/prefetch-xai.sh` (numeric → list, `@` → handle, else → topic) and rewrites SKILL.md to read `.xai-cache/reply-maker.json` as Path A. Closes ISS-014 day-13 carrier.",
+        "href": "https://github.com/aaronjmars/aeon/commit/795a5a1",
+        "source": "aaronjmars/aeon"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-shape": {
+      "type": "Text",
+      "props": {
+        "text": "Shape: 2 user-visible · 0 internal · 0 infra · 96 automation-folded · 2 merged PRs"
+      }
+    },
+    "text-volume": {
+      "type": "Text",
+      "props": {
+        "text": "Volume: 7 files, +229/-5 lines (excluding 96× swarm-fund-mvp `metrics.json` heartbeat ticks)"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-swarm-fund": {
+      "type": "Text",
+      "props": {
+        "text": "swarm-fund-mvp: only the 15-min `metrics.json` heartbeat (96 commits, single file). 72h merge-cadence test tightens."
+      }
+    },
+    "text-lore": {
+      "type": "Text",
+      "props": {
+        "text": "lore-financial-teaser: silent."
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "link-recap": {
+      "type": "Link",
+      "props": {
+        "label": "Full recap",
+        "href": "https://github.com/tomscaria/aeon/blob/main/articles/push-recap-2026-05-08.md"
+      }
+    }
+  }
+}
