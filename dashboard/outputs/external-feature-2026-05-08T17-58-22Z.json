@@ -1,0 +1,76 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "external-feature"
+      },
+      "children": [
+        "content-stack"
+      ]
+    },
+    "content-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "repo-heading",
+        "issues-stack",
+        "separator",
+        "pr-section"
+      ]
+    },
+    "repo-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "tomscaria/lore-financial-teaser",
+        "level": "h3"
+      }
+    },
+    "issues-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issue-env",
+        "issue-example"
+      ]
+    },
+    "issue-env": {
+      "type": "Alert",
+      "props": {
+        "title": "Untracked .env still committed",
+        "message": "Still committed despite .gitignore policy",
+        "type": "warning"
+      }
+    },
+    "issue-example": {
+      "type": "Alert",
+      "props": {
+        "title": "Fixed .env.example var name mismatch",
+        "message": "Variable name mismatch with src/integrations/supabase/client.ts",
+        "type": "success"
+      }
+    },
+    "separator": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "pr-section": {
+      "type": "StoryLink",
+      "props": {
+        "title": "PR #7",
+        "href": "https://github.com/tomscaria/lore-financial-teaser/pull/7",
+        "source": "tomscaria/lore-financial-teaser"
+      }
+    }
+  }
+}

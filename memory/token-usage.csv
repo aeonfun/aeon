@@ -130,4 +130,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-08,monitor-runners,claude-opus-4-7,72,38830,4933797,116913
 2026-05-08,repo-actions,claude-opus-4-7,90,41724,7344079,110591
 2026-05-08,code-health,claude-opus-4-7,112,38974,8997736,164213
-2026-05-08,rss-feed,claude-opus-4-7,53,17158,2876650,55386
+2026-05-08,external-feature,claude-opus-4-7,51,22110,3153951,128470
