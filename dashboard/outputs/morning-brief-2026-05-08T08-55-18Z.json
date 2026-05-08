@@ -1,0 +1,258 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Morning Brief — 2026-05-08"
+      },
+      "children": [
+        "stack-root"
+      ]
+    },
+    "stack-root": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "focus-section",
+        "sep1",
+        "yesterday-section",
+        "sep2",
+        "running-section"
+      ]
+    },
+    "focus-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "focus-heading",
+        "focus-item-1",
+        "focus-item-2",
+        "focus-item-3"
+      ]
+    },
+    "focus-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Focus today",
+        "level": "h2"
+      }
+    },
+    "focus-item-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-1-main",
+        "focus-1-why"
+      ]
+    },
+    "focus-1-main": {
+      "type": "Text",
+      "props": {
+        "text": "1. Iran-airspace-May-8 ladder resolves today — log calibration delta.",
+        "variant": "body"
+      }
+    },
+    "focus-1-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: market closes today, 48pp clause-text divergence anchors ADR case.",
+        "variant": "caption"
+      }
+    },
+    "focus-item-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-2-main",
+        "focus-2-why"
+      ]
+    },
+    "focus-2-main": {
+      "type": "Text",
+      "props": {
+        "text": "2. Open ADR-096 resolution-text-ingest on swarm-fund-mvp.",
+        "variant": "body"
+      }
+    },
+    "focus-2-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: highest-leverage CalibrationGap upgrade still slotless, anchor lands today.",
+        "variant": "caption"
+      }
+    },
+    "focus-item-3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "focus-3-main",
+        "focus-3-why"
+      ]
+    },
+    "focus-3-main": {
+      "type": "Text",
+      "props": {
+        "text": "3. swarm-fund-mvp tick-broker outputs/{skill}/{date}.json contract.",
+        "variant": "body"
+      }
+    },
+    "focus-3-why": {
+      "type": "Text",
+      "props": {
+        "text": "why now: 10-day window before ADR-093 wire-up reads aspirational.",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "yesterday-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "yesterday-heading",
+        "yesterday-item-1",
+        "yesterday-item-2",
+        "yesterday-item-3",
+        "yesterday-item-4",
+        "yesterday-item-5"
+      ]
+    },
+    "yesterday-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Since yesterday",
+        "level": "h2"
+      }
+    },
+    "yesterday-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick: Per-Market ILS (2605.02287) — closes 8-paper Nechepurenko run on order-flow-skill axis.",
+        "variant": "body"
+      }
+    },
+    "yesterday-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "paper-digest: 4 fresh hits — SAC ensemble, Sarit-Kraus folk theorem, OHLCV null, DAG execution-lineage.",
+        "variant": "body"
+      }
+    },
+    "yesterday-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "chain-runner dispatch_skill() day 12 DEGRADED — context not injected; blocked on operator-side workflow patch.",
+        "variant": "body"
+      }
+    },
+    "yesterday-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "reddit-digest 14 consecutive errors — recommend cron pause until prefetch ships.",
+        "variant": "body"
+      }
+    },
+    "yesterday-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "Tape risk-off — BTC −1.9% / ETH −3.3%, 31/100 green vs 85; SOL-DeFi/RWA rotation lead (JTO +28%, CFG +18%).",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "running-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "running-heading",
+        "running-item-1",
+        "running-item-2",
+        "running-item-3",
+        "running-item-4",
+        "running-item-5",
+        "running-item-6"
+      ]
+    },
+    "running-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Running today",
+        "level": "h2"
+      }
+    },
+    "running-item-1": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-polymarket @ 13:00 UTC",
+        "variant": "body"
+      }
+    },
+    "running-item-2": {
+      "type": "Text",
+      "props": {
+        "text": "polymarket-comments @ 13:00 UTC",
+        "variant": "body"
+      }
+    },
+    "running-item-3": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-kalshi @ 13:00 UTC",
+        "variant": "body"
+      }
+    },
+    "running-item-4": {
+      "type": "Text",
+      "props": {
+        "text": "paper-pick @ 14:00 UTC (PhD slot — AEL Darwinian-axis lead)",
+        "variant": "body"
+      }
+    },
+    "running-item-5": {
+      "type": "Text",
+      "props": {
+        "text": "project-lens @ 15:30 UTC",
+        "variant": "body"
+      }
+    },
+    "running-item-6": {
+      "type": "Text",
+      "props": {
+        "text": "evening-recap @ 21:00 UTC",
+        "variant": "body"
+      }
+    }
+  }
+}
