@@ -129,4 +129,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-08,github-releases,claude-opus-4-7,1079,28456,1522180,191472
 2026-05-08,monitor-runners,claude-opus-4-7,72,38830,4933797,116913
 2026-05-08,repo-actions,claude-opus-4-7,90,41724,7344079,110591
-2026-05-08,star-milestone,claude-opus-4-7,21,6584,816242,39928
+2026-05-08,changelog,claude-opus-4-7,52,22908,2983401,123408

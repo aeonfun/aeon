@@ -1,0 +1,101 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Changelog"
+      },
+      "children": [
+        "heading-correction",
+        "text-summary",
+        "separator-1",
+        "stats-grid",
+        "separator-2",
+        "text-note"
+      ]
+    },
+    "heading-correction": {
+      "type": "Heading",
+      "props": {
+        "text": "Changelog correction (counts)",
+        "level": "h2"
+      }
+    },
+    "text-summary": {
+      "type": "Text",
+      "props": {
+        "text": "3 repos / 46 user-facing changes"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "stats-grid": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-breaking",
+        "stat-added",
+        "stat-changed",
+        "stat-fixed",
+        "stat-security"
+      ]
+    },
+    "stat-breaking": {
+      "type": "Stat",
+      "props": {
+        "label": "Breaking",
+        "value": "0"
+      }
+    },
+    "stat-added": {
+      "type": "Stat",
+      "props": {
+        "label": "Added",
+        "value": "26"
+      }
+    },
+    "stat-changed": {
+      "type": "Stat",
+      "props": {
+        "label": "Changed",
+        "value": "7"
+      }
+    },
+    "stat-fixed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fixed",
+        "value": "11"
+      }
+    },
+    "stat-security": {
+      "type": "Stat",
+      "props": {
+        "label": "Security",
+        "value": "2"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "text-note": {
+      "type": "Text",
+      "props": {
+        "text": "Earlier message said 36; recount after assembly = 46.",
+        "variant": "caption"
+      }
+    }
+  }
+}
