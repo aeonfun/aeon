@@ -1,1 +1,1 @@
-farcaster digest skipped — sources: search=fail trending=fail channels=fail (Neynar gated: 401/402, NEYNAR_API_KEY still empty in workflow env). Day 2 of same-cause errors; same operator-blocker as yesterday — surface to next config sweep.
+farcaster digest skipped — sources: search=fail trending=fail channels=fail (NEYNAR_API_KEY empty in this run; HTTP 402 from Neynar). Seen cache untouched.
