@@ -1,0 +1,72 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "paper-pick"
+      },
+      "children": [
+        "story",
+        "separator1",
+        "desc",
+        "separator2",
+        "links_stack"
+      ]
+    },
+    "story": {
+      "type": "StoryLink",
+      "props": {
+        "title": "Per-Market Information Leakage and Order-Flow Skill: Two Methodological Lenses on Informed Trading in DePMs",
+        "href": "https://arxiv.org/abs/2605.02287",
+        "source": "Nechepurenko",
+        "score": "↑0"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "desc": {
+      "type": "Text",
+      "props": {
+        "text": "Closes the 8-paper Nechepurenko run on the order-flow-skill axis: 210k wallet-market pairs, 3.14% skilled, 1,950 insider-flagged accounts; three methodological layers (ILS + sign-randomization + lifecycle heuristics) — directly informs the resolution-text-ingest ADR-096+ thread (highest-leverage CalibrationGap upgrade).",
+        "variant": "body"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "links_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "read_link",
+        "pdf_link"
+      ]
+    },
+    "read_link": {
+      "type": "Link",
+      "props": {
+        "label": "Read",
+        "href": "https://arxiv.org/abs/2605.02287"
+      }
+    },
+    "pdf_link": {
+      "type": "Link",
+      "props": {
+        "label": "PDF",
+        "href": "https://arxiv.org/pdf/2605.02287"
+      }
+    }
+  }
+}
