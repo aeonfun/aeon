@@ -1,0 +1,142 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Tweet Roundup — 2026-05-08"
+      },
+      "children": [
+        "source_meta",
+        "separator1",
+        "story1_container",
+        "separator2",
+        "story2_container"
+      ]
+    },
+    "source_meta": {
+      "type": "Text",
+      "props": {
+        "text": "Source: cache:0 websearch:2 failed:1",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "story1_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story1_query",
+        "story1_meta",
+        "story1_headline",
+        "story1_tweet",
+        "story1_link"
+      ]
+    },
+    "story1_query": {
+      "type": "Badge",
+      "props": {
+        "text": "[artificial intelligence OR AI agents OR LLM]",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "story1_meta": {
+      "type": "Text",
+      "props": {
+        "text": "single story",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "story1_headline": {
+      "type": "Heading",
+      "props": {
+        "text": "Neolab count crossing 63 reframes pre-revenue AI capex as its own VC category",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "story1_tweet": {
+      "type": "TweetCard",
+      "props": {
+        "author": "deedydas",
+        "handle": "deedydas",
+        "text": "Ultimate List of Artificial Intelligence Neolabs: May 2026 pegs the category at 63 pre-revenue, $1B+-valuation startups working on long-term AI breakthroughs. Implication: the term has stabilized as the labeled bucket for scaled non-revenue AI capex (distinct from seed/Series-A staging), and the count itself is now a tracked top-line stat."
+      },
+      "children": []
+    },
+    "story1_link": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/deedydas/status/2052266037979320752"
+      },
+      "children": []
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "story2_container": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "story2_query",
+        "story2_headline",
+        "story2_tweet",
+        "story2_link"
+      ]
+    },
+    "story2_query": {
+      "type": "Badge",
+      "props": {
+        "text": "[technology OR startups OR open source]",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "story2_headline": {
+      "type": "Heading",
+      "props": {
+        "text": "ASML in the geopolitical crosshairs — EU CEOs vs an emerging US export regime",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "story2_tweet": {
+      "type": "TweetCard",
+      "props": {
+        "author": "EmmanuelInvest",
+        "handle": "EmmanuelInvest",
+        "text": "ASML update for 05-07 flags two pressures stacking: (1) joint opinion piece signed 05-05 by ASML CEO Christophe and other European Tech CEOs calling for urgent EU policy action, and (2) emerging US export-control risks on top of AI-driven demand. Implication: the EUV-tool chokepoint that anchors AI compute supply is now a multi-front policy fight, not just a US-China one."
+      },
+      "children": []
+    },
+    "story2_link": {
+      "type": "Link",
+      "props": {
+        "label": "View",
+        "href": "https://x.com/EmmanuelInvest/status/2052287254039556126"
+      },
+      "children": []
+    }
+  }
+}

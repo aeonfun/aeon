@@ -1,16 +1,8 @@
-## Summary
+*Tweet Roundup — 2026-05-08*
+_Source: cache:0 websearch:2 failed:1_
 
-Standalone re-run of `tweet-roundup` after today's `daily-routine` inline run. Result: **TWEET_ROUNDUP_EMPTY** (2nd consecutive day, same root cause as 2026-05-06).
+*[artificial intelligence OR AI agents OR LLM]* — _single story — "Neolab" count crossing 63 reframes pre-revenue AI capex as its own VC category_
+- x.com/deedydas — "Ultimate List of Artificial Intelligence Neolabs: May 2026" pegs the category at 63 pre-revenue, $1B+-valuation startups working on long-term AI breakthroughs. Implication: the term has stabilized as the labeled bucket for scaled non-revenue AI capex (distinct from seed/Series-A staging), and the count itself is now a tracked top-line stat. [View](https://x.com/deedydas/status/2052266037979320752)
 
-**What I did**
-- Built `SEEN_TWEETS` (35 URLs): union of `memory/tweet-roundup-seen.txt` (19) + last-3-day log grep (23 unique).
-- Resolved topics: `${var}` empty, no `## Tweet Roundup Topics` in MEMORY.md → fell through to built-in defaults (AI/LLM/agents, crypto/bitcoin/DeFi, technology/startups/open source).
-- Path A (`.xai-cache/roundup-*.json`): directory absent. Path B: skipped per skill (sandbox env-var auth blocked). Path C (WebSearch fallback): fired 5 queries — 3 default topics + 2 sharpened (AI/Anthropic/Claude announcement, BTC price today).
-- Highest fresh status ID in any result: `AI_News_Digest/2048372020841181476` (~2026-04-30, ~7 days). All other primary-tweet candidates 1644xxx–2046xxx, all >48h. Zero candidates passed the 48h gate across all 3 topics.
-- Per skill spec, every topic dropped → no notification, logged `TWEET_ROUNDUP_EMPTY` to `memory/logs/2026-05-07.md`.
-
-**Files modified**
-- `memory/logs/2026-05-07.md` — appended standalone Tweet Roundup block.
-
-**Follow-up**
-- `.xai-cache/` prefetch remains the structural fix (PR #156 on `aaronjmars/aeon`, day 13, ISS-014 carrier per MEMORY OPS ALERTS). WebSearch indexing of `x.com/.../status/<id>` URLs continues to lag >48h — cache-miss days will keep emitting EMPTY until prefetch lands. Surface to next `self-improve` as 2nd consecutive EMPTY day.
+*[technology OR startups OR open source]* — _ASML in the geopolitical crosshairs — EU CEOs vs an emerging US export regime_
+- x.com/EmmanuelInvest — ASML update for 05-07 flags two pressures stacking: (1) joint opinion piece signed 05-05 by ASML CEO Christophe and other European Tech CEOs calling for urgent EU policy action, and (2) emerging US export-control risks on top of AI-driven demand. Implication: the EUV-tool chokepoint that anchors AI compute supply is now a multi-front policy fight, not just a US-China one. [View](https://x.com/EmmanuelInvest/status/2052287254039556126)
