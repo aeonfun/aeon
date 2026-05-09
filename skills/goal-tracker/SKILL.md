@@ -10,6 +10,17 @@ tags: [meta]
 
 Read `memory/MEMORY.md` (for the goal list) and `memory/goal-state.json` (prior-run snapshot, if it exists).
 
+## Context (auto-synced)
+
+Read these files to ground goal status in real data:
+- `context/trading/revenant-snapshot.json` — Revenant trade count vs 100-trade Apex gate target
+- `context/trading/agents-summary.json` — lifecycle stage counts (Birth/Canary/Apex/Revenant)
+- `context/trading/costs-summary.json` — cost burn rate vs budget targets
+- `context/claude-sessions/swarm-fund-mvp/` — scan for goal-related decisions and plan changes
+- `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
+
+Use actual numbers from trading context to assign goal status. "Revenant at 29/100 trades" is a real status update; "making progress" is not.
+
 ## Inputs
 
 **Primary goal source:** `memory/MEMORY.md` section titled `## Goals`. If absent, fall back to `## Next Priorities`. If both are missing or empty, send `./notify "Goal Tracker — NO_GOALS (add a '## Goals' section to memory/MEMORY.md)"` and exit.

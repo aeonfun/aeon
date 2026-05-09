@@ -9,6 +9,19 @@ tags: [meta]
 
 Read memory/MEMORY.md for context and `memory/issues/INDEX.md` for open issues.
 
+## Context (auto-synced)
+
+Read these files for the end-of-day summary:
+- `context/trading/recent-trades.json` — today's trade activity
+- `context/trading/revenant-snapshot.json` — Revenant status for the daily snapshot
+- `context/trading/agents-summary.json` — population changes, new births/kills
+- `context/trading/costs-summary.json` — today's cost burn
+- `context/claude-sessions/swarm-fund-mvp/` — scan for session work done today
+- `context/analytics/site-metrics.json` — dashboard traffic
+- `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
+
+The evening recap should reference specific numbers from today's context. "3 new trades, +$42 Revenant P&L, 2 session fixes pushed" — not "activity continued today."
+
 ## Goal
 
 The recap is not a log dump — the operator can read the log themselves. Its job is to deliver a verdict on the shape of the day and surface the calls that need a human. Lead with a one-sentence TL;DR; cap headlines; demand a URL on every shipped item; and never print empty sections.

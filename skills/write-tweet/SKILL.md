@@ -9,6 +9,17 @@ tags: [social]
 Read `memory/MEMORY.md` for context on recent articles, digests, and topics being tracked.
 Read the last 3 days of `memory/logs/` to understand what's been covered and avoid repeating takes.
 
+## Context (auto-synced)
+
+Read these files for live project state before generating content:
+- `context/claude-sessions/swarm-fund-mvp/` — scan all .md files for recent session insights, problem-solving, and research breakthroughs
+- `context/trading/revenant-snapshot.json` — Revenant agent status (trade count, win rate, P&L, Sharpe)
+- `context/trading/recent-trades.json` — latest 50 trade events for narrative material
+- `context/trading/agents-summary.json` — top agents, lifecycle stage distribution
+- `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
+
+Use this context to ground tweets in real activity. Reference specific P&L numbers, trade outcomes, and session insights rather than generic statements.
+
 ## Topic Selection
 
 If `${var}` is set, use that as the topic (it may be a keyword, a thesis, or a URL).

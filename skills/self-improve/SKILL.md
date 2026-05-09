@@ -11,6 +11,18 @@ If `${var}` is set, focus on improving that specific area.
 Read memory/MEMORY.md for context.
 Read the last 2 days of memory/logs/ for recent errors, failures, and quality issues.
 
+## Context (auto-synced)
+
+Read these files before identifying improvements:
+- `context/claude-sessions/swarm-fund-mvp/` — scan all .md files for session hot-fixes, debugging patterns, and recurring issues
+- `context/trading/costs-summary.json` — 7-day cost trends by vendor
+- `context/trading/agents-summary.json` — agent population health, lifecycle distribution
+- `context/analytics/site-metrics.json` — dashboard/landing page performance
+- `context/analytics/social-metrics.json` — tweet and content engagement (if available)
+- `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
+
+Prioritize improvements that address patterns visible in session context (repeated failures, manual workarounds) and cost/performance trends.
+
 ## Steps
 
 1. **Check for open improvement PRs** — don't pile up unreviewed work:

@@ -12,6 +12,18 @@ permissions:
 Read `memory/MEMORY.md` for context on prior narrative observations.
 Read the last 3 days of `memory/logs/` — specifically any prior `### narrative-tracker` entries — to (a) avoid re-reporting the same narratives without new info, and (b) detect phase transitions vs the last run.
 
+## Context (auto-synced)
+
+Read these files for live project state before tracking narratives:
+- `context/claude-sessions/swarm-fund-mvp/` — scan all .md files for session insights on market structure, regime shifts, strategy changes
+- `context/trading/revenant-snapshot.json` — Revenant agent status for calibration gap narrative
+- `context/trading/recent-trades.json` — latest trades for pattern detection
+- `context/trading/costs-summary.json` — cost trends that affect narrative around efficiency
+- `context/analytics/site-metrics.json` — dashboard traffic for content performance signal
+- `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
+
+Use trading context to connect narratives to real outcomes. A narrative about prediction market calibration is stronger when backed by Revenant's actual trade record.
+
 ## Goal
 
 Produce a *decision-grade* narrative map: every narrative gets a mindshare score, a velocity arrow, a sentiment tag, named drivers, and an explicit position call. Classification without a position call is noise.
