@@ -79,6 +79,7 @@ skills:
   changelog: { enabled: false, schedule: "0 16 * * *" } # disabled for cost
   external-feature: { enabled: false, schedule: "30 16 * * *", var: "" } # disabled for cost
   vuln-scanner: { enabled: true, schedule: "0 16 * * 6", var: "" } # Saturday — audit repos for security vulns, PR fixes
+  config-audit: { enabled: true, schedule: "0 16 * * 0" } # Sunday — audit CLAUDE.md, aeon.yml, skills, soul for security/PII issues
   deploy-prototype: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
   autoresearch: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
   create-skill: { enabled: true, schedule: "workflow_dispatch", var: "" } # one-shot skill creator — set var to a description prompt
@@ -134,6 +135,7 @@ skills:
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
   cost-report: { enabled: true, schedule: "0 7 * * 1", model: "claude-sonnet-4-6" } # weekly API cost breakdown by skill and model
+  session-learner: { enabled: true, schedule: "0 7 * * 1" } # Monday — extract patterns from operator Claude Code sessions
 
   # --- Weekly (Monday only) ---
   fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # disabled for cost
@@ -150,6 +152,7 @@ skills:
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # disabled for cost
 
   # --- Utilities ---
+  task-planner: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — decompose goals into skill chains with cost estimation
   auto-workflow: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: URL to analyze
   onboard: { enabled: true, schedule: "workflow_dispatch", var: "" } # one-shot setup validator — checks secrets/workflows/memory writability and notifies a checklist with fix commands; pair with ./onboard CLI
 
