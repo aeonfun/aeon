@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-08T11:00:00Z",
+    "generated": "2026-05-09T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 112,
+    "total": 113,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -142,6 +142,18 @@
             "sha": "46a7a24",
             "updated": "2026-04-26",
             "install": "./add-skill aaronjmars/aeon contributor-reward"
+        },
+        {
+            "slug": "contributor-spotlight",
+            "name": "contributor-spotlight",
+            "description": "Weekly recognition post for one fork operator \u2014 converts fork-cohort cohort data into a named human moment (POWER fork callout with their work, stars, and skills enabled). 4-week dedup; rotates across the cohort.",
+            "category": "productivity",
+            "schedule": "0 20 * * 0",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-05-09",
+            "install": "./add-skill aaronjmars/aeon contributor-spotlight"
         },
         {
             "slug": "cost-report",
