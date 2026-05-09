@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T07:16:47.704150Z",
+  "generated_at": "2026-05-09T11:16:52.310576Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -1768,30 +1768,30 @@
     {
       "agent_id": "hl-fractal-v01",
       "lifecycle": "canary",
-      "closed_trades": 24,
+      "closed_trades": 25,
       "open_positions": 4,
-      "win_rate": 0.5833,
-      "total_pnl_usd": 1.04,
-      "sharpe": 0.047,
-      "composite": 0.138,
-      "mean_edge_bps_gross": 9,
-      "mean_edge_bps_net": -196,
-      "median_edge_bps_gross": 22,
-      "median_edge_bps_net": -183
+      "win_rate": 0.6,
+      "total_pnl_usd": 4.38,
+      "sharpe": 0.159,
+      "composite": 0.214,
+      "mean_edge_bps_gross": 35,
+      "mean_edge_bps_net": -170,
+      "median_edge_bps_gross": 31,
+      "median_edge_bps_net": -174
     },
     {
       "agent_id": "hl-fractal-v02",
       "lifecycle": "canary",
-      "closed_trades": 24,
+      "closed_trades": 25,
       "open_positions": 4,
-      "win_rate": 0.5833,
-      "total_pnl_usd": 1.04,
-      "sharpe": 0.047,
-      "composite": 0.138,
-      "mean_edge_bps_gross": 9,
-      "mean_edge_bps_net": -196,
-      "median_edge_bps_gross": 22,
-      "median_edge_bps_net": -183
+      "win_rate": 0.6,
+      "total_pnl_usd": 4.38,
+      "sharpe": 0.159,
+      "composite": 0.214,
+      "mean_edge_bps_gross": 35,
+      "mean_edge_bps_net": -170,
+      "median_edge_bps_gross": 31,
+      "median_edge_bps_net": -174
     },
     {
       "agent_id": "hl-regime-safe-haven-v01",
@@ -1936,16 +1936,16 @@
     {
       "agent_id": "pm-hl-divergence-v01",
       "lifecycle": "shadow",
-      "closed_trades": 5,
-      "open_positions": 1,
-      "win_rate": 0.6,
-      "total_pnl_usd": -0.43,
-      "sharpe": -0.116,
-      "composite": 0.127,
-      "mean_edge_bps_gross": -17,
-      "mean_edge_bps_net": -222,
-      "median_edge_bps_gross": 52,
-      "median_edge_bps_net": -153
+      "closed_trades": 6,
+      "open_positions": 0,
+      "win_rate": 0.5,
+      "total_pnl_usd": -0.64,
+      "sharpe": -0.159,
+      "composite": 0.063,
+      "mean_edge_bps_gross": -21,
+      "mean_edge_bps_net": -226,
+      "median_edge_bps_gross": 4,
+      "median_edge_bps_net": -201
     },
     {
       "agent_id": "pm-hl-divergence-v02",
@@ -1979,7 +1979,7 @@
       "agent_id": "pm-hl-lead-lag-v01",
       "lifecycle": "shadow",
       "closed_trades": 9,
-      "open_positions": 0,
+      "open_positions": 1,
       "win_rate": 0.4444,
       "total_pnl_usd": -3.03,
       "sharpe": -0.359,
@@ -2258,30 +2258,30 @@
     {
       "agent_id": "ta-bb-squeeze-v01",
       "lifecycle": "shadow",
-      "closed_trades": 9,
-      "open_positions": 1,
-      "win_rate": 0.3333,
-      "total_pnl_usd": -7.01,
-      "sharpe": -0.637,
+      "closed_trades": 10,
+      "open_positions": 2,
+      "win_rate": 0.4,
+      "total_pnl_usd": -5.96,
+      "sharpe": -0.465,
       "composite": 0.0,
-      "mean_edge_bps_gross": -156,
-      "mean_edge_bps_net": -361,
-      "median_edge_bps_gross": -146,
-      "median_edge_bps_net": -351
+      "mean_edge_bps_gross": -119,
+      "mean_edge_bps_net": -324,
+      "median_edge_bps_gross": -129,
+      "median_edge_bps_net": -334
     },
     {
       "agent_id": "ta-bb-squeeze-v02",
       "lifecycle": "shadow",
-      "closed_trades": 9,
-      "open_positions": 1,
-      "win_rate": 0.3333,
-      "total_pnl_usd": -7.01,
-      "sharpe": -0.637,
+      "closed_trades": 10,
+      "open_positions": 2,
+      "win_rate": 0.4,
+      "total_pnl_usd": -5.96,
+      "sharpe": -0.465,
       "composite": 0.0,
-      "mean_edge_bps_gross": -156,
-      "mean_edge_bps_net": -361,
-      "median_edge_bps_gross": -146,
-      "median_edge_bps_net": -351
+      "mean_edge_bps_gross": -119,
+      "mean_edge_bps_net": -324,
+      "median_edge_bps_gross": -129,
+      "median_edge_bps_net": -334
     },
     {
       "agent_id": "ta-macd-cross-v01",
@@ -2314,30 +2314,30 @@
     {
       "agent_id": "ta-rsi-divergence-v01",
       "lifecycle": "shadow",
-      "closed_trades": 5,
-      "open_positions": 5,
-      "win_rate": 0.4,
-      "total_pnl_usd": 0.42,
-      "sharpe": 0.086,
-      "composite": 0.06,
-      "mean_edge_bps_gross": 17,
-      "mean_edge_bps_net": -188,
-      "median_edge_bps_gross": -17,
-      "median_edge_bps_net": -222
+      "closed_trades": 7,
+      "open_positions": 3,
+      "win_rate": 0.2857,
+      "total_pnl_usd": -1.17,
+      "sharpe": -0.178,
+      "composite": 0.0,
+      "mean_edge_bps_gross": -34,
+      "mean_edge_bps_net": -239,
+      "median_edge_bps_gross": -99,
+      "median_edge_bps_net": -304
     },
     {
       "agent_id": "ta-rsi-divergence-v02",
       "lifecycle": "shadow",
-      "closed_trades": 5,
-      "open_positions": 5,
-      "win_rate": 0.4,
-      "total_pnl_usd": 0.42,
-      "sharpe": 0.086,
-      "composite": 0.06,
-      "mean_edge_bps_gross": 17,
-      "mean_edge_bps_net": -188,
-      "median_edge_bps_gross": -17,
-      "median_edge_bps_net": -222
+      "closed_trades": 7,
+      "open_positions": 3,
+      "win_rate": 0.2857,
+      "total_pnl_usd": -1.17,
+      "sharpe": -0.178,
+      "composite": 0.0,
+      "mean_edge_bps_gross": -34,
+      "mean_edge_bps_net": -239,
+      "median_edge_bps_gross": -99,
+      "median_edge_bps_net": -304
     }
   ],
   "swarm": {
@@ -2389,22 +2389,22 @@
     "hl_funded": false
   },
   "totals": {
-    "closed_trades": 1533,
-    "win_rate": 0.2962,
-    "total_pnl_usd": 744.28,
+    "closed_trades": 1542,
+    "win_rate": 0.297,
+    "total_pnl_usd": 750.96,
     "real_pnl_usd": 113.5341,
-    "real_fills_lifetime": 187,
-    "canary_pnl_usd": 744.28,
-    "canary_closed_trades": 143,
+    "real_fills_lifetime": 195,
+    "canary_pnl_usd": 750.96,
+    "canary_closed_trades": 145,
     "canary_agents": 9,
-    "shadow_pnl_usd": -22671.21,
-    "shadow_closed_trades": 1390,
+    "shadow_pnl_usd": -22672.5,
+    "shadow_closed_trades": 1397,
     "shadow_agents": 158,
     "strategies_active": 47,
-    "mean_edge_bps_gross": -2866,
-    "mean_edge_bps_net": -3071,
-    "median_edge_bps_gross": -6639,
-    "median_edge_bps_net": -6844
+    "mean_edge_bps_gross": -2848,
+    "mean_edge_bps_net": -3053,
+    "median_edge_bps_gross": -6601,
+    "median_edge_bps_net": -6806
   },
   "milestones": {
     "canary_to_apex_progress": "390/100",
@@ -2414,5 +2414,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-09T07:16:44Z"
+  "synced_at": "2026-05-09T11:16:49Z"
 }
