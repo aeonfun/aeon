@@ -1,9 +1,10 @@
 ---
 name: Narrative Tracker
-description: Track rising, peaking, and fading crypto/tech narratives with quantitative mindshare + velocity signals and explicit positioning calls
+description: Track rising, peaking, and fading crypto/tech narratives with quantitative mindshare + velocity signals and explicit positioning calls. Master content skill — outputs structured briefs consumed by write-tweet, evening-recap, and article.
+model: claude-opus-4-7
 schedule: "0 14 * * *"
 commits: true
-tags: [crypto, research]
+tags: [crypto, research, content-hub]
 permissions:
   - contents:write
 ---
@@ -23,6 +24,10 @@ Read these files for live project state before tracking narratives:
 - `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
 
 Use trading context to connect narratives to real outcomes. A narrative about prediction market calibration is stronger when backed by Revenant's actual trade record.
+
+## Voice
+
+Read `soul/SOUL.md` and `soul/STYLE.md` before composing the notification. The tracker's language should match the operator's voice: declarative positions, no hedging, fragments over clauses. "BTC-dom cope re-fired" not "Bitcoin dominance sentiment appears to be experiencing renewed interest." Use vocabulary from STYLE.md: "edge," "cope," "the read is," "skin on."
 
 ## Goal
 
@@ -127,6 +132,41 @@ If absolutely nothing new or notable (no transitions, no reflexivity, no FRONT-R
 ### 7. Log to `memory/logs/${today}.md`
 
 Append a `### narrative-tracker` section with the full structured output (not just the notification — include all narratives considered, even IGNOREd ones, so future diffs work). If a full run produced nothing actionable, log `NARRATIVE_TRACKER_OK` with the narrative labels seen (so tomorrow's diff still has a baseline).
+
+### 8. Write structured content brief
+
+Write a machine-readable brief to `.outputs/narrative-tracker.md` for downstream skills (write-tweet, evening-recap, article). Format:
+
+```
+# Narrative Brief — ${today}
+
+## POSITIONS
+- FRONT-RUN: <label> — <one-line angle for tweets> — <link>
+- RIDE: <label> — <one-line angle> — <link>
+- FADE: <label> — <one-line contrarian angle> — <link>
+
+## TRANSITIONS
+- NEW: <label> — <hook sentence suitable for tweet or article opener>
+- PROMOTED: <label> — <what flipped, why it matters now>
+- DEMOTED: <label> — <what cooled, what replaced it>
+- DEAD: <label> — <one-line obituary>
+
+## REFLEXIVITY
+- <narrative> — <concrete evidence the story is moving outcomes> — <link>
+
+## REVENANT CONNECTION
+- <any narrative that connects to CalibrationGap's actual trades or P&L>
+- Reference specific numbers from context/trading/revenant-snapshot.json
+
+## TOP 3 TWEET ANGLES
+1. <angle derived from strongest FRONT-RUN or TRANSITION + specific data point>
+2. <angle derived from REFLEXIVITY alert or contrarian FADE>
+3. <angle connecting Revenant trade outcomes to today's narrative>
+```
+
+If no transitions or positions worth surfacing, write a minimal brief: `# Narrative Brief — ${today}\n\nNo actionable narratives. Map unchanged.`
+
+This brief is the primary input for write-tweet's topic selection and evening-recap's narrative arc. Make positions sharp enough to tweet directly.
 
 ## Guidelines
 

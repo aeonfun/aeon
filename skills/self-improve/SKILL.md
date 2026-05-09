@@ -39,6 +39,16 @@ Prioritize improvements that address patterns visible in session context (repeat
      - Memory consolidation problems
    - Read `memory/cron-state.json` for skills with low success rates
    - Read `articles/repo-actions-*.md` from last 7 days for self-improvement ideas
+   - Read context pipeline data for systemic patterns:
+     - `context/trading/costs-summary.json` — if 7-day cost trend is rising >10%, propose model downgrade or schedule reduction for highest-cost skills
+     - `context/analytics/site-metrics.json` — if dashboard traffic dropped >20% week-over-week, investigate content pipeline health
+     - `context/analytics/social-metrics.json` — if tweet engagement dropped, check write-tweet and reply-maker quality
+     - `context/claude-sessions/swarm-fund-mvp/` — scan for patterns like "manually fixed X" or "worked around Y" that indicate a skill should be automated or a bug should be patched
+   - Prioritization order for context-derived fixes:
+     1. Cost overruns (directly burns money)
+     2. Session workarounds that could be automated (operator time saved)
+     3. Content engagement drops (affects external visibility)
+     4. Agent population health issues (affects core research)
    - Pick the **highest-impact, smallest-effort** fix. One change per run.
 
 3. **Understand the area you're fixing.** Read the relevant files:

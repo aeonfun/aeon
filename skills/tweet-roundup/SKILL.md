@@ -11,6 +11,10 @@ tags: [social]
 
 Today is ${today}. Read memory/MEMORY.md for context.
 
+## Voice
+
+If soul files exist (`soul/SOUL.md`, `soul/STYLE.md`), read them. Apply the operator's voice to insight lines and conversation-shape summaries. The curation commentary should be operator-grade: "BTC-dom cope is back, volume confirms" not "Several commentators are discussing Bitcoin dominance again."
+
 ## Steps
 
 ### 1. Load dedup set

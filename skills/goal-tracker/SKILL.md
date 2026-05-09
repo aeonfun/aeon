@@ -31,6 +31,10 @@ Use actual numbers from trading context to assign goal status. "Revenant at 29/1
 - `gh pr list --state=all --search "updated:>=$(date -d '30 days ago' +%F)" --json number,title,state,updatedAt,url` — recent PRs.
 - `gh issue list --state=all --search "updated:>=$(date -d '30 days ago' +%F)" --json number,title,state,updatedAt,url` — recent issues.
 - `memory/cron-state.json` — skill health; relevant when a goal depends on a skill running (e.g., "run first digest").
+- `context/trading/revenant-snapshot.json` — extract Revenant trade count for the "100-trade Apex gate" goal. If `revenant_agents[].trades` exists, use it as direct evidence: `activity_count = trades`, `completion_signal = trades >= 100`.
+- `context/trading/agents-summary.json` — extract `lifecycle_counts` for goals related to agent population targets (Birth/Canary/Apex/Revenant counts).
+- `context/trading/costs-summary.json` — extract weekly burn for cost-related goals.
+- `context/claude-sessions/swarm-fund-mvp/` — scan session memory files for goal-related keywords (these capture decisions and plan changes from coding sessions).
 
 If `${var}` is set, filter to the matching goal after loading.
 
@@ -68,6 +72,12 @@ Dedupe evidence by `(source, date, ref)` so a log mentioning a PR doesn't double
 | NEEDS ATTENTION | `activity_count_14d == 1` OR `days_since_last_activity` between 8 and 14 inclusive |
 | AT RISK | `activity_count_14d == 0` AND (`days_since_last_activity > 14` OR no activity ever) |
 
+When context pipeline provides direct numeric progress (e.g., Revenant at 29/100 trades), use the number to compute percentage completion and override the activity-based status:
+- >= 80% of target = ON TRACK (regardless of activity recency)
+- 50-79% with velocity suggesting target miss = NEEDS ATTENTION
+- < 50% with deadline pressure = AT RISK
+- 100% = DONE (with the specific metric as completion signal)
+
 ### 4. Compute trend vs prior snapshot
 
 - `improving` — status moved up the ladder (AT RISK → NEEDS ATTENTION → ON TRACK → DONE) OR `activity_count_14d` rose by ≥50%
@@ -84,6 +94,8 @@ Pick the single highest-leverage next step for each goal. Rules:
 - **ON TRACK** → omit action line entirely.
 
 Use one action verb. ≤15 words. No vague "continue monitoring" advice. No action = skip the line, don't fill with filler.
+
+When context data reveals a specific gap (e.g., cost burn exceeding target), the proposed action should reference the specific number and a concrete fix (e.g., "Cost burn $180/week vs $150 target — disable token-report to save ~$15/week").
 
 ### 6. Format the report
 

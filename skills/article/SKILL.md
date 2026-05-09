@@ -11,6 +11,10 @@ If `${var}` is set, write about that topic instead of auto-selecting.
 
 Today is ${today}. Your task is to research and write a high-quality article.
 
+## Voice
+
+If soul files exist (`soul/SOUL.md`, `soul/STYLE.md`, `soul/examples/`), read them and match the owner's voice. Articles should sound like the operator wrote them: short-medium-short sentence cadence, verb-first imperatives, specific names and numbers over abstractions. No "delve," no "tapestry," no hedging stacks. See `soul/STYLE.md` for the full anti-pattern list.
+
 Steps:
 1. Read `memory/MEMORY.md` for context on what topics have been covered recently.
 2. Search the web for the most interesting recent developments in AI, crypto/DeFi,

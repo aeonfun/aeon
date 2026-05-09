@@ -39,7 +39,7 @@ skills:
   token-pick: { enabled: true, schedule: "0 12 * * *" }
   token-report: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   market-context-refresh: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
-  narrative-tracker: { enabled: true, schedule: "workflow_dispatch" } # runs via morning-brief chain; individual schedule removed to avoid duplication
+  narrative-tracker: { enabled: true, schedule: "workflow_dispatch", model: "claude-opus-4-7" } # Opus master skill — runs via morning-brief chain; outputs structured briefs for write-tweet + evening-recap
   polymarket-comments: { enabled: true, schedule: "0 13 * * *", var: "Mine high-volume Polymarket comment threads for narrative-shift signals — info-asymmetry alpha that doesn't show up in CalibrationGap's quantitative scanner. Focus: politics + crypto verticals. Surface user names with track records, recurring claims, citation chains pointing at upcoming catalysts." } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker — disabled for cost
 
@@ -112,14 +112,15 @@ skills:
     } # disabled for cost
 
   # --- Evening / meta (6 PM UTC) ---
-  goal-tracker: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
+  goal-tracker: { enabled: true, schedule: "0 18 * * *" } # re-enabled — context pipeline provides real trading data for goal status
   skill-health: { enabled: true, schedule: "0 18 * * *" }
 
   self-improve: { enabled: false, schedule: "0 18 1/2 * *" } # disabled for cost
   reflect: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
 
   action-converter: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
-  startup-idea: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
+  startup-idea: { enabled: false, schedule: "0 18 * * *" } # disabled — replaced by monetize-revenant
+  monetize-revenant: { enabled: true, schedule: "0 14 * * 1", model: "claude-sonnet-4-6" } # Monday 2PM UTC — weekly monetization ideas for Revenant infra
   tool-builder: { enabled: true, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: true, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
   evening-recap: { enabled: true, schedule: "0 21 * * *", model: "claude-sonnet-4-6", var: "End-of-day Telegram digest: trading-loop scan count, signals fired, Revenant order activity, NAV delta, any aeon skill failures, top 3 papers/comments/PRs surfaced today. Keep under 200 words." } # end-of-day ops summary
