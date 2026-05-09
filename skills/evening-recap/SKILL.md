@@ -22,6 +22,17 @@ Read these files for the end-of-day summary:
 
 The evening recap should reference specific numbers from today's context. "3 new trades, +$42 Revenant P&L, 2 session fixes pushed" — not "activity continued today."
 
+## Narrative Context
+
+If running in a chain, check `.outputs/.chain-context-evening-recap.md` for narrative-tracker output. If present, use it to enrich the recap:
+
+- **TL;DR** — weave the day's dominant narrative position (strongest FRONT-RUN or RIDE) into the verdict. "heavy ship day + BTC-dom narrative re-fired, Revenant riding it at 76% WR" is better than just "heavy ship day."
+- **Headlines** — if a TRANSITION (NEW/PROMOTED/DEMOTED/DEAD) occurred today, surface it as a headline. Narrative shifts are operator-relevant events.
+- **Decisions for tomorrow** — if narrative-tracker flagged a FRONT-RUN or FADE call, and Revenant has active exposure in that narrative, flag it as a decision: "Revenant has $X exposure to [narrative] — narrative-tracker calls FADE. Review position?"
+- **Revenant Connection** — cross-reference today's trades from `context/trading/recent-trades.json` with the narrative brief's REVENANT CONNECTION section. If today's P&L moved because of a narrative shift, say so.
+
+If the narrative brief has no actionable content or is absent, skip this enrichment — don't force narrative language into a quiet day.
+
 ## Goal
 
 The recap is not a log dump — the operator can read the log themselves. Its job is to deliver a verdict on the shape of the day and surface the calls that need a human. Lead with a one-sentence TL;DR; cap headlines; demand a URL on every shipped item; and never print empty sections.

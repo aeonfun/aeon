@@ -20,6 +20,19 @@ Read these files for live project state before generating content:
 
 Use this context to ground tweets in real activity. Reference specific P&L numbers, trade outcomes, and session insights rather than generic statements.
 
+## Narrative Context
+
+If running in a chain, check `.outputs/.chain-context-write-tweet.md` for narrative-tracker output. If present, use it as the primary topic source — it contains pre-scored positions, transitions, and tweet angles grounded in today's data.
+
+Mapping from narrative brief to tweet tiers:
+- **POSITIONS (FRONT-RUN/RIDE)** → Tier 4-5 material. These are the sharpest takes with data backing.
+- **TRANSITIONS (NEW/PROMOTED)** → Tier 2-3 news hooks. The transition itself is the tweet.
+- **REFLEXIVITY alerts** → Tier 5 thread openers. The story-moving-outcomes angle is inherently multi-beat.
+- **TOP 3 TWEET ANGLES** → Direct inputs. Use as-is or riff on them.
+- **REVENANT CONNECTION** → Data grounding. Every Tier 4-5 draft must cite at least one specific number from context pipeline (trade count, win rate, P&L, or a specific trade outcome).
+
+If the narrative brief exists and has actionable content, skip the auto-selection logic in Topic Selection below and use the brief's angles directly.
+
 ## Topic Selection
 
 If `${var}` is set, use that as the topic (it may be a keyword, a thesis, or a URL).

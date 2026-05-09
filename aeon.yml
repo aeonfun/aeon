@@ -87,7 +87,7 @@ skills:
   fetch-tweets: { enabled: true, schedule: "0 17 * * *" }
   refresh-x: { enabled: true, schedule: "0 17 * * *" }
   list-digest: { enabled: true, schedule: "0 17 * * *" }
-  write-tweet: { enabled: true, schedule: "0 17 * * *" }
+  write-tweet: { enabled: true, schedule: "0 17 * * *", model: "claude-opus-4-7" } # Opus for narrative-grounded content; consumes narrative-tracker via chain
   reply-maker: { enabled: true, schedule: "0 17 * * *" }
   remix-tweets: { enabled: false, schedule: "30 17 * * *" } # disabled for cost
   tweet-roundup: { enabled: true, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
@@ -199,14 +199,15 @@ chains:
       - parallel: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, narrative-tracker]
       - skill: morning-brief, consume: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, narrative-tracker]
 
-  # Evening rollup: digest of trade activity + repo activity + agent buzz,
-  # then evening-recap pushes a Telegram summary.
+  # Evening rollup: pull signals in parallel, narrative-tracker feeds write-tweet,
+  # then evening-recap synthesizes everything into a Telegram summary.
   evening-rollup:
     schedule: "0 21 * * *"
     on_error: continue
     steps:
-      - parallel: [monitor-polymarket, agent-buzz]
-      - skill: evening-recap, consume: [monitor-polymarket, agent-buzz]
+      - parallel: [monitor-polymarket, agent-buzz, narrative-tracker]
+      - skill: write-tweet, consume: [narrative-tracker]
+      - skill: evening-recap, consume: [monitor-polymarket, agent-buzz, narrative-tracker]
 
   # Weekly grant-update narrative: DISABLED — depends on push-recap, repo-pulse (cut)
   # weekly-grant-update:
