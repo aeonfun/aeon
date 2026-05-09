@@ -27,9 +27,10 @@ Steps:
    - 3-4 substantive sections
    - Cited sources at the bottom
 5. Save the article to: articles/${today}.md
-6. Update memory/MEMORY.md to record that this article was written and its topic.
-7. Log what you did to memory/logs/${today}.md.
-8. Send a notification via `./notify`: "New article written: [title]\n\nhttps://github.com/${GITHUB_REPOSITORY}/blob/main/articles/${today}.md"
+6. Also write to: `dashboard/content/${today}-${slug}.md` (slug = lowercase title, spaces→hyphens, max 60 chars). This copy feeds the dashboard content feed. Same content, no reformatting needed.
+7. Update memory/MEMORY.md to record that this article was written and its topic.
+8. Log what you did to memory/logs/${today}.md.
+9. Send a notification via `./notify`: "New article written: [title]\n\nhttps://github.com/${GITHUB_REPOSITORY}/blob/main/articles/${today}.md"
 
    Use the `$GITHUB_REPOSITORY` env var (GitHub Actions sets it to `owner/repo` of the running instance).
 
