@@ -17,7 +17,7 @@ The current single most important agent is **CalibrationGap (Revenant)** on Poly
 
 ## Cost discipline
 
-Default model is `claude-opus-4-7`. Skills tagged with `model: claude-sonnet-4-6` should stay on Sonnet — they're tagged that way intentionally for cost reasons. If a `cost-report` shows weekly cost > $40, propose model downgrades for the highest-spend skills in the next `self-improve` run, don't silently change them.
+Default model is `claude-sonnet-4-6`. Only `paper-pick` and `deep-research` use Opus — they're tagged that way intentionally for quality reasons. If a `cost-report` shows weekly cost > $150, propose further model downgrades or skill disabling for the highest-spend skills.
 
 ## Output discipline
 

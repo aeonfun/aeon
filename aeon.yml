@@ -15,14 +15,14 @@ skills:
   reddit-digest: { enabled: true, schedule: "0 7 * * *" }
   telegram-digest: { enabled: true, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # digest from tracked Telegram channels
 
-  # --- Mid-morning (9 AM UTC) ---
-  issue-triage: { enabled: true, schedule: "0 9 * * *" }
-  pr-review: { enabled: true, schedule: "0 9 * * *", var: "tomscaria/swarm-fund-mvp — review parallel-session PRs against ADRs in DECISIONS.md and the conventions in CLAUDE.md. Block on: untested logic, hardcoded secrets, schema changes without migration, removal of risk gates." }
-  auto-merge: { enabled: true, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
-  github-monitor: { enabled: true, schedule: "0 9 * * *" }
-  github-issues: { enabled: true, schedule: "0 9 * * *" }
-  github-trending: { enabled: true, schedule: "0 9 * * *" }
-  github-releases: { enabled: true, schedule: "30 9 * * *" } # track new releases from watched repos
+  # --- Mid-morning (9 AM UTC) --- DISABLED: repo/code cluster cut for cost reduction
+  issue-triage: { enabled: false, schedule: "0 9 * * *" }
+  pr-review: { enabled: false, schedule: "0 9 * * *", var: "tomscaria/swarm-fund-mvp — review parallel-session PRs against ADRs in DECISIONS.md and the conventions in CLAUDE.md. Block on: untested logic, hardcoded secrets, schema changes without migration, removal of risk gates." }
+  auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
+  github-monitor: { enabled: false, schedule: "0 9 * * *" }
+  github-issues: { enabled: false, schedule: "0 9 * * *" }
+  github-trending: { enabled: false, schedule: "0 9 * * *" }
+  github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: true, schedule: "0 12 * * *" }
@@ -39,45 +39,45 @@ skills:
   token-pick: { enabled: true, schedule: "0 12 * * *" }
   token-report: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   market-context-refresh: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
-  narrative-tracker: { enabled: true, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
+  narrative-tracker: { enabled: true, schedule: "workflow_dispatch" } # runs via morning-brief chain; individual schedule removed to avoid duplication
   polymarket-comments: { enabled: true, schedule: "0 13 * * *", var: "Mine high-volume Polymarket comment threads for narrative-shift signals — info-asymmetry alpha that doesn't show up in CalibrationGap's quantitative scanner. Focus: politics + crypto verticals. Surface user names with track records, recurring claims, citation chains pointing at upcoming catalysts." } # top comments from trending Polymarket markets
-  unlock-monitor: { enabled: true, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
+  unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker — disabled for cost
 
   # --- Afternoon (2 PM UTC) ---
-  article: { enabled: true, schedule: "0 14 * * *" }
-  technical-explainer: { enabled: true, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
-  digest: { enabled: true, schedule: "0 14 * * *" }
-  research-brief: { enabled: true, schedule: "0 14 * * *" }
-  deep-research: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
+  article: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
+  technical-explainer: { enabled: false, schedule: "30 14 * * *" } # disabled for cost
+  digest: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
+  research-brief: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
+  deep-research: { enabled: true, schedule: "workflow_dispatch", model: "claude-opus-4-7", var: "" } # on-demand only — Opus for complex synthesis
   last30: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
-  paper-pick: { enabled: true, schedule: "0 14 * * *", var: "Stanford PhD prep (target: Dec 2026). Focus areas: prediction market calibration, agentic finance, multi-agent reinforcement learning, regime-switching trading, Polymarket microstructure, Becker-style trade-level calibration, Darwinian agent selection, FinCon-style verbal reinforcement. Prefer NeurIPS/ICML/SSRN over hype." }
-  search-skill: { enabled: true, schedule: "0 14 * * *" }
+  paper-pick: { enabled: true, schedule: "workflow_dispatch", model: "claude-opus-4-7", var: "Stanford PhD prep (target: Dec 2026). Focus areas: prediction market calibration, agentic finance, multi-agent reinforcement learning, regime-switching trading, Polymarket microstructure, Becker-style trade-level calibration, Darwinian agent selection, FinCon-style verbal reinforcement. Prefer NeurIPS/ICML/SSRN over hype." } # runs via morning-brief chain only; Opus for PhD-quality analysis
+  search-skill: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
 
-  security-digest: { enabled: true, schedule: "0 14 * * *" }
-  idea-capture: { enabled: true, schedule: "0 14 * * *" }
-  deal-flow: { enabled: true, schedule: "0 14 * * 1" } # weekly funding round tracker
-  reg-monitor: { enabled: true, schedule: "0 14 * * 3" } # regulatory developments tracker
+  security-digest: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
+  idea-capture: { enabled: false, schedule: "0 14 * * *" } # disabled for cost
+  deal-flow: { enabled: false, schedule: "0 14 * * 1" } # disabled for cost
+  reg-monitor: { enabled: false, schedule: "0 14 * * 3" } # disabled for cost
 
-  # --- Repo intelligence (3 PM UTC) ---
-  push-recap: { enabled: true, schedule: "0 15 * * *" }
-  repo-article: { enabled: true, schedule: "0 15 * * *" }
-  repo-actions: { enabled: true, schedule: "0 15 * * *" }
-  repo-pulse: { enabled: true, schedule: "0 15 * * *" }
-  star-milestone: { enabled: true, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
-  project-lens: { enabled: true, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
+  # --- Repo intelligence (3 PM UTC) --- DISABLED: repo/code cluster cut for cost reduction
+  push-recap: { enabled: false, schedule: "0 15 * * *" }
+  repo-article: { enabled: false, schedule: "0 15 * * *" }
+  repo-actions: { enabled: false, schedule: "0 15 * * *" }
+  repo-pulse: { enabled: false, schedule: "0 15 * * *" }
+  star-milestone: { enabled: false, schedule: "15 15 * * *" }
+  project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" }
   repo-scanner:
     {
-      enabled: true,
+      enabled: false,
       schedule: "0 15 * * 0",
       model: "claude-sonnet-4-6",
       var: ""
-    } # catalog all GitHub repos — set var to username
+    }
 
   # --- Late afternoon (4 PM UTC) ---
-  skill-security-scan: { enabled: true, schedule: "0 16 * * 1" }
-  code-health: { enabled: true, schedule: "0 16 * * *" }
-  changelog: { enabled: true, schedule: "0 16 * * *" }
-  external-feature: { enabled: true, schedule: "30 16 * * *", var: "" } # proactively enhance watched repos — set var to owner/repo or owner/repo#N
+  skill-security-scan: { enabled: false, schedule: "0 16 * * 1" } # disabled for cost
+  code-health: { enabled: false, schedule: "0 16 * * *" } # disabled for cost
+  changelog: { enabled: false, schedule: "0 16 * * *" } # disabled for cost
+  external-feature: { enabled: false, schedule: "30 16 * * *", var: "" } # disabled for cost
   vuln-scanner: { enabled: true, schedule: "0 16 * * 6", var: "" } # Saturday — audit repos for security vulns, PR fixes
   deploy-prototype: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
   autoresearch: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
@@ -89,64 +89,64 @@ skills:
   list-digest: { enabled: true, schedule: "0 17 * * *" }
   write-tweet: { enabled: true, schedule: "0 17 * * *" }
   reply-maker: { enabled: true, schedule: "0 17 * * *" }
-  remix-tweets: { enabled: true, schedule: "30 17 * * *" } # 10 rephrased versions of random past tweets
+  remix-tweets: { enabled: false, schedule: "30 17 * * *" } # disabled for cost
   tweet-roundup: { enabled: true, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
-  agent-buzz: { enabled: true, schedule: "30 17 * * *" } # top AI agent tweets by influence
-  farcaster-digest: { enabled: true, schedule: "0 17 * * *" } # trending Farcaster casts
-  vibecoding-digest: { enabled: true, schedule: "30 17 * * *" } # r/vibecoding trending posts
+  agent-buzz: { enabled: true, schedule: "workflow_dispatch" } # runs via evening-rollup chain; individual schedule removed to avoid duplication
+  farcaster-digest: { enabled: false, schedule: "0 17 * * *" } # disabled for cost
+  vibecoding-digest: { enabled: false, schedule: "30 17 * * *" } # disabled for cost
   channel-recap: { enabled: true, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
   # --- Feed generation (5:30 PM UTC, after content skills) ---
-  rss-feed: { enabled: true, schedule: "30 17 * * *" }
+  rss-feed: { enabled: false, schedule: "30 17 * * *" } # disabled for cost
 
   # --- Gallery update (Sunday 6 PM UTC, after content week) ---
-  update-gallery: { enabled: true, schedule: "0 18 * * 0" }
+  update-gallery: { enabled: false, schedule: "0 18 * * 0" } # disabled for cost
 
   # --- Content distribution (runs 30 min after article-generating skills) ---
   syndicate-article:
     {
-      enabled: true,
+      enabled: false,
       schedule: "30 15 * * *",
       model: "claude-sonnet-4-6",
       var: ""
-    } # cross-post latest article to Dev.to
+    } # disabled for cost
 
   # --- Evening / meta (6 PM UTC) ---
-  goal-tracker: { enabled: true, schedule: "0 18 * * *" }
+  goal-tracker: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
   skill-health: { enabled: true, schedule: "0 18 * * *" }
 
-  self-improve: { enabled: true, schedule: "0 18 1/2 * *" } # every other day — improve agent skills/prompts/config
-  reflect: { enabled: true, schedule: "0 18 * * *" }
+  self-improve: { enabled: false, schedule: "0 18 1/2 * *" } # disabled for cost
+  reflect: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
 
-  action-converter: { enabled: true, schedule: "0 18 * * *" }
-  startup-idea: { enabled: true, schedule: "0 18 * * *" }
+  action-converter: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
+  startup-idea: { enabled: false, schedule: "0 18 * * *" } # disabled for cost
   tool-builder: { enabled: true, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: true, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
   evening-recap: { enabled: true, schedule: "0 21 * * *", model: "claude-sonnet-4-6", var: "End-of-day Telegram digest: trading-loop scan count, signals fired, Revenant order activity, NAV delta, any aeon skill failures, top 3 papers/comments/PRs surfaced today. Keep under 200 words." } # end-of-day ops summary
   vercel-projects:
     {
-      enabled: true,
+      enabled: false,
       schedule: "0 18 * * 0",
       model: "claude-sonnet-4-6",
       var: ""
-    } # Sunday — catalog Vercel projects
+    } # disabled for cost
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
   cost-report: { enabled: true, schedule: "0 7 * * 1", model: "claude-sonnet-4-6" } # weekly API cost breakdown by skill and model
 
   # --- Weekly (Monday only) ---
-  fork-fleet: { enabled: true, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
-  skill-evals: { enabled: true, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
-  skill-update-check: { enabled: true, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
+  fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # disabled for cost
+  skill-evals: { enabled: false, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # disabled for cost
+  skill-update-check: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # disabled for cost
   spawn-instance: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
-  fleet-control: { enabled: true, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
-  weekly-review: { enabled: true, schedule: "0 19 * * 1" }
-  weekly-shiplog: { enabled: true, schedule: "0 9 * * 1", var: "tomscaria/swarm-fund-mvp — synthesize last week's commits + DECISIONS.md ADR adds + memory updates into an LP-ready narrative. Lead with shipped milestones, lifecycle progress (Birth/Canary/Apex/Revenant counts), trade tape highlights. Suitable for forwarding to investors and grant committees." } # Monday — narrative of everything shipped last week
-  skill-leaderboard: { enabled: true, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
-  fork-contributor-leaderboard: { enabled: true, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
-  fork-skill-digest: { enabled: true, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
+  fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # disabled for cost
+  weekly-review: { enabled: false, schedule: "0 19 * * 1" } # disabled for cost
+  weekly-shiplog: { enabled: false, schedule: "0 9 * * 1", var: "tomscaria/swarm-fund-mvp — synthesize last week's commits + DECISIONS.md ADR adds + memory updates into an LP-ready narrative. Lead with shipped milestones, lifecycle progress (Birth/Canary/Apex/Revenant counts), trade tape highlights. Suitable for forwarding to investors and grant committees." } # disabled for cost
+  skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # disabled for cost
+  fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # disabled for cost
+  fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # disabled for cost
   workflow-security-audit: { enabled: true, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
-  skill-graph: { enabled: true, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
+  skill-graph: { enabled: false, schedule: "0 17 * * 0" } # disabled for cost
 
   # --- Utilities ---
   auto-workflow: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — var: URL to analyze
@@ -195,8 +195,8 @@ chains:
     schedule: "0 7 * * *"
     on_error: continue
     steps:
-      - parallel: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker]
-      - skill: morning-brief, consume: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, github-monitor, narrative-tracker]
+      - parallel: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, narrative-tracker]
+      - skill: morning-brief, consume: [paper-pick, hacker-news-digest, monitor-polymarket, monitor-kalshi, narrative-tracker]
 
   # Evening rollup: digest of trade activity + repo activity + agent buzz,
   # then evening-recap pushes a Telegram summary.
@@ -204,22 +204,21 @@ chains:
     schedule: "0 21 * * *"
     on_error: continue
     steps:
-      - parallel: [push-recap, monitor-polymarket, agent-buzz, code-health]
-      - skill: evening-recap, consume: [push-recap, monitor-polymarket, agent-buzz, code-health]
+      - parallel: [monitor-polymarket, agent-buzz]
+      - skill: evening-recap, consume: [monitor-polymarket, agent-buzz]
 
-  # Weekly grant-update narrative: pull weekly shipped + paper picks + repo pulse,
-  # then weekly-shiplog synthesizes into LP/grant-committee-ready prose.
-  weekly-grant-update:
-    schedule: "0 9 * * 1"
-    on_error: continue
-    steps:
-      - parallel: [paper-pick, repo-pulse, push-recap, narrative-tracker]
-      - skill: weekly-shiplog, consume: [paper-pick, repo-pulse, push-recap, narrative-tracker]
+  # Weekly grant-update narrative: DISABLED — depends on push-recap, repo-pulse (cut)
+  # weekly-grant-update:
+  #   schedule: "0 9 * * 1"
+  #   on_error: continue
+  #   steps:
+  #     - parallel: [paper-pick, repo-pulse, push-recap, narrative-tracker]
+  #     - skill: weekly-shiplog, consume: [paper-pick, repo-pulse, push-recap, narrative-tracker]
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # Bankr gateway also supports: gemini-3-pro, gemini-3-flash, gpt-5.2, kimi-k2.5, qwen3-coder
-model: claude-opus-4-7
+model: claude-sonnet-4-6
 
 # AI Gateway — route Claude Code requests through an LLM gateway.
 # provider: direct (default, uses ANTHROPIC_API_KEY) | bankr (uses BANKR_LLM_KEY)
