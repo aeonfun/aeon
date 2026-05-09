@@ -1,0 +1,406 @@
+{
+  "trades": [
+    {
+      "id": "entered-pm-prob-reversion-v03-pm-pro-v03-631184",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v03",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.037",
+      "timestamp": "2026-04-27T09:08:30.433096+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v03-pm-pro-v03-823908",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v03",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.004",
+      "timestamp": "2026-04-27T09:08:30.433096+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v02-pm-pro-v02-631184",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v02",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.037",
+      "timestamp": "2026-04-27T09:08:30.432675+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v02-pm-pro-v02-823908",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v02",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.004",
+      "timestamp": "2026-04-27T09:08:30.432675+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v01-pm-pro-v01-631184",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v01",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.037",
+      "timestamp": "2026-04-27T09:08:30.432235+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v01-pm-pro-v01-823908",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v01",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.004",
+      "timestamp": "2026-04-27T09:08:30.432235+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v03-pm-pro-v03-235550",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v03",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.029",
+      "timestamp": "2026-04-27T09:07:21.212762+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v03-pm-pro-v03-073848",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v03",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.155",
+      "timestamp": "2026-04-27T09:07:21.212762+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v02-pm-pro-v02-235550",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v02",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.029",
+      "timestamp": "2026-04-27T09:07:21.212183+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v02-pm-pro-v02-073848",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v02",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.155",
+      "timestamp": "2026-04-27T09:07:21.212183+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v01-pm-pro-v01-562794",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v01",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.486",
+      "timestamp": "2026-04-27T09:07:21.211360+00:00"
+    },
+    {
+      "id": "entered-pm-prob-reversion-v01-pm-pro-v01-235550",
+      "type": "trade_entered",
+      "agent_id": "pm-prob-reversion-v01",
+      "asset": "PM",
+      "details": "buy_yes $50.00 @ 0.029",
+      "timestamp": "2026-04-27T09:07:21.211360+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-03-macro-gemflash-k15-allreg-i531-cg-ca26a625",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-03-macro-gemflash-k15-allreg-i531",
+      "asset": "ETH",
+      "details": "realized $+11.97 @ 0.000",
+      "timestamp": "2026-04-27T07:16:35.199310+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-03-politics-llama8-k35-riskonly-i460-cg-c959d307",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-03-politics-llama8-k35-riskonly-i460",
+      "asset": "ETH",
+      "details": "realized $+11.97 @ 0.000",
+      "timestamp": "2026-04-27T07:16:34.541381+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-03-crypto-gemflash-k50-trendonly-i371-cg-2b21f71c",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-03-crypto-gemflash-k50-trendonly-i371",
+      "asset": "ETH",
+      "details": "realized $+11.97 @ 0.000",
+      "timestamp": "2026-04-27T07:16:34.406542+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-03-politics-llama8-k20-riskonly-i300-cg-5e881b15",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-03-politics-llama8-k20-riskonly-i300",
+      "asset": "ETH",
+      "details": "realized $+11.97 @ 0.000",
+      "timestamp": "2026-04-27T07:16:33.893528+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-03-macro-llama70-k35-trendonly-i012-cg-3ed596cb",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-03-macro-llama70-k35-trendonly-i012",
+      "asset": "ETH",
+      "details": "realized $+11.97 @ 0.000",
+      "timestamp": "2026-04-27T07:16:32.233386+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-politics-csonnet46-k50-riskonly-i732-cg-aa6d6d48",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-politics-csonnet46-k50-riskonly-i732",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:20:34.614610+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-04-crypto-mixtral-k35-allreg-i611-cg-453075ba",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-04-crypto-mixtral-k35-allreg-i611",
+      "asset": "SOL",
+      "details": "buy_no $50.00 @ 0.122",
+      "timestamp": "2026-04-27T05:20:27.841902+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-macro-gemflash-k15-allreg-i531-cg-9a1d0c69",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-macro-gemflash-k15-allreg-i531",
+      "asset": "SOL",
+      "details": "buy_no $50.00 @ 0.122",
+      "timestamp": "2026-04-27T05:20:22.843630+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-politics-qwen72-k10-offheavy-i516-cg-d2263d48",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-politics-qwen72-k10-offheavy-i516",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:20:22.261220+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-macro-csonnet46-k45-offheavy-i348-cg-a0278d56",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-macro-csonnet46-k45-offheavy-i348",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:20:11.049359+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-crypto-copus45-k20-offheavy-i251-cg-44e8b3a6",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-crypto-copus45-k20-offheavy-i251",
+      "asset": "SOL",
+      "details": "buy_no $50.00 @ 0.122",
+      "timestamp": "2026-04-27T05:20:06.299361+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-macro-gemflash-k20-trendonly-i212-cg-41f01179",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-macro-gemflash-k20-trendonly-i212",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:20:03.335296+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-04-politics-deepseek-k25-riskonly-i195-cg-692f2fd1",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-04-politics-deepseek-k25-riskonly-i195",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:20:02.632238+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-07-politics-mixtral-k50-trendonly-i164-cg-4a4529f1",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-07-politics-mixtral-k50-trendonly-i164",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.138",
+      "timestamp": "2026-04-27T05:19:59.387996+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-macro-llama70-k35-trendonly-i012-cg-2c5a3ab3",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-macro-llama70-k35-trendonly-i012",
+      "asset": "SOL",
+      "details": "buy_no $50.00 @ 0.122",
+      "timestamp": "2026-04-27T05:19:49.606408+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-politics-llama8-k35-riskonly-i460-cg-aa6e7cc6",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-politics-llama8-k35-riskonly-i460",
+      "asset": "HYPE",
+      "details": "buy_yes $50.00 @ 0.904",
+      "timestamp": "2026-04-26T04:36:41.942659+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-politics-llama8-k20-riskonly-i300-cg-c36c4a86",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-politics-llama8-k20-riskonly-i300",
+      "asset": "HYPE",
+      "details": "buy_yes $50.00 @ 0.904",
+      "timestamp": "2026-04-26T04:36:32.243578+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-macro-llama70-k45-riskonly-i139-cg-3ee97b49",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-macro-llama70-k45-riskonly-i139",
+      "asset": "HYPE",
+      "details": "buy_yes $50.00 @ 0.904",
+      "timestamp": "2026-04-26T04:36:21.947190+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-04-crypto-copus45-k10-nocrisis-i124-cg-0d0ec808",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-04-crypto-copus45-k10-nocrisis-i124",
+      "asset": "HYPE",
+      "details": "buy_yes $50.00 @ 0.904",
+      "timestamp": "2026-04-26T04:36:20.259189+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-crypto-deepseek-k40-offheavy-i035-cg-e376704d",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-crypto-deepseek-k40-offheavy-i035",
+      "asset": "HYPE",
+      "details": "buy_yes $50.00 @ 0.904",
+      "timestamp": "2026-04-26T04:36:14.078733+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-politics-csonnet46-k50-riskonly-i732-cg-2109e95e",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-politics-csonnet46-k50-riskonly-i732",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:48:59.371027+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-politics-qwen72-k10-offheavy-i516-cg-cef3df6f",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-politics-qwen72-k10-offheavy-i516",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:48:27.908243+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-macro-csonnet46-k45-offheavy-i348-cg-1acdaf81",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-macro-csonnet46-k45-offheavy-i348",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:48:00.165294+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-macro-gemflash-k20-trendonly-i212-cg-3cf0ef77",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-macro-gemflash-k20-trendonly-i212",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:47:41.144420+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-04-politics-deepseek-k25-riskonly-i195-cg-1ad385c7",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-04-politics-deepseek-k25-riskonly-i195",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:47:38.740821+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-07-politics-mixtral-k50-trendonly-i164-cg-b071fe20",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-07-politics-mixtral-k50-trendonly-i164",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:47:33.986785+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-v1-cg-175fa304",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-v1",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.323",
+      "timestamp": "2026-04-25T16:47:02.941741+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-politics-qwen72-k10-offheavy-i516-cg-4e87fc45",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-politics-qwen72-k10-offheavy-i516",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.434",
+      "timestamp": "2026-04-25T12:40:40.495120+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-06-macro-gemflash-k20-trendonly-i212-cg-451bf395",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-06-macro-gemflash-k20-trendonly-i212",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.434",
+      "timestamp": "2026-04-25T12:39:52.927428+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-politics-csonnet46-k50-riskonly-i732-cg-3f96c38a",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-politics-csonnet46-k50-riskonly-i732",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.424",
+      "timestamp": "2026-04-25T10:48:36.423863+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-05-macro-csonnet46-k45-offheavy-i348-cg-38307090",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-05-macro-csonnet46-k45-offheavy-i348",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.424",
+      "timestamp": "2026-04-25T10:47:36.779659+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-04-politics-deepseek-k25-riskonly-i195-cg-2ab6e187",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-04-politics-deepseek-k25-riskonly-i195",
+      "asset": "BTC",
+      "details": "buy_no $50.00 @ 0.424",
+      "timestamp": "2026-04-25T10:47:15.119062+00:00"
+    },
+    {
+      "id": "exited-calibration-gap-v1-cg-4b2b83da",
+      "type": "trade_exited",
+      "agent_id": "calibration-gap-v1",
+      "asset": "BTC",
+      "details": "realized $+25.19 @ 1.000",
+      "timestamp": "2026-04-24T19:39:14.268102+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-macro-gemflash-k15-allreg-i531-cg-ca26a625",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-macro-gemflash-k15-allreg-i531",
+      "asset": "ETH",
+      "details": "buy_no $50.00 @ 0.193",
+      "timestamp": "2026-04-24T00:27:30.688127+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-politics-llama8-k35-riskonly-i460-cg-c959d307",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-politics-llama8-k35-riskonly-i460",
+      "asset": "ETH",
+      "details": "buy_no $50.00 @ 0.193",
+      "timestamp": "2026-04-24T00:27:16.794535+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-crypto-gemflash-k50-trendonly-i371-cg-2b21f71c",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-crypto-gemflash-k50-trendonly-i371",
+      "asset": "ETH",
+      "details": "buy_no $50.00 @ 0.193",
+      "timestamp": "2026-04-24T00:26:55.415991+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-politics-llama8-k20-riskonly-i300-cg-5e881b15",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-politics-llama8-k20-riskonly-i300",
+      "asset": "ETH",
+      "details": "buy_no $50.00 @ 0.193",
+      "timestamp": "2026-04-24T00:26:41.051072+00:00"
+    },
+    {
+      "id": "entered-calibration-gap-03-macro-llama70-k35-trendonly-i012-cg-3ed596cb",
+      "type": "trade_entered",
+      "agent_id": "calibration-gap-03-macro-llama70-k35-trendonly-i012",
+      "asset": "ETH",
+      "details": "buy_no $50.00 @ 0.193",
+      "timestamp": "2026-04-24T00:25:34.993301+00:00"
+    }
+  ],
+  "count": 50,
+  "synced_at": "2026-05-09T03:15:46Z"
+}

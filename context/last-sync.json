@@ -1,0 +1,9 @@
+{
+  "timestamp": "2026-05-09T03:15:46Z",
+  "sources": {
+    "claude-sessions": "ok",
+    "trading": "ok",
+    "analytics-site": "ok",
+    "analytics-social": "skip:no-source-file"
+  }
+}
