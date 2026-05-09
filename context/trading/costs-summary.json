@@ -1,26 +1,26 @@
 {
   "total_cost_usd": 0.8769,
-  "total_calls": 10183,
+  "total_calls": 10185,
   "total_tokens": 204688,
   "by_vendor": {
     "polymarket": {
-      "calls": 8474,
+      "calls": 8475,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 8474,
+          "calls": 8475,
           "cost_usd": 0.0
         }
       }
     },
     "hyperliquid": {
-      "calls": 1501,
+      "calls": 1502,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "get_user_fills_pnl": {
-          "calls": 675,
+          "calls": 676,
           "cost_usd": 0.0
         },
         "get_open_positions": {
@@ -47,17 +47,17 @@
   },
   "by_agent": {
     "__system__": {
-      "calls": 9879,
+      "calls": 9881,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
         "polymarket": {
-          "calls": 8378,
+          "calls": 8379,
           "cost_usd": 0.0,
           "tokens": 0
         },
         "hyperliquid": {
-          "calls": 1501,
+          "calls": 1502,
           "cost_usd": 0.0,
           "tokens": 0
         }
@@ -2108,9 +2108,9 @@
     {
       "hour": "2026-05-09T03:00:00",
       "cost_usd": 0.0,
-      "calls": 7
+      "calls": 9
     }
   ],
-  "event_count": 6462,
-  "synced_at": "2026-05-09T03:16:11Z"
+  "event_count": 6464,
+  "synced_at": "2026-05-09T03:16:30Z"
 }

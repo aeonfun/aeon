@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-09T03:16:13.583724Z",
+  "generated_at": "2026-05-09T03:16:32.880280Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -2414,5 +2414,5 @@
     "regime_states": 5,
     "papers_ingested": 3737
   },
-  "synced_at": "2026-05-09T03:16:11Z"
+  "synced_at": "2026-05-09T03:16:30Z"
 }
