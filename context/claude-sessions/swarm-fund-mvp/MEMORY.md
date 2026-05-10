@@ -2,7 +2,7 @@
 
 ## Rules
 - [No compliance leak in public materials](feedback_no_compliance_in_public.md) — regulator names / ToS / geoblock / "entity restructure" workarounds are 201-deep-dive-only (LP-distributed). Scrub from landing, /investors web, 1-pager, 101 deck.
-- [No ASK content on public /investors](project_investor_access_split.md) — public is vision-only; multiples, raise sizes, VC target lists, scenarios live ONLY on gated /investors/101+201+onepager. Stage 1 live (commit `b686093`); Stage 2 PR queued via routine `trig_01USVATWYoxg5JYry6UhJLcD` (fires 2026-04-28T06:08:00Z).
+- [No ASK content on public /investors](project_investor_access_split.md) — public is vision-only; multiples, raise sizes, VC target lists, scenarios live ONLY on gated /investors/101+201+onepager. Stage 1 live (commit `b686093`); Stage 2 PR #21 opened 2026-04-28 by routine `trig_01USVATWYoxg5JYry6UhJLcD` and CLOSED without merging — JSON allowlist + mailto shim remains operational.
 - [zsh read-only var names](feedback_zsh_readonly_vars.md) — never assign to `status`, `pipestatus`, `RANDOM`, `SECONDS`, etc. in Monitor/Bash loops. Use `code`/`http_code` instead.
 - [Interactive shell aliases on this Mac](feedback_interactive_shell_aliases.md) — `mv -i`, `cp -v`, `mkdir -v` leak into Bash calls; scripted overwrites can hang on the y/n prompt. Use `\mv -f` or pipe `yes`.
 - [Hardware revisit at $5M AUM](project_hardware_revisit_5m_aum.md) — when AUM crosses $5M, re-run §2 of `~/.claude/plans/how-does-this-change-precious-twilight.md` (build-vs-rent + peer silicon scan + inference $/Mtok curve). Below threshold answer is fixed: rent, no silicon.

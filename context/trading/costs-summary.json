@@ -1,34 +1,34 @@
 {
   "total_cost_usd": 1.2998,
-  "total_calls": 10479,
+  "total_calls": 10550,
   "total_tokens": 381424,
   "by_vendor": {
     "hyperliquid": {
-      "calls": 1715,
+      "calls": 1833,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "get_user_fills_pnl": {
-          "calls": 687,
+          "calls": 691,
           "cost_usd": 0.0
         },
         "get_balance": {
-          "calls": 306,
+          "calls": 400,
           "cost_usd": 0.0
         },
         "get_open_positions": {
-          "calls": 722,
+          "calls": 742,
           "cost_usd": 0.0
         }
       }
     },
     "polymarket": {
-      "calls": 8390,
+      "calls": 8343,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 8390,
+          "calls": 8343,
           "cost_usd": 0.0
         }
       }
@@ -58,17 +58,17 @@
   },
   "by_agent": {
     "__system__": {
-      "calls": 10009,
+      "calls": 10080,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
         "hyperliquid": {
-          "calls": 1715,
+          "calls": 1833,
           "cost_usd": 0.0,
           "tokens": 0
         },
         "polymarket": {
-          "calls": 8294,
+          "calls": 8247,
           "cost_usd": 0.0,
           "tokens": 0
         }
@@ -1282,29 +1282,9 @@
   },
   "hourly": [
     {
-      "hour": "2026-05-03T07:00:00",
-      "cost_usd": 0.0,
-      "calls": 23
-    },
-    {
-      "hour": "2026-05-03T08:00:00",
-      "cost_usd": 0.0,
-      "calls": 63
-    },
-    {
-      "hour": "2026-05-03T09:00:00",
-      "cost_usd": 0.0,
-      "calls": 55
-    },
-    {
-      "hour": "2026-05-03T10:00:00",
-      "cost_usd": 0.0,
-      "calls": 52
-    },
-    {
       "hour": "2026-05-03T11:00:00",
       "cost_usd": 0.0,
-      "calls": 47
+      "calls": 33
     },
     {
       "hour": "2026-05-03T12:00:00",
@@ -2124,9 +2104,29 @@
     {
       "hour": "2026-05-10T07:00:00",
       "cost_usd": 0.0,
-      "calls": 8
+      "calls": 27
+    },
+    {
+      "hour": "2026-05-10T08:00:00",
+      "cost_usd": 0.0,
+      "calls": 140
+    },
+    {
+      "hour": "2026-05-10T09:00:00",
+      "cost_usd": 0.0,
+      "calls": 51
+    },
+    {
+      "hour": "2026-05-10T10:00:00",
+      "cost_usd": 0.0,
+      "calls": 47
+    },
+    {
+      "hour": "2026-05-10T11:00:00",
+      "cost_usd": 0.0,
+      "calls": 21
     }
   ],
-  "event_count": 6776,
-  "synced_at": "2026-05-10T07:17:07Z"
+  "event_count": 6871,
+  "synced_at": "2026-05-10T11:17:11Z"
 }
