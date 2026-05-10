@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-10T03:17:07.269144Z",
+  "generated_at": "2026-05-10T07:17:10.811299Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -1894,16 +1894,16 @@
     {
       "agent_id": "pm-entropy-flow-v01",
       "lifecycle": "shadow",
-      "closed_trades": 6,
+      "closed_trades": 7,
       "open_positions": 1,
-      "win_rate": 0.6667,
-      "total_pnl_usd": 1.87,
-      "sharpe": 0.463,
-      "composite": 0.419,
-      "mean_edge_bps_gross": 62,
-      "mean_edge_bps_net": -143,
-      "median_edge_bps_gross": 65,
-      "median_edge_bps_net": -140
+      "win_rate": 0.5714,
+      "total_pnl_usd": 1.67,
+      "sharpe": 0.368,
+      "composite": 0.309,
+      "mean_edge_bps_gross": 48,
+      "mean_edge_bps_net": -157,
+      "median_edge_bps_gross": 5,
+      "median_edge_bps_net": -200
     },
     {
       "agent_id": "pm-entropy-flow-v02",
@@ -2286,30 +2286,30 @@
     {
       "agent_id": "ta-macd-cross-v01",
       "lifecycle": "canary",
-      "closed_trades": 11,
-      "open_positions": 4,
-      "win_rate": 0.5455,
-      "total_pnl_usd": 3.9,
-      "sharpe": 0.267,
-      "composite": 0.447,
-      "mean_edge_bps_gross": 71,
-      "mean_edge_bps_net": -134,
-      "median_edge_bps_gross": 35,
-      "median_edge_bps_net": -170
+      "closed_trades": 15,
+      "open_positions": 5,
+      "win_rate": 0.4667,
+      "total_pnl_usd": 4.12,
+      "sharpe": 0.231,
+      "composite": 0.253,
+      "mean_edge_bps_gross": 55,
+      "mean_edge_bps_net": -150,
+      "median_edge_bps_gross": -30,
+      "median_edge_bps_net": -235
     },
     {
       "agent_id": "ta-macd-cross-v02",
       "lifecycle": "canary",
-      "closed_trades": 11,
-      "open_positions": 4,
-      "win_rate": 0.5455,
-      "total_pnl_usd": 3.9,
-      "sharpe": 0.267,
-      "composite": 0.447,
-      "mean_edge_bps_gross": 71,
-      "mean_edge_bps_net": -134,
-      "median_edge_bps_gross": 35,
-      "median_edge_bps_net": -170
+      "closed_trades": 15,
+      "open_positions": 5,
+      "win_rate": 0.4667,
+      "total_pnl_usd": 4.12,
+      "sharpe": 0.231,
+      "composite": 0.253,
+      "mean_edge_bps_gross": 55,
+      "mean_edge_bps_net": -150,
+      "median_edge_bps_gross": -30,
+      "median_edge_bps_net": -235
     },
     {
       "agent_id": "ta-rsi-divergence-v01",
@@ -2389,22 +2389,22 @@
     "hl_funded": false
   },
   "totals": {
-    "closed_trades": 1587,
-    "win_rate": 0.3006,
-    "total_pnl_usd": 1042.47,
+    "closed_trades": 1596,
+    "win_rate": 0.3001,
+    "total_pnl_usd": 1042.91,
     "real_pnl_usd": 108.111,
     "real_fills_lifetime": 225,
-    "canary_pnl_usd": 1042.47,
-    "canary_closed_trades": 185,
+    "canary_pnl_usd": 1042.91,
+    "canary_closed_trades": 193,
     "canary_agents": 12,
-    "shadow_pnl_usd": -23178.4,
-    "shadow_closed_trades": 1402,
+    "shadow_pnl_usd": -23178.6,
+    "shadow_closed_trades": 1403,
     "shadow_agents": 155,
     "strategies_active": 47,
-    "mean_edge_bps_gross": -2794,
-    "mean_edge_bps_net": -2999,
-    "median_edge_bps_gross": -6452,
-    "median_edge_bps_net": -6657
+    "mean_edge_bps_gross": -2779,
+    "mean_edge_bps_net": -2984,
+    "median_edge_bps_gross": -6416,
+    "median_edge_bps_net": -6621
   },
   "milestones": {
     "canary_to_apex_progress": "394/100",
@@ -2414,5 +2414,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-10T03:17:04Z"
+  "synced_at": "2026-05-10T07:17:07Z"
 }
