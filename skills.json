@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-09T00:00:00Z",
+    "generated": "2026-05-10T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 113,
+    "total": 114,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -34,6 +34,18 @@
             "sha": "39b5a88",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon agent-buzz"
+        },
+        {
+            "slug": "ai-framework-watch",
+            "name": "AI Framework Watch",
+            "description": "Weekly competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated 9-framework watchlist",
+            "category": "research",
+            "schedule": "30 8 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-10",
+            "install": "./add-skill aaronjmars/aeon ai-framework-watch"
         },
         {
             "slug": "aixbt-pulse",
