@@ -45,8 +45,15 @@
     {
       "id": null,
       "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.32822674080480635,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
       "lifecycle": "shadow",
-      "fitness": 0.30946854979604743,
+      "fitness": 0.31,
       "pnl": null
     },
     {
@@ -68,20 +75,6 @@
       "family": null,
       "lifecycle": "canary",
       "fitness": 0.2536146920724847,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
-      "fitness": 0.25272594695906525,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
-      "fitness": 0.25272594695906525,
       "pnl": null
     },
     {
@@ -101,6 +94,20 @@
     {
       "id": null,
       "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.2477325980257677,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.2477325980257677,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
       "lifecycle": "shadow",
       "fitness": 0.24386329243854613,
       "pnl": null
@@ -110,20 +117,6 @@
       "family": null,
       "lifecycle": "shadow",
       "fitness": 0.24386329243854613,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
-      "fitness": 0.20923834873826305,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
-      "fitness": 0.20923834873826305,
       "pnl": null
     },
     {
@@ -139,12 +132,19 @@
       "lifecycle": "shadow",
       "fitness": 0.19569953630711973,
       "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.18258624922429156,
+      "pnl": null
     }
   ],
   "lifecycle_counts": {
-    "canary": 12,
-    "shadow": 160
+    "canary": 13,
+    "shadow": 159
   },
   "total_agents": 172,
-  "synced_at": "2026-05-11T03:17:26Z"
+  "synced_at": "2026-05-11T07:17:29Z"
 }
