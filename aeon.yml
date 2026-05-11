@@ -40,6 +40,7 @@ skills:
   monitor-runners: { enabled: false, schedule: "0 12 * * *" }
   token-pick: { enabled: false, schedule: "0 12 * * *" }
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
+  price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
   market-context-refresh: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets

@@ -39,7 +39,7 @@ get_category() {
     spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
     # Crypto & Markets
-    token-alert|token-movers|token-report|token-pick|monitor-runners) echo "crypto" ;;
+    token-alert|token-movers|token-report|token-pick|monitor-runners|price-threshold-alert) echo "crypto" ;;
     on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
     treasury-info|distribute-tokens|contributor-reward) echo "crypto" ;;
