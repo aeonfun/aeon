@@ -143,8 +143,8 @@
   ],
   "lifecycle_counts": {
     "canary": 12,
-    "shadow": 157
+    "shadow": 160
   },
-  "total_agents": 169,
-  "synced_at": "2026-05-10T23:17:22Z"
+  "total_agents": 172,
+  "synced_at": "2026-05-11T03:17:26Z"
 }
