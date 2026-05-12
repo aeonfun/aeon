@@ -109,7 +109,7 @@
       "id": null,
       "family": null,
       "lifecycle": "shadow",
-      "fitness": 0.23612647533002495,
+      "fitness": 0.2349335362833602,
       "pnl": null
     },
     {
@@ -123,7 +123,7 @@
       "id": null,
       "family": null,
       "lifecycle": "shadow",
-      "fitness": 0.2233512112338886,
+      "fitness": 0.22284649083197527,
       "pnl": null
     },
     {
@@ -146,5 +146,5 @@
     "shadow": 167
   },
   "total_agents": 180,
-  "synced_at": "2026-05-12T07:17:51Z"
+  "synced_at": "2026-05-12T11:17:55Z"
 }
