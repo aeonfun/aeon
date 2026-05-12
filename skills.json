@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-11T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 115,
+    "total": 116,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -370,6 +370,18 @@
             "sha": "4a6b037",
             "updated": "2026-05-03",
             "install": "./add-skill aaronjmars/aeon fork-cohort"
+        },
+        {
+            "slug": "fork-release-tracker",
+            "name": "fork-release-tracker",
+            "description": "Weekly scan \u2014 celebrate when any fork of the parent repo cuts a tagged GitHub release. Silent when no fork releases in the window.",
+            "category": "dev",
+            "schedule": "30 19 * * 0",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-12",
+            "install": "./add-skill aaronjmars/aeon fork-release-tracker"
         },
         {
             "slug": "fork-contributor-leaderboard",
