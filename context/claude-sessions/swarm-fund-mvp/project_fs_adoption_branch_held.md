@@ -11,8 +11,8 @@ originSessionId: 513c23b0-828d-4944-982c-4758d052989b
 ## Branch state
 
 - **Worktree:** `/Users/stew/scaria/swarm-fund-mvp-fs-adoption`
-- **Branch:** `feat/fs-adoption`, 23 commits ahead of main
-- **Range:** `bf8e9aed` (scaffold) → `cf7e2142` (signal_router CLI). All commits explicitly reference ADR-103.
+- **Branch:** `feat/fs-adoption`, 26 commits ahead of main
+- **Range:** `bf8e9aed` (scaffold) → `f56b8f83` (lint noise reduction). All implementation commits explicitly reference ADR-103. Final 3 commits cleaned up flagged debt — see below.
 - **Spec:** `docs/superpowers/specs/2026-05-12-fs-adoption-design.md` (uncommitted in main checkout; committed in worktree only)
 - **Plan:** `docs/superpowers/plans/2026-05-12-fs-adoption.md` (same)
 
@@ -58,9 +58,14 @@ When ready to merge:
 - Don't merge before renumbering — `DECISIONS.md:1731` collision will cause merge conflict.
 - Don't delete the worktree before merge — uncommitted spec/plan markdowns in `docs/superpowers/{specs,plans}/2026-05-12-*` are worktree-only.
 
-## Known non-blocking debt to address later
+## Debt cleared 2026-05-12 (post-Task-22)
 
-- `datetime.utcnow()` deprecation warnings throughout fs_adoption code (Python 3.14). Bulk sweep to `datetime.now(UTC)` in follow-up.
+- **datetime sweep (`78f4cd14`):** Introduced `python/fs_adoption/_time.py` with `utc_now_naive()` + `utc_iso()` helpers. Swept 7 src + 20 test call sites. All 61 fs_adoption tests pass under `-W error::DeprecationWarning` (the 4 api_endpoints tests trip FastAPI's own unrelated `on_event` deprecation — out of scope).
+- **Cooldown persistence (`46168389`):** Telegram alert cooldown is now JSON-file-backed at `data/fs_adoption_alert_cooldowns.json` (override via `FS_ALERT_COOLDOWN_PATH`). Atomic write (tmp + rename). Survives restart. 2 new tests assert this.
+- **Lint noise reduction (`f56b8f83`):** Expanded `HardcodedConstantsRule.ignore_literals` to cover universal floor (bps base, common confidence thresholds 0.55-0.99, epsilons 1e-3 to 1e-10, time windows). Regression scan: **122 → 19 warns (84% reduction)**. `0.073`-magic-still-flagged test confirms strategy-specific literals still surface. 1 new test added.
+
+## Known non-blocking debt (still open)
+
 - `_read_paper_nav()` in `nav_reconciler.py` reads `config/settings.yaml:nav.paper_nav_usd` — Task 5 fix; works but `config/agents.yaml` may also have a `nav:` block that should override. Verify operator preference.
-- Telegram alert cooldown is per-process (in-module dict). Restart-resistant cooldown across launchd job restarts would need a JSON-file persistent state. Not a problem for 15-min cadence (cooldown 1h, restart freq much lower).
-- 122 hardcoded-constants warn-severity hits on existing strategies (Task 7 regression). Real findings to triage; not blocking ship.
+- 19 remaining hardcoded-constants warns are genuinely strategy-specific literals worth triaging into program.md.
+- `python/api/server.py:1604` uses FastAPI's deprecated `@app.on_event("startup")` — pre-existing, out of scope for fs-adoption. Migration to lifespan events is a separate ticket.
