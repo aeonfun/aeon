@@ -124,6 +124,7 @@ skills:
 
   # --- Weekly (Monday only) ---
   ai-framework-watch: { enabled: false, schedule: "30 8 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
+  fleet-state: { enabled: false, schedule: "0 8 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release-tracker + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
   fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
   fork-cohort: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
   fork-release-tracker: { enabled: false, schedule: "30 19 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 19:30 UTC — weekly scan: celebrate when any fork cuts a tagged GitHub release in the last 7 days. Silent on quiet weeks. Pass dry-run to skip notify, or owner/repo to override parent.

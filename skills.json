@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-11T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 116,
+    "total": 117,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -358,6 +358,18 @@
             "sha": "e3e02ec",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon fleet-control"
+        },
+        {
+            "slug": "fleet-state",
+            "name": "fleet-state",
+            "description": "Weekly fleet-state digest \u2014 synthesises fork-cohort + fork-release-tracker + contributor-spotlight into one Monday-morning \"state of the fleet\" narrative with WoW deltas and a 12-week trend",
+            "category": "productivity",
+            "schedule": "0 8 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-13",
+            "install": "./add-skill aaronjmars/aeon fleet-state"
         },
         {
             "slug": "fork-cohort",
