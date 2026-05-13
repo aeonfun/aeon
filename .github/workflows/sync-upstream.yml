@@ -1,0 +1,88 @@
+name: Sync from upstream
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name  "aeon-sync-bot"
+          git config user.email "aeon-sync-bot@users.noreply.github.com"
+
+      - name: Fetch upstream
+        run: |
+          git remote add upstream https://github.com/aaronjmars/aeon.git
+          git fetch upstream main
+
+      - name: Check for upstream changes
+        id: diff
+        run: |
+          AHEAD=$(git rev-list --count HEAD..upstream/main)
+          echo "ahead=$AHEAD" >> "$GITHUB_OUTPUT"
+          echo "Upstream is $AHEAD commits ahead of fork."
+
+      - name: Exit if nothing to merge
+        if: steps.diff.outputs.ahead == '0'
+        run: echo "Already up to date — skipping."
+
+      - name: Create sync branch and attempt merge
+        if: steps.diff.outputs.ahead != '0'
+        id: merge
+        run: |
+          BRANCH="sync/upstream-$(date -u +%Y%m%d)"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          git checkout -b "$BRANCH"
+          if git merge --no-edit upstream/main; then
+            echo "conflict=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+            git add -A
+            git commit -m "sync: merge upstream/main (CONFLICTS — resolve before merging)" --no-verify || true
+          fi
+
+      - name: Push sync branch
+        if: steps.diff.outputs.ahead != '0'
+        run: git push origin "${{ steps.merge.outputs.branch }}"
+
+      - name: Open or update PR
+        if: steps.diff.outputs.ahead != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="${{ steps.merge.outputs.branch }}"
+          CONFLICT="${{ steps.merge.outputs.conflict }}"
+          AHEAD="${{ steps.diff.outputs.ahead }}"
+
+          if [ "$CONFLICT" = "true" ]; then
+            TITLE="sync: upstream/main (CONFLICTS, $AHEAD commits)"
+            BODY="Automated upstream sync — **merge conflicts present, resolve manually**.\n\nUpstream is $AHEAD commits ahead. Conflict markers committed; fix them locally:\n\n\`\`\`\ngit fetch origin $BRANCH && git checkout $BRANCH\n# resolve conflicts\ngit add -A && git commit --amend --no-edit && git push -f origin $BRANCH\n\`\`\`"
+          else
+            TITLE="sync: upstream/main ($AHEAD commits)"
+            BODY="Automated upstream sync — clean merge, $AHEAD commits.\n\nReview the diff and merge to pull in the latest skills, workflows, and fixes from aaronjmars/aeon."
+          fi
+
+          EXISTING=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' || echo "")
+          if [ -n "$EXISTING" ]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body "$(printf '%b' "$BODY")"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body "$(printf '%b' "$BODY")"
+          fi
