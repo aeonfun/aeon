@@ -10,13 +10,25 @@ function ghAvailable(): boolean {
   }
 }
 
+function ghRepoFlag(): string {
+  try {
+    const repo = execSync('gh repo set-default --view', { stdio: 'pipe' }).toString().trim()
+    if (repo && repo !== 'no default repository has been set') return ` -R ${repo}`
+  } catch {}
+  try {
+    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe' }).toString().trim()
+    if (repo) return ` -R ${repo}`
+  } catch {}
+  return ''
+}
+
 export async function GET() {
   // Check if ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN is set
   try {
     if (!ghAvailable()) {
       return NextResponse.json({ authenticated: false, error: 'gh CLI not authenticated' })
     }
-    const out = execSync('gh secret list --json name -q ".[].name"', {
+    const out = execSync(`gh secret list${ghRepoFlag()} --json name -q ".[].name"`, {
       stdio: 'pipe',
     }).toString().trim()
     const secrets = out ? out.split('\n').filter(Boolean) : []
@@ -43,7 +55,7 @@ export async function POST(request: Request) {
       // API keys (sk-ant-api) → ANTHROPIC_API_KEY
       const isOauth = key.startsWith('sk-ant-oat')
       const secretName = isOauth ? 'CLAUDE_CODE_OAUTH_TOKEN' : 'ANTHROPIC_API_KEY'
-      execSync(`gh secret set ${secretName}`, {
+      execSync(`gh secret set${ghRepoFlag()} ${secretName}`, {
         input: key,
         stdio: ['pipe', 'pipe', 'pipe'],
       })
@@ -81,7 +93,7 @@ export async function POST(request: Request) {
     }
     const token = tokenChars.join('')
 
-    execSync('gh secret set CLAUDE_CODE_OAUTH_TOKEN', {
+    execSync(`gh secret set${ghRepoFlag()} CLAUDE_CODE_OAUTH_TOKEN`, {
       input: token,
       stdio: ['pipe', 'pipe', 'pipe'],
     })
