@@ -38,9 +38,30 @@ function ghAvailable(): boolean {
   }
 }
 
+function ghRepo(): string | null {
+  try {
+    const repo = execSync('gh repo set-default --view', { stdio: 'pipe' }).toString().trim()
+    if (repo && !repo.startsWith('no default')) return repo
+  } catch {}
+  try {
+    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe' }).toString().trim()
+    if (repo) return repo
+  } catch {}
+  return null
+}
+
+function ghArgsRepo(): string[] {
+  const repo = ghRepo()
+  return repo ? ['-R', repo] : []
+}
+
 function listSecrets(): string[] {
   try {
-    const out = execSync('gh secret list --json name -q ".[].name"', {
+    const repo = ghRepo()
+    const cmd = repo
+      ? `gh secret list -R ${repo} --json name -q ".[].name"`
+      : 'gh secret list --json name -q ".[].name"'
+    const out = execSync(cmd, {
       stdio: 'pipe',
       cwd: process.cwd(),
     }).toString().trim()
@@ -93,7 +114,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    execFileSync('gh', ['secret', 'set', name, '-b', value], {
+    execFileSync('gh', ['secret', 'set', name, ...ghArgsRepo(), '-b', value], {
       stdio: 'pipe',
       cwd: process.cwd(),
     })
@@ -116,7 +137,7 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    execFileSync('gh', ['secret', 'delete', name], { stdio: 'pipe', cwd: process.cwd() })
+    execFileSync('gh', ['secret', 'delete', name, ...ghArgsRepo()], { stdio: 'pipe', cwd: process.cwd() })
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to delete secret'
