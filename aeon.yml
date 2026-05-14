@@ -45,6 +45,7 @@ skills:
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
+  aixbt-pulse: { enabled: false, schedule: "0 9,21 * * *", model: "claude-sonnet-4-6" } # twice daily — AIXBT free grounding endpoint: cross-domain market pulse (crypto/macro/tradfi/geopolitics) with taxonomy refresh
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
@@ -146,6 +147,10 @@ skills:
   smithery-manifest: { enabled: false, schedule: "0 6 1/7 * *", model: "claude-sonnet-4-6" } # weekly — refresh docs/smithery-manifest.json + smithery.yaml + smithery-submission.md from skills.json + aeon-mcp; PR + notify only on diff
   show-hn-draft: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft Show HN post + r/MachineLearning + r/selfhosted variants from live repo state, ready for the operator to paste at launch time. Set var to one of {show-hn, r/MachineLearning, r/selfhosted} to regenerate that single variant.
   v4-readiness: { enabled: false, schedule: "workflow_dispatch", model: "claude-sonnet-4-6", var: "" } # one-shot — per-fork v4 upgrade readiness checklist. Reads aeon.yml + skills.json + MEMORY.md against an embedded v4 change manifest; emits Safe / Review / Custom / Action breakdown. Pass dry-run to skip notify, or owner/repo to audit a fork remotely.
+
+  # --- Paid ads (AdManage.ai) ---
+  schedule-ads: { enabled: false, schedule: "0 8 * * *", model: "claude-sonnet-4-6", var: "" } # daily 08:00 UTC — schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn from skills/schedule-ads/config.yaml; launches PAUSED by default
+  create-campaign: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — provision Meta campaigns/ad sets on AdManage.ai (PAUSED) and write IDs back so schedule-ads can launch into them
 
   # --- Utilities ---
   auto-workflow: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: URL to analyze

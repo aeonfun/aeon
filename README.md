@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction — it'll leverage +90 skills like deep research, PR reviews, market monitoring, Vercel deploys, and more to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction — it'll leverage 117 skills like deep research, PR reviews, market monitoring, Vercel deploys, and more to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -72,14 +72,16 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 
 ![Skills](./assets/skill.jpg)
 
+117 skills, grouped by what they do. Every skill is independently installable, schedulable, and chainable.
+
 | Category | Skills |
 |----------|--------|
-| **Research & Content** (18) | `article`, `digest`, `rss-digest`, `hacker-news-digest`, `paper-digest`, `paper-pick`, `huggingface-trending`, `last30`, `deep-research`, `technical-explainer`, `list-digest`, `research-brief`, `fetch-tweets`, `reddit-digest`, `telegram-digest`, `security-digest`, `channel-recap`, `vibecoding-digest` |
-| **Dev & Code** (29) | `pr-review`, `github-monitor`, `github-issues`, `github-releases`, `issue-triage`, `auto-merge`, `changelog`, `code-health`, `skill-security-scan`, `github-trending`, `push-recap`, `repo-pulse`, `star-milestone`, `repo-article`, `repo-actions`, `repo-scanner`, `project-lens`, `external-feature`, `create-skill`, `autoresearch`, `search-skill`, `auto-workflow`, `deploy-prototype`, `vuln-scanner`, `workflow-security-audit`, `vercel-projects`, `spawn-instance`, `fleet-control`, `fork-fleet` |
-| **Crypto & Markets** (16) | `token-alert`, `token-movers`, `token-report`, `token-pick`, `monitor-runners`, `on-chain-monitor`, `defi-monitor`, `defi-overview`, `market-context-refresh`, `narrative-tracker`, `monitor-polymarket`, `monitor-kalshi`, `polymarket-comments`, `unlock-monitor`, `treasury-info`, `distribute-tokens` |
-| **Social & Writing** (7) | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `tweet-roundup`, `agent-buzz`, `farcaster-digest` |
-| **Productivity** (12) | `morning-brief`, `daily-routine`, `evening-recap`, `weekly-review`, `weekly-shiplog`, `goal-tracker`, `idea-capture`, `action-converter`, `tool-builder`, `startup-idea`, `deal-flow`, `reg-monitor` |
-| **Meta / Agent** (14) | `heartbeat`, `reflect`, `self-improve`, `skill-health`, `skill-evals`, `skill-repair`, `skill-leaderboard`, `fork-contributor-leaderboard`, `fork-skill-digest`, `skill-update-check`, `cost-report`, `rss-feed`, `update-gallery`, `onboard` |
+| **Research & Content** (19) | `ai-framework-watch`, `article`, `channel-recap`, `deep-research`, `digest`, `fetch-tweets`, `hacker-news-digest`, `huggingface-trending`, `last30`, `list-digest`, `paper-digest`, `paper-pick`, `reddit-digest`, `research-brief`, `rss-digest`, `security-digest`, `technical-explainer`, `telegram-digest`, `vibecoding-digest` |
+| **Dev & Code** (32) | `auto-merge`, `auto-workflow`, `autoresearch`, `changelog`, `code-health`, `create-skill`, `deploy-prototype`, `external-feature`, `fleet-control`, `fork-cohort`, `fork-fleet`, `fork-release-tracker`, `github-issues`, `github-monitor`, `github-releases`, `github-trending`, `issue-triage`, `pr-review`, `pr-triage`, `project-lens`, `push-recap`, `repo-actions`, `repo-article`, `repo-pulse`, `repo-scanner`, `search-skill`, `smithery-manifest`, `spawn-instance`, `star-milestone`, `vercel-projects`, `vuln-scanner`, `workflow-security-audit` |
+| **Crypto & Markets** (19) | `aixbt-pulse`, `contributor-reward`, `defi-monitor`, `defi-overview`, `distribute-tokens`, `market-context-refresh`, `monitor-kalshi`, `monitor-polymarket`, `monitor-runners`, `narrative-tracker`, `on-chain-monitor`, `polymarket-comments`, `price-threshold-alert`, `token-alert`, `token-movers`, `token-pick`, `token-report`, `treasury-info`, `unlock-monitor` |
+| **Social & Writing** (12) | `agent-buzz`, `create-campaign`, `farcaster-digest`, `refresh-x`, `remix-tweets`, `reply-maker`, `schedule-ads`, `show-hn-draft`, `syndicate-article`, `thread-formatter`, `tweet-roundup`, `write-tweet` |
+| **Productivity** (14) | `action-converter`, `daily-routine`, `deal-flow`, `evening-recap`, `goal-tracker`, `idea-capture`, `morning-brief`, `reflect`, `reg-monitor`, `startup-idea`, `tool-builder`, `v4-readiness`, `weekly-review`, `weekly-shiplog` |
+| **Meta / Agent** (21) | `contributor-spotlight`, `cost-report`, `fleet-state`, `fork-contributor-leaderboard`, `fork-skill-digest`, `heartbeat`, `onboard`, `operator-scorecard`, `rss-feed`, `self-improve`, `skill-analytics`, `skill-evals`, `skill-freshness`, `skill-graph`, `skill-health`, `skill-leaderboard`, `skill-repair`, `skill-security-scan`, `skill-update-check`, `star-momentum-alert`, `update-gallery` |
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`
 
@@ -278,7 +280,7 @@ Claude only installs and runs when a skill actually matches.
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 aeon.yml                 ← skill schedules, chains, reactive triggers, and enabled flags
-skills.json              ← machine-readable skill catalog (92 skills)
+skills.json              ← machine-readable skill catalog (117 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
 ./onboard                ← validate the fork's setup (secrets, workflows, channels) — see Quick start
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
@@ -294,7 +296,7 @@ skills/                  ← each skill is a SKILL.md prompt file
   article/
   digest/
   heartbeat/
-  ...                    ← 92 skills total
+  ...                    ← 117 skills total
 workflows/               ← GitHub Agentic Workflow templates (.md)
 mcp-server/              ← MCP server — exposes skills as Claude tools
 a2a-server/              ← A2A protocol gateway — exposes skills to any agent framework
