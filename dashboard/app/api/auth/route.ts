@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { execSync } from 'child_process'
+import { execFileSync, execSync } from 'child_process'
 
 function ghAvailable(): boolean {
   try {
@@ -10,16 +10,21 @@ function ghAvailable(): boolean {
   }
 }
 
-function ghRepoFlag(): string {
+function ghRepo(): string | null {
   try {
     const repo = execSync('gh repo set-default --view', { stdio: 'pipe' }).toString().trim()
-    if (repo && repo !== 'no default repository has been set') return ` -R ${repo}`
+    if (repo && !repo.startsWith('no default')) return repo
   } catch {}
   try {
     const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe' }).toString().trim()
-    if (repo) return ` -R ${repo}`
+    if (repo) return repo
   } catch {}
-  return ''
+  return null
+}
+
+function ghArgsRepo(): string[] {
+  const repo = ghRepo()
+  return repo ? ['-R', repo] : []
 }
 
 export async function GET() {
@@ -28,7 +33,7 @@ export async function GET() {
     if (!ghAvailable()) {
       return NextResponse.json({ authenticated: false, error: 'gh CLI not authenticated' })
     }
-    const out = execSync(`gh secret list${ghRepoFlag()} --json name -q ".[].name"`, {
+    const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
       stdio: 'pipe',
     }).toString().trim()
     const secrets = out ? out.split('\n').filter(Boolean) : []
@@ -55,7 +60,7 @@ export async function POST(request: Request) {
       // API keys (sk-ant-api) → ANTHROPIC_API_KEY
       const isOauth = key.startsWith('sk-ant-oat')
       const secretName = isOauth ? 'CLAUDE_CODE_OAUTH_TOKEN' : 'ANTHROPIC_API_KEY'
-      execSync(`gh secret set${ghRepoFlag()} ${secretName}`, {
+      execFileSync('gh', ['secret', 'set', secretName, ...ghArgsRepo()], {
         input: key,
         stdio: ['pipe', 'pipe', 'pipe'],
       })
@@ -93,7 +98,7 @@ export async function POST(request: Request) {
     }
     const token = tokenChars.join('')
 
-    execSync(`gh secret set${ghRepoFlag()} CLAUDE_CODE_OAUTH_TOKEN`, {
+    execFileSync('gh', ['secret', 'set', 'CLAUDE_CODE_OAUTH_TOKEN', ...ghArgsRepo()], {
       input: token,
       stdio: ['pipe', 'pipe', 'pipe'],
     })

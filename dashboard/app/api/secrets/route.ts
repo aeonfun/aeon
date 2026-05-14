@@ -57,11 +57,7 @@ function ghArgsRepo(): string[] {
 
 function listSecrets(): string[] {
   try {
-    const repo = ghRepo()
-    const cmd = repo
-      ? `gh secret list -R ${repo} --json name -q ".[].name"`
-      : 'gh secret list --json name -q ".[].name"'
-    const out = execSync(cmd, {
+    const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
       stdio: 'pipe',
       cwd: process.cwd(),
     }).toString().trim()
