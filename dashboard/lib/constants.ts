@@ -4,6 +4,14 @@ export const MODELS = [
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
+export const BANKR_EXTRA_MODELS = [
+  { id: 'gemini-3-pro', label: 'Gemini 3 Pro' },
+  { id: 'gemini-3-flash', label: 'Gemini 3 Flash' },
+  { id: 'gpt-5.2', label: 'GPT-5.2' },
+  { id: 'kimi-k2.5', label: 'Kimi K2.5' },
+  { id: 'qwen3-coder', label: 'Qwen3 Coder' },
+]
+
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },
   { label: 'Wed', value: 3 }, { label: 'Thu', value: 4 }, { label: 'Fri', value: 5 },

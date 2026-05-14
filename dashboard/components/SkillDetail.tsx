@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run } from '../lib/types'
-import { MODELS, DEPARTMENTS } from '../lib/constants'
+import { MODELS, BANKR_EXTRA_MODELS, DEPARTMENTS } from '../lib/constants'
 import { displayName, initials, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
 import { timeAgo } from '../lib/utils'
@@ -11,6 +11,7 @@ interface SkillDetailProps {
   skill: Skill
   runs: Run[]
   model: string
+  gateway: 'direct' | 'bankr'
   busy: Record<string, boolean>
   onToggle: (name: string, enabled: boolean) => void
   onRun: (name: string, v?: string, m?: string) => void
@@ -21,7 +22,8 @@ interface SkillDetailProps {
   onViewRun: (run: Run) => void
 }
 
-export function SkillDetail({ skill, runs, model, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onViewRun }: SkillDetailProps) {
+export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onViewRun }: SkillDetailProps) {
+  const modelOptions = gateway === 'bankr' ? [...MODELS, ...BANKR_EXTRA_MODELS] : MODELS
   const [editingSchedule, setEditingSchedule] = useState(false)
   const [editingVar, setEditingVar] = useState(false)
   const [varDraft, setVarDraft] = useState('')
@@ -90,8 +92,8 @@ export function SkillDetail({ skill, runs, model, busy, onToggle, onRun, onDelet
       <div className="card-hst p-[var(--space-md)]">
         <div className="text-label mb-[var(--space-sm)]">Capability Level</div>
         <select value={skill.model} onChange={(e) => onUpdateModel(skill.name, e.target.value)} className="bg-white text-eva-black text-xs px-3 py-2 border-2 border-[rgba(10,10,10,0.08)] outline-none font-mono w-full cursor-pointer focus:border-eva-orange transition-colors">
-          <option value="">Default ({MODELS.find(m => m.id === model)?.label})</option>
-          {MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+          <option value="">Default ({modelOptions.find(m => m.id === model)?.label ?? model})</option>
+          {modelOptions.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
         </select>
       </div>
 

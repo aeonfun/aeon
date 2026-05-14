@@ -112,7 +112,7 @@ export default function Dashboard() {
           )}
           {skill && (
             <SkillDetail
-              skill={skill} runs={runs} model={model} busy={busy}
+              skill={skill} runs={runs} model={model} gateway={gateway} busy={busy}
               onToggle={toggleSkill} onRun={runSkill} onDelete={deleteSkill}
               onUpdateSchedule={updateSchedule} onUpdateVar={updateVar} onUpdateModel={updateSkillModel}
               onViewRun={() => {}}
