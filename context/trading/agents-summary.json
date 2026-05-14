@@ -115,6 +115,20 @@
     {
       "id": null,
       "family": null,
+      "lifecycle": "shadow",
+      "fitness": 0.21288664352979397,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "shadow",
+      "fitness": 0.2038224251154198,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
       "lifecycle": "canary",
       "fitness": 0.18258624922429156,
       "pnl": null
@@ -124,20 +138,6 @@
       "family": null,
       "lifecycle": "canary",
       "fitness": 0.18258624922429156,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "shadow",
-      "fitness": 0.1597101449275362,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "shadow",
-      "fitness": 0.1597101449275362,
       "pnl": null
     }
   ],
@@ -146,5 +146,5 @@
     "shadow": 164
   },
   "total_agents": 180,
-  "synced_at": "2026-05-14T15:18:54Z"
+  "synced_at": "2026-05-14T19:18:58Z"
 }
