@@ -56,6 +56,8 @@ jobs:
           else
             echo "conflict=true" >> "$GITHUB_OUTPUT"
             git add -A
+            # --no-verify: tree has unresolved conflict markers by design so
+            # reviewers can see what to fix; commit hooks would reject them.
             git commit -m "sync: merge upstream/main (CONFLICTS — resolve before merging)" --no-verify || true
           fi
 
