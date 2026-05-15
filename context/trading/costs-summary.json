@@ -1,34 +1,34 @@
 {
   "total_cost_usd": 0.7039,
-  "total_calls": 14349,
+  "total_calls": 14315,
   "total_tokens": 205023,
   "by_vendor": {
-    "hyperliquid": {
-      "calls": 5834,
-      "cost_usd": 0.0,
-      "tokens": 0,
-      "operations": {
-        "get_user_fills_pnl": {
-          "calls": 692,
-          "cost_usd": 0.0
-        },
-        "get_open_positions": {
-          "calls": 4876,
-          "cost_usd": 0.0
-        },
-        "get_balance": {
-          "calls": 266,
-          "cost_usd": 0.0
-        }
-      }
-    },
     "polymarket": {
-      "calls": 8344,
+      "calls": 8366,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 8344,
+          "calls": 8366,
+          "cost_usd": 0.0
+        }
+      }
+    },
+    "hyperliquid": {
+      "calls": 5778,
+      "cost_usd": 0.0,
+      "tokens": 0,
+      "operations": {
+        "get_user_fills_pnl": {
+          "calls": 691,
+          "cost_usd": 0.0
+        },
+        "get_open_positions": {
+          "calls": 4821,
+          "cost_usd": 0.0
+        },
+        "get_balance": {
+          "calls": 266,
           "cost_usd": 0.0
         }
       }
@@ -58,17 +58,17 @@
   },
   "by_agent": {
     "__system__": {
-      "calls": 13911,
+      "calls": 13877,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
-        "hyperliquid": {
-          "calls": 5834,
+        "polymarket": {
+          "calls": 8099,
           "cost_usd": 0.0,
           "tokens": 0
         },
-        "polymarket": {
-          "calls": 8077,
+        "hyperliquid": {
+          "calls": 5778,
           "cost_usd": 0.0,
           "tokens": 0
         }
@@ -1210,29 +1210,9 @@
   },
   "hourly": [
     {
-      "hour": "2026-05-07T23:00:00",
-      "cost_usd": 0.0,
-      "calls": 59
-    },
-    {
-      "hour": "2026-05-08T00:00:00",
-      "cost_usd": 0.0,
-      "calls": 41
-    },
-    {
-      "hour": "2026-05-08T01:00:00",
-      "cost_usd": 0.0,
-      "calls": 45
-    },
-    {
-      "hour": "2026-05-08T02:00:00",
-      "cost_usd": 0.0,
-      "calls": 77
-    },
-    {
       "hour": "2026-05-08T03:00:00",
       "cost_usd": 0.0,
-      "calls": 39
+      "calls": 28
     },
     {
       "hour": "2026-05-08T04:00:00",
@@ -2052,9 +2032,29 @@
     {
       "hour": "2026-05-14T23:00:00",
       "cost_usd": 0.0,
-      "calls": 17
+      "calls": 90
+    },
+    {
+      "hour": "2026-05-15T00:00:00",
+      "cost_usd": 0.0,
+      "calls": 27
+    },
+    {
+      "hour": "2026-05-15T01:00:00",
+      "cost_usd": 0.0,
+      "calls": 37
+    },
+    {
+      "hour": "2026-05-15T02:00:00",
+      "cost_usd": 0.0,
+      "calls": 48
+    },
+    {
+      "hour": "2026-05-15T03:00:00",
+      "cost_usd": 0.0,
+      "calls": 14
     }
   ],
-  "event_count": 10305,
-  "synced_at": "2026-05-14T23:19:01Z"
+  "event_count": 10278,
+  "synced_at": "2026-05-15T03:19:04Z"
 }
