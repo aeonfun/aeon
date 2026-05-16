@@ -481,3 +481,114 @@ Your `memory/`, `articles/`, and personal config won't conflict — they're in f
 [![Star History Chart](https://api.star-history.com/svg?repos=aaronjmars/aeon&type=Date)](https://www.star-history.com/#aaronjmars/aeon&Date)
 
 Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
+
+---
+
+## ❓ FAQ
+
+### What is Aeon?
+
+Aeon is "the most autonomous agent framework" — an AI agent system that runs unattended, self-heals when skills fail, and monitors its own output quality. Configure once, walk away, and it handles recurring tasks like morning briefs, market monitoring, PR reviews, and research digests.
+
+### How does Aeon differ from Claude Code, Hermes, or OpenClaw?
+
+| Feature | Aeon | Claude Code | Hermes | OpenClaw |
+|---------|------|-------------|--------|----------|
+| Runs unattended on schedule | Yes | No | Yes | No |
+| Self-heals failing skills | Yes | No | No | No |
+| Monitors output quality | Yes | No | No | No |
+| Persistent memory | Yes | No | Limited | No |
+| Reactive triggers | Yes | No | No | No |
+| Fixes broken skills | Yes | No | No | No |
+| Zero infrastructure | Yes (GitHub Actions) | Local | Self-hosted | Self-hosted |
+
+**Key difference**: Other agents are interactive tools you use. Aeon is an autonomous system you configure and leave alone.
+
+### How many built-in skills does Aeon have?
+
+117 skills across 6 categories:
+- **Research & Content** (19): deep-research, paper-digest, rss-digest, etc.
+- **Dev & Code** (32): pr-review, github-monitor, auto-merge, etc.
+- **Crypto & Markets** (19): defi-monitor, token-alert, polymarket monitoring, etc.
+- **Social & Writing** (12): write-tweet, syndicate-article, etc.
+- **Productivity** (14): morning-brief, weekly-review, goal-tracker, etc.
+- **Meta / Agent** (21): skill-repair, self-improve, fleet-state, etc.
+
+### How do I get started?
+
+```bash
+git clone https://github.com/aaronjmars/aeon
+cd aeon && ./aeon
+```
+
+Then:
+1. Open `http://localhost:5555` in your browser
+2. Add your Claude API key
+3. Set up notification channel (Telegram/Discord/Slack)
+4. Toggle skills and set schedules
+5. Push config to GitHub — Actions handles the rest
+6. Run `./onboard` to verify setup
+
+### What LLM providers does Aeon support?
+
+Aeon primarily uses Claude (Anthropic) via API key or OAuth token. Check the dashboard for authentication options.
+
+### What is the skill dependency graph?
+
+See [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map showing how 117 skills connect, with the self-healing loop and content pipeline highlighted.
+
+### Can I create custom skills?
+
+Yes. Use templates from [`templates/`](templates/TEMPLATE.md):
+- Crypto tracker
+- Research digest
+- Code reviewer
+- Social monitor
+- Deploy watcher
+- Community manager
+
+Bootstrap: `./new-from-template <template> <skill-name> --var KEY=VALUE...`
+
+### What is Instance Fleet?
+
+Aeon can spawn specialized copies of itself via `spawn-instance`, `fleet-control`, and `fork-fleet`. Each instance runs a focused skill set (e.g., crypto monitoring, research). New owners add their own secrets.
+
+### How does self-healing work?
+
+Aeon's Meta/Agent skills (`skill-repair`, `self-improve`, `skill-health`) detect failing skills, diagnose issues, and patch them automatically without human intervention.
+
+### What notifications are supported?
+
+Telegram, Discord, and Slack. Set up in the dashboard to receive output and interact with Aeon.
+
+### How does Aeon run?
+
+Aeon runs on GitHub Actions with zero infrastructure needed. After pushing your config, Actions executes skills on schedule. You can also run locally via `./aeon`.
+
+### What is the autonomy spectrum?
+
+See `assets/autonomy.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
+
+### Troubleshooting
+
+**Issue**: Dashboard not loading
+- Ensure `./aeon` is running
+- Check `http://localhost:5555` port
+
+**Issue**: Skills not executing
+- Run `./onboard --remote` to verify setup in Actions
+- Check GitHub Actions workflow status
+
+**Issue**: Notifications not working
+- Verify channel configuration in dashboard
+- Check Telegram/Discord/Slack API tokens
+
+**Issue**: Self-healing not working
+- Enable `skill-repair` and `skill-health` skills
+- Check memory state in `memory/` directory
+
+### Need more help?
+
+- Check [`docs/`](docs/) directory
+- Run `./onboard` for setup verification
+- Open an issue on GitHub
