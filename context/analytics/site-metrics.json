@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-16T01:50:04.531872Z",
+  "generated_at": "2026-05-16T05:50:08.240927Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -2574,8 +2574,8 @@
     "closed_trades": 2215,
     "win_rate": 0.2921,
     "total_pnl_usd": 1365.05,
-    "real_pnl_usd": null,
-    "real_fills_lifetime": null,
+    "real_pnl_usd": 68.0834,
+    "real_fills_lifetime": 318,
     "canary_pnl_usd": 1365.05,
     "canary_closed_trades": 270,
     "canary_agents": 16,
@@ -2596,5 +2596,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-16T01:50:03Z"
+  "synced_at": "2026-05-16T05:50:05Z"
 }

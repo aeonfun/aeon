@@ -1,93 +1,65 @@
 {
-  "total_cost_usd": 0.7039,
-  "total_calls": 13295,
-  "total_tokens": 205023,
+  "total_cost_usd": 0.281,
+  "total_calls": 12935,
+  "total_tokens": 28287,
   "by_vendor": {
     "polymarket": {
-      "calls": 7576,
+      "calls": 7470,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 7576,
+          "calls": 7470,
           "cost_usd": 0.0
         }
       }
     },
     "hyperliquid": {
-      "calls": 5548,
+      "calls": 5460,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
-        "get_balance": {
-          "calls": 230,
-          "cost_usd": 0.0
-        },
         "get_user_fills_pnl": {
-          "calls": 668,
+          "calls": 652,
           "cost_usd": 0.0
         },
         "get_open_positions": {
-          "calls": 4650,
+          "calls": 4637,
+          "cost_usd": 0.0
+        },
+        "get_balance": {
+          "calls": 171,
           "cost_usd": 0.0
         }
       }
     },
     "anthropic": {
-      "calls": 88,
-      "cost_usd": 0.7039020000000001,
-      "tokens": 123686,
+      "calls": 5,
+      "cost_usd": 0.281025,
+      "tokens": 28287,
       "operations": {
         "llm_completion": {
-          "calls": 88,
-          "cost_usd": 0.7039020000000001
-        }
-      }
-    },
-    "ollama": {
-      "calls": 83,
-      "cost_usd": 0.0,
-      "tokens": 81337,
-      "operations": {
-        "llm_completion": {
-          "calls": 83,
-          "cost_usd": 0.0
+          "calls": 5,
+          "cost_usd": 0.281025
         }
       }
     }
   },
   "by_agent": {
     "__system__": {
-      "calls": 12857,
+      "calls": 12663,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
         "polymarket": {
-          "calls": 7309,
+          "calls": 7203,
           "cost_usd": 0.0,
           "tokens": 0
         },
         "hyperliquid": {
-          "calls": 5548,
+          "calls": 5460,
           "cost_usd": 0.0,
           "tokens": 0
-        }
-      }
-    },
-    "research-triage": {
-      "calls": 166,
-      "cost_usd": 0.42287700000000006,
-      "tokens": 176736,
-      "vendors": {
-        "anthropic": {
-          "calls": 83,
-          "cost_usd": 0.42287700000000006,
-          "tokens": 95399
-        },
-        "ollama": {
-          "calls": 83,
-          "cost_usd": 0.0,
-          "tokens": 81337
         }
       }
     },
@@ -1210,29 +1182,9 @@
   },
   "hourly": [
     {
-      "hour": "2026-05-09T01:00:00",
-      "cost_usd": 0.0,
-      "calls": 8
-    },
-    {
-      "hour": "2026-05-09T02:00:00",
-      "cost_usd": 0.0,
-      "calls": 38
-    },
-    {
-      "hour": "2026-05-09T03:00:00",
-      "cost_usd": 0.0,
-      "calls": 39
-    },
-    {
-      "hour": "2026-05-09T04:00:00",
-      "cost_usd": 0.42287700000000006,
-      "calls": 265
-    },
-    {
       "hour": "2026-05-09T05:00:00",
       "cost_usd": 0.0,
-      "calls": 35
+      "calls": 3
     },
     {
       "hour": "2026-05-09T06:00:00",
@@ -2038,8 +1990,18 @@
       "hour": "2026-05-16T00:00:00",
       "cost_usd": 0.0,
       "calls": 3
+    },
+    {
+      "hour": "2026-05-16T04:00:00",
+      "cost_usd": 0.0,
+      "calls": 3
+    },
+    {
+      "hour": "2026-05-16T05:00:00",
+      "cost_usd": 0.0,
+      "calls": 19
     }
   ],
-  "event_count": 9629,
-  "synced_at": "2026-05-16T01:50:03Z"
+  "event_count": 9309,
+  "synced_at": "2026-05-16T05:50:05Z"
 }
