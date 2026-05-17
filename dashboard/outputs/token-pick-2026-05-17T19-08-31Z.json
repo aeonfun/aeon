@@ -1,0 +1,361 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Pick — 2026-05-17"
+      },
+      "children": [
+        "token-section",
+        "sep1",
+        "score-section",
+        "sep2",
+        "catalyst-section",
+        "sep3",
+        "risk-section",
+        "sep4",
+        "vs-section",
+        "sep5",
+        "market-section",
+        "sep6",
+        "sources-section",
+        "sep7",
+        "disclaimer"
+      ]
+    },
+    "token-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token-header",
+        "token-metrics"
+      ]
+    },
+    "token-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-name",
+        "signal-badge"
+      ]
+    },
+    "token-name": {
+      "type": "Heading",
+      "props": {
+        "text": "KAIA",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signal-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH signal 9/10",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "token-metrics": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Metric",
+          "Value"
+        ],
+        "rows": [
+          [
+            "Price",
+            "$0.0538"
+          ],
+          [
+            "24h Change",
+            "+17.1%"
+          ],
+          [
+            "7d Change",
+            "+8.5%"
+          ],
+          [
+            "Market Cap",
+            "$315M"
+          ],
+          [
+            "Volume",
+            "$66M"
+          ],
+          [
+            "Vol/Mcap Ratio",
+            "0.21"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "score-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "score-heading",
+        "score-breakdown"
+      ]
+    },
+    "score-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Score Breakdown",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "score-breakdown": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Criteria",
+          "Points"
+        ],
+        "rows": [
+          [
+            "24h+7d up",
+            "+2"
+          ],
+          [
+            "both >+5%",
+            "+2"
+          ],
+          [
+            "vol/mcap>=0.20",
+            "+3"
+          ],
+          [
+            "RS vs BTC/ETH",
+            "+2"
+          ],
+          [
+            "Total Score",
+            "9/10"
+          ]
+        ]
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "KAIA L1 rallying on its stablecoin push — Visa-compatible USDT payments, a Flipster partnership, and BORA's gaming-ecosystem integration — outperforming a broadly red alt market.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "risk-section": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "The move is partnership-narrative driven; a slip in the Visa/stablecoin rollout plus KAIA's recurring monthly token unlocks could retrace it fast.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "vs-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "vs-heading",
+        "vs-text"
+      ]
+    },
+    "vs-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Vs Recent Picks",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "vs-text": {
+      "type": "Text",
+      "props": {
+        "text": "First token-pick entry — no prior picks to dedup against.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "market-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "market-alert",
+        "market-reasons",
+        "market-examples"
+      ]
+    },
+    "market-alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Market Pick",
+        "message": "No market pick today",
+        "type": "info"
+      },
+      "children": []
+    },
+    "market-reasons": {
+      "type": "Text",
+      "props": {
+        "text": "Top Polymarket markets are priced at extremes. Best estimated edge ~1pp, below the 5pp floor.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "market-examples": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ex1",
+        "ex2",
+        "ex3"
+      ]
+    },
+    "ex1": {
+      "type": "Text",
+      "props": {
+        "text": "BTC $150k by Jun 30 @ 1.3c",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ex2": {
+      "type": "Text",
+      "props": {
+        "text": "Iran regime fall @ 1.3c",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "ex3": {
+      "type": "Text",
+      "props": {
+        "text": "Mistral best model @ 0.1c",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "sources-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "source-cg",
+        "source-dex",
+        "source-poly"
+      ]
+    },
+    "source-cg": {
+      "type": "Badge",
+      "props": {
+        "text": "CoinGecko: OK",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "source-dex": {
+      "type": "Badge",
+      "props": {
+        "text": "DEX: FAIL",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "source-poly": {
+      "type": "Badge",
+      "props": {
+        "text": "Polymarket: OK",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "sep7": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "Not financial advice — pattern-matching only",
+        "variant": "muted"
+      },
+      "children": []
+    }
+  }
+}
