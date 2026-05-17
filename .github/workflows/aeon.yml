@@ -193,6 +193,7 @@ jobs:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_MAP: ${{ secrets.DISCORD_WEBHOOK_MAP }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -347,8 +348,16 @@ jobs:
             done <<< "$TG_CHUNKS_B64"
           fi
 
-          if [ -n "${DISCORD_WEBHOOK_URL:-}" ]; then
-            curl -sf -X POST "$DISCORD_WEBHOOK_URL" \
+          # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL
+          DISCORD_TARGET=""
+          if [ -n "${DISCORD_WEBHOOK_MAP:-}" ]; then
+            DISCORD_TARGET=$(printf '%s' "$DISCORD_WEBHOOK_MAP" | jq -r --arg s "${SKILL_NAME:-}" '.[$s] // ._default // empty' 2>/dev/null || echo "")
+          fi
+          if [ -z "$DISCORD_TARGET" ]; then
+            DISCORD_TARGET="${DISCORD_WEBHOOK_URL:-}"
+          fi
+          if [ -n "$DISCORD_TARGET" ]; then
+            curl -sf -X POST "$DISCORD_TARGET" \
               -H "Content-Type: application/json" \
               -d "$(jq -n --arg text "$MSG" '{content: $text}')" > /dev/null && DELIVERED=true || true
           fi
@@ -620,6 +629,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK_MAP: ${{ secrets.DISCORD_WEBHOOK_MAP }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
           NOTIFY_EMAIL_TO: ${{ secrets.NOTIFY_EMAIL_TO }}
@@ -669,9 +679,16 @@ jobs:
                 -H "Content-Type: application/json" \
                 -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text}')" > /dev/null 2>&1 || true
             fi
-            # Discord
-            if [ -n "${DISCORD_WEBHOOK_URL:-}" ]; then
-              curl -sf -X POST "$DISCORD_WEBHOOK_URL" \
+            # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL
+            DC_TARGET=""
+            if [ -n "${DISCORD_WEBHOOK_MAP:-}" ]; then
+              DC_TARGET=$(printf '%s' "$DISCORD_WEBHOOK_MAP" | jq -r --arg s "${SKILL_NAME:-}" '.[$s] // ._default // empty' 2>/dev/null || echo "")
+            fi
+            if [ -z "$DC_TARGET" ]; then
+              DC_TARGET="${DISCORD_WEBHOOK_URL:-}"
+            fi
+            if [ -n "$DC_TARGET" ]; then
+              curl -sf -X POST "$DC_TARGET" \
                 -H "Content-Type: application/json" \
                 -d "$(jq -n --arg text "$MSG" '{content: $text}')" > /dev/null 2>&1 || true
             fi
