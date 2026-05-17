@@ -555,15 +555,44 @@ jobs:
           ANALYSIS_TEXT=$(echo "$RAW" | jq -r '.result // empty')
           [ -z "$ANALYSIS_TEXT" ] && { echo "::warning::Empty analysis result"; exit 0; }
 
-          # Parse score from response (try direct JSON, then extract embedded JSON)
+          # Parse score from response. Try in order:
+          #   1. Response is already valid JSON
+          #   2. Strip markdown code fences (```json ... ```) and try again
+          #   3. Extract first balanced JSON object via Python (handles multi-line + nesting)
+          PARSED=""
           if echo "$ANALYSIS_TEXT" | jq empty 2>/dev/null; then
             PARSED="$ANALYSIS_TEXT"
           else
-            PARSED=$(echo "$ANALYSIS_TEXT" | grep -o '{[^{}]*}' | head -1 || true)
-            if [ -z "$PARSED" ] || ! echo "$PARSED" | jq empty 2>/dev/null; then
-              echo "::warning::Could not parse analysis JSON"
-              exit 0
+            STRIPPED=$(printf '%s' "$ANALYSIS_TEXT" | sed -E 's/^[[:space:]]*```[a-zA-Z]*[[:space:]]*$//; s/^[[:space:]]*```[[:space:]]*$//' | sed -E '/^[[:space:]]*$/d')
+            if echo "$STRIPPED" | jq empty 2>/dev/null; then
+              PARSED="$STRIPPED"
+            else
+              PARSED=$(printf '%s' "$ANALYSIS_TEXT" | python3 -c '
+import sys, json
+text = sys.stdin.read()
+depth = 0
+start = None
+for i, c in enumerate(text):
+    if c == "{":
+        if depth == 0:
+            start = i
+        depth += 1
+    elif c == "}" and depth > 0:
+        depth -= 1
+        if depth == 0 and start is not None:
+            candidate = text[start:i+1]
+            try:
+                json.loads(candidate)
+                sys.stdout.write(candidate)
+                sys.exit(0)
+            except json.JSONDecodeError:
+                start = None
+' 2>/dev/null || true)
             fi
+          fi
+          if [ -z "$PARSED" ] || ! echo "$PARSED" | jq empty 2>/dev/null; then
+            echo "::warning::Could not parse analysis JSON"
+            exit 0
           fi
 
           SCORE=$(echo "$PARSED" | jq -r '.score // 0')
