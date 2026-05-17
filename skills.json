@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-11T00:00:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 118,
+    "total": 119,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -406,6 +406,18 @@
             "sha": "da02f64",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon fork-contributor-leaderboard"
+        },
+        {
+            "slug": "fork-first-run-alert",
+            "name": "fork-first-run-alert",
+            "description": "Daily — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh, live-fallback otherwise. Per-fork at 1–3 activators, batch at 4+.",
+            "category": "dev",
+            "schedule": "30 20 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "pending",
+            "updated": "2026-05-17",
+            "install": "./add-skill aaronjmars/aeon fork-first-run-alert"
         },
         {
             "slug": "fork-fleet",
