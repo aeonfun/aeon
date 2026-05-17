@@ -25,5 +25,14 @@
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1
+  },
+  "narrative-tracker": {
+    "last_status": "success",
+    "last_success": "2026-05-17T19:10:13Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1
   }
 }
