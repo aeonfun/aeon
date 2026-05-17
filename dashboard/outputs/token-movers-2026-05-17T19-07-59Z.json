@@ -1,0 +1,416 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Token Movers — 2026-05-17"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_sentiment",
+        "sep1",
+        "heading_winners",
+        "table_winners",
+        "sep2",
+        "heading_losers",
+        "table_losers",
+        "sep3",
+        "heading_trending",
+        "table_trending",
+        "sep4",
+        "heading_notable",
+        "stack_notable"
+      ]
+    },
+    "text_sentiment": {
+      "type": "Text",
+      "props": {
+        "text": "Quiet, slightly red tape — 69 of the top 100 are down but the median 24h move is just −0.1%; BTC flat, only a handful of low-cap outliers actually moving.",
+        "variant": "lead"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_winners": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Winners (24h)",
+        "level": "h2"
+      }
+    },
+    "table_winners": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h %",
+          "7d %",
+          "1h %",
+          "Vol/Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "XP (Xphere)",
+            "$0.06535",
+            "+38.1%",
+            "+225.2%",
+            "−5.5%",
+            "$3.4M / #195",
+            "PUMP-RISK, BREAKOUT"
+          ],
+          [
+            "BSB (Block Street)",
+            "$0.5860",
+            "+37.5%",
+            "+10.4%",
+            "−0.9%",
+            "$29.7M / #247",
+            "PUMP-RISK"
+          ],
+          [
+            "KAIA (Kaia)",
+            "$0.05376",
+            "+17.2%",
+            "+8.5%",
+            "−3.3%",
+            "$65.9M / #144",
+            ""
+          ],
+          [
+            "HYPE (Hyperliquid)",
+            "$45.37",
+            "+9.2%",
+            "+4.6%",
+            "+2.9%",
+            "$369M / #13",
+            "TRENDING+UP, MAJOR"
+          ],
+          [
+            "VVV (Venice Token)",
+            "$14.44",
+            "+9.0%",
+            "−0.8%",
+            "+1.9%",
+            "$64.1M / #86",
+            "TRENDING+UP"
+          ],
+          [
+            "BEAT (Audiera)",
+            "$0.6796",
+            "+8.6%",
+            "+25.7%",
+            "+2.3%",
+            "$6.9M / #194",
+            ""
+          ],
+          [
+            "ASTEROID (Asteroid Shiba)",
+            "$0.000384",
+            "+6.9%",
+            "+12.0%",
+            "+1.0%",
+            "$14.1M / #212",
+            ""
+          ],
+          [
+            "BILL (Billions Network)",
+            "$0.1584",
+            "+6.4%",
+            "+36.3%",
+            "+7.8%",
+            "$725M / #126",
+            "TRENDING+UP"
+          ],
+          [
+            "TEL (Telcoin)",
+            "$0.003195",
+            "+5.7%",
+            "+44.1%",
+            "−1.6%",
+            "$2.3M / #152",
+            ""
+          ],
+          [
+            "BinanceLife",
+            "$0.4163",
+            "+5.6%",
+            "−7.9%",
+            "+0.6%",
+            "$18.1M / #121",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_losers": {
+      "type": "Heading",
+      "props": {
+        "text": "Top Losers (24h)",
+        "level": "h2"
+      }
+    },
+    "table_losers": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Price",
+          "24h %",
+          "7d %",
+          "1h %",
+          "Vol/Rank",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "QNT (Quant)",
+            "$77.82",
+            "−5.1%",
+            "+3.2%",
+            "0.0%",
+            "$18.2M / #62",
+            ""
+          ],
+          [
+            "STABLE (Stable)",
+            "$0.03519",
+            "−5.1%",
+            "+3.4%",
+            "+0.6%",
+            "$15.4M / #79",
+            ""
+          ],
+          [
+            "UB (Unibase)",
+            "$0.1632",
+            "−4.5%",
+            "+23.1%",
+            "+7.6%",
+            "$24.6M / #122",
+            ""
+          ],
+          [
+            "RAVE (RaveDAO)",
+            "$0.5904",
+            "−4.4%",
+            "−20.9%",
+            "−0.3%",
+            "$8.1M / #232",
+            ""
+          ],
+          [
+            "SIREN (Siren)",
+            "$0.5040",
+            "−4.2%",
+            "−56.2%",
+            "−0.6%",
+            "$8.5M / #131",
+            ""
+          ],
+          [
+            "CFX (Conflux)",
+            "$0.06301",
+            "−4.1%",
+            "−7.0%",
+            "+0.1%",
+            "$14.5M / #139",
+            ""
+          ],
+          [
+            "ZBCN (Zebec Network)",
+            "$0.003105",
+            "−4.0%",
+            "−13.2%",
+            "−0.7%",
+            "$5.5M / #150",
+            ""
+          ],
+          [
+            "XDC (XDC Network)",
+            "$0.03135",
+            "−3.6%",
+            "+2.1%",
+            "+0.1%",
+            "$16.8M / #88",
+            ""
+          ],
+          [
+            "RIVER (River)",
+            "$7.41",
+            "−3.5%",
+            "+15.2%",
+            "+1.3%",
+            "$10.6M / #233",
+            ""
+          ],
+          [
+            "XTZ (Tezos)",
+            "$0.3462",
+            "−3.4%",
+            "−13.4%",
+            "−0.5%",
+            "$11.1M / #130",
+            ""
+          ]
+        ]
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_trending": {
+      "type": "Heading",
+      "props": {
+        "text": "Trending",
+        "level": "h2"
+      }
+    },
+    "table_trending": {
+      "type": "Table",
+      "props": {
+        "columns": [
+          "Token",
+          "Rank",
+          "Price",
+          "24h %",
+          "Tags"
+        ],
+        "rows": [
+          [
+            "POD (Dolphin)",
+            "#806",
+            "$0.4577",
+            "+65.1%",
+            "PUMP-RISK"
+          ],
+          [
+            "VVV (Venice Token)",
+            "#86",
+            "$14.22",
+            "+6.6%",
+            "TRENDING+UP"
+          ],
+          [
+            "SERV (OpenServ)",
+            "#544",
+            "$0.05627",
+            "+19.0%",
+            ""
+          ],
+          [
+            "PENGU (Pudgy Penguins)",
+            "#98",
+            "$0.008488",
+            "+0.1%",
+            ""
+          ],
+          [
+            "HYPE (Hyperliquid)",
+            "#13",
+            "$44.76",
+            "+8.5%",
+            "TRENDING+UP, MAJOR"
+          ],
+          [
+            "BTC (Bitcoin)",
+            "#1",
+            "$78,096",
+            "−0.2%",
+            "MAJOR"
+          ],
+          [
+            "BILL (Billions Network)",
+            "#131",
+            "$0.1514",
+            "+1.0%",
+            "TRENDING+UP"
+          ]
+        ]
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_notable": {
+      "type": "Heading",
+      "props": {
+        "text": "Notable",
+        "level": "h2"
+      }
+    },
+    "stack_notable": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notable_1",
+        "notable_2",
+        "notable_3",
+        "notable_4"
+      ]
+    },
+    "notable_1": {
+      "type": "Alert",
+      "props": {
+        "title": "XP",
+        "message": "+38% on the day, +225% over 7d — sustained breakout but rank #195 and only $3.4M volume; PUMP-RISK, and 1h −5.5% suggests it's rolling over.",
+        "type": "warning"
+      }
+    },
+    "notable_2": {
+      "type": "Alert",
+      "props": {
+        "title": "POD (Dolphin)",
+        "message": "Trending and +65%, but rank #806 — deep low-cap, high manipulation risk.",
+        "type": "warning"
+      }
+    },
+    "notable_3": {
+      "type": "Alert",
+      "props": {
+        "title": "BILL",
+        "message": "$725M of 24h volume against a $387M market cap — volume nearly 2x the cap, unusual churn for a trending name.",
+        "type": "info"
+      }
+    },
+    "notable_4": {
+      "type": "Alert",
+      "props": {
+        "title": "BSB",
+        "message": "Rank #247 up +37.5% — low-cap spike, treat as PUMP-RISK.",
+        "type": "warning"
+      }
+    }
+  }
+}
