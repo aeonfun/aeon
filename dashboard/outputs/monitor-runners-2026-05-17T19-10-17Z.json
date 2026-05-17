@@ -1,0 +1,627 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "monitor-runners",
+        "description": "2026-05-17 • verdict: MIXED"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "token1",
+        "sep1",
+        "token2",
+        "sep2",
+        "token3",
+        "sep3",
+        "token4",
+        "sep4",
+        "token5",
+        "sep-sources",
+        "sources",
+        "vibe"
+      ]
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "sep-sources": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t1-header",
+        "t1-metrics-group",
+        "t1-comment"
+      ]
+    },
+    "t1-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-name",
+        "t1-blockchain",
+        "t1-status",
+        "t1-gain"
+      ]
+    },
+    "t1-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Ebola",
+        "level": "h3"
+      }
+    },
+    "t1-blockchain": {
+      "type": "Badge",
+      "props": {
+        "text": "solana"
+      }
+    },
+    "t1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "REVERSAL",
+        "variant": "secondary"
+      }
+    },
+    "t1-gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+466%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t1-metrics-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t1-vol-liq-fdv",
+        "t1-h1-ratio"
+      ]
+    },
+    "t1-vol-liq-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.2m | liq $74k | fdv $663k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "t1-h1-ratio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t1-h1",
+        "t1-ratio"
+      ]
+    },
+    "t1-h1": {
+      "type": "Stat",
+      "props": {
+        "value": "-8.2%",
+        "label": "1h",
+        "trend": "down"
+      }
+    },
+    "t1-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 8.8k:5.8k",
+        "variant": "caption"
+      }
+    },
+    "t1-comment": {
+      "type": "Text",
+      "props": {
+        "text": "biggest mover of the day but cooling on h1/h6; $74k liq under $1.2m volume is thin exit liquidity — watch whether it bases or unwinds.",
+        "variant": "muted"
+      }
+    },
+    "token2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t2-header",
+        "t2-metrics-group",
+        "t2-comment"
+      ]
+    },
+    "t2-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-name",
+        "t2-blockchain",
+        "t2-status",
+        "t2-gain"
+      ]
+    },
+    "t2-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Mira",
+        "level": "h3"
+      }
+    },
+    "t2-blockchain": {
+      "type": "Badge",
+      "props": {
+        "text": "solana"
+      }
+    },
+    "t2-status": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "t2-gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+307%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t2-metrics-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t2-vol-liq-fdv",
+        "t2-h1-ratio"
+      ]
+    },
+    "t2-vol-liq-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.7m | liq $33k | fdv $146k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "t2-h1-ratio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t2-h1",
+        "t2-ratio"
+      ]
+    },
+    "t2-h1": {
+      "type": "Stat",
+      "props": {
+        "value": "-32%",
+        "label": "1h",
+        "trend": "down"
+      }
+    },
+    "t2-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 17.9k:13.7k",
+        "variant": "caption"
+      }
+    },
+    "t2-comment": {
+      "type": "Text",
+      "props": {
+        "text": "fresh <8h pool already down 32% on the hour; launch-day blowoff, the breakout is spent — watch only for a dead-cat.",
+        "variant": "muted"
+      }
+    },
+    "token3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t3-header",
+        "t3-metrics-group",
+        "t3-comment"
+      ]
+    },
+    "t3-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-name",
+        "t3-blockchain",
+        "t3-status",
+        "t3-gain"
+      ]
+    },
+    "t3-name": {
+      "type": "Heading",
+      "props": {
+        "text": "Peace",
+        "level": "h3"
+      }
+    },
+    "t3-blockchain": {
+      "type": "Badge",
+      "props": {
+        "text": "solana"
+      }
+    },
+    "t3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "BREAKOUT",
+        "variant": "secondary"
+      }
+    },
+    "t3-gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+221%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t3-metrics-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t3-vol-liq-fdv",
+        "t3-h1-ratio"
+      ]
+    },
+    "t3-vol-liq-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "vol $2.0m | liq $30k | fdv $116k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "t3-h1-ratio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t3-h1",
+        "t3-ratio"
+      ]
+    },
+    "t3-h1": {
+      "type": "Stat",
+      "props": {
+        "value": "-16%",
+        "label": "1h",
+        "trend": "down"
+      }
+    },
+    "t3-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 20.1k:15.3k",
+        "variant": "caption"
+      }
+    },
+    "t3-comment": {
+      "type": "Text",
+      "props": {
+        "text": "13h-old pool fading after the pop; $30k liq vs $2m volume is casino-tier — momentum already negative, treat as cooling.",
+        "variant": "muted"
+      }
+    },
+    "token4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t4-header",
+        "t4-metrics-group",
+        "t4-comment"
+      ]
+    },
+    "t4-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-name",
+        "t4-blockchain",
+        "t4-status",
+        "t4-gain"
+      ]
+    },
+    "t4-name": {
+      "type": "Heading",
+      "props": {
+        "text": "SYNTH",
+        "level": "h3"
+      }
+    },
+    "t4-blockchain": {
+      "type": "Badge",
+      "props": {
+        "text": "base"
+      }
+    },
+    "t4-status": {
+      "type": "Badge",
+      "props": {
+        "text": "CONTINUATION",
+        "variant": "secondary"
+      }
+    },
+    "t4-gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+146%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t4-metrics-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t4-vol-liq-fdv",
+        "t4-h1-ratio"
+      ]
+    },
+    "t4-vol-liq-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "vol $635k | liq $216k | fdv $434k (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "t4-h1-ratio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t4-h1",
+        "t4-ratio"
+      ]
+    },
+    "t4-h1": {
+      "type": "Stat",
+      "props": {
+        "value": "+7.6%",
+        "label": "1h",
+        "trend": "up"
+      }
+    },
+    "t4-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 1.5k:897",
+        "variant": "caption"
+      }
+    },
+    "t4-comment": {
+      "type": "Text",
+      "props": {
+        "text": "only top pick still green on the hour; established Base pool reaccelerating — cleanest continuation in today's tape.",
+        "variant": "muted"
+      }
+    },
+    "token5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t5-header",
+        "t5-metrics-group",
+        "t5-comment"
+      ]
+    },
+    "t5-header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-name",
+        "t5-blockchain",
+        "t5-status",
+        "t5-gain"
+      ]
+    },
+    "t5-name": {
+      "type": "Heading",
+      "props": {
+        "text": "aeon",
+        "level": "h3"
+      }
+    },
+    "t5-blockchain": {
+      "type": "Badge",
+      "props": {
+        "text": "base"
+      }
+    },
+    "t5-status": {
+      "type": "Badge",
+      "props": {
+        "text": "DEEP-LIQ",
+        "variant": "secondary"
+      }
+    },
+    "t5-gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+107%",
+        "label": "24h",
+        "trend": "up"
+      }
+    },
+    "t5-metrics-group": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t5-vol-liq-fdv",
+        "t5-h1-ratio"
+      ]
+    },
+    "t5-vol-liq-fdv": {
+      "type": "Text",
+      "props": {
+        "text": "vol $1.9m | liq $2.2m | fdv $7m (no mcap)",
+        "variant": "caption"
+      }
+    },
+    "t5-h1-ratio": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "t5-h1",
+        "t5-ratio"
+      ]
+    },
+    "t5-h1": {
+      "type": "Stat",
+      "props": {
+        "value": "+1.7%",
+        "label": "1h",
+        "trend": "up"
+      }
+    },
+    "t5-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "buys:sells 1.9k:1.2k",
+        "variant": "caption"
+      }
+    },
+    "t5-comment": {
+      "type": "Text",
+      "props": {
+        "text": "the only deep-liquidity name here; $2.2m liq and h6 still building +15% — orderly move, the one worth actually watching.",
+        "variant": "muted"
+      }
+    },
+    "sources": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sources-title",
+        "sources-text"
+      ]
+    },
+    "sources-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Sources",
+        "level": "h4"
+      }
+    },
+    "sources-text": {
+      "type": "Text",
+      "props": {
+        "text": "gt-global=ok  gt-solana=ok  gt-eth=ok  gt-base=ok  gt-bsc=ok  gt-arbitrum=ok",
+        "variant": "caption"
+      }
+    },
+    "vibe": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe-title",
+        "vibe-text"
+      ]
+    },
+    "vibe-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      }
+    },
+    "vibe-text": {
+      "type": "Text",
+      "props": {
+        "text": "Solana meme casino on top — the three biggest movers are sub-$150k-liq pumps already rolling over; the only orderly action is on Base.",
+        "variant": "muted"
+      }
+    }
+  }
+}
