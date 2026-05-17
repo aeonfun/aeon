@@ -1,0 +1,219 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "AIXBT Pulse — 2026-05-17 19:00Z"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_crypto",
+        "text_crypto_1",
+        "text_crypto_2",
+        "separator_1",
+        "heading_macro",
+        "text_macro",
+        "separator_2",
+        "heading_geo",
+        "text_geo_intro",
+        "grid_geo_metrics",
+        "text_geo_oil",
+        "separator_3",
+        "heading_tradfi",
+        "text_tradfi_intro",
+        "grid_tradfi_metrics",
+        "separator_4",
+        "heading_new_pull",
+        "text_new_pull",
+        "separator_5",
+        "heading_bridge",
+        "text_bridge"
+      ]
+    },
+    "heading_crypto": {
+      "type": "Heading",
+      "props": {
+        "text": "CRYPTO",
+        "level": "h2"
+      }
+    },
+    "text_crypto_1": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid eats perps mindshare — SpaceX pre-IPO perps live via TradeXYZ, HYPE ETFs debut strong, Jeff Yan in the room with US regulators."
+      }
+    },
+    "text_crypto_2": {
+      "type": "Text",
+      "props": {
+        "text": "Tokenized stocks hit $1.5B onchain (~40x YoY), led by Ondo; CLARITY Act clears Senate committee."
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_macro": {
+      "type": "Heading",
+      "props": {
+        "text": "MACRO",
+        "level": "h2"
+      }
+    },
+    "text_macro": {
+      "type": "Text",
+      "props": {
+        "text": "Warsh as incoming Fed chair injects rate-path uncertainty — yields steepen, energy-driven inflation keeps the Fed on hold."
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_geo": {
+      "type": "Heading",
+      "props": {
+        "text": "GEO",
+        "level": "h2"
+      }
+    },
+    "text_geo_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Strait of Hormuz blockade risk lifts"
+      }
+    },
+    "grid_geo_metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_gold",
+        "stat_silver"
+      ]
+    },
+    "stat_gold": {
+      "type": "Stat",
+      "props": {
+        "label": "Gold",
+        "value": "3.8%",
+        "trend": "up"
+      }
+    },
+    "stat_silver": {
+      "type": "Stat",
+      "props": {
+        "label": "Silver",
+        "value": "7.5%",
+        "trend": "up"
+      }
+    },
+    "text_geo_oil": {
+      "type": "Text",
+      "props": {
+        "text": "Oil volatility spikes on 20% shipment-disruption fears."
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_tradfi": {
+      "type": "Heading",
+      "props": {
+        "text": "TRADFI",
+        "level": "h2"
+      }
+    },
+    "text_tradfi_intro": {
+      "type": "Text",
+      "props": {
+        "text": "China summit miss triggers risk-off"
+      }
+    },
+    "grid_tradfi_metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_dow",
+        "stat_sp500"
+      ]
+    },
+    "stat_dow": {
+      "type": "Stat",
+      "props": {
+        "label": "Dow",
+        "value": "-500",
+        "trend": "down"
+      }
+    },
+    "stat_sp500": {
+      "type": "Stat",
+      "props": {
+        "label": "S&P Futures",
+        "value": "-1.2%",
+        "trend": "down"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_new_pull": {
+      "type": "Heading",
+      "props": {
+        "text": "NEW THIS PULL",
+        "level": "h2"
+      }
+    },
+    "text_new_pull": {
+      "type": "Text",
+      "props": {
+        "text": "First recorded pull — full feed is NEW. Diffing starts next run."
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading_bridge": {
+      "type": "Heading",
+      "props": {
+        "text": "BRIDGE",
+        "level": "h2"
+      }
+    },
+    "text_bridge": {
+      "type": "Text",
+      "props": {
+        "text": "TradFi is migrating onchain whatever the macro tape does — SpaceX perps, $1.5B tokenized stocks, HYPE ETFs, CLARITY Act all moving while equities sell off. BTC at Fear 27 but institutions hedge with options, not dumps — coiled spring, not collapse."
+      }
+    }
+  }
+}
