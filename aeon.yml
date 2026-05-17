@@ -28,8 +28,8 @@ skills:
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: false, schedule: "0 12 * * *" }
-  token-movers: { enabled: false, schedule: "0 12 * * *" }
-  on-chain-monitor: { enabled: false, schedule: "0 12 * * *" }
+  token-movers: { enabled: true, schedule: "0 12 * * *" } # daily noon — top movers/losers/trending with anti-pump filtering + signal tags
+  on-chain-monitor: { enabled: false, schedule: "0 12 * * *" } # add later: populate memory/on-chain-watches.yml first
   defi-monitor: { enabled: false, schedule: "0 12 * * *" }
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
@@ -37,15 +37,15 @@ skills:
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume
-  monitor-runners: { enabled: false, schedule: "0 12 * * *" }
-  token-pick: { enabled: false, schedule: "0 12 * * *" }
+  monitor-runners: { enabled: true, schedule: "0 12 * * *" } # daily noon — top 5 tokens that ran hardest in last 24h via GeckoTerminal
+  token-pick: { enabled: true, schedule: "30 12 * * *" } # daily 12:30 UTC — one token + one Polymarket call, scored with skip-day branch
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
-  price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
-  market-context-refresh: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
-  narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
+  price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # add later: needs Tracked Token section in memory/MEMORY.md first
+  market-context-refresh: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # daily 1pm UTC — refresh macro context (BTC dom, ETH/BTC, funding) into memory/topics/market-context.md
+  narrative-tracker: { enabled: true, schedule: "30 13 * * *" } # daily 1:30pm UTC — quantitative narrative map with explicit position calls
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
-  aixbt-pulse: { enabled: false, schedule: "0 9,21 * * *", model: "claude-sonnet-4-6" } # twice daily — AIXBT free grounding endpoint: cross-domain market pulse (crypto/macro/tradfi/geopolitics) with taxonomy refresh
+  aixbt-pulse: { enabled: true, schedule: "0 9,21 * * *", model: "claude-sonnet-4-6" } # twice daily 9am/9pm UTC — AIXBT free grounding endpoint: cross-domain pulse (crypto/macro/tradfi/geo) + bridge calls
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
