@@ -237,10 +237,23 @@ if [ -n "$VAR" ]; then
   ASSET_LIST=$(echo "$VAR" | tr ',' '\n' | tr '[:lower:]' '[:upper:]' | tr -d '[:space:]' | grep -v '^$' | sort -u)
   echo "coinglass-prefetch: using VAR override asset list: $(echo "$ASSET_LIST" | tr '\n' ' ')"
 else
-  # Group CoinGecko perpetual rows by index_id (coin ticker), sum 24h volume across exchanges,
-  # rank desc, take top 25. CoinGecko volume_24h sometimes arrives as a string — coerce.
+  # Filter to perpetual contracts on the three majors Coinglass aggregates
+  # (Binance / OKX / Bybit) and where the symbol is USDT-margined — guarantees
+  # the per-coin Binance per-exchange endpoints (price, top-L/S, basis, taker)
+  # have a chance of returning data. Without this filter the universe pulls in
+  # coins primarily traded on Bitget/MEXC/Gate/BingX, which Coinglass aggregated
+  # endpoints may not cover, leading to high drop rate downstream.
+  #
+  # Group by index_id (coin ticker), sum 24h volume across the three majors,
+  # rank desc, take top 25. CoinGecko volume_24h sometimes arrives as a string.
   TOP=$(jq -r '
-    [.[] | select(.contract_type == "perpetual" and .index_id != null and .volume_24h != null) |
+    [.[] | select(
+      .contract_type == "perpetual"
+      and .index_id != null
+      and .volume_24h != null
+      and (.market | tostring | test("(Binance|OKX|Bybit)"; "i"))
+      and (.symbol  | tostring | test("USDT"; "i"))
+    ) |
       {index_id, vol: (.volume_24h | tonumber? // 0)}] |
     group_by(.index_id) |
     map({index_id: .[0].index_id, total_vol: ([.[].vol] | add)}) |
@@ -248,7 +261,7 @@ else
     sort_by(.total_vol) | reverse | .[0:25] | .[].index_id
   ' "$DERIVATIVES_FILE")
   ASSET_LIST=$(printf '%s\nBTC\nETH\nSOL\n' "$TOP" | grep -v '^$' | sort -u)
-  echo "coinglass-prefetch: universe = top 25 by CoinGecko aggregated perp 24h volume + BTC/ETH/SOL ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
+  echo "coinglass-prefetch: universe = top 25 by Binance/OKX/Bybit USDT-perp aggregated 24h volume + BTC/ETH/SOL ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
 fi
 
 # --- 3. Per-coin Coinglass fetches (7 endpoints per coin, tier-confirmed accessible) ---
