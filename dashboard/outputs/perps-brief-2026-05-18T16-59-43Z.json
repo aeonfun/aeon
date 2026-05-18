@@ -1,0 +1,351 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Perps Brief",
+        "description": "2026-05-18"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "section_sentiment",
+        "sep1",
+        "section_conviction",
+        "sep2",
+        "section_watchlist"
+      ]
+    },
+    "section_sentiment": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_sentiment",
+        "grid_sentiment_stats",
+        "text_sentiment_context",
+        "text_sentiment_bias"
+      ]
+    },
+    "heading_sentiment": {
+      "type": "Heading",
+      "props": {
+        "text": "MARKET SENTIMENT",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "grid_sentiment_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc_24h",
+        "stat_eth_24h",
+        "stat_liquidations"
+      ]
+    },
+    "stat_btc_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC 24h (below $77K)",
+        "value": "—",
+        "delta": "-1.3%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat_eth_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "ETH 24h",
+        "value": "—",
+        "delta": "-1.5%",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "stat_liquidations": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidations 24h",
+        "value": "~$600M",
+        "trend": "down"
+      },
+      "children": []
+    },
+    "text_sentiment_context": {
+      "type": "Text",
+      "props": {
+        "text": "Funding near-flat across majors, OI not building on the bid. Perps-scan reads QUIET: 1 of 12 assessed assets non-NEUTRAL. Risk-off tape (breadth 3–4/20 green, Fear & Greed 28, DEX vol −30% 7d) with Strategy 2B bid failing to hold $77K. No leverage crowding on majors — the only live setup is idiosyncratic relative strength.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_sentiment_bias": {
+      "type": "Text",
+      "props": {
+        "text": "Bias: cash-patient on majors; selective on names outperforming the red tape on their own catalyst.",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_conviction": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_conviction",
+        "bsb_stack"
+      ]
+    },
+    "heading_conviction": {
+      "type": "Heading",
+      "props": {
+        "text": "HIGH CONVICTION",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "bsb_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "badge_bsb",
+        "grid_bsb_stats",
+        "text_bsb_narrative",
+        "text_bsb_context",
+        "text_bsb_enrichment",
+        "alert_bsb"
+      ]
+    },
+    "badge_bsb": {
+      "type": "Badge",
+      "props": {
+        "text": "BSB · long breakout w/ trailing stop",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "grid_bsb_stats": {
+      "type": "Grid",
+      "props": {
+        "columns": 4,
+        "gap": "md"
+      },
+      "children": [
+        "stat_bsb_24h",
+        "stat_bsb_vol",
+        "stat_bsb_oi",
+        "stat_bsb_taker"
+      ]
+    },
+    "stat_bsb_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+20.8%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_bsb_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol",
+        "value": "3.9x",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_bsb_oi": {
+      "type": "Stat",
+      "props": {
+        "label": "OI +24h",
+        "value": "+11.6%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_bsb_taker": {
+      "type": "Stat",
+      "props": {
+        "label": "Taker buy",
+        "value": "51%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "text_bsb_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "Narrative: RWA / tokenized capital markets RISING, narrative-tracker 5/5 RIDE. Only non-NEUTRAL print in the scan.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_bsb_context": {
+      "type": "Text",
+      "props": {
+        "text": "Context: Risk-off board (3/20 green) but BSB +36% 7d — idiosyncratic relative strength, not beta.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "text_bsb_enrichment": {
+      "type": "Text",
+      "props": {
+        "text": "Enrichment: Exchange-listings catalyst (Binance Alpha + Aster perps deepening the book); no near-term unlock — multi-year cliffs off the Mar-4 TGE, treasury cliff ~Sept; 65% below the May-4 ATH so room overhead; token-call HIGH 9/10 cross-confirm.",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "alert_bsb": {
+      "type": "Alert",
+      "props": {
+        "title": "Setup",
+        "message": "RWA sector RIDE + quant breakout flag + clean unlock calendar align — ride it but trail tight; thin float makes the reversal sharp.",
+        "type": "info"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_watchlist": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "heading_watchlist",
+        "hype_stack",
+        "bch_stack",
+        "tao_stack"
+      ]
+    },
+    "heading_watchlist": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCHLIST",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "hype_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_hype",
+        "alert_hype"
+      ]
+    },
+    "badge_hype": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE · narrative + ETF catalyst, but no quant read this snapshot",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "alert_hype": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "Perp-DEX RISING and Bitwise BHYP ETF live May 15, but perps-scan dropped HYPE for missing OI/funding history — structure unconfirmed, and the +16% ETF-day move is already extended.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "bch_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_bch",
+        "alert_bch"
+      ]
+    },
+    "badge_bch": {
+      "type": "Badge",
+      "props": {
+        "text": "BCH · perps near-CAPITULATION, stayed NEUTRAL",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "alert_bch": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "Lost the $400 multi-month support (−11% 24h) but OI rose into the drop — no flush bottom; funding already negative after a $6M liq, so a short here chases into squeeze risk.",
+        "type": "warning"
+      },
+      "children": []
+    },
+    "tao_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_tao",
+        "alert_tao"
+      ]
+    },
+    "badge_tao": {
+      "type": "Badge",
+      "props": {
+        "text": "TAO · decentralized-compute RISING, no quant confirmation",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "alert_tao": {
+      "type": "Alert",
+      "props": {
+        "title": "Risk",
+        "message": "Narrative velocity up but narrative-tracker flags tokens still lagging the story; dropped from perps-scan for missing history — no OI/funding confirmation of accumulation.",
+        "type": "warning"
+      },
+      "children": []
+    }
+  }
+}
