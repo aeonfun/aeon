@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-18T13:14:32.168040Z",
+  "generated_at": "2026-05-18T17:14:35.634893Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -1363,7 +1363,7 @@
       "agent_id": "calibration-gap-06-politics-qwen72-k15-allreg-i068",
       "lifecycle": "shadow",
       "closed_trades": 4,
-      "open_positions": 1,
+      "open_positions": 2,
       "win_rate": 0.5,
       "total_pnl_usd": -32.74,
       "sharpe": 0.0,
@@ -1391,7 +1391,7 @@
       "agent_id": "calibration-gap-07-macro-gpt5mini-k10-riskonly-i320",
       "lifecycle": "shadow",
       "closed_trades": 4,
-      "open_positions": 1,
+      "open_positions": 2,
       "win_rate": 0.5,
       "total_pnl_usd": -39.48,
       "sharpe": 0.0,
@@ -2287,7 +2287,7 @@
       "agent_id": "pm-resolution-snap-v01",
       "lifecycle": "shadow",
       "closed_trades": 53,
-      "open_positions": 0,
+      "open_positions": 1,
       "win_rate": 0.0943,
       "total_pnl_usd": -1619.79,
       "sharpe": -0.492,
@@ -2301,7 +2301,7 @@
       "agent_id": "pm-resolution-snap-v02",
       "lifecycle": "shadow",
       "closed_trades": 119,
-      "open_positions": 1,
+      "open_positions": 7,
       "win_rate": 0.1008,
       "total_pnl_usd": -1984.96,
       "sharpe": -0.13,
@@ -2315,7 +2315,7 @@
       "agent_id": "pm-resolution-snap-v03",
       "lifecycle": "shadow",
       "closed_trades": 47,
-      "open_positions": 0,
+      "open_positions": 1,
       "win_rate": 0.0426,
       "total_pnl_usd": -1878.17,
       "sharpe": -0.806,
@@ -2329,7 +2329,7 @@
       "agent_id": "pm-resolution-snap-v04",
       "lifecycle": "shadow",
       "closed_trades": 106,
-      "open_positions": 0,
+      "open_positions": 6,
       "win_rate": 0.066,
       "total_pnl_usd": -2318.77,
       "sharpe": -0.167,
@@ -2343,7 +2343,7 @@
       "agent_id": "pm-resolution-snap-v05",
       "lifecycle": "shadow",
       "closed_trades": 65,
-      "open_positions": 0,
+      "open_positions": 2,
       "win_rate": 0.0,
       "total_pnl_usd": -3250.0,
       "sharpe": 0.0,
@@ -2596,5 +2596,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-18T13:14:29Z"
+  "synced_at": "2026-05-18T17:14:32Z"
 }
