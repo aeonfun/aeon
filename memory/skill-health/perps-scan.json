@@ -1,10 +1,12 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-18T15:42:30Z",
+  "last_analyzed": "2026-05-18T16:26:40Z",
   "quality_score": 4,
-  "assessment": "Substantive output with clear verdicts and actionable signals; well-structured with proper error handling and documentation of sandbox limitations; 52% asset dropout explained by API failures (not a skill defect)",
-  "flags": [],
-  "avg_score": 3,
+  "assessment": "Substantive execution with transparent limitations; well-structured regime analysis, proper file/memory management, and actionable near-misses despite 52% asset dropout from API failures.",
+  "flags": [
+    "api_error"
+  ],
+  "avg_score": 3.2,
   "history": [
     {
       "date": "2026-05-18",
@@ -17,6 +19,10 @@
     {
       "date": "2026-05-18",
       "score": 2
+    },
+    {
+      "date": "2026-05-18",
+      "score": 4
     },
     {
       "date": "2026-05-18",

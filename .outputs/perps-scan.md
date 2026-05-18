@@ -1,25 +1,22 @@
-I couldn't delete the three `.tmp-perps*` scratch files (sandbox blocks `rm`), but they're harmless untracked files outside the skill's committed outputs.
-
-The perps-scan skill ran successfully — the first successful run after four prior "scan unavailable" attempts today.
-
 ## Summary
 
-Executed `skills/perps-scan/SKILL.md` (v2.3) for 2026-05-18. The prefetch cache (`.coinglass-cache/`) was populated cleanly with `universe_ok: true`.
+Ran the perps-scan skill (v2.3) for 2026-05-18 against the fresh prefetch cache (`manifest.fetched_at` 16:17Z, `universe_ok: true`).
 
-**Result — Verdict: MIXED (2 ACCUMULATION, 1 CATALYST-BREAKOUT, 9 NEUTRAL)**
-- **ACCUMULATION:** CHZ, HYPE
-- **CATALYST-BREAKOUT:** BSB (broke 7d high, +19% 24h, vol 3.8x, OI +11% 24h)
-- **NEUTRAL:** ADA, BCH, BILL, BNB, BTC, DOGE, EDEN, ETH, LAB
-- 12 of 25 universe assets assessed; 13 dropped for missing critical history (LINK, LTC, SOL, TAO, XAU/XAG/SILVER, etc. — all per-coin endpoints failed, mostly no-Binance-pair tickers)
+**Result — Verdict: QUIET (no regime populated)**
+- All 12 assessed assets classified NEUTRAL — no regime triggered.
+- Regime counts: ACCUM=0 CAT=0 MOM=0 COMP=0 DIST=0 CAP=0 NEUTRAL=12.
+- Broadly red, low-energy tape: BTC -1.2% 24h / -6.4% 7d, ETH -1.1% / -9.9%; funding near-flat across majors, no extremes.
 
-**Notes**
-- No repeat markers possible — first successful run, no prior regime data.
-- Found a doc bug: Coinglass history arrays are time-**ascending** (data[0] = oldest), but SKILL.md step 3 says data[0] is newest. I computed metrics against the correct (newest) element via `sort_by(time)|reverse`; flagged for a doc fix.
-- Could not run `python3`, `bash` scripts, or `./notify` inline (automated run, no interactive approval) — used `jq` per-file for all metrics and wrote the notification directly to `.pending-notify/` for post-run delivery.
+**Near-misses worth flagging:**
+- BCH — closest to CAPITULATION: -9.0% 24h (gate -10), negative funding, $6.0M top-quartile liq flush — but OI rose +2.7% instead of falling.
+- BSB — closest to CATALYST-BREAKOUT: broke 7d high, +19.2% 24h, vol 3.9x, OI +9.9% 24h (gate +10). It cleared as CAT in the earlier same-day run on an +11% OI reading — the fresher snapshot tipped it under the gate.
+- BILL / EDEN — missed ACCUMULATION on 7d range (85.5% / 104.8% vs <25% gate).
 
-**Files**
-- `.outputs/perps-scan.md` — overwritten with the v2 locked-format scan
-- `.pending-notify/1779118850.signal.md` — #perps signal queued for post-run delivery
+**Universe:** 12 of 25 assessed. 13 dropped — all per-coin history endpoints failed in prefetch (FIDA, HYPE, LAB, LINK, SOL, SUI, TAO, TON, UB, XAG, XAU, XRP, ZEC). ETH missing liq/topls/basis/taker; 1000PEPE/BILL/BSB/CL missing basis — classified anyway.
+
+**Files:**
+- `.outputs/perps-scan.md` — overwritten (stale assistant-summary text replaced) with QUIET title line + full per-asset metric table
+- `.pending-notify/1779121547.signal.md` — single-line QUIET signal queued for post-run delivery to #perps (`./notify` can't run inline in this automated run)
 - `memory/logs/2026-05-18.md` — appended the run log
 
-**Follow-up:** tomorrow's run will be the first able to flag ≥2-day regime persistence. The SKILL.md data-orientation claim should be corrected on the next revision.
+**Notes:** Confirmed again that Coinglass history arrays are time-ascending (data[0] = oldest) — SKILL.md step 3 still claims data[0] is most recent; metrics were computed against the newest element. The doc fix remains a follow-up for the next skill revision.
