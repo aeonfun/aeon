@@ -1,0 +1,14 @@
+{
+  "skill": "market-context-refresh",
+  "last_analyzed": "2026-05-18T16:43:47Z",
+  "quality_score": 4,
+  "assessment": "Substantive market analysis with verified data sources, clear regime classification, quantified metrics, and actionable narrative calls—well-structured and useful, though output is truncated so full depth cannot be assessed.",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-18",
+      "score": 4
+    }
+  ]
+}
