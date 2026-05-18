@@ -13,7 +13,9 @@ The `aeon` workflow looks up the channel for each skill in this order:
 
 ## Signal vs internal skills
 
-Only **signal skills** post to Discord. Internal skills (`market-context-refresh`, `aixbt-pulse`, `token-movers`) write artifacts consumed by downstream skills and never notify any channel.
+Only **signal skills** post to Discord. Internal skills (`market-context-refresh`, `aixbt-pulse`, `token-movers`, `perps-scan`) write artifacts consumed by downstream skills and never notify any channel.
+
+`perps-scan` was originally a signal skill in v2 but was demoted to internal in v2.3 — its raw per-asset classification is too dense for daily reading. `perps-brief` is the reader-facing synthesis that consumes `perps-scan`'s artifact.
 
 Signal skills also pass the `--signal` flag to `./notify`, which suppresses Telegram outbound (Telegram is reserved for inbound agent conversation). Signal output therefore lands only in Discord.
 
@@ -24,13 +26,12 @@ Signal skills also pass the `--signal` flag to `./notify`, which suppresses Tele
 | `monitor-runners` | `#runners` | Yesterday's top 24h runners, grouped by tag |
 | `narrative-tracker` | `#narratives` | Phase-grouped narratives (RISING / PEAK / FADING) with leading tokens |
 | `token-call` | `#token-call` | Daily single highest-conviction call with thesis + invalidation |
-| `perps-scan` | `#perps` | Daily perps regime classification per pair + summary table |
-| `perps-brief` | `#perps` | 4-pass confluence synthesizer for perps sector (lands after `perps-scan`, sits on top) |
+| `perps-brief` | `#perps` | 4-pass confluence synthesizer for perps sector — the reader-facing perps output. Consumes `perps-scan`'s artifact internally. |
 | `morning-macro` | `#morning-macro` | Cross-sector strategist read consumed at start of day |
 | `daily-ops-review` | `#aeon-ops` | Chain-final health check — step statuses, anomalies, follow-ups |
 | Anything not listed | `#aeon-ops` (via `_default`) | Catches unexpected output so it's never lost |
 
-`perps-scan` and `perps-brief` share the same `#perps` webhook by design — the brief lands second and sits on top of the scan in the channel feed.
+As of v2.3, `perps-scan` is internal (no Discord) and only `perps-brief` posts to `#perps`. The shared-channel design was retired when perps-scan was demoted.
 
 ## DISCORD_WEBHOOK_MAP format
 
@@ -41,7 +42,6 @@ Plain JSON. Store as a single repo secret. To update routing, replace the whole 
   "monitor-runners":   "https://discord.com/api/webhooks/.../runners-hook",
   "narrative-tracker": "https://discord.com/api/webhooks/.../narratives-hook",
   "token-call":        "https://discord.com/api/webhooks/.../token-call-hook",
-  "perps-scan":        "https://discord.com/api/webhooks/.../perps-hook",
   "perps-brief":       "https://discord.com/api/webhooks/.../perps-hook",
   "morning-macro":     "https://discord.com/api/webhooks/.../morning-macro-hook",
   "daily-ops-review":  "https://discord.com/api/webhooks/.../ops-hook",
@@ -77,7 +77,7 @@ You'll end up with six webhook URLs.
 
 ### 3. Build the JSON map
 
-In a scratch doc, assemble the JSON like the example above. Use exact skill names from `aeon.yml` (e.g. `token-call`, not `Token Pick`). Note `perps-scan` and `perps-brief` reuse the same `#perps` URL. Verify it's valid JSON — paste into https://jsonlint.com and click Validate.
+In a scratch doc, assemble the JSON like the example above. Use exact skill names from `aeon.yml` (e.g. `token-call`, not `Token Pick`). Verify it's valid JSON — paste into https://jsonlint.com and click Validate.
 
 ### 4. Add the secret
 
@@ -97,9 +97,9 @@ Manually trigger each signal skill in Actions and verify it lands in the correct
 | 1 | `monitor-runners` | `#runners` |
 | 2 | `narrative-tracker` | `#narratives` |
 | 3 | `token-call` | `#token-call` |
-| 4 | `perps-scan` | `#perps` |
+| 4 | `perps-brief` (via chain — see step 6) | `#perps` |
 | 5 | `daily-ops-review` | `#aeon-ops` |
-| 6 | full `morning-review` chain | covers `perps-brief` → `#perps` + `morning-macro` → `#morning-macro` |
+| 6 | full `morning-review` chain | covers `perps-brief` → `#perps` + `morning-macro` → `#morning-macro` (perps-scan runs as internal upstream — no Discord output) |
 
 If a message lands in the wrong channel: the skill name in the JSON map doesn't match the workflow's `SKILL_NAME`. Compare against `aeon.yml` and fix the JSON.
 
