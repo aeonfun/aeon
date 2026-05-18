@@ -1,0 +1,16 @@
+{
+  "skill": "morning-review",
+  "last_analyzed": "2026-05-18T13:06:26Z",
+  "quality_score": 1,
+  "assessment": "Skill file does not exist; output is error message with no task completion",
+  "flags": [
+    "empty_output"
+  ],
+  "avg_score": 1,
+  "history": [
+    {
+      "date": "2026-05-18",
+      "score": 1
+    }
+  ]
+}
