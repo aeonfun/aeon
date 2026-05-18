@@ -6,3 +6,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-18,perps-scan,claude-opus-4-7,27,6454,635184,39599
 2026-05-18,perps-scan,claude-opus-4-7,27,8876,649368,43647
 2026-05-18,coinglass-probe,claude-opus-4-7,55,13981,1204306,44658
+2026-05-18,coinglass-probe,claude-opus-4-7,31,8509,713329,39155
