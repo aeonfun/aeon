@@ -37,12 +37,12 @@ skills:
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume
-  monitor-runners: { enabled: true, schedule: "0 12 * * *" } # daily noon — top 5 tokens that ran hardest in last 24h via GeckoTerminal
-  token-call: { enabled: true, schedule: "30 12 * * *" } # daily 12:30 UTC — one token call per day, scored 0-10 with skip-day branch. Prediction-market half removed in v2.
+  monitor-runners: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. Top 5 24h DEX runners via GeckoTerminal. Output → #runners via DISCORD_WEBHOOK_MAP.
+  token-call: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. One token call per day, scored 0-10 with skip-day branch. Output → #token-call via DISCORD_WEBHOOK_MAP.
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # add later: needs Tracked Token section in memory/MEMORY.md first
   market-context-refresh: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
-  narrative-tracker: { enabled: true, schedule: "30 13 * * *" } # daily 1:30pm UTC — quantitative narrative map with explicit position calls
+  narrative-tracker: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. Quantitative narrative map (mindshare + velocity + phase + position calls). Output → #narratives via DISCORD_WEBHOOK_MAP.
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
   aixbt-pulse: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
@@ -203,6 +203,33 @@ chains:
   #   steps:
   #     - parallel: [token-movers, paper-pick, github-issues, hacker-news-digest]
   #     - skill: daily-routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]
+
+  # --- Aeon Market Stack v2: morning-review ---
+  # Fires daily at 04:00 UTC (12:00 PM Perth, AWST), weekends included.
+  # Total chain duration estimated 20-30 min. Briefs land 04:20-04:30 UTC.
+  # on_error: continue — a single skill failure doesn't kill the brief;
+  # downstream skills note partial-input degradation and daily-ops-review reports the cause.
+  morning-review:
+    schedule: "0 4 * * *"
+    on_error: continue
+    steps:
+      # Step 1 — Data fetchers in parallel.
+      # Internal-only (no notify): market-context-refresh, aixbt-pulse, token-movers
+      # Signal (notify via --signal → Discord per DISCORD_WEBHOOK_MAP):
+      #   monitor-runners, narrative-tracker, perps-scan, token-call
+      # Flow-sequence syntax `[a, b, c]` is required for the chain-runner regex parser.
+      - parallel: [market-context-refresh, aixbt-pulse, monitor-runners, token-movers, perps-scan, narrative-tracker, token-call]
+
+      # Step 2 — Sector brief (v1: perps only; v2/v3 add on-chain-brief, stocks-brief)
+      # Flow-mapping syntax is required: the chain-runner uses line-regex to find skill/consume
+      # on the same line. Block-style YAML (consume: as own line) is silently ignored.
+      - { skill: perps-brief, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call] }
+
+      # Step 3 — Cross-sector macro synthesis (reads sector briefs)
+      - { skill: morning-macro, consume: [perps-brief, market-context-refresh, aixbt-pulse, narrative-tracker] }
+
+      # Step 4 — Operator health check (reads everything above; routes to #aeon-ops only)
+      - { skill: daily-ops-review, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call, perps-brief, morning-macro] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
