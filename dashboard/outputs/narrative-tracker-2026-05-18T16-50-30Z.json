@@ -1,0 +1,405 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Narratives",
+        "description": "2026-05-18 · 5 tracked"
+      },
+      "children": [
+        "narratives_stack"
+      ]
+    },
+    "narratives_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "narrative_1",
+        "sep_1",
+        "narrative_2",
+        "sep_2",
+        "narrative_3",
+        "sep_3",
+        "narrative_4",
+        "sep_4",
+        "narrative_5"
+      ]
+    },
+    "narrative_1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n1_header",
+        "n1_desc"
+      ]
+    },
+    "n1_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n1_status",
+        "n1_name",
+        "n1_tokens",
+        "n1_score",
+        "n1_action"
+      ]
+    },
+    "n1_status": {
+      "type": "Badge",
+      "props": {
+        "text": "↑ EMERGING",
+        "variant": "secondary"
+      }
+    },
+    "n1_name": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy / ZK layer",
+        "variant": "lead"
+      }
+    },
+    "n1_tokens": {
+      "type": "Badge",
+      "props": {
+        "text": "[ZEC, ALEO, ZK]",
+        "variant": "outline"
+      }
+    },
+    "n1_score": {
+      "type": "Badge",
+      "props": {
+        "text": "3/5"
+      }
+    },
+    "n1_action": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "secondary"
+      }
+    },
+    "n1_desc": {
+      "type": "Text",
+      "props": {
+        "text": "CoinGecko + Kaito 2026 top-9 lists feature Privacy/ZK; FHE builder attention (@zama) but no breakout catalyst yet",
+        "variant": "body"
+      }
+    },
+    "sep_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n2_header",
+        "n2_desc"
+      ]
+    },
+    "n2_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n2_status",
+        "n2_name",
+        "n2_tokens",
+        "n2_score",
+        "n2_action"
+      ]
+    },
+    "n2_status": {
+      "type": "Badge",
+      "props": {
+        "text": "↑ RISING",
+        "variant": "secondary"
+      }
+    },
+    "n2_name": {
+      "type": "Text",
+      "props": {
+        "text": "Decentralized compute / AI infra",
+        "variant": "lead"
+      }
+    },
+    "n2_tokens": {
+      "type": "Badge",
+      "props": {
+        "text": "[TAO, RNDR, AKT]",
+        "variant": "outline"
+      }
+    },
+    "n2_score": {
+      "type": "Badge",
+      "props": {
+        "text": "4/5"
+      }
+    },
+    "n2_action": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      }
+    },
+    "n2_desc": {
+      "type": "Text",
+      "props": {
+        "text": "GPU-shortage story + BTC miners pivoting hashpower to AI compute; velocity ↑↑, tokens still lag the narrative",
+        "variant": "body"
+      }
+    },
+    "sep_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n3_header",
+        "n3_desc",
+        "n3_reflexivity"
+      ]
+    },
+    "n3_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n3_status",
+        "n3_name",
+        "n3_tokens",
+        "n3_score",
+        "n3_action"
+      ]
+    },
+    "n3_status": {
+      "type": "Badge",
+      "props": {
+        "text": "→ PEAK",
+        "variant": "default"
+      }
+    },
+    "n3_name": {
+      "type": "Text",
+      "props": {
+        "text": "AI agents / agentic finance",
+        "variant": "lead"
+      }
+    },
+    "n3_tokens": {
+      "type": "Badge",
+      "props": {
+        "text": "[VIRTUAL, FET, AIXBT]",
+        "variant": "outline"
+      }
+    },
+    "n3_score": {
+      "type": "Badge",
+      "props": {
+        "text": "5/5"
+      }
+    },
+    "n3_action": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      }
+    },
+    "n3_desc": {
+      "type": "Text",
+      "props": {
+        "text": "velocity cooled ↑↑→→; Gemini Agentic Trading + Bitget Agent Hub productizing, but a $500k LLM-router drain hardens the bear case",
+        "variant": "body"
+      }
+    },
+    "n3_reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "reflexivity: exchanges wiring LLMs into live order execution manufactures legitimacy; $139B-by-2034 forecast circulating as a token bid",
+        "variant": "muted"
+      }
+    },
+    "sep_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n4_header",
+        "n4_desc",
+        "n4_reflexivity"
+      ]
+    },
+    "n4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n4_status",
+        "n4_name",
+        "n4_tokens",
+        "n4_score",
+        "n4_action"
+      ]
+    },
+    "n4_status": {
+      "type": "Badge",
+      "props": {
+        "text": "→ PEAK",
+        "variant": "default"
+      }
+    },
+    "n4_name": {
+      "type": "Text",
+      "props": {
+        "text": "RWA / stablecoins / perp DEXs",
+        "variant": "lead"
+      }
+    },
+    "n4_tokens": {
+      "type": "Badge",
+      "props": {
+        "text": "[ONDO, LINK, HYPE]",
+        "variant": "outline"
+      }
+    },
+    "n4_score": {
+      "type": "Badge",
+      "props": {
+        "text": "5/5"
+      }
+    },
+    "n4_action": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "secondary"
+      }
+    },
+    "n4_desc": {
+      "type": "Text",
+      "props": {
+        "text": "Hyperliquid $21.8B/24h perp vol; stablecoins >$20T/yr forecast; RWA +185.8% in 2025",
+        "variant": "body"
+      }
+    },
+    "n4_reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "reflexivity: regulation legitimizes RWA, RWA growth lobbies regulation — loop intact",
+        "variant": "muted"
+      }
+    },
+    "sep_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "narrative_5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n5_header",
+        "n5_desc"
+      ]
+    },
+    "n5_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n5_status",
+        "n5_name",
+        "n5_tokens",
+        "n5_score",
+        "n5_action"
+      ]
+    },
+    "n5_status": {
+      "type": "Badge",
+      "props": {
+        "text": "↓ FADING",
+        "variant": "destructive"
+      }
+    },
+    "n5_name": {
+      "type": "Text",
+      "props": {
+        "text": "Solana Alpenglow speed",
+        "variant": "lead"
+      }
+    },
+    "n5_tokens": {
+      "type": "Badge",
+      "props": {
+        "text": "[SOL]",
+        "variant": "outline"
+      }
+    },
+    "n5_score": {
+      "type": "Badge",
+      "props": {
+        "text": "1/5 (was 3)",
+        "variant": "destructive"
+      }
+    },
+    "n5_action": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "secondary"
+      }
+    },
+    "n5_desc": {
+      "type": "Text",
+      "props": {
+        "text": "zero chatter this window — absent from XAI cache and WebSearch; Q3 2026 rollout still pending",
+        "variant": "body"
+      }
+    }
+  }
+}
