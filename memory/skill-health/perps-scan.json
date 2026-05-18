@@ -1,17 +1,18 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-18T13:07:26Z",
-  "quality_score": 2,
-  "assessment": "Skill executed gracefully with proper fallback handling, but failed to deliver primary output (perps regime classification) due to geo-blocking; primary function unavailable.",
-  "flags": [
-    "api_error",
-    "low_quality"
-  ],
-  "avg_score": 2,
+  "last_analyzed": "2026-05-18T14:00:41Z",
+  "quality_score": 4,
+  "assessment": "Well-structured failure handling with excellent diagnosis: skill encountered Coinglass upstream failure, properly routed to documented edge case, logged correctly, and provided clear troubleshooting guidance. Not a 5 because primary objective (perps scan) unavailable, but execution is substantive and professional.",
+  "flags": [],
+  "avg_score": 3,
   "history": [
     {
       "date": "2026-05-18",
       "score": 2
+    },
+    {
+      "date": "2026-05-18",
+      "score": 4
     }
   ]
 }

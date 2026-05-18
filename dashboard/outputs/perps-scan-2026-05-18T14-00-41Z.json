@@ -1,0 +1,23 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "perps-scan"
+      },
+      "children": [
+        "alert"
+      ]
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Perps Regimes",
+        "message": "2026-05-18 · scan unavailable, Coinglass API failed",
+        "type": "error"
+      }
+    }
+  }
+}
