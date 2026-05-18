@@ -10,7 +10,7 @@ tags: [crypto]
 
 <!-- autoresearch: variation B — sharper output: lead with a Market Take (regime + conviction), show deltas vs prior snapshot, classify narrative phase with evidence, emit decision-ready context for downstream skills rather than a data dump -->
 
-Refresh `memory/topics/market-context.md` with **decision-ready** crypto context. This file is read by token-pick, narrative-tracker, and other skills — it must be current *and* actionable. A data dump is a failure; the reader should know the regime and what to do differently today within 10 seconds.
+Refresh `memory/topics/market-context.md` with **decision-ready** crypto context. This file is read by token-call, narrative-tracker, and other skills — it must be current *and* actionable. A data dump is a failure; the reader should know the regime and what to do differently today within 10 seconds.
 
 Read `memory/MEMORY.md` for prior context.
 
@@ -210,7 +210,7 @@ Total: $XB (±X% 7d). USDT $XB · USDC $XB · [next two] · combined share of mc
 Omit this section entirely if nothing material. Do not pad with generic headlines.
 
 ## Implications for Downstream Skills
-- **token-pick:** [e.g. "favor [narrative] exposure; avoid [sector] on weak breadth"]
+- **token-call:** [e.g. "favor [narrative] exposure; avoid [sector] on weak breadth"]
 - **narrative-tracker:** [e.g. "monitor [narrative] for phase transition emerging→rising"]
 Keep to 1-2 lines per skill. Only write implications that follow from the Take and deltas — don't generate generic advice.
 
@@ -286,6 +286,6 @@ Formatting rules:
 
 - **No data-dump output.** If the file has no Take or the Take is a tautology ("market moved"), the run failed the quality bar.
 - **No fabricated numbers.** If a source fails and there's no prior value, write `n/a` — never guess.
-- **Preserve token-picks history.** "Never truncate" applies specifically to the **Token Picks Made** table: when overwriting `market-context.md`, copy the existing Token Picks Made table verbatim into the new version before adding new rows. The rest of the file is overwritten; only this table is carried forward. Never drop rows, never reorder them.
+- **Preserve Token Picks Made history.** "Never truncate" applies specifically to the **Token Picks Made** table (table name retained from pre-rename schema for data continuity — the underlying skill is now `token-call`): when overwriting `market-context.md`, copy the existing Token Picks Made table verbatim into the new version before adding new rows. The rest of the file is overwritten; only this table is carried forward. Never drop rows, never reorder them.
 - **Concrete evidence only.** Every narrative phase claim must cite a number or signal; otherwise drop the narrative.
 - **Deltas must be real.** "What Changed" only lists material moves (≥±1% BTC, ≥±5 F&G, ≥±2% TVL, or a new regime label). No filler.

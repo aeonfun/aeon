@@ -73,7 +73,7 @@ Sum the five. Keep the **top 8** deals by total. Ties broken by recency.
 
 ### 4. Quality gates (drop if any fail)
 
-- Acqui-hire, grant <$1M, or token sale → drop (token-pick covers tokens)
+- Acqui-hire, grant <$1M, or token sale → drop (token-call covers tokens)
 - Round older than 14 days → drop
 - Amount or lead unverifiable → drop (no rumors)
 - Total leverage score <12 → drop **unless** it carries a Tier-3 signal flag
