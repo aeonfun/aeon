@@ -1,24 +1,25 @@
-*runners — 2026-05-17* — verdict: MIXED
+Yesterday's Runners · 2026-05-18 · MIXED (1 DEEP-LIQ on base, breakout-heavy tape)
 
-1. [REVERSAL] Ebola (solana) +466% 24h
-vol $1.2m | liq $74k | fdv $663k (no mcap) | h1 -8.2% | buys:sells 8.8k:5.8k
-— biggest mover of the day but cooling on h1/h6; $74k liq under $1.2m volume is thin exit liquidity — watch whether it bases or unwinds.
+DEEP-LIQ
+• PITCH (base) +1480% 24h
+  $7.1m vol, $1.5m liq, h1 +2.5%, buys 61%
+  → only top pick with real depth; h1 still green and buy-skewed, the cleanest sustained breakout to watch into continuation
 
-2. [BREAKOUT] Mira (solana) +307% 24h
-vol $1.7m | liq $33k | fdv $146k (no mcap) | h1 -32% | buys:sells 17.9k:13.7k
-— fresh <8h pool already down 32% on the hour; launch-day blowoff, the breakout is spent — watch only for a dead-cat.
+BREAKOUT
+• ASTEROID (bsc) +5692% 24h
+  $51m vol, $130k liq, pool 6h old, buys 58%
+  → $51m vol on $130k liq is ~390x churn; treat the print as wash noise, the only thing to watch is the unwind
 
-3. [BREAKOUT] Peace (solana) +221% 24h
-vol $2.0m | liq $30k | fdv $116k (no mcap) | h1 -16% | buys:sells 20.1k:15.3k
-— 13h-old pool fading after the pop; $30k liq vs $2m volume is casino-tier — momentum already negative, treat as cooling.
+• SpaceX (base) +8733% 24h
+  $30.8m vol, $117k liq, pool 10h old, h6 -26%
+  → h6 already red while h24 still prints +8733%; blowoff is spent, this is the fade not the setup
 
-4. [CONTINUATION] SYNTH (base) +146% 24h
-vol $635k | liq $216k | fdv $434k (no mcap) | h1 +7.6% | buys:sells 1.5k:897
-— only top pick still green on the hour; established Base pool reaccelerating — cleanest continuation in today's tape.
+• GDOR (sol) +580% 24h
+  $52m vol, $333k liq, pool 21h old, h1/h6 flat
+  → h1 and h6 both flat means the move is fully stale; $52m vol with no fresh bid reads as distribution
 
-5. [DEEP-LIQ] aeon (base) +107% 24h
-vol $1.9m | liq $2.2m | fdv $7m (no mcap) | h1 +1.7% | buys:sells 1.9k:1.2k
-— the only deep-liquidity name here; $2.2m liq and h6 still building +15% — orderly move, the one worth actually watching.
+• MANIFEST (sol) +5256% 24h
+  $1.6m vol, $244k liq, pool 33h old, h1 +11%
+  → 33h-old pool still climbing on both h1 and h6 (+46%), $9.1m mcap; most durable breakout of the set
 
-sources: gt-global=ok gt-solana=ok gt-eth=ok gt-base=ok gt-bsc=ok gt-arbitrum=ok
-vibe: Solana meme casino on top — the three biggest movers are sub-$150k-liq pumps already rolling over; the only orderly action is on Base.
+vibe: speculative tape — extreme prints driven by wash-heavy fresh pools, only PITCH and MANIFEST hold a genuine bid

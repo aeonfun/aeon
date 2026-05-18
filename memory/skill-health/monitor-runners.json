@@ -1,0 +1,16 @@
+{
+  "skill": "monitor-runners",
+  "last_analyzed": "2026-05-18T13:00:33Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured analysis with actionable picks; rate-limiting impacts reliability",
+  "flags": [
+    "rate_limited"
+  ],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-18",
+      "score": 4
+    }
+  ]
+}

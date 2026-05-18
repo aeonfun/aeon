@@ -1,0 +1,288 @@
+{
+  "root": "main_card",
+  "state": {},
+  "elements": {
+    "main_card": {
+      "type": "Card",
+      "props": {
+        "title": "Yesterday's Runners",
+        "description": "2026-05-18 · MIXED (1 DEEP-LIQ on base, breakout-heavy tape)"
+      },
+      "children": [
+        "content_stack"
+      ]
+    },
+    "content_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "deepliq_heading",
+        "deepliq_stack",
+        "separator1",
+        "breakout_heading",
+        "breakout_stack",
+        "separator2",
+        "vibe_text"
+      ]
+    },
+    "deepliq_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "DEEP-LIQ",
+        "level": "h2"
+      }
+    },
+    "deepliq_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "pitch_card"
+      ]
+    },
+    "pitch_card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pitch_header",
+        "pitch_gain",
+        "pitch_metrics",
+        "pitch_analysis"
+      ]
+    },
+    "pitch_header": {
+      "type": "Text",
+      "props": {
+        "text": "PITCH (base)",
+        "variant": "lead"
+      }
+    },
+    "pitch_gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+1480%",
+        "label": "24h"
+      }
+    },
+    "pitch_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$7.1m vol, $1.5m liq, h1 +2.5%, buys 61%"
+      }
+    },
+    "pitch_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "only top pick with real depth; h1 still green and buy-skewed, the cleanest sustained breakout to watch into continuation",
+        "variant": "caption"
+      }
+    },
+    "separator1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "breakout_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "BREAKOUT",
+        "level": "h2"
+      }
+    },
+    "breakout_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "asteroid_card",
+        "spacex_card",
+        "gdor_card",
+        "manifest_card"
+      ]
+    },
+    "asteroid_card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asteroid_header",
+        "asteroid_gain",
+        "asteroid_metrics",
+        "asteroid_analysis"
+      ]
+    },
+    "asteroid_header": {
+      "type": "Text",
+      "props": {
+        "text": "ASTEROID (bsc)",
+        "variant": "lead"
+      }
+    },
+    "asteroid_gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+5692%",
+        "label": "24h"
+      }
+    },
+    "asteroid_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$51m vol, $130k liq, pool 6h old, buys 58%"
+      }
+    },
+    "asteroid_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "$51m vol on $130k liq is ~390x churn; treat the print as wash noise, the only thing to watch is the unwind",
+        "variant": "caption"
+      }
+    },
+    "spacex_card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "spacex_header",
+        "spacex_gain",
+        "spacex_metrics",
+        "spacex_analysis"
+      ]
+    },
+    "spacex_header": {
+      "type": "Text",
+      "props": {
+        "text": "SpaceX (base)",
+        "variant": "lead"
+      }
+    },
+    "spacex_gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+8733%",
+        "label": "24h"
+      }
+    },
+    "spacex_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$30.8m vol, $117k liq, pool 10h old, h6 -26%"
+      }
+    },
+    "spacex_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "h6 already red while h24 still prints +8733%; blowoff is spent, this is the fade not the setup",
+        "variant": "caption"
+      }
+    },
+    "gdor_card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gdor_header",
+        "gdor_gain",
+        "gdor_metrics",
+        "gdor_analysis"
+      ]
+    },
+    "gdor_header": {
+      "type": "Text",
+      "props": {
+        "text": "GDOR (sol)",
+        "variant": "lead"
+      }
+    },
+    "gdor_gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+580%",
+        "label": "24h"
+      }
+    },
+    "gdor_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$52m vol, $333k liq, pool 21h old, h1/h6 flat"
+      }
+    },
+    "gdor_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "h1 and h6 both flat means the move is fully stale; $52m vol with no fresh bid reads as distribution",
+        "variant": "caption"
+      }
+    },
+    "manifest_card": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "manifest_header",
+        "manifest_gain",
+        "manifest_metrics",
+        "manifest_analysis"
+      ]
+    },
+    "manifest_header": {
+      "type": "Text",
+      "props": {
+        "text": "MANIFEST (sol)",
+        "variant": "lead"
+      }
+    },
+    "manifest_gain": {
+      "type": "Stat",
+      "props": {
+        "value": "+5256%",
+        "label": "24h"
+      }
+    },
+    "manifest_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$1.6m vol, $244k liq, pool 33h old, h1 +11%"
+      }
+    },
+    "manifest_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "33h-old pool still climbing on both h1 and h6 (+46%), $9.1m mcap; most durable breakout of the set",
+        "variant": "caption"
+      }
+    },
+    "separator2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "vibe: speculative tape — extreme prints driven by wash-heavy fresh pools, only PITCH and MANIFEST hold a genuine bid",
+        "variant": "muted"
+      }
+    }
+  }
+}

@@ -1,2 +1,3 @@
 date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-17,monitor-runners,claude-opus-4-7,61,23423,1478174,49313
+2026-05-18,monitor-runners,claude-opus-4-7,93,40359,3087711,154578
