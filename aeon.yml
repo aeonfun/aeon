@@ -48,6 +48,7 @@ skills:
   aixbt-pulse: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
   perps-scan: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. Bybit perps regime classifier (6 regimes). Output → #perps via DISCORD_WEBHOOK_MAP.
   daily-ops-review: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 4. Verifies all chain steps ran; reports source health + issues. Output → #aeon-ops via DISCORD_WEBHOOK_MAP. Private (operator-only).
+  perps-brief: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 2. 4-pass confluence synth (discovery → enrich → judge → compose). HIGH CONVICTION cap 5. Output → #perps via DISCORD_WEBHOOK_MAP.
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
