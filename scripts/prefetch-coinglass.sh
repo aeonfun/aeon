@@ -109,17 +109,41 @@ cg_get() {
 }
 
 # --- 1. Fetch the universe + current metrics ---
-echo "coinglass-prefetch: fetching coins-markets ..."
-if ! cg_get "$CACHE/coins.json" \
-  "$BASE/api/futures/coins-markets?exchange_list=Binance,Bybit,OKX&per_page=50"; then
-  echo "::warning::coinglass-prefetch: coins-markets fetch failed — skill will fall back to 'scan unavailable'"
-  # Write a manifest indicating total failure so skill can detect it without re-checking
+# Try variants in order from richest-data to least, picking the first that succeeds.
+# Coinglass returns code != 0 with msg "Upgrade plan" when a param/endpoint
+# exceeds the subscription tier (per_page caps + multi-exchange lists are the
+# typical tier-gated params). Step down progressively.
+COINS_VARIANTS=(
+  "exchange_list=Binance,Bybit,OKX&per_page=50"
+  "exchange_list=Binance,OKX&per_page=50"
+  "exchange_list=Binance,OKX&per_page=25"
+  "exchange_list=Binance,OKX"
+  ""
+)
+USED_VARIANT=""
+TRIED=""
+for VARIANT in "${COINS_VARIANTS[@]}"; do
+  TRIED="${TRIED}${VARIANT:-<defaults>}; "
+  URL="$BASE/api/futures/coins-markets"
+  [ -n "$VARIANT" ] && URL="${URL}?${VARIANT}"
+  echo "coinglass-prefetch: trying coins-markets ${VARIANT:-<defaults>} ..."
+  if cg_get "$CACHE/coins.json" "$URL"; then
+    USED_VARIANT="${VARIANT:-<defaults>}"
+    break
+  fi
+done
+if [ -z "$USED_VARIANT" ]; then
+  TRIED="${TRIED%; }"
+  echo "::warning::coinglass-prefetch: ALL coins-markets variants failed (tried: $TRIED)"
+  echo "::warning::coinglass-prefetch: likely endpoint is tier-gated entirely — verify Coinglass plan covers /api/futures/coins-markets"
+  # Write manifest with tried_variants so skill / daily-ops-review can see what was attempted
   jq -n --arg fetched_at "$(date -u +%FT%TZ)" \
-    '{fetched_at: $fetched_at, coins_markets_ok: false, asset_list: [], per_coin_errors: []}' \
+    --arg tried "$TRIED" \
+    '{fetched_at: $fetched_at, coins_markets_ok: false, asset_list: [], per_coin_errors: [], tried_variants: $tried}' \
     > "$CACHE/manifest.json"
   exit 0  # Non-fatal — skill handles the missing-data case
 fi
-echo "coinglass-prefetch: saved coins.json ($(wc -c < "$CACHE/coins.json" | tr -d ' ') bytes)"
+echo "coinglass-prefetch: saved coins.json using variant: $USED_VARIANT ($(wc -c < "$CACHE/coins.json" | tr -d ' ') bytes)"
 
 # --- 2. Determine asset list ---
 if [ -n "$VAR" ]; then
@@ -161,9 +185,10 @@ done
 ASSET_LIST_JSON=$(echo "$ASSET_LIST" | jq -R -s 'split("\n") | map(select(length > 0))')
 jq -n \
   --arg fetched_at "$(date -u +%FT%TZ)" \
+  --arg used_variant "$USED_VARIANT" \
   --argjson asset_list "$ASSET_LIST_JSON" \
   --argjson per_coin_errors "$PER_COIN_ERRORS" \
-  '{fetched_at: $fetched_at, coins_markets_ok: true, asset_list: $asset_list, per_coin_errors: $per_coin_errors}' \
+  '{fetched_at: $fetched_at, coins_markets_ok: true, used_variant: $used_variant, asset_list: $asset_list, per_coin_errors: $per_coin_errors}' \
   > "$CACHE/manifest.json"
 
 ERROR_COUNT=$(echo "$PER_COIN_ERRORS" | jq 'length')
