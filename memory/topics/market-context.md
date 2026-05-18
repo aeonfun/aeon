@@ -42,6 +42,53 @@ Total: ~$284.8B (7d change: n/a). USDT $189.7B · USDC $77.1B · USDS $8.9B · D
 - VVV — Venice Token (AI private data), +1.15% 24h; AI-infra adjacency narrative
 - BTC — -2.38%; trending = fear/attention, not bullish
 - ASTEROID — -14.72%; top monitor-runners pick from 2026-05-18 already unwinding
+> **Take:** risk-off — BTC -2.2% 24h with only 3/20 top-cap majors green; DEX vol $3.97B, -35% vs 7d avg. Conviction: high.
+
+## Signal Snapshot
+- BTC $76,392 (-2.2% 24h, -6.1% 7d) · dominance 58.24% (n/a pp 24h — first run)
+- ETH $2,096 (-4.1% 24h, -10.1% 7d) · ETH/BTC 0.02742
+- SOL $84.25 (-2.7% 24h, -11.4% 7d)
+- Total mcap $2.63T (-2.1% 24h) · DEX vol $3.97B 24h
+- Breadth: 3/20 green 24h · 3/20 green 7d
+- Fear & Greed: 28 (Fear) — yesterday 27
+
+## What Changed Since Last Refresh
+First run — no prior snapshot. Key context established:
+- BTC has retraced from $80K+ area to $76,392 this week; April PPI +1.4% MoM / +6% YoY reset rate expectations to "higher for longer," triggering risk-off cascade.
+- New Fed Chair Kevin Warsh (hawkish lean) sworn in May 15 — first chair change since 2018.
+- CLARITY Act advancing through Senate Banking Committee — positive structural signal for U.S. crypto market structure.
+- BTC ETF May cumulative inflows still positive ($1.63B since May 1) despite price pullback — institutional demand intact.
+
+## Active Narratives
+- **Hyperliquid / perp DEX dominance** — phase: rising. Evidence: HYPE +2.8% 24h, +9.77% 7d — the only top-10 asset green; trending #2 on CoinGecko while majors bleed.
+- **Privacy / ZK** — phase: emerging. Evidence: ZANO #1 trending (+6.85% 24h); ZEC +2.1% 24h while broad market red; both outperform in a 3/20 green environment.
+- **RWA / stablecoin regulation** — phase: rising. Evidence: CLARITY Act Senate markup underway; ONDO trending (#8); stablecoin mcap $289B steady; Polymarket Iran/geopolitical volume suggests macro risk driving safe-haven stablecoin demand.
+- **AI agents / agentic crypto** — phase: fading. Evidence: BILL trending (+6.25%) but majority of AI-agent token cohort red; narrative-tracker (2026-05-18) flagged AI agents as FADE with security-gap bear case hardening.
+- **Meme / casino layer** — phase: fading. Evidence: PENGU, MEGA, PEPE, ASTEROID all trending but -3% to -15% 24h; ASTEROID previously +5692% now reversing hard.
+
+## Top DeFi Protocols (TVL, 7d change)
+- Lido: $18.59B (-8.4%)
+- SSV Network: $15.56B (-8.7%)
+- Aave V3: $13.94B (-6.1%)
+- Morpho Blue: $7.37B (-2.5%)
+- EigenCloud: $6.87B (-8.3%)
+
+## Chain Flow (top 3 by TVL, 7d)
+- Ethereum: $43.38B (7d delta: n/a — chains endpoint did not return 7d change)
+- Solana: $5.93B (7d delta: n/a)
+- Tron: $5.10B (7d delta: n/a)
+
+## Stablecoins
+Total: $289B (7d delta: n/a — first run). USDT $189.7B · USDC $77.1B · USDS $8.9B · USDe $4.4B · combined share of total mcap ~11.0%.
+
+## Trending (CoinGecko)
+- ZANO — privacy coin, $11.53, +6.85%
+- HYPE — Hyperliquid perp DEX, $44.77, +2.03%
+- VVV — Venice Token / AI, $14.40, +1.15%
+- BILL — Billions Network / launch token, $0.156, +6.25%
+- PENGU — Pudgy Penguins meme, $0.0083, -3.29%
+- MEGA — MegaETH L2, $0.087, -6.09%
+- ONDO — RWA protocol, $0.34, -3.30%
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
@@ -58,6 +105,17 @@ Total: ~$284.8B (7d change: n/a). USDT $189.7B · USDC $77.1B · USDS $8.9B · D
 ## Implications for Downstream Skills
 - **token-call:** favor decentralized compute / privacy exposure (HYPE, ZEC outperforming); avoid meme/pump plays (ASTEROID already unwinding); skip broad alt bets until 24h breadth recovers above 10/20.
 - **narrative-tracker:** monitor privacy/ZK (ZANO/ZEC outperformance) for emerging→rising transition; confirm whether AI-agents FADE firms up as exchange productization signals peak maturity.
+| Will Reza Pahlavi lead Iran in 2026? | 6.7% | $1.77M | $112K |
+| US x Iran permanent peace deal by May 31? | 8.5% | $1.38M | $511K |
+| Crude Oil (CL) >$84 Jun 2026 | 70.0% | n/a | n/a |
+
+## Macro Catalysts (next 48h)
+- **PPI shock / rates repricing** — April PPI +1.4% MoM / +6% YoY well above expectations; hawkish Fed Chair Warsh freshly seated. Risk: if hike expectations firm further, BTC likely tests $72-74K next support.
+- **CLARITY Act Senate markup** — vote timing unclear but this week; passage would be structurally bullish for RWA/stablecoin sector specifically.
+
+## Implications for Downstream Skills
+- **token-call:** favor isolated catalysts with named events in Hyperliquid ecosystem or privacy/ZK; avoid broad alt beta — 7d drawdowns of -10% to -11% on ETH/SOL mean momentum is against longs.
+- **narrative-tracker:** watch ZANO/ZEC for emerging→rising phase transition; watch CLARITY Act timeline for RWA/stablecoin narrative catalyst.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -67,4 +125,9 @@ Total: ~$284.8B (7d change: n/a). USDT $189.7B · USDC $77.1B · USDS $8.9B · D
 
 ---
 *Sources — btc/eth: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket*
+| 2026-05-17 | KAIA | $0.0538 | Kaia L1 rallying on stablecoin push (Visa-compatible USDT payments, Flipster partnership) + BORA gaming integration; outperforming red alt tape |
+| 2026-05-18 | TRAC | $0.49 | Upbit listing live 16:00 KST (KRW/BTC/USDT pairs); AI-infra narrative (Copilot MCP integration) adds floor; risk: sell-the-news after +49% 24h run |
+
+---
+*Sources — btc/eth/sol/top20/trending: CoinGecko · defi/chains: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
 *Source status: coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok*

@@ -19,4 +19,24 @@ All 5 data sources came back clean (coingecko=ok defillama=ok fng=ok polymarket=
 **Files created/updated:**
 - `memory/topics/market-context.md` — new, full canonical file with Token Picks table (KAIA 05-17, TRAC 05-18)
 - `.outputs/market-context-refresh.md` — chain-consumable digest for perps-brief / morning-macro / daily-ops-review
+Done. Here's the summary:
+
+## Summary
+
+**Regime: risk-off, conviction high.**
+
+**Data fetched (all sources OK):**
+- CoinGecko: BTC $76,392 (-2.2% 24h, -6.1% 7d), ETH $2,096 (-4.1%), SOL $84.25 (-2.7%). Breadth 3/20 green — well below the 7/20 risk-off threshold.
+- DeFiLlama: DEX vol $3.97B 24h (-35% vs 7d avg); all major DeFi protocols negative 7d (-2.5% to -8.9%).
+- Fear & Greed: 28 (Fear), was 27 — flat.
+- Polymarket: top volume dominated by Iran geopolitics (Reza Pahlavi 6.7%, Iran peace deal 8.5%).
+- Macro: PPI shock (+1.4% MoM / +6% YoY) and hawkish Fed Chair Warsh driving risk-off; CLARITY Act advancing in Senate as a structural positive.
+
+**Market Take:** `risk-off — BTC -2.2% 24h with only 3/20 top-cap majors green; DEX vol $3.97B, -35% vs 7d avg. Conviction: high.`
+
+**Active narratives:** Hyperliquid/perp DEX (rising), Privacy/ZK (emerging, ZANO #1 trending), RWA/stablecoin regulation (rising, CLARITY Act), AI agents (fading), Meme layer (fading).
+
+**Files created/modified:**
+- `memory/topics/market-context.md` — new, full canonical file
+- `.outputs/market-context-refresh.md` — new, chain-consumable digest
 - `memory/logs/2026-05-18.md` — log entry appended
