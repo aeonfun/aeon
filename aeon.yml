@@ -28,7 +28,7 @@ skills:
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: false, schedule: "0 12 * * *" }
-  token-movers: { enabled: true, schedule: "0 12 * * *" } # daily noon — top movers/losers/trending with anti-pump filtering + signal tags
+  token-movers: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
   on-chain-monitor: { enabled: false, schedule: "0 12 * * *" } # add later: populate memory/on-chain-watches.yml first
   defi-monitor: { enabled: false, schedule: "0 12 * * *" }
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
@@ -41,11 +41,11 @@ skills:
   token-pick: { enabled: true, schedule: "30 12 * * *" } # daily 12:30 UTC — one token + one Polymarket call, scored with skip-day branch
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # add later: needs Tracked Token section in memory/MEMORY.md first
-  market-context-refresh: { enabled: true, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # daily 1pm UTC — refresh macro context (BTC dom, ETH/BTC, funding) into memory/topics/market-context.md
+  market-context-refresh: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
   narrative-tracker: { enabled: true, schedule: "30 13 * * *" } # daily 1:30pm UTC — quantitative narrative map with explicit position calls
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
-  aixbt-pulse: { enabled: true, schedule: "0 9,21 * * *", model: "claude-sonnet-4-6" } # twice daily 9am/9pm UTC — AIXBT free grounding endpoint: cross-domain pulse (crypto/macro/tradfi/geo) + bridge calls
+  aixbt-pulse: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }

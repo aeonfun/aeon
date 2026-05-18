@@ -260,6 +260,13 @@ jobs:
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash
           set -euo pipefail
+
+          # --signal flag: suppress Telegram delivery (Discord-only routing for signal-output skills).
+          # Usage:
+          #   ./notify "message"            — default: Telegram + Discord + Slack + email
+          #   ./notify --signal "message"   — Discord + Slack + email only (skip Telegram)
+          SIGNAL=false
+          if [ "${1:-}" = "--signal" ]; then SIGNAL=true; shift; fi
           MSG="$1"
 
           # Suppress obvious diagnostic probes (short messages containing test/trace/ping/debug/hello).
@@ -285,15 +292,22 @@ jobs:
           fi
           printf '%s\n' "$HASH" >> "$HASH_FILE" 2>/dev/null || true
 
-          # Always save to .pending-notify/ for post-run delivery (sandbox fallback)
+          # Always save to .pending-notify/ for post-run delivery (sandbox fallback).
+          # Filename convention encodes the --signal flag so post-run re-delivery honors Telegram suppression.
           TS=$(date -u +%s)
-          echo "$MSG" > ".pending-notify/${TS}.md"
+          if [ "$SIGNAL" = "true" ]; then
+            PENDING_FILE=".pending-notify/${TS}.signal.md"
+          else
+            PENDING_FILE=".pending-notify/${TS}.md"
+          fi
+          echo "$MSG" > "$PENDING_FILE"
 
           # Attempt immediate delivery (may fail in sandbox — post-run step retries)
           DELIVERED=false
 
-          # Telegram: 4096 char limit, strict Markdown parsing
-          if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
+          # Telegram: 4096 char limit, strict Markdown parsing.
+          # Skipped entirely when --signal flag was passed (signal skills route to Discord only).
+          if [ "$SIGNAL" != "true" ] && [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
             # Split $MSG into chunks ≤3900 chars (Telegram cap 4096, leaves room for
             # "[i/N]" suffix). Prefer paragraph (\n\n) then line (\n) boundaries,
             # hard-split only if a single paragraph/line exceeds the limit.
@@ -392,7 +406,7 @@ jobs:
 
           # Remove pending file if immediate delivery succeeded (prevents double-send)
           if [ "$DELIVERED" = "true" ]; then
-            rm -f ".pending-notify/${TS}.md"
+            rm -f "$PENDING_FILE"
           fi
           NOTIFY_SCRIPT
           chmod +x ./notify
@@ -679,6 +693,13 @@ for i, c in enumerate(text):
             [ -f "$pending" ] || continue
             MSG=$(cat "$pending")
 
+            # Detect --signal pending files (filename convention: ${TS}.signal.md).
+            # Signal-tagged messages skip Telegram delivery; all other channels still fire.
+            case "$(basename "$pending")" in
+              *.signal.md) SIGNAL=true ;;
+              *) SIGNAL=false ;;
+            esac
+
             # Suppress trivial probes
             MSG_LEN=${#MSG}
             if [ "$MSG_LEN" -lt 120 ]; then
@@ -700,8 +721,8 @@ for i, c in enumerate(text):
             printf '%s\n' "$HASH" >> "$HASH_FILE"
 
             echo "Delivering pending notification: $(basename "$pending")"
-            # Telegram
-            if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
+            # Telegram (skipped for --signal pending files — Discord-only routing)
+            if [ "$SIGNAL" != "true" ] && [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
               TG_MSG="$MSG"
               [ ${#TG_MSG} -gt 4000 ] && TG_MSG="${TG_MSG:0:3990}...(truncated)"
               curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \

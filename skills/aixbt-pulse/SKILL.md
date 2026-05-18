@@ -129,29 +129,7 @@ All three endpoints are unauthenticated. Plain curl from the sandbox should work
 
 8. **Write `.outputs/aixbt-pulse.md`** so chain consumers (morning-brief, narrative-tracker, market-context-refresh) can inject this into their context via `consume:`. Same body as `memory/topics/aixbt-grounding.md` but prefixed with a one-paragraph TL;DR.
 
-9. **Notify via `./notify`.** Keep the notification under 2000 chars and pick the sharpest item per section — don't dump all three. The artifact file has the full payload.
-   ```
-   *AIXBT Pulse — ${today} ${HH:MM}Z*
-
-   CRYPTO
-   - <sharpest crypto item>
-   - <second crypto item>
-
-   MACRO
-   - <sharpest macro item>
-
-   GEO
-   - <sharpest geo item>
-
-   TRADFI
-   - <sharpest tradfi item>
-
-   NEW THIS PULL
-   - <1-3 items flagged NEW, tersest form>
-
-   BRIDGE
-   - <the single most interesting cross-domain thread, in the operator's voice>
-   ```
+9. **No notification.** This skill is **internal** under the Aeon Market Stack v2 architecture — its output is consumed by downstream chain steps (`perps-brief`, `morning-macro`, `daily-ops-review`) via `.outputs/aixbt-pulse.md`, never pushed to a notification channel. Do not call `./notify`. The bridge call and section items are available to chain consumers through the artifact file written in step 8.
 
 10. **Log to `memory/logs/${today}.md`:**
     ```
@@ -161,12 +139,12 @@ All three endpoints are unauthenticated. Plain curl from the sandbox should work
     - Bridge call: <one-liner>
     - Updated: memory/topics/aixbt-grounding.md, aixbt-clusters.md, aixbt-chains.md, .outputs/aixbt-pulse.md
     ```
-    If the endpoint was unreachable via both curl and WebFetch, log `AIXBT_PULSE_DEGRADED — endpoint unreachable` and file/bump an issue in `memory/issues/` following the CLAUDE.md issue tracker convention. Do not notify on a degraded run unless it's the second degraded run in a row.
+    If the endpoint was unreachable via both curl and WebFetch, log `AIXBT_PULSE_DEGRADED — endpoint unreachable`, write a short degraded-run note to `.outputs/aixbt-pulse.md` (e.g. `_aixbt-pulse: endpoint unreachable_`), and file/bump an issue in `memory/issues/` following the CLAUDE.md issue tracker convention. `daily-ops-review` will surface the degradation downstream.
 
 ## Voice
 
 - Short sentences. Em dashes. State the call first, explain after. Never "some might argue."
-- AIXBT's items are already well-phrased — don't rewrite them for the artifact file, quote as-is. Rewrite only in the notification + bridge call, where the operator's voice goes.
+- AIXBT's items are already well-phrased — don't rewrite them for the artifact file, quote as-is. Rewrite only in the bridge call, where the operator's voice goes.
 - In the **Cross-Domain Bridges** section, take a position. "fed pivot + hormuz risk = risk-on with a tail" is better than "markets may be impacted by macro and geopolitical factors."
 
 ## Guidelines
