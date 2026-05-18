@@ -15,7 +15,7 @@
 | `aixbt-pulse` | `0 9,21 * * *` | Cross-domain pulse (crypto/macro/geo/tradfi) twice daily |
 | `token-movers` | `0 12 * * *` | Daily winners/losers/trending with anti-pump filtering |
 | `monitor-runners` | `0 12 * * *` | Top 5 24h runners via GeckoTerminal |
-| `token-pick` | `30 12 * * *` | One token + one Polymarket call with skip-day branch |
+| `token-call` | `30 12 * * *` | One token call per day, scored with skip-day branch (renamed from `token-pick` in v2; prediction-market half removed — Polymarket flows via `market-context-refresh`) |
 | `market-context-refresh` | `0 13 * * *` | Refresh macro context into `memory/topics/market-context.md` |
 | `narrative-tracker` | `30 13 * * *` | Quantitative narrative map + position calls |
 | `heartbeat` | `0 8,14,20 * * *` | Watchdog — silent unless something needs attention |

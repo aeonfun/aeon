@@ -80,39 +80,70 @@ For each narrative, flag if the story itself is moving outcomes:
 
 Only flag explicit cases with a concrete example. "Reflexivity" without evidence is hand-waving.
 
-### 5. Format the notification
+### 5. Write artifact + notify (v2 locked format)
 
-Keep under 4000 chars. Lead with transitions and reflexivity — those are the decisions. Classification goes below.
+This is a **signal** skill under Aeon Market Stack v2. It writes both:
+1. `.outputs/narrative-tracker.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
+2. A Discord-only notification via `./notify --signal "..."` routed to `#narratives`.
+
+**Format (used identically for both artifact and notification, under 4000 chars):**
 
 ```
-*Narrative Tracker — ${today}*
+Narratives · ${today} · 5 tracked, 1 NEW
 
-TRANSITIONS
-• NEW: <label> — <why it matters> — <link>
-• PROMOTED: <label> Rising → Peak — <what flipped>
-• DEMOTED: <label> Peak → Fading — <what cooled>
-• DEAD: <label> — gone
+↑ RISING
+• Hyperliquid sector [HYPE, JUP, drift] · 5/5 · RIDE
+  perps infra real — SpaceX pre-IPO on TradeXYZ, HYPE ETF debut
 
-REFLEXIVITY ALERT
-• <narrative> — <concrete evidence the story is moving outcomes>
+• AI inference demand [TAO, RNDR, AKT] · 4/5 · FRONT-RUN
+  GPU shortage + TAO mindshare doubled 72h — story building, tokens lag
 
-POSITIONS
-• FRONT-RUN: <label> (mindshare 2 ↑↑, Bull) — <driver> — <bear case> — <link>
-• RIDE: <label> (3 ↑, Bull) — <driver> — <bear case>
-• FADE: <label> (5 → Cope) — <driver> — <reflexivity note>
+• Onchain derivatives reg [HYPE, dYdX, GMX] · 2/5 · NEW · WATCH
+  CLARITY Act through committee, early but worth tracking
 
-MAP
-Emerging: <labels>
-Rising: <labels>
-Peak: <labels>
-Fading: <labels>
+→ PEAK
+• Tokenized stocks [ONDO, BUIDL, OUSG] · 5/5 · RIDE w/ trail
+  $1.5B onchain mcap (40x YoY), CLARITY Act Senate vote pending
+  reflexivity: regulation legitimizes, growth lobbies regulation — peaking
+
+↓ FADING
+• DeFi yields [AAVE, COMP, MKR] · 2/5 (was 3) · FADE
+  narrative dying, sustainable yields out-competed by token issuance
+
+Changes since yesterday:
++ Onchain derivatives reg (NEW)
+- BTC ETF inflows (absorbed into market price)
 ```
 
-If absolutely nothing new or notable (no transitions, no reflexivity, no FRONT-RUN/FADE calls): send a one-line update instead of the full template — `*Narrative Tracker — ${today}*: no phase transitions, map unchanged from <last_date>.`
+**Universal formatting rules (v2):**
+- No asterisks (`*` or `**`) anywhere. Plain text only.
+- Title: `Narratives · ${today} · N tracked, M NEW` (omit `, M NEW` if M=0).
+- Phase headers prefixed with the velocity arrow that matches: `↑ EMERGING`, `↑ RISING`, `→ PEAK`, `↓ FADING`. Omit empty phase groups.
+- Dot separator `·` for inline metadata.
+- `•` prefix for each narrative entry.
+- Drop IGNORE-tier narratives from the signal output entirely (still logged for diff continuity).
 
-### 6. Send via `./notify`
+**Per-narrative entry structure (2-3 lines):**
+- Line 1: `• Label [TOKEN1, TOKEN2, TOKEN3] · MINDSHARE/5 · POSITION` — optionally `· NEW` and/or `(was N)` before the position when phase changed.
+- Line 2: short evidence/driver line — what makes this narrative tick.
+- Line 3 (optional): `reflexivity:` callout when the story is materially moving outcomes (token rebrands, VC manufacturing, prediction-market reflexivity loops). Skip line 3 if no clear reflexivity.
 
-### 7. Log to `memory/logs/${today}.md`
+**Position vocabulary:** `FRONT-RUN`, `RIDE`, `RIDE w/ trail`, `FADE`, `WATCH`. Free-form qualifier OK after the base term (e.g. `RIDE w/ trail`, `WATCH (early)`).
+
+**Changes footer:** 1-3 bullets max. Use `+` for NEW (not in prior 3 days of logs), `-` for DEAD (was in prior logs, now absent). Skip the footer entirely if neither category applies.
+
+**Quiet-day fallback:** if no phase transitions, no reflexivity, no FRONT-RUN/FADE calls, AND the map is unchanged from the last run, write a single-line variant for both artifact and notification:
+```
+Narratives · ${today} · map unchanged from ${last_date}
+```
+
+**Invocation:**
+```bash
+./notify --signal "$(cat .outputs/narrative-tracker.md)"
+```
+The `--signal` flag suppresses Telegram; Discord routing via `DISCORD_WEBHOOK_MAP[narrative-tracker]` targets `#narratives`.
+
+### 6. Log to `memory/logs/${today}.md`
 
 Append a `### narrative-tracker` section with the full structured output (not just the notification — include all narratives considered, even IGNOREd ones, so future diffs work). If a full run produced nothing actionable, log `NARRATIVE_TRACKER_OK` with the narrative labels seen (so tomorrow's diff still has a baseline).
 

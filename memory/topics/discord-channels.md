@@ -16,7 +16,7 @@ The `aeon` workflow looks up the channel for each skill in this order:
 | Skill | Channel | Why a dedicated channel |
 |---|---|---|
 | `aixbt-pulse` | `#aeon-market-pulse` | Macro/cross-domain context, twice daily — own channel keeps it from drowning out picks |
-| `token-pick` | `#aeon-picks` | Daily call, the most "signal-heavy" output — easy to find later for accountability |
+| `token-call` | `#aeon-picks` | Daily call, the most "signal-heavy" output — easy to find later for accountability |
 | `token-movers` | `#aeon-movers` | Daily winners/losers with anti-pump tags — high volume of data per message |
 | `monitor-runners` | `#aeon-runners` | Top 5 24h runners — different angle from movers |
 | `narrative-tracker` | `#aeon-narratives` | Position calls + phase transitions — slow-moving, worth re-reading |
@@ -32,7 +32,7 @@ Plain JSON. Store as a single repo secret. To update routing, replace the whole 
 ```json
 {
   "aixbt-pulse": "https://discord.com/api/webhooks/123.../market-pulse-hook",
-  "token-pick": "https://discord.com/api/webhooks/123.../picks-hook",
+  "token-call": "https://discord.com/api/webhooks/123.../picks-hook",
   "token-movers": "https://discord.com/api/webhooks/123.../movers-hook",
   "monitor-runners": "https://discord.com/api/webhooks/123.../runners-hook",
   "narrative-tracker": "https://discord.com/api/webhooks/123.../narratives-hook",
@@ -69,7 +69,7 @@ You'll end up with 6 webhook URLs.
 
 ### 3. Build the JSON map
 
-In a scratch doc, assemble the JSON like the example above. Use exact skill names from `aeon.yml` (e.g. `token-pick`, not `Token Pick`). Verify it's valid JSON — easiest way is to paste it into https://jsonlint.com and click Validate.
+In a scratch doc, assemble the JSON like the example above. Use exact skill names from `aeon.yml` (e.g. `token-call`, not `Token Pick`). Verify it's valid JSON — easiest way is to paste it into https://jsonlint.com and click Validate.
 
 ### 4. Add the secret
 
@@ -87,7 +87,7 @@ Manually trigger each skill in Actions and verify it lands in the correct channe
 | Test order | Skill | Expected channel |
 |---|---|---|
 | 1 | `aixbt-pulse` | `#aeon-market-pulse` |
-| 2 | `token-pick` | `#aeon-picks` |
+| 2 | `token-call` | `#aeon-picks` |
 | 3 | `token-movers` | `#aeon-movers` |
 | 4 | `monitor-runners` | `#aeon-runners` |
 | 5 | `narrative-tracker` | `#aeon-narratives` |

@@ -52,7 +52,7 @@ That's it for required secrets. Everything below is optional polish.
 
 | Secret | Why | Where to get |
 |---|---|---|
-| `COINGECKO_API_KEY` | Higher rate limits for `token-movers`, `token-pick`, on-chain USD pricing | https://www.coingecko.com/en/api/pricing (Demo tier free) |
+| `COINGECKO_API_KEY` | Higher rate limits for `token-movers`, `token-call`, on-chain USD pricing | https://www.coingecko.com/en/api/pricing (Demo tier free) |
 | `ALCHEMY_API_KEY` | Powers `on-chain-monitor` (preferred path; Etherscan v2 fallback works without) | https://www.alchemy.com (300M compute units/mo free) |
 | `ETHERSCAN_API_KEY` | Higher rate limits on `on-chain-monitor` Etherscan fallback | https://etherscan.io/myapikey |
 | `XAI_API_KEY` | Powers Grok x_search pre-fetch for `narrative-tracker` — falls back to WebSearch without it | https://x.ai/api |
@@ -83,7 +83,7 @@ Once enabled and merged, here's what should hit your Telegram on day 1 (UTC time
 | 09:00 | `aixbt-pulse` | Cross-domain market pulse (crypto / macro / geo / tradfi) + bridge call |
 | 12:00 | `token-movers` | Top winners/losers/trending with anti-pump tags + market pulse one-liner |
 | 12:00 | `monitor-runners` | Top 5 tokens that ran hardest in last 24h with Runner Score |
-| 12:30 | `token-pick` | One token call + one Polymarket call, scored — or skip-day message |
+| 12:30 | `token-call` | One token call per day, scored 0-10 with conviction tier — or skip-day message |
 | 13:00 | `market-context-refresh` | Updates `memory/topics/market-context.md` (no notification by default) |
 | 13:30 | `narrative-tracker` | Quantitative narrative map with phase transitions + position calls |
 | 21:00 | `aixbt-pulse` | Second daily macro pulse |

@@ -144,39 +144,75 @@ Compute a session verdict from the tag distribution among the top 5:
 
 From the last 2 days of `memory/logs/`, extract any token names flagged under `## Monitor Runners`. For each of today's top 5, mark **★ repeat** if the token name appears in either prior day's log. Sustained runners across multiple days deserve extra attention.
 
-### 7. Notify
+### 7. Write artifact + notify (v2 locked format)
 
-Send via `./notify` (under 4000 chars, no leading spaces). Format:
+This is a **signal** skill under Aeon Market Stack v2. It writes both:
+1. `.outputs/monitor-runners.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
+2. A Discord-only notification via `./notify --signal "..."` routed to `#runners`.
+
+**Format (used identically for both artifact and notification, under 4000 chars):**
 
 ```
-*runners — ${TODAY}* — verdict: STRONG
+Yesterday's Runners · ${TODAY} · STRONG (2 DEEP-LIQ across solana, ethereum)
 
-1. [TAG] TOKEN (chain) +X% 24h ★ repeat
-vol $X.Xm | liq $X.Xm | fdv $Xm | h1 +X% | buys:sells X:Y
-— [one-line actionable take: e.g. "sustained multi-day momentum with deep liquidity — watch for continuation"]
+DEEP-LIQ
+★ HYPE (sol) +18% 24h
+  $4.2m vol, $1.8m liq, h1 +2%, buys 60%
+  → institutional accumulation, watch for continuation
 
-2. [TAG] TOKEN (chain) +X% 24h
-vol $Xm | liq $Xk | fdv $Xm | h1 -X% | buys:sells X:Y
-— [one-line take]
+CONTINUATION
+• WIF (sol) +47% 24h
+  $1.1m vol, $450k liq, h1 +6%, buys 72%
+  → clean breakout, momentum sustained
 
-3. ...
-4. ...
-5. ...
+• PEPE (eth) +22% 24h
+  $800k vol, $400k liq, h1 +3%, buys 64%
+  → mid-cap riding momentum
 
-sources: gt-global=ok gt-{networks}=ok/fail
-vibe: [one-line read on overall tape mood]
+BREAKOUT
+• NEWTKN (base) +340% 24h
+  $750k vol, $500k liq, pool 12h old, buys 65%
+  → fresh launch with depth, not typical rug
+
+vibe: speculative tape with selective conviction
 ```
 
-**Formatting rules:**
-- Format dollar values human-readable: `$2.3m`, `$450k`, `$75k`. Never show raw dollar amounts with comma separators.
-- Format percentages: `+347%` (no decimals unless <10%, then `+4.2%`).
-- If `market_cap_usd` is null, show `fdv $Xm (no mcap)`.
-- Include the ★ repeat marker only for tokens appearing in prior days' logs.
-- The one-line take MUST say something the operator can act on — not a restatement of the numbers. Good: "clean breakout, pool <24h old but already $500k liq locked". Bad: "price went up a lot with high volume".
+**Universal formatting rules (v2):**
+- No asterisks (`*` or `**`) anywhere. Plain text only.
+- Title: `Yesterday's Runners · ${TODAY} · VERDICT (parenthetical detail)`. Dot separator `·`.
+- Section headers in CAPS, no leading symbols.
+- `★` prefix for repeat tokens (in prior days' logs), `•` for non-repeats.
+- `→` arrow prefixes the actionable thesis line.
+- No source footers in the signal output — `daily-ops-review` reports source health separately.
+
+**Per-skill formatting rules:**
+- Format dollar values human-readable: `$2.3m`, `$450k`, `$75k`. No comma separators.
+- Format percentages: `+347%` (no decimals unless `<10%`, then `+4.2%`).
+- If `market_cap_usd` is null, omit fdv inline.
+- Group output by tag (DEEP-LIQ first, then CONTINUATION, BREAKOUT, REVERSAL, MICRO-SPEC). Omit a tag header entirely if its group is empty.
+- The `→` thesis line MUST say something the operator can act on — not a restatement of the numbers. Good: "clean breakout, pool <24h old but already $500k liq locked". Bad: "price went up a lot with high volume".
+- The `vibe:` footer is one line summarizing the overall tape mood.
 
 **Edge cases:**
-- If verdict is **SLEEPY** (<5 pools passed): send a short note instead — `*runners — ${TODAY}* — sleepy session, only N pools cleared quality gate. Skipping top-5.` Include the 1-2 survivors if any.
-- If ALL sources failed (every `*_OK=0`): send `*runners — ${TODAY}* — MONITOR_RUNNERS_ERROR, all GeckoTerminal endpoints failed. Check sandbox/rate-limits.` and skip the rest.
+- **SLEEPY verdict** (<5 pools passed quality gate): omit the grouped structure entirely. Write a short note instead:
+  ```
+  Yesterday's Runners · ${TODAY} · SLEEPY (only N pools cleared quality gate)
+
+  • [1-2 survivors with stripped detail, if any]
+
+  vibe: quiet tape, no clean setups
+  ```
+- **All sources failed** (every `*_OK=0`): write a one-line error to both artifact and notification:
+  ```
+  Yesterday's Runners · ${TODAY} · scan unavailable, GeckoTerminal endpoints failed
+  ```
+  `daily-ops-review` will surface the cause from `memory/issues/`.
+
+**Invocation:**
+```bash
+./notify --signal "$(cat .outputs/monitor-runners.md)"
+```
+The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_WEBHOOK_MAP[monitor-runners]` targets `#runners`.
 
 ### 8. Log
 
@@ -193,7 +229,8 @@ Append to `memory/logs/${TODAY}.md`:
   2. ...
 - **Repeat runners (seen in prior 2 days):** [list or "none"]
 - **Gate rejections breakdown:** thin-vol=N, dumping=N, honeypot=N, too-new=N, rug-like=N
-- **Notification sent:** yes|no (reason if no)
+- **Artifact written:** .outputs/monitor-runners.md
+- **Notification sent:** yes|no (reason if no) — via `./notify --signal` to #runners
 ```
 
 If a token appears as a runner on **3 days in a row**, flag it in `memory/MEMORY.md` under "Active topics" — sustained multi-day runners are worth a deeper look.

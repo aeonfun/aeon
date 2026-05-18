@@ -66,7 +66,7 @@ For each article:
 |---|---|
 | `article` | `article`, `research-brief`, `repo-article`, `technical-explainer`, `deep-research`, `project-lens`, `paper-pick`, `idea-capture` |
 | `changelog` | `changelog`, `push-recap`, `code-health`, `repo-actions`, `repo-pulse` |
-| `crypto` | `token-report`, `token-alert`, `token-movers`, `token-pick`, `defi-overview`, `defi-monitor`, `treasury-info`, `on-chain-monitor`, `polymarket`, `kalshi`, `market-context`, `narrative-tracker`, `unlock-monitor` |
+| `crypto` | `token-report`, `token-alert`, `token-movers`, `token-call`, `defi-overview`, `defi-monitor`, `treasury-info`, `on-chain-monitor`, `polymarket`, `kalshi`, `market-context`, `narrative-tracker`, `unlock-monitor` |
 | `digest` | `digest`, `rss-digest`, `hacker-news`, `reddit-digest`, `telegram-digest`, `farcaster-digest`, `vibecoding-digest`, `agent-buzz`, `list-digest`, `tweet-roundup`, `channel-recap` |
 | `security` | `security-digest`, `vuln-scanner`, `workflow-security-audit`, `skill-security-scan` |
 | `repo` | `repo-scanner`, `vercel-projects`, `github-monitor`, `github-issues`, `github-trending`, `github-releases`, `star-milestone`, `external-feature` |
