@@ -1,13 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-18T14:24:15Z",
-  "quality_score": 2,
-  "assessment": "Skill ran and handled failure gracefully with proper escalation, but delivered zero scan data (core function failed) on second consecutive run",
-  "flags": [
-    "api_error",
-    "empty_output"
-  ],
-  "avg_score": 2.67,
+  "last_analyzed": "2026-05-18T15:42:30Z",
+  "quality_score": 4,
+  "assessment": "Substantive output with clear verdicts and actionable signals; well-structured with proper error handling and documentation of sandbox limitations; 52% asset dropout explained by API failures (not a skill defect)",
+  "flags": [],
+  "avg_score": 3,
   "history": [
     {
       "date": "2026-05-18",
@@ -20,6 +17,10 @@
     {
       "date": "2026-05-18",
       "score": 2
+    },
+    {
+      "date": "2026-05-18",
+      "score": 4
     }
   ]
 }
