@@ -1,0 +1,369 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Market Morning · 2026-05-18"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "badges_sentiment",
+        "section_btc",
+        "section_cross",
+        "section_today",
+        "section_watchlist"
+      ]
+    },
+    "badges_sentiment": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge_riskoff",
+        "badge_conviction"
+      ]
+    },
+    "badge_riskoff": {
+      "type": "Badge",
+      "props": {
+        "text": "Risk-off",
+        "variant": "destructive"
+      }
+    },
+    "badge_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "Conviction high",
+        "variant": "secondary"
+      }
+    },
+    "section_btc": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_btc",
+        "grid_btc_main",
+        "stack_btc_detail"
+      ]
+    },
+    "heading_btc": {
+      "type": "Heading",
+      "props": {
+        "text": "Bitcoin & Market Structure",
+        "level": "h2"
+      }
+    },
+    "grid_btc_main": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_btc_price",
+        "stat_btc_24h",
+        "stat_btc_7d",
+        "stat_dominance",
+        "stat_fear_greed"
+      ]
+    },
+    "stat_btc_price": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC Price",
+        "value": "$76.4K"
+      }
+    },
+    "stat_btc_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "-2.2%",
+        "trend": "down"
+      }
+    },
+    "stat_btc_7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d Change",
+        "value": "-6.1%",
+        "trend": "down"
+      }
+    },
+    "stat_dominance": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC Dominance",
+        "value": "58.2%"
+      }
+    },
+    "stat_fear_greed": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed Index",
+        "value": "28",
+        "delta": "flat from 27"
+      }
+    },
+    "stack_btc_detail": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_btc_failing",
+        "text_strategy_bid",
+        "text_breadth",
+        "text_dex_vol",
+        "text_rwa_narrative"
+      ]
+    },
+    "text_btc_failing": {
+      "type": "Text",
+      "props": {
+        "text": "Failing to hold $77K",
+        "variant": "caption"
+      }
+    },
+    "text_strategy_bid": {
+      "type": "Text",
+      "props": {
+        "text": "Strategy's $2B bid couldn't catch it. ~$600M liquidated.",
+        "variant": "body"
+      }
+    },
+    "text_breadth": {
+      "type": "Text",
+      "props": {
+        "text": "Breadth 3-4/20 green. No rotation into alts—broad bleed.",
+        "variant": "body"
+      }
+    },
+    "text_dex_vol": {
+      "type": "Text",
+      "props": {
+        "text": "DEX vol $3.97B (-30% on the week).",
+        "variant": "body"
+      }
+    },
+    "text_rwa_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "RWA / perp-DEX is the one narrative still rated RIDE through the red tape.",
+        "variant": "body"
+      }
+    },
+    "section_cross": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_cross",
+        "text_cross_thread",
+        "text_cross_tell",
+        "text_cross_goldman",
+        "text_cross_rwa"
+      ]
+    },
+    "heading_cross": {
+      "type": "Heading",
+      "props": {
+        "text": "Cross-Domain",
+        "level": "h2"
+      }
+    },
+    "text_cross_thread": {
+      "type": "Text",
+      "props": {
+        "text": "AIXBT threads: Iran → oil → 10Y at 4.6% → BTC below $77K.",
+        "variant": "body"
+      }
+    },
+    "text_cross_tell": {
+      "type": "Text",
+      "props": {
+        "text": "The tell is Strategy's $2B buy failing to hold the line. The reflexivity engine that defended every prior dip is broken at this price.",
+        "variant": "body"
+      }
+    },
+    "text_cross_goldman": {
+      "type": "Text",
+      "props": {
+        "text": "Goldman rotating out of SOL/XRP ETFs into HYPE is manufactured institutional legitimacy cascading through the allocator stack.",
+        "variant": "body"
+      }
+    },
+    "text_cross_rwa": {
+      "type": "Text",
+      "props": {
+        "text": "RWA rails keep building counter-cyclically against all of it.",
+        "variant": "body"
+      }
+    },
+    "section_today": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_today",
+        "badge_high_conviction",
+        "stack_today_detail"
+      ]
+    },
+    "heading_today": {
+      "type": "Heading",
+      "props": {
+        "text": "Today: Action in #perps-brief",
+        "level": "h2"
+      }
+    },
+    "badge_high_conviction": {
+      "type": "Badge",
+      "props": {
+        "text": "1 HIGH CONVICTION Setup",
+        "variant": "secondary"
+      }
+    },
+    "stack_today_detail": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "text_bsb_setup",
+        "grid_bsb_metrics",
+        "text_bsb_confluence"
+      ]
+    },
+    "text_bsb_setup": {
+      "type": "Text",
+      "props": {
+        "text": "BSB long breakout",
+        "variant": "lead"
+      }
+    },
+    "grid_bsb_metrics": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_bsb_24h",
+        "stat_bsb_vol",
+        "stat_bsb_oi"
+      ]
+    },
+    "stat_bsb_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "+20.8%",
+        "trend": "up"
+      }
+    },
+    "stat_bsb_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol Multiple",
+        "value": "3.9x"
+      }
+    },
+    "stat_bsb_oi": {
+      "type": "Stat",
+      "props": {
+        "label": "OI",
+        "value": "+11.6%",
+        "trend": "up"
+      }
+    },
+    "text_bsb_confluence": {
+      "type": "Text",
+      "props": {
+        "text": "Clean RWA confluence: perps quant flag + narrative-tracker RWA RIDE + AIXBT's counter-cyclical RWA-rails call all point the same way. The only live trade against a quiet, risk-off board.",
+        "variant": "caption"
+      }
+    },
+    "section_watchlist": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_watchlist",
+        "text_watchlist_caveat",
+        "stack_watchlist_items"
+      ]
+    },
+    "heading_watchlist": {
+      "type": "Heading",
+      "props": {
+        "text": "Watchlist",
+        "level": "h2"
+      }
+    },
+    "text_watchlist_caveat": {
+      "type": "Text",
+      "props": {
+        "text": "No quant confirmation",
+        "variant": "caption"
+      }
+    },
+    "stack_watchlist_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "watchlist_hype",
+        "watchlist_bch",
+        "watchlist_tao"
+      ]
+    },
+    "watchlist_hype": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE — BHYP ETF catalyst",
+        "variant": "body"
+      }
+    },
+    "watchlist_bch": {
+      "type": "Text",
+      "props": {
+        "text": "BCH — Capitulation watch",
+        "variant": "body"
+      }
+    },
+    "watchlist_tao": {
+      "type": "Text",
+      "props": {
+        "text": "TAO — Compute narrative RISING",
+        "variant": "body"
+      }
+    }
+  }
+}
