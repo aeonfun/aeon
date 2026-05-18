@@ -54,5 +54,15 @@
     "consecutive_failures": 0,
     "success_rate": 1,
     "last_quality_score": 1
+  },
+  "perps-scan": {
+    "last_status": "success",
+    "last_success": "2026-05-18T13:07:36Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1,
+    "last_quality_score": 2
   }
 }
