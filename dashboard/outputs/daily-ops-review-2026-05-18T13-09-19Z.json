@@ -1,0 +1,471 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Ops Review",
+        "description": "2026-05-18"
+      },
+      "children": [
+        "heading_meta",
+        "step1_section",
+        "step2_section",
+        "step3_section",
+        "summary_alert",
+        "missing_section",
+        "stale_section",
+        "notes_section"
+      ]
+    },
+    "heading_meta": {
+      "type": "Text",
+      "props": {
+        "text": "duration n/a",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "step1_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step1_heading",
+        "step1_sep",
+        "item1_stack",
+        "item2_stack",
+        "item3_stack",
+        "item4_stack",
+        "item5_stack",
+        "item6_stack",
+        "item7_stack"
+      ]
+    },
+    "step1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 1 — Data",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "step1_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "item1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item1_badge",
+        "item1_text"
+      ]
+    },
+    "item1_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item1_text": {
+      "type": "Text",
+      "props": {
+        "text": "market-context-refresh · no artifact in .outputs/"
+      },
+      "children": []
+    },
+    "item2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item2_badge",
+        "item2_text"
+      ]
+    },
+    "item2_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Stale",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item2_text": {
+      "type": "Text",
+      "props": {
+        "text": "aixbt-pulse · artifact stale — dated 2026-05-17 19:00Z, not today's chain run"
+      },
+      "children": []
+    },
+    "item3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item3_badge",
+        "item3_text"
+      ]
+    },
+    "item3_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Stale",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item3_text": {
+      "type": "Text",
+      "props": {
+        "text": "narrative-tracker · artifact stale — dated 2026-05-17 baseline run"
+      },
+      "children": []
+    },
+    "item4_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item4_badge",
+        "item4_text"
+      ]
+    },
+    "item4_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Fresh",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "item4_text": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners · MIXED verdict, 1 DEEP-LIQ (PITCH +1480%), fresh 2026-05-18"
+      },
+      "children": []
+    },
+    "item5_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item5_badge",
+        "item5_text"
+      ]
+    },
+    "item5_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Stale",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "item5_text": {
+      "type": "Text",
+      "props": {
+        "text": "token-movers · artifact stale — dated 2026-05-17"
+      },
+      "children": []
+    },
+    "item6_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item6_badge",
+        "item6_text"
+      ]
+    },
+    "item6_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item6_text": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan · no artifact in .outputs/"
+      },
+      "children": []
+    },
+    "item7_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item7_badge",
+        "item7_text"
+      ]
+    },
+    "item7_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item7_text": {
+      "type": "Text",
+      "props": {
+        "text": "token-call · no artifact — only stale token-pick.md (2026-05-17, pre-rename slot)"
+      },
+      "children": []
+    },
+    "step2_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step2_heading",
+        "step2_sep",
+        "item2b_stack"
+      ]
+    },
+    "step2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 2 — Briefs",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "step2_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "item2b_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item2b_badge",
+        "item2b_text"
+      ]
+    },
+    "item2b_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item2b_text": {
+      "type": "Text",
+      "props": {
+        "text": "perps-brief · no artifact in .outputs/"
+      },
+      "children": []
+    },
+    "step3_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step3_heading",
+        "step3_sep",
+        "item3b_stack"
+      ]
+    },
+    "step3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 3 — Macro",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "step3_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "item3b_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "item3b_badge",
+        "item3b_text"
+      ]
+    },
+    "item3b_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "Missing",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "item3b_text": {
+      "type": "Text",
+      "props": {
+        "text": "morning-macro · no artifact in .outputs/"
+      },
+      "children": []
+    },
+    "summary_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Chain Execution Status",
+        "message": "Chain did not execute as a unit today. Only monitor-runners produced a fresh (2026-05-18) artifact; 4 artifacts are stale 2026-05-17 standalone runs, 4 are missing entirely."
+      },
+      "children": []
+    },
+    "missing_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "missing_heading",
+        "missing_sep",
+        "missing_text"
+      ]
+    },
+    "missing_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Missing Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "missing_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "missing_text": {
+      "type": "Text",
+      "props": {
+        "text": "market-context-refresh, perps-scan, perps-brief, morning-macro"
+      },
+      "children": []
+    },
+    "stale_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "stale_heading",
+        "stale_sep",
+        "stale_text"
+      ]
+    },
+    "stale_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Stale Sources",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "stale_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "stale_text": {
+      "type": "Text",
+      "props": {
+        "text": "aixbt-pulse, narrative-tracker, token-movers"
+      },
+      "children": []
+    },
+    "notes_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "notes_heading",
+        "notes_sep",
+        "notes_text1",
+        "notes_text2"
+      ]
+    },
+    "notes_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Notes",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "notes_sep": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "notes_text1": {
+      "type": "Text",
+      "props": {
+        "text": "No issues filed in memory/issues/."
+      },
+      "children": []
+    },
+    "notes_text2": {
+      "type": "Text",
+      "props": {
+        "text": "token-call output slot is empty while a stale token-pick.md remains — the rename landed in aeon.yml but not in the skill's artifact naming. MEMORY.md still describes v1 config; it lags the v2 morning-review chain in aeon.yml."
+      },
+      "children": []
+    }
+  }
+}
