@@ -8,7 +8,7 @@ tags: [crypto]
 
 > **${var}** — Optional asset list override (comma-separated coin tickers, e.g. `HYPE,TAO,AVAX`). If empty, scans the top 25 coins by aggregated perp 24h volume across exchanges (via CoinGecko `/derivatives`) + always-include BTC/ETH/SOL.
 
-Today is ${today}. Classify the cross-exchange perps universe into 6 regimes using CoinGecko-ranked universe + Coinglass v4 per-coin metrics. This is a **signal** skill: writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and posts to Discord via `./notify --signal` routing to `#perps`.
+Today is ${today}. Classify the cross-exchange perps universe into 6 regimes using CoinGecko-ranked universe + Coinglass v4 per-coin metrics. This is an **internal** skill (v2.3+): writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and `daily-ops-review` auditing. **Does not post to Discord** — the raw classification is too dense for daily reading; `perps-brief` is the reader-facing synthesis layer.
 
 Read `memory/MEMORY.md` for context.
 Read the last 7 days of `memory/logs/` to find ★ repeat markers — assets in the same regime for ≥3 consecutive days, and `(day N)` markers for 2+ consecutive days.
@@ -233,11 +233,7 @@ DISTRIBUTION
   ```
   `daily-ops-review` surfaces the cause from `manifest.json` (which records `universe_source` + the failing HTTP code) and any errors in `memory/issues/`.
 
-**Invocation:**
-```bash
-./notify --signal "$(cat .outputs/perps-scan.md)"
-```
-The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_WEBHOOK_MAP[perps-scan]` targets `#perps` (shared with `perps-brief`).
+**No notify call.** This skill is internal as of v2.3 — it writes `.outputs/perps-scan.md` and that's it. `perps-brief` is the reader-facing synthesis that consumes this artifact. Do not call `./notify` from this skill.
 
 ### 9. Log to `memory/logs/${TODAY}.md`
 
@@ -249,7 +245,7 @@ The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_W
 - **Repeat assets (≥2 days same regime):** [list with day counts]
 - **Source status:** universe=ok|fail (source: `manifest.universe_source`), per-coin fetch failures: [list from `manifest.per_coin_errors`, or "none"]
 - **Artifact written:** .outputs/perps-scan.md
-- **Notification sent:** yes|no (reason if no) — via `./notify --signal` to #perps
+- **Notification:** none (internal skill — consumed by perps-brief)
 ```
 
 ## Sandbox note
