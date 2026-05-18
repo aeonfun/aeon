@@ -105,5 +105,9 @@
     "consecutive_failures": 0,
     "success_rate": 1,
     "last_quality_score": 4
+  },
+  "chain:morning-review": {
+    "last_status": "failed",
+    "last_failed": "2026-05-18T16:38:05Z"
   }
 }
