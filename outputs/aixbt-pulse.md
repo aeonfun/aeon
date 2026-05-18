@@ -1,3 +1,7 @@
+**TL;DR (2026-05-18 16:00 UTC):** The macro transmission chain is live — Iran geopolitical stalemate → oil surge → 10Y yields approaching 4.6% → BTC below $77K with $600M in liquidations. Strategy's $2B buy failed to hold price; that's a regime signal, not a blip. Goldman rotating from SOL/XRP into HYPE is manufactured institutional legitimacy at scale — expect the allocator cascade. RWA rails keep building counter-cyclically (Ondo, Superstate, GRVT). Six new items vs the 09:00 UTC pull; seven stories gone.
+
+---
+
 # AIXBT Grounding (as of 2026-05-18 16:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)

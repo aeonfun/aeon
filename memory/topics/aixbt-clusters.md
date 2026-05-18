@@ -1,14 +1,14 @@
-# AIXBT Clusters (as of 2026-05-17)
+# AIXBT Clusters (as of 2026-05-18)
 
-36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters` returned 36 this pull; skill header references 46 — taxonomy may have been trimmed). Each cluster has a description, member archetype, sentiment, and ideology. Used when filtering projects/intel/momentum endpoints (paid tier).
+36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters` returned 36 this pull; skill header references 46 — taxonomy may have been trimmed or the remainder is paid-tier only). Used when filtering projects/intel/momentum endpoints (paid tier).
 
 | id | name | one-line vibe |
 |----|------|---------------|
 | AIRDROP_FARMER | Airdrop Farmer | Testnets, points programs, wallet farming. |
-| ART_MARKET | Art Market | Gallery, auction house, museum, or digital-art institution. |
-| ARTIST | Artist | Creates or mints on-chain visual, generative, AI, or audio art. |
-| ASSET_MANAGER | Asset Manager | Regulated fund, ETF issuer, custodian, or AUM-oriented firm. |
-| AUTOMATED_FEED | Automated Feed | Templated market, on-chain, alert, whale, or news feed. |
+| ART_MARKET | Art Market | Gallery, auction house, museum, art fair, or digital-art institution. |
+| ARTIST | Artist | Creates or mints on-chain visual, generative, AI, glitch, or audio art. |
+| ASSET_MANAGER | Asset Manager | Regulated fund, ETF issuer, custodian, or AUM-oriented crypto product firm. |
+| AUTOMATED_FEED | Automated Feed | Templated market, on-chain, alert, whale, app-rank, research, or news feed. |
 | BTC_MAXI | BTC Maxi | Bitcoin-only conviction; everything else a distraction or scam. |
 | BIZDEV | Bizdev | Sales, partnerships, GTM, ops, commercial relationship-building. |
 | CULTURE_SIGNAL | Culture Signal | Celebrity, creator, athlete, or retail-culture account with token relevance. |
@@ -31,7 +31,7 @@
 | POLICY_REGULATOR | Policy Regulator | Government, regulator, elected official, policy, or advocacy source. |
 | PROJECT_ECOSYSTEM | Project Ecosystem | Official ecosystem sub-account, not a core protocol handle. |
 | QUANT | Quant | Charts, funding, order flow, market structure, PnL framing. |
-| RESEARCHER | Researcher | Deep dives on tokenomics, MEV, consensus, or protocol design. |
+| RESEARCHER | Researcher | Deep dives on tokenomics, MEV, consensus, markets, or protocol design. |
 | SERVICE_PROVIDER | Service Provider | Audit, OTC, custody, analytics, data, or infra company. |
 | SHILLER | Shiller | Paid alpha, sponsored promos, referral calls, paid groups. |
 | SHITPOSTER | Shitposter | Memes and bits that can still move attention. |
