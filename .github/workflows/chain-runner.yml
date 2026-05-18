@@ -60,7 +60,7 @@ jobs:
               sleep 5
               run_id=$(gh run list --workflow=aeon.yml -L 10 \
                 --json databaseId,displayTitle,createdAt \
-                -q "[.[] | select(.displayTitle | test(\"skill: ${skill}(\"; \"i\")) | select(.createdAt >= \"${before_ts}\")] | .[0].databaseId" \
+                -q "[.[] | select(.displayTitle | test(\"^skill: ${skill}$\"; \"i\")) | select(.createdAt >= \"${before_ts}\")] | .[0].databaseId" \
                 2>/dev/null || true)
               [ -n "$run_id" ] && [ "$run_id" != "null" ] && break
               run_id=""
