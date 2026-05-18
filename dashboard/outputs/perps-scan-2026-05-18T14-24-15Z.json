@@ -1,0 +1,24 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Perps Regimes",
+        "description": "2026-05-18"
+      },
+      "children": [
+        "alert_failure"
+      ]
+    },
+    "alert_failure": {
+      "type": "Alert",
+      "props": {
+        "title": "Scan Unavailable",
+        "message": "Coinglass API failed",
+        "type": "error"
+      }
+    }
+  }
+}

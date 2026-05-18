@@ -1,10 +1,13 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-18T14:00:41Z",
-  "quality_score": 4,
-  "assessment": "Well-structured failure handling with excellent diagnosis: skill encountered Coinglass upstream failure, properly routed to documented edge case, logged correctly, and provided clear troubleshooting guidance. Not a 5 because primary objective (perps scan) unavailable, but execution is substantive and professional.",
-  "flags": [],
-  "avg_score": 3,
+  "last_analyzed": "2026-05-18T14:24:15Z",
+  "quality_score": 2,
+  "assessment": "Skill ran and handled failure gracefully with proper escalation, but delivered zero scan data (core function failed) on second consecutive run",
+  "flags": [
+    "api_error",
+    "empty_output"
+  ],
+  "avg_score": 2.67,
   "history": [
     {
       "date": "2026-05-18",
@@ -13,6 +16,10 @@
     {
       "date": "2026-05-18",
       "score": 4
+    },
+    {
+      "date": "2026-05-18",
+      "score": 2
     }
   ]
 }
