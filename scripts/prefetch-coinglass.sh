@@ -1,23 +1,30 @@
 #!/usr/bin/env bash
-# Pre-fetch Coinglass v4 data OUTSIDE the Claude sandbox.
+# Pre-fetch Coinglass v4 + CoinGecko derivatives data OUTSIDE the Claude sandbox.
 # Called by the workflow before Claude runs (via the generic
 # scripts/prefetch-*.sh loop). Saves JSON responses to .coinglass-cache/
 # so perps-scan can read cached results instead of calling curl directly
 # (curl with $COINGLASS_API_KEY in headers is blocked by the sandbox).
+#
+# v2.3 (post-tier-probe): coins-markets is tier-gated, so universe ranking
+# moves to CoinGecko /derivatives, and per-coin metrics use the seven
+# Coinglass endpoints confirmed accessible on the Startup tier.
 #
 # Usage: ./scripts/prefetch-coinglass.sh <skill-name> [var]
 #   skill-name: e.g. "perps-scan" — gates the fetch
 #   var:        optional comma-separated ticker override, e.g. "HYPE,TAO,AVAX"
 #
 # Cache layout (all JSON):
-#   .coinglass-cache/coins.json       — coins-markets response (universe + current metrics)
-#   .coinglass-cache/price-<COIN>.json    — daily price history (8d)
-#   .coinglass-cache/oi-<COIN>.json       — aggregated OI history (8d)
-#   .coinglass-cache/funding-<COIN>.json  — OI-weight funding history (21x8h = 7d)
-#   .coinglass-cache/liq-<COIN>.json      — aggregated liquidation history (8d)
-#   .coinglass-cache/manifest.json    — { fetched_at, asset_list, coins_markets_ok, per_coin_errors }
+#   .coinglass-cache/cg-derivatives.json — CoinGecko /derivatives (universe + 24h vol)
+#   .coinglass-cache/price-<COIN>.json   — Binance per-exchange daily price history (8d)
+#   .coinglass-cache/oi-<COIN>.json      — aggregated OI history (8d)
+#   .coinglass-cache/funding-<COIN>.json — OI-weight funding history (21x8h = 7d)
+#   .coinglass-cache/liq-<COIN>.json     — aggregated liquidation history with exchange_list (8d)
+#   .coinglass-cache/topls-<COIN>.json   — top-trader long/short position ratio (8d)
+#   .coinglass-cache/basis-<COIN>.json   — futures-spot basis history (8d)
+#   .coinglass-cache/taker-<COIN>.json   — taker buy/sell volume history (8d)
+#   .coinglass-cache/manifest.json       — { fetched_at, universe_ok, asset_list, per_coin_errors }
 #
-# Closes ISS-001 (sandbox-limitation: authenticated curl blocked).
+# Closes ISS-001 (sandbox-limitation), ISS-002 (coins-markets tier-gated — superseded).
 set -euo pipefail
 
 SKILL="${1:-}"
@@ -199,64 +206,65 @@ cg_get() {
   return 0
 }
 
-# --- 1. Fetch the universe + current metrics ---
-# Try variants in order from richest-data to least, picking the first that succeeds.
-# Coinglass returns code != 0 with msg "Upgrade plan" when a param/endpoint
-# exceeds the subscription tier (per_page caps + multi-exchange lists are the
-# typical tier-gated params). Step down progressively.
-COINS_VARIANTS=(
-  "exchange_list=Binance,Bybit,OKX&per_page=50"
-  "exchange_list=Binance,OKX&per_page=50"
-  "exchange_list=Binance,OKX&per_page=25"
-  "exchange_list=Binance,OKX"
-  ""
-)
-USED_VARIANT=""
-TRIED=""
-for VARIANT in "${COINS_VARIANTS[@]}"; do
-  TRIED="${TRIED}${VARIANT:-<defaults>}; "
-  URL="$BASE/api/futures/coins-markets"
-  [ -n "$VARIANT" ] && URL="${URL}?${VARIANT}"
-  echo "coinglass-prefetch: trying coins-markets ${VARIANT:-<defaults>} ..."
-  if cg_get "$CACHE/coins.json" "$URL"; then
-    USED_VARIANT="${VARIANT:-<defaults>}"
-    break
-  fi
-done
-if [ -z "$USED_VARIANT" ]; then
-  TRIED="${TRIED%; }"
-  echo "::warning::coinglass-prefetch: ALL coins-markets variants failed (tried: $TRIED)"
-  echo "::warning::coinglass-prefetch: likely endpoint is tier-gated entirely — verify Coinglass plan covers /api/futures/coins-markets"
-  # Write manifest with tried_variants so skill / daily-ops-review can see what was attempted
-  jq -n --arg fetched_at "$(date -u +%FT%TZ)" \
-    --arg tried "$TRIED" \
-    '{fetched_at: $fetched_at, coins_markets_ok: false, asset_list: [], per_coin_errors: [], tried_variants: $tried}' \
-    > "$CACHE/manifest.json"
-  exit 0  # Non-fatal — skill handles the missing-data case
-fi
-echo "coinglass-prefetch: saved coins.json using variant: $USED_VARIANT ($(wc -c < "$CACHE/coins.json" | tr -d ' ') bytes)"
+# --- 1. Fetch universe from CoinGecko /derivatives ---
+# Coinglass coins-markets is tier-gated on Startup (confirmed by coinglass-probe).
+# CoinGecko /derivatives is free at the Demo tier (30 req/min), returns every
+# perpetual contract across all major exchanges with volume_24h — gives us a
+# truly dynamic, multi-venue universe ranking.
+CG_BASE="https://api.coingecko.com/api/v3"
+DERIVATIVES_FILE="$CACHE/cg-derivatives.json"
+echo "coinglass-prefetch: fetching universe from CoinGecko /derivatives ..."
 
-# --- 2. Determine asset list ---
+cg_curl_args=(-s --max-time 30 -w "\n__HTTP_CODE__%{http_code}" -H "accept: application/json")
+[ -n "${COINGECKO_API_KEY:-}" ] && cg_curl_args+=(-H "x-cg-demo-api-key: $COINGECKO_API_KEY")
+
+cg_resp=$(curl "${cg_curl_args[@]}" "${CG_BASE}/derivatives" 2>&1) || cg_resp="__CURL_ERR__"
+CG_HTTP=$(echo "$cg_resp" | grep '__HTTP_CODE__' | sed 's/__HTTP_CODE__//')
+CG_BODY=$(echo "$cg_resp" | grep -v '__HTTP_CODE__')
+
+if [ "$cg_resp" = "__CURL_ERR__" ] || [ "$CG_HTTP" != "200" ]; then
+  echo "::warning::coinglass-prefetch: CoinGecko /derivatives failed (HTTP ${CG_HTTP:-curl-err}) — universe unavailable"
+  jq -n --arg fetched_at "$(date -u +%FT%TZ)" --arg cg_http "${CG_HTTP:-curl-err}" \
+    '{fetched_at: $fetched_at, universe_ok: false, universe_source: "coingecko-derivatives", cg_http: $cg_http, asset_list: [], per_coin_errors: []}' \
+    > "$CACHE/manifest.json"
+  exit 0
+fi
+echo "$CG_BODY" > "$DERIVATIVES_FILE"
+echo "coinglass-prefetch: saved cg-derivatives.json ($(wc -c < "$DERIVATIVES_FILE" | tr -d ' ') bytes, $(jq 'length' "$DERIVATIVES_FILE") rows)"
+
+# --- 2. Build asset list (VAR override OR top 25 by aggregated perp 24h volume) ---
 if [ -n "$VAR" ]; then
-  # User-provided override: comma-separated tickers, normalize to uppercase
   ASSET_LIST=$(echo "$VAR" | tr ',' '\n' | tr '[:lower:]' '[:upper:]' | tr -d '[:space:]' | grep -v '^$' | sort -u)
   echo "coinglass-prefetch: using VAR override asset list: $(echo "$ASSET_LIST" | tr '\n' ' ')"
 else
-  # Default: top 25 by OI + force-include BTC/ETH/SOL
-  TOP=$(jq -r '.data | sort_by(.open_interest_usd) | reverse | .[0:25] | .[].symbol' "$CACHE/coins.json")
+  # Group CoinGecko perpetual rows by index_id (coin ticker), sum 24h volume across exchanges,
+  # rank desc, take top 25. CoinGecko volume_24h sometimes arrives as a string — coerce.
+  TOP=$(jq -r '
+    [.[] | select(.contract_type == "perpetual" and .index_id != null and .volume_24h != null) |
+      {index_id, vol: (.volume_24h | tonumber? // 0)}] |
+    group_by(.index_id) |
+    map({index_id: .[0].index_id, total_vol: ([.[].vol] | add)}) |
+    map(select(.total_vol > 0)) |
+    sort_by(.total_vol) | reverse | .[0:25] | .[].index_id
+  ' "$DERIVATIVES_FILE")
   ASSET_LIST=$(printf '%s\nBTC\nETH\nSOL\n' "$TOP" | grep -v '^$' | sort -u)
-  echo "coinglass-prefetch: default asset list ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
+  echo "coinglass-prefetch: universe = top 25 by CoinGecko aggregated perp 24h volume + BTC/ETH/SOL ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
 fi
 
-# --- 3. Per-coin history fetch ---
+# --- 3. Per-coin Coinglass fetches (7 endpoints per coin, tier-confirmed accessible) ---
 PER_COIN_ERRORS="[]"
 for COIN in $ASSET_LIST; do
   COIN_ERRORS=""
+  SYM_AGG="$COIN"            # aggregated endpoints expect coin ticker (BTC)
+  SYM_PER="${COIN}USDT"      # per-exchange endpoints expect pair (BTCUSDT on Binance USDT-perp)
   for KIND_SPEC in \
-    "price:$BASE/api/futures/price/history?symbol=${COIN}&interval=1d&limit=8" \
-    "oi:$BASE/api/futures/open-interest/aggregated-history?symbol=${COIN}&interval=1d&limit=8" \
-    "funding:$BASE/api/futures/funding-rate/oi-weight-history?symbol=${COIN}&interval=8h&limit=21" \
-    "liq:$BASE/api/futures/liquidation/aggregated-history?symbol=${COIN}&interval=1d&limit=8"
+    "price:$BASE/api/futures/price/history?exchange=Binance&symbol=${SYM_PER}&interval=1d&limit=8" \
+    "oi:$BASE/api/futures/open-interest/aggregated-history?symbol=${SYM_AGG}&interval=1d&limit=8" \
+    "funding:$BASE/api/futures/funding-rate/oi-weight-history?symbol=${SYM_AGG}&interval=8h&limit=21" \
+    "liq:$BASE/api/futures/liquidation/aggregated-history?symbol=${SYM_AGG}&exchange_list=Binance,OKX&interval=1d&limit=8" \
+    "topls:$BASE/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol=${SYM_PER}&interval=1d&limit=8" \
+    "basis:$BASE/api/futures/basis/history?exchange=Binance&symbol=${SYM_PER}&interval=1d&limit=8" \
+    "taker:$BASE/api/futures/taker-buy-sell-volume/history?exchange=Binance&symbol=${SYM_PER}&interval=1d&limit=8"
   do
     KIND="${KIND_SPEC%%:*}"
     URL="${KIND_SPEC#*:}"
@@ -266,7 +274,7 @@ for COIN in $ASSET_LIST; do
     sleep 0.1
   done
   if [ -n "$COIN_ERRORS" ]; then
-    COIN_ERRORS="${COIN_ERRORS%,}"  # strip trailing comma
+    COIN_ERRORS="${COIN_ERRORS%,}"
     PER_COIN_ERRORS=$(echo "$PER_COIN_ERRORS" | jq --arg coin "$COIN" --arg errs "$COIN_ERRORS" \
       '. + [{coin: $coin, failed: ($errs | split(","))}]')
   fi
@@ -276,10 +284,9 @@ done
 ASSET_LIST_JSON=$(echo "$ASSET_LIST" | jq -R -s 'split("\n") | map(select(length > 0))')
 jq -n \
   --arg fetched_at "$(date -u +%FT%TZ)" \
-  --arg used_variant "$USED_VARIANT" \
   --argjson asset_list "$ASSET_LIST_JSON" \
   --argjson per_coin_errors "$PER_COIN_ERRORS" \
-  '{fetched_at: $fetched_at, coins_markets_ok: true, used_variant: $used_variant, asset_list: $asset_list, per_coin_errors: $per_coin_errors}' \
+  '{fetched_at: $fetched_at, universe_ok: true, universe_source: "coingecko-derivatives", asset_list: $asset_list, per_coin_errors: $per_coin_errors}' \
   > "$CACHE/manifest.json"
 
 ERROR_COUNT=$(echo "$PER_COIN_ERRORS" | jq 'length')
