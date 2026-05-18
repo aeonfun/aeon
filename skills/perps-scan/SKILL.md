@@ -1,14 +1,14 @@
 ---
 name: Perps Scan
-description: Classify Bybit perps universe into 6 regimes (Accumulation, Catalyst-Breakout, Momentum, Compression, Distribution, Capitulation)
+description: Classify the cross-exchange perps universe (Binance + Bybit + OKX, aggregated via Coinglass) into 6 regimes (Accumulation, Catalyst-Breakout, Momentum, Compression, Distribution, Capitulation)
 var: ""
 tags: [crypto]
 ---
-<!-- v2: foundation skill for the perps sector brief. Raw classification, not synthesis. -->
+<!-- v2.1: foundation skill for the perps sector brief. Raw classification, not synthesis. Coinglass v4 data layer (migrated from Bybit due to GitHub Actions geo-block on Bybit). -->
 
-> **${var}** — Optional asset list override (comma-separated tickers). If empty, scans the top 25 by 24h Bybit perp volume + always-include BTC/ETH/SOL.
+> **${var}** — Optional asset list override (comma-separated coin tickers, e.g. `HYPE,TAO,AVAX`). If empty, scans the top 25 coins by aggregated open-interest USD + always-include BTC/ETH/SOL.
 
-Today is ${today}. Classify the perps universe into 6 regimes using Bybit's public REST API. This is a **signal** skill: writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and posts to Discord via `./notify --signal` routing to `#perps`.
+Today is ${today}. Classify the cross-exchange perps universe into 6 regimes using Coinglass v4 aggregated data. This is a **signal** skill: writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and posts to Discord via `./notify --signal` routing to `#perps`.
 
 Read `memory/MEMORY.md` for context.
 Read the last 7 days of `memory/logs/` to find ★ repeat markers — assets in the same regime for ≥3 consecutive days, and `(day N)` markers for 2+ consecutive days.
@@ -19,102 +19,136 @@ Bucket every assessed asset into exactly one of six regimes (or NEUTRAL catch-al
 
 ## Data source
 
-Bybit public REST API. Base: `https://api.bybit.com`. No auth, no key required.
+Coinglass v4 API (Startup tier). Base: `https://open-api-v4.coinglass.com`. Auth: `CG-API-KEY: $COINGLASS_API_KEY` header.
+
+Coinglass aggregates cross-exchange (Binance + Bybit + OKX by default) — regime classification reflects the whole perps market, not one venue. All endpoints accept coin tickers (`BTC`, `ETH`) rather than pair symbols.
 
 Endpoints used:
-- `GET /v5/market/tickers?category=linear` — all linear perps with 24h volume, last price, price change %, open interest value, funding rate
-- `GET /v5/market/funding/history?category=linear&symbol={SYM}&limit=21` — funding rate history (21 entries = 7 days at 8h cadence)
-- `GET /v5/market/open-interest?category=linear&symbol={SYM}&intervalTime=1d&limit=8` — daily OI snapshots for 7d delta
-- `GET /v5/market/kline?category=linear&symbol={SYM}&interval=D&limit=8` — daily candles for 7d price action + range
+- `GET /api/futures/coins-markets?exchange_list=Binance,Bybit,OKX&per_page=50` — ranked coin list with current metrics: price, 24h change, OI USD, funding rate (OI-weighted + vol-weighted), 24h volume, **24h liquidations split long/short**, long/short ratio
+- `GET /api/futures/price/history?symbol={COIN}&interval=1d&limit=8` — daily OHLC candles for 7d price action + range
+- `GET /api/futures/open-interest/aggregated-history?symbol={COIN}&interval=1d&limit=8` — daily OI OHLC for 7d delta
+- `GET /api/futures/funding-rate/oi-weight-history?symbol={COIN}&interval=8h&limit=21` — OI-weighted funding rate history (21 entries = 7d at 8h cadence)
+- `GET /api/futures/liquidation/aggregated-history?symbol={COIN}&interval=1d&limit=8` — daily aggregated liquidation OHLC for 7d quartile baseline
 
-Rate limits: 10 req/s for public endpoints. Sequence the per-symbol calls with `sleep 0.2` between requests to stay well under.
+Rate limit: Startup tier permits 1200 req/min. The per-coin loop (25 coins × 4 endpoints = 100 requests) is well under. No throttling needed but `sleep 0.1` between calls keeps the pattern conservative.
+
+All Coinglass responses follow the shape `{ "code": "0", "msg": "success", "data": [...] }`. History endpoints return `data: [{ time, open, high, low, close }]` with `time` in milliseconds and OHLC values as numbers (close-of-interval is the bucket total for liquidations).
 
 ## Steps
 
-### 1. Fetch the universe
+### 1. Fetch the universe + current metrics
+
+One batched call returns ranked coins with all current-state values.
 
 ```bash
 TMPDIR=$(mktemp -d)
 TODAY=$(date -u +%Y-%m-%d)
 
-curl -s --max-time 15 "https://api.bybit.com/v5/market/tickers?category=linear" > "$TMPDIR/tickers.json"
-if ! jq -e '.result.list | length > 0' "$TMPDIR/tickers.json" >/dev/null 2>&1; then
-  echo "Bybit tickers fetch failed — trying WebFetch fallback"
-  # WebFetch fallback (sandbox path): retrieve the same URL via Claude's WebFetch
+curl -s --max-time 15 \
+  -H "CG-API-KEY: $COINGLASS_API_KEY" \
+  -H "accept: application/json" \
+  "https://open-api-v4.coinglass.com/api/futures/coins-markets?exchange_list=Binance,Bybit,OKX&per_page=50" \
+  > "$TMPDIR/coins.json"
+
+if ! jq -e '.code == "0" and (.data | length > 0)' "$TMPDIR/coins.json" >/dev/null 2>&1; then
+  echo "Coinglass coins-markets fetch failed — trying WebFetch fallback"
 fi
 ```
 
-If the curl returned empty / errored, use **WebFetch** on `https://api.bybit.com/v5/market/tickers?category=linear` and parse the JSON body. Mark `bybit_tickers=fail` in the log if both fail and abort the run with the "scan unavailable" output (step 6).
+If curl returns empty / a non-zero `code` / no `data`, use **WebFetch** on the same URL (Coinglass requires the API key in a header, which WebFetch cannot send — so this fallback only works if Coinglass IP-allows Anthropic's egress; if it fails, abort with the "scan unavailable" output in step 6). Log `coinglass_coins=fail` in step 9 if both fail.
 
 ### 2. Build the asset list
 
-From `result.list`, filter to symbols ending in `USDT` (linear USDT perps). Sort by `turnover24h` descending. Take the top 25.
+From `data`, sort by `volume_change_usd_24h` desc (proxy for activity volume) — falling back to `open_interest_usd` desc if volume_change is zero/null for everything. Take the top 25 by composite.
 
-Force-include `BTCUSDT`, `ETHUSDT`, `SOLUSDT` if not already in the top 25 (regime anchors).
+Actually for v1 simplicity, sort by `open_interest_usd` desc and take top 25 — OI is the most stable proxy for "where the perps action is."
 
-If `${var}` is set, parse it as a comma-separated ticker list (e.g. `HYPE,TAO,AVAX`) — append `USDT` to each, intersect with available symbols on Bybit, and use that as the asset list instead.
+Force-include `BTC`, `ETH`, `SOL` if not in the top 25 (regime anchors).
 
-Per asset, extract from the tickers response:
-- `lastPrice`, `price24hPcnt`, `turnover24h`, `volume24h`
-- `openInterestValue` (USD value of OI), `openInterest` (units)
-- `fundingRate` (current 8h funding — sign and magnitude both matter)
-- `markPrice`, `indexPrice` (compute basis: `(markPrice - indexPrice) / indexPrice * 100`)
+If `${var}` is set, parse it as a comma-separated ticker list (e.g. `HYPE,TAO,AVAX`) — intersect with available coins in the Coinglass response and use that as the asset list instead.
+
+Per asset, extract from the `data` entry directly (no further fetch needed for current values):
+- `current_price`
+- `price_change_percent_24h` (current 24h % move)
+- `open_interest_usd` (current OI in USD)
+- `avg_funding_rate_by_oi` (cross-exchange OI-weighted current 8h funding, %)
+- `open_interest_change_percent_24h`
+- `liquidation_usd_24h` (total 24h liquidations), `long_liquidation_usd_24h`, `short_liquidation_usd_24h`
+- `long_short_ratio_24h` (sentiment proxy — bonus signal)
 
 ### 3. Fetch per-asset history (sequential, rate-limit aware)
 
-For each asset in the list, fetch funding history, OI history, and daily klines. Sleep 0.2s between requests.
+For each coin in the list, fetch four history endpoints. Sleep 0.1s between requests (well below the 1200/min limit).
 
 ```bash
-for SYM in $ASSET_LIST; do
-  curl -s --max-time 10 "https://api.bybit.com/v5/market/funding/history?category=linear&symbol=${SYM}&limit=21" > "$TMPDIR/funding-${SYM}.json"
-  sleep 0.2
-  curl -s --max-time 10 "https://api.bybit.com/v5/market/open-interest?category=linear&symbol=${SYM}&intervalTime=1d&limit=8" > "$TMPDIR/oi-${SYM}.json"
-  sleep 0.2
-  curl -s --max-time 10 "https://api.bybit.com/v5/market/kline?category=linear&symbol=${SYM}&interval=D&limit=8" > "$TMPDIR/kline-${SYM}.json"
-  sleep 0.2
+for COIN in $ASSET_LIST; do
+  curl -s --max-time 10 \
+    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
+    "https://open-api-v4.coinglass.com/api/futures/price/history?symbol=${COIN}&interval=1d&limit=8" \
+    > "$TMPDIR/price-${COIN}.json"
+  sleep 0.1
+  curl -s --max-time 10 \
+    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
+    "https://open-api-v4.coinglass.com/api/futures/open-interest/aggregated-history?symbol=${COIN}&interval=1d&limit=8" \
+    > "$TMPDIR/oi-${COIN}.json"
+  sleep 0.1
+  curl -s --max-time 10 \
+    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
+    "https://open-api-v4.coinglass.com/api/futures/funding-rate/oi-weight-history?symbol=${COIN}&interval=8h&limit=21" \
+    > "$TMPDIR/funding-${COIN}.json"
+  sleep 0.1
+  curl -s --max-time 10 \
+    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
+    "https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-history?symbol=${COIN}&interval=1d&limit=8" \
+    > "$TMPDIR/liq-${COIN}.json"
+  sleep 0.1
 done
 ```
 
-If any individual symbol's history calls fail, drop that symbol from the regime classification (log it) and continue. Do not abort the whole scan for one bad symbol.
+History responses share the shape `data: [{ time, open, high, low, close }]`. `data[0]` is the most recent interval. For liquidation history, `close` represents the bucketed total liquidation USD for that interval.
+
+If any individual coin's history calls fail, drop that coin from the regime classification (log it) and continue. Do not abort the whole scan for one bad coin.
 
 ### 4. Compute per-asset metrics
 
-For each asset, compute:
+For each coin, compute:
 
 | Metric | Formula |
 |---|---|
-| `pct_24h` | `price24hPcnt * 100` |
-| `pct_7d` | `(lastPrice - kline[6].close) / kline[6].close * 100` (kline[0] is most recent) |
-| `vol_24h` | `turnover24h` (USD) |
-| `vol_7d_avg` | mean of kline[0..6].turnover |
-| `vol_ratio` | `vol_24h / vol_7d_avg` |
-| `oi_now` | `openInterestValue` |
-| `oi_24h_pct` | `(oi[0] - oi[1]) / oi[1] * 100` from /open-interest |
-| `oi_7d_pct` | `(oi[0] - oi[7]) / oi[7] * 100` |
-| `funding_now` | `fundingRate * 100` (as %/8h) |
-| `funding_7d_avg` | mean of last 21 funding entries |
-| `basis_pct` | `(markPrice - indexPrice) / indexPrice * 100` |
-| `range_7d_pct` | `(max(klines.high) - min(klines.low)) / min(klines.low) * 100` over last 7 daily candles |
+| `pct_24h` | `price_change_percent_24h` (already a percent from coins-markets) |
+| `pct_7d` | `(current_price - price.data[6].close) / price.data[6].close * 100` (price.data[0] is most recent daily candle) |
+| `oi_now` | `open_interest_usd` from coins-markets |
+| `oi_24h_pct` | `open_interest_change_percent_24h` from coins-markets |
+| `oi_7d_pct` | `(oi.data[0].close - oi.data[7].close) / oi.data[7].close * 100` from open-interest/aggregated-history |
+| `funding_now` | `avg_funding_rate_by_oi` from coins-markets (already a percent per 8h) |
+| `funding_7d_avg` | mean of `funding.data[0..20].close` (last 21 entries × 8h = 7 days) |
+| `vol_ratio` | `current daily volume / mean(price.data[0..6].volume)` — Coinglass kline returns volume; use it to compute 24h-vs-7d-avg ratio. If Coinglass kline lacks volume, default `vol_ratio = 1.0` (neutral) so the CATALYST-BREAKOUT criterion falls back to the price + OI clauses |
+| `range_7d_pct` | `(max(price.data[0..6].high) - min(price.data[0..6].low)) / min(price.data[0..6].low) * 100` |
+| `liq_24h` | `liquidation_usd_24h` from coins-markets (total USD liquidated in last 24h) |
+| `liq_7d_p75` | 75th percentile of `liq.data[0..7].close` — the "top quartile 7d" liquidation threshold for CAPITULATION confirmation |
+| `ls_ratio_24h` | `long_short_ratio_24h` from coins-markets (optional sentiment proxy, not used in classification but shown in DISTRIBUTION/CAPITULATION metric lines) |
 
-Round funding/basis to 3 decimals; everything else to 1 decimal for the output.
+Round funding to 3 decimals; everything else to 1 decimal for the output.
 
-### 5. Classify each asset into a regime
+### 5. Classify each coin into a regime
 
 **First-match priority order** (top of list wins, evaluated in order):
 
 | Order | Regime | Trigger (all conditions must hold unless noted) |
 |---|---|---|
-| 1 | **CAPITULATION** | `pct_24h <= -10` AND `funding_now < 0` AND `oi_24h_pct <= -10` |
-| 2 | **DISTRIBUTION** | `funding_now > 0.08` (or `funding_7d_avg > 0.06`) AND `basis_pct > 0.5` AND `pct_24h < pct_7d / 7` (gains slowing) |
+| 1 | **CAPITULATION** | `pct_24h <= -10` AND `funding_now < 0` AND `oi_24h_pct <= -10` AND `liq_24h >= liq_7d_p75` |
+| 2 | **DISTRIBUTION** | (`funding_now > 0.08` OR `funding_7d_avg > 0.06`) AND `pct_24h < pct_7d / 7` (gains slowing) AND `oi_24h_pct > 5` (OI still building into the high funding — the "crowded long" tell) |
 | 3 | **CATALYST-BREAKOUT** | (`pct_24h > 20` OR price broke above 7d high) AND `vol_ratio > 2.0` AND `oi_24h_pct > 10` |
-| 4 | **ACCUMULATION** | `oi_7d_pct > 10` AND `abs(funding_7d_avg) < 0.04` AND `abs(basis_pct) < 0.4` AND `pct_7d > 0` AND `range_7d_pct < 25` |
-| 5 | **MOMENTUM** | `pct_7d > 15` AND `oi_24h_pct >= 0` AND `funding_now > 0.03 AND funding_now <= 0.07` |
+| 4 | **ACCUMULATION** | `oi_7d_pct > 10` AND `abs(funding_7d_avg) < 0.04` AND `pct_7d > 0` AND `range_7d_pct < 25` |
+| 5 | **MOMENTUM** | `pct_7d > 15` AND `oi_24h_pct >= 0` AND `funding_now > 0.03` AND `funding_now <= 0.07` |
 | 6 | **COMPRESSION** | `range_7d_pct < 5` AND `oi_7d_pct > 5` AND `abs(funding_now) < 0.02` AND `abs(pct_24h) < 2` |
 | 7 | **NEUTRAL** | none of the above match |
 
-These thresholds are **v1 starting defaults**. After 2 weeks of observation, refine inline in this file (and note the change date + reasoning in a comment). If a multi-day pattern emerges where a regime triggers too rarely or too commonly, adjust.
+These thresholds are **v2.1 starting defaults** (Coinglass migration). After 2 weeks of observation, refine inline in this file (and note the change date + reasoning in a comment). If a multi-day pattern emerges where a regime triggers too rarely or too commonly, adjust.
 
-**Sandbox note on liquidation data:** Bybit public REST does not expose 24h aggregated liquidations (only the WebSocket `liquidation.{symbol}` stream gives per-event data, impractical from cron). The CAPITULATION regime in v1 therefore uses three confluent signals (price drawdown + funding flip + OI drop) without a liquidation criterion. This is documented in v2 spec's Acknowledged Data Gaps. Coinglass Startup tier ($79/mo) restores liquidation data in v2 of this skill.
+**Note on basis:** Coinglass v4 does not expose mark-vs-index basis directly. Previous v2 spec used `basis_pct` as a confirming criterion in DISTRIBUTION and ACCUMULATION. The migration replaces it with OI behavior (`oi_24h_pct > 5` in DISTRIBUTION confirms crowded long flow alongside extreme funding) and drops the basis condition from ACCUMULATION (the regime still requires 4 confluent signals, which is operationally tight).
+
+**Liquidation criterion restored:** CAPITULATION now requires 4 confluence signals (the original v2 spec design). The `liq_7d_p75` threshold means today's 24h liquidations must be in the top quartile of the last 7 days — flushes are relative to recent activity, not an absolute number.
 
 ### 6. Compute the verdict header
 
@@ -148,25 +182,25 @@ Write both `.outputs/perps-scan.md` and notify content. Format (under 4000 chars
 Perps Regimes · ${TODAY} · {VERDICT} ({parenthetical breakdown})
 
 ACCUMULATION
-★ HYPE — OI +18% 7d, funding +0.02%/8h, basis +0.3% (day 3)
-• SOL — OI +12% 7d, funding +0.02%/8h, basis stable
+★ HYPE — OI +18% 7d, funding +0.02%/8h, 7d range 18% (day 3)
+• SOL — OI +12% 7d, funding +0.02%/8h, 7d +4%
 
 CATALYST-BREAKOUT
 • AVAX — +14% 24h, vol 2.4x avg, OI +11% 24h, funding +0.05%/8h
-• LINK — +8% 24h, OI +9% 24h, basis +0.2%
+• LINK — +8% 24h, vol 2.1x avg, OI +9% 24h
 
 MOMENTUM
-• BTC — 7d +6%, OI +6% 24h, funding +0.07%/8h, basis +0.3%
-• ETH — 7d +4%, OI flat, funding +0.04%/8h, basis +0.2%
+• BTC — 7d +6%, OI +6% 24h, funding +0.07%/8h
+• ETH — 7d +4%, OI flat, funding +0.04%/8h
 
 COMPRESSION
-• TAO — 7d range 5%, OI +9% 7d, funding flat, basis +0.1%
-• ATOM — 7d range 6%, OI flat, funding flat
+• TAO — 7d range 5%, OI +9% 7d, funding flat
+• ATOM — 7d range 6%, OI +6% 7d, funding flat
 
 DISTRIBUTION
-• FARTCOIN — funding +0.14%/8h (extreme), OI +35% 24h, basis +0.6%
+• FARTCOIN — funding +0.14%/8h (extreme), OI +35% 24h, L/S 2.8
 
-CAPITULATION (empty — no major flushes today)
+CAPITULATION (empty — no flushes in top 7d quartile)
 
 Neutral · 13 other assets · see artifact for full data
 ```
@@ -180,12 +214,12 @@ Neutral · 13 other assets · see artifact for full data
 - No source footers — `daily-ops-review` handles source health.
 
 **Adaptive metric line per regime** — what's diagnostic varies by regime:
-- ACCUMULATION: emphasize OI growth + funding (neutral) + basis (stable)
+- ACCUMULATION: emphasize OI growth (7d) + funding (neutral) + 7d range or 7d %
 - CATALYST-BREAKOUT: emphasize 24h % + volume ratio + OI 24h
 - MOMENTUM: emphasize 7d % + OI + funding (moderate positive)
-- COMPRESSION: emphasize 7d range + OI + funding (flat)
-- DISTRIBUTION: emphasize funding (extreme) + OI peak + basis (stretched)
-- CAPITULATION: emphasize 24h drawdown + funding (negative) + OI drop
+- COMPRESSION: emphasize 7d range + OI 7d + funding (flat)
+- DISTRIBUTION: emphasize funding (extreme) + OI 24h still building + long/short ratio
+- CAPITULATION: emphasize 24h drawdown + funding (negative) + OI drop + 24h liquidations USD
 
 **Edge cases:**
 - All NEUTRAL (quiet day): write a single-line variant for both artifact and notification:
@@ -193,9 +227,9 @@ Neutral · 13 other assets · see artifact for full data
   Perps Regimes · ${TODAY} · QUIET (no regime populated, see artifact)
   ```
   Still write the full per-asset metric table to `.outputs/perps-scan.md` so downstream consumers can read raw data.
-- Bybit API unavailable (both curl + WebFetch failed): write a one-line variant:
+- Coinglass API unavailable (curl returned non-zero `code` AND WebFetch fallback failed): write a one-line variant:
   ```
-  Perps Regimes · ${TODAY} · scan unavailable, Bybit API failed
+  Perps Regimes · ${TODAY} · scan unavailable, Coinglass API failed
   ```
   `daily-ops-review` surfaces the cause from `memory/issues/`.
 
@@ -220,19 +254,24 @@ The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_W
 
 ## Sandbox note
 
-The sandbox may block outbound curl. For every curl call, if it fails or returns empty/malformed JSON, use **WebFetch** as fallback against the same URL. Bybit public endpoints require no auth headers so WebFetch works without pre-fetch.
+The GitHub Actions sandbox may block outbound curl calls that reference environment variables in headers. Coinglass requires `CG-API-KEY: $COINGLASS_API_KEY`, so if curl fails, WebFetch cannot directly substitute (it can't send auth headers). Pattern:
 
-For the per-symbol loop, on the first repeated failure pattern, consider falling back to a single batched WebFetch of the parent ticker list and computing all metrics from that snapshot — accept reduced 7d delta accuracy in exchange for partial-output capability.
+1. **First curl attempt**: invoke with the header inline. The workflow exposes `COINGLASS_API_KEY` to the env, so the expansion should work in most cases.
+2. **If curl returns empty body / non-zero `code` / HTTP error**: log the failure to `memory/issues/` (file an issue with category `api-change` or `rate-limit` depending on response), then write the "scan unavailable" output and exit gracefully.
+3. **Do not attempt WebFetch fallback for authenticated endpoints** — the header can't be passed. The skill's graceful failure path is the correct response to total Coinglass unreachability.
+
+If a single coin's per-history call fails (network blip, missing data on Coinglass side) but the universe call succeeded, drop that coin from the regime classification and continue with the rest. Note dropped coins in the step-9 log.
 
 ## Environment Variables
 
-- None required. Bybit public endpoints are unauthenticated.
+- `COINGLASS_API_KEY` — required. Configured as a repo secret; the workflow injects it into the env. Without it, the skill writes "scan unavailable" output.
 - Notification channels configured via repo secrets (see CLAUDE.md).
 
 ## Constraints
 
-- **First-match priority is strict.** Once an asset matches a regime, lower-priority regimes do not apply. This prevents double-counting and keeps the bucketing deterministic.
-- **Never invent numbers.** If a symbol's history calls failed, drop it from the output — don't carry forward yesterday's metric.
-- **Thresholds are v1 starting points.** Refine after 2 weeks of observation. Document changes inline.
-- **Liquidation data is intentionally absent in v1.** Do not attempt to scrape WebSocket liquidation feed from cron. CAPITULATION uses confluence of drawdown + funding flip + OI drop instead.
+- **First-match priority is strict.** Once a coin matches a regime, lower-priority regimes do not apply. This prevents double-counting and keeps the bucketing deterministic.
+- **Never invent numbers.** If a coin's history calls failed, drop it from the output — don't carry forward yesterday's metric.
+- **Thresholds are v2.1 starting points** (Coinglass migration). Refine after 2 weeks of observation. Document changes inline.
+- **Liquidation criterion is now active in CAPITULATION** — Coinglass exposes aggregated 24h liquidations directly. The `liq_7d_p75` baseline means a flush is detected relative to recent activity, not against an absolute USD threshold.
+- **No basis criterion** — Coinglass v4 does not expose mark-vs-index basis. DISTRIBUTION now confirms via OI behavior; ACCUMULATION drops basis entirely.
 - **Notification under 4000 chars.** If output exceeds, drop empty sections, use the `Neutral · N other assets · see artifact` line, or shorten metric lines.

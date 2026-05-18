@@ -125,6 +125,7 @@ jobs:
         env:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          COINGLASS_API_KEY: ${{ secrets.COINGLASS_API_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
           SUPERNOTES_API_KEY: ${{ secrets.SUPERNOTES_API_KEY }}
@@ -203,6 +204,7 @@ jobs:
           NOTIFY_EMAIL_SUBJECT_PREFIX: ${{ vars.NOTIFY_EMAIL_SUBJECT_PREFIX || '[Aeon]' }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          COINGLASS_API_KEY: ${{ secrets.COINGLASS_API_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           BANKR_API_KEY: ${{ secrets.BANKR_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
