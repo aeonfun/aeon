@@ -1,26 +1,26 @@
-*Narrative Tracker — 2026-05-17*
-(first run — establishing baseline; no prior phase data to diff)
+Narratives · 2026-05-18 · 5 tracked, 1 NEW
 
-TRANSITIONS
-• NEW: AI-agent tokens hitting Peak — PHALA +102.9% weekly on a Musk AGI tweet, no fundamentals shift. Sector at $3.18B mcap.
-• NEW: "Invisible crypto" thesis — crypto as silent AI settlement/permission layer. Emerging meta from builders, no token yet.
-• NEW: Solana Alpenglow speed narrative — 150ms finality, Q3 2026 rollout. Presales already marketing on it.
+↑ EMERGING
+• Privacy / ZK layer [ZEC, ALEO, STRK] · 3/5 · NEW · WATCH
+  institutions want a privacy layer before scaling AI agents onchain — @soultaker_eth via FINTECHTV; also surfacing in Kaito/CoinGecko 2026 top-9 lists. Thin so far, one real driver thread.
 
-REFLEXIVITY ALERT
-• AI-agent tokens — PHALA +30.6% in a day purely on Elon's "Tesla may hit AGI" comment. Price moving on narrative alone; builders (@RaAres, @metahacker_) say AI flattens signaling so $50k mcaps now replace $5M ones.
-• Solana speed — presales (AlphaPepe et al.) rebranding to ride Alpenglow before the Q3 rollout even ships.
-• VC legitimacy — a16z + founders pouring tens of millions into pro-crypto/pro-AI Super PACs (@integritypac). Manufactured tailwind.
+↑ RISING
+• Decentralized compute / AI infra [TAO, AKT, RNDR] · 4/5 · RIDE
+  promoted from IGNORE — yesterday's "neoclouds" thread is now a tradeable meta: @zackfromsubway, @Delekenny01 frame GPU/compute as crypto's biggest narrative; BTC miners pivoting to AI compute.
+  reflexivity: miners rebranding hashpower as "AI compute" to ride the story — capital-flow narrative running ahead of revenue.
 
-POSITIONS
-• FADE: AI-agent tokens (mindshare 5 ↑↑, Cope) — Gemini Agentic Trading + Virtuals robotics are real, but the token rally is a Musk-tweet reflexivity spike. Bear: builders themselves calling it crypto's most exhausting hype cycle.
-• RIDE: RWA / stablecoins / perp DEXs (4 →, Bull) — stablecoin mcap $311B, +50% since early 2025; institutional flows structural. Bear: pure consensus, no contrarian edge — already priced.
-• RIDE: Solana Alpenglow speed (3 ↑, Bull) — real tech catalyst. Bear: front-running a Q3 catalyst; presale shilling muddies the signal.
-• WATCH: Invisible crypto / AI settlement layer (3 ↑, Bull) — @inflectivAI, @VizierPrime, @BlakeNastri2403. Bear: a thesis with no token or timeline — nothing to front-run yet.
-• WATCH: AI hype → reliability/trust shift (3 ↑, Mixed) — @letsgoelsewhere + mainstream press. Bear: "boring fundamentals" narratives don't pump tokens.
-• WATCH: SUI institutional primitives (2 ↑, Bull) — Paradigm + Coinbase Ventures backing SUI-native SDKs/stablecoins (@Sa1ntDG). Early VC-rotation signal.
+→ PEAK
+• AI agents / agentic finance [VIRTUAL, PHALA, NEAR] · 5/5 (was ↑↑) · FADE
+  convergence framing now consensus; Gemini Agentic Trading + Bitget Agent Hub productize it. PHALA +102.9% wk already run.
+  reflexivity: exchanges wiring LLMs into live order execution manufactures legitimacy; $139B-by-2034 forecast feeds token bids. Bear case hardening — researchers documented a $500k wallet drain via malicious agent routers.
 
-MAP
-Emerging: Invisible crypto infra, SUI institutional primitives
-Rising: AI hype→reliability shift, Solana Alpenglow speed, VC-rot critique
-Peak: AI-agent tokens, RWA/stablecoins/perps
-Fading: — (none; baseline run)
+• RWA / stablecoins / perp DEXs [ONDO, HYPE, ENA] · 5/5 (was 4) · RIDE
+  top liquidity-rotation meta: stablecoin volume forecast >$20T/yr, Hyperliquid $21.8B/24h perp vol, RWA +185.8% in 2025. OpenSea now teasing tokenized collectibles as the next leg.
+
+↓ FADING
+• Solana Alpenglow speed [SOL] · 1/5 (was 3) · WATCH
+  zero chatter this window — narrative gone quiet, though the 150ms-finality rollout is still dated Q3 2026. Catalyst real, attention absent.
+
+Changes since yesterday:
++ Privacy / ZK layer (NEW)
+- VC-rot critique, SUI primitives (no signal — dropped)
