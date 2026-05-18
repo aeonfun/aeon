@@ -46,6 +46,7 @@ skills:
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
   aixbt-pulse: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
+  perps-scan: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. Bybit perps regime classifier (6 regimes). Output → #perps via DISCORD_WEBHOOK_MAP.
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
