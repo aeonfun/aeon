@@ -4,14 +4,14 @@
       "id": null,
       "family": null,
       "lifecycle": "canary",
-      "fitness": 0.6185271699094768,
+      "fitness": 0.6068164923509083,
       "pnl": null
     },
     {
       "id": null,
       "family": null,
       "lifecycle": "canary",
-      "fitness": 0.6185271699094768,
+      "fitness": 0.5933259133773765,
       "pnl": null
     },
     {
@@ -26,6 +26,20 @@
       "family": null,
       "lifecycle": "canary",
       "fitness": 0.581741812876355,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.5556260559347117,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.5556260559347117,
       "pnl": null
     },
     {
@@ -74,20 +88,6 @@
       "id": null,
       "family": null,
       "lifecycle": "canary",
-      "fitness": 0.4695882793639265,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "shadow",
-      "fitness": 0.3523666606994885,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
       "fitness": 0.2477325980257677,
       "pnl": null
     },
@@ -115,15 +115,8 @@
     {
       "id": null,
       "family": null,
-      "lifecycle": "shadow",
-      "fitness": 0.21288664352979397,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "shadow",
-      "fitness": 0.2038224251154198,
+      "lifecycle": "canary",
+      "fitness": 0.2126580203675183,
       "pnl": null
     },
     {
@@ -138,13 +131,20 @@
       "family": null,
       "lifecycle": "canary",
       "fitness": 0.18258624922429156,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "shadow",
+      "fitness": 0.12090909090909092,
       "pnl": null
     }
   ],
   "lifecycle_counts": {
-    "canary": 16,
-    "shadow": 164
+    "canary": 17,
+    "shadow": 163
   },
   "total_agents": 180,
-  "synced_at": "2026-05-16T17:50:15Z"
+  "synced_at": "2026-05-18T01:14:19Z"
 }
