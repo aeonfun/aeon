@@ -4,7 +4,7 @@ description: Classify the cross-exchange perps universe (Binance + Bybit + OKX, 
 var: ""
 tags: [crypto]
 ---
-<!-- v2.1: foundation skill for the perps sector brief. Raw classification, not synthesis. Coinglass v4 data layer (migrated from Bybit due to GitHub Actions geo-block on Bybit). -->
+<!-- v2.2: foundation skill for the perps sector brief. Raw classification, not synthesis. Coinglass v4 data layer (migrated from Bybit due to GitHub Actions geo-block on Bybit). Data is fetched by scripts/prefetch-coinglass.sh before Claude runs (sandbox blocks env-var expansion in curl headers — ISS-001). -->
 
 > **${var}** — Optional asset list override (comma-separated coin tickers, e.g. `HYPE,TAO,AVAX`). If empty, scans the top 25 coins by aggregated open-interest USD + always-include BTC/ETH/SOL.
 
@@ -19,55 +19,54 @@ Bucket every assessed asset into exactly one of six regimes (or NEUTRAL catch-al
 
 ## Data source
 
-Coinglass v4 API (Startup tier). Base: `https://open-api-v4.coinglass.com`. Auth: `CG-API-KEY: $COINGLASS_API_KEY` header.
+Coinglass v4 API (Startup tier). Data is **pre-fetched** by `scripts/prefetch-coinglass.sh` (which runs before Claude, outside the sandbox, with `COINGLASS_API_KEY` access) and cached to `.coinglass-cache/`. This skill reads only from the cache — never calls curl directly (the sandbox blocks env-var expansion in curl headers; see ISS-001).
 
 Coinglass aggregates cross-exchange (Binance + Bybit + OKX by default) — regime classification reflects the whole perps market, not one venue. All endpoints accept coin tickers (`BTC`, `ETH`) rather than pair symbols.
 
-Endpoints used:
-- `GET /api/futures/coins-markets?exchange_list=Binance,Bybit,OKX&per_page=50` — ranked coin list with current metrics: price, 24h change, OI USD, funding rate (OI-weighted + vol-weighted), 24h volume, **24h liquidations split long/short**, long/short ratio
-- `GET /api/futures/price/history?symbol={COIN}&interval=1d&limit=8` — daily OHLC candles for 7d price action + range
-- `GET /api/futures/open-interest/aggregated-history?symbol={COIN}&interval=1d&limit=8` — daily OI OHLC for 7d delta
-- `GET /api/futures/funding-rate/oi-weight-history?symbol={COIN}&interval=8h&limit=21` — OI-weighted funding rate history (21 entries = 7d at 8h cadence)
-- `GET /api/futures/liquidation/aggregated-history?symbol={COIN}&interval=1d&limit=8` — daily aggregated liquidation OHLC for 7d quartile baseline
-
-Rate limit: Startup tier permits 1200 req/min. The per-coin loop (25 coins × 4 endpoints = 100 requests) is well under. No throttling needed but `sleep 0.1` between calls keeps the pattern conservative.
+Cache layout (populated by the prefetch):
+- `.coinglass-cache/manifest.json` — `{ fetched_at, coins_markets_ok, asset_list, per_coin_errors }`. **Always check `coins_markets_ok` first** — if `false`, jump to the "scan unavailable" output (step 6, edge case).
+- `.coinglass-cache/coins.json` — coins-markets response (universe + current metrics: price, 24h change, OI USD, funding rate, 24h volume, **24h liquidations split long/short**, long/short ratio).
+- `.coinglass-cache/price-<COIN>.json` — daily price history (8d).
+- `.coinglass-cache/oi-<COIN>.json` — aggregated OI history (8d).
+- `.coinglass-cache/funding-<COIN>.json` — OI-weighted funding history (21 × 8h = 7d).
+- `.coinglass-cache/liq-<COIN>.json` — aggregated liquidation history (8d).
 
 All Coinglass responses follow the shape `{ "code": "0", "msg": "success", "data": [...] }`. History endpoints return `data: [{ time, open, high, low, close }]` with `time` in milliseconds and OHLC values as numbers (close-of-interval is the bucket total for liquidations).
 
+If a per-coin endpoint file is missing or invalid (the prefetch logs the per-coin failures in `manifest.per_coin_errors`), drop that coin from the regime classification and continue.
+
 ## Steps
 
-### 1. Fetch the universe + current metrics
-
-One batched call returns ranked coins with all current-state values.
+### 1. Read the universe + current metrics from cache
 
 ```bash
-TMPDIR=$(mktemp -d)
 TODAY=$(date -u +%Y-%m-%d)
+CACHE=.coinglass-cache
 
-curl -s --max-time 15 \
-  -H "CG-API-KEY: $COINGLASS_API_KEY" \
-  -H "accept: application/json" \
-  "https://open-api-v4.coinglass.com/api/futures/coins-markets?exchange_list=Binance,Bybit,OKX&per_page=50" \
-  > "$TMPDIR/coins.json"
+# Step 1a: verify the prefetch succeeded
+if [ ! -f "$CACHE/manifest.json" ] || ! jq -e '.coins_markets_ok == true' "$CACHE/manifest.json" >/dev/null 2>&1; then
+  # Prefetch didn't run or failed at universe call — go straight to "scan unavailable"
+  # (see step 6 edge case)
+  exit 0
+fi
 
-if ! jq -e '.code == "0" and (.data | length > 0)' "$TMPDIR/coins.json" >/dev/null 2>&1; then
-  echo "Coinglass coins-markets fetch failed — trying WebFetch fallback"
+# Step 1b: load the universe + current metrics
+if ! jq -e '.code == "0" and (.data | length > 0)' "$CACHE/coins.json" >/dev/null 2>&1; then
+  exit 0  # prefetch wrote a file but Coinglass returned an error shape — same fallback
 fi
 ```
 
-If curl returns empty / a non-zero `code` / no `data`, use **WebFetch** on the same URL (Coinglass requires the API key in a header, which WebFetch cannot send — so this fallback only works if Coinglass IP-allows Anthropic's egress; if it fails, abort with the "scan unavailable" output in step 6). Log `coinglass_coins=fail` in step 9 if both fail.
+If `manifest.coins_markets_ok == false` OR `coins.json` doesn't validate, jump to step 6's "scan unavailable" output. Log `coinglass_coins=fail` in step 9.
 
-### 2. Build the asset list
+### 2. Read the asset list
 
-From `data`, sort by `volume_change_usd_24h` desc (proxy for activity volume) — falling back to `open_interest_usd` desc if volume_change is zero/null for everything. Take the top 25 by composite.
+The prefetch already resolved the asset list (VAR override OR top 25 by OI + force-include BTC/ETH/SOL). It's in the manifest:
 
-Actually for v1 simplicity, sort by `open_interest_usd` desc and take top 25 — OI is the most stable proxy for "where the perps action is."
+```bash
+ASSET_LIST=$(jq -r '.asset_list[]' "$CACHE/manifest.json")
+```
 
-Force-include `BTC`, `ETH`, `SOL` if not in the top 25 (regime anchors).
-
-If `${var}` is set, parse it as a comma-separated ticker list (e.g. `HYPE,TAO,AVAX`) — intersect with available coins in the Coinglass response and use that as the asset list instead.
-
-Per asset, extract from the `data` entry directly (no further fetch needed for current values):
+Per asset, extract current-state values from `coins.json` (entries in `data[]`, matched on `symbol`):
 - `current_price`
 - `price_change_percent_24h` (current 24h % move)
 - `open_interest_usd` (current OI in USD)
@@ -76,38 +75,26 @@ Per asset, extract from the `data` entry directly (no further fetch needed for c
 - `liquidation_usd_24h` (total 24h liquidations), `long_liquidation_usd_24h`, `short_liquidation_usd_24h`
 - `long_short_ratio_24h` (sentiment proxy — bonus signal)
 
-### 3. Fetch per-asset history (sequential, rate-limit aware)
+If a coin from `asset_list` isn't in `coins.json.data[]` (rare — would indicate the universe changed between prefetch passes), drop it and continue.
 
-For each coin in the list, fetch four history endpoints. Sleep 0.1s between requests (well below the 1200/min limit).
+### 3. Read per-asset history from cache
+
+For each coin in `ASSET_LIST`, the prefetch has written four files (`price-<COIN>.json`, `oi-<COIN>.json`, `funding-<COIN>.json`, `liq-<COIN>.json`). Each follows the Coinglass response shape `{ "code": "0", "data": [{ time, open, high, low, close }] }`.
 
 ```bash
 for COIN in $ASSET_LIST; do
-  curl -s --max-time 10 \
-    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
-    "https://open-api-v4.coinglass.com/api/futures/price/history?symbol=${COIN}&interval=1d&limit=8" \
-    > "$TMPDIR/price-${COIN}.json"
-  sleep 0.1
-  curl -s --max-time 10 \
-    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
-    "https://open-api-v4.coinglass.com/api/futures/open-interest/aggregated-history?symbol=${COIN}&interval=1d&limit=8" \
-    > "$TMPDIR/oi-${COIN}.json"
-  sleep 0.1
-  curl -s --max-time 10 \
-    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
-    "https://open-api-v4.coinglass.com/api/futures/funding-rate/oi-weight-history?symbol=${COIN}&interval=8h&limit=21" \
-    > "$TMPDIR/funding-${COIN}.json"
-  sleep 0.1
-  curl -s --max-time 10 \
-    -H "CG-API-KEY: $COINGLASS_API_KEY" -H "accept: application/json" \
-    "https://open-api-v4.coinglass.com/api/futures/liquidation/aggregated-history?symbol=${COIN}&interval=1d&limit=8" \
-    > "$TMPDIR/liq-${COIN}.json"
-  sleep 0.1
+  for KIND in price oi funding liq; do
+    FILE="$CACHE/${KIND}-${COIN}.json"
+    # If a file is missing OR doesn't validate, this coin gets dropped — check manifest.per_coin_errors
+    [ -f "$FILE" ] && jq -e '.code == "0" and (.data | length > 0)' "$FILE" >/dev/null 2>&1 || continue 2
+  done
+  # All four files OK — proceed with metrics in step 4
 done
 ```
 
-History responses share the shape `data: [{ time, open, high, low, close }]`. `data[0]` is the most recent interval. For liquidation history, `close` represents the bucketed total liquidation USD for that interval.
+`data[0]` is the most recent interval. For liquidation history, `close` represents the bucketed total liquidation USD for that interval.
 
-If any individual coin's history calls fail, drop that coin from the regime classification (log it) and continue. Do not abort the whole scan for one bad coin.
+The manifest's `per_coin_errors` array lists exactly which endpoints failed for which coins during prefetch — use it for the step-9 log without re-checking each file.
 
 ### 4. Compute per-asset metrics
 
@@ -247,31 +234,31 @@ The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_W
 - **Verdict:** {VERDICT} ({breakdown})
 - **Regime counts:** ACCUM=N CAT=N MOM=N COMP=N DIST=N CAP=N NEUTRAL=N
 - **Repeat assets (≥2 days same regime):** [list with day counts]
-- **Source status:** bybit_tickers=ok|fail, per-symbol fetch failures: [list or "none"]
+- **Source status:** coinglass_coins=ok|fail, per-coin fetch failures: [list from `manifest.per_coin_errors`, or "none"]
 - **Artifact written:** .outputs/perps-scan.md
 - **Notification sent:** yes|no (reason if no) — via `./notify --signal` to #perps
 ```
 
 ## Sandbox note
 
-The GitHub Actions sandbox may block outbound curl calls that reference environment variables in headers. Coinglass requires `CG-API-KEY: $COINGLASS_API_KEY`, so if curl fails, WebFetch cannot directly substitute (it can't send auth headers). Pattern:
+The sandbox blocks env-var expansion in curl headers, which is why this skill never calls Coinglass directly. The pattern is:
 
-1. **First curl attempt**: invoke with the header inline. The workflow exposes `COINGLASS_API_KEY` to the env, so the expansion should work in most cases.
-2. **If curl returns empty body / non-zero `code` / HTTP error**: log the failure to `memory/issues/` (file an issue with category `api-change` or `rate-limit` depending on response), then write the "scan unavailable" output and exit gracefully.
-3. **Do not attempt WebFetch fallback for authenticated endpoints** — the header can't be passed. The skill's graceful failure path is the correct response to total Coinglass unreachability.
+1. **Prefetch runs before Claude** — `scripts/prefetch-coinglass.sh` (invoked by the workflow's `Run pre-fetch scripts` step) has full env access. It fetches coins-markets + per-coin histories and writes everything to `.coinglass-cache/`, plus a `manifest.json` with `coins_markets_ok` and `per_coin_errors`.
+2. **This skill reads only from `.coinglass-cache/`** — no curl, no WebFetch. The skill checks `manifest.coins_markets_ok` first; if `false`, jump straight to the locked "scan unavailable" output (step 6 edge case).
+3. **Per-coin endpoint failures are non-fatal** — `manifest.per_coin_errors` lists exactly which `{coin, endpoint}` pairs failed. Drop affected coins from regime classification, log them in step 9. Do not abort the whole scan.
 
-If a single coin's per-history call fails (network blip, missing data on Coinglass side) but the universe call succeeded, drop that coin from the regime classification and continue with the rest. Note dropped coins in the step-9 log.
+If the prefetch was never run (e.g. someone invokes Claude directly outside the workflow), `.coinglass-cache/` won't exist — fall through to "scan unavailable" gracefully.
 
 ## Environment Variables
 
-- `COINGLASS_API_KEY` — required. Configured as a repo secret; the workflow injects it into the env. Without it, the skill writes "scan unavailable" output.
+- `COINGLASS_API_KEY` — read by `scripts/prefetch-coinglass.sh`, **not by this skill directly**. Configured as a repo secret; the workflow exposes it to the prefetch step. Without it, the prefetch exits 0 with a notice, no cache is written, and this skill writes "scan unavailable".
 - Notification channels configured via repo secrets (see CLAUDE.md).
 
 ## Constraints
 
 - **First-match priority is strict.** Once a coin matches a regime, lower-priority regimes do not apply. This prevents double-counting and keeps the bucketing deterministic.
 - **Never invent numbers.** If a coin's history calls failed, drop it from the output — don't carry forward yesterday's metric.
-- **Thresholds are v2.1 starting points** (Coinglass migration). Refine after 2 weeks of observation. Document changes inline.
+- **Thresholds are v2.1 starting points** (Coinglass migration; data path moved to prefetch in v2.2). Refine after 2 weeks of observation. Document changes inline.
 - **Liquidation criterion is now active in CAPITULATION** — Coinglass exposes aggregated 24h liquidations directly. The `liq_7d_p75` baseline means a flush is detected relative to recent activity, not against an absolute USD threshold.
 - **No basis criterion** — Coinglass v4 does not expose mark-vs-index basis. DISTRIBUTION now confirms via OI behavior; ACCUMULATION drops basis entirely.
 - **Notification under 4000 chars.** If output exceeds, drop empty sections, use the `Neutral · N other assets · see artifact` line, or shorten metric lines.
