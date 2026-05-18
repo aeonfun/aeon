@@ -581,27 +581,7 @@ jobs:
             if echo "$STRIPPED" | jq empty 2>/dev/null; then
               PARSED="$STRIPPED"
             else
-              PARSED=$(printf '%s' "$ANALYSIS_TEXT" | python3 -c '
-import sys, json
-text = sys.stdin.read()
-depth = 0
-start = None
-for i, c in enumerate(text):
-    if c == "{":
-        if depth == 0:
-            start = i
-        depth += 1
-    elif c == "}" and depth > 0:
-        depth -= 1
-        if depth == 0 and start is not None:
-            candidate = text[start:i+1]
-            try:
-                json.loads(candidate)
-                sys.stdout.write(candidate)
-                sys.exit(0)
-            except json.JSONDecodeError:
-                start = None
-' 2>/dev/null || true)
+              PARSED=$(printf '%s' "$ANALYSIS_TEXT" | python3 .github/scripts/extract-first-json.py 2>/dev/null || true)
             fi
           fi
           if [ -z "$PARSED" ] || ! echo "$PARSED" | jq empty 2>/dev/null; then
