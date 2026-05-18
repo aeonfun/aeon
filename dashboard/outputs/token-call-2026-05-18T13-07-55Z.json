@@ -1,0 +1,248 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 2026-05-18",
+        "description": "TRAC · HIGH · 10/10"
+      },
+      "children": [
+        "stack_main"
+      ]
+    },
+    "stack_main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price_grid",
+        "sep1",
+        "signals_section",
+        "sep2",
+        "catalyst_section",
+        "sep3",
+        "risk_section",
+        "sep4",
+        "dedup_section",
+        "sep5",
+        "disclaimer"
+      ]
+    },
+    "price_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 2,
+        "gap": "md"
+      },
+      "children": [
+        "stat_price",
+        "stat_24h",
+        "stat_7d",
+        "stat_mcap",
+        "stat_vol",
+        "stat_vol_mcap"
+      ]
+    },
+    "stat_price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.49"
+      },
+      "children": []
+    },
+    "stat_24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Change",
+        "value": "+49.6%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d Change",
+        "value": "+42.6%",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "stat_mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$219m"
+      },
+      "children": []
+    },
+    "stat_vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume",
+        "value": "$52m"
+      },
+      "children": []
+    },
+    "stat_vol_mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/Mcap",
+        "value": "0.24"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "signals_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signals_heading",
+        "signals_text"
+      ]
+    },
+    "signals_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signals_text": {
+      "type": "Text",
+      "props": {
+        "text": "Heavy turnover (vol/mcap 0.24), both 24h and 7d up double digits, on the CoinGecko trending list, outpacing BTC and ETH on the 7d in a red alt tape"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "Upbit listing goes live today 16:00 KST — KRW/BTC/USDT pairs open direct Korean retail fiat inflows, the biggest distribution event in OriginTrail history; AI-infra narrative (Microsoft Copilot MCP integration) adds a fundamental floor"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "risk_heading",
+        "risk_text"
+      ]
+    },
+    "risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "Classic sell-the-news — after +49% in 24h the listing itself is the event; Korean premium and overbought conditions can unwind sharply once the listing-day bid is spent"
+      },
+      "children": []
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "dedup_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dedup_heading",
+        "dedup_text"
+      ]
+    },
+    "dedup_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dedup Check",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "dedup_text": {
+      "type": "Text",
+      "props": {
+        "text": "First time in 7d (yesterday was KAIA)"
+      },
+      "children": []
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "disclaimer": {
+      "type": "Alert",
+      "props": {
+        "message": "not financial advice — pattern-matching only",
+        "type": "info"
+      },
+      "children": []
+    }
+  }
+}
