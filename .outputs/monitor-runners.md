@@ -1,25 +1,25 @@
-Yesterday's Runners · 2026-05-18 · MIXED (1 DEEP-LIQ on base, breakout-heavy tape)
+Yesterday's Runners · 2026-05-18 · MIXED (1 DEEP-LIQ, 4 BREAKOUT across sol, bsc, base)
 
 DEEP-LIQ
-• PITCH (base) +1480% 24h
-  $7.1m vol, $1.5m liq, h1 +2.5%, buys 61%
-  → only top pick with real depth; h1 still green and buy-skewed, the cleanest sustained breakout to watch into continuation
+★ PITCH (base) +1009% 24h
+  $8.4m vol, $1.2m liq, h1 -10%, buys 61%
+  → yesterday's deep-liq leader now distributing; h6 -32%, depth lets holders exit orderly — no setup until it bases
 
 BREAKOUT
-• ASTEROID (bsc) +5692% 24h
-  $51m vol, $130k liq, pool 6h old, buys 58%
-  → $51m vol on $130k liq is ~390x churn; treat the print as wash noise, the only thing to watch is the unwind
+• PTROLL (sol) +8140% 24h
+  $9.6m vol, $385k liq, h1 +17%, buys 86%
+  → only fresh name on the board; 86% buy-skew is extreme one-sided demand, still expanding 15h in — first red hour ends it
 
-• SpaceX (base) +8733% 24h
-  $30.8m vol, $117k liq, pool 10h old, h6 -26%
-  → h6 already red while h24 still prints +8733%; blowoff is spent, this is the fade not the setup
+★ ASTEROID (bsc) +8592% 24h
+  $51m vol, $161k liq, h1 +19%, buys 60%
+  → second straight day of wash-volume print, ~320x vol/liq churn; treat the volume as noise and any move as exit liquidity
 
-• GDOR (sol) +580% 24h
-  $52m vol, $333k liq, pool 21h old, h1/h6 flat
-  → h1 and h6 both flat means the move is fully stale; $52m vol with no fresh bid reads as distribution
+★ MANIFEST (sol) +2249% 24h
+  $2.0m vol, $250k liq, h1 +35%, buys 57%
+  → most durable repeat — still accelerating 37h in with a real $10m mcap; cleanest sustained name here
 
-• MANIFEST (sol) +5256% 24h
-  $1.6m vol, $244k liq, pool 33h old, h1 +11%
-  → 33h-old pool still climbing on both h1 and h6 (+46%), $9.1m mcap; most durable breakout of the set
+★ GDOR (sol) +891% 24h
+  $49m vol, $258k liq, h1 +5.9%, buys 55%
+  → fresh 3h-old pool, not yesterday's GDOR token; $49m churned on micro-liq, blowoff already decelerating on h1
 
-vibe: speculative tape — extreme prints driven by wash-heavy fresh pools, only PITCH and MANIFEST hold a genuine bid
+vibe: speculative tape coasting on yesterday's names — wash volume inflates two prints, only MANIFEST shows real follow-through

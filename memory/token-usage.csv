@@ -10,4 +10,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-18,perps-scan,claude-opus-4-7,73,49278,2813300,93508
 2026-05-18,perps-scan,claude-opus-4-7,55,46878,2637978,136130
 2026-05-18,market-context-refresh,claude-sonnet-4-6,15,16570,535697,52010
-2026-05-18,narrative-tracker,claude-opus-4-7,1669,20323,1581391,90476
+2026-05-18,monitor-runners,claude-opus-4-7,109,31678,2902788,100178

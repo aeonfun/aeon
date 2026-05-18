@@ -1,13 +1,18 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-18T13:00:33Z",
+  "last_analyzed": "2026-05-18T16:52:45Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured analysis with actionable picks; rate-limiting impacts reliability",
+  "assessment": "Substantive, well-structured output with clear rankings and actionable intelligence; rate-limited but recovered gracefully.",
   "flags": [
-    "rate_limited"
+    "rate_limited",
+    "sandbox_limitation"
   ],
   "avg_score": 4,
   "history": [
+    {
+      "date": "2026-05-18",
+      "score": 4
+    },
     {
       "date": "2026-05-18",
       "score": 4

@@ -1,0 +1,352 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Yesterday's Runners"
+      },
+      "children": [
+        "heading_title",
+        "badge_status",
+        "sep1",
+        "section_deep_liq",
+        "sep2",
+        "section_breakout",
+        "sep3",
+        "vibe_section"
+      ]
+    },
+    "heading_title": {
+      "type": "Heading",
+      "props": {
+        "text": "Yesterday's Runners · 2026-05-18",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "badge_status": {
+      "type": "Badge",
+      "props": {
+        "text": "MIXED (1 DEEP-LIQ, 4 BREAKOUT across sol, bsc, base)",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_deep_liq": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_deep_liq",
+        "token_pitch"
+      ]
+    },
+    "heading_deep_liq": {
+      "type": "Heading",
+      "props": {
+        "text": "DEEP-LIQ",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token_pitch": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "pitch_name",
+        "pitch_stat",
+        "pitch_metrics",
+        "pitch_analysis"
+      ]
+    },
+    "pitch_name": {
+      "type": "Heading",
+      "props": {
+        "text": "★ PITCH (base)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "pitch_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+1009%",
+        "label": "24h gain"
+      },
+      "children": []
+    },
+    "pitch_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$8.4m vol, $1.2m liq, h1 -10%, buys 61%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "pitch_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "→ yesterday's deep-liq leader now distributing; h6 -32%, depth lets holders exit orderly — no setup until it bases",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "section_breakout": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading_breakout",
+        "token_ptroll",
+        "token_asteroid",
+        "token_manifest",
+        "token_gdor"
+      ]
+    },
+    "heading_breakout": {
+      "type": "Heading",
+      "props": {
+        "text": "BREAKOUT",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "token_ptroll": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ptroll_name",
+        "ptroll_stat",
+        "ptroll_metrics",
+        "ptroll_analysis"
+      ]
+    },
+    "ptroll_name": {
+      "type": "Heading",
+      "props": {
+        "text": "• PTROLL (sol)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "ptroll_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+8140%",
+        "label": "24h gain"
+      },
+      "children": []
+    },
+    "ptroll_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$9.6m vol, $385k liq, h1 +17%, buys 86%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ptroll_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "→ only fresh name on the board; 86% buy-skew is extreme one-sided demand, still expanding 15h in — first red hour ends it",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "token_asteroid": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "asteroid_name",
+        "asteroid_stat",
+        "asteroid_metrics",
+        "asteroid_analysis"
+      ]
+    },
+    "asteroid_name": {
+      "type": "Heading",
+      "props": {
+        "text": "★ ASTEROID (bsc)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "asteroid_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+8592%",
+        "label": "24h gain"
+      },
+      "children": []
+    },
+    "asteroid_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$51m vol, $161k liq, h1 +19%, buys 60%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "asteroid_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "→ second straight day of wash-volume print, ~320x vol/liq churn; treat the volume as noise and any move as exit liquidity",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "token_manifest": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "manifest_name",
+        "manifest_stat",
+        "manifest_metrics",
+        "manifest_analysis"
+      ]
+    },
+    "manifest_name": {
+      "type": "Heading",
+      "props": {
+        "text": "★ MANIFEST (sol)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "manifest_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+2249%",
+        "label": "24h gain"
+      },
+      "children": []
+    },
+    "manifest_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$2.0m vol, $250k liq, h1 +35%, buys 57%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "manifest_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "→ most durable repeat — still accelerating 37h in with a real $10m mcap; cleanest sustained name here",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "token_gdor": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "gdor_name",
+        "gdor_stat",
+        "gdor_metrics",
+        "gdor_analysis"
+      ]
+    },
+    "gdor_name": {
+      "type": "Heading",
+      "props": {
+        "text": "★ GDOR (sol)",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "gdor_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "+891%",
+        "label": "24h gain"
+      },
+      "children": []
+    },
+    "gdor_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "$49m vol, $258k liq, h1 +5.9%, buys 55%",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "gdor_analysis": {
+      "type": "Text",
+      "props": {
+        "text": "→ fresh 3h-old pool, not yesterday's GDOR token; $49m churned on micro-liq, blowoff already decelerating on h1",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "vibe_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "vibe_label",
+        "vibe_text"
+      ]
+    },
+    "vibe_label": {
+      "type": "Heading",
+      "props": {
+        "text": "Vibe",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "vibe_text": {
+      "type": "Text",
+      "props": {
+        "text": "speculative tape coasting on yesterday's names — wash volume inflates two prints, only MANIFEST shows real follow-through",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
