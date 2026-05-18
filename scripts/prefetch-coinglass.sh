@@ -31,6 +31,7 @@ fi
 # Gate: only fetch for skills that need Coinglass data
 case "$SKILL" in
   perps-scan) ;;
+  coinglass-probe) ;;  # one-off diagnostic: probes endpoints to identify tier coverage
   *)
     echo "coinglass-prefetch: no prefetch defined for skill '$SKILL'"
     exit 0
@@ -39,6 +40,86 @@ esac
 
 if [ -z "${COINGLASS_API_KEY:-}" ]; then
   echo "coinglass-prefetch: COINGLASS_API_KEY not set, skipping"
+  exit 0
+fi
+
+# Branch: probe mode emits a markdown summary of which endpoints the key/tier supports
+if [ "$SKILL" = "coinglass-probe" ]; then
+  mkdir -p .coinglass-cache
+  CACHE=.coinglass-cache
+  BASE="https://open-api-v4.coinglass.com"
+  SUMMARY="$CACHE/probe-summary.md"
+
+  # probe_one <label> <relative_path_with_query>
+  # Captures HTTP code + Coinglass code + msg + data length, appends a Markdown table row.
+  probe_one() {
+    local label="$1" path="$2"
+    local response http_code curl_exit cg_code cg_msg data_len status
+    curl_exit=0
+    response=$(curl -s --max-time 20 -w "\n__HTTP_CODE__%{http_code}" \
+      -H "CG-API-KEY: $COINGLASS_API_KEY" \
+      -H "accept: application/json" \
+      "${BASE}${path}" 2>&1) || curl_exit=$?
+    if [ "$curl_exit" -ne 0 ]; then
+      printf '| %s | curl-err | %s | %s | curl exit %s |\n' \
+        "$label" "-" "-" "$curl_exit" >> "$SUMMARY"
+      return
+    fi
+    http_code=$(echo "$response" | grep '__HTTP_CODE__' | sed 's/__HTTP_CODE__//')
+    response=$(echo "$response" | grep -v '__HTTP_CODE__')
+    cg_code=$(echo "$response" | jq -r '.code // "-"' 2>/dev/null | head -c 20)
+    cg_msg=$(echo "$response" | jq -r '.msg // "-"' 2>/dev/null | head -c 40)
+    data_len=$(echo "$response" | jq -r 'if .data | type == "array" then "\(.data | length) rows" elif .data == null then "no data" else "object" end' 2>/dev/null | head -c 20)
+    if [ "$http_code" = "200" ] && [ "$cg_code" = "0" ]; then
+      status="OK"
+    elif [ "$cg_msg" = "Upgrade plan" ]; then
+      status="TIER-GATED"
+    else
+      status="FAIL"
+    fi
+    printf '| %s | %s | HTTP %s · code=%s | %s | %s |\n' \
+      "$label" "$status" "$http_code" "$cg_code" "$cg_msg" "$data_len" >> "$SUMMARY"
+  }
+
+  TODAY=$(date -u +%Y-%m-%d)
+  NOW=$(date -u +%H:%M)
+  cat > "$SUMMARY" <<EOF
+# Coinglass Tier Probe · ${TODAY} ${NOW}Z
+
+Tests the Coinglass v4 endpoints \`perps-scan\` needs (plus likely lower-tier alternates), using the configured \`COINGLASS_API_KEY\`. **TIER-GATED** = Coinglass returned \`{code != 0, msg: "Upgrade plan"}\`. **OK** = HTTP 200 + \`code == "0"\`.
+
+| Endpoint | Status | Response | Coinglass msg | Data |
+|----------|--------|----------|---------------|------|
+EOF
+
+  # Endpoints needed by perps-scan v2.2 (cross-exchange aggregated)
+  probe_one "coins-markets (no params)"                "/api/futures/coins-markets"
+  probe_one "coins-markets (per_page=10)"              "/api/futures/coins-markets?per_page=10"
+  probe_one "price/history BTC 1d"                     "/api/futures/price/history?symbol=BTC&interval=1d&limit=8"
+  probe_one "open-interest/aggregated-history BTC 1d"  "/api/futures/open-interest/aggregated-history?symbol=BTC&interval=1d&limit=8"
+  probe_one "funding-rate/oi-weight-history BTC 8h"    "/api/futures/funding-rate/oi-weight-history?symbol=BTC&interval=8h&limit=21"
+  probe_one "liquidation/aggregated-history BTC 1d"    "/api/futures/liquidation/aggregated-history?symbol=BTC&interval=1d&limit=8"
+
+  # Potentially-lower-tier alternates we could pivot to
+  probe_one "supported-coins"                          "/api/futures/supported-coins"
+  probe_one "supported-exchange-pairs"                 "/api/futures/supported-exchange-pairs"
+  probe_one "pairs-markets"                            "/api/futures/pairs-markets"
+  probe_one "open-interest/history BTC (per-exchange)" "/api/futures/open-interest/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+  probe_one "funding-rate/history BTC (per-exchange)"  "/api/futures/funding-rate/history?exchange=Binance&symbol=BTCUSDT&interval=8h&limit=21"
+  probe_one "liquidation/history BTC (per-exchange)"   "/api/futures/liquidation/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+
+  cat >> "$SUMMARY" <<'EOF'
+
+## Interpretation
+
+- All **OK** → tier covers everything; problem was specific param (e.g. multi-exchange aggregation). Trim `prefetch-coinglass.sh` variants.
+- Core endpoints **TIER-GATED** but alternates **OK** → rewrite prefetch to use per-exchange variants + reduce ambition.
+- Everything **TIER-GATED** → tier upgrade required, or switch provider.
+- **FAIL** (non-tier) → unrelated issue (auth, network, endpoint moved); check Coinglass support.
+EOF
+
+  echo "coinglass-probe: results written to $SUMMARY"
+  cat "$SUMMARY"
   exit 0
 fi
 
