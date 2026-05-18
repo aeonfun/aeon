@@ -1,0 +1,366 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Ops Review · 2026-05-18",
+        "description": "Daily operations review chain"
+      },
+      "children": [
+        "header_info",
+        "step1_heading",
+        "step1_stack",
+        "sep1",
+        "step2_heading",
+        "step2_stack",
+        "sep2",
+        "step3_heading",
+        "step3_stack",
+        "sep3",
+        "summary_section"
+      ]
+    },
+    "header_info": {
+      "type": "Text",
+      "props": {
+        "text": "duration n/a",
+        "variant": "caption"
+      }
+    },
+    "step1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 1 — Data",
+        "level": "h2"
+      }
+    },
+    "step1_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_market",
+        "item_aixbt",
+        "item_narrative",
+        "item_perps",
+        "item_monitor",
+        "item_token_movers",
+        "item_token_call"
+      ]
+    },
+    "item_market": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok1",
+        "text_market"
+      ]
+    },
+    "badge_ok1": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_market": {
+      "type": "Text",
+      "props": {
+        "text": "market-context-refresh · regime risk-off (high), 5/5 sources ok"
+      }
+    },
+    "item_aixbt": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok2",
+        "text_aixbt"
+      ]
+    },
+    "badge_ok2": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_aixbt": {
+      "type": "Text",
+      "props": {
+        "text": "aixbt-pulse · bridge call generated (Iran→oil→10Y→BTC), 6 NEW items"
+      }
+    },
+    "item_narrative": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok3",
+        "text_narrative"
+      ]
+    },
+    "badge_ok3": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_narrative": {
+      "type": "Text",
+      "props": {
+        "text": "narrative-tracker · 5 narratives (1 NEW: Privacy/ZK)"
+      }
+    },
+    "item_perps": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_warn1",
+        "text_perps"
+      ]
+    },
+    "badge_warn1": {
+      "type": "Badge",
+      "props": {
+        "text": "⚠",
+        "variant": "secondary"
+      }
+    },
+    "text_perps": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan · ran clean — QUIET, 1 CATALYST-BREAKOUT (BSB) — but artifact is the Summary blob, not the v2 locked format"
+      }
+    },
+    "item_monitor": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok4",
+        "text_monitor"
+      ]
+    },
+    "badge_ok4": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_monitor": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners · MIXED verdict, 1 DEEP-LIQ (PITCH +1009%)"
+      }
+    },
+    "item_token_movers": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok5",
+        "text_token_movers"
+      ]
+    },
+    "badge_ok5": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_token_movers": {
+      "type": "Text",
+      "props": {
+        "text": "token-movers · 197 assets post-filter, TRAC/BSB breakout-tagged"
+      }
+    },
+    "item_token_call": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok6",
+        "text_token_call"
+      ]
+    },
+    "badge_ok6": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_token_call": {
+      "type": "Text",
+      "props": {
+        "text": "token-call · BSB · HIGH 9/10"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "step2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 2 — Briefs",
+        "level": "h2"
+      }
+    },
+    "step2_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_brief"
+      ]
+    },
+    "item_brief": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok7",
+        "text_brief"
+      ]
+    },
+    "badge_ok7": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_brief": {
+      "type": "Text",
+      "props": {
+        "text": "perps-brief · 1 HIGH CONVICTION (BSB), 3 WATCHLIST"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "step3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 3 — Macro",
+        "level": "h2"
+      }
+    },
+    "step3_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "item_macro"
+      ]
+    },
+    "item_macro": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_ok8",
+        "text_macro"
+      ]
+    },
+    "badge_ok8": {
+      "type": "Badge",
+      "props": {
+        "text": "✓"
+      }
+    },
+    "text_macro": {
+      "type": "Text",
+      "props": {
+        "text": "morning-macro · published"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "summary_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "summary_heading",
+        "summary_text",
+        "issue_alert"
+      ]
+    },
+    "summary_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Summary",
+        "level": "h2"
+      }
+    },
+    "summary_text": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "text_chain",
+        "text_sources"
+      ]
+    },
+    "text_chain": {
+      "type": "Text",
+      "props": {
+        "text": "Chain ran complete — all 9 artifacts fresh (2026-05-18). 8 ✓, 1 ⚠, 0 ✗."
+      }
+    },
+    "text_sources": {
+      "type": "Text",
+      "props": {
+        "text": "All data sources ok — no source failed this run."
+      }
+    },
+    "issue_alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Issue filed: ISS-003 (medium, output-format)",
+        "message": "perps-scan wrote its assistant Summary blob into .outputs/perps-scan.md instead of the v2 locked format. Same bug narrative-tracker hit earlier today (fixed via re-run); now recurred in perps-scan. Downstream perps-brief still consumed the verdict, so impact is contained.",
+        "type": "warning"
+      }
+    }
+  }
+}

@@ -4,6 +4,7 @@
 
 | ID | Title | Severity | Category | Detected | Affected Skills |
 |----|-------|----------|----------|----------|-----------------|
+| ISS-003 | Skills write the `## Summary` blob into `.outputs/` instead of the locked artifact format | medium | output-format | 2026-05-18 | perps-scan, narrative-tracker |
 
 ## Resolved
 

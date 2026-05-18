@@ -1,22 +1,20 @@
 Ops Review · 2026-05-18 · duration n/a
 
 Step 1 — Data
-✗ market-context-refresh · no artifact in .outputs/
-⚠ aixbt-pulse · artifact stale — dated 2026-05-17 19:00Z, not today's chain run
-⚠ narrative-tracker · artifact stale — dated 2026-05-17 baseline run
-✓ monitor-runners · MIXED verdict, 1 DEEP-LIQ (PITCH +1480%), fresh 2026-05-18
-⚠ token-movers · artifact stale — dated 2026-05-17
-✗ perps-scan · no artifact in .outputs/
-✗ token-call · no artifact — only stale token-pick.md (2026-05-17, pre-rename slot)
+✓ market-context-refresh · regime risk-off (high), 5/5 sources ok
+✓ aixbt-pulse · bridge call generated (Iran→oil→10Y→BTC), 6 NEW items
+✓ narrative-tracker · 5 narratives (1 NEW: Privacy/ZK)
+⚠ perps-scan · ran clean — QUIET, 1 CATALYST-BREAKOUT (BSB) — but artifact is the Summary blob, not the v2 locked format
+✓ monitor-runners · MIXED verdict, 1 DEEP-LIQ (PITCH +1009%)
+✓ token-movers · 197 assets post-filter, TRAC/BSB breakout-tagged
+✓ token-call · BSB · HIGH 9/10
 
 Step 2 — Briefs
-✗ perps-brief · no artifact in .outputs/
+✓ perps-brief · 1 HIGH CONVICTION (BSB), 3 WATCHLIST
 
 Step 3 — Macro
-✗ morning-macro · no artifact in .outputs/
+✓ morning-macro · published
 
-Chain did not execute as a unit today. Only monitor-runners produced a fresh (2026-05-18) artifact; 4 artifacts are stale 2026-05-17 standalone runs, 4 are missing entirely.
-Missing sources: market-context-refresh, perps-scan, perps-brief, morning-macro.
-Stale sources: aixbt-pulse, narrative-tracker, token-movers.
-No issues filed in memory/issues/.
-Note: token-call output slot is empty while a stale token-pick.md remains — the rename landed in aeon.yml but not in the skill's artifact naming. MEMORY.md still describes v1 config; it lags the v2 morning-review chain in aeon.yml.
+Chain ran complete — all 9 artifacts fresh (2026-05-18). 8 ✓, 1 ⚠, 0 ✗.
+All data sources ok — no source failed this run.
+Issue filed: ISS-003 (medium, output-format) — perps-scan wrote its assistant Summary blob into .outputs/perps-scan.md instead of the v2 locked format. Same bug narrative-tracker hit earlier today (fixed via re-run); now recurred in perps-scan. Downstream perps-brief still consumed the verdict, so impact is contained.
