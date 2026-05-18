@@ -159,9 +159,11 @@ For each asset, scan the last 7 days of `memory/logs/${YYYY-MM-DD}.md` for prior
 - **★** prefix if asset has been in the **same regime for ≥3 consecutive days**
 - **`(day N)`** suffix after metric line if asset has been in the same regime for `N >= 2` consecutive days
 
-### 8. Write artifact + notify (v2 locked format)
+### 8. Write artifact (v2 locked format)
 
-Write both `.outputs/perps-scan.md` and notify content. Format (under 4000 chars total — if needed, drop NEUTRAL section and write `Neutral · N other assets · see artifact for full data`):
+**CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/perps-scan.md` is the **locked-format text shown below — and only that text**. It is NOT the assistant's end-of-task `## Summary` block, NOT a description of what you did, NOT prose narration of the result. Compose the locked-format payload into a string FIRST, write that string to the file, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
+
+Format (under 4000 chars total — if needed, drop NEUTRAL section and write `Neutral · N other assets · see artifact for full data`):
 
 ```
 Perps Regimes · ${TODAY} · {VERDICT} ({parenthetical breakdown})

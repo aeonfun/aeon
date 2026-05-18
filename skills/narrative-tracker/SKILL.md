@@ -86,6 +86,8 @@ This is a **signal** skill under Aeon Market Stack v2. It writes both:
 1. `.outputs/narrative-tracker.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
 2. A Discord-only notification via `./notify --signal "..."` routed to `#narratives`.
 
+**CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/narrative-tracker.md` (and the notification payload) is the **locked-format text shown below — and only that text**. It is NOT the assistant's end-of-task `## Summary` block, NOT a description of what you did, NOT prose narration of the result. Compose the locked-format payload into a string FIRST, write that string to the file and pass it to `./notify`, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
+
 **Format (used identically for both artifact and notification, under 4000 chars):**
 
 ```
