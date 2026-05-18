@@ -1,0 +1,49 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "perps-scan"
+      },
+      "children": [
+        "stack"
+      ]
+    },
+    "stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "heading",
+        "date",
+        "alert"
+      ]
+    },
+    "heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Perps Regimes",
+        "level": "h2"
+      }
+    },
+    "date": {
+      "type": "Text",
+      "props": {
+        "text": "2026-05-18",
+        "variant": "caption"
+      }
+    },
+    "alert": {
+      "type": "Alert",
+      "props": {
+        "title": "Scan unavailable",
+        "message": "Bybit API failed",
+        "type": "error"
+      }
+    }
+  }
+}
