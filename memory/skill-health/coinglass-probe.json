@@ -1,0 +1,14 @@
+{
+  "skill": "coinglass-probe",
+  "last_analyzed": "2026-05-18T14:38:44Z",
+  "quality_score": 4,
+  "assessment": "Diagnostic ran successfully with specific, actionable findings (tier-gate root cause identified, solution provided, proper sandbox fallback used). Well-structured with clear follow-up steps.",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-18",
+      "score": 4
+    }
+  ]
+}
