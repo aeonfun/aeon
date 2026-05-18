@@ -164,6 +164,7 @@ jobs:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          COINGLASS_API_KEY: ${{ secrets.COINGLASS_API_KEY }}
           SKILL_VAR: ${{ inputs.var }}
         run: |
           # Run all scripts/prefetch-*.sh before Claude starts (outside sandbox).

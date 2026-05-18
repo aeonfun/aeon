@@ -12,6 +12,7 @@
 # Caches (regenerated per run)
 .xai-cache/
 .bankr-cache/
+.coinglass-cache/
 .pending-notify/
 .pending-replicate/
 .pending-supernotes/
