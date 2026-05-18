@@ -100,13 +100,23 @@ EOF
   probe_one "funding-rate/oi-weight-history BTC 8h"    "/api/futures/funding-rate/oi-weight-history?symbol=BTC&interval=8h&limit=21"
   probe_one "liquidation/aggregated-history BTC 1d"    "/api/futures/liquidation/aggregated-history?symbol=BTC&interval=1d&limit=8"
 
-  # Potentially-lower-tier alternates we could pivot to
+  # Round 1 — potentially-lower-tier alternates
   probe_one "supported-coins"                          "/api/futures/supported-coins"
   probe_one "supported-exchange-pairs"                 "/api/futures/supported-exchange-pairs"
   probe_one "pairs-markets"                            "/api/futures/pairs-markets"
   probe_one "open-interest/history BTC (per-exchange)" "/api/futures/open-interest/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
   probe_one "funding-rate/history BTC (per-exchange)"  "/api/futures/funding-rate/history?exchange=Binance&symbol=BTCUSDT&interval=8h&limit=21"
   probe_one "liquidation/history BTC (per-exchange)"   "/api/futures/liquidation/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+
+  # Round 2 — advanced sentiment / order-flow signals (would upgrade the regime classifier)
+  probe_one "liquidation/aggregated-history BTC (+exchange_list)" "/api/futures/liquidation/aggregated-history?symbol=BTC&exchange_list=Binance,OKX&interval=1d&limit=8"
+  probe_one "global-long-short-account-ratio/history BTC"        "/api/futures/global-long-short-account-ratio/history?symbol=BTC&interval=1d&limit=8"
+  probe_one "top-long-short-account-ratio/history BTC"           "/api/futures/top-long-short-account-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+  probe_one "top-long-short-position-ratio/history BTC"          "/api/futures/top-long-short-position-ratio/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+  probe_one "taker-buy-sell-volume/history BTC"                  "/api/futures/taker-buy-sell-volume/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+  probe_one "basis/history BTC"                                  "/api/futures/basis/history?exchange=Binance&symbol=BTCUSDT&interval=1d&limit=8"
+  probe_one "funding-rate/vol-weight-history BTC 8h"             "/api/futures/funding-rate/vol-weight-history?symbol=BTC&interval=8h&limit=21"
+  probe_one "funding-rate/exchange-list BTC"                     "/api/futures/funding-rate/exchange-list?symbol=BTC"
 
   cat >> "$SUMMARY" <<'EOF'
 
