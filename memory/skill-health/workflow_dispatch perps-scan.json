@@ -1,0 +1,14 @@
+{
+  "skill": "workflow_dispatch perps-scan",
+  "last_analyzed": "2026-05-18T13:38:27Z",
+  "quality_score": 4,
+  "assessment": "Gracefully handled sandbox-limited API auth failure with precise root cause analysis, structured issue filing (ISS-001), and actionable fix path (prefetch pattern)—but primary objective failed",
+  "flags": [],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-18",
+      "score": 4
+    }
+  ]
+}

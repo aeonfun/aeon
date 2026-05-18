@@ -1,1 +1,1 @@
-Perps Regimes · 2026-05-18 · scan unavailable, Bybit API failed
+Perps Regimes · 2026-05-18 · scan unavailable, Coinglass API failed
