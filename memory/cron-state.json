@@ -109,5 +109,15 @@
   "chain:morning-review": {
     "last_status": "failed",
     "last_failed": "2026-05-18T16:38:05Z"
+  },
+  "market-context-refresh": {
+    "last_status": "success",
+    "last_success": "2026-05-18T16:43:49Z",
+    "total_runs": 1,
+    "total_successes": 1,
+    "total_failures": 0,
+    "consecutive_failures": 0,
+    "success_rate": 1,
+    "last_quality_score": 4
   }
 }
