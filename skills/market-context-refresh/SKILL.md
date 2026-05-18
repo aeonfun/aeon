@@ -239,17 +239,43 @@ Keep to 1-2 lines per skill. Only write implications that follow from the Take a
 - Updated memory/topics/market-context.md
 ```
 
-### 11. Send notification via `./notify` (under 500 chars)
+### 11. Write chain-consumable artifact (`.outputs/market-context-refresh.md`)
+
+This skill is **internal** under the Aeon Market Stack v2 architecture — its output is consumed by downstream chain steps (`perps-brief`, `morning-macro`, `narrative-tracker` reads it lagged by one day, `daily-ops-review`), never pushed to a notification channel. Do not call `./notify`.
+
+Write a chain-consumable summary to `.outputs/market-context-refresh.md`. This is a *digest* for downstream consumers — `memory/topics/market-context.md` remains the operator-facing canonical file (full Snapshot + Deltas + Narratives + Polymarket + Token Picks). The `.outputs/` artifact strips the persistent Token Picks Made table and trims to what other skills need today.
 
 ```
-market context — ${today}
+# Market Context — ${today}
 
-take: [regime] (conviction [level])
-BTC $X (±X%) / ETH $X (±X%) · F&G X ([label])
-breadth N/20 · TVL $XB (±X% 7d)
-top narrative: [name] ([phase])
-hot market: "[polymarket q]" YES X%
+Take: [regime] — [one-sentence why citing 2 numbers]. Conviction: [high|medium|low].
+
+## Snapshot
+- BTC $X (±X% 24h, ±X% 7d) · dominance X% (±X pp 24h)
+- ETH $X (±X% 24h, ±X% 7d) · ETH/BTC X.XXX
+- SOL $X (±X% 24h, ±X% 7d)
+- Total mcap $XT (±X% 24h) · DEX vol $XB 24h
+- Breadth: N/20 green 24h · N/20 green 7d
+- Fear & Greed: X ([label]) — yesterday X
+- TVL: $XB (±X% 7d)
+
+## What Changed
+[bullet deltas from step 7, or "Quiet — regime unchanged"]
+
+## Active Narratives
+- [Narrative] — phase: [...]. Evidence: [...].
+
+## Polymarket Highlights (top by 24h vol)
+- [question] — YES X%, vol $Xm
+
+## Source Status
+coingecko=[ok|fail] defillama=[ok|fail] fng=[ok|fail] polymarket=[ok|fail] websearch=[ok|fail]
 ```
+
+Formatting rules:
+- No asterisks (universal v2 rule).
+- Keep this under 2000 chars so downstream chain context files don't bloat.
+- If the canonical `memory/topics/market-context.md` was not overwritten (preserve-on-failure rule in step 9 triggered), still write a short `.outputs/market-context-refresh.md` flagging stale-data status so `daily-ops-review` and `perps-brief` know.
 
 ## Environment Variables
 

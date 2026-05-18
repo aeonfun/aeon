@@ -79,34 +79,35 @@ Don't editorialize beyond what the numbers show. No predictions.
 
 Treat it as either a specific token (symbol match) or a category. If a specific token: fetch `/coins/{id}` for detailed stats and put a dedicated block at the top with price, 24h volume, market cap, 7d and 30d changes, ATH distance. If a category (e.g. `layer-2`, `meme-token`): filter the top-250 list to that category (use `/coins/categories/list` → `/coins/markets?category=X` if needed) and run the same pipeline scoped to it.
 
-### 7. Send notification
+### 7. Write artifact (`.outputs/token-movers.md`)
 
-Via `./notify`, under 4000 chars:
+This skill is **internal** under the Aeon Market Stack v2 architecture — its output is consumed by downstream chain steps (`perps-brief`, `morning-macro`, `daily-ops-review`), never pushed to a notification channel. Write the full report to `.outputs/token-movers.md` so chain consumers can read it. No `./notify` call.
 
 ```
-*Token Movers — ${today}*
+# Token Movers — ${today}
 
-_[one-sentence market pulse from step 5]_
+[one-sentence market pulse from step 5]
 
-*Top Winners (24h)*
+## Top Winners (24h)
 1. SYMBOL (Name) — $price  +24.1% / 7d +18% / 1h +2.3%  •  $vol / #rank  [TAGS]
 2. ...
 
-*Top Losers (24h)*
+## Top Losers (24h)
 1. SYMBOL (Name) — $price  −18.4% / 7d −22% / 1h −3.1%  •  $vol / #rank  [TAGS]
 2. ...
 
-*Trending*
+## Trending
 1. NAME (SYMBOL) — #rank, $price, 24h ±X.X%  [TAGS]
 2. ...
 
-*Notable*
-• SYMBOL: trending + up 42% on 6× volume — strong signal
-• SYMBOL: #212 rank up 85% — PUMP-RISK, low liquidity
-• [1–4 bullets, skip section if none worth calling out]
+## Notable
+- SYMBOL: trending + up 42% on 6× volume — strong signal
+- SYMBOL: #212 rank up 85% — PUMP-RISK, low liquidity
+- [1–4 bullets, skip section if none worth calling out]
 ```
 
 Formatting rules:
+- No asterisks for emphasis (universal v2 rule — chain consumers may render plaintext).
 - Round prices sensibly (4 sig figs, or 6 decimals for sub-$0.01 tokens).
 - Round % to one decimal. Volume and mcap abbreviated (e.g. `$4.2B`, `$380M`).
 - Only include the `Notable` section if at least one signal earned `[TRENDING+UP]`, `[BREAKOUT]`, `[CAPITULATION]`, or `[PUMP-RISK]`.
@@ -130,11 +131,11 @@ Append to `memory/logs/${today}.md`:
 
 The sandbox may block outbound curl. If either endpoint fails or returns malformed JSON:
 1. Retry once with **WebFetch** against the same URL.
-2. If both attempts fail for the markets endpoint, abort and notify: "token-movers: CoinGecko unreachable — skipping run." (Do not publish a partial or stale report.)
-3. If only the trending endpoint fails, proceed with winners/losers and note "trending unavailable" in the message.
+2. If both attempts fail for the markets endpoint, write a short degraded-run note to `.outputs/token-movers.md` (e.g. `_token-movers: CoinGecko unreachable, skipping_`) and log the failure. `daily-ops-review` will surface the degradation.
+3. If only the trending endpoint fails, proceed with winners/losers and note "trending unavailable" in the artifact.
 
 ## Constraints
 
 - Never recommend buying or selling. Tags describe observed patterns; the reader decides.
 - [PUMP-RISK] must always be surfaced — even in the main list — when it applies. Don't bury manipulation warnings.
-- Keep the message under 4000 chars. If filters leave too few coins after exclusions, shrink the lists (e.g. top 5 instead of top 10) rather than relaxing the volume floor.
+- Keep the artifact under 4000 chars where possible. If filters leave too few coins after exclusions, shrink the lists (e.g. top 5 instead of top 10) rather than relaxing the volume floor.
