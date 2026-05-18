@@ -28,12 +28,13 @@
   },
   "narrative-tracker": {
     "last_status": "success",
-    "last_success": "2026-05-17T19:10:13Z",
-    "total_runs": 1,
-    "total_successes": 1,
+    "last_success": "2026-05-18T13:10:02Z",
+    "total_runs": 2,
+    "total_successes": 2,
     "total_failures": 0,
     "consecutive_failures": 0,
-    "success_rate": 1
+    "success_rate": 1,
+    "last_quality_score": 4
   },
   "monitor-runners": {
     "last_status": "success",
