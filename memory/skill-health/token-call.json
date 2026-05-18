@@ -1,14 +1,18 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-18T13:07:55Z",
-  "quality_score": 4,
-  "assessment": "Substantive, well-sourced token pick with specific catalyst timing, risk disclosure, and proper deduplication tracking.",
+  "last_analyzed": "2026-05-18T16:50:39Z",
+  "quality_score": 5,
+  "assessment": "Complete, well-structured token analysis with clear reasoning, sourced signals, proper risk disclosure, and full documentation; acknowledged temporary files are sandbox limitation, not quality issue",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 4.5,
   "history": [
     {
       "date": "2026-05-18",
       "score": 4
+    },
+    {
+      "date": "2026-05-18",
+      "score": 5
     }
   ]
 }

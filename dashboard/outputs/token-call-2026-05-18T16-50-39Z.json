@@ -1,0 +1,229 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 2026-05-18"
+      },
+      "children": [
+        "header-stack",
+        "sep1",
+        "metrics-stack",
+        "sep2",
+        "signals-section",
+        "catalyst-section",
+        "risk-section",
+        "dedup-text",
+        "sep3",
+        "disclaimer-alert"
+      ]
+    },
+    "header-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-name",
+        "signal-badge",
+        "score-badge"
+      ]
+    },
+    "token-name": {
+      "type": "Heading",
+      "props": {
+        "text": "BSB",
+        "level": "h2"
+      },
+      "children": []
+    },
+    "signal-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "score-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "9/10",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "metrics-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price-stat",
+        "mcap-vol-grid"
+      ]
+    },
+    "price-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.6954",
+        "delta": "+18.2% 24h, +36.0% 7d",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "mcap-vol-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "lg"
+      },
+      "children": [
+        "mcap-text",
+        "vol-text",
+        "ratio-text"
+      ]
+    },
+    "mcap-text": {
+      "type": "Text",
+      "props": {
+        "text": "mcap $155m",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "vol-text": {
+      "type": "Text",
+      "props": {
+        "text": "vol $42m",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "ratio-text": {
+      "type": "Text",
+      "props": {
+        "text": "vol/mcap 0.27",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "signals-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signals-heading",
+        "signals-text"
+      ]
+    },
+    "signals-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "signals-text": {
+      "type": "Text",
+      "props": {
+        "text": "high turnover (vol/mcap 0.27), both 24h and 7d up double digits, strongly outpacing a red BTC/ETH 7d tape — no trending-list or DEX cross-confirm",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "RWA / tokenized-capital-markets narrative drawing bids; post-airdrop accumulation since the May 4 claim-window close, with Binance and Aster perp listings deepening the book",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "risk-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "risk-heading",
+        "risk-text"
+      ]
+    },
+    "risk-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "risk-text": {
+      "type": "Text",
+      "props": {
+        "text": "young token — TGE was only ~10 weeks ago (Mar 4) and it sits well below its May 4 ATH; thin float plus leveraged perps make sell-the-bounce squeezes sharp in both directions",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "dedup-text": {
+      "type": "Text",
+      "props": {
+        "text": "Dedup check: first time in 7d (yesterday TRAC, prior KAIA)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {},
+      "children": []
+    },
+    "disclaimer-alert": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "not financial advice — pattern-matching only"
+      },
+      "children": []
+    }
+  }
+}
