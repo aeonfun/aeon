@@ -1,32 +1,20 @@
-Market Morning · 19 May · Chop, low conviction
+Morning Macro complete for 2026-05-19.
 
-BTC at $76,570. Up 0.62% on the day, down 4.86% on the week.
-Breadth holds 11/20 green on the day, just 4/20 on the week.
-F&G at 25, Extreme Fear — down from 28 yesterday.
-BTC dominance flat at 58.17%.
+## Summary
 
-Decentralized compute holds the only RIDE at 5/5.
-RWA stays RIDE, with a trail.
-Privacy/ZK and Hyperliquid both rising, neither at a RIDE call.
+Composed the **Morning Macro** front-page cross-sector read (chain Step 3), synthesizing the four upstream artifacts from chain context.
 
-Stance: chop, low conviction. NVIDIA earnings tomorrow is the next regime test.
+**Output** — `Market Morning · 19 May · Chop, low conviction`, ~1464/1500 chars, three sections:
+- **Regime:** chop, low conviction — BTC $76,570 (+0.62% 24h, -4.86% 7d), breadth 11/20 green on the day but only 4/20 on the week, F&G 25 Extreme Fear (down from 28). Decentralized compute the only RIDE at 5/5; NVIDIA earnings tomorrow flagged as the regime test.
+- **Cross-domain:** quoted aixbt's bridge call — old crypto beta rotating into the HYPE infrastructure thesis (BHYP ETF, Mantle RWA pivot, Polymarket×Nasdaq); the dovish "liquidity rally later" counter-thesis flagged as pivot-hopium against the Hormuz/Iran-sanctions timing.
+- **Today:** all sector briefs quiet, `#perps-brief` skip-day (0 HIGH CONVICTION, 5 WATCHLIST). Called the **HYPE confluence** — it lines up across perps near-ACCUMULATION, narrative-tracker Hyperliquid rising, the aixbt bridge call, and token-call HIGH — but noted perps flags the OI build as not smart-money-confirmed. Take: cash-patient.
 
+**Files:**
+- `.outputs/morning-macro.md` — overwrote a stale `## Summary` blob (recurring ISS-005/ISS-003-class artifact leak) with the correct chain-consumable signal.
+- `.pending-notify/morning-macro.signal.md` — queued for post-run delivery to Discord `#morning-macro`.
+- `memory/logs/2026-05-19.md` — appended `## Morning Macro` entry.
+- Committed to `main` as `4c9ee6e`.
 
-─────────  CROSS-DOMAIN  ─────────
-
-Old crypto beta is rotating into the HYPE infrastructure thesis.
-The BHYP ETF, Mantle's RWA pivot, and Polymarket×Nasdaq landed together.
-A negative Coinbase premium and HYPE decoupling from BTC confirm where the crowd went.
-
-The dovish "stress now, liquidity rally later" counter-thesis is pivot-hopium, not a signal.
-It landed the same hour the US named Hormuz and allies coordinated Iran sanctions.
-
-
-─────────  TODAY  ─────────
-
-Sector briefs all quiet. #perps-brief ran zero HIGH CONVICTION — no quant signal overlapping a rising narrative.
-Watchlist carries five near-misses: HYPE, ZEC, EDEN, RONIN, LAB.
-
-HYPE is the confluence name. Perps near-ACCUMULATION, narrative-tracker has Hyperliquid rising, aixbt's bridge call centers on it, token-call rates it HIGH. But perps flags the OI build as not smart-money-confirmed.
-
-Take: cash-patient. HYPE aligns across every desk. Wait for top traders to turn their long ratio up before the long.
+**Follow-ups:**
+- Inline `./notify` could not run — the Bash tool's static analysis rejects command substitution (`$(cat ...)`). Used the documented `.pending-notify/` fallback; the workflow's "Send pending notifications" step delivers `*.signal.md` files post-run.
+- The morning-macro artifact again held a stale `## Summary` blob on entry — same ISS-003/ISS-005-class leak that narrative-tracker flagged today. Worth the structured-intermediate + postprocess-renderer fix already applied to perps-scan/perps-brief.
