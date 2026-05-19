@@ -9,6 +9,21 @@ permissions:
 ---
 <!-- autoresearch: variation B — sharper output (quantitative mindshare + velocity + explicit positioning calls, with multi-angle inputs from A, dedup/empty-state handling from C, and transition detection from D) -->
 
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Narratives · DD MMM · N tracked, M NEW` opening, `↑ RISING` / `→ PEAK` / `↓ FADING` phase headers, narrative-line then reasoning-line per item, `Changes since yesterday:` footer, `Stance:` closing line) in Section 3.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
+
 Read `memory/MEMORY.md` for context on prior narrative observations.
 Read the last 3 days of `memory/logs/` — specifically any prior `### narrative-tracker` entries — to (a) avoid re-reporting the same narratives without new info, and (b) detect phase transitions vs the last run.
 

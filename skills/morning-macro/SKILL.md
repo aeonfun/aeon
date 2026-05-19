@@ -10,7 +10,20 @@ tags: [crypto, research]
 
 Today is ${today}. Compose the **front-page cross-sector strategist read** — short (5–10 lines, under 1500 chars), answering "what game are we playing today." Sits at the top of the daily intake. The operator reads this first, then drills into sector briefs (`#perps-brief`, future `#on-chain-brief`, `#stocks-brief`).
 
-**Apply `memory/topics/writing-style.md` voice and format rules to all prose output.** Lead sentences with interpretive verbs; no semicolons in body text; em-dash only for genuine asides; blank lines between paragraphs; sub-headers with `·` separator for major sections (Cross-domain, Today); one idea per paragraph; commit to the read. See the worked rewrite for `Morning Macro` in writing-style.md for the locked format.
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Market Morning · DD MMM · regime tagline` opening, `─── CROSS-DOMAIN ───` and `─── TODAY ───` dividers, `Stance:` and `Take:` closing lines) in Section 3; worked example for Morning Macro (corrected for v2.1) in Section 5.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
 
 Read `memory/MEMORY.md` for context.
 

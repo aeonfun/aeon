@@ -8,6 +8,21 @@ tags: [crypto]
 
 > **${var}** — Filter by chain (e.g. "solana", "eth", "base", "bsc", "arbitrum"). If empty, scans all major networks.
 
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Yesterday's Runners · DD MMM · verdict (parenthetical reason)` opening, CAPS sub-headers for `DEEP-LIQ` / `CONTINUATION` / `BREAKOUT`, `vibe:` closing line) in Section 3.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
+
 Read `memory/MEMORY.md` for context.
 Read the last 2 days of `memory/logs/` to find any tokens previously flagged as runners — **repeat runners across days are the real signal**.
 

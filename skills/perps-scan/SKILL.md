@@ -10,7 +10,20 @@ tags: [crypto]
 
 Today is ${today}. Classify the cross-exchange perps universe using tier-adjusted thresholds, derived fields, sub-tags, pattern tags, and day-over-day regime transitions. This is an **internal** skill: writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and `daily-ops-review` auditing. **Does not post to Discord** — the engine is the context layer; the brief is what the operator reads.
 
-**Apply `memory/topics/writing-style.md` to all prose output in this skill** — interpretation lines, transition reads, pattern-tag reads. Specifically: lead sentences with interpretive verbs; no semicolons in body text; em-dash only for genuine asides; one idea per paragraph; commit to actions; quantify whenever possible. The classification lines are data lines (less prose-heavy) but every interpretation line obeys the style guide.
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template in Section 3; worked examples in Section 5. In this skill the prose surfaces are the verdict sentences, regime-change notes, transition reads, and pattern-tag reads; the per-asset metric lines are data lines and exempt from Section 2 prose mechanics, but the interpretation lines obey the full style.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
 
 Read `memory/MEMORY.md` for context.
 Read the last 7 days of `memory/logs/` to find `★` repeat markers — assets in the same regime for ≥3 consecutive days.

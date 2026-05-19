@@ -10,7 +10,20 @@ tags: [meta, crypto]
 
 Today is ${today}. Verify every chain step ran correctly, sources were responsive, and no silent degradations occurred. This is **operator self-monitoring**, not market signal. Output routes to `#aeon-ops` only — never Telegram, never the public signal channels.
 
-**Apply `memory/topics/writing-style.md` voice and format rules to the report.** Indent status-marker lines two spaces under their step header; blank line between steps; secondary detail on its own indented line under the primary status line; no semicolons in body text. See the worked rewrite for `Ops Review` in writing-style.md for the locked layout.
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Ops Review · DD MMM · X min` opening, `─── STEP N — LABEL ───` dividers, two-space-indented `✓ ⚠ ✗` status markers, closing roll-up line) in Section 3; worked example for Ops Review in Section 5.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream") — note: ops review CAN reference internal skill names and artifact paths because the channel IS the operator-monitoring channel, but prose interpretations should still avoid leakage
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
 
 Read `memory/MEMORY.md` for context. Read `memory/issues/INDEX.md` for the open issue list.
 
