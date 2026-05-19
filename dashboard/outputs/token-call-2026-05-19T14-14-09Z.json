@@ -1,0 +1,219 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call",
+        "description": "2026-05-19"
+      },
+      "children": [
+        "token_header",
+        "sep1",
+        "signals_section",
+        "sep2",
+        "catalyst_section",
+        "sep3",
+        "risk_section",
+        "sep4",
+        "dedup_section",
+        "sep5",
+        "disclaimer"
+      ]
+    },
+    "token_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "token_badges",
+        "token_price",
+        "token_metrics"
+      ]
+    },
+    "token_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_hype",
+        "badge_risk",
+        "badge_rating"
+      ]
+    },
+    "badge_hype": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE",
+        "variant": "lead"
+      }
+    },
+    "badge_risk": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "badge_rating": {
+      "type": "Badge",
+      "props": {
+        "text": "8/10",
+        "variant": "secondary"
+      }
+    },
+    "token_price": {
+      "type": "Stat",
+      "props": {
+        "value": "$48.27",
+        "label": "Price (24h)",
+        "delta": "+5.3%",
+        "trend": "up"
+      }
+    },
+    "token_metrics": {
+      "type": "Text",
+      "props": {
+        "text": "+18.4% 7d | mcap $11.5b | vol $723m | vol/mcap 0.06"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signals_heading",
+        "signals_text"
+      ]
+    },
+    "signals_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals_text": {
+      "type": "Text",
+      "props": {
+        "text": "clean breakout — both 24h and 7d above +5%, on the CoinGecko trending list, outpacing a red BTC and ETH on the 7d, DEX cross-confirmed on the Hyperliquid L1 pair"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "Bitwise BHYP ETF (live on NYSE May 15) now allocates 10% of fees to buy and hold HYPE; SpaceX pre-IPO perps and a validator-set expansion both shipped May 18"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "risk_heading",
+        "risk_text"
+      ]
+    },
+    "risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      }
+    },
+    "risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "monthly Core Contributor unlock lands on the 6th — May 6 released ~10m HYPE (~$375m); the next one June 6 is fresh supply that can cap upside if demand softens"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dedup_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dedup_heading",
+        "dedup_text"
+      ]
+    },
+    "dedup_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dedup check",
+        "level": "h3"
+      }
+    },
+    "dedup_text": {
+      "type": "Text",
+      "props": {
+        "text": "first time in 7d (recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR)"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "caption"
+      }
+    }
+  }
+}

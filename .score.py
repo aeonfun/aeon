@@ -1,7 +1,7 @@
 import json
 
-markets = json.load(open('.cg_markets.json'))
-trending = json.load(open('.cg_trending.json'))
+markets = json.load(open('.markets.json'))
+trending = json.load(open('.trending.json'))
 
 trend_syms = set()
 for c in trending.get('coins', []):
@@ -15,7 +15,7 @@ btc7 = btc.get('price_change_percentage_7d_in_currency') or 0
 eth7 = eth.get('price_change_percentage_7d_in_currency') or 0
 print(f"BTC 7d {btc7:.2f}  ETH 7d {eth7:.2f}")
 
-dedup = {'INJ', 'TRAC', 'BSB', 'KAIA'}
+dedup = {'INJ', 'TRAC', 'BSB', 'KAIA', 'NEAR'}
 
 results = []
 for c in markets:

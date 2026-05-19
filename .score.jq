@@ -1,5 +1,5 @@
 ($trend | split(" ")) as $t |
--4.77126 as $btc7 | -6.93872 as $eth7 |
+-4.6187 as $btc7 | -6.9445 as $eth7 |
 .[] | select((.market_cap // 0) >= 20000000) |
 (.symbol | ascii_upcase) as $s |
 (.price_change_percentage_24h_in_currency // 0) as $p24 |
