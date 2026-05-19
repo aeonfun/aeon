@@ -1,0 +1,16 @@
+name = "aeon-telegram-webhook"
+main = "worker.js"
+compatibility_date = "2024-11-01"
+
+# Non-secret config. Override per-environment as needed.
+[vars]
+GITHUB_REPO = "azh1er/aeon"
+SEND_ACK = "true"
+BOT_USERNAME = "Azh1er_bot"  # without leading @ — required for group mode
+# ALLOWED_CHAT_IDS = "123,456"        # comma-separated; falls back to TELEGRAM_CHAT_ID
+
+# Secrets to set via `wrangler secret put`:
+#   TELEGRAM_WEBHOOK_SECRET  random string; also given to Telegram on setWebhook
+#   TELEGRAM_BOT_TOKEN       same token as the GHA secret
+#   GITHUB_TOKEN             fine-grained PAT: repo scope `actions: write` + `metadata: read`
+#   TELEGRAM_CHAT_ID         (optional) legacy single-chat allowlist

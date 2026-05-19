@@ -2,8 +2,10 @@ name: Messages & Scheduler
 run-name: "${{ inputs.message && format('msg ({0}): {1}', inputs.source || 'user', inputs.message) || 'tick: schedule + poll' }}"
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
+  # Cron poll disabled — replaced by webhook-proxy (Cloudflare Worker → repository_dispatch).
+  # Re-enable if the webhook is offline or for a fallback poll.
+  # schedule:
+  #   - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       message:
