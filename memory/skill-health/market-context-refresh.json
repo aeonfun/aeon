@@ -1,13 +1,17 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-19T08:53:17Z",
+  "last_analyzed": "2026-05-19T09:56:41Z",
   "quality_score": 4,
-  "assessment": "Substantive market digest integrating 5 clean sources with regime call, conviction level, sentiment divergence insight, and narrative transitions; actionable asset movers and proper state management.",
+  "assessment": "Clean execution with specific quantified deltas, clear regime call (chop/low conviction), and substantive narrative tracking. All sources responded, memory properly updated.",
   "flags": [],
   "avg_score": 4,
   "history": [
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     },
     {
