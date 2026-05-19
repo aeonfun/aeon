@@ -1,9 +1,13 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-18T17:09:28Z",
+  "last_analyzed": "2026-05-19T09:20:01Z",
   "quality_score": 4,
-  "assessment": "Substantive audit with specific findings: identified output-format degradation in perps-scan, traced to recurring bug class, properly filed ISS-003, and recommended actionable fixes.",
-  "flags": [],
+  "assessment": "Substantive, well-structured audit that comprehensively checked all 9 artifacts, identified downstream quality issues (perps-scan format and data loss), properly filed and tracked problems, and provided actionable follow-up.",
+  "flags": [
+    "low_quality",
+    "output_format",
+    "quality_regression"
+  ],
   "avg_score": 4,
   "history": [
     {
@@ -12,6 +16,10 @@
     },
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     }
   ]

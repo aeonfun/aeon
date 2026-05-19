@@ -1,0 +1,539 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Ops Review",
+        "description": "2026-05-19"
+      },
+      "children": [
+        "duration",
+        "sep1",
+        "step1",
+        "sep2",
+        "step2",
+        "sep3",
+        "step3",
+        "sep4",
+        "chain_section",
+        "sep5",
+        "issues_section"
+      ]
+    },
+    "duration": {
+      "type": "Text",
+      "props": {
+        "text": "Duration: n/a",
+        "variant": "caption"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "step1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step1_heading",
+        "data1",
+        "data2",
+        "data3",
+        "data4",
+        "data5",
+        "data6",
+        "data7"
+      ]
+    },
+    "step1_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 1 — Data",
+        "level": "h2"
+      }
+    },
+    "data1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge1",
+        "text1name",
+        "text1desc"
+      ]
+    },
+    "badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text1name": {
+      "type": "Text",
+      "props": {
+        "text": "market-context-refresh"
+      }
+    },
+    "text1desc": {
+      "type": "Text",
+      "props": {
+        "text": "regime rotation (medium), 5/5 sources ok",
+        "variant": "caption"
+      }
+    },
+    "data2": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge2",
+        "text2name",
+        "text2desc"
+      ]
+    },
+    "badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text2name": {
+      "type": "Text",
+      "props": {
+        "text": "aixbt-pulse"
+      }
+    },
+    "text2desc": {
+      "type": "Text",
+      "props": {
+        "text": "bridge call generated (bond rout + CME OI -55%), 14 NEW items",
+        "variant": "caption"
+      }
+    },
+    "data3": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge3",
+        "text3name",
+        "text3desc"
+      ]
+    },
+    "badge3": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text3name": {
+      "type": "Text",
+      "props": {
+        "text": "narrative-tracker"
+      }
+    },
+    "text3desc": {
+      "type": "Text",
+      "props": {
+        "text": "5 narratives, 1 NEW (Liquidity rotation equities→crypto)",
+        "variant": "caption"
+      }
+    },
+    "data4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "data4_header",
+        "data4_alert"
+      ]
+    },
+    "data4_header": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge4",
+        "text4name",
+        "text4desc"
+      ]
+    },
+    "badge4": {
+      "type": "Badge",
+      "props": {
+        "text": "⚠",
+        "variant": "secondary"
+      }
+    },
+    "text4name": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan"
+      }
+    },
+    "text4desc": {
+      "type": "Text",
+      "props": {
+        "text": "ran clean, QUIET verdict, 1 ACCUMULATION (CL)",
+        "variant": "caption"
+      }
+    },
+    "data4_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "Artifact wrote in Summary-blob format instead of the v3 locked format. Prefetch dropped 14 of 25 universe coins, including Tier 1 ETH and SOL."
+      }
+    },
+    "data5": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge5",
+        "text5name",
+        "text5desc"
+      ]
+    },
+    "badge5": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text5name": {
+      "type": "Text",
+      "props": {
+        "text": "monitor-runners"
+      }
+    },
+    "text5desc": {
+      "type": "Text",
+      "props": {
+        "text": "SPECULATIVE verdict, 0 DEEP-LIQ",
+        "variant": "caption"
+      }
+    },
+    "data6": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge6",
+        "text6name",
+        "text6desc"
+      ]
+    },
+    "badge6": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text6name": {
+      "type": "Text",
+      "props": {
+        "text": "token-movers"
+      }
+    },
+    "text6desc": {
+      "type": "Text",
+      "props": {
+        "text": "183 assets post-filter, 9BIT and ONDO breakout-tagged",
+        "variant": "caption"
+      }
+    },
+    "data7": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge7",
+        "text7name",
+        "text7desc"
+      ]
+    },
+    "badge7": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text7name": {
+      "type": "Text",
+      "props": {
+        "text": "token-call"
+      }
+    },
+    "text7desc": {
+      "type": "Text",
+      "props": {
+        "text": "INJ · HIGH 9/10",
+        "variant": "caption"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "step2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step2_heading",
+        "brief1"
+      ]
+    },
+    "step2_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 2 — Briefs",
+        "level": "h2"
+      }
+    },
+    "brief1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_brief1",
+        "text_brief1name",
+        "text_brief1desc"
+      ]
+    },
+    "badge_brief1": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text_brief1name": {
+      "type": "Text",
+      "props": {
+        "text": "perps-brief"
+      }
+    },
+    "text_brief1desc": {
+      "type": "Text",
+      "props": {
+        "text": "1 HIGH CONVICTION (ZEC), 5 WATCHLIST",
+        "variant": "caption"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "step3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "step3_heading",
+        "macro1"
+      ]
+    },
+    "step3_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Step 3 — Macro",
+        "level": "h2"
+      }
+    },
+    "macro1": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "badge_macro1",
+        "text_macro1name",
+        "text_macro1desc"
+      ]
+    },
+    "badge_macro1": {
+      "type": "Badge",
+      "props": {
+        "text": "✓",
+        "variant": "default"
+      }
+    },
+    "text_macro1name": {
+      "type": "Text",
+      "props": {
+        "text": "morning-macro"
+      }
+    },
+    "text_macro1desc": {
+      "type": "Text",
+      "props": {
+        "text": "published",
+        "variant": "caption"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "chain_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "chain_heading",
+        "chain_text1",
+        "chain_text2"
+      ]
+    },
+    "chain_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Chain Summary",
+        "level": "h2"
+      }
+    },
+    "chain_text1": {
+      "type": "Text",
+      "props": {
+        "text": "Chain ran complete — all 9 artifacts fresh (2026-05-19). 8 ✓, 1 ⚠, 0 ✗."
+      }
+    },
+    "chain_text2": {
+      "type": "Text",
+      "props": {
+        "text": "All data sources ok."
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "issues_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "issues_filed_section",
+        "resolved_section",
+        "open_section"
+      ]
+    },
+    "issues_filed_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "issues_filed_heading",
+        "iss004"
+      ]
+    },
+    "issues_filed_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Issues Filed",
+        "level": "h3"
+      }
+    },
+    "iss004": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "ISS-004 (medium, output-format)",
+        "message": "perps-scan again wrote its assistant Summary blob into .outputs/perps-scan.md instead of the v3 locked format. Recurrence of ISS-003, which was marked resolved earlier today with a SKILL.md prose guardrail. The guardrail did not hold. ISS-003's resolution note flagged this exact case as needing a structural fix. Downstream perps-brief still consumed the QUIET verdict — impact contained."
+      }
+    },
+    "resolved_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "resolved_heading",
+        "iss003"
+      ]
+    },
+    "resolved_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Resolved Today",
+        "level": "h3"
+      }
+    },
+    "iss003": {
+      "type": "Alert",
+      "props": {
+        "type": "success",
+        "title": "ISS-003",
+        "message": "Marked resolved 2026-05-19 via a SKILL.md guardrail patch. Recurred the same day, now tracked as ISS-004."
+      }
+    },
+    "open_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "open_heading",
+        "open_count"
+      ]
+    },
+    "open_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Open Issues",
+        "level": "h3"
+      }
+    },
+    "open_count": {
+      "type": "Text",
+      "props": {
+        "text": "1 (ISS-004)",
+        "variant": "lead"
+      }
+    }
+  }
+}
