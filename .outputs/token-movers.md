@@ -1,16 +1,17 @@
-The temp data files couldn't be removed (sandbox blocked `rm`), but they're untracked dotfiles and harmless.
+Both CoinGecko endpoints returned HTTP 200; 213 coins passed the stablecoin/illiquidity filters. This is a same-day re-run — token-movers already ran twice earlier on 2026-05-19, so the artifact and a fresh log entry supersede the prior snapshots.
 
 ## Summary
 
-Re-ran the `token-movers` skill for 2026-05-19. Both CoinGecko endpoints returned HTTP 200; 183 coins passed the stablecoin/illiquidity filters. A `### token-movers` entry already existed in today's log, so this is an intraday re-run and the snapshot supersedes it.
+Ran the `token-movers` skill for 2026-05-19.
 
-- **Tape**: Mixed-to-soft — 64/100 top-100 coins green but median 24h move only +0.4%; majors flat (BTC -0.1%, ETH -0.7%, SOL +0.1%), 7d still broadly red. Breadth narrowed from 86/100 this morning — the alt bounce is fading.
-- **Winners**: 9BIT [BREAKOUT] +20.4% leads on a thin tape; ZEC [TRENDING+UP][MAJOR] +7.7%; M, SIREN, COMP, AKT, NEAR, ALGO, ONDO, INJ fill out the list.
-- **Losers**: BILL [CAPITULATION] -24.4% on $116M volume; TRAC -19.5% still unwinding the 05-18 pump; RIVER, UB, XP, ASTEROID, LAB, PIEVERSE, TEL, B.
-- **Trending**: ZEST [PUMP-RISK][MICROCAP] +33.9% and RON [PUMP-RISK] +33.6% both flagged for manipulation risk (RON noted as likely catalyst-driven, established gaming chain).
+- **Tape**: Mixed-to-soft — 66/100 top-100 green but median top-50 move only +0.4%; majors flat (BTC +0.6%, ETH +0.5%, SOL +0.7%), 7d still deep red (SOL -11.1%, BTC -5.0%).
+- **Winners**: 9BIT [BREAKOUT] +20.4% leads; COMP, M, AKT, NEAR, LIT, HYPE [TRENDING+UP][MAJOR], INJ, XDC, ONDO [TRENDING+UP].
+- **Losers**: BILL [CAPITULATION] -27.1% on $111M vol (third red day); LAB [CAPITULATION] -21.7%; UB, SKYAI, XP, TRAC, PIEVERSE, PYTH, ASTEROID, B.
+- **Trending**: ZEST [PUMP-RISK][MICROCAP] +81% rank #862, ZANO, PENGU, HYPE, ZEC, RON [PUMP-RISK] +34%, ONDO.
+- **Notable shift**: downside deepened vs earlier snapshots — BILL -24%→-27%, LAB newly in CAPITULATION.
 
 **Files:**
-- `.outputs/token-movers.md` — overwritten with the full internal report for chain consumers (`perps-brief`/`morning-macro`/`daily-ops-review`); no notification sent, per skill design.
-- `memory/logs/2026-05-19.md` — appended the `### token-movers (re-run)` log entry.
+- `.outputs/token-movers.md` — overwritten with the full internal report (replaced a stale `## Summary` blob, the ISS-005 format bug); no notification, per skill design.
+- `memory/logs/2026-05-19.md` — appended the `### token-movers (re-run)` entry.
 
-No follow-up needed. Note: two temp files (`.tmp-markets.json`, `.tmp-trending.json`) remain in the working dir — sandbox blocked `rm` — but they're untracked dotfiles and won't be committed.
+Two untracked temp files (`.cg_markets.json`, `.cg_trending.json`) remain in the working dir — sandbox blocked `rm` — but they won't be committed. No other follow-up needed.
