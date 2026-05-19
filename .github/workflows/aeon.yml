@@ -647,6 +647,31 @@ jobs:
             ./notify-jsonrender "$SKILL" "$(cat "$pending")" && rm -f "$pending" || echo "json-render: $SKILL conversion failed (non-fatal)"
           done
 
+      # IMPORTANT: post-process runs BEFORE Send pending notifications.
+      # Reason: some postprocess scripts (e.g. scripts/postprocess-perps-brief.sh)
+      # render a markdown artifact from a JSON intermediate and then queue the
+      # rendered content to .pending-notify/ via ./notify. The post-run delivery
+      # loop must run AFTER postprocess so those queued messages get delivered.
+      - name: Run post-process scripts
+        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
+        env:
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
+          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
+        run: |
+          # Run all scripts/postprocess-*.sh after Claude finishes.
+          # Each script handles its own .pending-{service}/ directory
+          # and checks its own env vars. Exit 0 if nothing to do.
+          for script in scripts/postprocess-*.sh; do
+            [ -f "$script" ] || continue
+            chmod +x "$script"
+            echo "Running $(basename "$script")..."
+            ./"$script" || echo "::notice::$(basename "$script") failed (non-fatal)"
+          done
+
       - name: Send pending notifications
         if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
         env:
@@ -746,26 +771,6 @@ jobs:
             fi
           done
           rm -rf .pending-notify
-
-      - name: Run post-process scripts
-        if: steps.work.outputs.mode != '' && steps.run.outcome == 'success'
-        env:
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
-          NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
-          NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
-        run: |
-          # Run all scripts/postprocess-*.sh after Claude finishes.
-          # Each script handles its own .pending-{service}/ directory
-          # and checks its own env vars. Exit 0 if nothing to do.
-          for script in scripts/postprocess-*.sh; do
-            [ -f "$script" ] || continue
-            chmod +x "$script"
-            echo "Running $(basename "$script")..."
-            ./"$script" || echo "::notice::$(basename "$script") failed (non-fatal)"
-          done
 
       - name: Commit results
         if: steps.work.outputs.mode != ''

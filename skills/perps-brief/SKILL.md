@@ -124,9 +124,9 @@ Free-form qualifier OK (e.g. `long continuation w/ trailing stop`, `short fade �
 
 **Cap: 5 HIGH CONVICTION setups in the published brief.** If 7+ qualify, take the strongest 5 by confluence quality, push the rest to the artifact under an `OVERFLOW` heading (visible in #perps but not in the trimmed notification).
 
-### Composition — write the brief
+### Composition — what the rendered brief looks like
 
-Apply `memory/topics/writing-style.md` strictly. Lead with MARKET SENTIMENT, then HIGH CONVICTION setups (sub-header layout), then WATCHLIST. Blank lines between every section and between every setup. Setup detail blocks use `·` sub-headers and two-space indentation.
+The example below is the FINAL rendered output produced by `scripts/render-perps-brief.py` from the JSON intermediate Claude writes. Use it as a reference for the shape; compose the JSON fields in **Write the structured data artifact** below to match. Apply `memory/topics/writing-style.md` strictly for every prose field (paragraphs, bias_line, block.lines, risk.lines).
 
 ```
 Perps Brief · ${today}
@@ -262,15 +262,112 @@ Reference the transition explicitly in the Perps block when relevant: `Perps · 
   Limit to WATCHLIST entries only — without quant confirmation, no HIGH CONVICTION is honest.
 - **Multiple upstream artifacts missing**: write a degraded skip variant. `daily-ops-review` surfaces the cause.
 
-## Write artifact + notify
+## Write the structured data artifact
 
-Write `.outputs/perps-brief.md` and notify via `./notify --signal`:
+**Write `.outputs/perps-brief.data.json` — a structured JSON intermediate. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. The workflow's postprocess step (`scripts/postprocess-perps-brief.sh`) invokes `scripts/render-perps-brief.py` to produce the markdown artifact AND queues the rendered content for Discord delivery via `./notify --signal` after rendering.**
 
-```bash
-./notify --signal "$(cat .outputs/perps-brief.md)"
+This structural separation closes the ISS-004 recurrence in perps-brief — Claude wrote its assistant `## Summary` blob into `.outputs/perps-brief.md` instead of the locked format despite the prose guardrail, mirroring the perps-scan bug. With the LLM removed from the markdown-write AND notify-call paths, the artifact content cannot diverge from the JSON and the Discord delivery cannot contain stray prose.
+
+#### JSON schema
+
+```json
+{
+  "date": "${today}",
+  "qualifier": null,
+  "market_sentiment": {
+    "paragraphs": [
+      "BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.",
+      "Alt funding neutral, no rotation yet. Memes hot — 3 of top 5 funding extremes. Retail crowded there, not majors."
+    ],
+    "bias_line": "Bias · long majors with structure, fade extreme funding on meme tickers."
+  },
+  "high_conviction": [
+    {
+      "ticker": "HYPE",
+      "bias_label": "long continuation",
+      "repeat_days_suffix": null,
+      "blocks": {
+        "perps": {
+          "header_suffix": "ACCUMULATION · CONFIRMED",
+          "lines": [
+            "OI +18% 7d, funding +0.02%/8h, basis stable, taker buy 53.",
+            "Day 3 in regime. STEALTH-POSITIONING tag — top L/S rose +0.5 over 7d."
+          ]
+        },
+        "narrative": {
+          "header_suffix": "Hyperliquid sector RISING",
+          "lines": ["Mindshare 4 → 5, RIDE call from narrative-tracker."]
+        },
+        "context": {
+          "header_suffix": "sector aligned with market direction",
+          "lines": ["Alts rotation early. Sector leads."]
+        },
+        "enrichment": {
+          "header_suffix": null,
+          "lines": [
+            "No near-term unlocks. Next vest Q3.",
+            "X sentiment building 7d.",
+            "Roadmap update on perps clearing engine landed this week."
+          ]
+        },
+        "thesis": {
+          "header_suffix": null,
+          "lines": [
+            "Real money quietly positioning into the sector lead.",
+            "Continuation setup. Trail stop below 7d range low."
+          ]
+        }
+      }
+    }
+  ],
+  "overflow": [],
+  "watchlist": [
+    {
+      "ticker": "AVAX",
+      "conflict_label": "catalyst real, sector tailwind absent",
+      "risk": {
+        "header_suffix": "regime conflict",
+        "lines": [
+          "Perps CATALYST-BREAKOUT (+14% 24h, vol 2.4x).",
+          "Narrative-tracker has DeFi FADING. One-day catalyst, not sustained."
+        ]
+      }
+    }
+  ],
+  "skip_day_best_near_miss": null
+}
 ```
 
-Routes to Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel (shared with `perps-scan`; brief posts second, appears on top in Discord since posts render newest-first).
+#### Field-level rules
+
+- **`date`** — `${today}` (UTC YYYY-MM-DD).
+- **`qualifier`** — null for the normal full-brief variant. Set to `"no high-conviction setups"` for skip-day, `"degraded (perps-scan unavailable, discovery-only)"` for degraded, or any other operator-meaningful suffix. Renders into the title as `Perps Brief · DATE · QUALIFIER`.
+- **`market_sentiment.paragraphs`** — array of paragraph strings, rendered with blank lines between. One or more is fine — multi-paragraph reads better in #perps. Apply `memory/topics/writing-style.md` strictly: no semicolons, em-dash only for genuine asides, interpretive verbs first.
+- **`market_sentiment.bias_line`** — single-line bias call, typically prefixed `Bias · ` or `Bias: `. Whatever the operator-voice convention prefers that day.
+- **`high_conviction[]`** — array of setup objects. Empty array → HIGH CONVICTION section is suppressed entirely (the title qualifier should also be set to `"no high-conviction setups"` in this case).
+- **`high_conviction[].ticker`** — symbol, e.g. `"HYPE"`.
+- **`high_conviction[].bias_label`** — the framing after the dot in the header (`HYPE · long continuation` → `"long continuation"`).
+- **`high_conviction[].repeat_days_suffix`** — string like `" (day 2)"` (note leading space) when the same ticker was HIGH CONVICTION on prior day(s). null otherwise. Compute from last 7 days of `memory/logs/` → `## Perps Brief` entries.
+- **`high_conviction[].blocks`** — five sub-blocks, all optional but typically all populated:
+  - `perps`, `narrative`, `context` — each has `header_suffix` (rendered after `Perps · ` etc.) and `lines` (multi-line body, each line is rendered indented under the sub-header).
+  - `enrichment`, `thesis` — typically no header_suffix; just the `lines` body.
+- **`overflow[]`** — same shape as `high_conviction[]`. Setups that qualified but didn't make the top-5 cap. Renders into the markdown for audit purposes; the Discord notification picks up the whole markdown so it's visible in #perps unless the operator manually trims later.
+- **`watchlist[]`** — array of `{ticker, conflict_label, risk: {header_suffix, lines}}`. Empty → WATCHLIST section suppressed.
+- **`skip_day_best_near_miss`** — single-sentence string used in the skip-day variant only. Renders as `Best near-miss: …` immediately after the bias line. null otherwise.
+
+#### Edge cases
+
+- **No HIGH CONVICTION**: set `qualifier: "no high-conviction setups"`, leave `high_conviction: []`, fill `skip_day_best_near_miss` with the one-sentence near-miss explanation. The watchlist is optional in this case — typically empty.
+- **perps-scan artifact missing (degraded)**: set `qualifier: "degraded (perps-scan unavailable, discovery-only)"`, leave `high_conviction: []`, populate `watchlist` with discovery-only candidates.
+- **Multiple upstream artifacts missing**: set `qualifier` to a descriptive degraded label, leave most sections empty. `daily-ops-review` surfaces the cause.
+
+#### Render verification
+
+After writing the JSON, do not write `.outputs/perps-brief.md`, and do not call `./notify`. The postprocess step does both. If the JSON is malformed, the renderer fails the postprocess step and writes a `Perps Brief · unknown date · render failed` placeholder — `daily-ops-review` surfaces the failure.
+
+#### Notification routing
+
+`scripts/postprocess-perps-brief.sh` calls `./notify --signal "$(cat .outputs/perps-brief.md)"` after rendering. That routes to Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel (shared with `perps-scan`; brief posts second, appears on top in Discord since posts render newest-first). Chunking handles the 2000-character Discord webhook limit automatically.
 
 ## Log to `memory/logs/${today}.md`
 
@@ -286,8 +383,8 @@ Routes to Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel (s
   - ...
 - **OVERFLOW (artifact only):** N entries
 - **Source artifacts read:** [✓/⚠ list of consumed upstream artifacts]
-- **Artifact written:** .outputs/perps-brief.md
-- **Notification sent:** yes (normal | skip-day | degraded) — via `./notify --signal` to #perps
+- **Artifact written:** .outputs/perps-brief.data.json (structured intermediate; rendered to .outputs/perps-brief.md by scripts/postprocess-perps-brief.sh)
+- **Notification sent:** yes (normal | skip-day | degraded) — queued by postprocess via `./notify --signal` to #perps
 ```
 
 ## Sandbox note
