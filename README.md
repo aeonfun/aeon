@@ -413,6 +413,24 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ---
 
+## Community skill packs
+
+Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they're installable via the same `add-skill <github-url>` flow as any other external skill.
+
+| Pack | Skills | Description |
+|------|--------|-------------|
+| [aeon-skill-pack-vvvkernel](https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel) | 9 | Venice AI inference via VVVKernel — onchain, audit, growth, narrative, image gen, monitoring |
+
+**To list a pack here**, open a PR adding a row. Guidelines:
+
+- The pack must be in its own public repo with a clear license and a per-skill `SKILL.md`.
+- Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog — no monkey-patching of Aeon internals, no skill that depends on private endpoints.
+- The README row should link to the repo, name the skill count, and one-line what the pack is for.
+
+This is the lightweight surface: it gives community packs visibility without coupling them to the core catalog's release cadence.
+
+---
+
 ## Publishing
 
 Aeon publishes articles to a GitHub Pages gallery and an RSS feed.
