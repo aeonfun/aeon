@@ -4,11 +4,13 @@ description: Synthesize perps setups by confluence — discovery, enrichment, HI
 var: ""
 tags: [crypto, research]
 ---
-<!-- v2: sector synthesizer for perps. The trader's note. -->
+<!-- v2 base + v3 tag-awareness: sector synthesizer for perps. The trader's note. v3 input upgrade: perps-scan now exposes tier classification, sub-tags within regimes (FRESH/STALE, CONFIRMED/DIVERGENT, ACTIVE/QUIET, IN-PROGRESS/CLEARED, REAL-CROWDED-LONG/RETAIL-ANOMALY/LONG-TRAP), cross-signal pattern tags (REAL-CROWDED-LONG, RETAIL-ANOMALY, LONG-TRAP, STEALTH-POSITIONING, CASH-AND-CARRY, SHORT-SQUEEZE), regime transitions, aggregate market read, and a verbose artifact tail. This skill recognizes those signals in its Pass 1/2/3 reasoning. -->
 
 > **${var}** — Optional thesis or sector filter (e.g. "AI tokens only", "fade memes"). If empty, scans broadly across the perps universe.
 
 Today is ${today}. Compose the actionable perps sector brief by combining raw classifications from `perps-scan` with independent discovery, targeted enrichment, and confluence judgment. This is the **integration layer** — it's where quant signals + narrative momentum + macro context + catalyst research come together into setup calls.
+
+**Apply `memory/topics/writing-style.md` voice and format rules to all prose output.** Specifically: lead sentences with interpretive verbs; no semicolons in body text; em-dash only for genuine asides; blank lines between paragraphs; sub-headers with `·` separator for detail blocks; one idea per paragraph; commit to actions in thesis lines. Use the per-skill worked rewrites in writing-style.md as format anchors.
 
 Read `memory/MEMORY.md` for context.
 Read the last 7 days of `memory/logs/` to find prior HIGH CONVICTION setups for `(day N)` repeat markers.
@@ -124,51 +126,114 @@ Free-form qualifier OK (e.g. `long continuation w/ trailing stop`, `short fade �
 
 ### Composition — write the brief
 
-Locked v2 output format. Lead with MARKET SENTIMENT, then HIGH CONVICTION setups, then WATCHLIST.
+Apply `memory/topics/writing-style.md` strictly. Lead with MARKET SENTIMENT, then HIGH CONVICTION setups (sub-header layout), then WATCHLIST. Blank lines between every section and between every setup. Setup detail blocks use `·` sub-headers and two-space indentation.
 
 ```
 Perps Brief · ${today}
 
 MARKET SENTIMENT
-BTC funding warm (+0.07%/8h avg), OI +6% 24h, basis +0.3% — majors absorbing leverage on the bid. Alt funding bias neutral, no rotation yet. Memes hot (3 of top 5 funding extremes) — retail crowded there, not majors.
-Bias: long majors with structure; fade extreme funding on meme tickers.
+
+BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.
+
+Alt funding neutral, no rotation yet. Memes hot — 3 of top 5 funding extremes. Retail crowded there, not majors.
+
+Bias · long majors with structure, fade extreme funding on meme tickers.
 
 HIGH CONVICTION
 
 HYPE · long continuation
-  perps: ACCUMULATION (OI +18% 7d, funding +0.02%/8h, basis stable, day 3)
-  narrative: Hyperliquid sector RISING, mindshare 4→5
-  context: alts rotation early, sector aligned with market direction
-  enrichment: no near-term unlocks (next vest Q3); X sentiment building 7d; roadmap update on perps clearing engine
-  → real money quietly positioning into the sector lead; continuation setup
+
+  Perps · ACCUMULATION · CONFIRMED
+    OI +18% 7d, funding +0.02%/8h, basis stable, taker buy 53.
+    Day 3 in regime. STEALTH-POSITIONING tag — top L/S rose +0.5 over 7d.
+
+  Narrative · Hyperliquid sector RISING
+    Mindshare 4 → 5, RIDE call from narrative-tracker.
+
+  Context · sector aligned with market direction
+    Alts rotation early. Sector leads.
+
+  Enrichment
+    No near-term unlocks. Next vest Q3.
+    X sentiment building 7d.
+    Roadmap update on perps clearing engine landed this week.
+
+  Thesis
+    Real money quietly positioning into the sector lead.
+    Continuation setup. Trail stop below 7d range low.
 
 TAO · long breakout-pending
-  perps: COMPRESSION (7d range tightening, OI building +9%)
-  narrative: AI RISING, decentralized inference theme accelerating
-  context: AI cluster confluence (aixbt-pulse flagged AI inference demand)
-  enrichment: GPU shortage news this week; no unlock for 4 months; X mindshare doubled in 72h
-  → setup pre-breakout; sector tailwind + tightening range + clean calendar
+
+  Perps · COMPRESSION · ACTIVE
+    Range_7d 4.2%, OI +9% 7d, funding flat, vol_ratio 1.1.
+    Volume holding into the tight range — energy building.
+
+  Narrative · AI / decentralized compute RISING
+    Mindshare 4/5. Tokens lagging the story.
+
+  Context · AI cluster confluence
+    aixbt-pulse flagged AI inference demand on the bridge call today.
+
+  Enrichment
+    GPU shortage news this week.
+    No unlock for 4 months.
+    X mindshare doubled in 72h.
+
+  Thesis
+    Pre-breakout setup. Sector tailwind + tight range + clean calendar all align.
+    Long on break with stop below the coil.
 
 WATCHLIST
 
-AVAX · perps CATALYST-BREAKOUT, narrative says DeFi FADING
-  risk: catalyst real (+14% 24h, vol 2.4x) but sector tailwind absent — could be a one-day catalyst rather than sustained move
+AVAX · catalyst real, sector tailwind absent
 
-FARTCOIN · perps DISTRIBUTION, narrative says memes PEAK
-  risk: classic fade setup but no broader market risk-off signal yet — squeeze could continue, wait for breadth to roll
+  Risk · regime conflict
+    Perps CATALYST-BREAKOUT (+14% 24h, vol 2.4x).
+    Narrative-tracker has DeFi FADING. One-day catalyst, not sustained.
+
+FARTCOIN · classic fade setup, market not confirming
+
+  Risk · no broader risk-off yet
+    Perps DISTRIBUTION · REAL-CROWDED-LONG.
+    But breadth still 12/20 green. Squeeze risk over fade.
+    Wait for breadth to roll before sizing the short.
 ```
 
-**Setup block structure (HIGH CONVICTION) — 6 lines:**
-1. `ASSET · bias label` — header (add ` (day N)` suffix if asset was HIGH CONVICTION on prior day(s))
-2. `perps:` — quant signal from perps-scan
-3. `narrative:` — narrative-tracker context (phase + mindshare + leading position if applicable)
-4. `context:` — market-context-refresh signal (regime + relevant breadth/F&G detail)
-5. `enrichment:` — Pass 2 research findings (semicolon-separated concrete facts)
-6. `→ thesis` — actionable read, one committal sentence, ≤140 chars
+**Setup block structure (HIGH CONVICTION) — sub-header layout:**
 
-**Setup block structure (WATCHLIST) — 2 lines:**
-1. `ASSET · the conflict` — what's missing
-2. `risk:` — named reason not promoted
+1. Header line: `ASSET · bias label`. Add ` (day N)` suffix if asset was HIGH CONVICTION on prior day(s).
+2. **Blank line.**
+3. `Perps · {REGIME [· SUB-TAG]}` sub-header. Indented two spaces. Detail block under it: regime metrics, sub-tags, pattern tags from `perps-scan` artifact. Repeat-day annotation if applicable.
+4. `Narrative · {sector phase}` sub-header. Mindshare value, leading position, RIDE/WATCH/FADE call.
+5. `Context · {one-phrase tag}` sub-header. Market regime + relevant breadth/F&G detail.
+6. `Enrichment` sub-header (no value — just the label). Three to four short sentences from Pass 2 research. Each on its own line. Concrete facts only.
+7. `Thesis` sub-header. Two short sentences max. First commits to the action. Second names the invalidation, the stop, or the reflexivity risk.
+
+**Pattern tags from perps-scan recognized in the Perps block:**
+
+- `REAL-CROWDED-LONG` → confirms a short-fade thesis. Smart money + retail both long.
+- `RETAIL-ANOMALY` → contradicts a short-fade thesis. Squeeze risk over fade.
+- `LONG-TRAP` → highest-severity short-fade setup. Longs paying premium while bleeding.
+- `STEALTH-POSITIONING` → upgrades a pre-breakout thesis. Smart money positioning ahead of price.
+- `CASH-AND-CARRY` → contradicts an accumulation read. Institutional arb, not directional bid.
+- `SHORT-SQUEEZE` (regime or tag) → short-term ride only. Different trade from CATALYST-BREAKOUT.
+
+**Regime transitions from perps-scan are first-class evidence.** When an asset just transitioned (REGIME CHANGES section of perps-scan), the transition itself is a signal:
+
+- `ACCUMULATION → CATALYST-BREAKOUT` → highest-quality breakout call. Patient build paid off.
+- `MOMENTUM → DISTRIBUTION` → topping signal. Take profits or initiate fade.
+- `COMPRESSION → CATALYST-BREAKOUT` → coil resolved. Ride.
+- `CAPITULATION → ACCUMULATION` → bottom call. Quiet entry.
+
+Reference the transition explicitly in the Perps block when relevant: `Perps · ACCUMULATION · CONFIRMED — transitioned from COMPRESSION yesterday`.
+
+**Setup block structure (WATCHLIST) — sub-header layout:**
+
+1. Header line: `ASSET · the conflict`. Names what's missing.
+2. **Blank line.**
+3. `Risk · {one-phrase tag}` sub-header. Two to three short sentences. State the regime read, state the contradicting signal, name the wait condition.
+
+**Aggregate market read from perps-scan informs the MARKET SENTIMENT framing.** When perps-scan's aggregate verdict is `CROWDED TOPPING`, the brief's bias should lean fade-side. When `LEVERAGE BUILDING`, lean long-side. When `MIXED` or `QUIET`, lean selective and patient.
 
 **Universal formatting rules (v2):**
 - No asterisks anywhere.
