@@ -286,15 +286,20 @@ jobs:
             esac
           fi
 
-          # Dedup within this workflow run — same message never sent twice even if ./notify is called again
+          # Dedup within this workflow run — same message never sent twice even if ./notify is called again.
+          # Uses .notify-attempted-hashes (in-run attempt tracking) separately from .notify-sent-hashes
+          # (cross-step delivery tracking, written only on successful delivery). If inline delivery
+          # fails (sandbox-blocked curl, transient 5xx), .notify-sent-hashes stays empty for this
+          # message, so the post-run "Send pending notifications" step still retries.
           HASH=$(printf '%s' "$MSG" | sha256sum | awk '{print $1}')
-          HASH_FILE=".notify-sent-hashes"
-          touch "$HASH_FILE" 2>/dev/null || true
-          if [ -f "$HASH_FILE" ] && grep -qxF "$HASH" "$HASH_FILE" 2>/dev/null; then
+          ATTEMPTED_FILE=".notify-attempted-hashes"
+          SENT_FILE=".notify-sent-hashes"
+          touch "$ATTEMPTED_FILE" 2>/dev/null || true
+          if [ -f "$ATTEMPTED_FILE" ] && grep -qxF "$HASH" "$ATTEMPTED_FILE" 2>/dev/null; then
             echo "notify: duplicate message (hash ${HASH:0:8}), skipping" >&2
             exit 0
           fi
-          printf '%s\n' "$HASH" >> "$HASH_FILE" 2>/dev/null || true
+          printf '%s\n' "$HASH" >> "$ATTEMPTED_FILE" 2>/dev/null || true
 
           # Always save to .pending-notify/ for post-run delivery (sandbox fallback).
           # Filename convention encodes the --signal flag so post-run re-delivery honors Telegram suppression.
@@ -408,9 +413,14 @@ jobs:
             echo "$MSG" > "dashboard/outputs/.pending-${SKILL_NAME}.md"
           fi
 
-          # Remove pending file if immediate delivery succeeded (prevents double-send)
+          # Remove pending file if immediate delivery succeeded (prevents double-send),
+          # and record the hash in .notify-sent-hashes so post-run delivery sees it as done.
+          # If delivery failed, leave the pending file in place AND leave .notify-sent-hashes
+          # untouched — post-run will retry and record the hash on its own success.
           if [ "$DELIVERED" = "true" ]; then
             rm -f "$PENDING_FILE"
+            touch "$SENT_FILE" 2>/dev/null || true
+            printf '%s\n' "$HASH" >> "$SENT_FILE" 2>/dev/null || true
           fi
           NOTIFY_SCRIPT
           chmod +x ./notify
