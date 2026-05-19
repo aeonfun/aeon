@@ -1,25 +1,32 @@
-Done. Here's the run summary:
+# Market Context — 2026-05-19
 
-## Summary
+Take: chop — BTC flat (+0.10% 24h, -4.62% 7d) with breadth at 10/20 green and F&G pinned at 25 (Extreme Fear); no directional catalyst. Conviction: low.
 
-**Regime: chop — conviction: low**
+## Snapshot
+- BTC $76,769 (+0.10% 24h, -4.62% 7d) · dominance 58.18% (flat 24h)
+- ETH $2,114 (-0.58% 24h, -6.94% 7d) · ETH/BTC 0.02754
+- SOL $84.61 (+0.15% 24h, -10.82% 7d)
+- Total mcap $2.641T (+0.49% 24h) · DEX vol $6.56B 24h (+8% vs $6.06B 7d avg)
+- Breadth: 10/20 green 24h · 4/20 green 7d
+- Fear & Greed: 25 (Extreme Fear) — yesterday 28
+- TVL top chains: ETH $43.27B · SOL $5.92B · BSC $5.48B (7d delta n/a)
 
-All 5 sources responded clean. This is the second market-context-refresh of the day; the prior run (earlier this morning) called rotation. The afternoon data tells a different story.
+## What Changed
+Quiet — all majors within ±1%, regime unchanged.
+- Trending shifted: ZEST (+33.9%) and RON (+33.6%) now lead trending, replacing prior defensive BTC/ETH/SOL top-3
+- ONDO re-entered trending at +6.9% (was absent prior snapshot — RWA reactivation attempt)
+- Iran Polymarket YES: 11.5% → 10%
 
-**Key deltas vs the morning snapshot:**
-- Breadth collapsed: 16/20 → 8/20 green 24h — the alt bounce fully faded
-- BTC flipped: +0.33% → -0.19% 24h (ETH also flipped: +0.92% → -0.15%)
-- Regime call changed: rotation → chop — no directional signal dominates
-- Trending entirely rotated: BTC/ETH/SOL now occupy the top 3 trending slots (defensive); ZANO, ONDO, PENGU dropped off
-- RWA (ONDO) downgraded: rising → fading — +12.75% 24h catalyst (CLARITY Act committee pass) appears priced in
+## Active Narratives
+- Privacy / ZK layer — phase: rising. Evidence: ZEC +7.74% 24h top-20 solo outperformer (3rd+ session); VVV trending +3.4%.
+- Hyperliquid / perp DEX — phase: rising. Evidence: HYPE +5.32% 24h, +18.42% 7d; trending #4.
+- Decentralized compute / AI infra — phase: rising. Evidence: narrative-tracker 5/5 RIDE; NEAR trending +6.9%; NVIDIA earnings May 20 is the regime test.
+- Gaming / NFT infra — phase: emerging. Evidence: RON +33.6% 24h trending #2; PENGU +2.8% trending #5.
+- RWA / stablecoins — phase: fading. Evidence: ONDO +6.9% re-entered trending but Senate CLARITY Act floor vote still pending; no new trigger.
 
-**Active narratives:**
-- Privacy/ZK (rising) — ZEC +7.23% 24h, best top-20 performer, in trending 2nd+ consecutive day
-- Hyperliquid/perp DEX (rising) — HYPE +5.93% 24h, +15.57% 7d, only large-cap sustaining
-- Decentralized compute/AI infra (rising) — TAO in trending 3rd+ day, narrative-tracker 5/5 Rising
-- RWA/stablecoins (fading) — ONDO absent from trending; waiting on CLARITY Act floor vote
+## Polymarket Highlights (top by 24h vol)
+- Manchester City win 2026-05-19 — YES 60%, vol $5.3M (sports)
+- US x Iran permanent peace deal by May 31? — YES 10%, vol $1.6M (ticked down from 11.5%)
 
-**Files updated:**
-- `memory/topics/market-context.md` — overwritten with fresh snapshot + INJ pick added to Token Picks table
-- `.outputs/market-context-refresh.md` — overwritten with chain-consumable digest
-- `memory/logs/2026-05-19.md` — afternoon run entry appended
+## Source Status
+coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
