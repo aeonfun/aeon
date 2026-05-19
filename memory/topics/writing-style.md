@@ -1,13 +1,17 @@
-# Aeon Writing Style v2 — Layout First
+# Aeon Writing Style v2.1 — Layout First, Prose Second
 *Locked: 2026-05-19*
-*Supersedes: previous `writing-style.md` (v1)*
+*Supersedes: writing-style v2 (structural rules unchanged; adds Sentence-Level Patterns section)*
 *Source of truth for all prose output across Aeon skills.*
 
-This is the operator-facing style guide for every signal Aeon produces. v1 emphasized prose mechanics (verbs, hedging, sentence rhythm). It was right on those rules but wrong on the load-bearing question. In production, the wall-of-text problem turned out to be **structural, not prosaic**.
+This is the operator-facing style guide for every signal Aeon produces.
 
-v2 inverts the priority. Layout rules are the load-bearing rules. Prose rules are secondary — they govern the sentences inside the structure, not the structure itself.
+**v1** (deprecated) emphasized prose mechanics. Correct on the rules, wrong on the priority — the wall-of-text problem turned out to be structural.
 
-When v2 conflicts with v1, v2 wins.
+**v2** inverted the priority. Layout rules became load-bearing; prose rules became secondary.
+
+**v2.1** keeps the v2 structural foundation and adds a Sentence-Level Patterns section. After v2 shipped to production, structural problems resolved but sentence-level prose patterns emerged that pass every existing rule and still read poorly. Section 4 names them.
+
+When versions conflict, v2.1 wins.
 
 ---
 
@@ -15,38 +19,37 @@ When v2 conflicts with v1, v2 wins.
 
 The reader is an operator who reads a daily brief in 90 seconds and needs the signal to land in 20. Every signal is dense by necessity. The job of the writing is to make density navigable, not to compress further.
 
-Two failure modes:
+Three failure modes (added one in v2.1):
 
-1. **Wall-of-text** — dense paragraphs with no visual structure. The eye can't find the next idea.
-2. **Worded data dump** — facts listed without commitment. The reader does interpretation work the writer should have done.
+1. **Wall-of-text** — dense paragraphs with no visual structure. The eye can't find the next idea. *Fixed by Structural Rules.*
+2. **Worded data dump** — facts listed without commitment. The reader does interpretation work the writer should have done. *Fixed by Mandatory Closing Lines.*
+3. **Sentence-level reading friction** — sentences that pass structural and prose rules but still read poorly. Parse ambiguities, modifier stacking, jargon leaks, passive constructions. *Fixed by Sentence-Level Patterns section (new in v2.1).*
 
-v2 fixes the first via layout. v2 fixes the second via mandatory closing lines on every independent unit.
-
-**The core insight:** the structure of the document is the most important writing decision. A well-laid-out wall of bullet points reads faster than well-prosed paragraphs without structure. Once the structure is right, the prose rules from v1 still apply to the sentences within — but they're not the problem the operator is reacting to.
+The core insight remains from v2: structure is the most important writing decision. v2.1 adds: once structure is right, the sentences inside it need sharp execution. Sentences are the last 10% — but in production, that's the 10% the operator actually feels.
 
 ---
 
-## Structural Rules
+## Section 1 — Structural Rules
 
-These are the primary rules. They govern the shape of every output.
+Unchanged from v2. Primary rules. Govern the shape of every output.
 
-### Rule 1 — Visual hierarchy is built from three levels
+### Rule 1 — Visual hierarchy from three levels
 
-Every signal output uses exactly three structural elements:
+Every output uses exactly three structural elements:
 
-1. **Horizontal dividers (`─────`)** — separate major content shifts. A divider says: "different kind of content is coming."
-2. **CAPS sub-headers** — label aspects within the same content type. A CAPS header says: "different angle on the same thing."
+1. **Horizontal dividers (`─────`)** — separate major content shifts. "Different kind of content is coming."
+2. **CAPS sub-headers** — label aspects within the same content type. "Different angle on the same thing."
 3. **Indentation (2 spaces)** — group detail lines under their parent header.
 
-These three elements do all the structural work. No bold, no italics, no asterisks, no other markdown.
+No bold, no italics, no asterisks, no other markdown.
 
 ### Rule 2 — When to use dividers vs CAPS sub-headers
 
-**Divider** — between sections that answer different questions. In Perps Brief: the sentiment block (about the market), the near-miss (about one asset), the watchlist (about multiple assets) are three different lenses on three different questions. Dividers earn space here.
+**Divider** — between sections answering different questions. In Perps Brief: sentiment (about the market), near-miss (about one asset), watchlist (about multiple assets) are three lenses on three questions. Dividers earn space.
 
-**CAPS sub-header** — between sub-aspects of one analysis. In Token Call: SIGNALS, CATALYST, RISK, DEDUP all answer one question: "should I take this trade and why." Same content, different angles. CAPS sub-headers carry the separation; dividers would over-segment.
+**CAPS sub-header** — between sub-aspects of one analysis. In Token Call: SIGNALS, CATALYST, RISK, DEDUP all answer one question. Same content, different angles. CAPS sub-headers carry the separation; dividers would over-segment.
 
-**The test:** if the sections could each stand alone as a complete sub-document, use dividers. If they only make sense together as facets of one larger answer, use CAPS sub-headers.
+**Test:** if the sections could each stand alone as a complete sub-document, use dividers. If they only make sense together, use CAPS sub-headers.
 
 ### Rule 3 — Divider format
 
@@ -54,148 +57,81 @@ These three elements do all the structural work. No bold, no italics, no asteris
 ─────────  LABEL  ─────────
 ```
 
-Label embedded mid-divider, surrounded by `─` characters. Approximately 9 dashes on each side, fewer if the label is long. Aim for total visual width around 50-60 characters.
+Label embedded mid-divider, surrounded by `─`. Approximately 9 dashes each side; fewer if the label is long. Total visual width 50–60 characters.
 
-The exception is the very first divider directly under the title bar. That one carries no label — it just signals "the document body starts here":
+The exception is the very first divider under the title bar — no label, just signals "the document body starts here":
 
 ```
 Perps Brief · 19 May · No high-conviction setups
 ─────────────────────────────────────────────────
 ```
 
-The under-title divider matches the visual width of the title above it (approximate is fine).
+### Rule 4 — Indentation
 
-### Rule 4 — Indentation conventions
+Two-space indent per level. Three levels maximum.
 
-Two-space indent for every level.
-
-- Top-level content (the body of a section): flush left.
+- Top-level content: flush left.
 - Sub-section content (under a CAPS sub-header): indented 2 spaces.
-- Details below an asset header in a list (e.g. inside a watchlist item): indented 2 spaces.
-
-Three levels of indentation maximum. If a structure requires four levels, it's too nested — flatten via dividers or split into separate sections.
+- Details below an asset header in a list: indented 2 spaces.
 
 ### Rule 5 — One sentence per line
 
-Every line within a structured section contains one thought. The line break replaces commas, em-dashes-as-connectors, and "and" / "but" linkages between independent thoughts.
+Every line within a structured section contains one thought. The line break replaces commas, em-dashes-as-connectors, and "and"/"but" linkages between independent thoughts.
 
-The exception is the closing line of a section (next rule). Closing lines can flow.
+Exception: closing lines (Rule 6) can flow.
 
-```
-✗ "OI +42.4% 7d on calm funding, top traders cut their long ratio 0.26 over 7d, and funding flipped negative to -0.029%/8h."
+### Rule 6 — Mandatory closing line per independent unit
 
-✓ "OI +42.4% 7d on calm funding.
-    Top traders cut their long ratio 0.26 over 7d.
-    Funding flipped negative to -0.029%/8h."
-```
-
-### Rule 6 — Mandatory closing line on every independent unit
-
-Every independent unit ends with a closing line that commits to a position. The convention:
+Every independent unit ends with a closing line that commits to a position.
 
 | Closing label | Used in | Format |
 |---|---|---|
 | `Stance:` | Sentiment/regime blocks | "Stance: cash-patient. [one-line rationale]" |
-| `Take:` | Whole-document synthesis (token-call, brief overall) | "Take: [synthesizing read]. [sizing or action context]" |
-| `→` | Thesis line on HIGH CONVICTION setups | "→ [committed interpretation]. [trade structure note]" |
+| `Take:` | Whole-document synthesis | "Take: [synthesizing read]. [sizing or action context]" |
+| `→` | Thesis line on HIGH CONVICTION setups | "→ [committed interpretation]. [trade structure]" |
 | Bare imperative | Watchlist items | "Pass." / "Wait." / "Watch for X." / "Fade on Y." |
 
-Independent units that need closing lines:
-- The sentiment/regime block of a brief
-- Each HIGH CONVICTION setup
-- Each watchlist item
-- The whole document (final Take line, optional but recommended)
-
-The closing line is on its own line, preceded by a blank line. It is never indented under its content — it's flush with the asset header above it. The blank line + flush-left position is the visual cue that the close-out is coming.
-
-```
-HYPE · OI build not smart-money-confirmed
-
-  Perps WATCH — OI +42.4% 7d, funding flat 7d-avg.
-  Top traders cut their long ratio 0.26 over 7d.
-  Funding flipped negative to -0.029%/8h.
-
-  Wait for top L/S to turn up before the long.
-```
-
-The closing line sits inside the indent of its parent asset block, but it does not get further indented under any sub-header. It belongs to the asset, not to a sub-section.
+Closing lines are preceded by a blank line. Flush with the asset header above (not further indented under any sub-header). The blank line + flush-left position is the visual cue that the close-out is coming.
 
 ### Rule 7 — Asset header format
-
-For any list of assets (watchlist, near-miss, runners, regime members):
 
 ```
 TICKER · qualifier sentence
 ```
 
-- Ticker first, no asterisks, no special formatting.
-- Dot separator (`·`) between ticker and qualifier.
-- Qualifier is a one-liner that says what makes this asset interesting (or where it falls short). For HIGH CONVICTION: the bias label. For watchlist: the named conflict. For neutral inclusions: the regime tag.
-
-Examples:
-- HIGH CONVICTION: `HYPE · long continuation, trail tight`
-- Watchlist: `HYPE · OI build not smart-money-confirmed`
-- Near-miss: `HYPE · perp-DEX leader, quant not confirmed`
-
-The qualifier carries the conviction signal so the asset header is self-contained — the reader knows what this row means before reading any details.
+Ticker, dot separator, qualifier. Qualifier carries the conviction or conflict signal so the asset header is self-contained.
 
 ### Rule 8 — Data lines: split when comma-separated reads as a wall
 
-Multi-metric data lines that read fine inline:
-
-```
-$1.65 · +11.1% 24h · +6.0% 7d
-```
-
-Three metrics, dot-separated, reads instantly.
-
-Multi-metric data lines that should split into two lines:
-
-```
-$1.65 · +11.1% 24h · +6.0% 7d
-mcap $2.13b · vol $283m · vol/mcap 0.13
-```
-
-Six metrics in one line is too much. Split into price/performance (one line) and structural (one line).
-
-Rule of thumb: 3 dot-separated items on a line is comfortable; 4 is the upper limit; 5+ split.
+Three dot-separated items per line: comfortable. Four: upper limit. Five+: split into two lines (e.g. price/performance on one, structural metrics on another).
 
 ---
 
-## Prose Rules (carried from v1, refined)
+## Section 2 — Prose Rules
 
-These govern the sentences inside structured sections. They are secondary to the structural rules — when in conflict, the structure wins. They are not banned, but they are no longer the load-bearing rules.
+Carried from v2. Govern sentences inside structured sections. Secondary to structural rules.
 
 ### Punctuation
 
-- **Em-dash (`—`)** — for genuine asides only. The test: remove the em-dash and what follows; does the sentence stand? If yes, keep the em-dash. If no, it was a connector — use a period and start a new sentence.
-- **Semicolons** — banned in body text. If two thoughts belong together, write them as two sentences.
-- **Parentheses** — one level deep, one per sentence max. For optional context (quantification, source citation). Not for nested commentary.
+- **Em-dash (`—`)** — genuine asides only. See also Pattern 5 in Section 4 for the slip-test.
+- **Semicolons** — banned in body text.
+- **Parentheses** — one level deep, one per sentence max.
 
 ### Sentence rules
 
-- **One conclusion per sentence.** Multiple ideas → multiple sentences (and usually multiple lines).
-- **Lead with the interpretive verb.** "Bled," "absorbed," "crowded," "positioning," "failed" — verbs that say what the data means, not what it is.
-- **Active voice.** Subject does something to object.
+- One conclusion per sentence (in body lines; closing lines can flow).
+- Lead with interpretive verbs ("bled," "absorbed," "crowded," "positioning," "failed").
+- Active voice. See Pattern 4 in Section 4 for slip-test.
 
 ### Hedging
 
-- No "could," "may," "might," "appears to," "seems to," "potentially," "perhaps."
-- If uncertainty is genuine, use explicit confidence language: "low conviction," "mixed signals — X is positive but Y contradicts," "watching for confirmation."
+Banned: "could," "may," "might," "appears to," "seems to," "potentially," "perhaps."
 
-### Closing lines are allowed rhythm
-
-The rule "one conclusion per sentence" applies inside structured sections. Closing lines (Stance / Take / →) are the place where flowing prose is allowed and welcome — an interpretive sentence can run longer and contain a genuine aside.
-
-```
-✓ "Take: high signal across price, narrative, and institutional flow. The catch is rollout execution — sized accordingly, this is a position-for-Q2 trade not a chase."
-```
-
-That's two sentences with a genuine em-dash aside. Permitted because it's the synthesizing close-out, not a body line.
+If uncertainty is genuine, explicit confidence language: "low conviction," "mixed signals," "watching for confirmation."
 
 ### Banned phrases (Claude-tells)
 
-Strike on sight if produced:
+Strike on sight:
 - "It's worth noting that..."
 - "Looking at the data..."
 - "From what we can see..."
@@ -207,36 +143,34 @@ Strike on sight if produced:
 
 ---
 
-## Per-Skill Structural Templates
+## Section 3 — Per-Skill Structural Templates
 
-Below are the locked layouts for every signal output. Skills should produce output matching these templates exactly.
+Unchanged from v2. Skills should produce output matching the templates exactly.
 
 ### `morning-macro`
 
 ```
 Market Morning · DD MMM · regime tagline
 
-[Regime opening — 2-4 lines describing market state. Closes with stance line.]
+[Regime opening — 2-4 lines.]
 
-[Where the bid lives or doesn't — 2-4 lines describing flow and leadership.]
+[Where the bid lives or doesn't — 2-4 lines.]
 
-[Stance: cash-patient. (or equivalent closing line)]
+Stance: [bias]. [one-line rationale]
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-[Cross-domain thread 1 — 2-4 lines.]
+[Thread 1 — 2-4 lines.]
 
-[Cross-domain thread 2 — 2-4 lines.]
-
-[Cross-domain thread 3 — 2-4 lines.]
+[Thread 2 — 2-4 lines.]
 
 
 ─────────  TODAY  ─────────
 
 [Pointer to sector briefs and headline setups — 2-4 lines.]
 
-[Final Take: cash-patient. Better day tomorrow. (or equivalent)]
+Take: [synthesizing read]. [action context]
 ```
 
 ### `token-call`
@@ -254,13 +188,13 @@ SIGNALS
   [4-6 short factual lines]
 
 CATALYST
-  [3-5 short factual lines, narrative + event-driven evidence]
+  [3-5 short factual lines]
 
 RISK
-  [2-4 short factual lines, named downside risks]
+  [2-4 short factual lines]
 
 DEDUP
-  [1-3 lines, dedup history]
+  [1-3 lines]
 
 
 Take: [synthesizing read]. [sizing or action context]
@@ -269,102 +203,63 @@ Take: [synthesizing read]. [sizing or action context]
 not financial advice — pattern-matching only
 ```
 
-Skip-day variant:
-
-```
-Daily Token Call · DD MMM · no pick
-─────────────────────────────────────
-
-Token signals weak today.
-Best near-miss: TICKER at X/10 — below threshold.
-
-Tomorrow.
-```
-
 ### `perps-brief`
-
-Multi-section: sentiment + (optional near-miss) + watchlist + HIGH CONVICTION (when present).
 
 ```
 Perps Brief · DD MMM · verdict tagline
 ─────────────────────────────────────────
 
-[Market sentiment opening — 3-5 lines.]
-
+[Sentiment — 3-5 lines.]
 [Perps-specific read — 3-5 lines.]
-
 [Risk/regime context — 2-3 lines.]
 
-Stance: [overall bias]. [one-line rationale]
+Stance: [bias]. [rationale]
 
 
-─────────  BEST NEAR-MISS  ─────────
-[Only on skip-days when there's a noteworthy near-miss]
+─────────  BEST NEAR-MISS  ─────────    [skip-days only]
 
 TICKER · qualifier
-
-  [3-5 indented fact lines]
-
-  [Closing imperative line]
+  [3-5 lines]
+  [Closing imperative]
 
 
-─────────  HIGH CONVICTION  ─────────
-[When setups exist]
+─────────  HIGH CONVICTION  ─────────    [when setups exist]
 
 TICKER · bias label
 
   PERPS
-    [3-5 lines of perps quant data]
+    [3-5 lines]
 
   NARRATIVE
-    [2-4 lines of narrative context]
+    [2-4 lines]
 
   CONTEXT
-    [2-4 lines of market context]
+    [2-4 lines]
 
   ENRICHMENT
-    [2-5 lines of Pass-2 research findings]
+    [2-5 lines]
 
-  → [Thesis line, committed interpretation, trade structure note]
+  → [Thesis line, trade structure]
 
 
 ─────────  WATCHLIST  ─────────
 
 TICKER · qualifier
-
   [3-6 indented fact lines]
-
-  [Closing imperative line]
-
-[Repeat for each watchlist item]
+  [Closing imperative]
 ```
-
-Notes on Perps Brief HIGH CONVICTION blocks:
-- CAPS sub-headers (PERPS / NARRATIVE / CONTEXT / ENRICHMENT) sit at the indent level of the asset block's content (2 spaces in from flush left).
-- Detail lines beneath each CAPS sub-header are indented a further 2 spaces (4 from flush left).
-- The thesis line (→) returns to the asset block indent level (2 spaces) — same as the CAPS sub-headers above it. It's the asset's conclusion, not a sub-section.
 
 ### `narrative-tracker`
 
-Existing structure (phase-grouped with arrows) is close to clean. Apply v2 only for:
-- Title format: `Narratives · DD MMM · N tracked, M NEW`
-- Dividers between phase groups when there are 4+ narratives total
-- Closing stance line at the bottom: "Stance: [where to focus today]."
-
 ```
-Narratives · DD MMM · 5 tracked, 1 NEW
+Narratives · DD MMM · N tracked, M NEW
 
 ↑ RISING
-• Narrative name [TKR1, TKR2, TKR3] · X/5 · POSITION
+• Narrative [TKR1, TKR2, TKR3] · X/5 · POSITION
   Reasoning line.
-  Second reasoning line if needed.
-
-[Repeat for each rising narrative]
-
 
 → PEAK
 [Same pattern]
-
 
 ↓ FADING
 [Same pattern]
@@ -379,17 +274,12 @@ Stance: [where to focus today].
 
 ### `monitor-runners`
 
-Existing structure (tag-grouped with → reads) is also close to clean. Apply v2 for:
-- Title: `Yesterday's Runners · DD MMM · verdict (parenthetical reason)`
-- Section dividers between tag groups (DEEP-LIQ / CONTINUATION / BREAKOUT / etc.) — only when there are 3+ different tag groups populated
-- Closing vibe line at the bottom
-
 ```
-Yesterday's Runners · DD MMM · STRONG (2 DEEP-LIQ across solana, ethereum)
+Yesterday's Runners · DD MMM · verdict (parenthetical reason)
 
 DEEP-LIQ
 ★ TICKER (chain) +X% 24h
-  $X vol, $X liq, h1 +X%, buys X%
+  [data line]
   → [interpretation]
 
 CONTINUATION
@@ -403,28 +293,15 @@ vibe: [one-line tape read]
 
 ### `perps-scan`
 
-The data-dense regime classification. Apply v2 for:
-- Title format
-- The aggregate market read block (3 indented lines under verdict)
-- Section dividers between major sections (Market read / REGIME CHANGES / each regime / WATCH / Neutral)
-- Sub-headers in regime sections without dividers (regime name in CAPS as section label)
-
-Structure documented fully in `Perps_Engine_v3.md`. v2 writing style applies to all prose lines.
+Documented fully in `Perps_Engine_v3.md`. v2.1 writing style applies.
 
 ### `daily-ops-review`
-
-Status report. Apply v2 for:
-- Title with timing in subtitle
-- Dividers between steps
-- One line per skill, status marker leading
-- Trailing summary block
 
 ```
 Ops Review · DD MMM · X min
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ skill-name · [headline output]
   ✓ skill-name · [headline output]
   ⚠ skill-name · [headline output + degradation note]
 
@@ -444,9 +321,165 @@ Chain ran complete. X ✓, Y ⚠, Z ✗.
 
 ---
 
-## Worked Examples
+## Section 4 — Sentence-Level Patterns to Avoid
 
-Full output samples for the most-affected signals. These are the locked references — when CC implements the new style, these are what it should produce.
+**New in v2.1.** These are sentence-level patterns that pass structural and prose rules but still read poorly. Each has a test (how to detect it) and a fix template. All examples are pulled from real production output.
+
+### Pattern 1 — Participle-phrase ambiguity
+
+A subject-noun followed by a verb-ing form can be parsed two ways: as a noun-with-action (*"institutional money [that is] losing tech conviction"*) or as a compound noun (*"institutional money-losing tech"*). English readers default to the compound-noun reading because they chunk noun+verb-ing automatically. When the rest of the sentence breaks that parse, the reader has to back up and re-read.
+
+**Test:** Find every subject-noun + verb-ing construction. Read the noun + verb-ing chunk in isolation. Does it form a plausible compound noun? If yes, restructure.
+
+**Examples:**
+
+```
+✗ "Institutional money losing tech conviction is being handed an on-chain entry point."
+   ("institutional money-losing tech" reads as a compound noun before "conviction is being handed" breaks the parse.)
+
+✓ "Institutional money is rotating out of tech, with on-chain as the entry point."
+
+✓ "The same capital that's losing tech conviction now has an on-chain entry point."
+```
+
+**Fix templates:**
+- Split into two sentences: "X is doing Y. Z is the result."
+- Use "[noun] that's [verb-ing]" to lock the participle reading
+- Reorder so the verb-ing precedes the noun: "X is [verb-ing] toward Y" rather than "Y [verb-ing] X..."
+
+### Pattern 2 — Adjective stacking
+
+Two or more adjectives modifying the same noun in different semantic dimensions creates clutter. The reader doesn't know which to prioritize.
+
+**Test:** Find every noun with two or more adjectives preceding it. Ask whether the adjectives nest naturally (one modifies the next, then both modify the noun) or stack independently (both modify the noun in different ways).
+
+**Examples:**
+
+```
+✗ "the lone clean RIDE"
+   ("lone" = only one. "clean" = uncomplicated. Both modify RIDE in different dimensions.)
+
+✓ "the only RIDE call"
+   ("only" carries the lone-ness; clean-ness is implied by surviving to a RIDE.)
+
+✓ "fresh institutional bid"
+   (Fine — "fresh" modifies "institutional bid" as a unit. Natural nesting.)
+
+✗ "extreme crowded long positioning"
+   (Three modifiers stacked. Pick one — "extreme long positioning" or "crowded long positioning.")
+```
+
+**Fix templates:**
+- Pick the load-bearing modifier; drop the others. The dropped meaning is usually implied by context.
+- If both feel essential, the noun is wrong — find a more specific noun that contains one meaning intrinsically.
+
+### Pattern 3 — Internal jargon in operator-facing prose
+
+Engine-internal terminology has no meaning to the reader. The operator reads the brief without the engine spec in hand; vocabulary that requires that context is illegible.
+
+**Test:** Read the output as someone who hasn't seen the engine spec or any SKILL.md. Do they understand every phrase?
+
+**Internal terms that leak (replace with operator-facing equivalent):**
+
+| Internal | Operator-facing |
+|---|---|
+| "next pull" / "next run" / "next window" | "next 48 hours" / "next two days" / "tomorrow's scan" |
+| "this run" | "today's scan" / "today's tape" |
+| "downstream consumption" | name the consuming skill or drop |
+| "the artifact" | "today's data" / "the scan output" |
+| "skip-day branch" | "skip-day" or "quiet day" |
+| "the prior chain" | "yesterday's scan" |
+| "two windows" | "48 hours" / "two days" |
+
+**Note:** trader/market jargon is welcome — "tape," "bid," "offer," "front-running," "fade," "RIDE call," "ACCUMULATION print," "thin float," "vol/mcap." That language is *operator-native*. Engine/infrastructure jargon is not.
+
+**Examples:**
+
+```
+✗ "A use-case bid worth watching over the next two windows."
+   ("two windows" is internal — two chain runs.)
+
+✓ "A use-case bid worth watching over the next 48 hours."
+```
+
+### Pattern 4 — Passive voice slipping back in
+
+"Is being [past-participle]" constructions read as filler. v2 says active voice; in practice it slips back.
+
+**Test:** Search for "is being," "was being," "are being," "has been." Each is a candidate for active rewrite.
+
+**Examples:**
+
+```
+✗ "Institutional money is being handed an on-chain entry point."
+
+✓ "Institutional money is rotating into on-chain."
+   (Make the subject do the action.)
+
+✓ "On-chain is the entry point being handed to institutional money."
+   (If the receiving party must be the subject, at least make the verb's subject explicit.)
+
+✗ "The narrative is being absorbed into the consensus."
+
+✓ "The narrative is absorbing into the consensus."
+   (Reflexive active voice works for processes.)
+```
+
+### Pattern 5 — Em-dash slipping back as a connector
+
+Reinforcement of the v2 punctuation rule. Em-dash slippage is the most common rule-break in production.
+
+**Test:** For every em-dash, remove the em-dash and everything after it until the next mark (period or end-of-sentence). Does the sentence still stand? If yes, the em-dash was an aside — keep it. If no, it was connecting two independent thoughts — use a period.
+
+**Examples:**
+
+```
+✗ "Trending rotated — ZEST and RON microcaps displaced the defensive trio."
+   (Test: remove "— ZEST and RON microcaps displaced the defensive trio." → "Trending rotated." Stands. So the em-dash was connecting, not interrupting.)
+
+✓ "Trending rotated. ZEST and RON microcaps displaced the defensive trio."
+
+✗ "BTC bled -2.2% — Strategy's $2B bid couldn't catch it."
+   (Same test: "BTC bled -2.2%." stands alone. The post-dash content is independent.)
+
+✓ "BTC bled -2.2%. Strategy's $2B bid couldn't catch it."
+
+✓ "BTC bled -2.2% — the kind of day that breaks structural support."
+   (Genuine aside: "the kind of day that breaks structural support" doesn't have its own subject and verb. It interrupts the main sentence with a parenthetical interpretation.)
+```
+
+The pattern: post-dash content with its own subject and verb is independent. Use a period.
+
+### Pattern 6 — Verb weakness
+
+Some verbs are technically correct but commit less than alternatives. Where stronger verbs exist, use them.
+
+**Test:** Find every verb. Ask: is there a more specific, more committed verb that says the same thing? Common slip-verbs to upgrade:
+
+| Weak | Stronger options |
+|---|---|
+| "surfaces as" | "emerges as," "named as," "shows up as" |
+| "is positioned" | "positioning," "crowding," "building," "accumulating" |
+| "could see" | (delete or replace with explicit confidence: "low-conviction risk") |
+| "looks set to" | (delete) |
+| "is poised to" | (delete) |
+| "remains" | "holds," "stays," "sits at" |
+
+**Examples:**
+
+```
+✗ "ZEC surfaces as a named rotation destination..."
+
+✓ "ZEC named as a rotation destination..."
+
+✓ "ZEC emerging as a rotation destination..."
+```
+
+---
+
+## Section 5 — Worked Examples
+
+Full output samples for the most-affected signals. Locked references — when CC implements the style, these are what it should produce.
 
 ### Worked Example 1 — Token Call
 
@@ -488,47 +521,76 @@ The catch is rollout execution — sized accordingly, this is a position-for-Q2 
 not financial advice — pattern-matching only
 ```
 
-### Worked Example 2 — Morning Macro
+### Worked Example 2 — Morning Macro (corrected for v2.1)
+
+This is the May 19 production output, rewritten against v2.1 to fix the patterns flagged in Section 4.
+
+**Original (v2 output with prose issues):**
+
+```
+Trending rotated — ZEST and RON microcaps displaced the defensive BTC/ETH/SOL trio.
+Attention drifting to alts with no tape behind it.
+Decentralized compute holds the lone clean RIDE at 5/5.
+RWA rides with a trail. Privacy/ZK sits at WATCH.
+...
+Institutional money losing tech conviction is being handed an on-chain entry point.
+...
+ZEC surfaces as a named rotation destination in the same window as sanctions escalation.
+A use-case bid worth watching over the next two windows.
+```
+
+**Corrected (v2.1 applied):**
 
 ```
 Market Morning · 19 May · Chop, low conviction
 
-BTC at $76,744. Down 0.19% on the day, down 5.09% on the week.
+BTC at $76,769. Flat on the day, down 4.62% on the week.
 The morning alt bounce faded by lunch.
+Breadth holds at 10/20 green.
+F&G pinned at 25 — Extreme Fear, unmoved all day.
 
-Breadth halved to 8/20 green.
-F&G dropped to 25 — Extreme Fear, three points lower than yesterday.
-BTC, ETH and SOL re-entered the top 3 trending slots.
-Defensive rotation, not appetite.
+Trending rotated.
+ZEST and RON microcaps displaced the defensive BTC/ETH/SOL trio.
+Attention drifting to alts with no tape behind it.
 
-Compute and AI infra holds the lone clean RIDE.
-ZEC and HYPE the only large-caps still bid against the red tape.
+Decentralized compute holds the only RIDE call at 5/5.
+RWA stays RIDE, with a trail.
+Privacy/ZK sits at WATCH.
+
+Stance: chop, low conviction. NVIDIA earnings tomorrow is the next regime test.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-AIXBT flags Iran both ways inside the same 12h window.
-A de-escalation proposal priced alongside live escalation risk.
-The resolution is the next directional catalyst.
+The RWA regulatory exemption and the hedge-fund semiconductor rotation are one capital-pool story.
+Institutional money is rotating out of tech, with on-chain as the entry point.
 
-Polymarket has permanent US-Iran peace by May 31 at 11.5%.
-The market leans toward the tail staying open.
+The Iran de-escalation proposal is dead.
+The US is building a multilateral sanctions coalition.
+The conflict premium is institutionalizing, not fading.
 
-HYPE/BTC printing an all-time high with TradFi execs onboarding Hypercore.
-Institutional reflexivity in real-time.
-BTC's 200DMA is the stress test that could break it.
+ZEC named as a rotation destination alongside the sanctions escalation.
+A use-case bid worth watching over the next 48 hours.
 
 
 ─────────  TODAY  ─────────
 
-Sector briefs all skip-day.
+Sector briefs all quiet.
 #perps-brief ran zero HIGH CONVICTION — no quant signal overlapping a rising narrative.
 
-Watchlist carries five near-misses: ZEC, HYPE, NEAR, TAO, CL.
-Each named with a conflict; none confirmed.
+Watchlist carries five near-misses: HYPE, ZEC, EDEN, BILL, XAU.
+HYPE the best near-miss — near-ACCUMULATION, but the OI build is not smart-money-confirmed.
 
 Take: cash-patient. Better day tomorrow.
 ```
+
+**Changes applied:**
+- Pattern 5 (em-dash slip): *"Trending rotated — ZEST and RON..."* → split into two sentences.
+- Pattern 2 (adjective stacking): *"lone clean RIDE"* → *"only RIDE call."*
+- Pattern 1 (participle ambiguity) + Pattern 4 (passive): *"Institutional money losing tech conviction is being handed..."* → *"Institutional money is rotating out of tech, with on-chain as the entry point."*
+- Pattern 6 (weak verb): *"ZEC surfaces as a named rotation destination..."* → *"ZEC named as a rotation destination..."*
+- Pattern 3 (internal jargon): *"next two windows"* → *"next 48 hours."*
+- Pattern 5 (em-dash slip): *"...sanctions coalition — the conflict premium is institutionalizing..."* → split into two sentences.
 
 ### Worked Example 3 — Perps Brief (skip-day with watchlist)
 
@@ -647,50 +709,68 @@ BSB · long breakout, trail tight
      Trail tight. Thin float makes reversals sharp both ways.
 ```
 
-Note on the thesis line indentation: the → arrow is flush with the asset's content indent level (2 spaces from flush left, same as the CAPS sub-headers above it). When the thesis continues to a second line, the continuation is indented further (5 spaces — past the `→ `) to visually align with the first character of the thesis prose.
-
 ---
 
-## Implementation Notes for Claude Code
+## Section 6 — Implementation Notes
 
 ### Application across skills
 
 Every prose-producing skill SKILL.md should add this line near the top of its prompt:
 
-> Apply `memory/topics/writing-style.md` to all output. Structural rules (dividers, CAPS sub-headers, indentation, closing lines per unit) are primary. Prose rules (punctuation discipline, banned hedges, active voice, interpretive verbs) apply to sentences within the structure. Per-skill structural template lives in this file under "Per-Skill Structural Templates."
+> Apply `memory/topics/writing-style.md` to all output. Structural rules (Section 1) are primary. Prose rules (Section 2) govern sentences within structure. Sentence-Level Patterns (Section 4) catch specific failure modes that pass structural rules — review against each pattern before emitting. Per-skill structural template lives in Section 3. Worked examples in Section 5.
 
 ### Character choices
 
-- Divider character: `─` (U+2500 BOX DRAWINGS LIGHT HORIZONTAL).
-- Bullet character: `•` for primary list items, `★` for repeat/notable markers.
-- Arrow character: `→` for thesis lines, `↑` `↓` `→` for phase markers in narrative-tracker.
-- Dot separator: `·` (U+00B7 MIDDLE DOT).
+- Divider: `─` (U+2500 BOX DRAWINGS LIGHT HORIZONTAL)
+- Bullet: `•` for primary list items, `★` for repeat/notable markers
+- Arrow: `→` for thesis lines; `↑` `↓` `→` for phase markers in narrative-tracker
+- Dot separator: `·` (U+00B7 MIDDLE DOT)
 
-If any character renders poorly in Discord, fall back to ASCII equivalents (`-----` for divider, `*` for bullet, `->` for arrow). Test in production; revise if needed.
+If any character renders poorly in Discord, fall back to ASCII (`-----`, `*`, `->`).
 
 ### Migration order
 
-When applying v2 to existing skills:
+When applying v2.1 to existing skills (after v2 structural fixes are in):
 
-1. **Token Call** — full restructure to template above. Most prose-affected.
-2. **Perps Brief** — full restructure. Replace the labeled-sub-block pattern with CAPS sub-headers + dividers between content types.
-3. **Morning Macro** — apply Rewrite A structure (dividers + one-sentence-per-line). Already drafted.
-4. **Narrative Tracker** — minor pass. Existing phase-arrow structure works; just standardize title format and add closing stance line.
-5. **Yesterday's Runners** — minor pass. Existing tag-group structure works; standardize title and section dividers when 3+ groups populated.
-6. **Perps Scan** — apply structural rules to the v3 output format already documented in `Perps_Engine_v3.md`.
-7. **Daily Ops Review** — apply step-divider structure.
+1. **Re-review every prose-producing skill against Section 4 patterns.**
+2. Token Call, Perps Brief, Morning Macro — apply Section 4 checks per-sentence.
+3. Narrative Tracker, Yesterday's Runners — minor pass.
+4. Perps Scan — apply Section 4 to all prose lines (aggregate read, transition reads, per-asset reads).
+5. Daily Ops Review — apply Section 4 to the prose lines in the issues block.
 
-### Things v2 deliberately does not do
+### Self-check before emit
 
-- **No SOUL.md content.** v2 governs *how* Claude writes. It doesn't govern *whose perspective* Claude writes from. Soul/perspective remains deferred until structural style has shipped and stabilized.
-- **No tone calibration for different audiences.** Every signal is for the operator, in the same context (morning brief read). Single voice.
-- **No interpretive section titles.** "Where we are" / "Where the bid lives" — tested in production, read as twee. Section labels stay functional (MARKET SENTIMENT, CROSS-DOMAIN, TODAY, WATCHLIST). Personality lives in the closing lines, not the headers.
-- **No length compression beyond what structure demands.** v1 over-corrected toward fragments by enforcing "one conclusion per sentence" universally. v2 allows flowing prose inside closing lines — sometimes a single committal sentence with a genuine aside reads sharpest. Don't strip rhythm in the wrong places.
+Every skill that produces prose runs an internal review before emitting. Concretely, the SKILL.md should instruct Claude to:
 
-### When v2 produces awkward output
+1. Draft the output applying Sections 1-3.
+2. Before emitting, search the draft for the 6 patterns in Section 4:
+   - Pattern 1: subject + verb-ing chunks that could be compound nouns
+   - Pattern 2: nouns with 2+ adjectives stacked
+   - Pattern 3: internal jargon ("window," "pull," "run," "artifact")
+   - Pattern 4: "is being," "was being," "are being," "has been"
+   - Pattern 5: em-dashes (test each one)
+   - Pattern 6: weak verbs ("surfaces," "remains," "could see," "looks set," "is poised")
+3. Rewrite anything that matches a pattern.
+4. Emit.
 
-If a specific skill's output reads poorly after applying v2, the fix lives here, not in the skill. Add or revise the worked example for that skill in this document. The skill's SKILL.md references this file as the source of truth. Single source of truth means single place to iterate.
+The internal review is fast (LLM-internal) and catches most slips before they reach the operator.
+
+### Things v2.1 still deliberately doesn't do
+
+- No SOUL.md content. v2.1 governs *how* Claude writes. *Whose perspective* remains deferred.
+- No tone calibration for different audiences. Single voice.
+- No interpretive section titles. Section labels stay functional.
+- No length compression beyond what structure demands.
+
+### When v2.1 produces awkward output
+
+If a specific skill's output still reads poorly after applying v2.1, the fix lives here:
+- If it's a new sentence-level pattern not in Section 4, add a Pattern 7.
+- If it's a structural issue, revise the Section 3 template for that skill.
+- If it's a worked-example deviation, revise Section 5.
+
+Single source of truth. Don't fork style guidance into individual SKILL.md files.
 
 ---
 
-*End of writing-style v2.*
+*End of writing-style v2.1.*

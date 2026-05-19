@@ -12,6 +12,21 @@ tags: [crypto]
 
 Refresh `memory/topics/market-context.md` with **decision-ready** crypto context. This file is read by token-call, narrative-tracker, and other skills — it must be current *and* actionable. A data dump is a failure; the reader should know the regime and what to do differently today within 10 seconds.
 
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. This skill is internal (writes the consumed artifact at `memory/topics/market-context.md`) but the regime-read sentence, breadth interpretation, and narrative-phase classifications all surface in downstream prose, so they need to read cleanly.
+
+**Self-check before emitting:**
+
+1. Draft the output applying Sections 1-3.
+2. Search the draft for the 6 patterns in Section 4:
+   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
+   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
+   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
+   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
+   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
+   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+3. Rewrite anything that matches.
+4. Emit.
+
 Read `memory/MEMORY.md` for prior context.
 
 ## Sandbox note
