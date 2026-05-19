@@ -4,6 +4,41 @@ set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
 DASHBOARD="$DIR/dashboard"
 
+# Preflight: the dashboard's /api/* routes shell out to `gh` for secrets,
+# workflow runs, and auth. Without an authenticated gh CLI nothing works,
+# and the failure shows up much later as a 503 in the Authenticate modal.
+if ! command -v gh >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+GitHub CLI (`gh`) not found.
+
+The dashboard uses `gh` to manage repo secrets, dispatch workflows, and
+read your repo. Install it before launching:
+
+  macOS:        brew install gh   (or download the arm64/amd64 binary from
+                                   https://github.com/cli/cli/releases and
+                                   put it on PATH — no sudo required)
+  Linux:        see https://github.com/cli/cli#installation
+  Windows:      winget install --id GitHub.cli
+
+Then run: gh auth login
+EOF
+  exit 1
+fi
+
+if ! gh auth status >/dev/null 2>&1; then
+  cat >&2 <<'EOF'
+GitHub CLI is installed but not authenticated.
+
+Run:  gh auth login
+
+Then re-run ./aeon. The dashboard also needs a default repo — once you've
+created/cloned your own copy, set it with:
+
+  gh repo set-default <owner>/<repo>
+EOF
+  exit 1
+fi
+
 cd "$DASHBOARD"
 
 # Install deps if needed

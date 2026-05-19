@@ -51,10 +51,21 @@ For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, Lang
 
 ## Quick start
 
+**Prerequisites**
+
+- **Node.js 20+** — the dashboard is a Next.js app.
+- **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated.** The dashboard shells out to `gh` for every `/api/*` call (secrets, workflow dispatch, repo metadata). Without it, the Authenticate modal returns 503 and nothing pushes.
+  - Install: `brew install gh` (macOS) / `winget install --id GitHub.cli` (Windows) / [other platforms](https://github.com/cli/cli#installation).
+  - **No admin / no sudo?** Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli/cli/releases](https://github.com/cli/cli/releases) and drop it on your `PATH` (e.g. `~/.local/bin`). No installer needed.
+  - Then: `gh auth login`.
+- **A repo of your own** to host Aeon (fork this repo or `gh repo create your-name/aeon --public --clone --source=.`). Set it as the default for `gh` once: `gh repo set-default <owner>/<repo>`.
+
 ```bash
-git clone https://github.com/aaronjmars/aeon
+git clone https://github.com/<you>/aeon
 cd aeon && ./aeon
 ```
+
+`./aeon` prechecks `gh` + auth and bails out early with a clear message if either is missing.
 
 Click on `http://localhost:5555` to open the dashboard in your browser. From there:
 
