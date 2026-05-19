@@ -1,11 +1,11 @@
 Daily Token Call · 2026-05-19
 
-HYPE · HIGH · 8/10
-$48.27 (+5.3% 24h, +18.4% 7d), mcap $11.5b, vol $723m, vol/mcap 0.06
+CHZ · HIGH · 7/10
+$0.0476 (+1.8% 24h, +11.0% 7d), mcap $494m, vol $103m, vol/mcap 0.21
 
-Signals: clean breakout — both 24h and 7d above +5%, on the CoinGecko trending list, outpacing a red BTC and ETH on the 7d, DEX cross-confirmed on the Hyperliquid L1 pair
-Catalyst: Bitwise BHYP ETF (live on NYSE May 15) now allocates 10% of fees to buy and hold HYPE; SpaceX pre-IPO perps and a validator-set expansion both shipped May 18
-Risk: monthly Core Contributor unlock lands on the 6th — May 6 released ~10m HYPE (~$375m); the next one June 6 is fresh supply that can cap upside if demand softens
-Dedup check: first time in 7d (recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR)
+Signals: high turnover at vol/mcap 0.21, an 11.0% 7d climb that outpaces a red BTC and ETH, 24h momentum cooling to +1.8%. Not on the trending list, no DEX cross-confirm.
+Catalyst: FIFA World Cup 2026 opens June 11, three weeks out, the demand event CHZ Fan Tokens are built around. The Q2 buyback program routes 10% of Fan Token revenue into open-market CHZ purchases, and a Naver Pay integration onboarded close to 1m new Chiliz Chain wallets.
+Risk: CHZ has run into every prior World Cup and sold off after kickoff, so sell-the-news is the base case. The token sits 94.6% below its 2021 ATH, a long downtrend an event bid does not reverse. The buyback is a Q2 commitment tied to Fan Token revenue, not a confirmed bid.
+Dedup check: first time in 7d (recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR, HYPE)
 
 not financial advice — pattern-matching only

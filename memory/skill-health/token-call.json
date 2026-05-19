@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-19T14:14:09Z",
+  "last_analyzed": "2026-05-19T15:26:22Z",
   "quality_score": 4,
-  "assessment": "Substantive token analysis with clear methodology, quantified signals, identified catalysts, risk assessment, deduplication tracking, and cited sources",
+  "assessment": "Well-structured analysis with specific data, multi-source validation, clear reasoning (World Cup catalyst, buyback program), risk framing, and proper dedup logic—all supporting actions executed correctly.",
   "flags": [],
-  "avg_score": 4.2,
+  "avg_score": 4.17,
   "history": [
     {
       "date": "2026-05-18",
@@ -13,6 +13,10 @@
     {
       "date": "2026-05-18",
       "score": 5
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     },
     {
       "date": "2026-05-19",

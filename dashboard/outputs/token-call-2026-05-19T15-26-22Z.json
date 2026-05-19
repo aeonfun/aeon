@@ -1,0 +1,254 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 2026-05-19"
+      },
+      "children": [
+        "header-section",
+        "metrics-grid",
+        "sep1",
+        "signals-section",
+        "sep2",
+        "catalyst-section",
+        "sep3",
+        "risk-section",
+        "sep4",
+        "dedup-section",
+        "sep5",
+        "disclaimer"
+      ]
+    },
+    "header-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "token-heading",
+        "rating-badge",
+        "rating-text"
+      ]
+    },
+    "token-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "CHZ",
+        "level": "h2"
+      }
+    },
+    "rating-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "default"
+      }
+    },
+    "rating-text": {
+      "type": "Text",
+      "props": {
+        "text": "7/10"
+      }
+    },
+    "metrics-grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-24h",
+        "stat-7d",
+        "stat-mcap",
+        "stat-vol",
+        "stat-volcap"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$0.0476"
+      }
+    },
+    "stat-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+1.8%",
+        "trend": "up"
+      }
+    },
+    "stat-7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d",
+        "value": "+11.0%",
+        "trend": "up"
+      }
+    },
+    "stat-mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "mcap",
+        "value": "$494m"
+      }
+    },
+    "stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$103m"
+      }
+    },
+    "stat-volcap": {
+      "type": "Stat",
+      "props": {
+        "label": "vol/mcap",
+        "value": "0.21"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signals-heading",
+        "signals-text"
+      ]
+    },
+    "signals-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals-text": {
+      "type": "Text",
+      "props": {
+        "text": "high turnover at vol/mcap 0.21, an 11.0% 7d climb that outpaces a red BTC and ETH, 24h momentum cooling to +1.8%. Not on the trending list, no DEX cross-confirm.",
+        "variant": "body"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "FIFA World Cup 2026 opens June 11, three weeks out, the demand event CHZ Fan Tokens are built around. The Q2 buyback program routes 10% of Fan Token revenue into open-market CHZ purchases, and a Naver Pay integration onboarded close to 1m new Chiliz Chain wallets.",
+        "variant": "body"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "risk-heading",
+        "risk-text"
+      ]
+    },
+    "risk-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      }
+    },
+    "risk-text": {
+      "type": "Text",
+      "props": {
+        "text": "CHZ has run into every prior World Cup and sold off after kickoff, so sell-the-news is the base case. The token sits 94.6% below its 2021 ATH, a long downtrend an event bid does not reverse. The buyback is a Q2 commitment tied to Fan Token revenue, not a confirmed bid.",
+        "variant": "body"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dedup-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dedup-heading",
+        "dedup-text"
+      ]
+    },
+    "dedup-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dedup check",
+        "level": "h3"
+      }
+    },
+    "dedup-text": {
+      "type": "Text",
+      "props": {
+        "text": "first time in 7d (recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR, HYPE)",
+        "variant": "body"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "disclaimer": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "muted"
+      }
+    }
+  }
+}
