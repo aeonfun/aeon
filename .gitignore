@@ -35,6 +35,8 @@ tmp_*
 .*-msg.txt
 *_msg.txt
 *_raw.txt
+.gtdata/
+.runner_process.py
 
 # Leaked creds scratch
 .xai_key

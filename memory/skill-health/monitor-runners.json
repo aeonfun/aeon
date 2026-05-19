@@ -1,8 +1,8 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-19T10:00:54Z",
+  "last_analyzed": "2026-05-19T14:20:48Z",
   "quality_score": 4,
-  "assessment": "Substantive analysis with solid methodology, detailed metrics, and honest verdict; SPECULATIVE classification reflects market conditions, not execution failure; good operational transparency about sandbox limitations and recovery strategy",
+  "assessment": "Substantive, well-structured market analysis with actionable tape-reading insights and honest sandbox constraint documentation. Recovered cleanly from API rate limiting and cross-referenced prior results.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -12,6 +12,10 @@
     },
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     },
     {
