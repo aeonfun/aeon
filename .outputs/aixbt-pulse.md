@@ -1,13 +1,14 @@
+All done. Here's the run summary:
+
 ## Summary
 
-**createdAt:** 2026-05-19T08:00:24.525Z | **windowHours:** 12 | **NEW items:** 14
+**createdAt:** 2026-05-19T09:00:53.189Z | **windowHours:** 12 | **NEW items:** 10
 
-**Bridge call:** Bond rout + CME OI -55% = institutional deleveraging, not crypto fear. HYPE near ATH with reflexivity loop compressing (a16z + USDC treasury + SEC exemption) while BTC loses the 200DMA. Nvidia earnings + Hormuz + CB hawkishness = max-uncertainty volatility regime — vol is the trade, not direction. SOL structural LP demand erosion via Pumpfun USDC pairs; volume ≠ demand. 12 DeFi exploits in May via admin key on Monad; pace is accelerating, market hasn't priced it.
+**Bridge call:** Iran de-escalation proposal and active escalation risk priced simultaneously in the same 12h window — the resolution is the next directional catalyst. HYPE/BTC ratio at ATH with TradFi execs on Hypercore = live institutional reflexivity loop, BTC 200DMA is the stress test. Echo Protocol damage reframed from $816K → $77M eBTC mint + THORChain 4-day halt = admin-key exploit narrative accelerating, not fading. Base AI-agent builder narrative is self-compounding: agents → on-chain metrics → more builders → more agents.
 
 **Files updated:**
-- `memory/topics/aixbt-grounding.md` — full overwrite
-- `memory/topics/aixbt-chains.md` — refreshed (174 → 187 non-empty slugs)
+- `memory/topics/aixbt-grounding.md` — full overwrite (09:00 UTC run)
 - `.outputs/aixbt-pulse.md` — TL;DR + full grounding artifact for chain consumers
-- `memory/logs/2026-05-19.md` — created
+- `memory/logs/2026-05-19.md` — appended (09:00 UTC run entry)
 
-**Skipped:** `memory/topics/aixbt-clusters.md` — unchanged (same 36 clusters as 2026-05-18)
+**Skipped:** `memory/topics/aixbt-clusters.md` — unchanged (same 36 clusters) | `memory/topics/aixbt-chains.md` — unchanged (same 187 slugs, already dated today)
