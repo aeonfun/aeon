@@ -78,9 +78,19 @@ cg_get() {
     fi
     http_code=$(echo "$response" | grep '__HTTP_CODE__' | sed 's/__HTTP_CODE__//')
     response=$(echo "$response" | grep -v '__HTTP_CODE__')
-    if [ "$http_code" = "429" ] && [ "$attempt" -lt 2 ]; then
-      echo "coinglass-prefetch: HTTP 429 on $(basename "$outfile"), backing off 5s then retrying"
-      sleep 5
+    # Coinglass returns 429 OR HTTP 200 + code != "0" + msg="Too Many Requests".
+    # Both indicate rate-limit; retry with exponential backoff (5s, 15s, 30s, 60s — total 110s wall time max).
+    cg_rate_limited=false
+    if [ "$http_code" = "429" ]; then
+      cg_rate_limited=true
+    elif [ "$http_code" = "200" ] && echo "$response" | jq -e '.msg | tostring | test("Too Many Requests"; "i")' >/dev/null 2>&1; then
+      cg_rate_limited=true
+    fi
+    if [ "$cg_rate_limited" = "true" ] && [ "$attempt" -lt 5 ]; then
+      backoff=$(( 5 * (3 ** (attempt - 1)) ))  # 5, 15, 45, 135 → cap at 60
+      [ "$backoff" -gt 60 ] && backoff=60
+      echo "coinglass-prefetch: rate-limited on $(basename "$outfile") (attempt $attempt), backing off ${backoff}s then retrying"
+      sleep "$backoff"
       attempt=$((attempt + 1))
       continue
     fi
@@ -170,8 +180,11 @@ else
     map(select(.total_vol > 0)) |
     sort_by(.total_vol) | reverse | .[0:25] | .[].index_id
   ' "$DERIVATIVES_FILE")
-  ASSET_LIST=$(printf '%s\nBTC\nETH\nSOL\n' "$TOP" | grep -v '^$' | sort -u)
-  echo "coinglass-prefetch: universe = top 25 by Binance/OKX/Bybit USDT-perp aggregated 24h volume + BTC/ETH/SOL ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
+  # Order: Tier 1 (BTC, ETH, SOL) FIRST so they always succeed even if a later
+  # Coinglass burst hits per-minute rate limits. Then top-25-by-volume, deduped
+  # against Tier 1 (preserves the first-seen ordering — no sort -u shuffling).
+  ASSET_LIST=$(printf 'BTC\nETH\nSOL\n%s\n' "$TOP" | awk 'NF && !seen[$0]++')
+  echo "coinglass-prefetch: universe = Tier 1 (BTC, ETH, SOL) + top 25 by Binance/OKX/Bybit USDT-perp aggregated 24h volume ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
 fi
 
 # --- 3. Per-coin Coinglass fetches (7 endpoints per coin, tier-confirmed accessible) ---
