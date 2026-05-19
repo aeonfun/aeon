@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-18T16:50:30Z",
+  "last_analyzed": "2026-05-19T08:52:14Z",
   "quality_score": 4,
-  "assessment": "Corrective re-run executed competently: identified earlier format bug, re-validated data consistency, regenerated output in correct v2-locked format, handled notification deduplication properly, and documented everything. Substantive, well-sourced, properly logged.",
+  "assessment": "Well-executed skill run with substantive, structured narratives, cross-validation via triangulation, and critical reasoning (cope-tagging); complete workflow from ingestion through commit, but summary lacks detailed source attribution and reasoning depth.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -12,6 +12,10 @@
     },
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     }
   ]

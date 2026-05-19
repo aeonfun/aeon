@@ -1,0 +1,668 @@
+{
+  "root": "card-narratives",
+  "state": {},
+  "elements": {
+    "card-narratives": {
+      "type": "Card",
+      "props": {
+        "title": "Narratives · 2026-05-19 · 5 tracked, 1 NEW"
+      },
+      "children": [
+        "stack-main"
+      ]
+    },
+    "stack-main": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "lg"
+      },
+      "children": [
+        "emerging-sec",
+        "sep1",
+        "rising-sec",
+        "sep2",
+        "peak-sec",
+        "sep3",
+        "changes-sec"
+      ]
+    },
+    "emerging-sec": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-emerging",
+        "n1",
+        "n2"
+      ]
+    },
+    "h-emerging": {
+      "type": "Heading",
+      "props": {
+        "text": "↑ EMERGING",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "n1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n1-title",
+        "n1-tokens",
+        "n1-meta",
+        "n1-desc"
+      ]
+    },
+    "n1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Privacy / ZK layer",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "n1-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n1-tk1",
+        "n1-tk2",
+        "n1-tk3"
+      ]
+    },
+    "n1-tk1": {
+      "type": "Badge",
+      "props": {
+        "text": "ZEC",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n1-tk2": {
+      "type": "Badge",
+      "props": {
+        "text": "ZANO",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n1-tk3": {
+      "type": "Badge",
+      "props": {
+        "text": "ZK",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n1-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "n1-score",
+        "n1-status"
+      ]
+    },
+    "n1-score": {
+      "type": "Stat",
+      "props": {
+        "value": "3/5"
+      },
+      "children": []
+    },
+    "n1-status": {
+      "type": "Badge",
+      "props": {
+        "text": "WATCH",
+        "variant": "outline"
+      },
+      "children": []
+    },
+    "n1-desc": {
+      "type": "Text",
+      "props": {
+        "text": "ZANO still #1 trending, ZEC outperforming a red tape; Grok adds \"privacy AI as enterprise gatekeeper\" — sector real, still no token catalyst",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "n2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n2-title",
+        "n2-tokens",
+        "n2-meta",
+        "n2-desc",
+        "n2-reflexivity"
+      ]
+    },
+    "n2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Liquidity rotation equities→crypto",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "n2-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n2-tk1",
+        "n2-tk2",
+        "n2-tk3"
+      ]
+    },
+    "n2-tk1": {
+      "type": "Badge",
+      "props": {
+        "text": "BTC",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n2-tk2": {
+      "type": "Badge",
+      "props": {
+        "text": "ETH",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n2-tk3": {
+      "type": "Badge",
+      "props": {
+        "text": "SOL",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n2-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "n2-score",
+        "n2-status1",
+        "n2-status2"
+      ]
+    },
+    "n2-score": {
+      "type": "Stat",
+      "props": {
+        "value": "3/5"
+      },
+      "children": []
+    },
+    "n2-status1": {
+      "type": "Badge",
+      "props": {
+        "text": "NEW",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "n2-status2": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "n2-desc": {
+      "type": "Text",
+      "props": {
+        "text": "@MerlijnTrader / @VoidOnChain call the rotation \"undeniable\" — tape says risk-off (BTC -6% 7d, breadth 3/20 green); story is ahead of price",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "n2-reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "Reflexivity: bull case cites a \"Pro-Bitcoin Fed Chair\" — the May-15 appointee Warsh is hawkish; manufactured macro tailwind",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "rising-sec": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-rising",
+        "n3"
+      ]
+    },
+    "h-rising": {
+      "type": "Heading",
+      "props": {
+        "text": "↑ RISING",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "n3": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n3-title",
+        "n3-tokens",
+        "n3-meta",
+        "n3-desc",
+        "n3-reflexivity"
+      ]
+    },
+    "n3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "Decentralized compute / DePIN / AI infra",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "n3-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n3-tk1",
+        "n3-tk2",
+        "n3-tk3"
+      ]
+    },
+    "n3-tk1": {
+      "type": "Badge",
+      "props": {
+        "text": "TAO",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n3-tk2": {
+      "type": "Badge",
+      "props": {
+        "text": "RENDER",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n3-tk3": {
+      "type": "Badge",
+      "props": {
+        "text": "AKT",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n3-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "n3-score",
+        "n3-status",
+        "n3-note"
+      ]
+    },
+    "n3-score": {
+      "type": "Stat",
+      "props": {
+        "value": "5/5",
+        "delta": "+1",
+        "trend": "up"
+      },
+      "children": []
+    },
+    "n3-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "n3-note": {
+      "type": "Text",
+      "props": {
+        "text": "(was 4)",
+        "variant": "caption"
+      },
+      "children": []
+    },
+    "n3-desc": {
+      "type": "Text",
+      "props": {
+        "text": "$725B Big Tech AI capex + DePIN 2.0 (GRASS, HNT, FIL) + sovereign-compute race — broadest infra thread, tokens still lag the story",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "n3-reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "Reflexivity: BTC miners rebranding hashpower as \"AI compute\" — capital-flow narrative running ahead of revenue",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "peak-sec": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-peak",
+        "n4",
+        "n5"
+      ]
+    },
+    "h-peak": {
+      "type": "Heading",
+      "props": {
+        "text": "→ PEAK",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "n4": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n4-title",
+        "n4-tokens",
+        "n4-meta",
+        "n4-desc",
+        "n4-reflexivity"
+      ]
+    },
+    "n4-title": {
+      "type": "Heading",
+      "props": {
+        "text": "AI agents / agentic finance",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "n4-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n4-tk1",
+        "n4-tk2",
+        "n4-tk3"
+      ]
+    },
+    "n4-tk1": {
+      "type": "Badge",
+      "props": {
+        "text": "VIRTUAL",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n4-tk2": {
+      "type": "Badge",
+      "props": {
+        "text": "FET",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n4-tk3": {
+      "type": "Badge",
+      "props": {
+        "text": "AIXBT",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n4-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "n4-score",
+        "n4-status"
+      ]
+    },
+    "n4-score": {
+      "type": "Stat",
+      "props": {
+        "value": "5/5"
+      },
+      "children": []
+    },
+    "n4-status": {
+      "type": "Badge",
+      "props": {
+        "text": "FADE",
+        "variant": "destructive"
+      },
+      "children": []
+    },
+    "n4-desc": {
+      "type": "Text",
+      "props": {
+        "text": "most-saturated thread (4 of 15 Grok narratives); \"AI tokens making a comeback\" rotation chatter building, but no fresh fundamentals",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "n4-reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "Reflexivity: \"rotate back into AI\" framed as a bid driver; exchange productization (Gemini, Bitget) = saturation, not edge",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "n5": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "n5-title",
+        "n5-tokens",
+        "n5-meta",
+        "n5-desc",
+        "n5-reflexivity"
+      ]
+    },
+    "n5-title": {
+      "type": "Heading",
+      "props": {
+        "text": "RWA / stablecoins / perp DEXs",
+        "level": "h4"
+      },
+      "children": []
+    },
+    "n5-tokens": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "n5-tk1",
+        "n5-tk2",
+        "n5-tk3"
+      ]
+    },
+    "n5-tk1": {
+      "type": "Badge",
+      "props": {
+        "text": "ONDO",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n5-tk2": {
+      "type": "Badge",
+      "props": {
+        "text": "LINK",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n5-tk3": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE",
+        "variant": "secondary"
+      },
+      "children": []
+    },
+    "n5-meta": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "n5-score",
+        "n5-status"
+      ]
+    },
+    "n5-score": {
+      "type": "Stat",
+      "props": {
+        "value": "5/5"
+      },
+      "children": []
+    },
+    "n5-status": {
+      "type": "Badge",
+      "props": {
+        "text": "RIDE w/ trail",
+        "variant": "default"
+      },
+      "children": []
+    },
+    "n5-desc": {
+      "type": "Text",
+      "props": {
+        "text": "institutional RWA maturation (ONDO, PLUME, LINK), CLARITY Act in Senate Banking markup; structurally real but fully consensus",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "n5-reflexivity": {
+      "type": "Text",
+      "props": {
+        "text": "Reflexivity: regulation legitimizes RWA, RWA growth lobbies regulation — loop intact",
+        "variant": "muted"
+      },
+      "children": []
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      },
+      "children": []
+    },
+    "changes-sec": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h-changes",
+        "changes-stack"
+      ]
+    },
+    "h-changes": {
+      "type": "Heading",
+      "props": {
+        "text": "Changes since yesterday",
+        "level": "h3"
+      },
+      "children": []
+    },
+    "changes-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "change-added",
+        "change-removed"
+      ]
+    },
+    "change-added": {
+      "type": "Text",
+      "props": {
+        "text": "+ Liquidity rotation equities→crypto (NEW)",
+        "variant": "body"
+      },
+      "children": []
+    },
+    "change-removed": {
+      "type": "Text",
+      "props": {
+        "text": "- Solana Alpenglow speed (zero chatter, absent from all signals)",
+        "variant": "body"
+      },
+      "children": []
+    }
+  }
+}
