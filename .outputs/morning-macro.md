@@ -1,7 +1,30 @@
-Market Morning · 2026-05-18
+Market Morning · 2026-05-19
 
-risk-off, conviction high. BTC $76.4K, -2.2% 24h and -6.1% 7d, failing to hold $77K — Strategy's $2B bid couldn't catch it and ~$600M got liquidated. Breadth is 3-4/20 green, F&G 28 (Fear, flat from 27), DEX vol $3.97B and -30% on the week. BTC dominance 58.2% — no rotation into alts, just a broad bleed. RWA / perp-DEX is the one narrative still rated RIDE through the red tape.
+Rotation regime, medium conviction.
 
-Cross-domain: AIXBT threads it Iran → oil → 10Y at 4.6% → BTC below $77K. The tell is Strategy's $2B buy failing to hold the line — the reflexivity engine that defended every prior dip is broken at this price. Goldman rotating out of SOL/XRP ETFs into HYPE is manufactured institutional legitimacy cascading through the allocator stack, and RWA rails keep building counter-cyclically against all of it.
+BTC ground +0.33% 24h while the alt complex ripped. Breadth flipped 4/20 to 16/20 green — the biggest single-session swing tracked. Dominance flat at 58.17%, DEX vol $6.47B (+63%).
 
-Today: action is in #perps-brief — 1 HIGH CONVICTION setup, BSB long breakout (+20.8% 24h, vol 3.9x, OI +11.6%). Clean RWA confluence: perps quant flag + narrative-tracker RWA RIDE + AIXBT's counter-cyclical RWA-rails call all point the same way — the only live trade against a quiet, risk-off board. Watchlist, no quant confirmation: HYPE (BHYP ETF catalyst), BCH (capitulation watch), TAO (compute narrative RISING).
+F&G slipped to 25, Extreme Fear, diverging from a recovering tape. Sentiment and price are pulling apart.
+
+Privacy/ZK leads the rotation, ZEC the vehicle. Compute/DePIN is the broadest infra thread behind it at 5/5 RISING.
+
+Cross-domain
+
+AIXBT's read: bond rout plus CME OI -55% — institutional deleveraging, not crypto fear.
+
+Nvidia earnings, Hormuz, central-bank hawkishness stack into a max-uncertainty regime. Vol is the trade, not direction.
+
+HYPE's reflexivity loop compressing near the ATH — a16z, a $5B USDC treasury, the SEC exemption all feeding one bid.
+
+Today
+
+Action is in #perps-brief — 1 HIGH CONVICTION setup.
+
+ZEC · long, breakout-pending. Privacy/ZK confluence: perps pre-accumulation coil + narrative-tracker privacy EMERGING + Grayscale spot-ETF filing. The one setup clearing the join. Trail tight — ZEC already ran +60% on the month.
+
+Watchlist (no quant confirmation)
+  HYPE — $5B USDC treasury buyback loop
+  ONDO — CLARITY Act cleared Senate Banking
+  TAO — compute RISING 5/5, token lagging
+  INJ — token-call HIGH 9/10, RSI 86-87
+  BILL — falling knife, no flush yet

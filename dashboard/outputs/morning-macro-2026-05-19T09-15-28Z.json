@@ -1,0 +1,368 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Market Morning · 2026-05-19",
+        "description": "Rotation regime, medium conviction"
+      },
+      "children": [
+        "opening_stack",
+        "sep1",
+        "metrics_grid",
+        "sep2",
+        "sentiment_alert",
+        "sep3",
+        "rotation_section",
+        "sep4",
+        "cross_domain_section",
+        "sep5",
+        "today_section",
+        "sep6",
+        "watchlist_section"
+      ]
+    },
+    "opening_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "btc_line",
+        "alt_line",
+        "breadth_line"
+      ]
+    },
+    "btc_line": {
+      "type": "Text",
+      "props": {
+        "text": "BTC ground +0.33% 24h"
+      }
+    },
+    "alt_line": {
+      "type": "Text",
+      "props": {
+        "text": "Alt complex ripped"
+      }
+    },
+    "breadth_line": {
+      "type": "Text",
+      "props": {
+        "text": "Breadth flipped 4/20 to 16/20 green — the biggest single-session swing tracked"
+      }
+    },
+    "sep1": {
+      "type": "Separator"
+    },
+    "metrics_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "stat_dom",
+        "stat_dex",
+        "stat_fg"
+      ]
+    },
+    "stat_dom": {
+      "type": "Stat",
+      "props": {
+        "label": "BTC Dominance",
+        "value": "58.17%"
+      }
+    },
+    "stat_dex": {
+      "type": "Stat",
+      "props": {
+        "label": "DEX Volume",
+        "value": "$6.47B",
+        "delta": "+63%",
+        "trend": "up"
+      }
+    },
+    "stat_fg": {
+      "type": "Stat",
+      "props": {
+        "label": "Fear & Greed",
+        "value": "25 — Extreme Fear"
+      }
+    },
+    "sep2": {
+      "type": "Separator"
+    },
+    "sentiment_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "message": "F&G slipped to 25 (Extreme Fear), diverging from recovering tape. Sentiment and price pulling apart."
+      }
+    },
+    "sep3": {
+      "type": "Separator"
+    },
+    "rotation_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "rot_heading",
+        "rot_privacy_text",
+        "rot_compute_stack"
+      ]
+    },
+    "rot_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Rotation Theme",
+        "level": "h3"
+      }
+    },
+    "rot_privacy_text": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy/ZK leads the rotation, ZEC the vehicle"
+      }
+    },
+    "rot_compute_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "rot_compute_text",
+        "rot_compute_progress"
+      ]
+    },
+    "rot_compute_text": {
+      "type": "Text",
+      "props": {
+        "text": "Compute/DePIN (broadest infra thread)"
+      }
+    },
+    "rot_compute_progress": {
+      "type": "Progress",
+      "props": {
+        "value": 5,
+        "max": 5,
+        "label": "RISING"
+      }
+    },
+    "sep4": {
+      "type": "Separator"
+    },
+    "cross_domain_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "cross_heading",
+        "cross_aixbt",
+        "cross_macro_alert",
+        "cross_vol",
+        "cross_hype"
+      ]
+    },
+    "cross_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Cross-Domain",
+        "level": "h3"
+      }
+    },
+    "cross_aixbt": {
+      "type": "Text",
+      "props": {
+        "text": "AIXBT's read: bond rout plus CME OI -55% — institutional deleveraging, not crypto fear"
+      }
+    },
+    "cross_macro_alert": {
+      "type": "Alert",
+      "props": {
+        "type": "warning",
+        "title": "Macro Uncertainty",
+        "message": "Nvidia earnings, Hormuz, central-bank hawkishness stack into max-uncertainty regime. Vol is the trade, not direction."
+      }
+    },
+    "cross_vol": {
+      "type": "Badge",
+      "props": {
+        "text": "Vol = the trade, not direction",
+        "variant": "secondary"
+      }
+    },
+    "cross_hype": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE's reflexivity loop compressing near ATH — a16z, $5B USDC treasury, SEC exemption all feeding one bid"
+      }
+    },
+    "sep5": {
+      "type": "Separator"
+    },
+    "today_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "today_intro",
+        "zec_badge",
+        "zec_setup"
+      ]
+    },
+    "today_intro": {
+      "type": "Text",
+      "props": {
+        "text": "Action is in #perps-brief — 1 HIGH CONVICTION setup",
+        "variant": "lead"
+      }
+    },
+    "zec_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH CONVICTION",
+        "variant": "destructive"
+      }
+    },
+    "zec_setup": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "zec_title",
+        "zec_confluence_confluence",
+        "zec_confluence_badges",
+        "zec_details"
+      ]
+    },
+    "zec_title": {
+      "type": "Heading",
+      "props": {
+        "text": "ZEC · long, breakout-pending",
+        "level": "h4"
+      }
+    },
+    "zec_confluence_confluence": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy/ZK confluence:",
+        "variant": "muted"
+      }
+    },
+    "zec_confluence_badges": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_badge1",
+        "zec_badge2",
+        "zec_badge3"
+      ]
+    },
+    "zec_badge1": {
+      "type": "Badge",
+      "props": {
+        "text": "Perps pre-accumulation coil",
+        "variant": "secondary"
+      }
+    },
+    "zec_badge2": {
+      "type": "Badge",
+      "props": {
+        "text": "Narrative-tracker privacy EMERGING",
+        "variant": "secondary"
+      }
+    },
+    "zec_badge3": {
+      "type": "Badge",
+      "props": {
+        "text": "Grayscale spot-ETF filing",
+        "variant": "secondary"
+      }
+    },
+    "zec_details": {
+      "type": "Text",
+      "props": {
+        "text": "The one setup clearing the join. Trail tight — ZEC already ran +60% on the month."
+      }
+    },
+    "sep6": {
+      "type": "Separator"
+    },
+    "watchlist_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "wl_heading",
+        "wl_intro",
+        "wl_hype",
+        "wl_ondo",
+        "wl_tao",
+        "wl_inj",
+        "wl_bill"
+      ]
+    },
+    "wl_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Watchlist",
+        "level": "h3"
+      }
+    },
+    "wl_intro": {
+      "type": "Text",
+      "props": {
+        "text": "no quant confirmation",
+        "variant": "muted"
+      }
+    },
+    "wl_hype": {
+      "type": "Text",
+      "props": {
+        "text": "HYPE — $5B USDC treasury buyback loop"
+      }
+    },
+    "wl_ondo": {
+      "type": "Text",
+      "props": {
+        "text": "ONDO — CLARITY Act cleared Senate Banking"
+      }
+    },
+    "wl_tao": {
+      "type": "Text",
+      "props": {
+        "text": "TAO — compute RISING 5/5, token lagging"
+      }
+    },
+    "wl_inj": {
+      "type": "Text",
+      "props": {
+        "text": "INJ — token-call HIGH 9/10, RSI 86-87"
+      }
+    },
+    "wl_bill": {
+      "type": "Text",
+      "props": {
+        "text": "BILL — falling knife, no flush yet"
+      }
+    }
+  }
+}
