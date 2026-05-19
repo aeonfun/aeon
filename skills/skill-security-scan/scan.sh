@@ -277,15 +277,23 @@ scan_file() {
       PASS) echo -e "${GREEN}[PASS]${NC} $skill_name ($file)" ;;
     esac
 
-    for h in "${highs[@]}"; do
-      echo -e "  ${RED}HIGH${NC}: $h"
-    done
-    for m in "${mediums[@]}"; do
-      echo -e "  ${YELLOW}MEDIUM${NC}: $m"
-    done
-    for l in "${lows[@]}"; do
-      echo -e "  ${CYAN}LOW${NC}: $l"
-    done
+    # Bash 3.2 (macOS default) treats `"${arr[@]}"` as unbound under `set -u`
+    # when the array has zero elements, so each loop is gated on length first.
+    if [[ ${#highs[@]} -gt 0 ]]; then
+      for h in "${highs[@]}"; do
+        echo -e "  ${RED}HIGH${NC}: $h"
+      done
+    fi
+    if [[ ${#mediums[@]} -gt 0 ]]; then
+      for m in "${mediums[@]}"; do
+        echo -e "  ${YELLOW}MEDIUM${NC}: $m"
+      done
+    fi
+    if [[ ${#lows[@]} -gt 0 ]]; then
+      for l in "${lows[@]}"; do
+        echo -e "  ${CYAN}LOW${NC}: $l"
+      done
+    fi
   fi
 }
 
