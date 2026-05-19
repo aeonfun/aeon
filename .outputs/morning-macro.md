@@ -1,30 +1,24 @@
-Market Morning · 2026-05-19
+Morning Macro re-run complete.
 
-Rotation regime, medium conviction.
+## Summary
 
-BTC ground +0.33% 24h while the alt complex ripped. Breadth flipped 4/20 to 16/20 green — the biggest single-session swing tracked. Dominance flat at 58.17%, DEX vol $6.47B (+63%).
+Re-ran **morning-macro** as chain Step 3 against the corrected afternoon context. The morning scheduled run published a rotation-regime front page with a ZEC HIGH CONVICTION confluence call — the afternoon chain flipped that read, so I recomposed as the quiet-day variant.
 
-F&G slipped to 25, Extreme Fear, diverging from a recovering tape. Sentiment and price are pulling apart.
+**Why the call changed**
+- `market-context-refresh` flipped regime rotation → chop, breadth halved 16/20 → 8/20 green, F&G slipped 28 → 25 (Extreme Fear)
+- `perps-brief` ran a skip-day — 0 HIGH CONVICTION, 5 WATCHLIST, no quant signal overlapping a rising narrative
+- With no perps × narrative × aixbt alignment, confluence cannot honestly be claimed — the spec bars manufacturing one
 
-Privacy/ZK leads the rotation, ZEC the vehicle. Compute/DePIN is the broadest infra thread behind it at 5/5 RISING.
+**Output** — `Market Morning · 2026-05-19 · quiet`, 1132/1500 chars, three sections:
+- **Regime:** chop, low conviction — BTC -0.19% 24h, breadth 8/20, defensive BTC/ETH/SOL trending rotation
+- **Cross-domain:** AIXBT's two-way Iran tape (de-escalation vs escalation in one 12h window), Polymarket peace-deal at 11.5%, HYPE/BTC ATH reflexivity loop
+- **Today:** sector briefs all quiet, #perps-brief skip-day, cash-patient stance
 
-Cross-domain
+**Files**
+- `.outputs/morning-macro.md` — overwrote the stale morning rotation/ZEC-confluence brief
+- `memory/logs/2026-05-19.md` — appended `## Morning Macro (re-run)` + summary
+- `.pending-notify/1779185571.signal.md` — queued for #morning-macro delivery
 
-AIXBT's read: bond rout plus CME OI -55% — institutional deleveraging, not crypto fear.
-
-Nvidia earnings, Hormuz, central-bank hawkishness stack into a max-uncertainty regime. Vol is the trade, not direction.
-
-HYPE's reflexivity loop compressing near the ATH — a16z, a $5B USDC treasury, the SEC exemption all feeding one bid.
-
-Today
-
-Action is in #perps-brief — 1 HIGH CONVICTION setup.
-
-ZEC · long, breakout-pending. Privacy/ZK confluence: perps pre-accumulation coil + narrative-tracker privacy EMERGING + Grayscale spot-ETF filing. The one setup clearing the join. Trail tight — ZEC already ran +60% on the month.
-
-Watchlist (no quant confirmation)
-  HYPE — $5B USDC treasury buyback loop
-  ONDO — CLARITY Act cleared Senate Banking
-  TAO — compute RISING 5/5, token lagging
-  INJ — token-call HIGH 9/10, RSI 86-87
-  BILL — falling knife, no flush yet
+**Follow-ups**
+- Inline `./notify` required interactive approval, so I used the documented `.pending-notify/` fallback — the post-run workflow step delivers it to Discord #morning-macro.
+- `_send_brief.sh` (flagged in the perps-brief step) remains untracked in the repo root — `rm` is sandbox-blocked. Should not be committed.
