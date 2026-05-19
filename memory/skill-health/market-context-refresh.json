@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-19T09:56:41Z",
-  "quality_score": 4,
-  "assessment": "Clean execution with specific quantified deltas, clear regime call (chop/low conviction), and substantive narrative tracking. All sources responded, memory properly updated.",
+  "last_analyzed": "2026-05-19T14:14:40Z",
+  "quality_score": 5,
+  "assessment": "Excellent — quantified market analysis across five sources with narrative shift tracking, macro event linkage, and conviction assessment; properly logged and committed",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-18",
@@ -17,6 +17,10 @@
     {
       "date": "2026-05-19",
       "score": 4
+    },
+    {
+      "date": "2026-05-19",
+      "score": 5
     }
   ]
 }
