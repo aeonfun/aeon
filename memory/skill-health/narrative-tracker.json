@@ -1,12 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-19T14:11:28Z",
+  "last_analyzed": "2026-05-19T15:27:15Z",
   "quality_score": 4,
-  "assessment": "Substantive diagnostics with proper corrective action; detected and fixed artifact corruption, verified data integrity, avoided redundant notifications, but ISS-003 recurrence indicates systemic root-cause remains unfixed.",
-  "flags": [
-    "quality_regression"
-  ],
-  "avg_score": 3.8,
+  "assessment": "Well-executed corrective run with thoughtful investigation and good judgment (avoided duplicate notification), but underlying ISS-005 corruption persists as third failure in a day—fix requires architectural redesign, not just workaround.",
+  "flags": [],
+  "avg_score": 3.83,
   "history": [
     {
       "date": "2026-05-18",
@@ -23,6 +21,10 @@
     {
       "date": "2026-05-19",
       "score": 3
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     },
     {
       "date": "2026-05-19",
