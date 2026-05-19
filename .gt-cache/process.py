@@ -1,144 +1,129 @@
-import json, math, glob, os
-from datetime import datetime, timezone
+import json, os, glob, math, datetime
+from collections import Counter
 
-NOW = datetime(2026,5,18,12,52,0,tzinfo=timezone.utc)
 CACHE = "/home/runner/work/aeon/aeon/.gt-cache"
+NOW = datetime.datetime.now(datetime.timezone.utc)
 
-def num(x):
+def clamp(x, lo, hi):
+    return max(lo, min(hi, x))
+
+def fnum(v):
     try:
-        if x is None: return None
-        return float(x)
-    except: return None
+        return float(v)
+    except (TypeError, ValueError):
+        return None
 
-pools = []
+files = glob.glob(os.path.join(CACHE, "*.json"))
+pools = {}
+raw_count = 0
 
-# standard GeckoTerminal files
-std_files = ["global.json","solana-trend.json","solana-vol.json","eth-trend.json","eth-vol.json",
-             "base-trend.json","base-vol.json","bsc-trend.json","arbitrum-trend.json","arbitrum-vol.json","new.json"]
-for fn in std_files:
-    path = os.path.join(CACHE,fn)
+for f in files:
     try:
-        d = json.load(open(path))
-    except Exception as e:
-        print("SKIP",fn,e); continue
-    data = d.get("data")
-    if not isinstance(data,list):
-        print("NODATA",fn); continue
-    for p in data:
-        a = p.get("attributes",{})
-        rel = p.get("relationships",{})
-        net = rel.get("network",{}).get("data",{}).get("id")
-        base = rel.get("base_token",{}).get("data",{}).get("id")
-        pcp = a.get("price_change_percentage",{}) or {}
-        vol = a.get("volume_usd",{}) or {}
-        tx = (a.get("transactions",{}) or {}).get("h24",{}) or {}
-        pools.append(dict(
-            network=net, name=a.get("name"), base=base,
-            m5=num(pcp.get("m5")), h1=num(pcp.get("h1")), h6=num(pcp.get("h6")), h24=num(pcp.get("h24")),
-            vol24=num(vol.get("h24")), liq=num(a.get("reserve_in_usd")),
-            mcap=num(a.get("market_cap_usd")), fdv=num(a.get("fdv_usd")),
-            created=a.get("pool_created_at"),
-            buys=num(tx.get("buys")) or 0, sells=num(tx.get("sells")) or 0,
-        ))
+        data = json.load(open(f))
+    except Exception:
+        continue
+    if not isinstance(data, dict) or not isinstance(data.get("data"), list):
+        continue
+    for p in data["data"]:
+        a = p.get("attributes", {})
+        rel = p.get("relationships", {})
+        raw_count += 1
+        bt = rel.get("base_token", {}).get("data", {})
+        net = rel.get("network", {}).get("data", {})
+        bt_id = (bt.get("id") if bt else None) or a.get("address")
+        vol = a.get("volume_usd", {}) or {}
+        pcp = a.get("price_change_percentage", {}) or {}
+        txn = (a.get("transactions", {}) or {}).get("h24", {}) or {}
+        rec = {
+            "name": a.get("name", "?"),
+            "network": (net.get("id") if net else "?"),
+            "h24v": fnum(vol.get("h24")) or 0.0,
+            "h24p": fnum(pcp.get("h24")),
+            "h6p": fnum(pcp.get("h6")),
+            "h1p": fnum(pcp.get("h1")),
+            "reserve": fnum(a.get("reserve_in_usd")) or 0.0,
+            "mcap": fnum(a.get("market_cap_usd")),
+            "fdv": fnum(a.get("fdv_usd")),
+            "buys": int(txn.get("buys") or 0),
+            "sells": int(txn.get("sells") or 0),
+            "created": a.get("pool_created_at"),
+            "bt_id": bt_id,
+        }
+        prev = pools.get(bt_id)
+        if prev is None or rec["h24v"] > prev["h24v"]:
+            pools[bt_id] = rec
 
-# bsc-vol simplified WebFetch file
-try:
-    d = json.load(open(os.path.join(CACHE,"bsc-vol-wf.json")))
-    for p in d["data"]:
-        pools.append(dict(
-            network=p["network"], name=p["name"], base=p["base"],
-            m5=num(p.get("m5")), h1=num(p.get("h1")), h6=num(p.get("h6")), h24=num(p.get("h24")),
-            vol24=num(p.get("vol24")), liq=num(p.get("liq")),
-            mcap=num(p.get("mcap")), fdv=num(p.get("fdv")),
-            created=p.get("created"),
-            buys=num(p.get("buys")) or 0, sells=num(p.get("sells")) or 0,
-        ))
-except Exception as e:
-    print("SKIP bsc-vol-wf",e)
+deduped = list(pools.values())
+pre_gate = len(deduped)
+rej = {"thin-vol":0,"down/no-move":0,"thin-liq":0,"dumping":0,"honeypot":0,"too-new":0,"rug-like":0}
+survivors = []
 
-print("TOTAL raw pools:",len(pools))
+for r in deduped:
+    h24p = r["h24p"]
+    if r["h24v"] < 50000:
+        rej["thin-vol"] += 1; continue
+    if h24p is None or h24p <= 0:
+        rej["down/no-move"] += 1; continue
+    if r["reserve"] < 10000:
+        rej["thin-liq"] += 1; continue
+    b, s = r["buys"], r["sells"]
+    if b > 0 and s / b > 10:
+        rej["dumping"] += 1; continue
+    if s > 0 and b / s > 50:
+        rej["honeypot"] += 1; continue
+    age_h = None
+    if r["created"]:
+        try:
+            ct = datetime.datetime.fromisoformat(r["created"].replace("Z","+00:00"))
+            age_h = (NOW - ct).total_seconds() / 3600.0
+        except Exception:
+            age_h = None
+    r["age_h"] = age_h
+    if age_h is not None and age_h < 1 and r["h24v"] < 100000:
+        rej["too-new"] += 1; continue
+    if h24p > 10000:
+        rej["rug-like"] += 1; continue
+    survivors.append(r)
 
-# dedupe by base token, keep highest vol24
-best = {}
-for p in pools:
-    b = p["base"]
-    if not b: continue
-    v = p["vol24"] or 0
-    if b not in best or v > (best[b]["vol24"] or 0):
-        best[b] = p
-deduped = list(best.values())
-print("PRE-GATE deduped:",len(deduped))
+post_gate = len(survivors)
 
-def age_hours(ts):
-    if not ts: return None
-    try:
-        dt = datetime.fromisoformat(ts.replace("Z","+00:00"))
-        return (NOW-dt).total_seconds()/3600
-    except: return None
+for r in survivors:
+    h24p = r["h24p"]
+    h1p = r["h1p"] if r["h1p"] is not None else 0.0
+    h6p = r["h6p"] if r["h6p"] is not None else 0.0
+    pct_pts = clamp(h24p / 500.0, 0, 1)
+    vol_pts = clamp(math.log10(r["h24v"] + 1) / 7.0, 0, 1)
+    liq_pts = clamp(math.log10(r["reserve"] + 1) / 6.0, 0, 1)
+    mom_pts = clamp((h1p + 50.0) / 100.0, 0, 1)
+    tot = r["buys"] + r["sells"]
+    skew_pts = clamp(r["buys"] / tot, 0, 1) if tot > 0 else 0.5
+    r["score"] = 40*pct_pts + 25*vol_pts + 15*liq_pts + 10*mom_pts + 10*skew_pts
+    r["skew"] = (r["buys"] / tot * 100) if tot > 0 else 0
+    age_h = r.get("age_h")
+    if r["reserve"] >= 1_000_000 and r["h24v"] >= 1_000_000:
+        r["tag"] = "DEEP-LIQ"
+    elif age_h is not None and age_h <= 48 and r["h24v"] >= 250_000:
+        r["tag"] = "BREAKOUT"
+    elif h1p > 2 and h24p > 50:
+        r["tag"] = "CONTINUATION"
+    elif h1p < -5 and h24p > 0:
+        r["tag"] = "REVERSAL"
+    else:
+        r["tag"] = "MICRO-SPEC"
 
-rej = dict(thin=0,dump=0,honey=0,toonew=0,ruglike=0,nomove=0,thinliq=0)
-gated = []
-for p in deduped:
-    h24=p["h24"]; vol=p["vol24"]; liq=p["liq"]; b=p["buys"]; s=p["sells"]
-    if vol is None or vol < 50000: rej["thin"]+=1; continue
-    if h24 is None or h24 <= 0: rej["nomove"]+=1; continue
-    if liq is None or liq < 10000: rej["thinliq"]+=1; continue
-    if b>0 and s/ max(b,1e-9) > 10: rej["dump"]+=1; continue
-    if s>0 and b/ max(s,1e-9) > 50: rej["honey"]+=1; continue
-    ah = age_hours(p["created"])
-    if ah is not None and ah < 1 and vol < 100000: rej["toonew"]+=1; continue
-    if h24 > 10000: rej["ruglike"]+=1; continue
-    p["age_h"]=ah
-    gated.append(p)
+survivors.sort(key=lambda r: r["score"], reverse=True)
+top = survivors[:5]
 
-print("POST-GATE:",len(gated))
-print("REJ:",rej)
-
-def clamp(x,a,b): return max(a,min(b,x))
-
-for p in gated:
-    h24=p["h24"]; vol=p["vol24"]; liq=p["liq"]; h1=p["h1"] if p["h1"] is not None else 0
-    b=p["buys"]; s=p["sells"]
-    pct=clamp(h24/500,0,1)
-    vp=clamp(math.log10(vol+1)/7,0,1)
-    lp=clamp(math.log10(liq+1)/6,0,1)
-    mp=clamp((h1+50)/100,0,1)
-    sk=clamp(b/(b+s) if (b+s)>0 else 0.5,0,1)
-    p["score"]=40*pct+25*vp+15*lp+10*mp+10*sk
-    # tag
-    if liq>=1_000_000 and vol>=1_000_000: tag="DEEP-LIQ"
-    elif p["age_h"] is not None and p["age_h"]<=48 and vol>=250_000: tag="BREAKOUT"
-    elif h1>2 and h24>50: tag="CONTINUATION"
-    elif h1<-5 and h24>0: tag="REVERSAL"
-    else: tag="MICRO-SPEC"
-    p["tag"]=tag
-
-gated.sort(key=lambda x:-x["score"])
-top5 = gated[:5]
-
-def fmt_usd(v):
-    if v is None: return "n/a"
-    if v>=1e6: return f"${v/1e6:.1f}m"
-    if v>=1e3: return f"${v/1e3:.0f}k"
-    return f"${v:.0f}"
-def fmt_pct(v):
-    if v is None: return "n/a"
-    if abs(v)<10: return f"{'+' if v>=0 else ''}{v:.1f}%"
-    return f"{'+' if v>=0 else ''}{v:.0f}%"
-
-print("\n=== TOP 5 ===")
-for i,p in enumerate(top5,1):
-    sk = p["buys"]/(p["buys"]+p["sells"]) if (p["buys"]+p["sells"])>0 else 0
-    print(f"{i}. [{p['tag']}] {p['name']} ({p['network']}) h24={fmt_pct(p['h24'])} "
-          f"score={p['score']:.0f} vol={fmt_usd(p['vol24'])} liq={fmt_usd(p['liq'])} "
-          f"h1={fmt_pct(p['h1'])} h6={fmt_pct(p['h6'])} buys={sk*100:.0f}% age_h={p['age_h']}")
-
-# verdict
-tags=[p["tag"] for p in top5]
-deepliq=tags.count("DEEP-LIQ"); cont=tags.count("CONTINUATION")
-if len(top5)<5: verdict="SLEEPY"
-elif deepliq>=2: verdict="STRONG"
-elif deepliq==1 or cont>=2: verdict="MIXED"
-else: verdict="SPECULATIVE"
-print("\nVERDICT:",verdict, "deepliq=",deepliq,"cont=",cont)
-print("ALL TAGS:",tags)
+print("RAW_OBJECTS:", raw_count)
+print("PRE_GATE:", pre_gate)
+print("POST_GATE:", post_gate)
+print("REJECTIONS:", json.dumps(rej))
+print("TOP5:")
+for i, r in enumerate(top, 1):
+    age = ("%.0fh" % r["age_h"]) if r.get("age_h") is not None else "n/a"
+    print(f"  {i}. [{r['tag']}] {r['name']} ({r['network']}) h24={r['h24p']:.0f}% "
+          f"score={r['score']:.1f} vol={r['h24v']:.0f} liq={r['reserve']:.0f} "
+          f"h1={r['h1p']} h6={r['h6p']} buys={r['buys']} sells={r['sells']} "
+          f"skew={r['skew']:.0f}% mcap={r['mcap']} fdv={r['fdv']} age={age}")
+tc = Counter(r["tag"] for r in top)
+print("TOP5_TAGS:", json.dumps(tc))
