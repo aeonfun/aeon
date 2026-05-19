@@ -94,7 +94,7 @@ The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whos
 
 ## Skills
 
-![Skills](./assets/skill.jpg)
+![Skills](./assets/skills.jpg)
 
 121 skills, grouped by what they do. Every skill is independently installable, schedulable, and chainable.
 
