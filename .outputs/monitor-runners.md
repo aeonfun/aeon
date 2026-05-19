@@ -1,25 +1,24 @@
-Yesterday's Runners · 2026-05-18 · MIXED (1 DEEP-LIQ, 4 BREAKOUT across sol, bsc, base)
-
-DEEP-LIQ
-★ PITCH (base) +1009% 24h
-  $8.4m vol, $1.2m liq, h1 -10%, buys 61%
-  → yesterday's deep-liq leader now distributing; h6 -32%, depth lets holders exit orderly — no setup until it bases
+Yesterday's Runners · 2026-05-19 · SPECULATIVE (top 5 all BREAKOUT, every print wash-inflated)
 
 BREAKOUT
-• PTROLL (sol) +8140% 24h
-  $9.6m vol, $385k liq, h1 +17%, buys 86%
-  → only fresh name on the board; 86% buy-skew is extreme one-sided demand, still expanding 15h in — first red hour ends it
+• 14 (bsc) +4159% 24h
+  $51m vol, $113k liq, h1 +36%, buys 55%
+  → 450x vol/liq churn on a nameless ticker, $85k fdv — manufactured print, pool only ~6h old; watch the unwind, not an entry
 
-★ ASTEROID (bsc) +8592% 24h
-  $51m vol, $161k liq, h1 +19%, buys 60%
-  → second straight day of wash-volume print, ~320x vol/liq churn; treat the volume as noise and any move as exit liquidity
+• OSOR (sol) +2918% 24h
+  $48m vol, $283k liq, h1 0%, h6 +8%, buys 54%
+  → 6h pool, move dead flat on h1; $48m vol against $283k liq with no fresh bid reads as exit-liquidity churn
 
-★ MANIFEST (sol) +2249% 24h
-  $2.0m vol, $250k liq, h1 +35%, buys 57%
-  → most durable repeat — still accelerating 37h in with a real $10m mcap; cleanest sustained name here
+★ GDOR (sol) +899% 24h
+  $51m vol, $268k liq, h1/h6 flat, buys 53%
+  → name carries over from yesterday's runners but this is a fresh contract; h1 and h6 both 0% = move fully stale, volume is pure wash
 
-★ GDOR (sol) +891% 24h
-  $49m vol, $258k liq, h1 +5.9%, buys 55%
-  → fresh 3h-old pool, not yesterday's GDOR token; $49m churned on micro-liq, blowoff already decelerating on h1
+★ GDOR (sol) +712% 24h
+  $47m vol, $254k liq, h1/h6 flat, buys 54%
+  → a second distinct GDOR contract live the same day — copycat name-farm cluster, treat the whole GDOR tag as noise not signal
 
-vibe: speculative tape coasting on yesterday's names — wash volume inflates two prints, only MANIFEST shows real follow-through
+• t3code (base) +580% 24h
+  $6.7m vol, $92k liq, h1 +14%, h6 -16%, buys 56%
+  → 11h pool, only top pick still bid on the hour but h6 is red — choppy two-way tape, no clean trend to lean on
+
+vibe: retail casino tape — every top print is wash-inflated micro-cap, zero deep-liquidity conviction anywhere on the board

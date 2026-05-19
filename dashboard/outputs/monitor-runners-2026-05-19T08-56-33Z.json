@@ -1,0 +1,495 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Yesterday's Runners",
+        "description": "2026-05-19 · SPECULATIVE (top 5 all BREAKOUT, every print wash-inflated)"
+      },
+      "children": [
+        "section-header",
+        "sep1",
+        "token-14",
+        "sep2",
+        "token-osor",
+        "sep3",
+        "token-gdor-1",
+        "sep4",
+        "token-gdor-2",
+        "sep5",
+        "token-t3code",
+        "sep6",
+        "vibe"
+      ]
+    },
+    "section-header": {
+      "type": "Heading",
+      "props": {
+        "text": "BREAKOUT",
+        "level": "h2"
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token-14": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "t14-title",
+        "t14-metrics",
+        "t14-commentary"
+      ]
+    },
+    "t14-title": {
+      "type": "Heading",
+      "props": {
+        "text": "14 (bsc) +4159% 24h",
+        "level": "h3"
+      }
+    },
+    "t14-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "t14-vol",
+        "t14-liq",
+        "t14-h1",
+        "t14-buys",
+        "t14-fdv",
+        "t14-pool-age",
+        "t14-vol-liq-ratio"
+      ]
+    },
+    "t14-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$51m"
+      }
+    },
+    "t14-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$113k"
+      }
+    },
+    "t14-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+36%",
+        "trend": "up"
+      }
+    },
+    "t14-buys": {
+      "type": "Stat",
+      "props": {
+        "label": "Buy %",
+        "value": "55%"
+      }
+    },
+    "t14-fdv": {
+      "type": "Stat",
+      "props": {
+        "label": "FDV",
+        "value": "$85k"
+      }
+    },
+    "t14-pool-age": {
+      "type": "Text",
+      "props": {
+        "text": "Pool age: ~6h"
+      }
+    },
+    "t14-vol-liq-ratio": {
+      "type": "Text",
+      "props": {
+        "text": "Vol/Liq churn: 450x"
+      }
+    },
+    "t14-commentary": {
+      "type": "Text",
+      "props": {
+        "text": "450x vol/liq churn on a nameless ticker, $85k fdv — manufactured print, pool only ~6h old; watch the unwind, not an entry",
+        "variant": "muted"
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token-osor": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tosor-title",
+        "tosor-metrics",
+        "tosor-commentary"
+      ]
+    },
+    "tosor-title": {
+      "type": "Heading",
+      "props": {
+        "text": "OSOR (sol) +2918% 24h",
+        "level": "h3"
+      }
+    },
+    "tosor-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tosor-vol",
+        "tosor-liq",
+        "tosor-h1",
+        "tosor-h6",
+        "tosor-buys",
+        "tosor-pool-age"
+      ]
+    },
+    "tosor-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$48m"
+      }
+    },
+    "tosor-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$283k"
+      }
+    },
+    "tosor-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "0%",
+        "trend": "neutral"
+      }
+    },
+    "tosor-h6": {
+      "type": "Stat",
+      "props": {
+        "label": "6h change",
+        "value": "+8%",
+        "trend": "up"
+      }
+    },
+    "tosor-buys": {
+      "type": "Stat",
+      "props": {
+        "label": "Buy %",
+        "value": "54%"
+      }
+    },
+    "tosor-pool-age": {
+      "type": "Text",
+      "props": {
+        "text": "Pool age: 6h"
+      }
+    },
+    "tosor-commentary": {
+      "type": "Text",
+      "props": {
+        "text": "6h pool, move dead flat on h1; $48m vol against $283k liq with no fresh bid reads as exit-liquidity churn",
+        "variant": "muted"
+      }
+    },
+    "sep3": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token-gdor-1": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tgdor1-title",
+        "tgdor1-flag",
+        "tgdor1-metrics",
+        "tgdor1-commentary"
+      ]
+    },
+    "tgdor1-title": {
+      "type": "Heading",
+      "props": {
+        "text": "GDOR (sol) +899% 24h",
+        "level": "h3"
+      }
+    },
+    "tgdor1-flag": {
+      "type": "Badge",
+      "props": {
+        "text": "★ Fresh contract",
+        "variant": "warning"
+      }
+    },
+    "tgdor1-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tgdor1-vol",
+        "tgdor1-liq",
+        "tgdor1-h1",
+        "tgdor1-h6",
+        "tgdor1-buys"
+      ]
+    },
+    "tgdor1-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$51m"
+      }
+    },
+    "tgdor1-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$268k"
+      }
+    },
+    "tgdor1-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "0%",
+        "trend": "neutral"
+      }
+    },
+    "tgdor1-h6": {
+      "type": "Stat",
+      "props": {
+        "label": "6h change",
+        "value": "0%",
+        "trend": "neutral"
+      }
+    },
+    "tgdor1-buys": {
+      "type": "Stat",
+      "props": {
+        "label": "Buy %",
+        "value": "53%"
+      }
+    },
+    "tgdor1-commentary": {
+      "type": "Text",
+      "props": {
+        "text": "name carries over from yesterday's runners but this is a fresh contract; h1 and h6 both 0% = move fully stale, volume is pure wash",
+        "variant": "muted"
+      }
+    },
+    "sep4": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token-gdor-2": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tgdor2-title",
+        "tgdor2-flag",
+        "tgdor2-metrics",
+        "tgdor2-commentary"
+      ]
+    },
+    "tgdor2-title": {
+      "type": "Heading",
+      "props": {
+        "text": "GDOR (sol) +712% 24h",
+        "level": "h3"
+      }
+    },
+    "tgdor2-flag": {
+      "type": "Badge",
+      "props": {
+        "text": "★ Copycat contract",
+        "variant": "destructive"
+      }
+    },
+    "tgdor2-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tgdor2-vol",
+        "tgdor2-liq",
+        "tgdor2-h1",
+        "tgdor2-h6",
+        "tgdor2-buys"
+      ]
+    },
+    "tgdor2-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$47m"
+      }
+    },
+    "tgdor2-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$254k"
+      }
+    },
+    "tgdor2-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "0%",
+        "trend": "neutral"
+      }
+    },
+    "tgdor2-h6": {
+      "type": "Stat",
+      "props": {
+        "label": "6h change",
+        "value": "0%",
+        "trend": "neutral"
+      }
+    },
+    "tgdor2-buys": {
+      "type": "Stat",
+      "props": {
+        "label": "Buy %",
+        "value": "54%"
+      }
+    },
+    "tgdor2-commentary": {
+      "type": "Text",
+      "props": {
+        "text": "a second distinct GDOR contract live the same day — copycat name-farm cluster, treat the whole GDOR tag as noise not signal",
+        "variant": "muted"
+      }
+    },
+    "sep5": {
+      "type": "Separator",
+      "props": {}
+    },
+    "token-t3code": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "tt3-title",
+        "tt3-metrics",
+        "tt3-commentary"
+      ]
+    },
+    "tt3-title": {
+      "type": "Heading",
+      "props": {
+        "text": "t3code (base) +580% 24h",
+        "level": "h3"
+      }
+    },
+    "tt3-metrics": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tt3-vol",
+        "tt3-liq",
+        "tt3-h1",
+        "tt3-h6",
+        "tt3-buys",
+        "tt3-pool-age"
+      ]
+    },
+    "tt3-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "Volume (24h)",
+        "value": "$6.7m"
+      }
+    },
+    "tt3-liq": {
+      "type": "Stat",
+      "props": {
+        "label": "Liquidity",
+        "value": "$92k"
+      }
+    },
+    "tt3-h1": {
+      "type": "Stat",
+      "props": {
+        "label": "1h change",
+        "value": "+14%",
+        "trend": "up"
+      }
+    },
+    "tt3-h6": {
+      "type": "Stat",
+      "props": {
+        "label": "6h change",
+        "value": "-16%",
+        "trend": "down"
+      }
+    },
+    "tt3-buys": {
+      "type": "Stat",
+      "props": {
+        "label": "Buy %",
+        "value": "56%"
+      }
+    },
+    "tt3-pool-age": {
+      "type": "Text",
+      "props": {
+        "text": "Pool age: 11h — only top pick still bid on the hour but 6h is red"
+      }
+    },
+    "tt3-commentary": {
+      "type": "Text",
+      "props": {
+        "text": "11h pool, only top pick still bid on the hour but h6 is red — choppy two-way tape, no clean trend to lean on",
+        "variant": "muted"
+      }
+    },
+    "sep6": {
+      "type": "Separator",
+      "props": {}
+    },
+    "vibe": {
+      "type": "Alert",
+      "props": {
+        "title": "Market Vibe",
+        "message": "retail casino tape — every top print is wash-inflated micro-cap, zero deep-liquidity conviction anywhere on the board",
+        "type": "warning"
+      }
+    }
+  }
+}
