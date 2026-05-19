@@ -1,42 +1,26 @@
-Done. Here's what was executed:
+All three files are written. Here's the run summary:
 
 ## Summary
 
-**Regime: risk-off · Conviction: high**
+**Regime: rotation — conviction: medium**
 
-All 5 data sources came back clean (coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok). This was the first run — no prior snapshot, so all deltas are n/a.
+All 5 sources responded clean.
 
-**Key numbers:**
-- BTC $76,380 (-2.2% 24h, -6.1% 7d) · ETH $2,095 (-4.1% 24h) · SOL $84 (-2.8% 24h)
-- Total mcap $2.623T (-2.2% 24h) · DEX vol $3.97B (-30.5% 7d)
-- Breadth 4/20 green 24h (BCH -11.2% leading the cascade) · F&G 28 Fear (was 27)
-- BTC dominance 58.19%; ETH/BTC 0.02744
+**Key numbers vs yesterday (2026-05-18):**
+- BTC: $76,380 → $77,137 (+0.33% 24h, -4.78% 7d) · dominance flat at 58.17%
+- ETH: $2,095 → $2,136 (+0.92%) · SOL $85.33 (+0.80%)
+- Breadth: 4/20 → **16/20 green** — biggest single-session swing tracked
+- DEX vol: $3.97B → **$6.47B** (+63%, above $6.0B 7d average)
+- F&G: 28 (Fear) → **25 (Extreme Fear)** — sentiment diverging from price recovery
 
-**Macro driver:** US PPI +6% YoY (April) triggered $635M record BTC ETF outflows on May 13 — risk-off headwind still in effect. CLARITY Act advancing through Senate is a medium-term structural positive but not an immediate catalyst.
+**The regime call:** *rotation* — BTC barely moved (+0.33%) while the alt complex posted broad gains led by ZEC (+6.63%), ONDO (+12.75%), HYPE (+5.43%). Conviction held at medium because F&G slipped to Extreme Fear even as breadth recovered.
 
-**Top narrative calls:** Privacy/ZK emerging (ZANO #1 trending +6.85%, ZEC +2.23% vs red tape); Decentralized compute rising (HYPE +9.56% 7d); AI agents fading; Memes fading (ASTEROID already -14.72% from yesterday's monitor-runners top pick).
+**Narrative transitions from 2026-05-18:**
+- Privacy/ZK: emerging → **rising** (ZANO #1 trending 2nd day, ZEC now rank 14 by mcap)
+- RWA/stablecoins: peak → **rising** (ONDO +12.75% on CLARITY Act Senate Banking Committee passage)
+- USD1 (Trump's World Liberty Financial stablecoin) now 4th largest stablecoin at $4.62B, overtaking USDe
 
-**Files created/updated:**
-- `memory/topics/market-context.md` — new, full canonical file with Token Picks table (KAIA 05-17, TRAC 05-18)
-- `.outputs/market-context-refresh.md` — chain-consumable digest for perps-brief / morning-macro / daily-ops-review
-Done. Here's the summary:
-
-## Summary
-
-**Regime: risk-off, conviction high.**
-
-**Data fetched (all sources OK):**
-- CoinGecko: BTC $76,392 (-2.2% 24h, -6.1% 7d), ETH $2,096 (-4.1%), SOL $84.25 (-2.7%). Breadth 3/20 green — well below the 7/20 risk-off threshold.
-- DeFiLlama: DEX vol $3.97B 24h (-35% vs 7d avg); all major DeFi protocols negative 7d (-2.5% to -8.9%).
-- Fear & Greed: 28 (Fear), was 27 — flat.
-- Polymarket: top volume dominated by Iran geopolitics (Reza Pahlavi 6.7%, Iran peace deal 8.5%).
-- Macro: PPI shock (+1.4% MoM / +6% YoY) and hawkish Fed Chair Warsh driving risk-off; CLARITY Act advancing in Senate as a structural positive.
-
-**Market Take:** `risk-off — BTC -2.2% 24h with only 3/20 top-cap majors green; DEX vol $3.97B, -35% vs 7d avg. Conviction: high.`
-
-**Active narratives:** Hyperliquid/perp DEX (rising), Privacy/ZK (emerging, ZANO #1 trending), RWA/stablecoin regulation (rising, CLARITY Act), AI agents (fading), Meme layer (fading).
-
-**Files created/modified:**
-- `memory/topics/market-context.md` — new, full canonical file
-- `.outputs/market-context-refresh.md` — new, chain-consumable digest
-- `memory/logs/2026-05-18.md` — log entry appended
+**Files updated:**
+- `memory/topics/market-context.md` — overwritten (clean single copy, BSB 2026-05-18 re-run pick appended to Token Picks table)
+- `.outputs/market-context-refresh.md` — overwritten with chain-consumable digest
+- `memory/logs/2026-05-19.md` — created
