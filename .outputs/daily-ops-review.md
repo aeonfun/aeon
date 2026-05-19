@@ -1,21 +1,26 @@
-Daily ops review complete for 2026-05-19.
+Ops Review · 19 May · duration n/a
 
-## Summary
+─────────  STEP 1 — DATA  ─────────
 
-Audited the `morning-review` chain (chain Step 4), using the prior steps' chain context rather than re-running them.
+  ⚠ market-context-refresh · regime chop, conviction low · artifact is a Summary blob (ISS-005)
+  ⚠ aixbt-pulse · 11 NEW items, bridge call generated · Summary blob (ISS-005)
+  ⚠ narrative-tracker · 5 narratives, 1 NEW · Summary blob (ISS-005)
+  ✓ perps-scan · QUIET, 0 of 25 assets in a regime, all NEUTRAL · clean v3 artifact
+  ⚠ monitor-runners · SPECULATIVE verdict, 0 DEEP-LIQ · Summary blob (ISS-005)
+  ⚠ token-movers · 213 assets, BILL and LAB in CAPITULATION · Summary blob (ISS-005)
+  ✓ token-call · CHZ, HIGH 7/10
 
-**Verdict: Complete — 3 ✓, 6 ⚠, 0 ✗.** All 9 artifacts fresh and non-empty; every data source responded clean.
+─────────  STEP 2 — BRIEFS  ─────────
 
-**The 6 ⚠ are one bug, not six.** `market-context-refresh`, `aixbt-pulse`, `narrative-tracker`, `monitor-runners`, `token-movers`, and `morning-macro` each wrote their assistant `## Summary` blob into `.outputs/` instead of the locked artifact format — the ISS-003 bug class.
+  ✓ perps-brief · 0 HIGH CONVICTION, 5 WATCHLIST
 
-- ISS-003 and ISS-004 were both marked resolved today, but the ISS-004 structural fix (data-JSON intermediate + deterministic postprocess render) was scoped to `perps-scan` only. It worked — `perps-scan.md` is clean v3 locked format this run.
-- The other 6 chain skills never got that treatment. `narrative-tracker` carries the ISS-003 prose guardrail and still produced a blob — confirming the prose guardrail is insufficient.
-- Impact contained: the blobs carry the headline data, so `perps-brief` and `morning-macro` still consumed them.
+─────────  STEP 3 — MACRO  ─────────
 
-**Issues:** Filed **ISS-005** (medium, output-format) — the Summary-blob corruption persists across 6 skills; the fix needs to generalize the perps-scan structured-render pattern. Open issues: 1.
+  ⚠ morning-macro · published · Summary blob (ISS-005)
 
-**Chain duration:** n/a — no run ID or log timestamps to bracket; still no 7-day median.
 
-**Files:** `.outputs/daily-ops-review.md`, `memory/issues/ISS-005.md` (new), `memory/issues/INDEX.md`, `memory/logs/2026-05-19.md` — committed as `1662197`. Notification queued to `.pending-notify/1779201694.signal.md` for post-run delivery to `#aeon-ops` (inline `./notify` blocked by sandbox command-substitution analysis).
+Chain ran complete. 3 ✓, 6 ⚠, 0 ✗.
 
-**Follow-up:** ISS-005 needs the perps-scan v3 pattern (or a chain-runner fix) applied to the remaining 6 chain skills — re-running and prose guardrails have both failed.
+All data sources responded clean — coingecko, defillama, fng, polymarket, geckoterminal, websearch.
+The 6 ⚠ are one bug: ISS-005, the Summary-blob artifact corruption, unchanged from the prior run today. Six artifacts hold the assistant Summary blob instead of the locked format. perps-scan, on the v3 structured-render path, stayed clean.
+No new issue this run. ISS-005 (medium, output-format) stays open. Updated it to add daily-ops-review — the prior run's own artifact also landed as a Summary blob, so the bug spans 7 skills, not 6.
