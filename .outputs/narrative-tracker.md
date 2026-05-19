@@ -1,24 +1,13 @@
-Narratives · 2026-05-19 · 5 tracked, 1 NEW
+## Summary
 
-↑ EMERGING
-• Privacy / ZK layer [ZEC, ZANO, STRK] · 3/5 · WATCH
-  privacy-AI angle (@CryptoHass); ZANO #1 trending + ZEC outperformance — real sector, no token catalyst yet
-• Liquidity rotation equities→crypto [BTC, ETH] · 3/5 · NEW · FADE
-  @MerlijnTrader, @VoidOnChain call the rotation "undeniable" — tape is risk-off (BTC -6% 7d), story ahead of price
+Re-invoked `narrative-tracker` for 2026-05-19 (fourth invocation today). The scheduled run had already computed the narrative map correctly, but `.outputs/narrative-tracker.md` was found **corrupted** — it held a `## Summary` blob from the earlier re-run instead of the v2-locked chain-consumable signal. This is the exact ISS-003 guardrail violation the skill warns against.
 
-↑ RISING
-• Decentralized compute / DePIN / AI infra [RENDER, GRASS, AKT] · 5/5 (was 4) · RIDE
-  @dens_club (DePIN 2.0), $725B Big Tech capex (@drboycewatkins1), sovereign compute — now spans 3 sub-threads
-  reflexivity: BTC miners rebranding hashpower as "AI compute"; $725B capex circulating as the token-bid anchor
+**What I did:**
+- Re-verified signals: `.xai-cache/narratives.json` unchanged (15 Grok threads, window 05-16→05-19); WebSearch triangulation re-run fresh — all consistent with the scheduled run.
+- Confirmed the narrative map is identical: 5 tracked — Privacy/ZK (WATCH), Liquidity rotation (NEW, FADE), Decentralized compute/DePIN (RIDE 5/5), AI agents (FADE), RWA (RIDE w/ trail). Transitions: NEW Liquidity rotation, DEAD Solana Alpenglow.
+- **Regenerated** `.outputs/narrative-tracker.md` in correct v2-locked format (5 tracked, 1 NEW).
+- Did **not** re-send the Discord `#narratives` notification — the scheduled run already delivered this exact signal; re-sending would duplicate.
 
-→ PEAK
-• AI agents / agentic finance [TAO, FET, VIRTUAL] · 5/5 · FADE
-  @dens_club, @The_NewsCrypto agentic-economy threads — exchange productization reads as saturation, no fresh fundamentals
-  reflexivity: "AI tokens making a comeback" circulating as a bid driver while every catalyst stays April-dated
-• RWA / stablecoins / perp DEXs [ONDO, PLUME, HYPE] · 5/5 · RIDE w/ trail
-  @dens_club ($ONDO/$PLUME/$LINK), CLARITY Act in Senate Banking markup
-  reflexivity: regulation-legitimizes / growth-lobbies-regulation loop intact — peaking
+**Files:** `.outputs/narrative-tracker.md` (rewritten to v2-locked format), `memory/logs/2026-05-19.md` (corrective-run entry). Committed to `main` as `150ff94`.
 
-Changes since yesterday:
-+ Liquidity rotation equities→crypto (NEW)
-- Solana Alpenglow speed (absent from all signals)
+**Follow-up:** ISS-003 remains open — the artifact/Summary separation bug has now recurred a third time on re-runs; the root cause (assistant Summary leaking into the artifact) is not yet fixed and warrants a real fix rather than repeated corrective re-runs.

@@ -1,10 +1,12 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-19T09:54:43Z",
-  "quality_score": 3,
-  "assessment": "Acceptable execution: skill verified data consistency and correctly applied the 'no re-report without new info' principle by avoiding redundant output and duplicate notifications, but ultimate outcome is a no-op status report with limited actionability.",
-  "flags": [],
-  "avg_score": 3.75,
+  "last_analyzed": "2026-05-19T14:11:28Z",
+  "quality_score": 4,
+  "assessment": "Substantive diagnostics with proper corrective action; detected and fixed artifact corruption, verified data integrity, avoided redundant notifications, but ISS-003 recurrence indicates systemic root-cause remains unfixed.",
+  "flags": [
+    "quality_regression"
+  ],
+  "avg_score": 3.8,
   "history": [
     {
       "date": "2026-05-18",
@@ -21,6 +23,10 @@
     {
       "date": "2026-05-19",
       "score": 3
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     }
   ]
 }
