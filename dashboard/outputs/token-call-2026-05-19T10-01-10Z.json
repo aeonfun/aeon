@@ -1,0 +1,239 @@
+{
+  "root": "card",
+  "state": {},
+  "elements": {
+    "card": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 2026-05-19"
+      },
+      "children": [
+        "header-stack",
+        "price-stat",
+        "market-data-stack",
+        "separator-1",
+        "signals-section",
+        "separator-2",
+        "catalyst-section",
+        "separator-3",
+        "risk-section",
+        "separator-4",
+        "dedup-section",
+        "separator-5",
+        "disclaimer"
+      ]
+    },
+    "header-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "near-badge",
+        "high-badge",
+        "score-badge"
+      ]
+    },
+    "near-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "NEAR",
+        "variant": "default"
+      }
+    },
+    "high-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH",
+        "variant": "destructive"
+      }
+    },
+    "score-badge": {
+      "type": "Badge",
+      "props": {
+        "text": "10/10",
+        "variant": "secondary"
+      }
+    },
+    "price-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Price",
+        "value": "$1.65",
+        "delta": "+11.1% 24h, +6.0% 7d",
+        "trend": "up"
+      }
+    },
+    "market-data-stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "mcap-stat",
+        "volume-stat",
+        "vol-mcap-stat"
+      ]
+    },
+    "mcap-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Market Cap",
+        "value": "$2.13b"
+      }
+    },
+    "volume-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "24h Volume",
+        "value": "$283m"
+      }
+    },
+    "vol-mcap-stat": {
+      "type": "Stat",
+      "props": {
+        "label": "Vol/Mcap",
+        "value": "0.13"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signals-heading",
+        "signals-text"
+      ]
+    },
+    "signals-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals-text": {
+      "type": "Text",
+      "props": {
+        "text": "high turnover, on the trending list, both 24h and 7d positive with 24h well above +5%, outpacing a red BTC and ETH on the 7d",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst-heading",
+        "catalyst-text"
+      ]
+    },
+    "catalyst-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "catalyst-text": {
+      "type": "Text",
+      "props": {
+        "text": "NEAR confirmed post-quantum Chain Signatures (FIPS-204 / ML-DSA) with a Q2 rollout timeline from co-founder Polosukhin, extending to 35+ external chains; Grayscale and Bitwise spot-ETF filings add an institutional angle",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "risk-heading",
+        "risk-text"
+      ]
+    },
+    "risk-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      }
+    },
+    "risk-text": {
+      "type": "Text",
+      "props": {
+        "text": "the quantum upgrade is still a Q2 promise not a shipped product — a rollout slip unwinds the narrative bid, and NEAR still carries an active emission/unlock schedule that caps upside",
+        "variant": "body"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dedup-section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dedup-heading",
+        "dedup-text"
+      ]
+    },
+    "dedup-heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dedup check",
+        "level": "h3"
+      }
+    },
+    "dedup-text": {
+      "type": "Text",
+      "props": {
+        "text": "first time in 7d (today's earlier scan picked INJ — different token; recent picks INJ, BSB, TRAC, KAIA all excluded)",
+        "variant": "body"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "disclaimer": {
+      "type": "Alert",
+      "props": {
+        "type": "info",
+        "message": "not financial advice — pattern-matching only"
+      }
+    }
+  }
+}
