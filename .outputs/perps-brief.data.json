@@ -3,24 +3,26 @@
   "qualifier": "no high-conviction setups",
   "market_sentiment": {
     "paragraphs": [
-      "BTC funding flat at +0.006%/8h, open interest unmoved on 24h. The three majors all printed under 1% on the day. Leverage building on neither side.",
-      "Perps-scan reads QUIET. One ACCUMULATION across 25 assessed, 24 NEUTRAL. Funding near-flat universe-wide — no crowded-long extreme, no capitulation flush, no pattern tags firing.",
-      "Breadth halved to 8/20 green as the morning alt bounce faded. F&G pinned at 25, Extreme Fear. Chop regime, no directional signal dominates."
+      "BTC funding sits flat at +0.007%/8h, barely above its 7d average. Open interest bled 4.96% on the week and went nowhere on 24h. The three majors all printed under 1.1% on the day. Neither side is building leverage.",
+      "Perps-scan reads QUIET. Zero assets cleared into a regime across 25 assessed, all 25 NEUTRAL. Funding is near-flat universe-wide, no crowded-long extreme, no capitulation flush. No pattern tags fired.",
+      "Breadth holds at 10/20 green, the morning alt bounce already faded. F&G pinned at 25, Extreme Fear, unmoved all day. Trending rotated into ZEST and RON microcaps — attention without a tape behind it. Chop regime, no directional signal dominates."
     ],
-    "bias_line": "Bias · cash-patient. QUIET perps tape, chop regime, no quant signal overlapping a rising narrative."
+    "bias_line": "Stance: cash-patient. QUIET perps tape, chop regime, no quant regime signal overlapping a rising narrative."
   },
   "high_conviction": [],
   "overflow": [],
   "watchlist": [
     {
       "ticker": "HYPE",
-      "conflict_label": "OI build not smart-money-confirmed",
+      "conflict_label": "near-ACCUMULATION, OI build not smart-money-confirmed",
       "risk": {
-        "header_suffix": "quant contradicts the narrative",
+        "header_suffix": "WATCH, no quant regime",
         "lines": [
-          "Perps WATCH — OI +42.4% 7d, funding flat 7d-avg, one tight range-day from an ACCUMULATION print.",
-          "Top traders cut their long ratio 0.26 over 7d. Funding flipped negative to -0.029%/8h.",
-          "Price +20.25% 7d into a HYPE/BTC all-time high. Wait for top L/S to turn up before the long."
+          "Perps WATCH — OI +42.9% 7d, 7d range 27.6% just over the 25% ACCUMULATION gate.",
+          "Top traders cut their long ratio 0.28 over 7d and funding flipped negative to -0.013%/8h.",
+          "Token-call cross-confirms HIGH 8/10, Hyperliquid sector rising on the perp-DEX super-app pitch.",
+          "June 6 unlock releases 9.92M HYPE, roughly $449M, 1% of supply.",
+          "Wait for top L/S to turn up before the long."
         ]
       }
     },
@@ -28,50 +30,54 @@
       "ticker": "ZEC",
       "conflict_label": "narrative leader, no quant join",
       "risk": {
-        "header_suffix": "perps NEUTRAL",
+        "header_suffix": "NEUTRAL perps, narrative WATCH",
         "lines": [
-          "Privacy/ZK rising — ZEC +6.37% 24h, in CoinGecko trending a second day.",
-          "Perps NEUTRAL — 7d range 21.8%, funding flat, top L/S 0.79 and falling.",
-          "Narrative-tracker rates Privacy/ZK WATCH, not RIDE. No quant signal to join."
-        ]
-      }
-    },
-    {
-      "ticker": "NEAR",
-      "conflict_label": "token-call HIGH, no perps read",
-      "risk": {
-        "header_suffix": "catalyst unshipped",
-        "lines": [
-          "Token-call HIGH 10/10 — NEAR +11.1% 24h, on the trending list.",
-          "Perps NEUTRAL — OI -2.58% 7d, funding flat, 7d range 15.6%. No regime signal.",
-          "Post-quantum Chain Signatures is a Q2 promise, not shipped. A rollout slip unwinds the bid."
+          "Privacy/ZK rising — narrative-tracker rates it WATCH, not RIDE.",
+          "Perps NEUTRAL — 7d range 21.8%, funding flat, top L/S 0.83 and falling.",
+          "Multicoin accumulation and a Grayscale spot-ETF filing are real, ZEC up over 110% on the month.",
+          "No quant signal to join. Watch the perps print."
         ]
       }
     },
     {
       "ticker": "EDEN",
-      "conflict_label": "leverage blow-off, not demand",
+      "conflict_label": "leverage blow-off, demand unconfirmed",
       "risk": {
-        "header_suffix": "volume unconfirmed",
+        "header_suffix": "WATCH, volume short of the gate",
         "lines": [
-          "Perps WATCH — +30.8% 24h, OI exploding +67.6% 24h, short liqs $323k against $73k long.",
-          "Volume only 1.21x average. The rip reads leverage-fueled, not demand-fueled.",
-          "Funding negative at -0.066%/8h. A sharp reversal weighs as heavily as follow-through."
+          "Perps WATCH — +26.9% 24h, OI exploding +58.9% 24h and +333.7% 7d.",
+          "Volume holds at 1.95x average, just under the 2x CATALYST-BREAKOUT gate.",
+          "Short liqs $449k against $138k long, funding near-flat at -0.002%/8h.",
+          "Leverage-fueled, not demand-fueled. A push past 2x volume tips it into a real breakout — wait for it."
         ]
       }
     },
     {
-      "ticker": "CL",
-      "conflict_label": "lone ACCUMULATION, no narrative tailwind",
+      "ticker": "BILL",
+      "conflict_label": "falling knife, no flush yet",
       "risk": {
-        "header_suffix": "low-conviction build",
+        "header_suffix": "WATCH, missed CAPITULATION",
         "lines": [
-          "Perps ACCUMULATION — OI +12.95% 7d on a tight 10.4% range, price +4.24% 7d, calm funding.",
-          "Top traders sit net short at 0.45 L/S. Taker buy a flat 50.3% — passive build.",
-          "No rising narrative attaches to CL. The only quant print on the board, but nothing to join it to."
+          "Perps WATCH — bled -20.7% 24h and -36.0% 7d.",
+          "OI rose 5.3% into the drop and funding stayed positive at +0.009%/8h.",
+          "Liquidations $600k sit under the 7d p75 of $1.6M — no capitulation flush.",
+          "Longs still loaded. Pass until the OI clears out."
+        ]
+      }
+    },
+    {
+      "ticker": "XAU",
+      "conflict_label": "coiling, no crypto narrative attaches",
+      "risk": {
+        "header_suffix": "WATCH, near COMPRESSION",
+        "lines": [
+          "Perps WATCH — 7d range 5.8%, just wide of the 5% COMPRESSION gate.",
+          "OI built +34.96% 7d and +18.94% 24h inside the quiet coil.",
+          "Funding flat at +0.012%/8h, price -1.73% 24h.",
+          "A quant coil with no narrative tailwind. Nothing to join — pass."
         ]
       }
     }
   ],
-  "skip_day_best_near_miss": "HYPE — perp-DEX leader with OI +42% 7d on calm funding, but top traders cut their long ratio over the week and price is +20% 7d into a HYPE/BTC all-time high, so the OI build is not smart-money-confirmed."
+  "skip_day_best_near_miss": "HYPE — perps WATCH reads one tight range-day from an ACCUMULATION print on OI +42.9% 7d, and token-call cross-confirms HIGH 8/10, but top traders cut their long ratio 0.28 over 7d and funding flipped negative, so the OI build is not smart-money-confirmed."
 }
