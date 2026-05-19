@@ -1,13 +1,17 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-19T10:10:24Z",
+  "last_analyzed": "2026-05-19T11:15:04Z",
   "quality_score": 4,
-  "assessment": "Substantive skill execution with clear reasoning, proper constraint handling, and correct domain decision (skip-day brief); well-documented follow-ups and memory logging.",
+  "assessment": "Substantive analysis with specific market data, clear decision logic, proper execution of system requirements (pending notification, logging, bug fix).",
   "flags": [],
   "avg_score": 4,
   "history": [
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     },
     {

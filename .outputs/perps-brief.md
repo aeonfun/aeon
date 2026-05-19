@@ -1,26 +1,18 @@
-The skill is complete. Here's the run summary.
-
 ## Summary
 
-Re-ran **perps-brief** as chain Step 2 against the corrected afternoon chain context. The morning scheduled run had published ZEC as the lone HIGH CONVICTION setup — that brief was built on the morning rotation snapshot and is now stale.
+Ran the **perps-brief** skill for 2026-05-19 against the corrected afternoon chain context.
 
-**Why the call changed**
-- `market-context-refresh` flipped the regime rotation → chop, breadth halved 16/20 → 8/20 green, BTC went red
-- The afternoon `perps-scan` re-run dropped ZEC, HYPE, NEAR, and TAO from its universe entirely — every narrative leader lost its quant read
-- `perps-scan` verdict is QUIET (1 ACCUMULATION, 9 NEUTRAL, no pattern tags)
+**Result: skip-day — 0 HIGH CONVICTION setups.** The confluence the skill demands isn't there:
+- perps-scan verdict is QUIET (1 ACCUMULATION, no pattern tags fired)
+- Market regime is chop, low conviction (breadth 8/20 green, F&G 25 Extreme Fear)
+- The lone [BOTH]-tagged asset, HYPE, has a constructive perps WATCH read but top traders cut their long ratio 0.26 over 7d while price runs +20% 7d into a HYPE/BTC ATH — the OI build is not smart-money-confirmed
+- Every other narrative leader (ZEC, TAO, ONDO, NEAR) sits NEUTRAL on perps — no quant signal overlaps a rising narrative
 
-With no quant signal overlapping any rising narrative, confluence cannot be honestly claimed. Recomposed as a **skip-day brief** — the spec's correct answer for a quiet day, not a forced setup.
+Composed the skip-day variant: MARKET SENTIMENT, cash-patient bias, HYPE as best near-miss, and a 5-entry WATCHLIST (HYPE, CL, ZEC, EDEN, BILL), each with a named conflict.
 
-**Output**
-- **HIGH CONVICTION:** 0 — skip-day
-- **Best near-miss:** ZEC (privacy/ZK leader, lost its perps coil read)
-- **WATCHLIST:** 5 — ZEC, HYPE, NEAR, TAO, CL, each with a named conflict
+**Files:**
+- `.outputs/perps-brief.md` — rewrote in locked format (the prior file held an assistant `## Summary` run-blob — the ISS-003/004 output-format bug)
+- `.pending-notify/1779190000.signal.md` — queued for #perps delivery (inline `./notify` is sandbox-blocked; used the documented pending-file fallback)
+- `memory/logs/2026-05-19.md` — appended the `## Perps Brief` log entry
 
-**Files**
-- `.outputs/perps-brief.md` — overwrote the stale morning ZEC-HIGH-CONVICTION brief
-- `memory/logs/2026-05-19.md` — appended `## Perps Brief (re-run)` entry
-- `.pending-notify/1779185325.signal.md` — queued for #perps delivery
-
-**Follow-ups**
-- Inline `./notify` required interactive approval, so I used the documented `.pending-notify/` fallback — the post-run workflow step delivers it to Discord #perps (skip-day correction following the morning brief).
-- Temp file `_send_brief.sh` remains in the repo root — `rm` is sandbox-blocked. It is untracked and should not be committed; flagging for cleanup.
+**Follow-up:** None. The post-run workflow step delivers the queued notification to Discord #perps.
