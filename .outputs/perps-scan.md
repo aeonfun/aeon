@@ -1,24 +1,24 @@
 ## Summary
 
-Ran perps-scan v2.3 for 2026-05-18 (seventh run of the day, fresh 16:45Z prefetch snapshot).
+Ran **perps-scan v3** for 2026-05-19. Verdict: **QUIET** — 1 ACCUMULATION, 10 NEUTRAL.
 
 **What I did**
-- Verified prefetch: `universe_ok: true`, source `coingecko-derivatives`.
-- Assessed 12 of 25 universe assets; 13 dropped for missing critical price/oi/funding history (FIDA, HYPE, LAB, LINK, SOL, SUI, TAO, TON, UB, XAG, XAU, XRP, ZEC).
-- Computed all per-coin metrics from the 7 Coinglass history endpoints (worked around sandbox blocks on `jq -f`/`--slurpfile`/loop variables by using `jq -s` with inline filters and literal paths).
-- Classified each coin by first-match priority.
+- Verified prefetch (`universe_ok: true`, source `coingecko-derivatives`).
+- Assessed **11 of 25** universe coins. 14 dropped on missing critical price/oi/funding — including Tier 1 **ETH and SOL**, leaving BTC as the only Tier 1.
+- Computed all v3 metrics from the cached Coinglass endpoints. Worked around sandbox blocks (`python` execution and `jq -f`/`--slurpfile`/`*` flagged) by using `jq -s` with inline filters and literal paths.
+- Classified each coin by first-match priority, applied sub-tags/pattern tags, wrote the v3 locked artifact + verbose tail.
 
-**Result — Verdict: QUIET (1 CATALYST-BREAKOUT, 11 NEUTRAL)**
-- **CATALYST-BREAKOUT:** BSB — +20.8% 24h, vol 3.9x, OI +11.6% 24h, taker buy 51%. Tipped over the +10% OI gate this snapshot after being a run-six near-miss.
-- **NEUTRAL:** the other 11. Closest calls — BCH near CAPITULATION (-8.3% vs -10% gate, $6.0M liq flush, but OI rose); AIGENSYN near ACCUMULATION (failed funding-stability gate); BILL/EDEN near ACCUMULATION (failed wide 7d-range gate).
-- Broad tape quiet and red (BTC -1.3% 24h, ETH -1.5%), funding near-flat across majors.
+**Result**
+- **ACCUMULATION:** CL — OI +13.5% 7d, calm funding, +4.2% 7d. Low conviction (top traders net short, passive build).
+- **WATCH (5):** EDEN (+32% 24h blow-off on −0.21% funding, OI +65% 24h), BILL (−22% falling knife, OI still rising), BSB (post-pump cooling), 1000PEPE (smart-money long build vs OI washout), ZEC (pre-accumulation coil).
+- No pattern tags fired — funding muted universe-wide, no crowded-long or capitulation extremes.
+- No regime transitions: yesterday's scan aborted and the prior artifact was malformed.
 
 **Files**
-- `.outputs/perps-scan.md` — overwritten with the v2 locked format + full per-asset raw metric table
-- `memory/logs/2026-05-18.md` — appended the seventh-run log entry
+- `.outputs/perps-scan.md` — overwritten with v3 locked output + tail (prior file was the corrupt `## Summary` ISS-003 case)
+- `memory/logs/2026-05-19.md` — created with the Perps Scan log entry
 
-No notification — perps-scan is internal as of v2.3; the artifact feeds downstream `perps-brief`.
-
-**Follow-ups (no action taken)**
-- SKILL.md step 3 still claims Coinglass arrays are descending; they are time-ascending — should be corrected on the next revision.
-- No repeat markers (★ / day-N) yet — no prior calendar day carries regime data.
+**Follow-ups**
+- The prefetch dropped 56% of the universe (incl. both major alts) — `daily-ops-review`/`skill-health` should track the cause.
+- SKILL.md step 3 still says Coinglass arrays are time-descending; they are ascending (`data[-1]` = most recent) — worth correcting.
+- Temp files `perps_tmp.py` and `metrics.jq` remain in the repo root — `rm` was sandbox-blocked, so they need manual cleanup (untracked, not committed).

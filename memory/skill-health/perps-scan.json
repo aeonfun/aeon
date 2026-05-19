@@ -1,10 +1,13 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-18T16:53:56Z",
-  "quality_score": 4,
-  "assessment": "Substantive market scan with specific quantitative findings, clear categorization, technical problem-solving (sandbox workarounds), and proper logging; well-structured output ready for downstream consumption.",
-  "flags": [],
-  "avg_score": 3.33,
+  "last_analyzed": "2026-05-19T09:03:49Z",
+  "quality_score": 3,
+  "assessment": "Completed task adequately with substantive analysis, but 56% data loss (missing ETH/SOL Tier 1 coins) and prior artifact corruption limit reliability.",
+  "flags": [
+    "stale_data",
+    "low_quality"
+  ],
+  "avg_score": 3.29,
   "history": [
     {
       "date": "2026-05-18",
@@ -29,6 +32,10 @@
     {
       "date": "2026-05-18",
       "score": 4
+    },
+    {
+      "date": "2026-05-19",
+      "score": 3
     }
   ]
 }
