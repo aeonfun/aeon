@@ -29,7 +29,7 @@ get_category() {
     article|digest|rss-digest|hacker-news-digest|paper-digest|paper-pick) echo "research" ;;
     list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
     deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
-    huggingface-trending) echo "research" ;;
+    huggingface-trending|competitor-launch-radar) echo "research" ;;
     # Dev & Code
     pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
     issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
@@ -37,6 +37,7 @@ get_category() {
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
     workflow-security-audit|skill-security-scan|vercel-projects) echo "dev" ;;
     spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
+    fork-first-run-alert|fork-skill-gap) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
     # Crypto & Markets
     token-alert|token-movers|token-report|token-pick|monitor-runners|price-threshold-alert) echo "crypto" ;;
@@ -45,7 +46,7 @@ get_category() {
     treasury-info|distribute-tokens|contributor-reward) echo "crypto" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
-    show-hn-draft|syndicate-article) echo "social" ;;
+    show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
     # Productivity & Meta
     morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;

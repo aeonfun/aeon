@@ -94,7 +94,7 @@ Write to the `## Description` section.
 
 Example shape (do **not** copy verbatim):
 
-> Aeon is an autonomous agent that runs on GitHub Actions. It ships features, writes articles, and merges its own PRs from a file-based memory in your repo. 313 stars, 117 skills, zero infrastructure to babysit.
+> Aeon is an autonomous agent that runs on GitHub Actions. It ships features, writes articles, and merges its own PRs from a file-based memory in your repo. 313 stars, 121 skills, zero infrastructure to babysit.
 
 Output the chosen description AND its character count on a footer line.
 
