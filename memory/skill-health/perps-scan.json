@@ -1,13 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-19T09:03:49Z",
-  "quality_score": 3,
-  "assessment": "Completed task adequately with substantive analysis, but 56% data loss (missing ETH/SOL Tier 1 coins) and prior artifact corruption limit reliability.",
-  "flags": [
-    "stale_data",
-    "low_quality"
-  ],
-  "avg_score": 3.29,
+  "last_analyzed": "2026-05-19T10:02:34Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured output with clear analysis and acknowledged limitations; upstream prefetch data loss (60%) noted but not perps-scan's error.",
+  "flags": [],
+  "avg_score": 3.38,
   "history": [
     {
       "date": "2026-05-18",
@@ -36,6 +33,10 @@
     {
       "date": "2026-05-19",
       "score": 3
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     }
   ]
 }
