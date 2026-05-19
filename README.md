@@ -66,6 +66,19 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 
 **Need a skill for X?** Six pre-built starters live in [`templates/`](templates/TEMPLATE.md) — crypto tracker, research digest, code reviewer, social monitor, deploy watcher, community manager. Bootstrap one with `./new-from-template <template> <skill-name> --var KEY=VALUE...` and it lands in `skills/` with a disabled entry in `aeon.yml`, ready to enable.
 
+### Dashboard access
+
+The dashboard `/api/*` routes drive `gh workflow run` and read/write the repo's GitHub secrets. They are gated to loopback callers by default — same machine the dashboard is running on, no remote callers, no DNS-rebinding from a malicious page in your browser.
+
+If you need to reach the dashboard from another machine on the same network or over a tunnel (Tailscale, `ngrok`, a reverse proxy), the gate has two env-var hatches:
+
+| Env var | Behaviour |
+|---|---|
+| `AEON_DASHBOARD_ALLOWED_HOSTS=aeon.local,box.tail-xxx.ts.net` | Extends the loopback allowlist by one or more hostnames (comma-separated, case- and port-insensitive). The defaults stay accepted. |
+| `AEON_DASHBOARD_ALLOW_ANY_HOST=1` | Disables Host-header checking entirely. Intended only for a trusted reverse proxy that terminates `Host` upstream. Loudly insecure if set without an authenticating proxy in front. |
+
+The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whose `Origin` (or `Referer` fallback) isn't on the same allowlist — so a malicious page on another origin can't drive `/api/secrets` or `/api/skills/.../run` via a no-cors POST. Code lives in [`dashboard/middleware.ts`](dashboard/middleware.ts) + [`dashboard/lib/security/api-gate.ts`](dashboard/lib/security/api-gate.ts).
+
 ---
 
 ## Skills
