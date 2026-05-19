@@ -1,11 +1,11 @@
-Daily Token Call · 2026-05-18
+Daily Token Call · 2026-05-19
 
-BSB · HIGH · 9/10
-$0.6954 (+18.2% 24h, +36.0% 7d), mcap $155m, vol $42m, vol/mcap 0.27
+INJ · HIGH · 9/10
+$4.98 (+8.7% 24h, +5.1% 7d), mcap $498m, vol $159m, vol/mcap 0.32
 
-Signals: high turnover (vol/mcap 0.27), both 24h and 7d up double digits, strongly outpacing a red BTC/ETH 7d tape — no trending-list or DEX cross-confirm
-Catalyst: RWA / tokenized-capital-markets narrative drawing bids; post-airdrop accumulation since the May 4 claim-window close, with Binance and Aster perp listings deepening the book
-Risk: young token — TGE was only ~10 weeks ago (Mar 4) and it sits well below its May 4 ATH; thin float plus leveraged perps make sell-the-bounce squeezes sharp in both directions
-Dedup check: first time in 7d (yesterday TRAC, prior KAIA)
+Signals: very high turnover (vol/mcap 0.32), both 24h and 7d positive with 24h above +5%, strongly outpacing BTC and ETH on the 7d (both negative this week) — no trending-list or DEX cross-confirm
+Catalyst: Circle native USDC + CCTP went live on Injective (May 7) and Bitnomial's CFTC-regulated INJ futures (April 16) open an institutional/ETF path; ongoing buyback-and-burn keeps tightening supply
+Risk: INJ is already up roughly 90% on the month — entry here is late-cycle, and the next named catalyst (Injective Summit) is not until July 16, leaving room for a sharp mean-reversion pullback
+Dedup check: first time in 7d (recent picks BSB, TRAC, KAIA)
 
 not financial advice — pattern-matching only

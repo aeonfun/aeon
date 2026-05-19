@@ -1,0 +1,252 @@
+{
+  "root": "card_root",
+  "state": {},
+  "elements": {
+    "card_root": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 2026-05-19"
+      },
+      "children": [
+        "header_stack",
+        "separator_1",
+        "price_section",
+        "separator_2",
+        "signals_section",
+        "separator_3",
+        "catalyst_section",
+        "separator_4",
+        "risk_section",
+        "separator_5",
+        "dedup_section",
+        "separator_6",
+        "disclaimer_text"
+      ]
+    },
+    "header_stack": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "inj_badge",
+        "high_badge",
+        "score_text"
+      ]
+    },
+    "inj_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "INJ"
+      }
+    },
+    "high_badge": {
+      "type": "Badge",
+      "props": {
+        "text": "HIGH"
+      }
+    },
+    "score_text": {
+      "type": "Text",
+      "props": {
+        "text": "9/10"
+      }
+    },
+    "separator_1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "price_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "price_stat",
+        "market_data_grid"
+      ]
+    },
+    "price_stat": {
+      "type": "Stat",
+      "props": {
+        "value": "$4.98",
+        "delta": "+8.7% 24h, +5.1% 7d",
+        "trend": "up"
+      }
+    },
+    "market_data_grid": {
+      "type": "Grid",
+      "props": {
+        "columns": 3,
+        "gap": "md"
+      },
+      "children": [
+        "mcap_stat",
+        "volume_stat",
+        "ratio_text"
+      ]
+    },
+    "mcap_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "mcap",
+        "value": "$498m"
+      }
+    },
+    "volume_stat": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$159m"
+      }
+    },
+    "ratio_text": {
+      "type": "Text",
+      "props": {
+        "text": "vol/mcap 0.32",
+        "variant": "body"
+      }
+    },
+    "separator_2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "signals_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "signals_heading",
+        "signals_text"
+      ]
+    },
+    "signals_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Signals",
+        "level": "h3"
+      }
+    },
+    "signals_text": {
+      "type": "Text",
+      "props": {
+        "text": "very high turnover (vol/mcap 0.32), both 24h and 7d positive with 24h above +5%, strongly outpacing BTC and ETH on the 7d (both negative this week) — no trending-list or DEX cross-confirm",
+        "variant": "body"
+      }
+    },
+    "separator_3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "catalyst_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "catalyst_heading",
+        "catalyst_text"
+      ]
+    },
+    "catalyst_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Catalyst",
+        "level": "h3"
+      }
+    },
+    "catalyst_text": {
+      "type": "Text",
+      "props": {
+        "text": "Circle native USDC + CCTP went live on Injective (May 7) and Bitnomial's CFTC-regulated INJ futures (April 16) open an institutional/ETF path; ongoing buyback-and-burn keeps tightening supply",
+        "variant": "body"
+      }
+    },
+    "separator_4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "risk_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "risk_heading",
+        "risk_text"
+      ]
+    },
+    "risk_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Risk",
+        "level": "h3"
+      }
+    },
+    "risk_text": {
+      "type": "Text",
+      "props": {
+        "text": "INJ is already up roughly 90% on the month — entry here is late-cycle, and the next named catalyst (Injective Summit) is not until July 16, leaving room for a sharp mean-reversion pullback",
+        "variant": "body"
+      }
+    },
+    "separator_5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "dedup_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "dedup_heading",
+        "dedup_text"
+      ]
+    },
+    "dedup_heading": {
+      "type": "Heading",
+      "props": {
+        "text": "Dedup check",
+        "level": "h3"
+      }
+    },
+    "dedup_text": {
+      "type": "Text",
+      "props": {
+        "text": "first time in 7d (recent picks BSB, TRAC, KAIA)",
+        "variant": "body"
+      }
+    },
+    "separator_6": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "disclaimer_text": {
+      "type": "Text",
+      "props": {
+        "text": "not financial advice — pattern-matching only",
+        "variant": "caption"
+      }
+    }
+  }
+}

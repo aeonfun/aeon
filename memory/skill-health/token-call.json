@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-18T16:50:39Z",
-  "quality_score": 5,
-  "assessment": "Complete, well-structured token analysis with clear reasoning, sourced signals, proper risk disclosure, and full documentation; acknowledged temporary files are sandbox limitation, not quality issue",
+  "last_analyzed": "2026-05-19T08:50:34Z",
+  "quality_score": 4,
+  "assessment": "Substantive output with specific pick, clear catalysts, risk assessment, and proper sourcing; minor API limitation on DexScreener didn't impair task completion",
   "flags": [],
-  "avg_score": 4.5,
+  "avg_score": 4.33,
   "history": [
     {
       "date": "2026-05-18",
@@ -13,6 +13,10 @@
     {
       "date": "2026-05-18",
       "score": 5
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     }
   ]
 }
