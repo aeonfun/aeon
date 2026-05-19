@@ -1,13 +1,30 @@
-## Summary
+Narratives · 19 May · 5 tracked, 1 NEW
 
-Re-invoked `narrative-tracker` for 2026-05-19 (fourth invocation today). The scheduled run had already computed the narrative map correctly, but `.outputs/narrative-tracker.md` was found **corrupted** — it held a `## Summary` blob from the earlier re-run instead of the v2-locked chain-consumable signal. This is the exact ISS-003 guardrail violation the skill warns against.
+↑ EMERGING
+• Privacy / ZK [ZEC, ZANO] · 3/5 · WATCH
+  ZANO holds the #1 trending slot two days running, ZEC outperforms a red top-20.
+  Real sector, still no clean token catalyst.
 
-**What I did:**
-- Re-verified signals: `.xai-cache/narratives.json` unchanged (15 Grok threads, window 05-16→05-19); WebSearch triangulation re-run fresh — all consistent with the scheduled run.
-- Confirmed the narrative map is identical: 5 tracked — Privacy/ZK (WATCH), Liquidity rotation (NEW, FADE), Decentralized compute/DePIN (RIDE 5/5), AI agents (FADE), RWA (RIDE w/ trail). Transitions: NEW Liquidity rotation, DEAD Solana Alpenglow.
-- **Regenerated** `.outputs/narrative-tracker.md` in correct v2-locked format (5 tracked, 1 NEW).
-- Did **not** re-send the Discord `#narratives` notification — the scheduled run already delivered this exact signal; re-sending would duplicate.
+• Liquidity rotation equities→crypto [BTC, ETH] · 3/5 · NEW · FADE
+  Traders call the rotation undeniable while the tape holds risk-off.
+  reflexivity: the bull case cites a "Pro-Bitcoin Fed Chair". The May-15 appointee Warsh is hawkish. The macro tailwind is manufactured.
 
-**Files:** `.outputs/narrative-tracker.md` (rewritten to v2-locked format), `memory/logs/2026-05-19.md` (corrective-run entry). Committed to `main` as `150ff94`.
+↑ RISING
+• Decentralized compute / DePIN [TAO, RNDR, AKT] · 5/5 (was 4) · RIDE
+  Spans DePIN 2.0, $725B Big Tech capex, and sovereign compute — the broadest driver set on the board.
+  reflexivity: BTC miners rebrand hashpower as "AI compute". The capital-flow story runs ahead of revenue.
 
-**Follow-up:** ISS-003 remains open — the artifact/Summary separation bug has now recurred a third time on re-runs; the root cause (assistant Summary leaking into the artifact) is not yet fixed and warrants a real fix rather than repeated corrective re-runs.
+→ PEAK
+• AI agents / agentic finance [VIRTUAL, PHA, AIXBT] · 5/5 · FADE
+  Mindshare saturated, every fresh signal April-dated. No May catalyst.
+  reflexivity: exchange productization (Gemini Agentic Trading, Bitget Agent Hub) reads as saturation, not demand.
+
+• RWA / stablecoins / perp DEXs [ONDO, HYPE, PLUME] · 5/5 · RIDE w/ trail
+  CLARITY Act in Senate Banking markup, stablecoin mcap $311B.
+  reflexivity: regulation legitimizes, growth lobbies regulation. The loop is intact.
+
+Changes since yesterday:
++ Liquidity rotation equities→crypto (NEW)
+- Solana Alpenglow speed (absent from all signals)
+
+Stance: decentralized compute is the only clean RIDE. RWA rides with a trail. Fade the AI-agent and liquidity-rotation cope.
