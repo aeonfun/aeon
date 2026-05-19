@@ -314,43 +314,12 @@ jobs:
           # Attempt immediate delivery (may fail in sandbox — post-run step retries)
           DELIVERED=false
 
-          # Telegram: 4096 char limit, strict Markdown parsing.
+          # Telegram: 4096-char limit, strict Markdown parsing. Chunk on
+          # paragraph (\n\n) then line (\n) then hard-split. Chunks come back
+          # one per line, base64-encoded to preserve embedded newlines.
           # Skipped entirely when --signal flag was passed (signal skills route to Discord only).
           if [ "$SIGNAL" != "true" ] && [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
-            # Split $MSG into chunks ≤3900 chars (Telegram cap 4096, leaves room for
-            # "[i/N]" suffix). Prefer paragraph (\n\n) then line (\n) boundaries,
-            # hard-split only if a single paragraph/line exceeds the limit.
-            # Chunks emitted one per line as base64 to preserve embedded newlines.
-            TG_CHUNKS_B64=$(printf '%s' "$MSG" | python3 -c '
-          import sys, base64
-          LIMIT = 3900
-          text = sys.stdin.read()
-          def pack(parts, sep):
-              out, cur = [], ""
-              for p in parts:
-                  glue = sep if cur else ""
-                  if len(cur) + len(glue) + len(p) <= LIMIT:
-                      cur += glue + p
-                  else:
-                      if cur:
-                          out.append(cur); cur = ""
-                      if len(p) > LIMIT and sep == "\n\n":
-                          out.extend(pack(p.split("\n"), "\n"))
-                      elif len(p) > LIMIT:
-                          while len(p) > LIMIT:
-                              out.append(p[:LIMIT]); p = p[LIMIT:]
-                          cur = p
-                      else:
-                          cur = p
-              if cur:
-                  out.append(cur)
-              return out
-          chunks = [text] if len(text) <= LIMIT else pack(text.split("\n\n"), "\n\n")
-          N = len(chunks)
-          for i, c in enumerate(chunks):
-              suffix = f"\n\n[{i+1}/{N}]" if N > 1 else ""
-              sys.stdout.write(base64.b64encode((c + suffix).encode()).decode() + "\n")
-          ')
+            TG_CHUNKS_B64=$(printf '%s' "$MSG" | python3 .github/scripts/chunk-text.py 3900)
             while IFS= read -r TG_CHUNK_B64; do
               [ -z "$TG_CHUNK_B64" ] && continue
               TG_MSG=$(printf '%s' "$TG_CHUNK_B64" | base64 -d)
@@ -371,7 +340,11 @@ jobs:
             done <<< "$TG_CHUNKS_B64"
           fi
 
-          # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL
+          # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL.
+          # Discord webhook `content` field is hard-capped at 2000 chars — messages over
+          # that are rejected with a silent HTTP 400 by curl -sf. Chunk on the same
+          # paragraph/line boundaries Telegram uses, 1900-char limit to leave room
+          # for the [i/N] suffix the chunker appends.
           DISCORD_TARGET=""
           if [ -n "${DISCORD_WEBHOOK_MAP:-}" ]; then
             DISCORD_TARGET=$(printf '%s' "$DISCORD_WEBHOOK_MAP" | jq -r --arg s "${SKILL_NAME:-}" '.[$s] // ._default // empty' 2>/dev/null || echo "")
@@ -380,9 +353,23 @@ jobs:
             DISCORD_TARGET="${DISCORD_WEBHOOK_URL:-}"
           fi
           if [ -n "$DISCORD_TARGET" ]; then
-            curl -sf -X POST "$DISCORD_TARGET" \
-              -H "Content-Type: application/json" \
-              -d "$(jq -n --arg text "$MSG" '{content: $text}')" > /dev/null && DELIVERED=true || true
+            DC_CHUNKS_B64=$(printf '%s' "$MSG" | python3 .github/scripts/chunk-text.py 1900)
+            DC_ANY_OK=false
+            while IFS= read -r DC_CHUNK_B64; do
+              [ -z "$DC_CHUNK_B64" ] && continue
+              DC_MSG=$(printf '%s' "$DC_CHUNK_B64" | base64 -d)
+              DC_HTTP=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$DISCORD_TARGET" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n --arg text "$DC_MSG" '{content: $text}')" 2>/dev/null || echo "000")
+              if [ "$DC_HTTP" = "200" ] || [ "$DC_HTTP" = "204" ]; then
+                DC_ANY_OK=true
+              else
+                echo "notify: Discord webhook returned HTTP $DC_HTTP for chunk ($(printf '%s' "$DC_MSG" | wc -c | tr -d ' ') chars)" >&2
+              fi
+              # Discord rate limit: 5 requests / 2 seconds per channel
+              sleep 0.5
+            done <<< "$DC_CHUNKS_B64"
+            [ "$DC_ANY_OK" = "true" ] && DELIVERED=true
           fi
           if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
             curl -sf -X POST "$SLACK_WEBHOOK_URL" \
@@ -715,15 +702,21 @@ jobs:
             printf '%s\n' "$HASH" >> "$HASH_FILE"
 
             echo "Delivering pending notification: $(basename "$pending")"
-            # Telegram (skipped for --signal pending files — Discord-only routing)
+            # Telegram (skipped for --signal pending files — Discord-only routing).
+            # Chunk via the shared chunker — Telegram hard-rejects > 4096 chars per message.
             if [ "$SIGNAL" != "true" ] && [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
-              TG_MSG="$MSG"
-              [ ${#TG_MSG} -gt 4000 ] && TG_MSG="${TG_MSG:0:3990}...(truncated)"
-              curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-                -H "Content-Type: application/json" \
-                -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text}')" > /dev/null 2>&1 || true
+              TG_CHUNKS_B64=$(printf '%s' "$MSG" | python3 .github/scripts/chunk-text.py 3900)
+              while IFS= read -r TG_CHUNK_B64; do
+                [ -z "$TG_CHUNK_B64" ] && continue
+                TG_MSG=$(printf '%s' "$TG_CHUNK_B64" | base64 -d)
+                curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+                  -H "Content-Type: application/json" \
+                  -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id: $chat, text: $text}')" > /dev/null 2>&1 || true
+                sleep 0.3
+              done <<< "$TG_CHUNKS_B64"
             fi
-            # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL
+            # Discord: per-skill routing via DISCORD_WEBHOOK_MAP (JSON), fallback to DISCORD_WEBHOOK_URL.
+            # Discord webhook content field is hard-capped at 2000 chars. Chunk on the same boundaries.
             DC_TARGET=""
             if [ -n "${DISCORD_WEBHOOK_MAP:-}" ]; then
               DC_TARGET=$(printf '%s' "$DISCORD_WEBHOOK_MAP" | jq -r --arg s "${SKILL_NAME:-}" '.[$s] // ._default // empty' 2>/dev/null || echo "")
@@ -732,9 +725,18 @@ jobs:
               DC_TARGET="${DISCORD_WEBHOOK_URL:-}"
             fi
             if [ -n "$DC_TARGET" ]; then
-              curl -sf -X POST "$DC_TARGET" \
-                -H "Content-Type: application/json" \
-                -d "$(jq -n --arg text "$MSG" '{content: $text}')" > /dev/null 2>&1 || true
+              DC_CHUNKS_B64=$(printf '%s' "$MSG" | python3 .github/scripts/chunk-text.py 1900)
+              while IFS= read -r DC_CHUNK_B64; do
+                [ -z "$DC_CHUNK_B64" ] && continue
+                DC_MSG=$(printf '%s' "$DC_CHUNK_B64" | base64 -d)
+                DC_HTTP=$(curl -s -o /dev/null -w '%{http_code}' -X POST "$DC_TARGET" \
+                  -H "Content-Type: application/json" \
+                  -d "$(jq -n --arg text "$DC_MSG" '{content: $text}')" 2>/dev/null || echo "000")
+                if [ "$DC_HTTP" != "200" ] && [ "$DC_HTTP" != "204" ]; then
+                  echo "post-run notify: Discord webhook returned HTTP $DC_HTTP for chunk ($(printf '%s' "$DC_MSG" | wc -c | tr -d ' ') chars)"
+                fi
+                sleep 0.5
+              done <<< "$DC_CHUNKS_B64"
             fi
             # Slack
             if [ -n "${SLACK_WEBHOOK_URL:-}" ]; then
