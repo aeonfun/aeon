@@ -1,37 +1,21 @@
-Ops Review · 2026-05-19 · duration n/a
+Daily ops review complete — afternoon corrective re-run of the chain.
 
-Step 1 — Data
-  ✓ market-context-refresh · regime rotation (medium), 5/5 sources ok
-  ✓ aixbt-pulse · bridge call generated (bond rout + CME OI -55%), 14 NEW items
-  ✓ narrative-tracker · 5 narratives, 1 NEW (Liquidity rotation equities→crypto)
-  ⚠ perps-scan · ran clean, QUIET verdict, 1 ACCUMULATION (CL)
-       Artifact wrote in Summary-blob format instead of the v3 locked format.
-       Prefetch dropped 14 of 25 universe coins, including Tier 1 ETH and SOL.
-  ✓ monitor-runners · SPECULATIVE verdict, 0 DEEP-LIQ
-  ✓ token-movers · 183 assets post-filter, 9BIT and ONDO breakout-tagged
-  ✓ token-call · INJ · HIGH 9/10
+## Summary
 
-Step 2 — Briefs
-  ✓ perps-brief · 1 HIGH CONVICTION (ZEC), 5 WATCHLIST
+Audited the recomposed afternoon `morning-review` chain for 2026-05-19. This re-run supersedes the earlier ops review, which audited the stale morning chain.
 
-Step 3 — Macro
-  ✓ morning-macro · published
+**Result: Complete — 8 ✓, 1 ⚠, 0 ✗.** All 9 artifacts fresh, all data sources responded clean.
 
-Chain ran complete — all 9 artifacts fresh (2026-05-19). 8 ✓, 1 ⚠, 0 ✗.
-All data sources ok.
+**The one ⚠ — perps-scan:** Ran clean on data (QUIET verdict, 1 ACCUMULATION CL), but its afternoon *corrective re-run* — launched explicitly to fix the Summary-blob artifact format — produced the blob again. `.outputs/perps-scan.md` still opens with prose + `## Summary` / `**What I did**` / `**Result**`, not the v3 locked format, while its own text claims a v3-locked rewrite happened. That's the third occurrence of ISS-004 in one day, including a deliberate re-run — confirming a re-run is not a reliable workaround and a structural fix is needed. Prefetch also dropped 15 of 25 universe coins including ETH and SOL.
 
-Issues filed
-  ISS-004 (medium, output-format)
-    perps-scan again wrote its assistant Summary blob into .outputs/perps-scan.md
-    instead of the v3 locked format.
-    Recurrence of ISS-003, which was marked resolved earlier today with a
-    SKILL.md prose guardrail.
-    The guardrail did not hold. ISS-003's resolution note flagged this exact
-    case as needing a structural fix.
-    Downstream perps-brief still consumed the QUIET verdict — impact contained.
+**Issues:** No new issues filed. ISS-004 stays open; appended a recurrence note documenting the corrective-re-run failure. ISS-003 was resolved earlier today.
 
-Resolved today
-  ISS-003 — marked resolved 2026-05-19 via a SKILL.md guardrail patch. Recurred
-  the same day, now tracked as ISS-004.
+**Chain duration:** n/a — no run ID or log timestamps to bracket; still no 7-day median.
 
-Open issues · 1 (ISS-004).
+**Files:**
+- `.outputs/daily-ops-review.md` — overwritten with the afternoon report
+- `memory/issues/ISS-004.md` — recurrence note appended
+- `memory/logs/2026-05-19.md` — re-run entry appended
+- `.pending-notify/1779185809.signal.md` — queued for #aeon-ops (inline `./notify` blocked by sandbox, used the documented pending-file fallback)
+
+**Follow-up:** ISS-004 needs the structural fix (templated/heredoc artifact write) — re-running and the prose guardrail have both failed. The perps-scan prefetch dropping 60% of its universe (incl. both major alts) remains worth tracking by skill-health.
