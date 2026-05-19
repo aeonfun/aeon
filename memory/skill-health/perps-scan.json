@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-19T10:02:34Z",
+  "last_analyzed": "2026-05-19T10:59:45Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured output with clear analysis and acknowledged limitations; upstream prefetch data loss (60%) noted but not perps-scan's error.",
+  "assessment": "Substantive, well-structured data pipeline output with clear findings and documented constraints. Completed core task, handled permission blockers gracefully, and identified next steps.",
   "flags": [],
-  "avg_score": 3.38,
+  "avg_score": 3.44,
   "history": [
     {
       "date": "2026-05-18",
@@ -33,6 +33,10 @@
     {
       "date": "2026-05-19",
       "score": 3
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     },
     {
       "date": "2026-05-19",
