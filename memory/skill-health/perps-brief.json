@@ -1,13 +1,17 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-19T12:01:57Z",
+  "last_analyzed": "2026-05-19T14:32:00Z",
   "quality_score": 4,
-  "assessment": "Substantive analysis with specific metrics, proper guardrail compliance, and honest skip-day calibration — well-executed and actionable.",
+  "assessment": "Substantive skip-day analysis with clear technical reasoning (confluence mandate), specific asset evaluation, complete workflow execution, and citations—minor python3 validation limitation mitigated by construction validation.",
   "flags": [],
   "avg_score": 4,
   "history": [
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     },
     {
