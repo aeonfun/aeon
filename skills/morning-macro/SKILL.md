@@ -10,6 +10,8 @@ tags: [crypto, research]
 
 Today is ${today}. Compose the **front-page cross-sector strategist read** — short (5–10 lines, under 1500 chars), answering "what game are we playing today." Sits at the top of the daily intake. The operator reads this first, then drills into sector briefs (`#perps-brief`, future `#on-chain-brief`, `#stocks-brief`).
 
+**Apply `memory/topics/writing-style.md` voice and format rules to all prose output.** Lead sentences with interpretive verbs; no semicolons in body text; em-dash only for genuine asides; blank lines between paragraphs; sub-headers with `·` separator for major sections (Cross-domain, Today); one idea per paragraph; commit to the read. See the worked rewrite for `Morning Macro` in writing-style.md for the locked format.
+
 Read `memory/MEMORY.md` for context.
 
 ## Inputs (consumed via chain)

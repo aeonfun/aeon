@@ -10,6 +10,8 @@ tags: [meta, crypto]
 
 Today is ${today}. Verify every chain step ran correctly, sources were responsive, and no silent degradations occurred. This is **operator self-monitoring**, not market signal. Output routes to `#aeon-ops` only — never Telegram, never the public signal channels.
 
+**Apply `memory/topics/writing-style.md` voice and format rules to the report.** Indent status-marker lines two spaces under their step header; blank line between steps; secondary detail on its own indented line under the primary status line; no semicolons in body text. See the worked rewrite for `Ops Review` in writing-style.md for the locked layout.
+
 Read `memory/MEMORY.md` for context. Read `memory/issues/INDEX.md` for the open issue list.
 
 ## Goal

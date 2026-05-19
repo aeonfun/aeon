@@ -16,6 +16,7 @@
 # Cache layout (all JSON):
 #   .coinglass-cache/cg-derivatives.json — CoinGecko /derivatives (universe + 24h vol)
 #   .coinglass-cache/price-<COIN>.json   — Binance per-exchange daily price history (8d)
+#   .coinglass-cache/price-1h-<COIN>.json — Binance per-exchange hourly price (last 8h, for pct_4h v3 derivation)
 #   .coinglass-cache/oi-<COIN>.json      — aggregated OI history (8d)
 #   .coinglass-cache/funding-<COIN>.json — OI-weight funding history (21x8h = 7d)
 #   .coinglass-cache/liq-<COIN>.json     — aggregated liquidation history with exchange_list (8d)
@@ -181,6 +182,7 @@ for COIN in $ASSET_LIST; do
   SYM_PER="${COIN}USDT"      # per-exchange endpoints expect pair (BTCUSDT on Binance USDT-perp)
   for KIND_SPEC in \
     "price:$BASE/api/futures/price/history?exchange=Binance&symbol=${SYM_PER}&interval=1d&limit=8" \
+    "price-1h:$BASE/api/futures/price/history?exchange=Binance&symbol=${SYM_PER}&interval=1h&limit=8" \
     "oi:$BASE/api/futures/open-interest/aggregated-history?symbol=${SYM_AGG}&interval=1d&limit=8" \
     "funding:$BASE/api/futures/funding-rate/oi-weight-history?symbol=${SYM_AGG}&interval=8h&limit=21" \
     "liq:$BASE/api/futures/liquidation/aggregated-history?symbol=${SYM_AGG}&exchange_list=Binance,OKX&interval=1d&limit=8" \
