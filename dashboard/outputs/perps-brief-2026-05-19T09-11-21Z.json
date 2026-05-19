@@ -1,0 +1,772 @@
+{
+  "root": "card_main",
+  "state": {},
+  "elements": {
+    "card_main": {
+      "type": "Card",
+      "props": {
+        "title": "Perps Brief · 2026-05-19"
+      },
+      "children": [
+        "sentiment_section",
+        "sep1",
+        "conviction_section",
+        "sep2",
+        "watchlist_section"
+      ]
+    },
+    "sentiment_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_sentiment",
+        "sentiment_content"
+      ]
+    },
+    "h_sentiment": {
+      "type": "Heading",
+      "props": {
+        "text": "MARKET SENTIMENT",
+        "level": "h2"
+      }
+    },
+    "sentiment_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "sentiment_p1",
+        "sentiment_p2",
+        "sentiment_p3",
+        "sentiment_p4"
+      ]
+    },
+    "sentiment_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Perps stayed QUIET while spot ripped. Breadth flipped 16/20 green but funding sat muted across the universe. No crowded longs, no capitulation extremes, no pattern tags fired."
+      }
+    },
+    "sentiment_p2": {
+      "type": "Text",
+      "props": {
+        "text": "The green session ran on spot, not leverage. CME OI bled 55%, the signature of institutional deleveraging."
+      }
+    },
+    "sentiment_p3": {
+      "type": "Text",
+      "props": {
+        "text": "F&G slipped to 25, Extreme Fear, against a recovering tape. Sentiment and price are diverging."
+      }
+    },
+    "sentiment_p4": {
+      "type": "Text",
+      "props": {
+        "text": "Yesterday's lone BSB breakout cooled to NEUTRAL. Post-pump, momentum decayed to +6.7%."
+      }
+    },
+    "sep1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "conviction_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_conviction",
+        "bias_note",
+        "zec_entry"
+      ]
+    },
+    "h_conviction": {
+      "type": "Heading",
+      "props": {
+        "text": "HIGH CONVICTION",
+        "level": "h2"
+      }
+    },
+    "bias_note": {
+      "type": "Text",
+      "props": {
+        "text": "Bias · selective and patient. One setup clears the join — privacy/ZK leads the rotation.",
+        "variant": "muted"
+      }
+    },
+    "zec_entry": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "zec_title",
+        "zec_subsections"
+      ]
+    },
+    "zec_title": {
+      "type": "Heading",
+      "props": {
+        "text": "ZEC · long breakout-pending, trail tight",
+        "level": "h3"
+      }
+    },
+    "zec_subsections": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "zec_perps",
+        "zec_narrative",
+        "zec_context",
+        "zec_enrichment",
+        "zec_thesis"
+      ]
+    },
+    "zec_perps": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_perps_label",
+        "zec_perps_content"
+      ]
+    },
+    "zec_perps_label": {
+      "type": "Text",
+      "props": {
+        "text": "Perps · NEUTRAL · WATCH (pre-accumulation coil)",
+        "variant": "lead"
+      }
+    },
+    "zec_perps_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_perps_p1",
+        "zec_perps_p2",
+        "zec_perps_p3"
+      ]
+    },
+    "zec_perps_p1": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan held ZEC in WATCH, not a regime hit."
+      }
+    },
+    "zec_perps_p2": {
+      "type": "Text",
+      "props": {
+        "text": "The read is a pre-accumulation coil — range tightening, no funding extreme."
+      }
+    },
+    "zec_perps_p3": {
+      "type": "Text",
+      "props": {
+        "text": "The coil is the signal, not yet a confirmed ACCUMULATION print."
+      }
+    },
+    "zec_narrative": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_narrative_label",
+        "zec_narrative_content"
+      ]
+    },
+    "zec_narrative_label": {
+      "type": "Text",
+      "props": {
+        "text": "Narrative · Privacy / ZK rising, ZEC the leader",
+        "variant": "lead"
+      }
+    },
+    "zec_narrative_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_narrative_p1",
+        "zec_narrative_p2"
+      ]
+    },
+    "zec_narrative_p1": {
+      "type": "Text",
+      "props": {
+        "text": "narrative-tracker EMERGING 3/5. ZANO held #1 trending two days running."
+      }
+    },
+    "zec_narrative_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy is the cleanest rotation thread on the board."
+      }
+    },
+    "zec_context": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_context_label",
+        "zec_context_content"
+      ]
+    },
+    "zec_context_label": {
+      "type": "Text",
+      "props": {
+        "text": "Context · rotation regime, ZEC outperforming",
+        "variant": "lead"
+      }
+    },
+    "zec_context_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_context_p1",
+        "zec_context_p2"
+      ]
+    },
+    "zec_context_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Ripped +6.63% 24h into a 16/20-green tape, leading every top-10 major."
+      }
+    },
+    "zec_context_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Market-context rates privacy/ZK rising."
+      }
+    },
+    "zec_enrichment": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_enrichment_label",
+        "zec_enrichment_items"
+      ]
+    },
+    "zec_enrichment_label": {
+      "type": "Text",
+      "props": {
+        "text": "Enrichment",
+        "variant": "lead"
+      }
+    },
+    "zec_enrichment_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_enr_item1",
+        "zec_enr_item2",
+        "zec_enr_item3",
+        "zec_enr_item4"
+      ]
+    },
+    "zec_enr_item1": {
+      "type": "Text",
+      "props": {
+        "text": "Grayscale filed to convert its Zcash Trust into a spot ZEC ETF."
+      }
+    },
+    "zec_enr_item2": {
+      "type": "Text",
+      "props": {
+        "text": "SEC closed its privacy-coin review with no enforcement — the regulatory overhang lifted."
+      }
+    },
+    "zec_enr_item3": {
+      "type": "Text",
+      "props": {
+        "text": "Robinhood listed ZEC, widening US retail access."
+      }
+    },
+    "zec_enr_item4": {
+      "type": "Text",
+      "props": {
+        "text": "Quantum-recoverable wallets ship within weeks. No VC unlock cliffs — ZEC is mined."
+      }
+    },
+    "zec_thesis": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_thesis_label",
+        "zec_thesis_content"
+      ]
+    },
+    "zec_thesis_label": {
+      "type": "Text",
+      "props": {
+        "text": "Thesis",
+        "variant": "lead"
+      }
+    },
+    "zec_thesis_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "zec_thesis_p1",
+        "zec_thesis_p2"
+      ]
+    },
+    "zec_thesis_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Privacy leads the rotation and ZEC is the vehicle — the coil resolves up if the bid holds."
+      }
+    },
+    "zec_thesis_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Trail tight. ZEC already ran +60% on the month, and a $615 to $500s correction left heavy liquidations overhead."
+      }
+    },
+    "sep2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "watchlist_section": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "h_watchlist",
+        "watchlist_items"
+      ]
+    },
+    "h_watchlist": {
+      "type": "Heading",
+      "props": {
+        "text": "WATCHLIST",
+        "level": "h2"
+      }
+    },
+    "watchlist_items": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "item_hype",
+        "item_ondo",
+        "item_tao",
+        "item_inj",
+        "item_bill"
+      ]
+    },
+    "item_hype": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hype_title",
+        "hype_subtitle",
+        "hype_risk"
+      ]
+    },
+    "hype_title": {
+      "type": "Heading",
+      "props": {
+        "text": "HYPE",
+        "level": "h3"
+      }
+    },
+    "hype_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "structural catalyst, no quant read",
+        "variant": "muted"
+      }
+    },
+    "hype_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hype_risk_label",
+        "hype_risk_content"
+      ]
+    },
+    "hype_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk · structure unconfirmed, extended",
+        "variant": "lead"
+      }
+    },
+    "hype_risk_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "hype_p1",
+        "hype_p2",
+        "hype_p3"
+      ]
+    },
+    "hype_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Circle is deploying a $5B USDC treasury, 90% of yield routed to HYPE buybacks."
+      }
+    },
+    "hype_p2": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan dropped HYPE again for missing OI and funding history."
+      }
+    },
+    "hype_p3": {
+      "type": "Text",
+      "props": {
+        "text": "+16% 7d already extended, reflexivity loop compressing near the ATH. Wait for a quant print."
+      }
+    },
+    "item_ondo": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ondo_title",
+        "ondo_subtitle",
+        "ondo_risk"
+      ]
+    },
+    "ondo_title": {
+      "type": "Heading",
+      "props": {
+        "text": "ONDO",
+        "level": "h3"
+      }
+    },
+    "ondo_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "catalyst priced in real time",
+        "variant": "muted"
+      }
+    },
+    "ondo_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ondo_risk_label",
+        "ondo_risk_content"
+      ]
+    },
+    "ondo_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk · no quant confirmation",
+        "variant": "lead"
+      }
+    },
+    "ondo_risk_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "ondo_p1",
+        "ondo_p2",
+        "ondo_p3"
+      ]
+    },
+    "ondo_p1": {
+      "type": "Text",
+      "props": {
+        "text": "CLARITY Act cleared Senate Banking Committee — a real RWA catalyst."
+      }
+    },
+    "ondo_p2": {
+      "type": "Text",
+      "props": {
+        "text": "ONDO already ripped +12.75% 24h pricing it, and perps-scan never flagged it."
+      }
+    },
+    "ondo_p3": {
+      "type": "Text",
+      "props": {
+        "text": "Clean calendar helps — next unlock is Jan 2027. Chasing the catalyst day, not a setup."
+      }
+    },
+    "item_tao": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tao_title",
+        "tao_subtitle",
+        "tao_risk"
+      ]
+    },
+    "tao_title": {
+      "type": "Heading",
+      "props": {
+        "text": "TAO",
+        "level": "h3"
+      }
+    },
+    "tao_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "narrative RIDE, governance overhang",
+        "variant": "muted"
+      }
+    },
+    "tao_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tao_risk_label",
+        "tao_risk_content"
+      ]
+    },
+    "tao_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk · sector strong, token lagging",
+        "variant": "lead"
+      }
+    },
+    "tao_risk_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "tao_p1",
+        "tao_p2",
+        "tao_p3"
+      ]
+    },
+    "tao_p1": {
+      "type": "Text",
+      "props": {
+        "text": "Compute narrative RISING 5/5, spot TAO ETF filings pending from Grayscale and Bitwise."
+      }
+    },
+    "tao_p2": {
+      "type": "Text",
+      "props": {
+        "text": "Covenant AI exited Bittensor this month and TAO dropped 15% on the news."
+      }
+    },
+    "tao_p3": {
+      "type": "Text",
+      "props": {
+        "text": "Only +0.98% 24h — token lags the story, no quant confirmation."
+      }
+    },
+    "item_inj": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "inj_title",
+        "inj_subtitle",
+        "inj_risk"
+      ]
+    },
+    "inj_title": {
+      "type": "Heading",
+      "props": {
+        "text": "INJ",
+        "level": "h3"
+      }
+    },
+    "inj_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "token-call pick, overbought",
+        "variant": "muted"
+      }
+    },
+    "inj_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "inj_risk_label",
+        "inj_risk_content"
+      ]
+    },
+    "inj_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk · late-cycle entry",
+        "variant": "lead"
+      }
+    },
+    "inj_risk_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "inj_p1",
+        "inj_p2",
+        "inj_p3"
+      ]
+    },
+    "inj_p1": {
+      "type": "Text",
+      "props": {
+        "text": "token-call rated INJ HIGH 9/10 on a deflationary-burn and institutional-access thesis."
+      }
+    },
+    "inj_p2": {
+      "type": "Text",
+      "props": {
+        "text": "INJ ran +90% on the month and daily RSI sits at 86-87."
+      }
+    },
+    "inj_p3": {
+      "type": "Text",
+      "props": {
+        "text": "No perps-scan read. The catalysts already printed — entry is late."
+      }
+    },
+    "item_bill": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bill_title",
+        "bill_subtitle",
+        "bill_risk"
+      ]
+    },
+    "bill_title": {
+      "type": "Heading",
+      "props": {
+        "text": "BILL",
+        "level": "h3"
+      }
+    },
+    "bill_subtitle": {
+      "type": "Text",
+      "props": {
+        "text": "falling knife, no flush yet",
+        "variant": "muted"
+      }
+    },
+    "bill_risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bill_risk_label",
+        "bill_risk_content"
+      ]
+    },
+    "bill_risk_label": {
+      "type": "Text",
+      "props": {
+        "text": "Risk · OI rising into the drop",
+        "variant": "lead"
+      }
+    },
+    "bill_risk_content": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "sm"
+      },
+      "children": [
+        "bill_p1",
+        "bill_p2",
+        "bill_p3"
+      ]
+    },
+    "bill_p1": {
+      "type": "Text",
+      "props": {
+        "text": "perps-scan WATCH — BILL bled 22% with open interest still climbing."
+      }
+    },
+    "bill_p2": {
+      "type": "Text",
+      "props": {
+        "text": "No capitulation flush, no reset."
+      }
+    },
+    "bill_p3": {
+      "type": "Text",
+      "props": {
+        "text": "Wait for OI to wash before any bounce trade."
+      }
+    }
+  }
+}
