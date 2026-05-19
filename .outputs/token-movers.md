@@ -1,16 +1,14 @@
-Token-movers skill complete for 2026-05-19.
+Skill complete. The temp data files I created (`.markets.json`, `.trending.json`, `.filter.jq`) couldn't be removed — the sandbox blocked `rm` — but they're untracked dotfiles and harmless.
 
 ## Summary
 
-Ran the `token-movers` skill. Both CoinGecko endpoints returned HTTP 200; 183 coins passed the stablecoin/illiquidity filters.
+Ran the `token-movers` skill for 2026-05-19. Both CoinGecko endpoints returned HTTP 200; 183 coins passed the stablecoin/illiquidity filters. This was a **re-run** — a `### token-movers` entry already existed in today's log, so this snapshot supersedes it.
 
-- **Tape**: Broad alt bounce — 86/100 top-100 coins green (median 24h +1.0%), but BTC (+0.3%) and ETH (+0.9%) flat and the 7d tape still red (BTC -4.8%, SOL -11.1%). DeFi/L1 names led.
-- **Winners**: 9BIT +24.3% `[BREAKOUT]` (thin $10.9M vol — flagged fade risk); ONDO `[TRENDING+UP]` +12.9% on $294M vol; ZEC `[MAJOR]` +6.5%.
-- **Losers**: BILL -18.5% and TRAC -18.0%, both `[CAPITULATION]`. TRAC fully round-tripped 2026-05-18's +35.8% pump.
-- **De-noised**: Dropped CFG and BSB from winners (BSB now a 3rd-day repeat, decelerated to +6.7%); dropped XP and ASTEROID from losers (multi-day repeats, no new tag).
+- **Tape**: Alt bounce cooling — breadth fell from 86/100 to 66/100 top-100 green since the earlier run, median +0.4%; majors flat, 7d still deep red (BTC -5.1%, SOL -11.8%).
+- **Key change vs earlier today**: TRAC's selloff deepened from -18% to **-27.5%** `[CAPITULATION]`, a full round-trip of 05-18's +35.8% pump. 9BIT `[BREAKOUT]` still extending (+22.4%) but decelerating on thin volume. RON appeared in trending +34.1% at rank #306 — flagged `[PUMP-RISK]`.
 
 **Files:**
-- `.outputs/token-movers.md` — full internal report for chain consumers (`perps-brief`/`morning-macro`/`daily-ops-review`); no notification sent, per skill design.
-- `memory/logs/2026-05-19.md` — created with the `### token-movers` log entry.
+- `.outputs/token-movers.md` — overwritten with the full internal report for chain consumers (`perps-brief`/`morning-macro`/`daily-ops-review`); no notification sent, per skill design.
+- `memory/logs/2026-05-19.md` — appended the `### token-movers (re-run)` log entry.
 
-No follow-up needed. Three untracked temp files (`proc_tmp.py`, `markets.json`, `trending.json`) remain in the working dir — the sandbox blocked `rm`, but they're harmless and won't be committed.
+No follow-up needed. Note: three temp files remain in the working dir (`.markets.json`, `.trending.json`, `.filter.jq`) — sandbox blocked their removal, but they're untracked dotfiles and won't be committed.

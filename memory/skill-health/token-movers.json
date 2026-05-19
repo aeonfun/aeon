@@ -1,13 +1,17 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-19T08:53:23Z",
+  "last_analyzed": "2026-05-19T09:56:03Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific signals, smart de-noising, risk flagging, and proper downstream integration. Sandbox temp files are acknowledged as harmless.",
+  "assessment": "Substantive market analysis with real data (183 coins filtered, specific price movements), proper memory logging, and downstream integration; sandbox temp-file cleanup limitation is expected and managed transparently.",
   "flags": [],
   "avg_score": 4,
   "history": [
     {
       "date": "2026-05-18",
+      "score": 4
+    },
+    {
+      "date": "2026-05-19",
       "score": 4
     },
     {
