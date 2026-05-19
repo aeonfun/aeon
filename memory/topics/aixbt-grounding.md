@@ -1,15 +1,15 @@
-# AIXBT Grounding (as of 2026-05-19 09:00 UTC)
+# AIXBT Grounding (as of 2026-05-19 14:01 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-19T09:00:53.189Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-19T14:01:19.712Z
 
-Note: fourth consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics signal continues to fold into TradFi items.
+Note: fifth+ consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics signal continues to fold into TradFi items.
 
 ## Crypto
-- BTC ETFs logged $649M in outflows—largest since January—while Fear & Greed hit 25; bears cite Saylor pause risk and 200DMA rejection below $77K.
-- Hyperliquid dominates mindshare: Bitwise pledges 10% of BHYP fees to buy $HYPE, TradFi execs pitch spot stocks on Hypercore, and HYPE/BTC prints ATH.
-- Echo Protocol on Monad exploited via admin key leak for ~$77M eBTC mint; THORChain halted four days; security concerns intensify across newer chains.
-- Base emerges as the chain attracting net capital inflows and AI-agent builder attention, while Pump.fun's USDC pair shift pressures Solana TVL dynamics.
+- Hyperliquid dominates mindshare as HYPE hits new ATH vs BTC, with Bitwise calling it a "super app" targeting $600T in global assets and open interest at record highs.
+- SEC's pending "innovation exemption" for tokenized stocks fuels RWA momentum; xStocks hit $1.2B volume on Raydium and top RWA protocols posted triple-digit growth over 90-180 days.
+- BTC faces sustained pressure at $76.8K with $649M in spot ETF outflows, BlackRock depositing $450M to Coinbase, and rising yields and oil above $100 weighing on risk assets.
+- Base ecosystem heats up with meme and AI agent activity drawing capital rotation, while ETH sentiment sours as traders shift exposure toward HYPE, SOL perp plays, and ZEC privacy narratives.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this window)*
@@ -18,46 +18,43 @@ Note: fourth consecutive pull returning only two sections — `crypto` and `trad
 *(folded into TradFi this window)*
 
 ## TradFi
-- Persistent energy price shocks from the Middle East are lifting global inflation expectations and pushing yields higher, which is tightening liquidity and weighing on leveraged positions.
-- Technology weakness is pressuring S&P 500 and Nasdaq futures lower, driving shifts in positioning toward defensives as growth stocks face renewed scrutiny.
-- A US proposal detailing conditions to end the Iran war is raising de-escalation prospects, which could dampen oil volatility and boost risk sentiment across markets.
-- Escalating conflict risks in the Middle East are sustaining oil upside, transmitting higher energy costs into elevated yields and defensive rotations in equity flows.
+- US 30-year yields flirting with 2007 highs while 10-year holds near 4.61% are transmitting Iran oil inflation fears into equity futures, forcing risk-asset repricing and lifting vol across rates and credit.
+- Hedge funds' semiconductor net exposure nearing 20% amplifies downside risk in equities as rising yields prompt rotation out of tech into defensives amid cross-asset oil swings.
+- US Treasury urging Europe to escalate Iran sanctions sustains energy price volatility, pressuring global liquidity via higher costs and potential shipping disruptions in key routes.
+- Mixed US-Iran strike signals keep conflict premium elevated, driving Asian stock slides and shifting flows toward energy while transmitting geopolitical risk into broader equity and yield volatility.
 
-## What's New (vs last pull — 2026-05-19T08:00:24.525Z)
-- [Crypto] Fear & Greed at 25 (extreme fear) — severity escalation beyond just ETF outflows
-- [Crypto] "Largest since January" framing for $649M BTC ETF outflows — severity anchor added
-- [Crypto] Saylor pause risk named as bear thesis driver — new named catalyst for BTC selling
-- [Crypto] HYPE/BTC prints ATH — ratio trade confirmed, not just absolute HYPE price near ATH
-- [Crypto] TradFi execs pitching spot stocks on Hypercore — new institutional legitimization vector for HL
-- [Crypto] Echo exploit reframed: ~$77M eBTC mint (prior window: ~$816K losses) — massive damage escalation or new reporting angle
-- [Crypto] THORChain halted four days — cross-chain contagion signal, not in prior window
-- [Crypto] "Security concerns across newer chains" — broader contagion framing (was Monad-specific)
-- [Crypto] Base gains "AI-agent builder attention" narrative alongside capital inflows
-- [TradFi] US proposal with conditions to end the Iran war — de-escalation scenario now on table, opposing the oil upside item
-
-## Persisting Stories
-- BTC ETF outflows + 200DMA rejection — deepening; severity now "largest since January"
-- Hyperliquid/HYPE mindshare dominance — HYPE/BTC ATH now confirmed
-- Echo Protocol/Monad admin key exploit — persisting and escalating in damage framing
-- Pumpfun/SOL structural pressure → capital rotating to Base and Hyperliquid
-- Middle East energy → yields → risk-off transmission chain — now three items in TradFi
-- Technology weakness pressuring Nasdaq/S&P
+## What's New (vs last pull — 2026-05-19T09:00:53.189Z)
+- [Crypto] SEC "innovation exemption" for tokenized stocks + xStocks $1.2B on Raydium + RWA triple-digit growth — entirely new item, regulatory legitimization of on-chain TradFi
+- [Crypto] HYPE reframed as "super app" targeting $600T global assets — Bitwise thesis sharpened
+- [Crypto] HYPE open interest at record highs — new data point confirming conviction not just price
+- [Crypto] Oil above $100 named as explicit BTC risk driver — first time oil price surfaces in crypto section
+- [Crypto] BlackRock depositing $450M to Coinbase — new institutional flow data point
+- [Crypto] ETH sentiment souring explicitly — ETH called out as the loser in the rotation
+- [Crypto] ZEC privacy narrative joining HYPE/SOL as named rotation destinations — new
+- [TradFi] 30-year yields at 2007 highs — severity escalation with historical anchor
+- [TradFi] 10-year at 4.61% specific level — new precision
+- [TradFi] Hedge fund semiconductor net exposure at ~20% — new specific metric
+- [TradFi] US Treasury urging Europe to escalate Iran sanctions — new (Europe now drawn in)
+- [TradFi] Asian stock slides from conflict premium — geographic broadening
 
 ## Gone Since Last Pull
-- Nvidia earnings as named volatility catalyst (probably resolved or absorbed)
-- CB communications hawkishness as standalone item (folded into yields/liquidity picture)
-- "Global bond rout" explicit framing (yields story still here, framing downgraded)
-- Dollar strengthening on CB comms (dropped)
-- CME OI down 55% (absorbed into broader BTC bear thesis)
-- Strategy 4% of BTC supply milestone (no longer named)
-- Whale wallets accumulating BTC divergence signal (dropped)
-- $2B USDC minted on Solana metric (dropped)
-- "12th exploit in May" count framing (dropped)
-- a16z named as HYPE accumulator (implied but not named)
-- HYPE USDC treasury status and SEC tokenized stock exemption (dropped)
+- [Crypto] Echo Protocol exploit / THORChain halt — dropped
+- [Crypto] Fear & Greed at 25 — dropped
+- [Crypto] Saylor pause risk as named bear catalyst — dropped
+- [Crypto] Pump.fun USDC pair shift / Solana TVL pressure — dropped
+- [TradFi] De-escalation proposal for Iran war — dropped; replaced with "mixed signals" framing
+- [TradFi] Tech weakness as standalone item — absorbed into semiconductor exposure story
+
+## Persisting Stories
+- Hyperliquid/HYPE mindshare dominance — same core story; OI at records adds new leg
+- BTC ETF outflows $649M — same figure, different framing; baseline now, not shock
+- BTC price pressure ~$76.8K — persisting
+- Middle East / Iran oil → yields → risk-off transmission chain — persisting, now with European escalation vector added
+- Base ecosystem capital rotation — persisting
+- Tech weakness → defensive rotation — persisting, now semiconductor-specific
 
 ## Cross-Domain Bridges
-- TradFi items 3 and 4 are literally contradicting each other in the same 12h window: de-escalation proposal on Iran + escalating conflict risk both in the feed. The market is pricing both outcomes simultaneously. That's not indecision — it's vol. The next directional catalyst is whichever resolves: a real ceasefire framework triggers risk-on hard, a fresh escalation closes the trade. Neither oil nor yields can find equilibrium until one of those outcomes is off the table. Don't pick a direction — price the uncertainty.
-- Echo Protocol damage: $816K last window, $77M eBTC mint this window. Either the attacker had much more leverage than initially reported, or the damage accounting changed (minted vs. extracted). Either way the narrative is escalating, not fading. Admin key exploits are replicable — same upgrade pattern, same vector. THORChain halt on the same day is independent but compounds the confidence hit across cross-chain infrastructure. The market hasn't priced the pace: 12+ DeFi exploits in May, and the per-incident damage is growing.
-- HYPE/BTC ratio printing ATH while BTC trades below its 200DMA: institutional legitimization (TradFi execs on Hypercore) running concurrent with ratio outperformance in a risk-off tape. This is the reflexivity loop live — HL institutional narrative → more capital → higher HYPE/BTC → stronger narrative → repeat. If BTC bounces the 200DMA and HYPE holds ratio, the "rotate BTC beta into HL" trade becomes consensus. If BTC falls through and takes HL with it, the loop breaks hard. The next BTC candle is the stress test for HL reflexivity.
-- Base + AI-agent builder narrative is a compounding signal, not a one-off. Agents need on-chain activity to operate → their activity generates measurable on-chain metrics → better metrics attract more builders → more agents → more activity. This is self-reinforcing. If agent activity becomes a standard TVL-adjacent metric, Base's fundamentals will look strong regardless of DeFi capital flows. Watch for the first "Base agent volume" data point — that's when the narrative crosses into measurable.
+- SEC tokenized stock exemption + hedge fund semiconductor rotation are the same capital pool story told in two feeds. Institutional money losing conviction on tech equities is simultaneously being handed a regulatory on-chain entry point via RWA. The $1.2B xStocks volume on Raydium isn't retail — it's the first visible proof-of-concept for exactly the rotation the TradFi feed is describing. These items should be read as one narrative, not two.
+- Oil above $100 + US Treasury pulling Europe into Iran sanctions: the de-escalation item from the morning window is gone. What replaced it is active escalation — the US is now building a multilateral sanctions coalition. The conflict premium isn't being priced as a tail risk; it's being institutionalized. 30-year yields at 2007 highs + oil above $100 = sustained liquidity squeeze, not a spike. BTC at $76.8K in this macro context is not seeking a local bottom — it's repricing to a higher-rate, higher-energy-cost world.
+- ZEC appearing alongside HYPE/SOL as a named rotation out of ETH, in the same window that US Treasury escalates Iran sanctions: privacy assets get bid when sanctions regimes tighten. This is not a technology narrative — it's a use-case bid. Coincidence is possible; the timing is worth watching. If ZEC persists in two more windows alongside the sanctions story, it's a signal, not noise.
+- HYPE "super app" targeting $600T + semiconductor rotation: Hyperliquid is pitching to the same seat that semis used to occupy in institutional portfolios. If hedge funds rotate from semis into "on-chain financial infrastructure," HYPE's framing positions it as the infrastructure play. Reflexivity loop remains intact — OI at records while BTC rolls over confirms conviction isn't leverage-driven, it's positional.
