@@ -142,5 +142,9 @@
     "consecutive_failures": 0,
     "success_rate": 1,
     "last_quality_score": 4
+  },
+  "heartbeat": {
+    "last_dispatch": "2026-05-19T14:12:04Z",
+    "last_status": "dispatched"
   }
 }
