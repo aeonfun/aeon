@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-19T10:13:48Z",
+  "last_analyzed": "2026-05-19T14:36:05Z",
   "quality_score": 4,
-  "assessment": "Well-structured market briefing with clear decision-making logic, proper chain integration, correct sandbox constraint handling, and thorough documentation of reasoning and file management.",
+  "assessment": "Substantive, well-structured market analysis with solid judgment (confluence logic, data synthesis); handled tool constraints appropriately via documented fallbacks; properly updated memory. Recurring ISS-003 artifact-leak and notify-workaround are platform issues, not skill quality issues.",
   "flags": [],
-  "avg_score": 4.33,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-18",
@@ -13,6 +13,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-19",
+      "score": 4
     },
     {
       "date": "2026-05-19",
