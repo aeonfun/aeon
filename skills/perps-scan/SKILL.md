@@ -292,134 +292,129 @@ For each asset, scan the last 7 days of `memory/logs/${YYYY-MM-DD}.md` for prior
 - `★` prefix on the asset line if same regime for ≥3 consecutive days
 - `(day N)` suffix after metric line if same regime for `N ≥ 2` consecutive days
 
-### 12. Write the artifact (v3 locked format)
+### 12. Write the structured data artifact
 
-**CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/perps-scan.md` is the locked-format text shown below — and only that text. It is NOT the assistant's `## Summary` block, NOT a description of what you did, NOT prose narration. Compose the locked-format payload as a string FIRST, write it, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
+**Write `.outputs/perps-scan.data.json` — a structured JSON intermediate that downstream tooling renders to markdown deterministically. DO NOT write `.outputs/perps-scan.md` directly. The workflow's postprocess step (`scripts/postprocess-perps-scan.sh`) invokes `scripts/render-perps-scan.py` to produce the final markdown artifact from this JSON.**
 
-**Locked v3 format:**
+This structural separation replaces the previous prose-level guardrail that failed three times in one day (ISS-003 / ISS-004 — Claude wrote its end-of-task `## Summary` blob into `.outputs/perps-scan.md` instead of the locked format). With the render moved out of the LLM path, the markdown format cannot be corrupted.
 
-```
-Perps Regimes · ${TODAY}
+#### JSON schema
 
-Market read · {VERDICT_WORD}
-  {regime distribution sentence}
-  {cycle interpretation}
-  {forward expectation}
-
-REGIME CHANGES (since yesterday)
-  HYPE — MOMENTUM → DISTRIBUTION
-    First day at extreme funding. Gains slowing. Topping signal forming.
-  SOL — ACCUMULATION → CATALYST-BREAKOUT
-    Patient build paid off. Clean break, taker buy confirms.
-  AVAX — NEUTRAL → COMPRESSION
-    Range tightening, OI starting to build. Pre-move setup.
-
-ACCUMULATION
-
-★ TAO — OI +18% 7d, funding +0.02%/8h, basis +0.3% (day 3)
-  Tag: ACCUMULATION · CONFIRMED
-  Tag: STEALTH-POSITIONING — top L/S +0.6 over 7d, leading the signal
-
-CATALYST-BREAKOUT
-
-• SOL — +14% 24h (+9% last 4h), vol 2.4x avg, OI +11%, taker buy 58%
-  Tier 1 classification.
-  Tag: CATALYST-BREAKOUT · FRESH
-
-SHORT-SQUEEZE
-
-(empty today — no qualifying assets)
-
-MOMENTUM
-
-• BTC — 7d +6%, OI +6% 24h, funding +0.07%/8h, basis +0.3%
-  Tier 1 classification.
-
-• ETH — 7d +4%, OI flat, funding +0.04%/8h, basis +0.2%
-  Tier 1 classification.
-
-COMPRESSION
-
-• AVAX — range_7d 4.2%, OI +8% 7d, funding flat, basis +0.1%
-  Tag: COMPRESSION · QUIET — volume contracting, no immediate trigger
-
-DISTRIBUTION
-
-• FARTCOIN — funding +0.14%/8h (delta +0.08%), OI +35% 24h, basis +0.6%
-  Tag: REAL-CROWDED-LONG — top L/S 2.3, smart money also long.
-  Read: Real top risk. Cleanest fade setup in the scan.
-
-• BONK — funding +0.10%/8h (delta +0.06%), OI +22% 24h, basis +0.4%
-  Tag: RETAIL-ANOMALY — top L/S 1.3, smart money not following.
-  Read: Funding extreme but smart money out. Squeeze risk over fade.
-
-• PEPE — funding +0.10%/8h, price -2% 24h, OI flat
-  Tag: LONG-TRAP — longs paying premium while bleeding.
-  Read: Highest-severity distribution. Failure imminent.
-
-CAPITULATION
-
-(empty today — no major flushes)
-
-WATCH (early signals, no full regime)
-
-• AAVE — funding rising +0.04% → +0.06% over 7d, OI +5%, range tightening
-  Reads as transitioning toward DISTRIBUTION.
-
-• LDO — top L/S +0.5 over 7d, basis turning positive, price quiet
-  Reads as pre-ACCUMULATION. STEALTH-POSITIONING tag applies.
-
-Neutral · 11 other assets · see artifact tail for full data
-```
-
-### Format rules
-
-- **No asterisks anywhere.** Plain text only.
-- **Dot separator `·`** for inline metadata in titles and tag headers.
-- **CAPS section headers** for major divisions. Empty regimes show with `(empty today — reason)` parenthetical.
-- **`★`** prefix for ≥3-day repeats; `•` otherwise.
-- **Tag lines** indented two spaces under the asset, beginning `Tag: `.
-- **Read lines** indented two spaces under the tag, beginning `Read: ` — used only when the tag combination warrants explicit interpretation.
-- **Tier 1 explicit marker** on major assets so the reader knows tier thresholds applied.
-- **Blank line between assets within a regime section** for visual rhythm (writing-style.md compliance).
-- **WATCH bucket**: assets where ≥2 signals favor a single direction and none contradict but no regime criteria fully fire. Surface with a brief transition read.
-
-### Artifact tail (verbose data dump for perps-brief)
-
-After the locked output above, append a structured per-asset block at the bottom of `.outputs/perps-scan.md` (NOT included in any notification — this skill never notifies). The tail provides raw values for every signal field including the v3 derived fields. Use this format:
-
-```
----
-ARTIFACT DATA TAIL (consumed by perps-brief Pass 0)
-
-Asset: BTC | Tier: 1 | Regime: MOMENTUM | Sub-tags: — | Pattern tags: —
-  price: $76420 | pct_24h: -1.3 | pct_7d: -6.1 | pct_4h: -0.2 | range_7d: 8.4
-  pct_24h_vs_btc: 0.0 | pct_7d_vs_btc: 0.0
-  oi: 30.2B | oi_24h_pct: +3.1 | oi_7d_pct: +6.0
-  funding_now: +0.07 | funding_7d_avg: +0.06 | funding_delta: +0.01
-  liq_24h: $180M | liq_7d_p75: $210M | long_liqs: $100M | short_liqs: $80M | liqs_4h: $20M
-  top_ls: 1.4 | top_ls_7d_avg: 1.3 | top_ls_delta_7d: +0.1
-  basis: +0.3 | taker_buy: 54
-  yesterday_regime: MOMENTUM | repeat_days: 4
-
-Asset: SOL | ...
+```json
+{
+  "date": "${TODAY}",
+  "edge_case": null,
+  "verdict": {
+    "word": "QUIET | RISK-ON | LEVERAGE BUILDING | EUPHORIC | CHOP | ...",
+    "distribution": "1 ACCUMULATION across 12 assessed, 11 NEUTRAL",
+    "cycle": "Chop phase, no clear directional bid",
+    "forward": "Watch funding shifts on majors"
+  },
+  "regime_changes": [
+    { "asset": "HYPE", "from": "MOMENTUM", "to": "DISTRIBUTION", "note": "First day at extreme funding. Gains slowing." }
+  ],
+  "regimes": {
+    "ACCUMULATION": [
+      {
+        "asset": "TAO",
+        "tier": 2,
+        "marker": "star",
+        "repeat_days_suffix": "(day 3)",
+        "metrics_line": "OI +18% 7d, funding +0.02%/8h, basis +0.3%",
+        "tags": [
+          { "tag": "ACCUMULATION · CONFIRMED" },
+          { "tag": "STEALTH-POSITIONING", "read": "top L/S +0.6 over 7d, leading the signal" }
+        ]
+      }
+    ],
+    "CATALYST-BREAKOUT": [],
+    "SHORT-SQUEEZE": [],
+    "MOMENTUM": [],
+    "COMPRESSION": [],
+    "DISTRIBUTION": [],
+    "CAPITULATION": []
+  },
+  "regime_empty_notes": {
+    "SHORT-SQUEEZE": "no qualifying assets",
+    "CAPITULATION": "no major flushes"
+  },
+  "watch": [
+    {
+      "asset": "AAVE",
+      "metrics_line": "funding rising +0.04% → +0.06% over 7d, OI +5%, range tightening",
+      "transition_read": "Reads as transitioning toward DISTRIBUTION."
+    }
+  ],
+  "neutral_summary": "Neutral · 11 other assets · see artifact tail for full data",
+  "tail": [
+    {
+      "asset": "BTC",
+      "tier": 1,
+      "regime": "MOMENTUM",
+      "sub_tags": [],
+      "pattern_tags": [],
+      "metrics": {
+        "price": "$76420",
+        "pct_24h": -1.3, "pct_7d": -6.1, "pct_4h": -0.2, "range_7d": 8.4,
+        "pct_24h_vs_btc": 0.0, "pct_7d_vs_btc": 0.0,
+        "oi_usd": "30.2B", "oi_24h_pct": 3.1, "oi_7d_pct": 6.0,
+        "funding_now": 0.07, "funding_7d_avg": 0.06, "funding_delta": 0.01,
+        "liq_24h": "$180M", "liq_7d_p75": "$210M",
+        "long_liqs": "$100M", "short_liqs": "$80M", "liqs_4h": "$20M",
+        "top_ls": 1.4, "top_ls_7d_avg": 1.3, "top_ls_delta_7d": 0.1,
+        "basis": 0.3, "taker_buy": 54
+      },
+      "yesterday_regime": "MOMENTUM",
+      "repeat_days": 4
+    }
+  ]
+}
 ```
 
-Include every assessed asset (including NEUTRAL) — `perps-brief`'s Pass 0 discovery needs the full universe of structured data. Skip assets that were dropped for missing critical files (price/oi/funding) — they were never assessed.
+#### Field-level rules
 
-### Edge cases
+- **`date`** — `${TODAY}` (UTC YYYY-MM-DD).
+- **`edge_case`** — `null` normally. Set to `"prefetch_failed"` if `manifest.universe_ok == false` or `manifest.json` is missing; render emits the one-line "scan unavailable, prefetch failed" artifact and skips everything else.
+- **`verdict.word`** — the aggregate market read from step 9 (single uppercase word or short phrase).
+- **`verdict.distribution`** — one sentence, count-style: "N ACCUMULATION across X assessed, Y NEUTRAL".
+- **`verdict.cycle`** — one sentence interpreting the cycle phase.
+- **`verdict.forward`** — one sentence on what to watch next.
+- **`regime_changes`** — array of transitions detected in step 10. Pass `null` (or omit) if no yesterday artifact existed — render emits the "(no comparison available — first run or prior artifact missing)" line. Pass `[]` if there were no transitions today.
+- **`regimes`** — map keyed by ALL seven regime names (include empty arrays for unpopulated regimes). Asset order within each array is the order they should appear in the markdown.
+- **`regimes[].marker`** — `"star"` for ≥3-day repeat (renders as `★`), `"bullet"` otherwise (renders as `•`).
+- **`regimes[].repeat_days_suffix`** — string like `"(day 3)"` for 2+ consecutive days in this regime; omit or null otherwise.
+- **`regimes[].metrics_line`** — the metric prose per regime, no leading marker. Follow the v3 adaptive metric line conventions per regime (see step 9 examples).
+- **`regimes[].tier`** — `1` or `2`. Render auto-adds `Tier 1 classification.` line under Tier 1 assets.
+- **`regimes[].tags[]`** — each `{tag, read?}`. The `read` field is rendered after `—` on the same line as the tag.
+- **`regime_empty_notes`** — optional per-regime empty-state suffix; default is `"no qualifying assets"`. Render emits `(empty today — <note>)`.
+- **`watch`** — array of WATCH-bucket assets with transition reads. Omit or empty array → WATCH section is suppressed entirely.
+- **`neutral_summary`** — one-line summary string for the NEUTRAL count, or null/omit to suppress.
+- **`tail`** — verbose per-asset data dump. Include every **assessed** asset (incl. NEUTRAL). Skip dropped assets.
+- **`tail[].metrics`** — every numeric field gets passed through. Render substitutes `—` for missing keys.
 
-- **All NEUTRAL (quiet day)**: still write the full v3 format. Show empty regime sections with `(empty today — no qualifying assets)`. Aggregate read verdict = `QUIET`. The artifact tail still includes every assessed asset.
-- **Prefetch failed** (`manifest.universe_ok == false`, or `manifest.json` missing): write a one-line variant:
-  ```
-  Perps Regimes · ${TODAY} · scan unavailable, prefetch failed
-  ```
-  `daily-ops-review` surfaces the cause.
-- **No yesterday artifact**: REGIME CHANGES section reads `(no comparison available — first run or prior artifact missing)`.
+#### Format rules (enforced by render — no LLM in this path)
 
-### Verbosity expectations
+- **No asterisks anywhere** in any string value.
+- **Dot separator `·`** for inline metadata in tag headers — pre-render this into the `tag` string.
+- **CAPS regime names** are produced by the render from `REGIME_ORDER`; do not embed them in metric strings.
+- **`★ / •` markers** are produced by the render from the `marker` field; never embed them in strings.
+- **Tier 1 classification** line is auto-added by the render when `tier == 1`; do not embed.
+- **Blank line between assets** within a regime is added by the render; do not pre-insert.
+- **Prose lines** (verdict sentences, transition notes, transition_read) must follow `memory/topics/writing-style.md` — no semicolons, em-dash only for genuine asides, lead with interpretive verbs.
 
-Typical day: ~30-50 lines for the locked output, plus the artifact tail (~5 lines per assessed asset × ~25 assets = ~125 lines). Total artifact roughly 150-200 lines. Substantially longer than v2 — by design. The engine is the context layer.
+#### Render verification
+
+After writing the JSON, do not write `.outputs/perps-scan.md`. The postprocess step renders it. If the JSON is malformed, the render fails the postprocess step and writes a `scan unavailable, render failed` placeholder — `daily-ops-review` surfaces the failure.
+
+#### Edge cases
+
+- **All NEUTRAL (quiet day)** — populate `verdict.word: "QUIET"`, set every regime to an empty array, include every assessed asset in `tail`.
+- **Prefetch failed** — set `edge_case: "prefetch_failed"`; the render produces the one-line artifact.
+- **No yesterday artifact** — pass `regime_changes: null`; render produces the "(no comparison available — ...)" line.
+
+#### Sizing expectations
+
+Typical day: ~30-50 lines of rendered locked output + ~5 lines per assessed asset × ~25 assets in the tail = ~150-200 line markdown total. JSON intermediate roughly 8-15 KB. The engine remains the context layer — density is by design.
 
 ## Step 13. Log to `memory/logs/${TODAY}.md`
 
@@ -432,7 +427,7 @@ Typical day: ~30-50 lines for the locked output, plus the artifact tail (~5 line
 - **Pattern tags surfaced:** [list, deduplicated]
 - **Repeat assets (≥2 days same regime):** [list with day counts]
 - **Source status:** universe=ok|fail, per-coin fetch failures: [list from manifest.per_coin_errors or "none"]
-- **Artifact written:** .outputs/perps-scan.md (locked output + verbose tail)
+- **Artifact written:** .outputs/perps-scan.data.json (structured intermediate; rendered to .outputs/perps-scan.md by scripts/postprocess-perps-scan.sh)
 - **Notification:** none (internal skill — consumed by perps-brief)
 ```
 
