@@ -1,10 +1,12 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-19T15:26:22Z",
+  "last_analyzed": "2026-05-20T06:15:24Z",
   "quality_score": 4,
-  "assessment": "Well-structured analysis with specific data, multi-source validation, clear reasoning (World Cup catalyst, buyback program), risk framing, and proper dedup logic—all supporting actions executed correctly.",
-  "flags": [],
-  "avg_score": 4.17,
+  "assessment": "Substantive token pick with specific catalysts (Vitalik mention, $1B perp volume, EVM mainnet timing), cited sources, and clear risk analysis; DexScreener API failure is documented/mitigated but represents ongoing data source degradation.",
+  "flags": [
+    "api_error"
+  ],
+  "avg_score": 4.14,
   "history": [
     {
       "date": "2026-05-18",
@@ -28,6 +30,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     }
   ]

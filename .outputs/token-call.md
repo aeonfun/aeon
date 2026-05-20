@@ -1,11 +1,22 @@
-Daily Token Call · 2026-05-19
+## Summary
 
-CHZ · HIGH · 7/10
-$0.0476 (+1.8% 24h, +11.0% 7d), mcap $494m, vol $103m, vol/mcap 0.21
+Ran the token-call skill for 2026-05-20.
 
-Signals: high turnover at vol/mcap 0.21, an 11.0% 7d climb that outpaces a red BTC and ETH, 24h momentum cooling to +1.8%. Not on the trending list, no DEX cross-confirm.
-Catalyst: FIFA World Cup 2026 opens June 11, three weeks out, the demand event CHZ Fan Tokens are built around. The Q2 buyback program routes 10% of Fan Token revenue into open-market CHZ purchases, and a Naver Pay integration onboarded close to 1m new Chiliz Chain wallets.
-Risk: CHZ has run into every prior World Cup and sold off after kickoff, so sell-the-news is the base case. The token sits 94.6% below its 2021 ATH, a long downtrend an event bid does not reverse. The buyback is a Q2 commitment tied to Fan Token revenue, not a confirmed bid.
-Dedup check: first time in 7d (recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR, HYPE)
+**Pick: LIT (Lighter) — HIGH · 10/10**
+- $1.18 · +18.5% 24h · +25.9% 7d · mcap $299m · vol $63.9m · vol/mcap 0.21
+- Top scorer of the 250-token scan after the 7d dedup gate excluded TRAC/BSB/INJ/NEAR/HYPE/CHZ/KAIA.
+- Catalyst: Vitalik Buterin name-check at the May-18 fireside chat + Telegram wallet's $1B perp volume on May 7 (fully routed through Lighter) + EVM mainnet locked for Q2/Q3 2026; perp-DEX narrative is RIDE w/ trail.
+- Risks: thin book / no major CEX listing, team+investor cliff at one year (next major unlock late 2026), Vitalik mention is endorsement not product news.
 
-not financial advice — pattern-matching only
+**Files**
+- `.outputs/token-call.md` (overwritten — v2.1 locked layout)
+- `memory/logs/2026-05-20.md` (new)
+- `.pending-notify/1779257657.signal.md` (queued — inline `./notify` blocked by sandbox shell-substitution restriction, used the documented pending-file fallback)
+
+**Sources:** cg=ok, dex=fail (DexScreener `q=trending` returned only junk tokens literally named "Trending"/"TREND" — same failure mode as prior runs)
+
+Sources used for catalyst/risk research:
+- [Lighter price outlook: Vitalik endorsement push toward $1 — invezz](https://invezz.com/news/2026/05/19/lighter-price-outlook-can-lit-push-toward-1-after-vitalik-endorsement/)
+- [Lighter DEX launches LIT token with 25% airdrop — CoinDesk](https://www.coindesk.com/markets/2025/12/30/lighter-dex-launches-lit-token-with-25-airdrop)
+- [Lighter (LIT) tokenomics & vesting — Tokenomist](https://tokenomist.ai/lighter)
+- [Lighter LIT price prediction 2026 — CCN](https://www.ccn.com/analysis/crypto/lighter-lit-price-prediction-2026/)
