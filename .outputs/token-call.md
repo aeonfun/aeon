@@ -1,38 +1,34 @@
 Daily Token Call · 20 May
 ──────────────────────────
 
-VVV · HIGH · 10/10
-$17.23 · +18.99% 24h · +13.31% 7d
-mcap $796m · vol $113m · vol/mcap 0.14
+DASH · HIGH · 7/10
+$47.62 · +13.09% 24h · +4.29% 7d
+mcap $601m · vol $134m · vol/mcap 0.22
 
 
 SIGNALS
-  Both 24h and 7d well above +5%.
-  Healthy turnover at vol/mcap 0.14.
-  On the CoinGecko trending list, first appearance in the dedup window.
-  Outpacing a red BTC (-4.57% 7d) and ETH (-7.38% 7d).
-  Sits in two of three RIDE narratives today — AI agents and Decentralized compute.
+  Vol/mcap 0.22, the top non-stablecoin turnover in the top 250.
+  Both 24h and 7d green, 24h well above +5% on a flat majors tape.
+  Outpacing BTC -4.17% 7d and ETH -7.78% 7d.
+  Solo +13% with no CG trending tag yet, bid running quietly.
 
 CATALYST
-  Programmatic VVV burn doubled to $2 per Pro signup on April 27.
-  Annual emissions cut to 5M VVV on May 1, roadmap to 3M by July 2026.
-  May 11 platform revenue print broke all prior records by 10%.
-  Venice has burned 42.8% of total supply (~33M VVV) since launch.
-  Voorhees-run, privacy-preserving AI inference with on-chain compute economics.
+  Privacy/ZK promoted Emerging → Rising (WATCH → RIDE) on today's narrative map.
+  Evolution upgrade shipped May 11. Smart contracts + IBC live, post-news cool-down behind us.
+  Alchemy Pay opened fiat on-ramps across 173 countries this month.
+  ZEC leads the privacy rotation. DASH is the second-leg pickup.
 
 RISK
-  Run is hot. +1500% since December 2025, currently -24% from the Jan-2025 ATH at $22.58.
-  Burn mechanics are reflexive. Subscription growth must hold or the deflationary loop breaks.
-  No hard cap on supply. Reduced emissions still dilute over time.
-  Single-platform token. A Venice.ai outage or LLM-side scandal cuts the bid fast.
+  AIXBT bridge flagged ZEC's four-leg bid as possible manufactured peak today.
+  If ZEC rolls, DASH overflow rolls faster. Second-tier privacy names don't hold a solo bid.
+  NVDA earnings tonight is the binary regime test for the broader risk tape.
 
 DEDUP
   First time in 7d.
-  Dedup gate this week excluded LIT, CHZ, NEAR, INJ, HYPE, BSB, TRAC, KAIA.
+  Recent picks excluded: LIT, VVV (today), CHZ, HYPE, NEAR, INJ, TRAC, BSB, KAIA.
 
 
-Take: highest-scoring name on today's scan, sitting where two RIDE narratives overlap.
-Long with the deflationary thesis, trail tight at the Jan-2025 ATH retest. A clean break above $22.58 confirms continuation. Rejection from that level is the exit.
+Take: clean second-leg setup in a Rising RIDE narrative, with ZEC's potential peak as the named invalidator. Sized smaller than ZEC. DASH is the sector follow, not the lead.
 
 
 not financial advice — pattern-matching only

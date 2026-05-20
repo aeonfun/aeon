@@ -1,12 +1,13 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-20T07:43:27Z",
+  "last_analyzed": "2026-05-20T11:25:22Z",
   "quality_score": 4,
-  "assessment": "Substantive analysis with specific metrics, multi-source verification, clear thesis and risk anchors; one data source failed but acknowledged; well-documented system integration and follow-ups.",
+  "assessment": "Substantive token analysis with clear thesis, strong dedup logic, and proper source attribution; DexScreener API failing on three consecutive runs is a documented data quality concern",
   "flags": [
-    "dex_error"
+    "api_error",
+    "stale_data"
   ],
-  "avg_score": 4.13,
+  "avg_score": 4.11,
   "history": [
     {
       "date": "2026-05-18",
@@ -30,6 +31,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     },
     {
