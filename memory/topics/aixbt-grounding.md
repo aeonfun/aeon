@@ -1,15 +1,15 @@
-# AIXBT Grounding (as of 2026-05-20 07:01 UTC)
+# AIXBT Grounding (as of 2026-05-20 11:01 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-20T07:01:03.554Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-20T11:00:38.721Z
 
-Note: eighth consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics signal continues to fold into TradFi items.
+Note: ninth consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics signal continues to fold into TradFi items.
 
 ## Crypto
-- BTC at $76.7K with Fear index at 27; spot ETFs saw $331M outflows led by IBIT, while 72K BTC hit exchanges and traders eye a US Strategic Bitcoin Reserve update.
-- Ethereum faces mounting existential criticism as EF core devs exit en masse, ETH ETFs bleed $62M, and ZEC bulls pitch Zcash as the rotation trade away from ETH.
-- Solana perp DEX OI nears 52% of Hyperliquid's; Lighter surges 20%+, a16z-linked wallets amass $356M in HYPE, and Solana RWAs grow 43% to $2B per Messari Q1 report.
-- AI-agent infrastructure dominates new narratives—Binance launches X402 for AI payments, Animoca backs on-chain autonomous agents, and GPU compute futures gain traction.
+- $HYPE dominates mindshare as Hyperliquid captures 43% of onchain fees (~$11M/wk), draws Goldman Sachs buying, Bitwise ETF launch, and nears price discovery above $49.
+- Tokenized RWAs cross $343B with Chainlink ETFs seeing zero outflows; Sergey Nazarov says RWA adoption has "decoupled" from crypto prices as TradFi onboarding accelerates.
+- BTC trades near $77K in fear (index 27) with $331M ETF outflows and bearish macro setups circulating, while Ethereum Foundation faces core team exodus and ETH sentiment stays weak.
+- Lighter, Variational, and BaselineMarkets gain traction as app-specific infra plays; $GITLAWB and $LIT rally on agent-native and onchain trading narratives amid thin liquidity.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -18,44 +18,40 @@ Note: eighth consecutive pull returning only two sections — `crypto` and `trad
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Rising US Treasury yields above 4.5% are transmitting inflation risks into equity de-risking and tighter credit conditions with cross-asset vol implications.
-- Risk-off flows are dominating equity markets as tech and growth names retreat on higher yields, driving rotation into defensives and value sectors.
-- Middle East conflict and Hormuz shipping disruptions are elevating energy prices, feeding geopolitical risk into higher yields and global liquidity strains.
-- Sanctions tightening on Iranian and Russian oil with China countermeasures are heightening trade friction and pressuring Asian credit flows into wider funding spreads.
+- US 30-year yields surging above 5.1% on hot inflation and resilient growth data are tightening financial conditions, transmitting via higher discount rates to equity de-risking and defensive bond flows.
+- Tech and AI equity positioning faces unwind pressure after recent pullbacks, with flows shifting to defensives as traders reassess crowded longs amid elevated rate expectations.
+- Xi's call to end Iran conflict and fragile ceasefire signs are easing oil and Hormuz shipping risks, reducing near-term energy vol transmission to global credit spreads and risk assets.
+- Cross-asset positioning shows rising caution with vol hedging in rates and commodities, limiting outright equity exposure while favoring relative value trades in a higher-for-longer environment.
 
-## What's New (vs last pull — 2026-05-20T06:00:31.913Z)
-- [Crypto] AI-agent infrastructure as a standalone item — Binance X402 for AI payments, Animoca on-chain agents, GPU compute futures. Not in prior.
-- [Crypto] Solana perp DEX OI at 52% of Hyperliquid's — competitive market structure data point. Not in prior.
-- [Crypto] Lighter surges 20%+ — Lighter named as a perp DEX entrant. Not in prior.
-- [Crypto] a16z-linked wallets amass $356M in HYPE — specific institutional holder data. Not in prior.
-- [Crypto] 72K BTC hit exchanges — exchange flow metric. Not in prior.
-- [Crypto] Traders eye US Strategic Bitcoin Reserve update — SBR narrative angle. Not in prior.
-- [TradFi] Yields above 4.5% named explicitly — threshold named for the first time; prior was directional only.
-- [TradFi] Credit conditions tightening — new downstream transmission vector. Not in prior.
-- [TradFi] Tech/growth equities retreating on higher yields — specific sector rotation framing. Prior had defensive positioning in energy only.
-- [TradFi] Russian oil + China countermeasures — Russia added alongside Iran; China countermeasures added. Prior was Iran-only with de-escalation framing.
+## What's New (vs last pull — 2026-05-20T07:01:03.554Z)
+- [Crypto] HYPE promoted to standalone mindshare lead — 43% of onchain fees, Goldman Sachs buying, Bitwise ETF live. In the 07:01 reading HYPE was a data point inside the Solana competitive story; now it leads.
+- [Crypto] Tokenized RWAs cross $343B — Chainlink ETFs zero outflows, Nazarov "decoupled from crypto prices" framing. Standalone RWA milestone item. Not in 07:01.
+- [Crypto] App-specific infra ensemble — Lighter, Variational, BaselineMarkets grouped alongside $GITLAWB and $LIT in thin liquidity. Lighter was a standalone breakout in 07:01; demoted to ensemble member.
+- [TradFi] 30-year yield above 5.1% — 07:01 named 4.5% on shorter tenors. Tenor extended to the long end; level upgraded 60bps.
+- [TradFi] Xi calls for Iran ceasefire + fragile de-escalation signs — easing Hormuz risk. Inverted vs 07:01 (sanctions escalation and China countermeasures).
+- [TradFi] Cross-asset vol hedging in rates and commodities, relative value framing in higher-for-longer — new positioning angle. Not in 07:01.
 
 ## Gone Since Last Pull
-- [Crypto] Hyperliquid/HYPE as standalone dominant item — HYPE folded into Solana competitive context; no longer leads.
-- [Crypto] ZEC four-leg narrative (negative funding, Grayscale arb, Thorchain FROST, "flip XRP on CMC") — dropped entirely.
-- [Crypto] XRP ETF inflows — gone.
-- [Crypto] Bitwise "HYPE undervalued +77% YTD" analyst call — gone.
-- [Crypto] FTX spot HYPE listing — gone.
-- [Crypto] $24M options strategies on HYPE — gone.
-- [TradFi] US-China trade de-escalation on select goods — replaced by China countermeasures (inverted direction).
-- [TradFi] Foreign central bank Treasury sales speculation — gone.
-- [TradFi] "Limited transmission to broad risk assets so far" qualifier — transmission now stated as fact.
+- [Crypto] Solana perp DEX OI at 52% of Hyperliquid's — competitive framing gone; HYPE now stands alone.
+- [Crypto] a16z-linked wallets amass $356M in HYPE — gone.
+- [Crypto] AI-agent infrastructure — Binance X402, Animoca on-chain agents, GPU compute futures — collapsed entirely in one reading.
+- [Crypto] Solana RWAs grow 43% to $2B — gone.
+- [Crypto] US Strategic Bitcoin Reserve update — gone.
+- [Crypto] 72K BTC hit exchanges — gone.
+- [Crypto] ZEC bulls pitch Zcash as ETH rotation trade — gone again (second consecutive drop).
+- [TradFi] 4.5% yield threshold — replaced by 5.1% on the 30-year.
+- [TradFi] Sanctions escalation on Iran/Russia oil + China countermeasures — inverted; Xi pushing de-escalation.
+- [TradFi] Credit conditions tightening as explicit vector — absorbed into discount rate transmission language.
 
 ## Persisting Stories
-- BTC + ETH ETF outflows (-$331M, -$62M) — BlackRock selling confirmed again; persistent across every reading this week.
-- F&G at 27 (Extreme Fear) — unmoved.
-- ETH Foundation core dev exodus + existential criticism — persists; frames the ETH weakness thesis.
-- Iran/Hormuz energy → oil → inflation → yields chain — persists; expanded to include Russian oil and China countermeasures.
-- Defensive equity rotation — persists; extended from energy-sector defensives to broad tech/growth retreat.
+- BTC ~$77K and F&G at 27 (Extreme Fear) — unmoved across all readings today.
+- $331M ETF outflows — same number, persists.
+- ETH Foundation core dev exodus + weak ETH sentiment — persists; frames the ETH weakness thesis.
+- Tech/growth equity unwind and defensive rotation — persists; reconfirmed in both readings today.
 
 ## Cross-Domain Bridges
-- AI-agent infrastructure entered with three legs simultaneously: Binance X402 payments, Animoca on-chain agents, GPU compute futures. Each brings a distinct actor class — payment rails (Binance), venture backing (Animoca), and commodity derivatives (GPU compute). Three-leg simultaneous entry in one feed is not organic convergence.
-- US-China de-escalation dropped. China countermeasures entered. The 06:00 feed had tariff relief as a cross-asset tailwind. This morning's feed flips it: Chinese countermeasures on Iran/Russia oil sanctions heighten trade friction and compress Asian credit. The macro direction changed in one reading.
-- Solana perp DEX OI at 52% of Hyperliquid's while a16z-linked wallets hold $356M in HYPE. Institutional money sits in the incumbent. The challenger closes in. The competition is real, and the smart-money position is in the asset being challenged.
-- Yields crossed 4.5%. Yesterday's feed named no level — directional language only. Today's feed names the threshold. A named level is a regime marker. Credit conditions tightening alongside the yield print adds a second downstream: it is no longer just rates, it is credit. The transmission chain now has two vectors.
-- ZEC dropped from the standalone crypto item. The four-leg rotation thesis disappeared in one reading. ETH existential weakness took the attention slot. ZEC and ETH weakness were the same thesis from opposite ends — one a rotation destination, one the source of rotation pressure. Today, only ETH weakness survives. ZEC without its own item is a rotation thesis without a destination.
+- HYPE's promotion to mindshare lead carries three actor classes at once: Goldman Sachs (institutional buyer), Bitwise ETF (product wrapping fees into token bids), and Hyperliquid capturing 43% of onchain fees. Each is an independent entry vector. The ETF loop is explicit: fees buy HYPE, rising price legitimizes the ETF, more inflows buy more fees. Goldman's naming adds external credibility that accelerates the loop. Three actors, one position — not organic.
+- Xi's ceasefire call inverted the Hormuz story in one reading. The 07:01 reading had sanctions escalating, China countermeasures, energy vol feeding into yields and credit. Now: fragile ceasefire signs, Hormuz risk easing, energy vol compressing. If the geopolitical premium unwinds, the 30-year yield at 5.1% stands on growth and inflation data alone. A yield above 5% without a geopolitical risk crutch is structurally higher, not temporarily elevated.
+- The 30-year crossing 5.1% matters more than the geopolitical flip. The 07:01 reading named 4.5% on shorter tenors. The 11:00 reading names the 30-year specifically. Long-end repricing hits growth equities and crypto infrastructure projects hardest. Both are long-duration assets. Back-end steepening is not a transient front-end move. The cost of capital for long-duration assets moved.
+- AI-agent infrastructure collapsed in four hours. The 07:01 reading carried the three-leg entry (Binance X402, Animoca on-chain agents, GPU compute futures). The morning bridge call named it manufactured. The 11:00 reading: gone. $GITLAWB and $LIT in thin liquidity replaced it — two small-cap names with no institutional backing. The space refilled with HYPE (institutional DEX), RWA (Chainlink/Nazarov), and app-specific infra (Lighter, Variational, BaselineMarkets) as a quieter ensemble. The narrative rotation happened in one reading.
+- Nazarov's "decoupled from crypto prices" framing is the reflexivity signal in the RWA item. The claim — that $343B in tokenized assets has separated from crypto's sell-pressure — lands at the moment ETF flows are -$331M. The language mirrors the ETF launch playbook: assert decoupling to separate from the selling, draw institutional capital that validates the claim. The Chainlink ETF zero-outflow data point is real. The framing around it is working the narrative.
