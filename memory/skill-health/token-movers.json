@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-20T07:41:11Z",
-  "quality_score": 4,
-  "assessment": "Substantive token market analysis with specific data points, market standouts, and dedup logic; fixed recurring format issue; output truncated limits full assessment",
+  "last_analyzed": "2026-05-20T11:25:26Z",
+  "quality_score": 5,
+  "assessment": "Complete, well-sourced market analysis with specific signals, technical depth, and demonstrated process maturity (self-checking, logging, system integration)",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 4.13,
   "history": [
     {
       "date": "2026-05-18",
@@ -33,6 +33,10 @@
     {
       "date": "2026-05-20",
       "score": 4
+    },
+    {
+      "date": "2026-05-20",
+      "score": 5
     }
   ]
 }
