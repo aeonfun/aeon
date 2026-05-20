@@ -4,7 +4,8 @@
 
 | ID | Title | Severity | Category | Detected | Affected Skills |
 |----|-------|----------|----------|----------|-----------------|
-| ISS-005 | Summary-blob artifact corruption persists across 7 chain skills after the perps-scan-only structural fix | medium | output-format | 2026-05-19 | market-context-refresh, aixbt-pulse, narrative-tracker, monitor-runners, token-movers, morning-macro, daily-ops-review |
+| ISS-005 | Summary-blob artifact corruption persists across chain skills after the perps-scan-only structural fix | medium | output-format | 2026-05-19 | market-context-refresh, aixbt-pulse, narrative-tracker, token-movers, token-call, morning-macro, daily-ops-review |
+| ISS-006 | monitor-runners .outputs/ artifact overwritten with `--help` after skill ran clean | high | output-format | 2026-05-20 | monitor-runners |
 
 ## Resolved
 
