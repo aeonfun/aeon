@@ -1,27 +1,26 @@
-## Summary
+Ops Review · 20 May · n/a
 
-Ran daily-ops-review as chain Step 4 for 2026-05-20 from upstream chain context.
+─────────  STEP 1 — DATA  ─────────
 
-**Verdict: Complete — 2 ✓, 6 ⚠, 1 ✗.**
+  ✓ market-context-refresh · chop, BTC +0.18%, breadth 7/20, F&G 27 Fear, all sources ok
+  ✓ aixbt-pulse · 2 populated sections (macro+geo folded into tradfi), AI-agent infra bridge call
+  ✓ narrative-tracker · 5 tracked, 1 NEW (Hyperliquid)
+  ✓ perps-scan · QUIET, 2 ACCUMULATION (ZEC, NEAR) across 25 assessed
+  ✗ monitor-runners · artifact wiped to "--skill", ISS-006 recurrence
+  ✓ token-movers · 34/100 green, 8 winners 7 losers, ZEC joined trending
+  ✓ token-call · VVV HIGH 10/10
 
-- **✓ clean (2):** perps-scan (QUIET, 2 ACCUMULATION — ZEC, NEAR), perps-brief (3 HIGH CONVICTION — ZEC, NEAR, LIT)
-- **⚠ ISS-005 Summary-blob leak (6):** market-context-refresh, aixbt-pulse, narrative-tracker, token-movers, token-call, morning-macro — each contains the assistant `## Summary` blob in `.outputs/` instead of the v2.1 locked format. token-call is newly affected today; previously clean.
-- **✗ monitor-runners:** `.outputs/monitor-runners.md` holds the literal seven-byte payload `--help`. Skill log records a clean run with a 1.5kb v2-locked signal written. Something overwrote the artifact between the skill's write and Step 4's read. Distinct failure mode from ISS-005.
+─────────  STEP 2 — BRIEFS  ─────────
 
-**Sources:** all clean — coingecko, defillama, fng, polymarket, geckoterminal, aixbt, websearch. No source-side degradations.
+  ✓ perps-brief · 3 HIGH CONVICTION (ZEC, NEAR, LIT), 4 WATCHLIST
 
-**New issue filed:** **ISS-006** (high · output-format) for the monitor-runners overwrite. Documents the hypothesis space (chain-runner / postprocess script / aliased command writing `--help` to the artifact path).
+─────────  STEP 3 — MACRO  ─────────
 
-**Chain duration:** n/a — no `GITHUB_RUN_ID` exposed, no bracketing log timestamps; 7-day median still unestablished.
+  ✓ morning-macro · published
 
-**Files:**
-- `.outputs/daily-ops-review.md` — v2.1 locked layout. Wrote via Write before composing this chat Summary to avoid the ISS-005 trap.
-- `memory/issues/ISS-006.md` (new)
-- `memory/issues/INDEX.md` (added ISS-006, revised ISS-005 affected_skills: dropped monitor-runners, added token-call)
-- `memory/issues/ISS-005.md` (frontmatter affected_skills synced)
-- `memory/logs/2026-05-20.md` (appended `## Daily Ops Review` block)
-- `.pending-notify/daily-ops-review-20260520.signal.md` (queued for post-run Discord delivery to #aeon-ops; inline `./notify --signal "$(cat ...)"` blocked by sandbox)
 
-**Self-check vs writing-style v2.1 Section 4:** ran clean across Patterns 1–6. No participle ambiguity, no adjective stacking, no banned internal jargon (skill/artifact/.outputs/ are operator-monitoring-channel allowed), one tolerated passive ("overwritten by an unknown later step" — the agent really is unknown), no em-dashes used as connectors, no weak verbs.
+Chain ran complete. 8 ✓, 0 ⚠, 1 ✗.
 
-**Follow-ups:** ISS-005 still needs the perps-scan v3 structured-render pattern generalized to the remaining six skills. ISS-006 needs `chain-runner.yml` + `scripts/postprocess-*.sh` inspected for a stray write path to `.outputs/monitor-runners.md` after the skill exits.
+Failed sources: none. Every data source returned clean (coingecko, defillama, fng, polymarket, geckoterminal, aixbt, websearch). The 1 ✗ flags the monitor-runners artifact, not a source failure. Something overwrote the skill-written 1.5kb signal after the skill ran.
+
+Issues: ISS-006 reopened. The same Capture-step overwrite pattern landed today with "--skill" in place of yesterday's "--help" snippet. The aeon.yml sentinel-mtime fix shipped this morning did not hold against the second occurrence.

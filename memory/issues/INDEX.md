@@ -4,6 +4,7 @@
 
 | ID | Title | Severity | Category | Detected | Affected Skills |
 |----|-------|----------|----------|----------|-----------------|
+| ISS-006 | monitor-runners .outputs/ artifact overwritten with stray CLI snippet after skill ran clean | high | output-format | 2026-05-20 | monitor-runners |
 
 ## Resolved
 
@@ -14,4 +15,3 @@
 | ISS-003 | Skills write the `## Summary` blob into `.outputs/` instead of the locked artifact format | medium | TBD | 2026-05-19 |
 | ISS-004 | perps-scan still writes the `## Summary` blob into `.outputs/` after the ISS-003 guardrail patch | medium | TBD | 2026-05-19 |
 | ISS-005 | Summary-blob artifact corruption persists across chain skills after the perps-scan-only structural fix | medium | TBD | 2026-05-20 |
-| ISS-006 | monitor-runners .outputs/ artifact overwritten with `--help` after skill ran clean | high | TBD | 2026-05-20 |

@@ -1,8 +1,8 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-20T06:51:53Z",
+  "last_analyzed": "2026-05-20T08:06:41Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured diagnostic output with clear issue identification and actionable follow-ups; however, the verdict shows 6 warnings and 1 critical failure across monitored skills, indicating systemic degradation rather than system health.",
+  "assessment": "Substantive daily review with concrete issue tracking (ISS-006 reopened), specific corruption diagnosis, and actionable follow-ups; limited by recurring bug recurrence and missing chain metrics.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -28,6 +28,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     },
     {
