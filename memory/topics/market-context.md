@@ -1,71 +1,75 @@
-# Market Context (as of 2026-05-19)
+# Market Context (as of 2026-05-20)
 
-> **Take:** chop — BTC +0.62% 24h with 11/20 top-cap majors green, F&G pinned at 25 (Extreme Fear), DEX volume flat at $6.56B; no directional signal. Conviction: low.
+> **Take:** chop — BTC flat (+0.31% 24h), breadth collapsed to 5/20 green, DEX vol at $5.32B (-18.9% daily). Alts bled while BTC held; no directional signal. Conviction: low.
 
 ## Signal Snapshot
-- BTC $76,570 (+0.62% 24h, -4.86% 7d) · dominance 58.17% (-0.01 pp 24h)
-- ETH $2,110 (+0.59% 24h, -6.98% 7d) · ETH/BTC 0.02755
-- SOL $84.34 (+0.48% 24h, -11.11% 7d)
-- Total mcap $2.633T (+0.13% 24h) · DEX vol $6.56B 24h
-- Breadth: 11/20 green 24h · 4/20 green 7d
-- Fear & Greed: 25 (Extreme Fear) — yesterday 28
+- BTC $77,130 (+0.31% 24h, -4.77% 7d) · dominance 58.28% (+0.11 pp 24h)
+- ETH $2,125 (-0.35% 24h, -7.47% 7d) · ETH/BTC 0.02755
+- SOL $84.75 (-0.47% 24h, -11.04% 7d)
+- Total mcap $2.650T (+0.65% from prior refresh) · DEX vol $5.32B 24h
+- Breadth: 5/20 green 24h · 4/20 green 7d
+- Fear & Greed: 27 (Fear) — yesterday 25
 
 ## What Changed Since Last Refresh
-- ZEST extended: +33.9% → +81.37% 24h, day-2 trending leader (#1). 2-day confirmation, not a one-session spike.
-- NEAR exited trending (was #10). Compute/AI infra loses its trending anchor heading into NVIDIA earnings.
-- Iran peace deal ticked up: Polymarket YES 10% → 12.5%.
-- All majors flat intraday. Regime unchanged.
+- Breadth collapsed: 11/20 → 5/20 green 24h. Alts bled while BTC held flat. Distribution, not capitulation.
+- DEX vol dropped -18.9% to $5.32B from $6.56B. Volume compression across the board.
+- ZEST extended to day 3: +133% 24h (was +81%). Float at $27M mcap. Thin.
+- F&G crossed from Extreme Fear to Fear (25 → 27). Classification boundary cleared. Recovery stalled at the 27 mark.
+- Iran airspace closure risk emerged: Polymarket YES 13.5% by May 21. US-Iran peace deal odds dropped from 12.5% to 10.5%.
+- AI compute expanded trending breadth: VVV jumped from #8 to #2 trending (+15.9% 24h). Gensyn (AI) entered #5. Two AI tokens in top 5 trending.
+- Privacy narrative lost its trending anchors: ZEC and ZANO exited trending. ZEC holds +3.33% 24h in top-20 but mindshare dropped.
 
 ## Active Narratives
-- **Privacy / ZK layer** — phase: rising. Evidence: ZEC +6.39% 24h for the 4th+ consecutive session, ZANO trending #2, XMR +1.62% in top-20.
-- **Hyperliquid / perp DEX** — phase: rising. Evidence: HYPE +7.27% 24h, +18.83% 7d, trending #4, now #12 by global mcap. 2-day sustained outperformance.
-- **Decentralized compute / AI infra** — phase: rising. Evidence: NVIDIA earnings tomorrow (May 20) is the next regime test. NEAR exited trending; the narrative holds on catalyst watch.
-- **Gaming / NFT infra** — phase: emerging. Evidence: RON +33.96% held into day 2 (trending #6), PENGU +3.95% at trending #3. Both gaming/NFT names in trending for the 2nd consecutive day.
-- **RWA / stablecoins** — phase: fading. Evidence: ONDO trending #7 at +6.23% but no new trigger. CLARITY Act markup committed by Tim Scott; Senate floor outcome still open.
+- **Bitcoin DeFi / lending** — phase: rising. Evidence: ZEST #1 trending for day 3 at +133% 24h, $27M mcap float. Not a one-session spike.
+- **AI / private compute** — phase: rising. Evidence: VVV +15.9% 24h jumped to #2 trending from #8; Gensyn (AI) entered #5. Two AI tokens in top 5 trending ahead of NVIDIA earnings.
+- **Perp DEX / liquidity infra** — phase: rising. Evidence: HYPE +1.37% 24h, +21.03% 7d, #12 by global mcap; LIT (Lighter) newly entered trending #3. Narrative broadening beyond HYPE.
+- **Privacy / ZK layer** — phase: fading. Evidence: ZEC +3.33% 24h still in top-20 but exited trending. ZANO gone. Price held; mindshare dropped.
+- **Gaming / NFT infra** — phase: fading. Evidence: RON fell from $0.115 to $0.107 and dropped from trending #6 to #11. PENGU holds #4 but no new trigger.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Binance CEX: $153.6B (-3.3%)
-- OKX: $24.6B (-3.5%)
-- Lido: $18.7B (-6.7%)
-- Bitfinex: $18.6B (-4.8%)
-- SSV Network: $15.6B (-7.7%)
+- Binance CEX: $153.9B (-3.9%)
+- OKX: $24.7B (-3.9%)
+- Lido: $18.7B (-7.1%)
+- Bitfinex: $18.6B (-4.5%)
+- SSV Network: $15.5B (-8.1%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $43.29B (7d change: n/a — chains endpoint does not return 7d delta)
-- Solana: $5.93B (7d change: n/a)
-- BSC: $5.48B (7d change: n/a)
+- Ethereum: $43.25B (7d change: n/a — chains endpoint does not return 7d delta)
+- Solana: $5.91B (7d change: n/a)
+- BSC: $5.47B (7d change: n/a)
 
 ## Stablecoins
-Total: ~$284.6B (7d change: n/a). USDT $189.6B · USDC $77.0B · USDS $8.8B · USD1 $4.6B · combined share of mcap ~10.8%.
+Total: ~$289B (7d change: n/a). USDT $189.5B · USDC $77.0B · USDS $8.8B · USD1 $4.6B · combined share of mcap ~10.9%.
 
 ## Trending (CoinGecko)
-- ZEST — Zest Protocol (Bitcoin DeFi/lending), $0.142, +81.37% 24h; #1 trending. 2-day move confirmed, no broad narrative context yet.
-- ZANO — Zano, $11.33, -0.64% 24h; #2 trending. Privacy anchor, price easing but trend persistent.
-- PENGU — Pudgy Penguins, $0.0085, +3.95% 24h; #3 trending. NFT/gaming overlay, day 2.
-- HYPE — Hyperliquid, $47.69, +7.05% 24h; #4 trending. Perp DEX leader, holding both timeframes.
-- ZEC — Zcash, $557.60, +6.50% 24h; #5 trending. 4th+ consecutive session of top-20 outperformance.
-- RON — Ronin, $0.115, +33.96% 24h; #6 trending. Gaming/NFT infra, move held into day 2.
-- ONDO — Ondo Finance, $0.361, +6.23% 24h; #7 trending. RWA, persistent trending with no new trigger.
-- VVV — Venice Token, $14.60, +2.94% 24h; #8 trending. AI privacy infra.
-- BTC — Bitcoin, $76,460, +0.34% 24h; #9 trending.
-- ETH — Ethereum, $2,108, +0.30% 24h; #10 trending. Replaced NEAR on the list.
+- ZEST — Zest Protocol (Bitcoin DeFi/lending), $0.183, +133% 24h; #1 trending. Day 3. Float $27M mcap.
+- VVV — Venice Token (AI privacy infra), $16.95, +15.9% 24h; #2 trending. Jumped from #8 yesterday.
+- LIT — Lighter (perp DEX on Arbitrum), $1.20; #3 trending. New entry.
+- PENGU — Pudgy Penguins, $0.00885; #4 trending. NFT/gaming. No fresh trigger.
+- AI — Gensyn (decentralized compute), $0.0344; #5 trending. New entry.
+- ONDO — Ondo Finance (RWA), $0.383; #6 trending. Persistent, no new trigger.
+- ETH — Ethereum, $2,124; #7 trending.
+- KITE — $0.249; #8 trending. New entry.
+- HYPE — Hyperliquid, $48.33, +1.37% 24h; #9 trending. Dropped from #4. Retains top-20 price leadership.
+- LUNC — Terra Luna Classic, $0.0000760; #10 trending. New entry.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Manchester City win 2026-05-19 | 60.5% | $6.6M | $1.9M |
-| Cavaliers vs. Knicks | 30.5% | $1.8M | $2.3M |
-| US x Iran permanent peace deal by May 31? | 12.5% | $1.2M | $472K |
+| Spurs vs. Thunder | 32.5% (Spurs) | $1.3M | $2.1M |
+| Iran closes airspace by May 21 | 13.5% | $1.1M | $95K |
+| US x Iran permanent peace deal by May 31 | 10.5% | $1.1M | $584K |
+| Cleveland Cavaliers win 2026 NBA Finals | 3.35% | $908K | $538K |
 
 ## Macro Catalysts (next 48h)
-- **NVIDIA Q1 FY2027 earnings (May 20):** Analyst consensus ~$78.6B revenue. A beat sustains the decentralized compute narrative (TAO, AKT, RNDR). A miss pulls the bid from the sector.
-- **BTC ETF institutional bid:** 7 consecutive weeks of net inflows. ETFs absorb ~4,500–5,000 BTC/day vs 450 mined. Institutional floor bid active but BTC sits below prior $80K highs. Accumulation not yet translating to price.
-- **CLARITY Act Senate markup:** Tim Scott committed to running markup. Floor vote opens RWA/stablecoin re-activation or confirms the fading phase.
-- **Iran de-escalation:** Polymarket YES ticked up 10% → 12.5%. Soft positive, not a regime shift.
+- **NVIDIA Q1 FY2027 earnings (May 20):** Results pending at this refresh. A beat activates the AI compute narrative (VVV, Gensyn, AKT, RNDR). A miss pulls the bid. Trending data shows AI tokens entering top 5 ahead of the print.
+- **BTC ETF flows:** 5-day consecutive inflow streak confirmed, $238M single-day spike. Institutional bid active. ETF inflows running but BTC anchored below $77K. Funding divergence growing.
+- **Iran geopolitical risk:** Airspace closure by May 21 at YES 13.5%. Peace deal odds dropped from 12.5% to 10.5%. De-escalation thesis lost ground; risk premium building.
+- **CLARITY Act Senate markup:** Ongoing. RWA/stablecoin narrative phase depends on floor vote outcome.
 
 ## Implications for Downstream Skills
-- **token-call:** ZEST at +81% confirmed but extended. ZEC and HYPE stay the cleanest pair in this tape. NVIDIA earnings reshapes compute conviction tomorrow.
-- **narrative-tracker:** Gaming/NFT infra (RON + PENGU) holding for day 2. Evaluate phase upgrade from emerging → rising. NVIDIA earnings is the compute narrative phase-test.
+- **token-call:** Breadth 5/20 argues against broad alt exposure. HYPE and ZEC held through the breadth collapse — cleanest pair in the tape. ZEST at +133% over 3 days extended on thin float; reversal risk high.
+- **narrative-tracker:** Privacy/ZK lost trending anchors. Evaluate phase downgrade to fading. AI compute (VVV, AI in top 5 trending) earning a phase upgrade to rising if NVIDIA beat confirms.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
