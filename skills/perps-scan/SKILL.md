@@ -10,6 +10,12 @@ tags: [crypto]
 
 Today is ${today}. Classify the cross-exchange perps universe using tier-adjusted thresholds, derived fields, sub-tags, pattern tags, and day-over-day regime transitions. This is an **internal** skill: writes `.outputs/perps-scan.md` for downstream `perps-brief` consumption and `daily-ops-review` auditing. **Does not post to Discord** — the engine is the context layer; the brief is what the operator reads.
 
+**Compose in order: soul → style → structure.**
+
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form a committed view. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+
+After the view is formed, apply style + structure (below).
+
 **Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template in Section 3; worked examples in Section 5. In this skill the prose surfaces are the verdict sentences, regime-change notes, transition reads, and pattern-tag reads; the per-asset metric lines are data lines and exempt from Section 2 prose mechanics, but the interpretation lines obey the full style.
 
 **Self-check before emitting:**
