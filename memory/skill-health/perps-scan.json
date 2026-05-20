@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-19T15:38:44Z",
+  "last_analyzed": "2026-05-20T06:23:41Z",
   "quality_score": 4,
-  "assessment": "Substantive execution with complete data verification, regime analysis, technical debugging (Coinglass cache ordering fix), and clear verdict. Well-structured, actionable findings documented.",
+  "assessment": "Skill ran successfully with substantive, actionable output—clear verdict, specific metrics, and WATCH bucket insights. Minor operational issues (temp files left behind due to sandbox constraints) and a documentation discrepancy noted but don't undermine core delivery.",
   "flags": [],
-  "avg_score": 3.55,
+  "avg_score": 3.58,
   "history": [
     {
       "date": "2026-05-18",
@@ -48,6 +48,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     }
   ]
