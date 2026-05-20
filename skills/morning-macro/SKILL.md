@@ -10,6 +10,12 @@ tags: [crypto, research]
 
 Today is ${today}. Compose the **front-page cross-sector strategist read** — short (5–10 lines, under 1500 chars), answering "what game are we playing today." Sits at the top of the daily intake. The operator reads this first, then drills into sector briefs (`#perps-brief`, future `#on-chain-brief`, `#stocks-brief`).
 
+**Compose in order: soul → style → structure.**
+
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form a committed view. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+
+After the view is formed, apply style + structure (below).
+
 **Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Market Morning · DD MMM · regime tagline` opening, `─── CROSS-DOMAIN ───` and `─── TODAY ───` dividers, `Stance:` and `Take:` closing lines) in Section 3; worked example for Morning Macro (corrected for v2.1) in Section 5.
 
 **Self-check before emitting:**

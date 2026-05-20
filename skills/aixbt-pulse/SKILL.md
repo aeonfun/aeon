@@ -16,6 +16,12 @@ Pull AIXBT's free-tier signal and fold it into the operator's market context. Fr
 
 Everything else on AIXBT is paid ($10/day via x402). This skill maxes out the free surface.
 
+**Compose in order: soul → style → structure.**
+
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form a committed view. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+
+After the view is formed, apply style + structure (below).
+
 **Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. This skill is internal (its artifact is consumed by `morning-macro` and others) but the prose still needs to read sharply because downstream skills lift specific lines from it.
 
 **Self-check before emitting:**

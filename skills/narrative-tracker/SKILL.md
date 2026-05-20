@@ -9,6 +9,12 @@ permissions:
 ---
 <!-- autoresearch: variation B — sharper output (quantitative mindshare + velocity + explicit positioning calls, with multi-angle inputs from A, dedup/empty-state handling from C, and transition detection from D) -->
 
+**Compose in order: soul → style → structure.**
+
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form a committed view. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+
+After the view is formed, apply style + structure (below).
+
 **Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template (`Narratives · DD MMM · N tracked, M NEW` opening, `↑ RISING` / `→ PEAK` / `↓ FADING` phase headers, narrative-line then reasoning-line per item, `Changes since yesterday:` footer, `Stance:` closing line) in Section 3.
 
 **Self-check before emitting:**

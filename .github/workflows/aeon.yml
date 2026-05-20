@@ -442,6 +442,11 @@ jobs:
           Use this variable (override the default in the skill file):
           var=$VAR"
           fi
+          # Sentinel timestamp — anything in .outputs/ modified after this point
+          # was written by Claude during this run. Read by the "Capture skill
+          # output" step to distinguish a freshly-written locked artifact from
+          # a stale file checked out from the prior commit.
+          touch /tmp/aeon-claude-start
           if ! CLAUDE_OUTPUT=$(echo "$PROMPT" | claude -p - \
             --model "$MODEL" --allowedTools "$ALLOWED" \
             --output-format json 2>&1); then
@@ -505,16 +510,36 @@ jobs:
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           mkdir -p .outputs
-          # Save the notification message as a chain artifact
+          ARTIFACT=".outputs/${SKILL}.md"
           PENDING="dashboard/outputs/.pending-${SKILL}.md"
+          # Resolve the artifact in priority order:
+          #   1. json-render pending file (when JSONRENDER_ENABLED=true)
+          #   2. Skill-written locked-format artifact (fresh — modified after
+          #      /tmp/aeon-claude-start sentinel touched just before Claude ran)
+          #   3. Fall back to Claude's chat result (which per CLAUDE.md convention
+          #      ends in a `## Summary` block — only use this when the skill
+          #      didn't write its own artifact)
+          #   4. Empty-output placeholder
+          #
+          # The prior version unconditionally jumped to step 3, which OVERWROTE
+          # every skill's Write-tool-created locked artifact with the chat
+          # response — root cause of ISS-003/004/005 (Summary blob in
+          # .outputs/) and ISS-006 (the `--help` overwrite). perps-scan and
+          # perps-brief escaped only because their postprocess scripts rebuild
+          # the artifact AFTER this step from a JSON intermediate.
           if [ -f "$PENDING" ]; then
-            cp "$PENDING" ".outputs/${SKILL}.md"
+            cp "$PENDING" "$ARTIFACT"
+            echo "Capture: used json-render pending file"
+          elif [ -f "$ARTIFACT" ] && [ -s "$ARTIFACT" ] && [ "$ARTIFACT" -nt /tmp/aeon-claude-start ]; then
+            echo "Capture: skill wrote its own $ARTIFACT ($(wc -c < "$ARTIFACT") bytes), preserving"
           elif [ -f /tmp/skill-result.txt ] && [ -s /tmp/skill-result.txt ]; then
-            cp /tmp/skill-result.txt ".outputs/${SKILL}.md"
+            cp /tmp/skill-result.txt "$ARTIFACT"
+            echo "Capture: skill did not write its own artifact; falling back to Claude chat result"
           else
-            echo "_No output captured._" > ".outputs/${SKILL}.md"
+            echo "_No output captured._" > "$ARTIFACT"
+            echo "Capture: no skill artifact and no Claude result; wrote empty-output placeholder"
           fi
-          echo "::notice::Skill output captured to .outputs/${SKILL}.md ($(wc -c < ".outputs/${SKILL}.md") bytes)"
+          echo "::notice::Skill output captured to $ARTIFACT ($(wc -c < "$ARTIFACT") bytes)"
 
       - name: Analyze skill output
         id: analyze
