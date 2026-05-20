@@ -1,10 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-20T06:15:38Z",
+  "last_analyzed": "2026-05-20T07:40:59Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured skill output with specific crypto narrative insights, proper file artifacts, and documented follow-ups; truncated sources section prevents 5.",
+  "assessment": "Substantive corrective re-run with methodical verification, specific details (file size, item counts, pattern checks), proper logging, and clear follow-up actions; dense but well-documented.",
   "flags": [],
-  "avg_score": 3.86,
+  "avg_score": 3.88,
   "history": [
     {
       "date": "2026-05-18",
@@ -28,6 +28,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     },
     {
