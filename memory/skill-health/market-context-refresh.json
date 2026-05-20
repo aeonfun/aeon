@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-19T15:32:22Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive market analysis with specific data, comparative insights (ZEST day-2 confirmation, NEAR→ETH trend shift with earnings context), geopolitical integration, all sources verified, actionable regime assessment, complete artifact chain.",
+  "last_analyzed": "2026-05-20T06:34:10Z",
+  "quality_score": 4,
+  "assessment": "Substantive market synthesis with specific data, clear regime classification, and actionable theme tracking across breadth, volume, sentiment, and geopolitical signals.",
   "flags": [],
-  "avg_score": 4.4,
+  "avg_score": 4.33,
   "history": [
     {
       "date": "2026-05-18",
@@ -25,6 +25,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-20",
+      "score": 4
     }
   ]
 }
