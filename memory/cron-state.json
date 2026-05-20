@@ -11,9 +11,9 @@
   },
   "token-movers": {
     "last_status": "success",
-    "last_success": "2026-05-19T15:25:04Z",
-    "total_runs": 6,
-    "total_successes": 6,
+    "last_success": "2026-05-20T06:15:45Z",
+    "total_runs": 7,
+    "total_successes": 7,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
