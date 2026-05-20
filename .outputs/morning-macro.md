@@ -1,20 +1,17 @@
-Morning Macro complete for 2026-05-19.
-
 ## Summary
 
-Composed the **Morning Macro** front-page cross-sector read (chain Step 3), synthesizing the four upstream artifacts from chain context.
+Ran `morning-macro` chain Step 3 for 2026-05-20 using the four upstream artifacts already in chain context — no re-execution.
 
-**Output** — `Market Morning · 19 May · Chop, low conviction`, ~1464/1500 chars, three sections:
-- **Regime:** chop, low conviction — BTC $76,570 (+0.62% 24h, -4.86% 7d), breadth 11/20 green on the day but only 4/20 on the week, F&G 25 Extreme Fear (down from 28). Decentralized compute the only RIDE at 5/5; NVIDIA earnings tomorrow flagged as the regime test.
-- **Cross-domain:** quoted aixbt's bridge call — old crypto beta rotating into the HYPE infrastructure thesis (BHYP ETF, Mantle RWA pivot, Polymarket×Nasdaq); the dovish "liquidity rally later" counter-thesis flagged as pivot-hopium against the Hormuz/Iran-sanctions timing.
-- **Today:** all sector briefs quiet, `#perps-brief` skip-day (0 HIGH CONVICTION, 5 WATCHLIST). Called the **HYPE confluence** — it lines up across perps near-ACCUMULATION, narrative-tracker Hyperliquid rising, the aixbt bridge call, and token-call HIGH — but noted perps flags the OI build as not smart-money-confirmed. Take: cash-patient.
+**Output (`Market Morning · 20 May · Chop, conviction low` · 1499/1500 chars):**
+- **Regime:** BTC flat +0.31%, funding +0.009%/8h, breadth collapse 11/20 → 5/20 green, F&G stalled at 27 Fear, NVDA earnings tonight as regime test.
+- **Cross-domain:** ZEC's four-leg manufactured squeeze setup overnight, HYPE peaked into market-structure trade, US-China de-escalation broke the Iran-yields risk-off read.
+- **Today:** three HIGH CONVICTION setups in `#perps-brief` — ZEC long continuation, NEAR long continuation, LIT long breakout-pending. Infrastructure rotation is the cross-sector confluence (perps ACCUMULATION × three narrative-tracker RIDE calls).
 
 **Files:**
-- `.outputs/morning-macro.md` — overwrote a stale `## Summary` blob (recurring ISS-005/ISS-003-class artifact leak) with the correct chain-consumable signal.
-- `.pending-notify/morning-macro.signal.md` — queued for post-run delivery to Discord `#morning-macro`.
-- `memory/logs/2026-05-19.md` — appended `## Morning Macro` entry.
-- Committed to `main` as `4c9ee6e`.
+- `.outputs/morning-macro.md` — overwrote yesterday's stale `## Summary` blob (recurring ISS-005-class leak) with the v2.1 locked-format signal.
+- `.pending-notify/morning-macro-20260520.signal.md` — queued for Discord `#morning-macro` post-run delivery (inline `./notify --signal "$(cat ...)"` blocked by sandbox shell-substitution restriction, used documented pending-file fallback).
+- `memory/logs/2026-05-20.md` — appended `## Morning Macro` entry and summary.
 
-**Follow-ups:**
-- Inline `./notify` could not run — the Bash tool's static analysis rejects command substitution (`$(cat ...)`). Used the documented `.pending-notify/` fallback; the workflow's "Send pending notifications" step delivers `*.signal.md` files post-run.
-- The morning-macro artifact again held a stale `## Summary` blob on entry — same ISS-003/ISS-005-class leak that narrative-tracker flagged today. Worth the structured-intermediate + postprocess-renderer fix already applied to perps-scan/perps-brief.
+**Self-check vs writing-style v2.1 Section 4 ran clean** — Patterns 1–6 reviewed: em-dashes pass the slip-test as genuine noun-phrase asides; no participle ambiguity, no adjective stacking, no internal jargon, no passive voice, no weak verbs.
+
+**Follow-ups:** post-run notify step delivers the queued signal file. ISS-005-class artifact leak hit again on the morning-macro output — the structured-intermediate + postprocess-render fix already shipped to perps-scan/perps-brief still pending for morning-macro.

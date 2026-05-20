@@ -1,10 +1,12 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-19T15:47:40Z",
+  "last_analyzed": "2026-05-20T06:46:12Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-executed market brief with specific data points, clear theses, and proper chain integration; fixed a known artifact leak and documented follow-ups correctly.",
-  "flags": [],
-  "avg_score": 4.2,
+  "assessment": "Substantive market analysis with specific conviction setups, proper state management, and self-validation; recurring ISS-005 artifact leak and consolidation-only step limit upside",
+  "flags": [
+    "quality-regression"
+  ],
+  "avg_score": 4.17,
   "history": [
     {
       "date": "2026-05-18",
@@ -24,6 +26,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     }
   ]
