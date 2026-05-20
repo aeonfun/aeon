@@ -1,9 +1,26 @@
 import { NextResponse } from 'next/server'
-import { execSync } from 'child_process'
+import { execFileSync, execSync } from 'child_process'
 import { resolve } from 'path'
 import { readdirSync, readFileSync } from 'fs'
 
 const REPO_ROOT = resolve(process.cwd(), '..')
+
+function ghRepo(): string | null {
+  try {
+    const repo = execSync('gh repo set-default --view', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+    if (repo && !repo.startsWith('no default')) return repo
+  } catch {}
+  try {
+    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+    if (repo) return repo
+  } catch {}
+  return null
+}
+
+function ghArgsRepo(): string[] {
+  const repo = ghRepo()
+  return repo ? ['-R', repo] : []
+}
 
 interface RunRecord {
   name: string
@@ -35,8 +52,9 @@ interface Insight {
 export async function GET() {
   try {
     // Fetch up to 200 recent runs from GitHub Actions
-    const out = execSync(
-      'gh run list --json name,status,conclusion,createdAt,updatedAt --limit 200',
+    const out = execFileSync(
+      'gh',
+      ['run', 'list', ...ghArgsRepo(), '--json', 'name,status,conclusion,createdAt,updatedAt', '--limit', '200'],
       { stdio: 'pipe', cwd: REPO_ROOT, timeout: 30000 },
     ).toString()
     const raw: RunRecord[] = JSON.parse(out)
