@@ -76,9 +76,13 @@ fi
 # ---------- Pattern definitions ----------
 
 # HIGH severity: immediate risk of code execution or data exfiltration
+# NOTE: patterns must be POSIX Extended Regular Expressions — grep -E does NOT
+# understand PCRE escapes like \s (whitespace) or \b (word boundary). Use
+# [[:space:]] for whitespace and explicit character-class anchors for word
+# boundaries. See AntFleet finding H6 (Issue #184).
 HIGH_PATTERNS=(
   # Shell injection
-  'eval\s'
+  'eval[[:space:]]'
   'eval\('
   '`[^`]*\$'
   '\$\([^)]*\$'
@@ -94,7 +98,7 @@ HIGH_PATTERNS=(
   # Env var exfiltration patterns
   'printenv.*\|.*curl'
   'printenv.*\|.*wget'
-  'env\s.*\|.*curl'
+  'env[[:space:]].*\|.*curl'
   'cat.*/proc/.*environ'
   # Direct exfil of known secrets
   '\$TELEGRAM_BOT_TOKEN'
@@ -103,21 +107,21 @@ HIGH_PATTERNS=(
   '\$GITHUB_TOKEN.*curl'
   '\$GITHUB_TOKEN.*wget'
   # Prompt injection
-  '[Ii]gnore\s+(all\s+)?previous\s+instructions'
-  '[Ii]gnore\s+(all\s+)?prior\s+instructions'
-  '[Yy]ou\s+are\s+now\s+'
-  '[Ff]orget\s+(all\s+)?(your\s+)?instructions'
-  '[Dd]isregard\s+(all\s+)?previous'
-  '[Oo]verride\s+(all\s+)?rules'
+  '[Ii]gnore[[:space:]]+(all[[:space:]]+)?previous[[:space:]]+instructions'
+  '[Ii]gnore[[:space:]]+(all[[:space:]]+)?prior[[:space:]]+instructions'
+  '[Yy]ou[[:space:]]+are[[:space:]]+now[[:space:]]+'
+  '[Ff]orget[[:space:]]+(all[[:space:]]+)?(your[[:space:]]+)?instructions'
+  '[Dd]isregard[[:space:]]+(all[[:space:]]+)?previous'
+  '[Oo]verride[[:space:]]+(all[[:space:]]+)?rules'
   # Destructive commands
-  'rm\s+-rf\s+/'
-  'rm\s+-rf\s+\*'
-  'rm\s+-rf\s+~'
+  'rm[[:space:]]+-rf[[:space:]]+/'
+  'rm[[:space:]]+-rf[[:space:]]+\*'
+  'rm[[:space:]]+-rf[[:space:]]+~'
   'mkfs\.'
-  'dd\s+if=.*of=/dev/'
-  ':(){.*};:'
-  'git\s+push\s+--force\s+origin\s+main'
-  'git\s+push\s+-f\s+origin\s+main'
+  'dd[[:space:]]+if=.*of=/dev/'
+  ':\(\)[[:space:]]*\{.*\};[[:space:]]*:'
+  'git[[:space:]]+push[[:space:]]+--force[[:space:]]+origin[[:space:]]+main'
+  'git[[:space:]]+push[[:space:]]+-f[[:space:]]+origin[[:space:]]+main'
 )
 
 # MEDIUM severity: suspicious patterns that may or may not be intentional
@@ -128,27 +132,29 @@ MEDIUM_PATTERNS=(
   # Absolute paths outside typical dirs
   '/etc/passwd'
   '/etc/shadow'
-  '~/.ssh'
-  '~/.gnupg'
-  '~/.aws'
-  '~/.config'
+  '~/\.ssh'
+  '~/\.gnupg'
+  '~/\.aws'
+  '~/\.config'
   # Network calls to non-standard destinations
-  'curl\s+http://'
-  'wget\s+http://'
+  'curl[[:space:]]+http://'
+  'wget[[:space:]]+http://'
   # Unquoted variable expansion in bash blocks
-  'rm\s.*\$[A-Z]'
-  'chmod\s+777'
-  'chmod\s+-R\s+777'
+  'rm[[:space:]].*\$[A-Z]'
+  'chmod[[:space:]]+777'
+  'chmod[[:space:]]+-R[[:space:]]+777'
   # Git force operations
-  'git\s+push\s+--force'
-  'git\s+push\s+-f\b'
-  'git\s+reset\s+--hard'
-  'git\s+clean\s+-fd'
+  'git[[:space:]]+push[[:space:]]+--force'
+  # `-f` must terminate at a word boundary so we don't false-positive on `-fast`,
+  # `-force`, etc. POSIX-ERE word boundary: end-of-line OR non-word character.
+  'git[[:space:]]+push[[:space:]]+-f($|[^[:alnum:]_-])'
+  'git[[:space:]]+reset[[:space:]]+--hard'
+  'git[[:space:]]+clean[[:space:]]+-fd'
   # Base64 encoded payloads
-  'base64\s+-d'
-  'base64\s+--decode'
+  'base64[[:space:]]+-d'
+  'base64[[:space:]]+--decode'
   # Process manipulation
-  'kill\s+-9'
+  'kill[[:space:]]+-9'
   'killall'
   'pkill'
 )
@@ -156,14 +162,14 @@ MEDIUM_PATTERNS=(
 # LOW severity: worth noting but usually harmless
 LOW_PATTERNS=(
   # Broad file operations
-  'find\s+/\s'
-  'cat\s+/etc/'
+  'find[[:space:]]+/[[:space:]]'
+  'cat[[:space:]]+/etc/'
   # Network without explicit https
   'fetch\('
   'XMLHttpRequest'
   # Write operations outside skills/
-  'tee\s+/'
-  '>\s+/'
+  'tee[[:space:]]+/'
+  '>[[:space:]]+/'
 )
 
 # ---------- Scanner ----------
