@@ -1,6 +1,18 @@
 name: Chain Runner
-run-name: "chain: ${{ inputs.chain }}"
+run-name: "chain: ${{ inputs.chain || 'morning-review' }}"
 
+# The morning-review chain runs daily at 04:00 UTC (noon Perth, ~midnight ET).
+# This direct schedule replaces the previous indirect path through
+# .github/workflows/messages.yml's */5 * * * * dispatcher, which GitHub
+# Actions silently throttles on forks (the dispatcher fired only ~2 of ~600
+# expected ticks in its first 52 hours). A single low-frequency cron on this
+# workflow is reliably honoured.
+#
+# To add another chain on its own schedule, add a second `cron:` entry below
+# and resolve the chain name in env at the step level — there is no clean way
+# to pin different chains to different cron entries in a single workflow
+# without an additional dispatch step, so for now this workflow assumes
+# morning-review when fired by schedule.
 on:
   workflow_dispatch:
     inputs:
@@ -8,13 +20,15 @@ on:
         description: 'Chain name from aeon.yml chains section'
         required: true
         type: string
+  schedule:
+    - cron: '0 4 * * *'
 
 permissions:
   contents: write
   actions: write
 
 concurrency:
-  group: aeon-chain-${{ inputs.chain }}
+  group: aeon-chain-${{ inputs.chain || 'morning-review' }}
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +52,11 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          CHAIN="${{ inputs.chain }}"
+          # inputs.chain is empty when fired by schedule (no input form).
+          # Default to morning-review — the only chain currently using the
+          # workflow's own schedule trigger. Other chains use workflow_dispatch
+          # explicitly with an inputs.chain value.
+          CHAIN="${{ inputs.chain || 'morning-review' }}"
           NOW_ISO=$(date -u +%FT%TZ)
           echo "Running chain: $CHAIN"
 

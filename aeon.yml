@@ -210,7 +210,11 @@ chains:
   # on_error: continue — a single skill failure doesn't kill the brief;
   # downstream skills note partial-input degradation and daily-ops-review reports the cause.
   morning-review:
-    schedule: "0 4 * * *"
+    # Schedule moved to .github/workflows/chain-runner.yml (`schedule: 0 4 * * *`).
+    # The messages.yml */5 poller was unreliable on this fork (GitHub Actions
+    # throttles high-frequency schedules on forks), so chain-runner.yml now
+    # owns its own cron trigger directly. Keep this comment in place so anyone
+    # grepping aeon.yml for the chain's fire time still finds the answer.
     on_error: continue
     steps:
       # Step 1 — Data fetchers in parallel.
