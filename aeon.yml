@@ -209,6 +209,18 @@ chains:
   # Total chain duration estimated 20-30 min. Briefs land 04:20-04:30 UTC.
   # on_error: continue — a single skill failure doesn't kill the brief;
   # downstream skills note partial-input degradation and daily-ops-review reports the cause.
+  #
+  # ============================================================================
+  # v4 KILL SWITCH (perps-engine v4 rollout)
+  # ----------------------------------------------------------------------------
+  # The block below is the v3 baseline chain. Rescue tag: perps-engine-v3-stable.
+  # When PR 1 of v4 lands, the v4 chain will be added directly below this block
+  # and this v3 block will be commented out with a `# --- v3 chain (revert
+  # target) ---` marker at its top. To revert any v4 phase: re-enable this
+  # block by uncommenting, comment out the v4 block, push to main. Next
+  # morning's chain-runner.yml schedule will pick up the v3 chain.
+  # Full revert: `git reset --hard perps-engine-v3-stable && git push`.
+  # ============================================================================
   morning-review:
     # Schedule moved to .github/workflows/chain-runner.yml (`schedule: 0 4 * * *`).
     # The messages.yml */5 poller was unreliable on this fork (GitHub Actions
