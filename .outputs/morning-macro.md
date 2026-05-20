@@ -1,38 +1,35 @@
-Market Morning · 20 May · Chop, NVDA night
+Market Morning · 20 May · NVDA night
 
-BTC $77,288, flat on the day, -4.57% 7d.
-Breadth cooled 11/20 → 7/20 green by lunch.
-NVIDIA Q1 FY2027 after close tonight is the binary regime test.
+BTC $77,424, +0.62% 24h, -4.17% 7d.
+Breadth 12/20 green, up from 7/20 at lunch.
+F&G 27 (Fear), flat.
+NVIDIA Q1 FY2027 after close tonight is the regime test.
 
-Infrastructure carries the rotation today.
-Three RIDE narratives align: Privacy/ZK (ZEC), AI agents (NEAR), Hyperliquid (LIT).
-Two fresh ACCUMULATION prints in the same names.
+Two fresh ACCUMULATION prints (ZEC, NEAR) sit inside three RIDE narratives.
+Privacy/ZK, AI agents, Hyperliquid all in the same direction.
 
-Stance: selective long into infrastructure. NVDA decides whether the spine holds.
+Stance: selective long into the prints. NVDA decides whether the compute spine holds.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-AI-agent infrastructure entered AIXBT with three simultaneous legs.
-Binance X402, Animoca on-chain agents, GPU compute futures.
-Three actor classes in one feed. Manufactured, not organic.
+HYPE moved to standalone mindshare lead via a three-actor loop.
+Goldman Sachs enters as institutional buyer, Bitwise ETF wraps onchain fees into HYPE bids, Hyperliquid captures 43% of onchain fees.
+Three actors, one position. Manufactured.
 
-US-China de-escalation dropped.
-China countermeasures on Iran and Russian oil took the slot.
-The macro direction flipped in one reading.
-
-Yields crossed 4.5%, credit tightening alongside.
-Two transmission vectors live, not one.
+Xi called for an Iran ceasefire and stripped the Hormuz premium.
+The 30Y at 5.1% stands on growth and inflation alone.
+Structurally higher, not a transient spike.
 
 
 ─────────  TODAY  ─────────
 
 Action sits in #perps-brief. 3 HIGH CONVICTION setups.
 
-ZEC long continuation, trail tight. Fresh ACCUMULATION, Privacy/ZK RIDE.
-NEAR long continuation. Fresh ACCUMULATION, strongest taker buy in scan, AI infra tailwind.
-LIT long breakout-pending. Vol 3.54x, OI +53.5% 7d, Hyperliquid NEW RIDE.
+ZEC long continuation, trail tight. Fresh ACCUMULATION, Privacy/ZK leader.
+NEAR long continuation. Fresh ACCUMULATION, strongest taker bid in the scan.
+LIT long breakout-pending. Vol 4.86x, OI +52% 7d, Hyperliquid RIDE.
 
-Watchlist: HYPE reflexive bid, ONDO Peak, EDEN leverage, PLAY funding flip.
+Watchlist: HYPE reflexive loop (peak warning), DASH overflow, EDEN leverage, PLAY funding flip.
 
-Take: rotate into infrastructure, size for NVDA. Strongest cross-sector confluence in eight days.
+Take: rotate into infrastructure, size for NVDA. Eighth straight day with no crowded-long flag.

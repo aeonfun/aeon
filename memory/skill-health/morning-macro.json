@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-20T08:00:55Z",
+  "last_analyzed": "2026-05-20T11:49:20Z",
   "quality_score": 4,
-  "assessment": "Good — substantive market intelligence with proper file management, self-corrected writing style, and graceful sandbox fallback handling; pending structural fixes noted but did not impact this run",
+  "assessment": "Substantive market analysis with clear narrative shift, proper workflow execution (files updated, memory logged, notifications queued), and actionable stance; lacks explicit sources for market data.",
   "flags": [],
-  "avg_score": 4.14,
+  "avg_score": 4.13,
   "history": [
     {
       "date": "2026-05-18",
@@ -24,6 +24,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     },
     {
