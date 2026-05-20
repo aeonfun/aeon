@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-20T06:34:10Z",
+  "last_analyzed": "2026-05-20T07:49:16Z",
   "quality_score": 4,
-  "assessment": "Substantive market synthesis with specific data, clear regime classification, and actionable theme tracking across breadth, volume, sentiment, and geopolitical signals.",
+  "assessment": "Substantive market analysis with specific metrics, regime assessment, narrative insights, and proper system integration.",
   "flags": [],
-  "avg_score": 4.33,
+  "avg_score": 4.29,
   "history": [
     {
       "date": "2026-05-18",
@@ -25,6 +25,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-20",
+      "score": 4
     },
     {
       "date": "2026-05-20",
