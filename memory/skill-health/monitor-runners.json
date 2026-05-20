@@ -1,10 +1,10 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-19T15:33:35Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive market analysis with specific picks, proper tape reading, clean data handling, documented sandbox workarounds, and memory management showing system awareness.",
+  "last_analyzed": "2026-05-20T06:21:15Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured skill output with complete methodology, actionable picks, and good pattern recognition (GDOR name farm). Recovered cleanly from a 429 retry.",
   "flags": [],
-  "avg_score": 4.17,
+  "avg_score": 4.14,
   "history": [
     {
       "date": "2026-05-18",
@@ -29,6 +29,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-20",
+      "score": 4
     }
   ]
 }
