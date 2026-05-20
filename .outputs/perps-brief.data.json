@@ -3,11 +3,11 @@
   "qualifier": null,
   "market_sentiment": {
     "paragraphs": [
-      "BTC funding holds at +0.009%/8h, just above the 0.004% 7d average. Open interest bled 5.81% on the week and went nowhere on 24h. The three majors all printed under 1% on the day. Neither side is building leverage.",
-      "Perps-scan reads QUIET with the all-NEUTRAL streak broken. Two fresh ACCUMULATION prints across 25 assessed. ZEC and NEAR both transitioned NEUTRAL → ACCUMULATION today. Funding muted universe-wide, no crowded-long extreme, no capitulation flush, no pattern tags fired.",
-      "Breadth collapsed 11/20 → 5/20 green as alts distributed broadly. F&G ticked 25 → 27, crossing the Extreme Fear boundary but stalling at Fear. NVIDIA earnings tonight is the regime test for the compute and AI infrastructure thesis driving the rotation."
+      "BTC funding warm at +0.0084%/8h, above the 0.0041% 7d average. Open interest bled 5.75% on the week and went flat on 24h. The three majors all printed under 1% on the day. Neither side is building leverage.",
+      "Perps-scan reads QUIET with two ACCUMULATION prints across 25 assessed. ZEC and NEAR both transitioned NEUTRAL → ACCUMULATION today, fresh first-day prints. Funding muted universe-wide. No REAL-CROWDED-LONG, LONG-TRAP, or STEALTH-POSITIONING confluence fired for the eighth straight day.",
+      "Breadth cooled to 7/20 green, down from 11/20 this morning. F&G stalled at 27 (Fear). Yields crossed 4.5% with credit conditions tightening alongside. NVIDIA Q1 FY2027 earnings tonight is the binary regime test for the compute and AI-infrastructure rotation."
     ],
-    "bias_line": "Bias · selective long into fresh ACCUMULATION prints, fade extended narrative leaders that lack smart-money confirmation."
+    "bias_line": "Bias · selective long into the fresh ACCUMULATION prints, fade extended narrative leaders that lack smart-money confirmation."
   },
   "high_conviction": [
     {
@@ -16,41 +16,42 @@
       "repeat_days_suffix": null,
       "blocks": {
         "perps": {
-          "header_suffix": "ACCUMULATION",
+          "header_suffix": "ACCUMULATION, fresh transition",
           "lines": [
-            "Fresh transition NEUTRAL → ACCUMULATION today, fourth-session solo bid.",
-            "OI +34.67% 7d, price +12.04% 7d on a 21.38% range.",
-            "Funding 7d-avg flat at +0.003%/8h, funding_now flipped to -0.011%/8h. Taker buy 53.63%.",
-            "Top L/S 0.76, net short and cut -0.15 over 7d. Smart money leaning against the rip."
+            "Fresh NEUTRAL → ACCUMULATION print today, fourth solo-bid session.",
+            "OI +37.53% 7d, price +12.69% 7d on a 22.20% range.",
+            "Funding 7d-avg flat at +0.003%/8h, funding_now flipped to -0.006%/8h. Taker buy 54.21%.",
+            "Top L/S 0.76, net short and cut 0.15 over 7d. Smart money leaning against the rip."
           ]
         },
         "narrative": {
-          "header_suffix": "Privacy/ZK RISING, promoted from Emerging today",
+          "header_suffix": "Privacy/ZK RISING, promoted from Emerging WATCH yesterday",
           "lines": [
-            "Mindshare 3 → 4, RIDE call from narrative-tracker (was WATCH yesterday).",
+            "Mindshare 3 → 4, RIDE call from narrative-tracker.",
+            "ZEC re-entered the trending list at #14 today after exiting yesterday.",
             "Grayscale spot-ETF filing the project-side tailwind."
           ]
         },
         "context": {
-          "header_suffix": "narrative leader through the breadth collapse",
+          "header_suffix": "narrative leader through the breadth cooling",
           "lines": [
-            "Breadth halved 11/20 → 5/20 green. ZEC held alongside HYPE as the only top-20 names still bid.",
+            "Breadth cooled to 7/20 green. ZEC held alongside HYPE as one of the only top-20 majors still bid.",
             "Chop regime, low conviction. Selective longs only."
           ]
         },
         "enrichment": {
           "header_suffix": null,
           "lines": [
-            "AIXBT bridge flagged the bid as manufactured: negative funding plus Grayscale arb plus Thorchain FROST plus CMC rankings entering simultaneously across four actor classes.",
-            "Up 60% on the month with no project-side catalyst shipped. Price leads project.",
+            "AIXBT dropped ZEC from its standalone crypto item today. Yesterday's four-leg coordinated bid (negative funding, Grayscale arb, Thorchain FROST, CMC rankings) disappeared in one reading.",
+            "Up 60% on the month with no project-side catalyst shipped. Price leads narrative leads project.",
             "Possible peak signal on ZEC specifically even as the broader Privacy/ZK narrative still climbs."
           ]
         },
         "thesis": {
           "header_suffix": null,
           "lines": [
-            "The ACCUMULATION print confirms the rotation is real. The AIXBT bridge confirms the bid is reflexive rather than organic.",
-            "Trail tight. The reflexivity loop carries the trade until it breaks."
+            "The ACCUMULATION print confirms the rotation. The vanishing engineered-narrative framing makes the second leg harder to extend.",
+            "Trail tight below the 7d range low. The reflexivity carries the trade until the chart breaks."
           ]
         }
       }
@@ -61,27 +62,27 @@
       "repeat_days_suffix": null,
       "blocks": {
         "perps": {
-          "header_suffix": "ACCUMULATION",
+          "header_suffix": "ACCUMULATION, fresh transition",
           "lines": [
-            "Fresh transition NEUTRAL → ACCUMULATION today.",
-            "OI +12.41% 7d on a +11.04% 24h OI spike. Price +5.78% 7d, range 15.39%.",
-            "Funding +0.006%/8h 7d-avg, +0.010%/8h now. Building positive without going extreme.",
-            "Taker buy 56.95%, the strongest taker bid in the scan. Top L/S 1.95, long-skewed."
+            "Fresh NEUTRAL → ACCUMULATION print today.",
+            "OI +12.62% 7d on a +11.25% 24h OI spike. Price +5.33% 7d, range 15.39%.",
+            "Funding +0.006%/8h 7d-avg, +0.010%/8h now. Positive without going extreme.",
+            "Taker buy 54.14%, the strongest taker bid in the scan. Top L/S 1.91, long-skewed."
           ]
         },
         "narrative": {
           "header_suffix": "AI agents and decentralized compute RIDE",
           "lines": [
-            "AI agents promoted FADE → RIDE w/ trail today on AWS Bedrock AgentCore plus Solana × Google Cloud catalysts.",
-            "Decentralized compute holds the cleanest RIDE at 5/5 mindshare.",
-            "NEAR post-quantum Chain Signatures (FIPS-204 / ML-DSA) ties the asset to both threads."
+            "AI agents promoted FADE → RIDE w/ trail yesterday on AWS Bedrock AgentCore plus Solana × Google Cloud.",
+            "AIXBT today named AI-agent infrastructure with three simultaneous legs (Binance X402, Animoca, GPU compute futures).",
+            "Decentralized compute holds the cleanest RIDE at 5/5 mindshare. NEAR post-quantum Chain Signatures ties the asset to both threads."
           ]
         },
         "context": {
-          "header_suffix": "sector aligned with infrastructure rotation",
+          "header_suffix": "sector aligned with the infrastructure rotation",
           "lines": [
             "Narrative-tracker stance: rotate into infrastructure.",
-            "NVDA earnings tonight is the cross-sector catalyst."
+            "NVDA earnings tonight is the cross-sector catalyst that decides whether the compute spine holds."
           ]
         },
         "enrichment": {
@@ -109,24 +110,24 @@
         "perps": {
           "header_suffix": "WATCH, one step short of CATALYST-BREAKOUT",
           "lines": [
-            "Vol 3.05x average, OI +50.05% 7d, OI +8.33% 24h. Energy stacked.",
-            "+3.85% 24h tape too tame for the Tier 2 breakout gate. Taker buy 51.96% brushed the 52 gate.",
-            "Top L/S 2.22 long-skewed but cooling -0.38 over 7d."
+            "Vol 3.54x average, OI +53.50% 7d, OI +10.83% 24h. Energy stacked.",
+            "+6.29% 24h tape short of the Tier 2 +20% breakout gate. Taker buy 52.10% just over the gate.",
+            "Top L/S 2.20 long-skewed but cooling 0.40 over 7d."
           ]
         },
         "narrative": {
-          "header_suffix": "Hyperliquid and perp DEX RISING, NEW today",
+          "header_suffix": "Hyperliquid and perp DEX RISING, NEW yesterday",
           "lines": [
             "Mindshare 4/5, NEW · RIDE call from narrative-tracker.",
-            "Perp DEX dominance split out of the RWA bundle into a standalone thread.",
-            "Token-call HIGH 10/10 today cross-confirms the sector bid."
+            "AIXBT 07:01 named Lighter explicitly: surges 20%+ as a perp DEX entrant.",
+            "Token-call HIGH 10/10 yesterday cross-confirms the sector bid."
           ]
         },
         "context": {
           "header_suffix": "infrastructure rotation, perp DEX the standalone thread",
           "lines": [
             "Bitwise BHYP ETF plus SpaceX pre-IPO perps plus TradFi execs on Hypercore form the sector catalyst stack.",
-            "LIT carries an idiosyncratic catalyst against that backdrop."
+            "Solana perp DEX OI at 52% of Hyperliquid's per AIXBT. The challenger thesis is live, and LIT carries its own catalyst against that backdrop."
           ]
         },
         "enrichment": {
@@ -141,7 +142,7 @@
         "thesis": {
           "header_suffix": null,
           "lines": [
-            "Volume already confirms positioning while price has not broken yet.",
+            "Volume confirms positioning while price has not broken yet.",
             "Long the breakout above today's high with a stop below the coil. Thin float makes invalidation sharp."
           ]
         }
@@ -152,13 +153,13 @@
   "watchlist": [
     {
       "ticker": "HYPE",
-      "conflict_label": "narrative leader, OI build not smart-money-confirmed",
+      "conflict_label": "reflexive bid without smart-money confirmation",
       "risk": {
         "header_suffix": "WATCH, peak warning",
         "lines": [
-          "Perps WATCH. OI +42.06% 7d, range 28.22% overshoots the 25% ACCUMULATION gate by 3.22 points.",
-          "Top L/S cut -0.14 over 7d, funding pinned to zero, price +24.6% 7d into a HYPE/BTC all-time high.",
-          "AIXBT flagged HYPE narrative peaked into a market-structure trade: range-bound options plus FTX listing entered today.",
+          "Perps WATCH. OI +43.68% 7d, range 28.22% overshoots the 25% ACCUMULATION gate by 3.22 points.",
+          "Top L/S 1.21 cut 0.15 over 7d. Funding pinned to zero. Price +25.08% 7d into a HYPE/BTC all-time high.",
+          "AIXBT 07:01 noted a16z holds $356M in HYPE while Solana perp DEX OI closes to 52% of Hyperliquid's. Smart money sits in the incumbent. The challenger is closing the gap.",
           "Wait for top L/S to turn up before sizing the long."
         ]
       }
@@ -169,9 +170,9 @@
       "risk": {
         "header_suffix": "NEUTRAL, narrative at Peak",
         "lines": [
-          "Perps NEUTRAL. +4.58% 24h on OI +11.72% 24h, but +0.05% 7d means range-bound.",
+          "Perps NEUTRAL. OI +11.47% 24h, but -2.15% 7d means range-bound.",
           "Narrative-tracker has RWA at Peak RIDE w/ trail, not Rising.",
-          "Dropped from CoinGecko trending after the CLARITY committee-pass catalyst priced in.",
+          "Dropped from trending after the CLARITY committee-pass catalyst priced in.",
           "Hold for an ACCUMULATION print or a fresh CLARITY catalyst."
         ]
       }
@@ -182,9 +183,9 @@
       "risk": {
         "header_suffix": "WATCH, distribution risk",
         "lines": [
-          "Perps WATCH. +110.32% 7d, OI +638.91% 7d on a 174.72% range.",
-          "Funding negative at -0.006%/8h on a -0.024% 7d average, top L/S collapsed -1.02 over 7d.",
-          "Leverage stacked through the rip. The 639% 7d OI build on negative funding sets the unwind clock.",
+          "Perps WATCH. +103.12% 7d, OI +621.94% 7d on a 174.72% range.",
+          "Funding flipped from a -0.024%/8h 7d average to +0.007%/8h. Top L/S collapsed 0.99 over 7d.",
+          "Leverage stacked through the rip. The 622% 7d OI build with smart money gone sets the unwind clock.",
           "Stand clear until the OI flushes."
         ]
       }
@@ -195,9 +196,9 @@
       "risk": {
         "header_suffix": "WATCH, late-stage chase",
         "lines": [
-          "Perps WATCH. +76.82% 7d, OI +128.21% 7d, +6.94% 24h on OI +23.83% 24h.",
-          "Funding +0.007%/8h flipped from a -0.028% 7d average. Long-side rebuilds on the chase.",
-          "Top L/S 1.00, cut -1.12 over 7d. Smart money already left.",
+          "Perps WATCH. +77.96% 7d, OI +97.61% 7d, +7.63% 24h on OI +7.23% 24h.",
+          "Funding +0.017%/8h flipped from a -0.027% 7d average. Long-side rebuilds on the chase.",
+          "Top L/S 0.98, cut 1.14 over 7d. Smart money already left.",
           "Wait the next 24 hours to separate a real bid from the chase."
         ]
       }
