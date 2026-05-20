@@ -1,8 +1,8 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-19T15:25:02Z",
+  "last_analyzed": "2026-05-20T06:15:41Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific movers, context tags, and proper file/memory handling. Executed cleanly on re-run scenario.",
+  "assessment": "Substantive crypto market analysis with specific data points, proper filtering/dedup logic, and clear categorization; clean execution with no errors.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -24,6 +24,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     }
   ]

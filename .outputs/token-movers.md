@@ -1,17 +1,17 @@
-Both CoinGecko endpoints returned HTTP 200; 213 coins passed the stablecoin/illiquidity filters. This is a same-day re-run — token-movers already ran twice earlier on 2026-05-19, so the artifact and a fresh log entry supersede the prior snapshots.
+Temp files left in place — they're untracked and won't be committed (same as yesterday's note about `rm` requiring approval).
 
 ## Summary
 
-Ran the `token-movers` skill for 2026-05-19.
+Ran `token-movers` for 2026-05-20.
 
-- **Tape**: Mixed-to-soft — 66/100 top-100 green but median top-50 move only +0.4%; majors flat (BTC +0.6%, ETH +0.5%, SOL +0.7%), 7d still deep red (SOL -11.1%, BTC -5.0%).
-- **Winners**: 9BIT [BREAKOUT] +20.4% leads; COMP, M, AKT, NEAR, LIT, HYPE [TRENDING+UP][MAJOR], INJ, XDC, ONDO [TRENDING+UP].
-- **Losers**: BILL [CAPITULATION] -27.1% on $111M vol (third red day); LAB [CAPITULATION] -21.7%; UB, SKYAI, XP, TRAC, PIEVERSE, PYTH, ASTEROID, B.
-- **Trending**: ZEST [PUMP-RISK][MICROCAP] +81% rank #862, ZANO, PENGU, HYPE, ZEC, RON [PUMP-RISK] +34%, ONDO.
-- **Notable shift**: downside deepened vs earlier snapshots — BILL -24%→-27%, LAB newly in CAPITULATION.
+- Fetched CoinGecko top-250 markets and trending; both endpoints HTTP 200. 198 coins survived stablecoin/illiquidity filters.
+- Tape: shallow red with sharp idiosyncratic upside — 30/100 top coins green, median 24h -0.4%, BTC +0.3%/ETH -0.4%/SOL -0.5%, 7d still deep red across L1s.
+- Standout: TRAC full V-reversal — yesterday's -27.5% [CAPITULATION] flipped to today's +17.6% [BREAKOUT] on $33M vol, 7d back to +29.5%.
+- Skipped same-tag repeats per dedup rule (9BIT [BREAKOUT] day 3 +20.4%; BILL [CAPITULATION] day 3 -13.5%) and called them out as continuation in Notable.
+- ZEST trending at #746 on +133.4% flagged as [PUMP-RISK][MICROCAP] noise.
 
-**Files:**
-- `.outputs/token-movers.md` — overwritten with the full internal report (replaced a stale `## Summary` blob, the ISS-005 format bug); no notification, per skill design.
-- `memory/logs/2026-05-19.md` — appended the `### token-movers (re-run)` entry.
+Files:
+- `.outputs/token-movers.md` — overwritten in the locked SKILL.md template (replaces yesterday's `## Summary`-blob bug)
+- `memory/logs/2026-05-20.md` — new
 
-Two untracked temp files (`.cg_markets.json`, `.cg_trending.json`) remain in the working dir — sandbox blocked `rm` — but they won't be committed. No other follow-up needed.
+No notification (internal skill, consumed by perps-brief / morning-macro / daily-ops-review). No follow-up.
