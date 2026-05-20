@@ -24,7 +24,13 @@ skills:
   github-issues: { enabled: false, schedule: "0 9 * * *" }
   github-trending: { enabled: false, schedule: "0 9 * * *" }
   github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
-  huggingface-trending: { enabled: false, schedule: "30 9 * * *", model: "claude-sonnet-4-6", var: "" } # daily — curated trending HF models/datasets/spaces with "why notable" lines, momentum tags, and bucket clustering. Set var to one of {models, datasets, spaces} to scope.
+  huggingface-trending:
+    {
+      enabled: false,
+      schedule: "30 9 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # daily — curated trending HF models/datasets/spaces with "why notable" lines, momentum tags, and bucket clustering. Set var to one of {models, datasets, spaces} to scope.
 
   # --- Midday (12 PM UTC) ---
   token-alert: { enabled: false, schedule: "0 12 * * *" }
@@ -40,7 +46,13 @@ skills:
   monitor-runners: { enabled: false, schedule: "0 12 * * *" }
   token-pick: { enabled: false, schedule: "0 12 * * *" }
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
-  price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
+  price-threshold-alert:
+    {
+      enabled: false,
+      schedule: "*/30 * * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
   market-context-refresh: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
@@ -68,9 +80,21 @@ skills:
   repo-actions: { enabled: false, schedule: "0 15 * * *" }
   repo-pulse: { enabled: false, schedule: "0 15 * * *" }
   star-milestone: { enabled: false, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
-  star-momentum-alert: { enabled: false, schedule: "10 10 * * *", model: "claude-sonnet-4-6", var: "" } # daily — project next milestone crossing date from 14-day repo-pulse history; alert only when projected date lands in 7-14d window on Tue/Wed/Thu (Show HN dispatch slot)
+  star-momentum-alert:
+    {
+      enabled: false,
+      schedule: "10 10 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # daily — project next milestone crossing date from 14-day repo-pulse history; alert only when projected date lands in 7-14d window on Tue/Wed/Thu (Show HN dispatch slot)
   project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
-  repo-scanner: { enabled: false, schedule: "0 15 * * 0", model: "claude-sonnet-4-6", var: "" } # catalog all GitHub repos — set var to username
+  repo-scanner:
+    {
+      enabled: false,
+      schedule: "0 15 * * 0",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # catalog all GitHub repos — set var to username
 
   # --- Late afternoon (4 PM UTC) ---
   skill-security-scan: { enabled: false, schedule: "0 16 * * 1" }
@@ -103,7 +127,13 @@ skills:
   update-gallery: { enabled: false, schedule: "0 18 * * 0" }
 
   # --- Content distribution (runs 30 min after article-generating skills) ---
-  syndicate-article: { enabled: false, schedule: "30 15 * * *", model: "claude-sonnet-4-6", var: "" } # cross-post latest article to Dev.to
+  syndicate-article:
+    {
+      enabled: false,
+      schedule: "30 15 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # cross-post latest article to Dev.to
 
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: false, schedule: "0 18 * * *" }
@@ -118,20 +148,62 @@ skills:
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
   evening-recap: { enabled: false, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
-  vercel-projects: { enabled: false, schedule: "0 18 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday — catalog Vercel projects
+  vercel-projects:
+    {
+      enabled: false,
+      schedule: "0 18 * * 0",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Sunday — catalog Vercel projects
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
   cost-report: { enabled: false, schedule: "0 7 * * 1", model: "claude-sonnet-4-6" } # weekly API cost breakdown by skill and model
 
   # --- Weekly (Monday only) ---
-  ai-framework-watch: { enabled: false, schedule: "30 8 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
-  competitor-launch-radar: { enabled: false, schedule: "0 10 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 10:00 UTC — weekly scan of Product Hunt RSS + HN Algolia for NEW AI-agent-framework launches outside the 9-framework cohort tracked by ai-framework-watch. Classifies framework/mcp/product, LRU-200 dedup, gated notify (QUIET on zero entrants). Pass dry-run to skip notify.
-  fleet-state: { enabled: false, schedule: "0 8 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release-tracker + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
+  ai-framework-watch:
+    {
+      enabled: false,
+      schedule: "30 8 * * 1",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
+  competitor-launch-radar:
+    {
+      enabled: false,
+      schedule: "0 10 * * 1",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Monday 10:00 UTC — weekly scan of Product Hunt RSS + HN Algolia for NEW AI-agent-framework launches outside the 9-framework cohort tracked by ai-framework-watch. Classifies framework/mcp/product, LRU-200 dedup, gated notify (QUIET on zero entrants). Pass dry-run to skip notify.
+  fleet-state:
+    {
+      enabled: false,
+      schedule: "0 8 * * 1",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release-tracker + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
   fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
   fork-cohort: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
-  fork-release-tracker: { enabled: false, schedule: "30 19 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 19:30 UTC — weekly scan: celebrate when any fork cuts a tagged GitHub release in the last 7 days. Silent on quiet weeks. Pass dry-run to skip notify, or owner/repo to override parent.
-  contributor-spotlight: { enabled: false, schedule: "0 20 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 20:00 UTC — weekly recognition post: pick one POWER fork from the latest fork-cohort run and convert it into a named human moment (operator handle, enabled stack, diverged work, 30d commits). 4-week dedup. Pass dry-run to skip notify, or owner/repo to override the auto-pick.
-  fork-first-run-alert: { enabled: false, schedule: "30 20 * * *", model: "claude-sonnet-4-6", var: "" } # daily 20:30 UTC — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh (≤8d), live-fallback otherwise. Persistent seen-list (LRU 500), bot allowlist suppressed from alerts. Per-fork alert when 1–3 new activators; batch notification at 4+ to avoid spam. Pass dry-run to skip notify, or owner/repo to override parent.
+  fork-release-tracker:
+    {
+      enabled: false,
+      schedule: "30 19 * * 0",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Sunday 19:30 UTC — weekly scan: celebrate when any fork cuts a tagged GitHub release in the last 7 days. Silent on quiet weeks. Pass dry-run to skip notify, or owner/repo to override parent.
+  contributor-spotlight:
+    {
+      enabled: false,
+      schedule: "0 20 * * 0",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Sunday 20:00 UTC — weekly recognition post: pick one POWER fork from the latest fork-cohort run and convert it into a named human moment (operator handle, enabled stack, diverged work, 30d commits). 4-week dedup. Pass dry-run to skip notify, or owner/repo to override the auto-pick.
+  fork-first-run-alert:
+    {
+      enabled: false,
+      schedule: "30 20 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # daily 20:30 UTC — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh (≤8d), live-fallback otherwise. Persistent seen-list (LRU 500), bot allowlist suppressed from alerts. Per-fork alert when 1–3 new activators; batch notification at 4+ to avoid spam. Pass dry-run to skip notify, or owner/repo to override parent.
   skill-evals: { enabled: false, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
   skill-update-check: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
@@ -140,20 +212,56 @@ skills:
   weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
-  contributor-reward: { enabled: false, schedule: "30 9 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
-  operator-scorecard: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
+  contributor-reward:
+    {
+      enabled: false,
+      schedule: "30 9 * * 1",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
+  operator-scorecard:
+    {
+      enabled: false,
+      schedule: "30 10 * * 1",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
   fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
-  fork-skill-gap: { enabled: false, schedule: "0 21 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 21:00 UTC — per-fork table of upstream skills the fork hasn't adopted; gates on fork-cohort POWER+ACTIVE set when fresh, falls back to live API otherwise. Pass dry-run to skip notify, or owner/repo to override parent.
+  fork-skill-gap:
+    {
+      enabled: false,
+      schedule: "0 21 * * 0",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # Sunday 21:00 UTC — per-fork table of upstream skills the fork hasn't adopted; gates on fork-cohort POWER+ACTIVE set when fresh, falls back to live API otherwise. Pass dry-run to skip notify, or owner/repo to override parent.
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
-  skill-freshness: { enabled: false, schedule: "0 8 * * *", model: "claude-sonnet-4-6", var: "" } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
+  skill-freshness:
+    {
+      enabled: false,
+      schedule: "0 8 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
   smithery-manifest: { enabled: false, schedule: "0 6 1/7 * *", model: "claude-sonnet-4-6" } # weekly — refresh docs/smithery-manifest.json + smithery.yaml + smithery-submission.md from skills.json + aeon-mcp; PR + notify only on diff
   show-hn-draft: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft Show HN post + r/MachineLearning + r/selfhosted variants from live repo state, ready for the operator to paste at launch time. Set var to one of {show-hn, r/MachineLearning, r/selfhosted} to regenerate that single variant.
   product-hunt-launch: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft the full Product Hunt launch asset pack (tagline 60ch / description 260ch / first comment 500ch / maker comment 500ch / six 80ch feature bullets) from live repo state. Set var to one of {tagline, description, first-comment, maker-comment, bullets} to regenerate that single section only.
-  v4-readiness: { enabled: false, schedule: "workflow_dispatch", model: "claude-sonnet-4-6", var: "" } # one-shot — per-fork v4 upgrade readiness checklist. Reads aeon.yml + skills.json + MEMORY.md against an embedded v4 change manifest; emits Safe / Review / Custom / Action breakdown. Pass dry-run to skip notify, or owner/repo to audit a fork remotely.
+  v4-readiness:
+    {
+      enabled: false,
+      schedule: "workflow_dispatch",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # one-shot — per-fork v4 upgrade readiness checklist. Reads aeon.yml + skills.json + MEMORY.md against an embedded v4 change manifest; emits Safe / Review / Custom / Action breakdown. Pass dry-run to skip notify, or owner/repo to audit a fork remotely.
 
   # --- Paid ads (AdManage.ai) ---
-  schedule-ads: { enabled: false, schedule: "0 8 * * *", model: "claude-sonnet-4-6", var: "" } # daily 08:00 UTC — schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn from skills/schedule-ads/config.yaml; launches PAUSED by default
+  schedule-ads:
+    {
+      enabled: false,
+      schedule: "0 8 * * *",
+      model: "claude-sonnet-4-6",
+      var: ""
+    } # daily 08:00 UTC — schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn from skills/schedule-ads/config.yaml; launches PAUSED by default
   create-campaign: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — provision Meta campaigns/ad sets on AdManage.ai (PAUSED) and write IDs back so schedule-ads can launch into them
 
   # --- Utilities ---
@@ -206,7 +314,7 @@ chains:
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # Bankr gateway also supports: gemini-3-pro, gemini-3-flash, gpt-5.2, kimi-k2.5, qwen3-coder
-model: claude-opus-4-7
+model: claude-sonnet-4-6
 
 # AI Gateway — route Claude Code requests through an LLM gateway.
 # provider: direct (default, uses ANTHROPIC_API_KEY) | bankr (uses BANKR_LLM_KEY)
