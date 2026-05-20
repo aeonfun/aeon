@@ -41,3 +41,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-20,perps-brief,claude-opus-4-7,23,17745,1983782,128950
 2026-05-20,morning-macro,claude-opus-4-7,27,22393,2113822,96448
 2026-05-20,daily-ops-review,claude-opus-4-7,35,17567,2634124,94141
+2026-05-20,narrative-tracker,claude-opus-4-7,1611,10673,1232679,128051
