@@ -1,10 +1,12 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-20T06:21:15Z",
+  "last_analyzed": "2026-05-20T07:46:02Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured skill output with complete methodology, actionable picks, and good pattern recognition (GDOR name farm). Recovered cleanly from a 429 retry.",
-  "flags": [],
-  "avg_score": 4.14,
+  "assessment": "Substantive and well-structured output with detailed token analysis and clear results, but compromised by recurrent ISS-006 bug affecting artifact integrity and self-acknowledged limitations on reliability.",
+  "flags": [
+    "known_issue_recurrence"
+  ],
+  "avg_score": 4.13,
   "history": [
     {
       "date": "2026-05-18",
@@ -29,6 +31,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-20",
+      "score": 4
     },
     {
       "date": "2026-05-20",
