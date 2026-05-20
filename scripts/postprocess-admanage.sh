@@ -59,6 +59,15 @@ if [ "$STRICTEST_CAP" != "null" ] && [ -n "$STRICTEST_CAP" ]; then
     "$API_BASE/v1/spend/daily?startDate=$TODAY&endDate=$TODAY" \
     -H "$auth_hdr" || echo '{}')
   TODAY_SPEND=$(echo "$SPEND_RESP" | jq -r '.metadata.totalSpend // 0')
+  # Guard: if the API response was malformed or empty, jq may produce a
+  # non-numeric value. awk treats "" as 0, which would silently bypass the cap.
+  # Fail closed instead — block the launch until spend can be verified.
+  if ! [[ "$TODAY_SPEND" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    MSG="ads NOT launched — daily spend could not be verified (unexpected API response). Failing safe."
+    echo "postprocess-admanage: $MSG"
+    ./notify "$MSG" || true
+    exit 0
+  fi
   if awk "BEGIN{exit !($TODAY_SPEND >= $STRICTEST_CAP)}"; then
     MSG="ads NOT launched — daily spend cap tripped. today=\$${TODAY_SPEND} cap=\$${STRICTEST_CAP} queued=${#LAUNCH_FILES[@]}"
     echo "postprocess-admanage: $MSG"
