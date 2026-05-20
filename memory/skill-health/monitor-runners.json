@@ -1,12 +1,10 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-20T07:46:02Z",
+  "last_analyzed": "2026-05-20T11:26:48Z",
   "quality_score": 4,
-  "assessment": "Substantive and well-structured output with detailed token analysis and clear results, but compromised by recurrent ISS-006 bug affecting artifact integrity and self-acknowledged limitations on reliability.",
-  "flags": [
-    "known_issue_recurrence"
-  ],
-  "avg_score": 4.13,
+  "assessment": "Substantive, domain-expert analysis with clear verdict and appropriate scope decisions; well-integrated into memory system and issue tracking.",
+  "flags": [],
+  "avg_score": 4.11,
   "history": [
     {
       "date": "2026-05-18",
@@ -31,6 +29,10 @@
     {
       "date": "2026-05-19",
       "score": 5
+    },
+    {
+      "date": "2026-05-20",
+      "score": 4
     },
     {
       "date": "2026-05-20",
