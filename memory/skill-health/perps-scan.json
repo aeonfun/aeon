@@ -1,10 +1,12 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-20T06:23:41Z",
+  "last_analyzed": "2026-05-20T07:46:59Z",
   "quality_score": 4,
-  "assessment": "Skill ran successfully with substantive, actionable output—clear verdict, specific metrics, and WATCH bucket insights. Minor operational issues (temp files left behind due to sandbox constraints) and a documentation discrepancy noted but don't undermine core delivery.",
-  "flags": [],
-  "avg_score": 3.58,
+  "assessment": "Complex multi-step execution with substantive market analysis, clear documentation, and honest problem flagging; sandbox limitations required workarounds but execution remained complete and actionable.",
+  "flags": [
+    "sandbox-limitation"
+  ],
+  "avg_score": 3.62,
   "history": [
     {
       "date": "2026-05-18",
@@ -48,6 +50,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     },
     {
