@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-20T09:15:08.487540Z",
+  "generated_at": "2026-05-20T13:15:11.986178Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -2105,7 +2105,7 @@
       "agent_id": "pm-entropy-flow-v03",
       "lifecycle": "shadow",
       "closed_trades": 12,
-      "open_positions": 0,
+      "open_positions": 1,
       "win_rate": 0.3333,
       "total_pnl_usd": -0.92,
       "sharpe": -0.127,
@@ -2161,7 +2161,7 @@
       "agent_id": "pm-hl-lead-lag-v01",
       "lifecycle": "shadow",
       "closed_trades": 31,
-      "open_positions": 2,
+      "open_positions": 3,
       "win_rate": 0.4516,
       "total_pnl_usd": -1.73,
       "sharpe": -0.047,
@@ -2244,16 +2244,16 @@
     {
       "agent_id": "pm-regime-shift-v01",
       "lifecycle": "canary",
-      "closed_trades": 10,
-      "open_positions": 2,
-      "win_rate": 0.8,
-      "total_pnl_usd": 7.34,
-      "sharpe": 0.954,
-      "composite": 0.607,
-      "mean_edge_bps_gross": 147,
-      "mean_edge_bps_net": -58,
-      "median_edge_bps_gross": 185,
-      "median_edge_bps_net": -20
+      "closed_trades": 12,
+      "open_positions": 0,
+      "win_rate": 0.6667,
+      "total_pnl_usd": 6.41,
+      "sharpe": 0.641,
+      "composite": 0.483,
+      "mean_edge_bps_gross": 107,
+      "mean_edge_bps_net": -98,
+      "median_edge_bps_gross": 113,
+      "median_edge_bps_net": -92
     },
     {
       "agent_id": "pm-regime-shift-v02",
@@ -2440,30 +2440,30 @@
     {
       "agent_id": "ta-bb-squeeze-v01",
       "lifecycle": "shadow",
-      "closed_trades": 47,
-      "open_positions": 2,
-      "win_rate": 0.4255,
-      "total_pnl_usd": -11.01,
-      "sharpe": -0.122,
-      "composite": 0.016,
-      "mean_edge_bps_gross": -47,
-      "mean_edge_bps_net": -252,
-      "median_edge_bps_gross": -34,
-      "median_edge_bps_net": -239
+      "closed_trades": 48,
+      "open_positions": 4,
+      "win_rate": 0.4375,
+      "total_pnl_usd": -9.09,
+      "sharpe": -0.098,
+      "composite": 0.024,
+      "mean_edge_bps_gross": -38,
+      "mean_edge_bps_net": -243,
+      "median_edge_bps_gross": -24,
+      "median_edge_bps_net": -229
     },
     {
       "agent_id": "ta-bb-squeeze-v02",
       "lifecycle": "shadow",
-      "closed_trades": 47,
-      "open_positions": 2,
-      "win_rate": 0.4255,
-      "total_pnl_usd": -11.01,
-      "sharpe": -0.122,
-      "composite": 0.016,
-      "mean_edge_bps_gross": -47,
-      "mean_edge_bps_net": -252,
-      "median_edge_bps_gross": -34,
-      "median_edge_bps_net": -239
+      "closed_trades": 48,
+      "open_positions": 4,
+      "win_rate": 0.4375,
+      "total_pnl_usd": -9.09,
+      "sharpe": -0.098,
+      "composite": 0.024,
+      "mean_edge_bps_gross": -38,
+      "mean_edge_bps_net": -243,
+      "median_edge_bps_gross": -24,
+      "median_edge_bps_net": -229
     },
     {
       "agent_id": "ta-macd-cross-v01",
@@ -2571,22 +2571,22 @@
     "hl_funded": false
   },
   "totals": {
-    "closed_trades": 2577,
-    "win_rate": 0.2988,
-    "total_pnl_usd": 1289.48,
+    "closed_trades": 2581,
+    "win_rate": 0.2991,
+    "total_pnl_usd": 1288.55,
     "real_pnl_usd": 68.0834,
     "real_fills_lifetime": 318,
-    "canary_pnl_usd": 1289.48,
-    "canary_closed_trades": 309,
+    "canary_pnl_usd": 1288.55,
+    "canary_closed_trades": 311,
     "canary_agents": 20,
-    "shadow_pnl_usd": -38354.08,
-    "shadow_closed_trades": 2268,
+    "shadow_pnl_usd": -38350.24,
+    "shadow_closed_trades": 2270,
     "shadow_agents": 160,
     "strategies_active": 47,
-    "mean_edge_bps_gross": -2879,
-    "mean_edge_bps_net": -3084,
-    "median_edge_bps_gross": -5797,
-    "median_edge_bps_net": -6002
+    "mean_edge_bps_gross": -2875,
+    "mean_edge_bps_net": -3080,
+    "median_edge_bps_gross": -5788,
+    "median_edge_bps_net": -5993
   },
   "milestones": {
     "canary_to_apex_progress": "421/100",
@@ -2596,5 +2596,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-20T09:15:05Z"
+  "synced_at": "2026-05-20T13:15:09Z"
 }
