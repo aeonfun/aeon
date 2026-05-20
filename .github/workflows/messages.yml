@@ -534,7 +534,7 @@ jobs:
               BOT_ID=$(echo "$RESPONSE" | jq -r ".messages[$i].bot_id // empty")
               HAS_CHECK=$(echo "$RESPONSE" | jq -r ".messages[$i].reactions[]? | select(.name == \"white_check_mark\") | .name // empty")
 
-              if [ -n "$TEXT" ] && [ "$BOT_ID" = "null" ] && [ -z "$HAS_CHECK" ]; then
+              if [ -n "$TEXT" ] && [ -z "$BOT_ID" ] && [ -z "$HAS_CHECK" ]; then
                 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
                   -H "Content-Type: application/json" \
                   -d "$(jq -n --arg ch "$SLACK_CHANNEL_ID" --arg ts "$TS" \
