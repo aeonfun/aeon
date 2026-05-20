@@ -1,12 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-20T07:46:59Z",
-  "quality_score": 4,
-  "assessment": "Complex multi-step execution with substantive market analysis, clear documentation, and honest problem flagging; sandbox limitations required workarounds but execution remained complete and actionable.",
-  "flags": [
-    "sandbox-limitation"
-  ],
-  "avg_score": 3.62,
+  "last_analyzed": "2026-05-20T11:32:51Z",
+  "quality_score": 5,
+  "assessment": "Excellent: substantive perps market analysis with specific metrics, clear verdicts, actionable signals (FIDA/PROMPT flags), and graceful sandbox handling.",
+  "flags": [],
+  "avg_score": 3.71,
   "history": [
     {
       "date": "2026-05-18",
@@ -59,6 +57,10 @@
     {
       "date": "2026-05-20",
       "score": 4
+    },
+    {
+      "date": "2026-05-20",
+      "score": 5
     }
   ]
 }

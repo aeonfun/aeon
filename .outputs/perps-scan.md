@@ -1,311 +1,314 @@
 Perps Regimes · 2026-05-20
 
 Market read · QUIET
-  2 ACCUMULATION prints across 25 assessed, 23 NEUTRAL.
-  ZEC and NEAR each printed fresh ACCUMULATION on rising OI, calm funding, and taker buy over 50%. Yesterday ran all-NEUTRAL across the universe.
-  Top traders cut exposure in both names across the past week. The OI build holds without smart-money confirmation. Watch the next 24h for top L/S to turn up, or a clean break of ZEC above the 7d high.
+  2 ACCUMULATION across 25 assessed, 23 NEUTRAL.
+  Two ACCUMULATION prints land in ZEC and NEAR. Leverage builds beneath the QUIET headline across Tier-2 alts while top traders cut exposure.
+  Watch PLAY and EDEN for a funding flip that triggers a flush. FIDA carries funding deepest in the red into a +25% 24h rip, the cleanest short-squeeze setup if shorts capitulate before they crowd more.
 
 REGIME CHANGES (since yesterday)
-  ZEC — NEUTRAL → ACCUMULATION
-    Fresh accumulation print. Early entry.
-  NEAR — NEUTRAL → ACCUMULATION
-    Fresh accumulation print. Early entry.
+  (no comparison available — first run or prior artifact missing)
 
 ACCUMULATION
 
-• ZEC — OI +37.53% 7d, price +12.69% 7d on a 22.20% range, funding flat at +0.003%/8h avg, taker buy 54.21%, top L/S 0.76 net short
+• ZEC — OI +36.30% 7d, price +11.65% 7d on a 22.20% range, funding +0.002%/8h 7d avg, funding now -0.002%/8h, taker buy 53.34%, top L/S 0.77 net short and down 0.14 over 7d
 
-• NEAR — OI +12.62% 7d on +11.25% 24h, price +5.33% 7d, range 15.39%, funding +0.006%/8h avg, taker buy 54.14%
+• NEAR — OI +13.63% 7d on +12.24% 24h, price +4.63% 7d, range 15.39%, funding +0.006%/8h 7d avg, funding now +0.012%/8h, taker buy 53.82%, top L/S 1.86 down 0.15 over 7d
 
 CATALYST-BREAKOUT
 
-(empty today — LIT cleared vol 3.54x and OI +10.83% 24h but ran a +6.29% 24h tape against the 20% breakout gate)
+(empty today — LIT cleared vol 4.86x and OI +10.06% 24h on +4.91% 24h, short of the Tier 2 +20% gate. FIDA cleared +25.23% 24h but vol only 1.27x, short of the 2.0x gate.)
 
 SHORT-SQUEEZE
 
-(empty today — no qualifying assets)
+(empty today — no qualifying assets — FIDA cleared +25.23% 24h but OI built +90.08% 24h instead of unwinding, so the squeeze profile fails)
 
 MOMENTUM
 
-(empty today — funding muted across the universe, no coin landed in the +0.03 to +0.07 8h band)
+(empty today — funding muted across the universe, no coin landed in the +0.03% to +0.07%/8h band)
 
 COMPRESSION
 
-(empty today — XAU printed a 5.91% 7d range and OI +47.25% 7d, missed the 5% range gate by 0.91)
+(empty today — XAU printed a 5.91% 7d range with OI +42.52% 7d, missed the Tier 2 5% range gate by 0.91)
 
 DISTRIBUTION
 
-(empty today — funding muted universe-wide, no coin near the extreme)
+(empty today — funding muted universe-wide, no coin near the extreme — PLAY funded +0.021%/8h on a 94.36% 7d run, still under the 0.08% Tier 2 gate)
 
 CAPITULATION
 
-(empty today — EDEN ran the deepest red at -4.76% 24h, no coin approached the -10% Tier 2 gate)
+(empty today — PROMPT touched -12.06% 24h with funding negative, but OI built +9.75% instead of flushing)
 
 WATCH (early signals, no full regime)
 
-• HYPE — OI +43.68% 7d, price +25.08% 7d on a 28.22% range, funding flat at -0.0007%/8h, top L/S 1.21 dropping 0.15 over 7d
-  Sits one tight range-day from an ACCUMULATION print. The 7d range overshoots the 25% gate by 3.22 points and top traders are reducing.
+• HYPE — OI +49.90% 7d, price +28.56% 7d on a 31.23% range, funding -0.0012%/8h, top L/S 1.28 down 0.08 over 7d
+  Range overshoots the 25% gate by 6.23 points. The OI build holds without smart-money confirmation. Tightens the range or rolls.
 
-• LIT — +6.29% 24h on vol 3.54x, OI +10.83% 24h, OI +53.50% 7d, taker buy 52.10%, top L/S 2.20 down 0.40 over 7d
-  Vol blew out 3.5x with OI +53.5% 7d. The +6.29% 24h tape stayed short of the Tier 2 +20% gate. The signature reads as a wider accumulation, not a breakout.
+• LIT — +4.91% 24h on vol 4.86x, OI +10.06% 24h, OI +52.44% 7d, taker buy 51.68%, top L/S 2.24 down 0.36 over 7d
+  Volume blew out 4.86x with OI +52.44% 7d. The +4.91% 24h tape stays under the Tier 2 +20% breakout gate. Read as a wider accumulation, not a fresh breakout.
 
-• EDEN — -4.76% 24h, +103.12% 7d, OI +621.94% 7d, funding flipped from -0.024%/8h 7d avg to +0.007%/8h, top L/S collapsed -0.99 over 7d
-  Funding cleaned to positive on a -4.76% 24h tape. The 622% 7d OI stack with top traders gone reads as the start of the unwind.
+• FIDA — +25.23% 24h on OI +90.08% 24h, OI +544.89% 7d, funding -0.198%/8h on -0.136%/8h 7d avg, top L/S 1.10 down 1.23 over 7d
+  Shorts pay 0.198%/8h into a +25% rip with OI +90% in 24h. The cleanest short-squeeze setup in the universe. Vol 1.27x failed the breakout gate. Watch for taker buy to push above 52% as the trigger.
 
-• PLAY — +7.63% 24h on OI +7.23% 24h, +77.96% 7d / OI +97.61% 7d, funding flipped from -0.027%/8h 7d avg to +0.017%/8h, top L/S -1.14 over 7d
-  Funding flipped positive into the price strength. Smart money already left. The next 24h separates a real bid from a chase.
+• EDEN — -2.90% 24h, +107.08% 7d, OI +625.76% 7d, funding flipped from -0.022%/8h 7d avg to +0.003%/8h, top L/S 1.03 collapsed 1.01 over 7d
+  A 626% 7d OI stack with funding flipped positive and smart money gone reads as the leverage blow-off. First red 24h after the run starts the unwind risk.
 
-Neutral · 23 of 25 assessed · full per-asset data in the tail below.
+• PLAY — +17.55% 24h on OI +42.51% 24h, +94.36% 7d / OI +162.64% 7d, funding flipped from -0.026%/8h 7d avg to +0.021%/8h, top L/S 0.92 down 1.20 over 7d
+  Funding flipped clean positive into +17.55% 24h with OI building another 42% in 24 hours. Smart money already exited. The next 24h separates a real continuation from a chase top.
+
+• PROMPT — -12.06% 24h on vol 4.79x, OI +9.75% 24h, OI +248.44% 7d, funding -0.007%/8h on -0.086%/8h 7d avg
+  Volume blew out 4.79x into a -12% drop. OI built another 9.75% on top of a +248% 7d stack. Shorts pile in while funding stays negative. Reads as conviction-short, not capitulation. A funding flip up is the squeeze trigger.
+
+Neutral · 23 other assets · see artifact tail for full data
 
 ---
 ARTIFACT DATA TAIL (consumed by perps-brief Pass 0)
 
 Asset: BTC | Tier: 1 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $77,337.20 | pct_24h: 0.7 | pct_7d: -2.46 | pct_4h: 0.84 | range_7d: 7.87%
+  price: $77,471.9 | pct_24h: 0.88 | pct_7d: -2.29 | pct_4h: 0.29 | range_7d: 7.87%
   pct_24h_vs_btc: 0 | pct_7d_vs_btc: 0
-  oi: $56.58B | oi_24h_pct: 0.52 | oi_7d_pct: -5.75
-  funding_now: 0.0084 | funding_7d_avg: 0.0041 | funding_delta: 0.0044
-  liq_24h: $5.6M | liq_7d_p75: $51.3M | long_liqs: $430K | short_liqs: $5.1M | liqs_4h: $927K
-  top_ls: 1.07 | top_ls_7d_avg: 1 | top_ls_delta_7d: 0.18
-  basis: 0.0429 | taker_buy: 49.58
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  oi: $56.69B | oi_24h_pct: 0.72 | oi_7d_pct: -5.57
+  funding_now: 0.0057 | funding_7d_avg: 0.0041 | funding_delta: 0.0016
+  liq_24h: $7.0M | liq_7d_p75: $51.3M | long_liqs: $449K | short_liqs: $6.5M | liqs_4h: $1.2M
+  top_ls: 1.08 | top_ls_7d_avg: 1 | top_ls_delta_7d: 0.19
+  basis: 0.0395 | taker_buy: 50.24
+  yesterday_regime: None | repeat_days: 0
 
 Asset: ETH | Tier: 1 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $2,132.27 | pct_24h: 1.01 | pct_7d: -5.55 | pct_4h: 1.03 | range_7d: 11.78%
-  pct_24h_vs_btc: 0.31 | pct_7d_vs_btc: -3.09
-  oi: $32.09B | oi_24h_pct: 1.86 | oi_7d_pct: -7.85
-  funding_now: 0.0048 | funding_7d_avg: 0.0054 | funding_delta: -0.0006
-  liq_24h: $2.6M | liq_7d_p75: $54.1M | long_liqs: $903K | short_liqs: $1.7M | liqs_4h: $433K
-  top_ls: 1.43 | top_ls_7d_avg: 1.36 | top_ls_delta_7d: 0.1
-  basis: 0.0507 | taker_buy: 53.77
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $2,129.56 | pct_24h: 0.88 | pct_7d: -5.67 | pct_4h: 0.04 | range_7d: 11.78%
+  pct_24h_vs_btc: 0 | pct_7d_vs_btc: -3.38
+  oi: $32.10B | oi_24h_pct: 1.9 | oi_7d_pct: -7.81
+  funding_now: 0.0054 | funding_7d_avg: 0.0054 | funding_delta: 0
+  liq_24h: $3.0M | liq_7d_p75: $54.1M | long_liqs: $967K | short_liqs: $2.0M | liqs_4h: $495K
+  top_ls: 1.45 | top_ls_7d_avg: 1.37 | top_ls_delta_7d: 0.12
+  basis: 0.0418 | taker_buy: 53.76
+  yesterday_regime: None | repeat_days: 0
 
 Asset: SOL | Tier: 1 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $84.91 | pct_24h: 0.8 | pct_7d: -6.8 | pct_4h: 1.01 | range_7d: 12.40%
-  pct_24h_vs_btc: 0.1 | pct_7d_vs_btc: -4.34
-  oi: $5.64B | oi_24h_pct: 1.6 | oi_7d_pct: -5.89
-  funding_now: 0.0049 | funding_7d_avg: 0.0009 | funding_delta: 0.0039
-  liq_24h: $303K | liq_7d_p75: $9.9M | long_liqs: $227K | short_liqs: $76K | liqs_4h: $50K
-  top_ls: 1.8 | top_ls_7d_avg: 1.71 | top_ls_delta_7d: 0.04
-  basis: 0.0589 | taker_buy: 51.12
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $84.900 | pct_24h: 0.78 | pct_7d: -6.82 | pct_4h: 0.22 | range_7d: 12.40%
+  pct_24h_vs_btc: -0.09 | pct_7d_vs_btc: -4.53
+  oi: $5.64B | oi_24h_pct: 1.67 | oi_7d_pct: -5.82
+  funding_now: 0.0012 | funding_7d_avg: 0.0009 | funding_delta: 0.0003
+  liq_24h: $362K | liq_7d_p75: $9.9M | long_liqs: $244K | short_liqs: $119K | liqs_4h: $60K
+  top_ls: 1.78 | top_ls_7d_avg: 1.71 | top_ls_delta_7d: 0.02
+  basis: 0.0707 | taker_buy: 50.38
+  yesterday_regime: None | repeat_days: 0
 
 Asset: ZEC | Tier: 2 | Regime: ACCUMULATION | Sub-tags: — | Pattern tags: —
-  price: $590.86 | pct_24h: 3.02 | pct_7d: 12.69 | pct_4h: 0.54 | range_7d: 22.20%
-  pct_24h_vs_btc: 2.32 | pct_7d_vs_btc: 15.15
-  oi: $1.35B | oi_24h_pct: 8.16 | oi_7d_pct: 37.53
-  funding_now: -0.0064 | funding_7d_avg: 0.0029 | funding_delta: -0.0093
-  liq_24h: $1.5M | liq_7d_p75: $5.5M | long_liqs: $59K | short_liqs: $1.4M | liqs_4h: $246K
-  top_ls: 0.76 | top_ls_7d_avg: 0.88 | top_ls_delta_7d: -0.15
-  basis: 0.0355 | taker_buy: 54.21
-  yesterday_regime: NEUTRAL | repeat_days: 1
+  price: $585.380 | pct_24h: 2.06 | pct_7d: 11.65 | pct_4h: -0.13 | range_7d: 22.20%
+  pct_24h_vs_btc: 1.19 | pct_7d_vs_btc: 13.94
+  oi: $1.34B | oi_24h_pct: 7.2 | oi_7d_pct: 36.3
+  funding_now: -0.0017 | funding_7d_avg: 0.0024 | funding_delta: -0.0041
+  liq_24h: $1.8M | liq_7d_p75: $5.5M | long_liqs: $210K | short_liqs: $1.5M | liqs_4h: $292K
+  top_ls: 0.77 | top_ls_7d_avg: 0.88 | top_ls_delta_7d: -0.14
+  basis: 0.0632 | taker_buy: 53.34
+  yesterday_regime: None | repeat_days: 0
 
 Asset: HYPE | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $48.56 | pct_24h: 1.08 | pct_7d: 25.08 | pct_4h: 2.3 | range_7d: 28.22%
-  pct_24h_vs_btc: 0.38 | pct_7d_vs_btc: 27.54
-  oi: $2.21B | oi_24h_pct: 1.81 | oi_7d_pct: 43.68
-  funding_now: -0.0007 | funding_7d_avg: 0.0002 | funding_delta: -0.0009
-  liq_24h: $416K | liq_7d_p75: $3.5M | long_liqs: $121K | short_liqs: $295K | liqs_4h: $69K
-  top_ls: 1.21 | top_ls_7d_avg: 1.22 | top_ls_delta_7d: -0.15
-  basis: None | taker_buy: 53.54
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $49.910 | pct_24h: 3.9 | pct_7d: 28.56 | pct_4h: 2.98 | range_7d: 31.23%
+  pct_24h_vs_btc: 3.03 | pct_7d_vs_btc: 30.86
+  oi: $2.30B | oi_24h_pct: 6.22 | oi_7d_pct: 49.9
+  funding_now: -0.0012 | funding_7d_avg: -0.0003 | funding_delta: -0.0009
+  liq_24h: $1.7M | liq_7d_p75: $3.5M | long_liqs: $124K | short_liqs: $1.6M | liqs_4h: $289K
+  top_ls: 1.28 | top_ls_7d_avg: 1.23 | top_ls_delta_7d: -0.08
+  basis: None | taker_buy: 53.81
+  yesterday_regime: None | repeat_days: 0
 
 Asset: BSB | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.7668 | pct_24h: -8.73 | pct_7d: 71.85 | pct_4h: -4.14 | range_7d: 242.83%
-  pct_24h_vs_btc: -9.42 | pct_7d_vs_btc: 74.31
-  oi: $73.0M | oi_24h_pct: -7.24 | oi_7d_pct: 108.84
-  funding_now: 0.0058 | funding_7d_avg: 0.0074 | funding_delta: -0.0016
-  liq_24h: $98K | liq_7d_p75: $944K | long_liqs: $77K | short_liqs: $20K | liqs_4h: $16K
-  top_ls: 1.35 | top_ls_7d_avg: 1.95 | top_ls_delta_7d: -0.94
-  basis: None | taker_buy: 49.3
-  yesterday_regime: NEUTRAL | repeat_days: 2
-
-Asset: EDEN | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.0789 | pct_24h: -4.76 | pct_7d: 103.12 | pct_4h: -12.62 | range_7d: 174.72%
-  pct_24h_vs_btc: -5.46 | pct_7d_vs_btc: 105.58
-  oi: $48.1M | oi_24h_pct: -1.51 | oi_7d_pct: 621.94
-  funding_now: 0.0075 | funding_7d_avg: -0.0236 | funding_delta: 0.031
-  liq_24h: $517K | liq_7d_p75: $1.1M | long_liqs: $262K | short_liqs: $254K | liqs_4h: $86K
-  top_ls: 1.05 | top_ls_7d_avg: 1.48 | top_ls_delta_7d: -0.99
-  basis: -0.0127 | taker_buy: 50.97
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $0.78478 | pct_24h: -6.58 | pct_7d: 75.88 | pct_4h: 2.26 | range_7d: 242.83%
+  pct_24h_vs_btc: -7.46 | pct_7d_vs_btc: 78.18
+  oi: $79.8M | oi_24h_pct: 1.42 | oi_7d_pct: 128.34
+  funding_now: 0.0015 | funding_7d_avg: 0.0072 | funding_delta: -0.0057
+  liq_24h: $200K | liq_7d_p75: $944K | long_liqs: $105K | short_liqs: $94K | liqs_4h: $33K
+  top_ls: 1.41 | top_ls_7d_avg: 1.95 | top_ls_delta_7d: -0.88
+  basis: None | taker_buy: 49.6
+  yesterday_regime: None | repeat_days: 0
 
 Asset: LAB | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $4.17 | pct_24h: -1.55 | pct_7d: -31.1 | pct_4h: -1.54 | range_7d: 122.48%
-  pct_24h_vs_btc: -2.25 | pct_7d_vs_btc: -28.64
-  oi: $451.6M | oi_24h_pct: -1.82 | oi_7d_pct: -38.42
-  funding_now: 0.018 | funding_7d_avg: 0.0321 | funding_delta: -0.0141
-  liq_24h: $30K | liq_7d_p75: $1.8M | long_liqs: $23K | short_liqs: $7K | liqs_4h: $5K
-  top_ls: 1.05 | top_ls_7d_avg: 1.18 | top_ls_delta_7d: -0.21
-  basis: None | taker_buy: 48.69
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $4.219 | pct_24h: -0.52 | pct_7d: -30.38 | pct_4h: 1.03 | range_7d: 122.48%
+  pct_24h_vs_btc: -1.39 | pct_7d_vs_btc: -28.09
+  oi: $456.4M | oi_24h_pct: -0.78 | oi_7d_pct: -37.76
+  funding_now: 0.007 | funding_7d_avg: 0.0278 | funding_delta: -0.0208
+  liq_24h: $78K | liq_7d_p75: $1.8M | long_liqs: $53K | short_liqs: $26K | liqs_4h: $13K
+  top_ls: 1.08 | top_ls_7d_avg: 1.18 | top_ls_delta_7d: -0.18
+  basis: None | taker_buy: 48.61
+  yesterday_regime: None | repeat_days: 0
+
+Asset: EDEN | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $0.08043 | pct_24h: -2.9 | pct_7d: 107.08 | pct_4h: 3.04 | range_7d: 174.72%
+  pct_24h_vs_btc: -3.77 | pct_7d_vs_btc: 109.37
+  oi: $48.4M | oi_24h_pct: -0.99 | oi_7d_pct: 625.76
+  funding_now: 0.0033 | funding_7d_avg: -0.022 | funding_delta: 0.0252
+  liq_24h: $661K | liq_7d_p75: $1.1M | long_liqs: $292K | short_liqs: $369K | liqs_4h: $110K
+  top_ls: 1.03 | top_ls_7d_avg: 1.48 | top_ls_delta_7d: -1.01
+  basis: 0.0995 | taker_buy: 51.04
+  yesterday_regime: None | repeat_days: 0
 
 Asset: XRP | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $1.37 | pct_24h: 0.65 | pct_7d: -3.98 | pct_4h: 1.04 | range_7d: 15.02%
-  pct_24h_vs_btc: -0.05 | pct_7d_vs_btc: -1.52
-  oi: $2.95B | oi_24h_pct: 0.68 | oi_7d_pct: 1.75
-  funding_now: 0.0078 | funding_7d_avg: 0.002 | funding_delta: 0.0059
-  liq_24h: $724K | liq_7d_p75: $4.6M | long_liqs: $384K | short_liqs: $340K | liqs_4h: $121K
+  price: $1.370 | pct_24h: 0.68 | pct_7d: -3.95 | pct_4h: 0.16 | range_7d: 15.02%
+  pct_24h_vs_btc: -0.2 | pct_7d_vs_btc: -1.66
+  oi: $2.86B | oi_24h_pct: -2.44 | oi_7d_pct: -1.41
+  funding_now: 0.0073 | funding_7d_avg: 0.0022 | funding_delta: 0.0051
+  liq_24h: $730K | liq_7d_p75: $4.6M | long_liqs: $388K | short_liqs: $342K | liqs_4h: $122K
   top_ls: 1.79 | top_ls_7d_avg: 1.76 | top_ls_delta_7d: -0.06
-  basis: 0.0584 | taker_buy: 50.8
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  basis: 0.0584 | taker_buy: 51.05
+  yesterday_regime: None | repeat_days: 0
 
 Asset: DOGE | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.1038 | pct_24h: 0.86 | pct_7d: -7.81 | pct_4h: 0.97 | range_7d: 16.48%
-  pct_24h_vs_btc: 0.17 | pct_7d_vs_btc: -5.34
-  oi: $1.45B | oi_24h_pct: 1.17 | oi_7d_pct: -14.83
-  funding_now: 0.0054 | funding_7d_avg: 0.0022 | funding_delta: 0.0032
-  liq_24h: $445K | liq_7d_p75: $5.7M | long_liqs: $406K | short_liqs: $39K | liqs_4h: $74K
-  top_ls: 1.97 | top_ls_7d_avg: 2.02 | top_ls_delta_7d: -0.92
-  basis: 0.0578 | taker_buy: 49.81
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $0.10386 | pct_24h: 0.9 | pct_7d: -7.77 | pct_4h: 0.29 | range_7d: 16.48%
+  pct_24h_vs_btc: 0.03 | pct_7d_vs_btc: -5.48
+  oi: $1.32B | oi_24h_pct: -7.82 | oi_7d_pct: -22.4
+  funding_now: 0.0035 | funding_7d_avg: 0.0021 | funding_delta: 0.0014
+  liq_24h: $448K | liq_7d_p75: $5.7M | long_liqs: $410K | short_liqs: $39K | liqs_4h: $75K
+  top_ls: 1.98 | top_ls_7d_avg: 2.02 | top_ls_delta_7d: -0.91
+  basis: 0.0674 | taker_buy: 49.98
+  yesterday_regime: None | repeat_days: 0
 
 Asset: BILL | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.1146 | pct_24h: 2.33 | pct_7d: -37.54 | pct_4h: 4.23 | range_7d: 147.52%
-  pct_24h_vs_btc: 1.63 | pct_7d_vs_btc: -35.08
-  oi: $50.2M | oi_24h_pct: 8.73 | oi_7d_pct: -29.34
-  funding_now: 0.0006 | funding_7d_avg: 0.0037 | funding_delta: -0.0031
-  liq_24h: $178K | liq_7d_p75: $1.5M | long_liqs: $57K | short_liqs: $121K | liqs_4h: $30K
-  top_ls: 1.43 | top_ls_7d_avg: 1.35 | top_ls_delta_7d: 0.26
-  basis: None | taker_buy: 49.79
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $0.10881 | pct_24h: -2.82 | pct_7d: -40.69 | pct_4h: -2.96 | range_7d: 147.52%
+  pct_24h_vs_btc: -3.7 | pct_7d_vs_btc: -38.4
+  oi: $49.8M | oi_24h_pct: 7.89 | oi_7d_pct: -29.88
+  funding_now: 0.0014 | funding_7d_avg: 0.0039 | funding_delta: -0.0025
+  liq_24h: $294K | liq_7d_p75: $1.5M | long_liqs: $111K | short_liqs: $183K | liqs_4h: $49K
+  top_ls: 1.39 | top_ls_7d_avg: 1.34 | top_ls_delta_7d: 0.22
+  basis: None | taker_buy: 49.14
+  yesterday_regime: None | repeat_days: 0
 
 Asset: XAU | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $4,481.16 | pct_24h: -0.26 | pct_7d: -4.63 | pct_4h: 0.32 | range_7d: 5.91%
-  pct_24h_vs_btc: -0.96 | pct_7d_vs_btc: -2.17
-  oi: $829.0M | oi_24h_pct: 4.98 | oi_7d_pct: 47.25
-  funding_now: 0.0099 | funding_7d_avg: 0.0064 | funding_delta: 0.0035
-  liq_24h: $557K | liq_7d_p75: $5.6M | long_liqs: $523K | short_liqs: $33K | liqs_4h: $93K
-  top_ls: 2.26 | top_ls_7d_avg: 2.53 | top_ls_delta_7d: -0.53
-  basis: None | taker_buy: 49.88
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $4,494.91 | pct_24h: 0.05 | pct_7d: -4.34 | pct_4h: 0.31 | range_7d: 5.91%
+  pct_24h_vs_btc: -0.82 | pct_7d_vs_btc: -2.05
+  oi: $802.3M | oi_24h_pct: 1.61 | oi_7d_pct: 42.52
+  funding_now: 0.0046 | funding_7d_avg: 0.0064 | funding_delta: -0.0017
+  liq_24h: $648K | liq_7d_p75: $5.6M | long_liqs: $533K | short_liqs: $115K | liqs_4h: $108K
+  top_ls: 2.36 | top_ls_7d_avg: 2.54 | top_ls_delta_7d: -0.43
+  basis: None | taker_buy: 49.33
+  yesterday_regime: None | repeat_days: 0
 
 Asset: ONDO | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.3770 | pct_24h: 2.28 | pct_7d: -2.15 | pct_4h: 1.56 | range_7d: 24.80%
-  pct_24h_vs_btc: 1.58 | pct_7d_vs_btc: 0.31
-  oi: $191.2M | oi_24h_pct: 11.47 | oi_7d_pct: 3.06
-  funding_now: -0.002 | funding_7d_avg: 0.0002 | funding_delta: -0.0023
-  liq_24h: $102K | liq_7d_p75: $684K | long_liqs: $61K | short_liqs: $41K | liqs_4h: $17K
-  top_ls: 1.7 | top_ls_7d_avg: 1.9 | top_ls_delta_7d: -0.14
-  basis: 0.1061 | taker_buy: 49.2
-  yesterday_regime: NEUTRAL | repeat_days: 2
-
-Asset: SUI | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $1.06 | pct_24h: 0.67 | pct_7d: -12.32 | pct_4h: 2.07 | range_7d: 22.03%
-  pct_24h_vs_btc: -0.03 | pct_7d_vs_btc: -9.86
-  oi: $726.9M | oi_24h_pct: 6.42 | oi_7d_pct: -5.91
-  funding_now: 0.009 | funding_7d_avg: 0.0032 | funding_delta: 0.0058
-  liq_24h: $395K | liq_7d_p75: $2.5M | long_liqs: $353K | short_liqs: $43K | liqs_4h: $66K
-  top_ls: 1.69 | top_ls_7d_avg: 1.49 | top_ls_delta_7d: 0.12
-  basis: 0.0567 | taker_buy: 48.89
-  yesterday_regime: NEUTRAL | repeat_days: 2
-
-Asset: TON | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $1.96 | pct_24h: -0.99 | pct_7d: -6.66 | pct_4h: 1.81 | range_7d: 16.92%
-  pct_24h_vs_btc: -1.69 | pct_7d_vs_btc: -4.2
-  oi: $476.9M | oi_24h_pct: -0.98 | oi_7d_pct: -5.66
-  funding_now: -0.0081 | funding_7d_avg: -0.0006 | funding_delta: -0.0075
-  liq_24h: $227K | liq_7d_p75: $2.2M | long_liqs: $215K | short_liqs: $13K | liqs_4h: $38K
-  top_ls: 1.36 | top_ls_7d_avg: 1.41 | top_ls_delta_7d: 0.04
-  basis: 0.0714 | taker_buy: 49.3
-  yesterday_regime: NEUTRAL | repeat_days: 2
-
-Asset: NEAR | Tier: 2 | Regime: ACCUMULATION | Sub-tags: — | Pattern tags: —
-  price: $1.66 | pct_24h: 3.56 | pct_7d: 5.33 | pct_4h: 4.08 | range_7d: 15.39%
-  pct_24h_vs_btc: 2.86 | pct_7d_vs_btc: 7.79
-  oi: $324.7M | oi_24h_pct: 11.25 | oi_7d_pct: 12.62
-  funding_now: 0.0103 | funding_7d_avg: 0.0058 | funding_delta: 0.0045
-  liq_24h: $184K | liq_7d_p75: $689K | long_liqs: $28K | short_liqs: $156K | liqs_4h: $31K
-  top_ls: 1.91 | top_ls_7d_avg: 1.73 | top_ls_delta_7d: -0.1
-  basis: 0.0603 | taker_buy: 54.14
-  yesterday_regime: NEUTRAL | repeat_days: 1
-
-Asset: RONIN | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.1078 | pct_24h: 1.32 | pct_7d: 2.08 | pct_4h: 2.28 | range_7d: 61.16%
-  pct_24h_vs_btc: 0.62 | pct_7d_vs_btc: 4.54
-  oi: $8.7M | oi_24h_pct: -0.25 | oi_7d_pct: 299.76
-  funding_now: -0.1833 | funding_7d_avg: -0.1322 | funding_delta: -0.0511
-  liq_24h: $42K | liq_7d_p75: $442K | long_liqs: $11K | short_liqs: $31K | liqs_4h: $7K
-  top_ls: 1.12 | top_ls_7d_avg: 1.09 | top_ls_delta_7d: -0.05
-  basis: 0.5571 | taker_buy: 52.43
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $0.38340 | pct_24h: 4.02 | pct_7d: -0.49 | pct_4h: 1.91 | range_7d: 24.80%
+  pct_24h_vs_btc: 3.14 | pct_7d_vs_btc: 1.8
+  oi: $192.6M | oi_24h_pct: 12.27 | oi_7d_pct: 3.79
+  funding_now: -0.0127 | funding_7d_avg: -0.0007 | funding_delta: -0.012
+  liq_24h: $138K | liq_7d_p75: $684K | long_liqs: $71K | short_liqs: $66K | liqs_4h: $23K
+  top_ls: 1.59 | top_ls_7d_avg: 1.88 | top_ls_delta_7d: -0.25
+  basis: 0.1304 | taker_buy: 50.01
+  yesterday_regime: None | repeat_days: 0
 
 Asset: LIT | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $1.20 | pct_24h: 6.29 | pct_7d: 34.58 | pct_4h: 0.69 | range_7d: 49.36%
-  pct_24h_vs_btc: 5.59 | pct_7d_vs_btc: 37.04
-  oi: $227.3M | oi_24h_pct: 10.83 | oi_7d_pct: 53.5
-  funding_now: 0.0055 | funding_7d_avg: 0.0035 | funding_delta: 0.0021
-  liq_24h: $478K | liq_7d_p75: $215K | long_liqs: $198K | short_liqs: $280K | liqs_4h: $80K
-  top_ls: 2.2 | top_ls_7d_avg: 2.5 | top_ls_delta_7d: -0.4
-  basis: None | taker_buy: 52.1
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $1.189 | pct_24h: 4.91 | pct_7d: 32.83 | pct_4h: 1.01 | range_7d: 49.36%
+  pct_24h_vs_btc: 4.04 | pct_7d_vs_btc: 35.13
+  oi: $225.7M | oi_24h_pct: 10.06 | oi_7d_pct: 52.44
+  funding_now: 0.0038 | funding_7d_avg: 0.0037 | funding_delta: 0.0001
+  liq_24h: $724K | liq_7d_p75: $222K | long_liqs: $308K | short_liqs: $416K | liqs_4h: $121K
+  top_ls: 2.24 | top_ls_7d_avg: 2.51 | top_ls_delta_7d: -0.36
+  basis: None | taker_buy: 51.68
+  yesterday_regime: None | repeat_days: 0
 
-Asset: BCH | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $370.44 | pct_24h: 0.13 | pct_7d: -14.61 | pct_4h: 0.19 | range_7d: 26.32%
-  pct_24h_vs_btc: -0.57 | pct_7d_vs_btc: -12.15
-  oi: $570.1M | oi_24h_pct: 0.74 | oi_7d_pct: 3.07
-  funding_now: -0.015 | funding_7d_avg: -0.0094 | funding_delta: -0.0056
-  liq_24h: $4K | liq_7d_p75: $856K | long_liqs: $4K | short_liqs: $328 | liqs_4h: $644
-  top_ls: 1.36 | top_ls_7d_avg: 2.17 | top_ls_delta_7d: -1.48
-  basis: 0.108 | taker_buy: 47.23
-  yesterday_regime: NEUTRAL | repeat_days: 2
+Asset: TON | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $1.939 | pct_24h: -2.07 | pct_7d: -7.67 | pct_4h: -0.34 | range_7d: 16.92%
+  pct_24h_vs_btc: -2.94 | pct_7d_vs_btc: -5.38
+  oi: $477.3M | oi_24h_pct: -0.89 | oi_7d_pct: -5.57
+  funding_now: 0.0027 | funding_7d_avg: -0.0007 | funding_delta: 0.0034
+  liq_24h: $243K | liq_7d_p75: $2.2M | long_liqs: $226K | short_liqs: $17K | liqs_4h: $40K
+  top_ls: 1.38 | top_ls_7d_avg: 1.42 | top_ls_delta_7d: 0.06
+  basis: 0.0825 | taker_buy: 49.46
+  yesterday_regime: None | repeat_days: 0
 
-Asset: BNB | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $644.13 | pct_24h: 0.59 | pct_7d: -4.13 | pct_4h: 0.57 | range_7d: 8.85%
-  pct_24h_vs_btc: -0.11 | pct_7d_vs_btc: -1.67
-  oi: $956.3M | oi_24h_pct: 0.45 | oi_7d_pct: -12.77
-  funding_now: 0.0029 | funding_7d_avg: 0.0021 | funding_delta: 0.0008
-  liq_24h: $22K | liq_7d_p75: $2.1M | long_liqs: $17K | short_liqs: $4K | liqs_4h: $4K
-  top_ls: 1.41 | top_ls_7d_avg: 1.42 | top_ls_delta_7d: -0.07
-  basis: -0.0466 | taker_buy: 50.68
-  yesterday_regime: NEUTRAL | repeat_days: 2
+Asset: SUI | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $1.060 | pct_24h: 0.82 | pct_7d: -12.18 | pct_4h: 0.57 | range_7d: 22.03%
+  pct_24h_vs_btc: -0.06 | pct_7d_vs_btc: -9.89
+  oi: $685.2M | oi_24h_pct: 0.3 | oi_7d_pct: -11.32
+  funding_now: 0.0084 | funding_7d_avg: 0.0034 | funding_delta: 0.005
+  liq_24h: $398K | liq_7d_p75: $2.5M | long_liqs: $353K | short_liqs: $45K | liqs_4h: $66K
+  top_ls: 1.7 | top_ls_7d_avg: 1.49 | top_ls_delta_7d: 0.13
+  basis: 0.0566 | taker_buy: 49.29
+  yesterday_regime: None | repeat_days: 0
+
+Asset: NEAR | Tier: 2 | Regime: ACCUMULATION | Sub-tags: — | Pattern tags: —
+  price: $1.648 | pct_24h: 2.87 | pct_7d: 4.63 | pct_4h: 0 | range_7d: 15.39%
+  pct_24h_vs_btc: 2 | pct_7d_vs_btc: 6.93
+  oi: $327.6M | oi_24h_pct: 12.24 | oi_7d_pct: 13.63
+  funding_now: 0.012 | funding_7d_avg: 0.0061 | funding_delta: 0.0059
+  liq_24h: $184K | liq_7d_p75: $689K | long_liqs: $29K | short_liqs: $156K | liqs_4h: $31K
+  top_ls: 1.86 | top_ls_7d_avg: 1.73 | top_ls_delta_7d: -0.15
+  basis: 0 | taker_buy: 53.82
+  yesterday_regime: None | repeat_days: 0
 
 Asset: PLAY | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.1463 | pct_24h: 7.63 | pct_7d: 77.96 | pct_4h: 3.72 | range_7d: 88.64%
-  pct_24h_vs_btc: 6.93 | pct_7d_vs_btc: 80.43
-  oi: $18.2M | oi_24h_pct: 7.23 | oi_7d_pct: 97.61
-  funding_now: 0.0172 | funding_7d_avg: -0.0274 | funding_delta: 0.0446
-  liq_24h: $262K | liq_7d_p75: $686K | long_liqs: $83K | short_liqs: $179K | liqs_4h: $44K
-  top_ls: 0.98 | top_ls_7d_avg: 1.72 | top_ls_delta_7d: -1.14
-  basis: None | taker_buy: 51.36
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $0.15982 | pct_24h: 17.55 | pct_7d: 94.36 | pct_4h: 5.06 | range_7d: 98.57%
+  pct_24h_vs_btc: 16.67 | pct_7d_vs_btc: 96.65
+  oi: $24.1M | oi_24h_pct: 42.51 | oi_7d_pct: 162.64
+  funding_now: 0.0207 | funding_7d_avg: -0.0262 | funding_delta: 0.0469
+  liq_24h: $566K | liq_7d_p75: $686K | long_liqs: $154K | short_liqs: $412K | liqs_4h: $94K
+  top_ls: 0.92 | top_ls_7d_avg: 1.71 | top_ls_delta_7d: -1.2
+  basis: None | taker_buy: 51.86
+  yesterday_regime: None | repeat_days: 0
 
-Asset: XAG | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $75.04 | pct_24h: 1.02 | pct_7d: -14.5 | pct_4h: 1.96 | range_7d: 20.99%
-  pct_24h_vs_btc: 0.32 | pct_7d_vs_btc: -12.04
-  oi: $442.4M | oi_24h_pct: -2.2 | oi_7d_pct: 10.58
-  funding_now: 0.002 | funding_7d_avg: 0.0054 | funding_delta: -0.0034
-  liq_24h: $600K | liq_7d_p75: $4.2M | long_liqs: $280K | short_liqs: $320K | liqs_4h: $100K
-  top_ls: 1.65 | top_ls_7d_avg: 1.32 | top_ls_delta_7d: 0.81
-  basis: None | taker_buy: 49.56
-  yesterday_regime: NEUTRAL | repeat_days: 2
+Asset: BCH | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $367.790 | pct_24h: -0.58 | pct_7d: -15.22 | pct_4h: -0.64 | range_7d: 26.32%
+  pct_24h_vs_btc: -1.46 | pct_7d_vs_btc: -12.93
+  oi: $544.8M | oi_24h_pct: -3.73 | oi_7d_pct: -1.5
+  funding_now: -0.0176 | funding_7d_avg: -0.01 | funding_delta: -0.0076
+  liq_24h: $4K | liq_7d_p75: $856K | long_liqs: $4K | short_liqs: $328 | liqs_4h: $692
+  top_ls: 1.36 | top_ls_7d_avg: 2.17 | top_ls_delta_7d: -1.48
+  basis: 0.0571 | taker_buy: 47.32
+  yesterday_regime: None | repeat_days: 0
 
-Asset: LINK | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $9.61 | pct_24h: 1.76 | pct_7d: -5.91 | pct_4h: 1.29 | range_7d: 15.82%
-  pct_24h_vs_btc: 1.06 | pct_7d_vs_btc: -3.45
-  oi: $513.1M | oi_24h_pct: 4.07 | oi_7d_pct: 0.97
-  funding_now: 0.0062 | funding_7d_avg: 0.0038 | funding_delta: 0.0024
-  liq_24h: $46K | liq_7d_p75: $861K | long_liqs: $39K | short_liqs: $7K | liqs_4h: $8K
-  top_ls: 2.47 | top_ls_7d_avg: 2.52 | top_ls_delta_7d: 0.01
-  basis: 0.0729 | taker_buy: 49.1
-  yesterday_regime: NEUTRAL | repeat_days: 2
-
-Asset: ADA | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $0.2499 | pct_24h: 0.77 | pct_7d: -5.56 | pct_4h: 0.77 | range_7d: 14.41%
-  pct_24h_vs_btc: 0.07 | pct_7d_vs_btc: -3.09
-  oi: $559.5M | oi_24h_pct: 4.96 | oi_7d_pct: 2.92
-  funding_now: 0.0101 | funding_7d_avg: 0.0026 | funding_delta: 0.0075
-  liq_24h: $24K | liq_7d_p75: $988K | long_liqs: $13K | short_liqs: $10K | liqs_4h: $4K
-  top_ls: 1.56 | top_ls_7d_avg: 1.67 | top_ls_delta_7d: -0.23
-  basis: 0.04 | taker_buy: 50.4
-  yesterday_regime: NEUTRAL | repeat_days: 2
+Asset: BNB | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $644.050 | pct_24h: 0.58 | pct_7d: -4.14 | pct_4h: 0.05 | range_7d: 8.85%
+  pct_24h_vs_btc: -0.3 | pct_7d_vs_btc: -1.85
+  oi: $955.0M | oi_24h_pct: 0.32 | oi_7d_pct: -12.89
+  funding_now: 0.0034 | funding_7d_avg: 0.0022 | funding_delta: 0.0012
+  liq_24h: $22K | liq_7d_p75: $2.1M | long_liqs: $17K | short_liqs: $5K | liqs_4h: $4K
+  top_ls: 1.41 | top_ls_7d_avg: 1.42 | top_ls_delta_7d: -0.07
+  basis: -0.0699 | taker_buy: 50.35
+  yesterday_regime: None | repeat_days: 0
 
 Asset: VVV | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
-  price: $17.21 | pct_24h: 4.38 | pct_7d: 19.87 | pct_4h: 2.63 | range_7d: 41.77%
-  pct_24h_vs_btc: 3.68 | pct_7d_vs_btc: 22.33
-  oi: $124.3M | oi_24h_pct: 3.15 | oi_7d_pct: 37.59
-  funding_now: -0.0022 | funding_7d_avg: 0.004 | funding_delta: -0.0062
-  liq_24h: $66K | liq_7d_p75: $349K | long_liqs: $13K | short_liqs: $53K | liqs_4h: $11K
-  top_ls: 0.51 | top_ls_7d_avg: 0.55 | top_ls_delta_7d: -0.14
-  basis: None | taker_buy: 52.45
-  yesterday_regime: NEUTRAL | repeat_days: 2
+  price: $17.813 | pct_24h: 8.05 | pct_7d: 24.08 | pct_4h: 3.85 | range_7d: 43.56%
+  pct_24h_vs_btc: 7.17 | pct_7d_vs_btc: 26.37
+  oi: $133.7M | oi_24h_pct: 10.92 | oi_7d_pct: 47.95
+  funding_now: 0.0075 | funding_7d_avg: 0.0036 | funding_delta: 0.0039
+  liq_24h: $113K | liq_7d_p75: $349K | long_liqs: $29K | short_liqs: $84K | liqs_4h: $19K
+  top_ls: 0.48 | top_ls_7d_avg: 0.55 | top_ls_delta_7d: -0.17
+  basis: None | taker_buy: 53.09
+  yesterday_regime: None | repeat_days: 0
+
+Asset: PROMPT | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $0.04091 | pct_24h: -12.06 | pct_7d: 17.46 | pct_4h: 1.09 | range_7d: 64.67%
+  pct_24h_vs_btc: -12.93 | pct_7d_vs_btc: 19.75
+  oi: $18.0M | oi_24h_pct: 9.75 | oi_7d_pct: 248.44
+  funding_now: -0.0073 | funding_7d_avg: -0.0865 | funding_delta: 0.0792
+  liq_24h: $484K | liq_7d_p75: $152K | long_liqs: $320K | short_liqs: $164K | liqs_4h: $81K
+  top_ls: 1.04 | top_ls_7d_avg: 0.96 | top_ls_delta_7d: -0.07
+  basis: None | taker_buy: 49.4
+  yesterday_regime: None | repeat_days: 0
+
+Asset: RONIN | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $0.10630 | pct_24h: -0.09 | pct_7d: 0.66 | pct_4h: -0.84 | range_7d: 61.16%
+  pct_24h_vs_btc: -0.97 | pct_7d_vs_btc: 2.95
+  oi: $8.5M | oi_24h_pct: -2.99 | oi_7d_pct: 288.77
+  funding_now: -0.0774 | funding_7d_avg: -0.136 | funding_delta: 0.0586
+  liq_24h: $54K | liq_7d_p75: $452K | long_liqs: $22K | short_liqs: $32K | liqs_4h: $9K
+  top_ls: 1.15 | top_ls_7d_avg: 1.1 | top_ls_delta_7d: -0.02
+  basis: 0.0939 | taker_buy: 50.77
+  yesterday_regime: None | repeat_days: 0
+
+Asset: FIDA | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $0.02700 | pct_24h: 25.23 | pct_7d: 48.92 | pct_4h: -2.24 | range_7d: 76.04%
+  pct_24h_vs_btc: 24.36 | pct_7d_vs_btc: 51.22
+  oi: $24.4M | oi_24h_pct: 90.08 | oi_7d_pct: 544.89
+  funding_now: -0.198 | funding_7d_avg: -0.1358 | funding_delta: -0.0622
+  liq_24h: $433K | liq_7d_p75: $407K | long_liqs: $91K | short_liqs: $342K | liqs_4h: $72K
+  top_ls: 1.1 | top_ls_7d_avg: 2.38 | top_ls_delta_7d: -1.23
+  basis: 0.7407 | taker_buy: 50.59
+  yesterday_regime: None | repeat_days: 0
+
+Asset: XAG | Tier: 2 | Regime: NEUTRAL | Sub-tags: — | Pattern tags: —
+  price: $75.630 | pct_24h: 1.82 | pct_7d: -13.83 | pct_4h: 0.79 | range_7d: 20.99%
+  pct_24h_vs_btc: 0.94 | pct_7d_vs_btc: -11.54
+  oi: $446.4M | oi_24h_pct: -1.32 | oi_7d_pct: 11.58
+  funding_now: 0.0021 | funding_7d_avg: 0.0056 | funding_delta: -0.0035
+  liq_24h: $1.5M | liq_7d_p75: $4.2M | long_liqs: $281K | short_liqs: $1.3M | liqs_4h: $257K
+  top_ls: 1.62 | top_ls_7d_avg: 1.31 | top_ls_delta_7d: 0.78
+  basis: None | taker_buy: 49.71
+  yesterday_regime: None | repeat_days: 0
