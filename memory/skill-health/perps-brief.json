@@ -1,8 +1,8 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-19T15:42:43Z",
+  "last_analyzed": "2026-05-20T06:40:46Z",
   "quality_score": 4,
-  "assessment": "Substantive domain-specific analysis with clear skip-day decision, detailed reasoning, named watchlist conflicts, proper file management, and consistent rigor across six daily runs",
+  "assessment": "Substantive, well-structured market brief with specific conviction setups, technical depth (ACCUMULATION prints, taker %, vol ratios), and clear documentation of work output",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -32,6 +32,10 @@
     },
     {
       "date": "2026-05-19",
+      "score": 4
+    },
+    {
+      "date": "2026-05-20",
       "score": 4
     }
   ]
