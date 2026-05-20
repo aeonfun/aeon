@@ -1,18 +1,35 @@
-## Summary
+# Market Context — 2026-05-20
 
-Market Context Refresh complete for 2026-05-20. Files committed:
+Take: chop — BTC +0.18% 24h, 7/20 breadth, F&G 27 (Fear) flat since morning refresh. Conviction: low.
 
-- `memory/topics/market-context.md` — overwritten with today's data
-- `.outputs/market-context-refresh.md` — chain-consumable artifact for downstream skills
-- `memory/logs/2026-05-20.md` — daily log entry
+NVIDIA Q1 FY2027 earnings after close tonight is the binary catalyst. AI tokens pricing in a beat ahead of the print.
 
-**Regime: chop, conviction: low**
+## Snapshot
+- BTC $77,288 (+0.18% 24h, -4.57% 7d) · dominance 58.28% (flat 24h)
+- ETH $2,131 (-0.36% 24h, -7.38% 7d) · ETH/BTC 0.02757
+- SOL $84.88 (-0.58% 24h, -10.90% 7d)
+- Total mcap $2.66T (-0.03% 24h) · DEX vol $5.32B 24h
+- Breadth: 7/20 green 24h · 4/20 green 7d
+- Fear & Greed: 27 (Fear) — yesterday 25
+- TVL: top 5 protocols all down 3–8% 7d
 
-The key story today is a breadth collapse from 11/20 → 5/20 green while BTC held flat (+0.31% 24h). Alts distributed broadly; DEX vol dropped 18.9% to $5.32B. F&G ticked up 2 pts from Extreme Fear to Fear (25 → 27), crossing a classification boundary but stalling there.
+## What Changed
+- Quiet on price. BTC/ETH/SOL within ±1% of morning refresh, regime unchanged.
+- ZEST day 4 pulled back to +100% 24h from +133%. Peak signal at day 4 on a $27M float.
+- ZEC re-entered trending at #9 (+4.52% 24h, +6.24% 7d). Privacy narrative reversed from fading.
+- HYPE climbed from #9 to #3 trending, holding +21.58% 7d.
 
-Notable shifts vs yesterday:
-- **ZEST** day 3 trending at +133% 24h — thin $27M float, extended but confirmed
-- **AI compute** expanded (VVV #2 trending, Gensyn #5) ahead of NVIDIA earnings today
-- **Privacy/ZK** lost trending anchors (ZEC + ZANO both exited) — phase downgrade warranted
-- **Iran airspace closure** YES 13.5% by May 21 — new geopolitical risk; peace deal odds slipped
-- **HYPE** and **ZEC** held as the two cleanest top-20 names through the breadth collapse
+## Active Narratives
+- Bitcoin DeFi / lending — phase: peak. Evidence: ZEST day 4 at #1 trending, +100% 24h down from +133%. $27M float.
+- AI / private compute — phase: rising. Evidence: VVV +18.37% 24h at #2 trending. NVIDIA print tonight is the phase confirmation.
+- Perp DEX / liquidity infra — phase: rising. Evidence: HYPE #3 trending at +21.58% 7d. LIT #4 at +22.34% 24h.
+- Privacy / ZK — phase: rising. Evidence: ZEC re-entered trending at #9, +4.52% 24h. XMR +2.66% 24h.
+- Gaming / NFT infra — phase: fading. Evidence: PENGU #5 trending at +2.88%, no new trigger.
+
+## Polymarket Highlights (top by 24h vol)
+- FIFA World Cup 2026 — multi-outcome, $25.4M vol (sports, no crypto signal)
+- Bitcoin $150k by Jun 30 — YES 1.4%, $5.8M vol (effectively settled, below 3% threshold)
+- No actionable YES% market (3–97%) in top 10 today
+
+## Source Status
+coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
