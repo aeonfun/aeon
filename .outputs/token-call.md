@@ -1,22 +1,38 @@
-## Summary
+Daily Token Call · 20 May
+──────────────────────────
 
-Ran the token-call skill for 2026-05-20.
+VVV · HIGH · 10/10
+$17.23 · +18.99% 24h · +13.31% 7d
+mcap $796m · vol $113m · vol/mcap 0.14
 
-**Pick: LIT (Lighter) — HIGH · 10/10**
-- $1.18 · +18.5% 24h · +25.9% 7d · mcap $299m · vol $63.9m · vol/mcap 0.21
-- Top scorer of the 250-token scan after the 7d dedup gate excluded TRAC/BSB/INJ/NEAR/HYPE/CHZ/KAIA.
-- Catalyst: Vitalik Buterin name-check at the May-18 fireside chat + Telegram wallet's $1B perp volume on May 7 (fully routed through Lighter) + EVM mainnet locked for Q2/Q3 2026; perp-DEX narrative is RIDE w/ trail.
-- Risks: thin book / no major CEX listing, team+investor cliff at one year (next major unlock late 2026), Vitalik mention is endorsement not product news.
 
-**Files**
-- `.outputs/token-call.md` (overwritten — v2.1 locked layout)
-- `memory/logs/2026-05-20.md` (new)
-- `.pending-notify/1779257657.signal.md` (queued — inline `./notify` blocked by sandbox shell-substitution restriction, used the documented pending-file fallback)
+SIGNALS
+  Both 24h and 7d well above +5%.
+  Healthy turnover at vol/mcap 0.14.
+  On the CoinGecko trending list, first appearance in the dedup window.
+  Outpacing a red BTC (-4.57% 7d) and ETH (-7.38% 7d).
+  Sits in two of three RIDE narratives today — AI agents and Decentralized compute.
 
-**Sources:** cg=ok, dex=fail (DexScreener `q=trending` returned only junk tokens literally named "Trending"/"TREND" — same failure mode as prior runs)
+CATALYST
+  Programmatic VVV burn doubled to $2 per Pro signup on April 27.
+  Annual emissions cut to 5M VVV on May 1, roadmap to 3M by July 2026.
+  May 11 platform revenue print broke all prior records by 10%.
+  Venice has burned 42.8% of total supply (~33M VVV) since launch.
+  Voorhees-run, privacy-preserving AI inference with on-chain compute economics.
 
-Sources used for catalyst/risk research:
-- [Lighter price outlook: Vitalik endorsement push toward $1 — invezz](https://invezz.com/news/2026/05/19/lighter-price-outlook-can-lit-push-toward-1-after-vitalik-endorsement/)
-- [Lighter DEX launches LIT token with 25% airdrop — CoinDesk](https://www.coindesk.com/markets/2025/12/30/lighter-dex-launches-lit-token-with-25-airdrop)
-- [Lighter (LIT) tokenomics & vesting — Tokenomist](https://tokenomist.ai/lighter)
-- [Lighter LIT price prediction 2026 — CCN](https://www.ccn.com/analysis/crypto/lighter-lit-price-prediction-2026/)
+RISK
+  Run is hot. +1500% since December 2025, currently -24% from the Jan-2025 ATH at $22.58.
+  Burn mechanics are reflexive. Subscription growth must hold or the deflationary loop breaks.
+  No hard cap on supply. Reduced emissions still dilute over time.
+  Single-platform token. A Venice.ai outage or LLM-side scandal cuts the bid fast.
+
+DEDUP
+  First time in 7d.
+  Dedup gate this week excluded LIT, CHZ, NEAR, INJ, HYPE, BSB, TRAC, KAIA.
+
+
+Take: highest-scoring name on today's scan, sitting where two RIDE narratives overlap.
+Long with the deflationary thesis, trail tight at the Jan-2025 ATH retest. A clean break above $22.58 confirms continuation. Rejection from that level is the exit.
+
+
+not financial advice — pattern-matching only
