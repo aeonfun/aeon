@@ -271,7 +271,21 @@ jobs:
           #   ./notify --signal "message"   — Discord + Slack + email only (skip Telegram)
           SIGNAL=false
           if [ "${1:-}" = "--signal" ]; then SIGNAL=true; shift; fi
-          MSG="$1"
+          MSG="${1:-}"
+
+          # Reject flag-like arguments as MSG. If Claude calls `./notify --help`
+          # or `./notify --skill foo` the script previously treated `--help` or
+          # `--skill` as the payload, wrote that to .pending-notify/ AND to
+          # dashboard/outputs/.pending-${SKILL_NAME}.md (json-render path), and
+          # the Capture step then overwrote the real artifact with the flag
+          # string. ISS-006 hit twice on consecutive days under this pattern
+          # (`--help` on 2026-05-19, `--skill` on 2026-05-20). Detect and bail.
+          case "$MSG" in
+            --*)
+              echo "notify: refusing flag-like MSG argument: '$MSG'. Expected message text after --signal (if present). Exiting non-zero so misuse is visible." >&2
+              exit 2
+              ;;
+          esac
 
           # Suppress obvious diagnostic probes (short messages containing test/trace/ping/debug/hello).
           # Claude sometimes issues these to verify the notify script works — they should not reach channels.
@@ -513,25 +527,31 @@ jobs:
           ARTIFACT=".outputs/${SKILL}.md"
           PENDING="dashboard/outputs/.pending-${SKILL}.md"
           # Resolve the artifact in priority order:
-          #   1. json-render pending file (when JSONRENDER_ENABLED=true)
-          #   2. Skill-written locked-format artifact (fresh — modified after
-          #      /tmp/aeon-claude-start sentinel touched just before Claude ran)
-          #   3. Fall back to Claude's chat result (which per CLAUDE.md convention
-          #      ends in a `## Summary` block — only use this when the skill
-          #      didn't write its own artifact)
-          #   4. Empty-output placeholder
+          #   1. Skill-written locked-format artifact (fresh — modified after
+          #      /tmp/aeon-claude-start sentinel touched just before Claude ran).
+          #      Authoritative when present.
+          #   2. json-render pending file (when JSONRENDER_ENABLED=true and the
+          #      skill did NOT write its own artifact). Only signal-only skills
+          #      that route entirely through ./notify rely on this.
+          #   3. Fall back to Claude's chat result (which per CLAUDE.md
+          #      convention ends in a `## Summary` block — only use this when
+          #      neither (1) nor (2) is available).
+          #   4. Empty-output placeholder.
           #
-          # The prior version unconditionally jumped to step 3, which OVERWROTE
-          # every skill's Write-tool-created locked artifact with the chat
-          # response — root cause of ISS-003/004/005 (Summary blob in
-          # .outputs/) and ISS-006 (the `--help` overwrite). perps-scan and
-          # perps-brief escaped only because their postprocess scripts rebuild
-          # the artifact AFTER this step from a JSON intermediate.
-          if [ -f "$PENDING" ]; then
-            cp "$PENDING" "$ARTIFACT"
-            echo "Capture: used json-render pending file"
-          elif [ -f "$ARTIFACT" ] && [ -s "$ARTIFACT" ] && [ "$ARTIFACT" -nt /tmp/aeon-claude-start ]; then
+          # History: the first version unconditionally jumped to (3), which
+          # OVERWROTE every skill's Write-tool-created locked artifact with
+          # the chat response — root cause of ISS-003/004/005. PR #27 added
+          # the sentinel-mtime preservation but kept (2) ahead of (1), so a
+          # bad json-render pending file (e.g. when `./notify --skill` left
+          # the literal string `--skill` in MSG) STILL won over the correct
+          # skill-written artifact — ISS-006 recurrence on 2026-05-20. This
+          # version puts (1) first; (2) only fires when the skill did not
+          # write its own fresh artifact.
+          if [ -f "$ARTIFACT" ] && [ -s "$ARTIFACT" ] && [ "$ARTIFACT" -nt /tmp/aeon-claude-start ]; then
             echo "Capture: skill wrote its own $ARTIFACT ($(wc -c < "$ARTIFACT") bytes), preserving"
+          elif [ -f "$PENDING" ]; then
+            cp "$PENDING" "$ARTIFACT"
+            echo "Capture: skill did not write its own artifact; using json-render pending file"
           elif [ -f /tmp/skill-result.txt ] && [ -s /tmp/skill-result.txt ]; then
             cp /tmp/skill-result.txt "$ARTIFACT"
             echo "Capture: skill did not write its own artifact; falling back to Claude chat result"
