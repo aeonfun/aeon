@@ -1,6 +1,6 @@
-# AIXBT Clusters (as of 2026-05-19)
+# AIXBT Clusters (as of 2026-05-20)
 
-36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; minor description tweaks vs 2026-05-18 snapshot — CULTURE_SIGNAL expanded, MACRO extended, BTC_MAXI minor grammar fix). Used when filtering projects/intel/momentum endpoints (paid tier).
+36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; minor description tweaks vs 2026-05-19 snapshot — CULTURE_SIGNAL expanded to include "crypto, NFT, or"; WEB3_GAMER adds "deck, or"). Used when filtering projects/intel/momentum endpoints (paid tier).
 
 | id | name | one-line vibe |
 |----|------|---------------|
@@ -11,7 +11,7 @@
 | AUTOMATED_FEED | Automated Feed | Templated market, on-chain, alert, whale, app-rank, research, or news feed. |
 | BTC_MAXI | BTC Maxi | Bitcoin-only conviction; everything else is a distraction or scam. |
 | BIZDEV | Bizdev | Sales, partnerships, GTM, ops, and commercial relationship-building. |
-| CULTURE_SIGNAL | Culture Signal | Celebrity, creator, athlete, musician, gaming, or retail-culture account with token relevance. |
+| CULTURE_SIGNAL | Culture Signal | Celebrity, creator, athlete, musician, gaming, or retail-culture account with crypto, NFT, or token relevance. |
 | DESIGNER | Designer | Crypto product, brand, UI/UX, design-system, or visual-identity work. |
 | DEV | Dev | Ships code, commits, technical replies, and implementation detail. |
 | DOOMER | Doomer | Collapse, depeg, wick, and headline panic. |
@@ -38,5 +38,5 @@
 | SOLANA_MAXI | Solana Maxi | Solana speed, fees, mobile, and ETH-gas dunking. |
 | TRENCHER | Trencher | Perps, memecoins, leverage, and liquidation-risk culture. |
 | VC | VC | Thesis threads, portfolio wins, and fund or network perspective. |
-| WEB3_GAMER | Web3 Gamer | On-chain game player, meta, tournaments, or gameplay strategy. |
+| WEB3_GAMER | Web3 Gamer | On-chain game player, meta, tournaments, deck, or gameplay strategy. |
 | YIELD_FARMER | Yield Farmer | DeFi APY rotation, liquidity incentives, and emissions. |
