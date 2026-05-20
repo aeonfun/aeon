@@ -1,298 +1,213 @@
 ---
 name: Perps Brief
-description: Synthesize perps setups by confluence — discovery, enrichment, HIGH CONVICTION elevation with bias labels
+description: Position-aware sector synthesis — evaluate open positions, decide new setups with structured confluence
 var: ""
 tags: [crypto, research]
 ---
-<!-- v2 base + v3 tag-awareness: sector synthesizer for perps. The trader's note. v3 input upgrade: perps-scan now exposes tier classification, sub-tags within regimes (FRESH/STALE, CONFIRMED/DIVERGENT, ACTIVE/QUIET, IN-PROGRESS/CLEARED, REAL-CROWDED-LONG/RETAIL-ANOMALY/LONG-TRAP), cross-signal pattern tags (REAL-CROWDED-LONG, RETAIL-ANOMALY, LONG-TRAP, STEALTH-POSITIONING, CASH-AND-CARRY, SHORT-SQUEEZE), regime transitions, aggregate market read, and a verbose artifact tail. This skill recognizes those signals in its Pass 1/2/3 reasoning. -->
+<!-- v4: position-aware brief on top of the v3 base. Two-mode decision vocabulary (pre-entry: LONG/SHORT (now|wait), FADE; in-position: RIDE, SELL (now|wait)). Stateful: reads memory/topics/state/active-setups.json at start, writes ledger_ops in data.json, which apply-ledger-ops.py persists. v3 base preserved in SKILL.v3.md alongside. v4 spec: /Users/ash/Downloads/perps-engine-v4-spec.md. State map: memory/topics/perps-engine.md. -->
 
 > **${var}** — Optional thesis or sector filter (e.g. "AI tokens only", "fade memes"). If empty, scans broadly across the perps universe.
 
-Today is ${today}. Compose the actionable perps sector brief by combining raw classifications from `perps-scan` with independent discovery, targeted enrichment, and confluence judgment. This is the **integration layer** — it's where quant signals + narrative momentum + macro context + catalyst research come together into setup calls.
+Today is ${today}. Compose the position-aware perps sector brief by **evaluating every open ledger entry first**, then combining quant classifications from `perps-scan` with independent discovery and targeted enrichment to decide today's new setups. This is the **integration + decision layer** — quant signals + narrative momentum + macro context + catalyst research + open-position state come together into RIDE/SELL calls on existing trades and LONG/SHORT (now|wait) calls on new ones.
 
-**Compose in order: soul → style → structure.**
+**Compose in order: read ledger → evaluate open → decide new → write JSON.**
 
-Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form a committed view. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form committed views — for open positions AND new setups. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
 
-After the view is formed, apply style + structure (below).
+After views are formed, apply style + structure (below).
 
-**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template in Section 3; worked examples (including the Perps Brief skip-day and HIGH CONVICTION block) in Section 5.
+**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template in Section 3; worked examples in Section 5.
 
 **Self-check before emitting:**
 
 1. Draft the output applying Sections 1-3.
-2. Search the draft for the 6 patterns in Section 4:
-   - Pattern 1 — subject + verb-ing chunks that could be compound nouns ("institutional money losing tech")
-   - Pattern 2 — nouns with 2+ adjectives stacked ("the lone clean RIDE")
-   - Pattern 3 — internal jargon ("window", "pull", "run", "artifact", "downstream")
-   - Pattern 4 — passive constructions ("is being", "was being", "are being", "has been")
-   - Pattern 5 — em-dashes used as connectors instead of asides (test each: remove em-dash + everything after; does the sentence still stand? If yes, use a period)
-   - Pattern 6 — weak verbs ("surfaces", "remains", "could see", "looks set", "is poised")
+2. Search the draft for the 6 patterns in Section 4 (subject + verb-ing chunks, stacked adjectives, internal jargon, passive voice, em-dash connectors, weak verbs).
 3. Rewrite anything that matches.
 4. Emit.
 
 Read `memory/MEMORY.md` for context.
-Read the last 7 days of `memory/logs/` to find prior HIGH CONVICTION setups for `(day N)` repeat markers.
+Read the last 7 days of `memory/logs/` to find prior new-setup tickers for `(day N)` repeat tracking and `repeat_appearance` confluence.
+
+## Decision vocabulary (locked v4)
+
+Pre-entry (used in `new_setups[]`):
+
+| Call | Meaning |
+|---|---|
+| `LONG (now)` | Enter long at market or specified zone immediately. Opens a ledger entry. |
+| `LONG (wait)` | Long thesis exists; wait for named trigger before entry. Lands in `pending[]`. |
+| `SHORT (now)` | Enter short at market or specified zone. Opens a ledger entry. |
+| `SHORT (wait)` | Short thesis exists; wait for named trigger. Lands in `pending[]`. |
+| `FADE` | No conviction setup; any trade here is a risk. Not a short entry. Emitted as the FADE line when `new_setups[]` is empty. |
+
+In-position (used in `open_positions[]`, one per open ledger entry):
+
+| Call | Meaning |
+|---|---|
+| `RIDE` | Thesis intact; continue holding. |
+| `SELL (now)` | Exit at market. Moves ledger entry from `open[]` to `closed[]`. |
+| `SELL (wait)` | Exit when a named trigger fires (price level OR signal-state change). Stays in `open[]`. |
+
+`SELL` is direction-neutral — for a SHORT entry, `SELL` means cover.
 
 ## Goal
 
-Produce up to **5 HIGH CONVICTION setups** per day, each with an explicit bias label, plus a WATCHLIST of partial-alignment candidates. If no setup clears HIGH CONVICTION judgment, write the skip-day variant — do not force a weak setup.
+Two deliverables per run:
 
-Confluence is mandatory: no single signal (quant alone OR narrative alone OR catalyst alone) is sufficient. The job is the join.
+1. **Evaluate every open ledger entry.** For each entry in `memory/topics/state/active-setups.json`'s `open[]`, decide RIDE, SELL (now), or SELL (wait) by re-running the thesis against current `perps-scan`, `narrative-tracker`, `market-context-refresh`, and `aixbt-pulse` data. Required, even on a skip day for new setups.
+2. **Decide new setups.** Up to **5** new setups per day. Each is `LONG (now)`, `LONG (wait)`, `SHORT (now)`, or `SHORT (wait)` with required fields populated. If nothing clears the confluence bar, emit a FADE — do not fabricate.
+
+Skip-day discipline applies to **new setups only**. Open positions are always evaluated.
 
 ## Inputs (consumed via chain)
 
-This skill runs as chain Step 2 with `consume:` set to seven upstream skills. The chain-runner injects all seven artifacts into the working context as `.outputs/.chain-context-perps-brief.md`. Read them as the primary input:
+This skill runs as chain Step 2 with `consume:` set to seven upstream skills. The chain-runner injects all seven artifacts into the working context as `.outputs/.chain-context-perps-brief.md`. Read them as primary input:
 
-- `.outputs/perps-scan.md` — 6-regime classification, verdict
+- `.outputs/perps-scan.md` — regime classification + pattern tags + aggregate verdict
 - `.outputs/narrative-tracker.md` — phase-grouped narratives with leading tokens
-- `.outputs/market-context-refresh.md` — regime + breadth + F&G + Polymarket sentiment
+- `.outputs/market-context-refresh.md` — regime + breadth + F&G + Polymarket
 - `.outputs/aixbt-pulse.md` — cross-domain pulse + bridge call
 - `.outputs/monitor-runners.md` — DEX runners, tag-grouped
 - `.outputs/token-movers.md` — winners/losers/trending with tags
 - `.outputs/token-call.md` — daily token call (or skip-day variant)
 
-Plus: `memory/topics/market-context.md` (full canonical version of today's regime — has full Snapshot, Deltas, Narratives, Polymarket sections), `memory/MEMORY.md`, last 7 days of `memory/logs/`.
+**Plus, critically:**
+- `memory/topics/state/active-setups.json` — the ledger. Read `open[]` and `pending[]` at the start of every run.
+- `memory/topics/market-context.md` — full canonical regime view
+- `memory/MEMORY.md` + last 7 days of `memory/logs/`
 
-## Four-pass process
+## Process — five passes
 
-### Pass 0 — Discovery (Bybit-filtered)
+### Pass A — Evaluate every open ledger entry
 
-Generate ~10 candidate tickers based on *attention*, not quant signal. Independent of what `perps-scan` flagged. Sources:
+For each entry in `ledger.open[]`:
 
-1. **`narrative-tracker.md`** — leading tokens from RISING and EMERGING narratives. These are the assets the X conversation is centered on.
-2. **`aixbt-pulse.md`** — projects named in crypto / macro / tradfi sections, especially in the bridge call.
-3. **`token-movers.md`** — trending list (CoinGecko search trending). Often early-narrative.
-4. **WebSearch** — for each dominant narrative from narrative-tracker, query like:
-   - `"[narrative] tokens [today]"` (e.g. `"AI inference demand tokens"`)
-   - `"crypto trending tokens today"`
-   - `"perps highest funding [today]"`
+1. Locate the asset in today's `perps-scan.md` and `narrative-tracker.md`.
+2. Re-run the original thesis. Is it still intact?
+   - Regime still aligned with direction?
+   - Narrative phase still aligned?
+   - Pattern tags still supporting (or new contradicting tags appeared)?
+   - Invalidation triggered yet (price level OR signal-state change)?
+3. Decide: `RIDE`, `SELL (now)`, or `SELL (wait)`.
+4. If `SELL (now)`: name the close reason concretely. Compute return vs entry, vs BTC, vs ETH (using current BTC/ETH prices from `market-context-refresh`).
+5. If `SELL (wait)`: name the trigger that would fire the exit.
+6. If `RIDE`: name the current condition the operator should watch in the `watch` field.
 
-Filter to **Bybit-listed perps**. Cross-reference against the perps-scan artifact's asset list (if a ticker isn't there, it's not on Bybit). Drop non-perps.
+Each evaluation appends to the ledger entry's `evaluations[]` array (handled by `apply-ledger-ops.py` — the brief writes it once into `ledger_ops.evaluations[]` in data.json).
 
-Output: a list of 10–15 discovery candidates. Each tagged with `source: narrative` / `source: aixbt` / `source: trending` / `source: websearch`.
+### Pass B — Decide pending (wait) intents
 
-### Pass 1 — Combine quant + discovery, dedupe, prioritize
+For each entry in `ledger.pending[]`:
 
-**Quant candidates** = every asset in `perps-scan` that landed in a non-NEUTRAL regime, especially CATALYST-BREAKOUT / ACCUMULATION / MOMENTUM / DISTRIBUTION / CAPITULATION.
+1. Has the trigger fired today?
+   - **Yes** → promote to a new setup with `mode: "now"` and `pending_id_promoted: "<that ID>"`. The apply script removes the pending entry and opens a new `open[]` entry.
+   - **No, but thesis intact** → re-emit in today's `new_setups[]` as a new setup with `mode: "wait"`. Add the pending entry's `id` to `ledger_ops.keep_pending[]`.
+   - **No, and thesis broken** → do NOT add to `keep_pending`. The apply script drops the pending entry.
 
-**Discovery candidates** = output of Pass 0.
+A pending entry NOT in `keep_pending` AND NOT promoted is dropped.
 
-Merge into a single list, dedupe by ticker. Tag each:
-- `[QUANT]` — appeared only in perps-scan's regime hits
-- `[DISCOVERY]` — appeared only in Pass 0 attention sources
-- `[BOTH]` — appeared in both
+### Pass 0 — Discovery (independent of quant)
 
-Cap the final list at **15 unique assets**. If more, prioritize: `[BOTH]` first, then `[QUANT]` non-NEUTRAL, then `[DISCOVERY]` ordered by source-count.
+Generate ~10 candidates by **attention**, not signal:
 
-`[BOTH]`-tagged assets are the natural candidates for HIGH CONVICTION (signal + attention align by definition).
+1. `narrative-tracker.md` — leading tokens from RISING and EMERGING narratives.
+2. `aixbt-pulse.md` — projects named in crypto/macro/tradfi, especially in the bridge call.
+3. `token-movers.md` — CoinGecko trending.
+4. WebSearch — per dominant narrative: `"[narrative] tokens [today]"`, `"crypto trending tokens today"`.
+
+Filter to **Bybit-listed perps**. Cross-reference against `perps-scan` asset list.
+
+### Pass 1 — Combine, dedupe, tag
+
+Merge quant candidates (non-NEUTRAL in `perps-scan`) with discovery candidates. Tag each `[QUANT]` / `[DISCOVERY]` / `[BOTH]`. Cap 15 unique assets. `[BOTH]` first, then `[QUANT]`, then `[DISCOVERY]`.
+
+Exclude any asset that already has an open ledger entry in the same direction — that's an existing position, not a new setup.
 
 ### Pass 2 — Targeted enrichment
 
-For each of the (up to 15) candidates, run **3–5 WebSearch queries** chosen based on profile:
+For each candidate, run 3–5 WebSearch queries:
 
-**Always-run categories** (one query each):
-- Token unlock schedule — `"[ASSET] token unlock schedule [year]"`. Confirm next vest date, size, % of supply.
-- Recent news catalyst — `"[ASSET] news [last 24h]"`. Identify any single-day catalyst already priced.
-- X sentiment proxy — `"[ASSET] twitter [today]"` OR `"$[ASSET] sentiment"`. Compare velocity vs week ago if extractable.
+**Always:**
+- Token unlock schedule
+- Recent 24h news catalyst
+- X sentiment proxy
 
-**Conditional categories** (run when relevant):
-- Upcoming announcement / roadmap — when the asset is in ACCUMULATION or COMPRESSION (pre-move setups).
-- Regulatory / SEC angle — when the asset is in a narrative tagged `regulation` or appeared in `aixbt-pulse` macro section.
-- **Regime-specific:**
-  - CAPITULATION → `"[ASSET] reason for drop [today]"` — separate "real" from "flush"
-  - DISTRIBUTION → `"[ASSET] resistance level"`, `"[ASSET] insider selling"`
-  - CATALYST-BREAKOUT → `"[ASSET] catalyst [recent]"` — what event drove this
+**Conditional:**
+- CAPITULATION → reason for drop
+- DISTRIBUTION → resistance, insider selling
+- CATALYST-BREAKOUT → catalyst identification
+- ACCUMULATION / COMPRESSION → upcoming announcement, roadmap
+- Narrative-tagged → regulatory / SEC angle
 
-Build a per-asset enrichment dossier (3–6 lines per asset). Capture concrete findings only — no speculation. Examples of good enrichment lines:
-- "$300m unlock in 14 days, 5% of float — material"
-- "GPU shortage news this week (TechCrunch), no unlock for 4 months, X mindshare doubled in 72h"
-- "Bybit funding +0.14%/8h crowding on the long side; resistance at $1.2B mcap from 2 weeks ago"
-- "(no flagged unlocks; no recent news; X sentiment flat)"
+3–6 concrete-fact lines per asset. No speculation.
 
-### Pass 3 — Confluence judgment + composition
+### Pass 3 — Confluence judgement + composition
 
-For each enriched candidate, decide tier:
+For each enriched candidate, judge against the **enumerated confluence criteria**:
 
-- **HIGH CONVICTION** — quant regime signal aligns with narrative phase aligns with market context aligns with positive enrichment. Cap **5 max** in the brief. Overflow rolls to artifact only.
-- **WATCHLIST** — partial alignment. Named risk surfaced in enrichment. The thing that's missing is named explicitly.
-- **NOISE** — drops out of the brief. Still visible in `#perps-scan` raw view if quant-flagged.
+| Criterion | What it means |
+|---|---|
+| `quant_regime_aligned` | `perps-scan` regime supports the directional thesis |
+| `pattern_tag_supports` | A cross-signal pattern tag reinforces the thesis (e.g. STEALTH-POSITIONING for long, LONG-TRAP for short) |
+| `narrative_phase_aligned` | `narrative-tracker` phase aligns (Rising for long, Fading/Peak for short) |
+| `market_regime_aligned` | Aggregate market read aligns (LEVERAGE BUILDING / TRENDING for long; CROWDED TOPPING / DELEVERAGING for short) |
+| `both_tag` | Asset is `[BOTH]` — quant + attention agree |
+| `repeat_appearance` | Same asset, same regime, same narrative phase for ≥2 consecutive days |
+| `regime_transition` | Day-over-day regime transition supports thesis (e.g. ACCUMULATION → CATALYST-BREAKOUT for long) |
+| `cross_domain_bridge` | `aixbt-pulse` flags a macro/geo/tradfi catalyst that maps to this asset's sector |
+| `enrichment_positive` | Pass 2 enrichment surfaces a confirming catalyst with no disqualifying findings |
+| `dominance_aligned` | BTC.D / USDT.D / ETH/BTC capital-flow signals align (populated when Phase 3 ships; in Phase 1, list only when `market-context-refresh` already surfaces the read) |
 
-**Confluence judgment is Claude judgment, not hard thresholds.** What counts as "alignment" varies by setup. Some kinds of confluence that DO count:
-- Perps regime + narrative phase + clean catalyst calendar
-- Sector tailwind (multiple narratives in same theme) + asset in ACCUMULATION/COMPRESSION
-- Market context regime aligns with bias direction + perps-scan flag
-- `[BOTH]` tag (quant + attention) + market regime aligned
-- Repeat appearance (multi-day same regime + same narrative still rising)
+**Log every criterion that fired** in `confluence_fired[]`. Optionally log considered-but-rejected criteria in `confluence_missing[]`.
 
-What does NOT count as confluence:
-- Just being trending — that's attention, not signal
-- Just being in CATALYST-BREAKOUT — that's a 24h move, not a setup
-- Just being in a hot narrative without quant confirmation
-- Strong signal in conflict with market regime (`long majors` while breadth flipping risk-off)
+Single-criterion setups are allowed but discouraged — the strongest setups carry multiple. The job is the join.
 
-**Bias label vocabulary** (mandatory on every HIGH CONVICTION setup, free-form within set):
-- `long continuation` — established trend, momentum sustained
-- `long breakout` — recent break above range with confirmation
-- `long breakout-pending` — coiling tight, OI building, range about to break
-- `long bounce` — capitulation flush + reset, mean-reversion
-- `short fade` — distribution + crowded long + sector rolling
-- `short continuation` — established downtrend with crowded continuation signal
+**Cap 5 new setups in the published brief.** Anything that would have qualified but didn't make the top-5 by confluence quality drops — there is no overflow in v4 (the ledger is the persistent record now).
 
-Free-form qualifier OK (e.g. `long continuation w/ trailing stop`, `short fade — small`). The base term must be one of the six.
+**FADE override:** if the aggregate market read is `CROWDED TOPPING` or `DELEVERAGING` AND no specific high-conviction shorts cleared, the entire `new_setups[]` may be empty. The render script then emits the FADE line.
 
-**Cap: 5 HIGH CONVICTION setups in the published brief.** If 7+ qualify, take the strongest 5 by confluence quality, push the rest to the artifact under an `OVERFLOW` heading (visible in #perps but not in the trimmed notification).
+## Required fields per new setup (no exceptions)
 
-### Composition — what the rendered brief looks like
+- `ticker`, `direction` (LONG | SHORT), `mode` (now | wait), `horizon` (24h | 3d | 7d | multi-week)
+- `entry_zone` (for `mode: now`) — price level, range, or `"market"`
+- `trigger` (for `mode: wait`) — price level OR named signal-state change
+- `invalidation` — price level OR named signal-state change
+- `thesis` — 1–2 sentences
+- `confluence_fired[]` — at least one criterion from the enumerated set
+- `risks[]` — at least one named risk, non-empty
 
-The example below is the FINAL rendered output produced by `scripts/render-perps-brief.py` from the JSON intermediate Claude writes. Use it as a reference for the shape; compose the JSON fields in **Write the structured data artifact** below to match. Apply `memory/topics/writing-style.md` strictly for every prose field (paragraphs, bias_line, block.lines, risk.lines).
+## Required fields per open position (no exceptions)
 
-```
-Perps Brief · ${today}
-
-MARKET SENTIMENT
-
-BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.
-
-Alt funding neutral, no rotation yet. Memes hot — 3 of top 5 funding extremes. Retail crowded there, not majors.
-
-Bias · long majors with structure, fade extreme funding on meme tickers.
-
-HIGH CONVICTION
-
-HYPE · long continuation
-
-  Perps · ACCUMULATION · CONFIRMED
-    OI +18% 7d, funding +0.02%/8h, basis stable, taker buy 53.
-    Day 3 in regime. STEALTH-POSITIONING tag — top L/S rose +0.5 over 7d.
-
-  Narrative · Hyperliquid sector RISING
-    Mindshare 4 → 5, RIDE call from narrative-tracker.
-
-  Context · sector aligned with market direction
-    Alts rotation early. Sector leads.
-
-  Enrichment
-    No near-term unlocks. Next vest Q3.
-    X sentiment building 7d.
-    Roadmap update on perps clearing engine landed this week.
-
-  Thesis
-    Real money quietly positioning into the sector lead.
-    Continuation setup. Trail stop below 7d range low.
-
-TAO · long breakout-pending
-
-  Perps · COMPRESSION · ACTIVE
-    Range_7d 4.2%, OI +9% 7d, funding flat, vol_ratio 1.1.
-    Volume holding into the tight range — energy building.
-
-  Narrative · AI / decentralized compute RISING
-    Mindshare 4/5. Tokens lagging the story.
-
-  Context · AI cluster confluence
-    aixbt-pulse flagged AI inference demand on the bridge call today.
-
-  Enrichment
-    GPU shortage news this week.
-    No unlock for 4 months.
-    X mindshare doubled in 72h.
-
-  Thesis
-    Pre-breakout setup. Sector tailwind + tight range + clean calendar all align.
-    Long on break with stop below the coil.
-
-WATCHLIST
-
-AVAX · catalyst real, sector tailwind absent
-
-  Risk · regime conflict
-    Perps CATALYST-BREAKOUT (+14% 24h, vol 2.4x).
-    Narrative-tracker has DeFi FADING. One-day catalyst, not sustained.
-
-FARTCOIN · classic fade setup, market not confirming
-
-  Risk · no broader risk-off yet
-    Perps DISTRIBUTION · REAL-CROWDED-LONG.
-    But breadth still 12/20 green. Squeeze risk over fade.
-    Wait for breadth to roll before sizing the short.
-```
-
-**Setup block structure (HIGH CONVICTION) — sub-header layout:**
-
-1. Header line: `ASSET · bias label`. Add ` (day N)` suffix if asset was HIGH CONVICTION on prior day(s).
-2. **Blank line.**
-3. `Perps · {REGIME [· SUB-TAG]}` sub-header. Indented two spaces. Detail block under it: regime metrics, sub-tags, pattern tags from `perps-scan` artifact. Repeat-day annotation if applicable.
-4. `Narrative · {sector phase}` sub-header. Mindshare value, leading position, RIDE/WATCH/FADE call.
-5. `Context · {one-phrase tag}` sub-header. Market regime + relevant breadth/F&G detail.
-6. `Enrichment` sub-header (no value — just the label). Three to four short sentences from Pass 2 research. Each on its own line. Concrete facts only.
-7. `Thesis` sub-header. Two short sentences max. First commits to the action. Second names the invalidation, the stop, or the reflexivity risk.
-
-**Pattern tags from perps-scan recognized in the Perps block:**
-
-- `REAL-CROWDED-LONG` → confirms a short-fade thesis. Smart money + retail both long.
-- `RETAIL-ANOMALY` → contradicts a short-fade thesis. Squeeze risk over fade.
-- `LONG-TRAP` → highest-severity short-fade setup. Longs paying premium while bleeding.
-- `STEALTH-POSITIONING` → upgrades a pre-breakout thesis. Smart money positioning ahead of price.
-- `CASH-AND-CARRY` → contradicts an accumulation read. Institutional arb, not directional bid.
-- `SHORT-SQUEEZE` (regime or tag) → short-term ride only. Different trade from CATALYST-BREAKOUT.
-
-**Regime transitions from perps-scan are first-class evidence.** When an asset just transitioned (REGIME CHANGES section of perps-scan), the transition itself is a signal:
-
-- `ACCUMULATION → CATALYST-BREAKOUT` → highest-quality breakout call. Patient build paid off.
-- `MOMENTUM → DISTRIBUTION` → topping signal. Take profits or initiate fade.
-- `COMPRESSION → CATALYST-BREAKOUT` → coil resolved. Ride.
-- `CAPITULATION → ACCUMULATION` → bottom call. Quiet entry.
-
-Reference the transition explicitly in the Perps block when relevant: `Perps · ACCUMULATION · CONFIRMED — transitioned from COMPRESSION yesterday`.
-
-**Setup block structure (WATCHLIST) — sub-header layout:**
-
-1. Header line: `ASSET · the conflict`. Names what's missing.
-2. **Blank line.**
-3. `Risk · {one-phrase tag}` sub-header. Two to three short sentences. State the regime read, state the contradicting signal, name the wait condition.
-
-**Aggregate market read from perps-scan informs the MARKET SENTIMENT framing.** When perps-scan's aggregate verdict is `CROWDED TOPPING`, the brief's bias should lean fade-side. When `LEVERAGE BUILDING`, lean long-side. When `MIXED` or `QUIET`, lean selective and patient.
-
-**Universal formatting rules (v2):**
-- No asterisks anywhere.
-- Title: `Perps Brief · ${today}` (with `· quiet` or `· degraded` qualifier on edge cases).
-- Dot separator `·`, → for thesis line, no source footer.
-- Section headers in CAPS.
-
-**Repeat markers:** `(day N)` after bias label when the same asset was HIGH CONVICTION on prior day(s). Compute from last 7 days of memory/logs/ → ## Perps Brief entries.
-
-**Edge cases:**
-
-- **No HIGH CONVICTION** (signals too thin OR sources missing OR every candidate has a disqualifying enrichment finding): write the skip-day variant. Lead with MARKET SENTIMENT only, then a one-line cash-patient stance + best near-miss:
-  ```
-  Perps Brief · ${today} · no high-conviction setups
-
-  MARKET SENTIMENT
-  [normal sentiment paragraph]
-  Bias: cash-patient, no clean confluence today.
-
-  Best near-miss: ASSET — [one sentence on why it didn't clear].
-  ```
-- **`perps-scan` artifact missing**: degraded run on discovery-only. Mark in title:
-  ```
-  Perps Brief · ${today} · degraded (perps-scan unavailable, discovery-only)
-  ```
-  Limit to WATCHLIST entries only — without quant confirmation, no HIGH CONVICTION is honest.
-- **Multiple upstream artifacts missing**: write a degraded skip variant. `daily-ops-review` surfaces the cause.
+- `id` — matches the ledger entry id
+- `ticker`, `direction`, `fired_date`, `fired_price`, `horizon`
+- `day_of` — `"N/M"` where N is days elapsed and M is horizon-as-days (multi-week = 21)
+- `call` — `RIDE`, `SELL (now)`, or `SELL (wait)`
+- `thesis_status` — `intact` or `broken`
+- `thesis_note` — short justification (1 sentence)
+- `invalidation` — original or revised
+- `watch` — current condition the operator should monitor (string or null)
+- `evaluation_note` — note that gets appended to the ledger's `evaluations[]`
 
 ## Write the structured data artifact
 
-**Write `.outputs/perps-brief.data.json` — a structured JSON intermediate. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. The workflow's postprocess step (`scripts/postprocess-perps-brief.sh`) invokes `scripts/render-perps-brief.py` to produce the markdown artifact AND queues the rendered content for Discord delivery via `./notify --signal` after rendering.**
+**Write `.outputs/perps-brief.data.json`. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. DO NOT edit `memory/topics/state/active-setups.json` directly.**
 
-This structural separation closes the ISS-004 recurrence in perps-brief — Claude wrote its assistant `## Summary` blob into `.outputs/perps-brief.md` instead of the locked format despite the prose guardrail, mirroring the perps-scan bug. With the LLM removed from the markdown-write AND notify-call paths, the artifact content cannot diverge from the JSON and the Discord delivery cannot contain stray prose.
+The postprocess step (`scripts/postprocess-perps-brief.sh`) handles all three:
 
-#### JSON schema
+1. `scripts/render-perps-brief.py` produces the markdown artifact.
+2. `scripts/lib/ledger.py snapshot` saves a pre-apply backup.
+3. `scripts/apply-ledger-ops.py` applies the ledger_ops to active-setups.json atomically.
+4. `python3 -m lib.ledger` validates the post-apply ledger.
+5. `./notify --signal` queues the Discord delivery.
+
+### JSON schema (v4)
 
 ```json
 {
+  "schema_version": "v4",
   "date": "${today}",
   "qualifier": null,
+
   "market_sentiment": {
     "paragraphs": [
       "BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.",
@@ -300,117 +215,172 @@ This structural separation closes the ISS-004 recurrence in perps-brief — Clau
     ],
     "bias_line": "Bias · long majors with structure, fade extreme funding on meme tickers."
   },
-  "high_conviction": [
+
+  "open_positions": [
     {
+      "id": "HYPE-2026-05-18-001",
       "ticker": "HYPE",
-      "bias_label": "long continuation",
-      "repeat_days_suffix": null,
-      "blocks": {
-        "perps": {
-          "header_suffix": "ACCUMULATION · CONFIRMED",
-          "lines": [
-            "OI +18% 7d, funding +0.02%/8h, basis stable, taker buy 53.",
-            "Day 3 in regime. STEALTH-POSITIONING tag — top L/S rose +0.5 over 7d."
-          ]
-        },
-        "narrative": {
-          "header_suffix": "Hyperliquid sector RISING",
-          "lines": ["Mindshare 4 → 5, RIDE call from narrative-tracker."]
-        },
-        "context": {
-          "header_suffix": "sector aligned with market direction",
-          "lines": ["Alts rotation early. Sector leads."]
-        },
-        "enrichment": {
-          "header_suffix": null,
-          "lines": [
-            "No near-term unlocks. Next vest Q3.",
-            "X sentiment building 7d.",
-            "Roadmap update on perps clearing engine landed this week."
-          ]
-        },
-        "thesis": {
-          "header_suffix": null,
-          "lines": [
-            "Real money quietly positioning into the sector lead.",
-            "Continuation setup. Trail stop below 7d range low."
-          ]
-        }
-      }
+      "direction": "LONG",
+      "fired_date": "2026-05-18",
+      "fired_price": 28.40,
+      "horizon": "7d",
+      "day_of": "2/7",
+      "call": "RIDE",
+      "thesis_status": "intact",
+      "thesis_note": "ACCUMULATION continues, OI +21% 7d, Hyperliquid narrative still RISING",
+      "invalidation": "close below $26.00 OR funding extreme >+0.15%/8h",
+      "watch": "funding warming (+0.04%/8h, up from +0.02%). Approaching second-half-of-horizon judgement.",
+      "evaluation_note": "thesis intact, OI accelerating, no invalidation hit"
     }
   ],
-  "overflow": [],
-  "watchlist": [
+
+  "new_setups": [
     {
-      "ticker": "AVAX",
-      "conflict_label": "catalyst real, sector tailwind absent",
-      "risk": {
-        "header_suffix": "regime conflict",
-        "lines": [
-          "Perps CATALYST-BREAKOUT (+14% 24h, vol 2.4x).",
-          "Narrative-tracker has DeFi FADING. One-day catalyst, not sustained."
-        ]
-      }
+      "ticker": "SOL",
+      "direction": "LONG",
+      "mode": "wait",
+      "horizon": "7d",
+      "entry_zone": null,
+      "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
+      "thesis": "Regime transition COMPRESSION → CATALYST-BREAKOUT pending. AI sector tailwind. [BOTH] tag (top-trader L/S building +0.3 over 7d).",
+      "invalidation": "close below $148 before trigger fires",
+      "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"],
+      "confluence_missing": ["regime_transition"],
+      "risks": ["BTC.D rolling could front-run too aggressively", "NVDA earnings Wed = binary catalyst"]
+    },
+    {
+      "ticker": "FARTCOIN",
+      "direction": "SHORT",
+      "mode": "now",
+      "horizon": "3d",
+      "entry_zone": "market or first bounce to $0.65",
+      "trigger": null,
+      "thesis": "DISTRIBUTION + LONG-TRAP (funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%). Memes phase PEAK.",
+      "invalidation": "close above $0.72",
+      "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
+      "confluence_missing": ["both_tag", "repeat_appearance"],
+      "risks": ["memes can squeeze irrespective of fundamentals", "size as starter"]
     }
   ],
-  "skip_day_best_near_miss": null
+
+  "fade_note": null,
+  "skip_day_best_near_miss": null,
+
+  "ledger_ops": {
+    "evaluations": [
+      {
+        "open_id": "HYPE-2026-05-18-001",
+        "date": "${today}",
+        "call": "RIDE",
+        "price_at_eval": 31.40,
+        "note": "thesis intact, OI accelerating, no invalidation hit"
+      }
+    ],
+    "close": [],
+    "open_now": [
+      {
+        "ticker": "FARTCOIN",
+        "direction": "SHORT",
+        "fired_price": 0.6710,
+        "fired_btc_price": 95210,
+        "fired_eth_price": 3510,
+        "entry_zone": "market or first bounce to $0.65",
+        "invalidation": "close above $0.72",
+        "horizon": "3d",
+        "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%. Memes phase PEAK.",
+        "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
+        "confluence_missing": ["both_tag", "repeat_appearance"],
+        "named_risks": ["memes can squeeze irrespective of fundamentals"],
+        "pending_id_promoted": null
+      }
+    ],
+    "add_pending": [
+      {
+        "ticker": "SOL",
+        "direction": "LONG",
+        "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
+        "invalidation": "close below $148 before trigger fires",
+        "horizon": "7d",
+        "thesis": "Regime transition COMPRESSION → CATALYST-BREAKOUT pending.",
+        "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"],
+        "named_risks": ["BTC.D rolling could front-run too aggressively"]
+      }
+    ],
+    "keep_pending": []
+  }
 }
 ```
 
-#### Field-level rules
+### Field-level rules
 
+- **`schema_version`** — must be `"v4"`. The render script rejects anything else.
 - **`date`** — `${today}` (UTC YYYY-MM-DD).
-- **`qualifier`** — null for the normal full-brief variant. Set to `"no high-conviction setups"` for skip-day, `"degraded (perps-scan unavailable, discovery-only)"` for degraded, or any other operator-meaningful suffix. Renders into the title as `Perps Brief · DATE · QUALIFIER`.
-- **`market_sentiment.paragraphs`** — array of paragraph strings, rendered with blank lines between. One or more is fine — multi-paragraph reads better in #perps. Apply `memory/topics/writing-style.md` strictly: no semicolons, em-dash only for genuine asides, interpretive verbs first.
-- **`market_sentiment.bias_line`** — single-line bias call, typically prefixed `Bias · ` or `Bias: `. Whatever the operator-voice convention prefers that day.
-- **`high_conviction[]`** — array of setup objects. Empty array → HIGH CONVICTION section is suppressed entirely (the title qualifier should also be set to `"no high-conviction setups"` in this case).
-- **`high_conviction[].ticker`** — symbol, e.g. `"HYPE"`.
-- **`high_conviction[].bias_label`** — the framing after the dot in the header (`HYPE · long continuation` → `"long continuation"`).
-- **`high_conviction[].repeat_days_suffix`** — string like `" (day 2)"` (note leading space) when the same ticker was HIGH CONVICTION on prior day(s). null otherwise. Compute from last 7 days of `memory/logs/` → `## Perps Brief` entries.
-- **`high_conviction[].blocks`** — five sub-blocks, all optional but typically all populated:
-  - `perps`, `narrative`, `context` — each has `header_suffix` (rendered after `Perps · ` etc.) and `lines` (multi-line body, each line is rendered indented under the sub-header).
-  - `enrichment`, `thesis` — typically no header_suffix; just the `lines` body.
-- **`overflow[]`** — same shape as `high_conviction[]`. Setups that qualified but didn't make the top-5 cap. Renders into the markdown for audit purposes; the Discord notification picks up the whole markdown so it's visible in #perps unless the operator manually trims later.
-- **`watchlist[]`** — array of `{ticker, conflict_label, risk: {header_suffix, lines}}`. Empty → WATCHLIST section suppressed.
-- **`skip_day_best_near_miss`** — single-sentence string used in the skip-day variant only. Renders as `Best near-miss: …` immediately after the bias line. null otherwise.
+- **`qualifier`** — `null` for normal. Set to `"degraded (perps-scan unavailable, discovery-only)"` for degraded runs, or operator-meaningful suffix.
+- **`market_sentiment.paragraphs`** — array of paragraphs, one per topic. Writing-style applies.
+- **`market_sentiment.bias_line`** — single-line bias call, prefixed `Bias · `.
+- **`open_positions[]`** — one entry per open ledger row. Empty array is valid ONLY when the ledger has no open entries. If the ledger has open entries and this array is empty, that's a bug — the postprocess will still render and apply, but daily-ops-review will surface the gap.
+- **`open_positions[].day_of`** — string like `"2/7"`. Compute as: days-elapsed-since-fired-date / horizon-as-days. Use 21 for `multi-week`.
+- **`new_setups[]`** — capped at 5. Empty means FADE (the render emits a FADE line). Each entry must satisfy required fields above.
+- **`new_setups[].mode`** — `"now"` requires `entry_zone`. `"wait"` requires `trigger`.
+- **`fade_note`** — optional single-line FADE explanation when `new_setups[]` is empty. Default render: `"FADE — no new conviction setups today"`.
+- **`skip_day_best_near_miss`** — single-sentence near-miss for skip-day variant. Renders as `Best near-miss: …` after the FADE line. Only meaningful when `new_setups[]` is empty.
+- **`ledger_ops`** — applied by `apply-ledger-ops.py`. Required structure below.
 
-#### Edge cases
+### `ledger_ops` structure
 
-- **No HIGH CONVICTION**: set `qualifier: "no high-conviction setups"`, leave `high_conviction: []`, fill `skip_day_best_near_miss` with the one-sentence near-miss explanation. The watchlist is optional in this case — typically empty.
-- **perps-scan artifact missing (degraded)**: set `qualifier: "degraded (perps-scan unavailable, discovery-only)"`, leave `high_conviction: []`, populate `watchlist` with discovery-only candidates.
-- **Multiple upstream artifacts missing**: set `qualifier` to a descriptive degraded label, leave most sections empty. `daily-ops-review` surfaces the cause.
+**`evaluations[]`** — one per open ledger entry. Must include all open IDs from the ledger. Each: `{open_id, date, call, price_at_eval, note}`.
 
-#### Render verification
+**`close[]`** — one entry per `SELL (now)` call. Each: `{open_id, closed_price, close_reason, return_pct, return_vs_btc_pct, return_vs_eth_pct, outcome, horizon_realized}`. `outcome` is one of `WIN`, `LOSS`, `NEUTRAL`. Default rule:
+- `WIN` = return_vs_btc_pct ≥ +2% AND not invalidation-hit
+- `LOSS` = invalidation hit OR return_vs_btc_pct ≤ −2%
+- `NEUTRAL` = between
 
-After writing the JSON, do not write `.outputs/perps-brief.md`, and do not call `./notify`. The postprocess step does both. If the JSON is malformed, the renderer fails the postprocess step and writes a `Perps Brief · unknown date · render failed` placeholder — `daily-ops-review` surfaces the failure.
+**`open_now[]`** — one entry per `LONG (now)` or `SHORT (now)` new setup. Each: `{ticker, direction, fired_price, fired_btc_price, fired_eth_price, entry_zone, invalidation, horizon, thesis, confluence_fired, confluence_missing, named_risks, pending_id_promoted}`. `fired_price`, `fired_btc_price`, `fired_eth_price` are snapshots at brief-publish-time — pull current prices from `market-context-refresh` artifact OR the perps-scan cache. `pending_id_promoted` references a pending entry being promoted to open; null otherwise.
 
-#### Notification routing
+**`add_pending[]`** — one entry per `LONG (wait)` or `SHORT (wait)` setup that is NEW (no existing pending entry for it). Each: `{ticker, direction, trigger, invalidation, horizon, thesis, confluence_fired, named_risks}`.
 
-`scripts/postprocess-perps-brief.sh` calls `./notify --signal "$(cat .outputs/perps-brief.md)"` after rendering. That routes to Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel (shared with `perps-scan`; brief posts second, appears on top in Discord since posts render newest-first). Chunking handles the 2000-character Discord webhook limit automatically.
+**`keep_pending[]`** — IDs from `ledger.pending[]` that should remain. Any pending ID NOT in this list AND NOT in `pending_id_promoted` (from open_now) AND NOT just-added is DROPPED by the apply script. **Carry forward each pending you still believe in.**
+
+### Edge cases
+
+- **No open ledger entries (cold start or after all closes):** `open_positions: []`, `ledger_ops.evaluations: []`. Render skips the OPEN POSITIONS section entirely.
+- **No new setups clear:** `new_setups: []`, `ledger_ops.open_now: []`, `ledger_ops.add_pending: []`. Set `fade_note` and optionally `skip_day_best_near_miss`. Open positions are still evaluated.
+- **`perps-scan` artifact missing (degraded):** set `qualifier` to a descriptive label. Open positions are still evaluated using narrative-tracker + market-context only. Conservative bias on RIDE/SELL — when in doubt, SELL (wait) until quant returns. New setups: discovery-only, much higher bar.
+- **Multiple upstream artifacts missing:** set `qualifier`, leave most of `new_setups` empty. Open positions still evaluated. `daily-ops-review` surfaces the cause.
+- **Pending entry's trigger fired:** emit in `new_setups` with `mode: "now"`. In `ledger_ops.open_now`, set `pending_id_promoted` to the pending entry's id. The apply script removes the pending entry and opens a new open entry.
+- **Pending entry's invalidation hit:** do NOT add to `keep_pending`. The apply script drops it. Note the drop in the brief's market_sentiment paragraphs if material.
+- **Pending entry still relevant:** add its id to `keep_pending`, and re-emit in `new_setups` with `mode: "wait"`.
+- **Two setups on same ticker in opposite directions:** allowed but unusual. Both open_now entries land in the ledger with separate IDs.
+
+### Render verification
+
+After writing the JSON, do NOT write `.outputs/perps-brief.md`, do NOT call `./notify`, and do NOT touch `memory/topics/state/active-setups.json`. The postprocess pipeline owns all three. If the JSON fails schema validation, the render writes a `Perps Brief · unknown date · render failed` placeholder and the apply step is skipped — the ledger stays intact.
+
+### Notification routing
+
+`scripts/postprocess-perps-brief.sh` calls `./notify --signal "$(cat .outputs/perps-brief.md)"`. Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel. Chunking handles the 2000-character limit.
 
 ## Log to `memory/logs/${today}.md`
 
 ```
 ## Perps Brief
-- **Universe assessed:** N candidates (Pass 1 final list)
-- **Quant / Discovery / Both tag distribution:** [counts]
-- **HIGH CONVICTION:** N setups
-  - SYMBOL · bias-label · (perps regime / narrative phase / market context summary)
+- **Open positions evaluated:** N (R RIDE, S SELL-now, W SELL-wait)
+- **Pending entries:** P (kept K, promoted-to-open M, dropped D, new-added A)
+- **New setups:** N — capped at 5
+  - TICKER · DIRECTION (now|wait) · horizon · confluence: criterion1, criterion2 ...
   - ...
-- **WATCHLIST:** N entries
-  - SYMBOL · conflict reason
-  - ...
-- **OVERFLOW (artifact only):** N entries
-- **Source artifacts read:** [✓/⚠ list of consumed upstream artifacts]
-- **Artifact written:** .outputs/perps-brief.data.json (structured intermediate; rendered to .outputs/perps-brief.md by scripts/postprocess-perps-brief.sh)
-- **Notification sent:** yes (normal | skip-day | degraded) — queued by postprocess via `./notify --signal` to #perps
+- **Closes this run:** N (W win, L loss, U neutral)
+- **Source artifacts read:** [✓/⚠ list of consumed upstream artifacts + ledger]
+- **Artifact written:** .outputs/perps-brief.data.json (rendered to .outputs/perps-brief.md by postprocess)
+- **Ledger update:** open Δ, pending Δ, closed Δ
+- **Notification sent:** yes (normal | skip-day | degraded) — queued by postprocess to #perps
 ```
 
 ## Sandbox note
 
-This skill is mostly consume-only — it reads artifacts written by Step 1 chain steps. The Pass 0 + Pass 2 WebSearch calls go through Claude's WebSearch tool which works in the sandbox. No outbound curl required (the upstream skills handle that).
+This skill is mostly consume-only — it reads artifacts written by Step 1 chain steps and the ledger JSON. The Pass 0 + Pass 2 WebSearch calls go through Claude's WebSearch tool which works in the sandbox. No outbound curl required (the upstream skills handle that).
 
-If WebSearch fails or returns empty for a Pass 2 query, write `(no findings)` for that enrichment line — do not invent. If the asset has zero enrichment findings across all queries, demote to WATCHLIST or NOISE per confluence rules.
+If WebSearch fails or returns empty for a Pass 2 query, write `(no findings)` for that enrichment line — do not invent.
 
 ## Environment Variables
 
@@ -419,10 +389,11 @@ If WebSearch fails or returns empty for a Pass 2 query, write `(no findings)` fo
 
 ## Constraints
 
-- **Confluence is mandatory for HIGH CONVICTION.** A single signal — even a strong one — does not qualify. The job is the join.
-- **Bias labels are mandatory.** Every HIGH CONVICTION setup carries one of the six base labels (long continuation, long breakout, long breakout-pending, long bounce, short fade, short continuation), optionally with a free-form qualifier.
-- **Cap 5 HIGH CONVICTION.** Overflow rolls to artifact, never the published brief.
-- **Skip-day discipline.** No HIGH CONVICTION on a quiet day is the correct answer. Don't fabricate confluence.
-- **WATCHLIST requires a named conflict.** "Risk: market could turn" is not a named conflict. "Risk: $200m unlock in 4 days, 6% of float" is.
-- **Discovery is independent of quant.** Pass 0 runs even when perps-scan flagged plenty of candidates. The `[BOTH]` tag is the signal of agreement; agreement is what we're after.
+- **Position-aware first.** Evaluate every open ledger entry before deciding new setups. Skip-day discipline applies only to `new_setups[]`, never to open evaluations.
+- **Confluence is structured, not prose.** Every new setup must list at least one criterion from the enumerated set in `confluence_fired[]`. Track-record analysis (Phase 2) reads these.
+- **Required fields are required.** `entry_zone` for `mode: now`, `trigger` for `mode: wait`, `invalidation` always, `named_risks` always non-empty. The schema validator rejects setups missing any of these.
+- **Cap 5 new setups.** No overflow — the ledger is the persistent record.
+- **FADE is honest.** Empty `new_setups[]` is the correct answer on quiet days. Don't fabricate.
+- **Pending entries need explicit carry-forward.** If a `(wait)` setup is still good, its id must be in `ledger_ops.keep_pending[]`. Silence drops it.
+- **Discovery is independent of quant.** Pass 0 runs even when perps-scan flagged plenty. `[BOTH]` is the signal of agreement.
 - **No source footer.** `daily-ops-review` reports artifact health. Setup-level evidence comes from the per-line context inside each setup block.
