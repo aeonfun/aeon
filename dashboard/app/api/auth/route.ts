@@ -81,22 +81,24 @@ export async function POST(request: Request) {
         error: 'Could not extract token. Paste your API key manually instead.',
       }, { status: 400 })
     }
-    // Take everything until we hit a space, newline-then-non-alnum, or empty line
-    // The token chars are: A-Za-z0-9_-
+    // Extract only valid token characters from each line, stopping at the first
+    // line that contributes nothing. This handles terminal wrapping while
+    // rejecting any trailing prose, ANSI escapes, or other non-token bytes that
+    // the first line might contain after the token text.
+    // Token alphabet: A-Za-z0-9_-
     const tokenChars: string[] = []
     for (const line of tokenBlock.split('\n')) {
-      const trimmed = line.trim()
-      if (tokenChars.length === 0) {
-        // First line with the token
-        tokenChars.push(trimmed)
-      } else if (/^[A-Za-z0-9_\-]+$/.test(trimmed)) {
-        // Continuation line (all valid token chars — wrapped portion of token)
-        tokenChars.push(trimmed)
-      } else {
-        break
-      }
+      const segment = line.trim().match(/^[A-Za-z0-9_\-]+/)?.[0] ?? ''
+      if (!segment) break
+      tokenChars.push(segment)
     }
     const token = tokenChars.join('')
+
+    if (!token.startsWith('sk-ant-oat')) {
+      return NextResponse.json({
+        error: 'Could not extract a valid OAuth token. Paste your API key manually instead.',
+      }, { status: 400 })
+    }
 
     execFileSync('gh', ['secret', 'set', 'CLAUDE_CODE_OAUTH_TOKEN', ...ghArgsRepo()], {
       input: token,
