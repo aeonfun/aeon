@@ -1,71 +1,78 @@
-# Market Context (as of 2026-05-20)
+# Market Context (as of 2026-05-21)
 
-> **Take:** chop — BTC +0.62% 24h, breadth 12/20, F&G 27 (Fear) unchanged. Conviction: low.
+> **Take:** rotation — BTC +0.37% 24h while dominance slipped -0.14pp as HYPE +18.5% and ZEC +13.2% pulled breadth to 14/20. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $77,424 (+0.62% 24h, -4.17% 7d) · dominance 58.35% (+0.07pp 24h)
-- ETH $2,128 (+0.54% 24h, -7.78% 7d) · ETH/BTC 0.02749
-- SOL $84.89 (+0.28% 24h, -10.43% 7d)
-- Total mcap $2.66T (flat 24h) · DEX vol $5.29B 24h
-- Breadth: 12/20 green 24h · 4/20 green 7d
-- Fear & Greed: 27 (Fear) — yesterday 25
+- BTC $77,584 (+0.37% 24h, -2.76% 7d) · dominance 58.21% (-0.14pp 24h)
+- ETH $2,128 (-0.14% 24h, -6.18% 7d) · ETH/BTC 0.02743
+- SOL $86.49 (+1.94% 24h, -5.28% 7d)
+- Total mcap $2.67T (+0.62% 24h) · DEX vol $5.71B 24h
+- Breadth: 14/20 green 24h · 6/20 green 7d
+- Fear & Greed: 29 (Fear) — yesterday 27
 
 ## What Changed Since Last Refresh
-- Quiet on price — BTC/ETH/SOL all within ±1%, regime unchanged (chop).
-- Breadth jumped from 7/20 to 12/20 green 24h. Still below risk-on threshold (14/20).
-- PENGU climbed from #5 to #1 trending with no identified catalyst. NFT/collectibles bid active.
-- ZEST dropped from #1 to #4 trending on day 5. Bitcoin DeFi mindshare rotating.
-- BTC and ETH entered the trending list at #7 and #8. Majors in trending is a mild sentiment shift.
+- Regime shift chop → rotation: HYPE +18.54% 24h and ZEC +13.21% 24h carried alts while BTC held flat.
+- HYPE repriced $49 → $57.57, claimed #11 global mcap at $13.7B. Perp-DEX narrative entered peak territory.
+- ZEC repriced $584 → $668 (+25.91% 7d). Privacy narrative entered its third strong session.
+- VVV -1.02% 24h post-NVIDIA print. AI compute catalyst resolved. Token bid cooled.
+- Breadth 24h improved from 12/20 to 14/20, reaching the risk-on threshold for the first time this cycle.
 
 ## Active Narratives
-- **Perp DEX / liquidity infra** — phase: rising. Evidence: HYPE #2 trending at +24.51% 7d; LIT #10 trending at +21.32% 24h. Two perp-DEX tokens in top 10 trending on consecutive days.
-- **AI / private compute** — phase: rising. Evidence: VVV #3 trending at +23.17% 24h ahead of NVIDIA print tonight. NVIDIA result is the phase confirmation gate.
-- **Privacy / ZK** — phase: rising. Evidence: ZEC #6 trending at +4.42% 24h, +5.37% 7d; XMR +1.76% 24h. Third consecutive session in trending.
-- **Bitcoin DeFi / lending** — phase: peak→fading. Evidence: ZEST dropped from #1 to #4 trending on day 5; 24h rate-of-change declined from +100% to +87.74%.
-- **NFT / collectibles** — phase: emerging. Evidence: PENGU jumped from #5 to #1 trending (+3.06% 24h) with no identified fresh catalyst.
+- **Perp DEX / Hyperliquid** — phase: peak. Evidence: HYPE +18.54% 24h to $57.57, #1 trending, #11 global mcap at $13.7B. AIXBT (21:00 UTC 05-20) confirmed the BHYP ETF fee-buyback loop across three actor classes. June 6 Core Contributor unlock (~10M HYPE at $57 ≈ $575M) approaching.
+- **Privacy / ZK** — phase: rising. Evidence: ZEC +13.21% 24h, +25.91% 7d, #5 trending, #13 by mcap at $11.1B. Third consecutive strong session. XMR +0.47% 24h confirms sector, not isolated print.
+- **RWA / tokenization** — phase: peak. Evidence: ONDO +7.24% 24h, #9 trending. CLARITY Act cleared Senate Banking Committee. Regulatory tailwind deepened but 5/5 mindshare is saturated; price reaction subdued.
+- **DePIN / compute infra** — phase: emerging. Evidence: PEAQ +29.83% 24h (#10 trending), TAO +7.21% 24h (#11 trending). Fresh entrants; a16z OpenGradient verifiable-inference round the anchoring catalyst. No market-cap leader yet.
+- **NFT / collectibles** — phase: emerging. Evidence: PENGU +3.51% 24h, #3 trending for second session. No fresh catalyst; persistence in trending is the signal.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Binance CEX: $153.9B (-3.79%)
-- OKX: $24.8B (-3.35%)
-- Lido: $18.9B (-7.13%)
-- Bitfinex: $18.8B (-3.68%)
-- SSV Network: $15.7B (-7.95%)
+- Binance CEX: $154.6B (-2.16%)
+- OKX: $24.9B (-1.59%)
+- Lido: $18.9B (-4.39%)
+- Bitfinex: $18.8B (-2.56%)
+- Bybit: $15.8B (+0.22%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $43.16B (7d change: n/a — chains endpoint does not return 7d delta)
-- Solana: $5.94B (7d change: n/a)
-- BSC: $5.50B (7d change: n/a)
+- Ethereum: $43.30B (7d change: n/a — chains endpoint does not return 7d delta)
+- Solana: $6.03B (7d change: n/a)
+- BSC: $5.53B (7d change: n/a)
 
 ## Stablecoins
-Total: ~$289.6B (prior ~$293B). USDT $189.5B · USDC $77.0B · USDS $8.8B · USD1 $4.6B · DAI $4.6B · combined share of mcap ~10.9%.
+Total: ~$284.6B (prior ~$289.6B — $5B contraction vs prior). USDT $189.5B · USDC $77.0B · USDS $8.8B · USD1 $4.6B · DAI $4.6B · combined share of mcap ~10.7%.
 
 ## Trending (CoinGecko)
-- PENGU — Pudgy Penguins, +3.06% 24h; #1 trending. Jumped from #5. No identified catalyst.
-- HYPE — Hyperliquid, $49.80, +2.69% 24h; #2 trending. Perp-DEX leader, +24.51% 7d.
-- VVV — Venice Token (AI privacy infra), $17.69, +23.17% 24h; #3 trending. NVIDIA catalyst tonight.
-- ZEST — Zest Protocol (Bitcoin DeFi/lending), +87.74% 24h; #4 trending. Day 5; rate-of-change declining.
-- GITLAWB — Gitlawb, +56.25% 24h; #5 trending. Small cap (rank #576), no narrative context identified.
-- ZEC — Zcash, $584.53, +4.42% 24h; #6 trending. Privacy narrative, third consecutive trending session.
-- BTC — Bitcoin, $77,448, +0.68% 24h; #7 trending. New entry.
-- ETH — Ethereum, $2,129, +0.58% 24h; #8 trending. New entry.
-- HBAR — Hedera, $0.089, -0.69% 24h; #9 trending. New entry.
-- LIT — Lighter (perp DEX on Arbitrum), ~$1.20, +21.32% 24h; #10 trending. Dropped from #4.
+- HYPE — Hyperliquid, $57.57, +18.29% 24h; #1 trending. Perp-DEX leader at #11 global mcap. Catalyst-driven session.
+- NEX — Nexus blockchain, +26.01% 24h; #2 trending. Small cap (rank #144). No narrative context.
+- PENGU — Pudgy Penguins, $0.0092, +3.51% 24h; #3 trending. NFT/collectibles, second session.
+- VVV — Venice Token, $16.98, -1.02% 24h; #4 trending. AI compute cooling post-NVIDIA print.
+- ZEC — Zcash, $668.32, +13.23% 24h; #5 trending. Privacy narrative, third strong session.
+- SUI — Sui, $1.10, +3.94% 24h; #6 trending. L1 momentum, no distinct narrative driver.
+- PI — Pi Network, $0.153, +2.43% 24h; #7 trending.
+- BTC — Bitcoin, $77,526, +0.30% 24h; #8 trending.
+- ONDO — Ondo Finance, $0.405, +7.24% 24h; #9 trending. RWA narrative, CLARITY Act tailwind.
+- PEAQ — peaq, $0.0351, +29.83% 24h; #10 trending. DePIN/compute infra, fresh entrant.
+- TAO — Bittensor, $281.41, +7.21% 24h; #11 trending. AI/compute sub-theme.
+- SOL — Solana, $86.41, +1.69% 24h; #12 trending.
+- MEGA — MegaETH, $0.088, +3.46% 24h; #13 trending. Ethereum L2, no catalyst identified.
+- KNTQ — Kinetiq, $0.215, +29.46% 24h; #14 trending. Restaking/liquid staking, small cap (rank #439).
+- ADA — Cardano, $0.248, -0.65% 24h; #15 trending.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Spurs vs. Thunder | 32.5% (Spurs) | $1.48M | $2.31M |
-| Bitcoin $150k by Jun 30 | 1.35% (below signal threshold) | — | — |
+| US × Iran permanent peace deal by May 31 | 16.5% | $2.88M | $374.6K |
+| US × Iran permanent peace deal by May 22 | 4.2% | $1.31M | $112.5K |
 
-*No crypto-relevant market in the top 10 by volume carries an actionable YES% (3–97%) today. Sports speculation dominates Polymarket volumes.*
+*Bitcoin $150k by Jun 30 at 1.35% YES (below signal threshold). No other crypto-relevant market carries an actionable YES% (3–97%) in today's top 10 by volume. Geopolitical uncertainty dominates traded volume.*
 
 ## Macro Catalysts (next 48h)
-- **NVIDIA Q1 FY2027 earnings (May 20, after close):** Analysts expect EPS $1.78 (+120% YoY), revenue $79.2B (+79.5% YoY). Beat activates AI compute bid (VVV, AKT, RNDR); miss pulls it. AI tokens pricing in a beat ahead of the print.
-- **BTC ETF outflows:** Week of May 11–15 posted $1B+ in outflows, the largest weekly outflow since February. IBIT alone saw $448M in redemptions on May 18. Institutional bid weakening; BTC capped below $78K. Key support at $75K.
+- **BTC ETF outflows (~week of May 15):** $982M in product outflows per CoinShares — first negative week in seven. Iran risk-off cited as the trigger. IBIT redemptions confirm institutional bid softening. BTC capped below $78K; $75K is the key structural support.
+- **Iran peace deal:** Polymarket pricing 16.5% YES by May 31. Geopolitical premium still embedded. Resolution removes the risk-off suppressor on BTC.
+- **CLARITY Act:** Senate Banking Committee approved — regulatory tailwind reinforced. Price failed to hold on the news (BTC sub-$78K). Crowded long regime absorbed the catalyst.
+- **Kevin Warsh as Fed chair:** First chair change since 2018. More hawkish/rules-based framing. Reduces near-term rate-cut probability and caps risk-on expansion.
 
 ## Implications for Downstream Skills
-- **token-call:** ZEC is the cleanest setup — privacy RIDE, #6 trending, +4.42% 24h, +5.37% 7d, no recent dedup conflict. Post-NVIDIA beat opens VVV (AI/compute dual-RIDE). Breadth at 12/20 supports selective alt exposure; below risk-on threshold argues against broad positions.
-- **narrative-tracker:** Bitcoin DeFi/lending (ZEST) entering fading phase — peak passed at day 4–5 (dropped from #1 to #4 trending). NFT/collectibles (PENGU) upgraded to emerging. NVIDIA print tonight determines AI/compute phase direction.
+- **token-call:** Dedup stack excludes HYPE/ZEC/LIT/VVV/INJ/NEAR/BSB/TRAC/KAIA/CHZ. Rotation confirmed — favor PEAQ (DePIN, #10 trending, +29.83%), ONDO (RWA, #9, +7.24%), TAO (AI/compute, #11, +7.21%) as next-cycle candidates. Avoid HYPE on peak signal and June 6 unlock risk.
+- **narrative-tracker:** Upgrade Perp DEX / Hyperliquid from rising to peak — BHYP three-actor loop confirmed, June 6 unlock growing ($575M at current price). Monitor AI agents for fading confirmation (VVV -1.02% post-NVIDIA). Watch PEAQ and TAO for phase promotion to rising if sustained across 2+ sessions.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
