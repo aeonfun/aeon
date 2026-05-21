@@ -1,35 +1,31 @@
-Market Morning · 20 May · NVDA night
+Market Morning · 21 May · Rotation, AI/DePIN re-firing
 
-BTC $77,424, +0.62% 24h, -4.17% 7d.
-Breadth 12/20 green, up from 7/20 at lunch.
-F&G 27 (Fear), flat.
-NVIDIA Q1 FY2027 after close tonight is the regime test.
+BTC holds $77,584, +0.37% 24h. Dominance slips 0.14pp.
+Breadth widened to 14/20 green 24h. F&G 29 Fear, up from 27.
+The bid lives in HYPE and ZEC. Majors held flat through the move.
+AI and DePIN narratives re-fire after NVDA's parabolic demand print last night.
 
-Two fresh ACCUMULATION prints (ZEC, NEAR) sit inside three RIDE narratives.
-Privacy/ZK, AI agents, Hyperliquid all in the same direction.
-
-Stance: selective long into the prints. NVDA decides whether the compute spine holds.
+Stance: selective longs at confirmed quant prints. Fade leverage stacks if smart money trims.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-HYPE moved to standalone mindshare lead via a three-actor loop.
-Goldman Sachs enters as institutional buyer, Bitwise ETF wraps onchain fees into HYPE bids, Hyperliquid captures 43% of onchain fees.
-Three actors, one position. Manufactured.
+Iran deal optimism runs three legs at once.
+Oil sharply lower, dollar rally paused, yields stabilizing.
+One geopolitical thesis driving all three. If the deal reverses, every leg flips together.
 
-Xi called for an Iran ceasefire and stripped the Hormuz premium.
-The 30Y at 5.1% stands on growth and inflation alone.
-Structurally higher, not a transient spike.
+NVDA cleared the regime test overnight. Chip/AI rally extends.
+HYPE flipped SOL in FDV at ~$54B. Grayscale and SpaceX entered as new institutional actors.
+BHYP fee-buyback loop holds — onchain fees route into HYPE bids.
 
 
 ─────────  TODAY  ─────────
 
-Action sits in #perps-brief. 3 HIGH CONVICTION setups.
+Action is in #perps-brief. 2 HIGH CONVICTION setups.
 
-ZEC long continuation, trail tight. Fresh ACCUMULATION, Privacy/ZK leader.
-NEAR long continuation. Fresh ACCUMULATION, strongest taker bid in the scan.
-LIT long breakout-pending. Vol 4.86x, OI +52% 7d, Hyperliquid RIDE.
+NEAR day 2 long — ACCUMULATION CONFIRMED, smart money loaded, AI agents and DePIN both RISING 5/5, NVDA tailwind.
+HYPE long, trail tight — PEAK narrative, Grayscale and SpaceX as new actors, June 6 unlock 16 days out.
 
-Watchlist: HYPE reflexive loop (peak warning), DASH overflow, EDEN leverage, PLAY funding flip.
+Watchlist: ONDO funding hot but smart money out, ZEC pillars collapsing, LIT vol short, BSB retail squeeze.
 
-Take: rotate into infrastructure, size for NVDA. Eighth straight day with no crowded-long flag.
+Take: AI/DePIN is the highest-confluence call today. Trail HYPE tight into the unlock.

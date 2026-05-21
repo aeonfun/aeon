@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-20T11:49:20Z",
+  "last_analyzed": "2026-05-21T08:08:19Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with clear narrative shift, proper workflow execution (files updated, memory logged, notifications queued), and actionable stance; lacks explicit sources for market data.",
+  "assessment": "Well-executed skill with substantive market synthesis, quality gates, and proper system integration; competent but not exceptional.",
   "flags": [],
-  "avg_score": 4.13,
+  "avg_score": 4.11,
   "history": [
     {
       "date": "2026-05-18",
@@ -36,6 +36,10 @@
     },
     {
       "date": "2026-05-20",
+      "score": 4
+    },
+    {
+      "date": "2026-05-21",
       "score": 4
     }
   ]
