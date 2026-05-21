@@ -34,11 +34,12 @@ Today is ${today}. Audit imported skills for upstream changes since installation
 
 ### 2. Per-skill drift detection
 
-For each entry, fetch the latest upstream commit SHA for the locked source path:
+For each entry, fetch the latest upstream commit SHA for the locked source path **on the tracked branch**:
 ```bash
-gh api "repos/${source_repo}/commits" -f path="${source_path}" -f per_page=1 \
+gh api "repos/${source_repo}/commits" -f path="${source_path}" -f sha="${branch}" -f per_page=1 \
   --jq '.[0] | if . == null then "MISSING" else {sha: .sha, message: .commit.message, date: .commit.author.date, author: .commit.author.name} end'
 ```
+The `-f sha="${branch}"` constraint is required: the `commits` API defaults to the repository's default branch, so skills locked to a non-default branch (e.g. `release`, `develop`) would otherwise be compared against the wrong history and produce false `UP-TO-DATE` / `CHANGED` results.
 - If output is `"MISSING"`, classify status as `MISSING_UPSTREAM` (file deleted or path renamed upstream — treat as a security signal in step 5).
 - If the API call fails:
   - On `429` or `5xx`: wait 60 seconds and retry once. If still failing, mark `UNREACHABLE` for this run.
