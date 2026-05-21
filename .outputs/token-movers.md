@@ -1,45 +1,43 @@
-# Token Movers — 2026-05-20
+# Token Movers — 2026-05-21
 
-Mixed tape with idiosyncratic upside, majors flat — 57/100 top-100 green, median 24h +0.2%, BTC +0.6% / ETH +0.5% / SOL +0.3%, 7d still deep red across L1s (BTC −4.2%, ETH −7.8%, SOL −10.4%).
+Broad green tape — 78/100 top coins green, median 24h +1.0%, majors mixed (BTC +0.4%, ETH -0.1%, SOL +1.9%) and 7d tape still red across L1s (BTC -2.7%, ETH -6.1%, SOL -5.3%).
 
 ## Top Winners (24h)
-1. TRAC (OriginTrail) — $0.4547  +25.3% / 7d +31.9% / 1h +2.4%  •  $59.1M / #181  [BREAKOUT]
-2. VVV (Venice Token) — $17.64  +22.6% / 7d +18.0% / 1h +1.1%  •  $124M / #78  [TRENDING+UP]
-3. XP (Xphere) — $0.0630  +21.9% / 7d +213.6% / 1h −1.7%  •  $2.9M / #204  [BREAKOUT]
-4. LIT (Lighter) — $1.190  +21.0% / 7d +26.9% / 1h +0.5%  •  $67.9M / #152  [BREAKOUT]
-5. BSB (Block Street) — $0.7768  +15.8% / 7d +61.2% / 1h −5.6%  •  $92.1M / #202  [BREAKOUT]
-6. SKYAI — $0.3231  +14.1% / 7d −39.2% / 1h +1.4%  •  $68.2M / #141
-7. DASH (Dash) — $47.63  +13.1% / 7d +4.3% / 1h +2.1%  •  $134M / #92
-8. B (BUILDon) — $0.3986  +12.6% / 7d −42.1% / 1h −0.7%  •  $12.0M / #122
-9. XDC (XDC Network) — $0.0354  +10.2% / 7d +8.9% / 1h −0.2%  •  $40.1M / #87
-10. RAY (Raydium) — $0.7529  +7.4% / 7d −9.0% / 1h +1.6%  •  $24.5M / #184
+1. NEX (Nexus) — $0.0000053  +26.4% / 7d n/a / 1h -4.8%  •  $87.4M / #144  [TRENDING+UP]
+2. BSB (Block Street) — $0.9550  +24.6% / 7d +121.9% / 1h -1.1%  •  $132.4M / #181  [BREAKOUT]
+3. JTO (Jito) — $0.5274  +22.5% / 7d +3.4% / 1h +2.5%  •  $141.4M / #170
+4. 2Z (DoubleZero) — $0.1126  +21.3% / 7d +7.4% / 1h +1.7%  •  $30.9M / #124  [MICROCAP]
+5. BEAT (Audiera) — $0.6791  +20.0% / 7d +20.5% / 1h +0.2%  •  $29.0M / #199  [MICROCAP]
+6. HYPE (Hyperliquid) — $57.57  +18.5% / 7d +46.9% / 1h +2.1%  •  $1.3B / #11  [TRENDING+UP][BREAKOUT]
+7. BANANAS31 (Banana For Scale) — $0.0137  +16.3% / 7d -3.0% / 1h +1.5%  •  $48.2M / #243  [MICROCAP]
+8. CHEEMS (Cheems Token) — $0.00000067  +14.2% / 7d +11.4% / 1h -6.8%  •  $2.6M / #242  [MICROCAP]
+9. GRASS (Grass) — $0.3444  +13.9% / 7d +5.2% / 1h +1.9%  •  $11.6M / #189
+10. ZEC (Zcash) — $667.88  +13.3% / 7d +26.0% / 1h +0.3%  •  $1.1B / #13  [TRENDING+UP][MAJOR]
 
 ## Top Losers (24h)
-1. BILL (Billions Network) — $0.1080  −9.1% / 7d −48.3% / 1h −6.9%  •  $111M / #165
-2. BINANCELIFE — $0.4397  −7.6% / 7d +7.1% / 1h −0.5%  •  $64.4M / #114
-3. BEAT (Audiera) — $0.5726  −7.4% / 7d +2.6% / 1h −1.9%  •  $4.9M / #219
-4. CHZ (Chiliz) — $0.0459  −6.7% / 7d +3.8% / 1h −1.1%  •  $68.9M / #109
-5. PYTH (Pyth Network) — $0.0401  −6.4% / 7d −27.5% / 1h −0.3%  •  $38.9M / #140
-6. ZBCN (Zebec Network) — $0.002845  −5.5% / 7d −18.7% / 1h +0.2%  •  $6.5M / #159
-7. AKT (Akash Network) — $0.7612  −4.8% / 7d −14.0% / 1h +0.6%  •  $8.0M / #176
-8. STABLE — $0.0345  −4.5% / 7d −8.2% / 1h +0.5%  •  $12.9M / #81
-9. M (MemeCore) — $3.320  −4.2% / 7d +1.1% / 1h −0.6%  •  $7.2M / #25
-10. ULTIMA — $2735.25  −3.5% / 7d −7.6% / 1h +0.1%  •  $15.3M / #231
+1. BILL (Billions Network) — $0.0830  -27.4% / 7d -51.7% / 1h -5.0%  •  $105.4M / #188  [CAPITULATION]
+2. UB (Unibase) — $0.1040  -16.6% / 7d -47.6% / 1h -6.8%  •  $13.4M / #166
+3. M (MemeCore) — $2.930  -13.9% / 7d -12.3% / 1h +0.6%  •  $8.5M / #30
+4. SKYAI (SkyAI) — $0.3457  -9.2% / 7d -17.1% / 1h +0.1%  •  $55.0M / #135
+5. RUNE (THORChain) — $0.4235  -6.5% / 7d -27.2% / 1h +0.3%  •  $9.4M / #226
+6. TRAC (OriginTrail) — $0.4558  -4.9% / 7d +34.1% / 1h -2.1%  •  $61.6M / #184
+7. SIREN (Siren) — $0.5124  -4.9% / 7d -19.3% / 1h +0.2%  •  $8.7M / #129
+8. GWEI (ETHGas) — $0.1242  -4.8% / 7d -4.5% / 1h -0.3%  •  $5.7M / #165
+9. 9BIT (The9bit) — $0.0387  -4.6% / 7d +48.1% / 1h -0.2%  •  $6.0M / #145
 
 ## Trending
-1. PENGU (Pudgy Penguins) — #97, $0.008839, 24h +3.4%
-2. HYPE (Hyperliquid) — #12, $49.80, 24h +3.1%  [MAJOR]
-3. VVV (Venice Token) — #78, $17.64, 24h +22.6%  [TRENDING+UP]
-4. ZEST (Zest Protocol) — #856, $0.1472, 24h +87.7%  [PUMP-RISK][MICROCAP]
-5. GITLAWB — #576, $0.0003937, 24h +56.3%  [PUMP-RISK]
-6. ZEC (Zcash) — #14, $584.59, 24h +4.5%  [MAJOR]
-7. BTC (Bitcoin) — #1, $77,424, 24h +0.6%  [MAJOR]
+1. HYPE (Hyperliquid) — #11, $57.57, 24h +18.5%  [MAJOR][TRENDING+UP]
+2. NEX (Nexus) — #144, $0.0000053, 24h +26.4%  [TRENDING+UP]
+3. PENGU (Pudgy Penguins) — #94, $0.00918, 24h +3.9%
+4. VVV (Venice Token) — #82, $16.85, 24h -2.0%
+5. ZEC (Zcash) — #13, $667.88, 24h +13.3%  [MAJOR][TRENDING+UP]
+6. SUI (Sui) — #25, $1.110, 24h +4.8%
+7. PI (Pi Network) — #54, $0.1529, 24h +2.7%
 
 ## Notable
-- TRAC [BREAKOUT] +25.3% extends the V-reversal another leg. Yesterday's −27.5% CAPITULATION, earlier 05-20 +17.6%, now +25.3% with 7d back to +31.9% on $59M vol. Round-trip into trend.
-- VVV [TRENDING+UP] +22.6% on $124M vol lands the trending list the same morning token-call rated it 10/10 HIGH. Narrative-tracker carries AI agents at RIDE w/ trail and decentralized compute 5/5 RIDE; the infrastructure rotation alignment holds.
-- LIT [BREAKOUT] day-3 continuation +21.0%, 7d +26.9% on $68M vol. Breakout structure holds, no fade signature; perps-brief has it as long breakout-pending today.
-- XP [BREAKOUT] +21.9% with 7d +213.6%. Earlier 05-20 listing carried no tag, today qualifies. Cap is microscopic at #204 / $2.9M vol. The move is real, the size is not.
-- GITLAWB [PUMP-RISK] trending at rank #576 on +56.3%. Low-cap manipulation print, not signal.
-- ZEST [PUMP-RISK][MICROCAP] rank #856 +87.7% for a fourth trending session. Pure noise, disclose and ignore.
-- Dropped same-tag repeats: 9BIT (day-4 BREAKOUT, decelerating), PIEVERSE (day-3 −7.1%, lost CAPITULATION tag), UB (day-3 −9.3% sub-threshold).
+- BSB [BREAKOUT] +24.6% on 7d +121.9% with $132M mcap — day-2 continuation of yesterday's +14.5% pop, well past the BREAKOUT gate this time.
+- HYPE [TRENDING+UP][BREAKOUT] +18.5% on 7d +46.9% — top-15 cap, $1.3B vol, narrative leader breaking out.
+- ZEC [TRENDING+UP][MAJOR] +13.3% extending the multi-day privacy/ZK leadership — fourth straight session bid.
+- BILL [CAPITULATION] -27.4% on $105M vol — sharper than the morning's -8.4% slide, 7d down -51.7% as the three-day losing streak deepens.
+- NEX [TRENDING+UP] +26.4% with 7d data missing, rank #144 / $87M mcap — recent listing pattern, 24h print is low-context.
+- Dedup-dropped: LIT (winner repeat, decelerating, lost BREAKOUT tag), CHZ (loser repeat, same direction/mag, no new tag).
