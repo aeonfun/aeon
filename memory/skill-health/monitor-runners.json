@@ -1,10 +1,10 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-20T11:26:48Z",
+  "last_analyzed": "2026-05-21T07:55:44Z",
   "quality_score": 4,
-  "assessment": "Substantive, domain-expert analysis with clear verdict and appropriate scope decisions; well-integrated into memory system and issue tracking.",
+  "assessment": "Substantive execution with specific metrics (161 deduped pools, 75 quality-gated, 4-day pattern identified), clear ranking output, intelligent sandbox workarounds, and proper process tracking.",
   "flags": [],
-  "avg_score": 4.11,
+  "avg_score": 4.1,
   "history": [
     {
       "date": "2026-05-18",
@@ -40,6 +40,10 @@
     },
     {
       "date": "2026-05-20",
+      "score": 4
+    },
+    {
+      "date": "2026-05-21",
       "score": 4
     }
   ]

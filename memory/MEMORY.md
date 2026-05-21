@@ -30,6 +30,9 @@
 - `price-threshold-alert` — needs Tracked Token section in MEMORY.md first
 - `on-chain-monitor` — needs `memory/on-chain-watches.yml` populated first
 
+## Active topics
+- **GDOR name-farm (sol)** — distinct contracts under the same `GDOR` ticker have topped `monitor-runners` for 4 straight days (2026-05-18, 05-19, 05-20 morning, 05-21). Each occurrence is a fresh address; the ticker itself is the recurring entity, not any one asset. The pattern reads as a serial pump-cluster, not a continuing run — but it's now persistent enough that the cluster mechanism (same name, fresh contracts daily) is worth a deeper look. First flagged 2026-05-21.
+
 ## Pointers
 - `topics/setup-checklist.md` — fork + secrets + push walkthrough
 - `topics/telegram-discord-split.md` — future migration plan for signals → Discord
