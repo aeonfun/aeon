@@ -1,34 +1,37 @@
-Daily Token Call · 20 May
+Daily Token Call · 21 May
 ──────────────────────────
 
-DASH · HIGH · 7/10
-$47.62 · +13.09% 24h · +4.29% 7d
-mcap $601m · vol $134m · vol/mcap 0.22
+ZEC · HIGH · 10/10
+$667.93 · +13.3% 24h · +26.0% 7d
+mcap $11.1b · vol $1.13b · vol/mcap 0.10
 
 
 SIGNALS
-  Vol/mcap 0.22, the top non-stablecoin turnover in the top 250.
-  Both 24h and 7d green, 24h well above +5% on a flat majors tape.
-  Outpacing BTC -4.17% 7d and ETH -7.78% 7d.
-  Solo +13% with no CG trending tag yet, bid running quietly.
+  Vol/mcap 0.10 on an $11b cap — institutional-size turnover, not retail churn.
+  CoinGecko trending, multi-day persistence.
+  Both 24h and 7d well above +5%, in a tape where BTC bled -2.7% 7d and ETH bled -6.1% 7d.
+  Outpacing both majors by roughly 30 points on the week.
 
 CATALYST
-  Privacy/ZK promoted Emerging → Rising (WATCH → RIDE) on today's narrative map.
-  Evolution upgrade shipped May 11. Smart contracts + IBC live, post-news cool-down behind us.
-  Alchemy Pay opened fiat on-ramps across 173 countries this month.
-  ZEC leads the privacy rotation. DASH is the second-leg pickup.
+  SEC closed its 2023 investigation without enforcement. Regulatory cloud cleared.
+  Multicoin Capital disclosed a position accumulated since February. Smart money already in.
+  Quantum-resistance roadmap puts ZEC alongside NEAR as one of two majors with shipped timelines.
+  Shielded supply hit 30% of circulation. Structural adoption, not just speculation.
+  Robinhood listing and ETF chatter widen the buyer base.
 
 RISK
-  AIXBT bridge flagged ZEC's four-leg bid as possible manufactured peak today.
-  If ZEC rolls, DASH overflow rolls faster. Second-tier privacy names don't hold a solo bid.
-  NVDA earnings tonight is the binary regime test for the broader risk tape.
+  Monthly gain above 120% — crowded long, mean-reversion candidate if Multicoin trims.
+  Privacy narratives historically run hot then cut fast.
+  No spot ETF yet. The headline is speculation, not flow.
 
 DEDUP
   First time in 7d.
-  Recent picks excluded: LIT, VVV (today), CHZ, HYPE, NEAR, INJ, TRAC, BSB, KAIA.
+  Recent picks excluded: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH.
 
 
-Take: clean second-leg setup in a Rising RIDE narrative, with ZEC's potential peak as the named invalidator. Sized smaller than ZEC. DASH is the sector follow, not the lead.
+Take: the catalyst stack is the strongest in the top-50 right now.
+Regulatory clear, smart money positioned, quantum-resistance a 12-month story not a 12-day one.
+Sized for continuation, not chase. Trim hard if vol/mcap collapses below 0.05 or if the privacy sector breaks lower in lockstep.
 
 
 not financial advice — pattern-matching only
