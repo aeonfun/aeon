@@ -1,26 +1,23 @@
-Ops Review · 20 May · n/a
+Ops Review · 21 May · n/a
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ market-context-refresh · chop, BTC +0.62%, breadth 12/20 (up from 7/20 at lunch), F&G 27
-  ✓ aixbt-pulse · 11:00 reading, three-actor HYPE loop bridge, 9th consecutive 2-section pull
-  ⚠ narrative-tracker · map locked correct (5 tracked, 1 NEW Hyperliquid) but `.outputs/narrative-tracker.md` on disk is the fourth-invocation `## Summary` blob — ISS-005 pattern back after the morning's fix
-  ✓ perps-scan · QUIET, 2 ACCUMULATION (ZEC + NEAR), 6 WATCH inc. FIDA short-squeeze + PROMPT conviction-short
-  ✓ monitor-runners · SPECULATIVE post-noon re-run, morning ZEST DEEP-LIQ faded into a 4h copycat
-  ✓ token-movers · 57/100 green, third run today, TRAC V-reversal extending day-3
-  ✓ token-call · DASH · HIGH 7/10 (third pick today — LIT and VVV both dedup-excluded by the chain)
+  ✓ market-context-refresh · rotation (medium), breadth 14/20, F&G 29 up from 27
+  ✓ aixbt-pulse · 8 NEW items, Iran-deal three-leg bridge call, 10th 2-section pull in a row
+  ✓ narrative-tracker · 7 tracked, 2 NEW (AI×crypto SocialFi, BTCFi), Privacy/ZK demoted to FADE
+  ✓ perps-scan · QUIET, 3 ACCUMULATION (NEAR day-2 CONFIRMED, ONDO fresh, CL fresh CONFIRMED), 1 COMPRESSION (XAU)
+  ✓ monitor-runners · SPECULATIVE, 0 DEEP-LIQ in top 5, GDOR 4th straight day on a fresh contract
+  ✓ token-movers · 78/100 green, BSB day-2 BREAKOUT, ZEC day-4 privacy bid
+  ✓ token-call · ZEC · HIGH 10/10
 
 ─────────  STEP 2 — BRIEFS  ─────────
 
-  ✓ perps-brief · 3 HIGH CONVICTION (ZEC, NEAR, LIT), 4 WATCHLIST (HYPE, DASH, EDEN, PLAY)
+  ✓ perps-brief · 2 HIGH CONVICTION (NEAR, HYPE), 4 WATCHLIST (ONDO, ZEC, LIT, BSB)
 
 ─────────  STEP 3 — MACRO  ─────────
 
-  ✓ morning-macro · published, second emission against AIXBT 11:00 reading
+  ✓ morning-macro · published, 1447/1500 chars, AI/DePIN headline
 
+Chain ran complete. 9 ✓, 0 ⚠, 0 ✗.
 
-Chain ran complete. 8 ✓, 1 ⚠, 0 ✗.
-
-Failed sources: none. Every data source returned clean (coingecko, defillama, fng, polymarket, geckoterminal, aixbt, websearch). The 1 ⚠ flags the narrative-tracker artifact, not a source failure. The Discord signal landed correct earlier; the on-disk artifact got clobbered by the fourth same-day invocation's `## Summary` text.
-
-Issues: none filed this run. Open count holds at 1 (ISS-006, monitor-runners post-write overwrite — fixed in-chain by the operator re-run, root cause still live). ISS-005 had resolved this morning but the narrative-tracker leak today reproduces the pattern, so the resolution may need to reopen tomorrow if the scheduled chain hits it again.
+All sources ok. No new issues filed. Open count: 1 (ISS-006, still open from yesterday). Every .outputs/ file landed in locked format on the first write — the artifact-leak pattern that hit yesterday's chain stayed absent today.
