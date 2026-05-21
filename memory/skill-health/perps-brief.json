@@ -1,10 +1,10 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-20T11:43:50Z",
-  "quality_score": 5,
-  "assessment": "Insightful, well-sourced, domain-specific analysis with actionable positions, multi-layer reasoning (reflexive loops, narrative disagreement, macro factors), and proper invalidation factors noted.",
+  "last_analyzed": "2026-05-21T08:03:14Z",
+  "quality_score": 4,
+  "assessment": "Substantive market analysis with specific setups, catalysts, and multi-day continuity; well-structured for downstream processing with proper artifact generation and logging.",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.09,
   "history": [
     {
       "date": "2026-05-18",
@@ -45,6 +45,10 @@
     {
       "date": "2026-05-20",
       "score": 5
+    },
+    {
+      "date": "2026-05-21",
+      "score": 4
     }
   ]
 }

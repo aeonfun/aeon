@@ -1,126 +1,98 @@
-Perps Brief · 2026-05-20
+Perps Brief · 2026-05-21
 
 MARKET SENTIMENT
 
-Perps-scan reads QUIET, two ACCUMULATION prints across 25 assets. ZEC and NEAR both transitioned NEUTRAL → ACCUMULATION today, fresh first-day prints. Eighth straight day with no REAL-CROWDED-LONG or LONG-TRAP or STEALTH-POSITIONING confluence — funding stays muted universe-wide.
+BTC funding +0.0038%/8h, sits near the 7d avg. OI flat on the day. Majors holding through the rotation without bidding it. The move lives in HYPE and ZEC alone.
 
-BTC funding warm at +0.0057%/8h above the 0.0041% 7d average, OI bled 5.57% on the week and went flat on 24h. The three majors all printed under 1% on the day. Neither side builds leverage.
+Perps tape QUIET. Three ACCUMULATION, one COMPRESSION across 25 assessed. Leverage stacking underneath the NEUTRAL tag. HYPE, LIT, BSB, EDEN at OI +47% to +907% 7d without firing the regime gates.
 
-Breadth 12/20 green, cooled from earlier in the week. F&G 27 (Fear), unmoved across two readings. The 30Y yield crossed 5.1% this morning, with the geopolitical premium thinned by Xi's ceasefire call. Long-duration assets carry the back-end repricing alone. NVIDIA Q1 FY2027 after-close tonight is the binary test for the compute spine.
+NVDA cleared the cross-sector regime test overnight. Iran deal optimism is running three macro legs on one geopolitical thesis — correlated risk if the deal reverses. F&G 29 still Fear but rising.
 
-Bias · selective long into the two fresh ACCUMULATION prints, fade extended narrative leaders that lack smart-money confirmation.
+Bias · selective longs at the confirmed quant prints, fade the leverage stacks if smart money trims further.
 
 HIGH CONVICTION
 
-ZEC · long continuation, trail tight
+NEAR · long continuation (day 2)
 
-  Perps · ACCUMULATION, fresh transition
-    Fresh NEUTRAL → ACCUMULATION today, day 4 in solo-bid territory.
-    OI +36.30% 7d, price +11.65% 7d on a 22.20% range.
-    Funding 7d-avg +0.002%/8h, funding_now flipped to -0.002%/8h. Taker buy 53.34%.
-    Top L/S 0.77 net short, cut 0.14 over 7d. Smart money leans against the rip.
+  Perps · ACCUMULATION · CONFIRMED
+    OI +31.98% 7d, +6.76% 24h, funding +0.0051%/8h, taker buy 50.31%.
+    Top L/S 2.04, up +0.33 over 7d. Smart money confirmation.
+    Day 2 in regime. Real demand crossing the spread.
 
-  Narrative · Privacy/ZK RISING, promoted from Emerging WATCH
-    Mindshare 3 → 4, RIDE call from narrative-tracker.
-    ZEC re-entered the trending list at #6 today.
-    Grayscale spot-ETF filing the project-side tailwind.
+  Narrative · AI agents + Decentralized compute RISING
+    Both sectors at 5/5 mindshare, double RIDE call from narrative-tracker.
+    NVDA delivered parabolic AI demand last night.
 
-  Context · narrative leader with the broader tape still chop
-    Breadth 12/20 green, F&G 27. Selective longs only.
-    ZEC sits as one of the only top-20 majors holding bid alongside HYPE.
+  Context · sector aligned with risk-on rotation
+    Breadth 14/20 green, F&G 29 improving.
+    NVDA print resolved the cross-sector binary bullish.
 
   Enrichment
-    AIXBT 11:00 reading dropped ZEC entirely from its crypto items. Yesterday's four-leg coordinated bid (negative funding, Grayscale arb, Thorchain FROST, CMC rankings) has vanished across two consecutive readings.
-    Up 60%+ on the month with no project-side catalyst shipped. Price leads narrative leads project.
-    Today's token-call picks DASH as the second-leg Privacy/ZK overflow. ZEC stays the sector lead but the overflow trade names a peak risk for the leader.
+    Hermes Agent shipped browser skills this week.
+    VCs rotating into physical and defense AI infra across 600+ newsletter signals.
+    No flagged near-term unlock.
+    AI × crypto SocialFi added as NEW narrative today, adjacent attention vector.
 
   Thesis
-    ACCUMULATION confirms the rotation. The disappearing engineered-bid framing makes the second leg harder to extend.
-    Trail tight below the 7d range low. The bid carries the trade until the chart breaks.
+    Real demand crossing the spread with smart money positioning into the sector lead.
+    Continuation. Trail below the 7d range low. Invalidation if top L/S reverses or OI unwinds while price holds.
 
-NEAR · long continuation
+HYPE · long continuation, trail tight
 
-  Perps · ACCUMULATION, fresh transition
-    Fresh NEUTRAL → ACCUMULATION today.
-    OI +13.63% 7d on a +12.24% 24h OI spike. Price +4.63% 7d, range 15.39%.
-    Funding +0.006%/8h 7d-avg, +0.012%/8h now. Positive without going extreme.
-    Taker buy 53.82%, the strongest in the scan. Top L/S 1.86 long-skewed.
+  Perps · WATCH · leverage building, smart money confirmed
+    +30.80% 7d, +5.32% 24h on OI +47.94% 7d and +8.42% 24h.
+    Funding +0.0048%/8h, top L/S 1.58 up +0.27 over 7d.
+    Smart money stepped in over the week. Yesterday's exit signal reversed.
 
-  Narrative · AI agents and decentralized compute RIDE
-    AI agents promoted FADE → RIDE w/ trail on AWS Bedrock AgentCore + Solana × Google Cloud.
-    Decentralized compute holds the cleanest RIDE at 5/5 mindshare.
-    NEAR post-quantum Chain Signatures ties the asset to both threads.
+  Narrative · Hyperliquid PEAK · RIDE w/ trail
+    Hyperliquid sector at peak phase, 4/5 mindshare, leading the alts rotation.
+    HYPE flipped SOL in FDV at ~$54B yesterday.
 
-  Context · infrastructure rotation into the NVDA print
-    Narrative-tracker stance: rotate into infrastructure.
-    NVDA Q1 FY2027 after close tonight is the cross-sector catalyst. A miss flushes the compute rotation; a beat extends it.
+  Context · narrative leader through the rotation
+    #1 trending on token-movers, +18.5% 24h.
+    Grayscale and SpaceX named as new institutional actors via AIXBT.
 
   Enrichment
-    Yesterday's token-call HIGH 10/10. Dedup-excluded today and still the cleanest large-cap AI tie.
-    Quantum-resistant signature scheme extends to 35+ chains. Grayscale and Bitwise spot-ETF filings pending.
-    AIXBT 11:00 collapsed AI-agent infrastructure entirely in one reading — the three-leg entry (Binance X402, Animoca, GPU compute futures) named four hours ago is gone. Narrative-tracker still carries the RIDE; AIXBT now disagrees.
-    30Y at 5.1% reprices long-duration assets including crypto infra. Cost of capital just moved.
+    June 6 unlock ~$575M, 16 days out.
+    BHYP ETF allocates 10% of fees to HYPE buys. Reflexive bid mechanism confirmed.
+    Hyperliquid carries 43% of onchain DEX fees.
+    AIXBT bridge: external trigger is Grayscale nav premium. Inversion means institutional bid leading price, reversal sharpens.
 
   Thesis
-    Strongest taker bid in the scan plus the rotation tailwind into NVDA.
-    Long with a stop below the 7d range low. NVDA miss is the named external invalidator.
-
-LIT · long breakout-pending
-
-  Perps · WATCH, one step short of CATALYST-BREAKOUT
-    Vol 4.86x average, OI +52.44% 7d, OI +10.06% 24h. Volume keeps stacking.
-    +4.91% 24h on the perps snapshot, +21% on the token-movers snapshot. Tier 2 +20% breakout gate either just cleared or about to.
-    Taker buy 51.68% over the threshold. Top L/S 2.20 long-skewed, cooling 0.36 over 7d.
-
-  Narrative · Hyperliquid and perp DEX RISING, NEW yesterday
-    Mindshare 4/5, NEW · RIDE call from narrative-tracker.
-    AIXBT 11:00 reading demoted Lighter from standalone breakout to ensemble member alongside Variational and BaselineMarkets in thin liquidity.
-    Token-call HIGH 10/10 yesterday cross-confirms the sector bid.
-
-  Context · perp DEX the standalone infrastructure thread
-    Bitwise BHYP ETF live, SpaceX pre-IPO perps, TradFi execs on Hypercore form the sector catalyst stack.
-    Solana perp DEX OI at 52% of Hyperliquid's per AIXBT. Challenger thesis live, LIT carries its own catalyst into the rotation.
-
-  Enrichment
-    token-movers tagged [BREAKOUT] +21.0% 24h on $67.9M vol, day-3 continuation.
-    Vitalik Buterin name-check at the May-18 fireside chat.
-    Telegram-wallet integration crossed $1B perp volume on May 7, routed through Lighter.
-    Thin book, no major CEX listing yet. Sharp two-way reversals on the way up.
-
-  Thesis
-    Volume confirms positioning, price brackets the breakout gate across two snapshots.
-    Long the break above the day high with a stop below the coil. Thin float makes invalidation sharp.
+    Smart money joined the retail crowded long this week. Real crowded positioning forming, not retail-only.
+    Continuation, trail tight. Invalidation: top L/S flips back down, funding pushes through +0.03%/8h, or June 6 unlock breaks the bid.
 
 WATCHLIST
 
-HYPE · three-actor reflexive loop, not organic demand
+ONDO · ACCUMULATION print without smart-money confirmation
 
-  Risk · WATCH, peak warning loud
-    Perps WATCH. OI +49.90% 7d, range 31.23% overshoots the 25% ACCUMULATION gate by 6.23 points.
-    Top L/S 1.28 cut 0.08 over 7d. Funding -0.0012%/8h pinned. Price +28.56% 7d into HYPE/BTC all-time high.
-    AIXBT 11:00 promoted HYPE to standalone mindshare lead. Three actors carry the bid at once: Goldman Sachs entering as institutional buyer, Bitwise ETF wraps onchain fees back into token bids, Hyperliquid captures 43% of all onchain fees. The ETF loop is explicit — fees buy HYPE, rising price legitimizes the ETF, more inflows buy more fees.
-    Wait for HYPE/BTC to print a higher high with displacement before sizing the long. The reflexive loop carries the trade until it doesn't.
+  Risk · regime signal weak
+    Perps ACCUMULATION fresh. Funding +0.0194%/8h vs 0.0008% 7d avg, the heat is real.
+    Top L/S 1.55 down -0.43 over 7d. Smart money trimming into the retail bid.
+    RWA at PEAK · RIDE w/ trail, sector at saturation not rising.
+    Wait for top L/S to turn up, or fade if funding pushes through +0.03%/8h into DISTRIBUTION.
 
-DASH · second-leg Privacy/ZK without a perps print
+ZEC · quant pillar transitioned out, narrative faded
 
-  Risk · no perps-scan read, narrative confluence only
-    Not in perps-scan's 25-asset universe today.
-    +13.09% 24h on $134M vol, vol/mcap 0.22 — the top non-stable turnover in the top 250. Today's token-call HIGH 7/10.
-    Privacy/ZK promoted Emerging → Rising RIDE. Evolution upgrade shipped May 11. Alchemy Pay fiat on-ramps across 173 countries.
-    ZEC carries the leader bid; DASH is the overflow. If ZEC rolls, DASH rolls faster. Hold for a clean ACCUMULATION print or for ZEC to hold above its 7d range high.
+  Risk · pillars collapsing
+    Perps ACCUMULATION → NEUTRAL. Range expanded to 41.69%, past the 25% gate.
+    Funding flipped to -0.0166%/8h, top L/S -0.20 over 7d.
+    Privacy/ZK FADING per narrative-tracker, 2/5 mindshare. Zero signal mentions today.
+    Token-call still HIGH 10/10 today but +25.91% 7d already priced. Possible peak signal.
+    Pass long. No fade until structure breaks downside.
 
-EDEN · leverage blow-off, demand unconfirmed
+LIT · breakout signal incomplete, smart money cutting
 
-  Risk · WATCH, distribution risk
-    Perps WATCH. +107.08% 7d, OI +625.76% 7d on a 174.72% range.
-    Funding flipped from a -0.022%/8h 7d average to +0.003%/8h. Top L/S collapsed 1.01 over 7d.
-    Leverage stacked through the rip. First red 24h after the run started the unwind clock.
-    Stand clear until the OI flushes.
+  Risk · vol short of gate
+    Perps WATCH. Vol 1.20x, short of the 2.0x breakout gate.
+    Funding +0.0169%/8h on OI +61.67% 7d, top L/S 2.14 down -0.43 over 7d.
+    Hyperliquid at PEAK · RIDE w/ trail, same backdrop as HYPE, weaker token.
+    Funding extension through +0.03%/8h flips to DISTRIBUTION. Wait for vol confirmation or stand down.
 
-PLAY · funding flip into the strength
+BSB · retail-funded squeeze pile, smart money gone
 
-  Risk · WATCH, late-stage chase
-    Perps WATCH. +94.36% 7d, +17.55% 24h on OI +42.51% 24h, OI +162.64% 7d.
-    Funding flipped from a -0.026%/8h 7d average to +0.021%/8h. Long-side rebuilds on the chase.
-    Top L/S 0.92, cut 1.20 over 7d. Smart money has already left.
-    Wait the next 24h to separate a real continuation from a chase top.
+  Risk · long without confirmation
+    Price +132.62% 7d on OI +215.82% 7d with funding still negative at -0.0242%/8h.
+    Short pile-in dominates. Top L/S 1.43 down -0.96 over 7d, smart money already exited.
+    Token-movers BREAKOUT day 2 +24.6% 24h. The squeeze can run another leg but no clean long entry.
+    Pass. Watch for the unwind to capitulate before any bounce setup forms.
