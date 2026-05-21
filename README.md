@@ -503,6 +503,26 @@ Start with [`examples/README.md`](examples/README.md) for the full setup walk-th
 
 ---
 
+## Fleet Watcher (optional authorization layer)
+
+Add inline ALLOW/BLOCK authorization in front of every skill run. Each skill workflow asks your self-hosted [Fleet Watcher](https://github.com/yourorg/fleet-watcher) control plane *"is this allowed?"* before Claude starts, and reports the outcome after Claude finishes. BLOCK = workflow exits non-zero, Claude never runs, no side-effects, audit ref recorded.
+
+Already wired into `.github/workflows/aeon.yml` as two opt-in steps (`Fleet Watcher preflight`, `Fleet Watcher postflight`). To enable:
+
+1. Stand up Fleet Watcher and mint an agent token via `POST /api/aeon/register`.
+2. Add two repo secrets:
+
+    | Secret           | Value                                           |
+    |------------------|-------------------------------------------------|
+    | `FLEET_ENDPOINT` | Base URL of your Fleet Watcher (e.g. `https://fleet.example.com`) |
+    | `FLEET_TOKEN`    | The `agnt_…` token returned by `/api/aeon/register` |
+
+3. Define your red lines in the Fleet Watcher dashboard (per-skill caps, counterparty allowlists, dangerous-string patterns, source-to-sink chain detection).
+
+If the secrets are not set, both steps no-op — fully backward compatible with every existing AEON install. If Fleet is unreachable when the secrets *are* set, the preflight step fails closed (skill does not run). The postflight step always runs (`if: always()`) so failed/blocked skills are still recorded for taint analysis.
+
+---
+
 ## Two-repo strategy
 
 This repo is a public template. Run your own instance as a **private fork** so memory, articles, and API keys stay private.
