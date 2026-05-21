@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-20T11:32:51Z",
-  "quality_score": 5,
-  "assessment": "Excellent: substantive perps market analysis with specific metrics, clear verdicts, actionable signals (FIDA/PROMPT flags), and graceful sandbox handling.",
+  "last_analyzed": "2026-05-21T07:55:32Z",
+  "quality_score": 4,
+  "assessment": "Substantive market analysis with specific regime classifications, technical metrics, and actionable asset-level watch list; well-documented outputs and clear chain handoff to downstream skill.",
   "flags": [],
-  "avg_score": 3.71,
+  "avg_score": 3.73,
   "history": [
     {
       "date": "2026-05-18",
@@ -61,6 +61,10 @@
     {
       "date": "2026-05-20",
       "score": 5
+    },
+    {
+      "date": "2026-05-21",
+      "score": 4
     }
   ]
 }
