@@ -288,6 +288,12 @@ Cap the article at ~400 lines. If any section's bullet list exceeds the cap, tri
 ### 11. Persist state
 
 ```bash
+# Roll the .bak forward BEFORE we touch the live file. This is the only
+# place that creates the backup; without this line the rollback path
+# below (cp .bak ...) would have nothing to restore from on a corrupt
+# write — both the live file and the backup would be lost.
+[ -f memory/topics/fleet-state.json ] && cp memory/topics/fleet-state.json memory/topics/fleet-state.json.bak
+
 TMP=$(mktemp)
 jq --arg ts "$(date -u +%FT%TZ)" \
    --arg today "$(date -u +%F)" \
@@ -301,11 +307,22 @@ jq --arg ts "$(date -u +%FT%TZ)" \
   .snapshot = {totals: $totals, release_count: $release_count, spotlight_fork: $spotlight_fork} |
   .history = ((.history // []) + [{run_date: $today, totals: $totals, release_count: $release_count, spotlight_fork: $spotlight_fork}] | sort_by(.run_date) | .[-12:])
 ' memory/topics/fleet-state.json > "$TMP"
-mv "$TMP" memory/topics/fleet-state.json
-jq empty memory/topics/fleet-state.json || { cp memory/topics/fleet-state.json.bak memory/topics/fleet-state.json; exit 1; }
+
+# Validate the candidate write before promoting it. If jq produced
+# invalid JSON (interrupted pipe, disk error, malformed input), leave
+# the live file untouched — the .bak rotation above is the safety net
+# for the rarer case where the live file itself is corrupt at start.
+if jq empty "$TMP" 2>/dev/null; then
+  mv "$TMP" memory/topics/fleet-state.json
+else
+  rm -f "$TMP"
+  cp memory/topics/fleet-state.json.bak memory/topics/fleet-state.json 2>/dev/null || true
+  echo "FLEET_STATE_STATE_CORRUPT: jq build produced invalid JSON; restored from .bak" >&2
+  exit 1
+fi
 ```
 
-Keep one `.bak` rolling. If `jq empty` fails after write → log `FLEET_STATE_STATE_CORRUPT`, restore from `.bak`, exit `ERROR`.
+Keep one `.bak` rolling. The rotation runs every persist step so the rollback always has a non-empty backup to restore from.
 
 In `MODE=dry-run`: build the article + computed deltas + planned state diff, log everything, **do not** call `./notify`, **do** write the article and update state (so a real run later doesn't re-fire the same week with stale baselines).
 
