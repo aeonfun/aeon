@@ -87,6 +87,12 @@ gh api "repos/${FEATURED_FORK}" \
   --jq '{stars: .stargazers_count, forks: .forks_count, default_branch, created_at, pushed_at, description, html_url}' \
   > /tmp/contrib-repo.json 2>/dev/null || echo '{}' > /tmp/contrib-repo.json
 
+# Extract default_branch into a shell var — step 5 needs it to address the right ref.
+# Falls back to "main" when the API call failed (contrib-repo.json is "{}") or
+# when GitHub returned the field as null/missing.
+FORK_DEFAULT_BRANCH=$(jq -r '.default_branch // "main"' /tmp/contrib-repo.json)
+[ -z "$FORK_DEFAULT_BRANCH" ] || [ "$FORK_DEFAULT_BRANCH" = "null" ] && FORK_DEFAULT_BRANCH=main
+
 # Recent commit activity (last 30 days, default branch)
 SINCE=$(date -u -d "${today} - 30 days" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null \
     || date -u -j -v-30d -f %Y-%m-%dT%H:%M:%SZ "${today}T00:00:00Z" +%Y-%m-%dT%H:%M:%SZ)
@@ -104,9 +110,12 @@ gh api "repos/${FEATURED_FORK}/stats/contributors" \
 ### 5. Identify the diverged work
 
 ```bash
-# Read the fork's aeon.yml to count enabled skills, and diff against parent's
+# Read the fork's aeon.yml to count enabled skills, and diff against parent's.
+# FORK_DEFAULT_BRANCH was extracted from contrib-repo.json in step 4 (falls back
+# to "main"). Without that ref the GitHub contents API used to silently 404 on
+# every fork that renamed its default branch — see Issue #184 (AntFleet H3).
 gh api "repos/${FEATURED_FORK}/contents/aeon.yml?ref=${FORK_DEFAULT_BRANCH}" \
-  --jq '.content' 2>/dev/null | base64 -d > /tmp/fork-aeon.yml || true
+  --jq '.content' 2>/dev/null | base64 -d > /tmp/fork-aeon.yml || echo '' > /tmp/fork-aeon.yml
 ```
 
 Extract the list of enabled skills (lines matching `enabled:\s*true` with the skill key on the same logical line). Pattern (loose, comment-skipping):
