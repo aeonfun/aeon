@@ -63,6 +63,16 @@ while IFS=$'\t' read -r cfg_name cid; do
   [ -n "$cfg_name" ] && NAME_TO_ID["$cfg_name"]="$cid"
 done < <(jq -r '.campaigns[]? | [.configName, .campaignId] | @tsv' "$STATE_FILE")
 
+# Reverse map: campaign ID -> config name. Used by Phase 2 to find the state
+# entry for an ad set whose payload supplies a direct campaignId without a
+# parentCampaignConfigName — without this, the state-write `select` runs
+# against an empty $parent and silently appends the ad set under no
+# campaign, leaving .admanage-state/campaigns.json out of sync.
+declare -A ID_TO_NAME
+while IFS=$'\t' read -r cid cfg_name; do
+  [ -n "$cid" ] && ID_TO_NAME["$cid"]="$cfg_name"
+done < <(jq -r '.campaigns[]? | [.campaignId, .configName] | @tsv' "$STATE_FILE")
+
 campaign_success=0
 campaign_fail=0
 adset_success=0
@@ -163,9 +173,24 @@ for file in "${ADSET_FILES[@]}"; do
     continue
   fi
 
+  # Resolve the parent's configName for the state write. If the payload
+  # supplied a direct campaignId without parentCampaignConfigName, the
+  # ID->name reverse map (built from STATE_FILE at startup) tells us which
+  # campaign to attach the ad set to. Without this, the jq select below
+  # would run against an empty $parent and silently no-op.
+  state_parent="$parent_name"
+  if [ -z "$state_parent" ]; then
+    cid_for_lookup=$(echo "$payload" | jq -r '.campaignId // empty')
+    state_parent="${ID_TO_NAME[$cid_for_lookup]:-}"
+  fi
+  if [ -z "$state_parent" ]; then
+    echo "postprocess-admanage-create: WARNING ad-set '$cfg_name' created (id=$adset_id) but parent campaign is unknown — state not updated"
+    summary_lines+=("adset '$cfg_name' → $adset_id (state SKIPPED: parent campaign unknown)")
+  fi
+
   # Append to state under the right campaign
   tmp=$(mktemp)
-  jq --arg parent "$parent_name" --arg name "$cfg_name" --arg aid "$adset_id" \
+  jq --arg parent "$state_parent" --arg name "$cfg_name" --arg aid "$adset_id" \
      --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
      '(.campaigns[] | select(.configName == $parent) | .adSets) += [{configName:$name, adSetId:$aid, createdAt:$ts}]' \
      "$STATE_FILE" > "$tmp" && mv "$tmp" "$STATE_FILE"
