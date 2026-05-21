@@ -1,9 +1,29 @@
-## Summary
+Narratives · 21 May · 7 tracked, 2 NEW
 
-- Executed the narrative-tracker skill for 2026-05-20 — fourth invocation of the same day (after the morning scheduled run, noon corrective re-run, and a third invocation already logged).
-- Re-verified inputs: `.xai-cache/narratives.json` window (05-17→05-20) unchanged from this morning; WebSearch triangulation across the three Step 1c queries returned signals consistent with the morning run (RWA/Stablecoins/PerpDEXs cluster, AWS Bedrock AgentCore Payments + Solana×Google Cloud Pay.sh + Grayscale/Bitwise TAO ETF filings); no fresh narrative catalyst this afternoon.
-- Map locked since the morning run: 5 tracked, 1 NEW (Hyperliquid). ↑ RISING — Hyperliquid 4/5 NEW·RIDE, Decentralized compute 5/5·RIDE, Privacy/ZK 4/5 (was 3)·RIDE, AI agents 5/5·RIDE w/ trail. → PEAK — RWA 5/5·RIDE w/ trail. Changes: + Hyperliquid (NEW), − Liquidity rotation (DEAD). Stance: rotate into infrastructure, NVDA earnings tonight is the test.
-- `.outputs/narrative-tracker.md` already holds the correct 1819-byte v2-locked artifact from the noon corrective run — verified intact, no rewrite.
-- No notification re-emitted — mirrors the 05-19 and morning-of-05-20 corrective-rerun precedents to avoid spamming #narratives with the same signal.
-- Files: read-only verification of `.outputs/narrative-tracker.md`; appended `### narrative-tracker (fourth invocation, operator-invoked — map verification only)` block + `## Summary` to `memory/logs/2026-05-20.md`.
-- Follow-up: tomorrow's scheduled run (2026-05-21 14:00 UTC) refreshes the XAI cache and rebuilds against today's baseline; watch NVDA earnings reaction for Decentralized compute / AI agents / infrastructure rotation feedback in the next 24h.
+↑ RISING
+• AI agents / agentic finance [TAO, FET, VIRTUAL] · 5/5 · RIDE
+  Jensen Huang called demand parabolic post-NVDA last night. Hermes Agent shipped browser skills. Big Tech wiring continues.
+• Decentralized compute / DePIN / AI infra [TAO, RNDR, AKT, FIL] · 5/5 · RIDE
+  NVDA confirmed parabolic AI demand last night. VCs are rotating into physical and defense AI infra across 600+ newsletter signals.
+• AI × crypto on X / SocialFi [VIRTUAL] · 3/5 · NEW · WATCH
+  X-payments and AI agents pull memes and follows into onchain flows. No clean token vehicle yet.
+• BTCFi / Bitcoin-native yield [BABY, STX, CORE] · 3/5 · NEW · WATCH
+  @Saint_Blac calls BTCFi a top-3 narrative alongside AI and RWA. Babylon is the named project. Waits for a token catalyst to RIDE.
+
+→ PEAK
+• RWA / stablecoins / tokenization [ONDO, PLUME, LINK] · 5/5 · RIDE w/ trail
+  Japan recognizes foreign stablecoins as legal payment June 1. ONDO leading the utility shift.
+  reflexivity: regulation legitimizes RWA, growth lobbies for regulation. Japan adds a second jurisdiction to the loop.
+• Hyperliquid / perp DEX [HYPE, dYdX] · 4/5 · RIDE w/ trail
+  BHYP ETF and SpaceX perps still in play. No fresh thread in today's signals. Top traders continue cutting long exposure.
+  reflexivity: BHYP ETF allocates 10% of fees to HYPE buys. Inflows compound the token bid until structure breaks.
+
+↓ FADING
+• Privacy / ZK [ZEC, ZANO] · 2/5 (was 4) · FADE
+  Zero mentions in today's signals after the 4-day solo ZEC bid. Price led without project-side catalyst. Peak signal confirmed.
+
+Changes since yesterday:
++ AI × crypto on X / SocialFi (NEW)
++ BTCFi (NEW)
+
+Stance: rotate into compute and AI agents through NVDA confirmation. Fade the privacy bid.

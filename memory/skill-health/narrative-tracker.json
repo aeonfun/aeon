@@ -1,10 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-20T11:22:54Z",
+  "last_analyzed": "2026-05-21T07:47:03Z",
   "quality_score": 4,
-  "assessment": "Substantive narrative analysis with specific clusters identified, well-structured verification workflow, sound judgment (no re-notify precedent), and clear follow-up actions; verification run rather than discovery limits peak impact.",
+  "assessment": "Good — substantive narrative tracking with specific catalysts, clear trading stance, and proper file management; minor operational friction noted but doesn't detract from output quality",
   "flags": [],
-  "avg_score": 3.89,
+  "avg_score": 3.9,
   "history": [
     {
       "date": "2026-05-18",
@@ -40,6 +40,10 @@
     },
     {
       "date": "2026-05-20",
+      "score": 4
+    },
+    {
+      "date": "2026-05-21",
       "score": 4
     }
   ]
