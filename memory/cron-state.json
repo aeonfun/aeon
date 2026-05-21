@@ -60,13 +60,13 @@
   },
   "perps-scan": {
     "last_status": "success",
-    "last_success": "2026-05-20T11:32:58Z",
-    "total_runs": 14,
-    "total_successes": 14,
+    "last_success": "2026-05-21T07:55:40Z",
+    "total_runs": 15,
+    "total_successes": 15,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
-    "last_quality_score": 5
+    "last_quality_score": 4
   },
   "token-call": {
     "last_status": "success",
