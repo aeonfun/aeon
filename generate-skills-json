@@ -35,7 +35,7 @@ get_category() {
     issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
     autoresearch|auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
-    workflow-security-audit|skill-security-scan|vercel-projects) echo "dev" ;;
+    workflow-security-audit|skill-security-scan|vercel-projects|nipmod) echo "dev" ;;
     spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     fork-first-run-alert|fork-skill-gap) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
