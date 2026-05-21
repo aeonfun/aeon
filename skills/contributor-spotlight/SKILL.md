@@ -87,6 +87,13 @@ gh api "repos/${FEATURED_FORK}" \
   --jq '{stars: .stargazers_count, forks: .forks_count, default_branch, created_at, pushed_at, description, html_url}' \
   > /tmp/contrib-repo.json 2>/dev/null || echo '{}' > /tmp/contrib-repo.json
 
+# Extract default branch into FORK_DEFAULT_BRANCH for later content fetches.
+# Fall back to "main" if the repo stats call was empty or default_branch was
+# absent — most aeon forks default to "main", but the fetch below should
+# still tolerate a wrong ref (404) without aborting the run.
+FORK_DEFAULT_BRANCH=$(jq -r '.default_branch // "main"' /tmp/contrib-repo.json 2>/dev/null)
+[ -z "$FORK_DEFAULT_BRANCH" ] && FORK_DEFAULT_BRANCH=main
+
 # Recent commit activity (last 30 days, default branch)
 SINCE=$(date -u -d "${today} - 30 days" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null \
     || date -u -j -v-30d -f %Y-%m-%dT%H:%M:%SZ "${today}T00:00:00Z" +%Y-%m-%dT%H:%M:%SZ)
