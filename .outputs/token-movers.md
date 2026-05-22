@@ -1,43 +1,45 @@
-# Token Movers — 2026-05-21
+# Token Movers — 2026-05-22
 
-Broad green tape — 78/100 top coins green, median 24h +1.0%, majors mixed (BTC +0.4%, ETH -0.1%, SOL +1.9%) and 7d tape still red across L1s (BTC -2.7%, ETH -6.1%, SOL -5.3%).
+Broad green tape behind flat majors: 69/100 top-100 green at median +0.5%, BTC −0.2% / ETH flat / SOL +0.5%, 7d L1 reds still in place (BTC −3.6%, ETH −5.2%, SOL −4.0%).
 
 ## Top Winners (24h)
-1. NEX (Nexus) — $0.0000053  +26.4% / 7d n/a / 1h -4.8%  •  $87.4M / #144  [TRENDING+UP]
-2. BSB (Block Street) — $0.9550  +24.6% / 7d +121.9% / 1h -1.1%  •  $132.4M / #181  [BREAKOUT]
-3. JTO (Jito) — $0.5274  +22.5% / 7d +3.4% / 1h +2.5%  •  $141.4M / #170
-4. 2Z (DoubleZero) — $0.1126  +21.3% / 7d +7.4% / 1h +1.7%  •  $30.9M / #124  [MICROCAP]
-5. BEAT (Audiera) — $0.6791  +20.0% / 7d +20.5% / 1h +0.2%  •  $29.0M / #199  [MICROCAP]
-6. HYPE (Hyperliquid) — $57.57  +18.5% / 7d +46.9% / 1h +2.1%  •  $1.3B / #11  [TRENDING+UP][BREAKOUT]
-7. BANANAS31 (Banana For Scale) — $0.0137  +16.3% / 7d -3.0% / 1h +1.5%  •  $48.2M / #243  [MICROCAP]
-8. CHEEMS (Cheems Token) — $0.00000067  +14.2% / 7d +11.4% / 1h -6.8%  •  $2.6M / #242  [MICROCAP]
-9. GRASS (Grass) — $0.3444  +13.9% / 7d +5.2% / 1h +1.9%  •  $11.6M / #189
-10. ZEC (Zcash) — $667.88  +13.3% / 7d +26.0% / 1h +0.3%  •  $1.1B / #13  [TRENDING+UP][MAJOR]
+1. RAIL (Railgun) — $2.450  +58.8% / 7d +43.5% / 1h +7.6%  •  $3M / #239  [PUMP-RISK] [TRENDING+UP]
+2. NEAR (NEAR Protocol) — $2.230  +30.3% / 7d +42.5% / 1h +1.8%  •  $909M / #36  [TRENDING+UP] [BREAKOUT]
+3. GRASS (Grass) — $0.4437  +29.8% / 7d +34.7% / 1h +0.8%  •  $48M / #164  [TRENDING+UP] [BREAKOUT]
+4. GENIUS (Genius) — $0.5280  +18.6% / 7d +7.1% / 1h +20.1%  •  $17M / #206
+5. AERO (Aerodrome Finance) — $0.4623  +11.4% / 7d −1.0% / 1h +1.0%  •  $49M / #117
+6. FET (Artificial Superintelligence Alliance) — $0.2125  +9.8% / 7d +1.8% / 1h +0.6%  •  $88M / #110  [TRENDING+UP]
+7. WLD (Worldcoin) — $0.2815  +9.4% / 7d +11.6% / 1h +0.3%  •  $162M / #76
+8. TIA (Celestia) — $0.4412  +8.8% / 7d −0.2% / 1h +2.3%  •  $48M / #121
+9. RIVER (River) — $6.730  +8.5% / 7d −8.9% / 1h +0.9%  •  $13M / #250
+
+(list shrank from 10 to 9 after dedup-dropping BEAT: yesterday +20.0% [MICROCAP], today +11.3%, same direction, no new tag.)
 
 ## Top Losers (24h)
-1. BILL (Billions Network) — $0.0830  -27.4% / 7d -51.7% / 1h -5.0%  •  $105.4M / #188  [CAPITULATION]
-2. UB (Unibase) — $0.1040  -16.6% / 7d -47.6% / 1h -6.8%  •  $13.4M / #166
-3. M (MemeCore) — $2.930  -13.9% / 7d -12.3% / 1h +0.6%  •  $8.5M / #30
-4. SKYAI (SkyAI) — $0.3457  -9.2% / 7d -17.1% / 1h +0.1%  •  $55.0M / #135
-5. RUNE (THORChain) — $0.4235  -6.5% / 7d -27.2% / 1h +0.3%  •  $9.4M / #226
-6. TRAC (OriginTrail) — $0.4558  -4.9% / 7d +34.1% / 1h -2.1%  •  $61.6M / #184
-7. SIREN (Siren) — $0.5124  -4.9% / 7d -19.3% / 1h +0.2%  •  $8.7M / #129
-8. GWEI (ETHGas) — $0.1242  -4.8% / 7d -4.5% / 1h -0.3%  •  $5.7M / #165
-9. 9BIT (The9bit) — $0.0387  -4.6% / 7d +48.1% / 1h -0.2%  •  $6.0M / #145
+1. SKYAI (SkyAI) — $0.2580  −24.3% / 7d −29.9% / 1h −0.3%  •  $79M / #165  [CAPITULATION]
+2. B (BUILDon) — $0.2772  −21.1% / 7d −40.2% / 1h −1.5%  •  $26M / #160
+3. NEX (Nexus) — $0.000004  −19.4% / 7d n/a / 1h −9.1%  •  $57M / #166  [TRENDING+DOWN]
+4. H (Humanity) — $0.2202  −13.2% / 7d −11.4% / 1h −0.2%  •  $478M / #123  [CAPITULATION]
+5. BSB (Block Street) — $0.8758  −7.8% / 7d +116.8% / 1h −0.7%  •  $71M / #193
+6. STABLE (Stable) — $0.0325  −5.4% / 7d −16.5% / 1h −2.8%  •  $15M / #84
+7. RAVE (RaveDAO) — $0.5708  −4.6% / 7d −10.0% / 1h −0.6%  •  $10M / #234
+
+(list shrank from 10 to 7 after dedup-dropping BILL [CAPITULATION] day-2 same tag/direction, plus UB and GWEI as same direction with no new tag.)
 
 ## Trending
-1. HYPE (Hyperliquid) — #11, $57.57, 24h +18.5%  [MAJOR][TRENDING+UP]
-2. NEX (Nexus) — #144, $0.0000053, 24h +26.4%  [TRENDING+UP]
-3. PENGU (Pudgy Penguins) — #94, $0.00918, 24h +3.9%
-4. VVV (Venice Token) — #82, $16.85, 24h -2.0%
-5. ZEC (Zcash) — #13, $667.88, 24h +13.3%  [MAJOR][TRENDING+UP]
-6. SUI (Sui) — #25, $1.110, 24h +4.8%
-7. PI (Pi Network) — #54, $0.1529, 24h +2.7%
+1. NEAR (NEAR Protocol) — #36, $2.23, +30.3%  [TRENDING+UP] [BREAKOUT]
+2. PENGU (Pudgy Penguins) — #92, $0.00976, +6.4%
+3. HYPE (Hyperliquid) — #11, $57.49, +0.1%  [MAJOR]
+4. GRASS (Grass) — #164, $0.4437, +29.8%  [TRENDING+UP] [BREAKOUT]
+5. ZEC (Zcash) — #13, $653.82, −2.2%  [MAJOR]
+6. VVV (Venice Token) — #79, $18.12, +6.8%
+7. NEX (Nexus) — #163, $0.000004, −19.4%  [TRENDING+DOWN]
 
 ## Notable
-- BSB [BREAKOUT] +24.6% on 7d +121.9% with $132M mcap — day-2 continuation of yesterday's +14.5% pop, well past the BREAKOUT gate this time.
-- HYPE [TRENDING+UP][BREAKOUT] +18.5% on 7d +46.9% — top-15 cap, $1.3B vol, narrative leader breaking out.
-- ZEC [TRENDING+UP][MAJOR] +13.3% extending the multi-day privacy/ZK leadership — fourth straight session bid.
-- BILL [CAPITULATION] -27.4% on $105M vol — sharper than the morning's -8.4% slide, 7d down -51.7% as the three-day losing streak deepens.
-- NEX [TRENDING+UP] +26.4% with 7d data missing, rank #144 / $87M mcap — recent listing pattern, 24h print is low-context.
-- Dedup-dropped: LIT (winner repeat, decelerating, lost BREAKOUT tag), CHZ (loser repeat, same direction/mag, no new tag).
+- NEAR +30.3% on $909M vol at rank #36, 7d +42.5%, in trending. Quantum-signatures + AI-agents + DePIN narrative confluence converts yesterday's NEAR ACCUMULATION day-2 into a clean breakout. Size and turnover read continuation, not pump.
+- GRASS +29.8% [BREAKOUT] on $48M vol, trending, 7d +34.7%. DePIN leader joins NEAR in the move. The AI-infra rotation is firing.
+- RAIL [PUMP-RISK] rank #239 on only $3M volume behind +58.8%. Privacy/ZK adjacency tempts. Liquidity disqualifies. Treat as pump until volume confirms.
+- NEX closes the round trip. Yesterday's +26.4% top winner prints −19.4% today and joins trending on the downside. Flash-pump fade complete in 24h.
+- H [CAPITULATION] −13.2% on $478M vol against a $401M cap (vol/mcap 1.19). Heavy distribution day, structural break to the downside.
+- BSB −7.8% with 7d +116.8% intact. Yesterday's day-2 [BREAKOUT] reverses but the 7d frame holds. Distribution after the run, no capitulation yet.
+- SKYAI [CAPITULATION] −24.3% completes the relief-bounce fade flagged on 05-20 (then [FADE] +25.6% on 7d −32%). The fade call landed.
