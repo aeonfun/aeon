@@ -1,61 +1,81 @@
-"""Perps engine v4 ledger — schema validation + atomic read/write.
+"""Perps engine v4.1 ledger — schema validation + atomic read/write.
 
 The ledger at memory/topics/state/active-setups.json is the source of truth
-for every fired LONG/SHORT call. This module owns its on-disk format.
+for every fired LONG/SHORT position. This module owns its on-disk format.
+
+v4.1 changes from v4:
+- pending[] renamed to watchlist[] (cap 5 enforced at render layer)
+- MAE/MFE tracking on every open/closed entry (daily close granularity)
+- SCARE added to outcome vocabulary (won the trade but breached invalidation)
+- watchlist_provenance on open/closed entries promoted from a watchlist
+- auto_flipped flag on closes triggered by opposite-direction entry
+- VALID_CALLS simplified to {RIDE, CLOSE}
 
 Schema:
     {
-      "schema_version": "v4",
-      "last_updated": str | null,         # ISO 8601 UTC, set by writer
-      "open":    [OpenEntry, ...],         # active positions
-      "pending": [PendingEntry, ...],      # (wait) intents that haven't fired
-      "closed":  [ClosedEntry, ...]        # historical, append-only
+      "schema_version": "v4.1",
+      "last_updated": str | null,
+      "open":      [OpenEntry, ...],
+      "watchlist": [WatchlistEntry, ...],
+      "closed":    [ClosedEntry, ...]
     }
 
 OpenEntry:
     {
-      "id":             "TICKER-YYYY-MM-DD-NNN",
-      "asset":          str,
-      "direction":      "LONG" | "SHORT",
-      "fired_date":     "YYYY-MM-DD",
-      "fired_price":    number,
+      "id":              "TICKER-YYYY-MM-DD-NNN",
+      "asset":           str,
+      "direction":       "LONG" | "SHORT",
+      "fired_date":      "YYYY-MM-DD",
+      "fired_price":     number,
       "fired_btc_price": number | null,
       "fired_eth_price": number | null,
-      "entry_zone":     str | null,
-      "invalidation":   str,
-      "horizon":        "24h" | "3d" | "7d" | "multi-week",
-      "thesis":         str,
+      "entry_zone":      str | null,
+      "invalidation":    str,
+      "horizon":         "24h" | "3d" | "7d" | "multi-week",
+      "thesis":          str,
       "confluence_fired":   [str, ...],
       "confluence_missing": [str, ...],
-      "named_risks":    [str, ...],         # at least one
-      "evaluations":    [Evaluation, ...]
+      "named_risks":     [str, ...],
+      "mae_pct":         number | null,    # worst PnL % seen so far
+      "mfe_pct":         number | null,    # best  PnL % seen so far
+      "mae_date":        "YYYY-MM-DD" | null,
+      "mfe_date":        "YYYY-MM-DD" | null,
+      "invalidation_breached": bool,
+      "watchlist_provenance":  WatchlistProvenance | null,
+      "evaluations":     [Evaluation, ...]
     }
 
-Evaluation:
-    {"date": "YYYY-MM-DD", "call": "RIDE" | "SELL (now)" | "SELL (wait)",
-     "price_at_eval": number | null, "note": str}
-
-PendingEntry (a (wait) call that hasn't promoted to (now) yet):
+WatchlistEntry (a setup that doesn't meet entry conviction yet):
     {
-      "id":               "TICKER-pending-YYYY-MM-DD-NNN",
+      "id":               "TICKER-watchlist-YYYY-MM-DD-NNN",
       "asset":            str,
       "direction":        "LONG" | "SHORT",
       "first_seen_date":  "YYYY-MM-DD",
       "trigger":          str,
       "invalidation":     str,
-      "horizon":          "24h" | "3d" | "7d" | "multi-week",
+      "horizon":          str,
       "thesis":           str,
       "confluence_fired": [str, ...],
       "named_risks":      [str, ...]
     }
 
+WatchlistProvenance:
+    {
+      "watchlist_id":              str,
+      "days_on_watchlist":         number,
+      "original_trigger":          str,
+      "original_confluence_fired": [str, ...]
+    }
+
+Evaluation:
+    {"date": "YYYY-MM-DD", "call": "RIDE" | "CLOSE",
+     "price_at_eval": number | null, "note": str}
+
 ClosedEntry: OpenEntry plus closed_date, closed_price, close_reason,
 horizon_realized, return_pct, return_vs_btc_pct, return_vs_eth_pct,
-outcome ("WIN" | "LOSS" | "NEUTRAL").
+outcome (WIN | LOSS | SCARE | NEUTRAL), auto_flipped.
 
 Atomic write: write to .tmp file, fsync, then os.replace() into place.
-os.replace() is atomic on POSIX filesystems. This protects against
-partial writes if the process is killed mid-write.
 """
 
 from __future__ import annotations
@@ -69,12 +89,12 @@ from typing import Any
 
 LEDGER_PATH = Path("memory/topics/state/active-setups.json")
 SNAPSHOT_DIR = Path("memory/topics/state/snapshots")
-SCHEMA_VERSION = "v4"
+SCHEMA_VERSION = "v4.1"
 
 VALID_DIRECTIONS = {"LONG", "SHORT"}
 VALID_HORIZONS = {"24h", "3d", "7d", "multi-week"}
-VALID_CALLS = {"RIDE", "SELL (now)", "SELL (wait)"}
-VALID_OUTCOMES = {"WIN", "LOSS", "NEUTRAL"}
+VALID_CALLS = {"RIDE", "CLOSE"}
+VALID_OUTCOMES = {"WIN", "LOSS", "SCARE", "NEUTRAL"}
 
 CONFLUENCE_CRITERIA = {
     "quant_regime_aligned",
@@ -86,7 +106,7 @@ CONFLUENCE_CRITERIA = {
     "regime_transition",
     "cross_domain_bridge",
     "enrichment_positive",
-    "dominance_aligned",  # populated when B1 ships in Phase 3
+    "dominance_aligned",  # populated when Phase 3 ships
 }
 
 
@@ -95,7 +115,7 @@ class LedgerError(Exception):
 
 
 # ---------------------------------------------------------------------------
-# Validation
+# Validation helpers
 
 
 def _require(cond: bool, msg: str) -> None:
@@ -109,9 +129,7 @@ def _require_str(obj: dict, key: str, where: str) -> None:
     _require(len(obj[key]) > 0, f"{where}: '{key}' must be non-empty")
 
 
-def _require_number(
-    obj: dict, key: str, where: str, allow_none: bool = False
-) -> None:
+def _require_number(obj: dict, key: str, where: str, allow_none: bool = False) -> None:
     _require(key in obj, f"{where}: missing '{key}'")
     val = obj[key]
     if allow_none and val is None:
@@ -120,6 +138,11 @@ def _require_number(
         isinstance(val, (int, float)) and not isinstance(val, bool),
         f"{where}: '{key}' must be number",
     )
+
+
+def _require_bool(obj: dict, key: str, where: str) -> None:
+    _require(key in obj, f"{where}: missing '{key}'")
+    _require(isinstance(obj[key], bool), f"{where}: '{key}' must be boolean")
 
 
 def _require_list(obj: dict, key: str, where: str) -> None:
@@ -138,6 +161,24 @@ def _validate_evaluation(ev: dict, where: str) -> None:
     _require_str(ev, "note", where)
 
 
+def _validate_watchlist_provenance(prov: Any, where: str) -> None:
+    if prov is None:
+        return
+    _require(isinstance(prov, dict), f"{where}: watchlist_provenance must be object or null")
+    _require_str(prov, "watchlist_id", where)
+    _require_number(prov, "days_on_watchlist", where)
+    _require_str(prov, "original_trigger", where)
+    _require_list(prov, "original_confluence_fired", where)
+
+
+def _validate_confluence_list(lst: list, where: str, key: str) -> None:
+    for c in lst:
+        _require(
+            c in CONFLUENCE_CRITERIA,
+            f"{where}.{key}: unknown criterion '{c}' (allowed: {sorted(CONFLUENCE_CRITERIA)})",
+        )
+
+
 def _validate_open_entry(entry: dict, idx: int) -> None:
     where = f"open[{idx}]"
     _require(isinstance(entry, dict), f"{where}: must be object")
@@ -151,7 +192,6 @@ def _validate_open_entry(entry: dict, idx: int) -> None:
     _require_number(entry, "fired_price", where)
     _require_number(entry, "fired_btc_price", where, allow_none=True)
     _require_number(entry, "fired_eth_price", where, allow_none=True)
-    # entry_zone optional (can be null for "market" entries)
     if entry.get("entry_zone") is not None:
         _require(
             isinstance(entry["entry_zone"], str),
@@ -168,25 +208,29 @@ def _validate_open_entry(entry: dict, idx: int) -> None:
         len(entry["confluence_fired"]) >= 1,
         f"{where}: confluence_fired must list at least one criterion",
     )
-    for c in entry["confluence_fired"]:
-        _require(
-            c in CONFLUENCE_CRITERIA,
-            f"{where}: unknown confluence criterion '{c}' "
-            f"(allowed: {sorted(CONFLUENCE_CRITERIA)})",
-        )
+    _validate_confluence_list(entry["confluence_fired"], where, "confluence_fired")
     _require_list(entry, "confluence_missing", where)
+    _validate_confluence_list(entry["confluence_missing"], where, "confluence_missing")
     _require_list(entry, "named_risks", where)
     _require(
         len(entry["named_risks"]) >= 1,
         f"{where}: named_risks must list at least one risk",
     )
+    _require_number(entry, "mae_pct", where, allow_none=True)
+    _require_number(entry, "mfe_pct", where, allow_none=True)
+    if entry.get("mae_date") is not None:
+        _require(isinstance(entry["mae_date"], str), f"{where}: mae_date must be string or null")
+    if entry.get("mfe_date") is not None:
+        _require(isinstance(entry["mfe_date"], str), f"{where}: mfe_date must be string or null")
+    _require_bool(entry, "invalidation_breached", where)
+    _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
     _require_list(entry, "evaluations", where)
     for i, ev in enumerate(entry["evaluations"]):
         _validate_evaluation(ev, f"{where}.evaluations[{i}]")
 
 
-def _validate_pending_entry(entry: dict, idx: int) -> None:
-    where = f"pending[{idx}]"
+def _validate_watchlist_entry(entry: dict, idx: int) -> None:
+    where = f"watchlist[{idx}]"
     _require(isinstance(entry, dict), f"{where}: must be object")
     _require_str(entry, "id", where)
     _require_str(entry, "asset", where)
@@ -203,6 +247,7 @@ def _validate_pending_entry(entry: dict, idx: int) -> None:
     )
     _require_str(entry, "thesis", where)
     _require_list(entry, "confluence_fired", where)
+    _validate_confluence_list(entry["confluence_fired"], where, "confluence_fired")
     _require_list(entry, "named_risks", where)
 
 
@@ -232,6 +277,11 @@ def _validate_closed_entry(entry: dict, idx: int) -> None:
         entry.get("outcome") in VALID_OUTCOMES,
         f"{where}: outcome must be one of {sorted(VALID_OUTCOMES)}",
     )
+    _require_number(entry, "mae_pct", where, allow_none=True)
+    _require_number(entry, "mfe_pct", where, allow_none=True)
+    _require_bool(entry, "invalidation_breached", where)
+    _require_bool(entry, "auto_flipped", where)
+    _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
 
 
 def validate(ledger: dict) -> None:
@@ -243,37 +293,34 @@ def validate(ledger: dict) -> None:
         f"got '{ledger.get('schema_version')}'",
     )
     _require_list(ledger, "open", "ledger")
-    _require_list(ledger, "pending", "ledger")
+    _require_list(ledger, "watchlist", "ledger")
     _require_list(ledger, "closed", "ledger")
     for i, e in enumerate(ledger["open"]):
         _validate_open_entry(e, i)
-    for i, e in enumerate(ledger["pending"]):
-        _validate_pending_entry(e, i)
+    for i, e in enumerate(ledger["watchlist"]):
+        _validate_watchlist_entry(e, i)
     for i, e in enumerate(ledger["closed"]):
         _validate_closed_entry(e, i)
 
-    # Cross-cutting: IDs must be unique across open + closed (pending IDs are
-    # separately namespaced via the "-pending-" segment so collisions are
-    # checked within pending only).
+    # Cross-cutting: IDs unique across open + closed (watchlist IDs are
+    # separately namespaced via the "-watchlist-" segment).
     open_ids = [e["id"] for e in ledger["open"]]
     closed_ids = [e["id"] for e in ledger["closed"]]
-    pending_ids = [e["id"] for e in ledger["pending"]]
-    _require(
-        len(open_ids) == len(set(open_ids)),
-        "ledger: duplicate ID in open[]",
-    )
-    _require(
-        len(closed_ids) == len(set(closed_ids)),
-        "ledger: duplicate ID in closed[]",
-    )
-    _require(
-        len(pending_ids) == len(set(pending_ids)),
-        "ledger: duplicate ID in pending[]",
-    )
+    watchlist_ids = [e["id"] for e in ledger["watchlist"]]
+    _require(len(open_ids) == len(set(open_ids)), "ledger: duplicate ID in open[]")
+    _require(len(closed_ids) == len(set(closed_ids)), "ledger: duplicate ID in closed[]")
+    _require(len(watchlist_ids) == len(set(watchlist_ids)), "ledger: duplicate ID in watchlist[]")
     cross = set(open_ids) & set(closed_ids)
+    _require(not cross, f"ledger: ID(s) appear in both open and closed: {sorted(cross)}")
+
+    # Asset uniqueness in open[] — one open position per asset (auto-flip
+    # closes the prior). Same asset can appear in watchlist regardless,
+    # but the render layer should suppress that combination.
+    open_assets = [e["asset"] for e in ledger["open"]]
     _require(
-        not cross,
-        f"ledger: ID(s) appear in both open and closed: {sorted(cross)}",
+        len(open_assets) == len(set(open_assets)),
+        f"ledger: duplicate asset in open[] (auto-flip should have closed the prior): "
+        f"{[a for a in open_assets if open_assets.count(a) > 1]}",
     )
 
 
@@ -282,7 +329,7 @@ def validate(ledger: dict) -> None:
 
 
 def load(path: Path = LEDGER_PATH) -> dict:
-    """Load and validate the ledger at path. Raises LedgerError on any issue."""
+    """Load and validate the ledger at path."""
     if not path.exists():
         raise LedgerError(f"ledger file not found at {path}")
     try:
@@ -294,16 +341,9 @@ def load(path: Path = LEDGER_PATH) -> dict:
 
 
 def save(ledger: dict, path: Path = LEDGER_PATH) -> None:
-    """Validate, then atomically write the ledger to path.
-
-    Writes to a sibling .tmp file, fsyncs, then os.replace()s into place.
-    On POSIX, os.replace() is atomic — readers see either the old file or
-    the new file, never a half-written one.
-    """
+    """Validate, then atomically write the ledger to path."""
     validate(ledger)
-    ledger["last_updated"] = datetime.now(timezone.utc).strftime(
-        "%Y-%m-%dT%H:%M:%SZ"
-    )
+    ledger["last_updated"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(path.suffix + ".tmp")
     payload = json.dumps(ledger, indent=2, ensure_ascii=False) + "\n"
@@ -315,11 +355,7 @@ def save(ledger: dict, path: Path = LEDGER_PATH) -> None:
 
 
 def snapshot(path: Path = LEDGER_PATH, snapshot_dir: Path = SNAPSHOT_DIR) -> Path:
-    """Copy the current ledger to snapshots/active-setups.YYYY-MM-DD.json.
-
-    Snapshots are pre-apply backups. If apply-ledger-ops corrupts the ledger,
-    the operator restores from the most recent snapshot.
-    """
+    """Copy the current ledger to snapshots/active-setups.YYYY-MM-DD.json."""
     if not path.exists():
         raise LedgerError(f"cannot snapshot: ledger {path} does not exist")
     snapshot_dir.mkdir(parents=True, exist_ok=True)
@@ -334,11 +370,7 @@ def snapshot(path: Path = LEDGER_PATH, snapshot_dir: Path = SNAPSHOT_DIR) -> Pat
 
 
 def next_entry_id(asset: str, fired_date: str, ledger: dict) -> str:
-    """Compute the next available {ASSET}-{YYYY-MM-DD}-NNN id.
-
-    NNN starts at 001 for the first entry per asset/date, increments if there
-    are existing entries with the same prefix (open or closed).
-    """
+    """Compute the next available {ASSET}-{YYYY-MM-DD}-NNN id."""
     prefix = f"{asset.upper()}-{fired_date}-"
     existing = [
         e["id"]
@@ -351,13 +383,11 @@ def next_entry_id(asset: str, fired_date: str, ledger: dict) -> str:
     return f"{prefix}{n:03d}"
 
 
-def next_pending_id(asset: str, first_seen_date: str, ledger: dict) -> str:
-    """Compute the next available {ASSET}-pending-{YYYY-MM-DD}-NNN id."""
-    prefix = f"{asset.upper()}-pending-{first_seen_date}-"
+def next_watchlist_id(asset: str, first_seen_date: str, ledger: dict) -> str:
+    """Compute the next available {ASSET}-watchlist-{YYYY-MM-DD}-NNN id."""
+    prefix = f"{asset.upper()}-watchlist-{first_seen_date}-"
     existing = [
-        e["id"]
-        for e in ledger.get("pending", [])
-        if e["id"].startswith(prefix)
+        e["id"] for e in ledger.get("watchlist", []) if e["id"].startswith(prefix)
     ]
     n = 1
     while f"{prefix}{n:03d}" in existing:
@@ -365,16 +395,57 @@ def next_pending_id(asset: str, first_seen_date: str, ledger: dict) -> str:
     return f"{prefix}{n:03d}"
 
 
+def compute_mae_mfe_update(
+    direction: str,
+    fired_price: float,
+    todays_high: float | None,
+    todays_low: float | None,
+    current_mae: float | None,
+    current_mfe: float | None,
+    current_mae_date: str | None,
+    current_mfe_date: str | None,
+    today: str,
+) -> tuple[float | None, float | None, str | None, str | None]:
+    """Given today's price range + prior MAE/MFE, return updated values.
+
+    MAE = worst PnL % seen (most negative).
+    MFE = best  PnL % seen (most positive).
+
+    For LONG: MAE comes from low; MFE comes from high.
+    For SHORT: MAE comes from high (worst for short); MFE comes from low.
+
+    Returns (mae_pct, mfe_pct, mae_date, mfe_date). All None-safe.
+    """
+    if todays_high is None or todays_low is None or fired_price <= 0:
+        return current_mae, current_mfe, current_mae_date, current_mfe_date
+
+    if direction == "LONG":
+        todays_worst = (todays_low - fired_price) / fired_price * 100
+        todays_best = (todays_high - fired_price) / fired_price * 100
+    else:  # SHORT
+        todays_worst = -(todays_high - fired_price) / fired_price * 100
+        todays_best = -(todays_low - fired_price) / fired_price * 100
+
+    new_mae = current_mae
+    new_mae_date = current_mae_date
+    if new_mae is None or todays_worst < new_mae:
+        new_mae = todays_worst
+        new_mae_date = today
+
+    new_mfe = current_mfe
+    new_mfe_date = current_mfe_date
+    if new_mfe is None or todays_best > new_mfe:
+        new_mfe = todays_best
+        new_mfe_date = today
+
+    return new_mae, new_mfe, new_mae_date, new_mfe_date
+
+
 # ---------------------------------------------------------------------------
-# CLI for ad-hoc validation
+# CLI
 
 
 def _cli_main() -> int:
-    """`python3 -m scripts.lib.ledger [path]` — validate-only entry point.
-
-    Used by postprocess scripts to confirm the ledger is well-formed after
-    apply-ledger-ops finishes. Exits 0 on valid, 2 on validation error.
-    """
     path = Path(sys.argv[1]) if len(sys.argv) > 1 else LEDGER_PATH
     try:
         load(path)

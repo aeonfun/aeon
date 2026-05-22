@@ -1,67 +1,64 @@
 ---
 name: Perps Brief
-description: Position-aware sector synthesis — evaluate open positions, decide new setups with structured confluence
+description: Position-aware sector synthesis — evaluate current positions, decide new entries with structured confluence, surface up to 5 watchlist candidates
 var: ""
 tags: [crypto, research]
 ---
-<!-- v4: position-aware brief on top of the v3 base. Two-mode decision vocabulary (pre-entry: LONG/SHORT (now|wait), FADE; in-position: RIDE, SELL (now|wait)). Stateful: reads memory/topics/state/active-setups.json at start, writes ledger_ops in data.json, which apply-ledger-ops.py persists. v3 base preserved in SKILL.v3.md alongside. v4 spec: /Users/ash/Downloads/perps-engine-v4-spec.md. State map: memory/topics/perps-engine.md. -->
+<!-- v4.1: position-aware brief on top of the v4 base. Simplified vocabulary (LONG/SHORT for new positions, RIDE/CLOSE for current, WAIT-direction for watchlist). New sections: CURRENT POSITIONS, NEW POSITIONS, WATCHLIST. Auto-flip semantics: opposite-direction high-conviction entry on an active position triggers explicit CLOSE-then-open. MAE/MFE tracking from daily Coinglass cache. SCARE outcome category for invalidation-breach-but-recovered. Watchlist cap 5, no overflow. v3 base preserved in SKILL.v3.md alongside. -->
 
 > **${var}** — Optional thesis or sector filter (e.g. "AI tokens only", "fade memes"). If empty, scans broadly across the perps universe.
 
-Today is ${today}. Compose the position-aware perps sector brief by **evaluating every open ledger entry first**, then combining quant classifications from `perps-scan` with independent discovery and targeted enrichment to decide today's new setups. This is the **integration + decision layer** — quant signals + narrative momentum + macro context + catalyst research + open-position state come together into RIDE/SELL calls on existing trades and LONG/SHORT (now|wait) calls on new ones.
+Today is ${today}. Compose the position-aware perps sector brief by **evaluating every current ledger position first**, then combining quant classifications from `perps-scan` with independent discovery and targeted enrichment to decide today's new entries and watchlist candidates. This is the integration + decision layer — quant signals + narrative momentum + macro context + catalyst research + position state come together into RIDE/CLOSE calls on existing trades and LONG/SHORT entries on new ones.
 
-**Compose in order: read ledger → evaluate open → decide new → write JSON.**
+**Compose in order: read ledger → evaluate current → decide new + watchlist → write JSON.**
 
-Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form committed views — for open positions AND new setups. **Single high-quality signals warrant calls; confluence increases conviction but is not required.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
+Before composing, internalize `memory/topics/soul.md` as standing frame. Reason across the engine data and form committed views — for current positions, new entries, and watchlist candidates. **Single high-quality signals warrant entries; confluence increases conviction.** Translate internal data (funding deltas, top L/S, basis, pattern tags) into external triggers the operator can verify (price levels, volume signatures, narrative inflections, sector behaviour). When uncertain, name the specific external condition that would resolve it. Never regress to neutral-analyst tone — the output IS the view.
 
-After views are formed, apply style + structure (below).
+After views are formed, apply style + structure.
 
-**Apply `memory/topics/writing-style.md` to all output.** Structural rules (Section 1) are load-bearing; prose rules (Section 2) govern sentences within structure; Sentence-Level Patterns (Section 4) catch failure modes that pass the first two. Per-skill structural template in Section 3; worked examples in Section 5.
-
-**Self-check before emitting:**
-
-1. Draft the output applying Sections 1-3.
-2. Search the draft for the 6 patterns in Section 4 (subject + verb-ing chunks, stacked adjectives, internal jargon, passive voice, em-dash connectors, weak verbs).
-3. Rewrite anything that matches.
-4. Emit.
+**Apply `memory/topics/writing-style.md` to all output.**
 
 Read `memory/MEMORY.md` for context.
-Read the last 7 days of `memory/logs/` to find prior new-setup tickers for `(day N)` repeat tracking and `repeat_appearance` confluence.
 
-## Decision vocabulary (locked v4)
+## Decision vocabulary (locked v4.1)
 
-Pre-entry (used in `new_setups[]`):
+**Sections:**
 
-| Call | Meaning |
-|---|---|
-| `LONG (now)` | Enter long at market or specified zone immediately. Opens a ledger entry. |
-| `LONG (wait)` | Long thesis exists; wait for named trigger before entry. Lands in `pending[]`. |
-| `SHORT (now)` | Enter short at market or specified zone. Opens a ledger entry. |
-| `SHORT (wait)` | Short thesis exists; wait for named trigger. Lands in `pending[]`. |
-| `FADE` | No conviction setup; any trade here is a risk. Not a short entry. Emitted as the FADE line when `new_setups[]` is empty. |
+- **CURRENT POSITIONS** — every entry in `ledger.open[]`. Required RIDE or CLOSE call per position. Unbounded count.
+- **NEW POSITIONS** — fresh LONG or SHORT entries fired today. Cap **5**. Each becomes a tracked ledger entry.
+- **WATCHLIST** — assets that don't meet entry conviction but are worth noting. Cap **5**. The WAIT bucket.
 
-In-position (used in `open_positions[]`, one per open ledger entry):
+**Calls:**
 
-| Call | Meaning |
-|---|---|
-| `RIDE` | Thesis intact; continue holding. |
-| `SELL (now)` | Exit at market. Moves ledger entry from `open[]` to `closed[]`. |
-| `SELL (wait)` | Exit when a named trigger fires (price level OR signal-state change). Stays in `open[]`. |
+| Section | Call | Meaning |
+|---|---|---|
+| NEW POSITIONS | `LONG` | Enter long at the named entry zone (or market). Opens a ledger entry. |
+| NEW POSITIONS | `SHORT` | Enter short at the named entry zone (or market). Opens a ledger entry. |
+| CURRENT POSITIONS | `RIDE` | Thesis intact; continue holding. |
+| CURRENT POSITIONS | `CLOSE` | Exit now. Moves ledger entry → `closed[]`. Outcome locked. |
+| WATCHLIST | (none) | Direction tagged (LONG/SHORT), no call — these are intents pending a trigger. |
 
-`SELL` is direction-neutral — for a SHORT entry, `SELL` means cover.
+**Auto-flip rule.** If an asset has an open position in one direction and today's analysis produces a high-conviction entry in the opposite direction, the brief must:
+1. Emit `CLOSE` for the current position with `auto_flipped: true` in `ledger_ops.close[]`
+2. Emit the new entry in `new_positions[]` AND `ledger_ops.open_now[]` normally
+
+If the opposite-direction signal is only watchlist-conviction (not strong enough for NEW POSITIONS), do NOT close the current position. Mention the emerging opposite signal in the current position's `watch` field instead. Watchlist-conviction is not enough to override an active position.
+
+**Same-direction signal on an existing position is suppressed.** v4.1 has no pyramiding. If FARTCOIN is short and a fresh SHORT signal fires today, drop the new signal. Acknowledge in the existing position's `watch` field if material.
 
 ## Goal
 
-Two deliverables per run:
+Three deliverables per run:
 
-1. **Evaluate every open ledger entry.** For each entry in `memory/topics/state/active-setups.json`'s `open[]`, decide RIDE, SELL (now), or SELL (wait) by re-running the thesis against current `perps-scan`, `narrative-tracker`, `market-context-refresh`, and `aixbt-pulse` data. Required, even on a skip day for new setups.
-2. **Decide new setups.** Up to **5** new setups per day. Each is `LONG (now)`, `LONG (wait)`, `SHORT (now)`, or `SHORT (wait)` with required fields populated. If nothing clears the confluence bar, emit a FADE — do not fabricate.
+1. **Evaluate every current ledger position.** Required, even on a skip day for new entries.
+2. **Decide new entries.** Up to 5 LONG/SHORT entries. Cap is hard.
+3. **Decide watchlist candidates.** Up to 5 WAIT entries. Cap is hard.
 
-Skip-day discipline applies to **new setups only**. Open positions are always evaluated.
+Skip-day discipline applies to NEW POSITIONS and WATCHLIST. CURRENT POSITIONS is always evaluated.
 
 ## Inputs (consumed via chain)
 
-This skill runs as chain Step 2 with `consume:` set to seven upstream skills. The chain-runner injects all seven artifacts into the working context as `.outputs/.chain-context-perps-brief.md`. Read them as primary input:
+This skill runs as chain Step 2 with `consume:` set to seven upstream skills. The chain-runner injects all seven artifacts into `.outputs/.chain-context-perps-brief.md`:
 
 - `.outputs/perps-scan.md` — regime classification + pattern tags + aggregate verdict
 - `.outputs/narrative-tracker.md` — phase-grouped narratives with leading tokens
@@ -72,60 +69,61 @@ This skill runs as chain Step 2 with `consume:` set to seven upstream skills. Th
 - `.outputs/token-call.md` — daily token call (or skip-day variant)
 
 **Plus, critically:**
-- `memory/topics/state/active-setups.json` — the ledger. Read `open[]` and `pending[]` at the start of every run.
+- `memory/topics/state/active-setups.json` — the ledger. Read `open[]` and `watchlist[]` at the start of every run.
 - `memory/topics/market-context.md` — full canonical regime view
 - `memory/MEMORY.md` + last 7 days of `memory/logs/`
 
 ## Process — five passes
 
-### Pass A — Evaluate every open ledger entry
+### Pass A — Evaluate every current ledger position
 
 For each entry in `ledger.open[]`:
 
-1. Locate the asset in today's `perps-scan.md` and `narrative-tracker.md`.
+1. Locate the asset in today's `perps-scan.md` and `narrative-tracker.md`. Get today's close price, daily high, daily low.
 2. Re-run the original thesis. Is it still intact?
    - Regime still aligned with direction?
    - Narrative phase still aligned?
    - Pattern tags still supporting (or new contradicting tags appeared)?
-   - Invalidation triggered yet (price level OR signal-state change)?
-3. Decide: `RIDE`, `SELL (now)`, or `SELL (wait)`.
-4. If `SELL (now)`: name the close reason concretely. Compute return vs entry, vs BTC, vs ETH (using current BTC/ETH prices from `market-context-refresh`).
-5. If `SELL (wait)`: name the trigger that would fire the exit.
-6. If `RIDE`: name the current condition the operator should watch in the `watch` field.
+   - Did the daily close cross the invalidation level today?
+3. Decide: `RIDE` or `CLOSE`.
+4. If `CLOSE`: compute return vs entry, vs BTC, vs ETH (using current BTC/ETH prices from `market-context-refresh`). Set `close_reason`.
+5. If `RIDE`: name the current condition the operator should watch.
+6. **Record today's price snapshot** in the evaluation: `price_at_eval`, `todays_high`, `todays_low`. The apply script uses these to update MAE/MFE.
+7. **Record invalidation breach if applicable** — if today's daily close crossed the invalidation level, set `invalidation_breached_today: true` in the evaluation. This is sticky on the ledger entry (once true, stays true). Drives the SCARE outcome later.
 
-Each evaluation appends to the ledger entry's `evaluations[]` array (handled by `apply-ledger-ops.py` — the brief writes it once into `ledger_ops.evaluations[]` in data.json).
+Each evaluation must include all fields. The apply script appends to the entry's `evaluations[]` array and updates MAE/MFE.
 
-### Pass B — Decide pending (wait) intents
+### Pass B — Decide watchlist carry-forward
 
-For each entry in `ledger.pending[]`:
+For each entry in `ledger.watchlist[]`:
 
 1. Has the trigger fired today?
-   - **Yes** → promote to a new setup with `mode: "now"` and `pending_id_promoted: "<that ID>"`. The apply script removes the pending entry and opens a new `open[]` entry.
-   - **No, but thesis intact** → re-emit in today's `new_setups[]` as a new setup with `mode: "wait"`. Add the pending entry's `id` to `ledger_ops.keep_pending[]`.
-   - **No, and thesis broken** → do NOT add to `keep_pending`. The apply script drops the pending entry.
+   - **Yes** → promote to NEW POSITIONS with the same direction. Add to `ledger_ops.open_now[]` with `watchlist_id_promoted: "<that ID>"`. The apply script removes the watchlist entry and opens a new ledger entry with `watchlist_provenance` populated.
+   - **No, but thesis intact** → carry forward. Re-emit in today's WATCHLIST section. Add the watchlist entry's `id` to `ledger_ops.keep_watchlist[]`.
+   - **No, and thesis broken** → drop. Do NOT add to `keep_watchlist`.
 
-A pending entry NOT in `keep_pending` AND NOT promoted is dropped.
+A watchlist entry NOT in `keep_watchlist` AND NOT promoted is dropped by the apply script.
 
 ### Pass 0 — Discovery (independent of quant)
 
-Generate ~10 candidates by **attention**, not signal:
+Generate ~10 candidates by attention:
 
-1. `narrative-tracker.md` — leading tokens from RISING and EMERGING narratives.
-2. `aixbt-pulse.md` — projects named in crypto/macro/tradfi, especially in the bridge call.
-3. `token-movers.md` — CoinGecko trending.
-4. WebSearch — per dominant narrative: `"[narrative] tokens [today]"`, `"crypto trending tokens today"`.
+1. `narrative-tracker.md` — leading tokens from RISING and EMERGING narratives
+2. `aixbt-pulse.md` — projects in crypto/macro/tradfi sections, especially in the bridge call
+3. `token-movers.md` — CoinGecko trending
+4. WebSearch — per dominant narrative
 
-Filter to **Bybit-listed perps**. Cross-reference against `perps-scan` asset list.
+Filter to Bybit-listed perps. Cross-reference against `perps-scan` asset list.
 
 ### Pass 1 — Combine, dedupe, tag
 
-Merge quant candidates (non-NEUTRAL in `perps-scan`) with discovery candidates. Tag each `[QUANT]` / `[DISCOVERY]` / `[BOTH]`. Cap 15 unique assets. `[BOTH]` first, then `[QUANT]`, then `[DISCOVERY]`.
+Merge quant candidates (non-NEUTRAL in `perps-scan`) with discovery. Tag `[QUANT]` / `[DISCOVERY]` / `[BOTH]`. Cap 15 unique assets.
 
-Exclude any asset that already has an open ledger entry in the same direction — that's an existing position, not a new setup.
+**Exclude assets that already have an open position in the same direction.** Same-direction signal is suppressed. **Include assets with opposite-direction open positions** — these are auto-flip candidates if today's signal is high enough.
 
 ### Pass 2 — Targeted enrichment
 
-For each candidate, run 3–5 WebSearch queries:
+3–5 WebSearch queries per candidate:
 
 **Always:**
 - Token unlock schedule
@@ -141,82 +139,92 @@ For each candidate, run 3–5 WebSearch queries:
 
 3–6 concrete-fact lines per asset. No speculation.
 
-### Pass 3 — Confluence judgement + composition
+### Pass 3 — Confluence judgement + tier assignment
 
-For each enriched candidate, judge against the **enumerated confluence criteria**:
+For each enriched candidate, judge against the enumerated confluence criteria:
 
 | Criterion | What it means |
 |---|---|
 | `quant_regime_aligned` | `perps-scan` regime supports the directional thesis |
-| `pattern_tag_supports` | A cross-signal pattern tag reinforces the thesis (e.g. STEALTH-POSITIONING for long, LONG-TRAP for short) |
-| `narrative_phase_aligned` | `narrative-tracker` phase aligns (Rising for long, Fading/Peak for short) |
-| `market_regime_aligned` | Aggregate market read aligns (LEVERAGE BUILDING / TRENDING for long; CROWDED TOPPING / DELEVERAGING for short) |
+| `pattern_tag_supports` | Pattern tag reinforces (e.g. STEALTH-POSITIONING for long, LONG-TRAP for short) |
+| `narrative_phase_aligned` | Phase aligns (Rising for long, Fading/Peak for short) |
+| `market_regime_aligned` | Aggregate market read aligns |
 | `both_tag` | Asset is `[BOTH]` — quant + attention agree |
 | `repeat_appearance` | Same asset, same regime, same narrative phase for ≥2 consecutive days |
-| `regime_transition` | Day-over-day regime transition supports thesis (e.g. ACCUMULATION → CATALYST-BREAKOUT for long) |
-| `cross_domain_bridge` | `aixbt-pulse` flags a macro/geo/tradfi catalyst that maps to this asset's sector |
+| `regime_transition` | Day-over-day regime transition supports thesis |
+| `cross_domain_bridge` | `aixbt-pulse` flags a macro/geo/tradfi catalyst mapping to this asset's sector |
 | `enrichment_positive` | Pass 2 enrichment surfaces a confirming catalyst with no disqualifying findings |
-| `dominance_aligned` | BTC.D / USDT.D / ETH/BTC capital-flow signals align (populated when Phase 3 ships; in Phase 1, list only when `market-context-refresh` already surfaces the read) |
+| `dominance_aligned` | BTC.D / USDT.D / ETH/BTC capital-flow signals align (populated when Phase 3 ships) |
 
-**Log every criterion that fired** in `confluence_fired[]`. Optionally log considered-but-rejected criteria in `confluence_missing[]`.
+**Tier assignment:**
+- **NEW POSITIONS** — high conviction. Cap 5 by confluence count, ties broken by judgement.
+- **WATCHLIST** — partial conviction, named trigger condition. Cap 5 by confluence count.
+- **NOISE** — drops. Not surfaced anywhere.
 
-Single-criterion setups are allowed but discouraged — the strongest setups carry multiple. The job is the join.
+**The cap-5 selection rule for both NEW POSITIONS and WATCHLIST is confluence count first.** When ties exist, prefer:
+1. Repeat appearance (asset has been a candidate multiple days running)
+2. `[BOTH]` tag
+3. Pure judgement as tiebreaker
 
-**Cap 5 new setups in the published brief.** Anything that would have qualified but didn't make the top-5 by confluence quality drops — there is no overflow in v4 (the ledger is the persistent record now).
+This rule lets the track-record measure whether confluence-count-based ranking outperforms judgement-only ranking over time. As track record matures, we may transition fully to judgement-based selection.
 
-**FADE override:** if the aggregate market read is `CROWDED TOPPING` or `DELEVERAGING` AND no specific high-conviction shorts cleared, the entire `new_setups[]` may be empty. The render script then emits the FADE line.
+## Required fields per current position
 
-## Required fields per new setup (no exceptions)
+- `id` — matches the ledger entry
+- `ticker`, `direction`, `fired_date`, `fired_price`, `horizon`
+- `day_of` — `"N/M"` where N is days elapsed, M is horizon-as-days (multi-week = 21)
+- `call` — `RIDE` or `CLOSE`
+- `thesis_note` — short justification (1 sentence)
+- `invalidation` — original or revised
+- For RIDE: `watch` — current condition to monitor; `mae_pct`, `mfe_pct`, `mae_day_of`, `mfe_day_of`, `now_pct` (computed from current price)
+- For CLOSE: `return_pct`, `return_vs_btc_pct`, `return_vs_eth_pct`, `outcome` (WIN | LOSS | SCARE | NEUTRAL), `mae_pct`, `mfe_pct`, `auto_flipped` (boolean — true when this CLOSE was triggered by an opposite-direction entry on the same asset; renders as `CLOSE (auto-flip)`)
 
-- `ticker`, `direction` (LONG | SHORT), `mode` (now | wait), `horizon` (24h | 3d | 7d | multi-week)
-- `entry_zone` (for `mode: now`) — price level, range, or `"market"`
-- `trigger` (for `mode: wait`) — price level OR named signal-state change
+## Required fields per new position
+
+- `ticker`, `direction` (LONG | SHORT), `horizon` (24h | 3d | 7d | multi-week)
+- `entry_zone` — price level, range, or `"market"`
 - `invalidation` — price level OR named signal-state change
 - `thesis` — 1–2 sentences
 - `confluence_fired[]` — at least one criterion from the enumerated set
 - `risks[]` — at least one named risk, non-empty
 
-## Required fields per open position (no exceptions)
+## Required fields per watchlist entry
 
-- `id` — matches the ledger entry id
-- `ticker`, `direction`, `fired_date`, `fired_price`, `horizon`
-- `day_of` — `"N/M"` where N is days elapsed and M is horizon-as-days (multi-week = 21)
-- `call` — `RIDE`, `SELL (now)`, or `SELL (wait)`
-- `thesis_status` — `intact` or `broken`
-- `thesis_note` — short justification (1 sentence)
-- `invalidation` — original or revised
-- `watch` — current condition the operator should monitor (string or null)
-- `evaluation_note` — note that gets appended to the ledger's `evaluations[]`
+- `ticker`, `direction` (LONG | SHORT)
+- `day_of_watchlist` — N (1 for new, increments for carry-forwards)
+- `trigger` — named external condition that would promote to NEW POSITIONS
+- `invalidation` — price level OR named signal-state change before trigger fires
+- `thesis` — 1–2 sentences
+- `confluence_fired[]` — at least one criterion
 
 ## Write the structured data artifact
 
 **Write `.outputs/perps-brief.data.json`. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. DO NOT edit `memory/topics/state/active-setups.json` directly.**
 
-The postprocess step (`scripts/postprocess-perps-brief.sh`) handles all three:
+The postprocess step handles all of the above:
+1. `scripts/render-perps-brief.py` → markdown
+2. `scripts/lib/ledger.py snapshot` → pre-apply backup
+3. `scripts/apply-ledger-ops.py` → applies ops atomically
+4. `python3 -m lib.ledger` → post-apply validation
+5. Section-split markdown + per-section Discord delivery wrapped in code blocks
 
-1. `scripts/render-perps-brief.py` produces the markdown artifact.
-2. `scripts/lib/ledger.py snapshot` saves a pre-apply backup.
-3. `scripts/apply-ledger-ops.py` applies the ledger_ops to active-setups.json atomically.
-4. `python3 -m lib.ledger` validates the post-apply ledger.
-5. `./notify --signal` queues the Discord delivery.
-
-### JSON schema (v4)
+### JSON schema (v4.1)
 
 ```json
 {
-  "schema_version": "v4",
+  "schema_version": "v4.1",
   "date": "${today}",
   "qualifier": null,
 
   "market_sentiment": {
     "paragraphs": [
       "BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.",
-      "Alt funding neutral, no rotation yet. Memes hot — 3 of top 5 funding extremes. Retail crowded there, not majors."
+      "Alt funding neutral. Memes hot, three of top five funding extremes. Retail crowded there, not majors."
     ],
-    "bias_line": "Bias · long majors with structure, fade extreme funding on meme tickers."
+    "bias_line": "Bias · long majors with structure, fade extreme funding on memes."
   },
 
-  "open_positions": [
+  "current_positions": [
     {
       "id": "HYPE-2026-05-18-001",
       "ticker": "HYPE",
@@ -224,47 +232,60 @@ The postprocess step (`scripts/postprocess-perps-brief.sh`) handles all three:
       "fired_date": "2026-05-18",
       "fired_price": 28.40,
       "horizon": "7d",
-      "day_of": "2/7",
+      "day_of": "4/7",
       "call": "RIDE",
-      "thesis_status": "intact",
-      "thesis_note": "ACCUMULATION continues, OI +21% 7d, Hyperliquid narrative still RISING",
-      "invalidation": "close below $26.00 OR funding extreme >+0.15%/8h",
-      "watch": "funding warming (+0.04%/8h, up from +0.02%). Approaching second-half-of-horizon judgement.",
-      "evaluation_note": "thesis intact, OI accelerating, no invalidation hit"
+      "thesis_note": "ACCUMULATION continues, OI +21% 7d, narrative still RISING",
+      "invalidation": "close below $26.00",
+      "watch": "funding warming +0.04%/8h, up from +0.02%",
+      "mae_pct": -2.1, "mae_day_of": "2",
+      "mfe_pct": 12.3, "mfe_day_of": "3",
+      "now_pct": 10.6
+    },
+    {
+      "id": "TAO-2026-05-19-001",
+      "ticker": "TAO",
+      "direction": "LONG",
+      "fired_date": "2026-05-19",
+      "fired_price": 485.00,
+      "horizon": "3d",
+      "day_of": "3/3",
+      "call": "CLOSE",
+      "thesis_note": "horizon reached, momentum slowing, funding warming",
+      "invalidation": "close below $470",
+      "return_pct": 9.4,
+      "return_vs_btc_pct": 7.1,
+      "return_vs_eth_pct": 8.2,
+      "outcome": "WIN",
+      "mae_pct": -1.8,
+      "mfe_pct": 11.2,
+      "auto_flipped": false
     }
   ],
 
-  "new_setups": [
-    {
-      "ticker": "SOL",
-      "direction": "LONG",
-      "mode": "wait",
-      "horizon": "7d",
-      "entry_zone": null,
-      "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
-      "thesis": "Regime transition COMPRESSION → CATALYST-BREAKOUT pending. AI sector tailwind. [BOTH] tag (top-trader L/S building +0.3 over 7d).",
-      "invalidation": "close below $148 before trigger fires",
-      "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"],
-      "confluence_missing": ["regime_transition"],
-      "risks": ["BTC.D rolling could front-run too aggressively", "NVDA earnings Wed = binary catalyst"]
-    },
+  "new_positions": [
     {
       "ticker": "FARTCOIN",
       "direction": "SHORT",
-      "mode": "now",
       "horizon": "3d",
       "entry_zone": "market or first bounce to $0.65",
-      "trigger": null,
-      "thesis": "DISTRIBUTION + LONG-TRAP (funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%). Memes phase PEAK.",
       "invalidation": "close above $0.72",
+      "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%. Memes PEAK.",
       "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
-      "confluence_missing": ["both_tag", "repeat_appearance"],
-      "risks": ["memes can squeeze irrespective of fundamentals", "size as starter"]
+      "risks": ["memes can squeeze irrespective of fundamentals"]
     }
   ],
 
-  "fade_note": null,
-  "skip_day_best_near_miss": null,
+  "watchlist": [
+    {
+      "ticker": "SOL",
+      "direction": "LONG",
+      "day_of_watchlist": 2,
+      "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
+      "invalidation": "close below $148 before trigger fires",
+      "thesis": "COMPRESSION → CATALYST-BREAKOUT pending. AI sector tailwind.",
+      "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"]
+    }
+  ],
 
   "ledger_ops": {
     "evaluations": [
@@ -273,10 +294,34 @@ The postprocess step (`scripts/postprocess-perps-brief.sh`) handles all three:
         "date": "${today}",
         "call": "RIDE",
         "price_at_eval": 31.40,
-        "note": "thesis intact, OI accelerating, no invalidation hit"
+        "todays_high": 31.80,
+        "todays_low": 30.50,
+        "invalidation_breached_today": false,
+        "note": "thesis intact, no invalidation hit"
+      },
+      {
+        "open_id": "TAO-2026-05-19-001",
+        "date": "${today}",
+        "call": "CLOSE",
+        "price_at_eval": 525.00,
+        "todays_high": 530.00,
+        "todays_low": 520.00,
+        "invalidation_breached_today": false,
+        "note": "horizon reached"
       }
     ],
-    "close": [],
+    "close": [
+      {
+        "open_id": "TAO-2026-05-19-001",
+        "closed_price": 525.00,
+        "close_reason": "horizon reached, momentum slowing, funding warming",
+        "return_pct": 9.4,
+        "return_vs_btc_pct": 7.1,
+        "return_vs_eth_pct": 8.2,
+        "horizon_realized": "3d",
+        "auto_flipped": false
+      }
+    ],
     "open_now": [
       {
         "ticker": "FARTCOIN",
@@ -287,113 +332,102 @@ The postprocess step (`scripts/postprocess-perps-brief.sh`) handles all three:
         "entry_zone": "market or first bounce to $0.65",
         "invalidation": "close above $0.72",
         "horizon": "3d",
-        "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%. Memes phase PEAK.",
+        "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h.",
         "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
-        "confluence_missing": ["both_tag", "repeat_appearance"],
-        "named_risks": ["memes can squeeze irrespective of fundamentals"],
-        "pending_id_promoted": null
+        "confluence_missing": ["both_tag"],
+        "named_risks": ["memes can squeeze"],
+        "watchlist_id_promoted": null
       }
     ],
-    "add_pending": [
+    "add_watchlist": [
       {
-        "ticker": "SOL",
-        "direction": "LONG",
-        "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
-        "invalidation": "close below $148 before trigger fires",
-        "horizon": "7d",
-        "thesis": "Regime transition COMPRESSION → CATALYST-BREAKOUT pending.",
-        "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"],
-        "named_risks": ["BTC.D rolling could front-run too aggressively"]
+        "ticker": "PEPE",
+        "direction": "SHORT",
+        "trigger": "funding extreme >+0.15%/8h with top L/S >2.0",
+        "invalidation": "close above last 7d high",
+        "horizon": "3d",
+        "thesis": "DISTRIBUTION building",
+        "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned"],
+        "named_risks": ["could squeeze before trigger"]
       }
     ],
-    "keep_pending": []
+    "keep_watchlist": ["SOL-watchlist-2026-05-19-001"]
   }
 }
 ```
 
 ### Field-level rules
 
-- **`schema_version`** — must be `"v4"`. The render script rejects anything else.
+- **`schema_version`** — must be `"v4.1"`.
 - **`date`** — `${today}` (UTC YYYY-MM-DD).
-- **`qualifier`** — `null` for normal. Set to `"degraded (perps-scan unavailable, discovery-only)"` for degraded runs, or operator-meaningful suffix.
-- **`market_sentiment.paragraphs`** — array of paragraphs, one per topic. Writing-style applies.
-- **`market_sentiment.bias_line`** — single-line bias call, prefixed `Bias · `.
-- **`open_positions[]`** — one entry per open ledger row. Empty array is valid ONLY when the ledger has no open entries. If the ledger has open entries and this array is empty, that's a bug — the postprocess will still render and apply, but daily-ops-review will surface the gap.
-- **`open_positions[].day_of`** — string like `"2/7"`. Compute as: days-elapsed-since-fired-date / horizon-as-days. Use 21 for `multi-week`.
-- **`new_setups[]`** — capped at 5. Empty means FADE (the render emits a FADE line). Each entry must satisfy required fields above.
-- **`new_setups[].mode`** — `"now"` requires `entry_zone`. `"wait"` requires `trigger`.
-- **`fade_note`** — optional single-line FADE explanation when `new_setups[]` is empty. Default render: `"FADE — no new conviction setups today"`.
-- **`skip_day_best_near_miss`** — single-sentence near-miss for skip-day variant. Renders as `Best near-miss: …` after the FADE line. Only meaningful when `new_setups[]` is empty.
-- **`ledger_ops`** — applied by `apply-ledger-ops.py`. Required structure below.
+- **`qualifier`** — `null` for normal; descriptive label for degraded runs.
+- **`market_sentiment`** — paragraphs + bias line. Writing-style applies.
+- **`current_positions[]`** — one entry per open ledger row. Empty array IS valid when the ledger has no open entries.
+- **`new_positions[]`** — capped at 5. Empty is valid (skip-day for new entries).
+- **`watchlist[]`** — capped at 5. Empty is valid.
+- **`ledger_ops`** — applied by `apply-ledger-ops.py` AFTER render. Required structure documented inline above.
 
-### `ledger_ops` structure
+### Auto-flip in the JSON
 
-**`evaluations[]`** — one per open ledger entry. Must include all open IDs from the ledger. Each: `{open_id, date, call, price_at_eval, note}`.
+When today's analysis fires a high-conviction opposite-direction entry on an existing open position:
 
-**`close[]`** — one entry per `SELL (now)` call. Each: `{open_id, closed_price, close_reason, return_pct, return_vs_btc_pct, return_vs_eth_pct, outcome, horizon_realized}`. `outcome` is one of `WIN`, `LOSS`, `NEUTRAL`. Default rule:
-- `WIN` = return_vs_btc_pct ≥ +2% AND not invalidation-hit
-- `LOSS` = invalidation hit OR return_vs_btc_pct ≤ −2%
-- `NEUTRAL` = between
+1. The current_positions[] entry for that asset has `call: "CLOSE"` with full close fields filled
+2. The ledger_ops.close[] entry has `auto_flipped: true` and references the open_id
+3. The new_positions[] entry for the same ticker has the opposite direction
+4. The ledger_ops.open_now[] entry mirrors new_positions[] — no special flag, just the new direction
 
-**`open_now[]`** — one entry per `LONG (now)` or `SHORT (now)` new setup. Each: `{ticker, direction, fired_price, fired_btc_price, fired_eth_price, entry_zone, invalidation, horizon, thesis, confluence_fired, confluence_missing, named_risks, pending_id_promoted}`. `fired_price`, `fired_btc_price`, `fired_eth_price` are snapshots at brief-publish-time — pull current prices from `market-context-refresh` artifact OR the perps-scan cache. `pending_id_promoted` references a pending entry being promoted to open; null otherwise.
-
-**`add_pending[]`** — one entry per `LONG (wait)` or `SHORT (wait)` setup that is NEW (no existing pending entry for it). Each: `{ticker, direction, trigger, invalidation, horizon, thesis, confluence_fired, named_risks}`.
-
-**`keep_pending[]`** — IDs from `ledger.pending[]` that should remain. Any pending ID NOT in this list AND NOT in `pending_id_promoted` (from open_now) AND NOT just-added is DROPPED by the apply script. **Carry forward each pending you still believe in.**
+The apply script processes close BEFORE open_now, so the asset slot is freed before the new direction is opened. No special "flip" op exists — auto-flip is just CLOSE + open_now on the same asset in the same run.
 
 ### Edge cases
 
-- **No open ledger entries (cold start or after all closes):** `open_positions: []`, `ledger_ops.evaluations: []`. Render skips the OPEN POSITIONS section entirely.
-- **No new setups clear:** `new_setups: []`, `ledger_ops.open_now: []`, `ledger_ops.add_pending: []`. Set `fade_note` and optionally `skip_day_best_near_miss`. Open positions are still evaluated.
-- **`perps-scan` artifact missing (degraded):** set `qualifier` to a descriptive label. Open positions are still evaluated using narrative-tracker + market-context only. Conservative bias on RIDE/SELL — when in doubt, SELL (wait) until quant returns. New setups: discovery-only, much higher bar.
-- **Multiple upstream artifacts missing:** set `qualifier`, leave most of `new_setups` empty. Open positions still evaluated. `daily-ops-review` surfaces the cause.
-- **Pending entry's trigger fired:** emit in `new_setups` with `mode: "now"`. In `ledger_ops.open_now`, set `pending_id_promoted` to the pending entry's id. The apply script removes the pending entry and opens a new open entry.
-- **Pending entry's invalidation hit:** do NOT add to `keep_pending`. The apply script drops it. Note the drop in the brief's market_sentiment paragraphs if material.
-- **Pending entry still relevant:** add its id to `keep_pending`, and re-emit in `new_setups` with `mode: "wait"`.
-- **Two setups on same ticker in opposite directions:** allowed but unusual. Both open_now entries land in the ledger with separate IDs.
+- **No current positions:** `current_positions: []`, `ledger_ops.evaluations: []`. Render skips the CURRENT POSITIONS section.
+- **No new entries:** `new_positions: []`, `ledger_ops.open_now: []`. Render skips the NEW POSITIONS section. Skip-day discipline.
+- **No watchlist:** `watchlist: []`, `ledger_ops.add_watchlist: []`, `ledger_ops.keep_watchlist: []`. Render skips the WATCHLIST section.
+- **All three empty:** brief still publishes with title + MARKET SENTIMENT. The notification is just the sentiment paragraph + bias line.
+- **`perps-scan` artifact missing (degraded):** set `qualifier`. Current positions still evaluated using narrative-tracker + market-context only. Conservative bias on RIDE/CLOSE.
+- **Watchlist trigger fired:** emit in `new_positions[]` with mode-equivalent fields. `open_now[].watchlist_id_promoted` references the watchlist entry's id. Apply script removes from watchlist[], adds provenance to the new open entry.
+- **Auto-flip case:** see above. CLOSE the current, OPEN the new direction in same run.
 
 ### Render verification
 
-After writing the JSON, do NOT write `.outputs/perps-brief.md`, do NOT call `./notify`, and do NOT touch `memory/topics/state/active-setups.json`. The postprocess pipeline owns all three. If the JSON fails schema validation, the render writes a `Perps Brief · unknown date · render failed` placeholder and the apply step is skipped — the ledger stays intact.
+If the JSON fails schema validation, render writes a `Perps Brief · unknown date · render failed` placeholder and the apply step is skipped — ledger stays intact. Section-split notify is also skipped.
 
 ### Notification routing
 
-`scripts/postprocess-perps-brief.sh` calls `./notify --signal "$(cat .outputs/perps-brief.md)"`. Discord via `DISCORD_WEBHOOK_MAP[perps-brief]` → `#perps` channel. Chunking handles the 2000-character limit.
+`scripts/postprocess-perps-brief.sh` splits the rendered markdown by section divider, wraps each section in a code block, and calls `./notify --signal` per section. Discord delivers to `#perps` via `DISCORD_WEBHOOK_MAP[perps-brief]`. Each section is its own Discord message — sections never split mid-content.
 
 ## Log to `memory/logs/${today}.md`
 
 ```
 ## Perps Brief
-- **Open positions evaluated:** N (R RIDE, S SELL-now, W SELL-wait)
-- **Pending entries:** P (kept K, promoted-to-open M, dropped D, new-added A)
-- **New setups:** N — capped at 5
-  - TICKER · DIRECTION (now|wait) · horizon · confluence: criterion1, criterion2 ...
+- **Current positions evaluated:** N (R RIDE, C CLOSE)
+- **Watchlist entries:** W (kept K, promoted M, dropped D, new-added A)
+- **New positions:** N — capped at 5
+  - TICKER · DIRECTION · horizon · confluence: criterion1, criterion2 ...
   - ...
-- **Closes this run:** N (W win, L loss, U neutral)
-- **Source artifacts read:** [✓/⚠ list of consumed upstream artifacts + ledger]
+- **Closes this run:** N (W win, L loss, U neutral, S scare, A auto-flipped)
+- **Source artifacts read:** [✓/⚠ list]
 - **Artifact written:** .outputs/perps-brief.data.json (rendered to .outputs/perps-brief.md by postprocess)
-- **Ledger update:** open Δ, pending Δ, closed Δ
-- **Notification sent:** yes (normal | skip-day | degraded) — queued by postprocess to #perps
+- **Ledger update:** open Δ, watchlist Δ, closed Δ
+- **Notification sent:** N section messages queued to #perps
 ```
 
 ## Sandbox note
 
-This skill is mostly consume-only — it reads artifacts written by Step 1 chain steps and the ledger JSON. The Pass 0 + Pass 2 WebSearch calls go through Claude's WebSearch tool which works in the sandbox. No outbound curl required (the upstream skills handle that).
-
-If WebSearch fails or returns empty for a Pass 2 query, write `(no findings)` for that enrichment line — do not invent.
+This skill is consume-only — reads chain artifacts + ledger JSON. WebSearch via Claude's built-in tool. No outbound curl needed.
 
 ## Environment Variables
 
-- None required. WebSearch is built into Claude.
-- Notification channels configured via repo secrets (see CLAUDE.md).
+- None required.
 
 ## Constraints
 
-- **Position-aware first.** Evaluate every open ledger entry before deciding new setups. Skip-day discipline applies only to `new_setups[]`, never to open evaluations.
-- **Confluence is structured, not prose.** Every new setup must list at least one criterion from the enumerated set in `confluence_fired[]`. Track-record analysis (Phase 2) reads these.
-- **Required fields are required.** `entry_zone` for `mode: now`, `trigger` for `mode: wait`, `invalidation` always, `named_risks` always non-empty. The schema validator rejects setups missing any of these.
-- **Cap 5 new setups.** No overflow — the ledger is the persistent record.
-- **FADE is honest.** Empty `new_setups[]` is the correct answer on quiet days. Don't fabricate.
-- **Pending entries need explicit carry-forward.** If a `(wait)` setup is still good, its id must be in `ledger_ops.keep_pending[]`. Silence drops it.
-- **Discovery is independent of quant.** Pass 0 runs even when perps-scan flagged plenty. `[BOTH]` is the signal of agreement.
-- **No source footer.** `daily-ops-review` reports artifact health. Setup-level evidence comes from the per-line context inside each setup block.
+- **Position-aware first.** Evaluate every current ledger position before deciding new entries. Skip-day applies only to NEW POSITIONS and WATCHLIST.
+- **Confluence is structured, not prose.** Every new position and watchlist entry lists at least one criterion from the enumerated set.
+- **Required fields are required.** `entry_zone` for new positions, `trigger` for watchlist, `invalidation` always, `risks` always non-empty for new positions.
+- **Cap 5 on NEW POSITIONS and WATCHLIST.** No overflow — the ledger is the persistent record.
+- **Auto-flip is mechanical.** Opposite-direction high-conviction signal on an active position triggers CLOSE + OPEN in the same brief. No exceptions.
+- **No pyramiding.** Same-direction signal on an active position is dropped.
+- **MAE/MFE every evaluation.** Every current position evaluation must include `todays_high` and `todays_low` for the apply script to update MAE/MFE.
+- **invalidation_breached_today is sticky.** Set true when a daily close crosses invalidation. Once true on the ledger entry, drives SCARE outcome at close time.
+- **Watchlist entries need explicit carry-forward.** Add the id to `keep_watchlist[]` or it gets dropped. Silence drops.

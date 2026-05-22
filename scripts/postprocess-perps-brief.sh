@@ -1,37 +1,19 @@
 #!/usr/bin/env bash
-# Post-process for perps-brief (v4).
+# Post-process for perps-brief (v4.1).
 #
-# Reads the structured JSON intermediate Claude wrote, runs the v4 pipeline
-# in this order:
-#
+# Pipeline:
 #   1. Render JSON → markdown        (scripts/render-perps-brief.py)
-#   2. Snapshot the ledger           (pre-apply backup, see scripts/lib/ledger.py)
+#   2. Snapshot the ledger           (pre-apply backup)
 #   3. Apply ledger operations       (scripts/apply-ledger-ops.py)
-#   4. Validate ledger post-apply    (python3 -m lib.ledger memory/topics/state/active-setups.json)
-#   5. Queue notification            (./notify --signal "$(cat .outputs/perps-brief.md)")
+#   4. Validate ledger post-apply    (python3 -m lib.ledger)
+#   5. Section-split markdown + send per-section to Discord
 #
-# Order matters:
-#   - Render runs first so the published brief reflects what Claude actually
-#     decided. If render fails (schema violation), abort BEFORE touching the
-#     ledger.
-#   - Snapshot runs after render and before apply so the snapshot captures
-#     the pre-apply state. If apply corrupts something, the snapshot is the
-#     rollback.
-#   - Apply runs after snapshot. The apply script validates pre and post
-#     state and refuses to write a corrupt ledger.
-#   - Validate is belt-and-suspenders — `apply-ledger-ops.py` already calls
-#     `L.validate()` before writing, but the explicit validate step here
-#     catches any concurrent-edit weirdness from a same-run rebase.
-#   - Notify runs last so the operator only gets a Discord post if every
-#     prior step succeeded.
-#
-# Carried over from v3 (ISS-004 fix):
-#   - Claude does not write .outputs/perps-brief.md directly. Render owns it.
-#   - Claude does not call ./notify. This script does.
-#
-# New in v4:
-#   - Claude does not write memory/topics/state/active-setups.json directly.
-#     apply-ledger-ops.py owns it.
+# v4.1 changes from v4:
+#   - Step 5 splits the brief by section divider, wraps each section in a
+#     code block, and sends each as a separate Discord message. Sections
+#     stay intact across the 2000-char webhook limit.
+#   - The title + MARKET SENTIMENT block is the first message (combined
+#     per operator decision).
 
 set -euo pipefail
 
@@ -40,7 +22,7 @@ MD_PATH=".outputs/perps-brief.md"
 LEDGER_PATH="memory/topics/state/active-setups.json"
 
 if [ ! -f "$JSON_PATH" ]; then
-  echo "postprocess-perps-brief: $JSON_PATH not present, skipping (not a perps-brief run)"
+  echo "postprocess-perps-brief: $JSON_PATH not present, skipping"
   exit 0
 fi
 
@@ -61,12 +43,11 @@ if ! python3 scripts/render-perps-brief.py; then
   exit 1
 fi
 
-# Step 2 — Snapshot the ledger (pre-apply backup)
+# Step 2 — Snapshot ledger
 echo "postprocess-perps-brief: step 2/5 — snapshot ledger"
 if [ -f "$LEDGER_PATH" ]; then
   python3 - <<'PY'
 import sys
-from pathlib import Path
 sys.path.insert(0, "scripts")
 from lib import ledger as L
 try:
@@ -77,31 +58,29 @@ except L.LedgerError as e:
     sys.exit(1)
 PY
 else
-  echo "postprocess-perps-brief: ledger does not exist yet ($LEDGER_PATH); skipping snapshot"
+  echo "postprocess-perps-brief: ledger does not exist yet; skipping snapshot"
 fi
 
-# Step 3 — Apply ledger operations
+# Step 3 — Apply ledger ops
 echo "postprocess-perps-brief: step 3/5 — apply ledger ops"
 if ! python3 scripts/apply-ledger-ops.py; then
-  echo "::error::postprocess-perps-brief: apply-ledger-ops failed; ledger untouched (script aborts before write on any validation error)"
+  echo "::error::postprocess-perps-brief: apply-ledger-ops failed; ledger untouched"
   echo "::warning::postprocess-perps-brief: continuing to notify — brief artifact is valid"
 fi
 
-# Step 4 — Validate ledger post-apply (defense in depth)
+# Step 4 — Validate ledger post-apply
 echo "postprocess-perps-brief: step 4/5 — validate ledger"
 if [ -f "$LEDGER_PATH" ]; then
   if ! ( cd scripts && python3 -m lib.ledger "../$LEDGER_PATH" ); then
-    echo "::error::postprocess-perps-brief: ledger post-apply validation FAILED — operator must restore from memory/topics/state/snapshots/"
-    # Do not exit — still send the notify so operator sees today's brief.
+    echo "::error::postprocess-perps-brief: ledger post-apply validation FAILED — restore from memory/topics/state/snapshots/"
   fi
 fi
 
-# Step 5 — Notify
-echo "postprocess-perps-brief: step 5/5 — notify"
+# Step 5 — Section-split notify
+echo "postprocess-perps-brief: step 5/5 — section-split notify"
 
-# ./notify is generated into the workspace by the workflow's main run step.
 if [ ! -x ./notify ]; then
-  echo "::error::postprocess-perps-brief: ./notify is missing or not executable — cannot queue Discord delivery"
+  echo "::error::postprocess-perps-brief: ./notify is missing or not executable"
   exit 1
 fi
 
@@ -110,7 +89,75 @@ if [ ! -s "$MD_PATH" ]; then
   exit 0
 fi
 
-echo "postprocess-perps-brief: queuing $(wc -c < "$MD_PATH" | tr -d ' ')-byte brief for Discord delivery"
-./notify --signal "$(cat "$MD_PATH")" || {
-  echo "::warning::postprocess-perps-brief: ./notify exited non-zero — Send pending notifications will retry"
-}
+# Split the brief into sections. The render emits a deterministic divider
+# `─────────  NAME  ─────────` at section boundaries. The first section
+# is the title + MARKET SENTIMENT block (no divider above it).
+#
+# python helper: read the md, split, emit one file per section to a temp dir,
+# then loop and notify each.
+SECTION_DIR=$(python3 - <<'PY'
+import sys, os, tempfile
+from pathlib import Path
+
+md = Path(".outputs/perps-brief.md").read_text()
+lines = md.splitlines()
+
+# A section divider line starts and ends with the "─────────" sequence.
+DIV = "─" * 9
+def is_divider(line: str) -> bool:
+    return line.startswith(DIV) and line.rstrip().endswith(DIV)
+
+# Walk the lines; each divider starts a new section. Lines before the
+# first divider belong to "section 0" (title + MARKET SENTIMENT in v4.1).
+# Actually MARKET SENTIMENT itself has a divider, so section 0 is just
+# the title lines if any precede MARKET SENTIMENT's divider.
+sections: list[list[str]] = []
+current: list[str] = []
+for line in lines:
+    if is_divider(line):
+        if current:
+            sections.append(current)
+            current = []
+    current.append(line)
+if current:
+    sections.append(current)
+
+# The first section contains the title (before the MARKET SENTIMENT
+# divider). If MARKET SENTIMENT is the first divider in the file, that
+# section already includes the title — perfect. The combined "title +
+# MARKET SENTIMENT" message is sections[0].
+
+tmpdir = tempfile.mkdtemp(prefix="perps-brief-sections-")
+for i, sec in enumerate(sections):
+    body = "\n".join(sec).rstrip()
+    if not body:
+        continue
+    Path(tmpdir, f"section-{i:02d}.md").write_text(body + "\n")
+print(tmpdir)
+PY
+)
+
+if [ -z "$SECTION_DIR" ] || [ ! -d "$SECTION_DIR" ]; then
+  echo "::warning::postprocess-perps-brief: section split failed; falling back to monolithic notify"
+  ./notify --signal "$(cat "$MD_PATH")" || {
+    echo "::warning::postprocess-perps-brief: ./notify exited non-zero — pending-notify will retry"
+  }
+  exit 0
+fi
+
+SECTION_COUNT=$(ls -1 "$SECTION_DIR"/section-*.md 2>/dev/null | wc -l | tr -d ' ')
+echo "postprocess-perps-brief: split into $SECTION_COUNT section(s); sending each wrapped in a code block"
+
+# Send each section as its own Discord message, wrapped in a code block
+# so Discord renders monospace + preserves the dividers + indentation.
+for f in "$SECTION_DIR"/section-*.md; do
+  CONTENT=$(cat "$f")
+  WRAPPED=$(printf '```\n%s\n```' "$CONTENT")
+  echo "postprocess-perps-brief: notify section: $(basename "$f") ($(wc -c < "$f" | tr -d ' ') bytes)"
+  ./notify --signal "$WRAPPED" || {
+    echo "::warning::postprocess-perps-brief: ./notify exited non-zero on $(basename "$f") — pending-notify will retry"
+  }
+done
+
+# Clean up temp dir
+rm -rf "$SECTION_DIR"

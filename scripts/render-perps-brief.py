@@ -1,33 +1,56 @@
 #!/usr/bin/env python3
-"""Render .outputs/perps-brief.md deterministically from .outputs/perps-brief.data.json.
+"""Render .outputs/perps-brief.md from .outputs/perps-brief.data.json (v4.1).
 
-v4 schema. Same structural pattern as the v3 renderer (ISS-004 fix): Claude
-writes the JSON intermediate; this script produces the locked markdown
-output. No LLM in the render path so the format cannot be corrupted by an
-end-of-task ## Summary blob.
+v4.1 template:
 
-v4 differences from v3:
-- Output begins with header + RISK REGIME placeholder line (B2 fills in
-  Phase 3; v4-Phase-1 emits a single empty `RISK REGIME: pending (v4 Phase 3)`
-  line until then so the structural slot is reserved).
-- OPEN POSITIONS section between MARKET SENTIMENT and NEW SETUPS.
-- NEW SETUPS replaces HIGH CONVICTION. Two flavors per entry: (now) and (wait).
-- FADE line when new_setups[] is empty.
-- TRACK RECORD section is rendered only when Phase 2 lands (v4-Phase-1 leaves
-  the slot dormant — absent track_record block means no rendering).
+    Perps Brief · DD MMM
 
-The matching skills/perps-brief/SKILL.md describes how Claude composes the
-JSON. This file is the renderer + schema gate only.
+    ─────────  MARKET SENTIMENT  ─────────
 
-Render emits exit 0 on success, 2 on schema violation. On schema violation
-it writes a "skill ran but render failed" placeholder artifact so
-daily-ops-review surfaces the issue.
+      <paragraph>
+
+      Bias · <bias line>
+
+    ─────────  CURRENT POSITIONS (N)  ─────────
+
+      TICKER · DIRECTION · fired DD MMM @ $price · day N/M
+        RIDE | CLOSE — <thesis_note>
+        invalidation: <invalidation>
+        watch: <watch>           (only for RIDE)
+        MAE −X% (day N) · MFE +Y% (day N) · now +Z%   (RIDE)
+        final +X% vs entry · +Y% vs BTC · WIN|LOSS|NEUTRAL|WIN-WITH-SCARE   (CLOSE)
+        MAE −X% · MFE +Y%        (CLOSE)
+
+    ─────────  NEW POSITIONS (N)  ─────────
+
+      TICKER · DIRECTION · horizon · entry: <zone>
+        invalidation: <invalidation>
+        thesis: <thesis>
+        confluence (N): name1, name2, ...
+        risks: <risk1>; <risk2>
+
+    ─────────  WATCHLIST (N)  ─────────
+
+      TICKER · DIRECTION · day N on watchlist · confluence (N)
+        trigger: <trigger>
+        invalidation: <invalidation>
+        thesis: <thesis>
+
+Section markers `─────────  XXX  ─────────` are deterministic — the
+postprocess script reads them to split the brief into per-section Discord
+messages.
+
+Empty sections are omitted entirely. Title + MARKET SENTIMENT are combined
+into the first section (no divider between them).
+
+Exit 0 on success, 2 on schema violation.
 """
 
 from __future__ import annotations
 
 import json
 import sys
+from datetime import date
 from pathlib import Path
 from typing import List, Optional
 
@@ -37,8 +60,13 @@ MD_OUT = Path(".outputs/perps-brief.md")
 
 VALID_DIRECTIONS = {"LONG", "SHORT"}
 VALID_HORIZONS = {"24h", "3d", "7d", "multi-week"}
-VALID_CALLS = {"RIDE", "SELL (now)", "SELL (wait)"}
-VALID_MODES = {"now", "wait"}
+VALID_CALLS = {"RIDE", "CLOSE"}
+VALID_OUTCOMES = {"WIN", "LOSS", "SCARE", "NEUTRAL"}
+
+WATCHLIST_CAP = 5
+NEW_POSITIONS_CAP = 5
+
+DIVIDER = "─" * 9
 
 
 def fail(msg: str, code: int = 1) -> None:
@@ -55,66 +83,176 @@ def write_failure_placeholder(reason: str) -> None:
     )
 
 
-def render_open_position(p: dict) -> List[str]:
-    """One OPEN POSITIONS block."""
+def fmt_date(iso: str) -> str:
+    """YYYY-MM-DD → "DD MMM"."""
+    try:
+        d = date.fromisoformat(iso)
+        return d.strftime("%-d %b") if hasattr(d, "strftime") else iso
+    except (ValueError, TypeError):
+        return iso
+
+
+def fmt_price(p) -> str:
+    """Format price for display.
+
+    Rules:
+      - >= 100        no decimals, comma-grouped:  95,210
+      - 1 to 100      exactly 2 decimals:          28.40
+      - 0.01 to 1     up to 4 decimals, trimmed:   0.68
+      - < 0.01        up to 6 decimals, trimmed:   0.000034
+    """
+    if p is None:
+        return "?"
+    try:
+        f = float(p)
+        if f >= 100:
+            return f"{f:,.0f}"
+        if f >= 1:
+            return f"{f:.2f}"
+        if f >= 0.01:
+            return f"{f:.4f}".rstrip("0").rstrip(".")
+        return f"{f:.6f}".rstrip("0").rstrip(".")
+    except (ValueError, TypeError):
+        return str(p)
+
+
+def fmt_pct(p, sign: bool = True) -> str:
+    if p is None:
+        return "?"
+    try:
+        f = float(p)
+        if sign:
+            return f"{f:+.1f}%"
+        return f"{f:.1f}%"
+    except (ValueError, TypeError):
+        return str(p)
+
+
+def section_header(name: str, count: int | None) -> str:
+    if count is None:
+        return f"{DIVIDER}  {name}  {DIVIDER}"
+    return f"{DIVIDER}  {name} ({count})  {DIVIDER}"
+
+
+# ---------------------------------------------------------------------------
+# Section renderers
+
+
+def render_market_sentiment(date_str: str, ms: dict, qualifier: str | None) -> List[str]:
+    out: List[str] = []
+    title = f"Perps Brief · {fmt_date(date_str)}"
+    if qualifier:
+        title += f" · {qualifier}"
+    out.append(title)
+    out.append("")
+    out.append(section_header("MARKET SENTIMENT", None))
+    out.append("")
+    for para in ms.get("paragraphs", []):
+        # indent paragraph body by 2 spaces, soft-wrap respected as-written
+        for line in para.splitlines() or [para]:
+            out.append(f"  {line}")
+        out.append("")
+    out.append(f"  {ms['bias_line']}")
+    out.append("")
+    return out
+
+
+def render_current_position(p: dict) -> List[str]:
     ticker = p.get("ticker", "?")
     direction = p.get("direction", "?")
-    fired_date = p.get("fired_date", "?")
-    fired_price = p.get("fired_price", "?")
-    horizon = p.get("horizon", "?")
-    day_of = p.get("day_of", "")  # e.g. "2/7"
+    fired_date = fmt_date(p.get("fired_date", ""))
+    fired_price = fmt_price(p.get("fired_price"))
+    day_of = p.get("day_of", "")
     call = p.get("call", "?")
-    status = p.get("thesis_status", "intact")
     note = p.get("thesis_note", "")
     invalidation = p.get("invalidation", "")
-    watch = p.get("watch") or "-"
+    watch = p.get("watch")
+    mae = p.get("mae_pct")
+    mfe = p.get("mfe_pct")
+    mae_day = p.get("mae_day_of")
+    mfe_day = p.get("mfe_day_of")
 
     day_suffix = f" · day {day_of}" if day_of else ""
-    header = (
-        f"{ticker} · {direction} · fired {fired_date} @ ${fired_price} "
-        f"· {horizon} horizon{day_suffix}"
-    )
-    out = [header]
-    out.append(f"  call: {call}")
-    out.append(f"  thesis {status}: {note}")
-    out.append(f"  invalidation: {invalidation}")
-    out.append(f"  watch: {watch}")
+    out = [f"  {ticker} · {direction} · fired {fired_date} @ ${fired_price}{day_suffix}"]
+    # Auto-flip marker on CLOSE — the original position is being closed
+    # because an opposite-direction high-conviction entry fires today.
+    # Same ticker will appear in NEW POSITIONS with the new direction.
+    call_label = call
+    if call == "CLOSE" and p.get("auto_flipped"):
+        call_label = "CLOSE (auto-flip)"
+    out.append(f"    {call_label} — {note}")
+    out.append(f"    invalidation: {invalidation}")
+
+    if call == "RIDE":
+        if watch:
+            out.append(f"    watch: {watch}")
+        now_pct = p.get("now_pct")
+        mae_str = f"MAE {fmt_pct(mae)}" + (f" (day {mae_day})" if mae_day else "") if mae is not None else "MAE —"
+        mfe_str = f"MFE {fmt_pct(mfe)}" + (f" (day {mfe_day})" if mfe_day else "") if mfe is not None else "MFE —"
+        now_str = f"now {fmt_pct(now_pct)}" if now_pct is not None else ""
+        bits = [mae_str, mfe_str]
+        if now_str:
+            bits.append(now_str)
+        out.append(f"    {' · '.join(bits)}")
+    else:  # CLOSE
+        ret = p.get("return_pct")
+        ret_btc = p.get("return_vs_btc_pct")
+        outcome = p.get("outcome", "?")
+        outcome_label = "WIN-WITH-SCARE" if outcome == "SCARE" else outcome
+        final_bits = [f"final {fmt_pct(ret)} vs entry"]
+        if ret_btc is not None:
+            final_bits.append(f"{fmt_pct(ret_btc)} vs BTC")
+        final_bits.append(outcome_label)
+        out.append(f"    {' · '.join(final_bits)}")
+        if mae is not None or mfe is not None:
+            mae_str = f"MAE {fmt_pct(mae)}" if mae is not None else "MAE —"
+            mfe_str = f"MFE {fmt_pct(mfe)}" if mfe is not None else "MFE —"
+            out.append(f"    {mae_str} · {mfe_str}")
+
     return out
 
 
-def render_new_setup(s: dict) -> List[str]:
-    """One NEW SETUPS block."""
-    ticker = s.get("ticker", "?")
-    direction = s.get("direction", "?")
-    mode = s.get("mode", "?")
-    horizon = s.get("horizon", "?")
-    thesis = s.get("thesis", "")
-    invalidation = s.get("invalidation", "")
-    confluence = s.get("confluence_fired", [])
-    risks = s.get("risks", [])
+def render_new_position(p: dict) -> List[str]:
+    ticker = p.get("ticker", "?")
+    direction = p.get("direction", "?")
+    horizon = p.get("horizon", "?")
+    entry_zone = p.get("entry_zone") or "market"
+    invalidation = p.get("invalidation", "")
+    thesis = p.get("thesis", "")
+    confluence = p.get("confluence_fired", [])
+    risks = p.get("risks", [])
 
-    # Header: "TICKER · LONG (now) · 7d horizon"
-    header = f"{ticker} · {direction} ({mode}) · {horizon} horizon"
-    out = [header]
-
-    if mode == "now":
-        entry = s.get("entry_zone") or "market"
-        out.append(f"  entry: {entry}")
-    else:  # wait
-        trigger = s.get("trigger") or "(unspecified)"
-        out.append(f"  trigger: {trigger}")
-
-    out.append(f"  thesis: {thesis}")
-    out.append(f"  invalidation: {invalidation}")
-    out.append(f"  confluence: {', '.join(confluence) if confluence else '-'}")
-    out.append(f"  risks: {'; '.join(risks) if risks else '-'}")
+    out = [f"  {ticker} · {direction} · {horizon} horizon · entry: {entry_zone}"]
+    out.append(f"    invalidation: {invalidation}")
+    out.append(f"    thesis: {thesis}")
+    out.append(f"    confluence ({len(confluence)}): {', '.join(confluence)}")
+    out.append(f"    risks: {'; '.join(risks)}")
     return out
+
+
+def render_watchlist_entry(p: dict) -> List[str]:
+    ticker = p.get("ticker", "?")
+    direction = p.get("direction", "?")
+    day_of = p.get("day_of_watchlist", 1)
+    confluence = p.get("confluence_fired", [])
+    trigger = p.get("trigger", "")
+    invalidation = p.get("invalidation", "")
+    thesis = p.get("thesis", "")
+
+    out = [f"  {ticker} · {direction} · day {day_of} on watchlist · confluence ({len(confluence)})"]
+    out.append(f"    trigger: {trigger}")
+    out.append(f"    invalidation: {invalidation}")
+    out.append(f"    thesis: {thesis}")
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Schema validation
 
 
 def validate_schema(data: dict) -> Optional[str]:
-    """Return None if valid, else a human error string. No exception."""
-    if data.get("schema_version") != "v4":
-        return f"schema_version must be 'v4', got '{data.get('schema_version')}'"
+    if data.get("schema_version") != "v4.1":
+        return f"schema_version must be 'v4.1', got '{data.get('schema_version')}'"
     for k in ("date", "market_sentiment"):
         if k not in data:
             return f"missing required key '{k}'"
@@ -122,154 +260,142 @@ def validate_schema(data: dict) -> Optional[str]:
     if "paragraphs" not in ms or "bias_line" not in ms:
         return "market_sentiment must contain 'paragraphs' and 'bias_line'"
 
-    # OPEN POSITIONS validation (may be empty)
-    open_positions = data.get("open_positions", [])
-    if not isinstance(open_positions, list):
-        return "open_positions must be array"
-    for i, p in enumerate(open_positions):
+    current = data.get("current_positions", [])
+    if not isinstance(current, list):
+        return "current_positions must be array"
+    for i, p in enumerate(current):
         if not isinstance(p, dict):
-            return f"open_positions[{i}] must be object"
+            return f"current_positions[{i}] must be object"
         for k in ("ticker", "direction", "call"):
             if k not in p:
-                return f"open_positions[{i}] missing '{k}'"
+                return f"current_positions[{i}] missing '{k}'"
         if p["direction"] not in VALID_DIRECTIONS:
-            return f"open_positions[{i}].direction invalid"
+            return f"current_positions[{i}].direction invalid"
         if p["call"] not in VALID_CALLS:
-            return f"open_positions[{i}].call must be one of {sorted(VALID_CALLS)}"
+            return f"current_positions[{i}].call must be one of {sorted(VALID_CALLS)}"
+        if p["call"] == "CLOSE" and p.get("outcome") not in VALID_OUTCOMES:
+            return f"current_positions[{i}] CLOSE missing valid 'outcome'"
 
-    # NEW SETUPS validation
-    new_setups = data.get("new_setups", [])
-    if not isinstance(new_setups, list):
-        return "new_setups must be array"
-    if len(new_setups) > 5:
-        return f"new_setups capped at 5; got {len(new_setups)}"
-    for i, s in enumerate(new_setups):
+    new_positions = data.get("new_positions", [])
+    if not isinstance(new_positions, list):
+        return "new_positions must be array"
+    if len(new_positions) > NEW_POSITIONS_CAP:
+        return f"new_positions capped at {NEW_POSITIONS_CAP}; got {len(new_positions)}"
+    for i, s in enumerate(new_positions):
         if not isinstance(s, dict):
-            return f"new_setups[{i}] must be object"
-        for k in ("ticker", "direction", "mode", "horizon", "thesis",
-                 "invalidation", "confluence_fired", "risks"):
+            return f"new_positions[{i}] must be object"
+        for k in (
+            "ticker",
+            "direction",
+            "horizon",
+            "entry_zone",
+            "thesis",
+            "invalidation",
+            "confluence_fired",
+            "risks",
+        ):
             if k not in s:
-                return f"new_setups[{i}] missing '{k}'"
+                return f"new_positions[{i}] missing '{k}'"
         if s["direction"] not in VALID_DIRECTIONS:
-            return f"new_setups[{i}].direction invalid"
-        if s["mode"] not in VALID_MODES:
-            return f"new_setups[{i}].mode must be 'now' or 'wait'"
+            return f"new_positions[{i}].direction invalid"
         if s["horizon"] not in VALID_HORIZONS:
-            return f"new_setups[{i}].horizon invalid"
+            return f"new_positions[{i}].horizon invalid"
         if not isinstance(s["confluence_fired"], list) or not s["confluence_fired"]:
-            return f"new_setups[{i}].confluence_fired must be non-empty array"
+            return f"new_positions[{i}].confluence_fired must be non-empty array"
         if not isinstance(s["risks"], list) or not s["risks"]:
-            return f"new_setups[{i}].risks must be non-empty array"
-        if s["mode"] == "now" and not s.get("entry_zone"):
-            # entry_zone can be "market" — but the field must be present and non-empty string
-            return f"new_setups[{i}] mode=now requires entry_zone"
-        if s["mode"] == "wait" and not s.get("trigger"):
-            return f"new_setups[{i}] mode=wait requires trigger"
+            return f"new_positions[{i}].risks must be non-empty array"
+
+    watchlist = data.get("watchlist", [])
+    if not isinstance(watchlist, list):
+        return "watchlist must be array"
+    if len(watchlist) > WATCHLIST_CAP:
+        return f"watchlist capped at {WATCHLIST_CAP}; got {len(watchlist)}"
+    for i, w in enumerate(watchlist):
+        if not isinstance(w, dict):
+            return f"watchlist[{i}] must be object"
+        for k in (
+            "ticker",
+            "direction",
+            "trigger",
+            "invalidation",
+            "thesis",
+            "confluence_fired",
+        ):
+            if k not in w:
+                return f"watchlist[{i}] missing '{k}'"
+        if w["direction"] not in VALID_DIRECTIONS:
+            return f"watchlist[{i}].direction invalid"
 
     return None
 
 
+# ---------------------------------------------------------------------------
+# Main
+
+
 def main() -> int:
     if not DATA_JSON.exists():
-        sys.stderr.write(
-            f"render-perps-brief: no {DATA_JSON} — nothing to render\n"
-        )
+        sys.stderr.write(f"render-perps-brief: no {DATA_JSON} — nothing to render\n")
         return 0
 
     try:
         data = json.loads(DATA_JSON.read_text())
     except json.JSONDecodeError as e:
-        write_failure_placeholder(
-            f"perps-brief.data.json was not valid JSON ({e})."
-        )
+        write_failure_placeholder(f"perps-brief.data.json was not valid JSON ({e}).")
         fail(f"{DATA_JSON} is not valid JSON: {e}", code=2)
 
     err = validate_schema(data)
     if err:
-        write_failure_placeholder(
-            f"perps-brief.data.json failed schema validation: {err}"
-        )
+        write_failure_placeholder(f"perps-brief.data.json failed schema validation: {err}")
         fail(err, code=2)
 
     lines: List[str] = []
 
-    # Title
-    title = f"Perps Brief · {data['date']}"
-    if data.get("qualifier"):
-        title += f" · {data['qualifier']}"
-    lines.append(title)
-    lines.append("")
+    # Section 1: Title + MARKET SENTIMENT (combined per operator decision)
+    lines.extend(
+        render_market_sentiment(
+            data["date"], data["market_sentiment"], data.get("qualifier")
+        )
+    )
 
-    # RISK REGIME line — placeholder slot. Phase 3 (Workstream B2) populates
-    # this line from market-context-refresh + perps-scan aggregate verdict.
-    risk_regime = data.get("risk_regime")
-    if risk_regime:
-        # risk_regime: {label, detail, dominance_line}
-        lab = risk_regime.get("label", "")
-        det = risk_regime.get("detail", "")
-        dom = risk_regime.get("dominance_line", "")
-        lines.append(f"RISK REGIME: {lab} · {det}")
-        if dom:
-            lines.append(dom)
+    # Section 2: CURRENT POSITIONS — only if non-empty
+    current = data.get("current_positions", [])
+    if current:
+        lines.append(section_header("CURRENT POSITIONS", len(current)))
         lines.append("")
-    # else: omit the section entirely in Phase 1.
-
-    # MARKET SENTIMENT
-    ms = data["market_sentiment"]
-    lines.append("MARKET SENTIMENT")
-    lines.append("")
-    for para in ms.get("paragraphs", []):
-        lines.append(para)
-        lines.append("")
-    lines.append(ms["bias_line"])
-    lines.append("")
-
-    # OPEN POSITIONS — rendered only when non-empty
-    open_positions = data.get("open_positions", [])
-    if open_positions:
-        lines.append(f"OPEN POSITIONS ({len(open_positions)})")
-        lines.append("")
-        for i, p in enumerate(open_positions):
-            lines.extend(render_open_position(p))
-            if i < len(open_positions) - 1:
+        for i, p in enumerate(current):
+            lines.extend(render_current_position(p))
+            if i < len(current) - 1:
                 lines.append("")
         lines.append("")
 
-    # NEW SETUPS — rendered when non-empty; otherwise emit FADE line
-    new_setups = data.get("new_setups", [])
-    if new_setups:
-        lines.append(f"NEW SETUPS ({len(new_setups)})")
+    # Section 3: NEW POSITIONS — only if non-empty
+    new_positions = data.get("new_positions", [])
+    if new_positions:
+        lines.append(section_header("NEW POSITIONS", len(new_positions)))
         lines.append("")
-        for i, s in enumerate(new_setups):
-            lines.extend(render_new_setup(s))
-            if i < len(new_setups) - 1:
+        for i, p in enumerate(new_positions):
+            lines.extend(render_new_position(p))
+            if i < len(new_positions) - 1:
                 lines.append("")
         lines.append("")
-    else:
-        fade_note = data.get("fade_note") or "no new conviction setups today"
-        lines.append(f"FADE — {fade_note}")
-        lines.append("")
 
-    # SKIP-DAY best-near-miss (only meaningful when new_setups empty)
-    if not new_setups and data.get("skip_day_best_near_miss"):
-        lines.append(f"Best near-miss: {data['skip_day_best_near_miss']}")
+    # Section 4: WATCHLIST — only if non-empty
+    watchlist = data.get("watchlist", [])
+    if watchlist:
+        lines.append(section_header("WATCHLIST", len(watchlist)))
         lines.append("")
-
-    # TRACK RECORD — Phase 2 produces .outputs/outcome-tracker.md and feeds
-    # a track_record block here. v4-Phase-1: dormant slot.
-    tr = data.get("track_record")
-    if tr:
-        lines.append("TRACK RECORD")
-        lines.append("")
-        for line in tr.get("lines", []):
-            lines.append(line)
+        for i, w in enumerate(watchlist):
+            lines.extend(render_watchlist_entry(w))
+            if i < len(watchlist) - 1:
+                lines.append("")
         lines.append("")
 
     MD_OUT.parent.mkdir(parents=True, exist_ok=True)
     MD_OUT.write_text("\n".join(lines).rstrip() + "\n")
     print(
         f"render-perps-brief: wrote {MD_OUT} ({MD_OUT.stat().st_size} bytes, "
-        f"{len(open_positions)} open positions, {len(new_setups)} new setups)"
+        f"{len(current)} current, {len(new_positions)} new, {len(watchlist)} watchlist)"
     )
     return 0
 
