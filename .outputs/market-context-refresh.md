@@ -1,33 +1,33 @@
-Market Context — 2026-05-21
+# Market Context — 2026-05-22
 
-Take: rotation — BTC +0.37% 24h while dominance slipped -0.14pp as HYPE +18.5% and ZEC +13.2% pulled breadth to 14/20. Conviction: medium.
+Take: chop — BTC -0.2% 24h, breadth 12/20, yesterday's rotation leaders HYPE (+0.1%) and ZEC (-2.1%) stalled without follow-through. Conviction: medium.
 
-Snapshot
-- BTC $77,584 (+0.37% 24h, -2.76% 7d) · dominance 58.21% (-0.14pp 24h)
-- ETH $2,128 (-0.14% 24h, -6.18% 7d) · ETH/BTC 0.02743
-- SOL $86.49 (+1.94% 24h, -5.28% 7d)
-- Total mcap $2.67T (+0.62% 24h) · DEX vol $5.71B 24h
-- Breadth: 14/20 green 24h · 6/20 green 7d
-- Fear & Greed: 29 (Fear) — yesterday 27
-- TVL: Ethereum $43.30B · Solana $6.03B · BSC $5.53B (7d delta n/a)
+## Snapshot
+- BTC $77,414 (-0.20% 24h, -3.64% 7d) · dominance 58.09% (-0.12pp 24h)
+- ETH $2,129 (+0.05% 24h, -5.18% 7d) · ETH/BTC 0.02750
+- SOL $86.96 (+0.63% 24h, -4.02% 7d)
+- Total mcap $2.67T (-0.33% 24h) · DEX vol $6.34B 24h
+- Breadth: 12/20 green 24h · 3/20 green 7d
+- Fear & Greed: 28 (Fear) — yesterday 29
+- TVL (top chains): Ethereum $43.24B · Solana $6.05B · BSC $5.54B
 
-What Changed
-- Regime chop → rotation: HYPE +18.54% and ZEC +13.21% carried alts while BTC held flat.
-- HYPE claimed #11 global mcap at $13.7B (+18.54% 24h, +46.89% 7d). Peak signal: BHYP three-actor loop confirmed. June 6 unlock ~$575M approaching.
-- ZEC +13.21% 24h, +25.91% 7d. Privacy narrative third strong session.
-- VVV -1.02% post-NVIDIA. AI compute catalyst resolved.
-- Breadth 24h reached risk-on threshold: 12/20 → 14/20.
+## What Changed
+- Regime rotation → chop: ZEC -2.15% 24h, HYPE +0.09% 24h, breadth fell 14/20 → 12/20.
+- 7d breadth collapsed 6/20 → 3/20 (TRX, HYPE, ZEC only). Broader market red on the week.
+- Stablecoin supply +$5.7B to $290.3B — dry powder expanding.
+- DEX vol +11% ($5.71B → $6.34B) with no price follow-through. Volume found no direction.
+- Iran peace deal YES 16.5% → 19.5% (+3pp). Geopolitical risk premium easing at the margin.
 
-Active Narratives
-- Perp DEX / Hyperliquid — phase: peak. HYPE +18.54% 24h, #1 trending, #11 mcap $13.7B. BHYP ETF fee-buyback loop confirmed.
-- Privacy / ZK — phase: rising. ZEC +13.21% 24h, +25.91% 7d, #5 trending, #13 mcap $11.1B. XMR +0.47% confirms sector.
-- RWA / tokenization — phase: peak. ONDO +7.24% 24h, #9 trending. CLARITY Act cleared Senate Banking Committee.
-- DePIN / compute infra — phase: emerging. PEAQ +29.83% 24h (#10 trending), TAO +7.21% (#11 trending).
-- NFT / collectibles — phase: emerging. PENGU +3.51% 24h, #3 trending, second session.
+## Active Narratives
+- Privacy / ZK — phase: rising. Evidence: ZEC +20.17% 7d (#3 trending), RAIL +58.92% 24h (#10 trending) — two privacy protocols moving together. Counter-signal: narrative-tracker May 21 called FADE on zero XAI mentions; price is leading social signal.
+- AI / compute infra — phase: rising. Evidence: NEAR +29.34% 24h (#6 trending, day-3 ACCUMULATION), GRASS +33.04% 24h (#8 trending), TAO #4 trending — three names in top 10 simultaneously.
+- Perp DEX / Hyperliquid — phase: peak. Evidence: HYPE +26.96% 7d, +0.09% 24h. June 6 unlock 15 days out.
+- NFT / collectibles — phase: emerging. Evidence: PENGU +5.69% 24h, third consecutive trending session.
+- RWA / tokenization — phase: fading. Evidence: ONDO absent from trending today.
 
-Polymarket Highlights (top by 24h vol)
-- US x Iran permanent peace deal by May 31 — YES 16.5%, vol $2.88M
-- US x Iran permanent peace deal by May 22 — YES 4.2%, vol $1.31M
+## Polymarket Highlights (top by 24h vol)
+- Reza Pahlavi lead Iran 2026 — YES 7.1%, vol $5.28M
+- US x Iran permanent peace deal by May 31 — YES 19.5%, vol $3.63M
 
-Source Status
+## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
