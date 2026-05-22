@@ -1,45 +1,37 @@
-# Token Movers — 2026-05-22
+# Token Movers — 2026-05-22 (midday refresh)
 
-Broad green tape behind flat majors: 69/100 top-100 green at median +0.5%, BTC −0.2% / ETH flat / SOL +0.5%, 7d L1 reds still in place (BTC −3.6%, ETH −5.2%, SOL −4.0%).
+Broad green tape — 77/100 top-100 green at median +1.7%, majors mixed (BTC +0.3% / ETH +0.8% / SOL +2.1%). Dedup against the morning run trimmed both lists; what surfaces below is materially new or carries a fresh tag since the morning broadcast.
 
 ## Top Winners (24h)
-1. RAIL (Railgun) — $2.450  +58.8% / 7d +43.5% / 1h +7.6%  •  $3M / #239  [PUMP-RISK] [TRENDING+UP]
-2. NEAR (NEAR Protocol) — $2.230  +30.3% / 7d +42.5% / 1h +1.8%  •  $909M / #36  [TRENDING+UP] [BREAKOUT]
-3. GRASS (Grass) — $0.4437  +29.8% / 7d +34.7% / 1h +0.8%  •  $48M / #164  [TRENDING+UP] [BREAKOUT]
-4. GENIUS (Genius) — $0.5280  +18.6% / 7d +7.1% / 1h +20.1%  •  $17M / #206
-5. AERO (Aerodrome Finance) — $0.4623  +11.4% / 7d −1.0% / 1h +1.0%  •  $49M / #117
-6. FET (Artificial Superintelligence Alliance) — $0.2125  +9.8% / 7d +1.8% / 1h +0.6%  •  $88M / #110  [TRENDING+UP]
-7. WLD (Worldcoin) — $0.2815  +9.4% / 7d +11.6% / 1h +0.3%  •  $162M / #76
-8. TIA (Celestia) — $0.4412  +8.8% / 7d −0.2% / 1h +2.3%  •  $48M / #121
-9. RIVER (River) — $6.730  +8.5% / 7d −8.9% / 1h +0.9%  •  $13M / #250
-
-(list shrank from 10 to 9 after dedup-dropping BEAT: yesterday +20.0% [MICROCAP], today +11.3%, same direction, no new tag.)
+1. BEAT (Audiera) — $1.063  +48.4% / 7d +67.1% / 1h +0.9%  •  $26.3M / #158  [BREAKOUT][PUMP-RISK]
+2. GENIUS (Genius) — $0.5741  +31.2% / 7d +15.4% / 1h -5.8%  •  $45.3M / #196  [TRENDING+UP][PUMP-RISK]
+3. ONDO (Ondo) — $0.4656  +16.0% / 7d +22.2% / 1h +8.7%  •  $394.6M / #42  [TRENDING+UP]
+4. ATH (Aethir) — $0.006728  +12.5% / 7d +4.8% / 1h +0.7%  •  $20.7M / #243  [MICROCAP]
+5. VIRTUAL (Virtuals Protocol) — $0.8121  +12.3% / 7d +3.6% / 1h +3.7%  •  $84.1M / #102
 
 ## Top Losers (24h)
-1. SKYAI (SkyAI) — $0.2580  −24.3% / 7d −29.9% / 1h −0.3%  •  $79M / #165  [CAPITULATION]
-2. B (BUILDon) — $0.2772  −21.1% / 7d −40.2% / 1h −1.5%  •  $26M / #160
-3. NEX (Nexus) — $0.000004  −19.4% / 7d n/a / 1h −9.1%  •  $57M / #166  [TRENDING+DOWN]
-4. H (Humanity) — $0.2202  −13.2% / 7d −11.4% / 1h −0.2%  •  $478M / #123  [CAPITULATION]
-5. BSB (Block Street) — $0.8758  −7.8% / 7d +116.8% / 1h −0.7%  •  $71M / #193
-6. STABLE (Stable) — $0.0325  −5.4% / 7d −16.5% / 1h −2.8%  •  $15M / #84
-7. RAVE (RaveDAO) — $0.5708  −4.6% / 7d −10.0% / 1h −0.6%  •  $10M / #234
-
-(list shrank from 10 to 7 after dedup-dropping BILL [CAPITULATION] day-2 same tag/direction, plus UB and GWEI as same direction with no new tag.)
+1. BSB (Block Street) — $0.7721  -22.0% / 7d +85.0% / 1h -19.1%  •  $78M / #209  [CAPITULATION]
+2. DASH (Dash) — $45.28  -6.0% / 7d +1.0% / 1h -0.8%  •  $103.9M / #95
+3. XP (Xphere) — $0.0558  -5.6% / 7d +60.9% / 1h +1.0%  •  $2.2M / #225
+4. XDC (XDC Network) — $0.0342  -5.0% / 7d -4.0% / 1h -0.8%  •  $26M / #88
+5. KITE (Kite) — $0.2237  -4.6% / 7d +4.4% / 1h -1.5%  •  $26.8M / #104
 
 ## Trending
-1. NEAR (NEAR Protocol) — #36, $2.23, +30.3%  [TRENDING+UP] [BREAKOUT]
-2. PENGU (Pudgy Penguins) — #92, $0.00976, +6.4%
-3. HYPE (Hyperliquid) — #11, $57.49, +0.1%  [MAJOR]
-4. GRASS (Grass) — #164, $0.4437, +29.8%  [TRENDING+UP] [BREAKOUT]
-5. ZEC (Zcash) — #13, $653.82, −2.2%  [MAJOR]
-6. VVV (Venice Token) — #79, $18.12, +6.8%
-7. NEX (Nexus) — #163, $0.000004, −19.4%  [TRENDING+DOWN]
+1. Hyperliquid (HYPE) — #11, $61.11, 24h +5.1%  [TRENDING+UP][MAJOR]
+2. Venice Token (VVV) — #78, $19.3, 24h +10.9%  [TRENDING+UP]
+3. NEAR Protocol (NEAR) — #35, $2.31, 24h +32.2%  [TRENDING+UP][BREAKOUT]
+4. Pudgy Penguins (PENGU) — #92, $0.009701, 24h +4.8%
+5. Genius (GENIUS) — #197, $0.5741, 24h +31.2%  [TRENDING+UP][PUMP-RISK]
+6. Ondo (ONDO) — #43, $0.4656, 24h +16.0%  [TRENDING+UP]
+7. Zcash (ZEC) — #13, $638.97, 24h -3.3%  [MAJOR]
 
 ## Notable
-- NEAR +30.3% on $909M vol at rank #36, 7d +42.5%, in trending. Quantum-signatures + AI-agents + DePIN narrative confluence converts yesterday's NEAR ACCUMULATION day-2 into a clean breakout. Size and turnover read continuation, not pump.
-- GRASS +29.8% [BREAKOUT] on $48M vol, trending, 7d +34.7%. DePIN leader joins NEAR in the move. The AI-infra rotation is firing.
-- RAIL [PUMP-RISK] rank #239 on only $3M volume behind +58.8%. Privacy/ZK adjacency tempts. Liquidity disqualifies. Treat as pump until volume confirms.
-- NEX closes the round trip. Yesterday's +26.4% top winner prints −19.4% today and joins trending on the downside. Flash-pump fade complete in 24h.
-- H [CAPITULATION] −13.2% on $478M vol against a $401M cap (vol/mcap 1.19). Heavy distribution day, structural break to the downside.
-- BSB −7.8% with 7d +116.8% intact. Yesterday's day-2 [BREAKOUT] reverses but the 7d frame holds. Distribution after the run, no capitulation yet.
-- SKYAI [CAPITULATION] −24.3% completes the relief-bounce fade flagged on 05-20 (then [FADE] +25.6% on 7d −32%). The fade call landed.
+- BEAT prints a 4x expansion from the morning baseline (+11% to +48%) with fresh BREAKOUT and PUMP-RISK tags. Microcap rank #158 ripping on $26M vol — high manipulation probability, surface and discount.
+- GENIUS jumps from +18.6% morning to +31.2% with PUMP-RISK now firing. Joined trending; rank #196 puts it past the manipulation gate.
+- BSB escalated from morning's -7.8% day-2 reversal to full CAPITULATION at -22% on $78M vol against a $144M cap. The 7d +85% bid is unwinding hard.
+- ONDO joins as a fresh mid-cap mover on the RWA narrative — +16% on $395M vol at #42, joined trending. The cleanest large-cap addition since morning.
+
+## Dedup notes
+- Suppressed from winners (same direction + similar magnitude + no new tag since morning): NEAR, GRASS, TIA, FET, WLD.
+- Suppressed from losers: NEX (already TRENDING+DOWN this morning), SKYAI (already CAPITULATION), B (decelerating), H (lost CAPITULATION tag, decelerating), STABLE.
+- Lists shrank from 10 to 5 each per the SKILL.md gate: shrink rather than relax the volume floor.
