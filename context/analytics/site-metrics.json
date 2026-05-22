@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-22T05:52:45.806871Z",
+  "generated_at": "2026-05-22T09:52:49.361335Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -788,16 +788,16 @@
     {
       "agent_id": "calibration-gap-04-macro-copus45-k40-allreg-i796",
       "lifecycle": "shadow",
-      "closed_trades": 4,
-      "open_positions": 7,
-      "win_rate": 0.5,
-      "total_pnl_usd": -32.74,
-      "sharpe": 0.0,
-      "composite": 0.0,
-      "mean_edge_bps_gross": -1637,
-      "mean_edge_bps_net": -1842,
-      "median_edge_bps_gross": -2166,
-      "median_edge_bps_net": -2371
+      "closed_trades": 5,
+      "open_positions": 6,
+      "win_rate": 0.6,
+      "total_pnl_usd": 3.91,
+      "sharpe": 0.019,
+      "composite": 0.198,
+      "mean_edge_bps_gross": 156,
+      "mean_edge_bps_net": -49,
+      "median_edge_bps_gross": 5667,
+      "median_edge_bps_net": 5462
     },
     {
       "agent_id": "calibration-gap-04-macro-deepseek-k50-allreg-i636",
@@ -1362,16 +1362,16 @@
     {
       "agent_id": "calibration-gap-06-politics-qwen72-k15-allreg-i068",
       "lifecycle": "shadow",
-      "closed_trades": 4,
-      "open_positions": 4,
-      "win_rate": 0.5,
-      "total_pnl_usd": -32.74,
-      "sharpe": 0.0,
-      "composite": 0.0,
-      "mean_edge_bps_gross": -1637,
-      "mean_edge_bps_net": -1842,
-      "median_edge_bps_gross": -2166,
-      "median_edge_bps_net": -2371
+      "closed_trades": 5,
+      "open_positions": 3,
+      "win_rate": 0.6,
+      "total_pnl_usd": 7.04,
+      "sharpe": 0.033,
+      "composite": 0.246,
+      "mean_edge_bps_gross": 282,
+      "mean_edge_bps_net": 76,
+      "median_edge_bps_gross": 5667,
+      "median_edge_bps_net": 5462
     },
     {
       "agent_id": "calibration-gap-07-macro-copus45-k35-nocrisis-i475",
@@ -1390,16 +1390,16 @@
     {
       "agent_id": "calibration-gap-07-macro-gpt5mini-k10-riskonly-i320",
       "lifecycle": "shadow",
-      "closed_trades": 4,
-      "open_positions": 4,
-      "win_rate": 0.5,
-      "total_pnl_usd": -39.48,
-      "sharpe": 0.0,
-      "composite": 0.0,
-      "mean_edge_bps_gross": -1974,
-      "mean_edge_bps_net": -2179,
-      "median_edge_bps_gross": -2166,
-      "median_edge_bps_net": -2371
+      "closed_trades": 5,
+      "open_positions": 3,
+      "win_rate": 0.6,
+      "total_pnl_usd": 0.3,
+      "sharpe": 0.001,
+      "composite": 0.131,
+      "mean_edge_bps_gross": 12,
+      "mean_edge_bps_net": -193,
+      "median_edge_bps_gross": 5667,
+      "median_edge_bps_net": 5462
     },
     {
       "agent_id": "calibration-gap-07-politics-gemflash-k15-trendonly-i128",
@@ -1446,16 +1446,16 @@
     {
       "agent_id": "calibration-gap-08-crypto-gpt5-k45-offheavy-i544",
       "lifecycle": "shadow",
-      "closed_trades": 4,
-      "open_positions": 4,
-      "win_rate": 0.5,
-      "total_pnl_usd": -39.48,
-      "sharpe": 0.0,
-      "composite": 0.0,
-      "mean_edge_bps_gross": -1974,
-      "mean_edge_bps_net": -2179,
-      "median_edge_bps_gross": -2166,
-      "median_edge_bps_net": -2371
+      "closed_trades": 5,
+      "open_positions": 3,
+      "win_rate": 0.6,
+      "total_pnl_usd": 0.3,
+      "sharpe": 0.001,
+      "composite": 0.131,
+      "mean_edge_bps_gross": 12,
+      "mean_edge_bps_net": -193,
+      "median_edge_bps_gross": 5667,
+      "median_edge_bps_net": 5462
     },
     {
       "agent_id": "calibration-gap-08-macro-csonnet46-k50-rangeonly-i079",
@@ -1544,16 +1544,16 @@
     {
       "agent_id": "calibration-gap-10-crypto-gpt5mini-k40-riskonly-i231",
       "lifecycle": "shadow",
-      "closed_trades": 3,
-      "open_positions": 1,
-      "win_rate": 0.6667,
-      "total_pnl_usd": 12.49,
+      "closed_trades": 4,
+      "open_positions": 0,
+      "win_rate": 0.75,
+      "total_pnl_usd": 44.18,
       "sharpe": 0.0,
       "composite": 0.0,
-      "mean_edge_bps_gross": 833,
-      "mean_edge_bps_net": 628,
-      "median_edge_bps_gross": 6062,
-      "median_edge_bps_net": 5857
+      "mean_edge_bps_gross": 2209,
+      "mean_edge_bps_net": 2004,
+      "median_edge_bps_gross": 6200,
+      "median_edge_bps_net": 5995
     },
     {
       "agent_id": "calibration-gap-10-crypto-qwen72-k20-offheavy-i760",
@@ -1572,16 +1572,16 @@
     {
       "agent_id": "calibration-gap-10-crypto-qwen72-k50-nocrisis-i439",
       "lifecycle": "shadow",
-      "closed_trades": 3,
-      "open_positions": 1,
-      "win_rate": 0.6667,
-      "total_pnl_usd": 12.49,
+      "closed_trades": 4,
+      "open_positions": 0,
+      "win_rate": 0.75,
+      "total_pnl_usd": 44.18,
       "sharpe": 0.0,
       "composite": 0.0,
-      "mean_edge_bps_gross": 833,
-      "mean_edge_bps_net": 628,
-      "median_edge_bps_gross": 6062,
-      "median_edge_bps_net": 5857
+      "mean_edge_bps_gross": 2209,
+      "mean_edge_bps_net": 2004,
+      "median_edge_bps_gross": 6200,
+      "median_edge_bps_net": 5995
     },
     {
       "agent_id": "calibration-gap-10-politics-llama70-k50-rangeonly-i536",
@@ -2105,7 +2105,7 @@
       "agent_id": "pm-entropy-flow-v03",
       "lifecycle": "shadow",
       "closed_trades": 13,
-      "open_positions": 0,
+      "open_positions": 1,
       "win_rate": 0.3077,
       "total_pnl_usd": -1.17,
       "sharpe": -0.155,
@@ -2301,7 +2301,7 @@
       "agent_id": "pm-resolution-snap-v02",
       "lifecycle": "shadow",
       "closed_trades": 181,
-      "open_positions": 1,
+      "open_positions": 2,
       "win_rate": 0.0939,
       "total_pnl_usd": -3911.32,
       "sharpe": -0.194,
@@ -2329,7 +2329,7 @@
       "agent_id": "pm-resolution-snap-v04",
       "lifecycle": "shadow",
       "closed_trades": 160,
-      "open_positions": 1,
+      "open_positions": 2,
       "win_rate": 0.0563,
       "total_pnl_usd": -4575.26,
       "sharpe": -0.26,
@@ -2343,7 +2343,7 @@
       "agent_id": "pm-resolution-snap-v05",
       "lifecycle": "shadow",
       "closed_trades": 88,
-      "open_positions": 1,
+      "open_positions": 2,
       "win_rate": 0.0,
       "total_pnl_usd": -4400.0,
       "sharpe": 0.0,
@@ -2571,22 +2571,22 @@
     "hl_funded": false
   },
   "totals": {
-    "closed_trades": 2764,
-    "win_rate": 0.2956,
+    "closed_trades": 2770,
+    "win_rate": 0.2971,
     "total_pnl_usd": 1278.24,
     "real_pnl_usd": 68.0834,
     "real_fills_lifetime": 318,
     "canary_pnl_usd": 1278.24,
     "canary_closed_trades": 331,
     "canary_agents": 20,
-    "shadow_pnl_usd": -40482.78,
-    "shadow_closed_trades": 2433,
+    "shadow_pnl_usd": -40263.41,
+    "shadow_closed_trades": 2439,
     "shadow_agents": 160,
     "strategies_active": 47,
-    "mean_edge_bps_gross": -2839,
-    "mean_edge_bps_net": -3044,
-    "median_edge_bps_gross": -5699,
-    "median_edge_bps_net": -5904
+    "mean_edge_bps_gross": -2817,
+    "mean_edge_bps_net": -3022,
+    "median_edge_bps_gross": -5629,
+    "median_edge_bps_net": -5834
   },
   "milestones": {
     "canary_to_apex_progress": "422/100",
@@ -2596,5 +2596,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-22T05:52:43Z"
+  "synced_at": "2026-05-22T09:52:46Z"
 }

@@ -1,10 +1,21 @@
 ---
 name: feat/fs-adoption branch held pending ADR renumber
-description: 23 commits on feat/fs-adoption worktree, all referencing ADR-103. Held unmerged because main has parallel ADR-103+104 claim for spec-driven strategy authoring. Resume: confirm parallel ADRs landed → renumber my branch to ADR-105 → write final ADR body → merge.
+description: feat/fs-adoption (27 fs_adoption commits) is STRANDED by the 2026-05-16 git filter-repo rewrite — a git merge would corrupt main. Recovery = rebase the 27 commits onto current origin/main, founder-supervised. See outputs/2026-05-22_fs_adoption_branch_stranded.md.
 type: project
 originSessionId: 513c23b0-828d-4944-982c-4758d052989b
 ---
 # feat/fs-adoption branch — held unmerged pending ADR renumber
+
+> **UPDATE 2026-05-22 — BRANCH IS STRANDED. Do NOT `git merge feat/fs-adoption`.**
+> The `git filter-repo` rewrite (~2026-05-16, stripping the becker parquet)
+> rewrote every `origin/main` commit SHA. `feat/fs-adoption` still points at the
+> pre-rewrite history — merge-base is now `d918964` from 2026-03-20, branch is
+> 2069 ahead / 3051 behind, `git diff` = 5031 files / +411k lines. `git merge`
+> would corrupt `main`. **The "Resume procedure" below is OBSOLETE.** Correct
+> recovery: rebase the 27 fs_adoption commits onto current `origin/main`
+> (`git rebase --onto origin/main 2b7a14ab~1 feat/fs-adoption`), founder-supervised
+> — expect conflicts. Full assessment + steps:
+> `outputs/2026-05-22_fs_adoption_branch_stranded.md`.
 
 **Date held:** 2026-05-12 (user picked option (c) over (a) renumber-now and (b) ship-as-is)
 
@@ -33,9 +44,13 @@ Parallel work in main claimed ADR-103 + ADR-104 for "Spec-driven strategy author
 
 My branch's ADR-103 stub at `DECISIONS.md:1731` in the worktree is "Adopt anthropics/financial-services patterns" — entirely different topic.
 
-## Resume procedure
+## Resume procedure (OBSOLETE — see the 2026-05-22 stranding notice above)
 
-When ready to merge:
+The steps below assume a normal branch that just needs `git merge`. Post-rewrite
+that is invalid — a merge corrupts `main`. Retained only for the ADR-renumber
+detail (step 3), which is still needed during the rebase-onto-origin/main recovery.
+
+~~When ready to merge:~~
 
 1. **Confirm parallel ADRs actually landed.** Read `DECISIONS.md` and `CLAUDE.md` on main; check that ADR-103 (spec-rails) and ADR-104 (spec-generator) are stable, not WIP.
 2. **Pick next free ADR number.** Likely **ADR-105** (unless other parallel work has used it).
