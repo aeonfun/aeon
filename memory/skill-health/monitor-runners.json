@@ -1,10 +1,10 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-21T07:55:44Z",
+  "last_analyzed": "2026-05-22T07:43:05Z",
   "quality_score": 4,
-  "assessment": "Substantive execution with specific metrics (161 deduped pools, 75 quality-gated, 4-day pattern identified), clear ranking output, intelligent sandbox workarounds, and proper process tracking.",
+  "assessment": "Substantive output with specific metrics, data-driven verdict, and clear follow-up; recovered gracefully from API errors; well-documented file changes and reasoning.",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.09,
   "history": [
     {
       "date": "2026-05-18",
@@ -44,6 +44,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     }
   ]

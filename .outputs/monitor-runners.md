@@ -1,25 +1,27 @@
-Yesterday's Runners · 21 May · SPECULATIVE (4 of 5 are fresh breakouts, no DEEP-LIQ)
+Yesterday's Runners · 22 May · SPECULATIVE (5 DEEP-LIQ cleared the gate, none scored top 5)
+
+CONTINUATION
+• STARMAN (eth) +238% 24h
+  $2.0m vol, $127k liq, h1 +2.7%, h6 +135%, buys 55%
+  → 2.5y pool reanimating, only top-5 pick whose hourly is still bid
 
 BREAKOUT
-• WOKE (sol) +648% 24h
-  $44.7m vol, $262k liq, h1 +33%, buys 56%
-  → 2h-old pool, ~170x vol-to-liq churn, hourly tape still bid. Live pump with no liquidity floor.
+• WCOR (sol) +4764% 24h
+  $61m vol, $224k liq, 23h pool, h1 -14%, h6 -20%, buys 51%
+  → 270x vol-to-liq churn, peak printed and rolling over
 
-• NVB (bsc) +1349% 24h
-  $35.8m vol, $66k liq, h1 +1349%, buys 52%
-  → 2.7h pool, $36m vol on 65 trades (~$550k avg ticket). Coordinated print, not retail flow.
-
-• HENRY (sol) +2229% 24h
-  $6.4m vol, $85k liq, h1 +27%, h6 -12%, buys 57%
-  → 24h pump.fun token, hourly bounce against a fading higher frame. Reanimation into distribution.
-
-★ GDOR (sol) +745% 24h
-  $45.4m vol, $349k liq, h1 +0.2%, h6 -5%, buys 51%
-  → 4th straight day a GDOR-named token tops the board, each a fresh address. Serial name-farm, not a continuing run.
+• Ball (sol) +309% 24h
+  $1.7m vol, $77k liq, 41h pool, h1 -6%, h6 +17%, buys 57%
+  → 2-day Solana pool, hourly fading on thin liquidity
 
 REVERSAL
-• Surplus (base) +908% 24h
-  $5.7m vol, $827k liq, h1 -13%, h6 -4%, buys 56%
-  → 4d pool, highest-liq pick in the top 5, peak already printed. Fade window open.
+• SUPERGEMMA (base) +3972% 24h
+  $5.0m vol, $431k liq, h1 -16%, h6 +84%, buys 39%
+  → 38d contract reactivated, now bleeding on 39% buy-skew
 
-vibe: micro-cap casino with one fading deep-pool laggard
+MICRO-SPEC
+• grantr (base) +193% 24h
+  $1.9m vol, $410k liq, h1 +0.6%, h6 -14%, buys 39%
+  → sell-skewed flow into a flat hourly, distribution into bounce
+
+vibe: micro-cap casino on top of a quiet blue-chip floor
