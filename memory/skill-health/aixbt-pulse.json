@@ -1,8 +1,8 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-22T13:21:26Z",
+  "last_analyzed": "2026-05-22T14:38:33Z",
   "quality_score": 4,
-  "assessment": "Substantive multi-vector analysis (macro narrative, geopolitical, DeFi infrastructure risks) with specific recent intelligence and proper memory integration; truncated output limits visibility into full depth and explicit sourcing",
+  "assessment": "Substantive, well-sourced, clearly structured with specific data points and narrative analysis; tracks continuity across runs and explains downstream consumption correctly.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -40,6 +40,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {
