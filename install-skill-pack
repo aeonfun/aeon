@@ -1,0 +1,546 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# install-skill-pack — Install a curated community skill pack from a single command.
+#
+# Why this exists (vs ./add-skill):
+#   ./add-skill works against a generic GitHub repo and scans for SKILL.md files.
+#   A *skill pack* is a curated collection with a manifest (skills-pack.json) that
+#   declares the pack's identity, version, license, and per-skill metadata. This
+#   script reads that manifest and installs the whole pack as one unit — the same
+#   distribution surface that the Community Skill Packs README section describes.
+#
+# Usage:
+#   ./install-skill-pack <github-repo>                       Install everything the pack manifest declares
+#   ./install-skill-pack <github-repo> --list                List skills in the pack
+#   ./install-skill-pack <github-repo> <skill> [skill...]    Install only the named skills from the pack
+#   ./install-skill-pack <github-repo> --path skills/sub     Pack lives in a subdirectory (path holds skills-pack.json)
+#   ./install-skill-pack <github-repo> --branch develop      Use a non-default branch
+#   ./install-skill-pack <github-repo> --yes                 Auto-accept HIGH findings (CI/non-interactive)
+#   ./install-skill-pack <github-repo> --force               Install even if security scan finds HIGH issues
+#   ./install-skill-pack <github-repo> --dry-run             Preview without writing
+#
+# Manifest format (skills-pack.json, at pack root or under --path):
+#   {
+#     "name": "Pack name",
+#     "version": "1.0",
+#     "description": "One-line summary",
+#     "author": "github-handle-or-name",
+#     "license": "MIT",                                       (optional)
+#     "homepage": "https://...",                              (optional)
+#     "skills": [
+#       {
+#         "slug": "skill-name",
+#         "path": "skills/skill-name",                         (defaults to skills/<slug>)
+#         "description": "What the skill does",                (optional, falls back to SKILL.md frontmatter)
+#         "category": "research|dev|crypto|social|productivity", (optional)
+#         "schedule": "0 12 * * *",                            (optional, default 0 12 * * *)
+#         "default_enabled": false                              (optional, default false)
+#       }
+#     ]
+#   }
+#
+# Fallback (no manifest): scans the pack root for skills/*/SKILL.md and installs
+# each one with safe defaults. The pack identity falls back to the repo name.
+
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILLS_DIR="$ROOT_DIR/skills"
+SKILLS_JSON="$ROOT_DIR/skills.json"
+SKILLS_LOCK="$ROOT_DIR/skills.lock"
+AEON_YML="$ROOT_DIR/aeon.yml"
+SCANNER="$ROOT_DIR/skills/skill-security-scan/scan.sh"
+TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT
+
+usage() {
+  cat <<'EOF'
+Usage: ./install-skill-pack <github-repo> [options] [skill-names...]
+
+Install a curated community skill pack from a GitHub repository.
+
+Arguments:
+  <github-repo>          owner/repo (e.g. baseddevoloper/aeon-skill-pack-vvvkernel)
+  [skill-names...]       Optional — limit install to specific slugs from the pack
+
+Options:
+  --list                 List skills declared by the pack (no install)
+  --path <subdir>        Pack lives in a subdirectory (where skills-pack.json sits)
+  --branch <branch>      Use a specific branch or tag (default: main)
+  --yes                  Non-interactive — auto-accept HIGH-severity findings
+  --force                Install even when security scan reports HIGH findings
+  --dry-run              Show what would be installed, write nothing
+  --help                 Show this help
+
+Pack manifest:
+  The script looks for skills-pack.json at the pack root (or --path). If absent,
+  it falls back to scanning skills/*/SKILL.md. See docs/community-skill-packs.md
+  for the manifest schema.
+
+Examples:
+  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel --list
+  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
+  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel vvv-onchain vvv-audit
+  ./install-skill-pack danbuildss/luca-aeon-skills --dry-run
+EOF
+  exit 0
+}
+
+if [[ $# -lt 1 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
+  usage
+fi
+
+REPO="$1"; shift
+
+BRANCH="main"
+SUBPATH=""
+LIST_ONLY=false
+DRY_RUN=false
+ASSUME_YES=false
+FORCE_INSTALL=false
+REQUESTED_SLUGS=()
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --list) LIST_ONLY=true; shift ;;
+    --path) SUBPATH="${2#/}"; SUBPATH="${SUBPATH%/}"; shift 2 ;;
+    --branch) BRANCH="$2"; shift 2 ;;
+    --yes|-y) ASSUME_YES=true; shift ;;
+    --force) FORCE_INSTALL=true; shift ;;
+    --dry-run) DRY_RUN=true; shift ;;
+    --help|-h) usage ;;
+    -*) echo "Unknown option: $1" >&2; exit 2 ;;
+    *) REQUESTED_SLUGS+=("$1"); shift ;;
+  esac
+done
+
+REPO="${REPO#https://github.com/}"
+REPO="${REPO%.git}"
+
+if [[ "$REPO" != */* ]]; then
+  echo "Repo must be in owner/repo format, got: $REPO" >&2
+  exit 2
+fi
+
+REPO_NAME="${REPO#*/}"
+PACK_LABEL="$REPO_NAME"
+
+echo "Fetching $REPO ($BRANCH)..."
+
+TARBALL_URL="https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz"
+if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
+  TARBALL_URL="https://github.com/$REPO/archive/refs/tags/$BRANCH.tar.gz"
+  if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
+    echo "Failed to fetch $REPO (branch/tag: $BRANCH)" >&2
+    exit 1
+  fi
+fi
+
+tar -xzf "$TMP_DIR/repo.tar.gz" -C "$TMP_DIR" 2>/dev/null
+
+REPO_ROOT=$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
+if [[ -z "$REPO_ROOT" ]]; then
+  echo "Failed to extract repository" >&2
+  exit 1
+fi
+
+PACK_DIR="$REPO_ROOT"
+if [[ -n "$SUBPATH" ]]; then
+  PACK_DIR="$REPO_ROOT/$SUBPATH"
+  if [[ ! -d "$PACK_DIR" ]]; then
+    echo "--path $SUBPATH not found inside $REPO" >&2
+    exit 1
+  fi
+fi
+
+# Reset declarations (no associative arrays — they require Bash 4+ which macOS lacks).
+SLUGS=()
+SKILL_PATHS=()
+SKILL_DESCS=()
+SKILL_CATS=()
+SKILL_SCHEDS=()
+SKILL_DEFAULT_ENABLED=()
+MANIFEST_FOUND=false
+MANIFEST_PATH="$PACK_DIR/skills-pack.json"
+
+if [[ -f "$MANIFEST_PATH" ]]; then
+  MANIFEST_FOUND=true
+  echo "Manifest: skills-pack.json"
+
+  if ! jq -e . "$MANIFEST_PATH" >/dev/null 2>&1; then
+    echo "skills-pack.json is not valid JSON" >&2
+    exit 1
+  fi
+
+  manifest_name=$(jq -r '.name // ""' "$MANIFEST_PATH")
+  manifest_version=$(jq -r '.version // ""' "$MANIFEST_PATH")
+  manifest_desc=$(jq -r '.description // ""' "$MANIFEST_PATH")
+  manifest_author=$(jq -r '.author // ""' "$MANIFEST_PATH")
+  manifest_license=$(jq -r '.license // ""' "$MANIFEST_PATH")
+  [[ -n "$manifest_name" ]] && PACK_LABEL="$manifest_name"
+
+  echo "  pack:       ${manifest_name:-$REPO_NAME}${manifest_version:+ v$manifest_version}"
+  [[ -n "$manifest_author" ]] && echo "  author:     $manifest_author"
+  [[ -n "$manifest_license" ]] && echo "  license:    $manifest_license"
+  [[ -n "$manifest_desc" ]] && echo "  about:      $manifest_desc"
+
+  skill_count=$(jq '.skills | length' "$MANIFEST_PATH" 2>/dev/null || echo 0)
+  if [[ "$skill_count" == "0" ]] || [[ -z "$skill_count" ]]; then
+    echo "Manifest has no skills." >&2
+    exit 1
+  fi
+
+  for i in $(seq 0 $((skill_count - 1))); do
+    slug=$(jq -r ".skills[$i].slug // empty" "$MANIFEST_PATH")
+    if [[ -z "$slug" ]]; then
+      echo "Manifest skill #$i has no slug — aborting." >&2
+      exit 1
+    fi
+    # Reject slugs that would escape skills/ — defensive even though add-skill validates too.
+    if [[ "$slug" =~ [^a-zA-Z0-9_-] ]] || [[ "$slug" == "." ]] || [[ "$slug" == ".." ]]; then
+      echo "Invalid slug in manifest: $slug" >&2
+      exit 1
+    fi
+    rel_path=$(jq -r ".skills[$i].path // empty" "$MANIFEST_PATH")
+    [[ -z "$rel_path" ]] && rel_path="skills/$slug"
+    rel_path="${rel_path#/}"
+    # Reject path traversal.
+    if [[ "$rel_path" == *".."* ]]; then
+      echo "Manifest path may not contain '..': $rel_path" >&2
+      exit 1
+    fi
+    desc=$(jq -r ".skills[$i].description // \"\"" "$MANIFEST_PATH")
+    cat=$(jq -r ".skills[$i].category // \"\"" "$MANIFEST_PATH")
+    sched=$(jq -r ".skills[$i].schedule // \"0 12 * * *\"" "$MANIFEST_PATH")
+    default_enabled=$(jq -r ".skills[$i].default_enabled // false" "$MANIFEST_PATH")
+    SLUGS+=("$slug")
+    SKILL_PATHS+=("$rel_path")
+    SKILL_DESCS+=("$desc")
+    SKILL_CATS+=("$cat")
+    SKILL_SCHEDS+=("$sched")
+    SKILL_DEFAULT_ENABLED+=("$default_enabled")
+  done
+else
+  echo "No skills-pack.json — falling back to scanning skills/ in $REPO"
+  scan_root="$PACK_DIR/skills"
+  if [[ ! -d "$scan_root" ]]; then
+    echo "Neither skills-pack.json nor skills/ directory found in pack." >&2
+    exit 1
+  fi
+  while IFS= read -r skill_file; do
+    sd=$(dirname "$skill_file")
+    slug=$(basename "$sd")
+    rel_path="skills/$slug"
+    SLUGS+=("$slug")
+    SKILL_PATHS+=("$rel_path")
+    SKILL_DESCS+=("")
+    SKILL_CATS+=("")
+    SKILL_SCHEDS+=("0 12 * * *")
+    SKILL_DEFAULT_ENABLED+=("false")
+  done < <(find "$scan_root" -mindepth 2 -maxdepth 2 -name SKILL.md -type f 2>/dev/null | sort)
+fi
+
+if [[ ${#SLUGS[@]} -eq 0 ]]; then
+  echo "No skills found in pack." >&2
+  exit 1
+fi
+
+# Filter by --list / requested-slug subset.
+if [[ "$LIST_ONLY" == "true" ]]; then
+  echo ""
+  echo "Skills in pack '$PACK_LABEL':"
+  echo ""
+  for i in "${!SLUGS[@]}"; do
+    slug="${SLUGS[$i]}"
+    desc="${SKILL_DESCS[$i]:-}"
+    if [[ -z "$desc" ]]; then
+      skill_md="$PACK_DIR/${SKILL_PATHS[$i]}/SKILL.md"
+      if [[ -f "$skill_md" ]]; then
+        desc=$(sed -n '/^---$/,/^---$/p' "$skill_md" | grep -E '^description:' | sed 's/^description: *//' | head -1)
+      fi
+    fi
+    if [[ ${#desc} -gt 80 ]]; then desc="${desc:0:77}..."; fi
+    local_marker=""
+    [[ -d "$SKILLS_DIR/$slug" ]] && local_marker=" (installed)"
+    printf "  %-28s %s%s\n" "$slug" "$desc" "$local_marker"
+  done
+  echo ""
+  echo "${#SLUGS[@]} skills in pack. Re-run without --list to install."
+  exit 0
+fi
+
+# Restrict to requested slugs if specified.
+if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
+  FILTERED_SLUGS=()
+  FILTERED_PATHS=()
+  FILTERED_DESCS=()
+  FILTERED_CATS=()
+  FILTERED_SCHEDS=()
+  FILTERED_DEFAULT=()
+  for want in "${REQUESTED_SLUGS[@]}"; do
+    found=false
+    for i in "${!SLUGS[@]}"; do
+      if [[ "${SLUGS[$i]}" == "$want" ]]; then
+        FILTERED_SLUGS+=("${SLUGS[$i]}")
+        FILTERED_PATHS+=("${SKILL_PATHS[$i]}")
+        FILTERED_DESCS+=("${SKILL_DESCS[$i]}")
+        FILTERED_CATS+=("${SKILL_CATS[$i]}")
+        FILTERED_SCHEDS+=("${SKILL_SCHEDS[$i]}")
+        FILTERED_DEFAULT+=("${SKILL_DEFAULT_ENABLED[$i]}")
+        found=true
+        break
+      fi
+    done
+    if [[ "$found" == "false" ]]; then
+      echo "Requested skill '$want' is not in this pack — aborting." >&2
+      exit 1
+    fi
+  done
+  SLUGS=("${FILTERED_SLUGS[@]}")
+  SKILL_PATHS=("${FILTERED_PATHS[@]}")
+  SKILL_DESCS=("${FILTERED_DESCS[@]}")
+  SKILL_CATS=("${FILTERED_CATS[@]}")
+  SKILL_SCHEDS=("${FILTERED_SCHEDS[@]}")
+  SKILL_DEFAULT_ENABLED=("${FILTERED_DEFAULT[@]}")
+fi
+
+# Check trusted-sources for the pack repo.
+is_trusted_source() {
+  local repo="$1"
+  local owner="${repo%%/*}"
+  [[ -f "$TRUSTED_FILE" ]] || return 1
+  while IFS= read -r line; do
+    line="${line%%#*}"
+    line="${line// /}"
+    [[ -z "$line" ]] && continue
+    if [[ "$line" == "$repo" ]] || [[ "$line" == "$owner" ]]; then
+      return 0
+    fi
+  done < "$TRUSTED_FILE"
+  return 1
+}
+
+TRUSTED_SOURCE=false
+if is_trusted_source "$REPO"; then
+  TRUSTED_SOURCE=true
+  echo "Source $REPO is trusted — skipping deep security scan."
+fi
+
+echo ""
+if [[ "$DRY_RUN" == "true" ]]; then
+  echo "DRY RUN — would install ${#SLUGS[@]} skill(s) from $PACK_LABEL:"
+else
+  echo "Installing ${#SLUGS[@]} skill(s) from $PACK_LABEL..."
+fi
+echo ""
+
+INSTALLED=0
+SKIPPED=0
+FAILED=0
+
+# Run scanner and prompt on HIGH findings.
+# Returns: 0 = clean or accepted, 1 = blocked.
+scan_and_prompt() {
+  local skill="$1"
+  local skill_md="$2"
+  if [[ "$TRUSTED_SOURCE" == "true" ]] || [[ ! -x "$SCANNER" ]]; then
+    return 0
+  fi
+  local scan_output
+  if scan_output=$("$SCANNER" "$skill_md" 2>&1); then
+    echo "  ✓ security scan passed: $skill"
+    return 0
+  fi
+  echo "  ⚠ HIGH-severity findings on $skill:"
+  echo "$scan_output" | sed 's/^/      /'
+  if [[ "$FORCE_INSTALL" == "true" ]]; then
+    echo "  → installing anyway (--force)"
+    return 0
+  fi
+  if [[ "$ASSUME_YES" == "true" ]]; then
+    echo "  → installing anyway (--yes)"
+    return 0
+  fi
+  # Interactive prompt — only available on a TTY.
+  if [[ ! -t 0 ]]; then
+    echo "  ✗ stdin is not a TTY and --yes/--force not passed — blocking install of $skill"
+    return 1
+  fi
+  printf "  Install %s despite HIGH findings? [y/N]: " "$skill"
+  local answer
+  read -r answer
+  case "$answer" in
+    y|Y|yes|YES) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+# Pre-flight: ensure scanner is available when needed.
+if [[ "$TRUSTED_SOURCE" == "false" ]] && [[ ! -x "$SCANNER" ]]; then
+  echo "Warning: security scanner not found at $SCANNER — skipping per-skill scans."
+fi
+
+# skills.json mutation needs jq — same dependency as add-skill.
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq is required (used to mutate skills.json and skills.lock)." >&2
+  exit 1
+fi
+
+ensure_lock_initialized() {
+  if [[ ! -f "$SKILLS_LOCK" ]] || [[ ! -s "$SKILLS_LOCK" ]]; then
+    echo "[]" > "$SKILLS_LOCK"
+  fi
+}
+
+record_provenance() {
+  local slug="$1"
+  local source_path="$2"
+  ensure_lock_initialized
+  local commit_sha
+  commit_sha=$(gh api "repos/$REPO/commits" -f path="$source_path/SKILL.md" --jq '.[0].sha' 2>/dev/null || echo "unknown")
+  local imported_at
+  imported_at=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
+  local entry
+  entry=$(jq -n \
+    --arg name "$slug" \
+    --arg repo "$REPO" \
+    --arg path "$source_path/SKILL.md" \
+    --arg branch "$BRANCH" \
+    --arg sha "$commit_sha" \
+    --arg at "$imported_at" \
+    --arg pack "$PACK_LABEL" \
+    '{skill_name: $name, source_repo: $repo, source_path: $path, branch: $branch, commit_sha: $sha, imported_at: $at, pack: $pack}')
+  jq --argjson entry "$entry" \
+    '[.[] | select(.skill_name != $entry.skill_name)] + [$entry]' \
+    "$SKILLS_LOCK" > "${SKILLS_LOCK}.tmp" && mv "${SKILLS_LOCK}.tmp" "$SKILLS_LOCK"
+  echo "    -> skills.lock updated (sha: ${commit_sha:0:7})"
+}
+
+update_skills_json() {
+  local slug="$1"
+  local desc="$2"
+  local category="$3"
+  local schedule="$4"
+  [[ ! -f "$SKILLS_JSON" ]] && return 0
+  local sha7="unknown"
+  if [[ -f "$SKILLS_LOCK" ]]; then
+    sha7=$(jq -r --arg name "$slug" '[.[] | select(.skill_name == $name)][0].commit_sha // "unknown" | .[0:7]' "$SKILLS_LOCK" 2>/dev/null || echo "unknown")
+  fi
+  local today
+  today=$(date -u '+%Y-%m-%d')
+  local install_cmd="./install-skill-pack $REPO $slug"
+  local entry
+  entry=$(jq -n \
+    --arg slug "$slug" \
+    --arg name "$slug" \
+    --arg description "$desc" \
+    --arg category "${category:-research}" \
+    --arg schedule "$schedule" \
+    --arg sha "$sha7" \
+    --arg updated "$today" \
+    --arg install "$install_cmd" \
+    --arg source_repo "$REPO" \
+    --arg pack "$PACK_LABEL" \
+    '{slug: $slug, name: $name, description: $description, category: $category, schedule: $schedule, var: "", files: 0, sha: $sha, updated: $updated, install: $install, source_repo: $source_repo, pack: $pack}')
+  jq --argjson entry "$entry" \
+    '.skills = ([.skills[] | select(.slug != $entry.slug)] + [$entry]) | .total = (.skills | length) | .generated = (now | strftime("%Y-%m-%dT%H:%M:%SZ"))' \
+    "$SKILLS_JSON" > "${SKILLS_JSON}.tmp" && mv "${SKILLS_JSON}.tmp" "$SKILLS_JSON"
+  echo "    -> skills.json updated"
+}
+
+add_to_aeon_yml() {
+  local slug="$1"
+  local schedule="$2"
+  local default_enabled="$3"
+  [[ ! -f "$AEON_YML" ]] && return 0
+  # Already present?
+  if grep -q "^  $slug:" "$AEON_YML" 2>/dev/null; then
+    echo "    -> already in aeon.yml"
+    return 0
+  fi
+  local enabled_val="false"
+  [[ "$default_enabled" == "true" ]] && enabled_val="true"
+  local entry_line="  $slug: { enabled: $enabled_val, schedule: \"$schedule\" }"
+  if grep -q "^  # --- Fallback" "$AEON_YML"; then
+    awk -v entry="$entry_line" \
+      '/^  # --- Fallback/ { print entry }  { print }' \
+      "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
+  else
+    # No fallback marker — append before any non-skill block (chains:, etc).
+    awk -v entry="$entry_line" '
+      /^[a-z]+:/ && NR > 1 && !inserted { print entry; inserted=1 }
+      { print }
+      END { if (!inserted) print entry }
+    ' "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
+  fi
+  echo "    -> added to aeon.yml (enabled: $enabled_val, schedule: \"$schedule\")"
+}
+
+for i in "${!SLUGS[@]}"; do
+  slug="${SLUGS[$i]}"
+  rel_path="${SKILL_PATHS[$i]}"
+  desc="${SKILL_DESCS[$i]}"
+  category="${SKILL_CATS[$i]}"
+  schedule="${SKILL_SCHEDS[$i]}"
+  default_enabled="${SKILL_DEFAULT_ENABLED[$i]}"
+
+  src_dir="$PACK_DIR/$rel_path"
+  if [[ ! -d "$src_dir" ]] || [[ ! -f "$src_dir/SKILL.md" ]]; then
+    echo "  skip: '$slug' (missing $rel_path/SKILL.md in pack)"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
+  # Pull description from frontmatter if manifest didn't provide one.
+  if [[ -z "$desc" ]]; then
+    desc=$(sed -n '/^---$/,/^---$/p' "$src_dir/SKILL.md" | grep -E '^description:' | sed 's/^description: *//' | head -1)
+  fi
+
+  if ! scan_and_prompt "$slug" "$src_dir/SKILL.md"; then
+    echo "  ✗ blocked: $slug"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
+  dest="$SKILLS_DIR/$slug"
+
+  if [[ "$DRY_RUN" == "true" ]]; then
+    if [[ -d "$dest" ]]; then
+      echo "  would update: $slug"
+    else
+      echo "  would install: $slug"
+    fi
+    INSTALLED=$((INSTALLED + 1))
+    continue
+  fi
+
+  if [[ -d "$dest" ]]; then
+    echo "  update: $slug (overwriting existing copy)"
+    rm -rf "$dest"
+  else
+    echo "  install: $slug"
+  fi
+
+  cp -r "$src_dir" "$dest"
+  INSTALLED=$((INSTALLED + 1))
+
+  record_provenance "$slug" "$rel_path"
+  update_skills_json "$slug" "$desc" "$category" "$schedule"
+  add_to_aeon_yml "$slug" "$schedule" "$default_enabled"
+done
+
+echo ""
+echo "==============================="
+if [[ "$DRY_RUN" == "true" ]]; then
+  echo "Dry run complete: $INSTALLED would install, $FAILED skipped"
+else
+  echo "Done: $INSTALLED installed, $FAILED skipped/failed"
+fi
+
+if [[ "$DRY_RUN" == "false" ]] && [[ $INSTALLED -gt 0 ]]; then
+  echo ""
+  echo "Enable skills in aeon.yml to schedule them, or run manually:"
+  echo "  Read skills/<name>/SKILL.md and execute its steps."
+  echo ""
+  echo "Provenance recorded in skills.lock under pack: $PACK_LABEL"
+fi

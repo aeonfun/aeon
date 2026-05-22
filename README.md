@@ -439,7 +439,13 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ## Community skill packs
 
-Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they're installable via the same `add-skill <github-url>` flow as any other external skill.
+Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
+
+```bash
+./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
+```
+
+The script reads a `skills-pack.json` manifest from the pack root (or falls back to scanning `skills/`), runs the security scanner on each declared `SKILL.md`, and copies approved skills into `skills/` with rows added to `skills.json`, entries in `aeon.yml` (disabled), and provenance in `skills.lock`. Full schema and trust model in [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
 | Pack | Skills | Description |
 |------|--------|-------------|
@@ -450,6 +456,7 @@ Third-party skill collections that live in their own repos. Aeon doesn't ship th
 
 - The pack must be in its own public repo with a clear license and a per-skill `SKILL.md`.
 - Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog — no monkey-patching of Aeon internals, no skill that depends on private endpoints.
+- Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](docs/community-skill-packs.md) for the schema).
 - The README row should link to the repo, name the skill count, and one-line what the pack is for.
 
 This is the lightweight surface: it gives community packs visibility without coupling them to the core catalog's release cadence.
