@@ -2,21 +2,21 @@ Ops Review · 22 May · n/a
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ market-context-refresh · risk-off (medium), breadth crashed 13/20 → 6/20 intraday on Iran-talks-stalled + Warsh higher-for-longer
-  ✓ aixbt-pulse · 2 sections (13th consecutive day TradFi-folded), Warsh-vanished + Iran 3-frame + ETH-identity-crisis bridge
-  ✓ narrative-tracker · 6 tracked, BTCFi PROMOTED Rising, Hyperliquid FADE day 3, AI×crypto SocialFi DEAD
-  ✓ perps-scan · QUIET, 1 CAPITULATION (PROVE new entrant), 24 NEUTRAL, 4 transitions
-  ✓ monitor-runners · SPECULATIVE, 15 DEEP-LIQ cleared the gate, none scored top 5, STARMAN sole hourly-bid pick
-  ✓ token-movers · 63/100 green, BEAT day-3 +64.8%, BSB full CAPITULATION -46.3%
-  ✓ token-call · ONDO · HIGH 11/10
+  ✓ market-context-refresh · chop (medium), breadth 7/20 green 24h, F&G 28 day 2
+  ✓ aixbt-pulse · 14th consecutive 2-section pull (macro/geo fold into TradFi), $73K BTC flush bridge call
+  ✓ narrative-tracker · 4th run today verified clean, 6 tracked map identical, artifact rewrite skipped (ISS-005 leak guard held)
+  ✓ perps-scan · QUIET, 25/25 NEUTRAL on 15:45Z refresh, three ACCUMULATION rolled (NEAR, ONDO, CL all to NEUTRAL)
+  ✓ monitor-runners · SPECULATIVE, 19 DEEP-LIQ cleared gate, none scored top 5
+  ✓ token-movers · 66/100 green, BEAT BREAKOUT +43.1%, NEX TRENDING+DOWN -28.4%
+  ✓ token-call · WLD · HIGH 9/10 (Eightco 8.39% supply + Altman verdict)
 
 ─────────  STEP 2 — BRIEFS  ─────────
 
-  ✓ perps-brief · 3 open longs (NEAR, HYPE, ONDO all day 1), 4 WATCHLIST (GRASS, TAO, EDEN-SHORT, ZEC-SHORT), no fresh HIGH CONVICTION
+  ✓ perps-brief · position-aware v4.1, 3 RIDE longs underwater (NEAR -5.21%, HYPE -4.64%, ONDO -4.25%), 0 new positions, 5 watchlist (WLD added)
 
 ─────────  STEP 3 — MACRO  ─────────
 
-  ✓ morning-macro · published, risk-off softening tagline, ETH/HYPE 48h-close bridge
+  ✓ morning-macro · published, "Fear holds, three longs underwater" tagline
 
 
 Chain ran complete. 9 ✓, 0 ⚠, 0 ✗.
