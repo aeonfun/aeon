@@ -1,10 +1,12 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-21T07:46:17Z",
-  "quality_score": 4,
-  "assessment": "Good — substantive crypto analysis with clear catalysts, risk frames, and proper dedup/memory integration; transparent about data source failure (DexScreener)",
-  "flags": [],
-  "avg_score": 4.1,
+  "last_analyzed": "2026-05-22T07:43:12Z",
+  "quality_score": 5,
+  "assessment": "Excellent output—substantive token analysis with specific catalyst sourcing, quantified risk/reward, and transparent API limitation documentation.",
+  "flags": [
+    "api_error"
+  ],
+  "avg_score": 4.18,
   "history": [
     {
       "date": "2026-05-18",
@@ -45,6 +47,10 @@
     {
       "date": "2026-05-21",
       "score": 4
+    },
+    {
+      "date": "2026-05-22",
+      "score": 5
     }
   ]
 }
