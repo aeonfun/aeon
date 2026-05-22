@@ -1,8 +1,8 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-22T14:49:05Z",
+  "last_analyzed": "2026-05-22T15:52:58Z",
   "quality_score": 4,
-  "assessment": "Substantive technical execution with specific metrics, multi-file delivery, and actionable findings; well-structured and properly integrated with downstream tasks.",
+  "assessment": "Well-structured, substantive output with specific metrics, clear verdict, and documented artifacts; shows real computation and system fluency",
   "flags": [],
   "avg_score": 3.89,
   "history": [
@@ -73,6 +73,10 @@
     {
       "date": "2026-05-22",
       "score": 5
+    },
+    {
+      "date": "2026-05-22",
+      "score": 4
     },
     {
       "date": "2026-05-22",
