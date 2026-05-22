@@ -1,11 +1,9 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-22T13:20:16Z",
+  "last_analyzed": "2026-05-22T14:38:07Z",
   "quality_score": 4,
-  "assessment": "Well-documented re-run with clear diagnostics and follow-up actions; identified persistent notification delivery gap but primary content unchanged.",
-  "flags": [
-    "stale_data"
-  ],
+  "assessment": "Good — identified recurring in-day artifact leak, verified data integrity, produced correct output with proper formatting, documented findings in memory, and handled sandbox constraints with documented fallbacks.",
+  "flags": [],
   "avg_score": 3.92,
   "history": [
     {
@@ -46,6 +44,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {

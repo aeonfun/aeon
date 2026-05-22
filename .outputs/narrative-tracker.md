@@ -1,8 +1,29 @@
-## Summary
+Narratives · 22 May · 6 tracked
 
-- Read `skills/narrative-tracker/SKILL.md` and confirmed the scheduled 13:30 UTC run for 2026-05-22 already completed earlier in the chain — `.outputs/narrative-tracker.md` holds the v2-locked 6-tracked map (BTCFi rising; AI agents / Decentralized compute / RWA at peak; Hyperliquid + Privacy/ZK fading), and the full structured log entry is in `memory/logs/2026-05-22.md`.
-- Verified the XAI cache (`.xai-cache/narratives.json`, 15 Grok threads, window 05-19→05-22) is unchanged since the morning run, and the 05-19/05-20/05-21 baselines hold — a fresh run would produce an identical map.
-- `.pending-notify/` was empty but `.notify-sent-hashes` is 0 bytes, so no successful Discord delivery was recorded for today's signal. Re-queued the artifact content to `.pending-notify/narrative-tracker-20260522-rerun.signal.md` for the post-run delivery step. Inline `./notify --signal "$(cat ...)"` blocked by sandbox shell-substitution as documented across the prior four days.
-- Appended a `### narrative-tracker (re-run)` block to today's log noting the manual re-execution, the unchanged inputs, and the re-queued notification.
-- Files touched: `memory/logs/2026-05-22.md` (appended re-run entry), `.pending-notify/narrative-tracker-20260522-rerun.signal.md` (new). No changes to `.outputs/narrative-tracker.md`.
-- Follow-up: workflow post-run notify step picks up the new pending file. If `.notify-sent-hashes` still ends empty after the next post-run cycle, that points at a Discord webhook / `DISCORD_WEBHOOK_MAP[narrative-tracker]` configuration gap, not a content problem — worth raising with skill-health on tomorrow's daily-ops-review.
+↑ RISING
+• BTCFi / Bitcoin-native yield [BABYLON] · 4/5 (was 3) · WATCH
+  two driver threads today vs one yesterday, no named token yet — flips RIDE on first listing
+
+→ PEAK
+• AI agents [TAO, FET, VIRTUAL] · 5/5 · RIDE
+  velocity flattens post-NVDA, infra layer broadens via Exa $250M and Webull AI-native
+
+• Decentralized compute / DePIN [TAO, RNDR, AKT, GRASS] · 5/5 · RIDE
+  ByblosRadar VC wave keeps building across physical, defense, orbital AI infra
+
+• RWA / tokenization [ONDO, BUIDL, OUSG] · 5/5 · RIDE w/ trail
+  Japan stablecoin recognition live June 1, yield-bearing stables across multiple top lists
+  reflexivity: regulation legitimizes RWA, growth lobbies regulation, Japan adds a second jurisdiction
+
+↓ FADING
+• Hyperliquid / perp DEX [HYPE] · 3/5 (was 4) · FADE
+  second straight day with zero fresh thread, BHYP and SpaceX catalysts fully priced in
+  reflexivity: BHYP fee-buyback bid runs without smart-money confirmation, top traders cutting day 3
+
+• Privacy / ZK [ZEC, ZANO] · 2/5 · FADE
+  faint reaffirmation from kalxZM cycle list, no fresh ZEC bid, no project-side catalyst
+
+Changes since yesterday:
+- AI × crypto on X / SocialFi (1-day NEW didn't sustain)
+
+Stance: rotate inside AI / DePIN / RWA peak, fade Hyperliquid into the smart-money exit.
