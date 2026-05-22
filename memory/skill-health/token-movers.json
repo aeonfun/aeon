@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-22T14:40:36Z",
+  "last_analyzed": "2026-05-22T15:48:45Z",
   "quality_score": 4,
-  "assessment": "Substantive execution with concrete market insights, proper data validation, and clear follow-up logic—well-structured and actionable for downstream skills.",
+  "assessment": "Substantive market analysis with specific metrics, proper edge-case handling, and clear operational awareness; well-structured and ready for consumption by downstream skills.",
   "flags": [],
-  "avg_score": 4.17,
+  "avg_score": 4.15,
   "history": [
     {
       "date": "2026-05-18",
@@ -41,6 +41,10 @@
     {
       "date": "2026-05-21",
       "score": 5
+    },
+    {
+      "date": "2026-05-22",
+      "score": 4
     },
     {
       "date": "2026-05-22",
