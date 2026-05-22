@@ -1,19 +1,19 @@
-Kevin Warsh sworn in as pro-BTC Fed Chair while Iran talks stalled and oil reversed higher — two conflicting geopolitical reads in the same 12h window. HYPE holds ATHs with $16M+ daily ETF inflows; NEAR +30%; VVV joins the rotation basket. Polymarket took a $700K exploit and a congressional insider-trading probe in the same pull. Pyth oracle was down 4h+ while Solana's Alpenglow upgrade broke without announcement. The Warsh signal bifurcates: structural Bitcoin tailwind on one read, near-term liquidity headwind on the other.
+AIXBT's 21:00 UTC pull: ETH narrative fracturing (Bankless co-host sells all ETH, EF talent exodus, capital rotating to Solana and Hyperliquid) while HYPE ATH above $62 with Bitwise $30M AUM in five days and NEAR +30% lead a BTC-flat alt rotation. Kevin Warsh dropped from the crypto section within one hour — bullish BTC Fed Chair framing recycled, TradFi shifts to "potential Fed tightening." Iran oscillated through three directional frames across today's reads; equities pricing deal optimism, Hormuz control bids pricing closure risk. DeFi infra stress cluster added MegaETH Terminal shutdown alongside Polymarket exploit and Pyth concerns. Clusters and chains unchanged.
 
 ---
 
-# AIXBT Grounding (as of 2026-05-22 13:00 UTC)
+# AIXBT Grounding (as of 2026-05-22 21:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-22T13:00:42.742Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-22T14:00:34.298Z
 
-Note: twelfth consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
+Note: thirteenth consecutive pull returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
 
 ## Crypto
-- Polymarket suffered a ~$700K exploit via compromised private key on its UMA adapter, triggering a congressional insider-trading probe into both Polymarket and Kalshi.
-- HYPE dominates mindshare at new ATHs with $16M+ daily ETF inflows, while NEAR surged 30% and ZEC, VVV, and privacy coins draw rotational momentum.
-- Pro-BTC Fed Chair Kevin Warsh sworn in today as the Bitcoin Clarity Act gains bipartisan support; sentiment split between regulatory tailwinds and bearish BTC structure below $79K.
-- Infra stress mounts as Pyth oracle feeds went down 4+ hours, Solana's Alpenglow upgrade hit unreported breakages, and Lido pivots away from staking amid shrinking APR.
+- $HYPE dominates mindshare with new ATHs above $62, a Bitwise ETF accumulating $30M AUM in five days, and growing narrative as a revenue-driven L1 challenger.
+- $NEAR surges 30%+ on AI-agent infrastructure and buyback narratives, while $ZEC and $VVV rally—sparking early alt-rotation optimism as BTC chops near $77K.
+- Ethereum faces an identity crisis as Bankless co-host sells all ETH, EF talent exodus accelerates, and critics call it overvalued—capital bridges toward Solana and Hyperliquid.
+- Polymarket's $700K key-compromise exploit, MegaETH's abrupt Terminal shutdown, and Pyth reliability concerns highlight persistent infrastructure and security risks across DeFi.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -22,33 +22,43 @@ Note: twelfth consecutive pull returning only two sections — `crypto` and `tra
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Kevin Warsh takes over as Fed chair with yields rising on Iran-driven inflation fears, signaling extended higher-for-longer policy that strengthens the dollar and caps bond upside while pressuring rate-sensitive positioning.
-- AI earnings beats from Nvidia and peers are drawing institutional flows into tech equities, resetting bullish positioning as VIX stabilizes near 17 and supports risk rotation over fixed income.
-- Stalled US-Iran talks have pushed Brent and WTI higher by 2%+, transmitting geopolitical supply risk into energy sector outperformance and broader inflation hedges across asset classes.
-- Equity markets hold near record highs on ceasefire optimism with contained vol and limited credit spread widening, though persistent oil swings warrant portfolio hedges against cross-asset risk transmission.
+- Equities extend toward longest weekly gains streak since 2023 as Iran deal optimism eases oil fears and rotates positioning into risk assets with tech leadership.
+- Rising Treasury yields on persistent inflation signal potential Fed tightening, tightening liquidity and supporting dollar strength across funding and credit markets.
+- Hormuz control bids and shipping surges heighten energy volatility, transmitting geopolitical risks into elevated vol and commodity-driven equity hedges.
+- Mixed signals in US-Iran talks sustain oil rebounds after declines while equities hold gains, keeping cross-asset risk premiums and cautious flows intact.
 
-## What's New (vs last pull — 2026-05-22T07:00:49.104Z)
-- [Crypto] Polymarket $700K exploit + congressional insider-trading probe (Polymarket + Kalshi both named). Entirely new.
-- [Crypto] NEAR +30% explicitly named. VVV added to the rotation basket alongside ZEC and privacy coins.
-- [Crypto] Kevin Warsh sworn in as pro-BTC Fed Chair. Bitcoin Clarity Act named with bipartisan support. Entirely new.
-- [Crypto] Infra stress cluster: Pyth oracle 4h+ down, Solana Alpenglow unreported breakages, Lido staking pivot. Entirely new.
-- [TradFi] Warsh transition confirmed — higher-for-longer, stronger dollar.
-- [TradFi] Nvidia + AI peers earnings beats, VIX ~17 stabilizing. Entirely new.
-- [TradFi] Iran talks stalled, Brent and WTI +2%+. Regime flip — prior read had "negotiation progress easing oil."
-- [TradFi] Equity near record highs on ceasefire optimism. New framing vs prior "strong macro data."
+## What's New (vs last pull — 2026-05-22T13:00:42.742Z)
+- [Crypto] ETH identity crisis — Bankless co-host sells all ETH, EF talent exodus, capital flow to Solana and Hyperliquid. Entirely new.
+- [Crypto] MegaETH abrupt Terminal shutdown — added to the DeFi infra risk cluster alongside Polymarket + Pyth. New.
+- [Crypto] HYPE: Bitwise ETF $30M AUM in five days. Prior read had "$16M+ daily ETF inflows" — AUM cumulative vs daily flow, different framing.
+- [Crypto] NEAR: buyback narratives explicitly named as a second driver. BTC $77K named as the choppy backdrop.
+- [TradFi] Equities on "longest weekly gains streak since 2023" — specific milestone. Prior had "near record highs on ceasefire optimism."
+- [TradFi] Hormuz control bids and shipping surges explicitly named. Prior had "stalled talks pushing oil +2%+" — directional opposite.
+- [TradFi] "Potential Fed tightening" language. Prior had "higher-for-longer policy."
+
+## Gone Since Last Pull (2026-05-22T13:00 UTC)
+- [Crypto] Kevin Warsh sworn in as pro-BTC Fed Chair + Bitcoin Clarity Act bipartisan support — dropped entirely. One hour ago this was a named crypto catalyst.
+- [Crypto] Congressional insider-trading probe on Polymarket + Kalshi — gone, replaced by broader infra-risk framing.
+- [Crypto] Solana Alpenglow unreported breakages — gone.
+- [Crypto] Lido staking pivot on shrinking APR — gone.
+- [TradFi] Warsh named in TradFi frame — gone.
+- [TradFi] Nvidia/AI earnings beats + VIX ~17 — gone.
+- [TradFi] "Stalled talks pushing oil +2%" — flipped to "Iran deal optimism" in the same hour.
 
 ## Persisting Stories
-- HYPE ATH + $16M+ ETF inflows — all reads, milestone keeps upgrading.
-- ZEC + NEAR + privacy rotation — persists; NEAR now explicitly +30%, VVV newly added.
-- Higher-for-longer thesis — persists; now attributed to Warsh + Iran-driven inflation fears.
-- US-Iran geo → oil → macro — persists, but regime flipped: de-escalation prior read, stall + oil +2% now.
+- HYPE ATH + ETF momentum — all reads today; Bitwise $30M AUM is the new milestone.
+- NEAR +30% + ZEC + VVV rotation — persists; buyback narrative now explicit.
+- Polymarket $700K exploit — persists; congressional probe framing dropped, MegaETH added to the cluster.
+- Pyth reliability concerns — persists (downgraded from "4h+ outage" to "concerns").
+- Treasury yields up + dollar strength — persists.
+- Iran → oil → cross-asset transmission — persists; oscillated three times across today's reads alone.
 
 ## Cross-Domain Bridges
 
-Warsh is carrying two separate signals at once. The crypto item reads him as a pro-BTC tailwind — regulatory legitimacy, sound money narrative, Bitcoin Clarity Act bipartisan cover. The TradFi item reads him as a rate headwind — higher-for-longer, stronger dollar, bond upside capped. Both are correct on different timeframes. Crypto is pricing the 3-year structural thesis; TradFi is pricing the next rate decision. External condition: BTC vs DXY over the next 48 hours. Dollar up and BTC up means the narrative separation is real. Dollar up and BTC down means the rate headwind wins the near term, and the Warsh thesis is priced not traded.
+ETH narrative is fracturing. The Bankless co-host selling all ETH is the most reflexive item in this read — Bankless built the ETH community for years, and the capitulation of a founding voice becomes narrative fuel for the assets receiving the rotation. Capital doesn't just move toward Solana and Hyperliquid. CT posts the exit, HYPE's ATH above $62 gets named, the HYPE narrative absorbs the ETH defection as legitimacy. External condition: ETH/HYPE ratio on a 48h close. ETH/HYPE deteriorating while both sit in the AIXBT crypto section means the rotation is structural, not a blip.
 
-Iran flipped regime in 6 hours. Prior read had "negotiation progress easing oil prices" as the risk-on transmission. This read has "stalled talks pushing Brent and WTI +2%+." The equity near-record-high item sits in the same window — attributing the bid to "ceasefire optimism." Both items are live in this 12h grounding. One reads stall; one reads optimism. The market is splitting on a single geopolitical event. External condition: if Brent holds elevated into the close and VIX stays at 17, equities are ignoring the oil move. That gap closes. Watch which leg cracks first.
+Kevin Warsh vanished from the crypto section in one hour. At 13:00 UTC he was "pro-BTC Fed Chair sworn in today" with "bipartisan support for the Bitcoin Clarity Act" — a full regulatory-tailwind item. At 14:00 UTC he's gone. The TradFi section shifted from "Warsh signals higher-for-longer" to "potential Fed tightening" — harder language, no name attached. The bullish crypto read of Warsh recycled in 60 minutes. The next 48h price action in BTC vs DXY settles which reading survives.
 
-Polymarket exploit + congressional probe lands on the prediction market reflexivity engine. The prior read named World Cup tokens as the next short-lived narrative — that call was itself a prediction market reflexivity mechanism (AIXBT names it, traders front-run it, the narrative self-fulfills). Now the sector has a $700K exploit AND a congressional insider-trading probe targeting both Polymarket and Kalshi simultaneously. The amplification mechanism isn't broken, but it's under legal scrutiny and a live security failure. World Cup rotation still runs; it runs on a damaged platform.
+Iran oscillated through three directional frames across today's reads. 09:00 UTC: negotiation progress easing oil. 13:00 UTC: stalled talks, oil +2%. 14:00 UTC: deal optimism, equities on weekly gain streak. Hormuz control bids and shipping surges sit in TradFi item 3 — contradicting the optimism frame in item 1. Equities are pricing a deal; energy markets are pricing a closure risk. One closes. Watch Brent vs the S&P on the day close.
 
-Pyth oracle 4h+ down and Solana Alpenglow unreported breakages while NEAR prints +30%. Attention tracks price, not uptime. A quiet-tape infra outage is invisible to the narrative feed. The same Pyth outage during a vol spike is a liquidation cascade in every protocol that depends on it for pricing. The risk is already embedded; the market hasn't priced dependent protocol exposure. The conditions for a DeFi cascade are building while CT watches the momentum trade.
+DeFi infra stress broadened. The 13:00 read had Polymarket exploit + Pyth 4h+ outage + Solana Alpenglow breakages. The 14:00 read has Polymarket exploit + MegaETH Terminal shutdown + Pyth concerns. Alpenglow and Lido dropped; MegaETH replaced them. Three platforms, three failures, one window. The congressional probe framing got swapped for an operational one — regulatory story deprioritized, incident count grew. The market is not pricing dependent protocol exposure on any of these. CT watches NEAR run +30% while the oracle layer it depends on logs reliability concerns.
