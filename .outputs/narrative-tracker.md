@@ -1,29 +1,28 @@
-Narratives · 21 May · 7 tracked, 2 NEW
+Narratives · 22 May · 6 tracked
 
 ↑ RISING
-• AI agents / agentic finance [TAO, FET, VIRTUAL] · 5/5 · RIDE
-  Jensen Huang called demand parabolic post-NVDA last night. Hermes Agent shipped browser skills. Big Tech wiring continues.
-• Decentralized compute / DePIN / AI infra [TAO, RNDR, AKT, FIL] · 5/5 · RIDE
-  NVDA confirmed parabolic AI demand last night. VCs are rotating into physical and defense AI infra across 600+ newsletter signals.
-• AI × crypto on X / SocialFi [VIRTUAL] · 3/5 · NEW · WATCH
-  X-payments and AI agents pull memes and follows into onchain flows. No clean token vehicle yet.
-• BTCFi / Bitcoin-native yield [BABY, STX, CORE] · 3/5 · NEW · WATCH
-  @Saint_Blac calls BTCFi a top-3 narrative alongside AI and RWA. Babylon is the named project. Waits for a token catalyst to RIDE.
+• BTCFi / Bitcoin-native yield [BABY, STX, CORE] · 4/5 · WATCH
+  Two driver threads today versus one yesterday. @squirrel_wallet, @Saint_Blac, @kalxZM all name BTCFi a top-tier cycle narrative. Babylon still the only named project. Needs a token catalyst before WATCH flips to RIDE.
 
 → PEAK
+• AI agents / agentic finance [TAO, FET, VIRTUAL] · 5/5 · RIDE
+  Velocity flattening after the NVDA confirmation cycle. a16z leads Exa $250M for search-for-agents (infra extension). @balajis contrarian on the principal-agent gap. Story broadens into infrastructure.
+
+• Decentralized compute / DePIN / AI infra [TAO, RNDR, AKT, FIL] · 5/5 · RIDE
+  @ByblosRadar tracks 600+ VC newsletters converging on physical, defense, and orbital AI infra. Venice uncensored-AI adds a privacy-compute sub-thread. NVDA regime test holds.
+
 • RWA / stablecoins / tokenization [ONDO, PLUME, LINK] · 5/5 · RIDE w/ trail
-  Japan recognizes foreign stablecoins as legal payment June 1. ONDO leading the utility shift.
+  Yield-bearing stablecoin thesis continues across @kalxZM and @Saint_Blac. @TuongvyLe12 frames programmable capital as the institutional-deployment angle. Japan stablecoin recognition June 1 is the live near-term catalyst.
   reflexivity: regulation legitimizes RWA, growth lobbies for regulation. Japan adds a second jurisdiction to the loop.
-• Hyperliquid / perp DEX [HYPE, dYdX] · 4/5 · RIDE w/ trail
-  BHYP ETF and SpaceX perps still in play. No fresh thread in today's signals. Top traders continue cutting long exposure.
-  reflexivity: BHYP ETF allocates 10% of fees to HYPE buys. Inflows compound the token bid until structure breaks.
 
 ↓ FADING
-• Privacy / ZK [ZEC, ZANO] · 2/5 (was 4) · FADE
-  Zero mentions in today's signals after the 4-day solo ZEC bid. Price led without project-side catalyst. Peak signal confirmed.
+• Hyperliquid / perp DEX [HYPE, dYdX] · 3/5 (was 4) · FADE
+  Second straight day with zero fresh threads in today's signals. BHYP ETF and SpaceX perps catalyst stack now fully priced. Top traders continue cutting long exposure.
+
+• Privacy / ZK [ZEC, ZANO] · 2/5 · FADE
+  Faint reaffirmation from @kalxZM top-7 list and Venice uncensored-AI thread. No project-side catalyst, no fresh ZEC bid. Narrative saturated after the four-day solo run.
 
 Changes since yesterday:
-+ AI × crypto on X / SocialFi (NEW)
-+ BTCFi (NEW)
+- AI × crypto on X / SocialFi (DEAD: yesterday's fresh cluster absent today)
 
-Stance: rotate into compute and AI agents through NVDA confirmation. Fade the privacy bid.
+Stance: rotate into BTCFi rising. Trail AI agents and compute tight at peak. Fade the perp DEX bid.

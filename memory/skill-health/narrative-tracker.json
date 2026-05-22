@@ -1,10 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-21T07:47:03Z",
+  "last_analyzed": "2026-05-22T07:42:44Z",
   "quality_score": 4,
-  "assessment": "Good — substantive narrative tracking with specific catalysts, clear trading stance, and proper file management; minor operational friction noted but doesn't detract from output quality",
+  "assessment": "Substantive narrative tracking with clear state transitions, specific signals (RIDE/WATCH/FADE), proper data sourcing, memory integration, and downstream notification handoff.",
   "flags": [],
-  "avg_score": 3.9,
+  "avg_score": 3.91,
   "history": [
     {
       "date": "2026-05-18",
@@ -44,6 +44,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     }
   ]
