@@ -1,6 +1,6 @@
-# AIXBT Clusters (as of 2026-05-20)
+# AIXBT Clusters (as of 2026-05-22)
 
-36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; minor description tweaks vs 2026-05-19 snapshot — CULTURE_SIGNAL expanded to include "crypto, NFT, or"; WEB3_GAMER adds "deck, or"). Used when filtering projects/intel/momentum endpoints (paid tier).
+36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; unchanged vs 2026-05-20 snapshot). Used when filtering projects/intel/momentum endpoints (paid tier).
 
 | id | name | one-line vibe |
 |----|------|---------------|
