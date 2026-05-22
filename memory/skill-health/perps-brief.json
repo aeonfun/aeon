@@ -1,10 +1,10 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-21T08:03:14Z",
+  "last_analyzed": "2026-05-22T07:56:27Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific setups, catalysts, and multi-day continuity; well-structured for downstream processing with proper artifact generation and logging.",
+  "assessment": "Substantive, well-structured market analysis with specific metrics, clear conviction setups, and proper system integration",
   "flags": [],
-  "avg_score": 4.09,
+  "avg_score": 4.08,
   "history": [
     {
       "date": "2026-05-18",
@@ -48,6 +48,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     }
   ]
