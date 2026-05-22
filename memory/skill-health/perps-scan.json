@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-22T13:33:44Z",
-  "quality_score": 5,
-  "assessment": "Excellent execution — substantive regime-transition analysis with quantified metrics, clear verdict, identified arbitrage pattern (CASH-AND-CARRY/FIDA), 6-item WATCH bucket with deviation thresholds, proper follow-up trigger",
+  "last_analyzed": "2026-05-22T14:49:05Z",
+  "quality_score": 4,
+  "assessment": "Substantive technical execution with specific metrics, multi-file delivery, and actionable findings; well-structured and properly integrated with downstream tasks.",
   "flags": [],
-  "avg_score": 3.88,
+  "avg_score": 3.89,
   "history": [
     {
       "date": "2026-05-18",
@@ -73,6 +73,10 @@
     {
       "date": "2026-05-22",
       "score": 5
+    },
+    {
+      "date": "2026-05-22",
+      "score": 4
     }
   ]
 }

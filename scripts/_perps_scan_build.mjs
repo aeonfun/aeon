@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Build .outputs/perps-scan.data.json from .outputs/_perps_compute.json
-// + the regime_yesterday mapping parsed from the prior .outputs/perps-scan.md.
-// The verdict prose lines, WATCH bucket reads, and transition reads are
-// authored inline below — this script is the deliverable for today's run.
+// + the regime_yesterday mapping parsed from 2026-05-21's perps-scan log entry.
+// Verdict prose, WATCH bucket reads, and transition notes are authored inline
+// for the 2026-05-22 14:36Z prefetch snapshot.
 import fs from 'node:fs';
 
 const TODAY = '2026-05-22';
@@ -11,15 +11,16 @@ const REGIMES = ['ACCUMULATION', 'CATALYST-BREAKOUT', 'SHORT-SQUEEZE', 'MOMENTUM
 const compute = JSON.parse(fs.readFileSync('.outputs/_perps_compute.json', 'utf8'));
 const metrics = compute.metrics;
 
-// Yesterday's regime mapping, parsed from .outputs/perps-scan.md (2026-05-21 run)
+// Yesterday's (2026-05-21) regime mapping, sourced from 05-21 perps-scan log.
+// Mostly NEUTRAL, three ACCUMULATION (NEAR/ONDO/CL), XAU in COMPRESSION (dropped from today's universe).
 const yesterday = {
   BTC: 'NEUTRAL', ETH: 'NEUTRAL', SOL: 'NEUTRAL',
   ZEC: 'NEUTRAL', HYPE: 'NEUTRAL', BSB: 'NEUTRAL', EDEN: 'NEUTRAL', DOGE: 'NEUTRAL',
   XRP: 'NEUTRAL', FIDA: 'NEUTRAL', SUI: 'NEUTRAL', TON: 'NEUTRAL', LIT: 'NEUTRAL',
   ONDO: 'ACCUMULATION', NEAR: 'ACCUMULATION', CL: 'ACCUMULATION',
   BILL: 'NEUTRAL', BNB: 'NEUTRAL', WLD: 'NEUTRAL', TAO: 'NEUTRAL',
-  // Assets not in today's universe but recorded yesterday — used only for transition lookup
-  XAU: 'COMPRESSION', LAB: 'NEUTRAL', DASH: 'NEUTRAL', JTO: 'NEUTRAL', PLAY: 'NEUTRAL',
+  // Assets not in today's universe but recorded yesterday — preserved for completeness
+  XAU: 'COMPRESSION', JTO: 'NEUTRAL', DASH: 'NEUTRAL', PLAY: 'NEUTRAL',
 };
 
 function fmtUsd(x) {
@@ -47,77 +48,107 @@ function r3(x) {
 function r4(x) {
   return x === null || x === undefined || !Number.isFinite(x) ? null : Math.round(x * 10000) / 10000;
 }
-function fundingPct(x) {
-  return x === null || !Number.isFinite(x) ? null : Math.round(x * 1e6) / 1e4;
-}
 
-// Verdict — 100% NEUTRAL universe (25/25). Verdict word per step 9: QUIET (≥80% NEUTRAL).
 const assessed = Object.keys(metrics).length;
 const counts = { ACCUMULATION: 0, 'CATALYST-BREAKOUT': 0, 'SHORT-SQUEEZE': 0, MOMENTUM: 0, COMPRESSION: 0, DISTRIBUTION: 0, CAPITULATION: 0, NEUTRAL: 0 };
 for (const a in metrics) counts[metrics[a].regime] += 1;
 
+// Verdict — 24 NEUTRAL + 1 CAPITULATION = QUIET per step 9 (≥80% NEUTRAL).
+// Cycle highlights PROVE flush. Forward names BEAT, FIDA, PROVE follow-ons.
 const verdict = {
   word: 'QUIET',
-  distribution: `25 NEUTRAL across 25 assessed, 0 in any regime.`,
-  cycle: `Yesterday's three ACCUMULATION prints all rolled out. NEAR ran +16% 24h and broke the 25% range gate. ONDO bled the bid as OI rolled to -3.3% 24h. CL flattened on stalling OI.`,
-  forward: `Watch NEAR for funding pushing through +0.03%/8h into MOMENTUM. FIDA carries -0.33%/8h funding into a +8% bounce on OI +1491% 7d, ready to flip SHORT-SQUEEZE if OI 24h turns negative on the next push. PROVE sits 2pp of OI from a CAPITULATION trigger.`,
+  distribution: '1 CAPITULATION across 25 assessed, 24 NEUTRAL.',
+  cycle: 'PROVE flushed into CAPITULATION on universe entry. Price dropped -11.34% 24h as OI rolled -17.30% on funding -0.037%/8h. Liq ran $890K against the 7d p75 of $229K. The cascade follows a +500% 7d OI build that collapsed today. NEAR, ONDO, CL all rolled out of yesterday\'s ACCUMULATION as 7d range expanded past the 25% gate.',
+  forward: 'Watch PROVE for the IN-PROGRESS sub-tag if the cascade extends through the next 4h. BEAT cleared +50.58% 24h on vol 7.87x with OI +79.71% 24h. Only the +52% taker-buy gate keeps BEAT short of CATALYST-BREAKOUT. FIDA carries funding -0.232%/8h on a +130% 7d run with OI flipping -9.88% 24h. A green push higher fires SHORT-SQUEEZE on FIDA.',
 };
 
-// Regime changes (today vs yesterday)
+// Regime changes — surface NEAR/ONDO/CL out of ACCUMULATION + PROVE new entrant into CAPITULATION.
 const regime_changes = [];
 for (const a of Object.keys(metrics)) {
   const ry = yesterday[a];
   const rt = metrics[a].regime;
-  if (ry !== undefined && ry !== rt) {
+  if (ry === undefined) {
+    // New universe entrant — only surface if today's regime is not NEUTRAL.
+    if (rt !== 'NEUTRAL') {
+      let note = '';
+      if (a === 'PROVE' && rt === 'CAPITULATION') {
+        note = 'New universe entrant straight into CAPITULATION. Price dropped -11.34% 24h, OI rolled -17.30%, funding sat at -0.037%/8h. Liq ran $890K against the 7d p75 of $229K. Top L/S collapsed 1.28 over 7d to 1.18. Smart money had already left before the flush.';
+      }
+      regime_changes.push({ asset: a, from: '(new entrant)', to: rt, note });
+    }
+    continue;
+  }
+  if (ry !== rt) {
     let note = '';
     if (ry === 'ACCUMULATION' && rt === 'NEUTRAL') {
-      if (a === 'NEAR') note = 'Range expanded to 53% over 7d on a +16% 24h rip. OI +28% 24h, OI +128% 7d, vol 2.55x. The bid stayed but the structure broke past the 25% accumulation gate.';
-      else if (a === 'ONDO') note = 'OI rolled to -3.3% 24h. Funding pushed +0.005%/8h on top L/S down 0.26 7d. Demand thinned out of the structure.';
-      else if (a === 'CL') note = 'OI growth slowed to +0.5% 24h. Price -2.4% 7d turned the 7d delta negative, breaking the pct_7d > 0 gate.';
+      if (a === 'NEAR') note = 'Range expanded to 59.78% over 7d past the 25% accumulation gate on a +17.60% 24h rip. OI +41.11% 24h, vol 5.05x, taker buy 50.19%. The bid held but the structure broke past the accumulation gate.';
+      else if (a === 'ONDO') note = 'Range stretched to 42.95% on a +9.76% 24h push with OI +8.83% 24h. Structure broke past the 25% accumulation range gate.';
+      else if (a === 'CL') note = 'OI rolled -1.18% 24h. Price -3.67% 7d turned the 7d delta negative and broke the pct_7d > 0 gate.';
     }
     regime_changes.push({ asset: a, from: ry, to: rt, note });
   }
 }
 
-// All NEUTRAL today → no regime sections populated, but spec requires every regime key present
+// Populate regimes from compute output (any non-NEUTRAL assets).
 const regimes = {};
 for (const r of REGIMES) regimes[r] = [];
 
-// WATCH bucket — top near-misses
+for (const a of Object.keys(metrics)) {
+  const m = metrics[a];
+  if (m.regime === 'NEUTRAL') continue;
+  let metricsLine = '';
+  const tags = [];
+
+  if (a === 'PROVE' && m.regime === 'CAPITULATION') {
+    metricsLine = '-11.34% 24h, +16.69% 7d, OI -17.30% 24h on OI +500.08% 7d, funding -0.037%/8h (7d avg -0.073%), liq $890K vs 7d p75 $229K, long $572K vs short $318K, liqs_4h $148K (17% of 24h), top L/S 1.18 collapsed 1.28 7d, basis +0.207%, vol 2.01x';
+    // PROVE sub_tags: liqs_4h/liq_24h = 16.7% sits between 15% CLEARED and 40% IN-PROGRESS — no sub-tag fires
+  }
+
+  regimes[m.regime].push({
+    asset: a,
+    tier: m.tier,
+    marker: 'bullet',  // first day in this regime, no ★
+    repeat_days_suffix: null,
+    metrics_line: metricsLine,
+    tags,
+  });
+}
+
+// WATCH bucket — six near-misses + pattern fires.
 const watch = [
   {
+    asset: 'BEAT',
+    metrics_line: '+50.58% 24h, +76.64% 7d, OI +79.71% 24h on OI +83.58% 7d, vol 7.87x, funding +0.026%/8h (7d avg +0.009%), taker buy 51.19%, short liqs $1.79M vs 7d p75 $227K, top L/S 1.67 down 0.25 7d, pct_4h +14.27%',
+    transition_read: 'Missed CATALYST-BREAKOUT by 0.81pp on the +52% Tier 2 taker-buy gate. Vol 7.87x, OI cascade +79.71%, and short-liq pile-on at 7.9x the 7d p75 all confirm. The last 4h delivered 28% of the 24h move. A taker-buy flip through 52% fires the regime.',
+  },
+  {
     asset: 'NEAR',
-    metrics_line: '+15.99% 24h, +44.78% 7d, OI +28.49% 24h on OI +127.73% 7d, vol 2.55x, funding +0.011%/8h, taker buy 50.19%, short liqs $2.4M vs 7d p75 $1.4M, top L/S 1.89 up 0.14 7d',
-    transition_read: 'Missed CATALYST-BREAKOUT by 4pp on the +20% Tier 2 pct_24h gate. Vol, OI, short-liq cascade, and taker-buy mix all clear the breakout profile. A push through +20% 24h fires the regime.',
+    metrics_line: '+17.60% 24h, +46.79% 7d, OI +41.11% 24h on OI +150.09% 7d, vol 5.05x, funding +0.007%/8h, taker buy 50.19%, short liqs $3.94M vs 7d p75 $1.38M, top L/S 1.87 up 0.12 7d',
+    transition_read: 'Missed CATALYST-BREAKOUT on the +20% Tier 2 pct_24h gate by 2.4pp and the +52% taker-buy gate by 1.81pp. OI surge plus short-liq cascade reads as squeeze plus new-long pile-in stacked together. A continuation push through +20% 24h with taker-buy turning fires the regime.',
   },
   {
     asset: 'FIDA',
-    metrics_line: '+8.14% 24h, +159.56% 7d, OI +12.45% 24h, OI +1491.46% 7d, funding -0.327%/8h (7d avg -0.018%), top L/S 0.95 collapsed 2.26 7d',
-    transition_read: 'Funding deep negative -0.33%/8h with price reclaiming green. Classic short pile-in. OI 24h still rising +12% blocks SHORT-SQUEEZE today. An OI flip negative on the next push fires the regime.',
-  },
-  {
-    asset: 'PROVE',
-    metrics_line: '-10.24% 24h, +18.14% 7d, OI -8.37% 24h on OI +564.88% 7d, funding -0.10%/8h, vol 1.44x, top L/S 1.07 collapsed 1.39 7d',
-    transition_read: 'Missed CAPITULATION by 1.6pp on the -10% Tier 2 OI gate. Negative funding through a -10% drawdown with smart money already gone reads as a flush in progress. Another OI tick down fires CAPITULATION.',
-  },
-  {
-    asset: 'HYPE',
-    metrics_line: '-1.50% 24h, +30.70% 7d, OI -2.08% 24h on OI +41.74% 7d, funding +0.008%/8h (7d avg +0.0007%), top L/S 1.43 up 0.19 7d',
-    transition_read: 'Funding flipped positive on a +30% 7d run with smart money still adding. Range 55% blocks ACCUMULATION. A funding extension through +0.03%/8h fires MOMENTUM.',
+    metrics_line: '-4.33% 24h, +129.63% 7d, OI -9.88% 24h on OI +1175.45% 7d, funding -0.232%/8h (7d avg -0.163%, delta -0.069%), basis +0.591%, top L/S 1.03 collapsed 2.18 7d, taker buy 49.93%',
+    transition_read: 'Funding plunged to -0.232%/8h with OI flipping -9.88% 24h. Reads as forced short cover starting against the +130% 7d run. Pct_24h -4.33% blocks SHORT-SQUEEZE today. A green push higher with OI dropping fires the regime.',
   },
   {
     asset: 'GRASS',
-    metrics_line: '+6.33% 24h, +41.37% 7d, OI +27.09% 24h on OI +143.55% 7d, vol 7.39x, funding +0.005%/8h, taker buy 51.59%, top L/S 1.12 down 0.18 7d',
-    transition_read: 'OI surge with high-multiple volume reads as fresh leverage. Pct_24h 6.33% sits 14pp under the +20% Tier 2 breakout gate. A push higher with vol holding fires CATALYST-BREAKOUT.',
+    metrics_line: '+7.01% 24h, +42.26% 7d, OI +32.42% 24h on OI +153.77% 7d, vol 12.89x, funding -0.003%/8h, taker buy 51.12%, short liqs $633K vs 7d p75 $55K, top L/S 1.06 down 0.24 7d',
+    transition_read: 'Vol 12.89x with short-liq cascade 11x the 7d p75. Funding -0.003%/8h on rising price reads as classic short pile-in. Pct_24h +7.01% sits 3pp under the +10% Tier 2 SHORT-SQUEEZE gate. A push past +10% 24h with OI flipping fires SHORT-SQUEEZE.',
   },
   {
     asset: 'EDEN',
-    metrics_line: '+3.24% 24h, +240.33% 7d, OI -4.79% 24h on OI +1000.06% 7d, funding +0.013%/8h (7d avg +0.005%), top L/S 1.22 down 0.58 7d',
-    transition_read: 'OI stacked 10x over 7d while smart money exited 0.58 on the ratio. Funding flipped clean positive on the bounce. The setup reads top-heavy. A negative day with OI dropping fires CAPITULATION.',
+    metrics_line: '+21.34% 24h, +299.97% 7d, OI +11.07% 24h on OI +1183.35% 7d, vol 1.33x, funding +0.008%/8h (7d avg -0.025%), top L/S 1.23 down 0.57 7d, basis +0.054%',
+    transition_read: 'Parabolic blow-off. OI stacked 12x over 7d while smart money exited 0.57 on the ratio. Funding flipped clean positive on the bounce. Vol 1.33x blocks CATALYST-BREAKOUT. A red day with OI dropping fires CAPITULATION.',
+  },
+  {
+    asset: 'HYPE',
+    metrics_line: '+2.09% 24h, +35.45% 7d, OI +2.50% 24h on OI +48.36% 7d, vol 0.83x, funding +0.001%/8h (7d avg +0.0006%), top L/S 1.39 up 0.15 7d, range 55.40%',
+    transition_read: 'Funding muted at +0.001%/8h on a +35% 7d run with smart money still adding. Range 55% blocks ACCUMULATION. A funding extension through +0.03%/8h fires MOMENTUM.',
   },
 ];
 
-const neutral_summary = 'Neutral · 25 assets · see artifact tail for full data';
+const neutral_summary = 'Neutral · 24 assets · see artifact tail for full data';
 
 const tail = [];
 for (const a of Object.keys(metrics)) {
@@ -166,13 +197,12 @@ const out = {
   regime_changes,
   regimes,
   regime_empty_notes: {
-    ACCUMULATION: 'no qualifying assets — yesterday\'s three prints all rolled out (NEAR range expanded past 25%, ONDO OI rolled -3.3% 24h, CL pct_7d turned negative)',
-    'CATALYST-BREAKOUT': 'no qualifying assets — NEAR cleared +16% 24h with vol 2.55x and OI +28% 24h but fell 4pp short of the +20% Tier 2 pct_24h gate',
-    'SHORT-SQUEEZE': 'no qualifying assets — FIDA carries funding -0.33%/8h but OI 24h still rising +12% blocks the regime',
-    MOMENTUM: 'no qualifying assets — HYPE +30.7% 7d on OI +41.7% 7d sits at funding +0.008%/8h, well under the +0.03% gate',
+    ACCUMULATION: 'no qualifying assets — yesterday\'s three prints all rolled out (NEAR range expanded past 25%, ONDO range broke past 25% on the +9.76% 24h push, CL pct_7d turned -3.67%)',
+    'CATALYST-BREAKOUT': 'no qualifying assets — BEAT cleared +50.58% 24h with vol 7.87x and OI +79.71% 24h, missed the +52% Tier 2 taker-buy gate by 0.81pp',
+    'SHORT-SQUEEZE': 'no qualifying assets — FIDA carries funding -0.232%/8h with OI flipping -9.88% but pct_24h -4.33% is the wrong direction. GRASS holds vol 12.89x on short-liqs 11x p75 but pct_24h +7.01% sits 3pp under the +10% Tier 2 gate',
+    MOMENTUM: 'no qualifying assets — HYPE +35.45% 7d on OI +48.36% 7d sits at funding +0.001%/8h, well under the +0.03% gate',
     COMPRESSION: 'no qualifying assets — Tier 2 universe has no asset under the 5% range gate today',
-    DISTRIBUTION: 'no qualifying assets — funding muted universe-wide, no Tier 2 asset over the +0.08%/8h gate',
-    CAPITULATION: 'no qualifying assets — PROVE -10.24% 24h with funding negative but OI -8.37% 24h missed the -10% Tier 2 OI gate by 1.6pp',
+    DISTRIBUTION: 'no qualifying assets — funding muted across the long side universe-wide, no Tier 2 asset over the +0.08%/8h gate',
   },
   watch,
   neutral_summary,
