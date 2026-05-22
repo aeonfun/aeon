@@ -1,27 +1,25 @@
-Yesterday's Runners · 22 May · SPECULATIVE (5 DEEP-LIQ cleared the gate, none scored top 5)
-
-CONTINUATION
-• STARMAN (eth) +238% 24h
-  $2.0m vol, $127k liq, h1 +2.7%, h6 +135%, buys 55%
-  → 2.5y pool reanimating, only top-5 pick whose hourly is still bid
+Yesterday's Runners · 22 May · SPECULATIVE (26 DEEP-LIQ cleared the gate, none scored top 5)
 
 BREAKOUT
-• WCOR (sol) +4764% 24h
-  $61m vol, $224k liq, 23h pool, h1 -14%, h6 -20%, buys 51%
-  → 270x vol-to-liq churn, peak printed and rolling over
+• VIRL (sol) +521% 24h
+  $37m vol, $255k liq, 2h pool, h1 +56%, buys 56%
+  → only top pick whose hourly is still expanding
 
-• Ball (sol) +309% 24h
-  $1.7m vol, $77k liq, 41h pool, h1 -6%, h6 +17%, buys 57%
-  → 2-day Solana pool, hourly fading on thin liquidity
+• GENIUS (bsc) +5787% 24h
+  $51m vol, $130k liq, 5h pool, h1 +24%, buys 58%
+  → 390x vol-to-liq churn, exit before the print rolls
+
+• SPCX (sol) +538% 24h
+  $47m vol, $281k liq, 6h pool, h1 0%, buys 54%
+  → fresh peak with flat hourly, distribution opening
+
+• Bank (sol) +1186% 24h
+  $2.4m vol, $100k liq, 18h pool, h1 +4%, h6 +310%, buys 58%
+  → day-2 push still bid on thin liq, fade if h1 turns
 
 REVERSAL
-• SUPERGEMMA (base) +3972% 24h
-  $5.0m vol, $431k liq, h1 -16%, h6 +84%, buys 39%
-  → 38d contract reactivated, now bleeding on 39% buy-skew
+• SUPERGEMMA (base) +770% 24h
+  $5.5m vol, $456k liq, 38d pool, h1 -12%, h6 +8%, buys 39%
+  → same REVERSAL pick as this morning, sell-skew confirms exit liquidity
 
-MICRO-SPEC
-• grantr (base) +193% 24h
-  $1.9m vol, $410k liq, h1 +0.6%, h6 -14%, buys 39%
-  → sell-skewed flow into a flat hourly, distribution into bounce
-
-vibe: micro-cap casino on top of a quiet blue-chip floor
+vibe: micro-cap casino over a blue-chip floor sitting it out
