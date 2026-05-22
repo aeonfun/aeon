@@ -1,32 +1,27 @@
-Market Morning · 22 May · alts run on flat majors
+Market Morning · 22 May · Risk-off softening, ledger heavy
 
-BTC $77,417, flat 24h, -3.96% 7d.
-Breadth 13/20 green 24h, weekly frame thin at 4/20.
-F&G 28 Fear day 2, stablecoins -$1.36B 24h. Rotation is internal, not new capital.
+BTC $76.7K flat 24h, -4.50% 7d. Breadth crashed 13/20 → 6/20 green intraday as alts sold back morning gains.
+F&G 28 Fear, unchanged. BTC dominance 58.04% holds.
+AI compute, DePIN, RWA all sit PEAK with RIDE intact. Hyperliquid FADES on a second day without a fresh thread.
 
-Three narratives at 5/5 PEAK · RIDE w/ trail — AI agents, Decentralized compute, RWA.
-NEAR +29% 24h, GRASS +30%, ONDO +12%. The alt rotation is structural, not speculative.
-
-Stance: ride alt continuation with trails tight. Fade leverage extensions.
+Stance: hold the three longs with trails tight. No fresh entries on a softening tape.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Pyth oracle 4h+ down while NEAR prints +29%.
-A vol-spike outage cascades liquidations across every protocol that prices through it.
+Ethereum's identity crisis is today's bridge.
+Bankless co-host sold all ETH, EF talent exodus accelerated, capital rotated to Solana and Hyperliquid in one window.
+ETH defection becomes legitimacy fuel for the receivers. ETH/HYPE on a 48h close settles whether the rotation is structural.
 
-Polymarket $700K exploit plus congressional probe of Polymarket and Kalshi.
-Prediction market reflexivity takes a security failure and legal scrutiny in the same window. Rotation still runs on a damaged platform.
+Iran oscillated three frames in one session. Equities priced a deal, energy markets priced Hormuz closure with shipping surges. Brent vs S&P on the close picks the winner.
+
+DeFi infra stress broadened: Polymarket exploit, MegaETH shutdown, Pyth reliability concerns in one window. Three failures, no contagion priced.
 
 
 ─────────  TODAY  ─────────
 
-Action is in #perps-brief. 3 HIGH CONVICTION longs.
-NEAR (3d) · AI/DePIN continuation, short-liq cascade $3.86M.
-HYPE (multi-week) · $16M/day ETF inflows, June 6 unlock named invalidator.
-ONDO (7d) · cleanest RWA continuation.
+Action sits in #perps-brief. Three open longs (NEAR, HYPE, ONDO) all day 1, no fresh HIGH CONVICTION.
+HYPE runs against narrative-tracker FADE day 3. The position holds on smart money plus ETF flow. The narrative reads exits. Live tension on a top L/S 7d flip.
 Watchlist: GRASS, TAO long. EDEN, ZEC short.
 
-AI/DePIN confluence is the headline. Perps NEAR + GRASS overlap narrative-tracker AI + Decentralized compute, both 5/5 PEAK.
-
-Take: ride alts with trails. Pyth dependency is the universe-wide tail.
+Take: ledger heavy, tape softening. Trails tight, no fresh entries until a clean setup forms.

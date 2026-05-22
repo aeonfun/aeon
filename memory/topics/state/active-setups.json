@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-22T15:00:32Z",
+  "last_updated": "2026-05-22T15:06:52Z",
   "open": [
     {
       "id": "NEAR-2026-05-22-001",
@@ -40,6 +40,12 @@
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 2.265,
+          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        },
         {
           "date": "2026-05-22",
           "call": "RIDE",
@@ -89,6 +95,12 @@
           "call": "RIDE",
           "price_at_eval": 59.827,
           "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
+        },
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 59.827,
+          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
         }
       ]
     },
@@ -127,6 +139,12 @@
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 0.4545,
+          "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+        },
         {
           "date": "2026-05-22",
           "call": "RIDE",
