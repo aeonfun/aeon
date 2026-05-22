@@ -1,12 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-22T07:43:12Z",
-  "quality_score": 5,
-  "assessment": "Excellent output—substantive token analysis with specific catalyst sourcing, quantified risk/reward, and transparent API limitation documentation.",
-  "flags": [
-    "api_error"
-  ],
-  "avg_score": 4.18,
+  "last_analyzed": "2026-05-22T13:21:49Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-researched pick with specific data, cross-confirmed thesis, risk disclosure, proper system integration, and cited sources—minor sandbox workaround noted but handled.",
+  "flags": [],
+  "avg_score": 4.17,
   "history": [
     {
       "date": "2026-05-18",
@@ -51,6 +49,10 @@
     {
       "date": "2026-05-22",
       "score": 5
+    },
+    {
+      "date": "2026-05-22",
+      "score": 4
     }
   ]
 }

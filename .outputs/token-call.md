@@ -1,35 +1,37 @@
 Daily Token Call · 22 May
 ──────────────────────────
 
-PENGU · HIGH · 10/10
-$0.00975 · +6.4% 24h · +9.8% 7d
-mcap $613m · vol $142m · vol/mcap 0.23
+GRASS · HIGH · 10/10
+$0.4466 · +27.67% 24h · +34.46% 7d
+mcap $263m · vol $61m · vol/mcap 0.23
 
 
 SIGNALS
-  Highest turnover on the trending list at vol/mcap 0.23.
-  On the CoinGecko trending list.
-  Both 24h and 7d positive, both above +5%.
-  Outpacing a red BTC -3.7% and ETH -5.2% on the week.
+  Vol/mcap 0.23 — heavy turnover for a mid-cap.
+  On the CoinGecko trending list today.
+  Both 24h and 7d well above +5%.
+  Outpacing red BTC (-3.9% 7d) and ETH (-5.5% 7d) by 38+ points on the week.
+  Breakout tag fired on the morning scan with vol 7.39x average.
 
 CATALYST
-  CBOE filed for the PENGU + Pudgy Penguins ETF listing — first memecoin to clear the ETF pipeline.
-  Canary Capital's combined token + NFT ETF proposal still active at the SEC.
-  Real-world distribution: Pudgy toys in mass retail, debit card product live.
-  Memecoin rotation rebuilding as BTC and ETH bleed. PENGU the only top-100 meme tied to a revenue brand.
+  Decentralized compute / DePIN sits at 5/5 PEAK across the narrative map.
+  NEAR's +29% breakout this morning leads the sector. GRASS is the second clean play.
+  OKX Wallet Boost X campaign live with a 1.8M GRASS rewards pool.
+  Internet Labor Markets thesis: bandwidth-for-AI-data pulls fresh VC infra capital.
 
 RISK
-  21B+ PENGU vesting round queued this month (24% of total supply). Overhead the rally has to absorb.
-  Sits 85% below the Dec-24 ATH. The run is brand-driven, not on-chain confirmed.
-  The April-27 mark-up read as exit liquidity into the May-17 release. Same pattern risks repeating.
+  Smart money trimming into the breakout.
+  Top L/S -0.18 over 7d — retail-led move, not smart-money-confirmed.
+  Vesting and airdrop supply continues to print into the market.
+  Price still 88% below the Nov-2024 ATH.
 
 DEDUP
   First time in 7d.
-  Recent picks excluded: ZEC, DASH, VVV, LIT, CHZ, HYPE, NEAR, INJ, BSB, TRAC, KAIA.
+  Recent picks: PENGU, ZEC, DASH, VVV, LIT, CHZ, HYPE, NEAR, INJ, BSB all excluded.
 
 
-Take: ETF pipeline, brand distribution, and the cleanest turnover on the trending list make this a real rotation candidate.
-The unlock overhead caps the trade. Size for the catalyst window, not for a multi-leg trend.
+Take: second-leg DePIN play with the sector at PEAK RIDE.
+Smart money trimming is the catch — sized as a continuation trade with the breakout level as the invalidator, not a buy-and-hold thesis.
 
 
 not financial advice — pattern-matching only
