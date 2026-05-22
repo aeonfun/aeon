@@ -1,8 +1,8 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-22T07:56:27Z",
+  "last_analyzed": "2026-05-22T13:44:08Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured market analysis with specific metrics, clear conviction setups, and proper system integration",
+  "assessment": "Substantive, well-structured output with specific trading positions, proper schema versioning, memory logging, and documented workflow follow-ups; demonstrates context awareness (soul integration, chain consumption, risk flagging) but truncation limits verification of actual trading decision quality and source documentation.",
   "flags": [],
   "avg_score": 4.08,
   "history": [
@@ -48,6 +48,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {
