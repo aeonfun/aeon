@@ -1,12 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-22T14:37:59Z",
-  "last_updated": "2026-05-22T14:38:11Z",
-  "last_updated": "2026-05-22T14:38:36Z",
-  "last_updated": "2026-05-22T14:40:41Z",
-  "last_updated": "2026-05-22T14:41:07Z",
-  "last_updated": "2026-05-22T14:43:34Z",
-  "last_updated": "2026-05-22T14:49:09Z",
+  "last_updated": "2026-05-22T15:00:32Z",
   "open": [
     {
       "id": "NEAR-2026-05-22-001",
@@ -39,13 +33,20 @@
         "Pyth oracle cascade risk on dependent protocols",
         "+151% 7d OI means the long stack can flush on one red day"
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -5.376344086021505,
+      "mfe_pct": 3.2258064516128915,
+      "mae_date": "2026-05-22",
+      "mfe_date": "2026-05-22",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 2.265,
+          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        }
+      ]
     },
     {
       "id": "HYPE-2026-05-22-001",
@@ -76,13 +77,20 @@
         "Narrative-tracker FADE call is real — second day with no fresh threads",
         "ETF flow reverses if BTC/ETH ETFs come out of bleed"
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -2.3084753554657977,
+      "mfe_pct": 0.9752733720815704,
+      "mae_date": "2026-05-22",
+      "mfe_date": "2026-05-22",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 59.827,
+          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
+        }
+      ]
     },
     {
       "id": "ONDO-2026-05-22-001",
@@ -112,13 +120,20 @@
         "RWA PEAK = late-cycle, trail discipline required",
         "One-day re-entry to trending is shallow"
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -3.239740820734344,
+      "mfe_pct": 1.5118790496760153,
+      "mae_date": "2026-05-22",
+      "mfe_date": "2026-05-22",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 0.4545,
+          "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+        }
+      ]
     }
   ],
   "watchlist": [

@@ -1,53 +1,66 @@
-Perps Brief · 22 May
+Perps Brief · 22 May · Three opens, tape softening, no fresh entries
 
 ─────────  MARKET SENTIMENT  ─────────
 
-  BTC funding sits at +0.006%/8h, OI +0.58% 24h, basis +0.0485. No leverage building on the majors. Breadth 13/20 green 24h on a 4/20 7d frame — alt continuation real, weekly structure absent. Stablecoin supply -$1.36B 24h cuts against the dry-powder read; the rotation is internal, not new capital.
+  Tape softened through the session.
+  Breadth crashed 13/20 → 6/20 green intraday as Iran talks stalled and ETH narrative fractured.
+  Bankless co-host capitulated, EF talent exodus accelerated, capital rotating to Solana and Hyperliquid.
+  F&G 28 Fear, unchanged.
+  Risk-off without a panic flush.
 
-  Perps-scan QUIET — one ACCUMULATION across 25 names (TAO · DIVERGENT). Funding muted universe-wide despite the alt rips. NEAR ripped +20.72% 24h on vol 4.53x with short liqs $3.86M vs p75 $1.38M — a squeeze cascade. HYPE pushed +30.7% 7d into $61 ATH on smart money still adding +0.19 over 7d. ONDO returned to trending #6 on +11.81%. The rotation is structural, not speculative — funding nowhere near extreme.
+  BTC funding +0.0065%/8h, OI +0.78% 24h.
+  Leverage muted on the majors.
+  PROVE flushed into CAPITULATION on -11% 24h against +500% 7d OI build.
+  Smart money cleared before the wick.
+  BEAT cleared every CATALYST-BREAKOUT gate but the taker buy (0.81pp short) on a +50% 24h rip with retail piling into OI.
+  NEAR, ONDO, CL all rolled out of yesterday's ACCUMULATION as range gates broke past 25%.
 
-  Three concurrent infra failures sit unpriced. Pyth oracle 4h+ down. Solana Alpenglow breakages unreported. Lido pivots away from staking amid shrinking APR. The same Pyth outage during a vol spike fires a liquidation cascade across every protocol that prices through it. Polymarket's $700K exploit plus congressional probe of Polymarket and Kalshi damages the prediction market reflexivity engine simultaneously. Tail risk sits on every long today.
+  DeFi infra cluster broadened: Polymarket exploit, MegaETH Terminal shutdown, Pyth reliability concerns all printing in one window.
+  Iran oscillated three frames in one day.
+  Equities priced a deal, energy markets priced Hormuz closure.
+  Warsh vanished from crypto-side coverage inside one hour.
+  The bullish-BTC framing recycled to TradFi 'higher for longer.'
 
-  Bias · ride NEAR, HYPE, and ONDO on PEAK-narrative continuation with tight trails. Watchlist GRASS, TAO, EDEN-short, ZEC-short pending external triggers. Pyth dependency is the universe-wide tail.
+  Stance: hold the three longs with trails tight. No fresh entries on a softening tape with the ledger already heavy.
 
-─────────  NEW POSITIONS (3)  ─────────
+─────────  CURRENT POSITIONS (3)  ─────────
 
-  NEAR · LONG · 3d horizon · entry: market or first pullback to $2.10
+  NEAR · LONG · fired 22 May @ $2.33 · day 1/3
+    RIDE — Rip already booked but invalidation 9.5% away, AI/DePIN both still PEAK
     invalidation: close below $2.05
-    thesis: ACCUMULATION resolved into a +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h on OI +151.29% 7d, short liqs $3.86M vs p75 $1.38M — a squeeze cascade. Top L/S 1.83, +0.08 over 7d through the breakout. AIXBT names NEAR as the entry leg of the AI/DePIN basket. Token-movers tagged BREAKOUT. AI agents and Decentralized compute both 5/5 PEAK · RIDE w/ trail.
-    confluence (7): quant_regime_aligned, pattern_tag_supports, narrative_phase_aligned, market_regime_aligned, both_tag, cross_domain_bridge, enrichment_positive
-    risks: AI agents and Decentralized compute both at PEAK — late-cycle entry, easy gains likely behind; Pyth oracle outages building DeFi cascade risk that NEAR-adjacent protocols depend on; Day 4 of the AI/DePIN narrative wave. +151% 7d OI means the long stack can flush on a single red day
+    watch: first red day with OI dropping — +151% 7d OI is the asymmetric risk
+    MAE -5.4% (day 1) · MFE +3.2% (day 1) · now -2.6%
 
-  HYPE · LONG · multi-week horizon · entry: market or first pullback to $58
-    invalidation: close below $56, OR a clean break below the post-June-6-unlock settlement low
-    thesis: $16M/day ETF inflows while BTC and ETH ETFs bleed — institutional vehicle bid running solo. Smart money +0.19 over 7d through ATH $62. Funding +0.0067%/8h sits well under the +0.03% extreme gate — leverage room remaining. Narrative-tracker downgraded Hyperliquid to FADE on silence. Perps positioning contradicts the FADE. Price plus positioning wins commentary today.
-    confluence (4): pattern_tag_supports, market_regime_aligned, cross_domain_bridge, enrichment_positive
-    risks: June 6 unlock 15 days out — $575M token release, the dated invalidator; Narrative-tracker FADE call is real — second day with zero fresh threads, reflexive bid driven by ETF buyback flow rather than fresh attention; ETF flow can reverse if BTC and ETH ETFs come out of bleed and pull capital back
+  HYPE · LONG · fired 22 May @ $60.91 · day 1/21
+    RIDE — Smart money +0.15 7d still bid, ETF flow holding
+    invalidation: close below $56, OR clean break below the post-June-6-unlock settlement low
+    watch: narrative-tracker FADE day 3 active — a top L/S 7d delta flip is the structural break
+    MAE -2.3% (day 1) · MFE +1.0% (day 1) · now -1.8%
 
-  ONDO · LONG · 7d horizon · entry: market or pullback to $0.43
+  ONDO · LONG · fired 22 May @ $0.463 · day 1/7
+    RIDE — RWA PEAK still RIDE w/ trail, range break held above $0.45
     invalidation: close below $0.41
-    thesis: RWA at 5/5 PEAK · RIDE w/ trail. Today's +11.81% 24h on OI +13.19% rebuild returns ONDO to trending #6 after a one-day absence. Top L/S 1.79, -0.20 7d delta. The long stack mostly held through the run. CLARITY Act momentum plus Japan June-1 stablecoin recognition broadens the legitimization wave. Cleanest large-cap RWA continuation on the board.
-    confluence (4): narrative_phase_aligned, pattern_tag_supports, market_regime_aligned, enrichment_positive
-    risks: Rolled OUT of yesterday's ACCUMULATION — the structural bid that built the early position may not return; RWA at PEAK = late-cycle entry, narrative-tracker calls trail discipline; One-day re-entry to trending is shallow — needs follow-through to confirm the bid
+    watch: trending-list drop or close below $0.43 — trail tight
+    MAE -3.2% (day 1) · MFE +1.5% (day 1) · now -1.8%
 
 ─────────  WATCHLIST (4)  ─────────
 
   GRASS · LONG · day 1 on watchlist · confluence (5)
-    trigger: top L/S turns up through 1.10 OR funding holds negative on another vol-multiple day with pct_24h past +10% (the SHORT-SQUEEZE regime fires)
+    trigger: top L/S turns up through 1.10 OR funding holds negative on another vol-multiple day with pct_24h past +10%
     invalidation: close below $0.40 before trigger fires
-    thesis: Vol 11.81x with short-liq cascade $597K vs p75 $55K (10.8x p75). Funding -0.011%/8h on rising price reads as classic short pile-in. DePIN at 5/5 PEAK alongside NEAR. Token-call HIGH 10/10 cross-confirms. Top L/S -0.25 over 7d — smart money trimming into the move. Retail-led, not smart-money-confirmed.
+    thesis: Vol 12.89x today with short-liq cascade 11x p75. Funding -0.003%/8h on rising price reads short pile-in. DePIN 5/5 PEAK + token-call HIGH 10/10 cross-confirm. Top L/S 1.06 down 0.25 7d means retail-led, not smart-money confirmed.
 
   TAO · LONG · day 1 on watchlist · confluence (3)
     trigger: taker buy clean through 52% with OI continuing to build OR pct_24h breaks +10% with funding holding under +0.02%/8h
     invalidation: close below $275 OR funding flips negative
-    thesis: Only ACCUMULATION print in today's universe. OI +10.85% 7d on a tight 15.87% range. Funding +0.008%/8h above the +0.003% 7d average. AI compute infra at 5/5 PEAK · RIDE — TAO is the major beta to that bid. DIVERGENT sub-tag (taker buy 48.04% under the 50% gate) reads as passive build, possibly arb.
+    thesis: Only ACCUMULATION print in today's universe. OI +10.85% 7d on a tight 15.87% range. Funding +0.008%/8h above 7d avg. AI compute 5/5 PEAK · RIDE. DIVERGENT sub-tag reads passive build, possibly arb.
 
   EDEN · SHORT · day 1 on watchlist · confluence (3)
     trigger: OI flips negative on a red day (oi_24h_pct < 0 with pct_24h < 0) — fires CAPITULATION per perps-scan
     invalidation: close above $0.18 before trigger fires
-    thesis: Parabolic — +323.81% 7d, OI +1281% 7d while top L/S collapsed -0.57 over 7d. Smart money exited through the run. Funding flipped clean positive +0.018% off a -0.024% 7d base. Negative basis -0.20% reads as spot exit pressure into the leverage stack. A red day with OI dropping fires the regime.
+    thesis: Parabolic. +299.97% 7d, OI +1183% 7d while top L/S collapsed -0.57 7d. Funding flipped positive off a -0.0246% base. Pct_4h -13.23% inside today already starting to crack the structure.
 
-  ZEC · SHORT · day 1 on watchlist · confluence (2)
-    trigger: close below $620 (break of the 7d range support) OR top L/S falls under 0.75
-    invalidation: close above $670 (reclaim of the May-21 high)
-    thesis: Privacy/ZK FADING — mindshare 2/5, position FADE per narrative-tracker. Second down day from $667.93 May-21 peak. Top L/S 0.81 already net short, -0.13 over 7d. RAIL absent from trending today after yesterday's pump. No fresh institutional bid.
+  ZEC · SHORT · day 1 on watchlist · confluence (3)
+    trigger: close below $620 OR top L/S falls under 0.75
+    invalidation: close above $670 (reclaim of May-21 high)
+    thesis: Privacy/ZK FADING — mindshare 2/5, narrative-tracker FADE confirmed. Third down day from the $667.93 peak. Top L/S 0.81 net short, -0.13 7d. -4.62% 24h on OI -5.88% reads forced long unwind, not fresh short stack.
