@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-22T13:29:35Z",
+  "last_analyzed": "2026-05-22T14:41:02Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data deltas, verified sources, clear regime identification, and actionable token picks; well-structured but modest depth on some narratives",
+  "assessment": "Substantive crypto market analysis with specific data points, clear regime call, sector-by-sector narrative tracking, and completed memory updates—actionable but truncated output limits full evaluation.",
   "flags": [],
-  "avg_score": 4.18,
+  "avg_score": 4.17,
   "history": [
     {
       "date": "2026-05-18",
@@ -40,6 +40,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {
