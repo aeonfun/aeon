@@ -6,14 +6,19 @@
 #   2. Snapshot the ledger           (pre-apply backup)
 #   3. Apply ledger operations       (scripts/apply-ledger-ops.py)
 #   4. Validate ledger post-apply    (python3 -m lib.ledger)
-#   5. Section-split markdown + send per-section to Discord
+#   5. Split markdown into per-section pre-chunked pending files
 #
 # v4.1 changes from v4:
-#   - Step 5 splits the brief by section divider, wraps each section in a
-#     code block, and sends each as a separate Discord message. Sections
-#     stay intact across the 2000-char webhook limit.
-#   - The title + MARKET SENTIMENT block is the first message (combined
-#     per operator decision).
+#   - Step 5 splits the brief by section divider, pre-chunks each section
+#     to fit Discord's 2000-char limit (including code-block wrappers),
+#     and writes each chunk directly to .pending-notify/ with a unique
+#     filename. The post-run "Send pending notifications" step picks them
+#     up and delivers each as its own Discord message.
+#   - We bypass ./notify for these sends because ./notify builds pending
+#     filenames as $(date +%s) — when multiple sends happen in the same
+#     second they collide and overwrite each other. Writing directly with
+#     counter-suffixed filenames avoids the collision.
+#   - Title + MARKET SENTIMENT combined into the first section message.
 
 set -euo pipefail
 
@@ -76,88 +81,178 @@ if [ -f "$LEDGER_PATH" ]; then
   fi
 fi
 
-# Step 5 — Section-split notify
-echo "postprocess-perps-brief: step 5/5 — section-split notify"
-
-if [ ! -x ./notify ]; then
-  echo "::error::postprocess-perps-brief: ./notify is missing or not executable"
-  exit 1
-fi
+# Step 5 — Section-split + pre-chunk + write pending files
+echo "postprocess-perps-brief: step 5/5 — section-split + pre-chunk to pending"
 
 if [ ! -s "$MD_PATH" ]; then
   echo "postprocess-perps-brief: $MD_PATH is empty after render, nothing to notify"
   exit 0
 fi
 
-# Split the brief into sections. The render emits a deterministic divider
-# `─────────  NAME  ─────────` at section boundaries. The first section
-# is the title + MARKET SENTIMENT block (no divider above it).
-#
-# python helper: read the md, split, emit one file per section to a temp dir,
-# then loop and notify each.
-SECTION_DIR=$(python3 - <<'PY'
-import sys, os, tempfile
+python3 - "$MD_PATH" <<'PY'
+"""Split perps-brief markdown into pre-chunked, code-block-wrapped Discord
+messages and write each as a unique pending file.
+
+Section boundaries: ───── NAME ───── divider lines (9-char dashes).
+
+Title (any lines before the first divider) is merged into the first section
+so the title rides with MARKET SENTIMENT.
+
+Per-section chunking: each section's content + code-block wrapper must fit
+in 1900 bytes (Discord webhook limit is 2000; we leave headroom). When a
+section exceeds 1900 bytes, split at trade-block boundaries (blank lines
+after the section header). Continuation chunks get "(cont.)" appended to
+the section header for visual continuity.
+
+Each chunk gets its own pending file named perps-brief-<ts>-<seq>.signal.md
+to avoid the pending-filename collision in ./notify (same-second sends
+overwrite each other when ./notify is the writer).
+"""
+
+import sys
+import os
+import time
 from pathlib import Path
 
-md = Path(".outputs/perps-brief.md").read_text()
-lines = md.splitlines()
-
-# A section divider line starts and ends with the "─────────" sequence.
+MAX_CHUNK_BYTES = 1900  # Discord cap 2000; leave 100 for safety
+WRAPPER_OVERHEAD = 8     # ```\n + \n```
 DIV = "─" * 9
+
+
 def is_divider(line: str) -> bool:
     return line.startswith(DIV) and line.rstrip().endswith(DIV)
 
-# Walk the lines; each divider starts a new section. Lines before the
-# first divider belong to "section 0" (title + MARKET SENTIMENT in v4.1).
-# Actually MARKET SENTIMENT itself has a divider, so section 0 is just
-# the title lines if any precede MARKET SENTIMENT's divider.
-sections: list[list[str]] = []
-current: list[str] = []
-for line in lines:
-    if is_divider(line):
-        if current:
-            sections.append(current)
-            current = []
-    current.append(line)
-if current:
-    sections.append(current)
 
-# The first section contains the title (before the MARKET SENTIMENT
-# divider). If MARKET SENTIMENT is the first divider in the file, that
-# section already includes the title — perfect. The combined "title +
-# MARKET SENTIMENT" message is sections[0].
+def split_sections(lines: list[str]) -> list[list[str]]:
+    """Split markdown lines into sections.
 
-tmpdir = tempfile.mkdtemp(prefix="perps-brief-sections-")
-for i, sec in enumerate(sections):
-    body = "\n".join(sec).rstrip()
-    if not body:
-        continue
-    Path(tmpdir, f"section-{i:02d}.md").write_text(body + "\n")
-print(tmpdir)
+    Pre-first-divider content (e.g., title) is merged into the first section
+    so the title rides with MARKET SENTIMENT instead of being its own
+    orphan message.
+    """
+    sections: list[list[str]] = []
+    current: list[str] = []
+    first_divider_seen = False
+    for line in lines:
+        if is_divider(line):
+            if current and first_divider_seen:
+                sections.append(current)
+                current = []
+            first_divider_seen = True
+        current.append(line)
+    if current:
+        sections.append(current)
+    return sections
+
+
+def chunk_section(section: list[str], max_bytes: int) -> list[str]:
+    """Split a single section into chunks that fit in max_bytes (including
+    code-block wrapper). Splits on trade-block boundaries (blank lines).
+    """
+    full = "\n".join(section)
+    # Reserve wrapper overhead
+    budget = max_bytes - WRAPPER_OVERHEAD
+    if len(full) <= budget:
+        return [full]
+
+    # Find the section header (first divider line)
+    header_idx = None
+    for i, line in enumerate(section):
+        if is_divider(line):
+            header_idx = i
+            break
+
+    if header_idx is None:
+        # No divider — preamble-only section. Shouldn't happen with merge
+        # logic above, but fall back to hard split.
+        return [full[i:i + budget] for i in range(0, len(full), budget)]
+
+    preamble = section[:header_idx]               # title lines, if first section
+    header = section[header_idx]
+    cont_header = header.rstrip().replace(
+        "  " + DIV, " (cont.)  " + DIV, 1
+    )
+    body = section[header_idx + 1:]
+
+    # Split body into blocks by blank-line separator
+    blocks: list[list[str]] = []
+    cur: list[str] = []
+    for line in body:
+        if line.strip() == "":
+            if cur:
+                blocks.append(cur)
+                cur = []
+        else:
+            cur.append(line)
+    if cur:
+        blocks.append(cur)
+
+    # Greedy-pack blocks into chunks
+    chunks: list[str] = []
+    chunk_lines: list[str] = list(preamble) + ([""] if preamble else []) + [header, ""]
+    chunk_size = sum(len(l) + 1 for l in chunk_lines)
+    is_first_chunk = True
+
+    for block in blocks:
+        block_text = "\n".join(block)
+        block_size = len(block_text) + 2  # block + trailing blank line
+
+        if chunk_size + block_size > budget and any(
+            l.strip() for l in chunk_lines[header_idx + 1 if is_first_chunk else 1 :]
+        ):
+            # Flush current chunk
+            chunks.append("\n".join(chunk_lines).rstrip())
+            # Start new chunk with cont header
+            chunk_lines = [cont_header, ""]
+            chunk_size = sum(len(l) + 1 for l in chunk_lines)
+            is_first_chunk = False
+
+        chunk_lines.extend(block)
+        chunk_lines.append("")
+        chunk_size += block_size
+
+    # Flush remainder
+    if any(l.strip() for l in chunk_lines):
+        chunks.append("\n".join(chunk_lines).rstrip())
+
+    return chunks
+
+
+def main():
+    md_path = Path(sys.argv[1])
+    md = md_path.read_text()
+    lines = md.splitlines()
+
+    sections = split_sections(lines)
+
+    os.makedirs(".pending-notify", exist_ok=True)
+    ts = int(time.time())
+    seq = 0
+    chunks_written = 0
+
+    for sec in sections:
+        chunks = chunk_section(sec, MAX_CHUNK_BYTES)
+        for chunk in chunks:
+            if not chunk.strip():
+                continue
+            wrapped = "```\n" + chunk + "\n```"
+            seq += 1
+            fname = f".pending-notify/perps-brief-{ts}-{seq:03d}.signal.md"
+            Path(fname).write_text(wrapped)
+            print(
+                f"postprocess-perps-brief: queued {fname} "
+                f"({len(wrapped)} bytes content + wrapper)"
+            )
+            chunks_written += 1
+
+    print(
+        f"postprocess-perps-brief: wrote {chunks_written} pending file(s) "
+        f"across {len(sections)} section(s)"
+    )
+
+
+if __name__ == "__main__":
+    main()
 PY
-)
 
-if [ -z "$SECTION_DIR" ] || [ ! -d "$SECTION_DIR" ]; then
-  echo "::warning::postprocess-perps-brief: section split failed; falling back to monolithic notify"
-  ./notify --signal "$(cat "$MD_PATH")" || {
-    echo "::warning::postprocess-perps-brief: ./notify exited non-zero — pending-notify will retry"
-  }
-  exit 0
-fi
-
-SECTION_COUNT=$(ls -1 "$SECTION_DIR"/section-*.md 2>/dev/null | wc -l | tr -d ' ')
-echo "postprocess-perps-brief: split into $SECTION_COUNT section(s); sending each wrapped in a code block"
-
-# Send each section as its own Discord message, wrapped in a code block
-# so Discord renders monospace + preserves the dividers + indentation.
-for f in "$SECTION_DIR"/section-*.md; do
-  CONTENT=$(cat "$f")
-  WRAPPED=$(printf '```\n%s\n```' "$CONTENT")
-  echo "postprocess-perps-brief: notify section: $(basename "$f") ($(wc -c < "$f" | tr -d ' ') bytes)"
-  ./notify --signal "$WRAPPED" || {
-    echo "::warning::postprocess-perps-brief: ./notify exited non-zero on $(basename "$f") — pending-notify will retry"
-  }
-done
-
-# Clean up temp dir
-rm -rf "$SECTION_DIR"
+echo "postprocess-perps-brief: done. Section pending files written; post-run notify step will deliver each."
