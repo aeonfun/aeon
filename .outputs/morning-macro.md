@@ -1,31 +1,34 @@
-Market Morning · 21 May · Rotation, AI/DePIN re-firing
+Market Morning · 22 May · alts run on flat majors
 
-BTC holds $77,584, +0.37% 24h. Dominance slips 0.14pp.
-Breadth widened to 14/20 green 24h. F&G 29 Fear, up from 27.
-The bid lives in HYPE and ZEC. Majors held flat through the move.
-AI and DePIN narratives re-fire after NVDA's parabolic demand print last night.
+BTC $77,414, flat 24h, down 3.64% on the week.
+Breadth 12/20 green 24h, collapsed to 3/20 on the 7d.
+F&G 28 Fear, unmoved. Dominance slipping 0.12pp into the alt rotation.
+Stablecoins +$5.7B to $290.3B — dry powder building behind the move.
 
-Stance: selective longs at confirmed quant prints. Fade leverage stacks if smart money trims.
+Alts run ahead — NEAR +29% 24h, GRASS +33% 24h, HYPE +27% 7d.
+AI compute and DePIN both at PEAK, both RIDE with a trail.
+
+Stance: ride the alt continuation with trails tight. Fade the leverage extensions.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Iran deal optimism runs three legs at once.
-Oil sharply lower, dollar rally paused, yields stabilizing.
-One geopolitical thesis driving all three. If the deal reverses, every leg flips together.
+HYPE prints ATH $62 with $16M/day in ETF inflows.
+BTC and ETH ETFs bleed in the same window.
+Capital is reallocating inside the institutional wrapper, not just on CT.
 
-NVDA cleared the regime test overnight. Chip/AI rally extends.
-HYPE flipped SOL in FDV at ~$54B. Grayscale and SpaceX entered as new institutional actors.
-BHYP fee-buyback loop holds — onchain fees route into HYPE bids.
+Iran deal reads two ways in the same 12h window.
+Oil lower on deal progress. Treasury yields up on deal doubt.
+Three markets — equities, crypto, bonds — pricing one event in three directions.
+Watch oil/yield next 24h. Both falling together unwinds the doubt read.
 
 
 ─────────  TODAY  ─────────
 
-Action is in #perps-brief. 2 HIGH CONVICTION setups.
+Action is in #perps-brief. 2 HIGH CONVICTION setups, both long continuation.
+NEAR day 3 long — short squeeze cascading, AI/DePIN double 5/5 RIDE, smart money adding.
+HYPE day 2 long, trail tight. June 6 unlock is the named invalidator, 15 days out.
 
-NEAR day 2 long — ACCUMULATION CONFIRMED, smart money loaded, AI agents and DePIN both RISING 5/5, NVDA tailwind.
-HYPE long, trail tight — PEAK narrative, Grayscale and SpaceX as new actors, June 6 unlock 16 days out.
+AI/DePIN confluence is the headline. Narrative-tracker PEAK, perps long NEAR, GRASS fires in parallel.
 
-Watchlist: ONDO funding hot but smart money out, ZEC pillars collapsing, LIT vol short, BSB retail squeeze.
-
-Take: AI/DePIN is the highest-confluence call today. Trail HYPE tight into the unlock.
+Take: ride alts with trails. Cut HYPE size before June 4.
