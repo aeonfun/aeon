@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-22T13:50:09Z",
+  "last_updated": "2026-05-22T13:53:44Z",
   "open": [
     {
       "id": "NEAR-2026-05-22-001",
@@ -117,7 +117,7 @@
   ],
   "watchlist": [
     {
-      "id": "GRASS-watchlist-2026-05-22-002",
+      "id": "GRASS-watchlist-2026-05-22-001",
       "asset": "GRASS",
       "direction": "LONG",
       "first_seen_date": "2026-05-22",
@@ -138,7 +138,7 @@
       ]
     },
     {
-      "id": "TAO-watchlist-2026-05-22-002",
+      "id": "TAO-watchlist-2026-05-22-001",
       "asset": "TAO",
       "direction": "LONG",
       "first_seen_date": "2026-05-22",
@@ -157,7 +157,7 @@
       ]
     },
     {
-      "id": "EDEN-watchlist-2026-05-22-002",
+      "id": "EDEN-watchlist-2026-05-22-001",
       "asset": "EDEN",
       "direction": "SHORT",
       "first_seen_date": "2026-05-22",
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "id": "ZEC-watchlist-2026-05-22-002",
+      "id": "ZEC-watchlist-2026-05-22-001",
       "asset": "ZEC",
       "direction": "SHORT",
       "first_seen_date": "2026-05-22",
