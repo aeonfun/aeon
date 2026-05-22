@@ -1,25 +1,25 @@
-Yesterday's Runners · 22 May · SPECULATIVE (26 DEEP-LIQ cleared the gate, none scored top 5)
+Yesterday's Runners · 22 May · SPECULATIVE (15 DEEP-LIQ cleared the gate, none scored top 5)
 
 BREAKOUT
-• VIRL (sol) +521% 24h
-  $37m vol, $255k liq, 2h pool, h1 +56%, buys 56%
-  → only top pick whose hourly is still expanding
-
-• GENIUS (bsc) +5787% 24h
-  $51m vol, $130k liq, 5h pool, h1 +24%, buys 58%
-  → 390x vol-to-liq churn, exit before the print rolls
+• GENIUS (bsc) +6064% 24h
+  $51m vol, $135k liq, 6h pool, h1 +11%, h6 +6064%, buys 60%
+  → entire 24h move landed inside the h6 bucket, h1 still bid
 
 • SPCX (sol) +538% 24h
-  $47m vol, $281k liq, 6h pool, h1 0%, buys 54%
-  → fresh peak with flat hourly, distribution opening
+  $48m vol, $279k liq, 7h pool, h1 0%, h6 +74%, buys 54%
+  → peak landed, flat hourly opens distribution
 
-• Bank (sol) +1186% 24h
-  $2.4m vol, $100k liq, 18h pool, h1 +4%, h6 +310%, buys 58%
-  → day-2 push still bid on thin liq, fade if h1 turns
+• Bank (sol) +1120% 24h
+  $2.7m vol, $97k liq, 20h pool, h1 +16%, h6 +377%, buys 58%
+  → day-2 push still bid, fades when h1 prints negative
 
-REVERSAL
-• SUPERGEMMA (base) +770% 24h
-  $5.5m vol, $456k liq, 38d pool, h1 -12%, h6 +8%, buys 39%
-  → same REVERSAL pick as this morning, sell-skew confirms exit liquidity
+• yunc (sol) +725% 24h
+  $1.8m vol, $44k liq, 13h pool, h1 -33%, h6 -62%, buys 58%
+  → already broke, top printed inside the day
 
-vibe: micro-cap casino over a blue-chip floor sitting it out
+CONTINUATION
+• JUDE (eth) +498% 24h
+  $238k vol, $34k liq, 35d pool, h1 +35%, h6 +18%, buys 57%
+  → pool reactivates after 35d quiet, h1 still expanding on micro-cap liq
+
+vibe: micro-cap casino on top, real depth (ZEST, Beat, Surplus, PITCH) stuck at ranks 8-15
