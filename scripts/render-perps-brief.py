@@ -1,57 +1,72 @@
 #!/usr/bin/env python3
-"""Render .outputs/perps-brief.md deterministically from .outputs/perps-brief.data.json.
+"""Render .outputs/perps-brief.md from .outputs/perps-brief.data.json (v4.1).
 
-Same structural pattern as scripts/render-perps-scan.py (ISS-004 fix), applied
-to perps-brief. Claude writes the JSON intermediate; this script produces the
-locked markdown output. No LLM in the render path so the format cannot be
-corrupted by an end-of-task ## Summary blob.
+v4.1 template:
 
-The matching skills/perps-brief/SKILL.md step describes the JSON schema and
-the field-level rules in detail. Summary:
+    Perps Brief · DD MMM
 
-    {
-      "date": "2026-05-19",
-      "qualifier": null | "no high-conviction setups" | "degraded (...)" | "quiet",
-      "market_sentiment": {
-        "paragraphs": [str, ...],          # one or more paragraphs of prose
-        "bias_line": str                    # "Bias · ..." or similar
-      },
-      "high_conviction": [
-        {
-          "ticker": str,
-          "bias_label": str,                # the framing after ASSET ·
-          "repeat_days_suffix": str | null, # " (day N)" if same ticker on prior days
-          "blocks": {
-            "perps":      {"header_suffix": str | null, "lines": [str, ...]},
-            "narrative":  {"header_suffix": str | null, "lines": [str, ...]},
-            "context":    {"header_suffix": str | null, "lines": [str, ...]},
-            "enrichment": {"header_suffix": str | null, "lines": [str, ...]},
-            "thesis":     {"header_suffix": str | null, "lines": [str, ...]}
-          }
-        }
-      ],
-      "overflow": [                          # optional. setups that qualify but didn't
-        ...                                  # make the top-5 cap. Same shape as high_conviction.
-      ],
-      "watchlist": [
-        {
-          "ticker": str,
-          "conflict_label": str,             # the framing after ASSET ·
-          "risk": {"header_suffix": str | null, "lines": [str, ...]}
-        }
-      ],
-      "skip_day_best_near_miss": str | null  # one-sentence near-miss for skip-day variant
-    }
+    ─────────  MARKET SENTIMENT  ─────────
 
-Render emits HTTP 0 on success, 2 on schema violation. On schema violation it
-writes a "skill ran but render failed" placeholder artifact so daily-ops-review
-surfaces the issue.
+      <paragraph>
+
+      Bias · <bias line>
+
+    ─────────  CURRENT POSITIONS (N)  ─────────
+
+      TICKER · DIRECTION · fired DD MMM @ $price · day N/M
+        RIDE | CLOSE — <thesis_note>
+        invalidation: <invalidation>
+        watch: <watch>           (only for RIDE)
+        MAE −X% (day N) · MFE +Y% (day N) · now +Z%   (RIDE)
+        final +X% vs entry · +Y% vs BTC · WIN|LOSS|NEUTRAL|WIN-WITH-SCARE   (CLOSE)
+        MAE −X% · MFE +Y%        (CLOSE)
+
+    ─────────  NEW POSITIONS (N)  ─────────
+
+      TICKER · DIRECTION · horizon · entry: <zone>
+        invalidation: <invalidation>
+        thesis: <thesis>
+        confluence (N): name1, name2, ...
+        risks: <risk1>; <risk2>
+
+    ─────────  WATCHLIST (N)  ─────────
+
+      TICKER · DIRECTION · day N on watchlist · confluence (N)
+        trigger: <trigger>
+        invalidation: <invalidation>
+        thesis: <thesis>
+
+Section markers `─────────  XXX  ─────────` are deterministic — the
+postprocess script reads them to split the brief into per-section Discord
+messages.
+
+Empty sections are omitted entirely. Title + MARKET SENTIMENT are combined
+into the first section (no divider between them).
+
+Exit 0 on success, 2 on schema violation.
 """
+
+from __future__ import annotations
 
 import json
 import sys
+from datetime import date
 from pathlib import Path
 from typing import List, Optional
+
+
+DATA_JSON = Path(".outputs/perps-brief.data.json")
+MD_OUT = Path(".outputs/perps-brief.md")
+
+VALID_DIRECTIONS = {"LONG", "SHORT"}
+VALID_HORIZONS = {"24h", "3d", "7d", "multi-week"}
+VALID_CALLS = {"RIDE", "CLOSE"}
+VALID_OUTCOMES = {"WIN", "LOSS", "SCARE", "NEUTRAL"}
+
+WATCHLIST_CAP = 5
+NEW_POSITIONS_CAP = 5
+
+DIVIDER = "─" * 9
 
 
 def fail(msg: str, code: int = 1) -> None:
@@ -59,146 +74,328 @@ def fail(msg: str, code: int = 1) -> None:
     sys.exit(code)
 
 
-def render_block(label: str, block: Optional[dict]) -> List[str]:
-    """Render a single sub-header block under a setup.
+def write_failure_placeholder(reason: str) -> None:
+    MD_OUT.parent.mkdir(parents=True, exist_ok=True)
+    MD_OUT.write_text(
+        "Perps Brief · unknown date · render failed\n\n"
+        f"{reason}\n"
+        "perps-brief should be re-dispatched.\n"
+    )
 
-    Sub-header is "{label}" or "{label} · {header_suffix}". Each line in the
-    block's lines list is indented four spaces under the header (two for the
-    sub-header, two more for the body).
+
+def fmt_date(iso: str) -> str:
+    """YYYY-MM-DD → "DD MMM"."""
+    try:
+        d = date.fromisoformat(iso)
+        return d.strftime("%-d %b") if hasattr(d, "strftime") else iso
+    except (ValueError, TypeError):
+        return iso
+
+
+def fmt_price(p) -> str:
+    """Format price for display.
+
+    Rules:
+      - >= 100        no decimals, comma-grouped:  95,210
+      - 1 to 100      exactly 2 decimals:          28.40
+      - 0.01 to 1     up to 4 decimals, trimmed:   0.68
+      - < 0.01        up to 6 decimals, trimmed:   0.000034
     """
-    if not block:
-        return []
-    suffix = block.get("header_suffix")
-    header = f"  {label}"
-    if suffix:
-        header = f"  {label} · {suffix}"
-    out = [header]
-    for line in block.get("lines", []):
-        out.append(f"    {line}")
+    if p is None:
+        return "?"
+    try:
+        f = float(p)
+        if f >= 100:
+            return f"{f:,.0f}"
+        if f >= 1:
+            return f"{f:.2f}"
+        if f >= 0.01:
+            return f"{f:.4f}".rstrip("0").rstrip(".")
+        return f"{f:.6f}".rstrip("0").rstrip(".")
+    except (ValueError, TypeError):
+        return str(p)
+
+
+def fmt_pct(p, sign: bool = True) -> str:
+    if p is None:
+        return "?"
+    try:
+        f = float(p)
+        if sign:
+            return f"{f:+.1f}%"
+        return f"{f:.1f}%"
+    except (ValueError, TypeError):
+        return str(p)
+
+
+def section_header(name: str, count: int | None) -> str:
+    if count is None:
+        return f"{DIVIDER}  {name}  {DIVIDER}"
+    return f"{DIVIDER}  {name} ({count})  {DIVIDER}"
+
+
+# ---------------------------------------------------------------------------
+# Section renderers
+
+
+def render_market_sentiment(date_str: str, ms: dict, qualifier: str | None) -> List[str]:
+    out: List[str] = []
+    title = f"Perps Brief · {fmt_date(date_str)}"
+    if qualifier:
+        title += f" · {qualifier}"
+    out.append(title)
+    out.append("")
+    out.append(section_header("MARKET SENTIMENT", None))
+    out.append("")
+    for para in ms.get("paragraphs", []):
+        # indent paragraph body by 2 spaces, soft-wrap respected as-written
+        for line in para.splitlines() or [para]:
+            out.append(f"  {line}")
+        out.append("")
+    out.append(f"  {ms['bias_line']}")
+    out.append("")
     return out
 
 
-def render_high_conviction_setup(setup: dict) -> List[str]:
-    ticker = setup.get("ticker", "?")
-    bias_label = setup.get("bias_label", "")
-    suffix = setup.get("repeat_days_suffix") or ""
-    out = [f"{ticker} · {bias_label}{suffix}", ""]
-    blocks = setup.get("blocks", {})
-    block_order = ["perps", "narrative", "context", "enrichment", "thesis"]
-    for i, key in enumerate(block_order):
-        block = blocks.get(key)
-        if not block:
-            continue
-        label = key.capitalize()
-        rendered = render_block(label, block)
-        out.extend(rendered)
-        # blank line between blocks within a setup
-        if i < len(block_order) - 1:
-            out.append("")
+def render_current_position(p: dict) -> List[str]:
+    ticker = p.get("ticker", "?")
+    direction = p.get("direction", "?")
+    fired_date = fmt_date(p.get("fired_date", ""))
+    fired_price = fmt_price(p.get("fired_price"))
+    day_of = p.get("day_of", "")
+    call = p.get("call", "?")
+    note = p.get("thesis_note", "")
+    invalidation = p.get("invalidation", "")
+    watch = p.get("watch")
+    mae = p.get("mae_pct")
+    mfe = p.get("mfe_pct")
+    mae_day = p.get("mae_day_of")
+    mfe_day = p.get("mfe_day_of")
+
+    day_suffix = f" · day {day_of}" if day_of else ""
+    out = [f"  {ticker} · {direction} · fired {fired_date} @ ${fired_price}{day_suffix}"]
+    # Auto-flip marker on CLOSE — the original position is being closed
+    # because an opposite-direction high-conviction entry fires today.
+    # Same ticker will appear in NEW POSITIONS with the new direction.
+    call_label = call
+    if call == "CLOSE" and p.get("auto_flipped"):
+        call_label = "CLOSE (auto-flip)"
+    out.append(f"    {call_label} — {note}")
+    out.append(f"    invalidation: {invalidation}")
+
+    if call == "RIDE":
+        if watch:
+            out.append(f"    watch: {watch}")
+        now_pct = p.get("now_pct")
+        mae_str = f"MAE {fmt_pct(mae)}" + (f" (day {mae_day})" if mae_day else "") if mae is not None else "MAE —"
+        mfe_str = f"MFE {fmt_pct(mfe)}" + (f" (day {mfe_day})" if mfe_day else "") if mfe is not None else "MFE —"
+        now_str = f"now {fmt_pct(now_pct)}" if now_pct is not None else ""
+        bits = [mae_str, mfe_str]
+        if now_str:
+            bits.append(now_str)
+        out.append(f"    {' · '.join(bits)}")
+    else:  # CLOSE
+        ret = p.get("return_pct")
+        ret_btc = p.get("return_vs_btc_pct")
+        outcome = p.get("outcome", "?")
+        outcome_label = "WIN-WITH-SCARE" if outcome == "SCARE" else outcome
+        final_bits = [f"final {fmt_pct(ret)} vs entry"]
+        if ret_btc is not None:
+            final_bits.append(f"{fmt_pct(ret_btc)} vs BTC")
+        final_bits.append(outcome_label)
+        out.append(f"    {' · '.join(final_bits)}")
+        if mae is not None or mfe is not None:
+            mae_str = f"MAE {fmt_pct(mae)}" if mae is not None else "MAE —"
+            mfe_str = f"MFE {fmt_pct(mfe)}" if mfe is not None else "MFE —"
+            out.append(f"    {mae_str} · {mfe_str}")
+
     return out
 
 
-def render_watchlist_setup(setup: dict) -> List[str]:
-    ticker = setup.get("ticker", "?")
-    conflict = setup.get("conflict_label", "")
-    out = [f"{ticker} · {conflict}", ""]
-    risk = setup.get("risk")
-    if risk:
-        out.extend(render_block("Risk", risk))
+def render_new_position(p: dict) -> List[str]:
+    ticker = p.get("ticker", "?")
+    direction = p.get("direction", "?")
+    horizon = p.get("horizon", "?")
+    entry_zone = p.get("entry_zone") or "market"
+    invalidation = p.get("invalidation", "")
+    thesis = p.get("thesis", "")
+    confluence = p.get("confluence_fired", [])
+    risks = p.get("risks", [])
+
+    out = [f"  {ticker} · {direction} · {horizon} horizon · entry: {entry_zone}"]
+    out.append(f"    invalidation: {invalidation}")
+    out.append(f"    thesis: {thesis}")
+    out.append(f"    confluence ({len(confluence)}): {', '.join(confluence)}")
+    out.append(f"    risks: {'; '.join(risks)}")
     return out
+
+
+def render_watchlist_entry(p: dict) -> List[str]:
+    ticker = p.get("ticker", "?")
+    direction = p.get("direction", "?")
+    day_of = p.get("day_of_watchlist", 1)
+    confluence = p.get("confluence_fired", [])
+    trigger = p.get("trigger", "")
+    invalidation = p.get("invalidation", "")
+    thesis = p.get("thesis", "")
+
+    out = [f"  {ticker} · {direction} · day {day_of} on watchlist · confluence ({len(confluence)})"]
+    out.append(f"    trigger: {trigger}")
+    out.append(f"    invalidation: {invalidation}")
+    out.append(f"    thesis: {thesis}")
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Schema validation
+
+
+def validate_schema(data: dict) -> Optional[str]:
+    if data.get("schema_version") != "v4.1":
+        return f"schema_version must be 'v4.1', got '{data.get('schema_version')}'"
+    for k in ("date", "market_sentiment"):
+        if k not in data:
+            return f"missing required key '{k}'"
+    ms = data["market_sentiment"]
+    if "paragraphs" not in ms or "bias_line" not in ms:
+        return "market_sentiment must contain 'paragraphs' and 'bias_line'"
+
+    current = data.get("current_positions", [])
+    if not isinstance(current, list):
+        return "current_positions must be array"
+    for i, p in enumerate(current):
+        if not isinstance(p, dict):
+            return f"current_positions[{i}] must be object"
+        for k in ("ticker", "direction", "call"):
+            if k not in p:
+                return f"current_positions[{i}] missing '{k}'"
+        if p["direction"] not in VALID_DIRECTIONS:
+            return f"current_positions[{i}].direction invalid"
+        if p["call"] not in VALID_CALLS:
+            return f"current_positions[{i}].call must be one of {sorted(VALID_CALLS)}"
+        if p["call"] == "CLOSE" and p.get("outcome") not in VALID_OUTCOMES:
+            return f"current_positions[{i}] CLOSE missing valid 'outcome'"
+
+    new_positions = data.get("new_positions", [])
+    if not isinstance(new_positions, list):
+        return "new_positions must be array"
+    if len(new_positions) > NEW_POSITIONS_CAP:
+        return f"new_positions capped at {NEW_POSITIONS_CAP}; got {len(new_positions)}"
+    for i, s in enumerate(new_positions):
+        if not isinstance(s, dict):
+            return f"new_positions[{i}] must be object"
+        for k in (
+            "ticker",
+            "direction",
+            "horizon",
+            "entry_zone",
+            "thesis",
+            "invalidation",
+            "confluence_fired",
+            "risks",
+        ):
+            if k not in s:
+                return f"new_positions[{i}] missing '{k}'"
+        if s["direction"] not in VALID_DIRECTIONS:
+            return f"new_positions[{i}].direction invalid"
+        if s["horizon"] not in VALID_HORIZONS:
+            return f"new_positions[{i}].horizon invalid"
+        if not isinstance(s["confluence_fired"], list) or not s["confluence_fired"]:
+            return f"new_positions[{i}].confluence_fired must be non-empty array"
+        if not isinstance(s["risks"], list) or not s["risks"]:
+            return f"new_positions[{i}].risks must be non-empty array"
+
+    watchlist = data.get("watchlist", [])
+    if not isinstance(watchlist, list):
+        return "watchlist must be array"
+    if len(watchlist) > WATCHLIST_CAP:
+        return f"watchlist capped at {WATCHLIST_CAP}; got {len(watchlist)}"
+    for i, w in enumerate(watchlist):
+        if not isinstance(w, dict):
+            return f"watchlist[{i}] must be object"
+        for k in (
+            "ticker",
+            "direction",
+            "trigger",
+            "invalidation",
+            "thesis",
+            "confluence_fired",
+        ):
+            if k not in w:
+                return f"watchlist[{i}] missing '{k}'"
+        if w["direction"] not in VALID_DIRECTIONS:
+            return f"watchlist[{i}].direction invalid"
+
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Main
 
 
 def main() -> int:
-    json_path = Path(".outputs/perps-brief.data.json")
-    md_path = Path(".outputs/perps-brief.md")
-
-    if not json_path.exists():
-        sys.stderr.write(
-            "render-perps-brief: no .outputs/perps-brief.data.json — nothing to render\n"
-        )
+    if not DATA_JSON.exists():
+        sys.stderr.write(f"render-perps-brief: no {DATA_JSON} — nothing to render\n")
         return 0
 
     try:
-        data = json.loads(json_path.read_text())
+        data = json.loads(DATA_JSON.read_text())
     except json.JSONDecodeError as e:
-        md_path.parent.mkdir(parents=True, exist_ok=True)
-        md_path.write_text(
-            f"Perps Brief · unknown date · render failed\n\n"
-            f"perps-brief.data.json was not valid JSON ({e}).\n"
-            "perps-brief should be re-dispatched.\n"
-        )
-        fail(f"perps-brief.data.json is not valid JSON: {e}", code=2)
+        write_failure_placeholder(f"perps-brief.data.json was not valid JSON ({e}).")
+        fail(f"{DATA_JSON} is not valid JSON: {e}", code=2)
 
-    required = ["date", "market_sentiment"]
-    for k in required:
-        if k not in data:
-            fail(f"perps-brief.data.json missing required key '{k}'", code=2)
-
-    ms = data["market_sentiment"]
-    if "paragraphs" not in ms or "bias_line" not in ms:
-        fail("market_sentiment must contain 'paragraphs' and 'bias_line'", code=2)
+    err = validate_schema(data)
+    if err:
+        write_failure_placeholder(f"perps-brief.data.json failed schema validation: {err}")
+        fail(err, code=2)
 
     lines: List[str] = []
 
-    # Title — append qualifier when set
-    title = f"Perps Brief · {data['date']}"
-    if data.get("qualifier"):
-        title += f" · {data['qualifier']}"
-    lines.append(title)
-    lines.append("")
+    # Section 1: Title + MARKET SENTIMENT (combined per operator decision)
+    lines.extend(
+        render_market_sentiment(
+            data["date"], data["market_sentiment"], data.get("qualifier")
+        )
+    )
 
-    # MARKET SENTIMENT
-    lines.append("MARKET SENTIMENT")
-    lines.append("")
-    for para in ms.get("paragraphs", []):
-        lines.append(para)
+    # Section 2: CURRENT POSITIONS — only if non-empty
+    current = data.get("current_positions", [])
+    if current:
+        lines.append(section_header("CURRENT POSITIONS", len(current)))
         lines.append("")
-    lines.append(ms["bias_line"])
-    lines.append("")
-
-    # Skip-day variant — emits a best-near-miss line after the bias
-    if data.get("skip_day_best_near_miss"):
-        lines.append(f"Best near-miss: {data['skip_day_best_near_miss']}")
-        lines.append("")
-
-    # HIGH CONVICTION
-    hc = data.get("high_conviction", [])
-    if hc:
-        lines.append("HIGH CONVICTION")
-        lines.append("")
-        for i, setup in enumerate(hc):
-            lines.extend(render_high_conviction_setup(setup))
-            if i < len(hc) - 1:
+        for i, p in enumerate(current):
+            lines.extend(render_current_position(p))
+            if i < len(current) - 1:
                 lines.append("")
         lines.append("")
 
-    # OVERFLOW — visible in artifact only (post-run trim policy is upstream)
-    overflow = data.get("overflow", [])
-    if overflow:
-        lines.append("OVERFLOW")
+    # Section 3: NEW POSITIONS — only if non-empty
+    new_positions = data.get("new_positions", [])
+    if new_positions:
+        lines.append(section_header("NEW POSITIONS", len(new_positions)))
         lines.append("")
-        for i, setup in enumerate(overflow):
-            lines.extend(render_high_conviction_setup(setup))
-            if i < len(overflow) - 1:
+        for i, p in enumerate(new_positions):
+            lines.extend(render_new_position(p))
+            if i < len(new_positions) - 1:
                 lines.append("")
         lines.append("")
 
-    # WATCHLIST
-    wl = data.get("watchlist", [])
-    if wl:
-        lines.append("WATCHLIST")
+    # Section 4: WATCHLIST — only if non-empty
+    watchlist = data.get("watchlist", [])
+    if watchlist:
+        lines.append(section_header("WATCHLIST", len(watchlist)))
         lines.append("")
-        for i, setup in enumerate(wl):
-            lines.extend(render_watchlist_setup(setup))
-            if i < len(wl) - 1:
+        for i, w in enumerate(watchlist):
+            lines.extend(render_watchlist_entry(w))
+            if i < len(watchlist) - 1:
                 lines.append("")
         lines.append("")
 
-    md_path.parent.mkdir(parents=True, exist_ok=True)
-    md_path.write_text("\n".join(lines).rstrip() + "\n")
+    MD_OUT.parent.mkdir(parents=True, exist_ok=True)
+    MD_OUT.write_text("\n".join(lines).rstrip() + "\n")
     print(
-        f"render-perps-brief: wrote {md_path} ({md_path.stat().st_size} bytes, "
-        f"{len(hc)} high-conviction, {len(overflow)} overflow, {len(wl)} watchlist)"
+        f"render-perps-brief: wrote {MD_OUT} ({MD_OUT.stat().st_size} bytes, "
+        f"{len(current)} current, {len(new_positions)} new, {len(watchlist)} watchlist)"
     )
     return 0
 
