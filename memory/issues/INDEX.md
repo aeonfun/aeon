@@ -5,6 +5,7 @@
 | ID | Title | Severity | Category | Detected | Affected Skills |
 |----|-------|----------|----------|----------|-----------------|
 | ISS-006 | monitor-runners .outputs/ artifact overwritten with stray CLI snippet after skill ran clean | high | output-format | 2026-05-20 | monitor-runners |
+| ISS-007 | GitHub Actions silently throttles fork cron triggers — morning-review skipped daily fires | high | sandbox-limitation | 2026-05-21 | chain-runner, heartbeat, all schedule-triggered |
 
 ## Resolved
 
