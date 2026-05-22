@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-22T08:02:17Z",
+  "last_analyzed": "2026-05-22T13:50:04Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data, actionable setups, and cross-sector synthesis; well-structured and properly integrated, though HYPE/narrative-tracker positioning conflict noted as unresolved.",
+  "assessment": "Substantive, well-structured market brief with specific tail risks, corrected prior errors, and clear actionable positioning—solid execution of daily task.",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.09,
   "history": [
     {
       "date": "2026-05-18",
@@ -40,6 +40,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {
