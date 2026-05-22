@@ -1,10 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-22T14:38:07Z",
+  "last_analyzed": "2026-05-22T15:46:58Z",
   "quality_score": 4,
-  "assessment": "Good — identified recurring in-day artifact leak, verified data integrity, produced correct output with proper formatting, documented findings in memory, and handled sandbox constraints with documented fallbacks.",
+  "assessment": "Substantive analysis with deliberate decision-making; specific recommendations but undermined by workarounds for known issues (ISS-005, ISS-008)",
   "flags": [],
-  "avg_score": 3.92,
+  "avg_score": 3.93,
   "history": [
     {
       "date": "2026-05-18",
@@ -44,6 +44,10 @@
     },
     {
       "date": "2026-05-21",
+      "score": 4
+    },
+    {
+      "date": "2026-05-22",
       "score": 4
     },
     {
