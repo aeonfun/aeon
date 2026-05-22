@@ -2,23 +2,23 @@ Ops Review · 22 May · n/a
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ market-context-refresh · chop (medium), BTC +0.33% 24h, Iran-deal YES 29% (+9.5pp), breadth 13/20 24h on 4/20 7d
-  ✓ aixbt-pulse · 8 NEW items, Warsh bifurcation + Iran regime flip + Polymarket exploit/probe + Pyth outage bridge
-  ✓ narrative-tracker · 6 tracked, 0 NEW (re-run, XAI cache unchanged from morning)
-  ✓ perps-scan · QUIET (1 ACCUM TAO · DIVERGENT, 24 NEUTRAL), CASH-AND-CARRY FIDA, 4 transitions, fresher 13:19Z prefetch
-  ✓ monitor-runners · SPECULATIVE, 26 DEEP-LIQ cleared the gate, none scored top 5, VIRL only top-5 still hourly-bid
-  ✓ token-movers · 77/100 green, BEAT 4x expansion with PUMP-RISK, BSB full CAPITULATION, ONDO joins trending
-  ✓ token-call · GRASS · HIGH 10/10 (re-run after the 12:30 PENGU pick)
+  ✓ market-context-refresh · risk-off (medium), breadth crashed 13/20 → 6/20 intraday on Iran-talks-stalled + Warsh higher-for-longer
+  ✓ aixbt-pulse · 2 sections (13th consecutive day TradFi-folded), Warsh-vanished + Iran 3-frame + ETH-identity-crisis bridge
+  ✓ narrative-tracker · 6 tracked, BTCFi PROMOTED Rising, Hyperliquid FADE day 3, AI×crypto SocialFi DEAD
+  ✓ perps-scan · QUIET, 1 CAPITULATION (PROVE new entrant), 24 NEUTRAL, 4 transitions
+  ✓ monitor-runners · SPECULATIVE, 15 DEEP-LIQ cleared the gate, none scored top 5, STARMAN sole hourly-bid pick
+  ✓ token-movers · 63/100 green, BEAT day-3 +64.8%, BSB full CAPITULATION -46.3%
+  ✓ token-call · ONDO · HIGH 11/10
 
 ─────────  STEP 2 — BRIEFS  ─────────
 
-  ✓ perps-brief · 3 HIGH CONVICTION (NEAR 3d, HYPE multi-week, ONDO 7d), 4 WATCHLIST (GRASS, TAO, EDEN-SHORT, ZEC-SHORT)
+  ✓ perps-brief · 3 open longs (NEAR, HYPE, ONDO all day 1), 4 WATCHLIST (GRASS, TAO, EDEN-SHORT, ZEC-SHORT), no fresh HIGH CONVICTION
 
 ─────────  STEP 3 — MACRO  ─────────
 
-  ✓ morning-macro · published, 1436/1500 chars, AI/DePIN headline
+  ✓ morning-macro · published, risk-off softening tagline, ETH/HYPE 48h-close bridge
 
 
 Chain ran complete. 9 ✓, 0 ⚠, 0 ✗.
 
-All sources ok. No new issues filed. Open count holds at 2 (ISS-006 monitor-runners artifact overwrite, ISS-007 fork cron throttle). narrative-tracker `.notify-sent-hashes` empty on entry — possible `DISCORD_WEBHOOK_MAP[narrative-tracker]` config gap worth investigating with skill-health.
+All sources ok. No new issues filed. Open count holds at 2: ISS-006 (monitor-runners artifact overwrite, day 3), ISS-007 (fork cron throttle, day 2).
