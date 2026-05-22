@@ -1,25 +1,24 @@
-Yesterday's Runners · 22 May · SPECULATIVE (15 DEEP-LIQ cleared the gate, none scored top 5)
+Yesterday's Runners · 22 May · SPECULATIVE (19 DEEP-LIQ cleared the gate, none scored top 5)
 
 BREAKOUT
-• GENIUS (bsc) +6064% 24h
-  $51m vol, $135k liq, 6h pool, h1 +11%, h6 +6064%, buys 60%
-  → entire 24h move landed inside the h6 bucket, h1 still bid
+• RETARDATIDE (sol) +620% 24h
+  $3.4m vol, $45k liq, 9h pool, h1 +41%, h6 +85%, buys 54%
+  → only top-5 pick with h1 still expanding, fresh sub-1d move
+
+• GENIUS (bsc) +5982% 24h
+  $51m vol, $134k liq, 7h pool, h1 -3%, h6 +130%, buys 60%
+  → bulk of the move landed in h6, h1 already stalls
 
 • SPCX (sol) +538% 24h
-  $48m vol, $279k liq, 7h pool, h1 0%, h6 +74%, buys 54%
-  → peak landed, flat hourly opens distribution
+  $48m vol, $279k liq, 8h pool, h1 0%, h6 +3%, buys 54%
+  → vol stacked but price flat hourly, peak printed
 
-• Bank (sol) +1120% 24h
-  $2.7m vol, $97k liq, 20h pool, h1 +16%, h6 +377%, buys 58%
-  → day-2 push still bid, fades when h1 prints negative
+• Bank (sol) +960% 24h
+  $2.8m vol, $90k liq, 21h pool, h1 -16%, h6 +195%, buys 58%
+  → day-2 pool flipped h1 negative, fade window open
 
-• yunc (sol) +725% 24h
-  $1.8m vol, $44k liq, 13h pool, h1 -33%, h6 -62%, buys 58%
-  → already broke, top printed inside the day
+• yunc (sol) +734% 24h
+  $1.9m vol, $45k liq, 14h pool, h1 -10%, h6 -31%, buys 57%
+  → both h1 and h6 negative, top printed and unwinding
 
-CONTINUATION
-• JUDE (eth) +498% 24h
-  $238k vol, $34k liq, 35d pool, h1 +35%, h6 +18%, buys 57%
-  → pool reactivates after 35d quiet, h1 still expanding on micro-cap liq
-
-vibe: micro-cap casino on top, real depth (ZEST, Beat, Surplus, PITCH) stuck at ranks 8-15
+vibe: micro-cap casino on top, 19 real deep-liq pools cleared the gate and none scored top 5
