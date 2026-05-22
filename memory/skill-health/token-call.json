@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-22T14:37:54Z",
+  "last_analyzed": "2026-05-22T15:48:49Z",
   "quality_score": 4,
-  "assessment": "Substantive token pick with multi-signal justification (narrative, trend, institutional flow, vol/mcap); proper system integration (dedup tracking, file outputs, memory logs); clear reasoning for ONDO over GENIUS alternative.",
+  "assessment": "Substantive, well-structured token analysis with clear comparative reasoning, risk disclosure, named catalysts, complete file/memory operations, and adequate sourcing. Solid execution with self-awareness of process cadence.",
   "flags": [],
-  "avg_score": 4.15,
+  "avg_score": 4.14,
   "history": [
     {
       "date": "2026-05-18",
@@ -49,6 +49,10 @@
     {
       "date": "2026-05-22",
       "score": 5
+    },
+    {
+      "date": "2026-05-22",
+      "score": 4
     },
     {
       "date": "2026-05-22",
