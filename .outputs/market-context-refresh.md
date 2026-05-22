@@ -1,34 +1,33 @@
 # Market Context — 2026-05-22
 
-Take: chop — BTC +0.33% 24h, F&G at 28 (Fear) a second straight session. Price didn't follow the Iran deal surge or the 9-day ETF inflow streak. Conviction: medium.
+Take: risk-off — alt breadth crashed from 13/20 to 6/20 green intraday as Iran talks stalled and Warsh signaled higher-for-longer. Conviction: medium.
 
 ## Snapshot
-- BTC $77,417 (+0.33% 24h, -3.96% 7d) · dominance 58.06% (-0.03pp 24h)
-- ETH $2,132 (+0.84% 24h, -5.54% 7d) · ETH/BTC 0.02754
-- SOL $87.64 (+2.09% 24h, -3.99% 7d)
-- Total mcap $2.67T (+0.60% 24h) · DEX vol $6.38B 24h
-- Breadth: 13/20 green 24h · 4/20 green 7d
+- BTC $76,742 (-0.35% 24h, -4.50% 7d) · dominance 58.04% (-0.02pp 24h)
+- ETH $2,116 (-0.18% 24h, -4.41% 7d) · ETH/BTC 0.02758
+- SOL $86.55 (+0.47% 24h, -4.51% 7d)
+- Total mcap $2.65T (-0.76% 24h) · DEX vol $6.39B 24h
+- Breadth: 6/20 green 24h · 5/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 29
-- TVL chains (top 3): Ethereum $43.15B · Solana $5.60B · BSC $5.55B (7d delta n/a)
-- Stablecoins: $288.94B total (-$1.36B vs prior)
+- TVL: top protocols all -3 to -5% 7d (Lido -4.57%, Aave -5.25%)
 
 ## What Changed
-- Iran peace deal YES by May 31 jumped 19.5% → 29% (+9.5pp). Fastest single-session move in that market. Geopolitical suppressor on BTC contracting faster than BTC is moving.
-- HYPE rebounded $57.24 → $61.10 (+6.7%). Momentum returned after yesterday's stall.
-- ZEC -1.9% from $651.85 to $639.69. Second down session from $667.93 May-21 entry. Privacy breaking momentum.
-- ONDO returned to trending rank 6 (+13.17% 24h) after one-day absence. RWA re-entering.
+- Alt breadth collapsed 13/20 → 6/20 green 24h during the session. BTC held $76.7K while alts sold back morning gains.
+- Iran deal by May 31 YES retreated 29% → 25.5% (-3.5pp). Iran talks stalled, oil +2% regime flip.
+- ZEC -4.43% 24h (day-3 from $667.93 peak). Privacy fade confirmed.
+- HYPE -2.56% 24h, back to $60.10. The $57–61 recovery fully reversed.
 
 ## Active Narratives
-- AI / compute infra — phase: rising. Evidence: NEAR +32% 24h (day-4), GRASS +30%, FET +14%, RENDER +10%, VVV +13% — 5 names trending simultaneously. Narrative-tracker flagged peak on velocity; price runs regardless.
-- Perp DEX / Hyperliquid — phase: peak. Evidence: HYPE +5.43% 24h, +33.57% 7d. Narrative-tracker FADE, but perps top L/S +0.19 7d (smart money still adding). June 6 unlock 15 days out.
-- Privacy / ZK — phase: fading. Evidence: ZEC -3.13% 24h, second down session from peak. RAIL absent from trending.
-- RWA / tokenization — phase: emerging. Evidence: ONDO +13.17% 24h back in trending. One-day re-entry, shallow.
-- NFT / collectibles — phase: emerging. Evidence: PENGU +4.54% 24h, fourth trending session. CBOE ETF filing today.
+- AI/compute infra — phase: rising. Evidence: NEAR +30.89% day-5, GRASS +26.61% day-4, GENIUS +41%. Three names leading on a risk-off tape.
+- Perp DEX / Hyperliquid — phase: fading. Evidence: HYPE -2.56%, third down session from $63 zone. June 6 unlock 15 days out.
+- Privacy / ZK — phase: fading. Evidence: ZEC -4.43% (day-3 from peak), $634.
+- RWA / tokenization — phase: emerging. Evidence: ONDO +12.41% second consecutive trending day alongside VIRTUAL +6.91%.
+- NFT / collectibles — phase: emerging. Evidence: PENGU fifth trending session (+1.62%), momentum slowing.
 
 ## Polymarket Highlights (top by 24h vol)
-- US x Iran permanent peace deal by May 31 — YES 29%, vol $3.17M (+9.5pp in 24h)
-- US x Iran permanent peace deal by May 22 — YES 8.35%, vol $2.04M (resolves today, priced NO)
-- Strait of Hormuz traffic normal by end of May — YES 7.85%, vol $2.01M
+- Iran permanent peace deal by May 31 — YES 25.5%, vol $3.19M (retreated from 29%)
+- Strait of Hormuz normal by end of May — YES 4.95%, vol $2.05M
+- Note: Polymarket $700K exploit reported today, congressional probe opened
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok

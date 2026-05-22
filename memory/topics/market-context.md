@@ -1,72 +1,73 @@
 # Market Context (as of 2026-05-22)
 
-> **Take:** chop — BTC +0.33% 24h, F&G at 28 (Fear) for a second straight session. Price didn't follow the Iran deal surge or the 9-day ETF inflow streak. Conviction: medium.
+> **Take:** risk-off — alt breadth crashed from 13/20 to 6/20 green intraday as Iran talks stalled and Warsh signaled higher-for-longer. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $77,417 (+0.33% 24h, -3.96% 7d) · dominance 58.06% (-0.03pp 24h)
-- ETH $2,132 (+0.84% 24h, -5.54% 7d) · ETH/BTC 0.02754
-- SOL $87.64 (+2.09% 24h, -3.99% 7d)
-- Total mcap $2.67T (+0.60% 24h) · DEX vol $6.38B 24h
-- Breadth: 13/20 green 24h · 4/20 green 7d
+- BTC $76,742 (-0.35% 24h, -4.50% 7d) · dominance 58.04% (-0.02pp 24h)
+- ETH $2,116 (-0.18% 24h, -4.41% 7d) · ETH/BTC 0.02758
+- SOL $86.55 (+0.47% 24h, -4.51% 7d)
+- Total mcap $2.65T (-0.76% 24h) · DEX vol $6.39B 24h
+- Breadth: 6/20 green 24h · 5/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 29
 
 ## What Changed Since Last Refresh
-- Iran peace deal YES by May 31 jumped 19.5% → 29% (+9.5pp). Fastest single-session move in that market. The geopolitical suppressor on BTC is contracting faster than BTC is moving.
-- HYPE rebounded from $57.24 to $61.10 (+6.7%). Momentum returned after yesterday's stall.
-- ZEC -1.9% from $651.85 to $639.69. Second down session from the $667.93 May-21 entry. Privacy is breaking momentum.
-- ONDO returned to trending at rank 6 (+13.17% 24h) after one-day absence. RWA re-entering attention after yesterday's fading signal.
+- Alt breadth collapsed from 13/20 to 6/20 green 24h during the session. BTC held $76.7K while alts sold back their morning gains.
+- Iran deal by May 31 YES retreated from 29% to 25.5% (-3.5pp). Iran talks stalled per AIXBT — oil +2% regime flip, geopolitical repricing reversed.
+- ZEC -4.43% 24h (third consecutive down session from $667.93 May-21 peak). Now $634. Privacy narrative fully faded.
+- HYPE -2.56% 24h, back to $60.10. The $57.24 → $61.10 recovery fully reversed.
 
 ## Active Narratives
-- **AI / compute infra** — phase: rising. Evidence: NEAR +32% 24h (day-4 run), GRASS +30%, FET +14%, RENDER +10%, VVV +13% — 5 AI/data names in trending simultaneously, widest sector breadth this cycle. Narrative-tracker flagged peak today; price is running regardless.
-- **Perp DEX / Hyperliquid** — phase: peak. Evidence: HYPE +5.43% 24h, +33.57% 7d at $61.10; narrative-tracker downgraded to Fading (second day without fresh XAI signal), but perps positioning (top L/S +0.19 7d) still confirms smart money adding. June 6 Core Contributor unlock (~10M HYPE, ~$610M at spot) 15 days out.
-- **Privacy / ZK** — phase: fading. Evidence: ZEC -3.13% 24h (second down session from $667.93 May-21 peak). RAIL absent from trending. 7d still +20.37% but 24h momentum broke and sector breadth is gone.
-- **RWA / tokenization** — phase: emerging. Evidence: ONDO +13.17% 24h, back in trending at rank 6 after one-day absence; VIRTUAL +12.17% also trending. One-day re-entry without a fresh on-chain catalyst. Narrative-tracker rates RWA Peak RIDE-with-trail on social signal; price confirms re-entry but the one-day read is shallow.
-- **NFT / collectibles** — phase: emerging. Evidence: PENGU +4.54% 24h, fourth consecutive trending session; CBOE ETF filing (first memecoin to reach the ETF pipeline) confirmed today as token-call catalyst — institutional access vector deepens the buyer base.
+- **AI/compute infra** — phase: rising. Evidence: NEAR +30.89% 24h day-5 continuation, GRASS +26.61% day-4, GENIUS +41% in trending. Three AI/data names in the top 5 trending as the rest of the market sells off.
+- **Perp DEX / Hyperliquid** — phase: fading. Evidence: HYPE -2.56% 24h ($60.10), reversing the $57.24 → $61.10 recovery. Third consecutive down session from the $63 zone. June 6 Core Contributor unlock 15 days out (~10M HYPE).
+- **Privacy / ZK** — phase: fading. Evidence: ZEC -4.43% 24h (day-3 from $667.93 peak), now $634. Three down sessions with no floor print.
+- **RWA / tokenization** — phase: emerging. Evidence: ONDO +12.41% 24h, second consecutive trending day alongside VIRTUAL +6.91%. Two-day read strengthening, no on-chain catalyst confirmed.
+- **NFT / collectibles** — phase: emerging. Evidence: PENGU fifth consecutive trending session (+1.62% 24h vs +4.54% yesterday). CBOE ETF pipeline active, momentum slowing.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Binance CEX: $154.73B (-2.99%)
-- OKX: $24.87B (-2.13%)
-- Lido: $18.86B (-4.82%)
-- Bitfinex: $18.69B (-4.00%)
-- Bybit: $15.82B (-0.32%)
+- Binance CEX: $154.8B (-2.67%)
+- OKX: $24.8B (-2.02%)
+- Lido: $18.8B (-4.57%)
+- Bitfinex: $18.7B (-4.01%)
+- Bybit: $15.7B (-0.72%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $43.15B (7d change: n/a — chains endpoint does not return 7d delta)
-- Solana: $5.60B (7d change: n/a)
-- BSC: $5.55B (7d change: n/a)
+- Ethereum: $43.14B (7d change: n/a — chains endpoint does not return 7d delta)
+- Solana: $5.61B (7d change: n/a)
+- BSC: $5.57B (7d change: n/a)
 
 ## Stablecoins
-Total: $288.94B (-$1.36B vs prior). USDT $189.48B · USDC $76.94B · USDS $8.74B · USD1 $4.78B · DAI $4.56B · USDe $4.44B · combined share of mcap ~10.8%.
+Total: ~$289B (flat vs prior). USDT $189.49B · USDC $76.92B · USDS $8.73B · USD1 $4.78B · DAI $4.57B · USDe $4.44B · combined share of mcap ~10.9%.
 
 ## Trending (CoinGecko)
-- HYPE — Hyperliquid, $60.92, +5.43% 24h; #1 trending. Perp-DEX leader, rebounding after yesterday's stall.
-- VVV — Venice Token, $19.53, +12.86% 24h; #2 trending. AI agents sub-theme, day-2 trending continuation.
-- NEAR — NEAR Protocol, $2.31, +32.07% 24h; #3 trending. Day-4 continuation of post-quantum Chain Signatures + ETF filing catalyst.
-- PENGU — Pudgy Penguins, $0.0097, +4.54% 24h; #4 trending. NFT/collectibles, fourth consecutive session; CBOE ETF filing today.
-- GENIUS — Genius, $0.57, +31.42% 24h; #5 trending. Fresh AI/DeFi entrant, rank 195 — thin float.
-- ONDO — Ondo Finance, $0.46, +13.17% 24h; #6 trending. RWA leader returning after one-day absence.
-- TAO — Bittensor, $289.28, +3.62% 24h; #7 trending. AI/compute sub-theme, steady.
-- GRASS — Grass, $0.45, +29.68% 24h; #9 trending. DePIN data network, day-3 run.
-- ZEC — Zcash, $639.69, -3.13% 24h; #11 trending. Privacy narrative fading; two down sessions from peak.
-- FET — Artificial Superintelligence Alliance, $0.22, +13.90% 24h; #12 trending. AI/compute sector breadth.
-- RENDER — Render, $2.09, +9.84% 24h; #15 trending. AI compute, GPU rendering sub-theme.
+- NEAR — NEAR Protocol, $2.27, +30.89% 24h; #1 trending. AI/compute day-5 run, leading the tape.
+- HYPE — Hyperliquid, $60.12, -2.56% 24h; #2 trending. Perp-DEX leader reversing the bounce.
+- ONDO — Ondo Finance, $0.45, +12.41% 24h; #3 trending. RWA leader, second consecutive day.
+- VVV — Venice Token, $18.62, +7.43% 24h; #4 trending. AI agents sub-theme, day-3 continuation.
+- BTC — Bitcoin, $76,739, -0.35% 24h; #5 trending. Macro anchor holding while alts sell.
+- PENGU — Pudgy Penguins, $0.009, +1.62% 24h; #6 trending. Fifth consecutive session, momentum slowing.
+- GRASS — Grass, $0.45, +26.61% 24h; #7 trending. DePIN data, day-4 run.
+- ZEC — Zcash, $633, -4.43% 24h; #8 trending. Privacy fade deepening.
+- VIRTUAL — Virtuals Protocol, $0.77, +6.91% 24h; #9 trending. RWA/agent sub-theme.
+- GENIUS — Genius, $0.61, +41.01% 24h; #10 trending. AI/DeFi entrant, day-2. Thin float.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 31 | 29% | $3.17M | $348K |
-| US x Iran permanent peace deal by May 22 | 8.35% | $2.04M | $90K |
-| Strait of Hormuz traffic returns to normal by end of May | 7.85% | $2.01M | $165K |
+| US x Iran permanent peace deal by May 31 | 25.5% | $3.19M | $0.25M |
+| Strait of Hormuz traffic normal by end of May | 4.95% | $2.05M | $0.22M |
+| Reza Pahlavi leads Iran in 2026 | 4.7% | $5.10M | $0.13M |
 
-*Iran deal by May 31 surged 19.5% → 29% YES (+9.5pp). The May 22 deadline market at 8.35% resolves today — effectively a NO. The May 31 market is the live geopolitical variable: each point higher strips a slice of the risk premium capping BTC below $78K.*
+*Iran deal by May 31 retreated from 29% to 25.5% YES (-3.5pp). Iran talks stalled — oil regime flipped +2% today. The Strait of Hormuz market at 4.95% confirms the market prices no near-term normalization. Note: Polymarket suffered a $700K exploit today with congressional probe opened — data integrity may be degraded.*
 
 ## Macro Catalysts (next 48h)
-- **Iran deal by May 31 at 29% YES:** Jumped +9.5pp in 24h, the fastest single-session move in that market. Continued acceleration toward 40% YES would begin to force BTC repricing; a reversal back below 20% extends the risk-off cap.
-- **BTC ETF 9-day inflow streak:** ~$2.7B cumulative (BlackRock IBIT + Fidelity FBTC leading). Day 10 data lands within 24h and tests whether institutional demand holds at ~$77K or fades alongside stalled price action.
+- **Kevin Warsh sworn in as Fed Chair:** Bifurcated read. Pro-BTC 3-year structural tailwind (regulatory legitimacy, Bitcoin Clarity Act pathway) vs near-term higher-for-longer/stronger dollar headwind. Near-term weight is bearish for risk assets; 3-year is constructive for BTC.
+- **Iran talks stalled — oil +2%:** The geopolitical repricing that temporarily drove Iran deal YES to 29% reversed. Each oil spike extends the inflation/yield headwind capping BTC below $78K.
+- **BTC ETF Day 10 data:** The 9-day inflow streak totaled ~$2.7B cumulative. Day 10 flow data lands within 24h. A broken streak at $76.7K would remove the last institutional demand argument underpinning the current level.
+- **Senate crypto market structure markup:** Senate Banking committed to run the markup this week. A passed bill creates a direct regulatory legitimacy catalyst for exchange tokens and the RWA sector.
 
 ## Implications for Downstream Skills
-- **token-call:** NEAR at $2.31 is +40% from the May-19 entry ($1.65) — extension risk high, no new entry. Privacy (ZEC -1.9%, second down session) breaking momentum; avoid adds. ONDO re-entry signal: if it holds trending one more day, the emerging phase confirms and RWA becomes actionable. GENIUS ($0.57, rank 195) is the new AI entrant — thin float, speculative.
-- **narrative-tracker:** AI/compute infra phase ambiguous: price breadth (5 names trending, NEAR day-4) points to rising; narrative-tracker flagged peak (velocity flattening). Tomorrow's social signal resolves the conflict. HYPE: perps (top L/S +0.19 7d, smart money still adding) vs narrative FADE (two days without fresh signal). Monitor the June 6 unlock as the hard invalidator.
+- **token-call:** AI/compute infra is the only sector with 24h breadth on a risk-off tape (NEAR, GRASS, GENIUS all running). ZEC confirmed fade. Avoid. HYPE: June 6 unlock 15 days out, 24h reversal confirmed. Sizing risk increases. Watch ONDO for a third consecutive trending day as the emerging→rising trigger.
+- **narrative-tracker:** AI/compute infra diverged from market breadth collapse. This is the key regime signal. Privacy/ZK fully faded (three down sessions from peak). Perp DEX transitioning to full fade with HYPE reversing. RWA emerging phase strengthening on two-day read.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
