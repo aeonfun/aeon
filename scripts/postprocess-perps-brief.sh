@@ -22,6 +22,21 @@
 
 set -euo pipefail
 
+# Skill-name guard. The workflow's "Run post-process scripts" step loops
+# through ALL scripts/postprocess-*.sh files for every skill's workflow,
+# not just perps-brief's. Without this guard, every step-1 skill workflow
+# (narrative-tracker, token-call, monitor-runners, etc.) would re-process
+# the perps-brief.data.json that's on main from the previous chain run,
+# write new pending files, and the host workflow's Send pending
+# notifications step would deliver them to THAT skill's Discord channel
+# via DISCORD_WEBHOOK_MAP[$SKILL_NAME] — broadcasting the perps-brief
+# content across the whole chain's channel set. Bail early when this
+# script is executing inside a non-perps-brief workflow.
+if [ "${SKILL_NAME:-}" != "perps-brief" ]; then
+  echo "postprocess-perps-brief: skipping (SKILL_NAME='${SKILL_NAME:-}', not perps-brief)"
+  exit 0
+fi
+
 JSON_PATH=".outputs/perps-brief.data.json"
 MD_PATH=".outputs/perps-brief.md"
 LEDGER_PATH="memory/topics/state/active-setups.json"
