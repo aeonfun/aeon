@@ -1,28 +1,8 @@
-Narratives · 22 May · 6 tracked
+## Summary
 
-↑ RISING
-• BTCFi / Bitcoin-native yield [BABY, STX, CORE] · 4/5 · WATCH
-  Two driver threads today versus one yesterday. @squirrel_wallet, @Saint_Blac, @kalxZM all name BTCFi a top-tier cycle narrative. Babylon still the only named project. Needs a token catalyst before WATCH flips to RIDE.
-
-→ PEAK
-• AI agents / agentic finance [TAO, FET, VIRTUAL] · 5/5 · RIDE
-  Velocity flattening after the NVDA confirmation cycle. a16z leads Exa $250M for search-for-agents (infra extension). @balajis contrarian on the principal-agent gap. Story broadens into infrastructure.
-
-• Decentralized compute / DePIN / AI infra [TAO, RNDR, AKT, FIL] · 5/5 · RIDE
-  @ByblosRadar tracks 600+ VC newsletters converging on physical, defense, and orbital AI infra. Venice uncensored-AI adds a privacy-compute sub-thread. NVDA regime test holds.
-
-• RWA / stablecoins / tokenization [ONDO, PLUME, LINK] · 5/5 · RIDE w/ trail
-  Yield-bearing stablecoin thesis continues across @kalxZM and @Saint_Blac. @TuongvyLe12 frames programmable capital as the institutional-deployment angle. Japan stablecoin recognition June 1 is the live near-term catalyst.
-  reflexivity: regulation legitimizes RWA, growth lobbies for regulation. Japan adds a second jurisdiction to the loop.
-
-↓ FADING
-• Hyperliquid / perp DEX [HYPE, dYdX] · 3/5 (was 4) · FADE
-  Second straight day with zero fresh threads in today's signals. BHYP ETF and SpaceX perps catalyst stack now fully priced. Top traders continue cutting long exposure.
-
-• Privacy / ZK [ZEC, ZANO] · 2/5 · FADE
-  Faint reaffirmation from @kalxZM top-7 list and Venice uncensored-AI thread. No project-side catalyst, no fresh ZEC bid. Narrative saturated after the four-day solo run.
-
-Changes since yesterday:
-- AI × crypto on X / SocialFi (DEAD: yesterday's fresh cluster absent today)
-
-Stance: rotate into BTCFi rising. Trail AI agents and compute tight at peak. Fade the perp DEX bid.
+- Read `skills/narrative-tracker/SKILL.md` and confirmed the scheduled 13:30 UTC run for 2026-05-22 already completed earlier in the chain — `.outputs/narrative-tracker.md` holds the v2-locked 6-tracked map (BTCFi rising; AI agents / Decentralized compute / RWA at peak; Hyperliquid + Privacy/ZK fading), and the full structured log entry is in `memory/logs/2026-05-22.md`.
+- Verified the XAI cache (`.xai-cache/narratives.json`, 15 Grok threads, window 05-19→05-22) is unchanged since the morning run, and the 05-19/05-20/05-21 baselines hold — a fresh run would produce an identical map.
+- `.pending-notify/` was empty but `.notify-sent-hashes` is 0 bytes, so no successful Discord delivery was recorded for today's signal. Re-queued the artifact content to `.pending-notify/narrative-tracker-20260522-rerun.signal.md` for the post-run delivery step. Inline `./notify --signal "$(cat ...)"` blocked by sandbox shell-substitution as documented across the prior four days.
+- Appended a `### narrative-tracker (re-run)` block to today's log noting the manual re-execution, the unchanged inputs, and the re-queued notification.
+- Files touched: `memory/logs/2026-05-22.md` (appended re-run entry), `.pending-notify/narrative-tracker-20260522-rerun.signal.md` (new). No changes to `.outputs/narrative-tracker.md`.
+- Follow-up: workflow post-run notify step picks up the new pending file. If `.notify-sent-hashes` still ends empty after the next post-run cycle, that points at a Discord webhook / `DISCORD_WEBHOOK_MAP[narrative-tracker]` configuration gap, not a content problem — worth raising with skill-health on tomorrow's daily-ops-review.
