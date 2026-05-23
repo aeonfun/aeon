@@ -125,9 +125,9 @@
   },
   "perps-brief": {
     "last_status": "success",
-    "last_success": "2026-05-22T16:04:33Z",
-    "total_runs": 15,
-    "total_successes": 15,
+    "last_success": "2026-05-23T06:49:50Z",
+    "total_runs": 16,
+    "total_successes": 16,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
