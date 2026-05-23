@@ -1,12 +1,9 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-23T07:37:02Z",
+  "last_analyzed": "2026-05-23T10:31:47Z",
   "quality_score": 4,
-  "assessment": "Substantive ops review with clear findings, systematic issue tracking, and actionable follow-ups; one upstream data staleness issue (AIXBT) prevents higher score.",
-  "flags": [
-    "stale_data",
-    "partial_source_data"
-  ],
+  "assessment": "Substantive, well-structured report with specific metrics (7✓/1⚠/1✗), clear issue tracking, and actionable follow-ups; one documented render failure on perps-brief schema validation prevents a higher score.",
+  "flags": [],
   "avg_score": 4,
   "history": [
     {
@@ -63,6 +60,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {
