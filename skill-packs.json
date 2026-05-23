@@ -79,6 +79,22 @@
       "category": "dev",
       "trust_level": "community",
       "skills": ["bounty-hunter"]
+    },
+    {
+      "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
+      "name": "LiquidPad",
+      "description": "Track LiquidPad on Base — $LPAD burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee-accrual tracking on every launched token.",
+      "author": "liquidpadbot",
+      "license": "MIT",
+      "homepage": "https://www.liquidpad.site",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "liquidpad-burn-monitor",
+        "liquidpad-stats-digest",
+        "liquidpad-token-alert",
+        "liquidpad-fee-tracker"
+      ]
     }
   ]
 }
