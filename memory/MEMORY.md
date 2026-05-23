@@ -31,7 +31,9 @@
 - `on-chain-monitor` — needs `memory/on-chain-watches.yml` populated first
 
 ## Active topics
-- **GDOR name-farm (sol)** — distinct contracts under the same `GDOR` ticker topped `monitor-runners` for 4 straight days (2026-05-18, 05-19, 05-20 morning, 05-21), each on a fresh address. **2026-05-22 broke the streak** — no GDOR-named contract scored into today's top 5. The cluster mechanism (same name, fresh contracts daily) is still worth a deeper look; flagged for re-attention if GDOR reappears in tomorrow's data. Original flag 2026-05-21; streak-break noted 2026-05-22.
+- **GDOR name-farm (sol)** — distinct contracts under the same `GDOR` ticker topped `monitor-runners` for 4 straight days (2026-05-18, 05-19, 05-20 morning, 05-21), each on a fresh address. **2026-05-22 broke the streak** — no GDOR-named contract scored into today's top 5. **2026-05-23 confirms streak-broken** — a fresh GDOR contract still surfaces in the survivor set (rank 11, +363% on $41m vol/$273k liq) but again outside top 5. Original flag 2026-05-21; streak-break noted 2026-05-22; soft-fade confirmed 2026-05-23.
+- **SPCX name-farm (sol)** — emerging cluster. 2026-05-22 had SPCX at rank 3 (same pool); 2026-05-23 has at least 4 distinct SPCX-named sol contracts on the survivor set (two in top 15 — rank 2 and rank 10, one rugged at >1.2m% gate, one lower-score survivor). Same pattern as GDOR (recycling the ticker onto fresh base_token ids). SpaceX narrative anchor (Hypercore pre-IPO perps, 05-18 BHYP context). Day 2. If a third distinct fresh-contract day lands tomorrow this hits the 3-day flag rule and warrants its own topic file.
+- **GENIUS name-farm (bsc)** — emerging cluster. 2026-05-22 multiple log entries had GENIUS-named bsc pools printing $51m vol on 5-7h pools; 2026-05-23 has a fresh GENIUS pool (different base_token id, 58m old) at rank 1 with $44m vol. Same name-recycling pattern as SPCX/GDOR but on bsc. Day 2.
 
 ## Pointers
 - `topics/setup-checklist.md` — fork + secrets + push walkthrough
