@@ -447,6 +447,8 @@ Third-party skill collections that live in their own repos. Aeon doesn't ship th
 
 The script reads a `skills-pack.json` manifest from the pack root (or falls back to scanning `skills/`), runs the security scanner on each declared `SKILL.md`, and copies approved skills into `skills/` with rows added to `skills.json`, entries in `aeon.yml` (disabled), and provenance in `skills.lock`. Full schema and trust model in [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
+To browse known packs without installing, run `./install-skill-pack --list` — it reads the machine-readable registry in [`skill-packs.json`](skill-packs.json) (mirror of the table below).
+
 | Pack | Skills | Description |
 |------|--------|-------------|
 | [aeon-skill-pack-vvvkernel](https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel) | 9 | Venice AI inference via VVVKernel — onchain, audit, growth, narrative, image gen, monitoring |
@@ -458,6 +460,7 @@ The script reads a `skills-pack.json` manifest from the pack root (or falls back
 - Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog — no monkey-patching of Aeon internals, no skill that depends on private endpoints.
 - Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](docs/community-skill-packs.md) for the schema).
 - The README row should link to the repo, name the skill count, and one-line what the pack is for.
+- In the same PR, add a matching entry to [`skill-packs.json`](skill-packs.json) at this repo's root — the machine-readable mirror of the table that `./install-skill-pack --list` reads (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
 
 This is the lightweight surface: it gives community packs visibility without coupling them to the core catalog's release cadence.
 
