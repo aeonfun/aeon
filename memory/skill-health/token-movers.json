@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-23T10:00:54Z",
+  "last_analyzed": "2026-05-23T10:47:31Z",
   "quality_score": 4,
-  "assessment": "Substantive crypto market analysis with specific data, well-structured output, proper artifact/memory management, and thoughtful follow-up tracking.",
+  "assessment": "Substantive market analysis with specific numerical data, methodical deduplication strategy, and actionable trading signals across 201 analyzed tokens.",
   "flags": [],
-  "avg_score": 4.13,
+  "avg_score": 4.12,
   "history": [
     {
       "date": "2026-05-18",
@@ -56,6 +56,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {
