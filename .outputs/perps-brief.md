@@ -1,18 +1,18 @@
+Brief composed and written. Per SKILL.md instructions, only `.outputs/perps-brief.data.json` is written by Claude — the postprocess script renders markdown, applies ledger ops, and section-splits to Discord.
+
 ## Summary
 
-Ran perps-brief chain Step 2 (position-aware v4.1) for 2026-05-22 against the 15:45Z refresh.
+**Current positions (3) — 2 RIDE, 1 CLOSE:**
+- NEAR LONG · RIDE day 2/3 · -11.10%, invalidation $2.05 sits 0.83% below close. AI/DePIN promoted Peak→Rising re-firms the bull case.
+- HYPE LONG · RIDE day 2/multi-week · -9.38%, invalidation $56 BREACHED at $55.19. Same session narrative-tracker promoted Hyperliquid Fading→Peak, AIXBT names HYPE #1 with $1.8M daily buybacks + Grayscale 3rd ETF filing, smart money L/S +0.15 over 7d. Thesis strengthened as the line broke; `invalidation_breached_today: true` recorded, invalidation revised to $54.
+- ONDO LONG · CLOSE LOSS · -17.21% (-14.57pp vs BTC, -13.83pp vs ETH). RWA carrier rotated to tokenized stocks/ETFs.
 
-**Current positions (3, all RIDE):**
-- NEAR · LONG · -5.21% from fire, invalidation $2.05 sits 7% below, top L/S slipped to -0.02 7d but not breaking
-- HYPE · LONG · -4.64% from fire, invalidation $56 sits 3.58% below, funding flipped negative between prefetches but OI deflating (not aggressive shorts)
-- ONDO · LONG · -4.25% from fire, invalidation $0.41 sits 7.5% below, range broke past accumulation gate
+**New positions (1):** ZEC SHORT promoted from watchlist — close $594 below $620 trigger, top L/S 0.76, TRENDING+DOWN MAJOR. 4-criterion confluence.
 
-**New positions:** 0 — skip-day. Three open longs already booked this morning; F&G 28 Fear day 2; AIXBT names BTC $73K flush target.
-
-**Watchlist (5):** GRASS/TAO/EDEN/ZEC carried day 2 (no triggers fired). Added WLD LONG on token-call HIGH 9/10 (Eightco 8.39% supply + Altman verdict) with CATALYST-BREAKOUT trigger — smart-money trimming -0.22 7d disqualifies a NEW POSITION call.
+**Watchlist (4):** TAO LONG carried, BSB/BEAT/GENIUS SHORT added. GRASS + EDEN dropped.
 
 **Files:**
-- `.outputs/perps-brief.data.json` (v4.1, validated, 5kb)
-- `memory/logs/2026-05-22.md` (Perps Brief re-run entry appended)
+- `.outputs/perps-brief.data.json` — v4.1, validates clean
+- `memory/logs/2026-05-23.md` — Perps Brief entry appended
 
-**Follow-up:** Postprocess will render the markdown, snapshot the ledger, apply ops, section-split notify to #perps. ZEC trigger at $620 close is one session away — tomorrow's chain decides promotion.
+**Follow-up:** postprocess renders markdown, snapshots ledger, applies ops, section-splits to #perps.

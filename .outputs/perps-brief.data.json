@@ -1,15 +1,15 @@
 {
   "schema_version": "v4.1",
-  "date": "2026-05-22",
+  "date": "2026-05-23",
   "qualifier": null,
 
   "market_sentiment": {
     "paragraphs": [
-      "Perps tape 25/25 NEUTRAL across the assessed universe. PROVE funding repaired from -0.037% to +0.0002% between prefetches, pulling the asset out of CAPITULATION even as price held -11.52%. NEAR's morning rip booked at the gate, the +151% 7d OI stack now +37% 24h adds on top. Funding muted universe-wide on a tape still rotating.",
-      "AI agents plus Decentralized compute plus RWA all 5/5 PEAK · RIDE. Hyperliquid and Privacy/ZK both FADING. F&G 28 Fear day 2, breadth 7/20 24h on a 5/20 7d frame. AIXBT names BTC's $73K flush target with $2B coordinated selling and ETF outflows as the mechanism.",
-      "Alt rotation real but selective. NEAR holds the +14% 24h while HYPE rolls -0.9% on funding flipping negative. BSB capitulated -42.5% on the unwind yesterday's watchlist named. Smart money trimming across the AI/DePIN front."
+      "BTC drilled to $75,374, -2.54% on the day, -4.52% on the week. Breadth collapsed to 1/20 green, F&G held 28 Fear day two, $50B mcap shed. The leverage tail that decompressed yesterday inverted in spots today.",
+      "Perps tape QUIET. 100% NEUTRAL across 25 assets. The seven-asset WATCH bucket carries the action: BSB clears the funding gate on a +27% rip, EDEN broke -13.76% with funding -0.363%/8h, BEAT cascade started behind a long-trap shape. Narrative map promoted three RIDEs today. AI agents and DePIN flipped Peak to Rising, Hyperliquid pulled out of FADE and re-anchored on the Okada 53%-of-revenue thread.",
+      "AIXBT pulse calls Hormuz toll-push the structural mechanism. Iran's toll on the strait institutionalizes energy inflation, rate cuts price out, BTC at fear-28 is the regime read. ZEC tripled but XMR dropped from the lead. ZEC-specific catalyst, not a sector rotation. RWA hits ATH on tokenized stocks $1.2B and ETFs $425M while crypto bleeds. The rails expand structurally."
     ],
-    "bias_line": "Bias · ride the three open longs into PEAK trail. Fade short setups patiently — EDEN parabolic continues, ZEC trigger at $620 close approaches."
+    "bias_line": "Bias · risk-off into Fear day two. Narrative carriers AI/DePIN/Hyperliquid hold the RIDE side. ZEC SHORT promoted on the privacy fade, ONDO closed on invalidation."
   },
 
   "current_positions": [
@@ -20,16 +20,16 @@
       "fired_date": "2026-05-22",
       "fired_price": 2.325,
       "horizon": "3d",
-      "day_of": "1/3",
+      "day_of": "2/3",
       "call": "RIDE",
-      "thesis_note": "AI agents plus DePIN both 5/5 PEAK · RIDE, top L/S slipping to -0.02 over 7d but not breaking, invalidation $2.05 sits 7% below current",
+      "thesis_note": "AI agents and DePIN both PROMOTED Peak to Rising today — narrative re-firmed in the same session the price unwound. Invalidation $2.05 sits 0.83% below the close.",
       "invalidation": "close below $2.05",
-      "watch": "BTC flushes below $76K, OR NEAR breaks $2.10 entry zone on volume past 1.5x 24h avg",
-      "mae_pct": -5.21,
-      "mae_day_of": "1",
+      "watch": "$2.05 close is the line. Top L/S 1.78 holding inside the 7d band, OI -2.81% means late longs unwound without panic. Below $2.05 closes the position.",
+      "mae_pct": -11.10,
+      "mae_day_of": "2",
       "mfe_pct": 3.23,
       "mfe_day_of": "1",
-      "now_pct": -5.21
+      "now_pct": -11.10
     },
     {
       "id": "HYPE-2026-05-22-001",
@@ -38,16 +38,16 @@
       "fired_date": "2026-05-22",
       "fired_price": 60.906,
       "horizon": "multi-week",
-      "day_of": "1/21",
+      "day_of": "2/21",
       "call": "RIDE",
-      "thesis_note": "Narrative FADE day 4, funding flipped to -0.008% from positive between prefetches, top L/S still +0.13 over 7d, ETF inflow $30M first-week intact",
-      "invalidation": "close below $56, OR clean break below the post-June-6-unlock settlement low",
-      "watch": "second funding tick negative with top L/S delta turning down, OR close below $58 entry zone",
-      "mae_pct": -4.64,
-      "mae_day_of": "1",
+      "thesis_note": "Invalidation $56 breached at close $55.19. Same session: narrative promoted Fading to Peak, AIXBT names HYPE as #1 lead with $1.8M daily buybacks + Grayscale 3rd ETF filing, smart money L/S +0.15 over 7d. Thesis strengthens as the mechanical line breaks.",
+      "invalidation": "close below $54 (revised — original $56 breached but narrative validated in same session)",
+      "watch": "Top traders re-building (L/S 1.36, +0.15 7d) is the structural confirmation. Below $54 closes — that level holds the buyback-anchored support. A second close below $56 with smart-money L/S flipping back negative invalidates the revision.",
+      "mae_pct": -10.52,
+      "mae_day_of": "2",
       "mfe_pct": 0.98,
       "mfe_day_of": "1",
-      "now_pct": -4.64
+      "now_pct": -9.38
     },
     {
       "id": "ONDO-2026-05-22-001",
@@ -56,35 +56,78 @@
       "fired_date": "2026-05-22",
       "fired_price": 0.463,
       "horizon": "7d",
-      "day_of": "1/7",
-      "call": "RIDE",
-      "thesis_note": "RWA 5/5 PEAK trail, top L/S -0.22 over 7d but +5.5% OI add 24h holds the bid, trending #6 a second day",
+      "day_of": "2/7",
+      "call": "CLOSE",
+      "thesis_note": "Invalidation $0.41 breached by 7%. RWA narrative holds 5/5 Peak but the carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. AIXBT names Ondo only on the SEC tokenization-model angle — a regulatory thread, not a token bid.",
       "invalidation": "close below $0.41",
-      "watch": "top L/S falls under 1.50, OR break of $0.43 entry zone on volume past 1.5x 24h avg",
-      "mae_pct": -4.25,
-      "mae_day_of": "1",
+      "return_pct": -17.21,
+      "return_vs_btc_pct": -14.57,
+      "return_vs_eth_pct": -13.83,
+      "outcome": "LOSS",
+      "mae_pct": -17.21,
       "mfe_pct": 1.51,
-      "mfe_day_of": "1",
-      "now_pct": -4.25
+      "auto_flipped": false
     }
   ],
 
-  "new_positions": [],
+  "new_positions": [
+    {
+      "ticker": "ZEC",
+      "direction": "SHORT",
+      "horizon": "7d",
+      "entry_zone": "market or first bounce to $610",
+      "invalidation": "close above $620 (May-21 high reclaim)",
+      "thesis": "Watchlist trigger fired: close $594 below $620 line. Privacy/ZK FADING 5th day absent from narrative threads. AIXBT confirms ZEC was the idiosyncratic carrier, not a sector rotation — XMR dropped from the lead. Token-movers flips TRENDING+UP four days to TRENDING+DOWN MAJOR today, -9.18% on $577M vol. Top L/S 0.76 already net short.",
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "pattern_tag_supports",
+        "market_regime_aligned",
+        "cross_domain_bridge"
+      ],
+      "risks": [
+        "Top L/S 0.76 means crowd is already short — trade is partially priced",
+        "Privacy narrative can re-fire on a sanctions catalyst",
+        "Thin OI relative to other Tier 2 means a single-buyer counter-bounce moves the tape"
+      ]
+    }
+  ],
 
   "watchlist": [
     {
-      "ticker": "GRASS",
-      "direction": "LONG",
-      "day_of_watchlist": 2,
-      "trigger": "top L/S turns up through 1.10 OR funding holds negative on another vol-multiple day with pct_24h past +10%",
-      "invalidation": "close below $0.40 before trigger fires",
-      "thesis": "Vol 13.54x with short-liq cascade 11.5x p75. Funding -0.002%/8h on rising price reads as short pile-in. DePIN 5/5 PEAK. pct_24h decelerated from +6.96% morning to +3.72%, top L/S sits flat at 1.10 with -0.20 over 7d — retail-led, not smart-money-confirmed.",
+      "ticker": "BSB",
+      "direction": "SHORT",
+      "day_of_watchlist": 1,
+      "trigger": "flat-or-red 24h with OI holding flat-to-positive fires DISTRIBUTION per perps-scan (gains-slowing gate clears tomorrow)",
+      "invalidation": "close above $1.40 before trigger fires",
+      "thesis": "Funding +0.0878%/8h clears the +0.08% Tier 2 DIST gate. OI +28.69% 24h on top of +275% 7d. Top L/S 1.95 down 0.56 over 7d — smart money exiting into retail leverage. Token-movers prints [BREAKOUT][PUMP-RISK] at rank #164 on vol/mcap 0.56. Gains-accelerating gate blocks DIST today only.",
       "confluence_fired": [
         "pattern_tag_supports",
-        "narrative_phase_aligned",
-        "market_regime_aligned",
-        "enrichment_positive",
-        "both_tag"
+        "both_tag",
+        "market_regime_aligned"
+      ]
+    },
+    {
+      "ticker": "BEAT",
+      "direction": "SHORT",
+      "day_of_watchlist": 1,
+      "trigger": "funding crosses +0.08%/8h with another red day OR pct_4h -10% prints with OI still building",
+      "invalidation": "close above $1.30 (yesterday's high) before trigger fires",
+      "thesis": "Yesterday's +45.93% 24h rolled into -2.68% with OI still building +5.41%. Top L/S 1.30 down 0.65 over 7d — clean smart-money distribution. Cascade started: liq $1.23M past p75 $893K. Funding +0.024%/8h below the 0.08% LONG-TRAP gate. Today's token-call HIGH 9/10 LONG on the Arkham smart-money flag is the counter — perps positioning says retail bid, token-call says smart accumulation.",
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned"
+      ]
+    },
+    {
+      "ticker": "GENIUS",
+      "direction": "SHORT",
+      "day_of_watchlist": 1,
+      "trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow",
+      "invalidation": "close above $0.72 before trigger fires",
+      "thesis": "New universe entrant. OI +146.17% 7d on range 71.93% — fresh, volatile setup carrying real leverage build. Top L/S 1.30 down 0.43 over 7d reads as smart money fading the entry. Vol 1.28x is the second-highest in today's universe. Funding still mid at +0.0045%/8h.",
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned"
       ]
     },
     {
@@ -92,52 +135,10 @@
       "direction": "LONG",
       "day_of_watchlist": 2,
       "trigger": "taker buy clean through 52% with OI continuing to build OR pct_24h breaks +10% with funding holding under +0.02%/8h",
-      "invalidation": "close below $275 OR funding flips negative",
-      "thesis": "Yesterday's ACCUMULATION print rolled to NEUTRAL on pct_4h -3.71% intraday weakness. OI +4.57% 24h, funding +0.007%/8h still above 7d avg. Top L/S 1.90 with +0.06 over 7d holds. AI compute 5/5 PEAK. Setup weakening — needs taker buy through 52% to re-fire.",
+      "invalidation": "close below $250",
+      "thesis": "Narrative-tracker PROMOTED Decentralized compute Peak to Rising today — architectural-disruptor angle broadens the thesis. TAO holds tight at $264, range 15.87%, OI -3.42% 24h but +0.39% 7d. Funding flat. Setup forming, no trigger.",
       "confluence_fired": [
-        "quant_regime_aligned",
-        "narrative_phase_aligned",
-        "market_regime_aligned"
-      ]
-    },
-    {
-      "ticker": "EDEN",
-      "direction": "SHORT",
-      "day_of_watchlist": 2,
-      "trigger": "OI flips negative on a red day (oi_24h_pct < 0 with pct_24h < 0) — fires CAPITULATION per perps-scan",
-      "invalidation": "close above $0.18 before trigger fires",
-      "thesis": "Parabolic continued — +24.05% 24h on OI +13.55%. Top L/S 1.19 with -0.61 over 7d, the smart-money exit deepens. Funding flipped clean positive +0.007%/8h off the -0.025% 7d avg. Basis -0.099% still negative — spot exit pressure into the leverage stack.",
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "enrichment_positive"
-      ]
-    },
-    {
-      "ticker": "ZEC",
-      "direction": "SHORT",
-      "day_of_watchlist": 2,
-      "trigger": "close below $620 OR top L/S falls under 0.75",
-      "invalidation": "close above $670 (reclaim of May-21 high)",
-      "thesis": "Privacy/ZK FADING day 4, mindshare 2/5. Second drawdown session, -4.99% 24h to $630.78. Top L/S 0.82 with -0.12 over 7d, the short trade is partially priced. Trigger at $620 sits $10.78 below close — one red session away.",
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "pattern_tag_supports"
-      ]
-    },
-    {
-      "ticker": "WLD",
-      "direction": "LONG",
-      "day_of_watchlist": 1,
-      "trigger": "pct_24h breaks +20% with vol clean past 2.0x average (fires CATALYST-BREAKOUT) OR top L/S delta turns positive over 7d",
-      "invalidation": "close below $0.27 (break of today's range and 7d open)",
-      "thesis": "Token-call HIGH 9/10. Funding repaired from -0.035% 7d avg to +0.008%/8h, short liqs $730K vs p75 $284K = 2.6x cascade. OI +16.34% 24h. Eightco 8.39% of circulating supply is the largest known institutional holder, Altman won the OpenAI vs Musk verdict 18 May. AI identity sub-narrative inside AI/DePIN PEAK. Missed CATALYST-BREAKOUT by 10.2pp on pct_24h gate.",
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "narrative_phase_aligned",
-        "market_regime_aligned",
-        "enrichment_positive"
+        "narrative_phase_aligned"
       ]
     }
   ],
@@ -146,64 +147,128 @@
     "evaluations": [
       {
         "open_id": "NEAR-2026-05-22-001",
-        "date": "2026-05-22",
+        "date": "2026-05-23",
         "call": "RIDE",
-        "price_at_eval": 2.204,
-        "todays_high": 2.35,
-        "todays_low": 1.96,
+        "price_at_eval": 2.067,
+        "todays_high": 2.10,
+        "todays_low": 2.06,
         "invalidation_breached_today": false,
-        "note": "Day 1 second eval. -5.21% from fire, +151% 7d OI stack now +37% 24h add. Top L/S 1.73 with -0.02 over 7d weakened from morning +0.08 but not breaking. Invalidation $2.05 sits 7% below."
+        "note": "Day 2/3. -11.10% from fire, invalidation $2.05 sits 0.83% below close. Narrative-tracker promoted AI agents and DePIN Peak to Rising today — fresh tailwind on the bull case. Holding."
       },
       {
         "open_id": "HYPE-2026-05-22-001",
-        "date": "2026-05-22",
+        "date": "2026-05-23",
         "call": "RIDE",
-        "price_at_eval": 58.079,
-        "todays_high": 61.10,
-        "todays_low": 58.00,
-        "invalidation_breached_today": false,
-        "note": "Day 1 second eval. -4.64% from fire. Funding flipped from +0.0067% to -0.0082% between prefetches — bearish signal but OI -2.59% 24h means leverage book deflating, not aggressive shorts piling in. Top L/S still +0.13 over 7d. Invalidation $56 sits 3.58% below."
+        "price_at_eval": 55.191,
+        "todays_high": 56.50,
+        "todays_low": 54.50,
+        "invalidation_breached_today": true,
+        "note": "Day 2/multi-week. Close $55.19 below $56 invalidation — breach recorded. Same session narrative-tracker promoted Hyperliquid Fading to Peak, AIXBT names HYPE as #1 lead with $1.8M daily buybacks and Grayscale 3rd ETF filing, smart money L/S +0.15 over 7d. Thesis strengthens as the line breaks. Revising invalidation to $54 — that level holds the buyback-anchored support."
       },
       {
         "open_id": "ONDO-2026-05-22-001",
-        "date": "2026-05-22",
-        "call": "RIDE",
-        "price_at_eval": 0.4433,
-        "todays_high": 0.452,
-        "todays_low": 0.43,
-        "invalidation_breached_today": false,
-        "note": "Day 1 second eval. -4.25% from fire. Range broke past 25% accumulation gate on the breakout — bullish resolution. Top L/S 1.77 with -0.22 over 7d, RWA 5/5 PEAK still holds. Invalidation $0.41 sits 7.5% below."
+        "date": "2026-05-23",
+        "call": "CLOSE",
+        "price_at_eval": 0.3833,
+        "todays_high": 0.395,
+        "todays_low": 0.380,
+        "invalidation_breached_today": true,
+        "note": "Day 2/7. Invalidation $0.41 breached by 7%. RWA carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. -17.21% return, -14.57pp vs BTC, -13.83pp vs ETH. LOSS."
       }
     ],
-    "close": [],
-    "open_now": [],
-    "add_watchlist": [
+    "close": [
       {
-        "ticker": "WLD",
-        "direction": "LONG",
-        "trigger": "pct_24h breaks +20% with vol clean past 2.0x average (fires CATALYST-BREAKOUT) OR top L/S delta turns positive over 7d",
-        "invalidation": "close below $0.27 (break of today's range and 7d open)",
+        "open_id": "ONDO-2026-05-22-001",
+        "closed_price": 0.3833,
+        "close_reason": "invalidation breached at close; RWA narrative carrier rotated to tokenized stocks/ETFs not ONDO direct",
+        "return_pct": -17.21,
+        "return_vs_btc_pct": -14.57,
+        "return_vs_eth_pct": -13.83,
+        "horizon_realized": "2d",
+        "auto_flipped": false
+      }
+    ],
+    "open_now": [
+      {
+        "ticker": "ZEC",
+        "direction": "SHORT",
+        "fired_price": 594.23,
+        "fired_btc_price": 75374,
+        "fired_eth_price": 2060,
+        "entry_zone": "market or first bounce to $610",
+        "invalidation": "close above $620 (May-21 high reclaim)",
         "horizon": "7d",
-        "thesis": "Token-call HIGH 9/10. Funding repaired from -0.035% 7d avg to +0.008%/8h, short liqs 2.6x p75. OI +16.34% 24h. Eightco 8.39% of supply is the largest known institutional holder. Altman won OpenAI v Musk verdict 18 May. AI identity sub-narrative inside AI/DePIN PEAK.",
+        "thesis": "Watchlist trigger fired: close $594 below $620 line. Privacy/ZK FADING 5th day absent from narrative threads. AIXBT confirms ZEC-specific carrier, XMR dropped from the lead. Token-movers TRENDING+DOWN MAJOR at -9.18% on $577M vol. Top L/S 0.76 already net short.",
         "confluence_fired": [
-          "quant_regime_aligned",
-          "pattern_tag_supports",
           "narrative_phase_aligned",
+          "pattern_tag_supports",
           "market_regime_aligned",
-          "enrichment_positive"
+          "cross_domain_bridge"
+        ],
+        "confluence_missing": [
+          "quant_regime_aligned",
+          "both_tag",
+          "repeat_appearance"
         ],
         "named_risks": [
-          "Smart money trimming -0.22 over 7d — retail-led short squeeze tail",
-          "BTC $73K flush target per aixbt removes beta support",
-          "July 24 unlock-rate cut helps at horizon, not if structure breaks before"
+          "Top L/S 0.76 means crowd is already short — trade is partially priced",
+          "Privacy narrative can re-fire on a sanctions catalyst",
+          "Thin OI relative to other Tier 2 means a single-buyer counter-bounce moves the tape"
+        ],
+        "watchlist_id_promoted": "ZEC-watchlist-2026-05-22-002"
+      }
+    ],
+    "add_watchlist": [
+      {
+        "ticker": "BSB",
+        "direction": "SHORT",
+        "trigger": "flat-or-red 24h with OI holding flat-to-positive fires DISTRIBUTION per perps-scan (gains-slowing gate clears tomorrow)",
+        "invalidation": "close above $1.40 before trigger fires",
+        "horizon": "3d",
+        "thesis": "Funding +0.0878%/8h clears +0.08% Tier 2 DIST gate. OI +28.69% 24h on +275% 7d. Top L/S 1.95 down 0.56 over 7d. Token-movers [BREAKOUT][PUMP-RISK] at rank #164.",
+        "confluence_fired": [
+          "pattern_tag_supports",
+          "both_tag",
+          "market_regime_aligned"
+        ],
+        "named_risks": [
+          "Microcap pump can extend past reasonable funding levels",
+          "Thin float — short-squeeze risk on any buyer return"
+        ]
+      },
+      {
+        "ticker": "BEAT",
+        "direction": "SHORT",
+        "trigger": "funding crosses +0.08%/8h with another red day OR pct_4h -10% prints with OI still building",
+        "invalidation": "close above $1.30 (yesterday's high) before trigger fires",
+        "horizon": "3d",
+        "thesis": "Yesterday +45.93% rolled into -2.68% with OI still +5.41%. Top L/S 1.30 down 0.65 over 7d. Cascade started: liq $1.23M past p75 $893K. Token-call HIGH 9/10 LONG today is the counter — smart-money divergence between perps positioning and Arkham accumulation flag.",
+        "confluence_fired": [
+          "pattern_tag_supports",
+          "market_regime_aligned"
+        ],
+        "named_risks": [
+          "Smart-money divergence with token-call could resolve either way",
+          "AI narrative RIDE leaves bounce vehicle"
+        ]
+      },
+      {
+        "ticker": "GENIUS",
+        "direction": "SHORT",
+        "trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow",
+        "invalidation": "close above $0.72 before trigger fires",
+        "horizon": "3d",
+        "thesis": "New universe entrant. OI +146.17% 7d on range 71.93%. Top L/S 1.30 down 0.43 over 7d. Vol 1.28x second-highest in today's universe.",
+        "confluence_fired": [
+          "pattern_tag_supports",
+          "market_regime_aligned"
+        ],
+        "named_risks": [
+          "Day-1 setup — leverage build can extend before resolving",
+          "No clear narrative anchor — name-only ticker association"
         ]
       }
     ],
-    "keep_watchlist": [
-      "GRASS-watchlist-2026-05-22-002",
-      "TAO-watchlist-2026-05-22-002",
-      "EDEN-watchlist-2026-05-22-002",
-      "ZEC-watchlist-2026-05-22-002"
-    ]
+    "keep_watchlist": ["TAO-watchlist-2026-05-22-002"]
   }
 }
