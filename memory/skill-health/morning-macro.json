@@ -1,8 +1,8 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-23T06:54:24Z",
+  "last_analyzed": "2026-05-23T07:32:37Z",
   "quality_score": 4,
-  "assessment": "Substantive market brief with specific data, coherent cross-domain analysis, and actionable trade signals; well-structured output and proper file handling.",
+  "assessment": "Skill completed with substantive, well-structured market analysis output; proper file handling and notification queueing; specific data points and positions included. Limited to 4 rather than 5 due to truncated view of actual artifact and inability to verify analysis accuracy without full output.",
   "flags": [],
   "avg_score": 4.07,
   "history": [
@@ -56,6 +56,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {
