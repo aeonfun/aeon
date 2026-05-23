@@ -1,10 +1,10 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-23T10:19:50Z",
+  "last_analyzed": "2026-05-23T11:17:26Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific positions, prices, invalidation levels, and actionable watchlist updates; well-structured, domain-expert output with clear follow-up actions and schema validation",
+  "assessment": "Substantive, well-structured position brief with specific metrics, invalidation levels, and clear bias statement—domain-appropriate and actionable.",
   "flags": [],
-  "avg_score": 4.06,
+  "avg_score": 4.05,
   "history": [
     {
       "date": "2026-05-18",
@@ -64,6 +64,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {
