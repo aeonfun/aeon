@@ -1,10 +1,12 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-23T10:05:17Z",
+  "last_analyzed": "2026-05-23T10:50:35Z",
   "quality_score": 4,
-  "assessment": "Substantive skill output with specific pick, documented catalysts, risk assessment, file outputs, and sourced citations—well-structured and actionable despite inherent crypto speculation.",
-  "flags": [],
-  "avg_score": 4.24,
+  "assessment": "Substantive, well-reasoned output with clear scoring logic, specific metrics, and actionable follow-ups; flagged for recurring DexScreener data quality issue.",
+  "flags": [
+    "stale_data"
+  ],
+  "avg_score": 4.22,
   "history": [
     {
       "date": "2026-05-18",
@@ -69,6 +71,10 @@
     {
       "date": "2026-05-23",
       "score": 5
+    },
+    {
+      "date": "2026-05-23",
+      "score": 4
     },
     {
       "date": "2026-05-23",
