@@ -1,70 +1,71 @@
 # Market Context (as of 2026-05-23)
 
-> **Take:** risk-off — BTC -2.54% 24h with 1/20 top-cap majors green; total mcap shed $50B to $2.60T. Conviction: high.
+> **Take:** risk-off — BTC -2.60% 24h with 2/20 top-cap majors green; DEX volume $6.38B, down 8% vs 7-day average. Conviction: high.
 
 ## Signal Snapshot
-- BTC $75,374 (-2.54% 24h, -4.52% 7d) · dominance 58.05% (+0.06pp 24h)
-- ETH $2,060 (-3.02% 24h, -7.34% 7d) · ETH/BTC 0.02734
-- SOL $84.30 (-2.49% 24h, -4.80% 7d)
-- Total mcap $2.60T (-2.41% 24h) · DEX vol $6.38B 24h
-- Breadth: 1/20 green 24h · 4/20 green 7d
+- BTC $75,321 (-2.60% 24h, -4.58% 7d) · dominance 58.05% (flat 24h)
+- ETH $2,059 (-3.04% 24h, -7.42% 7d) · ETH/BTC 0.02734
+- SOL $84.12 (-2.87% 24h, -4.97% 7d)
+- Total mcap $2.60T (-2.53% 24h) · DEX vol $6.38B 24h
+- Breadth: 2/20 green 24h · 4/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 28
 
 ## What Changed Since Last Refresh
-- Regime flipped from chop to risk-off. Breadth collapsed from 7/20 to 1/20 green 24h. BTC dropped from $76,635 to $75,374; 24h move worsened from -0.66% to -2.54%.
-- Iran peace deal probability crashed 8pp to 18.5% YES on Polymarket. Iran airspace closing by May 24 hit 97% YES. Military escalation confirmed.
-- ZEC extended the privacy fade to five straight sessions. Today's -9.18% 24h leaves it at $594.73, down $73 from the $667.93 peak.
+- Quiet — all majors within ±1% vs prior snapshot, regime unchanged.
+- Iran peace deal at 17.5% YES (-1pp); two-day slide from 26.5% continues.
 
 ## Active Narratives
-- **AI/compute infra** — phase: fading. Evidence: NEAR -4.90% 24h ($2.07), VVV -5.04% 24h; both tokens underperform the tape on day six-plus of the run.
-- **RWA/tokenization** — phase: fading. Evidence: ONDO absent from trending today; yesterday confirmed PEAK saturation; no RWA name outperforms the risk-off tape.
-- **Perp DEX/Hyperliquid** — phase: fading. Evidence: HYPE -4.81% 24h ($55.17), sixth session below $63; approaching the prior $57.24 floor with June 6 unlock 14 days out.
-- **Privacy/ZK** — phase: fading. Evidence: ZEC -9.18% 24h ($594.73), five consecutive red sessions, $73 off the $667.93 peak.
+- **AI/compute infra** — phase: fading. Evidence: NEAR -5.37% ($2.05), RENDER -8.27% ($1.83), VVV -4.12% ($17.34); all three AI tokens red on the tape, no intraday recovery.
+- **Perp DEX/Hyperliquid** — phase: fading. Evidence: HYPE -4.28% ($55.06), sixth session below $63; LIT -21.09% ($1.12) deepens sector deterioration.
+- **Privacy/ZK** — phase: fading. Evidence: ZEC -9.96% ($589.89), sixth consecutive red session, $78 below the $667.93 peak of 2026-05-21.
+- **RWA/tokenization** — phase: fading. Evidence: ONDO absent from trending two sessions; no RWA token positive against this tape.
+
+Note: narrative-tracker's 05-23 session promoted AI agents and Decentralized compute to Rising on social signals (Okada anchor: agent funding 5%→36% of crypto-AI total). Price action from CoinGecko disagrees — all AI-sector tokens red 24h. Price wins per standing framework until accumulation shows on-chain or in positioning data.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Binance CEX: $152.55B (-2.97%)
-- OKX: $24.47B (-2.81%)
-- Bitfinex: $18.44B (-4.07%)
-- Lido: $18.30B (-6.31%)
-- Bybit: $15.54B (-1.08%)
+- Binance CEX: $152.25B (7d: n/a — protocols endpoint did not return 7d delta this run)
+- OKX: $24.52B (7d: n/a)
+- Bitfinex: $18.43B (7d: n/a)
+- Lido: $18.30B (7d: n/a)
+- Bybit: $15.51B (7d: n/a)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.35B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.52B (7d change: n/a)
+- Ethereum: $42.33B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.51B (7d change: n/a)
 - Solana: $5.45B (7d change: n/a)
 
 ## Stablecoins
-Total: ~$288.7B (flat vs prior). USDT $189.46B · USDC $76.60B · USDS $8.86B · USD1 $4.80B · DAI $4.57B · USDe $4.44B · combined share of mcap ~11.1%.
+Total: ~$288.7B (flat vs prior). USDT $189.46B · USDC $76.60B · USDS $8.86B · combined share of mcap ~11.1%.
 
 ## Trending (CoinGecko)
-- BILL — Billions Network, $0.086, +23.32% 24h; sole outperformer in a fully red trending list; thin-float pump, no narrative anchor.
-- NEAR — NEAR Protocol, $2.07, -4.90% 24h; AI/compute fading after a six-plus session run.
-- HYPE — Hyperliquid, $55.17, -4.81% 24h; perp-DEX fade deepening, sixth session below $63.
-- ZEC — Zcash, $594.73, -9.18% 24h; privacy fade accelerating, fifth consecutive red session.
-- VVV — Venice Token, $17.19, -5.04% 24h; AI agents, momentum fully broken.
-- PENGU — Pudgy Penguins, $0.0088, -8.52% 24h; NFT/collectibles, near-stall yesterday now accelerating into a flush.
-- ETH — Ethereum, $2,061, -3.01% 24h; blue-chip trending into a down day.
-- BTC — Bitcoin, $75,374, -2.54% 24h; blue-chip trending on the tape.
-- SOL — Solana, $84.36, -2.59% 24h; trending with the tape.
-- RON — Ronin, $0.091, -9.58% 24h; gaming sector, no catalyst.
-- KITE — $0.19, -19.57% 24h; sharp decline, no narrative.
+- BILL — Billions Network, $0.0824, +18.11% 24h; the only trending token printing positive; decelerating from +23.32% yesterday; thin-float pump, no narrative anchor.
+- NEAR — NEAR Protocol, $2.05, -5.37% 24h; AI/compute fading, seventh session of underperformance.
+- VVV — Venice Token, $17.34, -4.12% 24h; AI agents, momentum broken.
+- HYPE — Hyperliquid, $55.06, -4.28% 24h; perp-DEX fade, sixth session below $63.
+- PENGU — Pudgy Penguins, $0.0087, -9.83% 24h; NFT flush accelerating.
+- ZEC — Zcash, $589.89, -9.96% 24h; privacy fade, sixth straight red session.
+- RENDER — Render Network, $1.83, -8.27% 24h; AI/compute, new entrant to trending; confirms sector-wide selling.
+- LIT — Lighter, $1.12, -21.09% 24h; sharpest single-day drop in trending; perp-DEX narrative collapsed.
+- ETH — Ethereum, $2,059, -3.01% 24h; blue-chip trending on a down day.
+- BTC — Bitcoin, $75,321, -2.61% 24h; blue-chip trending on the tape.
+- SOL — Solana, $84.13, -2.99% 24h; trending with the tape.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 31 | 18.5% | $4.46M | $0.26M |
+| US x Iran permanent peace deal by May 31 | 17.5% | $4.44M | $0.33M |
 
-*Iran peace deal by May 31 crashed from 26.5% to 18.5% YES (-8pp), largest single-session move on this market. Iran airspace closing by May 24 at 97% YES (excluded as settled) confirms military action is the operative scenario. Bitcoin $150K by June 30 at 1.35% YES (excluded below 3% floor) reflects market skepticism at the current tape.*
+*Iran peace deal at 17.5% YES (-1pp session, -9pp from 26.5% two sessions ago). Bitcoin $150K by June 30 at 1.35% and Iran airspace by May 24 at 97.9% both excluded (outside 3–97% signal range). FIFA World Cup markets dominate 24h vol but at 0.05% YES — no signal value.*
 
 ## Macro Catalysts (next 48h)
-- **Iran military escalation:** Airspace closing by May 24 at 97% YES; peace deal by May 31 at 18.5% (-8pp in one session). Each oil spike extends the inflation/yield headwind capping BTC below $78K.
-- **BTC ETF flows:** May tracking as strongest ETF month in 2026; IBIT surpassed 806,700 BTC in holdings (~3.8% of supply). ETF inflows are the structural floor — a broken streak at $75K removes the last institutional demand argument holding this level.
-- **CLARITY Act markup:** Over 100 amendments in Senate; yield-bearing stablecoin debate ongoing. A passed bill is a direct regulatory catalyst for exchange tokens and the RWA sector.
-- **Trump 120-day Fed review:** Executive order mandating Fed evaluate crypto company access to Reserve Bank payment services — structural policy tailwind on a 4-month lag.
+- **Iran military escalation:** Airspace closing by May 24 at 97.9% YES; peace deal at 17.5% YES (-9pp over two sessions). Brent crude ~$103/barrel. Oil premium extends the inflation headwind deferring rate cuts.
+- **Fed Chair Kevin Warsh:** Sworn in May 15, first chair transition since 2018. The market prices rate uncertainty into 2H 2026. Iran's oil premium compounds that headwind.
+- **BTC ETF flows:** $1.63B net inflows since May 1 (9-day streak), IBIT and FBTC leading. The ETF bid holds the structural floor; $75K breaks if the streak ends.
+- **CLARITY Act markup:** Senate Banking ongoing with 100+ amendments. A passed bill is a direct catalyst for exchange tokens and the RWA sector; no Senate floor vote scheduled.
 
 ## Implications for Downstream Skills
-- **token-call:** All tracked narratives fading on broad risk-off. 1/20 breadth is a hard stop on new longs. Cash-patient until breadth recovers above 10/20 or a single name prints clear accumulation against the tape.
-- **narrative-tracker:** AI/compute and RWA both downgraded to fading on today's read. Full narrative map warrants a reset — no rising narrative confirmed. BILL the sole outlier; needs data confirmation before assigning phase.
+- **token-call:** All tracked narratives fading by price action on 2/20 breadth. Cash-patient on new longs until breadth recovers above 10/20, or a single name prints clear accumulation against the tape. Narrative-tracker promoted AI/DePIN to Rising today on social signals while price disagrees — no new long until price confirms.
+- **narrative-tracker:** Social signal (agent funding 5%→36% Okada anchor) and price tape (NEAR -5.37%, RENDER -8.27%) disagree today. The divergence closes when price follows the social bid, or the narrative collapses into the tape. Tomorrow's action decides.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -81,6 +82,7 @@ Total: ~$288.7B (flat vs prior). USDT $189.46B · USDC $76.60B · USDS $8.86B ·
 | 2026-05-22 | PENGU | $0.00975 | Top scorer in 250-coin scan (10/10, HIGH); CBOE filed PENGU + Pudgy Penguins ETF (first memecoin to reach the ETF pipeline); Canary Capital combined token + NFT ETF proposal active at SEC; real-world distribution (Pudgy toys in mass retail, debit card live); risk: 21B+ PENGU vesting this month (24% supply overhead), 85% below Dec-24 ATH, prior April mark-up/May release pattern risks repeating |
 | 2026-05-22 | GRASS | $0.4466 | Re-run pick (dedup excluded PENGU); DePIN/AI infra at 5/5 PEAK narrative; OKX Wallet Boost X campaign live (1.8M GRASS rewards pool); bandwidth-for-AI-data thesis pulling VC infra capital; vol/mcap 0.23; perps-scan WATCH (vol 7.39x, OI +27.09% 24h); risk: smart money trimming into the breakout (top L/S -0.18 7d, retail-led per perps-brief), 88% below Nov-2024 ATH |
 | 2026-05-22 | ONDO | $0.451 | Third 2026-05-22 re-run pick (dedup excluded PENGU/GRASS); RWA/tokenization at 5/5 PEAK; vol/mcap 0.21, trending rank #43, perps HIGH CONVICTION long (7d horizon, v4.1 inaugural entry); risk: RWA at PEAK saturation (RIDE w/ trail), 7d range stretched past 41% — easy accumulation entry past, BTC -4.5% 7d beta risk if tape breaks further |
+| 2026-05-23 | BEAT | $1.17 | Top scorer in 250-coin scan (9/10, HIGH); Arkham flagged 11.4M BEAT ($6.58m) withdrawn from Gate to 10 fresh addresses on 2026-05-22 — smart-money accumulation print; AI-narrative rotation extending DePIN/AI-compute PEAK leg; risk: fresh wallets can flip to distribution on $93m daily vol small-cap, ATH $4.91 puts price 76% below Nov-2025 launch |
 
 ---
 *Sources — btc/eth/sol/top20/trending: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
