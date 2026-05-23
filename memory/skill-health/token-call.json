@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-23T06:34:29Z",
+  "last_analyzed": "2026-05-23T07:08:14Z",
   "quality_score": 5,
-  "assessment": "Excellent — substantive crypto signal with on-chain analysis, specific risk metrics, proper deduplication logic, and well-sourced catalysts; includes implementation-aware commentary and self-validation.",
+  "assessment": "Excellent — substantive token analysis with specific conviction score (9/10), detailed risk framing (perps trap, listing-fade pattern, rug risk), clear catalyst (Binance listing), proper sourcing (4 URLs), and demonstrated QA (self-caught formatting issue). Production-ready artifacts and memory logging.",
   "flags": [],
-  "avg_score": 4.2,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-18",
@@ -61,6 +61,10 @@
     {
       "date": "2026-05-22",
       "score": 4
+    },
+    {
+      "date": "2026-05-23",
+      "score": 5
     },
     {
       "date": "2026-05-23",

@@ -1,35 +1,36 @@
 Daily Token Call · 23 May
 ──────────────────────────
 
-BEAT · HIGH · 9/10
-$1.17 · +58.0% 24h · +97.3% 7d
-mcap $319m · vol $93m · vol/mcap 0.29
+GENIUS · HIGH · 9/10
+$0.59 · +35.5% 24h · +23.6% 7d
+mcap $199m · vol $125m · vol/mcap 0.63
 
 
 SIGNALS
-  Vol/mcap 0.29 — institutional-grade turnover at the $300m-cap tier.
-  Both 24h and 7d above the +5% gate, with 7d at +97%.
-  Outpacing BTC -4.5% and ETH -7.4% on the 7d by 100+ points.
-  AI-narrative co-leader on a tape where NEAR and GRASS already ran.
+  High turnover at vol/mcap 0.63 — institutional-grade flow on a $199m cap.
+  Both 24h and 7d above the +5% gate (+35.5% / +23.6%).
+  Outpacing red BTC and ETH by 28-30 points on the 7d relative strength.
+  Listing-day flow absorbing — $125m volume holds the 0.63 ratio.
 
 CATALYST
-  Arkham flagged 11.423M BEAT ($6.58m) withdrawn from Gate to 10 fresh addresses on 22 May.
-  The market read the print as smart-money accumulation, not exit liquidity.
-  Capital rotated into AI-themed tokens as DePIN and AI/compute sat PEAK on the narrative map.
-  Entertainment-IP angle differentiates from yesterday's three picks (PENGU memecoin ETF, GRASS DePIN, ONDO RWA) and today's WLD identity.
+  Binance spot listing 2026-05-22 — USDT, USDC, TRY pairs at 12:00 UTC.
+  Top-CEX listing deepens spot access from project-tier liquidity into Binance's retail base.
+  Binance listed GENIUS alongside OpenGradient. The pairing suggests AI-adjacent positioning.
 
 RISK
-  The same fresh wallets driving the bid can flip to distribution. $93m daily volume thins fast on a small-cap entertainment-IP token.
-  ATH $4.91 from the Nov-2025 listing. Price sits 76% below — long supply overhang from the original launch holders.
-  AI narrative sits at PEAK per yesterday's narrative-tracker. The trail tightens, not the entry.
+  Perps shape reads long-trap. Top L/S cut 0.43 over 7 days while OI built +146% the same stretch.
+  Same-session perps-brief fired a SHORT on GENIUS. Cross-feed disagreement on the direction.
+  Bsc name-farm pools recycle the GENIUS ticker on fresh contracts. One printed +1891% at $44m volume on a 58-minute-old pool this morning, draining retail into exit liquidity that doesn't share the project's listing tailwind.
+  Listing-day pumps fade inside 48 hours. The 24-hour mark hit overnight.
 
 DEDUP
-  First time in 7d.
-  Today's three prior picks (PENGU, GRASS, ONDO) and WLD all excluded.
-  15-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD.
+  First time in 7 days for GENIUS.
+  Today's earlier scheduled call picked BEAT (Audiera) at 9/10. Operator re-invoked.
+  16-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT.
 
 
-Take: clean whale-accumulation print plus AI-narrative tailwind on a $300m-cap entertainment token. The catalyst is flow, not a dated event — continuation thesis with the trail tight. Sized small against a fragile BTC tape and a narrative already at PEAK.
+Take: real listing, real flow, but smart money fades while retail loads the headline.
+Sized small with trail tight to today's intraday low. Not a multi-day position. The 48-hour listing-fade pattern closes tonight.
 
 
 not financial advice — pattern-matching only
