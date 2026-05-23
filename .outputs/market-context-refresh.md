@@ -1,31 +1,29 @@
-# Market Context — 2026-05-22
+# Market Context — 2026-05-23
 
-Take: chop — BTC held $76,635 with 7/20 top-cap majors green and F&G pinned at 28 (Fear) for the second straight session. Conviction: medium.
+Take: risk-off — BTC -2.54% 24h with 1/20 top-cap majors green; total mcap shed $50B to $2.60T. Conviction: high.
 
 ## Snapshot
-- BTC $76,635 (-0.66% 24h, -3.25% 7d) · dominance 57.99% (-0.05pp 24h)
-- ETH $2,117 (-0.63% 24h, -4.42% 7d) · ETH/BTC 0.02762
-- SOL $86.65 (+0.27% 24h, -2.59% 7d)
-- Total mcap $2.65T (-0.27% 24h) · DEX vol $6.38B 24h
-- Breadth: 7/20 green 24h · 5/20 green 7d
-- Fear & Greed: 28 (Fear) — yesterday 29
-- TVL: Ethereum $43.06B · Solana $5.61B · BSC $5.57B (7d delta n/a)
+- BTC $75,374 (-2.54% 24h, -4.52% 7d) · dominance 58.05% (+0.06pp 24h)
+- ETH $2,060 (-3.02% 24h, -7.34% 7d) · ETH/BTC 0.02734
+- SOL $84.30 (-2.49% 24h, -4.80% 7d)
+- Total mcap $2.60T (-2.41% 24h) · DEX vol $6.38B 24h
+- Breadth: 1/20 green 24h · 4/20 green 7d
+- Fear & Greed: 28 (Fear) — yesterday 28
+- TVL: Ethereum chain $42.35B (vs $43.06B prior, -1.6%)
 
 ## What Changed
-- Regime shifted from risk-off to chop. Breadth ticked from 6/20 to 7/20 green 24h. BTC held $76.6K for a second session.
-- HYPE deepened to -5.04% 24h ($58.37), approaching the prior $57.24 floor.
-- RAIL (Railgun, ZK privacy) entered trending at +47.97% 24h. Privacy sector bifurcated: ZEC fading, ZK privacy catching a bid.
+- Regime flipped from chop to risk-off. Breadth collapsed from 7/20 to 1/20 green 24h. BTC -2.54% (was -0.66% 24h prior).
+- Iran peace deal probability crashed 8pp to 18.5% YES. Iran airspace closing by May 24 at 97% YES. Military escalation confirmed.
+- ZEC extended the privacy fade to five straight sessions. -9.18% 24h at $594.73, down $73 from the $667.93 peak.
 
 ## Active Narratives
-- AI/compute infra — phase: rising. NEAR +21.57% 24h day-6, GRASS +16.65% day-5, GENIUS +41.71% day-3.
-- RWA / tokenization — phase: rising. ONDO +9.02% 24h third consecutive trending session.
-- Perp DEX / Hyperliquid — phase: fading. HYPE -5.04% 24h ($58.37), recovery fully reversed.
-- Privacy/ZK — phase: fading. ZEC -4.46% 24h day-4 from peak. RAIL +47.97% 24h — sub-sector rotation within privacy.
-- NFT / PENGU — phase: fading. PENGU +0.45% 24h day-6, near-stall.
+- AI/compute infra — phase: fading. Evidence: NEAR -4.90% 24h ($2.07), VVV -5.04% 24h; six-plus session run broken by risk-off tape.
+- RWA/tokenization — phase: fading. Evidence: ONDO absent from trending; PEAK saturation confirmed yesterday; no RWA name outperforms today.
+- Perp DEX/Hyperliquid — phase: fading. Evidence: HYPE -4.81% 24h ($55.17), sixth session below $63.
+- Privacy/ZK — phase: fading. Evidence: ZEC -9.18% 24h, five consecutive red sessions.
 
 ## Polymarket Highlights (top by 24h vol)
-- US x Iran permanent peace deal by May 31 — YES 26.5%, vol $3.44M
-- US x Iran permanent peace deal by May 22 — YES 6.95%, vol $2.53M
+- US x Iran permanent peace deal by May 31 — YES 18.5% (crashed from 26.5%, -8pp), vol $4.46M
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
