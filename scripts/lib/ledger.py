@@ -129,6 +129,28 @@ def _require_str(obj: dict, key: str, where: str) -> None:
     _require(len(obj[key]) > 0, f"{where}: '{key}' must be non-empty")
 
 
+def _require_str_or_strlist(obj: dict, key: str, where: str) -> None:
+    """Field may be a single string (legacy v4.1 thesis) OR an array of
+    non-empty strings (v4.1+ bullet thesis). Both shapes are accepted so
+    the ledger validator stays back-compatible with entries written before
+    the card-layout migration."""
+    _require(key in obj, f"{where}: missing '{key}'")
+    val = obj[key]
+    if isinstance(val, str):
+        _require(len(val) > 0, f"{where}: '{key}' string must be non-empty")
+        return
+    _require(
+        isinstance(val, list),
+        f"{where}: '{key}' must be string OR array of strings (got {type(val).__name__})",
+    )
+    _require(len(val) > 0, f"{where}: '{key}' array must be non-empty")
+    for i, b in enumerate(val):
+        _require(
+            isinstance(b, str) and len(b.strip()) > 0,
+            f"{where}: '{key}'[{i}] must be non-empty string",
+        )
+
+
 def _require_number(obj: dict, key: str, where: str, allow_none: bool = False) -> None:
     _require(key in obj, f"{where}: missing '{key}'")
     val = obj[key]
@@ -202,7 +224,7 @@ def _validate_open_entry(entry: dict, idx: int) -> None:
         entry.get("horizon") in VALID_HORIZONS,
         f"{where}: horizon must be one of {sorted(VALID_HORIZONS)}",
     )
-    _require_str(entry, "thesis", where)
+    _require_str_or_strlist(entry, "thesis", where)
     _require_list(entry, "confluence_fired", where)
     _require(
         len(entry["confluence_fired"]) >= 1,
@@ -245,7 +267,7 @@ def _validate_watchlist_entry(entry: dict, idx: int) -> None:
         entry.get("horizon") in VALID_HORIZONS,
         f"{where}: horizon must be one of {sorted(VALID_HORIZONS)}",
     )
-    _require_str(entry, "thesis", where)
+    _require_str_or_strlist(entry, "thesis", where)
     _require_list(entry, "confluence_fired", where)
     _validate_confluence_list(entry["confluence_fired"], where, "confluence_fired")
     _require_list(entry, "named_risks", where)

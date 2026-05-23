@@ -203,51 +203,89 @@ Take: [synthesizing read]. [sizing or action context]
 not financial advice — pattern-matching only
 ```
 
-### `perps-brief`
+### `perps-brief` (v4.1 — card layout, multi-message Discord delivery)
+
+The brief is split into per-section messages. NEW POSITIONS and WATCHLIST are split further into per-signal messages so each card has its own monospace border. Layout per message:
+
+**Market context message (1):**
 
 ```
-Perps Brief · DD MMM · verdict tagline
-─────────────────────────────────────────
+Perps Brief · DD MMM
 
-[Sentiment — 3-5 lines.]
-[Perps-specific read — 3-5 lines.]
-[Risk/regime context — 2-3 lines.]
+─────────  MARKET SENTIMENT  ─────────
 
-Stance: [bias]. [rationale]
+  [Paragraph 1 — macro frame, 3-5 lines]
 
+  [Paragraph 2 — perps-specific read, 3-5 lines]
 
-─────────  BEST NEAR-MISS  ─────────    [skip-days only]
+  [Paragraph 3 — risk/regime context, 2-3 lines]
 
-TICKER · qualifier
-  [3-5 lines]
-  [Closing imperative]
-
-
-─────────  HIGH CONVICTION  ─────────    [when setups exist]
-
-TICKER · bias label
-
-  PERPS
-    [3-5 lines]
-
-  NARRATIVE
-    [2-4 lines]
-
-  CONTEXT
-    [2-4 lines]
-
-  ENRICHMENT
-    [2-5 lines]
-
-  → [Thesis line, trade structure]
-
-
-─────────  WATCHLIST  ─────────
-
-TICKER · qualifier
-  [3-6 indented fact lines]
-  [Closing imperative]
+  Bias · [stance]. [rationale]
 ```
+
+**Current positions message (1, as a table + per-row prose):**
+
+```
+─────────  CURRENT POSITIONS (N)  ─────────
+
+  TICKER  DIR    ENTRY      NOW         PNL      MAE / MFE       CALL
+  ──────  ────   ─────────  ─────────  ───────  ──────────────  ──────────
+  ASSET   LONG   $price     $price     ±X%      −X.X / +X.X     RIDE
+  ASSET   SHORT  $price     $price     ±X%      −X.X / +X.X     CLOSE  OUTCOME
+
+  ASSET  ▸ [2-3 sentence note in plain prose, no buzzword shorthand]
+  ASSET  ▸ [2-3 sentence note]
+```
+
+**Per new-position message (1 per signal, capped 5):**
+
+```
+─────────  NEW POSITION · TICKER DIR  ─────────
+
+  ticker      TICKER
+  direction   DIR
+  horizon     24h | 3d | 7d | multi-week
+  entry       price level OR "market"
+  stop        invalidation condition
+
+
+  thesis      · [observation 1: price action, 1-2 sentences]
+              · [observation 2: narrative, 1-2 sentences]
+              · [observation 3: regime/positioning, 1-2 sentences]
+              · [observation 4: cross-domain/catalyst, 1-2 sentences]
+
+
+  risks       · [risk 1: 1-2 sentences]
+              · [risk 2]
+              · [risk 3]
+```
+
+**Per watchlist message (1 per signal, capped 5):**
+
+```
+─────────  WATCHLIST · TICKER DIR · day N  ─────────
+
+  ticker      TICKER
+  direction   DIR
+  horizon     24h | 3d | 7d | multi-week
+  trigger     condition that would promote to NEW POSITION
+  stop        invalidation before the trigger fires
+
+
+  thesis      · [observation 1]
+              · [observation 2]
+              · [observation 3]
+```
+
+**Rules specific to v4.1 cards:**
+
+1. **Bullet writing** — every bullet is a complete observation (subject + verb + object), self-contained, plain language. Apply Pattern 7 strictly.
+2. **Bullet count** — 3-4 thesis bullets per card. 2-3 risks per new position. Don't pad to hit a count; if there are only two real observations, write two.
+3. **Bullet length** — target ~150-200 characters per bullet. Hard cap 250.
+4. **Blank-line separation** — two blank lines between the metadata block and `thesis`, and two between `thesis` and `risks`. Visual section breaks.
+5. **Field labels** — `ticker`, `direction`, `horizon`, `entry`/`trigger`, `stop`, `thesis`, `risks`. Lowercase, left-aligned, value indented to column 14.
+6. **Direction tags** — LONG / SHORT uppercase. Outcome tags on CLOSE rows (WIN, LOSS, NEUTRAL, WIN-WITH-SCARE) appended to CALL column.
+7. **No confluence list in the rendered output** — confluence criteria live in the ledger for track-record analysis; they're not surfaced in the operator-facing card.
 
 ### `narrative-tracker`
 
@@ -473,6 +511,50 @@ Some verbs are technically correct but commit less than alternatives. Where stro
 ✓ "ZEC named as a rotation destination..."
 
 ✓ "ZEC emerging as a rotation destination..."
+```
+
+### Pattern 7 — Source-artifact shorthand and undefined references
+
+The brief composes from multiple upstream artifacts (perps-scan, narrative-tracker, aixbt-pulse, market-context-refresh, etc.). Shorthand references to those sources compress the citation into something illegible to a reader who didn't open the source.
+
+**Symptom:** The operator reads a sentence, recognises the words, can't reconstruct the meaning without going to a second screen. Common in v3 prose; surfaced acutely in the v4.1 card layout where every bullet has to stand alone.
+
+**Test:** Read the bullet to someone who hasn't seen any other artifact today. Do they understand what every reference is *to*?
+
+**Examples of source-shorthand that leak:**
+
+| Shorthand | Illegible because | Operator-facing rewrite |
+|---|---|---|
+| `AIXBT #1` | #1 of what? Their morning leads? Bridge call? Sector list? | `AIXBT flagged HYPE as their top lead today` |
+| `Fading→Peak` | Fading and Peak are narrative-tracker phase labels | `narrative-tracker moved Hyperliquid from Fading to Peak` |
+| `5/5 RIDE` | Confidence score on a scale the reader doesn't have | `rated 5/5 with a RIDE call in narrative-tracker` |
+| `Smart money L/S +0.14 7d` | L/S = top-trader long/short ratio. What's +0.14 relative to? | `Top-trader long/short ratio rose 0.14 points over 7 days — smart money net long` |
+| `DIVERGENT sub-tag` | Internal regime sub-tag from perps-scan | `passive build, possibly arbitrage rather than directional positioning` |
+| `Token-call HIGH 10/10` | Reference to token-call's score scale | `token-call rates this HIGH conviction (10/10)` |
+| `Hold above re-engages` | Re-engages what? | `If price holds above $2.05, the position re-enters the ACCUMULATION setup tomorrow` |
+| `Pattern tag fired` | What pattern? Which tag? | name the pattern: `LONG-TRAP pattern fired — funding extreme while price drops` |
+
+**Rule:** Every reference to upstream data must include enough context for a reader who didn't open the upstream artifact to understand. Name the source skill, name the metric, give the unit, give the comparison point.
+
+**Two failure modes specific to v4.1 cards:**
+
+1. **Bullet-as-citation** — bullets that read like a citation list rather than a thesis. ("AIXBT names it · narrative RIDE · vol breakout.") Each bullet must be a complete observation, not a label.
+
+2. **Telegraphic sentence fragments** — dropping subjects, articles, and verbs to compress. ("Funding flushed.") Write complete sentences with subject + verb + object.
+
+```
+✗ AIXBT #1, Fading→Peak, $1.8M buybacks.
+
+✓ AIXBT named HYPE as their top lead today. Narrative-tracker
+  moved Hyperliquid from Fading to Peak. The protocol is buying
+  back $1.8M in tokens daily.
+```
+
+```
+✗ Hold above re-engages.
+
+✓ If the price holds above $2.05 with OI rebuilding, the asset
+  re-enters the ACCUMULATION setup on tomorrow's scan.
 ```
 
 ---

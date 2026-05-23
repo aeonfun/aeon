@@ -306,21 +306,37 @@ HEAVY_DATA='{
       "ticker": "FARTCOIN",
       "direction": "LONG",
       "horizon": "3d",
-      "entry_zone": "market or 0.71",
-      "invalidation": "close below 0.65",
-      "thesis": "Regime flipped ACCUMULATION today, smart money positioning, funding flushed",
+      "entry_zone": "market or first pullback to $0.71",
+      "invalidation": "close below $0.65",
+      "thesis": [
+        "FARTCOIN regime flipped from SHORT-supporting DISTRIBUTION to LONG-supporting ACCUMULATION today. Funding flushed to neutral after the prior +0.14%/8h squeeze.",
+        "Smart-money long/short ratio reset from 2.4 to 1.3 over the past 12 hours — the late longs that fired the LONG-TRAP have unwound.",
+        "perps-scan tags FRESH-ACCUMULATION, indicating the new long bid was today, not a multi-day pattern. Early entry.",
+        "Meme sector held the $0.65 retest. With the prior short structure gone and bid showing, asymmetry has flipped."
+      ],
       "confluence_fired": ["quant_regime_aligned", "regime_transition", "pattern_tag_supports"],
-      "risks": ["could be a fakeout if BTC.D rolls hard"]
+      "risks": [
+        "Could be a fakeout if BTC dominance rolls hard from here — alts get pressured first.",
+        "FRESH regime tag has lower confidence than CONFIRMED — could reverse on a single red session."
+      ]
     },
     {
       "ticker": "SOL",
       "direction": "LONG",
       "horizon": "7d",
       "entry_zone": "market",
-      "invalidation": "close below 148",
-      "thesis": "Trigger fired — close above 158 confirmed yesterday with vol 1.8x avg. CATALYST-BREAKOUT now active. AI sector tailwind via aixbt-pulse bridge.",
+      "invalidation": "close below $148",
+      "thesis": [
+        "SOL closed above $158 yesterday on 1.8x average volume — the watchlist trigger condition fired. CATALYST-BREAKOUT regime confirmed in today\u2019s perps-scan.",
+        "AI sector remains in RISING phase per narrative-tracker. aixbt-pulse named AI inference demand as the dominant bridge call.",
+        "Top-trader long/short ratio rose 0.3 points over 7 days — smart money positioned ahead of the breakout (STEALTH-POSITIONING pattern).",
+        "OI built 12% in the 24 hours preceding the break, confirming the move had structural support rather than thin-liquidity wickery."
+      ],
       "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "regime_transition", "cross_domain_bridge"],
-      "risks": ["BTC.D rolling could front-run too aggressively"]
+      "risks": [
+        "BTC dominance could roll hard and front-run the alt rotation, taking SOL with it.",
+        "The breakout level $158 is the new floor — a return below it invalidates the structural argument."
+      ]
     }
   ],
   "watchlist": [
@@ -328,27 +344,42 @@ HEAVY_DATA='{
       "ticker": "ARB",
       "direction": "LONG",
       "day_of_watchlist": 3,
-      "trigger": "close above 1.20",
-      "invalidation": "close below 1.05",
-      "thesis": "Building base, narrative attention rising but quant not confirming",
+      "horizon": "3d",
+      "trigger": "close above $1.20 with daily volume above $200M",
+      "invalidation": "close below $1.05 before the trigger fires",
+      "thesis": [
+        "ARB has been building a base around $1.10 for three days. Volume has been compressed below average — coiling pattern.",
+        "Narrative-tracker has the L2 sector in EMERGING phase. Attention is building but no concrete catalyst yet.",
+        "perps-scan does not yet flag ARB in a regime — quant confirmation is missing. Watching for a tape that confirms the chart."
+      ],
       "confluence_fired": ["narrative_phase_aligned"]
     },
     {
       "ticker": "PEPE",
       "direction": "SHORT",
       "day_of_watchlist": 1,
-      "trigger": "funding extreme >+0.15%/8h with top L/S >2.0",
-      "invalidation": "close above last 7d high",
-      "thesis": "DISTRIBUTION building but not yet at LONG-TRAP severity",
+      "horizon": "3d",
+      "trigger": "funding extreme above +0.15%/8h AND top-trader L/S above 2.0",
+      "invalidation": "close above the last 7-day high",
+      "thesis": [
+        "PEPE is in DISTRIBUTION regime — funding has warmed past the +0.06% gate and OI continues to build.",
+        "Top-trader L/S has crept from 1.4 to 1.8 over 7 days. Not yet at LONG-TRAP severity but trending that way.",
+        "Meme sector in PEAK alongside FARTCOIN. If FARTCOIN breaks first, the sector unwinds — PEPE follows."
+      ],
       "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned"]
     },
     {
       "ticker": "GRASS",
       "direction": "LONG",
       "day_of_watchlist": 1,
-      "trigger": "hold above 4.20 with 24h vol >$300M",
-      "invalidation": "close below 3.80",
-      "thesis": "DePIN narrative co-leader. Breakout confirmation pending.",
+      "horizon": "3d",
+      "trigger": "hold above $4.20 with 24h volume above $300M",
+      "invalidation": "close below $3.80",
+      "thesis": [
+        "GRASS is co-leading the DePIN narrative with NEAR in narrative-tracker. Today rated 5/5 with a RIDE call.",
+        "Today\u2019s session printed +30% on $260M volume. Just under the volume threshold for trigger — wants one more confirming day.",
+        "AIXBT named GRASS as a DePIN basket holding in their morning brief. Cross-narrative alignment with AI/DePIN bridge call."
+      ],
       "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag"]
     }
   ],
@@ -363,12 +394,12 @@ HEAVY_DATA='{
       {"open_id": "TAO-2026-05-19-001", "closed_price": 525.0, "close_reason": "horizon reached, momentum slowing", "return_pct": 9.4, "return_vs_btc_pct": 7.1, "return_vs_eth_pct": 8.2, "horizon_realized": "3d", "auto_flipped": false}
     ],
     "open_now": [
-      {"ticker": "FARTCOIN", "direction": "LONG", "fired_price": 0.7040, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market or 0.71", "invalidation": "close below 0.65", "horizon": "3d", "thesis": "Regime flipped ACCUMULATION today", "confluence_fired": ["quant_regime_aligned", "regime_transition", "pattern_tag_supports"], "confluence_missing": [], "named_risks": ["could be a fakeout if BTC.D rolls"], "watchlist_id_promoted": null},
-      {"ticker": "SOL", "direction": "LONG", "fired_price": 159.50, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market", "invalidation": "close below 148", "horizon": "7d", "thesis": "CATALYST-BREAKOUT confirmed", "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "regime_transition", "cross_domain_bridge"], "confluence_missing": [], "named_risks": ["BTC.D rolling"], "watchlist_id_promoted": "SOL-watchlist-2026-05-20-001"}
+      {"ticker": "FARTCOIN", "direction": "LONG", "fired_price": 0.7040, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market or first pullback to $0.71", "invalidation": "close below $0.65", "horizon": "3d", "thesis": ["FARTCOIN regime flipped ACCUMULATION today, funding flushed.", "Smart-money L/S reset 2.4 to 1.3.", "FRESH-ACCUMULATION tag — early entry.", "Meme sector held the retest."], "confluence_fired": ["quant_regime_aligned", "regime_transition", "pattern_tag_supports"], "confluence_missing": [], "named_risks": ["Could fakeout if BTC dominance rolls.", "FRESH tag is lower confidence than CONFIRMED."], "watchlist_id_promoted": null},
+      {"ticker": "SOL", "direction": "LONG", "fired_price": 159.50, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market", "invalidation": "close below $148", "horizon": "7d", "thesis": ["SOL closed above $158 yesterday on 1.8x vol — trigger fired.", "AI sector in RISING phase per narrative-tracker.", "Top-trader L/S rose 0.3 points over 7d — STEALTH-POSITIONING.", "OI built 12% in 24h before the break."], "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "regime_transition", "cross_domain_bridge"], "confluence_missing": [], "named_risks": ["BTC dominance roll could front-run the alt rotation.", "Return below $158 invalidates."], "watchlist_id_promoted": "SOL-watchlist-2026-05-20-001"}
     ],
     "add_watchlist": [
-      {"ticker": "PEPE", "direction": "SHORT", "trigger": "funding extreme >+0.15%/8h with top L/S >2.0", "invalidation": "close above last 7d high", "horizon": "3d", "thesis": "DISTRIBUTION building", "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned"], "named_risks": ["could squeeze before trigger"]},
-      {"ticker": "GRASS", "direction": "LONG", "trigger": "hold above 4.20 with 24h vol >$300M", "invalidation": "close below 3.80", "horizon": "3d", "thesis": "DePIN co-leader", "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag"], "named_risks": ["narrative could rotate to AI"]}
+      {"ticker": "PEPE", "direction": "SHORT", "trigger": "funding extreme above +0.15%/8h AND top L/S above 2.0", "invalidation": "close above last 7-day high", "horizon": "3d", "thesis": ["PEPE in DISTRIBUTION — funding past the +0.06% gate.", "Top-trader L/S crept from 1.4 to 1.8 over 7d.", "Meme sector PEAK — if FARTCOIN breaks, PEPE follows."], "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned"], "named_risks": ["Could squeeze before trigger if funding flushes overnight."]},
+      {"ticker": "GRASS", "direction": "LONG", "trigger": "hold above $4.20 with 24h volume above $300M", "invalidation": "close below $3.80", "horizon": "3d", "thesis": ["GRASS co-leads DePIN with NEAR — rated 5/5 RIDE today.", "+30% on $260M volume — just under trigger threshold.", "AIXBT named in DePIN basket — cross-narrative alignment."], "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag"], "named_risks": ["Narrative could rotate to AI before GRASS confirms."]}
     ],
     "keep_watchlist": ["ARB-watchlist-2026-05-20-001"]
   }
@@ -463,9 +494,14 @@ SKIP_DATA='{
       "ticker": "ARB",
       "direction": "LONG",
       "day_of_watchlist": 3,
-      "trigger": "close above 1.20",
-      "invalidation": "close below 1.05",
-      "thesis": "still building base, no fresh catalyst",
+      "horizon": "3d",
+      "trigger": "close above $1.20 with daily volume above $200M",
+      "invalidation": "close below $1.05 before the trigger fires",
+      "thesis": [
+        "ARB still building a base around $1.10. No fresh catalyst landed today.",
+        "Narrative-tracker has the L2 sector in EMERGING — attention building slowly.",
+        "Quant signal still missing — no perps-scan regime fire. Patience until the chart confirms."
+      ],
       "confluence_fired": ["narrative_phase_aligned"]
     }
   ],
@@ -507,10 +543,18 @@ COLD_DATA='{
       "direction": "LONG",
       "horizon": "7d",
       "entry_zone": "market",
-      "invalidation": "close below 460",
-      "thesis": "AI narrative leader, CATALYST-BREAKOUT FRESH, [BOTH] tag",
+      "invalidation": "close below $460",
+      "thesis": [
+        "TAO fired CATALYST-BREAKOUT in today\u2019s perps-scan — FRESH tag confirms the move happened in the last 24h, not multi-day.",
+        "AI narrative is the dominant sector in narrative-tracker, rated 5/5 with a RIDE call. TAO is the primary beta to that narrative.",
+        "perps-scan tags TAO as [BOTH] — both the quant signal and the discovery feed (attention) named it independently. Highest-quality starting point.",
+        "aixbt-pulse named AI inference demand in today\u2019s cross-domain bridge. Macro tailwind aligning with on-chain bid."
+      ],
       "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"],
-      "risks": ["AI sector could rotate to memes"]
+      "risks": [
+        "AI sector could rotate to memes if the broader risk-on tape returns — TAO loses its sector premium.",
+        "FRESH tag is lower-confidence than CONFIRMED — a single-session move can reverse on a red day."
+      ]
     }
   ],
   "watchlist": [],
@@ -518,7 +562,7 @@ COLD_DATA='{
     "evaluations": [],
     "close": [],
     "open_now": [
-      {"ticker": "TAO", "direction": "LONG", "fired_price": 485.0, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market", "invalidation": "close below 460", "horizon": "7d", "thesis": "AI narrative leader, CATALYST-BREAKOUT FRESH", "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"], "confluence_missing": [], "named_risks": ["AI sector could rotate to memes"], "watchlist_id_promoted": null}
+      {"ticker": "TAO", "direction": "LONG", "fired_price": 485.0, "fired_btc_price": 95210.0, "fired_eth_price": 3510.0, "entry_zone": "market", "invalidation": "close below $460", "horizon": "7d", "thesis": ["TAO fired CATALYST-BREAKOUT — FRESH tag.", "AI sector 5/5 RIDE — TAO primary beta.", "[BOTH] tag — quant + attention aligned.", "aixbt-pulse AI inference bridge call."], "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"], "confluence_missing": [], "named_risks": ["AI sector could rotate to memes.", "FRESH tag lower confidence than CONFIRMED."], "watchlist_id_promoted": null}
     ],
     "add_watchlist": [],
     "keep_watchlist": []
