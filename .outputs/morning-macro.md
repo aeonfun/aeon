@@ -1,25 +1,29 @@
-Market Morning · 23 May · Risk-off deepens, Warsh as Fed Chair
+Market Morning · 23 May · Risk-off, conflict premium rebuilding
 
-BTC bled to $74,665, -3.36% 24h, -4.69% 7d. Breadth collapsed to 3/20 green (stablecoins + Canton). F&G 28 day two.
+BTC at $74,686, down 3.31% on the day and 4.71% on the week.
+Third session sub-$75K with breadth at 3/20 green and F&G stuck at 28.
+Iran airspace closure at 39.3% YES (+10pp). May 24 deadline lands tomorrow.
 
-Narrative-tracker still carries three RIDE phases: AI agents 5/5 RISING, Decentralized compute 5/5 RISING, RWA 5/5 PEAK with trail. Social signal diverges from bleeding price tape.
+ETF outflows hit $1.26B weekly led by IBIT.
+AI agents and Decentralized compute lead narrative-tracker at 5/5 RISING — the only two standing on this tape.
 
-Stance: trail the rides, fade leverage prints. Cash-patient on majors until breadth turns.
+Stance: short the smart-money-confirmed bleeds, ride the relative strength on existing longs.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Warsh confirmed as incoming Fed Chair. Hawkish recalibration is the load-bearing bridge. Rate-relief deferral compounds with persistent Hormuz toll push. Two legs, no near-term resolution.
+Warsh took office as Fed Chair. The rate-delay thesis converts from signal to policy.
+Hormuz shipping risk feeds oil, oil feeds gas, gas feeds consumer sentiment.
+Today's record-low gas-sentiment print confirms the transmission to spending.
 
-BTC's $400M flash-crash below $75K against Dow's record 50,579 is the rate-disconnect playing out. $60-70K bear targets entered the AIXBT grounding narrative today. Narratives that name price targets attract positioning that reinforces the move.
+AIXBT promoted ZEC/privacy to crypto item 3, displacing the entire RWA structural story.
+Direct conflict with today's ZEC SHORT. Narrative bid against quant tape. Tape fired first.
 
 
 ─────────  TODAY  ─────────
 
-#perps-brief failed render on schema validation. Sector read partial. See #perps-scan raw view and re-dispatch.
+Action in #perps-brief. NEAR, HYPE, ZEC RIDE through the bleed.
+BCH SHORT on the heaviest smart-money exit in the universe. Top-trader long/short dropped 1.43 points on a -17% week.
+GENIUS SHORT on the listing-pump fade. Liquidations 2.76x typical, funding flipped negative.
 
-Carryforward: NEAR LONG + HYPE LONG RIDE (HYPE invalidation $54), ONDO closed LOSS, ZEC SHORT live, BSB/BEAT/GENIUS shorts + TAO long on watchlist.
-
-HYPE three-feed confluence holds — Hyperliquid PEAK + AIXBT #1 lead + HIP-4 prediction markets live.
-
-Take: ride narrative carriers, lean structural shorts, #perps-brief needs re-dispatch.
+Take: cash for new longs, short the bleeds with named smart-money exits. The consumer-sentiment gap is the headwind.
