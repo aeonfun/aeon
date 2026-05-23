@@ -1,12 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-23T06:34:56Z",
+  "last_analyzed": "2026-05-23T09:57:18Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured output with specific metrics, clear narrative categorization, and actionable follow-up logic; flags recurring ISS-005 issue.",
-  "flags": [
-    "ISS-005"
-  ],
-  "avg_score": 3.93,
+  "assessment": "Substantive, well-reasoned output showing intelligent state management and proactive issue prevention (ISS-005 tracking, baseline markers for diffs)",
+  "flags": [],
+  "avg_score": 3.94,
   "history": [
     {
       "date": "2026-05-18",
@@ -62,6 +60,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {

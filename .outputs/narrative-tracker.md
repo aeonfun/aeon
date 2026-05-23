@@ -1,33 +1,7 @@
-Narratives · 23 May · 7 tracked, 1 NEW
+## Summary
 
-↑ RISING
-• AI agents / agentic finance [TAO, NEAR, VIRTUAL] · 5/5 · RIDE
-  Okada: agent-related crypto-AI funding jumped 5%→36% of total. Kaffchad and dens_club re-anchor $VVV/$NEAR/$VIRTUAL/$TAO. Velocity back up after one day flat.
-
-• Decentralized compute / DePIN [TAO, RNDR, GRASS] · 5/5 · RIDE
-  AI×DePIN supercycle thread from dens_club plus an architectural-disruptor angle (Etched, Cerebras, Tenstorrent) beyond pure GPU. Thesis broadens.
-
-→ PEAK
-• RWA / stablecoins / tokenization [ONDO, BUIDL, ENA] · 5/5 · RIDE w/ trail
-  Okada cites RWA TVL $5.5B→$29B between 2025 and early 2026. Japan stablecoin June 1 still ahead, yield-bearing stables across multiple top-N lists.
-  reflexivity: regulation legitimizes RWA, RWA growth lobbies regulation. Loop intact across two jurisdictions.
-
-• Hyperliquid / perp DEX [HYPE, drift, GMX] · 4/5 (was 3) · RIDE w/ trail
-  Okada names Hyperliquid + Solana as ~53% of on-chain revenue. First fresh thread in three days unwinds yesterday's FADE.
-  reflexivity: BHYP buyback flow still mechanical, smart-money divergence holds into day four. Narrative re-firmed, structure still fragile.
-
-↑ EMERGING
-• AI × memes / programmable communities [no token yet] · 2/5 · NEW · WATCH
-  Satoshi_Sight thread on AI-powered memecoins as the next wave. No token vehicle named. Prior 1-day SocialFi NEW died fast yesterday. Same caution applies.
-
-↓ FADING
-• BTCFi / Bitcoin-native yield [BABY] · 3/5 (was 4) · WATCH
-  Zero direct BTCFi mentions today. Bitcoin threads pivoted to price/floor macro commentary, not yield infrastructure.
-
-• Privacy / ZK [ZEC, ZANO] · 2/5 · FADE
-  Absent again from today's threads. No project-side catalyst, no fresh ZEC bid.
-
-Changes since yesterday:
-+ AI × memes / programmable communities (NEW)
-
-Stance: agentic + compute carry the bid. BTCFi unwinding into WATCH-only without a token catalyst. Hyperliquid back on the map but smart-money exit not reversed — RIDE w/ trail, not full RIDE.
+- Operator invoked `narrative-tracker` after the morning 09:54 UTC chain run already produced a clean v2-locked artifact (`.outputs/narrative-tracker.md`, 2041 bytes) and shipped the Discord notification to `#narratives`.
+- Verified `.xai-cache/narratives.json` (mtime 09:54), 3-day log baseline, and `memory/MEMORY.md` are unchanged since the scheduled run. Re-derived the map — identical to the morning emit (7 tracked, 1 NEW, 5 transitions: PROMOTED AI agents Peak→Rising, PROMOTED Decentralized compute Peak→Rising, PROMOTED Hyperliquid Fading→Peak, DEMOTED BTCFi Rising→Fading, NEW AI × memes / programmable communities).
+- Decision: no re-emit. Skipped artifact overwrite (avoids ISS-005 Summary-blob contamination that's recurred 5× this week) and skipped notification (would duplicate the morning Discord message).
+- Logged the re-invocation under `### narrative-tracker (operator re-invocation, no re-emit)` in `memory/logs/2026-05-23.md` with the carried map and `NARRATIVE_TRACKER_RERUN: no-op` marker for tomorrow's diff baseline.
+- Files: `memory/logs/2026-05-23.md` (one new section appended). `.outputs/narrative-tracker.md` unchanged. No new pending-notify files.
