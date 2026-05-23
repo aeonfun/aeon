@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-23T06:37:25Z",
+  "last_analyzed": "2026-05-23T07:06:21Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific findings, proper caveats, and actionable follow-ups; well-documented limitations.",
+  "assessment": "Well-executed skill run with substantive market analysis, proper file updates, complete summary, and thoughtful system integration decisions.",
   "flags": [],
-  "avg_score": 4.14,
+  "avg_score": 4.13,
   "history": [
     {
       "date": "2026-05-18",
@@ -56,6 +56,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {
