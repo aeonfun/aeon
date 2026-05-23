@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-22T15:54:33Z",
+  "last_analyzed": "2026-05-23T06:36:16Z",
   "quality_score": 4,
-  "assessment": "Substantive market snapshot with specific metrics, clear regime analysis, and actionable token picks; well-structured completion with file updates and commits.",
+  "assessment": "Substantive market analysis with specific metrics, clear regime call, and actionable implications; well-structured and properly documented",
   "flags": [],
-  "avg_score": 4.15,
+  "avg_score": 4.14,
   "history": [
     {
       "date": "2026-05-18",
@@ -56,6 +56,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     }
   ]
