@@ -110,9 +110,23 @@ def divider(label: str) -> str:
     return f"{DIVIDER}  {label}  {DIVIDER}"
 
 
-def label_line(label: str, value: str) -> str:
-    """Emit `  label      value` with label left-aligned to LABEL_WIDTH."""
-    return f"{LABEL_INDENT}{label.ljust(LABEL_WIDTH)}{LABEL_PADDING}{value}"
+def label_line(label: str, value: str) -> List[str]:
+    """Emit `  label      value` with wrapped continuation aligned to the
+    value column. Returns a list of lines (one for short values, more for
+    long ones that need to wrap)."""
+    first_prefix = LABEL_INDENT + label.ljust(LABEL_WIDTH) + LABEL_PADDING
+    cont_prefix = " " * len(first_prefix)
+    wrapped = textwrap.wrap(
+        value,
+        width=MAX_LINE,
+        initial_indent=first_prefix,
+        subsequent_indent=cont_prefix,
+        break_long_words=False,
+        break_on_hyphens=False,
+    )
+    if not wrapped:
+        return [first_prefix.rstrip()]
+    return wrapped
 
 
 def bullet_lines(label: str, bullets: List[str]) -> List[str]:
@@ -343,11 +357,11 @@ def render_new_position_card(p: dict) -> List[str]:
     out.append("")
 
     # Metadata block
-    out.append(label_line("ticker", ticker))
-    out.append(label_line("direction", direction))
-    out.append(label_line("horizon", p.get("horizon", "?")))
-    out.append(label_line("entry", p.get("entry_zone") or "market"))
-    out.append(label_line("stop", p.get("invalidation", "")))
+    out.extend(label_line("ticker", ticker))
+    out.extend(label_line("direction", direction))
+    out.extend(label_line("horizon", p.get("horizon", "?")))
+    out.extend(label_line("entry", p.get("entry_zone") or "market"))
+    out.extend(label_line("stop", p.get("invalidation", "")))
 
     # Two blank lines between metadata and thesis (operator UX call)
     out.append("")
@@ -384,12 +398,12 @@ def render_watchlist_card(p: dict) -> List[str]:
     out.append("")
 
     # Metadata block — horizon is optional for watchlist entries
-    out.append(label_line("ticker", ticker))
-    out.append(label_line("direction", direction))
+    out.extend(label_line("ticker", ticker))
+    out.extend(label_line("direction", direction))
     if p.get("horizon"):
-        out.append(label_line("horizon", p["horizon"]))
-    out.append(label_line("trigger", p.get("trigger", "")))
-    out.append(label_line("stop", p.get("invalidation", "")))
+        out.extend(label_line("horizon", p["horizon"]))
+    out.extend(label_line("trigger", p.get("trigger", "")))
+    out.extend(label_line("stop", p.get("invalidation", "")))
 
     # Two blank lines between metadata and thesis
     out.append("")
