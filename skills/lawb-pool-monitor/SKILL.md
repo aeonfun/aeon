@@ -159,7 +159,33 @@ Format (Markdown, Telegram-safe):
 [Pool tx history](https://basescan.org/address/0x48b2db9E89542Baa217bf8dc6269164b7887fE57#events)
 ```
 
-Use `./notify` (or platform-specific `./notify-telegram`) per repo conventions. If `./notify` doesn't accept Markdown, fall back to plain text and inline the explorer link as raw URL.
+**Delivery — invoke the `./notify` script with the full message as a single argument:**
+
+```bash
+./notify "$(cat <<'MSG'
+🎣 LAWB Pool Monitor
+
+Pool: 215.15M LAWB (Δ-185M last 24h)
+ShopVault: 0 LAWB
+Paused: false
+Burn (24h): 185M LAWB → pool depletes in ~28h at current rate
+
+Last 1h activity:
+• 47 redeems · 12.3M LAWB out · 32 unique wallets
+
+Alerts:
+⚠️ HIGH_BURN — burn rate 185M/24h exceeds 100M threshold
+
+https://basescan.org/address/0x48b2db9E89542Baa217bf8dc6269164b7887fE57#events
+MSG
+)"
+```
+
+Notes on the `./notify` script provided by the workflow:
+- It will fan-out to Telegram, Discord, Slack, and email based on which secrets are set.
+- It **suppresses messages shorter than 120 characters that contain `test`, `trace`, `ping`, `debug`, `hello`, or `hi`** — keep alert bodies well above 120 chars (the format above is fine) and avoid those words in titles/snapshots.
+- Markdown is best-effort; the script falls back to plain text if Telegram rejects formatting.
+- Always exactly one `./notify` call per run. Don't repeat — the script dedupes by hash, but multiple calls waste sandbox time.
 
 ### 6. Persist state + log
 
