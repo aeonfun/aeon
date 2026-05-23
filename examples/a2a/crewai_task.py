@@ -55,6 +55,24 @@ def _call_aeon(skill_id: str, var: str) -> str:
 
 
 class AeonPRReviewTool(BaseTool):
+    """
+    A tool for reviewing all open pull requests on a GitHub repository via Aeon.
+    
+    Attributes:
+        name (str): The name identifier for the tool.
+        description (str): A brief description of the tool's functionality.
+        gateway_url (str): The URL of the A2A gateway used for Aeon communication.
+    
+    Execution Flow:
+        1. The caller invokes the `_run` method with the repository identifier.
+        2. The method `_run` then calls `_call_aeon` with the skill ID and repository info.
+        3. `_call_aeon` handles the interaction with the Aeon service via HTTP requests.
+        4. Incoming results from Aeon are processed and returned as a markdown summary.
+
+    Dependency:
+        _call_aeon: Handles API communication with Aeon services.
+        requests: Used for making HTTP requests to the Aeon service.
+    """
     name: str = "aeon_pr_review"
     description: str = (
         "Review all open pull requests on a GitHub repo via Aeon. "
@@ -64,6 +82,16 @@ class AeonPRReviewTool(BaseTool):
     gateway_url: str = Field(default=GATEWAY)
 
     def _run(self, repo: str) -> str:
+        """
+        Executes the PR review process for a specified GitHub repository.
+
+        Args:
+            repo (str): The target GitHub repository in owner/repo format.
+
+        Returns:
+            str: A markdown summary with risk flags, suggested merges,
+                 and any blocking issues identified in the PRs.
+        """
         return _call_aeon("aeon-pr-review", repo)
 
 

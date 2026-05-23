@@ -24,9 +24,27 @@ from autogen import AssistantAgent, UserProxyAgent
 
 GATEWAY = os.environ.get("A2A_GATEWAY_URL", "http://localhost:41241")
 
-
 def call_aeon_skill(skill_id: str, var: str = "") -> str:
-    """Submit an Aeon task and poll until done. Returns the artifact text."""
+    """
+    Submit an Aeon task by posting a request to the Aeon gateway and poll for the result until the task is done.
+    
+    Args:
+        skill_id: The identifier of the Aeon skill to execute.
+        var: Optional variable input for the skill.
+
+    Returns:
+        The text of the completed task's artifact.
+    
+    Raises:
+        RuntimeError: If the skill execution fails or is canceled.
+        TimeoutError: If the skill execution does not complete within the allowed time.
+    
+    Dependencies:
+        - Requests module for HTTP requests.
+        - UUID for generating unique task identifiers.
+        - System sleep for polling intervals.
+        - Environment variable `A2A_GATEWAY_URL` for defining the gateway URL.
+    """
     task_id = str(uuid.uuid4())
     requests.post(
         GATEWAY,
@@ -60,11 +78,9 @@ def call_aeon_skill(skill_id: str, var: str = "") -> str:
             raise RuntimeError(f"Aeon skill {skill_id} failed: {status['status']}")
     raise TimeoutError(f"Aeon skill {skill_id} timed out")
 
-
 def aeon_deep_research(topic: str) -> str:
     """Exhaustive multi-source research via Aeon (30–50 sources)."""
     return call_aeon_skill("aeon-deep-research", topic)
-
 
 config_list = [{"model": "gpt-4o-mini", "api_key": os.environ["OPENAI_API_KEY"]}]
 

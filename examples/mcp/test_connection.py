@@ -29,9 +29,16 @@ from pathlib import Path
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-
 def repo_root() -> Path:
-    """Walk up from this file until we find the Aeon repo root."""
+    """
+    Walk up from this file until we find the Aeon repo root.
+
+    Returns:
+        Path: The path object pointing to the root of the Aeon repository.
+
+    Raises:
+        SystemExit: If the repository root cannot be found.
+    """
     here = Path(__file__).resolve()
     for candidate in (here, *here.parents):
         if (candidate / "skills.json").exists() and (candidate / "mcp-server").is_dir():
@@ -40,8 +47,21 @@ def repo_root() -> Path:
         "Could not locate Aeon repo root (no skills.json + mcp-server/ above this file)."
     )
 
-
 async def main(tool_name: str, var_value: str) -> int:
+    """
+    Initialize and verify the agent configuration by connecting to the MCP server
+    and calling the specified tool.
+
+    Args:
+        tool_name (str): The name of the tool to call on the MCP server.
+        var_value (str): The variable value to pass to the tool.
+
+    Returns:
+        int: The exit status; 0 if successful, non-zero if an error occurs.
+
+    Prints:
+        The list of tools advertised by the server and the result of calling the specified tool.
+    """
     root = repo_root()
     server_js = root / "mcp-server" / "dist" / "index.js"
     if not server_js.exists():

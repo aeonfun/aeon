@@ -25,6 +25,19 @@ GATEWAY = os.environ.get("A2A_GATEWAY_URL", "http://localhost:41241")
 
 
 def _call_aeon(skill_id: str, var: str) -> str:
+    """Execute an Aeon task to process a skill with specified parameters and return a result.
+
+    Args:
+        skill_id: Identifier for the skill to be invoked.
+        var: Variable parameter to be passed to the Aeon skill.
+
+    Returns:
+        Result string output from the skill execution.
+
+    Raises:
+        RuntimeError: If the Aeon task fails or is canceled.
+        TimeoutError: If the Aeon task does not complete within the specified time limits.
+    """
     task_id = str(uuid.uuid4())
     requests.post(
         GATEWAY,

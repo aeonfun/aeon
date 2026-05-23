@@ -25,7 +25,32 @@ MAX_POLLS = 120  # 10 min — matches Aeon's GitHub Actions timeout
 
 
 def call_aeon(skill_id: str, var: str = "") -> str:
-    """Submit an Aeon skill task via JSON-RPC and poll until it completes."""
+    """
+    Submit an Aeon skill task via JSON-RPC and poll until it completes.
+
+    The function initiates a task by sending a JSON-RPC request to a predefined
+    Aeon gateway using the provided `skill_id` and an optional variable `var`.
+    It then repeatedly polls at intervals (defined by POLL_SECONDS) up to a maximum
+    number of attempts (MAX_POLLS) to check the task's state and retrieve the result
+    once the task is completed. If the task fails or is canceled, an exception is raised.
+    If the task does not complete within the allowed polls, a timeout error is raised.
+
+    Dependencies:
+    - Requires a valid environment variable `A2A_GATEWAY_URL` or defaults to the
+      local host URL.
+    - Uses the `requests` library to perform HTTP POST requests.
+
+    Args:
+        skill_id (str): The ID of the Aeon skill to be executed.
+        var (str, optional): An optional variable to be used by the Aeon skill.
+
+    Returns:
+        str: The textual result of the completed Aeon skill task.
+
+    Raises:
+        RuntimeError: If the task is rejected by Aeon or fails/cancels during execution.
+        TimeoutError: If the task does not complete within the specified time.
+    """
     task_id = str(uuid.uuid4())
     submit = requests.post(
         GATEWAY,
