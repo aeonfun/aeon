@@ -197,6 +197,10 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `thesis` — **array of 2-3 bullet strings**. Same writing rules as new-position thesis bullets.
 - `confluence_fired[]` — at least one criterion (ledger-only, not rendered)
 
+**Optional for watchlist (include if known, omit otherwise):**
+
+- `horizon` — `24h | 3d | 7d | multi-week`. May be unknown until the trigger fires and the entry promotes to a position. Omit cleanly if you haven't committed to a horizon yet.
+
 ## Write the structured data artifact
 
 **Write `.outputs/perps-brief.data.json`. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. DO NOT edit `memory/topics/state/active-setups.json` directly.**
