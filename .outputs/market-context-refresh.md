@@ -1,30 +1,31 @@
 # Market Context — 2026-05-23
 
-Take: risk-off — BTC -3.36% 24h at $74,665, breadth 3/20 green (2 stablecoins + Canton +0.28%). Conviction: high.
+Take: risk-off — BTC -3.3% 24h at $74.7K, breadth 3/20 green; Iran airspace closure surged to 39.3% YES (from 29.4%) with deadline tomorrow and disputed resolution. Conviction: high.
 
 ## Snapshot
-- BTC $74,665 (-3.36% 24h, -4.69% 7d) · dominance 58.07% (+0.02pp 24h)
-- ETH $2,027 (-4.45% 24h, -7.58% 7d) · ETH/BTC 0.02716
-- SOL $81.96 (-5.99% 24h, -6.19% 7d)
-- Total mcap $2.58T (-3.25% 24h) · DEX vol $6.38B 24h (+13.8% vs 7d avg $5.61B)
-- Breadth: 3/20 green 24h · 3/20 green 7d
+- BTC $74,686 (-3.31% 24h, -4.71% 7d) · dominance 58.06% (-0.01pp 24h)
+- ETH $2,029 (-4.35% 24h, -7.47% 7d) · ETH/BTC 0.02717
+- SOL $82.24 (-5.43% 24h, -5.98% 7d)
+- Total mcap $2.58T (-3.19% 24h) · DEX vol $6.38B 24h
+- Breadth: 3/20 green 24h · 4/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 28
-- TVL (top protocols): Lido $17.97B (-7.38% 7d), SSV $14.88B (-7.81%), Aave V3 $13.25B (-7.13%), Morpho $7.24B (-3.56%), EigenLayer $6.33B (-11.57%)
+- TVL top DeFi: Lido $17.98B (-6.5% 7d), SSV $14.88B (-7.8%), Aave $13.28B (-7.1%), WBTC $8.52B (-5.0%), BnbStETH $7.49B (-7.5%)
 
 ## What Changed
-- BTC crossed below $75K ($74,665 from $75,321 prior); third consecutive lower close.
-- SOL leads the decline: -5.99% 24h from -2.87% prior; steepest major drop of the session.
-- Iran airspace closure fell from near-certain (97.9% YES) to 29.4%; ceasefire held through May 22. Geopolitical premium pulling back.
+- Iran airspace closure (May 24 deadline — tomorrow) jumped to 39.3% YES from 29.4% (+9.9pp in one session), disputed resolution active. Conflict premium rebuilding.
+- BTC flat at $74,686 (+$21 from prior close). No new bear close. Third session sub-$75K without extension.
+- 7d breadth ticked from 3/20 to 4/20: HYPE, ZEC, TRX, Canton hold net weekly gains despite red 24h sessions.
 
 ## Active Narratives
-- AI/DePIN/compute — phase: fading. NEAR -7.90%, GRASS -9.61%, AKT -8.94% 24h; SKYAI +23.40% is a single micro-cap exception, not a sector reversal.
-- Perp DEX — phase: fading. HYPE -5.90% 24h seventh session below $63; LIT -14.20% deepening.
-- Privacy/ZK — phase: fading. ZEC $596 vs $667.93 call price on 2026-05-21; seventh consecutive losing session.
-- Geopolitical risk — phase: fading. Iran airspace 97.9% to 29.4%; ceasefire held through May 22.
+- Geopolitical risk — phase: rising. Evidence: Iran airspace 39.3% YES (+9.9pp), disputed resolution, May 24 deadline.
+- Privacy/ZK — phase: fading. Evidence: ZEC $588 (-7.67% 24h), -11.9% from May 21 call.
+- Perp DEX — phase: fading. Evidence: HYPE $55.71 (-6.24% 24h), -10.4% from May 21 ATH.
+- AI/DePIN/compute — phase: fading. Evidence: NEAR -6.98%, SUI -9.07%, PENGU -11.32% 24h.
+- RWA/regulatory — phase: emerging. Evidence: Canton +0.50% sole green in top 20; CLARITY Act bipartisan Senate Banking vote.
 
 ## Polymarket Highlights (top by 24h vol)
-- US x Iran permanent peace deal by May 31 — YES 15.5%, vol $4.48M
-- Iran closes airspace by May 24 — YES 29.4%, vol $4.09M (was >97%, now inside signal range)
+- Iran closes its airspace by May 24 — YES 39.3%, vol $4.51M (disputed resolution, deadline tomorrow)
+- US x Iran permanent peace deal by May 31 — YES 16.5%, vol $4.52M
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok

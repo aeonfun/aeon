@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-23T10:05:18Z",
+  "last_analyzed": "2026-05-23T11:01:35Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data points, comparative deltas from prior run, geopolitical insights (Iran airspace), and proper memory/logging structure; actionable for traders.",
+  "assessment": "Complete execution with specific market data updates, proper file management, and structured logging; output truncated prevents full content assessment",
   "flags": [],
-  "avg_score": 4.13,
+  "avg_score": 4.12,
   "history": [
     {
       "date": "2026-05-18",
@@ -56,6 +56,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     },
     {

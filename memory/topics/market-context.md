@@ -1,74 +1,68 @@
 # Market Context (as of 2026-05-23)
 
-> **Take:** risk-off — BTC -3.36% 24h at $74,665, breadth 3/20 green across top-cap majors (2 stablecoins + Canton +0.28%). Conviction: high.
+> **Take:** risk-off — BTC -3.3% 24h at $74.7K, breadth 3/20 green; Iran airspace closure surged to 39.3% YES (from 29.4% prior) with deadline tomorrow and a disputed resolution attempt on record. Conviction: high.
 
 ## Signal Snapshot
-- BTC $74,665 (-3.36% 24h, -4.69% 7d) · dominance 58.07% (+0.02pp 24h)
-- ETH $2,027 (-4.45% 24h, -7.58% 7d) · ETH/BTC 0.02716
-- SOL $81.96 (-5.99% 24h, -6.19% 7d)
-- Total mcap $2.58T (-3.25% 24h) · DEX vol $6.38B 24h (+13.8% vs 7d avg $5.61B)
-- Breadth: 3/20 green 24h · 3/20 green 7d
+- BTC $74,686 (-3.31% 24h, -4.71% 7d) · dominance 58.06% (-0.01pp 24h)
+- ETH $2,029 (-4.35% 24h, -7.47% 7d) · ETH/BTC 0.02717
+- SOL $82.24 (-5.43% 24h, -5.98% 7d)
+- Total mcap $2.58T (-3.19% 24h) · DEX vol $6.38B 24h
+- Breadth: 3/20 green 24h · 4/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 28
 
 ## What Changed Since Last Refresh
-- BTC crossed below $75K: at $74,665, down from $75,321 prior; third consecutive lower close.
-- SOL leads the decline: -5.99% 24h from -2.87% prior, steepest major-cap drop of the session.
-- Iran airspace closure probability fell from near-certain (97.9% YES, excluded prior) to 29.4%; ceasefire held through May 22. Geopolitical premium pulling back.
+- Iran airspace closure (May 24 deadline — tomorrow) surged from 29.4% to 39.3% YES (+9.9pp in one session), with a disputed resolution attempt filed today. Conflict premium rebuilding after the May 22 de-escalation read. This reverses the prior session's geopolitical call.
+- BTC flat at $74,686 (+$21 from prior close of $74,665). No new bear close. Third session sub-$75K without the range extending lower.
+- 7d breadth ticked from 3/20 to 4/20: HYPE (+33.6% 7d from May 21 ATH run), ZEC (+18.9% 7d), TRX (+2.1% 7d), Canton (+1.7% 7d) all hold net weekly gains despite red 24h sessions.
 
 ## Active Narratives
-- **AI/DePIN/compute** — phase: fading. Evidence: NEAR -7.90%, GRASS -9.61%, AKT -8.94% 24h; all major names red; SKYAI +23.40% is a single micro-cap exception with no sector confirmation.
-- **Perp DEX** — phase: fading. Evidence: HYPE -5.90% 24h (seventh consecutive session below $63 peak), LIT -14.20% 24h deepening the sector breakdown.
-- **Privacy/ZK** — phase: fading. Evidence: ZEC $596 vs $667.93 call price on 2026-05-21; -11% from peak, seventh consecutive losing session.
-- **Geopolitical risk** — phase: fading. Evidence: Iran airspace closure fell from 97.9% to 29.4% YES; ceasefire held through May 22 (99.65% YES, resolved); oil premium headwind easing.
+- **Geopolitical risk** — phase: rising. Evidence: Iran airspace closure at 39.3% YES (+9.9pp in 24h, deadline May 24), disputed resolution attempt on record; ceasefire framework showing stress after holding through May 22.
+- **Privacy/ZK** — phase: fading. Evidence: ZEC $588 (-7.67% 24h), -11.9% from May 21 call price of $667.93; still CoinGecko trending (rank 6) but price breaks the narrative.
+- **Perp DEX** — phase: fading. Evidence: HYPE $55.71 (-6.24% 24h), -10.4% from May 21 ATH of $62.18; June 6 Core Contributor unlock (~$375M) intact as the structural overhang.
+- **AI/DePIN/compute** — phase: fading. Evidence: NEAR $2.08 (-6.98% 24h), SUI $1.00 (-9.07% 24h), PENGU $0.00856 (-11.32% 24h) — all trending names selling with the broad tape.
+- **RWA/regulatory** — phase: emerging. Evidence: Canton +0.50% 24h, sole green non-stablecoin in the top 20; CLARITY Act cleared Senate Banking Committee with bipartisan vote, adding first clear exchange-token regulatory catalyst of 2026.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $17.97B (-7.38%)
+- Lido: $17.98B (-6.50%)
 - SSV Network: $14.88B (-7.81%)
-- Aave V3: $13.25B (-7.13%)
-- Morpho Blue: $7.24B (-3.56%)
-- EigenLayer: $6.33B (-11.57%)
+- Aave V3: $13.28B (-7.05%)
+- WBTC: $8.52B (-4.99%)
+- Binance staked ETH: $7.49B (-7.45%)
 
-## Chain Flow (top 5 by TVL, 7d)
-- Ethereum: $41.81B (7d change: n/a — chains endpoint does not return 7d delta)
+## Chain Flow (top 3 by TVL, 7d)
+- Ethereum: $41.80B (7d change: n/a — chains endpoint does not return 7d delta)
 - BSC: $5.46B (7d change: n/a)
-- Solana: $5.40B (7d change: n/a)
-- Tron: $5.02B (7d change: n/a)
-- Base: $4.40B (7d change: n/a)
+- Solana: $5.37B (7d change: n/a)
 
 ## Stablecoins
-Total: $398.6B (prior run reported $288.7B using partial count; individual coin amounts unchanged). USDT $189.46B · USDC $76.60B · USDS $8.85B · USD1 $4.80B · combined share of mcap ~15.4%.
+Total: $295B (partial — DeFiLlama top 8 by circulating supply). USDT $189.5B · USDC $76.6B · USDS $8.85B · USD1 $4.80B · combined top-4 share of mcap ~10.9%.
 
 ## Trending (CoinGecko)
-- SKYAI — SkyAI, $0.31, +23.40% 24h; only trending green; AI/compute micro-cap; single-day print, no sector confirmation.
-- HYPE — Hyperliquid, $55.64, -5.90% 24h; perp-DEX fade, seventh session below $63.
-- ZEC — Zcash, $596.30, -7.11% 24h; privacy fade, seventh consecutive losing session.
-- NEAR — NEAR Protocol, $2.08, -7.90% 24h; AI/compute, sustained sector selling.
-- TAO — Bittensor, $260.70, -7.59% 24h; AI infrastructure broad decline.
-- VVV — Venice Token, $17.58, -3.96% 24h; AI agents, moderate sell.
-- GRASS — Grass, $0.41, -9.61% 24h; DePIN, sector flush.
-- LIT — Lighter, $1.14, -14.20% 24h; perp-DEX narrative collapsed, deepening.
-- SUI — Sui, $1.00, -9.33% 24h; L1 sell-off.
-- AKT — Akash Network, $0.72, -8.94% 24h; AI compute infrastructure.
-- BTC — Bitcoin, $74,652, -3.30% 24h; trending on continued decline.
-- SOL — Solana, $82.02, -5.84% 24h; major leading lower.
+- UDS (Undeads Games) — $1.50, -0.02% 24h; gaming micro-cap, rank #196; trending on volume relative to size.
+- NEAR — NEAR Protocol, $2.08, -6.98% 24h; AI-native L1, sustained sector selling.
+- HYPE — Hyperliquid, $55.71, -6.24% 24h; perp-DEX leader fading from May 21 ATH of $62.18.
+- SOL — Solana, $82.24, -5.43% 24h; major L1 following the broad tape lower.
+- SUI — Sui, $1.00, -9.07% 24h; L1 sell-off, deepest drop among the trending group.
+- PENGU — Pudgy Penguins, $0.00856, -11.32% 24h; memecoin ETF narrative unwinding from May 22 call price of $0.00975.
+- ZEC — Zcash, $588, -7.67% 24h; privacy narrative fading despite trending status; -11.9% from May 21 call.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 31 | 15.5% | $4.48M | $0.36M |
-| Iran closes its airspace by May 24 | 29.4% | $4.09M | $0.10M |
+| Iran closes its airspace by May 24 | 39.3% | $4.51M | $140K |
+| US x Iran permanent peace deal by May 31 | 16.5% | $4.52M | $327K |
 
-*Iran airspace closure collapsed from 97.9% (prior — excluded as above 97% signal range) to 29.4% (now inside signal range). Ceasefire held through May 22 (99.65% YES, resolved). Peace deal at 15.5% (-2pp session). Bitcoin $150K by June 30 at 1.35% excluded (below 3%).*
+*Iran airspace market: disputed resolution status (proposed and challenged twice). YES surged from 29.4% prior to 39.3% (+9.9pp) in one session — sharpest single-day geopolitical move this cycle. Bitcoin $150K by June 30 at 1.4% excluded (below 3% threshold).*
 
 ## Macro Catalysts (next 48h)
-- **Iran geopolitical resolution:** Ceasefire held through May 22. Airspace closure now 29.4% YES. Oil premium partially pulling back, but peace deal at 15.5% leaves the conflict unresolved.
-- **CLARITY Act:** Senate Banking active with regulatory amendments. A passed bill would lift exchange tokens and the RWA sector; no Senate floor vote scheduled.
-- **BTC ETF flows:** $1.63B net inflows since May 1 (structural bid intact). ETFs absorbing approximately 4,500-5,000 BTC/day vs 450 BTC daily mining output. The floor holds — direct test now underway as BTC breaks below $75K.
-- **Fed/Warsh:** First chair transition since 2018; rate uncertainty extends through 2H 2026. DeFi TVL contraction compounds the macro headwind.
+- **Iran airspace (tomorrow — May 24):** 39.3% YES with disputed resolution active. A confirmed closure hits oil premiums and risk assets simultaneously. Ceasefire framework showing stress after two clean sessions.
+- **Iran peace deal (May 31 deadline):** 16.5% YES, unchanged. Pakistan-mediated talks continuing; 14-point Iranian counter-proposal under review. A deal announcement before May 31 is the single macro event most likely to flip the regime.
+- **BTC ETF floor bid:** Cumulative $58.7B inflows since launch; BlackRock IBIT holds 806K BTC. Structural floor bid intact. Direct test underway as BTC holds sub-$75K.
+- **CLARITY Act:** Cleared Senate Banking Committee with bipartisan vote. No floor vote date scheduled. A scheduling announcement is the actionable trigger for exchange tokens and RWA sector.
 
 ## Implications for Downstream Skills
-- **token-call:** Risk-off deepens into third day with breadth below 3/20. Hold cash on new longs until breadth clears 7/20 or a single name prints accumulation against the tape. ZEC ($596 vs $667.93 call price), LIT ($1.14 vs $1.18 call), GRASS ($0.41 vs $0.4466 call) all underwater. SKYAI +23.40% is the only trending green. The setup is too thin for a call without sector confirmation.
-- **narrative-tracker:** All AI/compute and perp-DEX names fading by price; the social vs price divergence flagged in the prior snapshot resolved in favor of price. Iran geopolitical risk reducing but regime unchanged. Monitor for BTC risk-on rotation if the Iran conflict moves toward permanent ceasefire — that is the specific condition that would change the macro backdrop.
+- **token-call:** Risk-off fourth session, breadth 3/20 unchanged. Iran escalation adds macro headwind beyond the price tape. Prior picks PENGU ($0.00856 vs $0.00975), GRASS ($0.41 vs $0.4466), ZEC ($588 vs $667.93), LIT ($1.14 vs $1.18) all underwater. Hold cash on new longs until breadth clears 7/20 or a single name prints accumulation against the tape. BEAT ($1.17, May 23 call) is the one active name to track.
+- **narrative-tracker:** Geopolitical risk shifted from fading to rising — Iran airspace dispute is the key new signal. RWA/regulatory is the only emerging narrative with a concrete catalyst. All tech narratives (AI/DePIN, Perp DEX, Privacy) at fading phase.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
