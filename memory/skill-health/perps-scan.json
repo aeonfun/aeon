@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-23T06:38:46Z",
-  "quality_score": 4,
-  "assessment": "Substantive output: completed scan of 25-asset universe, provided detailed market analysis with specific metrics (24h changes, OI %, funding rates), generated three expected file outputs, proper memory logging, and transparent execution notes on tooling changes.",
+  "last_analyzed": "2026-05-23T07:11:28Z",
+  "quality_score": 5,
+  "assessment": "Excellent — substantive crypto derivatives analysis with precise metrics, clear regime verdicts, proper state tracking vs prior runs, and correct file/memory updates for downstream consumption",
   "flags": [],
-  "avg_score": 3.9,
+  "avg_score": 3.95,
   "history": [
     {
       "date": "2026-05-18",
@@ -85,6 +85,10 @@
     {
       "date": "2026-05-23",
       "score": 4
+    },
+    {
+      "date": "2026-05-23",
+      "score": 5
     }
   ]
 }
