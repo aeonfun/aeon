@@ -1,12 +1,10 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-23T07:05:35Z",
-  "quality_score": 3,
-  "assessment": "Skill ran and identified substantive issue (15-hour grounding staleness, zero new items), provided domain-specific analysis, but persistent data freshness problem undermines reliability.",
-  "flags": [
-    "stale_data"
-  ],
-  "avg_score": 3.93,
+  "last_analyzed": "2026-05-23T10:02:37Z",
+  "quality_score": 4,
+  "assessment": "Well-executed skill — substantive market analysis with specific data points, proper file updates, clear bridging logic connecting Fed appointment to BTC volatility and rate policy",
+  "flags": [],
+  "avg_score": 3.94,
   "history": [
     {
       "date": "2026-05-18",
@@ -67,6 +65,10 @@
     {
       "date": "2026-05-23",
       "score": 3
+    },
+    {
+      "date": "2026-05-23",
+      "score": 4
     }
   ]
 }
