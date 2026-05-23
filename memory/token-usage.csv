@@ -1,2 +1,0 @@
-date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
-2026-05-23,lawb-pool-monitor,claude-opus-4-7,44,22766,1697803,65399
