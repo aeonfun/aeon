@@ -383,10 +383,11 @@ def render_watchlist_card(p: dict) -> List[str]:
     out.append(divider(f"WATCHLIST · {ticker} {direction} · day {day_of}"))
     out.append("")
 
-    # Metadata block
+    # Metadata block — horizon is optional for watchlist entries
     out.append(label_line("ticker", ticker))
     out.append(label_line("direction", direction))
-    out.append(label_line("horizon", p.get("horizon", "?")))
+    if p.get("horizon"):
+        out.append(label_line("horizon", p["horizon"]))
     out.append(label_line("trigger", p.get("trigger", "")))
     out.append(label_line("stop", p.get("invalidation", "")))
 
@@ -473,15 +474,18 @@ def validate_schema(data: dict) -> Optional[str]:
     for i, w in enumerate(watchlist):
         if not isinstance(w, dict):
             return f"watchlist[{i}] must be object"
+        # horizon is OPTIONAL for watchlist entries — the trade may not have
+        # a committed horizon until the trigger fires and it promotes to a
+        # new position.
         for k in (
-            "ticker", "direction", "horizon", "trigger", "invalidation", "thesis",
+            "ticker", "direction", "trigger", "invalidation", "thesis",
             "confluence_fired",
         ):
             if k not in w:
                 return f"watchlist[{i}] missing '{k}'"
         if w["direction"] not in VALID_DIRECTIONS:
             return f"watchlist[{i}].direction invalid"
-        if w["horizon"] not in VALID_HORIZONS:
+        if "horizon" in w and w["horizon"] not in VALID_HORIZONS:
             return f"watchlist[{i}].horizon invalid"
         # thesis MUST be array of strings
         if not isinstance(w["thesis"], list) or not w["thesis"]:
