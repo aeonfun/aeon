@@ -1,8 +1,8 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-23T07:11:28Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive crypto derivatives analysis with precise metrics, clear regime verdicts, proper state tracking vs prior runs, and correct file/memory updates for downstream consumption",
+  "last_analyzed": "2026-05-23T10:09:19Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured output with specific metrics, clear verdicts, complete file artifacts, continuity tracking, and self-review; domain expertise evident but actionability is observational rather than prescriptive.",
   "flags": [],
   "avg_score": 3.95,
   "history": [
@@ -89,6 +89,10 @@
     {
       "date": "2026-05-23",
       "score": 5
+    },
+    {
+      "date": "2026-05-23",
+      "score": 4
     }
   ]
 }
