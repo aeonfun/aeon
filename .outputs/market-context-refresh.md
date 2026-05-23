@@ -1,37 +1,30 @@
 # Market Context — 2026-05-23
 
-Take: risk-off — BTC -2.60% 24h with 2/20 top-cap majors green; DEX volume $6.38B, down 8% vs 7-day average. Conviction: high.
+Take: risk-off — BTC -3.36% 24h at $74,665, breadth 3/20 green (2 stablecoins + Canton +0.28%). Conviction: high.
 
 ## Snapshot
-- BTC $75,321 (-2.60% 24h, -4.58% 7d) · dominance 58.05% (flat 24h)
-- ETH $2,059 (-3.04% 24h, -7.42% 7d) · ETH/BTC 0.02734
-- SOL $84.12 (-2.87% 24h, -4.97% 7d)
-- Total mcap $2.60T (-2.53% 24h) · DEX vol $6.38B 24h
-- Breadth: 2/20 green 24h · 4/20 green 7d
+- BTC $74,665 (-3.36% 24h, -4.69% 7d) · dominance 58.07% (+0.02pp 24h)
+- ETH $2,027 (-4.45% 24h, -7.58% 7d) · ETH/BTC 0.02716
+- SOL $81.96 (-5.99% 24h, -6.19% 7d)
+- Total mcap $2.58T (-3.25% 24h) · DEX vol $6.38B 24h (+13.8% vs 7d avg $5.61B)
+- Breadth: 3/20 green 24h · 3/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 28
-- TVL: n/a (7d delta unavailable from chains endpoint)
+- TVL (top protocols): Lido $17.97B (-7.38% 7d), SSV $14.88B (-7.81%), Aave V3 $13.25B (-7.13%), Morpho $7.24B (-3.56%), EigenLayer $6.33B (-11.57%)
 
 ## What Changed
-- Quiet — all majors within +-1% vs prior snapshot, regime unchanged.
-- Iran peace deal at 17.5% YES (-1pp); two-day slide from 26.5% continues.
+- BTC crossed below $75K ($74,665 from $75,321 prior); third consecutive lower close.
+- SOL leads the decline: -5.99% 24h from -2.87% prior; steepest major drop of the session.
+- Iran airspace closure fell from near-certain (97.9% YES) to 29.4%; ceasefire held through May 22. Geopolitical premium pulling back.
 
 ## Active Narratives
-- AI/compute infra — phase: fading. Evidence: NEAR -5.37%, RENDER -8.27%, VVV -4.12%; all three red, no recovery.
-- Perp DEX/Hyperliquid — phase: fading. Evidence: HYPE -4.28% ($55.06), sixth session below $63; LIT -21.09%.
-- Privacy/ZK — phase: fading. Evidence: ZEC -9.96% ($589.89), sixth consecutive red session.
-- RWA/tokenization — phase: fading. Evidence: ONDO absent from trending two sessions.
-
-Note: narrative-tracker's 05-23 session promoted AI agents and DePIN to Rising on social signals. Price disagrees on all names. Divergence unresolved.
+- AI/DePIN/compute — phase: fading. NEAR -7.90%, GRASS -9.61%, AKT -8.94% 24h; SKYAI +23.40% is a single micro-cap exception, not a sector reversal.
+- Perp DEX — phase: fading. HYPE -5.90% 24h seventh session below $63; LIT -14.20% deepening.
+- Privacy/ZK — phase: fading. ZEC $596 vs $667.93 call price on 2026-05-21; seventh consecutive losing session.
+- Geopolitical risk — phase: fading. Iran airspace 97.9% to 29.4%; ceasefire held through May 22.
 
 ## Polymarket Highlights (top by 24h vol)
-- Iran peace deal by May 31 — YES 17.5%, vol $4.44M, liq $0.33M
-- BTC $150K by June 30 and Iran airspace by May 24 excluded (outside 3-97% range)
-
-## Macro Context
-- Iran airspace closing by May 24: 97.9% YES. Oil at Brent ~$103/barrel.
-- Fed Chair Kevin Warsh (sworn in May 15): market prices rate uncertainty into 2H 2026.
-- BTC ETF flows: $1.63B since May 1 (9-day streak), IBIT and FBTC leading.
-- CLARITY Act: Senate markup ongoing, no floor vote scheduled.
+- US x Iran permanent peace deal by May 31 — YES 15.5%, vol $4.48M
+- Iran closes airspace by May 24 — YES 29.4%, vol $4.09M (was >97%, now inside signal range)
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
