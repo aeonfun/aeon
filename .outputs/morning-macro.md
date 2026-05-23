@@ -1,28 +1,23 @@
-Market Morning · 22 May · Fear holds, three longs underwater
+Market Morning · 23 May · risk-off, rides under, ZEC SHORT lands
 
-BTC at $76,635, second session on the same handle. Breadth thin 7/20 green 24h, 5/20 on the week.
-F&G pinned at 28, Fear day two. Dominance slips 5bp to 57.99%.
+BTC $75,374, -2.54% 24h, -4.52% 7d. Breadth collapsed 7/20 to 1/20 green.
+F&G pinned 28, total mcap shed $50B to $2.60T.
+Narrative-tracker promoted AI agents and Decentralized compute Peak → Rising. Same session, two RIDE longs broke invalidation. Narrative is fresh. The tape is not.
 
-AI agents, decentralized compute, RWA all 5/5 peak. Hyperliquid and Privacy/ZK fading.
-Three RIDE longs underwater: NEAR -5.21%, HYPE -4.64%, ONDO -4.25%. Invalidations 3.58–7.50% below.
-
-Stance: hold the rides, no new positions. AIXBT names $73K as the next BTC flush target.
+Stance: trail NEAR + HYPE, cut ONDO, take ZEC SHORT. Selective on new entries.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-AI enthusiasm is the single bridge keeping BTC's $73K target and equities' 2023-win-streak alive.
-If AI-equities diverge from broad risk, BTC beta thins. NEAR-style names hold the bid.
-The mechanism: $2B coordinated selling plus ETF outflows. Consumer sentiment at lows kills the retail catch.
+Hormuz toll push institutionalizes energy costs and defers rate cuts. BTC at $75K with fear at 28 and $105M ETF outflows is the market's read on that regime.
 
-XMR newly joins ZEC under institutional backing. That's the tell on sanctions-routing demand.
-Narrative-tracker still reads Privacy/ZK as FADE. Watch XMR open interest for the retail-vs-institutional signal.
+ZEC tripled on a ZEC-specific catalyst. XMR didn't follow. The privacy run was idiosyncratic, not sector rotation. Today's -9.18% on a fifth red session confirms it.
 
 
 ─────────  TODAY  ─────────
 
-Action is in #perps-brief. Three open longs in RIDE, zero new positions today.
-NEAR (AI + privacy), HYPE (sector fading underneath), ONDO (RWA continuation).
-Watchlist: GRASS, TAO, EDEN, ZEC day two. WLD scored HIGH 9/10, but top traders trimmed -0.22 7d. No entry.
+Action in #perps-brief. HYPE confluence across all three feeds: narrative-tracker promoted Hyperliquid Peak, AIXBT names HYPE #1 lead, perps RIDE through breached $56 with smart money L/S +0.15 over 7d.
+ONDO closes loss -17.21%. RWA carrier rotated to tokenized stocks/ETFs, not ONDO direct.
+ZEC SHORT fires from watchlist on 4-criterion confluence (close $594 below $620, top L/S 0.76, TRENDING+DOWN MAJOR). BSB, BEAT, GENIUS join watchlist SHORT.
 
-Take: cash-patient on new entries. Ride the open longs to their invalidations.
+Take: structural shorts emerging into a risk-off tape. Trail the longs, fade the breakouts.
