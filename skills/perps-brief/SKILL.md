@@ -184,9 +184,9 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `ticker`, `direction` (LONG | SHORT), `horizon` (24h | 3d | 7d | multi-week)
 - `entry_zone` — price level, range, or `"market"`
 - `invalidation` — price level OR named signal-state change
-- `thesis` — 1–2 sentences
-- `confluence_fired[]` — at least one criterion from the enumerated set
-- `risks[]` — at least one named risk, non-empty
+- `thesis` — **array of 3-4 bullet strings**. Each bullet is a complete self-contained sentence covering one of: price action, narrative, regime/positioning, cross-domain catalyst. **Apply `memory/topics/writing-style.md` Pattern 7 strictly** — no source-artifact shorthand, no telegraphic fragments. Each bullet must read clearly to someone who hasn't opened the upstream artifacts. Target 150-200 chars per bullet, hard cap 250.
+- `confluence_fired[]` — at least one criterion from the enumerated set (logged for the ledger / track-record, NOT rendered in the operator-facing card)
+- `risks[]` — **array of 2-3 bullet strings**, non-empty. Each risk is a named, concrete concern (not "market could turn"). Same writing rules as thesis bullets.
 
 ## Required fields per watchlist entry
 
@@ -194,8 +194,8 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `day_of_watchlist` — N (1 for new, increments for carry-forwards)
 - `trigger` — named external condition that would promote to NEW POSITIONS
 - `invalidation` — price level OR named signal-state change before trigger fires
-- `thesis` — 1–2 sentences
-- `confluence_fired[]` — at least one criterion
+- `thesis` — **array of 2-3 bullet strings**. Same writing rules as new-position thesis bullets.
+- `confluence_fired[]` — at least one criterion (ledger-only, not rendered)
 
 ## Write the structured data artifact
 
@@ -206,7 +206,7 @@ The postprocess step handles all of the above:
 2. `scripts/lib/ledger.py snapshot` → pre-apply backup
 3. `scripts/apply-ledger-ops.py` → applies ops atomically
 4. `python3 -m lib.ledger` → post-apply validation
-5. Section-split markdown + per-section Discord delivery wrapped in code blocks
+5. Per-message split + per-signal Discord delivery wrapped in code blocks. MARKET CONTEXT is one message, CURRENT POSITIONS is one message (table + per-row prose), and each NEW POSITION and WATCHLIST entry is its own message. On heavy days this means 7-12 separate Discord messages.
 
 ### JSON schema (v4.1)
 
@@ -269,9 +269,17 @@ The postprocess step handles all of the above:
       "horizon": "3d",
       "entry_zone": "market or first bounce to $0.65",
       "invalidation": "close above $0.72",
-      "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h, top L/S 2.4, OI +35% 24h with price down 4%. Memes PEAK.",
+      "thesis": [
+        "FARTCOIN closed -4% today with OI up 35% in the same 24 hours. That combination — price down while leverage builds — fires the LONG-TRAP pattern in perps-scan.",
+        "Funding rate sits at +0.14%/8h, well above the +0.06% extreme gate. Longs are paying premium to stay positioned while the asset bleeds.",
+        "Top-trader long/short ratio at 2.4 means smart-money traders are crowded long alongside retail. Both sides positioned for an up-move; an unwind hits hard.",
+        "Narrative-tracker has the meme sector in PEAK status. No fresh catalyst on the calendar to defend the bid."
+      ],
       "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
-      "risks": ["memes can squeeze irrespective of fundamentals"]
+      "risks": [
+        "Memes can squeeze irrespective of fundamentals. A liquidation cascade above $0.72 invalidates the trade.",
+        "Funding could normalise overnight if a large long unwinds without a price bid, removing the asymmetry."
+      ]
     }
   ],
 
@@ -280,9 +288,13 @@ The postprocess step handles all of the above:
       "ticker": "SOL",
       "direction": "LONG",
       "day_of_watchlist": 2,
-      "trigger": "close above $158 with vol >1.5x 7d avg AND OI delta positive",
-      "invalidation": "close below $148 before trigger fires",
-      "thesis": "COMPRESSION → CATALYST-BREAKOUT pending. AI sector tailwind.",
+      "trigger": "close above $158 with 24h volume above 1.5x the 7d average AND OI net positive on the day",
+      "invalidation": "close below $148 before the trigger fires",
+      "thesis": [
+        "SOL is sitting in a tight 4% range over the past 7 days. OI has been building 18% week-on-week without a corresponding price move — classic pre-breakout compression.",
+        "Top-trader L/S has risen 0.3 points over 7 days, indicating smart-money positioning ahead of a move. perps-scan tags this as STEALTH-POSITIONING.",
+        "AI sector is in RISING phase in narrative-tracker, providing a sector tailwind. aixbt-pulse named AI inference demand in today's bridge call."
+      ],
       "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "both_tag", "cross_domain_bridge"]
     }
   ],
@@ -332,10 +344,18 @@ The postprocess step handles all of the above:
         "entry_zone": "market or first bounce to $0.65",
         "invalidation": "close above $0.72",
         "horizon": "3d",
-        "thesis": "DISTRIBUTION + LONG-TRAP. Funding +0.14%/8h.",
+        "thesis": [
+          "FARTCOIN closed -4% today with OI up 35% — LONG-TRAP pattern in perps-scan.",
+          "Funding at +0.14%/8h is above the +0.06% extreme gate.",
+          "Top-trader L/S at 2.4 — smart money crowded long alongside retail.",
+          "Meme sector in PEAK status in narrative-tracker, no fresh catalyst."
+        ],
         "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
         "confluence_missing": ["both_tag"],
-        "named_risks": ["memes can squeeze"],
+        "named_risks": [
+          "Memes can squeeze irrespective of fundamentals.",
+          "Funding could normalise without a price bid."
+        ],
         "watchlist_id_promoted": null
       }
     ],
@@ -343,12 +363,16 @@ The postprocess step handles all of the above:
       {
         "ticker": "PEPE",
         "direction": "SHORT",
-        "trigger": "funding extreme >+0.15%/8h with top L/S >2.0",
+        "trigger": "funding extreme above +0.15%/8h with top L/S above 2.0",
         "invalidation": "close above last 7d high",
         "horizon": "3d",
-        "thesis": "DISTRIBUTION building",
+        "thesis": [
+          "PEPE in DISTRIBUTION regime, funding has been steadily warming past the +0.06% gate.",
+          "Top-trader L/S has crept up from 1.4 to 1.8 over 7 days — not yet at LONG-TRAP severity but building.",
+          "Meme sector in PEAK alongside FARTCOIN — sector-wide unwind risk if the dominant meme breaks."
+        ],
         "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned"],
-        "named_risks": ["could squeeze before trigger"]
+        "named_risks": ["Could squeeze before the trigger fires if funding flushes overnight."]
       }
     ],
     "keep_watchlist": ["SOL-watchlist-2026-05-19-001"]
