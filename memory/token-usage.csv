@@ -65,4 +65,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-22,perps-brief,claude-opus-4-7,47,34951,4628304,262744
 2026-05-22,morning-macro,claude-opus-4-7,38,25235,2696124,80661
 2026-05-22,daily-ops-review,claude-opus-4-7,32,12827,2803082,118432
-2026-05-23,monitor-runners,claude-opus-4-7,76,31565,6368487,179009
+2026-05-23,perps-scan,claude-opus-4-7,44,27360,3858647,208642

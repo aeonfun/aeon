@@ -1,27 +1,26 @@
 #!/usr/bin/env node
 // Build .outputs/perps-scan.data.json from .outputs/_perps_compute.json
-// + the regime_yesterday mapping parsed from 2026-05-21's perps-scan log entry.
-// Verdict prose, WATCH bucket reads, and transition notes are authored inline
-// for the 2026-05-22 15:45Z prefetch snapshot.
+// + yesterday's regime_yesterday mapping parsed from 2026-05-22's perps-scan.md.
+// Verdict prose, WATCH bucket reads, transition notes authored inline for the
+// 2026-05-23 06:31Z prefetch.
 import fs from 'node:fs';
 
-const TODAY = '2026-05-22';
+const TODAY = '2026-05-23';
 const REGIMES = ['ACCUMULATION', 'CATALYST-BREAKOUT', 'SHORT-SQUEEZE', 'MOMENTUM', 'COMPRESSION', 'DISTRIBUTION', 'CAPITULATION'];
 
 const compute = JSON.parse(fs.readFileSync('.outputs/_perps_compute.json', 'utf8'));
 const metrics = compute.metrics;
 
-// Yesterday's (2026-05-21) regime mapping, sourced from 05-21 perps-scan log.
-// Three ACCUMULATION (NEAR/ONDO/CL), XAU in COMPRESSION (dropped from today's universe).
+// Yesterday's (2026-05-22) regime mapping, sourced from 05-22 perps-scan.md tail.
+// All 25 assessed assets classified NEUTRAL yesterday.
 const yesterday = {
   BTC: 'NEUTRAL', ETH: 'NEUTRAL', SOL: 'NEUTRAL',
-  ZEC: 'NEUTRAL', HYPE: 'NEUTRAL', BSB: 'NEUTRAL', EDEN: 'NEUTRAL', DOGE: 'NEUTRAL',
-  XRP: 'NEUTRAL', FIDA: 'NEUTRAL', SUI: 'NEUTRAL', TON: 'NEUTRAL', LIT: 'NEUTRAL',
-  ONDO: 'ACCUMULATION', NEAR: 'ACCUMULATION', CL: 'ACCUMULATION',
-  BILL: 'NEUTRAL', BNB: 'NEUTRAL', WLD: 'NEUTRAL', TAO: 'NEUTRAL',
-  // Assets not in today's universe but recorded yesterday — preserved for completeness
-  XAU: 'COMPRESSION', JTO: 'NEUTRAL', DASH: 'NEUTRAL', PLAY: 'NEUTRAL', LAB: 'NEUTRAL',
-  BCH: 'NEUTRAL', RONIN: 'NEUTRAL', PROMPT: 'NEUTRAL',
+  HYPE: 'NEUTRAL', NEAR: 'NEUTRAL', ZEC: 'NEUTRAL', EDEN: 'NEUTRAL', XRP: 'NEUTRAL',
+  BEAT: 'NEUTRAL', DOGE: 'NEUTRAL', BSB: 'NEUTRAL', SUI: 'NEUTRAL', ONDO: 'NEUTRAL',
+  FIDA: 'NEUTRAL', WLD: 'NEUTRAL', BNB: 'NEUTRAL', BILL: 'NEUTRAL', TON: 'NEUTRAL',
+  ADA: 'NEUTRAL', TAO: 'NEUTRAL', LINK: 'NEUTRAL',
+  // Assets in yesterday's universe but dropped from today
+  PROVE: 'NEUTRAL', GRASS: 'NEUTRAL', LIT: 'NEUTRAL', CL: 'NEUTRAL',
 };
 
 function fmtUsd(x) {
@@ -43,9 +42,6 @@ function fmtPrice(x) {
 function r2(x) {
   return x === null || x === undefined || !Number.isFinite(x) ? null : Math.round(x * 100) / 100;
 }
-function r3(x) {
-  return x === null || x === undefined || !Number.isFinite(x) ? null : Math.round(x * 1000) / 1000;
-}
 function r4(x) {
   return x === null || x === undefined || !Number.isFinite(x) ? null : Math.round(x * 10000) / 10000;
 }
@@ -54,49 +50,43 @@ const assessed = Object.keys(metrics).length;
 const counts = { ACCUMULATION: 0, 'CATALYST-BREAKOUT': 0, 'SHORT-SQUEEZE': 0, MOMENTUM: 0, COMPRESSION: 0, DISTRIBUTION: 0, CAPITULATION: 0, NEUTRAL: 0 };
 for (const a in metrics) counts[metrics[a].regime] += 1;
 
-// Verdict — 25/25 NEUTRAL on the 15:45Z prefetch refresh.
-// PROVE funding flipped from -0.037 to +0.000167 between the morning prefetch and this one,
-// pulling it out of CAPITULATION. NEAR/HYPE both softened materially. The character of the
-// read changed: the flush narrative paused as funding repaired across the leveraged tail.
+// Verdict — 25/25 NEUTRAL on a 06:31Z prefetch (early in the UTC day).
+// The leverage tail kept decompressing from yesterday and partly inverted:
+// EDEN flipped from +24.05% 24h to -13.76% (CAPITULATION-shaped, liq cascade hasn't fired).
+// BEAT cooled from +45.93% to -2.68% with OI still building. BSB exploded into +26.5% 24h
+// with funding +0.088%/8h (Tier 2 DIST funding gate cleared) but gains accelerating
+// (+26.5% 24h vs +173.6% 7d ÷ 7 = 24.8 floor) — the gains-slowing gate blocks DIST.
+// FIDA cash-and-carry unwind continued (funding -0.230% on basis +0.244%). Universe-wide
+// vol_ratio sits 0.1-0.55 against the 2.0 CATALYST-BREAKOUT floor — partial-bar prefetch.
 const verdict = {
   word: 'QUIET',
-  distribution: '25 NEUTRAL across 25 assessed — 100% NEUTRAL on the 15:45Z prefetch refresh.',
-  cycle: 'PROVE funding repaired from -0.037%/8h to +0.0002%/8h between the morning prefetch and this one, pulling the asset out of CAPITULATION even as price held -11.52% and OI -17.01%. NEAR softened from +17.60% 24h to +14.43% with top L/S down 0.02 over 7d on the refresh (was up 0.12). HYPE flipped negative on the day at -0.90% with OI -2.59% and funding -0.008%/8h. The leverage tail decompressed across one prefetch cycle.',
-  forward: 'BEAT is the cleanest near-CATALYST-BREAKOUT print. Vol ran 11.60x with OI +71.40% 24h and short liqs 9.2x the 7d p75. Taker buy 51.00% sits 1.00pp under the +52% Tier 2 gate. A taker-buy flip fires the regime. PROVE funding-flip means the flush may have completed. A second funding tick negative with OI extending lower re-arms CAPITULATION. FIDA funding -0.188%/8h on basis +0.311% still reads as cash-and-carry unwind. A green 24h with OI dropping fires SHORT-SQUEEZE.',
+  distribution: '25 NEUTRAL across 25 assessed — 100% NEUTRAL on the 06:31Z prefetch.',
+  cycle: 'EDEN flipped from +24.05% 24h yesterday to -13.76% today with funding collapsing to -0.363%/8h and OI -19.75% 24h. Liq cleared at $714K against a 7d p75 of $2.13M blocks CAPITULATION. BEAT cooled from +45.93% 24h yesterday to -2.68% with OI still building +5.41%. NEAR continued unwinding from yesterday\'s +14.43% to -1.62% with OI -2.81%. BSB freshly exploded to +26.52% 24h with funding spiking to +0.088%/8h from a +0.013% 7d avg. The leverage tail that decompressed yesterday inverted in spots today.',
+  forward: 'BSB carries the cleanest setup risk. Funding +0.088%/8h clears the +0.08% Tier 2 DIST gate, OI +28.69% 24h on +275.45% 7d, top L/S 1.95 with delta -0.56 7d (smart money exiting into retail leverage). Gains-slowing gate blocks DIST today. A flat-or-red 24h with OI holding fires the regime. EDEN reads as the closest CAPITULATION print. A second-day -10% drawdown with liq printing through the 7d p75 fires the regime. ALT carries an extreme cash-and-carry shape — funding -0.190%/8h, basis +0.846%, OI 7d +239.6%, taker buy 52.8% — pattern not regime, but worth watching. Universe vol_ratio sits 0.1-0.55 against the 2.0 breakout floor. The 06:31Z prefetch caught a partial day, breakout signals likely understate.',
 };
 
-// Regime changes — surface NEAR/ONDO/CL out of ACCUMULATION + new entrants worth flagging.
+// Regime transitions — every yesterday's asset that's in today's universe was NEUTRAL
+// yesterday and is NEUTRAL today. No transitions fire. Surface new entrants if non-NEUTRAL.
 const regime_changes = [];
 for (const a of Object.keys(metrics)) {
   const ry = yesterday[a];
   const rt = metrics[a].regime;
   if (ry === undefined) {
-    // New universe entrant — only surface if today's regime is not NEUTRAL,
-    // or the asset's profile is worth a named note despite NEUTRAL classification.
     if (rt !== 'NEUTRAL') {
       regime_changes.push({ asset: a, from: '(new entrant)', to: rt, note: '' });
     }
     continue;
   }
   if (ry !== rt) {
-    let note = '';
-    if (ry === 'ACCUMULATION' && rt === 'NEUTRAL') {
-      if (a === 'NEAR') note = 'Range expanded to 59.78% over 7d past the 25% accumulation gate on a +14.43% 24h rip. OI +36.64% 24h, vol 5.53x, taker buy 50.12%. Top L/S down 0.02 over 7d reverses yesterday\'s smart-money confirmation. The bid held but the structure broke past the accumulation gate.';
-      else if (a === 'ONDO') note = 'Range stretched to 42.95% on a +7.05% 24h push with OI +5.52% 24h. Structure broke past the 25% accumulation range gate.';
-      else if (a === 'CL') note = 'OI rolled -2.45% 24h. Price -4.11% 7d turned the 7d delta negative and broke the pct_7d > 0 gate.';
-    }
-    regime_changes.push({ asset: a, from: ry, to: rt, note });
+    regime_changes.push({ asset: a, from: ry, to: rt, note: '' });
   }
 }
 
-// Populate regimes from compute output (any non-NEUTRAL assets).
 const regimes = {};
 for (const r of REGIMES) regimes[r] = [];
-
 for (const a of Object.keys(metrics)) {
   const m = metrics[a];
   if (m.regime === 'NEUTRAL') continue;
-  // No regime fired on this prefetch — section stays empty.
   regimes[m.regime].push({
     asset: a,
     tier: m.tier,
@@ -107,47 +97,47 @@ for (const a of Object.keys(metrics)) {
   });
 }
 
-// WATCH bucket — near-misses on the refreshed compute.
+// WATCH bucket — the eight near-misses worth flagging on the refresh.
 const watch = [
   {
-    asset: 'BEAT',
-    metrics_line: '+45.93% 24h, +71.18% 7d, OI +71.40% 24h on OI +75.09% 7d, vol 11.60x, funding +0.026%/8h (7d avg +0.009%), taker buy 51.00%, short liqs $2.08M vs 7d p75 $227K, top L/S 1.71 down 0.21 7d, pct_4h +7.22%',
-    transition_read: 'Missed CATALYST-BREAKOUT by 1.00pp on the +52% Tier 2 taker-buy gate. Vol 11.60x, OI cascade +71.40%, and short-liq pile-on at 9.2x the 7d p75 all confirm. A taker-buy flip through 52% fires the regime.',
-  },
-  {
-    asset: 'PROVE',
-    metrics_line: '-11.52% 24h, +16.45% 7d, OI -17.01% 24h on OI +502.18% 7d, vol 2.07x, funding +0.0002%/8h (7d avg -0.071%), liq $906K vs 7d p75 $233K, long $586K vs short $320K, top L/S 1.19 down 1.27 7d, basis +0.311%',
-    transition_read: 'Cleared the pct_24h and OI gates for CAPITULATION but funding flipped from -0.037% to +0.0002% between prefetches. Funding now blocks the regime. Reads as the flush pausing. A second funding tick negative with OI extending lower re-arms CAPITULATION.',
-  },
-  {
-    asset: 'LIT',
-    metrics_line: '-10.04% 24h, +49.71% 7d, OI -14.43% 24h on OI +63.78% 7d, funding +0.003%/8h (7d avg +0.007%), liq $411K vs 7d p75 $761K, top L/S 2.03 down 0.55 7d',
-    transition_read: 'Cleared pct_24h -10.04% and OI -14.43% gates for CAPITULATION but funding +0.003%/8h blocks. Liq $411K also sits under the 7d p75 of $761K so even with funding negative the cascade hasn\'t intensified. Watch for funding flip negative on a second-day drawdown.',
-  },
-  {
-    asset: 'FIDA',
-    metrics_line: '-5.07% 24h, +127.86% 7d, OI -12.73% 24h on OI +1135.07% 7d, funding -0.188%/8h (7d avg -0.161%), basis +0.311%, top L/S 1.03 collapsed 2.18 7d, taker buy 49.96%',
-    transition_read: 'Funding at -0.188%/8h with OI flipping -12.73% 24h reads as forced short cover starting against the +128% 7d run. Basis collapsed from +0.591% to +0.311% on the refresh — the cash-and-carry unwind is in motion. Pct_24h -5.07% blocks SHORT-SQUEEZE today. A green push higher with OI dropping fires the regime.',
+    asset: 'BSB',
+    metrics_line: '+26.52% 24h, +173.59% 7d, OI +28.69% 24h on OI +275.45% 7d, funding +0.0878%/8h (7d avg +0.013%, delta +0.075), taker buy 49.86%, short liqs $481K vs 7d p75 $1.71M, top L/S 1.95 down 0.56 7d, pct_4h +3.27%, vol 0.37x (partial bar)',
+    transition_read: 'Funding +0.088%/8h clears the +0.08% Tier 2 DIST gate. The gains-slowing gate blocks DIST today. pct_24h +26.52% sits above the pct_7d/7 floor of +24.80%. A flat-to-red 24h tomorrow with OI holding fires DISTRIBUTION. Top L/S down 0.56 over 7d while OI piles in reads as smart money exiting into retail leverage. Vol partial-bar blocks CATALYST-BREAKOUT regardless.',
   },
   {
     asset: 'EDEN',
-    metrics_line: '+24.05% 24h, +308.92% 7d, OI +13.55% 24h on OI +1212.0% 7d, vol 1.40x, funding +0.007%/8h (7d avg -0.025%), top L/S 1.19 down 0.61 7d, basis -0.099%',
-    transition_read: 'Cleared pct_24h +24.05% > 20% Tier 2 gate and oi_24h +13.55% > 10% gate. Vol 1.40x blocks CATALYST-BREAKOUT against the 2.0x floor. Basis flipped negative on the refresh — the futures bid faded against spot. A vol push past 2.0x fires the regime. A red day with OI dropping fires CAPITULATION first.',
+    metrics_line: '-13.76% 24h, +153.01% 7d, OI -19.75% 24h on OI +703.90% 7d, funding -0.363%/8h (7d avg -0.047%, delta -0.315), liq $715K vs 7d p75 $2.13M, long $415K vs short $300K, top L/S 1.17 down 0.49 7d, basis +0.123%, pct_4h -19.70%',
+    transition_read: 'Cleared pct_24h ≤ -10% (-13.76%), funding < 0 (-0.363%), and oi_24h ≤ -10% (-19.75%) for CAPITULATION. Liq $715K sits at one-third the 7d p75 of $2.13M and blocks the regime. pct_4h -19.70% means the entire drawdown ran in the last four hours. The flush is fresh, not cleared. A second-day -10% with liq printing through $2.1M fires CAPITULATION.',
+  },
+  {
+    asset: 'BEAT',
+    metrics_line: '-2.68% 24h, +97.83% 7d, OI +5.41% 24h on OI +135.68% 7d, funding +0.024%/8h (7d avg +0.009%), liq $1.23M vs 7d p75 $893K, long $615K vs short $616K, top L/S 1.30 down 0.65 7d, pct_4h -9.89%, vol 1.90x',
+    transition_read: 'Yesterday\'s +45.93% 24h near-CATALYST-BREAKOUT print rolled into a red 24h with OI still building. Top L/S 1.30 down 0.65 over 7d reads as smart-money distribution. Funding +0.024% sits below the 0.08% Tier 2 LONG-TRAP floor. A second-day red with funding rising past 0.08% fires the pattern. Liq $1.23M now clears the 7d p75. The cascade has started.',
+  },
+  {
+    asset: 'FIDA',
+    metrics_line: '-3.68% 24h, +101.29% 7d, OI -8.30% 24h on OI +858.48% 7d, funding -0.230%/8h (7d avg -0.172%, delta -0.057), basis +0.244%, top L/S 1.11 collapsed 2.62 7d, taker buy 50.06%, liq $97K vs 7d p75 $1.55M',
+    transition_read: 'Funding deepened from -0.188%/8h yesterday to -0.230%/8h today. Basis collapsed from +0.311% to +0.244%. The cash-and-carry unwind continues. Top L/S 1.11 collapsed 2.62 over the week as positioning capitulates. pct_24h -3.68% blocks SHORT-SQUEEZE\'s positive-price gate. A green push higher with OI extending negative fires SHORT-SQUEEZE.',
+  },
+  {
+    asset: 'ALT',
+    metrics_line: '-1.59% 24h, +18.69% 7d, OI -2.22% 24h on OI +239.58% 7d, funding -0.190%/8h (7d avg -0.067%, delta -0.123), basis +0.846%, top L/S 1.20 down 0.25 7d, taker buy 52.83%',
+    transition_read: 'Extreme cash-and-carry shape. Basis +0.846% on funding -0.190%/8h with OI building +239.58% 7d. Taker buy 52.83% clears the upper CASH-AND-CARRY bound of 52 by 0.83pp, blocking the pattern tag (window is 48-52%). The structure reads as institutional arb flow, not bullish positioning. A taker-buy drop back under 52% with basis holding fires the formal CASH-AND-CARRY tag.',
+  },
+  {
+    asset: 'GENIUS',
+    metrics_line: '-4.28% 24h, +22.91% 7d, OI +2.72% 24h on OI +146.17% 7d, funding +0.0045%/8h (7d avg +0.0078%), vol 1.28x, liq $315K vs 7d p75 $135K, top L/S 1.30 down 0.43 7d, range_7d 71.93%',
+    transition_read: 'New universe entrant. OI +146.17% 7d with range 71.93% means a fresh, volatile setup carrying real leverage build. Vol 1.28x is the second-highest in today\'s universe behind BEAT. Top L/S 1.30 down 0.43 7d reads as smart money fading the entry. A second-day red with OI extending lower fires CAPITULATION-shaped flow.',
   },
   {
     asset: 'NEAR',
-    metrics_line: '+14.43% 24h, +42.84% 7d, OI +36.64% 24h on OI +142.17% 7d, vol 5.53x, funding +0.005%/8h, taker buy 50.12%, short liqs $4.02M vs 7d p75 $1.38M, top L/S 1.73 down 0.02 7d',
-    transition_read: 'Missed CATALYST-BREAKOUT by 5.57pp on the +20% Tier 2 pct_24h gate. Top L/S down 0.02 7d reverses yesterday\'s smart-money confirmation. Yesterday\'s ACCUMULATION CONFIRMED day-2 print collapsed into NEUTRAL on the range gate. The setup weakened from "long continuation" to "watch for re-acceleration." A continuation push through +20% 24h with taker-buy turning fires the regime.',
+    metrics_line: '-1.62% 24h, +38.17% 7d, OI -2.81% 24h on OI +130.02% 7d, funding +0.0004%/8h (7d avg +0.0057%), taker buy 51.10%, top L/S 1.78 down 0.07 7d, range_7d 59.78%',
+    transition_read: 'Yesterday\'s +14.43% 24h capped out and rolled into a soft red. OI -2.81% means the late longs unwind without panic. Funding repaired toward zero from yesterday\'s +0.005%. Range 59.78% holds the asset out of ACCUMULATION even though OI 7d +130% would qualify. The setup needs a tighter range. A 2-3 day consolidation under $2.20 with OI holding flat re-arms ACCUMULATION.',
   },
   {
-    asset: 'WLD',
-    metrics_line: '+9.80% 24h, +20.47% 7d, OI +16.34% 24h on OI +48.50% 7d, vol 1.98x, funding +0.008%/8h (7d avg -0.035%), short liqs $730K vs 7d p75 $284K, top L/S 1.63 down 0.22 7d',
-    transition_read: 'Missed CATALYST-BREAKOUT by 10.20pp on pct_24h and 0.02x on vol. Short-liq cascade 2.6x p75 confirms the squeeze leg. Funding repaired from -0.035% 7d avg to +0.008%/8h reads as new longs paying premium against covered shorts. A pct_24h push through +20% 24h fires CATALYST-BREAKOUT.',
-  },
-  {
-    asset: 'GRASS',
-    metrics_line: '+3.72% 24h, +37.89% 7d, OI +25.13% 24h on OI +139.81% 7d, vol 13.54x, funding -0.002%/8h, taker buy 51.10%, short liqs $637K vs 7d p75 $55K, top L/S 1.10 down 0.20 7d',
-    transition_read: 'Vol 13.54x with short-liq cascade 11.5x the 7d p75. Pct_24h decelerated from +7.01% to +3.72% on the refresh — the move slowed but the structure stayed intact. Funding -0.002%/8h on rising price still reads as short pile-in. Pct_24h sits 6.28pp under the +10% Tier 2 SHORT-SQUEEZE gate. A push past +10% 24h with OI flipping negative fires SHORT-SQUEEZE.',
+    asset: 'HYPE',
+    metrics_line: '+1.03% 24h, +32.00% 7d, OI -0.89% 24h on OI +43.62% 7d, funding +0.0082%/8h (7d avg +0.0007%, delta +0.0075), taker buy 52.19%, top L/S 1.36 up 0.15 7d, range_7d 51.57%, pct_4h -0.41%',
+    transition_read: 'Taker buy 52.19% just clears the +52% CATALYST-BREAKOUT gate. pct_24h +1.03% sits 19pp under the +20% Tier 2 trigger. The +32% 7d run on OI +43.62% 7d carries momentum but the range expanded past the 25% ACCUMULATION gate. Funding flipped clean positive. New longs paying premium. A consolidation week with range tightening fires ACCUMULATION CONFIRMED.',
   },
 ];
 
@@ -200,13 +190,13 @@ const out = {
   regime_changes,
   regimes,
   regime_empty_notes: {
-    ACCUMULATION: 'no qualifying assets — yesterday\'s three prints all rolled out (NEAR range expanded past 25%, ONDO range broke past 25% on the +7.05% 24h push, CL pct_7d turned -4.11%)',
-    'CATALYST-BREAKOUT': 'no qualifying assets — BEAT cleared +45.93% 24h with vol 11.60x and OI +71.40% 24h, missed the +52% Tier 2 taker-buy gate by 1.00pp. EDEN cleared +24.05% with OI +13.55% but vol 1.40x sits under the 2.0x floor',
-    'SHORT-SQUEEZE': 'no qualifying assets — FIDA carries funding -0.188%/8h with OI flipping -12.73% but pct_24h -5.07% is the wrong direction. GRASS holds vol 13.54x on short-liqs 11.5x p75 but pct_24h +3.72% sits 6.28pp under the +10% Tier 2 gate',
-    MOMENTUM: 'no qualifying assets — HYPE +31.50% 7d on OI +41.01% 7d sits at funding -0.008%/8h with OI -2.59% 24h, blocked by both the funding gate and the oi_24h ≥ 0 floor',
-    COMPRESSION: 'no qualifying assets — Tier 2 universe has no asset under the 5% range gate today; closest is BNB at 6.43% on OI -6.10% 7d which fails the OI build',
-    DISTRIBUTION: 'no qualifying assets — funding muted across the long side universe-wide, no Tier 2 asset over the +0.08%/8h gate',
-    CAPITULATION: 'no qualifying assets — PROVE cleared pct_24h and oi_24h gates but funding flipped from -0.037% to +0.0002% between prefetches and blocks. LIT cleared pct_24h -10.04% and OI -14.43% but funding +0.003%/8h blocks',
+    ACCUMULATION: 'no qualifying assets — HYPE +32.00% 7d / OI +43.62% 7d sits at range 51.57%, blocked by the 25% range gate. NEAR +38.17% 7d / OI +130.02% 7d sits at range 59.78%, same gate.',
+    'CATALYST-BREAKOUT': 'no qualifying assets — universe vol_ratio sits 0.10-1.90 against the 2.0 floor on the 06:31Z partial-bar prefetch. BSB carries the highest pct_24h at +26.52% with OI +28.69% but vol 0.37x and taker buy 49.86% both block.',
+    'SHORT-SQUEEZE': 'no qualifying assets — FIDA carries funding -0.230%/8h with OI -8.30% but pct_24h -3.68% is the wrong direction. ALT carries funding -0.190%/8h with similar profile but pct_24h -1.59%, also wrong direction.',
+    MOMENTUM: 'no qualifying assets — HYPE +32.00% 7d / OI +43.62% 7d sits at funding +0.0082%/8h, below the +0.03% MOMENTUM floor. BEAT +97.83% 7d sits at funding +0.024%/8h, also below the floor.',
+    COMPRESSION: 'no qualifying assets — Tier 2 universe has no asset under the 5% range gate today; closest is BNB at 4.81% (clears the gate) but OI 7d -1.99% fails the +5% OI build.',
+    DISTRIBUTION: 'no qualifying assets — BSB funding +0.0878%/8h clears the +0.08% Tier 2 gate but pct_24h +26.52% > pct_7d/7 (+24.80%) means gains are accelerating, blocking the gains-slowing gate. LAB funding +0.028%/8h sits well below the gate.',
+    CAPITULATION: 'no qualifying assets — EDEN cleared pct_24h -13.76% / oi_24h -19.75% / funding -0.363% gates but liq $715K sits at one-third the 7d p75 of $2.13M. Liq cascade hasn\'t intensified.',
   },
   watch,
   neutral_summary,
