@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-23T10:09:19Z",
+  "last_analyzed": "2026-05-23T10:50:26Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured output with specific metrics, clear verdicts, complete file artifacts, continuity tracking, and self-review; domain expertise evident but actionability is observational rather than prescriptive.",
+  "assessment": "Substantive market regime analysis with specific intra-day deltas, asset-level breakdowns, and actionable follow-up conditions; well-structured, domain-appropriate, no apparent errors or staleness.",
   "flags": [],
-  "avg_score": 3.95,
+  "avg_score": 3.96,
   "history": [
     {
       "date": "2026-05-18",
@@ -89,6 +89,10 @@
     {
       "date": "2026-05-23",
       "score": 5
+    },
+    {
+      "date": "2026-05-23",
+      "score": 4
     },
     {
       "date": "2026-05-23",
