@@ -1,34 +1,35 @@
-Daily Token Call · 22 May
+Daily Token Call · 23 May
 ──────────────────────────
 
-WLD · HIGH · 9/10
-$0.296 · +13.1% 24h · +21.7% 7d
-mcap $1.01b · vol $252m · vol/mcap 0.25
+BEAT · HIGH · 9/10
+$1.17 · +58.0% 24h · +97.3% 7d
+mcap $319m · vol $93m · vol/mcap 0.29
 
 
 SIGNALS
-  Vol/mcap 0.25 — institutional turnover, not micro-cap wash.
-  Both 24h and 7d above +5% on a red BTC and red ETH 7d.
-  Outpacing BTC -3.3% / ETH -4.5% on the 7d by 25 points.
-  Mid-large mcap ($1b) keeps the book liquid and hard to manipulate.
+  Vol/mcap 0.29 — institutional-grade turnover at the $300m-cap tier.
+  Both 24h and 7d above the +5% gate, with 7d at +97%.
+  Outpacing BTC -4.5% and ETH -7.4% on the 7d by 100+ points.
+  AI-narrative co-leader on a tape where NEAR and GRASS already ran.
 
 CATALYST
-  Eightco Holdings disclosed a 283.45M WLD position on 15 May — 8.39% of circulating supply, the largest known institutional holder.
-  Sam Altman won the OpenAI vs Musk verdict on 18 May, clearing a legal-overhang risk on WLD's principal sponsor.
-  AI identity angle differentiates from the day's earlier picks (memecoin ETF, DePIN, RWA).
+  Arkham flagged 11.423M BEAT ($6.58m) withdrawn from Gate to 10 fresh addresses on 22 May.
+  The market read the print as smart-money accumulation, not exit liquidity.
+  Capital rotated into AI-themed tokens as DePIN and AI/compute sat PEAK on the narrative map.
+  Entertainment-IP angle differentiates from yesterday's three picks (PENGU memecoin ETF, GRASS DePIN, ONDO RWA) and today's WLD identity.
 
 RISK
-  Short interest sits heavy per May commentary. The squeeze tail cuts both ways.
-  July 24 unlock-rate cut (5.1M → 2.9M daily) helps at horizon, not if structure breaks before then.
-  Not on the CoinGecko trending list today. Attention reads institutional, not retail.
+  The same fresh wallets driving the bid can flip to distribution. $93m daily volume thins fast on a small-cap entertainment-IP token.
+  ATH $4.91 from the Nov-2025 listing. Price sits 76% below — long supply overhang from the original launch holders.
+  AI narrative sits at PEAK per yesterday's narrative-tracker. The trail tightens, not the entry.
 
 DEDUP
   First time in 7d.
-  Today's three prior picks (PENGU, GRASS, ONDO) excluded.
-  14 names on the rolling dedup list: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO.
+  Today's three prior picks (PENGU, GRASS, ONDO) and WLD all excluded.
+  15-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD.
 
 
-Take: clean large-cap breakout on a differentiated angle, with a named institutional catalyst behind the move. Heavy short interest is the squeeze fuel and the failure mode at once. Sized small against a fragile BTC tape.
+Take: clean whale-accumulation print plus AI-narrative tailwind on a $300m-cap entertainment token. The catalyst is flow, not a dated event — continuation thesis with the trail tight. Sized small against a fragile BTC tape and a narrative already at PEAK.
 
 
 not financial advice — pattern-matching only
