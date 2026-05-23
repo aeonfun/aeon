@@ -1,10 +1,12 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-23T06:34:56Z",
-  "quality_score": 4,
-  "assessment": "Substantive market analysis with specific observations and proper memory/file management; well-structured but truncated output limits visibility into source grounding.",
-  "flags": [],
-  "avg_score": 4,
+  "last_analyzed": "2026-05-23T07:05:35Z",
+  "quality_score": 3,
+  "assessment": "Skill ran and identified substantive issue (15-hour grounding staleness, zero new items), provided domain-specific analysis, but persistent data freshness problem undermines reliability.",
+  "flags": [
+    "stale_data"
+  ],
+  "avg_score": 3.93,
   "history": [
     {
       "date": "2026-05-18",
@@ -61,6 +63,10 @@
     {
       "date": "2026-05-23",
       "score": 4
+    },
+    {
+      "date": "2026-05-23",
+      "score": 3
     }
   ]
 }
