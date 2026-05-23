@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-23T18:08:19Z",
+    "generated": "2026-05-23T18:21:12Z",
     "repo": "aaronjmars/aeon",
-    "total": 158,
+    "total": 155,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -43,8 +43,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon agent-displacement"
         },
         {
@@ -82,18 +82,6 @@
             "sha": "2601d0e",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon article"
-        },
-        {
-            "slug": "auto-merge-agent-prs",
-            "name": "auto-merge-agent-prs",
-            "description": "Close the loop on agent-authored PRs \u2014 auto-merge green, unblocked PRs opened by the agent so feature shipping doesn't stall waiting for a human click",
-            "category": "other",
-            "schedule": "",
-            "var": "",
-            "files": 0,
-            "sha": "",
-            "updated": "",
-            "install": "./add-skill aaronjmars/aeon auto-merge-agent-prs"
         },
         {
             "slug": "auto-merge",
@@ -139,21 +127,9 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon batch-health"
-        },
-        {
-            "slug": "build-skill",
-            "name": "Build Skill",
-            "description": "Design and build a new reusable skill",
-            "category": "other",
-            "schedule": "",
-            "var": "",
-            "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
-            "install": "./add-skill aaronjmars/aeon build-skill"
         },
         {
             "slug": "builder-map",
@@ -163,8 +139,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon builder-map"
         },
         {
@@ -223,8 +199,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon compute-pulse"
         },
         {
@@ -235,8 +211,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon config-validator"
         },
         {
@@ -391,8 +367,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon disclosure-tracker"
         },
         {
@@ -415,8 +391,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon engagement-act"
         },
         {
@@ -463,8 +439,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon feature"
         },
         {
@@ -703,8 +679,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon idea-pipeline"
         },
         {
@@ -715,8 +691,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon idea-validator"
         },
         {
@@ -739,8 +715,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon janitor"
         },
         {
@@ -763,8 +739,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon launch-radar"
         },
         {
@@ -799,8 +775,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon memory-flush"
         },
         {
@@ -811,8 +787,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon memory-structural-dedupe"
         },
         {
@@ -823,8 +799,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon milestone-tracker"
         },
         {
@@ -895,8 +871,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon note-taking"
         },
         {
@@ -967,8 +943,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pm-intel"
         },
         {
@@ -979,8 +955,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pm-manipulation"
         },
         {
@@ -991,8 +967,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pm-pulse"
         },
         {
@@ -1015,8 +991,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon polymarket"
         },
         {
@@ -1039,8 +1015,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pr-tracker"
         },
         {
@@ -1111,8 +1087,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pvr-triage-monitor"
         },
         {
@@ -1123,8 +1099,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon pvr-watchlist"
         },
         {
@@ -1243,8 +1219,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon repo-revive"
         },
         {
@@ -1303,8 +1279,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon run-frequency-guard"
         },
         {
@@ -1315,8 +1291,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon rwa-pulse"
         },
         {
@@ -1375,8 +1351,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon self-review"
         },
         {
@@ -1399,8 +1375,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon signal-verdict"
         },
         {
@@ -1423,8 +1399,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon skill-enabler"
         },
         {
@@ -1699,8 +1675,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon topic-momentum"
         },
         {
@@ -1716,18 +1692,6 @@
             "install": "./add-skill aaronjmars/aeon treasury-info"
         },
         {
-            "slug": "trending-coins",
-            "name": "Trending Coins",
-            "description": "Top trending and most searched coins on CoinGecko in the last 24 hours",
-            "category": "other",
-            "schedule": "",
-            "var": "",
-            "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
-            "install": "./add-skill aaronjmars/aeon trending-coins"
-        },
-        {
             "slug": "tweet-digest",
             "name": "Tweet Digest",
             "description": "Account-based digest of recent tweets from tracked X/Twitter accounts. Sibling to fetch-tweets (keyword) and tweet-roundup (topic).",
@@ -1735,8 +1699,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon tweet-digest"
         },
         {
@@ -1831,8 +1795,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon vuln-tracker"
         },
         {
@@ -1843,8 +1807,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "ba0143d",
-            "updated": "2026-04-15",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon wallet-digest"
         },
         {
@@ -1903,8 +1867,8 @@
             "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "",
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon x402-monitor"
         }
     ],
