@@ -1,9 +1,11 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-22T15:46:58Z",
+  "last_analyzed": "2026-05-23T06:34:56Z",
   "quality_score": 4,
-  "assessment": "Substantive analysis with deliberate decision-making; specific recommendations but undermined by workarounds for known issues (ISS-005, ISS-008)",
-  "flags": [],
+  "assessment": "Substantive, well-structured output with specific metrics, clear narrative categorization, and actionable follow-up logic; flags recurring ISS-005 issue.",
+  "flags": [
+    "ISS-005"
+  ],
   "avg_score": 3.93,
   "history": [
     {
@@ -60,6 +62,10 @@
     },
     {
       "date": "2026-05-22",
+      "score": 4
+    },
+    {
+      "date": "2026-05-23",
       "score": 4
     }
   ]
