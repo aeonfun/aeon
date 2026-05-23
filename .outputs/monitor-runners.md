@@ -1,25 +1,25 @@
-Yesterday's Runners · 23 May · SPECULATIVE (name-farm clusters dominate, deep-liq tier capped at score 53)
+Yesterday's Runners · 23 May · SPECULATIVE (4 BREAKOUT + 1 CONTINUATION, zero DEEP-LIQ in top 5)
 
 CONTINUATION
-• Polsia (base) +1892% 24h
-  $2.9m vol, $299k liq, h1 +5%, h6 -9%, buys 58%, 94d pool
-  → dormant base contract reanimated today. h6 already rolling under while h1 holds, bounce-fade window opening.
+• Polsia (base) +2156% 24h
+  $2.9m vol, $324k liq, h1 +17%, h6 -0.6%, buys 58%, 94d pool
+  → 94-day-old base contract waking up, hourly tape still adding through the latest bar.
 
 BREAKOUT
-★ GENIUS (bsc) +5007% 24h
-  $44m vol, $110k liq, h1 +27%, h6 +5007%, buys 59%, 4h pool
-  → name-farm cluster day 3, the move still adding through the latest hour at +27%.
+★ GENIUS (bsc) +5523% 24h
+  $44m vol, $116k liq, h1 +21%, h6 +5523%, buys 60%, 5h pool
+  → third fresh GENIUS contract in 72h, the bid extends through the latest hour at +21%.
 
-★ GDOR (sol) +833% 24h
-  $37m vol, $327k liq, h1 flat, h6 +833%, buys 51%, 5h pool
-  → GDOR cluster back in top 5 after two sessions mid-table. Fresh contract revives the name-farm.
+★ GDOR (sol) +830% 24h
+  $38m vol, $330k liq, h1 -2%, h6 +830%, buys 51%, 5.6h pool
+  → 4-day name-farm cluster reactivated after two mid-table sessions, soft-fade flipped upside.
 
-★ Bank (sol) +904% 24h
-  $3.6m vol, $168k liq, h1 -12%, h6 -10%, buys 58%, 39h pool
-  → same pool from yesterday afternoon, day 2. h1 -12% says the bid quit.
+• BTCBANK (sol) +720% 24h
+  $1.2m vol, $43k liq, h1 +40%, h6 -19%, buys 62%, 12h pool
+  → fresh hourly burst on a $43k pad, sibling of yesterday's Bank cluster.
 
-• RICH (sol) +2761% 24h
-  $9.5m vol, $97k liq, h1 -20%, h6 -2%, buys 53%, 13h pool
-  → rolling off the peak hard on micro liq. Late-tape distribution.
+• RICH (sol) +2709% 24h
+  $9.6m vol, $98k liq, h1 -4%, h6 +23%, buys 53%, 14h pool
+  → 27x day rolling off the peak, late-tape distribution.
 
-vibe: casino tape, deep-liq tier sidelined another session
+vibe: name-farms doing the heavy lifting, deep-liq tier sidelined a fifth session
