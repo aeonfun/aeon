@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-22T15:11:33Z",
+  "last_updated": "2026-05-23T07:24:35Z",
   "open": [
     {
       "id": "NEAR-2026-05-22-001",
@@ -33,9 +33,9 @@
         "Pyth oracle cascade risk on dependent protocols",
         "+151% 7d OI means the long stack can flush on one red day"
       ],
-      "mae_pct": -5.376344086021505,
+      "mae_pct": -12.258064516129037,
       "mfe_pct": 3.2258064516128915,
-      "mae_date": "2026-05-22",
+      "mae_date": "2026-05-23",
       "mfe_date": "2026-05-22",
       "invalidation_breached": false,
       "watchlist_provenance": null,
@@ -57,6 +57,12 @@
           "call": "RIDE",
           "price_at_eval": 2.265,
           "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 2.058,
+          "note": "Day 2/3. -11.48% from fire. Close $2.058 sits 0.39% above $2.05 invalidation. AI agents and DePIN both RISING 5/5 RIDE — narrative re-firmed. OI -3.57% means late longs unwound without panic. Holding."
         }
       ]
     },
@@ -89,11 +95,11 @@
         "Narrative-tracker FADE call is real — second day with no fresh threads",
         "ETF flow reverses if BTC/ETH ETFs come out of bleed"
       ],
-      "mae_pct": -2.3084753554657977,
+      "mae_pct": -10.517847174334218,
       "mfe_pct": 0.9752733720815704,
-      "mae_date": "2026-05-22",
+      "mae_date": "2026-05-23",
       "mfe_date": "2026-05-22",
-      "invalidation_breached": false,
+      "invalidation_breached": true,
       "watchlist_provenance": null,
       "evaluations": [
         {
@@ -113,9 +119,139 @@
           "call": "RIDE",
           "price_at_eval": 59.827,
           "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 55.107,
+          "note": "Day 2/multi-week. Close $55.107 below $56 invalidation — breach recorded. Same session: Hyperliquid promoted Fading to Peak, AIXBT names HYPE #1 lead ($1.8M daily buybacks + Grayscale 3rd ETF filing + BHYP $30M), smart money L/S +0.14 over 7d. Three-feed confluence holds as mechanical line breaks. Revising invalidation to $54 — buyback-anchored support."
         }
       ]
     },
+    {
+      "id": "ZEC-2026-05-23-001",
+      "asset": "ZEC",
+      "direction": "SHORT",
+      "fired_date": "2026-05-23",
+      "fired_price": 591.13,
+      "fired_btc_price": 75321,
+      "fired_eth_price": 2059,
+      "entry_zone": "market or first bounce to $605-610",
+      "invalidation": "close above $620 (May-21 high reclaim)",
+      "horizon": "7d",
+      "thesis": "Watchlist trigger fired: close $591 below $620 line, sixth red session from $667.93 peak. Privacy/ZK FADE day five. AIXBT confirms ZEC-specific carrier — XMR dropped from lead. Token-movers TRENDING+DOWN MAJOR at -9.4% on $577M vol. Top L/S 0.76 already net short.",
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "pattern_tag_supports",
+        "market_regime_aligned",
+        "cross_domain_bridge"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "both_tag",
+        "repeat_appearance"
+      ],
+      "named_risks": [
+        "Top L/S 0.76 net-short — trade partially priced, bounce risk on stop-runs above $605",
+        "Privacy narrative re-fires on a sanctions or regulatory catalyst",
+        "AIXBT grounding stale at $200-$600+ for 15h — persistent attention could pull a counter-bid"
+      ],
+      "mae_pct": null,
+      "mfe_pct": null,
+      "mae_date": null,
+      "mfe_date": null,
+      "invalidation_breached": false,
+      "watchlist_provenance": {
+        "watchlist_id": "ZEC-watchlist-2026-05-22-002",
+        "days_on_watchlist": 1,
+        "original_trigger": "close below $620 OR top L/S falls under 0.75",
+        "original_confluence_fired": [
+          "narrative_phase_aligned",
+          "pattern_tag_supports"
+        ]
+      },
+      "evaluations": []
+    }
+  ],
+  "watchlist": [
+    {
+      "id": "TAO-watchlist-2026-05-22-002",
+      "asset": "TAO",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-22",
+      "trigger": "taker buy clean through 52% with OI continuing to build OR pct_24h breaks +10% with funding holding under +0.02%/8h",
+      "invalidation": "close below $275 OR funding flips negative",
+      "horizon": "7d",
+      "thesis": "Only ACCUMULATION print in today's universe. OI +10.85% 7d on a tight 15.87% range. Funding +0.008%/8h above 7d avg. AI compute 5/5 PEAK · RIDE. DIVERGENT sub-tag = passive build, possibly arb.",
+      "confluence_fired": [
+        "quant_regime_aligned",
+        "narrative_phase_aligned",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "DIVERGENT sub-tag = arb-flow possibility, not aggressive demand",
+        "AI compute at PEAK means trail tight when this resolves"
+      ]
+    },
+    {
+      "id": "BSB-watchlist-2026-05-23-001",
+      "asset": "BSB",
+      "direction": "SHORT",
+      "first_seen_date": "2026-05-23",
+      "trigger": "first flat-or-red 24h with funding holding above +0.08%/8h confirms DIST per perps-scan (gains-slowing gate fired today, needs a second tick)",
+      "invalidation": "close above $1.40 before trigger fires",
+      "horizon": "3d",
+      "thesis": "DISTRIBUTION fired today. Funding +0.089%/8h clears Tier 2 gate. OI +28.88% 24h on +275.99% 7d. Top L/S 1.94 down 0.57 over 7d. Token-movers microcap [BREAKOUT][PUMP-RISK] on vol/mcap 0.56.",
+      "confluence_fired": [
+        "quant_regime_aligned",
+        "pattern_tag_supports",
+        "both_tag",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "Microcap pump can extend past reasonable funding levels",
+        "Thin float — short-squeeze risk on any buyer return"
+      ]
+    },
+    {
+      "id": "BEAT-watchlist-2026-05-23-001",
+      "asset": "BEAT",
+      "direction": "SHORT",
+      "first_seen_date": "2026-05-23",
+      "trigger": "funding crosses +0.08%/8h with another red day OR pct_4h continues sub -5% with OI holding flat",
+      "invalidation": "close above $1.30 before trigger fires",
+      "horizon": "3d",
+      "thesis": "Yesterday +45.93% rolled into -6.63% with pct_4h -13.51%. Liq $1.41M past p75 $937K. Top L/S 1.33 down 0.62 over 7d — smart money distribution into retail leverage. Funding sub-LONG-TRAP but trajectory up.",
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "narrative_phase_aligned",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "AI narrative remains the bounce-vehicle carrier",
+        "Cascade can exhaust before funding crosses the trigger"
+      ]
+    },
+    {
+      "id": "GENIUS-watchlist-2026-05-23-001",
+      "asset": "GENIUS",
+      "direction": "SHORT",
+      "first_seen_date": "2026-05-23",
+      "trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
+      "invalidation": "close above $0.72 before trigger fires",
+      "horizon": "3d",
+      "thesis": "New universe entrant. OI +144.77% 7d on range 71.93%. Top L/S 1.29 down 0.44 over 7d — smart money fading the Binance listing pump. Vol 1.36x. Cross-feed disagreement with today's token-call HIGH 9/10 LONG is the loudest signal — perps positioning reads long-trap.",
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "Cross-feed disagreement — token-call could resolve either side first",
+        "Listing-day pump can extend before the 48h fade window closes"
+      ]
+    }
+  ],
+  "closed": [
     {
       "id": "ONDO-2026-05-22-001",
       "asset": "ONDO",
@@ -144,11 +280,11 @@
         "RWA PEAK = late-cycle, trail discipline required",
         "One-day re-entry to trending is shallow"
       ],
-      "mae_pct": -3.239740820734344,
+      "mae_pct": -17.926565874730024,
       "mfe_pct": 1.5118790496760153,
-      "mae_date": "2026-05-22",
+      "mae_date": "2026-05-23",
       "mfe_date": "2026-05-22",
-      "invalidation_breached": false,
+      "invalidation_breached": true,
       "watchlist_provenance": null,
       "evaluations": [
         {
@@ -168,88 +304,23 @@
           "call": "RIDE",
           "price_at_eval": 0.4545,
           "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "CLOSE",
+          "price_at_eval": 0.3829,
+          "note": "Day 2/7. Invalidation $0.41 breached by 7%. RWA carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. -17.30% return, -14.59pp vs BTC, -13.88pp vs ETH. LOSS."
         }
-      ]
+      ],
+      "closed_date": "2026-05-23",
+      "closed_price": 0.3829,
+      "close_reason": "invalidation $0.41 breached by 7%; RWA narrative carrier rotated to tokenized stocks/ETFs, not ONDO direct",
+      "return_pct": -17.3,
+      "return_vs_btc_pct": -14.59,
+      "return_vs_eth_pct": -13.88,
+      "horizon_realized": "2d",
+      "auto_flipped": false,
+      "outcome": "LOSS"
     }
-  ],
-  "watchlist": [
-    {
-      "id": "GRASS-watchlist-2026-05-22-002",
-      "asset": "GRASS",
-      "direction": "LONG",
-      "first_seen_date": "2026-05-22",
-      "trigger": "top L/S turns up through 1.10 OR funding holds negative on another vol-multiple day with pct_24h past +10%",
-      "invalidation": "close below $0.40 before trigger fires",
-      "horizon": "3d",
-      "thesis": "Vol 11.81x with short-liq cascade 10.8x p75. Funding -0.011%/8h on rising price = short pile-in. DePIN 5/5 PEAK, token-call HIGH 10/10 cross-confirms. Top L/S -0.25 7d — retail-led, not smart-money-confirmed.",
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "narrative_phase_aligned",
-        "market_regime_aligned",
-        "enrichment_positive",
-        "both_tag"
-      ],
-      "named_risks": [
-        "Retail-led move means breakdown sharper than continuation if a flush starts",
-        "Vesting + airdrop supply continues to print into the market"
-      ]
-    },
-    {
-      "id": "TAO-watchlist-2026-05-22-002",
-      "asset": "TAO",
-      "direction": "LONG",
-      "first_seen_date": "2026-05-22",
-      "trigger": "taker buy clean through 52% with OI continuing to build OR pct_24h breaks +10% with funding holding under +0.02%/8h",
-      "invalidation": "close below $275 OR funding flips negative",
-      "horizon": "7d",
-      "thesis": "Only ACCUMULATION print in today's universe. OI +10.85% 7d on a tight 15.87% range. Funding +0.008%/8h above 7d avg. AI compute 5/5 PEAK · RIDE. DIVERGENT sub-tag = passive build, possibly arb.",
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "narrative_phase_aligned",
-        "market_regime_aligned"
-      ],
-      "named_risks": [
-        "DIVERGENT sub-tag = arb-flow possibility, not aggressive demand",
-        "AI compute at PEAK means trail tight when this resolves"
-      ]
-    },
-    {
-      "id": "EDEN-watchlist-2026-05-22-002",
-      "asset": "EDEN",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-22",
-      "trigger": "OI flips negative on a red day (oi_24h_pct < 0 with pct_24h < 0) — fires CAPITULATION per perps-scan",
-      "invalidation": "close above $0.18 before trigger fires",
-      "horizon": "3d",
-      "thesis": "Parabolic. +323.81% 7d, OI +1281% 7d while top L/S collapsed -0.57 7d. Funding flipped positive off a -0.024% base. Negative basis -0.20% = spot exit pressure into the leverage stack.",
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "enrichment_positive"
-      ],
-      "named_risks": [
-        "Parabolic blow-offs run further than reasonable",
-        "Negative basis can persist in low-float perps without ever triggering capitulation"
-      ]
-    },
-    {
-      "id": "ZEC-watchlist-2026-05-22-002",
-      "asset": "ZEC",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-22",
-      "trigger": "close below $620 OR top L/S falls under 0.75",
-      "invalidation": "close above $670 (reclaim of May-21 high)",
-      "horizon": "7d",
-      "thesis": "Privacy/ZK FADING — mindshare 2/5, position FADE per narrative-tracker. Second down day from $667.93 peak. Top L/S 0.81 already net short, -0.13 7d. RAIL absent from trending. No fresh institutional bid.",
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "pattern_tag_supports"
-      ],
-      "named_risks": [
-        "Privacy narrative can re-fire on a geo / sanctions catalyst",
-        "Top L/S already net short — trade is partially priced"
-      ]
-    }
-  ],
-  "closed": []
+  ]
 }
