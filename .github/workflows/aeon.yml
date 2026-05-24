@@ -336,7 +336,6 @@ jobs:
             echo "notify: duplicate message (hash ${HASH:0:8}), skipping" >&2
             exit 0
           fi
-          printf '%s\n' "$HASH" >> "$HASH_FILE" 2>/dev/null || true
 
           # Always save to .pending-notify/ for post-run delivery (sandbox fallback)
           TS=$(date -u +%s)
@@ -438,6 +437,7 @@ jobs:
           # Remove pending file if immediate delivery succeeded (prevents double-send)
           if [ "$DELIVERED" = "true" ]; then
             rm -f ".pending-notify/${TS}.md"
+            printf '%s\n' "$HASH" >> "$HASH_FILE" 2>/dev/null || true
           fi
           NOTIFY_SCRIPT
           chmod +x ./notify
