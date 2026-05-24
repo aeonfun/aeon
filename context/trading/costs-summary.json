@@ -1,34 +1,34 @@
 {
   "total_cost_usd": 0.0,
-  "total_calls": 19589,
+  "total_calls": 19794,
   "total_tokens": 0,
   "by_vendor": {
     "hyperliquid": {
-      "calls": 11327,
+      "calls": 11434,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "get_balance": {
-          "calls": 4903,
+          "calls": 4955,
           "cost_usd": 0.0
         },
         "get_user_fills_pnl": {
-          "calls": 749,
+          "calls": 764,
           "cost_usd": 0.0
         },
         "get_open_positions": {
-          "calls": 5675,
+          "calls": 5715,
           "cost_usd": 0.0
         }
       }
     },
     "polymarket": {
-      "calls": 8262,
+      "calls": 8360,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 8262,
+          "calls": 8360,
           "cost_usd": 0.0
         }
       }
@@ -36,17 +36,17 @@
   },
   "by_agent": {
     "__system__": {
-      "calls": 19589,
+      "calls": 19794,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
         "hyperliquid": {
-          "calls": 11327,
+          "calls": 11434,
           "cost_usd": 0.0,
           "tokens": 0
         },
         "polymarket": {
-          "calls": 8262,
+          "calls": 8360,
           "cost_usd": 0.0,
           "tokens": 0
         }
@@ -57,7 +57,7 @@
     {
       "hour": "2026-05-17T21:00:00",
       "cost_usd": 0.0,
-      "calls": 75
+      "calls": 44
     },
     {
       "hour": "2026-05-17T22:00:00",
@@ -867,9 +867,29 @@
     {
       "hour": "2026-05-24T17:00:00",
       "cost_usd": 0.0,
-      "calls": 24
+      "calls": 82
+    },
+    {
+      "hour": "2026-05-24T18:00:00",
+      "cost_usd": 0.0,
+      "calls": 62
+    },
+    {
+      "hour": "2026-05-24T19:00:00",
+      "cost_usd": 0.0,
+      "calls": 48
+    },
+    {
+      "hour": "2026-05-24T20:00:00",
+      "cost_usd": 0.0,
+      "calls": 54
+    },
+    {
+      "hour": "2026-05-24T21:00:00",
+      "cost_usd": 0.0,
+      "calls": 14
     }
   ],
-  "event_count": 16098,
-  "synced_at": "2026-05-24T17:29:47Z"
+  "event_count": 16258,
+  "synced_at": "2026-05-24T21:29:51Z"
 }
