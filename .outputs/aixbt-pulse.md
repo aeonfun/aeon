@@ -1,19 +1,19 @@
-The macro frame flipped overnight. US-Iran deal progress inverted the Hormuz escalation thesis — from stagflationary defensive (Warsh + oil premiums + firmer long yields) to risk-on (compressed energy risk premium, softening Fed expectations, dollar weakness, EM inflows, vol compression). BTC bounced to $77K tracking the deal narrative while Fear & Greed held at 25 — Extreme Fear. HYPE upgraded from ETF-filing story to $1B+ fee-funded buybacks and 16% futures market share vs Binance. Privacy + AI narratives converging under one umbrella with ZEC, ETH ZK (EIP-8182 + Kohaku), and open-weight AI tokens. 8 new items; geopolitical and rate-regime direction reversed from prior reading.
+The 17:00Z pull drifts significantly from morning. HYPE reframes from fundamentals (buybacks, competitive share) to ATH momentum and options positioning on Derive. Privacy sector broadens: $RAIL enters the cluster, Vitalik's EF post on intermediary minimization and CROPS values elevates the thesis from a technical trade to a values endorsement. DeFi Summer comparisons on Base and a stablecoin infrastructure item (JPYC, Osero, State Street) are entirely new. TradFi is no longer directional — a deal doubt item (Lebanon terms, asset unfreezing) sits alongside deal progress, and Treasury yields hold at 4.56%, confirming the Fed-softening thesis hasn't cleared the bond market. BTC cycle framing, equity extension signals, and EM inflow transmission all dropped.
 
-─────────────────────────────────────────────────
+---
 
-# AIXBT Grounding (as of 2026-05-24 06:00 UTC)
+# AIXBT Grounding (as of 2026-05-24 17:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-24T06:00:23.540Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-24T17:00:23.955Z
 
-Note: nineteenth consecutive execution returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
+Note: twentieth consecutive execution returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
 
 ## Crypto
-- Hyperliquid dominates mindshare with $1B+ in fee-funded HYPE buybacks, record 16% futures market share vs Binance, and fresh ETF inflows driving a spot-led rerate.
-- BTC bounced to $77K on US-Iran deal hopes but Fear & Greed sits at 25; bears eye $56K liquidation clusters while bulls anchor on the 200W SMA as cycle support.
-- Privacy and AI narratives converge as ZEC attracts large leveraged longs, ETH's EIP-8182 and Kohaku push native ZK privacy, and open-weight AI tokens launch on Base/Solana.
-- StablR's EURR/USDR depegged 20%+ after a ~$10M exploit, while Solana ETF inflows and tokenized commodity growth signal institutional appetite beyond pure BTC exposure.
+- $HYPE dominates sentiment, hitting ATHs near $64 with spot ETF inflows, record 7% perp OI share vs CEXs, and massive options positioning on Derive.
+- Privacy narrative surges as $ZEC, $RAIL, and NEAR's confidential intents gain traction; Vitalik's EF post champions intermediary minimization and CROPS values.
+- Stablecoin infrastructure expands with Japan's JPYC on Kaia, Osero's yield APIs, and State Street tokenization—while StablR's $13.5M multisig exploit exposes risks.
+- DeFi revenue metrics gain focus as Aave's Stani reframes lending valuation around loan books, and Base ecosystem fair launches draw comparisons to DeFi Summer.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -22,46 +22,39 @@ Note: nineteenth consecutive execution returning only two sections — `crypto` 
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Progress toward a U.S.-Iran deal reopening the Strait of Hormuz is compressing the energy risk premium, likely transmitting lower oil prices into risk-on flows across equities and credit.
-- Equity longs appear positioned for extension as de-escalation signals reduce tail risks, supporting vol compression and broader sector participation into the next session.
-- Oil relief from geopolitical progress may ease inflation pressures, softening Fed expectations and supporting global liquidity with implications for dollar softening and EM inflows.
-- Banks and credit could see spread tightening as reduced Middle East conflict risk improves risk appetite, favoring cyclical and yield-sensitive positioning.
+- US stock indices extend their winning streak as investors increase risk exposure following signs of progress toward an Iran peace deal.
+- Treasury yields hold near 4.56% amid resilient growth and energy price pressures, shaping duration and liquidity preferences in fixed income.
+- Potential reopening of the Strait of Hormuz from the emerging US-Iran agreement eases shipping and energy supply risks but pending details keep oil vol elevated.
+- Emerging doubts in Iran negotiations on asset unfreezing and Lebanon terms could reverse recent risk asset gains and heighten cross-market hedging demands.
 
-## What's New (vs last pull — 2026-05-23T10:00 UTC)
-- [CRYPTO] HYPE reframed: from ETF filing announcements to $1B+ fee-funded buybacks and 16% futures market share vs Binance — revenue + competitive displacement replaces the product-filing story; "spot-led rerate" confirms ETF inflows bidding spot, not just perps
-- [CRYPTO] BTC narrative reversed: from $75K flash crash / $1.26B weekly ETF outflows to $77K bounce on US-Iran deal hopes — opposite price action, opposite institutional flow direction
-- [CRYPTO] ETH ZK privacy angle added: EIP-8182 and Kohaku as native ZK privacy extensions (prior had ETH bears/whale accumulation, no ZK framing)
-- [CRYPTO] Open-weight AI tokens on Base/Solana folded into privacy/AI convergence narrative (entirely new)
-- [CRYPTO] StablR EURR/USDR depeg 20%+ / ~$10M exploit — new risk item; AIXBT frames it alongside positive RWA signals rather than as a sector narrative
-- [TRADFI] US-Iran deal progress compressing Hormuz risk (direct REVERSAL — prior had "resumed US-Iran strikes speculation sustains Hormuz shipping risks")
-- [TRADFI] Banks/credit spread tightening on risk appetite recovery (no equivalent in prior)
-- [TRADFI] Dollar softening + EM inflows from oil relief (new; prior had firmer long yields and delayed cuts under Warsh)
+## What's New (vs last pull — 2026-05-24T06:00 UTC)
+- [CRYPTO] HYPE reframed: from $1B+ fee-funded buybacks + 16% futures market share vs Binance to ATH near $64 + options positioning on Derive + 7% perp OI share vs CEXs. Momentum and options angle replaces the fundamental revenue frame.
+- [CRYPTO] $RAIL added to the privacy cluster. NEAR reframed from EIP-8182/Kohaku ETH ZK implementation to "confidential intents." Vitalik's EF post on intermediary minimization and CROPS values is entirely new. Philosophical anchor for the privacy bid.
+- [CRYPTO] Stablecoin infrastructure framing replaces the Solana ETF inflows / tokenized commodity story. StablR exploit upgraded from $10M depeg to $13.5M multisig. JPYC on Kaia + Osero yield APIs + State Street tokenization are new.
+- [CRYPTO] DeFi revenue metrics item entirely new: Aave's Stani loan book reframing + Base DeFi Summer comparisons.
+- [TRADFI] Treasury yields at 4.56% named for the first time.
+- [TRADFI] Iran deal doubt item new: asset unfreezing and Lebanon terms as named complications. Bifurcates the deal-progress narrative.
 
 ## Gone (vs last pull)
-- BTC $75K flash crash / $400M+ liquidations — replaced by $77K bounce narrative
-- Weekly $1.26B ETF outflows / IBIT named as lead — flipped to ETF inflows
-- Warsh swearing-in / firmer long yields / limited multiple expansion — rate regime flipped entirely
-- ETH bears scaling into shorts / whale $126M contrarian accumulation
-- NEAR confidential txns / Arcium encrypted-compute on Solana
-- ZEC 800%+ YTD to $600 specific price/performance figures (thesis persists, data points refreshed)
-- Record-low consumer sentiment on gas prices
-- Friday equity records framing with "fragile to Iran repricing" qualifier
+- BTC $77K bounce / Fear & Greed at 25 / $56K bear target / 200W SMA — entire BTC cycle structural frame dropped.
+- ETH ZK privacy via EIP-8182 and Kohaku — replaced by Vitalik's EF post on intermediary minimization.
+- Open-weight AI tokens on Base/Solana — AI × crypto convergence dropped.
+- Equity longs positioned for extension / vol compression / sector participation.
+- Dollar softening + EM inflows as explicit deal-transmission mechanism.
+- Banks and credit spread tightening.
 
 ## Persisting Stories
-- HYPE dominant — narrative upgraded from product filings to revenue + competitive displacement. Thesis intact, conviction higher.
-- ZEC/privacy sector — expanding. ETH ZK privacy (EIP-8182 + Kohaku) and open-weight AI tokens now in the same narrative umbrella. The sector is broadening.
-- US-Iran/Hormuz geopolitical nexus — direction REVERSED from escalation to de-escalation. Macro transmission mechanism is the same; signal inverted.
-- Institutional appetite / ETF flows — direction flipped from outflows to inflows. Solana ETF inflows and tokenized commodity growth holding the RWA thesis.
-- BTC as cycle anchor — 200W SMA now the support reference; $56K liquidation cluster is the bear target. Cycle-structural framing persists through the price reversal.
+- HYPE dominant — framing shifted from fundamentals (buybacks, competitive share) to ATH momentum + options. Thesis intact. Conviction angle changed.
+- Privacy sector (ZEC, NEAR) — broadening. RAIL added. Vitalik's EF post replaces the technical ETH ZK frame with a philosophical anchor.
+- US-Iran/Hormuz nexus — now bifurcated. Deal progress (equities extending, Hormuz easing) alongside explicit doubt (asset unfreezing + Lebanon terms). Prior reads were one-directional. This reading is contested.
+- StablR exploit — persisting. Amount upgraded $10M → $13.5M. Framing upgraded from depeg to multisig exploit.
 
 ## Cross-Domain Bridges
 
-The geopolitical frame flipped overnight. Yesterday: Warsh + Hormuz escalation = stagflationary setup, defensive rotations, firmer long yields, limited multiple expansion. Today: US-Iran deal progress = compressed energy risk premium, lower oil, risk-on flows, softening Fed expectations, dollar weakness, EM inflows, vol compression, cyclical positioning. Opposite macro regimes in consecutive readings.
+The Iran deal frame is no longer directional. Morning (06:00Z) had four TradFi items pointing the same way: deal progress, lower oil, Fed softening, risk-on flows. Evening (17:00Z) splits the block: two items track deal extension, one names specific complications (Lebanon terms, asset unfreezing). Treasury yields sit at 4.56% on resilient growth and energy price pressures. The Fed-softening thesis from morning hasn't cleared the yield market. Risk assets extended the winning streak and priced in a deal the bond market has not confirmed.
 
-BTC's $77K bounce tracks the deal narrative. Fear & Greed sits at 25 — Extreme Fear, unchanged. The price moved. The sentiment didn't. If the deal holds, sentiment closes the gap upward. If the deal falls apart, price closes the gap toward 25-level conviction. The $56K bear target and the 200W SMA bull anchor are the two resolution points AIXBT names.
+HYPE's narrative reframe is directional. Morning anchored the thesis on fundamentals: $1B+ buybacks, 16% futures market share, spot-led rerate. Evening drops the revenue frame and leads with ATH price action and options positioning on Derive. Large options OI creates gamma exposure that mechanically amplifies momentum as price moves. The reframe says the market is trading HYPE on momentum, not fundamentals. Both read true simultaneously. They suggest different holding horizons.
 
-HYPE's reframe is structural. The prior story was institutional interest via ETF filings — analyst anticipation. Today's story is $1B+ fee-funded buybacks creating mechanical buy pressure plus 16% futures market share confirming competitive displacement of Binance. The spot-led rerate means ETF inflows bid spot directly, not just the perps. Conviction upgraded on fundamentals, not narrative alone.
+Vitalik's EF post elevated the privacy bid from a technical trade to a values endorsement. Morning had ETH ZK privacy via protocol features (EIP-8182, Kohaku). Evening has Vitalik endorsing intermediary minimization and CROPS values as the direction of Ethereum. ZEC, RAIL, and NEAR's confidential intents inherit the philosophical legitimization. The narrative substrate for the privacy sector upgraded, not just the token list.
 
-Privacy + AI convergence introduces supply to the ZEC thesis. Yesterday: ZEC had the privacy bid to itself, with NEAR and Arcium as adjacent plays. Today: ETH's EIP-8182 and Kohaku extend ZK privacy to the dominant smart-contract platform, and open-weight AI tokens on Base/Solana add the compute angle. Three asset classes under one narrative umbrella. The umbrella amplifies the narrative. It also gives capital three destinations instead of one.
-
-StablR depeg is isolated. AIXBT frames it as a risk footnote alongside Solana ETF inflows and tokenized commodity growth. The RWA/institutional appetite thesis absorbs it rather than breaking on it.
+The Base DeFi Summer comparison is reflexive. Aave's Stani reframes loan book valuation. Base fair launches draw DeFi Summer comparisons. The narrative manufactures the attention it references: projects launch on Base because the comparison draws capital, and the comparison strengthens as more projects launch. AIXBT flagged it. The frame is mainstream.
