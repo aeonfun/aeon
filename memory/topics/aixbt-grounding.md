@@ -1,15 +1,15 @@
-# AIXBT Grounding (as of 2026-05-23 21:00 UTC)
+# AIXBT Grounding (as of 2026-05-24 06:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-23T10:00:35.333Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-24T06:00:23.540Z
 
-Note: eighteenth consecutive execution returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items. This pull found new grounding data: createdAt advanced from 2026-05-23T09:00:30.311Z (prior run) to 2026-05-23T10:00:35.333Z. Six substantively new items, including Warsh swearing-in confirmed, ZEC/privacy item displacing the RWA item entirely at crypto item 3, ETH whale $126M accumulation, and record-low consumer sentiment on gas prices.
+Note: nineteenth consecutive execution returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
 
 ## Crypto
-- BTC flash-crashed below $75K triggering $400M+ in liquidations; weekly spot BTC ETF outflows hit $1.26B led by IBIT, deepening bear-market sentiment.
-- HYPE emerges as consensus outperformer with Grayscale filing a third HYPE ETF amendment, Bitwise BHYP hitting $30M AUM in 5 days, and new USDC prediction markets.
-- ZEC and privacy narrative surging—ZEC up 800%+ YTD to $600—while attention rotates to NEAR confidential txns and Arcium's encrypted-compute ecosystem on Solana.
-- ETH sentiment at cycle lows near $2K with bears scaling into shorts; whale $126M accumulation offers a contrarian signal amid broad alt-coin fragility.
+- Hyperliquid dominates mindshare with $1B+ in fee-funded HYPE buybacks, record 16% futures market share vs Binance, and fresh ETF inflows driving a spot-led rerate.
+- BTC bounced to $77K on US-Iran deal hopes but Fear & Greed sits at 25; bears eye $56K liquidation clusters while bulls anchor on the 200W SMA as cycle support.
+- Privacy and AI narratives converge as ZEC attracts large leveraged longs, ETH's EIP-8182 and Kohaku push native ZK privacy, and open-weight AI tokens launch on Base/Solana.
+- StablR's EURR/USDR depegged 20%+ after a ~$10M exploit, while Solana ETF inflows and tokenized commodity growth signal institutional appetite beyond pure BTC exposure.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -18,35 +18,46 @@ Note: eighteenth consecutive execution returning only two sections — `crypto` 
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Warsh's swearing-in as Fed Chair amid energy shocks positions markets for delayed cuts and firmer long yields, limiting multiple expansion in equities.
-- Friday equity records on easing oil and yields channel risk flows into tech and cyclicals, but leave positioning exposed to any Iran escalation repricing vol.
-- Speculation of resumed US-Iran strikes sustains Hormuz shipping risks, transmitting elevated oil premiums into inflation hedges and credit spreads.
-- Record-low consumer sentiment on gas prices underscores conflict transmission to spending, favoring defensive rotations over growth sectors in equities.
+- Progress toward a U.S.-Iran deal reopening the Strait of Hormuz is compressing the energy risk premium, likely transmitting lower oil prices into risk-on flows across equities and credit.
+- Equity longs appear positioned for extension as de-escalation signals reduce tail risks, supporting vol compression and broader sector participation into the next session.
+- Oil relief from geopolitical progress may ease inflation pressures, softening Fed expectations and supporting global liquidity with implications for dollar softening and EM inflows.
+- Banks and credit could see spread tightening as reduced Middle East conflict risk improves risk appetite, favoring cyclical and yield-sensitive positioning.
 
-## What's New (vs last pull — 2026-05-23T09:00 UTC)
-- [CRYPTO] ETF outflows now quantified: $1.26B weekly, IBIT named as lead outflow vehicle (prior framing cited six-day outflow streak without a weekly total)
-- [CRYPTO] ZEC/privacy promoted to item 3 — displaces the RWA item entirely. New details: ZEC 800%+ YTD to $600, Arcium encrypted-compute on Solana, NEAR confidential txns as adjacent privacy play
-- [CRYPTO] ETH reframe: bears scaling into shorts + whale $126M contrarian accumulation (prior: ETH fear-28, CT splits between privacy/AI/accumulation)
-- [TRADFI] Warsh officially sworn in as Fed Chair (prior: "incoming Fed Chair Warsh" — regime shift executed, not anticipated)
-- [TRADFI] Friday equity records framed against easing oil/yields but flagged as fragile to Iran repricing vol (prior: eighth consecutive winning week / Dow 50,579 specific figures)
-- [TRADFI] Record-low consumer sentiment on gas prices — entirely new item confirming conflict transmission to spending
+## What's New (vs last pull — 2026-05-23T10:00 UTC)
+- [CRYPTO] HYPE reframed: from ETF filing announcements to $1B+ fee-funded buybacks and 16% futures market share vs Binance — revenue + competitive displacement replaces the product-filing story; "spot-led rerate" confirms ETF inflows bidding spot, not just perps
+- [CRYPTO] BTC narrative reversed: from $75K flash crash / $1.26B weekly ETF outflows to $77K bounce on US-Iran deal hopes — opposite price action, opposite institutional flow direction
+- [CRYPTO] ETH ZK privacy angle added: EIP-8182 and Kohaku as native ZK privacy extensions (prior had ETH bears/whale accumulation, no ZK framing)
+- [CRYPTO] Open-weight AI tokens on Base/Solana folded into privacy/AI convergence narrative (entirely new)
+- [CRYPTO] StablR EURR/USDR depeg 20%+ / ~$10M exploit — new risk item; AIXBT frames it alongside positive RWA signals rather than as a sector narrative
+- [TRADFI] US-Iran deal progress compressing Hormuz risk (direct REVERSAL — prior had "resumed US-Iran strikes speculation sustains Hormuz shipping risks")
+- [TRADFI] Banks/credit spread tightening on risk appetite recovery (no equivalent in prior)
+- [TRADFI] Dollar softening + EM inflows from oil relief (new; prior had firmer long yields and delayed cuts under Warsh)
 
 ## Gone (vs last pull)
-- RWA tokenization item (Ondo, Centrifuge, Canton, Sui gas-free stablecoins, SOL ETF inflows) — dropped entirely from this cycle's crypto section
-- AI-agent infra bets framing from the prior ETH/CT item
-- Eighth consecutive winning week / Dow 50,579 specific figures
+- BTC $75K flash crash / $400M+ liquidations — replaced by $77K bounce narrative
+- Weekly $1.26B ETF outflows / IBIT named as lead — flipped to ETF inflows
+- Warsh swearing-in / firmer long yields / limited multiple expansion — rate regime flipped entirely
+- ETH bears scaling into shorts / whale $126M contrarian accumulation
+- NEAR confidential txns / Arcium encrypted-compute on Solana
+- ZEC 800%+ YTD to $600 specific price/performance figures (thesis persists, data points refreshed)
+- Record-low consumer sentiment on gas prices
+- Friday equity records framing with "fragile to Iran repricing" qualifier
 
 ## Persisting Stories
-- BTC $75K flash-crash / $400M+ liquidations — now reinforced with $1.26B weekly ETF total and IBIT named as the largest outflow vehicle. The institutional derisking is quantified.
-- HYPE dominance — Grayscale 3rd ETF amendment + Bitwise BHYP $30M AUM in 5 days persisting. Prediction markets reframed from HIP-4 to USDC-denominated (same thesis, clearer product detail).
-- ZEC privacy strength — amplified from "privacy-coin strength" framing to the #3 crypto item. $600 price, 800% YTD, Arcium encrypted-compute and NEAR confidential txns now anchoring the narrative.
-- Warsh + delayed rate cuts regime — converted from anticipation to execution. Swearing-in confirmed. Firmer long yields and limited multiple expansion are the operative frame.
-- Hormuz/Iran risk → oil premiums → energy inflation → rate relief deferred — persisting through every refresh this week. Now compounded by consumer sentiment data confirming transmission.
+- HYPE dominant — narrative upgraded from product filings to revenue + competitive displacement. Thesis intact, conviction higher.
+- ZEC/privacy sector — expanding. ETH ZK privacy (EIP-8182 + Kohaku) and open-weight AI tokens now in the same narrative umbrella. The sector is broadening.
+- US-Iran/Hormuz geopolitical nexus — direction REVERSED from escalation to de-escalation. Macro transmission mechanism is the same; signal inverted.
+- Institutional appetite / ETF flows — direction flipped from outflows to inflows. Solana ETF inflows and tokenized commodity growth holding the RWA thesis.
+- BTC as cycle anchor — 200W SMA now the support reference; $56K liquidation cluster is the bear target. Cycle-structural framing persists through the price reversal.
 
 ## Cross-Domain Bridges
 
-Warsh's swearing-in converts the rate-delay thesis from signal to policy. The regime is no longer priced on his statements — it's priced on his decisions. Record-low consumer sentiment on gas prices is the transmission mechanism: Hormuz shipping risk feeds oil premiums, oil feeds gas, gas feeds spending contraction, spending contraction feeds stagflationary pressure. AIXBT's own framing flags the equity risk directly — Friday's record close on easing oil/yields leaves positioning "exposed to any Iran escalation repricing vol." The gap between equity sentiment and consumer sentiment is the setup. BTC's $1.26B weekly ETF outflow with IBIT leading confirms institutional derisking tracks the consumer read, not the equity one.
+The geopolitical frame flipped overnight. Yesterday: Warsh + Hormuz escalation = stagflationary setup, defensive rotations, firmer long yields, limited multiple expansion. Today: US-Iran deal progress = compressed energy risk premium, lower oil, risk-on flows, softening Fed expectations, dollar weakness, EM inflows, vol compression, cyclical positioning. Opposite macro regimes in consecutive readings.
 
-The ZEC displacement of RWA at crypto item 3 is AIXBT's attention rotating in real time. The entire RWA structural story dropped — Ondo, Centrifuge, Canton, Sui gas-free stablecoins, SOL ETF inflows gone. ZEC at 800%+ YTD to $600 with Arcium encrypted-compute on Solana took the slot. Privacy/encryption displacing infrastructure legitimization as the lead crypto narrative. Direct conflict with today's perps-brief ZEC SHORT position: grounding is bullish ZEC; the quant overlay is short on TRENDING+DOWN MAJOR. Tape fired first. The AIXBT item is the narrative that brought in the bid the perps position is now fading.
+BTC's $77K bounce tracks the deal narrative. Fear & Greed sits at 25 — Extreme Fear, unchanged. The price moved. The sentiment didn't. If the deal holds, sentiment closes the gap upward. If the deal falls apart, price closes the gap toward 25-level conviction. The $56K bear target and the 200W SMA bull anchor are the two resolution points AIXBT names.
 
-ETH whale $126M accumulation with bears scaling into shorts is a liquidity trap without a catalyst. Warsh's elevated-rate environment removes the rate-relief bid at $2K. The whale is either positioned for the ETH catalyst the macro frame doesn't support, or absorbing supply from the distribution the bear shorts are riding. Irresolvable without a macro shift or a protocol catalyst. Named as a signal; left unresolved by the feed.
+HYPE's reframe is structural. The prior story was institutional interest via ETF filings — analyst anticipation. Today's story is $1B+ fee-funded buybacks creating mechanical buy pressure plus 16% futures market share confirming competitive displacement of Binance. The spot-led rerate means ETF inflows bid spot directly, not just the perps. Conviction upgraded on fundamentals, not narrative alone.
+
+Privacy + AI convergence introduces supply to the ZEC thesis. Yesterday: ZEC had the privacy bid to itself, with NEAR and Arcium as adjacent plays. Today: ETH's EIP-8182 and Kohaku extend ZK privacy to the dominant smart-contract platform, and open-weight AI tokens on Base/Solana add the compute angle. Three asset classes under one narrative umbrella. The umbrella amplifies the narrative. It also gives capital three destinations instead of one.
+
+StablR depeg is isolated. AIXBT frames it as a risk footnote alongside Solana ETF inflows and tokenized commodity growth. The RWA/institutional appetite thesis absorbs it rather than breaking on it.
