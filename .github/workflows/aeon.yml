@@ -86,9 +86,15 @@ jobs:
 
       - name: Determine skill
         id: skill
+        env:
+          INPUT_SKILL: ${{ inputs.skill }}
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event_name }}" = "workflow_call" ]; then
-            echo "name=${{ inputs.skill }}" >> "$GITHUB_OUTPUT"
+            if [ -n "$INPUT_SKILL" ] && ! printf '%s' "$INPUT_SKILL" | grep -qE '^[a-zA-Z0-9_-]+$'; then
+              echo "::error::Invalid skill name: must match ^[a-zA-Z0-9_-]+$"
+              exit 1
+            fi
+            echo "name=$INPUT_SKILL" >> "$GITHUB_OUTPUT"
           elif [ "${{ github.event_name }}" = "issues" ]; then
             echo "name=feature" >> "$GITHUB_OUTPUT"
           fi
@@ -264,14 +270,14 @@ jobs:
           NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
           JSONRENDER_ENABLED: ${{ vars.JSONRENDER_ENABLED || 'true' }}
           SKILL_VAR: ${{ inputs.var }}
+          SKILL_NAME: ${{ steps.skill.outputs.name }}
+          INPUT_MODEL: ${{ inputs.model }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
-          SKILL_NAME="${{ steps.skill.outputs.name }}"
           export SKILL_NAME
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
           # Check for per-skill model override in aeon.yml (extract quoted value, ignore comments)
           SKILL_MODEL=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*model: *"\([^"]*\)".*/\1/p')
-          INPUT_MODEL="${{ inputs.model }}"
           if [ -n "$INPUT_MODEL" ] && [ "$INPUT_MODEL" != "(config default)" ]; then
             MODEL="$INPUT_MODEL"
           elif [ -n "$SKILL_MODEL" ]; then
