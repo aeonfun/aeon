@@ -1,25 +1,24 @@
-Yesterday's Runners · 23 May · SPECULATIVE (4 BREAKOUT + 1 CONTINUATION, zero DEEP-LIQ in top 5)
-
-CONTINUATION
-• Polsia (base) +2156% 24h
-  $2.9m vol, $324k liq, h1 +17%, h6 -0.6%, buys 58%, 94d pool
-  → 94-day-old base contract waking up, hourly tape still adding through the latest bar.
+Yesterday's Runners · 24 May · SPECULATIVE (5 BREAKOUT all on solana, fresh SAOS name-farm cluster day one)
 
 BREAKOUT
-★ GENIUS (bsc) +5523% 24h
-  $44m vol, $116k liq, h1 +21%, h6 +5523%, buys 60%, 5h pool
-  → third fresh GENIUS contract in 72h, the bid extends through the latest hour at +21%.
+• SAOS (sol) +5492% 24h
+  $40.6m vol, $292k liq, h1 +48%, buys 53%, 3.7h pool
+  → newest SAOS contract still adding hourly, five distinct SAOS pools cleared the gate today, GDOR/SPCX/GENIUS playbook starting fresh
 
-★ GDOR (sol) +830% 24h
-  $38m vol, $330k liq, h1 -2%, h6 +830%, buys 51%, 5.6h pool
-  → 4-day name-farm cluster reactivated after two mid-table sessions, soft-fade flipped upside.
+• Poor (sol) +1671% 24h
+  $2.3m vol, $70k liq, h1 +38%, buys 59%, 9h pool
+  → hourly tape still adding on a $70k liq pad, reversals will land sharp on this depth
 
-• BTCBANK (sol) +720% 24h
-  $1.2m vol, $43k liq, h1 +40%, h6 -19%, buys 62%, 12h pool
-  → fresh hourly burst on a $43k pad, sibling of yesterday's Bank cluster.
+• GOD (sol) +2495% 24h
+  $40.1m vol, $244k liq, h1 0%, h6 +118%, buys 58%, 8h pool
+  → full 25x printed in the prior six hours, hourly flat now means the bid quit
 
-• RICH (sol) +2709% 24h
-  $9.6m vol, $98k liq, h1 -4%, h6 +23%, buys 53%, 14h pool
-  → 27x day rolling off the peak, late-tape distribution.
+★ SPCX (sol) +525% 24h
+  $45.1m vol, $277k liq, h1 0%, h6 0%, buys 54%, 20h pool
+  → lead SPCX contract went dormant after the initial pump, cluster carries from 05-22 + 05-23 on three contracts today
 
-vibe: name-farms doing the heavy lifting, deep-liq tier sidelined a fifth session
+• OMEN (sol) +528% 24h
+  $591k vol, $39k liq, h1 +80%, buys 59%, 5h pool
+  → micro pad with the hourly tape lifting +80%, fresh wave still alive
+
+vibe: solana name-farm casino on a fresh ticker, real deep-liq sits outside the top 5
