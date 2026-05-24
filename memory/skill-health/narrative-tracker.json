@@ -1,10 +1,10 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-24T07:01:16Z",
+  "last_analyzed": "2026-05-24T17:11:44Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured output with specific metrics, clear narrative transitions, actionable follow-ups, and proper system health tracking.",
+  "assessment": "Complete execution with intelligent idempotency handling, substantive analysis verification, and thoughtful logging; detected duplicate invocation and preserved system state without reprocessing.",
   "flags": [],
-  "avg_score": 3.94,
+  "avg_score": 3.95,
   "history": [
     {
       "date": "2026-05-18",
@@ -72,6 +72,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     },
     {
