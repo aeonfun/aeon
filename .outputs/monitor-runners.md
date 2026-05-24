@@ -1,24 +1,24 @@
-Yesterday's Runners · 24 May · SPECULATIVE (5 BREAKOUT all on solana, fresh SAOS name-farm cluster day one)
+Yesterday's Runners · 24 May · SPECULATIVE (top 5 all BREAKOUT, fresh GENIUS bsc plus SAOS cluster extending on solana)
 
 BREAKOUT
-• SAOS (sol) +5492% 24h
-  $40.6m vol, $292k liq, h1 +48%, buys 53%, 3.7h pool
-  → newest SAOS contract still adding hourly, five distinct SAOS pools cleared the gate today, GDOR/SPCX/GENIUS playbook starting fresh
+• Stake (sol) +5958% 24h
+  $4.2m vol, $126k liq, h1 +30%, h6 +288%, buys 56%, 10h pool
+  → only fresh contract still firing hourly, tape adding aggressively into the latest bar
 
-• Poor (sol) +1671% 24h
-  $2.3m vol, $70k liq, h1 +38%, buys 59%, 9h pool
-  → hourly tape still adding on a $70k liq pad, reversals will land sharp on this depth
+★ GENIUS (bsc) +5946% 24h
+  $51m vol, $134k liq, h1 +7.9%, h6 +229%, buys 60%, 6h pool
+  → fifth distinct GENIUS contract on bsc inside 72h, name-farm cluster reactivated after a half-day pause
+
+• Boomerang (sol) +612% 24h
+  $1.6m vol, $47k liq, h1 +60%, h6 +141%, buys 58%, 18h pool
+  → hourly +60% on a $47k pad, reversals land sharp at this depth
 
 • GOD (sol) +2495% 24h
-  $40.1m vol, $244k liq, h1 0%, h6 +118%, buys 58%, 8h pool
-  → full 25x printed in the prior six hours, hourly flat now means the bid quit
+  $40m vol, $242k liq, h1 0%, h6 0%, buys 58%, 18h pool
+  → tape flatlined the prior six hours, distribution complete
 
-★ SPCX (sol) +525% 24h
-  $45.1m vol, $277k liq, h1 0%, h6 0%, buys 54%, 20h pool
-  → lead SPCX contract went dormant after the initial pump, cluster carries from 05-22 + 05-23 on three contracts today
+• SAOS (sol) +7992% 24h
+  $39m vol, $322k liq, h1 0%, h6 0%, buys 53%, 23h pool
+  → six distinct SAOS contracts cleared the gate today, cluster expanded from five this morning
 
-• OMEN (sol) +528% 24h
-  $591k vol, $39k liq, h1 +80%, buys 59%, 5h pool
-  → micro pad with the hourly tape lifting +80%, fresh wave still alive
-
-vibe: solana name-farm casino on a fresh ticker, real deep-liq sits outside the top 5
+vibe: name-farm casino on solana and bsc, real deep liquidity skipped the top 5 for a fifth straight session
