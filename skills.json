@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-19T00:00:00Z",
+    "generated": "2026-05-23T18:21:12Z",
     "repo": "aaronjmars/aeon",
-    "total": 121,
+    "total": 155,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -36,14 +36,26 @@
             "install": "./add-skill aaronjmars/aeon agent-buzz"
         },
         {
+            "slug": "agent-displacement",
+            "name": "agent-displacement",
+            "description": "Weekly tracker of AI agent substitution signals \u2014 which roles, companies, and industries show real headcount displacement. Named roles + real deployments only.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon agent-displacement"
+        },
+        {
             "slug": "ai-framework-watch",
             "name": "AI Framework Watch",
-            "description": "Weekly competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated 9-framework watchlist",
-            "category": "research",
+            "description": "Weekly competitive-intelligence digest on the AI agent framework space \u2014 momentum, releases, breaking changes across a curated watchlist",
+            "category": "other",
             "schedule": "30 8 * * 1",
             "var": "",
             "files": 0,
-            "sha": "0000000",
+            "sha": "8dd2270",
             "updated": "2026-05-10",
             "install": "./add-skill aaronjmars/aeon ai-framework-watch"
         },
@@ -52,7 +64,7 @@
             "name": "AIXBT Pulse",
             "description": "Cross-domain market pulse from AIXBT's free grounding endpoint \u2014 crypto, macro, tradfi, geopolitics. Refreshes taxonomy references (clusters, chains) as a bonus.",
             "category": "other",
-            "schedule": "",
+            "schedule": "0 9,21 * * *",
             "var": "",
             "files": 0,
             "sha": "29b6558",
@@ -108,6 +120,30 @@
             "install": "./add-skill aaronjmars/aeon autoresearch"
         },
         {
+            "slug": "batch-health",
+            "name": "batch-health",
+            "description": "Daily post-batch audit \u2014 checks whether all enabled scheduled skills fired in their expected morning window, alerts on silent misses, files issues on batch-level outages",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon batch-health"
+        },
+        {
+            "slug": "builder-map",
+            "name": "builder-map",
+            "description": "Weekly map of who's building on top of watched repos \u2014 forks, third-party ecosystem repos, builder announcements. Answers the \"who's building on top\" question.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon builder-map"
+        },
+        {
             "slug": "changelog",
             "name": "Changelog",
             "description": "Generate a user-facing weekly changelog (Keep a Changelog format) from recent commits across watched repos",
@@ -146,14 +182,38 @@
         {
             "slug": "competitor-launch-radar",
             "name": "competitor-launch-radar",
-            "description": "Weekly scan of Product Hunt RSS + HN Algolia for NEW AI-agent-framework launches outside the 9-framework cohort tracked by ai-framework-watch. Classifies framework/mcp/product, LRU-200 dedup, gated notify.",
+            "description": "Weekly scan of Product Hunt + Hacker News for NEW AI-agent-framework launches outside the 9-framework cohort already tracked by ai-framework-watch",
             "category": "research",
             "schedule": "0 10 * * 1",
             "var": "",
             "files": 0,
-            "sha": "pending",
-            "updated": "2026-05-18",
+            "sha": "8ca965f",
+            "updated": "2026-05-19",
             "install": "./add-skill aaronjmars/aeon competitor-launch-radar"
+        },
+        {
+            "slug": "compute-pulse",
+            "name": "compute-pulse",
+            "description": "Weekly tracker for the AI compute market \u2014 GPU/hardware deals, inference pricing trends, decentralized compute token signals, and lab vs hyperscaler dynamics.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon compute-pulse"
+        },
+        {
+            "slug": "config-validator",
+            "name": "Config Validator",
+            "description": "Validate aeon.yml and .github/workflows/aeon.yml for structural invariants that have caused past outages \u2014 checkout step ordering, duplicate skill keys, missing skill files",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon config-validator"
         },
         {
             "slug": "contributor-reward",
@@ -170,13 +230,13 @@
         {
             "slug": "contributor-spotlight",
             "name": "contributor-spotlight",
-            "description": "Weekly recognition post for one fork operator \u2014 converts fork-cohort cohort data into a named human moment (POWER fork callout with their work, stars, and skills enabled). 4-week dedup; rotates across the cohort.",
-            "category": "productivity",
+            "description": "Weekly recognition post for one fork operator \u2014 converts fork-cohort cohort data into a named human moment (POWER fork callout with their work, stars, and skills enabled)",
+            "category": "other",
             "schedule": "0 20 * * 0",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "2026-05-09",
+            "sha": "db9d84f",
+            "updated": "2026-05-21",
             "install": "./add-skill aaronjmars/aeon contributor-spotlight"
         },
         {
@@ -196,7 +256,7 @@
             "name": "Create Campaign",
             "description": "Provision Meta campaigns and ad sets on AdManage.ai from a declarative config. Runs on-demand \u2014 creates entities PAUSED, writes the returned IDs back into state so schedule-ads can launch into them.",
             "category": "social",
-            "schedule": "",
+            "schedule": "workflow_dispatch",
             "var": "",
             "files": 1,
             "sha": "29b6558",
@@ -300,6 +360,18 @@
             "install": "./add-skill aaronjmars/aeon digest"
         },
         {
+            "slug": "disclosure-tracker",
+            "name": "disclosure-tracker",
+            "description": "Daily audit of pending vulnerability disclosure queue \u2014 tracks draft advisories in memory/pending-disclosures/, alerts on aging CRITICAL/HIGH findings.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon disclosure-tracker"
+        },
+        {
             "slug": "distribute-tokens",
             "name": "Distribute Tokens",
             "description": "Send tokens to a list of contributors via Bankr Wallet API with per-recipient idempotency, two-phase resolve\u2192execute, dry-run, and recovery from partial runs",
@@ -310,6 +382,18 @@
             "sha": "7330f37",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon distribute-tokens"
+        },
+        {
+            "slug": "engagement-act",
+            "name": "Engagement Act",
+            "description": "Turn flagged engagement opportunities into ready-to-post replies \u2014 read recent logs, draft specific responses, send as copy-paste-ready output",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon engagement-act"
         },
         {
             "slug": "evening-recap",
@@ -348,6 +432,18 @@
             "install": "./add-skill aaronjmars/aeon farcaster-digest"
         },
         {
+            "slug": "feature",
+            "name": "Feature",
+            "description": "Build a feature for every watched repo in one run \u2014 iterates the full repo list, picks one feature per repo from yesterday's repo-actions ideas first",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon feature"
+        },
+        {
             "slug": "fetch-tweets",
             "name": "Fetch Tweets",
             "description": "Search X/Twitter for tweets about a token, keyword, username, or topic \u2014 clustered by sub-narrative",
@@ -374,13 +470,13 @@
         {
             "slug": "fleet-state",
             "name": "fleet-state",
-            "description": "Weekly fleet-state digest \u2014 synthesises fork-cohort + fork-release-tracker + contributor-spotlight into one Monday-morning \"state of the fleet\" narrative with WoW deltas and a 12-week trend",
-            "category": "productivity",
+            "description": "Weekly fleet-state digest \u2014 synthesises fork-cohort, contributor-spotlight, and fork-release-tracker into one \"state of the fleet\" narrative",
+            "category": "other",
             "schedule": "0 8 * * 1",
             "var": "",
             "files": 0,
-            "sha": "pending",
-            "updated": "2026-05-13",
+            "sha": "11cc2ef",
+            "updated": "2026-05-22",
             "install": "./add-skill aaronjmars/aeon fleet-state"
         },
         {
@@ -394,18 +490,6 @@
             "sha": "4a6b037",
             "updated": "2026-05-03",
             "install": "./add-skill aaronjmars/aeon fork-cohort"
-        },
-        {
-            "slug": "fork-release-tracker",
-            "name": "fork-release-tracker",
-            "description": "Weekly scan \u2014 celebrate when any fork of the parent repo cuts a tagged GitHub release. Silent when no fork releases in the window.",
-            "category": "dev",
-            "schedule": "30 19 * * 0",
-            "var": "",
-            "files": 0,
-            "sha": "pending",
-            "updated": "2026-05-12",
-            "install": "./add-skill aaronjmars/aeon fork-release-tracker"
         },
         {
             "slug": "fork-contributor-leaderboard",
@@ -422,12 +506,12 @@
         {
             "slug": "fork-first-run-alert",
             "name": "fork-first-run-alert",
-            "description": "Daily — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh, live-fallback otherwise. Per-fork at 1–3 activators, batch at 4+.",
+            "description": "Daily \u2014 named alert the day a fork completes its first ever workflow run. Fork-cohort runs weekly; this catches the activation moment.",
             "category": "dev",
             "schedule": "30 20 * * *",
             "var": "",
             "files": 0,
-            "sha": "pending",
+            "sha": "f6d6c6b",
             "updated": "2026-05-17",
             "install": "./add-skill aaronjmars/aeon fork-first-run-alert"
         },
@@ -442,6 +526,18 @@
             "sha": "1ea45d7",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon fork-fleet"
+        },
+        {
+            "slug": "fork-release-tracker",
+            "name": "fork-release-tracker",
+            "description": "Weekly scan \u2014 celebrate when any fork of the parent repo cuts a tagged GitHub release. Silent when no fork releases in the window.",
+            "category": "other",
+            "schedule": "30 19 * * 0",
+            "var": "",
+            "files": 0,
+            "sha": "3404229",
+            "updated": "2026-05-12",
+            "install": "./add-skill aaronjmars/aeon fork-release-tracker"
         },
         {
             "slug": "fork-skill-digest",
@@ -463,8 +559,8 @@
             "schedule": "0 21 * * 0",
             "var": "",
             "files": 0,
-            "sha": "pending",
-            "updated": "2026-05-16",
+            "sha": "f587d30",
+            "updated": "2026-05-17",
             "install": "./add-skill aaronjmars/aeon fork-skill-gap"
         },
         {
@@ -559,7 +655,7 @@
             "schedule": "30 9 * * *",
             "var": "",
             "files": 0,
-            "sha": "0000000",
+            "sha": "9c36154",
             "updated": "2026-05-08",
             "install": "./add-skill aaronjmars/aeon huggingface-trending"
         },
@@ -576,6 +672,30 @@
             "install": "./add-skill aaronjmars/aeon idea-capture"
         },
         {
+            "slug": "idea-pipeline",
+            "name": "idea-pipeline",
+            "description": "Weekly execution gap audit \u2014 cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs. Surfaces the top 3 ideas to build this week based on narrative fit and operator fit.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon idea-pipeline"
+        },
+        {
+            "slug": "idea-validator",
+            "name": "idea-validator",
+            "description": "Screen the startup idea backlog \u2014 research competitive landscape, score viability, surface the strongest picks from memory/topics/startup-ideas.md",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon idea-validator"
+        },
+        {
             "slug": "issue-triage",
             "name": "Issue Triage",
             "description": "Decision-ready triage \u2014 classify, dedupe, and emit a verdict + next action per new GitHub issue",
@@ -588,6 +708,18 @@
             "install": "./add-skill aaronjmars/aeon issue-triage"
         },
         {
+            "slug": "janitor",
+            "name": "Janitor",
+            "description": "Weekly cleanup of accumulated temp files \u2014 .notify-* root-level files, .pending-notify-temp/, and stale .outputs/ chain artifacts older than their TTL",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon janitor"
+        },
+        {
             "slug": "last30",
             "name": "Last 30 Days",
             "description": "Cross-platform social research \u2014 narrative-first intelligence on what people are saying about a topic across Reddit, X, HN, Polymarket, and the web over the last 30 days",
@@ -598,6 +730,18 @@
             "sha": "ca3ad10",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon last30"
+        },
+        {
+            "slug": "launch-radar",
+            "name": "launch-radar",
+            "description": "Weekly competitive scan \u2014 searches ProductHunt, HN Show HN, and GitHub Trending for product launches matching the operator's startup idea backlog. Flags when someone ships an idea from the list.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon launch-radar"
         },
         {
             "slug": "list-digest",
@@ -622,6 +766,42 @@
             "sha": "257212c",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon market-context-refresh"
+        },
+        {
+            "slug": "memory-flush",
+            "name": "Memory Flush",
+            "description": "Promote important recent log entries into MEMORY.md",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon memory-flush"
+        },
+        {
+            "slug": "memory-structural-dedupe",
+            "name": "memory-structural-dedupe",
+            "description": "Detect and collapse structural duplicate rows in MEMORY.md \u2014 sections like Recent Articles and Skills Built that accumulate multiple content blocks across memory-flush cycles. Companion to scripts/memory-dedupe (topic-pointer dedup); this handles section-level row accumulation.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon memory-structural-dedupe"
+        },
+        {
+            "slug": "milestone-tracker",
+            "name": "milestone-tracker",
+            "description": "Weekly progress tracking for key product and growth milestones \u2014 celebrates crossings, alerts on approaches, surfaces stalls",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon milestone-tracker"
         },
         {
             "slug": "monitor-kalshi",
@@ -667,8 +847,8 @@
             "schedule": "0 7 * * *",
             "var": "",
             "files": 0,
-            "sha": "d99e801",
-            "updated": "2026-04-20",
+            "sha": "e7896e1",
+            "updated": "2026-05-21",
             "install": "./add-skill aaronjmars/aeon morning-brief"
         },
         {
@@ -682,6 +862,18 @@
             "sha": "dd782a4",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon narrative-tracker"
+        },
+        {
+            "slug": "note-taking",
+            "name": "Note Taking",
+            "description": "Save a note as a Supernotes card (if configured) or to a local memory/notes/ file",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon note-taking"
         },
         {
             "slug": "on-chain-monitor",
@@ -744,6 +936,42 @@
             "install": "./add-skill aaronjmars/aeon paper-pick"
         },
         {
+            "slug": "pm-intel",
+            "name": "PM Intel",
+            "description": "Weekly competitive intelligence on the prediction market ecosystem \u2014 what major platforms and new entrants are shipping, funding, and building",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pm-intel"
+        },
+        {
+            "slug": "pm-manipulation",
+            "name": "PM Manipulation",
+            "description": "Detect suspected manipulation on prediction markets over the past 3 days by cross-referencing price/volume/comment anomalies with multilingual local-press coverage",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pm-manipulation"
+        },
+        {
+            "slug": "pm-pulse",
+            "name": "pm-pulse",
+            "description": "Weekly prediction-market & coordination-market tracker \u2014 volume on tracked platforms, new mechanism designs, reflexive market launches, regulatory moves",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pm-pulse"
+        },
+        {
             "slug": "polymarket-comments",
             "name": "Polymarket Comments",
             "description": "Top trending Polymarket markets and the most interesting comments from them",
@@ -756,16 +984,16 @@
             "install": "./add-skill aaronjmars/aeon polymarket-comments"
         },
         {
-            "slug": "price-threshold-alert",
-            "name": "Price Threshold Alert",
-            "description": "Fire when the tracked token does something — new ATH, sharp 1h move, or operator-set target crossed. Silent on normal days.",
-            "category": "crypto",
-            "schedule": "*/30 * * * *",
+            "slug": "polymarket",
+            "name": "Polymarket",
+            "description": "Surface trending and top markets on Polymarket globally \u2014 volume leaders, biggest movers, new & notable markets. Complement to monitor-polymarket.",
+            "category": "other",
+            "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "2026-05-11",
-            "install": "./add-skill aaronjmars/aeon price-threshold-alert"
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon polymarket"
         },
         {
             "slug": "pr-review",
@@ -780,6 +1008,18 @@
             "install": "./add-skill aaronjmars/aeon pr-review"
         },
         {
+            "slug": "pr-tracker",
+            "name": "PR Tracker",
+            "description": "Track status of cross-repo PRs opened by this aeon instance \u2014 merges, stale open, and closures",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pr-tracker"
+        },
+        {
             "slug": "pr-triage",
             "name": "PR Triage",
             "description": "First-touch triage for external pull requests \u2014 verdict + label + welcoming comment within minutes of open",
@@ -790,6 +1030,30 @@
             "sha": "e26e7a2",
             "updated": "2026-04-29",
             "install": "./add-skill aaronjmars/aeon pr-triage"
+        },
+        {
+            "slug": "price-threshold-alert",
+            "name": "price-threshold-alert",
+            "description": "Fire when the tracked token does something \u2014 new ATH, sharp 1h move, or operator-set target crossed. Silent on normal days.",
+            "category": "crypto",
+            "schedule": "*/30 * * * *",
+            "var": "",
+            "files": 0,
+            "sha": "32a48af",
+            "updated": "2026-05-11",
+            "install": "./add-skill aaronjmars/aeon price-threshold-alert"
+        },
+        {
+            "slug": "product-hunt-launch",
+            "name": "product-hunt-launch",
+            "description": "Draft the full Product Hunt launch asset package (tagline, description, first comment, maker comment, six-bullet feature list) from live repo state \u2014 operator reviews and submits.",
+            "category": "social",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "03057e2",
+            "updated": "2026-05-19",
+            "install": "./add-skill aaronjmars/aeon product-hunt-launch"
         },
         {
             "slug": "project-lens",
@@ -814,6 +1078,30 @@
             "sha": "df0c036",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon push-recap"
+        },
+        {
+            "slug": "pvr-triage-monitor",
+            "name": "pvr-triage-monitor",
+            "description": "Weekly lifecycle check on submitted private vulnerability reports \u2014 polls triage state, detects maintainer acceptance or rejection, surfaces action items when PVRs age past 30 days with no response",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pvr-triage-monitor"
+        },
+        {
+            "slug": "pvr-watchlist",
+            "name": "pvr-watchlist",
+            "description": "Weekly probe of repos on the security watchlist \u2014 check if private vulnerability reporting has been enabled, notify when status flips, re-submit any queued advisories or flag for re-research when draft was lost",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon pvr-watchlist"
         },
         {
             "slug": "reddit-digest",
@@ -883,8 +1171,8 @@
             "schedule": "0 17 * * *",
             "var": "",
             "files": 0,
-            "sha": "6e6042c",
-            "updated": "2026-04-20",
+            "sha": "795a5a1",
+            "updated": "2026-05-07",
             "install": "./add-skill aaronjmars/aeon reply-maker"
         },
         {
@@ -922,6 +1210,18 @@
             "sha": "825f52a",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon repo-pulse"
+        },
+        {
+            "slug": "repo-revive",
+            "name": "Repo Revive",
+            "description": "Pick the highest-\u2605 dormant watched repo and make one targeted improvement to reactivate it \u2014 refresh stale model references, README, or metadata",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon repo-revive"
         },
         {
             "slug": "repo-scanner",
@@ -972,11 +1272,35 @@
             "install": "./add-skill aaronjmars/aeon rss-feed"
         },
         {
+            "slug": "run-frequency-guard",
+            "name": "run-frequency-guard",
+            "description": "Daily per-skill run-count watchdog \u2014 checks if any capped skills exceeded their configured daily limit and alerts on breach",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon run-frequency-guard"
+        },
+        {
+            "slug": "rwa-pulse",
+            "name": "rwa-pulse",
+            "description": "Weekly Real World Asset tokenization momentum tracker \u2014 surfaces new protocol launches, TVL milestones, institutional adoption, and regulatory approvals",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon rwa-pulse"
+        },
+        {
             "slug": "schedule-ads",
             "name": "Schedule Ads",
             "description": "Schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn via the AdManage.ai API, driven by a declarative config file. Launches PAUSED by default \u2014 never auto-activates live spend.",
             "category": "social",
-            "schedule": "",
+            "schedule": "0 8 * * *",
             "var": "",
             "files": 1,
             "sha": "29b6558",
@@ -1020,6 +1344,18 @@
             "install": "./add-skill aaronjmars/aeon self-improve"
         },
         {
+            "slug": "self-review",
+            "name": "Self Review",
+            "description": "Weekly audit of what the agent did, what failed, and what to improve",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon self-review"
+        },
+        {
             "slug": "show-hn-draft",
             "name": "show-hn-draft",
             "description": "Draft a Show HN post (plus shorter Reddit r/MachineLearning + r/selfhosted variants) from the live repo state \u2014 README, SHOWCASE, recent repo-articles + project-lens, real autonomous behavior examples from logs, and current stars/forks/skill counts. Operator pastes; agent writes.",
@@ -1032,16 +1368,16 @@
             "install": "./add-skill aaronjmars/aeon show-hn-draft"
         },
         {
-            "slug": "product-hunt-launch",
-            "name": "product-hunt-launch",
-            "description": "Draft the full Product Hunt launch asset package (tagline, description, first comment, maker comment, six-bullet feature list) from live repo state \u2014 operator reviews and submits.",
-            "category": "social",
-            "schedule": "workflow_dispatch",
+            "slug": "signal-verdict",
+            "name": "signal-verdict",
+            "description": "Weekly accountability check on a configured set of tracker skills. Verifies each tracker is producing citable signals in articles/newsletters. Surfaces uncited trackers so the operator can demote or kill them.",
+            "category": "other",
+            "schedule": "",
             "var": "",
             "files": 0,
-            "sha": "0000000",
-            "updated": "2026-05-15",
-            "install": "./add-skill aaronjmars/aeon product-hunt-launch"
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon signal-verdict"
         },
         {
             "slug": "skill-analytics",
@@ -1054,6 +1390,18 @@
             "sha": "98193f9",
             "updated": "2026-04-26",
             "install": "./add-skill aaronjmars/aeon skill-analytics"
+        },
+        {
+            "slug": "skill-enabler",
+            "name": "skill-enabler",
+            "description": "Flip enabled:false \u2192 enabled:true for a comma-separated list of skill slugs in aeon.yml \u2014 validate against skills/, fail loudly on already-enabled or missing slugs, commit, open a PR with per-skill rationale",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon skill-enabler"
         },
         {
             "slug": "skill-evals",
@@ -1147,8 +1495,8 @@
             "schedule": "0 19 * * 0",
             "var": "",
             "files": 0,
-            "sha": "8255bd1",
-            "updated": "2026-04-20",
+            "sha": "efac3bc",
+            "updated": "2026-05-21",
             "install": "./add-skill aaronjmars/aeon skill-update-check"
         },
         {
@@ -1320,6 +1668,18 @@
             "install": "./add-skill aaronjmars/aeon tool-builder"
         },
         {
+            "slug": "topic-momentum",
+            "name": "topic-momentum",
+            "description": "Weekly content-gap scanner \u2014 cross-references rising narrative signals (narrative-tracker, tweet-roundup, paper-pick, etc.) against recent article history and surfaces the top 3 uncovered angles to write next.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon topic-momentum"
+        },
+        {
             "slug": "treasury-info",
             "name": "Treasury Info",
             "description": "Decision-ready treasury overview \u2014 verdict, concentration, depegs, significant changes",
@@ -1330,6 +1690,18 @@
             "sha": "6f7959a",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon treasury-info"
+        },
+        {
+            "slug": "tweet-digest",
+            "name": "Tweet Digest",
+            "description": "Account-based digest of recent tweets from tracked X/Twitter accounts. Sibling to fetch-tweets (keyword) and tweet-roundup (topic).",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon tweet-digest"
         },
         {
             "slug": "tweet-roundup",
@@ -1375,8 +1747,8 @@
             "schedule": "workflow_dispatch",
             "var": "",
             "files": 0,
-            "sha": "1e52b76",
-            "updated": "2026-05-06",
+            "sha": "3450b31",
+            "updated": "2026-05-07",
             "install": "./add-skill aaronjmars/aeon v4-readiness"
         },
         {
@@ -1416,6 +1788,30 @@
             "install": "./add-skill aaronjmars/aeon vuln-scanner"
         },
         {
+            "slug": "vuln-tracker",
+            "name": "Vuln Tracker",
+            "description": "Daily status check on every PR / advisory / queued draft produced by vuln-scanner \u2014 surfaces merges, stale opens, maintainer responses needing reply, and queued-too-long carve-outs",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon vuln-tracker"
+        },
+        {
+            "slug": "wallet-digest",
+            "name": "Wallet Digest",
+            "description": "Lightweight balance-and-activity summary across tracked wallets. Sibling to on-chain-monitor \u2014 balances-only, no per-transfer decode.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon wallet-digest"
+        },
+        {
             "slug": "weekly-review",
             "name": "Weekly Review",
             "description": "KALM retrospective grounded in objective metrics, with closed-loop tracking of last week's actions and SMART next-week actions",
@@ -1423,8 +1819,8 @@
             "schedule": "0 19 * * 1",
             "var": "",
             "files": 0,
-            "sha": "bbcc113",
-            "updated": "2026-04-20",
+            "sha": "e7896e1",
+            "updated": "2026-05-21",
             "install": "./add-skill aaronjmars/aeon weekly-review"
         },
         {
@@ -1462,6 +1858,18 @@
             "sha": "ba0143d",
             "updated": "2026-04-15",
             "install": "./add-skill aaronjmars/aeon write-tweet"
+        },
+        {
+            "slug": "x402-monitor",
+            "name": "Protocol Monitor (x402 default)",
+            "description": "Weekly tracker for a configured protocol's ecosystem velocity \u2014 new GitHub integrations, npm adoption, notable announcements. Defaults to x402; operators swap in their own protocol via memory/topics/tracked-protocol.md.",
+            "category": "other",
+            "schedule": "",
+            "var": "",
+            "files": 0,
+            "sha": "ac068d2",
+            "updated": "2026-05-23",
+            "install": "./add-skill aaronjmars/aeon x402-monitor"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",

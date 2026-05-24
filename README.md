@@ -43,7 +43,7 @@ The key difference: **other agents are interactive tools you use. Aeon is an aut
 
 This isn't better for everything — you still want Claude Code for writing code interactively. But for the 90% of recurring tasks that don't need you in the loop, the most autonomous agent is the one that never asks.
 
-For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, LangGraph) and a list of active forks running in production, see [`SHOWCASE.md`](SHOWCASE.md).
+For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, LangGraph) and a list of active forks running in production, see [`SHOWCASE.md`](SHOWCASE.md). For products and agents built on top of Aeon, see [`ECOSYSTEM.md`](ECOSYSTEM.md).
 
 ![Autonomy spectrum](./assets/autonomy.jpg)
 
@@ -447,10 +447,16 @@ Third-party skill collections that live in their own repos. Aeon doesn't ship th
 
 The script reads a `skills-pack.json` manifest from the pack root (or falls back to scanning `skills/`), runs the security scanner on each declared `SKILL.md`, and copies approved skills into `skills/` with rows added to `skills.json`, entries in `aeon.yml` (disabled), and provenance in `skills.lock`. Full schema and trust model in [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
+To browse known packs without installing, run `./install-skill-pack --list` — it reads the machine-readable registry in [`skill-packs.json`](skill-packs.json) (mirror of the table below).
+
 | Pack | Skills | Description |
 |------|--------|-------------|
 | [aeon-skill-pack-vvvkernel](https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel) | 9 | Venice AI inference via VVVKernel — onchain, audit, growth, narrative, image gen, monitoring |
 | [luca-aeon-skills](https://github.com/danbuildss/luca-aeon-skills) | 4 | Financial intelligence via x402Books AI — wallet scanning, treasury monitoring, financial reports, and agent registry on Base |
+| [zer0-skill-pack](https://github.com/0xShak/zer0-skill-pack) | 6 | Polymarket intelligence — daily thesis, mispricing scanner, contrarian fades, narrative-vs-markets, paper-trade PnL journal, alpha comment curator |
+| [gitbounty-skill-pack](https://github.com/gitlawbounty/gitbounty-skill-pack) | 1 | Bounty hunting on the gitlawb network via gitbounty — discover open bounties, scout the best fit with the gitbounty LLM scout, draft a solution plan (read-only) |
+| [aeon-skills](https://github.com/AntFleet/aeon-skills) | 1 | Two-model-consensus PR review (Opus 4.7 + GPT-5) — per-review USDC drawdown on Base |
+| [aeon-skill-pack-liquidpad](https://github.com/liquidpadbot/aeon-skill-pack-liquidpad) | 4 | Track LiquidPad on Base — burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee accrual tracking |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
@@ -458,6 +464,7 @@ The script reads a `skills-pack.json` manifest from the pack root (or falls back
 - Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog — no monkey-patching of Aeon internals, no skill that depends on private endpoints.
 - Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](docs/community-skill-packs.md) for the schema).
 - The README row should link to the repo, name the skill count, and one-line what the pack is for.
+- In the same PR, add a matching entry to [`skill-packs.json`](skill-packs.json) at this repo's root — the machine-readable mirror of the table that `./install-skill-pack --list` reads (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
 
 This is the lightweight surface: it gives community packs visibility without coupling them to the core catalog's release cadence.
 

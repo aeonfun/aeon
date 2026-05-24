@@ -11,6 +11,7 @@ set -euo pipefail
 #   distribution surface that the Community Skill Packs README section describes.
 #
 # Usage:
+#   ./install-skill-pack --list                              List every pack in the community registry (skill-packs.json)
 #   ./install-skill-pack <github-repo>                       Install everything the pack manifest declares
 #   ./install-skill-pack <github-repo> --list                List skills in the pack
 #   ./install-skill-pack <github-repo> <skill> [skill...]    Install only the named skills from the pack
@@ -50,21 +51,27 @@ SKILLS_LOCK="$ROOT_DIR/skills.lock"
 AEON_YML="$ROOT_DIR/aeon.yml"
 SCANNER="$ROOT_DIR/skills/skill-security-scan/scan.sh"
 TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
+REGISTRY_FILE="$ROOT_DIR/skill-packs.json"
+REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/skill-packs.json"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
 usage() {
   cat <<'EOF'
-Usage: ./install-skill-pack <github-repo> [options] [skill-names...]
+Usage: ./install-skill-pack [<github-repo>] [options] [skill-names...]
 
-Install a curated community skill pack from a GitHub repository.
+Install a curated community skill pack from a GitHub repository, or browse the
+community registry.
 
 Arguments:
   <github-repo>          owner/repo (e.g. baseddevoloper/aeon-skill-pack-vvvkernel)
+                         Omit with --list to browse the community registry.
   [skill-names...]       Optional — limit install to specific slugs from the pack
 
 Options:
-  --list                 List skills declared by the pack (no install)
+  --list                 Without <github-repo>: list every pack in the community
+                         registry (skill-packs.json). With <github-repo>: list
+                         skills declared inside that pack (no install).
   --path <subdir>        Pack lives in a subdirectory (where skills-pack.json sits)
   --branch <branch>      Use a specific branch or tag (default: main)
   --yes                  Non-interactive — auto-accept HIGH-severity findings
@@ -77,14 +84,95 @@ Pack manifest:
   it falls back to scanning skills/*/SKILL.md. See docs/community-skill-packs.md
   for the manifest schema.
 
+Community registry:
+  skill-packs.json at the repo root is the machine-readable index of known
+  packs. Use --list (no repo arg) to enumerate it; the script reads the local
+  file when available and falls back to the upstream raw URL otherwise.
+
 Examples:
+  ./install-skill-pack --list
   ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel --list
   ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
-  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel vvv-onchain vvv-audit
+  ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel vvvkernel-onchain vvvkernel-audit
   ./install-skill-pack danbuildss/luca-aeon-skills --dry-run
 EOF
   exit 0
 }
+
+# --- Registry listing path -------------------------------------------------
+# When the only meaningful argument is --list (no repo, no path/branch/etc),
+# print the community registry and exit. This is a strict "no repo + only
+# --list flag" check so power flags still error if used incorrectly.
+load_registry() {
+  if [[ -f "$REGISTRY_FILE" ]]; then
+    cat "$REGISTRY_FILE"
+    return 0
+  fi
+  # Local file missing — try the upstream raw URL via curl. If curl is sandbox-
+  # blocked the caller can re-run the command from a clone with the file present.
+  if curl -sfL "$REGISTRY_URL" 2>/dev/null; then
+    return 0
+  fi
+  return 1
+}
+
+list_registry() {
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "jq is required to read the registry." >&2
+    exit 1
+  fi
+  local registry_json
+  if ! registry_json=$(load_registry); then
+    echo "Could not read skill-packs.json (local file missing and fetch from $REGISTRY_URL failed)." >&2
+    echo "Pass <github-repo> explicitly if you already know which pack to install." >&2
+    exit 1
+  fi
+  local updated total
+  updated=$(echo "$registry_json" | jq -r '.updated // ""')
+  total=$(echo "$registry_json" | jq '.packs | length')
+  echo ""
+  echo "Community skill pack registry${updated:+ (updated $updated)}"
+  echo ""
+  for i in $(seq 0 $((total - 1))); do
+    local repo desc trust skill_count
+    repo=$(echo "$registry_json" | jq -r ".packs[$i].repo")
+    desc=$(echo "$registry_json" | jq -r ".packs[$i].description // \"\"")
+    trust=$(echo "$registry_json" | jq -r ".packs[$i].trust_level // \"community\"")
+    skill_count=$(echo "$registry_json" | jq ".packs[$i].skills | length // 0")
+    local trust_badge=" "
+    [[ "$trust" == "trusted" ]] && trust_badge="*"
+    if [[ ${#desc} -gt 80 ]]; then desc="${desc:0:77}..."; fi
+    printf "  %s %-44s %2d skills  %s\n" "$trust_badge" "$repo" "$skill_count" "$desc"
+  done
+  echo ""
+  echo "  * = trusted source (security scan skipped, format check still runs)"
+  echo ""
+  echo "$total packs in registry. Install with: ./install-skill-pack <repo>"
+  exit 0
+}
+
+# Registry-list mode: `./install-skill-pack --list` (no repo, no other flags) prints
+# every pack in skill-packs.json. We do a focused detect-and-route here so the
+# original single-pack flow below is unchanged.
+detect_registry_list_mode() {
+  local list_seen=false
+  for arg in "$@"; do
+    case "$arg" in
+      --list) list_seen=true ;;
+      --help|-h) return 1 ;;
+      *)
+        # Any non-list flag OR any positional argument disqualifies registry mode
+        # — the user wants to operate on a specific pack.
+        return 1
+        ;;
+    esac
+  done
+  [[ "$list_seen" == "true" ]] && return 0 || return 1
+}
+
+if detect_registry_list_mode "$@"; then
+  list_registry
+fi
 
 if [[ $# -lt 1 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
   usage

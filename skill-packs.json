@@ -1,0 +1,100 @@
+{
+  "version": "1.0",
+  "updated": "2026-05-23",
+  "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
+  "packs": [
+    {
+      "repo": "AntFleet/aeon-skills",
+      "name": "AntFleet aeon-skills",
+      "description": "On-demand two-model-consensus PR review (Claude Opus + GPT) with on-chain USDC payment channel on Base. Pull-mode counterpart to AntFleet's auto-review GitHub App.",
+      "author": "AntFleet",
+      "license": "MIT",
+      "homepage": "https://www.antfleet.dev",
+      "category": "dev",
+      "trust_level": "trusted",
+      "skills": ["pr-review-antfleet"]
+    },
+    {
+      "repo": "baseddevoloper/aeon-skill-pack-vvvkernel",
+      "name": "aeon-skill-pack-vvvkernel",
+      "description": "Venice AI inference via VVVKernel — onchain, audit, growth, narrative, image gen, monitoring.",
+      "author": "baseddevoloper",
+      "license": "MIT",
+      "homepage": "https://github.com/baseddevoloper/aeon-skill-pack-vvvkernel",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "vvvkernel",
+        "vvvkernel-audit",
+        "vvvkernel-brief",
+        "vvvkernel-digest",
+        "vvvkernel-growth",
+        "vvvkernel-image",
+        "vvvkernel-monitor",
+        "vvvkernel-narrative",
+        "vvvkernel-onchain"
+      ]
+    },
+    {
+      "repo": "danbuildss/luca-aeon-skills",
+      "name": "luca-aeon-skills",
+      "description": "Financial intelligence via x402Books AI — wallet scanning, treasury monitoring, financial reports, agent registry on Base.",
+      "author": "danbuildss",
+      "license": "MIT",
+      "homepage": "https://github.com/danbuildss/luca-aeon-skills",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "check-agent",
+        "get-report",
+        "scan-wallet",
+        "treasury-monitor"
+      ]
+    },
+    {
+      "repo": "0xShak/zer0-skill-pack",
+      "name": "zer0-skill-pack",
+      "description": "Polymarket intelligence — daily theses, mispricing scans, contrarian fades, narrative-vs-markets gaps, paper-trade PnL journal, alpha comment curation.",
+      "author": "ZER0 LABS",
+      "license": "MIT",
+      "homepage": "https://atzer0.xyz",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "prediction-journal",
+        "polymarket-thesis",
+        "polymarket-edge",
+        "polymarket-contrarian",
+        "narrative-vs-markets",
+        "polymarket-alpha-comments"
+      ]
+    },
+    {
+      "repo": "gitlawbounty/gitbounty-skill-pack",
+      "name": "GitBounty Skill Pack",
+      "description": "Bounty hunting on the gitlawb network — discovers open bounties via the gitbounty firehose, scouts the best fit, drafts a PR plan with a confidence score.",
+      "author": "gitlawbounty",
+      "license": "MIT",
+      "homepage": "https://github.com/gitlawbounty/gitbounty-skill-pack",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": ["bounty-hunter"]
+    },
+    {
+      "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
+      "name": "LiquidPad",
+      "description": "Track LiquidPad on Base — $LPAD burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee-accrual tracking on every launched token.",
+      "author": "liquidpadbot",
+      "license": "MIT",
+      "homepage": "https://www.liquidpad.site",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "liquidpad-burn-monitor",
+        "liquidpad-stats-digest",
+        "liquidpad-token-alert",
+        "liquidpad-fee-tracker"
+      ]
+    }
+  ]
+}

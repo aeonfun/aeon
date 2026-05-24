@@ -11,6 +11,14 @@ This page documents the **install protocol** — the `skills-pack.json` manifest
 
 ---
 
+## Browse the registry
+
+```bash
+./install-skill-pack --list
+```
+
+Prints every pack declared in `skill-packs.json` (at the Aeon repo root) — repo, skill count, trust badge, one-line description. Trusted-source packs are marked with `*` (security scan skipped, format check still runs). The script reads the local `skill-packs.json` when present and falls back to fetching the file from `https://raw.githubusercontent.com/aaronjmars/aeon/main/skill-packs.json` when it isn't.
+
 ## One-command install
 
 ```bash
@@ -157,7 +165,57 @@ The operator is always the trust boundary. The install script does not auto-trus
 3. Skills follow Aeon's `SKILL.md` conventions (frontmatter `name:`, `description:`, etc.).
 4. `skills-pack.json` declares every skill the pack intends to install. Skills present in `skills/` but missing from the manifest are not installed.
 5. Optional but encouraged: a `README.md` that names each skill, explains scheduling assumptions, and lists any required environment variables.
-6. Open a PR against `aaronjmars/aeon` to add a row to the **Community Skill Packs** table in the project README.
+6. Open a PR against `aaronjmars/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `skill-packs.json` (the machine-readable registry — see schema below).
+
+---
+
+## skill-packs.json (community registry)
+
+`skill-packs.json` at the Aeon repo root is the machine-readable mirror of the README's Community Skill Packs table. `./install-skill-pack --list` reads it; future tooling (dashboards, third-party indexers) can read it without scraping the README.
+
+### Registry schema
+
+```json
+{
+  "version": "1.0",
+  "updated": "2026-05-23",
+  "description": "Machine-readable registry of community skill packs ...",
+  "packs": [
+    {
+      "repo": "owner/repo",
+      "name": "Pack Name",
+      "description": "One-line summary",
+      "author": "github-handle-or-name",
+      "license": "MIT",
+      "homepage": "https://...",
+      "category": "research|dev|crypto|social|productivity",
+      "trust_level": "trusted|community",
+      "skills": ["slug-1", "slug-2"]
+    }
+  ]
+}
+```
+
+### Field reference
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `repo` | string | **required** | `owner/repo` — the GitHub repo holding the pack. |
+| `name` | string | recommended | Human-readable display name. Falls back to repo name. |
+| `description` | string | recommended | One-line summary shown by `--list`. |
+| `author` | string | recommended | Maintainer handle or org. |
+| `license` | string | optional | SPDX identifier. |
+| `homepage` | string | optional | Project page or docs link. |
+| `category` | string | optional | Same vocabulary as per-skill category. |
+| `trust_level` | string | optional | `trusted` (also requires the source in `skills/security/trusted-sources.txt`) or `community`. Default `community`. Listing here is a discovery hint — the actual scan-bypass behaviour is decided by the trusted-sources file. |
+| `skills[]` | array | **required** | Slugs the pack ships. Mirror the pack's own `skills-pack.json`. |
+
+### Why two files (README table + skill-packs.json)?
+
+- The README table is for humans browsing GitHub.
+- `skill-packs.json` is for tooling: `./install-skill-pack --list`, dashboard widgets, third-party crawlers, future package-resolver tooling.
+
+Pack maintainers update both in the same PR so the two surfaces stay in lockstep.
 
 ---
 
