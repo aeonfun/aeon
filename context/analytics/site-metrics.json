@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-24T13:29:47.340259Z",
+  "generated_at": "2026-05-24T17:29:50.561647Z",
   "agents": [
     {
       "agent_id": "calibration-gap-03-crypto-csonnet46-k30-riskonly-i723",
@@ -2161,7 +2161,7 @@
       "agent_id": "pm-hl-lead-lag-v01",
       "lifecycle": "shadow",
       "closed_trades": 43,
-      "open_positions": 2,
+      "open_positions": 3,
       "win_rate": 0.4419,
       "total_pnl_usd": -7.38,
       "sharpe": -0.096,
@@ -2175,7 +2175,7 @@
       "agent_id": "pm-hl-lead-lag-v02",
       "lifecycle": "shadow",
       "closed_trades": 42,
-      "open_positions": 2,
+      "open_positions": 3,
       "win_rate": 0.4048,
       "total_pnl_usd": -13.81,
       "sharpe": -0.181,
@@ -2287,7 +2287,7 @@
       "agent_id": "pm-resolution-snap-v01",
       "lifecycle": "shadow",
       "closed_trades": 91,
-      "open_positions": 1,
+      "open_positions": 4,
       "win_rate": 0.0989,
       "total_pnl_usd": -2498.14,
       "sharpe": -0.392,
@@ -2300,14 +2300,14 @@
     {
       "agent_id": "pm-resolution-snap-v02",
       "lifecycle": "shadow",
-      "closed_trades": 205,
-      "open_positions": 4,
-      "win_rate": 0.0878,
-      "total_pnl_usd": -4834.7,
-      "sharpe": -0.222,
+      "closed_trades": 206,
+      "open_positions": 10,
+      "win_rate": 0.0874,
+      "total_pnl_usd": -4884.7,
+      "sharpe": -0.223,
       "composite": 0.0,
-      "mean_edge_bps_gross": -4717,
-      "mean_edge_bps_net": -4922,
+      "mean_edge_bps_gross": -4742,
+      "mean_edge_bps_net": -4947,
       "median_edge_bps_gross": -10000,
       "median_edge_bps_net": -10205
     },
@@ -2315,7 +2315,7 @@
       "agent_id": "pm-resolution-snap-v03",
       "lifecycle": "shadow",
       "closed_trades": 79,
-      "open_positions": 0,
+      "open_positions": 3,
       "win_rate": 0.0633,
       "total_pnl_usd": -2741.71,
       "sharpe": -0.575,
@@ -2328,14 +2328,14 @@
     {
       "agent_id": "pm-resolution-snap-v04",
       "lifecycle": "shadow",
-      "closed_trades": 180,
-      "open_positions": 2,
-      "win_rate": 0.0556,
-      "total_pnl_usd": -5282.36,
-      "sharpe": -0.278,
+      "closed_trades": 181,
+      "open_positions": 8,
+      "win_rate": 0.0552,
+      "total_pnl_usd": -5332.36,
+      "sharpe": -0.279,
       "composite": 0.0,
-      "mean_edge_bps_gross": -5869,
-      "mean_edge_bps_net": -6074,
+      "mean_edge_bps_gross": -5892,
+      "mean_edge_bps_net": -6097,
       "median_edge_bps_gross": -10000,
       "median_edge_bps_net": -10205
     },
@@ -2343,7 +2343,7 @@
       "agent_id": "pm-resolution-snap-v05",
       "lifecycle": "shadow",
       "closed_trades": 98,
-      "open_positions": 1,
+      "open_positions": 6,
       "win_rate": 0.0,
       "total_pnl_usd": -4900.0,
       "sharpe": 0.0,
@@ -2571,22 +2571,22 @@
     "hl_funded": false
   },
   "totals": {
-    "closed_trades": 3003,
-    "win_rate": 0.3047,
+    "closed_trades": 3005,
+    "win_rate": 0.3045,
     "total_pnl_usd": 1567.15,
     "real_pnl_usd": 68.0834,
     "real_fills_lifetime": 318,
     "canary_pnl_usd": 1567.15,
     "canary_closed_trades": 356,
     "canary_agents": 20,
-    "shadow_pnl_usd": -43171.48,
-    "shadow_closed_trades": 2647,
+    "shadow_pnl_usd": -43271.48,
+    "shadow_closed_trades": 2649,
     "shadow_agents": 160,
     "strategies_active": 47,
-    "mean_edge_bps_gross": -2773,
-    "mean_edge_bps_net": -2978,
-    "median_edge_bps_gross": -5464,
-    "median_edge_bps_net": -5669
+    "mean_edge_bps_gross": -2778,
+    "mean_edge_bps_net": -2983,
+    "median_edge_bps_gross": -5467,
+    "median_edge_bps_net": -5672
   },
   "milestones": {
     "canary_to_apex_progress": "427/100",
@@ -2596,5 +2596,5 @@
     "regime_states": 5,
     "papers_ingested": 3749
   },
-  "synced_at": "2026-05-24T13:29:44Z"
+  "synced_at": "2026-05-24T17:29:47Z"
 }
