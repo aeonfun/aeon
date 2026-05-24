@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-24T07:24:03Z",
+  "last_updated": "2026-05-24T17:31:42Z",
   "open": [
     {
       "id": "HYPE-2026-05-22-001",
@@ -32,7 +32,7 @@
         "ETF flow reverses if BTC/ETH ETFs come out of bleed"
       ],
       "mae_pct": -10.517847174334218,
-      "mfe_pct": 1.7962105539684123,
+      "mfe_pct": 4.259022099628938,
       "mae_date": "2026-05-23",
       "mfe_date": "2026-05-24",
       "invalidation_breached": true,
@@ -73,6 +73,12 @@
           "call": "RIDE",
           "price_at_eval": 61.677,
           "note": "Day 3/multi-week. +1.27% from fire, well above the $54 revised invalidation. HYPE printed +12.3% on $931M volume on the same day BTC bounced 2.1% — 10pp of relative strength. AIXBT reframed the thesis from ETF filings to $1B fee-funded buybacks plus 16% futures market share against Binance. Narrative-tracker FADING 3/5 but price disagrees; per soul, price wins commentary."
+        },
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 63.283,
+          "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
         }
       ]
     },
@@ -108,7 +114,7 @@
         "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
       ],
       "mae_pct": -5.024950678890563,
-      "mfe_pct": -1.5434606011372847,
+      "mfe_pct": -0.9632122548450717,
       "mae_date": "2026-05-24",
       "mfe_date": "2026-05-24",
       "invalidation_breached": false,
@@ -119,61 +125,12 @@
           "call": "RIDE",
           "price_at_eval": 353.26,
           "note": "Day 2/7. Position -2.49% adverse as BCH absorbed the broader risk-on bounce. Still appears on token-movers losers list at -2.3% 24h, -15.0% 7d — the cleanest structural bleed on a day 17 of 20 majors ran green. Smart-money exit thesis intact. Invalidation $370 holds. RIDE."
-        }
-      ]
-    },
-    {
-      "id": "GENIUS-2026-05-23-001",
-      "asset": "GENIUS",
-      "direction": "SHORT",
-      "fired_date": "2026-05-23",
-      "fired_price": 0.5827,
-      "fired_btc_price": 74735,
-      "fired_eth_price": 2030.8,
-      "entry_zone": "market or first bounce to $0.62",
-      "invalidation": "close above $0.68 (recent intraday bounce high)",
-      "horizon": "3d",
-      "thesis": [
-        "GENIUS closed -6.93% today with open interest dropping 6.43% in the same window. Liquidations printed $498K — 2.76 times the 7d p75 of $180K. perps-scan named the structure CAPITULATION-shaped flow.",
-        "Top-trader long/short ratio fell 0.37 points over 7 days while open interest built 124% in the same period. Smart money is fading the Binance listing pump while retail leverage stays crowded long.",
-        "Funding flipped negative to -0.0005%/8h from the +0.0073% 7d average. The premium-paying long stack now pays nothing — the support that justified the leverage just lifted.",
-        "Cross-feed conflict with today's token-call HIGH 9/10 LONG on the same name. Per soul, perps positioning wins commentary when the chart confirms the structural shape. Tape fired the short side first."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "repeat_appearance",
-        "enrichment_positive"
-      ],
-      "confluence_missing": [
-        "quant_regime_aligned",
-        "both_tag",
-        "narrative_phase_aligned"
-      ],
-      "named_risks": [
-        "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
-        "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
-      ],
-      "mae_pct": -2.9689377037926863,
-      "mfe_pct": 14.19255191350609,
-      "mae_date": "2026-05-24",
-      "mfe_date": "2026-05-24",
-      "invalidation_breached": false,
-      "watchlist_provenance": {
-        "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
-        "days_on_watchlist": 0,
-        "original_trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
-        "original_confluence_fired": [
-          "pattern_tag_supports",
-          "market_regime_aligned"
-        ]
-      },
-      "evaluations": [
+        },
         {
           "date": "2026-05-24",
           "call": "RIDE",
-          "price_at_eval": 0.55,
-          "note": "Day 2/3. No GENIUS perps data in today's universe — price_at_eval is an estimate from the on-chain context (dropped off monitor-runners top 5, attention rotated to the Solana SAOS cluster). Capitulation thesis intact: smart-money exit and funding flip negative remain the structural reads. Horizon expires tomorrow."
+          "price_at_eval": 350.0,
+          "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
         }
       ]
     },
@@ -211,13 +168,20 @@
         "AVS slashing overhang — fresh security event flips this name to risk-off ahead of other AI dumps.",
         "Macro regime flip is fresh — if US-Iran deal stalls before May 31, the breadth-driven bid evaporates."
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -2.131361461504997,
+      "mfe_pct": 0.04349717268378284,
+      "mae_date": "2026-05-24",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 0.2299,
+          "note": "Day 1/7. Position fired this morning. No EIGEN data in afternoon perps slice or token-movers winners/losers/trending. Price_at_eval held at fire. AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker — sector tailwind intact."
+        }
+      ]
     }
   ],
   "watchlist": [
@@ -238,28 +202,6 @@
       "named_risks": [
         "DIVERGENT sub-tag = arb-flow possibility, not aggressive demand",
         "AI compute at PEAK means trail tight when this resolves"
-      ]
-    },
-    {
-      "id": "EDEN-watchlist-2026-05-23-001",
-      "asset": "EDEN",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-23",
-      "trigger": "liquidations print past $2M with funding holding negative, OR fresh -10% day with open interest extending lower",
-      "invalidation": "close above $0.115 before trigger fires",
-      "horizon": "24h",
-      "thesis": [
-        "EDEN closed -11.24% today with open interest down 30.10% in the same 24 hours. Funding rolled back to -0.0185%/8h — the sign-flip block that previously held CAPITULATION out has lifted.",
-        "Only the liquidation gate ($866K vs 7d p75 $2.1M) holds the regime back now. Pct_4h sits at +1.67% — the cascade ended in the last few hours and structure rebuilt.",
-        "A second leg down with liquidations pushing past the $2M threshold completes the CAPITULATION setup. Entering now is chasing the bounce, not riding the flush."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned"
-      ],
-      "named_risks": [
-        "Cascade can exhaust without firing the liquidation gate, leaving the structure in NEUTRAL through the watch window.",
-        "Funding normalization absent fresh distribution removes the asymmetry."
       ]
     },
     {
@@ -309,25 +251,28 @@
       ]
     },
     {
-      "id": "BSB-watchlist-2026-05-24-001",
-      "asset": "BSB",
-      "direction": "SHORT",
+      "id": "RAIL-watchlist-2026-05-24-001",
+      "asset": "RAIL",
+      "direction": "LONG",
       "first_seen_date": "2026-05-24",
-      "trigger": "pct_24h reverses to flat-to-red with funding holding above +0.08%/8h",
-      "invalidation": "close above $1.50 (recent intraday high)",
-      "horizon": "24h",
+      "trigger": "first pullback to the $3.50 area that holds with ZEC also holding above $640 OR a second privacy name continuing to print green on the same session",
+      "invalidation": "close below $3.30 before trigger fires",
+      "horizon": "7d",
       "thesis": [
-        "BSB funding +0.094%/8h cleared the DISTRIBUTION trigger of +0.08%/8h with a 0.038pp jump from yesterday. Gains-still-accelerating reading blocked regime fire on the thinnest margin in the universe.",
-        "Top L/S 2.00 fell 0.24 over 7 days while OI built 83.6%. Smart money exited 12% of long conviction this week as retail piled premium-paying leverage.",
-        "Liquidations $318K against 7d p75 $3.3M leaves heavy unwound leverage on the stack. Reversal day fires LONG-TRAP with cascade room beneath."
+        "Token-call rated RAIL HIGH 8/10 today — top score in the 250-coin scan. +66.4% 24h to $4.18, vol/mcap 0.04, 7d +173.6%.",
+        "Privacy/ZK promoted to RISING in narrative-tracker after five sessions absent. Drivers: Aleo + Ledger Private DeFi, US Treasury mixer report, ZEC tape cracking and extending.",
+        "Railgun sits inside the privacy-DeFi rail thesis with $92M TVL, $4.7M revenue, $2B+ shielded volume. Real usage. Pullback trigger waits because chasing +66% intraday entry is worst-timing on a parabolic."
       ],
       "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports"
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "cross_domain_bridge",
+        "enrichment_positive"
       ],
       "named_risks": [
-        "BSB is +127% over 7 days — momentum can extend through funding extreme for multiple sessions before reverting.",
-        "Microcap with thin liquidation depth — bounce risk on stop-runs after the flush begins."
+        "RAIL up 173.6% over 7 days already — late-cycle entry on a parabolic, the [PUMP-RISK] flag is real.",
+        "42.5M tokens still to issue against 57.5M circulating — future emission overhang at 74% of current float.",
+        "Narrative arriving after the run-up — capital may rotate to ZEC, Aleo, or other privacy alternatives instead of extending RAIL."
       ]
     }
   ],
@@ -550,6 +495,76 @@
       "return_vs_btc_pct": -5.11,
       "return_vs_eth_pct": -4.06,
       "horizon_realized": "1d",
+      "auto_flipped": false,
+      "outcome": "LOSS"
+    },
+    {
+      "id": "GENIUS-2026-05-23-001",
+      "asset": "GENIUS",
+      "direction": "SHORT",
+      "fired_date": "2026-05-23",
+      "fired_price": 0.5827,
+      "fired_btc_price": 74735,
+      "fired_eth_price": 2030.8,
+      "entry_zone": "market or first bounce to $0.62",
+      "invalidation": "close above $0.68 (recent intraday bounce high)",
+      "horizon": "3d",
+      "thesis": [
+        "GENIUS closed -6.93% today with open interest dropping 6.43% in the same window. Liquidations printed $498K — 2.76 times the 7d p75 of $180K. perps-scan named the structure CAPITULATION-shaped flow.",
+        "Top-trader long/short ratio fell 0.37 points over 7 days while open interest built 124% in the same period. Smart money is fading the Binance listing pump while retail leverage stays crowded long.",
+        "Funding flipped negative to -0.0005%/8h from the +0.0073% 7d average. The premium-paying long stack now pays nothing — the support that justified the leverage just lifted.",
+        "Cross-feed conflict with today's token-call HIGH 9/10 LONG on the same name. Per soul, perps positioning wins commentary when the chart confirms the structural shape. Tape fired the short side first."
+      ],
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned",
+        "repeat_appearance",
+        "enrichment_positive"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "both_tag",
+        "narrative_phase_aligned"
+      ],
+      "named_risks": [
+        "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
+        "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
+      ],
+      "mae_pct": -33.8596190149305,
+      "mfe_pct": 14.19255191350609,
+      "mae_date": "2026-05-24",
+      "mfe_date": "2026-05-24",
+      "invalidation_breached": true,
+      "watchlist_provenance": {
+        "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
+        "days_on_watchlist": 0,
+        "original_trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
+        "original_confluence_fired": [
+          "pattern_tag_supports",
+          "market_regime_aligned"
+        ]
+      },
+      "evaluations": [
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 0.55,
+          "note": "Day 2/3. No GENIUS perps data in today's universe — price_at_eval is an estimate from the on-chain context (dropped off monitor-runners top 5, attention rotated to the Solana SAOS cluster). Capitulation thesis intact: smart-money exit and funding flip negative remain the structural reads. Horizon expires tomorrow."
+        },
+        {
+          "date": "2026-05-24",
+          "call": "CLOSE",
+          "price_at_eval": 0.7232,
+          "note": "Day 2/3 afternoon re-eval. Afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. Fifth distinct GENIUS bsc contract reactivated the name-farm cluster, vol_ratio 2.38x cleared the breakout gate, pct_24h +9.51% on $51M volume. Morning brief's $0.55 estimate from on-chain attention rotation missed the perps print entirely. -24.11% return, -21.52pp vs BTC, -20.53pp vs ETH. LOSS."
+        }
+      ],
+      "closed_date": "2026-05-24",
+      "closed_price": 0.7232,
+      "close_reason": "afternoon perps data revealed daily close $0.7232 cleared the $0.68 invalidation; the morning eval's $0.55 estimate from on-chain attention missed the perps print where fifth distinct bsc name-farm contract reactivated the cluster with vol_ratio 2.38x clearing the breakout gate",
+      "return_pct": -24.11,
+      "return_vs_btc_pct": -21.52,
+      "return_vs_eth_pct": -20.53,
+      "horizon_realized": "2d",
       "auto_flipped": false,
       "outcome": "LOSS"
     }

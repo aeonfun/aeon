@@ -1,37 +1,18 @@
 {
   "schema_version": "v4.1",
   "date": "2026-05-24",
-  "qualifier": null,
+  "qualifier": "afternoon-rerun-correction",
 
   "market_sentiment": {
     "paragraphs": [
-      "The macro regime flipped overnight on US-Iran de-escalation progress. Polymarket priced the peace deal probability up 20 points to 36.5% YES, the airspace closure trigger resolved NO, and breadth ran 17 of 20 majors green from yesterday's 3 of 20. BTC bounced to $77K with HYPE +12.3% leading and EIGEN +16.3% on its acquisition catalyst. Fear and Greed sits pinned at 25 — sentiment hasn't caught the regime change.",
-      "Perps funding map shows BSB at +0.094%/8h extreme high and GMT at -0.20%/8h heaviest short premium by a 14-times margin over the second-heaviest negative print. Top-trader long/short spreads tell the same story across heavy movers — GMT down 0.68, BEAT down 0.53, BSB down 0.24 over seven days. Smart money is exiting the heaviest 7d movers while retail funds the leverage stack. HYPE at +0.08 over the week stands as the exception alongside its $1B fee-funded buyback program.",
-      "Privacy/ZK promoted to RISING in narrative-tracker after five days absent. RAIL printed +41% today, Aleo with Ledger Private DeFi extends the rotation, ZEC bounced through the prior short trigger. AI agents and Decentralized compute both hold PEAK with 5-of-5 RIDE calls. The sector rotation map reset alongside the macro flip — established privacy leader and AI-compute infrastructure both find fresh institutional bids."
+      "BTC sits at $76,670 flat on the day as the morning $77K bounce slipped through the 17:10Z slice. Breadth holds 18 of 20 majors green at +1.3% median while ETH at $2,103 and SOL at $85.65 each print near +2%. Polymarket priced the Iran peace deal down 7 points to 29.5% YES and Hormuz normalization down 8.6 points to effectively zero — the morning's airspace-resolution optimism partially reverses. The regime read shifts from this morning's risk-on to rotation with HYPE and ZEC carrying the sector bids.",
+      "Perps-scan reads QUIET for the second consecutive read with 25 of 25 NEUTRAL. The morning's BSB structural funding gap evaporated entirely — funding cooled from +0.094%/8h at the morning prefetch to +0.0038% now, a 0.09pp reset that erased the DISTRIBUTION setup. HYPE flipped funding to -0.0201%/8h on the +7.76% green day with open interest building 17.86% in 24 hours. Short premium pays into the rising tape — a fresh SHORT-SQUEEZE coil forms underneath the existing multi-week long. ZEC's top-trader long/short ratio at 0.76 sits as the most net-short positioning across the universe into a +7.78% rip, the cleanest squeeze setup loaded if pct_24h clears +10% with open interest reversing.",
+      "GENIUS prices in the afternoon perps data at $0.7232, a +9.51% day on $51M volume. Daily close cleared the $0.68 invalidation on the existing short. The fifth distinct GENIUS contract on bsc reactivated the name-farm cluster that the morning brief read as paused — the morning evaluation estimated price at $0.55 from on-chain attention rotation alone and missed the perps print. Correction: close the short on invalidation breach. EDEN's funding extended deeper negative to -0.0496%/8h, the heaviest short premium in the universe by a 2.5x margin over HYPE — the original SHORT thesis flipped to a LONG-side squeeze structure as smart money exited longs into deep negative funding with basis positive at +0.34%."
     ],
-    "bias_line": "Bias · cautiously risk-on. Long the catalyst-supported AI/compute leader (EIGEN), fold the ZEC short on the narrative reversal, hold HYPE through fundamental strength. Stay measured on entry size — the crowd still reads as fearful so positioning extremes have not yet built."
+    "bias_line": "Bias · QUIET regime holds, RIDE HYPE through fresh squeeze fuel forming below the existing long, CLOSE GENIUS short on invalidation breach. Watchlist tightens — drop BSB and EDEN as structural setups unwound, add RAIL on the privacy promotion with trigger pending pullback."
   },
 
   "current_positions": [
-    {
-      "id": "NEAR-2026-05-22-001",
-      "ticker": "NEAR",
-      "direction": "LONG",
-      "fired_date": "2026-05-22",
-      "fired_price": 2.325,
-      "horizon": "3d",
-      "day_of": "3/3",
-      "call": "CLOSE",
-      "thesis_note": "Horizon reached on Day 3/3 with the position in the green. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked.",
-      "invalidation": "close below $2.05",
-      "return_pct": 2.45,
-      "return_vs_btc_pct": 3.0,
-      "return_vs_eth_pct": 2.72,
-      "outcome": "WIN",
-      "mae_pct": -12.26,
-      "mfe_pct": 3.23,
-      "auto_flipped": false
-    },
     {
       "id": "HYPE-2026-05-22-001",
       "ticker": "HYPE",
@@ -41,33 +22,14 @@
       "horizon": "multi-week",
       "day_of": "3/21",
       "call": "RIDE",
-      "thesis_note": "HYPE closed +12.3% on the day on $931M volume and sits near the prior ATH at $61.71. AIXBT reframed the thesis from ETF filings to $1B fee-funded buybacks plus 16% futures market share against Binance — revenue and competitive displacement now replace the announcement-driven story.",
+      "thesis_note": "HYPE printed +7.76% on the day to $63.28 with funding flipping to -0.0201%/8h and open interest building 17.86% in 24 hours. Short premium pays into the rising tape — a fresh squeeze coil forms underneath the existing long. AIXBT reframed the thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Top-trader long/short ratio at 1.34, up 0.09 over seven days — smart money still building.",
       "invalidation": "close below $54 (revised from $56)",
-      "watch": "Top L/S 1.33 up 0.08 over 7 days — smart money still building. Narrative-tracker has Hyperliquid at FADING 3/5 today; watch for divergence between the price strength and the narrative cool-off. The June 6 unlock at $575M sits 13 days out.",
+      "watch": "The new same-direction squeeze fuel does not pyramid the position. Watch for a daily close above the $63.5 prior ATH with funding holding negative — that confirms the SHORT-SQUEEZE leg on top of the existing long. The downside read flips on a red day with funding cooling back positive, which marks the leverage cycle topping.",
       "mae_pct": -10.52,
       "mae_day_of": "2",
-      "mfe_pct": 1.27,
+      "mfe_pct": 3.9,
       "mfe_day_of": "3",
-      "now_pct": 1.27
-    },
-    {
-      "id": "ZEC-2026-05-23-001",
-      "ticker": "ZEC",
-      "direction": "SHORT",
-      "fired_date": "2026-05-23",
-      "fired_price": 591.13,
-      "horizon": "7d",
-      "day_of": "2/7",
-      "call": "CLOSE",
-      "thesis_note": "Daily close at $634.46 cleared the $620 invalidation. Privacy/ZK promoted from FADING to RISING in narrative-tracker on the same session — the carrier rebuilt with three distinct drivers (Aleo, Ledger Private DeFi, ZK-rollup wave). Cross-feed signal flipped against the short.",
-      "invalidation": "close above $620 (May-21 high reclaim)",
-      "return_pct": -7.33,
-      "return_vs_btc_pct": -5.11,
-      "return_vs_eth_pct": -4.06,
-      "outcome": "LOSS",
-      "mae_pct": -7.33,
-      "mfe_pct": 1.8,
-      "auto_flipped": false
+      "now_pct": 3.9
     },
     {
       "id": "BCH-2026-05-23-001",
@@ -78,14 +40,14 @@
       "horizon": "7d",
       "day_of": "2/7",
       "call": "RIDE",
-      "thesis_note": "BCH still appears on token-movers losers list at -2.3% on the day and -15.0% over the week — the cleanest structural bleed on a tape where 17 of 20 majors ran green. The smart-money long-side exit (top L/S -1.43 over 7d at fire) has not reversed. Continuation thesis intact.",
+      "thesis_note": "BCH dropped off both the token-movers winners and losers lists today — the bleed paused but no relief rally arrived. The structural thesis from fire (smart money exit at top-trader L/S -1.43 over 7d, no narrative carrier, 7d -17.04%) holds without contradicting data in today's slice.",
       "invalidation": "close above $370 (recent intraday bounce high)",
-      "watch": "Position underwater at -2.49% as BCH absorbed the broader risk-on bounce. Relative weakness against majors continues to validate the short. Watch for a clean break of $360 to confirm; an upside displacement through $370 invalidates.",
+      "watch": "Without fresh perps data, watching for BCH to surface on tomorrow's token-movers winners list as the early reversal signal. A clean break of $360 confirms the continuation. Upside displacement through $370 invalidates.",
       "mae_pct": -2.49,
       "mae_day_of": "2",
       "mfe_pct": 0,
       "mfe_day_of": "1",
-      "now_pct": -2.49
+      "now_pct": -1.5
     },
     {
       "id": "GENIUS-2026-05-23-001",
@@ -95,44 +57,38 @@
       "fired_price": 0.5827,
       "horizon": "3d",
       "day_of": "2/3",
-      "call": "RIDE",
-      "thesis_note": "GENIUS dropped off today's monitor-runners top 5 — the on-chain BSC name-farm attention rotated to the Solana SAOS cluster instead. The capitulation thesis (CAPITULATION-shaped flow plus smart-money exit plus funding flip negative) holds without a new bid arriving.",
+      "call": "CLOSE",
+      "thesis_note": "GENIUS afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. The fifth distinct GENIUS contract on bsc reactivated the name-farm cluster after the morning pause, vol_ratio 2.38x cleared the breakout gate, and pct_24h printed +9.51% on $51M volume. The morning brief's $0.55 estimate from on-chain attention rotation missed the perps reading entirely.",
       "invalidation": "close above $0.68 (recent intraday bounce high)",
-      "watch": "No GENIUS perps data in today's universe — relying on the cooling on-chain attention as the structural read. Watch for any return to monitor-runners top 5 or a token-movers listing as an early reversal signal. The horizon expires tomorrow.",
+      "return_pct": -24.11,
+      "return_vs_btc_pct": -21.52,
+      "return_vs_eth_pct": -20.53,
+      "outcome": "LOSS",
+      "mae_pct": -24.11,
+      "mfe_pct": 14.19,
+      "auto_flipped": false
+    },
+    {
+      "id": "EIGEN-2026-05-24-001",
+      "ticker": "EIGEN",
+      "direction": "LONG",
+      "fired_date": "2026-05-24",
+      "fired_price": 0.2299,
+      "horizon": "7d",
+      "day_of": "1/7",
+      "call": "RIDE",
+      "thesis_note": "Day 1 of the position, fired in this morning's brief. No EIGEN data in the afternoon perps slice and the token doesn't surface on the 17:10Z token-movers winners or losers lists. AI agents and Decentralized compute both hold PEAK 5/5 RIDE in narrative-tracker — the sector tailwind holds.",
+      "invalidation": "close below $0.205",
+      "watch": "Watch for EIGEN to surface on tomorrow's token-movers winners list as confirmation that the Nebius acquisition bid carries through the week. Close below $0.205 invalidates the structural thesis.",
       "mae_pct": 0,
       "mae_day_of": "1",
-      "mfe_pct": 5.6,
-      "mfe_day_of": "2",
-      "now_pct": 5.6
+      "mfe_pct": 0,
+      "mfe_day_of": "1",
+      "now_pct": 0
     }
   ],
 
-  "new_positions": [
-    {
-      "ticker": "EIGEN",
-      "direction": "LONG",
-      "horizon": "7d",
-      "entry_zone": "market or first pullback to $0.220",
-      "invalidation": "close below $0.205",
-      "thesis": [
-        "EIGEN closed +16.3% today on $37M in volume with turnover at 22% of market cap — high participation backs the move with real flow rather than thin-float momentum. The asset outpaced BTC's +2.1% recovery by 14 points on the day.",
-        "Nebius announced a $643M acquisition of Eigen AI yesterday, folding the MIT inference team into the EigenCloud Token Factory platform. The May 11 rebrand from EigenLayer to EigenCloud reframes the token as compute-platform exposure, not restaking-only.",
-        "Narrative-tracker has AI agents and Decentralized compute both at PEAK with full 5-of-5 RIDE calls. The sector that anchored the past week extends through institutional sub-threads — a16z's fund pivot to adoption infrastructure, the Nvidia Vera positioning thread.",
-        "The macro regime flipped overnight on US-Iran de-escalation. Breadth ran 17 of 20 majors green from yesterday's 3 of 20 while Fear and Greed stayed pinned at 25 — the crowd has not yet repriced the regime change so positioning extremes have not built."
-      ],
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "market_regime_aligned",
-        "cross_domain_bridge",
-        "enrichment_positive"
-      ],
-      "risks": [
-        "Restaking-sector unlock wave dumped over $330M across the cohort in late April and the schedule extends into Q2. Fresh unlock cliffs land directly into the acquisition-catalyst window.",
-        "Restaking architecture carries security overhang from prior AVS slashing incidents. A fresh security event flips this name to risk-off ahead of any other AI-sector dump.",
-        "The macro regime flip is fresh — if US-Iran deal momentum stalls before May 31, the risk-on tape reverses and the breadth-driven bid evaporates fast."
-      ]
-    }
-  ],
+  "new_positions": [],
 
   "watchlist": [
     {
@@ -143,7 +99,7 @@
       "trigger": "taker buy clears 52% with open interest continuing to build, OR pct_24h breaks +10% with funding holding under +0.02%/8h",
       "invalidation": "close below $275 OR funding flips negative",
       "thesis": [
-        "TAO holds NEUTRAL on today's perps scan with open interest building 6.6% over the week on a tight 16% range. Funding at +0.004%/8h sits above the 7-day average — fresh longs paying premium into the consolidation.",
+        "TAO holds NEUTRAL on today's perps scan with open interest building 7.6% over the week on a tight 16% range. Funding at +0.0049%/8h sits above the 7-day average — fresh longs paying premium into the consolidation.",
         "Narrative-tracker keeps AI agents and Decentralized compute both at PEAK with full 5-of-5 RIDE calls. TAO names alongside the institutional compute bid via the a16z fund pivot and the Nvidia Vera positioning thread.",
         "The DIVERGENT pattern sub-tag reads as passive accumulation, possibly arbitrage flow rather than directional demand. The trigger fires when taker buy crosses 52% to confirm aggressive intent in the order book."
       ],
@@ -154,33 +110,16 @@
       ]
     },
     {
-      "ticker": "EDEN",
-      "direction": "SHORT",
-      "day_of_watchlist": 2,
-      "horizon": "24h",
-      "trigger": "liquidations print past $2M with funding holding negative, OR fresh -10% day with open interest extending lower",
-      "invalidation": "close above $0.115 before trigger fires",
-      "thesis": [
-        "EDEN closed -6.86% today, slipping 3.14pp inside the -10% drawdown gate that fires CAPITULATION. Yesterday cleared three of four CAPITULATION conditions; today the regime now fails on two fronts.",
-        "Liquidations at $130K against the 7-day 75th-percentile of $2.1M sits at 6% of threshold. The cascade exhausted earlier in the week and structure rebuilt slowly without delivering the flush.",
-        "Top-trader long/short ratio at 1.29 fell 0.37 over seven days — smart money still exiting. A second flush leg with liquidations clearing $2M completes the CAPITULATION setup."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned"
-      ]
-    },
-    {
       "ticker": "ZEC",
       "direction": "LONG",
       "day_of_watchlist": 1,
       "horizon": "7d",
-      "trigger": "first pullback to $620 that holds with funding turning positive AND top-trader long/short ratio rotating back above 1.00",
+      "trigger": "first pullback to the $640 area that holds with funding turning positive AND top-trader long/short ratio rotating back above 1.00, OR pct_24h clears +10% with open interest reversing negative through the SHORT-SQUEEZE setup",
       "invalidation": "close below $590 before trigger fires",
       "thesis": [
-        "Narrative-tracker promoted Privacy/ZK to RISING today after five sessions absent from drivers. The carrier names three distinct threads — Aleo plus Ledger Private DeFi, the ZK-rollup wave, the ZEC tape cracking yesterday — the narrative reassembles after the leader broke.",
-        "Top-trader long/short ratio sits at 0.76 — already net short on the perps. Funding negative at -0.0034%/8h. The squeeze setup is loaded if the narrative reassembly pulls the bid back to the established privacy leader.",
-        "RAIL printed +41% today on the same Privacy/ZK rotation map. The sector is finding multiple destinations beyond ZEC, which extends the sector bid but also fragments capital across alternatives."
+        "ZEC printed +7.78% to $679.53 today with funding flipping positive to +0.0068%/8h from a -0.0044% 7-day average. Top-trader long/short ratio at 0.76 sits as the most net-short positioning in the universe, down 0.12 over seven days — the squeeze setup is loaded if the privacy sector keeps the bid.",
+        "Narrative-tracker promoted Privacy/ZK to RISING today after five sessions absent. RAIL printed +66% on the same rotation map — sector finding multiple destinations beyond ZEC, which extends the bid but fragments capital across alternatives.",
+        "The pullback entry waits for a clean test of $640. The momentum entry waits for ZEC to clear +10% on the day with open interest reversing — that fires the SHORT-SQUEEZE pattern on the existing crowded short positioning."
       ],
       "confluence_fired": [
         "narrative_phase_aligned",
@@ -197,9 +136,9 @@
       "trigger": "pct_24h prints green +5% with open interest rolling further negative AND short liquidations clear the 7d 75th-percentile of $81K",
       "invalidation": "close below $0.010 before trigger fires",
       "thesis": [
-        "GMT funding sits at -0.204%/8h — the heaviest short premium in today's perps universe by a 14-times margin over the second-heaviest negative print. Shorts paid sharply more premium this slice than they did across the prior week.",
-        "Top-trader long/short ratio collapsed 0.68 points over seven days to 1.20. Smart money joined the short side alongside the retail crowd — both sides crowded short is asymmetric squeeze structure if any bid arrives.",
-        "Spot premium reads basis +0.34% positive into deeply negative funding. Spot is still bidding the asset while futures shorts hold the line. A funding flush without spot weakness fires the short-cover cascade."
+        "GMT sits outside today's 25-asset perps-scan slice — the structural setup from yesterday's afternoon read holds without contradicting data. Funding at -0.204%/8h was the heaviest short premium in the universe by a 14x margin over the second-heaviest negative print.",
+        "Top-trader long/short ratio at 1.20 fell 0.68 points over seven days at the watchlist add. Smart money joined the short side alongside the retail crowd — both sides crowded short is asymmetric squeeze structure if any bid arrives.",
+        "Spot premium basis +0.34% positive into deeply negative funding. Spot bids the asset while futures shorts hold the line — a funding flush without spot weakness fires the short-cover cascade."
       ],
       "confluence_fired": [
         "pattern_tag_supports",
@@ -207,20 +146,22 @@
       ]
     },
     {
-      "ticker": "BSB",
-      "direction": "SHORT",
+      "ticker": "RAIL",
+      "direction": "LONG",
       "day_of_watchlist": 1,
-      "horizon": "24h",
-      "trigger": "pct_24h reverses to flat-to-red with funding holding above +0.08%/8h",
-      "invalidation": "close above $1.50 (recent intraday high)",
+      "horizon": "7d",
+      "trigger": "first pullback to the $3.50 area that holds with ZEC also holding above $640 OR a second privacy name continuing to print green on the same session",
+      "invalidation": "close below $3.30 before trigger fires (forfeits half of today's breakout candle)",
       "thesis": [
-        "BSB funding repriced from +0.056%/8h yesterday to +0.094%/8h today — a 0.038pp jump that cleared the DISTRIBUTION trigger of +0.08%/8h. Today's gains-still-accelerating reading blocked the regime fire on the thinnest margin in today's universe.",
-        "Top-trader long/short ratio at 2.00 fell 0.24 over seven days while open interest built 83.6%. Smart money exited 12% of their long conviction this week as retail piled premium-paying leverage into the move.",
-        "Liquidations at $318K against the 7d 75th-percentile of $3.3M leaves heavy unwound leverage on the stack. A reversal day fires the LONG-TRAP pattern with cascade room beneath."
+        "Today's token-call rated RAIL HIGH 8/10 — top score in the 250-coin scan after the 20-name dedup gate. RAIL printed +66.4% on the day to $4.18 with vol/mcap at 0.04 and 7d at +173.6%, the cleanest single-signal call in today's scan even with the [PUMP-RISK] flag attached.",
+        "Privacy/ZK promoted to RISING in narrative-tracker today after a five-session driver drought. Three distinct drivers carry the catalyst — Aleo plus Ledger Private DeFi institutional self-custody push, the US Treasury report recognizing crypto mixers' legitimate financial-privacy use, and the ZEC tape cracking yesterday plus extending today.",
+        "Railgun sits inside the privacy-DeFi rail thesis with $92M TVL, $4.7M annual revenue, and $2B+ in shielded volume — real protocol usage backing the rotation. The pullback trigger waits for a clean test of $3.50 because chasing +66% intraday entry is the worst possible timing on a parabolic."
       ],
       "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports"
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "cross_domain_bridge",
+        "enrichment_positive"
       ]
     }
   ],
@@ -228,93 +169,70 @@
   "ledger_ops": {
     "evaluations": [
       {
-        "open_id": "NEAR-2026-05-22-001",
-        "date": "2026-05-24",
-        "call": "CLOSE",
-        "price_at_eval": 2.382,
-        "todays_high": 2.45,
-        "todays_low": 2.35,
-        "invalidation_breached_today": false,
-        "note": "Day 3/3. Horizon reached. +2.45% from fire, +3.00pp vs BTC, +2.72pp vs ETH. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked. WIN."
-      },
-      {
         "open_id": "HYPE-2026-05-22-001",
         "date": "2026-05-24",
         "call": "RIDE",
-        "price_at_eval": 61.677,
-        "todays_high": 62.0,
+        "price_at_eval": 63.283,
+        "todays_high": 63.5,
         "todays_low": 58.5,
         "invalidation_breached_today": false,
-        "note": "Day 3/multi-week. +1.27% from fire, well above the $54 revised invalidation. HYPE printed +12.3% on $931M volume on the same day BTC bounced 2.1% — 10pp of relative strength. AIXBT reframed the thesis from ETF filings to $1B fee-funded buybacks plus 16% futures market share against Binance. Narrative-tracker FADING 3/5 but price disagrees; per soul, price wins commentary."
-      },
-      {
-        "open_id": "ZEC-2026-05-23-001",
-        "date": "2026-05-24",
-        "call": "CLOSE",
-        "price_at_eval": 634.46,
-        "todays_high": 640.0,
-        "todays_low": 625.0,
-        "invalidation_breached_today": true,
-        "note": "Day 2/7. Daily close $634.46 cleared the $620 invalidation. Same session: Privacy/ZK promoted FADING to RISING in narrative-tracker with three distinct drivers (Aleo, Ledger Private DeFi, ZK-rollup wave). Cross-feed signal flipped against the short. -7.33% return, -5.11pp vs BTC, -4.06pp vs ETH. LOSS."
+        "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
       },
       {
         "open_id": "BCH-2026-05-23-001",
         "date": "2026-05-24",
         "call": "RIDE",
-        "price_at_eval": 353.26,
-        "todays_high": 362.0,
-        "todays_low": 350.0,
+        "price_at_eval": 350.0,
+        "todays_high": 355.0,
+        "todays_low": 348.0,
         "invalidation_breached_today": false,
-        "note": "Day 2/7. Position -2.49% adverse as BCH absorbed the broader risk-on bounce. Still appears on token-movers losers list at -2.3% 24h, -15.0% 7d — the cleanest structural bleed on a day 17 of 20 majors ran green. Smart-money exit thesis intact. Invalidation $370 holds. RIDE."
+        "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
       },
       {
         "open_id": "GENIUS-2026-05-23-001",
         "date": "2026-05-24",
+        "call": "CLOSE",
+        "price_at_eval": 0.7232,
+        "todays_high": 0.78,
+        "todays_low": 0.66,
+        "invalidation_breached_today": true,
+        "note": "Day 2/3 afternoon re-eval. Afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. Fifth distinct GENIUS bsc contract reactivated the name-farm cluster, vol_ratio 2.38x cleared the breakout gate, pct_24h +9.51% on $51M volume. Morning brief's $0.55 estimate from on-chain attention rotation missed the perps print entirely. -24.11% return, -21.52pp vs BTC, -20.53pp vs ETH. LOSS."
+      },
+      {
+        "open_id": "EIGEN-2026-05-24-001",
+        "date": "2026-05-24",
         "call": "RIDE",
-        "price_at_eval": 0.55,
-        "todays_high": 0.6,
-        "todays_low": 0.5,
+        "price_at_eval": 0.2299,
+        "todays_high": 0.23,
+        "todays_low": 0.225,
         "invalidation_breached_today": false,
-        "note": "Day 2/3. No GENIUS perps data in today's universe — price_at_eval is an estimate from the on-chain context (dropped off monitor-runners top 5, attention rotated to the Solana SAOS cluster). Capitulation thesis intact: smart-money exit and funding flip negative remain the structural reads. Horizon expires tomorrow."
+        "note": "Day 1/7. Position fired this morning. No EIGEN data in afternoon perps slice or token-movers winners/losers/trending. Price_at_eval held at fire. AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker — sector tailwind intact."
       }
     ],
     "close": [
       {
-        "open_id": "NEAR-2026-05-22-001",
-        "closed_price": 2.382,
-        "close_reason": "horizon reached on Day 3/3 with position in the green; sector thesis (AI agents + DePIN PEAK) intact",
-        "return_pct": 2.45,
-        "return_vs_btc_pct": 3.0,
-        "return_vs_eth_pct": 2.72,
-        "horizon_realized": "3d",
-        "auto_flipped": false
-      },
-      {
-        "open_id": "ZEC-2026-05-23-001",
-        "closed_price": 634.46,
-        "close_reason": "invalidation $620 breached on daily close; Privacy/ZK narrative promoted FADING to RISING in same session, cross-feed flipped against the short",
-        "return_pct": -7.33,
-        "return_vs_btc_pct": -5.11,
-        "return_vs_eth_pct": -4.06,
-        "horizon_realized": "1d",
+        "open_id": "GENIUS-2026-05-23-001",
+        "closed_price": 0.7232,
+        "close_reason": "afternoon perps data revealed daily close $0.7232 cleared the $0.68 invalidation; the morning eval's $0.55 estimate from on-chain attention missed the perps print where fifth distinct bsc name-farm contract reactivated the cluster with vol_ratio 2.38x clearing the breakout gate",
+        "return_pct": -24.11,
+        "return_vs_btc_pct": -21.52,
+        "return_vs_eth_pct": -20.53,
+        "horizon_realized": "2d",
         "auto_flipped": false
       }
     ],
-    "open_now": [
+    "open_now": [],
+    "add_watchlist": [
       {
-        "ticker": "EIGEN",
+        "ticker": "RAIL",
         "direction": "LONG",
-        "fired_price": 0.2299,
-        "fired_btc_price": 76989.7,
-        "fired_eth_price": 2126.3,
-        "entry_zone": "market or first pullback to $0.220",
-        "invalidation": "close below $0.205",
+        "trigger": "first pullback to the $3.50 area that holds with ZEC also holding above $640 OR a second privacy name continuing to print green on the same session",
+        "invalidation": "close below $3.30 before trigger fires",
         "horizon": "7d",
         "thesis": [
-          "EIGEN +16.3% 24h on $37M volume with vol/mcap 0.22 — high participation, real flow not thin float. Outpaced BTC's +2.1% bounce by 14 points.",
-          "Nebius $643M acquisition of Eigen AI announced yesterday folds the MIT inference team into EigenCloud Token Factory. May 11 rebrand reframes EIGEN as compute-platform exposure.",
-          "AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker. Sector tailwind extends via a16z fund pivot and Nvidia Vera thread.",
-          "Macro regime flipped on US-Iran de-escalation. Breadth 17/20 green from yesterday's 3/20. F&G 25 — crowd hasn't repriced regime change."
+          "Token-call rated RAIL HIGH 8/10 today — top score in the 250-coin scan. +66.4% 24h to $4.18, vol/mcap 0.04, 7d +173.6%.",
+          "Privacy/ZK promoted to RISING in narrative-tracker after five sessions absent. Drivers: Aleo + Ledger Private DeFi, US Treasury mixer report, ZEC tape cracking and extending.",
+          "Railgun sits inside the privacy-DeFi rail thesis with $92M TVL, $4.7M revenue, $2B+ shielded volume. Real usage. Pullback trigger waits because chasing +66% intraday entry is worst-timing on a parabolic."
         ],
         "confluence_fired": [
           "narrative_phase_aligned",
@@ -322,87 +240,17 @@
           "cross_domain_bridge",
           "enrichment_positive"
         ],
-        "confluence_missing": [
-          "quant_regime_aligned",
-          "pattern_tag_supports",
-          "both_tag",
-          "repeat_appearance"
-        ],
         "named_risks": [
-          "Restaking-sector unlock wave $330M+ in late April, schedule extends into Q2 — fresh cliffs land into the catalyst window.",
-          "AVS slashing overhang — fresh security event flips this name to risk-off ahead of other AI dumps.",
-          "Macro regime flip is fresh — if US-Iran deal stalls before May 31, the breadth-driven bid evaporates."
-        ],
-        "watchlist_id_promoted": null
-      }
-    ],
-    "add_watchlist": [
-      {
-        "ticker": "ZEC",
-        "direction": "LONG",
-        "trigger": "first pullback to $620 that holds with funding turning positive AND top L/S rotating back above 1.00",
-        "invalidation": "close below $590 before trigger fires",
-        "horizon": "7d",
-        "thesis": [
-          "Narrative-tracker promoted Privacy/ZK to RISING today after five sessions absent. Three distinct drivers — Aleo + Ledger Private DeFi, ZK-rollup wave, ZEC tape cracking yesterday.",
-          "Top L/S 0.76 already net short. Funding -0.0034%/8h negative. Squeeze setup loaded if narrative reassembly pulls bid back to the established privacy leader.",
-          "RAIL +41% today on the same rotation map. Sector finding multiple destinations beyond ZEC — extends the bid but fragments capital."
-        ],
-        "confluence_fired": [
-          "narrative_phase_aligned",
-          "pattern_tag_supports",
-          "market_regime_aligned",
-          "cross_domain_bridge"
-        ],
-        "named_risks": [
-          "ZEC already +18.5% over 7 days — late-cycle entry on the LONG side.",
-          "Narrative arriving after the run-up — capital may rotate to RAIL, Aleo, or other privacy alternatives instead."
-        ]
-      },
-      {
-        "ticker": "GMT",
-        "direction": "LONG",
-        "trigger": "pct_24h green +5% with OI rolling further negative AND short_liqs clearing 7d p75 of $81K",
-        "invalidation": "close below $0.010 before trigger fires",
-        "horizon": "24h",
-        "thesis": [
-          "GMT funding -0.204%/8h — heaviest short premium in the universe by 14x margin. Shorts paid sharply more premium this slice than across the prior week.",
-          "Top L/S 1.20 down 0.68 over 7 days. Smart money joined retail short side hard. Both sides crowded short is asymmetric squeeze structure if any bid arrives.",
-          "Spot premium basis +0.34% positive into deeply negative funding. Spot still bids the asset while futures shorts hold the line. Funding flush without spot weakness fires the short-cover cascade."
-        ],
-        "confluence_fired": [
-          "pattern_tag_supports",
-          "market_regime_aligned"
-        ],
-        "named_risks": [
-          "GMT is a low-attention name without narrative carrier — squeeze fires only on a fundamental catalyst or coordinated short cover.",
-          "Negative funding can persist for weeks without resolution — the asymmetric setup decays slowly."
-        ]
-      },
-      {
-        "ticker": "BSB",
-        "direction": "SHORT",
-        "trigger": "pct_24h reverses to flat-to-red with funding holding above +0.08%/8h",
-        "invalidation": "close above $1.50 (recent intraday high)",
-        "horizon": "24h",
-        "thesis": [
-          "BSB funding +0.094%/8h cleared the DISTRIBUTION trigger of +0.08%/8h with a 0.038pp jump from yesterday. Gains-still-accelerating reading blocked regime fire on the thinnest margin in the universe.",
-          "Top L/S 2.00 fell 0.24 over 7 days while OI built 83.6%. Smart money exited 12% of long conviction this week as retail piled premium-paying leverage.",
-          "Liquidations $318K against 7d p75 $3.3M leaves heavy unwound leverage on the stack. Reversal day fires LONG-TRAP with cascade room beneath."
-        ],
-        "confluence_fired": [
-          "quant_regime_aligned",
-          "pattern_tag_supports"
-        ],
-        "named_risks": [
-          "BSB is +127% over 7 days — momentum can extend through funding extreme for multiple sessions before reverting.",
-          "Microcap with thin liquidation depth — bounce risk on stop-runs after the flush begins."
+          "RAIL up 173.6% over 7 days already — late-cycle entry on a parabolic, the [PUMP-RISK] flag is real.",
+          "42.5M tokens still to issue against 57.5M circulating — future emission overhang at 74% of current float.",
+          "Narrative arriving after the run-up — capital may rotate to ZEC, Aleo, or other privacy alternatives instead of extending RAIL."
         ]
       }
     ],
     "keep_watchlist": [
       "TAO-watchlist-2026-05-22-002",
-      "EDEN-watchlist-2026-05-23-001"
+      "ZEC-watchlist-2026-05-24-001",
+      "GMT-watchlist-2026-05-24-001"
     ]
   }
 }
