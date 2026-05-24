@@ -1,8 +1,8 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-24T07:12:18Z",
-  "quality_score": 5,
-  "assessment": "Substantive, insightful analysis with specific metrics, self-verification, constraint awareness, and actionable trading setups identified.",
+  "last_analyzed": "2026-05-24T17:18:32Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured scan output with specific metrics and proper documentation of work performed",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -101,6 +101,10 @@
     {
       "date": "2026-05-24",
       "score": 5
+    },
+    {
+      "date": "2026-05-24",
+      "score": 4
     }
   ]
 }
