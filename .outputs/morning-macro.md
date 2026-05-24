@@ -1,24 +1,26 @@
-Market Morning · 24 May · Regime flipped, sentiment hasn't caught it
+Market Morning · 24 May · afternoon refresh · rotation tightens
 
-BTC bounced to $76,934, +2.14% on the day. Breadth ran 17/20 green from yesterday's 3/20 — sharpest one-day reversal on record.
-F&G stuck at 25, Extreme Fear. The price moved. The crowd hasn't repriced.
-AI agents and Decentralized compute hold 5/5 PEAK RIDE. Privacy/ZK promoted Fading → Rising.
+BTC at $76,619, flat after the $77K morning bounce slipped through the day.
+Breadth 18/20 green but the bid concentrates in HYPE +9.5% and ZEC +11.9%.
+F&G pinned at 25 — three sessions of price moving while sentiment stays put.
+Privacy/ZK promoted Fading → Rising. AI/compute holds 5/5 Peak RIDE.
 
-Stance: cautiously risk-on. Long the AI/compute catalyst, wait for ZEC pullback before chasing the privacy revival.
+Stance: cautiously RIDE the rotation through HYPE and the privacy trio. Macro no longer one-way.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-US-Iran deal progress flipped the macro frame overnight. Polymarket peace odds jumped +20pp to 36.5% YES, airspace-closure trigger resolved NO.
-Energy premium compressed, Fed expectations softened, dollar weakened, EM inflows opening.
+Iran deal frame bifurcated. Peace odds slid 36.5% → 29.5%, Hormuz 12.3% → 3.7%.
+Treasury yields hold at 4.56%. Bonds reject the Fed-softening thesis equities priced in.
 
-HYPE reframed. Prior story was ETF filings. Today's story is $1B+ fee-funded buybacks plus 16% futures market share against Binance.
+HYPE narrative reframed from fundamentals to ATH momentum + Derive options — different holding horizon for the same RIDE.
+Vitalik's EF post elevated privacy from technical to values trade. ZEC, RAIL, NEAR inherit.
 
 
 ─────────  TODAY  ─────────
 
-Action in #perps-brief. New EIGEN LONG on Nebius's $643M acquisition — confluence across perps + narrative-tracker AI PEAK + aixbt-pulse AI/compute risk-on.
-HYPE RIDE through fundamental strength. Closed NEAR (WIN) and ZEC (LOSS) on the regime flip.
-Watchlist: ZEC LONG, GMT LONG, BSB SHORT, TAO LONG day 3, EDEN SHORT day 2.
+Action in #perps-brief — correction. Closed GENIUS SHORT for LOSS -24.11% on the fifth bsc name-farm contract.
+Dropped BSB SHORT (funding +0.094% → +0.004%) and EDEN SHORT (flipped to LONG-side squeeze).
+HYPE LONG RIDE on fresh SHORT-SQUEEZE coil (funding -0.02%/8h, OI +17.9% 24h). Added RAIL LONG to watchlist on token-call HIGH + privacy promotion.
 
-Take: front-run the macro repricing through AI/compute while the crowd still prices yesterday's fear. The window is short.
+Take: rotation holds the bid, macro tape no longer one way. Front-run HYPE momentum, wait the privacy pullback before chasing ZEC or RAIL.
