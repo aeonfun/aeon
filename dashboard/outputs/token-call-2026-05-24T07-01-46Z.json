@@ -1,0 +1,470 @@
+{
+  "root": "card-main",
+  "state": {},
+  "elements": {
+    "card-main": {
+      "type": "Card",
+      "props": {
+        "title": "Daily Token Call · 24 May"
+      },
+      "children": [
+        "heading-eigen",
+        "stack-price",
+        "separator-1",
+        "heading-signals",
+        "stack-signals",
+        "separator-2",
+        "heading-catalyst",
+        "stack-catalyst",
+        "separator-3",
+        "heading-risk",
+        "stack-risk",
+        "separator-4",
+        "heading-dedup",
+        "stack-dedup",
+        "separator-5",
+        "heading-take",
+        "text-take",
+        "alert-disclaimer"
+      ]
+    },
+    "heading-eigen": {
+      "type": "Heading",
+      "props": {
+        "text": "EIGEN · HIGH · 9/10",
+        "level": "h2"
+      }
+    },
+    "stack-price": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "md"
+      },
+      "children": [
+        "stat-price",
+        "stat-24h",
+        "stat-7d",
+        "stat-mcap",
+        "stat-vol",
+        "stat-ratio"
+      ]
+    },
+    "stat-price": {
+      "type": "Stat",
+      "props": {
+        "value": "$0.230"
+      }
+    },
+    "stat-24h": {
+      "type": "Stat",
+      "props": {
+        "label": "24h",
+        "value": "+16.3%",
+        "trend": "up"
+      }
+    },
+    "stat-7d": {
+      "type": "Stat",
+      "props": {
+        "label": "7d",
+        "value": "+19.9%",
+        "trend": "up"
+      }
+    },
+    "stat-mcap": {
+      "type": "Stat",
+      "props": {
+        "label": "mcap",
+        "value": "$168m"
+      }
+    },
+    "stat-vol": {
+      "type": "Stat",
+      "props": {
+        "label": "vol",
+        "value": "$37m"
+      }
+    },
+    "stat-ratio": {
+      "type": "Stat",
+      "props": {
+        "label": "vol/mcap",
+        "value": "0.22"
+      }
+    },
+    "separator-1": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-signals": {
+      "type": "Heading",
+      "props": {
+        "text": "SIGNALS",
+        "level": "h3"
+      }
+    },
+    "stack-signals": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "signal-1",
+        "signal-2",
+        "signal-3",
+        "signal-4",
+        "signal-5"
+      ]
+    },
+    "signal-1": {
+      "type": "Text",
+      "props": {
+        "text": "Top score out of the 250-coin scan after a 19-name dedup gate.",
+        "variant": "body"
+      }
+    },
+    "signal-2": {
+      "type": "Text",
+      "props": {
+        "text": "High turnover at vol/mcap 0.22 backs the move with real volume, not a thin float.",
+        "variant": "body"
+      }
+    },
+    "signal-3": {
+      "type": "Text",
+      "props": {
+        "text": "Both 24h (+16.3%) and 7d (+19.9%) clear the +5% threshold by a wide margin.",
+        "variant": "body"
+      }
+    },
+    "signal-4": {
+      "type": "Text",
+      "props": {
+        "text": "Outpacing BTC and ETH on the 7d. BTC sits at -1.5%, ETH at -2.8%.",
+        "variant": "body"
+      }
+    },
+    "signal-5": {
+      "type": "Text",
+      "props": {
+        "text": "+16% 24h on a day BTC bounced only +2.1%. Asymmetric strength, not beta.",
+        "variant": "body"
+      }
+    },
+    "separator-2": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-catalyst": {
+      "type": "Heading",
+      "props": {
+        "text": "CATALYST",
+        "level": "h3"
+      }
+    },
+    "stack-catalyst": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "catalyst-1",
+        "catalyst-2",
+        "catalyst-3"
+      ]
+    },
+    "catalyst-1": {
+      "type": "Text",
+      "props": {
+        "text": "Nebius announced a $643m acquisition of Eigen AI, folding the MIT inference team into EigenCloud's Token Factory platform.",
+        "variant": "body"
+      }
+    },
+    "catalyst-2": {
+      "type": "Text",
+      "props": {
+        "text": "May 11 rebrand from EigenLayer to EigenCloud reframes the token as compute-platform exposure, not restaking-only.",
+        "variant": "body"
+      }
+    },
+    "catalyst-3": {
+      "type": "Text",
+      "props": {
+        "text": "The acquisition pulls EIGEN into the AI/compute leg the rest of the trending list (RAIL, FET, RENDER) already rides.",
+        "variant": "body"
+      }
+    },
+    "separator-3": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-risk": {
+      "type": "Heading",
+      "props": {
+        "text": "RISK",
+        "level": "h3"
+      }
+    },
+    "stack-risk": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "risk-1",
+        "risk-2",
+        "risk-3"
+      ]
+    },
+    "risk-1": {
+      "type": "Text",
+      "props": {
+        "text": "Late-April restaking-sector unlock wave dumped $330m+ across the cohort. The schedule continues into Q2.",
+        "variant": "body"
+      }
+    },
+    "risk-2": {
+      "type": "Text",
+      "props": {
+        "text": "Restaking still carries security overhang from prior AVS incidents. Sentiment fragile to a fresh slashing event.",
+        "variant": "body"
+      }
+    },
+    "risk-3": {
+      "type": "Text",
+      "props": {
+        "text": "Tape still risk-off (BTC -4.7% 7d, breadth 3/20 green). A fresh leg down compresses idiosyncratic strength fast.",
+        "variant": "body"
+      }
+    },
+    "separator-4": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-dedup": {
+      "type": "Heading",
+      "props": {
+        "text": "DEDUP",
+        "level": "h3"
+      }
+    },
+    "stack-dedup": {
+      "type": "Stack",
+      "props": {
+        "direction": "vertical",
+        "gap": "md"
+      },
+      "children": [
+        "dedup-first",
+        "dedup-rolling"
+      ]
+    },
+    "dedup-first": {
+      "type": "Text",
+      "props": {
+        "text": "First time in 7d for EIGEN.",
+        "variant": "body"
+      }
+    },
+    "dedup-rolling": {
+      "type": "Stack",
+      "props": {
+        "direction": "horizontal",
+        "gap": "sm"
+      },
+      "children": [
+        "badge-kaia",
+        "badge-trac",
+        "badge-bsb",
+        "badge-inj",
+        "badge-near",
+        "badge-hype",
+        "badge-chz",
+        "badge-lit",
+        "badge-vvv",
+        "badge-dash",
+        "badge-zec",
+        "badge-pengu",
+        "badge-grass",
+        "badge-ondo",
+        "badge-wld",
+        "badge-beat",
+        "badge-genius",
+        "badge-skyai",
+        "badge-tag"
+      ]
+    },
+    "badge-kaia": {
+      "type": "Badge",
+      "props": {
+        "text": "KAIA",
+        "variant": "outline"
+      }
+    },
+    "badge-trac": {
+      "type": "Badge",
+      "props": {
+        "text": "TRAC",
+        "variant": "outline"
+      }
+    },
+    "badge-bsb": {
+      "type": "Badge",
+      "props": {
+        "text": "BSB",
+        "variant": "outline"
+      }
+    },
+    "badge-inj": {
+      "type": "Badge",
+      "props": {
+        "text": "INJ",
+        "variant": "outline"
+      }
+    },
+    "badge-near": {
+      "type": "Badge",
+      "props": {
+        "text": "NEAR",
+        "variant": "outline"
+      }
+    },
+    "badge-hype": {
+      "type": "Badge",
+      "props": {
+        "text": "HYPE",
+        "variant": "outline"
+      }
+    },
+    "badge-chz": {
+      "type": "Badge",
+      "props": {
+        "text": "CHZ",
+        "variant": "outline"
+      }
+    },
+    "badge-lit": {
+      "type": "Badge",
+      "props": {
+        "text": "LIT",
+        "variant": "outline"
+      }
+    },
+    "badge-vvv": {
+      "type": "Badge",
+      "props": {
+        "text": "VVV",
+        "variant": "outline"
+      }
+    },
+    "badge-dash": {
+      "type": "Badge",
+      "props": {
+        "text": "DASH",
+        "variant": "outline"
+      }
+    },
+    "badge-zec": {
+      "type": "Badge",
+      "props": {
+        "text": "ZEC",
+        "variant": "outline"
+      }
+    },
+    "badge-pengu": {
+      "type": "Badge",
+      "props": {
+        "text": "PENGU",
+        "variant": "outline"
+      }
+    },
+    "badge-grass": {
+      "type": "Badge",
+      "props": {
+        "text": "GRASS",
+        "variant": "outline"
+      }
+    },
+    "badge-ondo": {
+      "type": "Badge",
+      "props": {
+        "text": "ONDO",
+        "variant": "outline"
+      }
+    },
+    "badge-wld": {
+      "type": "Badge",
+      "props": {
+        "text": "WLD",
+        "variant": "outline"
+      }
+    },
+    "badge-beat": {
+      "type": "Badge",
+      "props": {
+        "text": "BEAT",
+        "variant": "outline"
+      }
+    },
+    "badge-genius": {
+      "type": "Badge",
+      "props": {
+        "text": "GENIUS",
+        "variant": "outline"
+      }
+    },
+    "badge-skyai": {
+      "type": "Badge",
+      "props": {
+        "text": "SKYAI",
+        "variant": "outline"
+      }
+    },
+    "badge-tag": {
+      "type": "Badge",
+      "props": {
+        "text": "TAG",
+        "variant": "outline"
+      }
+    },
+    "separator-5": {
+      "type": "Separator",
+      "props": {
+        "orientation": "horizontal"
+      }
+    },
+    "heading-take": {
+      "type": "Heading",
+      "props": {
+        "text": "Take",
+        "level": "h3"
+      }
+    },
+    "text-take": {
+      "type": "Text",
+      "props": {
+        "text": "a named $643m acquisition catalyst landing on the same day the asset outpaced a BTC bounce by 14 points. Long with stop on a daily close below $0.195 (the prior week's pivot). Size for the restaking unlock overhang. Multi-day position with a trim if BTC fails $76k and the broader tape rolls back.",
+        "variant": "body"
+      }
+    },
+    "alert-disclaimer": {
+      "type": "Alert",
+      "props": {
+        "message": "not financial advice — pattern-matching only",
+        "type": "info"
+      }
+    }
+  }
+}

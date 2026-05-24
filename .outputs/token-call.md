@@ -1,39 +1,34 @@
-Daily Token Call · 23 May
+Daily Token Call · 24 May
 ──────────────────────────
 
-TAG · MEDIUM · 6/10
-$0.001553 · +22.8% 24h · +32.7% 7d
-mcap $170m · vol $15.9m · vol/mcap 0.09
+EIGEN · HIGH · 9/10
+$0.230 · +16.3% 24h · +19.9% 7d
+mcap $168m · vol $37m · vol/mcap 0.22
 
 
 SIGNALS
-  Both 24h (+22.8%) and 7d (+32.7%) clear the +5% threshold on a tape printing 3/20 green at the top.
-  Outpacing BTC (-4.7%) and ETH (-7.5%) on the 7d by 37 to 40 points.
-  DexScreener cross-confirms the move on the BSC PancakeSwap pool at $6.9m h24 volume on $3m liquidity, +20.5% h24.
-  Turnover lands at vol/mcap 0.09, just under the 0.10 floor that earns the volume bonus.
-  Not on the CoinGecko trending list. Awareness lags the price.
-  Price strength and 7d relative strength carry the 6/10 alone — no turnover bonus, no trending bonus, no confluence.
+  Top score out of the 250-coin scan after a 19-name dedup gate.
+  High turnover at vol/mcap 0.22 backs the move with real volume, not a thin float.
+  Both 24h (+16.3%) and 7d (+19.9%) clear the +5% threshold by a wide margin.
+  Outpacing BTC and ETH on the 7d. BTC sits at -1.5%, ETH at -2.8%.
+  +16% 24h on a day BTC bounced only +2.1%. Asymmetric strength, not beta.
 
 CATALYST
-  TAG settles its $9m of data-labeling contracts in USD1, the World Liberty Financial stablecoin on BNB Chain.
-  USD1 revenue funds direct TAG buybacks per the August 2025 announcement.
-  USD1 sits at $4.8b mcap inside the top-5 stablecoins. A real revenue rail, not a vapor partnership.
-  AI-data narrative meets the Trump-linked stablecoin meets BNB Chain liquidity. Three threads in one ticker.
-  Price still 29% below the May-4 ATH at $0.00218.
+  Nebius announced a $643m acquisition of Eigen AI, folding the MIT inference team into EigenCloud's Token Factory platform.
+  May 11 rebrand from EigenLayer to EigenCloud reframes the token as compute-platform exposure, not restaking-only.
+  The acquisition pulls EIGEN into the AI/compute leg the rest of the trending list (RAIL, FET, RENDER) already rides.
 
 RISK
-  Parabolic 7d entry on a tape where BTC just lost $75k and breadth printed 3/20 green.
-  $170m mcap on $16m daily volume means the next leg lower lands deep. Likely leverage-fueled, not demand-fueled.
-  USD1 carries Trump-family exposure through World Liberty Financial. A regulatory pivot against the structure unwinds the buyback thesis.
-  BNB Chain name-farm clusters (GDOR, SPCX, GENIUS) active per MEMORY.md. Verify the 0x208bF... BSC contract before any entry.
+  Late-April restaking-sector unlock wave dumped $330m+ across the cohort. The schedule continues into Q2.
+  Restaking still carries security overhang from prior AVS incidents. Sentiment fragile to a fresh slashing event.
+  Tape still risk-off (BTC -4.7% 7d, breadth 3/20 green). A fresh leg down compresses idiosyncratic strength fast.
 
 DEDUP
-  First time in 7 days for TAG.
-  Fourth call of the day. Three earlier picks: BEAT (morning, 9/10), GENIUS (re-run, 9/10), SKYAI (third run, 10/10).
-  18-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT, GENIUS, SKYAI.
+  First time in 7d for EIGEN.
+  19-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT, GENIUS, SKYAI, TAG.
 
 
-Take: TAG carries the only clean +5% price action on the 7d that survived an 18-name dedup gate. The score lands at MEDIUM because turnover thins and trending awareness lags, not because the catalyst is weak. Long small with stop on a daily close below $0.00130 — the 10-day base. Exit if BTC reclaims $76k and TAG fails to lead the bounce. The relative-strength was the thesis.
+Take: a named $643m acquisition catalyst landing on the same day the asset outpaced a BTC bounce by 14 points. Long with stop on a daily close below $0.195 (the prior week's pivot). Size for the restaking unlock overhang. Multi-day position with a trim if BTC fails $76k and the broader tape rolls back.
 
 
 not financial advice — pattern-matching only
