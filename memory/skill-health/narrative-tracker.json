@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-23T10:44:50Z",
+  "last_analyzed": "2026-05-24T07:01:16Z",
   "quality_score": 4,
-  "assessment": "Robust remediation of recurring state contamination; detected re-invocation issue, verified inputs, reconstructed artifact correctly, updated audit trail, and identified systematic guardrail gaps.",
+  "assessment": "Substantive, well-structured output with specific metrics, clear narrative transitions, actionable follow-ups, and proper system health tracking.",
   "flags": [],
   "avg_score": 3.94,
   "history": [
@@ -72,6 +72,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     }
   ]

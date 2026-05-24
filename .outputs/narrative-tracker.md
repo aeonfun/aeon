@@ -1,34 +1,28 @@
-Narratives · 23 May · 7 tracked, 1 NEW
+Narratives · 24 May · 6 tracked
 
 ↑ RISING
-• AI agents [TAO, NEAR, VIRTUAL] · 5/5 · RIDE
-  Agent-related funding climbed from 5% to 36% of crypto-AI total — first quantitative anchor on the narrative.
-  reflexivity: funding ran seven-fold but token caps haven't compounded — alpha or warning that the bid sits upstream of the tradeable layer.
-
-• Decentralized compute [TAO, RENDER, GRASS] · 5/5 · RIDE
-  Thesis broadened beyond GPU into architectural disruptors (Etched, Cerebras, Tenstorrent). NVDA regime test still anchors.
-
-↑ EMERGING
-• AI × memes / programmable communities [no clean vehicle] · 2/5 · NEW · WATCH
-  Single-driver thread on AI-powered memecoins as programmable communities. No token vehicle named. Yesterday's 1-day SocialFi NEW died fast — same caution.
+• Privacy / ZK [ZEC, ALEO, VVV] · 4/5 (was 2) · RIDE w/ trail
+  Galactiator names privacy as one of the two biggest narratives. Aleo + Ledger Private DeFi push from breyonchain. Three distinct drivers after five days absent. ZEC tape cracked -9% yesterday. The narrative revives on top of an already-broken token leader.
+  reflexivity: institutional self-custody (Ledger) plus regulatory legitimization re-anchor the privacy bid. The narrative arrives before token recovery.
 
 → PEAK
-• RWA / tokenization [ONDO, BUIDL, OUSG] · 5/5 · RIDE w/ trail
-  TVL ran $5.5B to $29B between 2025 and early 2026. Japan stablecoin recognition June 1 extends the regulatory loop into a second jurisdiction.
-  reflexivity: regulation legitimizes RWA, RWA growth lobbies regulation. The loop compounds.
+• AI agents / agentic finance [TAO, NEAR, VIRTUAL] · 5/5 · RIDE
+  Ritzxbt names tokenization and AI agents as the two strongest narratives. Toktimescom on agents making independent financial decisions. VC platform wars cover compute, dev tools, agents. Velocity flattens. Extends through sub-threads, no fresh institutional pump.
 
-• Hyperliquid / perp DEX [HYPE, dYdX] · 4/5 (was 3) · RIDE w/ trail
-  First fresh institutional-quality thread in three days. Hyperliquid + Solana account for ~53% of on-chain revenue. BHYP ETF and SpaceX perps stack holds.
-  reflexivity: revenue dominance pulls capital, capital compounds revenue. Smart money cutting long ratio into day four keeps it trail, not full RIDE.
+• Decentralized compute [TAO, RENDER, GRASS] · 5/5 · RIDE
+  The_vc_intern on the agentic AI compute battle — Nvidia Vera positioning, dev tools, distribution. Confirms institutional bid as sub-thread extension, not fresh headline. NVDA regime anchor holds.
+
+• RWA / tokenization [ONDO, BUIDL, OUSG] · 5/5 · RIDE w/ trail
+  Ritzxbt names tokenization alongside AI agents as one of the two strongest threads. KMCrypton cites the a16z/Dixon new fund pivoting to adoption + infrastructure — institutional endorsement of the real-utility thesis. Japan stablecoin recognition June 1 still ahead.
 
 ↓ FADING
-• BTCFi / Bitcoin-native yield [BABY] · 3/5 (was 4) · WATCH
-  48h token catalyst from 05-22 did not land. Bitcoin threads pivoted to price/floor macro, not BTCFi yield infrastructure. Babylon still the only named project.
+• Hyperliquid / perp DEX [HYPE] · 3/5 (was 4) · FADE
+  Only one peripheral mention today (FEzejideaku1, "trading/liquidity attention around HYPE"). Yesterday's promotion off the Okada 53%-of-revenue thread did not sustain a second day. Smart money exit into day five.
 
-• Privacy / ZK [ZEC, ZANO] · 2/5 · FADE
-  Fifth straight day absent from drivers. No project-side catalyst, no fresh ZEC bid.
+• BTCFi / Bitcoin-native yield [BABY] · 2/5 (was 3) · FADE
+  Second straight day absent from drivers. The 48h token catalyst trigger never landed. Bitcoin attention holds on macro price/floor rather than yield infrastructure.
 
 Changes since yesterday:
-+ AI × memes / programmable communities (NEW)
+- AI × memes / programmable communities (DEAD)
 
-Stance: ride AI agents and decentralized compute through the next leg — quantitative anchor plus thesis broadening. Trail Hyperliquid. Fresh thread reverses yesterday's FADE but smart money still exiting into day four.
+Stance: front-run Privacy/ZK on the narrative revival before token recovery. Ride AI/DePIN through the flat. Peak is not exit. Fade Hyperliquid back to position size.
