@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-24T07:00:50Z",
-  "quality_score": 4,
-  "assessment": "Well-executed skill with substantive analysis, specific metrics, proper API validation, and clear integration into downstream workflows; dedup logic working as designed.",
+  "last_analyzed": "2026-05-24T17:15:12Z",
+  "quality_score": 5,
+  "assessment": "Excellent — substantive market analysis with specific metrics, deduped winners/losers, risk tagging, directional flip tracking, transparent filtering, source attribution, and actionable follow-up angles for downstream skills.",
   "flags": [],
-  "avg_score": 4.11,
+  "avg_score": 4.16,
   "history": [
     {
       "date": "2026-05-18",
@@ -77,6 +77,10 @@
     {
       "date": "2026-05-24",
       "score": 4
+    },
+    {
+      "date": "2026-05-24",
+      "score": 5
     }
   ]
 }

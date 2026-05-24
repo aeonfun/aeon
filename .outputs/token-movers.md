@@ -1,37 +1,37 @@
 # Token Movers — 2026-05-24
 
-Broad green snap-back — 89/100 top coins green at median +2.5%, BTC +2.1% / ETH +3.2% / SOL +2.4%, yesterday's L1/DeFi/privacy red flips green inside 24h.
+Snapback fades into a grind — 75/100 top coins green at median +1.3%, BTC +1.6% / ETH +2.1% / SOL +1.8%, breadth halved from morning's 89/100 with majors still carrying the lift.
 
 ## Top Winners (24h)
-1. RAIL (Railgun) — $3.340  +41.4% / 7d +126.5% / 1h -1.2%  •  $6M / #197  [PUMP-RISK][TRENDING+UP]
-2. EIGEN (EigenCloud) — $0.2299  +16.2% / 7d +19.8% / 1h -0.3%  •  $37M / #209
-3. ONDO (Ondo) — $0.4361  +14.0% / 7d +25.8% / 1h +2.6%  •  $418M / #46
-4. HYPE (Hyperliquid) — $61.72  +12.3% / 7d +45.0% / 1h +0.7%  •  $931M / #11  [TRENDING+UP][MAJOR]
-5. CFG (Centrifuge) — $0.3012  +11.8% / 7d +14.5% / 1h +1.9%  •  $21M / #207
+1. RAIL (Railgun) — $4.180  +66.4% / 7d +173.6% / 1h -1.4%  •  $10M / #178  [PUMP-RISK][TRENDING+UP]
+2. UB (Unicorn Ultra) — $0.1667  +26.9% / 7d +8.5% / 1h +2.5%  •  $26M / #119
+3. VVV (Venice Token) — $20.04  +12.8% / 7d +40.9% / 1h -1.3%  •  $107M / #76  [TRENDING+UP]
+4. LIT (Lighter) — $1.330  +12.2% / 7d +53.6% / 1h -1.6%  •  $68M / #135  [TRENDING+UP]
+5. ZEC (Zcash) — $676.59  +12.1% / 7d +31.4% / 1h +2.4%  •  $790M / #12  [MAJOR]
+6. GRASS (Grass) — $0.5148  +12.1% / 7d +71.1% / 1h +0.3%  •  $65M / #147  [TRENDING+UP]
+7. MORPHO (Morpho) — $2.260  +11.5% / 7d +27.9% / 1h +1.0%  •  $18M / #57
+8. DEXE (DeXe) — $15.32  +11.3% / 7d +14.6% / 1h +2.4%  •  $26M / #86
 
 ## Top Losers (24h)
-1. LAB (LAB) — $4.260  -7.0% / 7d -14.9% / 1h -1.5%  •  $24M / #140
-2. BTSE (BTSE Token) — $1.034  -6.1% / 7d -7.1% / 1h -0.5%  •  $4M / #211
-3. CHZ (Chiliz) — $0.0377  -5.9% / 7d -22.4% / 1h -0.3%  •  $126M / #123
-4. RIVER (River) — $6.590  -5.7% / 7d -12.4% / 1h -0.8%  •  $8M / #247
-5. B (BUILDon) — $0.2430  -5.6% / 7d -38.5% / 1h +0.7%  •  $10M / #174
-6. TAG (TAGGER) — $0.001457  -3.7% / 7d +27.4% / 1h +1.8%  •  $9M / #218
-7. NEX (Nexus) — $0.000004  -2.4% / 7d — / 1h +0.9%  •  $27M / #166
-8. BCH (Bitcoin Cash) — $353.26  -2.3% / 7d -15.0% / 1h +0.5%  •  $413M / #17  [MAJOR]
-9. AB (AB) — $0.001377  -1.8% / 7d -4.5% / 1h +0.1%  •  $3M / #241
-10. BSV (Bitcoin SV) — $14.62  -1.6% / 7d -6.6% / 1h +0.3%  •  $5M / #152
+1. BEAT (Audiera) — $1.220  -9.5% / 7d +86.7% / 1h +6.1%  •  $55M / #141
+2. BSB (Block Street) — $1.094  -8.3% / 7d +91.4% / 1h -3.9%  •  $78M / #175
+3. FLUID (Fluid) — $1.650  -3.5% / 7d +1.1% / 1h -0.4%  •  $3M / #248
+4. CHEEMS (Cheems) — $0.000001  -3.5% / 7d +14.9% / 1h +0.2%  •  $2M / #231
+5. TIA (Celestia) — $0.4138  -3.3% / 7d +6.1% / 1h -0.6%  •  $42M / #126
+6. LUNC (Terra Classic) — $0.000080  -3.2% / 7d -1.7% / 1h 0.0%  •  $22M / #115
+7. GRT (The Graph) — $0.0260  -3.0% / 7d +2.4% / 1h -0.4%  •  $15M / #159
 
 ## Trending
-1. Railgun (RAIL) — #197, $3.334, 24h +41.3%  [PUMP-RISK][TRENDING+UP]
-2. Grass (GRASS) — #149, $0.5212, 24h +26.9%  [TRENDING+UP][BREAKOUT]
-3. Hyperliquid (HYPE) — #11, $61.54, 24h +11.9%  [TRENDING+UP][MAJOR]
-4. NEAR Protocol (NEAR) — #35, $2.355, 24h +13.9%  [TRENDING+UP][BREAKOUT]
-5. Pudgy Penguins (PENGU) — #96, $0.009073, 24h +3.5%  [TRENDING+UP]
-6. Zcash (ZEC) — #13, $633.75, 24h +6.9%  [TRENDING+UP][MAJOR]
-7. Bitcoin (BTC) — #1, $76,695, 24h +1.8%  [TRENDING+UP][MAJOR]
+1. Hyperliquid (HYPE) — #11, $63.46, 24h +10.2%  [TRENDING+UP][MAJOR]
+2. NEAR Protocol (NEAR) — #34, $2.427, 24h +2.3%  [TRENDING+UP]
+3. Venice Token (VVV) — #76, $19.96, 24h +12.5%  [TRENDING+UP]
+4. Pudgy Penguins (PENGU) — #96, $0.009025, 24h +0.3%  [TRENDING+UP]
+5. Octra (OCT) — #467, $0.0881, 24h +53.5%  [PUMP-RISK][TRENDING+UP]
+6. Railgun (RAIL) — #178, $4.169, 24h +66.4%  [PUMP-RISK][TRENDING+UP]
+7. Grass (GRASS) — #147, $0.5148, 24h +12.6%  [TRENDING+UP]
 
 ## Notable
-- RAIL [PUMP-RISK][TRENDING+UP] +41.4% at rank #197 on $6M vol with 7d +126.5% — sub-top-150 cap on a 2.3x-in-a-week run, PUMP-RISK gates it even as the privacy/ZK rotation reasserts.
-- HYPE [TRENDING+UP][MAJOR] +12.3% at rank #11 on $931M vol with 7d +45% — cleanest major-cap rotation print on the board, structurally distinct from the microcap chasers above it.
-- ZEC flips from yesterday's [TRENDING+DOWN][MAJOR] −9.2% to today's [TRENDING+UP][MAJOR] +7.4% on $797M vol. The multi-day privacy/ZK bid that cracked yesterday reasserts in one session. RAIL prints on the same rotation map.
-- DePIN/AI continuation context: GRASS +25.4% [TRENDING+UP][BREAKOUT] and NEAR +15.7% [TRENDING+UP][BREAKOUT] repeat the 05-22 prints same-direction and dropped from the winners list, but both extend the sector ride that anchored that day. GENIUS +19.7% [BREAKOUT] holds day-3 on the bsc name-farm cluster.
+- RAIL [PUMP-RISK][TRENDING+UP] +66.4% at rank #178 on $10M vol with 7d +173.6% — magnitude essentially doubled from morning's +41.4%, the 2.7x-in-a-week run on a sub-top-150 cap warrants the manipulation gate even with the privacy/ZK bid still alive.
+- OCT [PUMP-RISK][TRENDING+UP] surfaces on trending at rank #467 with +53.5% 24h — far outside investable universe but attention is on it, classic name-farm/pump signature on the trending list.
+- BEAT and BSB reverse — yesterday's two headline winners (BEAT 05-23 token-call HIGH at +58% 24h, BSB 05-23 morning [PUMP-RISK][BREAKOUT] at +35.8%) both flipped into the losers list at -9.5% and -8.3% with 7d still +86.7% / +91.4%; profit-taking at the top of multi-day microcap pumps.
+- ZEC holds +12.1% [MAJOR] but dropped off the trending list (was #6 this morning, now outside top 15) — price held the privacy/ZK bid but the attention component faded inside 8 hours.
