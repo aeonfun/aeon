@@ -1,8 +1,8 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-23T11:17:26Z",
+  "last_analyzed": "2026-05-24T07:24:00Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured position brief with specific metrics, invalidation levels, and clear bias statement—domain-appropriate and actionable.",
+  "assessment": "Substantive, well-structured crypto derivatives analysis with specific metrics, clear trade decisions, and technical reasoning; no flags detected.",
   "flags": [],
   "avg_score": 4.05,
   "history": [
@@ -80,6 +80,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     }
   ]

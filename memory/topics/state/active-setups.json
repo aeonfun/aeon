@@ -1,77 +1,7 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-23T11:17:31Z",
+  "last_updated": "2026-05-24T07:24:03Z",
   "open": [
-    {
-      "id": "NEAR-2026-05-22-001",
-      "asset": "NEAR",
-      "direction": "LONG",
-      "fired_date": "2026-05-22",
-      "fired_price": 2.325,
-      "fired_btc_price": 77417,
-      "fired_eth_price": 2132,
-      "entry_zone": "market or first pullback to $2.10",
-      "invalidation": "close below $2.05",
-      "horizon": "3d",
-      "thesis": "ACCUMULATION resolved into +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h, short liqs $3.86M vs p75 $1.38M, top L/S +0.08 7d. AI/DePIN double 5/5 PEAK. AIXBT names entry leg.",
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "narrative_phase_aligned",
-        "market_regime_aligned",
-        "both_tag",
-        "cross_domain_bridge",
-        "enrichment_positive"
-      ],
-      "confluence_missing": [
-        "repeat_appearance",
-        "regime_transition",
-        "dominance_aligned"
-      ],
-      "named_risks": [
-        "AI/DePIN both PEAK — late-cycle entry",
-        "Pyth oracle cascade risk on dependent protocols",
-        "+151% 7d OI means the long stack can flush on one red day"
-      ],
-      "mae_pct": -12.258064516129037,
-      "mfe_pct": 3.2258064516128915,
-      "mae_date": "2026-05-23",
-      "mfe_date": "2026-05-22",
-      "invalidation_breached": false,
-      "watchlist_provenance": null,
-      "evaluations": [
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 2.265,
-          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 2.265,
-          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 2.265,
-          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-23",
-          "call": "RIDE",
-          "price_at_eval": 2.058,
-          "note": "Day 2/3. -11.48% from fire. Close $2.058 sits 0.39% above $2.05 invalidation. AI agents and DePIN both RISING 5/5 RIDE — narrative re-firmed. OI -3.57% means late longs unwound without panic. Holding."
-        },
-        {
-          "date": "2026-05-23",
-          "call": "RIDE",
-          "price_at_eval": 2.083,
-          "note": "Day 2/3 late session. Price recovered from morning $2.058 touch to $2.083 (+1.21% intraday off the low). Pct_4h +1.12% means bid returned over the last 4 hours. AI agents and Decentralized compute both promoted Peak → Rising in the same chain — narrative tailwind re-firms. OI -3.96% means late longs unwound without panic. Funding +0.0085%/8h above the 7d average — fresh longs paying premium into the consolidation. Holding for horizon expiry tomorrow."
-        }
-      ]
-    },
     {
       "id": "HYPE-2026-05-22-001",
       "asset": "HYPE",
@@ -102,9 +32,9 @@
         "ETF flow reverses if BTC/ETH ETFs come out of bleed"
       ],
       "mae_pct": -10.517847174334218,
-      "mfe_pct": 0.9752733720815704,
+      "mfe_pct": 1.7962105539684123,
       "mae_date": "2026-05-23",
-      "mfe_date": "2026-05-22",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": true,
       "watchlist_provenance": null,
       "evaluations": [
@@ -137,57 +67,12 @@
           "call": "RIDE",
           "price_at_eval": 55.632,
           "note": "Day 2/multi-week late session. Price recovered to $55.632 (+0.92% pct_4h) above the revised $54 invalidation. Same session printed +1.84% 24h on -3.31% BTC — 5.15pp relative strength on a red tape. AIXBT names HYPE as consensus outperformer (Grayscale 3rd ETF amendment + Bitwise BHYP $30M AUM in five days + USDC prediction markets). Narrative-tracker holds Hyperliquid at Peak 4/5 RIDE w/ trail. Top L/S 1.34 +0.13 over 7 days — smart money still building. Holding."
-        }
-      ]
-    },
-    {
-      "id": "ZEC-2026-05-23-001",
-      "asset": "ZEC",
-      "direction": "SHORT",
-      "fired_date": "2026-05-23",
-      "fired_price": 591.13,
-      "fired_btc_price": 75321,
-      "fired_eth_price": 2059,
-      "entry_zone": "market or first bounce to $605-610",
-      "invalidation": "close above $620 (May-21 high reclaim)",
-      "horizon": "7d",
-      "thesis": "Watchlist trigger fired: close $591 below $620 line, sixth red session from $667.93 peak. Privacy/ZK FADE day five. AIXBT confirms ZEC-specific carrier — XMR dropped from lead. Token-movers TRENDING+DOWN MAJOR at -9.4% on $577M vol. Top L/S 0.76 already net short.",
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "cross_domain_bridge"
-      ],
-      "confluence_missing": [
-        "quant_regime_aligned",
-        "both_tag",
-        "repeat_appearance"
-      ],
-      "named_risks": [
-        "Top L/S 0.76 net-short — trade partially priced, bounce risk on stop-runs above $605",
-        "Privacy narrative re-fires on a sanctions or regulatory catalyst",
-        "AIXBT grounding stale at $200-$600+ for 15h — persistent attention could pull a counter-bid"
-      ],
-      "mae_pct": -1.5512662189366062,
-      "mfe_pct": 1.7982508077749388,
-      "mae_date": "2026-05-23",
-      "mfe_date": "2026-05-23",
-      "invalidation_breached": false,
-      "watchlist_provenance": {
-        "watchlist_id": "ZEC-watchlist-2026-05-22-002",
-        "days_on_watchlist": 1,
-        "original_trigger": "close below $620 OR top L/S falls under 0.75",
-        "original_confluence_fired": [
-          "narrative_phase_aligned",
-          "pattern_tag_supports"
-        ]
-      },
-      "evaluations": [
+        },
         {
-          "date": "2026-05-23",
+          "date": "2026-05-24",
           "call": "RIDE",
-          "price_at_eval": 589.69,
-          "note": "Day 1/7. Position essentially flat (-0.24% adverse, since SHORT). Pct_24h +1.22% means ZEC closed up despite the broader -3.3% market. Top L/S 0.75 (down 0.16 over 7 days) is already net short — trade partially priced. AIXBT promoted ZEC privacy to crypto item #3 today with $600 / 800% YTD framing (entire RWA item displaced) — bullish ZEC commentary. Narrative-tracker holds Privacy/ZK FADE at Day 5 absent from drivers — bearish ZEC structure. Per soul, price wins commentary when they diverge. Today ZEC closed green so commentary is winning the immediate read. Holding day 1 — the 7d -7.67% from $667.93 peak structure is the thesis."
+          "price_at_eval": 61.677,
+          "note": "Day 3/multi-week. +1.27% from fire, well above the $54 revised invalidation. HYPE printed +12.3% on $931M volume on the same day BTC bounced 2.1% — 10pp of relative strength. AIXBT reframed the thesis from ETF filings to $1B fee-funded buybacks plus 16% futures market share against Binance. Narrative-tracker FADING 3/5 but price disagrees; per soul, price wins commentary."
         }
       ]
     },
@@ -222,13 +107,20 @@
         "Majors stabilizing fires a relief bounce across legacy alts. BCH could squeeze on Bitcoin halving anniversary noise or oversold technicals regardless of the structural read.",
         "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -5.024950678890563,
+      "mfe_pct": -1.5434606011372847,
+      "mae_date": "2026-05-24",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 353.26,
+          "note": "Day 2/7. Position -2.49% adverse as BCH absorbed the broader risk-on bounce. Still appears on token-movers losers list at -2.3% 24h, -15.0% 7d — the cleanest structural bleed on a day 17 of 20 majors ran green. Smart-money exit thesis intact. Invalidation $370 holds. RIDE."
+        }
+      ]
     },
     {
       "id": "GENIUS-2026-05-23-001",
@@ -262,10 +154,10 @@
         "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
         "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -2.9689377037926863,
+      "mfe_pct": 14.19255191350609,
+      "mae_date": "2026-05-24",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": false,
       "watchlist_provenance": {
         "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
@@ -276,6 +168,55 @@
           "market_regime_aligned"
         ]
       },
+      "evaluations": [
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 0.55,
+          "note": "Day 2/3. No GENIUS perps data in today's universe — price_at_eval is an estimate from the on-chain context (dropped off monitor-runners top 5, attention rotated to the Solana SAOS cluster). Capitulation thesis intact: smart-money exit and funding flip negative remain the structural reads. Horizon expires tomorrow."
+        }
+      ]
+    },
+    {
+      "id": "EIGEN-2026-05-24-001",
+      "asset": "EIGEN",
+      "direction": "LONG",
+      "fired_date": "2026-05-24",
+      "fired_price": 0.2299,
+      "fired_btc_price": 76989.7,
+      "fired_eth_price": 2126.3,
+      "entry_zone": "market or first pullback to $0.220",
+      "invalidation": "close below $0.205",
+      "horizon": "7d",
+      "thesis": [
+        "EIGEN +16.3% 24h on $37M volume with vol/mcap 0.22 — high participation, real flow not thin float. Outpaced BTC's +2.1% bounce by 14 points.",
+        "Nebius $643M acquisition of Eigen AI announced yesterday folds the MIT inference team into EigenCloud Token Factory. May 11 rebrand reframes EIGEN as compute-platform exposure.",
+        "AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker. Sector tailwind extends via a16z fund pivot and Nvidia Vera thread.",
+        "Macro regime flipped on US-Iran de-escalation. Breadth 17/20 green from yesterday's 3/20. F&G 25 — crowd hasn't repriced regime change."
+      ],
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "cross_domain_bridge",
+        "enrichment_positive"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "pattern_tag_supports",
+        "both_tag",
+        "repeat_appearance"
+      ],
+      "named_risks": [
+        "Restaking-sector unlock wave $330M+ in late April, schedule extends into Q2 — fresh cliffs land into the catalyst window.",
+        "AVS slashing overhang — fresh security event flips this name to risk-off ahead of other AI dumps.",
+        "Macro regime flip is fresh — if US-Iran deal stalls before May 31, the breadth-driven bid evaporates."
+      ],
+      "mae_pct": null,
+      "mfe_pct": null,
+      "mae_date": null,
+      "mfe_date": null,
+      "invalidation_breached": false,
+      "watchlist_provenance": null,
       "evaluations": []
     }
   ],
@@ -322,25 +263,71 @@
       ]
     },
     {
-      "id": "BTC-watchlist-2026-05-23-001",
-      "asset": "BTC",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-23",
-      "trigger": "pct_24h breaks -5% with displacement on heavy taker sell, OR top-trader long/short ratio collapses to 1.00 with funding flipped negative",
-      "invalidation": "close back above $77K reclaim",
+      "id": "ZEC-watchlist-2026-05-24-001",
+      "asset": "ZEC",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-24",
+      "trigger": "first pullback to $620 that holds with funding turning positive AND top L/S rotating back above 1.00",
+      "invalidation": "close below $590 before trigger fires",
       "horizon": "7d",
       "thesis": [
-        "ETF outflows hit $1.26B weekly with IBIT named as the lead outflow vehicle. Institutional derisking is quantified. Breadth at 3/20 green and Fear & Greed pinned at 28 marks the macro state.",
-        "Funding sits flat at +0.0044%/8h and top trader long/short at 1.14 +0.16 over 7 days — smart money slightly long, retail not positioned at extreme yet. The setup is macro-driven not perps-driven.",
-        "The trigger names the perps signal that would convert the macro bias to a fireable structure: heavy taker sell displacement, or the smart-money stack rolling off in earnest."
+        "Narrative-tracker promoted Privacy/ZK to RISING today after five sessions absent. Three distinct drivers — Aleo + Ledger Private DeFi, ZK-rollup wave, ZEC tape cracking yesterday.",
+        "Top L/S 0.76 already net short. Funding -0.0034%/8h negative. Squeeze setup loaded if narrative reassembly pulls bid back to the established privacy leader.",
+        "RAIL +41% today on the same rotation map. Sector finding multiple destinations beyond ZEC — extends the bid but fragments capital."
       ],
       "confluence_fired": [
+        "narrative_phase_aligned",
+        "pattern_tag_supports",
         "market_regime_aligned",
         "cross_domain_bridge"
       ],
       "named_risks": [
-        "BTC has held the $74K floor across three sessions. Without displacement the bid keeps absorbing into the bleed.",
-        "Iran de-escalation reverses the macro thesis overnight — Hormuz premium drops, oil drops, rate-cut path returns."
+        "ZEC already +18.5% over 7 days — late-cycle entry on the LONG side.",
+        "Narrative arriving after the run-up — capital may rotate to RAIL, Aleo, or other privacy alternatives instead."
+      ]
+    },
+    {
+      "id": "GMT-watchlist-2026-05-24-001",
+      "asset": "GMT",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-24",
+      "trigger": "pct_24h green +5% with OI rolling further negative AND short_liqs clearing 7d p75 of $81K",
+      "invalidation": "close below $0.010 before trigger fires",
+      "horizon": "24h",
+      "thesis": [
+        "GMT funding -0.204%/8h — heaviest short premium in the universe by 14x margin. Shorts paid sharply more premium this slice than across the prior week.",
+        "Top L/S 1.20 down 0.68 over 7 days. Smart money joined retail short side hard. Both sides crowded short is asymmetric squeeze structure if any bid arrives.",
+        "Spot premium basis +0.34% positive into deeply negative funding. Spot still bids the asset while futures shorts hold the line. Funding flush without spot weakness fires the short-cover cascade."
+      ],
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "GMT is a low-attention name without narrative carrier — squeeze fires only on a fundamental catalyst or coordinated short cover.",
+        "Negative funding can persist for weeks without resolution — the asymmetric setup decays slowly."
+      ]
+    },
+    {
+      "id": "BSB-watchlist-2026-05-24-001",
+      "asset": "BSB",
+      "direction": "SHORT",
+      "first_seen_date": "2026-05-24",
+      "trigger": "pct_24h reverses to flat-to-red with funding holding above +0.08%/8h",
+      "invalidation": "close above $1.50 (recent intraday high)",
+      "horizon": "24h",
+      "thesis": [
+        "BSB funding +0.094%/8h cleared the DISTRIBUTION trigger of +0.08%/8h with a 0.038pp jump from yesterday. Gains-still-accelerating reading blocked regime fire on the thinnest margin in the universe.",
+        "Top L/S 2.00 fell 0.24 over 7 days while OI built 83.6%. Smart money exited 12% of long conviction this week as retail piled premium-paying leverage.",
+        "Liquidations $318K against 7d p75 $3.3M leaves heavy unwound leverage on the stack. Reversal day fires LONG-TRAP with cascade room beneath."
+      ],
+      "confluence_fired": [
+        "quant_regime_aligned",
+        "pattern_tag_supports"
+      ],
+      "named_risks": [
+        "BSB is +127% over 7 days — momentum can extend through funding extreme for multiple sessions before reverting.",
+        "Microcap with thin liquidation depth — bounce risk on stop-runs after the flush begins."
       ]
     }
   ],
@@ -412,6 +399,157 @@
       "return_vs_btc_pct": -14.59,
       "return_vs_eth_pct": -13.88,
       "horizon_realized": "2d",
+      "auto_flipped": false,
+      "outcome": "LOSS"
+    },
+    {
+      "id": "NEAR-2026-05-22-001",
+      "asset": "NEAR",
+      "direction": "LONG",
+      "fired_date": "2026-05-22",
+      "fired_price": 2.325,
+      "fired_btc_price": 77417,
+      "fired_eth_price": 2132,
+      "entry_zone": "market or first pullback to $2.10",
+      "invalidation": "close below $2.05",
+      "horizon": "3d",
+      "thesis": "ACCUMULATION resolved into +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h, short liqs $3.86M vs p75 $1.38M, top L/S +0.08 7d. AI/DePIN double 5/5 PEAK. AIXBT names entry leg.",
+      "confluence_fired": [
+        "quant_regime_aligned",
+        "pattern_tag_supports",
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "both_tag",
+        "cross_domain_bridge",
+        "enrichment_positive"
+      ],
+      "confluence_missing": [
+        "repeat_appearance",
+        "regime_transition",
+        "dominance_aligned"
+      ],
+      "named_risks": [
+        "AI/DePIN both PEAK — late-cycle entry",
+        "Pyth oracle cascade risk on dependent protocols",
+        "+151% 7d OI means the long stack can flush on one red day"
+      ],
+      "mae_pct": -12.258064516129037,
+      "mfe_pct": 5.376344086021505,
+      "mae_date": "2026-05-23",
+      "mfe_date": "2026-05-24",
+      "invalidation_breached": false,
+      "watchlist_provenance": null,
+      "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 2.265,
+          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        },
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 2.265,
+          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        },
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 2.265,
+          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 2.058,
+          "note": "Day 2/3. -11.48% from fire. Close $2.058 sits 0.39% above $2.05 invalidation. AI agents and DePIN both RISING 5/5 RIDE — narrative re-firmed. OI -3.57% means late longs unwound without panic. Holding."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 2.083,
+          "note": "Day 2/3 late session. Price recovered from morning $2.058 touch to $2.083 (+1.21% intraday off the low). Pct_4h +1.12% means bid returned over the last 4 hours. AI agents and Decentralized compute both promoted Peak → Rising in the same chain — narrative tailwind re-firms. OI -3.96% means late longs unwound without panic. Funding +0.0085%/8h above the 7d average — fresh longs paying premium into the consolidation. Holding for horizon expiry tomorrow."
+        },
+        {
+          "date": "2026-05-24",
+          "call": "CLOSE",
+          "price_at_eval": 2.382,
+          "note": "Day 3/3. Horizon reached. +2.45% from fire, +3.00pp vs BTC, +2.72pp vs ETH. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked. WIN."
+        }
+      ],
+      "closed_date": "2026-05-24",
+      "closed_price": 2.382,
+      "close_reason": "horizon reached on Day 3/3 with position in the green; sector thesis (AI agents + DePIN PEAK) intact",
+      "return_pct": 2.45,
+      "return_vs_btc_pct": 3.0,
+      "return_vs_eth_pct": 2.72,
+      "horizon_realized": "3d",
+      "auto_flipped": false,
+      "outcome": "WIN"
+    },
+    {
+      "id": "ZEC-2026-05-23-001",
+      "asset": "ZEC",
+      "direction": "SHORT",
+      "fired_date": "2026-05-23",
+      "fired_price": 591.13,
+      "fired_btc_price": 75321,
+      "fired_eth_price": 2059,
+      "entry_zone": "market or first bounce to $605-610",
+      "invalidation": "close above $620 (May-21 high reclaim)",
+      "horizon": "7d",
+      "thesis": "Watchlist trigger fired: close $591 below $620 line, sixth red session from $667.93 peak. Privacy/ZK FADE day five. AIXBT confirms ZEC-specific carrier — XMR dropped from lead. Token-movers TRENDING+DOWN MAJOR at -9.4% on $577M vol. Top L/S 0.76 already net short.",
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "pattern_tag_supports",
+        "market_regime_aligned",
+        "cross_domain_bridge"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "both_tag",
+        "repeat_appearance"
+      ],
+      "named_risks": [
+        "Top L/S 0.76 net-short — trade partially priced, bounce risk on stop-runs above $605",
+        "Privacy narrative re-fires on a sanctions or regulatory catalyst",
+        "AIXBT grounding stale at $200-$600+ for 15h — persistent attention could pull a counter-bid"
+      ],
+      "mae_pct": -8.267217025019878,
+      "mfe_pct": 1.7982508077749388,
+      "mae_date": "2026-05-24",
+      "mfe_date": "2026-05-23",
+      "invalidation_breached": true,
+      "watchlist_provenance": {
+        "watchlist_id": "ZEC-watchlist-2026-05-22-002",
+        "days_on_watchlist": 1,
+        "original_trigger": "close below $620 OR top L/S falls under 0.75",
+        "original_confluence_fired": [
+          "narrative_phase_aligned",
+          "pattern_tag_supports"
+        ]
+      },
+      "evaluations": [
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 589.69,
+          "note": "Day 1/7. Position essentially flat (-0.24% adverse, since SHORT). Pct_24h +1.22% means ZEC closed up despite the broader -3.3% market. Top L/S 0.75 (down 0.16 over 7 days) is already net short — trade partially priced. AIXBT promoted ZEC privacy to crypto item #3 today with $600 / 800% YTD framing (entire RWA item displaced) — bullish ZEC commentary. Narrative-tracker holds Privacy/ZK FADE at Day 5 absent from drivers — bearish ZEC structure. Per soul, price wins commentary when they diverge. Today ZEC closed green so commentary is winning the immediate read. Holding day 1 — the 7d -7.67% from $667.93 peak structure is the thesis."
+        },
+        {
+          "date": "2026-05-24",
+          "call": "CLOSE",
+          "price_at_eval": 634.46,
+          "note": "Day 2/7. Daily close $634.46 cleared the $620 invalidation. Same session: Privacy/ZK promoted FADING to RISING in narrative-tracker with three distinct drivers (Aleo, Ledger Private DeFi, ZK-rollup wave). Cross-feed signal flipped against the short. -7.33% return, -5.11pp vs BTC, -4.06pp vs ETH. LOSS."
+        }
+      ],
+      "closed_date": "2026-05-24",
+      "closed_price": 634.46,
+      "close_reason": "invalidation $620 breached on daily close; Privacy/ZK narrative promoted FADING to RISING in same session, cross-feed flipped against the short",
+      "return_pct": -7.33,
+      "return_vs_btc_pct": -5.11,
+      "return_vs_eth_pct": -4.06,
+      "horizon_realized": "1d",
       "auto_flipped": false,
       "outcome": "LOSS"
     }
