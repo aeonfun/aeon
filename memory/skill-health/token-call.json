@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-24T07:01:30Z",
-  "quality_score": 4,
-  "assessment": "Substantive token analysis with quantified metrics, named catalyst (Nebius $643m acquisition), and clear risk disclosure. Proper file creation and memory logging. Operational issues: temp files left in repo, duplicate notification sent.",
+  "last_analyzed": "2026-05-24T17:14:24Z",
+  "quality_score": 5,
+  "assessment": "Substantive crypto pick with multi-driver narrative analysis, risk management rules, specific targets, and proper sourcing.",
   "flags": [],
-  "avg_score": 4.21,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-18",
@@ -81,6 +81,10 @@
     {
       "date": "2026-05-24",
       "score": 4
+    },
+    {
+      "date": "2026-05-24",
+      "score": 5
     }
   ]
 }

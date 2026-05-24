@@ -1,34 +1,37 @@
 Daily Token Call · 24 May
 ──────────────────────────
 
-EIGEN · HIGH · 9/10
-$0.230 · +16.3% 24h · +19.9% 7d
-mcap $168m · vol $37m · vol/mcap 0.22
+RAIL · HIGH · 8/10
+$4.18 · +66.4% 24h · +173.6% 7d
+mcap $240m · vol $10m · vol/mcap 0.04
 
 
 SIGNALS
-  Top score out of the 250-coin scan after a 19-name dedup gate.
-  High turnover at vol/mcap 0.22 backs the move with real volume, not a thin float.
-  Both 24h (+16.3%) and 7d (+19.9%) clear the +5% threshold by a wide margin.
-  Outpacing BTC and ETH on the 7d. BTC sits at -1.5%, ETH at -2.8%.
-  +16% 24h on a day BTC bounced only +2.1%. Asymmetric strength, not beta.
+  Top score out of the 250-coin scan after a 20-name dedup gate.
+  Both 24h (+66.4%) and 7d (+173.6%) clear +5% by a multiple, not a margin.
+  Outpacing BTC and ETH on the 7d by 175 and 177 points. BTC sits at -1.8%, ETH at -3.8%.
+  On the CoinGecko trending list alongside HYPE, NEAR, VVV.
+  Vol/mcap 0.04. Turnover sits thin relative to cap, so the move lacks the depth its magnitude suggests.
 
 CATALYST
-  Nebius announced a $643m acquisition of Eigen AI, folding the MIT inference team into EigenCloud's Token Factory platform.
-  May 11 rebrand from EigenLayer to EigenCloud reframes the token as compute-platform exposure, not restaking-only.
-  The acquisition pulls EIGEN into the AI/compute leg the rest of the trending list (RAIL, FET, RENDER) already rides.
+  Privacy/ZK narrative promoted Fading → Rising in today's narrative-tracker map, ending a five-day driver drought.
+  Aleo + Ledger Private DeFi institutional self-custody push lands the same week. Railgun sits inside that thesis as the named privacy DeFi rail.
+  US Treasury report formally recognized crypto mixers' legitimate financial-privacy use, proposing a compliant custodial mixer framework over blanket bans.
+  ZEC flipped TRENDING-DOWN to TRENDING-UP in one token-movers session today. Sector-wide privacy bid reasserts in real time.
+  Protocol TVL $92m, $4.7m revenue on $2b+ shielded volume — real usage backing the move.
 
 RISK
-  Late-April restaking-sector unlock wave dumped $330m+ across the cohort. The schedule continues into Q2.
-  Restaking still carries security overhang from prior AVS incidents. Sentiment fragile to a fresh slashing event.
-  Tape still risk-off (BTC -4.7% 7d, breadth 3/20 green). A fresh leg down compresses idiosyncratic strength fast.
+  Up 173% in 7d already. Most of the move is done. Late-cycle entry on a parabolic.
+  Sub-top-150 cap at $240m on $10m vol. Token-movers tagged this [PUMP-RISK] this morning.
+  Narrative-tracker called the position RIDE w/ trail. The honest read: narrative arrived before token recovery. The bid is either alpha or exit liquidity for the previous ZEC holders.
+  42.5M tokens still to issue against 57.5M circulating. Future emission overhang at 74% of current float.
 
 DEDUP
-  First time in 7d for EIGEN.
-  19-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT, GENIUS, SKYAI, TAG.
+  First time in 7d for RAIL.
+  20-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT, GENIUS, SKYAI, TAG, EIGEN.
 
 
-Take: a named $643m acquisition catalyst landing on the same day the asset outpaced a BTC bounce by 14 points. Long with stop on a daily close below $0.195 (the prior week's pivot). Size for the restaking unlock overhang. Multi-day position with a trim if BTC fails $76k and the broader tape rolls back.
+Take: privacy/ZK turned Rising today and RAIL printed the highest score in the scan. Three drivers carry the catalyst: regulatory tailwind, Ledger integration, sector revival. The +173% 7d at sub-top-150 cap is the [PUMP-RISK] tradeoff. Long with stop on a close below $3.30, which gives back half of today's breakout candle. Size half. If a second driver wave lands tomorrow, the $5.66 ATH from November is the draw. If drivers fade back to a single thread, exit fast.
 
 
 not financial advice — pattern-matching only
