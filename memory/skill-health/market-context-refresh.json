@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-24T07:01:59Z",
+  "last_analyzed": "2026-05-24T17:19:54Z",
   "quality_score": 4,
-  "assessment": "substantive market analysis with specific data points, multi-angle assessment (price, breadth, geopolitical, sentiment), clear regime call, well-documented outputs",
+  "assessment": "Substantive, well-quantified market analysis with specific regime update, proper file/memory integration, and actionable downstream implications",
   "flags": [],
   "avg_score": 4.11,
   "history": [
@@ -72,6 +72,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     },
     {
