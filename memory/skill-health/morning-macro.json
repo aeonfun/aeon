@@ -1,9 +1,11 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-23T11:24:49Z",
+  "last_analyzed": "2026-05-24T07:31:06Z",
   "quality_score": 4,
-  "assessment": "Substantive cross-domain market synthesis with specific signals; well-structured and actionable despite sandbox workaround",
-  "flags": [],
+  "assessment": "Substantive brief with specific market data, clear thesis, and actionable recommendations; strong synthesis of geopolitical and sentiment signals; proper execution and documentation.",
+  "flags": [
+    "data_verification_needed"
+  ],
   "avg_score": 4.06,
   "history": [
     {
@@ -72,6 +74,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     }
   ]
