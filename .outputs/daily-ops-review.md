@@ -1,24 +1,24 @@
-Ops Review · 24 May · n/a
+Ops Review · 24 May · n/a · afternoon chain
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ market-context-refresh · risk-on medium conviction, BTC $76,934 +2.14%, breadth 17/20 green 24h (sharpest one-day reversal on record from 3/20), F&G 25 Extreme Fear day 2, Iran airspace closure resolved NO (39.3% → 13.1%) with peace deal by May 31 at 36.5% YES (+20pp)
-  ✓ aixbt-pulse · 06:00 UTC pull with 8 new items, geopolitical frame flipped Hormuz escalation → US-Iran deal progress, HYPE reframed to $1B+ fee-funded buybacks + 16% futures share vs Binance, 19th consecutive 2-section pull (macro/geo fold into TradFi)
-  ✓ narrative-tracker · 6 tracked + 0 NEW, Privacy/ZK PROMOTED Fading → Rising (mindshare 2 → 4 after five-day driver drought), Hyperliquid DEMOTED Peak → Fading (one-day re-promotion broke), AI agents + Decentralized compute DEMOTED Rising → Peak, BTCFi WATCH → FADE, AI × memes DEAD (1-day NEW → DEAD)
-  ✓ perps-scan · QUIET, 25/25 NEUTRAL on 06:56Z prefetch, 1 transition (BSB MOMENTUM → NEUTRAL — funding ripped past +0.07 cap to +0.0943%/8h while gains-accelerating blocks DISTRIBUTION by 0.17pp), 6 WATCH (BSB IN GMT EDEN BEAT HYPE)
-  ✓ monitor-runners · SPECULATIVE, 5 BREAKOUT all on solana, brand-new SAOS name-farm cluster day 1 (5 distinct contracts under same ticker, top at +5492% on $40m vol / $292k liq), SPCX cluster persists at lower intensity, GENIUS + GDOR clusters silent
-  ✓ token-movers · 89/100 green, median +2.5%, BTC +2.1% / ETH +3.2% / SOL +2.4%, RAIL +41.4% [PUMP-RISK][TRENDING+UP] / EIGEN +16.2% / HYPE +12.3% [TRENDING+UP][MAJOR], ZEC flips [TRENDING+DOWN] → [TRENDING+UP] in one session
-  ✓ token-call · EIGEN · HIGH 9/10 (Nebius $643M acquisition of Eigen AI, EigenCloud Token Factory rebrand, AI/compute sector leg)
+  ✓ market-context-refresh · rotation medium conviction, BTC $76,619 (slipped from morning's $76,934), breadth holds 18/20 green 24h with bid concentrating in HYPE +9.5% and ZEC +11.9%, F&G 25 day 3, Iran peace deal 36.5% → 29.5% YES (-7pp) and Hormuz normalization 12.3% → 3.7% YES (effectively priced NO)
+  ✓ aixbt-pulse · 17:00Z pull with 6 NEW items, 20th consecutive 2-section read (macro+geo fold into TradFi), four cross-domain bridges generated (Iran deal bifurcation, HYPE fundamentals → ATH momentum reframe, Vitalik EF post elevates privacy from technical to values trade, Base DeFi Summer reflexivity)
+  ✓ narrative-tracker · 6 tracked + 0 NEW, Privacy/ZK PROMOTED Fading → Rising (3 direct drivers + 1 adjacent, ends 5-session driver drought), AI agents + Decentralized compute DEMOTED Rising → Peak, Hyperliquid DEMOTED Peak → Fading, BTCFi WATCH → FADE per 05-23 plan, AI × memes DEAD (1-day NEW → DEAD). Chain step fired 17:07Z; scheduled cron fired again at 17:09Z on identical cache — second run preserved artifact mtime and skipped notify dedup, flagged for aeon.yml double-trigger investigation
+  ✓ perps-scan · QUIET, 25/25 NEUTRAL on 17:10Z prefetch (second consecutive QUIET read today), morning BSB structural funding gap unwound (+0.094%/8h → +0.004%/8h, -0.09pp reset), HYPE funding flipped -0.0201%/8h on +7.76% green day with OI +17.86% 24h (fresh SHORT-SQUEEZE coil forming under existing long), watch bucket rewired to HYPE EDEN UB GENIUS ZEC BSB
+  ✓ monitor-runners · SPECULATIVE, top 5 all BREAKOUT on solana+bsc, ★ GENIUS bsc reactivated as 5th distinct contract inside 72h (crosses cluster threshold, warrants dedicated topic file), SAOS sol cluster expanded from 5 contracts this morning to 6 in survivor set, real deep-liq skipped top 5 for fifth straight session
+  ✓ token-movers · 75/100 green at median +1.3%, BTC +1.6% / ETH +2.1% / SOL +1.8%, breadth halved from morning's 89/100, RAIL +66.4% [PUMP-RISK][TRENDING+UP] (magnitude doubled from morning's +41.4%), yesterday's headline winners BEAT and BSB flipped into losers list -9.5% and -8.3%
+  ✓ token-call · RAIL · HIGH · 8/10 ($4.18, +66.4% 24h, +173.6% 7d, mcap $240M, vol/mcap 0.04, three drivers carry the privacy/ZK catalyst — regulatory tailwind, Aleo+Ledger integration, sector revival)
 
 ─────────  STEP 2 — BRIEFS  ─────────
 
-  ✓ perps-brief · 5 current positions (NEAR LONG CLOSE WIN +2.45%, HYPE LONG RIDE day 3, ZEC SHORT CLOSE LOSS -7.33%, BCH SHORT RIDE day 2, GENIUS SHORT RIDE day 2), 1 NEW POSITION (EIGEN LONG 7d), 5 WATCHLIST (TAO LONG day 3, EDEN SHORT day 2, ZEC LONG day 1, GMT LONG day 1, BSB SHORT day 1)
+  ✓ perps-brief · 4 current positions (HYPE LONG RIDE +3.9% day 4, BCH SHORT RIDE -1.5% day 3, GENIUS SHORT CLOSE LOSS -24.1% on $0.68 invalidation breach, EIGEN LONG RIDE +0.0% day 1), 4 WATCHLIST (TAO LONG day 3, ZEC LONG day 1, GMT LONG day 1, RAIL LONG day 1 — added on token-call HIGH + privacy promotion), morning-brief estimate for GENIUS at $0.55 missed actual perps print at $0.7232 (correction issued)
 
 ─────────  STEP 3 — MACRO  ─────────
 
-  ✓ morning-macro · published 1451 chars, cautiously risk-on with regime flip on US-Iran de-escalation
+  ✓ morning-macro · published afternoon refresh, "rotation tightens" tagline, cautiously RIDE through HYPE and privacy trio with macro tape no longer one-way
 
 
 Chain ran complete. 9 ✓, 0 ⚠, 0 ✗.
 
-No new issues filed. Open count holds at 2. ISS-006 (monitor-runners artifact overwrite, day 5). ISS-007 (fork cron throttle, day 4).
+No new issues filed. Open count holds at 2. ISS-006 (monitor-runners artifact overwrite, day 5 — afternoon artifact clean, signal format intact). ISS-007 (fork cron throttle, day 4). Narrative-tracker double-invocation (chain step 17:07Z + scheduled cron 17:09Z) worth a watch — both runs clean, no ISS opened, but if pattern recurs an aeon.yml schedule audit is warranted.
