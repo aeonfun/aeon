@@ -1,30 +1,37 @@
-# Token Movers — 2026-05-23
+# Token Movers — 2026-05-24
 
-Red tape deepens at the majors while the middle floor lifts: 8/100 top-100 green at median −3.8% (vs −4.5% earlier), BTC −3.3% / ETH −4.4% / SOL −5.4% with majors carrying 7d losses of −4.7% / −7.5% / −6.0%.
+Broad green snap-back — 89/100 top coins green at median +2.5%, BTC +2.1% / ETH +3.2% / SOL +2.4%, yesterday's L1/DeFi/privacy red flips green inside 24h.
 
 ## Top Winners (24h)
-1. BSB (Block Street) — $1.33  +50.5% / 7d +255.7% / 1h +8.4%  •  $165.0M / #138  [BREAKOUT]
-2. BEAT (Audiera) — $1.38  +42.8% / 7d +121.8% / 1h +12.5%  •  $97.3M / #129  [BREAKOUT]
+1. RAIL (Railgun) — $3.340  +41.4% / 7d +126.5% / 1h -1.2%  •  $6M / #197  [PUMP-RISK][TRENDING+UP]
+2. EIGEN (EigenCloud) — $0.2299  +16.2% / 7d +19.8% / 1h -0.3%  •  $37M / #209
+3. ONDO (Ondo) — $0.4361  +14.0% / 7d +25.8% / 1h +2.6%  •  $418M / #46
+4. HYPE (Hyperliquid) — $61.72  +12.3% / 7d +45.0% / 1h +0.7%  •  $931M / #11  [TRENDING+UP][MAJOR]
+5. CFG (Centrifuge) — $0.3012  +11.8% / 7d +14.5% / 1h +1.9%  •  $21M / #207
 
 ## Top Losers (24h)
-1. PENGU (Pudgy Penguins) — $0.008596  −11.3% / 7d +1.1% / 1h +0.5%  •  $177.2M / #98  [TRENDING+DOWN][CAPITULATION]
-2. FF (Falcon Finance) — $0.0801  −11.2% / 7d −9.4% / 1h −0.2%  •  $17.4M / #195
-3. STRK (Starknet) — $0.0393  −10.9% / 7d −7.3% / 1h +0.6%  •  $24.4M / #168
-4. WAL (Walrus) — $0.0613  −10.8% / 7d −14.3% / 1h −0.0%  •  $7.5M / #226
-5. XPL (Plasma) — $0.0797  −10.6% / 7d −6.2% / 1h +0.2%  •  $66.3M / #185  [CAPITULATION]
-6. ENA (Ethena) — $0.0960  −10.2% / 7d −9.7% / 1h −0.2%  •  $101.9M / #77
+1. LAB (LAB) — $4.260  -7.0% / 7d -14.9% / 1h -1.5%  •  $24M / #140
+2. BTSE (BTSE Token) — $1.034  -6.1% / 7d -7.1% / 1h -0.5%  •  $4M / #211
+3. CHZ (Chiliz) — $0.0377  -5.9% / 7d -22.4% / 1h -0.3%  •  $126M / #123
+4. RIVER (River) — $6.590  -5.7% / 7d -12.4% / 1h -0.8%  •  $8M / #247
+5. B (BUILDon) — $0.2430  -5.6% / 7d -38.5% / 1h +0.7%  •  $10M / #174
+6. TAG (TAGGER) — $0.001457  -3.7% / 7d +27.4% / 1h +1.8%  •  $9M / #218
+7. NEX (Nexus) — $0.000004  -2.4% / 7d — / 1h +0.9%  •  $27M / #166
+8. BCH (Bitcoin Cash) — $353.26  -2.3% / 7d -15.0% / 1h +0.5%  •  $413M / #17  [MAJOR]
+9. AB (AB) — $0.001377  -1.8% / 7d -4.5% / 1h +0.1%  •  $3M / #241
+10. BSV (Bitcoin SV) — $14.62  -1.6% / 7d -6.6% / 1h +0.3%  •  $5M / #152
 
 ## Trending
-1. Undeads Games (UDS) — #196, $1.50, 24h −0.0%
-2. NEAR Protocol (NEAR) — #37, $2.09, 24h −7.1%
-3. Hyperliquid (HYPE) — #11, $55.67, 24h −6.3%  [MAJOR]
-4. Solana (SOL) — #7, $82.25, 24h −5.4%  [MAJOR]
-5. Sui (SUI) — #26, $1.005, 24h −9.0%
-6. Pudgy Penguins (PENGU) — #98, $0.008596, 24h −11.3%  [TRENDING+DOWN][CAPITULATION]
-7. Zcash (ZEC) — #13, $588.02, 24h −7.7%  [MAJOR]
+1. Railgun (RAIL) — #197, $3.334, 24h +41.3%  [PUMP-RISK][TRENDING+UP]
+2. Grass (GRASS) — #149, $0.5212, 24h +26.9%  [TRENDING+UP][BREAKOUT]
+3. Hyperliquid (HYPE) — #11, $61.54, 24h +11.9%  [TRENDING+UP][MAJOR]
+4. NEAR Protocol (NEAR) — #35, $2.355, 24h +13.9%  [TRENDING+UP][BREAKOUT]
+5. Pudgy Penguins (PENGU) — #96, $0.009073, 24h +3.5%  [TRENDING+UP]
+6. Zcash (ZEC) — #13, $633.75, 24h +6.9%  [TRENDING+UP][MAJOR]
+7. Bitcoin (BTC) — #1, $76,695, 24h +1.8%  [TRENDING+UP][MAJOR]
 
 ## Notable
-- BSB [BREAKOUT] accelerates to +50.5% across four intra-day reads (morning +35.8% / mid +41.7% / afternoon +50.5%) and 7d compounds to +256%. Rank lifted from #163 to #138, retiring the PUMP-RISK tag carried earlier today. The open question is whether the move absorbs organic demand or prints distribution-stage volume.
-- BEAT [BREAKOUT] day-3 push to +42.8% / 7d +122%. Yesterday's token-call HIGH 9/10 vehicle. Today's perps-brief opened SHORT on the same name — long-trap shape per perps positioning. Cross-feed disagreement holds.
-- PENGU [TRENDING+DOWN][CAPITULATION] deepens to −11.3% on $177M vol against $539M cap (vol/mcap 0.33). Yesterday's token-call HIGH 10/10 vehicle collapsed inside 24 hours and now joins the day's heaviest distribution print.
-- BTC and ETH dropped off the trending list since this morning. SOL replaces them at #4 — search rotation from the BTC/ETH pair toward the deepest-bleeding L1 of the day.
+- RAIL [PUMP-RISK][TRENDING+UP] +41.4% at rank #197 on $6M vol with 7d +126.5% — sub-top-150 cap on a 2.3x-in-a-week run, PUMP-RISK gates it even as the privacy/ZK rotation reasserts.
+- HYPE [TRENDING+UP][MAJOR] +12.3% at rank #11 on $931M vol with 7d +45% — cleanest major-cap rotation print on the board, structurally distinct from the microcap chasers above it.
+- ZEC flips from yesterday's [TRENDING+DOWN][MAJOR] −9.2% to today's [TRENDING+UP][MAJOR] +7.4% on $797M vol. The multi-day privacy/ZK bid that cracked yesterday reasserts in one session. RAIL prints on the same rotation map.
+- DePIN/AI continuation context: GRASS +25.4% [TRENDING+UP][BREAKOUT] and NEAR +15.7% [TRENDING+UP][BREAKOUT] repeat the 05-22 prints same-direction and dropped from the winners list, but both extend the sector ride that anchored that day. GENIUS +19.7% [BREAKOUT] holds day-3 on the bsc name-farm cluster.

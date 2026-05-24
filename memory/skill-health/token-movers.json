@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-23T10:47:31Z",
+  "last_analyzed": "2026-05-24T07:00:50Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific numerical data, methodical deduplication strategy, and actionable trading signals across 201 analyzed tokens.",
+  "assessment": "Well-executed skill with substantive analysis, specific metrics, proper API validation, and clear integration into downstream workflows; dedup logic working as designed.",
   "flags": [],
-  "avg_score": 4.12,
+  "avg_score": 4.11,
   "history": [
     {
       "date": "2026-05-18",
@@ -72,6 +72,10 @@
     },
     {
       "date": "2026-05-23",
+      "score": 4
+    },
+    {
+      "date": "2026-05-24",
       "score": 4
     }
   ]
