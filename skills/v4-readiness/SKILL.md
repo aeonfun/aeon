@@ -33,7 +33,13 @@ Reads:
 - `skills.json` — total skill count, category breakdown, per-skill metadata; used as the catalog fingerprint to detect drift from upstream.
 - `memory/MEMORY.md` — Skills Built table (custom skills with no upstream equivalent get the most attention from the readiness check).
 - `skills/*/SKILL.md` (frontmatter only) — confirms which custom skills are actually present on disk, not just remembered in MEMORY.md.
+- `.github/workflows/chain-runner.yml` — chain runner workflow; presence + step shape feed the `chains:` Review row. Optional input.
+- `.outputs/*.md` (directory listing only) — confirms whether the fork has run any chained skills; informs the chain runner Review row. Optional input.
+- `mcp-server/src/index.ts` — MCP server tool-naming Review row scans for the `aeon-${skill_slug}` convention. Optional input (forks without MCP omit this directory).
+- `dashboard/lib/catalog.ts` — json-render catalog shape Review row scans for catalog entry signatures. Optional input (forks without the dashboard omit this directory).
 - The **embedded v4 change manifest** in this file (§Manifest below). This is the source of truth for what counts as Safe / Review / Removed / Renamed.
+
+Every file beyond the first four is **optional**: if it is absent (fork doesn't ship that component), the corresponding Review row is recorded as `unscanned` rather than silently skipped, and the run exits `V4_READINESS_PARTIAL` with the unscanned row count surfaced in the article and notification. This keeps the audit honest — see Issue #184 H1: previously the Review table named files outside the read set, so the audit could not actually detect usage of those patterns and undercounted Review items.
 
 Writes:
 - `articles/v4-readiness-${today}.md` — the full per-fork readiness report.
@@ -92,6 +98,17 @@ For each custom skill, we list:
 
 (Empty until v4 is announced. The operator's job — and the maintainer's job upstream — is to populate this row by row as the v4 PRs land. Each row should have a one-line migration recipe so the readiness report can convert it directly into an action item.)
 
+*Last audited: 2026-05-24* — cross-referenced against current `aeon.yml`, recent merged-PR titles for `feat!` / `fix!` / `BREAKING` markers since the skill landed (PR #160, 2026-05-07), and `.github/workflows/` for retired hook names. No verified upstream removals were found, so the table stays empty by design (`Action` verdict remains unreachable until v4 PRs actually land). Re-audit on the next manifest edit using the method described under §Audit method below.
+
+#### Audit method (how to re-verify before populating)
+
+1. `gh pr list -R aaronjmars/aeon --state merged --search "feat!" --limit 50 --json number,title,body,mergedAt` — scan titles + bodies for the breaking-change marker.
+2. `gh pr list -R aaronjmars/aeon --state merged --search "fix!" --limit 50 --json number,title,body,mergedAt` — same for breaking fixes.
+3. `gh pr list -R aaronjmars/aeon --state merged --search "BREAKING" --limit 30 --json number,title,body,mergedAt` — catches PR bodies with `BREAKING CHANGE:` footers that don't use the `!` marker.
+4. `git log --oneline --grep="^feat!\|^fix!\|BREAKING" -- aeon.yml` — local-history fallback for breaking changes to the agent config specifically.
+5. Diff the current `aeon.yml` skills/keys against an older snapshot to surface keys present in v3 history but absent today; anything missing-but-not-explained becomes a candidate row.
+6. Each new Removed row must have a one-line migration recipe so the readiness report can convert it directly into an action item.
+
 ## Steps
 
 ### 1. Parse var
@@ -109,14 +126,23 @@ mkdir -p articles
 
 Read each input. Any missing input is non-fatal — log `V4_READINESS_MISSING_INPUT: <name>` and proceed without it. The skill never invents content for missing inputs.
 
-| Input | Local | Remote (`MODE=remote`) |
-|-------|-------|------------------------|
-| `aeon.yml` | direct read | `gh api repos/${TARGET}/contents/aeon.yml --jq .content \| base64 -d` |
-| `skills.json` | direct read | same pattern |
-| `memory/MEMORY.md` | direct read | same pattern |
-| Custom skills | `ls skills/` minus skills present in `skills.json` install rows | `gh api repos/${TARGET}/contents/skills` JSON |
+| Input | Local | Remote (`MODE=remote`) | Required? |
+|-------|-------|------------------------|-----------|
+| `aeon.yml` | direct read | `gh api repos/${TARGET}/contents/aeon.yml --jq .content \| base64 -d` | required |
+| `skills.json` | direct read | same pattern | required |
+| `memory/MEMORY.md` | direct read | same pattern | required |
+| Custom skills | `ls skills/` minus skills present in `skills.json` install rows | `gh api repos/${TARGET}/contents/skills` JSON | required |
+| `.github/workflows/chain-runner.yml` | direct read | `gh api repos/${TARGET}/contents/.github/workflows/chain-runner.yml ...` | optional |
+| `.outputs/` (listing only — file names suffice) | `ls .outputs/ 2>/dev/null` | `gh api repos/${TARGET}/contents/.outputs` | optional |
+| `mcp-server/src/index.ts` | direct read | `gh api repos/${TARGET}/contents/mcp-server/src/index.ts ...` | optional |
+| `dashboard/lib/catalog.ts` | direct read | `gh api repos/${TARGET}/contents/dashboard/lib/catalog.ts ...` | optional |
 
 If `aeon.yml` is unreadable, log `V4_READINESS_NO_CONFIG` and exit with no notification (the fork is not initialized; nothing to check).
+
+For each **optional** input that is unreadable (404 in remote mode, missing on disk in local mode), log `V4_READINESS_MISSING_INPUT: <path>` and tag every Review row whose `Where it lives` cell references that path as `unscanned`. Unscanned rows still appear in the article so the operator sees the coverage gap; they just don't escalate to Review hits. If any Review row is `unscanned`, the run finishes `V4_READINESS_PARTIAL` (see Exit taxonomy).
+
+<!-- Issue #184 H1 audit, 2026-05-24: every file named in a Review row's `Where it lives` cell must also appear in this Inputs table. If you add a new Review row, add its file here too (or mark the Review row as inferred-from-${input}). Re-verify on each Manifest edit. -->
+
 
 ### 3. Compute the enabled-skill snapshot
 
@@ -132,7 +158,7 @@ Ignore commented entries. Capture `chains:`, `reactive:`, `gateway:`, `channels:
 
 For each row in the **Safe** table: scan the fork's inputs for the pattern. If found, record under `safe[]` with the file/line where it was matched. If absent, do not flag — Safe means "if you use it, it stays working," not "you must use it."
 
-For each row in the **Review** table: scan the fork's inputs for the pattern. If the fork uses it, record under `review[]` with the matched location and the manifest's "what might change" note. The presence of a Review row is what the operator should manually inspect before merging v4.
+For each row in the **Review** table: scan the fork's inputs for the pattern. If the row's `Where it lives` file is in the Inputs table (Step 2) AND that input read succeeded, record under `review[]` with the matched location and the manifest's "what might change" note. If the row's file was logged `V4_READINESS_MISSING_INPUT` in Step 2, record the row under `review_unscanned[]` instead — the operator sees "we could not check this row on this fork" rather than a false-negative absence. The presence of a Review row is what the operator should manually inspect before merging v4; the presence of an unscanned row is what the operator should investigate as a coverage gap (per Issue #184 H1).
 
 For each custom-skill candidate: confirm it exists on disk (`skills/${name}/SKILL.md`) and is **not** present in the upstream-fingerprint heuristic (skills with `install: ./add-skill aaronjmars/aeon ${name}` in this fork's `skills.json` are upstream; everything else is custom). Cross-reference custom skills against the Review patterns — a custom skill that uses `chains:` consume is the highest-priority audit candidate.
 
@@ -180,6 +206,14 @@ Patterns this fork uses that v4 may change. Inspect each one before merging the 
 |---------|-------|--------------------|--------|
 | ${pattern} | ${file_or_line} | ${manifest_note} | ${tag} |
 
+## Review — unscanned (${review_unscanned_count})
+
+Manifest rows whose backing file was missing on this fork. Coverage gap, not a clean bill — the operator should confirm manually whether the pattern is in use.
+
+| Pattern | Expected location | Why unscanned |
+|---------|-------------------|---------------|
+| ${pattern} | ${expected_file} | ${V4_READINESS_MISSING_INPUT reason} |
+
 ## Custom (${custom_count})
 
 Skills present on this fork but not in the upstream catalog. The upstream maintainer cannot guarantee their patterns travel into v4.
@@ -225,6 +259,7 @@ Verdict: ${verdict}
 
 - Safe: ${safe_count}
 - Review: ${review_count} (${trivial}/${minor}/${moderate}/${manual} effort split)
+- Review unscanned: ${review_unscanned_count} (coverage gap — manifest row but no backing input)
 - Custom: ${custom_count}
 - Action: ${action_count}
 
@@ -247,13 +282,13 @@ Cap message at ~3500 chars (Telegram safe limit). If exceeded, drop the Custom s
 - **Mode**: ${local|remote|dry-run}
 - **Target**: ${TARGET}
 - **Verdict**: ${READY|REVIEW|ACTION}
-- **Counts**: safe=${N} review=${N} custom=${N} action=${N}
+- **Counts**: safe=${N} review=${N} review_unscanned=${N} custom=${N} action=${N}
 - **Article**: articles/v4-readiness-${today}.md
 - **Notification**: ${sent|skipped — dry-run}
 - **Status**: ${V4_READINESS_OK | V4_READINESS_DRY_RUN | V4_READINESS_NO_CONFIG | V4_READINESS_BAD_VAR | V4_READINESS_PARTIAL}
 ```
 
-`V4_READINESS_PARTIAL` means at least one input was missing (logged in step 2) but the audit still wrote — the operator should sanity-check the affected section.
+`V4_READINESS_PARTIAL` means at least one input was missing (logged in step 2) but the audit still wrote — the operator should sanity-check the affected section. Any Review row that ended up in `review_unscanned[]` is, by itself, sufficient to trip `PARTIAL` — that is the Issue #184 H1 honesty guarantee: the audit never reports "no Review hits" when it could not actually look at the file the row points to.
 
 ## Exit taxonomy
 
