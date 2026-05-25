@@ -1,8 +1,8 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-25T08:18:16Z",
+  "last_analyzed": "2026-05-25T09:28:51Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data, no API errors, well-structured output tracking token movements and signal changes, files properly updated.",
+  "assessment": "Substantive market analysis with proper data ingestion, intelligent deduplication logic, and specific coin narratives; well-structured for downstream consumption.",
   "flags": [],
   "avg_score": 4.14,
   "history": [
@@ -81,6 +81,10 @@
     {
       "date": "2026-05-24",
       "score": 5
+    },
+    {
+      "date": "2026-05-25",
+      "score": 4
     },
     {
       "date": "2026-05-25",
