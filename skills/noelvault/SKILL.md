@@ -8,7 +8,7 @@ tags: [memory, storage, research, persistence]
 
 Noelvault is an external memory backend. Unlike MEMORY.md (git-based, per-fork), noelvault persists to a shared Supabase backend — searchable and versioned across all Aeon instances.
 
-Requires `NOELVAULT_URL` set in environment. Default hosted API: `https://api.noelclaw.com`
+Requires `NOELVAULT_URL` set in environment. Default hosted API: `https://illmpwsqcnwelnwfiikn.supabase.co/functions/v1/vault`
 
 ---
 
@@ -16,7 +16,7 @@ Requires `NOELVAULT_URL` set in environment. Default hosted API: `https://api.no
 
 ### 1. Check environment
 
-If `NOELVAULT_URL` is not set, use `https://api.noelclaw.com` as the base URL.
+If `NOELVAULT_URL` is not set, use `https://illmpwsqcnwelnwfiikn.supabase.co/functions/v1/vault` as the base URL.
 
 ### 2. Determine mode from `${var}`
 
