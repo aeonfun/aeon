@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-25T08:41:24Z",
+  "last_updated": "2026-05-25T09:46:37Z",
   "open": [
     {
       "id": "HYPE-2026-05-22-001",
@@ -32,9 +32,9 @@
         "ETF flow reverses if BTC/ETH ETFs come out of bleed"
       ],
       "mae_pct": -10.517847174334218,
-      "mfe_pct": 4.259022099628938,
+      "mfe_pct": 4.7680031523987845,
       "mae_date": "2026-05-23",
-      "mfe_date": "2026-05-24",
+      "mfe_date": "2026-05-25",
       "invalidation_breached": true,
       "watchlist_provenance": null,
       "evaluations": [
@@ -83,8 +83,9 @@
         {
           "date": "2026-05-25",
           "call": "RIDE",
-          "price_at_eval": 62.586,
-          "note": "Day 4/multi-week. +2.76% from fire, well above the $54 revised invalidation. Narrative-tracker promoted Hyperliquid from Fading 3/5 to Peak 4/5 RIDE w/ trail this session — the FADE call that contradicted price on day 2-3 has now flipped to confirm. AIXBT names HYPE flipping DOGE for 9th largest market cap with SOL flip as the next target. Top L/S 1.36 +0.18 7d; smart money still building. Funding rebuilt to +0.0068%/8h after yesterday's -0.0201% short-squeeze coil unwound on today's flatline. Same-direction signal suppressed (no pyramiding). RIDE."
+          "price_at_eval": 63.81,
+          "note": "Day 4/multi-week evening eval. +4.77% from fire on the evening slice — new MFE for the position, exceeding the prior +4.26% set on day 3. Narrative-tracker confirmed Hyperliquid Peak 4/5 RIDE w/ trail through three calendar-day reads today. AIXBT 09:00Z names HYPE whale battle $104M vs $80M with USDC transfer volume at ATH on Solana — institutional and on-chain liquidity both confirm the bid. Funding +0.0062%/8h sits 0.0238pp under the +0.03 MOMENTUM gate; if it pushes past the gate, the position picks up a fresh regime stamp on tomorrow's slice. Same-direction signal continues to suppress (no pyramiding). RIDE.",
+          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -148,7 +149,8 @@
           "date": "2026-05-25",
           "call": "RIDE",
           "price_at_eval": 345.0,
-          "note": "Day 3/7. BCH absent from the 25-asset perps slice and from token-movers winners/losers/trending — price_at_eval estimated near $345 from market-context-refresh naming BCH as one of five top-20 majors closing red on a +0.89% BTC day. Today's high/low estimates carry similar uncertainty bands. The structural smart-money-exit thesis from fire is intact. Invalidation $370 holds. RIDE."
+          "note": "Day 3/7 evening eval. BCH absent from the 25-asset perps slice (09:20Z re-run) and from token-movers across all three runs today (AM/midday/PM). Price_at_eval estimated near $345 from market-context naming BCH as one of the top-20 majors closing red on a +0.74% BTC day. High/low estimates carry similar uncertainty bands as prior evals today. Structural smart-money-exit thesis intact. Invalidation $370 holds well clear. RIDE.",
+          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -209,7 +211,8 @@
           "date": "2026-05-25",
           "call": "RIDE",
           "price_at_eval": 0.23,
-          "note": "Day 2/7. EIGEN absent from today's perps slice and token-movers — yesterday's +16.3% catalyst pop transitioned into a quiet consolidation. Price_at_eval estimated near fire ($0.2299). AI agents and Decentralized compute both Peak 5/5 RIDE in narrative-tracker — sector tailwind intact. Invalidation $0.205 holds. RIDE."
+          "note": "Day 2/7 evening eval. EIGEN absent from the evening perps slice and from PM token-movers winners/losers/trending. Price_at_eval estimated near morning fire ($0.2299). AI agents and Decentralized compute both hold Peak 5/5 RIDE through the third narrative-tracker read of the day. AKT joined the sector bid this morning, ASTER joined the perp-DEX bid this afternoon — sector confluence sustains across three positions now. Invalidation $0.205 holds. RIDE.",
+          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -263,7 +266,8 @@
           "date": "2026-05-25",
           "call": "RIDE",
           "price_at_eval": 0.9042,
-          "note": "Day 1/7 same-day re-eval. AKT printed +10.0% 24h at $0.9042 in afternoon token-movers — +3.93% from this morning's fire at $0.87. CoinGecko trending hold extended through the midday refresh. Decentralized compute holds Peak 5/5 RIDE. Position green out of the gate. RIDE."
+          "note": "Day 1/7 evening eval. PM token-movers print holds AKT near +11% 24h, in line with the afternoon's +10% read at $0.9042. CoinGecko trending hold extended through three of today's three token-movers runs. Decentralized compute Peak 5/5 RIDE intact. Position green at +3.93% from morning fire. RIDE.",
+          "invalidation_breached_today": false
         }
       ]
     },
@@ -301,13 +305,21 @@
         "Price approaches the $0.78 resistance level that capped the late-April attempt and stands roughly 235% below the $2.41 all-time high. A failed test of $0.78 without volume bleeds back to the $0.65 support before the squeeze fuel reloads.",
         "Hyperliquid is the sector lead. If HYPE breaks structurally (loses the buyback-anchored bid or smart money flips short), the second-derivative ASTER bid follows down through the unwind."
       ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
+      "mae_pct": -0.8795197542929055,
+      "mfe_pct": 0.0,
+      "mae_date": "2026-05-25",
+      "mfe_date": "2026-05-25",
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": []
+      "evaluations": [
+        {
+          "date": "2026-05-25",
+          "call": "RIDE",
+          "price_at_eval": 0.7138,
+          "note": "Day 1/7 evening eval. ASTER printed +1.33% 24h on the 09:20Z perps slice at $0.7138 — -0.35% from the afternoon fire at $0.7163. Funding -0.0058%/8h (shorts paying longs) holds the squeeze setup. Top-trader long/short at 2.89 with -0.82 over 7d means smart money continued the distribution leg into the evening, keeping the trail tight per the original risk callout. Narrative-tracker confirms Hyperliquid Peak 4/5 RIDE w/ trail for the third read today. Invalidation $0.67 holds well clear. RIDE.",
+          "invalidation_breached_today": false
+        }
+      ]
     }
   ],
   "watchlist": [
@@ -404,6 +416,28 @@
         "Cash-and-carry footprint can unwind in either direction on funding normalization, removing the directional asymmetry without firing the squeeze.",
         "Microcap open interest at $26.4M means squeezes can run irrespective of fundamentals on coordinated flow, but liquidity also evaporates fast on a flush.",
         "Solana ecosystem name with no fresh public catalyst. The bid depends on the structural arb desk staying engaged through the funding cycle."
+      ]
+    },
+    {
+      "id": "PLAY-watchlist-2026-05-25-001",
+      "asset": "PLAY",
+      "direction": "SHORT",
+      "first_seen_date": "2026-05-25",
+      "trigger": "funding pushes past +0.08%/8h with pct_24h going flat-to-red, OR pct_24h reverses past -5% with open interest flipping negative",
+      "invalidation": "close above $0.12 before trigger fires",
+      "horizon": "3d",
+      "thesis": [
+        "PLAY ran +60.95% 24h on +1.15% 7d. The entire move happened in the last 24 hours, with funding repricing +0.0973pp over the 7d average to +0.0730%/8h.",
+        "Top-trader long/short ratio at 1.43 sits down 0.51 over 7 days. Smart money cut conviction through the rip while open interest doubled to +47.58% 24h on +85% 7d.",
+        "Volume ratio at 0.81x reads under the prior-week average. The spike happened on thin participation — leverage-fueled pump, not real demand."
+      ],
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "quant_regime_aligned"
+      ],
+      "named_risks": [
+        "Funding cool-off without a price reversal removes the trigger pathway. The pump may simply consolidate without a flush.",
+        "Microcap open interest at $18.7M means squeezes and flushes both run irrespective of fundamentals on coordinated flow."
       ]
     }
   ],
