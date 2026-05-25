@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-25T08:14:22Z",
+  "last_analyzed": "2026-05-25T09:31:35Z",
   "quality_score": 4,
-  "assessment": "Well-handled duplicate verification with specific narrative tracking and pattern identification",
+  "assessment": "Recovered artifact successfully with quality checks; identified recurring upstream issue (ISS-005) requiring severity bump",
   "flags": [],
   "avg_score": 3.95,
   "history": [
@@ -80,6 +80,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     },
     {
