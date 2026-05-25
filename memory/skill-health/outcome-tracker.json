@@ -1,0 +1,16 @@
+{
+  "skill": "outcome-tracker",
+  "last_analyzed": "2026-05-25T09:20:25Z",
+  "quality_score": 4,
+  "assessment": "Well-executed thin skill with substantive output: specific data points, clear delineation of what was deferred to postprocess, transparent about limitations (stale mark-to-market), and actionable next steps documented.",
+  "flags": [
+    "stale_data"
+  ],
+  "avg_score": 4,
+  "history": [
+    {
+      "date": "2026-05-25",
+      "score": 4
+    }
+  ]
+}
