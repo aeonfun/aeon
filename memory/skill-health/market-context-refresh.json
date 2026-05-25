@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-25T08:22:28Z",
-  "quality_score": 5,
-  "assessment": "Excellent market context update with specific narratives, conviction levels, and multi-source data integration; substantive, well-structured, actionable.",
+  "last_analyzed": "2026-05-25T09:33:37Z",
+  "quality_score": 4,
+  "assessment": "Well-executed market refresh with substantive data across multiple sources, proper state tracking, and clean chain-consumable output.",
   "flags": [],
   "avg_score": 4.14,
   "history": [
@@ -89,6 +89,10 @@
     {
       "date": "2026-05-25",
       "score": 5
+    },
+    {
+      "date": "2026-05-25",
+      "score": 4
     }
   ]
 }

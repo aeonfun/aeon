@@ -9,7 +9,7 @@ Take: chop — BTC +0.74% 24h with breadth at 10/20 and DEX vol $4.48B, 22% belo
 - Total mcap $2.66T (+0.35% 24h) · DEX vol $4.48B 24h
 - Breadth: 10/20 green 24h · 12/20 green 7d
 - Fear & Greed: 30 (Fear) — yesterday 25
-- TVL: Ethereum $43.10B · BSC $5.63B · Solana $5.48B (7d chain delta n/a)
+- TVL: n/a (chains endpoint — 7d delta unavailable)
 
 ## What Changed
 Quiet — all majors within ±1%, regime unchanged.
