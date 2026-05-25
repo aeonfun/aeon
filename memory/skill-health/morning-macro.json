@@ -1,8 +1,8 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-24T17:44:51Z",
+  "last_analyzed": "2026-05-25T05:58:26Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data points, self-checked output, and proactive follow-up flagging",
+  "assessment": "Substantive market analysis with specific data points, well-structured execution, proper constraint handling via documented fallback, and complete pipeline (artifact → queue → log); full macro content truncated so can't verify sourcing depth.",
   "flags": [],
   "avg_score": 4.05,
   "history": [
@@ -80,6 +80,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     }
   ]

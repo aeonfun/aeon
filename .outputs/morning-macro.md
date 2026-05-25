@@ -1,26 +1,30 @@
-Market Morning · 24 May · afternoon refresh · rotation tightens
+Market Morning · 25 May · chop, fear lifts
 
-BTC at $76,619, flat after the $77K morning bounce slipped through the day.
-Breadth 18/20 green but the bid concentrates in HYPE +9.5% and ZEC +11.9%.
-F&G pinned at 25 — three sessions of price moving while sentiment stays put.
-Privacy/ZK promoted Fading → Rising. AI/compute holds 5/5 Peak RIDE.
+BTC $77,303, +0.89% with dominance climbing 0.17pp to 58.27%.
+Breadth compressed from 18/20 green to 11/20, DEX volume fell 20% to $4.48B.
+F&G ticked 25 → 30, first day out of Extreme Fear.
 
-Stance: cautiously RIDE the rotation through HYPE and the privacy trio. Macro no longer one-way.
+Perps tape reads QUIET universe-wide for a second straight day.
+Privacy/ZK holds the cleanest RIDE at 5/5, Post-Quantum compounding under it.
+HYPE flipped DOGE for the 9th-largest spot, SOL the next named target.
+
+Stance: ride existing longs, no new majors entries until breadth rebuilds.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Iran deal frame bifurcated. Peace odds slid 36.5% → 29.5%, Hormuz 12.3% → 3.7%.
-Treasury yields hold at 4.56%. Bonds reject the Fed-softening thesis equities priced in.
+Warsh Fed era opens with Treasury markets pricing 2026 rate hikes.
+Iran/Hormuz de-escalation transmits lower energy costs into credit spreads.
+The two pull opposite on the rate path. Crypto's leveraged book feels the bifurcation first.
 
-HYPE narrative reframed from fundamentals to ATH momentum + Derive options — different holding horizon for the same RIDE.
-Vitalik's EF post elevated privacy from technical to values trade. ZEC, RAIL, NEAR inherit.
+Saylor pivoted from BTC accumulation to bonds at the SMA200 rejection.
+Institutional anchor of two cycles softens at the moment spot ETFs were supposed to carry BTC structurally.
 
 
 ─────────  TODAY  ─────────
 
-Action in #perps-brief — correction. Closed GENIUS SHORT for LOSS -24.11% on the fifth bsc name-farm contract.
-Dropped BSB SHORT (funding +0.094% → +0.004%) and EDEN SHORT (flipped to LONG-side squeeze).
-HYPE LONG RIDE on fresh SHORT-SQUEEZE coil (funding -0.02%/8h, OI +17.9% 24h). Added RAIL LONG to watchlist on token-call HIGH + privacy promotion.
+Action lives in #perps-brief. New entry: AKT long on AI-compute continuation. Watchlist holds ZEC, TAO, RAIL as pullback longs and NIL as a distribution short.
+Existing book runs HYPE, BCH, EIGEN, all on RIDE.
+AKT joins EIGEN under Decentralized-compute Peak. ZEC anchors the Privacy/ZK + Post-Quantum cross.
 
-Take: rotation holds the bid, macro tape no longer one way. Front-run HYPE momentum, wait the privacy pullback before chasing ZEC or RAIL.
+Take: ride the AI-compute and privacy theses. No majors entries until perps breadth or volume rebuilds.
