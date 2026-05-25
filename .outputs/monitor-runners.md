@@ -1,25 +1,25 @@
-Yesterday's Runners · 25 May · MIXED (1 DEEP-LIQ cooling, 4 BREAKOUTs on sol + base)
+Yesterday's Runners · 2026-05-25 · MIXED (1 DEEP-LIQ holds the tier, 4 BREAKOUTs with three live hourly reads)
 
 DEEP-LIQ
-• AIC (bsc) +936% 24h
-  $20.3m vol, $1.5m liq, h1 -2.9%, h6 -8.0%, buys 55%, 20h pool
-  → the only deep-liq print on the board arrives already cooling. The bid stepped back hours ago. Reads as exit liquidity, not entry.
+• AIC (bsc) +1081% 24h
+  $23.4m vol, $1.47m liq, h1 +0.3%, h6 -1%, buys 55%, 24h pool
+  → second deep-liq print at score parity in two sessions. The morning print arrived cooling at h1 -2.9%, the afternoon hourly read recovered to flat. The bid stepped back in. Not exit liquidity anymore.
 
 BREAKOUT
-• NOAR (sol) +491% 24h
-  $36.5m vol, $240k liq, h1 +21%, h6 +491%, buys 56%, 2h pool
-  → freshest contract in the top 5, hourly still adding aggressively at +21%. The only live continuation print on today's board.
+• Stake (sol) +735% 24h
+  $6.8m vol, $105k liq, h1 +29%, h6 +9%, buys 55%, 26h pool
+  → the live continuation pick on the board, the hourly tape adds +29% on a thin $105k pad. STAKE cluster carries four distinct sol contracts in today's survivor set, day-1 cluster widens through the afternoon.
+
+★ GENIUS (bsc) +2676% 24h
+  $46.9m vol, $91k liq, h1 +20%, h6 +2676%, buys 53%, 1.6h pool
+  → cluster reactivates on a sixth bsc contract in 72h. Pool 96 minutes old, the full 27x printed inside the prior six hours, the hourly tape adds +20%. The burst-mode signature returns after the morning silence.
 
 ★ GOD (sol) +2112% 24h
-  $39.8m vol, $219k liq, h1 0%, h6 +2112%, buys 58%, 6h pool
-  → full 20x printed inside the prior six hours, hourly flat says the bid quit one hour back. Distribution shape.
+  $39.8m vol, $220k liq, h1 0%, h6 +11%, buys 58%, 10h pool
+  → second straight session in the top 5 on the same contract. The 21x printed earlier today, the hourly went flat hours ago. Distribution shape.
 
-★ SAOS (sol) +9661% 24h
-  $43.1m vol, $337k liq, h1 0%, h6 -1.9%, buys 52%, 13h pool
-  → day-2 cluster confirmation, five distinct SAOS contracts cleared the gate again. Lead pool dormant on the hourly. The cluster pattern carries the signal, individual picks print exit liquidity.
+• NOAR (sol) +537% 24h
+  $47.8m vol, $279k liq, h1 +2%, h6 +537%, buys 52%, 3.3h pool
+  → extends from morning rank 1 on a recycled contract. The hourly cooled from +21% to +2%, the bid quit during the lunch session.
 
-• SpaceX (base) +9756% 24h
-  $12.4m vol, $248k liq, h1 +0.3%, h6 -90%, buys 51%, 12h pool
-  → 24h move printed inside a single bar then collapsed -90% on the six-hour. Round-trip already done.
-
-vibe: SAOS cluster confirms day-2 on solana, the only deep-liq print arrives cooling
+vibe: GENIUS cluster reactivates this afternoon, Stake adds live hourly on day-1, AIC deep-liq holds parity twice in one day
