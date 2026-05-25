@@ -289,7 +289,7 @@ jobs:
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"
 
           # --- AI Gateway routing ---
-          GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider: *//' | tr -d ' "'"'" || echo "direct")
+          GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
           GATEWAY="${GATEWAY:-direct}"
           echo "Gateway: $GATEWAY"
 
