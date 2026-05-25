@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-25T05:29:55Z",
+  "last_analyzed": "2026-05-25T08:18:16Z",
   "quality_score": 4,
-  "assessment": "Comprehensive market analysis with specific token classification, temporal progression, and actionable follow-up; well-sourced (CoinGecko HTTP 200 confirmed), properly structured metadata and audit trail.",
+  "assessment": "Substantive market analysis with specific data, no API errors, well-structured output tracking token movements and signal changes, files properly updated.",
   "flags": [],
-  "avg_score": 4.15,
+  "avg_score": 4.14,
   "history": [
     {
       "date": "2026-05-18",
@@ -81,6 +81,10 @@
     {
       "date": "2026-05-24",
       "score": 5
+    },
+    {
+      "date": "2026-05-25",
+      "score": 4
     },
     {
       "date": "2026-05-25",

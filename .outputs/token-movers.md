@@ -1,36 +1,32 @@
-# Token Movers — 2026-05-25
+# Token Movers — 2026-05-25 (midday refresh)
 
-Mixed grind. 59/100 top coins green at median +0.3%, BTC +0.9% / ETH −0.3% / SOL +0.3%. Breadth softened from yesterday's snap-back as L1 majors split direction and the bid concentrates in mid-cap movers.
+Mixed grind with breadth easing. 54/100 top coins green at median +0.3%, BTC +0.8% / ETH −0.3% / SOL −0.2%. The morning 59-green print slipped to 54 as SOL flipped red, with the bid concentrating further into the +20% mid-cap movers.
 
 ## Top Winners (24h)
-1. DEXE (DeXe) — $17.64  +29.7% / 7d +30.2% / 1h +3.8%  •  $45M / #81  [BREAKOUT]
-2. RAIL (Railgun) — $4.140  +23.5% / 7d +203.1% / 1h −2.7%  •  $8M / #177  [TRENDING+UP][BREAKOUT]
-3. STABLE (Stable) — $0.0395  +16.3% / 7d +7.1% / 1h −0.3%  •  $20M / #78
-4. H (Humanity) — $0.2390  +13.6% / 7d −3.0% / 1h +2.1%  •  $49M / #116
-5. TAG (TAGGER) — $0.001663  +13.3% / 7d +54.1% / 1h +8.5%  •  $5M / #203
-6. XDC (XDC Network) — $0.0334  +7.9% / 7d +5.5% / 1h +1.6%  •  $19M / #89
+1. UB (Unibase) — $0.1799  +25.3% / 7d +22.5% / 1h +4.2%  •  $31M / #115
+2. BILL (Billions Network) — $0.1201  +23.0% / 7d −16.7% / 1h +1.6%  •  $103M / #154  [FADE]
+3. RAIL (Railgun) — $4.040  +11.9% / 7d +200.8% / 1h −0.7%  •  $7M / #179  [TRENDING+UP]
+4. AKT (Akash Network) — $0.9042  +10.0% / 7d +25.3% / 1h +0.4%  •  $24M / #167
 
 ## Top Losers (24h)
-1. BSB (Block Street) — $0.9367  −25.2% / 7d +66.2% / 1h −2.6%  •  $76M / #186  [CAPITULATION]
-2. TRAC (OriginTrail) — $0.4073  −4.9% / 7d +25.8% / 1h +0.6%  •  $5M / #200
-3. 9BIT (The9bit) — $0.0367  −4.8% / 7d +41.5% / 1h −4.3%  •  $9M / #148
-4. GRASS (Grass) — $0.5206  −4.0% / 7d +75.0% / 1h +1.0%  •  $47M / #147
-5. PIEVERSE (Pieverse) — $0.7284  −3.5% / 7d −16.7% / 1h +1.0%  •  $4M / #193
-6. SIREN (Siren) — $0.5038  −3.5% / 7d +0.4% / 1h +0.0%  •  $6M / #128
-7. SYRUP (Maple Finance) — $0.1936  −2.8% / 7d −8.9% / 1h +1.4%  •  $5M / #182
+1. BSB (Block Street) — $0.8856  −34.3% / 7d +40.6% / 1h −2.9%  •  $73M / #191  [CAPITULATION]
+2. BEAT (Audiera) — $1.071  −15.5% / 7d +67.6% / 1h −2.9%  •  $38M / #156
+3. JTO (Jito) — $0.5115  −5.7% / 7d +20.2% / 1h −0.2%  •  $28M / #174
+4. COMP (Compound) — $19.19  −4.7% / 7d −9.5% / 1h −3.9%  •  $26M / #198
+5. GENIUS (Genius) — $0.7051  −3.3% / 7d +55.3% / 1h +0.5%  •  $72M / #176
 
 ## Trending
-1. Pudgy Penguins (PENGU) — #96, $0.009039, 24h −0.1%
-2. Hyperliquid (HYPE) — #11, $62.74, 24h +4.0%  [MAJOR]
-3. NEAR Protocol (NEAR) — #35, $2.387, 24h +0.5%
-4. Railgun (RAIL) — #177, $4.115, 24h +23.5%  [BREAKOUT]
-5. Anoma (XAN) — #652, $0.0135, 24h +44.8%  [PUMP-RISK]
-6. Billions Network (BILL) — #165, $0.1109, 24h +15.8%
-7. Venice Token (VVV) — #79, $18.90, 24h +6.3%
+1. Hyperliquid (HYPE) — #11, $63.47, 24h +2.8%  [MAJOR]
+2. Anoma (XAN) — #637, $0.01394, 24h +50.1%  [PUMP-RISK]
+3. Solana (SOL) — #7, $85.78, 24h −0.2%  [MAJOR]
+4. Pudgy Penguins (PENGU) — #96, $0.009015, 24h −1.3%
+5. NEAR Protocol (NEAR) — #35, $2.390, 24h +0.5%
+6. Railgun (RAIL) — #179, $4.040, 24h +11.9%
+7. Nexus (NEX) — #166, $0.00000454, 24h +0.5%
 
 ## Notable
-- BSB cleared into a clean blow-off. 05-23 morning print of +35.8% [PUMP-RISK][BREAKOUT], 05-24 afternoon flip to −8.3%, today's −25.2% [CAPITULATION] on vol/mcap 0.37 closes the 3-day pump-distribution cycle.
-- RAIL extended 7d magnitude to +203% on $8M vol at rank #177 while 24h decelerated to +23.5%, shedding the [PUMP-RISK] tag yet stacking a third day on the breakout. The privacy/ZK bid holds the higher floor.
-- XAN [PUMP-RISK] entered trending at rank #652 with +44.8% 24h — out-of-investable-universe attention pump.
-- DEXE [BREAKOUT] +29.7% at $45M vol and rank #81 reads structurally cleaner than the microcap moves above it. The only fresh top-100-cap breakout on the board today.
-- GRASS flipped −4.0% loser after two days carrying [TRENDING+UP][BREAKOUT] — DePIN/AI continuation cooling as broader breadth softens.
+- BSB drawdown extended from morning −25.2% to midday −34.3% on vol/mcap 0.37. The distribution leg is deepening, not stabilizing. Day-3 of the pump-distribution cycle keeps printing into capitulation.
+- XAN attention pump escalated from morning +44.8% to +50.1% 24h inside one session, holding PUMP-RISK at rank #637. Third out-of-investable-universe trending entry in three days (RAIL, OCT, now XAN).
+- BILL re-accelerated to +23.0% 24h with 7d holding −16.7%. The FADE tag returned after the morning print stripped it — relief-bounce shape inside a downtrend, the third oscillation in four days.
+- GENIUS direction-flipped from three-day winner to loser at −3.3%. The pump signal paused without yet breaking the +55% 7d gain, the cluster's first red 24h since 05-22.
+- RAIL decelerated to +11.9% and lost BREAKOUT but kept TRENDING+UP. Day-4 of the privacy/ZK bid holding the higher floor on weaker fuel.
