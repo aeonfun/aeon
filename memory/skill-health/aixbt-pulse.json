@@ -1,8 +1,8 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-24T17:13:58Z",
+  "last_analyzed": "2026-05-25T05:28:57Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific bridges identified, clear structure, memory updates logged, actionable insights.",
+  "assessment": "Substantive market intelligence with well-structured analysis and insightful bridge call connecting market signals; lacks explicit sourcing",
   "flags": [],
   "avg_score": 3.95,
   "history": [
@@ -80,6 +80,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     }
   ]
