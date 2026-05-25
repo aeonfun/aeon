@@ -1,24 +1,25 @@
-Yesterday's Runners · 24 May · SPECULATIVE (top 5 all BREAKOUT, fresh GENIUS bsc plus SAOS cluster extending on solana)
+Yesterday's Runners · 25 May · MIXED (1 DEEP-LIQ cooling, 4 BREAKOUTs on sol + base)
+
+DEEP-LIQ
+• AIC (bsc) +936% 24h
+  $20.3m vol, $1.5m liq, h1 -2.9%, h6 -8.0%, buys 55%, 20h pool
+  → the only deep-liq print on the board arrives already cooling. The bid stepped back hours ago. Reads as exit liquidity, not entry.
 
 BREAKOUT
-• Stake (sol) +5958% 24h
-  $4.2m vol, $126k liq, h1 +30%, h6 +288%, buys 56%, 10h pool
-  → only fresh contract still firing hourly, tape adding aggressively into the latest bar
+• NOAR (sol) +491% 24h
+  $36.5m vol, $240k liq, h1 +21%, h6 +491%, buys 56%, 2h pool
+  → freshest contract in the top 5, hourly still adding aggressively at +21%. The only live continuation print on today's board.
 
-★ GENIUS (bsc) +5946% 24h
-  $51m vol, $134k liq, h1 +7.9%, h6 +229%, buys 60%, 6h pool
-  → fifth distinct GENIUS contract on bsc inside 72h, name-farm cluster reactivated after a half-day pause
+★ GOD (sol) +2112% 24h
+  $39.8m vol, $219k liq, h1 0%, h6 +2112%, buys 58%, 6h pool
+  → full 20x printed inside the prior six hours, hourly flat says the bid quit one hour back. Distribution shape.
 
-• Boomerang (sol) +612% 24h
-  $1.6m vol, $47k liq, h1 +60%, h6 +141%, buys 58%, 18h pool
-  → hourly +60% on a $47k pad, reversals land sharp at this depth
+★ SAOS (sol) +9661% 24h
+  $43.1m vol, $337k liq, h1 0%, h6 -1.9%, buys 52%, 13h pool
+  → day-2 cluster confirmation, five distinct SAOS contracts cleared the gate again. Lead pool dormant on the hourly. The cluster pattern carries the signal, individual picks print exit liquidity.
 
-• GOD (sol) +2495% 24h
-  $40m vol, $242k liq, h1 0%, h6 0%, buys 58%, 18h pool
-  → tape flatlined the prior six hours, distribution complete
+• SpaceX (base) +9756% 24h
+  $12.4m vol, $248k liq, h1 +0.3%, h6 -90%, buys 51%, 12h pool
+  → 24h move printed inside a single bar then collapsed -90% on the six-hour. Round-trip already done.
 
-• SAOS (sol) +7992% 24h
-  $39m vol, $322k liq, h1 0%, h6 0%, buys 53%, 23h pool
-  → six distinct SAOS contracts cleared the gate today, cluster expanded from five this morning
-
-vibe: name-farm casino on solana and bsc, real deep liquidity skipped the top 5 for a fifth straight session
+vibe: SAOS cluster confirms day-2 on solana, the only deep-liq print arrives cooling
