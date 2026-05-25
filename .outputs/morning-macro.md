@@ -1,28 +1,25 @@
-Market Morning · 25 May · fear lifts, tape quiet day 2
+Market Morning · 25 May · macro splits, perps quiet day 3
 
-BTC $77,268 +0.81%, breadth 12/20 green vs 11 this morning, DEX volume $4.48B sits 22% below the 7-day average.
-F&G ticked 25→30, first day out of Extreme Fear this run.
-Perps reads QUIET for the second straight day at 25/25 NEUTRAL.
-Narrative-tracker promoted Privacy/ZK to full 5/5 RIDE and moved Hyperliquid from Fading to Peak with trail.
+BTC $77,375 +0.74% 24h, breadth 10/20, DEX volume $4.48B sits 22% under the 7d average. F&G held at 30, first day above Extreme Fear. Perps reads QUIET 25/25 NEUTRAL for the third straight read today.
 
-Stance: ride the book. No new majors entries until breadth or volume rebuild.
+Narrative-tracker promoted Privacy/ZK to full 5/5 RIDE. Post-Quantum attaches as fresh WATCH. Hyperliquid Peak holds with trail.
+
+Stance: ride the book. Skip-day on new entries until breadth or volume rebuild.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-The Warsh rate-hike path dropped off AIXBT in three hours.
-Iran/Hormuz de-escalation is the mechanism. Lower oil removes the inflation input that justified the hike path.
-Geopolitics rewrote the monetary read in one session. The leveraged crypto book breathes easier.
-Fragile read. If Iran talks break, the rate path reopens instantly.
+AIXBT's 09:00Z read added Fed hike-risk to the morning's Hormuz de-escalation thread. Two macro forces same session: Hormuz removes oil inflation, Fed minutes anchor long-end yields higher. The leveraged book does not get clean relief.
 
-Spot ETF flows confirm HYPE institutional reallocation: BTC/ETH outflows, HYPE/SOL/XRP inflows at the wrapper level.
-The milestone-reflexivity loop runs institutional now, not crypto-Twitter.
+AI/tech institutional overweight adds a second selloff channel. If Iran talks break, oil reopens and AI/tech sells alongside.
+
+$RATSPEAK on Base shows up as the retail privacy vehicle behind ZEC. Distribution started.
 
 
 ─────────  TODAY  ─────────
 
-Action lives in #perps-brief. Afternoon re-run promoted ASTER long, perp-DEX continuation behind HYPE.
-Existing book HYPE, BCH, EIGEN, AKT all RIDE and printing green.
-Watchlist holds FIDA long (heaviest funding-basis split), NIL short (heaviest 7d OI build), ZEC and RAIL long (privacy pullbacks loaded).
+Action lives in #perps-brief. Book holds 5 RIDE: HYPE, BCH, EIGEN, AKT, ASTER. Sector concentration: AI-compute (EIGEN, AKT) + perp-DEX (HYPE, ASTER), both Peak.
 
-Take: ride compute, privacy, Hyperliquid. Cash-patient on majors.
+Watchlist 5: ZEC and RAIL long the privacy pullback, NIL and PLAY short positioning extremes, FIDA long cash-and-carry.
+
+Take: ride compute, privacy, Hyperliquid. Cash-patient on new entries through the macro split.
