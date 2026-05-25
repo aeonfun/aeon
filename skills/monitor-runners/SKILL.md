@@ -165,11 +165,15 @@ Compute a session verdict from the tag distribution among the top 5:
 
 From the last 2 days of `memory/logs/`, extract any token names flagged under `## Monitor Runners`. For each of today's top 5, mark **★ repeat** if the token name appears in either prior day's log. Sustained runners across multiple days deserve extra attention.
 
-### 7. Write artifact + notify (v2 locked format)
+### 7. Write artifact (V1 lock 2026-05-25 — was signal, now internal)
 
-This is a **signal** skill under Aeon Market Stack v2. It writes both:
+Under v4.1 V1, this is an **internal** skill. It writes only one output:
+
 1. `.outputs/monitor-runners.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
-2. A Discord-only notification via `./notify --signal "..."` routed to `#runners`.
+
+The Discord notification path was removed at V1 lock. The runners list is now consumed by perps-brief as input but no longer pushed to `#runners` independently. Operator decision: too many Discord channels diluted attention; perps-brief is the consolidation point for actionable trades.
+
+**Do NOT call `./notify`.** Skip step 8 (notify invocation) entirely. The skill log under §9 should still note "Notification: internal-only (V1 lock)".
 
 **Format (used identically for both artifact and notification, under 4000 chars):**
 
@@ -229,11 +233,7 @@ vibe: speculative tape with selective conviction
   ```
   `daily-ops-review` will surface the cause from `memory/issues/`.
 
-**Invocation:**
-```bash
-./notify --signal "$(cat .outputs/monitor-runners.md)"
-```
-The `--signal` flag suppresses Telegram delivery; Discord routing via `DISCORD_WEBHOOK_MAP[monitor-runners]` targets `#runners`.
+**Notify invocation removed at V1 lock.** Do not call `./notify`. The artifact at `.outputs/monitor-runners.md` is the only output; perps-brief picks it up via the chain consume mechanism.
 
 ### 8. Log
 
@@ -251,7 +251,7 @@ Append to `memory/logs/${TODAY}.md`:
 - **Repeat runners (seen in prior 2 days):** [list or "none"]
 - **Gate rejections breakdown:** thin-vol=N, dumping=N, honeypot=N, too-new=N, rug-like=N
 - **Artifact written:** .outputs/monitor-runners.md
-- **Notification sent:** yes|no (reason if no) — via `./notify --signal` to #runners
+- **Notification:** internal-only (V1 lock 2026-05-25 — was #runners signal)
 ```
 
 If a token appears as a runner on **3 days in a row**, flag it in `memory/MEMORY.md` under "Active topics" — sustained multi-day runners are worth a deeper look.

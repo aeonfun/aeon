@@ -133,7 +133,15 @@ def compute_outcome(
 
 
 def apply_evaluations(ledger: dict, evals: list) -> None:
-    """Append per-day evaluations + update MAE/MFE + invalidation_breached."""
+    """Append (or replace) per-day evaluations + update MAE/MFE +
+    invalidation_breached.
+
+    De-duplication: if an evaluation for the same (open_id, date) already
+    exists in entry.evaluations[], REPLACE it with the new one instead of
+    appending. This prevents duplicate-eval bloat from multi-dispatches
+    on the same day (chain re-dispatched 3x today → 3 identical eval
+    rows for each open position without this dedup).
+    """
     today = today_utc()
     for ev in evals:
         oid = ev.get("open_id")
@@ -142,14 +150,28 @@ def apply_evaluations(ledger: dict, evals: list) -> None:
             warn(f"evaluation references unknown open_id '{oid}' — skipping")
             continue
         entry = ledger["open"][idx]
-        entry["evaluations"].append(
-            {
-                "date": ev.get("date", today),
-                "call": ev["call"],
-                "price_at_eval": ev.get("price_at_eval"),
-                "note": ev.get("note", ""),
-            }
-        )
+        eval_date = ev.get("date", today)
+        new_eval = {
+            "date": eval_date,
+            "call": ev["call"],
+            "price_at_eval": ev.get("price_at_eval"),
+            "note": ev.get("note", ""),
+        }
+        # Carry the breach flag onto the eval entry so the SCARE provenance
+        # is preserved per-day (even though the cumulative flag below is
+        # what drives outcome computation).
+        if "invalidation_breached_today" in ev:
+            new_eval["invalidation_breached_today"] = ev["invalidation_breached_today"]
+
+        # De-dup: replace any existing eval for this date
+        replaced = False
+        for i, existing in enumerate(entry["evaluations"]):
+            if existing.get("date") == eval_date:
+                entry["evaluations"][i] = new_eval
+                replaced = True
+                break
+        if not replaced:
+            entry["evaluations"].append(new_eval)
 
         # MAE/MFE update from today's high/low
         todays_high = ev.get("todays_high")

@@ -574,5 +574,11 @@ reset_ledger
 
 echo
 echo "═══════════════════════════════════════════════════════════════════"
+echo "  CONTRACT TEST: SKILL.md JSON example vs render validator"
+echo "═══════════════════════════════════════════════════════════════════"
+python3 scripts/test-skill-schema-contract.py
+
+echo
+echo "═══════════════════════════════════════════════════════════════════"
 echo "  ALL SCENARIOS PASS"
 echo "═══════════════════════════════════════════════════════════════════"

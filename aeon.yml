@@ -37,8 +37,8 @@ skills:
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume
-  monitor-runners: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. Top 5 24h DEX runners via GeckoTerminal. Output → #runners via DISCORD_WEBHOOK_MAP.
-  token-call: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 1. One token call per day, scored 0-10 with skip-day branch. Output → #token-call via DISCORD_WEBHOOK_MAP.
+  monitor-runners: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: INTERNAL (V1 lock 2026-05-25 — was signal). Chain Step 1. Top 5 24h DEX runners via GeckoTerminal. Consumed by perps-brief; no longer pushed to #runners. Re-enable signal routing by re-adding DISCORD_WEBHOOK_MAP[monitor-runners] secret if you want the channel back.
+  token-call: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: INTERNAL (V1 lock 2026-05-25 — was signal). Chain Step 1. One token call per day, scored 0-10 with skip-day branch. Consumed by perps-brief; no longer pushed to #token-call.
   token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
   price-threshold-alert: { enabled: false, schedule: "*/30 * * * *", model: "claude-sonnet-4-6", var: "" } # add later: needs Tracked Token section in memory/MEMORY.md first
   market-context-refresh: { enabled: true, schedule: "workflow_dispatch", model: "claude-sonnet-4-6" } # market-stack v2: internal chain-step; runs via morning-review chain (Step 1). Standalone cron disabled.
@@ -50,6 +50,7 @@ skills:
   daily-ops-review: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 4. Verifies all chain steps ran; reports source health + issues. Output → #aeon-ops via DISCORD_WEBHOOK_MAP. Private (operator-only).
   perps-brief: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 2. 4-pass confluence synth (discovery → enrich → judge → compose). HIGH CONVICTION cap 5. Output → #perps via DISCORD_WEBHOOK_MAP.
   morning-macro: { enabled: true, schedule: "workflow_dispatch" } # market-stack v2: signal skill, chain Step 3. Cross-sector strategist read (regime + cross-domain bridges + sector pointer). <1500 chars. Output → #morning-macro via DISCORD_WEBHOOK_MAP.
+  outcome-tracker: { enabled: true, schedule: "workflow_dispatch" } # market-stack v4.1 Phase 2: internal track-record analytics, chain Step 1. Reads ledger closed[] + open[], writes .outputs/outcome-tracker.md (chain-consumed by perps-brief next-day) + memory/topics/track-record.md (persistent operator doc). No notify — internal only.
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
@@ -230,22 +231,22 @@ chains:
     on_error: continue
     steps:
       # Step 1 — Data fetchers in parallel.
-      # Internal-only (no notify): market-context-refresh, aixbt-pulse, token-movers
+      # Internal-only (no notify): market-context-refresh, aixbt-pulse, token-movers, outcome-tracker
       # Signal (notify via --signal → Discord per DISCORD_WEBHOOK_MAP):
       #   monitor-runners, narrative-tracker, perps-scan, token-call
       # Flow-sequence syntax `[a, b, c]` is required for the chain-runner regex parser.
-      - parallel: [market-context-refresh, aixbt-pulse, monitor-runners, token-movers, perps-scan, narrative-tracker, token-call]
+      - parallel: [market-context-refresh, aixbt-pulse, monitor-runners, token-movers, perps-scan, narrative-tracker, token-call, outcome-tracker]
 
       # Step 2 — Sector brief (v1: perps only; v2/v3 add on-chain-brief, stocks-brief)
       # Flow-mapping syntax is required: the chain-runner uses line-regex to find skill/consume
       # on the same line. Block-style YAML (consume: as own line) is silently ignored.
-      - { skill: perps-brief, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call] }
+      - { skill: perps-brief, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call, outcome-tracker] }
 
       # Step 3 — Cross-sector macro synthesis (reads sector briefs)
       - { skill: morning-macro, consume: [perps-brief, market-context-refresh, aixbt-pulse, narrative-tracker] }
 
       # Step 4 — Operator health check (reads everything above; routes to #aeon-ops only)
-      - { skill: daily-ops-review, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call, perps-brief, morning-macro] }
+      - { skill: daily-ops-review, consume: [market-context-refresh, aixbt-pulse, narrative-tracker, perps-scan, monitor-runners, token-movers, token-call, outcome-tracker, perps-brief, morning-macro] }
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
