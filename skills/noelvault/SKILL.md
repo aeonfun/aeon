@@ -1,42 +1,63 @@
 ---
 name: Noelvault
-description: Persist agent knowledge to an external searchable vault — save research, execution logs, workflows, and memory across sessions and Aeon forks
+description: Save and recall agent knowledge using noelvault — a persistent, searchable, versioned external memory store that works across all Aeon instances
 var: ""
 tags: [memory, storage, research, persistence]
 ---
-> **${var}** — Key or topic to save/recall. If empty, list recent vault entries.
+> **${var}** — Topic, key, or artifact to save/recall. If empty, list recent vault entries and sync today's key findings from memory/logs to vault.
 
-Noelvault is an external memory backend for Aeon. Unlike MEMORY.md (git-based, per-fork), noelvault persists to a shared Supabase backend — searchable, versioned, and available across all your Aeon instances.
+Noelvault is an external memory backend. Unlike MEMORY.md (git-based, per-fork), noelvault persists to a shared Supabase backend — searchable and versioned across all Aeon instances.
 
-Set `NOELVAULT_URL` in your environment:
-```
-export NOELVAULT_URL=https://api.noelclaw.com
-```
+Requires `NOELVAULT_URL` set in environment. Default hosted API: `https://api.noelclaw.com`
 
 ---
 
-## When to Use
+## Steps
 
-- **After research or analysis** — save the output so future sessions can recall it
-- **Before starting a task** — search vault for prior context on the same topic
-- **When versioning a prompt or workflow** — same key = auto-increments version (git-style)
-- **At session end** — save a memory summary so next session picks up where you left off
+### 1. Check environment
 
----
+If `NOELVAULT_URL` is not set, use `https://api.noelclaw.com` as the base URL.
 
-## Save to Vault
+### 2. Determine mode from `${var}`
 
-Save any artifact. `type` must be one of: `research` `execution` `workflow` `prompt` `file` `memory`
+**If `${var}` is empty → List + Sync mode:**
+- Fetch recent entries: `GET $NOELVAULT_URL/vault/list?limit=20`
+- Read today's log at `memory/logs/${today}.md` for any outputs worth persisting
+- For each significant finding in today's log (research, execution result, workflow, important memory), save it to vault (step 4)
+- Report the list of vault entries and what was synced
+
+**If `${var}` looks like a search query (no `/` in it) → Recall mode:**
+- Search: `GET $NOELVAULT_URL/vault/search?q=${var}`
+- If results found, read the top result: `GET $NOELVAULT_URL/vault/entry?key=<top result key>`
+- Summarize findings and add to context for the current session
+- Log to `memory/logs/${today}.md`: `### noelvault recall\n- Query: ${var}\n- Found: <N> results`
+
+**If `${var}` contains `/` (looks like a key, e.g. `research/btc-analysis`) → Read mode:**
+- Fetch: `GET $NOELVAULT_URL/vault/entry?key=${var}`
+- If not found, search instead: `GET $NOELVAULT_URL/vault/search?q=${var}`
+- Return full content and version history if found
+
+### 3. Before starting any research or analysis task
+
+Always search vault first to avoid duplicate work:
+```
+GET $NOELVAULT_URL/vault/search?q=<topic>
+```
+If prior research exists (< 7 days old), use it as context before proceeding.
+
+### 4. Save an artifact
+
+Use this after completing any research, execution, or analysis:
 
 ```
 POST $NOELVAULT_URL/vault/save
 
 {
-  "type": "research",
-  "title": "${var}",
-  "content": "<your content here>",
-  "key": "research/${var}",
-  "tags": [],
+  "type": "<research|execution|workflow|prompt|file|memory>",
+  "title": "<descriptive title>",
+  "content": "<full content>",
+  "key": "<type>/<slug>",
+  "tags": ["<relevant>", "<tags>"],
   "commitMsg": "initial",
   "agentId": "aeon"
 }
@@ -44,66 +65,54 @@ POST $NOELVAULT_URL/vault/save
 
 Response: `{ "key": "...", "version": 1, "changed": true }`
 
-Same key on next save → auto-increments version, previous version snapshotted.
+Same key on repeat saves → auto-increments version, previous version snapshotted automatically.
 
----
+**Entry types:**
+- `research` — market analysis, token deep dives, on-chain findings
+- `execution` — trade logs, automation runs, task results
+- `workflow` — reusable agent playbooks, step sequences
+- `prompt` — versioned system prompts and instructions
+- `file` — generated code, reports, exports
+- `memory` — long-term context, preferences, session summaries
 
-## Recall from Vault
+### 5. Version history and diff
 
-**Search** (before doing work — check if this was researched before):
+To review how a research or prompt evolved:
 ```
-GET $NOELVAULT_URL/vault/search?q=${var}
-```
-
-**Read by key**:
-```
-GET $NOELVAULT_URL/vault/entry?key=research/${var}
-```
-
-**List recent entries**:
-```
-GET $NOELVAULT_URL/vault/list?limit=20
+GET $NOELVAULT_URL/vault/history?key=<key>
+GET $NOELVAULT_URL/vault/diff?key=<key>&from=1&to=<latest>
 ```
 
----
+### 6. Log and notify
 
-## Version History & Diff
-
+After every vault operation, log to `memory/logs/${today}.md`:
 ```
-GET $NOELVAULT_URL/vault/history?key=prompt/system-v1
-GET $NOELVAULT_URL/vault/diff?key=prompt/system-v1&from=1&to=3
+### noelvault
+- Action: <save|recall|list>
+- Key: <key>
+- Version: <v>
+- Summary: <one line>
 ```
 
----
-
-## Recommended Integration Pattern
-
+Send via `./notify` if a significant artifact was saved:
 ```
-# Session start
-vault_recall: GET /vault/search?q=<today's topic>
-
-# During execution
-vault_save: POST /vault/save after each significant output
-
-# Session end
-vault_save: POST /vault/save with type: "memory", summary of session
+*Noelvault* — saved <title> (v<version>) to vault
+Key: <key>
 ```
 
 ---
 
-## Wallet Auth (optional)
+## Wallet auth (optional)
 
-To isolate your vault entries from others, sign requests with your wallet:
-
+To isolate entries to your wallet namespace, add headers to every request:
 ```
 X-Wallet-Address: 0x...
-X-Wallet-Signature: 0x...  (sign "noelclaw:vault_save:<timestamp>")
+X-Wallet-Signature: 0x...  (sign "noelclaw:<toolName>:<timestamp>")
 X-Wallet-Timestamp: <unix ms>
 ```
 
-Without auth headers → entries go to the shared `anon` namespace.
+Without auth headers → entries go to the `anon` shared namespace, still useful for most Aeon workflows.
 
 ---
 
-Skill source: https://github.com/noelclaw/noelvault
-Hosted API: https://api.noelclaw.com
+Source: https://github.com/noelclaw/noelvault
