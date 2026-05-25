@@ -161,6 +161,55 @@ skills:
   auto-workflow: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: URL to analyze
   onboard: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot setup validator — checks secrets/workflows/memory writability and notifies a checklist with fix commands; pair with ./onboard CLI
 
+  # --- Ported from derivative instances (PR #219) ---
+  # Markets & crypto
+  polymarket: { enabled: false, schedule: "45 12 * * *", model: "claude-sonnet-4-6" } # trending/top Polymarket markets globally — complement to monitor-polymarket
+  wallet-digest: { enabled: false, schedule: "30 12 * * *" } # balances-only activity summary across tracked wallets; sibling to on-chain-monitor
+  pm-pulse: { enabled: false, schedule: "0 13 * * 1", model: "claude-sonnet-4-6" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
+  pm-intel: { enabled: false, schedule: "30 13 * * 1", model: "claude-sonnet-4-6" } # Monday — competitive intel on the prediction-market ecosystem
+  pm-manipulation: { enabled: false, schedule: "15 13 * * *", model: "claude-sonnet-4-6" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
+  rwa-pulse: { enabled: false, schedule: "0 12 * * 1", model: "claude-sonnet-4-6" } # Monday — RWA tokenization momentum: launches, TVL, institutional adoption, regulation
+  compute-pulse: { enabled: false, schedule: "0 11 * * 6", model: "claude-sonnet-4-6" } # Saturday — AI compute market: GPU/hardware deals, inference pricing, decentralized-compute tokens
+  x402-monitor: { enabled: false, schedule: "0 12 * * 2", model: "claude-sonnet-4-6", var: "" } # Tuesday — protocol ecosystem velocity (defaults to x402; set memory/topics/tracked-protocol.md)
+
+  # Research & content
+  agent-displacement: { enabled: false, schedule: "0 11 * * 0", model: "claude-sonnet-4-6" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
+  launch-radar: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6" } # Monday — scan PH/HN/GitHub Trending for launches matching the startup-idea backlog
+  topic-momentum: { enabled: false, schedule: "30 6 * * 1", model: "claude-sonnet-4-6" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
+  tweet-digest: { enabled: false, schedule: "0 17 * * *", var: "" } # daily — account-based digest of tracked X accounts; sibling to fetch-tweets/tweet-roundup
+
+  # Dev & repo
+  builder-map: { enabled: false, schedule: "0 10 * * 2", model: "claude-sonnet-4-6" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
+  pr-tracker: { enabled: false, schedule: "30 9 * * *" } # daily — status of cross-repo PRs opened by this instance (merge/stale/closed)
+  repo-revive: { enabled: false, schedule: "0 10 * * 6" } # Saturday — one targeted improvement to reactivate the top dormant watched repo
+  feature: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build one feature per watched repo from repo-actions ideas (heavy; opens PRs)
+
+  # Security
+  disclosure-tracker: { enabled: false, schedule: "15 16 * * *" } # daily — audit pending disclosure queue, alert on aging CRITICAL/HIGH advisories
+  vuln-tracker: { enabled: false, schedule: "30 16 * * *" } # daily — status of vuln-scanner PRs/advisories/queued drafts
+  pvr-watchlist: { enabled: false, schedule: "0 16 * * 6" } # Saturday — probe watchlist repos for private-vuln-reporting status, re-submit queued advisories
+  pvr-triage-monitor: { enabled: false, schedule: "30 16 * * 6" } # Saturday — lifecycle check on submitted private vuln reports (accept/reject/aging >30d)
+
+  # Social
+  engagement-act: { enabled: false, schedule: "30 9 * * *" } # daily — turn flagged engagement opportunities into copy-paste-ready replies
+
+  # Ideas & productivity
+  idea-pipeline: { enabled: false, schedule: "0 18 * * 1", model: "claude-sonnet-4-6" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
+  idea-validator: { enabled: false, schedule: "30 18 * * 1", model: "claude-sonnet-4-6" } # Monday — screen the startup-idea backlog, score viability
+  milestone-tracker: { enabled: false, schedule: "0 19 * * 1" } # Monday — progress on key product/growth milestones; crossings, approaches, stalls
+  note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — save a note (Supernotes card or memory/notes/)
+
+  # Self-maintenance / meta
+  batch-health: { enabled: false, schedule: "30 8 * * *" } # daily — verify enabled morning-batch skills fired; alert on silent misses
+  run-frequency-guard: { enabled: false, schedule: "0 23 * * *" } # daily — watchdog for capped skills exceeding their per-day run limit
+  config-validator: { enabled: false, schedule: "30 16 * * 0" } # Sunday — lint aeon.yml + workflow for structural invariants (checkout order, dup keys, missing files)
+  janitor: { enabled: false, schedule: "30 5 * * 0" } # Sunday — clean stale .notify-*, .pending-notify-temp/, expired .outputs/ artifacts
+  memory-flush: { enabled: false, schedule: "30 21 * * *" } # daily — promote important recent log entries into MEMORY.md
+  memory-structural-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows in MEMORY.md
+  self-review: { enabled: false, schedule: "30 19 * * 0", model: "claude-sonnet-4-6" } # Sunday — audit what the agent did, what failed, what to improve
+  signal-verdict: { enabled: false, schedule: "0 8 * * 1", model: "claude-sonnet-4-6" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
+  skill-enabler: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — flip skills enabled:true by slug list, validate, commit + open PR
+
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
 
