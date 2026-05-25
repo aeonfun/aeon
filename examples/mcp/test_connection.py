@@ -31,7 +31,7 @@ from mcp.client.stdio import stdio_client
 
 
 def repo_root() -> Path:
-    """Walk up from this file until we find the Aeon repo root."""
+    """Find the Aeon repo root by walking up from this file."""
     here = Path(__file__).resolve()
     for candidate in (here, *here.parents):
         if (candidate / "skills.json").exists() and (candidate / "mcp-server").is_dir():
@@ -42,6 +42,7 @@ def repo_root() -> Path:
 
 
 async def main(tool_name: str, var_value: str) -> int:
+    """Run the MCP server connection and tool invocation."""
     root = repo_root()
     server_js = root / "mcp-server" / "dist" / "index.js"
     if not server_js.exists():

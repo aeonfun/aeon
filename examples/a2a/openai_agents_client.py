@@ -25,6 +25,7 @@ GATEWAY = os.environ.get("A2A_GATEWAY_URL", "http://localhost:41241")
 
 
 def _call_aeon(skill_id: str, var: str) -> str:
+    """Call an Aeon API asynchronously and return the result."""
     task_id = str(uuid.uuid4())
     requests.post(
         GATEWAY,
@@ -56,16 +57,7 @@ def _call_aeon(skill_id: str, var: str) -> str:
 
 @function_tool
 def aeon_token_report(token: str) -> str:
-    """Get a full Aeon token report for a crypto token.
-
-    Args:
-        token: A token symbol (e.g. 'AEON', 'BTC') or a contract address.
-               Pass the bare symbol without the leading '$'.
-
-    Returns:
-        Markdown report with price, 24h change, liquidity, volume, FDV,
-        and recent buy/sell stats.
-    """
+    """Generate a full Aeon token report for a crypto token."""
     return _call_aeon("aeon-token-report", token)
 
 
