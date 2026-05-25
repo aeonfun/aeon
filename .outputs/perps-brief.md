@@ -1,109 +1,129 @@
-Perps Brief · 25 May
+Perps Brief · 25 May · afternoon re-run
 
 ─────────  MARKET SENTIMENT  ─────────
 
-  BTC closed at $77,303, up 0.89% on the day. Breadth compressed from
-  yesterday's 18/20 green to 11/20 — HYPE and ZEC carried the green
-  count while ETH, XRP, ADA, BCH, and LINK all closed red. F&G ticked
-  from 25 to 30, the first day out of Extreme Fear this run. DEX volume
-  fell 20% to $4.48B on a session where BTC barely moved.
+  BTC sits at $77,268, up 0.81% on the day. Breadth ticked up one notch
+  from this morning's 11/20 to 12/20 green; ETH ($2,111) and SOL
+  ($85.78) both closed red while HYPE held the trending list at rank #11
+  on a decelerating 24h. DEX volume printed $4.48B, 22% below the 7-day
+  average. Fear and Greed crossed from 25 to 30 — first day out of
+  Extreme Fear this run.
 
-  Perps tape reads QUIET. Every asset in today's 25-asset slice prints
-  NEUTRAL for a second consecutive calendar day. The early-UTC snapshot
-  caps volume ratio at 0.07 to 0.36x universe-wide, blocking the
-  catalyst-breakout path mechanically. No quant signal carries the
-  leverage tape today — the engine is waiting, not signaling.
+  Perps tape reads QUIET for a second consecutive calendar day. The
+  08:14Z prefetch shows 25 of 25 assessed assets at NEUTRAL with no
+  pattern tag firing. Mid-cap intraday flow repriced through the
+  morning: BSB flushed 6.71% on open interest down 5.93%, BEAT dropped
+  10.42% on OI down 15.10%, UB popped 10.34% on OI up 17.01%. None of
+  those moves cleared a regime gate. BEAT cleared the capitulation
+  drawdown but funding stayed positive at +0.035%/8h. UB cleared the
+  breakout price gate but volume tracks only a third of the 2.0x
+  intraday flow trigger.
 
-  Polymarket peace-deal odds for May 31 fell from 29.5% to 24.5%
-  yesterday. Saylor pivoted from BTC accumulation to bonds at the SMA200
-  rejection — the institutional anchor for two cycles softening at the
-  moment spot ETFs were supposed to carry BTC structurally. The Warsh
-  Fed is now pricing 2026 rate hikes against simultaneous Iran/Hormuz
-  easing.
+  Two structural extremes worth naming. FIDA holds the heaviest
+  funding-basis split in the perps engine's deployment to date — funding
+  at -0.17%/8h against basis +0.46%. NIL holds the heaviest 7-day open
+  interest build the engine has ever printed at +410%, with top-trader
+  long/short cut 0.77 over the same window. Both setups load squeeze
+  fuel from opposite directions and neither has fired yet.
+  Narrative-tracker promoted Privacy/ZK to full RIDE 5/5 today and
+  Hyperliquid back to Peak 4/5 RIDE with trail. The morning sector map
+  sharpened by afternoon.
 
-  Bias · ride existing longs through the chop, add AKT on compute
-    continuation, watch NIL distribution forming. No majors entries
-    until breadth or vol_ratio rebuilds.
+  Bias · ride existing longs into the perp-DEX + AI-compute
+    continuation, add ASTER on the sector lead, watch FIDA and NIL
+    squeeze setups loading from opposite tails.
 
-─────────  CURRENT POSITIONS (3)  ─────────
+─────────  CURRENT POSITIONS (4)  ─────────
 
   TICKER    DIR         ENTRY         NOW       PNL         MAE / MFE  CALL
   ────────  ─────  ──────────  ──────────  ────────  ────────────────  ────────────
-  HYPE      LONG       $60.91      $62.59     +2.8%    -10.5% / +4.3%  RIDE
+  HYPE      LONG       $60.91      $63.30     +3.9%    -10.5% / +4.3%  RIDE
   BCH       SHORT        $345        $345     -0.1%     -5.0% / -1.0%  RIDE
-  EIGEN     LONG      $0.2299       $0.23     +0.0%     -2.1% / +0.0%  RIDE
+  EIGEN     LONG      $0.2299       $0.23     +0.0%     -2.1% / +1.3%  RIDE
+  AKT       LONG        $0.87     $0.9042     +3.9%         — / +3.9%  RIDE
 
-  HYPE      ▸ Narrative-tracker promoted Hyperliquid from Fading to Peak
-              with 4/5 rating; AIXBT flagged HYPE flipping DOGE to become
-              the 9th largest crypto with SOL flip as the named next target.
-              Top-trader long/short ratio at 1.36 sits 0.18 points higher
-              than 7 days ago — smart money still building through the
-              consolidation.
+  HYPE      ▸ Hyperliquid promoted Fading to Peak 4/5 RIDE with trail in
+              today's narrative-tracker — the FADE call from day 2 that
+              bothered the position now confirms the long. AIXBT named HYPE
+              flipping DOGE for the 9th largest market cap with SOL flip as
+              the next institutional milestone; spot ETF flow data from this
+              afternoon shows BTC and ETH outflows against HYPE, SOL, and
+              XRP inflows at the wrapper level. Smart money holding the
+              build at top long/short 1.35 with +0.17 over 7 days.
 
-  BCH       ▸ BCH named in today's market-context as one of five top-20
-              majors closing red while BTC closed +0.89% — relative weakness
-              intact. Not in today's 25-asset perps slice, so structural
-              read carries from the original entry: top-trader long/short
-              collapsed 1.43 points over 7 days at fire, funding negative
-              with spot premium, no narrative tailwind.
+  BCH       ▸ BCH absent from today's 25-asset perps slice and from the
+              token-movers winners and losers lists across both morning and
+              midday refreshes. Market-context-refresh named BCH as one of
+              the top-20 majors closing red on a +0.81% BTC day. Structural
+              smart-money-exit thesis from fire still intact; the asset has
+              dropped off the attention scan, which is the bear case
+              extending.
 
-  EIGEN     ▸ EIGEN absent from today's perps slice and from token-movers
-              winners/losers/trending — the asset went quiet after
-              yesterday's +16.3% catalyst pop. AI agents and Decentralized
-              compute both hold Peak 5/5 RIDE in narrative-tracker; the
-              Nebius acquisition thesis is intact and the asset is
-              consolidating, not breaking down.
+  EIGEN     ▸ EIGEN absent from today's perps slice and token-movers
+              refreshes — yesterday's +16.3% catalyst pop transitioned into
+              quiet consolidation around $0.23. AI agents and Decentralized
+              compute both hold Peak 5/5 RIDE in narrative-tracker; sector
+              tailwind sustained. The same compute bid that drove the fire
+              is now spreading across AKT (token-call this morning) and the
+              narrative-tracker meta.
+
+  AKT       ▸ AKT appears in today's afternoon token-movers winners list at
+              +10.0% 24h, $0.9042 — +3.9% from this morning's fire.
+              CoinGecko trending hold extended. Decentralized compute holds
+              Peak 5/5 RIDE in narrative-tracker; the sector confluence that
+              justified the fire is still building, not fading. Same-day
+              evaluation, position green out of the gate.
 
 
-─────────  NEW POSITION · AKT LONG  ─────────
+─────────  NEW POSITION · ASTER LONG  ─────────
 
-  ticker     AKT
+  ticker     ASTER
   direction  LONG
   horizon    7d
-  entry      market or first pullback to $0.83
-  stop       close below $0.78
+  entry      market or first pullback to $0.69
+  stop       close below $0.67
 
 
-  thesis     · AKT printed +4.3% today on $21M volume against a
-               chop tape, extending a one-month run of roughly
-               +63% into the $0.90 area. The 7d +17.8% return
-               outpaces BTC at +0.4% and ETH at -0.8% with the
-               move still adding on the 24h while AI-compute
-               peers slow into digestion.
-             · Narrative-tracker holds Decentralized compute at
-               Peak 5/5 RIDE with TAO, RNDR, AKT, GRASS as the
-               named roster. AIXBT's bridge call positions
-               Decentralized compute as the bid-bearing leg of
-               the SOLUNAVAX/AI cluster; dens_club ranks AKT the
-               cleanest non-TAO AI-infra play.
-             · Token-call rated AKT MEDIUM 6/10 today with the
-               Burn-Mint Equilibrium proposal active —
-               circulating supply contracted from 3.696M to
-               3.562M in the week after the vote landed. Founder
-               Osuri took the institutional stage at Economist
-               Impact Amsterdam earlier this month, with an
-               AI-builder showcase driving a clean intraday move
-               on AI tools shipping live on Akash GPUs.
-             · AKT is on CoinGecko trending today, sits inside
-               the Peak-narrative roster, and the supply
-               contraction provides the on-chain fact that
-               aligns with the sector framing. The single-signal
-               token-call backed by sector continuation is the
-               thesis — sized half per the token-call risk note.
+  thesis     · ASTER closed +5.5% on the day and +10.5% over 7
+               days with vol/mcap at 0.11 on a $1.85B market
+               cap. This afternoon's token-call re-run rated
+               ASTER HIGH conviction (8/10), the top score
+               across the 250-coin scan and two points above the
+               next band.
+             · Aster listed SpaceX pre-IPO perpetuals on 18 May
+               with 5x leverage — the same platform whose
+               product surface seeded the SAOS and SPCX
+               meme-coin name-farm clusters showing up in
+               monitor-runners this week. Permissionless Listing
+               Vote went live the same day and RWA Sprint Season
+               1 cuts taker fees to 0.9bps through 7 June.
+             · Narrative-tracker promoted Hyperliquid back to
+               Peak with a 4/5 RIDE-with-trail rating this
+               session. ASTER sits at #2 in the perp-DEX
+               segment, catching the sector tailwind as the
+               second-derivative trade behind the lead.
+             · Funding sits at -0.0069%/8h (shorts paying longs)
+               on a price that ran +10% over the week. Retail
+               shorts crowd against the rally, loading squeeze
+               fuel if price clears the $0.78 resistance pocket
+               that capped the late-April attempt.
 
 
-  risks      · Decentralized compute moved Rising to Peak
-               yesterday — late-cycle continuation, not
-               promotion. Trail tight if the sector cools or a
-               second compute name fails to confirm.
-             · AKT pushes into the $0.90 to $1.05 resistance
-               pocket on light volume (vol/mcap 0.08) — the
-               price action reads as markup rather than demand
-               confirmation, raising reversal risk on any sector
-               dip.
-             · Position concentration risk — EIGEN already runs
-               the AI/compute long. A sector-wide unwind hits
-               both names in the same window.
+  risks      · Top-trader long/short ratio sits at 2.92, the
+               highest in today's perps universe. Smart money
+               cut the ratio 0.79 points over 7 days while price
+               rose — distribution into retail demand, the
+               classic smart-exit pattern. This keeps the trail
+               tight.
+             · Price approaches the $0.78 resistance level that
+               capped the late-April attempt and stands roughly
+               235% below the $2.41 all-time high. A failed test
+               of $0.78 without volume bleeds back to the $0.65
+               support before the squeeze fuel reloads.
+             · Hyperliquid is the sector lead. If HYPE breaks
+               structurally (loses the buyback-anchored bid or
+               smart money flips short), the second-derivative
+               ASTER bid follows down through the unwind.
 
 ─────────  WATCHLIST · ZEC LONG · day 2  ─────────
 
@@ -111,57 +131,28 @@ Perps Brief · 25 May
   direction  LONG
   horizon    7d
   trigger    first pullback to $620 that holds with funding
-             turning positive AND top-trader long/short rotating
+             staying positive AND top-trader long/short rotating
              back above 1.00
   stop       close below $590 before trigger fires
 
 
-  thesis     · ZEC sits at $661.62 with the price extending
-               +17.47% over 7 days and Privacy/ZK holding Rising
-               5/5 RIDE in narrative-tracker. AIXBT names ZEC as
-               the institutional anchor for the SOLUNAVAX trio
-               with Grayscale's Silbert providing the
-               named-source connection.
-             · Top-trader long/short ratio sits at 0.71 — the
-               most net-short smart-money positioning in today's
-               25-asset universe — with smart traders running
-               1.41-to-1 short into the price extension. The
-               pullback-to-$620 trigger waits because chasing
-               the run-up entry hands the squeeze fuel away to
-               the same shorts that already paid premium.
-             · Post-Quantum entered narrative-tracker as a NEW
-               emerging narrative today, ZEC flagged inside it
-               via the Tachyon quantum-proof upgrade. Two
-               converging narratives (Privacy/ZK + Post-Quantum)
-               on one token with smart money still positioned
-               short loads the squeeze setup if the pullback
-               holds.
-
-─────────  WATCHLIST · TAO LONG · day 4  ─────────
-
-  ticker     TAO
-  direction  LONG
-  horizon    7d
-  trigger    taker buy clean through 52% with open interest
-             continuing to build OR pct_24h breaks +10% with
-             funding holding under +0.02%/8h
-  stop       close below $275 OR funding flips negative
-
-
-  thesis     · Decentralized compute holds Peak 5/5 RIDE in
-               narrative-tracker with TAO named the #1 AI-infra
-               play in the dens_club mega-narrative thread.
-               Bittensor Q1 2026 revenue of $43M is the
-               real-not-speculative fundamental that anchors the
-               sector framing.
-             · TAO is absent from today's 25-asset perps slice,
-               so the prior ACCUMULATION pattern (open interest
-               +10.85% over 7 days on a tight 15.87% range with
-               funding above 7d average) is the structural read
-               until a fresh print confirms or breaks it. The
-               trigger waits for either active demand crossing
-               the spread or a clean breakout that pulls passive
-               funds along.
+  thesis     · Narrative-tracker promoted Privacy/ZK from Rising
+               4/5 RIDE-with-trail to full Rising 5/5 RIDE today
+               — the tape caught up to the narrative. Drivers
+               stack: Grayscale ZEC ETF filed 12 May, SEC review
+               closed January, Tachyon quantum-proof upgrade
+               ties to the new Post-Quantum WATCH thread.
+             · Funding rotated positive today to +0.0055%/8h
+               from the prior -0.0043% 7d average. The first
+               half of the trigger condition is now met. Top
+               long/short still sits at 0.72 net short — the
+               second half of the trigger waits for rotation
+               back above 1.00.
+             · Pullback discipline holds because ZEC sits +17%
+               over 7 days and three privacy alternatives (RAIL,
+               Aleo, the Tachyon stack) absorb rotation capital.
+               Chasing $661 risks late-cycle entry on the leader
+               after the squeeze fuel has already burned off.
 
 ─────────  WATCHLIST · RAIL LONG · day 2  ─────────
 
@@ -169,29 +160,25 @@ Perps Brief · 25 May
   direction  LONG
   horizon    7d
   trigger    first pullback to the $3.50 area that holds with
-             ZEC also holding above $640 OR a second privacy
-             name continuing to print green on the same session
+             ZEC also holding above $640
   stop       close below $3.30 before trigger fires
 
 
-  thesis     · RAIL printed +23.5% to $4.14 today, day three of
-               the breakout stack with 7d magnitude extending to
-               +203% even as the 24h decelerated. The asset shed
-               the PUMP-RISK tag because 24h fell below the 30%
-               gate while the higher floor of the privacy bid
-               held the move.
-             · Privacy/ZK holds Rising 5/5 RIDE in
-               narrative-tracker with the second-day driver wave
-               confirming — Grayscale ZEC ETF filing, Tachyon
-               quantum-proof upgrade, ZEC tape catching up to
-               the narrative. RAIL sits inside the sector with
-               $92M TVL on $2B+ shielded volume.
-             · Chasing +23% intraday into a parabolic stack is
-               worst-timing — the prior 173% 7d run made the
-               entry asymmetric. A trigger fires either on the
-               pullback or on a second privacy name confirming
-               the sector bid (which extends RAIL by
-               association).
+  thesis     · RAIL prints day-3 of the breakout stack at $4.03,
+               +11.99% on the day and +203% over 7 days.
+               Token-call rated RAIL HIGH 8/10 yesterday — top
+               score in the scan. Privacy/ZK sits at full RIDE
+               with the Post-Quantum thread compounding
+               underneath.
+             · Railgun runs $92M TVL, $4.7M revenue, $2B+
+               shielded volume — real product usage, not
+               narrative-only. The privacy-DeFi rail thesis has
+               fundamental ground that the meme-driven privacy
+               plays do not.
+             · Trigger waits because chasing a +203% 7-day move
+               at the day-3 mark is the worst-timing entry on a
+               parabolic. The pullback level lets the squeeze
+               fuel reload before the next leg.
 
 ─────────  WATCHLIST · NIL SHORT · day 1  ─────────
 
@@ -204,21 +191,51 @@ Perps Brief · 25 May
   stop       close above the 7d high before trigger fires
 
 
-  thesis     · NIL entered today's perps slice with the heaviest
-               7d position build in the engine's deployment to
-               date — open interest up 398.6% over 7 days on a
-               +64.5% price run. The asset sits at $0.0771 with
-               volume ratio 0.76x, the highest active flow in
-               today's universe.
-             · Top-trader long/short ratio dropped 0.75 points
+  thesis     · NIL ran +66.65% over 7 days on open interest
+               +410.41% over the same window — the heaviest
+               7-day position build in the perps engine's
+               deployment to date, up from yesterday's +398.6%
+               reading. Top-trader long/short cut 0.77 points
                over 7 days while open interest nearly
-               quintupled. Smart money exited 38% of long
-               conviction over the same window retail piled in —
-               the textbook retail-trapped-long setup with the
-               smart-money exit underway.
-             · Funding sits at +0.0115%/8h with delta +0.01
-               versus the 7d average. The premium is building
-               but hasn't cleared the +0.04% extreme gate yet;
-               the trigger waits for the funding push that
-               converts the forming distribution into a fired
-               LONG-TRAP pattern.
+               quintupled.
+             · Intraday volume tracks 1.42x the prior-week
+               average, the only above-1.0x reading in today's
+               universe. Retail flow runs at 142% of the weekly
+               base while smart money exited 39% of long
+               conviction underneath. The split reads as
+               distribution into a chasing crowd.
+             · Funding cooled to +0.0004%/8h from yesterday's
+               +0.0115% spike. The trigger waits for the spike
+               pattern to reload. Retail refresh the position
+               without paying premium yet, which keeps the
+               long-trap fuse loading underneath.
+
+─────────  WATCHLIST · FIDA LONG · day 1  ─────────
+
+  ticker     FIDA
+  direction  LONG
+  horizon    3d
+  trigger    pct_24h push past +10% with open interest reversing
+             negative AND short liquidations clearing the 7d p75
+             of $1.6M
+  stop       close below $0.034 before trigger fires
+
+
+  thesis     · FIDA holds the heaviest funding-basis split in
+               the perps engine's deployment to date. Funding at
+               -0.1739%/8h against a 7-day average of -0.1116%,
+               basis at +0.4588% (3.4x the next reading in the
+               universe outside EDEN). Shorts pay sustained
+               extreme premium against spot trading at deep
+               futures discount.
+             · Open interest built 21.97% over 7 days and pct_7d
+               printed +73.29%, while top-trader long/short
+               ratio held balanced at 1.11. The setup reads as
+               cash-and-carry footprint scaling past the
+               engine's standard window — structural arb load,
+               not directional positioning.
+             · Pct_24h +2.07% is quiet positive grind into the
+               squeeze fuel. A sharp green day fires the squeeze
+               through the funding wall; a flat day with funding
+               extending past -0.20% sets structural short-side
+               capitulation when the rip arrives.

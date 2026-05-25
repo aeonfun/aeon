@@ -1,10 +1,10 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-25T05:51:33Z",
+  "last_analyzed": "2026-05-25T08:41:14Z",
   "quality_score": 4,
-  "assessment": "Well-structured perps brief with specific positions, quantified metrics, and actionable entry/exit levels; substantive and complete output.",
+  "assessment": "Substantive trading brief with specific positions, rationale, and self-checked output quality; proper artifacts and postprocess pipeline integration",
   "flags": [],
-  "avg_score": 4.05,
+  "avg_score": 4.04,
   "history": [
     {
       "date": "2026-05-18",
@@ -88,6 +88,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     },
     {
