@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-25T05:51:43Z",
+  "last_updated": "2026-05-24T17:31:42Z",
   "open": [
     {
       "id": "HYPE-2026-05-22-001",
@@ -79,12 +79,6 @@
           "call": "RIDE",
           "price_at_eval": 63.283,
           "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 62.586,
-          "note": "Day 4/multi-week. +2.76% from fire, well above the $54 revised invalidation. Narrative-tracker promoted Hyperliquid from Fading 3/5 to Peak 4/5 RIDE w/ trail this session — the FADE call that contradicted price on day 2-3 has now flipped to confirm. AIXBT names HYPE flipping DOGE for 9th largest market cap with SOL flip as the next target. Top L/S 1.36 +0.18 7d; smart money still building. Funding rebuilt to +0.0068%/8h after yesterday's -0.0201% short-squeeze coil unwound on today's flatline. Same-direction signal suppressed (no pyramiding). RIDE."
         }
       ]
     },
@@ -120,9 +114,9 @@
         "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
       ],
       "mae_pct": -5.024950678890563,
-      "mfe_pct": 0.4874086108854609,
+      "mfe_pct": -0.9632122548450717,
       "mae_date": "2026-05-24",
-      "mfe_date": "2026-05-25",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
@@ -137,12 +131,6 @@
           "call": "RIDE",
           "price_at_eval": 350.0,
           "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 345.0,
-          "note": "Day 3/7. BCH absent from the 25-asset perps slice and from token-movers winners/losers/trending — price_at_eval estimated near $345 from market-context-refresh naming BCH as one of five top-20 majors closing red on a +0.89% BTC day. Today's high/low estimates carry similar uncertainty bands. The structural smart-money-exit thesis from fire is intact. Invalidation $370 holds. RIDE."
         }
       ]
     },
@@ -181,9 +169,9 @@
         "Macro regime flip is fresh — if US-Iran deal stalls before May 31, the breadth-driven bid evaporates."
       ],
       "mae_pct": -2.131361461504997,
-      "mfe_pct": 1.3484123531970507,
+      "mfe_pct": 0.04349717268378284,
       "mae_date": "2026-05-24",
-      "mfe_date": "2026-05-25",
+      "mfe_date": "2026-05-24",
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
@@ -192,55 +180,8 @@
           "call": "RIDE",
           "price_at_eval": 0.2299,
           "note": "Day 1/7. Position fired this morning. No EIGEN data in afternoon perps slice or token-movers winners/losers/trending. Price_at_eval held at fire. AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker — sector tailwind intact."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 0.23,
-          "note": "Day 2/7. EIGEN absent from today's perps slice and token-movers — yesterday's +16.3% catalyst pop transitioned into a quiet consolidation. Price_at_eval estimated near fire ($0.2299). AI agents and Decentralized compute both Peak 5/5 RIDE in narrative-tracker — sector tailwind intact. Invalidation $0.205 holds. RIDE."
         }
       ]
-    },
-    {
-      "id": "AKT-2026-05-25-001",
-      "asset": "AKT",
-      "direction": "LONG",
-      "fired_date": "2026-05-25",
-      "fired_price": 0.87,
-      "fired_btc_price": 77303,
-      "fired_eth_price": 2107,
-      "entry_zone": "market or first pullback to $0.83",
-      "invalidation": "close below $0.78",
-      "horizon": "7d",
-      "thesis": [
-        "AKT +4.3% on $21M volume against a chop tape, extending the one-month run roughly +63% into $0.90.",
-        "Narrative-tracker holds Decentralized compute at Peak 5/5 RIDE; dens_club ranks AKT the cleanest non-TAO AI-infra play.",
-        "Token-call rated AKT MEDIUM 6/10; Burn-Mint Equilibrium proposal contracted circulating supply 3.696M to 3.562M in one week.",
-        "AKT on CoinGecko trending today; founder Osuri at Economist Impact Amsterdam earlier this month."
-      ],
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "enrichment_positive",
-        "cross_domain_bridge"
-      ],
-      "confluence_missing": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "both_tag",
-        "repeat_appearance"
-      ],
-      "named_risks": [
-        "Decentralized compute moved Rising to Peak yesterday — late-cycle continuation, trail tight.",
-        "Pushes into $0.90 to $1.05 resistance pocket on light volume (vol/mcap 0.08) — markup not demand confirmation.",
-        "EIGEN already runs the AI/compute long — sector unwind hits both names in same window."
-      ],
-      "mae_pct": null,
-      "mfe_pct": null,
-      "mae_date": null,
-      "mfe_date": null,
-      "invalidation_breached": false,
-      "watchlist_provenance": null,
-      "evaluations": []
     }
   ],
   "watchlist": [
@@ -288,6 +229,28 @@
       ]
     },
     {
+      "id": "GMT-watchlist-2026-05-24-001",
+      "asset": "GMT",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-24",
+      "trigger": "pct_24h green +5% with OI rolling further negative AND short_liqs clearing 7d p75 of $81K",
+      "invalidation": "close below $0.010 before trigger fires",
+      "horizon": "24h",
+      "thesis": [
+        "GMT funding -0.204%/8h — heaviest short premium in the universe by 14x margin. Shorts paid sharply more premium this slice than across the prior week.",
+        "Top L/S 1.20 down 0.68 over 7 days. Smart money joined retail short side hard. Both sides crowded short is asymmetric squeeze structure if any bid arrives.",
+        "Spot premium basis +0.34% positive into deeply negative funding. Spot still bids the asset while futures shorts hold the line. Funding flush without spot weakness fires the short-cover cascade."
+      ],
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "GMT is a low-attention name without narrative carrier — squeeze fires only on a fundamental catalyst or coordinated short cover.",
+        "Negative funding can persist for weeks without resolution — the asymmetric setup decays slowly."
+      ]
+    },
+    {
       "id": "RAIL-watchlist-2026-05-24-001",
       "asset": "RAIL",
       "direction": "LONG",
@@ -310,29 +273,6 @@
         "RAIL up 173.6% over 7 days already — late-cycle entry on a parabolic, the [PUMP-RISK] flag is real.",
         "42.5M tokens still to issue against 57.5M circulating — future emission overhang at 74% of current float.",
         "Narrative arriving after the run-up — capital may rotate to ZEC, Aleo, or other privacy alternatives instead of extending RAIL."
-      ]
-    },
-    {
-      "id": "NIL-watchlist-2026-05-25-001",
-      "asset": "NIL",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-25",
-      "trigger": "funding push past +0.04%/8h with pct_24h going flat-to-red OR pct_24h drops past -10% with open interest reversing negative",
-      "invalidation": "close above the 7d high before trigger fires",
-      "horizon": "3d",
-      "thesis": [
-        "NIL +64.5% 7d on open interest +398.6% 7d — heaviest 7d position build in the engine's deployment.",
-        "Top-trader long/short -0.75 over 7d while open interest nearly quintupled — smart money exited 38% of long conviction while retail piled in.",
-        "Funding +0.0115%/8h with delta +0.01 versus 7d average — premium building, hasn't cleared +0.04% extreme gate yet."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "quant_regime_aligned"
-      ],
-      "named_risks": [
-        "First-day entrant, no repeat appearance to confirm pattern stability.",
-        "Funding push past +0.04% could resolve through a sharp red day before the watchlist fires — getting in late on the flush.",
-        "Microcap (open interest $47.8M) — squeezes can run irrespective of fundamentals on coordinated flow."
       ]
     }
   ],
