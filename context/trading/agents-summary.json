@@ -4,13 +4,6 @@
       "id": null,
       "family": null,
       "lifecycle": "canary",
-      "fitness": 0.6572912064071963,
-      "pnl": null
-    },
-    {
-      "id": null,
-      "family": null,
-      "lifecycle": "canary",
       "fitness": 0.5970219866135541,
       "pnl": null
     },
@@ -33,6 +26,13 @@
       "family": null,
       "lifecycle": "canary",
       "fitness": 0.5666384861846776,
+      "pnl": null
+    },
+    {
+      "id": null,
+      "family": null,
+      "lifecycle": "canary",
+      "fitness": 0.5327700415209983,
       "pnl": null
     },
     {
@@ -146,5 +146,5 @@
     "shadow": 160
   },
   "total_agents": 180,
-  "synced_at": "2026-05-25T17:30:14Z"
+  "synced_at": "2026-05-25T21:30:18Z"
 }
