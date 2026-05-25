@@ -1,37 +1,35 @@
-Daily Token Call · 24 May
+Daily Token Call · 25 May
 ──────────────────────────
 
-RAIL · HIGH · 8/10
-$4.18 · +66.4% 24h · +173.6% 7d
-mcap $240m · vol $10m · vol/mcap 0.04
+AKT · MEDIUM · 6/10
+$0.87 · +4.3% 24h · +17.8% 7d
+mcap $254m · vol $21m · vol/mcap 0.08
 
 
 SIGNALS
-  Top score out of the 250-coin scan after a 20-name dedup gate.
-  Both 24h (+66.4%) and 7d (+173.6%) clear +5% by a multiple, not a margin.
-  Outpacing BTC and ETH on the 7d by 175 and 177 points. BTC sits at -1.8%, ETH at -3.8%.
-  On the CoinGecko trending list alongside HYPE, NEAR, VVV.
-  Vol/mcap 0.04. Turnover sits thin relative to cap, so the move lacks the depth its magnitude suggests.
+  On the CoinGecko trending list today.
+  7d +17.8% stacks on a ~63% one-month run.
+  24h still accelerating against AI-compute peers slowing into digestion.
+  Outpacing BTC and ETH on the 7d window. BTC at +0.4%, ETH at -0.8%.
+  Volume light versus the price move. Vol/mcap sits at 0.08.
 
 CATALYST
-  Privacy/ZK narrative promoted Fading → Rising in today's narrative-tracker map, ending a five-day driver drought.
-  Aleo + Ledger Private DeFi institutional self-custody push lands the same week. Railgun sits inside that thesis as the named privacy DeFi rail.
-  US Treasury report formally recognized crypto mixers' legitimate financial-privacy use, proposing a compliant custodial mixer framework over blanket bans.
-  ZEC flipped TRENDING-DOWN to TRENDING-UP in one token-movers session today. Sector-wide privacy bid reasserts in real time.
-  Protocol TVL $92m, $4.7m revenue on $2b+ shielded volume — real usage backing the move.
+  Decentralized compute / DePIN sits at a top-tier narrative position alongside AI agents.
+  Burn-Mint Equilibrium proposal burns AKT for network deployment costs. Supply dropped 3.696M to 3.562M in the week after the proposal landed.
+  Recent AI-builder showcase drove a clean 10% intraday move on AI tools shipping live on Akash GPUs.
+  Founder Osuri took an institutional stage at Economist Impact Amsterdam earlier this month.
 
 RISK
-  Up 173% in 7d already. Most of the move is done. Late-cycle entry on a parabolic.
-  Sub-top-150 cap at $240m on $10m vol. Token-movers tagged this [PUMP-RISK] this morning.
-  Narrative-tracker called the position RIDE w/ trail. The honest read: narrative arrived before token recovery. The bid is either alpha or exit liquidity for the previous ZEC holders.
-  42.5M tokens still to issue against 57.5M circulating. Future emission overhang at 74% of current float.
+  Decentralized compute moved Rising → Peak yesterday. Late-cycle continuation, not promotion.
+  AKT up ~63% on the month pushes into the $0.90–$1.05 resistance pocket.
+  Light 24h volume reads as markup, not demand confirmation.
 
 DEDUP
-  First time in 7d for RAIL.
-  20-name rolling dedup: KAIA, TRAC, BSB, INJ, NEAR, HYPE, CHZ, LIT, VVV, DASH, ZEC, PENGU, GRASS, ONDO, WLD, BEAT, GENIUS, SKYAI, TAG, EIGEN.
+  First time in 7d for AKT.
+  Recent picks include EIGEN (AI infra) and RAIL (privacy). Different narrative lanes.
 
 
-Take: privacy/ZK turned Rising today and RAIL printed the highest score in the scan. Three drivers carry the catalyst: regulatory tailwind, Ledger integration, sector revival. The +173% 7d at sub-top-150 cap is the [PUMP-RISK] tradeoff. Long with stop on a close below $3.30, which gives back half of today's breakout candle. Size half. If a second driver wave lands tomorrow, the $5.66 ATH from November is the draw. If drivers fade back to a single thread, exit fast.
+Take: AKT is the cleanest AI-compute exposure not on the dedup list. The narrative digests at Peak and the chart pushes into resistance. Long with stop on a close back under $0.78. Size half. Target the $1.05 ceiling — a break above with volume confirms the next leg.
 
 
 not financial advice — pattern-matching only

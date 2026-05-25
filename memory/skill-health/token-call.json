@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-24T17:14:24Z",
-  "quality_score": 5,
-  "assessment": "Substantive crypto pick with multi-driver narrative analysis, risk management rules, specific targets, and proper sourcing.",
+  "last_analyzed": "2026-05-25T05:36:17Z",
+  "quality_score": 4,
+  "assessment": "Substantive analysis with specific catalysts, price targets, and honest risk assessment; well-structured, sourced, and actionable",
   "flags": [],
-  "avg_score": 4.25,
+  "avg_score": 4.24,
   "history": [
     {
       "date": "2026-05-18",
@@ -85,6 +85,10 @@
     {
       "date": "2026-05-24",
       "score": 5
+    },
+    {
+      "date": "2026-05-25",
+      "score": 4
     }
   ]
 }
