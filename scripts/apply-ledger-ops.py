@@ -163,15 +163,15 @@ def apply_evaluations(ledger: dict, evals: list) -> None:
         if "invalidation_breached_today" in ev:
             new_eval["invalidation_breached_today"] = ev["invalidation_breached_today"]
 
-        # De-dup: replace any existing eval for this date
-        replaced = False
-        for i, existing in enumerate(entry["evaluations"]):
-            if existing.get("date") == eval_date:
-                entry["evaluations"][i] = new_eval
-                replaced = True
-                break
-        if not replaced:
-            entry["evaluations"].append(new_eval)
+        # De-dup: remove ALL existing evals for this date, then append the
+        # new one. (Earlier logic broke after replacing the first match,
+        # which left pre-existing same-date duplicates in place. Verified
+        # on HYPE-2026-05-22-001 ledger: had 3× 2026-05-22 evals from
+        # multi-dispatch, dedup replaced only one, leaving 2 duplicates.)
+        entry["evaluations"] = [
+            ev for ev in entry["evaluations"] if ev.get("date") != eval_date
+        ]
+        entry["evaluations"].append(new_eval)
 
         # MAE/MFE update from today's high/low
         todays_high = ev.get("todays_high")
