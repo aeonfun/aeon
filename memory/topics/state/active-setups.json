@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-25T09:46:37Z",
+  "last_updated": "2026-05-25T10:20:55Z",
   "open": [
     {
       "id": "HYPE-2026-05-22-001",
@@ -45,24 +45,6 @@
           "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
         },
         {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 59.827,
-          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 59.827,
-          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
-        },
-        {
-          "date": "2026-05-23",
-          "call": "RIDE",
-          "price_at_eval": 55.107,
-          "note": "Day 2/multi-week. Close $55.107 below $56 invalidation — breach recorded. Same session: Hyperliquid promoted Fading to Peak, AIXBT names HYPE #1 lead ($1.8M daily buybacks + Grayscale 3rd ETF filing + BHYP $30M), smart money L/S +0.14 over 7d. Three-feed confluence holds as mechanical line breaks. Revising invalidation to $54 — buyback-anchored support."
-        },
-        {
           "date": "2026-05-23",
           "call": "RIDE",
           "price_at_eval": 55.632,
@@ -71,21 +53,8 @@
         {
           "date": "2026-05-24",
           "call": "RIDE",
-          "price_at_eval": 61.677,
-          "note": "Day 3/multi-week. +1.27% from fire, well above the $54 revised invalidation. HYPE printed +12.3% on $931M volume on the same day BTC bounced 2.1% — 10pp of relative strength. AIXBT reframed the thesis from ETF filings to $1B fee-funded buybacks plus 16% futures market share against Binance. Narrative-tracker FADING 3/5 but price disagrees; per soul, price wins commentary."
-        },
-        {
-          "date": "2026-05-24",
-          "call": "RIDE",
           "price_at_eval": 63.283,
           "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 63.81,
-          "note": "Day 4/multi-week evening eval. +4.77% from fire on the evening slice — new MFE for the position, exceeding the prior +4.26% set on day 3. Narrative-tracker confirmed Hyperliquid Peak 4/5 RIDE w/ trail through three calendar-day reads today. AIXBT 09:00Z names HYPE whale battle $104M vs $80M with USDC transfer volume at ATH on Solana — institutional and on-chain liquidity both confirm the bid. Funding +0.0062%/8h sits 0.0238pp under the +0.03 MOMENTUM gate; if it pushes past the gate, the position picks up a fresh regime stamp on tomorrow's slice. Same-direction signal continues to suppress (no pyramiding). RIDE.",
-          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -136,21 +105,8 @@
         {
           "date": "2026-05-24",
           "call": "RIDE",
-          "price_at_eval": 353.26,
-          "note": "Day 2/7. Position -2.49% adverse as BCH absorbed the broader risk-on bounce. Still appears on token-movers losers list at -2.3% 24h, -15.0% 7d — the cleanest structural bleed on a day 17 of 20 majors ran green. Smart-money exit thesis intact. Invalidation $370 holds. RIDE."
-        },
-        {
-          "date": "2026-05-24",
-          "call": "RIDE",
           "price_at_eval": 350.0,
           "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 345.0,
-          "note": "Day 3/7 evening eval. BCH absent from the 25-asset perps slice (09:20Z re-run) and from token-movers across all three runs today (AM/midday/PM). Price_at_eval estimated near $345 from market-context naming BCH as one of the top-20 majors closing red on a +0.74% BTC day. High/low estimates carry similar uncertainty bands as prior evals today. Structural smart-money-exit thesis intact. Invalidation $370 holds well clear. RIDE.",
-          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -206,13 +162,6 @@
           "call": "RIDE",
           "price_at_eval": 0.2299,
           "note": "Day 1/7. Position fired this morning. No EIGEN data in afternoon perps slice or token-movers winners/losers/trending. Price_at_eval held at fire. AI agents and Decentralized compute both PEAK 5/5 RIDE in narrative-tracker — sector tailwind intact."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 0.23,
-          "note": "Day 2/7 evening eval. EIGEN absent from the evening perps slice and from PM token-movers winners/losers/trending. Price_at_eval estimated near morning fire ($0.2299). AI agents and Decentralized compute both hold Peak 5/5 RIDE through the third narrative-tracker read of the day. AKT joined the sector bid this morning, ASTER joined the perp-DEX bid this afternoon — sector confluence sustains across three positions now. Invalidation $0.205 holds. RIDE.",
-          "invalidation_breached_today": false
         },
         {
           "date": "2026-05-25",
@@ -484,18 +433,6 @@
           "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
         },
         {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 0.4545,
-          "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 0.4545,
-          "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
-        },
-        {
           "date": "2026-05-23",
           "call": "CLOSE",
           "price_at_eval": 0.3829,
@@ -555,24 +492,6 @@
           "call": "RIDE",
           "price_at_eval": 2.265,
           "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 2.265,
-          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 2.265,
-          "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
-        },
-        {
-          "date": "2026-05-23",
-          "call": "RIDE",
-          "price_at_eval": 2.058,
-          "note": "Day 2/3. -11.48% from fire. Close $2.058 sits 0.39% above $2.05 invalidation. AI agents and DePIN both RISING 5/5 RIDE — narrative re-firmed. OI -3.57% means late longs unwound without panic. Holding."
         },
         {
           "date": "2026-05-23",
@@ -710,12 +629,6 @@
         ]
       },
       "evaluations": [
-        {
-          "date": "2026-05-24",
-          "call": "RIDE",
-          "price_at_eval": 0.55,
-          "note": "Day 2/3. No GENIUS perps data in today's universe — price_at_eval is an estimate from the on-chain context (dropped off monitor-runners top 5, attention rotated to the Solana SAOS cluster). Capitulation thesis intact: smart-money exit and funding flip negative remain the structural reads. Horizon expires tomorrow."
-        },
         {
           "date": "2026-05-24",
           "call": "CLOSE",
