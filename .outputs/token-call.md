@@ -1,35 +1,34 @@
 Daily Token Call · 25 May
 ──────────────────────────
 
-AKT · MEDIUM · 6/10
-$0.87 · +4.3% 24h · +17.8% 7d
-mcap $254m · vol $21m · vol/mcap 0.08
+ASTER · HIGH · 8/10
+$0.72 · +5.5% 24h · +10.5% 7d
+mcap $1.85b · vol $211m · vol/mcap 0.11
 
 
 SIGNALS
-  On the CoinGecko trending list today.
-  7d +17.8% stacks on a ~63% one-month run.
-  24h still accelerating against AI-compute peers slowing into digestion.
-  Outpacing BTC and ETH on the 7d window. BTC at +0.4%, ETH at -0.8%.
-  Volume light versus the price move. Vol/mcap sits at 0.08.
+  Both 24h and 7d clear the +5% bar.
+  Vol/mcap at 0.11 on a $1.85b cap reads as real turnover.
+  Outpaces BTC and ETH on the 7d window. BTC at +0.3%, ETH at -0.4%.
+  Carries the perp-DEX narrative bid alongside HYPE's Peak position.
 
 CATALYST
-  Decentralized compute / DePIN sits at a top-tier narrative position alongside AI agents.
-  Burn-Mint Equilibrium proposal burns AKT for network deployment costs. Supply dropped 3.696M to 3.562M in the week after the proposal landed.
-  Recent AI-builder showcase drove a clean 10% intraday move on AI tools shipping live on Akash GPUs.
-  Founder Osuri took an institutional stage at Economist Impact Amsterdam earlier this month.
+  Aster listed SpaceX pre-IPO perpetuals on 18 May with 5x leverage. The platform now hosts the public-equity perp surface that seeded the SAOS and SPCX meme clusters trending on solana and base this week.
+  Permissionless Listing Vote went live 18 May. Stakers propose and vote on listings. Direct utility for the token.
+  RWA Sprint Season 1 cuts taker fees to 0.9bps, maker fees to zero through 7 June. Bid the volume side of the perp-DEX trade.
 
 RISK
-  Decentralized compute moved Rising → Peak yesterday. Late-cycle continuation, not promotion.
-  AKT up ~63% on the month pushes into the $0.90–$1.05 resistance pocket.
-  Light 24h volume reads as markup, not demand confirmation.
+  Top traders cut longs 0.39 over the past 7d on ASTER perps. The bid runs without smart-money confirmation.
+  Hyperliquid is the perp-DEX leader. ASTER sits at #2, catching the sector tailwind rather than driving it.
+  Price approaches the $0.78 resistance pocket that capped the late-April attempt. ATH at $2.41 sits 235% above current.
 
 DEDUP
-  First time in 7d for AKT.
-  Recent picks include EIGEN (AI infra) and RAIL (privacy). Different narrative lanes.
+  First time in 7d for ASTER.
+  AKT pick from earlier today superseded by operator re-run.
+  Recent picks RAIL, EIGEN, AKT sit in compute and privacy lanes. Different narrative.
 
 
-Take: AKT is the cleanest AI-compute exposure not on the dedup list. The narrative digests at Peak and the chart pushes into resistance. Long with stop on a close back under $0.78. Size half. Target the $1.05 ceiling — a break above with volume confirms the next leg.
+Take: ASTER is the second-derivative trade on Hyperliquid's Peak narrative, with three concrete platform catalysts inside the last week. Long with stop on a close below $0.67. Smart-money divergence keeps this sized for a trail, not a multi-week hold. Target $0.85 first, then $1.00. Break above $0.78 with volume confirms the next leg.
 
 
 not financial advice — pattern-matching only

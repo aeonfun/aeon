@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-25T05:36:17Z",
-  "quality_score": 4,
-  "assessment": "Substantive analysis with specific catalysts, price targets, and honest risk assessment; well-structured, sourced, and actionable",
+  "last_analyzed": "2026-05-25T08:17:48Z",
+  "quality_score": 5,
+  "assessment": "Excellent — insightful catalyst analysis, verified sources, professional trade structure with named risk, proper logging and dedup tracking.",
   "flags": [],
-  "avg_score": 4.24,
+  "avg_score": 4.27,
   "history": [
     {
       "date": "2026-05-18",
@@ -89,6 +89,10 @@
     {
       "date": "2026-05-25",
       "score": 4
+    },
+    {
+      "date": "2026-05-25",
+      "score": 5
     }
   ]
 }
