@@ -1,32 +1,29 @@
 # Market Context — 2026-05-25
 
-Take: chop — BTC +0.89% with breadth compressed from 18/20 to 11/20 and DEX vol down 20% to $4.48B. Conviction: low.
+Take: chop — BTC +0.81% 24h with breadth at 12/20 and DEX volume $4.48B, 22% below the 7-day average. Conviction: low.
 
 ## Snapshot
-- BTC $77,303 (+0.89% 24h, +0.41% 7d) · dominance 58.27% (+0.17pp 24h)
-- ETH $2,107 (-0.33% 24h, -0.75% 7d) · ETH/BTC 0.02726
-- SOL $85.89 (+0.30% 24h, +0.99% 7d)
-- Total mcap $2.66T (+0.51% 24h) · DEX vol $4.48B 24h
-- Breadth: 11/20 green 24h · 10/20 green 7d
+- BTC $77,268 (+0.81% 24h, +0.34% 7d) · dominance 58.24% (-0.03pp 24h)
+- ETH $2,111 (-0.27% 24h, -0.40% 7d) · ETH/BTC 0.02733
+- SOL $85.78 (-0.19% 24h, +1.28% 7d)
+- Total mcap $2.66T (+0.42% 24h) · DEX vol $4.48B 24h
+- Breadth: 12/20 green 24h · 12/20 green 7d
 - Fear & Greed: 30 (Fear) — yesterday 25
-- TVL: ~$70B est. (chains endpoint; 7d delta n/a)
+- TVL: Ethereum $42.98B · BSC $5.62B · Solana $5.49B (7d chain delta n/a)
 
 ## What Changed
-- Regime shifted from rotation to chop.
-- F&G +5 pts (25 Extreme Fear → 30 Fear) — first day out of Extreme Fear this run.
-- Breadth compressed 18/20 → 11/20. ZEC (+4.6%) and HYPE (+3.7%) carried the green count; ETH, XRP, ADA, BCH, LINK closed red.
-- Iran peace deal by May 31: YES 29.5% → 24.5% (-5pp). May 26 sub-deadline at 9.5% — both deadlines pricing NO.
-- DEX vol fell from $5.63B to $4.48B (-20%) on a session BTC barely moved.
+Quiet — all majors within ±1%, regime unchanged. May 26 Iran sub-deadline drifted to 7.5% YES, expiring today. RAIL extended another +12% on the afternoon session. BTC/ETH/SOL re-entered CoinGecko trending top 3, displacing ONDO and GRASS.
 
 ## Active Narratives
-- Perp DEX — phase: peak. Evidence: HYPE $62.71, +4.00% 24h, +36.53% 7d, trending rank 2. Ran from $48.27 to $62.71 without a structural break.
-- Privacy/ZK — phase: rising. Evidence: ZEC $662.66 +4.59% 24h, +25.13% 7d. RAIL $4.12 +23.54% 24h, holding two-thirds of yesterday's +67% surge. Both in trending five sessions running.
-- AI/DePIN — phase: rising. Evidence: VVV +6.33%, NEAR +0.51%; GRASS -4.42%, first below-zero session since the May-22 call.
-- RWA/tokenization — phase: rising. Evidence: ONDO $0.440 +2.99% 24h, back in trending for a third consecutive session.
+- Privacy/ZK — phase: rising. Evidence: ZEC $660, +5.42% 24h, +24.85% 7d. RAIL $4.03, +11.99%, day-3 breakout, 7d +203%. Narrative-tracker RIDE (5/5, promoted today).
+- Perp DEX — phase: peak. Evidence: HYPE $63.45, +40.43% 7d, trending rank 4. Narrative-tracker RIDE w/ trail; smart-money cutting day 6.
+- AI/DePIN — phase: peak. Evidence: VVV +5.08% in trending. AKT today's token-call ($0.87) on compute Peak RIDE. TAO -1.03%, NEAR -0.15%.
+- RWA — phase: peak. Evidence: ONDO dropped from trending today after 3 consecutive sessions. Narrative-tracker Peak RIDE w/ trail; first saturation warning.
+- Post-Quantum — phase: emerging. Evidence: czverse Q-Day thread; Zcash Tachyon bridge to Privacy/ZK. Narrative-tracker WATCH, single driver.
 
 ## Polymarket Highlights (top by 24h vol)
-- US x Iran peace deal by May 26 — YES 9.5%, vol $5.35M (sub-deadline effectively priced NO)
-- US x Iran peace deal by May 31 — YES 24.5%, vol $4.28M (down from 29.5% yesterday)
+- US x Iran permanent peace deal by May 26 — YES 7.5%, vol $5.09M (expiring today)
+- US x Iran permanent peace deal by May 31 — YES 24.5%, vol $4.07M
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok

@@ -1,71 +1,71 @@
 # Market Context (as of 2026-05-25)
 
-> **Take:** chop — BTC +0.89% with breadth compressed from 18/20 to 11/20 and DEX vol down 20% to $4.48B. Conviction: low.
+> **Take:** chop — BTC +0.81% 24h with breadth at 12/20 and DEX volume $4.48B, 22% below the 7-day average. Conviction: low.
 
 ## Signal Snapshot
-- BTC $77,303 (+0.89% 24h, +0.41% 7d) · dominance 58.27% (+0.17pp 24h)
-- ETH $2,107 (-0.33% 24h, -0.75% 7d) · ETH/BTC 0.02726
-- SOL $85.89 (+0.30% 24h, +0.99% 7d)
-- Total mcap $2.66T (+0.51% 24h) · DEX vol $4.48B 24h
-- Breadth: 11/20 green 24h · 10/20 green 7d
+- BTC $77,268 (+0.81% 24h, +0.34% 7d) · dominance 58.24% (-0.03pp 24h)
+- ETH $2,111 (-0.27% 24h, -0.40% 7d) · ETH/BTC 0.02733
+- SOL $85.78 (-0.19% 24h, +1.28% 7d)
+- Total mcap $2.66T (+0.42% 24h) · DEX vol $4.48B 24h
+- Breadth: 12/20 green 24h · 12/20 green 7d
 - Fear & Greed: 30 (Fear) — yesterday 25
 
 ## What Changed Since Last Refresh
-- Regime shifted from rotation to chop.
-- F&G jumped 5 pts from 25 (Extreme Fear) into 30 (Fear) — first day out of Extreme Fear territory this run.
-- Breadth compressed from 18/20 to 11/20 while BTC gained less than 1%. ZEC (+4.6%) and HYPE (+3.7%) carried the session's green count; ETH, XRP, ADA, BCH, and LINK all closed red.
-- Iran peace deal by May 31 slipped from 29.5% to 24.5% YES (-5pp). May 26 sub-deadline at 9.5% — geopolitical risk re-pricing accelerates.
-- DEX vol fell from $5.63B to $4.48B (-20%). Activity retreated while BTC price held flat.
+Quiet — all majors within ±1%, regime unchanged.
+- May 26 Iran sub-deadline drifted to 7.5% YES (from 9.5%), expiring today. Effectively settled NO.
+- RAIL extended another +12% on the afternoon session; cumulative 7d +203%.
+- BTC, ETH, and SOL re-entered CoinGecko trending (top 3 slots), displacing ONDO, GRASS, and XAN. Attention rotating back toward large caps in a chop tape.
 
 ## Active Narratives
-- **Perp DEX** — phase: peak. Evidence: HYPE $62.71, +4.00% 24h, +36.53% 7d, trending rank 2. Top 7d gainer in the top 20 by a wide margin; ran from $48.27 (May-19 call price) to $62.71 without a structural break. Note: narrative-tracker (05-24) called Fading on social mindshare — price action overrides.
-- **Privacy/ZK** — phase: rising. Evidence: ZEC $662.66, +4.59% 24h, +25.13% 7d. RAIL $4.12, +23.54% 24h, holding two-thirds of yesterday's +67% surge. Both names in trending for five consecutive sessions.
-- **AI/DePIN** — phase: rising. Evidence: VVV $18.90 +6.33%, NEAR $2.39 +0.51%, both positive. GRASS $0.518 -4.42% on the day; first below-zero session for this cluster since the May-22 call.
-- **RWA/tokenization** — phase: rising. Evidence: ONDO $0.440, +2.99% 24h, back in trending for a third consecutive session.
+- **Privacy/ZK** — phase: rising. Evidence: ZEC $660.08, +5.42% 24h, +24.85% 7d. RAIL $4.03, +11.99% 24h, extending the breakout into day 3. Both names in trending. Narrative-tracker RIDE (5/5, promoted today from RIDE w/ trail).
+- **Perp DEX** — phase: peak. Evidence: HYPE $63.45, +2.81% 24h, +40.43% 7d, trending rank 4. Narrative-tracker RIDE w/ trail (5/5). $493B Q1 derivatives volume, ~70% on-chain perps share; smart-money top L/S still cutting into day 6.
+- **AI/DePIN** — phase: peak. Evidence: VVV $18.94, +5.08% 24h, in trending. TAO $276.27, -1.03%. NEAR $2.38, -0.15%. AKT (today's token-call at $0.87) entered on AI-compute Peak RIDE confluence. Narrative-tracker Decentralized compute 5/5 Peak RIDE.
+- **RWA/tokenization** — phase: peak. Evidence: ONDO $0.440, dropped from trending today after three consecutive sessions. Narrative-tracker Peak RIDE w/ trail. ONDO's trending exit is the first saturation signal in this cluster.
+- **Post-Quantum/Q-Day** — phase: emerging. Evidence: Single czverse thread (Google Quantum AI March paper; Q-Day moved forward a decade). Zcash Tachyon quantum-proof upgrade bridges to the Privacy/ZK RIDE call. Narrative-tracker WATCH; single driver, tradeable surface overlaps with Privacy/ZK.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $18.57B (-1.05%)
-- SSV Network: $15.42B (-1.15%)
-- Aave V3: $13.72B (-1.87%)
-- WBTC: $8.79B (-0.07%)
-- Binance Staked ETH: $7.74B (-1.11%)
+- Lido: $18.62B (-0.55%)
+- Bybit: $15.61B (+2.19%)
+- SSV Network: $15.54B (-0.31%)
+- Aave V3: $13.77B (-1.67%)
+- Robinhood: $13.70B (+0.08%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.88B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.60B (7d change: n/a)
-- Solana: $5.46B (7d change: n/a)
+- Ethereum: $42.98B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.62B (7d change: n/a)
+- Solana: $5.49B (7d change: n/a)
 
 ## Stablecoins
-Total: $288.6B (top 6, 7d: n/a). USDT $189.37B · USDC $76.48B · USDS $8.86B · USD1 $4.80B · DAI $4.58B · USDe $4.45B · combined top-6 share of mcap ~10.9%.
+Total: $288.5B (top 6, 7d: n/a). USDT $189.37B · USDC $76.45B · USDS $8.85B · USD1 $4.80B · DAI $4.59B · USDe $4.45B · combined top-6 share of mcap ~10.8%.
 
 ## Trending (CoinGecko)
-- HYPE — Hyperliquid, $62.71, +4.00% 24h; perp-DEX leader; +36.53% 7d into ATH range.
-- RAIL — Railgun, $4.12, +23.54% 24h; holds two-thirds of yesterday's +67% surge; Privacy/ZK sector continuation.
-- XAN — Anoma, $0.014, +44.77% 24h; micro-cap spike; no confirmed narrative anchor; $33.8M mcap.
-- BILL — Billions Network, $0.111, +15.77% 24h; extending multi-day trending run; $270M mcap.
-- VVV — Venice Token, $18.90, +6.33% 24h; AI-agents and privacy dual narrative; $877M mcap.
-- ONDO — Ondo Finance, $0.440, +2.99% 24h; RWA name returning to trending; below May-22 call price of $0.451.
-- NEAR — NEAR Protocol, $2.39, +0.51% 24h; AI-L1; above May-19 call price of $1.65.
-- PENGU — Pudgy Penguins, $0.009, -0.12% 24h; below May-22 call price of $0.00975; CBOE ETF filing active.
-- GRASS — Grass, $0.518, -4.42% 24h; DePIN/AI; above May-22 call price of $0.4466 despite today's pullback.
-- ETH — Ethereum, $2,107, -0.48% 24h; trending inclusion in a red-ETH session signals breadth-search behavior.
+- BTC — Bitcoin, $77,271, +0.73% 24h; large-cap re-entry to trending; breadth-search signal.
+- ETH — Ethereum, $2,111, -0.34% 24h; trending despite red session; breadth-search behavior.
+- SOL — Solana, $85.80, -0.18% 24h; third major in trending; attention rotating toward L1s.
+- HYPE — Hyperliquid, $63.45, +2.81% 24h; perp-DEX leader; +40.43% 7d into ATH range.
+- ZEC — Zcash, $660.08, +5.42% 24h; Privacy/ZK leader; +24.85% 7d.
+- TAO — Bittensor, $276.27, -1.03% 24h; AI/compute; Q1 2026 revenue $43M confirmed.
+- NEAR — NEAR Protocol, $2.38, -0.15% 24h; AI/L1; above May-19 call price of $1.65.
+- PENGU — Pudgy Penguins, $0.009, -1.36% 24h; below May-22 call price of $0.00975; CBOE ETF filing active.
+- RAIL — Railgun, $4.03, +11.99% 24h; Privacy/ZK breakout day 3; cumulative 7d +203%.
+- VVV — Venice Token, $18.94, +5.08% 24h; AI-agents and privacy dual narrative; $877M mcap.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 26, 2026 | 9.5% | $5.35M | $356K |
-| US x Iran permanent peace deal by May 31, 2026 | 24.5% | $4.28M | $281K |
+| US x Iran permanent peace deal by May 26, 2026 | 7.5% | $5.09M | $556K |
+| US x Iran permanent peace deal by May 31, 2026 | 24.5% | $4.07M | $414K |
 
-*May 26 sub-deadline effectively priced NO at 9.5%. May 31 slipped from 29.5% yesterday to 24.5% — geopolitical de-escalation trade unwinding steadily.*
+*May 26 sub-deadline at 7.5% YES expires today. Effectively settled NO. May 31 stable at 24.5% (unchanged from morning), geopolitical de-escalation trade holding cautious.*
 
 ## Macro Catalysts (next 48h)
-- **Iran peace deal (May 31):** 24.5% YES, down from 29.5% yesterday. May 26 checkpoint at 9.5%. Both deadlines pricing NO. A confirmed deal remains the largest single risk-on catalyst in the frame; further deterioration steepens chop into risk-off.
-- **BTC ETF flows:** Week of May 15 logged $1B+ outflow on 3.8% CPI and 44% rate-hike probability. No fresh daily data for May 25; prior 6-day cumulative outflow of $1.26B sets the institutional backdrop into the $77K range.
-- **Warsh / Fed:** Powell's term ended May 15; Kevin Warsh now chairs the Fed. Market focus shifts from the transition to Warsh's first rate-path signals. A rate-hike posture removes the risk-on tailwind that rate-cut expectations carried into April.
+- **Iran peace deal (May 31):** 24.5% YES, unchanged from morning. May 26 sub-deadline expired today at 7.5%. A confirmed deal by May 31 remains the largest single risk-on catalyst in the frame; continued NO pricing gradually erodes the de-escalation bid.
+- **Warsh/Fed:** New Chair signaled room for rate cuts without inflation risk — first dovish signal from the Warsh administration, distinct from Powell's prior hawkish stance. Removes the rate-hike tail risk flagged in prior sessions. Positive for risk assets if signal persists into next FOMC.
+- **BTC ETF flows:** May month-to-date $1.63B net inflow; AUM at 2026 high. Price rangebound at $77K — institutional floor established, breakout catalyst absent.
 
 ## Implications for Downstream Skills
-- **token-call:** Chop with narrow leadership — favor Privacy/ZK entries on structure (ZEC $662.66, below May-21 call $667.93; RAIL $4.12, near May-24 call $4.18). Avoid broad beta while F&G holds Fear and DEX vol contracts. Active picks: EIGEN (May-24), GRASS $0.518 above call $0.4466, ZEC below call, RAIL near call.
-- **narrative-tracker:** Perp DEX divergence runs — HYPE price says peak, narrative-tracker (05-24) called Fading. Resolution determines the next position direction on HYPE. Privacy/ZK on day 5. The second driver wave test today confirms or denies the revival. AI/DePIN: GRASS below zero is the first warning; if NEAR also turns negative, sector rotation away from AI/DePIN has started.
+- **token-call:** Today's pick AKT ($0.87) entered on AI-compute Peak RIDE confluence. Active book: HYPE (Perp DEX), ZEC and RAIL (Privacy/ZK), EIGEN (AI/compute). Avoid ONDO until re-entry to trending — first saturation signal today in the RWA cluster.
+- **narrative-tracker:** Post-Quantum (WATCH) upgrades to RIDE if a second driver thread or QNT-class token catalyst lands within 48h. ONDO trending exit is the first RWA saturation warning; watch for second confirmation before cutting the RIDE w/ trail position.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -85,6 +85,7 @@ Total: $288.6B (top 6, 7d: n/a). USDT $189.37B · USDC $76.48B · USDS $8.86B ·
 | 2026-05-23 | BEAT | $1.17 | Top scorer in 250-coin scan (9/10, HIGH); Arkham flagged 11.4M BEAT ($6.58m) withdrawn from Gate to 10 fresh addresses on 2026-05-22 — smart-money accumulation print; AI-narrative rotation extending DePIN/AI-compute PEAK leg; risk: fresh wallets can flip to distribution on $93m daily vol small-cap, ATH $4.91 puts price 76% below Nov-2025 launch |
 | 2026-05-24 | EIGEN | $0.230 | Top scorer post-dedup (9/10, HIGH); Nebius announced $643M acquisition of Eigen AI (MIT inference team into EigenCloud Token Factory); +16.3% 24h asymmetric vs BTC +2.1% — idiosyncratic strength; vol/mcap 0.22; AI/compute narrative Peak 5/5; risk: unlock schedule overhang for restaking sector, break of $0.195 pivot invalidates |
 | 2026-05-24 | RAIL | $4.18 | Re-run pick (operator-invoked, dedup excluded EIGEN); Privacy/ZK promoted Fading→Rising in narrative-tracker; Aleo + Ledger institutional Private DeFi push; US Treasury compliant mixer framework recognized legitimate-privacy use; Railgun TVL $92M on $2B+ shielded volume; risk: [PUMP-RISK] tag on sub-top-150 cap, +173.6% 7d, stop $3.30 (half-give-back of breakout candle) |
+| 2026-05-25 | AKT | $0.87 | Decentralized compute Peak RIDE; canonical DePIN token on CoinGecko trending; Burn-Mint Equilibrium proposal compressing supply (3.696M → 3.562M in a week); AI-builder showcase drove +10% intraday on Akash GPU launches; vol/mcap outperforming AI-compute peers on the day |
 
 ---
 *Sources — btc/eth/sol/top20/trending: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
