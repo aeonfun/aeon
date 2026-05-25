@@ -95,6 +95,17 @@
         "liquidpad-token-alert",
         "liquidpad-fee-tracker"
       ]
+    },
+    {
+      "repo": "ryjin111/aeon-skill-pack-mythosforge",
+      "name": "aeon-skill-pack-mythosforge",
+      "description": "Read-only MythosForge ops monitoring — backlog, jury/payout health, degraded-juror notes, and stall alerts.",
+      "author": "ryjin111",
+      "license": "MIT",
+      "homepage": "https://mythosforge.xyz",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": ["mythosforge-ops-report"]
     }
   ]
 }
