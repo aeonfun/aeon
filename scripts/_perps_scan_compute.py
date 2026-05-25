@@ -2,7 +2,7 @@
 import json, os, sys
 
 CACHE = ".coinglass-cache"
-TODAY = "2026-05-19"
+TODAY = "2026-05-25"
 TIER1 = {"BTC", "ETH", "SOL"}
 
 
