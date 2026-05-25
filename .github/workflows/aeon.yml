@@ -708,6 +708,12 @@ jobs:
           # postprocess, leaving no rendered artifact and no Discord
           # delivery for the brief.
           SKILL_NAME: ${{ steps.skill.outputs.name }}
+          # V1_LOCK_DATE filters outcome-tracker's closed[] window to
+          # entries with closed_date >= V1_LOCK_DATE. Implements the
+          # operator's partial-reset baseline — pre-V1 closes stay in
+          # the ledger but don't contaminate the V1 track-record
+          # analysis. Unset means "include everything" (cold-start).
+          V1_LOCK_DATE: ${{ secrets.V1_LOCK_DATE }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
