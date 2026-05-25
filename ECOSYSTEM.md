@@ -19,6 +19,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
 | AgentBounty | [@agentbountydev](https://x.com/agentbountydev) |
 | Amper | [@ampera_xyze](https://x.com/ampera_xyze) |
+| AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
 | Autonomopoly | [@AUTONOMOPOLY_](https://x.com/AUTONOMOPOLY_) |
 | Bankr | [@bankrbot](https://x.com/bankrbot) |
 | Bankrsynth | [@bankrsynth](https://x.com/bankrsynth) |
@@ -34,15 +35,18 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | GitBlock | [@gitblock_](https://x.com/gitblock_) |
 | GitBounty | [@Git_Bounty](https://x.com/Git_Bounty) |
 | GitKernal | [@gitkernal](https://x.com/gitkernal) |
+| Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
 | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
 | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
 | Liq | [@_proxystudio](https://x.com/_proxystudio) |
 | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
 | MiroShark | [@miroshark_](https://x.com/miroshark_) |
+| MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
 | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
 | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
 | Powerloom | [@Powerloom](https://x.com/Powerloom) |
 | Precog | [@precog](https://x.com/precog) |
+| Reg Terminal | [@regterminal](https://x.com/regterminal) |
 | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | RootAi | [@rootaichad](https://x.com/rootaichad) |
@@ -52,6 +56,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
 | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) |
 | Tachi | [@smolekoma](https://x.com/smolekoma) |
+| USIC | [@USICAI](https://x.com/USICAI) |
 | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
 | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
 | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
