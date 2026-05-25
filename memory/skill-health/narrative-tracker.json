@@ -1,11 +1,9 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-25T05:31:11Z",
+  "last_analyzed": "2026-05-25T08:14:22Z",
   "quality_score": 4,
-  "assessment": "Substantive narrative analysis with multi-source triangulation, specific metrics, and clear follow-ups; recurring ISS-005 issue and notification workaround prevent excellence.",
-  "flags": [
-    "quality_regression"
-  ],
+  "assessment": "Well-handled duplicate verification with specific narrative tracking and pattern identification",
+  "flags": [],
   "avg_score": 3.95,
   "history": [
     {
@@ -82,6 +80,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     },
     {
