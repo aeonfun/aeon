@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-24T17:19:54Z",
+  "last_analyzed": "2026-05-25T05:35:38Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-quantified market analysis with specific regime update, proper file/memory integration, and actionable downstream implications",
+  "assessment": "Substantive market snapshot with specific data (breadth, volume, token metrics, narratives), clear regime call, files committed; truncated output limits full visibility",
   "flags": [],
-  "avg_score": 4.11,
+  "avg_score": 4.1,
   "history": [
     {
       "date": "2026-05-18",
@@ -80,6 +80,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     }
   ]
