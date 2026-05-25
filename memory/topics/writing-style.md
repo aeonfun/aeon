@@ -281,7 +281,7 @@ Perps Brief · DD MMM
 
 1. **Bullet writing** — every bullet is a complete observation (subject + verb + object), self-contained, plain language. Apply Pattern 7 strictly.
 2. **Bullet count** — 3-4 thesis bullets per card. 2-3 risks per new position. Don't pad to hit a count; if there are only two real observations, write two.
-3. **Bullet length** — target ~150-200 characters per bullet. Hard cap 250.
+3. **Bullet length** — target ~120 characters per bullet. Hard cap 180. Tighter than v4.1's first release after operator confirmed Discord mobile renders unrecoverably when bullets wrap to 3+ lines.
 4. **Blank-line separation** — two blank lines between the metadata block and `thesis`, and two between `thesis` and `risks`. Visual section breaks.
 5. **Field labels** — `ticker`, `direction`, `horizon`, `entry`/`trigger`, `stop`, `thesis`, `risks`. Lowercase, left-aligned, value indented to column 14.
 6. **Direction tags** — LONG / SHORT uppercase. Outcome tags on CLOSE rows (WIN, LOSS, NEUTRAL, WIN-WITH-SCARE) appended to CALL column.

@@ -95,11 +95,15 @@ Replace any per-signal numeric breakdown with a short prose summary of which sig
 
 The conviction tier and the numeric score (`8/10`) appear in the title line. The Signals prose appears as a single labelled line in the body.
 
-### 5. Write artifact + notify (v2 locked format)
+### 5. Write artifact (V1 lock 2026-05-25 — was signal, now internal)
 
-This is a **signal** skill under Aeon Market Stack v2. It writes both:
+Under v4.1 V1, this is an **internal** skill. It writes only one output:
+
 1. `.outputs/token-call.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
-2. A Discord-only notification via `./notify --signal "..."` routed to `#token-call`.
+
+The Discord notification path was removed at V1 lock. The daily token call is now consumed by perps-brief as Pass 1 input but no longer pushed to `#token-call` independently. Operator decision: too many Discord channels diluted attention; perps-brief is the consolidation point for actionable trades.
+
+**Do NOT call `./notify`.**
 
 **Format — normal day (under 4000 chars, no asterisks):**
 
@@ -141,11 +145,7 @@ Daily Token Call · ${today} · scan unavailable, sources failed
 - Each body line uses a label colon prefix (`Signals:`, `Catalyst:`, `Risk:`, `Dedup check:`).
 - Disclaimer line at bottom is mandatory on normal days.
 
-**Invocation:**
-```bash
-./notify --signal "$(cat .outputs/token-call.md)"
-```
-The `--signal` flag suppresses Telegram; Discord routing via `DISCORD_WEBHOOK_MAP[token-call]` targets `#token-call`.
+**Notify invocation removed at V1 lock.** Do not call `./notify`. The artifact at `.outputs/token-call.md` is the only output; perps-brief picks it up via the chain consume mechanism.
 
 ### 6. Log to `memory/logs/${today}.md`
 
@@ -155,7 +155,7 @@ The `--signal` flag suppresses Telegram; Discord routing via `DISCORD_WEBHOOK_MA
 - **Thesis:** [one line including catalyst]
 - **Sources:** cg=ok|fail, dex=ok|fail
 - **Artifact written:** .outputs/token-call.md
-- **Notification sent:** yes (normal | skip | no-data) — via `./notify --signal` to #token-call
+- **Notification:** internal-only (V1 lock 2026-05-25 — was #token-call signal)
 ```
 
 Append symbol on a single line for easy grep next-day dedup:

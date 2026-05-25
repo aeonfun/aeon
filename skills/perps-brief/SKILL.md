@@ -58,7 +58,7 @@ Skip-day discipline applies to NEW POSITIONS and WATCHLIST. CURRENT POSITIONS is
 
 ## Inputs (consumed via chain)
 
-This skill runs as chain Step 2 with `consume:` set to seven upstream skills. The chain-runner injects all seven artifacts into `.outputs/.chain-context-perps-brief.md`:
+This skill runs as chain Step 2 with `consume:` set to eight upstream skills. The chain-runner injects all artifacts into `.outputs/.chain-context-perps-brief.md`:
 
 - `.outputs/perps-scan.md` — regime classification + pattern tags + aggregate verdict
 - `.outputs/narrative-tracker.md` — phase-grouped narratives with leading tokens
@@ -67,6 +67,7 @@ This skill runs as chain Step 2 with `consume:` set to seven upstream skills. Th
 - `.outputs/monitor-runners.md` — DEX runners, tag-grouped
 - `.outputs/token-movers.md` — winners/losers/trending with tags
 - `.outputs/token-call.md` — daily token call (or skip-day variant)
+- `.outputs/outcome-tracker.md` — **track record context**. Headline win rate, by-direction / by-horizon / by-confluence-pattern rollups, mark-to-market on every open position, and a NOTES section with auto-detected anomalies. Use this as ambient context for your judgement: if a confluence pattern has historically underperformed, weight it less; if direct entries beat watchlist promotions, lower the bar for direct entries; if SCARE rate is high, tighten invalidation logic in your watch fields. The track record is information, not a hard constraint — integrate it alongside today's signal data.
 
 **Plus, critically:**
 - `memory/topics/state/active-setups.json` — the ledger. Read `open[]` and `watchlist[]` at the start of every run.
@@ -89,7 +90,11 @@ For each entry in `ledger.open[]`:
 4. If `CLOSE`: compute return vs entry, vs BTC, vs ETH (using current BTC/ETH prices from `market-context-refresh`). Set `close_reason`.
 5. If `RIDE`: name the current condition the operator should watch.
 6. **Record today's price snapshot** in the evaluation: `price_at_eval`, `todays_high`, `todays_low`. The apply script uses these to update MAE/MFE.
-7. **Record invalidation breach if applicable** — if today's daily close crossed the invalidation level, set `invalidation_breached_today: true` in the evaluation. This is sticky on the ledger entry (once true, stays true). Drives the SCARE outcome later.
+7. **Record invalidation breach if applicable.** If today's daily close crossed the invalidation level, set `invalidation_breached_today: true` in the evaluation entry. This is sticky on the ledger entry (once true, stays true). Drives the SCARE outcome later.
+
+   **CRITICAL — DO NOT MENTION BREACH IN PROSE WITHOUT SETTING THE FLAG.** If your evaluation note says anything like "Close $X below $Y invalidation", "breach recorded", "stop hit but holding", "broke the line", or "invalidation crossed", you MUST set `invalidation_breached_today: true` in that same evaluation's structured fields. Production audit on 2026-05-25 found HYPE flagged as breach=true with prose ("Close $55.107 below $56 invalidation — breach recorded") but the structured flag was never set across 8 evaluations. SCARE outcomes will under-report if this discipline slips.
+
+   Rule: prose says breach → flag is true. Anything else is a bug.
 
 Each evaluation must include all fields. The apply script appends to the entry's `evaluations[]` array and updates MAE/MFE.
 
@@ -184,9 +189,9 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `ticker`, `direction` (LONG | SHORT), `horizon` (24h | 3d | 7d | multi-week)
 - `entry_zone` — price level, range, or `"market"`
 - `invalidation` — price level OR named signal-state change
-- `thesis` — **array of 3-4 bullet strings**. Each bullet is a complete self-contained sentence covering one of: price action, narrative, regime/positioning, cross-domain catalyst. **Apply `memory/topics/writing-style.md` Pattern 7 strictly** — no source-artifact shorthand, no telegraphic fragments. Each bullet must read clearly to someone who hasn't opened the upstream artifacts. Target 150-200 chars per bullet, hard cap 250.
+- `thesis` — **array of 3-4 bullet strings**. Each bullet is a complete self-contained sentence covering one of: price action, narrative, regime/positioning, cross-domain catalyst. **Apply `memory/topics/writing-style.md` Pattern 7 strictly** — no source-artifact shorthand, no telegraphic fragments. Each bullet must read clearly to someone who hasn't opened the upstream artifacts. **Target ~120 chars per bullet, hard cap 180.** Tighter than v4.1's original 200-char target — operator confirmed Discord mobile renders unrecoverably when bullets wrap multiple times.
 - `confluence_fired[]` — at least one criterion from the enumerated set (logged for the ledger / track-record, NOT rendered in the operator-facing card)
-- `risks[]` — **array of 2-3 bullet strings**, non-empty. Each risk is a named, concrete concern (not "market could turn"). Same writing rules as thesis bullets.
+- `risks[]` — **array of 2-3 bullet strings**, non-empty. Each risk is a named, concrete concern (not "market could turn"). Same ~120 char target, 180 char cap as thesis bullets.
 
 ## Required fields per watchlist entry
 
