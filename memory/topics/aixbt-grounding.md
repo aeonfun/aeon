@@ -1,15 +1,15 @@
-# AIXBT Grounding (as of 2026-05-24 17:00 UTC)
+# AIXBT Grounding (as of 2026-05-25 05:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-24T17:00:23.955Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-25T05:00:23.099Z
 
-Note: twentieth consecutive execution returning only two sections — `crypto` and `tradfi`. Macro and geopolitics fold into TradFi items.
+Note: Macro and geopolitics fold into TradFi again. Two-section format persists.
 
 ## Crypto
-- $HYPE dominates sentiment, hitting ATHs near $64 with spot ETF inflows, record 7% perp OI share vs CEXs, and massive options positioning on Derive.
-- Privacy narrative surges as $ZEC, $RAIL, and NEAR's confidential intents gain traction; Vitalik's EF post champions intermediary minimization and CROPS values.
-- Stablecoin infrastructure expands with Japan's JPYC on Kaia, Osero's yield APIs, and State Street tokenization—while StablR's $13.5M multisig exploit exposes risks.
-- DeFi revenue metrics gain focus as Aave's Stani reframes lending valuation around loan books, and Base ecosystem fair launches draw comparisons to DeFi Summer.
+- $HYPE dominates mindshare after flipping $DOGE to become the 9th largest crypto; traders eye SOL flip next amid ATH breakout attempts and growing non-crypto perp OI.
+- $ZEC emerges as a consensus long alongside $HYPE and $NEAR, with CT framing the trio as this cycle's "SOLUNAVAX"; privacy narrative gains momentum from Grayscale's Silbert.
+- Vitalik's EF post reveals 90% net worth in ETH and signals reduced selling; sentiment remains split as ETH Fear index sits at 31 despite contrarian accumulation calls.
+- $BTC holds 2025 yearly lows but rejected at SMA200; Fear index at 25 with Saylor pivoting to bonds over BTC purchases, raising questions about near-term conviction.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -18,39 +18,40 @@ Note: twentieth consecutive execution returning only two sections — `crypto` a
 *(folded into TradFi this reading)*
 
 ## TradFi
-- US stock indices extend their winning streak as investors increase risk exposure following signs of progress toward an Iran peace deal.
-- Treasury yields hold near 4.56% amid resilient growth and energy price pressures, shaping duration and liquidity preferences in fixed income.
-- Potential reopening of the Strait of Hormuz from the emerging US-Iran agreement eases shipping and energy supply risks but pending details keep oil vol elevated.
-- Emerging doubts in Iran negotiations on asset unfreezing and Lebanon terms could reverse recent risk asset gains and heighten cross-market hedging demands.
+- Warsh Fed era opens with Treasury markets pricing 2026 rate hikes, tightening yield expectations and dollar funding amid sticky inflation.
+- Equity positioning stays risk-on at record levels as inflows favor tech and cyclicals on de-escalation optimism compressing vol.
+- US-Iran diplomacy progress eases Hormuz risk, transmitting lower energy costs into tighter credit spreads and broader risk appetite.
+- Macro liquidity remains anchored by resilient fiscal flows and central bank continuity, limiting geopolitical transmission into rates and equities.
 
-## What's New (vs last pull — 2026-05-24T06:00 UTC)
-- [CRYPTO] HYPE reframed: from $1B+ fee-funded buybacks + 16% futures market share vs Binance to ATH near $64 + options positioning on Derive + 7% perp OI share vs CEXs. Momentum and options angle replaces the fundamental revenue frame.
-- [CRYPTO] $RAIL added to the privacy cluster. NEAR reframed from EIP-8182/Kohaku ETH ZK implementation to "confidential intents." Vitalik's EF post on intermediary minimization and CROPS values is entirely new. Philosophical anchor for the privacy bid.
-- [CRYPTO] Stablecoin infrastructure framing replaces the Solana ETF inflows / tokenized commodity story. StablR exploit upgraded from $10M depeg to $13.5M multisig. JPYC on Kaia + Osero yield APIs + State Street tokenization are new.
-- [CRYPTO] DeFi revenue metrics item entirely new: Aave's Stani loan book reframing + Base DeFi Summer comparisons.
-- [TRADFI] Treasury yields at 4.56% named for the first time.
-- [TRADFI] Iran deal doubt item new: asset unfreezing and Lebanon terms as named complications. Bifurcates the deal-progress narrative.
+## What's New (vs last pull — 2026-05-24T17:00Z)
+- [CRYPTO] HYPE milestone reframe: from ATH near $64 + options on Derive + 7% perp OI share to flipping DOGE for 9th largest market cap, with SOL flip as the named next target. The narrative moved from momentum trading to asset-class ranking.
+- [CRYPTO] SOLUNAVAX trio label: CT explicitly packages ZEC/HYPE/NEAR as this cycle's mega-alt basket — a cluster framing absent from all prior reads. Grayscale's Silbert named as the institutional anchor for the privacy leg.
+- [CRYPTO] Vitalik's ETH reveal reframed: prior read was philosophical (CROPS values, intermediary minimization); current read is a sell-pressure signal (90% net worth in ETH, reduced selling). Both are pro-ETH; the current frame is actionable.
+- [CRYPTO] BTC structural softening returns: SMA200 rejection, Fear index at 25, Saylor pivoting to bonds over BTC purchases. This frame dropped from AIXBT's feed on 2026-05-22 and resurfaces now with a bearish lean.
+- [TRADFI] Warsh Fed era named for the first time: Treasury markets pricing 2026 rate hikes. New Fed leadership = new rate path priced in.
 
-## Gone (vs last pull)
-- BTC $77K bounce / Fear & Greed at 25 / $56K bear target / 200W SMA — entire BTC cycle structural frame dropped.
-- ETH ZK privacy via EIP-8182 and Kohaku — replaced by Vitalik's EF post on intermediary minimization.
-- Open-weight AI tokens on Base/Solana — AI × crypto convergence dropped.
-- Equity longs positioned for extension / vol compression / sector participation.
-- Dollar softening + EM inflows as explicit deal-transmission mechanism.
-- Banks and credit spread tightening.
+## Gone (vs last pull — 2026-05-24T17:00Z)
+- $RAIL dropped from the privacy cluster (prior: ZEC/RAIL/NEAR; now: ZEC/NEAR embedded in the SOLUNAVAX trio).
+- NEAR's "confidential intents" framing dropped.
+- Vitalik's CROPS values / intermediary minimization frame replaced by the personal position signal.
+- Stablecoin infrastructure block entirely dropped: JPYC on Kaia, Osero yield APIs, State Street tokenization, StablR $13.5M multisig exploit — all gone.
+- DeFi Summer / Aave loan book reframe gone.
+- Treasury yields at 4.56% explicit number replaced by Warsh rate-hike-path framing.
+- Iran deal doubt items gone: Lebanon terms and asset unfreezing no longer named. This read is uniformly bullish on the deal; prior read was bifurcated.
 
 ## Persisting Stories
-- HYPE dominant — framing shifted from fundamentals (buybacks, competitive share) to ATH momentum + options. Thesis intact. Conviction angle changed.
-- Privacy sector (ZEC, NEAR) — broadening. RAIL added. Vitalik's EF post replaces the technical ETH ZK frame with a philosophical anchor.
-- US-Iran/Hormuz nexus — now bifurcated. Deal progress (equities extending, Hormuz easing) alongside explicit doubt (asset unfreezing + Lebanon terms). Prior reads were one-directional. This reading is contested.
-- StablR exploit — persisting. Amount upgraded $10M → $13.5M. Framing upgraded from depeg to multisig exploit.
+- HYPE dominant — framing matures from ATH momentum + options to market-cap ranking milestone. Thesis intact. Conviction strengthened by the ranking benchmark.
+- Privacy (ZEC, NEAR) — tightened into the SOLUNAVAX trio label. $RAIL shed from the cluster. Institutional anchor added via Silbert.
+- US-Iran/Hormuz easing — persisting and now uniformly bullish. The doubt items (Lebanon terms, asset unfreezing) that bifurcated the prior read are gone.
+- Vitalik/ETH — persists across all readings, reframed each time. This read: sell-pressure signal.
+- BTC structural tension — dropped mid-session last week, now back. SMA200 rejection persistent concern.
 
 ## Cross-Domain Bridges
 
-The Iran deal frame is no longer directional. Morning (06:00Z) had four TradFi items pointing the same way: deal progress, lower oil, Fed softening, risk-on flows. Evening (17:00Z) splits the block: two items track deal extension, one names specific complications (Lebanon terms, asset unfreezing). Treasury yields sit at 4.56% on resilient growth and energy price pressures. The Fed-softening thesis from morning hasn't cleared the yield market. Risk assets extended the winning streak and priced in a deal the bond market has not confirmed.
+Warsh's Treasury market pricing 2026 rate hikes at the same time Iran/Hormuz easing transmits lower energy costs into credit spreads. The two signals point opposite directions on the rate path: tighter on monetary policy, easier on the geopolitical inflation input. Equity inflows at record levels and vol compression price the geopolitical easing. The bond market prices the Warsh hawkishness. Both can run for a while. The regime is bifurcated: equity risk-on sits on top of a rate structure that hasn't softened. The carry and funding cost implications hit crypto first — leveraged positions on altcoins feel the rate path before equities do.
 
-HYPE's narrative reframe is directional. Morning anchored the thesis on fundamentals: $1B+ buybacks, 16% futures market share, spot-led rerate. Evening drops the revenue frame and leads with ATH price action and options positioning on Derive. Large options OI creates gamma exposure that mechanically amplifies momentum as price moves. The reframe says the market is trading HYPE on momentum, not fundamentals. Both read true simultaneously. They suggest different holding horizons.
+Saylor pivoting to bonds is the most directional signal in this batch. He has been the institutional BTC anchor for two cycles. A bonds pivot in a Warsh tightening environment — where yields are elevated on the 2026 rate-hike path — reads as BTC upside capped at SMA200. BTC rejection + Saylor diversifying = institutional conviction softening at the moment spot ETFs were supposed to carry BTC structurally higher. The ETF wrapper without the institutional buyer narrative is a weaker floor.
 
-Vitalik's EF post elevated the privacy bid from a technical trade to a values endorsement. Morning had ETH ZK privacy via protocol features (EIP-8182, Kohaku). Evening has Vitalik endorsing intermediary minimization and CROPS values as the direction of Ethereum. ZEC, RAIL, and NEAR's confidential intents inherit the philosophical legitimization. The narrative substrate for the privacy sector upgraded, not just the token list.
+HYPE at 9th largest manufactures the next milestone. The ranking produces the SOL-flip target. The target produces positioning before it lands. Index inclusion criteria and ETF screeners trigger at market-cap thresholds — the 9th-to-8th move is not just cultural, it crosses screener gates. AIXBT flagged growing non-crypto perp OI: HYPE's derivatives market pulling in non-crypto traders extends the reflexivity loop further. The milestone generates the catalyst, the catalyst generates the milestone.
 
-The Base DeFi Summer comparison is reflexive. Aave's Stani reframes loan book valuation. Base fair launches draw DeFi Summer comparisons. The narrative manufactures the attention it references: projects launch on Base because the comparison draws capital, and the comparison strengthens as more projects launch. AIXBT flagged it. The frame is mainstream.
+The SOLUNAVAX label is narrative manufacturing at scale. CT borrows the SOLUNAVAX cultural memory from the 2021 cycle peak. Packaging ZEC/HYPE/NEAR as a trio transforms individual calls into a basket trade: buy all three because the group validates each component. Grayscale's Silbert on privacy provides the institutional anchor for the ZEC/NEAR leg. Two inputs aligned — cultural memory plus institutional endorsement. Once the basket label lands in CT consensus, the basket trade follows mechanically. AIXBT flagging it means the frame is already mainstream.
