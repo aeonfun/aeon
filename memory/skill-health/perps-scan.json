@@ -1,8 +1,8 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-24T17:18:32Z",
+  "last_analyzed": "2026-05-25T05:43:05Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured scan output with specific metrics and proper documentation of work performed",
+  "assessment": "Substantive analysis with specific metrics, clear verdict, identified watch list, and technical depth including a discovered bounds bug requiring investigation.",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -104,6 +104,10 @@
     },
     {
       "date": "2026-05-24",
+      "score": 4
+    },
+    {
+      "date": "2026-05-25",
       "score": 4
     }
   ]
