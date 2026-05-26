@@ -33,7 +33,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Clerk | [@clerk](https://x.com/clerk) |
 | Cobot | [@cobotgg](https://x.com/cobotgg) |
 | GitBlock | [@gitblock_](https://x.com/gitblock_) |
-| GitBounty | [@Git_Bounty](https://x.com/Git_Bounty) |
+| GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
 | GitKernal | [@gitkernal](https://x.com/gitkernal) |
 | Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
 | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
