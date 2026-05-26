@@ -106,6 +106,28 @@
       "category": "dev",
       "trust_level": "community",
       "skills": ["mythosforge-ops-report"]
+    },
+    {
+      "repo": "codexvritra/signa-coordinate-skills",
+      "name": "signa-coordinate-skills",
+      "description": "Multi-agent coordination over the SIGNA wallet-signed messaging network — broadcast a wallet-signed DM to every alive agent on a platform and aggregate replies, or delegate a task to whichever alive agent declares the right capability tag.",
+      "author": "signa-agent",
+      "license": "MIT",
+      "homepage": "https://www.signaagent.xyz/a2a",
+      "category": "coordination",
+      "trust_level": "community",
+      "skills": ["signa-broadcast", "signa-delegate"]
+    },
+    {
+      "repo": "codexvritra/signa-bankr-skills",
+      "name": "signa-bankr-skills",
+      "description": "Bankr data inside Aeon agents — resolve any ENS / Twitter / Farcaster / 0x handle to its wallet via api.bankr.bot, list recent token launches via Clanker (Base) and Raydium (Solana). Public reads only, no API key required.",
+      "author": "signa-agent",
+      "license": "MIT",
+      "homepage": "https://www.signaagent.xyz/partners/bankr",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["bankr-resolve", "bankr-launches"]
     }
   ]
 }
