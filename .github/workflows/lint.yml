@@ -1,0 +1,82 @@
+name: Lint
+
+# Runs the dossier-shipped lints + the skill-discovery coherence check.
+# Non-blocking by default — surfaces failures but doesn't gate merges yet.
+# Promote to a required check after the team validates the signal.
+
+on:
+  push:
+    paths:
+      - 'skills/**'
+      - 'aeon.yml'
+      - 'skills.json'
+      - 'docs/skills-index.json'
+      - 'docs/skills-index.manifest'
+      - 'scripts/index-skills.mjs'
+      - 'docs/contributor-dossier/_tests-scaffold/skill-lint.sh'
+      - '.github/workflows/lint.yml'
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'aeon.yml'
+      - 'skills.json'
+      - 'docs/skills-index.json'
+      - 'docs/skills-index.manifest'
+      - 'scripts/index-skills.mjs'
+      - 'docs/contributor-dossier/_tests-scaffold/skill-lint.sh'
+
+jobs:
+  skill-lint:
+    name: SKILL.md schema lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run skill-lint
+        run: |
+          if [ -x docs/contributor-dossier/_tests-scaffold/skill-lint.sh ]; then
+            bash docs/contributor-dossier/_tests-scaffold/skill-lint.sh
+          else
+            echo "skill-lint.sh not yet installed at the expected path; skipping."
+          fi
+
+  index-coherence:
+    name: skills-index coherence
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify docs/skills-index.json matches skills/
+        run: |
+          if [ -x ./index-skills ]; then
+            ./index-skills --check
+          else
+            echo "./index-skills not present; skipping (legacy fork)."
+          fi
+
+  skill-discovery-smoke:
+    name: skill-discovery smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install mcp-server deps
+        run: cd mcp-server && npm install --silent
+      - name: Build mcp-server
+        run: cd mcp-server && npm run build
+      - name: Run skill-discovery test suite
+        run: node --test scripts/test-skill-discovery.mjs
+
+  actionlint:
+    name: actionlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run actionlint
+        uses: docker://rhysd/actionlint:latest
+        with:
+          args: -color
+        continue-on-error: true  # non-blocking initially
