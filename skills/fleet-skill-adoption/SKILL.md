@@ -6,11 +6,11 @@ tags: [meta, community]
 ---
 > **${var}** — Optional. Pass `dry-run` to skip notify (state and article still write). Pass `owner/repo` to override the parent repo. Combine with a space (`dry-run owner/repo`) for both.
 
-Today is ${today}. `fork-skill-gap` answers *"what's in upstream that this fork hasn't adopted?"* — a per-fork **gap** view keyed on skill *presence* in each fork's `skills.json`. It cannot answer the inverse, fleet-level question: **"which skills has the fleet actually validated by turning them on?"** With the upstream catalog at 155+ skills (34 landed in a single merge, #219), a fork operator staring at the menu has no signal for which skills are battle-tested in production across the cohort. This skill closes that layer: it reads each POWER+ACTIVE fork's `aeon.yml`, counts per-slug `enabled: true`, and ranks the catalog by fleet penetration.
+Today is ${today}. `fork-skill-gap` answers *"what's in upstream that this fork hasn't adopted?"* — a per-fork **gap** view keyed on skill *presence* in each fork's `skills.json`. It cannot answer the inverse, fleet-level question: **"which skills has the fleet actually validated by turning them on?"** With the upstream catalog at 157+ skills (34 landed in a single merge, #219), a fork operator staring at the menu has no signal for which skills are battle-tested in production across the cohort. This skill closes that layer: it reads each POWER+ACTIVE fork's `aeon.yml`, counts per-slug `enabled: true`, and ranks the catalog by fleet penetration.
 
 ## Why this exists
 
-A 155-skill catalog is a menu no operator can evaluate cold. `fork-skill-gap` shows what a fork is *missing*; it says nothing about whether the missing skill is worth adopting. Adoption is the fleet's revealed preference: a skill enabled by 68% of active forks is one that survived contact with real operators; a skill enabled by nobody after eight weeks is one upstream should re-examine.
+A 157-skill catalog is a menu no operator can evaluate cold. `fork-skill-gap` shows what a fork is *missing*; it says nothing about whether the missing skill is worth adopting. Adoption is the fleet's revealed preference: a skill enabled by 68% of active forks is one that survived contact with real operators; a skill enabled by nobody after eight weeks is one upstream should re-examine.
 
 This skill turns enablement into a leaderboard. It is the demand-side complement to `fork-skill-gap`'s supply-side gap report — same cohort, same Sunday window, opposite question. Crucially it measures `enabled: true` in `aeon.yml` (the skill is *running*), not mere presence in `skills.json` (the skill is *installed*) — that distinction is exactly what separates this skill from `fork-skill-gap` and `fork-skill-digest`.
 
