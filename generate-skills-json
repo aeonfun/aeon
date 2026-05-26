@@ -143,3 +143,12 @@ if [[ "$PRETTY" == "true" ]] && command -v python3 &>/dev/null; then
 fi
 
 echo "Generated $OUTPUT with $TOTAL skills"
+
+# Regenerate skill-discovery embeddings index after catalog changes.
+# Skill-discovery (Session 06) keeps docs/skills-index.json in sync with skills.json.
+# Default provider is `mock` (deterministic, no external calls). Repo owner can swap
+# to openai/workers post-seal — see docs/contributor-dossier/03-subsystems/skill-discovery.md.
+if [ -x "$ROOT/index-skills" ]; then
+  echo "Regenerating embeddings index..."
+  "$ROOT/index-skills" --provider mock || echo "warn: index-skills failed (non-blocking)"
+fi

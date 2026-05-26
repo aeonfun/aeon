@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# index-skills — Embed every skills/*/SKILL.md and write docs/skills-index.{json,manifest}
+#
+# Part of the skill-discovery layer (Session 06 from the contributor dossier).
+#
+# Usage:
+#   ./index-skills                     # incremental, default mock provider
+#   ./index-skills --provider openai   # use OpenAI text-embedding-3-small (requires OPENAI_API_KEY)
+#   ./index-skills --provider workers  # use Cloudflare Workers AI bge-small-en-v1.5 (requires CF binding)
+#   ./index-skills --full              # ignore manifest, re-embed everything
+#   ./index-skills --check             # do not write; exit non-zero if index is out of sync with skills/
+#
+# Output:
+#   docs/skills-index.json        canonical index (committed, ~1MB)
+#   docs/skills-index.manifest    sha256 of skill slug list (committed, ensures coherence)
+#
+# Provider modes:
+#   - mock      Deterministic 384-dim hash-based vector. NO network. Tests use this. Default.
+#   - openai    text-embedding-3-small (1536 dims). Calls api.openai.com. Requires OPENAI_API_KEY.
+#   - workers   bge-small-en-v1.5 (384 dims). Calls Workers AI. Requires CLOUDFLARE_API_TOKEN.
+#
+# PLACEHOLDER: real-provider implementations are scaffolded but disabled by default.
+# Repo owner: see docs/contributor-dossier/03-subsystems/skill-discovery.md § Enabling real embeddings.
+
+set -eo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+PROVIDER="mock"
+MODE="incremental"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --provider) PROVIDER="$2"; shift 2 ;;
+    --full)     MODE="full"; shift ;;
+    --check)    MODE="check"; shift ;;
+    -h|--help)
+      awk '/^#/{print substr($0,3)} !/^#/{exit}' "$0"
+      exit 0
+      ;;
+    *) echo "unknown flag: $1" >&2; exit 2 ;;
+  esac
+done
+
+AEON_ROOT="$ROOT" PROVIDER="$PROVIDER" MODE="$MODE" node "$ROOT/scripts/index-skills.mjs"

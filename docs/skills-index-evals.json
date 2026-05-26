@@ -1,0 +1,100 @@
+{
+  "_comment": [
+    "Eval corpus for skill-search. Each entry: a natural-language query + the slugs we expect",
+    "to appear in the top-K results. Used to regression-test embedding quality.",
+    "",
+    "IMPORTANT: these tests are SKIPPED while the index uses the `mock` embedding provider —",
+    "mock embeddings are deterministic but not semantically meaningful, so any expected_top_k",
+    "assertion would always fail. The corpus exists as a regression harness for when the repo",
+    "owner enables a real provider post-seal.",
+    "",
+    "To enable:",
+    "  1. ./index-skills --provider openai     (or workers)",
+    "  2. node --test scripts/test-skill-discovery.mjs",
+    "  3. (extend test-skill-discovery.mjs to read this file and assert expected_top_k subset)"
+  ],
+  "schema": "aeon-skills-eval/1",
+  "min_provider": "openai",
+  "tests": [
+    {
+      "query": "track new GitHub stars on watched repos",
+      "expected_top_k": ["star-milestone", "star-momentum-alert", "github-trending"]
+    },
+    {
+      "query": "monitor DeFi protocols and token movements",
+      "expected_top_k": ["defi-monitor", "defi-overview", "token-movers"]
+    },
+    {
+      "query": "summarize trending Hacker News stories",
+      "expected_top_k": ["hacker-news-digest", "show-hn-draft"]
+    },
+    {
+      "query": "write a daily article about a trending topic",
+      "expected_top_k": ["article", "technical-explainer", "deep-research"]
+    },
+    {
+      "query": "review pull requests on watched repos",
+      "expected_top_k": ["pr-review", "pr-triage", "pr-tracker", "auto-merge"]
+    },
+    {
+      "query": "audit skills for security vulnerabilities",
+      "expected_top_k": ["skill-security-scan", "vuln-scanner", "workflow-security-audit"]
+    },
+    {
+      "query": "track Polymarket prediction market price moves",
+      "expected_top_k": ["monitor-polymarket", "polymarket-comments", "pm-pulse"]
+    },
+    {
+      "query": "compose a tweet from recent skill output",
+      "expected_top_k": ["write-tweet", "thread-formatter", "remix-tweets"]
+    },
+    {
+      "query": "fix a failing skill automatically",
+      "expected_top_k": ["skill-repair", "skill-health", "self-improve"]
+    },
+    {
+      "query": "publish an article to dev.to",
+      "expected_top_k": ["syndicate-article"]
+    },
+    {
+      "query": "produce a morning brief",
+      "expected_top_k": ["morning-brief", "daily-routine"]
+    },
+    {
+      "query": "research recent AI agent frameworks",
+      "expected_top_k": ["agent-buzz", "ai-framework-watch", "deep-research"]
+    },
+    {
+      "query": "track token unlocks and vesting schedules",
+      "expected_top_k": ["unlock-monitor"]
+    },
+    {
+      "query": "manage fleet of forked Aeon instances",
+      "expected_top_k": ["fleet-control", "fleet-state", "fork-fleet", "fork-cohort"]
+    },
+    {
+      "query": "tally weekly cost of Anthropic tokens",
+      "expected_top_k": ["cost-report"]
+    },
+    {
+      "query": "Tuesday/Wednesday/Thursday Show HN dispatch",
+      "expected_top_k": ["show-hn-draft", "star-momentum-alert"]
+    },
+    {
+      "query": "scan trending GitHub repos and pick papers worth reading",
+      "expected_top_k": ["github-trending", "paper-pick", "paper-digest"]
+    },
+    {
+      "query": "weekly recap of what I shipped",
+      "expected_top_k": ["weekly-shiplog", "weekly-review", "evening-recap"]
+    },
+    {
+      "query": "spawn a new Aeon instance for a specific purpose",
+      "expected_top_k": ["spawn-instance"]
+    },
+    {
+      "query": "regenerate the public dashboard gallery from articles",
+      "expected_top_k": ["update-gallery"]
+    }
+  ]
+}

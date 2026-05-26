@@ -22,7 +22,7 @@ import { createServer, IncomingMessage, ServerResponse } from "http";
 import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import { spawn, ChildProcess } from "child_process";
+import { spawn, spawnSync, ChildProcess } from "child_process";
 import { randomUUID } from "crypto";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -283,26 +283,77 @@ function buildAgentCard(): Record<string, unknown> {
     },
     defaultInputModes: ["text"],
     defaultOutputModes: ["text"],
-    skills: skills.map((s) => ({
-      id: `aeon-${s.slug}`,
-      name: s.name,
-      description: s.description,
-      tags: [s.category, "aeon", "background-agent"],
-      inputModes: ["text"],
-      outputModes: ["text"],
-      examples: [
-        {
-          role: "user",
-          parts: [
-            {
-              type: "text",
-              text: `Run aeon-${s.slug}${s.var ? ` with var="${s.var}"` : ""}`,
-            },
-          ],
-        },
-      ],
-    })),
+    skills: [
+      // skill-search: discovery tool (Session 06). Returns ranked candidates
+      // from docs/skills-index.json instead of executing a skill.
+      {
+        id: "aeon-skill-search",
+        name: "Skill Search",
+        description:
+          "Find Aeon skills matching a natural-language query. Returns ranked candidates with invocation hints. Use this before invoking a specific aeon-* skill when you don't know the slug.",
+        tags: ["meta", "aeon", "discovery"],
+        inputModes: ["text"],
+        outputModes: ["text"],
+        examples: [
+          {
+            role: "user",
+            parts: [
+              {
+                type: "text",
+                text: 'Run aeon-skill-search with var="track new GitHub stars"',
+              },
+            ],
+          },
+        ],
+      },
+      ...skills.map((s) => ({
+        id: `aeon-${s.slug}`,
+        name: s.name,
+        description: s.description,
+        tags: [s.category, "aeon", "background-agent"],
+        inputModes: ["text"],
+        outputModes: ["text"],
+        examples: [
+          {
+            role: "user",
+            parts: [
+              {
+                type: "text",
+                text: `Run aeon-${s.slug}${s.var ? ` with var="${s.var}"` : ""}`,
+              },
+            ],
+          },
+        ],
+      })),
+    ],
   };
+}
+
+// skill-search: synchronous discovery handler. Wraps scripts/skill-search.mjs.
+// Tasks for aeon-skill-search complete immediately with the ranked result.
+function runSkillSearchSync(query: string, limit: number, tag: string): string {
+  const result = spawnSync(
+    "node",
+    [join(REPO_ROOT, "scripts", "skill-search.mjs")],
+    {
+      env: {
+        ...process.env,
+        AEON_ROOT: REPO_ROOT,
+        QUERY: query,
+        LIMIT: String(limit),
+        TAG_FILTER: tag,
+        FORMAT: "json",
+      },
+      timeout: 30_000,
+      maxBuffer: 4 * 1024 * 1024,
+      encoding: "utf-8",
+    }
+  );
+  if (result.error || result.status !== 0) {
+    const msg = (result.stderr || result.error?.message || "unknown error").trim();
+    return `skill-search failed: ${msg}\n\nRun ./index-skills to (re)generate docs/skills-index.json.`;
+  }
+  return (result.stdout || "").trim() || "skill-search returned no output.";
 }
 
 // ── JSON-RPC handlers ─────────────────────────────────────────────────────────
@@ -326,6 +377,36 @@ function handleTasksSend(params: Record<string, unknown>): RpcResult<Task> {
       slug = parsed.slug;
       if (!varOverride) varValue = parsed.varValue;
     }
+  }
+
+  // skill-search: special handler — sync, no claude spawn. Completes immediately.
+  if (slug === "skill-search") {
+    const task: Task = {
+      id,
+      status: { state: "submitted", timestamp: new Date().toISOString() },
+      artifacts: [],
+      history: message ? [message] : [],
+      metadata: params.metadata as Record<string, unknown> | undefined,
+      skillSlug: slug,
+      _subscribers: [],
+    };
+    tasks.set(id, task);
+    evictStaleTasks();
+    setTaskState(task, "working");
+    const query =
+      varValue ||
+      (message?.parts.find((p) => p.type === "text")?.text ?? "").trim();
+    if (!query) {
+      completeTask(
+        task,
+        "failed",
+        'skill-search requires a query. Pass var="<query>" or include the query in the message.'
+      );
+      return task;
+    }
+    const output = runSkillSearchSync(query, 5, "");
+    completeTask(task, "completed", output);
+    return task;
   }
 
   if (!slug || !getSkillBySlug(slug)) {

@@ -67,7 +67,7 @@ function toolNameToSlug(toolName: string): string {
 }
 
 function buildTools(skills: Skill[]) {
-  return skills.map((skill) => ({
+  const skillTools = skills.map((skill) => ({
     name: skillToToolName(skill.slug),
     description: buildDescription(skill),
     inputSchema: {
@@ -81,6 +81,36 @@ function buildTools(skills: Skill[]) {
       required: [],
     },
   }));
+
+  // skill-search: discovery tool added by Session 06. Wraps scripts/skill-search.mjs.
+  // Lets MCP clients (Claude Desktop / Claude Code) find the right skill by
+  // natural-language description.
+  const searchTool = {
+    name: "aeon-skill-search",
+    description:
+      "[Aeon · Meta] Find Aeon skills matching a description. Returns ranked candidates with invocation hints. Use this before invoking a specific aeon-* tool when you don't know the slug.",
+    inputSchema: {
+      type: "object" as const,
+      properties: {
+        query: {
+          type: "string",
+          description: "Natural-language description of what you want to do.",
+        },
+        limit: {
+          type: "number",
+          description: "How many candidates to return (default 5, max 20).",
+        },
+        tag: {
+          type: "string",
+          description:
+            "Optional tag filter: research, dev, crypto, social, meta, news, content.",
+        },
+      },
+      required: ["query"],
+    },
+  };
+
+  return [searchTool, ...skillTools];
 }
 
 function buildDescription(skill: Skill): string {
@@ -187,8 +217,49 @@ process.stderr.write(
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
 
+async function runSkillSearch(args: Record<string, unknown>): Promise<string> {
+  const query = String(args.query ?? "").trim();
+  if (!query) {
+    return "Error: skill-search requires a non-empty 'query' argument.";
+  }
+  const limit = Math.min(20, Math.max(1, Number(args.limit ?? 5)));
+  const tag = String(args.tag ?? "").trim();
+
+  const result = spawnSync(
+    "node",
+    [join(REPO_ROOT, "scripts", "skill-search.mjs")],
+    {
+      env: {
+        ...process.env,
+        AEON_ROOT: REPO_ROOT,
+        QUERY: query,
+        LIMIT: String(limit),
+        TAG_FILTER: tag,
+        FORMAT: "json",
+      },
+      timeout: 30_000,
+      maxBuffer: 4 * 1024 * 1024,
+      encoding: "utf-8",
+    }
+  );
+
+  if (result.error || result.status !== 0) {
+    const msg = (result.stderr || result.error?.message || "unknown error").trim();
+    return `skill-search failed: ${msg}\n\nMake sure docs/skills-index.json exists. Run ./index-skills to (re)generate it.`;
+  }
+
+  return (result.stdout || "").trim() || "skill-search returned no output.";
+}
+
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const toolName = request.params.name;
+
+  // skill-search — discovery tool (Session 06).
+  if (toolName === "aeon-skill-search") {
+    const output = await runSkillSearch(request.params.arguments ?? {});
+    return { content: [{ type: "text" as const, text: output }] };
+  }
+
   const slug = toolNameToSlug(toolName);
   const skill = skills.find((s) => s.slug === slug);
 
