@@ -458,6 +458,8 @@ To browse known packs without installing, run `./install-skill-pack --list` — 
 | [aeon-skills](https://github.com/AntFleet/aeon-skills) | 1 | Two-model-consensus PR review (Opus 4.7 + GPT-5) — per-review USDC drawdown on Base |
 | [aeon-skill-pack-liquidpad](https://github.com/liquidpadbot/aeon-skill-pack-liquidpad) | 4 | Track LiquidPad on Base — burn cycle alerts, new token launches with onchain provenance, daily protocol digest, and fee accrual tracking |
 | [aeon-skill-pack-mythosforge](https://github.com/ryjin111/aeon-skill-pack-mythosforge) | 1 | Read-only MythosForge ops monitoring — backlog, jury/payout health, degraded-juror notes, and stall alerts |
+| [signa-gitlawb-skills](https://github.com/codexvritra/signa-gitlawb-skills) | 1 | gitlawb activity for any SIGNA wallet bound to a gitlawb DID — repos, commits, open tasks, bounty totals from node.gitlawb.com |
+| [signa-miroshark-skills](https://github.com/codexvritra/signa-miroshark-skills) | 2 | MiroShark swarm sims inside Aeon — read sim activity for any wallet, or fire a wallet-signed sim and watch for the verdict on the federated SIGNA feed |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
