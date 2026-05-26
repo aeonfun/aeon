@@ -1,24 +1,24 @@
-Yesterday's Runners · 2026-05-26 · SPECULATIVE (5 BREAKOUTs, NOAR day-2 cluster forms)
+Yesterday's Runners · 2026-05-26 · SPECULATIVE (top 5 all BREAKOUT, GENIUS cluster reactivates)
 
 BREAKOUT
+★ GENIUS (bsc) +2651% 24h
+  $51m vol, $90k liq, 48-min pool, buys 52%
+  → sixth GENIUS contract since 05-22, the cluster reactivates after one silent session. Entire move sits in the 48-min lifetime of the pool
+
+• HOPPY (sol) +671% 24h
+  $5.8m vol, $109k liq, h1 +9.5%, h6 +10%, buys 69%
+  → hourly still adding through the latest bar, 69% buy-skew on a sustained 18h pool. Cleanest tape on the board
+
 • CTR (sol) +2433% 24h
-  $40.8m vol, $241k liq, h1 0%, h6 +37%, buys 57%, 10.4h pool
-  → fresh single-contract pop, the six-hour added +37% then the hourly quit. The tape stepped back before the rotation completed.
+  $41m vol, $241k liq, h1 0%, h6 +16%, buys 57%
+  → fresh name-farm cluster, two distinct CTR contracts in the survivor set. The hourly quit before the rotation completed
 
 ★ NOAR (sol) +590% 24h
-  $48.5m vol, $276k liq, h1 0%, h6 0%, buys 52%, 19h pool
-  → day-2 cluster confirms: five distinct NOAR contracts cleared the gate today (ranks 2, 3, 13, 14, 15), all $37-48m vol on $200-345k liq. Same signature as SAOS day-1 print on 05-24. The lead pool went flat hours ago, the freshest sibling at rank 3 still carries the burst on a 5h contract.
+  $48m vol, $275k liq, h1 0%, h6 0%, buys 52%
+  → day-2 cluster expands to five distinct NOAR contracts, same signature SAOS printed 05-24. Lead pool dormant, the 5h sibling at +1210% h6 carries the burst
 
-• HOPPY (sol) +585% 24h
-  $5.7m vol, $103k liq, h1 -7%, h6 -4%, buys 69%, 17.3h pool
-  → 69% buys against a rolling-over tape, the thin $103k pad amplifies reversal risk above.
+• zBase (base) +5659% 24h
+  $7m vol, $152k liq, h1 -2.9%, h6 +36%, buys 55%
+  → the 56x sits before the prior six hours. Hourly rolling over
 
-★ SpaceX (base) +9783% 24h
-  $11.9m vol, $96k liq, h1 0%, h6 -90%, buys 51%, 15.6h pool
-  → second straight session this contract. The six-hour -90% means the round-trip already played out. The headline overstates a print already done.
-
-• zBase (base) +5074% 24h
-  $7m vol, $139k liq, h1 -11%, h6 +8%, buys 55%, 17.2h pool
-  → hourly rolled -11% off the six-hour peak. The bid stepped back, the print is cooling.
-
-vibe: NOAR five-contract day-2 cluster is the only fresh signal, two repeat tickers already exit liquidity, the rest fresh single-contract pops
+vibe: cluster casino — GENIUS reactivating, NOAR confirming day-2, SAOS and GOD fading
