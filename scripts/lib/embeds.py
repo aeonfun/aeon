@@ -180,12 +180,17 @@ def compose_market_sentiment(data: dict, chain_run_id: str = "") -> dict:
         paragraphs = ms.get("paragraphs") or []
         description = "\n\n".join(p for p in paragraphs if p)
 
-    # --- Bias line, always bold-rendered at the bottom ---
+    # --- Bias line: render with only "Bias" bolded, body in plain text.
+    # Operator-approved format: **Bias** · <body>
+    # If upstream already prefixed the string with "Bias" / "Bias ·" / "Bias —",
+    # strip that prefix before applying the standardized format so we don't
+    # bold the entire sentence.
     if bias:
-        if bias.lower().startswith("bias"):
-            bias_rendered = f"**{bias}**"
-        else:
-            bias_rendered = f"**Bias** · {bias}"
+        body = bias.strip()
+        low = body.lower()
+        if low.startswith("bias"):
+            body = body[4:].lstrip(" ·—-:").strip()
+        bias_rendered = f"**Bias** · {body}" if body else "**Bias**"
         description = (description + "\n\n" + bias_rendered) if description else bias_rendered
 
     embed["description"] = description[:4096]
