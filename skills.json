@@ -583,7 +583,7 @@
             "schedule": "0 22 * * 0",
             "var": "",
             "files": 0,
-            "sha": "0000000",
+            "sha": "c8a6d44",
             "updated": "2026-05-26",
             "install": "./add-skill aaronjmars/aeon fleet-skill-adoption"
         },
