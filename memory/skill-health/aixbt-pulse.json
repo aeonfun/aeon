@@ -1,10 +1,10 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-25T09:22:39Z",
+  "last_analyzed": "2026-05-26T07:44:14Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific signals (Fed/yields/spreads), clear structural insights (opposing channels, smart money distribution), proper file management, and memory updates per spec.",
+  "assessment": "Substantive crypto market narrative with specific data points, concrete token/policy references, and demonstrated file/memory management. Well-structured operational completeness.",
   "flags": [],
-  "avg_score": 3.95,
+  "avg_score": 3.96,
   "history": [
     {
       "date": "2026-05-18",
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     }
   ]
