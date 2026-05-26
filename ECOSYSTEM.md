@@ -51,7 +51,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | RootAi | [@rootaichad](https://x.com/rootaichad) |
 | SAM | [@prmrsamm](https://x.com/prmrsamm) |
-| Signa | [@Signa_Agent](https://x.com/Signa_Agent) |
+| Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
 | Solvr | [@solvrbot](https://x.com/solvrbot) |
 | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
 | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) |
