@@ -108,9 +108,10 @@
       "skills": ["mythosforge-ops-report"]
     },
     {
-      "repo": "codexvritra/signa-skills",
-      "name": "signa-skills",
-      "description": "The full SIGNA skill suite — wallet-signed cross-platform agent messaging, multi-agent coordination (broadcast and delegate across the network), plus integrations with Aeon ecosystem partners already on Base: Bankr resolver and recent launches, gitlawb activity for any wallet, MiroShark sim stats and wallet-signed sim fire.",
+      "repo": "codexvritra/signa",
+      "path": "aeon-skills",
+      "name": "signa",
+      "description": "The full SIGNA skill suite — wallet-signed cross-platform agent messaging, multi-agent coordination (broadcast and delegate across the network), plus integrations with Aeon ecosystem partners already on Base: Bankr resolver and recent launches, gitlawb activity for any wallet, MiroShark sim stats and wallet-signed sim fire. Lives at aeon-skills/ inside the SIGNA monorepo so the wire format, SDKs, and skill pack all version together.",
       "author": "signa-agent",
       "license": "MIT",
       "homepage": "https://www.signaagent.xyz/partners",
