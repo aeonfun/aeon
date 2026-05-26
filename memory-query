@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# memory-query — Query the Aeon memory graph by natural-language topic.
+#
+# Reads memory/graph/{chunks,entities,edges}.json (built by skills/graphify-memory)
+# and returns ranked chunks + related entities for the query.
+#
+# Usage:
+#   ./memory-query "Solana"
+#   ./memory-query "DeFi protocols" --window 7 --limit 5
+#   ./memory-query "vuln-scanner findings" --type concept --format json
+#
+# Inside the Sealed Sprint the provider is `mock` (deterministic, no network).
+# Repo owner: see docs/contributor-dossier/03-subsystems/knowledge-graph.md.
+
+set -eo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+QUERY=""
+LIMIT=10
+WINDOW=30
+ENTITY_TYPE=""
+FORMAT="md"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --limit)  LIMIT="$2"; shift 2 ;;
+    --window) WINDOW="$2"; shift 2 ;;
+    --type)   ENTITY_TYPE="$2"; shift 2 ;;
+    --format) FORMAT="$2"; shift 2 ;;
+    -h|--help)
+      awk '/^#/{print substr($0,3)} !/^#/{exit}' "$0"
+      exit 0
+      ;;
+    *)
+      if [ -z "$QUERY" ]; then QUERY="$1"; else QUERY="$QUERY $1"; fi
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$QUERY" ]; then
+  echo "usage: ./memory-query \"<topic>\" [--limit N] [--window DAYS] [--type <entity_type>] [--format md|json]" >&2
+  exit 2
+fi
+
+AEON_ROOT="$ROOT" QUERY="$QUERY" LIMIT="$LIMIT" WINDOW="$WINDOW" ENTITY_TYPE="$ENTITY_TYPE" FORMAT="$FORMAT" \
+  node "$ROOT/scripts/memory-query.mjs"

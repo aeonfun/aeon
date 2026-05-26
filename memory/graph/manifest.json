@@ -1,0 +1,9 @@
+{
+  "schema": "aeon-memory-graph/1",
+  "provider": "mock",
+  "last_indexed_at": null,
+  "total_entities": 0,
+  "total_edges": 0,
+  "total_chunks": 0,
+  "_comment": "Initialized by Session 02 scaffold. Run skills/graphify-memory to populate. Inside the Sealed Sprint the provider is mock (deterministic, no network). See docs/contributor-dossier/03-subsystems/knowledge-graph.md."
+}
