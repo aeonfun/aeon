@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-26T07:43:57Z",
+  "last_analyzed": "2026-05-26T08:23:12Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-sourced crypto narrative tracking with specific state changes, metrics, and actionable follow-ups; includes self-validation and clear thresholds for next iteration.",
+  "assessment": "Thorough idempotency verification with proper state management, artifact integrity checks, and substantive technical details; well-structured but primarily validating prior work rather than new primary output",
   "flags": [],
   "avg_score": 3.96,
   "history": [
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     },
     {
