@@ -1,8 +1,8 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-26T08:13:31Z",
+  "last_analyzed": "2026-05-26T08:44:35Z",
   "quality_score": 4,
-  "assessment": "Substantive output with detailed market analysis, specific data points, structured format compliance, and clear follow-up risk identification.",
+  "assessment": "Substantive market analysis with specific data points, cross-domain synthesis, and actionable trading ideas; well-structured with clear stance and contradiction flagged",
   "flags": [],
   "avg_score": 4.04,
   "history": [
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     },
     {

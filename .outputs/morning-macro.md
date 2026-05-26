@@ -1,23 +1,31 @@
-Market Morning · 26 May · AI-compute sweep on a risk-off tape
+Market Morning · 26 May · Risk-off, AI bid concentrates
 
-BTC bled -0.83% to $76,564 with breadth 1/20 green. ETF outflows hit $1.55B over six sessions, the institutional bid reversed. F&G at 34 (Fear), BTC dominance 58.20%.
+BTC sits at $76,667, down 0.71% on the day and 0.64% on the week.
+Breadth narrowed to 2/20 green 24h, the tightest reading of the week.
+F&G 34, Fear (up from 30 yesterday).
+ETF outflows hit $1.55B across six sessions.
 
-AI-compute holds the only sector bid — 7 of 8 winner slots. RENDER +14%, NEAR +15%, IO +18%, WLD +19%. RWA promoted to RIDE on Ondo/TermMax tokenized stocks landing on BNB and HyperEVM.
+AI-compute swept 7 of 8 top-100 winner slots: WLD, NEAR, RENDER, FET, TIA, GRASS, GRT.
+Privacy/ZK and perp-DEX bids rotated off trending wholesale in one session.
+Decentralized compute holds RIDE for the second straight day.
 
-Stance: long AI-compute, fade perp-DEX. Concentrated bid on risk-off tape.
+Stance: risk-off with a concentrated bid. AI-compute is the only sector working.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Warsh Fed era reverses yesterday's hawkish minutes read. Hormuz de-escalation transmits into risk without the rate-hike headwind. Buy-rumor-sell-fact entered in its place. Equity futures price the relief, not the close.
+Hormuz flipped intraday. Morning de-escalation became fresh US self-defense strikes by 08:00 UTC.
+Oil and yields pressed higher into the weekend as TradFi flagged AI/tech leverage reduction.
 
-CLARITY Act named as the recovery vehicle for $UNI, $AAVE, RWA tokens. ETH fear deepened to 36, restaking TVL -65% from peak. Catalyst months away, not days.
+That cross with the AI-compute crypto bid is the day's embedded contradiction.
+If the deleveraging is sector-wide, weekend flows hit both. If AI crypto is idiosyncratic, the rotation holds.
 
 
 ─────────  TODAY  ─────────
 
-Action lives in #perps-brief — two new positions, five watchlists. AI-compute confluence headlines: RENDER LONG and TAO LONG join EIGEN and AKT, Decentralized compute at full extension with AI sweeping 7 of 8 winners.
+Action is in #perps-brief. RENDER LONG and TAO LONG enter on the AI-compute confluence.
+Open book already carries EIGEN and AKT long. The new entries concentrate, not diversify.
+HYPE and ASTER closed on the Hyperliquid fade — second whipsaw in a week.
+Watchlist: WLD long (breakout day 1), ONDO long (RWA promoted), ZEC and RAIL long day 3, PLAY short.
 
-Hyperliquid demoted to fading. Close HYPE and ASTER on the second whipsaw. RWA waits on confirmation: ONDO watchlist day 1, trigger above $0.45.
-
-Take: long AI-compute (RENDER, TAO, EIGEN, AKT), concentration the named risk. Close perp-DEX before the unwind.
+Take: ride AI-compute, sized for sector concentration. Cash on the perp-DEX unwind.
