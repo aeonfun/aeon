@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-26T07:44:39Z",
+  "last_analyzed": "2026-05-26T08:34:12Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data points, sector tracking, narrative assessment, and system integration; well-structured and actionable, though data sources not explicitly cited.",
+  "assessment": "Substantive market analysis with specific narrative transitions, conviction levels, actionable token picks, and institutional tracking; well-structured but truncated output limits full assessment",
   "flags": [],
   "avg_score": 4.13,
   "history": [
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     },
     {
