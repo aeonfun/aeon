@@ -1,10 +1,10 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-25T09:32:34Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive domain-specific analysis with quantified near-misses, proper pipeline execution, sandbox workaround documented, and proactive follow-up suggestion based on pattern recognition",
+  "last_analyzed": "2026-05-26T07:55:11Z",
+  "quality_score": 4,
+  "assessment": "Substantive crypto regime analysis with clear transitions, specific metrics (3 accumulation assets, funding rates, OI changes), watch list, and complete execution on all 25 assets; well-documented technical decisions",
   "flags": [],
-  "avg_score": 4.04,
+  "avg_score": 4.03,
   "history": [
     {
       "date": "2026-05-18",
@@ -117,6 +117,10 @@
     {
       "date": "2026-05-25",
       "score": 5
+    },
+    {
+      "date": "2026-05-26",
+      "score": 4
     }
   ]
 }

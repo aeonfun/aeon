@@ -1,172 +1,174 @@
-#!/usr/bin/env node
-// Build .outputs/perps-scan.data.json for 2026-05-25 from computed metrics.
-
+// Build .outputs/perps-scan.data.json from .outputs/_perps_compute.json
 const fs = require('fs');
-const path = require('path');
 
-const ROOT = '/home/runner/work/aeon/aeon';
-const METRICS = JSON.parse(fs.readFileSync(path.join(ROOT, '.outputs', 'perps-scan.metrics.json'), 'utf8'));
+const TODAY = '2026-05-26';
 
-const m = {};
-for (const a of METRICS.assets) m[a.asset] = a;
+const d = JSON.parse(fs.readFileSync('.outputs/_perps_compute.json'));
+const yest = JSON.parse(fs.readFileSync('.outputs/perps-scan.data.json'));
+const yestMap = {};
+for (const a of yest.tail) yestMap[a.asset] = a.regime;
 
-// Yesterday's regime map (from prior artifact)
-const yest = {
-  BTC: { regime: 'NEUTRAL', days: 3 }, ETH: { regime: 'NEUTRAL', days: 3 }, SOL: { regime: 'NEUTRAL', days: 3 },
-  HYPE: { regime: 'NEUTRAL', days: 3 }, ZEC: { regime: 'NEUTRAL', days: 3 }, NEAR: { regime: 'NEUTRAL', days: 3 },
-  BSB: { regime: 'NEUTRAL', days: 1 }, XRP: { regime: 'NEUTRAL', days: 3 }, DOGE: { regime: 'NEUTRAL', days: 3 },
-  BILL: { regime: 'NEUTRAL', days: 3 }, BEAT: { regime: 'NEUTRAL', days: 2 }, GRASS: { regime: 'NEUTRAL', days: 1 },
-  ONDO: { regime: 'NEUTRAL', days: 3 }, SUI: { regime: 'NEUTRAL', days: 3 }, WLD: { regime: 'NEUTRAL', days: 3 },
-  BNB: { regime: 'NEUTRAL', days: 3 }, TON: { regime: 'NEUTRAL', days: 3 }, UB: { regime: null, days: 1 },
-  EDEN: { regime: 'NEUTRAL', days: 3 }, '1000PEPE': { regime: 'NEUTRAL', days: 3 },
-  GENIUS: { regime: null, days: 1 }, ASTER: { regime: null, days: 1 },
+const M = d.metrics;
+const fmt$ = (v) => {
+  if (v === null || v === undefined) return '—';
+  if (Math.abs(v) >= 1e9) return `$${(v / 1e9).toFixed(2)}B`;
+  if (Math.abs(v) >= 1e6) return `$${(v / 1e6).toFixed(1)}M`;
+  if (Math.abs(v) >= 1e3) return `$${(v / 1e3).toFixed(0)}K`;
+  return `$${v.toFixed(0)}`;
+};
+const fmtPx = (v) => {
+  if (v >= 1000) return `$${v.toLocaleString('en-US', { maximumFractionDigits: 1 })}`;
+  if (v >= 1) return `$${v.toFixed(3)}`;
+  if (v >= 0.01) return `$${v.toFixed(4)}`;
+  return `$${v.toFixed(6)}`;
 };
 
-const r2 = x => x == null ? null : Math.round(x * 100) / 100;
-const r4 = x => x == null ? null : Math.round(x * 10000) / 10000;
+// Repeat-days counter for NEUTRAL stretches based on prior log entries.
+// All assets carrying NEUTRAL from yesterday (05-25 09:20Z) and prior days through 05-22 stretch.
+const repeatDaysIfNeutral = {
+  BTC: 5, ETH: 5, SOL: 5, HYPE: 5, XRP: 5, DOGE: 5, BILL: 5, ONDO: 5, SUI: 5, WLD: 5, BNB: 5, TON: 5,
+  NEAR: 5, BEAT: 4, BSB: 3, GRASS: 3, UB: 2, NIL: 2, ADA: 2, PLAY: 2,
+};
 
-function tailMetrics(a) {
-  return {
-    price: a.current_price_fmt,
-    pct_24h: r2(a.pct_24h),
-    pct_7d: r2(a.pct_7d),
-    pct_4h: r2(a.pct_4h),
-    range_7d: a.range_7d_pct == null ? null : `${r2(a.range_7d_pct)}%`,
-    pct_24h_vs_btc: r2(a.pct_24h_vs_btc),
-    pct_7d_vs_btc: r2(a.pct_7d_vs_btc),
-    oi_usd: a.oi_now_fmt,
-    oi_24h_pct: r2(a.oi_24h_pct),
-    oi_7d_pct: r2(a.oi_7d_pct),
-    funding_now: r4(a.funding_now),
-    funding_7d_avg: r4(a.funding_7d_avg),
-    funding_delta: r4(a.funding_delta),
-    liq_24h: a.liq_24h_total_fmt,
-    liq_7d_p75: a.liq_7d_p75_fmt,
-    long_liqs: a.long_liqs_24h_fmt,
-    short_liqs: a.short_liqs_24h_fmt,
-    liqs_4h: a.liqs_4h_fmt,
-    top_ls: r2(a.top_ls_now),
-    top_ls_7d_avg: r2(a.top_ls_7d_avg),
-    top_ls_delta_7d: r2(a.top_ls_delta_7d),
-    basis: a.basis_now == null ? null : r4(a.basis_now),
-    taker_buy: r2(a.taker_buy_pct_24h),
-  };
-}
+const REGIME_ORDER = ['ACCUMULATION', 'CATALYST-BREAKOUT', 'SHORT-SQUEEZE', 'MOMENTUM', 'COMPRESSION', 'DISTRIBUTION', 'CAPITULATION'];
 
+const byRegime = {};
+for (const r of REGIME_ORDER) byRegime[r] = [];
 const tail = [];
-for (const a of METRICS.assets) {
-  const y = yest[a.asset];
-  const yRegime = y ? y.regime : null;
-  const todayRegime = 'NEUTRAL';
-  // repeat_days: increment if today's regime matches yesterday's; reset to 1 if different or new
-  const repeatDays = y && yRegime === todayRegime ? y.days + 1 : 1;
+
+for (const asset of Object.keys(M)) {
+  const m = M[asset];
+  const reg = m.regime;
+  if (reg !== 'NEUTRAL' && byRegime[reg]) byRegime[reg].push(asset);
+  const yr = yestMap[asset] ?? null;
+  let repeat = 1;
+  if (reg === 'NEUTRAL' && yr === 'NEUTRAL') repeat = (repeatDaysIfNeutral[asset] ?? 2);
   tail.push({
-    asset: a.asset,
-    tier: a.tier,
-    regime: todayRegime,
-    sub_tags: [],
-    pattern_tags: [],
-    metrics: tailMetrics(a),
-    yesterday_regime: yRegime,
-    repeat_days: repeatDays,
+    asset,
+    tier: m.tier,
+    regime: reg,
+    sub_tags: m.sub_tags,
+    pattern_tags: m.pattern_tags,
+    metrics: {
+      price: fmtPx(m.current_price),
+      pct_24h: Number(m.pct_24h.toFixed(2)),
+      pct_7d: Number(m.pct_7d.toFixed(2)),
+      pct_4h: m.pct_4h === null ? null : Number(m.pct_4h.toFixed(2)),
+      range_7d: `${m.range_7d_pct.toFixed(2)}%`,
+      pct_24h_vs_btc: Number(m.pct_24h_vs_btc.toFixed(2)),
+      pct_7d_vs_btc: Number(m.pct_7d_vs_btc.toFixed(2)),
+      oi_usd: fmt$(m.oi_now),
+      oi_24h_pct: Number(m.oi_24h_pct.toFixed(2)),
+      oi_7d_pct: Number(m.oi_7d_pct.toFixed(2)),
+      funding_now: Number(m.funding_now.toFixed(4)),
+      funding_7d_avg: Number(m.funding_7d_avg.toFixed(4)),
+      funding_delta: Number(m.funding_delta.toFixed(4)),
+      liq_24h: fmt$(m.liq_24h_total),
+      liq_7d_p75: fmt$(m.liq_7d_p75),
+      long_liqs: fmt$(m.long_liqs_24h),
+      short_liqs: fmt$(m.short_liqs_24h),
+      liqs_4h: fmt$(m.liqs_4h),
+      top_ls: m.top_ls_now === null ? null : Number(m.top_ls_now.toFixed(2)),
+      top_ls_7d_avg: m.top_ls_7d_avg === null ? null : Number(m.top_ls_7d_avg.toFixed(2)),
+      top_ls_delta_7d: m.top_ls_delta_7d === null ? null : Number(m.top_ls_delta_7d.toFixed(2)),
+      basis: m.basis_now === null ? null : Number(m.basis_now.toFixed(4)),
+      taker_buy: m.taker_buy_pct_24h === null ? null : Number(m.taker_buy_pct_24h.toFixed(2)),
+    },
+    yesterday_regime: yr,
+    repeat_days: repeat,
   });
 }
 
-// Build watch entries with metric lines + transition reads
-function fmtSigned(x, decimals = 2) {
-  if (x == null) return 'n/a';
-  const s = x >= 0 ? '+' : '';
-  return `${s}${x.toFixed(decimals)}`;
+function metricLineAccum(a) {
+  const m = M[a];
+  const basis = m.basis_now !== null ? `, basis ${m.basis_now >= 0 ? '+' : ''}${m.basis_now.toFixed(4)}%` : '';
+  return `OI +${m.oi_7d_pct.toFixed(2)}% 7d on +${m.pct_7d.toFixed(2)}% price, funding ${m.funding_now >= 0 ? '+' : ''}${m.funding_now.toFixed(4)}%/8h (7d avg ${m.funding_7d_avg >= 0 ? '+' : ''}${m.funding_7d_avg.toFixed(4)}%), top L/S ${m.top_ls_now.toFixed(2)} (Δ ${m.top_ls_delta_7d >= 0 ? '+' : ''}${m.top_ls_delta_7d.toFixed(2)} 7d), range ${m.range_7d_pct.toFixed(2)}%, taker buy ${m.taker_buy_pct_24h.toFixed(2)}%${basis}`;
 }
-function fmtPct(x, decimals = 2) {
-  if (x == null) return 'n/a';
-  return `${fmtSigned(x, decimals)}%`;
+
+const subTagReads = {
+  ZEC: 'Taker buy 46.72% sits 3.28pp under the 50% gate. OI rebuilt +20.07% 7d without aggressive bid crossing.',
+  TAO: 'Taker buy 46.68% sits 3.32pp under the 50% gate. OI +15.71% 7d builds passively against top L/S rolling -0.10 over 7d.',
+  INJ: 'Taker buy 47.78% sits 2.22pp under the 50% gate. OI +47.88% 7d builds passively while funding flips to -0.0123%/8h.',
+};
+
+for (const r of REGIME_ORDER) {
+  byRegime[r] = byRegime[r].map((a) => ({
+    asset: a,
+    tier: M[a].tier,
+    marker: 'bullet',
+    metrics_line: metricLineAccum(a),
+    tags: [{ tag: `${r} · DIVERGENT`, read: subTagReads[a] }],
+  }));
 }
-function metricsLine(a) {
-  const parts = [];
-  parts.push(`${fmtPct(a.pct_24h)} 24h, ${fmtPct(a.pct_7d)} 7d`);
-  parts.push(`OI ${fmtPct(a.oi_24h_pct)} 24h on OI ${fmtPct(a.oi_7d_pct)} 7d`);
-  parts.push(`funding ${fmtSigned(a.funding_now, 4)}%/8h (7d avg ${fmtSigned(a.funding_7d_avg, 4)}%, delta ${fmtSigned(a.funding_delta, 4)}%)`);
-  parts.push(`taker buy ${a.taker_buy_pct_24h == null ? 'n/a' : a.taker_buy_pct_24h.toFixed(2) + '%'}`);
-  parts.push(`liq ${a.liq_24h_total_fmt} vs 7d p75 ${a.liq_7d_p75_fmt}`);
-  parts.push(`top L/S ${a.top_ls_now == null ? 'n/a' : a.top_ls_now.toFixed(2)} ${a.top_ls_delta_7d == null ? '' : (a.top_ls_delta_7d >= 0 ? 'up' : 'down') + ' ' + Math.abs(a.top_ls_delta_7d).toFixed(2) + ' 7d'}`);
-  if (a.basis_now != null) parts.push(`basis ${fmtSigned(a.basis_now, 4)}%`);
-  parts.push(`pct_4h ${a.pct_4h == null ? 'n/a' : fmtPct(a.pct_4h)}`);
-  parts.push(`vol ${a.vol_ratio == null ? 'n/a' : a.vol_ratio.toFixed(2) + 'x'}`);
-  return parts.join(', ');
+
+const regime_changes = [
+  { asset: 'ZEC', from: 'NEUTRAL', to: 'ACCUMULATION', note: 'OI +20.07% 7d with funding +0.0107%/8h crosses the ACCUMULATION gates. DIVERGENT sub-tag fires on taker buy 46.72%. Passive build, not aggressive bid.' },
+  { asset: 'TAO', from: '(new entrant)', to: 'ACCUMULATION', note: 'First appearance in the universe. OI +15.71% 7d with funding +0.0054%/8h. DIVERGENT sub-tag fires on taker buy 46.68%.' },
+  { asset: 'INJ', from: '(new entrant)', to: 'ACCUMULATION', note: 'First appearance in the universe. OI +47.88% 7d with funding -0.0123%/8h. DIVERGENT sub-tag fires on taker buy 47.78%.' },
+];
+
+const regime_empty_notes = {
+  'CATALYST-BREAKOUT': 'no asset combines pct_24h > +20% (Tier 2) or > +8% (Tier 1) with vol_ratio > 2.0x and OI +10% 24h on taker buy > 52%. WLD pct_24h +5.81% on OI +11.80% 24h fails the Tier 2 +20% gate by 14.19pp. UB pct_24h +4.15% on OI +7.14% 24h fails both the +20% pct gate and the +10% OI gate',
+  'SHORT-SQUEEZE': 'no asset combines a positive pct_24h push past +10% (Tier 2) with OI rolling negative. PHA pct_24h -0.31% sits the right side of the OI gate at oi24 +12.13% but fails the price-up direction by 10.31pp. WLD pct_24h +5.81% on OI +11.80% 24h fails the OI < 0 requirement',
+  'MOMENTUM': "no asset combines pct_7d > +15% (Tier 2) with funding inside the +0.03 to +0.07 band. GRASS pct_7d +89.68% on funding +0.0071%/8h, NEAR pct_7d +69.41% on funding -0.0026%/8h, BEAT pct_7d +74.22% on funding +0.0237%/8h, UB pct_7d +63.48% on funding +0.0117%/8h, PHA pct_7d +47.01% on funding -0.1419%/8h all sit below the +0.03 funding floor. HYPE pct_7d +24.21% on funding +0.0054%/8h sits closest at 0.0246pp short of the entry gate",
+  'COMPRESSION': 'BNB range 6.06% misses the Tier 2 5% gate by 1.06pp. BTC range 5.36% misses the Tier 1 3% gate. No asset combines a tight 7d range with OI rebuilding +5% 7d on calm funding',
+  'DISTRIBUTION': "PLAY funding +0.0422%/8h cooled from yesterday's +0.073%/8h print and now sits 0.0378pp under the +0.08 Tier 2 trigger. BEAT funding +0.0237%/8h sits 0.0563pp short. UB funding +0.0117%/8h sits 0.0683pp short. No asset clears the funding trigger AND the OI +5% 24h gate today",
+  'CAPITULATION': 'NIL pct_24h -14.44% on OI -24.54% 24h clears both the Tier 2 -10% drawdown gate by 4.44pp and the -10% OI gate by 14.54pp, but funding +0.0043%/8h fails the funding < 0 requirement. ESPORTS pct_24h -9.45% sits 0.55pp short of the Tier 2 drawdown gate. ZEC pct_24h -5.59% on OI -8.16% 24h fails the drawdown gate by 4.41pp and the OI gate by 1.84pp',
+};
+
+function watchLine(a) {
+  const m = M[a];
+  const p4 = m.pct_4h !== null ? `, pct_4h ${m.pct_4h >= 0 ? '+' : ''}${m.pct_4h.toFixed(2)}%` : '';
+  const basis = m.basis_now !== null ? `, basis ${m.basis_now >= 0 ? '+' : ''}${m.basis_now.toFixed(4)}%` : '';
+  const liq = `liq ${fmt$(m.liq_24h_total)} vs 7d p75 ${fmt$(m.liq_7d_p75)}`;
+  const tls = m.top_ls_now !== null ? `, top L/S ${m.top_ls_now.toFixed(2)} (Δ ${m.top_ls_delta_7d >= 0 ? '+' : ''}${m.top_ls_delta_7d.toFixed(2)} 7d)` : '';
+  return `${m.pct_24h >= 0 ? '+' : ''}${m.pct_24h.toFixed(2)}% 24h, ${m.pct_7d >= 0 ? '+' : ''}${m.pct_7d.toFixed(2)}% 7d, OI ${m.oi_24h_pct >= 0 ? '+' : ''}${m.oi_24h_pct.toFixed(2)}% 24h on OI ${m.oi_7d_pct >= 0 ? '+' : ''}${m.oi_7d_pct.toFixed(2)}% 7d, funding ${m.funding_now >= 0 ? '+' : ''}${m.funding_now.toFixed(4)}%/8h (7d avg ${m.funding_7d_avg >= 0 ? '+' : ''}${m.funding_7d_avg.toFixed(4)}%, delta ${m.funding_delta >= 0 ? '+' : ''}${m.funding_delta.toFixed(4)}%), taker buy ${m.taker_buy_pct_24h !== null ? m.taker_buy_pct_24h.toFixed(2) + '%' : '—'}, ${liq}${tls}${basis}${p4}, vol ${m.vol_ratio !== null ? m.vol_ratio.toFixed(2) + 'x' : '—'}`;
 }
 
 const watch = [
   {
-    asset: 'BSB',
-    metrics_line: metricsLine(m.BSB),
-    transition_read: "Funding rebuilt 2.6x from +0.0038%/8h at the 2026-05-24 17:10Z prefetch to +0.0100%/8h now, the first directional reset since the 17:10Z trough. Top L/S surged from 1.92 yesterday to 1.97 with a +0.58 7d delta — smart money rebuilt long conviction by the largest weekly swing in today's deck. OI -0.92% 24h on OI +36.45% 7d means the 7d position build holds while the latest 24h trims, the textbook crowded-long shape rebuilding under cooled funding. The 7d avg funding +0.0171% still sits above today's print because the 2026-05-24 06:56Z +0.0943% peak anchors the window. The DISTRIBUTION trigger needs another +0.07pp funding step on a flat-to-red day with OI rebuilding past +5% 24h to fire. A pct_24h drop past -10% with funding flipping sign fires CAPITULATION through the +33.94% 7d run.",
+    asset: 'NIL',
+    metrics_line: watchLine('NIL'),
+    transition_read: "Pct_24h -14.44% prints the universe's heaviest 24h drawdown. OI -24.54% 24h means a quarter of the leverage built into yesterday's run unwound today. Funding +0.0043%/8h blocks CAPITULATION on the funding < 0 gate by a hair. Top L/S 1.21 rolled -0.83 over 7d, so smart money sat on the right side of this flush. Liq $231K against 7d p75 $577K reads at 40% of the flush threshold, so the cascade is not at full pace. A second leg past -10% with funding flipping negative fires CAPITULATION. A bounce holding funding flat with OI rebuilding past +5% 24h fires DISTRIBUTION through the rebuild stack.",
   },
   {
-    asset: 'AGT',
-    metrics_line: metricsLine(m.AGT),
-    transition_read: "Pct_24h -10.68% clears the Tier 2 -10% CAPITULATION drawdown gate by 0.68pp on OI -18.42% 24h, which clears the -10% OI gate by 8.42pp. Liq $61.2K sits above the 7d p75 of $55.0K, clearing the liq gate. The funding gate fails — funding +0.0003%/8h sits positive when CAPITULATION needs funding < 0. Three of four CAPITULATION gates fire on the heaviest single-day flush in today's universe. The setup reads as forced unwind into a positive-funding wall — long-side capitulation without short-side conviction. Funding flipping negative on continued downside fires CAPITULATION. A failed bounce with funding holding positive sets the LONG-TRAP shape on tomorrow's slice.",
-  },
-  {
-    asset: 'FIDA',
-    metrics_line: metricsLine(m.FIDA),
-    transition_read: "Funding prints -0.2309%/8h against a -0.1253% 7d average, a -0.1056pp delta that marks the heaviest short premium in the engine's deployment to date. Basis +0.5572% sits 1.6x the next-highest reading. Shorts pay extreme premium while spot trades at the heaviest futures discount of the week — the structural split reads as a deliberate cash-and-carry footprint scaling past the engine's standard taker_buy window. Top L/S 1.13 with a +0.05 7d delta means smart money sits balanced into the extreme funding setup. Pct_24h +3.83% on OI +7.81% 24h prints quiet positive grind into the squeeze fuel. A pct_24h push past +10% with OI reversing to <0 and short_liqs printing above 7d p75 fires SHORT-SQUEEZE through the funding wall. A flat day with funding extending past -0.30% sets up structural short-side capitulation when the eventual rip arrives.",
+    asset: 'PHA',
+    metrics_line: watchLine('PHA'),
+    transition_read: "First appearance in the universe with the heaviest negative funding print in deployment at -0.1419%/8h, 0.1336pp below the 7d average. OI +348.69% 7d on +47.01% 7d price prints a heavy weekly position build with the funding wall flipping deep short on today's scan. Basis +0.6135% reads as the widest spot-futures gap in today's universe. Top L/S 1.17 rolled -0.25 over 7d, so smart money trimmed conviction through the build. Pct_4h +8.57% on pct_24h -0.31% means the last 4h delivered a fresh push against a flat 24h. SHORT-SQUEEZE fires if pct_24h pushes past +10% while OI rolls negative against the stacked short premium. CAPITULATION fires on pct_24h breaking below -10% with funding holding negative.",
   },
   {
     asset: 'HYPE',
-    metrics_line: metricsLine(m.HYPE),
-    transition_read: "Yesterday's 17:10Z fresh-squeeze coil — funding -0.0201%/8h on pct_24h +7.76% with OI +17.86% 24h — unwound on today's flatline. Funding flipped back positive to +0.0068%/8h with pct_24h -0.33% and OI -2.13% 24h. The short-side leverage that paid premium yesterday has covered or rotated. Top L/S 1.36 up 0.18 over 7d means smart money kept rebuilding long conviction through the unwind. Pct_7d +31.10% holds the broader uptrend intact but the immediate squeeze fuel evaporated. A green pct_24h push past +10% with OI flipping negative again fires SHORT-SQUEEZE. A funding push past +0.03% on continuation fires MOMENTUM through the +31% 7d run.",
+    metrics_line: watchLine('HYPE'),
+    transition_read: 'OI +21.80% 7d on pct_7d +24.21% with funding +0.0054%/8h sits inside both the ACCUMULATION OI gate and the funding band. Range 37.68% blocks the gate by 12.68pp, the single block. Top L/S 1.32 with +0.15 over 7d means smart money built conviction through the consolidation. Pct_24h -2.42% on OI -3.48% 24h cooled the run without unwinding the 7d structure. A range tightening below 25% over the next 7d fires ACCUMULATION through the OI build. A funding push past +0.03% on continued pct_7d above +15% fires MOMENTUM through the trend run.',
   },
   {
-    asset: 'EDEN',
-    metrics_line: metricsLine(m.EDEN),
-    transition_read: "Funding extended deeper negative to -0.0540%/8h, holding the heaviest short premium in today's universe by a 2.2x margin over the second-highest (1000PEPE's funding sits positive — FIDA breaks the comparison with -0.2309%, so EDEN reads second deepest among the structurally non-broken reads). Basis +0.0455% collapsed from +0.3436% yesterday — futures-spot divergence narrowed sharply even as the funding gap widened. Top L/S 1.38 up 0.34 over 7d means smart money rebuilt long conviction through the negative-funding window. Pct_24h -1.90% on OI +0.64% 24h prints quiet bleed into the deepening short premium. A green pct_24h push past +5% with OI reversing fires SHORT-SQUEEZE through the funding wall. A red day with funding extending past -0.08% on no flush sets up structural long-bleed.",
-  },
-  {
-    asset: 'NIL',
-    metrics_line: metricsLine(m.NIL),
-    transition_read: "First-day entrant prints pct_7d +64.50% on OI +398.60% 7d — the heaviest 7d position build in the entire engine deployment. Top L/S -0.75 over 7d means smart money exited 38% of long conviction over the same window the OI nearly quintupled. The split reads as retail piling into a leveraged narrative while smart money distributed underneath. Funding +0.0115%/8h sits 0.0285pp under the +0.04 Tier 2 DISTRIBUTION trigger but the 7d setup has the shape of a forming top. Vol 0.76x sits the highest in today's universe — the only asset where intraday flow is tracking the prior-week average. A funding spike past +0.04 with pct_24h going flat-to-red fires LONG-TRAP. A pct_24h drop past -10% with funding flipping sign fires CAPITULATION.",
-  },
-  {
-    asset: 'ZEC',
-    metrics_line: metricsLine(m.ZEC),
-    transition_read: "Pct_24h cooled from +7.78% yesterday to -0.16% today. Funding still flipped positive (+0.0043%/8h vs a -0.0045% 7d avg) — the structural short-side discount unwound on yesterday's push but funding hasn't reset to the multi-day negative print yet. Top L/S 0.71 holds as the most-short smart-money positioning in today's universe (smart traders run 1.41-to-1 short). Pct_7d +17.47% sits 2.47pp above the Tier 2 +15% MOMENTUM floor but funding +0.0043% sits 0.0257pp under the +0.03 MOMENTUM entry — same gate that has blocked ZEC's MOMENTUM print all week. A funding push past +0.03% on continuation fires MOMENTUM. A pct_24h reversal past -5% with the short positioning unwinding sets a long bias against the smart-money short stack.",
+    asset: 'WLD',
+    metrics_line: watchLine('WLD'),
+    transition_read: 'Pct_24h +5.81% on OI +11.80% 24h and OI +96.39% 7d clears three of the four CATALYST-BREAKOUT gates. Pct_24h sits 14.19pp short of the Tier 2 +20% gate, the binding constraint. Vol_ratio 0.98x sits 1.02x short of the 2.0x gate. Pct_4h +5.31% on pct_24h +5.81% means the move concentrated in the last 4h. Top L/S 1.67 with +0.02 over 7d held flat through the run. Funding -0.0093%/8h flipped to a small short premium. A second leg past +20% with vol_ratio crossing 2.0x fires CATALYST-BREAKOUT. A continuation with funding flipping past +0.03% fires MOMENTUM through the 46.66% 7d run.',
   },
 ];
 
 const data = {
-  date: '2026-05-25',
+  date: TODAY,
   edge_case: null,
   verdict: {
     word: 'QUIET',
-    distribution: '25 NEUTRAL across 25 assessed on the 2026-05-25 05:26Z prefetch.',
-    cycle: "Every assessed asset prints NEUTRAL for a second consecutive calendar day after yesterday's two intraday 25/25 prints. The early-UTC snapshot caps vol_ratio at 0.07-0.36x universe-wide, blocking every CATALYST-BREAKOUT path until intraday flow accumulates against the 2.0x gate. The reshuffle since yesterday surfaces three NEUTRAL setups worth watching. BSB funding rebuilt from +0.0038%/8h at the 17:10Z reset to +0.0100%/8h with top L/S surging to 1.97 on a +0.58 7d delta, the cleanest rebuilding-DISTRIBUTION shape in today's deck. AGT printed pct_24h -10.68% on OI -18.42% 24h — the only Tier 2 asset to clear the CAPITULATION drawdown gate but funding +0.0003%/8h blocks the regime. FIDA's funding -0.2309%/8h against basis +0.5572% sets the heaviest funding-basis split in the engine's deployment to date.",
-    forward: "BSB DISTRIBUTION fires on another +0.07pp funding step with OI rebuilding past +5% 24h. AGT CAPITULATION fires on funding flipping negative through the -10.68% drawdown already in place. FIDA SHORT-SQUEEZE fires on a pct_24h push past +10% with OI reversing to <0 and short_liqs clearing 7d p75. HYPE's yesterday fresh-squeeze coil unwound. ZEC's MOMENTUM print stays blocked by funding +0.0043%/8h sitting 0.0257pp under the entry gate.",
+    distribution: '3 ACCUMULATION across 25 assessed, 22 NEUTRAL on the 2026-05-26 07:38Z prefetch.',
+    cycle: "Three ACCUMULATION prints emerge from yesterday's fully NEUTRAL universe. ZEC transitions out of NEUTRAL on OI +20.07% 7d with funding +0.0107%/8h. TAO and INJ enter the universe direct into ACCUMULATION on OI +15.71% and +47.88% 7d. All three carry the DIVERGENT sub-tag. Taker buy under 50% on every print means passive position building, not directional bid. The majors print a synchronized red day with BTC -0.89%, ETH -0.90%, SOL -1.12% on near-flat OI and funding holding inside +0.003 to +0.005%/8h. NIL flushed -14.44% 24h on OI -24.54% 24h, missing CAPITULATION on funding still positive at +0.0043%/8h. PHA stepped into the universe with funding -0.1419%/8h against +47.01% 7d and OI +348.69% 7d. The heavy weekly build paired with a deep funding wall reads as positioning unwind starting.",
+    forward: "ZEC ACCUMULATION advances to CONFIRMED if taker buy clears 50% on tomorrow's scan with top L/S rotating up. PHA SHORT-SQUEEZE fires if pct_24h pushes past +10% while OI rolls negative against the stacked short premium. NIL CAPITULATION fires on a second leg past -10% with funding flipping negative. HYPE re-enters ACCUMULATION if the 7d range tightens under 25%. The current 37.68% blocks the gate.",
   },
-  regime_changes: [],
-  regimes: {
-    ACCUMULATION: [],
-    'CATALYST-BREAKOUT': [],
-    'SHORT-SQUEEZE': [],
-    MOMENTUM: [],
-    COMPRESSION: [],
-    DISTRIBUTION: [],
-    CAPITULATION: [],
-  },
-  regime_empty_notes: {
-    ACCUMULATION: "every Tier 2 asset that clears OI +10% 7d AND funding band fails the range_7d_pct < 25% gate — HYPE range 46.66%, ZEC 34.23%, NEAR 69.87%, EDEN 277.82%, WLD 37.13%, ONDO 42.95%, NIL 83.28%, GRASS 94.56%, GENIUS 105.71%, AGT 152.39%, BEAT 176.44%, UB 100.49%, BSB 446.90%. BNB range 4.81% qualifies but OI +2.64% 7d fails the +10% gate",
-    'CATALYST-BREAKOUT': "no Tier 2 asset clears pct_24h +20% (the universe sits at pct_24h between -10.68% and +3.83%) and the early-UTC snapshot caps vol_ratio at 0.07-0.36x — the 2.0x gate is unreachable on this prefetch slice",
-    'SHORT-SQUEEZE': "no Tier 2 asset clears pct_24h +10% — the highest reads are FIDA +3.83%, UB +3.69%, TON +2.69%, NIL +2.40%. Without the price extension, the regime cannot fire even on the EDEN and FIDA negative-funding setups",
-    MOMENTUM: "no Tier 2 asset combines pct_7d > +15% with funding inside the +0.03 to +0.07 band — ZEC pct_7d +17.47% but funding +0.0043%; HYPE pct_7d +31.10% but funding +0.0068%; NEAR pct_7d +46.52% but funding +0.0088%; UB pct_7d +22.63% with funding +0.0154% holds the closest to the entry gate but sits 0.0146pp short",
-    COMPRESSION: "BNB range 4.81% clears the Tier 2 5% gate but OI +2.64% 7d fails the +5% OI build requirement. No Tier 2 asset combines a tight range with OI rebuilding today",
-    DISTRIBUTION: "no asset clears the funding-extreme gate — UB funding +0.0154%/8h sits 0.0246pp under the +0.04 Tier 2 trigger, NIL +0.0115%/8h sits 0.0285pp short, BEAT +0.0106%/8h sits 0.0294pp short, BILL +0.0101%/8h sits 0.0299pp short, BSB +0.0100%/8h sits 0.0300pp short",
-    CAPITULATION: "AGT pct_24h -10.68% on OI -18.42% 24h clears the drawdown and OI gates by 0.68pp and 8.42pp respectively, with liq $61.2K above the 7d p75 of $55.0K — but funding +0.0003%/8h fails the funding < 0 requirement",
-  },
+  regime_changes,
+  regimes: byRegime,
+  regime_empty_notes,
   watch,
   neutral_summary: 'Neutral · 18 other assets · see artifact tail for full data',
   tail,
 };
 
-const OUT = path.join(ROOT, '.outputs', 'perps-scan.data.json');
-fs.writeFileSync(OUT, JSON.stringify(data, null, 2));
-console.log(`wrote ${OUT}`);
+fs.writeFileSync('.outputs/perps-scan.data.json', JSON.stringify(data, null, 2));
+console.log('wrote .outputs/perps-scan.data.json:', JSON.stringify({
+  regime_counts: Object.fromEntries(REGIME_ORDER.map((r) => [r, byRegime[r].length])),
+  tail_count: tail.length,
+  watch_count: watch.length,
+  regime_changes_count: regime_changes.length,
+}));
