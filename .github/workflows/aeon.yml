@@ -720,6 +720,18 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
           NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
+          # V2 Discord bot — parallel embed delivery for perps-brief.
+          # postprocess-perps-brief.sh skips bot delivery when these are
+          # all unset (no-op for other skill workflows). Setting
+          # DISCORD_BOT_DRY_RUN=1 in repo variables prints embed JSON to
+          # workflow logs instead of POSTing — use during initial soak.
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_DRY_RUN: ${{ vars.DISCORD_BOT_DRY_RUN }}
+          DISCORD_BOT_CHANNEL_PERPS_CONTEXT: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_CONTEXT }}
+          DISCORD_BOT_CHANNEL_PERPS_POSITIONS: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_POSITIONS }}
+          DISCORD_BOT_CHANNEL_PERPS_SIGNALS: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_SIGNALS }}
+          DISCORD_BOT_CHANNEL_PERPS_WATCHLIST: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_WATCHLIST }}
+          DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
         run: |
           # Run all scripts/postprocess-*.sh after Claude finishes.
           # Each script handles its own .pending-{service}/ directory

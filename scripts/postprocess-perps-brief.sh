@@ -7,6 +7,7 @@
 #   3. Apply ledger operations       (scripts/apply-ledger-ops.py)
 #   4. Validate ledger post-apply    (python3 -m lib.ledger)
 #   5. Split markdown into per-section pre-chunked pending files
+#   6. Bot embed delivery            (scripts/embed-perps-brief.py, V2 parallel)
 #
 # v4.1 changes from v4:
 #   - Step 5 splits the brief by section divider, pre-chunks each section
@@ -269,5 +270,38 @@ def main():
 if __name__ == "__main__":
     main()
 PY
+
+# Step 6 — Bot embed delivery (V2 parallel path)
+# Posts structured embeds to the per-section channels (#perps-context,
+# #perps-positions, #perps-signals, #perps-watchlist, #perps-outcomes)
+# ALONGSIDE the existing webhook delivery above. The two paths target
+# non-overlapping channels — no duplicate messages.
+#
+# Gating:
+#   - DISCORD_BOT_TOKEN unset AND DISCORD_BOT_DRY_RUN unset → skip entirely
+#   - DISCORD_BOT_DRY_RUN=1 → run in dry-run (prints embed JSON to stderr,
+#     no API calls). Use to preview embeds in workflow logs without
+#     touching live channels.
+#   - DISCORD_BOT_TOKEN set → live POST to Discord.
+#
+# Failure is best-effort: the bot path is parallel; if it errors, the
+# webhook delivery above has already happened, so the operator still
+# gets the brief. We log a warning and exit 0.
+echo "postprocess-perps-brief: step 6/6 — bot embed delivery (V2 parallel)"
+
+if [ ! -f "scripts/embed-perps-brief.py" ]; then
+  echo "postprocess-perps-brief: embed-perps-brief.py missing — skipping bot delivery"
+elif [ -z "${DISCORD_BOT_TOKEN:-}" ] && [ "${DISCORD_BOT_DRY_RUN:-}" != "1" ]; then
+  echo "postprocess-perps-brief: DISCORD_BOT_TOKEN unset and DRY_RUN off — skipping bot delivery"
+else
+  BOT_MODE="--live"
+  if [ "${DISCORD_BOT_DRY_RUN:-}" = "1" ]; then
+    BOT_MODE="--dry-run"
+    echo "postprocess-perps-brief: bot dry-run requested via DISCORD_BOT_DRY_RUN=1"
+  fi
+  if ! python3 scripts/embed-perps-brief.py "$BOT_MODE"; then
+    echo "::warning::postprocess-perps-brief: bot embed delivery exited non-zero (non-fatal — webhook path already delivered)"
+  fi
+fi
 
 echo "postprocess-perps-brief: done. Section pending files written; post-run notify step will deliver each."
