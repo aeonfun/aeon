@@ -1,9 +1,11 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-26T08:05:46Z",
+  "last_analyzed": "2026-05-26T08:37:59Z",
   "quality_score": 4,
-  "assessment": "Substantive perps brief with specific positions, quantified signals, and clear decision rationale; well-structured and actionable despite lacking explicit source citations",
-  "flags": [],
+  "assessment": "Duplicate invocation handled gracefully; substantive re-verification with specific metrics (prices, ratios, funding) confirms stable state; actionable ZEC watchlist candidate identified",
+  "flags": [
+    "duplicate_invocation"
+  ],
   "avg_score": 4.04,
   "history": [
     {
@@ -100,6 +102,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     },
     {

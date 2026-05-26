@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-26T08:05:57Z",
+  "last_updated": "2026-05-26T08:38:07Z",
   "open": [
     {
       "id": "BCH-2026-05-23-001",
@@ -337,7 +337,7 @@
       ]
     },
     {
-      "id": "WLD-watchlist-2026-05-26-001",
+      "id": "WLD-watchlist-2026-05-26-002",
       "asset": "WLD",
       "direction": "LONG",
       "first_seen_date": "2026-05-26",
@@ -361,7 +361,7 @@
       ]
     },
     {
-      "id": "ONDO-watchlist-2026-05-26-001",
+      "id": "ONDO-watchlist-2026-05-26-002",
       "asset": "ONDO",
       "direction": "LONG",
       "first_seen_date": "2026-05-26",

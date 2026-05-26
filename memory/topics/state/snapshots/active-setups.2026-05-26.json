@@ -1,69 +1,7 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-25T10:20:55Z",
+  "last_updated": "2026-05-26T08:05:57Z",
   "open": [
-    {
-      "id": "HYPE-2026-05-22-001",
-      "asset": "HYPE",
-      "direction": "LONG",
-      "fired_date": "2026-05-22",
-      "fired_price": 60.906,
-      "fired_btc_price": 77417,
-      "fired_eth_price": 2132,
-      "entry_zone": "market or first pullback to $58",
-      "invalidation": "close below $56, OR clean break below the post-June-6-unlock settlement low",
-      "horizon": "multi-week",
-      "thesis": "$16M/day ETF inflows while BTC/ETH ETFs bleed. Smart money +0.19 over 7d through ATH $62. Funding +0.0067%/8h well under the +0.03% extreme gate. Narrative-tracker FADE contradicted by perps positioning.",
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "cross_domain_bridge",
-        "enrichment_positive"
-      ],
-      "confluence_missing": [
-        "quant_regime_aligned",
-        "narrative_phase_aligned",
-        "both_tag",
-        "repeat_appearance"
-      ],
-      "named_risks": [
-        "June 6 unlock 15 days out — $575M release",
-        "Narrative-tracker FADE call is real — second day with no fresh threads",
-        "ETF flow reverses if BTC/ETH ETFs come out of bleed"
-      ],
-      "mae_pct": -10.517847174334218,
-      "mfe_pct": 4.7680031523987845,
-      "mae_date": "2026-05-23",
-      "mfe_date": "2026-05-25",
-      "invalidation_breached": true,
-      "watchlist_provenance": null,
-      "evaluations": [
-        {
-          "date": "2026-05-22",
-          "call": "RIDE",
-          "price_at_eval": 59.827,
-          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
-        },
-        {
-          "date": "2026-05-23",
-          "call": "RIDE",
-          "price_at_eval": 55.632,
-          "note": "Day 2/multi-week late session. Price recovered to $55.632 (+0.92% pct_4h) above the revised $54 invalidation. Same session printed +1.84% 24h on -3.31% BTC — 5.15pp relative strength on a red tape. AIXBT names HYPE as consensus outperformer (Grayscale 3rd ETF amendment + Bitwise BHYP $30M AUM in five days + USDC prediction markets). Narrative-tracker holds Hyperliquid at Peak 4/5 RIDE w/ trail. Top L/S 1.34 +0.13 over 7 days — smart money still building. Holding."
-        },
-        {
-          "date": "2026-05-24",
-          "call": "RIDE",
-          "price_at_eval": 63.283,
-          "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
-        },
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 63.297,
-          "note": "Day 4/multi-week afternoon re-eval. +3.93% from fire. Narrative-tracker confirmed Hyperliquid Peak 4/5 RIDE w/ trail through the day. AIXBT 08:00Z names spot ETF BTC/ETH outflows against HYPE/SOL/XRP inflows — institutional reallocation at the wrapper level confirms the structural read. Funding +0.0075%/8h sits 0.0225pp under the MOMENTUM gate, the closest path to a regime print. Top L/S 1.35 +0.17 7d; smart money holding the build. RIDE."
-        }
-      ]
-    },
     {
       "id": "BCH-2026-05-23-001",
       "asset": "BCH",
@@ -96,9 +34,9 @@
         "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
       ],
       "mae_pct": -5.024950678890563,
-      "mfe_pct": 0.4874086108854609,
+      "mfe_pct": 1.3577811303237806,
       "mae_date": "2026-05-24",
-      "mfe_date": "2026-05-25",
+      "mfe_date": "2026-05-26",
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
@@ -113,6 +51,13 @@
           "call": "RIDE",
           "price_at_eval": 345.0,
           "note": "Day 3/7 afternoon re-eval. BCH still absent from the 25-asset perps slice and from token-movers (morning and midday refreshes both). Price_at_eval estimated near $345 from the market-context naming BCH as one of the top-20 majors closing red on a +0.81% BTC day. High/low estimates carry uncertainty bands. Structural smart-money-exit thesis intact. Invalidation $370 holds."
+        },
+        {
+          "date": "2026-05-26",
+          "call": "RIDE",
+          "price_at_eval": 342.0,
+          "note": "Day 4/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending — price estimated near $342 from BTC -0.83% on a risk-off tape with breadth 1/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+          "invalidation_breached_today": false
         }
       ]
     },
@@ -151,9 +96,9 @@
         "Macro regime flip is fresh — if US-Iran deal stalls before May 31, the breadth-driven bid evaporates."
       ],
       "mae_pct": -2.131361461504997,
-      "mfe_pct": 1.3484123531970507,
+      "mfe_pct": 1.7833840800348066,
       "mae_date": "2026-05-24",
-      "mfe_date": "2026-05-25",
+      "mfe_date": "2026-05-26",
       "invalidation_breached": false,
       "watchlist_provenance": null,
       "evaluations": [
@@ -168,6 +113,13 @@
           "call": "RIDE",
           "price_at_eval": 0.23,
           "note": "Day 2/7 afternoon re-eval. EIGEN absent from afternoon perps slice and both token-movers refreshes. Price_at_eval estimated near morning fire ($0.2299). AI agents and Decentralized compute hold Peak 5/5 RIDE — sector confluence sustained, AKT joined the bid this morning. Invalidation $0.205 holds. RIDE."
+        },
+        {
+          "date": "2026-05-26",
+          "call": "RIDE",
+          "price_at_eval": 0.231,
+          "note": "Day 3/7. EIGEN absent from today's perps slice and token-movers refreshes — price estimated near $0.231. AI-compute sector sweeps 7 of 8 winner slots today (WLD, NEAR, RENDER, FET, TIA, GRASS, GRT) — the named sector tailwind from the original thesis is firing exactly as predicted. AI agents and Decentralized compute both Peak 5/5 RIDE in narrative-tracker. Invalidation $0.205 holds well clear. RIDE.",
+          "invalidation_breached_today": false
         }
       ]
     },
@@ -217,58 +169,99 @@
           "price_at_eval": 0.9042,
           "note": "Day 1/7 evening eval. PM token-movers print holds AKT near +11% 24h, in line with the afternoon's +10% read at $0.9042. CoinGecko trending hold extended through three of today's three token-movers runs. Decentralized compute Peak 5/5 RIDE intact. Position green at +3.93% from morning fire. RIDE.",
           "invalidation_breached_today": false
+        },
+        {
+          "date": "2026-05-26",
+          "call": "RIDE",
+          "price_at_eval": 0.9,
+          "note": "Day 2/7. AKT absent from today's perps slice and not in today's top winners or trending refresh — price estimated near $0.90 from yesterday's $0.9042 print on a flat 1h tape for the AI-compute pack. Narrative-tracker holds Decentralized compute Peak 5/5 RIDE for second straight session; the new DePAI wrapper framing extends the catalyst stack. Invalidation $0.78 holds. RIDE.",
+          "invalidation_breached_today": false
         }
       ]
     },
     {
-      "id": "ASTER-2026-05-25-001",
-      "asset": "ASTER",
+      "id": "RENDER-2026-05-26-001",
+      "asset": "RENDER",
       "direction": "LONG",
-      "fired_date": "2026-05-25",
-      "fired_price": 0.7163,
-      "fired_btc_price": 77268,
-      "fired_eth_price": 2111,
-      "entry_zone": "market or first pullback to $0.69",
-      "invalidation": "close below $0.67",
+      "fired_date": "2026-05-26",
+      "fired_price": 2.29,
+      "fired_btc_price": 76590.8,
+      "fired_eth_price": 2092.7,
+      "entry_zone": "market or first pullback to $2.15",
+      "invalidation": "close below $2.00",
       "horizon": "7d",
       "thesis": [
-        "ASTER closed +5.5% on the day and +10.5% over 7 days with vol/mcap at 0.11 on a $1.85B market cap. This afternoon's token-call re-run rated ASTER HIGH conviction (8/10), the top score across the 250-coin scan and two points above the next band.",
-        "Aster listed SpaceX pre-IPO perpetuals on 18 May with 5x leverage — the same platform whose product surface seeded the SAOS and SPCX meme-coin name-farm clusters showing up in monitor-runners this week. Permissionless Listing Vote went live the same day and RWA Sprint Season 1 cuts taker fees to 0.9bps through 7 June.",
-        "Narrative-tracker promoted Hyperliquid back to Peak with a 4/5 RIDE-with-trail rating this session. ASTER sits at #2 in the perp-DEX segment, catching the sector tailwind as the second-derivative trade behind the lead.",
-        "Funding sits at -0.0069%/8h (shorts paying longs) on a price that ran +10% over the week. Retail shorts crowd against the rally, loading squeeze fuel if price clears the $0.78 resistance pocket that capped the late-April attempt."
+        "RENDER +14.2% 24h on $258M vol with vol/mcap 0.21 — AI-compute peer set leading while TAO digests at +1.1%.",
+        "Today's token-call rated RENDER HIGH 9/10. Salad Network adds ~60,000 enterprise GPUs, AI compute drives 35-40% of jobs.",
+        "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE second straight session, burns +278% year-over-year.",
+        "Token-movers shows AI-compute sweeping 7 of 8 winner slots — dominant cross-sector rotation on a 1/20 green tape."
       ],
       "confluence_fired": [
         "narrative_phase_aligned",
+        "market_regime_aligned",
         "enrichment_positive",
-        "cross_domain_bridge",
-        "pattern_tag_supports"
+        "cross_domain_bridge"
       ],
       "confluence_missing": [
         "quant_regime_aligned",
+        "pattern_tag_supports",
         "both_tag",
-        "repeat_appearance",
-        "market_regime_aligned"
+        "repeat_appearance"
       ],
       "named_risks": [
-        "Top-trader long/short ratio sits at 2.92, the highest in today's perps universe. Smart money cut the ratio 0.79 points over 7 days while price rose — distribution into retail demand, the classic smart-exit pattern. This keeps the trail tight.",
-        "Price approaches the $0.78 resistance level that capped the late-April attempt and stands roughly 235% below the $2.41 all-time high. A failed test of $0.78 without volume bleeds back to the $0.65 support before the squeeze fuel reloads.",
-        "Hyperliquid is the sector lead. If HYPE breaks structurally (loses the buyback-anchored bid or smart money flips short), the second-derivative ASTER bid follows down through the unwind."
+        "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang ready to land.",
+        "Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price — institutional flows may rotate back.",
+        "EIGEN and AKT already hold AI-compute long — RENDER concentrates rather than diversifies sector exposure."
       ],
-      "mae_pct": -0.8795197542929055,
-      "mfe_pct": 0.0,
-      "mae_date": "2026-05-25",
-      "mfe_date": "2026-05-25",
+      "mae_pct": null,
+      "mfe_pct": null,
+      "mae_date": null,
+      "mfe_date": null,
       "invalidation_breached": false,
       "watchlist_provenance": null,
-      "evaluations": [
-        {
-          "date": "2026-05-25",
-          "call": "RIDE",
-          "price_at_eval": 0.7138,
-          "note": "Day 1/7 evening eval. ASTER printed +1.33% 24h on the 09:20Z perps slice at $0.7138 — -0.35% from the afternoon fire at $0.7163. Funding -0.0058%/8h (shorts paying longs) holds the squeeze setup. Top-trader long/short at 2.89 with -0.82 over 7d means smart money continued the distribution leg into the evening, keeping the trail tight per the original risk callout. Narrative-tracker confirms Hyperliquid Peak 4/5 RIDE w/ trail for the third read today. Invalidation $0.67 holds well clear. RIDE.",
-          "invalidation_breached_today": false
-        }
-      ]
+      "evaluations": []
+    },
+    {
+      "id": "TAO-2026-05-26-001",
+      "asset": "TAO",
+      "direction": "LONG",
+      "fired_date": "2026-05-26",
+      "fired_price": 278.29,
+      "fired_btc_price": 76590.8,
+      "fired_eth_price": 2092.7,
+      "entry_zone": "market or first pullback to $265",
+      "invalidation": "close below $255",
+      "horizon": "7d",
+      "thesis": [
+        "TAO printed first-day ACCUMULATION DIVERGENT on OI +15.71% 7d, funding +0.0054%/8h holds under the extreme gate.",
+        "Bittensor Q1 2026 revenue $43M anchors fundamentals — real AI service revenue distinguishes TAO from the DePIN trade.",
+        "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE, new DePAI wrapper label extends the catalyst stack.",
+        "Top-trader long/short 1.98 with -0.10 over 7 days — smart money built through consolidation without piling in late."
+      ],
+      "confluence_fired": [
+        "quant_regime_aligned",
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "enrichment_positive",
+        "regime_transition"
+      ],
+      "confluence_missing": [
+        "pattern_tag_supports",
+        "both_tag",
+        "repeat_appearance"
+      ],
+      "named_risks": [
+        "DIVERGENT sub-tag means taker buy 46.68% under 50% — passive build could be arbitrage, not directional positioning.",
+        "AI-compute sector concentration risk — EIGEN, AKT, RENDER all hold the same thesis, sector unwind hits all four.",
+        "Decentralized compute Peak not Rising — late-cycle entry, narrative-tracker downgrade to Fading reverses the bid."
+      ],
+      "mae_pct": null,
+      "mfe_pct": null,
+      "mae_date": null,
+      "mfe_date": null,
+      "invalidation_breached": false,
+      "watchlist_provenance": null,
+      "evaluations": []
     }
   ],
   "watchlist": [
@@ -322,52 +315,6 @@
       ]
     },
     {
-      "id": "NIL-watchlist-2026-05-25-001",
-      "asset": "NIL",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-25",
-      "trigger": "funding push past +0.04%/8h with pct_24h going flat-to-red OR pct_24h drops past -10% with open interest reversing negative",
-      "invalidation": "close above the 7d high before trigger fires",
-      "horizon": "3d",
-      "thesis": [
-        "NIL +64.5% 7d on open interest +398.6% 7d — heaviest 7d position build in the engine's deployment.",
-        "Top-trader long/short -0.75 over 7d while open interest nearly quintupled — smart money exited 38% of long conviction while retail piled in.",
-        "Funding +0.0115%/8h with delta +0.01 versus 7d average — premium building, hasn't cleared +0.04% extreme gate yet."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "quant_regime_aligned"
-      ],
-      "named_risks": [
-        "First-day entrant, no repeat appearance to confirm pattern stability.",
-        "Funding push past +0.04% could resolve through a sharp red day before the watchlist fires — getting in late on the flush.",
-        "Microcap (open interest $47.8M) — squeezes can run irrespective of fundamentals on coordinated flow."
-      ]
-    },
-    {
-      "id": "FIDA-watchlist-2026-05-25-001",
-      "asset": "FIDA",
-      "direction": "LONG",
-      "first_seen_date": "2026-05-25",
-      "trigger": "pct_24h push past +10% with open interest reversing negative AND short liquidations clearing the 7d p75 of $1.6M",
-      "invalidation": "close below $0.034 before trigger fires",
-      "horizon": "3d",
-      "thesis": [
-        "FIDA holds the heaviest funding-basis split in the perps engine's deployment to date. Funding at -0.1739%/8h against a 7-day average of -0.1116%, basis at +0.4588% (3.4x the next reading in the universe outside EDEN). Shorts pay extreme premium against spot trading at deep futures discount.",
-        "Open interest built 21.97% over 7 days and price ran +73.29% over the same window, while top-trader long/short ratio held balanced at 1.11. The setup reads as cash-and-carry footprint scaling well past the typical arbitrage signature — structural arb load, not directional positioning.",
-        "Price up +2.07% on the day is quiet positive grind into the squeeze fuel. A sharp green day fires the squeeze through the funding wall. A flat day with funding extending past -0.20% sets structural short-side capitulation when the rip eventually arrives."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "quant_regime_aligned"
-      ],
-      "named_risks": [
-        "Cash-and-carry footprint can unwind in either direction on funding normalization, removing the directional asymmetry without firing the squeeze.",
-        "Microcap open interest at $26.4M means squeezes can run irrespective of fundamentals on coordinated flow, but liquidity also evaporates fast on a flush.",
-        "Solana ecosystem name with no fresh public catalyst. The bid depends on the structural arb desk staying engaged through the funding cycle."
-      ]
-    },
-    {
       "id": "PLAY-watchlist-2026-05-25-001",
       "asset": "PLAY",
       "direction": "SHORT",
@@ -387,6 +334,54 @@
       "named_risks": [
         "Funding cool-off without a price reversal removes the trigger pathway. The pump may simply consolidate without a flush.",
         "Microcap open interest at $18.7M means squeezes and flushes both run irrespective of fundamentals on coordinated flow."
+      ]
+    },
+    {
+      "id": "WLD-watchlist-2026-05-26-001",
+      "asset": "WLD",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-26",
+      "trigger": "pct_24h second leg past +20% with volume ratio crossing 2.0x, OR funding flipping positive past +0.03%/8h on continued pct_7d above +40%",
+      "invalidation": "close below $0.30 before trigger fires",
+      "horizon": "3d",
+      "thesis": [
+        "WLD +18.4% 24h on $342M vol at #63 cap with [TRENDING+UP][BREAKOUT] — only structurally clean breakout on today's board.",
+        "Perps-scan WATCH cleared three of four CATALYST-BREAKOUT gates — OI +11.80% 24h, taker buy 50.21%, pct gate binding.",
+        "AI/Worldcoin narrative folds into the AI-compute sector sweep — WLD leads the trending rotation onto AI-identity names."
+      ],
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "both_tag"
+      ],
+      "named_risks": [
+        "Pct_24h second leg past +20% on thinner participation may not arrive — the catalyst window closes fast on attention pumps.",
+        "World ID identity narrative is single-driver — without AI sector continuation, WLD reverts to standalone Worldcoin beta."
+      ]
+    },
+    {
+      "id": "ONDO-watchlist-2026-05-26-001",
+      "asset": "ONDO",
+      "direction": "LONG",
+      "first_seen_date": "2026-05-26",
+      "trigger": "close above $0.45 with 24h volume above 1.5x the 7d average AND open interest net positive on the day, reversing today's [TRENDING+DOWN] print",
+      "invalidation": "close below $0.39 before trigger fires",
+      "horizon": "7d",
+      "thesis": [
+        "Narrative-tracker PROMOTED RWA from RIDE-with-trail to full RIDE today on Ondo/TermMax tokenized-stock collateral launch on BNB.",
+        "Ondo also brings tokenized US stocks to Hyperliquid HyperEVM today — cross-narrative anchor into perp DEX infrastructure.",
+        "ONDO -2.25% 24h, rotated to [TRENDING+DOWN] despite catalyst — retail rotation off leaves the bid loaded for next confirmation."
+      ],
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "market_regime_aligned",
+        "cross_domain_bridge",
+        "enrichment_positive"
+      ],
+      "named_risks": [
+        "Prior ONDO LONG closed -17.30% on 2026-05-23 invalidation breach — same name, different setup, but cautious sizing.",
+        "TermMax launch may not extend to a second integration this week — the catalyst stack becomes single-anchored."
       ]
     }
   ],
@@ -645,6 +640,150 @@
       "horizon_realized": "2d",
       "auto_flipped": false,
       "outcome": "LOSS"
+    },
+    {
+      "id": "HYPE-2026-05-22-001",
+      "asset": "HYPE",
+      "direction": "LONG",
+      "fired_date": "2026-05-22",
+      "fired_price": 60.906,
+      "fired_btc_price": 77417,
+      "fired_eth_price": 2132,
+      "entry_zone": "market or first pullback to $58",
+      "invalidation": "close below $56, OR clean break below the post-June-6-unlock settlement low",
+      "horizon": "multi-week",
+      "thesis": "$16M/day ETF inflows while BTC/ETH ETFs bleed. Smart money +0.19 over 7d through ATH $62. Funding +0.0067%/8h well under the +0.03% extreme gate. Narrative-tracker FADE contradicted by perps positioning.",
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "market_regime_aligned",
+        "cross_domain_bridge",
+        "enrichment_positive"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "narrative_phase_aligned",
+        "both_tag",
+        "repeat_appearance"
+      ],
+      "named_risks": [
+        "June 6 unlock 15 days out — $575M release",
+        "Narrative-tracker FADE call is real — second day with no fresh threads",
+        "ETF flow reverses if BTC/ETH ETFs come out of bleed"
+      ],
+      "mae_pct": -10.517847174334218,
+      "mfe_pct": 4.7680031523987845,
+      "mae_date": "2026-05-23",
+      "mfe_date": "2026-05-25",
+      "invalidation_breached": true,
+      "watchlist_provenance": null,
+      "evaluations": [
+        {
+          "date": "2026-05-22",
+          "call": "RIDE",
+          "price_at_eval": 59.827,
+          "note": "Day 1 evening eval. -1.77% from fire, well above $56 invalidation. Narrative-tracker FADE day 3 active — watching top L/S delta for structural break."
+        },
+        {
+          "date": "2026-05-23",
+          "call": "RIDE",
+          "price_at_eval": 55.632,
+          "note": "Day 2/multi-week late session. Price recovered to $55.632 (+0.92% pct_4h) above the revised $54 invalidation. Same session printed +1.84% 24h on -3.31% BTC — 5.15pp relative strength on a red tape. AIXBT names HYPE as consensus outperformer (Grayscale 3rd ETF amendment + Bitwise BHYP $30M AUM in five days + USDC prediction markets). Narrative-tracker holds Hyperliquid at Peak 4/5 RIDE w/ trail. Top L/S 1.34 +0.13 over 7 days — smart money still building. Holding."
+        },
+        {
+          "date": "2026-05-24",
+          "call": "RIDE",
+          "price_at_eval": 63.283,
+          "note": "Day 3/multi-week afternoon re-eval. +3.90% from fire. HYPE printed +7.76% on the day with funding flipping to -0.0201%/8h on OI +17.86% 24h — fresh SHORT-SQUEEZE coil forms underneath the existing long. Top L/S 1.34 +0.09 over 7d — smart money still building. AIXBT reframed thesis from $1B fee-funded buybacks to ATH momentum and Derive options positioning. Same-direction signal does not pyramid; position rides through the new fuel."
+        },
+        {
+          "date": "2026-05-25",
+          "call": "RIDE",
+          "price_at_eval": 63.297,
+          "note": "Day 4/multi-week afternoon re-eval. +3.93% from fire. Narrative-tracker confirmed Hyperliquid Peak 4/5 RIDE w/ trail through the day. AIXBT 08:00Z names spot ETF BTC/ETH outflows against HYPE/SOL/XRP inflows — institutional reallocation at the wrapper level confirms the structural read. Funding +0.0075%/8h sits 0.0225pp under the MOMENTUM gate, the closest path to a regime print. Top L/S 1.35 +0.17 7d; smart money holding the build. RIDE."
+        },
+        {
+          "date": "2026-05-26",
+          "call": "CLOSE",
+          "price_at_eval": 59.666,
+          "note": "Day 5/multi-week. Price $59.666 above $56 invalidation today, but the ledger entry already carries sticky invalidation_breached=true from prior session. Narrative-tracker DEMOTED Hyperliquid Peak to Fading — the second FADE-PEAK-FADE whipsaw in a week, the pattern is the signal. Token-movers rotated HYPE off the trending list wholesale. AIXBT named hot-potato rotation warning on the HYPE/ZEC/NEAR cycle-leader trio. Perps-scan smart-money exit into day seven. Multiple structural signals = structural break. CLOSE.",
+          "invalidation_breached_today": false
+        }
+      ],
+      "closed_date": "2026-05-26",
+      "closed_price": 59.666,
+      "close_reason": "narrative-tracker DEMOTED Hyperliquid Peak to Fading on the second FADE-PEAK-FADE whipsaw in a week; token-movers rotated HYPE off trending wholesale; AIXBT named hot-potato rotation warning on the cycle-leader trio; perps-scan smart-money exit into day seven — structural sector thesis cracked, position carried sticky invalidation_breached from prior session",
+      "return_pct": -2.04,
+      "return_vs_btc_pct": -0.97,
+      "return_vs_eth_pct": -0.19,
+      "horizon_realized": "5d",
+      "auto_flipped": false,
+      "outcome": "NEUTRAL"
+    },
+    {
+      "id": "ASTER-2026-05-25-001",
+      "asset": "ASTER",
+      "direction": "LONG",
+      "fired_date": "2026-05-25",
+      "fired_price": 0.7163,
+      "fired_btc_price": 77268,
+      "fired_eth_price": 2111,
+      "entry_zone": "market or first pullback to $0.69",
+      "invalidation": "close below $0.67",
+      "horizon": "7d",
+      "thesis": [
+        "ASTER closed +5.5% on the day and +10.5% over 7 days with vol/mcap at 0.11 on a $1.85B market cap. This afternoon's token-call re-run rated ASTER HIGH conviction (8/10), the top score across the 250-coin scan and two points above the next band.",
+        "Aster listed SpaceX pre-IPO perpetuals on 18 May with 5x leverage — the same platform whose product surface seeded the SAOS and SPCX meme-coin name-farm clusters showing up in monitor-runners this week. Permissionless Listing Vote went live the same day and RWA Sprint Season 1 cuts taker fees to 0.9bps through 7 June.",
+        "Narrative-tracker promoted Hyperliquid back to Peak with a 4/5 RIDE-with-trail rating this session. ASTER sits at #2 in the perp-DEX segment, catching the sector tailwind as the second-derivative trade behind the lead.",
+        "Funding sits at -0.0069%/8h (shorts paying longs) on a price that ran +10% over the week. Retail shorts crowd against the rally, loading squeeze fuel if price clears the $0.78 resistance pocket that capped the late-April attempt."
+      ],
+      "confluence_fired": [
+        "narrative_phase_aligned",
+        "enrichment_positive",
+        "cross_domain_bridge",
+        "pattern_tag_supports"
+      ],
+      "confluence_missing": [
+        "quant_regime_aligned",
+        "both_tag",
+        "repeat_appearance",
+        "market_regime_aligned"
+      ],
+      "named_risks": [
+        "Top-trader long/short ratio sits at 2.92, the highest in today's perps universe. Smart money cut the ratio 0.79 points over 7 days while price rose — distribution into retail demand, the classic smart-exit pattern. This keeps the trail tight.",
+        "Price approaches the $0.78 resistance level that capped the late-April attempt and stands roughly 235% below the $2.41 all-time high. A failed test of $0.78 without volume bleeds back to the $0.65 support before the squeeze fuel reloads.",
+        "Hyperliquid is the sector lead. If HYPE breaks structurally (loses the buyback-anchored bid or smart money flips short), the second-derivative ASTER bid follows down through the unwind."
+      ],
+      "mae_pct": -2.2755828563451193,
+      "mfe_pct": 0.5165433477593083,
+      "mae_date": "2026-05-26",
+      "mfe_date": "2026-05-26",
+      "invalidation_breached": false,
+      "watchlist_provenance": null,
+      "evaluations": [
+        {
+          "date": "2026-05-25",
+          "call": "RIDE",
+          "price_at_eval": 0.7138,
+          "note": "Day 1/7 evening eval. ASTER printed +1.33% 24h on the 09:20Z perps slice at $0.7138 — -0.35% from the afternoon fire at $0.7163. Funding -0.0058%/8h (shorts paying longs) holds the squeeze setup. Top-trader long/short at 2.89 with -0.82 over 7d means smart money continued the distribution leg into the evening, keeping the trail tight per the original risk callout. Narrative-tracker confirms Hyperliquid Peak 4/5 RIDE w/ trail for the third read today. Invalidation $0.67 holds well clear. RIDE.",
+          "invalidation_breached_today": false
+        },
+        {
+          "date": "2026-05-26",
+          "call": "CLOSE",
+          "price_at_eval": 0.71,
+          "note": "Day 2/7. ASTER dropped out of today's 25-asset perps slice (entered yesterday's universe as new entrant). Price estimated near $0.71 from yesterday evening's $0.7138 print. Hyperliquid sector lead DEMOTED to Fading in narrative-tracker today, the perp-DEX bid rotated off trending list wholesale. Named risk #3 from original thesis (ASTER follows HYPE structurally) has fired. Close to free capital before the second-derivative unwind plays out. CLOSE.",
+          "invalidation_breached_today": false
+        }
+      ],
+      "closed_date": "2026-05-26",
+      "closed_price": 0.71,
+      "close_reason": "Hyperliquid sector lead DEMOTED to Fading in narrative-tracker today; perp-DEX bid rotated off trending list wholesale in one session; the named risk that ASTER is a second-derivative trade behind HYPE has fired — close before the unwind plays out",
+      "return_pct": -0.88,
+      "return_vs_btc_pct": 0.0,
+      "return_vs_eth_pct": -0.01,
+      "horizon_realized": "2d",
+      "auto_flipped": false,
+      "outcome": "NEUTRAL"
     }
   ]
 }
