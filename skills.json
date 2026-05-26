@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-23T18:21:12Z",
     "repo": "aaronjmars/aeon",
-    "total": 156,
+    "total": 157,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -574,6 +574,18 @@
             "sha": "f587d30",
             "updated": "2026-05-17",
             "install": "./add-skill aaronjmars/aeon fork-skill-gap"
+        },
+        {
+            "slug": "fleet-skill-adoption",
+            "name": "fleet-skill-adoption",
+            "description": "Weekly fleet skill-adoption leaderboard — per-slug count of how many POWER+ACTIVE forks have each upstream skill enabled, top-15 most-adopted and bottom-15 least-adopted by fleet penetration, silent when nothing moves",
+            "category": "dev",
+            "schedule": "0 22 * * 0",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-26",
+            "install": "./add-skill aaronjmars/aeon fleet-skill-adoption"
         },
         {
             "slug": "github-issues",
