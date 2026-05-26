@@ -99,13 +99,13 @@
     {
       "repo": "ryjin111/aeon-skill-pack-mythosforge",
       "name": "aeon-skill-pack-mythosforge",
-      "description": "Read-only MythosForge ops monitoring + proof-of-creation integrity — backlog/jury/payout health, plus continuous verification that paid + recent creations stay provably anchored on Base.",
+      "description": "Read-only MythosForge monitoring — ops/backlog/jury/payout health, proof-of-creation integrity on Base, theme/round guard against silent relabels, jury-drift detection, and live gallery/proof-page QA.",
       "author": "ryjin111",
       "license": "MIT",
       "homepage": "https://mythosforge.xyz",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity"]
+      "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity", "mythosforge-theme-round-guard", "mythosforge-jury-drift-watcher", "mythosforge-gallery-qa-watcher"]
     }
   ]
 }
