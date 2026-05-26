@@ -1,25 +1,23 @@
-Market Morning · 25 May · macro splits, perps quiet day 3
+Market Morning · 26 May · AI-compute sweep on a risk-off tape
 
-BTC $77,375 +0.74% 24h, breadth 10/20, DEX volume $4.48B sits 22% under the 7d average. F&G held at 30, first day above Extreme Fear. Perps reads QUIET 25/25 NEUTRAL for the third straight read today.
+BTC bled -0.83% to $76,564 with breadth 1/20 green. ETF outflows hit $1.55B over six sessions, the institutional bid reversed. F&G at 34 (Fear), BTC dominance 58.20%.
 
-Narrative-tracker promoted Privacy/ZK to full 5/5 RIDE. Post-Quantum attaches as fresh WATCH. Hyperliquid Peak holds with trail.
+AI-compute holds the only sector bid — 7 of 8 winner slots. RENDER +14%, NEAR +15%, IO +18%, WLD +19%. RWA promoted to RIDE on Ondo/TermMax tokenized stocks landing on BNB and HyperEVM.
 
-Stance: ride the book. Skip-day on new entries until breadth or volume rebuild.
+Stance: long AI-compute, fade perp-DEX. Concentrated bid on risk-off tape.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-AIXBT's 09:00Z read added Fed hike-risk to the morning's Hormuz de-escalation thread. Two macro forces same session: Hormuz removes oil inflation, Fed minutes anchor long-end yields higher. The leveraged book does not get clean relief.
+Warsh Fed era reverses yesterday's hawkish minutes read. Hormuz de-escalation transmits into risk without the rate-hike headwind. Buy-rumor-sell-fact entered in its place. Equity futures price the relief, not the close.
 
-AI/tech institutional overweight adds a second selloff channel. If Iran talks break, oil reopens and AI/tech sells alongside.
-
-$RATSPEAK on Base shows up as the retail privacy vehicle behind ZEC. Distribution started.
+CLARITY Act named as the recovery vehicle for $UNI, $AAVE, RWA tokens. ETH fear deepened to 36, restaking TVL -65% from peak. Catalyst months away, not days.
 
 
 ─────────  TODAY  ─────────
 
-Action lives in #perps-brief. Book holds 5 RIDE: HYPE, BCH, EIGEN, AKT, ASTER. Sector concentration: AI-compute (EIGEN, AKT) + perp-DEX (HYPE, ASTER), both Peak.
+Action lives in #perps-brief — two new positions, five watchlists. AI-compute confluence headlines: RENDER LONG and TAO LONG join EIGEN and AKT, Decentralized compute at full extension with AI sweeping 7 of 8 winners.
 
-Watchlist 5: ZEC and RAIL long the privacy pullback, NIL and PLAY short positioning extremes, FIDA long cash-and-carry.
+Hyperliquid demoted to fading. Close HYPE and ASTER on the second whipsaw. RWA waits on confirmation: ONDO watchlist day 1, trigger above $0.45.
 
-Take: ride compute, privacy, Hyperliquid. Cash-patient on new entries through the macro split.
+Take: long AI-compute (RENDER, TAO, EIGEN, AKT), concentration the named risk. Close perp-DEX before the unwind.
