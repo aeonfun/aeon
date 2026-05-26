@@ -1,25 +1,24 @@
-Yesterday's Runners · 2026-05-25 · MIXED (1 DEEP-LIQ holds the tier, 4 BREAKOUTs with three live hourly reads)
-
-DEEP-LIQ
-• AIC (bsc) +1081% 24h
-  $23.4m vol, $1.47m liq, h1 +0.3%, h6 -1%, buys 55%, 24h pool
-  → second deep-liq print at score parity in two sessions. The morning print arrived cooling at h1 -2.9%, the afternoon hourly read recovered to flat. The bid stepped back in. Not exit liquidity anymore.
+Yesterday's Runners · 2026-05-26 · SPECULATIVE (5 BREAKOUTs, NOAR day-2 cluster forms)
 
 BREAKOUT
-• Stake (sol) +735% 24h
-  $6.8m vol, $105k liq, h1 +29%, h6 +9%, buys 55%, 26h pool
-  → the live continuation pick on the board, the hourly tape adds +29% on a thin $105k pad. STAKE cluster carries four distinct sol contracts in today's survivor set, day-1 cluster widens through the afternoon.
+• CTR (sol) +2433% 24h
+  $40.8m vol, $241k liq, h1 0%, h6 +37%, buys 57%, 10.4h pool
+  → fresh single-contract pop, the six-hour added +37% then the hourly quit. The tape stepped back before the rotation completed.
 
-★ GENIUS (bsc) +2676% 24h
-  $46.9m vol, $91k liq, h1 +20%, h6 +2676%, buys 53%, 1.6h pool
-  → cluster reactivates on a sixth bsc contract in 72h. Pool 96 minutes old, the full 27x printed inside the prior six hours, the hourly tape adds +20%. The burst-mode signature returns after the morning silence.
+★ NOAR (sol) +590% 24h
+  $48.5m vol, $276k liq, h1 0%, h6 0%, buys 52%, 19h pool
+  → day-2 cluster confirms: five distinct NOAR contracts cleared the gate today (ranks 2, 3, 13, 14, 15), all $37-48m vol on $200-345k liq. Same signature as SAOS day-1 print on 05-24. The lead pool went flat hours ago, the freshest sibling at rank 3 still carries the burst on a 5h contract.
 
-★ GOD (sol) +2112% 24h
-  $39.8m vol, $220k liq, h1 0%, h6 +11%, buys 58%, 10h pool
-  → second straight session in the top 5 on the same contract. The 21x printed earlier today, the hourly went flat hours ago. Distribution shape.
+• HOPPY (sol) +585% 24h
+  $5.7m vol, $103k liq, h1 -7%, h6 -4%, buys 69%, 17.3h pool
+  → 69% buys against a rolling-over tape, the thin $103k pad amplifies reversal risk above.
 
-• NOAR (sol) +537% 24h
-  $47.8m vol, $279k liq, h1 +2%, h6 +537%, buys 52%, 3.3h pool
-  → extends from morning rank 1 on a recycled contract. The hourly cooled from +21% to +2%, the bid quit during the lunch session.
+★ SpaceX (base) +9783% 24h
+  $11.9m vol, $96k liq, h1 0%, h6 -90%, buys 51%, 15.6h pool
+  → second straight session this contract. The six-hour -90% means the round-trip already played out. The headline overstates a print already done.
 
-vibe: GENIUS cluster reactivates this afternoon, Stake adds live hourly on day-1, AIC deep-liq holds parity twice in one day
+• zBase (base) +5074% 24h
+  $7m vol, $139k liq, h1 -11%, h6 +8%, buys 55%, 17.2h pool
+  → hourly rolled -11% off the six-hour peak. The bid stepped back, the print is cooling.
+
+vibe: NOAR five-contract day-2 cluster is the only fresh signal, two repeat tickers already exit liquidity, the rest fresh single-contract pops
