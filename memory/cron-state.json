@@ -40,9 +40,9 @@
   },
   "monitor-runners": {
     "last_status": "success",
-    "last_success": "2026-05-25T09:35:42Z",
-    "total_runs": 24,
-    "total_successes": 23,
+    "last_success": "2026-05-26T07:46:02Z",
+    "total_runs": 25,
+    "total_successes": 24,
     "total_failures": 1,
     "consecutive_failures": 0,
     "success_rate": 0.96,
