@@ -99,13 +99,13 @@
     {
       "repo": "ryjin111/aeon-skill-pack-mythosforge",
       "name": "aeon-skill-pack-mythosforge",
-      "description": "Read-only MythosForge ops monitoring — backlog, jury/payout health, degraded-juror notes, and stall alerts.",
+      "description": "Read-only MythosForge ops monitoring + proof-of-creation integrity — backlog/jury/payout health, plus continuous verification that paid + recent creations stay provably anchored on Base.",
       "author": "ryjin111",
       "license": "MIT",
       "homepage": "https://mythosforge.xyz",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["mythosforge-ops-report"]
+      "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity"]
     }
   ]
 }
