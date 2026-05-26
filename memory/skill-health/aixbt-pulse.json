@@ -1,8 +1,8 @@
 {
   "skill": "aixbt-pulse",
-  "last_analyzed": "2026-05-26T07:44:14Z",
+  "last_analyzed": "2026-05-26T08:26:58Z",
   "quality_score": 4,
-  "assessment": "Substantive crypto market narrative with specific data points, concrete token/policy references, and demonstrated file/memory management. Well-structured operational completeness.",
+  "assessment": "Substantive market analysis with specific asset movements, macro synthesis, and clear before/after comparison; well-structured bridge call identifying embedded contradiction",
   "flags": [],
   "avg_score": 3.96,
   "history": [
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     },
     {
