@@ -1,6 +1,6 @@
-# AIXBT Clusters (as of 2026-05-24)
+# AIXBT Clusters (as of 2026-05-26)
 
-36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; unchanged vs 2026-05-22 snapshot). Used when filtering projects/intel/momentum endpoints (paid tier).
+36 sub-community clusters AIXBT tracks (free-tier `/v2/clusters`; minor description updates vs 2026-05-24 snapshot — CULTURE_SIGNAL added "NFT, or token" to scope; POLICY_REGULATOR name dropped slash). Used when filtering projects/intel/momentum endpoints (paid tier).
 
 | id | name | one-line vibe |
 |----|------|---------------|
@@ -11,7 +11,7 @@
 | AUTOMATED_FEED | Automated Feed | Templated market, on-chain, alert, whale, app-rank, research, or news feed. |
 | BTC_MAXI | BTC Maxi | Bitcoin-only conviction; everything else is a distraction or scam. |
 | BIZDEV | Bizdev | Sales, partnerships, GTM, ops, and commercial relationship-building. |
-| CULTURE_SIGNAL | Culture Signal | Celebrity, creator, athlete, musician, gaming, or retail-culture account with crypto relevance. |
+| CULTURE_SIGNAL | Culture Signal | Celebrity, creator, athlete, musician, gaming, or retail-culture account with crypto, NFT, or token relevance. |
 | DESIGNER | Designer | Crypto product, brand, UI/UX, design-system, or visual-identity work. |
 | DEV | Dev | Ships code, commits, technical replies, and implementation detail. |
 | DOOMER | Doomer | Collapse, depeg, wick, and headline panic. |
@@ -28,7 +28,7 @@
 | NFT_COLLECTOR | NFT Collector | PFPs, floors, mints, and collection lore. |
 | OG | OG | Long-cycle crypto veteran with early-cycle references or history. |
 | PERMA_BULL | Perma Bull | Always up-only; dips are buying opportunities. |
-| POLICY_REGULATOR | Policy / Regulator | Government, regulator, elected official, policy, or advocacy source. |
+| POLICY_REGULATOR | Policy Regulator | Government, regulator, elected official, policy, or advocacy source. |
 | PROJECT_ECOSYSTEM | Project Ecosystem | Official ecosystem or community sub-account, not a core protocol handle. |
 | QUANT | Quant | Charts, funding, order flow, market structure, and PnL framing. |
 | RESEARCHER | Researcher | Deep dives on tokenomics, MEV, consensus, markets, or protocol design. |

@@ -1,15 +1,15 @@
-# AIXBT Grounding (as of 2026-05-25 09:00 UTC)
+# AIXBT Grounding (as of 2026-05-26 07:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-25T09:00:25.471Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-26T07:00:21.329Z
 
 Note: Macro and geopolitics fold into TradFi again. Two-section format persists.
 
 ## Crypto
-- $HYPE dominates mindshare after flipping DOGE, with $104M vs $80M whale battle, USDC transfer volume at ATH, and bullish $100 targets circulating widely.
-- Privacy emerges as a major narrative: ZEC breaks a 9-year range, Grayscale's Silbert declares the "privacy era," and Base-native privacy plays like $RATSPEAK gain traction.
-- ETH sentiment hits cycle lows—Bankless founder sold all ETH, Fear index at 33, EF leadership criticized—while bulls cling to ATL fees and native privacy as recovery catalysts.
-- RWA yield infrastructure matures fast with Pendle, Maple, Hastra, and Tether's Georgia lari stablecoin launch, as stablecoin rails expand with $2B USDC minted on Solana.
+- $HYPE, $ZEC, and $NEAR dominate as cycle leaders decoupling from a choppy BTC; traders warn rotation into outperformers may be nearing a hot-potato phase.
+- Hyperliquid expands into prediction markets and pre-IPO tokens while OKX launches Exchange OS on X Layer, intensifying the race for permissionless onchain trading infra.
+- Privacy narrative gains momentum beyond $ZEC into $RAIL, Aztec, and Umbra as EF's Kohaku SDK ships shielded-pool wallet integrations and Tether preps Georgian lari stablecoin $GELT.
+- ETH sentiment sits at Fear (36) with restaking TVL down 65% from peak; attention shifts to CLARITY Act as a potential DeFi catalyst for $UNI, $AAVE, and RWA tokens.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -18,39 +18,40 @@ Note: Macro and geopolitics fold into TradFi again. Two-section format persists.
 *(folded into TradFi this reading)*
 
 ## TradFi
-- De-escalation progress in US-Iran talks is easing oil price pressures and yield volatility, supporting risk-on equity positioning into post-holiday sessions.
-- Fed minutes highlighting potential rate hikes if inflation persists are anchoring long-end yields higher, transmitting caution into credit spreads and duration flows.
-- Optimism around Strait of Hormuz reopening is compressing energy-driven inflation risks, favoring global liquidity and cross-asset risk appetite in equities and commodities.
-- Heavy institutional overweight in AI/tech sectors post-record Dow closes leaves markets exposed to any stall in geopolitical optimism, with vol positioning reflecting low conflict premia.
+- Equity futures extend gains on Iran deal optimism, with risk-on positioning evident in vol compression and rotation toward cyclicals and banks amid lower energy costs.
+- Oil's sharp drop on Hormuz reopening hopes transmits directly to eased inflation expectations, supporting credit spreads and reducing rate hike pricing in macro positioning.
+- Warsh Fed era begins with stabilizing yields as geopolitical easing improves liquidity outlook, favoring duration and cross-asset flows into equities over commodities.
+- Mixed deal signals highlight buy-rumor-sell-fact risk, prompting cautious equity inflows while pressuring oil longs and safe-haven assets in recent flows.
 
-## What's New (vs last pull — 2026-05-25T08:00Z)
-- [CRYPTO] HYPE whale battle quantified at $104M vs $80M; USDC transfer volume at ATH. Prior named DOGE flip and ETF flow divergence — this adds on-chain liquidity confirmation as a second layer.
-- [CRYPTO] $RATSPEAK (Base-native) surfaces as a named privacy play. Prior read named NEAR/ZEC/HYPE as the blue-chip rotation trio. The trio framing is gone — ZEC stands alone, a Base memecoin attaches downstream.
-- [CRYPTO] RWA block adds Hastra and "$2B USDC minted on Solana." Prior named Pendle, Maple, Tether GEL₮, and SEC BTC index options clearance. The SEC item dropped; Hastra and the USDC mint data replaced it.
-- [TRADFI] **Fed minutes signaling potential rate hikes if inflation persists.** Prior said "unchanged Fed and ECB policy" and yields easing. Current reversal: long-end yields anchoring higher, credit spreads cautious. Hormuz de-escalation (disinflationary) and Fed hike-risk (hawkish) now run simultaneously in the same session.
-- [TRADFI] Institutional AI/tech overweight post-record Dow closes as explicit tail risk. Prior named cyclicals rotation and Asian equities to records. Both absent; AI/tech concentration risk took their place.
+## What's New (vs last pull — 2026-05-25T09:00Z)
+- [CRYPTO] Hyperliquid prediction markets + pre-IPO expansion and OKX Exchange OS on X Layer race. Prior HYPE context was whale battle size and USDC ATH. The permissionless listing race is entirely new.
+- [CRYPTO] Privacy broadening to Aztec, Umbra, and EF Kohaku SDK shielded-pool integrations. Prior named $RATSPEAK (Base memecoin) as the retail attachment point. Infrastructure layer replaces memecoin tail.
+- [CRYPTO] ETH Fear index at 36 (was 33), restaking TVL -65% from peak, CLARITY Act named as DeFi catalyst for $UNI/$AAVE/RWA. Prior: Bankless founder sell, EF criticism, ATL fees framing.
+- [CRYPTO] HYPE/ZEC/NEAR named cycle-leader trio with hot-potato rotation warning. Prior framed HYPE as whale battle ($104M vs $80M) with USDC ATH as confirmation.
+- [TRADFI] Warsh Fed era opens with stabilizing yields — REVERSAL from prior's "Fed minutes highlighting potential rate hikes." Hawkish input closed; yield path flipped.
+- [TRADFI] Buy-rumor-sell-fact risk named as new tail. Prior tail: heavy AI/tech institutional overweight post-record Dow closes. Replaced entirely.
 
-## Gone (vs last pull — 2026-05-25T08:00Z)
-- Dollar weakening framing — absent. No directional dollar statement in current read.
-- "Oil prices fall sharply" — softened to "easing oil price pressures."
-- Treasury yields ease / unchanged Fed and ECB policy — REVERSED by the Fed minutes item.
-- Asian equities to records / cyclicals rotation — absent.
-- NEAR/ZEC/HYPE "blue-chip rotation trio" label — dissolved. Only ZEC holds from the trio in the privacy frame.
-- Vitalik 90% ETH / contrarian accumulation counterbalance — absent for a second straight read.
+## Gone (vs last pull — 2026-05-25T09:00Z)
+- HYPE whale battle ($104M vs $80M) and USDC transfer volume ATH — absorbed into trio label.
+- $RATSPEAK (Base-native privacy memecoin) — dropped; Aztec/Umbra/EF Kohaku SDK replaced it at the infrastructure layer.
+- Bankless founder sold all ETH / EF leadership criticism — absent; ETH fear framing shifted to restaking TVL and CLARITY Act.
+- RWA yield infrastructure block (Pendle, Maple, Hastra, $2B USDC minted on Solana) — CLARITY Act absorbed it as the named policy vehicle.
+- "Fed minutes highlighting potential rate hikes if inflation persists" — REVERSED by Warsh stabilizing yields.
+- Heavy AI/tech institutional overweight as TradFi tail risk — absent; buy-rumor-sell-fact risk replaced it.
 
 ## Persisting Stories
-- HYPE dominance — DOGE flip confirmed; framing upgraded to whale battle + USDC ATH evidence.
-- Privacy narrative (ZEC / Grayscale Silbert) — "privacy era" declaration persists.
-- ETH fear (31 → 33) / Bankless founder selling — fear index deepening, not stabilizing.
-- US-Iran / Hormuz de-escalation — persists across all reads today; broadening into credit and equity positioning.
-- RWA expansion (Pendle, Maple, Tether Georgia lari stablecoin) — core block intact.
+- HYPE dominance — framing upgraded from whale battle to cycle-leader trio with hot-potato warning.
+- Privacy/ZEC narrative — broadening from retail memecoin downstream to protocol SDK layer; ZEC holds as the tape leader.
+- ETH fear (deepening: 33 → 36) — metrics shifted from founder sell to restaking TVL decline.
+- US-Iran/Hormuz de-escalation — persists across all reads; oil "sharp drop" framing stronger than prior's "easing pressures."
+- Tether Georgia lari stablecoin ($GELT) — persists.
 
 ## Cross-Domain Bridges
 
-Fed hike-risk surfaced in the same 60-minute window the Hormuz de-escalation was supposed to clear the rate path. At 08:00Z: Hormuz removes the oil inflation input, the Warsh hike path drops, yields ease, dollar weakens. At 09:00Z: the Fed minutes arrive with explicit hike language anchoring long-end yields higher. Two opposing forces running simultaneously. The Hormuz channel is disinflationary. The minutes channel is hawkish. The leveraged crypto book does not get the clean relief the 08:00Z read implied. Ambiguity is the call — bifurcated and fragile, not risk-on or risk-off.
+Warsh era opens with stabilizing yields. Yesterday's Fed minutes flagged potential rate hikes. This read reverses that. Hormuz de-escalation now transmits directly into risk assets without a rate-hike headwind. Buy-rumor-sell-fact risk entered in its place. Equity futures extend on Iran deal optimism. The relief trade is pricing in, not arriving. Crypto leveraged books get the macro relief. Whether the bid is fresh entry or exhausted positioning depends on whether the Iran deal actually closes.
 
-$RATSPEAK on Base is the distribution signal on the privacy trade. ZEC breaks a 9-year range — that is real tape. Grayscale declares the privacy era — that is institutional legitimization. A Base memecoin named after the narrative gains traction — that is retail attaching to what smart money already labeled. The prior read used "blue-chip rotation trio" vocabulary for NEAR/ZEC/HYPE. That vocabulary is gone. The basket dissolved into a single tape leader (ZEC) with retail copies forming downstream. When the framing shifts from a curated trio to "Base-native plays gaining traction," distribution started.
+Hyperliquid manufactures the instruments it later captures. Pre-IPO perps listing seeded the SPCX meme cluster on Solana. Prediction market expansion extends the mechanism. OKX Exchange OS on X Layer is the first exchange to answer with a competing listing surface. The race is not for perp volume. Hyperliquid already owns 70% of on-chain perps. The race is for venue breadth: who controls what gets listed next controls the next rotation. AIXBT names HYPE, ZEC, and NEAR as cycle leaders decoupling from BTC. The hot-potato warning means the outperformance priced in ahead of the rotation. The expansion thesis holds. The timing thesis is against it.
 
-USDC at ATH on Solana plus $2B minted while the HYPE whale battle runs $104M vs $80M. Stablecoin capital formation and derivatives demand feeding the same ecosystem simultaneously. The mints fund the margin. The whale battle absorbs the liquidity. Both active at once extends the move's runway — but the unwind is more complex than a simple leverage flush. When the bid breaks, stablecoin recycling and perp open interest reverse together.
+Privacy completed the distribution-to-infrastructure arc. The prior read named $RATSPEAK as the retail attachment point. This read names Aztec, Umbra, and EF's Kohaku SDK instead. AIXBT's crypto items shifted from Base memecoin to protocol SDK. The narrative graduated. ZEC tape already caught the move. Institutional tooling validates what the tape printed. The Privacy RIDE thesis earns product confirmation.
 
-AI/tech institutional overweight post-Dow records is the tail risk the 09:00Z TradFi block added. Prior read had one geopolitical transmission channel: oil and Hormuz. Current read adds AI/tech concentration as a second channel. If Iran talks break, the oil risk premium reopens — and AI/tech positioning sells at the same time. Two selloff channels where before there was one. The geopolitical-failure scenario doubled in severity. Vol positioning still reflects low conflict premia.
+CLARITY Act connects ETH's fear floor to the RWA ceiling. ETH fear deepened to 36. Restaking TVL dropped 65% from peak. CLARITY Act names $UNI, $AAVE, and RWA tokens as the beneficiaries. The RWA block (Pendle, Maple, Hastra, $2B USDC) dropped out of today's feed. CLARITY Act absorbed it as the named policy vehicle. ETH fear creates the entry. CLARITY passage creates the catalyst. The two theses share one trigger. The trigger is months away, not days.
