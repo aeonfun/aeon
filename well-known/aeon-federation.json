@@ -1,0 +1,12 @@
+{
+  "schema": "aeon-federation/1",
+  "publisher": "@aeon-prime",
+  "publisher_key": "ed25519:PLACEHOLDER_GENERATE_WITH_skills/federation-publish",
+  "endpoint": "https://PLACEHOLDER.example.com/a2a",
+  "operator": "PLACEHOLDER-github-handle",
+  "version": "2026-05-26",
+  "_comment": "Reference manifest scaffolded in the Sealed Sprint (Session 03). Repo owner: run the federation-publish skill to generate publisher_key and populate endpoint + operator fields. See docs/federation-spec/SPEC.md.",
+  "skills": [],
+  "extensions": [],
+  "withdrawn": true
+}

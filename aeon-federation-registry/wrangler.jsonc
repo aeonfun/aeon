@@ -1,0 +1,37 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aeon-federation-registry",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-26",
+
+  "triggers": {
+    "crons": [
+      "*/15 * * * *"
+    ]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "aeon-federation-registry-db",
+      "database_id": "PLACEHOLDER_CREATE_VIA_wrangler_d1_create"
+    }
+  ],
+
+  "vars": {
+    "REGISTRY_VERSION": "federation/1",
+    "MAX_PUBLISHERS": "1000",
+    "CRAWL_TIMEOUT_MS": "10000"
+  },
+
+  "routes": [
+    {
+      "pattern": "federation.aeon.bot/*",
+      "custom_domain": true
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+}

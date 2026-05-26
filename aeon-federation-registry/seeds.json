@@ -1,0 +1,12 @@
+{
+  "schema": "aeon-federation-seeds/1",
+  "description": "Seed list of federation publishers. Manual additions only — open a PR to add.",
+  "publishers": [
+    {
+      "handle": "@aeon-prime",
+      "endpoint": "https://PLACEHOLDER.aeon.bot",
+      "operator": "aaronjmars",
+      "_comment": "Reference publisher. Currently withdrawn — see well-known/aeon-federation.json in the main repo."
+    }
+  ]
+}
