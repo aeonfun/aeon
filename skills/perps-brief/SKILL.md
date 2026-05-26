@@ -192,6 +192,12 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `thesis` — **array of 3-4 bullet strings**. Each bullet is a complete self-contained sentence covering one of: price action, narrative, regime/positioning, cross-domain catalyst. **Apply `memory/topics/writing-style.md` Pattern 7 strictly** — no source-artifact shorthand, no telegraphic fragments. Each bullet must read clearly to someone who hasn't opened the upstream artifacts. **Target ~120 chars per bullet, hard cap 180.** Tighter than v4.1's original 200-char target — operator confirmed Discord mobile renders unrecoverably when bullets wrap multiple times.
 - `confluence_fired[]` — at least one criterion from the enumerated set (logged for the ledger / track-record, NOT rendered in the operator-facing card)
 - `risks[]` — **array of 2-3 bullet strings**, non-empty. Each risk is a named, concrete concern (not "market could turn"). Same ~120 char target, 180 char cap as thesis bullets.
+- `invalidation` — **must be chartable** (price level, price + volume condition). DO NOT reference funding / OI / LSR / regime-name conditions in this field. Those go in `engine_watch_conditions` instead (structured) where the poller monitors them and alerts the operator on cross. Operator-facing UX = chartable; engine-facing analysis = structured. See Pattern 7 in `memory/topics/writing-style.md` for the full no-engine-jargon rule.
+- `engine_watch_conditions[]` — **structured array of conditions the poller will monitor** on this position's behalf. The poller (V2 work, scheduled hourly) reads these, evaluates against Coinglass cache data, and alerts the operator when any condition fires. Each entry: `{type, threshold, trigger_label, severity}`. Optional fields: `window_days` (for delta types), `window_hours` (for short-horizon types), `unit` (for cosmetic/clarity).
+  - **Condition types:** `price_close_above`, `price_close_below`, `funding_above`, `funding_below`, `oi_change_above_pct`, `oi_change_below_pct`, `lsr_above`, `lsr_below`, `lsr_delta_above`, `lsr_delta_below`, `taker_buy_above_pct`, `taker_buy_below_pct`, `basis_above`, `basis_below`, `volume_ratio_above`
+  - **Severity:** `info` (quiet alert), `warning` (default), `critical` (would change RIDE/CLOSE decision — invalidation breach, auto-flip trigger)
+  - **trigger_label:** plain-English description for the alert embed, written for an operator who doesn't know the codebase. Example: `"smart money exiting on the 7d window"` not `"top_ls_delta_7d < 0"`.
+  - **Required when opening:** every NEW POSITION should have at minimum one `price_close_above` (for SHORT) or `price_close_below` (for LONG) condition matching the `invalidation` price level. This is the structured invalidation that the poller monitors. Add as many other conditions as the engine's analytical depth warrants — typically 3-5 per position.
 
 ## Required fields per watchlist entry
 
@@ -226,11 +232,17 @@ The postprocess step handles all of the above:
   "qualifier": null,
 
   "market_sentiment": {
-    "paragraphs": [
-      "BTC funding warm at +0.07%/8h avg. OI +6% 24h, basis +0.3%. Majors absorbing leverage on the bid.",
-      "Alt funding neutral. Memes hot, three of top five funding extremes. Retail crowded there, not majors."
+    "headline_metrics": [
+      {"label": "BTC",     "value_top": "$77,375",       "value_bottom": "+0.74% 24h"},
+      {"label": "Breadth", "value_top": "10/20 green",   "value_bottom": "DEX vol -22% vs 7d"},
+      {"label": "F&G",     "value_top": "30",            "value_bottom": "↑ from 25 (out of Fear)"}
     ],
-    "bias_line": "Bias · long majors with structure, fade extreme funding on memes."
+    "sections": [
+      {"label": "Macro", "body": "Two competing selloff drivers in the tape today — Hormuz de-escalation runs disinflationary while Fed hike-risk runs hawkish. AI/tech overweight sits exposed to either tail."},
+      {"label": "Perps", "body": "Quiet across the perps universe — no regime breakouts firing on the 25-asset slice. PLAY ripped 60% on funding extremes, sitting just under a distribution setup. Both setups read as extreme positioning without a clean setup to ride."},
+      {"label": "Book",  "body": "Five open positions stacking three sector themes. AI-compute (EIGEN, AKT) and perp-DEX (HYPE, ASTER) concentration is heavy. BCH SHORT runs alone on legacy-alt structural bleed."}
+    ],
+    "bias_line": "Bias · ride the open book through macro fragility. No new entries — the perps tape is neutral, chop regime unresolved."
   },
 
   "current_positions": [
@@ -354,16 +366,22 @@ The postprocess step handles all of the above:
         "invalidation": "close above $0.72",
         "horizon": "3d",
         "thesis": [
-          "FARTCOIN closed -4% today with OI up 35% — LONG-TRAP pattern in perps-scan.",
-          "Funding at +0.14%/8h is above the +0.06% extreme gate.",
-          "Top-trader L/S at 2.4 — smart money crowded long alongside retail.",
-          "Meme sector in PEAK status in narrative-tracker, no fresh catalyst."
+          "FARTCOIN closed -4% today with OI up 35% — long-trap setup, leverage building into a falling price.",
+          "Funding at +0.14%/8h sits well above the +0.06% gate where long-side crowding usually breaks.",
+          "Top-trader LSR at 2.4 — smart money is crowded long alongside retail, both sides positioned for an up-move that isn't there.",
+          "Meme sector momentum is at peak attention with no fresh catalyst on the calendar to defend the bid."
         ],
         "confluence_fired": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned"],
         "confluence_missing": ["both_tag"],
         "named_risks": [
           "Memes can squeeze irrespective of fundamentals.",
           "Funding could normalise without a price bid."
+        ],
+        "engine_watch_conditions": [
+          {"type": "price_close_above", "threshold": 0.72, "trigger_label": "invalidation breached", "severity": "critical"},
+          {"type": "funding_above",     "threshold": 0.0015, "trigger_label": "funding crowding accelerating", "severity": "warning"},
+          {"type": "lsr_below",         "threshold": 1.5, "trigger_label": "smart money unwinding the crowd", "severity": "warning"},
+          {"type": "taker_buy_above_pct", "threshold": 55, "trigger_label": "buyers stepping in — squeeze risk", "severity": "warning"}
         ],
         "watchlist_id_promoted": null
       }
@@ -394,7 +412,10 @@ The postprocess step handles all of the above:
 - **`schema_version`** — must be `"v4.1"`.
 - **`date`** — `${today}` (UTC YYYY-MM-DD).
 - **`qualifier`** — `null` for normal; descriptive label for degraded runs.
-- **`market_sentiment`** — paragraphs + bias line. Writing-style applies.
+- **`market_sentiment`** — structured into `headline_metrics` (inline scan-stats), `sections` (sub-headed prose), and `bias_line` (closing call). Writing-style applies, **Pattern 7 strictly** — no skill names, no internal scoring, no process references.
+  - **`headline_metrics`** — array of 2-4 objects, each `{label, value_top, value_bottom}`. Renders as inline fields in the embed. Use for the at-a-glance "did anything important happen" stats: BTC + 24h change, breadth, F&G, total mcap, etc. Keep each label short (≤8 chars). `value_top` is the headline number; `value_bottom` is the qualifier (delta vs prior period, direction arrow, etc).
+  - **`sections`** — array of 2-4 objects, each `{label, body}`. Renders as bold sub-heads + body prose. Suggested labels: `Macro`, `Perps`, `Book`, `Sentiment`, `Narrative` — pick the 2-4 that fit today's framing. Each `body` is 1-3 sentences max. Avoid wall-of-text.
+  - **`bias_line`** — single-line bias call, typically prefixed `Bias · `. Bolded automatically in the embed. Apply writing-style.md strictly.
 - **`current_positions[]`** — one entry per open ledger row. Empty array IS valid when the ledger has no open entries.
 - **`new_positions[]`** — capped at 5. Empty is valid (skip-day for new entries).
 - **`watchlist[]`** — capped at 5. Empty is valid.

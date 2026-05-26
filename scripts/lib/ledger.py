@@ -42,7 +42,18 @@ OpenEntry:
       "mfe_date":        "YYYY-MM-DD" | null,
       "invalidation_breached": bool,
       "watchlist_provenance":  WatchlistProvenance | null,
+      "engine_watch_conditions": [WatchCondition, ...] | null,
       "evaluations":     [Evaluation, ...]
+    }
+
+WatchCondition (per-trade trigger evaluated hourly by the poller):
+    {
+      "type":          one of VALID_WATCH_CONDITION_TYPES,
+      "threshold":     number,                 # the level being watched
+      "severity":      "info" | "warning" | "critical",
+      "trigger_label": str,                    # operator-facing meaning
+      "window":        str | null,             # e.g. "1h", "4h", "24h"
+      "source":        str | null              # e.g. "coinglass", "ohlcv"
     }
 
 WatchlistEntry (a setup that doesn't meet entry conviction yet):
@@ -108,6 +119,31 @@ CONFLUENCE_CRITERIA = {
     "enrichment_positive",
     "dominance_aligned",  # populated when Phase 3 ships
 }
+
+# engine_watch_conditions[] — per-trade structured triggers that the hourly
+# poller evaluates against the Coinglass cache. Each condition the poller
+# fires posts an alert to #perps-alerts. Conditions are author-defined by
+# Claude when the position is opened, so they reflect the trade-specific
+# thesis (e.g. "if LSR drops below 1.1, exit early") rather than universal
+# market extremes.
+VALID_WATCH_CONDITION_TYPES = {
+    "price_close_above",
+    "price_close_below",
+    "funding_above",
+    "funding_below",
+    "oi_change_above_pct",
+    "oi_change_below_pct",
+    "lsr_above",
+    "lsr_below",
+    "lsr_delta_above",
+    "lsr_delta_below",
+    "taker_buy_above_pct",
+    "taker_buy_below_pct",
+    "basis_above",
+    "basis_below",
+    "volume_ratio_above",
+}
+VALID_WATCH_SEVERITY = {"info", "warning", "critical"}
 
 
 class LedgerError(Exception):
@@ -201,6 +237,36 @@ def _validate_confluence_list(lst: list, where: str, key: str) -> None:
         )
 
 
+def _validate_watch_conditions(lst: Any, where: str) -> None:
+    """Validate optional engine_watch_conditions[] array.
+
+    None or missing → skip (field is optional, pre-V2 entries won't have it).
+    Empty list is allowed (Claude may decide a position needs no watchers).
+    Each condition must have: type (enum), threshold (number), severity (enum),
+    trigger_label (non-empty string). Optional: window (str), source (str).
+    """
+    if lst is None:
+        return
+    _require(isinstance(lst, list), f"{where}: engine_watch_conditions must be array or null")
+    for i, c in enumerate(lst):
+        sub = f"{where}.engine_watch_conditions[{i}]"
+        _require(isinstance(c, dict), f"{sub}: must be object")
+        _require(
+            c.get("type") in VALID_WATCH_CONDITION_TYPES,
+            f"{sub}: type must be one of {sorted(VALID_WATCH_CONDITION_TYPES)}",
+        )
+        _require_number(c, "threshold", sub)
+        _require(
+            c.get("severity") in VALID_WATCH_SEVERITY,
+            f"{sub}: severity must be one of {sorted(VALID_WATCH_SEVERITY)}",
+        )
+        _require_str(c, "trigger_label", sub)
+        if c.get("window") is not None:
+            _require(isinstance(c["window"], str), f"{sub}: window must be string or null")
+        if c.get("source") is not None:
+            _require(isinstance(c["source"], str), f"{sub}: source must be string or null")
+
+
 def _validate_open_entry(entry: dict, idx: int) -> None:
     where = f"open[{idx}]"
     _require(isinstance(entry, dict), f"{where}: must be object")
@@ -246,6 +312,7 @@ def _validate_open_entry(entry: dict, idx: int) -> None:
         _require(isinstance(entry["mfe_date"], str), f"{where}: mfe_date must be string or null")
     _require_bool(entry, "invalidation_breached", where)
     _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
+    _validate_watch_conditions(entry.get("engine_watch_conditions"), where)
     _require_list(entry, "evaluations", where)
     for i, ev in enumerate(entry["evaluations"]):
         _validate_evaluation(ev, f"{where}.evaluations[{i}]")
@@ -304,6 +371,7 @@ def _validate_closed_entry(entry: dict, idx: int) -> None:
     _require_bool(entry, "invalidation_breached", where)
     _require_bool(entry, "auto_flipped", where)
     _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
+    _validate_watch_conditions(entry.get("engine_watch_conditions"), where)
 
 
 def validate(ledger: dict) -> None:
