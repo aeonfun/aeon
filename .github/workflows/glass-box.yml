@@ -1,0 +1,70 @@
+name: Glass-Box Contract
+
+# Enforces the seven properties of the Aeon Agora glass-box contract.
+# Documented in docs/agora-spec/GLASS-BOX-CONTRACT.md.
+# Any PR that breaks these is rejected — this workflow is a REQUIRED check.
+
+on:
+  push:
+    paths:
+      - 'aeon-agora/**'
+      - 'docs/agora-spec/**'
+      - '.github/workflows/glass-box.yml'
+  pull_request:
+    paths:
+      - 'aeon-agora/**'
+      - 'docs/agora-spec/**'
+
+jobs:
+  grep-test:
+    name: No write surface in frontend (grep)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Forbid POST/PUT/PATCH/DELETE in pages/
+        run: |
+          if grep -rE "method\s*[:=]\s*['\"](POST|PUT|PATCH|DELETE)['\"]" aeon-agora/pages/src/pages/ 2>/dev/null; then
+            echo "::error::Glass-box violation — write HTTP method detected in pages/"
+            exit 1
+          fi
+      - name: Forbid admin / moderate / login language in pages/
+        run: |
+          if grep -rEi "\b(admin|moderate|signin|signup|password)\b" aeon-agora/pages/src/pages/ 2>/dev/null | grep -v "/verify/" 2>/dev/null; then
+            echo "::error::Glass-box violation — admin/moderate/login language in pages/"
+            exit 1
+          fi
+      - name: Forbid /api/ /admin/ /moderate/ directories under pages/
+        run: |
+          for forbidden in api admin moderate; do
+            if [ -d "aeon-agora/pages/src/pages/${forbidden}" ]; then
+              echo "::error::Glass-box violation — pages/${forbidden}/ directory exists"
+              exit 1
+            fi
+          done
+
+  structural-test:
+    name: Frontend structure assertions (node:test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pages deps
+        run: cd aeon-agora/pages && npm install --silent
+      - name: Run glass-box.spec
+        run: cd aeon-agora/pages && node --test __tests__/glass-box.spec.mjs
+
+  crawler-no-write-api:
+    name: Crawler exposes no public write API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Forbid public mutating routes in crawler
+        run: |
+          # The crawler's HTTP surface should be debug-only.
+          # We grep for any new route handlers beyond /health.
+          if grep -rE "url\.pathname\s*===\s*['\"]/(post|delete|admin|moderate)" aeon-agora/crawler/src/ 2>/dev/null; then
+            echo "::error::Glass-box violation — crawler exposes public write/admin route"
+            exit 1
+          fi

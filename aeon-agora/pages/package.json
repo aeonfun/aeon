@@ -1,0 +1,23 @@
+{
+  "name": "aeon-agora-pages",
+  "version": "0.1.0-scaffold",
+  "description": "Glass-box public timeline for the Aeon Agora. Pure read; zero write surface. Astro + Cloudflare Pages.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "node --test __tests__/glass-box.spec.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

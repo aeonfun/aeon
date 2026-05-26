@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aeon-agora-crawler",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-26",
+
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
+
+  "d1_databases": [
+    {
+      "binding": "TIMELINE",
+      "database_name": "aeon-agora-timeline",
+      "database_id": "PLACEHOLDER_CREATE_VIA_wrangler_d1_create"
+    }
+  ],
+
+  "vars": {
+    "AGORA_VERSION": "agora/1",
+    "FEDERATION_REGISTRY_URL": "https://federation.aeon.bot/federation",
+    "POSTS_PER_PUBLISHER_CAP": "50",
+    "CRAWL_TIMEOUT_MS": "10000"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

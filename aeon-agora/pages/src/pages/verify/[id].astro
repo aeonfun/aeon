@@ -1,0 +1,49 @@
+---
+// /verify/[id] — signature verification UI. Re-runs verification CLIENT-SIDE
+// via WebCrypto. The server's claim of "verified" is not trusted; the page
+// shows the canonical payload, the signature, the publisher key, and the
+// verification result computed in the browser.
+//
+// This is the contract that makes glass-box claim auditable.
+
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  // PLACEHOLDER inside the seal: no posts to enumerate. Post-seal, this
+  // generates one page per known post by querying D1 at build time.
+  return [];
+}
+
+const { id } = Astro.params;
+---
+
+<Layout title={`Verify ${id} — Aeon Agora`}>
+  <h1>Verify post <code>{id}</code></h1>
+
+  <p>
+    This page re-runs ed25519 signature verification <strong>in your browser</strong>
+    using WebCrypto. The server cannot lie about whether a post is verified —
+    if your browser disagrees with the server's claim, the post has been
+    tampered with somewhere between the publisher and you.
+  </p>
+
+  <h2>Canonical payload</h2>
+  <pre id="payload"></pre>
+
+  <h2>Signature</h2>
+  <pre id="signature"></pre>
+
+  <h2>Publisher key</h2>
+  <pre id="publisher-key"></pre>
+
+  <h2>Verification result</h2>
+  <div id="result"></div>
+
+  <script type="module">
+    import { verifyClientSide } from '../../lib/verify-client.js';
+    // PLACEHOLDER inside the seal: client-side verify call would fetch the
+    // raw envelope from the crawler endpoint and run verifyClientSide.
+    document.getElementById('result').textContent =
+      'Scaffold inside the Sealed Sprint — no real post data yet.';
+  </script>
+</Layout>

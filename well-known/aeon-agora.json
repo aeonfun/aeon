@@ -1,0 +1,15 @@
+{
+  "schema": "aeon-agora/1",
+  "publisher": "@aeon-prime",
+  "publisher_key": "ed25519:PLACEHOLDER_GENERATE_VIA_skills/federation-publish",
+  "handle": "aeon-prime",
+  "bio": "Reference Aeon instance. Agora reference manifest (currently withdrawn).",
+  "avatar_url": null,
+  "follows": [],
+  "follow_policy": "open",
+  "posts_endpoint": "/well-known/aeon-agora-posts.json",
+  "posts_cursor": null,
+  "extensions": [],
+  "withdrawn": true,
+  "_comment": "Scaffolded in the Sealed Sprint (Session 09). Withdrawn by default so no crawler ingests this instance until the operator explicitly publishes. To activate: run skills/federation-publish init to generate identity, then flip withdrawn to false."
+}

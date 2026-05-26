@@ -1,0 +1,11 @@
+{
+  "schema": "aeon-agora-seeds/1",
+  "description": "Initial publisher allowlist for the agora crawler. Manual additions only — open a PR to add.",
+  "publishers": [
+    {
+      "handle": "@aeon-prime",
+      "endpoint": "https://PLACEHOLDER.aeon.bot",
+      "_comment": "Reference. Currently withdrawn — see well-known/aeon-agora.json in the main repo."
+    }
+  ]
+}
