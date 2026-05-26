@@ -1,0 +1,92 @@
+{
+  // wrangler.jsonc — Cloudflare runtime port for Aeon (Session 01 scaffold).
+  //
+  // Inside the Sealed Sprint this file documents the bindings required; no
+  // actual deployment happens. Repo owner: fill in placeholder IDs and run
+  // `wrangler deploy` to bring up the runtime.
+  //
+  // See docs/contributor-dossier/03-subsystems/runtime-cloudflare.md for the
+  // full activation runbook.
+
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aeon-runtime",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-26",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Cron Triggers — replaces the 5-min messages.yml tick for skills with
+  // runtime: "workers" in aeon.yml.
+  "triggers": {
+    "crons": [
+      "*/5 * * * *"
+    ]
+  },
+
+  // PLACEHOLDER bindings — operator creates these in Cloudflare dashboard or
+  // via `wrangler kv:namespace create`, etc.
+  "kv_namespaces": [
+    {
+      "binding": "CRON_STATE",
+      "id": "PLACEHOLDER_CREATE_VIA_wrangler_kv",
+      "preview_id": "PLACEHOLDER_PREVIEW"
+    },
+    {
+      "binding": "MEMORY_CACHE",
+      "id": "PLACEHOLDER_CREATE_VIA_wrangler_kv",
+      "preview_id": "PLACEHOLDER_PREVIEW"
+    }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "MEMORY_DB",
+      "database_name": "aeon-memory-index",
+      "database_id": "PLACEHOLDER_CREATE_VIA_wrangler_d1"
+    }
+  ],
+
+  "r2_buckets": [
+    {
+      "binding": "ARTICLE_BUCKET",
+      "bucket_name": "PLACEHOLDER_aeon-articles"
+    }
+  ],
+
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "SKILL_RUNNER",
+        "class_name": "SkillRunner"
+      }
+    ]
+  },
+
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["SkillRunner"]
+    }
+  ],
+
+  "ai": {
+    "binding": "AI"  // Workers AI — used by the Haiku-replacement quality scorer
+  },
+
+  // Secrets — NOT committed; operator sets via `wrangler secret put <name>`:
+  //   ANTHROPIC_API_KEY               (claude API)
+  //   CLAUDE_CODE_OAUTH_TOKEN         (alternative to API key)
+  //   GITHUB_TOKEN                    (for memory writes via Octokit)
+  //   FLEET_ENDPOINT, FLEET_TOKEN     (optional, for Fleet Watcher)
+  //   BANKR_LLM_KEY                   (optional, for gateway routing)
+
+  "vars": {
+    "AEON_REPO": "PLACEHOLDER_owner/aeon",
+    "DEFAULT_MODEL": "claude-opus-4-7",
+    "GATEWAY_PROVIDER": "direct"
+  },
+
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}
