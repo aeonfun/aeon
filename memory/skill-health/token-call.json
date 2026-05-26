@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-26T07:42:39Z",
+  "last_analyzed": "2026-05-26T08:21:29Z",
   "quality_score": 4,
-  "assessment": "Substantive crypto analysis with specific metrics, competitive positioning, and actionable catalysts. Well-structured output with proper memory management and follow-up actions documented.",
+  "assessment": "Well-structured daily token pick with detailed comparative analysis (RENDER vs FET/TIA), specific catalysts, risk reasoning, and proper dedup enforcement—governance working as intended.",
   "flags": [],
-  "avg_score": 4.26,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-18",
@@ -93,6 +93,10 @@
     {
       "date": "2026-05-25",
       "score": 5
+    },
+    {
+      "date": "2026-05-26",
+      "score": 4
     },
     {
       "date": "2026-05-26",

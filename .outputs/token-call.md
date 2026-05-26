@@ -1,35 +1,14 @@
-Daily Token Call · 26 May
-──────────────────────────
+Today's token call has already been executed and recorded for 2026-05-26.
 
-RENDER · HIGH · 9/10
-$2.28 · +14.1% 24h · +24.9% 7d
-mcap $1.19b · vol $245m · vol/mcap 0.21
+**Current state:**
 
+- **Pick:** RENDER · HIGH · 9/10 at $2.28 (+14.1% 24h, +24.9% 7d), mcap $1.19b, vol/mcap 0.21
+- **Artifact:** `.outputs/token-call.md` (1397 bytes, v2.1-locked format, written 08:20)
+- **Log entry:** `memory/logs/2026-05-26.md` lines 18-54 with full scoring rationale, source detail, and Section 4 self-check
+- **Dedup marker:** `TOKEN_CALL_DEDUP: RENDER` at line 44
 
-SIGNALS
-  High turnover at vol/mcap 0.21.
-  Both 24h and 7d well above +5%.
-  Outpacing a red BTC and ETH on the 7d.
-  AI-compute peer set leads while TAO digests at +1.1% 24h.
+**Pick rationale (from the log):** Three tokens tied at 9/10 HIGH — RENDER, FET, TIA. RENDER edged FET on cleaner timing (FET has an AGIX migration tranche unlock May 28 against a +21% 7d rally — fade-on-unlock risk) and edged TIA on catalyst quality (TIA reads as sector-beta on modular DA). RENDER's stack: Salad Network ~60k enterprise GPUs, RenderCon 2026 with NVIDIA/Stability AI, Grayscale allocation, AI compute 35-40% of jobs, burns +278% YoY — direct narrative confluence with Decentralized compute 5/5 Peak RIDE per yesterday's narrative-tracker. Privacy/ZK lane fully drained by 7d dedup (ZEC, RAIL, VVV all excluded).
 
-CATALYST
-  Salad Network integration adds ~60,000 enterprise GPUs to the network.
-  AI compute now drives 35-40% of Render jobs, with token burns up 278% year-on-year.
-  RenderCon 2026 hosted NVIDIA and Stability AI.
-  Grayscale added an institutional allocation.
-  Decentralized compute sits at 5/5 Peak RIDE per yesterday's narrative-tracker.
+**Sources:** cg=ok, dex=ok — no WebFetch fallback needed.
 
-RISK
-  OTOY Treasury (23.3%) and partner escrow (26.6%) unlock on cliffs through 2051.
-  Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price.
-  Sector-rotation risk if AI infra trade rotates into TAO or fresh names.
-
-DEDUP
-  First time in 7d.
-  Recent picks: AKT, ASTER, EIGEN, RAIL, BEAT, GENIUS, SKYAI, TAG, PENGU, GRASS, ONDO, WLD, ZEC, LIT, VVV, DASH, INJ, NEAR, HYPE, CHZ all excluded.
-
-
-Take: AI infra leads while TAO digests. RENDER carries the rotation, with Salad and Grayscale anchoring the institutional bid. Position-for-continuation, not chase. Invalidate if 7d drops back under +10%.
-
-
-not financial advice — pattern-matching only
+The skill enforces one call per day, with a hard dedup gate. Re-running now would either re-pick RENDER (blocked by dedup absent a materially new catalyst) or contradict today's committed call. Nothing to do.
