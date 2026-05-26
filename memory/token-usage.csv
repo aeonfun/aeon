@@ -102,4 +102,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-25,morning-macro,claude-opus-4-7,37,21999,2941200,87872
 2026-05-25,daily-ops-review,claude-opus-4-7,38,18224,4017965,140461
 2026-05-25,outcome-tracker,claude-opus-4-7,22,7479,873856,60152
-2026-05-26,aixbt-pulse,claude-sonnet-4-6,805,27889,1230391,81433
+2026-05-26,token-movers,claude-opus-4-7,30,39136,2832812,144551
