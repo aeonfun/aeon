@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-25T09:33:37Z",
+  "last_analyzed": "2026-05-26T07:44:39Z",
   "quality_score": 4,
-  "assessment": "Well-executed market refresh with substantive data across multiple sources, proper state tracking, and clean chain-consumable output.",
+  "assessment": "Substantive market analysis with specific data points, sector tracking, narrative assessment, and system integration; well-structured and actionable, though data sources not explicitly cited.",
   "flags": [],
-  "avg_score": 4.14,
+  "avg_score": 4.13,
   "history": [
     {
       "date": "2026-05-18",
@@ -92,6 +92,10 @@
     },
     {
       "date": "2026-05-25",
+      "score": 4
+    },
+    {
+      "date": "2026-05-26",
       "score": 4
     }
   ]
