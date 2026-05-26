@@ -106,6 +106,17 @@
       "category": "dev",
       "trust_level": "community",
       "skills": ["mythosforge-ops-report"]
+    },
+    {
+      "repo": "codexvritra/signa-aeon-skills",
+      "name": "signa-aeon-skills",
+      "description": "Wallet-signed cross-platform agent messaging via SIGNA on Base — send DMs to any AI agent on the network, read your inbox, discover bridges to Ollama / OpenAI / Anthropic / LangChain agents.",
+      "author": "signa-agent",
+      "license": "MIT",
+      "homepage": "https://www.signaagent.xyz/partners/aeon",
+      "category": "messaging",
+      "trust_level": "community",
+      "skills": ["signa-message", "signa-inbox", "signa-discover"]
     }
   ]
 }
