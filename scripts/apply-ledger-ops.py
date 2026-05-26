@@ -36,10 +36,13 @@ Operations in data.json["ledger_ops"]:
   open_now:
     - {ticker, direction, fired_price, fired_btc_price, fired_eth_price,
        entry_zone, invalidation, horizon, thesis, confluence_fired,
-       confluence_missing, named_risks, watchlist_id_promoted}
+       confluence_missing, named_risks, watchlist_id_promoted,
+       engine_watch_conditions}
     Opens a new entry in ledger.open[]. If watchlist_id_promoted is set,
     removes that entry from watchlist[] and attaches watchlist_provenance
     (with days_on_watchlist computed from first_seen_date).
+    engine_watch_conditions is an optional array of structured triggers
+    the hourly poller evaluates (see scripts/lib/ledger.py for shape).
 
   add_watchlist:
     - {ticker, direction, trigger, invalidation, horizon, thesis,
@@ -274,6 +277,7 @@ def apply_open_now(ledger: dict, opens: list) -> None:
                 "mfe_date": None,
                 "invalidation_breached": False,
                 "watchlist_provenance": None,
+                "engine_watch_conditions": list(o.get("engine_watch_conditions") or []) or None,
                 "evaluations": [],
             }
 

@@ -513,49 +513,85 @@ Some verbs are technically correct but commit less than alternatives. Where stro
 ✓ "ZEC emerging as a rotation destination..."
 ```
 
-### Pattern 7 — Source-artifact shorthand and undefined references
+### Pattern 7 — Internal references and engine-private vocabulary
 
-The brief composes from multiple upstream artifacts (perps-scan, narrative-tracker, aixbt-pulse, market-context-refresh, etc.). Shorthand references to those sources compress the citation into something illegible to a reader who didn't open the source.
+The brief is a public-facing artifact. The reader is a qualified trader who understands the market — funding rates, open interest, long/short ratios, basis, taker-buy flow, accumulation/distribution structure — but does **not** know the names of our internal skills, our internal scoring scales, our internal tags, or our engine's state machine.
 
-**Symptom:** The operator reads a sentence, recognises the words, can't reconstruct the meaning without going to a second screen. Common in v3 prose; surfaced acutely in the v4.1 card layout where every bullet has to stand alone.
+Anything that requires reading the codebase to understand is illegible. Replace every internal reference with the underlying trader-native meaning.
 
-**Test:** Read the bullet to someone who hasn't seen any other artifact today. Do they understand what every reference is *to*?
+**The test:** Show the bullet to a perps trader who has never seen this repo. Can they action it without asking "what's that?"
 
-**Examples of source-shorthand that leak:**
+#### Replacement table — INTERNAL → TRADER-NATIVE
 
-| Shorthand | Illegible because | Operator-facing rewrite |
+| Category | NEVER WRITE | INSTEAD WRITE |
 |---|---|---|
-| `AIXBT #1` | #1 of what? Their morning leads? Bridge call? Sector list? | `AIXBT flagged HYPE as their top lead today` |
-| `Fading→Peak` | Fading and Peak are narrative-tracker phase labels | `narrative-tracker moved Hyperliquid from Fading to Peak` |
-| `5/5 RIDE` | Confidence score on a scale the reader doesn't have | `rated 5/5 with a RIDE call in narrative-tracker` |
-| `Smart money L/S +0.14 7d` | L/S = top-trader long/short ratio. What's +0.14 relative to? | `Top-trader long/short ratio rose 0.14 points over 7 days — smart money net long` |
-| `DIVERGENT sub-tag` | Internal regime sub-tag from perps-scan | `passive build, possibly arbitrage rather than directional positioning` |
-| `Token-call HIGH 10/10` | Reference to token-call's score scale | `token-call rates this HIGH conviction (10/10)` |
-| `Hold above re-engages` | Re-engages what? | `If price holds above $2.05, the position re-enters the ACCUMULATION setup tomorrow` |
-| `Pattern tag fired` | What pattern? Which tag? | name the pattern: `LONG-TRAP pattern fired — funding extreme while price drops` |
+| **Skill names** | `per narrative-tracker`, `narrative-tracker shows`, `perps-scan flagged`, `aixbt-pulse named`, `token-movers QUIET`, `token-call rated HIGH 10/10`, `morning-macro shows` | Describe the underlying observation directly. `"Hyperliquid narrative is in peak phase"`, `"funding flipped to +0.08%/8h with OI rising 12%"`, `"a high-conviction discovery call"`. The reader doesn't need to know which engine module produced it. |
+| **Internal scoring** | `5/5 narrative`, `4/5 RIDE`, `HIGH 10/10`, `score 8/10`, `confidence 4 of 5` | Translate to qualitative trader language. `"high conviction"`, `"strong setup"`, `"moderate conviction with a soft edge"`. Numbers on a scale the reader doesn't have are noise. |
+| **Internal tags** | `[BOTH]`, `[QUANT]`, `[DISCOVERY]`, `[NARRATIVE]`, `DIVERGENT sub-tag`, `LONG-TRAP pattern fired` | Describe what the tag *means* structurally. `"showing up on both quantitative and narrative screens"`, `"passive build with funding rising while price drops — a long-trap structure"`. |
+| **Process references** | `absent from token-movers today`, `dropped from perps-scan`, `re-engages tomorrow's scan`, `picked up in this morning's run` | Drop the process reference; restate the market observation. `"flow has cooled — no longer a momentum candidate"`, `"volume contracted out of the breakout candidates"`. If timing matters, name a market window: `"if it holds above $2.05 into US open"`. |
+| **Engine state names** | `Fading → Peak`, `moved to ACCUMULATION`, `state DISTRIBUTION`, `regime QUIET → ACTIVE` | Use the structural meaning of the state. `Peak` → `"narrative is at full extension — late entries get punished"`. `Fading` → `"narrative losing steam, flows rotating elsewhere"`. `Accumulation` → `"absorption pattern — passive bids stacking under price"`. `Distribution` → `"supply being unloaded into strength"`. Lock the state vocabulary on the market structure, not on our enum value. |
+| **Score deltas with no scale** | `Smart money L/S +0.14 7d`, `narrative score +2 WoW` | Restate with unit and direction. `"top-trader long/short ratio rose from 1.26 to 1.40 over 7 days — net long bias building"`. |
+| **Compound shorthand** | `AIXBT #1`, `Pick of the day RIDE`, `Hold above re-engages` | Always close the shorthand with a complete observation. `"AIXBT flagged HYPE as their top lead today"`, `"holding above $2.05 keeps the long thesis intact; below it the setup is invalid"`. |
 
-**Rule:** Every reference to upstream data must include enough context for a reader who didn't open the upstream artifact to understand. Name the source skill, name the metric, give the unit, give the comparison point.
+#### Vocabulary that DOES belong in the brief (KEEP)
 
-**Two failure modes specific to v4.1 cards:**
+These are trader-native — the reader knows them, indicators carry their own scale and unit, and they describe market structure rather than engine state.
 
-1. **Bullet-as-citation** — bullets that read like a citation list rather than a thesis. ("AIXBT names it · narrative RIDE · vol breakout.") Each bullet must be a complete observation, not a label.
+- **Indicator values with units:** `funding +0.05%/8h`, `OI up 18% in 24h`, `LSR 1.4`, `taker buy 52% of flow`, `basis -0.3%`, `volume 2.4× 30d avg`
+- **Structural TA vocabulary:** `accumulation`, `distribution`, `compression`, `expansion`, `breakout`, `breakdown`, `momentum`, `capitulation`, `absorption`, `rotation`, `mean reversion`, `divergence`, `squeeze`
+- **Narrative descriptions in trader language:** `"the narrative is ripping"`, `"the narrative is fading — flows rotating to AI"`, `"ride the move while OI builds"`, `"narrative is cooked — wait for re-accumulation"`
+- **Phase descriptions when stated structurally:** `"early stage — funding still neutral, OI just starting to build"`, `"late stage — funding overheated, exits getting crowded"`
+- **Sector and narrative names:** `AI`, `DePIN`, `RWA`, `ZK`, `memecoins`, `Solana ecosystem`, `Hyperliquid ecosystem`, `restaking`, `L2s` — these are public-facing labels
+- **Market structure terms:** `support`, `resistance`, `liquidation cluster`, `funding flush`, `open-interest unwind`, `delta-neutral build`
 
-2. **Telegraphic sentence fragments** — dropping subjects, articles, and verbs to compress. ("Funding flushed.") Write complete sentences with subject + verb + object.
+#### Two failure modes specific to v4.1 cards
+
+1. **Bullet-as-citation** — bullets that read like a citation list rather than a thesis. (`"AIXBT names it · narrative RIDE · vol breakout."`) Each bullet must be a complete observation, not a label.
+
+2. **Telegraphic sentence fragments** — dropping subjects, articles, and verbs to compress. (`"Funding flushed."`) Write complete sentences with subject + verb + object.
+
+#### Worked examples
 
 ```
 ✗ AIXBT #1, Fading→Peak, $1.8M buybacks.
 
-✓ AIXBT named HYPE as their top lead today. Narrative-tracker
-  moved Hyperliquid from Fading to Peak. The protocol is buying
-  back $1.8M in tokens daily.
+✓ Hyperliquid is being called out as a top lead today. The narrative
+  has shifted from fading back to full extension, and the protocol is
+  buying back $1.8M in tokens daily — supply pressure easing while
+  attention builds.
+```
+
+```
+✗ 5/5 narrative, absent from token-movers, re-engages tomorrow.
+
+✓ High-conviction narrative setup, but flow has not confirmed yet —
+  volume hasn't picked up. Re-evaluating tomorrow if a breakout candle
+  prints.
+```
+
+```
+✗ DIVERGENT sub-tag — passive build.
+
+✓ Open interest is climbing while price drifts sideways — passive
+  positioning, possibly arbitrage rather than directional. Wait for
+  price to commit before taking a side.
+```
+
+```
+✗ Funding past +0.03%/8h fires MOMENTUM.
+
+✓ If funding pushes past +0.03%/8h with price holding the breakout,
+  the move is confirmed — add into strength.
 ```
 
 ```
 ✗ Hold above re-engages.
 
-✓ If the price holds above $2.05 with OI rebuilding, the asset
-  re-enters the ACCUMULATION setup on tomorrow's scan.
+✓ If price holds above $2.05 into US open with OI rebuilding, the
+  long thesis stays intact. Below $2.05 the setup is invalid.
 ```
+
+**Rule of thumb:** Read every sentence as if the operator is a trader on a Bloomberg terminal, not a developer reading our codebase. If a word, tag, or number only makes sense after you've opened a `.py` file or a SKILL.md, it doesn't belong in the brief.
 
 ---
 
