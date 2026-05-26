@@ -1,28 +1,24 @@
-Ops Review · 25 May · evening re-run · n/a (no run id exposed)
+Ops Review · 26 May · duration n/a
 
 ─────────  STEP 1 — DATA  ─────────
 
-  ✓ market-context-refresh · evening re-run, chop low conviction, BTC $77,375 +0.74% / breadth slipped 12/20 → 10/20 on SOL + BTC flipping intraday, F&G 30 holds, DEX vol $4.48B sits 22% below 7d avg, trending rotated (BTC/TAO/VVV out, XRP in), Binance CEX joined DeFiLlama top-5 protocols at $154.27B, coingecko/defillama/fng/polymarket/websearch all ok
-  ✓ aixbt-pulse · 09:00Z grounding, 5 NEW items (HYPE whale battle $104M vs $80M with USDC ATH on Solana, $RATSPEAK Base-native privacy play, Hastra + $2B USDC Solana in RWA block, Fed minutes hike-risk reversing yield-ease read, AI/tech institutional overweight as explicit tail risk), bridge call inverts the 08:00Z read in one hour (Hormuz disinflationary + Fed minutes hawkish active simultaneously)
-  ✓ narrative-tracker · 7 tracked, 1 NEW (Post-Quantum 2/5 WATCH), 2 PROMOTIONS (Privacy/ZK 4 RIDE w/ trail → 5 RIDE on ZEC tape catching the narrative + Grayscale ETF stack + Tachyon upgrade, Hyperliquid 3 FADE → 4 Peak RIDE w/ trail on second institutional re-anchor in 72h). ISS-005 fired seventh recurrence today after the 16:11 UTC verify-duplicate ran clean — chat-side Summary blob leaked over the morning's locked artifact some time before the evening recovery invocation, operator manually overwrote the on-disk artifact with the v2-locked payload (2446 bytes, clean now)
-  ✓ perps-scan · QUIET, 25/25 NEUTRAL third consecutive run today on the 09:20Z re-run prefetch, universe rotated PLAY + XAN + VVV in (EDEN + FIDA + GENIUS out), PLAY +60.95% 24h on funding repricing +0.0973pp to +0.0730%/8h sits 0.007pp under the DISTRIBUTION trigger, XAN landed first appearance with OI +319.81% 24h and vol_ratio 56.7x against taker buy 50.17% sitting 1.83pp under the CATALYST gate, no regime gates cleared on the slice
-  ✓ monitor-runners · MIXED afternoon re-run, 1 DEEP-LIQ (AIC bsc +1081% on $1.47m liq, hourly recovered -2.9% → +0.3% across morning to afternoon on the same pool, deep-liq parity holds twice in one day), 4 BREAKOUTs (Stake live +29% h1 cluster widens day-1, GENIUS reactivates on sixth distinct bsc contract in 72h, GOD third straight top-5 print on same pool, NOAR cooled from morning rank 1)
-  ✓ token-movers · PM re-run, third token-movers run of the day, 50/100 green at median 0.0% (slipped from morning 59 / midday 54 as SOL deepened red and ETH followed), BSB closes 4-session pump-distribution arc at -32.5% [CAPITULATION], GENIUS direction-flipped winner → CAPITULATION inside one session at -12.6%, ZEC re-entered trending validating the Privacy/ZK promotion, XAN second-session PUMP-RISK trending cooled to +41.5% from midday +50.1%
-  ✓ token-call · ASTER · HIGH 8/10 ($0.72, +5.5% 24h on $211M vol, vmc 0.11) holds from this afternoon's operator re-run, perp-DEX confluence with Hyperliquid Peak intact, three platform catalysts (SpaceX pre-IPO perps, Permissionless Listing Vote, RWA Sprint Season 1) all live
+  ✓ market-context-refresh · regime risk-off (medium), 1/20 green 24h
+  ✓ aixbt-pulse · 6 NEW items, bridge call on Warsh era + Hormuz path
+  ✓ narrative-tracker · 6 tracked, 4 transitions (RWA PROMOTED, HYPE + Privacy DEMOTED, Post-Quantum DEAD)
+  ✓ perps-scan · QUIET, 3 ACCUMULATION DIVERGENT (ZEC, TAO, INJ)
+  ✓ monitor-runners · SPECULATIVE, 5 BREAKOUTs, NOAR day-2 cluster confirms
+  ✓ token-movers · 33/100 green, AI-compute sweeps 7 of 8 winner slots
+  ✓ token-call · RENDER · HIGH 9/10
+  ✓ outcome-tracker · 0 closed in window, 5 open marked (stale prices, postprocess pipeline)
 
 ─────────  STEP 2 — BRIEFS  ─────────
 
-  ✓ perps-brief · evening re-run, 5 current positions all RIDE (HYPE LONG +4.77%, BCH SHORT -0.09%, EIGEN LONG +0.04%, AKT LONG +3.93%, ASTER LONG -0.35%), 0 NEW POSITIONS (skip-day on entries — by design, chop regime + macro dual-channel fragility + book already at 5 with heavy AI-compute + perp-DEX concentration), 5 WATCHLIST (ZEC LONG day 2, RAIL LONG day 2, NIL SHORT day 1, FIDA LONG day 1, PLAY SHORT day 1 added on the +60.95% manufactured-pump shape)
+  ✓ perps-brief · 2 NEW (RENDER LONG, TAO LONG), 5 watchlist, 2 closes (HYPE SCARE, ASTER NEUTRAL)
 
 ─────────  STEP 3 — MACRO  ─────────
 
-  ✓ morning-macro · evening re-run published, "chop · macro splits · perps quiet day 3" framing, bridge cites AIXBT 09:00Z hour-over-hour inversion, sector concentration on AI-compute + perp-DEX called out as primary portfolio risk
+  ✓ morning-macro · published, 1497/1500 chars
 
+Chain ran complete. 10 ✓, 0 ⚠, 0 ✗.
 
-Chain ran complete. 9 ✓, 0 ⚠, 0 ✗.
-
-New issues today: 0 filed against INDEX.md. Open count holds at 2 on the index. Flag for the health track: ISS-005 contamination recurred again today, seventh occurrence across 05-19 → 05-25. The morning chain artifact survived the 16:11 UTC verify-duplicate clean, then got overwritten by a chat-side Summary blob some time before the evening recovery invocation re-wrote the v2-locked payload manually. The pattern reads structural, not transient. The 05-19 resolve looks premature — recommend re-opening ISS-005 at high severity with the new triggering condition documented (duplicate-invocation chat Summary written within ~5 minutes of the morning chain step, downstream writer leaks Summary back to .outputs/narrative-tracker.md). SKILL.md hardening pass on the artifact-vs-Summary separation guardrail is the priority follow-up for skill-repair.
-
-Carry: ISS-006 (monitor-runners artifact overwrite, day 6 since 2026-05-20) — today's artifact reads clean across AM chain step and PM re-run, MIXED verdict + DEEP-LIQ AIC line + BREAKOUT block + STAKE day-1 cluster line + vibe line all intact. ISS-007 (fork cron throttle, day 5 since 2026-05-21) — no change.
-
-Follow-up: chain-triple-fire cadence consolidated today across narrative-tracker (chain + 16:11 verify + evening recovery), token-movers (morning + midday + PM), perps-scan (05:26Z + 08:14Z + 09:20Z), perps-brief (morning + afternoon + evening), morning-macro (morning + afternoon + evening), market-context-refresh (morning + afternoon + evening), aixbt-pulse (05:00Z + 08:00Z + 09:00Z), monitor-runners (morning + afternoon). Daily-ops-review now lands its third run for the same calendar day. The cadence is no longer an outlier — worth a formal entry in aeon.yml chain definition rather than leaving as operator-invoked re-runs if the pattern holds through 05-26.
+All sources ok. No new issues filed today. Open issues: ISS-006 (monitor-runners artifact overwrite, day 7), ISS-007 (GitHub Actions fork cron throttle, day 6).
