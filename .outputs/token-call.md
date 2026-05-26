@@ -1,34 +1,35 @@
-Daily Token Call · 25 May
+Daily Token Call · 26 May
 ──────────────────────────
 
-ASTER · HIGH · 8/10
-$0.72 · +5.5% 24h · +10.5% 7d
-mcap $1.85b · vol $211m · vol/mcap 0.11
+RENDER · HIGH · 9/10
+$2.28 · +14.1% 24h · +24.9% 7d
+mcap $1.19b · vol $245m · vol/mcap 0.21
 
 
 SIGNALS
-  Both 24h and 7d clear the +5% bar.
-  Vol/mcap at 0.11 on a $1.85b cap reads as real turnover.
-  Outpaces BTC and ETH on the 7d window. BTC at +0.3%, ETH at -0.4%.
-  Carries the perp-DEX narrative bid alongside HYPE's Peak position.
+  High turnover at vol/mcap 0.21.
+  Both 24h and 7d well above +5%.
+  Outpacing a red BTC and ETH on the 7d.
+  AI-compute peer set leads while TAO digests at +1.1% 24h.
 
 CATALYST
-  Aster listed SpaceX pre-IPO perpetuals on 18 May with 5x leverage. The platform now hosts the public-equity perp surface that seeded the SAOS and SPCX meme clusters trending on solana and base this week.
-  Permissionless Listing Vote went live 18 May. Stakers propose and vote on listings. Direct utility for the token.
-  RWA Sprint Season 1 cuts taker fees to 0.9bps, maker fees to zero through 7 June. Bid the volume side of the perp-DEX trade.
+  Salad Network integration adds ~60,000 enterprise GPUs to the network.
+  AI compute now drives 35-40% of Render jobs, with token burns up 278% year-on-year.
+  RenderCon 2026 hosted NVIDIA and Stability AI.
+  Grayscale added an institutional allocation.
+  Decentralized compute sits at 5/5 Peak RIDE per yesterday's narrative-tracker.
 
 RISK
-  Top traders cut longs 0.39 over the past 7d on ASTER perps. The bid runs without smart-money confirmation.
-  Hyperliquid is the perp-DEX leader. ASTER sits at #2, catching the sector tailwind rather than driving it.
-  Price approaches the $0.78 resistance pocket that capped the late-April attempt. ATH at $2.41 sits 235% above current.
+  OTOY Treasury (23.3%) and partner escrow (26.6%) unlock on cliffs through 2051.
+  Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price.
+  Sector-rotation risk if AI infra trade rotates into TAO or fresh names.
 
 DEDUP
-  First time in 7d for ASTER.
-  AKT pick from earlier today superseded by operator re-run.
-  Recent picks RAIL, EIGEN, AKT sit in compute and privacy lanes. Different narrative.
+  First time in 7d.
+  Recent picks: AKT, ASTER, EIGEN, RAIL, BEAT, GENIUS, SKYAI, TAG, PENGU, GRASS, ONDO, WLD, ZEC, LIT, VVV, DASH, INJ, NEAR, HYPE, CHZ all excluded.
 
 
-Take: ASTER is the second-derivative trade on Hyperliquid's Peak narrative, with three concrete platform catalysts inside the last week. Long with stop on a close below $0.67. Smart-money divergence keeps this sized for a trail, not a multi-week hold. Target $0.85 first, then $1.00. Break above $0.78 with volume confirms the next leg.
+Take: AI infra leads while TAO digests. RENDER carries the rotation, with Salad and Grayscale anchoring the institutional bid. Position-for-continuation, not chase. Invalidate if 7d drops back under +10%.
 
 
 not financial advice — pattern-matching only

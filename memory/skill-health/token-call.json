@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-25T08:17:48Z",
-  "quality_score": 5,
-  "assessment": "Excellent — insightful catalyst analysis, verified sources, professional trade structure with named risk, proper logging and dedup tracking.",
+  "last_analyzed": "2026-05-26T07:42:39Z",
+  "quality_score": 4,
+  "assessment": "Substantive crypto analysis with specific metrics, competitive positioning, and actionable catalysts. Well-structured output with proper memory management and follow-up actions documented.",
   "flags": [],
-  "avg_score": 4.27,
+  "avg_score": 4.26,
   "history": [
     {
       "date": "2026-05-18",
@@ -93,6 +93,10 @@
     {
       "date": "2026-05-25",
       "score": 5
+    },
+    {
+      "date": "2026-05-26",
+      "score": 4
     }
   ]
 }
