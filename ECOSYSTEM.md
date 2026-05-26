@@ -61,7 +61,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
 | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
 | x402Books | [@x402Books](https://x.com/x402Books) |
-| zer0 | [@Jaineon0G](https://x.com/Jaineon0G) |
+| zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
 
 ---
 
