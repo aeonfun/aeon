@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-05-23",
+  "updated": "2026-05-26",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -106,6 +106,17 @@
       "category": "dev",
       "trust_level": "community",
       "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity", "mythosforge-theme-round-guard", "mythosforge-jury-drift-watcher", "mythosforge-gallery-qa-watcher"]
+    },
+    {
+      "repo": "noelclaw/aeon-skill-pack-noelclaw",
+      "name": "aeon-skill-pack-noelclaw",
+      "description": "Persistent versioned memory and multi-agent swarm coordination — save typed artifacts to Noel Vault and manage shared agent session state across runs.",
+      "author": "noelclaw",
+      "license": "MIT",
+      "homepage": "https://noelclaw.com",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": ["noelvault", "noel-swarm"]
     }
   ]
 }
