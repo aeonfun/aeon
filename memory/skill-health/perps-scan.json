@@ -1,8 +1,8 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-26T07:55:11Z",
+  "last_analyzed": "2026-05-26T08:33:45Z",
   "quality_score": 4,
-  "assessment": "Substantive crypto regime analysis with clear transitions, specific metrics (3 accumulation assets, funding rates, OI changes), watch list, and complete execution on all 25 assets; well-documented technical decisions",
+  "assessment": "Substantive, well-structured analysis with actionable signals, proper documentation, and specific follow-up conditions identified",
   "flags": [],
   "avg_score": 4.03,
   "history": [
@@ -117,6 +117,10 @@
     {
       "date": "2026-05-25",
       "score": 5
+    },
+    {
+      "date": "2026-05-26",
+      "score": 4
     },
     {
       "date": "2026-05-26",
