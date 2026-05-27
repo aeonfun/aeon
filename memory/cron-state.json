@@ -84,13 +84,13 @@
   },
   "daily-ops-review": {
     "last_status": "success",
-    "last_success": "2026-05-27T06:50:59Z",
-    "total_runs": 26,
-    "total_successes": 26,
+    "last_success": "2026-05-27T08:30:03Z",
+    "total_runs": 27,
+    "total_successes": 27,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
-    "last_quality_score": 4
+    "last_quality_score": 5
   },
   "workflow_dispatch perps-scan": {
     "last_status": "success",
