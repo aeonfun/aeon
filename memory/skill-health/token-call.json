@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-26T08:21:29Z",
-  "quality_score": 4,
-  "assessment": "Well-structured daily token pick with detailed comparative analysis (RENDER vs FET/TIA), specific catalysts, risk reasoning, and proper dedup enforcement—governance working as intended.",
+  "last_analyzed": "2026-05-27T05:56:39Z",
+  "quality_score": 5,
+  "assessment": "Excellent substantive pick with principled reasoning, proper sourcing, and quality gates applied",
   "flags": [],
-  "avg_score": 4.25,
+  "avg_score": 4.28,
   "history": [
     {
       "date": "2026-05-18",
@@ -101,6 +101,10 @@
     {
       "date": "2026-05-26",
       "score": 4
+    },
+    {
+      "date": "2026-05-27",
+      "score": 5
     }
   ]
 }

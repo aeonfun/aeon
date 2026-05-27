@@ -1,14 +1,37 @@
-Today's token call has already been executed and recorded for 2026-05-26.
+Daily Token Call · 27 May
+──────────────────────────
 
-**Current state:**
+SEI · HIGH · 9/10
+$0.0697 · +10.0% 24h · +16.5% 7d
+mcap $469m · vol $135m · vol/mcap 0.29
 
-- **Pick:** RENDER · HIGH · 9/10 at $2.28 (+14.1% 24h, +24.9% 7d), mcap $1.19b, vol/mcap 0.21
-- **Artifact:** `.outputs/token-call.md` (1397 bytes, v2.1-locked format, written 08:20)
-- **Log entry:** `memory/logs/2026-05-26.md` lines 18-54 with full scoring rationale, source detail, and Section 4 self-check
-- **Dedup marker:** `TOKEN_CALL_DEDUP: RENDER` at line 44
 
-**Pick rationale (from the log):** Three tokens tied at 9/10 HIGH — RENDER, FET, TIA. RENDER edged FET on cleaner timing (FET has an AGIX migration tranche unlock May 28 against a +21% 7d rally — fade-on-unlock risk) and edged TIA on catalyst quality (TIA reads as sector-beta on modular DA). RENDER's stack: Salad Network ~60k enterprise GPUs, RenderCon 2026 with NVIDIA/Stability AI, Grayscale allocation, AI compute 35-40% of jobs, burns +278% YoY — direct narrative confluence with Decentralized compute 5/5 Peak RIDE per yesterday's narrative-tracker. Privacy/ZK lane fully drained by 7d dedup (ZEC, RAIL, VVV all excluded).
+SIGNALS
+  High turnover at vol/mcap 0.29.
+  Both 24h and 7d positive, 24h above +10%.
+  Outpacing BTC and ETH on the 7d by 18 points.
+  Absent from the CoinGecko trending list. The bid is building, not chasing the rotation.
+  Idiosyncratic strength on a top-cap tape running 2/20 green.
 
-**Sources:** cg=ok, dex=ok — no WebFetch fallback needed.
+CATALYST
+  Giga upgrade targets 200K+ TPS and sub-400ms finality, H1 2026 delivery.
+  EVM migration ships by June 15, three weeks out.
+  Xiaomi preinstalls Sei Wallet on devices sold outside China and the US.
+  Xiaomi stablecoin payments roll across 20K+ retail stores in Q2.
+  $30m Sei Foundation RWA commitment with BlackRock, Apollo, and Hamilton Lane as named partners.
 
-The skill enforces one call per day, with a hard dedup gate. Re-running now would either re-pick RENDER (blocked by dedup absent a materially new catalyst) or contradict today's committed call. Nothing to do.
+RISK
+  Giga is a promised upgrade, not shipped. A slip unwinds the bid.
+  June 15 EVM migration carries hard execution risk on a fixed date.
+  L1 sector sits quiet. SUI, APT, MOVE all flat to red on the 7d.
+  Price 94% below the Mar-2024 ATH at $1.14. Overhead supply is heavy.
+
+DEDUP
+  First time in 7d.
+  Recent picks excluded: RENDER, AKT, ASTER, EIGEN, RAIL, BEAT, GENIUS, SKYAI, TAG, ONDO, WLD, GRASS, PENGU, ZEC, DASH, VVV, LIT.
+
+
+Take: catalyst stack lands into Q2/June with high turnover and idiosyncratic strength on a red tape. The June 15 migration is the entry trigger. Trail the stop on a 24h close back below the recent breakout level near $0.062.
+
+
+not financial advice — pattern-matching only
