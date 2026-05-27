@@ -1,10 +1,10 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-27T06:50:44Z",
-  "quality_score": 4,
-  "assessment": "Substantive operational report with specific issue detection, systematic tracking, and clear follow-ups; domain-specific jargon limits accessibility but shows strong instrumentation.",
+  "last_analyzed": "2026-05-27T08:29:46Z",
+  "quality_score": 5,
+  "assessment": "Excellent — substantive ops review with detailed metrics, failure recovery analysis, trend tracking (5 consecutive clean runs on ISS-006), issue thresholds, and clear follow-up actions.",
   "flags": [],
-  "avg_score": 4.08,
+  "avg_score": 4.11,
   "history": [
     {
       "date": "2026-05-18",
@@ -109,6 +109,10 @@
     {
       "date": "2026-05-27",
       "score": 4
+    },
+    {
+      "date": "2026-05-27",
+      "score": 5
     }
   ]
 }
