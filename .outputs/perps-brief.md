@@ -1,4 +1,267 @@
-Perps Brief · unknown date · render failed
+Perps Brief · 27 May
 
-perps-brief.data.json failed schema validation: market_sentiment must contain 'paragraphs' and 'bias_line'
-perps-brief should be re-dispatched.
+─────────  MARKET SENTIMENT  ─────────
+
+  BTC         $75,801     -1.0% 24h, -2.1% 7d
+  Breadth     7/20 green  DEX vol $6.5B 24h
+  F&G         25          Extreme Fear, dropped 9 pts from 34
+
+  Macro
+    Risk-off deepens with Fear & Greed dropping 9 points into Extreme
+    Fear, the first reading at that level since May 15. Tech equities
+    print all-time highs while crypto sits in fear. The divergence is
+    the tell on whether the institutional pool bidding HYPE ETFs (1.04%
+    of mcap absorbed in 10 days, the strongest crypto ETF debut ever) is
+    the same pool buying Micron, or whether IBIT's seven-day outflow
+    streak is structural repositioning into equities.
+
+  Perps
+    QUIET across the 25-asset slice with one ACCUMULATION print and one
+    COMPRESSION print alone — HYPE rotates into ACCUMULATION CONFIRMED
+    on OI +13.33% 7d, XAU enters compression on a 2.27% range with OI
+    building. The AI-compute leadership reorganized rather than rotated
+    wholesale: NEAR flushed -7.8% (second red session ending the five-up
+    streak), ICP took the leg at +15.0% trending up, EIGEN and AKT held.
+    DRIFT stacks a 207% OI build against -0.36%/8h funding —
+    short-squeeze setup loaded but trigger not fired.
+
+  Book
+    Five open positions stack three themes. RENDER wicked to ~$1.88
+    intraday today, $0.12 from the $2.00 invalidation, but recovered to
+    $2.193 on the daily close — liquidity grab, not structure break.
+    AI-compute concentration grows to four with the new ICP entry; SEI
+    adds a catalyst-dated L1 diversifier as a separate thesis. BCH SHORT
+    alone carries the legacy-alt bleed.
+
+  Bias · two new entries on multi-RIDE narrative confluence (ICP) and
+    catalyst-dated L1 distribution (SEI). RENDER survives the wick on
+    the daily close, but the AI-compute concentration is now four names
+    and the trail stays tight.
+
+─────────  CURRENT POSITIONS (5)  ─────────
+
+  TICKER    DIR         ENTRY         NOW       PNL         MAE / MFE  CALL
+  ────────  ─────  ──────────  ──────────  ────────  ────────────────  ────────────
+  BCH       SHORT        $345        $340     +1.4%     -5.0% / +1.4%  RIDE
+  EIGEN     LONG      $0.2299      $0.227     -1.3%     -2.1% / +1.8%  RIDE
+  AKT       LONG        $0.87       $0.88     +1.1%     -2.3% / +5.8%  RIDE
+  RENDER    LONG        $2.29       $2.19     -4.2%    -17.9% / +0.0%  RIDE
+  TAO       LONG         $278        $275     -1.3%     -2.2% / +0.0%  RIDE
+
+  BCH       ▸ structural smart-money exit intact; risk-off deepening with
+              F&G dropped 9 pts into Extreme Fear; no narrative tailwind to
+              defend the bid
+
+  EIGEN     ▸ AI-compute sector concentration risk fired partially through
+              NEAR (-11.63% AM, -7.8% PM) but EIGEN held with the Nebius
+              acquisition catalyst and narrative double-peak RIDE intact
+
+  AKT       ▸ decentralized compute narrative still rides at peak with
+              velocity upgrade; AKT held while NEAR flushed; DePAI wrapper
+              framing extends the catalyst stack
+
+  RENDER    ▸ intraday wick to ~$1.88 left the position $0.12 from
+              invalidation but daily close at $2.193 holds above $2.00;
+              reads as liquidity grab on a deep flush, not structure break
+
+  TAO       ▸ regime cooled from ACCUMULATION DIVERGENT to NEUTRAL on OI 7d
+              dropping below the +10% gate, but Bittensor revenue and
+              narrative peak RIDE hold; smart money L/S 1.85 rolled -0.27
+              over 7d flags caution
+
+
+─────────  NEW POSITION · ICP LONG  ─────────
+
+  ticker     ICP
+  direction  LONG
+  horizon    multi-week
+  entry      market or pullback to $2.80
+  stop       close below $2.65
+
+
+  thesis     · ICP prints +15.0% 24h on $186M vol at $1.67B cap,
+               vol/mcap 0.11 in the healthy turnover band.
+               Outpaces BTC and ETH on the 7d by 21 points on a
+               risk-off tape.
+             · MISSION70 tokenomics upgrade passed NNS
+               governance in January 2026 with 53%+ support.
+               Annual inflation drops from 9.72% to 2.92% by
+               end-2026 via reward caps and accelerated burn.
+             · Sits at the intersection of two peak-extension
+               narratives — decentralized compute and AI agents.
+               Bittensor TAO new 2026 high (+48.2% this week)
+               cross-confirms the sector bid is still firing.
+             · Caffeine V3 ships natural-language dApp creation,
+               public App Market, and blob storage. Real product
+               surface shipping while inflation collapses —
+               fundamentals and narrative align.
+
+
+  risks      · Multi-year supply overhang from the 2021 $700 ATH
+               still lands gradually under NNS unlocks.
+               Slow-burn pressure on every rally attempt above
+               $4.
+             · Deflation thesis runs 28 months, not a dated
+               event. The catalyst bid relies on continued
+               shipping cadence rather than a single fixed-date
+               release.
+             · AI-compute concentration extends — EIGEN, AKT,
+               TAO already hold this thesis. ICP makes four
+               AI-compute longs that unwind together on sector
+               rotation.
+
+─────────  NEW POSITION · SEI LONG  ─────────
+
+  ticker     SEI
+  direction  LONG
+  horizon    multi-week
+  entry      market or pullback to $0.066
+  stop       close below $0.062
+
+
+  thesis     · SEI prints +10.0% 24h on a top-cap tape running
+               2/20 green, vol/mcap 0.29 on $469M cap —
+               idiosyncratic strength on a risk-off session, not
+               market beta.
+             · Q2 catalyst stack lands on fixed dates: Giga
+               upgrade targets 200K+ TPS and sub-400ms finality
+               in H1 2026, EVM migration ships June 15, three
+               weeks out.
+             · Xiaomi preinstalled the Sei Wallet on devices
+               sold outside China and the US, with stablecoin
+               payments rolling across 20K+ retail stores in Q2
+               — distribution at consumer scale.
+             · SEI absent from the trending list while printing
+               the move. The pattern reads as a bid building
+               under price, not retail chasing the rotation.
+
+
+  risks      · Giga is a promised upgrade, not shipped. A slip
+               announcement before H1 close unwinds the catalyst
+               bid fast.
+             · L1 sector sits quiet today with SUI, APT, MOVE
+               all flat-to-red on the 7d. No sector tailwind to
+               ride if SEI catalysts disappoint.
+             · Price sits 94% below the March 2024 ATH at $1.14.
+               Overhead supply is heavy, and rallies above $0.10
+               hit sellers from prior holders.
+
+─────────  WATCHLIST · PLAY SHORT · day 3  ─────────
+
+  ticker     PLAY
+  direction  SHORT
+  horizon    3d
+  trigger    funding pushes past +0.08%/8h with pct_24h going
+             flat-to-red, OR pct_24h reverses past -5% with open
+             interest flipping negative
+  stop       close above $0.12 before trigger fires
+
+
+  thesis     · PLAY ran +60.95% 24h on +1.15% 7d two sessions
+               back. The entire move happened in 24 hours, with
+               funding repricing +0.0973pp over the 7d average
+               to +0.0730%/8h.
+             · Top-trader long/short ratio at 1.43 sits down
+               0.51 over 7 days. Smart money cut conviction
+               through the rip while open interest doubled to
+               +47.58% 24h on +85% 7d.
+             · Absent from today's perps universe and
+               token-movers for the third straight session. The
+               leveraged-pump consolidation extends without a
+               directional flush — funding-extreme setup stays
+               loaded.
+
+─────────  WATCHLIST · WLD LONG · day 2  ─────────
+
+  ticker     WLD
+  direction  LONG
+  horizon    3d
+  trigger    pct_24h second leg past +20% with volume ratio
+             crossing 2.0x, OR funding flipping positive past
+             +0.03%/8h on continued pct_7d above +40%
+  stop       close below $0.30 before trigger fires
+
+
+  thesis     · WLD held +44.61% 7d on the second day with
+               pct_24h -4.63% and OI -9.92% 24h — the structural
+               build cooled but the weekly leg stays intact
+               above the trigger thresholds.
+             · Funding +0.0053%/8h sits 0.0247pp short of the
+               +0.03% MOMENTUM gate. Taker buy 49.69% reads
+               neutral. The catalyst window narrows but stays
+               open.
+             · AI-identity narrative folds into the AI-compute
+               sector reorganization today — WLD lost the
+               [BREAKOUT][TRENDING+UP] tags as ICP took the
+               AI-compute leg.
+
+─────────  WATCHLIST · ONDO LONG · day 2  ─────────
+
+  ticker     ONDO
+  direction  LONG
+  horizon    7d
+  trigger    close above $0.45 with 24h volume above 1.5x the 7d
+             average AND open interest net positive on the day,
+             reversing the recent trending-red print
+  stop       close below $0.39 before trigger fires
+
+
+  thesis     · ONDO at $0.4072 stays above the $0.39
+               invalidation with pct_24h +0.47% and OI 24h
+               -3.28%. The Ondo/TermMax tokenized-stock
+               collateral launch on BNB anchors the RWA
+               narrative.
+             · Narrative-tracker demoted RWA from full peak to
+               peak with trail today after the breakthrough
+               didn't extend to a second utility anchor — needs
+               a fresh catalyst by May 29 or the thesis weakens.
+             · Prior ONDO LONG closed -17.30% on May 23
+               invalidation breach. Same name, different setup.
+               Sizing stays cautious until the trigger fires.
+
+─────────  WATCHLIST · ZEC SHORT · day 1  ─────────
+
+  ticker     ZEC
+  direction  SHORT
+  horizon    7d
+  trigger    second daily close below $560 with funding flipping
+             positive past +0.02%/8h AND top-trader long/short
+             rotating above 1.0
+  stop       close above $620 before trigger fires
+
+
+  thesis     · ZEC printed first cap-leg break in the multi-day
+               privacy cycle at -6.6% 24h into trending red at
+               $574. Top-trader long/short 0.90 already net
+               short, funding +0.0089%/8h.
+             · Narrative promoted Privacy/ZK back to peak
+               conviction today on a five-driver day, but price
+               broke the cycle floor in the same session —
+               narrative top, price already rolling.
+             · Prior ZEC short closed -7.33% on May 24 when
+               narrative reassembly reversed the move. Different
+               setup now — price has confirmed the break and the
+               narrative is consensus.
+
+─────────  WATCHLIST · XAU LONG · day 1  ─────────
+
+  ticker     XAU
+  direction  LONG
+  horizon    7d
+  trigger    close above $4,580 with daily range expanding past
+             5% AND volume ratio crossing 1.0x
+  stop       close below $4,420 before trigger fires
+
+
+  thesis     · Gold sits in compression with 7d range at 2.27%,
+               well under the typical breakout threshold. Open
+               interest built +16.17% over 7 days on flat price
+               — coil setup.
+             · Taker buy 51.12% sits with a bullish lean while
+               funding +0.0083%/8h holds neutral. Cross-domain:
+               Iran ceasefire signals fragile with Polymarket
+               YES at 23.5%, down 3pp this morning.
+             · Macro risk-off backdrop deepens — Fear & Greed
+               dropped 9 points into Extreme Fear. Gold catches
+               the duration bid if equities crack from current
+               ATH or ceasefire negotiations stall.

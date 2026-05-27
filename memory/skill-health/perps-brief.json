@@ -1,8 +1,8 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-27T06:28:46Z",
+  "last_analyzed": "2026-05-27T08:16:13Z",
   "quality_score": 4,
-  "assessment": "Substantive brief with specific positions, entry/invalidation levels, dated catalysts, and clear portfolio strategy; well-structured summary with proper file outputs and memory logging",
+  "assessment": "Substantive, well-reasoned position brief with clear decisions, risk flagging, and actionable follow-ups; proper structure and soul-aligned narrative analysis.",
   "flags": [],
   "avg_score": 4.04,
   "history": [
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-26",
+      "score": 4
+    },
+    {
+      "date": "2026-05-27",
       "score": 4
     },
     {
