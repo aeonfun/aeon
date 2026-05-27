@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-26T08:29:48Z",
-  "quality_score": 5,
-  "assessment": "Excellent autonomous skill: substantive market analysis with verified sources (CoinGecko HTTP 200), specific metrics (191/250 tokens, 35/100 green), clear methodology, deduplication logic, and actionable follow-up signals",
+  "last_analyzed": "2026-05-27T05:57:49Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured market analysis with technical depth, operational rigor, and actionable follow-ups; strong execution of defined task.",
   "flags": [],
-  "avg_score": 4.17,
+  "avg_score": 4.16,
   "history": [
     {
       "date": "2026-05-18",
@@ -101,6 +101,10 @@
     {
       "date": "2026-05-26",
       "score": 5
+    },
+    {
+      "date": "2026-05-27",
+      "score": 4
     }
   ]
 }
