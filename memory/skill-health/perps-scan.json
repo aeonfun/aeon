@@ -1,15 +1,11 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-27T06:08:48Z",
+  "last_analyzed": "2026-05-27T08:02:53Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with detailed metrics, clear structure, actionable recommendations, and graceful constraint handling—but workaround implementation (node scripts left in repo) prevents excellence.",
+  "assessment": "Executed successfully with substantive market analysis, specific metrics, clear structure, and actionable watch list; competently handled sandbox constraints.",
   "flags": [],
   "avg_score": 4.1,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-18",
       "score": 2
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-26",
+      "score": 4
+    },
+    {
+      "date": "2026-05-27",
       "score": 4
     },
     {
