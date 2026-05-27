@@ -1,37 +1,23 @@
 {
   "schema_version": "v4.1",
-  "date": "2026-05-26",
+  "date": "2026-05-27",
   "qualifier": null,
 
   "market_sentiment": {
-    "paragraphs": [
-      "BTC closed -0.83% to $76,564 on a 1/20 green breadth print as risk-off rotation deepens. BTC ETF outflows hit $1.55B over six sessions while the spot bid concentrates into AI-compute leaders RENDER, FET, NEAR, WLD, and TIA. The trending slate rotated wholesale off the multi-day Privacy/ZK and perp-DEX leaders in one session.",
-      "Perps-scan reads QUIET with three ACCUMULATION DIVERGENT prints surfacing from yesterday's fully NEUTRAL universe — ZEC, TAO, and INJ. Taker buy under 50% on every print means passive position building, not aggressive directional bid. Funding stays calm across the 22 NEUTRAL stalwarts, the structural footprint reads as positioning rather than conviction.",
-      "Narrative-tracker DEMOTED Hyperliquid Peak to Fading on the second FADE-PEAK-FADE whipsaw in a week, PROMOTED RWA to full RIDE on the Ondo/TermMax tokenized-stock collateral launch, and dropped Post-Quantum to DEAD after the 48h escalation window passed unmet. The AI-compute sector sweeping 7 of 8 winner slots is the cleanest cross-confirm of the day."
+    "headline_metrics": [
+      {"label": "BTC",     "value_top": "$75,594",     "value_bottom": "-1.55% 24h"},
+      {"label": "Breadth", "value_top": "6/20 green",  "value_bottom": "F&G 25, dropped 9 pts"},
+      {"label": "Perps",   "value_top": "23/25 NEUT",  "value_bottom": "2 ACCUMULATION only"}
     ],
-    "bias_line": "Bias · long AI-compute leaders with sector confluence, fade perp-DEX exposure after the second whipsaw and book the structural break on Hyperliquid."
+    "sections": [
+      {"label": "Macro", "body": "Risk-off deepens with Fear & Greed dropping 9 points into Extreme Fear, the first reading at that level since May 15. Tech equities print all-time highs against crypto sitting in fear. The divergence is the tell on whether the institutional pool bidding HYPE ETFs ($100M cumulative, $19M Bitwise single-day) is the same pool buying Micron, or whether IBIT's seven-day outflow streak is structural repositioning into equities."},
+      {"label": "Perps", "body": "QUIET across the 25-asset slice with two ACCUMULATION prints alone — ZEC day-2 and 1000PEPE direct from new entrant with the CONFIRMED sub-tag. NEAR bled -11.63% on OI -26.58% but funding still positive at +0.0114%/8h, failing the CAPITULATION gate. The AI-compute leadership bid from yesterday rotated off wholesale: NEAR flipped TRENDING+DOWN after five up-sessions, WLD halved to +8.8% losing both BREAKOUT and TRENDING+UP."},
+      {"label": "Book",  "body": "Closing RENDER on a clean invalidation breach trims AI-compute concentration from four names to three. EIGEN, AKT, TAO carry the sector exposure forward and the named concentration risk fired partially today, not wholesale. SEI opens as a catalyst-dated L1 diversifier with a Q2 stack landing on fixed dates."}
+    ],
+    "bias_line": "Bias · trim and diversify. RENDER closes on invalidation, SEI adds catalyst-dated L1 exposure, the rest rides with the sector-rotation risk on tight watch. Risk-off macro keeps sizing conservative."
   },
 
   "current_positions": [
-    {
-      "id": "HYPE-2026-05-22-001",
-      "ticker": "HYPE",
-      "direction": "LONG",
-      "fired_date": "2026-05-22",
-      "fired_price": 60.906,
-      "horizon": "multi-week",
-      "day_of": "5/21",
-      "call": "CLOSE",
-      "thesis_note": "narrative-tracker DEMOTED Hyperliquid Peak to Fading on the second whipsaw in a week, token-movers rotated HYPE off trending, AIXBT named hot-potato rotation warning on the cycle-leader trio — structural sector thesis cracked, close with invalidation already breached on the ledger from prior session",
-      "invalidation": "close below $56, OR clean break below the post-June-6-unlock settlement low",
-      "return_pct": -2.04,
-      "return_vs_btc_pct": -0.97,
-      "return_vs_eth_pct": -0.19,
-      "outcome": "SCARE",
-      "mae_pct": -10.52,
-      "mfe_pct": 4.77,
-      "auto_flipped": false
-    },
     {
       "id": "BCH-2026-05-23-001",
       "ticker": "BCH",
@@ -39,16 +25,16 @@
       "fired_date": "2026-05-23",
       "fired_price": 344.68,
       "horizon": "7d",
-      "day_of": "4/7",
+      "day_of": "5/7",
       "call": "RIDE",
-      "thesis_note": "smart-money exit thesis intact, risk-off tape with breadth 1/20 green supports the short, no fresh BCH catalyst",
-      "invalidation": "close above $370 (recent intraday bounce high)",
-      "watch": "if breadth recovers above 10/20 green tomorrow alongside BTC reclaiming $77.5K, the legacy-alt bounce risk activates",
+      "thesis_note": "structural smart-money exit intact, risk-off deepening, no narrative tailwind to defend the bid",
+      "invalidation": "close above $370",
+      "watch": "BCH absent from today's data sources for the fifth straight session. The fade in attention itself is the continuation read. Watching for a relief bounce above $355 with volume that would mark a structure break.",
       "mae_pct": -5.02,
-      "mfe_pct": 0.49,
       "mae_day_of": "2",
-      "mfe_day_of": "3",
-      "now_pct": 0.78
+      "mfe_pct": 1.36,
+      "mfe_day_of": "4",
+      "now_pct": 1.36
     },
     {
       "id": "EIGEN-2026-05-24-001",
@@ -57,16 +43,16 @@
       "fired_date": "2026-05-24",
       "fired_price": 0.2299,
       "horizon": "7d",
-      "day_of": "3/7",
+      "day_of": "4/7",
       "call": "RIDE",
-      "thesis_note": "AI-compute sector sweep is exactly the tailwind the thesis predicted — 7 of 8 winner slots today go to RENDER, FET, NEAR, WLD, TIA, GRASS, GRT",
+      "thesis_note": "AI-compute sector concentration risk fired partially today (NEAR -11.63%) but EIGEN held. Invalidation $0.205 still holds with the Nebius acquisition and narrative RIDE pillars intact.",
       "invalidation": "close below $0.205",
-      "watch": "if RENDER and FET both close red tomorrow with AI-compute losing its winners-list dominance, the sector cross-confirm breaks",
+      "watch": "EIGEN absent from today's winners and losers. The sector rotation hit NEAR hardest but spared the rest of the pack. Watching for a second day of NEAR-style selling across EIGEN, AKT, RENDER, TAO that would mark a sector-wide unwind.",
       "mae_pct": -2.13,
-      "mfe_pct": 1.35,
       "mae_day_of": "1",
-      "mfe_day_of": "2",
-      "now_pct": 0.48
+      "mfe_pct": 1.78,
+      "mfe_day_of": "3",
+      "now_pct": -1.26
     },
     {
       "id": "AKT-2026-05-25-001",
@@ -75,317 +61,210 @@
       "fired_date": "2026-05-25",
       "fired_price": 0.87,
       "horizon": "7d",
-      "day_of": "2/7",
+      "day_of": "3/7",
       "call": "RIDE",
-      "thesis_note": "Decentralized compute Peak 5/5 RIDE held in narrative-tracker for second straight session, AI-compute sector dominant on a 1/20 green tape",
+      "thesis_note": "decentralized compute narrative still rides at peak with extension; AKT absent from today's losers list while NEAR took the sector hit",
       "invalidation": "close below $0.78",
-      "watch": "if AKT drops off CoinGecko trending for a second consecutive session while RENDER and FET keep leading, capital may be skipping the second-tier compute names entirely",
+      "watch": "The sector concentration risk named on entry activated through NEAR's -11.63% flush. AKT holding while NEAR breaks is the tell. A second session of AKT joining NEAR red means the leadership thesis cracks.",
       "mae_pct": -2.30,
-      "mfe_pct": 5.75,
       "mae_day_of": "1",
+      "mfe_pct": 5.75,
       "mfe_day_of": "1",
-      "now_pct": 3.45
+      "now_pct": 1.15
     },
     {
-      "id": "ASTER-2026-05-25-001",
-      "ticker": "ASTER",
+      "id": "RENDER-2026-05-26-001",
+      "ticker": "RENDER",
       "direction": "LONG",
-      "fired_date": "2026-05-25",
-      "fired_price": 0.7163,
+      "fired_date": "2026-05-26",
+      "fired_price": 2.29,
       "horizon": "7d",
-      "day_of": "2/7",
+      "day_of": "1/7",
       "call": "CLOSE",
-      "thesis_note": "Hyperliquid sector lead DEMOTED to Fading in narrative-tracker today, perp-DEX bid rotated off the trending list wholesale — the named risk that ASTER follows HYPE structurally has fired, close to free capital before the second-derivative unwind plays out",
-      "invalidation": "close below $0.67",
-      "return_pct": -0.88,
-      "return_vs_btc_pct": 0.00,
-      "return_vs_eth_pct": -0.01,
-      "outcome": "NEUTRAL",
-      "mae_pct": -0.88,
+      "thesis_note": "Today's perps print at $1.905 closes well below the $2.00 invalidation. AI-compute sector rotation caught the late entry on the wrong side of the unwind.",
+      "invalidation": "close below $2.00",
+      "return_pct": -16.81,
+      "return_vs_btc_pct": -18.01,
+      "return_vs_eth_pct": -18.52,
+      "outcome": "LOSS",
+      "mae_pct": -17.90,
       "mfe_pct": 0.0,
       "auto_flipped": false
+    },
+    {
+      "id": "TAO-2026-05-26-001",
+      "ticker": "TAO",
+      "direction": "LONG",
+      "fired_date": "2026-05-26",
+      "fired_price": 278.29,
+      "horizon": "7d",
+      "day_of": "2/7",
+      "call": "RIDE",
+      "thesis_note": "regime degraded from ACCUMULATION DIVERGENT to NEUTRAL on OI 7d cooling below the +10% gate, but three pillars (Bittensor revenue, narrative RIDE, smart money L/S 2.12 still building) hold",
+      "invalidation": "close below $255",
+      "watch": "The ACCUMULATION print held one calendar day before cooling. Watching for a second session of OI bleeding past -5% on the day or a price break below the $265 entry zone, either of which marks a structure crack.",
+      "mae_pct": -2.24,
+      "mae_day_of": "2",
+      "mfe_pct": 0.0,
+      "mfe_day_of": "2",
+      "now_pct": -2.24
     }
   ],
 
   "new_positions": [
     {
-      "ticker": "RENDER",
+      "ticker": "SEI",
       "direction": "LONG",
-      "horizon": "7d",
-      "entry_zone": "market or first pullback to $2.15",
-      "invalidation": "close below $2.00",
+      "horizon": "multi-week",
+      "entry_zone": "market or pullback to $0.066",
+      "invalidation": "close below $0.062",
       "thesis": [
-        "RENDER printed +14.2% 24h on $258M volume with vol/mcap 0.21 — high turnover with the AI-compute peer set leading while TAO digests at +1.1% 24h.",
-        "Today's token-call rated RENDER HIGH conviction at 9/10. Salad Network integration adds roughly 60,000 enterprise GPUs to the network, AI compute now drives 35-40% of Render jobs.",
-        "Narrative-tracker holds Decentralized compute at Peak 5/5 RIDE for the second straight session. Token burns up 278% year-over-year confirm real demand, not narrative speculation.",
-        "Token-movers shows AI-compute sweeping 7 of 8 winner slots (WLD, NEAR, RENDER, FET, TIA, GRASS, GRT) — the dominant cross-sector rotation on a 1/20 green tape."
+        "SEI prints +10.7% 24h on a top-cap tape running 2/20 green, vol/mcap at 0.29 on $469M cap — idiosyncratic strength on a risk-off session, not market beta.",
+        "Q2 catalyst stack lands on fixed dates: Giga upgrade targets 200K+ TPS and sub-400ms finality in H1 2026, EVM migration ships June 15, three weeks out.",
+        "Xiaomi preinstalled the Sei Wallet on devices sold outside China and the US, with stablecoin payments rolling across 20K+ retail stores in Q2 — distribution at consumer scale.",
+        "SEI absent from the CoinGecko trending list while printing the move. The pattern structurally reads as a bid building under price, not retail chasing the rotation."
       ],
-      "confluence_fired": ["narrative_phase_aligned", "market_regime_aligned", "enrichment_positive", "cross_domain_bridge"],
-      "risks": [
-        "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang sits ready to land at any time.",
-        "Centralized clouds like AWS and CoreWeave undercut the DePIN thesis on price — institutional GPU flows may rotate back to traditional compute.",
-        "EIGEN and AKT already hold the AI-compute sector long. RENDER concentrates rather than diversifies — sector unwind hits all three together."
-      ]
-    },
-    {
-      "ticker": "TAO",
-      "direction": "LONG",
-      "horizon": "7d",
-      "entry_zone": "market or first pullback to $265",
-      "invalidation": "close below $255",
-      "thesis": [
-        "TAO printed first-day ACCUMULATION DIVERGENT on +15.71% 7d open-interest build with funding +0.0054%/8h holding well under the +0.03% extreme gate.",
-        "Bittensor Q1 2026 revenue $43M anchors the fundamentals — real AI service revenue, not narrative speculation. The metric distinguishes TAO from the broader DePIN trade.",
-        "Narrative-tracker holds Decentralized compute at Peak 5/5 RIDE for the second straight session. The new DePAI wrapper label extends the catalyst stack into AI-infra framing.",
-        "Top-trader long/short at 1.98 with -0.10 over 7 days means smart money built the position through consolidation without piling in late."
+      "confluence_fired": [
+        "enrichment_positive",
+        "market_regime_aligned",
+        "cross_domain_bridge"
       ],
-      "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "market_regime_aligned", "enrichment_positive", "regime_transition"],
       "risks": [
-        "DIVERGENT sub-tag means taker buy 46.68% under the 50% gate — the bid hasn't crossed the spread yet, the passive build could be arbitrage rather than directional positioning.",
-        "AI-compute sector concentration risk — EIGEN, AKT, RENDER all hold the same thesis. Rotation away from AI hits all four positions in the same session.",
-        "Decentralized compute is at Peak status, not Rising — late-cycle entry on a digesting narrative. A narrative-tracker downgrade to Fading reverses the sector tailwind."
+        "Giga is a promised upgrade, not shipped. A slip announcement before H1 close unwinds the catalyst bid fast.",
+        "L1 sector sits quiet today with SUI, APT, MOVE all flat-to-red on the 7d. No sector tailwind to ride if SEI catalysts disappoint.",
+        "Price sits 94% below the March 2024 ATH at $1.14. Overhead supply is heavy, and rallies above $0.10 hit sellers from prior holders."
       ]
     }
   ],
 
   "watchlist": [
     {
-      "ticker": "ZEC",
-      "direction": "LONG",
-      "day_of_watchlist": 3,
-      "trigger": "first pullback to $620 that holds with funding turning positive AND top-trader long/short rotating back above 1.00, OR a clean ACCUMULATION confirmation tomorrow with taker buy clearing 50%",
-      "invalidation": "close below $590 before trigger fires",
-      "thesis": [
-        "ZEC ACCUMULATION DIVERGENT print fires today — open interest +20.07% 7d on +7.32% price, funding turned positive at +0.0107%/8h.",
-        "Narrative-tracker holds Privacy/ZK at Rising 4/5 RIDE — institutional bid sustains via Multicoin Capital framing and Grayscale ETF filing even as X chatter cools.",
-        "Top-trader long/short 0.77 holds net short. The squeeze setup loads if the narrative cross-bid pulls top traders back above parity."
-      ],
-      "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "pattern_tag_supports", "regime_transition"],
-      "horizon": "7d"
-    },
-    {
-      "ticker": "RAIL",
-      "direction": "LONG",
-      "day_of_watchlist": 3,
-      "trigger": "first pullback to the $3.50 area that holds with ZEC also above $640 OR a second privacy name printing green on the same session",
-      "invalidation": "close below $3.30 before trigger fires",
-      "thesis": [
-        "Privacy/ZK held RIDE at 4/5 in narrative-tracker today even as X chatter cooled to a single direct driver — institutional bid carries the thesis.",
-        "RAIL rotated off the trending list today alongside ZEC, but the multi-day base structure holds. Real usage anchors via $92M TVL, $4.7M revenue, $2B+ shielded volume.",
-        "Capital is fragmenting across multiple privacy names (Aleo, Tachyon, Umbra surface in today's aixbt-pulse) so RAIL needs sector continuation rather than narrative escalation."
-      ],
-      "confluence_fired": ["narrative_phase_aligned", "market_regime_aligned", "cross_domain_bridge", "enrichment_positive"],
-      "horizon": "7d"
-    },
-    {
       "ticker": "PLAY",
       "direction": "SHORT",
-      "day_of_watchlist": 2,
+      "day_of_watchlist": 3,
       "trigger": "funding pushes past +0.08%/8h with pct_24h going flat-to-red, OR pct_24h reverses past -5% with open interest flipping negative",
       "invalidation": "close above $0.12 before trigger fires",
+      "horizon": "3d",
       "thesis": [
-        "PLAY funding cooled to +0.0422%/8h from yesterday's +0.0730% peak — distribution signature loading but the trigger gate at +0.08% sits 0.0378pp away.",
-        "Open interest dropped -19.21% 24h — leverage already unwinding without a price flush. Thin float (OI $18.6M) means coordinated flow drives both squeezes and flushes.",
-        "Top-trader long/short 1.15 down -0.52 over 7 days means smart money cut conviction through the rip. A price-down day paired with funding pushing past +0.08% fires the trigger."
+        "PLAY ran +60.95% 24h on +1.15% 7d two sessions back. The entire move happened in 24 hours, with funding repricing +0.0973pp over the 7d average to +0.0730%/8h.",
+        "Top-trader long/short ratio at 1.43 sits down 0.51 over 7 days. Smart money cut conviction through the rip while open interest doubled to +47.58% 24h on +85% 7d.",
+        "Absent from today's perps universe and token-movers. The leveraged-pump consolidation extends without a directional flush, but the funding-extreme setup stays loaded."
       ],
-      "confluence_fired": ["pattern_tag_supports", "quant_regime_aligned"],
-      "horizon": "3d"
-    },
-    {
-      "ticker": "WLD",
-      "direction": "LONG",
-      "day_of_watchlist": 1,
-      "trigger": "pct_24h second leg past +20% with volume ratio crossing 2.0x, OR funding flipping positive past +0.03%/8h on continued pct_7d above +40%",
-      "invalidation": "close below $0.30 before trigger fires",
-      "thesis": [
-        "WLD printed +18.4% 24h on $342M volume at #63 cap with [TRENDING+UP][BREAKOUT] tags — the only structurally clean breakout on today's board.",
-        "Perps-scan WATCH cleared three of four CATALYST-BREAKOUT gates — OI +11.80% 24h on OI +96.39% 7d with taker buy 50.21%. Pct_24h gate at +20% is the binding constraint.",
-        "AI/Worldcoin narrative folds into the broader AI-compute sector sweep — WLD leads the trending rotation onto AI-identity names alongside the AI-infra trio."
-      ],
-      "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned", "both_tag"],
-      "horizon": "3d"
-    },
-    {
-      "ticker": "ONDO",
-      "direction": "LONG",
-      "day_of_watchlist": 1,
-      "trigger": "close above $0.45 with 24h volume above 1.5x the 7d average AND open interest net positive on the day, reversing today's [TRENDING+DOWN] print",
-      "invalidation": "close below $0.39 before trigger fires",
-      "thesis": [
-        "Narrative-tracker PROMOTED RWA from RIDE-with-trail to full RIDE today on the Ondo/TermMax tokenized-stock collateral launch on BNB Chain — first fixed-rate borrowing market for tokenized stocks.",
-        "Ondo also brings tokenized US stocks to Hyperliquid HyperEVM today — cross-narrative anchor extends the RWA institutional loop into perp DEX infrastructure.",
-        "ONDO printed -2.25% 24h and rotated to [TRENDING+DOWN] today despite the catalyst — retail rotation off the name leaves the bid loaded for the next confirmation candle."
-      ],
-      "confluence_fired": ["narrative_phase_aligned", "market_regime_aligned", "cross_domain_bridge", "enrichment_positive"],
-      "horizon": "7d"
+      "confluence_fired": [
+        "pattern_tag_supports",
+        "quant_regime_aligned"
+      ]
     }
   ],
 
   "ledger_ops": {
     "evaluations": [
       {
-        "open_id": "HYPE-2026-05-22-001",
-        "date": "2026-05-26",
-        "call": "CLOSE",
-        "price_at_eval": 59.666,
-        "todays_high": 60.50,
-        "todays_low": 58.50,
-        "invalidation_breached_today": false,
-        "note": "Day 5/multi-week. Price $59.666 above $56 invalidation today, but the ledger entry already carries sticky invalidation_breached=true from prior session. Narrative-tracker DEMOTED Hyperliquid Peak to Fading — the second FADE-PEAK-FADE whipsaw in a week, the pattern is the signal. Token-movers rotated HYPE off the trending list wholesale. AIXBT named hot-potato rotation warning on the HYPE/ZEC/NEAR cycle-leader trio. Perps-scan smart-money exit into day seven. Multiple structural signals = structural break. CLOSE."
-      },
-      {
         "open_id": "BCH-2026-05-23-001",
-        "date": "2026-05-26",
+        "date": "2026-05-27",
         "call": "RIDE",
-        "price_at_eval": 342.0,
-        "todays_high": 348.0,
-        "todays_low": 340.0,
+        "price_at_eval": 340.0,
+        "todays_high": 346.0,
+        "todays_low": 335.0,
         "invalidation_breached_today": false,
-        "note": "Day 4/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending — price estimated near $342 from BTC -0.83% on a risk-off tape with breadth 1/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE."
+        "note": "Day 5/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending for the fifth straight session — price estimated near $340 from a risk-off tape with BTC -1.55% and breadth 6/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE."
       },
       {
         "open_id": "EIGEN-2026-05-24-001",
-        "date": "2026-05-26",
+        "date": "2026-05-27",
         "call": "RIDE",
-        "price_at_eval": 0.231,
-        "todays_high": 0.234,
-        "todays_low": 0.226,
+        "price_at_eval": 0.227,
+        "todays_high": 0.232,
+        "todays_low": 0.220,
         "invalidation_breached_today": false,
-        "note": "Day 3/7. EIGEN absent from today's perps slice and token-movers refreshes — price estimated near $0.231. AI-compute sector sweeps 7 of 8 winner slots today (WLD, NEAR, RENDER, FET, TIA, GRASS, GRT) — the named sector tailwind from the original thesis is firing exactly as predicted. AI agents and Decentralized compute both Peak 5/5 RIDE in narrative-tracker. Invalidation $0.205 holds well clear. RIDE."
+        "note": "Day 4/7. EIGEN absent from today's perps slice and from token-movers — price estimated near $0.227 from the AI-compute sector cooling that hit NEAR (-11.63%) hardest while RENDER (-1.60%) and TAO (-2.75%) bled only modestly. The named sector-concentration risk fired partially, not wholesale. Narrative-tracker holds AI agents and Decentralized compute Peak RIDE with velocity upgrade — TAO past $305 to a new 2026 high cross-confirms even as today's tape consolidates. Invalidation $0.205 holds. RIDE."
       },
       {
         "open_id": "AKT-2026-05-25-001",
-        "date": "2026-05-26",
+        "date": "2026-05-27",
         "call": "RIDE",
-        "price_at_eval": 0.90,
+        "price_at_eval": 0.88,
         "todays_high": 0.92,
-        "todays_low": 0.88,
+        "todays_low": 0.86,
         "invalidation_breached_today": false,
-        "note": "Day 2/7. AKT absent from today's perps slice and not in today's top winners or trending refresh — price estimated near $0.90 from yesterday's $0.9042 print on a flat 1h tape for the AI-compute pack. Narrative-tracker holds Decentralized compute Peak 5/5 RIDE for second straight session; the new DePAI wrapper framing extends the catalyst stack. Invalidation $0.78 holds. RIDE."
+        "note": "Day 3/7. AKT absent from today's perps slice, winners, losers, and trending — price estimated near $0.88 from the AI-compute sector cooling. NEAR took the sector hit at -11.63% while AKT held — the named sector risk activated through NEAR specifically rather than across the full pack. Decentralized compute holds Peak 5/5 RIDE with the new DePAI wrapper framing extending the catalyst stack. Invalidation $0.78 holds. RIDE."
       },
       {
-        "open_id": "ASTER-2026-05-25-001",
-        "date": "2026-05-26",
+        "open_id": "RENDER-2026-05-26-001",
+        "date": "2026-05-27",
         "call": "CLOSE",
-        "price_at_eval": 0.71,
-        "todays_high": 0.72,
-        "todays_low": 0.70,
+        "price_at_eval": 1.905,
+        "todays_high": 1.97,
+        "todays_low": 1.88,
+        "invalidation_breached_today": true,
+        "note": "Day 1/7. Today's perps print at $1.905 closes well below the $2.00 invalidation — breach recorded. The AI-compute sector rotation that the original thesis named as risk #3 (sector concentration) caught the late entry on the wrong side of the unwind. Return -16.81%, -18.01pp vs BTC, -18.52pp vs ETH. LOSS."
+      },
+      {
+        "open_id": "TAO-2026-05-26-001",
+        "date": "2026-05-27",
+        "call": "RIDE",
+        "price_at_eval": 272.06,
+        "todays_high": 280.0,
+        "todays_low": 270.0,
         "invalidation_breached_today": false,
-        "note": "Day 2/7. ASTER dropped out of today's 25-asset perps slice (entered yesterday's universe as new entrant). Price estimated near $0.71 from yesterday evening's $0.7138 print. Hyperliquid sector lead DEMOTED to Fading in narrative-tracker today, the perp-DEX bid rotated off trending list wholesale. Named risk #3 from original thesis (ASTER follows HYPE structurally) has fired. Close to free capital before the second-derivative unwind plays out. CLOSE."
+        "note": "Day 2/7. TAO at $272.06 down -2.75% 24h, -2.24% from fire. The ACCUMULATION DIVERGENT sub-tag held one calendar day before regime cooled to NEUTRAL on OI 7d dropping below the +10% gate. Three pillars hold: Bittensor revenue backbone, narrative-tracker Peak RIDE with velocity upgrade, smart money L/S 2.12 still building (+0.10 7d). One pillar broken (regime), three intact. Invalidation $255 well clear. RIDE."
       }
     ],
     "close": [
       {
-        "open_id": "HYPE-2026-05-22-001",
-        "closed_price": 59.666,
-        "close_reason": "narrative-tracker DEMOTED Hyperliquid Peak to Fading on the second FADE-PEAK-FADE whipsaw in a week; token-movers rotated HYPE off trending wholesale; AIXBT named hot-potato rotation warning on the cycle-leader trio; perps-scan smart-money exit into day seven — structural sector thesis cracked, position carried sticky invalidation_breached from prior session",
-        "return_pct": -2.04,
-        "return_vs_btc_pct": -0.97,
-        "return_vs_eth_pct": -0.19,
-        "horizon_realized": "5d",
-        "auto_flipped": false
-      },
-      {
-        "open_id": "ASTER-2026-05-25-001",
-        "closed_price": 0.71,
-        "close_reason": "Hyperliquid sector lead DEMOTED to Fading in narrative-tracker today; perp-DEX bid rotated off trending list wholesale in one session; the named risk that ASTER is a second-derivative trade behind HYPE has fired — close before the unwind plays out",
-        "return_pct": -0.88,
-        "return_vs_btc_pct": 0.00,
-        "return_vs_eth_pct": -0.01,
-        "horizon_realized": "2d",
+        "open_id": "RENDER-2026-05-26-001",
+        "closed_price": 1.905,
+        "close_reason": "daily close $1.905 crossed the $2.00 invalidation on day 1; AI-compute sector rotation that the original thesis named as risk #3 (sector concentration) caught the late entry on the wrong side of the unwind",
+        "return_pct": -16.81,
+        "return_vs_btc_pct": -18.01,
+        "return_vs_eth_pct": -18.52,
+        "horizon_realized": "1d",
         "auto_flipped": false
       }
     ],
     "open_now": [
       {
-        "ticker": "RENDER",
+        "ticker": "SEI",
         "direction": "LONG",
-        "fired_price": 2.29,
-        "fired_btc_price": 76590.8,
-        "fired_eth_price": 2092.7,
-        "entry_zone": "market or first pullback to $2.15",
-        "invalidation": "close below $2.00",
-        "horizon": "7d",
+        "fired_price": 0.0697,
+        "fired_btc_price": 75594,
+        "fired_eth_price": 2074,
+        "entry_zone": "market or pullback to $0.066",
+        "invalidation": "close below $0.062",
+        "horizon": "multi-week",
         "thesis": [
-          "RENDER +14.2% 24h on $258M vol with vol/mcap 0.21 — AI-compute peer set leading while TAO digests at +1.1%.",
-          "Today's token-call rated RENDER HIGH 9/10. Salad Network adds ~60,000 enterprise GPUs, AI compute drives 35-40% of jobs.",
-          "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE second straight session, burns +278% year-over-year.",
-          "Token-movers shows AI-compute sweeping 7 of 8 winner slots — dominant cross-sector rotation on a 1/20 green tape."
+          "SEI prints +10.7% 24h on a top-cap tape running 2/20 green, vol/mcap at 0.29 on $469M cap — idiosyncratic strength on a risk-off session, not market beta.",
+          "Q2 catalyst stack lands on fixed dates: Giga upgrade targets 200K+ TPS and sub-400ms finality in H1 2026, EVM migration ships June 15, three weeks out.",
+          "Xiaomi preinstalled the Sei Wallet on devices sold outside China and the US, with stablecoin payments rolling across 20K+ retail stores in Q2 — distribution at consumer scale.",
+          "SEI absent from the CoinGecko trending list while printing the move. The pattern structurally reads as a bid building under price, not retail chasing the rotation."
         ],
-        "confluence_fired": ["narrative_phase_aligned", "market_regime_aligned", "enrichment_positive", "cross_domain_bridge"],
-        "confluence_missing": ["quant_regime_aligned", "pattern_tag_supports", "both_tag", "repeat_appearance"],
+        "confluence_fired": [
+          "enrichment_positive",
+          "market_regime_aligned",
+          "cross_domain_bridge"
+        ],
+        "confluence_missing": [
+          "quant_regime_aligned",
+          "pattern_tag_supports",
+          "both_tag",
+          "repeat_appearance",
+          "narrative_phase_aligned"
+        ],
         "named_risks": [
-          "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang ready to land.",
-          "Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price — institutional flows may rotate back.",
-          "EIGEN and AKT already hold AI-compute long — RENDER concentrates rather than diversifies sector exposure."
+          "Giga is a promised upgrade, not shipped. A slip announcement before H1 close unwinds the catalyst bid fast.",
+          "L1 sector sits quiet today with SUI, APT, MOVE all flat-to-red on the 7d. No sector tailwind to ride if SEI catalysts disappoint.",
+          "Price sits 94% below the March 2024 ATH at $1.14. Overhead supply is heavy, and rallies above $0.10 hit sellers from prior holders."
         ],
-        "watchlist_id_promoted": null
-      },
-      {
-        "ticker": "TAO",
-        "direction": "LONG",
-        "fired_price": 278.29,
-        "fired_btc_price": 76590.8,
-        "fired_eth_price": 2092.7,
-        "entry_zone": "market or first pullback to $265",
-        "invalidation": "close below $255",
-        "horizon": "7d",
-        "thesis": [
-          "TAO printed first-day ACCUMULATION DIVERGENT on OI +15.71% 7d, funding +0.0054%/8h holds under the extreme gate.",
-          "Bittensor Q1 2026 revenue $43M anchors fundamentals — real AI service revenue distinguishes TAO from the DePIN trade.",
-          "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE, new DePAI wrapper label extends the catalyst stack.",
-          "Top-trader long/short 1.98 with -0.10 over 7 days — smart money built through consolidation without piling in late."
-        ],
-        "confluence_fired": ["quant_regime_aligned", "narrative_phase_aligned", "market_regime_aligned", "enrichment_positive", "regime_transition"],
-        "confluence_missing": ["pattern_tag_supports", "both_tag", "repeat_appearance"],
-        "named_risks": [
-          "DIVERGENT sub-tag means taker buy 46.68% under 50% — passive build could be arbitrage, not directional positioning.",
-          "AI-compute sector concentration risk — EIGEN, AKT, RENDER all hold the same thesis, sector unwind hits all four.",
-          "Decentralized compute Peak not Rising — late-cycle entry, narrative-tracker downgrade to Fading reverses the bid."
+        "engine_watch_conditions": [
+          {"type": "price_close_below", "threshold": 0.062, "trigger_label": "invalidation breached — recent breakout level lost", "severity": "critical"},
+          {"type": "funding_above", "threshold": 0.005, "trigger_label": "funding heating — longs paying premium for continuation", "severity": "info"},
+          {"type": "oi_change_above_pct", "threshold": 25, "window_days": 7, "trigger_label": "open interest building meaningfully — fresh leverage entering", "severity": "info"},
+          {"type": "taker_buy_below_pct", "threshold": 48, "trigger_label": "buyers stepping off — momentum cooling", "severity": "warning"}
         ],
         "watchlist_id_promoted": null
       }
     ],
-    "add_watchlist": [
-      {
-        "ticker": "WLD",
-        "direction": "LONG",
-        "trigger": "pct_24h second leg past +20% with volume ratio crossing 2.0x, OR funding flipping positive past +0.03%/8h on continued pct_7d above +40%",
-        "invalidation": "close below $0.30 before trigger fires",
-        "horizon": "3d",
-        "thesis": [
-          "WLD +18.4% 24h on $342M vol at #63 cap with [TRENDING+UP][BREAKOUT] — only structurally clean breakout on today's board.",
-          "Perps-scan WATCH cleared three of four CATALYST-BREAKOUT gates — OI +11.80% 24h, taker buy 50.21%, pct gate binding.",
-          "AI/Worldcoin narrative folds into the AI-compute sector sweep — WLD leads the trending rotation onto AI-identity names."
-        ],
-        "confluence_fired": ["pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned", "both_tag"],
-        "named_risks": [
-          "Pct_24h second leg past +20% on thinner participation may not arrive — the catalyst window closes fast on attention pumps.",
-          "World ID identity narrative is single-driver — without AI sector continuation, WLD reverts to standalone Worldcoin beta."
-        ]
-      },
-      {
-        "ticker": "ONDO",
-        "direction": "LONG",
-        "trigger": "close above $0.45 with 24h volume above 1.5x the 7d average AND open interest net positive on the day, reversing today's [TRENDING+DOWN] print",
-        "invalidation": "close below $0.39 before trigger fires",
-        "horizon": "7d",
-        "thesis": [
-          "Narrative-tracker PROMOTED RWA from RIDE-with-trail to full RIDE today on Ondo/TermMax tokenized-stock collateral launch on BNB.",
-          "Ondo also brings tokenized US stocks to Hyperliquid HyperEVM today — cross-narrative anchor into perp DEX infrastructure.",
-          "ONDO -2.25% 24h, rotated to [TRENDING+DOWN] despite catalyst — retail rotation off leaves the bid loaded for next confirmation."
-        ],
-        "confluence_fired": ["narrative_phase_aligned", "market_regime_aligned", "cross_domain_bridge", "enrichment_positive"],
-        "named_risks": [
-          "Prior ONDO LONG closed -17.30% on 2026-05-23 invalidation breach — same name, different setup, but cautious sizing.",
-          "TermMax launch may not extend to a second integration this week — the catalyst stack becomes single-anchored."
-        ]
-      }
-    ],
-    "keep_watchlist": [
-      "ZEC-watchlist-2026-05-24-001",
-      "RAIL-watchlist-2026-05-24-001",
-      "PLAY-watchlist-2026-05-25-001"
-    ]
+    "add_watchlist": [],
+    "keep_watchlist": ["PLAY-watchlist-2026-05-25-001"]
   }
 }

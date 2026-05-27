@@ -1,11 +1,9 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-26T08:37:59Z",
+  "last_analyzed": "2026-05-27T06:28:46Z",
   "quality_score": 4,
-  "assessment": "Duplicate invocation handled gracefully; substantive re-verification with specific metrics (prices, ratios, funding) confirms stable state; actionable ZEC watchlist candidate identified",
-  "flags": [
-    "duplicate_invocation"
-  ],
+  "assessment": "Substantive brief with specific positions, entry/invalidation levels, dated catalysts, and clear portfolio strategy; well-structured summary with proper file outputs and memory logging",
+  "flags": [],
   "avg_score": 4.04,
   "history": [
     {
@@ -110,6 +108,10 @@
     },
     {
       "date": "2026-05-26",
+      "score": 4
+    },
+    {
+      "date": "2026-05-27",
       "score": 4
     }
   ]
