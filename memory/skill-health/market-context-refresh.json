@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-27T06:14:29Z",
+  "last_analyzed": "2026-05-27T07:56:36Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific metrics, regime assessment, four documented changes, and five narrative transitions with directional calls. Well-structured and actionable, limited only by truncation and lack of explicit source citations.",
+  "assessment": "Substantive market analysis with specific data points, trend analysis, and token picks; well-structured with clear deltas and file documentation.",
   "flags": [],
   "avg_score": 4.12,
   "history": [
@@ -100,6 +100,10 @@
     },
     {
       "date": "2026-05-26",
+      "score": 4
+    },
+    {
+      "date": "2026-05-27",
       "score": 4
     },
     {
