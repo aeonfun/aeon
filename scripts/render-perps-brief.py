@@ -183,6 +183,16 @@ def paragraph_lines(label: str, text: str) -> List[str]:
 
 
 def render_market_context(date_str: str, ms: dict, qualifier: Optional[str]) -> List[str]:
+    """Render the MARKET SENTIMENT section.
+
+    Accepts two shapes:
+      - v2 (post-Stage-1.5): ms = {headline_metrics: [...], sections: [...], bias_line}
+      - v1 (legacy):         ms = {paragraphs: [...], bias_line}
+
+    For v2 → render headline metrics as a compact label/value table, then
+    each section as a sub-heading + wrapped body. For v1 → wrap each
+    paragraph as a free-form block.
+    """
     out: List[str] = []
     title = f"Perps Brief · {fmt_date(date_str)}"
     if qualifier:
@@ -191,24 +201,78 @@ def render_market_context(date_str: str, ms: dict, qualifier: Optional[str]) -> 
     out.append("")
     out.append(divider("MARKET SENTIMENT"))
     out.append("")
-    paragraphs = ms.get("paragraphs", [])
-    for i, para in enumerate(paragraphs):
-        wrapped = textwrap.wrap(
-            para,
-            width=MAX_LINE + 8,
-            initial_indent=LABEL_INDENT,
-            subsequent_indent=LABEL_INDENT,
-            break_long_words=False,
-            break_on_hyphens=False,
-        )
-        out.extend(wrapped)
-        if i < len(paragraphs) - 1:
+
+    headline_metrics = ms.get("headline_metrics") or []
+    sections = ms.get("sections") or []
+    paragraphs = ms.get("paragraphs") or []
+
+    if headline_metrics or sections:
+        # --- v2 shape ---
+        if headline_metrics:
+            # Render as three columns: LABEL  VALUE_TOP  VALUE_BOTTOM
+            label_w = max(
+                (len(str(m.get("label", ""))) for m in headline_metrics),
+                default=10,
+            )
+            top_w = max(
+                (len(str(m.get("value_top", ""))) for m in headline_metrics),
+                default=10,
+            )
+            label_w = max(label_w, 10)
+            top_w = max(top_w, 10)
+            for m in headline_metrics:
+                label = str(m.get("label", ""))
+                vtop = str(m.get("value_top", ""))
+                vbot = str(m.get("value_bottom", ""))
+                out.append(
+                    f"{LABEL_INDENT}{label:<{label_w}}  {vtop:<{top_w}}  {vbot}"
+                )
             out.append("")
+
+        for i, sec in enumerate(sections):
+            label = str(sec.get("label", "")).strip()
+            body = str(sec.get("body", "")).strip()
+            if label:
+                out.append(f"{LABEL_INDENT}{label}")
+            if body:
+                wrapped = textwrap.wrap(
+                    body,
+                    width=MAX_LINE + 8,
+                    initial_indent=LABEL_INDENT + "  ",
+                    subsequent_indent=LABEL_INDENT + "  ",
+                    break_long_words=False,
+                    break_on_hyphens=False,
+                )
+                out.extend(wrapped)
+            if i < len(sections) - 1:
+                out.append("")
+    else:
+        # --- v1 fallback: free-form paragraphs ---
+        for i, para in enumerate(paragraphs):
+            wrapped = textwrap.wrap(
+                para,
+                width=MAX_LINE + 8,
+                initial_indent=LABEL_INDENT,
+                subsequent_indent=LABEL_INDENT,
+                break_long_words=False,
+                break_on_hyphens=False,
+            )
+            out.extend(wrapped)
+            if i < len(paragraphs) - 1:
+                out.append("")
+
     out.append("")
     bias_line = ms.get("bias_line", "")
     if bias_line:
+        # Strip any "Bias ·" prefix the upstream provided so the rendered
+        # form is consistent: "Bias · <body>". Mirrors the embed composer.
+        body = bias_line.strip()
+        low = body.lower()
+        if low.startswith("bias"):
+            body = body[4:].lstrip(" ·—-:").strip()
+        formatted = f"Bias · {body}" if body else "Bias"
         wrapped = textwrap.wrap(
-            bias_line,
+            formatted,
             width=MAX_LINE + 8,
             initial_indent=LABEL_INDENT,
             subsequent_indent=LABEL_INDENT + "  ",
@@ -430,8 +494,17 @@ def validate_schema(data: dict) -> Optional[str]:
         if k not in data:
             return f"missing required key '{k}'"
     ms = data["market_sentiment"]
-    if "paragraphs" not in ms or "bias_line" not in ms:
-        return "market_sentiment must contain 'paragraphs' and 'bias_line'"
+    # Accept v2 (sections / headline_metrics) OR v1 (paragraphs). bias_line
+    # is required on both shapes.
+    has_v2 = bool(ms.get("sections")) or bool(ms.get("headline_metrics"))
+    has_v1 = bool(ms.get("paragraphs"))
+    if not (has_v2 or has_v1):
+        return (
+            "market_sentiment must contain 'sections' / 'headline_metrics' (v2) "
+            "or 'paragraphs' (v1)"
+        )
+    if "bias_line" not in ms:
+        return "market_sentiment must contain 'bias_line'"
 
     current = data.get("current_positions", [])
     if not isinstance(current, list):
