@@ -1,4 +1,4 @@
-Track Record · 2026-05-26 · since V1 lock (2026-05-25)
+Track Record · 2026-05-27 · since V1 lock (2026-05-25)
 ──────────────────────────────────────────────────────
 
 **Insufficient closed trades to compute meaningful statistics.**
@@ -12,13 +12,13 @@ Patience. The data clock is running.
 (Note: 6 closed entries exist pre-V1-lock; filtered out of this window.)
 OPEN POSITIONS · MARK TO MARKET (5)
 
-  BCH SHORT (fired 2026-05-23, day 3/7d)
+  BCH SHORT (fired 2026-05-23, day 4/7d)
     now $342 (stale price) · PnL +0.8% · MAE -5.0% · MFE +1.4%
-  EIGEN LONG (fired 2026-05-24, day 2/7d)
+  EIGEN LONG (fired 2026-05-24, day 3/7d)
     now $0.231 (stale price) · PnL +0.5% · MAE -2.1% · MFE +1.8%
-  AKT LONG (fired 2026-05-25, day 1/7d)
+  AKT LONG (fired 2026-05-25, day 2/7d)
     now $0.9 (stale price) · PnL +3.4% · MAE -2.3% · MFE +5.7%
-  RENDER LONG (fired 2026-05-26, day 0/7d)
+  RENDER LONG (fired 2026-05-26, day 1/7d)
     now — · PnL — · MAE — · MFE —
-  TAO LONG (fired 2026-05-26, day 0/7d)
+  TAO LONG (fired 2026-05-26, day 1/7d)
     now — · PnL — · MAE — · MFE —
