@@ -1,31 +1,6 @@
 import { NextResponse } from 'next/server'
 import { execFileSync, execSync } from 'child_process'
-
-function ghAvailable(): boolean {
-  try {
-    execSync('gh auth status', { stdio: 'pipe' })
-    return true
-  } catch {
-    return false
-  }
-}
-
-function ghRepo(): string | null {
-  try {
-    const repo = execSync('gh repo set-default --view', { stdio: 'pipe' }).toString().trim()
-    if (repo && !repo.startsWith('no default')) return repo
-  } catch {}
-  try {
-    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe' }).toString().trim()
-    if (repo) return repo
-  } catch {}
-  return null
-}
-
-function ghArgsRepo(): string[] {
-  const repo = ghRepo()
-  return repo ? ['-R', repo] : []
-}
+import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 
 export async function GET() {
   // Check if ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN is set

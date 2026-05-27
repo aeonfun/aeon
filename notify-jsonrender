@@ -56,8 +56,7 @@ CRITICAL RULES:
 9. Use Badge for tags, labels, categories, or short status indicators.
 10. Use Alert for warnings, errors, or notable callouts.
 11. Use Separator between major sections.
-12. Wrap the whole output in one Card. Use the first heading or skill name as the Card title.
-11. Wrap the whole output in one Card. Use the first heading or skill name as the Card title.'
+12. Wrap the whole output in one Card. Use the first heading or skill name as the Card title.'
 
 # Use claude CLI — works with both API key and OAuth token
 SPEC=$(echo "$CONTENT" | claude -p "Convert this skill output into a json-render spec. Skill: ${SKILL}" \

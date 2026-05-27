@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import type { Skill, Run, Secret, SkillOutput } from '../lib/types'
+import type { Skill, Run, Secret, SkillOutput, GatewayProvider, UploadFile, AnalyticsData } from '../lib/types'
 import { MODELS } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [runs, setRuns] = useState<Run[]>([])
   const [secrets, setSecrets] = useState<Secret[]>([])
   const [model, setModel] = useState('claude-sonnet-4-6')
-  const [gateway, setGateway] = useState<'direct' | 'bankr'>('direct')
+  const [gateway, setGateway] = useState<GatewayProvider>('direct')
   const [repo, setRepo] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -39,7 +39,7 @@ export default function Dashboard() {
 
   const [outputs, setOutputs] = useState<SkillOutput[]>([])
   const [feedLoading, setFeedLoading] = useState(false)
-  const [analyticsData, setAnalyticsData] = useState<{ skills: Array<{ name: string; total: number; success: number; failure: number; cancelled: number; inProgress: number; successRate: number; lastRun: string | null; lastConclusion: string | null; avgDurationMin: number | null; streak: number }>; insights: Array<{ type: 'warning' | 'info' | 'success'; message: string }>; summary: { totalRuns: number; totalSuccess: number; totalFailure: number; overallSuccessRate: number; uniqueSkills: number; periodDays: number } } | null>(null)
+  const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
 
   const [showImport, setShowImport] = useState(false)
   const [authStatus, setAuthStatus] = useState<{ authenticated: boolean } | null>(null)
@@ -71,7 +71,7 @@ export default function Dashboard() {
   const setupAuth = async (key?: string) => { setAuthLoading(true); try { const r = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(key ? { key } : {}) }); if (r.ok) { flash('Authenticated'); setAuthStatus({ authenticated: true }); setShowAuthModal(false); fetchData() } else { const d = await r.json().catch(() => ({} as { error?: string })); const msg = typeof d?.error === 'string' ? d.error : (key ? 'Auth failed' : 'Auto-setup failed'); if (!key) setShowAuthModal(true); flash(msg) } } finally { setAuthLoading(false) } }
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, value }) }); if (r.ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n }) }); if (r.ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
-  const importSkill = async (files: Array<{ path: string; content: string }>, name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
+  const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
 
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null

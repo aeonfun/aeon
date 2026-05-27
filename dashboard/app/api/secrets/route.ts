@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { execFileSync, execSync } from 'child_process'
+import { execFileSync } from 'child_process'
+import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 
 const BUILTIN_SECRETS = [
   { name: 'CLAUDE_CODE_OAUTH_TOKEN', group: 'Core', description: 'Claude Code OAuth token (set via Authenticate button)', either: 'auth' },
@@ -28,32 +29,6 @@ const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
 
 // Valid env var name pattern
 const VALID_SECRET_NAME = /^[A-Z][A-Z0-9_]{1,}$/
-
-function ghAvailable(): boolean {
-  try {
-    execSync('gh auth status', { stdio: 'pipe' })
-    return true
-  } catch {
-    return false
-  }
-}
-
-function ghRepo(): string | null {
-  try {
-    const repo = execSync('gh repo set-default --view', { stdio: 'pipe' }).toString().trim()
-    if (repo && !repo.startsWith('no default')) return repo
-  } catch {}
-  try {
-    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe' }).toString().trim()
-    if (repo) return repo
-  } catch {}
-  return null
-}
-
-function ghArgsRepo(): string[] {
-  const repo = ghRepo()
-  return repo ? ['-R', repo] : []
-}
 
 function listSecrets(): string[] {
   try {

@@ -1,24 +1,12 @@
 import { NextResponse } from 'next/server'
-import { execFileSync, execSync } from 'child_process'
-import { resolve } from 'path'
+import { execFileSync } from 'child_process'
+import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
 
-const REPO_ROOT = resolve(process.cwd(), '..')
-
-function ghRepo(): string | null {
-  try {
-    const repo = execSync('gh repo set-default --view', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
-    if (repo && !repo.startsWith('no default')) return repo
-  } catch {}
-  try {
-    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
-    if (repo) return repo
-  } catch {}
-  return null
-}
-
-function ghArgsRepo(): string[] {
-  const repo = ghRepo()
-  return repo ? ['-R', repo] : []
+interface GhRunView {
+  status: string
+  conclusion: string | null
+  displayTitle: string
+  jobs: Array<{ name: string; status: string; conclusion: string | null }>
 }
 
 export async function GET(
@@ -41,7 +29,7 @@ export async function GET(
       ['run', 'view', id, ...repoArgs, '--json', 'status,conclusion,displayTitle,jobs'],
       { stdio: 'pipe', cwd: REPO_ROOT, timeout: 15000 },
     ).toString()
-    const info = JSON.parse(infoRaw)
+    const info: GhRunView = JSON.parse(infoRaw)
 
     // Get logs — use --log-failed for failed runs, --log for completed
     let logs = ''

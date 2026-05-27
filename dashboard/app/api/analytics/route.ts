@@ -1,26 +1,9 @@
 import { NextResponse } from 'next/server'
-import { execFileSync, execSync } from 'child_process'
+import { execFileSync } from 'child_process'
 import { resolve } from 'path'
-import { readdirSync, readFileSync } from 'fs'
-
-const REPO_ROOT = resolve(process.cwd(), '..')
-
-function ghRepo(): string | null {
-  try {
-    const repo = execSync('gh repo set-default --view', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
-    if (repo && !repo.startsWith('no default')) return repo
-  } catch {}
-  try {
-    const repo = execSync('gh repo view --json nameWithOwner -q .nameWithOwner', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
-    if (repo) return repo
-  } catch {}
-  return null
-}
-
-function ghArgsRepo(): string[] {
-  const repo = ghRepo()
-  return repo ? ['-R', repo] : []
-}
+import { readFileSync } from 'fs'
+import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
+import type { SkillMetrics, Insight } from '@/lib/types'
 
 interface RunRecord {
   name: string
@@ -28,25 +11,6 @@ interface RunRecord {
   conclusion: string | null
   createdAt: string
   updatedAt: string
-}
-
-interface SkillMetrics {
-  name: string
-  total: number
-  success: number
-  failure: number
-  cancelled: number
-  inProgress: number
-  successRate: number
-  lastRun: string | null
-  lastConclusion: string | null
-  avgDurationMin: number | null
-  streak: number // positive = consecutive successes, negative = consecutive failures
-}
-
-interface Insight {
-  type: 'warning' | 'info' | 'success'
-  message: string
 }
 
 export async function GET() {

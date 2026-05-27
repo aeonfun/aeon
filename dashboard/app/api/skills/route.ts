@@ -10,6 +10,7 @@ import {
   removeSkillFromConfig,
 } from '@/lib/config'
 import { deleteDirectory } from '@/lib/github'
+import { parseFrontmatter } from '@/lib/frontmatter'
 
 function getRepoSlug(): string {
   if (process.env.GITHUB_REPO) return process.env.GITHUB_REPO
@@ -20,30 +21,6 @@ function getRepoSlug(): string {
   } catch {
     return ''
   }
-}
-
-function extractFrontmatter(content: string): { description: string; tags: string[] } {
-  const fm = content.match(/^---\s*\n([\s\S]*?)\n---/)
-  let description = ''
-  let tags: string[] = []
-  if (fm) {
-    const desc = fm[1].match(/description:\s*(.+)/)
-    if (desc) description = desc[1].trim().replace(/^['"]|['"]$/g, '')
-    const tagsMatch = fm[1].match(/tags:\s*\[([^\]]*)\]/)
-    if (tagsMatch) {
-      tags = tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean)
-    }
-  }
-  if (!description) {
-    for (const line of content.split('\n')) {
-      const t = line.trim()
-      if (t && !t.startsWith('#') && !t.startsWith('---')) {
-        description = t.length > 120 ? t.slice(0, 117) + '...' : t
-        break
-      }
-    }
-  }
-  return { description, tags }
 }
 
 export async function GET() {
@@ -59,7 +36,8 @@ export async function GET() {
       dirNames.map(async (name) => {
         try {
           const { content } = await getFileContent(`skills/${name}/SKILL.md`)
-          return { name, ...extractFrontmatter(content) }
+          const { description, tags } = parseFrontmatter(content)
+          return { name, description, tags }
         } catch {
           return { name, description: '', tags: [] as string[] }
         }

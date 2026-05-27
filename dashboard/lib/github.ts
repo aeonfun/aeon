@@ -1,10 +1,14 @@
-import { readFile, writeFile, readdir, mkdir, stat, rm } from 'fs/promises'
+import { readFile, writeFile, readdir, mkdir, rm } from 'fs/promises'
 import { join, resolve } from 'path'
 
 const GITHUB_API = 'https://api.github.com'
 
 // Resolve the repo root (one level up from dashboard/)
 const REPO_ROOT = resolve(process.cwd(), '..')
+
+// Minimal shapes for the GitHub "Get repository content" REST responses.
+interface GitHubContentFile { content: string; sha: string; encoding: string }
+interface GitHubContentEntry { name: string; type: 'file' | 'dir' | 'symlink' | 'submodule'; path: string }
 
 function isLocal() {
   return !process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO
@@ -37,10 +41,10 @@ export async function getFileContent(path: string): Promise<{ content: string; s
     cache: 'no-store',
   })
   if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to read ${path}`)
-  const data = await res.json()
+  const data = (await res.json()) as GitHubContentFile
   return {
     content: Buffer.from(data.content, 'base64').toString('utf-8'),
-    sha: data.sha as string,
+    sha: data.sha,
   }
 }
 
@@ -111,37 +115,8 @@ export async function getDirectory(path: string): Promise<Array<{ name: string; 
     cache: 'no-store',
   })
   if (!res.ok) return []
-  const data = await res.json()
+  const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
   return Array.isArray(data) ? data : []
-}
-
-export async function triggerWorkflow(skill: string) {
-  if (isLocal()) {
-    throw new Error('Cannot trigger GitHub Actions locally — set GITHUB_TOKEN and GITHUB_REPO to enable remote runs')
-  }
-  const { token, repo } = getConfig()
-  const res = await fetch(`${GITHUB_API}/repos/${repo}/actions/workflows/aeon.yml/dispatches`, {
-    method: 'POST',
-    headers: authHeaders(token),
-    body: JSON.stringify({ ref: 'main', inputs: { skill } }),
-    cache: 'no-store',
-  })
-  if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to trigger workflow`)
-}
-
-export async function getWorkflowRuns(perPage = 20) {
-  if (isLocal()) {
-    // Return empty — no GitHub Actions access locally
-    return []
-  }
-  const { token, repo } = getConfig()
-  const res = await fetch(
-    `${GITHUB_API}/repos/${repo}/actions/runs?per_page=${perPage}`,
-    { headers: authHeaders(token), cache: 'no-store' },
-  )
-  if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to fetch runs`)
-  const data = await res.json()
-  return data.workflow_runs || []
 }
 
 // --- Remote repo helpers (for importing skills) ---
@@ -157,7 +132,7 @@ export async function getRemoteDirectory(remoteRepo: string, path: string): Prom
     : `${GITHUB_API}/repos/${remoteRepo}/contents`
   const res = await fetch(url, { headers, cache: 'no-store' })
   if (!res.ok) return []
-  const data = await res.json()
+  const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
   return Array.isArray(data) ? data : []
 }
 
@@ -171,7 +146,7 @@ export async function getRemoteFileContent(remoteRepo: string, path: string): Pr
     cache: 'no-store',
   })
   if (!res.ok) return null
-  const data = await res.json()
+  const data = (await res.json()) as GitHubContentFile
   return Buffer.from(data.content, 'base64').toString('utf-8')
 }
 
@@ -196,22 +171,5 @@ export async function deleteDirectory(path: string, message: string): Promise<vo
       })
       if (!res.ok) throw new Error(`GitHub API ${res.status}: failed to delete ${path}/${file.name}`)
     }
-  }
-}
-
-export async function fileExists(path: string): Promise<boolean> {
-  if (isLocal()) {
-    try {
-      await stat(join(REPO_ROOT, path))
-      return true
-    } catch {
-      return false
-    }
-  }
-  try {
-    await getFileContent(path)
-    return true
-  } catch {
-    return false
   }
 }

@@ -1,4 +1,4 @@
-import type { Skill } from '../lib/types'
+import type { Skill, GatewayProvider } from '../lib/types'
 import { MODELS, BANKR_EXTRA_MODELS, DEPARTMENTS } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
@@ -7,7 +7,7 @@ interface TopBarProps {
   view: 'hq' | 'secrets'
   repo: string
   model: string
-  gateway: 'direct' | 'bankr'
+  gateway: GatewayProvider
   authStatus: { authenticated: boolean } | null
   authLoading: boolean
   pulling: boolean

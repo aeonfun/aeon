@@ -1,15 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import type { Run, SkillOutput } from '../lib/types'
+import type { Run, SkillOutput, AnalyticsData } from '../lib/types'
 import { timeAgo } from '../lib/utils'
 import { SpecNode } from './SpecNode'
-
-interface AnalyticsData {
-  skills: Array<{ name: string; total: number; success: number; failure: number; cancelled: number; inProgress: number; successRate: number; lastRun: string | null; lastConclusion: string | null; avgDurationMin: number | null; streak: number }>
-  insights: Array<{ type: 'warning' | 'info' | 'success'; message: string }>
-  summary: { totalRuns: number; totalSuccess: number; totalFailure: number; overallSuccessRate: number; uniqueSkills: number; periodDays: number }
-}
 
 interface RightPanelProps {
   runs: Run[]

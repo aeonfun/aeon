@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile } from '@/lib/github'
 import { addSkillToConfig } from '@/lib/config'
+import { parseFrontmatter } from '@/lib/frontmatter'
+import type { UploadFile } from '@/lib/types'
 
 function detectSecretsFromContent(content: string): string[] {
   const matches = new Set<string>()
@@ -16,16 +18,9 @@ function detectSecretsFromContent(content: string): string[] {
 }
 
 function extractSkillName(content: string): string {
-  // Try frontmatter name field
-  const fm = content.match(/^---\s*\n([\s\S]*?)\n---/)
-  if (fm) {
-    const nameMatch = fm[1].match(/name:\s*(.+)/)
-    if (nameMatch) {
-      // Slugify: "Daily Article" → "daily-article"
-      return nameMatch[1].trim().replace(/^['"]|['"]$/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-    }
-  }
-  return ''
+  // Slugify the frontmatter name: "Daily Article" → "daily-article"
+  const { name } = parseFrontmatter(content)
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }
 
 function isSkillFile(path: string): boolean {
@@ -37,7 +32,7 @@ function stripSkillExt(name: string): string {
   return name.replace(/\.skill$/i, '')
 }
 
-function deriveSkillName(files: Array<{ path: string; content: string }>): { name: string; prefix: string } {
+function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } {
   // First try SKILL.md
   const skillFile = files.find(f =>
     f.path === 'SKILL.md' ||
@@ -90,7 +85,7 @@ function deriveSkillName(files: Array<{ path: string; content: string }>): { nam
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const files = body.files as Array<{ path: string; content: string }>
+    const files = body.files as UploadFile[]
     const overrideName = body.name as string | undefined
 
     if (!files || files.length === 0) {

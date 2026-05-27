@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Skill, Run } from '../lib/types'
+import type { Skill, Run, GatewayProvider } from '../lib/types'
 import { MODELS, BANKR_EXTRA_MODELS, DEPARTMENTS } from '../lib/constants'
 import { displayName, initials, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
@@ -11,7 +11,7 @@ interface SkillDetailProps {
   skill: Skill
   runs: Run[]
   model: string
-  gateway: 'direct' | 'bankr'
+  gateway: GatewayProvider
   busy: Record<string, boolean>
   onToggle: (name: string, enabled: boolean) => void
   onRun: (name: string, v?: string, m?: string) => void

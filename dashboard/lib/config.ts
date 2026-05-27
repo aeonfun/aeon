@@ -1,4 +1,5 @@
 import { parseDocument, isMap, isSeq, isPair, isScalar, type Document } from 'yaml'
+import type { GatewayProvider } from './types'
 
 export interface SkillConfig {
   enabled: boolean
@@ -8,7 +9,7 @@ export interface SkillConfig {
 }
 
 export interface GatewayConfig {
-  provider: 'direct' | 'bankr'
+  provider: GatewayProvider
 }
 
 export interface AeonConfig {
@@ -160,7 +161,7 @@ export function addSkillToConfig(
   })
   // Set flow style to match inline format
   if (isMap(entry)) {
-    (entry as any).flow = true
+    entry.flow = true
   }
 
   // Find the fallback skill (heartbeat, last entry) and insert before it
@@ -171,7 +172,7 @@ export function addSkillToConfig(
 
   if (fallbackIdx >= 0) {
     const pair = doc.createPair(name, entry)
-    items.splice(fallbackIdx, 0, pair as any)
+    items.splice(fallbackIdx, 0, pair)
   } else {
     skillsNode.set(name, entry)
   }
@@ -181,7 +182,7 @@ export function addSkillToConfig(
 
 // --- Helpers ---
 
-function getMapValue(map: any, key: string): unknown {
+function getMapValue(map: unknown, key: string): unknown {
   if (!isMap(map)) return undefined
   for (const item of map.items) {
     if (isPair(item) && isScalar(item.key) && item.key.value === key) {

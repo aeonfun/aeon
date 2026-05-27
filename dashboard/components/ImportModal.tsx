@@ -1,23 +1,24 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import type { UploadFile } from '../lib/types'
 import { displayName } from '../lib/utils'
 import { inputCls } from '../lib/utils'
 
 interface ImportModalProps {
   onClose: () => void
-  onImport: (files: Array<{ path: string; content: string }>, name?: string) => Promise<void>
+  onImport: (files: UploadFile[], name?: string) => Promise<void>
 }
 
 export function ImportModal({ onClose, onImport }: ImportModalProps) {
-  const [uploadFiles, setUploadFiles] = useState<Array<{ path: string; content: string }>>([])
+  const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([])
   const [uploadDragOver, setUploadDragOver] = useState(false)
   const [uploadName, setUploadName] = useState('')
   const [importLoading, setImportLoading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const readFilesFromInput = async (fl: FileList) => {
-    const files: Array<{ path: string; content: string }> = []
+    const files: UploadFile[] = []
     for (let i = 0; i < fl.length; i++) {
       const f = fl[i]
       files.push({ path: (f as { webkitRelativePath?: string }).webkitRelativePath || f.name, content: await f.text() })

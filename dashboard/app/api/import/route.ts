@@ -8,21 +8,7 @@ import {
   getDirectory,
 } from '@/lib/github'
 import { addSkillToConfig } from '@/lib/config'
-
-function extractDescription(content: string): string {
-  const fm = content.match(/^---\s*\n([\s\S]*?)\n---/)
-  if (fm) {
-    const desc = fm[1].match(/description:\s*(.+)/)
-    if (desc) return desc[1].trim().replace(/^['"]|['"]$/g, '')
-  }
-  for (const line of content.split('\n')) {
-    const t = line.trim()
-    if (t && !t.startsWith('#') && !t.startsWith('---')) {
-      return t.length > 120 ? t.slice(0, 117) + '...' : t
-    }
-  }
-  return ''
-}
+import { parseFrontmatter } from '@/lib/frontmatter'
 
 export async function POST(request: Request) {
   try {
@@ -51,7 +37,7 @@ export async function POST(request: Request) {
           if (!content) return null
           return {
             name: dir.name,
-            description: extractDescription(content),
+            description: parseFrontmatter(content).description,
             installed: localNames.has(dir.name),
           }
         }),
