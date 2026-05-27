@@ -466,6 +466,7 @@ To browse known packs without installing, run `./install-skill-pack --list` — 
 | [eth-gas-watch](https://github.com/sparkleware/eth-gas-watch) | 1 | Ethereum gas-price status check on a schedule — flags cheap windows for batching on-chain ops |
 | [morning-briefing](https://github.com/sparkleware/morning-briefing) | 1 | Daily morning briefing — date, day-of-week, current weather, and a sparkly closer |
 | [aeon-skill-pack-noelclaw](https://github.com/noelclaw/aeon-skill-pack-noelclaw) | 2 | Persistent versioned memory and multi-agent swarm coordination — save typed artifacts to Noel Vault and manage shared agent session state across runs |
+| [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 10 | Full SIGNA suite — wallet-signed cross-platform agent messaging, multi-agent broadcast and delegate, plus Bankr resolver / launches, gitlawb activity, MiroShark sim stats and wallet-signed sim fire |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
