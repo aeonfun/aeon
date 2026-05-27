@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-23T18:21:12Z",
     "repo": "aaronjmars/aeon",
-    "total": 157,
+    "total": 158,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -394,6 +394,18 @@
             "sha": "0000000",
             "updated": "2026-05-25",
             "install": "./add-skill aaronjmars/aeon ecosystem-pulse"
+        },
+        {
+            "slug": "sparkleware-catalog",
+            "name": "sparkleware-catalog",
+            "description": "Weekly enriched export of skill-packs.json — joins the canonical community registry to live GitHub signals (stars, last-push, live manifest skill count) and writes a machine-readable skill-packs-catalog.json that external tools (e.g. Sparkleware) can consume without screen-scraping",
+            "category": "dev",
+            "schedule": "0 9 * * 2",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-27",
+            "install": "./add-skill aaronjmars/aeon sparkleware-catalog"
         },
         {
             "slug": "engagement-act",
