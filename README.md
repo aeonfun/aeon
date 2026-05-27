@@ -465,6 +465,7 @@ To browse known packs without installing, run `./install-skill-pack --list` — 
 | [hn-top](https://github.com/sparkleware/hn-top) | 1 | Daily digest of HackerNews top stories — dev / startup / AI conversation in one screen |
 | [eth-gas-watch](https://github.com/sparkleware/eth-gas-watch) | 1 | Ethereum gas-price status check on a schedule — flags cheap windows for batching on-chain ops |
 | [morning-briefing](https://github.com/sparkleware/morning-briefing) | 1 | Daily morning briefing — date, day-of-week, current weather, and a sparkly closer |
+| [aeon-skill-pack-noelclaw](https://github.com/noelclaw/aeon-skill-pack-noelclaw) | 2 | Persistent versioned memory and multi-agent swarm coordination — save typed artifacts to Noel Vault and manage shared agent session state across runs |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
