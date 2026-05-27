@@ -1,24 +1,24 @@
-Yesterday's Runners · 27 May · SPECULATIVE (top 5 all BREAKOUT, NOAR day-3 cluster confirms)
+Yesterday's Runners · 27 May · SPECULATIVE (5 BREAKOUT, zero DEEP-LIQ in top 5)
 
 BREAKOUT
-• ชั้ง (sol) +3181% 24h
-  $6.2m vol, $100k liq, h1 +39%, h6 +123%, buys 56%
-  → only top-5 pick whose hourly tape still adds aggressively. The bid sits live on a 19.7h pool, the thin $100k pad amplifies reversal risk above
+• SLX (bsc) +1572% 24h
+  $44m vol, $62k liq, pool 30m old, buys 51%
+  → the entire print sits inside a 30-minute pool, $44m vol on $62k liq reads wash-heavy not organic demand
+
+• FOUR (sol) +3947% 24h
+  $41m vol, $267k liq, 3.6h pool, h1 +28%, h6 +3947%, buys 52%
+  → hourly still adds aggressively, the only top-5 fresh launch whose live tape has not quit
+
+• ISOR (sol) +1017% 24h
+  $47m vol, $264k liq, 11.1h pool, h1 +18%, h6 +77%, buys 52%
+  → hourly fired this afternoon from morning's flat read, the only morning pick with the bid still firing
 
 • USGS (sol) +2652% 24h
-  $44m vol, $260k liq, h1 0%, h6 +18%, buys 55%
-  → the 27x already printed inside the prior six hours. Hourly quit hours back, $44m vol on $260k liq reads wash-heavy
+  $44m vol, $261k liq, 15.6h pool, h1 0%, h6 +1%, buys 55%
+  → the 27x already printed, hourly went flat hours ago, distribution shape on a $44m vol against $261k liq profile
 
-• ISOR (sol) +742% 24h
-  $43m vol, $289k liq, h1 +1.0%, h6 +93%, buys 52%
-  → six-hour carried the move. Hourly went flat one bar back, the bid stepped off
+★ SAOS (sol) +502% 24h
+  $37m vol, $278k liq, 6.2h pool, h1 -1%, h6 +50%, buys 51%
+  → cluster relights with a fresh 6.2h sibling, three SAOS contracts in the survivor set up from morning's two
 
-★ NOAR (sol) +698% 24h
-  $40m vol, $216k liq, h1 0%, h6 0%, buys 53%
-  → day-3 cluster confirms, four distinct NOAR contracts in today's survivor set. Lead pool dormant but the 3.5h sibling carries +414% h6 burst
-
-• HALO (base) +1362% 24h
-  $1.7m vol, $190k liq, h1 +0.4%, h6 +10%, buys 61%
-  → thinnest vol of the top 5 but the strongest buy-skew at 61%, off the solana cluster slate
-
-vibe: micro-cap solana churn, deep-liq tier capped at score 52 for the seventh straight session
+vibe: the morning live print quit, the slate fills with fresh launches
