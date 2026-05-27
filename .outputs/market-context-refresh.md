@@ -1,32 +1,30 @@
 # Market Context — 2026-05-27
 
-Take: risk-off — BTC -1.55% 24h with 6/20 top-cap majors green and F&G at 25 (Extreme Fear, -9 pts). Conviction: high.
+Take: risk-off — BTC -1.02% 24h with 7/20 top-cap majors green while S&P/Nasdaq set ATH on Iran peace hopes and crypto non-participates. Conviction: medium.
 
 ## Snapshot
-- BTC $75,594 (-1.55% 24h, -1.41% 7d) · dominance 57.93% (-0.27 pp 24h)
-- ETH $2,074 (-1.10% 24h, -1.72% 7d) · ETH/BTC 0.02744
-- SOL $83.72 (-0.86% 24h, -0.41% 7d)
-- Total mcap $2.62T (-1.11% 24h) · DEX vol $6.51B 24h
-- Breadth: 6/20 green 24h · 6/20 green 7d
+- BTC $75,814 (-1.02% 24h, -1.97% 7d) · dominance 58.0% (+0.07 pp 24h)
+- ETH $2,077 (-0.79% 24h, -2.16% 7d) · ETH/BTC 0.02739
+- SOL $83.95 (-0.24% 24h, -0.84% 7d)
+- Total mcap $2.62T (≈flat 24h) · DEX vol $6.51B 24h
+- Breadth: 7/20 green 24h · 5/20 green 7d
 - Fear & Greed: 25 (Extreme Fear) — yesterday 34
-- TVL top chains: ETH $42.6B · BSC $5.5B · SOL $5.4B
+- TVL: Lido $18.4B · SSV $15.3B · Aave V3 $13.7B · all protocols -2% to -3% 7d
 
 ## What Changed
-- F&G dropped 9 points to 25 (Extreme Fear), first Extreme Fear reading since May 15.
-- BTC fell to $75,594 (-1.40%) — six-session ETF outflow streak at -$1.55B cumulative continues.
-- ZEC reversed -8.38%; May-21 entry at $667.93 now at $570.65, accumulation bid unwinding.
-- DEX volume spiked to $6.51B (+25%) — reads as liquidation/volatility trading, not demand.
+- Iran peace deal YES% declined 3pp to 23.5% (was 26.5% this morning, vol $3.3M) — deal prices less certain even as stocks rally.
+- S&P/Nasdaq at ATH on Iran peace while crypto breadth holds 7/20 — capital rotated into equities; fear is crypto-specific, not macro-wide.
+- Privacy/ZK promoted to high-conviction rising: Grayscale ZCSH ETF (first US privacy ETF), Multicoin Capital accumulation since Feb 2024, five driver threads today — ZEC at $574 bleeds -6.44% while institutional thesis holds.
+- NEAR confirmed TRENDING+DOWN (-7.68%) ending five-session AI-compute up-streak — sector rotation watch active.
 
 ## Active Narratives
-- Perp-DEX (HYPE) — phase: peak. Evidence: HYPE +2.47% 24h (+28% 7d), trending rank 2, $61.72 tracking toward May-24 ATH at $64.27.
-- AI identity (WLD) — phase: rising. Evidence: WLD +9.01% 24h, third consecutive positive session; trending rank 9.
-- Decentralized compute — phase: fading. Evidence: NEAR -8.41% after +13.73% yesterday; RENDER -2.12%, TAO -3.57%.
-- RWA/tokenization — phase: emerging. Evidence: FIGR_HELOC (tokenized HELOC) entered top-20 rank 9 by market cap.
-- Privacy/ZK — phase: fading. Evidence: ZEC -8.38%, now $570 vs. May-21 pick at $667.93.
+- Perp-DEX (HYPE) — phase: peak. +4.22% 24h (+28.71% 7d), CoinGecko trending rank 5, tracking May-24 ATH at $64.27; institutional ETF bid sustains.
+- AI agents / Decentralized compute — phase: peak, rotation watch. TAO new 2026 high this week; sector +$2.3B. NEAR -7.68% second down session signals intra-sector rotation from NEAR into TAO/VVV.
+- Privacy/ZK (ZEC, XMR) — phase: rising (narrative), fading (price). Institutional thesis intact; ZEC spot -14% from May-21 entry.
+- RWA / tokenization — phase: peak, ride with trailing stop. FIGR_HELOC top-20 rank 9. RWA TVL $29.2B (+300% YoY). X-side cooling — fresh anchor needed by May 29.
 
 ## Polymarket Highlights (top by 24h vol)
-- US x Iran peace deal by May 31 — YES 26.5%, vol $2.5M
-- Netherlands win 2026 FIFA World Cup — YES 3.7%, vol $1.2M
+- US x Iran permanent peace deal by May 31 — YES 23.5%, vol $3.3M (down 3pp from morning)
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
