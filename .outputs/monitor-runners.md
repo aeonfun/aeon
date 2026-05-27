@@ -1,24 +1,24 @@
-Yesterday's Runners · 2026-05-26 · SPECULATIVE (top 5 all BREAKOUT, GENIUS cluster reactivates)
+Yesterday's Runners · 27 May · SPECULATIVE (top 5 all BREAKOUT, NOAR day-3 cluster confirms)
 
 BREAKOUT
-★ GENIUS (bsc) +2651% 24h
-  $51m vol, $90k liq, 48-min pool, buys 52%
-  → sixth GENIUS contract since 05-22, the cluster reactivates after one silent session. Entire move sits in the 48-min lifetime of the pool
+• ชั้ง (sol) +3181% 24h
+  $6.2m vol, $100k liq, h1 +39%, h6 +123%, buys 56%
+  → only top-5 pick whose hourly tape still adds aggressively. The bid sits live on a 19.7h pool, the thin $100k pad amplifies reversal risk above
 
-• HOPPY (sol) +671% 24h
-  $5.8m vol, $109k liq, h1 +9.5%, h6 +10%, buys 69%
-  → hourly still adding through the latest bar, 69% buy-skew on a sustained 18h pool. Cleanest tape on the board
+• USGS (sol) +2652% 24h
+  $44m vol, $260k liq, h1 0%, h6 +18%, buys 55%
+  → the 27x already printed inside the prior six hours. Hourly quit hours back, $44m vol on $260k liq reads wash-heavy
 
-• CTR (sol) +2433% 24h
-  $41m vol, $241k liq, h1 0%, h6 +16%, buys 57%
-  → fresh name-farm cluster, two distinct CTR contracts in the survivor set. The hourly quit before the rotation completed
+• ISOR (sol) +742% 24h
+  $43m vol, $289k liq, h1 +1.0%, h6 +93%, buys 52%
+  → six-hour carried the move. Hourly went flat one bar back, the bid stepped off
 
-★ NOAR (sol) +590% 24h
-  $48m vol, $275k liq, h1 0%, h6 0%, buys 52%
-  → day-2 cluster expands to five distinct NOAR contracts, same signature SAOS printed 05-24. Lead pool dormant, the 5h sibling at +1210% h6 carries the burst
+★ NOAR (sol) +698% 24h
+  $40m vol, $216k liq, h1 0%, h6 0%, buys 53%
+  → day-3 cluster confirms, four distinct NOAR contracts in today's survivor set. Lead pool dormant but the 3.5h sibling carries +414% h6 burst
 
-• zBase (base) +5659% 24h
-  $7m vol, $152k liq, h1 -2.9%, h6 +36%, buys 55%
-  → the 56x sits before the prior six hours. Hourly rolling over
+• HALO (base) +1362% 24h
+  $1.7m vol, $190k liq, h1 +0.4%, h6 +10%, buys 61%
+  → thinnest vol of the top 5 but the strongest buy-skew at 61%, off the solana cluster slate
 
-vibe: cluster casino — GENIUS reactivating, NOAR confirming day-2, SAOS and GOD fading
+vibe: micro-cap solana churn, deep-liq tier capped at score 52 for the seventh straight session
