@@ -175,6 +175,8 @@ Every skill reads `CLAUDE.md`, so identity propagates automatically.
 
 ## Quality scoring & self-healing
 
+![Anatomy of a skill run](./assets/skill-run.jpg)
+
 Every skill output is automatically scored 1–5 by Haiku after each run (failed/empty → 1, excellent → 5). Scores and flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history.
 
 **Heartbeat** is the only skill enabled by default. Runs 3x daily, checks `memory/cron-state.json` for failed, stuck, or chronically broken skills, stalled PRs, and missed schedules. Nothing to report → logs `HEARTBEAT_OK`. Something needs attention → sends one notification. Listed last in `aeon.yml` so it only fires when no other skill claims the slot.
@@ -207,6 +209,8 @@ Every run logs token usage to `memory/token-usage.csv`. The `cost-report` skill 
 ---
 
 ## Configuration
+
+![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps.jpg)
 
 All scheduling lives in `aeon.yml`:
 
@@ -349,6 +353,8 @@ scripts/
 
 ## GitHub Actions cost
 
+![Basically free — runs on your existing Claude subscription and a free GitHub account](./assets/free.jpg)
+
 | Scenario | Cost |
 |----------|------|
 | No skill matched (most ticks) | ~10s — checkout + bash + exit |
@@ -438,6 +444,8 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 ---
 
 ## Community skill packs
+
+![Aeon Framework ecosystem map](./assets/ecosystem.jpg)
 
 Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
 
