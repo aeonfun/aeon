@@ -18,7 +18,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 |---------|-------|
 | aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
 | AgentBounty | [@agentbountydev](https://x.com/agentbountydev) |
-| Amper | [@ampera_xyze](https://x.com/ampera_xyze) |
+| Amper | [@helloamper](https://x.com/helloamper) |
 | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
 | Autonomopoly | [@AUTONOMOPOLY_](https://x.com/AUTONOMOPOLY_) |
 | Bankr | [@bankrbot](https://x.com/bankrbot) |
