@@ -5,16 +5,17 @@
 
   "market_sentiment": {
     "headline_metrics": [
-      {"label": "BTC",     "value_top": "$73,769",    "value_bottom": "-2.60% 24h"},
-      {"label": "Breadth", "value_top": "5/20 green",  "value_bottom": "deepest risk-off this week"},
-      {"label": "F&G",     "value_top": "22",          "value_bottom": "down from 25 · Extreme Fear"}
+      {"label": "BTC",     "value_top": "$73,603",     "value_bottom": "-1.07% 24h, -5.17% 7d"},
+      {"label": "Breadth", "value_top": "6/20 green",  "value_bottom": "relief off the midday flush"},
+      {"label": "F&G",     "value_top": "22",          "value_bottom": "Extreme Fear, down from 25"},
+      {"label": "Perps",   "value_top": "0/25 regimes","value_bottom": "all NEUTRAL, chop"}
     ],
     "sections": [
-      {"label": "Macro", "body": "Risk-off deepened across the board. BTC fell under $74K, Fear & Greed compressed to 22, and the Iran peace-deal odds collapsed from 23.5% to 12.5% as strikes resumed. Spot ETF outflows accelerated to $733M in a single session while equities held record highs. Capital is leaving crypto, not rotating within it."},
-      {"label": "Perps", "body": "The derivatives tape is dead quiet. Gold is the only asset coiling and the rest sit neutral with funding near zero. XLM is the one exception, running the only real volume expansion in the universe at 2.26x with a short-squeeze structure building under a +17% day."},
-      {"label": "Book", "body": "The AI-compute concentration risk fired. The sector that swept the winners two days ago led the losers today — RENDER -12.5%, AKT -9.7%, EIGEN -8.7%. Closing the two weakest momentum names at their stops and riding the holds that absorbed the flush on relative strength (TAO, ICP) or a deep stop (EIGEN)."}
+      {"label": "Macro", "body": "Risk-off held into the evening after a relief bounce off the midday flush. Bitcoin sits sub-$74K with ETF outflows on a six-day streak and Ethereum ETFs bleeding eleven straight. Iran re-escalation lifted oil toward $94-96 and pushed 10-year yields to 4.48%, and Fear and Greed stays pinned at 22."},
+      {"label": "Perps", "body": "Chop across the board. No regime confirmed on any of the 25 assets and leverage churns two-sided with nothing committing. XLM is the marquee setup: up 28% on open interest building 90% in a day, short liquidations running 53x normal, the only real volume expansion on the board. The leveraged parabolas ALLO and H ripped on fresh positioning, but the buying never turned aggressive with taker flow stuck near 51%, so the moves read fragile rather than absorbed."},
+      {"label": "Book",  "body": "Six positions open. XLM is ripping +21% from entry on a live squeeze, the standout. The BCH short sits +13% on today's 10.5% flush, riding into horizon. The AI-compute longs EIGEN and TAO hold a tight trail after the sector flushed today, the two momentum names alongside them got cut this morning while the two with cushion held. ICP and SEI carry their own multi-week theses."}
     ],
-    "bias_line": "Bias · trim the compute book into the flush, hold the names showing relative strength. One idiosyncratic long on XLM against a dead tape. No broad risk-on here. This is a stock-picker's session, not a market bid."
+    "bias_line": "Bias · ride the book. XLM the standout winner, the BCH short into its target, the compute longs on a tight trail. No new entries, the perps tape is risk-off chop with zero regime confirmation and the book is already concentrated."
   },
 
   "current_positions": [
@@ -27,12 +28,12 @@
       "horizon": "7d",
       "day_of": "6/7",
       "call": "RIDE",
-      "thesis_note": "Legacy-alt bleed intact on a deepening risk-off tape, absent from the data a sixth session with no catalyst to defend the bid.",
+      "thesis_note": "Structural legacy-alt bleed playing out, down 10.5% today to fresh lows with smart money still net short and no leverage rebuild.",
       "invalidation": "close above $370",
-      "watch": "A daily close above $370 ends it. Risk-off deepening into BTC sub-$74K and breadth 5/20 keeps the structural bleed alive through the final day of the window.",
+      "watch": "Squeeze-bounce risk after today's 10.5% flush with funding now paying shorts. A sharp reclaim above $320 or funding flipping hard positive is the early-cover trigger, otherwise the trade closes at horizon tomorrow.",
       "mae_pct": -5.02, "mae_day_of": "2",
-      "mfe_pct": 3.97, "mfe_day_of": "6",
-      "now_pct": 3.68
+      "mfe_pct": 13.83, "mfe_day_of": "6",
+      "now_pct": 13.17
     },
     {
       "id": "EIGEN-2026-05-24-001",
@@ -43,50 +44,12 @@
       "horizon": "7d",
       "day_of": "5/7",
       "call": "RIDE",
-      "thesis_note": "Took the sector hit at -8.7% but sits only 2% under entry with the stop 9% below — the most room of the compute longs.",
+      "thesis_note": "AI-compute flushed today then relief-bounced into the evening; the deep stop and the Nebius compute-platform catalyst keep this hold while the momentum names were cut.",
       "invalidation": "close below $0.205",
-      "watch": "Holding above the $0.205 stop with 9% of cushion. A daily close below it marks the structural break; until then the position has room to ride the sector's institutional anchor.",
+      "watch": "The AI-compute relief bounce has to hold. A loss of $0.205 confirms the sector-distribution read and ends the trade, the 9% cushion is the only reason this rides while peers got cut.",
       "mae_pct": -4.31, "mae_day_of": "4",
       "mfe_pct": 1.78, "mfe_day_of": "3",
       "now_pct": -1.91
-    },
-    {
-      "id": "AKT-2026-05-25-001",
-      "ticker": "AKT",
-      "direction": "LONG",
-      "fired_date": "2026-05-25",
-      "fired_price": 0.87,
-      "horizon": "7d",
-      "day_of": "4/7",
-      "call": "CLOSE",
-      "thesis_note": "Down -9.7% as the compute sector distributed, breaking the pattern of holding while peers fell; stop 2% below, the momentum leg is gone.",
-      "invalidation": "close below $0.78",
-      "return_pct": -8.57,
-      "return_vs_btc_pct": -4.00,
-      "return_vs_eth_pct": -3.02,
-      "outcome": "LOSS",
-      "mae_pct": -9.20,
-      "mfe_pct": 5.75,
-      "auto_flipped": false
-    },
-    {
-      "id": "RENDER-2026-05-26-001",
-      "ticker": "RENDER",
-      "direction": "LONG",
-      "fired_date": "2026-05-26",
-      "fired_price": 2.29,
-      "horizon": "7d",
-      "day_of": "3/7",
-      "call": "CLOSE",
-      "thesis_note": "Led the compute sector down at -12.5%, first close under the $2.05 watch line with the $2.00 stop 2% away — the sector-sweep thesis fully inverted.",
-      "invalidation": "close below $2.00",
-      "return_pct": -10.92,
-      "return_vs_btc_pct": -7.24,
-      "return_vs_eth_pct": -6.01,
-      "outcome": "LOSS",
-      "mae_pct": -17.90,
-      "mfe_pct": 0.44,
-      "auto_flipped": false
     },
     {
       "id": "TAO-2026-05-26-001",
@@ -97,9 +60,9 @@
       "horizon": "7d",
       "day_of": "3/7",
       "call": "RIDE",
-      "thesis_note": "Held the sector flush at -2.24% against peers down 9-12% — the relative-strength tell that the revenue-anchored name is treated as higher quality.",
+      "thesis_note": "Revenue-anchored compute name held relative strength through the sector flush, down 2% against peers down 9 to 12%.",
       "invalidation": "close below $255",
-      "watch": "A daily close below $255 ends it. The relative strength today says the revenue-anchored name is the quality hold in the compute book; lose $255 and that read is wrong.",
+      "watch": "$255 is the line, a daily close below it ends the trade. The revenue floor held TAO while the sector flushed, but the cushion is thin at 2%.",
       "mae_pct": -6.93, "mae_day_of": "3",
       "mfe_pct": 0.61, "mfe_day_of": "2",
       "now_pct": -6.32
@@ -113,11 +76,11 @@
       "horizon": "multi-week",
       "day_of": "2/21",
       "call": "RIDE",
-      "thesis_note": "Held better than the momentum names at -2.7% on day 2. The deflation thesis is structural and multi-week, with the $2.65 stop 4% below.",
+      "thesis_note": "Multi-week supply-deflation thesis intact on day 2, underwater on the sector flush but the structural inflation collapse is not a daily-price trade.",
       "invalidation": "close below $2.65",
-      "watch": "A daily close below $2.65 ends it. The supply-deflation thesis runs over months, so daily chop is noise until the stop breaks.",
+      "watch": "The $2.65 stop sits 4% below. This is a structural multi-week deflation hold, a daily close below $2.65 is the only thing that ends it.",
       "mae_pct": -9.27, "mae_day_of": "2",
-      "mfe_pct": 0.0, "mfe_day_of": "2",
+      "mfe_pct": -5.96, "mfe_day_of": "2",
       "now_pct": -8.54
     },
     {
@@ -129,63 +92,57 @@
       "horizon": "multi-week",
       "day_of": "2/21",
       "call": "RIDE",
-      "thesis_note": "Price estimated near $0.0665, absent from today's data. Holds above the $0.062 stop on the June 15 migration catalyst, a different sector from the compute flush.",
+      "thesis_note": "Multi-week L1 thesis intact, a different sector from the compute flush, with the June 15 EVM migration the dated catalyst three weeks out.",
       "invalidation": "close below $0.062",
-      "watch": "A daily close below $0.062 ends it. The June 15 EVM migration is the dated catalyst; the multi-week thesis is intact above the stop.",
+      "watch": "The $0.062 stop is 7% below and the EVM migration is three weeks out. A Giga-upgrade slip announcement is the catalyst risk to watch.",
       "mae_pct": -6.03, "mae_day_of": "2",
-      "mfe_pct": 0.0, "mfe_day_of": "2",
+      "mfe_pct": -1.00, "mfe_day_of": "2",
       "now_pct": -4.59
+    },
+    {
+      "id": "XLM-2026-05-28-001",
+      "ticker": "XLM",
+      "direction": "LONG",
+      "fired_date": "2026-05-28",
+      "fired_price": 0.1731,
+      "horizon": "3d",
+      "day_of": "1/3",
+      "call": "RIDE",
+      "thesis_note": "Breakout ripping +21% from entry on a live short squeeze, top traders still net short, short liquidations 53x normal, the only real volume expansion on the board.",
+      "invalidation": "close below $0.152",
+      "watch": "Top traders still net short means the squeeze fuel is not spent. If the buying turns aggressive the move extends, if open interest unwinds while top traders flip net long the squeeze is done and the gain should trail.",
+      "mae_pct": 0.0, "mae_day_of": "1",
+      "mfe_pct": 22.47, "mfe_day_of": "1",
+      "now_pct": 21.09
     }
   ],
 
-  "new_positions": [
-    {
-      "ticker": "XLM",
-      "direction": "LONG",
-      "horizon": "3d",
-      "entry_zone": "market or first pullback to $0.168 that holds the breakout",
-      "invalidation": "close below $0.152",
-      "thesis": [
-        "XLM ripped +17% today while BTC fell 2.6% and most of the top 100 printed red — moving on its own catalyst, not market beta.",
-        "DTCC plans to connect its tokenized-securities platform to Stellar and a DTCC patent names XLM as the cross-ledger settlement token.",
-        "Top traders sit net short at 0.82 with funding paying shorts and open interest up 20% in 24h — squeeze fuel stacked under a rising price.",
-        "Volume ran 2.26x the recent average, the only real volume expansion across the perps universe today. The move has participation behind it."
-      ],
-      "confluence_fired": ["enrichment_positive", "cross_domain_bridge", "both_tag"],
-      "risks": [
-        "The DTCC settlement connection is an H1 2027 event. The market is pricing a catalyst a full year out, so the move can deflate as fast as it inflated.",
-        "The entire +18% 7d gain is today's single bar. A close back below $0.152 unwinds the breakout and traps late longs.",
-        "Risk-off is deepening with Fear & Greed at 22. A broad market flush drags idiosyncratic names down regardless of their own catalyst."
-      ]
-    }
-  ],
+  "new_positions": [],
 
   "watchlist": [
     {
-      "ticker": "XAU",
+      "ticker": "HYPE",
       "direction": "LONG",
-      "day_of_watchlist": 2,
-      "horizon": "7d",
-      "trigger": "a daily close above $4,580 with the daily range expanding past 5% and volume crossing 1.0x the recent average — the coil resolving up",
-      "invalidation": "close below $4,420 before the trigger fires",
+      "day_of_watchlist": 1,
+      "trigger": "reclaim of the $64 range high on volume with top traders rotating net long, smart money joining the bid rather than retail bouncing it",
+      "invalidation": "close below $57 before the trigger fires",
       "thesis": [
-        "Gold sits in a tight coil — 7d range 4.55%, daily volume a third of average — while open interest built 37% over the week. Energy stored, not released.",
-        "Risk-off is deepening with Fear & Greed at 22 and the Iran peace deal collapsing to 12.5%. Gold catches the duration bid if equities crack from record highs.",
-        "Top traders trimmed their long ratio 0.47 over the week to 2.01. The coil resolves on a volume expansion, direction unconfirmed until it breaks."
+        "Hyperliquid bounced 6.7% today and leads the majors on relative strength, the perp-DEX narrative reviving on a real usage anchor as equity perps now drive 35% of the venue's volume.",
+        "The catch is that top traders are still trimming long exposure into the bounce and the buying stays passive, so the bid reads retail-led rather than smart-money-confirmed.",
+        "This is the fourth bounce off a fade in two weeks and the prior three whipsawed. Waiting for a range-high reclaim with smart money joining before committing."
       ],
-      "confluence_fired": ["pattern_tag_supports", "cross_domain_bridge", "market_regime_aligned"]
+      "confluence_fired": ["narrative_phase_aligned"]
     },
     {
       "ticker": "ZEC",
       "direction": "SHORT",
       "day_of_watchlist": 2,
-      "horizon": "7d",
-      "trigger": "a relief bounce that stalls near $560 with funding flipping positive and top traders rotating back net long above 1.0, OR a daily close below $490 confirming the support break",
+      "trigger": "a bounce that brings longs back, funding flipping positive past +0.02%/8h with top traders rotating net long above 1.0, then short the failed bounce, or a decisive second daily close below $500 support",
       "invalidation": "close above $620 before the trigger fires",
       "thesis": [
-        "ZEC bled -18% over 7 days and now tests $500 support after rolling from the $642 May peak — price leading the privacy narrative down.",
-        "Futures open interest fell 26% over the week as the long stack unwound. Top traders already sit net short at 0.91, so the easy short is partly priced.",
-        "The institutional bid holds — a privacy ETF filing, a disclosed Multicoin position, a 30% shielded pool — and can absorb price weakness short term."
+        "Zcash is down 17% on the week and leads the privacy sector lower, the token rolling over while the narrative still gets lip service, the textbook lead-on-the-way-down.",
+        "Shorting here is crowded, top traders already sit net short and funding pays shorts, so the immediate risk is a squeeze on any bounce. Wait for longs to step back in before fading.",
+        "The institutional floor is intact with the spot privacy ETF and shielded-pool growth, so this is a tactical short into a failed bounce, not a structural breakdown bet."
       ],
       "confluence_fired": ["pattern_tag_supports", "enrichment_positive"]
     }
@@ -196,130 +153,91 @@
       {
         "open_id": "BCH-2026-05-23-001",
         "date": "2026-05-28",
+        "slot": "eve",
         "call": "RIDE",
-        "price_at_eval": 332.0,
-        "todays_high": 338.0,
-        "todays_low": 331.0,
+        "price_at_eval": 299.29,
+        "todays_high": 334.00,
+        "todays_low": 297.00,
         "invalidation_breached_today": false,
-        "note": "Day 6/7. BCH absent from the 25-asset perps slice and from winners/losers/trending for the sixth straight session — price estimated near $332 from the deepest risk-off tape of the week (BTC -2.6%, breadth 5/20, top-20 only 4 green). High/low carry estimate uncertainty. Structural legacy-alt bleed intact, no catalyst defends the bid. Invalidation $370 well clear. Today's estimated low extends MFE toward +4%. RIDE into the final day."
+        "note": "Day 6/7 evening re-eval. Evening perps data finally prints BCH in the slice at $299.29, down 10.5% 24h and 21.3% 7d, far below the afternoon's $332 estimate. The structural-bleed short is now +13.2% from the $344.68 entry, the deepest profit of the trade. Funding flipped negative to -0.0346%/8h with shorts now crowded, and top traders sit 0.99 L/S, down 0.35 over 7d, so smart money has not covered. Open interest cooled only 4.3% on the down day, longs not yet flushed, leaving room lower. No leverage rebuild, no relief bounce, thesis fully intact. The $370 invalidation sits 24% above. Riding into the final day, the squeeze-bounce after a 10.5% flush with negative funding is the only near-term risk. RIDE."
       },
       {
         "open_id": "EIGEN-2026-05-24-001",
         "date": "2026-05-28",
+        "slot": "eve",
         "call": "RIDE",
         "price_at_eval": 0.2255,
-        "todays_high": 0.2320,
-        "todays_low": 0.2220,
+        "todays_high": 0.2310,
+        "todays_low": 0.2205,
         "invalidation_breached_today": false,
-        "note": "Day 5/7. EIGEN $0.2255 down -8.7% 24h as the AI-compute sector distributed, but only -1.9% from the $0.2299 entry with the $0.205 stop 9% below — the most cushion of the compute longs. Narrative still rates the sector a ride on a tight trail. The deep stop is what differentiates this hold from AKT/RENDER, which sit 2% above their stops. Invalidation $0.205 holds. RIDE."
-      },
-      {
-        "open_id": "AKT-2026-05-25-001",
-        "date": "2026-05-28",
-        "call": "CLOSE",
-        "price_at_eval": 0.7954,
-        "todays_high": 0.8810,
-        "todays_low": 0.7900,
-        "invalidation_breached_today": false,
-        "note": "Day 4/7. AKT $0.7954 down -9.7% as the compute sector distributed, breaking the prior pattern where it held while NEAR absorbed the sector hits. Price sits 2% above the $0.78 stop on a -8.6% position. The sector-momentum leg that carried the trade is broken even though the supply-burn story holds. Closing on the thesis break into the flush rather than riding to the stop. LOSS -8.57%."
-      },
-      {
-        "open_id": "RENDER-2026-05-26-001",
-        "date": "2026-05-28",
-        "call": "CLOSE",
-        "price_at_eval": 2.04,
-        "todays_high": 2.20,
-        "todays_low": 2.00,
-        "invalidation_breached_today": false,
-        "note": "Day 3/7. RENDER $2.04 led the compute sector lower at -12.5%, the biggest loser among the AI names. Today's close is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closing on the thesis break before the stop prints. Daily close $2.04 held above the $2.00 invalidation, so no breach flag. LOSS -10.92%."
+        "note": "Day 5/7 evening re-eval. EIGEN absent from the evening perps slice, price held near $0.2255 (-1.9% from the $0.2299 entry). The AI-compute sector flushed midday then relief-bounced into the evening (FET, VIRTUAL, RENDER all recovered from -12% to the -4 to -6% band), so the cascade paused rather than continued. EIGEN held better than the peers cut this morning (AKT, RENDER), and the $0.205 stop sits 9% below, the most cushion of the compute longs. The sector narrative cooled to a tight trail on the AI-snag overhang but did not break. Invalidation $0.205 holds. RIDE."
       },
       {
         "open_id": "TAO-2026-05-26-001",
         "date": "2026-05-28",
+        "slot": "eve",
         "call": "RIDE",
         "price_at_eval": 260.71,
-        "todays_high": 267.0,
-        "todays_low": 259.0,
+        "todays_high": 268.00,
+        "todays_low": 259.00,
         "invalidation_breached_today": false,
-        "note": "Day 3/7. TAO $260.71 down -2.24% 24h, holding against compute peers down 9-12% — the relative-strength tell that the revenue-anchored name is treated as higher quality on a sector flush day. Invalidation $255 sits 2% below. Riding the best name in the compute book while closing the momentum names; a daily close below $255 ends it. RIDE on tight watch."
+        "note": "Day 3/7 evening re-eval. TAO absent from the evening perps slice, price held near $260.71 (-6.3% from the $278.29 entry). Held relative strength through the compute flush, down ~2% on the day against peers down 9 to 12%, the tell that the revenue-anchored name ($43M Q1 on-chain revenue) is treated as higher quality. The evening sector relief bounce supports the hold. The $255 stop is the tight line, 2% below, a daily close beneath it ends the trade. Riding the best name in the compute book. RIDE on tight watch."
       },
       {
         "open_id": "ICP-2026-05-27-001",
         "date": "2026-05-28",
+        "slot": "eve",
         "call": "RIDE",
         "price_at_eval": 2.762,
-        "todays_high": 2.84,
-        "todays_low": 2.74,
+        "todays_high": 2.840,
+        "todays_low": 2.740,
         "invalidation_breached_today": false,
-        "note": "Day 2/multi-week. ICP $2.762 down -2.71% 24h, held better than the momentum names through the sector flush. First MAE/MFE tracked from today (day-1 had no eval) — underwater all session, MAE near -9.3%. The supply-deflation thesis is structural and multi-week, not a daily-price trade, and the $2.65 stop sits 4% below. RIDE."
+        "note": "Day 2/multi-week evening re-eval. ICP absent from the evening perps slice, price near $2.762 (-8.5% from the $3.02 entry), underwater all session on the compute-sector flush. The thesis is structural and multi-week (MISSION70 inflation collapse 9.72% to 2.92% by end-2026), not a daily-price trade, and the $2.65 stop sits 4% below. A day-2 drawdown on a multi-week deflation hold is not a thesis break. Invalidation $2.65 holds. RIDE."
       },
       {
         "open_id": "SEI-2026-05-27-001",
         "date": "2026-05-28",
+        "slot": "eve",
         "call": "RIDE",
         "price_at_eval": 0.0665,
         "todays_high": 0.0690,
         "todays_low": 0.0655,
         "invalidation_breached_today": false,
-        "note": "Day 2/multi-week. SEI absent from today's perps slice and from winners/losers — price estimated near $0.0665 (-4.6% from the $0.0697 entry) on the deepening risk-off tape; high/low carry estimate uncertainty. Different sector from the compute flush. The June 15 EVM migration is the dated catalyst and the $0.062 stop holds. RIDE day 2 of the multi-week thesis."
-      }
-    ],
-    "close": [
-      {
-        "open_id": "AKT-2026-05-25-001",
-        "closed_price": 0.7954,
-        "close_reason": "AI-compute sector distributed today and AKT fell -9.7% with it, breaking the pattern where it held while NEAR absorbed the sector hits. Price sits 2% above the $0.78 stop on a -8.6% position day 4 of 7. The sector-momentum leg that carried the trade is broken even though the supply-burn story holds. Closed on the thesis break into the flush rather than riding to the stop.",
-        "return_pct": -8.57,
-        "return_vs_btc_pct": -4.00,
-        "return_vs_eth_pct": -3.02,
-        "horizon_realized": "4d",
-        "auto_flipped": false
+        "note": "Day 2/multi-week evening re-eval. SEI absent from the evening perps slice and from winners/losers, price near $0.0665 (-4.6% from the $0.0697 entry). A different sector from the compute flush, the multi-week thesis rests on the June 15 EVM migration (dated, three weeks out) plus the Xiaomi wallet distribution. The $0.062 stop sits 7% below and holds well clear. RIDE day 2 of the multi-week thesis."
       },
       {
-        "open_id": "RENDER-2026-05-26-001",
-        "closed_price": 2.04,
-        "close_reason": "AI-compute sector distributed today and RENDER led it lower at -12.5%, the biggest loser among the compute names. Today's close near $2.04 is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closed on the thesis break before the stop printed.",
-        "return_pct": -10.92,
-        "return_vs_btc_pct": -7.24,
-        "return_vs_eth_pct": -6.01,
-        "horizon_realized": "3d",
-        "auto_flipped": false
+        "open_id": "XLM-2026-05-28-001",
+        "date": "2026-05-28",
+        "slot": "eve",
+        "call": "RIDE",
+        "price_at_eval": 0.2096,
+        "todays_high": 0.2120,
+        "todays_low": 0.1731,
+        "invalidation_breached_today": false,
+        "note": "Day 1/3 first eval. XLM fired at $0.1731 midday and ran to $0.2096 by the evening, +21.1% from entry. The breakout is a live squeeze: up 28% 24h on open interest building 90% in a day, short liquidations $5.3M at 53x the weekly norm, volume 22.8x the only real expansion on the board. Top traders sit 0.70 L/S net short and falling, so the squeeze fuel is not spent and the move pressures them harder as it extends. Regime held at NEUTRAL only because taker buy at 50.51% sits just under the 52% breakout gate. The $0.152 stop is 28% below, this is house-money now. RIDE the standout winner."
       }
     ],
-    "open_now": [
+    "close": [],
+    "open_now": [],
+    "add_watchlist": [
       {
-        "ticker": "XLM",
+        "ticker": "HYPE",
         "direction": "LONG",
-        "fired_price": 0.1731,
-        "fired_btc_price": 73769,
-        "fired_eth_price": 1990,
-        "entry_zone": "market or first pullback to $0.168 that holds the breakout",
-        "invalidation": "close below $0.152",
-        "horizon": "3d",
+        "trigger": "reclaim of the $64 range high on volume with top traders rotating net long, smart money joining the bid rather than retail bouncing it",
+        "invalidation": "close below $57 before the trigger fires",
+        "horizon": "7d",
         "thesis": [
-          "XLM ripped +17% today while BTC fell 2.6% and most of the top 100 printed red — moving on its own catalyst, not market beta.",
-          "DTCC plans to connect its tokenized-securities platform to Stellar and a DTCC patent names XLM as the cross-ledger settlement token.",
-          "Top traders sit net short at 0.82 with funding paying shorts and open interest up 20% in 24h — squeeze fuel stacked under a rising price.",
-          "Volume ran 2.26x the recent average, the only real volume expansion across the perps universe today. The move has participation behind it."
+          "Hyperliquid bounced 6.7% today and leads the majors on relative strength, the perp-DEX narrative reviving on a real usage anchor as equity perps now drive 35% of the venue's volume.",
+          "Top traders are still trimming long exposure into the bounce and the buying stays passive, so the bid reads retail-led rather than smart-money-confirmed.",
+          "Fourth bounce off a fade in two weeks, the prior three whipsawed. Waiting for a range-high reclaim with smart money joining before committing."
         ],
-        "confluence_fired": ["enrichment_positive", "cross_domain_bridge", "both_tag"],
-        "confluence_missing": ["quant_regime_aligned", "pattern_tag_supports", "narrative_phase_aligned", "market_regime_aligned", "repeat_appearance"],
+        "confluence_fired": ["narrative_phase_aligned"],
         "named_risks": [
-          "The DTCC settlement connection is an H1 2027 event. The market is pricing a catalyst a full year out, so the move can deflate as fast as it inflated.",
-          "The entire +18% 7d gain is today's single bar. A close back below $0.152 unwinds the breakout and traps late longs.",
-          "Risk-off is deepening with Fear & Greed at 22. A broad market flush drags idiosyncratic names down regardless of their own catalyst."
-        ],
-        "engine_watch_conditions": [
-          {"type": "price_close_below",   "threshold": 0.152, "trigger_label": "breakout unwound — late longs trapped", "severity": "critical"},
-          {"type": "taker_buy_above_pct", "threshold": 52,    "trigger_label": "buyers crossing the spread — squeeze confirming into continuation", "severity": "info"},
-          {"type": "funding_above",       "threshold": 0.03,  "trigger_label": "longs now paying premium — squeeze maturing, crowding risk", "severity": "warning"},
-          {"type": "lsr_above",           "threshold": 1.5,   "trigger_label": "top traders flipped net long — squeeze fuel spent", "severity": "warning"},
-          {"type": "oi_change_below_pct", "threshold": -10,   "window_hours": 24, "trigger_label": "open interest unwinding — shorts covered, move maturing", "severity": "warning"}
-        ],
-        "watchlist_id_promoted": null
+          "Another whipsaw, the bounce rolls over without reclaiming the range high and the long thesis never confirms.",
+          "Risk-off chop drags the perp-DEX bid back down before the trigger fires."
+        ]
       }
     ],
-    "add_watchlist": [],
-    "keep_watchlist": ["XAU-watchlist-2026-05-27-001", "ZEC-watchlist-2026-05-27-001"]
+    "keep_watchlist": ["ZEC-watchlist-2026-05-27-001"]
   }
 }
