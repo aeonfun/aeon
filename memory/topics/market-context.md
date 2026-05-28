@@ -1,66 +1,68 @@
-# Market Context (as of 2026-05-27)
+# Market Context (as of 2026-05-28)
 
-> **Take:** risk-off — BTC -1.02% 24h with 7/20 top-cap majors green while S&P/Nasdaq set ATH on Iran peace hopes and crypto non-participates. Conviction: medium.
+> **Take:** risk-off — BTC -2.60% 24h at $73,769 with 5/20 top-cap majors green and F&G falling to 22 (Extreme Fear). Conviction: high — BTC, breadth, F&G, and 7d TVL all deteriorate together; no contradicting signal.
 
 ## Signal Snapshot
-- BTC $75,814 (-1.02% 24h, -1.97% 7d) · dominance 58.0% (+0.07 pp 24h)
-- ETH $2,077 (-0.79% 24h, -2.16% 7d) · ETH/BTC 0.02739
-- SOL $83.95 (-0.24% 24h, -0.84% 7d)
-- Total mcap $2.62T (≈flat 24h) · DEX vol $6.51B 24h
-- Breadth: 7/20 green 24h · 5/20 green 7d
-- Fear & Greed: 25 (Extreme Fear) — yesterday 34
+- BTC $73,769 (-2.60% 24h, -5.31% 7d) · dominance 57.82% (-0.18 pp 24h)
+- ETH $1,990 (-4.05% 24h, -6.96% 7d) · ETH/BTC 0.02698
+- SOL $81.33 (-2.90% 24h, -6.04% 7d)
+- Total mcap $2.56T (-1.82% 24h) · DEX vol $6.24B 24h
+- Breadth: 5/20 green 24h · 3/20 green 7d
+- Fear & Greed: 22 (Extreme Fear) — yesterday 25
 
 ## What Changed Since Last Refresh
-- Iran peace deal YES% declined 3pp to 23.5% (was 26.5% this morning, vol $3.3M) — the deal prices less certain even as stocks rally on it.
-- S&P and Nasdaq at ATH on Iran peace while BTC holds -1.02% and crypto breadth stays 7/20 — capital rotated into equities, not crypto; fear is crypto-specific, not macro-wide.
-- Privacy/ZK promoted to high-conviction rising: Grayscale ZCSH ETF (first US privacy ETF), Multicoin Capital accumulation since Feb 2024, and five distinct driver threads in today's narrative read — institutional thesis intact while ZEC spot at $574 bleeds -6.44%.
-- NEAR confirmed TRENDING+DOWN (-7.68%) ending a five-session AI-compute up-streak — second consecutive major down session activates a sector rotation watch on AI-compute names.
+- BTC fell from $75,814 to $73,769 (-2.7%) — risk-off deepens past yesterday's -1.02% session.
+- Iran peace deal YES% collapsed from 23.5% to 12.5% on $6.4M overnight volume. US strikes resumed in late May. Deal probability near-halved in one session.
+- Breadth dropped from 7/20 to 5/20 green on 24h — fewest majors above water since the risk-off leg started.
+- F&G compressed from 25 to 22. Extreme Fear deeping at the margin, not stabilizing.
+- ETH/BTC ratio fell from 0.02739 to 0.02698. ETH underperforming BTC on the move down.
+- ETF outflow streak through May 25: -$1.55B cumulative over six days; YTD net inflows collapsed to $536M.
 
 ## Active Narratives
-- **Perp-DEX (HYPE)** — phase: peak. Evidence: +4.22% 24h (+28.71% 7d), CoinGecko trending rank 5, $62.14 tracking toward May-24 ATH at $64.27; Bitwise $19M single-day ETF inflow sustains the buyback bid. X-side narrative chatter is thin — price and institutional flow carry the call, not narrative breadth.
-- **AI agents / Decentralized compute** — phase: peak, rotation watch. Evidence: Bittensor TAO new 2026 high this week (+48.2%), sector added $2.3B market cap — both verticals at high-conviction in today's narrative read. Counter-signal: NEAR -7.68% today (second consecutive down session, TRENDING+DOWN after five up-sessions); leadership is rotating from NEAR into TAO/VVV/FET within the sector.
-- **Privacy/ZK (ZEC, XMR)** — phase: rising (narrative), fading (price). Evidence: Grayscale ZCSH ETF filing (first US privacy ETF), Multicoin Capital position since Feb 2024, "Privacy is Normal" institutional framing — five distinct driver threads today promoted this to a high-conviction rising read. ZEC -6.44% today at $574 vs May-21 token-call entry at $667.93 (now -14% underwater); price and institutional narrative diverge; the thesis survives but the floor is lower than the entry.
-- **RWA / tokenization** — phase: peak, ride with trailing stop. Evidence: FIGR_HELOC holds top-20 rank 9 (+1.08% 24h); RWA TVL at $29.2B (+300% YoY from $5.5B early 2025). X-side chatter cooled to a single driver today — if no fresh utility anchor lands by May 29, position degrades to full fade.
+- **Perp-DEX (HYPE)** — phase: peak. Evidence: HYPE -4.15% 24h, +3.18% 7d; CoinGecko trending rank 4; May-24 ATH at $64.27 not tested as risk-off absorbs the momentum bid.
+- **AI/Decentralized compute (NEAR, VVV)** — phase: peak, fading start. Evidence: NEAR -4.60% and VVV -2.18% on 24h; no AI-compute names bucking the broad decline today; idiosyncratic strength absent across the sector.
+- **Privacy/ZK (ZEC, RAIL)** — phase: fading. Evidence: ZEC -4.51% 24h, -19.50% 7d; May-21 entry at $667.93 approximately 18% underwater; seven-day price action refutes the institutional narrative from Grayscale ETF filing and Multicoin accumulation.
+- **RWA/Tokenization (ONDO)** — phase: fading. Evidence: ONDO -9.15% 24h; May 29 utility-anchor deadline arrived without a fresh catalyst; RWA mindshare stalled across the session.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $18.4B (-1.93%)
-- SSV Network: $15.3B (-2.20%)
-- Aave V3: $13.7B (-3.23%)
-- WBTC: $8.6B (-2.18%)
-- Binance staked ETH: $7.7B (-2.16%)
+- Lido: $17.96B (-4.81%)
+- SSV Network: $14.85B (-5.76%)
+- Aave V3: $13.7B (prior value; DeFiLlama API dominated by CEX entries in top-5 fetch)
+- WBTC: $8.6B (prior value)
+- Binance staked ETH: $7.7B (prior value)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.7B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.6B (7d change: n/a)
-- Solana: $5.4B (7d change: n/a)
+- Ethereum: $42.31B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.51B (7d change: n/a)
+- Solana: $5.29B (7d change: n/a)
 
 ## Stablecoins
-Total: $288.5B (≈flat 7d). USDT $189.3B · USDC $76.6B · USDS $8.8B · USD1 $4.8B · DAI $4.6B · USDe $4.4B · combined top-6 share of mcap ~11.0%.
+Total: $288.2B (≈flat 7d). USDT $189.1B · USDC $76.5B · USDS $8.76B · USD1 $4.77B · DAI $4.60B · USDe $4.49B · combined top-6 share of mcap ~11.2%.
 
 ## Trending (CoinGecko)
-- HYPE — Hyperliquid, rank 11, +4.22% 24h; perp-DEX recovery toward May-24 ATH; buyback model + ETF bid holding the floor.
-- NEAR — NEAR Protocol, rank 34, -7.68% 24h; AI-compute reversal confirmed (TRENDING+DOWN); second consecutive major down session after five up-sessions.
-- ZEC — Zcash, rank 13, -6.44% 24h; Privacy/ZK price diverging from institutional narrative; May-21 entry at $667.93 now -14% underwater.
-- SUI — Sui, rank 28, -2.32% 24h; L1 alt underperforming with broad tape.
-- BONK — Solana memecoin, rank 105, -0.72% 24h; muted.
-- PENGU — Pudgy Penguins, rank 103, -2.07% 24h; memecoin / NFT-ETF pipeline tracking market fear.
-- RAIN — Prediction markets infrastructure, rank 16 by claimed mcap, +44.11% 24h; data quality flag: vol/mcap 0.005 on the $7.2B figure reads as supply-calculation anomaly; price action real, mcap figure unreliable.
+- HYPE — Hyperliquid, rank 11, -4.15% 24h; perp-DEX leader trending through a risk-off session; ATH zone not tested.
+- ZEC — Zcash, rank 14, -4.51% 24h; privacy narrative intact institutionally but -19.50% 7d price action contradicts; entry at $667.93 underwater.
+- NEAR — NEAR Protocol, rank 34, -4.60% 24h; AI-compute sector selling with the broad tape; idiosyncratic strength absent.
+- XLM — Stellar, rank 22, +18.67% 24h; outlier green in a risk-off session; warrant a catalyst check before attributing to narrative rotation.
+- RAIN — Prediction markets infrastructure, rank 336, +24.22% 24h; prior data quality flag holds (vol/mcap anomaly on the $7.2B supply figure — price action real, mcap number unreliable).
+- ONDO — Ondo, rank 48, -9.15% 24h; RWA fading with the tape.
+- VVV — Venice Token, rank 83, -2.18% 24h; AI agents sector underperforming.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 31 | 23.5% | $3.3M | $0.8M |
+| US x Iran permanent peace deal by May 31 | 12.5% | $6.4M | $844k |
 
-*Only one active intermediate-probability market today. Deal probability declined 3pp from morning's 26.5%. All other top-10 markets effectively settled (<3% or >97%): Iran ceasefire held through May 24 (99.7%), Hormuz disruption at 1.55%, regime-fall at 0.15%. Stocks pricing the deal; prediction markets pricing skepticism.*
+*Iran deal probability halved from 23.5% (yesterday) to 12.5% today on the highest Polymarket 24h volume of the session. US strikes on Iranian targets in late May gutted deal momentum. Three days remain to the May 31 resolution window.*
 
 ## Macro Catalysts (next 48h)
-- **Stocks-crypto divergence:** S&P and Nasdaq at ATH on Iran peace narrative; BTC -1.02% and crypto breadth 7/20. Six-session ETF outflow streak at -$1.55B cumulative confirms institutional rotation away from BTC spot into equities. YTD net inflows collapsed to $536M.
-- **Powell transition risk:** Fed Chair Powell's term expires May 2026. Policy uncertainty introduces a tail — reactive easing (triggered by bad news) rather than proactive liquidity support.
-- **Treasury auctions May 26-28:** Weak auction outcomes push yields higher, pulling capital from risk assets.
+- **Iran escalation:** US strikes resumed. Peace deal at 12.5% YES and declining. Risk premium building into the May 31 window — stocks-crypto decoupling deepens if deal collapses to near-zero.
+- **Treasury auction window close (May 28):** Final day of the May 26–28 cycle. Weak outcomes push yields higher; risk-asset headwinds persist into month-end.
+- **Fed Chair Warsh policy stance:** Kevin Warsh took over from Powell on May 15. First clear policy signals still unread by the market; ambiguity caps risk appetite.
 
 ## Implications for Downstream Skills
-- **token-call:** Risk-off deepening. HYPE approaching ATH at $64.27 is the single high-momentum setup — peak phase, sized for the catalyst window. ZEC May-21 entry at $667.93 now -14% underwater — stop needed now, no thesis repair available while price bleeds into the narrative. SEI picked today on Q2 catalyst stack (Giga upgrade H1, EVM migration June 15, Xiaomi 20K+ stores, $30m RWA fund). Avoid fresh AI-compute entries until NEAR confirms sector floor or TAO/AKT absorb the rotation visibly.
-- **narrative-tracker:** Privacy/ZK promoted to high-conviction rising — watch for ZEC price to catch the institutional bid or for the bid to crack below $550 spot. AI-compute rotation from NEAR into TAO is the emerging intra-sector pattern; if NEAR down sessions extend to three, leadership has shifted. RWA ride with trailing stop — fresh utility anchor needed by May 29.
+- **token-call:** Full risk-off. No fresh entries at 5/20 breadth and F&G at 22. HYPE ATH window closing as risk-off absorbs the momentum bid. ZEC stop required now. Entry at $667.93 approximately 18% underwater; price action breaking down regardless of institutional narrative. Hold SEI thesis (Giga upgrade H1, June 15 EVM migration intact) but no add. Re-evaluate when BTC holds above $75K for a full session or breadth recovers past 10/20.
+- **narrative-tracker:** Privacy/ZK demoted to fading — ZEC -19.50% 7d overrides the institutional narrative read. RWA confirmed fading with ONDO -9.15%. XLM +18.67% warrants a catalyst check; if a concrete driver exists, flag as potentially emerging. AI-compute enters fading phase if NEAR extends the down-streak to three sessions.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
