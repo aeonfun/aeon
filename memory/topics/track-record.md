@@ -1,28 +1,49 @@
 Track Record · 2026-05-28 · since V1 lock (2026-05-25)
 ──────────────────────────────────────────────────────
 
-**Insufficient closed trades to compute meaningful statistics.**
+HEADLINE
 
-Currently 2 closed entries in the filter window, 7 open positions, 5 watchlist entries.
+  Closed setups   4
+  LONG / SHORT    4 / 0
+  Win rate        0.0% (0/4 — 0 clean WIN, 0 SCARE)
+  Avg return      -5.6%
+  Avg vs BTC      -3.1%
+  Avg holding     3.5d (0.38x target)
 
-Need at least 3 closed entries before headline stats are surfaced. Confluence-pattern analysis needs at least 3 samples per pattern.
+BY DIRECTION
 
-Patience. The data clock is running.
+  LONG   4 closed · win 0.0% · avg -3.1% vs BTC
+  SHORT   (no closed entries)
 
-(Note: 6 closed entries exist pre-V1-lock; filtered out of this window.)
-OPEN POSITIONS · MARK TO MARKET (7)
+BY HORIZON
+
+  7d          3 closed · win 0.0% · avg -3.7% vs BTC · held 3.0d
+  multi-week  1 closed · win 0.0% · avg -1.0% vs BTC · held 5.0d
+
+BY CONFLUENCE PATTERN
+
+  No patterns have at least 3 samples yet.
+
+BY PROVENANCE
+
+  promoted from watchlist: no closed entries
+  direct entry: 4 closed · win 0.0% · avg -3.1% vs BTC
+
+NOTES
+
+  · Win rate at 0% is below the 40% danger threshold — review confluence patterns.
+
+OPEN POSITIONS · MARK TO MARKET (6)
 
   BCH SHORT (fired 2026-05-23, day 5/7d)
-    now $340 (stale price) · PnL +1.4% · MAE -5.0% · MFE +2.8%
+    now $332 (stale price) · PnL +3.7% · MAE -5.0% · MFE +4.0%
   EIGEN LONG (fired 2026-05-24, day 4/7d)
-    now $0.227 (stale price) · PnL -1.3% · MAE -4.3% · MFE +1.8%
-  AKT LONG (fired 2026-05-25, day 3/7d)
-    now $0.88 (stale price) · PnL +1.1% · MAE -2.3% · MFE +5.7%
-  RENDER LONG (fired 2026-05-26, day 2/7d)
-    now $2.19 (stale price) · PnL -4.2% · MAE -17.9% · MFE +0.4%
+    now $0.2255 (stale price) · PnL -1.9% · MAE -4.3% · MFE +1.8%
   TAO LONG (fired 2026-05-26, day 2/7d)
-    now $275 (stale price) · PnL -1.3% · MAE -3.0% · MFE +0.6%
+    now $261 (stale price) · PnL -6.3% · MAE -6.9% · MFE +0.6%
   ICP LONG (fired 2026-05-27, day 1/multi-week)
-    now — · PnL — · MAE — · MFE —
+    now $2.76 (stale price) · PnL -8.5% · MAE -9.3% · MFE -6.0%
   SEI LONG (fired 2026-05-27, day 1/multi-week)
+    now $0.0665 (stale price) · PnL -4.6% · MAE -6.0% · MFE -1.0%
+  XLM LONG (fired 2026-05-28, day 0/3d)
     now — · PnL — · MAE — · MFE —
