@@ -1,13 +1,28 @@
-## Summary
+Narratives · 28 May · 5 tracked
 
-Read and executed the narrative-tracker skill for 2026-05-28. The scheduled morning chain had **already run this skill today** — its full structured entry, the clean v2-locked artifact (`.outputs/narrative-tracker.md`), and the `#narratives` notification were all complete. This manual invocation was the **chain-then-immediate-re-invocation duplicate pattern** the morning run explicitly flagged to watch for today (prior hits 05-24, 05-27).
+↑ RISING
+• Hyperliquid / perp DEX [HYPE] · 3/5 · WATCH (was FADE)
+  un-faded on a real usage anchor: HIP-3 equity perps drive 35%+ of HYPE volume.
+  promote to RIDE on a range-high reclaim with top-trader L/S turning up. fade if it rolls over without the reclaim.
 
-**Decision:** Recognized it as a duplicate and did not regenerate. The data source (`.xai-cache/narratives.json`) is the same morning cache, so the map is unchanged — RWA 5/5 RIDE, AI agents + Decentralized compute 5/5 RIDE w/ trail, Privacy/ZK 4/5 RIDE w/ trail, Hyperliquid 3/5 WATCH, BTCFi DEAD.
+→ PEAK
+• RWA / tokenized equity [ONDO, BUIDL, OUSG] · 5/5 · RIDE (was RIDE w/ trail)
+  synthetic ownership leads the week: tokenized equity, equity perps, RWA perps volume $524.8B Q1.
+  reflexivity: issuance deepens perp liquidity, deeper liquidity pulls more issuance, the loop compounds.
 
-**Guardrails honored (ISS-003):**
-- Preserved the clean morning artifact — did **not** overwrite it with a Summary blob (the anti-pattern that corrupted the 05-27 artifact) or clobber the full map that downstream chains consume.
-- Did **not** queue a duplicate notification — the morning `#narratives` signal already went out (`.pending-notify/` drained), so a second message would spam the channel.
+• AI agents / agentic finance [TAO, VIRTUAL, FET] · 5/5 · RIDE w/ trail (was RIDE)
+  sector tripled to $22.6-27B, TAO real revenue ($43M Q1, AWS/Coinbase/Stripe rails) holds the floor.
+  the AI-bubble snag (Uber/OpenAI/Anthropic walk back the jobs narrative) is the trail trigger.
 
-**Files modified:** `memory/logs/2026-05-28.md` — appended a `### narrative-tracker (re-invocation)` entry documenting the recurrence and the no-op handling.
+• Decentralized compute / AI infra [RENDER, TAO, AKT] · 5/5 · RIDE w/ trail (was RIDE)
+  RENDER GPU-compute and TAO decentralized-AI theses intact, same AI-snag overhang.
+  no fresh TAO high today. the trail fires if the snag spreads to crypto-AI flows.
 
-**Follow-up:** The duplicate-pattern watch for 05-28 resolves — pattern recurred, handled without artifact corruption. The recurring re-invocation issue itself is the structural problem worth fixing upstream (the chain triggering the skill then the skill being re-invoked), not anything in the narrative map.
+• Privacy / ZK [ZEC, VVV] · 4/5 · RIDE w/ trail (was RIDE)
+  ZEC rolled $642 to $522, futures OI down 30%, the token tests $500. it leads the narrative down.
+  institutional stack intact (Grayscale ZCSH ETF, shielded pool 30%). trail at $500, RIDE w/ trail not FADE.
+
+Changes since yesterday:
+- BTCFi (DEAD, day-8 absence, off-board)
+
+Stance: RWA the standout RIDE on the fresh synthetic-ownership anchor. AI complex on a tight trail, privacy trails the ZEC roll-over.

@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-28T11:59:40Z",
+  "last_analyzed": "2026-05-28T22:31:34Z",
   "quality_score": 4,
-  "assessment": "Correctly handled duplicate invocation via deduplication logic, preserved morning artifacts, prevented notification spam, documented decision in memory log.",
+  "assessment": "Good substantive work with intelligent problem-solving—identified and recovered corrupted artifact, made thoughtful decisions about notifications and precedent—though truncated output and underlying system issue (guardrail failure) prevent excellence",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
