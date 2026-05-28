@@ -1,10 +1,10 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-27T08:16:13Z",
+  "last_analyzed": "2026-05-28T04:07:43Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-reasoned position brief with clear decisions, risk flagging, and actionable follow-ups; proper structure and soul-aligned narrative analysis.",
+  "assessment": "Substantive trading brief with quantified risk analysis, clear position decisions grounded in market context, and appropriate data caveats; JSON validation step skipped but structure verified by inspection.",
   "flags": [],
-  "avg_score": 4.04,
+  "avg_score": 4.03,
   "history": [
     {
       "date": "2026-05-18",
@@ -116,6 +116,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     }
   ]
