@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-28T03:37:32Z",
+  "last_analyzed": "2026-05-28T12:08:19Z",
   "quality_score": 4,
-  "assessment": "Substantive market context with specific data (BTC $73,769, F&G 22, Iran delta), clear regime assessment, and actionable narrative shifts for autonomous agent decision-making",
+  "assessment": "Good — substantive market data with current prices, deltas vs prior run, narrative assessment, and clear documentation of updates; well-structured and actionable for decision-making.",
   "flags": [],
   "avg_score": 4.11,
   "history": [
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
