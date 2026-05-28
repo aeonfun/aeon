@@ -1,10 +1,10 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-28T12:08:19Z",
+  "last_analyzed": "2026-05-28T22:24:25Z",
   "quality_score": 4,
-  "assessment": "Good — substantive market data with current prices, deltas vs prior run, narrative assessment, and clear documentation of updates; well-structured and actionable for decision-making.",
+  "assessment": "Substantive market refresh with specific metrics, regime analysis, and properly maintained files; truncated output prevents full verification",
   "flags": [],
-  "avg_score": 4.11,
+  "avg_score": 4.1,
   "history": [
     {
       "date": "2026-05-18",
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
