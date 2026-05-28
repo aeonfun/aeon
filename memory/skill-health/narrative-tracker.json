@@ -1,8 +1,8 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-27T07:44:44Z",
+  "last_analyzed": "2026-05-28T03:38:24Z",
   "quality_score": 4,
-  "assessment": "Well-structured deduplication with clear documentation of the morning run's results; intelligently avoided redundant work while preserving chain freshness, though the skill didn't re-execute its tracking logic.",
+  "assessment": "Substantive, well-structured narrative analysis with specific data points, clear state transitions, and actionable follow-ups; domain expertise required to verify claims",
   "flags": [],
   "avg_score": 4,
   "history": [
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     }
   ]
