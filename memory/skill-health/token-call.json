@@ -1,10 +1,10 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-27T07:47:19Z",
+  "last_analyzed": "2026-05-28T03:33:56Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-reasoned token analysis with specific metrics, catalysts, and risk management; good structure and sourcing.",
+  "assessment": "Substantive skill output with clear methodology, multi-source data, specific metrics, named catalysts, and quantified risk parameters. Well-structured and actionable.",
   "flags": [],
-  "avg_score": 4.27,
+  "avg_score": 4.26,
   "history": [
     {
       "date": "2026-05-18",
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     }
   ]
