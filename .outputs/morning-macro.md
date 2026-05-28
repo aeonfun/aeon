@@ -1,36 +1,25 @@
-Market Morning · 27 May · risk-off, crypto-specific fear
+Market Morning · 28 May · risk-off deepening
 
-BTC $75,814, -1.02% 24h on 7/20 breadth green.
-Dominance ticks up 0.07pp to 58.0%. ETH/BTC at 0.0274.
-F&G dropped 9 points to 25. Extreme Fear, first read since May 15.
-TVL bleeds 2-3% across Lido, SSV, Aave V3 on the week.
+BTC broke $74K, down 2.60% on the day and 5.31% on the week.
+Breadth collapsed to 5/20 green, the worst of this leg, F&G at 22 from 25.
+Dominance slipped to 57.82%, ETH/BTC to 0.02698. ETH leads the decline.
+Spot ETF outflows hit $733M in a single session. Capital is leaving crypto, not rotating within it.
+The week's bid belongs to RWA and tokenized equity, but the derivatives tape is dead with funding near zero.
 
-Privacy / ZK rotates to peak mindshare on the holy-trinity framing.
-Five distinct drivers today, vehicles split across ZEC, NEAR, VVV.
-AI agents and decentralized compute extend at peak as TAO printed a new 2026 high +48.2%.
-NEAR flushed -7.68%, ending the five-session AI-compute up-streak.
-
-Stance: cash-patient. Fear is crypto-specific, equities at records. Wait for the divergence to resolve.
+Stance: cash-patient on the index. A stock-picker's session, not a market bid.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-Tech equities printed ATH while crypto sits in Extreme Fear.
-Micron crossed $1T on AI memory demand. S&P and Nasdaq set fresh records.
-The IBIT outflow streak runs against the equities ATH print in the same week.
-Capital rotated from BTC into semis.
-
-A $1.3B dark pool block cleared cleanly on a -$334M IBIT day.
-HYPE ETF crossed 1.04% of market cap in 10 days, strongest crypto ETF debut ever.
-Institutional allocation switched vehicles, did not exit the asset class.
-30-day implied vol sits at multi-year lows on both sides. The expansion prints when one divergence resolves.
+The $733M outflow is not capital leaving crypto. It is rotating from BTC spot exposure into HYPE's buyback and revenue mechanism. Institutions buy yield instruments, not monetary proxies.
+ETH at $2K loses to equities at record highs every time. It needs a crypto-specific catalyst, and today provides none.
 
 
 ─────────  TODAY  ─────────
 
-Action lives in #perps-brief.
-Two new positions: ICP LONG on the MISSION70 deflation plus Caffeine V3 stack at the AI-compute / AI-agents intersection, SEI LONG on the June 15 EVM migration plus Xiaomi wallet rollout.
-Five positions ride: BCH SHORT, EIGEN LONG, AKT LONG, RENDER LONG, TAO LONG.
-Five on watchlist: PLAY SHORT, WLD LONG, ONDO LONG, ZEC SHORT, XAU LONG.
+Action lives in #perps-brief. The AI-compute concentration risk fired. The sector that swept the winners two days ago led the losers today.
+Closing AKT and RENDER at their stops, riding TAO and ICP on the relative strength that absorbed the flush.
+One idiosyncratic long: XLM ripped +17% on the DTCC tokenized-securities link to Stellar, top traders net short with OI +20% 24h — squeeze fuel under the breakout.
+XAU and ZEC sit on the watchlist.
 
-Take: AI-compute concentration extends to four longs with ICP. The trail stays tight. Cash-patient on the index, ride the named theses.
+Take: trim the compute book into the flush, hold relative strength, one stock-picker long on XLM. No broad risk-on here.

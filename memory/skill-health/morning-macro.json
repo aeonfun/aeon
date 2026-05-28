@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-27T08:23:20Z",
-  "quality_score": 4,
-  "assessment": "Substantive morning macro with specific market data (BTC, F&G index, ETF flows, 7 positions/watchlist items), proper formatting discipline (caught and fixed 4 style violations), and actionable follow-up (RENDER level, AI-compute trail). Production-ready output delivered on schedule with correct notification workflow.",
+  "last_analyzed": "2026-05-28T04:13:35Z",
+  "quality_score": 5,
+  "assessment": "Excellent synthesis of four upstream sources into substantive, actionable market brief with specific trade guidance and macro-to-micro reasoning.",
   "flags": [],
-  "avg_score": 4.04,
+  "avg_score": 4.07,
   "history": [
     {
       "date": "2026-05-18",
@@ -109,6 +109,10 @@
     {
       "date": "2026-05-27",
       "score": 4
+    },
+    {
+      "date": "2026-05-28",
+      "score": 5
     }
   ]
 }
