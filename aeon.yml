@@ -18,6 +18,7 @@ skills:
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: false, schedule: "0 9 * * *" }
   pr-triage: { enabled: false, schedule: "30 9 * * *", var: "" } # first-touch external-PR triage (verdict + label + welcoming comment); var: owner/repo or owner/repo#N for one-shot
+  pr-skill-triage: { enabled: false, schedule: "workflow_dispatch", model: "claude-sonnet-4-6", var: "" } # workflow_dispatch only — structured triage receipt for inbound PRs that introduce/modify SKILL.md files. Runs skill-security-scan against each SKILL.md, enumerates required secrets, checks cron slot conflicts vs existing aeon.yml, surfaces quality signals (description, step count, notify call, tags). Posts ONE structured comment per (PR, head_sha). var: PR_NUMBER on aaronjmars/aeon. Gated notify (BLOCK or COMMENT_FAILED only).
   pr-review: { enabled: false, schedule: "0 9 * * *" }
   auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
   github-monitor: { enabled: false, schedule: "0 9 * * *" }

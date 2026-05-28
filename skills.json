@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-23T18:21:12Z",
     "repo": "aaronjmars/aeon",
-    "total": 158,
+    "total": 159,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1066,6 +1066,18 @@
             "sha": "e26e7a2",
             "updated": "2026-04-29",
             "install": "./add-skill aaronjmars/aeon pr-triage"
+        },
+        {
+            "slug": "pr-skill-triage",
+            "name": "pr-skill-triage",
+            "description": "Structured triage for inbound PRs that introduce or modify SKILL.md files \u2014 per-skill security scan, required-secrets enumeration, cron slot-conflict check, basic quality signals, posted as one PR comment. workflow_dispatch only; var=PR_NUMBER",
+            "category": "dev",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-28",
+            "install": "./add-skill aaronjmars/aeon pr-skill-triage"
         },
         {
             "slug": "price-threshold-alert",
