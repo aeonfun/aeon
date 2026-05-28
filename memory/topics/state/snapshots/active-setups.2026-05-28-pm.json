@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-28T12:27:06Z",
+  "last_updated": "2026-05-28T04:07:53Z",
   "open": [
     {
       "id": "BCH-2026-05-23-001",
@@ -71,7 +71,7 @@
           "call": "RIDE",
           "price_at_eval": 332.0,
           "note": "Day 6/7. BCH absent from the 25-asset perps slice and from winners/losers/trending for the sixth straight session — price estimated near $332 from the deepest risk-off tape of the week (BTC -2.6%, breadth 5/20, top-20 only 4 green). High/low carry estimate uncertainty. Structural legacy-alt bleed intact, no catalyst defends the bid. Invalidation $370 well clear. Today's estimated low extends MFE toward +4%. RIDE into the final day.",
-          "slot": "pm",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -148,7 +148,7 @@
           "call": "RIDE",
           "price_at_eval": 0.2255,
           "note": "Day 5/7. EIGEN $0.2255 down -8.7% 24h as the AI-compute sector distributed, but only -1.9% from the $0.2299 entry with the $0.205 stop 9% below — the most cushion of the compute longs. Narrative still rates the sector a ride on a tight trail. The deep stop is what differentiates this hold from AKT/RENDER, which sit 2% above their stops. Invalidation $0.205 holds. RIDE.",
-          "slot": "pm",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -206,7 +206,7 @@
           "call": "RIDE",
           "price_at_eval": 260.71,
           "note": "Day 3/7. TAO $260.71 down -2.24% 24h, holding against compute peers down 9-12% — the relative-strength tell that the revenue-anchored name is treated as higher quality on a sector flush day. Invalidation $255 sits 2% below. Riding the best name in the compute book while closing the momentum names; a daily close below $255 ends it. RIDE on tight watch.",
-          "slot": "pm",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -290,7 +290,7 @@
           "call": "RIDE",
           "price_at_eval": 2.762,
           "note": "Day 2/multi-week. ICP $2.762 down -2.71% 24h, held better than the momentum names through the sector flush. First MAE/MFE tracked from today (day-1 had no eval) — underwater all session, MAE near -9.3%. The supply-deflation thesis is structural and multi-week, not a daily-price trade, and the $2.65 stop sits 4% below. RIDE.",
-          "slot": "pm",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -368,7 +368,7 @@
           "call": "RIDE",
           "price_at_eval": 0.0665,
           "note": "Day 2/multi-week. SEI absent from today's perps slice and from winners/losers — price estimated near $0.0665 (-4.6% from the $0.0697 entry) on the deepening risk-off tape; high/low carry estimate uncertainty. Different sector from the compute flush. The June 15 EVM migration is the dated catalyst and the $0.062 stop holds. RIDE day 2 of the multi-week thesis.",
-          "slot": "pm",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]

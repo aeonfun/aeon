@@ -1,8 +1,8 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-28T04:07:43Z",
+  "last_analyzed": "2026-05-28T12:26:56Z",
   "quality_score": 4,
-  "assessment": "Substantive trading brief with quantified risk analysis, clear position decisions grounded in market context, and appropriate data caveats; JSON validation step skipped but structure verified by inspection.",
+  "assessment": "Morning run delivered substantive artifacts with ledger operations applied; afternoon decision-making was strategically sound (declining re-run to prevent duplicate mutations and notifications), well-documented, and showed system understanding of corruption patterns.",
   "flags": [],
   "avg_score": 4.03,
   "history": [
@@ -116,6 +116,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
