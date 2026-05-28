@@ -1,36 +1,16 @@
-Daily Token Call · 28 May
-──────────────────────────
+Token-call already ran today as part of the morning chain — I detected the completed run and declined to clobber it.
 
-XLM · HIGH · 10/10
-$0.1731 · +17.2% 24h · +18.6% 7d
-mcap $5.81b · vol $696m · vol/mcap 0.12
+## Summary
 
+**Skill already executed today (2026-05-28).** The morning chain ran token-call before this invocation:
 
-SIGNALS
-  Vol/mcap 0.12 on a $5.81b cap — heavy turnover for a top-25 name, not a microcap pump.
-  On the CoinGecko trending list.
-  +17.2% 24h is nearly the whole +18.6% 7d — a fresh breakout today off a flat week, not a slow grind.
-  Outpaces a red BTC -5.3% and ETH -7.0% on the 7d by 24 points.
+- **Today's call:** XLM · HIGH · 10/10 ($0.1731, +17.2% 24h / +18.6% 7d, mcap $5.81b, vol/mcap 0.12) — idiosyncratic strength on a red tape, riding the DTCC/Stellar institutional-settlement bid, sized small with a trail under $0.152.
+- `.outputs/token-call.md` already holds the well-formed locked-format artifact for "28 May".
+- The complete log entry with `TOKEN_CALL_DEDUP: XLM` is at `memory/logs/2026-05-28.md:37-79`.
+- daily-ops-review already confirmed all 10 chain skills ran clean and that perps-brief consumed the XLM card.
 
-CATALYST
-  DTCC plans to connect its tokenized-securities platform to Stellar in H1 2027, covering stocks and US Treasuries.
-  A DTCC patent names XLM as the Digital Liquidity Token for cross-ledger settlement.
-  Bermuda is building a sovereign digital-dollar on Stellar.
-  The bipartisan Crypto Clarity Act cleared a Senate milestone May 27 — a regulatory tailwind for compliance-focused chains.
-  Stellar TVL sits near $1.08b and rising while the token lagged for months.
+**Why I did not re-run:** This is a same-day duplicate invocation. Re-executing would violate the skill's one-call-per-day discipline and either (a) re-pick XLM, which is now hard-dedup-blocked as today's own pick with no fresh catalyst, or (b) overwrite the clean 10/10 HIGH artifact with a weaker forced pick — the exact ISS-003/004/005 artifact-overwrite anti-pattern that the narrative-tracker run guarded against this morning.
 
-RISK
-  The DTCC connection is an H1 2027 event. The market is pricing a story a year out.
-  The +18.6% 7d is almost entirely today's bar, leaving the move extended and thin on confirmation.
-  Narrative tokens lead on the way down. A risk-off drag from BTC -5.3% 7d unwinds front-run positioning fast.
-  A 24h close back below $0.152 unwinds the breakout.
+**Action taken:** Preserved the existing artifact and morning log entry untouched. Appended a short audit note (`memory/logs/2026-05-28.md`) documenting the declined duplicate invocation for daily-ops-review's duplicate-fire tracking. No `./notify` (internal-only skill).
 
-DEDUP
-  First XLM call in 7 days.
-  SEI, ICP, RENDER, ASTER, AKT all excluded inside the window.
-
-
-Take: idiosyncratic strength on a red tape. XLM rides a real institutional-settlement bid while BTC and ETH bleed, but the catch is timing. The DTCC milestone is H1 2027 and today's +17% is a single-bar breakout, not a confirmed trend. Position small, trail under $0.152 — a narrative-momentum trade, not a year-long hold.
-
-
-not financial advice — pattern-matching only
+If you want a *fresh* re-evaluation despite today's call already being locked (e.g. because data has moved materially since the morning run), say so and I'll re-run the full scan and explicitly note it as an intentional same-day override.
