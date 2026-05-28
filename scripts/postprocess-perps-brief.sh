@@ -42,12 +42,27 @@ JSON_PATH=".outputs/perps-brief.data.json"
 MD_PATH=".outputs/perps-brief.md"
 LEDGER_PATH="memory/topics/state/active-setups.json"
 
-# CHAIN_SLOT: derive from current UTC hour. < 12 → "am", else → "pm".
+# CHAIN_SLOT: bucket by which 12-hour window centred on a slot midpoint
+# the current UTC time falls in:
+#
+#   AM slot midpoint = 00:00 UTC → bucket = 18:00-06:00 UTC (wraps midnight)
+#   PM slot midpoint = 12:00 UTC → bucket = 06:00-18:00 UTC
+#
+# Why the wider 6-hour bucket on each side instead of simple noon bisection:
+# crons in chain-runner.yml are shifted 3h30m earlier (20:30 + 08:30 UTC)
+# to compensate for GitHub Actions' fork-throttle delay. With measured
+# variance of ±1h42m, AM runs can land anywhere in 22:57-00:39 UTC —
+# straddling midnight. Simple `HOUR < 12 → am` would misclassify any AM
+# run that lands at 22:xx UTC the prior calendar day as "pm".
+#
+# Manual triggers (workflow_dispatch) anywhere in the day also bucket
+# correctly to whichever slot midpoint they're nearest.
+#
 # Used to disambiguate twice-daily artifacts: ledger snapshot filename,
 # evaluation entries, and bot embed footer tags. Computed once here and
 # exported so all downstream Python scripts share the same value.
 HOUR_UTC=$(date -u +%H)
-if [ "$HOUR_UTC" -lt 12 ]; then
+if [ "$HOUR_UTC" -ge 18 ] || [ "$HOUR_UTC" -lt 6 ]; then
   export CHAIN_SLOT=am
 else
   export CHAIN_SLOT=pm
