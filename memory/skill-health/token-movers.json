@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-28T03:33:00Z",
+  "last_analyzed": "2026-05-28T12:05:47Z",
   "quality_score": 4,
-  "assessment": "Well-executed with substantive market analysis, clean API integration, proper deduping logic, and organized follow-ups. Specific data points and trend analysis evident. No errors or anomalies.",
+  "assessment": "Well-structured market analysis with specific data points, proper sourcing, audit trail, and actionable follow-ups; demonstrates domain expertise and self-checking against style guide.",
   "flags": [],
-  "avg_score": 4.19,
+  "avg_score": 4.18,
   "history": [
     {
       "date": "2026-05-18",
@@ -109,6 +109,10 @@
     {
       "date": "2026-05-27",
       "score": 5
+    },
+    {
+      "date": "2026-05-28",
+      "score": 4
     },
     {
       "date": "2026-05-28",

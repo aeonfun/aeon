@@ -1,39 +1,37 @@
-# Token Movers — 2026-05-28
+# Token Movers — 2026-05-28 (re-run)
 
-Deepest risk-off of the week: 20/100 top coins green at a -2.65% median, top-20 only 4 green, ETH leads the majors down at -4.0% with BTC -2.6% and SOL -2.9%.
+Deepest risk-off of the week and still deepening: 9 of the top 100 green at a -4.0% median (the earlier run today had 20 green at -2.65%), top 20 down to 3 green, every major red with ETH -4.4% leading, and the AI sector rolled from soft fade into outright capitulation.
 
 ## Top Winners (24h)
-1. RAIN (Rain) — $0.0144  +24.2% / 7d +91.3% / 1h -0.9%  •  $44M / #15  [BREAKOUT][MAJOR] data-suspect
-2. XLM (Stellar) — $0.1731  +17.2% / 7d +18.6% / 1h -1.8%  •  $696M / #22  [TRENDING+UP]
-3. GENIUS (Genius) — $0.7784  +15.6% / 7d +73.1% / 1h +10.7%  •  $122M / #160  [BREAKOUT]
-4. BEAT (Audiera) — $1.20  +15.5% / 7d +90.7% / 1h +2.9%  •  $27M / #135  [BREAKOUT]
-5. FF (Falcon Finance) — $0.1023  +8.7% / 7d +12.0% / 1h -0.1%  •  $79M / #170
-6. JTO (Jito) — $0.5488  +7.2% / 7d +0.5% / 1h -0.3%  •  $78M / #163
-7. NIGHT (Midnight) — $0.0346  +4.8% / 7d +13.9% / 1h -0.2%  •  $24M / #93
-8. STABLE (Stable) — $0.0380  +4.5% / 7d +10.2% / 1h -0.7%  •  $16M / #76
+1. XLM (Stellar) — $0.1778  +21.0% / 7d +24.1% / 1h +1.5%  •  $1.1B / #22  [TRENDING+UP]
+2. BILL (Billions Network) — $0.0846  +10.5% / 7d +5.0% / 1h +0.2%  •  $76M / #183
+3. RAIN (Rain) — $0.0143  +8.9% / 7d +90.2% / 1h -0.1%  •  $44M / #14  [MAJOR] data-suspect
+4. BAT (Basic Attention) — $0.1035  +6.4% / 7d +5.3% / 1h +1.2%  •  $28M / #214
+5. LAB (LAB) — $4.49  +5.9% / 7d +1.3% / 1h -0.5%  •  $58M / #128
+
+Green side is XLM and noise. FF +7.4% and BEAT +3.1% carry from the earlier run, both decelerating. Everything under XLM sits single-digit on a tape where 91 of the top 100 are red.
 
 ## Top Losers (24h)
-1. H (Humanity) — $0.2123  -15.7% / 7d -16.8% / 1h -0.6%  •  $115M / #123  [CAPITULATION]
-2. PENDLE (Pendle) — $1.56  -13.8% / 7d -17.2% / 1h +0.1%  •  $55M / #162
-3. RENDER (Render) — $2.04  -12.5% / 7d +6.6% / 1h -0.7%  •  $144M / #66
-4. AKT (Akash) — $0.7954  -9.7% / 7d +1.2% / 1h -1.9%  •  $14M / #176
-5. VIRTUAL (Virtuals Protocol) — $0.7140  -9.4% / 7d -2.8% / 1h -1.6%  •  $130M / #111
-6. ONDO (Ondo) — $0.3709  -9.2% / 7d -8.2% / 1h -1.1%  •  $216M / #48  [TRENDING+DOWN]
-7. EIGEN (EigenCloud) — $0.2255  -8.7% / 7d +16.1% / 1h -2.3%  •  $25M / #203
-8. WLD (Worldcoin) — $0.3297  -8.6% / 7d +30.9% / 1h -0.2%  •  $261M / #63
+1. WLD (Worldcoin) — $0.2950  -18.3% / 7d +13.8% / 1h -0.7%  •  $305M / #70  [CAPITULATION]
+2. EIGEN (EigenCloud) — $0.2102  -14.3% / 7d +9.1% / 1h +0.2%  •  $28M / #213
+3. STRK (Starknet) — $0.0356  -13.1% / 7d -19.8% / 1h +0.6%  •  $28M / #176
+4. VIRTUAL (Virtuals Protocol) — $0.7029  -12.7% / 7d -2.6% / 1h -0.6%  •  $142M / #112  [CAPITULATION]
+5. RENDER (Render) — $1.98  -12.7% / 7d +2.7% / 1h -0.2%  •  $115M / #68
+6. BCH (Bitcoin Cash) — $300.8  -12.1% / 7d -19.9% / 1h -6.0%  •  $301M / #20  [MAJOR]
+7. SYRUP (Maple Finance) — $0.1688  -10.8% / 7d -16.3% / 1h -0.8%  •  $25M / #186
+8. FET (ASI Alliance) — $0.2197  -10.4% / 7d +14.8% / 1h -0.4%  •  $134M / #104  [CAPITULATION]
 
 ## Trending
-1. BONK (Bonk) — #107, $0.000005667, 24h -4.6%
-2. XLM (Stellar) — #22, $0.1754, 24h +18.7%  [TRENDING+UP]
-3. PENGU (Pudgy Penguins) — #105, $0.008093, 24h -4.5%
-4. HYPE (Hyperliquid) — #11, $58.12, 24h -4.7%  [MAJOR]
-5. BTC (Bitcoin) — #1, $74,090, 24h -2.2%  [MAJOR]
-6. NEAR (NEAR Protocol) — #34, $2.399, 24h -4.6%
-7. ZEC (Zcash) — #14, $542.7, 24h -4.1%  [MAJOR]
+1. BONK (Bonk) — #110, $0.000005360, 24h -9.4%  [TRENDING+DOWN]
+2. ENA (Ethena) — #80, $0.0874, 24h -8.9%  [TRENDING+DOWN]
+3. NEAR (NEAR Protocol) — #34, $2.38, 24h -5.4%  [TRENDING+DOWN]
+4. HYPE (Hyperliquid) — #11, $56.95, 24h -9.3%  [TRENDING+DOWN][MAJOR]
+5. SOL (Solana) — #7, $80.75, 24h -3.7%  [TRENDING+DOWN][MAJOR]
+6. SLX (Solstice) — #452, $0.2187, 24h +1.6%
+7. PENGU (Pudgy Penguins) — #108, $0.007823, 24h -7.2%  [TRENDING+DOWN]
 
 ## Notable
-- XLM catches the only clean bid among the majors, +17.2% while 80 of the top 100 print red. Moving on its own thesis, not beta. The lone fresh signal on the board.
-- HYPE flips to red trending at -4.7% after two TRENDING+UP sessions. The cycle-leader bounce failed to confirm on the third session. The rebound resolved into the downside.
-- ZEC prints a third consecutive red trending session at -4.1%, #14 cap. The privacy/ZK structural bid broke at the major level. 7d went negative, the week's gain gone.
-- RAIN +24.2% [BREAKOUT][MAJOR] at #15, but $44M volume on a claimed $7.2B mcap holds vol/mcap at 0.005, the liquidity profile of a microcap dressed as a major. Day-3 unverified. Treat the print as a supply-calculation error.
-- AI-compute unwind broadens: RENDER -12.5%, WLD -8.6%, AKT -9.7%, VIRTUAL -9.4% all print red. The leaders that swept the winners list on 05-26 now lead the losers. NEAR's flip yesterday opened the move; the sector follows today.
+- XLM +21.0% TRENDING+UP: second straight green session as the only real bid on the board. The earlier run called for a second green print to confirm the move was not a one-day spike. It printed. XLM is trading on its own settlement-narrative bid, not the tape. It rose 21% on a day every major fell.
+- AI capitulated as a sector: WLD -18.3%, SKYAI -13.6%, VIRTUAL -12.7%, FET -10.4%, all on capitulation-grade volume. The cluster ran -9 to -12% earlier today and rolled outright. FET flushed on the AGIX migration-unlock day. That is the fade-on-unlock the calendar pointed to.
+- BCH -12.1%, #20 by cap, still bleeding -6.0% in the last hour: the cleanest large-cap breakdown on the board, day-5 of the move.
+- ZEC printed a 4th consecutive red trending session (-8.2%, #15), confirming the privacy/ZK major-level break the earlier run set conditional on a 4th red print. RAIN data anomaly hits day-4 ($8.9B claimed cap on $44M volume, vmc 0.005). Exclude from signal until circulating supply verifies.
