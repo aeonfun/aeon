@@ -20,6 +20,7 @@ set -euo pipefail
 #   ./install-skill-pack <github-repo> --yes                 Auto-accept HIGH findings (CI/non-interactive)
 #   ./install-skill-pack <github-repo> --force               Install even if security scan finds HIGH issues
 #   ./install-skill-pack <github-repo> --dry-run             Preview without writing
+#   ./install-skill-pack --list --no-secrets                 List only registry packs whose skills declare no secrets_required
 #
 # Manifest format (skills-pack.json, at pack root or under --path):
 #   {
@@ -36,7 +37,9 @@ set -euo pipefail
 #         "description": "What the skill does",                (optional, falls back to SKILL.md frontmatter)
 #         "category": "research|dev|crypto|social|productivity", (optional)
 #         "schedule": "0 12 * * *",                            (optional, default 0 12 * * *)
-#         "default_enabled": false                              (optional, default false)
+#         "default_enabled": false,                             (optional, default false)
+#         "secrets_required": ["VENICE_API_KEY"],               (optional — env vars the skill cannot run without)
+#         "secrets_optional": ["VENICE_MODEL"]                  (optional — env vars that tune behaviour but aren't required)
 #       }
 #     ]
 #   }
@@ -117,6 +120,7 @@ load_registry() {
 }
 
 list_registry() {
+  local no_secrets="${1:-false}"
   if ! command -v jq >/dev/null 2>&1; then
     echo "jq is required to read the registry." >&2
     exit 1
@@ -132,37 +136,56 @@ list_registry() {
   total=$(echo "$registry_json" | jq '.packs | length')
   echo ""
   echo "Community skill pack registry${updated:+ (updated $updated)}"
+  [[ "$no_secrets" == "true" ]] && echo "Filter: --no-secrets (hiding packs whose skills declare any secrets_required)"
   echo ""
+  local shown=0 hidden=0
   for i in $(seq 0 $((total - 1))); do
-    local repo desc trust skill_count
+    local repo desc trust skill_count secrets_count secrets_marker
     repo=$(echo "$registry_json" | jq -r ".packs[$i].repo")
     desc=$(echo "$registry_json" | jq -r ".packs[$i].description // \"\"")
     trust=$(echo "$registry_json" | jq -r ".packs[$i].trust_level // \"community\"")
     skill_count=$(echo "$registry_json" | jq ".packs[$i].skills | length // 0")
+    # secrets_required at the pack level is the aggregate; missing/null means none.
+    secrets_count=$(echo "$registry_json" | jq ".packs[$i].secrets_required | length // 0")
+    if [[ "$no_secrets" == "true" ]] && [[ "$secrets_count" != "0" ]]; then
+      hidden=$((hidden + 1))
+      continue
+    fi
     local trust_badge=" "
     [[ "$trust" == "trusted" ]] && trust_badge="*"
+    secrets_marker=""
+    [[ "$secrets_count" != "0" ]] && secrets_marker=" [needs ${secrets_count} secret(s)]"
     if [[ ${#desc} -gt 80 ]]; then desc="${desc:0:77}..."; fi
-    printf "  %s %-44s %2d skills  %s\n" "$trust_badge" "$repo" "$skill_count" "$desc"
+    printf "  %s %-44s %2d skills  %s%s\n" "$trust_badge" "$repo" "$skill_count" "$desc" "$secrets_marker"
+    shown=$((shown + 1))
   done
   echo ""
   echo "  * = trusted source (security scan skipped, format check still runs)"
+  echo "  [needs N secret(s)] = pack declares N entries in secrets_required — set them in the workflow before first run"
   echo ""
-  echo "$total packs in registry. Install with: ./install-skill-pack <repo>"
+  if [[ "$no_secrets" == "true" ]]; then
+    echo "$shown of $total packs shown ($hidden hidden by --no-secrets). Install with: ./install-skill-pack <repo>"
+  else
+    echo "$total packs in registry. Install with: ./install-skill-pack <repo>"
+  fi
   exit 0
 }
 
-# Registry-list mode: `./install-skill-pack --list` (no repo, no other flags) prints
-# every pack in skill-packs.json. We do a focused detect-and-route here so the
-# original single-pack flow below is unchanged.
+# Registry-list mode: `./install-skill-pack --list` (no repo, optionally with
+# --no-secrets) prints the registry. We do a focused detect-and-route here so
+# the original single-pack flow below is unchanged. Any unrecognised flag or
+# positional argument disqualifies registry mode.
 detect_registry_list_mode() {
   local list_seen=false
+  REGISTRY_NO_SECRETS=false
   for arg in "$@"; do
     case "$arg" in
       --list) list_seen=true ;;
+      --no-secrets) REGISTRY_NO_SECRETS=true ;;
       --help|-h) return 1 ;;
       *)
-        # Any non-list flag OR any positional argument disqualifies registry mode
-        # — the user wants to operate on a specific pack.
+        # Any non-list/non-no-secrets flag OR any positional argument disqualifies
+        # registry mode — the user wants to operate on a specific pack.
         return 1
         ;;
     esac
@@ -171,7 +194,7 @@ detect_registry_list_mode() {
 }
 
 if detect_registry_list_mode "$@"; then
-  list_registry
+  list_registry "$REGISTRY_NO_SECRETS"
 fi
 
 if [[ $# -lt 1 ]] || [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
@@ -242,12 +265,16 @@ if [[ -n "$SUBPATH" ]]; then
 fi
 
 # Reset declarations (no associative arrays — they require Bash 4+ which macOS lacks).
+# SKILL_SECRETS_REQ / SKILL_SECRETS_OPT hold space-separated env-var names per skill
+# (parallel arrays — same index as SLUGS). Empty string means none declared.
 SLUGS=()
 SKILL_PATHS=()
 SKILL_DESCS=()
 SKILL_CATS=()
 SKILL_SCHEDS=()
 SKILL_DEFAULT_ENABLED=()
+SKILL_SECRETS_REQ=()
+SKILL_SECRETS_OPT=()
 MANIFEST_FOUND=false
 MANIFEST_PATH="$PACK_DIR/skills-pack.json"
 
@@ -301,12 +328,18 @@ if [[ -f "$MANIFEST_PATH" ]]; then
     cat=$(jq -r ".skills[$i].category // \"\"" "$MANIFEST_PATH")
     sched=$(jq -r ".skills[$i].schedule // \"0 12 * * *\"" "$MANIFEST_PATH")
     default_enabled=$(jq -r ".skills[$i].default_enabled // false" "$MANIFEST_PATH")
+    # secrets_required / secrets_optional are optional string arrays. Render
+    # them as space-separated env-var names (the per-skill loop splits on " ").
+    secrets_req=$(jq -r ".skills[$i].secrets_required // [] | join(\" \")" "$MANIFEST_PATH")
+    secrets_opt=$(jq -r ".skills[$i].secrets_optional // [] | join(\" \")" "$MANIFEST_PATH")
     SLUGS+=("$slug")
     SKILL_PATHS+=("$rel_path")
     SKILL_DESCS+=("$desc")
     SKILL_CATS+=("$cat")
     SKILL_SCHEDS+=("$sched")
     SKILL_DEFAULT_ENABLED+=("$default_enabled")
+    SKILL_SECRETS_REQ+=("$secrets_req")
+    SKILL_SECRETS_OPT+=("$secrets_opt")
   done
 else
   echo "No skills-pack.json — falling back to scanning skills/ in $REPO"
@@ -325,6 +358,8 @@ else
     SKILL_CATS+=("")
     SKILL_SCHEDS+=("0 12 * * *")
     SKILL_DEFAULT_ENABLED+=("false")
+    SKILL_SECRETS_REQ+=("")
+    SKILL_SECRETS_OPT+=("")
   done < <(find "$scan_root" -mindepth 2 -maxdepth 2 -name SKILL.md -type f 2>/dev/null | sort)
 fi
 
@@ -365,6 +400,8 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
   FILTERED_CATS=()
   FILTERED_SCHEDS=()
   FILTERED_DEFAULT=()
+  FILTERED_SECRETS_REQ=()
+  FILTERED_SECRETS_OPT=()
   for want in "${REQUESTED_SLUGS[@]}"; do
     found=false
     for i in "${!SLUGS[@]}"; do
@@ -375,6 +412,8 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
         FILTERED_CATS+=("${SKILL_CATS[$i]}")
         FILTERED_SCHEDS+=("${SKILL_SCHEDS[$i]}")
         FILTERED_DEFAULT+=("${SKILL_DEFAULT_ENABLED[$i]}")
+        FILTERED_SECRETS_REQ+=("${SKILL_SECRETS_REQ[$i]}")
+        FILTERED_SECRETS_OPT+=("${SKILL_SECRETS_OPT[$i]}")
         found=true
         break
       fi
@@ -390,6 +429,8 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
   SKILL_CATS=("${FILTERED_CATS[@]}")
   SKILL_SCHEDS=("${FILTERED_SCHEDS[@]}")
   SKILL_DEFAULT_ENABLED=("${FILTERED_DEFAULT[@]}")
+  SKILL_SECRETS_REQ=("${FILTERED_SECRETS_REQ[@]}")
+  SKILL_SECRETS_OPT=("${FILTERED_SECRETS_OPT[@]}")
 fi
 
 # Check trusted-sources for the pack repo.
@@ -467,6 +508,45 @@ scan_and_prompt() {
 if [[ "$TRUSTED_SOURCE" == "false" ]] && [[ ! -x "$SCANNER" ]]; then
   echo "Warning: security scanner not found at $SCANNER — skipping per-skill scans."
 fi
+
+# Surface required/optional secrets declared by the manifest. Loud warning, no
+# gate — the operator may install dry-run, or wire the secret afterward before
+# the first scheduled run. Called after scan_and_prompt clears, before file copy.
+#
+# Names that don't look like POSIX env-var identifiers ([A-Za-z_][A-Za-z0-9_]*)
+# are flagged as malformed instead of being passed to `${!var}` — indirect
+# expansion of `FOO-BAR` or `1FOO` triggers a bad-substitution error that
+# `set -u` turns into a script abort, and a manifest is untrusted input.
+warn_missing_secrets() {
+  local skill="$1"
+  local req_list="$2"   # space-separated env var names, may be empty
+  local opt_list="$3"   # space-separated env var names, may be empty
+  if [[ -n "$req_list" ]]; then
+    local missing=() malformed=()
+    for var in $req_list; do
+      if ! [[ "$var" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+        malformed+=("$var")
+        continue
+      fi
+      # Indirect expansion — empty means unset OR set-to-empty (both block the skill).
+      # Safe now: identifier was validated above.
+      if [[ -z "${!var:-}" ]]; then
+        missing+=("$var")
+      fi
+    done
+    if [[ ${#missing[@]} -gt 0 ]]; then
+      echo "  ⚠ secrets_required missing for $skill: ${missing[*]}"
+      echo "      set these in \`secrets:\` of your workflow before the first scheduled run"
+    fi
+    if [[ ${#malformed[@]} -gt 0 ]]; then
+      echo "  ⚠ secrets_required for $skill includes malformed env-var names (skipped): ${malformed[*]}"
+      echo "      pack maintainer: each entry must match [A-Za-z_][A-Za-z0-9_]*"
+    fi
+  fi
+  if [[ -n "$opt_list" ]]; then
+    echo "  · secrets_optional for $skill (tunes behaviour, not required): $opt_list"
+  fi
+}
 
 # skills.json mutation needs jq — same dependency as add-skill.
 if ! command -v jq >/dev/null 2>&1; then
@@ -589,6 +669,8 @@ for i in "${!SLUGS[@]}"; do
     FAILED=$((FAILED + 1))
     continue
   fi
+
+  warn_missing_secrets "$slug" "${SKILL_SECRETS_REQ[$i]}" "${SKILL_SECRETS_OPT[$i]}"
 
   dest="$SKILLS_DIR/$slug"
 

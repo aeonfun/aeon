@@ -59,7 +59,9 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
       "description": "What this skill does",
       "category": "research",
       "schedule": "0 12 * * *",
-      "default_enabled": false
+      "default_enabled": false,
+      "secrets_required": ["VENICE_API_KEY"],
+      "secrets_optional": ["VENICE_MODEL"]
     }
   ]
 }
@@ -82,6 +84,8 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
 | `skills[].category` | string | optional | One of `research`, `dev`, `crypto`, `social`, `productivity`. Defaults to `research` in `skills.json`. |
 | `skills[].schedule` | string | optional | Cron string written into `aeon.yml`. Default `0 12 * * *`. |
 | `skills[].default_enabled` | boolean | optional | If `true`, the skill is added to `aeon.yml` with `enabled: true`. Default `false` (operator opts in explicitly). |
+| `skills[].secrets_required` | string[] | optional | Env vars the skill **cannot run without** (e.g. API keys). `install-skill-pack` warns loudly when any are unset before the first scheduled run, but does **not** gate the install — an operator may install dry-run or wire the secret afterward. |
+| `skills[].secrets_optional` | string[] | optional | Env vars that tune behaviour but aren't required (e.g. a model override). Surfaced at install for visibility; informational only. |
 
 ### What's enforced
 
@@ -190,7 +194,8 @@ The operator is always the trust boundary. The install script does not auto-trus
       "homepage": "https://...",
       "category": "research|dev|crypto|social|productivity",
       "trust_level": "trusted|community",
-      "skills": ["slug-1", "slug-2"]
+      "skills": ["slug-1", "slug-2"],
+      "secrets_required": ["VENICE_API_KEY"]
     }
   ]
 }
@@ -209,6 +214,7 @@ The operator is always the trust boundary. The install script does not auto-trus
 | `category` | string | optional | Same vocabulary as per-skill category. |
 | `trust_level` | string | optional | `trusted` (also requires the source in `skills/security/trusted-sources.txt`) or `community`. Default `community`. Listing here is a discovery hint — the actual scan-bypass behaviour is decided by the trusted-sources file. |
 | `skills[]` | array | **required** | Slugs the pack ships. Mirror the pack's own `skills-pack.json`. |
+| `secrets_required` | string[] | optional | Aggregated list of env vars the pack's skills declare as required. Drives the `./install-skill-pack --list --no-secrets` filter, which hides any pack with a non-empty `secrets_required`. Keep this in sync with the union of `skills[].secrets_required` in the pack's own `skills-pack.json`. |
 
 ### Why two files (README table + skill-packs.json)?
 
