@@ -1,10 +1,14 @@
 {
   "skill": "outcome-tracker",
-  "last_analyzed": "2026-05-28T12:01:35Z",
-  "quality_score": 4,
-  "assessment": "Substantive skill execution with meaningful findings — verified inputs, identified V1 window threshold crossed, analyzed performance composition, and properly deferred to postprocess; well-documented with clear follow-up actions.",
-  "flags": [],
-  "avg_score": 4,
+  "last_analyzed": "2026-05-28T22:20:13Z",
+  "quality_score": 3,
+  "assessment": "Skill executed competently within constraints but flagged data quality issues (stale pricing on 5/6 positions, 1 unpriced) and concerning results (0% win rate below danger threshold) limit actionability.",
+  "flags": [
+    "stale_data",
+    "incomplete_output",
+    "sandbox_limitation"
+  ],
+  "avg_score": 3.89,
   "history": [
     {
       "date": "2026-05-25",
@@ -37,6 +41,10 @@
     {
       "date": "2026-05-28",
       "score": 4
+    },
+    {
+      "date": "2026-05-28",
+      "score": 3
     }
   ]
 }
