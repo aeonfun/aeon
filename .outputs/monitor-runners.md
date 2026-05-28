@@ -1,24 +1,25 @@
-Yesterday's Runners · 27 May · SPECULATIVE (5 BREAKOUT, zero DEEP-LIQ in top 5)
+Yesterday's Runners · 28 May · SPECULATIVE (4 BREAKOUT + 1 CONTINUATION, zero DEEP-LIQ in top 5)
+
+CONTINUATION
+• CatFi (sol) +759% 24h
+  $979k vol, $13k liq, 481-day pool, h1 +21%, h6 -17%, buys 60%
+  → the only pick still adding through the latest bar, but $13k liq is the thinnest pad on the board. The six-hour already rolled -17%, so the +21% hourly is a bounce inside a fade, not clean continuation. Watch whether the hourly holds into tomorrow or fails back.
 
 BREAKOUT
-• SLX (bsc) +1572% 24h
-  $44m vol, $62k liq, pool 30m old, buys 51%
-  → the entire print sits inside a 30-minute pool, $44m vol on $62k liq reads wash-heavy not organic demand
+★ NOAR (sol) +657% 24h
+  $41m vol, $218k liq, 22h pool, h1 0%, h6 0%, buys 52%
+  → day-4 cluster, 05-25 through today, four distinct contracts surviving. The lead pool went dormant, but the fresh 2.4h sibling adds at +10% hourly on a +389% six-hour burst. The name-farm rotates the burst to its newest pool each session.
 
-• FOUR (sol) +3947% 24h
-  $41m vol, $267k liq, 3.6h pool, h1 +28%, h6 +3947%, buys 52%
-  → hourly still adds aggressively, the only top-5 fresh launch whose live tape has not quit
+• WADZ (eth) +976% 24h
+  $2.3m vol, $398k liq, 11h pool, h1 -13%, h6 -38%, buys 72%
+  → biggest headline on the slate but the round trip is underway. Hourly -13%, six-hour -38%, the bid stepped off hard. Rare eth-side name, but the tape already quit.
 
-• ISOR (sol) +1017% 24h
-  $47m vol, $264k liq, 11.1h pool, h1 +18%, h6 +77%, buys 52%
-  → hourly fired this afternoon from morning's flat read, the only morning pick with the bid still firing
+• GOSLINGS (sol) +784% 24h
+  $5.4m vol, $51k liq, 15h pool, h1 -14%, h6 -37%, buys 55%
+  → same fade shape as WADZ, both recent bars deeply red. The $51k pad amplifies the unwind above. Print already done.
 
-• USGS (sol) +2652% 24h
-  $44m vol, $261k liq, 15.6h pool, h1 0%, h6 +1%, buys 55%
-  → the 27x already printed, hourly went flat hours ago, distribution shape on a $44m vol against $261k liq profile
+★ SAOS (sol) +437% 24h
+  $42m vol, $221k liq, 6h pool, h1 +1%, h6 +437%, buys 51%
+  → reactivation holds a second straight session, four contracts today up from three yesterday afternoon. The fresh 6h sibling carries the +437% six-hour burst. Same recycling lineage as NOAR.
 
-★ SAOS (sol) +502% 24h
-  $37m vol, $278k liq, 6.2h pool, h1 -1%, h6 +50%, buys 51%
-  → cluster relights with a fresh 6.2h sibling, three SAOS contracts in the survivor set up from morning's two
-
-vibe: the morning live print quit, the slate fills with fresh launches
+vibe: headline pools dormant or fading, the live bids sit in fresh name-farm siblings
