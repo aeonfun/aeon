@@ -1,68 +1,68 @@
 # Market Context (as of 2026-05-28)
 
-> **Take:** risk-off — BTC -2.60% 24h at $73,769 with 5/20 top-cap majors green and F&G falling to 22 (Extreme Fear). Conviction: high — BTC, breadth, F&G, and 7d TVL all deteriorate together; no contradicting signal.
+> **Take:** risk-off — BTC -2.98% 24h at $73,399 with 3/20 top-cap majors green and $733M BTC ETF outflows in a single day. Conviction: high.
 
 ## Signal Snapshot
-- BTC $73,769 (-2.60% 24h, -5.31% 7d) · dominance 57.82% (-0.18 pp 24h)
-- ETH $1,990 (-4.05% 24h, -6.96% 7d) · ETH/BTC 0.02698
-- SOL $81.33 (-2.90% 24h, -6.04% 7d)
-- Total mcap $2.56T (-1.82% 24h) · DEX vol $6.24B 24h
-- Breadth: 5/20 green 24h · 3/20 green 7d
+- BTC $73,399 (-2.98% 24h, -4.87% 7d) · dominance 57.86% (+0.04 pp 24h)
+- ETH $1,987 (-4.35% 24h, -5.96% 7d) · ETH/BTC 0.02708
+- SOL $80.75 (-3.70% 24h, -5.89% 7d)
+- Total mcap $2.54T (-2.97% 24h) · DEX vol $6.28B 24h
+- Breadth: 3/20 green 24h · 1/20 green 7d
 - Fear & Greed: 22 (Extreme Fear) — yesterday 25
 
 ## What Changed Since Last Refresh
-- BTC fell from $75,814 to $73,769 (-2.7%) — risk-off deepens past yesterday's -1.02% session.
-- Iran peace deal YES% collapsed from 23.5% to 12.5% on $6.4M overnight volume. US strikes resumed in late May. Deal probability near-halved in one session.
-- Breadth dropped from 7/20 to 5/20 green on 24h — fewest majors above water since the risk-off leg started.
-- F&G compressed from 25 to 22. Extreme Fear deeping at the margin, not stabilizing.
-- ETH/BTC ratio fell from 0.02739 to 0.02698. ETH underperforming BTC on the move down.
-- ETF outflow streak through May 25: -$1.55B cumulative over six days; YTD net inflows collapsed to $536M.
+- Iran deal YES% fell from 12.5% to 7.5% on $7.5M volume. Deal at near-fractional probability with three days to the May 31 window.
+- BTC ETF outflows accelerated to $733M in a single day, six-day streak. Institutional selling intensifying.
+- Breadth dropped from 5/20 to 3/20 green 24h. Worst reading of the leg.
+- HYPE at $56.95, -8.96% 24h. Sector leader rolled from peak; 12% below the May-24 ATH at $64.27.
+- XLM +20.37% 24h. DTCC tokenization deal announced May 27 gives Stellar a concrete institutional catalyst. Only green major in the top-20 today.
 
 ## Active Narratives
-- **Perp-DEX (HYPE)** — phase: peak. Evidence: HYPE -4.15% 24h, +3.18% 7d; CoinGecko trending rank 4; May-24 ATH at $64.27 not tested as risk-off absorbs the momentum bid.
-- **AI/Decentralized compute (NEAR, VVV)** — phase: peak, fading start. Evidence: NEAR -4.60% and VVV -2.18% on 24h; no AI-compute names bucking the broad decline today; idiosyncratic strength absent across the sector.
-- **Privacy/ZK (ZEC, RAIL)** — phase: fading. Evidence: ZEC -4.51% 24h, -19.50% 7d; May-21 entry at $667.93 approximately 18% underwater; seven-day price action refutes the institutional narrative from Grayscale ETF filing and Multicoin accumulation.
-- **RWA/Tokenization (ONDO)** — phase: fading. Evidence: ONDO -9.15% 24h; May 29 utility-anchor deadline arrived without a fresh catalyst; RWA mindshare stalled across the session.
+- **XLM / RWA on public chain** — phase: emerging. Evidence: DTCC announced May 27 plans to tokenize DTC-custodied assets on Stellar in H1 2027; XLM sole top-20 major printing green today at +20.37% 24h.
+- **Perp-DEX (HYPE)** — phase: fading. Evidence: HYPE -8.96% 24h at $56.95; CoinGecko trending rank 11 but deep red; the momentum bid reversed at the peak, now 12% below the May-24 ATH.
+- **Privacy/ZK (ZEC)** — phase: fading. Evidence: ZEC -8.09% 24h, -20.76% 7d; now at $526 vs $667.93 pick entry on May 21 (-21%); price action overrides the Grayscale and Multicoin institutional narrative.
+- **AI/DePIN compute (NEAR, VVV, TAO)** — phase: fading. Evidence: NEAR -5.43%, VVV -9.43%, TAO -6.50% 24h; all three CoinGecko trending; no sector name bucking the broad decline; RENDER/AKT led today's loser list inside the sector.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $17.96B (-4.81%)
-- SSV Network: $14.85B (-5.76%)
-- Aave V3: $13.7B (prior value; DeFiLlama API dominated by CEX entries in top-5 fetch)
-- WBTC: $8.6B (prior value)
-- Binance staked ETH: $7.7B (prior value)
+- Lido: $17.66B (-6.77%)
+- SSV Network: $14.66B (-6.75%)
+- Aave V3: $13.09B (-8.00%)
+- WBTC: $8.37B (-5.94%)
+- Binance staked ETH: $7.36B (-6.70%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.31B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.51B (7d change: n/a)
-- Solana: $5.29B (7d change: n/a)
+- Ethereum: $41.86B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.44B (7d change: n/a)
+- Solana: $5.23B (7d change: n/a)
 
 ## Stablecoins
-Total: $288.2B (≈flat 7d). USDT $189.1B · USDC $76.5B · USDS $8.76B · USD1 $4.77B · DAI $4.60B · USDe $4.49B · combined top-6 share of mcap ~11.2%.
+Total: $288.2B (≈flat 7d). USDT $189.1B · USDC $76.5B · USDS $8.83B · USD1 $4.77B · DAI $4.59B · USDe $4.49B · combined top-6 share of mcap ~11.3%.
 
 ## Trending (CoinGecko)
-- HYPE — Hyperliquid, rank 11, -4.15% 24h; perp-DEX leader trending through a risk-off session; ATH zone not tested.
-- ZEC — Zcash, rank 14, -4.51% 24h; privacy narrative intact institutionally but -19.50% 7d price action contradicts; entry at $667.93 underwater.
-- NEAR — NEAR Protocol, rank 34, -4.60% 24h; AI-compute sector selling with the broad tape; idiosyncratic strength absent.
-- XLM — Stellar, rank 22, +18.67% 24h; outlier green in a risk-off session; warrant a catalyst check before attributing to narrative rotation.
-- RAIN — Prediction markets infrastructure, rank 336, +24.22% 24h; prior data quality flag holds (vol/mcap anomaly on the $7.2B supply figure — price action real, mcap number unreliable).
-- ONDO — Ondo, rank 48, -9.15% 24h; RWA fading with the tape.
-- VVV — Venice Token, rank 83, -2.18% 24h; AI agents sector underperforming.
+- HYPE — Hyperliquid, rank 11, -9.33% 24h; perp-DEX sector leader in sharp decline; 12% below the May-24 ATH.
+- ZEC — Zcash, rank 15, -8.24% 24h; privacy/ZK lead name breaking down; -20.76% 7d contradicts the institutional bid narrative.
+- XLM — Stellar, rank 22, +20.37% 24h; DTCC tokenization deal catalyst; sole green major in the top-20 today.
+- NEAR — NEAR Protocol, rank 34, -5.43% 24h; AI-compute sector fading; third consecutive red trending session.
+- SUI — Sui, rank 30, -8.71% 24h; L2/alt-chain selling with the broad market.
+- TAO — Bittensor, rank 39, -6.50% 24h; decentralized AI compute fading.
+- VVV — Venice Token, rank 84, -9.43% 24h; AI agents sector declining.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| US x Iran permanent peace deal by May 31 | 12.5% | $6.4M | $844k |
+| US x Iran permanent peace deal by May 31 | 7.5% | $7.5M | $1.4M |
+| Will Reza Pahlavi lead Iran in 2026 | 6.5% | $1.6M | $173k |
 
-*Iran deal probability halved from 23.5% (yesterday) to 12.5% today on the highest Polymarket 24h volume of the session. US strikes on Iranian targets in late May gutted deal momentum. Three days remain to the May 31 resolution window.*
+*Iran deal YES% dropped from 12.5% to 7.5% on the highest-volume session yet ($7.5M 24h). Deal probability halved again in one session. Reza Pahlavi regime-change market at 6.5% actively traded as geopolitical tail risk into the May 31 window.*
 
 ## Macro Catalysts (next 48h)
-- **Iran escalation:** US strikes resumed. Peace deal at 12.5% YES and declining. Risk premium building into the May 31 window — stocks-crypto decoupling deepens if deal collapses to near-zero.
-- **Treasury auction window close (May 28):** Final day of the May 26–28 cycle. Weak outcomes push yields higher; risk-asset headwinds persist into month-end.
-- **Fed Chair Warsh policy stance:** Kevin Warsh took over from Powell on May 15. First clear policy signals still unread by the market; ambiguity caps risk appetite.
+- **Iran escalation:** US strikes ongoing. Peace deal at 7.5% YES and falling. May 31 resolution window in three days. A collapse to near-zero would extend the risk premium into June.
+- **BTC ETF outflows:** Six-day streak, $733M single-day outflow. Institutional selling accelerated as risk-off deepened. Outflow reversal is the binary signal for a regime shift.
+- **Fed/Treasury:** Treasury auction window closed today (May 28). Yield pressure and dollar strength compressed risk assets into month-end. No fresh catalyst expected before June.
 
 ## Implications for Downstream Skills
-- **token-call:** Full risk-off. No fresh entries at 5/20 breadth and F&G at 22. HYPE ATH window closing as risk-off absorbs the momentum bid. ZEC stop required now. Entry at $667.93 approximately 18% underwater; price action breaking down regardless of institutional narrative. Hold SEI thesis (Giga upgrade H1, June 15 EVM migration intact) but no add. Re-evaluate when BTC holds above $75K for a full session or breadth recovers past 10/20.
-- **narrative-tracker:** Privacy/ZK demoted to fading — ZEC -19.50% 7d overrides the institutional narrative read. RWA confirmed fading with ONDO -9.15%. XLM +18.67% warrants a catalyst check; if a concrete driver exists, flag as potentially emerging. AI-compute enters fading phase if NEAR extends the down-streak to three sessions.
+- **token-call:** Full risk-off at 3/20 breadth and F&G 22. No new entries. ZEC long thesis broken. Price at $526 is 21% below the $667.93 entry, invalidation triggered. HYPE at $56.95 rolled from peak. Wait for BTC to hold $75K for a full session or breadth past 8/20 before re-engaging the perp-DEX sector. XLM is the sole fundamentals-driven outlier today on the DTCC catalyst.
+- **narrative-tracker:** XLM/RWA-on-public-chain enters emerging phase today. DTCC deal is a dated institutional catalyst with a clear mechanism. Perp-DEX (HYPE) demotes to fading; -8.96% 24h, the momentum bid reversed at the peak. AI/DePIN compute fading sector-wide. No idiosyncratic strength across NEAR, VVV, or TAO. Privacy/ZK (ZEC) confirmed fading. Price leads the narrative down at -20.76% 7d.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -86,6 +86,7 @@ Total: $288.2B (≈flat 7d). USDT $189.1B · USDC $76.5B · USDS $8.76B · USD1 
 | 2026-05-25 | ASTER | $0.72 | Afternoon re-run pick (operator-invoked, supersedes AKT; dedup excluded AKT + 20 others); perp-DEX peer to Hyperliquid (Peak RIDE); SpaceX pre-IPO perpetuals listed May 18 (5x leverage), Permissionless Listing Vote live May 18, RWA Sprint Season 1 fee-cut promo through June 7; vol/mcap 0.11 on $1.85B cap; risk: top-trader L/S cut 0.39 over 7d (bid without smart-money confirmation), $0.78 resistance pocket, HYPE is the sector leader |
 | 2026-05-26 | RENDER | $2.28 | AI-compute call (9/10, HIGH); Salad Network integration ~60k enterprise GPUs; RenderCon 2026 hosted NVIDIA + Stability AI; Grayscale allocation adds institutional bid; AI compute 35-40% of jobs; token burns +278% YoY; Decentralized compute Peak RIDE sector sweep (7 of 8 winner slots today) |
 | 2026-05-27 | SEI | $0.0697 | Top scorer in 250-coin scan (9/10, HIGH); idiosyncratic strength (+10.0% 24h / +16.5% 7d, vol/mcap 0.29) on 2/20-green top-cap tape at time of scan; Q2 catalyst stack: Giga upgrade (200K+ TPS / sub-400ms finality, H1 2026), EVM migration June 15, Xiaomi wallet preinstall + stablecoin payments across 20K+ retail stores, $30m Sei Foundation RWA fund (BlackRock/Apollo/Hamilton Lane); invalidation: close below $0.062 breakout level or Giga slip announcement |
+| 2026-05-28 | XLM | $0.1731 | Top scorer in 250-coin scan (10/10, HIGH); idiosyncratic strength (+17.2% 24h / +18.6% 7d, vol/mcap 0.12 on $5.81B cap) on a -2.98% BTC tape; DTCC plans to connect tokenized-securities platform to Stellar H1 2027, DTCC patent names XLM the Digital Liquidity Token for cross-ledger settlement; Bermuda sovereign digital-dollar on Stellar + bipartisan Crypto Clarity Act Senate milestone May 27 add regulatory tailwind; risk: H1 2027 catalyst horizon front-running, +18.6% 7d is almost entirely today's single bar; invalidation: 24h close below $0.152 |
 
 ---
 *Sources — btc/eth/sol/top20/trending: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
