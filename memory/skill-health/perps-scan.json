@@ -1,15 +1,11 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-28T03:52:32Z",
+  "last_analyzed": "2026-05-28T22:38:27Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with quantified findings, clear verdict, and actionable signals—though python3 permission gating required a documented workaround.",
+  "assessment": "Substantive autonomous execution with sophisticated market analysis, proper data handling, and clear reasoning; well-structured outputs updated to memory.",
   "flags": [],
   "avg_score": 4.17,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-18",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
