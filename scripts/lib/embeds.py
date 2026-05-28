@@ -103,11 +103,26 @@ def _footer(text: str, icon_url: Optional[str] = None) -> dict:
     return out
 
 
+def _slot_suffix(slot: str) -> str:
+    """Format a chain-slot tag for inclusion in a footer.
+
+    Empty string when slot is falsy or unrecognized. Returns ' · AM run'
+    / ' · PM run' otherwise. The leading separator means callers can
+    safely append to any non-empty footer text.
+    """
+    s = (slot or "").strip().lower()
+    if s in ("am", "pm"):
+        return f" · {s.upper()} run"
+    return ""
+
+
 # ---------------------------------------------------------------------------
 # Section composers
 
 
-def compose_market_sentiment(data: dict, chain_run_id: str = "") -> dict:
+def compose_market_sentiment(
+    data: dict, chain_run_id: str = "", slot: str = ""
+) -> dict:
     """One embed summarising daily market context.
 
     Reads the `market_sentiment` block from perps-brief.data.json. Supports
@@ -194,10 +209,14 @@ def compose_market_sentiment(data: dict, chain_run_id: str = "") -> dict:
         description = (description + "\n\n" + bias_rendered) if description else bias_rendered
 
     embed["description"] = description[:4096]
+    # Slot tag in the title line — market sentiment has no footer.
+    suffix = _slot_suffix(slot)
+    if suffix:
+        embed["title"] = f"{title}{suffix}"
     return embed
 
 
-def compose_current_position(p: dict, chain_run_id: str = "") -> dict:
+def compose_current_position(p: dict, chain_run_id: str = "", slot: str = "") -> dict:
     """One embed per CURRENT POSITION (RIDE state).
 
     On CLOSE, use compose_outcome instead — that goes to a different
@@ -290,13 +309,16 @@ def compose_current_position(p: dict, chain_run_id: str = "") -> dict:
         "fields": fields,
         "timestamp": _now_iso(),
     }
-    # No footer for current-position embeds — Discord's native relative
-    # timestamp ("Today at 12:12 AM") on the embed already conveys "last
-    # updated." chain_run_id stays in the workflow log for debugging.
+    # Slot tag goes into a minimal footer when the chain slot is known.
+    # Without slot, no footer — Discord's native relative timestamp
+    # ("Today at 12:12 AM") on the embed already conveys "last updated."
+    suffix = _slot_suffix(slot).lstrip(" ·").strip()
+    if suffix:
+        embed["footer"] = _footer(suffix)
     return embed
 
 
-def compose_new_position(p: dict, chain_run_id: str = "") -> dict:
+def compose_new_position(p: dict, chain_run_id: str = "", slot: str = "") -> dict:
     """One embed per NEW POSITION fired today."""
     ticker = p.get("ticker", "?")
     direction = p.get("direction", "?")
@@ -342,6 +364,7 @@ def compose_new_position(p: dict, chain_run_id: str = "") -> dict:
     footer_text = f"Fired {fmt_date_short(_now_iso()[:10])}"
     if confluence_count:
         footer_text += f" · {confluence_count} confluence criteria"
+    footer_text += _slot_suffix(slot)
 
     return {
         "color": color,
@@ -354,7 +377,7 @@ def compose_new_position(p: dict, chain_run_id: str = "") -> dict:
     }
 
 
-def compose_watchlist(p: dict, chain_run_id: str = "") -> dict:
+def compose_watchlist(p: dict, chain_run_id: str = "", slot: str = "") -> dict:
     """One embed per WATCHLIST entry (pending trigger)."""
     ticker = p.get("ticker", "?")
     direction = p.get("direction", "?")
@@ -380,7 +403,7 @@ def compose_watchlist(p: dict, chain_run_id: str = "") -> dict:
     if thesis:
         description = "**Thesis**\n" + _bullets(thesis, cap=4)
 
-    footer_text = f"Day {day_of} on watchlist"
+    footer_text = f"Day {day_of} on watchlist" + _slot_suffix(slot)
 
     return {
         "color": COLORS["WATCHLIST"],
@@ -393,7 +416,7 @@ def compose_watchlist(p: dict, chain_run_id: str = "") -> dict:
     }
 
 
-def compose_outcome(closed_entry: dict, chain_run_id: str = "") -> dict:
+def compose_outcome(closed_entry: dict, chain_run_id: str = "", slot: str = "") -> dict:
     """One embed per closed trade. Posted to #outcomes when CLOSE fires.
 
     Takes a closed[] ledger entry (or the equivalent shape from
@@ -483,7 +506,7 @@ def compose_outcome(closed_entry: dict, chain_run_id: str = "") -> dict:
         description_parts.append(f"**Confluence that fired:** {confluence_str}")
     description = "\n\n".join(description_parts)[:4096]
 
-    footer_text = f"Fired {fired_date} · Closed {closed_date}"
+    footer_text = f"Fired {fired_date} · Closed {closed_date}" + _slot_suffix(slot)
 
     return {
         "color": color,
@@ -496,7 +519,9 @@ def compose_outcome(closed_entry: dict, chain_run_id: str = "") -> dict:
     }
 
 
-def compose_weekly_summary(track_record: dict, chain_run_id: str = "") -> dict:
+def compose_weekly_summary(
+    track_record: dict, chain_run_id: str = "", slot: str = ""
+) -> dict:
     """One embed per weekly track-record summary. Posted to #outcomes.
 
     Takes the parsed output of scripts/lib/track_record.py's
@@ -556,6 +581,6 @@ def compose_weekly_summary(track_record: dict, chain_run_id: str = "") -> dict:
         "author": {"name": "WEEKLY TRACK RECORD"},
         "title": f"Track Record · since V1 lock ({since})",
         "fields": fields,
-        "footer": _footer(f"V1 sample n={n_closed}"),
+        "footer": _footer(f"V1 sample n={n_closed}" + _slot_suffix(slot)),
         "timestamp": _now_iso(),
     }

@@ -42,6 +42,18 @@ JSON_PATH=".outputs/perps-brief.data.json"
 MD_PATH=".outputs/perps-brief.md"
 LEDGER_PATH="memory/topics/state/active-setups.json"
 
+# CHAIN_SLOT: derive from current UTC hour. < 12 → "am", else → "pm".
+# Used to disambiguate twice-daily artifacts: ledger snapshot filename,
+# evaluation entries, and bot embed footer tags. Computed once here and
+# exported so all downstream Python scripts share the same value.
+HOUR_UTC=$(date -u +%H)
+if [ "$HOUR_UTC" -lt 12 ]; then
+  export CHAIN_SLOT=am
+else
+  export CHAIN_SLOT=pm
+fi
+echo "postprocess-perps-brief: chain slot = $CHAIN_SLOT (UTC hour $HOUR_UTC)"
+
 if [ ! -f "$JSON_PATH" ]; then
   echo "postprocess-perps-brief: $JSON_PATH not present, skipping"
   exit 0
@@ -68,10 +80,13 @@ fi
 echo "postprocess-perps-brief: step 2/5 — snapshot ledger"
 if [ -f "$LEDGER_PATH" ]; then
   python3 - <<'PY'
-import sys
+import os, sys
 sys.path.insert(0, "scripts")
 from lib import ledger as L
 try:
+    # snapshot() reads CHAIN_SLOT from env when slot is not passed —
+    # filename ends up as active-setups.YYYY-MM-DD-{am|pm}.json so the
+    # PM run doesn't overwrite the AM snapshot on the same calendar day.
     target = L.snapshot()
     print(f"postprocess-perps-brief: snapshot → {target}")
 except L.LedgerError as e:

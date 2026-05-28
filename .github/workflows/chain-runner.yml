@@ -1,18 +1,25 @@
 name: Chain Runner
 run-name: "chain: ${{ inputs.chain || 'morning-review' }}"
 
-# The morning-review chain runs daily at 04:00 UTC (noon Perth, ~midnight ET).
-# This direct schedule replaces the previous indirect path through
-# .github/workflows/messages.yml's */5 * * * * dispatcher, which GitHub
-# Actions silently throttles on forks (the dispatcher fired only ~2 of ~600
-# expected ticks in its first 52 hours). A single low-frequency cron on this
-# workflow is reliably honoured.
+# The morning-review chain runs twice daily:
+#   - 00:00 UTC — operator-AM slot. Sydney morning planning lens.
+#     Sets the day's outlook before US/EU markets activate.
+#   - 12:00 UTC — operator-PM slot. US-open intraday refresh.
+#     Highest-volume window of the day; positioning data is freshest.
 #
-# To add another chain on its own schedule, add a second `cron:` entry below
-# and resolve the chain name in env at the step level — there is no clean way
-# to pin different chains to different cron entries in a single workflow
-# without an additional dispatch step, so for now this workflow assumes
-# morning-review when fired by schedule.
+# Both slots run the same full chain (data fetchers in parallel →
+# perps-brief → morning-macro → daily-ops-review). Equal priority for
+# now — we collect comparative signal-reliability data on AM vs PM
+# slots before deciding whether to trim either to a leaner variant.
+#
+# GitHub Actions cron is best-effort with 10-30 min typical slippage
+# on forks. Don't depend on minute-precise fire times.
+#
+# To add another chain on its own schedule, add a second `cron:` entry
+# below and resolve the chain name in env at the step level — there is
+# no clean way to pin different chains to different cron entries in a
+# single workflow without an additional dispatch step, so for now this
+# workflow assumes morning-review when fired by schedule.
 on:
   workflow_dispatch:
     inputs:
@@ -21,7 +28,8 @@ on:
         required: true
         type: string
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 0 * * *'   # AM slot
+    - cron: '0 12 * * *'  # PM slot
 
 permissions:
   contents: write

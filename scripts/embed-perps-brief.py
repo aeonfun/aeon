@@ -110,9 +110,17 @@ def main() -> int:
     parser.add_argument("--live", action="store_true", help="Actually POST to Discord (default is dry-run)")
     parser.add_argument("--dry-run", action="store_true", help="Print embed JSON only (default)")
     parser.add_argument("--chain-run-id", default=os.environ.get("GITHUB_RUN_ID", ""), help="Optional chain run ID for footer")
+    parser.add_argument(
+        "--slot",
+        default=os.environ.get("CHAIN_SLOT", ""),
+        choices=["", "am", "pm"],
+        help="Twice-daily chain slot ('am' or 'pm') for embed footers. "
+             "Falls back to CHAIN_SLOT env var.",
+    )
     args = parser.parse_args()
 
     dry_run = not args.live  # default to dry-run unless --live explicitly set
+    slot = (args.slot or "").lower()
 
     if not DATA_JSON.exists():
         fail(f"{DATA_JSON} not present — nothing to render", code=2)
@@ -136,8 +144,8 @@ def main() -> int:
 
     # -----------------------------------------------------------
     # 1. MARKET SENTIMENT → #perps-context (always posted)
-    info(f"composing market sentiment")
-    market_embed = E.compose_market_sentiment(data, chain_run_id=chain_run_id)
+    info(f"composing market sentiment{f' ({slot.upper()} run)' if slot else ''}")
+    market_embed = E.compose_market_sentiment(data, chain_run_id=chain_run_id, slot=slot)
     post_to(bot, channels["context"], market_embed, "market_sentiment", results)
 
     # -----------------------------------------------------------
@@ -147,7 +155,7 @@ def main() -> int:
     for p in current_positions:
         if p.get("call") == "CLOSE":
             # Route to outcomes channel
-            outcome_embed = E.compose_outcome(p, chain_run_id=chain_run_id)
+            outcome_embed = E.compose_outcome(p, chain_run_id=chain_run_id, slot=slot)
             post_to(
                 bot,
                 channels["outcomes"],
@@ -157,7 +165,7 @@ def main() -> int:
             )
         else:
             # RIDE — stays in positions channel
-            position_embed = E.compose_current_position(p, chain_run_id=chain_run_id)
+            position_embed = E.compose_current_position(p, chain_run_id=chain_run_id, slot=slot)
             post_to(
                 bot,
                 channels["positions"],
@@ -170,7 +178,7 @@ def main() -> int:
     # 3. NEW POSITIONS → #perps-signals
     new_positions = data.get("new_positions", [])
     for p in new_positions:
-        embed = E.compose_new_position(p, chain_run_id=chain_run_id)
+        embed = E.compose_new_position(p, chain_run_id=chain_run_id, slot=slot)
         post_to(
             bot,
             channels["signals"],
@@ -183,7 +191,7 @@ def main() -> int:
     # 4. WATCHLIST → #perps-watchlist
     watchlist = data.get("watchlist", [])
     for w in watchlist:
-        embed = E.compose_watchlist(w, chain_run_id=chain_run_id)
+        embed = E.compose_watchlist(w, chain_run_id=chain_run_id, slot=slot)
         post_to(
             bot,
             channels["watchlist"],

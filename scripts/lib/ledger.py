@@ -80,7 +80,8 @@ WatchlistProvenance:
 
 Evaluation:
     {"date": "YYYY-MM-DD", "call": "RIDE" | "CLOSE",
-     "price_at_eval": number | null, "note": str}
+     "price_at_eval": number | null, "note": str,
+     "slot": "am" | "pm" | null}     # NEW: chain slot the eval came from
 
 ClosedEntry: OpenEntry plus closed_date, closed_price, close_reason,
 horizon_realized, return_pct, return_vs_btc_pct, return_vs_eth_pct,
@@ -106,6 +107,7 @@ VALID_DIRECTIONS = {"LONG", "SHORT"}
 VALID_HORIZONS = {"24h", "3d", "7d", "multi-week"}
 VALID_CALLS = {"RIDE", "CLOSE"}
 VALID_OUTCOMES = {"WIN", "LOSS", "SCARE", "NEUTRAL"}
+VALID_SLOTS = {"am", "pm"}
 
 CONFLUENCE_CRITERIA = {
     "quant_regime_aligned",
@@ -217,6 +219,14 @@ def _validate_evaluation(ev: dict, where: str) -> None:
     )
     _require_number(ev, "price_at_eval", where, allow_none=True)
     _require_str(ev, "note", where)
+    # Optional `slot` field: identifies which twice-daily chain slot the
+    # evaluation came from. Older evaluations (pre twice-daily) won't have
+    # this — we accept absence to stay backward-compatible.
+    if "slot" in ev and ev["slot"] is not None:
+        _require(
+            ev["slot"] in VALID_SLOTS,
+            f"{where}: slot must be one of {sorted(VALID_SLOTS)} or null/absent",
+        )
 
 
 def _validate_watchlist_provenance(prov: Any, where: str) -> None:
@@ -444,13 +454,32 @@ def save(ledger: dict, path: Path = LEDGER_PATH) -> None:
     os.replace(tmp, path)
 
 
-def snapshot(path: Path = LEDGER_PATH, snapshot_dir: Path = SNAPSHOT_DIR) -> Path:
-    """Copy the current ledger to snapshots/active-setups.YYYY-MM-DD.json."""
+def snapshot(
+    path: Path = LEDGER_PATH,
+    snapshot_dir: Path = SNAPSHOT_DIR,
+    slot: str | None = None,
+) -> Path:
+    """Copy the current ledger to a date-keyed snapshot.
+
+    Filename format:
+      - With slot:    active-setups.YYYY-MM-DD-{am|pm}.json
+      - Without slot: active-setups.YYYY-MM-DD.json  (legacy)
+
+    Twice-daily runs MUST pass a slot to avoid the PM run overwriting the
+    AM snapshot. Slot is sourced from the CHAIN_SLOT environment variable
+    if not passed explicitly.
+    """
     if not path.exists():
         raise LedgerError(f"cannot snapshot: ledger {path} does not exist")
     snapshot_dir.mkdir(parents=True, exist_ok=True)
     date = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    target = snapshot_dir / f"active-setups.{date}.json"
+    if slot is None:
+        slot = os.environ.get("CHAIN_SLOT") or None
+    if slot and slot not in VALID_SLOTS:
+        # Bad value → fall back to unsuffixed filename rather than crash
+        slot = None
+    suffix = f"-{slot}" if slot else ""
+    target = snapshot_dir / f"active-setups.{date}{suffix}.json"
     target.write_text(path.read_text())
     return target
 

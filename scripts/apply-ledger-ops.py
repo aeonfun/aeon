@@ -63,6 +63,7 @@ Exit codes:
 from __future__ import annotations
 
 import json
+import os
 import sys
 from datetime import datetime, timezone, date
 from pathlib import Path
@@ -70,6 +71,12 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lib import ledger as L  # noqa: E402
+
+
+def _current_slot() -> str | None:
+    """Return the CHAIN_SLOT env value if it's a valid slot, else None."""
+    s = os.environ.get("CHAIN_SLOT", "").strip().lower()
+    return s if s in ("am", "pm") else None
 
 
 DATA_JSON = Path(".outputs/perps-brief.data.json")
@@ -146,6 +153,7 @@ def apply_evaluations(ledger: dict, evals: list) -> None:
     rows for each open position without this dedup).
     """
     today = today_utc()
+    slot = _current_slot()
     for ev in evals:
         oid = ev.get("open_id")
         idx = find_open_index(ledger, oid)
@@ -160,6 +168,11 @@ def apply_evaluations(ledger: dict, evals: list) -> None:
             "price_at_eval": ev.get("price_at_eval"),
             "note": ev.get("note", ""),
         }
+        # Tag with chain slot when available (twice-daily schedule).
+        # Caller-provided slot wins if Claude explicitly set one; else use env.
+        eval_slot = ev.get("slot") or slot
+        if eval_slot:
+            new_eval["slot"] = eval_slot
         # Carry the breach flag onto the eval entry so the SCARE provenance
         # is preserved per-day (even though the cumulative flag below is
         # what drives outcome computation).
