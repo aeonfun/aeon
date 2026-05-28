@@ -257,9 +257,9 @@ chains:
   #     - skill: daily-routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]
 
 # Default model for all skills. Override per-run via workflow_dispatch.
-# Options: claude-opus-4-7, claude-sonnet-4-6, claude-haiku-4-5-20251001
+# Options: claude-opus-4-8, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # Bankr gateway also supports: gemini-3-pro, gemini-3-flash, gpt-5.2, kimi-k2.5, qwen3-coder
-model: claude-opus-4-7
+model: claude-opus-4-8
 
 # AI Gateway — route Claude Code requests through an LLM gateway.
 # provider: direct (default, uses ANTHROPIC_API_KEY) | bankr (uses BANKR_LLM_KEY)

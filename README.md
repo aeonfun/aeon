@@ -247,10 +247,10 @@ If `var` is empty, each skill falls back to its default behavior (scan everythin
 The default model for all skills is set in `aeon.yml`:
 
 ```yaml
-model: claude-opus-4-7
+model: claude-opus-4-8
 ```
 
-You can change it from the dashboard header dropdown. Options: `claude-opus-4-7`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`. Per-run overrides are also available via workflow dispatch.
+You can change it from the dashboard header dropdown. Options: `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`. Per-run overrides are also available via workflow dispatch.
 
 Individual skills can override the default model to optimize cost:
 

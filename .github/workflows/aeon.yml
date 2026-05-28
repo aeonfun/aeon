@@ -15,7 +15,7 @@ on:
         default: '(config default)'
         options:
           - '(config default)'
-          - claude-opus-4-7
+          - claude-opus-4-8
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
           - gemini-3-pro
@@ -283,7 +283,7 @@ jobs:
           elif [ -n "$SKILL_MODEL" ]; then
             MODEL="$SKILL_MODEL"
           else
-            MODEL="${CONFIG_MODEL:-claude-opus-4-7}"
+            MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
           fi
           echo "Using model: $MODEL"
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"

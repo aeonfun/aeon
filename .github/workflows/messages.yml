@@ -640,7 +640,7 @@ jobs:
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
-          MODEL="${CONFIG_MODEL:-claude-opus-4-7}"
+          MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
 
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash
