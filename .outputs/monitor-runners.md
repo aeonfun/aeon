@@ -1,26 +1,24 @@
-Yesterday's Runners · 28 May · SPECULATIVE (top 5 micro-cap, zero deep-liq, tenth straight session)
-
-CONTINUATION
-• SHIKOKU (sol) +462% 24h
-  $248k vol, $80k liq, 581-day pool, h1 +3.5%, h6 -4.4%, buys 67%
-  → an old pool spiking on a single session, barely over the volume floor. The hourly still adds +3.5% but the six-hour already rolled -4.4%, so the move cooled hours ago. Thin $80k pad. Watch whether the hourly holds positive into tomorrow or the spike round-trips.
+Yesterday's Runners · 28 May · SPECULATIVE (5 BREAKOUT, no deep-liq in the top 5, eleventh straight session)
 
 BREAKOUT
-• 光源 (bsc) +4374% 24h
-  $5.8m vol, $171k liq, 6.8h pool, h1 +43%, h6 +672%, buys 54%
-  → the only live-tape print on the board, hourly +43% means buyers still add through the latest bar. Vol/liq runs 34x, short of yesterday's wash-heavy launches. If the hourly holds positive the continuation extends. A flip negative on $171k liq makes the unwind sharp.
+• GoogleAI (bsc) +3461% 24h
+  $46.5m vol, $268k liq, 13.5h pool, h1 +48%, h6 -36%, buys 78%
+  → the only aggressive live bid on the board, hourly +48% on the strongest buy-skew of the slate at 78%. The six-hour already gave back 36%, so this is the hourly bouncing off the round-trip, not a clean leg up. Vol runs 174x liq, wash-heavy. Holds while the hourly stays positive. A flip down on $268k liq runs the unwind fast.
 
-★ WADZ (eth) +1175% 24h
-  $2.4m vol, $434k liq, 19.7h pool, h1 +0.6%, h6 +35%, buys 71%
-  → re-accelerated since this morning, the six-hour flipped from -38% to +35% and the bid stepped back in at 71% buys. Rare eth-side runner with the deepest liq of the slate. Holds while the hourly stays flat-to-positive.
+★ SAOS (sol) +1382% 24h
+  $51.3m vol, $288k liq, 17.1h pool, h1 +12%, h6 +84%, buys 51%
+  → the cluster reactivated hard since the afternoon, rank 8 back up to rank 2. The lead contract flipped live, hourly +12% and six-hour +84% both still adding where prior sessions sat dormant. Four contracts on the board again, top vol of the day at $51.3m. The cleanest continuation here. Watch whether the hourly holds into tomorrow or the cluster dies the way NOAR just did.
 
-★ NOAR (sol) +430% 24h
-  $39.3m vol, $276k liq, 22.6h pool, h1 0%, h6 0%, buys 56%
-  → day-4 cluster, three contracts down from four this morning. The lead pool sits dormant on the hourly, the move printed earlier in the session. The cluster decays intraday. Watch for a fresh recycled sibling tomorrow or the fade completes.
+• USNS (sol) +896% 24h
+  $35.5m vol, $274k liq, 3.8h pool, h1 +12%, h6 +896%, buys 52%
+  → fresh 3.8h pool, the entire move printed inside the six-hour and the hourly still adds +12%. Live continuation while the bid holds. The US-prefix name and $35m vol on $274k liq match the solana name-farm shape exactly, so the freshness is the risk, not the edge.
 
-REVERSAL
-• BUFFDON (sol) +1011% 24h
-  $1.8m vol, $51k liq, 6.7-day pool, h1 -9.6%, h6 -53%, buys 55%
-  → the headline overstates the print, the six-hour already gave back 53% and the hourly keeps bleeding. The $51k pad runs the unwind fast. Distribution underway, not a setup.
+★ ISOR (sol) +664% 24h
+  $38.3m vol, $208k liq, 3.2h pool, h1 +0.4%, h6 +664%, buys 53%
+  → rank 3 on the 27th, absent since, the name reappears on a fresh 3.2h contract today. The six-hour carried the whole move and the hourly went flat at +0.4%. The bid stepped off after the push, the print cooled. Same fresh-sol name-farm shape as USNS.
 
-vibe: one bsc launch firing live, the rest faded prints and a cluster slate decaying into the afternoon
+• USWR (sol) +884% 24h
+  $42.5m vol, $218k liq, 11.1h pool, h1 0%, h6 +1%, buys 52%
+  → h24 reads +884% but the hourly and six-hour both sit flat, so the move printed earlier in the session and the tape stalled. The headline overstates a print already done. Distribution shape, no live bid to join.
+
+vibe: fresh solana name-farm prints carry a speculative tape, one bsc launch the only aggressive live bid

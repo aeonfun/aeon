@@ -1,8 +1,8 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-28T12:11:55Z",
+  "last_analyzed": "2026-05-28T22:27:42Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured execution with clear methodology, proper error handling, complete file management, and appropriate caveats about sandbox limitations. Good—not excellent—because output is primarily ranked data presentation rather than deeper comparative insights.",
+  "assessment": "Substantive, well-structured output with specific token data, metrics, and comparative analysis across intraday slices; includes operational awareness and concrete follow-ups, though the SPECULATIVE verdict and limited deep-liq floor suggest inherent data quality constraints.",
   "flags": [],
   "avg_score": 4.07,
   "history": [
@@ -108,6 +108,10 @@
     },
     {
       "date": "2026-05-27",
+      "score": 4
+    },
+    {
+      "date": "2026-05-28",
       "score": 4
     },
     {
