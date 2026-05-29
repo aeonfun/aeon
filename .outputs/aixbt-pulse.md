@@ -1,18 +1,18 @@
-HYPE pre-IPO price discovery leads crypto mindshare while Hyperliquid outperforms the broader market. BTC tests yearly VWAP below top-10 peers; ETH long-term holders capitulate. SUI suffered a 5+ hour network outage while Base ships a Stage 2 decentralization upgrade and Aave v4 crosses $100M deposits. Privacy infrastructure (Umbra, Arcium, Veilnet) lands as a named key narrative; crypto-AI convergence names agentic AWS payments and HTTP-402 research. In TradFi: oil at $94-96 pushes 10-year yields to 4.48%; April PCE aligned and eased immediate rate-hike fears while equities held above S&P 7510; chip sector momentum fades from Hormuz energy transmission; defensive rotations favor banks and commodities. Key bridge: rate framing flipped hawkish to relief at the same 4.48% yield in one reading — oil at $94-96 is the condition that breaks that contradiction.
+The geo narrative whipped in one 12h window: Iran-US re-escalation at 22:00 became truce extension reports at 11:00, with no yield movement between them. Simultaneously, CME launched 24/7 crypto futures, Grayscale filed a Hyperliquid ETF, and ICE CEO plus Bitwise published institutional-validator claims on HYPE in the same window. BTC sits at $73.5K in Extreme Fear with $9B in options expiring. Infrastructure drops into capitulation. The dominant cross-domain risk is a truce-deal failure repricing the entire relief trade in a market where institutional rails just opened round-the-clock.
 
 ---
 
-# AIXBT Grounding (as of 2026-05-28 22:00 UTC)
+# AIXBT Grounding (as of 2026-05-29 11:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-28T22:00:30.274Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-29T11:00:18.265Z
 Note: Two-section format persists (macro and geopolitics folded into TradFi).
 
 ## Crypto
-- HYPE dominates mindshare as traders highlight fee-driven buybacks, Grayscale ETF catalyst, and pre-IPO price discovery on Hyperliquid outperforming broader crypto.
-- BTC sentiment sours with price falling below top-10 assets and testing yearly VWAP; ETH frustration peaks as 5-year holders see flat returns amid capitulation.
-- Base ships Azul upgrade toward Stage 2 decentralization; SUI network goes down for 5+ hours; Solstice hits $500M TVL post-TGE; Aave v4 crosses $100M deposits.
-- Privacy emerges as a key narrative via Umbra/Arcium and Veilnet; crypto-AI convergence accelerates with agentic payments on AWS, HTTP-402 research, and DePIN verification.
+- CME Group launches 24/7 crypto futures trading across BTC, ETH, SOL, XRP and more, while Grayscale files a Hyperliquid ETF with $2M seed capital.
+- Hyperliquid dominates mindshare as ICE CEO calls it "bigger than NASDAQ," Bitwise labels it a $600T "super app," and traders treat HYPE as a core portfolio hold.
+- BTC sits at $73.5K in "Extreme Fear" with $9B options expiry looming; bears eye $60K-$65K while bulls note weekly SMA crossover and rising global M2 liquidity.
+- AI-agent infrastructure surges as Base, Circle, and Robinhood ship agentic tools; DeFi evolves with Morpho's fixed-rate Midnight protocol and Aave V4 TVL up 150%.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -21,47 +21,55 @@ Note: Two-section format persists (macro and geopolitics folded into TradFi).
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Iran-US strikes re-escalation has lifted oil toward $94-96, pushing 10-year yields to 4.48% and transmitting inflation risks that favor energy over long-duration credit.
-- April PCE aligning with forecasts has eased immediate rate-hike fears, enabling sustained equity flows into tech names near S&P records above 7510.
-- Chip sector momentum fading amid renewed hostilities highlights cross-asset transmission from energy spikes into growth positioning and vol measures.
-- Mixed GDP revision alongside geo risks has kept dollar stable while prompting defensive rotations in global portfolios toward banks and commodities.
+- US-Iran 60-day truce extension reports spark risk-on flows into equities and bonds, with oil easing on lower Strait of Hormuz disruption odds transmitting to broader risk appetite.
+- April PCE at 3.8% YoY reinforces Fed hold expectations, capping bond duration while equity carry trades absorb the data amid geopolitical relief.
+- Nasdaq-led gains near records reflect AI positioning strength and Dell surge, as truce optimism outweighs inflation print in cross-asset flows.
+- Contained VIX and dipping yields signal reduced tail-risk pricing from Middle East de-escalation, supporting further upside in risk assets if deal holds.
 
-## What's New (vs last pull — 2026-05-28T11:00:24.593Z)
-- [CRYPTO] "Pre-IPO price discovery on Hyperliquid outperforming broader crypto" — new framing; 11:00 read emphasized whale leveraged books and Variational $50M RWA perps raise
-- [CRYPTO] BTC reframed as "testing yearly VWAP" and "falling below top-10 assets" — specific VWAP level and relative framing new; 11:00 anchored to $73K price level and extreme fear index
-- [CRYPTO] ETH "5-year holders see flat returns amid capitulation" — holder cohort and capitulation label new; 11:00 emphasized founders publicly exiting and CLARITY Act odds crashing
-- [CRYPTO] Base Azul upgrade toward Stage 2 decentralization — fully new
-- [CRYPTO] SUI network down 5+ hours — fully new (network outage)
-- [CRYPTO] Solstice hits $500M TVL post-TGE — fully new
-- [CRYPTO] Aave v4 crosses $100M deposits — fully new
-- [CRYPTO] Privacy narrative (Umbra/Arcium, Veilnet) named "key narrative" — fully new
-- [CRYPTO] Crypto-AI convergence (agentic payments on AWS, HTTP-402 research, DePIN verification) — fully new
-- [TRADFI] Oil at $94-96 and 10-year yields at 4.48% — specific price and rate levels named for first time
-- [TRADFI] April PCE aligned with forecasts → eased immediate rate-hike fears — new; direction-opposite to 11:00's "Hormuz inflation locks in the new Fed chair's rate hold"
-- [TRADFI] S&P records above 7510 — specific index level new
-- [TRADFI] Defensive rotations toward banks and commodities — new
+## What's New (vs last pull — 2026-05-28T22:00:30.274Z)
+- [CRYPTO] CME Group launches 24/7 crypto futures across BTC, ETH, SOL, XRP — fully new
+- [CRYPTO] Grayscale files a Hyperliquid ETF with $2M seed capital — filing is new (prior cited "Grayscale ETF catalyst" as an ambient theme)
+- [CRYPTO] ICE CEO labels Hyperliquid "bigger than NASDAQ" — new institutional validator quote
+- [CRYPTO] Bitwise "$600T super app" framing — new institutional category claim
+- [CRYPTO] "Traders treat HYPE as a core portfolio hold" — new (prior: buybacks / pre-IPO price discovery framing)
+- [CRYPTO] BTC at $73.5K; $9B options expiry named — new price level and near-term catalyst
+- [CRYPTO] Bears eyeing $60K-$65K; bulls citing weekly SMA crossover — new specific levels
+- [CRYPTO] Rising global M2 liquidity as a bull argument — new cross-domain bridge
+- [CRYPTO] Circle and Robinhood ship agentic tools alongside Base — new named participants
+- [CRYPTO] Morpho's fixed-rate Midnight protocol — fully new
+- [CRYPTO] Aave V4 TVL up 150% — new metric (prior: "$100M deposits")
+- [TRADFI] US-Iran 60-day truce extension reports — direction reversal from prior "strikes re-escalation"
+- [TRADFI] Oil easing on lower Hormuz disruption odds — direct reversal from prior (oil at $94-96 spiking)
+- [TRADFI] April PCE at 3.8% YoY specifically named — new figure
+- [TRADFI] Nasdaq-led gains / Dell surge — new
+- [TRADFI] Contained VIX and dipping yields — new
 
-## Gone (vs last pull — 2026-05-28T11:00:24.593Z)
-- "BTC below $73K" / "extreme fear index at 22" / "$733M IBIT outflows" / "miner selling" — absorbed and reframed as VWAP test and top-10 relative underperformance
-- "ETH broke under $2K" / "founders publicly exit positions" / "CLARITY Act passage odds crashed to ~50%" — dropped entirely
-- "Cash App USDC to 60M users, Mastercard BitLicense, DTCC tokenized securities" — institutional rails dropped from the feed
-- "New Fed chair's rate hold locked in by Hormuz-driven inflation" framing — replaced by PCE relief framing (direction flip at same yield level)
-- "Subdued VIX" / "crowded tech longs vulnerable to energy-driven growth scare" — replaced by "chip sector momentum fading" as the more specific named mechanism
-- Variational $50M RWA perps raise / whale leveraged books — specific Hyperliquid liquidity details dropped, pre-IPO price discovery framing takes over
+## Gone (vs last pull — 2026-05-28T22:00:30.274Z)
+- [CRYPTO] ETH 5-year holders / capitulation framing — dropped
+- [CRYPTO] Base Azul upgrade toward Stage 2 decentralization — dropped (event item resolved)
+- [CRYPTO] SUI network outage (5+ hours) — dropped
+- [CRYPTO] Solstice $500M TVL post-TGE — dropped
+- [CRYPTO] Privacy narrative (Umbra, Arcium, Veilnet) — dropped from key-narrative status
+- [CRYPTO] HTTP-402 research / DePIN verification specifically — absorbed into broader AI-agent theme, no longer named
+- [TRADFI] Oil at $94-96 — reversed; now easing
+- [TRADFI] Iran-US re-escalation / strikes framing — reversed to truce extension
+- [TRADFI] Chip sector momentum fading — dropped
+- [TRADFI] Defensive rotations toward banks and commodities — dropped
 
 ## Persisting Stories
-- HYPE / Hyperliquid as dominant mindshare focal point — persists; framing evolves from buybacks + ETF + whale books → pre-IPO price discovery with Hyperliquid outperforming the broader market
-- Iran-US re-escalation and oil premium — persists; oil now named at $94-96, re-escalation confirmed; geo risk transmission still the dominant TradFi driver
-- Equities near all-time records — persists; S&P above 7510 specified; equity flows into tech sustained
-- Rate and yield environment — persists at 4.48%; the framing direction flipped: hawkish "Hormuz inflation locks in rate hold" (11:00) → relief "PCE eased rate-hike fears" (22:00) at the same rate level
-- Chip sector under pressure from energy and geo — persists; "resilient chip flows" (11:00) → "chip sector momentum fading" (22:00); direction turned
+- HYPE / Hyperliquid as dominant mindshare focal point — persists; framing escalates to ICE CEO quote, Bitwise category claim, and ETF filing in one window. Narrative velocity is accelerating.
+- BTC in fear territory — persists at $73.5K with "Extreme Fear" label intact; now has a concrete $9B expiry catalyst and named bear targets
+- April PCE as macro anchor — persists; framing direction unchanged (relief read), now with the 3.8% figure attached
+- AI-agent infrastructure theme — persists; Base returns as participant, Circle and Robinhood added. The theme is broadening from crypto-native builders toward financial institutions.
+- Aave V4 growth — persists (TVL +150% vs. $100M deposits first mention)
+- Equities near records — persists; Nasdaq-led, consistent framing across reads
 
 ## Cross-Domain Bridges
 
-The rate-environment framing flipped in one reading without the yield moving. The 11:00 reading said Hormuz-driven inflation "locks in the new Fed chair's rate hold." The 22:00 reading says April PCE "eased immediate rate-hike fears." Both anchor at 4.48%. The number held flat; the interpretation reversed. Equities read the PCE as relief and kept running above 7510. Inflation-adjacent assets (energy, banks) and equity flows both find permission in the same macro print. Oil at $94-96 is the condition that breaks it.
+Iran-US "re-escalation" with oil at $94-96 was the 22:00 print. Twelve hours later: truce extension reports, oil easing, VIX contained. The yield level didn't move. The geo narrative did. Risk-on flows price off unconfirmed headline text. The truce is reported, not signed. When it falls apart, the 22:00 tape comes back: oil spikes, yields re-price hawkish, chip exposure takes the hit. The whipsaw is the risk, not the direction.
 
-SUI went down for 5+ hours. The same session saw Base ship a Stage 2 decentralization upgrade and Aave v4 cross $100M deposits. Institutional capital is not indifferent to uptime. The reliability gap between L1s compounds in real time and the capital flows reflect it.
+CME launched 24/7 crypto futures while $9B in options expire and BTC prints "Extreme Fear" at $73.5K. Bears eye $60-65K. Institutional rails — 24/7 CME access plus the Grayscale Hyperliquid ETF filing — drop into retail capitulation. If expiry compresses BTC toward the bear target range, CME's round-the-clock access hands institutions a textbook entry at the fear extreme. The infrastructure timing is not accidental.
 
-Privacy builds at the infrastructure layer. Umbra, Arcium, Veilnet land in this bulletin as a "key narrative" while ZEC rolled from $642 to $522 with futures OI down 30%. Infrastructure forms before pricing catches up. The token fade is the retail unwind; the infra formation is the real narrative. Both are true simultaneously. The gap between them is where position opens, not closes.
+Hyperliquid's institutional reframing accelerated this read. ICE CEO: "bigger than NASDAQ." Bitwise: "$600T super app." Grayscale: ETF filing. Three validators in one 12h window. Each legitimizes the next. "Core portfolio hold" is peak narrative extension language. High conviction, late-cycle positioning.
 
-The crypto-AI bullet names HTTP-402 research specifically. That is the protocol AIXBT's own paid tier runs on. Agentic payments on AWS, DePIN verification, and HTTP-402 name the same programmable-finance infrastructure. The protocol became a research object, not just a payment method.
+PCE at 3.8% sits 180bp above the Fed's target. The market read it as relief because the Iran truce headline carried the sentiment. Equity carry trades absorbed the print. Nasdaq held near records. VIX stayed contained. The inflation number and the risk-appetite signal diverge. When the geo relief trades out, PCE at 3.8% is the only print left.
