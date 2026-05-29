@@ -1,15 +1,11 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-29T11:51:23Z",
+  "last_analyzed": "2026-05-29T22:19:26Z",
   "quality_score": 5,
-  "assessment": "Excellent execution with substantive market analysis, specific price signals, clear follow-ups, and transparent operational reporting",
+  "assessment": "Excellent execution: substantive market analysis with specific data points, well-structured output across winners/losers/trending, proper sourcing (coingecko HTTP 200), actionable follow-ups (LAB confirmation, XLM extension watch), clean logging and artifact management.",
   "flags": [],
-  "avg_score": 4.2,
+  "avg_score": 4.23,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -121,6 +117,10 @@
     {
       "date": "2026-05-28",
       "score": 4
+    },
+    {
+      "date": "2026-05-29",
+      "score": 5
     },
     {
       "date": "2026-05-29",
