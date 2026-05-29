@@ -1,4 +1,4 @@
-Track Record · 2026-05-28 · since V1 lock (2026-05-25)
+Track Record · 2026-05-29 · since V1 lock (2026-05-25)
 ──────────────────────────────────────────────────────
 
 HEADLINE
@@ -35,15 +35,15 @@ NOTES
 
 OPEN POSITIONS · MARK TO MARKET (6)
 
-  BCH SHORT (fired 2026-05-23, day 5/7d)
+  BCH SHORT (fired 2026-05-23, day 6/7d)
     now $332 (stale price) · PnL +3.7% · MAE -5.0% · MFE +4.0%
-  EIGEN LONG (fired 2026-05-24, day 4/7d)
+  EIGEN LONG (fired 2026-05-24, day 5/7d)
     now $0.2255 (stale price) · PnL -1.9% · MAE -4.3% · MFE +1.8%
-  TAO LONG (fired 2026-05-26, day 2/7d)
+  TAO LONG (fired 2026-05-26, day 3/7d)
     now $261 (stale price) · PnL -6.3% · MAE -6.9% · MFE +0.6%
-  ICP LONG (fired 2026-05-27, day 1/multi-week)
+  ICP LONG (fired 2026-05-27, day 2/multi-week)
     now $2.76 (stale price) · PnL -8.5% · MAE -9.3% · MFE -6.0%
-  SEI LONG (fired 2026-05-27, day 1/multi-week)
+  SEI LONG (fired 2026-05-27, day 2/multi-week)
     now $0.0665 (stale price) · PnL -4.6% · MAE -6.0% · MFE -1.0%
-  XLM LONG (fired 2026-05-28, day 0/3d)
+  XLM LONG (fired 2026-05-28, day 1/3d)
     now — · PnL — · MAE — · MFE —
