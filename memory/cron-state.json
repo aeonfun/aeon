@@ -11,13 +11,13 @@
   },
   "token-movers": {
     "last_status": "success",
-    "last_success": "2026-05-28T22:23:04Z",
-    "total_runs": 30,
-    "total_successes": 30,
+    "last_success": "2026-05-29T11:51:33Z",
+    "total_runs": 31,
+    "total_successes": 31,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
-    "last_quality_score": 4
+    "last_quality_score": 5
   },
   "token-pick": {
     "last_status": "success",
