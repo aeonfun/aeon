@@ -445,7 +445,7 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ## Community skill packs
 
-![Aeon Framework ecosystem map](./assets/ecosystem-v2.jpg)
+![Aeon Framework ecosystem map](./assets/ecosystem-v3.jpg)
 
 Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
 
