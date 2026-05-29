@@ -1,23 +1,19 @@
-Market Morning · 28 May · risk-off deepening
+Market Morning · 29 May · relief bounce, broken week
 
-BTC broke $74K, down 2.60% on the day and 5.31% on the week.
-Breadth collapsed to 5/20 green, the worst of this leg, F&G at 22 from 25.
-Dominance slipped to 57.82%, ETH/BTC to 0.02698. ETH leads the decline.
-Spot ETF outflows hit $733M in a single session. Capital is leaving crypto, not rotating within it.
-The week's bid belongs to RWA and tokenized equity, but the derivatives tape is dead with funding near zero.
+Rotation, not a reversal. BTC sits flat at $73,415 while breadth jumped from 6 to 14 of 20 green, XLM and HYPE carrying the alt recovery on no BTC help.
+The base is fragile. ETF outflows hit a record nine straight days at $2.8B, F&G holds at 23 in Extreme Fear, majors down 5% on the week.
+Hyperliquid leads the narrative board, perp-DEX flipping to rising on real institutional validation.
 
-Stance: cash-patient on the index. A stock-picker's session, not a market bid.
+Stance: ride the book, don't chase the bounce. A day-old relief move on record outflows is not a regime change.
 
 ─────────  CROSS-DOMAIN  ─────────
 
-The $733M outflow is not capital leaving crypto. It is rotating from BTC spot exposure into HYPE's buyback and revenue mechanism. Institutions buy yield instruments, not monetary proxies.
-ETH at $2K loses to equities at record highs every time. It needs a crypto-specific catalyst, and today provides none.
+The geo narrative whipped in one 12h window. Iran-US re-escalation reports became truce-extension reports with no move in yields. The relief trade is pricing off headline text that is reported, not signed. A deal failure reprices the whole bounce.
+CME launched 24/7 crypto futures and Grayscale filed a Hyperliquid ETF the same week BTC prints Extreme Fear. Institutional rails opening into retail capitulation.
 
 ─────────  TODAY  ─────────
 
-Action lives in #perps-brief. The AI-compute concentration risk fired. The sector that swept the winners two days ago led the losers today.
-Closing AKT and RENDER at their stops, riding TAO and ICP on the relative strength that absorbed the flush.
-One idiosyncratic long: XLM ripped +17% on the DTCC tokenized-securities link to Stellar, top traders net short with OI +20% 24h — squeeze fuel under the breakout.
-XAU and ZEC sit on the watchlist.
+Action is in #perps-brief. Six positions, banking the BCH short at +13% and cutting TAO on a thesis break. Riding XLM at +20%, adding one new INJ long on relative strength.
+HYPE is the confluence. Hyperliquid tops the narrative board, stacks CME and the Grayscale ETF, and sits on the watchlist for the $64.27 ATH break. Three reads, one name.
 
-Take: trim the compute book into the flush, hold relative strength, one stock-picker long on XLM. No broad risk-on here.
+Take: ride XLM and bank the BCH win. HYPE is the watch. Take it long on a clean ATH break with volume, not before.

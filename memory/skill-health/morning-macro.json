@@ -1,10 +1,10 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-28T23:02:22Z",
-  "quality_score": 4,
-  "assessment": "Autonomous repair executed well: correctly detected artifact corruption, restored the clean artifact, made sound operational decision (no re-notify), identified systemic pattern (ISS-003 leak), and proposed upstream fix.",
+  "last_analyzed": "2026-05-29T12:37:33Z",
+  "quality_score": 5,
+  "assessment": "Excellent — substantive market brief integrating four upstream signals, identifies dominant narrative (Hyperliquid confluence), names specific setups with entry logic, properly logged and queued with documented sandbox workaround.",
   "flags": [],
-  "avg_score": 4.07,
+  "avg_score": 4.1,
   "history": [
     {
       "date": "2026-05-18",
@@ -121,6 +121,10 @@
     {
       "date": "2026-05-28",
       "score": 4
+    },
+    {
+      "date": "2026-05-29",
+      "score": 5
     }
   ]
 }
