@@ -61,7 +61,8 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
       "schedule": "0 12 * * *",
       "default_enabled": false,
       "secrets_required": ["VENICE_API_KEY"],
-      "secrets_optional": ["VENICE_MODEL"]
+      "secrets_optional": ["VENICE_MODEL"],
+      "capabilities": ["external_api", "writes_external_host"]
     }
   ]
 }
@@ -86,6 +87,7 @@ The manifest lives at the pack root (or under `--path <subdir>` if the pack is n
 | `skills[].default_enabled` | boolean | optional | If `true`, the skill is added to `aeon.yml` with `enabled: true`. Default `false` (operator opts in explicitly). |
 | `skills[].secrets_required` | string[] | optional | Env vars the skill **cannot run without** (e.g. API keys). `install-skill-pack` warns loudly when any are unset before the first scheduled run, but does **not** gate the install — an operator may install dry-run or wire the secret afterward. |
 | `skills[].secrets_optional` | string[] | optional | Env vars that tune behaviour but aren't required (e.g. a model override). Surfaced at install for visibility; informational only. |
+| `skills[].capabilities` | string[] | optional | Self-declared blast-radius hints. **Locked taxonomy** — one or more of `read_only`, `external_api`, `writes_external_host`, `onchain_writes`, `agent_messaging`, `sends_notifications`. Surfaced in `install-skill-pack` listings; unknown values are rejected with an error pointing at [docs/CAPABILITIES.md](CAPABILITIES.md). |
 
 ### What's enforced
 
@@ -195,7 +197,8 @@ The operator is always the trust boundary. The install script does not auto-trus
       "category": "research|dev|crypto|social|productivity",
       "trust_level": "trusted|community",
       "skills": ["slug-1", "slug-2"],
-      "secrets_required": ["VENICE_API_KEY"]
+      "secrets_required": ["VENICE_API_KEY"],
+      "capabilities": ["external_api", "writes_external_host"]
     }
   ]
 }
@@ -215,6 +218,7 @@ The operator is always the trust boundary. The install script does not auto-trus
 | `trust_level` | string | optional | `trusted` (also requires the source in `skills/security/trusted-sources.txt`) or `community`. Default `community`. Listing here is a discovery hint — the actual scan-bypass behaviour is decided by the trusted-sources file. |
 | `skills[]` | array | **required** | Slugs the pack ships. Mirror the pack's own `skills-pack.json`. |
 | `secrets_required` | string[] | optional | Aggregated list of env vars the pack's skills declare as required. Drives the `./install-skill-pack --list --no-secrets` filter, which hides any pack with a non-empty `secrets_required`. Keep this in sync with the union of `skills[].secrets_required` in the pack's own `skills-pack.json`. |
+| `capabilities` | string[] | optional | Aggregated blast-radius hints across the pack's skills. **Locked taxonomy** — see [docs/CAPABILITIES.md](CAPABILITIES.md) for the six allowed values and how to choose. List-only metadata: surfaces as `[caps: ...]` on `./install-skill-pack --list` and is taxonomy-validated at print time; not read by install (per-skill `skills[].capabilities` in the pack's own `skills-pack.json` is the source of truth at install time). Keep this in sync with the union of `skills[].capabilities`. |
 
 ### Why two files (README table + skill-packs.json)?
 

@@ -39,13 +39,20 @@ set -euo pipefail
 #         "schedule": "0 12 * * *",                            (optional, default 0 12 * * *)
 #         "default_enabled": false,                             (optional, default false)
 #         "secrets_required": ["VENICE_API_KEY"],               (optional — env vars the skill cannot run without)
-#         "secrets_optional": ["VENICE_MODEL"]                  (optional — env vars that tune behaviour but aren't required)
+#         "secrets_optional": ["VENICE_MODEL"],                 (optional — env vars that tune behaviour but aren't required)
+#         "capabilities": ["external_api"]                       (optional, locked taxonomy — see docs/CAPABILITIES.md)
 #       }
 #     ]
 #   }
 #
 # Fallback (no manifest): scans the pack root for skills/*/SKILL.md and installs
 # each one with safe defaults. The pack identity falls back to the repo name.
+#
+# Capabilities taxonomy (locked — unknown values are rejected at install time):
+#   read_only · external_api · writes_external_host · onchain_writes ·
+#   agent_messaging · sends_notifications
+# See docs/CAPABILITIES.md for the meaning of each value and the rule for
+# proposing additions.
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$ROOT_DIR/skills"
@@ -58,6 +65,27 @@ REGISTRY_FILE="$ROOT_DIR/skill-packs.json"
 REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/skill-packs.json"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
+
+# Locked capability taxonomy. Adding a value requires a separate PR that also
+# updates docs/CAPABILITIES.md + the skills-pack.json schema reference. Keep
+# this list in lockstep with docs/CAPABILITIES.md ("The taxonomy" table) —
+# unknown values are rejected at install time pointing back at that file.
+ALLOWED_CAPABILITIES=(
+  read_only
+  external_api
+  writes_external_host
+  onchain_writes
+  agent_messaging
+  sends_notifications
+)
+
+is_allowed_capability() {
+  local needle="$1" cap
+  for cap in "${ALLOWED_CAPABILITIES[@]}"; do
+    [[ "$cap" == "$needle" ]] && return 0
+  done
+  return 1
+}
 
 usage() {
   cat <<'EOF'
@@ -140,7 +168,7 @@ list_registry() {
   echo ""
   local shown=0 hidden=0
   for i in $(seq 0 $((total - 1))); do
-    local repo desc trust skill_count secrets_count secrets_marker
+    local repo desc trust skill_count secrets_count secrets_marker caps_type caps caps_marker
     repo=$(echo "$registry_json" | jq -r ".packs[$i].repo")
     desc=$(echo "$registry_json" | jq -r ".packs[$i].description // \"\"")
     trust=$(echo "$registry_json" | jq -r ".packs[$i].trust_level // \"community\"")
@@ -151,17 +179,39 @@ list_registry() {
       hidden=$((hidden + 1))
       continue
     fi
+    # capabilities at the pack level is the aggregate; missing/null means none
+    # declared. Validate each entry against the locked taxonomy so registry
+    # drift surfaces in the listing rather than silently leaking through.
+    caps_type=$(echo "$registry_json" | jq -r ".packs[$i].capabilities | type")
+    caps=""
+    if [[ "$caps_type" == "array" ]]; then
+      while IFS= read -r cap_line; do
+        local cap_kind="${cap_line%% *}"
+        local cap_value="${cap_line#* }"
+        if [[ "$cap_kind" != "string" ]] || ! is_allowed_capability "$cap_value"; then
+          echo "Registry pack '$repo' declares unknown or non-string capability '$cap_value' — see docs/CAPABILITIES.md." >&2
+          exit 1
+        fi
+        caps+="${caps:+,}$cap_value"
+      done < <(echo "$registry_json" | jq -r ".packs[$i].capabilities[]? | \"\(type) \(.)\"")
+    elif [[ "$caps_type" != "null" ]]; then
+      echo "Registry pack '$repo' has capabilities of type $caps_type (expected array) — see docs/CAPABILITIES.md." >&2
+      exit 1
+    fi
     local trust_badge=" "
     [[ "$trust" == "trusted" ]] && trust_badge="*"
     secrets_marker=""
     [[ "$secrets_count" != "0" ]] && secrets_marker=" [needs ${secrets_count} secret(s)]"
+    caps_marker=""
+    [[ -n "$caps" ]] && caps_marker=" [caps: $caps]"
     if [[ ${#desc} -gt 80 ]]; then desc="${desc:0:77}..."; fi
-    printf "  %s %-44s %2d skills  %s%s\n" "$trust_badge" "$repo" "$skill_count" "$desc" "$secrets_marker"
+    printf "  %s %-44s %2d skills  %s%s%s\n" "$trust_badge" "$repo" "$skill_count" "$desc" "$secrets_marker" "$caps_marker"
     shown=$((shown + 1))
   done
   echo ""
   echo "  * = trusted source (security scan skipped, format check still runs)"
   echo "  [needs N secret(s)] = pack declares N entries in secrets_required — set them in the workflow before first run"
+  echo "  [caps: ...] = declared capabilities — see docs/CAPABILITIES.md for the taxonomy"
   echo ""
   if [[ "$no_secrets" == "true" ]]; then
     echo "$shown of $total packs shown ($hidden hidden by --no-secrets). Install with: ./install-skill-pack <repo>"
@@ -267,6 +317,8 @@ fi
 # Reset declarations (no associative arrays — they require Bash 4+ which macOS lacks).
 # SKILL_SECRETS_REQ / SKILL_SECRETS_OPT hold space-separated env-var names per skill
 # (parallel arrays — same index as SLUGS). Empty string means none declared.
+# SKILL_CAPS holds the per-skill capabilities as a space-separated string
+# (parallel array, same index as SLUGS). Empty string means none declared.
 SLUGS=()
 SKILL_PATHS=()
 SKILL_DESCS=()
@@ -275,6 +327,7 @@ SKILL_SCHEDS=()
 SKILL_DEFAULT_ENABLED=()
 SKILL_SECRETS_REQ=()
 SKILL_SECRETS_OPT=()
+SKILL_CAPS=()
 MANIFEST_FOUND=false
 MANIFEST_PATH="$PACK_DIR/skills-pack.json"
 
@@ -332,6 +385,39 @@ if [[ -f "$MANIFEST_PATH" ]]; then
     # them as space-separated env-var names (the per-skill loop splits on " ").
     secrets_req=$(jq -r ".skills[$i].secrets_required // [] | join(\" \")" "$MANIFEST_PATH")
     secrets_opt=$(jq -r ".skills[$i].secrets_optional // [] | join(\" \")" "$MANIFEST_PATH")
+    # capabilities — optional string array. Iterate each element via jq so
+    # element boundaries survive (word-splitting on a joined string would
+    # mishandle empty / whitespace-bearing entries). Type-check the field
+    # and each element so non-array shapes and non-string entries surface our
+    # taxonomy pointer instead of an opaque jq error under `set -e`.
+    caps_type=$(jq -r ".skills[$i].capabilities | type" "$MANIFEST_PATH")
+    if [[ "$caps_type" != "null" ]] && [[ "$caps_type" != "array" ]]; then
+      echo "Manifest skill '$slug' has capabilities of type $caps_type (expected array)." >&2
+      echo "See docs/CAPABILITIES.md for the taxonomy and field shape." >&2
+      exit 1
+    fi
+    caps=""
+    if [[ "$caps_type" == "array" ]]; then
+      # Emit one line per element prefixed with its jq type ("string foo" /
+      # "number 7" / "boolean true" / ...). Reading line-by-line preserves
+      # element boundaries even if a manifest tries to sneak whitespace in.
+      while IFS= read -r cap_line; do
+        cap_kind="${cap_line%% *}"
+        cap_value="${cap_line#* }"
+        if [[ "$cap_kind" != "string" ]]; then
+          echo "Manifest skill '$slug' has a non-string entry in capabilities (got $cap_kind)." >&2
+          echo "Each value must be a string from the locked taxonomy — see docs/CAPABILITIES.md." >&2
+          exit 1
+        fi
+        if ! is_allowed_capability "$cap_value"; then
+          echo "Manifest skill '$slug' declares unknown capability '$cap_value'." >&2
+          echo "Allowed values: ${ALLOWED_CAPABILITIES[*]}." >&2
+          echo "See docs/CAPABILITIES.md for the taxonomy and how to propose additions." >&2
+          exit 1
+        fi
+        caps+="${caps:+ }$cap_value"
+      done < <(jq -r ".skills[$i].capabilities[]? | \"\(type) \(.)\"" "$MANIFEST_PATH")
+    fi
     SLUGS+=("$slug")
     SKILL_PATHS+=("$rel_path")
     SKILL_DESCS+=("$desc")
@@ -340,6 +426,7 @@ if [[ -f "$MANIFEST_PATH" ]]; then
     SKILL_DEFAULT_ENABLED+=("$default_enabled")
     SKILL_SECRETS_REQ+=("$secrets_req")
     SKILL_SECRETS_OPT+=("$secrets_opt")
+    SKILL_CAPS+=("$caps")
   done
 else
   echo "No skills-pack.json — falling back to scanning skills/ in $REPO"
@@ -360,6 +447,7 @@ else
     SKILL_DEFAULT_ENABLED+=("false")
     SKILL_SECRETS_REQ+=("")
     SKILL_SECRETS_OPT+=("")
+    SKILL_CAPS+=("")
   done < <(find "$scan_root" -mindepth 2 -maxdepth 2 -name SKILL.md -type f 2>/dev/null | sort)
 fi
 
@@ -402,6 +490,7 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
   FILTERED_DEFAULT=()
   FILTERED_SECRETS_REQ=()
   FILTERED_SECRETS_OPT=()
+  FILTERED_CAPS=()
   for want in "${REQUESTED_SLUGS[@]}"; do
     found=false
     for i in "${!SLUGS[@]}"; do
@@ -414,6 +503,7 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
         FILTERED_DEFAULT+=("${SKILL_DEFAULT_ENABLED[$i]}")
         FILTERED_SECRETS_REQ+=("${SKILL_SECRETS_REQ[$i]}")
         FILTERED_SECRETS_OPT+=("${SKILL_SECRETS_OPT[$i]}")
+        FILTERED_CAPS+=("${SKILL_CAPS[$i]}")
         found=true
         break
       fi
@@ -431,6 +521,7 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
   SKILL_DEFAULT_ENABLED=("${FILTERED_DEFAULT[@]}")
   SKILL_SECRETS_REQ=("${FILTERED_SECRETS_REQ[@]}")
   SKILL_SECRETS_OPT=("${FILTERED_SECRETS_OPT[@]}")
+  SKILL_CAPS=("${FILTERED_CAPS[@]}")
 fi
 
 # Check trusted-sources for the pack repo.
@@ -671,6 +762,12 @@ for i in "${!SLUGS[@]}"; do
   fi
 
   warn_missing_secrets "$slug" "${SKILL_SECRETS_REQ[$i]}" "${SKILL_SECRETS_OPT[$i]}"
+
+  # Surface declared capabilities (already validated upstream against the locked
+  # taxonomy). Informational only — no gate, no prompt.
+  if [[ -n "${SKILL_CAPS[$i]}" ]]; then
+    echo "  · capabilities for $slug: ${SKILL_CAPS[$i]}"
+  fi
 
   dest="$SKILLS_DIR/$slug"
 
