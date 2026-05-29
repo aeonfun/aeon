@@ -159,9 +159,9 @@
     "success_rate": 1
   },
   "chain:": {
-    "last_status": "success",
+    "last_status": "failed",
     "last_success": "2026-05-28T23:09:27Z",
-    "last_failed": "2026-05-28T12:35:10Z"
+    "last_failed": "2026-05-29T12:43:29Z"
   },
   "outcome-tracker": {
     "last_status": "success",
