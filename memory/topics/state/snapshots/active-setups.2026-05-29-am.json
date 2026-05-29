@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-29T22:42:16Z",
+  "last_updated": "2026-05-29T12:31:43Z",
   "open": [
     {
       "id": "EIGEN-2026-05-24-001",
@@ -82,7 +82,7 @@
           "call": "RIDE",
           "price_at_eval": 0.223,
           "note": "Day 6/7. EIGEN ~$0.223 (CoinGecko/CMC consensus) down ~3% from the $0.2299 entry — absent from the perps slice and token-movers, so price carries estimate uncertainty. The AI-compute momentum leg has broken, but EIGEN holds an 8% cushion to the $0.205 stop and the EigenCloud/Nebius build is structural. Horizon expires tomorrow. RIDE.",
-          "slot": "am",
+          "slot": "pm",
           "invalidation_breached_today": false
         }
       ]
@@ -174,7 +174,7 @@
           "call": "RIDE",
           "price_at_eval": 2.72,
           "note": "Day 3/multi-week. ICP $2.72 bounced +2.7% today (CMC) but absent from the perps slice — price carries estimate uncertainty, the intraday low near $2.65 grazed the stop without a close below. Deepest-underwater hold at -9.9%, sitting 3% above the $2.65 stop. The MISSION70 supply-deflation thesis is structural and multi-week, not a daily trade. RIDE on tight watch.",
-          "slot": "am",
+          "slot": "pm",
           "invalidation_breached_today": false
         }
       ]
@@ -260,7 +260,7 @@
           "call": "RIDE",
           "price_at_eval": 0.06906,
           "note": "Day 3/multi-week. SEI $0.06906 up +5.4% 24h (CoinGecko) — the L1 name participated in the relief while compute lagged, now near flat from the $0.0697 entry with the $0.062 stop 10% below. The June 15 EVM migration is the dated catalyst. The best intraday print tagged the entry level, lifting MFE just green. RIDE.",
-          "slot": "am",
+          "slot": "pm",
           "invalidation_breached_today": false
         }
       ]
@@ -344,7 +344,7 @@
           "call": "RIDE",
           "price_at_eval": 0.207,
           "note": "Day 2/3. XLM ~$0.207 (CoinGecko spot; perps mark $0.210) up +28% 24h, +43% 7d — the settlement-narrative breakout extended on volume 22.8x its norm with short liquidations 53x the weekly average. Up ~20% from the $0.1731 entry, first eval since fire so MAE/MFE initialize today. Invalidation $0.152 well clear. RIDE the winner.",
-          "slot": "am",
+          "slot": "pm",
           "invalidation_breached_today": false
         }
       ]
@@ -449,7 +449,7 @@
       ]
     },
     {
-      "id": "HYPE-watchlist-2026-05-29-002",
+      "id": "HYPE-watchlist-2026-05-29-001",
       "asset": "HYPE",
       "direction": "LONG",
       "first_seen_date": "2026-05-29",

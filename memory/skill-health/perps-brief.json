@@ -1,15 +1,11 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-29T12:31:34Z",
+  "last_analyzed": "2026-05-29T22:42:04Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured trading brief with specific position analysis, clear rationale for entries/exits, tracked ledger state, and proper file outputs.",
+  "assessment": "Substantive trading signal analysis—clear reasoning on position state, detailed evaluation of why signals fired or didn't (HYPE/ZEC), identified scheduler structural issue, and actionable follow-up items",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-28",
+      "score": 4
+    },
+    {
+      "date": "2026-05-29",
       "score": 4
     },
     {
