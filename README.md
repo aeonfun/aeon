@@ -45,7 +45,7 @@ This isn't better for everything — you still want Claude Code for writing code
 
 For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, LangGraph) and a list of active forks running in production, see [`SHOWCASE.md`](SHOWCASE.md). For products and agents built on top of Aeon, see [`ECOSYSTEM.md`](ECOSYSTEM.md).
 
-![Autonomy spectrum](./assets/autonomy-v3.jpg)
+![Autonomy spectrum](./assets/autonomy-aeon.jpg)
 
 ---
 
@@ -94,7 +94,7 @@ The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whos
 
 ## Skills
 
-![Skills](./assets/skills-156.jpg)
+![Skills](./assets/skills-aeon.jpg)
 
 156 skills, grouped by what they do. Every skill is independently installable, schedulable, and chainable.
 
@@ -175,7 +175,7 @@ Every skill reads `CLAUDE.md`, so identity propagates automatically.
 
 ## Quality scoring & self-healing
 
-![Anatomy of a skill run](./assets/skill-run-v2.jpg)
+![Anatomy of a skill run](./assets/skill-run-aeon.jpg)
 
 Every skill output is automatically scored 1–5 by Haiku after each run (failed/empty → 1, excellent → 5). Scores and flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history.
 
@@ -183,7 +183,7 @@ Every skill output is automatically scored 1–5 by Haiku after each run (failed
 
 ### Self-healing loop
 
-![Self-healing architecture](./assets/architecture-v4.jpg)
+![Self-healing architecture](./assets/architecture-aeon.jpg)
 
 1. **`heartbeat`** (3x daily) — detects failed, stuck, or chronically broken skills
 2. **`skill-health`** — audits quality scores and flags API degradation patterns
@@ -210,7 +210,7 @@ Every run logs token usage to `memory/token-usage.csv`. The `cost-report` skill 
 
 ## Configuration
 
-![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-v4.jpg)
+![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-aeon.jpg)
 
 All scheduling lives in `aeon.yml`:
 
@@ -303,7 +303,7 @@ Claude only installs and runs when a skill actually matches.
 
 ## Project structure
 
-![The Stack](./assets/stack-v3.jpg)
+![The Stack](./assets/stack-aeon.jpg)
 
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
@@ -353,7 +353,7 @@ scripts/
 
 ## GitHub Actions cost
 
-![Basically free — runs on your existing Claude subscription and a free GitHub account](./assets/free-v2.jpg)
+![Basically free — runs on your existing Claude subscription and a free GitHub account](./assets/free-aeon.jpg)
 
 | Scenario | Cost |
 |----------|------|
@@ -445,7 +445,7 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ## Community skill packs
 
-![Aeon Framework ecosystem map](./assets/ecosystem-v5.jpg)
+![Aeon Framework ecosystem map](./assets/ecosystem-aeon.jpg)
 
 Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
 
@@ -662,7 +662,7 @@ Aeon runs on GitHub Actions with zero infrastructure needed. After pushing your 
 
 ### What is the autonomy spectrum?
 
-See `assets/autonomy-v3.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
+See `assets/autonomy-aeon.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
 
 ### Troubleshooting
 
