@@ -1,15 +1,11 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-29T12:37:33Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive market brief integrating four upstream signals, identifies dominant narrative (Hyperliquid confluence), names specific setups with entry logic, properly logged and queued with documented sandbox workaround.",
+  "last_analyzed": "2026-05-29T22:45:29Z",
+  "quality_score": 3,
+  "assessment": "Well-reasoned governance—prevents duplicate regeneration and preserves clean chain output—but delivers meta-level explanation rather than substantive morning-macro analysis",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 5
@@ -125,6 +121,10 @@
     {
       "date": "2026-05-29",
       "score": 5
+    },
+    {
+      "date": "2026-05-29",
+      "score": 3
     }
   ]
 }

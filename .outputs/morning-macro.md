@@ -1,19 +1,14 @@
-Market Morning · 29 May · relief bounce, broken week
+## Summary
 
-Rotation, not a reversal. BTC sits flat at $73,415 while breadth jumped from 6 to 14 of 20 green, XLM and HYPE carrying the alt recovery on no BTC help.
-The base is fragile. ETF outflows hit a record nine straight days at $2.8B, F&G holds at 23 in Extreme Fear, majors down 5% on the week.
-Hyperliquid leads the narrative board, perp-DEX flipping to rising on real institutional validation.
+Recognized today's `morning-macro` invocation as the same chain-then-re-invocation duplicate pattern seen for `narrative-tracker` (05-26 → 05-29), `perps-brief` PM, and `outcome-tracker` PM today. The scheduled AM chain already produced `.outputs/morning-macro.md` (1571 bytes, clean v2-locked three-paragraph synthesis with `─── CROSS-DOMAIN ───` / `─── TODAY ───` dividers, Stance + Take closing lines, 1497/1500 chars) and delivered the `#morning-macro` Discord signal (`.notify-attempted-hashes` populated, `.pending-notify/` drained).
 
-Stance: ride the book, don't chase the bounce. A day-old relief move on record outflows is not a regime change.
+**What I did NOT do** (ISS-003 / ISS-005 guardrail, matching today's precedent):
+- Did not overwrite the clean chain-run artifact with a Summary blob or a "PM unchanged" one-liner.
+- Did not write a fresh PM version that would orphan the AM Discord message.
+- Did not queue a duplicate `#morning-macro` Discord signal.
 
-─────────  CROSS-DOMAIN  ─────────
+**What I did:** verified the PM-shifted upstream artifacts (market-context-refresh PM chop label, aixbt-pulse 22:00Z CFTC + $120M HYPE ETF seed bridge, narrative-tracker map unchanged, perps-brief PM re-eval reaffirming every AM call) confirm the AM call rather than overturning it. Appended `## Morning Macro (PM re-invocation)` + Summary to `memory/logs/2026-05-29.md` recording the recognition, the PM-signal diff vs the AM artifact, and the guardrail rationale.
 
-The geo narrative whipped in one 12h window. Iran-US re-escalation reports became truce-extension reports with no move in yields. The relief trade is pricing off headline text that is reported, not signed. A deal failure reprices the whole bounce.
-CME launched 24/7 crypto futures and Grayscale filed a Hyperliquid ETF the same week BTC prints Extreme Fear. Institutional rails opening into retail capitulation.
+**Files modified:** `memory/logs/2026-05-29.md` (appended). Nothing else touched.
 
-─────────  TODAY  ─────────
-
-Action is in #perps-brief. Six positions, banking the BCH short at +13% and cutting TAO on a thesis break. Riding XLM at +20%, adding one new INJ long on relative strength.
-HYPE is the confluence. Hyperliquid tops the narrative board, stacks CME and the Grayscale ETF, and sits on the watchlist for the $64.27 ATH break. Three reads, one name.
-
-Take: ride XLM and bank the BCH win. HYPE is the watch. Take it long on a clean ATH break with volume, not before.
+**Follow-up:** Three skills now show chain-then-re-invocation on 05-29 (narrative-tracker, perps-brief PM, morning-macro PM); narrative-tracker has recurred four straight days. If a second run-of-record per day is wanted, the fix belongs at the scheduler/chain layer (optional PM-refresh slot emitting a delta brief), not at the skill.
