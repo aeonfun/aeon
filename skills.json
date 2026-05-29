@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-23T18:21:12Z",
+    "generated": "2026-05-29T11:40:03Z",
     "repo": "aaronjmars/aeon",
-    "total": 159,
+    "total": 160,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1918,6 +1918,18 @@
             "sha": "ac068d2",
             "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon x402-monitor"
+        },
+        {
+            "slug": "tx-explain",
+            "name": "Tx Explain",
+            "description": "Decode any Base transaction into a plain-English story \u2014 method, token movements, swaps/approvals, counterparties, and suspicious-approval flags. Keyless via Base RPC + Etherscan v2.",
+            "category": "crypto",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "0399c15",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon tx-explain"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",
