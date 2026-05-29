@@ -183,7 +183,7 @@ Every skill output is automatically scored 1–5 by Haiku after each run (failed
 
 ### Self-healing loop
 
-![Self-healing architecture](./assets/architecture-v2.jpg)
+![Self-healing architecture](./assets/architecture-v3.jpg)
 
 1. **`heartbeat`** (3x daily) — detects failed, stuck, or chronically broken skills
 2. **`skill-health`** — audits quality scores and flags API degradation patterns
@@ -210,7 +210,7 @@ Every run logs token usage to `memory/token-usage.csv`. The `cost-report` skill 
 
 ## Configuration
 
-![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-v2.jpg)
+![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-v3.jpg)
 
 All scheduling lives in `aeon.yml`:
 
@@ -445,7 +445,7 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ## Community skill packs
 
-![Aeon Framework ecosystem map](./assets/ecosystem-v3.jpg)
+![Aeon Framework ecosystem map](./assets/ecosystem-v4.jpg)
 
 Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
 
