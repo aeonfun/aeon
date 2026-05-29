@@ -1,8 +1,8 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-28T22:24:25Z",
+  "last_analyzed": "2026-05-29T11:53:12Z",
   "quality_score": 4,
-  "assessment": "Substantive market refresh with specific metrics, regime analysis, and properly maintained files; truncated output prevents full verification",
+  "assessment": "Substantive market intelligence with specific metrics, multi-signal tracking, narrative shifts, and clear conviction levels; well-structured and actionable for crypto monitoring.",
   "flags": [],
   "avg_score": 4.1,
   "history": [
@@ -120,6 +120,10 @@
     },
     {
       "date": "2026-05-28",
+      "score": 4
+    },
+    {
+      "date": "2026-05-29",
       "score": 4
     }
   ]
