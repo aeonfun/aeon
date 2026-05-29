@@ -72,13 +72,13 @@
   },
   "token-call": {
     "last_status": "success",
-    "last_success": "2026-05-28T22:26:46Z",
-    "total_runs": 30,
-    "total_successes": 29,
+    "last_success": "2026-05-29T11:51:03Z",
+    "total_runs": 31,
+    "total_successes": 30,
     "total_failures": 1,
     "consecutive_failures": 0,
     "success_rate": 0.97,
-    "last_quality_score": 4,
+    "last_quality_score": 5,
     "last_failed": "2026-05-25T09:25:03Z",
     "last_error": "xScreener trending\"}},{\"tool_name\":\"Bash\",\"tool_use_id\":\"toolu_01TqDx3nTHZTgqvdM5rDJX8b\",\"tool_input\":{\"command\":\"mkdir -p /home/runner/work/aeon/aeon/.tmp-token-call && cd /home/runner/work/aeon/aeon"
   },
