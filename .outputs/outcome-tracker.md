@@ -3,21 +3,21 @@ Track Record · 2026-05-29 · since V1 lock (2026-05-25)
 
 HEADLINE
 
-  Closed setups   4
-  LONG / SHORT    4 / 0
-  Win rate        0.0% (0/4 — 0 clean WIN, 0 SCARE)
-  Avg return      -5.6%
-  Avg vs BTC      -3.1%
-  Avg holding     3.5d (0.38x target)
+  Closed setups   6
+  LONG / SHORT    5 / 1
+  Win rate        16.7% (1/6 — 1 clean WIN, 0 SCARE)
+  Avg return      -2.6%
+  Avg vs BTC      +0.1%
+  Avg holding     4.2d (0.52x target)
 
 BY DIRECTION
 
-  LONG   4 closed · win 0.0% · avg -3.1% vs BTC
-  SHORT   (no closed entries)
+  LONG   5 closed · win 0.0% · avg -2.9% vs BTC
+  SHORT   1 closed · win 100.0% · avg +14.9% vs BTC
 
 BY HORIZON
 
-  7d          3 closed · win 0.0% · avg -3.7% vs BTC · held 3.0d
+  7d          5 closed · win 20.0% · avg +0.3% vs BTC · held 4.0d
   multi-week  1 closed · win 0.0% · avg -1.0% vs BTC · held 5.0d
 
 BY CONFLUENCE PATTERN
@@ -27,23 +27,22 @@ BY CONFLUENCE PATTERN
 BY PROVENANCE
 
   promoted from watchlist: no closed entries
-  direct entry: 4 closed · win 0.0% · avg -3.1% vs BTC
+  direct entry: 6 closed · win 16.7% · avg +0.1% vs BTC
 
 NOTES
 
-  · Win rate at 0% is below the 40% danger threshold — review confluence patterns.
+  · Win rate at 17% is below the 40% danger threshold — review confluence patterns.
+  · SHORT edge over LONG: 100.0% vs 0.0% win rate.
 
-OPEN POSITIONS · MARK TO MARKET (6)
+OPEN POSITIONS · MARK TO MARKET (5)
 
-  BCH SHORT (fired 2026-05-23, day 6/7d)
-    now $332 (stale price) · PnL +3.7% · MAE -5.0% · MFE +4.0%
   EIGEN LONG (fired 2026-05-24, day 5/7d)
-    now $0.2255 (stale price) · PnL -1.9% · MAE -4.3% · MFE +1.8%
-  TAO LONG (fired 2026-05-26, day 3/7d)
-    now $261 (stale price) · PnL -6.3% · MAE -6.9% · MFE +0.6%
+    now $0.223 (stale price) · PnL -3.0% · MAE -4.3% · MFE +1.8%
   ICP LONG (fired 2026-05-27, day 2/multi-week)
-    now $2.76 (stale price) · PnL -8.5% · MAE -9.3% · MFE -6.0%
+    now $2.72 (stale price) · PnL -9.9% · MAE -12.3% · MFE -6.0%
   SEI LONG (fired 2026-05-27, day 2/multi-week)
-    now $0.0665 (stale price) · PnL -4.6% · MAE -6.0% · MFE -1.0%
+    now $0.0691 (stale price) · PnL -0.9% · MAE -6.0% · MFE +0.5%
   XLM LONG (fired 2026-05-28, day 1/3d)
+    now $0.207 (stale price) · PnL +19.6% · MAE +15.5% · MFE +24.2%
+  INJ LONG (fired 2026-05-29, day 0/3d)
     now — · PnL — · MAE — · MFE —
