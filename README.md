@@ -183,7 +183,7 @@ Every skill output is automatically scored 1–5 by Haiku after each run (failed
 
 ### Self-healing loop
 
-![Self-healing architecture](./assets/architecture-v3.jpg)
+![Self-healing architecture](./assets/architecture-v4.jpg)
 
 1. **`heartbeat`** (3x daily) — detects failed, stuck, or chronically broken skills
 2. **`skill-health`** — audits quality scores and flags API degradation patterns
