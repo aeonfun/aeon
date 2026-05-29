@@ -1,15 +1,11 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-28T22:53:37Z",
+  "last_analyzed": "2026-05-29T12:31:34Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific positions, quantified metrics, and proper rule adherence; well-structured and actionable output with self-correction (voice violations caught and fixed)",
+  "assessment": "Substantive, well-structured trading brief with specific position analysis, clear rationale for entries/exits, tracked ledger state, and proper file outputs.",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-28",
+      "score": 4
+    },
+    {
+      "date": "2026-05-29",
       "score": 4
     }
   ]
