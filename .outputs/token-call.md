@@ -1,37 +1,12 @@
-Daily Token Call · 29 May
-──────────────────────────
+The skill has already been executed today and the run is complete. I won't re-run it.
 
-INJ · HIGH · 9/10
-$5.99 · +12.3% 24h · +11.4% 7d
-mcap $600m · vol $199m · vol/mcap 0.33
+## Summary
 
+**Already executed earlier today (2026-05-29).**
 
-SIGNALS
-  Both 24h and 7d green, both well above +5%.
-  vol/mcap 0.33 — the heaviest turnover on the board today.
-  $199m of volume on a $600m cap, a mid-cap absorbing real flow.
-  Outpaces a red BTC (-4.95%) and ETH (-5.53%) on the 7d by roughly 16 points.
-  Riding the AI-token rotation alongside NEAR, FET, and HYPE.
+- **Artifact:** `.outputs/token-call.md` — INJ at 9/10 HIGH, $5.99 (+12.3% 24h, +11.4% 7d), vol/mcap 0.33, dated 29 May.
+- **Log entry:** `memory/logs/2026-05-29.md:19-59` — full thesis, scoring detail (tied at 9 with NEAR and FET, picked INJ on fresher turnover and deeper room overhead), source status (cg=ok, dex=ok via WebFetch), 7d dedup gate covering 05-22 → 05-28, and the self-check against writing-style v2.1 Section 4.
+- **Dedup marker:** `TOKEN_CALL_DEDUP: INJ` at line 52.
+- **Notification:** none — V1 lock 2026-05-25 made token-call an internal-only skill; perps-brief is the consolidation point and has already consumed today's artifact (visible in the perps-brief log section: "INJ · LONG · 3d").
 
-CATALYST
-  Injective Nova Program launched May 25, a developer pipeline built with Microsoft and Azure AI.
-  Native EVM mainnet, live since November 2025, anchors an ongoing MultiVM ecosystem push.
-  Injective Policy Institute opened in Washington May 21, courting US regulators on onchain finance.
-  INJ trades far under its old $50 range, leaving room overhead as the AI narrative draws flow.
-
-RISK
-  The fresh catalysts are developer and policy moves, not direct token-demand events.
-  The bid is narrative-driven, so it fades fast if AI-token attention rotates out.
-  INJ rides the broad AI cohort. If NEAR and FET cool, the group drags it lower.
-  Invalidation on a 24h close below $5.20, under the pre-breakout base.
-
-DEDUP
-  First time in 7d.
-  Last picked 05-19, aged out of the window.
-  Recent picks excluded: XLM, SEI, ICP, RENDER, ASTER, AKT, EIGEN, RAIL.
-
-
-Take: heavy turnover and dual-timeframe momentum on a red tape, the cleanest continuation in the AI cohort. The catalyst is developer-and-policy rather than a dated token event, so size for a momentum trade and trail under $5.20 — a rotation ride, not a thesis-hold.
-
-
-not financial advice — pattern-matching only
+The skill is one-call-per-day with a hard dedup gate. Re-running it would either pick INJ again (blocked by dedup since it was just picked today) or force a second token, which violates the "ONE token call per day" constraint. No action taken.

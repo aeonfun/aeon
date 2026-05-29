@@ -1,15 +1,11 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-29T11:50:53Z",
-  "quality_score": 5,
-  "assessment": "Excellent — substantive token analysis with sophisticated methodology, clear pick (INJ 9/10), well-reasoned trade-offs (XLM dedup, NEAR/FET comparison), properly sourced from multiple APIs, complete artifacts, transparent decision criteria",
+  "last_analyzed": "2026-05-29T22:13:24Z",
+  "quality_score": 4,
+  "assessment": "Substantive response demonstrating proper idempotency and system architecture; explains dedup gate, artifacts, logs, and methodology with specific data (INJ 9/10). Clear and well-reasoned, though not a fresh execution.",
   "flags": [],
   "avg_score": 4.27,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-18",
       "score": 5
@@ -125,6 +121,10 @@
     {
       "date": "2026-05-29",
       "score": 5
+    },
+    {
+      "date": "2026-05-29",
+      "score": 4
     }
   ]
 }
