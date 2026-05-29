@@ -42,6 +42,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
 | MiroShark | [@miroshark_](https://x.com/miroshark_) |
 | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
+| Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
 | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
 | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
 | Powerloom | [@Powerloom](https://x.com/Powerloom) |
