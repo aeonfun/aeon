@@ -210,7 +210,7 @@ Every run logs token usage to `memory/token-usage.csv`. The `cost-report` skill 
 
 ## Configuration
 
-![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-v3.jpg)
+![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-v4.jpg)
 
 All scheduling lives in `aeon.yml`:
 
@@ -445,7 +445,7 @@ Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue,
 
 ## Community skill packs
 
-![Aeon Framework ecosystem map](./assets/ecosystem-v4.jpg)
+![Aeon Framework ecosystem map](./assets/ecosystem-v5.jpg)
 
 Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
 
