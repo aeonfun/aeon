@@ -17,7 +17,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/aeon.gif" alt="Aeon Demo" />
+  <img src="assets/aeon-demo.gif" alt="Aeon Demo" />
 </p>
 
 ---
