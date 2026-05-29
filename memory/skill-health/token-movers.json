@@ -1,10 +1,10 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-28T22:22:54Z",
-  "quality_score": 4,
-  "assessment": "Complete, substantive, well-sourced crypto market analysis with specific signals (XLM breakout, mean-reversion patterns, AI-compute recovery). Properly integrated memory logging, confirmed data freshness (HTTP 200), verified artifact compliance. Professional execution of data-refresh skill.",
+  "last_analyzed": "2026-05-29T11:51:23Z",
+  "quality_score": 5,
+  "assessment": "Excellent execution with substantive market analysis, specific price signals, clear follow-ups, and transparent operational reporting",
   "flags": [],
-  "avg_score": 4.17,
+  "avg_score": 4.2,
   "history": [
     {
       "date": "2026-05-18",
@@ -121,6 +121,10 @@
     {
       "date": "2026-05-28",
       "score": 4
+    },
+    {
+      "date": "2026-05-29",
+      "score": 5
     }
   ]
 }
