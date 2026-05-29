@@ -1,15 +1,11 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-29T11:55:30Z",
+  "last_analyzed": "2026-05-29T22:15:07Z",
   "quality_score": 4,
-  "assessment": "Well-structured, substantive output with detailed tracking, multi-format delivery, and clear follow-up triggers. Proper methodology (triangulation + diff) and documented fallback pattern. Domain expertise needed to verify crypto narrative accuracy.",
+  "assessment": "Skill correctly identified duplicate run, made sound judgment to avoid re-execution and duplicate notifications, documented reasoning clearly, and flagged systemic scheduler issue for remediation.",
   "flags": [],
   "avg_score": 4,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-18",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-28",
+      "score": 4
+    },
+    {
+      "date": "2026-05-29",
       "score": 4
     },
     {
