@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-23T18:21:12Z",
+    "generated": "2026-05-29T15:40:00Z",
     "repo": "aaronjmars/aeon",
-    "total": 159,
+    "total": 164,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1918,6 +1918,66 @@
             "sha": "ac068d2",
             "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon x402-monitor"
+        },
+        {
+            "slug": "spend-monitor",
+            "name": "Spend Monitor",
+            "description": "Daily API spend watchdog \u2014 checks running weekly cost against a budget cap, alerts when approaching or exceeding it",
+            "category": "productivity",
+            "schedule": "0 12 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon spend-monitor"
+        },
+        {
+            "slug": "follow-up-patrol",
+            "name": "follow-up-patrol",
+            "description": "Weekly escalation audit \u2014 parses the follow-up / open-loop section of MEMORY.md plus the issue tracker, computes item ages, and alerts on items hitting urgency thresholds so nothing rots unattended",
+            "category": "productivity",
+            "schedule": "0 11 * * 2",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon follow-up-patrol"
+        },
+        {
+            "slug": "narrative-convergence",
+            "name": "narrative-convergence",
+            "description": "Daily cross-skill signal detector \u2014 finds entities or themes surfaced independently by 3+ different skill categories in the last 48h and surfaces them as high-confidence write opportunities",
+            "category": "research",
+            "schedule": "0 13 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon narrative-convergence"
+        },
+        {
+            "slug": "mcp-pulse",
+            "name": "mcp-pulse",
+            "description": "Weekly tracker for the Model Context Protocol (MCP) ecosystem \u2014 new server implementations, adoption velocity, npm/GitHub signals, and protocol evolution. Thesis check \u2014 is MCP becoming the default tool-call rail for agents?",
+            "category": "dev",
+            "schedule": "0 10 * * 5",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon mcp-pulse"
+        },
+        {
+            "slug": "fleet-scorecard",
+            "name": "Fleet Scorecard",
+            "description": "Daily fleet-wide scorecard across this instance and every managed instance in memory/instances.json \u2014 runs, tokens (OpenRouter shape), est. cost, skills, and reliability, with day-over-day deltas and alerts",
+            "category": "dev",
+            "schedule": "0 13 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon fleet-scorecard"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",

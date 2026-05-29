@@ -123,6 +123,7 @@ skills:
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
   cost-report: { enabled: false, schedule: "0 7 * * 1", model: "claude-sonnet-4-6" } # weekly API cost breakdown by skill and model
+  spend-monitor: { enabled: false, schedule: "0 12 * * *", model: "claude-sonnet-4-6", var: "" } # daily 12:00 UTC — API spend watchdog: running weekly cost vs WEEKLY_BUDGET_CAP (default $200), OK/WATCH/WARN/ALERT tiers, silent under 50%. Daily complement to cost-report. Pass var to override the cap.
 
   # --- Weekly (Monday only) ---
   ai-framework-watch: { enabled: false, schedule: "30 8 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
@@ -139,12 +140,14 @@ skills:
   skill-update-check: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
+  fleet-scorecard: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
   weekly-review: { enabled: false, schedule: "0 19 * * 1" }
   weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
   contributor-reward: { enabled: false, schedule: "30 9 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
   operator-scorecard: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
+  follow-up-patrol: { enabled: false, schedule: "0 11 * * 2", model: "claude-sonnet-4-6", var: "" } # Tuesday 11:00 UTC — escalation audit: parses MEMORY.md follow-up/next-priorities section + issue tracker, ages items, alerts on CRITICAL/HIGH operator items (>21d/>14d). Catch-all for the open-loop backlog. Pass var to filter.
   fork-skill-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   fork-skill-gap: { enabled: false, schedule: "0 21 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 21:00 UTC — per-fork table of upstream skills the fork hasn't adopted; gates on fork-cohort POWER+ACTIVE set when fresh, falls back to live API otherwise. Pass dry-run to skip notify, or owner/repo to override parent.
   fleet-skill-adoption: { enabled: false, schedule: "0 22 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 22:00 UTC — fleet skill-adoption leaderboard: per-slug count of POWER+ACTIVE forks with each upstream skill enabled:true in aeon.yml. Top-15 most-adopted + bottom-15 least-adopted (excludes freshly-shipped + dispatch-only), zero-adoption set, WoW deltas on adoption %. Reuses fork-cohort state when fresh; gated notify (QUIET when top-10 unchanged). Pass dry-run to skip notify, or owner/repo to override parent.
@@ -174,11 +177,13 @@ skills:
   rwa-pulse: { enabled: false, schedule: "0 12 * * 1", model: "claude-sonnet-4-6" } # Monday — RWA tokenization momentum: launches, TVL, institutional adoption, regulation
   compute-pulse: { enabled: false, schedule: "0 11 * * 6", model: "claude-sonnet-4-6" } # Saturday — AI compute market: GPU/hardware deals, inference pricing, decentralized-compute tokens
   x402-monitor: { enabled: false, schedule: "0 12 * * 2", model: "claude-sonnet-4-6", var: "" } # Tuesday — protocol ecosystem velocity (defaults to x402; set memory/topics/tracked-protocol.md)
+  mcp-pulse: { enabled: false, schedule: "0 10 * * 5", model: "claude-sonnet-4-6" } # Friday 10:00 UTC — MCP ecosystem tracker: new servers, npm/GitHub adoption velocity, protocol evolution, thesis check. Pairs with x402-monitor for full agent-infra coverage (tool-calls + payments).
 
   # Research & content
   agent-displacement: { enabled: false, schedule: "0 11 * * 0", model: "claude-sonnet-4-6" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
   launch-radar: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6" } # Monday — scan PH/HN/GitHub Trending for launches matching the startup-idea backlog
   topic-momentum: { enabled: false, schedule: "30 6 * * 1", model: "claude-sonnet-4-6" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
+  narrative-convergence: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6", var: "" } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
   tweet-digest: { enabled: false, schedule: "0 17 * * *", var: "" } # daily — account-based digest of tracked X accounts; sibling to fetch-tweets/tweet-roundup
 
   # Dev & repo
