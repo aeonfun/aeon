@@ -1,28 +1,22 @@
-Narratives · 28 May · 5 tracked
+Narratives · 29 May · 5 tracked
 
 ↑ RISING
-• Hyperliquid / perp DEX [HYPE] · 3/5 · WATCH (was FADE)
-  un-faded on a real usage anchor: HIP-3 equity perps drive 35%+ of HYPE volume.
-  promote to RIDE on a range-high reclaim with top-trader L/S turning up. fade if it rolls over without the reclaim.
+• Hyperliquid / perp DEX [HYPE, ASTER] · 4/5 (was 3) · WATCH
+  second day with a real anchor. Simon Dedic names perp DEXes a proven product-market winner, Hyperliquid clears $21.8B daily volume on $7.3B open interest, perps now the default wrapper for every asset, RWAs included.
+  HYPE the token failed its bounce, flipped red trending after two up-sessions. promote to RIDE on a range-high reclaim with top-trader long/short turning up.
 
 → PEAK
-• RWA / tokenized equity [ONDO, BUIDL, OUSG] · 5/5 · RIDE (was RIDE w/ trail)
-  synthetic ownership leads the week: tokenized equity, equity perps, RWA perps volume $524.8B Q1.
-  reflexivity: issuance deepens perp liquidity, deeper liquidity pulls more issuance, the loop compounds.
+• RWA / tokenized equity [ONDO, ENA] · 4/5 · RIDE w/ trail (was RIDE)
+  stablecoins are the boring product-market winner now, $311B cap, up 50%+ since early 2025. the narrative hardened into consensus. no fresh synthetic-ownership anchor today.
 
-• AI agents / agentic finance [TAO, VIRTUAL, FET] · 5/5 · RIDE w/ trail (was RIDE)
-  sector tripled to $22.6-27B, TAO real revenue ($43M Q1, AWS/Coinbase/Stripe rails) holds the floor.
-  the AI-bubble snag (Uber/OpenAI/Anthropic walk back the jobs narrative) is the trail trigger.
+• AI agents [VIRTUAL, FET] · 5/5 · RIDE w/ trail
+  cptdankkk calls AI the biggest narrative, VVV and NEAR the vehicles. the bubble snag deepens: pmarca flags anti-datacenter politics, the jobs-narrative walkback continues.
 
-• Decentralized compute / AI infra [RENDER, TAO, AKT] · 5/5 · RIDE w/ trail (was RIDE)
-  RENDER GPU-compute and TAO decentralized-AI theses intact, same AI-snag overhang.
-  no fresh TAO high today. the trail fires if the snag spreads to crypto-AI flows.
+• Decentralized compute [TAO, RENDER, AKT] · 4/5 (was 5) · RIDE w/ trail
+  TAO rolled back to $275 from the $305 high, sits below every major moving average. Grayscale and Bitwise spot ETF decision lands August. narrative leads, token cools.
 
-• Privacy / ZK [ZEC, VVV] · 4/5 · RIDE w/ trail (was RIDE)
-  ZEC rolled $642 to $522, futures OI down 30%, the token tests $500. it leads the narrative down.
-  institutional stack intact (Grayscale ZCSH ETF, shielded pool 30%). trail at $500, RIDE w/ trail not FADE.
+↓ FADING
+• Privacy / ZK [ZEC, VVV] · 3/5 · FADE (was RIDE w/ trail)
+  ZEC bled 19% on the week, tests $500, drivers collapsed to a lone VVV mention. token leads on the way down. Grayscale ZCSH ETF and the late-2026 Tachyon roadmap are the floor.
 
-Changes since yesterday:
-- BTCFi (DEAD, day-8 absence, off-board)
-
-Stance: RWA the standout RIDE on the fresh synthetic-ownership anchor. AI complex on a tight trail, privacy trails the ZEC roll-over.
+Stance: rotate toward perp-DEX infrastructure on a HYPE reclaim. AI and RWA are consensus holds on tight trails. privacy is a falling knife.
