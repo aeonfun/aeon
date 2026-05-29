@@ -1,24 +1,24 @@
-Yesterday's Runners · 28 May · SPECULATIVE (5 BREAKOUT, no deep-liq in the top 5, eleventh straight session)
+Yesterday's Runners · 29 May · SPECULATIVE (5 BREAKOUT, no deep-liq in the top 5, twelfth straight session)
 
 BREAKOUT
-• GoogleAI (bsc) +3461% 24h
-  $46.5m vol, $268k liq, 13.5h pool, h1 +48%, h6 -36%, buys 78%
-  → the only aggressive live bid on the board, hourly +48% on the strongest buy-skew of the slate at 78%. The six-hour already gave back 36%, so this is the hourly bouncing off the round-trip, not a clean leg up. Vol runs 174x liq, wash-heavy. Holds while the hourly stays positive. A flip down on $268k liq runs the unwind fast.
+• ALIENS (sol) +1282% 24h
+  $2.6m vol, $54k liq, 13.1h pool, h1 +85%, h6 +106%, buys 56%
+  → the only pick still adding hard, hourly +85% on top of a +106% six-hour, both bars green and accelerating. A fresh ALIENS cluster spawned three contracts across solana and ethereum today. The $54k pad is the thinnest on the board, so the live bid cuts both ways. Holds while the hourly stays positive. A flip down runs the unwind fast on that liquidity.
 
-★ SAOS (sol) +1382% 24h
-  $51.3m vol, $288k liq, 17.1h pool, h1 +12%, h6 +84%, buys 51%
-  → the cluster reactivated hard since the afternoon, rank 8 back up to rank 2. The lead contract flipped live, hourly +12% and six-hour +84% both still adding where prior sessions sat dormant. Four contracts on the board again, top vol of the day at $51.3m. The cleanest continuation here. Watch whether the hourly holds into tomorrow or the cluster dies the way NOAR just did.
+• GENIUS (bsc) +3570% 24h
+  $57.3m vol, $116k liq, 1.9h pool, h1 +18%, h6 +3570%, buys 54%
+  → the bsc GENIUS name-farm relit after five days dark, on a fresh contract whose 4444 vanity suffix matches the cluster signature. The whole +3570% is the 1.9h launch candle and the hourly still adds +18%. Vol runs ~490x liq, washing or sniping the launch rather than organic demand. The headline overstates a brand-new pool. Watch for a second contract tomorrow, the way the cluster ran five-deep on the 24th.
 
-• USNS (sol) +896% 24h
-  $35.5m vol, $274k liq, 3.8h pool, h1 +12%, h6 +896%, buys 52%
-  → fresh 3.8h pool, the entire move printed inside the six-hour and the hourly still adds +12%. Live continuation while the bid holds. The US-prefix name and $35m vol on $274k liq match the solana name-farm shape exactly, so the freshness is the risk, not the edge.
+★ USNS (sol) +522% 24h
+  $36.2m vol, $274k liq, 5.2h pool, h1 +2%, h6 +522%, buys 51%
+  → repeat from last night's evening scan, recycled onto a fresh 5.2h contract. The six-hour carried the whole move and the hourly cooled to +2%. The bid stepped off after the push. $36m vol on $274k liq, neutral 51% buy-skew, the solana name-farm template intact. Day-2 of the USNS name, a fade inside the burst rather than a fresh leg.
 
-★ ISOR (sol) +664% 24h
-  $38.3m vol, $208k liq, 3.2h pool, h1 +0.4%, h6 +664%, buys 53%
-  → rank 3 on the 27th, absent since, the name reappears on a fresh 3.2h contract today. The six-hour carried the whole move and the hourly went flat at +0.4%. The bid stepped off after the push, the print cooled. Same fresh-sol name-farm shape as USNS.
+★ FOUR (sol) +520% 24h
+  $35.2m vol, $215k liq, 5.5h pool, h1 +0%, h6 +520%, buys 52%
+  → the FOUR name reappears two days after its 27th print, on a fresh contract at +520%. Both recent bars sit flat, so the move printed earlier and the lead pool went dormant. Two FOUR contracts cleared the gate today. Same burst-mode as the GENIUS and SAOS clusters: print, pause, recycle. No live bid to join.
 
-• USWR (sol) +884% 24h
-  $42.5m vol, $218k liq, 11.1h pool, h1 0%, h6 +1%, buys 52%
-  → h24 reads +884% but the hourly and six-hour both sit flat, so the move printed earlier in the session and the tape stalled. The headline overstates a print already done. Distribution shape, no live bid to join.
+• America250 (sol) +596% 24h
+  $38.9m vol, $216k liq, 12.4h pool, h1 +0%, h6 +0%, buys 52%
+  → fully dormant, hourly and six-hour both flat, the +596% printed earlier in the session. A companion token named 250 rides the same US-anniversary meme at rank 7, +1265%. The July-4 Semiquincentennial gives the cluster its external hook, but $38m vol on $216k liq reads name-farm, not organic. Distribution shape, the headline overstates a print already done.
 
-vibe: fresh solana name-farm prints carry a speculative tape, one bsc launch the only aggressive live bid
+vibe: greener tape than the week's lows, top still owned by solana name-farm prints and a relit bsc cluster, ALIENS alone still adding
