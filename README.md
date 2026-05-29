@@ -45,7 +45,7 @@ This isn't better for everything — you still want Claude Code for writing code
 
 For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, LangGraph) and a list of active forks running in production, see [`SHOWCASE.md`](SHOWCASE.md). For products and agents built on top of Aeon, see [`ECOSYSTEM.md`](ECOSYSTEM.md).
 
-![Autonomy spectrum](./assets/autonomy-v2.jpg)
+![Autonomy spectrum](./assets/autonomy-v3.jpg)
 
 ---
 
@@ -303,7 +303,7 @@ Claude only installs and runs when a skill actually matches.
 
 ## Project structure
 
-![The Stack](./assets/stack-v2.jpg)
+![The Stack](./assets/stack-v3.jpg)
 
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
@@ -662,7 +662,7 @@ Aeon runs on GitHub Actions with zero infrastructure needed. After pushing your 
 
 ### What is the autonomy spectrum?
 
-See `assets/autonomy-v2.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
+See `assets/autonomy-v3.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
 
 ### Troubleshooting
 
