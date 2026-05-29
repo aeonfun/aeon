@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-05-27",
+  "updated": "2026-05-30",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -12,7 +12,9 @@
       "homepage": "https://www.antfleet.dev",
       "category": "dev",
       "trust_level": "trusted",
-      "skills": ["pr-review-antfleet"]
+      "skills": [
+        "pr-review-antfleet"
+      ]
     },
     {
       "repo": "baseddevoloper/aeon-skill-pack-vvvkernel",
@@ -78,7 +80,9 @@
       "homepage": "https://github.com/gitlawbounty/gitbounty-skill-pack",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["bounty-hunter"]
+      "skills": [
+        "bounty-hunter"
+      ]
     },
     {
       "repo": "liquidpadbot/aeon-skill-pack-liquidpad",
@@ -105,7 +109,13 @@
       "homepage": "https://mythosforge.xyz",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["mythosforge-ops-report", "mythosforge-proof-integrity", "mythosforge-theme-round-guard", "mythosforge-jury-drift-watcher", "mythosforge-gallery-qa-watcher"]
+      "skills": [
+        "mythosforge-ops-report",
+        "mythosforge-proof-integrity",
+        "mythosforge-theme-round-guard",
+        "mythosforge-jury-drift-watcher",
+        "mythosforge-gallery-qa-watcher"
+      ]
     },
     {
       "repo": "sparkleware/demo-pack",
@@ -116,7 +126,9 @@
       "homepage": "https://github.com/sparkleware/demo-pack",
       "category": "meta",
       "trust_level": "community",
-      "skills": ["sparkle-status"]
+      "skills": [
+        "sparkle-status"
+      ]
     },
     {
       "repo": "sparkleware/aeon-pulse",
@@ -127,7 +139,9 @@
       "homepage": "https://github.com/sparkleware/aeon-pulse",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["aeon-activity"]
+      "skills": [
+        "aeon-activity"
+      ]
     },
     {
       "repo": "sparkleware/registry-watch",
@@ -138,7 +152,9 @@
       "homepage": "https://github.com/sparkleware/registry-watch",
       "category": "meta",
       "trust_level": "community",
-      "skills": ["new-packs-digest"]
+      "skills": [
+        "new-packs-digest"
+      ]
     },
     {
       "repo": "sparkleware/arxiv-digest",
@@ -149,7 +165,9 @@
       "homepage": "https://github.com/sparkleware/arxiv-digest",
       "category": "research",
       "trust_level": "community",
-      "skills": ["daily-papers"]
+      "skills": [
+        "daily-papers"
+      ]
     },
     {
       "repo": "sparkleware/hn-top",
@@ -160,7 +178,9 @@
       "homepage": "https://github.com/sparkleware/hn-top",
       "category": "social",
       "trust_level": "community",
-      "skills": ["hn-daily"]
+      "skills": [
+        "hn-daily"
+      ]
     },
     {
       "repo": "sparkleware/eth-gas-watch",
@@ -171,7 +191,9 @@
       "homepage": "https://github.com/sparkleware/eth-gas-watch",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["gas-status"]
+      "skills": [
+        "gas-status"
+      ]
     },
     {
       "repo": "sparkleware/morning-briefing",
@@ -182,7 +204,9 @@
       "homepage": "https://github.com/sparkleware/morning-briefing",
       "category": "productivity",
       "trust_level": "community",
-      "skills": ["morning-briefing"]
+      "skills": [
+        "morning-briefing"
+      ]
     },
     {
       "repo": "noelclaw/aeon-skill-pack-noelclaw",
@@ -193,7 +217,10 @@
       "homepage": "https://noelclaw.com",
       "category": "dev",
       "trust_level": "community",
-      "skills": ["noelvault", "noel-swarm"]
+      "skills": [
+        "noelvault",
+        "noel-swarm"
+      ]
     },
     {
       "repo": "codexvritra/signa",
@@ -205,7 +232,32 @@
       "homepage": "https://www.signaagent.xyz/partners",
       "category": "messaging",
       "trust_level": "community",
-      "skills": ["signa-message", "signa-inbox", "signa-discover", "signa-broadcast", "signa-delegate", "bankr-resolve", "bankr-launches", "gitlawb-stats", "miroshark-stats", "miroshark-fire"]
+      "skills": [
+        "signa-message",
+        "signa-inbox",
+        "signa-discover",
+        "signa-broadcast",
+        "signa-delegate",
+        "bankr-resolve",
+        "bankr-launches",
+        "gitlawb-stats",
+        "miroshark-stats",
+        "miroshark-fire"
+      ]
+    },
+    {
+      "repo": "mandateseal/mandateseal-guard",
+      "path": "aeon",
+      "name": "MandateSeal Guard",
+      "description": "Guard Aeon fund-moving skills with a MandateSeal mandate before each transfer (per-tx cap, chain/token allow-list, blocked recipients, human-approval queue) and a signed, Base-anchored receipt after — bounded, gated, provable.",
+      "author": "mandateseal",
+      "license": "MIT",
+      "homepage": "https://mandateseal.tech",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": [
+        "distribute-tokens-guarded"
+      ]
     }
   ]
 }
