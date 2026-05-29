@@ -35,6 +35,7 @@ skills:
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
   defi-overview: { enabled: false, schedule: "0 12 * * *" }
+  rug-scan: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — rug-pull risk verdict
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume

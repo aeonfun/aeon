@@ -1,8 +1,8 @@
 {
     "version": "1.0",
-    "generated": "2026-05-23T18:21:12Z",
+    "generated": "2026-05-29T11:37:38Z",
     "repo": "aaronjmars/aeon",
-    "total": 159,
+    "total": 160,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1918,6 +1918,18 @@
             "sha": "ac068d2",
             "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon x402-monitor"
+        },
+        {
+            "slug": "rug-scan",
+            "name": "Rug Scan",
+            "description": "Assess rug-pull risk for any token on Base \u2014 ownership, mint/freeze powers, LP lock, and holder concentration rolled into one risk verdict. Keyless via Etherscan v2 + Base RPC.",
+            "category": "crypto",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "0399c15",
+            "updated": "2026-05-29",
+            "install": "./add-skill aaronjmars/aeon rug-scan"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",
