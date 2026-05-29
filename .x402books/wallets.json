@@ -1,0 +1,19 @@
+{
+  "agent": "AEON",
+  "xHandle": "@aeonframework",
+  "ecosystem": "Base",
+  "wallets": [
+    {
+      "address": "0xf1e958db7d1e4c074377946018ad645db4fb158e",
+      "role": "treasury",
+      "chain": "base",
+      "notes": "Main protocol treasury"
+    },
+    {
+      "address": "0x67976cebb5266b50a08c0dcb676e03baf305e3a2",
+      "role": "deployer",
+      "chain": "base",
+      "notes": "Contract deployer"
+    }
+  ]
+}
