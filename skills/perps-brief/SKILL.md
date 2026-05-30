@@ -103,11 +103,35 @@ Each evaluation must include all fields. The apply script appends to the entry's
 For each entry in `ledger.watchlist[]`:
 
 1. Has the trigger fired today?
-   - **Yes** → promote to NEW POSITIONS with the same direction. Add to `ledger_ops.open_now[]` with `watchlist_id_promoted: "<that ID>"`. The apply script removes the watchlist entry and opens a new ledger entry with `watchlist_provenance` populated.
+   - **Yes** → promote to NEW POSITIONS with the same direction. Add to `ledger_ops.open_now[]` with `watchlist_id_promoted: "<that ID>"`. Optionally include `promotion_note` (default note auto-generated). The apply script removes the watchlist entry from the active list, archives it into `watchlist_closed[]` with `close_reason: "promoted"`, and opens a new ledger entry with `watchlist_provenance` populated.
    - **No, but thesis intact** → carry forward. Re-emit in today's WATCHLIST section. Add the watchlist entry's `id` to `ledger_ops.keep_watchlist[]`.
-   - **No, and thesis broken** → drop. Do NOT add to `keep_watchlist`.
+   - **No, and thesis broken or invalidated** → drop with an EXPLICIT reason. Add to `ledger_ops.drop_watchlist[]` with `{watchlist_id, reason, note}` (see below).
 
-A watchlist entry NOT in `keep_watchlist` AND NOT promoted is dropped by the apply script.
+#### Explicit drops — required to preserve reasoning
+
+When dropping a watchlist entry, ALWAYS use `ledger_ops.drop_watchlist[]` with an explicit reason and a substantive note. This data feeds V2 judgement review — every drop is a call you made, and we need the reasoning preserved for later accuracy analysis.
+
+Each drop entry:
+
+```json
+{"watchlist_id": "ASSET-watchlist-YYYY-MM-DD-NNN",
+ "reason": "invalidated" | "thesis_decayed" | "stale",
+ "note": "<a substantive sentence explaining the decision>"}
+```
+
+Reason categories:
+
+| Reason | When to use |
+|---|---|
+| `invalidated` | Price action breached the watchlist's invalidation level. The setup explicitly failed. |
+| `thesis_decayed` | The underlying narrative or quant setup is no longer compelling — flows rotated elsewhere, sector lost momentum, catalyst faded. Active judgement call. |
+| `stale` | Entry has sat without firing or invalidating for an extended period. Removed for hygiene. Use sparingly — prefer `thesis_decayed` if you can articulate why. |
+
+**`promoted` is NOT a valid reason here.** Promotions are handled in `open_now` via `watchlist_id_promoted` and the apply script archives them automatically with the right reason.
+
+**Note quality matters.** A drop note saying "no longer compelling" is useless. A drop note saying "AI sector rolled — TOTAL3 lost the 80B level, narrative-tracker phase moved to Fading, similar positions in the discovery wave already played out" is actionable when reviewing why we missed a winner.
+
+A watchlist entry NOT in `keep_watchlist` AND NOT promoted AND NOT in `drop_watchlist` will still be removed by the apply script, but archived as `"stale"` with a note flagging that you omitted explicit reasoning. **Avoid this — it shows up as a reasoning gap in audits.**
 
 ### Pass 0 — Discovery (independent of quant)
 
@@ -402,7 +426,19 @@ The postprocess step handles all of the above:
         "named_risks": ["Could squeeze before the trigger fires if funding flushes overnight."]
       }
     ],
-    "keep_watchlist": ["SOL-watchlist-2026-05-19-001"]
+    "keep_watchlist": ["SOL-watchlist-2026-05-19-001"],
+    "drop_watchlist": [
+      {
+        "watchlist_id": "XAU-watchlist-2026-05-25-001",
+        "reason": "thesis_decayed",
+        "note": "Gold rotation thesis is broken — DXY breaking down hard while gold trades sideways, the disinflation tailwind that drove the original setup is gone. Sector flow rotated back to AI/tech this week."
+      },
+      {
+        "watchlist_id": "ZEC-watchlist-2026-05-22-001",
+        "reason": "invalidated",
+        "note": "Daily close at $63.40 above the $60 invalidation level. Privacy narrative caught a fresh bid from the EU regulatory news — setup is no longer a short."
+      }
+    ]
   }
 }
 ```
@@ -484,4 +520,4 @@ This skill is consume-only — reads chain artifacts + ledger JSON. WebSearch vi
 - **No pyramiding.** Same-direction signal on an active position is dropped.
 - **MAE/MFE every evaluation.** Every current position evaluation must include `todays_high` and `todays_low` for the apply script to update MAE/MFE.
 - **invalidation_breached_today is sticky.** Set true when a daily close crosses invalidation. Once true on the ledger entry, drives SCARE outcome at close time.
-- **Watchlist entries need explicit carry-forward.** Add the id to `keep_watchlist[]` or it gets dropped. Silence drops.
+- **Watchlist entries need explicit decisions.** Each entry needs ONE of: `keep_watchlist[]` (carry forward), `open_now[].watchlist_id_promoted` (promote), or `drop_watchlist[]` (drop with reason + note). Silent omission gets archived as `"stale"` — flagged as a reasoning gap in V2 audits.

@@ -52,7 +52,16 @@ Operations in data.json["ledger_ops"]:
   keep_watchlist:
     - ["WATCHLIST-ID-1", ...]
     Watchlist IDs to retain. Anything not in this list AND not promoted
-    AND not just-added is DROPPED.
+    AND not just-added AND not in drop_watchlist is archived implicitly
+    as "stale" (with a note flagging Claude's omission).
+
+  drop_watchlist:
+    - [{watchlist_id, reason, note}]
+    Explicit drops with Claude's reasoning. Each entry archives into
+    watchlist_closed[] with reason + note preserved for V2 judgement
+    review. reason ∈ {invalidated, thesis_decayed, stale}.
+    "promoted" is NOT a valid reason here — promotions are handled
+    inside open_now via the watchlist_id_promoted field.
 
 Exit codes:
   0 — applied successfully
@@ -294,8 +303,9 @@ def apply_open_now(ledger: dict, opens: list) -> None:
                 "evaluations": [],
             }
 
-            # If promoted from a watchlist entry, build provenance + remove
-            # from watchlist[].
+            # If promoted from a watchlist entry, build provenance, archive
+            # the watchlist entry into watchlist_closed[], and remove from
+            # active watchlist[].
             promoted_id = o.get("watchlist_id_promoted")
             if promoted_id:
                 widx = find_watchlist_index(ledger, promoted_id)
@@ -306,14 +316,25 @@ def apply_open_now(ledger: dict, opens: list) -> None:
                     )
                 else:
                     we = ledger["watchlist"][widx]
+                    days_watched = days_between(we["first_seen_date"], today)
                     entry["watchlist_provenance"] = {
                         "watchlist_id": promoted_id,
-                        "days_on_watchlist": days_between(
-                            we["first_seen_date"], today
-                        ),
+                        "days_on_watchlist": days_watched,
                         "original_trigger": we["trigger"],
                         "original_confluence_fired": list(we["confluence_fired"]),
                     }
+                    # Archive the watchlist entry as "promoted" so the
+                    # watchlist_closed[] log captures the full lifecycle.
+                    archive = dict(we)
+                    archive["closed_date"] = today
+                    archive["close_reason"] = "promoted"
+                    archive["close_note"] = o.get(
+                        "promotion_note",
+                        f"Promoted to {entry['id']}",
+                    )
+                    archive["days_on_watchlist"] = days_watched
+                    archive["promoted_to_open_id"] = entry["id"]
+                    ledger["watchlist_closed"].append(archive)
                     ledger["watchlist"].pop(widx)
 
             ledger["open"].append(entry)
@@ -339,15 +360,114 @@ def apply_add_watchlist(ledger: dict, adds: list) -> None:
         ledger["watchlist"].append(entry)
 
 
+VALID_EXPLICIT_DROP_REASONS = {"invalidated", "thesis_decayed", "stale"}
+
+
+def apply_drop_watchlist(ledger: dict, drops: list) -> list:
+    """Apply explicit watchlist drops with Claude-provided reasoning.
+
+    Each drop op shape:
+        {"watchlist_id": str, "reason": str, "note": str}
+
+    Where reason ∈ {invalidated, thesis_decayed, stale}. Watchlist entries
+    are moved from active watchlist[] into watchlist_closed[] with the
+    provided reason + note preserved for V2 judgement review.
+
+    "promoted" is NEVER a valid reason here — promotions are handled
+    inside apply_open_now() via the watchlist_id_promoted field.
+
+    Returns the list of watchlist IDs that were explicitly dropped.
+    """
+    today = today_utc()
+    dropped_ids: list[str] = []
+    for d in drops:
+        wid = d.get("watchlist_id")
+        reason = d.get("reason")
+        note = (d.get("note") or "").strip()
+
+        if reason == "promoted":
+            warn(
+                f"drop_watchlist: 'promoted' is reserved — use "
+                f"watchlist_id_promoted in open_now instead. Skipping {wid}."
+            )
+            continue
+        if reason not in VALID_EXPLICIT_DROP_REASONS:
+            warn(
+                f"drop_watchlist: invalid reason '{reason}' for {wid}. "
+                f"Allowed: {sorted(VALID_EXPLICIT_DROP_REASONS)}. Skipping."
+            )
+            continue
+        if not note:
+            warn(
+                f"drop_watchlist: empty note for {wid} ({reason}). "
+                f"Operator-facing review will lack context."
+            )
+            note = "(no note provided)"
+
+        widx = find_watchlist_index(ledger, wid)
+        if widx is None:
+            warn(
+                f"drop_watchlist references unknown watchlist_id '{wid}' "
+                f"— may have already been promoted or previously dropped. Skipping."
+            )
+            continue
+
+        we = ledger["watchlist"][widx]
+        archive = dict(we)
+        archive["closed_date"] = today
+        archive["close_reason"] = reason
+        archive["close_note"] = note
+        archive["days_on_watchlist"] = days_between(we["first_seen_date"], today)
+        archive["promoted_to_open_id"] = None
+        ledger["watchlist_closed"].append(archive)
+        ledger["watchlist"].pop(widx)
+        dropped_ids.append(wid)
+    return dropped_ids
+
+
 def apply_watchlist_drops(
-    ledger: dict, keep_ids: list, promoted_ids: list, just_added_ids: list
+    ledger: dict,
+    keep_ids: list,
+    promoted_ids: list,
+    just_added_ids: list,
+    explicitly_dropped_ids: list,
 ) -> None:
-    survivors = set(keep_ids) | set(promoted_ids) | set(just_added_ids)
+    """Apply implicit drops — watchlist entries that Claude did NOT include
+    in keep_watchlist, did NOT explicitly drop via drop_watchlist, did NOT
+    promote, and were NOT just added in this run.
+
+    Implicit drops indicate Claude omitted the entry without providing a
+    reason. Archived as `stale` with a note flagging the omission so V2
+    judgement review can spot reasoning gaps.
+    """
+    today = today_utc()
+    survivors = (
+        set(keep_ids)
+        | set(promoted_ids)
+        | set(just_added_ids)
+        | set(explicitly_dropped_ids)
+    )
+    implicit_drops = [e for e in ledger["watchlist"] if e["id"] not in survivors]
+    for we in implicit_drops:
+        archive = dict(we)
+        archive["closed_date"] = today
+        archive["close_reason"] = "stale"
+        archive["close_note"] = (
+            "Implicit drop — Claude omitted from keep_watchlist without "
+            "providing an explicit drop_watchlist reason. Archived as stale."
+        )
+        archive["days_on_watchlist"] = days_between(we["first_seen_date"], today)
+        archive["promoted_to_open_id"] = None
+        ledger["watchlist_closed"].append(archive)
+
     before = len(ledger["watchlist"])
     ledger["watchlist"] = [e for e in ledger["watchlist"] if e["id"] in survivors]
     after = len(ledger["watchlist"])
     if before != after:
-        info(f"dropped {before - after} watchlist entries (no longer carried forward)")
+        info(
+            f"dropped {before - after} watchlist entries implicitly "
+            f"(archived as stale)"
+        )
 
 
 def main() -> int:
@@ -382,26 +502,39 @@ def main() -> int:
         #    so an auto-flip frees the asset slot for the new direction.
         apply_close(ledger, ops.get("close", []))
 
-        # 3. open_now (may include watchlist promotions)
+        # 3. open_now (may include watchlist promotions). When promoting,
+        #    archives the promoted watchlist entry into watchlist_closed[]
+        #    with close_reason="promoted" + link to the new open[] id.
         opens = ops.get("open_now", [])
         promoted_ids = [
             o["watchlist_id_promoted"] for o in opens if o.get("watchlist_id_promoted")
         ]
         apply_open_now(ledger, opens)
 
-        # 4. add_watchlist
+        # 4. drop_watchlist — explicit drops with Claude reasoning. Archives
+        #    each drop into watchlist_closed[] with reason + note. Reasons:
+        #    invalidated, thesis_decayed, stale.
+        explicitly_dropped_ids = apply_drop_watchlist(
+            ledger, ops.get("drop_watchlist", [])
+        )
+
+        # 5. add_watchlist
         pre_watchlist_ids = {e["id"] for e in ledger["watchlist"]}
         apply_add_watchlist(ledger, ops.get("add_watchlist", []))
         just_added_ids = [
             e["id"] for e in ledger["watchlist"] if e["id"] not in pre_watchlist_ids
         ]
 
-        # 5. watchlist drops
+        # 6. watchlist drops (implicit fallback). Anything still on
+        #    watchlist[] that's not in keep + promoted + just-added +
+        #    explicitly-dropped is archived as 'stale' with a note
+        #    flagging that Claude omitted reasoning.
         apply_watchlist_drops(
             ledger,
             keep_ids=list(ops.get("keep_watchlist", [])),
             promoted_ids=promoted_ids,
             just_added_ids=just_added_ids,
+            explicitly_dropped_ids=explicitly_dropped_ids,
         )
     except (KeyError, TypeError) as e:
         fail(
