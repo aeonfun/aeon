@@ -120,9 +120,9 @@
   },
   "market-context-refresh": {
     "last_status": "success",
-    "last_success": "2026-05-30T10:32:57Z",
-    "total_runs": 33,
-    "total_successes": 33,
+    "last_success": "2026-05-30T21:49:51Z",
+    "total_runs": 34,
+    "total_successes": 34,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
