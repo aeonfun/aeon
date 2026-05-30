@@ -1,324 +1,304 @@
 #!/usr/bin/env node
-// Build .outputs/perps-scan.data.json for the current day from
-// .outputs/_perps_compute.json + the prior data.json (read for yesterday's regime map).
+// Build .outputs/perps-scan.data.json for today (2026-05-30) from
+// .outputs/_perps_compute.json plus yesterday's .outputs/perps-scan.md.
+//
+// This script is the JSON authoring step ONLY. The deterministic render is
+// scripts/render-perps-scan.py — but python3 is blocked in this sandbox, so
+// the workflow's postprocess step runs the render outside the Claude path.
+// We invoke it manually as a final step.
+
 import fs from 'node:fs';
 
-const TODAY = '2026-05-27';
-const PREFETCH_LABEL = '07:44Z prefetch';
+const TODAY = '2026-05-30';
+// .outputs/perps-scan.md gets overwritten each render with TODAY's date, so
+// reading it back to derive yesterday's regimes only works once. We seed a
+// backup copy of the prior artifact at .outputs/.yesterday-perps-scan.md
+// before the first render and prefer that on subsequent rebuilds.
+const PRIOR_BACKUP = '.outputs/.yesterday-perps-scan.md';
+const PRIOR_LIVE = '.outputs/perps-scan.md';
+const PRIOR = fs.existsSync(PRIOR_BACKUP) ? PRIOR_BACKUP : PRIOR_LIVE;
+const COMPUTE = '.outputs/_perps_compute.json';
+const OUT = '.outputs/perps-scan.data.json';
 
-const REGIME_ORDER = [
-  'ACCUMULATION', 'CATALYST-BREAKOUT', 'SHORT-SQUEEZE',
-  'MOMENTUM', 'COMPRESSION', 'DISTRIBUTION', 'CAPITULATION',
-];
-
-function fmtUsd(x) {
-  if (x === null || x === undefined || !Number.isFinite(x)) return '—';
-  const a = Math.abs(x);
-  if (a >= 1e9) return `$${(x / 1e9).toFixed(2)}B`;
-  if (a >= 1e6) return `$${(x / 1e6).toFixed(1)}M`;
-  if (a >= 1e3) return `$${(x / 1e3).toFixed(0)}K`;
-  return `$${Math.round(x)}`;
-}
-
-function fmtPrice(x) {
-  if (x === null || x === undefined || !Number.isFinite(x)) return '—';
-  if (x >= 1000) return `$${x.toLocaleString('en-US', { maximumFractionDigits: 1 })}`;
-  if (x >= 1) return `$${x.toFixed(3)}`;
-  if (x >= 0.01) return `$${x.toFixed(4)}`;
-  return `$${x.toFixed(5)}`;
-}
-
-function pct(x, d = 2) {
-  if (x === null || x === undefined || !Number.isFinite(x)) return '—';
-  return `${x >= 0 ? '+' : ''}${x.toFixed(d)}%`;
-}
-
-function fpct(x, d = 4) {
-  if (x === null || x === undefined || !Number.isFinite(x)) return '—';
-  return `${x >= 0 ? '+' : ''}${x.toFixed(d)}%`;
-}
-
-function rnd(x, d) {
-  if (x === null || x === undefined || !Number.isFinite(x)) return null;
-  return Number(x.toFixed(d));
-}
-
-const compute = JSON.parse(fs.readFileSync('.outputs/_perps_compute.json', 'utf8'));
+const compute = JSON.parse(fs.readFileSync(COMPUTE, 'utf8'));
 const metrics = compute.metrics;
-const assetList = Object.keys(metrics);
+const assets = Object.keys(metrics);
 
-const prior = JSON.parse(fs.readFileSync('.outputs/perps-scan.data.json', 'utf8'));
-const priorByAsset = new Map();
-for (const t of prior.tail || []) priorByAsset.set(t.asset, t);
+const priorRegime = {};
+const priorRepeatDays = {};
 
-// yesterday_regime[asset] = the asset's regime on 2026-05-26 (the prior parse stored it)
-function yesterdayRegimeFor(asset) {
-  const p = priorByAsset.get(asset);
-  if (!p) return null;
-  return p.yesterday_regime ?? null;
+if (fs.existsSync(PRIOR)) {
+  const txt = fs.readFileSync(PRIOR, 'utf8');
+  const head = txt.split('\n')[0];
+  const headDate = (head.match(/(\d{4}-\d{2}-\d{2})/) || [])[1];
+  if (headDate && headDate !== TODAY) {
+    const re = /^Asset:\s+(\S+)\s+\|\s+Tier:\s+(\d)\s+\|\s+Regime:\s+(\S+)/gm;
+    let m;
+    while ((m = re.exec(txt))) priorRegime[m[1]] = m[3];
+    const rdRe = /^Asset:\s+(\S+)[\s\S]*?repeat_days:\s+(\d+)/gm;
+    while ((m = rdRe.exec(txt))) priorRepeatDays[m[1]] = parseInt(m[2], 10);
+  }
 }
 
-function repeatDaysFor(asset, regimeToday) {
-  const p = priorByAsset.get(asset);
-  if (!p) return 1;
-  const yReg = p.yesterday_regime ?? null;
-  if (yReg === null) return 1;
-  if (regimeToday !== yReg) return 1;
-  // yesterday's count: if prior_today_regime == yReg, then prior was a continuation
-  // and yesterday's count = prior_repeat_days - 1
-  const yesterdayCount = (p.regime === yReg) ? Math.max((p.repeat_days || 1) - 1, 1) : 1;
-  return yesterdayCount + 1;
-}
+const havePrior = Object.keys(priorRegime).length > 0;
 
-const byRegime = Object.fromEntries(REGIME_ORDER.map((r) => [r, []]));
-const neutralAssets = [];
-for (const a of assetList) {
+const todayRepeat = {};
+for (const a of assets) {
   const r = metrics[a].regime;
-  if (r === 'NEUTRAL') neutralAssets.push(a);
-  else if (byRegime[r]) byRegime[r].push(a);
-}
-
-// --- transitions ---
-function transitionNote(asset, prior, current, m) {
-  if (prior === '(new entrant)') {
-    if (current === 'COMPRESSION') {
-      return `First appearance in the universe direct into COMPRESSION ${m.sub_tags.includes('QUIET') ? 'QUIET' : ''}. Range ${m.range_7d_pct.toFixed(2)}% sits well under the Tier 2 5% gate, OI ${pct(m.oi_7d_pct)} 7d builds with funding ${fpct(m.funding_now, 4)}/8h holding inside the 0.02 band. Taker buy ${m.taker_buy_pct_24h.toFixed(2)}% reads with a bullish lean.`;
-    }
-    return '';
-  }
-  if (current === 'ACCUMULATION' && asset === 'HYPE') {
-    return `Rotates into ACCUMULATION CONFIRMED on OI ${pct(m.oi_7d_pct)} 7d with funding ${fpct(m.funding_now, 4)}/8h inside the band, taker buy ${m.taker_buy_pct_24h.toFixed(2)}% crosses the 50% gate, top L/S delta +${m.top_ls_delta_7d.toFixed(2)} over 7d. Range tightened to ${m.range_7d_pct.toFixed(2)}% from yesterday's reading.`;
-  }
-  if (prior === 'ACCUMULATION' && current === 'NEUTRAL' && asset === 'ZEC') {
-    return `Drops out of ACCUMULATION on OI cooling to ${pct(m.oi_7d_pct)} 7d below the +10% gate, with pct_7d flipping to ${pct(m.pct_7d)} from yesterday's positive print. Funding ${fpct(m.funding_now, 4)}/8h still sits inside the 0.04 band, so the structural break is OI and price, not funding. Two-day ACCUMULATION read closed.`;
-  }
-  if (prior === 'ACCUMULATION' && current === 'NEUTRAL' && asset === 'TAO') {
-    return `Drops out of ACCUMULATION on OI 7d cooling to ${pct(m.oi_7d_pct)} below the +10% gate. Funding ${fpct(m.funding_now, 4)}/8h with pct_7d ${pct(m.pct_7d)} reads as drift, not build.`;
-  }
-  return '';
-}
-
-const transitions = [];
-for (const a of assetList) {
-  const yReg = yesterdayRegimeFor(a);
-  const current = metrics[a].regime;
-  if (yReg === null) {
-    // new entrant — surface even if NEUTRAL
-    transitions.push({
-      asset: a,
-      from: '(new entrant)',
-      to: current,
-      note: transitionNote(a, '(new entrant)', current, metrics[a]) || null,
-    });
-  } else if (yReg !== current) {
-    transitions.push({
-      asset: a,
-      from: yReg,
-      to: current,
-      note: transitionNote(a, yReg, current, metrics[a]) || null,
-    });
+  if (priorRegime[a] === r) {
+    todayRepeat[a] = (priorRepeatDays[a] || 0) + 1;
+  } else {
+    todayRepeat[a] = 1;
   }
 }
 
-// --- regime blocks ---
-function buildMetricsLine(asset, m) {
-  const parts = [];
-  parts.push(`OI ${pct(m.oi_7d_pct)} 7d on ${pct(m.pct_7d)} price`);
-  parts.push(`funding ${fpct(m.funding_now, 4)}/8h (7d avg ${fpct(m.funding_7d_avg, 4)})`);
-  if (m.top_ls_now != null && m.top_ls_delta_7d != null) {
-    parts.push(`top L/S ${m.top_ls_now.toFixed(2)} (Δ ${m.top_ls_delta_7d >= 0 ? '+' : ''}${m.top_ls_delta_7d.toFixed(2)} 7d)`);
-  }
-  parts.push(`range ${m.range_7d_pct.toFixed(2)}%`);
-  if (m.taker_buy_pct_24h != null) parts.push(`taker buy ${m.taker_buy_pct_24h.toFixed(2)}%`);
-  parts.push(`basis ${m.basis_now != null ? fpct(m.basis_now, 4) : '—'}`);
+function fmtPrice(p) {
+  if (p === null || p === undefined) return '—';
+  if (p >= 1000) return '$' + p.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  if (p >= 1) return '$' + p.toFixed(3);
+  if (p >= 0.01) return '$' + p.toFixed(4);
+  if (p >= 0.0001) return '$' + p.toFixed(5);
+  return '$' + p.toExponential(2);
+}
+function fmtUsd(v) {
+  if (v === null || v === undefined) return '—';
+  if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return '$' + (v / 1e6).toFixed(1) + 'M';
+  if (v >= 1e3) return '$' + (v / 1e3).toFixed(0) + 'K';
+  return '$' + v.toFixed(0);
+}
+function sign(n) {
+  if (n === null || n === undefined) return '';
+  return n >= 0 ? '+' : '';
+}
+function pctStr(v, d = 2) {
+  if (v === null || v === undefined) return '—';
+  return sign(v) + Number(v).toFixed(d) + '%';
+}
+function fmtF(v, d = 4) {
+  if (v === null || v === undefined) return '—';
+  return sign(v) + Number(v).toFixed(d) + '%/8h';
+}
+function fmtBasis(v, d = 4) {
+  if (v === null || v === undefined) return '—';
+  return sign(v) + Number(v).toFixed(d);
+}
+
+function metricLineFor(a) {
+  const m = metrics[a];
+  const parts = [
+    pctStr(m.pct_24h) + ' 24h',
+    pctStr(m.pct_7d) + ' 7d',
+    'OI ' + pctStr(m.oi_24h_pct) + ' 24h',
+    'OI ' + pctStr(m.oi_7d_pct) + ' 7d',
+    'funding ' + fmtF(m.funding_now) + ' (7d avg ' + fmtF(m.funding_7d_avg) + ', delta ' + fmtF(m.funding_delta) + ')',
+    'taker buy ' + (m.taker_buy_pct_24h !== null ? m.taker_buy_pct_24h.toFixed(2) + '%' : '—'),
+    'vol ' + (m.vol_ratio !== null ? m.vol_ratio.toFixed(2) + 'x' : '—'),
+    'liq ' + fmtUsd(m.liq_24h_total) + ' vs 7d p75 ' + fmtUsd(m.liq_7d_p75),
+    'short liqs ' + fmtUsd(m.short_liqs_24h) + ' vs p75 ' + fmtUsd(m.short_liqs_p75),
+    'top L/S ' + (m.top_ls_now !== null ? m.top_ls_now.toFixed(2) : '—') + ' (Δ ' + (m.top_ls_delta_7d !== null ? sign(m.top_ls_delta_7d) + m.top_ls_delta_7d.toFixed(2) : '—') + ' 7d)',
+    'basis ' + fmtBasis(m.basis_now),
+    'pct_4h ' + pctStr(m.pct_4h),
+    'range ' + (m.range_7d_pct !== null ? m.range_7d_pct.toFixed(2) + '%' : '—'),
+  ];
   return parts.join(', ');
 }
 
-function buildTags(asset, m) {
+const REGIME_ORDER = ['ACCUMULATION', 'CATALYST-BREAKOUT', 'SHORT-SQUEEZE', 'MOMENTUM', 'COMPRESSION', 'DISTRIBUTION', 'CAPITULATION'];
+const regimes = {};
+for (const r of REGIME_ORDER) regimes[r] = [];
+
+for (const a of assets) {
+  const m = metrics[a];
+  if (m.regime === 'NEUTRAL') continue;
   const tags = [];
-  for (const sub of m.sub_tags || []) {
-    tags.push({ tag: `${m.regime} · ${sub}` });
-  }
-  for (const pat of m.pattern_tags || []) {
-    tags.push({ tag: pat });
-  }
-  return tags;
-}
-
-const regimes = Object.fromEntries(REGIME_ORDER.map((r) => [r, []]));
-for (const r of REGIME_ORDER) {
-  for (const asset of byRegime[r]) {
-    const m = metrics[asset];
-    const rd = repeatDaysFor(asset, m.regime);
-    regimes[r].push({
-      asset,
-      tier: m.tier,
-      marker: rd >= 3 ? 'star' : 'bullet',
-      repeat_days_suffix: rd >= 2 ? `(day ${rd})` : null,
-      metrics_line: buildMetricsLine(asset, m),
-      tags: buildTags(asset, m),
-    });
-  }
-}
-
-// --- regime empty notes ---
-function getRegimeEmptyNote(regime) {
-  switch (regime) {
-    case 'CATALYST-BREAKOUT':
-      return 'no asset combines pct_24h above the tier breakout floor with vol_ratio above 2.0x and OI +10% 24h on taker buy above 52%. MU pct_24h +2.83% on OI +11.62% 24h with vol 1.81x and taker buy 49.94% clears the OI and vol gates but falls 17.17pp short of the Tier 2 +20% price floor and 2.06pp under the taker-buy floor';
-    case 'SHORT-SQUEEZE':
-      return 'no asset combines pct_24h past the tier squeeze floor with OI rolling negative. DRIFT funding sits at -0.3644%/8h with OI +207.32% 7d, but pct_24h -13.61% prints the wrong side of the price gate by 23.61pp';
-    case 'MOMENTUM':
-      return 'no asset combines pct_7d above the tier momentum floor with funding inside the +0.03 to +0.07 band. UB pct_7d +95.49% on funding +0.0139%/8h sits 0.0161pp short of the entry floor. NEAR pct_7d +46.83% on funding +0.0136%/8h sits 0.0164pp short. WLD pct_7d +45.45% on funding +0.0053%/8h sits 0.0247pp short. MU pct_7d +30.27% on funding +0.0215%/8h sits 0.0085pp short';
-    case 'DISTRIBUTION':
-      return 'ESPORTS funding +0.3833%/8h clears the +0.08 Tier 2 trigger by a factor of 4.8, but OI -13.04% 24h misses the +5% OI gate by 18.04pp. MU funding +0.0215%/8h sits 0.0585pp under the trigger';
-    case 'CAPITULATION':
-      return 'DRIFT pct_24h -13.61% on OI +6.93% 24h clears the Tier 2 -10% drawdown gate but fails the -10% OI gate by 16.93pp. LAB pct_24h -7.92% on OI -8.30% 24h misses the drawdown gate by 2.08pp and the OI gate by 1.70pp. Funding holds positive on every drawdown candidate today, so the funding < 0 gate blocks the regime even where price and OI line up';
-    default:
-      return 'no qualifying assets';
-  }
-}
-
-const regimeEmptyNotes = {};
-for (const r of REGIME_ORDER) {
-  if (regimes[r].length === 0) regimeEmptyNotes[r] = getRegimeEmptyNote(r);
-}
-
-// --- watch bucket ---
-function buildWatchLine(asset) {
-  const m = metrics[asset];
-  if (!m) return null;
-  const parts = [
-    `${pct(m.pct_24h)} 24h, ${pct(m.pct_7d)} 7d`,
-    `OI ${pct(m.oi_24h_pct)} 24h on OI ${pct(m.oi_7d_pct)} 7d`,
-    `funding ${fpct(m.funding_now, 4)}/8h (7d avg ${fpct(m.funding_7d_avg, 4)}, delta ${fpct(m.funding_delta, 4)})`,
-  ];
-  if (m.taker_buy_pct_24h != null) parts.push(`taker buy ${m.taker_buy_pct_24h.toFixed(2)}%`);
-  if (m.liq_24h_total != null && m.liq_7d_p75 != null) parts.push(`liq ${fmtUsd(m.liq_24h_total)} vs 7d p75 ${fmtUsd(m.liq_7d_p75)}`);
-  if (m.top_ls_now != null && m.top_ls_delta_7d != null) {
-    const dir = m.top_ls_delta_7d < 0 ? 'down' : 'up';
-    parts.push(`top L/S ${m.top_ls_now.toFixed(2)} (${dir} ${Math.abs(m.top_ls_delta_7d).toFixed(2)} 7d)`);
-  }
-  if (m.basis_now != null) parts.push(`basis ${fpct(m.basis_now, 4)}`);
-  if (m.pct_4h != null) parts.push(`pct_4h ${pct(m.pct_4h)}`);
-  if (m.vol_ratio != null) parts.push(`vol ${m.vol_ratio.toFixed(2)}x`);
-  parts.push(`range ${m.range_7d_pct.toFixed(2)}%`);
-  return { metrics_line: parts.join(', '), m };
-}
-
-function watchRead(asset, m) {
-  if (asset === 'NEAR') {
-    const dir = m.top_ls_delta_7d < 0 ? 'down' : 'up';
-    return `OI ${pct(m.oi_7d_pct)} 7d on pct_7d ${pct(m.pct_7d)} prints the second-heaviest weekly position build in today's universe. Range ${m.range_7d_pct.toFixed(2)}% sits ${(m.range_7d_pct - 25).toFixed(2)}pp above the Tier 2 25% ACCUMULATION ceiling. Top L/S ${m.top_ls_now.toFixed(2)} rolled ${dir} ${Math.abs(m.top_ls_delta_7d).toFixed(2)} over 7d, so smart money cooled into the run. ACCUMULATION fires if the 7d range contracts under 25% as OI continues to hold. MOMENTUM fires if funding pushes into the +0.03 to +0.07 band on pct_7d holding above +15%.`;
-  }
-  if (asset === 'DRIFT') {
-    return `Funding ${fpct(m.funding_now, 4)}/8h prints the universe's deepest negative funding by an order of magnitude, paired with OI ${pct(m.oi_7d_pct)} 7d and vol ${m.vol_ratio.toFixed(2)}x. Pct_24h ${pct(m.pct_24h)} flushed on OI +6.93% 24h — longs still adding into the drawdown. CAPITULATION fails on OI 24h positive and funding positive-side blockage missing. SHORT-SQUEEZE fires if pct_24h flips past +10% while OI rolls negative against the stacked short funding wall.`;
-  }
-  if (asset === 'WLD') {
-    return `OI ${pct(m.oi_7d_pct)} 7d on pct_7d ${pct(m.pct_7d)} reads as a heavy weekly position build cooling on pct_24h ${pct(m.pct_24h)} and OI ${pct(m.oi_24h_pct)} 24h. Range ${m.range_7d_pct.toFixed(2)}% sits ${(m.range_7d_pct - 25).toFixed(2)}pp above the ACCUMULATION ceiling. Funding ${fpct(m.funding_now, 4)}/8h with funding_7d_avg ${fpct(m.funding_7d_avg, 4)} sits at the zero line. ACCUMULATION fires if range contracts under 25% on OI holding.`;
-  }
-  if (asset === 'MU') {
-    return `OI ${pct(m.oi_7d_pct)} 7d on pct_7d ${pct(m.pct_7d)} with vol ${m.vol_ratio.toFixed(2)}x and pct_24h ${pct(m.pct_24h)} reads as the cleanest building structure in today's NEUTRAL bucket. Funding ${fpct(m.funding_now, 4)}/8h sits 0.0085pp short of the MOMENTUM entry floor and 0.0585pp short of the DISTRIBUTION trigger — the structural gap. MOMENTUM fires if funding drops into the +0.03 to +0.07 band. DISTRIBUTION fires if funding clears +0.08 on continued OI build above +5% 24h.`;
-  }
-  if (asset === 'ESPORTS') {
-    return `Funding ${fpct(m.funding_now, 4)}/8h clears the +0.08 Tier 2 DISTRIBUTION trigger by a factor of 4.8 — extreme stacked long premium. Top L/S ${m.top_ls_now.toFixed(2)} rolled ${m.top_ls_delta_7d.toFixed(2)} over 7d, fires RETAIL-ANOMALY since top L/S sits under 1.5. DISTRIBUTION fails on OI 24h ${pct(m.oi_24h_pct)} missing the +5% gate. Reads as squeeze risk over fade — retail crowded long while smart money lean light.`;
-  }
-  return '';
-}
-
-const watchOrder = ['NEAR', 'DRIFT', 'WLD', 'MU', 'ESPORTS'];
-const watch = [];
-for (const asset of watchOrder) {
-  const w = buildWatchLine(asset);
-  if (!w) continue;
-  watch.push({ asset, metrics_line: w.metrics_line, transition_read: watchRead(asset, w.m) });
-}
-
-// --- verdict ---
-const nTotal = assetList.length;
-const nNeutral = neutralAssets.length;
-const partsDistribution = [];
-for (const r of REGIME_ORDER) {
-  if (byRegime[r].length > 0) partsDistribution.push(`${byRegime[r].length} ${r}`);
-}
-partsDistribution.push(`${nNeutral} NEUTRAL`);
-const distribution = `${partsDistribution.join(', ')} across ${nTotal} assessed on the ${TODAY} ${PREFETCH_LABEL}.`;
-
-const word = nNeutral / nTotal >= 0.8 ? 'QUIET' : 'MIXED';
-
-const cycle = [
-  "HYPE rotates into ACCUMULATION CONFIRMED on OI +13.33% 7d with funding +0.0054%/8h inside the band, taker buy 52.43% crossing the 50% gate, top L/S delta +0.15 over 7d.",
-  "XAU enters direct into COMPRESSION QUIET on range 2.27% well under the Tier 2 5% gate, OI +16.17% 7d, vol 0.36x signalling true coil.",
-  "Yesterday's ACCUMULATION prints rolled off — ZEC drops on OI cooling to -19.73% 7d with pct_7d flipping to -14.46%, TAO drops on OI 7d cooling to +5.05% below the +10% gate.",
-  "The NEUTRAL bucket masks heavy weekly builds blocked on the 25% range ceiling — NEAR oi_7d +103.84% on pct_7d +46.83%, WLD oi_7d +85.46% on pct_7d +45.45%, UB oi_7d +196.21% on pct_7d +95.49%, DRIFT oi_7d +207.32% on pct_7d +21.94%.",
-  "DRIFT funding -0.3644%/8h prints the deepest negative funding in today's universe, paired with OI +207.32% 7d — classic squeeze fuel.",
-  "ESPORTS funding +0.3833%/8h clears the DISTRIBUTION trigger by a factor of 4.8 with top L/S 1.45 firing RETAIL-ANOMALY — squeeze risk over fade.",
-  "MU prints the cleanest build behind HYPE on oi_7d +51.46% and vol 1.81x, blocked from regime classification by funding +0.0215%/8h sitting in the structural gap between MOMENTUM and DISTRIBUTION."
-].join(' ');
-
-const forward = [
-  "HYPE advances from ACCUMULATION to MOMENTUM if funding lifts into the +0.03 to +0.07 band on continued OI build above +5% 24h.",
-  "XAU COMPRESSION resolves bullish if vol_ratio expands past 1.0x on a range break above 5% — taker buy 51.11% on OI +16.17% 7d leans bullish.",
-  "DRIFT SHORT-SQUEEZE fires if pct_24h pushes past +10% while OI rolls negative against the stacked short funding wall.",
-  "NEAR ACCUMULATION fires if the 7d range contracts under 25% on OI holding above the +10% gate.",
-  "ESPORTS resolves either direction — short-squeeze if pct_24h pushes past +10% on OI flipping negative, fade if OI rebuilds with funding holding extreme."
-].join(' ');
-
-const verdict = { word, distribution, cycle, forward };
-
-// --- tail ---
-const tail = [];
-for (const asset of assetList) {
-  const m = metrics[asset];
-  tail.push({
-    asset,
+  for (const s of m.sub_tags) tags.push({ tag: m.regime + ' · ' + s });
+  for (const p of m.pattern_tags) tags.push({ tag: p });
+  const days = todayRepeat[a];
+  regimes[m.regime].push({
+    asset: a,
     tier: m.tier,
-    regime: m.regime,
-    sub_tags: m.sub_tags || [],
-    pattern_tags: m.pattern_tags || [],
-    metrics: {
-      price: fmtPrice(m.current_price),
-      pct_24h: rnd(m.pct_24h, 2),
-      pct_7d: rnd(m.pct_7d, 2),
-      pct_4h: rnd(m.pct_4h, 2),
-      range_7d: m.range_7d_pct != null ? `${m.range_7d_pct.toFixed(2)}%` : '—',
-      pct_24h_vs_btc: rnd(m.pct_24h_vs_btc, 2),
-      pct_7d_vs_btc: rnd(m.pct_7d_vs_btc, 2),
-      oi_usd: fmtUsd(m.oi_now),
-      oi_24h_pct: rnd(m.oi_24h_pct, 2),
-      oi_7d_pct: rnd(m.oi_7d_pct, 2),
-      funding_now: rnd(m.funding_now, 4),
-      funding_7d_avg: rnd(m.funding_7d_avg, 4),
-      funding_delta: rnd(m.funding_delta, 4),
-      liq_24h: fmtUsd(m.liq_24h_total),
-      liq_7d_p75: fmtUsd(m.liq_7d_p75),
-      long_liqs: fmtUsd(m.long_liqs_24h),
-      short_liqs: fmtUsd(m.short_liqs_24h),
-      liqs_4h: fmtUsd(m.liqs_4h),
-      top_ls: rnd(m.top_ls_now, 2),
-      top_ls_7d_avg: rnd(m.top_ls_7d_avg, 2),
-      top_ls_delta_7d: rnd(m.top_ls_delta_7d, 2),
-      basis: rnd(m.basis_now, 4),
-      taker_buy: rnd(m.taker_buy_pct_24h, 2),
-    },
-    yesterday_regime: yesterdayRegimeFor(asset),
-    repeat_days: repeatDaysFor(asset, m.regime),
+    marker: days >= 3 ? 'star' : 'bullet',
+    repeat_days_suffix: days >= 2 ? `(day ${days})` : null,
+    metrics_line: metricLineFor(a),
+    tags,
   });
 }
 
-const neutralSummary = `Neutral · ${nNeutral} other assets · see artifact tail for full data`;
+const counts = {};
+for (const a of assets) counts[metrics[a].regime] = (counts[metrics[a].regime] || 0) + 1;
+const totalAssessed = assets.length;
+const neutralPct = (counts.NEUTRAL || 0) / totalAssessed;
+let verdictWord = 'QUIET';
+if (neutralPct < 0.8) {
+  if ((counts.ACCUMULATION || 0) + (counts.MOMENTUM || 0) >= 4 && (counts.CAPITULATION || 0) === 0) verdictWord = 'LEVERAGE BUILDING';
+  else if ((counts.DISTRIBUTION || 0) >= 3) verdictWord = 'CROWDED LONG';
+  else if ((counts.CAPITULATION || 0) >= 2) verdictWord = 'DELEVERAGING';
+  else if ((counts['CATALYST-BREAKOUT'] || 0) >= 3) verdictWord = 'BREAKOUTS ACTIVE';
+  else if ((counts.MOMENTUM || 0) >= 4) verdictWord = 'TRENDING';
+  else if ((counts.COMPRESSION || 0) >= 4) verdictWord = 'COILING';
+  else verdictWord = 'MIXED';
+}
+
+const nonNeutralParts = [];
+for (const r of REGIME_ORDER) if (counts[r]) nonNeutralParts.push(`${counts[r]} ${r}`);
+let distribution;
+if (nonNeutralParts.length === 0) {
+  distribution = `all ${totalAssessed} assessed sit in NEUTRAL`;
+} else {
+  distribution = `${nonNeutralParts.join(', ')} across ${totalAssessed} assessed, ${counts.NEUTRAL || 0} NEUTRAL`;
+}
+
+function transitionNote(from, to) {
+  const namedReads = {
+    'ACCUMULATION→CATALYST-BREAKOUT': 'Patient buyers paid off. High-quality breakout.',
+    'ACCUMULATION→COMPRESSION': 'Lost momentum. Accumulation did not deliver.',
+    'MOMENTUM→DISTRIBUTION': 'Trend topping. Take profits or fade.',
+    'COMPRESSION→CATALYST-BREAKOUT': 'Coil resolved bullish. Ride the break.',
+    'COMPRESSION→CAPITULATION': 'Coil resolved bearish. Fade.',
+    'DISTRIBUTION→CAPITULATION': 'Top played out. Mean-revert long for the bounce.',
+    'CAPITULATION→ACCUMULATION': 'Bottom is in. Quiet long entry.',
+    'NEUTRAL→ACCUMULATION': 'Fresh accumulation print. Early entry.',
+  };
+  const key = `${from}→${to}`;
+  if (namedReads[key]) return namedReads[key];
+  if (to === 'SHORT-SQUEEZE') return 'Squeeze in progress. Short-term ride only.';
+  if (to === 'CAPITULATION') return 'Flush starting.';
+  return '';
+}
+
+function firstEntryNote(m) {
+  return `First appearance, ${pctStr(m.pct_24h)} 24h, OI ${pctStr(m.oi_24h_pct)} 24h, funding ${fmtF(m.funding_now)}.`;
+}
+
+let regimeChanges = null;
+if (havePrior) {
+  regimeChanges = [];
+  for (const a of assets) {
+    const today = metrics[a].regime;
+    const prior = priorRegime[a];
+    if (prior && prior !== today) {
+      regimeChanges.push({ asset: a, from: prior, to: today, note: transitionNote(prior, today) });
+    } else if (!prior) {
+      regimeChanges.push({ asset: a, from: '(new entrant)', to: today, note: firstEntryNote(metrics[a]) });
+    }
+  }
+}
+
+const watch = [];
+
+function pushWatch(asset, transitionRead) {
+  if (!metrics[asset]) return;
+  watch.push({ asset, metrics_line: metricLineFor(asset), transition_read: transitionRead });
+}
+
+pushWatch('XLM',
+  'XLM gives back -5.97% 24h after a +64.69% 7d run with OI still carrying +274.48% 7d. Top L/S 0.82 leaves shorts crowded into the move, so a deeper unwind squeezes them harder rather than flushes longs. CAPITULATION fires on a continued bleed past the tier-2 -10% gate. A reclaim of the 7d run prints CATALYST-BREAKOUT on a single hour of taker buy above 52%.'
+);
+
+pushWatch('LAB',
+  'LAB carries the day-3 leg of its breakout with funding at -0.0996%/8h, the deepest short-pay in the assessed universe. Taker buy 50.89% sits one point under the 52% gate. CATALYST-BREAKOUT confirms on a single taker print above 52% with the +9.17% 24h holding into the close.'
+);
+
+pushWatch('ID',
+  'ID carries basis +2.6514 against funding -0.4242%/8h on OI +447.46% 7d. The structural cost of staying short cannot hold through the week. Resolution arrives either through a short capitulation that drives a vertical leg or a long unwind that gives back the +29.48% 7d gain. Taker buy 49.17% offers no directional tell yet.'
+);
+
+pushWatch('LIT',
+  'LIT enters the universe on +12.99% 7d, OI +14.43% 24h, top L/S 2.26 holding. Range 35.17% blocks the under-25% ACCUMULATION gate. Two days of price drift with the OI build sticking pulls range under the gate and prints the regime cleanly.'
+);
+
+pushWatch('HBAR',
+  'HBAR builds OI +45.15% 7d with price +9.49% 7d on top L/S 2.27. Range 34.42% blocks the under-25% gate. A two-day consolidation that compresses range prints ACCUMULATION cleanly. A flush instead invalidates the build.'
+);
+
+pushWatch('HEI',
+  'HEI prints +33.55% 24h on OI +74.59% 24h, but pct_4h -21.89% inside the same daily candle marks the leverage cascade already underway. CASH-AND-CARRY fires on basis +0.2408 with funding delta near zero, so institutional arb stacks on the wreck. Treat the 24h headline as discharge, not a directional thesis.'
+);
+
+const neutralSummary = `Neutral · ${totalAssessed} assessed, ${watch.length} surfaced to WATCH · full data in the tail`;
+
+const regime_empty_notes = {};
+for (const r of REGIME_ORDER) {
+  if (regimes[r].length > 0) continue;
+  if (r === 'CATALYST-BREAKOUT') {
+    regime_empty_notes[r] = 'no asset pairs a breakout-grade move with taker buy above 52%. LAB (+9.17%, vol 1.26x, OI +2.93%, taker 50.89%) and LIT (+9.91%, taker 47.87%) both miss the taker gate. HEI ripped +33.55% on vol 7.74x with OI +74.59%, but pct_4h -21.89% inside the same daily marks the move already cracked.';
+  } else if (r === 'SHORT-SQUEEZE') {
+    regime_empty_notes[r] = 'no asset pairs a >10% 24h rip with OI rolling negative. XLM rallied +64.69% 7d but OI +274.48% 7d confirms long-led discovery, not squeeze. ID +15.82% prints on OI +45.42% 24h — fresh longs, not forced cover.';
+  } else if (r === 'MOMENTUM') {
+    regime_empty_notes[r] = 'no asset holds a 7d run with funding inside the +0.03 to +0.07 band. HYPE (+13.08% 7d on funding -0.0136) sits under zero, so ACCUMULATION takes the call instead. HBAR (+9.49% 7d) and LIT (+12.99% 7d) miss the tier-2 +15% 7d gate.';
+  } else if (r === 'COMPRESSION') {
+    regime_empty_notes[r] = 'no asset holds sub-5% range with an OI build and flat funding. XAU prints the tightest range at 5.13% but OI -3.71% 7d misses the +5% build gate.';
+  } else if (r === 'DISTRIBUTION') {
+    regime_empty_notes[r] = 'no asset pairs extreme funding with a 5% OI build and slowing gains. ALLO funding +0.0116%/8h, BNB +0.0101%/8h and XLM +0.0096%/8h all sit well under the +0.08 tier-2 trigger. No longside funding extreme prints anywhere.';
+  } else if (r === 'CAPITULATION') {
+    regime_empty_notes[r] = 'no drawdown pairs negative funding with an OI flush past the liquidation 75th percentile. TAO printed -10.05% 7d but today is +0.52% 24h on funding +0.0009%/8h, so no flush. XLM -5.97% 24h missed the tier-2 -10% gate.';
+  }
+}
+
+const cycle =
+  'Two fresh ACCUMULATION prints land on HYPE and BNB after a fully-neutral 05-29 tape. HYPE rides the perp-DEX bid on taker buy 51.02% and smart-money L/S ticking up 0.04 over 7d. BNB carries the exchange flow on vol 1.18x average, OI building +12.10% 7d inside a 7.84% range.';
+const forward =
+  'HYPE holding the under-25% range another day puts the regime into a day-2 streak with BNB. A continuation candle that pushes range past 25% drops HYPE out of ACCUMULATION before the print extends. LAB taker buy clearing 52% on a single hour promotes the +9.17% leg to CATALYST-BREAKOUT. Watch ID basis +2.65 against funding -0.42%/8h for either-side capitulation by week-end.';
+
+function tailMetrics(m) {
+  return {
+    price: fmtPrice(m.current_price),
+    pct_24h: Number(m.pct_24h.toFixed(2)),
+    pct_7d: Number(m.pct_7d.toFixed(2)),
+    pct_4h: m.pct_4h !== null ? Number(m.pct_4h.toFixed(2)) : '—',
+    range_7d: (m.range_7d_pct !== null ? m.range_7d_pct.toFixed(2) + '%' : '—'),
+    pct_24h_vs_btc: m.pct_24h_vs_btc !== null ? Number(m.pct_24h_vs_btc.toFixed(2)) : '—',
+    pct_7d_vs_btc: m.pct_7d_vs_btc !== null ? Number(m.pct_7d_vs_btc.toFixed(2)) : '—',
+    oi_usd: fmtUsd(m.oi_now),
+    oi_24h_pct: Number(m.oi_24h_pct.toFixed(2)),
+    oi_7d_pct: Number(m.oi_7d_pct.toFixed(2)),
+    funding_now: m.funding_now !== null ? Number(m.funding_now.toFixed(4)) : '—',
+    funding_7d_avg: m.funding_7d_avg !== null ? Number(m.funding_7d_avg.toFixed(4)) : '—',
+    funding_delta: m.funding_delta !== null ? Number(m.funding_delta.toFixed(4)) : '—',
+    liq_24h: fmtUsd(m.liq_24h_total),
+    liq_7d_p75: fmtUsd(m.liq_7d_p75),
+    long_liqs: fmtUsd(m.long_liqs_24h),
+    short_liqs: fmtUsd(m.short_liqs_24h),
+    liqs_4h: fmtUsd(m.liqs_4h),
+    top_ls: m.top_ls_now !== null ? Number(m.top_ls_now.toFixed(2)) : '—',
+    top_ls_7d_avg: m.top_ls_7d_avg !== null ? Number(m.top_ls_7d_avg.toFixed(2)) : '—',
+    top_ls_delta_7d: m.top_ls_delta_7d !== null ? Number(m.top_ls_delta_7d.toFixed(2)) : '—',
+    basis: m.basis_now !== null ? Number(m.basis_now.toFixed(4)) : '—',
+    taker_buy: m.taker_buy_pct_24h !== null ? Number(m.taker_buy_pct_24h.toFixed(2)) : '—',
+  };
+}
+
+const tail = assets.map((a) => {
+  const m = metrics[a];
+  return {
+    asset: a,
+    tier: m.tier,
+    regime: m.regime,
+    sub_tags: m.sub_tags,
+    pattern_tags: m.pattern_tags,
+    metrics: tailMetrics(m),
+    yesterday_regime: priorRegime[a] || null,
+    repeat_days: todayRepeat[a] || 1,
+  };
+});
 
 const data = {
   date: TODAY,
   edge_case: null,
-  verdict,
-  regime_changes: transitions,
+  verdict: { word: verdictWord, distribution, cycle, forward },
+  regime_changes: regimeChanges,
   regimes,
-  regime_empty_notes: regimeEmptyNotes,
+  regime_empty_notes,
   watch,
   neutral_summary: neutralSummary,
   tail,
 };
 
-fs.writeFileSync('.outputs/perps-scan.data.json', JSON.stringify(data, null, 2));
-console.log(`wrote .outputs/perps-scan.data.json — verdict=${word} regimes=${REGIME_ORDER.map((r) => `${r}:${regimes[r].length}`).join(' ')} neutral=${nNeutral} transitions=${transitions.length} watch=${watch.length} tail=${tail.length}`);
+fs.writeFileSync(OUT, JSON.stringify(data, null, 2));
+console.log(`wrote ${OUT}`);
+console.log(`  verdict: ${verdictWord}`);
+console.log(`  regime counts: ${JSON.stringify(counts)}`);
+console.log(`  transitions: ${(regimeChanges || []).length}`);
+console.log(`  watch: ${watch.length}`);
+console.log(`  tail: ${tail.length}`);

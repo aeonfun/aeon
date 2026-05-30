@@ -1,15 +1,11 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-29T22:30:25Z",
+  "last_analyzed": "2026-05-30T10:37:32Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific pattern identification (CASH-AND-CARRY, cascade signals), quantified metrics (funding rates, taker buy stalls), proper memory integration, and clear follow-up actions.",
+  "assessment": "Substantive, well-structured output with specific asset metrics, clean constraint handling, and actionable watch list; limited by cached data and domain-specificity but solid execution for internal autonomous skill.",
   "flags": [],
   "avg_score": 4.17,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 3
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     }
   ]
