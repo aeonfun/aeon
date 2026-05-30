@@ -1,12 +1,10 @@
 {
   "skill": "outcome-tracker",
-  "last_analyzed": "2026-05-30T10:24:50Z",
-  "quality_score": 4,
-  "assessment": "Skill executed successfully, verified all dependencies, identified stale-data limitations proactively, and coordinated properly with postprocess workflow—good design thinking and transparency.",
-  "flags": [
-    "stale_data"
-  ],
-  "avg_score": 3.92,
+  "last_analyzed": "2026-05-30T21:35:02Z",
+  "quality_score": 3,
+  "assessment": "Task completed as designed—consume-only skill verified inputs, documented state changes, and deferred artifact generation to postprocess scripts. Output is accurate but heavily meta and provides limited actionable insight.",
+  "flags": [],
+  "avg_score": 3.85,
   "history": [
     {
       "date": "2026-05-25",
@@ -55,6 +53,10 @@
     {
       "date": "2026-05-30",
       "score": 4
+    },
+    {
+      "date": "2026-05-30",
+      "score": 3
     }
   ]
 }
