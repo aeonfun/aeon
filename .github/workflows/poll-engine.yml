@@ -1,0 +1,107 @@
+name: Engine Poller
+
+# Hourly Path B PR2 read-only engine condition poller. Reads the
+# ledger's engine_watch_conditions + watchlist trigger_conditions /
+# invalidation_conditions, evaluates each against the Coinglass cache,
+# and posts a summary embed to #aeon-ops.
+#
+# Read-only. No ledger mutations, no actions. PR3 will add Claude-
+# confirmation execution on the same trigger pipeline; this PR is the
+# evidence layer that validates conditions Claude writes actually fire
+# under real market data.
+#
+# Cadence: hourly. Pulls cache fresh each run via prefetch-coinglass.sh
+# (same pipeline perps-scan uses during chain runs).
+#
+# Cron timing: shifted 30m past the hour to avoid running concurrently
+# with the AM/PM perps-brief crons at :30. Lands at ~3-4h delay after
+# fork-throttle (consistent with other GHA crons on this fork) but the
+# poller is order-agnostic — it just reads the latest ledger state.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry-run: log embed JSON without posting'
+        required: true
+        type: boolean
+        default: true
+      quiet_skip_post:
+        description: 'Skip posting on quiet hours (no fires)'
+        required: true
+        type: boolean
+        default: false
+  schedule:
+    - cron: '15 * * * *'  # 15m past every hour
+
+permissions:
+  contents: read
+
+# Same concurrency group as the chain runner so the poller queues if
+# a chain is running. Prevents poller + chain from racing on the
+# ledger or running prefetch-coinglass.sh concurrently.
+concurrency:
+  group: aeon-engine
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate secrets
+        run: |
+          if [ -z "${{ secrets.DISCORD_BOT_TOKEN }}" ]; then
+            echo "::error::DISCORD_BOT_TOKEN secret not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.COINGLASS_API_KEY }}" ]; then
+            echo "::error::COINGLASS_API_KEY secret not set"
+            exit 1
+          fi
+
+      - name: Prefetch Coinglass cache
+        env:
+          COINGLASS_API_KEY: ${{ secrets.COINGLASS_API_KEY }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+        run: |
+          chmod +x scripts/prefetch-coinglass.sh
+          ./scripts/prefetch-coinglass.sh engine-poller
+
+      - name: Run poller
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CHANNEL_AEON_OPS: ${{ secrets.DISCORD_BOT_CHANNEL_AEON_OPS }}
+          DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
+        run: |
+          ARGS=""
+          # Schedule trigger always runs live; manual dispatch obeys the input.
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            ARGS="$ARGS --live"
+          elif [ "${{ inputs.dry_run }}" = "false" ]; then
+            ARGS="$ARGS --live"
+          fi
+          if [ "${{ inputs.quiet_skip_post }}" = "true" ]; then
+            ARGS="$ARGS --quiet-skip-post"
+          fi
+          python3 scripts/poll-engine-conditions.py $ARGS
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "Engine poll cycle complete."
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Schedule fire — embed posted to #aeon-ops (if any fires)."
+          else
+            echo "Manual dispatch. dry_run=${{ inputs.dry_run }}."
+          fi

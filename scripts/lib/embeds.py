@@ -1374,3 +1374,201 @@ def compose_daily_ops_review(
         embed["footer"] = _footer(footer_text.strip(" ·"))
 
     return [embed]
+
+
+# ---------------------------------------------------------------------------
+# Engine poller summary — Path B PR2
+#
+# Posted to #aeon-ops every poll cycle that has at least one fire. Lists
+# fired conditions per asset with the metric reading, the condition's
+# threshold, and the proposed action. PR2 takes no actions — this is
+# purely diagnostic to validate which conditions actually fire before
+# enabling PR3's Claude-confirmation execution.
+
+
+def _format_metric_value(metric_key: str, value) -> str:
+    """Render a metric value in its natural unit for the summary embed."""
+    if value is None:
+        return "—"
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return str(value)
+    if metric_key in ("funding", "basis"):
+        return f"{v * 100:.4f}%"  # rates rendered as %
+    if metric_key in (
+        "pct_24h_pct", "oi_change_24h_pct",
+        "taker_buy_pct",
+    ):
+        return f"{v:.2f}%"
+    if metric_key in ("vol_ratio",):
+        return f"{v:.2f}×"
+    if metric_key in ("lsr", "lsr_delta_7d"):
+        return f"{v:.3f}"
+    if metric_key in ("price",):
+        return fmt_price(v)
+    if metric_key in ("oi",):
+        if abs(v) >= 1e9:
+            return f"${v / 1e9:.2f}B"
+        if abs(v) >= 1e6:
+            return f"${v / 1e6:.2f}M"
+        return f"${v:,.0f}"
+    return f"{v:g}"
+
+
+def _action_emoji(action: str) -> str:
+    return {
+        "exit":  "📉",
+        "enter": "📈",
+        "drop":  "🗑",
+        "alert": "🔔",
+    }.get(action or "alert", "🔔")
+
+
+def compose_poller_summary(
+    fires: list,
+    n_scanned_conditions: int,
+    n_scanned_assets: int,
+    n_in_cooldown: int = 0,
+    n_missing_data: int = 0,
+    chain_run_id: str = "",
+    slot: str = "",
+) -> list[dict]:
+    """Compose the hourly poller summary embed.
+
+    Args:
+        fires: list of dicts with keys:
+            asset, direction, entity ("open" or "watchlist"),
+            entity_id, condition_index, condition (the full dict),
+            current_value
+        n_scanned_conditions: total conditions evaluated this cycle
+        n_scanned_assets: distinct assets the conditions cover
+        n_in_cooldown: conditions skipped due to cooldown
+        n_missing_data: conditions where the metric was unavailable
+
+    Returns a list of embeds (single element). Posted to #aeon-ops.
+    """
+    n_fired = len(fires)
+
+    # Color signals severity of the highest-severity fire
+    has_critical = any((f["condition"].get("severity") == "critical") for f in fires)
+    has_warning = any((f["condition"].get("severity") == "warning") for f in fires)
+    if has_critical:
+        color = COLORS["LOSS"]
+    elif has_warning:
+        color = COLORS["SCARE"]
+    elif n_fired:
+        color = COLORS["NEUTRAL_CLOSE"]
+    else:
+        color = COLORS["WIN"]  # quiet hour
+
+    title = (
+        f"Engine Poll · {n_fired} fire(s)" if n_fired else "Engine Poll · quiet"
+    )
+
+    fields: list[dict] = [
+        {
+            "name": "Scan summary",
+            "value": (
+                f"Conditions evaluated: **{n_scanned_conditions}**\n"
+                f"Assets covered: **{n_scanned_assets}**\n"
+                f"In cooldown: **{n_in_cooldown}** · "
+                f"Missing data: **{n_missing_data}**\n"
+                f"Fired: **{n_fired}**"
+            ),
+            "inline": False,
+        },
+    ]
+
+    # Group fires by asset for readability
+    by_asset: dict[str, list] = {}
+    for f in fires:
+        by_asset.setdefault(f["asset"], []).append(f)
+
+    for asset, asset_fires in by_asset.items():
+        lines = []
+        for f in asset_fires[:6]:  # cap per-asset fires shown
+            cond = f["condition"]
+            metric_key, _ = _CONDITION_MAP_FOR_EMBED.get(
+                cond.get("type"), (None, None)
+            )
+            value_str = _format_metric_value(metric_key, f.get("current_value"))
+            threshold_str = _format_metric_value(metric_key, cond.get("threshold"))
+            severity = cond.get("severity", "warning")
+            action = cond.get("action", "alert")
+            label = cond.get("trigger_label", cond.get("type", "?"))
+            entity_marker = (
+                "OPEN" if f.get("entity") == "open" else "WATCH"
+            )
+            lines.append(
+                f"{_action_emoji(action)} `{label[:60]}`\n"
+                f"   {cond.get('type', '?')}: **{value_str}** vs threshold {threshold_str} "
+                f"· {severity} · {action} · {entity_marker}"
+            )
+        if len(asset_fires) > 6:
+            lines.append(f"…and {len(asset_fires) - 6} more on {asset}")
+        # Direction tag from the first fire (positions are direction-tagged)
+        direction = asset_fires[0].get("direction") or ""
+        name = f"{asset}" + (f" {direction}" if direction else "")
+        fields.append({
+            "name": name,
+            "value": "\n".join(lines)[:1024],
+            "inline": False,
+        })
+
+    if not n_fired:
+        fields.append({
+            "name": "All conditions held",
+            "value": "No fires this cycle. Engine watchers nominal.",
+            "inline": False,
+        })
+
+    description_parts = []
+    if n_fired:
+        description_parts.append(
+            "Path B PR2 is read-only — this summary is diagnostic. "
+            "No ledger changes, no embeds posted to perps channels. "
+            "PR3 will add Claude-confirmation execution on fires."
+        )
+    description = "\n\n".join(description_parts)
+
+    footer_text = ""
+    if chain_run_id:
+        footer_text = f"poll run {chain_run_id}"
+    footer_text += _slot_suffix(slot)
+
+    embed: dict = {
+        "color": color,
+        "author": {"name": "ENGINE POLL"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "timestamp": _now_iso(),
+    }
+    if footer_text:
+        embed["footer"] = _footer(footer_text.strip(" ·"))
+
+    return [embed]
+
+
+# Local copy of the condition-type → metric mapping for use in embed
+# rendering (lib/condition_evaluator.py owns the canonical map). Listed
+# here so embeds.py doesn't import condition_evaluator (avoids any
+# circular-import risk at the module level).
+_CONDITION_MAP_FOR_EMBED: dict[str, tuple[str, str]] = {
+    "price_close_above":      ("price",            ">="),
+    "price_close_below":      ("price",            "<="),
+    "funding_above":          ("funding",          ">"),
+    "funding_below":          ("funding",          "<"),
+    "oi_change_above_pct":    ("oi_change_24h_pct", ">"),
+    "oi_change_below_pct":    ("oi_change_24h_pct", "<"),
+    "lsr_above":              ("lsr",              ">"),
+    "lsr_below":              ("lsr",              "<"),
+    "lsr_delta_above":        ("lsr_delta_7d",     ">"),
+    "lsr_delta_below":        ("lsr_delta_7d",     "<"),
+    "taker_buy_above_pct":    ("taker_buy_pct",    ">"),
+    "taker_buy_below_pct":    ("taker_buy_pct",    "<"),
+    "basis_above":            ("basis",            ">"),
+    "basis_below":            ("basis",            "<"),
+    "volume_ratio_above":     ("vol_ratio",        ">"),
+}

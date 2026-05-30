@@ -39,6 +39,9 @@ fi
 # Gate: only fetch for skills that need Coinglass data
 case "$SKILL" in
   perps-scan) ;;
+  # Path B PR2: hourly engine poller reads the same cache to evaluate
+  # per-trade conditions. Same data structure, same prefetch pipeline.
+  engine-poller) ;;
   *)
     echo "coinglass-prefetch: no prefetch defined for skill '$SKILL'"
     exit 0
