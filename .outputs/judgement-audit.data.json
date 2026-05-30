@@ -1,0 +1,102 @@
+{
+  "schema_version": "v1",
+  "audit_window": "30d",
+  "generated_at_utc": "2026-05-30T08:15:00Z",
+  "narrative": "30-day window, n=10 closed: 20% win rate, -6.19% average return, -3.77pp vs BTC, across a $77K → $73K BTC chop tape pinned in Extreme Fear all seven sessions. The dominant loss shape is peak-phase LONG continuation lost mid-hold to within-sector inversion or narrative-carrier rotation, not bad asset mechanics. The cleanest win was the BCH SHORT (+13.17%): smart-money long/short collapsing 1.43 points alongside negative funding ran clean through a green relief tape to seven-day horizon, while ONDO, RENDER and AKT all sat on solid entry reads that died when their sectors rotated mid-hold.",
+  "insights": [
+    "RIDE-then-loss is 65% (13 of 20 evaluations) and CLOSE-when-already-underperforming is 80% — invalidation tracking is fine (stops hold), mid-hold regime-degradation tracking is the actual gap. V2 should encode a 'is the regime that justified entry still intact?' check on every re-eval, independent of price-vs-invalidation.",
+    "Three of the four LONG losses with full postmortem context (ONDO, RENDER, plus AKT in the wider ledger) lost to narrative-carrier rotation or within-sector inversion while their own asset mechanics still looked clean at entry — failure_type clusters at `regime`, not `asset`. V2 needs an explicit sector-internal flip check before riding peak-phase narrative LONGs past day-2.",
+    "`narrative_phase_aligned` shows a -19pp edge (n=7 fired vs n=3 missing), and `pattern_tag_supports` (+28.6pp, n=7) and `market_regime_aligned` (+25.0pp, n=8) carry the positive signal — the V1 sample is suggesting that aligning to a *named* narrative phase late-cycle is the trap, while aligning to the *structural* tape and the *quant* pattern is what actually works. Re-check at n>=30 before locking.",
+    "The single largest-loss trade (GENIUS SHORT, -24.11%, MAE -33.86%) shorted into a perceived CAPITULATION print and missed the active bsc name-farm cluster reactivation already documented in `MEMORY.md` active topics — fifth distinct contract surfaced on day 2 and squeezed the short. V2 should consult active-topics before SHORTing bsc/sol microcap clusters whose name is still in a documented burst phase.",
+    "SHORT direction posted 33% WR (n=3) vs 14% for LONGs (n=7); the only direct-fire SHORT (BCH) won outright while both watchlist-promoted SHORTs (GENIUS, ZEC) lost. Early signal that the current risk-off chop tape rewards short-side asset edge more than long-side narrative edge — sample too thin to act on (n=3), flag for re-check once SHORT n>=10."
+  ],
+  "per_trade_postmortems": [
+    {
+      "trade_id": "BCH-2026-05-23-001",
+      "asset": "BCH",
+      "direction": "SHORT",
+      "outcome": "WIN",
+      "return_pct": 13.17,
+      "failure_type": null,
+      "success_type": "both",
+      "setup_type": "continuation",
+      "what_was_right": "Top-trader long/short ratio collapsed 1.43 points over 7d alongside funding at -0.0336%/8h (vs 7d average -0.0127%) and OI dropping 9.88% — smart money had fully exited the long side without leverage rebuild, and the legacy-alt bleed ran clean through to horizon.",
+      "what_went_wrong": null,
+      "lessons": [
+        "Continuation SHORTs with three confluence anchors (pattern, market regime, enrichment) and no narrative tailwind defending the bid can hold a full 7d horizon even on intermittent green relief tape — when the smart-money exit is verified by L/S collapse AND OI decline, hold to horizon rather than booking on the first green session.",
+        "Risk-off chop regimes (BTC -3% over the audit window, Fear & Greed pinned in Extreme Fear) favour SHORTs on names with no narrative carrier — the asset's structural bleed compounds with the absent bid for a reliable edge."
+      ]
+    },
+    {
+      "trade_id": "NEAR-2026-05-22-001",
+      "asset": "NEAR",
+      "direction": "LONG",
+      "outcome": "WIN",
+      "return_pct": 2.45,
+      "failure_type": null,
+      "success_type": "both",
+      "setup_type": "breakout",
+      "what_was_right": "Accumulation resolved into a +20.72% 24h rip on volume 4.53x, OI +41.79% 24h and short liqs $3.86M vs p75 $1.38M, with AI agents and Decentralized compute both Peak — every confluence criterion fired (the only `both_tag` trade in the window).",
+      "what_went_wrong": null,
+      "lessons": [
+        "Breakout LONGs that fire all seven confluence criteria including `both_tag` survive deep intraday MAE (-12.26% on day 2) when the sector phase tags hold — don't panic-close on a single red session if the sector tape is still Peak.",
+        "Short horizons (3d) on PEAK-phase entries lock in the rip before sector rotation arrives — when AI/DePIN are both already late-cycle, bias horizon shorter on continuation longs."
+      ]
+    },
+    {
+      "trade_id": "GENIUS-2026-05-23-001",
+      "asset": "GENIUS",
+      "direction": "SHORT",
+      "outcome": "LOSS",
+      "return_pct": -24.11,
+      "failure_type": "asset",
+      "success_type": null,
+      "setup_type": "counter_trend",
+      "what_was_right": "The structural read (-6.93% close, OI -6.43% same window, liqs $498K = 2.76x p75, funding flipped negative to -0.0005%/8h from +0.0073% 7d average) was a textbook capitulation-shaped flow on a thin-float listing pump.",
+      "what_went_wrong": "Fifth distinct bsc name-farm contract reactivated the cluster on day 2 (vol_ratio 2.38x cleared the breakout gate, +9.51% on $51M volume), cleared the $0.68 invalidation on daily close and squeezed the short — the active multi-day GENIUS-bsc name-farm pattern was already documented in `MEMORY.md` active topics on 2026-05-23 evening but the entry didn't cross-reference it.",
+      "lessons": [
+        "Before SHORTing a bsc/sol microcap whose ticker appears in `MEMORY.md` active topics as an in-burst name-farm cluster, treat the capitulation read as suspect — clusters in burst phase recycle through fresh contracts and one of them will squeeze.",
+        "Counter-trend SHORTs on thin-float listing pumps need a hard upper-bound on entry size and a tighter-than-default invalidation (the $0.68 stop was 17% above entry on a $0.58 token, far too loose for the volatility profile)."
+      ]
+    },
+    {
+      "trade_id": "ONDO-2026-05-22-001",
+      "asset": "ONDO",
+      "direction": "LONG",
+      "outcome": "LOSS",
+      "return_pct": -17.30,
+      "failure_type": "regime",
+      "success_type": null,
+      "setup_type": "narrative_rotation",
+      "what_was_right": "ONDO's own entry mechanics looked clean: +11.81% 24h on OI +13.19% returning ONDO to trending #6, top L/S 1.79 with the long stack mostly held, and RWA at Peak 5/5 with CLARITY + Japan June-1 framed as a broader legitimization wave.",
+      "what_went_wrong": "RWA narrative carrier rotated mid-hold from native protocol tokens to tokenized-stock wrappers ($1.2B inflow) and ETF flows ($425M), breaching the $0.41 invalidation by 7% on day 2 — the sector phase tag was right but the *carrier within the sector* had already left ONDO.",
+      "lessons": [
+        "Peak-phase narrative LONGs need a 'sector-internal carrier' check at entry — when the RWA flow is concentrating in wrappers and ETFs rather than native protocol tokens, the protocol-token leg is the one being rotated *out of*, not into.",
+        "When a name 'rolled OUT of yesterday's ACCUMULATION' was already flagged in the named-risks at entry, weight that risk more heavily than the day-1 trending re-appearance — structural bid that already left is the leading indicator."
+      ]
+    },
+    {
+      "trade_id": "RENDER-2026-05-26-001",
+      "asset": "RENDER",
+      "direction": "LONG",
+      "outcome": "LOSS",
+      "return_pct": -10.92,
+      "failure_type": "regime",
+      "success_type": null,
+      "setup_type": "narrative_rotation",
+      "what_was_right": "Decentralized-compute sector swept 7 of 8 winner slots on a 1/20 green tape with RENDER leading peers (+14.2% 24h, $258M vol, vol/mcap 0.21) and a HIGH 9/10 discovery call backing the Salad Network ~60K enterprise GPU integration — the cross-sector rotation read at entry was correct.",
+      "what_went_wrong": "Day-3 the same compute sector inverted and RENDER led the names lower at -12.5%, the biggest loser among the AI peers; the sector that had been sweeping winners 24h earlier flipped to sweeping losers with no individual-name catalyst, and the stop-tracking rightly closed on the thesis break ($2.04 vs $2.00 invalidation) before the stop printed.",
+      "lessons": [
+        "Sector-rotation LONGs entered on 'sector is sweeping winners' need a parallel daily check that the sector is still sweeping — when the same names that led winners 24h ago start leading losers, close on the thesis flip, don't wait for invalidation.",
+        "PEAK-phase narrative entries on names that 'concentrate rather than diversify sector exposure' (EIGEN + AKT already long) deserve a tighter horizon than 7d — the named-risks list at entry was already flagging this and got proven correct on day 3."
+      ]
+    }
+  ],
+  "regime_observations": [
+    "BTC bled from $77K to $73K across the audit window (-5.3%), dominance held 57-58% range-bound, and Fear & Greed sat in Extreme Fear (22-23) all seven sessions — risk-off chop without a crash leg, the worst tape for narrative-driven LONGs.",
+    "AI/compute sector phase-transitioned from Peak to early Fading during the window; RENDER, TAO and AKT led the compute names lower on day 3-5 after the same set had swept winner slots 24h earlier — a textbook intra-sector inversion that caught two of the three loser postmortems.",
+    "RWA narrative phase tagged Peak throughout but the carrier rotated mid-window from native protocol tokens (ONDO) to tokenized-stock wrappers ($1.2B flow) and ETF wrappers ($425M) — the sector tag remained valid while the protocol-token leg was being actively rotated out of.",
+    "BTC spot ETF outflow streak hit day 9 (-$223M today, -$2.8B cumulative) — institutional bid was absent for the entire audit window, removing the usual relief mechanism for oversold majors and helping the BCH SHORT run clean.",
+    "Multi-day name-farm clusters on bsc/sol microcaps (GENIUS, SAOS, NOAR) remained in burst-mode recycling through fresh contracts throughout the window — the fifth-contract GENIUS reactivation on 2026-05-24 was the proximate cause of the largest single-trade loss."
+  ]
+}
