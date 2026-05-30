@@ -879,6 +879,43 @@ def _fmt_n(n) -> str:
         return "—"
 
 
+def _fmt_postmortem_line(pm: dict) -> str:
+    """Compress one postmortem into a single-line field row.
+
+    Layout: TICKER DIR · OUTCOME ±X% · failure/success type · setup_type
+            one-sentence what_went_wrong / what_was_right
+            └ top lesson (if any)
+    """
+    asset = pm.get("asset", "?")
+    direction = pm.get("direction", "?")
+    outcome = pm.get("outcome", "?")
+    ret = pm.get("return_pct")
+    setup = pm.get("setup_type", "")
+
+    # Pick the categorisation tag — failure_type if loss-side, success_type
+    # otherwise.
+    cat = pm.get("failure_type") or pm.get("success_type") or "?"
+
+    if outcome in ("LOSS", "SCARE", "NEUTRAL"):
+        diagnosis = (pm.get("what_went_wrong") or "").strip()
+    else:
+        diagnosis = (pm.get("what_was_right") or "").strip()
+
+    header = f"**{asset} {direction}** · {outcome} {fmt_pct(ret)} · {cat}"
+    if setup:
+        header += f" · {setup}"
+
+    parts = [header]
+    if diagnosis:
+        parts.append(diagnosis[:500])
+    lessons = pm.get("lessons") or []
+    if lessons:
+        top = (lessons[0] or "").strip()
+        if top:
+            parts.append(f"└ {top[:300]}")
+    return "\n".join(parts)
+
+
 def compose_judgement_audit(
     stats: dict,
     window: str = "30d",
@@ -886,6 +923,8 @@ def compose_judgement_audit(
     slot: str = "",
     narrative: str = "",
     insights: Optional[list] = None,
+    postmortems: Optional[list] = None,
+    regime_observations: Optional[list] = None,
 ) -> dict:
     """One embed per judgement audit run. Posted to #perps-outcomes.
 
@@ -894,13 +933,19 @@ def compose_judgement_audit(
         window: which window to feature (default '30d'). Must exist in stats.
         narrative: optional Claude-written synthesis paragraph
         insights: optional list of Claude-identified insights
+        postmortems: optional list of per-trade postmortems produced by
+            the judgement-audit skill. Each dict carries trade_id, asset,
+            direction, outcome, return_pct, failure_type | success_type,
+            setup_type, what_went_wrong | what_was_right, lessons[].
+        regime_observations: optional list of macro regime observations
+            for the audit window.
 
     Layout:
         Headline metrics (inline fields): n closed, win rate, avg return,
         best/worst, max drawdown.
-        Description: narrative paragraph (if provided) + insights list.
+        Description: narrative paragraph + insights list + regime observations.
         Long-form fields: by_direction, by_horizon, top criteria by edge,
-        watchlist funnel summary.
+        watchlist funnel, postmortems (winners + losers).
     """
     windows = stats.get("windows") or {}
     w_stats = windows.get(window) or {}
@@ -1094,10 +1139,38 @@ def compose_judgement_audit(
             "inline": False,
         })
 
-    # --- Description: narrative (if any) + insights (if any)
+    # --- Per-trade postmortems (winners + losers)
+    if postmortems:
+        # Split into two columns by outcome class. Winners first, losers
+        # second — operator-readable left-to-right.
+        winners = [p for p in postmortems if p.get("outcome") in ("WIN", "SCARE")]
+        losers = [p for p in postmortems if p.get("outcome") in ("LOSS", "NEUTRAL")]
+
+        if winners:
+            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in winners[:3])
+            fields.append({
+                "name": "Top winners — postmortem",
+                "value": rendered[:1024],
+                "inline": False,
+            })
+        if losers:
+            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in losers[:3])
+            fields.append({
+                "name": "Top losers — postmortem",
+                "value": rendered[:1024],
+                "inline": False,
+            })
+
+    # --- Description: narrative + insights + regime observations
     desc_parts: list[str] = []
     if narrative:
         desc_parts.append(narrative.strip())
+    if regime_observations:
+        regime_block = "\n".join(
+            f"• {o.strip()}" for o in regime_observations if (o or "").strip()
+        )
+        if regime_block:
+            desc_parts.append("**Regime backdrop**\n" + regime_block)
     if insights:
         bullet_block = "\n".join(f"• {i.strip()}" for i in insights if (i or "").strip())
         if bullet_block:

@@ -110,18 +110,26 @@ def main() -> int:
     except json.JSONDecodeError as e:
         fail(f"{args.stats_path} not valid JSON: {e}", code=2)
 
-    # Optional Claude-synthesised narrative + insights
+    # Optional Claude-synthesised narrative + insights + postmortems
     narrative = ""
     insights: list = []
+    postmortems: list = []
+    regime_observations: list = []
     if args.data_path.exists():
         try:
             data = json.loads(args.data_path.read_text())
             narrative = (data.get("narrative") or "").strip()
             insights = data.get("insights") or []
+            postmortems = data.get("per_trade_postmortems") or []
+            regime_observations = data.get("regime_observations") or []
             if narrative:
                 info(f"loaded Claude narrative ({len(narrative)} chars)")
             if insights:
                 info(f"loaded {len(insights)} Claude insight(s)")
+            if postmortems:
+                info(f"loaded {len(postmortems)} per-trade postmortem(s)")
+            if regime_observations:
+                info(f"loaded {len(regime_observations)} regime observation(s)")
         except json.JSONDecodeError as e:
             warn(
                 f"{args.data_path} present but not valid JSON: {e}. "
@@ -136,6 +144,8 @@ def main() -> int:
         slot=args.slot,
         narrative=narrative,
         insights=insights,
+        postmortems=postmortems,
+        regime_observations=regime_observations,
     )
 
     # Channel routing — audit embed goes to #perps-outcomes (event log)

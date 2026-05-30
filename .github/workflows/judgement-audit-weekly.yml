@@ -1,0 +1,31 @@
+name: Judgement Audit Weekly
+
+# Fires every Sunday for the full Claude-narrative judgement audit.
+# Dispatches the standard aeon.yml workflow with skill=judgement-audit,
+# which runs prefetch (stats computation) → Claude (narrative +
+# postmortems) → postprocess (embed delivery to #perps-outcomes).
+#
+# Cron timing matches the perps-brief PM-slot compensation pattern:
+# shifted 3h30m earlier to compensate for GitHub Actions' fork-throttle
+# delay so the audit lands around ~12:00 UTC Sunday (operator's
+# Sunday-afternoon review window).
+#
+# Manual trigger (Actions → Aeon → Run workflow with skill=judgement-audit)
+# also works; this workflow exists ONLY for the weekly schedule.
+
+on:
+  schedule:
+    # Sunday 08:30 UTC — lands ~12:00 UTC Sunday after fork-throttle delay.
+    # Adjust if the audit consistently lands at the wrong time.
+    - cron: '30 8 * * 0'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  run:
+    uses: ./.github/workflows/aeon.yml
+    with:
+      skill: judgement-audit
+    secrets: inherit
