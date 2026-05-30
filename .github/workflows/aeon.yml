@@ -182,6 +182,23 @@ jobs:
             ./"$script" "$SKILL" "$VAR" || echo "::notice::$(basename "$script") skipped or failed (non-fatal)"
           done
 
+      - name: Compute CHAIN_SLOT
+        if: steps.work.outputs.mode != '' && steps.skill.outputs.name == 'perps-brief'
+        run: |
+          # Bucket the current UTC hour by which slot midpoint it's closest to.
+          # Matches the logic in scripts/postprocess-perps-brief.sh so Claude
+          # AND the postprocess script see the same slot value during one run.
+          #   18:00-06:00 UTC → AM slot
+          #   06:00-18:00 UTC → PM slot
+          HOUR_UTC=$(date -u +%H)
+          if [ "$HOUR_UTC" -ge 18 ] || [ "$HOUR_UTC" -lt 6 ]; then
+            SLOT=am
+          else
+            SLOT=pm
+          fi
+          echo "CHAIN_SLOT=$SLOT" >> "$GITHUB_ENV"
+          echo "::notice::chain slot for this run: $SLOT (UTC hour $HOUR_UTC)"
+
       - name: Run
         id: run
         if: steps.work.outputs.mode != ''
