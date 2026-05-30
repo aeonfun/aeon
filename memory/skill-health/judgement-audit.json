@@ -1,10 +1,10 @@
 {
   "skill": "judgement-audit",
-  "last_analyzed": "2026-05-30T07:55:36Z",
+  "last_analyzed": "2026-05-30T08:05:31Z",
   "quality_score": 4,
-  "assessment": "Substantive postmortem analysis with schema-valid output, structured categorizations, and actionable pattern insights; recovered cleanly from missing file.",
+  "assessment": "Good — substantive, well-structured audit with specific data, verified patterns, and clear next steps",
   "flags": [],
-  "avg_score": 4.33,
+  "avg_score": 4.25,
   "history": [
     {
       "date": "2026-05-30",
@@ -13,6 +13,10 @@
     {
       "date": "2026-05-30",
       "score": 5
+    },
+    {
+      "date": "2026-05-30",
+      "score": 4
     },
     {
       "date": "2026-05-30",

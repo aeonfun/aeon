@@ -1,7 +1,7 @@
 {
   "schema_version": "v1",
   "audit_window": "30d",
-  "generated_at_utc": "2026-05-30T08:15:00Z",
+  "generated_at_utc": "2026-05-30T08:04:11Z",
   "narrative": "30-day window, n=10 closed: 20% win rate, -6.19% average return, -3.77pp vs BTC, across a $77K → $73K BTC chop tape pinned in Extreme Fear all seven sessions. The dominant loss shape is peak-phase LONG continuation lost mid-hold to within-sector inversion or narrative-carrier rotation, not bad asset mechanics. The cleanest win was the BCH SHORT (+13.17%): smart-money long/short collapsing 1.43 points alongside negative funding ran clean through a green relief tape to seven-day horizon, while ONDO, RENDER and AKT all sat on solid entry reads that died when their sectors rotated mid-hold.",
   "insights": [
     "RIDE-then-loss is 65% (13 of 20 evaluations) and CLOSE-when-already-underperforming is 80% — invalidation tracking is fine (stops hold), mid-hold regime-degradation tracking is the actual gap. V2 should encode a 'is the regime that justified entry still intact?' check on every re-eval, independent of price-vs-invalidation.",
