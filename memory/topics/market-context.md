@@ -1,71 +1,67 @@
-# Market Context (as of 2026-05-29)
+# Market Context (as of 2026-05-30)
 
-> **Take:** chop — BTC -0.39% 24h at $73,314; breadth compressed from 14/20 to 9/20 green as the morning alt rally narrowed to idiosyncratic names. Conviction: medium.
+> **Take:** rotation — BTC flat at $73,554 while breadth surged from 9/20 to 16/20 as XLM, HYPE, BNB, and XMR absorbed the bid; dominance slid 0.13 pp. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $73,314 (-0.39% 24h, -3.39% 7d) · dominance 57.59% (-0.09 pp 24h)
-- ETH $2,005.78 (-0.36% 24h, -3.13% 7d) · ETH/BTC 0.02737
-- SOL $81.56 (-0.83% 24h, -3.98% 7d)
-- Total mcap $2.55T (+0.02% 24h) · DEX vol $7.04B 24h
-- Breadth: 9/20 green 24h · 4/20 green 7d
-- Fear & Greed: 23 (Extreme Fear) — yesterday 22
+- BTC $73,554 (+0.02% 24h, -1.39% 7d) · dominance 57.46% (-0.13 pp 24h)
+- ETH $2,017.60 (+0.42% 24h, -0.39% 7d) · ETH/BTC 0.02743
+- SOL $82.35 (+0.19% 24h, +0.53% 7d)
+- Total mcap $2.564T (+0.37% 24h) · DEX vol $6.62B 24h
+- Breadth: 16/20 green 24h · 10/20 green 7d
+- Fear & Greed: 23 (Extreme Fear) — yesterday 23
 
 ## What Changed Since Last Refresh
-- Breadth compressed from 14/20 to 9/20 green 24h. Regime shifted: rotation → chop. The alt-led morning relief rally pulled back by mid-day; XLM, HYPE, XMR, and INJ carried the idiosyncratic bid while the broader tape turned red.
-- HYPE broke above the prior ATH ($64.27) to $64.75 (+5.13% 24h, +15.34% 7d). New all-time high in Extreme Fear against 9/20 breadth. Peak extension signature.
-- Iran ceasefire extension confirmed (Polymarket: 99.85% YES). Hormuz blockade lifting priced at 25.5% YES by May 31. Oil heading for worst monthly performance since March 2020. Prior geopolitical risk premium is de-risking.
-- PCE inflation printed 3.8% YoY — fastest since May 2023. Core monthly +0.2% moderate; headline stickiness constrains the Fed's June path.
-- BTC ETF outflow day 9: -$223M today, $2.8B total. Record streak since January 2024 ETF launch.
-- ZEC breakdown deepened: -3.40% 24h, -11.38% 7d, now at $531 — 20.5% below the May 21 pick entry at $667.93. Narrative-tracker classified Privacy/ZK as FADE today.
+- Breadth surged from 9/20 to 16/20 green 24h while BTC held flat. Regime shifted from chop to rotation. XLM (+13.5%), HYPE (+6.2%), XMR (+7.5%), BNB (+5.4%) absorbed the bid BTC did not.
+- Hormuz blockade YES dropped from 25.5% to 15.5% on Polymarket — a 10pp de-rating in 24h. Geopolitical risk premium retreating into the May 31 deadline.
+- HYPE extended ATH from $64.75 to $66.35 (+2.5% further). Peak extension in Extreme Fear territory persists.
 
 ## Active Narratives
-- **XLM / RWA on public chain** — phase: rising. Evidence: XLM +13.61% 24h / +64.34% 7d, trending rank 2; DTCC catalyst day 3 with no volume fade on the third consecutive session.
-- **Perp-DEX (HYPE)** — phase: peak. Evidence: HYPE broke above prior ATH ($64.27) to $64.75, +5.13% 24h / +15.34% 7d, trending rank 3. New all-time high in Extreme Fear against compressed breadth (9/20) is the peak extension signature.
-- **Privacy/ZK (ZEC/XMR)** — phase: fading. Evidence: ZEC -11.38% 7d / -3.40% 24h at $531; narrative-tracker classified Privacy/ZK FADE today. XMR +7.60% 24h at $384 (trending rank 15) bifurcates the sector — capital rotating within privacy, not exiting.
-- **AI/compute** — phase: fading. Evidence: NEAR -1.81% 24h, TAO -5.05% 24h at $260 (below all major EMAs). INJ +16.40% 24h at $5.99 (trending rank 8) is idiosyncratic — developer/policy catalyst stack (Nova + Microsoft Azure, May 25), not sector confirmation.
+- XLM / RWA tokenization — phase: peak. Evidence: +71.9% 7d on $5.81B cap, trending rank 3, DTCC catalyst day 4 with no volume fade; 7d return now exceeds typical 30-day sector moves, saturated attention.
+- Perp-DEX (HYPE) — phase: peak. Evidence: HYPE $66.35 (+18.7% 7d), ATH extension above prior $64.75 ceiling, trending rank 4 in Extreme Fear against compressed BTC.
+- Privacy / ZK — phase: fading. Evidence: ZEC -12.4% 7d at $520.49, -4.0% 24h; XMR +6.1% 7d at $398 trending separately. Capital rotates within the sector rather than expanding it.
+- AI / compute — phase: fading. Evidence: NEAR -3.5% 24h and RENDER -4.4% 24h both in trending and both declining; FET +4.6% is the only green AI name in today's trending list.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $17.91B (-2.27%)
-- SSV Network: ~$14.80B (-5.29%) (prior session)
-- Aave V3: ~$13.2B (prior session)
-- Binance Staked ETH: ~$7.5B (prior session)
-- Morpho Blue: ~$7.2B (prior session)
+- Lido: $17.89B (-0.44%)
+- SSV Network: $14.82B (-0.44%)
+- Aave V3: $13.27B (+0.17%)
+- WBTC: $8.40B (-1.07%)
+- Binance Staked ETH: $7.44B (-0.39%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.21B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.48B (7d change: n/a)
-- Solana: $5.27B (7d change: n/a)
+- Ethereum: $42.23B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.60B (7d change: n/a)
+- Solana: $5.39B (7d change: n/a)
 
 ## Stablecoins
-Total (all tracked): ~$327B+ (7d delta n/a). USDT $188.3B · USDC $76.2B · USDS $8.83B · USD1 $4.75B · DAI $4.61B · USDe $4.50B · combined top-6 share of mcap ~11.3%.
+Top-6 combined: ~$287B (7d delta n/a). USDT $188.2B · USDC $76.1B · USDS $8.8B · USD1 $4.7B · DAI $4.6B · USDe $4.5B · combined share of total mcap ~11.2%.
 
 ## Trending (CoinGecko)
-- XLM — Stellar, rank 2, +13.61% 24h; DTCC tokenization catalyst day 3.
-- HYPE — Hyperliquid, rank 3, +5.13% 24h; ATH break at $64.75 above prior $64.27 ceiling.
-- PENGU — Pudgy Penguins, rank 4, +1.21% 24h; NFT-memecoin cross holding.
-- LAB — rank 5, +50.27% 24h; single-session spike, no confirmed catalyst; watch for follow-through before treating as a thesis.
-- NEAR — NEAR Protocol, rank 6, -1.81% 24h; AI-compute sector fading.
-- TAO — Bittensor, rank 7, -5.05% 24h; AI-compute fading, below all major EMAs.
-- INJ — Injective, rank 8, +16.40% 24h; AI-token rotation bid, developer/policy catalyst confirmed (Nova + Azure, May 25).
-- ONDO — Ondo Finance, rank 9, -2.70% 24h; RWA sector cooling.
-- JTO — Jito, rank 10, +7.33% 24h; Solana liquid staking bouncing with XLM.
-- XMR — Monero, rank 15, +7.60% 24h; privacy sector rotation as ZEC breaks down.
+- BONK — rank 110, -0.25% 24h; meme-season bid holding, no fresh catalyst.
+- PENGU — rank 105, +3.24% 24h; NFT-memecoin cross extending for a third session.
+- XLM — rank 17, +12.62% 24h; DTCC tokenization catalyst day 4, now +71.9% 7d.
+- HYPE — rank 11, +6.07% 24h; ATH extension at $66.35.
+- LIT (Lighter) — rank 135, +16.24% 24h; FHE-compute bid continuing; prior pick 2026-05-20 at $1.18.
+- ZAMA — rank 353, -6.95% 24h; FHE privacy protocol fading despite sector attention.
+- NEAR — rank 33, -3.49% 24h; AI-compute sector fading.
+- FET — rank 95, +4.63% 24h; only green AI token in trending; ASI Alliance bid.
+- NOCK (Nockchain) — rank 284, +17.85% 24h; single-session spike, no confirmed catalyst.
+- HBAR — rank 27, +4.95% 24h; Hedera bouncing with L1 rotation bid alongside BNB.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Trump announces Hormuz blockade lifted by May 31 | 25.5% | $2.18M | $39.8K |
-
-(Iran ceasefire continuation market settled at 99.85% YES — excluded per >97% threshold.)
+| US x Iran permanent peace deal by May 31 | 4.5% | $8.42M | $1.46M |
+| Trump announces Hormuz blockade lifted by May 31 | 15.5% | $2.40M | $55.5K |
 
 ## Macro Catalysts (next 48h)
-- **PCE 3.8% YoY:** Fastest since May 2023. Core monthly +0.2% holds moderate, but headline stickiness pushes back June rate-cut expectations. This week: Fed Chair Powell remarks, JOLTS, ADP; Friday NFP is the centrepiece.
-- **US-Iran 60-day ceasefire + Hormuz:** Ceasefire extension confirmed. Strait of Hormuz blockade lifting priced at 25.5% YES by May 31. Confirmation removes the geopolitical risk premium and is net positive for macro sentiment; failure extends the premium into June.
-- **BTC ETF outflows day 9 / OI divergence:** $2.8B total at record streak length. OI climbing toward $40B per Glassnode. Divergence resolves: ETF flows reverse (bullish) or OI unwinds (flush). First positive IBIT flow day is the reversal signal.
+- BTC ETF outflow streak day 9+ ($2.8B total, record since Jan 2024 ETF launch): No confirmed May 30 flow data yet. Prior streaks of this length have aligned with local BTC bottoms on Glassnode's 14-day MA. First positive IBIT day is the reversal signal.
+- Hormuz blockade deadline May 31: Market slashed YES from 25.5% to 15.5% in 24h. Confirmation lifts the geopolitical premium. Failure reprices into June.
+- US macro calendar: JOLTS today, ADP Wednesday, NFP Friday. PCE stickiness at 3.8% YoY is the binding constraint on June rate-cut expectations — this week's labor data sets the path.
 
 ## Implications for Downstream Skills
-- **token-call:** Chop with idiosyncratic pockets — favor catalyst-specific names over BTC beta. XLM day-3 run is extended; late entries get punished. HYPE broke ATH at $64.75 — ATH retrace long triggered and extended, thesis reset needed. ZEC breakdown past 20% below pick entry; exit signal active. INJ +16.4% picked today at $5.99 (AI-rotation continuation, $5.20 invalidation). AI/compute sector (NEAR/TAO) — no new entries until weekly trend reversal.
-- **narrative-tracker:** Monitor HYPE/perp-DEX for rising → peak confirmation (ATH break in chop with Extreme Fear = late-cycle signal). XLM/RWA-public-chain day-3 run still rising. Privacy/ZK FADE confirmed. AI/compute fading; INJ idiosyncratic exception, not sector reversal.
+- token-call: Rotation regime favors catalyst-specific alt names over BTC beta. XLM and HYPE are both at peak phase. Late entries at these levels face crowded exits. Next rotation leg candidates with rising 7d momentum not yet at peak: HBAR, FET on watchlist, NOCK spike unconfirmed. INJ from yesterday's call (entry $5.99, invalidation $5.20). No change in thesis.
+- narrative-tracker: XLM/RWA-tokenization and HYPE/perp-DEX both need peak-saturation confirmation checks — breadth at 16/20 is high but F&G at 23 creates the overhang. Privacy/ZK FADE confirmed; XMR is the rotation pocket within the sector, not a revival. AI/compute fading; FET is the single exception, not a sector turn.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |

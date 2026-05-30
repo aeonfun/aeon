@@ -1,32 +1,30 @@
-# Market Context — 2026-05-29
+# Market Context — 2026-05-30
 
-Take: chop — BTC -0.39% 24h at $73,314; breadth compressed from 14/20 to 9/20 green as the morning alt rally narrowed to idiosyncratic names. Conviction: medium.
+Take: rotation — BTC flat at $73,554 while breadth surged from 9/20 to 16/20 as XLM, HYPE, BNB, XMR absorbed the bid; dominance slid 0.13 pp. Conviction: medium.
 
 ## Snapshot
-- BTC $73,314 (-0.39% 24h, -3.39% 7d) · dominance 57.59% (-0.09 pp 24h)
-- ETH $2,005.78 (-0.36% 24h, -3.13% 7d) · ETH/BTC 0.02737
-- SOL $81.56 (-0.83% 24h, -3.98% 7d)
-- Total mcap $2.55T (+0.02% 24h) · DEX vol $7.04B 24h
-- Breadth: 9/20 green 24h · 4/20 green 7d
-- Fear & Greed: 23 (Extreme Fear) — yesterday 22
-- TVL: ETH $42.21B · BSC $5.48B · SOL $5.27B (Lido $17.91B, -2.27% 7d)
+- BTC $73,554 (+0.02% 24h, -1.39% 7d) · dominance 57.46% (-0.13 pp 24h)
+- ETH $2,017.60 (+0.42% 24h, -0.39% 7d) · ETH/BTC 0.02743
+- SOL $82.35 (+0.19% 24h, +0.53% 7d)
+- Total mcap $2.564T (+0.37% 24h) · DEX vol $6.62B 24h
+- Breadth: 16/20 green 24h · 10/20 green 7d
+- Fear & Greed: 23 (Extreme Fear) — yesterday 23
+- TVL top-DeFi: Lido $17.9B (-0.44% 7d), SSV $14.8B (-0.44%), Aave V3 $13.3B (+0.17%)
 
 ## What Changed
-- Breadth compressed 14/20 → 9/20 green 24h; regime shifted rotation → chop.
-- HYPE broke above prior ATH ($64.27) to $64.75. New all-time high in Extreme Fear.
-- Iran ceasefire extension confirmed (99.85% YES). Hormuz blockade lifting 25.5% YES by May 31.
-- PCE 3.8% YoY — fastest since May 2023, constrains June rate-cut path.
-- BTC ETF day-9 outflow: -$223M today, $2.8B total streak.
-- ZEC breakdown deepened: -11.38% 7d at $531, 20.5% below May 21 pick entry.
+- Breadth surged from 9/20 to 16/20 green 24h while BTC held flat. Regime: chop to rotation.
+- Hormuz blockade YES dropped from 25.5% to 15.5% on Polymarket. Geopolitical risk premium retreating.
+- HYPE extended ATH from $64.75 to $66.35.
 
 ## Active Narratives
-- XLM/RWA on public chain — phase: rising. Evidence: XLM +13.61% 24h / +64.34% 7d, DTCC day-3 no volume fade.
-- Perp-DEX (HYPE) — phase: peak. Evidence: HYPE $64.75 broke prior ATH $64.27; new high in Extreme Fear against 9/20 breadth.
-- Privacy/ZK — phase: fading. Evidence: ZEC -11.38% 7d / -3.40% 24h; narrative-tracker classified FADE today. XMR +7.60% bifurcates sector.
-- AI/compute — phase: fading. Evidence: NEAR -1.81%, TAO -5.05% 24h; INJ +16.40% idiosyncratic (Nova/Microsoft), not sector confirmation.
+- XLM / RWA tokenization — phase: peak. Evidence: +71.9% 7d, trending rank 3, DTCC catalyst day 4.
+- Perp-DEX (HYPE) — phase: peak. Evidence: $66.35 (+18.7% 7d), ATH extension in Extreme Fear.
+- Privacy / ZK — phase: fading. Evidence: ZEC -12.4% 7d at $520; XMR sector rotation only, not expansion.
+- AI / compute — phase: fading. Evidence: NEAR -3.5% 24h and RENDER -4.4% 24h both trending down.
 
 ## Polymarket Highlights (top by 24h vol)
-- Trump announces Hormuz blockade lifted by May 31 — YES 25.5%, vol $2.18M
+- US x Iran permanent peace deal by May 31 — YES 4.5%, vol $8.42M
+- Trump announces Hormuz blockade lifted by May 31 — YES 15.5%, vol $2.40M (down from 25.5%)
 
 ## Source Status
 coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok
