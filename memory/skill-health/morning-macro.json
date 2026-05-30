@@ -1,15 +1,11 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-30T10:54:30Z",
+  "last_analyzed": "2026-05-30T22:05:23Z",
   "quality_score": 4,
-  "assessment": "Well-executed synthesis of market signals with proper process logging; substantive output integrating four domain sources; actionable trading signals identified and queued for delivery",
+  "assessment": "Substantive crypto-macro analysis with specific data points and actionable positions; well-integrated workflow; lacking source citations for market figures",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -121,6 +117,10 @@
     {
       "date": "2026-05-29",
       "score": 3
+    },
+    {
+      "date": "2026-05-30",
+      "score": 4
     },
     {
       "date": "2026-05-30",

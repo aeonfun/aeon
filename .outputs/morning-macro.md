@@ -1,33 +1,29 @@
-Market Morning · 30 May · selective rotation
+Market Morning · 30 May · weekly breadth cracks
 
-BTC sat flat at $73,554 as breadth ripped from 9/20 to 16/20 green.
-Dominance slid 0.13pp with XLM, HYPE, BNB, XMR absorbing the bid.
+BTC closed +0.58% at $73,884 but the 7d cracked to -2.60%.
+Weekly breadth collapsed to 5/20 green, the thinnest read of the cycle.
 F&G pinned at 23, Extreme Fear, unmoved.
-Hyperliquid holds the dominant narrative at ATH extension to $66.35.
+BTC dominance slipped below 60% as BNB absorbed a +12% single-day move.
 
-Stance: ride the selective rotation, not the whole tape.
+Stance: ride the rotation within crypto, not the whole tape.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-BTC ETFs logged their 3rd-largest weekly outflow ever at -$1.4B, IBIT -$966M.
-USDT market cap contracted -$1.15B in the same 48 hours.
-HYPE drained -$46M of spot supply while an a16z-linked whale added $14.5M.
-Three flow directions in one window, capital compressing into one name.
+The $1.4B BTC ETF outflow and tonight's $30M/day HYPE inflow trace one rotation within crypto. NEAR, INJ, HYPE name the destination.
 
-DXY pinned at 99 even as equities print records.
-The conventional geo-relief playbook breaks. No dollar-weakness tailwind until DXY cracks.
+VanEck's first US spot BNB ETF lands the institutional playbook on exchange tokens. BNB +12% on the announcement, June 1 the decision window.
 
-Circle froze $12.6M of cUSDC and ZEC, XMR caught the bid the same session.
-The freeze manufactured the narrative it validated.
+Circle froze $12.6M of cUSDC and the bid fired on two vectors: privacy this morning, decentralized stablecoins this evening.
+
+Iran deal sits in pending-approval limbo. Hormuz reversal risk back in play, semis flagged for FOMO de-risking. Risk-on extension stays fragile.
 
 
 ─────────  TODAY  ─────────
 
 Action is in #perps-brief.
-HYPE LONG fires as NEW POSITION on triple alignment: quant ACCUMULATION, a16z whale buying into a 48h supply drain, perp-DEX narrative at full extension.
-BNB and LAB sit WATCHLIST day 1.
-XLM closes WIN at +39% on the DTCC settlement breakout.
-INJ day-2 at +9.5% on the AI rotation.
+BNB LONG fires NEW POSITION on taker buy 52%, OI +42% 24h, $7.5M short liqs vs 7d p75 $359K.
+ASTER, H, PORTAL sit WATCHLIST day 1: BNB-chain rotation, identity-AI lane, fresh-listing leverage.
+Four ridden: HYPE day-of confirm on ETF inflows, INJ day 2 of 3, SEI into the June 15 EVM migration, ICP supply-deflation hold.
 
-Take: HYPE confluence into US open. Let BNB and LAB confirm day 2 before adding.
+Take: ride the BNB ETF capital landing through June 1. Let ASTER and H confirm before adding.
