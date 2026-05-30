@@ -72,6 +72,36 @@ curl -s "https://api.coingecko.com/api/v3/search/trending" \
 
 From `/coins/markets` compute **breadth**: how many of the top 20 are green on 24h vs 7d. Breadth is a regime signal — 18/20 green = risk-on, 4/20 green = risk-off.
 
+### 2b. Dominance regime read (NEW — from prefetched cache)
+
+The prefetch step (`scripts/prefetch-dominance.sh`) has already cached the dominance data you need at `.dominance-cache/`. **Do NOT re-fetch — just read the cache.**
+
+```bash
+# Get the structured summary
+python3 scripts/lib/dominance.py
+```
+
+This returns JSON with current BTC.D / USDT.D / ETH.D values, 24h / 7d / 30d deltas in percentage points, magnitude buckets, and a deterministic 4-quadrant regime classification (`FULL_RISK_OFF` / `BTC_ONLY_FLOW` / `CAPITULATION` / `RISK_ON` / `FLAT`).
+
+**The 4-quadrant regime model** (from `scripts/lib/dominance.py`):
+
+|              | BTC.D rising         | BTC.D falling          |
+|--------------|----------------------|------------------------|
+| USDT.D **↑** | `FULL_RISK_OFF`      | `CAPITULATION`         |
+| USDT.D **↓** | `BTC_ONLY_FLOW`      | `RISK_ON`              |
+
+Use this as a contextual bias input — NOT as a top-line operator-facing metric. The regime read should integrate into how you describe today's tape and into the bias line at the bottom of `market-context.md`. Examples:
+
+- **RISK_ON regime, medium magnitude:** "Money flowing out of stables into the broader crypto risk surface — alt setups have macro permission to play, lean into clean asset thesis."
+- **BTC_ONLY_FLOW, large magnitude:** "BTC absorbing rotation flow while stables drain and alts bleed market share — alt longs face structural headwinds today even with clean asset mechanics. Bias toward BTC/ETH-relative trades; tighten alt position sizing."
+- **FULL_RISK_OFF, medium:** "Full risk-off rotation in progress — alts losing share AND money flowing into stables. Tighten everything; favour SHORT setups on overextended alts."
+- **CAPITULATION:** "Late-cycle distribution — alts AND BTC both giving up share to stables. Defensive posture; wait for capitulation to exhaust before adding longs."
+- **FLAT:** "Dominance regime is flat — rotation isn't the driver today. Trade asset-specific setups."
+
+**Writing-style discipline (Pattern 7):** Do NOT render raw regime enums in prose ("the regime is BTC_ONLY_FLOW"). Translate into trader-native phrasing ("BTC absorbing rotation flow while alts bleed share") and quote specific dominance values + 7d deltas as the evidence. The deterministic classifier is YOUR input, not the operator's output.
+
+**Sample-size guard:** If `sample_completeness.total_30d` is `false` (free-tier API limitation), the 7d/30d deltas may be missing. Use 24h regime only in that case and flag the data gap in your read.
+
 ### 3. Fetch DeFi data (DeFiLlama — free, no key required)
 
 Replace the prior WebSearch approach with DeFiLlama's open REST API:
