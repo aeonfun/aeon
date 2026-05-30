@@ -1,15 +1,11 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-29T22:49:07Z",
+  "last_analyzed": "2026-05-30T10:59:51Z",
   "quality_score": 4,
-  "assessment": "Substantive operational verification with deliberate decision-making — properly verified system state, respected guard rails, and provided actionable follow-up on the chain-re-invocation pattern.",
+  "assessment": "Systematic ops review with concrete metrics, issue tracking, and clear follow-ups—well-structured and operationally useful.",
   "flags": [],
   "avg_score": 4.1,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     }
   ]
