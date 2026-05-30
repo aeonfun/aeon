@@ -255,8 +255,8 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `call` — `RIDE` or `CLOSE`
 - `thesis_note` — short justification (1 sentence)
 - `invalidation` — original or revised
-- For RIDE: `watch` — current condition to monitor; `mae_pct`, `mfe_pct`, `mae_day_of`, `mfe_day_of`, `now_pct` (computed from current price)
-- For CLOSE: `return_pct`, `return_vs_btc_pct`, `return_vs_eth_pct`, `outcome` (WIN | LOSS | SCARE | NEUTRAL), `mae_pct`, `mfe_pct`, `auto_flipped` (boolean — true when this CLOSE was triggered by an opposite-direction entry on the same asset; renders as `CLOSE (auto-flip)`)
+- For RIDE: `watch` — current condition to monitor; `now_pct` (computed from current price). **DO NOT write `mae_pct`, `mfe_pct`, `mae_day_of`, `mfe_day_of`** — these are AUTHORITATIVELY auto-computed by `apply-ledger-ops.py` from each day's price range via `todays_high` / `todays_low` in the evaluation entry. The embed pipeline reads them from the ledger, not from your data.json. Writing them manually introduces drift from the canonical values (observed 2026-05-30 PM: XLM data.json said mfe_pct=24.21 while ledger had auto-tracked 45.58).
+- For CLOSE: `return_pct`, `return_vs_btc_pct`, `return_vs_eth_pct`, `outcome` (WIN | LOSS | SCARE | NEUTRAL), `auto_flipped` (boolean — true when this CLOSE was triggered by an opposite-direction entry on the same asset; renders as `CLOSE (auto-flip)`). **Same MAE/MFE rule: do NOT write `mae_pct` or `mfe_pct`.** They're auto-computed and the embed pipeline reads from ledger.
 
 ## Required fields per new position
 
@@ -365,8 +365,6 @@ The postprocess step handles all of the above:
       "thesis_note": "ACCUMULATION continues, OI +21% 7d, narrative still RISING",
       "invalidation": "close below $26.00",
       "watch": "funding warming +0.04%/8h, up from +0.02%",
-      "mae_pct": -2.1, "mae_day_of": "2",
-      "mfe_pct": 12.3, "mfe_day_of": "3",
       "now_pct": 10.6
     },
     {
@@ -384,8 +382,6 @@ The postprocess step handles all of the above:
       "return_vs_btc_pct": 7.1,
       "return_vs_eth_pct": 8.2,
       "outcome": "WIN",
-      "mae_pct": -1.8,
-      "mfe_pct": 11.2,
       "auto_flipped": false
     }
   ],

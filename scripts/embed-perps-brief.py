@@ -367,8 +367,6 @@ def handle_current_positions_and_closes(
                 for k in (
                     "evaluations",
                     "watchlist_provenance",
-                    "mae_date",
-                    "mfe_date",
                     "fired_date",
                     "fired_price",
                     "auto_flipped",
@@ -378,13 +376,21 @@ def handle_current_positions_and_closes(
                     "return_pct",
                     "return_vs_btc_pct",
                     "return_vs_eth_pct",
-                    "mae_pct",
-                    "mfe_pct",
                     "closed_date",
                     "close_reason",
                     "confluence_fired",
                 ):
                     merged.setdefault(k, closed_entry.get(k))
+                # MAE/MFE + their dates are AUTHORITATIVELY computed by
+                # apply-ledger-ops.py from each day's price range. Claude
+                # sometimes writes its own estimates in data.json which
+                # are stale or just wrong (observed 2026-05-30 PM: XLM
+                # data.json said mfe_pct=24.21 while the ledger had
+                # 45.58 from auto-tracking). Always prefer the ledger
+                # value for these fields when it exists.
+                for k in ("mae_pct", "mfe_pct", "mae_date", "mfe_date"):
+                    if closed_entry.get(k) is not None:
+                        merged[k] = closed_entry.get(k)
                 ledger_id = closed_entry.get("id")
             else:
                 warn(
@@ -539,6 +545,12 @@ def handle_new_positions(
         # Synthesize an early-life current position view from the new
         # position fields + the ledger entry. We use compose_current_position
         # so the visual style matches what subsequent runs will show.
+        #
+        # KEY NAMES MUST MATCH compose_current_position. Previous version
+        # used "entry"/"now"/"pnl"/"mae"/"mfe"/"mae_day"/"mfe_day" which
+        # the composer doesn't read — produced an empty seed card with
+        # "—" for every field. Fixed 2026-05-30 after HYPE NEW POSITION
+        # landed with missing Entry value.
         seed = {
             "ticker": ticker,
             "direction": direction,
@@ -546,15 +558,16 @@ def handle_new_positions(
             "invalidation": p.get("invalidation", ""),
             "horizon": p.get("horizon", ""),
             "day_of": "1",
-            "day_total": p.get("horizon", "?"),
-            "entry": open_entry.get("fired_price"),
+            "fired_price": open_entry.get("fired_price"),
             "fired_date": open_entry.get("fired_date"),
-            "now": open_entry.get("fired_price"),  # day 1 — no PnL yet
-            "pnl": 0.0,
-            "mae": 0.0,
-            "mfe": 0.0,
-            "mae_day": "1",
-            "mfe_day": "1",
+            # Day 1 — no PnL realised yet; composer reads now_pct, mae_pct,
+            # mfe_pct (None renders as "—" via fmt_pct which is correct
+            # since there's no movement to report).
+            "now_pct": 0.0,
+            "mae_pct": 0.0,
+            "mfe_pct": 0.0,
+            "mae_day_of": "1",
+            "mfe_day_of": "1",
             "call": "RIDE",
             "thesis_note": (p.get("thesis", [None]) or [None])[0] or "",
             "watch": p.get("watch", ""),
