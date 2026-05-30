@@ -140,13 +140,13 @@
   },
   "morning-macro": {
     "last_status": "success",
-    "last_success": "2026-05-29T22:45:39Z",
-    "total_runs": 31,
-    "total_successes": 31,
+    "last_success": "2026-05-30T10:54:41Z",
+    "total_runs": 32,
+    "total_successes": 32,
     "total_failures": 0,
     "consecutive_failures": 0,
     "success_rate": 1,
-    "last_quality_score": 3
+    "last_quality_score": 4
   },
   "heartbeat": {
     "last_dispatch": "2026-05-19T14:12:04Z",
