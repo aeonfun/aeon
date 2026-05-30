@@ -163,16 +163,40 @@ def main() -> int:
             code=1,
         )
 
+    # Discord enforces a per-message cap of 6000 chars across ALL embeds
+    # in a single message (not just per-embed). With Claude's full audit
+    # routinely producing 3 embeds totalling ~7000 chars, sending them in
+    # one message fails MAX_EMBED_SIZE_EXCEEDED (50035).
+    #
+    # Workaround: post each embed as a separate message. Each is a
+    # standalone artifact (stats / analysis / postmortems) so this also
+    # reads cleanly — the operator gets three distinct posts in the
+    # outcomes channel, easy to scroll.
     bot = DB.DiscordBot(dry_run=dry_run)
-    try:
-        result = bot.post_embed(channel_id=channel_id, embeds=embeds)
-        info(
-            f"posted judgement_audit:{args.window} → "
-            f"{channel_id} (msg {result['message_id']})"
-        )
-    except DB.DiscordError as e:
-        fail(f"failed to post: {e}", code=1)
+    posted = 0
+    errored = 0
+    for i, embed in enumerate(embeds):
+        label = embed.get("author", {}).get("name", f"embed[{i}]")
+        try:
+            result = bot.post_embed(channel_id=channel_id, embeds=embed)
+            info(
+                f"posted {label} → "
+                f"{channel_id} (msg {result['message_id']})"
+            )
+            posted += 1
+        except DB.DiscordError as e:
+            warn(f"failed to post {label}: {e}")
+            errored += 1
 
+    info(
+        f"done — {posted} embed(s) posted, {errored} errored "
+        f"(dry_run={dry_run})"
+    )
+    if errored > 0 and not dry_run:
+        # Non-zero exit so the postprocess script logs a warning, but
+        # partial success is still useful — the operator at least sees
+        # what got through.
+        return 1
     return 0
 
 
