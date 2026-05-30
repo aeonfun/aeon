@@ -1,15 +1,11 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-29T22:35:09Z",
+  "last_analyzed": "2026-05-30T10:32:43Z",
   "quality_score": 4,
-  "assessment": "Substantive market analysis with specific data points, regime classification, and proper memory/logging; lacks explicit source attribution",
+  "assessment": "Substantive market context with specific data points (BTC $73,554, breadth 9/20→16/20), regime identification, narrative assessment, and proper file/memory updates per CLAUDE.md",
   "flags": [],
   "avg_score": 4.1,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     }
   ]

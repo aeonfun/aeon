@@ -142,4 +142,4 @@ date,skill,model,input_tokens,output_tokens,cache_read,cache_creation
 2026-05-30,judgement-audit,claude-opus-4-7,18,16064,1178780,92318
 2026-05-30,judgement-audit,claude-opus-4-7,25068,12492,789733,73420
 2026-05-30,judgement-audit,claude-opus-4-7,19,9676,1334572,89181
-2026-05-30,token-movers,claude-opus-4-7,21,37192,1622277,112973
+2026-05-30,market-context-refresh,claude-sonnet-4-6,758,30840,1187041,80565
