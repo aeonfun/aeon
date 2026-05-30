@@ -1,19 +1,11 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-30T10:33:05Z",
+  "last_analyzed": "2026-05-30T21:36:44Z",
   "quality_score": 4,
-  "assessment": "Substantive narrative tracking with well-sourced content and proper error correction; recurring artifact corruption warrants system investigation",
-  "flags": [
-    "recurring_system_issue",
-    "truncated_output",
-    "artifact_corruption"
-  ],
+  "assessment": "Good — substantive narrative map with specific crypto signals, methodology, and decision logic; well-structured but intentionally preserved rather than freshly re-executed",
+  "flags": [],
   "avg_score": 4,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 3
@@ -124,6 +116,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     },
     {
