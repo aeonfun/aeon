@@ -1,43 +1,45 @@
 # Token Movers — 2026-05-30
 
-Top-50 median +0.23%, 65/100 top-100 green, but XLM extended day-4 to +72% 7d on $2.5B vol and LAB (+32% / +53% 7d) plus Humanity (+16% / +56% 7d) printed fresh BREAKOUTs. Majors flat (BTC +0.02% / ETH +0.4% / SOL +0.2%, all three still red on 7d).
+81/100 top coins green at +1.5% median, breadth widened from morning's 65/100, with the bid split between a BNB-chain cluster (BNB +12.2% MAJOR plus ASTER +15.1%, CAKE +11.6%, SFP +12.7%, BinanceLife +16.8%) and an identity-AI lane firing H +48.1% BREAKOUT and WLD +22.9%. Majors hold 24h green but stay 7d-red near -3 to -5%.
 
 ## Top Winners (24h)
-1. LAB (LAB) — $7.05  +32.1% / 7d +53.0% / 1h +2.9%  •  $135M / #101  [BREAKOUT]
-2. LIT (Lighter) — $1.38  +17.5% / 7d +22.8% / 1h -0.3%  •  $94M / #133  [TRENDING+UP]
-3. H (Humanity) — $0.3182  +16.0% / 7d +55.8% / 1h +12.3%  •  $46M / #95  [BREAKOUT]
-4. XLM (Stellar) — $0.2415  +13.5% / 7d +71.9% / 1h -1.8%  •  $2.5B / #17  [TRENDING+UP][MAJOR]
-5. BEAT (Audiera) — $1.22  +11.7% / 7d -2.7% / 1h +2.6%  •  $16M / #137
-6. 9BIT (The9bit) — $0.04373  +11.4% / 7d +22.5% / 1h +1.7%  •  $12M / #127
-7. INJ (Injective) — $6.59  +10.8% / 7d +35.3% / 1h +1.4%  •  $312M / #88
-8. XDC (XDC Network) — $0.03487  +9.2% / 7d +12.2% / 1h +1.1%  •  $17M / #86
-9. BAT (Basic Attention) — $0.1179  +8.7% / 7d +23.5% / 1h -2.2%  •  $47M / #197
-10. ZK (ZKsync) — $0.01451  +7.9% / 7d +1.7% / 1h +0.4%  •  $26M / #228
+1. H (Humanity) — $0.3883  +48.1% / 7d +84.9% / 1h +1.8%  •  $162M / #86  [TRENDING+UP][BREAKOUT]
+2. LAB (LAB) — $7.96  +27.3% / 7d +80.8% / 1h +1.6%  •  $145M / #96  [TRENDING+UP][BREAKOUT]
+3. WLD (Worldcoin) — $0.3643  +22.9% / 7d +21.0% / 1h -2.2%  •  $311M / #63  [TRENDING+UP]
+4. BinanceLife (币安人生) — $0.5149  +16.8% / 7d +15.2% / 1h -3.8%  •  $43M / #104
+5. ASTER (Aster) — $0.774  +15.1% / 7d +13.9% / 1h +3.0%  •  $168M / #45  [TRENDING+UP]
+6. SFP (SafePal) — $0.303  +12.7% / 7d +7.9% / 1h +0.9%  •  $4M / #222
+7. BNB (BNB) — $719  +12.2% / 7d +9.0% / 1h +0.1%  •  $2.8B / #4  [TRENDING+UP][MAJOR]
+8. NIGHT (Midnight) — $0.039  +11.9% / 7d +16.7% / 1h +1.0%  •  $24M / #91
+9. CAKE (PancakeSwap) — $1.50  +11.6% / 7d +6.1% / 1h +0.5%  •  $62M / #110
+10. XTZ (Tezos) — $0.336  +10.9% / 7d -2.6% / 1h +2.8%  •  $31M / #127
 
 ## Top Losers (24h)
-1. GENIUS (Genius) — $0.4555  -15.6% / 7d -22.5% / 1h +1.2%  •  $76M / #215  [CAPITULATION]
-2. FF (Falcon Finance) — $0.09696  -11.9% / 7d +20.9% / 1h -3.2%  •  $16M / #176
-3. SKYAI (SkyAI) — $0.1745  -11.3% / 7d -42.8% / 1h -1.5%  •  $28M / #199
-4. M (MemeCore) — $2.81  -8.2% / 7d +2.1% / 1h -0.5%  •  $5M / #30
-5. ONDO (Ondo) — $0.3456  -6.2% / 7d -11.8% / 1h -0.1%  •  $207M / #50
-6. PENDLE (Pendle) — $1.34  -5.2% / 7d -23.1% / 1h +0.1%  •  $51M / #175
-7. UB (Unibase) — $0.1925  -4.6% / 7d +60.4% / 1h -1.2%  •  $28M / #109
-8. TIBBIR (Ribbita by Virtuals) — $0.1294  -4.2% / 7d +31.4% / 1h -0.3%  •  $1.4M / #245
-9. ULTIMA (Ultima) — $2465  -4.1% / 7d -20.4% / 1h +0.2%  •  $7M / #181
-10. ZEC (Zcash) — $520.49  -4.0% / 7d -12.4% / 1h +0.8%  •  $624M / #16  [MAJOR]
+1. NEAR (NEAR Protocol) — $2.31  -6.0% / 7d -3.7% / 1h -0.1%  •  $643M / #35
+2. ULTIMA (Ultima) — $2326  -5.2% / 7d -17.2% / 1h -0.6%  •  $10M / #183
+3. TEL (Telcoin) — $0.002669  -5.0% / 7d -8.8% / 1h -0.0%  •  $1M / #164
+4. BTSE (BTSE Token) — $1.02  -4.8% / 7d -5.0% / 1h -0.7%  •  $3M / #203
+5. STABLE (Stable) — $0.0371  -4.1% / 7d +10.2% / 1h +1.1%  •  $13M / #76
+6. M (MemeCore) — $2.89  -3.0% / 7d +0.2% / 1h -0.0%  •  $6M / #30
+7. TRAC (OriginTrail) — $0.375  -2.8% / 7d -14.4% / 1h -1.5%  •  $3M / #201
+8. GWEI (ETHGas) — $0.1086  -2.4% / 7d -5.4% / 1h -0.1%  •  $4M / #177
+9. DEXE (DeXe) — $17.90  -2.3% / 7d +30.4% / 1h -1.0%  •  $15M / #79
+10. FF (Falcon Finance) — $0.0986  -2.1% / 7d +13.3% / 1h +0.5%  •  $12M / #173
 
 ## Trending
-1. BONK (Bonk) — #110, $0.0000055, 24h -0.2%
-2. PENGU (Pudgy Penguins) — #105, $0.008015, 24h +3.2%  [TRENDING+UP]
-3. XLM (Stellar) — #17, $0.2382, 24h +12.6%  [TRENDING+UP][MAJOR]
-4. HYPE (Hyperliquid) — #11, $66.33, 24h +6.1%  [TRENDING+UP][MAJOR]
-5. LIT (Lighter) — #135, $1.373, 24h +16.2%  [TRENDING+UP]
-6. ZAMA (Zama) — #353, $0.0354, 24h -6.9%  [TRENDING+DOWN]
-7. NEAR (NEAR Protocol) — #33, $2.42, 24h -3.5%  [TRENDING+DOWN]
+1. Bonk (BONK) — #112, $0.0000054, 24h +0.9%  [TRENDING+UP]
+2. Hyperliquid (HYPE) — #11, $67.64, 24h +4.7%  [TRENDING+UP][MAJOR]
+3. LAB (LAB) — #96, $7.96, 24h +27.3%  [TRENDING+UP][BREAKOUT]
+4. Stellar (XLM) — #17, $0.2397, 24h -0.7%  [TRENDING+DOWN][MAJOR]
+5. Bitcoin (BTC) — #1, $73892, 24h +0.6%  [TRENDING+UP][MAJOR]
+6. Aster (ASTER) — #45, $0.774, 24h +15.1%  [TRENDING+UP]
+7. Worldcoin (WLD) — #63, $0.3643, 24h +22.9%  [TRENDING+UP]
 
 ## Notable
-- XLM day-4 BREAKOUT extends (+13.5% / +72% 7d on $2.5B vol), but the 1h -1.8% intraday fade prints a third session. The leg compounds, the bid cools at the top.
-- Perp-DEX rotation widens to two trending names. LIT (Lighter) joined HYPE at +17% / +23% 7d, a second venue-token bid after yesterday's HYPE green-flip confirmed.
-- GENIUS CAPITULATION continues day-2 (cumulative -36% on two sessions, vol/mcap 0.50). Distribution runs clean. The 05-29 flush did not reverse.
-- INJ carries the heaviest turnover on the board (vol/mcap 0.47, +10.8% / +35.3% 7d). Yesterday's token-call pick still adding into day 2.
-- ZEC tests $500 on $624M vol (-4.0% / -12.4% 7d). Privacy/ZK fade extends into a second week at the top of the board.
+- H BREAKOUT +48.1% on 7d +84.9%, identity-AI lane lead. 1h cools to +1.8%, late-entry fade risk on a stretched leg.
+- LAB BREAKOUT +27.3% on 7d +80.8% repeats from 05-29 with TRENDING+UP now added, but ZachXBT flagged insider-supply concentration on LAB this morning. Manufactured signal. Surface for completeness, don't chase.
+- BNB-chain cluster rotation: BNB +12.2% MAJOR with ASTER +15.1%, CAKE +11.6%, SFP +12.7%, and BinanceLife +16.8% all double-digit green.
+- XLM TRENDING+DOWN -0.7% at #17. 05-29's BREAKOUT leader fades day-2, the settlement-narrative bid cooling.
+- FET extends to +10.6% / 7d +28.9% on $280M vol since this morning's high-conviction ASI Alliance pick. Same-day confirmation.
+
+_Filters: 250 → 188 (32 stables, 30 illiquid <$1M). Source: coingecko markets=ok, trending=ok._
