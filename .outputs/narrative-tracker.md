@@ -1,14 +1,24 @@
-Recognized as a duplicate per the 05-26/05-27/05-28 precedent. The scheduled chain already ran narrative-tracker today and produced the complete artifact + notification.
+Narratives · 30 May · 5 tracked
 
-**What I did:**
-- Read `skills/narrative-tracker/SKILL.md`, `memory/MEMORY.md`, soul + writing-style, `.xai-cache/narratives.json`, and the prior 3 days of `### narrative-tracker` log entries.
-- Verified today's chain run already produced `.outputs/narrative-tracker.md` (clean v2-locked, 22 lines, 5 tracked under ↑ RISING / → PEAK / ↓ FADING with Stance closing line) and a complete `### narrative-tracker` log entry with full structured map. `.pending-notify/` is drained, `.notify-attempted-hashes` populated — the `#narratives` signal already routed.
-- Confirmed the map would not change a few hours later (same xai-cache, sandbox blocks fresh curl, same diff window).
+↑ RISING
+• Hyperliquid / perp DEX [HYPE, ASTER, dYdX] · 4/5 · WATCH
+  Coinbase Institutional and Blofin name perp DEXes a proven category, $21.8B 24h volume on $7.3B OI. The HYPE bounce failed last week so price has not confirmed the narrative.
 
-**What I did NOT do (ISS-003 / ISS-005 guardrail, matching 05-28 precedent):**
-- Did not overwrite the clean artifact with a Summary blob or a "map unchanged" one-liner — downstream consumers (perps-brief, morning-macro, daily-ops-review) read the full map.
-- Did not queue a duplicate Discord signal.
+• Privacy / ZK [Arcium-stack, ZEC] · 4/5 (was 3) · WATCH
+  Vehicle rotation. ZEC bleeds further (~$522, -19% week) while a Solana-side privacy stack picks up builder-driven attention (Umbra, craftsdev, zinc_cash on Arcium, via SolanaSensei).
+  reflexivity: narrative survives the token. ZEC led the move down. The next leg waits for an Arcium-stack listing with liquid volume or a ZEC reclaim above $550.
 
-**Files modified:** `memory/logs/2026-05-29.md` (appended `### narrative-tracker (re-invocation)` + Summary). Nothing else touched.
+→ PEAK
+• AI agents / agentic finance [TAO, NEAR, FET, VRA] · 5/5 · RIDE w/ trail
+  cptdankkk holds "biggest narrative is AI", the Base AI big-four meta lands, Anthropic $1T valuation validates the infrastructure. TAO sits at $275 below every major moving average. The token cools while talk holds.
+  reflexivity: DataChaz "WE ARE SO BACK" thread at 12.7k likes flags peak-self-awareness on the AI-takes-jobs walkback. A dated "compliance kills agentic meta by June 2026" framing sharpens the trail trigger.
 
-**Follow-up:** chain-then-re-invocation has now recurred 4 days running (05-26/05-27/05-28/05-29). If a second same-day run is wanted-of-record, the fix belongs at the scheduler/chain layer (single-fire guard), not the skill.
+• RWA / tokenized equity / synthetic ownership [ONDO, LINK, BUIDL, OUSG] · 4/5 · RIDE w/ trail
+  Stablecoin mcap $311B holds the floor. No fresh tokenization anchor today, deep consensus phase continues.
+  reflexivity: maturation rather than acceleration. The marginal narrative buyer is already in, trail tightens.
+
+• Decentralized compute / AI infra / DePAI [TAO, RNDR, AKT] · 4/5 · RIDE w/ trail
+  Anthropic $1T strengthens the compute-demand thesis. Anti-datacenter politics escalates and the "no AI race" contrarian keeps adding engagement. TAO still below all major moving averages. Grayscale+Bitwise spot TAO ETF decision August 2026 the named catalyst.
+
+
+Stance: AI sector peaks with a dated June trigger on the bear case. Tighten trails, no fresh adds on the peak group. The two real watches: an Arcium-stack listing for privacy, a clean HYPE ATH reclaim for perp DEXes.

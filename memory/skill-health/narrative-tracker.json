@@ -1,15 +1,15 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-29T22:15:07Z",
+  "last_analyzed": "2026-05-30T10:33:05Z",
   "quality_score": 4,
-  "assessment": "Skill correctly identified duplicate run, made sound judgment to avoid re-execution and duplicate notifications, documented reasoning clearly, and flagged systemic scheduler issue for remediation.",
-  "flags": [],
+  "assessment": "Substantive narrative tracking with well-sourced content and proper error correction; recurring artifact corruption warrants system investigation",
+  "flags": [
+    "recurring_system_issue",
+    "truncated_output",
+    "artifact_corruption"
+  ],
   "avg_score": 4,
   "history": [
-    {
-      "date": "2026-05-18",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -124,6 +124,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     }
   ]
