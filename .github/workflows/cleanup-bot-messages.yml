@@ -1,0 +1,89 @@
+name: Cleanup Bot Messages
+
+# One-shot helper to delete stale Aeon bot embeds from the active-only
+# Discord channels. Use after Stage 3 (edit-in-place) shipped to clean
+# the historical backlog of:
+#   - Duplicate position cards from pre-Stage-3 twice-daily duplication
+#   - Stale "active" cards for positions that closed before the 24h
+#     cleanup queue existed
+#   - Duplicate watchlist cards
+#   - Older market sentiment fresh posts (only today's gets edited)
+#   - Misrouted JUDGEMENT AUDIT embeds in #perps-outcomes (now route
+#     to #aeon-ops per #57)
+#
+# ALWAYS run with dry_run=true first. Review the candidate list in the
+# logs. Re-run with dry_run=false to actually delete.
+#
+# Channels and policies are documented inline in
+# scripts/cleanup-bot-messages.py.
+
+on:
+  workflow_dispatch:
+    inputs:
+      channels:
+        description: 'Comma-separated channel labels (positions, watchlist, context, outcomes)'
+        required: true
+        type: string
+        default: 'positions,watchlist,context,outcomes'
+      dry_run:
+        description: 'Dry-run: print candidates, do NOT delete'
+        required: true
+        type: boolean
+        default: true
+      max_pages:
+        description: 'History depth per channel — pages of 100 messages'
+        required: true
+        type: string
+        default: '5'
+
+permissions:
+  contents: read
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate secrets
+        run: |
+          if [ -z "${{ secrets.DISCORD_BOT_TOKEN }}" ]; then
+            echo "::error::DISCORD_BOT_TOKEN secret not set"
+            exit 1
+          fi
+
+      - name: Run cleanup
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CHANNEL_PERPS_CONTEXT: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_CONTEXT }}
+          DISCORD_BOT_CHANNEL_PERPS_POSITIONS: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_POSITIONS }}
+          DISCORD_BOT_CHANNEL_PERPS_WATCHLIST: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_WATCHLIST }}
+          DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
+        run: |
+          ARGS="--channels ${{ inputs.channels }} --max-pages ${{ inputs.max_pages }}"
+          if [ "${{ inputs.dry_run }}" = "false" ]; then
+            ARGS="$ARGS --live"
+            echo "::notice::LIVE mode — deletions will happen"
+          else
+            echo "::notice::DRY-RUN mode — review candidate list below"
+          fi
+          python3 scripts/cleanup-bot-messages.py $ARGS
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "Dry-run complete. Review the candidate list in the 'Run cleanup' step."
+            echo "To delete for real, re-run this workflow with dry_run=false."
+          else
+            echo "Cleanup applied. Channels should now contain only active/recent embeds."
+          fi
