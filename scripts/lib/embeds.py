@@ -1236,3 +1236,141 @@ def compose_judgement_audit(
             out.append(postmortem_embed)
 
     return out
+
+
+# ---------------------------------------------------------------------------
+# Daily ops review — operator self-monitoring
+#
+# Renders the daily-ops-review skill's markdown artifact as a single
+# embed for the unified #aeon-ops developer channel. Same channel
+# receives judgement-audit output (see channel routing in
+# scripts/embed-judgement-audit.py).
+
+
+import re as _re_ops
+
+
+def _count_glyphs(text: str) -> tuple[int, int, int]:
+    """Count ✓ ⚠ ✗ glyph markers in the ops-review markdown body.
+
+    Prefers parsing the explicit summary line the skill writes (which
+    has the canonical counts), e.g. "10 ✓, 0 ⚠, 0 ✗". Falls back to
+    counting status-line glyphs only (lines starting with whitespace +
+    glyph) so the "0 ⚠" / "0 ✗" tokens inside the summary line don't
+    inflate the warn/err counts.
+    """
+    summary = _re_ops.search(
+        r"(\d+)\s*✓\s*,\s*(\d+)\s*⚠\s*,\s*(\d+)\s*✗",
+        text,
+    )
+    if summary:
+        return (
+            int(summary.group(1)),
+            int(summary.group(2)),
+            int(summary.group(3)),
+        )
+    # Fallback: count only status-line glyphs (lines that START with
+    # whitespace + glyph). This excludes the summary line which embeds
+    # the numbers inside a sentence, and excludes prose mentions.
+    ok = warn = err = 0
+    for line in text.splitlines():
+        s = line.lstrip()
+        if s.startswith("✓"):
+            ok += 1
+        elif s.startswith("⚠"):
+            warn += 1
+        elif s.startswith("✗"):
+            err += 1
+    return ok, warn, err
+
+
+def _ops_color(n_ok: int, n_warn: int, n_err: int) -> int:
+    """Pick a color based on overall ops health.
+      err > 0 → LOSS red
+      warn > 0 → SCARE amber
+      otherwise → WIN green
+    """
+    if n_err > 0:
+        return COLORS["LOSS"]
+    if n_warn > 0:
+        return COLORS["SCARE"]
+    return COLORS["WIN"]
+
+
+def compose_daily_ops_review(
+    markdown_text: str,
+    date_str: str = "",
+    chain_run_id: str = "",
+    slot: str = "",
+) -> list[dict]:
+    """Compose the daily-ops-review markdown as a single embed.
+
+    Returns a list of embeds (1 element) for consistency with the other
+    composers — the driver iterates the list and posts each embed.
+
+    Args:
+        markdown_text: contents of .outputs/daily-ops-review.md
+        date_str: optional date label (defaults to today UTC)
+        chain_run_id, slot: routing context (footer)
+    """
+    body = (markdown_text or "").strip()
+    if not body:
+        return [{
+            "color": COLORS["NEUTRAL_CLOSE"],
+            "author": {"name": "AEON OPS"},
+            "title": "Daily Ops Review · no content",
+            "description": "Skill produced no artifact body.",
+            "timestamp": _now_iso(),
+        }]
+
+    n_ok, n_warn, n_err = _count_glyphs(body)
+    color = _ops_color(n_ok, n_warn, n_err)
+
+    # Title prefers an explicit date_str, else parse the first line
+    # of the markdown which the skill writes as "Ops Review · {date} · ...".
+    title = ""
+    first_line = body.split("\n", 1)[0].strip()
+    if first_line.lower().startswith("ops review"):
+        title = first_line
+    if not title:
+        date_label = fmt_date_short(date_str or _now_iso()[:10])
+        title = f"Daily Ops Review · {date_label}"
+
+    # Description = the markdown body, capped at 4096. The skill writes
+    # an artifact that's already operator-readable; we pass it through
+    # verbatim. Strip the title line if we hoisted it into the embed
+    # title so we don't double-print.
+    body_for_desc = body
+    if title == first_line:
+        body_for_desc = body.split("\n", 1)[1].lstrip() if "\n" in body else ""
+    description = body_for_desc[:4096]
+
+    fields = [
+        {
+            "name": "Chain health",
+            "value": (
+                f"✓ **{n_ok}** ok"
+                + (f" · ⚠ **{n_warn}** warn" if n_warn else "")
+                + (f" · ✗ **{n_err}** error" if n_err else "")
+            ),
+            "inline": False,
+        },
+    ]
+
+    footer_text = ""
+    if chain_run_id:
+        footer_text = f"chain run {chain_run_id}"
+    footer_text += _slot_suffix(slot)
+
+    embed: dict = {
+        "color": color,
+        "author": {"name": "AEON OPS · daily review"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "timestamp": _now_iso(),
+    }
+    if footer_text:
+        embed["footer"] = _footer(footer_text.strip(" ·"))
+
+    return [embed]

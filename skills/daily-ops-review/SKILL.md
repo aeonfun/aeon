@@ -165,15 +165,13 @@ Issues filed: ISS-042 (bybit timeout, 2nd occurrence this week)
 - All skills ✓ but slow chain: keep the full report, `(slow)` qualifier on title, no issue list addition.
 - Per-skill summary line: pull the most diagnostic 1-2 facts from each artifact's header or `## Summary` block. Never fabricate. If a skill's summary line cannot be extracted, write the marker + skill name only with no `· detail`.
 
-### 7. Write artifact + notify
+### 7. Write artifact
 
-Write `.outputs/daily-ops-review.md` (chain consumers like future cross-day audit skills may read this). Same content as the notification.
+Write `.outputs/daily-ops-review.md`.
 
-```bash
-./notify --signal "$(cat .outputs/daily-ops-review.md)"
-```
+That's it — **do NOT call `./notify`**. Delivery is now handled by the bot embed pipeline (`scripts/postprocess-daily-ops-review.sh` → `scripts/embed-daily-ops-review.py`), which composes the artifact into a Discord embed and posts to the unified `#aeon-ops` developer channel via the bot. Same channel receives `judgement-audit` output.
 
-The `--signal` flag suppresses Telegram. Discord routing via `DISCORD_WEBHOOK_MAP[daily-ops-review]` targets `#aeon-ops` (private operator channel).
+Bot routing targets `DISCORD_BOT_CHANNEL_AEON_OPS` (operator secret). If unset, falls back to `DISCORD_BOT_CHANNEL_PERPS_OUTCOMES` with a warning — smooth migration during channel setup.
 
 ### 8. Log to `memory/logs/${today}.md`
 
@@ -186,7 +184,7 @@ The `--signal` flag suppresses Telegram. Discord routing via `DISCORD_WEBHOOK_MA
 - **New issues today:** N (IDs: [list or "none"])
 - **Open issues:** N total
 - **Artifact written:** .outputs/daily-ops-review.md
-- **Notification sent:** yes — via `./notify --signal` to #aeon-ops
+- **Notification sent:** yes — via bot embed to #aeon-ops (postprocess)
 ```
 
 The `Chain duration:` line is what the **next** run's step 4 reads to compute its running average.

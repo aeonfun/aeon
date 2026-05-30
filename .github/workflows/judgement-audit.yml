@@ -69,14 +69,18 @@ jobs:
             echo "::error::DISCORD_BOT_TOKEN secret not set"
             exit 1
           fi
-          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}" ]; then
-            echo "::error::DISCORD_BOT_CHANNEL_PERPS_OUTCOMES secret not set"
+          # Prefer the unified #aeon-ops channel; fall back to #perps-outcomes
+          # during the migration.
+          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_AEON_OPS }}" ] && \
+             [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}" ]; then
+            echo "::error::neither DISCORD_BOT_CHANNEL_AEON_OPS nor DISCORD_BOT_CHANNEL_PERPS_OUTCOMES secret is set"
             exit 1
           fi
 
       - name: Post audit embed
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CHANNEL_AEON_OPS: ${{ secrets.DISCORD_BOT_CHANNEL_AEON_OPS }}
           DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
           DISCORD_BOT_DRY_RUN: ${{ inputs.dry_run == true && '1' || '' }}
         run: |
