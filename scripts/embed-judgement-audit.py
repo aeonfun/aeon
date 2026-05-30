@@ -152,13 +152,25 @@ def main() -> int:
     )
     info(f"composed {len(embeds)} embed(s) for delivery")
 
-    # Channel routing — audit embed goes to #perps-outcomes (event log)
-    channel_id = os.environ.get("DISCORD_BOT_CHANNEL_PERPS_OUTCOMES", "")
+    # Channel routing — audit embeds go to the unified #aeon-ops developer
+    # channel (same destination as daily-ops-review). Operator can mute that
+    # channel without losing #perps-outcomes (trade-by-trade event log).
+    # Falls back to #perps-outcomes during migration if AEON_OPS isn't
+    # configured yet.
+    channel_id = os.environ.get("DISCORD_BOT_CHANNEL_AEON_OPS", "")
+    if not channel_id:
+        channel_id = os.environ.get("DISCORD_BOT_CHANNEL_PERPS_OUTCOMES", "")
+        if channel_id and not dry_run:
+            warn(
+                "DISCORD_BOT_CHANNEL_AEON_OPS not set — "
+                "falling back to #perps-outcomes"
+            )
     if dry_run and not channel_id:
-        channel_id = "MOCK-CHANNEL-OUTCOMES"
+        channel_id = "MOCK-CHANNEL-AEON-OPS"
     if not channel_id:
         fail(
-            "DISCORD_BOT_CHANNEL_PERPS_OUTCOMES env var not set "
+            "neither DISCORD_BOT_CHANNEL_AEON_OPS nor "
+            "DISCORD_BOT_CHANNEL_PERPS_OUTCOMES env vars are set, "
             "and not in dry-run mode",
             code=1,
         )
