@@ -196,7 +196,11 @@ Before starting code:
 
 _(Add observations here as PR2 runs. Patterns, anomalies, threshold-calibration thoughts, etc.)_
 
-- _e.g. 2026-06-05: funding_above conditions fired 12× yesterday, all on memecoins, all with margin > 0.05% above threshold. Threshold guidance probably needs to be tightened for funding on high-volatility assets._
+- **2026-05-30, first dry-run after PR2 merge:** Pipeline works end-to-end. Single fire on XLM LONG (`price_close_below: $0.148 vs $0.152`, action=alert, severity=critical). Real invalidation-level breach. PR3 would CONFIRM-close this.
+
+- **Pre-PR1 conditions have `action` defaulting to absent/alert.** XLM's invalidation condition was written before PR1 (it predates the SKILL.md requirement that critical invalidation conditions use `action: "exit"`). PR3 needs to handle the case where a critical-severity condition fires with `action: "alert"` — probably treat alert+critical as a soft-exit candidate and let Claude decide. New positions opened after PR1 will have `action: "exit"` set correctly per the SKILL.md contract.
+
+- **First-run missing_data rate: 13/19 (68%).** Causes to investigate after a few more polls: (a) cache field name mismatches in lib/condition_evaluator.py vs Coinglass v4 response shapes, (b) Coinglass universe ("Tier 1 + top 25 by volume") may not include all current ledger assets — need to expand universe to also include open[] + watchlist[] assets specifically, or fail gracefully when an asset is outside the universe. Defer fix until we have 3-5 polls of data to spot patterns.
 
 ---
 
