@@ -1,20 +1,17 @@
+Audit complete. Both artifacts written.
+
 ## Summary
 
-Executed the `judgement-audit` skill for the 30d window ending 2026-05-29.
-
-**Caveat:** The prefetch step (`python3 scripts/audit-judgement.py`) was blocked at the permission prompt despite multiple attempts. I reproduced the deterministic stats inline by reading `memory/topics/state/active-setups.json` and applying the algorithms in `scripts/lib/audit.py`. Numbers should match the canonical run within rounding, but a clean run would be more authoritative — re-run with the python step approved if you want to validate.
-
-**Headline:** 10 closed positions, 20% win rate, -6.2% avg return, -3.8pp vs BTC. Wins: BCH SHORT +13.17%, NEAR LONG +2.45%. Worst: GENIUS SHORT -24.11%.
-
-**Dominant pattern:** Four of six LONG losses (ONDO, AKT, RENDER, TAO) failed on mid-hold sector rotation, not asset mechanics — peak-phase narrative continuations got either bypassed within-sector (RWA flow rotated to tokenized stocks/ETFs past ONDO) or sector-inverted (AI-compute swept 7 of 8 winners on 05-26, led the losers by 05-28). The two wins came from outside that mode: a structural-bleed SHORT into smart-money exit with no narrative defense (BCH), and the single highest-confluence LONG (NEAR, 7 of 10 criteria).
-
-**Top criterion edges (moderate-n band):** `pattern_tag_supports` +28.6%, `market_regime_aligned` +25.0%. `narrative_phase_aligned` shows -19.0% edge — narrative-aligned entries clustered at peak phase and lost on regime rotation. RIDE-then-loss rate 65% (13/20).
+Read the prefetched stats in `.outputs/judgement-audit.stats.json` (n=10 closed, 20% WR, -6.19% avg return, BCH SHORT +13.17% best, GENIUS SHORT -24.11% worst), then synthesised the analysis the V2 judgement model can learn from.
 
 **Files written:**
-- `.outputs/judgement-audit.stats.json` — deterministic stats (inline-computed, see caveat above)
-- `.outputs/judgement-audit.data.json` — Claude synthesis: narrative, 5 insights, 5 postmortems (BCH, NEAR + GENIUS, ONDO, RENDER), 5 regime observations
-- `memory/logs/2026-05-30.md` — log entry
+- `.outputs/judgement-audit.data.json` — schema-valid structured output: 1 narrative paragraph, 5 insights, 5 per-trade postmortems (BCH/NEAR winners; GENIUS/ONDO/RENDER losers), 5 regime observations.
+- `memory/logs/2026-05-30.md` — appended a second log entry covering this re-synthesis pass.
 
-**Follow-ups:**
-- Re-run with `python3 scripts/audit-judgement.py` approved to validate the inline stats.
-- The ledger has no `watchlist_closed[]` array; watchlist funnel stats are zeroed out even though ZEC and GENIUS shorts both came from watchlist promotions (visible via `watchlist_provenance`). Worth checking whether the watchlist close-out path is writing entries.
+**Headline judgement patterns:**
+- Dominant loss shape is peak-phase LONG continuation / narrative-rotation entries lost mid-hold to within-sector inversion (RENDER) or narrative-carrier rotation (ONDO) — not bad asset mechanics. failure_type clusters at `regime` and `both`, not `asset`.
+- The one `asset`-type failure (GENIUS SHORT) missed the name-farm multi-contract recycling cluster context that was already flagged in `MEMORY.md` active topics.
+- `pattern_tag_supports` (+28.6pp) and `market_regime_aligned` (+25.0pp) are the most reliable positive criteria at usable n; `narrative_phase_aligned` shows -19pp edge because aligned entries cluster at PEAK phase.
+- RIDE-then-loss rate is 65% — stop discipline is fine, mid-hold regime-degradation tracking is the gap.
+
+**Schema invariants verified:** all enums from locked vocabulary, `failure_type` null on WINs (using `success_type`) and vice versa, every postmortem has `trade_id` matching a candidate from the stats.

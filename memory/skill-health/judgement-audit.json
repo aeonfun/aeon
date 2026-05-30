@@ -1,14 +1,18 @@
 {
   "skill": "judgement-audit",
-  "last_analyzed": "2026-05-30T06:39:01Z",
-  "quality_score": 4,
-  "assessment": "Good — substantive pattern analysis with quantified metrics, specific trade postmortems, and identified sector-rotation root cause. Clear caveats on permission-blocked prefetch and known watchlist tracking gap.",
+  "last_analyzed": "2026-05-30T07:47:56Z",
+  "quality_score": 5,
+  "assessment": "Insightful analysis with quantified findings, specific trade postmortems, root-cause pattern identification, schema validation, and clear actionable gaps for model improvement.",
   "flags": [],
-  "avg_score": 4,
+  "avg_score": 4.5,
   "history": [
     {
       "date": "2026-05-30",
       "score": 4
+    },
+    {
+      "date": "2026-05-30",
+      "score": 5
     }
   ]
 }

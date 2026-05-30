@@ -1,0 +1,1795 @@
+{
+  "schema_version": "v1",
+  "generated_at_utc": "2026-05-30T07:43:41Z",
+  "v1_lock_date": null,
+  "windows": {
+    "7d": {
+      "audit_window": "7d",
+      "since": "2026-05-23",
+      "to": "2026-05-29",
+      "v1_lock_date": null,
+      "headline": {
+        "n_closed": 10,
+        "n_wins": 2,
+        "n_losses": 6,
+        "n_scares": 0,
+        "n_neutral": 2,
+        "win_rate_pct": 20.0,
+        "clean_win_rate_pct": 20.0,
+        "scare_share_of_wins_pct": 0.0,
+        "avg_return_pct": -6.19,
+        "median_return_pct": -6.86,
+        "avg_return_vs_btc_pct": -3.77,
+        "median_return_vs_btc_pct": -3.12,
+        "max_drawdown_pct": -33.8596190149305,
+        "max_peak_gain_pct": 14.19255191350609,
+        "best_trade": {
+          "id": "BCH-2026-05-23-001",
+          "asset": "BCH",
+          "direction": "SHORT",
+          "return_pct": 13.17
+        },
+        "worst_trade": {
+          "id": "GENIUS-2026-05-23-001",
+          "asset": "GENIUS",
+          "direction": "SHORT",
+          "return_pct": -24.11
+        }
+      },
+      "by_direction": {
+        "LONG": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 4,
+          "n_scares": 0,
+          "n_neutral": 2,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -6.24,
+          "median_return_pct": -6.39,
+          "avg_return_vs_btc_pct": -3.72
+        },
+        "SHORT": {
+          "n": 3,
+          "n_wins": 1,
+          "n_losses": 2,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 33.3,
+          "clean_win_rate_pct": 33.3,
+          "avg_return_pct": -6.09,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -3.9
+        }
+      },
+      "by_horizon": {
+        "24h": {
+          "n": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": null,
+          "clean_win_rate_pct": null,
+          "avg_return_pct": null,
+          "median_return_pct": null,
+          "avg_return_vs_btc_pct": null
+        },
+        "3d": {
+          "n": 2,
+          "n_wins": 1,
+          "n_losses": 1,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 50.0,
+          "clean_win_rate_pct": 50.0,
+          "avg_return_pct": -10.83,
+          "median_return_pct": -10.83,
+          "avg_return_vs_btc_pct": -9.26
+        },
+        "7d": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 5,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -5.46,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -2.61
+        },
+        "multi-week": {
+          "n": 1,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 0.0,
+          "clean_win_rate_pct": 0.0,
+          "avg_return_pct": -2.04,
+          "median_return_pct": -2.04,
+          "avg_return_vs_btc_pct": -0.97
+        }
+      },
+      "by_criterion": [
+        {
+          "criterion": "both_tag",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 100.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 11.1,
+          "edge_pct": 88.9,
+          "avg_return_when_fired_pct": 2.45
+        },
+        {
+          "criterion": "quant_regime_aligned",
+          "n_fired": 2,
+          "win_rate_when_fired_pct": 50.0,
+          "n_missing": 8,
+          "win_rate_when_missing_pct": 12.5,
+          "edge_pct": 37.5,
+          "avg_return_when_fired_pct": -1.97
+        },
+        {
+          "criterion": "pattern_tag_supports",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 28.6,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 28.6,
+          "avg_return_when_fired_pct": -5.15
+        },
+        {
+          "criterion": "market_regime_aligned",
+          "n_fired": 8,
+          "win_rate_when_fired_pct": 25.0,
+          "n_missing": 2,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 25.0,
+          "avg_return_when_fired_pct": -6.56
+        },
+        {
+          "criterion": "repeat_appearance",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -24.11
+        },
+        {
+          "criterion": "regime_transition",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -6.39
+        },
+        {
+          "criterion": "enrichment_positive",
+          "n_fired": 9,
+          "win_rate_when_fired_pct": 22.2,
+          "n_missing": 1,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 22.2,
+          "avg_return_when_fired_pct": -6.07
+        },
+        {
+          "criterion": "narrative_phase_aligned",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 14.3,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 33.3,
+          "edge_pct": -19.0,
+          "avg_return_when_fired_pct": -6.99
+        },
+        {
+          "criterion": "cross_domain_bridge",
+          "n_fired": 6,
+          "win_rate_when_fired_pct": 16.7,
+          "n_missing": 4,
+          "win_rate_when_missing_pct": 25.0,
+          "edge_pct": -8.3,
+          "avg_return_when_fired_pct": -4.55
+        },
+        {
+          "criterion": "dominance_aligned",
+          "n_fired": 0,
+          "win_rate_when_fired_pct": null,
+          "n_missing": 10,
+          "win_rate_when_missing_pct": 20.0,
+          "edge_pct": null,
+          "avg_return_when_fired_pct": null
+        }
+      ],
+      "watchlist_funnel": {
+        "n_total": 0,
+        "n_promoted": 0,
+        "n_invalidated": 0,
+        "n_thesis_decayed": 0,
+        "n_stale": 0,
+        "promote_rate_pct": null,
+        "invalidation_rate_pct": null,
+        "decay_rate_pct": null,
+        "stale_rate_pct": null,
+        "median_days_promoted": null,
+        "median_days_invalidated": null,
+        "median_days_thesis_decayed": null,
+        "promoted_position_outcomes": {
+          "n_resolved": 0,
+          "n_pending": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "win_rate_pct": null
+        }
+      },
+      "auto_flips": {
+        "n": 0,
+        "n_followups_resolved": 0,
+        "n_followups_unresolved": 0,
+        "followup_win_rate_pct": null,
+        "followup_avg_return_pct": null
+      },
+      "time_to_outcome": {
+        "median_days_win": 4.0,
+        "median_days_loss": 1.5,
+        "median_days_scare": null,
+        "median_days_neutral": 2.5
+      },
+      "eval_call_calibration": {
+        "n_ride_calls": 20,
+        "n_close_calls": 10,
+        "ride_then_win_rate_pct": 35.0,
+        "ride_then_loss_rate_pct": 65.0,
+        "close_when_already_underperforming_pct": 80.0
+      },
+      "postmortem_candidates": {
+        "winners": [
+          {
+            "id": "BCH-2026-05-23-001",
+            "asset": "BCH",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 344.68,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $355",
+            "invalidation": "close above $370 (recent intraday bounce high)",
+            "horizon": "7d",
+            "thesis": [
+              "BCH closed -4.35% today extending a 7d bleed of -17.04%. The drawdown is the deepest in today's universe and unfolded without leverage rebuild — open interest dropped 9.88% over the same week.",
+              "Top-trader long/short ratio collapsed 1.43 points over 7 days. That's the heaviest smart-money exit in the entire perps universe today — the long-side conviction has rolled off completely.",
+              "Funding sits at -0.0336%/8h, well below the 7d average of -0.0127%. Spot premium against shorted futures reads as continuation positioning, not a panic flush waiting to bounce.",
+              "Bitcoin Cash carries no narrative tailwind from today's tracker map. The macro frame is risk-off with breadth at 3/20 green and BTC sub-$75K third session — no catalyst on the calendar to defend the bid."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Majors stabilizing fires a relief bounce across legacy alts. BCH could squeeze on Bitcoin halving anniversary noise or oversold technicals regardless of the structural read.",
+              "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
+            ],
+            "mae_pct": -5.024950678890563,
+            "mfe_pct": 14.123244748752468,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-29",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "RIDE",
+                "price_at_eval": 350.0,
+                "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-25",
+                "call": "RIDE",
+                "price_at_eval": 345.0,
+                "note": "Day 3/7 afternoon re-eval. BCH still absent from the 25-asset perps slice and from token-movers (morning and midday refreshes both). Price_at_eval estimated near $345 from the market-context naming BCH as one of the top-20 majors closing red on a +0.81% BTC day. High/low estimates carry uncertainty bands. Structural smart-money-exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-26",
+                "call": "RIDE",
+                "price_at_eval": 342.0,
+                "note": "Day 4/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending — price estimated near $342 from BTC -0.83% on a risk-off tape with breadth 1/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 340.0,
+                "note": "Day 5/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending for the fifth straight session — price estimated near $340 from a risk-off tape with BTC -1.0% and breadth 7/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "RIDE",
+                "price_at_eval": 332.0,
+                "note": "Day 6/7. BCH absent from the 25-asset perps slice and from winners/losers/trending for the sixth straight session — price estimated near $332 from the deepest risk-off tape of the week (BTC -2.6%, breadth 5/20, top-20 only 4 green). High/low carry estimate uncertainty. Structural legacy-alt bleed intact, no catalyst defends the bid. Invalidation $370 well clear. Today's estimated low extends MFE toward +4%. RIDE into the final day.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-29",
+                "call": "CLOSE",
+                "price_at_eval": 299.29,
+                "note": "Day 7/7. BCH printed in today's 25-asset perps slice at $299.29 down -10.5% 24h, funding negative at -0.0346%/8h and top L/S collapsed to 0.99 — the legacy-alt bleed ran clean through to horizon even on a 14/20-green relief tape. Seven-day horizon reached with the short at +13.17%. Invalidation $370 never approached. CLOSE, WIN.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-29",
+            "closed_price": 299.29,
+            "close_reason": "seven-day horizon reached with the short at +13.17%; the legacy-alt structural bleed ran clean to the end, BCH down another 10.5% today even on a green relief tape with funding negative and smart money fully exited",
+            "return_pct": 13.17,
+            "return_vs_btc_pct": 14.94,
+            "return_vs_eth_pct": 14.44,
+            "horizon_realized": "7d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          },
+          {
+            "id": "NEAR-2026-05-22-001",
+            "asset": "NEAR",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 2.325,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or first pullback to $2.10",
+            "invalidation": "close below $2.05",
+            "horizon": "3d",
+            "thesis": "ACCUMULATION resolved into +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h, short liqs $3.86M vs p75 $1.38M, top L/S +0.08 7d. AI/DePIN double 5/5 PEAK. AIXBT names entry leg.",
+            "confluence_fired": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "both_tag",
+              "cross_domain_bridge",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "repeat_appearance",
+              "regime_transition",
+              "dominance_aligned"
+            ],
+            "named_risks": [
+              "AI/DePIN both PEAK — late-cycle entry",
+              "Pyth oracle cascade risk on dependent protocols",
+              "+151% 7d OI means the long stack can flush on one red day"
+            ],
+            "mae_pct": -12.258064516129037,
+            "mfe_pct": 5.376344086021505,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 2.265,
+                "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "RIDE",
+                "price_at_eval": 2.083,
+                "note": "Day 2/3 late session. Price recovered from morning $2.058 touch to $2.083 (+1.21% intraday off the low). Pct_4h +1.12% means bid returned over the last 4 hours. AI agents and Decentralized compute both promoted Peak → Rising in the same chain — narrative tailwind re-firms. OI -3.96% means late longs unwound without panic. Funding +0.0085%/8h above the 7d average — fresh longs paying premium into the consolidation. Holding for horizon expiry tomorrow."
+              },
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 2.382,
+                "note": "Day 3/3. Horizon reached. +2.45% from fire, +3.00pp vs BTC, +2.72pp vs ETH. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked. WIN."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 2.382,
+            "close_reason": "horizon reached on Day 3/3 with position in the green; sector thesis (AI agents + DePIN PEAK) intact",
+            "return_pct": 2.45,
+            "return_vs_btc_pct": 3.0,
+            "return_vs_eth_pct": 2.72,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          }
+        ],
+        "losers": [
+          {
+            "id": "GENIUS-2026-05-23-001",
+            "asset": "GENIUS",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 0.5827,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $0.62",
+            "invalidation": "close above $0.68 (recent intraday bounce high)",
+            "horizon": "3d",
+            "thesis": [
+              "GENIUS closed -6.93% today with open interest dropping 6.43% in the same window. Liquidations printed $498K — 2.76 times the 7d p75 of $180K. perps-scan named the structure CAPITULATION-shaped flow.",
+              "Top-trader long/short ratio fell 0.37 points over 7 days while open interest built 124% in the same period. Smart money is fading the Binance listing pump while retail leverage stays crowded long.",
+              "Funding flipped negative to -0.0005%/8h from the +0.0073% 7d average. The premium-paying long stack now pays nothing — the support that justified the leverage just lifted.",
+              "Cross-feed conflict with today's token-call HIGH 9/10 LONG on the same name. Per soul, perps positioning wins commentary when the chart confirms the structural shape. Tape fired the short side first."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "repeat_appearance",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
+              "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
+            ],
+            "mae_pct": -33.8596190149305,
+            "mfe_pct": 14.19255191350609,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": true,
+            "watchlist_provenance": {
+              "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
+              "days_on_watchlist": 0,
+              "original_trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
+              "original_confluence_fired": [
+                "pattern_tag_supports",
+                "market_regime_aligned"
+              ]
+            },
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 0.7232,
+                "note": "Day 2/3 afternoon re-eval. Afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. Fifth distinct GENIUS bsc contract reactivated the name-farm cluster, vol_ratio 2.38x cleared the breakout gate, pct_24h +9.51% on $51M volume. Morning brief's $0.55 estimate from on-chain attention rotation missed the perps print entirely. -24.11% return, -21.52pp vs BTC, -20.53pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 0.7232,
+            "close_reason": "afternoon perps data revealed daily close $0.7232 cleared the $0.68 invalidation; the morning eval's $0.55 estimate from on-chain attention missed the perps print where fifth distinct bsc name-farm contract reactivated the cluster with vol_ratio 2.38x clearing the breakout gate",
+            "return_pct": -24.11,
+            "return_vs_btc_pct": -21.52,
+            "return_vs_eth_pct": -20.53,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "ONDO-2026-05-22-001",
+            "asset": "ONDO",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 0.463,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or pullback to $0.43",
+            "invalidation": "close below $0.41",
+            "horizon": "7d",
+            "thesis": "RWA 5/5 PEAK · RIDE w/ trail. +11.81% 24h on OI +13.19% returns ONDO to trending #6. Top L/S 1.79, -0.20 7d but long stack mostly held. CLARITY + Japan June-1 broadens the legitimization wave.",
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "Rolled OUT of yesterday's ACCUMULATION — structural bid may not return",
+              "RWA PEAK = late-cycle, trail discipline required",
+              "One-day re-entry to trending is shallow"
+            ],
+            "mae_pct": -17.926565874730024,
+            "mfe_pct": 1.5118790496760153,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-22",
+            "invalidation_breached": true,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 0.4545,
+                "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "CLOSE",
+                "price_at_eval": 0.3829,
+                "note": "Day 2/7. Invalidation $0.41 breached by 7%. RWA carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. -17.30% return, -14.59pp vs BTC, -13.88pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-23",
+            "closed_price": 0.3829,
+            "close_reason": "invalidation $0.41 breached by 7%; RWA narrative carrier rotated to tokenized stocks/ETFs, not ONDO direct",
+            "return_pct": -17.3,
+            "return_vs_btc_pct": -14.59,
+            "return_vs_eth_pct": -13.88,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "RENDER-2026-05-26-001",
+            "asset": "RENDER",
+            "direction": "LONG",
+            "fired_date": "2026-05-26",
+            "fired_price": 2.29,
+            "fired_btc_price": 76590.8,
+            "fired_eth_price": 2092.7,
+            "entry_zone": "market or first pullback to $2.15",
+            "invalidation": "close below $2.00",
+            "horizon": "7d",
+            "thesis": [
+              "RENDER +14.2% 24h on $258M vol with vol/mcap 0.21 — AI-compute peer set leading while TAO digests at +1.1%.",
+              "Today's token-call rated RENDER HIGH 9/10. Salad Network adds ~60,000 enterprise GPUs, AI compute drives 35-40% of jobs.",
+              "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE second straight session, burns +278% year-over-year.",
+              "Token-movers shows AI-compute sweeping 7 of 8 winner slots — dominant cross-sector rotation on a 1/20 green tape."
+            ],
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "enrichment_positive",
+              "cross_domain_bridge"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang ready to land.",
+              "Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price — institutional flows may rotate back.",
+              "EIGEN and AKT already hold AI-compute long — RENDER concentrates rather than diversifies sector exposure."
+            ],
+            "mae_pct": -17.903930131004373,
+            "mfe_pct": 0.4366812227074143,
+            "mae_date": "2026-05-27",
+            "mfe_date": "2026-05-27",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 2.193,
+                "note": "Day 1/7. Brutal intraday — wick to ~$1.88 left MAE -17.9%, $0.12 from the $2.00 invalidation. Daily close at $2.193 (-4.24% from fire) holds above invalidation — reads as deep liquidity grab on the AI-compute sector flush, not structure break. Decentralized compute narrative still rides peak with velocity upgrade. RIDE with tight watch: a second daily close below $2.05 with no recovery wick marks the structural break.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "CLOSE",
+                "price_at_eval": 2.04,
+                "note": "Day 3/7. RENDER $2.04 led the compute sector lower at -12.5%, the biggest loser among the AI names. Today's close is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closing on the thesis break before the stop prints. Daily close $2.04 held above the $2.00 invalidation, so no breach flag. LOSS -10.92%.",
+                "slot": "am",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-28",
+            "closed_price": 2.04,
+            "close_reason": "AI-compute sector distributed today and RENDER led it lower at -12.5%, the biggest loser among the compute names. Today's close near $2.04 is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closed on the thesis break before the stop printed.",
+            "return_pct": -10.92,
+            "return_vs_btc_pct": -7.24,
+            "return_vs_eth_pct": -6.01,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          }
+        ]
+      }
+    },
+    "30d": {
+      "audit_window": "30d",
+      "since": "2026-05-23",
+      "to": "2026-05-29",
+      "v1_lock_date": null,
+      "headline": {
+        "n_closed": 10,
+        "n_wins": 2,
+        "n_losses": 6,
+        "n_scares": 0,
+        "n_neutral": 2,
+        "win_rate_pct": 20.0,
+        "clean_win_rate_pct": 20.0,
+        "scare_share_of_wins_pct": 0.0,
+        "avg_return_pct": -6.19,
+        "median_return_pct": -6.86,
+        "avg_return_vs_btc_pct": -3.77,
+        "median_return_vs_btc_pct": -3.12,
+        "max_drawdown_pct": -33.8596190149305,
+        "max_peak_gain_pct": 14.19255191350609,
+        "best_trade": {
+          "id": "BCH-2026-05-23-001",
+          "asset": "BCH",
+          "direction": "SHORT",
+          "return_pct": 13.17
+        },
+        "worst_trade": {
+          "id": "GENIUS-2026-05-23-001",
+          "asset": "GENIUS",
+          "direction": "SHORT",
+          "return_pct": -24.11
+        }
+      },
+      "by_direction": {
+        "LONG": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 4,
+          "n_scares": 0,
+          "n_neutral": 2,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -6.24,
+          "median_return_pct": -6.39,
+          "avg_return_vs_btc_pct": -3.72
+        },
+        "SHORT": {
+          "n": 3,
+          "n_wins": 1,
+          "n_losses": 2,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 33.3,
+          "clean_win_rate_pct": 33.3,
+          "avg_return_pct": -6.09,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -3.9
+        }
+      },
+      "by_horizon": {
+        "24h": {
+          "n": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": null,
+          "clean_win_rate_pct": null,
+          "avg_return_pct": null,
+          "median_return_pct": null,
+          "avg_return_vs_btc_pct": null
+        },
+        "3d": {
+          "n": 2,
+          "n_wins": 1,
+          "n_losses": 1,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 50.0,
+          "clean_win_rate_pct": 50.0,
+          "avg_return_pct": -10.83,
+          "median_return_pct": -10.83,
+          "avg_return_vs_btc_pct": -9.26
+        },
+        "7d": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 5,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -5.46,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -2.61
+        },
+        "multi-week": {
+          "n": 1,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 0.0,
+          "clean_win_rate_pct": 0.0,
+          "avg_return_pct": -2.04,
+          "median_return_pct": -2.04,
+          "avg_return_vs_btc_pct": -0.97
+        }
+      },
+      "by_criterion": [
+        {
+          "criterion": "both_tag",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 100.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 11.1,
+          "edge_pct": 88.9,
+          "avg_return_when_fired_pct": 2.45
+        },
+        {
+          "criterion": "quant_regime_aligned",
+          "n_fired": 2,
+          "win_rate_when_fired_pct": 50.0,
+          "n_missing": 8,
+          "win_rate_when_missing_pct": 12.5,
+          "edge_pct": 37.5,
+          "avg_return_when_fired_pct": -1.97
+        },
+        {
+          "criterion": "pattern_tag_supports",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 28.6,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 28.6,
+          "avg_return_when_fired_pct": -5.15
+        },
+        {
+          "criterion": "market_regime_aligned",
+          "n_fired": 8,
+          "win_rate_when_fired_pct": 25.0,
+          "n_missing": 2,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 25.0,
+          "avg_return_when_fired_pct": -6.56
+        },
+        {
+          "criterion": "repeat_appearance",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -24.11
+        },
+        {
+          "criterion": "regime_transition",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -6.39
+        },
+        {
+          "criterion": "enrichment_positive",
+          "n_fired": 9,
+          "win_rate_when_fired_pct": 22.2,
+          "n_missing": 1,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 22.2,
+          "avg_return_when_fired_pct": -6.07
+        },
+        {
+          "criterion": "narrative_phase_aligned",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 14.3,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 33.3,
+          "edge_pct": -19.0,
+          "avg_return_when_fired_pct": -6.99
+        },
+        {
+          "criterion": "cross_domain_bridge",
+          "n_fired": 6,
+          "win_rate_when_fired_pct": 16.7,
+          "n_missing": 4,
+          "win_rate_when_missing_pct": 25.0,
+          "edge_pct": -8.3,
+          "avg_return_when_fired_pct": -4.55
+        },
+        {
+          "criterion": "dominance_aligned",
+          "n_fired": 0,
+          "win_rate_when_fired_pct": null,
+          "n_missing": 10,
+          "win_rate_when_missing_pct": 20.0,
+          "edge_pct": null,
+          "avg_return_when_fired_pct": null
+        }
+      ],
+      "watchlist_funnel": {
+        "n_total": 0,
+        "n_promoted": 0,
+        "n_invalidated": 0,
+        "n_thesis_decayed": 0,
+        "n_stale": 0,
+        "promote_rate_pct": null,
+        "invalidation_rate_pct": null,
+        "decay_rate_pct": null,
+        "stale_rate_pct": null,
+        "median_days_promoted": null,
+        "median_days_invalidated": null,
+        "median_days_thesis_decayed": null,
+        "promoted_position_outcomes": {
+          "n_resolved": 0,
+          "n_pending": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "win_rate_pct": null
+        }
+      },
+      "auto_flips": {
+        "n": 0,
+        "n_followups_resolved": 0,
+        "n_followups_unresolved": 0,
+        "followup_win_rate_pct": null,
+        "followup_avg_return_pct": null
+      },
+      "time_to_outcome": {
+        "median_days_win": 4.0,
+        "median_days_loss": 1.5,
+        "median_days_scare": null,
+        "median_days_neutral": 2.5
+      },
+      "eval_call_calibration": {
+        "n_ride_calls": 20,
+        "n_close_calls": 10,
+        "ride_then_win_rate_pct": 35.0,
+        "ride_then_loss_rate_pct": 65.0,
+        "close_when_already_underperforming_pct": 80.0
+      },
+      "postmortem_candidates": {
+        "winners": [
+          {
+            "id": "BCH-2026-05-23-001",
+            "asset": "BCH",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 344.68,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $355",
+            "invalidation": "close above $370 (recent intraday bounce high)",
+            "horizon": "7d",
+            "thesis": [
+              "BCH closed -4.35% today extending a 7d bleed of -17.04%. The drawdown is the deepest in today's universe and unfolded without leverage rebuild — open interest dropped 9.88% over the same week.",
+              "Top-trader long/short ratio collapsed 1.43 points over 7 days. That's the heaviest smart-money exit in the entire perps universe today — the long-side conviction has rolled off completely.",
+              "Funding sits at -0.0336%/8h, well below the 7d average of -0.0127%. Spot premium against shorted futures reads as continuation positioning, not a panic flush waiting to bounce.",
+              "Bitcoin Cash carries no narrative tailwind from today's tracker map. The macro frame is risk-off with breadth at 3/20 green and BTC sub-$75K third session — no catalyst on the calendar to defend the bid."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Majors stabilizing fires a relief bounce across legacy alts. BCH could squeeze on Bitcoin halving anniversary noise or oversold technicals regardless of the structural read.",
+              "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
+            ],
+            "mae_pct": -5.024950678890563,
+            "mfe_pct": 14.123244748752468,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-29",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "RIDE",
+                "price_at_eval": 350.0,
+                "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-25",
+                "call": "RIDE",
+                "price_at_eval": 345.0,
+                "note": "Day 3/7 afternoon re-eval. BCH still absent from the 25-asset perps slice and from token-movers (morning and midday refreshes both). Price_at_eval estimated near $345 from the market-context naming BCH as one of the top-20 majors closing red on a +0.81% BTC day. High/low estimates carry uncertainty bands. Structural smart-money-exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-26",
+                "call": "RIDE",
+                "price_at_eval": 342.0,
+                "note": "Day 4/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending — price estimated near $342 from BTC -0.83% on a risk-off tape with breadth 1/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 340.0,
+                "note": "Day 5/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending for the fifth straight session — price estimated near $340 from a risk-off tape with BTC -1.0% and breadth 7/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "RIDE",
+                "price_at_eval": 332.0,
+                "note": "Day 6/7. BCH absent from the 25-asset perps slice and from winners/losers/trending for the sixth straight session — price estimated near $332 from the deepest risk-off tape of the week (BTC -2.6%, breadth 5/20, top-20 only 4 green). High/low carry estimate uncertainty. Structural legacy-alt bleed intact, no catalyst defends the bid. Invalidation $370 well clear. Today's estimated low extends MFE toward +4%. RIDE into the final day.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-29",
+                "call": "CLOSE",
+                "price_at_eval": 299.29,
+                "note": "Day 7/7. BCH printed in today's 25-asset perps slice at $299.29 down -10.5% 24h, funding negative at -0.0346%/8h and top L/S collapsed to 0.99 — the legacy-alt bleed ran clean through to horizon even on a 14/20-green relief tape. Seven-day horizon reached with the short at +13.17%. Invalidation $370 never approached. CLOSE, WIN.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-29",
+            "closed_price": 299.29,
+            "close_reason": "seven-day horizon reached with the short at +13.17%; the legacy-alt structural bleed ran clean to the end, BCH down another 10.5% today even on a green relief tape with funding negative and smart money fully exited",
+            "return_pct": 13.17,
+            "return_vs_btc_pct": 14.94,
+            "return_vs_eth_pct": 14.44,
+            "horizon_realized": "7d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          },
+          {
+            "id": "NEAR-2026-05-22-001",
+            "asset": "NEAR",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 2.325,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or first pullback to $2.10",
+            "invalidation": "close below $2.05",
+            "horizon": "3d",
+            "thesis": "ACCUMULATION resolved into +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h, short liqs $3.86M vs p75 $1.38M, top L/S +0.08 7d. AI/DePIN double 5/5 PEAK. AIXBT names entry leg.",
+            "confluence_fired": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "both_tag",
+              "cross_domain_bridge",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "repeat_appearance",
+              "regime_transition",
+              "dominance_aligned"
+            ],
+            "named_risks": [
+              "AI/DePIN both PEAK — late-cycle entry",
+              "Pyth oracle cascade risk on dependent protocols",
+              "+151% 7d OI means the long stack can flush on one red day"
+            ],
+            "mae_pct": -12.258064516129037,
+            "mfe_pct": 5.376344086021505,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 2.265,
+                "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "RIDE",
+                "price_at_eval": 2.083,
+                "note": "Day 2/3 late session. Price recovered from morning $2.058 touch to $2.083 (+1.21% intraday off the low). Pct_4h +1.12% means bid returned over the last 4 hours. AI agents and Decentralized compute both promoted Peak → Rising in the same chain — narrative tailwind re-firms. OI -3.96% means late longs unwound without panic. Funding +0.0085%/8h above the 7d average — fresh longs paying premium into the consolidation. Holding for horizon expiry tomorrow."
+              },
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 2.382,
+                "note": "Day 3/3. Horizon reached. +2.45% from fire, +3.00pp vs BTC, +2.72pp vs ETH. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked. WIN."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 2.382,
+            "close_reason": "horizon reached on Day 3/3 with position in the green; sector thesis (AI agents + DePIN PEAK) intact",
+            "return_pct": 2.45,
+            "return_vs_btc_pct": 3.0,
+            "return_vs_eth_pct": 2.72,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          }
+        ],
+        "losers": [
+          {
+            "id": "GENIUS-2026-05-23-001",
+            "asset": "GENIUS",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 0.5827,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $0.62",
+            "invalidation": "close above $0.68 (recent intraday bounce high)",
+            "horizon": "3d",
+            "thesis": [
+              "GENIUS closed -6.93% today with open interest dropping 6.43% in the same window. Liquidations printed $498K — 2.76 times the 7d p75 of $180K. perps-scan named the structure CAPITULATION-shaped flow.",
+              "Top-trader long/short ratio fell 0.37 points over 7 days while open interest built 124% in the same period. Smart money is fading the Binance listing pump while retail leverage stays crowded long.",
+              "Funding flipped negative to -0.0005%/8h from the +0.0073% 7d average. The premium-paying long stack now pays nothing — the support that justified the leverage just lifted.",
+              "Cross-feed conflict with today's token-call HIGH 9/10 LONG on the same name. Per soul, perps positioning wins commentary when the chart confirms the structural shape. Tape fired the short side first."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "repeat_appearance",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
+              "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
+            ],
+            "mae_pct": -33.8596190149305,
+            "mfe_pct": 14.19255191350609,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": true,
+            "watchlist_provenance": {
+              "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
+              "days_on_watchlist": 0,
+              "original_trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
+              "original_confluence_fired": [
+                "pattern_tag_supports",
+                "market_regime_aligned"
+              ]
+            },
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 0.7232,
+                "note": "Day 2/3 afternoon re-eval. Afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. Fifth distinct GENIUS bsc contract reactivated the name-farm cluster, vol_ratio 2.38x cleared the breakout gate, pct_24h +9.51% on $51M volume. Morning brief's $0.55 estimate from on-chain attention rotation missed the perps print entirely. -24.11% return, -21.52pp vs BTC, -20.53pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 0.7232,
+            "close_reason": "afternoon perps data revealed daily close $0.7232 cleared the $0.68 invalidation; the morning eval's $0.55 estimate from on-chain attention missed the perps print where fifth distinct bsc name-farm contract reactivated the cluster with vol_ratio 2.38x clearing the breakout gate",
+            "return_pct": -24.11,
+            "return_vs_btc_pct": -21.52,
+            "return_vs_eth_pct": -20.53,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "ONDO-2026-05-22-001",
+            "asset": "ONDO",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 0.463,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or pullback to $0.43",
+            "invalidation": "close below $0.41",
+            "horizon": "7d",
+            "thesis": "RWA 5/5 PEAK · RIDE w/ trail. +11.81% 24h on OI +13.19% returns ONDO to trending #6. Top L/S 1.79, -0.20 7d but long stack mostly held. CLARITY + Japan June-1 broadens the legitimization wave.",
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "Rolled OUT of yesterday's ACCUMULATION — structural bid may not return",
+              "RWA PEAK = late-cycle, trail discipline required",
+              "One-day re-entry to trending is shallow"
+            ],
+            "mae_pct": -17.926565874730024,
+            "mfe_pct": 1.5118790496760153,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-22",
+            "invalidation_breached": true,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 0.4545,
+                "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "CLOSE",
+                "price_at_eval": 0.3829,
+                "note": "Day 2/7. Invalidation $0.41 breached by 7%. RWA carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. -17.30% return, -14.59pp vs BTC, -13.88pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-23",
+            "closed_price": 0.3829,
+            "close_reason": "invalidation $0.41 breached by 7%; RWA narrative carrier rotated to tokenized stocks/ETFs, not ONDO direct",
+            "return_pct": -17.3,
+            "return_vs_btc_pct": -14.59,
+            "return_vs_eth_pct": -13.88,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "RENDER-2026-05-26-001",
+            "asset": "RENDER",
+            "direction": "LONG",
+            "fired_date": "2026-05-26",
+            "fired_price": 2.29,
+            "fired_btc_price": 76590.8,
+            "fired_eth_price": 2092.7,
+            "entry_zone": "market or first pullback to $2.15",
+            "invalidation": "close below $2.00",
+            "horizon": "7d",
+            "thesis": [
+              "RENDER +14.2% 24h on $258M vol with vol/mcap 0.21 — AI-compute peer set leading while TAO digests at +1.1%.",
+              "Today's token-call rated RENDER HIGH 9/10. Salad Network adds ~60,000 enterprise GPUs, AI compute drives 35-40% of jobs.",
+              "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE second straight session, burns +278% year-over-year.",
+              "Token-movers shows AI-compute sweeping 7 of 8 winner slots — dominant cross-sector rotation on a 1/20 green tape."
+            ],
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "enrichment_positive",
+              "cross_domain_bridge"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang ready to land.",
+              "Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price — institutional flows may rotate back.",
+              "EIGEN and AKT already hold AI-compute long — RENDER concentrates rather than diversifies sector exposure."
+            ],
+            "mae_pct": -17.903930131004373,
+            "mfe_pct": 0.4366812227074143,
+            "mae_date": "2026-05-27",
+            "mfe_date": "2026-05-27",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 2.193,
+                "note": "Day 1/7. Brutal intraday — wick to ~$1.88 left MAE -17.9%, $0.12 from the $2.00 invalidation. Daily close at $2.193 (-4.24% from fire) holds above invalidation — reads as deep liquidity grab on the AI-compute sector flush, not structure break. Decentralized compute narrative still rides peak with velocity upgrade. RIDE with tight watch: a second daily close below $2.05 with no recovery wick marks the structural break.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "CLOSE",
+                "price_at_eval": 2.04,
+                "note": "Day 3/7. RENDER $2.04 led the compute sector lower at -12.5%, the biggest loser among the AI names. Today's close is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closing on the thesis break before the stop prints. Daily close $2.04 held above the $2.00 invalidation, so no breach flag. LOSS -10.92%.",
+                "slot": "am",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-28",
+            "closed_price": 2.04,
+            "close_reason": "AI-compute sector distributed today and RENDER led it lower at -12.5%, the biggest loser among the compute names. Today's close near $2.04 is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closed on the thesis break before the stop printed.",
+            "return_pct": -10.92,
+            "return_vs_btc_pct": -7.24,
+            "return_vs_eth_pct": -6.01,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          }
+        ]
+      }
+    },
+    "all": {
+      "audit_window": "all",
+      "since": "2026-05-23",
+      "to": "2026-05-29",
+      "v1_lock_date": null,
+      "headline": {
+        "n_closed": 10,
+        "n_wins": 2,
+        "n_losses": 6,
+        "n_scares": 0,
+        "n_neutral": 2,
+        "win_rate_pct": 20.0,
+        "clean_win_rate_pct": 20.0,
+        "scare_share_of_wins_pct": 0.0,
+        "avg_return_pct": -6.19,
+        "median_return_pct": -6.86,
+        "avg_return_vs_btc_pct": -3.77,
+        "median_return_vs_btc_pct": -3.12,
+        "max_drawdown_pct": -33.8596190149305,
+        "max_peak_gain_pct": 14.19255191350609,
+        "best_trade": {
+          "id": "BCH-2026-05-23-001",
+          "asset": "BCH",
+          "direction": "SHORT",
+          "return_pct": 13.17
+        },
+        "worst_trade": {
+          "id": "GENIUS-2026-05-23-001",
+          "asset": "GENIUS",
+          "direction": "SHORT",
+          "return_pct": -24.11
+        }
+      },
+      "by_direction": {
+        "LONG": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 4,
+          "n_scares": 0,
+          "n_neutral": 2,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -6.24,
+          "median_return_pct": -6.39,
+          "avg_return_vs_btc_pct": -3.72
+        },
+        "SHORT": {
+          "n": 3,
+          "n_wins": 1,
+          "n_losses": 2,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 33.3,
+          "clean_win_rate_pct": 33.3,
+          "avg_return_pct": -6.09,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -3.9
+        }
+      },
+      "by_horizon": {
+        "24h": {
+          "n": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": null,
+          "clean_win_rate_pct": null,
+          "avg_return_pct": null,
+          "median_return_pct": null,
+          "avg_return_vs_btc_pct": null
+        },
+        "3d": {
+          "n": 2,
+          "n_wins": 1,
+          "n_losses": 1,
+          "n_scares": 0,
+          "n_neutral": 0,
+          "win_rate_pct": 50.0,
+          "clean_win_rate_pct": 50.0,
+          "avg_return_pct": -10.83,
+          "median_return_pct": -10.83,
+          "avg_return_vs_btc_pct": -9.26
+        },
+        "7d": {
+          "n": 7,
+          "n_wins": 1,
+          "n_losses": 5,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 14.3,
+          "clean_win_rate_pct": 14.3,
+          "avg_return_pct": -5.46,
+          "median_return_pct": -7.33,
+          "avg_return_vs_btc_pct": -2.61
+        },
+        "multi-week": {
+          "n": 1,
+          "n_wins": 0,
+          "n_losses": 0,
+          "n_scares": 0,
+          "n_neutral": 1,
+          "win_rate_pct": 0.0,
+          "clean_win_rate_pct": 0.0,
+          "avg_return_pct": -2.04,
+          "median_return_pct": -2.04,
+          "avg_return_vs_btc_pct": -0.97
+        }
+      },
+      "by_criterion": [
+        {
+          "criterion": "both_tag",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 100.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 11.1,
+          "edge_pct": 88.9,
+          "avg_return_when_fired_pct": 2.45
+        },
+        {
+          "criterion": "quant_regime_aligned",
+          "n_fired": 2,
+          "win_rate_when_fired_pct": 50.0,
+          "n_missing": 8,
+          "win_rate_when_missing_pct": 12.5,
+          "edge_pct": 37.5,
+          "avg_return_when_fired_pct": -1.97
+        },
+        {
+          "criterion": "pattern_tag_supports",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 28.6,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 28.6,
+          "avg_return_when_fired_pct": -5.15
+        },
+        {
+          "criterion": "market_regime_aligned",
+          "n_fired": 8,
+          "win_rate_when_fired_pct": 25.0,
+          "n_missing": 2,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 25.0,
+          "avg_return_when_fired_pct": -6.56
+        },
+        {
+          "criterion": "repeat_appearance",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -24.11
+        },
+        {
+          "criterion": "regime_transition",
+          "n_fired": 1,
+          "win_rate_when_fired_pct": 0.0,
+          "n_missing": 9,
+          "win_rate_when_missing_pct": 22.2,
+          "edge_pct": -22.2,
+          "avg_return_when_fired_pct": -6.39
+        },
+        {
+          "criterion": "enrichment_positive",
+          "n_fired": 9,
+          "win_rate_when_fired_pct": 22.2,
+          "n_missing": 1,
+          "win_rate_when_missing_pct": 0.0,
+          "edge_pct": 22.2,
+          "avg_return_when_fired_pct": -6.07
+        },
+        {
+          "criterion": "narrative_phase_aligned",
+          "n_fired": 7,
+          "win_rate_when_fired_pct": 14.3,
+          "n_missing": 3,
+          "win_rate_when_missing_pct": 33.3,
+          "edge_pct": -19.0,
+          "avg_return_when_fired_pct": -6.99
+        },
+        {
+          "criterion": "cross_domain_bridge",
+          "n_fired": 6,
+          "win_rate_when_fired_pct": 16.7,
+          "n_missing": 4,
+          "win_rate_when_missing_pct": 25.0,
+          "edge_pct": -8.3,
+          "avg_return_when_fired_pct": -4.55
+        },
+        {
+          "criterion": "dominance_aligned",
+          "n_fired": 0,
+          "win_rate_when_fired_pct": null,
+          "n_missing": 10,
+          "win_rate_when_missing_pct": 20.0,
+          "edge_pct": null,
+          "avg_return_when_fired_pct": null
+        }
+      ],
+      "watchlist_funnel": {
+        "n_total": 0,
+        "n_promoted": 0,
+        "n_invalidated": 0,
+        "n_thesis_decayed": 0,
+        "n_stale": 0,
+        "promote_rate_pct": null,
+        "invalidation_rate_pct": null,
+        "decay_rate_pct": null,
+        "stale_rate_pct": null,
+        "median_days_promoted": null,
+        "median_days_invalidated": null,
+        "median_days_thesis_decayed": null,
+        "promoted_position_outcomes": {
+          "n_resolved": 0,
+          "n_pending": 0,
+          "n_wins": 0,
+          "n_losses": 0,
+          "win_rate_pct": null
+        }
+      },
+      "auto_flips": {
+        "n": 0,
+        "n_followups_resolved": 0,
+        "n_followups_unresolved": 0,
+        "followup_win_rate_pct": null,
+        "followup_avg_return_pct": null
+      },
+      "time_to_outcome": {
+        "median_days_win": 4.0,
+        "median_days_loss": 1.5,
+        "median_days_scare": null,
+        "median_days_neutral": 2.5
+      },
+      "eval_call_calibration": {
+        "n_ride_calls": 20,
+        "n_close_calls": 10,
+        "ride_then_win_rate_pct": 35.0,
+        "ride_then_loss_rate_pct": 65.0,
+        "close_when_already_underperforming_pct": 80.0
+      },
+      "postmortem_candidates": {
+        "winners": [
+          {
+            "id": "BCH-2026-05-23-001",
+            "asset": "BCH",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 344.68,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $355",
+            "invalidation": "close above $370 (recent intraday bounce high)",
+            "horizon": "7d",
+            "thesis": [
+              "BCH closed -4.35% today extending a 7d bleed of -17.04%. The drawdown is the deepest in today's universe and unfolded without leverage rebuild — open interest dropped 9.88% over the same week.",
+              "Top-trader long/short ratio collapsed 1.43 points over 7 days. That's the heaviest smart-money exit in the entire perps universe today — the long-side conviction has rolled off completely.",
+              "Funding sits at -0.0336%/8h, well below the 7d average of -0.0127%. Spot premium against shorted futures reads as continuation positioning, not a panic flush waiting to bounce.",
+              "Bitcoin Cash carries no narrative tailwind from today's tracker map. The macro frame is risk-off with breadth at 3/20 green and BTC sub-$75K third session — no catalyst on the calendar to defend the bid."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Majors stabilizing fires a relief bounce across legacy alts. BCH could squeeze on Bitcoin halving anniversary noise or oversold technicals regardless of the structural read.",
+              "Cash-and-carry desks holding spot-premium positions unwind in either direction on funding normalization, removing the directional asymmetry."
+            ],
+            "mae_pct": -5.024950678890563,
+            "mfe_pct": 14.123244748752468,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-29",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "RIDE",
+                "price_at_eval": 350.0,
+                "note": "Day 2/7 afternoon re-eval. BCH dropped off both token-movers winners and losers lists today — bleed paused but no relief rally. Not in the 25-asset perps-scan slice. Price_at_eval is an estimate near the morning's $353.26 print. Smart-money exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-25",
+                "call": "RIDE",
+                "price_at_eval": 345.0,
+                "note": "Day 3/7 afternoon re-eval. BCH still absent from the 25-asset perps slice and from token-movers (morning and midday refreshes both). Price_at_eval estimated near $345 from the market-context naming BCH as one of the top-20 majors closing red on a +0.81% BTC day. High/low estimates carry uncertainty bands. Structural smart-money-exit thesis intact. Invalidation $370 holds."
+              },
+              {
+                "date": "2026-05-26",
+                "call": "RIDE",
+                "price_at_eval": 342.0,
+                "note": "Day 4/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending — price estimated near $342 from BTC -0.83% on a risk-off tape with breadth 1/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 340.0,
+                "note": "Day 5/7. BCH absent from today's 25-asset perps slice and from token-movers winners/losers/trending for the fifth straight session — price estimated near $340 from a risk-off tape with BTC -1.0% and breadth 7/20 green. Structural smart-money-exit thesis intact, no fresh catalyst defends the bid. Invalidation $370 well above. RIDE.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "RIDE",
+                "price_at_eval": 332.0,
+                "note": "Day 6/7. BCH absent from the 25-asset perps slice and from winners/losers/trending for the sixth straight session — price estimated near $332 from the deepest risk-off tape of the week (BTC -2.6%, breadth 5/20, top-20 only 4 green). High/low carry estimate uncertainty. Structural legacy-alt bleed intact, no catalyst defends the bid. Invalidation $370 well clear. Today's estimated low extends MFE toward +4%. RIDE into the final day.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-29",
+                "call": "CLOSE",
+                "price_at_eval": 299.29,
+                "note": "Day 7/7. BCH printed in today's 25-asset perps slice at $299.29 down -10.5% 24h, funding negative at -0.0346%/8h and top L/S collapsed to 0.99 — the legacy-alt bleed ran clean through to horizon even on a 14/20-green relief tape. Seven-day horizon reached with the short at +13.17%. Invalidation $370 never approached. CLOSE, WIN.",
+                "slot": "pm",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-29",
+            "closed_price": 299.29,
+            "close_reason": "seven-day horizon reached with the short at +13.17%; the legacy-alt structural bleed ran clean to the end, BCH down another 10.5% today even on a green relief tape with funding negative and smart money fully exited",
+            "return_pct": 13.17,
+            "return_vs_btc_pct": 14.94,
+            "return_vs_eth_pct": 14.44,
+            "horizon_realized": "7d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          },
+          {
+            "id": "NEAR-2026-05-22-001",
+            "asset": "NEAR",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 2.325,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or first pullback to $2.10",
+            "invalidation": "close below $2.05",
+            "horizon": "3d",
+            "thesis": "ACCUMULATION resolved into +20.72% 24h rip. Vol 4.53x, OI +41.79% 24h, short liqs $3.86M vs p75 $1.38M, top L/S +0.08 7d. AI/DePIN double 5/5 PEAK. AIXBT names entry leg.",
+            "confluence_fired": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "both_tag",
+              "cross_domain_bridge",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "repeat_appearance",
+              "regime_transition",
+              "dominance_aligned"
+            ],
+            "named_risks": [
+              "AI/DePIN both PEAK — late-cycle entry",
+              "Pyth oracle cascade risk on dependent protocols",
+              "+151% 7d OI means the long stack can flush on one red day"
+            ],
+            "mae_pct": -12.258064516129037,
+            "mfe_pct": 5.376344086021505,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 2.265,
+                "note": "Day 1 evening eval. Rip booked at fire, -2.58% intraday slippage, invalidation 9.5% away. Watching the +151% 7d OI stack for flush risk."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "RIDE",
+                "price_at_eval": 2.083,
+                "note": "Day 2/3 late session. Price recovered from morning $2.058 touch to $2.083 (+1.21% intraday off the low). Pct_4h +1.12% means bid returned over the last 4 hours. AI agents and Decentralized compute both promoted Peak → Rising in the same chain — narrative tailwind re-firms. OI -3.96% means late longs unwound without panic. Funding +0.0085%/8h above the 7d average — fresh longs paying premium into the consolidation. Holding for horizon expiry tomorrow."
+              },
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 2.382,
+                "note": "Day 3/3. Horizon reached. +2.45% from fire, +3.00pp vs BTC, +2.72pp vs ETH. AI agents and Decentralized compute both hold PEAK 5/5 RIDE — the sector thesis worked. WIN."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 2.382,
+            "close_reason": "horizon reached on Day 3/3 with position in the green; sector thesis (AI agents + DePIN PEAK) intact",
+            "return_pct": 2.45,
+            "return_vs_btc_pct": 3.0,
+            "return_vs_eth_pct": 2.72,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "WIN"
+          }
+        ],
+        "losers": [
+          {
+            "id": "GENIUS-2026-05-23-001",
+            "asset": "GENIUS",
+            "direction": "SHORT",
+            "fired_date": "2026-05-23",
+            "fired_price": 0.5827,
+            "fired_btc_price": 74735,
+            "fired_eth_price": 2030.8,
+            "entry_zone": "market or first bounce to $0.62",
+            "invalidation": "close above $0.68 (recent intraday bounce high)",
+            "horizon": "3d",
+            "thesis": [
+              "GENIUS closed -6.93% today with open interest dropping 6.43% in the same window. Liquidations printed $498K — 2.76 times the 7d p75 of $180K. perps-scan named the structure CAPITULATION-shaped flow.",
+              "Top-trader long/short ratio fell 0.37 points over 7 days while open interest built 124% in the same period. Smart money is fading the Binance listing pump while retail leverage stays crowded long.",
+              "Funding flipped negative to -0.0005%/8h from the +0.0073% 7d average. The premium-paying long stack now pays nothing — the support that justified the leverage just lifted.",
+              "Cross-feed conflict with today's token-call HIGH 9/10 LONG on the same name. Per soul, perps positioning wins commentary when the chart confirms the structural shape. Tape fired the short side first."
+            ],
+            "confluence_fired": [
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "repeat_appearance",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "narrative_phase_aligned"
+            ],
+            "named_risks": [
+              "Late-stage capitulations often print a violent bounce as forced shorts cover. Thin-float listing pumps can extend past reasonable funding levels.",
+              "Promotional flow from Binance or partner exchanges could relight the bid on no fundamental change."
+            ],
+            "mae_pct": -33.8596190149305,
+            "mfe_pct": 14.19255191350609,
+            "mae_date": "2026-05-24",
+            "mfe_date": "2026-05-24",
+            "invalidation_breached": true,
+            "watchlist_provenance": {
+              "watchlist_id": "GENIUS-watchlist-2026-05-23-001",
+              "days_on_watchlist": 0,
+              "original_trigger": "second-day red with OI extending lower fires CAPITULATION-shaped flow OR funding cross +0.08%/8h with continued red",
+              "original_confluence_fired": [
+                "pattern_tag_supports",
+                "market_regime_aligned"
+              ]
+            },
+            "evaluations": [
+              {
+                "date": "2026-05-24",
+                "call": "CLOSE",
+                "price_at_eval": 0.7232,
+                "note": "Day 2/3 afternoon re-eval. Afternoon perps print at $0.7232 cleared the $0.68 invalidation on daily close. Fifth distinct GENIUS bsc contract reactivated the name-farm cluster, vol_ratio 2.38x cleared the breakout gate, pct_24h +9.51% on $51M volume. Morning brief's $0.55 estimate from on-chain attention rotation missed the perps print entirely. -24.11% return, -21.52pp vs BTC, -20.53pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-24",
+            "closed_price": 0.7232,
+            "close_reason": "afternoon perps data revealed daily close $0.7232 cleared the $0.68 invalidation; the morning eval's $0.55 estimate from on-chain attention missed the perps print where fifth distinct bsc name-farm contract reactivated the cluster with vol_ratio 2.38x clearing the breakout gate",
+            "return_pct": -24.11,
+            "return_vs_btc_pct": -21.52,
+            "return_vs_eth_pct": -20.53,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "ONDO-2026-05-22-001",
+            "asset": "ONDO",
+            "direction": "LONG",
+            "fired_date": "2026-05-22",
+            "fired_price": 0.463,
+            "fired_btc_price": 77417,
+            "fired_eth_price": 2132,
+            "entry_zone": "market or pullback to $0.43",
+            "invalidation": "close below $0.41",
+            "horizon": "7d",
+            "thesis": "RWA 5/5 PEAK · RIDE w/ trail. +11.81% 24h on OI +13.19% returns ONDO to trending #6. Top L/S 1.79, -0.20 7d but long stack mostly held. CLARITY + Japan June-1 broadens the legitimization wave.",
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "pattern_tag_supports",
+              "market_regime_aligned",
+              "enrichment_positive"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "Rolled OUT of yesterday's ACCUMULATION — structural bid may not return",
+              "RWA PEAK = late-cycle, trail discipline required",
+              "One-day re-entry to trending is shallow"
+            ],
+            "mae_pct": -17.926565874730024,
+            "mfe_pct": 1.5118790496760153,
+            "mae_date": "2026-05-23",
+            "mfe_date": "2026-05-22",
+            "invalidation_breached": true,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-22",
+                "call": "RIDE",
+                "price_at_eval": 0.4545,
+                "note": "Day 1 evening eval. -1.84% from fire, range break above $0.45 held. RWA PEAK saturation risk keeps trail tight."
+              },
+              {
+                "date": "2026-05-23",
+                "call": "CLOSE",
+                "price_at_eval": 0.3829,
+                "note": "Day 2/7. Invalidation $0.41 breached by 7%. RWA carrier rotated to tokenized stocks $1.2B + ETFs $425M, not ONDO direct. -17.30% return, -14.59pp vs BTC, -13.88pp vs ETH. LOSS."
+              }
+            ],
+            "closed_date": "2026-05-23",
+            "closed_price": 0.3829,
+            "close_reason": "invalidation $0.41 breached by 7%; RWA narrative carrier rotated to tokenized stocks/ETFs, not ONDO direct",
+            "return_pct": -17.3,
+            "return_vs_btc_pct": -14.59,
+            "return_vs_eth_pct": -13.88,
+            "horizon_realized": "2d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          },
+          {
+            "id": "RENDER-2026-05-26-001",
+            "asset": "RENDER",
+            "direction": "LONG",
+            "fired_date": "2026-05-26",
+            "fired_price": 2.29,
+            "fired_btc_price": 76590.8,
+            "fired_eth_price": 2092.7,
+            "entry_zone": "market or first pullback to $2.15",
+            "invalidation": "close below $2.00",
+            "horizon": "7d",
+            "thesis": [
+              "RENDER +14.2% 24h on $258M vol with vol/mcap 0.21 — AI-compute peer set leading while TAO digests at +1.1%.",
+              "Today's token-call rated RENDER HIGH 9/10. Salad Network adds ~60,000 enterprise GPUs, AI compute drives 35-40% of jobs.",
+              "Narrative-tracker holds Decentralized compute Peak 5/5 RIDE second straight session, burns +278% year-over-year.",
+              "Token-movers shows AI-compute sweeping 7 of 8 winner slots — dominant cross-sector rotation on a 1/20 green tape."
+            ],
+            "confluence_fired": [
+              "narrative_phase_aligned",
+              "market_regime_aligned",
+              "enrichment_positive",
+              "cross_domain_bridge"
+            ],
+            "confluence_missing": [
+              "quant_regime_aligned",
+              "pattern_tag_supports",
+              "both_tag",
+              "repeat_appearance"
+            ],
+            "named_risks": [
+              "OTOY Treasury 23.3% and partner escrow 26.6% unlock on cliffs through 2051 — schedule overhang ready to land.",
+              "Centralized clouds (AWS, CoreWeave) undercut the DePIN thesis on price — institutional flows may rotate back.",
+              "EIGEN and AKT already hold AI-compute long — RENDER concentrates rather than diversifies sector exposure."
+            ],
+            "mae_pct": -17.903930131004373,
+            "mfe_pct": 0.4366812227074143,
+            "mae_date": "2026-05-27",
+            "mfe_date": "2026-05-27",
+            "invalidation_breached": false,
+            "watchlist_provenance": null,
+            "evaluations": [
+              {
+                "date": "2026-05-27",
+                "call": "RIDE",
+                "price_at_eval": 2.193,
+                "note": "Day 1/7. Brutal intraday — wick to ~$1.88 left MAE -17.9%, $0.12 from the $2.00 invalidation. Daily close at $2.193 (-4.24% from fire) holds above invalidation — reads as deep liquidity grab on the AI-compute sector flush, not structure break. Decentralized compute narrative still rides peak with velocity upgrade. RIDE with tight watch: a second daily close below $2.05 with no recovery wick marks the structural break.",
+                "invalidation_breached_today": false
+              },
+              {
+                "date": "2026-05-28",
+                "call": "CLOSE",
+                "price_at_eval": 2.04,
+                "note": "Day 3/7. RENDER $2.04 led the compute sector lower at -12.5%, the biggest loser among the AI names. Today's close is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closing on the thesis break before the stop prints. Daily close $2.04 held above the $2.00 invalidation, so no breach flag. LOSS -10.92%.",
+                "slot": "am",
+                "invalidation_breached_today": false
+              }
+            ],
+            "closed_date": "2026-05-28",
+            "closed_price": 2.04,
+            "close_reason": "AI-compute sector distributed today and RENDER led it lower at -12.5%, the biggest loser among the compute names. Today's close near $2.04 is the first daily close under the $2.05 watch level set yesterday, with the $2.00 stop 2% away. The thesis that the sector was sweeping winners has fully inverted — the same names now lead the losers. Closed on the thesis break before the stop printed.",
+            "return_pct": -10.92,
+            "return_vs_btc_pct": -7.24,
+            "return_vs_eth_pct": -6.01,
+            "horizon_realized": "3d",
+            "auto_flipped": false,
+            "outcome": "LOSS"
+          }
+        ]
+      }
+    }
+  }
+}
