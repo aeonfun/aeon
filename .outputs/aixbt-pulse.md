@@ -1,18 +1,18 @@
-CFTC legalizes US perps and Grayscale seeds a $120M HYPE ETF on the same day the Coinbase premium goes negative. US retail is net-selling into sovereign and institutional bids ($89M Strive, $1B Strategic Reserve) at $73.6K Extreme Fear. JPMorgan's Dimon fights the CLARITY Act while S&P 500 hits record highs — revenue defense dressed as principle. The dominant risk: April PCE at 3.8% dropped off tonight's feed entirely as markets price the Iran geo-relief trade over inflation. The ceasefire is tentative, pending Trump approval. When it falls apart, 3.8% PCE is the only print left.
+BTC ETFs just logged their 3rd-largest weekly outflow ever ($1.4B, IBIT -$966M) while USDT shed $1.15B in market cap — broad risk-off. HYPE runs toward $70 anyway: a16z-linked whale buys $14.5M and spot exchange outflows drain $46M of supply in 48 hours. Circle freezes $12.6M in Zama's cUSDC; ZEC and XMR catch a privacy-narrative bid immediately after. SUI hit four outages in 48 hours, Base stalled 30+ hours, Gravity Bridge lost $5.4M to a drain. Iran ceasefire optimism holds TradFi at record highs; dollar stays at 99 even as equities run — the crypto dollar-weakness tailwind is not materializing.
 
 ---
 
-# AIXBT Grounding (as of 2026-05-29 22:00 UTC)
+# AIXBT Grounding (as of 2026-05-30 10:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-29T22:00:42.030Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-30T10:00:22.320Z
 Note: Two-section format persists (macro and geopolitics folded into TradFi).
 
 ## Crypto
-- Hyperliquid dominates mindshare as CFTC legalizes US perps, Grayscale files $120M seed HYPE ETF, and traders debate whether regulatory clarity helps or threatens HL's moat.
-- BTC sits at $73.6K in "Extreme Fear" with negative Coinbase premium and weak BTC/SPX ratio, even as Strive buys $89M BTC and the US Strategic Reserve grows by $1B.
-- JPMorgan CEO Dimon declares war on the CLARITY Act and slams Coinbase's Armstrong, highlighting the escalating TradFi-vs-crypto battle over stablecoin regulation.
-- Crypto sentiment remains fractured: ETH bulls defend fundamentals amid relentless underperformance, Solana memecoins churn in the trenches, and capital rotates to HYPE and AI plays.
+- Hyperliquid dominates mindshare as $HYPE eyes $70, a16z-linked whale adds $14.5M, and spot exchange outflows hit $46M in 48hrs amid supply crunch talk.
+- BTC ETFs post $1.4B weekly outflow—3rd largest ever—led by IBIT's $966M exit, while $USDT market cap drops $1.15B, signaling broad risk-off positioning.
+- SUI suffers 4 outages in 48hrs and Base state updates stall 30+ hrs; Gravity Bridge drained of $5.4M; Circle freezes $12.6M in Zama's cUSDC contract.
+- Privacy narrative heats up: ZEC and XMR see renewed interest, ZK payment infra gains traction, while Circle's USDC freeze fuels debate on stablecoin power.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -21,53 +21,45 @@ Note: Two-section format persists (macro and geopolitics folded into TradFi).
 *(folded into TradFi this reading)*
 
 ## TradFi
-- US-Iran tentative 60-day ceasefire extension pending Trump approval eases Strait of Hormuz risks, transmitting to sharply lower oil prices and risk-on equity positioning as energy inflation premium fades.
-- Dell's 757% AI server revenue surge triggers 30%+ stock gains, reinforcing tech leadership and drawing flows into AI hardware amid earnings-driven sentiment lift.
-- S&P 500 extends record highs with positioning shifting to growth and cyclicals as geopolitical de-escalation compresses vol and supports broader risk asset bids.
-- Yields ease near 4.45% on reduced conflict premium, bolstering bond liquidity and easing valuation pressure on equities from lower funding cost fears.
+- Dell's AI server beat fuels tech positioning, extending S&P and Nasdaq records with strong cross-asset risk flows into semis and growth names.
+- Iran truce optimism drives oil lower, transmitting to 10Y yields easing near 4.44% and supporting bond market positioning amid reduced inflation hedges.
+- Tentative 60-day US-Iran ceasefire and Hormuz reopening signals de-risk energy supply, boosting equity and credit flows while pressuring vol.
+- Macro relief from Middle East de-escalation keeps dollar stable near 99 even as equities hit highs, favoring risk carry and easing funding pressures.
 
-## What's New (vs last pull — 2026-05-29T11:00:18.265Z)
-- [CRYPTO] CFTC legalizes US perps — brand new regulatory catalyst; prior read had no CFTC item
-- [CRYPTO] Grayscale HYPE ETF seed capital revised to $120M (vs $2M in prior read) — 60x step-up in committed capital in one window
-- [CRYPTO] "Traders debate whether regulatory clarity helps or threatens HL's moat" — framing shifted from bullish ("core portfolio hold") to competitive-threat territory
-- [CRYPTO] Negative Coinbase premium — new technical signal; prior had $9B options expiry
-- [CRYPTO] Weak BTC/SPX ratio — new cross-asset read
-- [CRYPTO] Strive buys $89M BTC — new named institutional buyer
-- [CRYPTO] US Strategic Reserve grows by $1B — sovereign accumulation, new
-- [CRYPTO] JPMorgan CEO Dimon / CLARITY Act war — brand new item, no equivalent in prior read
-- [CRYPTO] ETH underperformance framing returned; Solana memecoins "churning in the trenches" — new color on sentiment fragmentation
-- [CRYPTO] "Capital rotates to HYPE and AI plays" — new capital-flow description
-- [TRADFI] Dell 757% AI server revenue surge / 30%+ stock gains — named explicitly with specifics (prior: "Dell surge" folded into Nasdaq item)
-- [TRADFI] "S&P 500 extends record highs" — upgraded from "Nasdaq-led gains near records"
-- [TRADFI] Yields easing near 4.45% — specific level added; prior had "dipping yields" without a number
-- [TRADFI] "Tentative ceasefire pending Trump approval" — Iran item persists but framing escalated; the deal is not signed
+## What's New (vs last pull — 2026-05-29T22:00:42.030Z)
+- [CRYPTO] HYPE eyes $70 with a16z-linked whale ($14.5M) + spot exchange outflows $46M in 48hrs — supply crunch framing replaces moat-debate framing
+- [CRYPTO] BTC ETF $1.4B weekly outflow (3rd largest ever), IBIT $966M exit — specific institutional ETF flow data, entirely new
+- [CRYPTO] USDT market cap drops $1.15B — stablecoin contraction signal, new
+- [CRYPTO] SUI 4 outages in 48hrs — brand new infrastructure failure item
+- [CRYPTO] Base state updates stall 30+ hrs — new L2 reliability failure
+- [CRYPTO] Gravity Bridge drained $5.4M — new bridge exploit
+- [CRYPTO] Circle freezes $12.6M in Zama's cUSDC contract — new on-chain censorship event
+- [CRYPTO] Privacy narrative: ZEC + XMR renewed interest, ZK payment infra — elevated to a standalone item
+- [CRYPTO] USDC freeze fuels stablecoin power debate — reflexive: the event became the argument
+- [TRADFI] Dollar stable near 99 as equities hit records — new; prior reads never quoted DXY level
 
-## Gone (vs last pull — 2026-05-29T11:00:18.265Z)
-- [CRYPTO] CME Group 24/7 crypto futures launch — dropped (event absorbed into context)
-- [CRYPTO] $9B options expiry framing — dropped
-- [CRYPTO] "Bears eye $60K-$65K / bulls cite weekly SMA crossover" — dropped
-- [CRYPTO] "Rising global M2 liquidity" as bull argument — dropped
-- [CRYPTO] ICE CEO "bigger than NASDAQ" quote — dropped
-- [CRYPTO] Bitwise "$600T super app" framing — dropped
-- [CRYPTO] "Traders treat HYPE as a core portfolio hold" — replaced by moat-debate framing
-- [CRYPTO] AI-agent infrastructure (Base, Circle, Robinhood) — dropped
-- [CRYPTO] Morpho Midnight protocol — dropped
-- [CRYPTO] Aave V4 TVL +150% — dropped
-- [TRADFI] April PCE at 3.8% YoY — dropped entirely; inflation absent from the 22:00 feed
-- [TRADFI] "Contained VIX" as standalone item — absorbed into the equity-record item
+## Gone (vs last pull — 2026-05-29T22:00:42.030Z)
+- [CRYPTO] CFTC legalizes US perps — dropped (event absorbed)
+- [CRYPTO] Grayscale $120M HYPE ETF seed — dropped (replaced by a16z whale + exchange outflow framing)
+- [CRYPTO] Negative Coinbase premium / weak BTC/SPX ratio — dropped
+- [CRYPTO] Strive $89M BTC buy — dropped
+- [CRYPTO] US Strategic Reserve +$1B — dropped
+- [CRYPTO] JPMorgan Dimon vs CLARITY Act — dropped
+- [CRYPTO] ETH underperformance / capital rotates to HYPE and AI plays — dropped
 
 ## Persisting Stories
-- HYPE / Hyperliquid dominant mindshare — persists and accelerating. ICE CEO + Bitwise validators from the 11:00 read replaced by CFTC legalization + $120M ETF seed at 22:00. The institutional stack deepens each read.
-- BTC in "Extreme Fear" at ~$73.6K — persists; now carries negative Coinbase premium and weak BTC/SPX as the specific tells
-- Iran-US ceasefire / risk-on trade — persists; uncertainty escalated ("pending Trump approval" vs "reports" at 11:00)
-- AI theme in TradFi — persists via Dell's 757% AI server surge and 30%+ stock gain
+- HYPE / Hyperliquid dominant mindshare — persists and accelerating; a16z whale + exchange supply drain + $70 target deepens the institutional stack built last window
+- Iran ceasefire / risk-on trade — persists; language shifted from "tentative pending Trump approval" to "optimism" and "signals de-risk" (uncertainty softened)
+- Dell AI server beat — persists as the TradFi tech-positioning anchor
+- S&P and Nasdaq at records — persists, now explicitly paired
+- Yields ~4.44% — same level, same driver (geo relief)
 
 ## Cross-Domain Bridges
 
-CFTC legalizes US perps on the same day Grayscale seeds a $120M HYPE ETF. The regulatory apparatus that spent four years fighting offshore crypto venues is now writing the rails that legitimize them. The moat debate is the tell: CFTC legalization opens a US-regulated perp market, which means Hyperliquid's structural edge — no KYC, no clearing requirement — competes directly with future CME-style venues. The ETF crowd profits from HYPE attention regardless of which perp exchange wins. Hyperliquid wins only if the offshore edge holds after US regulation sets the standard.
+The 3rd-largest BTC ETF weekly outflow ever and a $1.15B USDT contraction happened in the same 48-hour window that HYPE spot outflows hit $46M. The ETF holders and stablecoin holders are exiting. The HYPE holders drain exchange supply — holding intent, not selling. Three assets, three divergent flow directions: capital compression into one name, not broad rotation out of crypto. The risk-off signal from ETF and USDT is real. The HYPE supply crunch trades against it.
 
-Strive buys $89M BTC, the US Strategic Reserve adds $1B, and the Coinbase premium is negative. US retail is net-selling into sovereign and institutional bids at $73.6K Extreme Fear. The negative premium confirms the bid runs through CME and OTC, not Coinbase spot. Strategic Reserve accumulation carries no announced exit trigger. This is the institutional-vs-retail divergence that precedes either a violent reversal — when expiry pressure clears — or a continued grind lower if retail capitulation deepens faster than the institutional bid absorbs.
+Circle froze $12.6M in Zama's cUSDC. ZEC and XMR gain interest the same session. ZK payment infra upticks. The freeze manufactured the narrative it validated — the privacy trade is reflexive. The event is the proof-of-thesis and the catalyst at once. Privacy assets get bids not from ideological converts but from people who just watched the alternative get frozen.
 
-JPMorgan's Dimon fights the CLARITY Act from a position of record S&P 500 highs. Bank equity at all-time levels; CEO lobbying against stablecoin legislation that would disintermediate bank payment rails. The stablecoin market sits at $311B. This is revenue defense, not principle. The outcome is not binary: crypto wins the clarity bill, TradFi wins the distribution war via ETFs and CME access. Both paths land institutional capital in crypto. The bank's equity gains either way.
+SUI had four outages in 48 hours. Base stalled for 30+ hours. Gravity Bridge lost $5.4M. Three unrelated chains, three failure modes, same window. The market won't price these separately in a risk-off BTC ETF outflow environment — it prices them as one reliability discount on the alt-chain cohort. Infrastructure stress compounds capital exit pressure on L1/L2s not named Hyperliquid.
 
-April PCE at 3.8% appeared in this morning's AIXBT read. Tonight's 22:00 feed doesn't mention inflation once. Equities at record highs, yields at 4.45%, and the inflation print dropped off the dominant narrative. Markets are pricing the Iran geo-relief trade over the data. When the ceasefire falls apart — it's tentative, pending Trump approval — the only anchor left is PCE at 3.8%, 180bp above target. The silence on inflation is the risk, not the equity record.
+Iran de-escalation took oil down, yields to 4.44%, equities to records. DXY stayed at 99. Dollar-stable-with-equities-at-records breaks the conventional geo-relief playbook. If DXY doesn't fall, crypto doesn't get the dollar-weakness tailwind it would expect from this macro setup. The risk-off signals from ETF outflows and USDT contraction dominate until the dollar weakens.
