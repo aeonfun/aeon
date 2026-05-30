@@ -1167,10 +1167,13 @@ def compose_judgement_audit(
     if not has_analysis:
         return [stats_embed]
 
-    # --- Embed 2: Claude analysis
+    # --- Embed 2: Claude analysis prose (narrative + regime + insights)
     #
-    # Description holds narrative + regime backdrop + insights.
-    # Fields hold the per-trade postmortems (winners + losers).
+    # Description-heavy embed; no fields. Production data 2026-05-30 showed
+    # Claude routinely writes ~4000 chars of analysis (narrative + 5 regime
+    # observations + 5 insights), which combined with 2 postmortem fields
+    # (1024 each) blew past the 6000 cap. Splitting prose and postmortems
+    # into separate embeds gives each room to breathe.
     desc_parts: list[str] = []
     if narrative:
         desc_parts.append(narrative.strip())
@@ -1188,33 +1191,48 @@ def compose_judgement_audit(
             desc_parts.append("**Key insights**\n" + bullet_block)
     analysis_description = ("\n\n".join(desc_parts))[:4096]
 
-    analysis_fields: list[dict] = []
+    analysis_embed = {
+        "color": COLORS["AUDIT"],
+        "author": {"name": "JUDGEMENT AUDIT · analysis"},
+        "title": f"Analysis · {window}",
+        "description": analysis_description,
+        "footer": _footer(footer_text),
+        "timestamp": _now_iso(),
+    }
+
+    out = [stats_embed, analysis_embed]
+
+    # --- Embed 3: per-trade postmortems
+    #
+    # Always its own embed when Claude produced any. Two fields max
+    # (winners, losers), each 1024 chars — total well under 6000.
     if postmortems:
         winners = [p for p in postmortems if p.get("outcome") in ("WIN", "SCARE")]
         losers = [p for p in postmortems if p.get("outcome") in ("LOSS", "NEUTRAL")]
+        pm_fields: list[dict] = []
         if winners:
             rendered = "\n\n".join(_fmt_postmortem_line(p) for p in winners[:3])
-            analysis_fields.append({
+            pm_fields.append({
                 "name": "Top winners — postmortem",
                 "value": rendered[:1024],
                 "inline": False,
             })
         if losers:
             rendered = "\n\n".join(_fmt_postmortem_line(p) for p in losers[:3])
-            analysis_fields.append({
+            pm_fields.append({
                 "name": "Top losers — postmortem",
                 "value": rendered[:1024],
                 "inline": False,
             })
+        if pm_fields:
+            postmortem_embed = {
+                "color": COLORS["AUDIT"],
+                "author": {"name": "JUDGEMENT AUDIT · postmortems"},
+                "title": f"Postmortems · {window}",
+                "fields": pm_fields,
+                "footer": _footer(footer_text),
+                "timestamp": _now_iso(),
+            }
+            out.append(postmortem_embed)
 
-    analysis_embed = {
-        "color": COLORS["AUDIT"],
-        "author": {"name": "JUDGEMENT AUDIT · analysis"},
-        "title": f"Analysis · {window}",
-        "description": analysis_description,
-        "fields": analysis_fields,
-        "footer": _footer(footer_text),
-        "timestamp": _now_iso(),
-    }
-
-    return [stats_embed, analysis_embed]
+    return out
