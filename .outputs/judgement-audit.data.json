@@ -1,0 +1,99 @@
+{
+  "schema_version": "v1",
+  "audit_window": "30d",
+  "generated_at_utc": "2026-05-30T06:30:00Z",
+  "narrative": "Over the 30-day window the engine closed 10 positions: 20% win rate, -6.2% average return, on a BTC chop tape that bled $77K to $73K with Fear & Greed in Extreme Fear throughout. The dominant loss pattern is LONGs entered on Peak-phase narratives that suffered mid-hold sector rotation — three AI-compute names (AKT, RENDER, TAO) and one RWA name (ONDO) lost on regime flip rather than asset-mechanics failure. The two wins came from the opposite mode: a SHORT into smart-money-exit legacy bleed (BCH +13.17%) and the single highest-confluence LONG with 7 of 10 criteria firing (NEAR +2.45%).",
+  "insights": [
+    "Peak-phase LONG continuations dominate the loss column. Four of six LONG losses — ONDO, AKT, RENDER, TAO — share the same shape: entered on a sector at Peak with the narrative still rated as a ride, then the held sector either rotated within (RWA flowed to tokenized stocks and ETFs, bypassing ONDO) or inverted entirely (AI-compute moved from sweeping 7 of 8 winner slots on 2026-05-26 to leading the losers by 2026-05-28). V2 should treat a wide sector-sweep on a Peak-phase narrative as a peaking print, not a continuation green-light, and cap concurrent exposure to a single sector at two positions.",
+    "`pattern_tag_supports` and `market_regime_aligned` show the strongest signed edges in the moderate-n band: pattern_tag_supports +28.6% edge (n_fired=7, 28.6% WR vs 0% when missing), market_regime_aligned +25.0% edge (n_fired=8, 25% WR vs 0% missing). Both winners (NEAR, BCH) fired both. All three trades that missed pattern_tag_supports (AKT, RENDER, TAO) lost. Early signal: structural perps-pattern confirmation looks near-mandatory in V1 sample, n=10 cautioned.",
+    "`narrative_phase_aligned` shows NEGATIVE edge in this sample (-19.0%, n_fired=7, 14.3% WR fired vs 33.3% when missing). The cleanest win (BCH +13.17%) fired no narrative criterion at all. The signal is suggestive at this sample size: in V1, narrative-aligned entries clustered at Peak phase and lost on regime rotation. V2 should not treat narrative_phase_aligned as a positive criterion until the phase context (Rising vs Peak vs Fading) gates the weighting — Rising should add weight, Peak should subtract it.",
+    "RIDE-then-loss rate is 65% (13 of 20 RIDE calls landed on positions that ultimately did not make money). Only two trades got a CLOSE call before invalidation breached (AKT and RENDER both pre-empted stops by ~2% on a sector-thesis break). The eval cadence tracks invalidation levels well but undervalues sector-regime degradation mid-hold. V2 should make a narrative-tracker phase change an explicit re-evaluation trigger between scheduled evals, not something the daily slot picks up by chance.",
+    "The two SHORTs taken from watchlist-promoted setups (ZEC, GENIUS) both lost (-7.33% and -24.11%); the only SHORT taken directly without a watchlist stage (BCH) won +13.17%. n=3 caution applies, but the pattern is structural: SHORTs into actively-tracked narratives got run over by reassembly — Privacy/ZK flipped Fading to Rising the same day ZEC stopped out, GENIUS reactivated with a fifth distinct name-farm contract clearing the breakout gate. SHORTs into narrative-vacuums with smart-money already exited (BCH) ran clean to horizon. V2 should treat SHORT entries on actively-tracked narratives as higher-risk than SHORTs into narrative-empty bleeders."
+  ],
+  "per_trade_postmortems": [
+    {
+      "trade_id": "BCH-2026-05-23-001",
+      "asset": "BCH",
+      "direction": "SHORT",
+      "outcome": "WIN",
+      "return_pct": 13.17,
+      "failure_type": null,
+      "success_type": "both",
+      "setup_type": "distribution",
+      "what_was_right": "Top-trader long/short collapsed -1.43 over 7d (the heaviest smart-money exit in the perps universe that day), open interest dropped 9.88% in the same week (no leverage rebuild), funding -0.0336%/8h sat well below the 7d average of -0.0127% (continuation positioning, not a flush awaiting bounce), and no narrative carrier defended the bid.",
+      "what_went_wrong": "Nothing material — the position ran clean through to the 7d horizon, MFE +14.12% on the green relief tape of 2026-05-29, closed at +13.17% when BCH still printed -10.5% on horizon day.",
+      "lessons": [
+        "SHORTs into legacy alts with smart-money already exited, funding in continuation territory, and no narrative defense are the V1 sample's cleanest expectation profile. V2 should weight this structural combination higher than the average SHORT.",
+        "Patience held: BCH was absent from the 25-asset perps slice and from token-movers for five straight evaluation sessions while the thesis worked underneath. Absence-of-signal on a structural short is not a thesis-break — V2 should not treat low-attention as a reason to close early."
+      ]
+    },
+    {
+      "trade_id": "NEAR-2026-05-22-001",
+      "asset": "NEAR",
+      "direction": "LONG",
+      "outcome": "WIN",
+      "return_pct": 2.45,
+      "failure_type": null,
+      "success_type": "both",
+      "setup_type": "breakout",
+      "what_was_right": "An accumulation pattern resolved into a +20.72% 24h breakout on volume 4.53x average, open interest +41.79% 24h, short liquidations $3.86M (vs the p75 of $1.38M), with top-trader long/short building +0.08 over 7d and both AI agents and DePIN rated peak — seven of ten confluence criteria fired, the highest-confluence entry in the window.",
+      "what_went_wrong": "Day 2 saw MAE -12.26% almost to the $2.05 invalidation; the trade held nerve and closed at horizon expiry +2.45% rather than being ridden through the sector's next leg. Small win that earned the discipline of riding the early shake.",
+      "lessons": [
+        "High-confluence breakout entries survive the day-2 shake-out as long as invalidation is structurally placed. V2 should weight MAE-recovery within the first 48h as confirmation rather than as a reason to tighten the stop.",
+        "Horizon-realized exits (3d here) on momentum-name longs leave PnL on the table when the sector keeps running. V2 could test a horizon-extension rule when the narrative phase still rates ride and price holds above entry at horizon."
+      ]
+    },
+    {
+      "trade_id": "GENIUS-2026-05-23-001",
+      "asset": "GENIUS",
+      "direction": "SHORT",
+      "outcome": "LOSS",
+      "return_pct": -24.11,
+      "failure_type": "asset",
+      "setup_type": "counter_trend",
+      "what_was_right": "The structural signal at entry was textbook capitulation flow: -6.93% close with open interest dropping 6.43% in the same window, liquidations $498K at 2.76x the 7d p75, smart-money long/short falling -0.37 over 7 days while open interest had built +124% over the same period, funding flipping negative from a +0.0073% 7d average.",
+      "what_went_wrong": "GENIUS is a name-farm cluster token — distinct contracts under the same ticker recycling through fresh launches. On Day 2 the fifth distinct bsc contract reactivated the cluster (+9.51% 24h on $51M volume against $134k liquidity, vol/mcap clearing the breakout gate at 2.38x), invalidating the capitulation read on a supply mechanic that doesn't respect single-instrument structural signals.",
+      "lessons": [
+        "Name-farm cluster tokens (GENIUS / SAOS / NOAR / GDOR / SPCX pattern documented in MEMORY.md) do not behave like single-instrument assets. Shorting them on capitulation flow is unsafe because the recycled-contract supply mechanic ignores the inferred capitulation. V2 should add an explicit exclusion (or sharply reduced confidence) for tickers flagged as name-farm clusters in the active-topics file.",
+        "Cross-feed conflict policy needs nuance: the operator-side rule 'perps positioning wins commentary when the chart confirms the structural shape' was applied here against a same-day token-call HIGH 9/10 LONG on the same name. When the instrument class is a name-farm cluster, structural perps signals are not trustworthy enough to win that conflict — V2 should treat name-farm + cross-feed-conflict as a no-trade gate."
+      ]
+    },
+    {
+      "trade_id": "ONDO-2026-05-22-001",
+      "asset": "ONDO",
+      "direction": "LONG",
+      "outcome": "LOSS",
+      "return_pct": -17.3,
+      "failure_type": "regime",
+      "setup_type": "continuation",
+      "what_was_right": "ONDO printed real RWA-leader signal at entry: +11.81% 24h, open interest +13.19%, re-entry to the CoinGecko trending list at #6, and RWA rated peak in the narrative tracker with a ride-with-trail call — a high-quality continuation print on the sector's named leader.",
+      "what_went_wrong": "The RWA narrative carrier rotated within the sector the same week — capital stayed in RWA but flowed into tokenized stocks ($1.2B) and ETFs ($425M), bypassing the ONDO token. Invalidation $0.41 was breached by 7% on Day 2 as the within-sector rotation drained the specific-asset bid.",
+      "lessons": [
+        "Late-cycle (peak-phase) narrative continuation longs are vulnerable to within-sector carrier rotation, where the narrative stays alive but the specific token gets bypassed. V2 should add a 'carrier-check' for peak-phase entries: is this specific asset still the narrative's primary expression, or are downstream carriers (ETFs, tokenized equities, alternative protocols) absorbing the flow?",
+        "Peak-phase RIDE-with-trail is a hedge that did not save the trade — the trail was not tight enough to exit before the carrier rotation drained the bid. V2 should tighten the trail discipline on peak-phase RIDE calls to one daily-close confirmation of weakness, not waiting for the invalidation level."
+      ]
+    },
+    {
+      "trade_id": "RENDER-2026-05-26-001",
+      "asset": "RENDER",
+      "direction": "LONG",
+      "outcome": "LOSS",
+      "return_pct": -10.92,
+      "failure_type": "regime",
+      "setup_type": "continuation",
+      "what_was_right": "RENDER had real flow at entry: +14.2% 24h on $258M volume with vol/mcap 0.21, AI-compute peers sweeping 7 of 8 winner slots, decentralized compute rated peak with a ride call, token-call independently rated HIGH 9/10. The entry confluence was clean for a continuation print.",
+      "what_went_wrong": "The same AI-compute sector that swept the winners on Day 1 inverted to lead the losers by Day 3 — RENDER specifically led the losers at -12.5%. The sector-momentum leg snapped between sessions even though the daily close held above the $2.00 stop. The fundamental supply-burn story stayed intact while the sector flow that justified the entry rotated out.",
+      "lessons": [
+        "A sector-sweep entry (X of Y winner slots) on a peak-phase narrative is a peaking-print signal as much as a continuation signal. V2 should down-weight wide sector-sweep entries when the narrative phase is already at peak, and treat narrow-leadership entries (one or two names) as cleaner continuation candidates.",
+        "RENDER was the third LONG in the AI-compute book (alongside EIGEN and AKT). Sector concentration meant one sector flush hit all three positions on the same day. V2 needs a sector-concentration cap — once two positions are open in the same narrative-tracker sector, the third entry should require materially stronger asset-mechanics or be passed."
+      ]
+    }
+  ],
+  "regime_observations": [
+    "BTC compressed from $77,417 (2026-05-22) to $73,314 (2026-05-29), a 5.3% bleed across the window with no day printing a green relief that held. Fear & Greed sat in Extreme Fear (22-25) the entire 7 sessions — the crowd never repriced regime change.",
+    "AI/compute narrative transitioned Peak → Fading inside the window. The sector swept 7 of 8 winner slots on 2026-05-26 and led the losers by 2026-05-28 — three of the four LONG losses (AKT, RENDER, TAO) cluster around that single 48-hour regime flip.",
+    "RWA narrative held Peak conviction in the tracker but rotated its carrier within-sector: capital flowed from ONDO-direct to tokenized stocks ($1.2B) and tokenized-equity ETFs ($425M). The specific-token bid drained while the sector narrative survived. ONDO's loss reads as a within-sector flow rotation, not a narrative failure.",
+    "Perp-DEX (HYPE / ASTER) printed a FADE → PEAK → FADE whipsaw twice in one week. HYPE broke above the prior ATH ($64.27 → $64.75) on 2026-05-29 in Extreme Fear against 9/20 breadth — a late-cycle signature print that closed the HYPE book at NEUTRAL and pulled the second-derivative ASTER to NEUTRAL as well.",
+    "Privacy/ZK was rated Fading at the ZEC SHORT entry on 2026-05-23, then promoted Fading → Rising the same day the short closed (2026-05-24) on three distinct drivers (Aleo, Ledger Private DeFi, ZK-rollup wave), then back to Fading by 2026-05-29. The narrative-tracker re-classification inside one session is the regime signal that flipped the short."
+  ]
+}
