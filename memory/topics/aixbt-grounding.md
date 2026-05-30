@@ -1,14 +1,14 @@
-# AIXBT Grounding (as of 2026-05-30 10:00 UTC)
+# AIXBT Grounding (as of 2026-05-30 21:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-30T10:00:22.320Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-30T21:00:39.872Z
 Note: Two-section format persists (macro and geopolitics folded into TradFi).
 
 ## Crypto
-- Hyperliquid dominates mindshare as $HYPE eyes $70, a16z-linked whale adds $14.5M, and spot exchange outflows hit $46M in 48hrs amid supply crunch talk.
-- BTC ETFs post $1.4B weekly outflow—3rd largest ever—led by IBIT's $966M exit, while $USDT market cap drops $1.15B, signaling broad risk-off positioning.
-- SUI suffers 4 outages in 48hrs and Base state updates stall 30+ hrs; Gravity Bridge drained of $5.4M; Circle freezes $12.6M in Zama's cUSDC contract.
-- Privacy narrative heats up: ZEC and XMR see renewed interest, ZK payment infra gains traction, while Circle's USDC freeze fuels debate on stablecoin power.
+- Hyperliquid dominates mindshare as $HYPE ETFs pull ~$30M daily inflows, volume surpasses NASDAQ, and HIP-4 prediction markets challenge Polymarket.
+- BTC dominance drops below 60% amid whale accumulation stalls; analysts eye $60K-$80K range while altseason calls build around $NEAR, $INJ, and $HYPE.
+- $BNB surges 12% on VanEck's first US spot BNB ETF launch and a June 1 announcement; exchange token rotation gains traction with $MNT and $ASTER.
+- Circle's freeze of $12.6M in Zama's confidential USDC contract sparks renewed debate on censorship resistance, boosting privacy coin and decentralized stablecoin narratives.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -17,45 +17,40 @@ Note: Two-section format persists (macro and geopolitics folded into TradFi).
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Dell's AI server beat fuels tech positioning, extending S&P and Nasdaq records with strong cross-asset risk flows into semis and growth names.
-- Iran truce optimism drives oil lower, transmitting to 10Y yields easing near 4.44% and supporting bond market positioning amid reduced inflation hedges.
-- Tentative 60-day US-Iran ceasefire and Hormuz reopening signals de-risk energy supply, boosting equity and credit flows while pressuring vol.
-- Macro relief from Middle East de-escalation keeps dollar stable near 99 even as equities hit highs, favoring risk carry and easing funding pressures.
+- Oil relief from Iran truce optimism is transmitting lower energy costs into reduced inflation pressures, bolstering equity multiples and supporting dollar carry positioning.
+- AI demand flows lifting Dell sharply are extending Nasdaq records, channeling tech strength into broad risk-on sentiment across equities.
+- Pending US-Iran deal approval uncertainty sustains geopolitical premium, with Hormuz risks poised to reverse oil gains and elevate yields via inflation transmission.
+- Overextended memory chip valuations flag FOMO-driven positioning risks in semis, implying potential de-risking and rotation impacts on tech-heavy indices.
 
-## What's New (vs last pull — 2026-05-29T22:00:42.030Z)
-- [CRYPTO] HYPE eyes $70 with a16z-linked whale ($14.5M) + spot exchange outflows $46M in 48hrs — supply crunch framing replaces moat-debate framing
-- [CRYPTO] BTC ETF $1.4B weekly outflow (3rd largest ever), IBIT $966M exit — specific institutional ETF flow data, entirely new
-- [CRYPTO] USDT market cap drops $1.15B — stablecoin contraction signal, new
-- [CRYPTO] SUI 4 outages in 48hrs — brand new infrastructure failure item
-- [CRYPTO] Base state updates stall 30+ hrs — new L2 reliability failure
-- [CRYPTO] Gravity Bridge drained $5.4M — new bridge exploit
-- [CRYPTO] Circle freezes $12.6M in Zama's cUSDC contract — new on-chain censorship event
-- [CRYPTO] Privacy narrative: ZEC + XMR renewed interest, ZK payment infra — narrative elevated to a standalone item
-- [CRYPTO] USDC freeze fuels stablecoin power debate — reflexive: the event became the argument
-- [TRADFI] Dollar stable near 99 as equities hit records — new; prior reads never quoted DXY level
+## What's New (vs last pull — 2026-05-30T10:00:22.320Z)
+- [CRYPTO] HYPE ETFs ~$30M daily inflows + volume surpasses NASDAQ + HIP-4 prediction markets vs Polymarket — prior: supply crunch/a16z whale/$70 target; framing entirely replaced
+- [CRYPTO] BTC dominance below 60%, whale accumulation stalls, altseason calls (NEAR/INJ/HYPE) — prior: BTC ETF $1.4B outflow framing; dominance/altseason angle new
+- [CRYPTO] BNB +12% on VanEck first US spot BNB ETF + June 1 announcement; exchange token rotation (MNT, ASTER) — entirely new item
+- [TRADFI] Memory chip FOMO-driven valuations, semis de-risking risk flagged — no semis risk in prior reading
 
-## Gone (vs last pull — 2026-05-29T22:00:42.030Z)
-- [CRYPTO] CFTC legalizes US perps — dropped (event absorbed)
-- [CRYPTO] Grayscale $120M HYPE ETF seed — dropped (replaced by a16z whale + exchange outflow framing)
-- [CRYPTO] Negative Coinbase premium / weak BTC/SPX ratio — dropped
-- [CRYPTO] Strive $89M BTC buy — dropped
-- [CRYPTO] US Strategic Reserve +$1B — dropped
-- [CRYPTO] JPMorgan Dimon vs CLARITY Act — dropped
-- [CRYPTO] ETH underperformance / capital rotates to HYPE and AI plays — dropped
+## Gone (vs last pull — 2026-05-30T10:00:22.320Z)
+- [CRYPTO] BTC ETF $1.4B weekly outflow (3rd largest ever), IBIT $966M exit — dropped
+- [CRYPTO] USDT -$1.15B stablecoin contraction — dropped
+- [CRYPTO] SUI 4 outages in 48hrs — dropped
+- [CRYPTO] Base stall 30+ hrs — dropped
+- [CRYPTO] Gravity Bridge drain $5.4M — dropped
+- [CRYPTO] Privacy narrative as standalone item (ZEC/XMR/ZK infra) — absorbed into Circle freeze framing
+- [CRYPTO] HYPE supply crunch (a16z whale, spot exchange outflows $46M) — replaced by ETF inflows framing
+- [TRADFI] DXY stable at 99 — dropped
+- [TRADFI] Yields ~4.44% — dropped
 
 ## Persisting Stories
-- HYPE / Hyperliquid dominant mindshare — persists and accelerating; a16z whale + exchange supply drain + $70 target deepens the institutional stack built last window
-- Iran ceasefire / risk-on trade — persists; language shifted from "tentative pending Trump approval" to "optimism" and "signals de-risk" (uncertainty language softened)
-- Dell AI server beat — persists as the TradFi tech-positioning anchor
-- S&P and Nasdaq at records — persists, now explicitly paired
-- Yields ~4.44% — same level, same driver (geo relief)
+- HYPE / Hyperliquid dominant mindshare — holds and accelerating; supply-crunch framing replaced by ETF-inflows + NASDAQ-volume + HIP-4. Conviction deepens without framing stabilizing.
+- Iran truce / risk-on trade — holds; evening reading adds deal-approval uncertainty and Hormuz reversal risk. Language hardened from "optimism" to "pending approval uncertainty."
+- Dell AI + Nasdaq records — holds as the TradFi anchor. Now with a semis FOMO warning attached.
+- Circle USDC freeze / censorship resistance — holds; now explicitly boosting decentralized stablecoin narratives alongside privacy coins.
 
 ## Cross-Domain Bridges
 
-The 3rd-largest BTC ETF weekly outflow ever and a $1.15B USDT contraction happened in the same 48-hour window that HYPE spot outflows hit $46M. The ETF holders and stablecoin holders are exiting. The HYPE holders are draining exchange supply — holding intent, not selling. Three assets, three divergent flow directions: this is capital compression into one name, not broad rotation out of crypto. The risk-off signal from ETF and USDT is real. The HYPE supply crunch trades against it.
+HYPE ETFs pull $30M daily as BTC dominance cracks below 60%. The same capital flow described from two angles. The $1.4B BTC ETF outflow (3rd-largest ever, 10:00Z reading) went somewhere. HYPE ETF inflows at $30M/day name the destination. Analyst altseason calls pick NEAR/INJ alongside HYPE as the beneficiaries. The rotation is within crypto, not out of it.
 
-Circle froze $12.6M in Zama's cUSDC. ZEC and XMR gain interest the same session. ZK payment infra upticks. The freeze manufactured the narrative it validated — the privacy trade is reflexive. The event is the proof-of-thesis and the catalyst simultaneously. This is how privacy assets get bids: not from ideological converts, but from people who just watched the alternative get frozen.
+VanEck's BNB ETF is the institutional-product playbook landing on exchange tokens. BNB +12% on announcement. MNT and ASTER follow as CEX-ecosystem adjacents. June 1 is the catalyst decision point. If the announcement delivers, the CEX-token rotation extends. If it's already priced, the 12% is the full move.
 
-SUI had four outages in 48 hours. Base stalled for 30+ hours. Gravity Bridge lost $5.4M. Three unrelated chains, three failure modes, same window. The market won't price these separately in a risk-off BTC ETF outflow environment — it prices them as one reliability discount on the alt-chain cohort. Infrastructure stress compounds capital exit pressure on L1/L2s not named Hyperliquid.
+The Iran trade reversed direction intra-session. 10:00Z reading: optimism driving oil lower. 21:00Z reading: pending approval uncertainty keeping Hormuz risk alive. Risk-on held through the morning. Two fragility signals arrive in the evening: Hormuz reversal risk back on the table, semis FOMO flagged for de-risking. The Nasdaq records that anchored equity risk-on sit on top of both. The risk-on extension into US close is fragile.
 
-Iran de-escalation took oil down, yields to 4.44%, equities to records. DXY stayed at 99. Dollar-stable-with-equities-at-records breaks the conventional geo-relief playbook. If DXY doesn't fall, crypto doesn't get the dollar-weakness tailwind it would expect from this macro setup. The relief trade is real in equities; for crypto, it's attenuated. The risk-off signals from ETF outflows and USDT contraction dominate the setup until dollar weakens.
+Circle's freeze manufactured two bids from one event. Privacy coins got the morning call. The evening adds decentralized stablecoins as the second vector. The reflexive loop: Circle censors, bid materializes on two vectors, narrative validates, more bid. It runs until Circle acts again or attention exhausts.
