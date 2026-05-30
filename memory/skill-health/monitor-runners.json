@@ -1,15 +1,11 @@
 {
   "skill": "monitor-runners",
-  "last_analyzed": "2026-05-30T10:27:48Z",
+  "last_analyzed": "2026-05-30T21:33:49Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured output with ranked results, clean data acquisition (12 endpoints), proper filtering applied, and correct downstream integration; specialized domain analysis appears sound with pattern tracking.",
+  "assessment": "Substantive, well-structured output with detailed metrics, determinism verification, and filtering breakdown; limitation is cached data from prior chain run rather than fresh API pull",
   "flags": [],
   "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     },
     {
