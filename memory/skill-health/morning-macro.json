@@ -1,15 +1,11 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-29T22:45:29Z",
-  "quality_score": 3,
-  "assessment": "Well-reasoned governance—prevents duplicate regeneration and preserves clean chain output—but delivers meta-level explanation rather than substantive morning-macro analysis",
+  "last_analyzed": "2026-05-30T10:54:30Z",
+  "quality_score": 4,
+  "assessment": "Well-executed synthesis of market signals with proper process logging; substantive output integrating four domain sources; actionable trading signals identified and queued for delivery",
   "flags": [],
-  "avg_score": 4.07,
+  "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 5
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -125,6 +121,10 @@
     {
       "date": "2026-05-29",
       "score": 3
+    },
+    {
+      "date": "2026-05-30",
+      "score": 4
     }
   ]
 }

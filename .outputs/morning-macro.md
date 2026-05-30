@@ -1,14 +1,33 @@
-## Summary
+Market Morning · 30 May · selective rotation
 
-Recognized today's `morning-macro` invocation as the same chain-then-re-invocation duplicate pattern seen for `narrative-tracker` (05-26 → 05-29), `perps-brief` PM, and `outcome-tracker` PM today. The scheduled AM chain already produced `.outputs/morning-macro.md` (1571 bytes, clean v2-locked three-paragraph synthesis with `─── CROSS-DOMAIN ───` / `─── TODAY ───` dividers, Stance + Take closing lines, 1497/1500 chars) and delivered the `#morning-macro` Discord signal (`.notify-attempted-hashes` populated, `.pending-notify/` drained).
+BTC sat flat at $73,554 as breadth ripped from 9/20 to 16/20 green.
+Dominance slid 0.13pp with XLM, HYPE, BNB, XMR absorbing the bid.
+F&G pinned at 23, Extreme Fear, unmoved.
+Hyperliquid holds the dominant narrative at ATH extension to $66.35.
 
-**What I did NOT do** (ISS-003 / ISS-005 guardrail, matching today's precedent):
-- Did not overwrite the clean chain-run artifact with a Summary blob or a "PM unchanged" one-liner.
-- Did not write a fresh PM version that would orphan the AM Discord message.
-- Did not queue a duplicate `#morning-macro` Discord signal.
+Stance: ride the selective rotation, not the whole tape.
 
-**What I did:** verified the PM-shifted upstream artifacts (market-context-refresh PM chop label, aixbt-pulse 22:00Z CFTC + $120M HYPE ETF seed bridge, narrative-tracker map unchanged, perps-brief PM re-eval reaffirming every AM call) confirm the AM call rather than overturning it. Appended `## Morning Macro (PM re-invocation)` + Summary to `memory/logs/2026-05-29.md` recording the recognition, the PM-signal diff vs the AM artifact, and the guardrail rationale.
 
-**Files modified:** `memory/logs/2026-05-29.md` (appended). Nothing else touched.
+─────────  CROSS-DOMAIN  ─────────
 
-**Follow-up:** Three skills now show chain-then-re-invocation on 05-29 (narrative-tracker, perps-brief PM, morning-macro PM); narrative-tracker has recurred four straight days. If a second run-of-record per day is wanted, the fix belongs at the scheduler/chain layer (optional PM-refresh slot emitting a delta brief), not at the skill.
+BTC ETFs logged their 3rd-largest weekly outflow ever at -$1.4B, IBIT -$966M.
+USDT market cap contracted -$1.15B in the same 48 hours.
+HYPE drained -$46M of spot supply while an a16z-linked whale added $14.5M.
+Three flow directions in one window, capital compressing into one name.
+
+DXY pinned at 99 even as equities print records.
+The conventional geo-relief playbook breaks. No dollar-weakness tailwind until DXY cracks.
+
+Circle froze $12.6M of cUSDC and ZEC, XMR caught the bid the same session.
+The freeze manufactured the narrative it validated.
+
+
+─────────  TODAY  ─────────
+
+Action is in #perps-brief.
+HYPE LONG fires as NEW POSITION on triple alignment: quant ACCUMULATION, a16z whale buying into a 48h supply drain, perp-DEX narrative at full extension.
+BNB and LAB sit WATCHLIST day 1.
+XLM closes WIN at +39% on the DTCC settlement breakout.
+INJ day-2 at +9.5% on the AI rotation.
+
+Take: HYPE confluence into US open. Let BNB and LAB confirm day 2 before adding.
