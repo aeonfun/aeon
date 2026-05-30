@@ -139,13 +139,13 @@ Today: action is in #perps-brief — 3 HIGH CONVICTION setups, AI sector conflue
 - **Sector brief artifact failed:** paragraph 3 notes partial-input. `Today: perps-brief unavailable — see #aeon-ops for cause; data available in #perps-scan raw view.`
 - **Cross-domain section has nothing material:** drop paragraph 2 entirely. Two-paragraph brief is fine when the macro tape is quiet.
 
-### 7. Write artifact + notify
+### 7. Write artifact
 
-```bash
-./notify --signal "$(cat .outputs/morning-macro.md)"
-```
+Write `.outputs/morning-macro.md`. **DO NOT call `./notify`.**
 
-Routes via Discord per `DISCORD_WEBHOOK_MAP[morning-macro]` → `#morning-macro` channel.
+Discord delivery for morning-macro was decommissioned 2026-05-30. The output is now consume-only — `.outputs/morning-macro.md` is read by downstream skills (`daily-ops-review`, `perps-brief`'s chain context) but no longer broadcast to a Discord channel.
+
+The artifact still gets auto-committed to the repo for historical record.
 
 ### 8. Log to `memory/logs/${today}.md`
 
@@ -159,7 +159,7 @@ Routes via Discord per `DISCORD_WEBHOOK_MAP[morning-macro]` → `#morning-macro`
 - **Source artifacts read:** [✓/⚠ list]
 - **Char count:** N / 1500
 - **Artifact written:** .outputs/morning-macro.md
-- **Notification sent:** yes (normal | quiet | degraded) — via `./notify --signal` to #morning-macro
+- **Notification sent:** no (decommissioned 2026-05-30) — artifact remains at .outputs/morning-macro.md
 ```
 
 ## Sandbox note
