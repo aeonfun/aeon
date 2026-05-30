@@ -15,9 +15,10 @@ Schema:
     {
       "schema_version": "v4.1",
       "last_updated": str | null,
-      "open":      [OpenEntry, ...],
-      "watchlist": [WatchlistEntry, ...],
-      "closed":    [ClosedEntry, ...]
+      "open":             [OpenEntry, ...],
+      "watchlist":        [WatchlistEntry, ...],
+      "closed":           [ClosedEntry, ...],
+      "watchlist_closed": [WatchlistClosedEntry, ...]   # NEW (Stage 3 prep)
     }
 
 OpenEntry:
@@ -87,6 +88,17 @@ ClosedEntry: OpenEntry plus closed_date, closed_price, close_reason,
 horizon_realized, return_pct, return_vs_btc_pct, return_vs_eth_pct,
 outcome (WIN | LOSS | SCARE | NEUTRAL), auto_flipped.
 
+WatchlistClosedEntry: WatchlistEntry plus closed_date, close_reason
+(one of VALID_WATCHLIST_CLOSE_REASONS), close_note (Claude's reasoning),
+days_on_watchlist, and promoted_to_open_id (set only when
+close_reason == "promoted"; the id of the open[] entry the watchlist
+was promoted into).
+
+The watchlist_closed[] array preserves Claude's judgement on every
+watchlist entry that exits the watchlist without firing — for V2
+judgement review, post-hoc accuracy analysis, and the upcoming
+edit-in-place delivery layer (Stage 3 of the bot migration).
+
 Atomic write: write to .tmp file, fsync, then os.replace() into place.
 """
 
@@ -108,6 +120,28 @@ VALID_HORIZONS = {"24h", "3d", "7d", "multi-week"}
 VALID_CALLS = {"RIDE", "CLOSE"}
 VALID_OUTCOMES = {"WIN", "LOSS", "SCARE", "NEUTRAL"}
 VALID_SLOTS = {"am", "pm"}
+
+# Reasons a watchlist entry can exit the watchlist[] array without firing
+# into open[]. Recorded in watchlist_closed[].close_reason.
+#
+#   promoted        — entry was promoted into a real open[] position.
+#                     promoted_to_open_id MUST be set on the closed entry.
+#   invalidated     — price action breached the watchlist's invalidation
+#                     level before the trigger fired. The setup explicitly
+#                     failed.
+#   thesis_decayed  — Claude judged the underlying narrative / quant
+#                     setup is no longer compelling. The entry is dropped
+#                     proactively even though the invalidation hasn't
+#                     fired yet.
+#   stale           — entry has sat on the watchlist for an extended
+#                     period without triggering or being invalidated.
+#                     Removed for hygiene rather than judgement.
+VALID_WATCHLIST_CLOSE_REASONS = {
+    "promoted",
+    "invalidated",
+    "thesis_decayed",
+    "stale",
+}
 
 CONFLUENCE_CRITERIA = {
     "quant_regime_aligned",
@@ -384,6 +418,59 @@ def _validate_closed_entry(entry: dict, idx: int) -> None:
     _validate_watch_conditions(entry.get("engine_watch_conditions"), where)
 
 
+def _validate_watchlist_closed_entry(entry: dict, idx: int) -> None:
+    """Validate a WatchlistClosedEntry — a watchlist[] entry that has exited
+    the active watchlist (promoted, invalidated, decayed, or stale).
+
+    Carries the original WatchlistEntry shape plus the exit metadata.
+    """
+    where = f"watchlist_closed[{idx}]"
+    _require(isinstance(entry, dict), f"{where}: must be object")
+    _require_str(entry, "id", where)
+    _require_str(entry, "asset", where)
+    _require(
+        entry.get("direction") in VALID_DIRECTIONS,
+        f"{where}: direction must be LONG or SHORT",
+    )
+    _require_str(entry, "first_seen_date", where)
+    _require_str(entry, "trigger", where)
+    _require_str(entry, "invalidation", where)
+    _require(
+        entry.get("horizon") in VALID_HORIZONS,
+        f"{where}: horizon must be one of {sorted(VALID_HORIZONS)}",
+    )
+    _require_str_or_strlist(entry, "thesis", where)
+    _require_list(entry, "confluence_fired", where)
+    _validate_confluence_list(entry["confluence_fired"], where, "confluence_fired")
+    _require_list(entry, "named_risks", where)
+
+    # Exit metadata
+    _require_str(entry, "closed_date", where)
+    _require(
+        entry.get("close_reason") in VALID_WATCHLIST_CLOSE_REASONS,
+        f"{where}: close_reason must be one of "
+        f"{sorted(VALID_WATCHLIST_CLOSE_REASONS)}",
+    )
+    _require_str(entry, "close_note", where)
+    _require_number(entry, "days_on_watchlist", where)
+
+    # promoted_to_open_id is REQUIRED when close_reason=="promoted"
+    # and MUST be absent/null otherwise. This pairs each promotion with
+    # the open[] / closed[] entry it generated for traceability.
+    promo_id = entry.get("promoted_to_open_id")
+    if entry["close_reason"] == "promoted":
+        _require(
+            isinstance(promo_id, str) and len(promo_id) > 0,
+            f"{where}: close_reason='promoted' requires promoted_to_open_id (string)",
+        )
+    else:
+        _require(
+            promo_id is None,
+            f"{where}: promoted_to_open_id must be null/absent when "
+            f"close_reason='{entry['close_reason']}'",
+        )
+
+
 def validate(ledger: dict) -> None:
     """Raise LedgerError if the ledger object is malformed."""
     _require(isinstance(ledger, dict), "ledger root: must be object")
@@ -395,23 +482,47 @@ def validate(ledger: dict) -> None:
     _require_list(ledger, "open", "ledger")
     _require_list(ledger, "watchlist", "ledger")
     _require_list(ledger, "closed", "ledger")
+
+    # watchlist_closed[] was introduced in the Stage 3 prep work. Ledgers
+    # written before this change won't have the field — auto-initialise
+    # to an empty list so legacy ledgers validate cleanly. New writes
+    # via save() will then persist the field.
+    if "watchlist_closed" not in ledger:
+        ledger["watchlist_closed"] = []
+    _require_list(ledger, "watchlist_closed", "ledger")
+
     for i, e in enumerate(ledger["open"]):
         _validate_open_entry(e, i)
     for i, e in enumerate(ledger["watchlist"]):
         _validate_watchlist_entry(e, i)
     for i, e in enumerate(ledger["closed"]):
         _validate_closed_entry(e, i)
+    for i, e in enumerate(ledger["watchlist_closed"]):
+        _validate_watchlist_closed_entry(e, i)
 
     # Cross-cutting: IDs unique across open + closed (watchlist IDs are
     # separately namespaced via the "-watchlist-" segment).
     open_ids = [e["id"] for e in ledger["open"]]
     closed_ids = [e["id"] for e in ledger["closed"]]
     watchlist_ids = [e["id"] for e in ledger["watchlist"]]
+    watchlist_closed_ids = [e["id"] for e in ledger["watchlist_closed"]]
     _require(len(open_ids) == len(set(open_ids)), "ledger: duplicate ID in open[]")
     _require(len(closed_ids) == len(set(closed_ids)), "ledger: duplicate ID in closed[]")
     _require(len(watchlist_ids) == len(set(watchlist_ids)), "ledger: duplicate ID in watchlist[]")
+    _require(
+        len(watchlist_closed_ids) == len(set(watchlist_closed_ids)),
+        "ledger: duplicate ID in watchlist_closed[]",
+    )
     cross = set(open_ids) & set(closed_ids)
     _require(not cross, f"ledger: ID(s) appear in both open and closed: {sorted(cross)}")
+    # Watchlist IDs must not appear in BOTH watchlist[] and watchlist_closed[]
+    # — once an entry exits to closed, it should be gone from active.
+    cross_wl = set(watchlist_ids) & set(watchlist_closed_ids)
+    _require(
+        not cross_wl,
+        f"ledger: watchlist ID(s) in both watchlist[] and watchlist_closed[]: "
+        f"{sorted(cross_wl)}",
+    )
 
     # Asset uniqueness in open[] — one open position per asset (auto-flip
     # closes the prior). Same asset can appear in watchlist regardless,
