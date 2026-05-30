@@ -1,17 +1,13 @@
 {
   "schema_version": "v1",
-  "last_updated": "2026-05-30T03:51:16Z",
+  "last_updated": "2026-05-30T10:47:55Z",
   "market_sentiment": {
-    "message_id": "1510050677127254066",
-    "posted_at_utc": "2026-05-30T03:51:16Z",
-    "posted_date": "2026-05-29",
-    "slot": ""
+    "message_id": "1510233254358286417",
+    "posted_at_utc": "2026-05-30T10:47:46Z",
+    "posted_date": "2026-05-30",
+    "slot": "pm"
   },
   "open": {
-    "XLM-2026-05-28-001": {
-      "message_id": "1510050684890910911",
-      "posted_at_utc": "2026-05-30T03:51:16Z"
-    },
     "SEI-2026-05-27-001": {
       "message_id": "1510050683871559780",
       "posted_at_utc": "2026-05-30T03:51:16Z"
@@ -20,20 +16,49 @@
       "message_id": "1510050682483511296",
       "posted_at_utc": "2026-05-30T03:51:16Z"
     },
-    "EIGEN-2026-05-24-001": {
-      "message_id": "1510050679820128296",
-      "posted_at_utc": "2026-05-30T03:51:16Z"
+    "INJ-2026-05-29-001": {
+      "message_id": "1510233284049768608",
+      "posted_at_utc": "2026-05-30T10:47:53Z"
+    },
+    "HYPE-2026-05-30-001": {
+      "message_id": "1510233286415351962",
+      "posted_at_utc": "2026-05-30T10:47:54Z"
     }
   },
   "watchlist": {
-    "ZEC-watchlist-2026-05-27-001": {
-      "message_id": "1510050689039208599",
-      "posted_at_utc": "2026-05-30T03:51:16Z"
+    "BNB-watchlist-2026-05-30-001": {
+      "message_id": "1510233288143274085",
+      "posted_at_utc": "2026-05-30T10:47:54Z"
     },
-    "HYPE-watchlist-2026-05-29-002": {
-      "message_id": "1510050687373938780",
-      "posted_at_utc": "2026-05-30T03:51:16Z"
+    "LAB-watchlist-2026-05-30-001": {
+      "message_id": "1510233290265722902",
+      "posted_at_utc": "2026-05-30T10:47:55Z"
     }
   },
-  "stale_cleanup": []
+  "stale_cleanup": [
+    {
+      "channel": "positions",
+      "message_id": "1510050679820128296",
+      "label": "EIGEN-2026-05-24-001 CLOSED",
+      "delete_after_utc": "2026-05-31T10:47:47Z"
+    },
+    {
+      "channel": "positions",
+      "message_id": "1510050684890910911",
+      "label": "XLM-2026-05-28-001 CLOSED",
+      "delete_after_utc": "2026-05-31T10:47:53Z"
+    },
+    {
+      "channel": "watchlist",
+      "message_id": "1510050687373938780",
+      "label": "HYPE-watchlist-2026-05-29-002 promoted",
+      "delete_after_utc": "2026-05-31T10:47:55Z"
+    },
+    {
+      "channel": "watchlist",
+      "message_id": "1510050689039208599",
+      "label": "ZEC-watchlist-2026-05-27-001 thesis_decayed",
+      "delete_after_utc": "2026-05-31T10:47:55Z"
+    }
+  ]
 }

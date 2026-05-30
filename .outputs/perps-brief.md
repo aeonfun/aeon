@@ -1,157 +1,150 @@
-Perps Brief · 29 May
+Perps Brief · 30 May
 
 ─────────  MARKET SENTIMENT  ─────────
 
-  BTC         $73,415      +0.16% 24h, -4.9% 7d
-  Breadth     14/20 green  ↑ from 6/20
-  F&G         23           Extreme Fear
-  DEX vol     $7.01B       +11.6% 24h
+  BTC         $73,554      +0.02% 24h · -1.39% 7d
+  Breadth     16/20 green  ↑ from 9/20 — rotation widening
+  F&G         23           Extreme Fear, unchanged
 
   Macro
-    A relief bounce, breadth jumped to 14/20 green on flat BTC, alt-led
-    by XLM and HYPE. The base is fragile: BTC ETF outflows hit a record
-    nine straight days at $2.8B, sentiment is stuck in Extreme Fear, and
-    the risk-on tone leans on unconfirmed Iran truce-extension
-    headlines. One green day on a weekly structure that is still broken,
-    majors down 5% on the week.
+    BTC sits flat at $73,554 while breadth surged from 9/20 to 16/20
+    green. XLM, HYPE, BNB, XMR absorbed demand as dominance slid 0.13
+    pp. Capital compression looks selective — BTC ETFs logged a
+    third-largest-ever $1.4B weekly outflow while HYPE-specific demand
+    drained $46M of spot supply in 48 hours. Three flow directions in
+    one window, not a broad risk-off rotation.
 
   Perps
-    Chop across the board, zero regime breakouts on 25 assets, all
-    neutral. XLM is the standout, breaking out +28% on volume 22.8x its
-    norm with shorts liquidated at 53x the weekly average. HYPE
-    reclaimed +6.7% toward its $64.27 all-time high, but top-trader
-    long/short is still falling. No clean new setup to ride beyond what
-    is already on the book.
+    Two fresh ACCUMULATION signals land on HYPE and BNB after a
+    fully-neutral universe yesterday. HYPE rides perp-DEX momentum on
+    taker buy 51% with OI +22% 7d and smart money L/S ticking up. BNB
+    carries exchange flow on vol 1.18x average and OI +12% 7d inside a
+    tight 8% range. Broader regime stays QUIET — 23 of 25 names neutral.
 
   Book
-    Six positions, closing two. The BCH short hits its seven-day horizon
-    at +13% as the legacy-alt bleed ran clean to the end. The TAO long
-    closes on a thesis break. It fell -6.9% on a green day, inverting
-    the relative-strength tell that justified the hold, now below every
-    major moving average. Riding XLM at +20%, plus SEI, EIGEN, ICP.
-    Adding one new long in INJ on relative strength.
+    Five-position set turns over today. XLM hits horizon at +39% on the
+    DTCC settlement breakout — clean win. EIGEN closes at horizon barely
+    red but matched BTC drawdown. ICP and SEI ride multi-week structural
+    theses through the sector rotation. INJ catches the AI rotation
+    early on day 2 at +9.5%.
 
-  Bias · ride the book, bank the BCH win and take the TAO loss. One new
-    entry in INJ on relative strength, otherwise patient. The bounce is
-    a day old on record ETF outflows — let XLM run and watch HYPE for
-    the ATH break.
+  Bias · Ride HYPE into US open through the ATH confirmation. The
+    perp-DEX setup stacks deeper than anything else today — a16z whale,
+    supply crunch, ACCUMULATION confirmed. Let BNB and LAB confirm a
+    second day before adding.
 
-─────────  CURRENT POSITIONS (6)  ─────────
+─────────  CURRENT POSITIONS (5)  ─────────
 
   TICKER    DIR         ENTRY         NOW       PNL         MAE / MFE  CALL
   ────────  ─────  ──────────  ──────────  ────────  ────────────────  ────────────
-  BCH       SHORT        $345        $345    +13.2%    -5.0% / +14.1%  CLOSE  WIN
-  EIGEN     LONG      $0.2299      $0.223     -3.0%     -4.3% / +1.8%  RIDE
-  TAO       LONG         $278        $278     -6.4%     -8.5% / +0.6%  CLOSE  LOSS
+  EIGEN     LONG      $0.2299     $0.2299     -3.0%     -4.3% / +1.8%  CLOSE  NEUTRAL
   ICP       LONG        $3.02       $2.72     -9.9%    -12.2% / -6.0%  RIDE
   SEI       LONG      $0.0697     $0.0691     -0.9%     -6.0% / +0.5%  RIDE
-  XLM       LONG      $0.1731      $0.207    +19.6%    +0.0% / +24.2%  RIDE
+  XLM       LONG      $0.1731     $0.1731    +39.5%   +15.5% / +24.2%  CLOSE  WIN
+  INJ       LONG        $5.99       $6.56     +9.5%    +0.0% / +10.8%  RIDE
 
-  BCH       ▸ Seven-day horizon reached with the short at +13%. The
-              legacy-alt bleed ran clean to the end, BCH down another 10.5%
-              today even on a green relief tape, funding negative and smart
-              money fully exited.
+  EIGEN     ▸ Horizon reached. EigenCloud/Nebius structural build held but
+              AI-compute sector rotated out for the perp-DEX leg. Modest
+              loss matched BTC.
 
-  EIGEN     ▸ Down 3% from entry on day 6 of 7, the AI-compute momentum leg
-              broken but the EigenCloud build structural.
+  ICP       ▸ MISSION70 supply deflation is a 28-month structural thesis,
+              multi-week horizon. Sector rotation off compute does not break
+              the thesis itself.
 
-  TAO       ▸ Closing on a thesis break. TAO fell -6.9% on a green relief
-              day, inverting the relative-strength tell that held the
-              position, and sits below every major moving average with the
-              narrative cooling. Wicked $254.67 intraday under the $255
-              stop, held the close above it.
+  SEI       ▸ June 15 EVM migration sits 16 days out. Price flat near entry,
+              stop $0.062 well below — catalyst window still ahead.
 
-  ICP       ▸ Deepest-underwater hold at -10%, bounced +2.7% today to sit 3%
-              above the $2.65 stop. The supply-deflation thesis is
-              structural and multi-week, not a daily trade.
+  XLM       ▸ Horizon reached at +39% on the DTCC settlement breakout — vol
+              2.18x average, short liquidations confirmed the squeeze.
+              Today's -5.97% pullback is the first cooling, profit-take
+              before mean reversion.
 
-  SEI       ▸ Bounced +5.4% today back to near flat from entry, the L1 name
-              participating in the relief while compute lagged. The June 15
-              EVM migration is the dated catalyst ahead.
-
-  XLM       ▸ Up ~20% from entry on day 2 of 3. The settlement-narrative
-              breakout extended +28% on volume 22.8x its norm with short
-              liquidations 53x the weekly average.
+  INJ       ▸ Day 2/3 at +9.5%. INJ leads the AI rotation today on $312M
+              vol, funding -0.04%/8h means shorts pay longs, top L/S 0.99
+              keeps squeeze fuel in place.
 
 
-─────────  NEW POSITION · INJ LONG  ─────────
-
-  ticker     INJ
-  direction  LONG
-  horizon    3d
-  entry      market or first pullback to $5.75
-  stop       24h close below $5.20
-
-
-  thesis     · Injective ran +12% on the day and +11% on the
-               week, outpacing red majors by ~16 points over
-               seven days — relative strength, not a one-day
-               relief pop.
-             · Turnover is the heaviest on the board at a third
-               of market cap — $199M of volume on a $600M
-               mid-cap, real flow crossing into the move.
-             · The catalyst is developer-and-policy, not a dated
-               event: the Nova program with Microsoft and Azure
-               launched May 25, native EVM mainnet is live, a
-               Policy Institute opened in Washington.
-             · It leads the AI-token rotation, the one name
-               there with fresh accelerating momentum while NEAR
-               and the compute names cool.
-
-
-  risks      · The bid is rotational and narrative-driven. If
-               AI-token attention rotates out, INJ fades fast
-               with the cohort.
-             · The book already holds two AI-adjacent longs in
-               EIGEN and ICP. A sector unwind hits INJ alongside
-               them rather than diversifying.
-             · The move sits on a one-day relief bounce with BTC
-               ETF outflows at a record nine days and sentiment
-               in Extreme Fear. A flush drags momentum names
-               down regardless of catalyst.
-
-─────────  WATCHLIST · HYPE LONG · day 1  ─────────
+─────────  NEW POSITION · HYPE LONG  ─────────
 
   ticker     HYPE
   direction  LONG
   horizon    multi-week
-  trigger    daily close above the $64.27 all-time high with
-             volume expanding above the recent average
-  stop       close below $58 before the trigger fires
+  entry      market or first pullback to $63
+  stop       close below $58
 
 
-  thesis     · Hyperliquid reclaimed +6.7% on the day back
-               toward its $64.27 all-time high, confirming the
-               green-flip after last week's failed bounce.
-             · The institutional case stacked hard this week.
-               CME launched 24/7 crypto futures, Grayscale filed
-               a Hyperliquid ETF, and DEX volume ran $7.01B, up
-               11.6%.
-             · Top-trader long/short is still falling, down 0.26
-               over seven days. Smart money hasn't joined the
-               reclaim yet, so this waits for a clean ATH break
-               rather than a chase here.
+  thesis     · Hyperliquid extended its all-time high to $66.35
+               today on ACCUMULATION confirmed — OI built 22%
+               over the week with smart money L/S ticking up
+               alongside price, funding negative at -0.014%/8h
+               means shorts pay longs.
+             · An a16z-linked whale bought $14.5M of HYPE this
+               week as spot exchange outflows drained $46M of
+               supply in 48 hours. Institutional capital arrives
+               while the supply side compresses.
+             · Perp-DEX narrative sits at full extension with
+               Coinbase Institutional naming the category proven
+               — $21.8B 24h DEX volume on $7.3B OI reads as
+               structural growth, not a flash bid.
+             · Capital compressing into HYPE specifically as BTC
+               ETFs bleed $1.4B and USDT contracts $1.15B —
+               three flow directions in 48 hours, one name
+               absorbing the rotation.
 
-─────────  WATCHLIST · ZEC SHORT · day 3  ─────────
 
-  ticker     ZEC
-  direction  SHORT
+  risks      · Crowded long positioning typical at ATH extension
+               — top L/S 1.33 with smart money building means a
+               sharp pullback drags retail and smart-money longs
+               together.
+             · Perp-DEX narrative sits at full extension. Days
+               7-14 of a peak narrative are consensus and late
+               entries get punished if the regime turns.
+             · We closed HYPE neutral four days ago on a
+               fade-peak-fade whipsaw. Re-entering past the
+               prior failed bounce risks the same chop pattern.
+
+─────────  WATCHLIST · BNB LONG · day 1  ─────────
+
+  ticker     BNB
+  direction  LONG
   horizon    7d
-  trigger    second daily close below $560 with funding flipping
-             positive past +0.02%/8h AND top-trader long/short
-             rotating above 1.0
-  stop       close above $620 before the trigger fires
+  trigger    second daily close holding ACCUMULATION with OI
+             continuing to build, OR a clean break above $685 on
+             volume above 1.5x the recent average
+  stop       close below $645 before the trigger fires
 
 
-  thesis     · Zcash bled -17% on the week and tests $500. The
-               privacy narrative is fading with drivers
-               collapsed to a single mention, the token leading
-               the move down.
-             · Funding sits negative at -0.0164%/8h with top
-               traders net short at 0.88. The short side is
-               already crowded, so the trigger waits for that to
-               clear before adding.
-             · The institutional floor is intact — Grayscale's
-               ZCSH ETF and the late-2026 Tachyon roadmap. That
-               floor is the un-fade risk if ZEC re-anchors above
-               $560.
+  thesis     · BNB printed fresh ACCUMULATION today after a
+               fully-neutral universe yesterday — OI built
+               12.45% in 24 hours on taker buy 52.11% and volume
+               1.18x average.
+             · Smart money L/S 1.40 with -0.10 over 7 days reads
+               as exchange-flow early positioning where retail
+               has not joined yet. Range tight at 7.84% with
+               funding still calm at +0.01%/8h.
+             · ACCUMULATION on day 1 needs a second day's
+               confirmation before committing. The pattern fires
+               cleanly on continued OI build with the range
+               holding under 25%.
+
+─────────  WATCHLIST · LAB LONG · day 1  ─────────
+
+  ticker     LAB
+  direction  LONG
+  horizon    3d
+  trigger    single hour of taker buy above 52% with the +9% 24h
+             leg holding into the daily close
+  stop       close below $6.00 before the trigger fires
+
+
+  thesis     · LAB carries +62% 7d on day-3 of its breakout with
+               funding -0.10%/8h — the deepest short-pay in the
+               universe means shorts have lost patience, squeeze
+               fuel stacked.
+             · Top L/S 1.22 holds steady (+0.01 over 7 days) so
+               no extreme crowding. OI +44% 7d shows fresh
+               leverage entering the breakout, not late-stage
+               exhaustion.
+             · Taker buy 50.89% sits one percentage point under
+               the 52% confirmation gate. A single hour above
+               52% with the leg holding promotes to long.
