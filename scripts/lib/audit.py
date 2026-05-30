@@ -436,6 +436,44 @@ def _build_eval_call_calibration(closed: list[dict]) -> dict:
 # Public API
 
 
+def top_winners_losers(
+    closed: list[dict],
+    n_winners: int = 3,
+    n_losers: int = 3,
+) -> dict:
+    """Pick the top-N winners and top-N losers from a list of closed
+    entries for per-trade postmortem analysis by Claude.
+
+    Selection rule:
+      - Winners: sort by return_pct DESC, take top n_winners with return > 0
+      - Losers: sort by return_pct ASC, take top n_losers with return < 0
+
+    Ties broken by absolute return magnitude, then by closed_date DESC
+    (more recent first).
+
+    Returns {"winners": [...], "losers": [...]} where each entry is the
+    full closed[] dict (including evaluations, watchlist_provenance,
+    confluence, etc.) — Claude gets the full context for each.
+    """
+    def _key(e: dict) -> float:
+        r = e.get("return_pct")
+        return r if r is not None else 0.0
+
+    positives = sorted(
+        [e for e in closed if (e.get("return_pct") or 0) > 0],
+        key=_key,
+        reverse=True,
+    )
+    negatives = sorted(
+        [e for e in closed if (e.get("return_pct") or 0) < 0],
+        key=_key,
+    )
+    return {
+        "winners": positives[:n_winners],
+        "losers":  negatives[:n_losers],
+    }
+
+
 def build_audit(
     ledger: dict,
     window: str = "30d",
@@ -492,4 +530,11 @@ def build_audit(
         "auto_flips":       _build_auto_flips(closed),
         "time_to_outcome":  _build_time_to_outcome(closed),
         "eval_call_calibration": _build_eval_call_calibration(closed),
+        # Postmortem candidates — Claude reads these in the
+        # judgement-audit skill and writes per-trade categorization.
+        # Includes the FULL closed[] entry per pick so Claude has the
+        # evaluations[] journal, watchlist_provenance, confluence,
+        # MAE/MFE timing, close reason — everything needed to assess
+        # asset vs regime failure mode without re-reading the ledger.
+        "postmortem_candidates": top_winners_losers(closed, n_winners=3, n_losers=3),
     }
