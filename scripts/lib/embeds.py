@@ -925,8 +925,24 @@ def compose_judgement_audit(
     insights: Optional[list] = None,
     postmortems: Optional[list] = None,
     regime_observations: Optional[list] = None,
-) -> dict:
-    """One embed per judgement audit run. Posted to #perps-outcomes.
+) -> list[dict]:
+    """Compose the judgement-audit message as a LIST of embeds.
+
+    Returns 1 or 2 embeds depending on whether Claude analysis is present:
+      - Stats-only mode (no narrative/insights/postmortems): single embed
+        with all stat fields.
+      - Full audit mode: two embeds.
+          Embed 1: stats fields only (no description) — fits well under
+            Discord's 6000-char total limit.
+          Embed 2: Claude analysis — narrative + insights + regime
+            backdrop in description, top winners/losers postmortems
+            as fields.
+
+    Splitting is necessary because Claude-narrative + insights + 3+
+    postmortems + the full stats block routinely exceeds Discord's
+    6000-char/embed cap (observed 7203 chars in production 2026-05-30).
+    Splitting also gives the operator a visual separation between
+    'numbers' and 'analysis'.
 
     Args:
         stats: full stats artifact (dict with 'windows' keyed by window name)
@@ -939,13 +955,6 @@ def compose_judgement_audit(
             setup_type, what_went_wrong | what_was_right, lessons[].
         regime_observations: optional list of macro regime observations
             for the audit window.
-
-    Layout:
-        Headline metrics (inline fields): n closed, win rate, avg return,
-        best/worst, max drawdown.
-        Description: narrative paragraph + insights list + regime observations.
-        Long-form fields: by_direction, by_horizon, top criteria by edge,
-        watchlist funnel, postmortems (winners + losers).
     """
     windows = stats.get("windows") or {}
     w_stats = windows.get(window) or {}
@@ -953,12 +962,12 @@ def compose_judgement_audit(
         # Fall back to any available window
         w_stats = next(iter(windows.values()), {})
         if not w_stats:
-            return {
+            return [{
                 "color": COLORS["AUDIT"],
                 "title": "Judgement Audit · no data",
                 "description": "No closed trades within the audit window.",
                 "timestamp": _now_iso(),
-            }
+            }]
 
     headline = w_stats.get("headline", {})
     by_dir = w_stats.get("by_direction", {})
@@ -1139,29 +1148,29 @@ def compose_judgement_audit(
             "inline": False,
         })
 
-    # --- Per-trade postmortems (winners + losers)
-    if postmortems:
-        # Split into two columns by outcome class. Winners first, losers
-        # second — operator-readable left-to-right.
-        winners = [p for p in postmortems if p.get("outcome") in ("WIN", "SCARE")]
-        losers = [p for p in postmortems if p.get("outcome") in ("LOSS", "NEUTRAL")]
+    footer_text = (
+        f"Window {window} · {since} → {to}" + _slot_suffix(slot)
+    )
 
-        if winners:
-            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in winners[:3])
-            fields.append({
-                "name": "Top winners — postmortem",
-                "value": rendered[:1024],
-                "inline": False,
-            })
-        if losers:
-            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in losers[:3])
-            fields.append({
-                "name": "Top losers — postmortem",
-                "value": rendered[:1024],
-                "inline": False,
-            })
+    # --- Embed 1: stats (no description — keeps it well under 6000 chars)
+    stats_embed = {
+        "color": COLORS["AUDIT"],
+        "author": {"name": "JUDGEMENT AUDIT"},
+        "title": title,
+        "fields": fields,
+        "footer": _footer(footer_text),
+        "timestamp": _now_iso(),
+    }
 
-    # --- Description: narrative + insights + regime observations
+    # If no Claude analysis was provided, stop here (stats-only mode).
+    has_analysis = bool(narrative or insights or postmortems or regime_observations)
+    if not has_analysis:
+        return [stats_embed]
+
+    # --- Embed 2: Claude analysis
+    #
+    # Description holds narrative + regime backdrop + insights.
+    # Fields hold the per-trade postmortems (winners + losers).
     desc_parts: list[str] = []
     if narrative:
         desc_parts.append(narrative.strip())
@@ -1172,21 +1181,40 @@ def compose_judgement_audit(
         if regime_block:
             desc_parts.append("**Regime backdrop**\n" + regime_block)
     if insights:
-        bullet_block = "\n".join(f"• {i.strip()}" for i in insights if (i or "").strip())
+        bullet_block = "\n".join(
+            f"• {i.strip()}" for i in insights if (i or "").strip()
+        )
         if bullet_block:
             desc_parts.append("**Key insights**\n" + bullet_block)
-    description = ("\n\n".join(desc_parts))[:4096]
+    analysis_description = ("\n\n".join(desc_parts))[:4096]
 
-    footer_text = (
-        f"Window {window} · {since} → {to}" + _slot_suffix(slot)
-    )
+    analysis_fields: list[dict] = []
+    if postmortems:
+        winners = [p for p in postmortems if p.get("outcome") in ("WIN", "SCARE")]
+        losers = [p for p in postmortems if p.get("outcome") in ("LOSS", "NEUTRAL")]
+        if winners:
+            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in winners[:3])
+            analysis_fields.append({
+                "name": "Top winners — postmortem",
+                "value": rendered[:1024],
+                "inline": False,
+            })
+        if losers:
+            rendered = "\n\n".join(_fmt_postmortem_line(p) for p in losers[:3])
+            analysis_fields.append({
+                "name": "Top losers — postmortem",
+                "value": rendered[:1024],
+                "inline": False,
+            })
 
-    return {
+    analysis_embed = {
         "color": COLORS["AUDIT"],
-        "author": {"name": "JUDGEMENT AUDIT"},
-        "title": title,
-        "description": description,
-        "fields": fields,
+        "author": {"name": "JUDGEMENT AUDIT · analysis"},
+        "title": f"Analysis · {window}",
+        "description": analysis_description,
+        "fields": analysis_fields,
         "footer": _footer(footer_text),
         "timestamp": _now_iso(),
     }
+
+    return [stats_embed, analysis_embed]

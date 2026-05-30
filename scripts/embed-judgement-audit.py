@@ -136,8 +136,11 @@ def main() -> int:
                 f"Proceeding with stats-only embed."
             )
 
-    # Compose embed
-    embed = E.compose_judgement_audit(
+    # Compose audit message. compose_judgement_audit returns a LIST of
+    # embeds (1 stats-only when there's no Claude analysis, 2 when there
+    # is — Discord's 6000-char/embed cap can't hold both stats + full
+    # narrative + postmortems in a single embed for non-trivial audits).
+    embeds = E.compose_judgement_audit(
         stats=stats,
         window=args.window,
         chain_run_id=args.chain_run_id,
@@ -147,6 +150,7 @@ def main() -> int:
         postmortems=postmortems,
         regime_observations=regime_observations,
     )
+    info(f"composed {len(embeds)} embed(s) for delivery")
 
     # Channel routing — audit embed goes to #perps-outcomes (event log)
     channel_id = os.environ.get("DISCORD_BOT_CHANNEL_PERPS_OUTCOMES", "")
@@ -161,7 +165,7 @@ def main() -> int:
 
     bot = DB.DiscordBot(dry_run=dry_run)
     try:
-        result = bot.post_embed(channel_id=channel_id, embeds=embed)
+        result = bot.post_embed(channel_id=channel_id, embeds=embeds)
         info(
             f"posted judgement_audit:{args.window} → "
             f"{channel_id} (msg {result['message_id']})"
