@@ -54,8 +54,34 @@ WatchCondition (per-trade trigger evaluated hourly by the poller):
       "severity":      "info" | "warning" | "critical",
       "trigger_label": str,                    # operator-facing meaning
       "window":        str | null,             # e.g. "1h", "4h", "24h"
-      "source":        str | null              # e.g. "coinglass", "ohlcv"
+      "source":        str | null,             # e.g. "coinglass", "ohlcv"
+
+      # Path B PR1 additions (all optional):
+      "action":            one of VALID_WATCH_ACTIONS | null,
+                                                # alert | exit | enter | drop
+      "cooldown_minutes":  number | null,       # override DEFAULT_COOLDOWN_MINUTES
+      "last_fired_at_utc": ISO string | null,   # set by poller after confirmed fire
+      "last_defer_at_utc": ISO string | null    # set by poller when Claude DEFERed
     }
+
+WatchlistEntry (Path B PR1 additions):
+    Adds optional `trigger_conditions` and `invalidation_conditions`
+    structured groups. Each group is either:
+        {"match_mode": "all" | "any", "conditions": [WatchCondition, ...]}
+    or a bare [WatchCondition, ...] list (implied match_mode="all").
+    Used by the poller to mechanically evaluate when a watchlist entry
+    should promote (trigger_conditions fire) or invalidate
+    (invalidation_conditions fire).
+
+OpenEntry / ClosedEntry (Path B PR1 additions, all optional):
+    - opened_by: "claude" | "poller" | null
+        Who initiated the open. Default "claude" for back-compat.
+    - closed_by: "claude" | "poller" | null   (closed only)
+        Who initiated the close.
+    - triggered_condition_index: int | null
+        When *_by="poller", index into the source conditions array
+        identifying the specific condition that fired. Audit trail
+        for poller win-rate analysis.
 
 WatchlistEntry (a setup that doesn't meet entry conviction yet):
     {
@@ -181,6 +207,40 @@ VALID_WATCH_CONDITION_TYPES = {
 }
 VALID_WATCH_SEVERITY = {"info", "warning", "critical"}
 
+# Per-condition action vocabulary — what the poller-confirmation pipeline
+# proposes to Claude when the condition fires. Claude has the final say,
+# but the action field signals intent.
+#
+#   alert  — default. Notify only; Claude decides whether to act.
+#   exit   — Claude should consider closing the position.
+#   enter  — Claude should consider opening (watchlist trigger_conditions).
+#   drop   — Claude should consider dropping the watchlist entry
+#            (invalidation_conditions).
+VALID_WATCH_ACTIONS = {"alert", "exit", "enter", "drop"}
+
+# How a multi-condition group resolves when several conditions are
+# evaluated together (e.g. watchlist trigger_conditions[]).
+#
+#   all  — every condition in the group must fire (AND). Default.
+#   any  — any single condition in the group fires the group (OR).
+VALID_MATCH_MODES = {"all", "any"}
+
+# Action authorship — who initiated a state transition. Audit data for
+# tuning condition thresholds + measuring poller win rate vs Claude.
+#
+#   claude  — initiated by the perps-brief chain (default for back-compat).
+#   poller  — initiated by the engine-trigger-review skill in response
+#             to a poller-fired condition.
+VALID_ACTION_AUTHORS = {"claude", "poller"}
+
+# Default cooldown between poller-fire and re-evaluation of the same
+# condition. When Claude DEFERs a fired trigger, the condition is
+# skipped for this many minutes before being re-evaluated. Prevents
+# the poller from re-firing identical triggers every hour. Tunable
+# per-condition via the `cooldown_minutes` field; this is the fallback
+# when the condition doesn't override.
+DEFAULT_COOLDOWN_MINUTES = 240  # 4 hours
+
 
 class LedgerError(Exception):
     """Raised when the ledger fails validation or atomic write."""
@@ -281,19 +341,30 @@ def _validate_confluence_list(lst: list, where: str, key: str) -> None:
         )
 
 
-def _validate_watch_conditions(lst: Any, where: str) -> None:
-    """Validate optional engine_watch_conditions[] array.
+def _validate_watch_conditions(lst: Any, where: str, field_name: str = "engine_watch_conditions") -> None:
+    """Validate an optional array of poller-evaluated structured conditions.
+
+    Used by open[].engine_watch_conditions[] AND by watchlist[].
+    trigger_conditions[] / invalidation_conditions[] (added in Path B PR1).
 
     None or missing → skip (field is optional, pre-V2 entries won't have it).
-    Empty list is allowed (Claude may decide a position needs no watchers).
+    Empty list is allowed (Claude may decide an entry needs no watchers).
     Each condition must have: type (enum), threshold (number), severity (enum),
-    trigger_label (non-empty string). Optional: window (str), source (str).
+    trigger_label (non-empty string).
+
+    Optional fields:
+        window (str), source (str)         — observation provenance
+        action (enum)                       — alert | exit | enter | drop
+        cooldown_minutes (number)           — overrides DEFAULT_COOLDOWN_MINUTES
+        last_fired_at_utc (str)             — ISO timestamp set by the poller
+                                              after a confirmed fire (audit trail)
+        last_defer_at_utc (str)             — set when Claude DEFERed the trigger
     """
     if lst is None:
         return
-    _require(isinstance(lst, list), f"{where}: engine_watch_conditions must be array or null")
+    _require(isinstance(lst, list), f"{where}: {field_name} must be array or null")
     for i, c in enumerate(lst):
-        sub = f"{where}.engine_watch_conditions[{i}]"
+        sub = f"{where}.{field_name}[{i}]"
         _require(isinstance(c, dict), f"{sub}: must be object")
         _require(
             c.get("type") in VALID_WATCH_CONDITION_TYPES,
@@ -309,6 +380,57 @@ def _validate_watch_conditions(lst: Any, where: str) -> None:
             _require(isinstance(c["window"], str), f"{sub}: window must be string or null")
         if c.get("source") is not None:
             _require(isinstance(c["source"], str), f"{sub}: source must be string or null")
+        # NEW (Path B PR1): action vocabulary for the poller
+        if c.get("action") is not None:
+            _require(
+                c["action"] in VALID_WATCH_ACTIONS,
+                f"{sub}: action must be one of {sorted(VALID_WATCH_ACTIONS)} or null",
+            )
+        # Cooldown override (default 240 min applied at poll time)
+        if c.get("cooldown_minutes") is not None:
+            _require_number(c, "cooldown_minutes", sub)
+            _require(
+                c["cooldown_minutes"] >= 0,
+                f"{sub}: cooldown_minutes must be >= 0",
+            )
+        # Last-fired audit timestamps (poller-managed)
+        for ts_field in ("last_fired_at_utc", "last_defer_at_utc"):
+            if c.get(ts_field) is not None:
+                _require(
+                    isinstance(c[ts_field], str),
+                    f"{sub}: {ts_field} must be ISO string or null",
+                )
+
+
+def _validate_condition_group(
+    group: Any, where: str, field_name: str
+) -> None:
+    """Validate a watchlist trigger/invalidation condition GROUP.
+
+    Group shape:
+        {"match_mode": "all" | "any", "conditions": [WatchCondition, ...]}
+
+    Backward-compat: if the field is a bare list, treat it as
+    {"match_mode": "all", "conditions": <list>}. New schema writes always
+    use the structured group form.
+
+    None or missing → skip.
+    """
+    if group is None:
+        return
+    if isinstance(group, list):
+        # Legacy / shorthand: bare list with implicit match_mode=all
+        return _validate_watch_conditions(group, where, field_name)
+    _require(
+        isinstance(group, dict),
+        f"{where}: {field_name} must be array or object (with match_mode + conditions)",
+    )
+    if "match_mode" in group and group["match_mode"] is not None:
+        _require(
+            group["match_mode"] in VALID_MATCH_MODES,
+            f"{where}.{field_name}.match_mode must be one of {sorted(VALID_MATCH_MODES)}",
+        )
+    _validate_watch_conditions(group.get("conditions"), where, field_name)
 
 
 def _validate_open_entry(entry: dict, idx: int) -> None:
@@ -357,6 +479,21 @@ def _validate_open_entry(entry: dict, idx: int) -> None:
     _require_bool(entry, "invalidation_breached", where)
     _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
     _validate_watch_conditions(entry.get("engine_watch_conditions"), where)
+    # NEW (Path B PR1): action authorship for open events
+    if entry.get("opened_by") is not None:
+        _require(
+            entry["opened_by"] in VALID_ACTION_AUTHORS,
+            f"{where}: opened_by must be one of {sorted(VALID_ACTION_AUTHORS)} or null",
+        )
+    # When opened_by="poller", the triggered condition that caused
+    # the open should be linked by index into the source watchlist's
+    # trigger_conditions[].
+    if entry.get("triggered_condition_index") is not None:
+        _require(
+            isinstance(entry["triggered_condition_index"], int)
+            and entry["triggered_condition_index"] >= 0,
+            f"{where}: triggered_condition_index must be non-negative int or null",
+        )
     _require_list(entry, "evaluations", where)
     for i, ev in enumerate(entry["evaluations"]):
         _validate_evaluation(ev, f"{where}.evaluations[{i}]")
@@ -382,6 +519,16 @@ def _validate_watchlist_entry(entry: dict, idx: int) -> None:
     _require_list(entry, "confluence_fired", where)
     _validate_confluence_list(entry["confluence_fired"], where, "confluence_fired")
     _require_list(entry, "named_risks", where)
+    # NEW (Path B PR1): structured trigger + invalidation condition groups
+    # for the poller. Both optional — entries written before Path B don't
+    # have them, and Claude can still emit watchlist entries without
+    # structured conditions (poller just won't evaluate them).
+    _validate_condition_group(
+        entry.get("trigger_conditions"), where, "trigger_conditions",
+    )
+    _validate_condition_group(
+        entry.get("invalidation_conditions"), where, "invalidation_conditions",
+    )
 
 
 def _validate_closed_entry(entry: dict, idx: int) -> None:
@@ -416,6 +563,25 @@ def _validate_closed_entry(entry: dict, idx: int) -> None:
     _require_bool(entry, "auto_flipped", where)
     _validate_watchlist_provenance(entry.get("watchlist_provenance"), where)
     _validate_watch_conditions(entry.get("engine_watch_conditions"), where)
+    # NEW (Path B PR1): action authorship — who initiated this close?
+    if entry.get("closed_by") is not None:
+        _require(
+            entry["closed_by"] in VALID_ACTION_AUTHORS,
+            f"{where}: closed_by must be one of {sorted(VALID_ACTION_AUTHORS)} or null",
+        )
+    if entry.get("opened_by") is not None:
+        _require(
+            entry["opened_by"] in VALID_ACTION_AUTHORS,
+            f"{where}: opened_by must be one of {sorted(VALID_ACTION_AUTHORS)} or null",
+        )
+    # triggered_condition_index — when closed_by="poller", the index into
+    # the position's engine_watch_conditions[] of the trigger that fired.
+    if entry.get("triggered_condition_index") is not None:
+        _require(
+            isinstance(entry["triggered_condition_index"], int)
+            and entry["triggered_condition_index"] >= 0,
+            f"{where}: triggered_condition_index must be non-negative int or null",
+        )
 
 
 def _validate_watchlist_closed_entry(entry: dict, idx: int) -> None:

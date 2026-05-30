@@ -245,6 +245,16 @@ def apply_close(ledger: dict, closes: list) -> None:
             invalidation_breached=entry.get("invalidation_breached", False),
             return_pct=entry["return_pct"],
         )
+        # Path B PR1: action authorship for the close. Default "claude"
+        # when absent (perps-brief CLOSE op). Poller-confirmed closes
+        # (PR3) set "poller" + the triggered_condition_index identifying
+        # which engine_watch_conditions[] entry fired.
+        entry["closed_by"] = c.get("closed_by", "claude")
+        entry["triggered_condition_index"] = c.get("triggered_condition_index")
+        # opened_by carries through from the original open[] entry if set;
+        # explicit override in the close op also accepted.
+        if "opened_by" in c:
+            entry["opened_by"] = c["opened_by"]
         ledger["closed"].append(entry)
 
 
@@ -300,6 +310,11 @@ def apply_open_now(ledger: dict, opens: list) -> None:
                 "invalidation_breached": False,
                 "watchlist_provenance": None,
                 "engine_watch_conditions": list(o.get("engine_watch_conditions") or []) or None,
+                # Path B PR1: action authorship. Default "claude" when
+                # absent (perps-brief drives the open). Poller-initiated
+                # opens (PR3) set "poller" + triggered_condition_index.
+                "opened_by": o.get("opened_by", "claude"),
+                "triggered_condition_index": o.get("triggered_condition_index"),
                 "evaluations": [],
             }
 
@@ -357,6 +372,14 @@ def apply_add_watchlist(ledger: dict, adds: list) -> None:
             "confluence_fired": list(p.get("confluence_fired", [])),
             "named_risks": list(p.get("named_risks", [])),
         }
+        # Path B PR1: structured condition groups for the poller. Both
+        # optional. Accept either the structured group form
+        # {"match_mode": ..., "conditions": [...]} OR a bare list (ledger
+        # validator handles both shapes).
+        if p.get("trigger_conditions") is not None:
+            entry["trigger_conditions"] = p["trigger_conditions"]
+        if p.get("invalidation_conditions") is not None:
+            entry["invalidation_conditions"] = p["invalidation_conditions"]
         ledger["watchlist"].append(entry)
 
 
