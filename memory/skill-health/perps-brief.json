@@ -1,15 +1,11 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-30T10:47:38Z",
+  "last_analyzed": "2026-05-30T21:58:37Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured crypto trading brief with specific positions, quantified rationale, and clear decision framework; executed as designed with actionable analysis.",
+  "assessment": "Substantive portfolio brief with specific positions, entry triggers, technical rationale, and catalyst dates — well-structured and actionable for the intended trading/PM context.",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-29",
+      "score": 4
+    },
+    {
+      "date": "2026-05-30",
       "score": 4
     },
     {
