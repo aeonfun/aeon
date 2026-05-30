@@ -267,11 +267,13 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 - `confluence_fired[]` — at least one criterion from the enumerated set (logged for the ledger / track-record, NOT rendered in the operator-facing card)
 - `risks[]` — **array of 2-3 bullet strings**, non-empty. Each risk is a named, concrete concern (not "market could turn"). Same ~120 char target, 180 char cap as thesis bullets.
 - `invalidation` — **must be chartable** (price level, price + volume condition). DO NOT reference funding / OI / LSR / regime-name conditions in this field. Those go in `engine_watch_conditions` instead (structured) where the poller monitors them and alerts the operator on cross. Operator-facing UX = chartable; engine-facing analysis = structured. See Pattern 7 in `memory/topics/writing-style.md` for the full no-engine-jargon rule.
-- `engine_watch_conditions[]` — **structured array of conditions the poller will monitor** on this position's behalf. The poller (V2 work, scheduled hourly) reads these, evaluates against Coinglass cache data, and alerts the operator when any condition fires. Each entry: `{type, threshold, trigger_label, severity}`. Optional fields: `window_days` (for delta types), `window_hours` (for short-horizon types), `unit` (for cosmetic/clarity).
+- `engine_watch_conditions[]` — **structured array of conditions the poller will monitor** on this position's behalf. The poller (Path B, scheduled hourly) reads these, evaluates against Coinglass cache data, and when a condition fires it dispatches an `engine-trigger-review` skill run for Claude to confirm/defer/dismiss the implied action.
   - **Condition types:** `price_close_above`, `price_close_below`, `funding_above`, `funding_below`, `oi_change_above_pct`, `oi_change_below_pct`, `lsr_above`, `lsr_below`, `lsr_delta_above`, `lsr_delta_below`, `taker_buy_above_pct`, `taker_buy_below_pct`, `basis_above`, `basis_below`, `volume_ratio_above`
   - **Severity:** `info` (quiet alert), `warning` (default), `critical` (would change RIDE/CLOSE decision — invalidation breach, auto-flip trigger)
   - **trigger_label:** plain-English description for the alert embed, written for an operator who doesn't know the codebase. Example: `"smart money exiting on the 7d window"` not `"top_ls_delta_7d < 0"`.
-  - **Required when opening:** every NEW POSITION should have at minimum one `price_close_above` (for SHORT) or `price_close_below` (for LONG) condition matching the `invalidation` price level. This is the structured invalidation that the poller monitors. Add as many other conditions as the engine's analytical depth warrants — typically 3-5 per position.
+  - **`action`** (Path B PR1): `alert` (default — notify only), `exit` (poller should propose a CLOSE if it fires), or `enter` (only on watchlist trigger_conditions — see below).
+  - **`cooldown_minutes`** (optional, default 240 = 4h): when the poller fires this condition and Claude DEFERs, skip re-evaluation for this many minutes. Tighter cooldowns mean faster re-fire; looser means quieter.
+  - **Required when opening:** every NEW POSITION should have at minimum one `price_close_above` (for SHORT) or `price_close_below` (for LONG) condition matching the `invalidation` price level, with `action: "exit"` and `severity: "critical"`. This is the structured invalidation that the poller monitors. Add as many other conditions as the engine's analytical depth warrants — typically 3-5 per position. Use `action: "alert"` for soft watchers, `action: "exit"` for conditions that would actually cause an exit if confirmed.
 
 ## Required fields per watchlist entry
 
@@ -285,6 +287,37 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 **Optional for watchlist (include if known, omit otherwise):**
 
 - `horizon` — `24h | 3d | 7d | multi-week`. May be unknown until the trigger fires and the entry promotes to a position. Omit cleanly if you haven't committed to a horizon yet.
+
+- `trigger_conditions` (Path B PR1) — **structured version of the `trigger` string for the poller to evaluate**. The freeform `trigger` field stays as the human-readable interpretation. Two shapes accepted:
+  - Bare list: `[{type, threshold, severity, trigger_label, action: "enter"}, ...]` — all conditions must fire (implicit AND).
+  - Structured group: `{"match_mode": "all" | "any", "conditions": [...]}` — explicit logic.
+
+  Default `match_mode` is `all`. Use `any` sparingly — most setups need multiple confirmations.
+
+  Each condition uses the same shape as `engine_watch_conditions[]`. `action` should be `"enter"` for trigger conditions.
+
+  Example:
+  ```json
+  "trigger_conditions": {
+    "match_mode": "all",
+    "conditions": [
+      {"type": "price_close_above", "threshold": 0.00132,
+       "severity": "warning", "trigger_label": "breakout level",
+       "action": "enter"},
+      {"type": "volume_ratio_above", "threshold": 2.0,
+       "severity": "info", "trigger_label": "2x avg volume confirm",
+       "action": "enter"}
+    ]
+  }
+  ```
+
+  When all trigger_conditions fire, the poller dispatches `engine-trigger-review` and Claude decides whether to promote the watchlist entry to NEW POSITIONS.
+
+- `invalidation_conditions` (Path B PR1) — **structured version of the `invalidation` string**. Same shape as `trigger_conditions`. `action` should be `"drop"`.
+
+  When invalidation_conditions fire, Claude reviews and (typically) emits a `drop_watchlist` op with `reason: "invalidated"`.
+
+**Writing the structured conditions is highly encouraged.** Without them the poller can't evaluate the watchlist entry mechanically — it sits dormant until you (Claude) explicitly handle it on the next chain run. With them, the poller acts as an event-driven extension of your judgement.
 
 ## Write the structured data artifact
 
@@ -452,10 +485,10 @@ The postprocess step handles all of the above:
           "Funding could normalise without a price bid."
         ],
         "engine_watch_conditions": [
-          {"type": "price_close_above", "threshold": 0.72, "trigger_label": "invalidation breached", "severity": "critical"},
-          {"type": "funding_above",     "threshold": 0.0015, "trigger_label": "funding crowding accelerating", "severity": "warning"},
-          {"type": "lsr_below",         "threshold": 1.5, "trigger_label": "smart money unwinding the crowd", "severity": "warning"},
-          {"type": "taker_buy_above_pct", "threshold": 55, "trigger_label": "buyers stepping in — squeeze risk", "severity": "warning"}
+          {"type": "price_close_above", "threshold": 0.72, "trigger_label": "invalidation breached", "severity": "critical", "action": "exit"},
+          {"type": "funding_above",     "threshold": 0.0015, "trigger_label": "funding crowding accelerating", "severity": "warning", "action": "alert"},
+          {"type": "lsr_below",         "threshold": 1.5, "trigger_label": "smart money unwinding the crowd", "severity": "warning", "action": "exit"},
+          {"type": "taker_buy_above_pct", "threshold": 55, "trigger_label": "buyers stepping in — squeeze risk", "severity": "warning", "action": "alert"}
         ],
         "watchlist_id_promoted": null
       }
@@ -467,6 +500,16 @@ The postprocess step handles all of the above:
         "trigger": "funding extreme above +0.15%/8h with top L/S above 2.0",
         "invalidation": "close above last 7d high",
         "horizon": "3d",
+        "trigger_conditions": {
+          "match_mode": "all",
+          "conditions": [
+            {"type": "funding_above", "threshold": 0.0015, "trigger_label": "funding extreme", "severity": "warning", "action": "enter"},
+            {"type": "lsr_above",     "threshold": 2.0,    "trigger_label": "smart money crowded long", "severity": "warning", "action": "enter"}
+          ]
+        },
+        "invalidation_conditions": [
+          {"type": "price_close_above", "threshold": 0.0000095, "trigger_label": "close above 7d high", "severity": "critical", "action": "drop"}
+        ],
         "thesis": [
           "PEPE in DISTRIBUTION regime, funding has been steadily warming past the +0.06% gate.",
           "Top-trader L/S has crept up from 1.4 to 1.8 over 7 days — not yet at LONG-TRAP severity but building.",
