@@ -6,8 +6,14 @@
 #   2. Snapshot the ledger           (pre-apply backup)
 #   3. Apply ledger operations       (scripts/apply-ledger-ops.py)
 #   4. Validate ledger post-apply    (python3 -m lib.ledger)
-#   5. Split markdown into per-section pre-chunked pending files
-#   6. Bot embed delivery            (scripts/embed-perps-brief.py, V2 parallel)
+#   5. Bot embed delivery            (scripts/embed-perps-brief.py)
+#
+# Decommissioned (2026-05-30):
+#   - Webhook mono-space chunked delivery to #perps. The five-channel
+#     bot embed delivery (step 5) is the sole operator-facing output now.
+#     scripts/render-perps-brief.py still runs in step 1 because
+#     downstream chain consumers (morning-macro, daily-ops-review) read
+#     .outputs/perps-brief.md as their input.
 #
 # v4.1 changes from v4:
 #   - Step 5 splits the brief by section divider, pre-chunks each section
@@ -42,32 +48,30 @@ JSON_PATH=".outputs/perps-brief.data.json"
 MD_PATH=".outputs/perps-brief.md"
 LEDGER_PATH="memory/topics/state/active-setups.json"
 
-# CHAIN_SLOT: bucket by which 12-hour window centred on a slot midpoint
-# the current UTC time falls in:
+# CHAIN_SLOT: prefer the value set by the workflow's "Compute CHAIN_SLOT"
+# step (which runs BEFORE Claude so the brief composer can read it). Fall
+# back to local computation if invoked outside the workflow.
 #
-#   AM slot midpoint = 00:00 UTC → bucket = 18:00-06:00 UTC (wraps midnight)
-#   PM slot midpoint = 12:00 UTC → bucket = 06:00-18:00 UTC
+# Bucketing rule (must match aeon.yml's Compute CHAIN_SLOT step):
+#   18:00-06:00 UTC → AM slot
+#   06:00-18:00 UTC → PM slot
 #
 # Why the wider 6-hour bucket on each side instead of simple noon bisection:
 # crons in chain-runner.yml are shifted 3h30m earlier (20:30 + 08:30 UTC)
 # to compensate for GitHub Actions' fork-throttle delay. With measured
-# variance of ±1h42m, AM runs can land anywhere in 22:57-00:39 UTC —
-# straddling midnight. Simple `HOUR < 12 → am` would misclassify any AM
-# run that lands at 22:xx UTC the prior calendar day as "pm".
-#
-# Manual triggers (workflow_dispatch) anywhere in the day also bucket
-# correctly to whichever slot midpoint they're nearest.
-#
-# Used to disambiguate twice-daily artifacts: ledger snapshot filename,
-# evaluation entries, and bot embed footer tags. Computed once here and
-# exported so all downstream Python scripts share the same value.
-HOUR_UTC=$(date -u +%H)
-if [ "$HOUR_UTC" -ge 18 ] || [ "$HOUR_UTC" -lt 6 ]; then
-  export CHAIN_SLOT=am
+# variance of ±1h42m, AM runs can land in 22:57-00:39 UTC — straddling
+# midnight. The wider bucket handles this correctly.
+if [ -z "${CHAIN_SLOT:-}" ]; then
+  HOUR_UTC=$(date -u +%H)
+  if [ "$HOUR_UTC" -ge 18 ] || [ "$HOUR_UTC" -lt 6 ]; then
+    export CHAIN_SLOT=am
+  else
+    export CHAIN_SLOT=pm
+  fi
+  echo "postprocess-perps-brief: chain slot computed locally = $CHAIN_SLOT (UTC hour $HOUR_UTC)"
 else
-  export CHAIN_SLOT=pm
+  echo "postprocess-perps-brief: chain slot from workflow env = $CHAIN_SLOT"
 fi
-echo "postprocess-perps-brief: chain slot = $CHAIN_SLOT (UTC hour $HOUR_UTC)"
 
 if [ ! -f "$JSON_PATH" ]; then
   echo "postprocess-perps-brief: $JSON_PATH not present, skipping"
@@ -127,197 +131,23 @@ if [ -f "$LEDGER_PATH" ]; then
   fi
 fi
 
-# Step 5 — Section-split + pre-chunk + write pending files
-echo "postprocess-perps-brief: step 5/5 — section-split + pre-chunk to pending"
-
-if [ ! -s "$MD_PATH" ]; then
-  echo "postprocess-perps-brief: $MD_PATH is empty after render, nothing to notify"
-  exit 0
-fi
-
-python3 - "$MD_PATH" <<'PY'
-"""Split perps-brief markdown into pre-chunked, code-block-wrapped Discord
-messages and write each as a unique pending file.
-
-Section boundaries: ───── NAME ───── divider lines (9-char dashes).
-
-Title (any lines before the first divider) is merged into the first section
-so the title rides with MARKET SENTIMENT.
-
-Per-section chunking: each section's content + code-block wrapper must fit
-in 1900 bytes (Discord webhook limit is 2000; we leave headroom). When a
-section exceeds 1900 bytes, split at trade-block boundaries (blank lines
-after the section header). Continuation chunks get "(cont.)" appended to
-the section header for visual continuity.
-
-Each chunk gets its own pending file named perps-brief-<ts>-<seq>.signal.md
-to avoid the pending-filename collision in ./notify (same-second sends
-overwrite each other when ./notify is the writer).
-"""
-
-import sys
-import os
-import time
-from pathlib import Path
-
-MAX_CHUNK_BYTES = 1900  # Discord cap 2000; leave 100 for safety
-WRAPPER_OVERHEAD = 8     # ```\n + \n```
-DIV = "─" * 9
-
-
-def is_divider(line: str) -> bool:
-    return line.startswith(DIV) and line.rstrip().endswith(DIV)
-
-
-def split_sections(lines: list[str]) -> list[list[str]]:
-    """Split markdown lines into sections.
-
-    Pre-first-divider content (e.g., title) is merged into the first section
-    so the title rides with MARKET SENTIMENT instead of being its own
-    orphan message.
-    """
-    sections: list[list[str]] = []
-    current: list[str] = []
-    first_divider_seen = False
-    for line in lines:
-        if is_divider(line):
-            if current and first_divider_seen:
-                sections.append(current)
-                current = []
-            first_divider_seen = True
-        current.append(line)
-    if current:
-        sections.append(current)
-    return sections
-
-
-def chunk_section(section: list[str], max_bytes: int) -> list[str]:
-    """Split a single section into chunks that fit in max_bytes (including
-    code-block wrapper). Splits on trade-block boundaries (blank lines).
-    """
-    full = "\n".join(section)
-    # Reserve wrapper overhead
-    budget = max_bytes - WRAPPER_OVERHEAD
-    if len(full) <= budget:
-        return [full]
-
-    # Find the section header (first divider line)
-    header_idx = None
-    for i, line in enumerate(section):
-        if is_divider(line):
-            header_idx = i
-            break
-
-    if header_idx is None:
-        # No divider — preamble-only section. Shouldn't happen with merge
-        # logic above, but fall back to hard split.
-        return [full[i:i + budget] for i in range(0, len(full), budget)]
-
-    preamble = section[:header_idx]               # title lines, if first section
-    header = section[header_idx]
-    cont_header = header.rstrip().replace(
-        "  " + DIV, " (cont.)  " + DIV, 1
-    )
-    body = section[header_idx + 1:]
-
-    # Split body into blocks by blank-line separator
-    blocks: list[list[str]] = []
-    cur: list[str] = []
-    for line in body:
-        if line.strip() == "":
-            if cur:
-                blocks.append(cur)
-                cur = []
-        else:
-            cur.append(line)
-    if cur:
-        blocks.append(cur)
-
-    # Greedy-pack blocks into chunks
-    chunks: list[str] = []
-    chunk_lines: list[str] = list(preamble) + ([""] if preamble else []) + [header, ""]
-    chunk_size = sum(len(l) + 1 for l in chunk_lines)
-    is_first_chunk = True
-
-    for block in blocks:
-        block_text = "\n".join(block)
-        block_size = len(block_text) + 2  # block + trailing blank line
-
-        if chunk_size + block_size > budget and any(
-            l.strip() for l in chunk_lines[header_idx + 1 if is_first_chunk else 1 :]
-        ):
-            # Flush current chunk
-            chunks.append("\n".join(chunk_lines).rstrip())
-            # Start new chunk with cont header
-            chunk_lines = [cont_header, ""]
-            chunk_size = sum(len(l) + 1 for l in chunk_lines)
-            is_first_chunk = False
-
-        chunk_lines.extend(block)
-        chunk_lines.append("")
-        chunk_size += block_size
-
-    # Flush remainder
-    if any(l.strip() for l in chunk_lines):
-        chunks.append("\n".join(chunk_lines).rstrip())
-
-    return chunks
-
-
-def main():
-    md_path = Path(sys.argv[1])
-    md = md_path.read_text()
-    lines = md.splitlines()
-
-    sections = split_sections(lines)
-
-    os.makedirs(".pending-notify", exist_ok=True)
-    ts = int(time.time())
-    seq = 0
-    chunks_written = 0
-
-    for sec in sections:
-        chunks = chunk_section(sec, MAX_CHUNK_BYTES)
-        for chunk in chunks:
-            if not chunk.strip():
-                continue
-            wrapped = "```\n" + chunk + "\n```"
-            seq += 1
-            fname = f".pending-notify/perps-brief-{ts}-{seq:03d}.signal.md"
-            Path(fname).write_text(wrapped)
-            print(
-                f"postprocess-perps-brief: queued {fname} "
-                f"({len(wrapped)} bytes content + wrapper)"
-            )
-            chunks_written += 1
-
-    print(
-        f"postprocess-perps-brief: wrote {chunks_written} pending file(s) "
-        f"across {len(sections)} section(s)"
-    )
-
-
-if __name__ == "__main__":
-    main()
-PY
-
-# Step 6 — Bot embed delivery (V2 parallel path)
-# Posts structured embeds to the per-section channels (#perps-context,
-# #perps-positions, #perps-signals, #perps-watchlist, #perps-outcomes)
-# ALONGSIDE the existing webhook delivery above. The two paths target
-# non-overlapping channels — no duplicate messages.
+# Step 5 — Bot embed delivery (sole operator-facing output)
+#
+# Posts structured embeds to the per-section channels via the Stage 3
+# edit-in-place driver. The legacy webhook mono-space chunked delivery
+# was decommissioned 2026-05-30 — those embeds are the only path now.
 #
 # Gating:
 #   - DISCORD_BOT_TOKEN unset AND DISCORD_BOT_DRY_RUN unset → skip entirely
-#   - DISCORD_BOT_DRY_RUN=1 → run in dry-run (prints embed JSON to stderr,
+#   - DISCORD_BOT_DRY_RUN=1 → dry-run (prints embed JSON to stderr,
 #     no API calls). Use to preview embeds in workflow logs without
 #     touching live channels.
-#   - DISCORD_BOT_TOKEN set → live POST to Discord.
+#   - DISCORD_BOT_TOKEN set → live POST/EDIT/DELETE on Discord.
 #
-# Failure is best-effort: the bot path is parallel; if it errors, the
-# webhook delivery above has already happened, so the operator still
-# gets the brief. We log a warning and exit 0.
-echo "postprocess-perps-brief: step 6/6 — bot embed delivery (V2 parallel)"
+# Failure is best-effort: log a warning and exit 0. The brief artifact
+# (.outputs/perps-brief.md) is still on disk for downstream chain
+# consumers regardless of whether bot delivery succeeded.
+echo "postprocess-perps-brief: step 5/5 — bot embed delivery"
 
 if [ ! -f "scripts/embed-perps-brief.py" ]; then
   echo "postprocess-perps-brief: embed-perps-brief.py missing — skipping bot delivery"
@@ -334,4 +164,4 @@ else
   fi
 fi
 
-echo "postprocess-perps-brief: done. Section pending files written; post-run notify step will deliver each."
+echo "postprocess-perps-brief: done."

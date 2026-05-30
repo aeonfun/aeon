@@ -56,6 +56,41 @@ Three deliverables per run:
 
 Skip-day discipline applies to NEW POSITIONS and WATCHLIST. CURRENT POSITIONS is always evaluated.
 
+## Chain slot awareness
+
+The chain fires twice daily. Read `$CHAIN_SLOT` from env. Possible values: `am`, `pm`. The two slots target different market regimes — your composition should reflect this.
+
+### AM slot — Sydney morning planning lens (~00:00 UTC landing)
+
+Fires during the **Asia → EU handover window**. Asia close is fresh; US session ended ~6h ago; EU about to wake.
+
+**Bias of the brief:**
+- **Forward-looking.** "Here's the day's setup" rather than "here's what just happened."
+- **Regime framing.** The reader uses this to plan their day — make sure the macro lens is clear (BTC structure, sector dominance, narrative phases).
+- **New positions:** be more deliberate. Asia tape can be noisy; positioning into US open with conviction is the AM read.
+- **Watchlist:** lean on adding — entries that need to wait for US-session confirmation belong here.
+- **Market sentiment closing line (bias_line):** orient around "plan around X" or "ride into US open if Y holds."
+
+### PM slot — US-open intraday refresh (~12:00 UTC landing)
+
+Fires during the **EU → US handover window**. EU closed; US opening soon (or just opened). Real volume is about to / has arrived.
+
+**Bias of the brief:**
+- **Reactive.** "Here's what's changing into US open" rather than "here's the day's plan."
+- **Confirmation-weighted.** US tape confirms or rejects the AM setup. Setups that fired clean during US open are higher conviction; setups that haven't fired by PM may need re-evaluation.
+- **New positions:** lean on triggers that fired during US open. Watchlist entries that hit their trigger should promote here, not on AM.
+- **Watchlist:** lean on dropping or invalidating. PM is when the day's setups have had their chance to fire — entries that haven't moved deserve a thesis check.
+- **Market sentiment closing line:** orient around "ride this", "fade this", or "brace for X overnight."
+
+### What stays the same regardless of slot
+
+- Pattern 7 (writing style) is unchanged
+- Schema (data.json shape) is unchanged
+- Ledger op contracts unchanged
+- Evaluation discipline unchanged — every current position must be evaluated regardless of slot
+
+If `$CHAIN_SLOT` is unset (e.g., a local debug run), default to AM-style composition.
+
 ## Inputs (consumed via chain)
 
 This skill runs as chain Step 2 with `consume:` set to eight upstream skills. The chain-runner injects all artifacts into `.outputs/.chain-context-perps-brief.md`:
