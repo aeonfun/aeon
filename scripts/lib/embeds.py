@@ -416,12 +416,89 @@ def compose_watchlist(p: dict, chain_run_id: str = "", slot: str = "") -> dict:
     }
 
 
+def _outcome_color_emoji_label(outcome: str) -> tuple[int, str, str]:
+    """Map an outcome enum to (color, emoji, display_label)."""
+    if outcome == "WIN":
+        return COLORS["WIN"], "✅", "WIN"
+    if outcome == "LOSS":
+        return COLORS["LOSS"], "❌", "LOSS"
+    if outcome == "SCARE":
+        return COLORS["SCARE"], "⚠️", "WIN-WITH-SCARE"
+    return COLORS["NEUTRAL_CLOSE"], "➖", "NEUTRAL"
+
+
+def _summarise_journey(closed_entry: dict) -> str:
+    """Compose a one-paragraph summary of the trade arc from MAE/MFE
+    timing and notable evaluation notes. Used in the beefed-up outcome
+    embed to preserve the trade story that's lost when the 24h cleanup
+    deletes the CURRENT POSITION embed.
+    """
+    parts: list[str] = []
+    mae = closed_entry.get("mae_pct")
+    mfe = closed_entry.get("mfe_pct")
+    mae_date = closed_entry.get("mae_date")
+    mfe_date = closed_entry.get("mfe_date")
+    fired_date = closed_entry.get("fired_date")
+    if mae is not None and mae_date:
+        try:
+            d = (
+                datetime.fromisoformat(mae_date).date()
+                - datetime.fromisoformat(fired_date).date()
+            ).days + 1
+            parts.append(f"Worst drawdown {fmt_pct(mae)} on day {d}.")
+        except (ValueError, TypeError):
+            parts.append(f"Worst drawdown {fmt_pct(mae)}.")
+    if mfe is not None and mfe_date:
+        try:
+            d = (
+                datetime.fromisoformat(mfe_date).date()
+                - datetime.fromisoformat(fired_date).date()
+            ).days + 1
+            parts.append(f"Peak gain {fmt_pct(mfe)} on day {d}.")
+        except (ValueError, TypeError):
+            parts.append(f"Peak gain {fmt_pct(mfe)}.")
+
+    evals = closed_entry.get("evaluations") or []
+    n_evals = len(evals)
+    n_ride = sum(1 for e in evals if (e or {}).get("call") == "RIDE")
+    if n_evals:
+        parts.append(f"{n_ride}/{n_evals} evals carried RIDE.")
+    return " ".join(parts)
+
+
+def _notable_evals(closed_entry: dict, n: int = 2) -> list[str]:
+    """Pick a small number of evaluation notes most likely to be informative
+    — preferring the most recent evals + ones that flagged invalidation.
+    Used in the beefed-up outcome embed."""
+    evals = closed_entry.get("evaluations") or []
+    if not evals:
+        return []
+    # Prefer evals that flagged a breach, then the most recent ones
+    breach_evals = [e for e in evals if (e or {}).get("invalidation_breached_today")]
+    rest = [e for e in evals if not (e or {}).get("invalidation_breached_today")]
+    picked = breach_evals + list(reversed(rest))
+    out: list[str] = []
+    seen: set[str] = set()
+    for e in picked[: n + 2]:  # over-pick then dedupe
+        note = (e.get("note") or "").strip()
+        if not note or note in seen:
+            continue
+        seen.add(note)
+        date_label = fmt_date_short(e.get("date", ""))
+        out.append(f"_{date_label}_: {note}")
+        if len(out) >= n:
+            break
+    return out
+
+
 def compose_outcome(closed_entry: dict, chain_run_id: str = "", slot: str = "") -> dict:
     """One embed per closed trade. Posted to #outcomes when CLOSE fires.
 
-    Takes a closed[] ledger entry (or the equivalent shape from
-    current_positions with call=CLOSE), produces a celebratory or
-    cautionary embed depending on outcome.
+    Carries the FULL trade arc — watchlist provenance (if applicable),
+    MAE/MFE timing, evaluation journey summary, and notable per-day
+    notes. The 24h cleanup deletes the CURRENT POSITION embed in
+    #perps-positions after close, so the OUTCOME embed in #perps-outcomes
+    is the permanent record of the trade.
     """
     ticker = closed_entry.get("ticker") or closed_entry.get("asset", "?")
     direction = closed_entry.get("direction", "?")
@@ -438,34 +515,39 @@ def compose_outcome(closed_entry: dict, chain_run_id: str = "", slot: str = "") 
     close_reason = closed_entry.get("close_reason") or closed_entry.get("thesis_note", "")
     confluence = closed_entry.get("confluence_fired", [])
     auto_flipped = closed_entry.get("auto_flipped", False)
+    watchlist_prov = closed_entry.get("watchlist_provenance") or {}
 
-    # Color + emoji by outcome
-    if outcome == "WIN":
-        color = COLORS["WIN"]
-        emoji = "✅"
-        label = "WIN"
-    elif outcome == "LOSS":
-        color = COLORS["LOSS"]
-        emoji = "❌"
-        label = "LOSS"
-    elif outcome == "SCARE":
-        color = COLORS["SCARE"]
-        emoji = "⚠️"
-        label = "WIN-WITH-SCARE"
-    else:
-        color = COLORS["NEUTRAL_CLOSE"]
-        emoji = "➖"
-        label = "NEUTRAL"
+    color, emoji, label = _outcome_color_emoji_label(outcome)
 
     title = f"CLOSED · {ticker} {direction} · {label}"
     if auto_flipped:
         title += " (auto-flip)"
 
-    # Compose fields
-    fields = [
+    # Compose fields — Watched (from provenance) goes in the top row when
+    # we have it, providing the "lifecycle" view the operator wants.
+    fields: list[dict] = []
+    days_watched = watchlist_prov.get("days_on_watchlist")
+    if days_watched is not None:
+        fields.append({
+            "name": "Watched",
+            "value": f"**{int(days_watched)}d**\nbefore entry",
+            "inline": True,
+        })
+    else:
+        fields.append({
+            "name": "Watched",
+            "value": "—\ndirect entry",
+            "inline": True,
+        })
+    fields.extend([
         {
             "name": "Held",
-            "value": f"{horizon_realized}\nhorizon {horizon}",
+            "value": f"**{horizon_realized}**\nhorizon {horizon}",
+            "inline": True,
+        },
+        {
+            "name": "Outcome",
+            "value": f"**{label}** {emoji}",
             "inline": True,
         },
         {
@@ -476,6 +558,98 @@ def compose_outcome(closed_entry: dict, chain_run_id: str = "", slot: str = "") 
         {
             "name": "vs BTC",
             "value": f"**{fmt_pct(return_vs_btc)}**\nvs BTC",
+            "inline": True,
+        },
+        {
+            "name": "vs ETH" if return_vs_eth is not None else "MAE / MFE",
+            "value": (
+                f"**{fmt_pct(return_vs_eth)}**\nvs ETH"
+                if return_vs_eth is not None
+                else f"{fmt_pct(mae)} / {fmt_pct(mfe)}"
+            ),
+            "inline": True,
+        },
+    ])
+    # When vs ETH took the slot, add MAE/MFE on a second row
+    if return_vs_eth is not None:
+        fields.append({
+            "name": "MAE / MFE",
+            "value": f"{fmt_pct(mae)} / {fmt_pct(mfe)}",
+            "inline": True,
+        })
+
+    # Beefed-up description: close reason + trade journey + notable evals
+    desc_parts: list[str] = []
+    if close_reason:
+        desc_parts.append(f"**Close reason:** {close_reason}")
+    journey = _summarise_journey(closed_entry)
+    if journey:
+        desc_parts.append(f"**Trade journey:** {journey}")
+    notables = _notable_evals(closed_entry, n=2)
+    if notables:
+        desc_parts.append("**Notable evaluations**\n" + "\n".join(notables))
+    if watchlist_prov.get("original_trigger"):
+        desc_parts.append(
+            f"**Watchlist origin:** {watchlist_prov['original_trigger']}"
+        )
+    if confluence:
+        desc_parts.append(f"**Confluence:** {', '.join(confluence)}")
+    description = "\n\n".join(desc_parts)[:4096]
+
+    footer_text = f"Fired {fired_date} · Closed {closed_date}" + _slot_suffix(slot)
+
+    return {
+        "color": color,
+        "author": {"name": "OUTCOME"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "footer": _footer(footer_text),
+        "timestamp": _now_iso(),
+    }
+
+
+def compose_closed_position(
+    closed_entry: dict, chain_run_id: str = "", slot: str = ""
+) -> dict:
+    """Terminal-state version of the CURRENT POSITION embed.
+
+    Used to edit the existing in-channel CURRENT POSITION embed when a
+    position closes, before the 24h cleanup deletes it from
+    #perps-positions. Preserves the position-card visual shape (so the
+    operator's eye doesn't lose its place) but transitions to the
+    outcome colour + adds a CLOSED indicator.
+    """
+    ticker = closed_entry.get("ticker") or closed_entry.get("asset", "?")
+    direction = closed_entry.get("direction", "?")
+    outcome = closed_entry.get("outcome", "NEUTRAL")
+    return_pct = closed_entry.get("return_pct")
+    return_vs_btc = closed_entry.get("return_vs_btc_pct")
+    mae = closed_entry.get("mae_pct")
+    mfe = closed_entry.get("mfe_pct")
+    horizon = closed_entry.get("horizon", "?")
+    horizon_realized = closed_entry.get("horizon_realized", "?")
+    closed_date = fmt_date_short(closed_entry.get("closed_date", _now_iso()[:10]))
+    close_reason = closed_entry.get("close_reason", "")
+
+    color, emoji, label = _outcome_color_emoji_label(outcome)
+
+    title = f"CLOSED · {ticker} {direction} · {label} {emoji}"
+
+    fields = [
+        {
+            "name": "Held",
+            "value": f"**{horizon_realized}**\nhorizon {horizon}",
+            "inline": True,
+        },
+        {
+            "name": "Return",
+            "value": f"**{fmt_pct(return_pct)}**\nvs entry",
+            "inline": True,
+        },
+        {
+            "name": "vs BTC",
+            "value": f"**{fmt_pct(return_vs_btc)}**",
             "inline": True,
         },
         {
@@ -494,23 +668,114 @@ def compose_outcome(closed_entry: dict, chain_run_id: str = "", slot: str = "") 
             "inline": True,
         },
     ]
-    if return_vs_eth is not None:
-        # Add as a 4th-row field if present
-        pass  # keeping the embed simple; eth comparison is rare in our briefs
 
-    description_parts = []
+    desc_parts = []
     if close_reason:
-        description_parts.append(f"**Close reason:** {close_reason}")
-    if confluence:
-        confluence_str = ", ".join(confluence)
-        description_parts.append(f"**Confluence that fired:** {confluence_str}")
-    description = "\n\n".join(description_parts)[:4096]
+        desc_parts.append(f"**Close reason:** {close_reason}")
+    desc_parts.append(
+        "_This card will be removed in 24h — full outcome record is "
+        "in #perps-outcomes._"
+    )
+    description = "\n\n".join(desc_parts)[:4096]
 
-    footer_text = f"Fired {fired_date} · Closed {closed_date}" + _slot_suffix(slot)
+    footer_text = f"Closed {closed_date}" + _slot_suffix(slot)
 
     return {
         "color": color,
-        "author": {"name": "OUTCOME"},
+        "author": {"name": "CLOSED POSITION"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "footer": _footer(footer_text),
+        "timestamp": _now_iso(),
+    }
+
+
+# Watchlist terminal-state composers — used to edit the existing watchlist
+# embed when an entry exits the active list (promoted, invalidated,
+# decayed, or stale). The driver queues the message for 24h delete after.
+
+WATCHLIST_TERMINAL_BADGES = {
+    "promoted":       ("PROMOTED",     "🟢", "WIN"),
+    "invalidated":    ("INVALIDATED",  "❌", "LOSS"),
+    "thesis_decayed": ("DROPPED",      "➖", "NEUTRAL_CLOSE"),
+    "stale":          ("DROPPED · stale", "➖", "NEUTRAL_CLOSE"),
+}
+
+
+def compose_watchlist_terminal(
+    watchlist_closed_entry: dict,
+    chain_run_id: str = "",
+    slot: str = "",
+    promoted_signal_link: str = "",
+) -> dict:
+    """Terminal-state version of the WATCHLIST embed.
+
+    Used to edit the existing in-channel WATCHLIST embed when a watchlist
+    entry exits (promoted to position / invalidated / dropped / stale).
+    Carries Claude's close_note so the operator can see the reasoning
+    before the 24h cleanup deletes the embed.
+    """
+    ticker = watchlist_closed_entry.get("asset", "?")
+    direction = watchlist_closed_entry.get("direction", "?")
+    days_watched = watchlist_closed_entry.get("days_on_watchlist", "?")
+    reason = watchlist_closed_entry.get("close_reason", "stale")
+    note = watchlist_closed_entry.get("close_note", "")
+    promoted_to_open_id = watchlist_closed_entry.get("promoted_to_open_id")
+    closed_date = fmt_date_short(
+        watchlist_closed_entry.get("closed_date", _now_iso()[:10])
+    )
+
+    badge_label, badge_emoji, color_key = WATCHLIST_TERMINAL_BADGES.get(
+        reason,
+        ("EXITED", "—", "NEUTRAL_CLOSE"),
+    )
+    color = COLORS[color_key]
+
+    title = f"{ticker} · {direction} · {badge_label} {badge_emoji}"
+
+    fields: list[dict] = [
+        {
+            "name": "Watched",
+            "value": f"**{days_watched}d**\nbefore exit",
+            "inline": True,
+        },
+        {
+            "name": "Exit",
+            "value": f"**{badge_label}**",
+            "inline": True,
+        },
+        {
+            "name": "Exited",
+            "value": closed_date,
+            "inline": True,
+        },
+    ]
+    if reason == "promoted" and promoted_to_open_id:
+        fields.append({
+            "name": "Promoted to",
+            "value": (
+                f"[{promoted_to_open_id}]({promoted_signal_link})"
+                if promoted_signal_link
+                else f"`{promoted_to_open_id}`"
+            ),
+            "inline": False,
+        })
+
+    desc_parts: list[str] = []
+    if note:
+        desc_parts.append(f"**{badge_label}:** {note}")
+    desc_parts.append(
+        "_This card will be removed in 24h — full outcome data is "
+        "preserved in the ledger._"
+    )
+    description = "\n\n".join(desc_parts)[:4096]
+
+    footer_text = f"Exited {closed_date}" + _slot_suffix(slot)
+
+    return {
+        "color": color,
+        "author": {"name": f"WATCHLIST · {badge_label}"},
         "title": title,
         "description": description,
         "fields": fields,
