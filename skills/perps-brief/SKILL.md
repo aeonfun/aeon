@@ -88,6 +88,21 @@ For each entry in `ledger.open[]`:
    - Did the daily close cross the invalidation level today?
 3. Decide: `RIDE` or `CLOSE`.
 4. If `CLOSE`: compute return vs entry, vs BTC, vs ETH (using current BTC/ETH prices from `market-context-refresh`). Set `close_reason`.
+
+   **`close_reason` quality matters.** The CURRENT POSITION embed in `#perps-positions` gets removed 24h after close — the OUTCOME embed in `#perps-outcomes` is the permanent record of the trade. Operators reviewing past trades have ONLY the outcome embed to work from.
+
+   The outcome composer synthesizes a `Trade journey` summary from MAE/MFE timing and pulls the top 1-2 most informative `evaluations[].note` strings into a `Notable evaluations` section. Your `close_reason` should be the headline takeaway in one sentence — the *why* of the close, not a play-by-play of price action (the trade journey covers that).
+
+   Good close reasons:
+   - `Horizon reached at peak narrative extension — funding fully repriced, OI extension exhausted, take profit before mean reversion.`
+   - `Daily close breached the invalidation level on 2× volume; thesis broken, exit at market.`
+   - `Auto-flipped to opposite direction — sector regime transitioned from RIDE LONG to RIDE SHORT after dominance flip in market-context-refresh.`
+
+   Bad close reasons:
+   - `Closed.` (says nothing)
+   - `Time to exit.` (no reason given)
+   - `Day 7.` (mechanical, lacks the *why*)
+
 5. If `RIDE`: name the current condition the operator should watch.
 6. **Record today's price snapshot** in the evaluation: `price_at_eval`, `todays_high`, `todays_low`. The apply script uses these to update MAE/MFE.
 7. **Record invalidation breach if applicable.** If today's daily close crossed the invalidation level, set `invalidation_breached_today: true` in the evaluation entry. This is sticky on the ledger entry (once true, stays true). Drives the SCARE outcome later.
