@@ -11,8 +11,12 @@
 
 set -euo pipefail
 
-if [ "${SKILL_NAME:-}" != "judgement-audit" ]; then
-  echo "prefetch-judgement-audit: skipping (SKILL_NAME='${SKILL_NAME:-}', not judgement-audit)"
+# The aeon.yml prefetch loop passes the skill name as $1 (positional arg).
+# Other prefetch scripts in this repo follow the same convention.
+SKILL="${1:-${SKILL_NAME:-}}"
+
+if [ "$SKILL" != "judgement-audit" ]; then
+  echo "prefetch-judgement-audit: skipping (skill='$SKILL', not judgement-audit)"
   exit 0
 fi
 
