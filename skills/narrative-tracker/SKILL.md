@@ -101,13 +101,14 @@ For each narrative, flag if the story itself is moving outcomes:
 
 Only flag explicit cases with a concrete example. "Reflexivity" without evidence is hand-waving.
 
-### 5. Write artifact + notify (v2 locked format)
+### 5. Write artifact (v2 locked format)
 
-This is a **signal** skill under Aeon Market Stack v2. It writes both:
-1. `.outputs/narrative-tracker.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
-2. A Discord-only notification via `./notify --signal "..."` routed to `#narratives`.
+This is a **chain-consumed** artifact under Aeon Market Stack v2. It writes:
+- `.outputs/narrative-tracker.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
 
-**CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/narrative-tracker.md` (and the notification payload) is the **locked-format text shown below — and only that text**. It is NOT the assistant's end-of-task `## Summary` block, NOT a description of what you did, NOT prose narration of the result. Compose the locked-format payload into a string FIRST, write that string to the file and pass it to `./notify`, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
+**Discord delivery was decommissioned 2026-05-30.** The narrative-tracker output is now consume-only — downstream skills read the artifact for their own context; nothing is broadcast directly to Discord. A dedicated `#narratives` channel with edit-in-place embeds is planned as a follow-up (operator discussion pending) but is NOT in scope of this skill yet.
+
+**CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/narrative-tracker.md` is the **locked-format text shown below — and only that text**. It is NOT the assistant's end-of-task `## Summary` block, NOT a description of what you did, NOT prose narration of the result. Compose the locked-format payload into a string FIRST, write that string to the file, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
 
 **Format (used identically for both artifact and notification, under 4000 chars):**
 
@@ -160,11 +161,7 @@ Changes since yesterday:
 Narratives · ${today} · map unchanged from ${last_date}
 ```
 
-**Invocation:**
-```bash
-./notify --signal "$(cat .outputs/narrative-tracker.md)"
-```
-The `--signal` flag suppresses Telegram; Discord routing via `DISCORD_WEBHOOK_MAP[narrative-tracker]` targets `#narratives`.
+**Invocation:** none required for Discord delivery — it was decommissioned 2026-05-30. Just write the artifact at `.outputs/narrative-tracker.md`. The Aeon workflow's auto-commit step persists it to the repo; downstream skills read it from there.
 
 ### 6. Log to `memory/logs/${today}.md`
 
