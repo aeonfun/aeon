@@ -1,8 +1,39 @@
 {
   "schema_version": "v1",
-  "last_updated": null,
-  "market_sentiment": null,
-  "open": {},
-  "watchlist": {},
+  "last_updated": "2026-05-30T03:51:16Z",
+  "market_sentiment": {
+    "message_id": "1510050677127254066",
+    "posted_at_utc": "2026-05-30T03:51:16Z",
+    "posted_date": "2026-05-29",
+    "slot": ""
+  },
+  "open": {
+    "XLM-2026-05-28-001": {
+      "message_id": "1510050684890910911",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    },
+    "SEI-2026-05-27-001": {
+      "message_id": "1510050683871559780",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    },
+    "ICP-2026-05-27-001": {
+      "message_id": "1510050682483511296",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    },
+    "EIGEN-2026-05-24-001": {
+      "message_id": "1510050679820128296",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    }
+  },
+  "watchlist": {
+    "ZEC-watchlist-2026-05-27-001": {
+      "message_id": "1510050689039208599",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    },
+    "HYPE-watchlist-2026-05-29-002": {
+      "message_id": "1510050687373938780",
+      "posted_at_utc": "2026-05-30T03:51:16Z"
+    }
+  },
   "stale_cleanup": []
 }
