@@ -36,6 +36,7 @@ COLORS = {
     "WATCHLIST":     0xbf953f,   # muted gold — pending trigger
     "CONTEXT":       0x445566,   # deep blue-grey — market sentiment
     "WEEKLY":        0x6a5acd,   # royal purple — weekly summary
+    "AUDIT":         0x375a7f,   # steel blue — judgement audit
 }
 
 
@@ -847,5 +848,272 @@ def compose_weekly_summary(
         "title": f"Track Record · since V1 lock ({since})",
         "fields": fields,
         "footer": _footer(f"V1 sample n={n_closed}" + _slot_suffix(slot)),
+        "timestamp": _now_iso(),
+    }
+
+
+# ---------------------------------------------------------------------------
+# Judgement audit — V2 validation layer
+#
+# Renders the output of scripts/lib/audit.py as a single embed for
+# #perps-outcomes. Designed to be operator-readable at a glance, with
+# the most discriminating data surfaced first.
+
+
+def _fmt_pct_field(p, dash: str = "—") -> str:
+    """Render a percentage with no sign for stat fields."""
+    if p is None:
+        return dash
+    try:
+        return f"{float(p):.1f}%"
+    except (ValueError, TypeError):
+        return dash
+
+
+def _fmt_n(n) -> str:
+    if n is None:
+        return "—"
+    try:
+        return f"{int(n)}"
+    except (ValueError, TypeError):
+        return "—"
+
+
+def compose_judgement_audit(
+    stats: dict,
+    window: str = "30d",
+    chain_run_id: str = "",
+    slot: str = "",
+    narrative: str = "",
+    insights: Optional[list] = None,
+) -> dict:
+    """One embed per judgement audit run. Posted to #perps-outcomes.
+
+    Args:
+        stats: full stats artifact (dict with 'windows' keyed by window name)
+        window: which window to feature (default '30d'). Must exist in stats.
+        narrative: optional Claude-written synthesis paragraph
+        insights: optional list of Claude-identified insights
+
+    Layout:
+        Headline metrics (inline fields): n closed, win rate, avg return,
+        best/worst, max drawdown.
+        Description: narrative paragraph (if provided) + insights list.
+        Long-form fields: by_direction, by_horizon, top criteria by edge,
+        watchlist funnel summary.
+    """
+    windows = stats.get("windows") or {}
+    w_stats = windows.get(window) or {}
+    if not w_stats:
+        # Fall back to any available window
+        w_stats = next(iter(windows.values()), {})
+        if not w_stats:
+            return {
+                "color": COLORS["AUDIT"],
+                "title": "Judgement Audit · no data",
+                "description": "No closed trades within the audit window.",
+                "timestamp": _now_iso(),
+            }
+
+    headline = w_stats.get("headline", {})
+    by_dir = w_stats.get("by_direction", {})
+    by_hor = w_stats.get("by_horizon", {})
+    by_crit = w_stats.get("by_criterion", []) or []
+    wl_funnel = w_stats.get("watchlist_funnel", {})
+    auto_flips = w_stats.get("auto_flips", {})
+    time_to = w_stats.get("time_to_outcome", {})
+
+    since = w_stats.get("since") or "—"
+    to = w_stats.get("to") or "—"
+
+    n_closed = headline.get("n_closed", 0)
+    win_rate = headline.get("win_rate_pct")
+    clean_win_rate = headline.get("clean_win_rate_pct")
+    avg_return = headline.get("avg_return_pct")
+    avg_return_btc = headline.get("avg_return_vs_btc_pct")
+    max_dd = headline.get("max_drawdown_pct")
+    best = headline.get("best_trade") or {}
+    worst = headline.get("worst_trade") or {}
+
+    title = f"Judgement Audit · {window} window · n={n_closed}"
+
+    # --- Headline metrics (inline fields)
+    fields: list[dict] = [
+        {
+            "name": "Closed",
+            "value": f"**{n_closed}**\ntrades",
+            "inline": True,
+        },
+        {
+            "name": "Win rate",
+            "value": (
+                f"**{_fmt_pct_field(win_rate)}**\n"
+                f"clean {_fmt_pct_field(clean_win_rate)}"
+            ),
+            "inline": True,
+        },
+        {
+            "name": "Avg return",
+            "value": (
+                f"**{fmt_pct(avg_return)}**\nvs entry\n"
+                f"{fmt_pct(avg_return_btc)} vs BTC"
+            ),
+            "inline": True,
+        },
+        {
+            "name": "Best trade",
+            "value": (
+                f"**{best.get('asset', '—')}** {best.get('direction', '')}\n"
+                f"{fmt_pct(best.get('return_pct'))}"
+                if best.get("asset")
+                else "—"
+            ),
+            "inline": True,
+        },
+        {
+            "name": "Worst trade",
+            "value": (
+                f"**{worst.get('asset', '—')}** {worst.get('direction', '')}\n"
+                f"{fmt_pct(worst.get('return_pct'))}"
+                if worst.get("asset")
+                else "—"
+            ),
+            "inline": True,
+        },
+        {
+            "name": "Max drawdown",
+            "value": f"**{fmt_pct(max_dd)}**\nMAE (worst day)",
+            "inline": True,
+        },
+    ]
+
+    # --- By direction
+    long_s = by_dir.get("LONG", {}) or {}
+    short_s = by_dir.get("SHORT", {}) or {}
+    fields.append({
+        "name": "Direction breakdown",
+        "value": (
+            f"**LONG** n={_fmt_n(long_s.get('n'))} · "
+            f"wr {_fmt_pct_field(long_s.get('win_rate_pct'))} · "
+            f"avg {fmt_pct(long_s.get('avg_return_pct'))}\n"
+            f"**SHORT** n={_fmt_n(short_s.get('n'))} · "
+            f"wr {_fmt_pct_field(short_s.get('win_rate_pct'))} · "
+            f"avg {fmt_pct(short_s.get('avg_return_pct'))}"
+        ),
+        "inline": False,
+    })
+
+    # --- By horizon
+    horizon_lines = []
+    for h in ("24h", "3d", "7d", "multi-week"):
+        s = by_hor.get(h, {}) or {}
+        n = s.get("n", 0) or 0
+        if n == 0:
+            continue
+        horizon_lines.append(
+            f"**{h}** n={n} · wr {_fmt_pct_field(s.get('win_rate_pct'))} · "
+            f"avg {fmt_pct(s.get('avg_return_pct'))}"
+        )
+    if horizon_lines:
+        fields.append({
+            "name": "Horizon breakdown",
+            "value": "\n".join(horizon_lines),
+            "inline": False,
+        })
+
+    # --- Top criteria by edge (excluding zero-fired)
+    surfaced = [c for c in by_crit if (c.get("n_fired") or 0) >= 1][:6]
+    if surfaced:
+        lines = []
+        for c in surfaced:
+            crit = c["criterion"]
+            n_f = c.get("n_fired", 0)
+            wr_f = c.get("win_rate_when_fired_pct")
+            edge = c.get("edge_pct")
+            wr_m = c.get("win_rate_when_missing_pct")
+            edge_str = (
+                f"edge **{edge:+.1f}**"
+                if edge is not None
+                else "edge —"
+            )
+            lines.append(
+                f"`{crit}`  n={n_f}  "
+                f"fired {_fmt_pct_field(wr_f)} / "
+                f"missing {_fmt_pct_field(wr_m)} · {edge_str}"
+            )
+        fields.append({
+            "name": "Top confluence criteria by edge",
+            "value": "\n".join(lines)[:1024],
+            "inline": False,
+        })
+
+    # --- Watchlist funnel
+    n_total = wl_funnel.get("n_total", 0) or 0
+    if n_total > 0:
+        promoted_outcomes = wl_funnel.get("promoted_position_outcomes") or {}
+        lines = [
+            f"**Added:** {n_total}",
+            f"**Promoted:** {wl_funnel.get('n_promoted', 0)} "
+            f"({_fmt_pct_field(wl_funnel.get('promote_rate_pct'))})  •  "
+            f"**Invalidated:** {wl_funnel.get('n_invalidated', 0)} "
+            f"({_fmt_pct_field(wl_funnel.get('invalidation_rate_pct'))})  •  "
+            f"**Decayed:** {wl_funnel.get('n_thesis_decayed', 0)}  •  "
+            f"**Stale:** {wl_funnel.get('n_stale', 0)}",
+        ]
+        if promoted_outcomes.get("n_resolved", 0) > 0:
+            lines.append(
+                f"**Promoted → resolved positions:** "
+                f"{promoted_outcomes.get('n_wins', 0)}W / "
+                f"{promoted_outcomes.get('n_losses', 0)}L "
+                f"(win rate {_fmt_pct_field(promoted_outcomes.get('win_rate_pct'))})"
+            )
+        fields.append({
+            "name": "Watchlist funnel",
+            "value": "\n".join(lines)[:1024],
+            "inline": False,
+        })
+
+    # --- Auto-flips + time-to-outcome (compact tail field)
+    tail_parts = []
+    n_flips = auto_flips.get("n", 0) or 0
+    if n_flips > 0:
+        tail_parts.append(
+            f"**Auto-flips:** {n_flips} fired · "
+            f"followup win rate {_fmt_pct_field(auto_flips.get('followup_win_rate_pct'))}"
+        )
+    if time_to.get("median_days_win") is not None:
+        tail_parts.append(
+            f"**Median days to:** WIN {time_to.get('median_days_win')}d · "
+            f"LOSS {time_to.get('median_days_loss')}d · "
+            f"SCARE {time_to.get('median_days_scare') or '—'}d"
+        )
+    if tail_parts:
+        fields.append({
+            "name": "Trade tempo",
+            "value": "\n".join(tail_parts),
+            "inline": False,
+        })
+
+    # --- Description: narrative (if any) + insights (if any)
+    desc_parts: list[str] = []
+    if narrative:
+        desc_parts.append(narrative.strip())
+    if insights:
+        bullet_block = "\n".join(f"• {i.strip()}" for i in insights if (i or "").strip())
+        if bullet_block:
+            desc_parts.append("**Key insights**\n" + bullet_block)
+    description = ("\n\n".join(desc_parts))[:4096]
+
+    footer_text = (
+        f"Window {window} · {since} → {to}" + _slot_suffix(slot)
+    )
+
+    return {
+        "color": COLORS["AUDIT"],
+        "author": {"name": "JUDGEMENT AUDIT"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "footer": _footer(footer_text),
         "timestamp": _now_iso(),
     }
