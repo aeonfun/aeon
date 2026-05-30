@@ -1,0 +1,112 @@
+name: Migrate Bot Messages
+
+# One-shot helper to pre-populate memory/topics/state/bot-messages.json
+# from existing Discord channel history. Run ONCE after merging Stage 3
+# (PR #48) so the next chain run can edit existing embeds in place
+# instead of POSTing fresh duplicates.
+#
+# Two modes:
+#   dry_run = true  → fetch + print matches, do NOT write the tracker
+#                     or commit. Use this first to sanity-check matches.
+#   dry_run = false → fetch + write tracker + commit + push the change
+#                     to main, so the next chain run picks it up.
+#
+# Re-running with dry_run=false overwrites the existing tracker with
+# newly-discovered matches. If the tracker already has good entries
+# from a prior chain run, prefer not to re-run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry-run: print matches without writing tracker'
+        required: true
+        type: boolean
+        default: true
+      max_pages:
+        description: 'History depth — pages of 100 messages per channel'
+        required: true
+        type: string
+        default: '3'
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Need write access for the auto-commit step
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate inputs
+        run: |
+          if [ -z "${{ secrets.DISCORD_BOT_TOKEN }}" ]; then
+            echo "::error::DISCORD_BOT_TOKEN secret not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_CONTEXT }}" ]; then
+            echo "::error::DISCORD_BOT_CHANNEL_PERPS_CONTEXT secret not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_POSITIONS }}" ]; then
+            echo "::error::DISCORD_BOT_CHANNEL_PERPS_POSITIONS secret not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_WATCHLIST }}" ]; then
+            echo "::error::DISCORD_BOT_CHANNEL_PERPS_WATCHLIST secret not set"
+            exit 1
+          fi
+
+      - name: Run migration helper
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CHANNEL_PERPS_CONTEXT: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_CONTEXT }}
+          DISCORD_BOT_CHANNEL_PERPS_POSITIONS: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_POSITIONS }}
+          DISCORD_BOT_CHANNEL_PERPS_WATCHLIST: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_WATCHLIST }}
+        run: |
+          ARGS="--max-pages ${{ inputs.max_pages }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+            echo "::notice::Running in DRY-RUN mode — tracker will NOT be written"
+          else
+            echo "::notice::Running in LIVE mode — tracker will be written + committed"
+          fi
+          python3 scripts/migrate-bot-messages.py $ARGS
+
+      - name: Commit + push tracker (live mode only)
+        if: inputs.dry_run == false
+        run: |
+          git config user.name "aeonframework"
+          git config user.email "aeonframework@proton.me"
+          if git diff --quiet memory/topics/state/bot-messages.json; then
+            echo "::notice::No tracker changes to commit"
+            exit 0
+          fi
+          git add memory/topics/state/bot-messages.json
+          git commit -m "chore(perps): migrate bot-messages.json from channel history"
+          git push origin HEAD:main
+          echo "::notice::Tracker committed and pushed to main"
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "Dry-run complete. Review the 'Run migration helper' step above"
+            echo "for the matches that WOULD be written. To apply for real,"
+            echo "re-run this workflow with dry_run=false."
+          else
+            echo "Migration applied. The tracker is committed to main."
+            echo "Next perps-brief chain run (AM or PM slot) will edit the"
+            echo "matched embeds in place instead of posting fresh duplicates."
+          fi
