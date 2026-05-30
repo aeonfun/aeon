@@ -1,0 +1,102 @@
+name: Judgement Audit
+
+# Compute statistical audit of perps trading judgement and post the
+# result as an embed to #perps-outcomes. Runs on-demand via
+# workflow_dispatch — useful for ad-hoc review or as a manual step
+# while we work out the right recurring cadence.
+#
+# Phase 1 (this workflow): stats-only embed. The numbers are
+# deterministic and immediately auditable.
+#
+# Phase 2 (later): a judgement-audit skill consumes the stats and
+# layers Claude-synthesised narrative + insights on top.
+
+on:
+  workflow_dispatch:
+    inputs:
+      window:
+        description: 'Audit window to feature in the embed'
+        required: true
+        type: choice
+        options:
+          - 30d
+          - 7d
+          - all
+        default: 30d
+      dry_run:
+        description: 'Dry-run: print embed JSON to logs, do NOT post to Discord'
+        required: true
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Compute audit stats
+        env:
+          V1_LOCK_DATE: ${{ secrets.V1_LOCK_DATE }}
+        run: |
+          python3 scripts/audit-judgement.py --output .outputs/judgement-audit.stats.json
+          echo "::group::Stats summary"
+          python3 -c "
+          import json
+          d = json.load(open('.outputs/judgement-audit.stats.json'))
+          for w, s in d['windows'].items():
+              h = s['headline']
+              print(f'{w:6s} n={h[\"n_closed\"]:3d} wr={h[\"win_rate_pct\"]}% avg={h[\"avg_return_pct\"]}%')
+          "
+          echo "::endgroup::"
+
+      - name: Validate Discord secrets (live mode only)
+        if: inputs.dry_run == false
+        run: |
+          if [ -z "${{ secrets.DISCORD_BOT_TOKEN }}" ]; then
+            echo "::error::DISCORD_BOT_TOKEN secret not set"
+            exit 1
+          fi
+          if [ -z "${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}" ]; then
+            echo "::error::DISCORD_BOT_CHANNEL_PERPS_OUTCOMES secret not set"
+            exit 1
+          fi
+
+      - name: Post audit embed
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
+          DISCORD_BOT_DRY_RUN: ${{ inputs.dry_run == true && '1' || '' }}
+        run: |
+          MODE_FLAG="--dry-run"
+          if [ "${{ inputs.dry_run }}" = "false" ]; then
+            MODE_FLAG="--live"
+            echo "::notice::LIVE mode — embed will be posted to #perps-outcomes"
+          else
+            echo "::notice::DRY-RUN mode — embed JSON printed to logs only"
+          fi
+          python3 scripts/embed-judgement-audit.py \
+            --window "${{ inputs.window }}" \
+            $MODE_FLAG
+
+      - name: Summary
+        if: always()
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "Dry-run complete. Review embed JSON in the previous step's logs."
+            echo "To post for real, re-run with dry_run=false."
+          else
+            echo "Audit embed posted to #perps-outcomes for window ${{ inputs.window }}."
+          fi
