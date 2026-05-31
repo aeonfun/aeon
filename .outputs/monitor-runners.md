@@ -1,24 +1,26 @@
-Yesterday's Runners · 2026-05-31 · SPECULATIVE (5 BREAKOUT in top 5, zero DEEP-LIQ)
+Yesterday's Runners · 2026-05-31 · MIXED (3 CONTINUATION on sol/bsc, no DEEP-LIQ broke through)
+
+CONTINUATION
+• CUM (sol) +5713% 24h
+  $8m vol, $126k liq, h1 +30% / h6 +24%, 54h pool, buys 57%
+  → live-tape leader of the slate, hourly accelerates on top of the six-hour, $126k pad against $8m vol cuts both ways
+
+★ GENIUS (bsc) +6064% 24h
+  $51m vol, $135k liq, h1 +11% / h6 +6064%, 229h pool, buys 60%
+  → bsc name-farm cluster relit on the …4444 vanity, h24 fully printed in h6, vol/liq 380x reads washed
+
+• Bank (sol) +1120% 24h
+  $3m vol, $97k liq, h1 +16% / h6 +377%, 243h pool, buys 58%
+  → sol name-farm continuation, hourly adds on top of the six-hour, day-2 of the burst
 
 BREAKOUT
-• bStocks (bsc) +1494% 24h
-  $44m vol, $61k liq, h1 +1494% / h6 +1494%, 12-minute pool, buys 50%
-  → bsc launch on the …4444 vanity suffix the GENIUS cluster runs, vol/liq 727x reads sniped not organic
+• ballish (sol) +588% 24h
+  $1m vol, $41k liq, h1 +12% / h6 +185%, 46h pool, buys 60%
+  → freshest pool on the slate, thin $41k pad amplifies both legs
 
-• UTFS (sol) +2526% 24h
-  $38m vol, $237k liq, h1 0% / h6 0%, 14h pool, buys 56%
-  → entire move printed earlier, bid fully stepped off into dormant bars
+MICRO-SPEC
+★ SPCX (sol) +538% 24h
+  $48m vol, $279k liq, h1 0% / h6 +74%, 230h pool, buys 54%
+  → sol-side SPCX cluster reactivation, six-hour carried the move, hourly went flat
 
-★ SAOS (sol) +850% 24h
-  $36m vol, $205k liq, h1 0% / h6 +850%, 6.3h pool, buys 53%
-  → day-8 of the documented SAOS cluster, the six-hour candle carried the move and the hourly cooled flat
-
-★ ISOR (sol) +434% 24h
-  $35m vol, $250k liq, h1 +18% / h6 +434%, 5.5h pool, buys 53%
-  → only top-5 pick with the hourly still adding, $35m vol on a $250k pad reads as live sniping
-
-• PAC (sol) +412% 24h
-  $34m vol, $214k liq, h1 0% / h6 0%, 18.6h pool, buys 53%
-  → distribution candle then flat bars, no continuation behind the print
-
-vibe: pure sol name-farm slate with a bsc …4444 relaunch riding on top, speculative casino top to bottom
+vibe: continuation tape with the GENIUS cluster relit, no deep-liq print broke into the board

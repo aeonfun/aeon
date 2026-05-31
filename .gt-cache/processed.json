@@ -14,10 +14,10 @@
       "sells": 42800,
       "created": "2026-05-29T15:50:59Z",
       "bt_id": "solana_oqU4DdYCbdSf9j74vnEgvCn1YzNfYQEPWaC6pu6pump",
-      "age_h": 18.548735833333332,
+      "age_h": 53.685452777777776,
       "score": 91.20775228844363,
       "skew": 57.07810180913795,
-      "tag": "BREAKOUT"
+      "tag": "CONTINUATION"
     },
     {
       "name": "GENIUS / USDT",
@@ -33,7 +33,7 @@
       "sells": 1007,
       "created": "2026-05-22T08:45:51Z",
       "bt_id": "bsc_0xf6ed42036635008e56673c3918154d9f91324444",
-      "age_h": 193.6342913888889,
+      "age_h": 228.77100833333333,
       "score": 89.84376460972555,
       "skew": 59.62309542902967,
       "tag": "CONTINUATION"
@@ -52,7 +52,7 @@
       "sells": 18245,
       "created": "2026-05-22T07:35:20Z",
       "bt_id": "solana_B8NMXGMHC4XLSwZSHDdFQ3ZMmxXrGW6LcgYeKjHA1aVs",
-      "age_h": 194.80956916666668,
+      "age_h": 229.9462861111111,
       "score": 88.99264173092683,
       "skew": 53.79608995137764,
       "tag": "MICRO-SPEC"
@@ -71,7 +71,7 @@
       "sells": 17336,
       "created": "2026-05-21T19:01:31Z",
       "bt_id": "solana_2jCt3hj9vd7YpV7Sr3VA5nk3tdSpJtZezeoJXW4Xpump",
-      "age_h": 207.37318027777778,
+      "age_h": 242.50989722222224,
       "score": 87.74689244708273,
       "skew": 57.58880516684607,
       "tag": "CONTINUATION"
@@ -90,7 +90,7 @@
       "sells": 10502,
       "created": "2026-05-29T23:08:15Z",
       "bt_id": "solana_CmGsBfi3Zbsygpt1FcvFcQa3mD2drYGX6w5WdsWZpump",
-      "age_h": 11.260958055555555,
+      "age_h": 46.397675,
       "score": 85.46300442163464,
       "skew": 59.72078395274806,
       "tag": "BREAKOUT"
@@ -111,10 +111,10 @@
       "sells": 42800,
       "created": "2026-05-29T15:50:59Z",
       "bt_id": "solana_oqU4DdYCbdSf9j74vnEgvCn1YzNfYQEPWaC6pu6pump",
-      "age_h": 18.548735833333332,
+      "age_h": 53.685452777777776,
       "score": 91.20775228844363,
       "skew": 57.07810180913795,
-      "tag": "BREAKOUT"
+      "tag": "CONTINUATION"
     },
     {
       "name": "GENIUS / USDT",
@@ -130,7 +130,7 @@
       "sells": 1007,
       "created": "2026-05-22T08:45:51Z",
       "bt_id": "bsc_0xf6ed42036635008e56673c3918154d9f91324444",
-      "age_h": 193.6342913888889,
+      "age_h": 228.77100833333333,
       "score": 89.84376460972555,
       "skew": 59.62309542902967,
       "tag": "CONTINUATION"
@@ -149,7 +149,7 @@
       "sells": 18245,
       "created": "2026-05-22T07:35:20Z",
       "bt_id": "solana_B8NMXGMHC4XLSwZSHDdFQ3ZMmxXrGW6LcgYeKjHA1aVs",
-      "age_h": 194.80956916666668,
+      "age_h": 229.9462861111111,
       "score": 88.99264173092683,
       "skew": 53.79608995137764,
       "tag": "MICRO-SPEC"
@@ -168,7 +168,7 @@
       "sells": 17336,
       "created": "2026-05-21T19:01:31Z",
       "bt_id": "solana_2jCt3hj9vd7YpV7Sr3VA5nk3tdSpJtZezeoJXW4Xpump",
-      "age_h": 207.37318027777778,
+      "age_h": 242.50989722222224,
       "score": 87.74689244708273,
       "skew": 57.58880516684607,
       "tag": "CONTINUATION"
@@ -187,7 +187,7 @@
       "sells": 10502,
       "created": "2026-05-29T23:08:15Z",
       "bt_id": "solana_CmGsBfi3Zbsygpt1FcvFcQa3mD2drYGX6w5WdsWZpump",
-      "age_h": 11.260958055555555,
+      "age_h": 46.397675,
       "score": 85.46300442163464,
       "skew": 59.72078395274806,
       "tag": "BREAKOUT"
@@ -206,7 +206,7 @@
       "sells": 528,
       "created": "2026-04-17T11:11:35Z",
       "bt_id": "eth_0x722d2e60aab90eb3222a8edc802163d243299fb2",
-      "age_h": 1031.2054025,
+      "age_h": 1066.3421194444445,
       "score": 84.6174505192422,
       "skew": 57.41935483870968,
       "tag": "CONTINUATION"
@@ -225,7 +225,7 @@
       "sells": 12975,
       "created": "2026-05-22T02:03:33Z",
       "bt_id": "solana_CNraxbUfLJLbTPV7RuwZanygNN49vz1P3reNqyx9pump",
-      "age_h": 200.33929138888888,
+      "age_h": 235.47600833333334,
       "score": 81.37149758430715,
       "skew": 57.502210867642724,
       "tag": "REVERSAL"
@@ -244,7 +244,7 @@
       "sells": 295,
       "created": "2021-10-12T16:40:04Z",
       "bt_id": "eth_0x0f8c45b896784a1e408526b9300519ef8660209c",
-      "age_h": 40577.730680277775,
+      "age_h": 40612.867397222224,
       "score": 79.75948710158747,
       "skew": 47.97178130511463,
       "tag": "MICRO-SPEC"
@@ -263,7 +263,7 @@
       "sells": 20044,
       "created": "2026-05-21T17:17:45Z",
       "bt_id": "solana_AY6wEJQjx8mFYBRJsZv7KC7sHznNYzs5nXCM22K89V36",
-      "age_h": 209.10262472222223,
+      "age_h": 244.23934166666666,
       "score": 70.74776934636566,
       "skew": 56.495127297983636,
       "tag": "MICRO-SPEC"
@@ -282,10 +282,10 @@
       "sells": 8767,
       "created": "2026-05-29T10:10:37Z",
       "bt_id": "solana_FeMrhDeddUvuzo25RZriZD6Te8xy3tdyKLLXBhEEpump",
-      "age_h": 24.22151361111111,
+      "age_h": 59.35823055555556,
       "score": 68.36813809368435,
       "skew": 57.840827121904304,
-      "tag": "BREAKOUT"
+      "tag": "CONTINUATION"
     },
     {
       "name": "WERLDKUP / SOL",
@@ -301,7 +301,7 @@
       "sells": 10053,
       "created": "2026-05-21T22:38:51Z",
       "bt_id": "solana_4yBfVtYnWnrJRQhzjS3ZWzMPntCu77dDv6GY3iW4pump",
-      "age_h": 203.75095805555554,
+      "age_h": 238.887675,
       "score": 67.59140104364128,
       "skew": 66.15607325612713,
       "tag": "CONTINUATION"
@@ -320,7 +320,7 @@
       "sells": 10665,
       "created": "2026-04-14T02:53:59Z",
       "bt_id": "base_0x572c4fa77623652411574c51b5ddb7e1b750aba3",
-      "age_h": 1111.4987358333333,
+      "age_h": 1146.6354527777778,
       "score": 65.22757599119453,
       "skew": 38.77023768515329,
       "tag": "CONTINUATION"
@@ -339,7 +339,7 @@
       "sells": 4354,
       "created": "2026-04-30T16:16:35Z",
       "bt_id": "base_0x53cd9bf2be680bf7192a2317f95ba8716ee49b07",
-      "age_h": 714.1220691666666,
+      "age_h": 749.2587861111111,
       "score": 62.920848787633304,
       "skew": 33.01538461538461,
       "tag": "CONTINUATION"
@@ -358,7 +358,7 @@
       "sells": 6803,
       "created": "2026-05-21T16:59:57Z",
       "bt_id": "solana_EvKFvTQcSESeUPRpcBf8WKAYC4a1Er3jAQRYmTCi46x3",
-      "age_h": 209.39929138888888,
+      "age_h": 244.53600833333334,
       "score": 61.994745071417974,
       "skew": 58.01135662263918,
       "tag": "REVERSAL"
@@ -377,7 +377,7 @@
       "sells": 394,
       "created": "2026-05-25T00:54:11Z",
       "bt_id": "eth_0xcb891c8f1e3a4d04229e4d871dc27124411d8952",
-      "age_h": 129.4954025,
+      "age_h": 164.63211944444444,
       "score": 59.80041880871377,
       "skew": 76.10673135233475,
       "tag": "CONTINUATION"
@@ -396,7 +396,7 @@
       "sells": 4651,
       "created": "2026-04-24T02:57:57Z",
       "bt_id": "base_0x753f2af0f46361c9ae6fc347797f99b0c9e82ba3",
-      "age_h": 871.4326247222223,
+      "age_h": 906.5693416666667,
       "score": 59.12828489580695,
       "skew": 39.83960677790713,
       "tag": "REVERSAL"
@@ -415,7 +415,7 @@
       "sells": 1507,
       "created": "2026-04-13T20:49:25Z",
       "bt_id": "base_0x95ccfd2b81a9667b0cc979992632f98fc853eba3",
-      "age_h": 1117.5748469444445,
+      "age_h": 1152.7115638888888,
       "score": 56.23940167324697,
       "skew": 37.41694352159469,
       "tag": "CONTINUATION"
@@ -434,7 +434,7 @@
       "sells": 2372,
       "created": "2026-02-01T19:48:17Z",
       "bt_id": "base_0x4e606cb7370a61060ad9916462871750d77e2b07",
-      "age_h": 2822.5937358333335,
+      "age_h": 2857.730452777778,
       "score": 54.42776768058814,
       "skew": 36.099137931034484,
       "tag": "MICRO-SPEC"
@@ -453,7 +453,7 @@
       "sells": 57037,
       "created": "2025-11-19T05:50:12Z",
       "bt_id": "bsc_0xcf3232b85b43bca90e51d38cc06cc8bb8c8a3e36",
-      "age_h": 4612.561791388889,
+      "age_h": 4647.698508333333,
       "score": 53.39290043746661,
       "skew": 47.447804374666006,
       "tag": "DEEP-LIQ"
@@ -472,7 +472,7 @@
       "sells": 4652,
       "created": "2026-05-10T19:34:49Z",
       "bt_id": "solana_6qdzMx4c9rL2X3Ns3SwZ8uEo4zReDPjdXpAEmpo7pump",
-      "age_h": 470.8181802777778,
+      "age_h": 505.9548972222222,
       "score": 52.76425076970189,
       "skew": 52.876823338735825,
       "tag": "REVERSAL"
@@ -491,7 +491,7 @@
       "sells": 4302,
       "created": "2026-04-01T17:58:50Z",
       "bt_id": "solana_E6ifp2mJy8cYQehUGUtFvrXriRKxRuonLmrvTFypump",
-      "age_h": 1408.4179025,
+      "age_h": 1443.5546194444444,
       "score": 52.50270216869886,
       "skew": 56.22265187748041,
       "tag": "CONTINUATION"
@@ -510,7 +510,7 @@
       "sells": 105339,
       "created": "2026-05-18T10:23:37Z",
       "bt_id": "bsc_0x5506599c722389a60580b5213ea1da60d64754a1",
-      "age_h": 288.00484694444447,
+      "age_h": 323.14156388888887,
       "score": 51.953267066529264,
       "skew": 50.434070665292694,
       "tag": "DEEP-LIQ"
@@ -529,7 +529,7 @@
       "sells": 8604,
       "created": "2026-04-13T15:02:14Z",
       "bt_id": "bsc_0x1f12b85aac097e43aa1555b2881e98a51090e9a6",
-      "age_h": 1123.3612358333332,
+      "age_h": 1158.4979527777778,
       "score": 51.43148546887857,
       "skew": 49.959288123764104,
       "tag": "MICRO-SPEC"
@@ -548,7 +548,7 @@
       "sells": 16818,
       "created": "2026-05-11T20:38:31Z",
       "bt_id": "solana_33eum82LaAhtv5YkUq1BdwEviSErH5CnFxqVNLT5pump",
-      "age_h": 445.75651361111113,
+      "age_h": 480.89323055555553,
       "score": 51.245848631355706,
       "skew": 51.90322303886522,
       "tag": "MICRO-SPEC"
@@ -567,7 +567,7 @@
       "sells": 3348,
       "created": "2026-05-17T04:07:27Z",
       "bt_id": "solana_BCdwQBAn8dYB5YjTsoB6TdHAWokxv28k2oZUodERpump",
-      "age_h": 318.2742913888889,
+      "age_h": 353.4110083333333,
       "score": 51.20273183048488,
       "skew": 45.16868653783164,
       "tag": "CONTINUATION"
@@ -586,7 +586,7 @@
       "sells": 98,
       "created": "2026-02-27T03:13:35Z",
       "bt_id": "eth_0x98a878b1cd98131b271883b390f68d2c90674665",
-      "age_h": 2215.1720691666665,
+      "age_h": 2250.308786111111,
       "score": 51.12273111111111,
       "skew": 61.111111111111114,
       "tag": "DEEP-LIQ"
@@ -605,7 +605,7 @@
       "sells": 2062,
       "created": "2026-05-16T15:20:31Z",
       "bt_id": "base_0xc52aedec3374422d7510e294cfaa90799595cba3",
-      "age_h": 331.0565136111111,
+      "age_h": 366.19323055555554,
       "score": 50.90950009064444,
       "skew": 51.5621329574818,
       "tag": "DEEP-LIQ"
@@ -624,7 +624,7 @@
       "sells": 657,
       "created": "2026-05-20T18:54:49Z",
       "bt_id": "base_0x60a646e3fd75cde4c5b604b22d4fcd04639913c8",
-      "age_h": 231.48484694444446,
+      "age_h": 266.6215638888889,
       "score": 50.79465235303911,
       "skew": 54.59571527297857,
       "tag": "MICRO-SPEC"
@@ -643,7 +643,7 @@
       "sells": 39288,
       "created": "2025-09-10T10:19:46Z",
       "bt_id": "bsc_0x40b8129b786d766267a7a118cf8c07e31cdb6fde",
-      "age_h": 6288.069013611111,
+      "age_h": 6323.205730555555,
       "score": 50.61777732394182,
       "skew": 48.65857323941821,
       "tag": "DEEP-LIQ"
@@ -662,7 +662,7 @@
       "sells": 5412,
       "created": "2025-01-29T23:33:20Z",
       "bt_id": "base_0xacfe6019ed1a7dc6f7b508c02d1b04ec88cc21bf",
-      "age_h": 11650.8429025,
+      "age_h": 11685.979619444444,
       "score": 50.49964765470102,
       "skew": 52.75013095861708,
       "tag": "DEEP-LIQ"
@@ -681,7 +681,7 @@
       "sells": 1441,
       "created": "2025-05-13T03:47:35Z",
       "bt_id": "eth_0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
-      "age_h": 9174.6054025,
+      "age_h": 9209.742119444445,
       "score": 50.4126892804605,
       "skew": 53.91749280460505,
       "tag": "DEEP-LIQ"
@@ -700,7 +700,7 @@
       "sells": 1096,
       "created": "2026-05-17T19:57:43Z",
       "bt_id": "base_0xeae13ea73bec936664a51734c8c01ec7c3b0699c",
-      "age_h": 302.43651361111114,
+      "age_h": 337.57323055555554,
       "score": 50.31928767283557,
       "skew": 54.46614042376402,
       "tag": "DEEP-LIQ"
@@ -719,7 +719,7 @@
       "sells": 79466,
       "created": "2026-05-13T13:17:19Z",
       "bt_id": "base_0x8b7dde054be9d180c1be7fae0874697374a49832",
-      "age_h": 405.1098469444444,
+      "age_h": 440.2465638888889,
       "score": 50.300579803874676,
       "skew": 50.36756209832052,
       "tag": "MICRO-SPEC"
@@ -738,7 +738,7 @@
       "sells": 4201,
       "created": "2025-04-20T18:30:26Z",
       "bt_id": "solana_5UUH9RTDiSpq6HKS6bp4NdU9PNJpXRXuiw6ShBTBhgH2",
-      "age_h": 9711.891235833333,
+      "age_h": 9747.027952777778,
       "score": 50.28348464169266,
       "skew": 51.60138248847927,
       "tag": "DEEP-LIQ"
@@ -757,7 +757,7 @@
       "sells": 699,
       "created": "2026-03-12T18:27:37Z",
       "bt_id": "base_0x65021a79aeef22b17cdc1b768f5e79a8618beba3",
-      "age_h": 1887.9381802777777,
+      "age_h": 1923.0748972222223,
       "score": 50.24123709231545,
       "skew": 49.457700650759215,
       "tag": "REVERSAL"
@@ -776,7 +776,7 @@
       "sells": 3755,
       "created": "2024-10-24T15:05:07Z",
       "bt_id": "solana_5Jng6jkLKU1o8BNrCzTEMXMFvPjNJZTpdWR3Hq4RHJb6",
-      "age_h": 13987.313180277777,
+      "age_h": 14022.449897222223,
       "score": 50.083489828393525,
       "skew": 61.85493701747258,
       "tag": "MICRO-SPEC"
@@ -795,7 +795,7 @@
       "sells": 1632,
       "created": "2026-05-19T16:09:34Z",
       "bt_id": "solana_FmbmhYpjBzszfUxDju3g1qQzggXTT5yfMJ94rK7ypump",
-      "age_h": 258.2390136111111,
+      "age_h": 293.37573055555555,
       "score": 50.04729583843327,
       "skew": 52.05640423031728,
       "tag": "CONTINUATION"
@@ -814,7 +814,7 @@
       "sells": 1758,
       "created": "2021-12-29T12:35:14Z",
       "bt_id": "eth_0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-      "age_h": 38709.81123583333,
+      "age_h": 38744.94795277778,
       "score": 50.002067323943656,
       "skew": 50.478873239436616,
       "tag": "DEEP-LIQ"
@@ -833,7 +833,7 @@
       "sells": 12648,
       "created": "2025-01-06T20:15:25Z",
       "bt_id": "base_0x0b3e328455c4059eeb9e3f84b5543f74e24e7e1b",
-      "age_h": 12206.141513611112,
+      "age_h": 12241.278230555556,
       "score": 49.86817548837016,
       "skew": 49.061619009262984,
       "tag": "MICRO-SPEC"
@@ -852,7 +852,7 @@
       "sells": 29297,
       "created": "2023-07-05T14:34:02Z",
       "bt_id": "solana_So11111111111111111111111111111111111111112",
-      "age_h": 25435.831235833335,
+      "age_h": 25470.967952777777,
       "score": 49.74603988651871,
       "skew": 47.3945988651871,
       "tag": "DEEP-LIQ"
@@ -871,7 +871,7 @@
       "sells": 42332,
       "created": "2026-04-21T02:58:11Z",
       "bt_id": "bsc_0x5feccd17c393caf1001d18164236a37e731fcb9d",
-      "age_h": 943.4287358333333,
+      "age_h": 978.5654527777778,
       "score": 49.66597605491188,
       "skew": 48.481160549118876,
       "tag": "DEEP-LIQ"
@@ -890,7 +890,7 @@
       "sells": 7396,
       "created": "2026-05-20T14:14:35Z",
       "bt_id": "solana_H3pH7frVidjqQTpBpZtDhvuMZu97VkBGPHkngYegpump",
-      "age_h": 236.1554025,
+      "age_h": 271.29211944444444,
       "score": 49.27428852186572,
       "skew": 55.050443661115835,
       "tag": "MICRO-SPEC"
@@ -909,7 +909,7 @@
       "sells": 3222,
       "created": "2023-03-17T01:49:14Z",
       "bt_id": "arbitrum_0x912ce59144191c1204e64559fe8253a0e49e6548",
-      "age_h": 28088.5779025,
+      "age_h": 28123.714619444443,
       "score": 49.26350463242396,
       "skew": 50.131558582262805,
       "tag": "DEEP-LIQ"
@@ -928,7 +928,7 @@
       "sells": 16870,
       "created": "2025-12-15T06:04:39Z",
       "bt_id": "bsc_0x53ec33cd4fa46b9eced9ca3f6db626c5ffcd55cc",
-      "age_h": 3988.3209580555554,
+      "age_h": 4023.457675,
       "score": 49.15045359996816,
       "skew": 48.596849386026385,
       "tag": "MICRO-SPEC"
@@ -947,7 +947,7 @@
       "sells": 24389,
       "created": "2026-05-20T03:04:38Z",
       "bt_id": "solana_6A63uzxVoPkW8HCb6divQRtB5SdPvngAyuwPXuStW8cW",
-      "age_h": 247.32123583333333,
+      "age_h": 282.4579527777778,
       "score": 49.07915493037079,
       "skew": 58.29585677399497,
       "tag": "MICRO-SPEC"
@@ -966,7 +966,7 @@
       "sells": 1096,
       "created": "2024-12-03T04:44:53Z",
       "bt_id": "base_0x22af33fe49fd1fa80c7149773dde5890d3c76f3b",
-      "age_h": 13037.6504025,
+      "age_h": 13072.787119444445,
       "score": 48.88497726553195,
       "skew": 48.35061262959472,
       "tag": "DEEP-LIQ"
@@ -985,7 +985,7 @@
       "sells": 24535,
       "created": "2026-05-21T10:52:31Z",
       "bt_id": "solana_Geits3oBQkkmEBeyhNmeDTo6LMyCHCRirRuFQTeQXFq6",
-      "age_h": 215.52318027777778,
+      "age_h": 250.6598972222222,
       "score": 48.69930471634338,
       "skew": 58.11638983253384,
       "tag": "MICRO-SPEC"
@@ -1004,7 +1004,7 @@
       "sells": 8393,
       "created": "2026-01-30T03:11:55Z",
       "bt_id": "bsc_0x6907a5986c4950bdaf2f81828ec0737ce787519f",
-      "age_h": 2887.1998469444443,
+      "age_h": 2922.336563888889,
       "score": 48.45480699370836,
       "skew": 49.46107063286566,
       "tag": "DEEP-LIQ"
@@ -1023,7 +1023,7 @@
       "sells": 24416,
       "created": "2026-05-20T07:43:23Z",
       "bt_id": "solana_456pnYfppwJozLJ4nr156HwvJQmqnvN8Uxs3RKurbE8o",
-      "age_h": 242.6754025,
+      "age_h": 277.8121194444444,
       "score": 48.324748669151916,
       "skew": 58.240405007867544,
       "tag": "MICRO-SPEC"
@@ -1042,7 +1042,7 @@
       "sells": 21,
       "created": "2022-07-13T11:48:12Z",
       "bt_id": "eth_0x6b175474e89094c44da98b954eedeac495271d0f",
-      "age_h": 34006.595124722226,
+      "age_h": 34041.73184166667,
       "score": 48.1813782339259,
       "skew": 72,
       "tag": "MICRO-SPEC"
@@ -1061,10 +1061,10 @@
       "sells": 14097,
       "created": "2026-05-29T17:21:30Z",
       "bt_id": "solana_vhBZqcbfJvtqp3Bu48xB9JQQ6z66vBLwTGW7dK5pump",
-      "age_h": 17.040124722222224,
+      "age_h": 52.17684166666667,
       "score": 48.12393559712703,
       "skew": 56.34387290576321,
-      "tag": "BREAKOUT"
+      "tag": "MICRO-SPEC"
     },
     {
       "name": "rootai / WETH",
@@ -1080,7 +1080,7 @@
       "sells": 1989,
       "created": "2026-05-17T21:19:31Z",
       "bt_id": "base_0x461d3c96d170e551611f54fa466d3d74a680aba3",
-      "age_h": 301.0731802777778,
+      "age_h": 336.2098972222222,
       "score": 47.9628239983031,
       "skew": 41.8760958503799,
       "tag": "MICRO-SPEC"
@@ -1099,7 +1099,7 @@
       "sells": 225,
       "created": "2025-05-27T00:28:23Z",
       "bt_id": "eth_0x40e3d1a4b2c47d9aa61261f5606136ef73e28042",
-      "age_h": 8841.9254025,
+      "age_h": 8877.062119444445,
       "score": 47.83397247895666,
       "skew": 57.46691871455577,
       "tag": "MICRO-SPEC"
@@ -1118,7 +1118,7 @@
       "sells": 663,
       "created": "2025-09-30T10:32:11Z",
       "bt_id": "eth_0x24a3d725c37a8d1a66eb87f0e5d07fe67c120035",
-      "age_h": 5807.8620691666665,
+      "age_h": 5842.998786111111,
       "score": 47.13747515761031,
       "skew": 51.39296187683284,
       "tag": "DEEP-LIQ"
@@ -1137,7 +1137,7 @@
       "sells": 1119,
       "created": "2025-09-09T12:37:04Z",
       "bt_id": "arbitrum_0x33b49f2264e85bb124d2730dc180182717d436ae",
-      "age_h": 6309.780680277778,
+      "age_h": 6344.9173972222225,
       "score": 47.05817845525283,
       "skew": 39.903329752953816,
       "tag": "DEEP-LIQ"
@@ -1156,7 +1156,7 @@
       "sells": 522,
       "created": "2024-01-18T12:31:11Z",
       "bt_id": "eth_0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3",
-      "age_h": 20709.878735833332,
+      "age_h": 20745.015452777778,
       "score": 46.82701902906857,
       "skew": 47.956131605184446,
       "tag": "MICRO-SPEC"
@@ -1175,7 +1175,7 @@
       "sells": 513,
       "created": "2024-03-31T08:42:23Z",
       "bt_id": "eth_0x85f17cf997934a597031b2e18a9ab6ebd4b9f6a4",
-      "age_h": 18961.692069166667,
+      "age_h": 18996.82878611111,
       "score": 46.71121619345829,
       "skew": 53.61663652802894,
       "tag": "MICRO-SPEC"
@@ -1194,7 +1194,7 @@
       "sells": 27409,
       "created": "2026-05-18T13:14:23Z",
       "bt_id": "solana_FmjijgwEHpe32VPvHy1s7u7TLthh9yu1j75djVbWpump",
-      "age_h": 285.1587358333333,
+      "age_h": 320.29545277777777,
       "score": 46.69694776570121,
       "skew": 51.592165450981085,
       "tag": "MICRO-SPEC"
@@ -1213,7 +1213,7 @@
       "sells": 577,
       "created": "2023-03-08T09:19:01Z",
       "bt_id": "arbitrum_0x0c880f6761f1af8d9aa9c466984b80dab9a8c9e8",
-      "age_h": 28297.081513611112,
+      "age_h": 28332.218230555554,
       "score": 46.64344463240212,
       "skew": 54.88663017982799,
       "tag": "MICRO-SPEC"
@@ -1232,7 +1232,7 @@
       "sells": 194,
       "created": "2026-04-15T19:59:23Z",
       "bt_id": "eth_0x44b28991b167582f18ba0259e0173176ca125505",
-      "age_h": 1070.4087358333334,
+      "age_h": 1105.5454527777779,
       "score": 45.872572994879306,
       "skew": 63.94052044609665,
       "tag": "MICRO-SPEC"
@@ -1251,7 +1251,7 @@
       "sells": 2140,
       "created": "2026-05-11T21:13:06Z",
       "bt_id": "solana_7HgfXftRBBqsYtAEYcqjGLQrNJLL6Tww9ek4rE3Apump",
-      "age_h": 445.1801247222222,
+      "age_h": 480.3168416666667,
       "score": 45.80094429763365,
       "skew": 51.561792666364866,
       "tag": "MICRO-SPEC"
@@ -1270,7 +1270,7 @@
       "sells": 230,
       "created": "2023-08-16T02:52:11Z",
       "bt_id": "eth_0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c",
-      "age_h": 24439.528735833333,
+      "age_h": 24474.66545277778,
       "score": 45.641491280920135,
       "skew": 48.775055679287306,
       "tag": "MICRO-SPEC"
@@ -1289,7 +1289,7 @@
       "sells": 175,
       "created": "2021-12-29T13:15:46Z",
       "bt_id": "eth_0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
-      "age_h": 38709.13568027778,
+      "age_h": 38744.27239722222,
       "score": 45.49803643706161,
       "skew": 48.07121661721068,
       "tag": "MICRO-SPEC"
@@ -1308,7 +1308,7 @@
       "sells": 2352,
       "created": "2025-11-27T07:50:13Z",
       "bt_id": "bsc_0xa5c8e1513b6a08334b479fe4d71f1253259469be",
-      "age_h": 4418.561513611111,
+      "age_h": 4453.698230555556,
       "score": 45.48624900969916,
       "skew": 54.223433242506815,
       "tag": "MICRO-SPEC"
@@ -1327,7 +1327,7 @@
       "sells": 63,
       "created": "2024-05-08T12:10:24Z",
       "bt_id": "arbitrum_0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86",
-      "age_h": 18046.225124722223,
+      "age_h": 18081.361841666665,
       "score": 45.480376091538744,
       "skew": 84.0909090909091,
       "tag": "MICRO-SPEC"
@@ -1346,7 +1346,7 @@
       "sells": 1984,
       "created": "2026-05-27T13:15:35Z",
       "bt_id": "eth_0x759f8b83db57033aed95545694f6ada480b6e987",
-      "age_h": 69.13873583333333,
+      "age_h": 104.27545277777777,
       "score": 45.16572744571887,
       "skew": 57.06557022289548,
       "tag": "MICRO-SPEC"
@@ -1365,7 +1365,7 @@
       "sells": 81,
       "created": "2023-07-20T03:06:47Z",
       "bt_id": "eth_0xaaee1a9723aadb7afa2810263653a34ba2c21c7a",
-      "age_h": 25087.2854025,
+      "age_h": 25122.422119444444,
       "score": 45.00002677286051,
       "skew": 54.7486033519553,
       "tag": "MICRO-SPEC"
@@ -1384,7 +1384,7 @@
       "sells": 1216,
       "created": "2025-09-01T20:41:58Z",
       "bt_id": "bsc_0xfed56f9cd29f44e7c61c396dac95cb3ed33d3546",
-      "age_h": 6493.699013611111,
+      "age_h": 6528.8357305555555,
       "score": 44.80123204710475,
       "skew": 42.991092358180964,
       "tag": "REVERSAL"
@@ -1403,7 +1403,7 @@
       "sells": 696,
       "created": "2022-02-25T21:45:32Z",
       "bt_id": "arbitrum_0x289ba1701c2f088cf0faf8b3705246331cb8a839",
-      "age_h": 37308.63956916667,
+      "age_h": 37343.77628611111,
       "score": 43.98454827270917,
       "skew": 53.93778954334878,
       "tag": "MICRO-SPEC"
@@ -1422,7 +1422,7 @@
       "sells": 685,
       "created": "2026-05-01T16:42:23Z",
       "bt_id": "base_0x3722264ab15a1dfce5a5af89e6547f7949a8aba3",
-      "age_h": 689.6920691666667,
+      "age_h": 724.8287861111111,
       "score": 43.864638511883825,
       "skew": 44.39935064935065,
       "tag": "REVERSAL"
@@ -1441,7 +1441,7 @@
       "sells": 649,
       "created": "2025-05-22T15:53:04Z",
       "bt_id": "bsc_0xeb2b7d5691878627eff20492ca7c9a71228d931d",
-      "age_h": 8946.514013611111,
+      "age_h": 8981.650730555555,
       "score": 43.28421596503114,
       "skew": 52.97101449275362,
       "tag": "MICRO-SPEC"
@@ -1460,7 +1460,7 @@
       "sells": 64,
       "created": "2025-08-04T17:04:23Z",
       "bt_id": "arbitrum_0x30a538effd91acefb1b12ce9bc0074ed18c9dfc9",
-      "age_h": 7169.3254025,
+      "age_h": 7204.462119444444,
       "score": 42.965961766635814,
       "skew": 50,
       "tag": "MICRO-SPEC"
@@ -1479,7 +1479,7 @@
       "sells": 108,
       "created": "2025-07-01T18:40:23Z",
       "bt_id": "eth_0x95af4af910c28e8ece4512bfe46f1f33687424ce",
-      "age_h": 7983.7254025,
+      "age_h": 8018.862119444444,
       "score": 41.84096541906544,
       "skew": 57.48031496062992,
       "tag": "MICRO-SPEC"
@@ -1498,7 +1498,7 @@
       "sells": 368,
       "created": "2025-09-19T09:31:39Z",
       "bt_id": "solana_9AvytnUKsLxPxFHFqS6VLxaxt5p6BhYNr53SD2Chpump",
-      "age_h": 6072.870958055556,
+      "age_h": 6108.007675,
       "score": 41.38106019962439,
       "skew": 39.770867430441896,
       "tag": "MICRO-SPEC"
@@ -1517,8 +1517,8 @@
   "postGate": 74,
   "raw": 240,
   "tagCounts": {
-    "BREAKOUT": 2,
-    "CONTINUATION": 2,
-    "MICRO-SPEC": 1
+    "CONTINUATION": 3,
+    "MICRO-SPEC": 1,
+    "BREAKOUT": 1
   }
 }
