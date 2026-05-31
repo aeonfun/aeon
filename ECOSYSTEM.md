@@ -28,6 +28,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Bean | [@minebean_](https://x.com/minebean_) |
 | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
 | Capacitr | [@capacitr_](https://x.com/capacitr_) |
+| Careful Finance | [careful-finance.txzy.net](https://careful-finance.txzy.net) |
 | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
 | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
 | Clerk | [@clerk](https://x.com/clerk) |
