@@ -1,15 +1,11 @@
 {
   "skill": "narrative-tracker",
-  "last_analyzed": "2026-05-31T10:39:06Z",
+  "last_analyzed": "2026-05-31T21:33:53Z",
   "quality_score": 4,
-  "assessment": "Substantive trend tracking with specific insights (Physical AI × decentralized simulation emergence), actionable follow-ups with concrete gates and timelines, clear sourcing via WebSearch and domain references.",
+  "assessment": "Substantive, well-structured crypto narrative analysis with clear trend ratings and honest re-invocation handling; loses a point because re-run preserved existing output rather than generating fresh insights",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     },
     {
