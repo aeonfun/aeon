@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-05-31T05:17:11Z",
+  "timestamp": "2026-05-31T09:18:13Z",
   "sources": {
     "claude-sessions": "ok",
-    "trading": "ok",
-    "analytics-site": "ok",
+    "trading": "skip:api-unreachable",
+    "analytics-site": "skip:endpoint-failed",
     "analytics-social": "skip:no-source-file"
   }
 }
