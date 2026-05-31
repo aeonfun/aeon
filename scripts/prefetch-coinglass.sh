@@ -183,11 +183,33 @@ else
     map(select(.total_vol > 0)) |
     sort_by(.total_vol) | reverse | .[0:25] | .[].index_id
   ' "$DERIVATIVES_FILE")
-  # Order: Tier 1 (BTC, ETH, SOL) FIRST so they always succeed even if a later
-  # Coinglass burst hits per-minute rate limits. Then top-25-by-volume, deduped
-  # against Tier 1 (preserves the first-seen ordering — no sort -u shuffling).
-  ASSET_LIST=$(printf 'BTC\nETH\nSOL\n%s\n' "$TOP" | awk 'NF && !seen[$0]++')
-  echo "coinglass-prefetch: universe = Tier 1 (BTC, ETH, SOL) + top 25 by Binance/OKX/Bybit USDT-perp aggregated 24h volume ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins)"
+
+  # Pull our currently-tracked assets from the ledger (open[] + watchlist[]).
+  # Without this, anything below the top-25-by-volume cutoff (often the case
+  # for our smaller-cap positions like ICP/SEI/INJ) never gets cached and the
+  # engine-poller reports 60%+ missing_data. Adding ledger assets unconditionally
+  # guarantees full coverage regardless of where they rank by perp volume.
+  #
+  # Fail-soft: if jq or the ledger file isn't available, drop to top-25-only.
+  LEDGER_ASSETS=""
+  if [ -f "memory/topics/state/active-setups.json" ]; then
+    LEDGER_ASSETS=$(jq -r '
+      ((.open // []) + (.watchlist // [])) |
+      map(.asset // empty) |
+      map(ascii_upcase) |
+      unique |
+      .[]
+    ' "memory/topics/state/active-setups.json" 2>/dev/null || true)
+  fi
+
+  # Order:
+  #   1. Tier 1 (BTC, ETH, SOL) — always succeed
+  #   2. Ledger assets — guarantees coverage for our actual positions/watchlist
+  #   3. Top 25 by volume — fills the rest of the universe
+  # awk dedup preserves first-seen ordering — no sort -u shuffling.
+  ASSET_LIST=$(printf 'BTC\nETH\nSOL\n%s\n%s\n' "$LEDGER_ASSETS" "$TOP" | awk 'NF && !seen[$0]++')
+  N_LEDGER=$(printf '%s\n' "$LEDGER_ASSETS" | grep -v '^$' | wc -l | tr -d ' ')
+  echo "coinglass-prefetch: universe = Tier 1 + $N_LEDGER ledger asset(s) + top 25 by Binance/OKX/Bybit USDT-perp aggregated 24h volume ($(echo "$ASSET_LIST" | wc -l | tr -d ' ') coins total)"
 fi
 
 # --- 3. Per-coin Coinglass fetches (7 endpoints per coin, tier-confirmed accessible) ---
