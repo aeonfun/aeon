@@ -1,69 +1,66 @@
 # Market Context (as of 2026-05-31)
 
-> **Take:** chop — BTC +0.20% 24h while DEX vol fell 31% to $4.74B and 7d breadth holds at 4/20. Conviction: medium.
+> **Take:** chop — BTC -0.45% 24h, breadth compressed to 6/20 top-cap green with 14/20 red, DEX vol $4.63B for the second consecutive session below $5B. Conviction: medium.
 
 ## Signal Snapshot
-- BTC $73,692 (+0.20% 24h, -4.21% 7d) · dominance 57.27% (-0.07 pp 24h)
-- ETH $2,015 (-0.07% 24h, -4.99% 7d) · ETH/BTC 0.02734
-- SOL $82.46 (+0.13% 24h, -4.67% 7d)
-- Total mcap $2.578T (+0.57% 24h) · DEX vol $4.74B 24h
-- Breadth: 10/20 green 24h · 4/20 green 7d
+- BTC $73,548 (-0.45% 24h, -3.90% 7d) · dominance 57.34% (+0.07 pp 24h)
+- ETH $2,004 (-1.11% 24h, -4.47% 7d) · ETH/BTC 0.02725
+- SOL $81.83 (-1.31% 24h, -3.27% 7d)
+- Total mcap $2.573T (-0.33% 24h) · DEX vol $4.63B 24h
+- Breadth: 6/20 green 24h · 4/20 green 7d
 - Fear & Greed: 28 (Fear) — yesterday 23
 
 ## What Changed Since Last Refresh
-- F&G crossed from Extreme Fear (23) to Fear (28). First session above the Extreme Fear floor in the current run. A sentiment boundary cross, not a signal reversal.
-- DEX 24h volume fell from $6.9B to $4.74B (-31%). Activity compressed sharply while price held flat. The volume-price split signals contraction, not expansion.
-- XMR -7.62% 24h against ZEC +5.30% 24h. The privacy sector is splitting. ZEC absorbs flows while XMR breaks down intraday. Capital is rotating within the sector, not exiting it.
-- BNB added +7.11% 24h on top of yesterday's +12.05%, now +9.51% 7d with no confirmed catalyst. Day 2 confirms the move is not a single-session anomaly.
+- BNB's morning surge (+7.11% 24h) rolled out of the 24h window. BNB now -1.62% 24h while +8.04% 7d. The cluster bid holds on the week but cooled intraday. First attrition signal after day-2 confirmation.
+- Breadth compressed from 10/20 to 6/20 24h green as BTC, ETH, SOL all turned negative and BNB reversed. Fourteen of top-20 now red 24h.
+- HYPE extended to $70.99 (+4.97% 24h), adding $2.67 from this morning's $68.32. ATH extension continues into the PM session.
+- ZEC bounced to $553 (+3.84% 24h) off the $500 level from yesterday's PM session. Privacy floor holds so far.
 
 ## Active Narratives
-- **BNB / Binance ecosystem** — phase: rising (promoted from emerging). Evidence: BNB +9.51% 7d, day 2 of elevated outperformance without a confirmed fundamental catalyst. The move extended through a second session with no sell-side follow-through.
-- **Perp-DEX (HYPE, ASTER)** — phase: peak. Evidence: HYPE $68.32, +6.40% 7d, ATH extension, trending rank 2. ASTER +6.57% 24h trending rank 7. Both names in top-10 trending; sector attention has reached saturation.
-- **AI agents / compute (VVV, TAO)** — phase: rising. Evidence: VVV +12.35% 24h trending rank 8, TAO +2.17% 24h trending rank 5. The AI compute sector builds breadth across two names rather than concentrating in one.
-- **Privacy (ZEC bid, XMR breakdown)** — phase: rising. Evidence: ZEC +5.30% 24h at $547.58 (rank 14). XMR -7.62% 24h. ZEC absorbs the flows XMR is releasing; the narrative survived the vehicle divergence.
-- **XLM / RWA tokenization** — phase: fading. Evidence: XLM -1.14% 24h, second consecutive 24h-red session. The +63.21% 7d residual compresses with no new catalyst since the DTCC announcement.
+- **AI agents / identity-AI** — phase: peak. Evidence: WLD +11.8% 24h on Oku Trade DeFi aggregator launch inside World App with WLD rewards (today's pick); H day-2 +23% on +89% 7d; AWS launched Bedrock AgentCore Payments in preview with Coinbase and Stripe, adding institutional agent-to-agent payment rails over MCP servers.
+- **Hyperliquid / perp-DEX** — phase: rising. Evidence: HYPE $70.99, +4.97% 24h, +12.33% 7d. ATH extension with a live RIDE position. ASTER in accumulation day-2 (taker buy 47%, OI building), sector breadth across two names.
+- **Decentralized compute / DePAI** — phase: peak. Evidence: VVV +12.1% 24h; TAO $43M Q1 2026 on-chain AI-services revenue; Grayscale and Bitwise spot TAO ETF filings pending August 2026 decision.
+- **BNB / Binance cluster** — phase: rising. Evidence: BNB +8.04% 7d with accumulation in the derivatives scan day-2 (taker buy 49%, passive build); 24h window rolled to -1.62% as the morning's surge exits measurement. Cluster narrowing from five names to three (BNB, CAKE, ASTER).
+- **Physical AI × decentralized simulation** — phase: emerging. Evidence: new entry today. @InTheAssembly thread maps robots and sensors as the next multi-year AI cycle (SYM/CGNX/NDSN/OUST tradfi side + $SYN on Base as crypto bridge). NEAR sovereign-agents adjacent. No liquid mid-cap vehicle yet.
 
 ## Top DeFi Protocols (TVL, 7d change)
-- Lido: $17.98B (-4.61%)
-- SSV Network: $14.91B (-4.54%)
-- Aave V3: $13.37B (-3.12%)
-- WBTC: $8.45B (-3.66%)
-- Binance Staked ETH: $7.49B (-4.50%)
+- Lido: $17.69B (-4.87%)
+- SSV Network: $14.68B (-5.04%)
+- Aave V3: $13.25B (-3.28%)
+- Binance Staked ETH: $7.37B (-4.89%)
+- Morpho Blue: $7.28B (-1.22%)
 
 ## Chain Flow (top 3 by TVL, 7d)
-- Ethereum: $42.30B (7d change: n/a — chains endpoint does not return 7d delta)
-- BSC: $5.79B (7d change: n/a)
-- Solana: $5.39B (7d change: n/a)
+- Ethereum: $41.8B (7d change: n/a — chains endpoint does not return 7d delta)
+- BSC: $5.76B (7d change: n/a)
+- Solana: $5.32B (7d change: n/a)
 
 ## Stablecoins
-Top-6 combined: ~$286.72B (7d delta n/a). USDT $188.17B · USDC $75.89B · USDS $8.82B · USD1 $4.74B · DAI $4.60B · USDe $4.50B · combined share of total mcap ~11.1%.
+Total: ~$286.6B (7d delta n/a). USDT $188.1B · USDC $75.9B · USDS $8.8B · USD1 $4.7B · combined share of mcap ~11.1%.
 
 ## Trending (CoinGecko)
-- HYPE — rank 11, +3.38% 24h; ATH extension continuing, perp-DEX sector leader trending second straight session.
-- VVV — rank 81, +12.35% 24h; AI compute surge, largest 24h gain in the trending list today.
-- TAO — rank 40, +2.17% 24h; AI compute second name, sector breadth building across two names.
-- ASTER — rank 48, +6.57% 24h; perp-DEX peer to HYPE, trending alongside the sector leader.
-- XLM — rank 17, +1.69% 24h; slight bounce but the 7d residual compresses without new catalyst.
-- LAB — rank 33, +9.84% 24h; second session of elevated gain, no confirmed catalyst identified.
-- BTC — rank 1, +0.22% 24h; benchmark stable, trending as market concentrates into majors.
-- KITE — rank 112, +7.42% 24h; small-cap spike, no narrative anchor.
-- PENGU — rank 106, -0.78% 24h; ETF filing narrative holding on a flat-to-red session.
-- SOL — rank 7, +0.27% 24h; range-bound alongside BTC, no directional breakout.
+- HYPE — $70.99, +4.97% 24h; ATH extension second straight session, perp-DEX sector leader.
+- ASTER — +6.57% 24h; perp-DEX peer to HYPE, trending alongside the sector leader day-2.
+- XLM — $0.2472, +3.29% 24h; DTCC-Stellar tokenization announcement maintains the bid; recovered from morning's -1.14% reading.
+- LAB — +7.6% 24h (morning read); day-3 trending, 1h -13.1% intraday confirms distribution into attention (ZachXBT insider-supply concentration flag from 05-30).
+- FET — AI compute continuation token, rotating capital into AI names alongside the sector's week-long outperformance.
+- KITE — +7.42% 24h; small-cap trending, no narrative anchor.
+- BTC — $73,548, -0.45% 24h; benchmark on the trending list as market attention narrows to majors in a compressed tape.
 
 ## Prediction Markets (Polymarket, top by 24h vol)
 | Market | YES% | 24h Vol | Liquidity |
 |--------|------|---------|-----------|
-| Roland Garros WTA: Kostyuk vs Swiatek | 58.5% (Kostyuk) | $1.58M | $60.6K |
 
-*No crypto/macro markets in qualifying range today. US-Iran peace deal at 1.45% YES (below 3% threshold — effectively expired by May 31 deadline). Iran ceasefire market at 99.95% (above 97% threshold). Geopolitical risk premium fully repriced.*
+*No crypto/macro markets in qualifying range today. FIFA World Cup markets lead by 24h vol at below 1% YES (Cape Verde $10.7M at 0.05%, Turkiye $4.0M at 0.85%). US-Iran peace deal 0.55% YES — below 3% threshold, deadline passed May 31.*
 
 ## Macro Catalysts (next 48h)
-- BTC ETF outflows: day 10+ of consecutive outflows, $1.55B withdrawn since May 14. The longest streak since ETF launch. Institutional distribution into BTC's $73-75K range. First positive IBIT day is the reversal signal.
-- GENIUS Act stablecoin bill + CLARITY Act markup: pending Senate scheduling. Passage would structurally widen the stablecoin and RWA addressable market; failure would clip the RWA/stablecoin sector bid.
+- BTC ETF outflow streak at day 11+, $1.55B withdrawn since May 14. YTD 2026 net inflows fell to $536M, well below prior years at this calendar date. US spot ETFs hold ~1.3M BTC collectively. First positive IBIT day is the reversal signal. Without it the institutional distribution thesis stays intact.
+- GENIUS Act stablecoin vote + CLARITY Act markup pending Senate scheduling. Passage structurally widens the stablecoin and RWA addressable market. Failure clips the XLM/RWA/ONDO sector bid directly.
+- HYPE ATH extension to $70.99 into the PM session: narrative and price-side in alignment on the perp-DEX sector leader. Arthur Hayes SOL-mcap target cited in this morning's cross-domain read.
 
 ## Implications for Downstream Skills
-- **token-call:** Chop regime with 4/20 7d breadth caps the alt long thesis. Best single-name setups: BNB (rising, day 2 — the move extended without a catalyst, which adds risk; wait for a confirmed fundamental before adding size) and VVV (AI compute +12.35% 24h, sector breadth building via TAO as second name). HYPE at peak with ATH extension — late entries face a crowded exit. ZEC is the clean privacy vehicle as XMR breaks down.
-- **narrative-tracker:** BNB promoted to rising (day 2 confirmed, no catalyst yet). AI compute builds breadth (VVV + TAO both trending). HYPE/ASTER at peak — no new entries. XLM/RWA fading confirmed (two consecutive 24h-red sessions post-DTCC). ZEC absorbs XMR rotation within the privacy sector.
+- **token-call:** Chop at 6/20 breadth with 14/20 top-cap red. WLD called today (identity-AI, Oku Trade DeFi launch, 9/10). Best continuation bets: HYPE (live RIDE, no new entries) and VVV (decentralized compute, +12.1% 24h, breadth building via TAO). BNB 24h rolled to -1.62% while 7d holds at +8.04%. Wait for taker buy to reclaim 50%. Continued negativity into tomorrow confirms the cluster topping.
+- **narrative-tracker:** AI agents 5/5 peak — trail tightens toward June 2026 compliance window. Physical AI × decentralized simulation NEW Emerging today — gate condition: TAO/NEAR partnership pivot or mid-cap simulation token surfacing on aggregator boards. BNB cluster day-3: attention narrowing to three names, intraday reversal is the first attrition signal; CAKE/ASTER both negative 24h tomorrow breaks the cluster thesis.
 
 ## Token Picks Made
 | Date | Token | Price | Thesis |
@@ -90,8 +87,9 @@ Top-6 combined: ~$286.72B (7d delta n/a). USDT $188.17B · USDC $75.89B · USDS 
 | 2026-05-28 | XLM | $0.1731 | Top scorer in 250-coin scan (10/10, HIGH); idiosyncratic strength (+17.2% 24h / +18.6% 7d, vol/mcap 0.12 on $5.81B cap) on a -2.98% BTC tape; DTCC plans to connect tokenized-securities platform to Stellar H1 2027, DTCC patent names XLM the Digital Liquidity Token for cross-ledger settlement; Bermuda sovereign digital-dollar on Stellar + bipartisan Crypto Clarity Act Senate milestone May 27 add regulatory tailwind; risk: H1 2027 catalyst horizon front-running, +18.6% 7d is almost entirely today's single bar; invalidation: 24h close below $0.152 |
 | 2026-05-29 | INJ | $5.99 | Cleanest continuation in AI-token rotation (vol/mcap 0.33, $199M vol on $600M mid-cap); 16-point 7d relative-strength outperformance vs BTC/ETH; Injective Nova Program (Microsoft + Azure AI dev pipeline, May 25) + MultiVM ecosystem push + Policy Institute in Washington (May 21); room overhead vs old $50 range; invalidation: 24h close below $5.20 |
 | 2026-05-30 | FET | $0.25 | Top scorer in 250-coin scan (10/10, HIGH); capital rotating back into AI tokens; ASI Alliance Agent Launchpad shipped May 20 as a live product; vol/mcap 0.35 confirms real turnover; FET outpacing flat BTC/ETH on 7d; dedup gate cleared 14-pick 7d window |
+| 2026-05-31 | WLD | $0.333 | Oku Trade DeFi aggregator live inside World App with WLD rewards; whales/addresses/new-wallets all 2026 highs; identity-AI sector confluence with H/Humanity +88% 7d; vol/mcap 0.31; scored 9/10 HIGH; dedup gate cleared 7d window |
 
 ---
 *Sources — btc/eth/sol/top20/trending: CoinGecko · defi: DeFiLlama · sentiment: alternative.me · markets: Polymarket · macro: WebSearch*
 *Source status: coingecko=ok defillama=ok fng=ok polymarket=ok websearch=ok*
-*Dominance note: 24h regime FLAT (BTC.D -0.07pp, USDT.D unchanged). Data gap: charts-30d.json absent from prefetch cache (manifest global=0, charts_30d=0). Regime computed from live CoinGecko global API + 30d coin market cap charts.*
+*Dominance note: BTC.D 57.34% (+0.07 pp from prior 57.27%), USDT.D 7.31% (flat). Regime FLAT — neither dimension shows movement; trade asset-specific setups. Data gap: usdt_30d absent from prefetch cache (manifest usdt_30d=0); 7d USDT dominance delta unavailable.*
