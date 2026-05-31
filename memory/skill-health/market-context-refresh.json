@@ -1,15 +1,11 @@
 {
   "skill": "market-context-refresh",
-  "last_analyzed": "2026-05-30T21:49:39Z",
+  "last_analyzed": "2026-05-31T10:40:55Z",
   "quality_score": 4,
-  "assessment": "Substantive market intelligence with specific data, regime assessment, material changes tracked, and actionable catalysts; well-structured but output is truncated.",
+  "assessment": "Good — substantive market analysis with specific data points, clear regime/conviction classification, and documented narrative shifts; well-structured with concrete file outputs.",
   "flags": [],
-  "avg_score": 4.1,
+  "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 5
-    },
     {
       "date": "2026-05-19",
       "score": 5
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     }
   ]
