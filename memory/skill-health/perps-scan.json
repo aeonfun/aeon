@@ -1,15 +1,11 @@
 {
   "skill": "perps-scan",
-  "last_analyzed": "2026-05-31T10:39:54Z",
+  "last_analyzed": "2026-05-31T21:44:28Z",
   "quality_score": 4,
-  "assessment": "Substantive crypto regime analysis with detailed transitions, regime counts, and watch list; well-structured output with multiple artifacts and transparent compute pipeline.",
+  "assessment": "Complete technical execution with substantive market analysis, specific regime classifications, actionable watch list, and proper audit trail preservation.",
   "flags": [],
   "avg_score": 4.23,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -121,6 +117,10 @@
     {
       "date": "2026-05-30",
       "score": 5
+    },
+    {
+      "date": "2026-05-31",
+      "score": 4
     },
     {
       "date": "2026-05-31",
