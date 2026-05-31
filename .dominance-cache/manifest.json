@@ -1,10 +1,10 @@
 {
-  "fetched_at": "2026-05-31T10:28:55Z",
+  "fetched_at": "2026-05-31T21:30:45Z",
   "source": "coingecko",
   "endpoints": {
-    "global":      0,
+    "global":      1,
     "charts_30d":  0,
     "btc_30d":     1,
-    "usdt_30d":    1
+    "usdt_30d":    0
   }
 }
