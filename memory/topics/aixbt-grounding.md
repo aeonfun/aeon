@@ -1,14 +1,14 @@
-# AIXBT Grounding (as of 2026-05-30 21:00 UTC)
+# AIXBT Grounding (as of 2026-05-31 10:00 UTC)
 
 Source: https://api.aixbt.tech/v2/grounding (free tier)
-Window: 12h rolling. Last AIXBT generatedAt: 2026-05-30T21:00:39.872Z
+Window: 12h rolling. Last AIXBT generatedAt: 2026-05-31T10:00:28.046Z
 Note: Two-section format persists (macro and geopolitics folded into TradFi).
 
 ## Crypto
-- Hyperliquid dominates mindshare as $HYPE ETFs pull ~$30M daily inflows, volume surpasses NASDAQ, and HIP-4 prediction markets challenge Polymarket.
-- BTC dominance drops below 60% amid whale accumulation stalls; analysts eye $60K-$80K range while altseason calls build around $NEAR, $INJ, and $HYPE.
-- $BNB surges 12% on VanEck's first US spot BNB ETF launch and a June 1 announcement; exchange token rotation gains traction with $MNT and $ASTER.
-- Circle's freeze of $12.6M in Zama's confidential USDC contract sparks renewed debate on censorship resistance, boosting privacy coin and decentralized stablecoin narratives.
+- HYPE dominates mindshare as it prints ATHs above $69, with Arthur Hayes targeting SOL-level mcap and ETF inflows accelerating institutional conviction.
+- Bearish sentiment engulfs most L1s — ETH, SOL, SUI, AVAX all called "cooked" — while privacy tokens ZEC and XMR emerge as a consensus counter-narrative.
+- BTC stuck near $73-74K amid $2.9B in ETF outflows and Fear index at 28; macro headwinds from oil, rate cuts, and equity rotation keep risk-off tone intact.
+- New on-chain primitives gain traction: Solana's ZINC fair-launch mining, Cosmos Gravity bridge exploit, and DeFi security debates highlight evolving protocol risk.
 
 ## Global Liquidity / Macro
 *(folded into TradFi this reading)*
@@ -17,40 +17,39 @@ Note: Two-section format persists (macro and geopolitics folded into TradFi).
 *(folded into TradFi this reading)*
 
 ## TradFi
-- Oil relief from Iran truce optimism is transmitting lower energy costs into reduced inflation pressures, bolstering equity multiples and supporting dollar carry positioning.
-- AI demand flows lifting Dell sharply are extending Nasdaq records, channeling tech strength into broad risk-on sentiment across equities.
-- Pending US-Iran deal approval uncertainty sustains geopolitical premium, with Hormuz risks poised to reverse oil gains and elevate yields via inflation transmission.
-- Overextended memory chip valuations flag FOMO-driven positioning risks in semis, implying potential de-risking and rotation impacts on tech-heavy indices.
+- US equities extend record highs with bullish positioning in tech as tentative Iran ceasefire extension compresses energy risk premia and supports risk-on flows into growth assets.
+- Oil's sharp decline on Hormuz reopening hopes transmits lower inflation expectations, anchoring yields and encouraging bond duration extension alongside equity rallies.
+- Geopolitical de-escalation signals reduce conflict tail risks, prompting cross-asset repositioning out of defensives toward cyclicals and shipping-exposed sectors with EM flow implications.
+- VIX compression and futures positioning reflect heightened risk appetite into next week's data, with macro liquidity supporting carry trades amid fading Middle East volatility.
 
-## What's New (vs last pull — 2026-05-30T10:00:22.320Z)
-- [CRYPTO] HYPE ETFs ~$30M daily inflows + volume surpasses NASDAQ + HIP-4 prediction markets vs Polymarket — prior: supply crunch/a16z whale/$70 target; framing entirely replaced
-- [CRYPTO] BTC dominance below 60%, whale accumulation stalls, altseason calls (NEAR/INJ/HYPE) — prior: BTC ETF $1.4B outflow framing; dominance/altseason angle new
-- [CRYPTO] BNB +12% on VanEck first US spot BNB ETF + June 1 announcement; exchange token rotation (MNT, ASTER) — entirely new item
-- [TRADFI] Memory chip FOMO-driven valuations, semis de-risking risk flagged — no semis risk in prior reading
+## What's New (vs last pull — 2026-05-30T21:00:39.872Z)
+- [CRYPTO] HYPE ATH above $69 + Arthur Hayes SOL-mcap target + ETF inflows accelerating institutional conviction — prior: ETF $30M/day inflows + NASDAQ volume + HIP-4; framing upgraded from mechanics to ATH confirmation
+- [CRYPTO] L1s bearish (ETH/SOL/SUI/AVAX "cooked") + ZEC/XMR as standalone counter-narrative — prior: ZEC/XMR nested inside Circle USDC freeze story; now standalone lead item
+- [CRYPTO] BTC stuck $73-74K, $2.9B ETF outflows, Fear 28, macro headwinds, risk-off tone — prior: BTC dominance below 60% + altseason calls (NEAR/INJ/HYPE); now explicitly risk-off framing
+- [CRYPTO] ZINC fair-launch mining (Solana) + Cosmos Gravity bridge exploit + DeFi security debates — new combination framing; Gravity bridge alone appeared before, ZINC + DeFi security combo is new
+- [TRADFI] US equities extend record highs, Iran ceasefire extension, bullish tech positioning — prior: "oil relief from Iran truce optimism"; equity-centric reframe
+- [TRADFI] Geopolitical de-escalation → cross-asset repositioning out of defensives toward cyclicals and EM flows — new angle on the Iran trade
+- [TRADFI] VIX compression + futures positioning + carry trade support + fading Middle East volatility — new synthesis item consolidating the de-escalation chain
 
-## Gone (vs last pull — 2026-05-30T10:00:22.320Z)
-- [CRYPTO] BTC ETF $1.4B weekly outflow (3rd largest ever), IBIT $966M exit — dropped
-- [CRYPTO] USDT -$1.15B stablecoin contraction — dropped
-- [CRYPTO] SUI 4 outages in 48hrs — dropped
-- [CRYPTO] Base stall 30+ hrs — dropped
-- [CRYPTO] Gravity Bridge drain $5.4M — dropped
-- [CRYPTO] Privacy narrative as standalone item (ZEC/XMR/ZK infra) — absorbed into Circle freeze framing
-- [CRYPTO] HYPE supply crunch (a16z whale, spot exchange outflows $46M) — replaced by ETF inflows framing
-- [TRADFI] DXY stable at 99 — dropped
-- [TRADFI] Yields ~4.44% — dropped
+## Gone (vs last pull — 2026-05-30T21:00:39.872Z)
+- [CRYPTO] BNB +12% on VanEck BNB ETF + June 1 announcement; exchange token rotation (MNT/ASTER) — dropped entirely
+- [CRYPTO] Circle USDC freeze $12.6M / censorship resistance / decentralized stablecoin debate — dropped (ZEC/XMR narrative persists without the catalyst)
+- [CRYPTO] BTC dominance below 60% + altseason calls (NEAR/INJ/HYPE) — replaced by risk-off reframe
+- [TRADFI] Memory chip FOMO / semis de-risking flag — dropped
+- [TRADFI] Dell AI demand lifting Nasdaq records (Dell-specific framing) — dropped; equity bid holds but Dell anchor gone
+- [TRADFI] Pending US-Iran deal approval uncertainty / Hormuz reversal risk — replaced by de-escalation framing
 
 ## Persisting Stories
-- HYPE / Hyperliquid dominant mindshare — holds and accelerating; supply-crunch framing replaced by ETF-inflows + NASDAQ-volume + HIP-4. Conviction deepens without framing stabilizing.
-- Iran truce / risk-on trade — holds; evening reading adds deal-approval uncertainty and Hormuz reversal risk. Language hardened from "optimism" to "pending approval uncertainty."
-- Dell AI + Nasdaq records — holds as the TradFi anchor. Now with a semis FOMO warning attached.
-- Circle USDC freeze / censorship resistance — holds; now explicitly boosting decentralized stablecoin narratives alongside privacy coins.
+- HYPE / Hyperliquid dominant mindshare — holds and intensifying; ATH now confirmed at $69+; Arthur Hayes naming SOL-mcap target hardens the conviction floor
+- Iran de-escalation / TradFi risk-on — holds; language shifted from "pending approval uncertainty" to "ceasefire extension"; Hormuz reversal risk dropped from this reading
+- Privacy narrative (ZEC/XMR) — holds as standalone counter-narrative against "cooked" L1s; Circle catalyst gone, bid independent
 
 ## Cross-Domain Bridges
 
-HYPE ETFs pull $30M daily as BTC dominance cracks below 60%. The same capital flow described from two angles. The $1.4B BTC ETF outflow (3rd-largest ever, 10:00Z reading) went somewhere. HYPE ETF inflows at $30M/day name the destination. Analyst altseason calls pick NEAR/INJ alongside HYPE as the beneficiaries. The rotation is within crypto, not out of it.
+BTC reads risk-off ($2.9B ETF outflows, Fear 28, L1s "cooked"). TradFi reads risk-on (equities at record highs, VIX compressed, carry trades). Both descriptions cover the same 12h window. They don't cancel — they describe decoupled channels. The Iran de-escalation chain transmits to TradFi through oil and yields. BTC reads its own ETF register independently.
 
-VanEck's BNB ETF is the institutional-product playbook landing on exchange tokens. BNB +12% on announcement. MNT and ASTER follow as CEX-ecosystem adjacents. June 1 is the catalyst decision point. If the announcement delivers, the CEX-token rotation extends. If it's already priced, the 12% is the full move.
+HYPE printed ATH above $69 while BTC bled $2.9B in ETF exits. Same window. The BTC exits funded the HYPE bid. Arthur Hayes naming a SOL-level mcap target at ATH is a conviction floor, not a FOMO call. Analyst targets land hardest when the rotation has already happened and the paper hand turned into a real bid.
 
-The Iran trade reversed direction intra-session. 10:00Z reading: optimism driving oil lower. 21:00Z reading: pending approval uncertainty keeping Hormuz risk alive. Risk-on held through the morning. Two fragility signals arrive in the evening: Hormuz reversal risk back on the table, semis FOMO flagged for de-risking. The Nasdaq records that anchored equity risk-on sit on top of both. The risk-on extension into US close is fragile.
+Privacy tokens ZEC/XMR held after the catalyst dropped. The Circle USDC freeze that launched the bid is gone from this reading. ZEC/XMR now stand as a counter-narrative against "cooked" L1s on their own. The reflexive loop: catalyst gone, narrative holds on its own momentum. Runs until attention exhausts or a new anchor materializes.
 
-Circle's freeze manufactured two bids from one event. Privacy coins got the morning call. The evening adds decentralized stablecoins as the second vector. The reflexive loop: Circle censors, bid materializes on two vectors, narrative validates, more bid. It runs until Circle acts again or attention exhausts.
+Iran ceasefire extension anchors the TradFi risk-on chain: oil lower → yields anchor → equities hold records → VIX compresses → carry trades supported. The uncertainty language ("pending approval") dropped out of this reading. One tail remains: ceasefire extension that doesn't formalize inverts the chain — Hormuz back, oil up, yields rise, equities compress. That's the only intact risk-off tail in the TradFi read right now.
