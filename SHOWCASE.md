@@ -22,6 +22,7 @@ A snapshot of the operators currently running their own Aeon instance. "Active" 
 | [davenamovich/aeon](https://github.com/davenamovich/aeon) | 3 | A small, deliberate selection — uses Aeon as a low-touch personal automation. |
 | [0xfreddy/aeon](https://github.com/0xfreddy/aeon) | 2 | Ships a fork-only custom skill (`macos-apps`) alongside heartbeat — first fork to add a local-context skill that doesn't exist upstream. |
 | [pezetel/aeon](https://github.com/pezetel/aeon) | 2 | `heartbeat` + `github-trending` — a focused dev-pulse instance. The first fork to break `github-trending` out of the long tail. |
+| [UIZorrot/aeon](https://github.com/UIZorrot/aeon) | 1 | Careful Finance fork - uses Aeon/GitHub Actions as the scheduled market-analysis layer behind a public DeFi-yield and perp-arb ChatUI. |
 
 The full ranking — including the per-week skill-divergence buckets and the contributor leaderboard — is regenerated every Sunday by the `fork-skill-digest` and `fork-contributor-leaderboard` skills, with the latest output published to [`articles/`](articles/).
 
