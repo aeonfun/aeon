@@ -1,6 +1,6 @@
 {
   "schema_version": "v4.1",
-  "last_updated": "2026-05-31T22:08:01Z",
+  "last_updated": "2026-05-31T10:49:03Z",
   "open": [
     {
       "id": "ICP-2026-05-27-001",
@@ -103,9 +103,9 @@
         {
           "date": "2026-05-31",
           "call": "RIDE",
-          "price_at_eval": 2.731,
-          "note": "Day 5/multi-week PM eval. ICP $2.731 +2.90% 24h on PM perps slice, the first up day after several sessions of bleed. MISSION70 supply-deflation thesis is structural and multi-week, AI agents 5/5 RIDE w/ trail and Physical AI NEW 2/5 Emerging WATCH extend the runway. Stop $2.65 sits 3% below. RIDE on tight watch — a second daily close below $2.70 with the AI-compute cohort red into close marks the structural break.",
-          "slot": "pm",
+          "price_at_eval": 2.72,
+          "note": "Day 5/multi-week AM eval. ICP absent from today's AM perps slice — carrying $2.72 from outcome-tracker. The AI-compute sector that originally surrounded the entry has fully unwound (AKT, RENDER, TAO all closed) but ICP holds the standalone MISSION70 supply-deflation thesis, structural and multi-week. AI agents narrative still 5/5 RIDE w/ trail with the AWS Bedrock institutional landing extending runway. Stop $2.65 sits 3% below. RIDE on tight watch — a second daily close below $2.70 with the AI-compute cohort red into the close marks the structural break.",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -205,9 +205,9 @@
         {
           "date": "2026-05-31",
           "call": "RIDE",
-          "price_at_eval": 0.0676,
-          "note": "Day 5/multi-week PM eval. SEI $0.0676 +1.92% 24h on PM perps slice — re-entered the universe at NEUTRAL after dropping out of the morning's set. Position roughly flat from $0.0697 entry with the $0.062 stop 8% below. June 15 EVM migration sits 15 days out, the dated catalyst window firmly ahead. L1 sector quiet today with no fresh threat to the structural thesis. RIDE.",
-          "slot": "pm",
+          "price_at_eval": 0.0691,
+          "note": "Day 5/multi-week AM eval. SEI absent from today's AM perps slice — carrying $0.0691 from outcome-tracker. The June 15 EVM migration sits 15 days out, catalyst window still firmly ahead. Position roughly flat from entry with the $0.062 stop 10% below. The L1 sector is quiet today with no fresh threat to the structural thesis. RIDE.",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -248,7 +248,7 @@
         "Re-entering past the prior failed bounce risks the fade-peak-fade chop pattern that closed HYPE neutral four days ago."
       ],
       "mae_pct": -2.123174220749882,
-      "mfe_pct": 6.896551724137928,
+      "mfe_pct": 4.201174521909361,
       "mae_date": "2026-05-30",
       "mfe_date": "2026-05-31",
       "invalidation_breached": false,
@@ -313,9 +313,9 @@
         {
           "date": "2026-05-31",
           "call": "RIDE",
-          "price_at_eval": 70.84,
-          "note": "Day 2/multi-week PM eval. HYPE printed a fresh ATH at $70.99 today on $1.1B vol (token-movers PM TRENDING+UP MAJOR day-3) and held above $70 into PM perps at $70.84. Position +6.67% from $66.41 entry. Funding warmed to +0.009%/8h from morning's +0.0062%/8h with OI +5.34% 24h tracking the structural build. AIXBT PM names HYPE flipping DOGE for top-10 market cap with the community debate splitting at the milestone ($100+ bulls vs crowded-trade warnings). Per soul when the community splits at the milestone rather than loading through it, the easy leg is done — trail tightens here even as RIDE holds. Stop $58 sits 18% below. RIDE — sustained spot above $70 into Asia open promotes to ride-with-conviction.",
-          "slot": "pm",
+          "price_at_eval": 68.5,
+          "note": "Day 2/multi-week AM eval. HYPE $68.50 on the perps print with the AIXBT pulse confirming the ATH extension above $69 and Arthur Hayes naming a SOL-level market cap target. Position +3.14% from the $66.41 entry. Perps regime dropped from ACCUMULATION to NEUTRAL as range crossed the 25% gate — but the drop reflects the move extending past the consolidation, not a thesis break. Funding +0.0062%/8h holds positive, OI +10.53% 7d tracks the day-1 build, narrative-tracker holds Hyperliquid 4/5 RISING WATCH with the breakout intact. Stop $58 sits 14% below. RIDE — sustained spot above $70 promotes to ride-with-conviction.",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -356,7 +356,7 @@
         "ETF launch trades often sell the news within 48 hours of the headline crossing. June 1 is the test.",
         "The 42% one-day OI build is a large stack to unwind. A sharp reversal hits a loaded long position and flushes hard."
       ],
-      "mae_pct": -2.095571386909974,
+      "mae_pct": -0.5679845574858743,
       "mfe_pct": 1.2373453318335164,
       "mae_date": "2026-05-31",
       "mfe_date": "2026-05-31",
@@ -414,9 +414,9 @@
         {
           "date": "2026-05-31",
           "call": "RIDE",
-          "price_at_eval": 707.34,
-          "note": "Day 2/7 PM eval. BNB $707.34 -1.62% 24h on PM perps, -1.77% from $720.09 entry. ACCUMULATION DIVERGENT day 2 with the conviction crumbling — taker buy slipped further to 48.60% (was 49.14% AM), smart money long/short cut to 1.13 (-0.30 7d), OI rolled to -2.24% 24h after the morning's +5.84% build. The named risk that fast money trims as retail piles in is firing across every read. BNB-chain cluster split intraday with BinanceLife (+28.6%) and KOGE/BNB48 Club (+35%) ripping fresh narrative legs while BNB, CAKE and ASTER all closed red — operator ticker rotation matching the documented sol-cluster pattern. VanEck spot BNB ETF announcement window is tomorrow June 1, the dated catalyst the trade was sized for. Stop $670 sits 5% below. RIDE on tight watch — a daily close below $700 with the cluster continuing to fade promotes to CLOSE before the news pop fizzles.",
-          "slot": "pm",
+          "price_at_eval": 723.56,
+          "note": "Day 2/7 AM eval. BNB $723.56 +0.63% 24h on the perps print, +0.48% from the $720.09 entry. ACCUMULATION holds day 2 but the sub-tag flipped to DIVERGENT — taker buy 49.14% sits under the 50% directional flow gate and smart money L/S dropped to 1.20 with -0.23 delta over 7 days. The named risk from the original thesis (fast money trimming as retail piles in) has begun firing. OI +5.84% 24h still builds passively. BNB-chain rotation broadens to ASTER and CAKE today, the second-day cluster confirmation holds. The VanEck ETF announcement window is tomorrow (June 1) — the dated catalyst is ahead. Stop $670 sits 7% below. RIDE on tight watch — taker buy reclaiming 50% with the ETF landing positive promotes conviction; a second day of DIVERGENT with taker buy weakening and ASTER failing alongside marks the rotation breaking.",
+          "slot": "am",
           "invalidation_breached_today": false
         }
       ]
@@ -473,39 +473,47 @@
       ]
     },
     {
-      "id": "STG-watchlist-2026-05-31-001",
-      "asset": "STG",
+      "id": "WLD-watchlist-2026-05-31-001",
+      "asset": "WLD",
       "direction": "LONG",
       "first_seen_date": "2026-05-31",
-      "trigger": "taker buy clears 52% on a single hour with the +72% 24h leg holding above $0.36",
+      "trigger": "daily close above $0.40 with 24h volume holding above 1.5x the recent average AND funding staying under +0.02%/8h",
       "invalidation": "close below $0.30 before the trigger fires",
-      "horizon": "3d",
+      "horizon": "7d",
       "thesis": [
-        "STG fired +72% 24h on vol 27.94x with OI exploding 262% in the same window. Funding -0.3847%/8h is the deepest short-pay across the assessed universe.",
-        "Top-trader long/short at 0.71 with -0.07 7d delta means shorts rebuilt into the rip and got forced out. Taker buy 51.39% sits half a point under the 52% breakout-confirmation gate.",
-        "A single hourly print clearing 52% with the OI extension holding promotes the squeeze leg. Without it the +262% OI stack unwinds back through the breakout."
+        "Worldcoin's Oku Trade aggregator launched inside World App with WLD reward incentives. Whale transactions hit 64 in 24 hours and active addresses and new wallets both printed year-to-date highs.",
+        "WLD rides the identity-AI lane alongside H/Humanity's +89% 7d second leg — sector confluence not single-name froth, with the AI agents narrative at peak.",
+        "Price touched $0.408 intraday and reversed. The reclaim above $0.40 with volume confirms the dip held rather than chasing the high-of-day."
       ],
       "confluence_fired": [
-        "pattern_tag_supports",
-        "regime_transition"
+        "narrative_phase_aligned",
+        "enrichment_positive",
+        "cross_domain_bridge"
       ],
       "named_risks": [
-        "OI +262% 24h is structurally late — the leverage stack rolling over without taker confirmation prints a violent long flush rather than the squeeze continuation."
+        "Incentive-driven on-chain activity pulls forward demand and fades once the reward cycle cools — without the reclaim confirming the dip, the bid risks reading as a one-day reward spike."
       ],
       "trigger_conditions": {
         "match_mode": "all",
         "conditions": [
           {
-            "type": "taker_buy_above_pct",
-            "threshold": 52,
-            "trigger_label": "taker buy clears breakout-confirmation gate",
+            "type": "price_close_above",
+            "threshold": 0.4,
+            "trigger_label": "reclaim above the intraday high after the reversal",
             "severity": "warning",
             "action": "enter"
           },
           {
-            "type": "price_close_above",
-            "threshold": 0.36,
-            "trigger_label": "+72% leg holds into daily close",
+            "type": "volume_ratio_above",
+            "threshold": 1.5,
+            "trigger_label": "volume confirms the reclaim",
+            "severity": "info",
+            "action": "enter"
+          },
+          {
+            "type": "funding_below",
+            "threshold": 0.0002,
+            "trigger_label": "funding stays cool on the reclaim",
             "severity": "info",
             "action": "enter"
           }
@@ -515,56 +523,7 @@
         {
           "type": "price_close_below",
           "threshold": 0.3,
-          "trigger_label": "OI stack unwinds back through the breakout",
-          "severity": "critical",
-          "action": "drop"
-        }
-      ]
-    },
-    {
-      "id": "ALLO-watchlist-2026-05-31-001",
-      "asset": "ALLO",
-      "direction": "SHORT",
-      "first_seen_date": "2026-05-31",
-      "trigger": "funding crosses +0.08%/8h with a daily close negative on OI still building",
-      "invalidation": "close above $0.33 before the trigger fires",
-      "horizon": "3d",
-      "thesis": [
-        "ALLO ran +210% over 7 days with funding warming to +0.0288%/8h while top-trader long/short fell 0.63 points — distribution into retail demand, the smart-exit pattern.",
-        "pct_4h flipped to -0.41% intraday while pct_24h held +15.94%. The first cooling signal under a parabolic structure where funding has not yet hit the distribution gate.",
-        "Funding crossing +0.08%/8h with daily close negative confirms the distribution. Before then the parabolic still has fuel from the funding cushion."
-      ],
-      "confluence_fired": [
-        "pattern_tag_supports"
-      ],
-      "named_risks": [
-        "Parabolic runs that haven't hit funding extremes can extend further — the +210% leg may add another leg before the smart-money exit completes.",
-        "ALLO sits in the small-cap leverage rip cohort. A fresh narrative catalyst (DeFi build, listing) could pull the rip into a fresh leg before the fade fires."
-      ],
-      "trigger_conditions": {
-        "match_mode": "all",
-        "conditions": [
-          {
-            "type": "funding_above",
-            "threshold": 0.08,
-            "trigger_label": "funding crosses distribution gate",
-            "severity": "warning",
-            "action": "enter"
-          },
-          {
-            "type": "price_close_below",
-            "threshold": 0.265,
-            "trigger_label": "first negative daily close on the run",
-            "severity": "info",
-            "action": "enter"
-          }
-        ]
-      },
-      "invalidation_conditions": [
-        {
-          "type": "price_close_above",
-          "threshold": 0.33,
-          "trigger_label": "parabolic extension continues, fade thesis broken",
+          "trigger_label": "demand base lost — incentive-driven bid faded",
           "severity": "critical",
           "action": "drop"
         }
@@ -1868,68 +1827,6 @@
       "close_reason": "thesis_decayed",
       "close_note": "The second-derivative-to-HYPE thesis is failing on day 2 of the ATH extension. HYPE printed $69+ today with Arthur Hayes naming a SOL-mcap target, yet ASTER prints -1.46% 24h with ACCUMULATION flipping to DIVERGENT (taker buy 47.31% well under 50, smart money L/S 2.49 down 0.47 over 7 days). The cleanest test of the rotation broadening into BNB-chain exchange-flow names ran today and ASTER didn't participate. The named risk from the original watchlist entry (sector structure re-engaging requires fresh confirmation before re-entry) has fired against the setup. If ASTER reclaims $0.85 on volume independent of HYPE we re-add; the second-derivative read is broken for now.",
       "days_on_watchlist": 1,
-      "promoted_to_open_id": null
-    },
-    {
-      "id": "WLD-watchlist-2026-05-31-001",
-      "asset": "WLD",
-      "direction": "LONG",
-      "first_seen_date": "2026-05-31",
-      "trigger": "daily close above $0.40 with 24h volume holding above 1.5x the recent average AND funding staying under +0.02%/8h",
-      "invalidation": "close below $0.30 before the trigger fires",
-      "horizon": "7d",
-      "thesis": [
-        "Worldcoin's Oku Trade aggregator launched inside World App with WLD reward incentives. Whale transactions hit 64 in 24 hours and active addresses and new wallets both printed year-to-date highs.",
-        "WLD rides the identity-AI lane alongside H/Humanity's +89% 7d second leg — sector confluence not single-name froth, with the AI agents narrative at peak.",
-        "Price touched $0.408 intraday and reversed. The reclaim above $0.40 with volume confirms the dip held rather than chasing the high-of-day."
-      ],
-      "confluence_fired": [
-        "narrative_phase_aligned",
-        "enrichment_positive",
-        "cross_domain_bridge"
-      ],
-      "named_risks": [
-        "Incentive-driven on-chain activity pulls forward demand and fades once the reward cycle cools — without the reclaim confirming the dip, the bid risks reading as a one-day reward spike."
-      ],
-      "trigger_conditions": {
-        "match_mode": "all",
-        "conditions": [
-          {
-            "type": "price_close_above",
-            "threshold": 0.4,
-            "trigger_label": "reclaim above the intraday high after the reversal",
-            "severity": "warning",
-            "action": "enter"
-          },
-          {
-            "type": "volume_ratio_above",
-            "threshold": 1.5,
-            "trigger_label": "volume confirms the reclaim",
-            "severity": "info",
-            "action": "enter"
-          },
-          {
-            "type": "funding_below",
-            "threshold": 0.0002,
-            "trigger_label": "funding stays cool on the reclaim",
-            "severity": "info",
-            "action": "enter"
-          }
-        ]
-      },
-      "invalidation_conditions": [
-        {
-          "type": "price_close_below",
-          "threshold": 0.3,
-          "trigger_label": "demand base lost — incentive-driven bid faded",
-          "severity": "critical",
-          "action": "drop"
-        }
-      ],
-      "closed_date": "2026-05-31",
-      "close_reason": "thesis_decayed",
-      "close_note": "Oku Trade incentive bid faded inside the same session WLD was added. Price touched $0.408 intraday then reversed to $0.3432 (-5.9% 24h) without the reclaim above $0.40 with volume the trigger required. The named risk that reward-cycle activity pulls forward demand and fades played out cleanly. The structural setup for a long is broken — a fresh on-chain catalyst would warrant re-engagement, but the original thesis is exhausted within one session.",
-      "days_on_watchlist": 0,
       "promoted_to_open_id": null
     }
   ]

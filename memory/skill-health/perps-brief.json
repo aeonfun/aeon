@@ -1,15 +1,11 @@
 {
   "skill": "perps-brief",
-  "last_analyzed": "2026-05-31T10:48:52Z",
+  "last_analyzed": "2026-05-31T22:07:51Z",
   "quality_score": 4,
-  "assessment": "Substantive trading decisions with specific data, file outputs, and ledger tracking; well-structured and actionable.",
+  "assessment": "Substantive, well-structured portfolio brief with specific metrics and actionable trigger levels; domain expertise evident but data freshness not explicitly timestamped.",
   "flags": [],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-20",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     },
     {
