@@ -1,45 +1,41 @@
 # Token Movers — 2026-05-31
 
-Balanced tape with 52/100 top coins green at +0.2% median and majors 24h-flat (BTC +0.2% / ETH -0.1% / SOL +0.1%) yet still 7d-red near -4 to -5%, H extending day-2 BREAKOUT (+23%/24h on +89%/7d) while XMR -7.6% prints a MAJOR red to the privacy thread.
+Evening fade. Breadth halved since midday (33/100 green vs 52, top-20 6/20), majors rolled negative (BTC -0.5% / ETH -1.1% / SOL -1.3%), and the morning leader H unwound back to +0.8%/24h. The BNB-chain cluster split mid-session. BNB, CAKE, and ASTER rolled red while BinanceLife and KOGE ripped fresh +28% / +35% legs on the same narrative. HYPE printed a fresh ATH at $70.98 (+12.3%/7d) and LAB extended a second leg to +18% on top of +120%/7d. The bid concentrated.
 
 ## Top Winners (24h)
-1. H (Humanity) — $0.3919  +23.2% / 7d +89.1% / 1h -0.1%  •  $155M / #87  [BREAKOUT]
-2. VVV (Venice Token) — $17.95  +12.1% / 7d -8.7% / 1h 0.0%  •  $68M / #80
-3. WLD (Worldcoin) — $0.3335  +11.9% / 7d +10.7% / 1h -1.1%  •  $344M / #65
-4. NIGHT (Midnight) — $0.0408  +8.2% / 7d +21.9% / 1h +2.2%  •  $23M / #88
-5. M (MemeCore) — $3.030  +7.7% / 7d +5.3% / 1h +1.4%  •  $7M / #29
-6. LAB — $7.590  +7.6% / 7d +79.8% / 1h -13.1%  •  $125M / #33  [TRENDING+UP]
-7. OKB — $93.36  +7.5% / 7d +13.1% / 1h -0.3%  •  $35M / #46
-8. KITE — $0.2100  +7.3% / 7d +3.2% / 1h -0.9%  •  $46M / #112
-9. 9BIT (The9bit) — $0.0469  +7.3% / 7d +22.5% / 1h -1.6%  •  $12M / #126
-10. TON (Toncoin) — $1.880  +7.2% / 7d +5.5% / 1h -0.5%  •  $217M / #23
+1. HOME — $0.0382  +36.4% / 7d +69.9% / 1h +4.5%  •  $80M / #225  [PUMP-RISK][BREAKOUT]
+2. KOGE (BNB48 Club) — $47.83  +35.0% / 7d +45.7% / 1h -0.3%  •  $1M / #206  [PUMP-RISK][BREAKOUT]
+3. BinanceLife (币安人生) — $0.664  +28.6% / 7d +44.8% / 1h -1.5%  •  $112M / #90  [BREAKOUT]
+4. LAB — $9.40  +18.0% / 7d +119.8% / 1h +5.6%  •  $96M / #31  [BREAKOUT][TRENDING+UP]
+5. BILL (Billions Network) — $0.0791  +7.7% / 7d -29.3% / 1h -0.8%  •  $43M / #184
+6. VVV (Venice Token) — $18.11  +7.1% / 7d -9.1% / 1h +1.2%  •  $64M / #80  [TRENDING+UP]
+7. LUNC (Terra Luna Classic) — $0.000086  +7.1% / 7d +6.8% / 1h +2.8%  •  $33M / #113
+8. UB (Unibase) — $0.1938  +6.9% / 7d +12.7% / 1h +0.9%  •  $32M / #110
+9. DEXE — $18.94  +5.8% / 7d +24.4% / 1h -0.2%  •  $15M / #77
 
 ## Top Losers (24h)
-1. UB (Unibase) — $0.1625  -15.7% / 7d +10.7% / 1h -3.0%  •  $36M / #122
-2. BTSE — $0.9804  -8.8% / 7d -4.3% / 1h -0.9%  •  $3M / #210
-3. XMR (Monero) — $366.4  -7.6% / 7d -5.2% / 1h +0.4%  •  $148M / #18  [MAJOR]
-4. EIGEN (EigenCloud) — $0.2069  -7.3% / 7d -11.4% / 1h -0.8%  •  $19M / #215
-5. IOTA — $0.0614  -6.6% / 7d +7.8% / 1h -1.0%  •  $13M / #156
-6. JTO (Jito) — $0.5103  -5.6% / 7d -5.9% / 1h -1.6%  •  $28M / #165
-7. AXS (Axie Infinity) — $1.170  -5.3% / 7d -0.9% / 1h -0.4%  •  $38M / #183
-8. TEL (Telcoin) — $0.002648  -4.9% / 7d -12.5% / 1h -0.1%  •  $1M / #163
-9. ZBCN (Zebec Network) — $0.002957  -4.5% / 7d -1.7% / 1h -0.2%  •  $6M / #145
-10. TIA (Celestia) — $0.3967  -4.3% / 7d -7.5% / 1h -0.8%  •  $26M / #128
+1. RAIL (Railgun) — $2.960  -9.3% / 7d -23.6% / 1h +0.1%  •  $1M / #200
+2. AR (Arweave) — $2.220  -7.9% / 7d +8.1% / 1h +0.3%  •  $20M / #226
+3. ASTER — $0.7232  -6.6% / 7d +3.0% / 1h +0.8%  •  $286M / #49
+4. GWEI (ETHGas) — $0.1014  -6.6% / 7d -13.4% / 1h -0.4%  •  $3M / #179
+5. EDGE (edgeX) — $1.290  -6.6% / 7d -1.2% / 1h -0.3%  •  $9M / #118
+6. FIL (Filecoin) — $0.9282  -6.1% / 7d -2.6% / 1h +0.1%  •  $68M / #86
+7. WLD (Worldcoin) — $0.3432  -5.9% / 7d +18.0% / 1h +0.9%  •  $303M / #65
+8. WAL (Walrus) — $0.0553  -5.9% / 7d -13.0% / 1h +0.4%  •  $5M / #245
 
 ## Trending
-1. BONK — #111, $0.00000547, 24h -0.4%
-2. OP (Optimism) — #162, $0.1185, 24h -1.9%
-3. PENGU (Pudgy Penguins) — #106, $0.007967, 24h -0.8%
-4. LAB — #33, $7.746, 24h +9.8%  [TRENDING+UP]
-5. HYPE (Hyperliquid) — #11, $68.60, 24h +3.4%  [MAJOR]
-6. ASTER — #48, $0.7346, 24h +6.6%
-7. BTC (Bitcoin) — #1, $73,708, 24h +0.2%  [MAJOR]
+1. BONK — #112, $0.00000547, 24h -0.6%  [TRENDING+DOWN]
+2. OP (Optimism) — #162, $0.1169, 24h -4.0%  [TRENDING+DOWN]
+3. KITE — #115, $0.2042, 24h +3.9%  [TRENDING+UP]
+4. HYPE (Hyperliquid) — #10, $70.98, 24h +4.9%  [MAJOR][TRENDING+UP]
+5. PENGU (Pudgy Penguins) — #108, $0.007861, 24h -2.9%  [TRENDING+DOWN]
+6. STG (Stargate Finance) — #513, outside top-250 markets
+7. KNTQ (Kinetiq) — #310, outside top-250 markets
 
 ## Notable
-- H day-2 BREAKOUT at +23%/24h on +89%/7d, $155M vol — extending yesterday's identity-AI lead. The 1h flat after a full 24h run prints late-entry fade risk.
-- LAB cooled to +7.6% but holds TRENDING+UP at 7d +80%. The 1h -13.1% on the day shows distribution into the trending list. Yesterday's manufactured-signal flag (ZachXBT insider-supply concentration) plays through.
-- XMR Monero -7.6% MAJOR — top-20 print joining ZEC's privacy fade on $148M vol.
-- BNB-chain cluster carries day-2. BNB +7.1% / CAKE +6.6% / ASTER +6.2% all on the winners list — attention narrowing from yesterday's five-name green spread.
-- IOTA and JTO direction-flip from 05-29 winners (IOTA +14.1 → -6.6, JTO +10.3 → -5.6). Alt rotation has no settled leader.
+- HYPE printed a fresh ATH at $70.98 on $1.1B vol, day-3 trending [MAJOR][TRENDING+UP]. The breakout from yesterday's $66 base extends cleanly.
+- LAB second leg: +18%/24h on top of +119.8%/7d with 1h +5.6% still adding. The 05-30 manufactured-signal flag did not contain the move. Distribution thesis postponed.
+- WLD reversed to -5.9% from a morning +11.9% peak at $0.343. The Oku Trade incentive bid faded inside the session.
+- PUMP-RISK pair surfaced: HOME #225 +36% on $80M vol, KOGE #206 +35% on $1M vol. Manipulation territory.
 
-_Filters: 250 → 180 (48 stables, 22 illiquid <$1M). Source: coingecko markets=ok, trending=ok._
+_Filters: 250 → 187 (40 stables/pegs/wrapped, 22 illiquid <$1M). Source: coingecko markets=ok, trending=ok. Dedup-dropped vs midday: 9BIT (no new tag), BTSE / IOTA (no new tag on the loser side)._
