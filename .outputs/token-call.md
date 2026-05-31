@@ -1,16 +1,36 @@
-Token-call declined by idempotency. Morning chain already produced the canonical 30 May call.
+Daily Token Call · 31 May
+──────────────────────────
 
-## Summary
+WLD · HIGH · 9/10
+$0.333 · +11.8% 24h · +10.6% 7d
+mcap $1.12b · vol $344m · vol/mcap 0.31
 
-**Action:** declined re-execution. Today's morning chain ran token-call cleanly at 07:43Z and produced FET · HIGH · 10/10 at $0.25, with `TOKEN_CALL_DEDUP: FET` in the log and a complete locked-format artifact at `.outputs/token-call.md` that perps-brief has already consumed downstream.
 
-**Why decline:** per the 05-28 precedent, re-running would either re-pick FET (hard-dedup-blocked by its own marker, no nameable fresh catalyst since morning) or clobber a clean 10/10 with a weaker forced pick — the ISS-003/004/005 artifact-overwrite anti-pattern.
+SIGNALS
+  Vol/mcap 0.31 prints extreme turnover for a top-100 name.
+  Both 24h and 7d positive, 24h cleanly above +5%.
+  Outpacing flat BTC and red ETH on the 7d.
+  Identity-AI lane fires across the board today (H +88% 7d as the second leg).
+  No on-trending tag this morning. The bid is structural, not chased attention.
 
-**Cross-check:** fresh CoinGecko snapshot confirmed the morning thesis is paying off — FET extended $0.25 → $0.273 intraday (+9%), 24h delta widened +5.7% → +10.6%, vol/mcap rose 0.35 → 0.45. BTC/ETH regime backdrop unchanged. Continuation, not a new catalyst.
+CATALYST
+  Oku Trade DeFi aggregator went live inside World App with weekly swap competitions and WLD rewards.
+  Whale transactions hit 64 in 24h — the 2026 high.
+  Active addresses 1,309 and new wallets 379, both year-to-date highs.
+  AI-agent narrative in peak phase amplifies the bid.
 
-**Files:**
-- `memory/logs/2026-05-30.md` — appended `## Token Call (duplicate invocation — declined)` entry + summary
-- `.outputs/token-call.md` — preserved verbatim (FET 10/10 morning artifact)
-- no notification (internal-only skill per V1 lock)
+RISK
+  On-chain activity is incentive-driven. Reward programs pull forward demand and fade once the cycle cools.
+  Price already touched an 11-week high near $0.408 intraday and reversed. A sharp pullback marks blow-off.
+  AI-agent narrative carries the June 2026 compliance trail trigger flagged this week.
 
-**Follow-up:** second confirmed token-call same-day decline (05-28 XLM, 05-30 FET) — pattern is canonical now, worth a structural note at next memory-flush.
+DEDUP
+  Last picked 22 May (9 days clear of the 7d window).
+  Recent picks excluded: FET, INJ, XLM, ICP, SEI, RENDER, ASTER, AKT, RAIL, EIGEN.
+
+
+Take: clean top-100 turnover and a named on-chain catalyst align with the identity-AI lane in peak phase.
+The trail is tight. Size for the second leg, not a chase of the 11-week-high candle.
+
+
+not financial advice — pattern-matching only
