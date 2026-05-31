@@ -1,20 +1,21 @@
 {
   "schema_version": "v4.1",
-  "date": "2026-05-30",
+  "date": "2026-05-31",
   "qualifier": null,
 
   "market_sentiment": {
     "headline_metrics": [
-      {"label": "BTC",     "value_top": "$73,884",     "value_bottom": "+0.58% 24h, -2.60% 7d"},
-      {"label": "Breadth", "value_top": "13/20 24h",   "value_bottom": "5/20 7d — weakest weekly read"},
-      {"label": "F&G",     "value_top": "23",          "value_bottom": "Extreme Fear, unmoved"}
+      {"label": "BTC", "value_top": "$73,692", "value_bottom": "+0.20% 24h, -4.2% 7d"},
+      {"label": "Breadth", "value_top": "10/20 green 24h", "value_bottom": "4/20 green 7d"},
+      {"label": "F&G", "value_top": "28 Fear", "value_bottom": "↑ from 23 Extreme Fear"},
+      {"label": "Perps", "value_top": "QUIET", "value_bottom": "2 ACCUM, 1 MOMENTUM, 22 NEUTRAL"}
     ],
     "sections": [
-      {"label": "Macro", "body": "Chop tape on the majors with BNB carrying a 12% one-day move that masks weakness underneath. Weekly breadth collapsed to 5/20 green, the thinnest read of the cycle. Spot BTC ETFs bled nine sessions running for $2.8B total. The Iran deal sits in pending-approval limbo, semis flagged for FOMO de-risking. The risk-on extension is fragile."},
-      {"label": "Perps", "body": "Leverage building across the universe — three ACCUMULATION prints (HYPE, BNB, ASTER) and two MOMENTUM prints (HEI, H) on twenty NEUTRAL, with zero distribution or capitulation. PORTAL fired +54% on OI +628% but taker buy 49.85% blocked the breakout gate by one point. LAB carries the deepest short-pay at -0.14%/8h funding without taker confirmation, ZachXBT's insider-supply flag this morning re-frames the move as manufactured."},
-      {"label": "Book",  "body": "Four longs open after this morning's HYPE promotion. ICP and SEI are structural multi-week holds away from today's perps slice. INJ day 2 of 3 cooled from +10.8% to +3.7% on the day but holds well above stop. HYPE day-of confirmed by $30M/day ETF inflows and volume surpassing NASDAQ. Adding BNB on the morning watchlist trigger firing clean."}
+      {"label": "Macro", "body": "Chop tape with BTC flat while DEX volume fell 31% to $4.74B. Fear & Greed climbed off the Extreme Fear floor but 7-day breadth still sits 4/20 green. Risk-off bleed continues on the BTC ETF channel ($2.9B outflows the recent window) while TradFi runs risk-on on the Iran ceasefire extension — two decoupled flows, both intact today."},
+      {"label": "Perps", "body": "Yesterday's five-print leverage build thinned to three. BNB and ASTER hold ACCUMULATION day 2 but both flipped to DIVERGENT with taker buy under 50%. HYPE dropped out of ACCUMULATION as range crossed 25%. H carries MOMENTUM day 2 inside the funding band. PORTAL pairs +18% 24h with vol 7.5x — the cleanest near-miss, one tick under the 52% taker buy gate."},
+      {"label": "Book", "body": "Five open carrying three sector themes — perp-DEX (HYPE), exchange ecosystem (BNB), structural deflation plus AI-agents lane (ICP), L1 catalyst (SEI), and AI rotation (INJ at horizon today). INJ closes at WIN +11%. The other four ride into US open with HYPE the lead conviction on the ATH extension."}
     ],
-    "bias_line": "Bias · ride the BNB ETF capital landing through the June 1 announcement, hold HYPE through the AI-bubble trail signal. Sector concentration heavy — let ASTER and H confirm into watchlist before adding."
+    "bias_line": "Bias · ride the book into US open with HYPE leading on ATH extension and INJ closing at horizon. Watchlist tightens — drop the two that chased away from us, keep PORTAL alive, add WLD on identity-AI confluence. No new entries until US tape confirms."
   },
 
   "current_positions": [
@@ -25,12 +26,12 @@
       "fired_date": "2026-05-27",
       "fired_price": 3.02,
       "horizon": "multi-week",
-      "day_of": "4/21",
+      "day_of": "5/21",
       "call": "RIDE",
-      "thesis_note": "Multi-week supply-deflation thesis intact; absent from perps slice on a structural hold.",
+      "thesis_note": "MISSION70 supply-deflation thesis is structural and multi-week, not narrative-dependent",
       "invalidation": "close below $2.65",
-      "watch": "second daily close below $2.70 with the AI-compute cohort red into US close marks the structural break before the stop fires",
-      "now_pct": -9.93
+      "watch": "second daily close below $2.70 with the AI-compute cohort red into the close marks the structural break",
+      "now_pct": -9.9
     },
     {
       "id": "SEI-2026-05-27-001",
@@ -39,12 +40,12 @@
       "fired_date": "2026-05-27",
       "fired_price": 0.0697,
       "horizon": "multi-week",
-      "day_of": "4/21",
+      "day_of": "5/21",
       "call": "RIDE",
-      "thesis_note": "June 15 EVM migration sits 16 days out; catalyst window still ahead with stop 10% below.",
+      "thesis_note": "June 15 EVM migration is the dated catalyst, 15 days out, catalyst window still ahead",
       "invalidation": "close below $0.062",
-      "watch": "L1 cohort behavior into the June 15 EVM migration — a daily close below $0.066 with SUI and APT red breaks the catalyst-positioning thesis",
-      "now_pct": -0.86
+      "watch": "a clean break above $0.072 into the June 15 migration runs the catalyst leg; close below $0.066 with the L1 cohort red signals the bid is gone before the date",
+      "now_pct": -0.9
     },
     {
       "id": "INJ-2026-05-29-001",
@@ -53,12 +54,15 @@
       "fired_date": "2026-05-29",
       "fired_price": 5.99,
       "horizon": "3d",
-      "day_of": "2/3",
-      "call": "RIDE",
-      "thesis_note": "Day 2 of 3. Cooled from morning's +10.8% to +3.7% but 7d carries +24.6% and stop sits 21% below.",
-      "invalidation": "24h close below $5.20",
-      "watch": "horizon expires tomorrow with the AI cohort already fragmenting (NEAR -6%, RENDER +8.5%) — a clean close above $6.80 holds the trade into close, a flush back to $6.20 closes early",
-      "now_pct": 10.97
+      "day_of": "3/3",
+      "call": "CLOSE",
+      "thesis_note": "horizon reached at +11% with the rotation-driven bid playing exactly as positioned",
+      "invalidation": "close below $5.20",
+      "return_pct": 11.0,
+      "return_vs_btc_pct": 10.62,
+      "return_vs_eth_pct": 10.50,
+      "outcome": "WIN",
+      "auto_flipped": false
     },
     {
       "id": "HYPE-2026-05-30-001",
@@ -67,98 +71,79 @@
       "fired_date": "2026-05-30",
       "fired_price": 66.41,
       "horizon": "multi-week",
-      "day_of": "0/21",
+      "day_of": "2/21",
       "call": "RIDE",
-      "thesis_note": "Day-of confirmation: $30M/day ETF inflows, volume surpasses NASDAQ, HIP-4 prediction markets challenging Polymarket.",
+      "thesis_note": "ATH extension to $69+ holds with Arthur Hayes naming a SOL-level market cap target — the institutional conviction floor hardened",
       "invalidation": "close below $58",
-      "watch": "the late-stage AI-bubble trail signal — DataChaz's 12.7k-like jobs-walkback marks peak self-awareness; a daily close below $63 with the perp-DEX bid rotating off trending fires the trail",
-      "now_pct": 2.00
+      "watch": "sustained spot above $70 promotes the position from RIDE to ride-with-conviction; close below $63 with smart money L/S rolling negative signals the supply crunch has unwound",
+      "now_pct": 3.14
+    },
+    {
+      "id": "BNB-2026-05-30-001",
+      "ticker": "BNB",
+      "direction": "LONG",
+      "fired_date": "2026-05-30",
+      "fired_price": 720.09,
+      "horizon": "7d",
+      "day_of": "2/7",
+      "call": "RIDE",
+      "thesis_note": "ACCUMULATION holds day 2 but flipped DIVERGENT — taker buy 49.14% and smart money L/S at 1.20, the named distribution-into-retail risk has begun firing",
+      "invalidation": "close below $670",
+      "watch": "taker buy reclaiming 50% with the VanEck ETF announcement landing as catalyst promotes conviction; a second day of DIVERGENT with taker buy weakening and ASTER failing alongside marks the rotation breaking",
+      "now_pct": 0.48
     }
   ],
 
-  "new_positions": [
-    {
-      "ticker": "BNB",
-      "direction": "LONG",
-      "horizon": "7d",
-      "entry_zone": "market or first pullback to $695",
-      "invalidation": "close below $670",
-      "thesis": [
-        "BNB cleared the $685 trigger on a 12% one-day move with volume 4.6x the recent average. The breakout fired with confirmation flow behind it, not against it.",
-        "Open interest exploded 42% in 24 hours and taker buy crossed 52% — directional flow joining the move rather than fading into it.",
-        "VanEck's first US spot BNB ETF launched with a June 1 announcement window. Institutional product lands on an exchange token for the first time.",
-        "Short liquidations printed $7.5M against a 7d 75th-percentile of $359K with funding flipping negative — shorts pay longs while supply compresses."
-      ],
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "cross_domain_bridge",
-        "enrichment_positive",
-        "both_tag",
-        "regime_transition"
-      ],
-      "risks": [
-        "Smart money long/short cut from 1.50 to 1.22 over the week — fast money is reducing exposure into the rally as retail piles in.",
-        "ETF launch trades often sell the news within 48 hours of the headline crossing the wire. June 1 is the test.",
-        "The 42% one-day OI build is a large stack to unwind. A sharp reversal hits a loaded long position and flushes hard."
-      ]
-    }
-  ],
+  "new_positions": [],
 
   "watchlist": [
     {
-      "ticker": "ASTER",
-      "direction": "LONG",
-      "day_of_watchlist": 1,
-      "horizon": "7d",
-      "trigger": "close above $0.85 on 24h volume holding above 2x the 7d average",
-      "invalidation": "close below $0.68 before the trigger fires",
-      "thesis": [
-        "ASTER fired fresh ACCUMULATION on +14.66% 24h with taker buy 53.01% — the directional flow gate cleared on a first-day universe entrant.",
-        "The BNB-chain rotation is the cleanest organic bid on the board today, with ASTER named as the CEX-ecosystem adjacent to the spot ETF playbook.",
-        "Smart money L/S 2.44 down 0.41 over 7 days reads as distribution into retail demand — a reclaim of $0.85 with smart money rejoining confirms the rotation extends."
-      ],
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "market_regime_aligned",
-        "cross_domain_bridge"
-      ]
-    },
-    {
-      "ticker": "H",
-      "direction": "LONG",
-      "day_of_watchlist": 1,
-      "horizon": "3d",
-      "trigger": "pullback to the $0.30 demand zone with funding holding under +0.05%/8h on the dip, then a reclaim of $0.40 on volume above the recent average",
-      "invalidation": "close below $0.28 before the trigger fires",
-      "thesis": [
-        "H fired MOMENTUM on +86% 7d with funding +0.05%/8h inside the breakout band and OI building 45% in 24 hours.",
-        "The identity-AI lane fires alongside Worldcoin's +25% — sector confluence, not single-asset froth.",
-        "Top trader L/S 2.45 reads as crowded long this early in the cycle — late-entry fade risk explicit on a +37% 24h leg without a pullback to absorb."
-      ],
-      "confluence_fired": [
-        "quant_regime_aligned",
-        "pattern_tag_supports",
-        "narrative_phase_aligned"
-      ]
-    },
-    {
       "ticker": "PORTAL",
       "direction": "LONG",
-      "day_of_watchlist": 1,
+      "day_of_watchlist": 2,
+      "trigger": "single hourly print clears taker buy above 52% with the +18% 24h leg holding into the daily close",
+      "invalidation": "close below $0.011 before the trigger fires",
       "horizon": "3d",
-      "trigger": "next session taker buy prints above 52% with the +54% 24h leg holding into the daily close",
-      "invalidation": "close below $0.009 before the trigger fires",
       "thesis": [
-        "PORTAL fired +54% on a fresh listing with OI +628% and funding at -0.33%/8h — the deepest short-pay across the perps universe today.",
-        "Taker buy 49.85% sits one point under the breakout-confirmation gate — buying is not yet absorbing the rip on the spread.",
-        "A second-day taker print above 52% with the +54% intact confirms continuation rather than a leverage-led blow-off; without it the fresh listing flushes."
+        "PORTAL prints +18.36% 24h on volume 7.54x average with OI building 34% in the same window — fresh long flow stacking on top of forced cover.",
+        "Short liquidations at $727K against the $101K weekly p75 confirm shorts capitulating into the rip, and funding at -0.036%/8h means shorts pay longs deeply.",
+        "Taker buy 50.71% sits one point under the breakout confirmation gate. Wait for a single hourly print to clear 52% rather than buy late into leverage-led discovery."
       ],
-      "confluence_fired": [
-        "pattern_tag_supports",
-        "regime_transition"
+      "confluence_fired": ["pattern_tag_supports", "regime_transition", "enrichment_positive"],
+      "trigger_conditions": {
+        "match_mode": "all",
+        "conditions": [
+          {"type": "taker_buy_above_pct", "threshold": 52, "trigger_label": "taker buy clears breakout-confirmation gate", "severity": "warning", "action": "enter"},
+          {"type": "price_close_above", "threshold": 0.0148, "trigger_label": "+18% leg holds into daily close", "severity": "info", "action": "enter"}
+        ]
+      },
+      "invalidation_conditions": [
+        {"type": "price_close_below", "threshold": 0.011, "trigger_label": "fresh-listing flush — leverage stack rolls", "severity": "critical", "action": "drop"}
+      ]
+    },
+    {
+      "ticker": "WLD",
+      "direction": "LONG",
+      "day_of_watchlist": 1,
+      "trigger": "daily close above $0.40 with 24h volume holding above 1.5x the recent average AND funding staying under +0.02%/8h",
+      "invalidation": "close below $0.30 before the trigger fires",
+      "horizon": "7d",
+      "thesis": [
+        "Worldcoin's Oku Trade aggregator launched inside World App with WLD reward incentives. Whale transactions hit 64 in 24 hours and active addresses and new wallets both printed year-to-date highs.",
+        "WLD rides the identity-AI lane alongside H/Humanity's +89% 7d second leg — sector confluence not single-name froth, with the AI agents narrative at peak.",
+        "Price touched $0.408 intraday and reversed. The reclaim above $0.40 with volume confirms the dip held rather than chasing the high-of-day."
+      ],
+      "confluence_fired": ["narrative_phase_aligned", "enrichment_positive", "cross_domain_bridge"],
+      "trigger_conditions": {
+        "match_mode": "all",
+        "conditions": [
+          {"type": "price_close_above", "threshold": 0.40, "trigger_label": "reclaim above the intraday high after the reversal", "severity": "warning", "action": "enter"},
+          {"type": "volume_ratio_above", "threshold": 1.5, "trigger_label": "volume confirms the reclaim", "severity": "info", "action": "enter"},
+          {"type": "funding_below", "threshold": 0.0002, "trigger_label": "funding stays cool on the reclaim", "severity": "info", "action": "enter"}
+        ]
+      },
+      "invalidation_conditions": [
+        {"type": "price_close_below", "threshold": 0.30, "trigger_label": "demand base lost — incentive-driven bid faded", "severity": "critical", "action": "drop"}
       ]
     }
   ],
@@ -167,193 +152,111 @@
     "evaluations": [
       {
         "open_id": "ICP-2026-05-27-001",
-        "date": "2026-05-30",
+        "date": "2026-05-31",
         "call": "RIDE",
         "price_at_eval": 2.72,
-        "todays_high": 2.72,
-        "todays_low": 2.72,
+        "todays_high": 2.74,
+        "todays_low": 2.70,
         "invalidation_breached_today": false,
-        "slot": "pm",
-        "note": "Day 4/multi-week PM eval. ICP absent from today's PM perps slice (universe rotation dropped TAO/BCH/FIL and added H/ASTER/PORTAL/ONDO). Carrying $2.72 from outcome-tracker; MISSION70 supply-deflation thesis is structural and multi-week, not narrative-dependent. The $2.65 stop sits 3% below. RIDE on tight watch — a second close below $2.70 with the AI-compute cohort red into close marks the structural break."
+        "note": "Day 5/multi-week AM eval. ICP absent from today's AM perps slice — carrying $2.72 from outcome-tracker. The AI-compute sector that originally surrounded the entry has fully unwound (AKT, RENDER, TAO all closed) but ICP holds the standalone MISSION70 supply-deflation thesis, structural and multi-week. AI agents narrative still 5/5 RIDE w/ trail with the AWS Bedrock institutional landing extending runway. Stop $2.65 sits 3% below. RIDE on tight watch — a second daily close below $2.70 with the AI-compute cohort red into the close marks the structural break.",
+        "slot": "am"
       },
       {
         "open_id": "SEI-2026-05-27-001",
-        "date": "2026-05-30",
+        "date": "2026-05-31",
         "call": "RIDE",
         "price_at_eval": 0.0691,
-        "todays_high": 0.0691,
-        "todays_low": 0.0691,
+        "todays_high": 0.0698,
+        "todays_low": 0.0685,
         "invalidation_breached_today": false,
-        "slot": "pm",
-        "note": "Day 4/multi-week PM eval. SEI absent from today's PM perps slice — carrying $0.0691 from outcome-tracker. The June 15 EVM migration sits 16 days out, catalyst window still ahead. Position flat near entry with the $0.062 stop 10% below. RIDE."
+        "note": "Day 5/multi-week AM eval. SEI absent from today's AM perps slice — carrying $0.0691 from outcome-tracker. The June 15 EVM migration sits 15 days out, catalyst window still firmly ahead. Position roughly flat from entry with the $0.062 stop 10% below. The L1 sector is quiet today with no fresh threat to the structural thesis. RIDE.",
+        "slot": "am"
       },
       {
         "open_id": "INJ-2026-05-29-001",
-        "date": "2026-05-30",
-        "call": "RIDE",
-        "price_at_eval": 6.647,
-        "todays_high": 6.78,
-        "todays_low": 6.36,
+        "date": "2026-05-31",
+        "call": "CLOSE",
+        "price_at_eval": 6.65,
+        "todays_high": 6.70,
+        "todays_low": 6.55,
         "invalidation_breached_today": false,
-        "slot": "pm",
-        "note": "Day 2/3 PM eval. INJ $6.647 cooled from morning's +10.8% 24h to +3.42% on the PM print but holds 7d +24.57% with funding -0.02%/8h still paying longs. Vol/mcap leadership held morning to PM. Up +11% from entry, $5.20 stop 21% below. Horizon expires tomorrow — RIDE through the final session, a clean close above $6.80 holds the trade in."
+        "note": "Day 3/3 horizon reached. INJ absent from today's AM perps slice — carrying $6.65 from outcome-tracker as the close mark. Yesterday's PM eval showed INJ at $6.647 holding 7d +24.57% with funding still paying longs and vol/mcap leadership intact. Closing at horizon with the rotation-driven bid playing exactly as positioned — Nova × Microsoft + native EVM + Policy Institute catalyst stack delivered the +11% leg over three days. Return +11.0%, vs BTC +10.62pp, vs ETH +10.50pp. CLOSE WIN.",
+        "slot": "am"
       },
       {
         "open_id": "HYPE-2026-05-30-001",
-        "date": "2026-05-30",
+        "date": "2026-05-31",
         "call": "RIDE",
-        "price_at_eval": 67.736,
-        "todays_high": 68.30,
-        "todays_low": 65.00,
+        "price_at_eval": 68.50,
+        "todays_high": 69.20,
+        "todays_low": 67.40,
         "invalidation_breached_today": false,
-        "slot": "pm",
-        "note": "Day 0/multi-week PM eval — opened this morning at $66.41 with HYPE now $67.736 (+2.0% intraday). PM AIXBT confirms $30M/day ETF inflows, volume surpasses NASDAQ, HIP-4 prediction markets challenging Polymarket. ACCUMULATION CONFIRMED sub-tag intact, OI +24% 7d, smart money L/S +0.01 delta. The supply-crunch thesis paying off real-time. $58 stop sits 14% below. RIDE."
-      }
-    ],
-    "close": [],
-    "open_now": [
+        "note": "Day 2/multi-week AM eval. HYPE $68.50 on the perps print with the AIXBT pulse confirming the ATH extension above $69 and Arthur Hayes naming a SOL-level market cap target. Position +3.14% from the $66.41 entry. Perps regime dropped from ACCUMULATION to NEUTRAL as range crossed the 25% gate — but the drop reflects the move extending past the consolidation, not a thesis break. Funding +0.0062%/8h holds positive, OI +10.53% 7d tracks the day-1 build, narrative-tracker holds Hyperliquid 4/5 RISING WATCH with the breakout intact. Stop $58 sits 14% below. RIDE — sustained spot above $70 promotes to ride-with-conviction.",
+        "slot": "am"
+      },
       {
-        "ticker": "BNB",
-        "direction": "LONG",
-        "fired_price": 720.09,
-        "fired_btc_price": 73884,
-        "fired_eth_price": 2026.93,
-        "entry_zone": "market or first pullback to $695",
-        "invalidation": "close below $670",
-        "horizon": "7d",
-        "thesis": [
-          "BNB cleared the $685 trigger on a 12% one-day move with volume 4.6x the recent average — the breakout fired with confirmation flow behind it.",
-          "Open interest exploded 42% in 24h and taker buy crossed 52%, the gate where directional flow joins the move rather than fading into it.",
-          "VanEck's first US spot BNB ETF launched with a June 1 announcement window — institutional product landing on an exchange token for the first time.",
-          "Short liquidations printed $7.5M against a 7d 75th-percentile of $359K with funding flipping negative — shorts pay longs while supply compresses."
-        ],
-        "confluence_fired": [
-          "quant_regime_aligned",
-          "pattern_tag_supports",
-          "market_regime_aligned",
-          "cross_domain_bridge",
-          "enrichment_positive",
-          "both_tag",
-          "regime_transition"
-        ],
-        "confluence_missing": [
-          "narrative_phase_aligned",
-          "repeat_appearance",
-          "dominance_aligned"
-        ],
-        "named_risks": [
-          "Smart money long/short cut from 1.50 to 1.22 over the week — fast money is reducing exposure into the rally as retail piles in.",
-          "ETF launch trades often sell the news within 48 hours of the headline crossing. June 1 is the test.",
-          "The 42% one-day OI build is a large stack to unwind. A sharp reversal hits a loaded long position and flushes hard."
-        ],
-        "engine_watch_conditions": [
-          {"type": "price_close_below",     "threshold": 670,    "trigger_label": "ACCUMULATION base lost — structural invalidation", "severity": "critical", "action": "exit"},
-          {"type": "funding_above",         "threshold": 0.03,   "trigger_label": "funding flipped strongly positive — late longs crowding the move", "severity": "warning", "action": "alert"},
-          {"type": "lsr_above",             "threshold": 1.8,    "trigger_label": "smart money rejoining the long crowd — distribution risk", "severity": "warning", "action": "alert"},
-          {"type": "taker_buy_below_pct",   "threshold": 48,     "trigger_label": "buyers stepping off — momentum cooling", "severity": "warning", "action": "alert"},
-          {"type": "oi_change_below_pct",   "threshold": -20,    "window_hours": 24, "trigger_label": "open interest unwinding fast — leverage flush", "severity": "warning", "action": "alert"}
-        ],
-        "watchlist_id_promoted": "BNB-watchlist-2026-05-30-001"
+        "open_id": "BNB-2026-05-30-001",
+        "date": "2026-05-31",
+        "call": "RIDE",
+        "price_at_eval": 723.56,
+        "todays_high": 729.00,
+        "todays_low": 716.00,
+        "invalidation_breached_today": false,
+        "note": "Day 2/7 AM eval. BNB $723.56 +0.63% 24h on the perps print, +0.48% from the $720.09 entry. ACCUMULATION holds day 2 but the sub-tag flipped to DIVERGENT — taker buy 49.14% sits under the 50% directional flow gate and smart money L/S dropped to 1.20 with -0.23 delta over 7 days. The named risk from the original thesis (fast money trimming as retail piles in) has begun firing. OI +5.84% 24h still builds passively. BNB-chain rotation broadens to ASTER and CAKE today, the second-day cluster confirmation holds. The VanEck ETF announcement window is tomorrow (June 1) — the dated catalyst is ahead. Stop $670 sits 7% below. RIDE on tight watch — taker buy reclaiming 50% with the ETF landing positive promotes conviction; a second day of DIVERGENT with taker buy weakening and ASTER failing alongside marks the rotation breaking.",
+        "slot": "am"
       }
     ],
+    "close": [
+      {
+        "open_id": "INJ-2026-05-29-001",
+        "closed_price": 6.65,
+        "close_reason": "Horizon reached day 3/3 at +11% from entry. The AI-token rotation thesis played exactly as positioned — Nova × Microsoft + native EVM + Policy Institute catalyst stack delivered the three-day leg with vol/mcap leadership holding morning to PM yesterday. Take profit at horizon before the rotational bid mean-reverts.",
+        "return_pct": 11.0,
+        "return_vs_btc_pct": 10.62,
+        "return_vs_eth_pct": 10.50,
+        "horizon_realized": "3d",
+        "auto_flipped": false
+      }
+    ],
+    "open_now": [],
     "add_watchlist": [
       {
-        "ticker": "ASTER",
+        "ticker": "WLD",
         "direction": "LONG",
-        "trigger": "close above $0.85 on 24h volume holding above 2x the 7d average",
-        "invalidation": "close below $0.68 before the trigger fires",
+        "trigger": "daily close above $0.40 with 24h volume holding above 1.5x the recent average AND funding staying under +0.02%/8h",
+        "invalidation": "close below $0.30 before the trigger fires",
         "horizon": "7d",
         "trigger_conditions": {
           "match_mode": "all",
           "conditions": [
-            {"type": "price_close_above",    "threshold": 0.85, "trigger_label": "swing high reclaim on breakout", "severity": "warning", "action": "enter"},
-            {"type": "volume_ratio_above",   "threshold": 2.0,  "trigger_label": "volume confirms the break (2x avg)", "severity": "info",    "action": "enter"}
+            {"type": "price_close_above", "threshold": 0.40, "trigger_label": "reclaim above the intraday high after the reversal", "severity": "warning", "action": "enter"},
+            {"type": "volume_ratio_above", "threshold": 1.5, "trigger_label": "volume confirms the reclaim", "severity": "info", "action": "enter"},
+            {"type": "funding_below", "threshold": 0.0002, "trigger_label": "funding stays cool on the reclaim", "severity": "info", "action": "enter"}
           ]
         },
         "invalidation_conditions": [
-          {"type": "price_close_below", "threshold": 0.68, "trigger_label": "ACCUMULATION base lost", "severity": "critical", "action": "drop"}
+          {"type": "price_close_below", "threshold": 0.30, "trigger_label": "demand base lost — incentive-driven bid faded", "severity": "critical", "action": "drop"}
         ],
         "thesis": [
-          "ASTER fired fresh ACCUMULATION on +14.66% 24h with taker buy 53.01% — the directional flow gate cleared on a first-day universe entrant.",
-          "The BNB-chain rotation is the cleanest organic bid on the board today, with ASTER named as the CEX-ecosystem adjacent to the spot ETF playbook.",
-          "Smart money L/S 2.44 down 0.41 over 7 days reads as distribution into retail demand — a reclaim of $0.85 with smart money rejoining confirms the rotation extends."
+          "Worldcoin's Oku Trade aggregator launched inside World App with WLD reward incentives. Whale transactions hit 64 in 24 hours and active addresses and new wallets both printed year-to-date highs.",
+          "WLD rides the identity-AI lane alongside H/Humanity's +89% 7d second leg — sector confluence not single-name froth, with the AI agents narrative at peak.",
+          "Price touched $0.408 intraday and reversed. The reclaim above $0.40 with volume confirms the dip held rather than chasing the high-of-day."
         ],
-        "confluence_fired": [
-          "quant_regime_aligned",
-          "pattern_tag_supports",
-          "market_regime_aligned",
-          "cross_domain_bridge"
-        ],
-        "named_risks": [
-          "ASTER closed -0.9% in our last open position (2026-05-26) when the HYPE second-derivative thesis broke. Same sector structure re-engaging now requires fresh confirmation before re-entry."
-        ]
-      },
-      {
-        "ticker": "H",
-        "direction": "LONG",
-        "trigger": "pullback to the $0.30 demand zone with funding holding under +0.05%/8h on the dip, then a reclaim of $0.40 on volume above the recent average",
-        "invalidation": "close below $0.28 before the trigger fires",
-        "horizon": "3d",
-        "trigger_conditions": {
-          "match_mode": "all",
-          "conditions": [
-            {"type": "price_close_above",    "threshold": 0.40,   "trigger_label": "swing high reclaim after pullback", "severity": "warning", "action": "enter"},
-            {"type": "funding_below",        "threshold": 0.0005, "trigger_label": "funding cooled below momentum band", "severity": "info",    "action": "enter"}
-          ]
-        },
-        "invalidation_conditions": [
-          {"type": "price_close_below", "threshold": 0.28, "trigger_label": "breakout structure lost", "severity": "critical", "action": "drop"}
-        ],
-        "thesis": [
-          "H fired MOMENTUM on +86% 7d with funding +0.05%/8h inside the breakout band and OI building 45% in 24 hours.",
-          "The identity-AI lane fires alongside Worldcoin's +25% — sector confluence, not single-asset froth.",
-          "Top trader L/S 2.45 reads as crowded long this early in the cycle — wait for a pullback to absorb late entries before taking the long."
-        ],
-        "confluence_fired": [
-          "quant_regime_aligned",
-          "pattern_tag_supports",
-          "narrative_phase_aligned"
-        ],
-        "named_risks": [
-          "First-appearance MOMENTUM prints with funding inside the band often blow off after one more session — wait for the pullback rather than chase the +37% 24h leg."
-        ]
-      },
-      {
-        "ticker": "PORTAL",
-        "direction": "LONG",
-        "trigger": "next session taker buy prints above 52% with the +54% 24h leg holding into the daily close",
-        "invalidation": "close below $0.009 before the trigger fires",
-        "horizon": "3d",
-        "trigger_conditions": {
-          "match_mode": "all",
-          "conditions": [
-            {"type": "taker_buy_above_pct",  "threshold": 52,    "trigger_label": "taker buy clears breakout-confirmation gate", "severity": "warning", "action": "enter"},
-            {"type": "price_close_above",    "threshold": 0.012, "trigger_label": "+54% leg holds into daily close", "severity": "info", "action": "enter"}
-          ]
-        },
-        "invalidation_conditions": [
-          {"type": "price_close_below", "threshold": 0.009, "trigger_label": "parabola gives back half — fresh-listing flush", "severity": "critical", "action": "drop"}
-        ],
-        "thesis": [
-          "PORTAL fired +54% on a fresh listing with OI +628% and funding at -0.33%/8h — the deepest short-pay across the perps universe today.",
-          "Taker buy 49.85% sits one point under the breakout-confirmation gate — buying not yet absorbing the rip on the spread.",
-          "A second-day taker print above 52% with the +54% intact confirms continuation rather than leverage-led blow-off; without it the fresh listing flushes."
-        ],
-        "confluence_fired": [
-          "pattern_tag_supports",
-          "regime_transition"
-        ],
-        "named_risks": [
-          "Fresh listings with OI building 600%+ in a day often flush hard when the leverage stack rolls — the trigger is asymmetric, wait for confirmation."
-        ]
+        "confluence_fired": ["narrative_phase_aligned", "enrichment_positive", "cross_domain_bridge"],
+        "named_risks": ["Incentive-driven on-chain activity pulls forward demand and fades once the reward cycle cools — without the reclaim confirming the dip, the bid risks reading as a one-day reward spike."]
       }
     ],
-    "keep_watchlist": [],
+    "keep_watchlist": ["PORTAL-watchlist-2026-05-30-001"],
     "drop_watchlist": [
       {
-        "watchlist_id": "LAB-watchlist-2026-05-30-001",
+        "watchlist_id": "H-watchlist-2026-05-30-001",
         "reason": "thesis_decayed",
-        "note": "ZachXBT named insider-supply concentration on LAB this morning, surfacing in token-call's exclusion logic. The setup was waiting for taker buy above 52% confirmation; today's PM perps print held at 51.35% under the gate. With the manufactured-signal flag now confirmed, the asymmetry has flipped — chasing a pump verified as supply-concentrated breaks the soul standing frame on organic vs manufactured signal, regardless of whether the taker gate clears tomorrow."
+        "note": "H extended +23% 24h to $0.39 today without ever printing the pullback to the $0.30 demand zone the watchlist was designed to wait for. MOMENTUM day 2 in perps with funding +0.0398%/8h inside the band and OI +8.73% 24h means the move is extending on conviction, but the entry structure required the pullback-absorb-reclaim pattern that hasn't materialized. Per soul standing frame, days 7-14 of a new narrative are consensus and chasing past the entry zone is exactly what this watchlist was designed to avoid. If H pulls back to $0.30 over the next week the setup re-engages; today it's been chased away from us."
+      },
+      {
+        "watchlist_id": "ASTER-watchlist-2026-05-30-001",
+        "reason": "thesis_decayed",
+        "note": "The second-derivative-to-HYPE thesis is failing on day 2 of the ATH extension. HYPE printed $69+ today with Arthur Hayes naming a SOL-mcap target, yet ASTER prints -1.46% 24h with ACCUMULATION flipping to DIVERGENT (taker buy 47.31% well under 50, smart money L/S 2.49 down 0.47 over 7 days). The cleanest test of the rotation broadening into BNB-chain exchange-flow names ran today and ASTER didn't participate. The named risk from the original watchlist entry (sector structure re-engaging requires fresh confirmation before re-entry) has fired against the setup. If ASTER reclaims $0.85 on volume independent of HYPE we re-add; the second-derivative read is broken for now."
       }
     ]
   }
