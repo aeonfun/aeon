@@ -1,15 +1,13 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-31T10:57:52Z",
-  "quality_score": 4,
-  "assessment": "Comprehensive daily review with all 10 chain skills verified cleanly, proper logging, and clear tracking of open structural issues (ISS-006, ISS-007); well-structured output with actionable follow-ups despite persistent chain-timing and artifact-handling gaps.",
-  "flags": [],
-  "avg_score": 4.1,
+  "last_analyzed": "2026-05-31T22:20:38Z",
+  "quality_score": 3,
+  "assessment": "Completed the review task with structured output and issue tracking, but recurring failures across 6-27 consecutive days without resolution and somewhat cryptic messaging lower confidence.",
+  "flags": [
+    "low_quality"
+  ],
+  "avg_score": 4.07,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-20",
       "score": 4
@@ -125,6 +123,10 @@
     {
       "date": "2026-05-31",
       "score": 4
+    },
+    {
+      "date": "2026-05-31",
+      "score": 3
     }
   ]
 }
