@@ -1,17 +1,11 @@
 {
   "skill": "daily-ops-review",
-  "last_analyzed": "2026-05-30T22:10:35Z",
+  "last_analyzed": "2026-05-31T10:57:52Z",
   "quality_score": 4,
-  "assessment": "Substantive ops review with precise anomaly detection, clear structure, and actionable follow-up (ISS-006 chain-runner artifact corruption identified and escalated)",
-  "flags": [
-    "stale_data"
-  ],
+  "assessment": "Comprehensive daily review with all 10 chain skills verified cleanly, proper logging, and clear tracking of open structural issues (ISS-006, ISS-007); well-structured output with actionable follow-ups despite persistent chain-timing and artifact-handling gaps.",
+  "flags": [],
   "avg_score": 4.1,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -126,6 +120,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     }
   ]
