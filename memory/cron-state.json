@@ -62,12 +62,12 @@
   },
   "perps-scan": {
     "last_status": "success",
-    "last_success": "2026-05-31T10:40:06Z",
-    "total_runs": 39,
-    "total_successes": 38,
+    "last_success": "2026-05-31T21:44:38Z",
+    "total_runs": 40,
+    "total_successes": 39,
     "total_failures": 1,
     "consecutive_failures": 0,
-    "success_rate": 0.97,
+    "success_rate": 0.98,
     "last_quality_score": 4,
     "last_failed": "2026-05-29T12:15:10Z"
   },
