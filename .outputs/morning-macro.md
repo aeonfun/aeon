@@ -1,29 +1,29 @@
-Market Morning · 30 May · weekly breadth cracks
+Market Morning · 31 May · Chop with a HYPE-led tail
 
-BTC closed +0.58% at $73,884 but the 7d cracked to -2.60%.
-Weekly breadth collapsed to 5/20 green, the thinnest read of the cycle.
-F&G pinned at 23, Extreme Fear, unmoved.
-BTC dominance slipped below 60% as BNB absorbed a +12% single-day move.
+BTC at $73,692. Flat on the day, down 4.21% on the week.
+Breadth holds at 10/20 green 24h, just 4/20 on the 7d.
+DEX volume fell 31% to $4.74B. Activity contracts under flat price.
+Fear & Greed at 28, climbed off the 23 Extreme Fear floor.
 
-Stance: ride the rotation within crypto, not the whole tape.
+HYPE printed ATH above $69 with Arthur Hayes naming a SOL-level mcap target.
+AI agents and decentralized compute hold full extension.
+BTC bled $2.9B in ETF outflows the same morning.
+
+Stance: chop with a HYPE-led tail. Cash-patient on majors, ride the perps book.
 
 
 ─────────  CROSS-DOMAIN  ─────────
 
-The $1.4B BTC ETF outflow and tonight's $30M/day HYPE inflow trace one rotation within crypto. NEAR, INJ, HYPE name the destination.
+The BTC ETF exits funded the HYPE ATH. Institutional money rotates from BTC into Hyperliquid. The Arthur Hayes SOL-mcap target hardens the conviction floor.
 
-VanEck's first US spot BNB ETF lands the institutional playbook on exchange tokens. BNB +12% on the announcement, June 1 the decision window.
-
-Circle froze $12.6M of cUSDC and the bid fired on two vectors: privacy this morning, decentralized stablecoins this evening.
-
-Iran deal sits in pending-approval limbo. Hormuz reversal risk back in play, semis flagged for FOMO de-risking. Risk-on extension stays fragile.
+The Iran ceasefire extension anchors TradFi risk-on. Oil lower, yields anchored, equities at records, VIX compressed.
+The intact risk-off tail: ceasefire fails to formalize. Hormuz reopens, oil rips, yields rise, equities compress.
 
 
 ─────────  TODAY  ─────────
 
-Action is in #perps-brief.
-BNB LONG fires NEW POSITION on taker buy 52%, OI +42% 24h, $7.5M short liqs vs 7d p75 $359K.
-ASTER, H, PORTAL sit WATCHLIST day 1: BNB-chain rotation, identity-AI lane, fresh-listing leverage.
-Four ridden: HYPE day-of confirm on ETF inflows, INJ day 2 of 3, SEI into the June 15 EVM migration, ICP supply-deflation hold.
+Action in #perps-brief. Five positions live. INJ closes at horizon +11% as WIN. HYPE rides ATH extension into US open. BNB taker buy 49% with smart money L/S 1.20. Distribution into retail is underway.
 
-Take: ride the BNB ETF capital landing through June 1. Let ASTER and H confirm before adding.
+Watchlist tight: PORTAL one tick from the 52% taker-buy gate, WLD on identity-AI confluence.
+
+Take: ride the book into US open with HYPE the lead. No new entries until US tape confirms.
