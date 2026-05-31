@@ -73,9 +73,9 @@
   },
   "token-call": {
     "last_status": "success",
-    "last_success": "2026-05-31T10:34:51Z",
-    "total_runs": 35,
-    "total_successes": 34,
+    "last_success": "2026-05-31T21:34:22Z",
+    "total_runs": 36,
+    "total_successes": 35,
     "total_failures": 1,
     "consecutive_failures": 0,
     "success_rate": 0.97,
