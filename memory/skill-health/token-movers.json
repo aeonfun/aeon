@@ -1,15 +1,11 @@
 {
   "skill": "token-movers",
-  "last_analyzed": "2026-05-30T21:42:13Z",
+  "last_analyzed": "2026-05-31T10:37:08Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-structured market analysis with specific data, domain expertise, and clear follow-ups; excellent utility despite implicit rather than explicit source documentation.",
+  "assessment": "Substantive token analysis with specific, quantified signals (H +23%/24h breakout, LAB trending distribution, privacy fade, BNB-chain attention); proper dedup/backfill logic and operational discipline; truncation prevents full verification but visible work is domain-expert and actionable",
   "flags": [],
   "avg_score": 4.23,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -124,6 +120,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     }
   ]

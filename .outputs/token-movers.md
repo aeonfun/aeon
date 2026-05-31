@@ -1,45 +1,45 @@
-# Token Movers — 2026-05-30
+# Token Movers — 2026-05-31
 
-81/100 top coins green at +1.5% median, breadth widened from morning's 65/100, with the bid split between a BNB-chain cluster (BNB +12.2% MAJOR plus ASTER +15.1%, CAKE +11.6%, SFP +12.7%, BinanceLife +16.8%) and an identity-AI lane firing H +48.1% BREAKOUT and WLD +22.9%. Majors hold 24h green but stay 7d-red near -3 to -5%.
+Balanced tape with 52/100 top coins green at +0.2% median and majors 24h-flat (BTC +0.2% / ETH -0.1% / SOL +0.1%) yet still 7d-red near -4 to -5%, H extending day-2 BREAKOUT (+23%/24h on +89%/7d) while XMR -7.6% prints a MAJOR red to the privacy thread.
 
 ## Top Winners (24h)
-1. H (Humanity) — $0.3883  +48.1% / 7d +84.9% / 1h +1.8%  •  $162M / #86  [TRENDING+UP][BREAKOUT]
-2. LAB (LAB) — $7.96  +27.3% / 7d +80.8% / 1h +1.6%  •  $145M / #96  [TRENDING+UP][BREAKOUT]
-3. WLD (Worldcoin) — $0.3643  +22.9% / 7d +21.0% / 1h -2.2%  •  $311M / #63  [TRENDING+UP]
-4. BinanceLife (币安人生) — $0.5149  +16.8% / 7d +15.2% / 1h -3.8%  •  $43M / #104
-5. ASTER (Aster) — $0.774  +15.1% / 7d +13.9% / 1h +3.0%  •  $168M / #45  [TRENDING+UP]
-6. SFP (SafePal) — $0.303  +12.7% / 7d +7.9% / 1h +0.9%  •  $4M / #222
-7. BNB (BNB) — $719  +12.2% / 7d +9.0% / 1h +0.1%  •  $2.8B / #4  [TRENDING+UP][MAJOR]
-8. NIGHT (Midnight) — $0.039  +11.9% / 7d +16.7% / 1h +1.0%  •  $24M / #91
-9. CAKE (PancakeSwap) — $1.50  +11.6% / 7d +6.1% / 1h +0.5%  •  $62M / #110
-10. XTZ (Tezos) — $0.336  +10.9% / 7d -2.6% / 1h +2.8%  •  $31M / #127
+1. H (Humanity) — $0.3919  +23.2% / 7d +89.1% / 1h -0.1%  •  $155M / #87  [BREAKOUT]
+2. VVV (Venice Token) — $17.95  +12.1% / 7d -8.7% / 1h 0.0%  •  $68M / #80
+3. WLD (Worldcoin) — $0.3335  +11.9% / 7d +10.7% / 1h -1.1%  •  $344M / #65
+4. NIGHT (Midnight) — $0.0408  +8.2% / 7d +21.9% / 1h +2.2%  •  $23M / #88
+5. M (MemeCore) — $3.030  +7.7% / 7d +5.3% / 1h +1.4%  •  $7M / #29
+6. LAB — $7.590  +7.6% / 7d +79.8% / 1h -13.1%  •  $125M / #33  [TRENDING+UP]
+7. OKB — $93.36  +7.5% / 7d +13.1% / 1h -0.3%  •  $35M / #46
+8. KITE — $0.2100  +7.3% / 7d +3.2% / 1h -0.9%  •  $46M / #112
+9. 9BIT (The9bit) — $0.0469  +7.3% / 7d +22.5% / 1h -1.6%  •  $12M / #126
+10. TON (Toncoin) — $1.880  +7.2% / 7d +5.5% / 1h -0.5%  •  $217M / #23
 
 ## Top Losers (24h)
-1. NEAR (NEAR Protocol) — $2.31  -6.0% / 7d -3.7% / 1h -0.1%  •  $643M / #35
-2. ULTIMA (Ultima) — $2326  -5.2% / 7d -17.2% / 1h -0.6%  •  $10M / #183
-3. TEL (Telcoin) — $0.002669  -5.0% / 7d -8.8% / 1h -0.0%  •  $1M / #164
-4. BTSE (BTSE Token) — $1.02  -4.8% / 7d -5.0% / 1h -0.7%  •  $3M / #203
-5. STABLE (Stable) — $0.0371  -4.1% / 7d +10.2% / 1h +1.1%  •  $13M / #76
-6. M (MemeCore) — $2.89  -3.0% / 7d +0.2% / 1h -0.0%  •  $6M / #30
-7. TRAC (OriginTrail) — $0.375  -2.8% / 7d -14.4% / 1h -1.5%  •  $3M / #201
-8. GWEI (ETHGas) — $0.1086  -2.4% / 7d -5.4% / 1h -0.1%  •  $4M / #177
-9. DEXE (DeXe) — $17.90  -2.3% / 7d +30.4% / 1h -1.0%  •  $15M / #79
-10. FF (Falcon Finance) — $0.0986  -2.1% / 7d +13.3% / 1h +0.5%  •  $12M / #173
+1. UB (Unibase) — $0.1625  -15.7% / 7d +10.7% / 1h -3.0%  •  $36M / #122
+2. BTSE — $0.9804  -8.8% / 7d -4.3% / 1h -0.9%  •  $3M / #210
+3. XMR (Monero) — $366.4  -7.6% / 7d -5.2% / 1h +0.4%  •  $148M / #18  [MAJOR]
+4. EIGEN (EigenCloud) — $0.2069  -7.3% / 7d -11.4% / 1h -0.8%  •  $19M / #215
+5. IOTA — $0.0614  -6.6% / 7d +7.8% / 1h -1.0%  •  $13M / #156
+6. JTO (Jito) — $0.5103  -5.6% / 7d -5.9% / 1h -1.6%  •  $28M / #165
+7. AXS (Axie Infinity) — $1.170  -5.3% / 7d -0.9% / 1h -0.4%  •  $38M / #183
+8. TEL (Telcoin) — $0.002648  -4.9% / 7d -12.5% / 1h -0.1%  •  $1M / #163
+9. ZBCN (Zebec Network) — $0.002957  -4.5% / 7d -1.7% / 1h -0.2%  •  $6M / #145
+10. TIA (Celestia) — $0.3967  -4.3% / 7d -7.5% / 1h -0.8%  •  $26M / #128
 
 ## Trending
-1. Bonk (BONK) — #112, $0.0000054, 24h +0.9%  [TRENDING+UP]
-2. Hyperliquid (HYPE) — #11, $67.64, 24h +4.7%  [TRENDING+UP][MAJOR]
-3. LAB (LAB) — #96, $7.96, 24h +27.3%  [TRENDING+UP][BREAKOUT]
-4. Stellar (XLM) — #17, $0.2397, 24h -0.7%  [TRENDING+DOWN][MAJOR]
-5. Bitcoin (BTC) — #1, $73892, 24h +0.6%  [TRENDING+UP][MAJOR]
-6. Aster (ASTER) — #45, $0.774, 24h +15.1%  [TRENDING+UP]
-7. Worldcoin (WLD) — #63, $0.3643, 24h +22.9%  [TRENDING+UP]
+1. BONK — #111, $0.00000547, 24h -0.4%
+2. OP (Optimism) — #162, $0.1185, 24h -1.9%
+3. PENGU (Pudgy Penguins) — #106, $0.007967, 24h -0.8%
+4. LAB — #33, $7.746, 24h +9.8%  [TRENDING+UP]
+5. HYPE (Hyperliquid) — #11, $68.60, 24h +3.4%  [MAJOR]
+6. ASTER — #48, $0.7346, 24h +6.6%
+7. BTC (Bitcoin) — #1, $73,708, 24h +0.2%  [MAJOR]
 
 ## Notable
-- H BREAKOUT +48.1% on 7d +84.9%, identity-AI lane lead. 1h cools to +1.8%, late-entry fade risk on a stretched leg.
-- LAB BREAKOUT +27.3% on 7d +80.8% repeats from 05-29 with TRENDING+UP now added, but ZachXBT flagged insider-supply concentration on LAB this morning. Manufactured signal. Surface for completeness, don't chase.
-- BNB-chain cluster rotation: BNB +12.2% MAJOR with ASTER +15.1%, CAKE +11.6%, SFP +12.7%, and BinanceLife +16.8% all double-digit green.
-- XLM TRENDING+DOWN -0.7% at #17. 05-29's BREAKOUT leader fades day-2, the settlement-narrative bid cooling.
-- FET extends to +10.6% / 7d +28.9% on $280M vol since this morning's high-conviction ASI Alliance pick. Same-day confirmation.
+- H day-2 BREAKOUT at +23%/24h on +89%/7d, $155M vol — extending yesterday's identity-AI lead. The 1h flat after a full 24h run prints late-entry fade risk.
+- LAB cooled to +7.6% but holds TRENDING+UP at 7d +80%. The 1h -13.1% on the day shows distribution into the trending list. Yesterday's manufactured-signal flag (ZachXBT insider-supply concentration) plays through.
+- XMR Monero -7.6% MAJOR — top-20 print joining ZEC's privacy fade on $148M vol.
+- BNB-chain cluster carries day-2. BNB +7.1% / CAKE +6.6% / ASTER +6.2% all on the winners list — attention narrowing from yesterday's five-name green spread.
+- IOTA and JTO direction-flip from 05-29 winners (IOTA +14.1 → -6.6, JTO +10.3 → -5.6). Alt rotation has no settled leader.
 
-_Filters: 250 → 188 (32 stables, 30 illiquid <$1M). Source: coingecko markets=ok, trending=ok._
+_Filters: 250 → 180 (48 stables, 22 illiquid <$1M). Source: coingecko markets=ok, trending=ok._
