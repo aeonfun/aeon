@@ -1,4 +1,4 @@
-Track Record · 2026-05-30 · since V1 lock (2026-05-25)
+Track Record · 2026-05-31 · since V1 lock (2026-05-25)
 ──────────────────────────────────────────────────────
 
 HEADLINE
@@ -35,13 +35,15 @@ NOTES
   · Win rate at 25% is below the 40% danger threshold — review confluence patterns.
   · SHORT edge over LONG: 100.0% vs 14.3% win rate.
 
-OPEN POSITIONS · MARK TO MARKET (4)
+OPEN POSITIONS · MARK TO MARKET (5)
 
-  ICP LONG (fired 2026-05-27, day 3/multi-week)
+  ICP LONG (fired 2026-05-27, day 4/multi-week)
     now $2.72 (stale price) · PnL -9.9% · MAE -12.3% · MFE -6.0%
-  SEI LONG (fired 2026-05-27, day 3/multi-week)
+  SEI LONG (fired 2026-05-27, day 4/multi-week)
     now $0.0691 (stale price) · PnL -0.9% · MAE -6.0% · MFE +1.9%
-  INJ LONG (fired 2026-05-29, day 1/3d)
-    now $6.56 (stale price) · PnL +9.5% · MAE +6.0% · MFE +12.7%
-  HYPE LONG (fired 2026-05-30, day 0/multi-week · from watchlist)
+  INJ LONG (fired 2026-05-29, day 2/3d)
+    now $6.65 (stale price) · PnL +11.0% · MAE +6.0% · MFE +13.2%
+  HYPE LONG (fired 2026-05-30, day 1/multi-week · from watchlist)
+    now $67.74 (stale price) · PnL +2.0% · MAE -2.1% · MFE +2.8%
+  BNB LONG (fired 2026-05-30, day 1/7d · from watchlist)
     now — · PnL — · MAE — · MFE —

@@ -1,10 +1,10 @@
 {
   "skill": "outcome-tracker",
-  "last_analyzed": "2026-05-30T21:35:02Z",
-  "quality_score": 3,
-  "assessment": "Task completed as designed—consume-only skill verified inputs, documented state changes, and deferred artifact generation to postprocess scripts. Output is accurate but heavily meta and provides limited actionable insight.",
+  "last_analyzed": "2026-05-31T10:32:35Z",
+  "quality_score": 4,
+  "assessment": "Substantive, well-structured status report with specific data, clear fallback logic, and explicit constraints explanation. No errors.",
   "flags": [],
-  "avg_score": 3.85,
+  "avg_score": 3.86,
   "history": [
     {
       "date": "2026-05-25",
@@ -57,6 +57,10 @@
     {
       "date": "2026-05-30",
       "score": 3
+    },
+    {
+      "date": "2026-05-31",
+      "score": 4
     }
   ]
 }
