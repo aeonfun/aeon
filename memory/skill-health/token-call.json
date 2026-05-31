@@ -1,15 +1,11 @@
 {
   "skill": "token-call",
-  "last_analyzed": "2026-05-31T10:34:41Z",
+  "last_analyzed": "2026-05-31T21:34:10Z",
   "quality_score": 4,
-  "assessment": "Substantive, well-reasoned token pick with specific on-chain catalysts, clear exclusion logic, proper dedup tracking, and sourced analysis",
+  "assessment": "Skill correctly applied idempotency guardrail, verified thesis validity with fresh data, and maintained artifact integrity—substantive and well-documented but action is passive (skip re-execution) rather than proactive.",
   "flags": [],
   "avg_score": 4.23,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-19",
       "score": 4
@@ -120,6 +116,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     },
     {
