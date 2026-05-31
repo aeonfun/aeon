@@ -1,34 +1,34 @@
 {
   "total_cost_usd": 0.2494,
-  "total_calls": 15574,
+  "total_calls": 14175,
   "total_tokens": 249437,
   "by_vendor": {
     "hyperliquid": {
-      "calls": 9226,
+      "calls": 8332,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "get_balance": {
-          "calls": 2592,
+          "calls": 2333,
           "cost_usd": 0.0
         },
         "get_user_fills_pnl": {
-          "calls": 553,
+          "calls": 482,
           "cost_usd": 0.0
         },
         "get_open_positions": {
-          "calls": 6081,
+          "calls": 5517,
           "cost_usd": 0.0
         }
       }
     },
     "polymarket": {
-      "calls": 6068,
+      "calls": 5563,
       "cost_usd": 0.0,
       "tokens": 0,
       "operations": {
         "scan_markets": {
-          "calls": 6068,
+          "calls": 5563,
           "cost_usd": 0.0
         }
       }
@@ -47,17 +47,17 @@
   },
   "by_agent": {
     "__system__": {
-      "calls": 14139,
+      "calls": 12740,
       "cost_usd": 0.0,
       "tokens": 0,
       "vendors": {
         "hyperliquid": {
-          "calls": 9226,
+          "calls": 8332,
           "cost_usd": 0.0,
           "tokens": 0
         },
         "polymarket": {
-          "calls": 4913,
+          "calls": 4408,
           "cost_usd": 0.0,
           "tokens": 0
         }
@@ -1254,89 +1254,9 @@
   },
   "hourly": [
     {
-      "hour": "2026-05-24T05:00:00",
-      "cost_usd": 0.0,
-      "calls": 69
-    },
-    {
-      "hour": "2026-05-24T06:00:00",
-      "cost_usd": 0.0,
-      "calls": 120
-    },
-    {
-      "hour": "2026-05-24T07:00:00",
-      "cost_usd": 0.0,
-      "calls": 48
-    },
-    {
-      "hour": "2026-05-24T08:00:00",
-      "cost_usd": 0.0,
-      "calls": 73
-    },
-    {
-      "hour": "2026-05-24T09:00:00",
-      "cost_usd": 0.0,
-      "calls": 125
-    },
-    {
-      "hour": "2026-05-24T10:00:00",
-      "cost_usd": 0.0,
-      "calls": 144
-    },
-    {
-      "hour": "2026-05-24T11:00:00",
-      "cost_usd": 0.0,
-      "calls": 68
-    },
-    {
-      "hour": "2026-05-24T12:00:00",
-      "cost_usd": 0.0,
-      "calls": 150
-    },
-    {
-      "hour": "2026-05-24T13:00:00",
-      "cost_usd": 0.0,
-      "calls": 51
-    },
-    {
-      "hour": "2026-05-24T14:00:00",
-      "cost_usd": 0.0,
-      "calls": 54
-    },
-    {
-      "hour": "2026-05-24T15:00:00",
-      "cost_usd": 0.0,
-      "calls": 147
-    },
-    {
-      "hour": "2026-05-24T16:00:00",
-      "cost_usd": 0.0,
-      "calls": 151
-    },
-    {
-      "hour": "2026-05-24T17:00:00",
-      "cost_usd": 0.0,
-      "calls": 82
-    },
-    {
-      "hour": "2026-05-24T18:00:00",
-      "cost_usd": 0.0,
-      "calls": 62
-    },
-    {
-      "hour": "2026-05-24T19:00:00",
-      "cost_usd": 0.0,
-      "calls": 48
-    },
-    {
-      "hour": "2026-05-24T20:00:00",
-      "cost_usd": 0.0,
-      "calls": 54
-    },
-    {
       "hour": "2026-05-24T21:00:00",
       "cost_usd": 0.0,
-      "calls": 45
+      "calls": 9
     },
     {
       "hour": "2026-05-24T22:00:00",
@@ -2096,9 +2016,49 @@
     {
       "hour": "2026-05-31T05:00:00",
       "cost_usd": 0.0,
+      "calls": 11
+    },
+    {
+      "hour": "2026-05-31T06:00:00",
+      "cost_usd": 0.0,
+      "calls": 12
+    },
+    {
+      "hour": "2026-05-31T07:00:00",
+      "cost_usd": 0.0,
+      "calls": 5
+    },
+    {
+      "hour": "2026-05-31T08:00:00",
+      "cost_usd": 0.0,
       "calls": 4
+    },
+    {
+      "hour": "2026-05-31T17:00:00",
+      "cost_usd": 0.0,
+      "calls": 7
+    },
+    {
+      "hour": "2026-05-31T18:00:00",
+      "cost_usd": 0.0,
+      "calls": 12
+    },
+    {
+      "hour": "2026-05-31T19:00:00",
+      "cost_usd": 0.0,
+      "calls": 13
+    },
+    {
+      "hour": "2026-05-31T20:00:00",
+      "cost_usd": 0.0,
+      "calls": 14
+    },
+    {
+      "hour": "2026-05-31T21:00:00",
+      "cost_usd": 0.0,
+      "calls": 9
     }
   ],
-  "event_count": 12354,
-  "synced_at": "2026-05-31T05:17:11Z"
+  "event_count": 11191,
+  "synced_at": "2026-05-31T21:51:25Z"
 }
