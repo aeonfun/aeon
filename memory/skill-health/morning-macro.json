@@ -1,15 +1,13 @@
 {
   "skill": "morning-macro",
-  "last_analyzed": "2026-05-31T10:54:43Z",
+  "last_analyzed": "2026-05-31T22:14:51Z",
   "quality_score": 4,
-  "assessment": "Completed successfully with substantive market-specific output, proper self-checks, soul/style application, and clean logging. Artifact ready for downstream consumption.",
-  "flags": [],
+  "assessment": "Well-structured market brief with substantive content, actionable stances, and multi-source synthesis; strong execution but data accuracy cannot be independently verified.",
+  "flags": [
+    "data_verification_needed"
+  ],
   "avg_score": 4.03,
   "history": [
-    {
-      "date": "2026-05-19",
-      "score": 4
-    },
     {
       "date": "2026-05-20",
       "score": 4
@@ -120,6 +118,10 @@
     },
     {
       "date": "2026-05-30",
+      "score": 4
+    },
+    {
+      "date": "2026-05-31",
       "score": 4
     },
     {
