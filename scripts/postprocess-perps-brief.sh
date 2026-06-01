@@ -131,6 +131,78 @@ if [ -f "$LEDGER_PATH" ]; then
   fi
 fi
 
+# Step 4.5 — Persist Claude's reasoning traces (sidecar file)
+#
+# perps-brief now writes a structured "why" record for each decision to
+# .outputs/perps-brief.traces.json alongside the main data.json. We
+# extract those and append them to the rolling 60-day history at
+# memory/topics/state/judgement-trace.json so Claude can read its own
+# past reasoning on the same asset in future runs. This is the
+# intuition-building substrate — outcomes are tracked elsewhere
+# (outcome-tracker, judgement-audit); the trace file captures WHY
+# Claude weighted things the way it did.
+#
+# Schema and validation enforced by scripts/lib/judgement_trace.py.
+# Bad/malformed trace entries are logged and skipped — they never block
+# the chain.
+TRACES_PATH=".outputs/perps-brief.traces.json"
+if [ -f "$TRACES_PATH" ]; then
+  echo "postprocess-perps-brief: step 4.5/5 — persist reasoning traces"
+  python3 - <<'PY' || echo "::warning::postprocess-perps-brief: trace persistence exited non-zero (non-fatal)"
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, "scripts")
+from lib import judgement_trace as JT
+
+TRACES_PATH = Path(".outputs/perps-brief.traces.json")
+
+try:
+    traces_payload = json.loads(TRACES_PATH.read_text())
+except (json.JSONDecodeError, OSError) as e:
+    sys.stderr.write(f"postprocess-perps-brief: traces file unreadable: {e}\n")
+    sys.exit(0)
+
+# Accept either a bare list or {"traces": [...]} envelope so Claude has
+# a small amount of room to misformat without breaking the chain.
+if isinstance(traces_payload, dict):
+    traces_list = traces_payload.get("traces", [])
+elif isinstance(traces_payload, list):
+    traces_list = traces_payload
+else:
+    sys.stderr.write("postprocess-perps-brief: traces payload must be array or {traces: array}\n")
+    sys.exit(0)
+
+if not traces_list:
+    print("postprocess-perps-brief: no traces in payload, skipping persistence")
+    sys.exit(0)
+
+history = JT.load()
+appended = 0
+errored = 0
+for t in traces_list:
+    try:
+        JT.append(history, t)
+        appended += 1
+    except JT.JudgementTraceError as e:
+        sys.stderr.write(f"postprocess-perps-brief: WARN trace skipped: {e}\n")
+        errored += 1
+
+try:
+    JT.save(history)
+    print(f"postprocess-perps-brief: traces persisted — appended={appended} errored={errored}")
+except JT.JudgementTraceError as e:
+    sys.stderr.write(f"postprocess-perps-brief: ERROR history save: {e}\n")
+    sys.exit(1)
+PY
+  # Validate post-save
+  ( cd scripts && python3 -m lib.judgement_trace "../memory/topics/state/judgement-trace.json" ) \
+    || echo "::warning::postprocess-perps-brief: judgement-trace post-save validation failed"
+else
+  echo "postprocess-perps-brief: no $TRACES_PATH — Claude did not emit traces this run, skipping persistence"
+fi
+
 # Step 5 — Bot embed delivery (sole operator-facing output)
 #
 # Posts structured embeds to the per-section channels via the Stage 3
