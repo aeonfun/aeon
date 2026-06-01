@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 178,
+    "total": 179,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -2146,6 +2146,18 @@
             "sha": "",
             "updated": "2026-06-01",
             "install": "./add-skill aaronjmars/aeon capabilities-map"
+        },
+        {
+            "slug": "liquidpad-launch",
+            "name": "LiquidPad Launch",
+            "description": "Emit a LiquidPad token deploy payload through the prefetch/postprocess shim pair. Routes 80% fees to deployer, 15% to LPAD burn, 5% to LIQ buyback, contract-enforced.",
+            "category": "crypto",
+            "schedule": "",
+            "var": "",
+            "files": 1,
+            "sha": "4f40f1c7",
+            "updated": "2026-05-28",
+            "install": "./add-skill aaronjmars/aeon liquidpad-launch"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",
