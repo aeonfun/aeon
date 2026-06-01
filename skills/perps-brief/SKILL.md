@@ -108,6 +108,8 @@ This skill runs as chain Step 2 with `consume:` set to eight upstream skills. Th
 - `memory/topics/state/active-setups.json` — the ledger. Read `open[]` and `watchlist[]` at the start of every run.
 - `memory/topics/market-context.md` — full canonical regime view
 - `memory/MEMORY.md` + last 7 days of `memory/logs/`
+- `.divergence-cache/{ASSET}.json` — current spot/perps divergence snapshot per universe asset (BTC/ETH/SOL + ledger.open + ledger.watchlist). Schema: `{spot_usd, perps_mark_usd, divergence_pct, basis_apr, ...}`. **Use as context for your judgement, not as a hard threshold.** A wide positive `divergence_pct` (perps premium over spot) often signals leverage-led rallies that lack spot demand backing; a wide negative signals spot-led demand perps haven't caught up to.
+- `memory/topics/state/divergence-history.json` — 30-day rolling history of those snapshots. Read via `python3 -c "import sys; sys.path.insert(0, 'scripts'); from lib import divergence as D; print(D.summary_stats(D.load(), 'BTC', days=30))"` for descriptive stats. Compare the current snapshot against the asset's own 30-day distribution to develop per-asset intuition (e.g. "ETH divergence at +0.4% sits at the p90 of the 30-day range — leverage-led move worth flagging"). The data layer is threshold-free; the regime call is yours.
 
 ## Process — five passes
 
