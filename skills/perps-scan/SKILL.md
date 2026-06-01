@@ -68,6 +68,32 @@ All Coinglass responses follow `{ "code": "0", "msg": "success", "data": [...] }
 
 If a per-coin endpoint file is missing or invalid, drop that coin if `price`, `oi`, or `funding` is the missing one. Otherwise (missing `liq`/`topls`/`basis`/`taker`/`price-1h`), classify anyway and omit the affected signals from the metric line.
 
+### Spot/Perps divergence cache (new in v2.6)
+
+A second prefetcher (`scripts/prefetch-divergence.sh`) writes per-asset spot/perps divergence snapshots to `.divergence-cache/{ASSET}.json` for the same universe (Tier 1 majors + ledger.open + ledger.watchlist). Schema:
+
+```json
+{
+  "asset": "HYPE",
+  "ts_utc": "2026-06-01T12:00:00Z",
+  "spot_usd": 67.74,
+  "perps_mark_usd": 67.91,
+  "divergence_pct": 0.251,
+  "basis_apr": 8.7,
+  "spot_source": "coingecko:hyperliquid",
+  "perps_source": "coinglass:price-1h-aggregated"
+}
+```
+
+A 30-day rolling history of these snapshots is persisted at `memory/topics/state/divergence-history.json` (one entry per asset per chain run, capped at 30d). Read it via `python3 -c "import sys; sys.path.insert(0, 'scripts'); from lib import divergence as D; print(D.summary_stats(D.load(), 'BTC', days=30))"` to get descriptive stats (min/max/mean/p25/p50/p75/stdev for both `divergence_pct` and `basis_apr`).
+
+**How to use this data:**
+- Spot/perps divergence is **context, not a threshold**. There is no SPOT_LED / PERPS_LED label in the data layer — apply your own judgement.
+- A wide positive divergence (perps premium over spot) often signals leverage-led rallies that lack spot demand backing. A wide negative (perps discount to spot) often signals spot-led demand that perps haven't caught up to.
+- Compare the current `divergence_pct` against the asset's own 30-day distribution (the summary_stats). "BTC divergence at +0.5% vs 30d p75 of +0.3%" is meaningful per-asset context that varies by liquidity/regime.
+- For assets without a Coinglass cache entry (e.g. fresh ledger adds before the next Coinglass prefetch cycle), the snapshot is absent — treat as missing data, not zero.
+- You may surface divergence in the regime read or pattern tags where you believe it sharpens the signal. Do not invent a fixed structured field for it in this skill's JSON artifact yet — that comes in a follow-up PR once we have soak observations.
+
 ## Steps
 
 ### 1. Verify the prefetch succeeded
