@@ -113,6 +113,32 @@ This skill runs as chain Step 2 with `consume:` set to eight upstream skills. Th
 
 ## Process — five passes
 
+### Pass 0 (preamble) — Read your own past reasoning
+
+Before composing any decision, query the reasoning-trace history for each asset you'll touch this run. This is the substrate that turns judgement into intuition: outcomes are tracked by `outcome-tracker` and `judgement-audit-weekly`, but the WHY of each past call lives in `memory/topics/state/judgement-trace.json`.
+
+For each `ledger.open[]`, `ledger.watchlist[]`, and any new-position candidate that surfaces from Pass 0 (Discovery):
+
+```bash
+python3 -c "
+import sys, json
+sys.path.insert(0, 'scripts')
+from lib import judgement_trace as JT
+h = JT.load()
+print(json.dumps(JT.recent_for(h, 'HYPE', days=30), indent=2))
+print(json.dumps(JT.factor_frequency(h, 'HYPE', days=30), indent=2))
+"
+```
+
+Two things to look for:
+
+1. **Past decisive factors.** If a factor was weighted `decisive` on this asset last week and the trade won, weight it the same way today when present. If it was weighted `decisive` and the trade lost, ask why — was the factor itself wrong or was an unseen factor more important?
+2. **Consistency check.** If you flipped a call on the same asset within the last 7 days without a regime change, the trace makes that visible. Flag it in your reasoning and resolve the inconsistency before composing.
+
+Don't treat the history as gospel. Treat it the same way you treat divergence stats: context for your own judgement, never a hard rule. If the data contradicts your read today, the data is probably right, but the trace shows your past read so you can articulate why you're disagreeing with it.
+
+Skip this step on the first run after the schema ships (history will be empty). It compounds over time — after 30 days every active asset will have ~14-28 traces of past reasoning.
+
 ### Pass A — Evaluate every current ledger position
 
 For each entry in `ledger.open[]`:
@@ -325,12 +351,99 @@ This rule lets the track-record measure whether confluence-count-based ranking o
 
 **Write `.outputs/perps-brief.data.json`. DO NOT write `.outputs/perps-brief.md` directly. DO NOT call `./notify`. DO NOT edit `memory/topics/state/active-setups.json` directly.**
 
+**Also write `.outputs/perps-brief.traces.json`** — the structured reasoning record for every decision this run. See "Write the reasoning traces" below.
+
 The postprocess step handles all of the above:
 1. `scripts/render-perps-brief.py` → markdown
 2. `scripts/lib/ledger.py snapshot` → pre-apply backup
 3. `scripts/apply-ledger-ops.py` → applies ops atomically
 4. `python3 -m lib.ledger` → post-apply validation
+4.5. `scripts/lib/judgement_trace.py` → reads `.outputs/perps-brief.traces.json`, appends to rolling 60d history at `memory/topics/state/judgement-trace.json`, validates
 5. Per-message split + per-signal Discord delivery wrapped in code blocks. MARKET CONTEXT is one message, CURRENT POSITIONS is one message (table + per-row prose), and each NEW POSITION and WATCHLIST entry is its own message. On heavy days this means 7-12 separate Discord messages.
+
+### Write the reasoning traces
+
+Write one trace per decision to `.outputs/perps-brief.traces.json`. Format: a bare JSON array of trace objects. The postprocess extracts and persists them — Claude future-you will read them in Pass 0.
+
+Required schema per trace (validated by `scripts/lib/judgement_trace.py`):
+
+```json
+{
+  "ts_utc": "${now_utc_iso}",
+  "skill": "perps-brief",
+  "decision_type": "new_position | current_position | watchlist_decision",
+  "asset": "HYPE",
+  "decision": "LONG (HIGH)",
+  "factors": [
+    {"name": "perps-scan regime", "value": "LONG_HEAVY", "weight": "supporting"},
+    {"name": "narrative phase", "value": "PEAK_RIDE", "weight": "supporting"},
+    {"name": "divergence_pct", "value": -7.49, "context": "p10 of 30d range — spot-led", "weight": "decisive"},
+    {"name": "outcome-tracker", "value": "LONG WR 70% on PEAK narratives", "weight": "supporting"}
+  ],
+  "counterfactual": "Without the divergence read this would have been HIGH-WATCH not HIGH-LONG"
+}
+```
+
+Rules:
+- **`weight` MUST be one of `decisive | supporting | contrary | noted`.** Anything else is a schema error and the trace gets dropped. Force yourself to be explicit:
+  - `decisive` — without this factor the call would flip (direction or tier change)
+  - `supporting` — confirms the call but not load-bearing on its own
+  - `contrary` — argues against the call; you weighted it but moved past it
+  - `noted` — present in the data, didn't move the needle
+- **`decision_type` MUST be one of `new_position | current_position | watchlist_decision`** for perps-brief traces. (Other skills may use `regime` or `narrative_phase`; perps-brief sticks to these three.)
+- **One trace per decision.** Every entry in `current_positions`, `new_positions`, and `watchlist` produces exactly one trace. Three positions + two watchlist + one new = six traces in the array.
+- **`counterfactual` is OPTIONAL but valuable.** When you can articulate what would have changed the call, write it. The judgement-audit-weekly skill mines counterfactuals to learn which factors actually carry the decision vs which are decoration.
+- **`value` can be string or number.** Use whatever's natural for the factor.
+- **`context` is optional** — useful for numeric factors (e.g. "p90 of 30d range" turns -7.49 into something meaningful).
+
+Three concrete examples Claude should pattern-match against:
+
+```json
+// Closing a current position
+{
+  "ts_utc": "2026-06-01T12:00:00Z",
+  "skill": "perps-brief",
+  "decision_type": "current_position",
+  "asset": "ICP",
+  "decision": "CLOSE",
+  "factors": [
+    {"name": "invalidation breach", "value": true, "context": "daily close $5.42 < $5.50 line", "weight": "decisive"},
+    {"name": "narrative phase", "value": "FADING", "weight": "supporting"},
+    {"name": "outcome-tracker", "value": "FADING-phase closes WR 15%", "weight": "supporting"}
+  ],
+  "counterfactual": "If the close had held above the line I'd have RIDDEN — single-day wick wouldn't have triggered this"
+}
+
+// Carrying a watchlist entry forward unchanged
+{
+  "ts_utc": "2026-06-01T12:00:00Z",
+  "skill": "perps-brief",
+  "decision_type": "watchlist_decision",
+  "asset": "PORTAL",
+  "decision": "CARRY",
+  "factors": [
+    {"name": "trigger condition", "value": "not fired", "context": "needs reclaim $0.42 + 24h hold", "weight": "decisive"},
+    {"name": "narrative phase", "value": "EMERGING", "weight": "supporting"}
+  ],
+  "counterfactual": null
+}
+
+// Dropping a watchlist entry
+{
+  "ts_utc": "2026-06-01T12:00:00Z",
+  "skill": "perps-brief",
+  "decision_type": "watchlist_decision",
+  "asset": "ASTER",
+  "decision": "DROP",
+  "factors": [
+    {"name": "narrative phase", "value": "DEAD", "context": "BNB-chain cluster decayed below threshold over 3 sessions", "weight": "decisive"},
+    {"name": "day counter", "value": 9, "context": "watchlist max 14d", "weight": "supporting"}
+  ],
+  "counterfactual": "If the cluster had reactivated today on fresh volume this would have stayed on the list 7 more days"
+}
+```
+
+If you don't write `.outputs/perps-brief.traces.json` the chain still succeeds — the postprocess prints a notice and moves on. But every run without a traces file is a lost compounding cycle for your own future intuition. Treat the traces array as required output, not optional.
 
 ### JSON schema (v4.1)
 
