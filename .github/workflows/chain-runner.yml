@@ -74,6 +74,32 @@ jobs:
           NOW_ISO=$(date -u +%FT%TZ)
           echo "Running chain: $CHAIN"
 
+          # Compute CHAIN_SLOT — same bucketing as aeon.yml's "Compute CHAIN_SLOT" step.
+          # 18:00-06:00 UTC → AM slot, 06:00-18:00 UTC → PM slot. Used by the
+          # am_only dispatch gate below so PM cycles skip skills whose output
+          # only changes day-to-day (narrative-tracker, token-call) or whose PM
+          # re-run historically produced inconsistent artifacts (monitor-runners,
+          # ISS-006). The AM-cycle artifact for those skills is already on disk
+          # from the AM chain run; PM consumers read it untouched.
+          HOUR_UTC=$(date -u +%H)
+          if [ "$HOUR_UTC" -ge 18 ] || [ "$HOUR_UTC" -lt 6 ]; then
+            CHAIN_SLOT=am
+          else
+            CHAIN_SLOT=pm
+          fi
+          echo "Chain slot: $CHAIN_SLOT (UTC hour $HOUR_UTC)"
+
+          # --- Helper: check whether a skill is am_only ---
+          # Reads the skill's top-level registry entry in aeon.yml and looks for
+          # `am_only: true` in the flow-mapping body. Entries look like:
+          #   monitor-runners: { enabled: true, schedule: "workflow_dispatch", am_only: true } # ...
+          is_am_only() {
+            local skill="$1"
+            grep -E "^[[:space:]]+${skill}:[[:space:]]*\{" aeon.yml 2>/dev/null \
+              | head -1 \
+              | grep -qE "am_only:[[:space:]]*true"
+          }
+
           # --- Helper: dispatch a skill and return its run ID ---
           dispatch_skill() {
             local skill="$1" var="${2:-}" ctx_file="${3:-}"
@@ -253,6 +279,19 @@ jobs:
             RUN_IDS=()
 
             for skill in "${SKILL_LIST[@]}"; do
+              # AM-only gate: skip dispatch when the skill is flagged am_only=true
+              # in its aeon.yml registry entry and we're in the PM slot. The
+              # AM-cycle artifact stays on disk for PM consumers (perps-brief,
+              # morning-macro, daily-ops-review). This replaces the prior
+              # behaviour where the chain re-dispatched every Step 1 skill on
+              # both slots and the skills with no fresh PM output left a stale
+              # placeholder or (per ISS-006) leaked a flag-like CLI snippet
+              # into the artifact.
+              if [ "$CHAIN_SLOT" = "pm" ] && is_am_only "$skill"; then
+                echo "  Skipping $skill (am_only=true, slot=pm) — preserving AM-cycle artifact"
+                continue
+              fi
+
               # Build context file if this step consumes outputs
               CTX_FILE=""
               if [ -n "$CONSUME" ]; then
