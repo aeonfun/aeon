@@ -60,7 +60,12 @@ SCHEMA_VERSION = "v1"
 
 # Channels the cleanup queue can target. Keep in sync with the
 # DISCORD_BOT_CHANNEL_PERPS_* env var labels used by the driver.
-VALID_CLEANUP_CHANNELS = {"context", "positions", "signals", "watchlist", "outcomes"}
+VALID_CLEANUP_CHANNELS = {
+    "context", "positions", "signals", "watchlist", "outcomes",
+    # Path-B-PR2-equivalent for narratives — same edit-in-place +
+    # 24h-cleanup pattern.
+    "narratives",
+}
 
 
 class BotMessagesError(Exception):
@@ -74,6 +79,7 @@ def _empty_tracker() -> dict:
         "market_sentiment": None,
         "open": {},
         "watchlist": {},
+        "narratives": {},
         "stale_cleanup": [],
     }
 
@@ -91,8 +97,9 @@ def _ensure_shape(tracker: dict) -> dict:
     tracker.setdefault("market_sentiment", None)
     tracker.setdefault("open", {})
     tracker.setdefault("watchlist", {})
+    tracker.setdefault("narratives", {})
     tracker.setdefault("stale_cleanup", [])
-    for k in ("open", "watchlist"):
+    for k in ("open", "watchlist", "narratives"):
         if not isinstance(tracker[k], dict):
             raise BotMessagesError(f"tracker.{k} must be object")
     if not isinstance(tracker["stale_cleanup"], list):
@@ -188,6 +195,21 @@ def get_watchlist(tracker: dict, ledger_id: str) -> Optional[dict]:
 
 def remove_watchlist(tracker: dict, ledger_id: str) -> Optional[dict]:
     return tracker["watchlist"].pop(ledger_id, None)
+
+
+def record_narrative(tracker: dict, narrative_id: str, message_id: str) -> None:
+    tracker["narratives"][narrative_id] = {
+        "message_id": str(message_id),
+        "posted_at_utc": _now_iso(),
+    }
+
+
+def get_narrative(tracker: dict, narrative_id: str) -> Optional[dict]:
+    return tracker["narratives"].get(narrative_id)
+
+
+def remove_narrative(tracker: dict, narrative_id: str) -> Optional[dict]:
+    return tracker["narratives"].pop(narrative_id, None)
 
 
 def queue_for_cleanup(
