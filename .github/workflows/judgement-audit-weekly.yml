@@ -20,7 +20,13 @@ on:
     - cron: '30 8 * * 0'
 
 permissions:
+  # Must match the called aeon.yml workflow's permissions block. The
+  # first scheduled fire (2026-05-31) returned startup_failure with no
+  # logs — most likely cause was the caller's permissions not satisfying
+  # the callee's declared block at the workflow_call resolution step.
   contents: write
+  pull-requests: write
+  issues: read
   actions: write
 
 jobs:
