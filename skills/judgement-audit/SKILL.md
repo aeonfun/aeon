@@ -49,6 +49,14 @@ Plus (ambient context — read as needed):
 
   What it gives you: per-factor outcome distribution across (decisive, supporting, contrary, noted) weights. WIN-rate and HIT-rate computed for each. A factor that's `decisive` on 8 trades with 7 WIN / 1 LOSS is pulling its weight; a factor that's `decisive` on 6 trades with 2 WIN / 4 LOSS is a leading indicator of bad calls. Surface both in the audit narrative so Claude (future-you) knows which factors to trust and which to re-weight.
 
+  **Two additional accessors on the same lib** (use both in every weekly audit):
+
+  - `JA.outcomes_by_conviction(traces, ledger, days)` — slices NEW_POSITION trades by the conviction tier in the decision string ("LONG (HIGH)" / "SHORT (MEDIUM)" / etc). Returns WIN/LOSS/SCARE/NEUTRAL counts + win_rate + hit_rate per HIGH/MEDIUM/LOW tier. Tells you whether HIGH conviction calls actually outperform MEDIUM. If HIGH WR < MEDIUM WR over a meaningful sample, the conviction calibration is broken — surface that as a "calibration drift" finding.
+
+  - `JA.time_to_close_stats(ledger, days)` — distribution of `days_held`, `days_to_mae`, `days_to_mfe` per outcome category. Pure ledger join, no trace dependency. Tells you whether you close winners too quickly, hold losers too long, or have a healthy asymmetry. Example reads: "WIN p50 days_held = 8d, LOSS p50 = 3d → asymmetry intact (cutting losers fast)" vs "WIN p50 = 5d, LOSS p50 = 9d → reverse asymmetry, holding losers hoping for recovery."
+
+  Or run all three at once via `( cd scripts && python3 -m lib.judgement_audit 30 )`. The CLI prints the cross-ref leaderboard + conviction calibration + time-to-close stats in one pass — copy the relevant table into the audit narrative as evidence for your findings.
+
 - `.outputs/market-context-refresh.md` — current market context for "what's the regime today" framing
 - `memory/topics/market-context.md` — canonical regime view
 - Historical `memory/logs/` for any cross-reference
