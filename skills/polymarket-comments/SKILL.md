@@ -104,7 +104,54 @@ polymarket comments — ${today}
 ... (5 markets)
 ```
 
-### 7. Log
+### 7. Write swarm-fund signal JSON (ADR-093 contract)
+
+After notify, write a structured JSON file at `outputs/polymarket-comments/${today}.json` for swarm-fund-mvp's `python/execution/aeon_adapter.py`. The adapter polls `https://raw.githubusercontent.com/tomscaria/aeon/main/outputs/{skill}/{date}.json` every 15 min; this file gets auto-committed by the workflow's Commit step.
+
+Required schema (per `_parse_payload` in `python/execution/aeon_adapter.py`):
+
+```json
+{
+  "signals": [
+    {
+      "market_id": "<numeric market id, falls back to slug>",
+      "score": 0.0-1.0,
+      "direction": "LONG" or "SHORT",
+      "narrative": "<the salient comment-derived narrative shift, one line>",
+      "price": 0.0-1.0,
+      "volume": <24h volume number>
+    }
+  ]
+}
+```
+
+For each of the 5 selected markets, emit one entry capturing the strongest comments-side signal:
+- `market_id` = market `id` from Gamma API (fall back to `slug`)
+- `score` = comments-side confidence in the narrative shift, on a `0.0` (vibes only) → `1.0` (multiple independent commenters + concrete citation) scale. Anchors: single insider-style comment with track record = `0.5`; ≥2 commenters surfacing same catalyst = `0.7`; comment thread links to verifiable evidence (sante.gouv.fr, UMA filing, sub-clause text) = `0.9`+
+- `direction` = `"LONG"` (buy YES) if comments lean toward the YES outcome being underpriced, `"SHORT"` (buy NO) if the opposite. Use the strongest commenter direction; if ambiguous, default to whatever direction the price-vs-narrative gap implies
+- `narrative` = a one-line operator-grade summary of the comment-derived insight (NOT the market question, NOT a comment excerpt — the *thesis*)
+- `price` = YES `outcomePrices[0]` at observation
+- `volume` = `volume24hr`
+
+Write the file even when there are zero comment-derived signals — emit `{"signals": []}`. Use the **atomic + validated** pattern from `conventions/outputs-contract.md`:
+
+```bash
+mkdir -p outputs/polymarket-comments
+JSON_TMP=$(mktemp)
+python3 -c "
+import json, sys
+payload = ${PYTHON_LITERAL_PAYLOAD}
+json.dump(payload, sys.stdout, indent=2)
+" > "$JSON_TMP" 2>/dev/null \
+  && mv "$JSON_TMP" "outputs/polymarket-comments/${today}.json" \
+  || { echo "ADR093_WRITE_FAIL: outputs/polymarket-comments/${today}.json write failed" >&2; rm -f "$JSON_TMP"; }
+```
+
+**Field omissions documented:** polymarket-comments does NOT emit `price_drift` (comments are a narrative-class signal, not a price-move observation). The adapter handles missing optional fields via fallback defaults (`price_drift` becomes `null` in consumer metadata; consumer is OK with that).
+
+Do not abort the skill on JSON-write failure — `ADR093_WRITE_FAIL` to stderr, continue to notify.
+
+### 8. Log
 
 Append to memory/logs/${today}.md:
 ```

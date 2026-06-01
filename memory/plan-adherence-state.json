@@ -1,0 +1,93 @@
+{
+  "run_at": "2026-05-31T20:30:00Z",
+  "run_kind": "manual_v0_triage",
+  "run_notes": "First manual triage run executed in-session by operator + Claude. Surfaced 15 findings initially against a 23-day-stale MEMORY.md, then re-verified against live metrics.json + git log + grep, reducing to 8 real findings (the rest were stale-snapshot artifacts already resolved in code). The reality-correction step is the canonical pattern this skill should follow on every run.",
+  "findings": {
+    "ADR-093-outputs-contract-not-shipped": {
+      "iss_id": "ISS-021",
+      "severity": "P0",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "ls /Users/stew/scaria/aeon/outputs -> does-not-exist",
+      "status": "open",
+      "source_path": "swarm-fund-mvp/DECISIONS.md:ADR-093"
+    },
+    "ADR-095-OLLAMA_FULL-velocity-falsifier-fired": {
+      "iss_id": "ISS-022",
+      "severity": "P0",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "grep -r OLLAMA_FULL swarm-fund-mvp/.env* -> zero matches",
+      "status": "open",
+      "source_path": "swarm-fund-mvp/DECISIONS.md:ADR-095"
+    },
+    "feat-fs-adoption-branch-stranded": {
+      "iss_id": "ISS-023",
+      "severity": "P0",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "swarm-fund-mvp-fs-adoption-branch-27-commits-orphaned-since-2026-05-16-history-rewrite",
+      "status": "open",
+      "source_path": "swarm-fund-mvp/CODEX_HANDOFF.md:item-6"
+    },
+    "ADR-096-resolution-text-ingest-no-slot": {
+      "iss_id": "ISS-024",
+      "severity": "P0",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "grep ADR-096 swarm-fund-mvp/DECISIONS.md -> zero matches; latest ADR is 106",
+      "status": "open",
+      "source_path": "aeon/memory/MEMORY.md:L15 + multiple-references"
+    },
+    "MEMORY-md-staleness-pattern": {
+      "iss_id": "ISS-025",
+      "severity": "P1",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "MEMORY.md-last-consolidated-2026-05-08-vs-today-2026-05-31",
+      "status": "open_structural_fix_pending",
+      "content_resolved_at": "2026-05-31T20:30:00Z",
+      "source_path": "aeon/memory/MEMORY.md:L2"
+    },
+    "ADR-106-swarm-triage-no-graduation-criteria": {
+      "iss_id": "ISS-026",
+      "severity": "P1",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "ADR-106-eval-78%-below-80%-gate-no-criteria-section-in-ADR",
+      "status": "open",
+      "source_path": "swarm-fund-mvp/DECISIONS.md:ADR-106"
+    },
+    "chain-runner-dispatch-degraded-day-35+": {
+      "iss_id": "ISS-027",
+      "severity": "P1",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "MEMORY-snapshot-2026-05-08-said-day-12; today-2026-05-31-is-day-35+",
+      "status": "open_blocked_operator",
+      "source_path": "aeon/memory/MEMORY.md (prior snapshot)"
+    },
+    "grant-pipeline-zero-submissions-30d": {
+      "iss_id": "ISS-028",
+      "severity": "P1",
+      "first_seen": "2026-05-31",
+      "last_seen": "2026-05-31",
+      "reality_check_signature": "grep submitted aeon/memory/topics/grants.md -> zero hits; AWS-Activate pitch-ready since 2026-05-08",
+      "status": "open",
+      "source_path": "aeon/memory/topics/grants.md"
+    }
+  },
+  "phantom_findings_corrected_against_reality": {
+    "runner_swarm_canary_frozen": "FALSE — verified via rswarm.ai/metrics.json: 8+ runner_swarm variants are live in canary lifecycle (hl-fractal, pm-entropy-flow, pm-regime-shift, ta-macd-cross, hl-vol-momentum, hl-dynamic-vol-grid). PR #34 merged with all four Codex review P0/P1 fixes. Stale snapshot, not real drift.",
+    "9_stalled_PRs_on_tomscaria_aeon": "FALSE — `gh pr list --state=open` shows recent (last 7d) feat/fix/docs PRs. The 9-stalled-PRs framing was about aaronjmars/aeon (upstream fork) or has been resolved. Snapshot artifact.",
+    "Apex_gate_29_of_100_2-3_weeks_ETA": "FALSE — headline agent restructured. Now `calibration-gap-v1` at 42/100, Sharpe 0.19 (worse than 0.31 snapshot). Apex gate is FURTHER than the snapshot suggested, not closer. Numbers moved; lifecycle label `Revenant` is unused in live fleet.",
+    "PR_queue_stagnation": "FALSE — 142 commits in 23 days on swarm-fund-mvp (including 6 new ADRs, 100-106), Aeon Batch 1-5 features + context pipeline shipped. Active work was rendered invisible by stale snapshot."
+  },
+  "next_run_should": [
+    "Auto-trigger when MEMORY.md mtime > 7d (see ISS-025 fix path 2)",
+    "Always read live metrics.json BEFORE classifying any P0 about trading state",
+    "Always run git log filtered for non-bot commits BEFORE classifying any 'queue stagnation' finding",
+    "Cross-reference DECISIONS.md latest ADR number against MEMORY.md mentions of ADR-XXX+ to catch slot-not-opened drift",
+    "Verify falsifier checks programmatically where possible (ls / grep / curl) before reporting"
+  ]
+}

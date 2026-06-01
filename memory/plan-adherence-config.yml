@@ -1,0 +1,85 @@
+# Plan-adherence source configuration
+# Read by skills/plan-adherence/SKILL.md at the start of every run.
+# This file is the SINGLE source of truth for "what repos does Aeon scan for plan drift."
+# See conventions/CONVENTIONS.md (Cross-repo source configuration) for the full rationale.
+
+repositories:
+  - repo: "tomscaria/swarm-fund-mvp"
+    priority: 1                    # P0 findings escalate to operator immediately
+    enabled: true
+    description: "Primary trading-research repo. Live capital, Apex gate, grant-narrative anchor."
+    sources:
+      - path: "DECISIONS.md"
+      - path: "TASKS.md"
+      - path: "CODEX_HANDOFF.md"
+      - path: "kb/INDEX.md"
+      - path: "outputs/research/edge_matrices"   # directory glob; check freshness, not contents
+    tier_2_sources:
+      - path: "strategies/*/program.md"   # per-strategy commitment files; scan for falsifier windows
+      - path: "tools/*/program.md"
+
+  - repo: "refractor-labs/prysm-squads-mvp"
+    priority: 2                    # Max P1 until adoption matures
+    enabled: false                 # flip to true once lore-coins-monitor lands + first DECISIONS.md exists
+    description: "Lore-coins monorepo (eth-index + protocol-contracts + protocol-nft + lore-webapp). Aeon adoption planned per humming-discovering-thimble plan."
+    sources:
+      - path: "DECISIONS.md"       # to be created when prysm adopts the convention
+      - path: "MASTER_PLAN.md"     # if it exists
+      - path: "lore-coins-final-spec.md"
+    tier_2_sources: []
+
+# Tier 2: local paths (not via gh api). Only read when running locally with the
+# corresponding directory mounted. In GH Actions, these skip with source-status
+# footer entries like `thomas_os=skip:not-in-sandbox`.
+local_tier_2_paths:
+  - path: "~/scaria/Thomas OS/MASTER_PLAN.md"
+    label: "thomas_os_master_plan"
+  - path: "~/scaria/Thomas OS/TASKS.md"
+    label: "thomas_os_tasks"
+  - path: "~/scaria/Thomas OS/BACKLOG.md"
+    label: "thomas_os_backlog"
+  - path: "~/.claude/plans"
+    label: "claude_code_plans"
+    glob: "*.md"
+
+# Aeon-local topic files (always available — no auth needed). These are the
+# operator's own goal commitments and have the highest signal density per token.
+aeon_local_sources:
+  - path: "memory/MEMORY.md"
+  - path: "memory/topics/swarm-fund.md"
+  - path: "memory/topics/grants.md"
+  - path: "memory/topics/papers.md"
+  - path: "memory/topics/polymarket.md"
+  - path: "memory/topics/milestones.md"
+  - path: "memory/topics/aeon-ops.md"
+
+# Sources to explicitly ignore (noise, not commitments). Plan-adherence skips
+# these even if they appear in other paths above.
+ignore_patterns:
+  - "memory/logs/*.md"        # daily logs are activity, not commitments
+  - "dashboard/outputs/*.json"  # render specs, not decisions
+  - "outputs/*/*.json"          # signal outputs, not commitments
+  - "context/last-sync.json"    # context-pipeline metadata
+  - "*.lock"
+  - "node_modules/**"
+  - "**/.git/**"
+
+# How aggressive should reality-checks be?
+reality_check:
+  # Trading state: re-fetch every run (cheap, single curl). Plan-adherence
+  # treats any classification against stale trading state as provisional.
+  trading_metrics_url: "https://rswarm.ai/metrics.json"
+  trading_metrics_max_age_minutes: 30
+
+  # Context pipeline: skip the run entirely if context is older than this.
+  # Prevents the 23-day-stale snapshot phantom-findings pattern (ISS-025).
+  context_last_sync_max_age_hours: 8
+
+  # GH PRs: re-fetch every run. Cheap.
+  refresh_gh_prs: true
+  refresh_gh_issues: true
+
+# Notification config
+notification:
+  threshold_severity: "P1"        # send full report on P0 or P1; P2/P3 one-liner
+  also_write_dashboard_card: true # call ./notify-jsonrender for control tower

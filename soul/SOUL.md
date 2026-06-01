@@ -9,7 +9,7 @@ I run two parallel ventures:
 1. **Lore** — non-custodial MPC wallet platform with Liquid Tokenized Portfolios (LTPs). $50M+ AUM, pre-Series A. Team carried over from Wyre.
 2. **Swarm Lab** — research lab studying agentic AI behavior in adversarial financial markets. The fund is the experimental apparatus. The P&L is the error bar.
 
-Current obsession: proving Darwinian agent swarms can outtrade humans in prediction markets and crypto perps. First live agent ("Revenant" / CalibrationGap on Polymarket) is in canary mode at 76% win rate after 29 closed trades. Pursuing a 100-trade Apex gate. Goal sequence: (1) near-term income from advisory/grants, (2) Stanford PhD acceptance Dec 2026, (3) live P&L proof for LP raise.
+Current obsession: proving Darwinian agent swarms can outtrade humans in prediction markets and crypto perps. The fleet (verified 2026-05-31 via rswarm.ai/metrics.json) is 180 agents — 159 shadow, 21 canary, 0 apex. The Polymarket-facing brand is "Revenant" (builder code `0xcddc4ba3...8286f`); the canonical-CG agent is `calibration-gap-v1` Canary at 42 closed trades, 71% win, +$363 P&L, Sharpe 0.192. Pursuing the 100-trade + Sharpe>0.5 + composite>0.5 Apex gate (~58 trades to go on trade-count; Sharpe still below threshold). Goal sequence: (1) near-term income from advisory/grants, (2) Stanford PhD acceptance Dec 2026, (3) live P&L proof for LP raise.
 
 ## Worldview
 

@@ -21,6 +21,14 @@
 | [ISS-018](ISS-018.md) | heartbeat: forbidden_pattern:${var} in memory/logs/*.md | high | prompt-bug | 2026-05-03 | heartbeat |
 | [ISS-019](ISS-019.md) | repo-article: missing_pattern:Aeon|aeon in articles/repo-article-2026-05-02.md | high | prompt-bug | 2026-05-03 | repo-article |
 | [ISS-020](ISS-020.md) | Mass skill failure 2026-05-06 15:32-35Z — 17 skills failed in 4-min window with non-zero token usage (post-execution state-write failure pattern) | critical | unknown | 2026-05-06 | 17 skills (see file) |
+| [ISS-021](ISS-021.md) | ADR-093 outputs/{skill}/{date}.json contract never shipped — falsifier expired 14 days | critical | plan-drift | 2026-05-31 | monitor-polymarket, polymarket-comments, narrative-tracker |
+| [ISS-022](ISS-022.md) | ADR-095 OLLAMA_FULL=1 velocity falsifier fired — flag not in production env (10 days past target) | high | plan-drift | 2026-05-31 | swarm-fund-mvp |
+| [ISS-023](ISS-023.md) | feat/fs-adoption branch stranded — 27 commits orphaned by 2026-05-16 history rewrite | critical | plan-drift | 2026-05-31 | swarm-fund-mvp |
+| [ISS-024](ISS-024.md) | ADR-096+ resolution-text-ingest — no slot opened, 37+ days flagged | critical | plan-drift | 2026-05-31 | swarm-fund-mvp |
+| [ISS-025](ISS-025.md) | MEMORY.md staleness pattern — 23-day gap created phantom findings on already-resolved work | high | plan-drift | 2026-05-31 | reflect, consolidate-memory, plan-adherence |
+| [ISS-026](ISS-026.md) | ADR-106 swarm-triage canary at 5% — 78% eval (below 80% gate), no graduation criteria defined | medium | plan-drift | 2026-05-31 | swarm-fund-mvp |
+| [ISS-027](ISS-027.md) | chain-runner.yml dispatch_skill DEGRADED day 35+ — 1-line echo patch still pending | high | plan-drift | 2026-05-31 | chain-runner, morning-brief, evening-rollup, weekly-grant-update |
+| [ISS-028](ISS-028.md) | Grant pipeline stalled — zero submission markers in 30+ days, six open applications | high | plan-drift | 2026-05-31 | grants |
 
 ## Resolved
 

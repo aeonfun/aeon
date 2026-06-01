@@ -168,6 +168,55 @@ If no transitions or positions worth surfacing, write a minimal brief: `# Narrat
 
 This brief is the primary input for write-tweet's topic selection and evening-recap's narrative arc. Make positions sharp enough to tweet directly.
 
+### 9. Write swarm-fund signal JSON (ADR-093 contract)
+
+After the structured content brief, write a machine-readable signal file at `outputs/narrative-tracker/${today}.json` for swarm-fund-mvp's `python/execution/aeon_adapter.py` to consume. The adapter polls `https://raw.githubusercontent.com/tomscaria/aeon/main/outputs/{skill}/{date}.json` every 15 min; this file gets auto-committed by the workflow's Commit step.
+
+Required schema (per `_parse_payload` in `python/execution/aeon_adapter.py`):
+
+```json
+{
+  "signals": [
+    {
+      "market_id": "<narrative label, slug-cased — narrative-tracker has no per-market id, so emit one entry per FRONT-RUN/RIDE/FADE position and use the narrative slug as the market_id>",
+      "score": 0.0-1.0,
+      "direction": "LONG" or "SHORT",
+      "narrative": "<the one-line angle from POSITIONS section>",
+      "narrative_score": 0.0-1.0
+    }
+  ]
+}
+```
+
+Map narrative-tracker's outputs to the schema:
+- **FRONT-RUN** positions → `direction: "LONG"`, `score = min(1.0, mindshare/5)` (5-point mindshare scale → 0-1 score)
+- **RIDE** positions → `direction: "LONG"`, `score = min(1.0, mindshare/5) * 0.7` (lower than FRONT-RUN because the narrative is already priced)
+- **FADE** positions → `direction: "SHORT"`, `score = min(1.0, mindshare/5)`
+- **WATCH** positions → skip (no conviction)
+- `market_id` = slug-cased narrative label (e.g. `"btc-dom-cope-refire"`)
+- `narrative` = the one-line angle from the POSITIONS section
+- `narrative_score` = same value as `score` (the adapter falls back to this field; emit both for safety)
+
+REFLEXIVITY-flagged narratives get their score boosted by `1.2x` (capped at `1.0`) — reflexivity is the signal that the narrative is moving outcomes, not just describing them.
+
+Write the file even when there are zero positions — emit `{"signals": []}`. Use the **atomic + validated** pattern from `conventions/outputs-contract.md`:
+
+```bash
+mkdir -p outputs/narrative-tracker
+JSON_TMP=$(mktemp)
+python3 -c "
+import json, sys
+payload = ${PYTHON_LITERAL_PAYLOAD}
+json.dump(payload, sys.stdout, indent=2)
+" > "$JSON_TMP" 2>/dev/null \
+  && mv "$JSON_TMP" "outputs/narrative-tracker/${today}.json" \
+  || { echo "ADR093_WRITE_FAIL: outputs/narrative-tracker/${today}.json write failed" >&2; rm -f "$JSON_TMP"; }
+```
+
+**Field omissions documented:** narrative-tracker does NOT emit `price` or `volume` (narratives span multiple markets; per-market price/volume is not meaningful at the narrative level). Adapter falls back to defaults (`price=0.5`, `volume=0.0`). DO emit `narrative_score` alongside `score` — the adapter accepts either, and emitting both adds robustness against any schema renormalization downstream.
+
+Do not abort the skill on JSON-write failure — `ADR093_WRITE_FAIL` to stderr, continue to notify.
+
 ## Guidelines
 
 - Quantitative over vibes. Every narrative gets mindshare 1-5 and a velocity arrow — no exceptions. If you can't score it, drop it.

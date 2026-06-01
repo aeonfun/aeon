@@ -84,6 +84,12 @@ skills:
   autoresearch: { enabled: true, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
   create-skill: { enabled: true, schedule: "workflow_dispatch", var: "" } # one-shot skill creator — set var to a description prompt
 
+  # --- Early morning (6 AM UTC) — operator signal queue ---
+  xai-bookmarks: { enabled: false, schedule: "0 6 * * *", model: "claude-haiku-4-5-20251001", var: "" } # Phase 1 — Thomas's X bookmarks. Disabled until X_BOOKMARKS_BEARER_TOKEN secret is configured. Flip enabled to activate. Feeds narrative-tracker / write-tweet / monetize-revenant as the curated signal queue.
+
+  # --- Midday (1 PM UTC) — lore on-chain ---
+  lore-coins-monitor: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6", var: "", project: "lore" } # Phase 1 — prysm-squads-mvp eth-indexer reader. Disabled until LORE_INDEXER_URL secret is configured. Producer side of the outputs-contract.md for any prysm-squads-side consumer adapter.
+
   # --- X / social (5 PM UTC) ---
   fetch-tweets: { enabled: true, schedule: "0 17 * * *" }
   refresh-x: { enabled: true, schedule: "0 17 * * *" }
@@ -115,6 +121,7 @@ skills:
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: true, schedule: "0 18 * * *" } # re-enabled — context pipeline provides real trading data for goal status
   skill-health: { enabled: true, schedule: "0 18 * * *" }
+  plan-adherence: { enabled: true, schedule: "0 9 * * 0", model: "claude-sonnet-4-6", var: "" } # weekly Sunday 9 AM UTC — scan DECISIONS.md, TASKS.md, CODEX_HANDOFF.md, memory topics for expired falsifiers + goal drift; files findings to memory/issues/ as plan-drift category
 
   self-improve: { enabled: false, schedule: "0 18 1/2 * *" } # disabled for cost
   reflect: { enabled: false, schedule: "0 18 * * *" } # disabled for cost

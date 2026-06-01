@@ -9,7 +9,7 @@ Live tracker maintained at `swarm-fund-mvp/outputs/grants_tracker.md`.
 | **AWS Activate** | Cloud credits ($25k–$100k) | Pitch ready | Four-layer playbook: Research Credits → Activate Portfolio → Gen AI Accelerator → Fintech. Lead with story, credits close. |
 | **Anthropic Research Credits** | API credits | Approved | Active. Covers Aeon + autoresearch loop. |
 | **dYdX grant** | $$$ research grant | Drafting | Focus on cross-venue liquidation cascade research. |
-| **Uniswap Foundation Fellowship** | Stipend + brand | Drafting | Pitch agentic LP/router design. |
+| **Uniswap Foundation Fellowship** | Stipend + brand | Drafting | Pitch agentic LP/router design. Foundation grant is the formal application path; the Ken Ng (Ecosystem Growth) inbound is the parallel relationship-led path. See `memory/topics/uniswap.md`. |
 | **Polymarket Builders Program** | $2.5M+ pool, rolling | Need Verified status | Email: builder@polymarket.com once Verified. |
 | **Harmonic** | Research grant | Drafting | Pitch Aristotle adversarial-critique loop as reproducible methodology. Output: `outputs/harmonic_aristotle_grant_application.md`. |
 
@@ -19,12 +19,13 @@ Live tracker maintained at `swarm-fund-mvp/outputs/grants_tracker.md`.
 
 ## Conversations open
 
+- **Uniswap Ecosystem Growth (Ken Ng)** — INBOUND, call being scheduled per Thomas OS MASTER_PLAN.md (🟢 hot). Distinct from the Foundation Fellowship grant: Ken Ng route is relationship-led, immediate, lower friction. Position as agentic LP/router researcher with live CalibrationGap track record + lore-coins on-chain monitor as portfolio piece. See `memory/topics/uniswap.md` for full positioning + briefing.
 - Tower Research, DRW, DES — research roles in conversation, position as quant researcher with live agent
 - Multicoin Capital — 2026-03 conversation validated convergence thesis externally; not formal grant pursuit but useful narrative anchor
 
 ## Application narrative anchors
 
-1. **Live capital** — 29 closed trades, real $$, not paper
+1. **Live capital** — 42 closed trades on `calibration-gap-v1` Canary, 71% win rate, +$363 realized P&L, real $$ not paper. Plus 20 additional Canary-lifecycle variants (8+ runner_swarm: hl-fractal-v01/v02, pm-entropy-flow-v01, pm-regime-shift-v01/v02, ta-macd-cross-v01/v02, hl-vol-momentum-v01-v03, hl-dynamic-vol-grid-v03) extending the live-trading surface. Source: rswarm.ai/metrics.json, verified 2026-05-31.
 2. **Reproducible methodology** — every ADR numbered, every trade tape committed, every decision logged
 3. **Convergence-infra thesis** — not "this strategy works forever," but "infrastructure to rotate when each strategy decays"
 4. **OODA-loop velocity** — Aeon itself is the artifact. Watch it run.

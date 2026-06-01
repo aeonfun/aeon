@@ -26,7 +26,7 @@ The evening recap should reference specific numbers from today's context. "3 new
 
 If running in a chain, check `.outputs/.chain-context-evening-recap.md` for narrative-tracker output. If present, use it to enrich the recap:
 
-- **TL;DR** — weave the day's dominant narrative position (strongest FRONT-RUN or RIDE) into the verdict. "heavy ship day + BTC-dom narrative re-fired, Revenant riding it at 76% WR" is better than just "heavy ship day."
+- **TL;DR** — weave the day's dominant narrative position (strongest FRONT-RUN or RIDE) into the verdict. "heavy ship day + BTC-dom narrative re-fired, `calibration-gap-v1` riding it at 71% WR" is better than just "heavy ship day." Trust live `metrics.json` (or `context/trading/revenant-snapshot.json`) for the actual headline numbers; do not invent or copy stale figures from prior recap examples. Note: "Revenant" is the brand identity on Polymarket (builder code attribution), distinct from any code-level lifecycle stage.
 - **Headlines** — if a TRANSITION (NEW/PROMOTED/DEMOTED/DEAD) occurred today, surface it as a headline. Narrative shifts are operator-relevant events.
 - **Decisions for tomorrow** — if narrative-tracker flagged a FRONT-RUN or FADE call, and Revenant has active exposure in that narrative, flag it as a decision: "Revenant has $X exposure to [narrative] — narrative-tracker calls FADE. Review position?"
 - **Revenant Connection** — cross-reference today's trades from `context/trading/recent-trades.json` with the narrative brief's REVENANT CONNECTION section. If today's P&L moved because of a narrative shift, say so.

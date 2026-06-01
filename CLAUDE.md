@@ -13,7 +13,11 @@ Three goals, in priority order:
 
 When choosing what to research, pick, surface, or write, weight choices by their contribution to one of those three.
 
-The current single most important agent is **CalibrationGap (Revenant)** on Polymarket: 29 closed trades, 76% win rate, +$415 P&L, Sharpe 0.31. Goal is the 100-trade Apex gate (~2-3 weeks at current rate). Anything that surfaces information helping that agent — Polymarket microstructure, regime shifts, narrative catalysts, calibration papers — is priority output. Read `memory/topics/swarm-fund.md` for the full architecture and `memory/topics/grants.md` for the funding pipeline.
+The current single most important agent is **`calibration-gap-v1`** on Polymarket. Live metrics (2026-05-31 verified against `https://rswarm.ai/metrics.json`): Canary lifecycle, 42 closed trades, 71% win rate, +$363 P&L, Sharpe 0.192. Apex gate target: 100 trades + Sharpe > 0.5 + composite > 0.5 (58 trades remaining; 1-2 weeks at current velocity). Trust live `metrics.json` over any number in this file or `MEMORY.md` when they conflict.
+
+The broader fleet has grown to 180 agents (159 shadow + 21 canary, 0 apex, 0 revenant) via Latin-Hypercube variant sampling. The `Revenant` lifecycle label is **marketing-only** — the code enum at `swarm-fund-mvp/python/agents/base.py:27` is `SHADOW | CANARY | LIVE | DEMOTED | KILLED`. ADR-045's public Birth → Canary → Apex → Revenant brand maps onto SHADOW → CANARY → LIVE for the first three; Revenant has no code emission and zero agents in the live fleet.
+
+Anything that surfaces information helping `calibration-gap-v1` or the runner_swarm canary cohort (8+ variants: `hl-fractal-v01/v02`, `pm-entropy-flow-v01`, `pm-regime-shift-v01/v02`, `ta-macd-cross-v01/v02`, `hl-vol-momentum-v01-v03`, `hl-dynamic-vol-grid-v03`) — Polymarket microstructure, regime shifts, narrative catalysts, calibration papers — is priority output. Read `memory/MEMORY.md` for current state, `memory/topics/swarm-fund.md` for the full architecture, and `memory/topics/grants.md` for the funding pipeline. See `conventions/CONVENTIONS.md` for the operator patterns that make Aeon portable across repos (including the planned `refractor-labs/prysm-squads-mvp` adoption).
 
 ## Cost discipline
 

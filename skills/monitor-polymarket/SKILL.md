@@ -126,7 +126,56 @@ alerts: [list any markets that moved >5pp]
 
 If no markets moved significantly, say so — "all quiet" is useful signal too.
 
-### 6. Log
+### 6. Write swarm-fund signal JSON (ADR-093 contract)
+
+After notify, write a structured JSON file at `outputs/monitor-polymarket/${today}.json` for swarm-fund-mvp's `python/execution/aeon_adapter.py` to consume. The adapter polls `https://raw.githubusercontent.com/tomscaria/aeon/main/outputs/{skill}/{date}.json` every 15 min via the GitHub raw content API; this file gets auto-committed by the workflow's Commit step.
+
+Required schema (per `_parse_payload` in `python/execution/aeon_adapter.py`):
+
+```json
+{
+  "signals": [
+    {
+      "market_id": "<numeric market id from Gamma API, or slug>",
+      "score": 0.0-1.0,
+      "direction": "LONG" or "SHORT",
+      "narrative": "<one-line summary, typically the market question>",
+      "price": 0.0-1.0,
+      "volume": <24h volume number>,
+      "price_drift": <24h change in pp, signed>
+    }
+  ]
+}
+```
+
+For each market with `|24h_change_pp| > 1.0` (broader net than the 5pp alert threshold so the swarm gets sub-alert signal too), emit one entry. Mapping:
+- `market_id` = market `id` from the Gamma API (fall back to `slug` if absent)
+- `score` = `min(1.0, abs(price_drift_pp) / 10.0)` — a 10pp move maxes out the score
+- `direction` = `"LONG"` if `price_drift > 0` else `"SHORT"`
+- `narrative` = market `question`
+- `price` = YES `outcomePrices[0]` (parsed from JSON string)
+- `volume` = `volume24hr`
+- `price_drift` = signed 24h change in pp (e.g. `+4.0`)
+
+Write the file even when `signals` is empty — an empty array tells the adapter the skill ran. Use the **atomic + validated** pattern from `conventions/outputs-contract.md`: serialize via Python's `json.dump` to a temp file, then `mv` into place. Python validates structure before write; atomic rename prevents partial files.
+
+```bash
+mkdir -p outputs/monitor-polymarket
+JSON_TMP=$(mktemp)
+python3 -c "
+import json, sys
+payload = ${PYTHON_LITERAL_PAYLOAD}
+json.dump(payload, sys.stdout, indent=2)
+" > "$JSON_TMP" 2>/dev/null \
+  && mv "$JSON_TMP" "outputs/monitor-polymarket/${today}.json" \
+  || { echo "ADR093_WRITE_FAIL: outputs/monitor-polymarket/${today}.json write failed (validation or disk)" >&2; rm -f "$JSON_TMP"; }
+```
+
+Where `${PYTHON_LITERAL_PAYLOAD}` is a Python dict/list literal built from the per-market data above (e.g. `{"signals": [{"market_id": "12345", "score": 0.5, ...}, ...]}`). Do not embed a JSON-string-as-bash-variable — pass the literal directly so Python's parser validates it.
+
+If both the write and the explicit error path fail, the `ADR093_WRITE_FAIL` line lands in stderr (captured by the workflow log) and the skill continues to the notify step. The signal-publication path must NEVER block the human-notify path. Next workflow run will retry (idempotent).
+
+### 7. Log
 
 Append to `memory/logs/${today}.md`:
 ```

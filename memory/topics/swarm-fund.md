@@ -19,7 +19,7 @@ Internal enum (`AgentLifecycle`): adds `DEMOTED` (drawdown / regime mismatch) an
 ## Active strategies
 | Name | Stage | Status |
 |------|-------|--------|
-| CalibrationGap (Revenant) | Canary | 29/100 trades to Apex gate. 76% win, +$415, Sharpe 0.31. |
+| `calibration-gap-v1` | Canary | 42/100 trades to Apex gate. 71% win, +$363, Sharpe 0.192. (Was "29/76%/+$415/0.31" per the 2026-05-08 snapshot; numbers degraded as canary fleet grew.) Trust live `metrics.json`. Note: `Revenant` is the marketing brand on Polymarket — builder code `0xcddc4ba3...8286f` — NOT a code-level lifecycle. |
 | FundingRate | Birth | Scanning, no fires (rates < 1bp threshold) |
 | Pathfinder (HL cross-venue) | Birth | Scaffold |
 | Mage (mean-reversion, RANGE-only) | Birth | Scaffold |

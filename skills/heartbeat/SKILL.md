@@ -44,6 +44,12 @@ Flag these conditions:
 
 - [ ] Any open PRs stalled > 24h? (use `gh pr list`)
 - [ ] Any GitHub issues labeled urgent? (use `gh issue list`)
+- [ ] **MEMORY.md staleness** — `stat -f %m memory/MEMORY.md` (or grep `Last consolidated:` from the file header). Three-stage escalation per `conventions/CONVENTIONS.md`:
+  - **7-14 days old** — flag as `MEMORY_STALE_WARNING` in the heartbeat notification (one line, yellow tier). The operator is on notice but no issue is filed.
+  - **14-21 days old** — flag as `MEMORY_STALE_HIGH` (red tier). Recommend running `consolidate-memory` (or `reflect`) in the next operator session.
+  - **> 21 days old** — file a new `ISS-NNN.md` with `category: plan-drift`, `severity: high`, `title: "MEMORY.md staleness — N days since last consolidation"`. Reference [ISS-025](../../memory/issues/ISS-025.md) as the precedent. Skip if an open ISS already exists for this condition (grep INDEX.md for `MEMORY.md staleness`).
+
+  The 2026-05-31 plan-adherence triage proved this matters: a 23-day MEMORY.md gap produced 4 phantom findings (work that was already done in code but invisible in the snapshot). Catching it at 7d prevents that loop from reopening.
 
 ### P2 — Flagged memory items
 

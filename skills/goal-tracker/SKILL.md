@@ -19,7 +19,7 @@ Read these files to ground goal status in real data:
 - `context/claude-sessions/swarm-fund-mvp/` — scan for goal-related decisions and plan changes
 - `context/last-sync.json` — check freshness; if older than 8 hours, note "(stale data)" in output
 
-Use actual numbers from trading context to assign goal status. "Revenant at 29/100 trades" is a real status update; "making progress" is not.
+Use actual numbers from trading context to assign goal status. "`calibration-gap-v1` at 42/100 trades, Sharpe 0.19, +$363 P&L" is a real status update; "making progress" is not. Trust live `metrics.json` at https://rswarm.ai/metrics.json over any number in this file or MEMORY.md when they conflict — the trading-context snapshot may be ≤8h old, and any reference to "Revenant lifecycle" should be treated as marketing-only (the code enum is SHADOW|CANARY|LIVE|DEMOTED|KILLED per `swarm-fund-mvp/python/agents/base.py:27`).
 
 ## Inputs
 
@@ -31,7 +31,37 @@ Use actual numbers from trading context to assign goal status. "Revenant at 29/1
 - `gh pr list --state=all --search "updated:>=$(date -d '30 days ago' +%F)" --json number,title,state,updatedAt,url` — recent PRs.
 - `gh issue list --state=all --search "updated:>=$(date -d '30 days ago' +%F)" --json number,title,state,updatedAt,url` — recent issues.
 - `memory/cron-state.json` — skill health; relevant when a goal depends on a skill running (e.g., "run first digest").
-- `context/trading/revenant-snapshot.json` — extract Revenant trade count for the "100-trade Apex gate" goal. If `revenant_agents[].trades` exists, use it as direct evidence: `activity_count = trades`, `completion_signal = trades >= 100`.
+- `context/trading/revenant-snapshot.json` — historically expected to carry the headline-agent trade count for the "100-trade Apex gate" goal. **As of 2026-05-31 this file ships with `revenant_agents: []` because the context-sync filter still looks for `lifecycle == revenant` while the live code enum at `swarm-fund-mvp/python/agents/base.py:27` is `SHADOW|CANARY|LIVE|DEMOTED|KILLED` — Revenant never lands.** Treat an empty array as "filter is stale, fall back to live source," not "no headline agent exists."
+
+  **Fallback (use this whenever `revenant_agents` is empty or missing):**
+  ```bash
+  curl -s --max-time 10 https://rswarm.ai/metrics.json \
+    | python3 -c '
+  import json, sys
+  d = json.load(sys.stdin)
+  agents = d.get("agents", [])
+  # Headline canonical agent
+  cg = next((a for a in agents if a.get("agent_id") == "calibration-gap-v1"), None)
+  # Apex gate is multi-axis: 100 trades + Sharpe > 0.5 + composite > 0.5
+  if cg:
+      print(json.dumps({
+          "headline_agent": cg["agent_id"],
+          "trades": cg.get("closed_trades", 0),
+          "win_rate": cg.get("win_rate", 0),
+          "pnl_usd": cg.get("total_pnl_usd", 0),
+          "sharpe": cg.get("sharpe", 0),
+          "composite": cg.get("composite", 0),
+          "apex_gates_passed": sum([
+              cg.get("closed_trades", 0) >= 100,
+              cg.get("sharpe", 0) > 0.5,
+              cg.get("composite", 0) > 0.5,
+          ]),
+          "apex_gates_total": 3,
+      }))
+  '
+  ```
+
+  Use the returned dict as direct evidence: `activity_count = trades`, `completion_signal = (apex_gates_passed == 3)`. The trade-count axis alone is NOT sufficient — surface `apex_gates_passed/3` in the status output so the operator sees which axes are still open. If curl fails, log `METRICS_JSON_UNAVAILABLE` and fall through to the activity-based status logic with the goal marked as "data degraded."
 - `context/trading/agents-summary.json` — extract `lifecycle_counts` for goals related to agent population targets (Birth/Canary/Apex/Revenant counts).
 - `context/trading/costs-summary.json` — extract weekly burn for cost-related goals.
 - `context/claude-sessions/swarm-fund-mvp/` — scan session memory files for goal-related keywords (these capture decisions and plan changes from coding sessions).
@@ -72,7 +102,7 @@ Dedupe evidence by `(source, date, ref)` so a log mentioning a PR doesn't double
 | NEEDS ATTENTION | `activity_count_14d == 1` OR `days_since_last_activity` between 8 and 14 inclusive |
 | AT RISK | `activity_count_14d == 0` AND (`days_since_last_activity > 14` OR no activity ever) |
 
-When context pipeline provides direct numeric progress (e.g., Revenant at 29/100 trades), use the number to compute percentage completion and override the activity-based status:
+When the live metrics.json (or `revenant-snapshot.json` if non-empty) provides direct numeric progress (e.g., `calibration-gap-v1` at 42/100 trades, Sharpe 0.192, composite below threshold), use the numbers to compute multi-axis completion and override the activity-based status. **Important:** The Apex gate requires ALL THREE axes (100 trades + Sharpe > 0.5 + composite > 0.5) — a trades-only percentage is misleading. Report each axis:
 - >= 80% of target = ON TRACK (regardless of activity recency)
 - 50-79% with velocity suggesting target miss = NEEDS ATTENTION
 - < 50% with deadline pressure = AT RISK

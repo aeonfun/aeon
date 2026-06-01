@@ -182,7 +182,7 @@ Concrete tradable hooks (carry to CalibrationGap):
 8. Fed Apr 28-29 FOMC — 99.85% no-change pricing; Experienced-Carpeting tail-risk fade is the rare contrarian voice ("Fed always changes rate at beginning of war" — -50bps OR +25bps).
 
 ## Open work / blockers
-- 100-trade Apex gate — 71 trades to go on CalibrationGap/Revenant (current 29 closed / 76% / +$415 / Sharpe 0.31). 2–3 weeks at current rate.
+- 100-trade Apex gate — 58 trades to go on `calibration-gap-v1` per 2026-05-31 rswarm.ai/metrics.json (42 closed / 71% / +$363 / Sharpe 0.192). 1-2 weeks at current cadence on the trade-count axis. Apex gate is multi-axis: 100 trades + Sharpe > 0.5 + composite > 0.5; current Sharpe is below threshold, so trade-count milestone alone does not graduate.
 - `py-clob-client` install blocked → paper mode only for live order placement.
 - Tier-1 latency for PM leg blocked by datacenter/VPN ban; co-lo strategy applies to HL only.
 - Need to wire Kalshi-BRTI vs PM-Chainlink **basis recorder** into hermes-arb backtest (deep-research recommendation).
