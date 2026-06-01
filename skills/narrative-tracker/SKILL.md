@@ -101,12 +101,78 @@ For each narrative, flag if the story itself is moving outcomes:
 
 Only flag explicit cases with a concrete example. "Reflexivity" without evidence is hand-waving.
 
-### 5. Write artifact (v2 locked format)
+### 5. Write artifact (v2 locked format) + structured data.json
 
-This is a **chain-consumed** artifact under Aeon Market Stack v2. It writes:
-- `.outputs/narrative-tracker.md` — chain-consumable artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`).
+Write TWO artifacts:
 
-**Discord delivery was decommissioned 2026-05-30.** The narrative-tracker output is now consume-only — downstream skills read the artifact for their own context; nothing is broadcast directly to Discord. A dedicated `#narratives` channel with edit-in-place embeds is planned as a follow-up (operator discussion pending) but is NOT in scope of this skill yet.
+1. **`.outputs/narrative-tracker.md`** — chain-consumable text artifact (read by `perps-brief`, `morning-macro`, `daily-ops-review`). Locked v2 format described below.
+
+2. **`.outputs/narrative-tracker.data.json`** — structured output that drives the `#narratives` Discord channel's edit-in-place embeds via the bot pipeline (`scripts/apply-narrative-ops.py` → `scripts/embed-narrative-tracker.py`).
+
+**The previous freeform webhook delivery was decommissioned 2026-05-30. The new flow is structured-data-driven:** Claude writes both artifacts → the postprocess script applies the structured ops to `memory/topics/state/narratives.json` (the narratives ledger) → the embed driver edits/posts to `#narratives` based on which narratives are active, newly added, or transitioned to terminal states.
+
+#### `data.json` schema
+
+```json
+{
+  "schema_version": "v1",
+  "date": "${today}",
+  "narratives": [
+    {
+      "narrative_id":  "hyperliquid-sector",
+      "label":         "Hyperliquid sector",
+      "tokens":        ["HYPE", "JUP", "drift"],
+      "phase":         "RISING",
+      "position":      "RIDE",
+      "mindshare":     5,
+      "evidence":      "perps infra real — SpaceX pre-IPO on TradeXYZ, HYPE ETF debut",
+      "reflexivity":   null
+    }
+  ],
+  "drop_narratives": [
+    {
+      "narrative_id": "btc-etf-inflows",
+      "reason":       "absent",
+      "note":         "Absorbed into baseline market price — no longer a separable narrative driver."
+    }
+  ]
+}
+```
+
+#### Field rules
+
+| Field | Rules |
+|---|---|
+| `narrative_id` | **Stable across runs.** Read `memory/topics/state/narratives.json` at start of run. For continuing narratives, REUSE the existing `narrative_id`. For genuinely new narratives, slugify the label (`Hyperliquid sector` → `hyperliquid-sector`). Never rename a narrative — promote it to a new ID and drop the old one explicitly if the framing fundamentally changed. |
+| `label` | Human-readable name as shown in the `.md` artifact |
+| `tokens` | Canonical tickers, uppercase, deduplicated |
+| `phase` | One of `EMERGING`, `RISING`, `PEAK`, `FADING`, `DEAD`, `IGNORE`. `DEAD` and `IGNORE` AUTO-ARCHIVE the narrative (terminal). |
+| `position` | One of `WATCH`, `FRONT-RUN`, `RIDE`, `RIDE w/ trail`, `FADE` |
+| `mindshare` | Integer 1-5 |
+| `evidence` | One-sentence driver/evidence, Pattern 7 compliant |
+| `reflexivity` | Optional. String or null. Only when materially relevant. |
+
+#### `drop_narratives` op
+
+When a tracked narrative no longer warrants tracking, include it in `drop_narratives` with a reason:
+
+| Reason | When to use |
+|---|---|
+| `dead` | Narrative ran its course (alternative to writing `phase: "DEAD"` — both work; phase=DEAD is preferred so the final state is captured) |
+| `ignored` | Decided no longer worth tracking, but didn't necessarily die (e.g., narrative diluted into adjacent themes) |
+| `absent` | Narrative fully disappeared — explicit acknowledgment that you're dropping it rather than letting it implicitly fall out |
+
+**Implicit drops are still tracked.** If a previously-active narrative isn't in `narratives[]` AND isn't in `drop_narratives[]`, the apply script archives it with `reason: "absent"` and a note flagging the omission. Always prefer the explicit `drop_narratives` op so the audit trail captures your reasoning.
+
+#### Active vs terminal lifecycle
+
+The embed pipeline:
+- **First time a narrative_id appears** → fresh embed posted to `#narratives`
+- **Each subsequent run with the same id** → existing embed edited in place (phase, position, mindshare, evidence updated)
+- **Phase transitions to `DEAD` or `IGNORE`, or appears in `drop_narratives[]`, or implicitly disappears** → embed edited to terminal state, queued for 24h auto-delete
+- **24h after terminal edit** → embed deleted, channel stays clean
+
+Continue to write the `.md` artifact in the existing locked format below — the structured `data.json` is in addition to, not instead of, the text artifact.
 
 **CRITICAL — artifact vs assistant Summary separation (ISS-003 guardrail).** The content of `.outputs/narrative-tracker.md` is the **locked-format text shown below — and only that text**. It is NOT the assistant's end-of-task `## Summary` block, NOT a description of what you did, NOT prose narration of the result. Compose the locked-format payload into a string FIRST, write that string to the file, and only THEN compose the chat-side `## Summary` separately. If the artifact ever begins with `## Summary` or `**What I did**`, it is wrong — overwrite.
 

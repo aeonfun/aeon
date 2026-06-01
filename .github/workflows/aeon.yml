@@ -749,6 +749,10 @@ jobs:
           DISCORD_BOT_CHANNEL_PERPS_SIGNALS: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_SIGNALS }}
           DISCORD_BOT_CHANNEL_PERPS_WATCHLIST: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_WATCHLIST }}
           DISCORD_BOT_CHANNEL_PERPS_OUTCOMES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_OUTCOMES }}
+          # Narratives channel: edit-in-place embeds per active narrative,
+          # 24h cleanup on transition to DEAD/IGNORE/absent. Same Stage 3
+          # pattern as positions/watchlist.
+          DISCORD_BOT_CHANNEL_PERPS_NARRATIVES: ${{ secrets.DISCORD_BOT_CHANNEL_PERPS_NARRATIVES }}
           # Unified developer channel: receives daily-ops-review + judgement-audit
           # output. Operator can mute this channel without affecting trade signals.
           DISCORD_BOT_CHANNEL_AEON_OPS: ${{ secrets.DISCORD_BOT_CHANNEL_AEON_OPS }}

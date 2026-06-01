@@ -1572,3 +1572,215 @@ _CONDITION_MAP_FOR_EMBED: dict[str, tuple[str, str]] = {
     "basis_below":            ("basis",            "<"),
     "volume_ratio_above":     ("vol_ratio",        ">"),
 }
+
+
+# ---------------------------------------------------------------------------
+# Narrative tracking — Path-3-equivalent edit-in-place for narrative-tracker
+#
+# Each tracked narrative gets a persistent embed in #perps-narratives.
+# Edits in place as the phase, position, mindshare, evidence shift over
+# successive narrative-tracker runs. Transitions to DEAD/IGNORE produce
+# a terminal-state edit + 24h cleanup queue entry.
+
+
+# Phase → embed color
+NARRATIVE_PHASE_COLORS = {
+    "EMERGING":  COLORS["LONG"],          # sage green — fresh
+    "RISING":    COLORS["WIN"],           # forest green — gaining
+    "PEAK":      COLORS["WATCHLIST"],     # muted gold — high attention
+    "FADING":    COLORS["SCARE"],         # amber — warning
+    "DEAD":      COLORS["NEUTRAL_CLOSE"], # slate — terminal
+    "IGNORE":    COLORS["NEUTRAL_CLOSE"],
+}
+
+# Phase → emoji
+NARRATIVE_PHASE_EMOJI = {
+    "EMERGING":  "🌱",
+    "RISING":    "↑",
+    "PEAK":      "🔝",
+    "FADING":    "↓",
+    "DEAD":      "💀",
+    "IGNORE":    "🚫",
+}
+
+# Position → emoji
+NARRATIVE_POSITION_EMOJI = {
+    "WATCH":         "👁",
+    "FRONT-RUN":     "🏃",
+    "RIDE":          "🟢",
+    "RIDE w/ trail": "🟡",
+    "FADE":          "🔴",
+}
+
+
+def _format_tokens(tokens: list) -> str:
+    """Render token list as a compact comma-separated string, cap at 8."""
+    if not tokens:
+        return "—"
+    clean = [str(t) for t in tokens if t]
+    if len(clean) > 8:
+        return ", ".join(clean[:8]) + f", +{len(clean) - 8} more"
+    return ", ".join(clean)
+
+
+def _days_since(iso_date: str) -> int:
+    """Days between iso_date (YYYY-MM-DD) and today UTC."""
+    try:
+        d = datetime.fromisoformat(iso_date[:10]).date()
+        today = datetime.now(timezone.utc).date()
+        return max(0, (today - d).days)
+    except (ValueError, TypeError):
+        return 0
+
+
+def compose_narrative(
+    entry: dict,
+    chain_run_id: str = "",
+    slot: str = "",
+) -> dict:
+    """One embed per ACTIVE narrative. Edited in place each run as the
+    phase, position, mindshare, or evidence shift.
+
+    entry is a NarrativeEntry from scripts/lib/narratives.py — fields:
+        narrative_id, label, tokens, phase, position, mindshare,
+        evidence, reflexivity, first_seen, last_updated, phase_history
+    """
+    label = entry.get("label", entry.get("narrative_id", "?"))
+    phase = entry.get("phase", "EMERGING")
+    position = entry.get("position", "WATCH")
+    mindshare = entry.get("mindshare", 0)
+    tokens = entry.get("tokens", []) or []
+    evidence = entry.get("evidence", "") or ""
+    reflexivity = entry.get("reflexivity") or ""
+    first_seen = entry.get("first_seen", "")
+
+    phase_emoji = NARRATIVE_PHASE_EMOJI.get(phase, "•")
+    pos_emoji = NARRATIVE_POSITION_EMOJI.get(position, "")
+    color = NARRATIVE_PHASE_COLORS.get(phase, COLORS["CONTEXT"])
+
+    title = f"{label} · {phase_emoji} {phase}"
+
+    description_parts: list[str] = []
+    if evidence:
+        description_parts.append(evidence.strip())
+    if reflexivity:
+        description_parts.append(f"**Reflexivity:** {reflexivity.strip()}")
+    description = "\n\n".join(description_parts)[:4096]
+
+    n_days = _days_since(first_seen) if first_seen else 0
+
+    fields = [
+        {
+            "name": "Phase",
+            "value": f"{phase_emoji} **{phase}**",
+            "inline": True,
+        },
+        {
+            "name": "Position",
+            "value": f"{pos_emoji} **{position}**".strip(),
+            "inline": True,
+        },
+        {
+            "name": "Mindshare",
+            "value": f"**{mindshare}** / 5",
+            "inline": True,
+        },
+        {
+            "name": "Tokens",
+            "value": _format_tokens(tokens),
+            "inline": False,
+        },
+    ]
+
+    footer_text = f"First seen {fmt_date_short(first_seen)} · day {n_days}"
+    footer_text += _slot_suffix(slot)
+
+    return {
+        "color": color,
+        "author": {"name": f"NARRATIVE · {phase}"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "footer": _footer(footer_text.strip()),
+        "timestamp": _now_iso(),
+    }
+
+
+# Terminal-state badges (mirror compose_watchlist_terminal pattern)
+NARRATIVE_TERMINAL_BADGES = {
+    "dead":     ("DEAD",     "💀", "NEUTRAL_CLOSE"),
+    "ignored":  ("IGNORED",  "🚫", "NEUTRAL_CLOSE"),
+    "absent":   ("ABSENT",   "—",  "NEUTRAL_CLOSE"),
+}
+
+
+def compose_narrative_terminal(
+    closed_entry: dict,
+    chain_run_id: str = "",
+    slot: str = "",
+) -> dict:
+    """Terminal-state edit when a narrative transitions to DEAD/IGNORE
+    or implicitly disappears (close_reason='absent'). Queued for 24h
+    cleanup after this edit lands.
+
+    closed_entry: a NarrativeClosedEntry — has all NarrativeEntry fields
+    plus closed_date, close_reason, close_note.
+    """
+    label = closed_entry.get("label", closed_entry.get("narrative_id", "?"))
+    close_reason = closed_entry.get("close_reason", "absent")
+    close_note = closed_entry.get("close_note", "")
+    closed_date = fmt_date_short(closed_entry.get("closed_date", _now_iso()[:10]))
+    first_seen = closed_entry.get("first_seen", "")
+    tokens = closed_entry.get("tokens", []) or []
+    n_days = _days_since(first_seen) if first_seen else 0
+
+    badge_label, badge_emoji, color_key = NARRATIVE_TERMINAL_BADGES.get(
+        close_reason, ("EXITED", "—", "NEUTRAL_CLOSE"),
+    )
+    color = COLORS[color_key]
+
+    title = f"{label} · {badge_label} {badge_emoji}"
+
+    desc_parts: list[str] = []
+    if close_note:
+        desc_parts.append(f"**{badge_label}:** {close_note}")
+    desc_parts.append(
+        "_This card will be removed in 24h — full lifecycle data is "
+        "preserved in the narratives ledger._"
+    )
+    description = "\n\n".join(desc_parts)[:4096]
+
+    fields: list[dict] = [
+        {
+            "name": "Lifetime",
+            "value": f"**{n_days}d** active",
+            "inline": True,
+        },
+        {
+            "name": "Exit",
+            "value": f"**{badge_label}**",
+            "inline": True,
+        },
+        {
+            "name": "Exited",
+            "value": closed_date,
+            "inline": True,
+        },
+        {
+            "name": "Tokens",
+            "value": _format_tokens(tokens),
+            "inline": False,
+        },
+    ]
+
+    footer_text = f"Exited {closed_date}" + _slot_suffix(slot)
+
+    return {
+        "color": color,
+        "author": {"name": f"NARRATIVE · {badge_label}"},
+        "title": title,
+        "description": description,
+        "fields": fields,
+        "footer": _footer(footer_text),
+        "timestamp": _now_iso(),
+    }
