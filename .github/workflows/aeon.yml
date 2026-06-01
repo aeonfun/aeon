@@ -553,8 +553,25 @@ jobs:
             cp "$PENDING" "$ARTIFACT"
             echo "Capture: skill did not write its own artifact; using json-render pending file"
           elif [ -f /tmp/skill-result.txt ] && [ -s /tmp/skill-result.txt ]; then
-            cp /tmp/skill-result.txt "$ARTIFACT"
-            echo "Capture: skill did not write its own artifact; falling back to Claude chat result"
+            # Guard against flag-like CLI snippets leaking into the artifact.
+            # ISS-006 recurred 2026-05-30 PM: when the chain re-dispatched
+            # monitor-runners on the PM slot and Claude exited without re-
+            # writing the artifact, /tmp/skill-result.txt held a stray
+            # `--skill` token from a tool-discovery call, and this branch
+            # copied it over the AM artifact. Mirror the notify-side guard
+            # (lines 293-305): if the first non-empty token starts with `--`,
+            # refuse the chat result and fall through to the placeholder.
+            FIRST_TOKEN=$(awk 'NF{print $1; exit}' /tmp/skill-result.txt 2>/dev/null || true)
+            case "$FIRST_TOKEN" in
+              --*)
+                echo "_No output captured (skill chat result began with flag-like token '$FIRST_TOKEN' — guarded per ISS-006 recurrence 2026-05-30)._" > "$ARTIFACT"
+                echo "Capture: refused flag-like Claude chat result '$FIRST_TOKEN'; wrote guarded placeholder"
+                ;;
+              *)
+                cp /tmp/skill-result.txt "$ARTIFACT"
+                echo "Capture: skill did not write its own artifact; falling back to Claude chat result"
+                ;;
+            esac
           else
             echo "_No output captured._" > "$ARTIFACT"
             echo "Capture: no skill artifact and no Claude result; wrote empty-output placeholder"
