@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-05-27",
+  "updated": "2026-06-01",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -218,6 +218,17 @@
       "category": "crypto",
       "trust_level": "community",
       "skills": ["distribute-tokens-guarded"]
+    },
+    {
+      "repo": "Atrium-Hermes/aeon-atrium-skills",
+      "name": "Atrium Skills",
+      "description": "Publish, monetize & discover agent skills on Atrium — the onchain skill marketplace on Base. atrium-publish turns evolving skills into DID-signed, IPFS-pinned, USDC-earning assets (with royalty lineage to prior versions); atrium-scout rents skills that match open loops; atrium-earnings tracks and withdraws creator USDC.",
+      "author": "Atrium-Hermes",
+      "license": "MIT",
+      "homepage": "https://atriumhermes.tech",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["atrium-publish", "atrium-scout", "atrium-earnings"]
     }
   ]
 }
