@@ -56,6 +56,7 @@ from lib import ledger as L  # noqa: E402
 
 VALID_OUTCOMES = ("WIN", "LOSS", "SCARE", "NEUTRAL")
 VALID_WEIGHTS = ("decisive", "supporting", "contrary", "noted")
+VALID_CONVICTIONS = ("HIGH", "MEDIUM", "LOW")
 
 
 class JudgementAuditError(Exception):
@@ -190,6 +191,207 @@ def hit_rate(counts: dict) -> Optional[float]:
     return wins / denom
 
 
+def _extract_conviction(decision: str) -> Optional[str]:
+    """Pull HIGH/MEDIUM/LOW out of a perps-brief decision string like
+    "LONG (HIGH)" or "SHORT (MEDIUM)". Returns None if absent."""
+    if not isinstance(decision, str):
+        return None
+    upper = decision.upper()
+    for tier in VALID_CONVICTIONS:
+        if f"({tier})" in upper:
+            return tier
+    return None
+
+
+def outcomes_by_conviction(
+    trace_history: dict,
+    ledger: dict,
+    lookback_days: int = 30,
+) -> dict:
+    """Join NEW_POSITION traces with ledger closed[] outcomes, slicing
+    by conviction tier (HIGH / MEDIUM / LOW). Tells you whether HIGH-
+    conviction calls actually outperform MEDIUM.
+
+    Only `new_position` traces are joined — those carry the original
+    entry-tier decision. Per-position RIDE / CLOSE traces inherit the
+    same conviction by definition.
+
+    Returns:
+      {
+        "by_conviction": {
+          "HIGH":   {"WIN": n, "LOSS": n, "SCARE": n, "NEUTRAL": n,
+                     "n_total": n, "win_rate": float|null,
+                     "hit_rate": float|null},
+          "MEDIUM": {...},
+          "LOW":    {...}
+        },
+        "n_trades_with_conviction": int,
+        "lookback_days":            int
+      }
+    """
+    cutoff = datetime.now(timezone.utc) - timedelta(days=lookback_days)
+
+    by_conviction: dict = {
+        c: _empty_weight_counts() for c in VALID_CONVICTIONS
+    }
+    n_trades = 0
+
+    for closed_entry in ledger.get("closed", []) or []:
+        asset = closed_entry.get("asset")
+        outcome = closed_entry.get("outcome")
+        fired_date = closed_entry.get("fired_date")
+        closed_date = closed_entry.get("closed_date")
+        if not asset or outcome not in VALID_OUTCOMES:
+            continue
+        if not fired_date or not closed_date:
+            continue
+        closed_dt = _parse_date(closed_date)
+        if closed_dt is None or closed_dt < cutoff:
+            continue
+
+        traces = _traces_for_trade(trace_history, asset, fired_date, closed_date)
+        if not traces:
+            continue
+
+        # Find the FIRST new_position trace — that's the entry call
+        conviction = None
+        for trace in traces:
+            if trace.get("decision_type") == "new_position":
+                conviction = _extract_conviction(trace.get("decision", ""))
+                if conviction:
+                    break
+        if not conviction:
+            # No conviction tier captured (might be poller-opened or
+            # legacy trace). Skip rather than guess.
+            continue
+
+        by_conviction[conviction][outcome] += 1
+        by_conviction[conviction]["n_total"] += 1
+        n_trades += 1
+
+    # Compute win/hit rates per tier
+    for tier, counts in by_conviction.items():
+        counts["win_rate"] = win_rate(counts)
+        counts["hit_rate"] = hit_rate(counts)
+
+    return {
+        "by_conviction":            by_conviction,
+        "n_trades_with_conviction": n_trades,
+        "lookback_days":            lookback_days,
+    }
+
+
+def time_to_close_stats(
+    ledger: dict,
+    lookback_days: int = 30,
+) -> dict:
+    """Distribution of days_held, days_to_mae, days_to_mfe per outcome
+    category. Tells you whether trades close too quickly or hold too
+    long, broken down by win/loss/scare.
+
+    Pure ledger join — no trace dependency. Uses fired_date /
+    closed_date / mae_date / mfe_date.
+
+    Returns:
+      {
+        "by_outcome": {
+          "WIN":     {
+            "n": int,
+            "days_held":    {"min", "max", "mean", "p25", "p50", "p75"},
+            "days_to_mae":  {...} | null,
+            "days_to_mfe":  {...} | null
+          },
+          ...
+        },
+        "n_trades":    int,
+        "lookback_days": int
+      }
+    """
+    import statistics
+
+    cutoff = datetime.now(timezone.utc) - timedelta(days=lookback_days)
+
+    samples: dict = {
+        o: {"days_held": [], "days_to_mae": [], "days_to_mfe": []}
+        for o in VALID_OUTCOMES
+    }
+    n_trades = 0
+
+    for closed_entry in ledger.get("closed", []) or []:
+        outcome = closed_entry.get("outcome")
+        fired_date = closed_entry.get("fired_date")
+        closed_date = closed_entry.get("closed_date")
+        if outcome not in VALID_OUTCOMES:
+            continue
+        if not fired_date or not closed_date:
+            continue
+        fired_dt = _parse_date(fired_date)
+        closed_dt = _parse_date(closed_date)
+        if fired_dt is None or closed_dt is None:
+            continue
+        if closed_dt < cutoff:
+            continue
+
+        days_held = (closed_dt - fired_dt).days
+        if days_held >= 0:
+            samples[outcome]["days_held"].append(days_held)
+
+        mae_dt = _parse_date(closed_entry.get("mae_date") or "")
+        if mae_dt is not None:
+            d = (mae_dt - fired_dt).days
+            if d >= 0:
+                samples[outcome]["days_to_mae"].append(d)
+
+        mfe_dt = _parse_date(closed_entry.get("mfe_date") or "")
+        if mfe_dt is not None:
+            d = (mfe_dt - fired_dt).days
+            if d >= 0:
+                samples[outcome]["days_to_mfe"].append(d)
+
+        n_trades += 1
+
+    def _stats(vals: list) -> Optional[dict]:
+        if not vals:
+            return None
+        s = sorted(vals)
+        n = len(s)
+
+        def q(p: float) -> float:
+            if n == 1:
+                return s[0]
+            idx = p * (n - 1)
+            lo = int(idx)
+            hi = min(lo + 1, n - 1)
+            frac = idx - lo
+            return s[lo] + (s[hi] - s[lo]) * frac
+
+        return {
+            "n":     n,
+            "min":   s[0],
+            "max":   s[-1],
+            "mean":  statistics.fmean(s),
+            "p25":   q(0.25),
+            "p50":   q(0.50),
+            "p75":   q(0.75),
+        }
+
+    by_outcome: dict = {}
+    for outcome in VALID_OUTCOMES:
+        slab = samples[outcome]
+        by_outcome[outcome] = {
+            "n":           len(slab["days_held"]),
+            "days_held":   _stats(slab["days_held"]),
+            "days_to_mae": _stats(slab["days_to_mae"]),
+            "days_to_mfe": _stats(slab["days_to_mfe"]),
+        }
+
+    return {
+        "by_outcome":    by_outcome,
+        "n_trades":      n_trades,
+        "lookback_days": lookback_days,
+    }
+
+
 def rank_factors_by_weight(
     cross_ref: dict, weight: str = "decisive", min_n: int = 3
 ) -> list:
@@ -255,6 +457,33 @@ def _cli_main() -> int:
                 f"  {r['name']:<30}  n={r['n_total']:>3}  "
                 f"WR={wr:>6}  HR={hr:>6}  {r['counts']}"
             )
+
+    print(f"\nConviction calibration (lookback={lookback}d):")
+    conv = outcomes_by_conviction(trace_history, ledger, lookback_days=lookback)
+    print(f"  n_trades_with_conviction = {conv['n_trades_with_conviction']}")
+    for tier in VALID_CONVICTIONS:
+        c = conv["by_conviction"][tier]
+        wr = "—" if c["win_rate"] is None else f"{c['win_rate']:.1%}"
+        hr = "—" if c["hit_rate"] is None else f"{c['hit_rate']:.1%}"
+        print(
+            f"  {tier:<6}  n={c['n_total']:>3}  WR={wr:>6}  HR={hr:>6}  "
+            f"WIN={c['WIN']} LOSS={c['LOSS']} SCARE={c['SCARE']} NEUTRAL={c['NEUTRAL']}"
+        )
+
+    print(f"\nTime-to-close by outcome (lookback={lookback}d):")
+    ttc = time_to_close_stats(ledger, lookback_days=lookback)
+    print(f"  n_trades = {ttc['n_trades']}")
+    for outcome in VALID_OUTCOMES:
+        slab = ttc["by_outcome"][outcome]
+        if slab["n"] == 0:
+            print(f"  {outcome:<8}  n=0")
+            continue
+        dh = slab["days_held"]
+        dh_str = (
+            f"min={dh['min']} p25={dh['p25']:.1f} p50={dh['p50']:.1f} "
+            f"p75={dh['p75']:.1f} max={dh['max']}"
+        ) if dh else "—"
+        print(f"  {outcome:<8}  n={slab['n']:>3}  days_held: {dh_str}")
     return 0
 
 
