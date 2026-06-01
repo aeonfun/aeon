@@ -2,10 +2,7 @@
 
 ## Open
 
-| ID | Title | Severity | Category | Detected | Affected Skills |
-|----|-------|----------|----------|----------|-----------------|
-| ISS-006 | monitor-runners .outputs/ artifact overwritten with stray CLI snippet after skill ran clean | high | output-format | 2026-05-20 | monitor-runners |
-| ISS-007 | GitHub Actions silently throttles fork cron triggers — morning-review skipped daily fires | high | sandbox-limitation | 2026-05-21 | chain-runner, heartbeat, all schedule-triggered |
+_(none — all known issues resolved as of 2026-06-01)_
 
 ## Resolved
 
@@ -16,3 +13,5 @@
 | ISS-003 | Skills write the `## Summary` blob into `.outputs/` instead of the locked artifact format | medium | TBD | 2026-05-19 |
 | ISS-004 | perps-scan still writes the `## Summary` blob into `.outputs/` after the ISS-003 guardrail patch | medium | TBD | 2026-05-19 |
 | ISS-005 | Summary-blob artifact corruption persists across chain skills after the perps-scan-only structural fix | medium | TBD | 2026-05-20 |
+| ISS-006 | monitor-runners .outputs/ artifact overwritten with stray CLI snippet after skill ran clean | high | TBD | 2026-06-01 |
+| ISS-007 | GitHub Actions silently throttles fork cron triggers — morning-review skipped daily fires | high | TBD | 2026-06-01 |
