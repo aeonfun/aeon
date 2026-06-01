@@ -26,6 +26,29 @@ The prefetch step has already produced:
 Plus (ambient context — read as needed):
 
 - `memory/topics/state/active-setups.json` — full ledger (closed[] for trades not in the candidates list, watchlist_closed[] for watchlist judgement review)
+- `memory/topics/state/judgement-trace.json` — Claude's per-decision reasoning records. Cross-reference with closed outcomes via `scripts/lib/judgement_audit.py` to answer "for every factor I weighted as decisive, what was the eventual outcome?" This is the closed loop between reasoning and outcome.
+
+  Usage:
+  ```bash
+  python3 -c "
+  import sys, json
+  sys.path.insert(0, 'scripts')
+  from lib import judgement_audit as JA
+  from lib import judgement_trace as JT
+  from lib import ledger as L
+  cross_ref = JA.cross_reference_factors(JT.load(), L.load(), lookback_days=30)
+  print(json.dumps(cross_ref, indent=2))
+  print()
+  print('Decisive factor leaderboard (min n=3):')
+  for r in JA.rank_factors_by_weight(cross_ref, weight='decisive', min_n=3):
+      print(r)
+  "
+  ```
+
+  Or directly: `python3 -m lib.judgement_audit 30` from the scripts dir.
+
+  What it gives you: per-factor outcome distribution across (decisive, supporting, contrary, noted) weights. WIN-rate and HIT-rate computed for each. A factor that's `decisive` on 8 trades with 7 WIN / 1 LOSS is pulling its weight; a factor that's `decisive` on 6 trades with 2 WIN / 4 LOSS is a leading indicator of bad calls. Surface both in the audit narrative so Claude (future-you) knows which factors to trust and which to re-weight.
+
 - `.outputs/market-context-refresh.md` — current market context for "what's the regime today" framing
 - `memory/topics/market-context.md` — canonical regime view
 - Historical `memory/logs/` for any cross-reference
