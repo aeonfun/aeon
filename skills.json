@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 172,
+    "total": 173,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -386,7 +386,7 @@
         {
             "slug": "ecosystem-pulse",
             "name": "ecosystem-pulse",
-            "description": "Weekly liveness check of the projects listed in ECOSYSTEM.md — stars/forks/last-commit recency + new releases for any project that can be matched to a GitHub repo",
+            "description": "Weekly liveness check of the projects listed in ECOSYSTEM.md \u2014 stars/forks/last-commit recency + new releases for any project that can be matched to a GitHub repo",
             "category": "research",
             "schedule": "0 11 * * 1",
             "var": "",
@@ -398,7 +398,7 @@
         {
             "slug": "sparkleware-catalog",
             "name": "sparkleware-catalog",
-            "description": "Weekly enriched export of skill-packs.json — joins the canonical community registry to live GitHub signals (stars, last-push, live manifest skill count) and writes a machine-readable skill-packs-catalog.json that external tools (e.g. Sparkleware) can consume without screen-scraping",
+            "description": "Weekly enriched export of skill-packs.json \u2014 joins the canonical community registry to live GitHub signals (stars, last-push, live manifest skill count) and writes a machine-readable skill-packs-catalog.json that external tools (e.g. Sparkleware) can consume without screen-scraping",
             "category": "dev",
             "schedule": "0 9 * * 2",
             "var": "",
@@ -602,7 +602,7 @@
         {
             "slug": "fleet-skill-adoption",
             "name": "fleet-skill-adoption",
-            "description": "Weekly fleet skill-adoption leaderboard — per-slug count of how many POWER+ACTIVE forks have each upstream skill enabled, top-15 most-adopted and bottom-15 least-adopted by fleet penetration, silent when nothing moves",
+            "description": "Weekly fleet skill-adoption leaderboard \u2014 per-slug count of how many POWER+ACTIVE forks have each upstream skill enabled, top-15 most-adopted and bottom-15 least-adopted by fleet penetration, silent when nothing moves",
             "category": "dev",
             "schedule": "0 22 * * 0",
             "var": "",
@@ -2074,6 +2074,18 @@
             "sha": "",
             "updated": "",
             "install": "./add-skill aaronjmars/aeon approval-audit"
+        },
+        {
+            "slug": "honeypot-check",
+            "name": "Honeypot Check",
+            "description": "Detect un-sellable / restricted (honeypot) tokens on Base by simulating a real holder's sell via eth_call. Keyless \u2014 no explorer key needed.",
+            "category": "crypto",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "",
+            "install": "./add-skill aaronjmars/aeon honeypot-check"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",
