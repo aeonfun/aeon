@@ -186,16 +186,57 @@ Send via `./notify "..."`.
 
 ### 9. ACCEPT mode (when var=accept:{skill_name})
 
-For one-off operator-confirmed lock advancement without re-running `./add-skill`:
+For one-off operator-confirmed lock advancement without re-running `./add-skill`.
+
+**Supply-chain gate (mandatory).** Re-run the security scanner against the fetched upstream SKILL.md *before* it is allowed to overwrite the locked copy. The scanner is the source of truth — never reimplement HIGH/MEDIUM patterns inside this skill (same pattern as `pr-skill-triage`, see its step 6).
+
+Steps:
+
 1. Look up the entry by `skill_name`. Abort if not found: log `SKILL_UPDATE_CHECK_ACCEPT_NO_MATCH: {skill_name}` and stop.
 2. Refetch the current upstream SHA (step 2 logic). If `MISSING_UPSTREAM` or `UNREACHABLE`, abort with `SKILL_UPDATE_CHECK_ACCEPT_FAIL: cannot fetch upstream`.
-3. Refetch the SKILL.md content via the raw accept header (step 4) and re-scan. If verdict is `FAIL`, abort with `SKILL_UPDATE_CHECK_ACCEPT_BLOCKED: security FAIL` and notify the operator. `WARN` proceeds with a flagged notification.
-4. Write the new content to `skills/{skill_name}/SKILL.md`.
+3. Refetch the SKILL.md content via the raw accept header (step 4) into `/tmp/updated-skill.md`. Re-run the scanner against the fetched file **before any overwrite of the locked copy** — call `skills/skill-security-scan/scan.sh` verbatim, exactly like `pr-skill-triage` does. Capture the exit code via `|| SCAN_EXIT=$?` (not `|| true`) because `cmd || true` always exits `0`, so a subsequent `SCAN_EXIT=$?` reads `true`'s status, not the scanner's — and the scanner's `exit 1` (FAIL / ≥1 HIGH) gets masked to `0`, silently reopening the gate. Initialise `SCAN_EXIT=0` first so the success path (no failure → `||` clause never fires) still leaves it set:
+   ```bash
+   SCAN_EXIT=0
+   ./skills/skill-security-scan/scan.sh /tmp/updated-skill.md --json > /tmp/skill-update-scan.json || SCAN_EXIT=$?
+   ```
+   Map the scanner output to a verdict (scanner exit codes: `0` = PASS / no HIGH, `1` = FAIL / ≥1 HIGH, `2` = usage error). Then parse `high` and `medium` counts from the JSON file with `jq` — always read `high` as a belt-and-suspenders cross-check so a future exit-code regression (e.g. someone reintroducing `|| true`) cannot silently reopen the gate. If the scanner is missing, exits `2`, or the JSON cannot be parsed, **fail closed** — do not fall back to inline pattern matching. The scanner is the source of truth; a missing or broken scanner means no verdict, which means no overwrite (this is the ACCEPT path, where the cost of being wrong is a poisoned skill landing in the live skill set):
+   - `SCAN_EXIT == 0` AND JSON parses cleanly AND `high` count `== 0` AND `medium` count `== 0` → **PASS** (silent update path)
+   - `SCAN_EXIT == 0` AND JSON parses cleanly AND `high` count `== 0` AND `medium` count `> 0` → **WARN** (update path, but surface the warning summary)
+   - (`SCAN_EXIT == 1` OR `high` count `> 0`) AND JSON parses cleanly → **FAIL** (abort — HIGH finding present; surface the HIGH summary). The `high > 0` arm catches the case where exit code is `0` but the JSON reports HIGH findings — a defence against exit-code masking regressions.
+   - `SCAN_EXIT == 2`, scanner not executable / missing, `jq` missing, or JSON parse failure → **SCANNER_ERROR** (fail-closed variant of FAIL — same abort path, with `scanner_error` flag added to the paper trail and notification so the operator can distinguish "upstream is hostile" from "our scanner is broken")
+
+   Branch on verdict:
+
+   - **PASS (silent update path).** Proceed to step 4 below. Notification at step 7 stays brief.
+   - **WARN (update with warning surfaced).** Proceed to step 4 below, but include the MEDIUM finding summary in the run output and in the step 7 notification so the operator sees it. Log `SKILL_UPDATE_CHECK_ACCEPT_WARN: {skill_name} {N} MEDIUM finding(s)`.
+   - **FAIL or SCANNER_ERROR (abort, leave local intact).** Do NOT write `skills/{skill_name}/SKILL.md`. Do NOT advance `commit_sha`. The locked copy is preserved exactly as-is. Then:
+     1. Write a paper-trail entry to `memory/topics/skill-update-blocked.md` (create the file if missing, append otherwise) so the operator has a durable record across runs. Include the blocked upstream SHA in the heading so re-blocks on the same day against different SHAs don't collide:
+        ```markdown
+        ## {skill_name} @ {current_sha[:7]} — blocked {today}
+        - Source: {source_repo} @ {source_path} (branch: {branch})
+        - Locked SHA: {locked_sha} (imported {imported_at}, preserved)
+        - Blocked upstream SHA: {current_sha} ({current_date} by {author})
+        - Scanner verdict: {FAIL | SCANNER_ERROR} ({N_high} HIGH, {N_medium} MEDIUM){if SCANNER_ERROR: " — scanner_error: <reason>"}
+        - Top findings (max 3): {file:line — pattern} (omit for SCANNER_ERROR)
+        - Reproduce: `./aeon skill-security-scan {skill_name}` after manual fetch, or inspect `/tmp/skill-update-scan.json`
+        ```
+        If a section with this exact `## {skill_name} @ {current_sha[:7]}` heading already exists, replace it in place instead of appending a duplicate. Use an atomic-write pattern (`mv tmp → final`); never partial-write this file.
+     2. Emit notification with the finding summary:
+        ```
+        *Skill update BLOCKED* {skill_name}
+        Upstream {current_sha[:7]} {if FAIL: "fails security scan ({N_high} HIGH)" | if SCANNER_ERROR: "could not be scanned (scanner_error: <reason>)"}. Locked copy preserved.
+        Top: {first HIGH finding — file:line pattern} (omit for SCANNER_ERROR)
+        Paper trail: memory/topics/skill-update-blocked.md
+        ```
+     3. Log `SKILL_UPDATE_CHECK_ACCEPT_BLOCKED: {skill_name} {FAIL|SCANNER_ERROR} ({N_high} HIGH, {N_medium} MEDIUM)` and stop. Do not run steps 4–7.
+
+4. Write the new content to `skills/{skill_name}/SKILL.md` (only reachable on PASS or WARN).
 5. Update the lock entry: `commit_sha = current_sha`, `last_checked = now_utc`, leave `imported_at` unchanged (preserves install date). Use the same atomic-write pattern as step 7.
-6. Log `SKILL_UPDATE_CHECK_ACCEPTED: {skill_name} {old_sha[:7]} → {new_sha[:7]} (security: {verdict})`.
+6. Log `SKILL_UPDATE_CHECK_ACCEPTED: {skill_name} {old_sha[:7]} → {new_sha[:7]} (security: {PASS|WARN})`.
 7. Notify:
    ```
-   *Skill update accepted* {skill_name} advanced from {old_sha[:7]} to {new_sha[:7]} (security: {verdict}).
+   *Skill update accepted* {skill_name} advanced from {old_sha[:7]} to {new_sha[:7]} (security: {PASS|WARN}).
+   {If WARN: include 1-line MEDIUM finding summary.}
    Re-enable in aeon.yml if needed.
    ```
 
@@ -220,6 +261,8 @@ For the SKILL.md content fetch in step 4, the raw accept header is critical — 
 ## Constraints
 
 - **Never advance `commit_sha` automatically.** Only ACCEPT mode advances, only one skill at a time, only after a fresh security re-scan.
+- **Never overwrite a locked SKILL.md until the fetched upstream copy has cleared the security scanner.** ACCEPT mode runs `skills/skill-security-scan/scan.sh` against the fetched file before any write. On scanner FAIL (HIGH finding) or SCANNER_ERROR (scanner missing, exit 2, `jq` missing, or JSON parse failure), the locked copy is preserved and the verdict is recorded to `memory/topics/skill-update-blocked.md`.
+- **Never reimplement the HIGH/MEDIUM pattern library inside this skill — not even as a fallback.** Call `skills/skill-security-scan/scan.sh` verbatim (same contract `pr-skill-triage` uses). If the scanner is unavailable on the ACCEPT path, fail closed; do not pattern-match inline. The scanner is the single source of truth; if it false-positives, the fix lives in the scanner.
 - Never write `skills.lock` unless the temp file passes `jq empty` validation. Atomic write only.
 - Treat `MISSING_UPSTREAM` as a `CRITICAL` security signal — the locked path no longer exists upstream, which means either legitimate deletion (operator should remove from lock) or silent rename (operator now untracked). Do not advance through it.
 - Never execute or `source` the locked or upstream SKILL.md content as part of this check — it is data, not code, for the duration of this skill.
