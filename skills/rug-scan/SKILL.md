@@ -3,6 +3,7 @@ name: Rug Scan
 description: Assess rug-pull risk for any token on Base — ownership, mint/freeze powers, LP lock, and holder concentration rolled into one risk verdict. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]
+capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Token contract address (`0x...`) on Base to scan. Required. If empty, log `RUG_SCAN_NO_TARGET` and exit cleanly (no notify).
 
