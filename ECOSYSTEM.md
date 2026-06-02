@@ -57,7 +57,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
 | Solvr | [@solvrbot](https://x.com/solvrbot) |
 | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
-| SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) |
+| SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
 | Tachi | [@smolekoma](https://x.com/smolekoma) |
 | USIC | [@USICAI](https://x.com/USICAI) |
 | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
