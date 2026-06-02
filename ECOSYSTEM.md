@@ -42,6 +42,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
 | <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
 | <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
+| <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
 | <img src="https://pbs.twimg.com/profile_images/2022853922847887363/7hiICjWl_400x400.jpg" width="36" height="36" alt="MythosForge logo"> | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
@@ -61,13 +62,12 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2059512048598548480/T3S4MoZ4_400x400.jpg" width="36" height="36" alt="Spoon logo"> | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
 |  | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
 |  | Tachi | [@smolekoma](https://x.com/smolekoma) |
-|  | USIC | [@USICAI](https://x.com/USICAI) |
-|  | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
-|  | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
-|  | VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
-|  | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
-|  | x402Books | [@x402Books](https://x.com/x402Books) |
-|  | zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
+| <img src="https://pbs.twimg.com/profile_images/2045582133826142208/NCXRNpY5_400x400.jpg" width="36" height="36" alt="Venice Kernel logo"> | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
+| <img src="https://pbs.twimg.com/profile_images/2029609210124849155/xjVy8biJ_400x400.jpg" width="36" height="36" alt="Vexor logo"> | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
+| <img src="https://pbs.twimg.com/profile_images/2061833048958668800/Oq_tc1Vc_400x400.jpg" width="36" height="36" alt="VIGIL logo"> | VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
+| <img src="https://pbs.twimg.com/profile_images/2056369895009357824/RE6XcseT_400x400.jpg" width="36" height="36" alt="Wake logo"> | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
+| <img src="https://pbs.twimg.com/profile_images/2054330548374458368/uIcsLhXO_400x400.jpg" width="36" height="36" alt="x402Books logo"> | x402Books | [@x402Books](https://x.com/x402Books) |
+| <img src="https://pbs.twimg.com/profile_images/2057305586904023040/jaDCPSZQ_400x400.jpg" width="36" height="36" alt="zer0 logo"> | zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
 
 ---
 
