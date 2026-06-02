@@ -26,17 +26,16 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056801122858196992/FNUojvPG_400x400.jpg" width="36" height="36" alt="BaseHouse logo"> | BaseHouse | [@basehouse_org](https://x.com/basehouse_org) |
 | <img src="https://pbs.twimg.com/profile_images/2021187758547664896/7tdqvR2z_400x400.jpg" width="36" height="36" alt="Baseline logo"> | Baseline | [@BaselineMarkets](https://x.com/BaselineMarkets) |
 | <img src="https://pbs.twimg.com/profile_images/2026627252511977474/r8GGxl52_400x400.jpg" width="36" height="36" alt="Bean logo"> | Bean | [@minebean_](https://x.com/minebean_) |
-|  | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
-|  | Capacitr | [@capacitr_](https://x.com/capacitr_) |
-|  | Careful Finance | [@ZorrotChen](https://x.com/ZorrotChen) · [carefulfinance.txzy.net](https://carefulfinance.txzy.net/) |
-|  | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
-|  | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
-|  | Clerk | [@clerk](https://x.com/clerk) |
-|  | Cobot | [@cobotgg](https://x.com/cobotgg) |
-|  | Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
-|  | GitBlock | [@gitblock_](https://x.com/gitblock_) |
-|  | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
-|  | GitKernal | [@gitkernal](https://x.com/gitkernal) |
+| <img src="https://pbs.twimg.com/profile_images/2047719472455438336/CFrEyoNZ_400x400.jpg" width="36" height="36" alt="Blue Agent logo"> | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
+| <img src="https://pbs.twimg.com/profile_images/2033580402561232896/0M-1cdeH_400x400.jpg" width="36" height="36" alt="Capacitr logo"> | Capacitr | [@capacitr_](https://x.com/capacitr_) |
+| <img src="https://pbs.twimg.com/profile_images/2027296134939684866/eTsFmewn_400x400.jpg" width="36" height="36" alt="Claw Harbor logo"> | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
+| <img src="https://pbs.twimg.com/profile_images/2045511364072873985/r7zESZco_400x400.jpg" width="36" height="36" alt="ClawBank logo"> | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
+| <img src="https://pbs.twimg.com/profile_images/2058054817516548096/e0qPRxNW_400x400.jpg" width="36" height="36" alt="Clerk logo"> | Clerk | [@agent_clerk](https://x.com/agent_clerk) |
+| <img src="https://pbs.twimg.com/profile_images/2039705524166660096/mcVkmNR3_400x400.jpg" width="36" height="36" alt="Cobot logo"> | Cobot | [@cobotgg](https://x.com/cobotgg) |
+| <img src="https://pbs.twimg.com/profile_images/2057284361066569728/K5ZhxKXY_400x400.png" width="36" height="36" alt="Echo Oracle logo"> | Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
+| <img src="https://pbs.twimg.com/profile_images/2057534847216988160/SDVPe4rG_400x400.jpg" width="36" height="36" alt="GitBlock logo"> | GitBlock | [@gitblock_](https://x.com/gitblock_) |
+| <img src="https://pbs.twimg.com/profile_images/2056356306726887424/2DrOBX8R_400x400.jpg" width="36" height="36" alt="GitBounty logo"> | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
+| <img src="https://pbs.twimg.com/profile_images/2054906494626455553/ff1PHBKF_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
 |  | Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
 |  | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
 |  | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
