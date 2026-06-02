@@ -73,12 +73,17 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 
 ## Add your project
 
-Building on top of Aeon? Open a PR adding a row to the table above.
+Building on top of Aeon? Open a PR adding a row to the table above. Each row has three columns — **Logo**, **Project**, and **Links** — so a new entry looks like:
+
+```markdown
+| <img src="https://pbs.twimg.com/profile_images/.../yourlogo_400x400.jpg" width="36" height="36" alt="YourProject logo"> | YourProject | [@yourhandle](https://x.com/yourhandle) · [yoursite.xyz](https://yoursite.xyz) |
+```
 
 Guidelines:
 
 - Project should publicly identify as built on / using / extending Aeon.
 - One row per project. Keep rows alphabetized by project name.
+- **Logo / PFP** — add a square logo in the first column via an `<img>` tag sized `width="36" height="36"` so the column stays tidy, with an `alt` like `"YourProject logo"`. Point `src` at a directly-hosted square image — your X avatar works well (open your profile picture and use its `..._400x400.jpg`/`.png` URL). Leave the cell empty (`|  |`) if you don't have one yet.
 - Provide at least an X handle or a public link. A short website link is welcome alongside the X handle.
 - Forks that are mainly running stock skills belong on [`SHOWCASE.md`](SHOWCASE.md), not here. This page is for products and agents *built with* Aeon.
 - If your project also ships an installable skill pack, list the pack under [Community skill packs](README.md#community-skill-packs) in the README as well.
