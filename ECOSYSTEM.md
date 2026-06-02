@@ -50,9 +50,9 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2050098727512322048/bS61Qs6N_400x400.jpg" width="36" height="36" alt="NoelClaw logo"> | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
 | <img src="https://pbs.twimg.com/profile_images/2004910939959967744/wr7-zpVh_400x400.jpg" width="36" height="36" alt="PancakeSwap logo"> | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
 | <img src="https://pbs.twimg.com/profile_images/1725595719086530560/n--iy1A9_400x400.jpg" width="36" height="36" alt="Powerloom logo"> | Powerloom | [@Powerloom](https://x.com/Powerloom) |
-|  | Precog | [@precog](https://x.com/precog) |
-|  | Reg Terminal | [@regterminal](https://x.com/regterminal) |
-|  | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/1858962630796603393/iIb9x5CQ_400x400.jpg" width="36" height="36" alt="Precog logo"> | Precog | [@precogmarkets](https://x.com/precogmarkets) |
+| <img src="https://pbs.twimg.com/profile_images/2039867838198890496/rwbQCLQe_400x400.jpg" width="36" height="36" alt="Reg Terminal logo"> | Reg Terminal | [@regterminal](https://x.com/regterminal) |
+| <img src="https://pbs.twimg.com/profile_images/1993360165958303745/OQQCQNha_400x400.png" width="36" height="36" alt="Reppo logo"> | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2020159691557335040/bSUQk1F2_400x400.jpg" width="36" height="36" alt="ResearchSwarm logo"> | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 | <img src="https://pbs.twimg.com/profile_images/2048174647171268608/2UsSB2GA_400x400.jpg" width="36" height="36" alt="Revault logo"> | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | <img src="https://pbs.twimg.com/profile_images/2055018961746399233/09lx9ZYV_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
@@ -60,8 +60,8 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2051334344053252096/Hhd6H4Id_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
 | <img src="https://pbs.twimg.com/profile_images/2059512048598548480/T3S4MoZ4_400x400.jpg" width="36" height="36" alt="Spoon logo"> | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
-|  | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
-|  | Tachi | [@smolekoma](https://x.com/smolekoma) |
+| <img src="https://pbs.twimg.com/profile_images/2056876942385664001/Z-aV7MzX_400x400.jpg" width="36" height="36" alt="SyntheticsAI logo"> | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
+| <img src="https://pbs.twimg.com/profile_images/2031824990207721472/WU9mpmz__400x400.jpg" width="36" height="36" alt="Tachi logo"> | Tachi | [@smolekoma](https://x.com/smolekoma) |
 | <img src="https://pbs.twimg.com/profile_images/2045582133826142208/NCXRNpY5_400x400.jpg" width="36" height="36" alt="Venice Kernel logo"> | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
 | <img src="https://pbs.twimg.com/profile_images/2029609210124849155/xjVy8biJ_400x400.jpg" width="36" height="36" alt="Vexor logo"> | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
 | <img src="https://pbs.twimg.com/profile_images/2061833048958668800/Oq_tc1Vc_400x400.jpg" width="36" height="36" alt="VIGIL logo"> | VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
