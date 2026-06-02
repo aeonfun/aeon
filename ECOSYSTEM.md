@@ -52,6 +52,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | Powerloom | [@Powerloom](https://x.com/Powerloom) |
 | Precog | [@precog](https://x.com/precog) |
 | Reg Terminal | [@regterminal](https://x.com/regterminal) |
+| Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
 | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | RootAi | [@rootaichad](https://x.com/rootaichad) |
