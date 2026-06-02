@@ -33,6 +33,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
 | Clerk | [@clerk](https://x.com/clerk) |
 | Cobot | [@cobotgg](https://x.com/cobotgg) |
+| Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
 | GitBlock | [@gitblock_](https://x.com/gitblock_) |
 | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
 | GitKernal | [@gitkernal](https://x.com/gitkernal) |
