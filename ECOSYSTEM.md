@@ -65,6 +65,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | USIC | [@USICAI](https://x.com/USICAI) |
 | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
 | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
+| VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
 | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
 | x402Books | [@x402Books](https://x.com/x402Books) |
 | zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
