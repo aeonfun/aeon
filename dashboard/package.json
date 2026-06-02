@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test lib/*.test.mjs"
+    "test": "node --import tsx --test 'lib/**/*.test.mjs' 'lib/**/*.test.ts'"
   },
   "dependencies": {
     "@json-render/core": "^0.15.0",
@@ -24,6 +24,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.22.4",
     "typescript": "^5.7.0"
   },
   "overrides": {
