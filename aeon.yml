@@ -205,6 +205,7 @@ skills:
   # Dev & repo
   builder-map: { enabled: false, schedule: "0 10 * * 2", model: "claude-sonnet-4-6" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
   pr-tracker: { enabled: false, schedule: "30 9 * * *" } # daily — status of cross-repo PRs opened by this instance (merge/stale/closed)
+  pr-merge-queue: { enabled: false, schedule: "45 9 * * *", var: "" } # daily 09:45 UTC — operator-facing morning digest of every open PR on the target repo (default aaronjmars/aeon), bucketed by touched-file risk tier (FAST_TRACK/SKILL_PASS/INFRA_REVIEW/SKILL_WARN_OR_BLOCK/CORE_REVIEW/UNKNOWN), each skill-PR scanned via skill-security-scan/scan.sh, gated re-notify on head SHA. var: dry-run [owner/repo]
   repo-revive: { enabled: false, schedule: "0 10 * * 6" } # Saturday — one targeted improvement to reactivate the top dormant watched repo
   feature: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build one feature per watched repo from repo-actions ideas (heavy; opens PRs)
 

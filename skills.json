@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 179,
+    "total": 180,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -1042,6 +1042,18 @@
             "sha": "ac068d2",
             "updated": "2026-05-23",
             "install": "./add-skill aaronjmars/aeon polymarket"
+        },
+        {
+            "slug": "pr-merge-queue",
+            "name": "pr-merge-queue",
+            "description": "Daily operator-facing digest of open PRs on a target repo, bucketed by touched-file risk tier (FAST_TRACK / SKILL_PASS / INFRA_REVIEW / SKILL_WARN_OR_BLOCK / CORE_REVIEW / UNKNOWN). Reuses skill-security-scan verbatim for every changed SKILL.md. No merge action, no PR comment — surfaces the queue the operator still has to think about. Gated re-notify on head SHA. var: dry-run [owner/repo]",
+            "category": "dev",
+            "schedule": "45 9 * * *",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-06-02",
+            "install": "./add-skill aaronjmars/aeon pr-merge-queue"
         },
         {
             "slug": "pr-review",
