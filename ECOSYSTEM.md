@@ -39,13 +39,13 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 |  | Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
 |  | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
 |  | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
-|  | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
-|  | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
-|  | Liq | [@_proxystudio](https://x.com/_proxystudio) |
-|  | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
-|  | MiroShark | [@miroshark_](https://x.com/miroshark_) |
-|  | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
-|  | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
+| <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
+| <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
+| <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
+| <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
+| <img src="https://pbs.twimg.com/profile_images/2022853922847887363/7hiICjWl_400x400.jpg" width="36" height="36" alt="MythosForge logo"> | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
+| <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
 |  | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
 |  | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
 |  | Powerloom | [@Powerloom](https://x.com/Powerloom) |
