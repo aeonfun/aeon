@@ -54,11 +54,11 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 |  | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
 |  | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
 |  | Revault | [@revaultdrops](https://x.com/revaultdrops) |
-|  | RootAi | [@rootaichad](https://x.com/rootaichad) |
-|  | SAM | [@prmrsamm](https://x.com/prmrsamm) |
-|  | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
-|  | Solvr | [@solvrbot](https://x.com/solvrbot) |
-|  | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
+| <img src="https://pbs.twimg.com/profile_images/2055018961746399233/09lx9ZYV_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
+| <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
+| <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2051334344053252096/Hhd6H4Id_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
+| <img src="https://pbs.twimg.com/profile_images/2059512048598548480/T3S4MoZ4_400x400.jpg" width="36" height="36" alt="Spoon logo"> | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
 |  | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
 |  | Tachi | [@smolekoma](https://x.com/smolekoma) |
 |  | USIC | [@USICAI](https://x.com/USICAI) |
