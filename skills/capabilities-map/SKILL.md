@@ -242,6 +242,34 @@ UNDECLARED_ENABLED=$(awk -F'|' '$1 == "(undeclared)" {
 
 `UNDECLARED_ENABLED` is the headline number for community pack authors: "N enabled skills on this instance carry no capability declaration." Driving that number down is the long-tail follow-up work this skill exists to make legible.
 
+**Gate the gap verdict on the enabled-declaration base.** A gap means a tier the operator *could* cover but doesn't. That reading only holds once at least one enabled skill has declared *something* — otherwise every tier is trivially "zero enabled coverage" for the same reason (nobody has annotated their skills yet), and a report that flags all six tiers as gaps on a fresh instance can't distinguish "operator deliberately runs a narrow stack" from "the taxonomy is brand new and unannotated." That false alarm is exactly the failure mode that trains operators to ignore the report, so suppress the gap verdict until the base exists:
+
+```bash
+# Total enabled declarations across all real tiers (double-counts multi-tier
+# skills — fine, only the >0 / ==0 distinction is used). >0 means at least one
+# enabled skill has annotated a capability, so "this tier has zero enabled
+# coverage" is a meaningful statement about that tier rather than an artefact
+# of the whole instance being unannotated.
+DECLARED_ENABLED=$(awk -F'|' '$1 != "(undeclared)" {
+  n = split($2, a, ","); if (a[1] == "") n = 0
+  total += n
+} END { print total + 0 }' /tmp/cap-matrix.tsv)
+
+if [ "${DECLARED_ENABLED}" -eq 0 ]; then
+  # No enabled skill declares anything. Gaps are undeterminable, not zero —
+  # render the per-tier Status as "—" in the article, suppress GAP_SET so the
+  # delta gate doesn't fire six spurious "new gap" lines, and route to the
+  # UNDECLARED_BASELINE terminal status in step 9.
+  COVERAGE_ASSESSABLE=false
+  GAP_SET=""
+  GAP_COUNT=0
+else
+  COVERAGE_ASSESSABLE=true
+fi
+```
+
+When `COVERAGE_ASSESSABLE=false` the actionable signal is no longer "which tiers are gaps" but "annotate enabled skills so coverage can be assessed" — the `UNDECLARED_ENABLED` count and the undeclared list in the article carry that, and step 9 routes the run to a dedicated status that says so plainly rather than crying six gaps.
+
 ### 7. Write the article
 
 Write `articles/capabilities-map-${today}.md`:
@@ -253,7 +281,7 @@ This instance runs **{enabled_skill_count} enabled skills** across **{installed_
 
 | Capability | Enabled | Disabled | Status |
 |------------|---------|----------|--------|
-| `read_only` | {N} | {N} | {OK / **GAP** if enabled=0} |
+| `read_only` | {N} | {N} | {OK / **GAP** if enabled=0 / `—` if COVERAGE_ASSESSABLE=false} |
 | `external_api` | {N} | {N} | {OK / **GAP**} |
 | `writes_external_host` | {N} | {N} | {OK / **GAP**} |
 | `onchain_writes` | {N} | {N} | {OK / **GAP**} |
@@ -263,7 +291,10 @@ This instance runs **{enabled_skill_count} enabled skills** across **{installed_
 
 ## Gaps
 
-{If GAP_COUNT > 0:}
+{If COVERAGE_ASSESSABLE is false:}
+**Coverage can't be assessed yet.** No enabled skill on this instance declares a `capabilities:` value, so all six tiers read zero enabled coverage for the same trivial reason — not because of any real coverage hole. This is a *declaration* gap, not a *coverage* gap. Annotate enabled skills with `capabilities:` frontmatter (start with the highest-blast-radius ones — anything that writes on-chain, spends through an API key, or speaks for the operator) and this matrix becomes meaningful on the next run. The per-tier **Status** column reads `—` until at least one enabled skill declares a capability. See the **Undeclared enabled skills** list below and docs/CAPABILITIES.md §"How to choose".
+
+{Else if GAP_COUNT > 0:}
 The following capability tiers have **zero enabled coverage** on this instance:
 
 - `{capability}` — no enabled skill declares this. {one-line meaning from docs/CAPABILITIES.md taxonomy table}
@@ -306,8 +337,10 @@ Compare this run's matrix against `state`:
 - **newly_declared_skills** — slugs that resolved to a non-`(undeclared)` capability set this run, but were `(undeclared)` (or absent) in `state.declared_skills`.
 - **newly_undeclared_skills** — slugs that were declared last run but resolved to `(undeclared)` this run (a regression — usually a pack manifest got rewritten and dropped the array; rare).
 - **first_run** — `state.last_run == null` and `tier_counts` is empty.
+- **entered_undeclared_baseline** — `COVERAGE_ASSESSABLE` is false this run AND `state.last_status != "CAPABILITIES_MAP_UNDECLARED_BASELINE"` (the instance just dropped to — or started in — an all-undeclared state).
+- **became_assessable** — `COVERAGE_ASSESSABLE` is true this run AND `state.last_status == "CAPABILITIES_MAP_UNDECLARED_BASELINE"` (the first enabled declaration just landed; coverage analysis is now live — worth one ping).
 
-`notify_worthy = first_run OR new_gaps OR recovered_gaps OR newly_undeclared_skills`. (`newly_declared_skills` alone does **not** notify — declarations land all week as packs ship updates; surfacing every one would re-create the noise problem the gated `cost-report → spend-monitor` pair was built to avoid. Declaration *progress* lives in the article counts and the log block.)
+`notify_worthy = first_run OR new_gaps OR recovered_gaps OR newly_undeclared_skills OR entered_undeclared_baseline OR became_assessable`. (`newly_declared_skills` alone does **not** notify — declarations land all week as packs ship updates; surfacing every one would re-create the noise problem the gated `cost-report → spend-monitor` pair was built to avoid. Declaration *progress* lives in the article counts and the log block.) When `COVERAGE_ASSESSABLE` is false, the gap-driven triggers (`new_gaps` / `recovered_gaps`) are inert because `GAP_SET` was suppressed to empty in step 6 — so a persistently-unannotated instance fires **once** on `entered_undeclared_baseline`, then goes `QUIET` each week until a declaration lands, rather than re-crying gaps every Monday.
 
 ### 9. Decide terminal status and notification policy
 
@@ -321,11 +354,13 @@ Precedence:
 | `aeon.yml` missing/invalid | `CAPABILITIES_MAP_NO_CONFIG` | No |
 | `MODE=dry-run` | `CAPABILITIES_MAP_DRY_RUN` | No |
 | State was corrupt this run | `CAPABILITIES_MAP_STATE_CORRUPT` | No (silent recovery; next run notifies) |
+| `COVERAGE_ASSESSABLE=false` and `notify_worthy` | `CAPABILITIES_MAP_UNDECLARED_BASELINE` | Yes (once, on entering the state) |
+| `COVERAGE_ASSESSABLE=false` and not `notify_worthy` | `CAPABILITIES_MAP_UNDECLARED_BASELINE` | No (already notified; stays quiet until a declaration lands) |
 | ≥1 gap and `notify_worthy` | `CAPABILITIES_MAP_GAPS` | Yes |
 | Zero gaps and `notify_worthy` | `CAPABILITIES_MAP_OK` | Yes |
 | Zero deltas | `CAPABILITIES_MAP_QUIET` | No |
 
-`NO_TAXONOMY`, `NO_SKILLS`, `NO_CONFIG`, `BAD_VAR` write nothing else. `DRY_RUN`, `STATE_CORRUPT`, `GAPS`, `OK`, `QUIET` all write the article + state (the matrix file always stays fresh; only the *notification* is gated).
+`COVERAGE_ASSESSABLE=false` takes precedence over the `GAPS` / `OK` rows: when no enabled skill declares anything, the run is an `UNDECLARED_BASELINE`, never a six-gap `GAPS` report. `NO_TAXONOMY`, `NO_SKILLS`, `NO_CONFIG`, `BAD_VAR` write nothing else. `DRY_RUN`, `STATE_CORRUPT`, `UNDECLARED_BASELINE`, `GAPS`, `OK`, `QUIET` all write the article + state (the matrix file always stays fresh; only the *notification* is gated).
 
 ### 10. Write state, log, and notify
 
@@ -355,7 +390,8 @@ Append a log block to `memory/logs/${today}.md`:
 
 ```
 ## capabilities-map
-- Status: CAPABILITIES_MAP_OK | _GAPS | _QUIET | _DRY_RUN | _NO_TAXONOMY | _NO_SKILLS | _NO_CONFIG | _STATE_CORRUPT | _BAD_VAR
+- Status: CAPABILITIES_MAP_OK | _GAPS | _UNDECLARED_BASELINE | _QUIET | _DRY_RUN | _NO_TAXONOMY | _NO_SKILLS | _NO_CONFIG | _STATE_CORRUPT | _BAD_VAR
+- Coverage assessable: {true | false (no enabled skill declares a capability)}
 - Installed: {N} skills · Enabled: {N} · Disabled: {N}
 - Declared: {N} skills · Undeclared: {N} (enabled-undeclared: {N})
 - Gaps: {N} ({comma-separated gap capabilities, or "none"})
@@ -368,6 +404,21 @@ End the skill body with a single terminal line mirroring the chosen status, e.g.
 
 **Notify (gated).** Skip entirely on `BAD_VAR`, `NO_TAXONOMY`, `NO_SKILLS`, `NO_CONFIG`, `DRY_RUN`, `STATE_CORRUPT`, `QUIET`. Otherwise send via `./notify` (≤ 900 chars; Telegram/Discord/Slack render). Match `soul/STYLE.md` voice if populated.
 
+**When `COVERAGE_ASSESSABLE=false`** (status `UNDECLARED_BASELINE`), do NOT send the gap-style message below — `{gap_count}` is 0 there and "0 of 6 tiers uncovered" reads like full coverage, the opposite of the truth. Send this instead:
+
+```
+*Capabilities Coverage — ${today}*
+
+Coverage can't be assessed yet: {undeclared_enabled} of {enabled_skill_count} enabled skills declare no `capabilities:`.
+
+The matrix can't tell a real gap from an unannotated one until at least one enabled skill declares a capability. Start with the highest-blast-radius skills (on-chain writes, key-spending APIs, anything that speaks for you).
+
+Annotation guide: docs/CAPABILITIES.md §"How to choose"
+Matrix: articles/capabilities-map-${today}.md
+```
+
+**Otherwise** (status `OK` / `GAPS`):
+
 ```
 *Capabilities Coverage — ${today}*
 
@@ -376,12 +427,13 @@ End the skill body with a single terminal line mirroring the chosen status, e.g.
 {If first_run:} Baseline run — full matrix in the article.
 {If new_gaps:} New gaps: {comma-separated, e.g. `onchain_writes`, `agent_messaging`}
 {If recovered_gaps:} Recovered: {comma-separated}
+{If became_assessable:} First declarations landed — coverage analysis is now live.
 {If newly_undeclared_skills:} Dropped declarations: {comma-separated slugs}
 
 Matrix: articles/capabilities-map-${today}.md
 ```
 
-Drop any line whose list is empty. On the first (baseline) run, lead with the matrix totals and skip the delta lines (every tier is "new" on a baseline — listing all of them is noise; the article carries the full table).
+Drop any line whose list is empty. On the first (baseline) run that *is* assessable, lead with the matrix totals and skip the delta lines (every tier is "new" on a baseline — listing all of them is noise; the article carries the full table).
 
 ## Exit taxonomy
 
@@ -389,6 +441,7 @@ Drop any line whose list is empty. On the first (baseline) run, lead with the ma
 |--------|---------|---------|
 | `CAPABILITIES_MAP_OK` | Matrix written; baseline or a coverage/declaration delta fired | Yes |
 | `CAPABILITIES_MAP_GAPS` | Matrix written; ≥1 capability tier has zero enabled coverage AND a delta fired | Yes |
+| `CAPABILITIES_MAP_UNDECLARED_BASELINE` | Matrix written; no enabled skill declares any capability, so gaps are undeterminable — fires once on entry, then quiet until a declaration lands | Yes (once) |
 | `CAPABILITIES_MAP_QUIET` | Matrix written; no coverage/declaration change since last run | No (article + state still write) |
 | `CAPABILITIES_MAP_DRY_RUN` | `MODE=dry-run`; article + state wrote, notify skipped | No |
 | `CAPABILITIES_MAP_NO_TAXONOMY` | `docs/CAPABILITIES.md` missing or zero values extracted | No |
@@ -402,6 +455,7 @@ Drop any line whose list is empty. On the first (baseline) run, lead with the ma
 - **Read-only across every input.** Never edits `skills.json`, `aeon.yml`, `skill-packs.json`, `docs/CAPABILITIES.md`, or any skill's frontmatter. The matrix is a derived view; declarations stay an explicit operator/pack-author edit, same contract `sparkleware-catalog` has with `skill-packs.json` and `ecosystem-pulse` has with `ECOSYSTEM.md`.
 - **Locked taxonomy is the row vocabulary.** Only the 6 values in `docs/CAPABILITIES.md` `## The taxonomy` can be rows. An unknown value in a skill's declaration is logged and dropped, never widened into a new row. The CI parity check (PR #304) keeps `install-skill-pack`'s allow-list aligned with the docs; this skill keeps the *matrix* aligned with the docs the same way.
 - **`(undeclared)` is informational, never a gap.** A capability tier with zero enabled skills is a gap (coverage hole); the synthetic `(undeclared)` row is just a count of skills with no declaration. Treating undeclared as a gap would push operators to declare `read_only` on skills they haven't actually audited, which corrupts the matrix.
+- **Gaps are undeterminable until the declaration base exists.** When zero enabled skills declare any capability, every tier reads zero enabled coverage trivially — that's a `CAPABILITIES_MAP_UNDECLARED_BASELINE` run, not a six-gap report. The skill says so plainly and fires once, rather than crying six gaps every week and training the operator to mute it. The moment one enabled skill declares a capability, gap analysis goes live (`became_assessable`). This is the honest reading of the first-run state on an instance whose 179 native skills predate the taxonomy.
 - **Most-specific declaration wins.** Frontmatter > local pack manifest > registry pack-level union. Never merge across precedence levels — the lower-precedence union is a *fallback*, used only when the higher-precedence declaration is absent. Mixing would inflate per-skill capability sets past what the author actually declared.
 - **Never infer capabilities from body content.** A heuristic that scans for `./notify` calls or wallet-sign patterns would feel useful but corrupt the matrix the moment a skill's source diverges from its declaration. The matrix's job is to surface what was declared, not to guess what was written.
 - **A single skill declaring N capabilities contributes 1 to each of N rows.** Per-tier coverage is the operator question; disjoint partitioning would hide multi-tier skills behind whichever bucket they got assigned first.
