@@ -14,61 +14,61 @@
 
 These are the projects we know of that run Aeon, extend it, or integrate with the framework. The list is curated from operator self-disclosures and public mentions — it isn't exhaustive, and not every fork is listed here. For a leaderboard of active forks see [`SHOWCASE.md`](SHOWCASE.md); for installable skill collections see the [Community skill packs](README.md#community-skill-packs) section in the README.
 
-| Project | Links |
-|---------|-------|
-| aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
-| AgentBounty | [@agentbountydev](https://x.com/agentbountydev) |
-| Amper | [@helloamper](https://x.com/helloamper) |
-| AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
-| Autonomopoly | [@AUTONOMOPOLY_](https://x.com/AUTONOMOPOLY_) |
-| Bankr | [@bankrbot](https://x.com/bankrbot) |
-| Bankrsynth | [@bankrsynth](https://x.com/bankrsynth) |
-| BaseHouse | [@basehouse_org](https://x.com/basehouse_org) |
-| Baseline | [@BaselineMarkets](https://x.com/BaselineMarkets) |
-| Bean | [@minebean_](https://x.com/minebean_) |
-| Blue Agent | [@blueagent_](https://x.com/blueagent_) |
-| Capacitr | [@capacitr_](https://x.com/capacitr_) |
-| Careful Finance | [@ZorrotChen](https://x.com/ZorrotChen) · [carefulfinance.txzy.net](https://carefulfinance.txzy.net/) |
-| Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
-| ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
-| Clerk | [@clerk](https://x.com/clerk) |
-| Cobot | [@cobotgg](https://x.com/cobotgg) |
-| Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
-| GitBlock | [@gitblock_](https://x.com/gitblock_) |
-| GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
-| GitKernal | [@gitkernal](https://x.com/gitkernal) |
-| Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
-| HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
-| Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
-| LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
-| LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
-| Liq | [@_proxystudio](https://x.com/_proxystudio) |
-| Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
-| MiroShark | [@miroshark_](https://x.com/miroshark_) |
-| MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
-| Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
-| NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
-| PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
-| Powerloom | [@Powerloom](https://x.com/Powerloom) |
-| Precog | [@precog](https://x.com/precog) |
-| Reg Terminal | [@regterminal](https://x.com/regterminal) |
-| Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
-| ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
-| Revault | [@revaultdrops](https://x.com/revaultdrops) |
-| RootAi | [@rootaichad](https://x.com/rootaichad) |
-| SAM | [@prmrsamm](https://x.com/prmrsamm) |
-| Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
-| Solvr | [@solvrbot](https://x.com/solvrbot) |
-| Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
-| SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
-| Tachi | [@smolekoma](https://x.com/smolekoma) |
-| USIC | [@USICAI](https://x.com/USICAI) |
-| Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
-| Vexor | [@Vexora_x](https://x.com/Vexora_x) |
-| VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
-| Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
-| x402Books | [@x402Books](https://x.com/x402Books) |
-| zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
+| Logo | Project | Links |
+|------|---------|-------|
+| <img src="https://pbs.twimg.com/profile_images/2056143519824166912/W2VGsyMX_400x400.jpg" width="36" height="36" alt="aeonbook logo"> | aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
+| <img src="https://pbs.twimg.com/profile_images/2060437940493332485/VrIC7fKj_400x400.jpg" width="36" height="36" alt="AgentBounty logo"> | AgentBounty | [@agentbountydev](https://x.com/agentbountydev) |
+| <img src="https://pbs.twimg.com/profile_images/2030575047644188673/vaJqbpck_400x400.jpg" width="36" height="36" alt="Amper logo"> | Amper | [@helloamper](https://x.com/helloamper) |
+| <img src="https://pbs.twimg.com/profile_images/2055896281751633920/NeawiT3G_400x400.png" width="36" height="36" alt="AntFleet logo"> | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
+| <img src="https://coin-images.coingecko.com/coins/images/102173323/large/autonomopoly.jpg?1779000184" width="36" height="36" alt="Autonomopoly logo"> | Autonomopoly | [GeckoTerminal](https://www.geckoterminal.com/base/pools/0x84771828f44fcfbaae08e271ff74e272cc2934a3348ec724a475941185ce4eb9) |
+| <img src="https://pbs.twimg.com/profile_images/1951545493936545792/AriqgxQN_400x400.jpg" width="36" height="36" alt="Bankr logo"> | Bankr | [@bankrbot](https://x.com/bankrbot) |
+| <img src="https://pbs.twimg.com/profile_images/2054481928422862848/7AOz3CwK_400x400.jpg" width="36" height="36" alt="Bankrsynth logo"> | Bankrsynth | [@bankrsynth](https://x.com/bankrsynth) |
+| <img src="https://pbs.twimg.com/profile_images/2056801122858196992/FNUojvPG_400x400.jpg" width="36" height="36" alt="BaseHouse logo"> | BaseHouse | [@basehouse_org](https://x.com/basehouse_org) |
+| <img src="https://pbs.twimg.com/profile_images/2021187758547664896/7tdqvR2z_400x400.jpg" width="36" height="36" alt="Baseline logo"> | Baseline | [@BaselineMarkets](https://x.com/BaselineMarkets) |
+| <img src="https://pbs.twimg.com/profile_images/2026627252511977474/r8GGxl52_400x400.jpg" width="36" height="36" alt="Bean logo"> | Bean | [@minebean_](https://x.com/minebean_) |
+|  | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
+|  | Capacitr | [@capacitr_](https://x.com/capacitr_) |
+|  | Careful Finance | [@ZorrotChen](https://x.com/ZorrotChen) · [carefulfinance.txzy.net](https://carefulfinance.txzy.net/) |
+|  | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
+|  | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
+|  | Clerk | [@clerk](https://x.com/clerk) |
+|  | Cobot | [@cobotgg](https://x.com/cobotgg) |
+|  | Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
+|  | GitBlock | [@gitblock_](https://x.com/gitblock_) |
+|  | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
+|  | GitKernal | [@gitkernal](https://x.com/gitkernal) |
+|  | Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
+|  | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
+|  | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
+|  | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
+|  | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
+|  | Liq | [@_proxystudio](https://x.com/_proxystudio) |
+|  | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
+|  | MiroShark | [@miroshark_](https://x.com/miroshark_) |
+|  | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
+|  | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
+|  | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
+|  | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
+|  | Powerloom | [@Powerloom](https://x.com/Powerloom) |
+|  | Precog | [@precog](https://x.com/precog) |
+|  | Reg Terminal | [@regterminal](https://x.com/regterminal) |
+|  | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
+|  | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
+|  | Revault | [@revaultdrops](https://x.com/revaultdrops) |
+|  | RootAi | [@rootaichad](https://x.com/rootaichad) |
+|  | SAM | [@prmrsamm](https://x.com/prmrsamm) |
+|  | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
+|  | Solvr | [@solvrbot](https://x.com/solvrbot) |
+|  | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
+|  | SyntheticsAI | [@SyntheticsAI_](https://x.com/SyntheticsAI_) · [syntheticuser.org](https://syntheticuser.org) · [repo](https://github.com/AISynthetics/synthetic-users) |
+|  | Tachi | [@smolekoma](https://x.com/smolekoma) |
+|  | USIC | [@USICAI](https://x.com/USICAI) |
+|  | Venice Kernel | [@VeniceKernel](https://x.com/VeniceKernel) |
+|  | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
+|  | VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
+|  | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
+|  | x402Books | [@x402Books](https://x.com/x402Books) |
+|  | zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
 
 ---
 
