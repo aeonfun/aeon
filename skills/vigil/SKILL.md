@@ -1,85 +1,142 @@
 ---
 name: VIGIL Security Scanner
-description: Onchain security scanner on Base — scan token approvals, detect honeypots, analyze contracts for rugpull indicators, score contract safety, and revoke dangerous approvals via MCP server.
+description: Onchain security scanner on Base — scan token approvals, detect honeypots, analyze contracts for rugpull indicators, and score contract safety. Keyless read-only scanning via VIGIL API. Revoke actions require Bankr auth and are gated separately.
 var: ""
 tags: [crypto, security, base, defi]
-capabilities: [read_only, sends_notifications, mcp]
+capabilities: [external_api, sends_notifications]
 ---
-> **${var}** — Wallet address (`0x...`) or token address on Base to scan. If empty, scan all connected wallets.
+> **${var}** — Wallet address (`0x...`) or token contract address on Base to scan. Required. If empty, log `VIGIL_NO_TARGET` and exit cleanly (no notify).
 
-VIGIL is an agent-based MCP security server for DeFi traders on Base. It provides six security tools:
+VIGIL is an onchain security scanner for DeFi traders on Base. It provides five read-only scanning tools and one write action (revoke) that requires explicit Bankr authentication.
 
-1. **Approval Scanner** — List all ERC-20/ERC-721 approvals, flag unlimited allowances, identify risky spenders
-2. **Token Scanner** — Analyze contracts for rugpull indicators (hidden mint, proxy patterns, tax manipulation, blacklist)
-3. **Honeypot Detector** — Simulate buy/sell to detect tokens that block selling
-4. **Safety Score** — 0-100 rating based on code analysis, ownership, liquidity, holder distribution
-5. **Approval Revoker** — Revoke dangerous approvals via Bankr transaction signing
-6. **Wallet Report** — Full security posture assessment
+**Read-only tools (this skill):**
+1. Approval Scanner — list all ERC-20/ERC-721 approvals, flag unlimited allowances
+2. Token Scanner — analyze contracts for rugpull indicators (hidden mint, proxy, tax manipulation, blacklist)
+3. Honeypot Detector — simulate buy/sell to detect trap tokens
+4. Safety Score — 0-100 composite rating based on code, ownership, liquidity, holders
+5. Wallet Report — full security posture assessment
+
+**Write action (separate, not included here):**
+6. Approval Revoker — revoke dangerous approvals via Bankr transaction signing. This is a state-changing onchain transaction and is NOT part of this read-only skill.
+
+Read the last 2 days of `memory/logs/` so a repeat scan can note newly-granted or newly-revoked approvals.
 
 ## Config
 
 - Target = `${var}`. Can be a wallet address or token contract address.
-- Chain = Base (`chainid=8453`).
-- MCP endpoint: `http://143.198.220.27:3100/sse` (SSE transport)
+- Chain = Base (`chainid=8453`, explorer `basescan.org`).
+- VIGIL API: `https://mcp.vigil.codes` (HTTPS, SSE transport)
 - GitHub: `https://github.com/vigilcodes/vigil-mcp`
 
 ## Steps
 
-### 1. Scan approvals
-
-If `${var}` is a wallet address (starts with `0x`, 42 chars):
+### 1. Determine target type
 
 ```bash
-WALLET="${var}"
-curl -s "http://143.198.220.27:3100/sse" -X POST \
-  -H "Content-Type: application/json" \
-  -d "{\"tool\": \"scan_approvals\", \"args\": {\"wallet\": \"$WALLET\", \"chain\": \"base\"}}"
+TARGET="${var}"
+if [ ${#TARGET} -eq 42 ] && [[ "$TARGET" == 0x* ]]; then
+  # Could be wallet or token — try wallet scan first
+  TARGET_TYPE="wallet"
+else
+  echo "Invalid address: $TARGET"
+  exit 0
+fi
 ```
 
-### 2. Scan token safety
-
-If `${var}` is a token contract:
+### 2. Scan approvals (wallet)
 
 ```bash
-TOKEN="${var}"
-curl -s "http://143.198.220.27:3100/sse" -X POST \
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
   -H "Content-Type: application/json" \
-  -d "{\"tool\": \"scan_token\", \"args\": {\"token\": \"$TOKEN\", \"chain\": \"base\"}}"
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "scan_approvals",
+      "arguments": {"wallet": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
 ```
 
-### 3. Check honeypot
+### 3. Scan token safety
 
 ```bash
-curl -s "http://143.198.220.27:3100/sse" -X POST \
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
   -H "Content-Type: application/json" \
-  -d "{\"tool\": \"detect_honeypot\", \"args\": {\"token\": \"$TOKEN\", \"chain\": \"base\"}}"
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "scan_token",
+      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
 ```
 
-### 4. Get safety score
+### 4. Check honeypot
 
 ```bash
-curl -s "http://143.198.220.27:3100/sse" -X POST \
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
   -H "Content-Type: application/json" \
-  -d "{\"tool\": \"safety_score\", \"args\": {\"contract\": \"$TOKEN\", \"chain\": \"base\"}}"
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "detect_honeypot",
+      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
 ```
 
-### 5. Generate wallet report
+### 5. Get safety score
 
 ```bash
-curl -s "http://143.198.220.27:3100/sse" -X POST \
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
   -H "Content-Type: application/json" \
-  -d "{\"tool\": \"wallet_report\", \"args\": {\"wallet\": \"$WALLET\", \"chain\": \"base\"}}"
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "safety_score",
+      "arguments": {"contract": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
+```
+
+### 6. Generate wallet report
+
+```bash
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "wallet_report",
+      "arguments": {"wallet": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
 ```
 
 ## Output Format
 
-VIGIL returns structured JSON with:
+VIGIL returns JSON with:
 
-- `approvals` — list of token approvals with risk levels (CRITICAL/HIGH/MEDIUM/LOW/SAFE)
+- `approvals` — list of token approvals with risk levels
 - `safety_score` — 0-100 composite rating
 - `honeypot` — boolean + reason if detected
 - `rugpull_indicators` — list of suspicious patterns found
-- `recommendations` — action items (revoke, monitor, safe)
+- `recommendations` — action items
 
 ## Risk Levels
 
@@ -91,16 +148,6 @@ VIGIL returns structured JSON with:
 | LOW | 🟢 | Minor concern — monitor |
 | SAFE | ✅ | No issues detected |
 
-## Chaining
+## Important: Revocation is NOT included
 
-Chain with `token-movers` or `narrative-tracker` to get security context on trending tokens:
-
-```yaml
-chains:
-  security-sweep:
-    schedule: "0 */6 * * *"
-    steps:
-      - parallel: [token-movers, narrative-tracker]
-      - skill: vigil
-        consume: [token-movers]
-```
+The Approval Revoker tool performs state-changing onchain transactions via Bankr. It is intentionally excluded from this read-only skill. To revoke approvals, use the separate `vigil-revoke` skill (requires `BANKR_API_KEY` and explicit user confirmation).
