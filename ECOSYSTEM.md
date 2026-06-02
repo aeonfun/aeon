@@ -36,9 +36,9 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2057534847216988160/SDVPe4rG_400x400.jpg" width="36" height="36" alt="GitBlock logo"> | GitBlock | [@gitblock_](https://x.com/gitblock_) |
 | <img src="https://pbs.twimg.com/profile_images/2056356306726887424/2DrOBX8R_400x400.jpg" width="36" height="36" alt="GitBounty logo"> | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
 | <img src="https://pbs.twimg.com/profile_images/2054906494626455553/ff1PHBKF_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
-|  | Gitlawb Terminal | [@Gitlawbterminal](https://x.com/Gitlawbterminal) |
-|  | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
-|  | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
+| <img src="https://pbs.twimg.com/profile_images/2056261441192419328/X6pFHgHc_400x400.jpg" width="36" height="36" alt="Gitlawb Terminal logo"> | Gitlawb Terminal | [@terminalgitlawb](https://x.com/terminalgitlawb) |
+| <img src="https://pbs.twimg.com/profile_images/2061386184820162560/t1py10Vb_400x400.jpg" width="36" height="36" alt="HivemindOS logo"> | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
+| <img src="https://pbs.twimg.com/profile_images/2060061798691221509/dGZFzJ5e_400x400.jpg" width="36" height="36" alt="Hound Flow logo"> | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
 | <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
 | <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
 | <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
@@ -46,14 +46,14 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
 | <img src="https://pbs.twimg.com/profile_images/2022853922847887363/7hiICjWl_400x400.jpg" width="36" height="36" alt="MythosForge logo"> | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
 | <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
-|  | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
-|  | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
-|  | Powerloom | [@Powerloom](https://x.com/Powerloom) |
+| <img src="https://pbs.twimg.com/profile_images/2050098727512322048/bS61Qs6N_400x400.jpg" width="36" height="36" alt="NoelClaw logo"> | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
+| <img src="https://pbs.twimg.com/profile_images/2004910939959967744/wr7-zpVh_400x400.jpg" width="36" height="36" alt="PancakeSwap logo"> | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
+| <img src="https://pbs.twimg.com/profile_images/1725595719086530560/n--iy1A9_400x400.jpg" width="36" height="36" alt="Powerloom logo"> | Powerloom | [@Powerloom](https://x.com/Powerloom) |
 |  | Precog | [@precog](https://x.com/precog) |
 |  | Reg Terminal | [@regterminal](https://x.com/regterminal) |
 |  | Reppo | [@reppo](https://x.com/reppo) · [reppo.xyz](https://reppo.xyz) |
-|  | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
-|  | Revault | [@revaultdrops](https://x.com/revaultdrops) |
+| <img src="https://pbs.twimg.com/profile_images/2020159691557335040/bSUQk1F2_400x400.jpg" width="36" height="36" alt="ResearchSwarm logo"> | ResearchSwarm | [@ResearchSwarmAI](https://x.com/ResearchSwarmAI) |
+| <img src="https://pbs.twimg.com/profile_images/2048174647171268608/2UsSB2GA_400x400.jpg" width="36" height="36" alt="Revault logo"> | Revault | [@revaultdrops](https://x.com/revaultdrops) |
 | <img src="https://pbs.twimg.com/profile_images/2055018961746399233/09lx9ZYV_400x400.jpg" width="36" height="36" alt="RootAi logo"> | RootAi | [@root_edge](https://x.com/root_edge) |
 | <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
 | <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
