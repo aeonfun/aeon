@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 180,
+    "total": 181,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -382,6 +382,18 @@
             "sha": "7330f37",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon distribute-tokens"
+        },
+        {
+            "slug": "ecosystem-entrants",
+            "name": "ecosystem-entrants",
+            "description": "Weekly Monday diff of ECOSYSTEM.md against the prior snapshot \u2014 surfaces added / removed / updated entries since last run, attributes added rows to a merged PR when one can be found in the last 14 days. First-touch complement to ecosystem-pulse (liveness).",
+            "category": "research",
+            "schedule": "45 11 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-06-03",
+            "install": "./add-skill aaronjmars/aeon ecosystem-entrants"
         },
         {
             "slug": "ecosystem-pulse",
