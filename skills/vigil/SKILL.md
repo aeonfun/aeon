@@ -7,7 +7,7 @@ capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Wallet address (`0x...`) or token contract address on Base to scan. Required. If empty, log `VIGIL_NO_TARGET` and exit cleanly (no notify).
 
-VIGIL is an onchain security scanner for DeFi traders on Base. It provides five read-only scanning tools and one write action (revoke) that requires explicit Bankr authentication.
+VIGIL is an onchain security scanner for DeFi traders on Base. It provides nine read-only scanning tools and one write action (revoke) that requires explicit Bankr authentication.
 
 **Read-only tools (this skill):**
 1. Approval Scanner — list all ERC-20/ERC-721 approvals, flag unlimited allowances
@@ -15,9 +15,13 @@ VIGIL is an onchain security scanner for DeFi traders on Base. It provides five 
 3. Honeypot Detector — simulate buy/sell to detect trap tokens
 4. Safety Score — 0-100 composite rating based on code, ownership, liquidity, holders
 5. Wallet Report — full security posture assessment
+6. Wallet Monitor — real-time alerts for new approvals, risky interactions, and balance changes
+7. Token Market — price, liquidity, 24h volume, and pool age via DexScreener (no API key)
+8. Deployer Check — contract verification, name, and deployer reputation via Basescan
+9. Batch Scan — score multiple tokens in one call, ranked by risk
 
 **Write action (separate, not included here):**
-6. Approval Revoker — revoke dangerous approvals via Bankr transaction signing. This is a state-changing onchain transaction and is NOT part of this read-only skill.
+10. Approval Revoker — revoke dangerous approvals via Bankr transaction signing. This is a state-changing onchain transaction and is NOT part of this read-only skill.
 
 Read the last 2 days of `memory/logs/` so a repeat scan can note newly-granted or newly-revoked approvals.
 
@@ -123,6 +127,74 @@ RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
     "params": {
       "name": "wallet_report",
       "arguments": {"wallet": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
+```
+
+### 7. Monitor wallet (real-time alerts)
+
+```bash
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "monitor_wallet",
+      "arguments": {"wallet": "'"$TARGET"'", "chain": "base", "lookback_blocks": 1000}
+    }
+  }')
+echo "$RESULT" | jq '.result'
+```
+
+### 8. Token market context (price + liquidity)
+
+```bash
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "token_market",
+      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
+```
+
+### 9. Deployer reputation (verification + age)
+
+```bash
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "deployer_check",
+      "arguments": {"contract": "'"$TARGET"'", "chain": "base"}
+    }
+  }')
+echo "$RESULT" | jq '.result'
+```
+
+### 10. Batch scan multiple tokens
+
+```bash
+RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
+    "params": {
+      "name": "batch_scan",
+      "arguments": {"tokens": ["0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"], "chain": "base"}
     }
   }')
 echo "$RESULT" | jq '.result'
