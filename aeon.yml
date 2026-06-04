@@ -218,6 +218,7 @@ skills:
 
   # Social
   engagement-act: { enabled: false, schedule: "30 9 * * *" } # daily — turn flagged engagement opportunities into copy-paste-ready replies
+  skill-of-the-day: { enabled: false, schedule: "workflow_dispatch", var: "" } # picks one skill from a rotation queue (memory/topics/skill-of-the-day.md), writes a paste-ready feature tweet in the "Aeon skill of the day 🌟" format, then dispatches the picked skill so its own ./notify delivers the live outcome. Two notifications per run: tweet draft + skill result. Set var=<skill-name> to override the queue. Recommended enabled cron: "0 8 * * *".
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1", model: "claude-sonnet-4-6" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
