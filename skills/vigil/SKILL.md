@@ -90,55 +90,55 @@ vigil_call () {
 ### 2. Scan approvals (wallet)
 
 ```bash
-vigil_call scan_approvals '{"wallet": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_scan_approvals '{"wallet": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 3. Scan token safety
 
 ```bash
-vigil_call scan_token '{"token": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_scan_token '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 4. Check honeypot
 
 ```bash
-vigil_call detect_honeypot '{"token": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_detect_honeypot '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 5. Get safety score
 
 ```bash
-vigil_call safety_score '{"contract": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_safety_score '{"contract": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 6. Generate wallet report
 
 ```bash
-vigil_call wallet_report '{"wallet": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_wallet_report '{"wallet": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 7. Monitor wallet (real-time alerts)
 
 ```bash
-vigil_call monitor_wallet '{"wallet": "'"$TARGET"'", "chain": "base", "lookback_blocks": 1000}'
+vigil_call vigil_monitor_wallet '{"wallet": "'"$TARGET"'", "chain": "base", "lookback_blocks": 1000}'
 ```
 
 ### 8. Token market context (price + liquidity)
 
 ```bash
-vigil_call token_market '{"token": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_token_market '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 9. Deployer reputation (verification + age)
 
 ```bash
-vigil_call deployer_check '{"contract": "'"$TARGET"'", "chain": "base"}'
+vigil_call vigil_deployer_check '{"contract": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 10. Batch scan multiple tokens
 
 ```bash
-vigil_call batch_scan '{"tokens": ["'"$TARGET"'"], "chain": "base"}'
+vigil_call vigil_batch_scan '{"tokens": ["'"$TARGET"'"], "chain": "base"}'
 ```
 
 ## Output Format
