@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 181,
+    "total": 182,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -2182,6 +2182,18 @@
             "sha": "4f40f1c7",
             "updated": "2026-05-28",
             "install": "./add-skill aaronjmars/aeon liquidpad-launch"
+        },
+        {
+            "slug": "wallet-risk-weekly",
+            "name": "wallet-risk-weekly",
+            "description": "Weekly risk audit of this agent's own Base wallets (.x402books/wallets.json) — live ERC-20 approvals (unlimited flagged + known-safe-spender downgrade), per-token honeypot simulation. First scheduled consumer of the HoundFlow approval-audit + honeypot-check pair.",
+            "category": "crypto",
+            "schedule": "15 11 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-06-04",
+            "install": "./add-skill aaronjmars/aeon wallet-risk-weekly"
         }
     ],
     "install_all": "./add-skill aaronjmars/aeon --all",
