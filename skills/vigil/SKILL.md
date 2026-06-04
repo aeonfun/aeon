@@ -34,170 +34,111 @@ Read the last 2 days of `memory/logs/` so a repeat scan can note newly-granted o
 
 ## Steps
 
-### 1. Determine target type
+### 1. Validate input (strict — rejects injection)
+
+The target MUST be exactly `0x` followed by 40 hex characters. The regex
+below rejects any input containing quotes, spaces, or shell metacharacters,
+so it is safe to interpolate into the JSON payloads in later steps. Reject
+anything else and exit cleanly.
 
 ```bash
 TARGET="${var}"
-if [ ${#TARGET} -eq 42 ] && [[ "$TARGET" == 0x* ]]; then
-  # Could be wallet or token — try wallet scan first
-  TARGET_TYPE="wallet"
-else
-  echo "Invalid address: $TARGET"
+
+# Strict allowlist: 0x + exactly 40 hex chars. Nothing else can pass.
+if ! printf '%s' "$TARGET" | grep -qiE '^0x[0-9a-f]{40}$'; then
+  echo "VIGIL_INVALID_TARGET: not a valid 0x address"
   exit 0
 fi
+
+# Normalise to lowercase for consistent calls.
+TARGET="$(printf '%s' "$TARGET" | tr '[:upper:]' '[:lower:]')"
+```
+
+Because `$TARGET` is now guaranteed to match `^0x[0-9a-f]{40}$`, it contains
+no characters that could break the JSON body or the shell. A single address
+can be either a wallet or a token contract, so run the relevant tools and
+read each tool's own result — do not assume a type up front.
+
+### 1b. Safe call helper (checks errors before reading results)
+
+Every step below uses this helper. It fails loudly on a non-200 HTTP status
+or a JSON-RPC `error` body instead of silently passing `null` to `jq`, so a
+broken call is never reported as a clean scan.
+
+```bash
+VIGIL_API="https://mcp.vigil.codes/tools/call"
+
+vigil_call () {
+  # $1 = tool name, $2 = JSON arguments object
+  local name="$1" args="$2" body http code
+  body=$(curl -m 30 -s -w '\n%{http_code}' "$VIGIL_API" \
+    -H "Content-Type: application/json" \
+    -d "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"tools/call\",\"params\":{\"name\":\"$name\",\"arguments\":$args}}")
+  code=$(printf '%s' "$body" | tail -n1)
+  http=$(printf '%s' "$body" | sed '$d')
+
+  if [ "$code" != "200" ]; then
+    echo "VIGIL_HTTP_ERROR ($code) calling $name"; return 1
+  fi
+  if printf '%s' "$http" | jq -e '.error' >/dev/null 2>&1; then
+    echo "VIGIL_RPC_ERROR: $(printf '%s' "$http" | jq -c '.error')"; return 1
+  fi
+  printf '%s' "$http" | jq '.result'
+}
 ```
 
 ### 2. Scan approvals (wallet)
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "scan_approvals",
-      "arguments": {"wallet": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call scan_approvals '{"wallet": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 3. Scan token safety
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "scan_token",
-      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call scan_token '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 4. Check honeypot
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "detect_honeypot",
-      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call detect_honeypot '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 5. Get safety score
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "safety_score",
-      "arguments": {"contract": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call safety_score '{"contract": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 6. Generate wallet report
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "wallet_report",
-      "arguments": {"wallet": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call wallet_report '{"wallet": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 7. Monitor wallet (real-time alerts)
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "monitor_wallet",
-      "arguments": {"wallet": "'"$TARGET"'", "chain": "base", "lookback_blocks": 1000}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call monitor_wallet '{"wallet": "'"$TARGET"'", "chain": "base", "lookback_blocks": 1000}'
 ```
 
 ### 8. Token market context (price + liquidity)
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "token_market",
-      "arguments": {"token": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call token_market '{"token": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 9. Deployer reputation (verification + age)
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "deployer_check",
-      "arguments": {"contract": "'"$TARGET"'", "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call deployer_check '{"contract": "'"$TARGET"'", "chain": "base"}'
 ```
 
 ### 10. Batch scan multiple tokens
 
 ```bash
-RESULT=$(curl -m 30 -s "https://mcp.vigil.codes/tools/call" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "jsonrpc": "2.0",
-    "id": 1,
-    "method": "tools/call",
-    "params": {
-      "name": "batch_scan",
-      "arguments": {"tokens": ["0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"], "chain": "base"}
-    }
-  }')
-echo "$RESULT" | jq '.result'
+vigil_call batch_scan '{"tokens": ["'"$TARGET"'"], "chain": "base"}'
 ```
 
 ## Output Format
