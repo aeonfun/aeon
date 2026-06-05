@@ -25,6 +25,7 @@ Steps:
    - Keep MEMORY.md as a short index (~50 lines): goals, active topics, and pointers to topic files.
    - Move detailed notes into `memory/topics/` files (e.g. `crypto.md`, `research.md`, `projects.md`).
    - If a topic file already exists, update it rather than creating a new one.
+   - Never add a second `## Heading` with a name that already exists in MEMORY.md — update the existing section in place. Duplicate H2 headings are a known drift mode that memory-structural-dedupe otherwise has to repair later.
 6. Log what you did to memory/logs/${today}.md.
 7. Send a notification via `./notify`: "Memory consolidated — ${today}"
 

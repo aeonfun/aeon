@@ -35,6 +35,7 @@ Steps:
    - Add brief entries to MEMORY.md (keep it under ~50 lines as an index)
    - If a topic needs more detail, write to `memory/topics/<topic>.md` instead
    - Update tables (recent articles, recent digests) with new rows
+   - Before adding a section, check whether its `## Heading` already exists anywhere in MEMORY.md — if it does, update that section in place. Never prepend a duplicate heading.
 
 5. Do NOT rewrite the whole file — make targeted additions and removals.
 

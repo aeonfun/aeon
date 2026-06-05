@@ -234,10 +234,24 @@ skills:
   config-validator: { enabled: false, schedule: "30 16 * * 0" } # Sunday — lint aeon.yml + workflow for structural invariants (checkout order, dup keys, missing files)
   janitor: { enabled: false, schedule: "30 5 * * 0" } # Sunday — clean stale .notify-*, .pending-notify-temp/, expired .outputs/ artifacts
   memory-flush: { enabled: false, schedule: "30 21 * * *" } # daily — promote important recent log entries into MEMORY.md
-  memory-structural-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows in MEMORY.md
+  memory-structural-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows + duplicate H2 headings in MEMORY.md
   self-review: { enabled: false, schedule: "30 19 * * 0", model: "claude-sonnet-4-6" } # Sunday — audit what the agent did, what failed, what to improve
   signal-verdict: { enabled: false, schedule: "0 8 * * 1", model: "claude-sonnet-4-6" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
   skill-enabler: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — flip skills enabled:true by slug list, validate, commit + open PR
+
+  # --- Ported from aeon-aaron ---
+  # Infra & health
+  api-health-probe: { enabled: false, schedule: "30 6 * * *", model: "claude-sonnet-4-6" } # daily 06:30 UTC — pre-batch health probe of every configured API provider key (credit exhaustion / auth failure / outage) via scripts/prefetch-api-probe.sh; files/updates issues; notifies only on degradation or recovery
+  # Markets & crypto
+  fear-divergence-scout: { enabled: false, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # daily 07:30 UTC — conditional: fires only when Fear & Greed < 25; surfaces assets diverging from the BTC drawdown with narrative catalysts from memory; silent skip otherwise. Reads market-context.md (enable market-context-refresh first).
+  picks-tracker: { enabled: false, schedule: "0 9 * * 0", model: "claude-sonnet-4-6" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
+  # Content pipeline
+  beat-tracker: { enabled: false, schedule: "0 9 * * 3", model: "claude-sonnet-4-6" } # Wednesday 09:00 UTC — persistent beat counts per news storyline; alerts when a thread hits 3 beats (article-ready). Event-level complement to topic-momentum + narrative-tracker.
+  article-queue: { enabled: false, schedule: "0 11 * * 0", model: "claude-sonnet-4-6" } # Sunday 11:00 UTC — synthesizes beat-tracker + topic-momentum + narrative-tracker into a ranked queue at memory/topics/article-queue.md that the article skill picks up via MEMORY.md
+  content-performance: { enabled: false, schedule: "0 10 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 10:00 UTC — weekly engagement analysis of the operator's X account (topics, formats, breakouts); feeds article-queue/topic-momentum. var: X handle (no @); falls back to soul/SOUL.md. XAI_API_KEY optional (WebSearch fallback).
+  thread-writer: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — write a 5–10 tweet thread in the operator's voice on a topic/URL; picks the sharpest recent signal from memory if var empty
+  # Social
+  mention-radar: { enabled: false, schedule: "25 7 2/2 * *", model: "claude-sonnet-4-6", var: "" } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
 
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }

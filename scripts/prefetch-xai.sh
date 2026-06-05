@@ -181,6 +181,22 @@ case "$SKILL" in
     fi
     ;;
 
+  content-performance)
+    SEVEN_DAYS_AGO=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
+    HANDLE="${VAR:-}"
+    if [ -z "$HANDLE" ] && [ -f soul/SOUL.md ]; then
+      HANDLE=$(grep -oE '@[A-Za-z0-9_]{2,15}' soul/SOUL.md | head -1 | tr -d '@')
+    fi
+    if [ -z "$HANDLE" ]; then
+      echo "xai-prefetch: content-performance — no handle (var empty, none found in soul/SOUL.md), skipping"
+    else
+      xai_search "content-performance.json" \
+        "Search X for all public tweets posted by @${HANDLE} between ${SEVEN_DAYS_AGO} and ${TODAY}. Include original tweets, replies, and quote tweets. For each tweet return: the full text (up to 150 chars), date posted (YYYY-MM-DD), like count, retweet count, quote tweet count, and reply count. Return up to 25 tweets sorted by total engagement (likes + retweets*2 + quotes*3) descending. If fewer tweets exist in the window, return all of them." \
+        "$SEVEN_DAYS_AGO" "$TODAY" \
+        "\"allowed_x_handles\": [\"${HANDLE}\"]"
+    fi
+    ;;
+
   vercel-projects)
     # Pre-fetch Vercel API data (requires auth — can't be done in sandbox)
     if [ -z "${VERCEL_TOKEN:-}" ]; then
