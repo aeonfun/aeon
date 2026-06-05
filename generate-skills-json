@@ -59,6 +59,11 @@ get_category() {
     cost-report|rss-feed|update-gallery|onboard|operator-scorecard) echo "productivity" ;;
     v4-readiness) echo "productivity" ;;
     spend-monitor|follow-up-patrol) echo "productivity" ;;
+    # Ported from aeon-aaron (PR #343)
+    beat-tracker|article-queue) echo "research" ;;
+    fear-divergence-scout|picks-tracker) echo "crypto" ;;
+    content-performance|thread-writer|mention-radar) echo "social" ;;
+    api-health-probe) echo "productivity" ;;
     *) echo "other" ;;
   esac
 }
