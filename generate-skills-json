@@ -25,6 +25,11 @@ fi
 get_category() {
   local slug="$1"
   case "$slug" in
+    # Core — the load-bearing set: self-evolution & self-healing, fleet /
+    # self-replication, autonomous real-world action. Matched first.
+    autoresearch|create-skill|skill-health|skill-repair|skill-evals|self-improve) echo "core" ;;
+    spawn-instance|fleet-control|fleet-scorecard|contributor-reward|distribute-tokens) echo "core" ;;
+    external-feature|feature|deploy-prototype|vuln-scanner) echo "core" ;;
     # Research & Content
     article|digest|rss-digest|hacker-news-digest|paper-digest|paper-pick) echo "research" ;;
     list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
@@ -35,50 +40,50 @@ get_category() {
     mcp-pulse) echo "research" ;;
     # Dev & Code
     pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
-    issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
-    autoresearch|auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
-    repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
+    issue-triage|auto-merge|changelog|code-health|search-skill) echo "dev" ;;
+    auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
+    repo-scanner|project-lens) echo "dev" ;;
     workflow-security-audit|vercel-projects) echo "dev" ;;
-    spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
+    fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
-    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-pulse|feature) echo "dev" ;;
+    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-pulse) echo "dev" ;;
     fork-release-tracker|pr-merge-queue|pr-skill-triage|pr-tracker) echo "dev" ;;
     pvr-triage-monitor|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
     # Crypto & Markets
     token-alert|token-movers|token-report|token-pick|monitor-runners|price-threshold-alert) echo "crypto" ;;
     on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
-    treasury-info|distribute-tokens|contributor-reward) echo "crypto" ;;
-    rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "crypto" ;;
+    treasury-info) echo "crypto" ;;
     aixbt-pulse|compute-pulse|pm-intel|pm-manipulation|pm-pulse|polymarket|rwa-pulse) echo "crypto" ;;
     wallet-digest|x402-monitor|liquidpad-launch) echo "crypto" ;;
-    approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "crypto" ;;
-    lp-lock-check|vigil|wallet-risk-weekly) echo "crypto" ;;
+    # Onchain Security (Hound pack + forensics)
+    rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
+    approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
+    lp-lock-check|vigil|wallet-risk-weekly) echo "onchain-security" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
     engagement-act|skill-of-the-day|thread-formatter) echo "social" ;;
-    # Productivity & Meta
+    # Productivity
     morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
-    deal-flow|reg-monitor|heartbeat|reflect|self-improve) echo "productivity" ;;
-    skill-health|skill-evals|skill-repair|skill-leaderboard|skill-update-check) echo "productivity" ;;
-    cost-report|rss-feed|update-gallery|onboard|operator-scorecard) echo "productivity" ;;
-    v4-readiness) echo "productivity" ;;
-    spend-monitor|follow-up-patrol) echo "productivity" ;;
+    deal-flow|reg-monitor|reflect|follow-up-patrol|v4-readiness) echo "productivity" ;;
     idea-pipeline|idea-validator|milestone-tracker|note-taking) echo "productivity" ;;
-    batch-health|config-validator|janitor|memory-flush|memory-structural-dedupe) echo "productivity" ;;
-    run-frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "productivity" ;;
-    skill-freshness|skill-graph|skill-security-scan|star-momentum-alert) echo "productivity" ;;
-    atrium-catalog-watcher|capabilities-map|sparkleware-catalog) echo "productivity" ;;
-    contributor-spotlight|fleet-scorecard|fleet-skill-adoption|fleet-state) echo "productivity" ;;
-    fork-contributor-leaderboard|fork-first-run-alert|fork-health-score|fork-skill-digest|fork-skill-gap) echo "productivity" ;;
+    # Meta / Agent
+    heartbeat|spend-monitor|cost-report|skill-leaderboard|skill-update-check) echo "meta" ;;
+    rss-feed|update-gallery|onboard|operator-scorecard) echo "meta" ;;
+    batch-health|config-validator|janitor|memory-flush|memory-structural-dedupe) echo "meta" ;;
+    run-frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "meta" ;;
+    skill-freshness|skill-graph|skill-security-scan|star-momentum-alert) echo "meta" ;;
+    atrium-catalog-watcher|capabilities-map|sparkleware-catalog) echo "meta" ;;
+    contributor-spotlight|fleet-skill-adoption|fleet-state) echo "meta" ;;
+    fork-contributor-leaderboard|fork-first-run-alert|fork-health-score|fork-skill-digest|fork-skill-gap) echo "meta" ;;
     # Ported from aeon-aaron (PR #343)
     beat-tracker|article-queue) echo "research" ;;
     fear-divergence-scout|picks-tracker) echo "crypto" ;;
     content-performance|thread-writer|mention-radar) echo "social" ;;
-    api-health-probe) echo "productivity" ;;
+    api-health-probe) echo "meta" ;;
     *) echo "other" ;;
   esac
 }
@@ -112,7 +117,7 @@ get_skill_updated() {
 # Start JSON output
 echo -n '{"version":"1.0","generated":"' > "$OUTPUT"
 echo -n "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$OUTPUT"
-echo -n '","repo":"aaronjmars/aeon","total":0,"categories":{"research":"Research & Content","dev":"Dev & Code","crypto":"Crypto & Markets","social":"Social","productivity":"Productivity & Meta"},"skills":[' >> "$OUTPUT"
+echo -n '","repo":"aaronjmars/aeon","total":0,"categories":{"core":"Core — self-evolution, fleet, autonomous action","research":"Research & Content","dev":"Dev & Code","crypto":"Crypto & Markets","onchain-security":"Onchain Security","social":"Social","productivity":"Productivity","meta":"Meta / Agent"},"skills":[' >> "$OUTPUT"
 
 TOTAL=0
 FIRST=true
