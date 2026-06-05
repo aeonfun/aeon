@@ -31,26 +31,34 @@ get_category() {
     deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
     huggingface-trending|competitor-launch-radar) echo "research" ;;
     narrative-convergence) echo "research" ;;
+    agent-displacement|ai-framework-watch|launch-radar|topic-momentum|tweet-digest) echo "research" ;;
+    mcp-pulse) echo "research" ;;
     # Dev & Code
     pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
     issue-triage|auto-merge|changelog|code-health|search-skill|create-skill) echo "dev" ;;
     autoresearch|auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
     repo-scanner|project-lens|external-feature|deploy-prototype|vuln-scanner) echo "dev" ;;
-    workflow-security-audit|skill-security-scan|vercel-projects) echo "dev" ;;
+    workflow-security-audit|vercel-projects) echo "dev" ;;
     spawn-instance|fleet-control|fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
-    fork-first-run-alert|fork-skill-gap) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
-    fleet-scorecard|mcp-pulse) echo "dev" ;;
+    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-pulse|feature) echo "dev" ;;
+    fork-release-tracker|pr-merge-queue|pr-skill-triage|pr-tracker) echo "dev" ;;
+    pvr-triage-monitor|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
     # Crypto & Markets
     token-alert|token-movers|token-report|token-pick|monitor-runners|price-threshold-alert) echo "crypto" ;;
     on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
     treasury-info|distribute-tokens|contributor-reward) echo "crypto" ;;
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "crypto" ;;
+    aixbt-pulse|compute-pulse|pm-intel|pm-manipulation|pm-pulse|polymarket|rwa-pulse) echo "crypto" ;;
+    wallet-digest|x402-monitor|liquidpad-launch) echo "crypto" ;;
+    approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "crypto" ;;
+    lp-lock-check|vigil|wallet-risk-weekly) echo "crypto" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
+    engagement-act|skill-of-the-day|thread-formatter) echo "social" ;;
     # Productivity & Meta
     morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
@@ -59,6 +67,13 @@ get_category() {
     cost-report|rss-feed|update-gallery|onboard|operator-scorecard) echo "productivity" ;;
     v4-readiness) echo "productivity" ;;
     spend-monitor|follow-up-patrol) echo "productivity" ;;
+    idea-pipeline|idea-validator|milestone-tracker|note-taking) echo "productivity" ;;
+    batch-health|config-validator|janitor|memory-flush|memory-structural-dedupe) echo "productivity" ;;
+    run-frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "productivity" ;;
+    skill-freshness|skill-graph|skill-security-scan|star-momentum-alert) echo "productivity" ;;
+    atrium-catalog-watcher|capabilities-map|sparkleware-catalog) echo "productivity" ;;
+    contributor-spotlight|fleet-scorecard|fleet-skill-adoption|fleet-state) echo "productivity" ;;
+    fork-contributor-leaderboard|fork-first-run-alert|fork-health-score|fork-skill-digest|fork-skill-gap) echo "productivity" ;;
     # Ported from aeon-aaron (PR #343)
     beat-tracker|article-queue) echo "research" ;;
     fear-divergence-scout|picks-tracker) echo "crypto" ;;
