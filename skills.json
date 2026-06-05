@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-05-29T17:40:44Z",
     "repo": "aaronjmars/aeon",
-    "total": 182,
+    "total": 183,
     "categories": {
         "research": "Research & Content",
         "dev": "Dev & Code",
@@ -82,6 +82,18 @@
             "sha": "2601d0e",
             "updated": "2026-04-20",
             "install": "./add-skill aaronjmars/aeon article"
+        },
+        {
+            "slug": "atrium-catalog-watcher",
+            "name": "atrium-catalog-watcher",
+            "description": "Weekly Friday diff of the Atrium marketplace catalog (atriumhermes.tech/.well-known/skills/index.json) against the prior snapshot — surfaces newly-published / removed / renamed skills with one-click install-from-atrium commands. Supply-side complement to sparkleware-catalog (curated registry) and skill-update-check (installed-skill drift).",
+            "category": "dev",
+            "schedule": "0 12 * * 5",
+            "var": "",
+            "files": 0,
+            "sha": "0000000",
+            "updated": "2026-06-05",
+            "install": "./add-skill aaronjmars/aeon atrium-catalog-watcher"
         },
         {
             "slug": "auto-merge",
