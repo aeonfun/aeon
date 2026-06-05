@@ -94,7 +94,7 @@ The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whos
 
 ## Skills
 
-![Skills](./assets/skills-aeon.jpg)
+![Skills](./assets/skills-aeon-193.jpg)
 
 193 skills across 8 categories. Every skill is independently installable, schedulable, and chainable.
 
