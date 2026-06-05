@@ -104,6 +104,8 @@ The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whos
 - 🛰️ **Fleet & self-replication** — `spawn-instance` clones the agent into new repos (no secret propagation, billing isolation); `fleet-control` health-checks and dispatches skills across instances; `fleet-scorecard` tracks fleet economics daily; `contributor-reward` → `distribute-tokens` pays contributors on-chain with two-phase, idempotent sends.
 - 🤖 **Autonomous real-world action** — `external-feature` / `feature` ship code to watched repos unprompted; `deploy-prototype` generates and deploys live web apps to Vercel; `vuln-scanner` finds real vulnerabilities with purpose-built scanners and discloses them responsibly (private advisories, never public exploit chains).
 
+Deep dive: [`docs/CORE.md`](docs/CORE.md) — per-skill mechanics, exit taxonomies, the health→repair contract, and the money-safety design behind `distribute-tokens`.
+
 | Category | Skills |
 |----------|--------|
 | **Core** (15) | 🧬 `autoresearch`, `create-skill`, `skill-health`, `skill-repair`, `skill-evals`, `self-improve` · 🛰️ `spawn-instance`, `fleet-control`, `fleet-scorecard`, `contributor-reward`, `distribute-tokens` · 🤖 `external-feature`, `feature`, `deploy-prototype`, `vuln-scanner` |
