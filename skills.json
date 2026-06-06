@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-06-05T18:34:23Z",
     "repo": "aaronjmars/aeon",
-    "total": 193,
+    "total": 194,
     "categories": {
         "core": "Core \u2014 self-evolution, fleet, autonomous action",
         "research": "Research & Content",
@@ -505,6 +505,18 @@
             "sha": "9cb91a7",
             "updated": "2026-06-05",
             "install": "./add-skill aaronjmars/aeon ecosystem-entrants"
+        },
+        {
+            "slug": "ecosystem-links",
+            "name": "ecosystem-links",
+            "description": "Weekly link-health audit of ECOSYSTEM.md \u2014 checks every GitHub repo for archived/disabled state and every project URL for HTTP 4xx/5xx or redirect chains, surfacing dead/archived/moved entries before a casual reader stumbles into one. Closes the three-skill ecosystem loop with ecosystem-entrants (arrivals) and ecosystem-pulse (liveness).",
+            "category": "dev",
+            "schedule": "55 11 * * 1",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-06-06",
+            "install": "./add-skill aaronjmars/aeon ecosystem-links"
         },
         {
             "slug": "ecosystem-pulse",

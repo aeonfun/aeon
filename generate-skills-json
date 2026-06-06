@@ -46,7 +46,7 @@ get_category() {
     workflow-security-audit|vercel-projects) echo "dev" ;;
     fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
-    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-pulse) echo "dev" ;;
+    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-links|ecosystem-pulse) echo "dev" ;;
     fork-release-tracker|pr-merge-queue|pr-skill-triage|pr-tracker) echo "dev" ;;
     pvr-triage-monitor|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
     # Crypto & Markets
