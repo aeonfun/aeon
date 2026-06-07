@@ -59,7 +59,7 @@ get_category() {
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
     approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
-    lp-lock-check|vigil|wallet-risk-weekly) echo "onchain-security" ;;
+    lp-lock-check|vigil|vigil-revoke|wallet-risk-weekly) echo "onchain-security" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;

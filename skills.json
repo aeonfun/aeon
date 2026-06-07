@@ -2,7 +2,7 @@
     "version": "1.0",
     "generated": "2026-06-05T18:34:23Z",
     "repo": "aaronjmars/aeon",
-    "total": 193,
+    "total": 194,
     "categories": {
         "core": "Core \u2014 self-evolution, fleet, autonomous action",
         "research": "Research & Content",
@@ -2209,6 +2209,18 @@
             "sha": "9cb91a7",
             "updated": "2026-06-05",
             "install": "./add-skill aaronjmars/aeon vigil"
+        },
+        {
+            "slug": "vigil-revoke",
+            "name": "VIGIL Approval Revoker",
+            "description": "Revoke a single live ERC-20 approval on Base via Bankr. Confirms the approval is live, then submits `approve(spender, 0)` and waits for receipt. workflow_dispatch only \u2014 `var` is the `wallet:spender:token` triplet returned by VIGIL / approval-audit / wallet-risk-weekly. Closes the detection\u2192revoke loop that VIGIL PR #323 explicitly split out.",
+            "category": "onchain-security",
+            "schedule": "workflow_dispatch",
+            "var": "",
+            "files": 0,
+            "sha": "",
+            "updated": "2026-06-07",
+            "install": "./add-skill aaronjmars/aeon vigil-revoke"
         },
         {
             "slug": "vuln-scanner",
