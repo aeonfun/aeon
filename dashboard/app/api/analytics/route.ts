@@ -164,7 +164,8 @@ export async function GET() {
           : 0,
       },
     })
-  } catch {
-    return NextResponse.json({ skills: [], insights: [], summary: { totalRuns: 0, totalSuccess: 0, totalFailure: 0, overallSuccessRate: 0, uniqueSkills: 0, periodDays: 0 } })
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Failed to load analytics'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }

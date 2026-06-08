@@ -22,7 +22,8 @@ export async function GET() {
       url: r.url,
     }))
     return NextResponse.json({ runs })
-  } catch {
-    return NextResponse.json({ runs: [] })
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : 'Failed to list runs'
+    return NextResponse.json({ error: msg }, { status: 500 })
   }
 }
