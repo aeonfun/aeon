@@ -148,7 +148,7 @@ export function isSameOriginWrite(
 }
 
 /**
- * Top-level gate used by `dashboard/middleware.ts`. Reads the two env
+ * Top-level gate used by `dashboard/proxy.ts`. Reads the two env
  * vars once and applies both checks. Returns `null` on success or a
  * `Response` with a 403 + JSON body explaining the rejection.
  */
