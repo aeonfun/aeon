@@ -46,15 +46,15 @@ When consolidating memory (reflect, memory-flush), move detail into topic files 
 ## Tools
 
 - **`./notify "message"`** — Send to all configured notification channels (Telegram, Discord, Slack, json-render). Skips unconfigured channels silently.
-- **`./notify-jsonrender <skill_name> <markdown>`** — Convert skill output to a json-render spec and write to `dashboard/outputs/`. Called automatically by `./notify` when `JSONRENDER_ENABLED=true`.
+- **`./notify-jsonrender <skill_name> <markdown>`** — Convert skill output to a json-render spec and write to `apps/dashboard/outputs/`. Called automatically by `./notify` when `JSONRENDER_ENABLED=true`.
 - **`./scripts/skill-runs [--hours N] [--full] [--json] [--failures]`** — Audit recent GitHub Actions skill runs. Shows counts, pass/fail rates, anomalies.
 - Use Claude Code's built-in **WebSearch** and **WebFetch** for web searches and URL fetching.
 
 ## MCP Servers (local mode only)
 
-- **json-render**: `npx @json-render/mcp --catalog dashboard/lib/catalog.ts`
+- **json-render**: `npx @json-render/mcp --catalog apps/dashboard/lib/catalog.ts`
 
-  When running `./aeon` locally, use the json-render MCP tool to emit a rendered spec at the end of each skill run. The spec lands in `dashboard/outputs/` and the dashboard feed renders it in real time. This mode only activates locally — the GitHub Actions path uses `./notify-jsonrender` instead.
+  When running `./aeon` locally, use the json-render MCP tool to emit a rendered spec at the end of each skill run. The spec lands in `apps/dashboard/outputs/` and the dashboard feed renders it in real time. This mode only activates locally — the GitHub Actions path uses `./notify-jsonrender` instead.
 
 ## Skill Chaining
 

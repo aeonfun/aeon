@@ -8,7 +8,7 @@
   "repository": {
     "url": "https://github.com/aaronjmars/aeon",
     "source": "github",
-    "subfolder": "mcp-server"
+    "subfolder": "apps/mcp-server"
   },
   "packages": [
     {

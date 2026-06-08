@@ -20,7 +20,7 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-A2A_DIR="$DIR/a2a-server"
+A2A_DIR="$DIR/apps/a2a-server"
 PORT=41241
 
 usage() {
@@ -65,7 +65,7 @@ fi
 ok "npm $(npm --version)"
 
 if [[ ! -d "$A2A_DIR" ]]; then
-  err "a2a-server/ directory not found at $A2A_DIR"
+  err "apps/a2a-server/ directory not found at $A2A_DIR"
 fi
 if [[ ! -f "$DIR/skills.json" ]]; then
   err "skills.json not found at $DIR/skills.json. Run this from the repo root."
@@ -79,7 +79,7 @@ ok "Dependencies installed"
 
 info "Building TypeScript..."
 (cd "$A2A_DIR" && npm run build)
-ok "Build complete → a2a-server/dist/index.js"
+ok "Build complete → apps/a2a-server/dist/index.js"
 
 SERVER_PATH="$A2A_DIR/dist/index.js"
 if [[ ! -f "$SERVER_PATH" ]]; then

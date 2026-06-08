@@ -187,7 +187,7 @@ ${list of {skill, schedule} pairs OR "none — every enabled cron skill ran at l
 
 ### 11. Write the dashboard JSON spec
 
-Path: `dashboard/outputs/skill-analytics.json`. Use the catalog components (Card / Stack / Heading / Text / Badge / Table).
+Path: `apps/dashboard/outputs/skill-analytics.json`. Use the catalog components (Card / Stack / Heading / Text / Badge / Table).
 
 ```json
 {
@@ -289,7 +289,7 @@ Cap the message body at ~3500 chars (Telegram safe limit). Drop the "Top by runs
 - **Exit dominant**: ${exit_dominant_summary}
 - **Verdict**: ${verdict_line}
 - **Article**: articles/skill-analytics-${today}.md
-- **Dashboard**: dashboard/outputs/skill-analytics.json
+- **Dashboard**: apps/dashboard/outputs/skill-analytics.json
 - **Notification sent**: ${yes|no — quiet (no anomalies)}
 - **Status**: SKILL_ANALYTICS_OK | SKILL_ANALYTICS_QUIET | SKILL_ANALYTICS_NO_DATA
 ```

@@ -34,7 +34,7 @@ Read the last 2 days of memory/logs/ for recent errors, failures, and quality is
    - Config: `aeon.yml`
    - Workflows: `.github/workflows/*.yml`
    - Agent instructions: `CLAUDE.md`
-   - Dashboard: `dashboard/` (if UI-related)
+   - Dashboard: `apps/dashboard/` (if UI-related)
    
    Understand the current behavior before changing anything.
 

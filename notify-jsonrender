@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Usage: ./notify-jsonrender <skill_name> <markdown_output>
 # Converts skill markdown output into a json-render spec via Haiku,
-# then writes it to dashboard/outputs/ for the dashboard feed.
+# then writes it to apps/dashboard/outputs/ for the dashboard feed.
 # Works with both ANTHROPIC_API_KEY and CLAUDE_CODE_OAUTH_TOKEN.
 set -euo pipefail
 
 SKILL="$1"
 CONTENT="$2"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H-%M-%SZ")
-OUTDIR="dashboard/outputs"
+OUTDIR="apps/dashboard/outputs"
 OUTFILE="$OUTDIR/${SKILL}-${TIMESTAMP}.json"
 
 mkdir -p "$OUTDIR"

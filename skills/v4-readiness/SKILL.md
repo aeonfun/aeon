@@ -35,8 +35,8 @@ Reads:
 - `skills/*/SKILL.md` (frontmatter only) — confirms which custom skills are actually present on disk, not just remembered in MEMORY.md.
 - `.github/workflows/chain-runner.yml` — chain runner workflow; presence + step shape feed the `chains:` Review row. Optional input.
 - `.outputs/*.md` (directory listing only) — confirms whether the fork has run any chained skills; informs the chain runner Review row. Optional input.
-- `mcp-server/src/index.ts` — MCP server tool-naming Review row scans for the `aeon-${skill_slug}` convention. Optional input (forks without MCP omit this directory).
-- `dashboard/lib/catalog.ts` — json-render catalog shape Review row scans for catalog entry signatures. Optional input (forks without the dashboard omit this directory).
+- `apps/mcp-server/src/index.ts` — MCP server tool-naming Review row scans for the `aeon-${skill_slug}` convention. Optional input (forks without MCP omit this directory).
+- `apps/dashboard/lib/catalog.ts` — json-render catalog shape Review row scans for catalog entry signatures. Optional input (forks without the dashboard omit this directory).
 - The **embedded v4 change manifest** in this file (§Manifest below). This is the source of truth for what counts as Safe / Review / Removed / Renamed.
 
 Every file beyond the first four is **optional**: if it is absent (fork doesn't ship that component), the corresponding Review row is recorded as `unscanned` rather than silently skipped, and the run exits `V4_READINESS_PARTIAL` with the unscanned row count surfaced in the article and notification. This keeps the audit honest — see Issue #184 H1: previously the Review table named files outside the read set, so the audit could not actually detect usage of those patterns and undercounted Review items.
@@ -76,10 +76,10 @@ These are the patterns the operator's social posts have signposted as in-scope f
 | Model selector strings | `aeon.yml` per-skill `model:` | Model id references — Opus/Sonnet/Haiku version pins |
 | `gateway:` provider block | `aeon.yml` | Bankr/direct selector, env var names |
 | `channels:` block (`jsonrender.enabled`) | `aeon.yml` | Toggle key names, channel set |
-| MCP server tool naming (`aeon-${skill_slug}`) | `mcp-server/src/index.ts` | Naming convention for forks consuming the MCP |
+| MCP server tool naming (`aeon-${skill_slug}`) | `apps/mcp-server/src/index.ts` | Naming convention for forks consuming the MCP |
 | `add-skill`, `add-mcp`, `add-a2a` CLIs | repo root | Argument shape, supported sources |
 | `skills.json` schema (`version`, `categories`, `skills[].install`) | `skills.json` | Field set; rename/remove of optional fields |
-| `dashboard/lib/catalog.ts` json-render catalog shape | `dashboard/` | Spec shape for `dashboard/outputs/*.json` |
+| `apps/dashboard/lib/catalog.ts` json-render catalog shape | `apps/dashboard/` | Spec shape for `apps/dashboard/outputs/*.json` |
 
 ### Custom — skills with no upstream equivalent
 
@@ -134,8 +134,8 @@ Read each input. Any missing input is non-fatal — log `V4_READINESS_MISSING_IN
 | Custom skills | `ls skills/` minus skills present in `skills.json` install rows | `gh api repos/${TARGET}/contents/skills` JSON | required |
 | `.github/workflows/chain-runner.yml` | direct read | `gh api repos/${TARGET}/contents/.github/workflows/chain-runner.yml ...` | optional |
 | `.outputs/` (listing only — file names suffice) | `ls .outputs/ 2>/dev/null` | `gh api repos/${TARGET}/contents/.outputs` | optional |
-| `mcp-server/src/index.ts` | direct read | `gh api repos/${TARGET}/contents/mcp-server/src/index.ts ...` | optional |
-| `dashboard/lib/catalog.ts` | direct read | `gh api repos/${TARGET}/contents/dashboard/lib/catalog.ts ...` | optional |
+| `apps/mcp-server/src/index.ts` | direct read | `gh api repos/${TARGET}/contents/apps/mcp-server/src/index.ts ...` | optional |
+| `apps/dashboard/lib/catalog.ts` | direct read | `gh api repos/${TARGET}/contents/apps/dashboard/lib/catalog.ts ...` | optional |
 
 If `aeon.yml` is unreadable, log `V4_READINESS_NO_CONFIG` and exit with no notification (the fork is not initialized; nothing to check).
 

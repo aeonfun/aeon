@@ -31,7 +31,7 @@ The recap is not a log dump — the operator can read the log themselves. Its jo
 
 4. **Deduplicate repeat runs.** If the same skill appears N>1 times in the log, fold into one entry labeled `skill ×N`. Keep the most informative run's headline (the one with a PR/URL or the longest body); collapse the rest to `+K more`.
 
-5. **Extract every artifact link.** For each entry, capture every URL or file path in the body (PR link, run URL, `articles/...` path, `dashboard/outputs/...` path, ISS-NNN reference). An entry with no concrete artifact is "talk, not ship" — demote it to the Notable tier.
+5. **Extract every artifact link.** For each entry, capture every URL or file path in the body (PR link, run URL, `articles/...` path, `apps/dashboard/outputs/...` path, ISS-NNN reference). An entry with no concrete artifact is "talk, not ship" — demote it to the Notable tier.
 
 6. **Score and tier each entry on leverage.** What matters for tomorrow's decisions:
    - **Headlines (top tier, cap 5):** new PR opened, change merged, new article shipped, issue resolved or newly filed, new failure pattern.

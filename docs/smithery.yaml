@@ -21,7 +21,7 @@ commandFunction:
   |-
     config => ({
       command: 'node',
-      args: [(config.repoPath || '.') + '/mcp-server/dist/index.js'],
+      args: [(config.repoPath || '.') + '/apps/mcp-server/dist/index.js'],
       env: process.env
     })
 

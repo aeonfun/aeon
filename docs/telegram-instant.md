@@ -1,11 +1,11 @@
 # Telegram Instant Mode
 
 Default polling checks for messages every 5 minutes. For ~1s response time, deploy
-the Cloudflare Worker in [`../webhook/`](../webhook/) as a Telegram webhook.
+the Cloudflare Worker in [`../apps/webhook/`](../apps/webhook/) as a Telegram webhook.
 
 The Worker is now a self-contained, one-click-deployable package — source,
 `wrangler.toml`, and full setup instructions live in
-**[`webhook/README.md`](../webhook/README.md)**, including the "Deploy to
+**[`apps/webhook/README.md`](../apps/webhook/README.md)**, including the "Deploy to
 Cloudflare" button.
 
 In short:

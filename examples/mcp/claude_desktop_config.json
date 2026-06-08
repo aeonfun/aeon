@@ -2,7 +2,7 @@
   "mcpServers": {
     "aeon": {
       "command": "node",
-      "args": ["/ABSOLUTE/PATH/TO/aeon/mcp-server/dist/index.js"]
+      "args": ["/ABSOLUTE/PATH/TO/aeon/apps/mcp-server/dist/index.js"]
     }
   }
 }

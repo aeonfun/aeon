@@ -1,6 +1,6 @@
 # Aeon integration examples
 
-Aeon ships an [A2A gateway](../a2a-server/) and an [MCP server](../mcp-server/) so any agent stack can call its 90+ skills. The scripts here are the shortest possible "first call works" demos — point them at a running gateway, run `python <file>`, get a real Aeon output back.
+Aeon ships an [A2A gateway](../apps/a2a-server/) and an [MCP server](../apps/mcp-server/) so any agent stack can call its 90+ skills. The scripts here are the shortest possible "first call works" demos — point them at a running gateway, run `python <file>`, get a real Aeon output back.
 
 | File | Stack | Skill called | What it shows |
 |------|-------|--------------|---------------|
@@ -32,12 +32,12 @@ To call a different skill, change the `skillId` (and the `var` if the skill need
 ## MCP — verify the round-trip
 
 ```bash
-./add-mcp --build-only          # produce mcp-server/dist/index.js
+./add-mcp --build-only          # produce apps/mcp-server/dist/index.js
 pip install mcp                 # official Anthropic MCP client
 python examples/mcp/test_connection.py
 ```
 
-You should see the full list of `aeon-*` tools followed by a real `aeon-cost-report` output. Once that works, hand `mcp-server/dist/index.js` to Claude Code with `./add-mcp` (already done if you ran `./add-mcp` without `--build-only`) or to Claude Desktop using [`mcp/claude_desktop_config.json`](mcp/claude_desktop_config.json) — replace `/ABSOLUTE/PATH/TO/aeon` with your actual repo path.
+You should see the full list of `aeon-*` tools followed by a real `aeon-cost-report` output. Once that works, hand `apps/mcp-server/dist/index.js` to Claude Code with `./add-mcp` (already done if you ran `./add-mcp` without `--build-only`) or to Claude Desktop using [`mcp/claude_desktop_config.json`](mcp/claude_desktop_config.json) — replace `/ABSOLUTE/PATH/TO/aeon` with your actual repo path.
 
 ## Picking a different skill
 

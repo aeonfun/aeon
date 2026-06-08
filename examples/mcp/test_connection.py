@@ -3,7 +3,7 @@
 Sanity-check the Aeon MCP server end-to-end.
 
 What it does:
-  1. Spawns `node mcp-server/dist/index.js` as a stdio MCP server.
+  1. Spawns `node apps/mcp-server/dist/index.js` as a stdio MCP server.
   2. Sends `tools/list` and prints every aeon-* tool that is registered.
   3. Calls one tool (default: `aeon-cost-report`, fast and offline-safe)
      so you can confirm the full request/response cycle works.
@@ -14,7 +14,7 @@ script works, your Claude Desktop / Claude Code wiring will too.
 
 Setup:
     cd /path/to/aeon
-    ./add-mcp --build-only          # produce mcp-server/dist/index.js
+    ./add-mcp --build-only          # produce apps/mcp-server/dist/index.js
     pip install mcp                 # official anthropic MCP client
     python examples/mcp/test_connection.py            # lists + calls default tool
     python examples/mcp/test_connection.py aeon-token-report AEON
@@ -34,17 +34,17 @@ def repo_root() -> Path:
     """Find the Aeon repo root by walking up from this file."""
     here = Path(__file__).resolve()
     for candidate in (here, *here.parents):
-        if (candidate / "skills.json").exists() and (candidate / "mcp-server").is_dir():
+        if (candidate / "skills.json").exists() and (candidate / "apps/mcp-server").is_dir():
             return candidate
     raise SystemExit(
-        "Could not locate Aeon repo root (no skills.json + mcp-server/ above this file)."
+        "Could not locate Aeon repo root (no skills.json + apps/mcp-server/ above this file)."
     )
 
 
 async def main(tool_name: str, var_value: str) -> int:
     """Run the MCP server connection and tool invocation."""
     root = repo_root()
-    server_js = root / "mcp-server" / "dist" / "index.js"
+    server_js = root / "apps/mcp-server" / "dist" / "index.js"
     if not server_js.exists():
         print(f"✗ MCP server build missing at {server_js}")
         print("  Run `./add-mcp --build-only` from the repo root first.")

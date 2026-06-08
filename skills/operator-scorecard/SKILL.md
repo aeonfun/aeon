@@ -139,7 +139,7 @@ The "What was notable" section reads `memory/MEMORY.md` for rows in the `## Skil
 
 ### 7. Write the dashboard JSON spec
 
-Path: `dashboard/outputs/operator-scorecard.json`. Use the catalog components.
+Path: `apps/dashboard/outputs/operator-scorecard.json`. Use the catalog components.
 
 ```json
 {
@@ -229,7 +229,7 @@ Cap message at ~3500 chars (Telegram safe limit). The verdict + three lane lines
 - **Community growth**: +${total_stars_added}⭐ +${total_forks_added} forks · ${new_contributors} new contributors
 - **Economic activity**: $${total_distributed} in $AEON to ${recipient_count} recipients · token ${token_7d_pct}% 7d (${token_verdict})
 - **Article**: articles/operator-scorecard-${today}.md
-- **Dashboard**: dashboard/outputs/operator-scorecard.json
+- **Dashboard**: apps/dashboard/outputs/operator-scorecard.json
 - **Notification sent**: ${yes|no — dry-run|no — INSUFFICIENT_DATA}
 - **Status**: OPERATOR_SCORECARD_OK | OPERATOR_SCORECARD_QUIET | OPERATOR_SCORECARD_NO_DATA
 ```

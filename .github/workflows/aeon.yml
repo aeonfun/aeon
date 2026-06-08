@@ -443,8 +443,8 @@ jobs:
           fi
           # json-render channel — save raw message for post-run conversion
           if [ "${JSONRENDER_ENABLED:-false}" = "true" ] && [ -n "${SKILL_NAME:-}" ]; then
-            mkdir -p dashboard/outputs
-            echo "$MSG" > "dashboard/outputs/.pending-${SKILL_NAME}.md"
+            mkdir -p apps/dashboard/outputs
+            echo "$MSG" > "apps/dashboard/outputs/.pending-${SKILL_NAME}.md"
           fi
 
           # Remove pending file if immediate delivery succeeded (prevents double-send)
@@ -616,7 +616,7 @@ jobs:
           SKILL="${{ steps.skill.outputs.name }}"
           mkdir -p .outputs
           # Save the notification message as a chain artifact
-          PENDING="dashboard/outputs/.pending-${SKILL}.md"
+          PENDING="apps/dashboard/outputs/.pending-${SKILL}.md"
           if [ -f "$PENDING" ]; then
             cp "$PENDING" ".outputs/${SKILL}.md"
           elif [ -f /tmp/skill-result.txt ] && [ -s /tmp/skill-result.txt ]; then
@@ -743,7 +743,7 @@ jobs:
             unset ANTHROPIC_API_KEY
             unset CLAUDE_CODE_OAUTH_TOKEN
           fi
-          for pending in dashboard/outputs/.pending-*.md; do
+          for pending in apps/dashboard/outputs/.pending-*.md; do
             [ -f "$pending" ] || continue
             SKILL=$(basename "$pending" .md | sed 's/^\.pending-//')
             echo "json-render: converting $SKILL..."
@@ -883,7 +883,7 @@ jobs:
                 CONFLICTED=$(git diff --name-only --diff-filter=U) || true
                 [ -z "$CONFLICTED" ] && break
                 for f in $CONFLICTED; do
-                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == dashboard/outputs/* ]] || [[ "$f" == .outputs/* ]]; then
+                  if [[ "$f" == memory/logs/* ]] || [[ "$f" == memory/topics/* ]] || [[ "$f" == memory/MEMORY.md ]] || [[ "$f" == memory/skill-health/* ]] || [[ "$f" == apps/dashboard/outputs/* ]] || [[ "$f" == .outputs/* ]]; then
                     sed -i '/^<<<<<<< /d; /^=======/d; /^>>>>>>> /d' "$f"
                     git add "$f"
                   else

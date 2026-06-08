@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-DASHBOARD="$DIR/dashboard"
+DASHBOARD="$DIR/apps/dashboard"
 
 # Preflight: the dashboard's /api/* routes shell out to `gh` for secrets,
 # workflow runs, and auth. Without an authenticated gh CLI nothing works,

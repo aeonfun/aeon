@@ -80,7 +80,7 @@ From the `files` array, tag each fork with signals:
 - **New skills**: files with `status=added` under `skills/*/SKILL.md`
 - **Modified skills**: `status=modified` under `skills/*/SKILL.md`
 - **Custom schedule**: any change to `aeon.yml`
-- **Modified dashboard**: any change under `dashboard/`
+- **Modified dashboard**: any change under `apps/dashboard/`
 - **Custom notify**: change to `notify` or `notify-jsonrender`
 - **New content**: additions under `articles/` or `memory/topics/`
 - **Config changes**: changes to `CLAUDE.md`, `.github/`, or root `scripts/`

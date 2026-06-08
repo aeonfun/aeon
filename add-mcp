@@ -15,7 +15,7 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "$0")" && pwd)"
-MCP_DIR="$DIR/mcp-server"
+MCP_DIR="$DIR/apps/mcp-server"
 
 usage() {
   sed -n '3,12p' "$0" | sed 's/^# //'
@@ -76,7 +76,7 @@ fi
 ok "npm $(npm --version)"
 
 if [[ ! -d "$MCP_DIR" ]]; then
-  err "mcp-server/ directory not found at $MCP_DIR"
+  err "apps/mcp-server/ directory not found at $MCP_DIR"
 fi
 
 if [[ ! -f "$DIR/skills.json" ]]; then
@@ -91,7 +91,7 @@ ok "Dependencies installed"
 
 info "Building TypeScript..."
 (cd "$MCP_DIR" && npm run build)
-ok "Build complete → mcp-server/dist/index.js"
+ok "Build complete → apps/mcp-server/dist/index.js"
 
 SERVER_PATH="$MCP_DIR/dist/index.js"
 if [[ ! -f "$SERVER_PATH" ]]; then

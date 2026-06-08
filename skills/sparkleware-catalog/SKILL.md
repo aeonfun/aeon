@@ -37,7 +37,7 @@ Writes:
 - `memory/logs/${today}.md` — one log block per run
 - Notification via `./notify` — only when the registry composition or pack reachability changed (see step 7)
 
-> **Output-path note.** The catalog is written to the **repo root** (next to `skill-packs.json`), **not** to `dashboard/outputs/`. `dashboard/outputs/` is consumed by the dashboard feed, which parses every `*.json` there as a json-render *spec* and renders it through `SpecNode`; dropping a plain data file there would pollute the live feed with an unrenderable card. A root-level `skill-packs-catalog.json` is the natural sibling of `skill-packs.json`, gets a permanent raw URL, and keeps the data artifact separate from the dashboard's spec stream. The human-facing dashboard card for this skill still arrives via the normal `./notify` → `notify-jsonrender` path.
+> **Output-path note.** The catalog is written to the **repo root** (next to `skill-packs.json`), **not** to `apps/dashboard/outputs/`. `apps/dashboard/outputs/` is consumed by the dashboard feed, which parses every `*.json` there as a json-render *spec* and renders it through `SpecNode`; dropping a plain data file there would pollute the live feed with an unrenderable card. A root-level `skill-packs-catalog.json` is the natural sibling of `skill-packs.json`, gets a permanent raw URL, and keeps the data artifact separate from the dashboard's spec stream. The human-facing dashboard card for this skill still arrives via the normal `./notify` → `notify-jsonrender` path.
 
 ## Steps
 

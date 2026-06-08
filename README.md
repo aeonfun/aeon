@@ -75,7 +75,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
 5. **Verify** — run `./onboard` to confirm secrets, workflows, memory, and notifications are wired up correctly. Add `--remote` to fire the check inside Actions and have the checklist arrive in your notification channel.
 
-**Need a skill for X?** Six pre-built starters live in [`templates/`](templates/TEMPLATE.md) — crypto tracker, research digest, code reviewer, social monitor, deploy watcher, community manager. Bootstrap one with `./new-from-template <template> <skill-name> --var KEY=VALUE...` and it lands in `skills/` with a disabled entry in `aeon.yml`, ready to enable.
+**Need a skill for X?** Six pre-built starters live in [`skill-templates/`](skill-templates/TEMPLATE.md) — crypto tracker, research digest, code reviewer, social monitor, deploy watcher, community manager. Bootstrap one with `./new-from-template <template> <skill-name> --var KEY=VALUE...` and it lands in `skills/` with a disabled entry in `aeon.yml`, ready to enable.
 
 ### Dashboard access
 
@@ -88,7 +88,7 @@ If you need to reach the dashboard from another machine on the same network or o
 | `AEON_DASHBOARD_ALLOWED_HOSTS=aeon.local,box.tail-xxx.ts.net` | Extends the loopback allowlist by one or more hostnames (comma-separated, case- and port-insensitive). The defaults stay accepted. |
 | `AEON_DASHBOARD_ALLOW_ANY_HOST=1` | Disables Host-header checking entirely. Intended only for a trusted reverse proxy that terminates `Host` upstream. Loudly insecure if set without an authenticating proxy in front. |
 
-The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whose `Origin` (or `Referer` fallback) isn't on the same allowlist — so a malicious page on another origin can't drive `/api/secrets` or `/api/skills/.../run` via a no-cors POST. Code lives in [`dashboard/middleware.ts`](dashboard/middleware.ts) + [`dashboard/lib/security/api-gate.ts`](dashboard/lib/security/api-gate.ts).
+The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whose `Origin` (or `Referer` fallback) isn't on the same allowlist — so a malicious page on another origin can't drive `/api/secrets` or `/api/skills/.../run` via a no-cors POST. Code lives in [`apps/dashboard/proxy.ts`](apps/dashboard/proxy.ts) + [`apps/dashboard/lib/security/api-gate.ts`](apps/dashboard/lib/security/api-gate.ts).
 
 ---
 
@@ -335,10 +335,12 @@ skills/                  ← each skill is a SKILL.md prompt file
   digest/
   heartbeat/
   ...                    ← 193 skills total
-workflows/               ← GitHub Agentic Workflow templates (.md)
-mcp-server/              ← MCP server — exposes skills as Claude tools
-a2a-server/              ← A2A protocol gateway — exposes skills to any agent framework
-dashboard/               ← local web UI (Next.js + json-render feed)
+workflow-templates/      ← GitHub Agentic Workflow templates (.md)
+apps/                    ← standalone sub-projects, each with its own package.json
+  dashboard/             ← local web UI (Next.js + json-render feed)
+  mcp-server/            ← MCP server — exposes skills as Claude tools
+  a2a-server/            ← A2A protocol gateway — exposes skills to any agent framework
+  webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
 memory/
   MEMORY.md              ← goals, active topics, pointers
   cron-state.json        ← per-skill execution metrics (status, success rate, quality)
@@ -401,9 +403,9 @@ Set the secret → channel activates. No code changes needed.
 
 Default polling has up to a 5-min delay. Deploy the self-contained Cloudflare Worker in [`webhook/`](webhook/) for ~1s response time — one click, into your own Cloudflare account (no shared infra, no credential custody):
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/webhook)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/apps/webhook)
 
-Setup, required secrets, and how it coexists with polling are in [`webhook/README.md`](webhook/README.md). The poller calls `getWebhookInfo` and skips Telegram automatically once a webhook is active, so the two never conflict.
+Setup, required secrets, and how it coexists with polling are in [`apps/webhook/README.md`](apps/webhook/README.md). The poller calls `getWebhookInfo` and skips Telegram automatically once a webhook is active, so the two never conflict.
 
 ---
 
@@ -721,7 +723,7 @@ See [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map showing how 19
 
 ### Can I create custom skills?
 
-Yes. Use templates from [`templates/`](templates/TEMPLATE.md):
+Yes. Use templates from [`skill-templates/`](skill-templates/TEMPLATE.md):
 - Crypto tracker
 - Research digest
 - Code reviewer

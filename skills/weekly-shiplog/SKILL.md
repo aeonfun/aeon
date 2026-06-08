@@ -97,7 +97,7 @@ gh api "repos/${REPO}/commits/${FULL_SHA}" \
   --jq '{files: [.files[] | {filename, status, additions, deletions}], stats: .stats}'
 ```
 
-Use `additions + deletions` and the changed-file list to write substance into theme paragraphs — quote real file names where relevant ("the change touches `dashboard/lib/runs.ts` and the workflow runner").
+Use `additions + deletions` and the changed-file list to write substance into theme paragraphs — quote real file names where relevant ("the change touches `apps/dashboard/lib/runs.ts` and the workflow runner").
 
 ### 6. Write the article
 

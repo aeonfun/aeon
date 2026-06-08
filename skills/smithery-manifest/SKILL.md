@@ -11,7 +11,7 @@ Today is ${today}. Generate the submission artifacts that let an operator (or th
 
 ## Why this skill exists
 
-`mcp-server/` has been live since the integration-examples ship (Apr 21) but Aeon is still not listed on Smithery or the MCP Registry. Every day without those listings, inbound discovery from the growing MCP ecosystem misses Aeon entirely. The actual blocker is documented as Apr-22 repo-actions idea #1 (highest-priority growth unbuilt for 6 weeks): "submission requires a correctly-formatted manifest and a pre-filled submission document — none of which has been written." This skill writes both.
+`apps/mcp-server/` has been live since the integration-examples ship (Apr 21) but Aeon is still not listed on Smithery or the MCP Registry. Every day without those listings, inbound discovery from the growing MCP ecosystem misses Aeon entirely. The actual blocker is documented as Apr-22 repo-actions idea #1 (highest-priority growth unbuilt for 6 weeks): "submission requires a correctly-formatted manifest and a pre-filled submission document — none of which has been written." This skill writes both.
 
 ## Steps
 
@@ -19,8 +19,8 @@ Today is ${today}. Generate the submission artifacts that let an operator (or th
 
 ```
 skills.json          — canonical skill catalog (slug, name, description, category, schedule, var)
-aeon.yml             — `enabled: true|false` flags per skill (skills surfaced as MCP tools follow `mcp-server/src/index.ts` which exposes ALL skills, not just enabled ones — match that behavior)
-mcp-server/package.json — name, version
+aeon.yml             — `enabled: true|false` flags per skill (skills surfaced as MCP tools follow `apps/mcp-server/src/index.ts` which exposes ALL skills, not just enabled ones — match that behavior)
+apps/mcp-server/package.json — name, version
 README.md            — first paragraph for the description, repo URL
 ```
 
@@ -36,19 +36,19 @@ Format: a server.json document compatible with the [MCP Registry schema](https:/
   "name": "io.github.aaronjmars/aeon-mcp",
   "title": "Aeon",
   "description": "<one-sentence pull from README opening; <=200 chars>",
-  "version": "<from mcp-server/package.json>",
+  "version": "<from apps/mcp-server/package.json>",
   "websiteUrl": "https://github.com/aaronjmars/aeon",
   "repository": {
     "url": "https://github.com/aaronjmars/aeon",
     "source": "github",
-    "subfolder": "mcp-server"
+    "subfolder": "apps/mcp-server"
   },
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "aeon-mcp",
-      "version": "<from mcp-server/package.json>",
+      "version": "<from apps/mcp-server/package.json>",
       "transport": { "type": "stdio" },
       "environmentVariables": []
     }
@@ -71,9 +71,9 @@ Rules:
 - **`name`** uses reverse-DNS form per MCP Registry naming convention: `io.github.aaronjmars/aeon-mcp` (matches the `aaronjmars/aeon` GitHub identity).
 - **`title`** is fixed: `"Aeon"`.
 - **`description`** is the first sentence after the bold strapline in `README.md` ("The most autonomous agent framework. Give it a direction…"), trimmed to ≤200 chars. Strip any leading "**" markdown.
-- **`version`** is read from `mcp-server/package.json` `.version` field — never hard-coded here.
-- **`packages[0].identifier`** is the npm name (`mcp-server/package.json` `.name`). The aeon-mcp package is not yet published — flag that in step 5.
-- **`_meta` namespace** uses `io.github.aaronjmars/aeon` (per registry "publisher-provided" convention). Tool list mirrors `mcp-server/src/index.ts:buildTools()` — every skill in `skills.json`, named `aeon-<slug>`, description follows `[Aeon · <Category>] <description> (cron: <schedule>)` (or `(on-demand)` when schedule is `workflow_dispatch` or `reactive`).
+- **`version`** is read from `apps/mcp-server/package.json` `.version` field — never hard-coded here.
+- **`packages[0].identifier`** is the npm name (`apps/mcp-server/package.json` `.name`). The aeon-mcp package is not yet published — flag that in step 5.
+- **`_meta` namespace** uses `io.github.aaronjmars/aeon` (per registry "publisher-provided" convention). Tool list mirrors `apps/mcp-server/src/index.ts:buildTools()` — every skill in `skills.json`, named `aeon-<slug>`, description follows `[Aeon · <Category>] <description> (cron: <schedule>)` (or `(on-demand)` when schedule is `workflow_dispatch` or `reactive`).
 - Sort tools alphabetically by `name` so the diff between runs only changes when skills are actually added/removed/described.
 
 ### 3. Generate `docs/smithery.yaml`
@@ -102,7 +102,7 @@ commandFunction:
   |-
     config => ({
       command: 'node',
-      args: [(config.repoPath || '.') + '/mcp-server/dist/index.js'],
+      args: [(config.repoPath || '.') + '/apps/mcp-server/dist/index.js'],
       env: process.env
     })
 
@@ -113,7 +113,7 @@ exampleConfig:
 Rules:
 
 - `startCommand.type` is `stdio` — the aeon-mcp server uses `StdioServerTransport`.
-- `configSchema.required` stays empty: the server tolerates `repoPath=""` by walking `__dirname/../..` per `mcp-server/src/index.ts:30`.
+- `configSchema.required` stays empty: the server tolerates `repoPath=""` by walking `__dirname/../../..` per `apps/mcp-server/src/index.ts:30`.
 - `commandFunction` body is a string (YAML pipe scalar) — Smithery evals it server-side; do not introduce template literals or backticks that break YAML.
 - `env: process.env` is required so the spawned `claude` CLI inherits `ANTHROPIC_API_KEY` / `CLAUDE_CODE_OAUTH_TOKEN` from Claude Desktop's environment.
 
@@ -138,7 +138,7 @@ The paste-ready document. Every field the operator will be asked to type into th
 - **Title:** Aeon
 - **Version:** <version>
 - **Repository URL:** https://github.com/aaronjmars/aeon
-- **Subfolder:** `mcp-server`
+- **Subfolder:** `apps/mcp-server`
 - **Website URL:** https://github.com/aaronjmars/aeon
 - **Transport:** stdio
 - **Auth required:** no (reads operator's `ANTHROPIC_API_KEY` or `CLAUDE_CODE_OAUTH_TOKEN` from env)
@@ -166,14 +166,14 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 ```bash
 # 1. Clone Aeon
 git clone https://github.com/aaronjmars/aeon
-cd aeon/mcp-server && npm install && npm run build
+cd aeon/apps/mcp-server && npm install && npm run build
 
 # 2. Add to Claude Desktop config (~/Library/Application Support/Claude/claude_desktop_config.json on macOS)
 {
   "mcpServers": {
     "aeon": {
       "command": "node",
-      "args": ["/absolute/path/to/aeon/mcp-server/dist/index.js"]
+      "args": ["/absolute/path/to/aeon/apps/mcp-server/dist/index.js"]
     }
   }
 }
@@ -181,7 +181,7 @@ cd aeon/mcp-server && npm install && npm run build
 
 ## Notes for the maintainer
 
-- The `aeon-mcp` npm package referenced by `packages[0].identifier` in `smithery-manifest.json` is **not yet published**. Either publish it (`cd mcp-server && npm publish --access public`) or remove the `packages` block before submitting to the MCP Registry. Smithery's URL-based listing works without the npm publish.
+- The `aeon-mcp` npm package referenced by `packages[0].identifier` in `smithery-manifest.json` is **not yet published**. Either publish it (`cd apps/mcp-server && npm publish --access public`) or remove the `packages` block before submitting to the MCP Registry. Smithery's URL-based listing works without the npm publish.
 - This document is regenerated by the `smithery-manifest` skill — re-run after every `skills.json` change to keep the tool catalog accurate.
 ```
 
@@ -190,7 +190,7 @@ Field rules:
 - `<one-sentence README pull>` — same string used for `description` in step 2.
 - `<total-skill-count>` — `len(skills.json["skills"])`.
 - `<top-3-category-counts>` — categories sorted by skill count descending, top 3, formatted as `"research (17), dev (29), crypto (16)"`.
-- The tool catalog table includes every skill from `skills.json`, sorted alphabetically by tool name. Use the same Category labels as `mcp-server/src/index.ts:categoryName()` (Research, Dev, Crypto, Social, Productivity).
+- The tool catalog table includes every skill from `skills.json`, sorted alphabetically by tool name. Use the same Category labels as `apps/mcp-server/src/index.ts:categoryName()` (Research, Dev, Crypto, Social, Productivity).
 
 ### 5. Diff against the prior generation
 
@@ -262,7 +262,7 @@ If running in `--dry-run` mode skip the `./notify` call entirely (the log entry 
 
 ## Edge cases
 
-- **`mcp-server/package.json` missing `version`** — fall back to `"0.0.0"` and add a NOTE in the submission doc: `"version: 0.0.0 (mcp-server/package.json missing version field — set it before submitting)"`. Do not abort.
+- **`apps/mcp-server/package.json` missing `version`** — fall back to `"0.0.0"` and add a NOTE in the submission doc: `"version: 0.0.0 (apps/mcp-server/package.json missing version field — set it before submitting)"`. Do not abort.
 - **Skill in `skills.json` with empty description** — emit the tool entry with description `"[Aeon · <Category>] (no description in skills.json)"`. The catalog stays comprehensive even when a single skill is under-documented.
 - **Schedule is `workflow_dispatch` or `reactive`** — render as `(on-demand)` in tool descriptions, not the raw cron string.
 - **Categories not present in `skills.json["categories"]`** — fall back to title-case of the slug. Do not skip the tool.
@@ -270,12 +270,12 @@ If running in `--dry-run` mode skip the `./notify` call entirely (the log entry 
 
 ## Sandbox note
 
-Pure local file I/O. Reads `skills.json`, `aeon.yml`, `mcp-server/package.json`, and `README.md`; writes three files under `docs/`; runs `gh pr create` (uses `gh`'s built-in auth). No `curl`, no env-var-in-headers expansion, no prefetch or postprocess scripts needed.
+Pure local file I/O. Reads `skills.json`, `aeon.yml`, `apps/mcp-server/package.json`, and `README.md`; writes three files under `docs/`; runs `gh pr create` (uses `gh`'s built-in auth). No `curl`, no env-var-in-headers expansion, no prefetch or postprocess scripts needed.
 
 ## Constraints
 
 - **No invented tools.** Every entry in the tool catalog must correspond to an actual `slug` in `skills.json`. Do not add hypothetical or planned skills.
-- **No invented version strings.** `version` is read live from `mcp-server/package.json` — never bumped or fabricated by this skill.
-- **Idempotent.** Running multiple times with no changes to `skills.json` / `aeon.yml` / `mcp-server/package.json` / `README.md` produces identical output and triggers no PR and no notification.
+- **No invented version strings.** `version` is read live from `apps/mcp-server/package.json` — never bumped or fabricated by this skill.
+- **Idempotent.** Running multiple times with no changes to `skills.json` / `aeon.yml` / `apps/mcp-server/package.json` / `README.md` produces identical output and triggers no PR and no notification.
 - **One PR per refresh.** Even if both manifest and submission doc change, both land in the same PR.
 - **Notify only on real change.** A no-op refresh is a successful run, not a notification-worthy event.
