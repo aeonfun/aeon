@@ -114,7 +114,7 @@ If `ALLOWANCE_HEX` is `0x0000…0000` (all zeros), the approval is already revok
 
 ### 4. Submit the revoke via Bankr
 
-For a single ERC-20 `approve(spender, 0)` against an arbitrary contract address, use Bankr's `/agent/prompt` (same path `distribute-tokens` uses for natural-language wallet operations). The prompt MUST name only the three validated hex addresses — no operator-typed text, no untrusted labels — so the LLM-on-the-other-side has zero ambiguity to amplify into a wrong call.
+For a single ERC-20 `approve(spender, 0)` against an arbitrary contract address, use Bankr's `/agent/prompt`. Note that `distribute-tokens` deliberately bans the Agent API for *transfers* and routes those through the structured `/wallet/transfer` endpoint — but Bankr's Wallet API exposes no structured raw-contract-call path for an arbitrary `approve`, so `/agent/prompt` is the only route that can issue this revoke. The blast radius stays bounded: the worst a misconstructed call can do is zero a *different* allowance — it can never move funds — which is why the Agent API is acceptable here even though it is off-limits for transfers. The prompt MUST name only the three validated hex addresses — no operator-typed text, no untrusted labels — so the LLM-on-the-other-side has zero ambiguity to amplify into a wrong call.
 
 ```bash
 PROMPT="Revoke my approval on Base for token ${TOKEN} to spender ${SPENDER}. Call approve(${SPENDER}, 0) on contract ${TOKEN}. Confirm the wallet sending the transaction equals ${WALLET}. Do not perform any other action."
