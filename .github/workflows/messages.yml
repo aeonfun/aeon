@@ -614,7 +614,8 @@ jobs:
 
       - name: Install Claude Code
         if: steps.msg.outputs.source != ''
-        run: npm install -g @anthropic-ai/claude-code
+        # Pinned for supply-chain safety — keep in sync with aeon.yml's pin.
+        run: npm install -g @anthropic-ai/claude-code@2.1.168
 
       - name: Run
         id: run
