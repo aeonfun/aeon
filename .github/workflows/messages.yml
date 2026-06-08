@@ -479,25 +479,44 @@ jobs:
 
           # --- Telegram (collect ALL pending updates) ---
           if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
-            RESPONSE=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?timeout=0&allowed_updates=%5B%22message%22%5D")
-            COUNT=$(echo "$RESPONSE" | jq '.result | length')
-            MAX_UPDATE_ID=""
+            # A webhook and getUpdates are mutually exclusive: once a webhook is
+            # set (instant mode, see webhook/), getUpdates returns 409. Detect it
+            # and skip polling — the Worker delivers via repository_dispatch.
+            WEBHOOK_URL=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getWebhookInfo" | jq -r '.result.url // empty')
+            if [ -n "$WEBHOOK_URL" ]; then
+              echo "Telegram webhook active — skipping poll (instant mode delivers via repository_dispatch)"
+            else
+              RESPONSE=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?timeout=0&allowed_updates=%5B%22message%22%5D")
+              COUNT=$(echo "$RESPONSE" | jq '.result | length')
+              MAX_UPDATE_ID=""
+              TG_MESSAGES='[]'
 
-            for ((i=0; i<COUNT; i++)); do
-              TEXT=$(echo "$RESPONSE" | jq -r ".result[$i].message.text // empty")
-              CHAT=$(echo "$RESPONSE" | jq -r ".result[$i].message.chat.id // empty")
-              UPDATE_ID=$(echo "$RESPONSE" | jq -r ".result[$i].update_id // empty")
+              for ((i=0; i<COUNT; i++)); do
+                TEXT=$(echo "$RESPONSE" | jq -r ".result[$i].message.text // empty")
+                CHAT=$(echo "$RESPONSE" | jq -r ".result[$i].message.chat.id // empty")
+                UPDATE_ID=$(echo "$RESPONSE" | jq -r ".result[$i].update_id // empty")
 
-              if [ -n "$TEXT" ] && [ "$CHAT" = "$TELEGRAM_CHAT_ID" ]; then
-                MESSAGES=$(echo "$MESSAGES" | jq --arg src "telegram" --arg txt "$TEXT" '. + [{source: $src, text: $txt}]')
-                echo "Telegram: $TEXT"
+                if [ -n "$TEXT" ] && [ "$CHAT" = "$TELEGRAM_CHAT_ID" ]; then
+                  TG_MESSAGES=$(echo "$TG_MESSAGES" | jq --arg src "telegram" --arg txt "$TEXT" '. + [{source: $src, text: $txt}]')
+                  echo "Telegram: $TEXT"
+                fi
+                MAX_UPDATE_ID="$UPDATE_ID"
+              done
+
+              # Acknowledge updates BEFORE queuing them for dispatch, and only
+              # enqueue once Telegram confirms the offset advanced (ok:true) — a
+              # re-poll then can't re-read them. If the ack fails, leave the
+              # messages pending for the next tick rather than dispatch updates
+              # that could be re-read and processed twice.
+              if [ -n "$MAX_UPDATE_ID" ]; then
+                ACK_OK=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=$((MAX_UPDATE_ID + 1))" | jq -r '.ok // false')
+                if [ "$ACK_OK" = "true" ]; then
+                  MESSAGES=$(echo "$MESSAGES" | jq --argjson tg "$TG_MESSAGES" '. + $tg')
+                else
+                  PENDING=$(echo "$TG_MESSAGES" | jq 'length')
+                  [ "$PENDING" -gt 0 ] && echo "::warning::Telegram offset ack failed — leaving $PENDING message(s) pending to avoid double-processing"
+                fi
               fi
-              MAX_UPDATE_ID="$UPDATE_ID"
-            done
-
-            # Acknowledge all updates at once
-            if [ -n "$MAX_UPDATE_ID" ]; then
-              curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=$((MAX_UPDATE_ID + 1))" > /dev/null
             fi
           fi
 
