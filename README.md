@@ -399,7 +399,11 @@ Set the secret → channel activates. No code changes needed.
 
 ### Telegram instant mode (optional)
 
-Default polling has up to 5-min delay. Deploy a ~20-line Cloudflare Worker as a webhook for ~1s response time. See [`docs/telegram-instant.md`](docs/telegram-instant.md) for the Worker code and setup.
+Default polling has up to a 5-min delay. Deploy the self-contained Cloudflare Worker in [`webhook/`](webhook/) for ~1s response time — one click, into your own Cloudflare account (no shared infra, no credential custody):
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/webhook)
+
+Setup, required secrets, and how it coexists with polling are in [`webhook/README.md`](webhook/README.md). The poller calls `getWebhookInfo` and skips Telegram automatically once a webhook is active, so the two never conflict.
 
 ---
 
