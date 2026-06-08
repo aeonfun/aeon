@@ -1,4 +1,4 @@
-import { parseDocument, isMap, isSeq, isPair, isScalar, type Document } from 'yaml'
+import { parseDocument, isMap, isPair, isScalar } from 'yaml'
 import type { GatewayProvider } from './types'
 
 export interface SkillConfig {

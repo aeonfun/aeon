@@ -2,7 +2,6 @@
 
 import { useState, useRef } from 'react'
 import type { UploadFile } from '../lib/types'
-import { displayName } from '../lib/utils'
 import { inputCls } from '../lib/utils'
 
 interface ImportModalProps {
