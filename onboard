@@ -141,6 +141,20 @@ else
     "Restore from upstream: git checkout upstream/main -- aeon.yml"
 fi
 
+# --- STRATEGY.md (north-star imported into every run) ----------------------
+
+if [[ -f STRATEGY.md ]]; then
+  if grep -q '^> \*\*Status:\*\* unconfigured defaults' STRATEGY.md; then
+    emit warn "STRATEGY.md" "present but still using template defaults" \
+      "Edit STRATEGY.md — set your north-star metric, priorities, audience, and constraints. Every skill reads it (it's imported into CLAUDE.md), so tailoring it steers all output."
+  else
+    emit pass "STRATEGY.md" "customized" ""
+  fi
+else
+  emit warn "STRATEGY.md" "missing (skills run without a shared strategy)" \
+    "Restore the template: git checkout upstream/main -- STRATEGY.md  then edit it for your goal."
+fi
+
 # --- 3. memory writable ----------------------------------------------------
 
 if [[ ! -d memory ]]; then
