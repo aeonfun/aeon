@@ -1,10 +1,8 @@
 import { readFile, writeFile, readdir, mkdir, rm } from 'fs/promises'
-import { join, resolve } from 'path'
+import { join } from 'path'
+import { REPO_ROOT } from './gh'
 
 const GITHUB_API = 'https://api.github.com'
-
-// Resolve the repo root (one level up from dashboard/)
-const REPO_ROOT = resolve(process.cwd(), '..')
 
 // Minimal shapes for the GitHub "Get repository content" REST responses.
 interface GitHubContentFile { content: string; sha: string; encoding: string }
