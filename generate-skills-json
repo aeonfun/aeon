@@ -46,7 +46,7 @@ get_category() {
     workflow-security-audit|vercel-projects) echo "dev" ;;
     fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
-    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-pulse) echo "dev" ;;
+    builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-links|ecosystem-pulse) echo "dev" ;;
     fork-release-tracker|pr-merge-queue|pr-skill-triage|pr-tracker) echo "dev" ;;
     pvr-triage-monitor|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
     # Crypto & Markets
@@ -59,7 +59,7 @@ get_category() {
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
     approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
-    lp-lock-check|vigil|wallet-risk-weekly) echo "onchain-security" ;;
+    lp-lock-check|vigil|vigil-revoke|wallet-risk-weekly) echo "onchain-security" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;

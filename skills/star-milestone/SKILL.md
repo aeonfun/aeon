@@ -1,6 +1,6 @@
 ---
 name: star-milestone
-description: Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a velocity-shaped narrative — time-to-milestone, growth shape, projection, and a tight highlight reel
+description: Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a velocity-shaped narrative — time-to-milestone, growth shape, projection, and a tight highlight reel. Optionally auto-dispatches downstream skills (e.g. show-hn-draft at 500⭐) per the rule map in `memory/topics/milestone-dispatch.json`.
 var: ""
 tags: [dev]
 ---
@@ -123,9 +123,49 @@ Field rules:
 - `${eta_date}` — `today + (next_M - STARS) / max(v7/7, 0.5)` rounded to a date. If TRICKLE or pace < 0.5/day, write *"no projection — pace too slow"* instead of an inflated date.
 - **Highlights**: cap at 3. Source from `memory/logs/YYYY-MM-DD.md` last 14 days, sections like `## Push Recap`, `## Feature Built`, `## Repo Article`, `## Repo Actions`, `## Changelog`. Each highlight must include a verb, a concrete noun, and a delta or specificity (count, PR/issue number, name). Reject vague items like "improved docs" — rewrite as "Added 3 sections to README (PR #N)" or drop. If logs are empty, fall back to `gh api repos/$REPO/commits?since=<14d-ago> --jq '.[].commit.message'` and pick 3 commit subjects that ship value (skip chore/typo).
 - If velocity is `UNKNOWN`, replace the `Time to` and `Pace` lines with a single line: *"Velocity data unavailable this run — milestone confirmed by repo count."*
-- **`${status_footer}`** — single line, only printed in the log entry (step 9), NOT in the user-facing notification body. Format: `_status: shape=$SHAPE, v7=$N, fake_check=$ok|skip|defer, log_window=$days_d_`
+- **`${status_footer}`** — single line, only printed in the log entry (step 10), NOT in the user-facing notification body. Format: `_status: shape=$SHAPE, v7=$N, fake_check=$ok|skip|defer, log_window=$days_d_`
 
-### 8. Update `memory/topics/milestones.md`
+### 8. Auto-dispatch downstream skills
+
+Only reached when step 5 gate **f** passed (i.e. the milestone is being announced, not silently recorded as bootstrap/stale/deferred/skipped). A milestone crossed on dead momentum or a suspected fake-star burst is the wrong signal to fire a launch draft on — the silent-record path bypasses dispatch entirely.
+
+Read `memory/topics/milestone-dispatch.json`. If absent, write the seed `{"rules": {}, "dispatched": {}}` atomically (`.tmp` + `mv`) and skip — no dispatch happens until `rules` is populated. Format:
+
+```json
+{
+  "rules": {
+    "aaronjmars/aeon": {
+      "500": "show-hn-draft"
+    }
+  },
+  "dispatched": {
+    "aaronjmars/aeon:500:show-hn-draft": "2026-06-11T08:15:00Z"
+  }
+}
+```
+
+For the current repo + announced milestone `M`:
+
+a. Look up `rules["${REPO}"]["${M}"]` (key is the threshold integer as a string). If absent → skip (most milestones have no downstream skill).
+b. Check `dispatched["${REPO}:${M}:${SKILL}"]`. If present → already fired previously; do nothing. **Re-runs at higher star counts must NOT re-dispatch.** (Step 5a already prevents re-entry once `M` is recorded in `milestones.md`, but this is a second guard — milestones.md is hand-editable and git-revertable.)
+c. Otherwise fire-and-forget:
+   ```bash
+   gh workflow run aeon.yml -f skill="${SKILL}" -f var=""
+   ```
+   On success, set `dispatched["${REPO}:${M}:${SKILL}"]` to the current UTC timestamp (`YYYY-MM-DDTHH:MM:SSZ`) and write the file atomically (`.tmp` + `mv`) so a mid-write crash can't corrupt prior records. Do not wait or poll — the dispatched skill's own `./notify` delivers its outcome separately.
+d. On dispatch failure (gh non-zero, rate limit, permission denied), DO NOT write the dispatched flag. Send a single follow-up notification:
+   ```
+   star-milestone: ${REPO} crossed ${M} but auto-dispatch of ${SKILL} failed.
+   Run manually: gh workflow run aeon.yml -f skill=${SKILL}
+   ```
+   One attempt, one notification on failure. Step 5a will prevent auto-retry on the next run — operator dispatches manually if they want it.
+
+**Constraints:**
+- **Idempotent.** The `dispatched` map plus step 5a make this safe to re-run — a second pass at 502⭐ never fires `show-hn-draft` a second time.
+- **Operator-editable.** Rules are added/removed by hand; the skill only writes to `dispatched`. Adding `"aaronjmars/foo": {"1000": "celebrate"}` is a one-line edit.
+- **Silent on empty rules.** A repo with no rule for any threshold dispatches nothing — behaviour identical to the pre-feature skill.
+
+### 9. Update `memory/topics/milestones.md`
 
 Append the new entry under the repo's section. Create the file with `# Star Milestones` header if absent. Keep entries in ascending threshold order per repo. Format:
 
@@ -135,7 +175,7 @@ Append the new entry under the repo's section. Create the file with `# Star Mile
 
 For silent records (bootstrap/stale/deferred/skipped), use the corresponding suffix instead of the shape.
 
-### 9. Log to `memory/logs/${today}.md`
+### 10. Log to `memory/logs/${today}.md`
 
 ```
 ## Star Milestone
@@ -144,6 +184,7 @@ For silent records (bootstrap/stale/deferred/skipped), use the corresponding suf
 - **Δprior**: $N days from ${prev_M} (prior gap was $N days)
 - **Highlights used**: $N (source: logs|commits)
 - **Notification sent**: yes / no — ${reason}
+- **Dispatched**: ${SKILL} | none | FAILED — ${reason}
 - **Status**: STAR_MILESTONE_OK | STAR_MILESTONE_QUIET | STAR_MILESTONE_DEFERRED | STAR_MILESTONE_DEGRADED
 ```
 
@@ -159,7 +200,7 @@ For silent records (bootstrap/stale/deferred/skipped), use the corresponding suf
 
 ## Sandbox note
 
-`gh api` handles auth via the workflow's `GITHUB_TOKEN`, so no env-var curl workaround is needed. The stargazer pagination call is the only network-heavy step; if it fails, fall through to `UNKNOWN` shape rather than aborting. `./notify` fans out to every configured channel.
+`gh api` and `gh workflow run` handle auth via the workflow's `GITHUB_TOKEN`, so no env-var curl workaround is needed. The stargazer pagination call is the only network-heavy step; if it fails, fall through to `UNKNOWN` shape rather than aborting. `./notify` fans out to every configured channel. Auto-dispatch (step 8) uses the gh CLI's internal auth — no separate token plumbing required.
 
 ## Constraints
 

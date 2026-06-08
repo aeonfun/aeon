@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-01",
+  "updated": "2026-06-08",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -50,6 +50,19 @@
         "scan-wallet",
         "treasury-monitor"
       ]
+    },
+    {
+      "repo": "UIZorrot/careful-finance-aeon-skill-pack",
+      "name": "Careful Finance Aeon Skill Pack",
+      "description": "Market-intelligence scanner for DeFi yield and perpetual-futures opportunities; prints or publishes a conservative hourly Careful Finance snapshot.",
+      "author": "UIZorrot",
+      "license": "MIT",
+      "homepage": "https://careful-finance.txzy.net",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["careful-finance"],
+      "secrets_required": [],
+      "capabilities": ["external_api", "writes_external_host", "sends_notifications"]
     },
     {
       "repo": "0xShak/zer0-skill-pack",
@@ -229,6 +242,17 @@
       "category": "crypto",
       "trust_level": "community",
       "skills": ["atrium-publish", "atrium-scout", "atrium-earnings"]
+    },
+    {
+      "repo": "mnemedb/aeon-skill-pack-mneme",
+      "name": "aeon-skill-pack-mneme",
+      "description": "Mneme as Aeon's persistent memory layer — vector recall across runs, entity/relation graph, live Base chain streams, async LLM 'dream' reflections, and schema-aware /chat. One MNEME_API_KEY (scope *), zero infra. Drops into any Aeon agent and replaces the markdown+JSON memory dir with a real Postgres schema that's searchable, traversable, and stream-aware.",
+      "author": "mnemedb",
+      "license": "MIT",
+      "homepage": "https://mnemedb.dev",
+      "category": "memory",
+      "trust_level": "community",
+      "skills": ["mneme-remember", "mneme-recall", "mneme-entity", "mneme-relate", "mneme-find", "mneme-dream", "mneme-watch", "mneme-ask"]
     }
   ]
 }

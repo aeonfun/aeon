@@ -51,6 +51,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
+| <img src="https://mnemedb.dev/mnemelogo.png" width="36" height="36" alt="Mneme logo"> | Mneme | [mnemedb.dev](https://mnemedb.dev) · [skill pack](https://github.com/mnemedb/aeon-skill-pack-mneme) |
 | <img src="https://pbs.twimg.com/profile_images/2022853922847887363/7hiICjWl_400x400.jpg" width="36" height="36" alt="MythosForge logo"> | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
 | <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2050098727512322048/bS61Qs6N_400x400.jpg" width="36" height="36" alt="NoelClaw logo"> | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
