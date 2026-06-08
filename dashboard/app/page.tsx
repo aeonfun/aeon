@@ -12,13 +12,14 @@ import { TopBar } from '../components/TopBar'
 import { HQOverview } from '../components/HQOverview'
 import { SkillDetail } from '../components/SkillDetail'
 import { SecretsPanel } from '../components/SecretsPanel'
+import { StrategyPanel } from '../components/StrategyPanel'
 import { McpPanel } from '../components/McpPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
 
 export default function Dashboard() {
-  const [view, setView] = useState<'hq' | 'secrets' | 'mcp'>('hq')
+  const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
 
   const [skills, setSkills] = useState<Skill[]>([])
@@ -47,6 +48,9 @@ export default function Dashboard() {
   const [authLoading, setAuthLoading] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
+  const [strategy, setStrategy] = useState('')
+  const [strategyLoaded, setStrategyLoaded] = useState(false)
+  const [strategySaving, setStrategySaving] = useState(false)
   const [mcpServers, setMcpServers] = useState<Record<string, Record<string, unknown>>>({})
   const [mcpLoaded, setMcpLoaded] = useState(false)
   const [mcpSaving, setMcpSaving] = useState(false)
@@ -63,6 +67,7 @@ export default function Dashboard() {
   useEffect(() => { fetchData() }, [fetchData])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
   useEffect(() => { setFeedLoading(true); fetch('/api/outputs').then(r => r.ok ? r.json() : { outputs: [] }).then(d => setOutputs(d.outputs || [])).finally(() => setFeedLoading(false)) }, [feedKey])
+  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
   useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() : null).then(d => { if (d) { setMcpServers(d.servers || {}); setMcpLoaded(true) } }).catch(() => {}) } }, [view, mcpLoaded])
 
   const toggleSkill = async (n: string, en: boolean) => { setBusy(b => ({ ...b, [n]: true })); try { const r = await fetch('/api/skills', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, enabled: en }) }); if (r.ok) { setSkills(s => s.map(sk => sk.name === n ? { ...sk, enabled: en } : sk)); flash(`${displayName(n)} ${en ? 'on duty' : 'off duty'}`); setHasChanges(true) } } finally { setBusy(b => ({ ...b, [n]: false })) } }
@@ -78,6 +83,7 @@ export default function Dashboard() {
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, value }) }); if (r.ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n }) }); if (r.ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
+  const saveStrategy = async (content: string) => { setStrategySaving(true); try { const r = await fetch('/api/strategy', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) }); if (r.ok) { setStrategy(content); flash('Strategy saved'); setHasChanges(true) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const r = await fetch('/api/mcp', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ servers }) }); if (r.ok) { setMcpServers(servers); flash('MCP servers saved'); setHasChanges(true) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
 
   // --- Derived ---
@@ -112,7 +118,10 @@ export default function Dashboard() {
 
         <div className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} busy={busy} onSave={saveSecret} onDelete={deleteSecret} />
+            <SecretsPanel secrets={secrets} busy={busy} repo={repo} onSave={saveSecret} onDelete={deleteSecret} />
+          )}
+          {view === 'strategy' && !selectedSkill && (
+            <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} onSave={saveStrategy} />
           )}
           {view === 'mcp' && !selectedSkill && (
             <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} onSave={saveMcp} />

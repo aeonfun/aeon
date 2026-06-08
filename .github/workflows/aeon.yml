@@ -129,7 +129,10 @@ jobs:
 
       - name: Install Claude Code
         if: steps.work.outputs.mode != ''
-        run: npm install -g @anthropic-ai/claude-code
+        # Pinned for supply-chain safety — a freshly-published (or compromised)
+        # version is never pulled automatically. Bump deliberately after reviewing
+        # the release notes: https://github.com/anthropics/claude-code/releases
+        run: npm install -g @anthropic-ai/claude-code@2.1.168
 
       - name: Validate skill secrets
         if: steps.work.outputs.mode != ''

@@ -1,18 +1,20 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import type { Secret } from '../lib/types'
 import { inputCls } from '../lib/utils'
 import { Scramble } from './ui/Animated'
+import { InstantModeCard } from './InstantModeCard'
 
 interface SecretsPanelProps {
   secrets: Secret[]
   busy: Record<string, boolean>
+  repo: string
   onSave: (name: string, value: string) => void
   onDelete: (name: string) => void
 }
 
-export function SecretsPanel({ secrets, busy, onSave, onDelete }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, busy, repo, onSave, onDelete }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -50,7 +52,8 @@ export function SecretsPanel({ secrets, busy, onSave, onDelete }: SecretsPanelPr
       {['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Skill Keys'].map((group, gi) => {
         const gs = secrets.filter(s => s.group === group); if (!gs.length) return null
         return (
-          <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">
+          <Fragment key={group}>
+          <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
             <div className="flex items-center gap-3 mb-4">
               <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">
                 {String(gi + 1).padStart(2, '0')} / {group}
@@ -84,6 +87,8 @@ export function SecretsPanel({ secrets, busy, onSave, onDelete }: SecretsPanelPr
               ))}
             </div>
           </section>
+          {group === 'Telegram' && <InstantModeCard repo={repo} />}
+          </Fragment>
         )
       })}
       <div>{addingSecret ? (<div className="space-y-2"><input type="text" value={newSecretName} onChange={(e) => setNewSecretName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))} placeholder="SECRET_NAME" autoFocus className={inputCls} />{newSecretName && <div className="flex gap-2"><input type="password" value={secretValue} onChange={(e) => setSecretValue(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSave(newSecretName)} placeholder="value..." className={inputCls} /><button onClick={() => handleSave(newSecretName)} disabled={!secretValue.trim()} className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 disabled:opacity-50">Save</button></div>}<button onClick={() => { setAddingSecret(false); setNewSecretName(''); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-primary-70">Cancel</button></div>) : <button onClick={() => setAddingSecret(true)} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors">+ Add Credential</button>}</div>
