@@ -2218,8 +2218,8 @@
             "schedule": "workflow_dispatch",
             "var": "",
             "files": 0,
-            "sha": "",
-            "updated": "2026-06-07",
+            "sha": "af5fb9d",
+            "updated": "2026-06-08",
             "install": "./add-skill aaronjmars/aeon vigil-revoke"
         },
         {
