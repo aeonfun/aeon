@@ -485,6 +485,7 @@ To browse known packs without installing, run `./install-skill-pack --list` — 
 | [morning-briefing](https://github.com/sparkleware/morning-briefing) | 1 | Daily morning briefing — date, day-of-week, current weather, and a sparkly closer |
 | [aeon-skill-pack-noelclaw](https://github.com/noelclaw/aeon-skill-pack-noelclaw) | 2 | Persistent versioned memory and multi-agent swarm coordination — save typed artifacts to Noel Vault and manage shared agent session state across runs |
 | [signa](https://github.com/codexvritra/signa) (`--path aeon-skills`) | 10 | Full SIGNA suite — wallet-signed cross-platform agent messaging, multi-agent broadcast and delegate, plus Bankr resolver / launches, gitlawb activity, MiroShark sim stats and wallet-signed sim fire |
+| [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Mneme as Aeon's persistent memory layer — vector recall across runs, entity/relation graph, live Base chain streams, async LLM "dream" reflections, and schema-aware /chat. One `MNEME_API_KEY`, zero infra. |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
