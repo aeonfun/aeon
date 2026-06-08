@@ -3,15 +3,9 @@ import { execFileSync } from 'child_process'
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
-import type { SkillMetrics, Insight } from '@/lib/types'
+import type { SkillMetrics, Insight, GhRunJson } from '@/lib/types'
 
-interface RunRecord {
-  name: string
-  status: string
-  conclusion: string | null
-  createdAt: string
-  updatedAt: string
-}
+type RunRecord = Pick<GhRunJson, 'name' | 'status' | 'conclusion' | 'createdAt' | 'updatedAt'>
 
 export async function GET() {
   try {

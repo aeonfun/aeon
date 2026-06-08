@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
+import type { GhRunJson } from '@/lib/types'
 
-interface GhRunView {
-  status: string
-  conclusion: string | null
-  displayTitle: string
-  jobs: Array<{ name: string; status: string; conclusion: string | null }>
-}
+type GhRunView = Pick<GhRunJson, 'status' | 'conclusion' | 'displayTitle' | 'jobs'>
 
 export async function GET(
   _request: Request,

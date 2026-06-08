@@ -4,6 +4,19 @@ export interface Secret { name: string; group: string; description: string; isSe
 export interface SkillOutput { filename: string; skill: string; timestamp: string; spec: { root: string; state?: Record<string, unknown>; elements: Record<string, SpecElement> } }
 export interface SpecElement { type: string; props?: Record<string, unknown>; children?: string[] }
 
+// Shape of `gh run list`/`gh run view --json` output. Routes Pick<> the columns they request.
+export interface GhRunJson {
+  databaseId: number
+  name: string
+  status: string
+  conclusion: string | null
+  createdAt: string
+  updatedAt: string
+  url: string
+  displayTitle: string
+  jobs: Array<{ name: string; status: string; conclusion: string | null }>
+}
+
 export type GatewayProvider = 'direct' | 'bankr'
 
 export interface UploadFile { path: string; content: string }

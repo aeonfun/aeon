@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
+import type { Secret } from '@/lib/types'
 
-const BUILTIN_SECRETS = [
+const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'CLAUDE_CODE_OAUTH_TOKEN', group: 'Core', description: 'Claude Code OAuth token (set via Authenticate button)', either: 'auth' },
   { name: 'ANTHROPIC_API_KEY', group: 'Core', description: 'Anthropic or Anthropic-compatible API key for Claude Code', either: 'auth' },
   { name: 'BANKR_LLM_KEY', group: 'Core', description: 'Bankr Gateway API key (bk_...) — enable at bankr.bot/api' },
@@ -53,7 +54,7 @@ export async function GET() {
   const setSecrets = new Set(listSecrets())
 
   // Start with builtin secrets
-  const secrets = BUILTIN_SECRETS.map(s => ({
+  const secrets: Secret[] = BUILTIN_SECRETS.map(s => ({
     ...s,
     isSet: setSecrets.has(s.name),
   }))

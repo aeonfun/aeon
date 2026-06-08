@@ -11,6 +11,7 @@ import {
 } from '@/lib/config'
 import { deleteDirectory } from '@/lib/github'
 import { parseFrontmatter } from '@/lib/frontmatter'
+import type { Skill } from '@/lib/types'
 
 function getRepoSlug(): string {
   if (process.env.GITHUB_REPO) return process.env.GITHUB_REPO
@@ -44,7 +45,7 @@ export async function GET() {
       }),
     )
 
-    const skills = dirNames.map(name => {
+    const skills: Skill[] = dirNames.map(name => {
       const m = meta.find(d => d.name === name)
       return {
         name,
