@@ -548,6 +548,75 @@ Start with [`examples/README.md`](examples/README.md) for the full setup walk-th
 
 ---
 
+## MCP servers in skill runs
+
+The section above exposes Aeon skills *as* MCP tools. This is the other direction: letting your skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions.
+
+It's **opt-in and safe** — nothing changes until you add a `.mcp.json` at the repo root. With no file, runs are byte-identical to before.
+
+### Quick start
+
+```bash
+cp .mcp.json.example .mcp.json   # then edit, commit, push
+```
+
+The example ships two working servers:
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN}" }
+    },
+    "sequential-thinking": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  }
+}
+```
+
+- **`github`** works out of the box — `GITHUB_TOKEN` is already in the runner's environment.
+- **`sequential-thinking`** is a no-auth stdio server — nothing to configure.
+
+On the next run, the runner loads `.mcp.json` (`--mcp-config .mcp.json --strict-mcp-config`) and auto-allows every server's tools (`mcp__github`, `mcp__sequential-thinking`, …). A skill can then just say *"use the github MCP server to …"*.
+
+Or add servers from the dashboard: the **MCP** tab writes `.mcp.json` for you and tells you which secret each server needs.
+
+### Servers that need a secret
+
+Reference secrets with `${VAR}` — **never commit the value**:
+
+```json
+"acme": {
+  "type": "http",
+  "url": "https://mcp.acme.dev/v1",
+  "headers": { "Authorization": "Bearer ${ACME_API_KEY}" }
+}
+```
+
+Then make `ACME_API_KEY` reachable in the run:
+
+1. Add it as a repo **secret** (dashboard → Settings → Add Credential, or `gh secret set ACME_API_KEY`).
+2. **Map it into the workflow env** so the runner can expand it — add one line under the `Run` step's `env:` in `.github/workflows/aeon.yml` (and `messages.yml` if you use it from chat):
+   ```yaml
+   ACME_API_KEY: ${{ secrets.ACME_API_KEY }}
+   ```
+   (Secrets already mapped — `GITHUB_TOKEN`, `XAI_API_KEY`, `ALCHEMY_API_KEY`, `COINGECKO_API_KEY`, `NEYNAR_*`, … — need no extra wiring.)
+
+**Safety valve:** if a `.mcp.json` references a `${VAR}` that is unset (and has no `${VAR:-default}` fallback), the runner **skips MCP for that run and logs a warning** instead of letting the config parse-failure break the skill. Set the secret, and the next run picks it up.
+
+### Notes
+
+- **Scope is global** — `.mcp.json` applies to every skill. Per-skill scoping isn't supported yet.
+- **Tool visibility:** add `"alwaysLoad": true` to a server entry to force its tools into context every run (otherwise they load on demand via tool search).
+- **Sandbox:** stdio servers run as local processes in the runner (`npx`/`node`/`python` are available); HTTP/SSE servers are reached over the network. No prefetch/postprocess pattern is needed — Claude Code manages the MCP connection itself.
+
+---
+
 ## Fleet Watcher (optional authorization layer)
 
 Add inline ALLOW/BLOCK authorization in front of every skill run. Each skill workflow asks your self-hosted [Fleet Watcher](https://github.com/yourorg/fleet-watcher) control plane *"is this allowed?"* before Claude starts, and reports the outcome after Claude finishes. BLOCK = workflow exits non-zero, Claude never runs, no side-effects, audit ref recorded.

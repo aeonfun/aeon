@@ -672,6 +672,27 @@ jobs:
           ALLOWED="$ALLOWED,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
           ALLOWED="$ALLOWED,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"
 
+          # MCP (opt-in): when a project .mcp.json exists, load it for this run
+          # and allow each server's tools. No-op when the file is absent. If the
+          # config references an env var that is unset and has no ":-" default,
+          # skip MCP with a warning rather than break the run on a parse failure.
+          MCP_FLAGS=()
+          if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
+            MCP_MISSING=""
+            for v in $(grep -oE '\$\{[A-Z_][A-Z0-9_]*\}' .mcp.json | sed -E 's/[${}]//g' | sort -u); do
+              [ -z "${!v:-}" ] && MCP_MISSING="$MCP_MISSING $v"
+            done
+            if [ -n "$MCP_MISSING" ]; then
+              echo "::warning::.mcp.json references unset env:${MCP_MISSING} — skipping MCP this run"
+            else
+              for srv in $(jq -r '.mcpServers | keys[]' .mcp.json); do
+                ALLOWED="$ALLOWED,mcp__${srv}"
+              done
+              MCP_FLAGS=(--mcp-config .mcp.json --strict-mcp-config)
+              echo "MCP enabled: $(jq -r '.mcpServers | keys | join(", ")' .mcp.json)"
+            fi
+          fi
+
           SOURCE="$_MSG_SOURCE"
           MESSAGE="$_MSG_MESSAGE"
           PROMPT="Today is $TODAY. You received this message from the user on ${SOURCE}:
@@ -689,7 +710,7 @@ jobs:
           Always send your response back via ./notify so the user sees it."
           if ! CLAUDE_OUTPUT=$(echo "$PROMPT" | claude -p - \
             --model "$MODEL" --allowedTools "$ALLOWED" \
-            --output-format json 2>&1); then
+            "${MCP_FLAGS[@]}" --output-format json 2>&1); then
             echo "::error::Claude CLI failed. Output: $CLAUDE_OUTPUT"
             exit 1
           fi
