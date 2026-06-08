@@ -1,6 +1,7 @@
 {
   "name": "aeon-mcp",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "MCP server that exposes all Aeon skills as Claude tools",
   "type": "module",
   "main": "dist/index.js",

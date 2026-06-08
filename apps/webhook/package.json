@@ -1,6 +1,7 @@
 {
   "name": "aeon-telegram-webhook",
   "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "description": "Cloudflare Worker that relays Telegram messages to an Aeon fork via GitHub repository_dispatch for ~1s response time.",
   "scripts": {

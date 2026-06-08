@@ -1,6 +1,7 @@
 {
   "name": "aeon-a2a-server",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "A2A Protocol Gateway — expose all Aeon skills to any AI agent framework",
   "type": "module",
   "main": "dist/index.js",
