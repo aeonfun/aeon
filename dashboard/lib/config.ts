@@ -8,7 +8,7 @@ export interface SkillConfig {
   model: string
 }
 
-export interface GatewayConfig {
+interface GatewayConfig {
   provider: GatewayProvider
 }
 

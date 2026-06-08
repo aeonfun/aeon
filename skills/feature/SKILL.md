@@ -11,7 +11,7 @@ This skill is the **multi-repo** sibling of `external-feature`:
 | | `feature` (this skill) | `external-feature` |
 |---|---|---|
 | Per run | Iterates **every** watched repo, ships one PR per repo | **Single** repo per run |
-| Repo source | `memory/topics/watched-repos.md` | `memory/topics/watched-repos.md` (or `${var}` override) |
+| Repo source | `memory/watched-repos.md` | `memory/watched-repos.md` (or `${var}` override) |
 | Use it for | Weekly broad sweep — keep every repo moving | Targeted enhancement on one repo |
 | Notification | One per successfully-built feature (per repo) | One per run |
 
@@ -23,7 +23,7 @@ If `soul/SOUL.md` and `soul/STYLE.md` are populated, read both and match the ope
 
 ## Config
 
-This skill reads the candidate repo list from `memory/topics/watched-repos.md`. If the file is missing or empty, log `FEATURE_NO_CONFIG` and exit cleanly (no notification — empty config is not an error).
+This skill reads the candidate repo list from `memory/watched-repos.md`. If the file is missing or empty, log `FEATURE_NO_CONFIG` and exit cleanly (no notification — empty config is not an error).
 
 Format: one `owner/repo` per line. Markdown bullets like `- owner/repo` are fine; comment lines starting with `#` are ignored.
 
@@ -31,7 +31,7 @@ Format: one `owner/repo` per line. Markdown bullets like `- owner/repo` are fine
 
 ### 1. Load the target list
 
-Parse `memory/topics/watched-repos.md` into a list of `owner/repo` entries.
+Parse `memory/watched-repos.md` into a list of `owner/repo` entries.
 
 If `${var}` is set, restrict the list to **the first repo only** and use `${var}` as the feature spec for it.
 

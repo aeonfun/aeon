@@ -2,7 +2,7 @@ import { readdir, readFile, stat } from 'fs/promises'
 import { resolve, join, sep, normalize } from 'path'
 
 const REPO_ROOT = resolve(process.cwd(), '..')
-export const MEMORY_ROOT = join(REPO_ROOT, 'memory')
+const MEMORY_ROOT = join(REPO_ROOT, 'memory')
 
 const TOPICS_DIR = join(MEMORY_ROOT, 'topics')
 const LOGS_DIR = join(MEMORY_ROOT, 'logs')

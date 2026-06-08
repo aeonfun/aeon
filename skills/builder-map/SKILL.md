@@ -15,7 +15,7 @@ When a repo, framework, or stack attracts builders — forks, third-party apps, 
 
 ## Config
 
-This skill reads watched repos from `memory/topics/watched-repos.md`. Each row should declare a primary repo and optional search keywords. Example format:
+This skill reads watched repos from `memory/watched-repos.md`. Each row should declare a primary repo and optional search keywords. Example format:
 
 ```markdown
 # Watched Repos
@@ -26,7 +26,7 @@ This skill reads watched repos from `memory/topics/watched-repos.md`. Each row s
 | acme/dataengine | dataengine, acmedata | trading / quant ecosystem |
 ```
 
-If `memory/topics/watched-repos.md` doesn't exist, fall back to `memory/watched-repos.md` (legacy single-line OWNER format). If neither exists, log `BUILDER_MAP_SKIP: no watched repos configured` and stop — there's nothing to map.
+If `memory/watched-repos.md` doesn't exist or lists no repos, log `BUILDER_MAP_SKIP: no watched repos configured` and stop — there's nothing to map.
 
 ## Steps
 
@@ -62,7 +62,7 @@ Extract:
 
 ### 2. Scan forks for each watched repo
 
-For each repo from `memory/topics/watched-repos.md`:
+For each repo from `memory/watched-repos.md`:
 
 ```bash
 gh api "repos/${OWNER}/${REPO}/forks" --paginate \
@@ -97,7 +97,7 @@ gh api "search/repositories?q=${KEYWORD}+in:readme+in:description&sort=updated&p
 ```
 
 Filter:
-- Exclude the owners listed in `memory/topics/watched-repos.md` (their own repos)
+- Exclude the owners listed in `memory/watched-repos.md` (their own repos)
 - Exclude repos that are clearly forks already captured in step 2
 - Focus on repos updated in last 30 days
 

@@ -11,7 +11,7 @@ tags: [dev, growth]
 
 If `${var}` is set, skip selection and work on that repo directly.
 
-Read `memory/MEMORY.md`, `memory/topics/watched-repos.md`, and the last 7 days of `memory/logs/` before starting.
+Read `memory/MEMORY.md`, `memory/watched-repos.md`, and the last 7 days of `memory/logs/` before starting.
 
 ## Voice
 
@@ -21,7 +21,7 @@ If `soul/SOUL.md` and `soul/STYLE.md` are populated, read both and match the ope
 
 This skill reads two operator-controlled files:
 
-- **`memory/topics/watched-repos.md`** — the candidate repo pool. One `owner/repo` per line (markdown bullets like `- owner/repo` are fine; comment lines starting with `#` are ignored). If the file is missing or empty, log `REPO_REVIVE_NO_CONFIG` and exit cleanly (no notification — empty config is not an error).
+- **`memory/watched-repos.md`** — the candidate repo pool. One `owner/repo` per line (markdown bullets like `- owner/repo` are fine; comment lines starting with `#` are ignored). If the file is missing or empty, log `REPO_REVIVE_NO_CONFIG` and exit cleanly (no notification — empty config is not an error).
 - **`memory/topics/stale-models.md`** — list of AI model names the operator considers stale and the current model names they want to see referenced instead. Used only when scoring stale-model fixes. Example shape:
 
   ```markdown
@@ -49,7 +49,7 @@ This skill reads two operator-controlled files:
 
 If `${var}` is set, use that repo. Otherwise:
 
-- Parse `memory/topics/watched-repos.md` into a list of `owner/repo` candidates
+- Parse `memory/watched-repos.md` into a list of `owner/repo` candidates
 - For each candidate, fetch metadata via `gh api`:
   ```bash
   gh api "repos/$REPO" --jq '{stars: .stargazers_count, pushed_at, archived, default_branch}'
