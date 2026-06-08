@@ -68,7 +68,7 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, enabled, schedule, var: skillVar, model, skillModel, jsonrenderEnabled } = await request.json()
+    const { name, enabled, schedule, var: skillVar, model, skillModel, jsonrenderEnabled } = await request.json() as { name?: string; enabled?: boolean; schedule?: string; var?: string; model?: string; skillModel?: string; jsonrenderEnabled?: boolean }
     const { content, sha } = await getFileContent('aeon.yml')
     let updated = content
 
@@ -107,7 +107,7 @@ export async function PATCH(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const { name } = await request.json()
+    const { name } = await request.json() as { name?: string }
     if (!name || !/^[a-z][a-z0-9-]*$/.test(name)) {
       return NextResponse.json({ error: 'Invalid skill name' }, { status: 400 })
     }

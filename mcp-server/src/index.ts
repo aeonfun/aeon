@@ -210,7 +210,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
   }
 
-  const varValue = (request.params.arguments?.var as string) ?? "";
+  const varArg = request.params.arguments?.var;
+  const varValue = typeof varArg === "string" ? varArg : "";
   const output = await runSkill(slug, varValue);
 
   return {

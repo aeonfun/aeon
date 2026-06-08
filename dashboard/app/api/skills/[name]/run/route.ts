@@ -20,7 +20,7 @@ export async function POST(
     let skillVar = ''
     let model = ''
     try {
-      const body = await request.json()
+      const body = await request.json() as { var?: string; model?: string }
       if (body.var && typeof body.var === 'string') {
         skillVar = body.var.replace(/[^a-zA-Z0-9_ .\-/#@]/g, '')
       }

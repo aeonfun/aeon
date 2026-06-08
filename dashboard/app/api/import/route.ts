@@ -12,7 +12,11 @@ import { parseFrontmatter } from '@/lib/frontmatter'
 
 export async function POST(request: Request) {
   try {
-    const { action, repo, skills: skillNames } = await request.json()
+    const { action, repo, skills: skillNames } = await request.json() as { action?: string; repo?: string; skills?: string[] }
+
+    if (!repo) {
+      return NextResponse.json({ error: 'repo required' }, { status: 400 })
+    }
 
     if (action === 'list') {
       // Check both root and skills/ subdirectory
@@ -55,10 +59,13 @@ export async function POST(request: Request) {
     }
 
     if (action === 'install') {
+      if (!skillNames) {
+        return NextResponse.json({ error: 'skills required' }, { status: 400 })
+      }
       const installed: string[] = []
       const failed: string[] = []
 
-      for (const name of skillNames as string[]) {
+      for (const name of skillNames) {
         const content =
           (await getRemoteFileContent(repo, `${name}/SKILL.md`)) ||
           (await getRemoteFileContent(repo, `skills/${name}/SKILL.md`))

@@ -13,8 +13,9 @@ function isLocal() {
 }
 
 function getConfig() {
-  const token = process.env.GITHUB_TOKEN!
-  const repo = process.env.GITHUB_REPO!
+  const token = process.env.GITHUB_TOKEN
+  const repo = process.env.GITHUB_REPO
+  if (!token || !repo) throw new Error('github.ts: getConfig() requires GITHUB_TOKEN and GITHUB_REPO (non-local mode)')
   return { token, repo }
 }
 
@@ -46,7 +47,7 @@ export async function getFileContent(path: string): Promise<{ content: string; s
   }
 }
 
-export async function updateFile(path: string, content: string, sha: string, _message: string) {
+export async function updateFile(path: string, content: string, sha: string, _message: string): Promise<unknown> {
   if (isLocal()) {
     await writeFile(join(REPO_ROOT, path), content, 'utf-8')
     return { ok: true }
@@ -66,7 +67,7 @@ export async function updateFile(path: string, content: string, sha: string, _me
   return res.json()
 }
 
-export async function createFile(path: string, content: string, message: string) {
+export async function createFile(path: string, content: string, message: string): Promise<unknown> {
   if (isLocal()) {
     const fullPath = join(REPO_ROOT, path)
     await mkdir(join(fullPath, '..'), { recursive: true })

@@ -309,11 +309,25 @@ function buildAgentCard(): Record<string, unknown> {
 
 type RpcResult<T> = T | { error: { code: number; message: string } };
 
+// Narrowing guards for untrusted JSON-RPC params (params is Record<string, unknown>).
+function asString(v: unknown): string | undefined {
+  return typeof v === "string" ? v : undefined;
+}
+function asNumber(v: unknown): number | undefined {
+  return typeof v === "number" ? v : undefined;
+}
+function isRecord(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+function isA2AMessage(v: unknown): v is A2AMessage {
+  return isRecord(v) && Array.isArray((v as { parts?: unknown }).parts);
+}
+
 function handleTasksSend(params: Record<string, unknown>): RpcResult<Task> {
-  const id = (params.id as string | undefined) ?? randomUUID();
-  const message = params.message as A2AMessage | undefined;
-  const skillId = params.skillId as string | undefined;
-  const varOverride = params.var as string | undefined;
+  const id = asString(params.id) ?? randomUUID();
+  const message = isA2AMessage(params.message) ? params.message : undefined;
+  const skillId = asString(params.skillId);
+  const varOverride = asString(params.var);
 
   let slug: string | undefined;
   let varValue = varOverride ?? "";
@@ -348,7 +362,7 @@ function handleTasksSend(params: Record<string, unknown>): RpcResult<Task> {
     status: { state: "submitted", timestamp: new Date().toISOString() },
     artifacts: [],
     history: message ? [message] : [],
-    metadata: params.metadata as Record<string, unknown> | undefined,
+    metadata: isRecord(params.metadata) ? params.metadata : undefined,
     skillSlug: slug,
     _subscribers: [],
   };
@@ -362,19 +376,19 @@ function handleTasksSend(params: Record<string, unknown>): RpcResult<Task> {
 }
 
 function handleTasksGet(params: Record<string, unknown>): RpcResult<Record<string, unknown>> {
-  const id = params.id as string;
+  const id = asString(params.id) ?? "";
   const task = tasks.get(id);
   if (!task) {
     return { error: { code: -32602, message: `Task not found: ${id}` } };
   }
-  const historyLength = (params.historyLength as number | undefined) ?? task.history.length;
+  const historyLength = asNumber(params.historyLength) ?? task.history.length;
   // Omit internal _subscribers from response
   const { _subscribers: _, ...safe } = task;
   return { ...safe, history: task.history.slice(-historyLength) };
 }
 
 function handleTasksCancel(params: Record<string, unknown>): RpcResult<Record<string, unknown>> {
-  const id = params.id as string;
+  const id = asString(params.id) ?? "";
   const task = tasks.get(id);
   if (!task) {
     return { error: { code: -32602, message: `Task not found: ${id}` } };

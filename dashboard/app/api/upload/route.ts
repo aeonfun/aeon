@@ -84,9 +84,9 @@ function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } 
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json()
-    const files = body.files as UploadFile[]
-    const overrideName = body.name as string | undefined
+    const body = await request.json() as { files?: UploadFile[]; name?: string }
+    const files = body.files
+    const overrideName = body.name
 
     if (!files || files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 })

@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
   }
 
-  const { name, value } = await request.json()
+  const { name, value } = await request.json() as { name?: string; value?: string }
 
   if (!name || !value) {
     return NextResponse.json({ error: 'name and value required' }, { status: 400 })
@@ -102,7 +102,7 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: 'GitHub CLI not authenticated' }, { status: 503 })
   }
 
-  const { name } = await request.json()
+  const { name } = await request.json() as { name?: string }
 
   if (!name || !VALID_SECRET_NAME.test(name)) {
     return NextResponse.json({ error: 'Invalid secret name' }, { status: 400 })
