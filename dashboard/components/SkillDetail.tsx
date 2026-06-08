@@ -48,7 +48,6 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
 
   return (
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
-      {/* ───── HERO ───── */}
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
@@ -96,7 +95,6 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
         </div>
       </section>
 
-      {/* ───── 01 / SHIFT ───── */}
       <Section
         index="01"
         label="Shift schedule"
@@ -120,7 +118,6 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
         )}
       </Section>
 
-      {/* ───── 02 / BRIEF ───── */}
       <Section
         index="02"
         label="Assignment brief"
@@ -154,7 +151,6 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
         )}
       </Section>
 
-      {/* ───── 03 / MODEL ───── */}
       <Section index="03" label="Capability level">
         <select
           value={skill.model}
@@ -166,7 +162,6 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
         </select>
       </Section>
 
-      {/* ───── 04 / ACTIVITY ───── */}
       <Section index="04" label="Activity log">
         <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
           {skillRuns.slice(0, 10).map(run => (

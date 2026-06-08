@@ -49,7 +49,6 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
 
   return (
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
-      {/* ───── HERO ───── */}
       <section className="relative overflow-hidden border border-[rgba(250,250,250,0.10)] bg-aeon-panel">
         <div className="dither" aria-hidden="true" />
         <div className="relative z-10 px-8 pt-10 pb-8">
@@ -84,7 +83,6 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
         </dl>
       </section>
 
-      {/* ───── 01 / DEPARTMENTS ───── */}
       <Section index="01" label="Departments">
         <ul
           ref={spotRef}
@@ -116,7 +114,6 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
         </ul>
       </Section>
 
-      {/* ───── 02 / ACTIVITY ───── */}
       <Section index="02" label="Recent activity">
         <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
           {runs.slice(0, 8).map(run => (
@@ -141,7 +138,6 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
         </div>
       </Section>
 
-      {/* ───── MARQUEE BAND ───── */}
       <VelocityMarquee
         className="overflow-hidden border-y border-aeon-fg/30 whitespace-nowrap py-3 font-display uppercase tracking-wide text-base text-aeon-fg/85"
         trackClassName="inline-block will-change-transform"
