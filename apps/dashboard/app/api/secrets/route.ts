@@ -17,13 +17,26 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'SLACK_WEBHOOK_URL', group: 'Slack', description: 'Webhook URL for notifications' },
   { name: 'SENDGRID_API_KEY', group: 'Email', description: 'SendGrid API key — create at sendgrid.com/settings/api_keys' },
   { name: 'NOTIFY_EMAIL_TO', group: 'Email', description: 'Recipient email address for skill notifications' },
-  { name: 'DEVTO_API_KEY', group: 'Distribution', description: 'Dev.to API key — generate at dev.to/settings/extensions' },
-  { name: 'NEYNAR_API_KEY', group: 'Distribution', description: 'Neynar API key — used by farcaster-digest (read) and syndicate-article (cast)' },
-  { name: 'NEYNAR_SIGNER_UUID', group: 'Distribution', description: 'Neynar managed signer UUID — required to publish Farcaster casts' },
-  { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI/Grok API key (for tweet skills)' },
-  { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key (for crypto skills)' },
-  { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key (for on-chain skills)' },
-  { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access' },
+  // Skill Keys — third-party API keys individual skills call. Each is opt-in:
+  // unset means the skills that need it skip rather than fail. Names below are
+  // the exact env vars referenced across skills/ (verified by global scan).
+  { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI / Grok API key — tweet & X-analysis skills. Create at console.x.ai' },
+  { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key — crypto price/market skills. Get one at coingecko.com/en/api' },
+  { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key — on-chain RPC/data skills. Create at dashboard.alchemy.com' },
+  { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key — on-chain skills (tx-explain, rug-scan, holder-concentration); lifts rate limits. Get one at etherscan.io/myapikey' },
+  { name: 'BASESCAN_KEY', group: 'Skill Keys', description: 'Basescan API key — Base on-chain skills (fund-flow, linked-wallets, investigation-report). Get one at basescan.org/myapikey' },
+  { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) — token distribution & treasury skills (distribute-tokens, vigil, treasury-info). Enable at bankr.bot/api' },
+  { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token — deploy skills (deploy-prototype, vercel-projects). Create at vercel.com/account/tokens' },
+  { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token — image/diagram generation (technical-explainer). Get one at replicate.com/account/api-tokens' },
+  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key — emailed digests (morning-brief, weekly-review). Create at resend.com/api-keys' },
+  { name: 'LIQUIDPAD_API_KEY', group: 'Skill Keys', description: 'Liquidpad API key — token-launch skill (liquidpad-launch). From api.liquidpad.site' },
+  { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key — ad campaign skills (schedule-ads, create-campaign). From api.admanage.ai' },
+  { name: 'SUPERNOTES_API_KEY', group: 'Skill Keys', description: 'Supernotes API key — note-taking skill. Create in Supernotes → Settings → API' },
+  { name: 'CONGRESS_GOV_API_KEY', group: 'Skill Keys', description: 'Congress.gov API key — regulatory monitoring (reg-monitor). Sign up at api.congress.gov/sign-up' },
+  { name: 'DEVTO_API_KEY', group: 'Skill Keys', description: 'Dev.to API key — article syndication. Generate at dev.to/settings/extensions' },
+  { name: 'NEYNAR_API_KEY', group: 'Skill Keys', description: 'Neynar API key — Farcaster read/cast (farcaster-digest, syndicate-article). Get one at neynar.com' },
+  { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID — required to publish Farcaster casts' },
+  { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access — cross-repo skills & deploys' },
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
