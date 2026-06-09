@@ -2,6 +2,7 @@ import { execFileSync } from 'child_process'
 import { REPO_ROOT } from './gh'
 import { getFileContent, updateFile, isLocal } from './github'
 import { updateGatewayInConfig } from './config'
+import { GATEWAY_PROVIDERS } from './types'
 import type { GatewayProvider } from './types'
 
 // Commit a working-tree file and push it to the instance repo. In local mode
@@ -17,10 +18,12 @@ function commitAndPush(file: string, message: string) {
 }
 
 // Set aeon.yml's gateway.provider and make the change land on the repo the
-// workflow reads. A Bankr (bk_) key uses `bankr`; removing it — or any other
-// key — reverts to `direct`. No-ops when the provider is already correct.
+// workflow reads. Gateway keys (Bankr bk_, OpenRouter sk-or-, …) select their
+// provider; removing one — or any other key — reverts to `direct`. No-ops when
+// the provider is already correct.
 export async function syncGatewayProvider(provider: string) {
-  const next: GatewayProvider = provider === 'bankr' ? 'bankr' : 'direct'
+  const next: GatewayProvider = GATEWAY_PROVIDERS.includes(provider as GatewayProvider)
+    ? (provider as GatewayProvider) : 'direct'
   const { content, sha } = await getFileContent('aeon.yml')
   const updated = updateGatewayInConfig(content, next)
   if (updated === content) return

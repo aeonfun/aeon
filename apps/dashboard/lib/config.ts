@@ -1,4 +1,5 @@
 import { parseDocument, isMap, isPair, isScalar } from 'yaml'
+import { GATEWAY_PROVIDERS } from './types'
 import type { GatewayProvider } from './types'
 
 export interface SkillConfig {
@@ -49,7 +50,7 @@ export function parseConfig(raw: string): AeonConfig {
   const gatewayNode = doc.get('gateway')
   if (isMap(gatewayNode)) {
     const provider = String(getMapValue(gatewayNode, 'provider') ?? 'direct')
-    gateway = { provider: provider === 'bankr' ? 'bankr' : 'direct' }
+    gateway = { provider: GATEWAY_PROVIDERS.includes(provider as GatewayProvider) ? (provider as GatewayProvider) : 'direct' }
   }
 
   let jsonrenderEnabled = false
