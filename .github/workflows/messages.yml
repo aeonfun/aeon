@@ -1,5 +1,5 @@
 name: Messages & Scheduler
-run-name: "${{ inputs.message && format('msg ({0}): {1}', inputs.source || 'user', inputs.message) || 'tick: schedule + poll' }}"
+run-name: "${{ inputs.message && format('msg ({0}): {1}', inputs.source || 'user', inputs.message) || (github.event_name == 'repository_dispatch' && github.event.action != 'cron-tick' && format('msg ({0}): {1}', github.event.action, github.event.client_payload.message)) || 'tick: schedule + poll' }}"
 
 on:
   schedule:

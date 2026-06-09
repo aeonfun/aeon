@@ -370,11 +370,13 @@ Aeon publishes articles to a GitHub Pages gallery and an RSS feed.
 
 ### Telegram instant mode
 
-Default polling has up to a 5-min delay. Deploy the self-contained Cloudflare Worker in [`apps/webhook/`](apps/webhook/) for ~1s response time — one click, into your own Cloudflare account (no shared infra, no credential custody):
+Replies aren't instant by default — Aeon runs on GitHub Actions and polls Telegram every 5 minutes. That's by design: it's built for autonomous background work, not real-time chat. For ~1-second replies, deploy the self-contained Cloudflare Worker in [`apps/webhook/`](apps/webhook/) into your own Cloudflare account (no shared infra, no credential custody) — a one-time setup of about 5 minutes:
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/apps/webhook)
 
-Setup details in [`apps/webhook/README.md`](apps/webhook/README.md). The poller skips Telegram automatically once a webhook is active, so the two never conflict.
+The deploy wizard prompts for the four variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GITHUB_REPO`, `GITHUB_TOKEN`) and stores them as encrypted Worker secrets, so the Worker comes out configured — then point your bot at it with `setWebhook`. The dashboard walks through all three steps with one-click webhook registration: **Settings → Credentials → Telegram → ⚡ Instant replies**. The button needs a **public** source repo — on a private fork, mirror `apps/webhook/` to a small public repo and point the button URL there.
+
+Full guide: [`apps/webhook/README.md`](apps/webhook/README.md). The poller detects an active webhook (`getWebhookInfo`) and skips Telegram polling automatically, so the two never conflict.
 
 ### Remote dashboard access
 
