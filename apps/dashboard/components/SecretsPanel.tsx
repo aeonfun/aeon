@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect } from 'react'
 import type { Secret, Skill } from '../lib/types'
 import { inputCls, displayName } from '../lib/utils'
 import { Scramble } from './ui/Animated'
@@ -86,8 +86,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
       {['Core', 'Telegram', 'Discord', 'Slack', 'Email', 'Skill Keys'].map((group, gi) => {
         const gs = secrets.filter(s => s.group === group); if (!gs.length) return null
         return (
-          <Fragment key={group}>
-          <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
+          <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">
             <div className="flex items-center gap-3 mb-4">
               <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">
                 {String(gi + 1).padStart(2, '0')} / {group}
@@ -153,10 +152,9 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                   )}
                 </div>
               ))}
+              {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
             </div>
           </section>
-          {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
-          </Fragment>
         )
       })}
       <div>{addingSecret ? (<div className="space-y-2"><input type="text" value={newSecretName} onChange={(e) => setNewSecretName(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, ''))} placeholder="SECRET_NAME" autoFocus className={inputCls} />{newSecretName && <div className="flex gap-2"><input type="password" value={secretValue} onChange={(e) => setSecretValue(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSave(newSecretName)} placeholder="value..." className={inputCls} /><button onClick={() => handleSave(newSecretName)} disabled={!secretValue.trim()} className="bg-eva-green text-white text-[11px] px-4 py-2 font-mono hover:opacity-90 disabled:opacity-50">Save</button></div>}<button onClick={() => { setAddingSecret(false); setNewSecretName(''); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-primary-70">Cancel</button></div>) : <button onClick={() => setAddingSecret(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-eva-orange hover:border-eva-orange/40 transition-colors">+ Add Credential</button>}</div>
