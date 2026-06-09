@@ -155,7 +155,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
               ))}
             </div>
           </section>
-          {group === 'Telegram' && <InstantModeCard repo={repo} />}
+          {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
           </Fragment>
         )
       })}

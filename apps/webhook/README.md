@@ -27,33 +27,34 @@ npx wrangler deploy
 
 ## Configure
 
-After the first deploy the Worker exists but has no config. Set these as
-**secrets** (Cloudflare dashboard → Workers & Pages → your worker → Settings →
-Variables → *Add variable* → *Encrypt*), or via the CLI:
+The deploy button prompts for all four values during the wizard (declared in
+[`.dev.vars.example`](.dev.vars.example)) and stores them as encrypted Worker
+secrets — the Worker comes out configured. Deploying from a clone instead? Set
+them via the CLI:
 
 ```bash
 npx wrangler secret put TELEGRAM_BOT_TOKEN        # bot token from @BotFather
 npx wrangler secret put TELEGRAM_CHAT_ID          # your chat id (only this chat is allowed)
 npx wrangler secret put GITHUB_REPO               # owner/repo of your Aeon fork
 npx wrangler secret put GITHUB_TOKEN              # GitHub PAT (see scopes below)
-npx wrangler secret put TELEGRAM_WEBHOOK_SECRET   # optional but recommended — any random string
 ```
 
 | Secret | Required | Notes |
 |--------|----------|-------|
 | `TELEGRAM_BOT_TOKEN` | yes | From [@BotFather](https://t.me/BotFather). |
 | `TELEGRAM_CHAT_ID` | yes | Only messages from this chat are relayed; everything else is dropped. |
-| `GITHUB_REPO` | yes | `owner/repo`, e.g. `aaronjmars/aeon`. |
+| `GITHUB_REPO` | yes | `owner/repo` of your Aeon fork, e.g. `aaronjmars/aeon` — not the worker repo the deploy button creates. |
 | `GITHUB_TOKEN` | yes | Fine-grained PAT scoped to your fork with **Contents: read/write** and **Actions: read/write**, or a classic token with `repo`. |
-| `TELEGRAM_WEBHOOK_SECRET` | recommended | Shared secret that lets the Worker reject forged calls. Use the same value when registering the webhook (below). |
+
+To edit values later: Cloudflare dashboard → Workers & Pages → your worker →
+Settings → Variables and secrets.
 
 ## Point Telegram at the Worker
 
-Register your Worker URL as the bot's webhook. Include the optional secret so
-Telegram signs every call (the Worker verifies it):
+Register your Worker URL as the bot's webhook:
 
 ```bash
-curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://aeon-telegram-webhook.<your-subdomain>.workers.dev&secret_token=<YOUR_WEBHOOK_SECRET>"
+curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://aeon-telegram-webhook.<your-subdomain>.workers.dev"
 ```
 
 Verify it took:
@@ -85,7 +86,7 @@ retries).
 
 ```
 Telegram → POST update → Worker
-  ├─ verify method + secret_token
+  ├─ verify method
   ├─ ignore (200) anything not a text message from TELEGRAM_CHAT_ID
   └─ POST repository_dispatch {event_type: telegram-message, client_payload:{message,…}}
        → GitHub Actions: Messages & Scheduler `run` job acts on it (~1s)

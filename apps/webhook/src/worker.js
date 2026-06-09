@@ -9,15 +9,12 @@
  * Each user deploys this into their OWN Cloudflare account — there is no shared
  * infrastructure and no credential custody. See README.md for deployment.
  *
- * Required vars/secrets (set after deploy):
+ * Required vars/secrets (the deploy wizard prompts for them; see .dev.vars.example):
  *   TELEGRAM_BOT_TOKEN        bot token from @BotFather
  *   TELEGRAM_CHAT_ID          the only chat allowed to command the agent
  *   GITHUB_REPO               "owner/repo" of your Aeon fork
  *   GITHUB_TOKEN              GitHub PAT — fine-grained with Contents: read/write
  *                             and Actions: read/write on your fork (or classic `repo`)
- *   TELEGRAM_WEBHOOK_SECRET   (optional, recommended) shared secret; set the same
- *                             value as setWebhook's `secret_token` so forged
- *                             requests are rejected
  */
 export default {
   async fetch(request, env) {

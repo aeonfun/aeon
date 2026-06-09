@@ -8,6 +8,22 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
+  "cloudflare": {
+    "bindings": {
+      "TELEGRAM_BOT_TOKEN": {
+        "description": "Bot token from @BotFather — open t.me/BotFather, send /newbot (or /token for an existing bot), and paste the token it replies with."
+      },
+      "TELEGRAM_CHAT_ID": {
+        "description": "Your Telegram chat ID — only this chat can command the agent. Message your bot, then open api.telegram.org/bot<TOKEN>/getUpdates and copy chat.id."
+      },
+      "GITHUB_REPO": {
+        "description": "owner/repo of YOUR Aeon fork (where the GitHub Actions run) — not this worker repo."
+      },
+      "GITHUB_TOKEN": {
+        "description": "GitHub PAT — fine-grained with Contents: read/write + Actions: read/write on your fork, or a classic token with repo scope."
+      }
+    }
+  },
   "devDependencies": {
     "wrangler": "4.98.0"
   }

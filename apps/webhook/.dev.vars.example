@@ -1,0 +1,8 @@
+# Declared here so the "Deploy to Cloudflare" wizard prompts for each value
+# during deploy and stores it as an encrypted Worker secret. This file holds
+# names only — never put real values in it. For local dev, copy to .dev.vars
+# (gitignored) and fill in.
+TELEGRAM_BOT_TOKEN=        # paste from @BotFather
+TELEGRAM_CHAT_ID=
+GITHUB_REPO=owner/your-aeon-fork
+GITHUB_TOKEN=
