@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { inputCls } from '../lib/utils'
+import type { Secret } from '../lib/types'
 
 type McpServer = Record<string, unknown>
 type McpServers = Record<string, McpServer>
@@ -11,6 +12,7 @@ interface McpPanelProps {
   servers: McpServers
   loading: boolean
   saving: boolean
+  secrets: Secret[]
   onSave: (servers: McpServers) => void
   onSetSecret: (name: string, value: string) => void
 }
@@ -38,9 +40,20 @@ function transportOf(server: McpServer): string {
   return typeof server.command === 'string' ? 'stdio' : 'http'
 }
 
-export function McpPanel({ servers, loading, saving, onSave, onSetSecret }: McpPanelProps) {
+export function McpPanel({ servers, loading, saving, secrets, onSave, onSetSecret }: McpPanelProps) {
   const [draft, setDraft] = useState<McpServers>(servers)
   useEffect(() => { setDraft(servers) }, [servers])
+
+  // Per-row token entry — set an existing server's referenced secret inline,
+  // exactly like a credential row in Settings (paste value → Set → saved to GH).
+  const [secretDraft, setSecretDraft] = useState<Record<string, string>>({})
+  const isSecretSet = (n: string) => secrets.some(s => s.name === n && s.isSet)
+  const saveRowSecret = (n: string) => {
+    const v = (secretDraft[n] ?? '').trim()
+    if (!v) return
+    onSetSecret(n, v)
+    setSecretDraft(d => ({ ...d, [n]: '' }))
+  }
 
   const [adding, setAdding] = useState(false)
   const [name, setName] = useState('')
@@ -135,10 +148,23 @@ export function McpPanel({ servers, loading, saving, onSave, onSetSecret }: McpP
                         </div>
                         <div className="text-[11px] text-primary-40 font-mono truncate mt-0.5">{describe(s)}</div>
                         {refs.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-1.5">
-                            {refs.map(r => (
-                              <span key={r} className="text-[10px] font-mono text-eva-orange border border-eva-orange/30 px-1.5 py-0.5">${'{'}{r}{'}'}</span>
-                            ))}
+                          <div className="mt-2 space-y-1.5">
+                            {refs.map(r => {
+                              const ok = isSecretSet(r)
+                              return (
+                                <div key={r} className="flex items-center gap-2">
+                                  <span className={`text-[10px] font-mono border px-1.5 py-0.5 shrink-0 ${ok ? 'text-eva-green border-eva-green/30' : 'text-eva-orange border-eva-orange/30'}`}>${'{'}{r}{'}'}</span>
+                                  {ok ? (
+                                    <span className="text-[10px] font-mono text-eva-green">✓ set</span>
+                                  ) : (
+                                    <>
+                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste token value — saved to GitHub, wired into every run" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors" />
+                                      <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="bg-eva-green text-white text-[10px] px-3 py-1 font-mono hover:opacity-90 disabled:opacity-40 shrink-0 transition-opacity">Set</button>
+                                    </>
+                                  )}
+                                </div>
+                              )
+                            })}
                           </div>
                         )}
                       </div>
@@ -189,11 +215,10 @@ export function McpPanel({ servers, loading, saving, onSave, onSetSecret }: McpP
             </div>
 
             {/* Footer: secrets reminder + save */}
-            {allRefs.length > 0 && (
+            {allRefs.some(r => !isSecretSet(r)) && (
               <p className="mt-5 text-[11px] text-primary-40 leading-relaxed">
-                <span className="text-eva-orange">Secrets:</span> {allRefs.map(r => <span key={r} className="font-mono text-primary-70">{r} </span>)}
-                — set the value{allRefs.length > 1 ? 's' : ''} above when adding a server, or in <span className="text-primary-70">Settings</span>.
-                The runner wires {allRefs.length > 1 ? 'them' : 'it'} into every run automatically; until set, runs skip MCP rather than fail.
+                <span className="text-eva-orange">Secrets:</span> paste each unset token in the box on its server above — it saves straight to GitHub
+                and the runner wires it into every run automatically. Until set, runs skip MCP rather than fail.
               </p>
             )}
             <div className="flex items-center justify-between mt-4">
