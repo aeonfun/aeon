@@ -35,6 +35,7 @@ skills:
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
   defi-overview: { enabled: false, schedule: "0 12 * * *" }
+  liquidpad-launch: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: token concept (≥6 chars, or JSON {name,symbol,theme}); deploys a token on Base via LiquidPad through a prefetch/postprocess shim. Requires LIQUIDPAD_API_KEY (read by the shim, not the skill). Set LIQUIDPAD_DRY_RUN=1 to simulate.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
   rug-scan: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — rug-pull risk verdict
@@ -50,6 +51,7 @@ skills:
   tx-explain: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: tx hash — plain-English decode
   holder-concentration: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — distribution/HHI analysis
   vigil-revoke: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet:spender:token (triplet of 0x40-hex addresses) — revoke a single live ERC-20 approval on Base via Bankr. Confirms live allowance, submits approve(spender, 0), waits for receipt. Operator-initiated only — pairs with wallet-risk-weekly + approval-audit. Requires BANKR_API_KEY (read-write, Wallet API). No auto-retry, no bulk, no scheduled cron.
+  vigil: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet or token address on Base — keyless read-only onchain security scan (approvals, honeypot, rugpull indicators, contract-safety score) via VIGIL API. Pairs with vigil-revoke for the write action.
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
   monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume

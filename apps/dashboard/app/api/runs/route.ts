@@ -3,19 +3,21 @@ import { execFileSync } from 'child_process'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
 import type { GhRunJson } from '@/lib/types'
 
-type GhRunListItem = Pick<GhRunJson, 'databaseId' | 'name' | 'status' | 'conclusion' | 'createdAt' | 'url' | 'displayTitle'>
+type GhRunListItem = Pick<GhRunJson, 'databaseId' | 'name' | 'status' | 'conclusion' | 'createdAt' | 'url' | 'displayTitle' | 'event'>
 
 export async function GET() {
   try {
     const out = execFileSync(
       'gh',
-      ['run', 'list', ...ghArgsRepo(), '--json', 'databaseId,name,status,conclusion,createdAt,url,displayTitle', '--limit', '30'],
+      ['run', 'list', ...ghArgsRepo(), '--json', 'databaseId,name,status,conclusion,createdAt,url,displayTitle,event', '--limit', '30'],
       { stdio: 'pipe', cwd: REPO_ROOT },
     ).toString()
     const raw: GhRunListItem[] = JSON.parse(out)
     const runs = raw
-      // Fork-maintenance runs (upstream sync) are noise, not Aeon skill
-      // activity — keep them out of the feed and runs list.
+      // Aeon skill activity fires on workflow_dispatch (dashboard "Run") or
+      // schedule (cron). Repo CI (push / pull_request) and fork-maintenance
+      // runs (upstream sync) are noise — keep them out of the feed and runs list.
+      .filter((r) => r.event !== 'push' && r.event !== 'pull_request')
       .filter((r) => r.name !== 'Sync from upstream')
       .map((r) => ({
         id: r.databaseId,

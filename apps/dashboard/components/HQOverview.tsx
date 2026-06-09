@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import type { Skill, Run } from '../lib/types'
-import { DEPARTMENTS } from '../lib/constants'
+import { CATEGORIES } from '../lib/constants'
 import { timeAgo } from '../lib/utils'
 import { Scramble, Flip, VelocityMarquee } from './ui/Animated'
 
@@ -37,14 +37,15 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
     card.style.setProperty('--my', `${e.clientY - r.top}px`)
   }
 
-  const departments = new Map<string, Skill[]>()
-  skills.forEach(s => { const t = s.tags?.[0] || 'meta'; if (!departments.has(t)) departments.set(t, []); departments.get(t)!.push(s) })
+  const cats = CATEGORIES
+    .map(c => ({ ...c, skills: skills.filter(s => (s.category || 'meta') === c.key) }))
+    .filter(c => c.skills.length)
 
   const stats: { label: string; value: number; tone?: string }[] = [
     { label: 'Team', value: skills.length },
     { label: 'On duty', value: enabledCount, tone: 'text-eva-green' },
     { label: 'Working', value: workingCount, tone: 'text-eva-orange' },
-    { label: 'Departments', value: departments.size },
+    { label: 'Categories', value: cats.length },
   ]
 
   return (
@@ -63,7 +64,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
             <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {departments.size} department{departments.size === 1 ? '' : 's'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle — waiting for the next cron tick.'}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} categor{cats.length === 1 ? 'y' : 'ies'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle — waiting for the next cron tick.'}
           </p>
         </div>
 
@@ -83,30 +84,29 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
         </dl>
       </section>
 
-      <Section index="01" label="Departments">
+      <Section index="01" label="Categories">
         <ul
           ref={spotRef}
           onMouseMove={onMove}
           className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]"
         >
-          {[...departments.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([tag, ts]) => {
-            const d = DEPARTMENTS[tag] || DEPARTMENTS.meta
-            const en = ts.filter(s => s.enabled).length
+          {cats.map(cat => {
+            const en = cat.skills.filter(s => s.enabled).length
             return (
               <li
-                key={tag}
+                key={cat.key}
                 className="spotlight relative overflow-hidden bg-aeon-bg px-6 py-5 flex items-center gap-5 transition-colors hover:bg-aeon-panel-2"
               >
                 <span className="font-display leading-none text-aeon-red" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
-                  <Flip value={ts.length} />
+                  <Flip value={cat.skills.length} />
                 </span>
                 <div className="min-w-0">
-                  <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{d.label}</div>
-                  <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">{en} active · {ts.length - en} idle</div>
+                  <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{cat.label}</div>
+                  <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">{en} active · {cat.skills.length - en} idle</div>
                 </div>
                 <span
                   className="ml-auto w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: en > 0 ? d.color : 'rgba(250,250,250,0.15)' }}
+                  style={{ backgroundColor: en > 0 ? cat.color : 'rgba(250,250,250,0.15)' }}
                 />
               </li>
             )
@@ -144,7 +144,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
       >
         {Array.from({ length: 2 }).map((_, k) => (
           <span key={k} aria-hidden={k === 1 ? 'true' : undefined} className="inline-block px-7">
-            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ON DUTY <i className="not-italic text-aeon-red">★</i> {departments.size} DEPARTMENTS <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
+            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ON DUTY <i className="not-italic text-aeon-red">★</i> {cats.length} CATEGORIES <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
           </span>
         ))}
       </VelocityMarquee>

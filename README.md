@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction — it'll leverage 193 skills like deep research, PR reviews, market monitoring, Vercel deploys, and more to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction — it'll leverage 195 skills like deep research, PR reviews, market monitoring, Vercel deploys, and more to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -96,7 +96,7 @@ The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whos
 
 ![Skills](./assets/skills-aeon-193.jpg)
 
-193 skills across 8 categories. Every skill is independently installable, schedulable, and chainable.
+195 skills across 8 categories. Every skill is independently installable, schedulable, and chainable.
 
 **Core** is the load-bearing set — the 15 skills that make Aeon autonomous rather than just scheduled:
 
@@ -110,9 +110,9 @@ Deep dive: [`docs/CORE.md`](docs/CORE.md) — per-skill mechanics, exit taxonomi
 |----------|--------|
 | **Core** (15) | 🧬 `autoresearch`,`create-skill`,`skill-health`,`skill-repair`,`skill-evals`,`self-improve` · 🛰️ `spawn-instance`,`fleet-control`,`fleet-scorecard`,`contributor-reward`,`distribute-tokens` · 🤖 `external-feature`,`feature`,`deploy-prototype`,`vuln-scanner` |
 | **Research & Content** (28) | `agent-displacement`,`ai-framework-watch`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`competitor-launch-radar`,`deep-research`,`digest`,`fetch-tweets`,`hacker-news-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
-| **Dev & Code** (36) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release-tracker`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge-queue`,`pr-review`,`pr-skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage-monitor`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-security-audit` |
+| **Dev & Code** (37) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release-tracker`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge-queue`,`pr-review`,`pr-skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage-monitor`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-security-audit` |
 | **Crypto & Markets** (28) | `aixbt-pulse`,`compute-pulse`,`defi-monitor`,`defi-overview`,`fear-divergence-scout`,`liquidpad-launch`,`market-context-refresh`,`monitor-kalshi`,`monitor-polymarket`,`monitor-runners`,`narrative-tracker`,`on-chain-monitor`,`picks-tracker`,`pm-intel`,`pm-manipulation`,`pm-pulse`,`polymarket`,`polymarket-comments`,`price-threshold-alert`,`rwa-pulse`,`token-alert`,`token-movers`,`token-pick`,`token-report`,`treasury-info`,`unlock-monitor`,`wallet-digest`,`x402-monitor` |
-| **Onchain Security** (14) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock-check`,`rug-scan`,`tx-explain`,`vigil`,`wallet-profile`,`wallet-risk-weekly` |
+| **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock-check`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk-weekly` |
 | **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt-launch`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn-draft`,`skill-of-the-day`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
 | **Productivity** (19) | `action-converter`,`daily-routine`,`deal-flow`,`evening-recap`,`follow-up-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`morning-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`weekly-review`,`weekly-shiplog` |
 | **Meta / Agent** (35) | `api-health-probe`,`atrium-catalog-watcher`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`fleet-skill-adoption`,`fleet-state`,`fork-contributor-leaderboard`,`fork-first-run-alert`,`fork-health-score`,`fork-skill-digest`,`fork-skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-structural-dedupe`,`onboard`,`operator-scorecard`,`run-frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-security-scan`,`skill-update-check`,`sparkleware-catalog`,`spend-monitor`,`star-momentum-alert`,`update-gallery` |
@@ -318,7 +318,7 @@ Claude only installs and runs when a skill actually matches.
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 aeon.yml                 ← skill schedules, chains, reactive triggers, and enabled flags
-skills.json              ← machine-readable skill catalog (193 skills)
+skills.json              ← machine-readable skill catalog (195 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
 ./onboard                ← validate the fork's setup (secrets, workflows, channels) — see Quick start
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
@@ -334,7 +334,7 @@ skills/                  ← each skill is a SKILL.md prompt file
   article/
   digest/
   heartbeat/
-  ...                    ← 193 skills total
+  ...                    ← 195 skills total
 workflow-templates/      ← GitHub Agentic Workflow templates (.md)
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
@@ -686,12 +686,12 @@ Aeon is "the most autonomous agent framework" — an AI agent system that runs u
 
 ### How many built-in skills does Aeon have?
 
-193 skills across 8 categories:
+195 skills across 8 categories:
 - **Core** (15): the load-bearing set — skill-repair, autoresearch, spawn-instance, vuln-scanner, etc.
 - **Research & Content** (28): deep-research, paper-digest, beat-tracker, etc.
-- **Dev & Code** (36): pr-review, github-monitor, auto-merge, etc.
+- **Dev & Code** (37): pr-review, github-monitor, auto-merge, etc.
 - **Crypto & Markets** (28): defi-monitor, token-alert, picks-tracker, etc.
-- **Onchain Security** (14): rug-scan, contract-audit, honeypot-check, etc.
+- **Onchain Security** (15): rug-scan, contract-audit, honeypot-check, etc.
 - **Social & Writing** (18): write-tweet, syndicate-article, thread-writer, etc.
 - **Productivity** (19): morning-brief, weekly-review, goal-tracker, etc.
 - **Meta / Agent** (35): memory-flush, batch-health, api-health-probe, etc.
@@ -717,7 +717,7 @@ Aeon primarily uses Claude (Anthropic) via API key or OAuth token. Check the das
 
 ### What is the skill dependency graph?
 
-See [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map showing how 193 skills connect, with the self-healing loop and content pipeline highlighted.
+See [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map showing how 195 skills connect, with the self-healing loop and content pipeline highlighted.
 
 ### Can I create custom skills?
 

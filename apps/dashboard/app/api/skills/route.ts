@@ -33,30 +33,40 @@ export async function GET() {
     const config = parseConfig(configResult.content)
     const dirNames = skillDirs.filter(d => d.type === 'dir').map(d => d.name)
 
+    // Canonical slug → category map from the generated catalog (skills.json).
+    // Falls back to 'meta' for any skill not yet in the catalog.
+    const categoryBySlug: Record<string, string> = {}
+    try {
+      const { content: catalogRaw } = await getFileContent('skills.json')
+      const catalog = JSON.parse(catalogRaw) as { skills?: Array<{ slug: string; category: string }> }
+      for (const s of catalog.skills ?? []) categoryBySlug[s.slug] = s.category
+    } catch { /* catalog optional — categories default to meta */ }
+
     const meta = await Promise.all(
       dirNames.map(async (name) => {
         try {
           const { content } = await getFileContent(`skills/${name}/SKILL.md`)
           const { description, tags } = parseFrontmatter(content)
-          return { name, description, tags }
+          return { name, description, tags, found: true }
         } catch {
-          return { name, description: '', tags: [] as string[] }
+          // No SKILL.md → this is a support/data dir (e.g. skills/security/), not a skill.
+          return { name, description: '', tags: [] as string[], found: false }
         }
       }),
     )
 
-    const skills: Skill[] = dirNames.map(name => {
-      const m = meta.find(d => d.name === name)
-      return {
-        name,
-        description: m?.description || '',
-        tags: m?.tags || [],
-        enabled: config.skills[name]?.enabled ?? false,
-        schedule: config.skills[name]?.schedule || '0 12 * * *',
-        var: config.skills[name]?.var || '',
-        model: config.skills[name]?.model || '',
-      }
-    })
+    const skills: Skill[] = meta
+      .filter(m => m.found)
+      .map(m => ({
+        name: m.name,
+        description: m.description,
+        tags: m.tags,
+        category: categoryBySlug[m.name] || 'meta',
+        enabled: config.skills[m.name]?.enabled ?? false,
+        schedule: config.skills[m.name]?.schedule || '0 12 * * *',
+        var: config.skills[m.name]?.var || '',
+        model: config.skills[m.name]?.model || '',
+      }))
 
     const repo = getRepoSlug()
     return NextResponse.json({ skills, model: config.model, gateway: config.gateway, repo, jsonrenderEnabled: config.jsonrenderEnabled })

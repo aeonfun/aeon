@@ -11,7 +11,7 @@ Today is ${today}. Write a Show HN post — plus two shorter platform variants �
 
 ## Why this skill exists
 
-Show HN is a one-shot moment. A front-page run for a project at this scale (~500 stars, ~165 forks, ~193 skills across 8 categories, an external skill-packs ecosystem, and an onchain security layer) historically adds 50–200 stars in 48h — but the difference between front page and dead post is largely the title and the first 200 words. Those are exactly the parts that suffer when written last-minute. This skill is the inverse of `repo-article` (which turns one event into one article every day): it turns the entire project state into one launch post on demand, so the launch text is ready before the launch.
+Show HN is a one-shot moment. A front-page run for a project at this scale (~500 stars, ~165 forks, ~195 skills across 8 categories, an external skill-packs ecosystem, and an onchain security layer) historically adds 50–200 stars in 48h — but the difference between front page and dead post is largely the title and the first 200 words. Those are exactly the parts that suffer when written last-minute. This skill is the inverse of `repo-article` (which turns one event into one article every day): it turns the entire project state into one launch post on demand, so the launch text is ready before the launch.
 
 The Reddit variants exist because cross-posting verbatim from HN to r/MachineLearning or r/selfhosted reads as low-effort. Each subreddit has a different framing that lands; this skill writes both.
 
@@ -67,7 +67,7 @@ Write to the `## Show HN` section of `articles/show-hn-draft-${today}.md`.
 
 **Title** — single line, ≤80 chars, follows HN convention `Show HN: <project>` + a one-clause hook. Examples to match in shape (do **not** copy verbatim):
 - `Show HN: Aeon — an autonomous agent that runs on GitHub Actions and patches itself`
-- `Show HN: I built an agent that ships its own PRs while I sleep — 193 skills, no babysitting`
+- `Show HN: I built an agent that ships its own PRs while I sleep — 195 skills, no babysitting`
 
 Pick a title that names exactly **one** non-obvious capability. Avoid: "framework," "platform," "AI-powered," vague superlatives. The title must pass a sceptical-engineer test — would they click it?
 

@@ -111,8 +111,10 @@ export async function GET() {
       const enabledSkills: string[] = []
       const lines = yml.split('\n')
       for (const line of lines) {
-        const m = line.match(/^\s+(\S+):\s*\{.*enabled:\s*true/)
-        if (m) enabledSkills.push(m[1])
+        // Capture only the inline brace body ([^}]*) so a trailing
+        // "# ... enabled:true ..." comment can't trigger a false positive.
+        const m = line.match(/^\s+(\S+):\s*\{([^}]*)\}/)
+        if (m && /enabled:\s*true/.test(m[2])) enabledSkills.push(m[1])
       }
 
       for (const skillName of enabledSkills) {

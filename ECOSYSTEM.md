@@ -23,6 +23,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2055896281751633920/NeawiT3G_400x400.png" width="36" height="36" alt="AntFleet logo"> | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
 | <img src="https://atriumhermes.tech/atrium-mark.jpg" width="36" height="36" alt="Atrium logo"> | Atrium | [@atriumhermes](https://x.com/atriumhermes) · [atriumhermes.tech](https://atriumhermes.tech) |
 | <img src="https://coin-images.coingecko.com/coins/images/102173323/large/autonomopoly.jpg?1779000184" width="36" height="36" alt="Autonomopoly logo"> | Autonomopoly | [GeckoTerminal](https://www.geckoterminal.com/base/pools/0x84771828f44fcfbaae08e271ff74e272cc2934a3348ec724a475941185ce4eb9) |
+| <img src="https://pbs.twimg.com/profile_images/2063611600771092482/LwifcR7-_400x400.jpg" width="36" height="36" alt="Azzle logo"> | Azzle | [@azzleAI](https://x.com/azzleAI) |
 | <img src="https://pbs.twimg.com/profile_images/1951545493936545792/AriqgxQN_400x400.jpg" width="36" height="36" alt="Bankr logo"> | Bankr | [@bankrbot](https://x.com/bankrbot) |
 | <img src="https://pbs.twimg.com/profile_images/2054481928422862848/7AOz3CwK_400x400.jpg" width="36" height="36" alt="Bankrsynth logo"> | Bankrsynth | [@bankrsynth](https://x.com/bankrsynth) |
 | <img src="https://pbs.twimg.com/profile_images/2056801122858196992/FNUojvPG_400x400.jpg" width="36" height="36" alt="BaseHouse logo"> | BaseHouse | [@basehouse_org](https://x.com/basehouse_org) |

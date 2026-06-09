@@ -159,7 +159,7 @@ export function McpPanel({ servers, loading, saving, secrets, onSave, onSetSecre
                                     <span className="text-[10px] font-mono text-eva-green">✓ set</span>
                                   ) : (
                                     <>
-                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token — saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors" />
+                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token — saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors cursor-target" />
                                       <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="bg-eva-green text-white text-[10px] px-3 py-1 font-mono hover:opacity-90 disabled:opacity-40 shrink-0 transition-opacity">Set</button>
                                     </>
                                   )}

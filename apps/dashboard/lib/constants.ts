@@ -19,13 +19,19 @@ export const DAYS = [
   { label: 'Sat', value: 6 }, { label: 'Sun', value: 0 },
 ]
 
-export const DEPARTMENTS: Record<string, { label: string; color: string }> = {
-  meta:     { label: 'Operations',     color: '#6B7280' },
-  crypto:   { label: 'Treasury',       color: '#FF6B1A' },
-  dev:      { label: 'Engineering',    color: '#3B82F6' },
-  news:     { label: 'Intelligence',   color: '#06B6D4' },
-  social:   { label: 'Communications', color: '#EC4899' },
-  research: { label: 'R&D',            color: '#8B5CF6' },
-  content:  { label: 'Publishing',     color: '#43C165' },
-  creative: { label: 'Creative',       color: '#F59E0B' },
-}
+// Canonical 8 skill categories. Mirrors get_category() in generate-skills-json
+// and the `category` field baked into skills.json — the single source of truth.
+// Ordered for display (Core first); every skill maps to exactly one key.
+export const CATEGORIES: { key: string; label: string; short: string; color: string }[] = [
+  { key: 'core',             label: 'Core',               short: 'Core',         color: '#E5484D' },
+  { key: 'research',         label: 'Research & Content', short: 'Research',     color: '#8B5CF6' },
+  { key: 'dev',              label: 'Dev & Code',         short: 'Dev',          color: '#3B82F6' },
+  { key: 'crypto',           label: 'Crypto & Markets',   short: 'Crypto',       color: '#FF6B1A' },
+  { key: 'onchain-security', label: 'Onchain Security',   short: 'Onchain',      color: '#EAB308' },
+  { key: 'social',           label: 'Social & Writing',   short: 'Social',       color: '#EC4899' },
+  { key: 'productivity',     label: 'Productivity',       short: 'Productivity', color: '#06B6D4' },
+  { key: 'meta',             label: 'Meta / Agent',       short: 'Meta',         color: '#9CA3AF' },
+]
+
+export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
+  Object.fromEntries(CATEGORIES.map(c => [c.key, { label: c.label, color: c.color }]))

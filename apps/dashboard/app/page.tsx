@@ -105,6 +105,7 @@ export default function Dashboard() {
         skills={skills} runs={runs} repo={repo}
         enabledCount={enabledCount} workingCount={workingCount}
         onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
+        onShowImport={() => setShowImport(true)}
       />
 
       <div className="flex-1 flex flex-col min-w-0">
@@ -113,7 +114,7 @@ export default function Dashboard() {
           authStatus={authStatus} authLoading={authLoading}
           pulling={pulling} syncing={syncing} hasChanges={hasChanges} behind={behind}
           onSetupAuth={() => setShowAuthModal(true)} onUpdateModel={updateModel}
-          onShowImport={() => setShowImport(true)} onPull={pullFromGithub} onSync={syncToGithub}
+          onPull={pullFromGithub} onSync={syncToGithub}
         />
 
         <div className="flex-1 overflow-y-auto p-[var(--space-lg)]">

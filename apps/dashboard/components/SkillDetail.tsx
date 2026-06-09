@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, GatewayProvider } from '../lib/types'
-import { MODELS, BANKR_EXTRA_MODELS, DEPARTMENTS } from '../lib/constants'
+import { MODELS, BANKR_EXTRA_MODELS, CATEGORY_BY_KEY } from '../lib/constants'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
 import { timeAgo } from '../lib/utils'
@@ -42,9 +42,16 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
   const [editingVar, setEditingVar] = useState(false)
   const [varDraft, setVarDraft] = useState('')
 
-  const dept = skill.tags?.[0] ? DEPARTMENTS[skill.tags[0]] : null
+  const cat = CATEGORY_BY_KEY[skill.category || 'meta'] || null
   const skillRuns = runs.filter(r => r.workflow.toLowerCase().includes(skill.name))
   const st = getSkillStatus(skill.name, skill.enabled, runs)
+
+  // Scramble locks each word to `white-space: nowrap`, so a long unbreakable
+  // token (e.g. "INVESTIGATION", 13 chars) can't wrap and would overflow the
+  // hero box. Scale the max font-size down by the longest word so it always fits.
+  const title = displayName(skill.name)
+  const longestWord = title.split(' ').reduce((m, w) => Math.max(m, w.length), 0)
+  const titleMaxPx = longestWord >= 13 ? 50 : longestWord >= 11 ? 60 : longestWord >= 9 ? 72 : 88
 
   return (
     <div className="max-w-5xl mx-auto pb-16 space-y-10">
@@ -54,7 +61,7 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
           <div className="flex items-center gap-4 mb-4 flex-wrap">
             <span className="text-[11px] font-mono uppercase tracking-[0.28em] text-aeon-red inline-flex items-center gap-3">
               <span className="w-7 h-px bg-aeon-red" />
-              {dept ? dept.label : 'Skill'}
+              {cat ? cat.label : 'Skill'}
             </span>
             <span className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.18em] text-primary-50">
               <span className={statusDot(st.color)} />
@@ -62,8 +69,8 @@ export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun
             </span>
           </div>
           <h1 className="font-display uppercase leading-[0.92] tracking-tight text-aeon-fg break-words"
-              style={{ fontSize: 'clamp(40px, 6.5vw, 88px)' }}>
-            <Scramble key={skill.name} text={displayName(skill.name)} />
+              style={{ fontSize: `clamp(32px, 6vw, ${titleMaxPx}px)` }}>
+            <Scramble key={skill.name} text={title} />
           </h1>
           {skill.description && (
             <p className="mt-4 max-w-2xl text-sm text-primary-70 leading-relaxed">{skill.description}</p>
