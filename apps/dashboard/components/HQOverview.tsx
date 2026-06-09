@@ -97,7 +97,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
                 key={cat.key}
                 className="spotlight relative overflow-hidden bg-aeon-bg px-6 py-5 flex items-center gap-5 transition-colors hover:bg-aeon-panel-2"
               >
-                <span className="font-display leading-none text-aeon-red" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
+                <span className="font-display leading-none text-aeon-red shrink-0 whitespace-nowrap" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
                   <Flip value={cat.skills.length} />
                 </span>
                 <div className="min-w-0">

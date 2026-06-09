@@ -22,6 +22,7 @@ interface LeftSidebarProps {
 export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, enabledCount, workingCount, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
+  const [enabledOnly, setEnabledOnly] = useState(false)
 
   return (
     <div className="w-[240px] border-r border-[rgba(250,250,250,0.10)] flex flex-col shrink-0 bg-aeon-panel">
@@ -75,6 +76,14 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, 
           >
             All
           </button>
+          <button
+            onClick={() => setEnabledOnly(v => !v)}
+            title="Show only skills on duty"
+            className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${enabledOnly ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-green" />
+            Enabled
+          </button>
           {CATEGORIES.map(cat => {
             const active = categoryFilter === cat.key
             return (
@@ -96,8 +105,9 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, 
           if (categoryFilter && cat.key !== categoryFilter) return null
           const catSkills = skills.filter(s => (s.category || 'meta') === cat.key)
           if (!catSkills.length) return null
-          const filtered = skillSearch ? catSkills.filter(s => displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase())) : catSkills
-          if (skillSearch && !filtered.length) return null
+          const searched = skillSearch ? catSkills.filter(s => displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase())) : catSkills
+          const filtered = enabledOnly ? searched.filter(s => s.enabled) : searched
+          if (!filtered.length) return null
           const en = filtered.filter(s => s.enabled).length
           return (
             <div key={cat.key} className="mb-1">

@@ -16,6 +16,7 @@ interface McpPanelProps {
   busy: Record<string, boolean>
   onSave: (servers: McpServers) => void
   onSetSecret: (name: string, value: string) => void
+  onDeleteSecret: (name: string) => void
 }
 
 // The ${VAR} secret references a server needs at runtime.
@@ -41,7 +42,7 @@ function transportOf(server: McpServer): string {
   return typeof server.command === 'string' ? 'stdio' : 'http'
 }
 
-export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSetSecret }: McpPanelProps) {
+export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSetSecret, onDeleteSecret }: McpPanelProps) {
   const [draft, setDraft] = useState<McpServers>(servers)
   useEffect(() => { setDraft(servers) }, [servers])
 
@@ -100,8 +101,19 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
     resetForm()
   }
 
+  // A credential this panel minted for a server is stored as MCP_<SLUG>_TOKEN.
+  const isMcpToken = (r: string) => /^MCP_[A-Z0-9_]+_TOKEN$/.test(r)
+
   const removeServer = (n: string) => {
-    const next = { ...draft }; delete next[n]; setDraft(next)
+    const next = { ...draft }; delete next[n]
+    // Any MCP token this server owned that nothing else references is now orphaned
+    // on GitHub — delete it so removing a server actually removes its credentials.
+    // Only touch panel-minted MCP_*_TOKEN secrets, never shared/builtin ones.
+    const stillUsed = new Set(Object.values(next).flatMap(refsOf))
+    const orphans = refsOf(draft[n]).filter(r => isMcpToken(r) && !stillUsed.has(r) && isSecretSet(r))
+    if (orphans.length && !confirm(`Remove server "${n}" and delete its credential${orphans.length === 1 ? '' : 's'} (${orphans.join(', ')}) from GitHub?`)) return
+    orphans.forEach(onDeleteSecret)
+    setDraft(next)
   }
 
   return (
