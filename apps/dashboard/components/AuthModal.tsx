@@ -11,8 +11,7 @@ interface AuthModalProps {
 
 export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
   const [authKey, setAuthKey] = useState('')
-  const [baseUrl, setBaseUrl] = useState('')
-  const submit = () => authKey.trim() && onAuth({ key: authKey.trim(), baseUrl: baseUrl.trim() || undefined })
+  const submit = () => authKey.trim() && onAuth({ key: authKey.trim() })
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
@@ -26,8 +25,7 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
           {loading ? '...' : 'Use Claude Subscription'}
         </button>
         <div className="my-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)]" />
-        <input type="password" value={authKey} onChange={(e) => setAuthKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="API key" className={`${inputCls} mb-[var(--space-sm)]`} />
-        <input type="url" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="Optional base URL, e.g. https://api.deepseek.com/anthropic" className={`${inputCls} mb-[var(--space-md)]`} />
+        <input type="password" value={authKey} onChange={(e) => setAuthKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="API key" className={`${inputCls} mb-[var(--space-md)]`} />
         <button onClick={submit} disabled={!authKey.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">{loading ? '...' : 'Save API Key'}</button>
       </div>
     </div>
