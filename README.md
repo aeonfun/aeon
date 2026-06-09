@@ -604,16 +604,14 @@ Reference secrets with `${VAR}` — **never commit the value**:
 }
 ```
 
-Then make `ACME_API_KEY` reachable in the run:
+Then make `ACME_API_KEY` reachable in the run — just **set the secret**, no workflow editing:
 
-1. Add it as a repo **secret** (dashboard → Settings → Add Credential, or `gh secret set ACME_API_KEY`).
-2. **Map it into the workflow env** so the runner can expand it — add one line under the `Run` step's `env:` in `.github/workflows/aeon.yml` (and `messages.yml` if you use it from chat):
-   ```yaml
-   ACME_API_KEY: ${{ secrets.ACME_API_KEY }}
-   ```
-   (Secrets already mapped — `GITHUB_TOKEN`, `XAI_API_KEY`, `ALCHEMY_API_KEY`, `COINGECKO_API_KEY`, `NEYNAR_*`, … — need no extra wiring.)
+- Dashboard → **MCP** tab: type the value inline when you add the server, **or**
+- Dashboard → **Settings** → Add Credential, **or** `gh secret set ACME_API_KEY`.
 
-**Safety valve:** if a `.mcp.json` references a `${VAR}` that is unset (and has no `${VAR:-default}` fallback), the runner **skips MCP for that run and logs a warning** instead of letting the config parse-failure break the skill. Set the secret, and the next run picks it up.
+That's it. The runner auto-resolves any `${VAR}` your `.mcp.json` references from the repo's secrets (via `toJSON(secrets)`, consumed and discarded before any skill code runs) — so **any** secret name works with zero per-name wiring. Built-ins like `XAI_API_KEY`, `ALCHEMY_API_KEY`, `COINGECKO_API_KEY`, `NEYNAR_*`, … are always available too.
+
+**Safety valve:** if a `.mcp.json` references a `${VAR}` whose secret isn't set (and has no `${VAR:-default}` fallback), the runner **skips MCP for that run and logs a warning** instead of letting the config parse-failure break the skill. Set the secret, and the next run picks it up.
 
 ### Notes
 

@@ -246,6 +246,10 @@ jobs:
         id: run
         if: steps.work.outputs.mode != ''
         env:
+          # Full secrets context — lets .mcp.json reference ANY repo secret as
+          # ${NAME} with no per-name env wiring. Consumed by the MCP preflight
+          # below, then unset before Claude runs so it never reaches skill code.
+          ALL_SECRETS: ${{ toJSON(secrets) }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
@@ -463,17 +467,21 @@ jobs:
 
           # MCP (opt-in): when a project .mcp.json exists, load it for this run
           # and allow each server's tools. No-op when the file is absent, so
-          # existing forks are unaffected. If the config references an env var
-          # that is unset and has no ":-" default, skip MCP with a warning rather
+          # existing forks are unaffected. Any ${VAR} the config references is
+          # auto-resolved from this repo's secrets (ALL_SECRETS) — set the secret
+          # in the dashboard and it just works, no per-name workflow wiring. If a
+          # referenced secret genuinely isn't set, skip MCP with a warning rather
           # than let Claude's config parse-failure break the whole skill run.
           MCP_FLAGS=()
           if [ -f .mcp.json ] && jq -e '.mcpServers' .mcp.json >/dev/null 2>&1; then
             MCP_MISSING=""
             for v in $(grep -oE '\$\{[A-Z_][A-Z0-9_]*\}' .mcp.json | sed -E 's/[${}]//g' | sort -u); do
-              [ -z "${!v:-}" ] && MCP_MISSING="$MCP_MISSING $v"
+              [ -n "${!v:-}" ] && continue                                  # already in env (built-in)
+              val="$(jq -r --arg k "$v" '.[$k] // empty' <<<"${ALL_SECRETS:-{}}")"
+              if [ -n "$val" ]; then export "$v=$val"; else MCP_MISSING="$MCP_MISSING $v"; fi
             done
             if [ -n "$MCP_MISSING" ]; then
-              echo "::warning::.mcp.json references unset env:${MCP_MISSING} — skipping MCP this run (set the secret(s) and map them into this workflow's env)"
+              echo "::warning::.mcp.json references secret(s) not set:${MCP_MISSING} — add them in the dashboard (Settings or the MCP tab); the next run picks them up. Skipping MCP this run."
             else
               for srv in $(jq -r '.mcpServers | keys[]' .mcp.json); do
                 ALLOWED="$ALLOWED,mcp__${srv}"
@@ -482,6 +490,7 @@ jobs:
               echo "MCP enabled: $(jq -r '.mcpServers | keys | join(", ")' .mcp.json)"
             fi
           fi
+          unset ALL_SECRETS   # drop the secrets blob before any skill/Claude code runs
 
           SKILL_NAME="${{ steps.skill.outputs.name }}"
           VAR="$SKILL_VAR"

@@ -12,6 +12,7 @@ interface McpPanelProps {
   loading: boolean
   saving: boolean
   onSave: (servers: McpServers) => void
+  onSetSecret: (name: string, value: string) => void
 }
 
 // The ${VAR} secret references a server needs at runtime.
@@ -37,7 +38,7 @@ function transportOf(server: McpServer): string {
   return typeof server.command === 'string' ? 'stdio' : 'http'
 }
 
-export function McpPanel({ servers, loading, saving, onSave }: McpPanelProps) {
+export function McpPanel({ servers, loading, saving, onSave, onSetSecret }: McpPanelProps) {
   const [draft, setDraft] = useState<McpServers>(servers)
   useEffect(() => { setDraft(servers) }, [servers])
 
@@ -46,15 +47,19 @@ export function McpPanel({ servers, loading, saving, onSave }: McpPanelProps) {
   const [transport, setTransport] = useState<'http' | 'stdio'>('http')
   const [url, setUrl] = useState('')
   const [secretVar, setSecretVar] = useState('')
+  const [secretValue, setSecretValue] = useState('')
   const [command, setCommand] = useState('npx')
   const [args, setArgs] = useState('')
+
+  // The secret name a typed bearer-token ref resolves to (UPPER_SNAKE_CASE).
+  const envName = (s: string) => s.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_')
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(servers)
   const names = Object.keys(draft)
   const allRefs = [...new Set(names.flatMap(n => refsOf(draft[n])))]
 
   const resetForm = () => {
-    setAdding(false); setName(''); setUrl(''); setSecretVar(''); setCommand('npx'); setArgs(''); setTransport('http')
+    setAdding(false); setName(''); setUrl(''); setSecretVar(''); setSecretValue(''); setCommand('npx'); setArgs(''); setTransport('http')
   }
 
   const addServer = () => {
@@ -64,7 +69,13 @@ export function McpPanel({ servers, loading, saving, onSave }: McpPanelProps) {
     if (transport === 'http') {
       if (!url.trim()) return
       server = { type: 'http', url: url.trim() }
-      if (secretVar.trim()) server.headers = { Authorization: `Bearer \${${secretVar.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_')}}` }
+      if (secretVar.trim()) {
+        const ref = envName(secretVar)
+        server.headers = { Authorization: `Bearer \${${ref}}` }
+        // Save the token straight to repo secrets so the run can resolve it —
+        // no Settings detour, no workflow editing.
+        if (secretValue.trim()) onSetSecret(ref, secretValue.trim())
+      }
     } else {
       if (!command.trim()) return
       server = { type: 'stdio', command: command.trim() }
@@ -157,6 +168,9 @@ export function McpPanel({ servers, loading, saving, onSave }: McpPanelProps) {
                     <>
                       <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://mcp.example.com/v1" className={inputCls} />
                       <input value={secretVar} onChange={e => setSecretVar(e.target.value)} placeholder="bearer-token secret name (optional, e.g. ACME_API_KEY)" className={inputCls} />
+                      {secretVar.trim() && (
+                        <input type="password" value={secretValue} onChange={e => setSecretValue(e.target.value)} placeholder={`value for ${envName(secretVar)} — saved as a repo secret, wired into every run`} className={inputCls} />
+                      )}
                     </>
                   ) : (
                     <>
@@ -170,16 +184,16 @@ export function McpPanel({ servers, loading, saving, onSave }: McpPanelProps) {
                   </div>
                 </div>
               ) : (
-                <button onClick={() => setAdding(true)} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors">+ Add server</button>
+                <button onClick={() => setAdding(true)} className="w-full text-sm font-mono uppercase tracking-[0.14em] text-primary-60 border border-dashed border-[rgba(250,250,250,0.16)] py-3.5 hover:text-eva-orange hover:border-eva-orange/40 transition-colors">+ Add server</button>
               )}
             </div>
 
             {/* Footer: secrets reminder + save */}
             {allRefs.length > 0 && (
               <p className="mt-5 text-[11px] text-primary-40 leading-relaxed">
-                <span className="text-eva-orange">Secrets:</span> set {allRefs.map(r => <span key={r} className="font-mono text-primary-70">{r} </span>)}
-                in <span className="text-primary-70">Settings</span>, and map each into the workflow&apos;s <span className="font-mono">env:</span> block
-                (see README → MCP). Until then, runs skip MCP rather than fail.
+                <span className="text-eva-orange">Secrets:</span> {allRefs.map(r => <span key={r} className="font-mono text-primary-70">{r} </span>)}
+                — set the value{allRefs.length > 1 ? 's' : ''} above when adding a server, or in <span className="text-primary-70">Settings</span>.
+                The runner wires {allRefs.length > 1 ? 'them' : 'it'} into every run automatically; until set, runs skip MCP rather than fail.
               </p>
             )}
             <div className="flex items-center justify-between mt-4">
