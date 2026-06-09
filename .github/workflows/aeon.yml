@@ -695,13 +695,15 @@ jobs:
           ANALYSIS_TEXT=$(echo "$RAW" | jq -r '.result // empty')
           [ -z "$ANALYSIS_TEXT" ] && { echo "::warning::Empty analysis result"; exit 0; }
 
-          # Parse score from response (try direct JSON, then extract embedded JSON)
+          # Parse score: accept raw JSON, else strip code fences, flatten newlines,
+          # and grab the outermost {…} object — handles fenced / multi-line output
+          # from gateways like Bankr that the old line-based grep missed.
           if echo "$ANALYSIS_TEXT" | jq empty 2>/dev/null; then
             PARSED="$ANALYSIS_TEXT"
           else
-            PARSED=$(echo "$ANALYSIS_TEXT" | grep -o '{[^{}]*}' | head -1 || true)
+            PARSED=$(printf '%s' "$ANALYSIS_TEXT" | sed 's/```[a-zA-Z]*//g' | tr '\n' ' ' | grep -o '{.*}' | head -1 || true)
             if [ -z "$PARSED" ] || ! echo "$PARSED" | jq empty 2>/dev/null; then
-              echo "::warning::Could not parse analysis JSON"
+              echo "::warning::Could not parse analysis JSON. Raw: $(printf '%s' "$ANALYSIS_TEXT" | head -c 300 | tr '\n' ' ')"
               exit 0
             fi
           fi
