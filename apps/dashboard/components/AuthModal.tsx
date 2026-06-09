@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import { inputCls } from '../lib/utils'
 
-// Gateway providers selectable in the picker. Auto-detect covers keys with a
-// distinctive prefix (Anthropic, Bankr bk_, OpenRouter sk-or-, Surplus inf_);
-// Venice and UsePod have no prefix so they must be selected explicitly.
+// Key providers selectable in the picker. Anthropic submits no provider, so
+// the backend still prefix-detects (Anthropic-compatible keys, OAuth tokens);
+// every gateway is selected explicitly.
 const PROVIDER_OPTIONS = [
-  { value: '', label: 'Auto-detect (Anthropic / Bankr / OpenRouter / Surplus)' },
+  { value: '', label: 'Anthropic (or compatible)' },
+  { value: 'bankr', label: 'Bankr' },
   { value: 'openrouter', label: 'OpenRouter' },
   { value: 'usepod', label: 'UsePod' },
   { value: 'venice', label: 'Venice' },
@@ -32,7 +33,7 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
           <h2 className="font-display text-xl">Authenticate</h2>
           <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">&times;</button>
         </div>
-        <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or paste an Anthropic or Anthropic-compatible API key. Gateway keys with a prefix (Bankr bk_…, OpenRouter sk-or-…, Surplus inf_…) route automatically — pick Venice or UsePod explicitly.</p>
+        <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or pick your key&apos;s provider and paste it below. Gateway keys route Claude through that provider automatically.</p>
         <button onClick={() => onAuth()} disabled={loading} className="w-full bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity disabled:opacity-50">
           {loading ? '...' : 'Use Claude Subscription'}
         </button>

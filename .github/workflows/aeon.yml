@@ -700,12 +700,12 @@ jobs:
 
           if ! RAW=$(echo "$ANALYSIS_PROMPT" | claude -p - \
             --model "${ANTHROPIC_DEFAULT_HAIKU_MODEL:-claude-haiku-4-5-20251001}" --output-format json 2>&1); then
-            echo "::warning::Skill analysis failed (non-fatal)"
+            echo "::warning::Skill analysis failed (non-fatal). Raw: $(printf '%s' "$RAW" | head -c 300 | tr '\n' ' ')"
             exit 0
           fi
 
           ANALYSIS_TEXT=$(echo "$RAW" | jq -r '.result // empty')
-          [ -z "$ANALYSIS_TEXT" ] && { echo "::warning::Empty analysis result"; exit 0; }
+          [ -z "$ANALYSIS_TEXT" ] && { echo "::warning::Empty analysis result. Raw: $(printf '%s' "$RAW" | head -c 300 | tr '\n' ' ')"; exit 0; }
 
           # Parse score: accept raw JSON, else strip code fences, flatten newlines,
           # and grab the outermost {…} object — handles fenced / multi-line output
