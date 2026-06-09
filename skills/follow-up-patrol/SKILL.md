@@ -1,6 +1,6 @@
 ---
 name: follow-up-patrol
-description: Weekly escalation audit — parses the follow-up / open-loop section of MEMORY.md plus the issue tracker, computes item ages, and alerts on items hitting urgency thresholds so nothing rots unattended
+description: Escalation audit — parses the follow-up / open-loop section of MEMORY.md plus the issue tracker, computes item ages, and alerts on items hitting urgency thresholds so nothing rots unattended
 var: ""
 tags: [meta, ops, memory]
 schedule: "0 11 * * 2"

@@ -1,6 +1,6 @@
 ---
 name: beat-tracker
-description: Weekly multi-beat news thread tracker — persists beat counts per active storyline, searches for new developments, alerts when a thread hits the article-ready threshold (3rd beat)
+description: Multi-beat news thread tracker — persists beat counts per active storyline, searches for new developments, alerts when a thread hits the article-ready threshold (3rd beat)
 schedule: "0 9 * * 3"
 tags: [content, meta, research]
 ---

@@ -26,30 +26,30 @@ The most autonomous agent framework — give it a direction and it leverages 95 
 
 ## Description (long — for the listing body)
 
-Aeon is an autonomous agent framework that runs on GitHub Actions and exposes its 95 skills as MCP tools so any Claude Desktop or Claude Code session can invoke them directly. The catalog is dominated by Dev (30), Productivity (24), and Research (17), with the remainder covering crypto/markets, social drafting, and self-managing meta-skills (heartbeat, self-improve, skill-health). Each MCP tool maps 1:1 to an Aeon skill — calling `aeon-deep-research` from Claude Desktop runs the same prompt that the daily cron runs. The server speaks stdio, requires no extra API keys, and reuses whichever Claude credential is already configured for the operator.
+Aeon is an autonomous agent framework that runs on GitHub Actions and exposes its 95 skills as MCP tools so any Claude Desktop or Claude Code session can invoke them directly. The catalog is dominated by Dev (30), Productivity (24), and Research (17), with the remainder covering crypto/markets, social drafting, and self-managing meta-skills (heartbeat, self-improve, skill-health). Each MCP tool maps 1:1 to an Aeon skill — calling `aeon-deep-research` from Claude Desktop runs the same prompt that the scheduled cron runs. The server speaks stdio, requires no extra API keys, and reuses whichever Claude credential is already configured for the operator.
 
 ## Tool catalog (95 tools)
 
 | Tool | Category | Description |
 |------|----------|-------------|
-| `aeon-action-converter` | Productivity | 5 concrete real-life actions for today based on recent signals and memory |
+| `aeon-action-converter` | Productivity | 5 concrete real-life actions based on recent signals and memory |
 | `aeon-agent-buzz` | Social | Top 10 tweets by influence mentioning AI agents |
 | `aeon-article` | Research | Research trending topics and write a publication-ready article |
 | `aeon-auto-merge` | Dev | Automatically merge open PRs that have passing CI, no blocking reviews, and no conflicts |
 | `aeon-auto-workflow` | Dev | Analyze a URL and generate a tailored aeon.yml schedule with skill suggestions |
 | `aeon-autoresearch` | Dev | Evolve a skill by generating variations, evaluating them, and updating the best version |
 | `aeon-changelog` | Dev | Generate a changelog from recent commits across watched repos |
-| `aeon-channel-recap` | Research | Weekly recap article from a public Telegram channel — expand on the best posts |
-| `aeon-code-health` | Dev | Weekly report on TODOs, dead code, and test coverage gaps |
-| `aeon-cost-report` | Productivity | Weekly API cost report — reads token usage CSV, computes dollar costs per skill and model, reports trends |
+| `aeon-channel-recap` | Research | Recap article from a public Telegram channel — expand on the best posts |
+| `aeon-code-health` | Dev | Report on TODOs, dead code, and test coverage gaps |
+| `aeon-cost-report` | Productivity | API cost report — reads token usage CSV, computes dollar costs per skill and model, reports trends |
 | `aeon-create-skill` | Dev | Generate a complete new skill from a one-line prompt |
-| `aeon-daily-routine` | Productivity | Morning briefing combining token movers, tweet roundup, paper pick, GitHub issues, and HN digest |
-| `aeon-deal-flow` | Productivity | Weekly funding round tracker across configurable verticals |
+| `aeon-daily-routine` | Productivity | Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run |
+| `aeon-deal-flow` | Productivity | Funding round tracker across configurable verticals |
 | `aeon-deep-research` | Research | Exhaustive multi-source synthesis on any topic using full-context ingestion — far beyond a digest |
 | `aeon-defi-monitor` | Crypto | Check pool health, positions, and yield rates for tracked protocols |
-| `aeon-defi-overview` | Crypto | Daily overview of DeFi activity from DeFiLlama — TVL changes, top chains, top protocols |
+| `aeon-defi-overview` | Crypto | Overview of DeFi activity from DeFiLlama — TVL changes, top chains, top protocols |
 | `aeon-deploy-prototype` | Dev | Generate a small app or tool and deploy it live to Vercel via API |
-| `aeon-digest` | Research | Generate and send a daily digest on a configurable topic |
+| `aeon-digest` | Research | Generate and send a digest on a configurable topic |
 | `aeon-distribute-tokens` | Crypto | Send tokens to a list of contributors via Bankr Agent API (supports Twitter handles and EVM addresses) |
 | `aeon-evening-recap` | Productivity | End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up |
 | `aeon-external-feature` | Dev | Proactively enhance watched repos — fix issues, add features, improve code |
@@ -72,16 +72,16 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-monitor-kalshi` | Crypto | Monitor specific Kalshi prediction markets for 24h price moves, volume changes, and top events |
 | `aeon-monitor-polymarket` | Crypto | Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments |
 | `aeon-monitor-runners` | Crypto | Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal |
-| `aeon-morning-brief` | Productivity | Aggregated daily briefing — digests, priorities, and what's ahead |
+| `aeon-morning-brief` | Productivity | Aggregated briefing — digests, priorities, and what's ahead |
 | `aeon-narrative-tracker` | Crypto | Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak |
 | `aeon-on-chain-monitor` | Crypto | Monitor blockchain addresses and contracts for notable activity |
 | `aeon-paper-digest` | Research | Find and summarize new papers matching tracked research interests |
-| `aeon-paper-pick` | Research | Find the one paper you should read today from Hugging Face Papers |
+| `aeon-paper-pick` | Research | Find the one paper most worth reading from Hugging Face Papers |
 | `aeon-polymarket-comments` | Crypto | Top trending Polymarket markets and the most interesting comments from them |
 | `aeon-pr-review` | Dev | Auto-review open PRs on watched repos and post summary comments |
 | `aeon-pr-triage` | Dev | First-touch triage for external pull requests — verdict + label + welcoming comment within minutes of open |
 | `aeon-project-lens` | Dev | Write an article about the project through a surprising lens — connecting it to current events, trends, philosophy, or comparable projects |
-| `aeon-push-recap` | Dev | Daily deep-dive recap of all pushes — reads diffs, explains what changed and why |
+| `aeon-push-recap` | Dev | Deep-dive recap of all pushes — reads diffs, explains what changed and why |
 | `aeon-reddit-digest` | Research | Fetch and summarize top Reddit posts from tracked subreddits |
 | `aeon-reflect` | Productivity | Review recent activity, consolidate memory, and prune stale entries |
 | `aeon-refresh-x` | Social | Fetch a tracked X/Twitter account's latest tweets and save the gist to memory |
@@ -90,7 +90,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-reply-maker` | Social | Generate two reply options for 5 tweets from tracked X accounts or topics |
 | `aeon-repo-actions` | Dev | Generate actionable ideas to improve the repo — features, integrations, community, and growth |
 | `aeon-repo-article` | Dev | Write an article about the current state, progress, and vision of the watched repo |
-| `aeon-repo-pulse` | Dev | Daily report on new stars, forks, and traffic for watched repos |
+| `aeon-repo-pulse` | Dev | Report on new stars, forks, and traffic for watched repos |
 | `aeon-repo-scanner` | Dev | Catalog all GitHub repos for a user or org |
 | `aeon-research-brief` | Research | Deep dive on a topic combining web search, papers, and synthesis |
 | `aeon-rss-digest` | Research | Fetch, summarize, and deliver RSS feed highlights |
@@ -100,7 +100,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-self-improve` | Productivity | Improve the agent itself — better skills, prompts, workflows, and config based on recent performance |
 | `aeon-skill-evals` | Productivity | Evaluate skill output quality against assertion manifests — detects regressions before users notice |
 | `aeon-skill-health` | Productivity | Audit skill quality metrics, detect API degradation, and report health trends |
-| `aeon-skill-leaderboard` | Productivity | Weekly ranking of which skills are most popular across all active forks |
+| `aeon-skill-leaderboard` | Productivity | Ranking of which skills are most popular across all active forks |
 | `aeon-skill-repair` | Productivity | Diagnose and fix failing or degraded skills automatically |
 | `aeon-skill-security-scan` | Dev | Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run |
 | `aeon-skill-update-check` | Productivity | Check imported skills for upstream changes and security regressions since the version in skills.lock |
@@ -114,17 +114,17 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-token-alert` | Crypto | Notify on price or volume anomalies for tracked tokens |
 | `aeon-token-movers` | Crypto | Top movers, losers, and trending coins from CoinGecko |
 | `aeon-token-pick` | Crypto | One token recommendation and one prediction market pick based on live data |
-| `aeon-token-report` | Crypto | Daily price performance report for the project's token — price, volume, liquidity, and context |
+| `aeon-token-report` | Crypto | Price performance report for the project's token — price, volume, liquidity, and context |
 | `aeon-tool-builder` | Productivity | Build automation scripts from action-converter suggestions and recurring manual tasks |
 | `aeon-treasury-info` | Crypto | Show holdings overview for a wallet using Bankr API with block explorer fallback |
 | `aeon-tweet-roundup` | Social | Gist of the latest tweets on configurable topics |
-| `aeon-unlock-monitor` | Crypto | Weekly token unlock and vesting tracker — flag major supply events before they move markets |
+| `aeon-unlock-monitor` | Crypto | Token unlock and vesting tracker — flag major supply events before they move markets |
 | `aeon-update-gallery` | Productivity | Sync articles, activity logs, and memory to the GitHub Pages site |
 | `aeon-vercel-projects` | Dev | Catalog all Vercel projects with deployment status, domains, and framework info |
 | `aeon-vibecoding-digest` | Research | Monitor r/vibecoding for trending posts, interesting discussions, and notable projects shipped |
 | `aeon-vuln-scanner` | Dev | Fork trending repos, audit for security vulnerabilities, and PR fixes |
 | `aeon-weekly-review` | Productivity | Synthesize the week's logs into a structured retrospective |
-| `aeon-weekly-shiplog` | Productivity | Weekly narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
+| `aeon-weekly-shiplog` | Productivity | Narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
 | `aeon-workflow-security-audit` | Dev | Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. |
 | `aeon-write-tweet` | Social | Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs |
 

@@ -1,6 +1,6 @@
 ---
 name: signal-verdict
-description: Weekly accountability check on a configured set of tracker skills. Verifies each tracker is producing citable signals in articles/newsletters. Surfaces uncited trackers so the operator can demote or kill them.
+description: Accountability check on a configured set of tracker skills. Verifies each tracker is producing citable signals in articles/newsletters. Surfaces uncited trackers so the operator can demote or kill them.
 schedule: "0 8 * * 1"
 commits: true
 permissions:

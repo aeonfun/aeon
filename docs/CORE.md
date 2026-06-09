@@ -82,7 +82,7 @@ Three modes via `var`: **Health Check** (default), **Status** (`status`), **Disp
 
 Dispatch mode lets the parent trigger a skill on one child — or all healthy / degraded children at once. State-change-gated notify; bails on missing `gh` auth or low rate limit.
 
-### [`fleet-scorecard`](../skills/fleet-scorecard/SKILL.md) — daily fleet economics · 13:00
+### [`fleet-scorecard`](../skills/fleet-scorecard/SKILL.md) — fleet economics · daily 13:00
 
 Discovers the fleet at runtime (self + every non-archived instance — never hardcoded). All data is gathered by `scripts/prefetch-fleet-scorecard.sh` *outside* the sandbox, so the skill just reads `/tmp/fleet-scorecard/*` and writes the report — no network needed.
 

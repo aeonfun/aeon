@@ -1,6 +1,6 @@
 ---
 name: cost-report
-description: Weekly API cost report — computes dollar costs from token usage, flags anomalies, forecasts burn, and prescribes concrete optimizations
+description: API cost report — computes dollar costs from token usage, flags anomalies, forecasts burn, and prescribes concrete optimizations
 var: ""
 tags: [meta]
 version: "2.0.0"

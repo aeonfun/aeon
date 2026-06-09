@@ -1,6 +1,6 @@
 ---
 name: DeFi Overview
-description: Daily DeFi read — regime verdict, biggest movers with "why it matters", sustainable vs incentive yields, fees fundamentals
+description: DeFi read — regime verdict, biggest movers with "why it matters", sustainable vs incentive yields, fees fundamentals
 var: ""
 tags: [crypto]
 ---

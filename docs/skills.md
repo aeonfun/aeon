@@ -20,12 +20,12 @@ Install any skill into your own agent:
 | Skill | Description | Default Schedule |
 |-------|-------------|-----------------|
 | `article` | Research trending topics and write a publication-ready article | Daily 2 PM UTC |
-| `digest` | Generate and send a daily digest on a configurable topic | Daily 2 PM UTC |
+| `digest` | Generate and send a digest on a configurable topic | Daily 2 PM UTC |
 | `rss-digest` | Fetch, summarize, and deliver RSS feed highlights | Daily 7 AM UTC |
 | `hacker-news-digest` | Top HN stories filtered by your interests | Daily 7 AM UTC |
 | `hn-digest` | Top Hacker News stories filtered by interests | Daily 7 AM UTC |
 | `paper-digest` | Find and summarize new papers matching tracked research interests | Daily 7 AM UTC |
-| `paper-pick` | Find the one paper you should read today from arXiv and Semantic Scholar | Daily 2 PM UTC |
+| `paper-pick` | Find the one paper most worth reading from arXiv and Semantic Scholar | Daily 2 PM UTC |
 | `tweet-digest` | Aggregate and summarize tweets from tracked accounts | Daily 7 AM UTC |
 | `list-digest` | Top tweets from tracked X lists in the past 24 hours | Daily 5 PM UTC |
 | `research-brief` | Deep dive on a topic combining web search, papers, and synthesis | Daily 2 PM UTC |
@@ -46,7 +46,7 @@ Install any skill into your own agent:
 | `github-trending` | Top 10 trending repos on GitHub right now | Daily 9 AM UTC |
 | `issue-triage` | Label and prioritize new GitHub issues on watched repos | Daily 9 AM UTC |
 | `changelog` | Generate a changelog from recent commits across watched repos | Daily 4 PM UTC |
-| `code-health` | Weekly report on TODOs, dead code, and test coverage gaps | Daily 4 PM UTC |
+| `code-health` | Report on TODOs, dead code, and test coverage gaps | Daily 4 PM UTC |
 | `feature` | Build new features from GitHub issues or improve the agent | Daily 4 PM UTC |
 | `build-skill` | Design and build a new reusable skill | Daily 4 PM UTC |
 | `search-skill` | Search the open agent skills ecosystem for useful skills to install | Daily 2 PM UTC |
@@ -63,7 +63,7 @@ Install any skill into your own agent:
 | `wallet-digest` | Summarize recent wallet activity across tracked addresses | Daily 12 PM UTC |
 | `on-chain-monitor` | Monitor blockchain addresses and contracts for notable activity | Daily 12 PM UTC |
 | `defi-monitor` | Check pool health, positions, and yield rates for tracked protocols | Daily 12 PM UTC |
-| `defi-overview` | Daily overview of DeFi activity from DeFiLlama | Daily 12 PM UTC |
+| `defi-overview` | Overview of DeFi activity from DeFiLlama | Daily 12 PM UTC |
 | `polymarket` | Trending and top markets on Polymarket — volume, new markets, movers | Daily 12 PM UTC |
 | `polymarket-comments` | Top trending Polymarket markets and most interesting comments | Daily 12 PM UTC |
 | `monitor-runners` | Top 5 tokens that ran hardest in the past 24h via GeckoTerminal | Daily 12 PM UTC |
@@ -96,7 +96,7 @@ Install any skill into your own agent:
 | `memory-flush` | Promote important recent log entries into MEMORY.md | Daily 6 PM UTC |
 | `reflect` | Review recent activity, consolidate memory, prune stale entries | Daily 6 PM UTC |
 | `skill-health` | Check which scheduled skills haven't run recently | Daily 6 PM UTC |
-| `self-review` | Weekly audit of what Aeon did, what failed, and what to improve | Daily 6 PM UTC |
+| `self-review` | Audit of what Aeon did, what failed, and what to improve | Daily 6 PM UTC |
 | `rss-feed` | Generate an Atom XML feed from articles in the repo | Daily 5:30 PM UTC |
 | `update-gallery` | Sync articles to GitHub Pages gallery with proper Jekyll frontmatter | Weekly Sunday 6 PM UTC |
 

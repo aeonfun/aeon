@@ -59,7 +59,7 @@ If either secret is missing, log `DEPLOY_WATCH_NO_TOKEN` and exit cleanly — ne
    Inspect: https://vercel.com/${owner}/${PROJECT}/${uid}
    ```
 
-8. **Write a daily roll-up** to `articles/[REPLACE: SKILL_NAME]-${today}.md`: total deploys, success/fail counts per target, average build time, list of failed UIDs with commit messages.
+8. **Write a roll-up** to `articles/[REPLACE: SKILL_NAME]-${today}.md`: total deploys, success/fail counts per target, average build time, list of failed UIDs with commit messages.
 
 9. **Log** to `memory/logs/${today}.md`:
    ```

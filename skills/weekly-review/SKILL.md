@@ -1,6 +1,6 @@
 ---
-name: Weekly Review
-description: KALM retrospective grounded in objective metrics, with closed-loop tracking of last week's actions and SMART next-week actions
+name: Retrospective
+description: KALM retrospective grounded in objective metrics, with closed-loop tracking of prior actions and SMART next actions
 var: ""
 tags: [meta]
 requires: [RESEND_API_KEY?]
@@ -89,7 +89,7 @@ If MEMORY.md has no concrete goals (placeholder content), flag that as itself an
 Save to `articles/weekly-review-${today}.md`. Required structure:
 
 ```markdown
-# Weekly Review — ${today}
+# Retrospective — ${today}
 
 ## TL;DR
 {one paragraph: the single most important thing this week + the #1 action for next week}
@@ -123,7 +123,7 @@ Via `./notify`, send **only if there is signal worth sharing**. Skip the notific
 When you do notify, lead with the action, not the count:
 
 ```
-*Weekly Review — ${today}*
+*Retrospective — ${today}*
 Top action: {the #1 SMART action, in one line}
 Health: N/M skill runs ok, K new issues
 Full review: articles/weekly-review-${today}.md
@@ -143,7 +143,7 @@ Send the full weekly review article (not just the `./notify` summary) to the boa
   {
     "from": "Aeon Briefings <onboarding@resend.dev>",
     "to": ["<each recipient>"],
-    "subject": "[Aeon] Weekly Review — week of ${today}",
+    "subject": "[Aeon] Retrospective — ${today}",
     "html": "<html version of full review>",
     "text": "<plain-text version of full review>"
   }

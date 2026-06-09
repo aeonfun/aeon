@@ -1,6 +1,6 @@
 ---
 name: pr-merge-queue
-description: Daily survey of open external PRs across watched repos — buckets each PR by touched-file risk tier (FAST_TRACK / INFRA_REVIEW / SKILL_PASS / SKILL_WARN_OR_BLOCK / CORE_REVIEW), runs skill-security-scan on every SKILL.md PR, emits one structured digest so the operator can clear the safest candidates first
+description: Survey of open external PRs across watched repos — buckets each PR by touched-file risk tier (FAST_TRACK / INFRA_REVIEW / SKILL_PASS / SKILL_WARN_OR_BLOCK / CORE_REVIEW), runs skill-security-scan on every SKILL.md PR, emits one structured digest so the operator can clear the safest candidates first
 var: ""
 tags: [dev, community]
 ---

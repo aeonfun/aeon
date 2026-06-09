@@ -1,6 +1,6 @@
 ---
 name: sparkleware-catalog
-description: Weekly enriched export of skill-packs.json — joins the canonical community registry to live GitHub signals (stars, last-push, live manifest skill count) and writes a machine-readable skill-packs-catalog.json that external tools (e.g. Sparkleware) can consume without screen-scraping
+description: Enriched export of skill-packs.json — joins the canonical community registry to live GitHub signals (stars, last-push, live manifest skill count) and writes a machine-readable skill-packs-catalog.json that external tools (e.g. Sparkleware) can consume without screen-scraping
 var: ""
 tags: [dev, community]
 ---

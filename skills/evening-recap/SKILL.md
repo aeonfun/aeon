@@ -1,6 +1,6 @@
 ---
-name: Evening Recap
-description: End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up
+name: Ops Recap
+description: Operational summary — what Aeon shipped, what failed, what needs follow-up
 var: ""
 tags: [meta]
 ---
@@ -55,7 +55,7 @@ The recap is not a log dump — the operator can read the log themselves. Its jo
 9. **Compose and send the recap via `./notify`.**
 
    ```
-   *Evening Recap — ${TODAY}*
+   *Ops Recap — ${TODAY}*
    _TL;DR: <one-sentence verdict from step 8>_
 
    *Headlines:*
@@ -82,11 +82,11 @@ The recap is not a log dump — the operator can read the log themselves. Its jo
    - Never print "none" or "clean" — omit the section instead.
    - Always include the source-health footer line so future-you can debug "why was this recap empty".
    - Lead with shipped artifacts, not skills attempted.
-   - **Empty-day exit:** if `log=missing` AND no silent failures AND no decisions, send a single line `*Evening Recap — ${TODAY}*: quiet day, no activity recorded · sources: log=missing cron-state=ok` and stop.
+   - **Empty-day exit:** if `log=missing` AND no silent failures AND no decisions, send a single line `*Ops Recap — ${TODAY}*: quiet day, no activity recorded · sources: log=missing cron-state=ok` and stop.
 
 10. **Log to memory.** Append to `memory/logs/${TODAY}.md` (create the file if it didn't exist):
     ```
-    ## Evening Recap
+    ## Ops Recap
     - Sent for ${TODAY}: H headlines, N notable, B blockers, D decisions queued, M collapsed
     - TL;DR: <copy the one-sentence verdict>
     - Sources: log=X cron-state=Y

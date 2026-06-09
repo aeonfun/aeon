@@ -1,6 +1,6 @@
 ---
 name: competitor-launch-radar
-description: Weekly scan of Product Hunt + Hacker News for NEW AI-agent-framework launches outside the 9-framework cohort already tracked by ai-framework-watch
+description: Scan of Product Hunt + Hacker News for NEW AI-agent-framework launches outside the 9-framework cohort already tracked by ai-framework-watch
 var: ""
 tags: [research, dev]
 ---

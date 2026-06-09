@@ -1,6 +1,6 @@
 ---
 name: fleet-state
-description: Weekly fleet-state digest — synthesises fork-cohort, contributor-spotlight, and fork-release-tracker into one "state of the fleet" narrative
+description: Fleet-state digest — synthesises fork-cohort, contributor-spotlight, and fork-release-tracker into one "state of the fleet" narrative
 var: ""
 tags: [meta, community]
 ---

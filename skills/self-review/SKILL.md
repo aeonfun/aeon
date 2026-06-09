@@ -1,6 +1,6 @@
 ---
 name: Self Review
-description: Weekly audit of what the agent did, what failed, and what to improve
+description: Audit of what the agent did, what failed, and what to improve
 var: ""
 tags: [meta]
 ---

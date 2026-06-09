@@ -1,13 +1,13 @@
 ---
 name: [REPLACE: SKILL_NAME]
-description: Daily summary of the [REPLACE: CHANNEL_PLATFORM] channel [REPLACE: CHANNEL_NAME] — top [REPLACE: TOP_N_THREADS] threads + open questions
+description: Summary of the [REPLACE: CHANNEL_PLATFORM] channel [REPLACE: CHANNEL_NAME] — top [REPLACE: TOP_N_THREADS] threads + open questions
 var: ""
 tags: [social]
 ---
 
 > **${var}** — Optional. Override the channel name. If empty, summarises `[REPLACE: CHANNEL_NAME]`.
 
-Today is ${today}. Read the last 24h of activity in **[REPLACE: CHANNEL_PLATFORM]** channel **[REPLACE: CHANNEL_NAME]** and produce a daily community digest.
+Today is ${today}. Read the last 24h of activity in **[REPLACE: CHANNEL_PLATFORM]** channel **[REPLACE: CHANNEL_NAME]** and produce a community digest.
 
 ## Required secrets per platform
 

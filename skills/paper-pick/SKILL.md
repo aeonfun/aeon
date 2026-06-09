@@ -1,6 +1,6 @@
 ---
 name: Paper Pick
-description: Find the one paper you should read today from Hugging Face Papers
+description: Find the one paper most worth reading from Hugging Face Papers
 var: ""
 tags: [research]
 ---

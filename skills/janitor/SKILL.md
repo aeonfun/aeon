@@ -1,6 +1,6 @@
 ---
 name: Janitor
-description: Weekly cleanup of accumulated temp files — .notify-* root-level files, .pending-notify-temp/, and stale .outputs/ chain artifacts older than their TTL
+description: Cleanup of accumulated temp files — .notify-* root-level files, .pending-notify-temp/, and stale .outputs/ chain artifacts older than their TTL
 tags: [meta]
 ---
 

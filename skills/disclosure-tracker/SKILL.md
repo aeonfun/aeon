@@ -1,6 +1,6 @@
 ---
 name: disclosure-tracker
-description: Daily audit of pending vulnerability disclosure queue — tracks draft advisories in memory/pending-disclosures/, alerts on aging CRITICAL/HIGH findings.
+description: Audit of the pending vulnerability disclosure queue — tracks draft advisories in memory/pending-disclosures/, alerts on aging CRITICAL/HIGH findings.
 var: ""
 tags: [security, meta]
 ---

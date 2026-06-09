@@ -1,13 +1,13 @@
 ---
 name: [REPLACE: SKILL_NAME]
-description: Daily digest of the most interesting new posts on [REPLACE: TOPIC] from RSS feeds and the open web
+description: Digest of the most interesting new posts on [REPLACE: TOPIC] from RSS feeds and the open web
 var: ""
 tags: [research]
 ---
 
 > **${var}** — Optional. Pass a different topic to override the default. If empty, digests [REPLACE: TOPIC].
 
-Today is ${today}. Build a daily digest of the [REPLACE: MAX_ITEMS] most interesting new posts on **[REPLACE: TOPIC]**.
+Today is ${today}. Build a digest of the [REPLACE: MAX_ITEMS] most interesting new posts on **[REPLACE: TOPIC]**.
 
 ## Steps
 

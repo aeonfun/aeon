@@ -1,6 +1,6 @@
 ---
-name: weekly-shiplog
-description: Weekly narrative of everything shipped — features, fixes, and momentum, written as a compelling update
+name: Shiplog
+description: Narrative of everything shipped — features, fixes, and momentum, written as a compelling update
 var: ""
 tags: [content]
 ---
@@ -170,7 +170,7 @@ Send via `./notify` based on status:
 **`SHIPLOG_OK` / `SHIPLOG_LIGHT_WEEK`:**
 
 ```
-*Weekly Shiplog — ${TODAY}*
+*Shiplog — ${TODAY}*
 
 [Thesis sentence from the article — verbatim]
 
@@ -186,21 +186,21 @@ ${ARTICLE_URL}
 **`SHIPLOG_QUIET_WEEK`:**
 
 ```
-*Weekly Shiplog — ${TODAY}*
+*Shiplog — ${TODAY}*
 SHIPLOG_QUIET_WEEK — 0 commits, 0 PRs merged, 0 releases in the last 7 days. No article written.
 ```
 
 **`SHIPLOG_NO_THEME_MATCH`:**
 
 ```
-*Weekly Shiplog — ${TODAY}*
+*Shiplog — ${TODAY}*
 SHIPLOG_NO_THEME_MATCH — no shipping matched theme "${var}" this week. No article written.
 ```
 
 **`SHIPLOG_NO_REPOS`:**
 
 ```
-*Weekly Shiplog — ${TODAY}*
+*Shiplog — ${TODAY}*
 SHIPLOG_NO_REPOS — memory/watched-repos.md is empty or missing. Add a repo to enable this skill.
 ```
 

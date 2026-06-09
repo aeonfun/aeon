@@ -1,6 +1,6 @@
 # Changelog
 
-Generate a changelog from recent commits on a weekly schedule.
+Generate a changelog from recent commits on a schedule.
 
 ## Trigger
 

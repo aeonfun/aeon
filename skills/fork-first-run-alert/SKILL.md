@@ -1,6 +1,6 @@
 ---
 name: fork-first-run-alert
-description: Daily — named alert the day a fork completes its first ever workflow run. Fork-cohort runs weekly; this catches the activation moment.
+description: Named alert when a fork completes its first ever workflow run — catches the activation moment that slower fork-cohort snapshots would miss
 var: ""
 tags: [meta, community]
 ---

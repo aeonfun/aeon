@@ -1,6 +1,6 @@
 ---
-name: Skill of the Day
-description: Pick one skill from a rotation, ship a paste-ready feature tweet in the "Aeon skill of the day" format, then dispatch the picked skill so the chosen channel also gets the live outcome
+name: Skill Spotlight
+description: Pick one skill from a rotation, ship a paste-ready feature tweet spotlighting it, then dispatch the picked skill so the chosen channel also gets the live outcome
 var: ""
 tags: [meta, social, content]
 ---
@@ -13,16 +13,16 @@ If `soul/` files exist, read them (`soul/SOUL.md`, `soul/STYLE.md`) to match the
 
 ## Goal
 
-A daily content cadence around the framework's observable feature surface. Each morning produces two notifications:
+A recurring content series around the framework's observable feature surface. Each run produces two notifications:
 
-1. A paste-ready feature tweet (long-form X post) in the **Aeon skill of the day** format — the operator copies this to X.
+1. A paste-ready feature tweet (long-form X post) in the **Aeon skill spotlight** format — the operator copies this to X.
 2. The picked skill's live outcome — delivered through that skill's own `./notify` after dispatch. The operator screenshots that outcome as the "Result ⤵️" body of the tweet.
 
 Two separate notifications, not a combined message. Each notify stays under platform character limits, and the dispatched skill remains independently observable.
 
 ## Steps
 
-### 1. Pick today's skill
+### 1. Pick the featured skill
 
 Priority order:
 
@@ -47,7 +47,7 @@ Parse the frontmatter and body:
 Write the following file: `.outputs/skill-of-the-day.md`. Use **exactly** this shape:
 
 ```
-The @aeonframework skill of the day 🌟
+The @aeonframework skill spotlight 🌟
 
 🗓️ {ordinal} {Month}
 
@@ -76,7 +76,7 @@ Result ⤵️
 
 Notes:
 
-- The header line `The @aeonframework skill of the day 🌟` is the brand of the series. Forks that want their own handle can edit this one string in the SKILL.md.
+- The header line `The @aeonframework skill spotlight 🌟` is the brand of the series. Forks that want their own handle can edit this one string in the SKILL.md.
 - Date formatting: English ordinal (`1st`, `2nd`, `3rd`, `4th`, …, `21st`, `22nd`, `23rd`, `31st`). Month is full name (`June`, not `Jun`). No year.
 - Every `✴️` bullet starts with **`It {verb}.`** — keeps the cadence consistent across days and makes the series visually scannable.
 - Each bullet must trace to a real behavior in the SKILL.md. If the skill genuinely has only 5 distinct behaviors, ship 5 bullets, not 7.

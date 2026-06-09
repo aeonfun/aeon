@@ -1,5 +1,5 @@
 ---
-name: Daily Article
+name: Article
 description: Research trending topics and write a publication-ready article
 var: ""
 tags: [content]

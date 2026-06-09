@@ -1,6 +1,6 @@
 ---
-name: Daily Digest
-description: Generate and send a daily digest on a configurable topic
+name: Digest
+description: Generate and send a digest on a configurable topic
 var: ""
 tags: [content]
 requires: [XAI_API_KEY?]

@@ -1,6 +1,6 @@
 ---
 name: AI Framework Watch
-description: Weekly competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated watchlist
+description: Competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated watchlist
 var: ""
 tags: [research, dev]
 ---

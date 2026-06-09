@@ -109,7 +109,7 @@ Health skills file issues, repair skills close them. `heartbeat` is the only ski
 
 ### It replicates
 
-Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into a new specialized instance (`var: "crypto-tracker: monitor DeFi protocols"`), selects relevant skills, and registers it in `memory/instances.json` — no secrets propagated, billing stays isolated. `fleet-control` health-checks and dispatches across instances; `fleet-scorecard` tracks fleet economics daily.
+Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into a new specialized instance (`var: "crypto-tracker: monitor DeFi protocols"`), selects relevant skills, and registers it in `memory/instances.json` — no secrets propagated, billing stays isolated. `fleet-control` health-checks and dispatches across instances; `fleet-scorecard` tracks fleet economics.
 
 ### It ships real work
 
@@ -134,7 +134,7 @@ Installed skills land in `skills/` and are added to `aeon.yml` disabled — flip
 
 ## Why "the most autonomous"?
 
-Most agent tools put you in the driver's seat — approve this tool call, review this diff, confirm this action. Aeon is built for the work you want *done* while you're not there: morning briefs, market monitoring, PR reviews, research digests, security scans.
+Most agent tools put you in the driver's seat — approve this tool call, review this diff, confirm this action. Aeon is built for the work you want *done* while you're not there: briefings, market monitoring, PR reviews, research digests, security scans.
 
 |  | Aeon | Claude Code | Hermes | OpenClaw |
 |--|------|------------|--------|---------|
@@ -462,7 +462,7 @@ Your `memory/`, `articles/`, and personal config won't conflict — they're in f
 | Heartbeat (nothing found) | ~2 min |
 | **Public repo** | **Unlimited free minutes** |
 
-Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public. Every run logs token usage to `memory/token-usage.csv`; the `cost-report` skill generates a weekly breakdown by skill and model.
+Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public. Every run logs token usage to `memory/token-usage.csv`; the `cost-report` skill generates a cost breakdown by skill and model.
 
 ### Project structure
 
@@ -517,7 +517,7 @@ scripts/
 
 ### What is Aeon?
 
-Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals when skills fail, and monitors its own output quality. Configure once, walk away — it handles recurring tasks like morning briefs, market monitoring, PR reviews, and research digests.
+Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals when skills fail, and monitors its own output quality. Configure once, walk away — it handles recurring tasks like briefings, market monitoring, PR reviews, and research digests.
 
 ### Can I create custom skills?
 

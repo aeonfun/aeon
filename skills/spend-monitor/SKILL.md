@@ -1,6 +1,6 @@
 ---
 name: Spend Monitor
-description: Daily API spend watchdog — checks running weekly cost against a budget cap, alerts when approaching or exceeding it
+description: API spend watchdog — checks running cost against the configured weekly budget cap, alerts when approaching or exceeding it
 var: ""
 tags: [meta]
 schedule: "0 12 * * *"

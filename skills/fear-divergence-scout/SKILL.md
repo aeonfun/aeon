@@ -1,6 +1,6 @@
 ---
 name: fear-divergence-scout
-description: Conditional daily scan — fires only when Fear & Greed < 25. Identifies assets outperforming during broad market fear, synthesizes narrative catalysts from memory, and delivers a terse conviction setup brief. Skips silently when market conditions don't qualify.
+description: Conditional scan — fires only when Fear & Greed < 25. Identifies assets outperforming during broad market fear, synthesizes narrative catalysts from memory, and delivers a terse conviction setup brief. Skips silently when market conditions don't qualify.
 schedule: "30 7 * * *"
 commits: false
 permissions: []

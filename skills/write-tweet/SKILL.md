@@ -1,6 +1,6 @@
 ---
 name: Write Tweet
-description: Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs
+description: Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from recent outputs
 var: ""
 tags: [social]
 requires: [XAI_API_KEY]

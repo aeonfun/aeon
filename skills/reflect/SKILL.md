@@ -1,5 +1,5 @@
 ---
-name: Weekly Reflect
+name: Reflect
 description: Review recent activity, consolidate memory, and prune stale entries
 var: ""
 tags: [meta]

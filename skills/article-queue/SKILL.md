@@ -1,6 +1,6 @@
 ---
 name: article-queue
-description: Weekly article idea synthesizer — ranks signals from topic-momentum, beat-tracker, and narrative-tracker into a prioritized queue the article skill reads on next run
+description: Article idea synthesizer — ranks signals from topic-momentum, beat-tracker, and narrative-tracker into a prioritized queue the article skill reads on its next run
 schedule: "0 11 * * 0"
 tags: [content, meta]
 ---

@@ -1,6 +1,6 @@
 ---
 name: Deal Flow
-description: Weekly funding round tracker across configurable verticals
+description: Funding round tracker across configurable verticals
 var: ""
 tags: [research]
 ---

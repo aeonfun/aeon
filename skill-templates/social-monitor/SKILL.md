@@ -1,6 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
-description: Daily mention/keyword sweep on social platforms for [REPLACE: KEYWORDS] — trends, sentiment, top posts
+description: Mention/keyword sweep on social platforms for [REPLACE: KEYWORDS] — trends, sentiment, top posts
 var: ""
 tags: [social]
 requires: [XAI_API_KEY?]
@@ -8,7 +8,7 @@ requires: [XAI_API_KEY?]
 
 > **${var}** — Optional. Pass alternative keywords (comma-separated) to override the default. If empty, monitors `[REPLACE: KEYWORDS]`.
 
-Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produce a daily summary.
+Today is ${today}. Monitor social mentions of **[REPLACE: KEYWORDS]** and produce a summary.
 
 ## Steps
 

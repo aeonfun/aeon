@@ -1,6 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
-description: Daily price and volume tracker for [REPLACE: TOKEN_SYMBOL] with anomaly alerts above [REPLACE: ALERT_THRESHOLD_PCT]% movement
+description: Price and volume tracker for [REPLACE: TOKEN_SYMBOL] with anomaly alerts above [REPLACE: ALERT_THRESHOLD_PCT]% movement
 var: ""
 tags: [crypto]
 requires: [COINGECKO_API_KEY?]

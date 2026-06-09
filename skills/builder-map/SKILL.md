@@ -1,6 +1,6 @@
 ---
 name: builder-map
-description: Weekly map of who's building on top of watched repos — forks, third-party ecosystem repos, builder announcements. Answers the "who's building on top" question.
+description: Map of who's building on top of watched repos — forks, third-party ecosystem repos, builder announcements. Answers the "who's building on top" question.
 schedule: "0 10 * * 2"
 commits: false
 permissions: []

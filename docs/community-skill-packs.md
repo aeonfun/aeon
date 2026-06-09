@@ -126,13 +126,13 @@ With this manifest:
 {
   "name": "Acme Research Pack",
   "version": "0.2.0",
-  "description": "Daily arXiv watch + citation-graph traversal",
+  "description": "arXiv watch + citation-graph traversal",
   "author": "acme-research",
   "license": "MIT",
   "skills": [
     {
       "slug": "arxiv-watcher",
-      "description": "Daily arXiv digest filtered by interest profile",
+      "description": "arXiv digest filtered by interest profile",
       "category": "research",
       "schedule": "0 8 * * *"
     },

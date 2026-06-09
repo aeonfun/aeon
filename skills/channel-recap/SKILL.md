@@ -1,6 +1,6 @@
 ---
 name: Channel Recap
-description: Weekly recap article from a public Telegram channel — rank posts by engagement, expand on the best
+description: Recap article from a public Telegram channel — rank posts by engagement, expand on the best
 var: ""
 tags: [content]
 ---

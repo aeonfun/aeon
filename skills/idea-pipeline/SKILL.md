@@ -1,6 +1,6 @@
 ---
 name: idea-pipeline
-description: Weekly execution gap audit — cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs. Surfaces the top 3 ideas to build this week based on narrative fit and operator fit.
+description: Execution-gap audit — cross-references the startup idea backlog against shipped skills, prototypes, and cross-repo PRs. Surfaces the top 3 ideas to build next based on narrative fit and operator fit.
 var: ""
 tags: [meta, creative]
 ---

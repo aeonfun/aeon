@@ -1,6 +1,6 @@
 ---
-name: Morning Brief
-description: Priority-driven daily briefing — the 3 things to focus on today, why now, and what moved
+name: Priority Brief
+description: Priority-driven briefing — the 3 things to focus on, why now, and what moved
 var: ""
 tags: [meta]
 requires: [RESEND_API_KEY?]
@@ -9,7 +9,7 @@ requires: [RESEND_API_KEY?]
 
 > **${var}** — Area to emphasize. If empty, covers all areas.
 
-A good morning brief is a **priming document**, not a news dump. Every line must answer "so what?".
+A good brief is a **priming document**, not a news dump. Every line must answer "so what?".
 
 Today is ${today}. Read `memory/MEMORY.md`, `memory/logs/${yesterday}.md` (and today's if it exists), and `memory/cron-state.json` (if present).
 
@@ -37,7 +37,7 @@ Use `WebSearch` for 2 headlines in the user's tracked areas (AI and crypto by de
 ### 3. Format — terse, scannable, opinionated
 
 ```
-*Morning Brief — ${today}*
+*Priority Brief — ${today}*
 
 *Focus today*
 1. [item] — why now: [≤12 words]
@@ -78,7 +78,7 @@ Style rules:
     {
       "from": "Aeon Briefings <onboarding@resend.dev>",
       "to": ["<each recipient>"],
-      "subject": "[Aeon] Morning Brief — ${today}",
+      "subject": "[Aeon] Priority Brief — ${today}",
       "html": "<html version>",
       "text": "<plain-text version>"
     }

@@ -12,7 +12,7 @@
 
 ## Active forks
 
-A snapshot of the operators currently running their own Aeon instance. "Active" means the fork pushed within the last 30 days. Source: weekly `fork-contributor-leaderboard` and `skill-leaderboard` runs against the GitHub forks API.
+A snapshot of the operators currently running their own Aeon instance. "Active" means the fork pushed within the last 30 days. Source: scheduled `fork-contributor-leaderboard` and `skill-leaderboard` runs against the GitHub forks API.
 
 | Fork | Skills enabled | What it focuses on |
 |------|---------------:|--------------------|
@@ -58,7 +58,7 @@ Aeon is one of many ways to build agentic systems. Here's where it sits next to 
 - **CrewAI** — Role-based crews with task hand-offs. Best when you're modelling a team (researcher + writer + critic) and want each role to be a discrete agent.
 - **n8n** — General-purpose visual workflow tool with a vast integration catalog. Best when the bottleneck is connecting SaaS APIs together, not the LLM step itself.
 - **LangGraph** — Stateful graph orchestration over LangChain. Best when your workflow has explicit state machines, branching, and replay needs.
-- **Aeon** — A configured-and-forgotten background agent on GitHub Actions. Best when the work is *recurring* (daily briefs, monitoring, PR reviews, research digests) and you want it to run without you, score itself, and patch itself when it breaks.
+- **Aeon** — A configured-and-forgotten background agent on GitHub Actions. Best when the work is *recurring* (briefs, monitoring, PR reviews, research digests) and you want it to run without you, score itself, and patch itself when it breaks.
 
 The real distinction is *operator posture*. AutoGen, CrewAI, and LangGraph are libraries you build *with*. n8n is a workflow editor you build *in*. Aeon is a runtime you point at a goal and leave alone — the cron, the memory, the self-healing, and the public dashboard come included.
 
@@ -68,6 +68,6 @@ If you need an agent you watch, pick one of the others. If you need an agent tha
 
 ## Add yourself
 
-Running an Aeon fork that should be on this page? Open a PR adding a row to the **Active forks** table. The weekly `fork-skill-digest` and `fork-contributor-leaderboard` skills automatically pick up active forks from the GitHub API; this page links the human-readable summary.
+Running an Aeon fork that should be on this page? Open a PR adding a row to the **Active forks** table. The `fork-skill-digest` and `fork-contributor-leaderboard` skills automatically pick up active forks from the GitHub API; this page links the human-readable summary.
 
 For the comparison table, corrections from maintainers of the listed frameworks are welcome — open an issue or a PR.

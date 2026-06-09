@@ -1,6 +1,6 @@
 # Code Health
 
-Weekly audit of code quality — TODOs, dead code, test gaps, and large files.
+Audit of code quality — TODOs, dead code, test gaps, and large files.
 
 ## Trigger
 

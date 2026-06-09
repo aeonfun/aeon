@@ -1,6 +1,6 @@
 ---
 name: PM Intel
-description: Weekly competitive intelligence on the prediction market ecosystem — what major platforms and new entrants are shipping, funding, and building
+description: Competitive intelligence on the prediction market ecosystem — what major platforms and new entrants are shipping, funding, and building
 tags: [research, crypto]
 ---
 

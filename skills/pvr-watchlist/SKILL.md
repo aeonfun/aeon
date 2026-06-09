@@ -1,6 +1,6 @@
 ---
 name: pvr-watchlist
-description: Weekly probe of repos on the security watchlist — check if private vulnerability reporting has been enabled, notify when status flips, re-submit any queued advisories or flag for re-research when draft was lost
+description: Probe of repos on the security watchlist — check if private vulnerability reporting has been enabled, notify when status flips, re-submit any queued advisories or flag for re-research when draft was lost
 var: ""
 tags: [security, meta]
 requires: [GH_GLOBAL?]

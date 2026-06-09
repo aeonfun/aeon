@@ -1,6 +1,6 @@
 ---
 name: fork-contributor-leaderboard
-description: Weekly ranking of developers contributing to the fork fleet and back upstream
+description: Ranking of developers contributing to the fork fleet and back upstream
 var: ""
 tags: [meta, community]
 ---

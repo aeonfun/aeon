@@ -1,6 +1,6 @@
 ---
 name: Changelog
-description: Generate a user-facing weekly changelog (Keep a Changelog format) from recent commits across watched repos
+description: Generate a user-facing changelog (Keep a Changelog format) from recent commits across watched repos
 var: ""
 tags: [dev]
 ---

@@ -18,7 +18,7 @@ function detectSecretsFromContent(content: string): string[] {
 }
 
 function extractSkillName(content: string): string {
-  // Slugify the frontmatter name: "Daily Article" → "daily-article"
+  // Slugify the frontmatter name: "Fleet Scorecard" → "fleet-scorecard"
   const { name } = parseFrontmatter(content)
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 }

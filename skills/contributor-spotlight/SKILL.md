@@ -1,6 +1,6 @@
 ---
 name: contributor-spotlight
-description: Weekly recognition post for one fork operator — converts fork-cohort cohort data into a named human moment (POWER fork callout with their work, stars, and skills enabled)
+description: Recognition post for one fork operator — converts fork-cohort cohort data into a named human moment (POWER fork callout with their work, stars, and skills enabled)
 var: ""
 tags: [meta, community]
 ---

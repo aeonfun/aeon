@@ -1,6 +1,6 @@
 ---
 name: rwa-pulse
-description: Weekly Real World Asset tokenization momentum tracker — surfaces new protocol launches, TVL milestones, institutional adoption, and regulatory approvals
+description: Real World Asset tokenization momentum tracker — surfaces new protocol launches, TVL milestones, institutional adoption, and regulatory approvals
 tags: [crypto, research]
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: operator-scorecard
-description: Weekly plain-language synthesis of agent health + community growth + economic activity — answers "was this week worth it?" in one notification
+description: Plain-language synthesis of agent health + community growth + economic activity — answers "was it worth it?" in one notification
 var: ""
 tags: [meta, productivity]
 ---

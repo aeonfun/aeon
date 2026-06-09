@@ -1,6 +1,6 @@
 ---
 name: ecosystem-entrants
-description: Weekly diff of ECOSYSTEM.md against last run — surfaces newly-added projects (and projects removed) as a discrete signal so new entrants aren't lost in the static list. Pairs with ecosystem-pulse (liveness) on Monday morning.
+description: Diff of ECOSYSTEM.md against the last run — surfaces newly-added projects (and projects removed) as a discrete signal so new entrants aren't lost in the static list. Pairs with ecosystem-pulse (liveness).
 var: ""
 tags: [research, community]
 ---

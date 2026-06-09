@@ -1,6 +1,6 @@
 ---
 name: GitHub Issues
-description: Daily digest of new open issues across your repos, ranked by signal (security/bug/feature/other)
+description: Digest of new open issues across your repos, ranked by signal (security/bug/feature/other)
 var: ""
 tags: [dev]
 ---

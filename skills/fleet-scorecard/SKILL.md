@@ -1,6 +1,6 @@
 ---
 name: Fleet Scorecard
-description: Daily fleet-wide scorecard across this instance and every managed instance in memory/instances.json — runs, tokens (OpenRouter shape), est. cost, skills, and reliability, with day-over-day deltas and alerts
+description: Fleet-wide scorecard across this instance and every managed instance in memory/instances.json — runs, tokens (OpenRouter shape), est. cost, skills, and reliability, with deltas vs the previous run and alerts
 schedule: "0 13 * * *"
 tags: [meta, fleet, report, cost]
 ---

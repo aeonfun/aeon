@@ -1,6 +1,6 @@
 ---
 name: atrium-catalog-watcher
-description: Weekly diff of the Atrium marketplace catalog at https://atriumhermes.tech/.well-known/skills/index.json against the prior snapshot — surfaces newly-published skills, removed skills, and updated descriptions. Supply-side complement to sparkleware-catalog (curated skill-packs.json registry) and skill-update-check (version drift of installed skills).
+description: Diff of the Atrium marketplace catalog at https://atriumhermes.tech/.well-known/skills/index.json against the prior snapshot — surfaces newly-published skills, removed skills, and updated descriptions. Supply-side complement to sparkleware-catalog (curated skill-packs.json registry) and skill-update-check (version drift of installed skills).
 var: ""
 tags: [dev, community]
 ---

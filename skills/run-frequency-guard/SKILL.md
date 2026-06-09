@@ -1,6 +1,6 @@
 ---
 name: run-frequency-guard
-description: Daily per-skill run-count watchdog — checks if any capped skills exceeded their configured daily limit and alerts on breach
+description: Per-skill run-count watchdog — checks if any capped skills exceeded their configured daily limit and alerts on breach
 var: ""
 tags: [meta]
 ---

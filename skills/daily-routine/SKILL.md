@@ -1,6 +1,6 @@
 ---
-name: Daily Routine
-description: Morning briefing combining token movers, tweet roundup, paper pick, GitHub issues, and HN digest
+name: Routine
+description: Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run
 var: ""
 tags: [news]
 requires: [XAI_API_KEY?]
@@ -52,7 +52,7 @@ For each topic, write 2-3 bullet points capturing the gist. Include links.
 Combine everything (chain context outputs + tweet roundup) into a single notification via `./notify` (keep under 4000 chars):
 
 ```
-*Daily Routine — ${today}*
+*Routine — ${today}*
 
 *Top 10 Winners (24h)*
 1. SYMBOL: $price (+X%)
@@ -67,7 +67,7 @@ Combine everything (chain context outputs + tweet roundup) into a single notific
 *AI:* gist
 *Dev:* gist
 
-*Paper of the Day*
+*Paper Pick*
 "Title" — why you should read it [link]
 
 *GitHub Issues*
