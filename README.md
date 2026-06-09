@@ -26,7 +26,7 @@
 
 You need three things:
 
-1. **Node.js 20+** — check with `node -v`. Missing or too old? Grab the LTS installer from [nodejs.org](https://nodejs.org/en/download), or use a package manager: `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) or your distro's package manager (Linux).
+1. **Node.js 20+** — grab the LTS installer from [nodejs.org](https://nodejs.org/en/download), or use a package manager: `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) or your distro's package manager (Linux). Already have it? `node -v` should print 20 or higher.
 2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** — the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
 3. **Your own fork of this repo** — click the **Fork** button at the top of [the repo page](https://github.com/aaronjmars/aeon) (keep it public — Actions minutes are free on public repos), or run `gh repo fork aaronjmars/aeon --clone`. Then point `gh` at it once: `gh repo set-default <you>/aeon`.
 
