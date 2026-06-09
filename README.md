@@ -28,7 +28,7 @@ You need three things:
 
 1. **Node.js 20+** — grab the LTS installer from [nodejs.org](https://nodejs.org/en/download), or use a package manager: `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) or your distro's package manager (Linux). Already have it? `node -v` should print 20 or higher.
 2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** — the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
-3. **Your own copy of this repo** — click **Use this template** (or **Fork**) at the top of [the repo page](https://github.com/aaronjmars/aeon) — keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aaronjmars/aeon --clone`. Then point `gh` at it once: `gh repo set-default <you>/aeon`.
+3. **Your own copy of this repo** — click **Use this template** at the top of [the repo page](https://github.com/aaronjmars/aeon) — keep it public, Actions minutes are free on public repos. CLI version: `gh repo fork aaronjmars/aeon --clone`.
 
    <img src="assets/use-this-template.png" alt="The Use this template button at the top of the repo page" width="320" />
 
@@ -42,7 +42,7 @@ Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key (Anthropic, Anthropic-compatible, or a Bankr `bk_…` key from [bankr.bot/api-keys](https://bankr.bot/api-keys) — routed automatically).
 2. **Add a channel** — [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
 3. **Pick skills** — toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
-4. **Run** — hit **Run now** on any skill to try it immediately; API keys and `var`s apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
+4. **Run** — hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
 
 That's it — Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `./onboard` anytime to verify your setup.
 
