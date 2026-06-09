@@ -42,8 +42,15 @@ start_ccr_sidecar() {
   # NOTE: the host step runs under `bash -e` (Actions default), so conditionals
   # in this file must use `if` — a bare `[ … ] && …` list that evaluates false
   # would kill the step.
-  local transformers='"anthropic"'
-  if [ -n "$extra_tf" ]; then transformers="\"anthropic\", \"${extra_tf}\""; fi
+  #
+  # sanitize-empty-text (scripts/ccr-sanitize.js) runs first: Claude Code can
+  # emit whitespace-only text blocks that strict upstreams reject with a 400
+  # ("text content blocks must contain non-whitespace text"). ccr skips the
+  # transformer gracefully if the plugin fails to load.
+  local script_dir
+  script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+  local transformers='"sanitize-empty-text", "anthropic"'
+  if [ -n "$extra_tf" ]; then transformers="\"sanitize-empty-text\", \"anthropic\", \"${extra_tf}\""; fi
 
   if ! command -v ccr >/dev/null 2>&1; then
     if ! npm install -g @musistudio/claude-code-router@2.0.0 >/dev/null 2>&1; then
@@ -61,6 +68,9 @@ start_ccr_sidecar() {
   "PORT": ${CCR_PORT},
   "LOG": ${CCR_LOG:-false},
   "API_TIMEOUT_MS": 600000,
+  "transformers": [
+    { "path": "${script_dir}/ccr-sanitize.js" }
+  ],
   "Providers": [
     {
       "name": "${name}",

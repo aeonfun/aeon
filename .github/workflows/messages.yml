@@ -785,6 +785,21 @@ jobs:
 
           echo "::notice::Token usage — input: $INPUT_TOKENS, output: $OUTPUT_TOKENS, cache_read: $CACHE_READ, cache_creation: $CACHE_CREATION, total: $TOTAL_TOKENS"
 
+      # Sidecar gateway logs die with the VM — surface them in the job log on
+      # failure (set the CCR_LOG=true repo variable for request-level detail).
+      # The ccr config.json is deliberately NOT printed (it embeds the provider key).
+      - name: Sidecar logs (on failure)
+        if: failure()
+        run: |
+          found=0
+          for f in "$HOME"/.claude-code-router/logs/*.log "$HOME"/.claude-code-router/*.log; do
+            [ -f "$f" ] || continue
+            found=1
+            echo "===== ${f} (last 200 lines) ====="
+            tail -n 200 "$f"
+          done
+          if [ "$found" -eq 0 ]; then echo "No claude-code-router logs found (gateway was not a sidecar provider, or it never started)."; fi
+
       - name: Log token usage
         if: steps.msg.outputs.source != ''
         env:
