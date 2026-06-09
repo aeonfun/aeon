@@ -142,11 +142,11 @@ export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onT
   const worksBetterMcp = mcp.filter(m => m.optional)
   const missingRequiredMcp = requiredMcp.filter(m => !isMcpInstalled(m.slug))
 
-  // Section numbers are assigned in render order; the MCP section only appears
-  // when the skill declares an `mcp:` requirement, so number it dynamically.
+  // Section numbers are assigned in render order; the API keys and MCP sections
+  // only appear when the skill declares requirements, so number them dynamically.
   let sectionN = 0
   const nextN = () => String(++sectionN).padStart(2, '0')
-  const nApiKeys = nextN()
+  const nApiKeys = requires.length > 0 ? nextN() : ''
   const nMcp = mcp.length > 0 ? nextN() : ''
   const nSchedule = nextN()
   const nBrief = nextN()
@@ -209,51 +209,45 @@ export function SkillDetail({ skill, runs, model, secrets, mcpServers, busy, onT
         </div>
       </section>
 
-      <Section index={nApiKeys} label="API keys">
-        {requires.length === 0 ? (
-          <div className="text-sm text-primary-35 font-mono uppercase tracking-[0.14em]">
-            No external credentials — runs on the built-in Claude &amp; GitHub tokens
-          </div>
-        ) : (
-          <>
-            {missingRequired.length > 0 && (
-              <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
-                <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
-                <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
-                  Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} —
-                  this skill won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
-                  {missingRequired.map((r, i) => (
-                    <span key={r.key}>
-                      {i > 0 && ', '}
-                      <button onClick={() => onGoToSecret(r.key)} title="Open in Settings to set this key" className="text-eva-red underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">{r.key}</button>
-                    </span>
-                  ))}
-                </p>
+      {requires.length > 0 && (
+        <Section index={nApiKeys} label="API keys">
+          {missingRequired.length > 0 && (
+            <div className="mb-4 flex items-start gap-3 border border-eva-red/40 bg-eva-red/5 px-4 py-3">
+              <span className="text-eva-red text-sm leading-none mt-0.5">▲</span>
+              <p className="text-[12px] text-primary-70 font-mono leading-relaxed">
+                Missing {missingRequired.length} required key{missingRequired.length > 1 ? 's' : ''} —
+                this skill won&apos;t work until {missingRequired.length > 1 ? 'they are' : 'it is'} set:{' '}
+                {missingRequired.map((r, i) => (
+                  <span key={r.key}>
+                    {i > 0 && ', '}
+                    <button onClick={() => onGoToSecret(r.key)} title="Open in Settings to set this key" className="text-eva-red underline decoration-dotted underline-offset-2 hover:text-aeon-fg transition-colors">{r.key}</button>
+                  </span>
+                ))}
+              </p>
+            </div>
+          )}
+          {requiredKeys.length > 0 && (
+            <div className="mb-4">
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red mb-2">Required to run</div>
+              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+                {requiredKeys.map(r => (
+                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
+                ))}
               </div>
-            )}
-            {requiredKeys.length > 0 && (
-              <div className="mb-4">
-                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-aeon-red mb-2">Required to run</div>
-                <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
-                  {requiredKeys.map(r => (
-                    <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
-                  ))}
-                </div>
+            </div>
+          )}
+          {worksBetterKeys.length > 0 && (
+            <div>
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange/80 mb-2">Works better with</div>
+              <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
+                {worksBetterKeys.map(r => (
+                  <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
+                ))}
               </div>
-            )}
-            {worksBetterKeys.length > 0 && (
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-eva-orange/80 mb-2">Works better with</div>
-                <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
-                  {worksBetterKeys.map(r => (
-                    <KeyRow key={r.key} kref={r} secret={secretByName.get(r.key)} onGoTo={onGoToSecret} />
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </Section>
+            </div>
+          )}
+        </Section>
+      )}
 
       {mcp.length > 0 && (
         <Section index={nMcp} label="MCP servers">

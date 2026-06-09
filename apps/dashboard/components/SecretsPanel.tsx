@@ -111,12 +111,9 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                                 title={u.optional ? 'Works better with this key' : 'Required for this skill'}
                                 className={`hover:text-aeon-fg transition-colors ${u.optional ? 'text-primary-40' : 'text-aeon-red/80'}`}
                               >
-                                {displayName(u.name)}{!u.optional && '*'}
+                                {displayName(u.name)}
                               </button>
                             ))}
-                          {usedBy.get(secret.name)!.some(u => !u.optional) && (
-                            <span className="text-primary-30">· * = required</span>
-                          )}
                         </div>
                       )}
                     </div>
