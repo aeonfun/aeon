@@ -114,6 +114,16 @@ describe("parseCron", () => {
       assert.equal(parsed.unit, "h");
     }
   });
+
+  it("does not crash on non-cron schedules like workflow_dispatch", () => {
+    assert.doesNotThrow(() => parseCron("workflow_dispatch"));
+    const parsed = parseCron("workflow_dispatch");
+    assert.equal(parsed.mode, "time");
+  });
+
+  it("does not crash on an empty schedule", () => {
+    assert.doesNotThrow(() => parseCron(""));
+  });
 });
 
 // ── cronLabel ─────────────────────────────────────────────────────────

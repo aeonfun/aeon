@@ -16,7 +16,13 @@ function utcToLocal24(utcH: number): number { return ((utcH + getUtcOffsetHours(
 export function localToUtc24(localH: number): number { return ((localH - getUtcOffsetHours()) % 24 + 24) % 24 }
 
 export function parseCron(cron: string) {
-  const [m, h, , , dow] = cron.split(' ')
+  const [m, h, , , dow] = (cron ?? '').split(' ')
+  // Schedules that aren't 5-field crons (e.g. "workflow_dispatch") have no
+  // minute/hour fields — fall back to a daily 9 AM default so the editor renders
+  // instead of crashing on undefined.includes().
+  if (m === undefined || h === undefined) {
+    return { mode: 'time' as const, hour12: 9, minute: 0, ampm: 'AM' as 'AM' | 'PM', days: [-1] }
+  }
   if (m.includes('/')) return { mode: 'interval' as const, value: parseInt(m.split('/')[1]) || 5, unit: 'm' as const }
   if (h === '*' || h.includes('/')) return { mode: 'interval' as const, value: h === '*' ? 1 : parseInt(h.split('/')[1]) || 1, unit: 'h' as const }
   const localH = utcToLocal24(parseInt(h))
