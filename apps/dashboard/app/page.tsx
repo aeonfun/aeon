@@ -124,7 +124,7 @@ export default function Dashboard() {
             <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} onSave={saveStrategy} />
           )}
           {view === 'mcp' && !selectedSkill && (
-            <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} onSave={saveMcp} onSetSecret={saveSecret} />
+            <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} onSave={saveMcp} onSetSecret={saveSecret} />
           )}
           {view === 'hq' && !selectedSkill && (
             <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} onViewRun={() => {}} />
