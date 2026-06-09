@@ -647,6 +647,21 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
+          BANKR_LLM_KEY: ${{ secrets.BANKR_LLM_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
+          SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
+          OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
+          OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
+          USEPOD_MODEL: ${{ vars.USEPOD_MODEL }}
+          USEPOD_MODEL_SONNET: ${{ vars.USEPOD_MODEL_SONNET }}
+          USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
+          VENICE_MODEL: ${{ vars.VENICE_MODEL }}
+          VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
+          SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
+          CCR_LOG: ${{ vars.CCR_LOG }}
           GITHUB_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -666,6 +681,11 @@ jobs:
           TODAY=$(date -u +%Y-%m-%d)
           CONFIG_MODEL=$(grep -E '^model:' aeon.yml | sed 's/^model: *//' | tr -d ' ')
           MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
+
+          # AI Gateway routing — same path as aeon.yml's Run steps
+          GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
+          GATEWAY="${GATEWAY:-direct}"
+          source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
 
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash

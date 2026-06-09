@@ -8,6 +8,10 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'CLAUDE_CODE_OAUTH_TOKEN', group: 'Core', description: 'Claude Code OAuth token (set via Authenticate button)', either: 'auth' },
   { name: 'ANTHROPIC_API_KEY', group: 'Core', description: 'Anthropic or Anthropic-compatible API key for Claude Code', either: 'auth' },
   { name: 'BANKR_LLM_KEY', group: 'Core', description: 'Bankr Gateway API key (bk_...) — enable at bankr.bot/api' },
+  { name: 'OPENROUTER_API_KEY', group: 'Core', description: 'OpenRouter API key (sk-or-...) — routes Claude through openrouter.ai. Create at openrouter.ai/keys' },
+  { name: 'USEPOD_TOKEN', group: 'Core', description: 'UsePod proxy token — routes Claude through api.usepod.ai (token embedded in the base URL)' },
+  { name: 'VENICE_API_KEY', group: 'Core', description: 'Venice API key — routes Claude through api.venice.ai via a local translator. Create at venice.ai/settings/api' },
+  { name: 'SURPLUS_API_KEY', group: 'Core', description: 'Surplus Intelligence API key (inf_...) — routes Claude through surplusintelligence.ai via a local translator' },
   { name: 'TELEGRAM_BOT_TOKEN', group: 'Telegram', description: 'Bot token from @BotFather' },
   { name: 'TELEGRAM_CHAT_ID', group: 'Telegram', description: 'Your chat ID' },
   { name: 'DISCORD_BOT_TOKEN', group: 'Discord', description: 'Discord bot token' },
@@ -42,6 +46,16 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
+
+// Gateway key secrets — setting one flips aeon.yml's gateway.provider to the
+// mapped provider; deleting one reverts it to `direct`.
+const GATEWAY_SECRETS: Record<string, string> = {
+  BANKR_LLM_KEY: 'bankr',
+  OPENROUTER_API_KEY: 'openrouter',
+  USEPOD_TOKEN: 'usepod',
+  VENICE_API_KEY: 'venice',
+  SURPLUS_API_KEY: 'surplus',
+}
 
 // Valid env var name pattern
 const VALID_SECRET_NAME = /^[A-Z][A-Z0-9_]{1,}$/
@@ -105,8 +119,8 @@ export async function POST(request: Request) {
       stdio: 'pipe',
       cwd: process.cwd(),
     })
-    // Setting the Bankr key here (not just via the auth modal) routes through Bankr.
-    if (name === 'BANKR_LLM_KEY') await syncGatewayProvider('bankr')
+    // Setting a gateway key here (not just via the auth modal) routes through that gateway.
+    if (GATEWAY_SECRETS[name]) await syncGatewayProvider(GATEWAY_SECRETS[name])
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to set secret'
@@ -127,8 +141,8 @@ export async function DELETE(request: Request) {
 
   try {
     execFileSync('gh', ['secret', 'delete', name, ...ghArgsRepo()], { stdio: 'pipe', cwd: process.cwd() })
-    // Deleting the Bankr key reverts the gateway to the classic (direct) provider.
-    if (name === 'BANKR_LLM_KEY') await syncGatewayProvider('direct')
+    // Deleting a gateway key reverts the gateway to the classic (direct) provider.
+    if (GATEWAY_SECRETS[name]) await syncGatewayProvider('direct')
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to delete secret'

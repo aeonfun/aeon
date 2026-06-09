@@ -39,7 +39,7 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key (Anthropic, Anthropic-compatible, or a Bankr `bk_…` key from [bankr.bot/api-keys](https://bankr.bot/api-keys) — routed automatically).
+1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus) — routed automatically.
 2. **Add a channel** — [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
 3. **Pick skills** — toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** — hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
@@ -217,7 +217,7 @@ Set **one** of these — not both:
 claude setup-token   # opens browser → prints sk-ant-oat01-... (valid 1 year)
 ```
 
-The dashboard's Authenticate modal handles both — and auto-routes Bankr `bk_…` keys (see [Bankr Gateway](#bankr-gateway-cheaper-opus)).
+The dashboard's Authenticate modal handles both — and routes gateway keys (Bankr `bk_…`, OpenRouter `sk-or-…`, Surplus `inf_…`, or Venice/UsePod via the dropdown) automatically (see [LLM Gateways](#llm-gateways)).
 
 ### Notifications
 
@@ -345,11 +345,19 @@ Working client scripts for every supported stack (LangChain, AutoGen, CrewAI, Op
 
 The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `pr-review`, `issue-triage`, and `external-feature` to work on your other repos, add a `GH_GLOBAL` personal access token: github.com/settings/tokens → Fine-grained → set repo access → grant Contents, Pull requests, Issues (read/write) → add as `GH_GLOBAL` secret. Skills use it when available and fall back to `GITHUB_TOKEN` automatically.
 
-### Bankr Gateway (cheaper Opus)
+### LLM Gateways
 
-Route requests through [Bankr LLM Gateway](https://docs.bankr.bot/llm-gateway/overview) for ~67% cheaper Opus (via Vertex AI), plus gateway access to Gemini, GPT, Kimi, and Qwen models (set the model id manually in `aeon.yml`).
+Route Claude Code through an alternative gateway instead of the direct Anthropic API. Paste the key in the dashboard's Authenticate modal — keys with a distinctive prefix are detected automatically; Venice and UsePod have no prefix, so pick them in the modal's provider dropdown. The key is saved as the secret below and `gateway: { provider: … }` is set in `aeon.yml` automatically. Removing the key reverts the gateway to `direct`.
 
-Get a key at [bankr.bot/api-keys](https://bankr.bot/api-keys), top up credits, and paste it in the dashboard's Authenticate modal — `bk_…` keys are saved as `BANKR_LLM_KEY` and `gateway: { provider: bankr }` is set automatically. Removing the key reverts the gateway to `direct`.
+| Gateway | Secret | Detection | Claude models | Notes |
+|---------|--------|-----------|---------------|-------|
+| [Bankr](https://docs.bankr.bot/llm-gateway/overview) | `BANKR_LLM_KEY` | `bk_…` prefix | Opus 4.8 | ~67% cheaper Opus (via Vertex AI), plus Gemini/GPT/Kimi/Qwen |
+| [OpenRouter](https://openrouter.ai) | `OPENROUTER_API_KEY` | `sk-or-…` prefix | Opus 4.8 | Anthropic-native passthrough; lowest-risk option |
+| [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | dropdown | passthrough | Solana marketplace; token is embedded in the base URL, keep it secret |
+| [Venice](https://venice.ai) | `VENICE_API_KEY` | dropdown | up to Opus 4.6 | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
+| [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | `inf_…` prefix | Opus 4.8 | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
+
+Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`). Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
 
 ### Soul
 

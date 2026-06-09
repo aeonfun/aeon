@@ -17,6 +17,8 @@ export async function GET() {
     const hasApiKey = secrets.includes('ANTHROPIC_API_KEY')
     const hasOauth = secrets.includes('CLAUDE_CODE_OAUTH_TOKEN')
     const hasBankr = secrets.includes('BANKR_LLM_KEY')
+    const hasGateway = ['BANKR_LLM_KEY', 'OPENROUTER_API_KEY', 'USEPOD_TOKEN', 'VENICE_API_KEY', 'SURPLUS_API_KEY']
+      .some((name) => secrets.includes(name))
     let hasBaseUrl = false
 
     try {
@@ -26,7 +28,7 @@ export async function GET() {
       hasBaseUrl = vars ? vars.split('\n').includes('ANTHROPIC_BASE_URL') : false
     } catch {}
 
-    return NextResponse.json({ authenticated: hasApiKey || hasOauth || hasBankr, hasApiKey, hasOauth, hasBankr, hasBaseUrl })
+    return NextResponse.json({ authenticated: hasApiKey || hasOauth || hasGateway, hasApiKey, hasOauth, hasBankr, hasGateway, hasBaseUrl })
   } catch {
     return NextResponse.json({ authenticated: false })
   }
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'gh CLI not authenticated. Run: gh auth login' }, { status: 503 })
     }
 
-    const body = await request.json().catch(() => ({})) as { key?: string, baseUrl?: string }
+    const body = await request.json().catch(() => ({})) as { key?: string, baseUrl?: string, provider?: string }
     const config = normalizeAuthConfig(body)
 
     if (config.baseUrl) {
@@ -91,7 +93,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, method: 'oauth' })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to setup auth'
-    const status = msg.includes('Base URL') || msg.includes('OAuth tokens') || msg.includes('Bankr') ? 400 : 500
+    const status = msg.includes('Base URL') || msg.includes('OAuth tokens') || msg.includes('gateway') ? 400 : 500
     return NextResponse.json({ error: msg }, { status })
   }
 }
