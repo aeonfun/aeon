@@ -21,6 +21,7 @@ import { AuthModal } from '../components/AuthModal'
 export default function Dashboard() {
   const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
+  const [secretFocus, setSecretFocus] = useState<string | null>(null)
 
   const [skills, setSkills] = useState<Skill[]>([])
   const [runs, setRuns] = useState<Run[]>([])
@@ -62,6 +63,8 @@ export default function Dashboard() {
     try { const [sr, rr, secr] = await Promise.all([fetch('/api/skills'), fetch('/api/runs'), fetch('/api/secrets')]); if (sr.ok) { const d = await sr.json(); setSkills(d.skills); if (d.model) setModel(d.model); if (d.gateway?.provider) setGateway(d.gateway.provider); if (d.repo) setRepo(d.repo) }; if (rr.ok) setRuns((await rr.json()).runs); if (secr.ok) { const d = await secr.json(); if (d.secrets) setSecrets(d.secrets) } } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Failed to connect') } finally { setLoading(false) }
     try { const r = await fetch('/api/sync'); if (r.ok) { const d = await r.json(); setHasChanges(d.hasChanges); if (typeof d.behind === 'number') setBehind(d.behind) } } catch {}
     try { const r = await fetch('/api/auth'); if (r.ok) setAuthStatus(await r.json()) } catch {}
+    // Preload MCP servers so each skill's "MCP servers" panel can show install state.
+    try { const r = await fetch('/api/mcp'); if (r.ok) { const d = await r.json(); setMcpServers(d.servers || {}); setMcpLoaded(true) } } catch {}
   }, [])
   const refreshRuns = useCallback(async () => { try { const r = await fetch('/api/runs'); if (r.ok) setRuns((await r.json()).runs) } catch {} }, [])
   useEffect(() => { fetchData() }, [fetchData])
@@ -85,6 +88,11 @@ export default function Dashboard() {
   const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const r = await fetch('/api/strategy', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) }); if (r.ok) { setStrategy(content); flash('Strategy saved'); setHasChanges(true) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const r = await fetch('/api/mcp', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ servers }) }); if (r.ok) { setMcpServers(servers); flash('MCP servers saved'); setHasChanges(true) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
+
+  // Jump from a skill's API-keys panel straight to Settings → Access Keys,
+  // scrolled to the chosen key with its input open and ready to paste.
+  const goToSecret = (name: string) => { setSelectedSkill(null); setView('secrets'); setSecretFocus(name) }
+  const goToMcp = () => { setSelectedSkill(null); setView('mcp') }
 
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
@@ -119,7 +127,7 @@ export default function Dashboard() {
 
         <div className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} />
           )}
           {view === 'strategy' && !selectedSkill && (
             <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} onSave={saveStrategy} />
@@ -132,10 +140,10 @@ export default function Dashboard() {
           )}
           {skill && (
             <SkillDetail
-              skill={skill} runs={runs} model={model} secrets={secrets} busy={busy}
+              skill={skill} runs={runs} model={model} secrets={secrets} mcpServers={mcpServers} busy={busy}
               onToggle={toggleSkill} onRun={runSkill} onDelete={deleteSkill}
               onUpdateSchedule={updateSchedule} onUpdateVar={updateVar} onUpdateModel={updateSkillModel}
-              onSetSecret={saveSecret}
+              onGoToSecret={goToSecret} onGoToMcp={goToMcp}
               onViewRun={() => {}}
             />
           )}

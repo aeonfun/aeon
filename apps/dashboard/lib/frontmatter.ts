@@ -3,11 +3,17 @@ export interface SkillKeyRef {
   optional: boolean // true when the skill degrades gracefully without it (declared with a trailing `?`)
 }
 
+export interface SkillMcpRef {
+  slug: string      // MCP server slug from the catalog, e.g. "base"
+  optional: boolean // true when the skill works better with it but doesn't require it (trailing `?`)
+}
+
 export interface Frontmatter {
   name: string
   description: string
   tags: string[]
   requires: SkillKeyRef[]
+  mcp: SkillMcpRef[]
 }
 
 // Parse a SKILL.md's leading `--- ... ---` block. When `description:` is absent,
@@ -43,7 +49,18 @@ export function parseFrontmatter(content: string): Frontmatter {
     })
     .filter(r => /^[A-Z][A-Z0-9_]+$/.test(r.key))
 
-  return { name, description, tags, requires }
+  // `mcp:` declares the MCP servers a skill needs. Same shape/semantics as
+  // `requires:` (trailing `?` = "works better with"), but slugs reference the
+  // MCP catalog (lib/mcp-catalog.ts) surfaced on the dashboard's MCP page.
+  //   mcp: [base, ctrl?]
+  const mcp: SkillMcpRef[] = parseList(block.match(/mcp:\s*\[([^\]]*)\]/)?.[1])
+    .map(raw => {
+      const optional = raw.endsWith('?')
+      return { slug: raw.replace(/\?$/, '').trim().toLowerCase(), optional }
+    })
+    .filter(r => /^[a-z][a-z0-9-]+$/.test(r.slug))
+
+  return { name, description, tags, requires, mcp }
 }
 
 function parseList(inner: string | undefined): string[] {

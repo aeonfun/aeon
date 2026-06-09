@@ -69,13 +69,10 @@ cd aeon && ./aeon
 
 Click on `http://localhost:5555` to open the dashboard in your browser. From there:
 
-1. **Authenticate** — add your Claude API key or OAuth token
-2. **Add a channel** — set up [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you (and you can talk back)
+1. **Authenticate** — connect a Claude Pro/Max subscription token, or paste an Anthropic API key, an Anthropic-compatible key, or a Bankr gateway key (`bk_…`, routed automatically)
+2. **Add a channel** — set up [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you
 3. **Pick skills** — toggle on what you want, set a schedule, and optionally set a `var` to focus each skill. Each skill's **API keys** panel shows which third-party keys it needs (and which are still unset) — see [API keys per skill](#api-keys-per-skill)
 4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
-5. **Verify** — run `./onboard` to confirm secrets, workflows, memory, and notifications are wired up correctly. Add `--remote` to fire the check inside Actions and have the checklist arrive in your notification channel.
-
-**Need a skill for X?** Six pre-built starters live in [`skill-templates/`](skill-templates/TEMPLATE.md) — crypto tracker, research digest, code reviewer, social monitor, deploy watcher, community manager. Bootstrap one with `./new-from-template <template> <skill-name> --var KEY=VALUE...` and it lands in `skills/` with a disabled entry in `aeon.yml`, ready to enable.
 
 ### Dashboard access
 
@@ -607,7 +604,7 @@ The example ships two working servers:
 
 On the next run, the runner loads `.mcp.json` (`--mcp-config .mcp.json --strict-mcp-config`) and auto-allows every server's tools (`mcp__github`, `mcp__sequential-thinking`, …). A skill can then just say *"use the github MCP server to …"*.
 
-Or add servers from the dashboard: the **MCP** tab writes `.mcp.json` for you and tells you which secret each server needs.
+Or add servers from the dashboard: the **MCP** tab writes `.mcp.json` for you and tells you which secret each server needs. It also lists **Featured** servers (e.g. [Base](https://mcp.base.org)) for one-click install. Skills can declare the servers they call with an `mcp:` frontmatter list (`mcp: [base]`, `?` = works better with) — the dashboard then shows a per-skill **MCP servers** panel with install state and a one-click jump to the MCP page. See [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md#declaring-mcp-servers-mcp).
 
 ### Servers that need a secret
 

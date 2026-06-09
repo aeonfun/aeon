@@ -56,6 +56,7 @@ get_category() {
     treasury-info) echo "crypto" ;;
     aixbt-pulse|compute-pulse|pm-intel|pm-manipulation|pm-pulse|polymarket|rwa-pulse) echo "crypto" ;;
     wallet-digest|x402-monitor|liquidpad-launch) echo "crypto" ;;
+    base-mcp) echo "crypto" ;;
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
     approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
@@ -150,6 +151,22 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   fi
   requires_json+="]"
 
+  # mcp: [base, ctrl?]  →  [{"slug":"base","optional":false},{"slug":"ctrl","optional":true}]
+  mcp_raw=$(awk '/^---$/{n++; next} n==1 && /^mcp:/{sub(/^mcp: *\[/, ""); sub(/\].*/, ""); print; exit}' "$skill_file")
+  mcp_json="["
+  if [[ -n "$mcp_raw" ]]; then
+    mfirst=true
+    IFS=',' read -ra mparts <<< "$mcp_raw"
+    for raw in "${mparts[@]}"; do
+      mslug=$(echo "$raw" | tr -d ' ')
+      [[ -z "$mslug" ]] && continue
+      if [[ "$mslug" == *"?" ]]; then optional="true"; mslug="${mslug%\?}"; else optional="false"; fi
+      [[ "$mfirst" == "true" ]] && mfirst=false || mcp_json+=","
+      mcp_json+="{\"slug\":\"$mslug\",\"optional\":$optional}"
+    done
+  fi
+  mcp_json+="]"
+
   # Get metadata
   schedule=$(get_schedule "$slug")
   category=$(get_category "$slug")
@@ -169,7 +186,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     echo -n ',' >> "$OUTPUT"
   fi
 
-  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"schedule\":\"$schedule\",\"var\":\"$var\",\"requires\":$requires_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
+  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"schedule\":\"$schedule\",\"var\":\"$var\",\"requires\":$requires_json,\"mcp\":$mcp_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
 
   TOTAL=$((TOTAL + 1))
 done

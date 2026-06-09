@@ -69,6 +69,21 @@ requires: [XAI_API_KEY, COINGECKO_API_KEY?]
 - Omit `requires:` entirely (or use `[]`) for skills that only use the built-in
   Claude + GitHub tokens.
 
+### Declaring MCP servers (`mcp:`)
+
+If a skill calls an [MCP server](../README.md#mcp-servers-in-skill-runs) during
+its run, declare it in the `mcp:` frontmatter list. Same two-tier semantics as
+`requires:` — a bare slug is **required**, a trailing `?` means **works better
+with**. Slugs reference the MCP catalog (`apps/dashboard/lib/mcp-catalog.ts`).
+
+```yaml
+mcp: [base]        # this skill needs the Base MCP server (mcp.base.org)
+```
+
+The dashboard shows a per-skill **MCP servers** panel (install state pulled from
+`.mcp.json`, name/logo from the catalog) and a ⚠ banner with a one-click jump to
+the MCP page when a required server isn't installed.
+
 Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case so they're easy to spot in a diff. The literal token `[REPLACE: SKILL_NAME]` is special — it's auto-set to the skill name passed to `./new-from-template` (the second positional argument).
 
 ## Adding a new template

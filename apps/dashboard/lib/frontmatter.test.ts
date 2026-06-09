@@ -127,6 +127,30 @@ requires: [GOOD_KEY, , lowercase, 123BAD]
     assert.deepEqual(result.requires, [{ key: "GOOD_KEY", optional: false }]);
   });
 
+  it("parses mcp servers with required and works-better (?) tiers", () => {
+    const content = `---
+name: Base MCP
+description: onchain
+tags: [crypto]
+mcp: [base, ctrl?]
+---`;
+    const result = parseFrontmatter(content);
+    assert.deepEqual(result.mcp, [
+      { slug: "base", optional: false },
+      { slug: "ctrl", optional: true },
+    ]);
+  });
+
+  it("returns empty mcp when the field is absent", () => {
+    const content = `---
+name: No MCP
+description: nothing
+tags: [meta]
+---`;
+    const result = parseFrontmatter(content);
+    assert.deepEqual(result.mcp, []);
+  });
+
   it("truncates long fallback descriptions at 120 chars", () => {
     // Without description, the fallback scans all content for the first
     // non-heading/non-`---` line and truncates at 120 chars.

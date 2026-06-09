@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Fragment } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import type { Secret, Skill } from '../lib/types'
 import { inputCls, displayName } from '../lib/utils'
 import { Scramble } from './ui/Animated'
@@ -11,16 +11,31 @@ interface SecretsPanelProps {
   skills: Skill[]
   busy: Record<string, boolean>
   repo: string
+  focusKey?: string | null
+  onFocusHandled?: () => void
   onSave: (name: string, value: string) => void
   onDelete: (name: string) => void
   onSelectSkill: (name: string) => void
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, onSave, onDelete, onSelectSkill }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
   const [newSecretName, setNewSecretName] = useState('')
+
+  // Deep-link from a skill's API-keys panel: open the requested key's editor,
+  // scroll it into view, and clear the request so re-navigating works.
+  useEffect(() => {
+    if (!focusKey) return
+    setEditingSecret(focusKey)
+    setSecretValue('')
+    const t = setTimeout(() => {
+      document.getElementById(`secret-${focusKey}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 60)
+    onFocusHandled?.()
+    return () => clearTimeout(t)
+  }, [focusKey, onFocusHandled])
 
   // Reverse index: which skills declare each credential, and whether they
   // require it or just work better with it. Powers the "used by" line so the
@@ -79,7 +94,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, onSave, onDelete, on
             </div>
             <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
               {gs.map(secret => (
-                <div key={secret.name} className="px-[var(--space-md)] py-[var(--space-sm)]">
+                <div key={secret.name} id={`secret-${secret.name}`} className={`px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-eva-orange/5' : ''}`}>
                   <div className="flex items-center justify-between">
                     <div className="min-w-0">
                       <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>

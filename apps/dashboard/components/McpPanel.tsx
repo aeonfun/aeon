@@ -3,10 +3,14 @@
 import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { inputCls } from '../lib/utils'
+import { MCP_CATALOG } from '../lib/mcp-catalog'
 import type { Secret } from '../lib/types'
 
 type McpServer = Record<string, unknown>
 type McpServers = Record<string, McpServer>
+
+// One-click starters — public HTTP MCP servers that install with no token.
+const FEATURED = MCP_CATALOG
 
 interface McpPanelProps {
   servers: McpServers
@@ -104,6 +108,17 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   // A credential this panel minted for a server is stored as MCP_<SLUG>_TOKEN.
   const isMcpToken = (r: string) => /^MCP_[A-Z0-9_]+_TOKEN$/.test(r)
 
+  // One-click install a featured server: add it to .mcp.json and persist
+  // immediately (same as Save). No token needed — these are public endpoints.
+  const isFeaturedInstalled = (url: string) => Object.values(draft).some(s => s.url === url)
+  const installFeatured = (f: typeof FEATURED[number]) => {
+    if (isFeaturedInstalled(f.url)) return
+    const slug = draft[f.slug] ? `${f.slug}-mcp` : f.slug
+    const next = { ...draft, [slug]: { type: 'http', url: f.url } }
+    setDraft(next)
+    onSave(next)
+  }
+
   const removeServer = (n: string) => {
     const next = { ...draft }; delete next[n]
     // Any MCP token this server owned that nothing else references is now orphaned
@@ -139,7 +154,35 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
 
       <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
         <div className="flex items-center gap-3 mb-4">
-          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">01 / .mcp.json</span>
+          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">01 / Featured</span>
+          <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
+          <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">one-click install</span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {FEATURED.map(f => {
+            const installed = isFeaturedInstalled(f.url)
+            return (
+              <div key={f.slug} className="border border-[rgba(250,250,250,0.10)] bg-aeon-panel px-[var(--space-md)] py-[var(--space-sm)] flex items-center gap-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={f.logo} alt={f.name} width={36} height={36} className="w-9 h-9 rounded object-cover bg-aeon-bg shrink-0 border border-[rgba(250,250,250,0.10)]" />
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-xs text-primary-100">{f.name}</div>
+                  <div className="text-[11px] text-primary-40 font-mono truncate">{f.url}</div>
+                </div>
+                {installed ? (
+                  <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-eva-green shrink-0">✓ installed</span>
+                ) : (
+                  <button onClick={() => installFeatured(f)} disabled={saving} className="bg-eva-green text-white text-[11px] px-3 py-1.5 font-mono hover:opacity-90 transition-opacity disabled:opacity-40 shrink-0">Install</button>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
+        <div className="flex items-center gap-3 mb-4">
+          <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">02 / .mcp.json</span>
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
           <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-35">{names.length} server{names.length === 1 ? '' : 's'}</span>
         </div>
