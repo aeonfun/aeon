@@ -8,7 +8,7 @@ const GITHUB_API = 'https://api.github.com'
 interface GitHubContentFile { content: string; sha: string; encoding: string }
 interface GitHubContentEntry { name: string; type: 'file' | 'dir' | 'symlink' | 'submodule'; path: string }
 
-function isLocal() {
+export function isLocal() {
   return !process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO
 }
 
