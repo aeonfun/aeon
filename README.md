@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction — it'll leverage 195 skills like deep research, PR reviews, market monitoring, Vercel deploys, and more to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction — it'll use 196 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -22,11 +22,117 @@
 
 ---
 
-## Why "most autonomous agent framework"?
+## Quick start
 
-Most agent tools put you in the driver's seat — approve this tool call, review this diff, confirm this action. That's useful for interactive work. But there's a whole class of tasks where you just want the work *done* while you're not there: morning briefs, market monitoring, PR reviews, research digests, security scans.
+You need three things:
 
-Aeon is built for that. Here's how it compares:
+1. **Node.js 20+**
+2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** — `brew install gh`, then `gh auth login`. The dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting.
+3. **Your own copy of this repo** — fork it (or `gh repo create <you>/aeon --public --clone --source=.`), then `gh repo set-default <you>/<repo>`.
+
+```bash
+git clone https://github.com/<you>/aeon
+cd aeon && ./aeon
+```
+
+Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
+
+1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key (Anthropic, Anthropic-compatible, or a Bankr `bk_…` key — routed automatically).
+2. **Add a channel** — [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
+3. **Pick skills** — toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
+4. **Push** — one click commits your config to GitHub. Actions takes it from there.
+
+That's it — Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `./onboard` anytime to verify your setup.
+
+<details>
+<summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
+
+Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli/cli/releases](https://github.com/cli/cli/releases) and drop it on your `PATH` (e.g. `~/.local/bin`). No installer, no sudo. Then `gh auth login`.
+
+</details>
+
+---
+
+## What Aeon can do
+
+![Skills](./assets/skills-aeon-193.jpg)
+
+**196 skills across 8 categories.** Every skill is independently installable, schedulable, and chainable.
+
+| Category | Count | Examples |
+|----------|-------|----------|
+| 🧬 **Core** | 15 | self-healing, self-evolution, fleet control, vuln scanning |
+| 📚 **Research & Content** | 28 | `deep-research`, `paper-digest`, `hacker-news-digest` |
+| 💻 **Dev & Code** | 37 | `pr-review`, `github-monitor`, `auto-merge` |
+| 📈 **Crypto & Markets** | 29 | `token-alert`, `defi-monitor`, `polymarket`, `base-mcp` |
+| 🛡️ **Onchain Security** | 15 | `rug-scan`, `contract-audit`, `honeypot-check` |
+| ✍️ **Social & Writing** | 18 | `write-tweet`, `thread-writer`, `reply-maker` |
+| ✅ **Productivity** | 19 | `morning-brief`, `weekly-review`, `goal-tracker` |
+| 🤖 **Meta / Agent** | 35 | `heartbeat`, `cost-report`, `memory-flush` |
+
+<details>
+<summary><strong>Full catalog (all 196 skills)</strong></summary>
+
+| Category | Skills |
+|----------|--------|
+| **Core** (15) | 🧬 `autoresearch`,`create-skill`,`skill-health`,`skill-repair`,`skill-evals`,`self-improve` · 🛰️ `spawn-instance`,`fleet-control`,`fleet-scorecard`,`contributor-reward`,`distribute-tokens` · 🤖 `external-feature`,`feature`,`deploy-prototype`,`vuln-scanner` |
+| **Research & Content** (28) | `agent-displacement`,`ai-framework-watch`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`competitor-launch-radar`,`deep-research`,`digest`,`fetch-tweets`,`hacker-news-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
+| **Dev & Code** (37) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release-tracker`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge-queue`,`pr-review`,`pr-skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage-monitor`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-security-audit` |
+| **Crypto & Markets** (29) | `aixbt-pulse`,`base-mcp`,`compute-pulse`,`defi-monitor`,`defi-overview`,`fear-divergence-scout`,`liquidpad-launch`,`market-context-refresh`,`monitor-kalshi`,`monitor-polymarket`,`monitor-runners`,`narrative-tracker`,`on-chain-monitor`,`picks-tracker`,`pm-intel`,`pm-manipulation`,`pm-pulse`,`polymarket`,`polymarket-comments`,`price-threshold-alert`,`rwa-pulse`,`token-alert`,`token-movers`,`token-pick`,`token-report`,`treasury-info`,`unlock-monitor`,`wallet-digest`,`x402-monitor` |
+| **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock-check`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk-weekly` |
+| **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt-launch`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn-draft`,`skill-of-the-day`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
+| **Productivity** (19) | `action-converter`,`daily-routine`,`deal-flow`,`evening-recap`,`follow-up-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`morning-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`weekly-review`,`weekly-shiplog` |
+| **Meta / Agent** (35) | `api-health-probe`,`atrium-catalog-watcher`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`fleet-skill-adoption`,`fleet-state`,`fork-contributor-leaderboard`,`fork-first-run-alert`,`fork-health-score`,`fork-skill-digest`,`fork-skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-structural-dedupe`,`onboard`,`operator-scorecard`,`run-frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-security-scan`,`skill-update-check`,`sparkleware-catalog`,`spend-monitor`,`star-momentum-alert`,`update-gallery` |
+
+Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`.
+Dependency graph: [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map of how skills connect.
+
+</details>
+
+### It heals itself
+
+![Anatomy of a skill run](./assets/skill-run-aeon.jpg)
+
+Every skill output is automatically scored 1–5 by Haiku after each run. Scores and failure flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history. When something breaks, the loop fixes it without you:
+
+![Self-healing architecture](./assets/architecture-aeon.jpg)
+
+1. **`heartbeat`** (3x daily) — detects failed, stuck, or chronically broken skills
+2. **`skill-health`** — audits quality scores and flags API degradation patterns
+3. **`skill-evals`** — assertion-based output tests to catch regressions
+4. **`skill-repair`** — diagnoses and patches failing skills automatically
+5. **`self-improve`** — evolves prompts, config, and workflows based on performance
+
+Health skills file issues, repair skills close them. `heartbeat` is the only skill enabled by default: nothing to report → silent; something needs attention → one notification. Deep dive: [`docs/CORE.md`](docs/CORE.md).
+
+### It replicates
+
+Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into a new specialized instance (`var: "crypto-tracker: monitor DeFi protocols"`), selects relevant skills, and registers it in `memory/instances.json` — no secrets propagated, billing stays isolated. `fleet-control` health-checks and dispatches across instances; `fleet-scorecard` tracks fleet economics daily.
+
+### It ships real work
+
+`external-feature` and `feature` ship code to watched repos unprompted. `deploy-prototype` generates and deploys live web apps to Vercel. `vuln-scanner` finds real vulnerabilities and discloses them responsibly. `autoresearch` evolves existing skills through scored variations, and `create-skill` generates new ones from a sentence.
+
+### Add more skills
+
+```bash
+./add-skill aaronjmars/aeon --list        # browse the built-in catalog
+./add-skill BankrBot/skills bankr hydrex  # install from any GitHub repo
+./add-skill BankrBot/skills --all         # install everything from a repo
+./export-skill token-alert                # package one for standalone use
+```
+
+Installed skills land in `skills/` and are added to `aeon.yml` disabled — flip `enabled: true` to activate. You can also:
+
+- **Build your own** from [`skill-templates/`](skill-templates/TEMPLATE.md): `./new-from-template <template> <skill-name>`
+- **Label any GitHub issue `ai-build`** — Claude reads the issue, implements it, and opens a PR
+- **Install community packs** — see [Community skill packs](#community-skill-packs)
+
+---
+
+## Why "the most autonomous"?
+
+Most agent tools put you in the driver's seat — approve this tool call, review this diff, confirm this action. Aeon is built for the work you want *done* while you're not there: morning briefs, market monitoring, PR reviews, research digests, security scans.
 
 |  | Aeon | Claude Code | Hermes | OpenClaw |
 |--|------|------------|--------|---------|
@@ -39,185 +145,19 @@ Aeon is built for that. Here's how it compares:
 | Zero infrastructure | Yes (GitHub Actions) | Local | Self-hosted | Self-hosted |
 | Reasons about tasks | Yes | Yes | Yes | Yes |
 
-The key difference: **other agents are interactive tools you use. Aeon is an autonomous system you configure and walk away from.** It decides when to run, what to check, and when to bother you. It scores its own output, detects degradation, and patches failing skills without intervention.
+**Other agents are interactive tools you use. Aeon is an autonomous system you configure and walk away from.** It decides when to run, what to check, and when to bother you. You still want Claude Code for writing code interactively — but for the 90% of recurring tasks that don't need you in the loop, the most autonomous agent is the one that never asks.
 
-This isn't better for everything — you still want Claude Code for writing code interactively. But for the 90% of recurring tasks that don't need you in the loop, the most autonomous agent is the one that never asks.
-
-For a comparison against the broader agent ecosystem (AutoGen, CrewAI, n8n, LangGraph) and a list of active forks running in production, see [`SHOWCASE.md`](SHOWCASE.md). For products and agents built on top of Aeon, see [`ECOSYSTEM.md`](ECOSYSTEM.md).
+For a comparison against the broader ecosystem (AutoGen, CrewAI, n8n, LangGraph) and active forks in production, see [`SHOWCASE.md`](SHOWCASE.md). For products built on Aeon, see [`ECOSYSTEM.md`](ECOSYSTEM.md).
 
 ![Autonomy spectrum](./assets/autonomy-aeon.jpg)
 
 ---
 
-## Quick start
-
-**Prerequisites**
-
-- **Node.js 20+** — the dashboard is a Next.js app.
-- **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated.** The dashboard shells out to `gh` for every `/api/*` call (secrets, workflow dispatch, repo metadata). Without it, the Authenticate modal returns 503 and nothing pushes.
-  - Install: `brew install gh` (macOS) / `winget install --id GitHub.cli` (Windows) / [other platforms](https://github.com/cli/cli#installation).
-  - **No admin / no sudo?** Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli/cli/releases](https://github.com/cli/cli/releases) and drop it on your `PATH` (e.g. `~/.local/bin`). No installer needed.
-  - Then: `gh auth login`.
-- **A repo of your own** to host Aeon (fork this repo or `gh repo create your-name/aeon --public --clone --source=.`). Set it as the default for `gh` once: `gh repo set-default <owner>/<repo>`.
-
-```bash
-git clone https://github.com/<you>/aeon
-cd aeon && ./aeon
-```
-
-`./aeon` prechecks `gh` + auth and bails out early with a clear message if either is missing.
-
-Click on `http://localhost:5555` to open the dashboard in your browser. From there:
-
-1. **Authenticate** — connect a Claude Pro/Max subscription token, or paste an Anthropic API key, an Anthropic-compatible key, or a Bankr gateway key (`bk_…`, routed automatically)
-2. **Add a channel** — set up [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you
-3. **Pick skills** — toggle on what you want, set a schedule, and optionally set a `var` to focus each skill. Each skill's **API keys** panel shows which third-party keys it needs (and which are still unset) — see [API keys per skill](#api-keys-per-skill)
-4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
-
-### Dashboard access
-
-The dashboard `/api/*` routes drive `gh workflow run` and read/write the repo's GitHub secrets. They are gated to loopback callers by default — same machine the dashboard is running on, no remote callers, no DNS-rebinding from a malicious page in your browser.
-
-If you need to reach the dashboard from another machine on the same network or over a tunnel (Tailscale, `ngrok`, a reverse proxy), the gate has two env-var hatches:
-
-| Env var | Behaviour |
-|---|---|
-| `AEON_DASHBOARD_ALLOWED_HOSTS=aeon.local,box.tail-xxx.ts.net` | Extends the loopback allowlist by one or more hostnames (comma-separated, case- and port-insensitive). The defaults stay accepted. |
-| `AEON_DASHBOARD_ALLOW_ANY_HOST=1` | Disables Host-header checking entirely. Intended only for a trusted reverse proxy that terminates `Host` upstream. Loudly insecure if set without an authenticating proxy in front. |
-
-The gate also rejects state-changing requests (POST / PUT / PATCH / DELETE) whose `Origin` (or `Referer` fallback) isn't on the same allowlist — so a malicious page on another origin can't drive `/api/secrets` or `/api/skills/.../run` via a no-cors POST. Code lives in [`apps/dashboard/proxy.ts`](apps/dashboard/proxy.ts) + [`apps/dashboard/lib/security/api-gate.ts`](apps/dashboard/lib/security/api-gate.ts).
-
----
-
-## Skills
-
-![Skills](./assets/skills-aeon-193.jpg)
-
-195 skills across 8 categories. Every skill is independently installable, schedulable, and chainable.
-
-**Core** is the load-bearing set — the 15 skills that make Aeon autonomous rather than just scheduled:
-
-- 🧬 **Self-evolution & self-healing** — `skill-health` and `skill-evals` detect failures and regressions and file issues; `skill-repair` diagnoses and ships fix PRs; `autoresearch` evolves existing skills through scored A/B/C/D variations; `create-skill` generates new ones from a sentence; `self-improve` makes one small high-impact fix every other day. Health skills file issues, repair skills close them — the loop runs without you.
-- 🛰️ **Fleet & self-replication** — `spawn-instance` clones the agent into new repos (no secret propagation, billing isolation); `fleet-control` health-checks and dispatches skills across instances; `fleet-scorecard` tracks fleet economics daily; `contributor-reward` → `distribute-tokens` pays contributors on-chain with two-phase, idempotent sends.
-- 🤖 **Autonomous real-world action** — `external-feature` / `feature` ship code to watched repos unprompted; `deploy-prototype` generates and deploys live web apps to Vercel; `vuln-scanner` finds real vulnerabilities with purpose-built scanners and discloses them responsibly (private advisories, never public exploit chains).
-
-Deep dive: [`docs/CORE.md`](docs/CORE.md) — per-skill mechanics, exit taxonomies, the health→repair contract, and the money-safety design behind `distribute-tokens`.
-
-| Category | Skills |
-|----------|--------|
-| **Core** (15) | 🧬 `autoresearch`,`create-skill`,`skill-health`,`skill-repair`,`skill-evals`,`self-improve` · 🛰️ `spawn-instance`,`fleet-control`,`fleet-scorecard`,`contributor-reward`,`distribute-tokens` · 🤖 `external-feature`,`feature`,`deploy-prototype`,`vuln-scanner` |
-| **Research & Content** (28) | `agent-displacement`,`ai-framework-watch`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`competitor-launch-radar`,`deep-research`,`digest`,`fetch-tweets`,`hacker-news-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
-| **Dev & Code** (37) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release-tracker`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge-queue`,`pr-review`,`pr-skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage-monitor`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-security-audit` |
-| **Crypto & Markets** (28) | `aixbt-pulse`,`compute-pulse`,`defi-monitor`,`defi-overview`,`fear-divergence-scout`,`liquidpad-launch`,`market-context-refresh`,`monitor-kalshi`,`monitor-polymarket`,`monitor-runners`,`narrative-tracker`,`on-chain-monitor`,`picks-tracker`,`pm-intel`,`pm-manipulation`,`pm-pulse`,`polymarket`,`polymarket-comments`,`price-threshold-alert`,`rwa-pulse`,`token-alert`,`token-movers`,`token-pick`,`token-report`,`treasury-info`,`unlock-monitor`,`wallet-digest`,`x402-monitor` |
-| **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock-check`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk-weekly` |
-| **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt-launch`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn-draft`,`skill-of-the-day`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
-| **Productivity** (19) | `action-converter`,`daily-routine`,`deal-flow`,`evening-recap`,`follow-up-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`morning-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`weekly-review`,`weekly-shiplog` |
-| **Meta / Agent** (35) | `api-health-probe`,`atrium-catalog-watcher`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`fleet-skill-adoption`,`fleet-state`,`fork-contributor-leaderboard`,`fork-first-run-alert`,`fork-health-score`,`fork-skill-digest`,`fork-skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-structural-dedupe`,`onboard`,`operator-scorecard`,`run-frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-security-scan`,`skill-update-check`,`sparkleware-catalog`,`spend-monitor`,`star-momentum-alert`,`update-gallery` |
-
-Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`
-
-**Dependency graph:** [`docs/skill-graph.md`](docs/skill-graph.md) — visual map of how skills connect, grouped by category with the self-healing loop and content pipeline highlighted
-
----
-
-### Instance Fleet
-
-Aeon can spawn and manage copies of itself via `spawn-instance`, `fleet-control`, and `fork-fleet`. Use this to run specialized instances — one for crypto monitoring, another for research, etc.
-
-Spawn with `var: "crypto-tracker: monitor DeFi protocols and token movements"`. The skill forks the repo, selects relevant skills, and registers it in `memory/instances.json`. No secrets are propagated — the new owner adds their own keys.
-
----
-
-## Authentication
-
-Set **one** of these — not both:
-
-| Secret | What it is | Billing |
-|--------|-----------|---------|
-| `CLAUDE_CODE_OAUTH_TOKEN` | OAuth token from your Claude Pro/Max subscription | Included in plan |
-| `ANTHROPIC_API_KEY` | API key from console.anthropic.com | Pay per token |
-
-**Getting an OAuth token:**
-```bash
-claude setup-token   # opens browser → prints sk-ant-oat01-... (valid 1 year)
-```
-
-### Bankr Gateway (optional)
-
-Route requests through [Bankr LLM Gateway](https://docs.bankr.bot/llm-gateway/overview) for ~67% cheaper Opus (via Vertex AI) and access to Gemini, GPT, Kimi, and Qwen models.
-
-1. Get a key at [bankr.bot/api](https://bankr.bot/api) and top up credits
-2. Add `BANKR_LLM_KEY` as a repo secret
-3. Set `gateway: { provider: bankr }` in `aeon.yml`
-
----
-
-## Soul (optional)
-
-By default Aeon has no personality. To make it write and respond like you, add a soul:
-
-1. Fork [soul.md](https://github.com/aaronjmars/soul.md) and fill in your files:
-   - `SOUL.md` — identity, worldview, opinions, interests
-   - `STYLE.md` — voice, sentence patterns, vocabulary, tone
-   - `examples/good-outputs.md` — 10–20 calibration samples
-2. Copy into your Aeon repo under `soul/`
-3. Add to the top of `CLAUDE.md`:
-
-```markdown
-## Identity
-
-Read and internalize before every task:
-- `soul/SOUL.md` — identity and worldview
-- `soul/STYLE.md` — voice and communication patterns
-- `soul/examples.md` — calibration examples
-
-Embody this identity in all output. Never hedge with "as an AI."
-```
-
-Every skill reads `CLAUDE.md`, so identity propagates automatically.
-
-**Quality check:** soul files work when they're specific enough to be wrong. *"I think most AI safety discourse is galaxy-brained cope"* is useful. *"I have nuanced views on AI safety"* is not.
-
----
-
-## Quality scoring & self-healing
-
-![Anatomy of a skill run](./assets/skill-run-aeon.jpg)
-
-Every skill output is automatically scored 1–5 by Haiku after each run (failed/empty → 1, excellent → 5). Scores and flags (`api_error`, `stale_data`, `rate_limited`) are tracked per skill in `memory/skill-health/` with a rolling 30-run history.
-
-**Heartbeat** is the only skill enabled by default. Runs 3x daily, checks `memory/cron-state.json` for failed, stuck, or chronically broken skills, stalled PRs, and missed schedules. Nothing to report → logs `HEARTBEAT_OK`. Something needs attention → sends one notification. Listed last in `aeon.yml` so it only fires when no other skill claims the slot.
-
-### Self-healing loop
-
-![Self-healing architecture](./assets/architecture-aeon.jpg)
-
-1. **`heartbeat`** (3x daily) — detects failed, stuck, or chronically broken skills
-2. **`skill-health`** — audits quality scores and flags API degradation patterns
-3. **`skill-evals`** — assertion-based output quality tests to catch regressions
-4. **`skill-repair`** — diagnoses and patches failing skills automatically
-5. **`self-improve`** — evolves prompts, config, and workflows based on performance
-
-### Reactive triggers
-
-Skills with `schedule: "reactive"` fire on conditions, not cron. If any skill fails 3x in a row, `skill-repair` auto-fires. The scheduler evaluates triggers after processing cron skills.
-
-```yaml
-reactive:
-  skill-repair:
-    trigger:
-      - { on: "*", when: "consecutive_failures >= 3" }
-```
-
-### Cost tracking
-
-Every run logs token usage to `memory/token-usage.csv`. The `cost-report` skill generates a weekly breakdown by skill and model.
-
----
-
-## Configuration
+## Configure
 
 ![Aeon never sleeps — a full day of autonomous runs](./assets/never-sleeps-aeon.jpg)
+
+### Schedules
 
 All scheduling lives in `aeon.yml`:
 
@@ -232,13 +172,11 @@ skills:
     var: "solana"               # topic for this skill
 ```
 
-Standard cron format. All times UTC. Supports `*`, `*/N`, exact values, comma lists.
-
-**Order matters** — the scheduler picks the first matching skill. Put day-specific skills (e.g. Monday-only) before daily ones. Heartbeat goes last.
+Standard cron format, all times UTC. Supports `*`, `*/N`, exact values, comma lists. **Order matters** — the scheduler picks the first matching skill, so put day-specific skills before daily ones and `heartbeat` last.
 
 ### The `var` field
 
-Every skill accepts a single `var` — a universal input that each skill interprets in its own way:
+Every skill accepts a single `var` — a universal input each skill interprets its own way:
 
 | Skill type | What `var` does | Example |
 |-----------|----------------|---------|
@@ -247,157 +185,39 @@ Every skill accepts a single `var` — a universal input that each skill interpr
 | Crypto | Focuses on a token/wallet | `var: "solana"` → only check SOL price |
 | Productivity | Sets the focus area | `var: "shipping v2"` → morning brief emphasizes v2 |
 
-If `var` is empty, each skill falls back to its default behavior (scan everything, auto-pick topics, etc.). Set it from the dashboard or pass it when triggering manually.
+Empty `var` = the skill's default behavior (scan everything, auto-pick topics). Set it from the dashboard or pass it when triggering manually.
 
-### API keys per skill
+### Models
 
-Skills that call a third-party API declare the credentials they read in a `requires:` frontmatter list, so the dashboard can show **which skill needs which key** — no more guessing why a skill returns empty.
-
-```yaml
----
-name: Token Alert
-tags: [crypto]
-requires: [COINGECKO_API_KEY?]   # `?` = works better with; bare name = required
----
-```
-
-- **Bare name** (`XAI_API_KEY`) — required; the skill can't do its core job without it.
-- **Trailing `?`** (`COINGECKO_API_KEY?`) — works better with; the skill still runs without it (degraded / rate-limited).
-
-The dashboard surfaces this three ways: an **API keys** panel on each skill (with set/unset status and an inline "Set" button), a ⚠ flag in the roster when an *enabled* skill is missing a required key, and a **"used by"** index under each key in **Settings → Access Keys**. Key names map to the central credential registry (`apps/dashboard/app/api/secrets/route.ts`); add new keys there and any skill can reference them. See [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md#declaring-api-keys-requires) for the full convention.
-
-### Model selection
-
-The default model for all skills is set in `aeon.yml`:
+The default model for all skills is set in `aeon.yml` (or from the dashboard header dropdown):
 
 ```yaml
 model: claude-opus-4-8
 ```
 
-You can change it from the dashboard header dropdown. Options: `claude-opus-4-8`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`. Per-run overrides are also available via workflow dispatch.
-
-Individual skills can override the default model to optimize cost:
+Options: `claude-opus-4-8`, `claude-fable-5`, `claude-opus-4-7`, `claude-sonnet-4-6`, `claude-haiku-4-5-20251001`. Per-run overrides are available via workflow dispatch, and individual skills can override to optimize cost:
 
 ```yaml
 skills:
   token-report: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" }
-  skill-evals: { enabled: true, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" }
 ```
 
-### Skill Chaining
+### Authentication
 
-Skills can be chained together so outputs flow between them. Chains run as separate GitHub Actions workflow steps via `chain-runner.yml`.
+Set **one** of these — not both:
 
-```yaml
-chains:
-  morning-pipeline:
-    schedule: "0 7 * * *"
-    on_error: fail-fast       # or: continue
-    steps:
-      - parallel: [token-movers, hacker-news-digest]  # run concurrently
-      - skill: morning-brief                         # runs after parallel group
-        consume: [token-movers, hacker-news-digest]  # gets their outputs injected
+| Secret | What it is | Billing |
+|--------|-----------|---------|
+| `CLAUDE_CODE_OAUTH_TOKEN` | OAuth token from your Claude Pro/Max subscription | Included in plan |
+| `ANTHROPIC_API_KEY` | API key from console.anthropic.com | Pay per token |
+
+```bash
+claude setup-token   # opens browser → prints sk-ant-oat01-... (valid 1 year)
 ```
 
-How it works:
-1. Each step runs as a separate workflow dispatch
-2. After each skill completes, its output is saved to `.outputs/{skill}.md`
-3. Downstream steps with `consume:` get prior outputs injected into context
-4. Steps can run in parallel or sequentially
-5. `on_error: fail-fast` aborts the chain on any failure; `continue` keeps going
+The dashboard's Authenticate modal handles both — and auto-routes Bankr `bk_…` keys (see [Bankr Gateway](#bankr-gateway-cheaper-opus)).
 
-Define chains in `aeon.yml` alongside your skills. The scheduler dispatches them on their own cron schedule.
-
----
-
-### Changing check frequency
-
-Edit `.github/workflows/messages.yml`:
-
-```yaml
-schedule:
-  - cron: '*/5 * * * *'    # every 5 min (default)
-  - cron: '*/15 * * * *'   # every 15 min (saves Actions minutes)
-  - cron: '0 * * * *'      # hourly (most conservative)
-```
-
-Claude only installs and runs when a skill actually matches.
-
----
-
-## Project structure
-
-![The Stack](./assets/stack-aeon.jpg)
-
-```
-CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
-aeon.yml                 ← skill schedules, chains, reactive triggers, and enabled flags
-skills.json              ← machine-readable skill catalog (195 skills)
-./aeon                   ← launch the local dashboard (Next.js on port 5555)
-./onboard                ← validate the fork's setup (secrets, workflows, channels) — see Quick start
-./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
-./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
-./add-skill              ← import skills from GitHub repos (with security scanning)
-./add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
-./add-a2a                ← start the A2A protocol gateway for external agents
-./export-skill           ← package skills for standalone distribution
-./generate-skills-json   ← regenerate skills.json from SKILL.md files
-docs/                    ← GitHub Pages site (articles, activity log, memory)
-soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file
-  article/
-  digest/
-  heartbeat/
-  ...                    ← 195 skills total
-workflow-templates/      ← GitHub Agentic Workflow templates (.md)
-apps/                    ← standalone sub-projects, each with its own package.json
-  dashboard/             ← local web UI (Next.js + json-render feed)
-  mcp-server/            ← MCP server — exposes skills as Claude tools
-  a2a-server/            ← A2A protocol gateway — exposes skills to any agent framework
-  webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
-memory/
-  MEMORY.md              ← goals, active topics, pointers
-  cron-state.json        ← per-skill execution metrics (status, success rate, quality)
-  skill-health/          ← rolling quality scores per skill (last 30 runs)
-  token-usage.csv        ← token cost tracking per run
-  issues/                ← structured issue tracker for skill failures
-  topics/                ← detailed notes by topic
-  logs/                  ← daily activity logs (YYYY-MM-DD.md)
-.outputs/                ← skill chain outputs (passed between chained steps)
-scripts/
-  prefetch-xai.sh        ← pre-fetch X/Grok API data outside sandbox
-  postprocess-replicate.sh ← generate images via Replicate after Claude runs
-  skill-runs             ← audit recent GitHub Actions skill runs
-  sync-site-data.sh      ← sync memory/logs to docs site data
-.github/workflows/
-  aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
-  chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
-  messages.yml           ← cron scheduler + message polling (Telegram/Discord/Slack)
-```
-
----
-
-## GitHub Actions cost
-
-![Basically free — runs on your existing Claude subscription and a free GitHub account](./assets/free-aeon.jpg)
-
-| Scenario | Cost |
-|----------|------|
-| No skill matched (most ticks) | ~10s — checkout + bash + exit |
-| Skill runs | 2–10 min depending on complexity |
-| Heartbeat (nothing found) | ~2 min |
-| **Public repo** | **Unlimited free minutes** |
-
-To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public.
-
-| Plan | Free minutes/mo | Overage |
-|------|----------------|---------|
-| Free | 2,000 | N/A (private only) |
-| Pro / Team | 3,000 | $0.008/min |
-
----
-
-## Notifications
+### Notifications
 
 Set the secret → channel activates. No code changes needed.
 
@@ -408,84 +228,183 @@ Set the secret → channel activates. No code changes needed.
 | Slack | `SLACK_WEBHOOK_URL` | `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID` |
 | Email | `SENDGRID_API_KEY` + `NOTIFY_EMAIL_TO` | — |
 
-**Telegram:** Create a bot with @BotFather → get token + chat ID.  
-**Discord:** Outbound: Channel → Integrations → Webhooks → Create. Inbound: discord.com/developers → bot → add `channels:history` scope → copy token + channel ID.  
-**Slack:** api.slack.com → Create App → Incoming Webhooks → install → copy URL. Inbound: add `channels:history`, `reactions:write` scopes → copy bot token + channel ID.  
-**Email:** sendgrid.com/settings/api_keys → Create API Key (Mail Send permission) → add as `SENDGRID_API_KEY`. Set `NOTIFY_EMAIL_TO` to your recipient address. Optional: set repository variable `NOTIFY_EMAIL_FROM` (default: `aeon@notifications.aeon.bot`) and `NOTIFY_EMAIL_SUBJECT_PREFIX` (default: `[Aeon]`).
+**Telegram:** Create a bot with @BotFather → get token + chat ID.
+**Discord:** Outbound: Channel → Integrations → Webhooks → Create. Inbound: discord.com/developers → bot → add `channels:history` scope → copy token + channel ID.
+**Slack:** api.slack.com → Create App → Incoming Webhooks → install → copy URL. Inbound: add `channels:history`, `reactions:write` scopes → copy bot token + channel ID.
+**Email:** sendgrid.com/settings/api_keys → Create API Key (Mail Send permission) → add as `SENDGRID_API_KEY`, set `NOTIFY_EMAIL_TO`. Optional repo variables: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot`), `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`).
 
-### Telegram instant mode (optional)
+Want ~1s Telegram replies instead of up-to-5-min polling? See [Telegram instant mode](#telegram-instant-mode).
 
-Default polling has up to a 5-min delay. Deploy the self-contained Cloudflare Worker in [`webhook/`](webhook/) for ~1s response time — one click, into your own Cloudflare account (no shared infra, no credential custody):
+### API keys per skill
+
+Skills that call third-party APIs declare their credentials in a `requires:` frontmatter list, so the dashboard shows **which skill needs which key**:
+
+```yaml
+requires: [XAI_API_KEY, COINGECKO_API_KEY?]   # bare = required · `?` = works better with
+```
+
+The dashboard surfaces this as an **API keys** panel on each skill (set/unset status, inline "Set" button), a ⚠ flag when an enabled skill is missing a required key, and a **"used by"** index under each key in Settings → Access Keys. Skills can likewise declare MCP servers with an `mcp:` list (`mcp: [base]`) — same two tiers, shown as a per-skill **MCP servers** panel with install state. Convention details: [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md#declaring-api-keys-requires).
+
+---
+
+## Advanced
+
+Everything below is optional — Aeon runs fine without any of it.
+
+### Skill chaining
+
+Chain skills so outputs flow between them. Chains run as separate GitHub Actions workflow steps via `chain-runner.yml`:
+
+```yaml
+chains:
+  morning-pipeline:
+    schedule: "0 7 * * *"
+    on_error: fail-fast       # or: continue
+    steps:
+      - parallel: [token-movers, hacker-news-digest]  # run concurrently
+      - skill: morning-brief                          # runs after parallel group
+        consume: [token-movers, hacker-news-digest]   # gets their outputs injected
+```
+
+Each step runs as a separate workflow dispatch; outputs are saved to `.outputs/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.
+
+### Reactive triggers
+
+Skills with `schedule: "reactive"` fire on conditions, not cron. The scheduler evaluates triggers after processing cron skills:
+
+```yaml
+reactive:
+  skill-repair:
+    trigger:
+      - { on: "*", when: "consecutive_failures >= 3" }
+```
+
+### Scheduler frequency
+
+Edit `.github/workflows/messages.yml`:
+
+```yaml
+schedule:
+  - cron: '*/5 * * * *'    # every 5 min (default)
+  - cron: '*/15 * * * *'   # every 15 min (saves Actions minutes)
+  - cron: '0 * * * *'      # hourly (most conservative)
+```
+
+Claude only installs and runs when a skill actually matches — non-matching ticks cost ~10s.
+
+### MCP servers in skill runs
+
+Let skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions. Opt-in and safe — with no `.mcp.json` at the repo root, runs are byte-identical to before.
+
+```bash
+cp .mcp.json.example .mcp.json   # then edit, commit, push
+```
+
+The example ships two working servers — `github` (uses the runner's built-in `GITHUB_TOKEN`) and `sequential-thinking` (no-auth stdio). On the next run, the runner loads `.mcp.json` and auto-allows every server's tools, so a skill can just say *"use the github MCP server to …"*.
+
+Or skip the file entirely: the dashboard's **MCP** tab writes `.mcp.json` for you, lists **Featured** servers (e.g. [Base](https://mcp.base.org)) for one-click install, and tells you which secret each server needs.
+
+**Servers that need a secret** — reference it with `${VAR}`, never commit the value:
+
+```json
+"acme": {
+  "type": "http",
+  "url": "https://mcp.acme.dev/v1",
+  "headers": { "Authorization": "Bearer ${ACME_API_KEY}" }
+}
+```
+
+Then just **set the secret** (dashboard MCP tab inline, Settings → Add Credential, or `gh secret set ACME_API_KEY`) — the runner auto-resolves any `${VAR}` your `.mcp.json` references from the repo's secrets, with zero workflow editing. If a referenced secret isn't set, the runner skips MCP for that run and logs a warning instead of breaking the skill.
+
+Notes: scope is global (`.mcp.json` applies to every skill); add `"alwaysLoad": true` to force a server's tools into context every run; stdio servers run as local processes in the runner, HTTP/SSE servers are reached over the network.
+
+### Use Aeon's skills from Claude or any agent (MCP & A2A)
+
+Aeon skills work outside GitHub Actions too — locally via `claude -p -`, identical to Actions. API keys are read from your environment or a `.env` file in the repo root.
+
+**Claude (MCP)** — every skill appears as an `aeon-<name>` tool in Claude Desktop and Claude Code:
+
+```bash
+./add-mcp                    # build and register
+./add-mcp --desktop          # also print Claude Desktop config
+./add-mcp --uninstall        # remove
+```
+
+**Any AI agent (A2A)** — [Google's A2A protocol](https://google.github.io/A2A/) lets LangChain, AutoGen, CrewAI, OpenAI Agents SDK, and Vertex AI invoke skills via HTTP:
+
+```bash
+./add-a2a                    # starts on port 41241
+./add-a2a --print-config     # LangChain/Python client examples
+```
+
+Working client scripts for every supported stack (LangChain, AutoGen, CrewAI, OpenAI Agents SDK, MCP stdio, Claude Desktop) live in [`examples/`](examples/) — each <100 lines, calling a real skill end-to-end. Start with [`examples/README.md`](examples/README.md).
+
+### Cross-repo access
+
+The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `pr-review`, `issue-triage`, and `external-feature` to work on your other repos, add a `GH_GLOBAL` personal access token: github.com/settings/tokens → Fine-grained → set repo access → grant Contents, Pull requests, Issues (read/write) → add as `GH_GLOBAL` secret. Skills use it when available and fall back to `GITHUB_TOKEN` automatically.
+
+### Bankr Gateway (cheaper Opus)
+
+Route requests through [Bankr LLM Gateway](https://docs.bankr.bot/llm-gateway/overview) for ~67% cheaper Opus (via Vertex AI), plus gateway access to Gemini, GPT, Kimi, and Qwen models (set the model id manually in `aeon.yml`).
+
+Get a key at [bankr.bot/api](https://bankr.bot/api), top up credits, and paste it in the dashboard's Authenticate modal — `bk_…` keys are saved as `BANKR_LLM_KEY` and `gateway: { provider: bankr }` is set automatically. Removing the key reverts the gateway to `direct`.
+
+### Soul
+
+By default Aeon has no personality. To make it write and respond like you:
+
+1. Fork [soul.md](https://github.com/aaronjmars/soul.md) and fill in `SOUL.md` (identity, worldview), `STYLE.md` (voice, vocabulary), and `examples/good-outputs.md` (10–20 calibration samples)
+2. Copy into your Aeon repo under `soul/`
+3. Add an `## Identity` section at the top of `CLAUDE.md` telling Aeon to read and embody them
+
+Every skill reads `CLAUDE.md`, so identity propagates automatically. **Quality check:** soul files work when they're specific enough to be wrong. *"I think most AI safety discourse is galaxy-brained cope"* is useful; *"I have nuanced views on AI safety"* is not.
+
+### Publishing (GitHub Pages & RSS)
+
+Aeon publishes articles to a GitHub Pages gallery and an RSS feed.
+
+- **Pages:** Settings → Pages → source `Deploy from a branch`, branch `main`, folder `/docs`. The site lives at `https://<username>.github.io/aeon`; the `update-gallery` skill keeps it in sync.
+- **RSS:** Subscribe at `https://raw.githubusercontent.com/<owner>/<repo>/main/articles/feed.xml` — regenerated after each content skill runs.
+
+### Telegram instant mode
+
+Default polling has up to a 5-min delay. Deploy the self-contained Cloudflare Worker in [`apps/webhook/`](apps/webhook/) for ~1s response time — one click, into your own Cloudflare account (no shared infra, no credential custody):
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/aaronjmars/aeon/tree/main/apps/webhook)
 
-Setup, required secrets, and how it coexists with polling are in [`apps/webhook/README.md`](apps/webhook/README.md). The poller calls `getWebhookInfo` and skips Telegram automatically once a webhook is active, so the two never conflict.
+Setup details in [`apps/webhook/README.md`](apps/webhook/README.md). The poller skips Telegram automatically once a webhook is active, so the two never conflict.
 
----
+### Remote dashboard access
 
-## Cross-repo access
+The dashboard's `/api/*` routes drive `gh workflow run` and read/write repo secrets, so they're gated to loopback callers by default — no remote callers, no DNS-rebinding from a malicious page. To reach the dashboard from another machine or over a tunnel (Tailscale, ngrok, reverse proxy):
 
-The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `pr-review`, `issue-triage`, and `external-feature` to work on your other repos, add a `GH_GLOBAL` personal access token.
+| Env var | Behaviour |
+|---|---|
+| `AEON_DASHBOARD_ALLOWED_HOSTS=aeon.local,box.tail-xxx.ts.net` | Extends the loopback allowlist by hostnames (comma-separated, case- and port-insensitive) |
+| `AEON_DASHBOARD_ALLOW_ANY_HOST=1` | Disables Host-header checking entirely. Only for a trusted reverse proxy that terminates `Host` upstream — loudly insecure otherwise |
 
-| | `GITHUB_TOKEN` | `GH_GLOBAL` |
-|--|--------------|------------|
-| Scope | This repo | Any repo you grant |
-| Created by | GitHub (automatic) | You (manual) |
-| Lifetime | Job duration | Up to 1 year |
+The gate also rejects state-changing requests whose `Origin` isn't allowlisted, so a malicious page can't drive `/api/secrets` via a no-cors POST. Code: [`apps/dashboard/proxy.ts`](apps/dashboard/proxy.ts) + [`apps/dashboard/lib/security/api-gate.ts`](apps/dashboard/lib/security/api-gate.ts).
 
-**Setup:** github.com/settings/tokens → Fine-grained → set repo access → grant Contents, Pull requests, Issues (all read/write) → add as `GH_GLOBAL` secret.
+### Fleet Watcher (authorization layer)
 
-Skills use `GH_GLOBAL` when available, fall back to `GITHUB_TOKEN` automatically.
+Add inline ALLOW/BLOCK authorization in front of every skill run. Each workflow asks your self-hosted [Fleet Watcher](https://github.com/yourorg/fleet-watcher) control plane *"is this allowed?"* before Claude starts and reports the outcome after. BLOCK = workflow exits non-zero, Claude never runs, audit ref recorded.
 
----
+Already wired into `.github/workflows/aeon.yml` as two opt-in steps. To enable: stand up Fleet Watcher, mint a token via `POST /api/aeon/register`, and add two secrets — `FLEET_ENDPOINT` (base URL) and `FLEET_TOKEN` (the `agnt_…` token). Define your red lines (per-skill caps, counterparty allowlists, dangerous-string patterns) in its dashboard.
 
-## Adding skills
+If the secrets aren't set, both steps no-op — fully backward compatible. If Fleet is unreachable when they *are* set, the preflight fails closed (skill doesn't run); the postflight always runs so blocked skills are still recorded.
 
-### Install external skills
-
-```bash
-./add-skill BankrBot/skills --list          # browse a repo's skills
-./add-skill BankrBot/skills bankr hydrex   # install specific skills
-./add-skill BankrBot/skills --all           # install everything
-```
-
-Installed skills land in `skills/` and are added to `aeon.yml` disabled. Flip `enabled: true` to activate.
-
-### Install from Aeon's catalog
-
-Every skill is independently installable. Browse the catalog in [`skills.json`](skills.json) or:
-
-```bash
-./add-skill aaronjmars/aeon --list                                       # browse
-./add-skill aaronjmars/aeon token-alert monitor-polymarket                # install specific
-./add-skill aaronjmars/aeon --all                                         # install everything
-```
-
-### Export a skill
-
-```bash
-./export-skill token-alert              # exports to ./exports/token-alert/
-```
-
-### Trigger feature builds from issues
-
-Label any GitHub issue `ai-build` → workflow fires → Claude reads the issue, implements it, opens a PR.
-
----
-
-## Community skill packs
+### Community skill packs
 
 ![Aeon Framework ecosystem map](./assets/ecosystem-aeon.jpg)
 
-Third-party skill collections that live in their own repos. Aeon doesn't ship them in the core catalog, but they install as one bundle via [`./install-skill-pack`](install-skill-pack):
+Third-party skill collections in their own repos, installable as one bundle:
 
 ```bash
 ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
+./install-skill-pack --list      # browse the registry (skill-packs.json)
 ```
 
-The script reads a `skills-pack.json` manifest from the pack root (or falls back to scanning `skills/`), runs the security scanner on each declared `SKILL.md`, and copies approved skills into `skills/` with rows added to `skills.json`, entries in `aeon.yml` (disabled), and provenance in `skills.lock`. Full schema and trust model in [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
-
-To browse known packs without installing, run `./install-skill-pack --list` — it reads the machine-readable registry in [`skill-packs.json`](skill-packs.json) (mirror of the table below).
+The script reads the pack's `skills-pack.json` manifest, runs the security scanner on each `SKILL.md`, and copies approved skills into `skills/` (disabled in `aeon.yml`, provenance in `skills.lock`). Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
 | Pack | Skills | Description |
 |------|--------|-------------|
@@ -514,159 +433,102 @@ To browse known packs without installing, run `./install-skill-pack --list` — 
 - Skills should follow the conventions in [`add-skill`](add-skill) and the core catalog — no monkey-patching of Aeon internals, no skill that depends on private endpoints.
 - Add a `skills-pack.json` manifest at the pack root so `install-skill-pack` knows which skills the pack ships (see [docs](docs/community-skill-packs.md) for the schema).
 - The README row should link to the repo, name the skill count, and one-line what the pack is for.
-- In the same PR, add a matching entry to [`skill-packs.json`](skill-packs.json) at this repo's root — the machine-readable mirror of the table that `./install-skill-pack --list` reads (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
+- In the same PR, add a matching entry to [`skill-packs.json`](skill-packs.json) — the machine-readable mirror of this table (registry schema in [the docs](docs/community-skill-packs.md#skill-packsjson-community-registry)).
 
-This is the lightweight surface: it gives community packs visibility without coupling them to the core catalog's release cadence.
+### Two-repo strategy
 
----
-
-## Publishing
-
-Aeon publishes articles to a GitHub Pages gallery and an RSS feed.
-
-**GitHub Pages:** Enable in **Settings → Pages** → source `Deploy from a branch`, branch `main`, folder `/docs`. The site lives at `https://<username>.github.io/aeon` with articles, activity logs, and memory. The `update-gallery` skill keeps it in sync.
-
-**RSS:** Subscribe at `https://raw.githubusercontent.com/<owner>/<repo>/main/articles/feed.xml` — works with any RSS reader. Regenerated after each content skill runs.
-
----
-
-## Integrations (MCP & A2A)
-
-Aeon skills work outside GitHub Actions too — use them from Claude or any AI agent framework.
-
-**Claude (MCP)** — every skill appears as an `aeon-<name>` tool in Claude Desktop and Claude Code:
+This repo is a public template. Run your own instance as a **private fork** so memory, articles, and API keys stay private:
 
 ```bash
-./add-mcp                    # build and register
-./add-mcp --desktop          # also print Claude Desktop config
-./add-mcp --uninstall        # remove
-```
-
-**Any AI agent (A2A)** — [Google's A2A protocol](https://google.github.io/A2A/) lets LangChain, AutoGen, CrewAI, OpenAI Agents SDK, and Vertex AI invoke skills via HTTP:
-
-```bash
-./add-a2a                    # starts on port 41241
-./add-a2a --print-config     # LangChain/Python client examples
-```
-
-Skills run locally via `claude -p -`, identical to Actions. API keys read from your environment or a `.env` file in the repo root.
-
-### Integration examples
-
-Working client scripts for every supported stack live in [`examples/`](examples/) — each one is &lt;100 lines, talks to a running A2A gateway or MCP server, and calls a real Aeon skill end-to-end:
-
-| Stack | File | Skill called |
-|-------|------|--------------|
-| LangChain | [`examples/a2a/langchain_client.py`](examples/a2a/langchain_client.py) | `aeon-fetch-tweets` |
-| AutoGen | [`examples/a2a/autogen_workflow.py`](examples/a2a/autogen_workflow.py) | `aeon-deep-research` |
-| CrewAI | [`examples/a2a/crewai_task.py`](examples/a2a/crewai_task.py) | `aeon-pr-review` |
-| OpenAI Agents SDK | [`examples/a2a/openai_agents_client.py`](examples/a2a/openai_agents_client.py) | `aeon-token-report` |
-| MCP (stdio) | [`examples/mcp/test_connection.py`](examples/mcp/test_connection.py) | `aeon-cost-report` |
-| Claude Desktop | [`examples/mcp/claude_desktop_config.json`](examples/mcp/claude_desktop_config.json) | — |
-
-Start with [`examples/README.md`](examples/README.md) for the full setup walk-through.
-
----
-
-## MCP servers in skill runs
-
-The section above exposes Aeon skills *as* MCP tools. This is the other direction: letting your skills **call** MCP servers (GitHub, a database, a paid API, your own) while they run in GitHub Actions.
-
-It's **opt-in and safe** — nothing changes until you add a `.mcp.json` at the repo root. With no file, runs are byte-identical to before.
-
-### Quick start
-
-```bash
-cp .mcp.json.example .mcp.json   # then edit, commit, push
-```
-
-The example ships two working servers:
-
-```json
-{
-  "mcpServers": {
-    "github": {
-      "type": "http",
-      "url": "https://api.githubcopilot.com/mcp/",
-      "headers": { "Authorization": "Bearer ${GITHUB_TOKEN}" }
-    },
-    "sequential-thinking": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
-    }
-  }
-}
-```
-
-- **`github`** works out of the box — `GITHUB_TOKEN` is already in the runner's environment.
-- **`sequential-thinking`** is a no-auth stdio server — nothing to configure.
-
-On the next run, the runner loads `.mcp.json` (`--mcp-config .mcp.json --strict-mcp-config`) and auto-allows every server's tools (`mcp__github`, `mcp__sequential-thinking`, …). A skill can then just say *"use the github MCP server to …"*.
-
-Or add servers from the dashboard: the **MCP** tab writes `.mcp.json` for you and tells you which secret each server needs. It also lists **Featured** servers (e.g. [Base](https://mcp.base.org)) for one-click install. Skills can declare the servers they call with an `mcp:` frontmatter list (`mcp: [base]`, `?` = works better with) — the dashboard then shows a per-skill **MCP servers** panel with install state and a one-click jump to the MCP page. See [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md#declaring-mcp-servers-mcp).
-
-### Servers that need a secret
-
-Reference secrets with `${VAR}` — **never commit the value**:
-
-```json
-"acme": {
-  "type": "http",
-  "url": "https://mcp.acme.dev/v1",
-  "headers": { "Authorization": "Bearer ${ACME_API_KEY}" }
-}
-```
-
-Then make `ACME_API_KEY` reachable in the run — just **set the secret**, no workflow editing:
-
-- Dashboard → **MCP** tab: type the value inline when you add the server, **or**
-- Dashboard → **Settings** → Add Credential, **or** `gh secret set ACME_API_KEY`.
-
-That's it. The runner auto-resolves any `${VAR}` your `.mcp.json` references from the repo's secrets (via `toJSON(secrets)`, consumed and discarded before any skill code runs) — so **any** secret name works with zero per-name wiring. Built-ins like `XAI_API_KEY`, `ALCHEMY_API_KEY`, `COINGECKO_API_KEY`, `NEYNAR_*`, … are always available too.
-
-**Safety valve:** if a `.mcp.json` references a `${VAR}` whose secret isn't set (and has no `${VAR:-default}` fallback), the runner **skips MCP for that run and logs a warning** instead of letting the config parse-failure break the skill. Set the secret, and the next run picks it up.
-
-### Notes
-
-- **Scope is global** — `.mcp.json` applies to every skill. Per-skill scoping isn't supported yet.
-- **Tool visibility:** add `"alwaysLoad": true` to a server entry to force its tools into context every run (otherwise they load on demand via tool search).
-- **Sandbox:** stdio servers run as local processes in the runner (`npx`/`node`/`python` are available); HTTP/SSE servers are reached over the network. No prefetch/postprocess pattern is needed — Claude Code manages the MCP connection itself.
-
----
-
-## Fleet Watcher (optional authorization layer)
-
-Add inline ALLOW/BLOCK authorization in front of every skill run. Each skill workflow asks your self-hosted [Fleet Watcher](https://github.com/yourorg/fleet-watcher) control plane *"is this allowed?"* before Claude starts, and reports the outcome after Claude finishes. BLOCK = workflow exits non-zero, Claude never runs, no side-effects, audit ref recorded.
-
-Already wired into `.github/workflows/aeon.yml` as two opt-in steps (`Fleet Watcher preflight`, `Fleet Watcher postflight`). To enable:
-
-1. Stand up Fleet Watcher and mint an agent token via `POST /api/aeon/register`.
-2. Add two repo secrets:
-
-    | Secret           | Value                                           |
-    |------------------|-------------------------------------------------|
-    | `FLEET_ENDPOINT` | Base URL of your Fleet Watcher (e.g. `https://fleet.example.com`) |
-    | `FLEET_TOKEN`    | The `agnt_…` token returned by `/api/aeon/register` |
-
-3. Define your red lines in the Fleet Watcher dashboard (per-skill caps, counterparty allowlists, dangerous-string patterns, source-to-sink chain detection).
-
-If the secrets are not set, both steps no-op — fully backward compatible with every existing AEON install. If Fleet is unreachable when the secrets *are* set, the preflight step fails closed (skill does not run). The postflight step always runs (`if: always()`) so failed/blocked skills are still recorded for taint analysis.
-
----
-
-## Two-repo strategy
-
-This repo is a public template. Run your own instance as a **private fork** so memory, articles, and API keys stay private.
-
-```bash
-# Pull template updates into your private fork
 git remote add upstream https://github.com/aaronjmars/aeon.git
 git fetch upstream
 git merge upstream/main --no-edit
 ```
 
 Your `memory/`, `articles/`, and personal config won't conflict — they're in files that don't exist in the template.
+
+### GitHub Actions cost
+
+![Basically free — runs on your existing Claude subscription and a free GitHub account](./assets/free-aeon.jpg)
+
+| Scenario | Cost |
+|----------|------|
+| No skill matched (most ticks) | ~10s — checkout + bash + exit |
+| Skill runs | 2–10 min depending on complexity |
+| Heartbeat (nothing found) | ~2 min |
+| **Public repo** | **Unlimited free minutes** |
+
+Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. To reduce usage: switch to `*/15` or hourly cron, disable unused skills, keep the repo public. Every run logs token usage to `memory/token-usage.csv`; the `cost-report` skill generates a weekly breakdown by skill and model.
+
+### Project structure
+
+![The Stack](./assets/stack-aeon.jpg)
+
+```
+CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
+aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
+skills.json              ← machine-readable skill catalog (196 skills)
+./aeon                   ← launch the local dashboard (Next.js on port 5555)
+./onboard                ← validate the fork's setup (secrets, workflows, channels)
+./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
+./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
+./add-skill              ← import skills from GitHub repos (with security scanning)
+./add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
+./add-a2a                ← start the A2A protocol gateway for external agents
+./export-skill           ← package skills for standalone distribution
+./generate-skills-json   ← regenerate skills.json from SKILL.md files
+docs/                    ← GitHub Pages site (articles, activity log, memory)
+soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
+skills/                  ← each skill is a SKILL.md prompt file (196 total)
+workflow-templates/      ← GitHub Agentic Workflow templates (.md)
+skill-templates/         ← templates for building your own skills
+apps/                    ← standalone sub-projects, each with its own package.json
+  dashboard/             ← local web UI (Next.js + json-render feed)
+  mcp-server/            ← MCP server — exposes skills as Claude tools
+  a2a-server/            ← A2A protocol gateway — exposes skills to any agent framework
+  webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
+memory/
+  MEMORY.md              ← goals, active topics, pointers
+  cron-state.json        ← per-skill execution metrics (status, success rate, quality)
+  skill-health/          ← rolling quality scores per skill (last 30 runs)
+  token-usage.csv        ← token cost tracking per run
+  issues/                ← structured issue tracker for skill failures
+  topics/                ← detailed notes by topic
+  logs/                  ← daily activity logs (YYYY-MM-DD.md)
+.outputs/                ← skill chain outputs (passed between chained steps)
+scripts/
+  prefetch-xai.sh        ← pre-fetch X/Grok API data outside sandbox
+  postprocess-replicate.sh ← generate images via Replicate after Claude runs
+  skill-runs             ← audit recent GitHub Actions skill runs
+  sync-site-data.sh      ← sync memory/logs to docs site data
+.github/workflows/
+  aeon.yml               ← skill runner (workflow_dispatch, issues, quality scoring)
+  chain-runner.yml       ← skill chain executor (parallel + sequential pipelines)
+  messages.yml           ← cron scheduler + message polling (Telegram/Discord/Slack)
+```
+
+---
+
+## FAQ
+
+### What is Aeon?
+
+Aeon is an AI agent system that runs unattended on GitHub Actions, self-heals when skills fail, and monitors its own output quality. Configure once, walk away — it handles recurring tasks like morning briefs, market monitoring, PR reviews, and research digests.
+
+### Can I create custom skills?
+
+Yes. Bootstrap from [`skill-templates/`](skill-templates/TEMPLATE.md) (`./new-from-template <template> <skill-name> --var KEY=VALUE...`), describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon build it.
+
+### Troubleshooting
+
+- **Dashboard not loading** — make sure `./aeon` is running and check `http://localhost:5555`.
+- **Skills not executing** — run `./onboard --remote` to verify setup, check GitHub Actions workflow status.
+- **Notifications not working** — verify channel secrets in the dashboard (Telegram/Discord/Slack tokens).
+- **Self-healing not working** — enable `skill-repair` and `skill-health`, check `memory/` state.
+
+### Need more help?
+
+Check the [`docs/`](docs/) directory, run `./onboard` for setup verification, or open an issue on GitHub.
 
 ---
 
@@ -675,116 +537,3 @@ Your `memory/`, `articles/`, and personal config won't conflict — they're in f
 [![Star History Chart](https://api.star-history.com/svg?repos=aaronjmars/aeon&type=Date)](https://www.star-history.com/#aaronjmars/aeon&Date)
 
 Support the project : 0xbf8e8f0e8866a7052f948c16508644347c57aba3
-
----
-
-## ❓ FAQ
-
-### What is Aeon?
-
-Aeon is "the most autonomous agent framework" — an AI agent system that runs unattended, self-heals when skills fail, and monitors its own output quality. Configure once, walk away, and it handles recurring tasks like morning briefs, market monitoring, PR reviews, and research digests.
-
-### How does Aeon differ from Claude Code, Hermes, or OpenClaw?
-
-| Feature | Aeon | Claude Code | Hermes | OpenClaw |
-|---------|------|-------------|--------|----------|
-| Runs unattended on schedule | Yes | No | Yes | No |
-| Self-heals failing skills | Yes | No | No | No |
-| Monitors output quality | Yes | No | No | No |
-| Persistent memory | Yes | No | Limited | No |
-| Reactive triggers | Yes | No | No | No |
-| Fixes broken skills | Yes | No | No | No |
-| Zero infrastructure | Yes (GitHub Actions) | Local | Self-hosted | Self-hosted |
-
-**Key difference**: Other agents are interactive tools you use. Aeon is an autonomous system you configure and leave alone.
-
-### How many built-in skills does Aeon have?
-
-195 skills across 8 categories:
-- **Core** (15): the load-bearing set — skill-repair, autoresearch, spawn-instance, vuln-scanner, etc.
-- **Research & Content** (28): deep-research, paper-digest, beat-tracker, etc.
-- **Dev & Code** (37): pr-review, github-monitor, auto-merge, etc.
-- **Crypto & Markets** (28): defi-monitor, token-alert, picks-tracker, etc.
-- **Onchain Security** (15): rug-scan, contract-audit, honeypot-check, etc.
-- **Social & Writing** (18): write-tweet, syndicate-article, thread-writer, etc.
-- **Productivity** (19): morning-brief, weekly-review, goal-tracker, etc.
-- **Meta / Agent** (35): memory-flush, batch-health, api-health-probe, etc.
-
-### How do I get started?
-
-```bash
-git clone https://github.com/aaronjmars/aeon
-cd aeon && ./aeon
-```
-
-Then:
-1. Open `http://localhost:5555` in your browser
-2. Add your Claude API key
-3. Set up notification channel (Telegram/Discord/Slack)
-4. Toggle skills and set schedules
-5. Push config to GitHub — Actions handles the rest
-6. Run `./onboard` to verify setup
-
-### What LLM providers does Aeon support?
-
-Aeon primarily uses Claude (Anthropic) via API key or OAuth token. Check the dashboard for authentication options.
-
-### What is the skill dependency graph?
-
-See [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map showing how 195 skills connect, with the self-healing loop and content pipeline highlighted.
-
-### Can I create custom skills?
-
-Yes. Use templates from [`skill-templates/`](skill-templates/TEMPLATE.md):
-- Crypto tracker
-- Research digest
-- Code reviewer
-- Social monitor
-- Deploy watcher
-- Community manager
-
-Bootstrap: `./new-from-template <template> <skill-name> --var KEY=VALUE...`
-
-### What is Instance Fleet?
-
-Aeon can spawn specialized copies of itself via `spawn-instance`, `fleet-control`, and `fork-fleet`. Each instance runs a focused skill set (e.g., crypto monitoring, research). New owners add their own secrets.
-
-### How does self-healing work?
-
-Aeon's core skills (`skill-health`, `skill-repair`, `self-improve`) detect failing skills, diagnose issues, and patch them automatically without human intervention. See [`docs/CORE.md`](docs/CORE.md) for how the loop closes.
-
-### What notifications are supported?
-
-Telegram, Discord, and Slack. Set up in the dashboard to receive output and interact with Aeon.
-
-### How does Aeon run?
-
-Aeon runs on GitHub Actions with zero infrastructure needed. After pushing your config, Actions executes skills on schedule. You can also run locally via `./aeon`.
-
-### What is the autonomy spectrum?
-
-See `assets/autonomy-aeon.jpg`. Aeon sits at the "fully autonomous" end — it decides when to run, what to check, and when to notify you. Other tools require approval loops and babysitting.
-
-### Troubleshooting
-
-**Issue**: Dashboard not loading
-- Ensure `./aeon` is running
-- Check `http://localhost:5555` port
-
-**Issue**: Skills not executing
-- Run `./onboard --remote` to verify setup in Actions
-- Check GitHub Actions workflow status
-
-**Issue**: Notifications not working
-- Verify channel configuration in dashboard
-- Check Telegram/Discord/Slack API tokens
-
-**Issue**: Self-healing not working
-- Enable `skill-repair` and `skill-health` skills
-- Check memory state in `memory/` directory
-
-### Need more help?
-
-- Check [`docs/`](docs/) directory
-- Run `./onboard` for setup verification
-- Open an issue on GitHub
