@@ -1,37 +1,8 @@
 import { NextResponse } from 'next/server'
 import { execFileSync, execSync } from 'child_process'
-import { ghAvailable, ghArgsRepo, REPO_ROOT } from '@/lib/gh'
+import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 import { normalizeAuthConfig } from '@/lib/auth-provider.mjs'
-import { getFileContent, updateFile, isLocal } from '@/lib/github'
-import { updateGatewayInConfig } from '@/lib/config'
-import type { GatewayProvider } from '@/lib/types'
-
-// Commit a working-tree file and push it to the instance repo. In local mode
-// updateFile() only writes the working copy, so without this the GitHub Actions
-// workflow — which reads gateway.provider from aeon.yml on the remote default
-// branch — would never see the change.
-function commitAndPush(file: string, message: string) {
-  const git = (args: string[]) =>
-    execFileSync('git', ['-C', REPO_ROOT, ...args], { stdio: ['pipe', 'pipe', 'pipe'] })
-  git(['add', file])
-  git(['-c', 'user.name=Aeon Dashboard', '-c', 'user.email=dashboard@aeon.local', 'commit', '-m', message])
-  git(['push'])
-}
-
-// Keep aeon.yml's gateway.provider in sync with the authenticated key:
-// a Bankr (bk_) key flips it to `bankr`, anything else back to `direct`.
-async function syncGatewayProvider(provider: string) {
-  const next: GatewayProvider = provider === 'bankr' ? 'bankr' : 'direct'
-  const { content, sha } = await getFileContent('aeon.yml')
-  const updated = updateGatewayInConfig(content, next)
-  if (updated === content) return
-
-  const message = `chore: set LLM gateway provider to ${next}`
-  await updateFile('aeon.yml', updated, sha, message)
-  // Remote mode (GITHUB_TOKEN+GITHUB_REPO) already committed via the API;
-  // local mode wrote only the working copy, so commit & push it.
-  if (isLocal()) commitAndPush('aeon.yml', message)
-}
+import { syncGatewayProvider } from '@/lib/gateway'
 
 export async function GET() {
   try {

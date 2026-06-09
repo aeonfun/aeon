@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
+import { syncGatewayProvider } from '@/lib/gateway'
 import type { Secret } from '@/lib/types'
 
 const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
@@ -103,6 +104,8 @@ export async function POST(request: Request) {
       stdio: 'pipe',
       cwd: process.cwd(),
     })
+    // Setting the Bankr key here (not just via the auth modal) routes through Bankr.
+    if (name === 'BANKR_LLM_KEY') await syncGatewayProvider('bankr')
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to set secret'
@@ -123,6 +126,8 @@ export async function DELETE(request: Request) {
 
   try {
     execFileSync('gh', ['secret', 'delete', name, ...ghArgsRepo()], { stdio: 'pipe', cwd: process.cwd() })
+    // Deleting the Bankr key reverts the gateway to the classic (direct) provider.
+    if (name === 'BANKR_LLM_KEY') await syncGatewayProvider('direct')
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to delete secret'
