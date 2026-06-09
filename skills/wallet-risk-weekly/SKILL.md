@@ -3,6 +3,7 @@ name: wallet-risk-weekly
 description: Weekly risk audit of this agent's own Base wallets — live ERC-20 approvals (unlimited flagged), honeypot simulation on every token with a live approval, severity-tiered findings. Keyless via Base RPC. First scheduled consumer of the HoundFlow security pack against `.x402books/wallets.json`.
 var: ""
 tags: [crypto, security, base, meta]
+requires: [BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Optional. If set to a single wallet `address` (`0x...`) or wallet `role` (`treasury` / `deployer` / `other`), restrict the audit to that subset. If empty, audit every Base wallet in `.x402books/wallets.json`. Pass `dry-run` to write the article + log but skip the notification.

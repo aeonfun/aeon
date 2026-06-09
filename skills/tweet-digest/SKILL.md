@@ -3,6 +3,7 @@ name: Tweet Digest
 description: Account-based digest of recent tweets from tracked X/Twitter accounts. Sibling to fetch-tweets (keyword) and tweet-roundup (topic).
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 > **${var}** — Optional. If set, restrict to that single account (or topic filter). If empty, processes every account in `memory/topics/tracked-accounts.yml`.
 

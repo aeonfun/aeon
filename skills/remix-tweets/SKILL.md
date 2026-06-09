@@ -3,6 +3,7 @@ name: Remix Tweets
 description: Fetch ~30 older tweets, pre-filter for remixability, then produce 10 new rephrased versions across diverse strategies with post-write quality gates
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via remixability pre-filter, strategy-rotation, skip-gate for un-remixable originals, post-write self-edit; folded in A's multi-angle queries + engagement counts and C's source-status footer + OK/EMPTY/ERROR branching -->
 

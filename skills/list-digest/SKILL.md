@@ -3,6 +3,7 @@ name: List Digest
 description: Cross-list narrative resonance + signal-scored top tweets from tracked X lists in the past 24 hours
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via signal scoring + cross-list narrative clustering + insight-per-item discipline -->
 

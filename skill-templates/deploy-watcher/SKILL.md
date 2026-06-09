@@ -3,6 +3,7 @@ name: [REPLACE: SKILL_NAME]
 description: Watch Vercel deploys for [REPLACE: VERCEL_PROJECT] — alert on [REPLACE: ALERT_ON] in the last [REPLACE: LOOKBACK_HOURS] hours
 var: ""
 tags: [dev]
+requires: [VERCEL_TOKEN]
 ---
 
 > **${var}** — Optional. Override the Vercel project slug. If empty, watches `[REPLACE: VERCEL_PROJECT]`.

@@ -3,6 +3,7 @@ name: Contract Audit
 description: Audit any contract on Base — verification, proxy/upgradeability, ownership/admin roles, and mint/freeze/pause/drain powers as a live capability matrix. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]
+requires: [ETHERSCAN_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Contract address (`0x...`) on Base to audit. Required. If empty, log `AUDIT_NO_TARGET` and exit cleanly (no notify).

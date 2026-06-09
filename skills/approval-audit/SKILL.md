@@ -3,6 +3,7 @@ name: Approval Audit
 description: List a wallet's live ERC-20 token approvals on Base and flag unlimited / risky spender grants. Keyless via Base RPC (eth_getLogs + eth_call) — no explorer key needed.
 var: ""
 tags: [crypto, security, base]
+requires: [BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Wallet address (`0x...`) on Base to audit. Required. If empty, log `APPROVAL_AUDIT_NO_TARGET` and exit cleanly (no notify).

@@ -3,6 +3,7 @@ name: Write Tweet
 description: Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 > **${var}** — Topic or URL to write about (e.g. "prediction markets are broken", "https://arxiv.org/..."). If empty, auto-selects the most tweetable insight from today's logs.
 

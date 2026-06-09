@@ -3,6 +3,7 @@ name: Last 30 Days
 description: Cross-platform social research — narrative-first intelligence on what people are saying about a topic across Reddit, X, HN, Polymarket, and the web over the last 30 days
 var: ""
 tags: [research, social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — narrative-first output with sentiment splits, contrarian view, and what-changed delta -->
 

@@ -133,6 +133,23 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   description=$(awk '/^---$/{n++; next} n==1 && /^description:/{sub(/^description: */, ""); print; exit}' "$skill_file")
   var=$(awk '/^---$/{n++; next} n==1 && /^var:/{sub(/^var: */, ""); gsub(/"/, ""); print; exit}' "$skill_file")
 
+  # requires: [KEY, KEY2?]  →  [{"key":"KEY","optional":false},{"key":"KEY2","optional":true}]
+  # `?` suffix marks a "works better" (optional) credential; bare names are required.
+  requires_raw=$(awk '/^---$/{n++; next} n==1 && /^requires:/{sub(/^requires: *\[/, ""); sub(/\].*/, ""); print; exit}' "$skill_file")
+  requires_json="["
+  if [[ -n "$requires_raw" ]]; then
+    rfirst=true
+    IFS=',' read -ra rparts <<< "$requires_raw"
+    for raw in "${rparts[@]}"; do
+      key=$(echo "$raw" | tr -d ' ')
+      [[ -z "$key" ]] && continue
+      if [[ "$key" == *"?" ]]; then optional="true"; key="${key%\?}"; else optional="false"; fi
+      [[ "$rfirst" == "true" ]] && rfirst=false || requires_json+=","
+      requires_json+="{\"key\":\"$key\",\"optional\":$optional}"
+    done
+  fi
+  requires_json+="]"
+
   # Get metadata
   schedule=$(get_schedule "$slug")
   category=$(get_category "$slug")
@@ -152,7 +169,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     echo -n ',' >> "$OUTPUT"
   fi
 
-  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"schedule\":\"$schedule\",\"var\":\"$var\",\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
+  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"schedule\":\"$schedule\",\"var\":\"$var\",\"requires\":$requires_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
 
   TOTAL=$((TOTAL + 1))
 done

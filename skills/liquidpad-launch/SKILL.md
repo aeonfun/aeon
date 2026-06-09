@@ -3,6 +3,7 @@ name: LiquidPad Launch
 description: Emit a LiquidPad token deploy payload through the prefetch/postprocess shim pair. Routes 80% fees to deployer, 15% to LPAD burn, 5% to LIQ buyback, contract-enforced.
 var: ""
 tags: [defi, base, launchpad, token-launch]
+requires: [LIQUIDPAD_API_KEY]
 capabilities: [external_api, writes_external_host, onchain_writes, sends_notifications]
 ---
 

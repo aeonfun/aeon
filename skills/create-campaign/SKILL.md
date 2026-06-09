@@ -5,6 +5,7 @@ commits: true
 permissions:
   - contents:write
 tags: [growth, ads]
+requires: [ADMANAGE_API_KEY]
 ---
 
 Reads `skills/create-campaign/config.yaml`, figures out which campaigns/ad sets don't exist yet, and queues create requests to `.pending-admanage/creates/`. The credentialed API calls happen in `scripts/postprocess-admanage-create.sh` after Claude finishes.

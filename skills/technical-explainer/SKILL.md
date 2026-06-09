@@ -3,6 +3,7 @@ name: Technical Explainer
 description: Generate a visual technical explanation of a recent topic using Replicate for the hero image
 var: ""
 tags: [content]
+requires: [REPLICATE_API_TOKEN?]
 ---
 <!-- autoresearch: variation B — sharper output via forced mechanism articulation, intuition pump, falsifiability, numbers with primary-source citations -->
 

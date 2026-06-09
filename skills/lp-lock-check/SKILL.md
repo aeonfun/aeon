@@ -3,6 +3,7 @@ name: LP Lock Check
 description: Resolve a token's main liquidity pool on Base and classify whether its LP is burned/locked or removable (rug-pull risk). Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]
+requires: [BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Token contract address (`0x...`) on Base to check. Required. If empty, log `LPLOCK_NO_TARGET` and exit cleanly (no notify).

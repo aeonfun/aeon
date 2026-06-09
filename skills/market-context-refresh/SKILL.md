@@ -6,6 +6,7 @@ commits: true
 permissions:
   - contents:write
 tags: [crypto]
+requires: [COINGECKO_API_KEY?]
 ---
 
 <!-- autoresearch: variation B — sharper output: lead with a Market Take (regime + conviction), show deltas vs prior snapshot, classify narrative phase with evidence, emit decision-ready context for downstream skills rather than a data dump -->

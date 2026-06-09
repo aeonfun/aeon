@@ -3,6 +3,7 @@ name: Treasury Info
 description: Decision-ready treasury overview — verdict, concentration, depegs, significant changes
 var: ""
 tags: [crypto]
+requires: [BANKR_API_KEY, ALCHEMY_API_KEY?, COINGECKO_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output via verdict + concentration + depeg flags + significance-gated deltas, folding in Alchemy Portfolio API (from A), source-status footer + bootstrap (from C), and "what changed" lede (from D) -->
 

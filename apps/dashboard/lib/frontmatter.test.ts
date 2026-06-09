@@ -93,6 +93,40 @@ tags: []
     assert.deepEqual(result.tags, []);
   });
 
+  it("parses requires with required and works-better (?) keys", () => {
+    const content = `---
+name: Token Alert
+description: alerts
+tags: [crypto]
+requires: [XAI_API_KEY, COINGECKO_API_KEY?]
+---`;
+    const result = parseFrontmatter(content);
+    assert.deepEqual(result.requires, [
+      { key: "XAI_API_KEY", optional: false },
+      { key: "COINGECKO_API_KEY", optional: true },
+    ]);
+  });
+
+  it("returns empty requires when the field is absent", () => {
+    const content = `---
+name: No Keys
+description: nothing
+tags: [meta]
+---`;
+    const result = parseFrontmatter(content);
+    assert.deepEqual(result.requires, []);
+  });
+
+  it("ignores malformed requires entries", () => {
+    const content = `---
+name: Messy
+description: d
+requires: [GOOD_KEY, , lowercase, 123BAD]
+---`;
+    const result = parseFrontmatter(content);
+    assert.deepEqual(result.requires, [{ key: "GOOD_KEY", optional: false }]);
+  });
+
   it("truncates long fallback descriptions at 120 chars", () => {
     // Without description, the fallback scans all content for the first
     // non-heading/non-`---` line and truncates at 120 chars.

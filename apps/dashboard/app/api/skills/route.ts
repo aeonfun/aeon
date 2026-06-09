@@ -46,11 +46,11 @@ export async function GET() {
       dirNames.map(async (name) => {
         try {
           const { content } = await getFileContent(`skills/${name}/SKILL.md`)
-          const { description, tags } = parseFrontmatter(content)
-          return { name, description, tags, found: true }
+          const { description, tags, requires } = parseFrontmatter(content)
+          return { name, description, tags, requires, found: true }
         } catch {
           // No SKILL.md → this is a support/data dir (e.g. skills/security/), not a skill.
-          return { name, description: '', tags: [] as string[], found: false }
+          return { name, description: '', tags: [] as string[], requires: [], found: false }
         }
       }),
     )
@@ -61,6 +61,7 @@ export async function GET() {
         name: m.name,
         description: m.description,
         tags: m.tags,
+        requires: m.requires,
         category: categoryBySlug[m.name] || 'meta',
         enabled: config.skills[m.name]?.enabled ?? false,
         schedule: config.skills[m.name]?.schedule || '0 12 * * *',

@@ -3,6 +3,7 @@ name: Daily Digest
 description: Generate and send a daily digest on a configurable topic
 var: ""
 tags: [content]
+requires: [XAI_API_KEY?]
 ---
 <!-- autoresearch: variation B — curatorial discipline (filter → distill → structure → sanity-check) folded with sandbox-safe inputs and memory-aware dedup -->
 

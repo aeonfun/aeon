@@ -3,6 +3,7 @@ name: Investigation Report
 description: One-shot composite investigation of a Base token — runs rug-scan, contract-audit, deployer-trace and holder-concentration and merges them into a single report with an at-a-glance verdict. Keyless core; a Basescan key deepens it.
 var: ""
 tags: [crypto, security, base]
+requires: [BASESCAN_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Token contract address (`0x...`) on Base to investigate. Required. If empty, log `REPORT_NO_TARGET` and exit cleanly (no notify).

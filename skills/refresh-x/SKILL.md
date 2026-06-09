@@ -3,6 +3,7 @@ name: Refresh X
 description: Fetch a tracked X/Twitter account's latest tweets, cluster them, and save a decision-ready gist to memory
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via verdict + clustering + thread detection + insight lines + signal-score gating -->
 

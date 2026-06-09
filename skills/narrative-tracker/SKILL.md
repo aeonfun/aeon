@@ -4,6 +4,7 @@ description: Track rising, peaking, and fading crypto/tech narratives with quant
 schedule: "0 14 * * *"
 commits: true
 tags: [crypto, research]
+requires: [XAI_API_KEY]
 permissions:
   - contents:write
 ---

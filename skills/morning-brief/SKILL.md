@@ -3,6 +3,7 @@ name: Morning Brief
 description: Priority-driven daily briefing — the 3 things to focus on today, why now, and what moved
 var: ""
 tags: [meta]
+requires: [RESEND_API_KEY?]
 ---
 <!-- autoresearch: variation B — priority-driven, decision-ready output (cut noise, demand "why now") -->
 

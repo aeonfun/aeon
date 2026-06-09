@@ -3,6 +3,7 @@ name: Token Movers
 description: Top movers, losers, and trending coins from CoinGecko — with signal enrichment and pump-risk flags
 var: ""
 tags: [crypto]
+requires: [COINGECKO_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 <!-- autoresearch: variation B — sharper output: enrich each mover with context, score signals, flag pump risk, add market commentary -->

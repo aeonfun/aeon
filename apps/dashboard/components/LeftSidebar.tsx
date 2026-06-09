@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Skill, Run } from '../lib/types'
+import type { Skill, Run, Secret } from '../lib/types'
 import { CATEGORIES } from '../lib/constants'
 import { displayName, initials, getSkillStatus, statusDot } from '../lib/utils'
 
@@ -12,6 +12,7 @@ interface LeftSidebarProps {
   setSelectedSkill: (s: string | null) => void
   skills: Skill[]
   runs: Run[]
+  secrets: Secret[]
   repo: string
   enabledCount: number
   workingCount: number
@@ -19,10 +20,17 @@ interface LeftSidebarProps {
   onShowImport: () => void
 }
 
-export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, enabledCount, workingCount, onSkillSelect, onShowImport }: LeftSidebarProps) {
+export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [enabledOnly, setEnabledOnly] = useState(false)
+
+  // A skill is "key-blocked" when it's enabled but a required (non-optional)
+  // credential it declares isn't set — flagged inline so the operator sees it
+  // without opening each skill.
+  const setSecretNames = new Set(secrets.filter(s => s.isSet).map(s => s.name))
+  const missingRequiredKeys = (s: Skill) =>
+    (s.requires ?? []).filter(r => !r.optional && !setSecretNames.has(r.key))
 
   return (
     <div className="w-[240px] border-r border-[rgba(250,250,250,0.10)] flex flex-col shrink-0 bg-aeon-panel">
@@ -119,6 +127,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, 
               {filtered.sort((a, b) => Number(b.enabled) - Number(a.enabled) || a.name.localeCompare(b.name)).map(s => {
                 const st = getSkillStatus(s.name, s.enabled, runs)
                 const sel = selectedSkill === s.name
+                const keyGap = s.enabled && missingRequiredKeys(s).length > 0
                 return (
                   <button key={s.name} onClick={() => onSkillSelect(s.name)}
                     className={`w-full flex items-center gap-2.5 px-4 py-2 transition-all text-left ${sel ? 'bg-aeon-bg selected-indicator' : 'hover:bg-aeon-bg'}`}>
@@ -132,6 +141,11 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, repo, 
                         <span className="text-[10px] text-primary-40 font-mono truncate">{st.label}</span>
                       </div>
                     </div>
+                    {keyGap && (
+                      <span title="Enabled but a required API key is missing" className="shrink-0 text-eva-red" aria-label="Missing required API key">
+                        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" /></svg>
+                      </span>
+                    )}
                   </button>
                 )
               })}

@@ -6,6 +6,7 @@ commits: true
 permissions:
   - contents:write
 tags: [growth, ads]
+requires: [ADMANAGE_API_KEY]
 ---
 
 Reads `skills/schedule-ads/config.yaml`, picks schedule entries matching today, and queues ad launches via AdManage.ai. The actual API calls happen in `scripts/postprocess-admanage.sh` (outside the sandbox, with full env access) — this skill just builds the launch payloads and drops them in `.pending-admanage/`.

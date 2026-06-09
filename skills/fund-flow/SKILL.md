@@ -3,6 +3,7 @@ name: Fund Flow
 description: Trace where funds move to (or came from) across multiple hops from a Base address and render a Mermaid flow graph. Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]
+requires: [BASESCAN_KEY?, BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Address (`0x...`) on Base to trace. Required. If empty, log `FUNDFLOW_NO_TARGET` and exit cleanly (no notify).

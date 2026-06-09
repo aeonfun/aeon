@@ -3,6 +3,7 @@ name: Fetch Tweets
 description: Search X/Twitter for tweets about a token, keyword, username, or topic — clustered by sub-narrative
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via clustering + signal line + insight extraction -->
 > **${var}** — Search query for X/Twitter. **Required** — set your query in aeon.yml.

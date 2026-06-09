@@ -43,8 +43,31 @@ name: [REPLACE: SKILL_NAME]
 description: One-line description of what this skill does
 var: ""
 tags: [...]
+requires: [SOME_API_KEY, OTHER_API_KEY?]
 ---
 ```
+
+### Declaring API keys (`requires:`)
+
+If a skill calls a third-party API, declare the credentials it reads in the
+`requires:` frontmatter list. This is the single source of truth the dashboard
+reads to show **which skill needs which API key** (a per-skill "API keys"
+section, an inline "key missing" flag in the roster, and a reverse "used by"
+index under each key in Settings → Access Keys).
+
+```yaml
+requires: [XAI_API_KEY, COINGECKO_API_KEY?]
+```
+
+- Each entry is the exact env-var name the skill reads (e.g. `XAI_API_KEY`).
+- A bare name is **required** — the skill can't do its core job without it.
+- A trailing `?` means **works better with** — the skill still runs without the
+  key (degraded, rate-limited, or one feature skipped), it's just better with it.
+- Names should match the central credential registry (`apps/dashboard/app/api/secrets/route.ts`),
+  so the dashboard can show the description and where to get the key. A name not
+  in the registry still renders — it's treated as a custom credential.
+- Omit `requires:` entirely (or use `[]`) for skills that only use the built-in
+  Claude + GitHub tokens.
 
 Replacement tokens use the form `[REPLACE: KEY]`. Keys are uppercase snake-case so they're easy to spot in a diff. The literal token `[REPLACE: SKILL_NAME]` is special — it's auto-set to the skill name passed to `./new-from-template` (the second positional argument).
 

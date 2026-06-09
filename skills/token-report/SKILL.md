@@ -3,6 +3,7 @@ name: token-report
 description: Daily price performance report for the project's token — price, volume, liquidity, and context
 var: ""
 tags: [crypto]
+requires: [ALCHEMY_API_KEY?, XAI_API_KEY?]
 capabilities: [external_api]
 ---
 <!-- autoresearch: variation B — verdict-first template, threshold-based classification, true deltas from persistent STATE log, skip-when-empty sections -->

@@ -3,6 +3,7 @@ name: Farcaster Digest
 description: Clustered, signal-scored digest of Farcaster casts with conversation-shape lead and insight-first editorial notes
 var: ""
 tags: [crypto, social]
+requires: [NEYNAR_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via cluster + signal score + insight extraction; folds in A's semantic/channel inputs and C's source-status footer + persistent dedup -->
 

@@ -3,6 +3,7 @@ name: Regulatory Monitor
 description: Track legislation, regulatory actions, and legal developments affecting prediction markets, crypto, and AI agents — triaged by stage × impact for decision-ready output
 var: ""
 tags: [crypto, research]
+requires: [CONGRESS_GOV_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output via stage×impact scoring, action-first triage, deadline-aware buckets, structured primary sources (Federal Register + SEC/CFTC RSS), persistent URL dedup, source-status observability -->
 

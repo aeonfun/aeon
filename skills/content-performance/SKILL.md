@@ -7,6 +7,7 @@ permissions:
   - contents:write
 var: ""
 tags: [content, meta, social]
+requires: [XAI_API_KEY]
 ---
 
 > **${var}** — X handle to track (without @). If empty, resolves the operator's handle from soul/SOUL.md or MEMORY.md.

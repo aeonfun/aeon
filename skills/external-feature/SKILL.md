@@ -3,6 +3,7 @@ name: External Feature
 description: Proactively enhance watched repos — fix issues, add features, improve code
 var: ""
 tags: [dev, build]
+requires: [GH_GLOBAL]
 depends_on: [repo-scanner]
 ---
 > **${var}** — Target in `owner/repo` or `owner/repo#N` format. If empty, picks a repo and finds the best thing to improve.

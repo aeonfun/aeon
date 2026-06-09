@@ -3,6 +3,7 @@ name: Tweet Roundup
 description: Gist of the latest tweets on configurable topics
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 
 <!-- autoresearch: variation B — sharper output via signal scoring, sub-narrative clustering, and insight-per-item discipline -->

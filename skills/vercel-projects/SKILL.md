@@ -3,6 +3,7 @@ name: Vercel Projects
 description: Triage Vercel deploy fleet — verdict, errored-first, what-changed since last snapshot
 var: ""
 tags: [dev, meta]
+requires: [VERCEL_TOKEN]
 ---
 <!-- autoresearch: variation B — sharper output: portfolio verdict + errored-first triage + what-changed deltas (folds A's pagination/link parsing, C's exit taxonomy + N+1 elimination, D's broken-now framing) -->
 

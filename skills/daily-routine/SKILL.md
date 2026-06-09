@@ -3,6 +3,7 @@ name: Daily Routine
 description: Morning briefing combining token movers, tweet roundup, paper pick, GitHub issues, and HN digest
 var: ""
 tags: [news]
+requires: [XAI_API_KEY?]
 ---
 > **${var}** — Area to emphasize (e.g. "crypto", "AI", "security"). If empty, covers all areas equally.
 

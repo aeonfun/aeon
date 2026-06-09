@@ -2,6 +2,7 @@
 name: workflow-security-audit
 description: Audit .github/workflows and composite actions with zizmor + actionlint, classify findings against the prior audit, auto-fix Critical/High regressions, and open a PR only when something actually changed.
 tags: [dev]
+requires: [GH_GLOBAL?]
 ---
 <!-- autoresearch: variation B — sharper output via zizmor-led scanning, NEW/REINTRODUCED/UNCHANGED/RESOLVED delta classification, attack-chain narratives for Critical/High, exit taxonomy, silent-on-no-delta -->
 

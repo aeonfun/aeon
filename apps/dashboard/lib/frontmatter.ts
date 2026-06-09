@@ -1,7 +1,13 @@
+export interface SkillKeyRef {
+  key: string       // env-var name, e.g. "XAI_API_KEY"
+  optional: boolean // true when the skill degrades gracefully without it (declared with a trailing `?`)
+}
+
 export interface Frontmatter {
   name: string
   description: string
   tags: string[]
+  requires: SkillKeyRef[]
 }
 
 // Parse a SKILL.md's leading `--- ... ---` block. When `description:` is absent,
@@ -22,10 +28,26 @@ export function parseFrontmatter(content: string): Frontmatter {
     }
   }
 
-  const tagsMatch = block.match(/tags:\s*\[([^\]]*)\]/)
-  const tags = tagsMatch ? tagsMatch[1].split(',').map(t => t.trim()).filter(Boolean) : []
+  const tags = parseList(block.match(/tags:\s*\[([^\]]*)\]/)?.[1])
 
-  return { name, description, tags }
+  // `requires:` declares the third-party credentials a skill needs to function.
+  // Format mirrors `tags:` — an inline list of env-var names. A trailing `?`
+  // marks a key as optional (the skill still runs without it, just degraded /
+  // rate-limited). Names reference the central credential registry surfaced in
+  // the dashboard's Settings → Access Keys vault.
+  //   requires: [XAI_API_KEY, COINGECKO_API_KEY?]
+  const requires: SkillKeyRef[] = parseList(block.match(/requires:\s*\[([^\]]*)\]/)?.[1])
+    .map(raw => {
+      const optional = raw.endsWith('?')
+      return { key: raw.replace(/\?$/, '').trim(), optional }
+    })
+    .filter(r => /^[A-Z][A-Z0-9_]+$/.test(r.key))
+
+  return { name, description, tags, requires }
+}
+
+function parseList(inner: string | undefined): string[] {
+  return inner ? inner.split(',').map(t => t.trim()).filter(Boolean) : []
 }
 
 function unquote(value: string): string {

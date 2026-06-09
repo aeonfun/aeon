@@ -3,6 +3,7 @@ name: [REPLACE: SKILL_NAME]
 description: Daily price and volume tracker for [REPLACE: TOKEN_SYMBOL] with anomaly alerts above [REPLACE: ALERT_THRESHOLD_PCT]% movement
 var: ""
 tags: [crypto]
+requires: [COINGECKO_API_KEY?]
 ---
 
 > **${var}** — Optional. Pass a different CoinGecko ID to override the default. If empty, tracks the configured token.

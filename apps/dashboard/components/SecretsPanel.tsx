@@ -1,24 +1,38 @@
 'use client'
 
 import { useState, Fragment } from 'react'
-import type { Secret } from '../lib/types'
-import { inputCls } from '../lib/utils'
+import type { Secret, Skill } from '../lib/types'
+import { inputCls, displayName } from '../lib/utils'
 import { Scramble } from './ui/Animated'
 import { InstantModeCard } from './InstantModeCard'
 
 interface SecretsPanelProps {
   secrets: Secret[]
+  skills: Skill[]
   busy: Record<string, boolean>
   repo: string
   onSave: (name: string, value: string) => void
   onDelete: (name: string) => void
+  onSelectSkill: (name: string) => void
 }
 
-export function SecretsPanel({ secrets, busy, repo, onSave, onDelete }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, onSave, onDelete, onSelectSkill }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
   const [newSecretName, setNewSecretName] = useState('')
+
+  // Reverse index: which skills declare each credential, and whether they
+  // require it or just work better with it. Powers the "used by" line so the
+  // operator can see what a key unlocks before setting it.
+  const usedBy = new Map<string, { name: string; optional: boolean }[]>()
+  for (const sk of skills) {
+    for (const r of sk.requires ?? []) {
+      const list = usedBy.get(r.key) ?? []
+      list.push({ name: sk.name, optional: r.optional })
+      usedBy.set(r.key, list)
+    }
+  }
 
   const handleSave = (name: string) => {
     if (!secretValue.trim()) return
@@ -67,9 +81,29 @@ export function SecretsPanel({ secrets, busy, repo, onSave, onDelete }: SecretsP
               {gs.map(secret => (
                 <div key={secret.name} className="px-[var(--space-md)] py-[var(--space-sm)]">
                   <div className="flex items-center justify-between">
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
                       <div className="text-[11px] text-primary-40 font-mono">{secret.description}</div>
+                      {(usedBy.get(secret.name)?.length ?? 0) > 0 && (
+                        <div className="text-[10px] text-primary-35 font-mono mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                          <span className="uppercase tracking-[0.14em] text-primary-30">Used by</span>
+                          {usedBy.get(secret.name)!
+                            .sort((a, b) => Number(a.optional) - Number(b.optional))
+                            .map(u => (
+                              <button
+                                key={u.name}
+                                onClick={() => onSelectSkill(u.name)}
+                                title={u.optional ? 'Works better with this key' : 'Required for this skill'}
+                                className={`hover:text-aeon-fg transition-colors ${u.optional ? 'text-primary-40' : 'text-aeon-red/80'}`}
+                              >
+                                {displayName(u.name)}{!u.optional && '*'}
+                              </button>
+                            ))}
+                          {usedBy.get(secret.name)!.some(u => !u.optional) && (
+                            <span className="text-primary-30">· * = required</span>
+                          )}
+                        </div>
+                      )}
                     </div>
                     <div className="flex gap-1.5">
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}

@@ -38,6 +38,7 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'NEYNAR_API_KEY', group: 'Skill Keys', description: 'Neynar API key — Farcaster read/cast (farcaster-digest, syndicate-article). Get one at neynar.com' },
   { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID — required to publish Farcaster casts' },
   { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access — cross-repo skills & deploys' },
+  { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint — onchain Base skills (fund-flow, honeypot-check, vigil-revoke). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits.' },
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))

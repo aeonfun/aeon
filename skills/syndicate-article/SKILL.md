@@ -3,6 +3,7 @@ name: syndicate-article
 description: Cross-post articles to Dev.to and Farcaster with hook-driven copy and click-optimized metadata
 var: ""
 tags: [content, growth]
+requires: [DEVTO_API_KEY?, NEYNAR_API_KEY?, NEYNAR_SIGNER_UUID?]
 ---
 <!-- autoresearch: variation B — sharper output: hook-driven cast + CTR-optimized Dev.to card, with quality gate -->
 > **${var}** — Filename of a specific article to syndicate (e.g. `repo-article-2026-04-16.md`). If empty, syndicates the most recently written article.

@@ -3,6 +3,7 @@ name: VIGIL Approval Revoker
 description: Revoke a single live ERC-20 approval on Base via Bankr. Confirms the approval is live, then submits `approve(spender, 0)` and waits for receipt. workflow_dispatch only — `var` is the `wallet:spender:token` triplet returned by VIGIL / approval-audit / wallet-risk-weekly. Closes the detection→revoke loop that VIGIL PR #323 explicitly split out.
 var: ""
 tags: [crypto, security, base, defi]
+requires: [BANKR_API_KEY, BASE_RPC_URL?]
 capabilities: [external_api, writes_external_host, onchain_writes, sends_notifications]
 ---
 > **${var}** — Required. The `wallet:spender:token` triplet to revoke. All three MUST be `0x` followed by exactly 40 hex characters, separated by single `:` colons. Example: `var: "0xWALLET:0xSPENDER:0xTOKEN"`. If empty or malformed, log the explicit error and exit cleanly (no notify). No defaults — the operator must name what is being revoked.

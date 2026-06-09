@@ -102,7 +102,7 @@ export default function Dashboard() {
       <LeftSidebar
         view={view} setView={(v) => { setView(v); setSelectedSkill(null) }}
         selectedSkill={selectedSkill} setSelectedSkill={setSelectedSkill}
-        skills={skills} runs={runs} repo={repo}
+        skills={skills} runs={runs} secrets={secrets} repo={repo}
         enabledCount={enabledCount} workingCount={workingCount}
         onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
         onShowImport={() => setShowImport(true)}
@@ -119,7 +119,7 @@ export default function Dashboard() {
 
         <div className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
-            <SecretsPanel secrets={secrets} busy={busy} repo={repo} onSave={saveSecret} onDelete={deleteSecret} />
+            <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} />
           )}
           {view === 'strategy' && !selectedSkill && (
             <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} onSave={saveStrategy} />
@@ -132,9 +132,10 @@ export default function Dashboard() {
           )}
           {skill && (
             <SkillDetail
-              skill={skill} runs={runs} model={model} busy={busy}
+              skill={skill} runs={runs} model={model} secrets={secrets} busy={busy}
               onToggle={toggleSkill} onRun={runSkill} onDelete={deleteSkill}
               onUpdateSchedule={updateSchedule} onUpdateVar={updateVar} onUpdateModel={updateSkillModel}
+              onSetSecret={saveSecret}
               onViewRun={() => {}}
             />
           )}

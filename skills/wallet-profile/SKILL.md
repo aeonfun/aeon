@@ -3,6 +3,7 @@ name: Wallet Profile
 description: Behavioral profile of any wallet on Base — age, activity class (bot/whale/sniper/trader), funding source, top counterparties, and risk flags. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, base]
+requires: [ETHERSCAN_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Wallet address (`0x...`) on Base to profile. Required. If empty, log `WALLET_PROFILE_NO_TARGET` and exit cleanly (no notify).

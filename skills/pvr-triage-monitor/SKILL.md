@@ -3,6 +3,7 @@ name: pvr-triage-monitor
 description: Weekly lifecycle check on submitted private vulnerability reports — polls triage state, detects maintainer acceptance or rejection, surfaces action items when PVRs age past 30 days with no response
 var: ""
 tags: [security, meta]
+requires: [GH_GLOBAL?]
 ---
 
 > **${var}** — Optional `GHSA-xxxx-xxxx-xxxx` to check a single advisory on demand.

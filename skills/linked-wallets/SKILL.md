@@ -3,6 +3,7 @@ name: Linked Wallets
 description: Cluster addresses likely controlled by the same entity on Base via shared-funder and co-spend heuristics. Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]
+requires: [BASESCAN_KEY?, BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Address (`0x...`) on Base to investigate. Required. If empty, log `LINKED_NO_TARGET` and exit cleanly (no notify).

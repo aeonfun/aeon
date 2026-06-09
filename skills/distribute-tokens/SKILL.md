@@ -3,6 +3,7 @@ name: Distribute Tokens
 description: Send tokens to a list of contributors via Bankr Wallet API with per-recipient idempotency, two-phase resolve→execute, dry-run, and recovery from partial runs
 var: ""
 tags: [crypto]
+requires: [BANKR_API_KEY]
 capabilities: [external_api, writes_external_host, onchain_writes, sends_notifications]
 ---
 <!-- autoresearch: variation C — robustness via per-recipient idempotency state, two-phase resolve→execute, dry-run, retries, 403/429 handling, recovery -->

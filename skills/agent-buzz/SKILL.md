@@ -3,6 +3,7 @@ name: Agent Buzz
 description: Curated AI-agent tweets, clustered into narratives with insight summaries
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via clustering, signal score, insight extraction, and skip-gates -->
 

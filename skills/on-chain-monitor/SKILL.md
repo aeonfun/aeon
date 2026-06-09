@@ -3,6 +3,7 @@ name: On-Chain Monitor
 description: Monitor blockchain addresses and contracts for notable activity
 var: ""
 tags: [crypto]
+requires: [ALCHEMY_API_KEY?, COINGECKO_API_KEY?, ETHERSCAN_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 <!-- autoresearch: variation B — sharper output (decoded transfers + counterparty labels + ranked USD-denominated one-liners + TL;DR lede); folds in A's Alchemy+Etherscan-v2 input path and C's persistent state + source-status footer + dedup. -->

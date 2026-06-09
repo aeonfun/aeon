@@ -3,6 +3,7 @@ name: Honeypot Check
 description: Detect un-sellable / restricted (honeypot) tokens on Base by simulating a real holder's sell via eth_call. Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]
+requires: [BASE_RPC_URL?]
 capabilities: [read_only, sends_notifications]
 ---
 > **${var}** — Token contract address (`0x...`) on Base to check. Required. If empty, log `HONEYPOT_NO_TARGET` and exit cleanly (no notify).

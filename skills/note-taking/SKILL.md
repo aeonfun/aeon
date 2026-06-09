@@ -3,6 +3,7 @@ name: Note Taking
 description: Save a note as a Supernotes card (if configured) or to a local memory/notes/ file
 var: ""
 tags: [meta]
+requires: [SUPERNOTES_API_KEY]
 ---
 > **${var}** — The note content to save. Can be a thought, idea, link, quote, or anything worth remembering.
 

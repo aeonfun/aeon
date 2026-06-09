@@ -71,7 +71,7 @@ Click on `http://localhost:5555` to open the dashboard in your browser. From the
 
 1. **Authenticate** — add your Claude API key or OAuth token
 2. **Add a channel** — set up [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you (and you can talk back)
-3. **Pick skills** — toggle on what you want, set a schedule, and optionally set a `var` to focus each skill
+3. **Pick skills** — toggle on what you want, set a schedule, and optionally set a `var` to focus each skill. Each skill's **API keys** panel shows which third-party keys it needs (and which are still unset) — see [API keys per skill](#api-keys-per-skill)
 4. **Push** — one click commits and pushes your config to GitHub, Actions takes it from there
 5. **Verify** — run `./onboard` to confirm secrets, workflows, memory, and notifications are wired up correctly. Add `--remote` to fire the check inside Actions and have the checklist arrive in your notification channel.
 
@@ -251,6 +251,23 @@ Every skill accepts a single `var` — a universal input that each skill interpr
 | Productivity | Sets the focus area | `var: "shipping v2"` → morning brief emphasizes v2 |
 
 If `var` is empty, each skill falls back to its default behavior (scan everything, auto-pick topics, etc.). Set it from the dashboard or pass it when triggering manually.
+
+### API keys per skill
+
+Skills that call a third-party API declare the credentials they read in a `requires:` frontmatter list, so the dashboard can show **which skill needs which key** — no more guessing why a skill returns empty.
+
+```yaml
+---
+name: Token Alert
+tags: [crypto]
+requires: [COINGECKO_API_KEY?]   # `?` = works better with; bare name = required
+---
+```
+
+- **Bare name** (`XAI_API_KEY`) — required; the skill can't do its core job without it.
+- **Trailing `?`** (`COINGECKO_API_KEY?`) — works better with; the skill still runs without it (degraded / rate-limited).
+
+The dashboard surfaces this three ways: an **API keys** panel on each skill (with set/unset status and an inline "Set" button), a ⚠ flag in the roster when an *enabled* skill is missing a required key, and a **"used by"** index under each key in **Settings → Access Keys**. Key names map to the central credential registry (`apps/dashboard/app/api/secrets/route.ts`); add new keys there and any skill can reference them. See [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md#declaring-api-keys-requires) for the full convention.
 
 ### Model selection
 

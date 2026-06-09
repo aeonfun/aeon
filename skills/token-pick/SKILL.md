@@ -3,6 +3,7 @@ name: Token Pick
 description: One token recommendation and one prediction market pick — scored, quantified, with a skip branch when signals are weak
 var: ""
 tags: [crypto]
+requires: [COINGECKO_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 <!-- autoresearch: variation B — sharper output via signal scoring, edge calculation, conviction tiers, and a skip-day branch -->

@@ -3,6 +3,7 @@ name: Deployer Trace
 description: Map every contract deployed by an address on Base, link reused patterns, and surface serial-rug signals. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]
+requires: [ETHERSCAN_API_KEY?]
 capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Deployer address (`0x...`) on Base. Required. May also be a token address — its creator is resolved first. If empty, log `DEPLOYER_TRACE_NO_TARGET` and exit cleanly (no notify).

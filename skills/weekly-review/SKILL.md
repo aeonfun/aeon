@@ -3,6 +3,7 @@ name: Weekly Review
 description: KALM retrospective grounded in objective metrics, with closed-loop tracking of last week's actions and SMART next-week actions
 var: ""
 tags: [meta]
+requires: [RESEND_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output: KALM frame + close-the-loop + SMART actions -->
 > **${var}** — Optional area to focus on (e.g. `crypto`, `notifications`). If empty, covers the whole system.

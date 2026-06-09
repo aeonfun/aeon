@@ -3,6 +3,7 @@ name: Reply Maker
 description: Generate two reply options for 5 tweets from tracked X accounts or topics
 var: ""
 tags: [social]
+requires: [XAI_API_KEY]
 ---
 <!-- autoresearch: variation B — sharper output via specificity gates, anti-sycophancy lint, post-write self-edit, and skip-gate for low-leverage tweets -->
 
