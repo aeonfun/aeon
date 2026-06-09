@@ -5,6 +5,7 @@ import type { Secret, Skill } from '../lib/types'
 import { inputCls, displayName } from '../lib/utils'
 import { Scramble } from './ui/Animated'
 import { InstantModeCard } from './InstantModeCard'
+import { TelegramChatIdHelper } from './TelegramChatIdHelper'
 
 interface SecretsPanelProps {
   secrets: Secret[]
@@ -23,6 +24,9 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
   const [newSecretName, setNewSecretName] = useState('')
+  // Bot token saved this session, kept to pre-fill the chat-ID helper —
+  // GitHub secrets are write-only, so it can't be read back later.
+  const [sessionBotToken, setSessionBotToken] = useState('')
 
   // Deep-link from a skill's API-keys panel: open the requested key's editor,
   // scroll it into view, and clear the request so re-navigating works.
@@ -51,6 +55,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
 
   const handleSave = (name: string) => {
     if (!secretValue.trim()) return
+    if (name === 'TELEGRAM_BOT_TOKEN') setSessionBotToken(secretValue.trim())
     onSave(name, secretValue.trim())
     setEditingSecret(null)
     setSecretValue('')
@@ -99,6 +104,23 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                     <div className="min-w-0">
                       <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
                       <div className="text-[11px] text-primary-40 font-mono">{secret.description}</div>
+                      {secret.name === 'TELEGRAM_BOT_TOKEN' && (
+                        <a
+                          href="https://t.me/BotFather"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) — it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
+                          className="inline-block text-[10px] font-mono text-eva-orange/80 hover:text-eva-orange transition-colors mt-1"
+                        >
+                          Get one from @BotFather ↗
+                        </a>
+                      )}
+                      {secret.name === 'TELEGRAM_CHAT_ID' && (
+                        <TelegramChatIdHelper
+                          defaultToken={sessionBotToken}
+                          onFound={(chatId) => { setEditingSecret('TELEGRAM_CHAT_ID'); setSecretValue(chatId) }}
+                        />
+                      )}
                       {(usedBy.get(secret.name)?.length ?? 0) > 0 && (
                         <div className="text-[10px] text-primary-35 font-mono mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
                           <span className="uppercase tracking-[0.14em] text-primary-30">Used by</span>
