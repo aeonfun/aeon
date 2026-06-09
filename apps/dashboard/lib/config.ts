@@ -113,6 +113,15 @@ export function updateModelInConfig(raw: string, model: string): string {
 }
 
 /**
+ * Update the LLM gateway provider. Creates the gateway block if absent.
+ */
+export function updateGatewayInConfig(raw: string, provider: GatewayProvider): string {
+  const doc = parseDocument(raw)
+  doc.setIn(['gateway', 'provider'], provider)
+  return doc.toString()
+}
+
+/**
  * Update jsonrender enabled flag.
  */
 export function updateJsonrenderInConfig(raw: string, enabled: boolean): string {

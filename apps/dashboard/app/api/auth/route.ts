@@ -2,6 +2,20 @@ import { NextResponse } from 'next/server'
 import { execFileSync, execSync } from 'child_process'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 import { normalizeAuthConfig } from '@/lib/auth-provider.mjs'
+import { getFileContent, updateFile } from '@/lib/github'
+import { updateGatewayInConfig } from '@/lib/config'
+import type { GatewayProvider } from '@/lib/types'
+
+// Keep aeon.yml's gateway.provider in sync with the authenticated key:
+// a Bankr (bk_) key flips it to `bankr`, anything else back to `direct`.
+async function syncGatewayProvider(provider: string) {
+  const next: GatewayProvider = provider === 'bankr' ? 'bankr' : 'direct'
+  const { content, sha } = await getFileContent('aeon.yml')
+  const updated = updateGatewayInConfig(content, next)
+  if (updated !== content) {
+    await updateFile('aeon.yml', updated, sha, `chore: set LLM gateway provider to ${next}`)
+  }
+}
 
 export async function GET() {
   try {
@@ -15,6 +29,7 @@ export async function GET() {
     const secrets = out ? out.split('\n').filter(Boolean) : []
     const hasApiKey = secrets.includes('ANTHROPIC_API_KEY')
     const hasOauth = secrets.includes('CLAUDE_CODE_OAUTH_TOKEN')
+    const hasBankr = secrets.includes('BANKR_LLM_KEY')
     let hasBaseUrl = false
 
     try {
@@ -24,7 +39,7 @@ export async function GET() {
       hasBaseUrl = vars ? vars.split('\n').includes('ANTHROPIC_BASE_URL') : false
     } catch {}
 
-    return NextResponse.json({ authenticated: hasApiKey || hasOauth, hasApiKey, hasOauth, hasBaseUrl })
+    return NextResponse.json({ authenticated: hasApiKey || hasOauth || hasBankr, hasApiKey, hasOauth, hasBankr, hasBaseUrl })
   } catch {
     return NextResponse.json({ authenticated: false })
   }
@@ -50,7 +65,8 @@ export async function POST(request: Request) {
         input: config.key,
         stdio: ['pipe', 'pipe', 'pipe'],
       })
-      return NextResponse.json({ ok: true, method: config.method, secret: config.secretName, baseUrl: Boolean(config.baseUrl) })
+      await syncGatewayProvider(config.gateway)
+      return NextResponse.json({ ok: true, method: config.method, secret: config.secretName, baseUrl: Boolean(config.baseUrl), gateway: config.gateway })
     }
 
     const output = execSync('claude setup-token', {
@@ -84,10 +100,11 @@ export async function POST(request: Request) {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
+    await syncGatewayProvider(config.gateway)
     return NextResponse.json({ ok: true, method: 'oauth' })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to setup auth'
-    const status = msg.includes('Base URL') || msg.includes('OAuth tokens') ? 400 : 500
+    const status = msg.includes('Base URL') || msg.includes('OAuth tokens') || msg.includes('Bankr') ? 400 : 500
     return NextResponse.json({ error: msg }, { status })
   }
 }

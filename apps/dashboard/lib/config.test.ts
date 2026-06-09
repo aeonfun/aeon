@@ -13,6 +13,7 @@ import {
   parseConfig,
   updateSkillInConfig,
   updateModelInConfig,
+  updateGatewayInConfig,
   updateJsonrenderInConfig,
   removeSkillFromConfig,
   addSkillToConfig,
@@ -164,6 +165,26 @@ describe("updateModelInConfig", () => {
     const updated = updateModelInConfig(FULL_YAML, "claude-haiku-4-5-20251001");
     const config = parseConfig(updated);
     assert.equal(config.model, "claude-haiku-4-5-20251001");
+  });
+});
+
+// ── updateGatewayInConfig ────────────────────────────────────────────
+
+describe("updateGatewayInConfig", () => {
+  it("flips an existing provider to bankr", () => {
+    const updated = updateGatewayInConfig(FULL_YAML, "bankr");
+    assert.equal(parseConfig(updated).gateway.provider, "bankr");
+  });
+
+  it("flips back to direct", () => {
+    const bankr = updateGatewayInConfig(FULL_YAML, "bankr");
+    const updated = updateGatewayInConfig(bankr, "direct");
+    assert.equal(parseConfig(updated).gateway.provider, "direct");
+  });
+
+  it("creates the gateway block when absent", () => {
+    const updated = updateGatewayInConfig(MINIMAL_YAML, "bankr");
+    assert.equal(parseConfig(updated).gateway.provider, "bankr");
   });
 });
 

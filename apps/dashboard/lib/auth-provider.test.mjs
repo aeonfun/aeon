@@ -14,6 +14,28 @@ test('stores Anthropic-compatible API keys in ANTHROPIC_API_KEY', () => {
   assert.equal(config.baseUrl, 'https://api.deepseek.com/anthropic')
 })
 
+test('routes Bankr gateway keys to BANKR_LLM_KEY and flips gateway to bankr', () => {
+  const config = normalizeAuthConfig({ key: 'bk_live_abc123' })
+
+  assert.equal(config.secretName, 'BANKR_LLM_KEY')
+  assert.equal(config.method, 'bankr')
+  assert.equal(config.gateway, 'bankr')
+  assert.equal(config.baseUrl, '')
+})
+
+test('rejects Bankr keys with a custom base URL', () => {
+  assert.throws(
+    () => normalizeAuthConfig({ key: 'bk_live_abc123', baseUrl: 'https://llm.bankr.bot' }),
+    /Bankr gateway keys cannot be used with a custom base URL/,
+  )
+})
+
+test('keeps the direct gateway for non-Bankr keys', () => {
+  assert.equal(normalizeAuthConfig({ key: 'sk-ant-api03-xyz' }).gateway, 'direct')
+  assert.equal(normalizeAuthConfig({ key: 'sk-ant-oat-abc123' }).gateway, 'direct')
+  assert.equal(normalizeAuthConfig({}).gateway, 'direct')
+})
+
 test('stores Claude OAuth tokens separately', () => {
   const config = normalizeAuthConfig({ key: 'sk-ant-oat-abc123' })
 
