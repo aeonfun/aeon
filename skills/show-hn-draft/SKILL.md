@@ -7,11 +7,11 @@ tags: [dev]
 
 > **${var}** — Optional. If empty: write the default trio (Show HN + r/MachineLearning + r/selfhosted). If set to one of `show-hn`, `r/MachineLearning`, `r/selfhosted`: regenerate that single variant only and overwrite that section in today's draft. Any other value: log `SHOW_HN_DRAFT_BAD_VAR` and exit.
 
-Today is ${today}. Write a Show HN post — plus two shorter platform variants — that an operator can paste **as-is** at the moment the project is ready for a launch push. The point is to remove every text-authoring obstacle so that when timing is right (currently: ~12 days from the 300-star milestone at ~4/day momentum), the operator is not typing a 4-paragraph post in 10 minutes and shipping the worst version of it. **The agent writes the text now, under zero pressure, with full context. The operator edits and pastes.**
+Today is ${today}. Write a Show HN post — plus two shorter platform variants — that an operator can paste **as-is** at the moment the project is ready for a launch push. The point is to remove every text-authoring obstacle so that when timing is right (currently: the 500-star milestone is the auto-dispatch trigger wired by `star-milestone` — this skill must have a fresh draft sitting in `articles/` when that fires), the operator is not typing a 4-paragraph post in 10 minutes and shipping the worst version of it. **The agent writes the text now, under zero pressure, with full context. The operator edits and pastes.**
 
 ## Why this skill exists
 
-Show HN is a one-shot moment. A front-page run for a project at this scale (~250 stars, growing autonomous-agent narrative) historically adds 50–200 stars in 48h — but the difference between front page and dead post is largely the title and the first 200 words. Those are exactly the parts that suffer when written last-minute. This skill is the inverse of `repo-article` (which turns one event into one article every day): it turns the entire project state into one launch post on demand, so the launch text is ready before the launch.
+Show HN is a one-shot moment. A front-page run for a project at this scale (~500 stars, ~165 forks, ~195 skills across 8 categories, an external skill-packs ecosystem, and an onchain security layer) historically adds 50–200 stars in 48h — but the difference between front page and dead post is largely the title and the first 200 words. Those are exactly the parts that suffer when written last-minute. This skill is the inverse of `repo-article` (which turns one event into one article every day): it turns the entire project state into one launch post on demand, so the launch text is ready before the launch.
 
 The Reddit variants exist because cross-posting verbatim from HN to r/MachineLearning or r/selfhosted reads as low-effort. Each subreddit has a different framing that lands; this skill writes both.
 
@@ -67,14 +67,14 @@ Write to the `## Show HN` section of `articles/show-hn-draft-${today}.md`.
 
 **Title** — single line, ≤80 chars, follows HN convention `Show HN: <project>` + a one-clause hook. Examples to match in shape (do **not** copy verbatim):
 - `Show HN: Aeon — an autonomous agent that runs on GitHub Actions and patches itself`
-- `Show HN: I built an agent that ships its own PRs while I sleep — 90+ skills, no babysitting`
+- `Show HN: I built an agent that ships its own PRs while I sleep — 195 skills, no babysitting`
 
 Pick a title that names exactly **one** non-obvious capability. Avoid: "framework," "platform," "AI-powered," vague superlatives. The title must pass a sceptical-engineer test — would they click it?
 
 **Body** — exactly 4 paragraphs, no markdown headers inside the body, plain prose:
 
 1. **Cold open** — the lead beat from step 3 in 2–3 sentences. Concrete, dated, with a PR or commit if available. No "I'm excited to share."
-2. **What it actually does** — 4–6 sentences naming the capabilities a senior engineer would care about: schedule-driven runs on Actions, file-based memory in git, quality scoring per run, self-healing via skill-repair, MCP server + A2A gateway. Reference the README comparison table — Aeon vs Claude Code / Hermes / OpenClaw — without re-pasting it.
+2. **What it actually does** — 4–6 sentences naming the capabilities a senior engineer would care about: schedule-driven runs on Actions, file-based memory in git, quality scoring per run, self-healing via skill-repair, MCP server + A2A gateway. Reference the README comparison table — Aeon vs Claude Code / Hermes / OpenClaw — without re-pasting it. If there's room, name one capability the senior engineer would not have guessed: the onchain security layer (`vigil` + `wallet-risk-weekly` + `vigil-revoke` — detection through revoke, Bankr-gated), or the install ecosystem (three paths: clone, `install-skill-pack`, `install-from-atrium` — the last one onchain via the Atrium marketplace), or the external-contributor inflow (skill packs landed from Nurstar / vigilcodes / HoundFlow / signa / Careful Finance / Mneme in the last 30 days). Pick ONE; do not list all three.
 3. **Honest scope** — 3–4 sentences. What it's good at (recurring background work). What it's NOT (interactive coding — keep using Claude Code for that). The "configure once, walk away" framing belongs here. Naming the boundary is what makes the rest credible.
 4. **Pointer + ask** — repo URL `https://github.com/aaronjmars/aeon`, the install one-liner (`git clone https://github.com/aaronjmars/aeon && cd aeon && ./aeon`), and a specific question for HN comments — e.g. *"What's the worst recurring-task class you've automated and abandoned because the agent kept needing you?"* Specific questions get specific replies; "feedback welcome" gets nothing.
 
@@ -122,7 +122,7 @@ Append a `## Launch checklist` section to `articles/show-hn-draft-${today}.md`. 
 
 ```
 ## Launch checklist
-- [ ] Star count check (rerun this skill if stars > 300; titles update with the new round number)
+- [ ] Star count check (rerun this skill if stars cross the next round number — 500, 750, 1000 — so titles update with the new milestone)
 - [ ] No active known-broken skills (./scripts/skill-runs --hours 24 --failures shows clean)
 - [ ] No pinned issues that contradict the post (open issues at `gh issue list -R aaronjmars/aeon --state open`)
 - [ ] Final read-through for tone (anything that sounds like marketing → cut)
@@ -187,4 +187,4 @@ All inputs are local file reads or `gh api` (`gh` handles auth via the workflow'
 - **Already-drafted-today rerun, `${var}` set to one variant** — patch only that section; preserve the others byte-for-byte (round-trip read → replace section → write).
 - **Stars fetch failed AND no recent repo-pulse article** — set the headline number placeholder to `${current_stars}` literally and emit `SHOW_HN_DRAFT_PARTIAL`. The operator must fill it before posting; the launch checklist already covers this read-through.
 - **Empty `memory/logs/` (first-run fork)** — the lead beat will fall through to README + skills.json material. Tag the draft with a `_Note: this fork has no log history yet — the lead beat is generic until the agent has run for ~7 days_` line at the top.
-- **Star count crossed 300 since the last draft** — the title's hook line should reference the round number explicitly; the launch checklist's first item flags this as a re-run trigger. Don't auto-celebrate inside the body — that's `star-milestone`'s job.
+- **Star count crossed the next round number since the last draft** (500, 750, 1000, …) — the title's hook line should reference the round number explicitly; the launch checklist's first item flags this as a re-run trigger. Don't auto-celebrate inside the body — that's `star-milestone`'s job, and `star-milestone` is what auto-dispatches this skill at 500⭐.
