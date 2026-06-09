@@ -16,14 +16,16 @@ interface LeftSidebarProps {
   repo: string
   enabledCount: number
   workingCount: number
+  categoryFilter: string | null
+  setCategoryFilter: (c: string | null) => void
   onSkillSelect: (name: string) => void
   onShowImport: () => void
 }
 
-export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, onSkillSelect, onShowImport }: LeftSidebarProps) {
+export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const [enabledOnly, setEnabledOnly] = useState(false)
+  const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)
   // credential it declares isn't set — flagged inline so the operator sees it
@@ -32,12 +34,18 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   const missingRequiredKeys = (s: Skill) =>
     (s.requires ?? []).filter(r => !r.optional && !setSecretNames.has(r.key))
 
+  // "Available" = runnable out of the box: every declared key is optional.
+  const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional)
+
   return (
     <div className="w-[240px] border-r border-[rgba(250,250,250,0.10)] flex flex-col shrink-0 bg-aeon-panel">
       {/* Brand */}
       <div className="px-4 py-4 border-b border-[rgba(250,250,250,0.10)]">
         <div className="flex items-center gap-3">
-          <span className="brand-dot" aria-hidden="true" />
+          <span className="brand-mark w-[22px] h-[22px]" aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/android-chrome-192x192.png" alt="" />
+          </span>
           <div className="min-w-0">
             <div className="font-display text-lg leading-tight uppercase tracking-tight text-aeon-fg truncate">
               {repo ? repo.split('/').pop() : 'Aeon'} HQ
@@ -92,6 +100,14 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-green" />
             Enabled
           </button>
+          <button
+            onClick={() => setAvailableOnly(v => !v)}
+            title="Show only skills that need no API key"
+            className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${availableOnly ? 'text-eva-amber border-eva-amber/50 bg-eva-amber/10' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-amber" />
+            Available
+          </button>
           {CATEGORIES.map(cat => {
             const active = categoryFilter === cat.key
             return (
@@ -114,7 +130,8 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           const catSkills = skills.filter(s => (s.category || 'meta') === cat.key)
           if (!catSkills.length) return null
           const searched = skillSearch ? catSkills.filter(s => displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase())) : catSkills
-          const filtered = enabledOnly ? searched.filter(s => s.enabled) : searched
+          const enabledFiltered = enabledOnly ? searched.filter(s => s.enabled) : searched
+          const filtered = availableOnly ? enabledFiltered.filter(needsNoKey) : enabledFiltered
           if (!filtered.length) return null
           const en = filtered.filter(s => s.enabled).length
           return (

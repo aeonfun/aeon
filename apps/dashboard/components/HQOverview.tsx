@@ -11,6 +11,8 @@ interface HQOverviewProps {
   runs: Run[]
   enabledCount: number
   workingCount: number
+  categoryFilter: string | null
+  onCategoryClick: (key: string) => void
   onViewRun: (run: Run) => void
 }
 
@@ -26,7 +28,7 @@ function Section({ index, label, children }: { index: string; label: string; chi
   )
 }
 
-export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun }: HQOverviewProps) {
+export function HQOverview({ skills, runs, enabledCount, workingCount, categoryFilter, onCategoryClick, onViewRun }: HQOverviewProps) {
   const spotRef = useRef<HTMLUListElement>(null)
 
   const onMove = (e: React.MouseEvent<HTMLUListElement>) => {
@@ -92,22 +94,30 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, onViewRun
         >
           {cats.map(cat => {
             const en = cat.skills.filter(s => s.enabled).length
+            const active = categoryFilter === cat.key
+            // li is flex so the button stretches to the grid row's full height —
+            // otherwise the active ring stops short when the row neighbor is taller
             return (
-              <li
-                key={cat.key}
-                className="spotlight relative overflow-hidden bg-aeon-bg px-6 py-5 flex items-center gap-5 transition-colors hover:bg-aeon-panel-2"
-              >
-                <span className="font-display leading-none text-aeon-red shrink-0 whitespace-nowrap" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
-                  <Flip value={cat.skills.length} />
-                </span>
-                <div className="min-w-0">
-                  <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{cat.label}</div>
-                  <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">{en} active · {cat.skills.length - en} idle</div>
-                </div>
-                <span
-                  className="ml-auto w-2 h-2 rounded-full shrink-0"
-                  style={{ backgroundColor: en > 0 ? cat.color : 'rgba(250,250,250,0.15)' }}
-                />
+              <li key={cat.key} className="spotlight relative overflow-hidden bg-aeon-bg transition-colors hover:bg-aeon-panel-2 flex">
+                <button
+                  onClick={() => onCategoryClick(cat.key)}
+                  title={active ? 'Clear the team filter' : `Filter the team to ${cat.label}`}
+                  aria-pressed={active}
+                  className="w-full px-6 py-5 flex items-center gap-5 text-left cursor-pointer"
+                  style={active ? { boxShadow: `inset 0 0 0 1px ${cat.color}`, backgroundColor: cat.color + '14' } : undefined}
+                >
+                  <span className="font-display leading-none text-aeon-red shrink-0 whitespace-nowrap" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
+                    <Flip value={cat.skills.length} />
+                  </span>
+                  <div className="min-w-0">
+                    <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{cat.label}</div>
+                    <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">{en} active · {cat.skills.length - en} idle</div>
+                  </div>
+                  <span
+                    className="ml-auto w-2 h-2 rounded-full shrink-0"
+                    style={{ backgroundColor: active || en > 0 ? cat.color : 'rgba(250,250,250,0.15)' }}
+                  />
+                </button>
               </li>
             )
           })}

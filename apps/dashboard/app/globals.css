@@ -163,21 +163,33 @@ body::before {
 }
 
 /* ──────────────────────────────────────────────────────────
-   BRAND DOT — the pulsing red bullet from the site's nav
+   BRAND MARK — the spinning Aeon star (replaces the pulsing dot).
+   Slow constant spin; hover runs a second, faster rotation on the
+   inner image. Pausing an animation preserves its phase, so the
+   speed-up and slow-down are seamless — no angle jump.
    ────────────────────────────────────────────────────────── */
-.brand-dot {
-  width: 10px;
-  height: 10px;
+.brand-mark {
   border-radius: 50%;
-  background: var(--aeon-red);
-  box-shadow: 0 0 0 2px var(--aeon-bg), 0 0 14px var(--aeon-red);
-  animation: brandPulse 2.4s ease-in-out infinite;
-  display: inline-block;
+  display: inline-flex;
   flex: none;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px var(--aeon-bg), 0 0 14px rgba(210, 75, 64, 0.55);
+  animation: brandSpin 6s linear infinite;
 }
-@keyframes brandPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(0.82); }
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  animation: brandSpin 1.1s linear infinite;
+  animation-play-state: paused;
+}
+.brand-mark:hover img { animation-play-state: running; }
+@keyframes brandSpin {
+  to { transform: rotate(360deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand-mark, .brand-mark img { animation: none; }
 }
 
 /* Background grid — kept for the dashboard's surface texture but recolored to coral */

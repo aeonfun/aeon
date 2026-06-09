@@ -3,9 +3,12 @@ export function LoadingScreen() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-aeon-bg relative overflow-hidden">
       <div className="dither" aria-hidden="true" />
       <div className="relative z-10 flex flex-col items-center gap-6">
-        <div className="relative w-20 h-20 flex items-center justify-center">
+        <div className="relative w-28 h-28 flex items-center justify-center">
           <span className="absolute inset-0 rounded-full border border-dashed border-aeon-rule animate-aeon-spin" aria-hidden="true" />
-          <span className="brand-dot" style={{ width: 14, height: 14 }} aria-hidden="true" />
+          <span className="brand-mark" style={{ width: 72, height: 72 }} aria-hidden="true">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/android-chrome-192x192.png" alt="" />
+          </span>
         </div>
         <div className="text-center space-y-1">
           <p className="font-display text-2xl uppercase tracking-wide text-aeon-fg">AEON HQ</p>

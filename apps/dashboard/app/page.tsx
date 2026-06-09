@@ -22,6 +22,8 @@ export default function Dashboard() {
   const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
+  // Shared with the sidebar's category chips — HQ category cards toggle it too.
+  const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
 
   const [skills, setSkills] = useState<Skill[]>([])
   const [runs, setRuns] = useState<Run[]>([])
@@ -112,6 +114,7 @@ export default function Dashboard() {
         selectedSkill={selectedSkill} setSelectedSkill={setSelectedSkill}
         skills={skills} runs={runs} secrets={secrets} repo={repo}
         enabledCount={enabledCount} workingCount={workingCount}
+        categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
         onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
         onShowImport={() => setShowImport(true)}
       />
@@ -136,7 +139,7 @@ export default function Dashboard() {
             <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
           )}
           {view === 'hq' && !selectedSkill && (
-            <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} onViewRun={() => {}} />
+            <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />
           )}
           {skill && (
             <SkillDetail

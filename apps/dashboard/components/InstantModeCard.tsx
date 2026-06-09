@@ -80,16 +80,16 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
           <button
-            onClick={() => setEnabled(true)}
-            className={`text-[11px] font-mono px-3 py-1 border transition-colors ${enabled ? 'border-eva-green text-eva-green' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-eva-green hover:border-eva-green/40'}`}
-          >
-            Yes
-          </button>
-          <button
             onClick={() => setEnabled(false)}
             className={`text-[11px] font-mono px-3 py-1 border transition-colors ${!enabled ? 'border-[rgba(250,250,250,0.35)] text-primary-70' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-primary-70'}`}
           >
             No
+          </button>
+          <button
+            onClick={() => setEnabled(true)}
+            className={`text-[11px] font-mono px-3 py-1 border transition-colors ${enabled ? 'border-eva-green text-eva-green' : 'border-[rgba(250,250,250,0.16)] text-primary-40 hover:text-eva-green hover:border-eva-green/40'}`}
+          >
+            Yes
           </button>
         </div>
       </div>
