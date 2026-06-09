@@ -26,21 +26,21 @@
 
 You need three things:
 
-1. **Node.js 20+**
-2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** — `brew install gh`, then `gh auth login`. The dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting.
-3. **Your own copy of this repo** — fork it (or `gh repo create <you>/aeon --public --clone --source=.`), then `gh repo set-default <you>/<repo>`.
+1. **Node.js 20+** — check with `node -v`. Missing or too old? Grab the LTS installer from [nodejs.org](https://nodejs.org/en/download), or use a package manager: `brew install node` (macOS), `winget install OpenJS.NodeJS.LTS` (Windows), [nvm](https://github.com/nvm-sh/nvm) or your distro's package manager (Linux).
+2. **[GitHub CLI](https://cli.github.com/) (`gh`), authenticated** — the dashboard uses it for everything (secrets, workflows), and `./aeon` checks it before starting. Install: `brew install gh` (macOS), `winget install --id GitHub.cli` (Windows), [per-distro instructions](https://github.com/cli/cli/blob/trunk/docs/install_linux.md) (Linux). Then run `gh auth login` and follow the prompts.
+3. **Your own fork of this repo** — click the **Fork** button at the top of [the repo page](https://github.com/aaronjmars/aeon) (keep it public — Actions minutes are free on public repos), or run `gh repo fork aaronjmars/aeon --clone`. Then point `gh` at it once: `gh repo set-default <you>/aeon`.
 
 ```bash
-git clone https://github.com/<you>/aeon
+git clone https://github.com/<you>/aeon   # skip if you used `gh repo fork --clone`
 cd aeon && ./aeon
 ```
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key (Anthropic, Anthropic-compatible, or a Bankr `bk_…` key — routed automatically).
+1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key (Anthropic, Anthropic-compatible, or a Bankr `bk_…` key from [bankr.bot/api-keys](https://bankr.bot/api-keys) — routed automatically).
 2. **Add a channel** — [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
 3. **Pick skills** — toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
-4. **Push** — one click commits your config to GitHub. Actions takes it from there.
+4. **Run** — hit **Run now** on any skill to try it immediately; API keys and `var`s apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
 
 That's it — Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `./onboard` anytime to verify your setup.
 
@@ -61,7 +61,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| 🧬 **Core** | 15 | self-healing, self-evolution, fleet control, vuln scanning |
+| 🧬 **Core** | 15 | `skill-repair`, `autoresearch`, `spawn-instance`, `vuln-scanner` |
 | 📚 **Research & Content** | 28 | `deep-research`, `paper-digest`, `hacker-news-digest` |
 | 💻 **Dev & Code** | 37 | `pr-review`, `github-monitor`, `auto-merge` |
 | 📈 **Crypto & Markets** | 29 | `token-alert`, `defi-monitor`, `polymarket`, `base-mcp` |
@@ -347,7 +347,7 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
 
 Route requests through [Bankr LLM Gateway](https://docs.bankr.bot/llm-gateway/overview) for ~67% cheaper Opus (via Vertex AI), plus gateway access to Gemini, GPT, Kimi, and Qwen models (set the model id manually in `aeon.yml`).
 
-Get a key at [bankr.bot/api](https://bankr.bot/api), top up credits, and paste it in the dashboard's Authenticate modal — `bk_…` keys are saved as `BANKR_LLM_KEY` and `gateway: { provider: bankr }` is set automatically. Removing the key reverts the gateway to `direct`.
+Get a key at [bankr.bot/api-keys](https://bankr.bot/api-keys), top up credits, and paste it in the dashboard's Authenticate modal — `bk_…` keys are saved as `BANKR_LLM_KEY` and `gateway: { provider: bankr }` is set automatically. Removing the key reverts the gateway to `direct`.
 
 ### Soul
 
