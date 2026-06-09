@@ -1,5 +1,5 @@
 import type { Skill, GatewayProvider } from '../lib/types'
-import { MODELS, BANKR_EXTRA_MODELS, CATEGORY_BY_KEY } from '../lib/constants'
+import { MODELS, CATEGORY_BY_KEY } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
 interface TopBarProps {
@@ -22,7 +22,7 @@ interface TopBarProps {
 
 export function TopBar({ skill, view, repo, model, gateway, authStatus, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onPull, onSync }: TopBarProps) {
   const dept = skill ? (CATEGORY_BY_KEY[skill.category || 'meta'] || null) : null
-  const modelOptions = gateway === 'bankr' ? [...MODELS, ...BANKR_EXTRA_MODELS] : MODELS
+  const modelOptions = MODELS
 
   return (
     <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-between px-5 shrink-0 bg-aeon-bg">

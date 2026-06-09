@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import type { Skill, Run, GatewayProvider } from '../lib/types'
-import { MODELS, BANKR_EXTRA_MODELS, CATEGORY_BY_KEY } from '../lib/constants'
+import type { Skill, Run } from '../lib/types'
+import { MODELS, CATEGORY_BY_KEY } from '../lib/constants'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
 import { ScheduleEditor } from './ScheduleEditor'
 import { timeAgo } from '../lib/utils'
@@ -12,7 +12,6 @@ interface SkillDetailProps {
   skill: Skill
   runs: Run[]
   model: string
-  gateway: GatewayProvider
   busy: Record<string, boolean>
   onToggle: (name: string, enabled: boolean) => void
   onRun: (name: string, v?: string, m?: string) => void
@@ -36,8 +35,8 @@ function Section({ index, label, action, children }: { index: string; label: str
   )
 }
 
-export function SkillDetail({ skill, runs, model, gateway, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onViewRun }: SkillDetailProps) {
-  const modelOptions = gateway === 'bankr' ? [...MODELS, ...BANKR_EXTRA_MODELS] : MODELS
+export function SkillDetail({ skill, runs, model, busy, onToggle, onRun, onDelete, onUpdateSchedule, onUpdateVar, onUpdateModel, onViewRun }: SkillDetailProps) {
+  const modelOptions = MODELS
   const [editingSchedule, setEditingSchedule] = useState(false)
   const [editingVar, setEditingVar] = useState(false)
   const [varDraft, setVarDraft] = useState('')
