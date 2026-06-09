@@ -59,35 +59,36 @@ export function McpPanel({ servers, loading, saving, secrets, onSave, onSetSecre
   const [name, setName] = useState('')
   const [transport, setTransport] = useState<'http' | 'stdio'>('http')
   const [url, setUrl] = useState('')
-  const [secretVar, setSecretVar] = useState('')
-  const [secretValue, setSecretValue] = useState('')
+  const [bearerToken, setBearerToken] = useState('')
   const [command, setCommand] = useState('npx')
   const [args, setArgs] = useState('')
 
-  // The secret name a typed bearer-token ref resolves to (UPPER_SNAKE_CASE).
-  const envName = (s: string) => s.trim().toUpperCase().replace(/[^A-Z0-9_]/g, '_')
+  // The operator never types a secret name. They paste the bearer token (which
+  // IS the secret); we derive the env-var to store it under from the server name.
+  const slugify = (s: string) => s.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/^-+|-+$/g, '')
+  const tokenVar = (slug: string) => 'MCP_' + slug.toUpperCase().replace(/[^A-Z0-9_]/g, '_') + '_TOKEN'
 
   const dirty = JSON.stringify(draft) !== JSON.stringify(servers)
   const names = Object.keys(draft)
   const allRefs = [...new Set(names.flatMap(n => refsOf(draft[n])))]
 
   const resetForm = () => {
-    setAdding(false); setName(''); setUrl(''); setSecretVar(''); setSecretValue(''); setCommand('npx'); setArgs(''); setTransport('http')
+    setAdding(false); setName(''); setUrl(''); setBearerToken(''); setCommand('npx'); setArgs(''); setTransport('http')
   }
 
   const addServer = () => {
-    const slug = name.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '-').replace(/^-+|-+$/g, '')
+    const slug = slugify(name)
     if (!slug) return
     let server: McpServer
     if (transport === 'http') {
       if (!url.trim()) return
       server = { type: 'http', url: url.trim() }
-      if (secretVar.trim()) {
-        const ref = envName(secretVar)
-        server.headers = { Authorization: `Bearer \${${ref}}` }
-        // Save the token straight to repo secrets so the run can resolve it —
-        // no Settings detour, no workflow editing.
-        if (secretValue.trim()) onSetSecret(ref, secretValue.trim())
+      if (bearerToken.trim()) {
+        // The token IS the secret. Derive its var from the server name, store
+        // the value on GH, and reference it in .mcp.json — no name to type.
+        const varName = tokenVar(slug)
+        server.headers = { Authorization: `Bearer \${${varName}}` }
+        onSetSecret(varName, bearerToken.trim())
       }
     } else {
       if (!command.trim()) return
@@ -158,7 +159,7 @@ export function McpPanel({ servers, loading, saving, secrets, onSave, onSetSecre
                                     <span className="text-[10px] font-mono text-eva-green">✓ set</span>
                                   ) : (
                                     <>
-                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste token value — saved to GitHub, wired into every run" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors" />
+                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token — saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors" />
                                       <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="bg-eva-green text-white text-[10px] px-3 py-1 font-mono hover:opacity-90 disabled:opacity-40 shrink-0 transition-opacity">Set</button>
                                     </>
                                   )}
@@ -193,9 +194,9 @@ export function McpPanel({ servers, loading, saving, secrets, onSave, onSetSecre
                   {transport === 'http' ? (
                     <>
                       <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://mcp.example.com/v1" className={inputCls} />
-                      <input value={secretVar} onChange={e => setSecretVar(e.target.value)} placeholder="bearer-token secret name (optional, e.g. ACME_API_KEY)" className={inputCls} />
-                      {secretVar.trim() && (
-                        <input type="password" value={secretValue} onChange={e => setSecretValue(e.target.value)} placeholder={`value for ${envName(secretVar)} — saved as a repo secret, wired into every run`} className={inputCls} />
+                      <input type="password" value={bearerToken} onChange={e => setBearerToken(e.target.value)} placeholder="bearer token (optional) — paste it, saved to GitHub & wired in" className={inputCls} />
+                      {bearerToken.trim() && slugify(name) && (
+                        <p className="text-[10px] font-mono text-primary-40 px-0.5">→ stored as secret <span className="text-primary-70">{tokenVar(slugify(name))}</span>, referenced from this server in <span className="text-primary-70">.mcp.json</span></p>
                       )}
                     </>
                   ) : (
