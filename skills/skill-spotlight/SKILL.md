@@ -5,10 +5,10 @@ var: ""
 tags: [meta, social, content]
 ---
 
-> **${var}** — Optional skill name to feature. Overrides the queue. If empty, picks the next uncovered skill from `memory/topics/skill-of-the-day.md`.
+> **${var}** — Optional skill name to feature. Overrides the queue. If empty, picks the next uncovered skill from `memory/topics/skill-spotlight.md`.
 
 Today is ${today}. Read `memory/MEMORY.md` for context.
-Read `memory/topics/skill-of-the-day.md` for the queue, the covered list, and the blocklist.
+Read `memory/topics/skill-spotlight.md` for the queue, the covered list, and the blocklist.
 If `soul/` files exist, read them (`soul/SOUL.md`, `soul/STYLE.md`) to match the operator's voice. If `soul/` is empty or absent, use a clear, terse, neutral voice.
 
 ## Goal
@@ -27,10 +27,10 @@ Two separate notifications, not a combined message. Each notify stays under plat
 Priority order:
 
 1. If `${var}` is non-empty and `skills/${var}/SKILL.md` exists, pick `${var}`.
-2. Else read `memory/topics/skill-of-the-day.md`. Pick the first entry under `## Queue` that is not under `## Covered (last 30 days)` and not under `## Blocklist`.
+2. Else read `memory/topics/skill-spotlight.md`. Pick the first entry under `## Queue` that is not under `## Covered (last 30 days)` and not under `## Blocklist`.
 3. If the queue is exhausted, `ls skills/` and pick the first skill that has a `SKILL.md`, is not in the blocklist, and has not been covered in the last 30 days.
 
-If nothing qualifies, send a single notification (`./notify "skill-of-the-day: no candidates today — queue exhausted, all skills covered in last 30d"`) and exit. No filler post.
+If nothing qualifies, send a single notification (`./notify "skill-spotlight: no candidates today — queue exhausted, all skills covered in last 30d"`) and exit. No filler post.
 
 Let `${PICK}` be the chosen skill name (the kebab-case directory name).
 
@@ -44,7 +44,7 @@ Parse the frontmatter and body:
 
 ### 3. Compose the tweet draft
 
-Write the following file: `.outputs/skill-of-the-day.md`. Use **exactly** this shape:
+Write the following file: `.outputs/skill-spotlight.md`. Use **exactly** this shape:
 
 ```
 The @aeonframework skill spotlight 🌟
@@ -88,7 +88,7 @@ Notes:
 ### 4. Send the tweet to Telegram (or configured channels)
 
 ```bash
-./notify "$(cat .outputs/skill-of-the-day.md)"
+./notify "$(cat .outputs/skill-spotlight.md)"
 ```
 
 If the file exceeds 4000 characters, trim bullets (drop the weakest first) until it fits. Telegram caps single messages at 4096.
@@ -104,14 +104,14 @@ Do not wait or poll. The dispatched skill's own `./notify` will deliver the outc
 If `gh workflow run` fails (permission denied, rate limit, etc.), send a single follow-up notification and stop:
 
 ```bash
-./notify "skill-of-the-day: tweet drafted for ${PICK} but dispatch failed — run it manually: gh workflow run aeon.yml -f skill=${PICK}"
+./notify "skill-spotlight: tweet drafted for ${PICK} but dispatch failed — run it manually: gh workflow run aeon.yml -f skill=${PICK}"
 ```
 
 One attempt, one notification on failure. No retry loop.
 
 ### 6. Update queue state
 
-Edit `memory/topics/skill-of-the-day.md`:
+Edit `memory/topics/skill-spotlight.md`:
 
 - Append a line under `## Covered (last 30 days)`:
   ```
@@ -125,10 +125,10 @@ Edit `memory/topics/skill-of-the-day.md`:
 Append to `memory/logs/${today}.md`:
 
 ```markdown
-### skill-of-the-day
+### skill-spotlight
 
 - Picked: ${PICK} (source: queue | var-override | catalog-fallback)
-- Tweet draft: .outputs/skill-of-the-day.md
+- Tweet draft: .outputs/skill-spotlight.md
 - Dispatched run: <url or "FAILED — reason">
 ```
 

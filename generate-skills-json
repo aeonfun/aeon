@@ -60,14 +60,14 @@ get_category() {
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
     approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
-    lp-lock-check|vigil|vigil-revoke|wallet-risk-weekly) echo "onchain-security" ;;
+    lp-lock-check|vigil|vigil-revoke|wallet-risk-audit) echo "onchain-security" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
-    engagement-act|skill-of-the-day|thread-formatter) echo "social" ;;
+    engagement-act|skill-spotlight|thread-formatter) echo "social" ;;
     # Productivity
-    morning-brief|daily-routine|evening-recap|weekly-review|weekly-shiplog) echo "productivity" ;;
+    priority-brief|routine|ops-recap|retrospective|shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
     deal-flow|reg-monitor|reflect|follow-up-patrol|v4-readiness) echo "productivity" ;;
     idea-pipeline|idea-validator|milestone-tracker|note-taking) echo "productivity" ;;

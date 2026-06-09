@@ -259,8 +259,8 @@ Overwrite atomically: write to `wallet-risk-state.json.tmp` then `mv` so a mid-w
 
 Append:
 ```markdown
-## wallet-risk-weekly
-- **Skill**: wallet-risk-weekly
+## wallet-risk-audit
+- **Skill**: wallet-risk-audit
 - **Wallets audited**: N (treasury=N, deployer=N, other=N)
 - **Per-wallet verdicts**:
   - `0xabc…def` (treasury): HIGH — 4 live (2 unlimited, 1 unknown-unlimited), 1 honeypot

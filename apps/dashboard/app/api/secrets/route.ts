@@ -29,7 +29,7 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) — token distribution & treasury skills (distribute-tokens, vigil, treasury-info). Enable at bankr.bot/api' },
   { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token — deploy skills (deploy-prototype, vercel-projects). Create at vercel.com/account/tokens' },
   { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token — image/diagram generation (technical-explainer). Get one at replicate.com/account/api-tokens' },
-  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key — emailed digests (morning-brief, weekly-review). Create at resend.com/api-keys' },
+  { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key — emailed digests (priority-brief, retrospective). Create at resend.com/api-keys' },
   { name: 'LIQUIDPAD_API_KEY', group: 'Skill Keys', description: 'Liquidpad API key — token-launch skill (liquidpad-launch). From api.liquidpad.site' },
   { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key — ad campaign skills (schedule-ads, create-campaign). From api.admanage.ai' },
   { name: 'SUPERNOTES_API_KEY', group: 'Skill Keys', description: 'Supernotes API key — note-taking skill. Create in Supernotes → Settings → API' },

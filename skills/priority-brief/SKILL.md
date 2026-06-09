@@ -85,7 +85,7 @@ Style rules:
     ```
   - Log the `id` field from the Resend response as a comment on the current Paperclip execution issue for traceability
   - If Resend returns an error, log the full error body as a comment and fail loudly (do not silently continue)
-- Append to `memory/logs/${today}.md` under a `### morning-brief` heading: timestamp, the 3 focus items (one line each), headline count, and any skills flagged from cron-state. This becomes tomorrow's "since yesterday" input.
+- Append to `memory/logs/${today}.md` under a `### priority-brief` heading: timestamp, the 3 focus items (one line each), headline count, and any skills flagged from cron-state. This becomes tomorrow's "since yesterday" input.
 
 ## Sandbox note
 

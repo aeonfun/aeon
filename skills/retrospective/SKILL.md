@@ -12,7 +12,7 @@ If `${var}` is set, scope every section below to that area only. Skip findings t
 
 ## Why this skill exists
 
-A weekly review is only valuable if (a) findings rest on objective data, not vibes, and (b) findings turn into **specific actions that get checked next week**. This skill enforces both: pull metrics from multiple sources, frame findings as KALM (Keep/Add/Less/More), and emit each action as SMART (specific, measurable, owner, deadline) so the next run can audit follow-through.
+A retrospective is only valuable if (a) findings rest on objective data, not vibes, and (b) findings turn into **specific actions that get checked next week**. This skill enforces both: pull metrics from multiple sources, frame findings as KALM (Keep/Add/Less/More), and emit each action as SMART (specific, measurable, owner, deadline) so the next run can audit follow-through.
 
 ## Inputs (gather all before writing)
 
@@ -23,18 +23,18 @@ Read in this order. If any source is empty or missing, note it explicitly in the
 3. **Objective skill metrics** — run `./scripts/skill-runs --hours 168 --json` and parse pass/fail counts per skill. If the script fails or the JSON is empty, fall back to `cat memory/cron-state.json` and note the degraded source.
 4. **Open issues** — `memory/issues/INDEX.md` (treat any new `open` issues this week as findings).
 5. **Code activity** — `git log --since="7 days ago" --pretty=format:"%h %s"` to see what shipped (skills added/changed, fixes, PRs merged).
-6. **Prior review** — the most recent `articles/weekly-review-*.md`. Extract its "Next week priorities" section — you will audit those actions in step 1 below.
+6. **Prior review** — the most recent `articles/retrospective-*.md` (if none exists, fall back to the most recent legacy `articles/weekly-review-*.md`). Extract its "Next week priorities" section — you will audit those actions in step 1 below.
 
 ## Steps
 
 ### 1. Close the loop on last week's actions (do this FIRST)
 
-For each action item in the prior weekly-review's "Next week priorities":
+For each action item in the prior retrospective's "Next week priorities":
 - Did it ship? (Check git log + this week's logs for evidence.)
 - If yes: note as **shipped** with the commit/log line that proves it.
 - If no: classify as **slipped** (still relevant, carry over), **abandoned** (no longer needed, explain why), or **blocked** (needs unblocking — name the blocker).
 
-If there is no prior weekly-review, write `_No prior review to audit — this is the baseline._` and continue.
+If there is no prior retrospective, write `_No prior review to audit — this is the baseline._` and continue.
 
 ### 2. Compile objective metrics
 
@@ -86,7 +86,7 @@ If MEMORY.md has no concrete goals (placeholder content), flag that as itself an
 
 ### 6. Write the article
 
-Save to `articles/weekly-review-${today}.md`. Required structure:
+Save to `articles/retrospective-${today}.md`. Required structure:
 
 ```markdown
 # Retrospective — ${today}
@@ -126,14 +126,14 @@ When you do notify, lead with the action, not the count:
 *Retrospective — ${today}*
 Top action: {the #1 SMART action, in one line}
 Health: N/M skill runs ok, K new issues
-Full review: articles/weekly-review-${today}.md
+Full review: articles/retrospective-${today}.md
 ```
 
 ### 8. Send email via Resend
 
-Send the full weekly review article (not just the `./notify` summary) to the board:
+Send the full retrospective article (not just the `./notify` summary) to the board:
 - Build the full retrospective as HTML (wrap each section in `<h2>` headers, `<ul>/<li>` bullets)
-- Also keep a plain-text copy (the full weekly review text)
+- Also keep a plain-text copy (the full retrospective text)
 - Parse `$BRIEF_RECIPIENTS` as a comma-separated list of addresses
 - POST to `https://api.resend.com/emails`:
   ```
@@ -156,13 +156,13 @@ Send the full weekly review article (not just the `./notify` summary) to the boa
 Append to `memory/logs/${today}.md`:
 
 ```
-### weekly-review
+### retrospective
 - Period: {7-day window covered}
 - Metrics: N skill runs (M failures), K articles, J notifications
 - Top finding: {one-line summary}
 - Top action: {one-line summary, with deadline}
 - Closed-loop result: X shipped / Y slipped / Z abandoned (of N prior actions)
-- Article: articles/weekly-review-${today}.md
+- Article: articles/retrospective-${today}.md
 ```
 
 ## Sandbox note

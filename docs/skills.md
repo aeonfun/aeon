@@ -85,9 +85,9 @@ Install any skill into your own agent:
 
 | Skill | Description | Default Schedule |
 |-------|-------------|-----------------|
-| `morning-brief` | Aggregated daily briefing — digests, priorities, and what's ahead | Daily 7 AM UTC |
-| `daily-routine` | Morning briefing combining token movers, tweets, papers, issues, HN | Daily 7 AM UTC |
-| `weekly-review` | Synthesize the week's logs into a structured retrospective | Mondays 7 PM UTC |
+| `priority-brief` | Aggregated daily briefing — digests, priorities, and what's ahead | Daily 7 AM UTC |
+| `routine` | Morning briefing combining token movers, tweets, papers, issues, HN | Daily 7 AM UTC |
+| `retrospective` | Synthesize the week's logs into a structured retrospective | Mondays 7 PM UTC |
 | `goal-tracker` | Compare current progress against goals stored in MEMORY.md | Daily 6 PM UTC |
 | `idea-capture` | Quick note capture triggered via Telegram | Daily 2 PM UTC |
 | `action-converter` | 5 concrete real-life actions for today based on recent signals | Daily 6 PM UTC |

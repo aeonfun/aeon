@@ -127,7 +127,7 @@ All three endpoints are unauthenticated. Plain curl from the sandbox should work
    <comma-separated slug list>
    ```
 
-8. **Write `.outputs/aixbt-pulse.md`** so chain consumers (morning-brief, narrative-tracker, market-context-refresh) can inject this into their context via `consume:`. Same body as `memory/topics/aixbt-grounding.md` but prefixed with a one-paragraph TL;DR.
+8. **Write `.outputs/aixbt-pulse.md`** so chain consumers (priority-brief, narrative-tracker, market-context-refresh) can inject this into their context via `consume:`. Same body as `memory/topics/aixbt-grounding.md` but prefixed with a one-paragraph TL;DR.
 
 9. **Notify via `./notify`.** Keep the notification under 2000 chars and pick the sharpest item per section — don't dump all three. The artifact file has the full payload.
    ```

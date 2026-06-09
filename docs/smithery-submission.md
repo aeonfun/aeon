@@ -43,7 +43,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-code-health` | Dev | Report on TODOs, dead code, and test coverage gaps |
 | `aeon-cost-report` | Productivity | API cost report — reads token usage CSV, computes dollar costs per skill and model, reports trends |
 | `aeon-create-skill` | Dev | Generate a complete new skill from a one-line prompt |
-| `aeon-daily-routine` | Productivity | Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run |
+| `aeon-routine` | Productivity | Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run |
 | `aeon-deal-flow` | Productivity | Funding round tracker across configurable verticals |
 | `aeon-deep-research` | Research | Exhaustive multi-source synthesis on any topic using full-context ingestion — far beyond a digest |
 | `aeon-defi-monitor` | Crypto | Check pool health, positions, and yield rates for tracked protocols |
@@ -51,7 +51,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-deploy-prototype` | Dev | Generate a small app or tool and deploy it live to Vercel via API |
 | `aeon-digest` | Research | Generate and send a digest on a configurable topic |
 | `aeon-distribute-tokens` | Crypto | Send tokens to a list of contributors via Bankr Agent API (supports Twitter handles and EVM addresses) |
-| `aeon-evening-recap` | Productivity | End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up |
+| `aeon-ops-recap` | Productivity | End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up |
 | `aeon-external-feature` | Dev | Proactively enhance watched repos — fix issues, add features, improve code |
 | `aeon-farcaster-digest` | Social | Trending and relevant Farcaster casts filtered by crypto, prediction markets, and coordination topics |
 | `aeon-fetch-tweets` | Research | Search X/Twitter for tweets by keyword, username, or both |
@@ -72,7 +72,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-monitor-kalshi` | Crypto | Monitor specific Kalshi prediction markets for 24h price moves, volume changes, and top events |
 | `aeon-monitor-polymarket` | Crypto | Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments |
 | `aeon-monitor-runners` | Crypto | Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal |
-| `aeon-morning-brief` | Productivity | Aggregated briefing — digests, priorities, and what's ahead |
+| `aeon-priority-brief` | Productivity | Aggregated briefing — digests, priorities, and what's ahead |
 | `aeon-narrative-tracker` | Crypto | Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak |
 | `aeon-on-chain-monitor` | Crypto | Monitor blockchain addresses and contracts for notable activity |
 | `aeon-paper-digest` | Research | Find and summarize new papers matching tracked research interests |
@@ -123,8 +123,8 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-vercel-projects` | Dev | Catalog all Vercel projects with deployment status, domains, and framework info |
 | `aeon-vibecoding-digest` | Research | Monitor r/vibecoding for trending posts, interesting discussions, and notable projects shipped |
 | `aeon-vuln-scanner` | Dev | Fork trending repos, audit for security vulnerabilities, and PR fixes |
-| `aeon-weekly-review` | Productivity | Synthesize the week's logs into a structured retrospective |
-| `aeon-weekly-shiplog` | Productivity | Narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
+| `aeon-retrospective` | Productivity | Synthesize the week's logs into a structured retrospective |
+| `aeon-shiplog` | Productivity | Narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
 | `aeon-workflow-security-audit` | Dev | Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. |
 | `aeon-write-tweet` | Social | Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs |
 

@@ -6,8 +6,8 @@
 
 skills:
   # --- Morning aggregation (7 AM UTC) ---
-  morning-brief: { enabled: false, schedule: "0 7 * * *" }
-  daily-routine: { enabled: false, schedule: "0 7 * * *" }
+  priority-brief: { enabled: false, schedule: "0 7 * * *" }
+  routine: { enabled: false, schedule: "0 7 * * *" }
   rss-digest: { enabled: false, schedule: "0 7 * * *" }
   hacker-news-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
@@ -50,7 +50,7 @@ skills:
   deployer-trace: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: deployer/token address — serial-rug detection
   tx-explain: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: tx hash — plain-English decode
   holder-concentration: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — distribution/HHI analysis
-  vigil-revoke: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet:spender:token (triplet of 0x40-hex addresses) — revoke a single live ERC-20 approval on Base via Bankr. Confirms live allowance, submits approve(spender, 0), waits for receipt. Operator-initiated only — pairs with wallet-risk-weekly + approval-audit. Requires BANKR_API_KEY (read-write, Wallet API). No auto-retry, no bulk, no scheduled cron.
+  vigil-revoke: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet:spender:token (triplet of 0x40-hex addresses) — revoke a single live ERC-20 approval on Base via Bankr. Confirms live allowance, submits approve(spender, 0), waits for receipt. Operator-initiated only — pairs with wallet-risk-audit + approval-audit. Requires BANKR_API_KEY (read-write, Wallet API). No auto-retry, no bulk, no scheduled cron.
   vigil: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet or token address on Base — keyless read-only onchain security scan (approvals, honeypot, rugpull indicators, contract-safety score) via VIGIL API. Pairs with vigil-revoke for the write action.
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
@@ -136,7 +136,7 @@ skills:
   startup-idea: { enabled: false, schedule: "0 18 * * *" }
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
-  evening-recap: { enabled: false, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
+  ops-recap: { enabled: false, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
   vercel-projects: { enabled: false, schedule: "0 18 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday — catalog Vercel projects
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
@@ -162,8 +162,8 @@ skills:
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
   fleet-scorecard: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
-  weekly-review: { enabled: false, schedule: "0 19 * * 1" }
-  weekly-shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
+  retrospective: { enabled: false, schedule: "0 19 * * 1" }
+  shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
   fork-contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
   contributor-reward: { enabled: false, schedule: "30 9 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
@@ -174,7 +174,7 @@ skills:
   fleet-skill-adoption: { enabled: false, schedule: "0 22 * * 0", model: "claude-sonnet-4-6", var: "" } # Sunday 22:00 UTC — fleet skill-adoption leaderboard: per-slug count of POWER+ACTIVE forks with each upstream skill enabled:true in aeon.yml. Top-15 most-adopted + bottom-15 least-adopted (excludes freshly-shipped + dispatch-only), zero-adoption set, WoW deltas on adoption %. Reuses fork-cohort state when fresh; gated notify (QUIET when top-10 unchanged). Pass dry-run to skip notify, or owner/repo to override parent.
   fork-health-score: { enabled: false, schedule: "45 10 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 10:45 UTC — weekly per-fork health tier (ACTIVE/WARM/STALE/QUIET) from push recency + enabled skill count + 30d PR throughput. Top-10 ACTIVE leaderboard + fleet ACTIVE ratio; reuses fork-cohort state when fresh. Gated notify (QUIET when ratio steady and no top-10 churn / ≥3 tier transitions). Pass dry-run to skip notify, or owner/repo to override parent.
   capabilities-map: { enabled: false, schedule: "30 11 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 11:30 UTC — weekly read-only audit of installed skills' capability coverage: maps every enabled/disabled skill against the locked 6-value taxonomy in docs/CAPABILITIES.md (PR #268/#304), flags any tier with zero enabled coverage as an actionable gap, counts undeclared-enabled skills as a separate informational row. Reads skills.json + aeon.yml + skill-packs.json + per-skill SKILL.md frontmatter; gated notify (gap deltas + first run only). Pass dry-run to skip notify.
-  wallet-risk-weekly: { enabled: false, schedule: "15 11 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 11:15 UTC — weekly risk audit of this agent's own Base wallets (.x402books/wallets.json): live ERC-20 approvals (unlimited flagged + known-safe-spender downgrade), per-token honeypot simulation. First scheduled consumer of the HoundFlow approval-audit + honeypot-check pair (workflow_dispatch-only otherwise). Gated notify (HIGH only / new MEDIUM transitions / first-run baseline). Pass dry-run to skip notify, an address to scope to one wallet, or a role (treasury/deployer/other).
+  wallet-risk-audit: { enabled: false, schedule: "15 11 * * 1", model: "claude-sonnet-4-6", var: "" } # Monday 11:15 UTC — weekly risk audit of this agent's own Base wallets (.x402books/wallets.json): live ERC-20 approvals (unlimited flagged + known-safe-spender downgrade), per-token honeypot simulation. First scheduled consumer of the HoundFlow approval-audit + honeypot-check pair (workflow_dispatch-only otherwise). Gated notify (HIGH only / new MEDIUM transitions / first-run baseline). Pass dry-run to skip notify, an address to scope to one wallet, or a role (treasury/deployer/other).
   workflow-security-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
   skill-freshness: { enabled: false, schedule: "0 8 * * *", model: "claude-sonnet-4-6", var: "" } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
@@ -225,7 +225,7 @@ skills:
 
   # Social
   engagement-act: { enabled: false, schedule: "30 9 * * *" } # daily — turn flagged engagement opportunities into copy-paste-ready replies
-  skill-of-the-day: { enabled: false, schedule: "workflow_dispatch", var: "" } # picks one skill from a rotation queue (memory/topics/skill-of-the-day.md), writes a paste-ready feature tweet in the "Aeon skill of the day 🌟" format, then dispatches the picked skill so its own ./notify delivers the live outcome. Two notifications per run: tweet draft + skill result. Set var=<skill-name> to override the queue. Recommended enabled cron: "0 8 * * *".
+  skill-spotlight: { enabled: false, schedule: "workflow_dispatch", var: "" } # picks one skill from a rotation queue (memory/topics/skill-spotlight.md), writes a paste-ready feature tweet in the "Aeon skill spotlight 🌟" format, then dispatches the picked skill so its own ./notify delivers the live outcome. Two notifications per run: tweet draft + skill result. Set var=<skill-name> to override the queue. Recommended enabled cron: "0 8 * * *".
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1", model: "claude-sonnet-4-6" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
@@ -294,12 +294,12 @@ reactive:
 #         - parallel: [skill-a, skill-b]
 #         - skill: skill-c, consume: [skill-a, skill-b]
 chains:
-  # daily-routine:
+  # routine:
   #   schedule: "0 7 * * *"
   #   on_error: fail-fast
   #   steps:
   #     - parallel: [token-movers, paper-pick, github-issues, hacker-news-digest]
-  #     - skill: daily-routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]
+  #     - skill: routine, consume: [token-movers, paper-pick, github-issues, hacker-news-digest]
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-4-6, claude-haiku-4-5-20251001

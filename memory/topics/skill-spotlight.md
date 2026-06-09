@@ -1,6 +1,6 @@
-# Skill of the Day — Rotation State
+# Skill Spotlight — Rotation State
 
-Queue + history for `skills/skill-of-the-day/`. The picker reads top-down, skips anything covered in the last 30 days or in the blocklist.
+Queue + history for `skills/skill-spotlight/`. The picker reads top-down, skips anything covered in the last 30 days or in the blocklist.
 
 Edit freely — this file is operator-owned config, not auto-managed except for `## Covered (last 30 days)`, which the skill appends to and prunes each run.
 
@@ -10,7 +10,7 @@ Ordered list of skills to feature next. The picker takes the first one not in `C
 
 The starter pack below targets *observable* skills with clear single-purpose output — the format works best when the "Result ⤵️" screenshot is something a reader can grok in one glance. Edit to taste.
 
-- morning-brief
+- priority-brief
 - paper-pick
 - repo-pulse
 - agentic-video-digest
@@ -19,7 +19,7 @@ The starter pack below targets *observable* skills with clear single-purpose out
 - self-improve
 - narrative-tracker
 - paper-digest
-- weekly-shiplog
+- shiplog
 - fork-skill-digest
 - tweet-roundup
 
@@ -33,7 +33,7 @@ The skill appends here after each successful run. Entries older than 30 days are
 
 Never feature these — they are meta/internal/repair skills that don't read as user-facing features. Add or remove entries to taste.
 
-- skill-of-the-day
+- skill-spotlight
 - skill-health
 - skill-evals
 - skill-graph
@@ -131,5 +131,5 @@ Never feature these — they are meta/internal/repair skills that don't read as 
 
 ## Notes
 
-- The starter queue is intentionally short (~12 skills, three weeks of daily posts). Extend it as the framework grows or as you discover skills that screenshot well.
+- The starter queue is intentionally short (~12 skills). Extend it as the framework grows or as you discover skills that screenshot well.
 - If the format ever drifts (a new post doesn't visually match the prior days), check the SKILL.md anti-patterns section — the cadence is the brand.

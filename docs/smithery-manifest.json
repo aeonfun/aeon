@@ -70,7 +70,7 @@
           "description": "[Aeon · Dev] Generate a complete new skill from a one-line prompt (on-demand)"
         },
         {
-          "name": "aeon-daily-routine",
+          "name": "aeon-routine",
           "description": "[Aeon · Productivity] Morning briefing combining token movers, tweet roundup, paper pick, GitHub issues, and HN digest (cron: 0 7 * * *)"
         },
         {
@@ -102,7 +102,7 @@
           "description": "[Aeon · Crypto] Send tokens to a list of contributors via Bankr Agent API (supports Twitter handles and EVM addresses) (on-demand)"
         },
         {
-          "name": "aeon-evening-recap",
+          "name": "aeon-ops-recap",
           "description": "[Aeon · Productivity] End-of-day operational summary — what Aeon shipped, what failed, what needs follow-up (cron: 0 21 * * *)"
         },
         {
@@ -186,7 +186,7 @@
           "description": "[Aeon · Crypto] Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal (cron: 0 12 * * *)"
         },
         {
-          "name": "aeon-morning-brief",
+          "name": "aeon-priority-brief",
           "description": "[Aeon · Productivity] Aggregated daily briefing — digests, priorities, and what's ahead (cron: 0 7 * * *)"
         },
         {
@@ -390,11 +390,11 @@
           "description": "[Aeon · Dev] Fork trending repos, audit for security vulnerabilities, and PR fixes (cron: 0 16 * * 6)"
         },
         {
-          "name": "aeon-weekly-review",
+          "name": "aeon-retrospective",
           "description": "[Aeon · Productivity] Synthesize the week's logs into a structured retrospective (cron: 0 19 * * 1)"
         },
         {
-          "name": "aeon-weekly-shiplog",
+          "name": "aeon-shiplog",
           "description": "[Aeon · Productivity] Weekly narrative of everything shipped — features, fixes, and momentum, written as a compelling update (cron: 0 9 * * 1)"
         },
         {

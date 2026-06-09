@@ -206,4 +206,4 @@ For silent records (bootstrap/stale/deferred/skipped), use the corresponding suf
 
 - **Never spam.** A milestone announced without velocity context is worse than no announcement — it trains readers to mute the channel. Honor the stale-suppression and fake-star-defer gates strictly.
 - **Never inflate.** If `v7` is below baseline, label the shape **TRICKLE** honestly rather than wording around it. Credibility compounds.
-- **Preserve milestones.md format.** Other skills (e.g. weekly-review) may parse this file — append, don't restructure.
+- **Preserve milestones.md format.** Other skills (e.g. retrospective) may parse this file — append, don't restructure.

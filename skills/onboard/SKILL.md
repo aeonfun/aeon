@@ -109,7 +109,7 @@ Append a single line to `memory/topics/onboard-history.md` (create with `# Onboa
 - ${today}T${time}Z — pass=$P warn=$W fail=$F status=$STATUS
 ```
 
-Used by `weekly-shiplog` and any future skill that wants to spot setup drift (e.g. "GH_GLOBAL was set last week, missing this week → operator rotated the PAT and forgot to re-add it").
+Used by `shiplog` and any future skill that wants to spot setup drift (e.g. "GH_GLOBAL was set last week, missing this week → operator rotated the PAT and forgot to re-add it").
 
 ## Edge cases
 

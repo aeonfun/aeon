@@ -13,7 +13,7 @@ Read `memory/watched-repos.md` for repos to cover. If empty or missing, exit wit
 
 ## Idempotency
 
-If `articles/weekly-shiplog-${today}.md` already exists, exit with `SHIPLOG_ALREADY_RAN_TODAY` — no commit, no notify, no overwrite. One shiplog per day.
+If `articles/shiplog-${today}.md` already exists, exit with `SHIPLOG_ALREADY_RAN_TODAY` — no commit, no notify, no overwrite. One shiplog per day.
 
 ## Steps
 
@@ -101,7 +101,7 @@ Use `additions + deletions` and the changed-file list to write substance into th
 
 ### 6. Write the article
 
-Write to `articles/weekly-shiplog-${TODAY}.md`. Use the template matching the status from step 3.
+Write to `articles/shiplog-${TODAY}.md`. Use the template matching the status from step 3.
 
 **`SHIPLOG_OK` (full):**
 
@@ -151,7 +151,7 @@ Write to `articles/weekly-shiplog-${TODAY}.md`. Use the template matching the st
 ```
 
 **Hard rules for both forms:**
-- Only include a "Momentum Check" section if a prior `articles/weekly-shiplog-*.md` exists from 7–14 days ago to compare against. If none exists, omit the section — do not invent a baseline.
+- Only include a "Momentum Check" section if a prior `articles/shiplog-*.md` (or legacy `articles/weekly-shiplog-*.md`) exists from 7–14 days ago to compare against. If none exists, omit the section — do not invent a baseline.
 - Cite every concrete claim with `(sha)` or `(#PR)`. Anything uncitable goes.
 - If you would write "the team continued working on X," delete that sentence.
 - **Banned phrases:** "exciting", "robust", "leveraging", "unlocks", "in this fast-moving space", "we're thrilled", "stay tuned".
@@ -162,7 +162,7 @@ Build the article URL from `gh` (do NOT use `git remote get-url origin` — it r
 
 ```bash
 REPO_URL=$(gh repo view --json url -q .url)
-ARTICLE_URL="${REPO_URL}/blob/main/articles/weekly-shiplog-${TODAY}.md"
+ARTICLE_URL="${REPO_URL}/blob/main/articles/shiplog-${TODAY}.md"
 ```
 
 Send via `./notify` based on status:
@@ -211,14 +211,14 @@ SHIPLOG_NO_REPOS — memory/watched-repos.md is empty or missing. Add a repo to 
 Append to `memory/logs/${TODAY}.md`:
 
 ```
-### weekly-shiplog
+### shiplog
 - Status: SHIPLOG_OK | SHIPLOG_LIGHT_WEEK | SHIPLOG_QUIET_WEEK | SHIPLOG_NO_THEME_MATCH | SHIPLOG_NO_REPOS | SHIPLOG_ALREADY_RAN_TODAY
 - Theme filter: ${var:-none}
 - Repos covered: [list]
 - Commits / PRs merged / Issues closed: N / M / K
 - Themes: [theme 1 title; theme 2 title; theme 3 title]
 - Sources: commits=ok|fail, prs=ok|fail, releases=ok|fail, issues=ok|fail, open_prs=ok|fail
-- Article: articles/weekly-shiplog-${TODAY}.md (if written)
+- Article: articles/shiplog-${TODAY}.md (if written)
 - Notify URL: ${ARTICLE_URL} (if applicable)
 ```
 
@@ -228,7 +228,7 @@ The sandbox may block outbound `curl`. `gh` CLI handles auth internally and is t
 
 ## Constraints
 
-- One shiplog per day — always check for an existing `articles/weekly-shiplog-${today}.md` first.
+- One shiplog per day — always check for an existing `articles/shiplog-${today}.md` first.
 - Themes name capability changes, not refactors. Drop weak themes rather than pad to 3.
 - The thesis sentence is mandatory; it must come from the actual data, not boilerplate.
 - Never invent activity that isn't in the raw data — every claim needs a `(sha)` or `(#PR)`.

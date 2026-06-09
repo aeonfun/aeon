@@ -11,7 +11,7 @@ Visual map of all **196 Aeon skills** grouped by the 8 canonical categories, wit
 - **Skills: 91 → 196.** The catalog more than doubled; every category below reflects the current `skills.json` inventory.
 - **Categories: 5 → 8.** `Core` (the load-bearing set), `Onchain Security`, and `Meta / Agent` were split out of the old Dev/Productivity groupings.
 - **New dependency edge:** `vuln-tracker --> vuln-scanner` (tracker consumes the scanner's disclosure state).
-- Chains and reactive triggers in `aeon.yml` ship as commented templates — the `daily-routine` chain below is shown as the canonical example.
+- Chains and reactive triggers in `aeon.yml` ship as commented templates — the `routine` chain below is shown as the canonical example.
 
 ## Legend
 
@@ -45,9 +45,9 @@ flowchart LR
     core -->|2 depends_on| dev
     dev -->|1 depends_on| core
     meta -..->|self-healing loop| core
-    productivity -.->|daily-routine chain| crypto
-    productivity -.->|daily-routine chain| research
-    productivity -.->|daily-routine chain| dev
+    productivity -.->|routine chain| crypto
+    productivity -.->|routine chain| research
+    productivity -.->|routine chain| dev
     research -..->|content pipeline| social
     research -..->|content pipeline| meta
     crypto -..->|market context| crypto
@@ -185,13 +185,13 @@ flowchart LR
         vibecoding-digest[vibecoding-digest]
     end
 
-    daily-routine[daily-routine]:::external
+    routine[routine]:::external
     rss-feed[rss-feed]:::external
     syndicate-article[syndicate-article]:::external
     update-gallery[update-gallery]:::external
 
-    daily-routine -.-> paper-pick
-    daily-routine -.-> hacker-news-digest
+    routine -.-> paper-pick
+    routine -.-> hacker-news-digest
     article -..-> syndicate-article
     article -..-> rss-feed
     article -..-> update-gallery
@@ -227,7 +227,7 @@ flowchart LR
     click topic-momentum "../skills/topic-momentum/SKILL.md"
     click tweet-digest "../skills/tweet-digest/SKILL.md"
     click vibecoding-digest "../skills/vibecoding-digest/SKILL.md"
-    click daily-routine "../skills/daily-routine/SKILL.md"
+    click routine "../skills/routine/SKILL.md"
     click rss-feed "../skills/rss-feed/SKILL.md"
     click syndicate-article "../skills/syndicate-article/SKILL.md"
     click update-gallery "../skills/update-gallery/SKILL.md"
@@ -277,14 +277,14 @@ flowchart LR
         workflow-security-audit[workflow-security-audit]
     end
 
-    daily-routine[daily-routine]:::external
+    routine[routine]:::external
     external-feature[external-feature]:::external
     vuln-scanner[vuln-scanner]:::external
 
     external-feature --> repo-scanner
     vuln-scanner --> github-trending
     vuln-tracker --> vuln-scanner
-    daily-routine -.-> github-issues
+    routine -.-> github-issues
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
@@ -326,7 +326,7 @@ flowchart LR
     click vercel-projects "../skills/vercel-projects/SKILL.md"
     click vuln-tracker "../skills/vuln-tracker/SKILL.md"
     click workflow-security-audit "../skills/workflow-security-audit/SKILL.md"
-    click daily-routine "../skills/daily-routine/SKILL.md"
+    click routine "../skills/routine/SKILL.md"
     click external-feature "../skills/external-feature/SKILL.md"
     click vuln-scanner "../skills/vuln-scanner/SKILL.md"
 ```
@@ -367,9 +367,9 @@ flowchart LR
         x402-monitor[x402-monitor]
     end
 
-    daily-routine[daily-routine]:::external
+    routine[routine]:::external
 
-    daily-routine -.-> token-movers
+    routine -.-> token-movers
     market-context-refresh -..-> token-pick
     market-context-refresh -..-> narrative-tracker
 
@@ -405,7 +405,7 @@ flowchart LR
     click unlock-monitor "../skills/unlock-monitor/SKILL.md"
     click wallet-digest "../skills/wallet-digest/SKILL.md"
     click x402-monitor "../skills/x402-monitor/SKILL.md"
-    click daily-routine "../skills/daily-routine/SKILL.md"
+    click routine "../skills/routine/SKILL.md"
 ```
 
 ### Onchain Security (15)
@@ -427,7 +427,7 @@ flowchart LR
         vigil[vigil]
         vigil-revoke[vigil-revoke]
         wallet-profile[wallet-profile]
-        wallet-risk-weekly[wallet-risk-weekly]
+        wallet-risk-audit[wallet-risk-audit]
     end
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
@@ -447,7 +447,7 @@ flowchart LR
     click vigil "../skills/vigil/SKILL.md"
     click vigil-revoke "../skills/vigil-revoke/SKILL.md"
     click wallet-profile "../skills/wallet-profile/SKILL.md"
-    click wallet-risk-weekly "../skills/wallet-risk-weekly/SKILL.md"
+    click wallet-risk-audit "../skills/wallet-risk-audit/SKILL.md"
 ```
 
 ### Social & Writing (18)
@@ -467,7 +467,7 @@ flowchart LR
         reply-maker[reply-maker]
         schedule-ads[schedule-ads]
         show-hn-draft[show-hn-draft]
-        skill-of-the-day[skill-of-the-day]
+        skill-spotlight[skill-spotlight]
         syndicate-article[syndicate-article]
         thread-formatter[thread-formatter]
         thread-writer[thread-writer]
@@ -494,7 +494,7 @@ flowchart LR
     click reply-maker "../skills/reply-maker/SKILL.md"
     click schedule-ads "../skills/schedule-ads/SKILL.md"
     click show-hn-draft "../skills/show-hn-draft/SKILL.md"
-    click skill-of-the-day "../skills/skill-of-the-day/SKILL.md"
+    click skill-spotlight "../skills/skill-spotlight/SKILL.md"
     click syndicate-article "../skills/syndicate-article/SKILL.md"
     click thread-formatter "../skills/thread-formatter/SKILL.md"
     click thread-writer "../skills/thread-writer/SKILL.md"
@@ -509,24 +509,24 @@ flowchart LR
 flowchart LR
     subgraph productivity ["Productivity"]
         action-converter[action-converter]
-        daily-routine[daily-routine]
+        routine[routine]
         deal-flow[deal-flow]
-        evening-recap[evening-recap]
+        ops-recap[ops-recap]
         follow-up-patrol[follow-up-patrol]
         goal-tracker[goal-tracker]
         idea-capture[idea-capture]
         idea-pipeline[idea-pipeline]
         idea-validator[idea-validator]
         milestone-tracker[milestone-tracker]
-        morning-brief[morning-brief]
+        priority-brief[priority-brief]
         note-taking[note-taking]
         reflect[reflect]
         reg-monitor[reg-monitor]
         startup-idea[startup-idea]
         tool-builder[tool-builder]
         v4-readiness[v4-readiness]
-        weekly-review[weekly-review]
-        weekly-shiplog[weekly-shiplog]
+        retrospective[retrospective]
+        shiplog[shiplog]
     end
 
     github-issues[github-issues]:::external
@@ -535,33 +535,33 @@ flowchart LR
     token-movers[token-movers]:::external
 
     tool-builder --> action-converter
-    daily-routine -.-> token-movers
-    daily-routine -.-> paper-pick
-    daily-routine -.-> github-issues
-    daily-routine -.-> hacker-news-digest
+    routine -.-> token-movers
+    routine -.-> paper-pick
+    routine -.-> github-issues
+    routine -.-> hacker-news-digest
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
     classDef external fill:none,stroke:#bbb,stroke-dasharray:3 3,color:#888
     click action-converter "../skills/action-converter/SKILL.md"
-    click daily-routine "../skills/daily-routine/SKILL.md"
+    click routine "../skills/routine/SKILL.md"
     click deal-flow "../skills/deal-flow/SKILL.md"
-    click evening-recap "../skills/evening-recap/SKILL.md"
+    click ops-recap "../skills/ops-recap/SKILL.md"
     click follow-up-patrol "../skills/follow-up-patrol/SKILL.md"
     click goal-tracker "../skills/goal-tracker/SKILL.md"
     click idea-capture "../skills/idea-capture/SKILL.md"
     click idea-pipeline "../skills/idea-pipeline/SKILL.md"
     click idea-validator "../skills/idea-validator/SKILL.md"
     click milestone-tracker "../skills/milestone-tracker/SKILL.md"
-    click morning-brief "../skills/morning-brief/SKILL.md"
+    click priority-brief "../skills/priority-brief/SKILL.md"
     click note-taking "../skills/note-taking/SKILL.md"
     click reflect "../skills/reflect/SKILL.md"
     click reg-monitor "../skills/reg-monitor/SKILL.md"
     click startup-idea "../skills/startup-idea/SKILL.md"
     click tool-builder "../skills/tool-builder/SKILL.md"
     click v4-readiness "../skills/v4-readiness/SKILL.md"
-    click weekly-review "../skills/weekly-review/SKILL.md"
-    click weekly-shiplog "../skills/weekly-shiplog/SKILL.md"
+    click retrospective "../skills/retrospective/SKILL.md"
+    click shiplog "../skills/shiplog/SKILL.md"
     click github-issues "../skills/github-issues/SKILL.md"
     click hacker-news-digest "../skills/hacker-news-digest/SKILL.md"
     click paper-pick "../skills/paper-pick/SKILL.md"
@@ -670,9 +670,9 @@ Skills that aggregate output from multiple sources:
 
 | Hub | Consumes |
 |-----|----------|
-| `daily-routine` | `token-movers`, `paper-pick`, `github-issues`, `hacker-news-digest` (example chain in `aeon.yml`) |
-| `morning-brief` | Memory, logs, goals |
-| `evening-recap` | Day's logs, cron-state |
+| `routine` | `token-movers`, `paper-pick`, `github-issues`, `hacker-news-digest` (example chain in `aeon.yml`) |
+| `priority-brief` | Memory, logs, goals |
+| `ops-recap` | Day's logs, cron-state |
 
 ### Data Providers
 

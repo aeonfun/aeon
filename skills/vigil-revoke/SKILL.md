@@ -1,6 +1,6 @@
 ---
 name: VIGIL Approval Revoker
-description: Revoke a single live ERC-20 approval on Base via Bankr. Confirms the approval is live, then submits `approve(spender, 0)` and waits for receipt. workflow_dispatch only — `var` is the `wallet:spender:token` triplet returned by VIGIL / approval-audit / wallet-risk-weekly. Closes the detection→revoke loop that VIGIL PR #323 explicitly split out.
+description: Revoke a single live ERC-20 approval on Base via Bankr. Confirms the approval is live, then submits `approve(spender, 0)` and waits for receipt. workflow_dispatch only — `var` is the `wallet:spender:token` triplet returned by VIGIL / approval-audit / wallet-risk-audit. Closes the detection→revoke loop that VIGIL PR #323 explicitly split out.
 var: ""
 tags: [crypto, security, base, defi]
 requires: [BANKR_API_KEY, BASE_RPC_URL?]
@@ -16,11 +16,11 @@ If `soul/SOUL.md` and `soul/STYLE.md` exist and are populated, read them and mat
 
 ## Why this skill exists
 
-VIGIL's five-round review (PR #323) **explicitly split** the Approval Revoker into a separate future skill with a maintainer comment: *"Bankr-gated, state-changing — separate PR."* `wallet-risk-weekly` (PR #340, 2026-06-04) now runs the weekly audit and surfaces HIGH-bucket approvals that warrant revocation. `approval-audit` (HoundFlow) and `vigil_scan_approvals` (VIGIL MCP) both return the same `(wallet, spender, token)` tuple shape on detection.
+VIGIL's five-round review (PR #323) **explicitly split** the Approval Revoker into a separate future skill with a maintainer comment: *"Bankr-gated, state-changing — separate PR."* `wallet-risk-audit` (PR #340, 2026-06-04) now runs the weekly audit and surfaces HIGH-bucket approvals that warrant revocation. `approval-audit` (HoundFlow) and `vigil_scan_approvals` (VIGIL MCP) both return the same `(wallet, spender, token)` tuple shape on detection.
 
 The detection → revoke loop has been **half-open** since 2026-06-04: the agent identifies an UNLIMITED approval to a non-trusted spender but has no autonomous path to act. This skill closes it. With `eth_call` confirming the approval is still live before spending any gas, and Bankr handling the transaction signing, the operator gets a single-step remediation surface rather than having to manually construct a revoke transaction or copy-paste into revoke.cash.
 
-This skill is **operator-initiated only** — never scheduled. The `var` triplet is a load-bearing decision the operator makes consciously after reading the wallet-risk-weekly notification or running approval-audit on demand. It is NOT wired downstream of any scheduled skill.
+This skill is **operator-initiated only** — never scheduled. The `var` triplet is a load-bearing decision the operator makes consciously after reading the wallet-risk-audit notification or running approval-audit on demand. It is NOT wired downstream of any scheduled skill.
 
 ## Required env vars
 
@@ -278,7 +278,7 @@ Append a log entry to `memory/logs/${today}.md`:
 
 - **No auto-retry.** A failed revoke could mean: insufficient gas, contract pausable+paused, Bankr 5xx, sandbox network blip. None of those are safe to retry blindly. The next operator-initiated `workflow_dispatch` is the retry.
 - **No multi-revoke per run.** One triplet per run. Bulk revoke is a separate `vigil-revoke-batch` skill, deliberately out of scope here — keeps blast radius bounded and audit trail clean.
-- **No "trusted spender" auto-skip.** Even Uniswap routers can be exploited. If the operator passes a triplet, the skill revokes (or no-ops on already-zero). Trust-list filtering belongs upstream in `wallet-risk-weekly`'s severity bucketing, not here.
+- **No "trusted spender" auto-skip.** Even Uniswap routers can be exploited. If the operator passes a triplet, the skill revokes (or no-ops on already-zero). Trust-list filtering belongs upstream in `wallet-risk-audit`'s severity bucketing, not here.
 - **No prompt-injection surface in Bankr calls.** The `/agent/prompt` body interpolates only validated 40-hex addresses, never operator-typed text or fetched contract metadata.
 - **Don't paste raw RPC/Bankr bodies into notifications.** Reverts can carry untrusted strings; only surface validated status + short fixed reasons.
 
@@ -286,6 +286,6 @@ Append a log entry to `memory/logs/${today}.md`:
 
 - **State-changing.** This skill broadcasts an on-chain transaction. `capabilities` declares `onchain_writes` so the install surface advertises it.
 - **One submission per run.** Idempotent only because the pre-check at step 3 short-circuits to NOOP when allowance is already zero.
-- **Operator-initiated only.** No scheduled cron. The `var` triplet must come from a deliberate operator decision — typically copied from a `wallet-risk-weekly` HIGH-bucket notification or an `approval-audit` REVIEW verdict.
+- **Operator-initiated only.** No scheduled cron. The `var` triplet must come from a deliberate operator decision — typically copied from a `wallet-risk-audit` HIGH-bucket notification or an `approval-audit` REVIEW verdict.
 - **Wallet-bound by Bankr.** The skill refuses to submit when the triplet's `WALLET` doesn't match Bankr's bound address — it cannot revoke on behalf of any other wallet.
 - **Never revokes more than what `var` names.** No "while we're here, revoke siblings" logic. One spender, one token, one wallet, per run.
