@@ -307,13 +307,20 @@ chains:
 # Bankr gateway also supports: gemini-3-pro, gemini-3-flash, gpt-5.2, kimi-k2.5, qwen3-coder
 model: claude-opus-4-8
 
-# AI Gateway — route Claude Code requests through an LLM gateway.
-# provider: direct (default, uses ANTHROPIC_API_KEY) | bankr (uses BANKR_LLM_KEY)
-# For Anthropic-compatible providers, set repo variable ANTHROPIC_BASE_URL
-# and repo secret ANTHROPIC_API_KEY. Example: https://api.deepseek.com/anthropic
+# AI Gateway — route Claude Code requests through an LLM provider.
+#
+# provider: auto (default) resolves at RUN TIME from whichever provider secret
+# is set, in priority order — no need to re-pin when you add/remove a key:
+#   claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
+#   openrouter → bankr → usepod → venice → surplus → direct (fallback)
+# Override the order with the repo variable GATEWAY_ORDER (space-separated).
+#
+# Or PIN one explicitly: direct | bankr | openrouter | usepod | venice | surplus.
+# For Anthropic-compatible endpoints (direct), set repo variable ANTHROPIC_BASE_URL
+# + secret ANTHROPIC_API_KEY. Example: https://api.deepseek.com/anthropic
 # Bankr docs: https://docs.bankr.bot/llm-gateway/overview
 gateway:
-  provider: direct
+  provider: auto
 
 # Output channels
 channels:

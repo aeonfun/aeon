@@ -314,7 +314,7 @@ jobs:
 
           # --- AI Gateway routing ---
           GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
-          GATEWAY="${GATEWAY:-direct}"
+          GATEWAY="${GATEWAY:-auto}"
           echo "Gateway: $GATEWAY"
 
           echo "GATEWAY=$GATEWAY" >> "$GITHUB_OUTPUT"

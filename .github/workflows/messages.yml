@@ -684,7 +684,7 @@ jobs:
 
           # AI Gateway routing — same path as aeon.yml's Run steps
           GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
-          GATEWAY="${GATEWAY:-direct}"
+          GATEWAY="${GATEWAY:-auto}"
           source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
 
           cat > ./notify << 'NOTIFY_SCRIPT'

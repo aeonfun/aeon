@@ -74,9 +74,15 @@ describe("parseConfig", () => {
     assert.equal(config.model, "claude-sonnet-4-6");
   });
 
-  it("defaults gateway to direct when absent", () => {
+  it("defaults gateway to auto when absent", () => {
     const config = parseConfig(MINIMAL_YAML);
-    assert.equal(config.gateway.provider, "direct");
+    assert.equal(config.gateway.provider, "auto");
+  });
+
+  it("parses an explicit auto gateway", () => {
+    const yaml = `skills: {}\n\ngateway:\n  provider: auto\n`;
+    const config = parseConfig(yaml);
+    assert.equal(config.gateway.provider, "auto");
   });
 
   it("defaults jsonrenderEnabled to false when absent", () => {

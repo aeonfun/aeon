@@ -20,9 +20,11 @@ export interface GhRunJson {
   jobs: Array<{ name: string; status: string; conclusion: string | null }>
 }
 
-export type GatewayProvider = 'direct' | 'bankr' | 'openrouter' | 'usepod' | 'venice' | 'surplus'
+// `auto` resolves the provider at run time from whichever secret is set
+// (see scripts/llm-gateway.sh). The rest pin a single provider explicitly.
+export type GatewayProvider = 'auto' | 'direct' | 'bankr' | 'openrouter' | 'usepod' | 'venice' | 'surplus'
 
-export const GATEWAY_PROVIDERS: GatewayProvider[] = ['direct', 'bankr', 'openrouter', 'usepod', 'venice', 'surplus']
+export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', 'bankr', 'openrouter', 'usepod', 'venice', 'surplus']
 
 export interface UploadFile { path: string; content: string }
 

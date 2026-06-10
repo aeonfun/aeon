@@ -18,9 +18,10 @@ function commitAndPush(file: string, message: string) {
 }
 
 // Set aeon.yml's gateway.provider and make the change land on the repo the
-// workflow reads. Gateway keys (Bankr bk_, OpenRouter sk-or-, …) select their
-// provider; removing one — or any other key — reverts to `direct`. No-ops when
-// the provider is already correct.
+// workflow reads. Adding/removing a key keeps this on `auto`, so the workflow
+// resolves the live provider at run time from whichever secrets are set
+// (scripts/llm-gateway.sh). Callers may still pass an explicit name to pin one.
+// No-ops when the provider is already correct.
 export async function syncGatewayProvider(provider: string) {
   const next: GatewayProvider = GATEWAY_PROVIDERS.includes(provider as GatewayProvider)
     ? (provider as GatewayProvider) : 'direct'

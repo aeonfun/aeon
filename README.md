@@ -351,7 +351,16 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
   <img src="assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
 </p>
 
-Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the other five route through a **gateway**. You choose in the dashboard's Authenticate modal — paste a credential and the provider is detected from its prefix (or picked from the dropdown), saved as the secret below, and written to `gateway: { provider: … }` in `aeon.yml`. Removing the key reverts to `direct`.
+Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the other five route through a **gateway**. You add a credential in the dashboard's Authenticate modal — paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below.
+
+**Routing is automatic.** `aeon.yml` ships `gateway: { provider: auto }`, and each run resolves the live provider from *whichever secrets are set*, in priority order — so adding or removing a key changes routing with no re-config:
+
+```
+claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
+openrouter → bankr → usepod → venice → surplus → direct (fallback)
+```
+
+The first match wins (the run log prints `::notice:: gateway=auto resolved to …`). Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus` explicitly.
 
 **Direct (`provider: direct`)** — the official Anthropic API, no middleman:
 
@@ -376,11 +385,11 @@ A gateway is wired through five files, all following the existing pattern — so
 
 1. **`apps/dashboard/lib/types.ts`** — add the slug to the `GatewayProvider` union and the `GATEWAY_PROVIDERS` array.
 2. **`apps/dashboard/lib/auth-provider.mjs`** — add `slug: { label, secretName, prefixes }` (empty `prefixes: []` = dropdown-only, no auto-detect).
-3. **`apps/dashboard/app/api/secrets/route.ts`** — list the secret in `BUILTIN_SECRETS` and map `SECRET_NAME → slug` in `GATEWAY_SECRETS` so the dashboard syncs `aeon.yml` when the key is set/removed.
-4. **`scripts/llm-gateway.sh`** — add a `case` branch: a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`.
-5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:`.
+3. **`apps/dashboard/app/api/secrets/route.ts`** — list the secret in `BUILTIN_SECRETS` and map `SECRET_NAME → slug` in `GATEWAY_SECRETS` so the dashboard recognises it as a gateway key (and keeps `aeon.yml` on `auto`).
+4. **`scripts/llm-gateway.sh`** — add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`), **and** add the slug + its secret to the auto-resolver's default order so it's picked up automatically.
+5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
 
-Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown), confirm `aeon.yml` flips to your slug, and run any skill — the workflow log prints a `::notice:: Routing through …` line.
+Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown) and run any skill — the workflow log prints `::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
 
 ### Soul
 

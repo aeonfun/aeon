@@ -54,7 +54,7 @@ export async function POST(request: Request) {
         input: config.key,
         stdio: ['pipe', 'pipe', 'pipe'],
       })
-      await syncGatewayProvider(config.gateway)
+      await syncGatewayProvider('auto')
       return NextResponse.json({ ok: true, method: config.method, secret: config.secretName, baseUrl: Boolean(config.baseUrl), gateway: config.gateway })
     }
 
@@ -89,7 +89,7 @@ export async function POST(request: Request) {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
-    await syncGatewayProvider(config.gateway)
+    await syncGatewayProvider('auto')
     return NextResponse.json({ ok: true, method: 'oauth' })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to setup auth'

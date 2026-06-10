@@ -46,11 +46,11 @@ export function parseConfig(raw: string): AeonConfig {
 
   const model = String(doc.get('model') ?? 'claude-sonnet-4-6')
 
-  let gateway: GatewayConfig = { provider: 'direct' }
+  let gateway: GatewayConfig = { provider: 'auto' }
   const gatewayNode = doc.get('gateway')
   if (isMap(gatewayNode)) {
-    const provider = String(getMapValue(gatewayNode, 'provider') ?? 'direct')
-    gateway = { provider: GATEWAY_PROVIDERS.includes(provider as GatewayProvider) ? (provider as GatewayProvider) : 'direct' }
+    const provider = String(getMapValue(gatewayNode, 'provider') ?? 'auto')
+    gateway = { provider: GATEWAY_PROVIDERS.includes(provider as GatewayProvider) ? (provider as GatewayProvider) : 'auto' }
   }
 
   let jsonrenderEnabled = false

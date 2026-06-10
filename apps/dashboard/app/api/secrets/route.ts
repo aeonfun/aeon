@@ -119,8 +119,9 @@ export async function POST(request: Request) {
       stdio: 'pipe',
       cwd: process.cwd(),
     })
-    // Setting a gateway key here (not just via the auth modal) routes through that gateway.
-    if (GATEWAY_SECRETS[name]) await syncGatewayProvider(GATEWAY_SECRETS[name])
+    // Keep routing on `auto` so the workflow resolves the provider at run time
+    // from whichever keys are set (scripts/llm-gateway.sh) — no per-key pinning.
+    if (GATEWAY_SECRETS[name]) await syncGatewayProvider('auto')
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to set secret'
@@ -141,8 +142,9 @@ export async function DELETE(request: Request) {
 
   try {
     execFileSync('gh', ['secret', 'delete', name, ...ghArgsRepo()], { stdio: 'pipe', cwd: process.cwd() })
-    // Deleting a gateway key reverts the gateway to the classic (direct) provider.
-    if (GATEWAY_SECRETS[name]) await syncGatewayProvider('direct')
+    // Stay on `auto`: dropping a key just makes run-time resolution fall through
+    // to the next provider whose secret is still set (or `direct`).
+    if (GATEWAY_SECRETS[name]) await syncGatewayProvider('auto')
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to delete secret'

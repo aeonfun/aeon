@@ -6,7 +6,8 @@
 # call in the same shell. Place at: scripts/llm-gateway.sh
 #
 # Inputs already present in the step environment:
-#   $GATEWAY                    direct | bankr | openrouter | usepod | surplus | venice
+#   $GATEWAY                    auto | direct | bankr | openrouter | usepod | surplus | venice
+#                               (auto = resolve at run time from which secrets are set)
 #   $MODEL                      aeon's resolved model id (may be rewritten here)
 #   <PROVIDER> secret           the secret for the selected gateway (see below)
 #   vars.ANTHROPIC_BASE_URL     optional Anthropic-compatible endpoint (direct path)
@@ -110,6 +111,36 @@ JSON
   export ANTHROPIC_API_KEY="sk-ccr-local"   # ccr APIKEY empty; value unused but must be non-empty
   unset ANTHROPIC_AUTH_TOKEN CLAUDE_CODE_OAUTH_TOKEN
 }
+
+# --- auto resolution --------------------------------------------------------
+# When gateway.provider is `auto` (or unset), pick the first provider whose
+# secret is present, in priority order. Override the order with the repo var
+# GATEWAY_ORDER (space-separated). Default order:
+#
+#   claude     Claude Code subscription    (CLAUDE_CODE_OAUTH_TOKEN)
+#   anthropic  pay-as-you-go Anthropic API (ANTHROPIC_API_KEY)
+#   openrouter bankr usepod venice surplus  — gateway keys
+#
+# `claude` and `anthropic` both route via the `direct` path; we drop the other
+# credential so the chosen one wins deterministically when both happen to be set.
+# `direct` is the implicit final fallback (errors later if no usable key).
+if [ -z "${GATEWAY:-}" ] || [ "${GATEWAY}" = "auto" ]; then
+  resolved=""
+  for provider in ${GATEWAY_ORDER:-claude anthropic openrouter bankr usepod venice surplus}; do
+    case "$provider" in
+      claude)     if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then resolved="direct";     unset ANTHROPIC_API_KEY;       fi ;;
+      anthropic)  if [ -n "${ANTHROPIC_API_KEY:-}" ];       then resolved="direct";     unset CLAUDE_CODE_OAUTH_TOKEN; fi ;;
+      openrouter) if [ -n "${OPENROUTER_API_KEY:-}" ];      then resolved="openrouter"; fi ;;
+      bankr)      if [ -n "${BANKR_LLM_KEY:-}" ];           then resolved="bankr";      fi ;;
+      usepod)     if [ -n "${USEPOD_TOKEN:-}" ];            then resolved="usepod";     fi ;;
+      venice)     if [ -n "${VENICE_API_KEY:-}" ];          then resolved="venice";     fi ;;
+      surplus)    if [ -n "${SURPLUS_API_KEY:-}" ];         then resolved="surplus";    fi ;;
+    esac
+    if [ -n "$resolved" ]; then break; fi
+  done
+  GATEWAY="${resolved:-direct}"
+  echo "::notice::gateway=auto resolved to '${GATEWAY}'"
+fi
 
 # --- route ------------------------------------------------------------------
 case "${GATEWAY:-direct}" in

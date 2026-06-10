@@ -1,9 +1,10 @@
 // Gateway providers route Claude Code at a FIXED (non-custom) base URL, the way
 // the Bankr path already does. Each maps the pasted key/token to its own repo
-// secret and flips aeon.yml's gateway.provider, so the workflow knows how to
-// wire ANTHROPIC_BASE_URL (or spin up a claude-code-router sidecar). A custom
-// baseUrl is rejected for all of them — the base URL is fixed per provider and
-// set by scripts/llm-gateway.sh.
+// secret; the workflow then wires ANTHROPIC_BASE_URL (or spins up a
+// claude-code-router sidecar) based on whichever secret is set. Routing stays on
+// `auto` — the provider is resolved at run time (scripts/llm-gateway.sh), not
+// pinned on paste. A custom baseUrl is rejected for all of them — the base URL
+// is fixed per provider and set by scripts/llm-gateway.sh.
 const GATEWAY_PROVIDERS = {
   bankr: { label: 'Bankr', secretName: 'BANKR_LLM_KEY', prefixes: ['bk_'] },
   openrouter: { label: 'OpenRouter', secretName: 'OPENROUTER_API_KEY', prefixes: ['sk-or-'] },
