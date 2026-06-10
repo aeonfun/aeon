@@ -368,9 +368,7 @@ Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the 
 | <img src="https://icons.duckduckgo.com/ip3/openrouter.ai.ico" width="16" valign="middle"> [OpenRouter](https://openrouter.ai) | `OPENROUTER_API_KEY` | Anthropic-native passthrough; lowest-risk option |
 | <img src="https://icons.duckduckgo.com/ip3/usepod.ai.ico" width="16" valign="middle"> [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | Solana marketplace; token is embedded in the base URL, keep it secret |
 | <img src="https://icons.duckduckgo.com/ip3/venice.ai.ico" width="16" valign="middle"> [Venice](https://venice.ai) | `VENICE_API_KEY` | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
-| <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
-
-Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`). Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
+| <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Routed via The Bridge; settles in USDC on Base — fund the wallet + `approve()` once before use |
 
 #### Adding a gateway
 
