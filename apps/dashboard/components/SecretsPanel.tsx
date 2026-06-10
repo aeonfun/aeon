@@ -30,9 +30,12 @@ interface SecretsPanelProps {
   onSave: (name: string, value: string) => void
   onDelete: (name: string) => void
   onSelectSkill: (name: string) => void
+  onConnectClaude: () => void
+  connecting?: boolean
+  authenticated?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, authenticated }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -93,6 +96,19 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
             Set a secret, the channel turns on. Unset secrets are silently skipped — every channel is opt-in.
           </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button
+              onClick={onConnectClaude}
+              disabled={connecting}
+              title="Run the Claude Code OAuth flow — powers runs with your Claude Pro/Max plan, no API key needed."
+              className="bg-aeon-fg text-aeon-bg text-xs py-2.5 px-5 font-mono uppercase tracking-[0.18em] hover:opacity-90 transition-opacity disabled:opacity-50"
+            >
+              {connecting ? '…' : 'Connect with Claude Code'}
+            </button>
+            {authenticated
+              ? <span className="text-[11px] font-mono text-eva-green inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-eva-green" /> subscription connected</span>
+              : <span className="text-[11px] font-mono text-primary-40">Claude Pro/Max — no API key needed</span>}
+          </div>
         </div>
       </section>
 
