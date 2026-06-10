@@ -30,7 +30,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     slug: 'rootai',
     name: 'RootAI',
     url: 'https://mcp.rootedge.ai/pro',
-    logo: 'https://rootedge.ai/rootai.svg',
+    logo: 'https://pbs.twimg.com/profile_images/2055018961746399233/09lx9ZYV_400x400.jpg',
     description: 'RootAI Edge MCP — crypto market intelligence across Hyperliquid, Base & Paradex: funding-arbitrage scans, cross-exchange spreads, and best-execution routing. Discovery and free tools are no-cost; premium tools settle per-call in USDC via x402.',
   },
 ]
