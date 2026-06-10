@@ -18,7 +18,6 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 |------|---------|-------|
 | <img src="https://pbs.twimg.com/profile_images/2061062812626014209/g2f04VCK_400x400.jpg" width="36" height="36" alt="Aeon City logo"> | Aeon City | [@aeoncityhub](https://x.com/aeoncityhub) |
 | <img src="https://pbs.twimg.com/profile_images/2056143519824166912/W2VGsyMX_400x400.jpg" width="36" height="36" alt="aeonbook logo"> | aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
-| <img src="https://pbs.twimg.com/profile_images/2060437940493332485/VrIC7fKj_400x400.jpg" width="36" height="36" alt="AgentBounty logo"> | AgentBounty | [@agentbountydev](https://x.com/agentbountydev) |
 | <img src="https://pbs.twimg.com/profile_images/2030575047644188673/vaJqbpck_400x400.jpg" width="36" height="36" alt="Amper logo"> | Amper | [@helloamper](https://x.com/helloamper) |
 | <img src="https://pbs.twimg.com/profile_images/2055896281751633920/NeawiT3G_400x400.png" width="36" height="36" alt="AntFleet logo"> | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
 | <img src="https://atriumhermes.tech/atrium-mark.jpg" width="36" height="36" alt="Atrium logo"> | Atrium | [@atriumhermes](https://x.com/atriumhermes) · [atriumhermes.tech](https://atriumhermes.tech) |
@@ -30,7 +29,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2021187758547664896/7tdqvR2z_400x400.jpg" width="36" height="36" alt="Baseline logo"> | Baseline | [@BaselineMarkets](https://x.com/BaselineMarkets) |
 | <img src="https://pbs.twimg.com/profile_images/2026627252511977474/r8GGxl52_400x400.jpg" width="36" height="36" alt="Bean logo"> | Bean | [@minebean_](https://x.com/minebean_) |
 | <img src="https://pbs.twimg.com/profile_images/2047719472455438336/CFrEyoNZ_400x400.jpg" width="36" height="36" alt="Blue Agent logo"> | Blue Agent | [@blueagent_](https://x.com/blueagent_) |
-| <img src="https://pbs.twimg.com/profile_images/2033580402561232896/0M-1cdeH_400x400.jpg" width="36" height="36" alt="Capacitr logo"> | Capacitr | [@capacitr_](https://x.com/capacitr_) |
+| <img src="https://pbs.twimg.com/profile_images/2040249335284387840/hIisggkp_400x400.png" width="36" height="36" alt="Capacitr logo"> | Capacitr | [@capacitr_xyz](https://x.com/capacitr_xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2062754968852221952/QcEP9JKW_400x400.jpg" width="36" height="36" alt="Charon logo"> | Charon | [@Charon_AI](https://x.com/Charon_AI) |
 | <img src="https://pbs.twimg.com/profile_images/2027296134939684866/eTsFmewn_400x400.jpg" width="36" height="36" alt="Claw Harbor logo"> | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
 | <img src="https://pbs.twimg.com/profile_images/2045511364072873985/r7zESZco_400x400.jpg" width="36" height="36" alt="ClawBank logo"> | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
@@ -56,6 +55,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2022853922847887363/7hiICjWl_400x400.jpg" width="36" height="36" alt="MythosForge logo"> | MythosForge | [@mythosforgebot](https://x.com/mythosforgebot) |
 | <img src="https://pbs.twimg.com/profile_images/2059382579107659778/pkh1HmwK_400x400.jpg" width="36" height="36" alt="Noctel logo"> | Noctel | [@noctelxbt](https://x.com/noctelxbt) · [noctel.xyz](https://www.noctel.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2050098727512322048/bS61Qs6N_400x400.jpg" width="36" height="36" alt="NoelClaw logo"> | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
+| <img src="https://pbs.twimg.com/profile_images/2063332856688996352/xgUYZiSY_400x400.jpg" width="36" height="36" alt="NÜMETAL logo"> | NÜMETAL | [@numetalxyz](https://x.com/numetalxyz) |
 | <img src="https://pbs.twimg.com/profile_images/2004910939959967744/wr7-zpVh_400x400.jpg" width="36" height="36" alt="PancakeSwap logo"> | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
 | <img src="https://pbs.twimg.com/profile_images/1725595719086530560/n--iy1A9_400x400.jpg" width="36" height="36" alt="Powerloom logo"> | Powerloom | [@Powerloom](https://x.com/Powerloom) |
 | <img src="https://pbs.twimg.com/profile_images/1858962630796603393/iIb9x5CQ_400x400.jpg" width="36" height="36" alt="Precog logo"> | Precog | [@precogmarkets](https://x.com/precogmarkets) |
