@@ -356,7 +356,7 @@ Route Claude Code through an alternative gateway instead of the direct Anthropic
 | [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | dropdown | passthrough | Solana marketplace; token is embedded in the base URL, keep it secret |
 | [Venice](https://venice.ai) | `VENICE_API_KEY` | dropdown | up to Opus 4.6 | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
 | [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | `inf_…` prefix | Opus 4.8 | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
-| BEAMR ([x402](https://github.com/coinbase/x402)) | `BEAMR_BASE_URL` | dropdown | router (`auto`) | Self-hostable router — classifies each call and routes to the cheapest capable provider, settling per call in USDC on Base over x402. Point at your own deployment; sidecar-bridged |
+| [BEAMR](https://askbeamr.com) ([x402](https://github.com/coinbase/x402)) | `BEAMR_BASE_URL` | dropdown | router (`auto`) | Self-hostable router — classifies each call and routes to the cheapest capable provider, settling per call in USDC on Base over x402. Point at your own deployment; sidecar-bridged |
 
 Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`), `BEAMR_MODEL` (default `auto` — lets BEAMR's router pick) + optional `BEAMR_API_KEY` if your deployment is auth-gated. Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
 
