@@ -32,10 +32,9 @@ interface SecretsPanelProps {
   onSelectSkill: (name: string) => void
   onConnectClaude: () => void
   connecting?: boolean
-  authenticated?: boolean
 }
 
-export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting, authenticated }: SecretsPanelProps) {
+export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHandled, onSave, onDelete, onSelectSkill, onConnectClaude, connecting }: SecretsPanelProps) {
   const [editingSecret, setEditingSecret] = useState<string | null>(null)
   const [secretValue, setSecretValue] = useState('')
   const [addingSecret, setAddingSecret] = useState(false)
@@ -96,19 +95,6 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
             Set a secret, the channel turns on. Unset secrets are silently skipped — every channel is opt-in.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <button
-              onClick={onConnectClaude}
-              disabled={connecting}
-              title="Run the Claude Code OAuth flow — powers runs with your Claude Pro/Max plan, no API key needed."
-              className="bg-aeon-fg text-aeon-bg text-xs py-2.5 px-5 font-mono uppercase tracking-[0.18em] hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {connecting ? '…' : 'Connect with Claude Code'}
-            </button>
-            {authenticated
-              ? <span className="text-[11px] font-mono text-eva-green inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-eva-green" /> subscription connected</span>
-              : <span className="text-[11px] font-mono text-primary-40">Claude Pro/Max — no API key needed</span>}
-          </div>
         </div>
       </section>
 
@@ -172,6 +158,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                       </div>
                     </div>
                     <div className="flex gap-1.5 shrink-0">
+                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow — signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors">Remove</button>}
                     </div>
