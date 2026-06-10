@@ -13,7 +13,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction — it'll use 196 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction — it'll use 197 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -70,10 +70,10 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | 🛡️ **Onchain Security** | 15 | `rug-scan`, `contract-audit`, `honeypot-check` |
 | ✍️ **Social & Writing** | 18 | `write-tweet`, `thread-writer`, `reply-maker` |
 | ✅ **Productivity** | 19 | `priority-brief`, `retrospective`, `goal-tracker` |
-| 🤖 **Meta / Agent** | 35 | `heartbeat`, `cost-report`, `memory-flush` |
+| 🤖 **Meta / Agent** | 36 | `heartbeat`, `cost-report`, `memory-flush` |
 
 <details>
-<summary><strong>Full catalog (all 196 skills)</strong></summary>
+<summary><strong>Full catalog (all 197 skills)</strong></summary>
 
 | Category | Skills |
 |----------|--------|
@@ -84,7 +84,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk` |
 | **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn`,`skill-spotlight`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
 | **Productivity** (19) | `action-converter`,`routine`,`deal-flow`,`ops-recap`,`followup-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`priority-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`retrospective`,`shiplog` |
-| **Meta / Agent** (35) | `api-health`,`atrium-watch`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`skill-adoption`,`fleet-state`,`contributor-leaderboard`,`fork-firstrun`,`fork-health`,`fork-digest`,`skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-dedupe`,`onboard`,`operator-scorecard`,`frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-scan`,`skill-update`,`sparkleware-catalog`,`spend-monitor`,`star-momentum`,`update-gallery` |
+| **Meta / Agent** (36) | `api-health`,`atrium-watch`,`batch-health`,`capabilities-map`,`capabilities-sweep`,`config-validator`,`contributor-spotlight`,`cost-report`,`skill-adoption`,`fleet-state`,`contributor-leaderboard`,`fork-firstrun`,`fork-health`,`fork-digest`,`skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-dedupe`,`onboard`,`operator-scorecard`,`frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-scan`,`skill-update`,`sparkleware-catalog`,`spend-monitor`,`star-momentum`,`update-gallery` |
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`.
 Dependency graph: [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map of how skills connect.
@@ -511,7 +511,7 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-skills.json              ← machine-readable skill catalog (196 skills)
+skills.json              ← machine-readable skill catalog (197 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
 ./onboard                ← validate the fork's setup (secrets, workflows, channels)
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
@@ -523,7 +523,7 @@ skills.json              ← machine-readable skill catalog (196 skills)
 ./generate-skills-json   ← regenerate skills.json from SKILL.md files
 docs/                    ← GitHub Pages site (articles, activity log, memory)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file (196 total)
+skills/                  ← each skill is a SKILL.md prompt file (197 total)
 workflow-templates/      ← GitHub Agentic Workflow templates (.md)
 skill-templates/         ← templates for building your own skills
 apps/                    ← standalone sub-projects, each with its own package.json
