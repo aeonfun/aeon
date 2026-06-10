@@ -357,18 +357,18 @@ Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the 
 
 | Mode | Credential | Notes |
 |------|-----------|-------|
-| Claude subscription | `CLAUDE_CODE_OAUTH_TOKEN` | Your Claude Pro/Max plan — **Connect** in the modal runs the OAuth flow; no per-token billing |
-| Anthropic API | `ANTHROPIC_API_KEY` | Pay-as-you-go API key (or any Anthropic-compatible endpoint via `ANTHROPIC_BASE_URL`) |
+| <img src="https://icons.duckduckgo.com/ip3/anthropic.com.ico" width="16" valign="middle"> Claude subscription | `CLAUDE_CODE_OAUTH_TOKEN` | Your Claude Pro/Max plan — **Connect** in the modal runs the OAuth flow; no per-token billing |
+| <img src="https://icons.duckduckgo.com/ip3/anthropic.com.ico" width="16" valign="middle"> Anthropic API | `ANTHROPIC_API_KEY` | Pay-as-you-go API key (or any Anthropic-compatible endpoint via `ANTHROPIC_BASE_URL`) |
 
 **Gateways** — route Claude through an alternative provider (cheaper Opus, crypto-settled, privacy-first…). Keys with a distinctive prefix are detected automatically; UsePod and Venice have no prefix, so pick them in the dropdown:
 
-| Gateway | Secret | Detection | Claude models | Notes |
-|---------|--------|-----------|---------------|-------|
-| [Bankr](https://docs.bankr.bot/llm-gateway/overview) | `BANKR_LLM_KEY` | `bk_…` prefix | Opus 4.8 | ~67% cheaper Opus (via Vertex AI), plus Gemini/GPT/Kimi/Qwen |
-| [OpenRouter](https://openrouter.ai) | `OPENROUTER_API_KEY` | `sk-or-…` prefix | Opus 4.8 | Anthropic-native passthrough; lowest-risk option |
-| [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | dropdown | passthrough | Solana marketplace; token is embedded in the base URL, keep it secret |
-| [Venice](https://venice.ai) | `VENICE_API_KEY` | dropdown | up to Opus 4.6 | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
-| [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | `inf_…` prefix | Opus 4.8 | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
+| Gateway | Secret | Notes |
+|---------|--------|-------|
+| <img src="https://icons.duckduckgo.com/ip3/bankr.bot.ico" width="16" valign="middle"> [Bankr](https://docs.bankr.bot/llm-gateway/overview) | `BANKR_LLM_KEY` | Discounted Opus access |
+| <img src="https://icons.duckduckgo.com/ip3/openrouter.ai.ico" width="16" valign="middle"> [OpenRouter](https://openrouter.ai) | `OPENROUTER_API_KEY` | Anthropic-native passthrough; lowest-risk option |
+| <img src="https://icons.duckduckgo.com/ip3/usepod.ai.ico" width="16" valign="middle"> [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | Solana marketplace; token is embedded in the base URL, keep it secret |
+| <img src="https://icons.duckduckgo.com/ip3/venice.ai.ico" width="16" valign="middle"> [Venice](https://venice.ai) | `VENICE_API_KEY` | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
+| <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
 
 Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`). Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
 
