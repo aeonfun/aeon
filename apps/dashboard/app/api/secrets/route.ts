@@ -43,6 +43,8 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID — required to publish Farcaster casts' },
   { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access — cross-repo skills & deploys. Create one at github.com/settings/tokens' },
   { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint — onchain Base skills (fund-flow, honeypot-check, vigil-revoke). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits. Find a provider at docs.base.org/chain/node-providers' },
+  { name: 'BEAMR_GATEWAY_URL', group: 'Skill Keys', description: 'BEAMR inference-gateway URL — the beamr-route skill pays per call over x402 (USDC on Base) and returns the answer + onchain receipt.' },
+  { name: 'BEAMR_PAYER_KEY', group: 'Skill Keys', description: 'Payer wallet private key (0x...) for the beamr-route skill — fund a DEDICATED low-balance wallet with USDC on Base; per-call spend is capped by the BEAMR_MAX_PAY_USDC variable.' },
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))
