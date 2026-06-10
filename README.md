@@ -347,7 +347,20 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
 
 ### LLM Gateways
 
-Route Claude Code through an alternative gateway instead of the direct Anthropic API. Paste the key in the dashboard's Authenticate modal — keys with a distinctive prefix are detected automatically; Venice and UsePod have no prefix, so pick them in the modal's provider dropdown. The key is saved as the secret below and `gateway: { provider: … }` is set in `aeon.yml` automatically. Removing the key reverts the gateway to `direct`.
+<p align="center">
+  <img src="assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
+</p>
+
+Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the other five route through a **gateway**. You choose in the dashboard's Authenticate modal — paste a credential and the provider is detected from its prefix (or picked from the dropdown), saved as the secret below, and written to `gateway: { provider: … }` in `aeon.yml`. Removing the key reverts to `direct`.
+
+**Direct (`provider: direct`)** — the official Anthropic API, no middleman:
+
+| Mode | Credential | Notes |
+|------|-----------|-------|
+| Claude subscription | `CLAUDE_CODE_OAUTH_TOKEN` | Your Claude Pro/Max plan — **Connect** in the modal runs the OAuth flow; no per-token billing |
+| Anthropic API | `ANTHROPIC_API_KEY` | Pay-as-you-go API key (or any Anthropic-compatible endpoint via `ANTHROPIC_BASE_URL`) |
+
+**Gateways** — route Claude through an alternative provider (cheaper Opus, crypto-settled, privacy-first…). Keys with a distinctive prefix are detected automatically; UsePod and Venice have no prefix, so pick them in the dropdown:
 
 | Gateway | Secret | Detection | Claude models | Notes |
 |---------|--------|-----------|---------------|-------|
@@ -358,6 +371,18 @@ Route Claude Code through an alternative gateway instead of the direct Anthropic
 | [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | `inf_…` prefix | Opus 4.8 | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
 
 Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`). Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
+
+#### Adding a gateway
+
+A gateway is wired through five files, all following the existing pattern — so copy an entry of the same **tier**. There are two: **native** (the provider already speaks the Anthropic API — just point `ANTHROPIC_BASE_URL` at it, like Bankr/OpenRouter/UsePod) and **sidecar** (OpenAI-compatible — bridged per run by a [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar, like Venice/Surplus).
+
+1. **`apps/dashboard/lib/types.ts`** — add the slug to the `GatewayProvider` union and the `GATEWAY_PROVIDERS` array.
+2. **`apps/dashboard/lib/auth-provider.mjs`** — add `slug: { label, secretName, prefixes }` (empty `prefixes: []` = dropdown-only, no auto-detect).
+3. **`apps/dashboard/app/api/secrets/route.ts`** — list the secret in `BUILTIN_SECRETS` and map `SECRET_NAME → slug` in `GATEWAY_SECRETS` so the dashboard syncs `aeon.yml` when the key is set/removed.
+4. **`scripts/llm-gateway.sh`** — add a `case` branch: a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`.
+5. **`.github/workflows/aeon.yml`** — pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:`.
+
+Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown), confirm `aeon.yml` flips to your slug, and run any skill — the workflow log prints a `::notice:: Routing through …` line.
 
 ### Soul
 
