@@ -292,6 +292,10 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
           NEYNAR_API_KEY: ${{ secrets.NEYNAR_API_KEY }}
           NEYNAR_SIGNER_UUID: ${{ secrets.NEYNAR_SIGNER_UUID }}
+          BEAMR_GATEWAY_URL: ${{ secrets.BEAMR_GATEWAY_URL }}
+          BEAMR_PAYER_KEY: ${{ secrets.BEAMR_PAYER_KEY }}
+          BEAMR_NETWORK: ${{ vars.BEAMR_NETWORK }}
+          BEAMR_MAX_PAY_USDC: ${{ vars.BEAMR_MAX_PAY_USDC }}
           JSONRENDER_ENABLED: ${{ vars.JSONRENDER_ENABLED || 'true' }}
           SKILL_VAR: ${{ inputs.var }}
           SKILL_NAME: ${{ steps.skill.outputs.name }}
