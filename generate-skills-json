@@ -77,7 +77,7 @@ get_category() {
     batch-health|config-validator|janitor|memory-flush|memory-structural-dedupe) echo "meta" ;;
     run-frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "meta" ;;
     skill-freshness|skill-graph|skill-security-scan|star-momentum-alert) echo "meta" ;;
-    atrium-catalog-watcher|capabilities-map|sparkleware-catalog) echo "meta" ;;
+    atrium-catalog-watcher|capabilities-map|capabilities-sweep|sparkleware-catalog) echo "meta" ;;
     contributor-spotlight|fleet-skill-adoption|fleet-state) echo "meta" ;;
     fork-contributor-leaderboard|fork-first-run-alert|fork-health-score|fork-skill-digest|fork-skill-gap) echo "meta" ;;
     # Ported from aeon-aaron (PR #343)
