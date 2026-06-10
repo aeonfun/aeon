@@ -13,7 +13,6 @@ The starter pack below targets *observable* skills with clear single-purpose out
 - priority-brief
 - paper-pick
 - repo-pulse
-- agentic-video-digest
 - reply-maker
 - hn-digest
 - self-improve
@@ -93,7 +92,6 @@ Never feature these — they are meta/internal/repair skills that don't read as 
 - product-hunt
 - create-campaign
 - schedule-ads
-- motion-explainer
 - onchain-monitor
 - price-alert
 - monitor-runners

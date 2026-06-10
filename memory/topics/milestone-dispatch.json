@@ -1,9 +1,5 @@
 {
   "_comment": "Auto-dispatch rules for star-milestone. Read by skills/star-milestone/SKILL.md step 8 on every announced milestone (gate 5f). `rules` is operator-editable: { owner/repo: { threshold (as string): skill_name } }. `dispatched` is managed automatically — one timestamp per (repo, threshold, skill) tuple, written only on successful dispatch. Step 5a in star-milestone (milestones.md already-recorded check) is the primary idempotency guard; `dispatched` here is a second guard for cases where milestones.md is hand-edited or reverted. Failures do NOT write to `dispatched` — the operator runs the dispatch manually if they want a retry.",
-  "rules": {
-    "aaronjmars/aeon": {
-      "500": "show-hn"
-    }
-  },
+  "rules": {},
   "dispatched": {}
 }
