@@ -360,7 +360,9 @@ claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
 openrouter → bankr → usepod → venice → surplus → direct (fallback)
 ```
 
-The first match wins (the run log prints `::notice:: gateway=auto resolved to …`). Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus` explicitly.
+It runs as a **cascade**: the highest-priority provider whose key is set goes first, and on **any** failure (no credits, rate limit, outage, dud response) the run automatically falls over to the next provider whose key is set — so a dead provider degrades gracefully instead of failing the run, and it only errors out if *every* provider fails. The log prints `Routing attempt via '<provider>'` per hop (and `ran via fallback provider …` when it recovers).
+
+Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus` explicitly.
 
 **Direct (`provider: direct`)** — the official Anthropic API, no middleman:
 
