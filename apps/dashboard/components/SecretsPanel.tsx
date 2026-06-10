@@ -4,8 +4,21 @@ import { useState, useEffect } from 'react'
 import type { Secret, Skill } from '../lib/types'
 import { inputCls, displayName } from '../lib/utils'
 import { Scramble } from './ui/Animated'
+import { ServiceIcon } from './ui/ServiceIcon'
+import { linkify } from './ui/Linkify'
 import { InstantModeCard } from './InstantModeCard'
 import { TelegramChatIdHelper } from './TelegramChatIdHelper'
+
+// Logo shown next to each credential group's header. Brand groups use their
+// favicon; non-brand groups use a glyph.
+const GROUP_ICON: Record<string, { domain?: string; glyph?: 'mail' | 'key' }> = {
+  Core: { glyph: 'key' },
+  Telegram: { domain: 'telegram.org' },
+  Discord: { domain: 'discord.com' },
+  Slack: { domain: 'slack.com' },
+  Email: { glyph: 'mail' },
+  'Skill Keys': { glyph: 'key' },
+}
 
 interface SecretsPanelProps {
   secrets: Secret[]
@@ -87,7 +100,8 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
         const gs = secrets.filter(s => s.group === group); if (!gs.length) return null
         return (
           <section key={group} className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="group flex items-center gap-3 mb-4">
+              <ServiceIcon domain={GROUP_ICON[group]?.domain} glyph={GROUP_ICON[group]?.glyph} />
               <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">
                 {String(gi + 1).padStart(2, '0')} / {group}
               </span>
@@ -98,11 +112,13 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
             </div>
             <div className="border border-[rgba(250,250,250,0.10)] divide-y divide-[rgba(250,250,250,0.08)]">
               {gs.map(secret => (
-                <div key={secret.name} id={`secret-${secret.name}`} className={`px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-eva-orange/5' : ''}`}>
-                  <div className="flex items-center justify-between">
-                    <div className="min-w-0">
+                <div key={secret.name} id={`secret-${secret.name}`} className={`group px-[var(--space-md)] py-[var(--space-sm)] scroll-mt-24 transition-colors ${editingSecret === secret.name ? 'bg-eva-orange/5' : ''}`}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3 min-w-0">
+                      <ServiceIcon name={secret.name} className="mt-0.5" />
+                      <div className="min-w-0">
                       <div className="flex items-center gap-2"><span className="font-mono text-xs">{secret.name}</span><span className={`w-2 h-2 rounded-full ${secret.isSet ? 'bg-eva-green' : 'bg-[rgba(250,250,250,0.15)]'}`} /></div>
-                      <div className="text-[11px] text-primary-40 font-mono">{secret.description}</div>
+                      <div className="text-[11px] text-primary-40 font-mono">{linkify(secret.description)}</div>
                       {secret.name === 'TELEGRAM_BOT_TOKEN' && (
                         <a
                           href="https://t.me/BotFather"
@@ -137,8 +153,9 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                             ))}
                         </div>
                       )}
+                      </div>
                     </div>
-                    <div className="flex gap-1.5">
+                    <div className="flex gap-1.5 shrink-0">
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors">Remove</button>}
                     </div>
