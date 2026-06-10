@@ -31,27 +31,27 @@ get_category() {
     spawn-instance|fleet-control|fleet-scorecard|contributor-reward|distribute-tokens) echo "core" ;;
     external-feature|feature|deploy-prototype|vuln-scanner) echo "core" ;;
     # Research & Content
-    article|digest|rss-digest|hacker-news-digest|paper-digest|paper-pick) echo "research" ;;
+    article|digest|rss-digest|hn-digest|paper-digest|paper-pick) echo "research" ;;
     list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
     deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
-    huggingface-trending|competitor-launch-radar) echo "research" ;;
+    huggingface-trending|competitor-radar) echo "research" ;;
     narrative-convergence) echo "research" ;;
-    agent-displacement|ai-framework-watch|launch-radar|topic-momentum|tweet-digest) echo "research" ;;
+    agent-displacement|framework-watch|launch-radar|topic-momentum|tweet-digest) echo "research" ;;
     mcp-pulse) echo "research" ;;
     # Dev & Code
     pr-review|pr-triage|github-monitor|github-issues|github-releases|github-trending) echo "dev" ;;
     issue-triage|auto-merge|changelog|code-health|search-skill) echo "dev" ;;
     auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
     repo-scanner|project-lens) echo "dev" ;;
-    workflow-security-audit|vercel-projects) echo "dev" ;;
+    workflow-audit|vercel-projects) echo "dev" ;;
     fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
     smithery-manifest) echo "dev" ;;
     builder-map|disclosure-tracker|ecosystem-entrants|ecosystem-links|ecosystem-pulse) echo "dev" ;;
-    fork-release-tracker|pr-merge-queue|pr-skill-triage|pr-tracker) echo "dev" ;;
-    pvr-triage-monitor|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
+    fork-release|pr-merge|skill-triage|pr-tracker) echo "dev" ;;
+    pvr-triage|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
     # Crypto & Markets
-    token-alert|token-movers|token-report|token-pick|monitor-runners|price-threshold-alert) echo "crypto" ;;
-    on-chain-monitor|defi-monitor|defi-overview|market-context-refresh|narrative-tracker) echo "crypto" ;;
+    token-alert|token-movers|token-report|token-pick|monitor-runners|price-alert) echo "crypto" ;;
+    onchain-monitor|defi-monitor|defi-overview|market-context|narrative-tracker) echo "crypto" ;;
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
     treasury-info) echo "crypto" ;;
     aixbt-pulse|compute-pulse|pm-intel|pm-manipulation|pm-pulse|polymarket|rwa-pulse) echo "crypto" ;;
@@ -60,31 +60,31 @@ get_category() {
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
     approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
-    lp-lock-check|vigil|vigil-revoke|wallet-risk-audit) echo "onchain-security" ;;
+    lp-lock|vigil|vigil-revoke|wallet-risk) echo "onchain-security" ;;
     # Social
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
-    show-hn-draft|syndicate-article|product-hunt-launch) echo "social" ;;
+    show-hn|syndicate-article|product-hunt) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
     engagement-act|skill-spotlight|thread-formatter) echo "social" ;;
     # Productivity
     priority-brief|routine|ops-recap|retrospective|shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
-    deal-flow|reg-monitor|reflect|follow-up-patrol|v4-readiness) echo "productivity" ;;
+    deal-flow|reg-monitor|reflect|followup-patrol|v4-readiness) echo "productivity" ;;
     idea-pipeline|idea-validator|milestone-tracker|note-taking) echo "productivity" ;;
     # Meta / Agent
-    heartbeat|spend-monitor|cost-report|skill-leaderboard|skill-update-check) echo "meta" ;;
+    heartbeat|spend-monitor|cost-report|skill-leaderboard|skill-update) echo "meta" ;;
     rss-feed|update-gallery|onboard|operator-scorecard) echo "meta" ;;
-    batch-health|config-validator|janitor|memory-flush|memory-structural-dedupe) echo "meta" ;;
-    run-frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "meta" ;;
-    skill-freshness|skill-graph|skill-security-scan|star-momentum-alert) echo "meta" ;;
-    atrium-catalog-watcher|capabilities-map|capabilities-sweep|sparkleware-catalog) echo "meta" ;;
-    contributor-spotlight|fleet-skill-adoption|fleet-state) echo "meta" ;;
-    fork-contributor-leaderboard|fork-first-run-alert|fork-health-score|fork-skill-digest|fork-skill-gap) echo "meta" ;;
+    batch-health|config-validator|janitor|memory-flush|memory-dedupe) echo "meta" ;;
+    frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "meta" ;;
+    skill-freshness|skill-graph|skill-scan|star-momentum) echo "meta" ;;
+    atrium-watch|capabilities-map|capabilities-sweep|sparkleware-catalog) echo "meta" ;;
+    contributor-spotlight|skill-adoption|fleet-state) echo "meta" ;;
+    contributor-leaderboard|fork-firstrun|fork-health|fork-digest|skill-gap) echo "meta" ;;
     # Ported from aeon-aaron (PR #343)
     beat-tracker|article-queue) echo "research" ;;
-    fear-divergence-scout|picks-tracker) echo "crypto" ;;
+    fear-divergence|picks-tracker) echo "crypto" ;;
     content-performance|thread-writer|mention-radar) echo "social" ;;
-    api-health-probe) echo "meta" ;;
+    api-health) echo "meta" ;;
     *) echo "other" ;;
   esac
 }

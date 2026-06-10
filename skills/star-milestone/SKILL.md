@@ -1,6 +1,6 @@
 ---
 name: star-milestone
-description: Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a velocity-shaped narrative — time-to-milestone, growth shape, projection, and a tight highlight reel. Optionally auto-dispatches downstream skills (e.g. show-hn-draft at 500⭐) per the rule map in `memory/topics/milestone-dispatch.json`.
+description: Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a velocity-shaped narrative — time-to-milestone, growth shape, projection, and a tight highlight reel. Optionally auto-dispatches downstream skills (e.g. show-hn at 500⭐) per the rule map in `memory/topics/milestone-dispatch.json`.
 var: ""
 tags: [dev]
 ---
@@ -135,11 +135,11 @@ Read `memory/topics/milestone-dispatch.json`. If absent, write the seed `{"rules
 {
   "rules": {
     "aaronjmars/aeon": {
-      "500": "show-hn-draft"
+      "500": "show-hn"
     }
   },
   "dispatched": {
-    "aaronjmars/aeon:500:show-hn-draft": "2026-06-11T08:15:00Z"
+    "aaronjmars/aeon:500:show-hn": "2026-06-11T08:15:00Z"
   }
 }
 ```
@@ -161,7 +161,7 @@ d. On dispatch failure (gh non-zero, rate limit, permission denied), DO NOT writ
    One attempt, one notification on failure. Step 5a will prevent auto-retry on the next run — operator dispatches manually if they want it.
 
 **Constraints:**
-- **Idempotent.** The `dispatched` map plus step 5a make this safe to re-run — a second pass at 502⭐ never fires `show-hn-draft` a second time.
+- **Idempotent.** The `dispatched` map plus step 5a make this safe to re-run — a second pass at 502⭐ never fires `show-hn` a second time.
 - **Operator-editable.** Rules are added/removed by hand; the skill only writes to `dispatched`. Adding `"aaronjmars/foo": {"1000": "celebrate"}` is a one-line edit.
 - **Silent on empty rules.** A repo with no rule for any threshold dispatches nothing — behaviour identical to the pre-feature skill.
 

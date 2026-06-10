@@ -266,7 +266,7 @@ Append to `memory/logs/${today}.md`:
 | `ECOSYSTEM_ENTRANTS_STATE_CORRUPT` | State JSON unreadable, recreated; silent recovery this run | No |
 | `ECOSYSTEM_ENTRANTS_BAD_VAR` | `${var}` parse failed | No |
 
-`OK` and `QUIET` are the two success states. The split lets the dashboard show "ran clean, nothing changed" without overloading the OK row — the same pattern `ecosystem-pulse`, `competitor-launch-radar`, and `pr-merge-queue` use.
+`OK` and `QUIET` are the two success states. The split lets the dashboard show "ran clean, nothing changed" without overloading the OK row — the same pattern `ecosystem-pulse`, `competitor-radar`, and `pr-merge` use.
 
 ## Design notes (do not edit without reading)
 

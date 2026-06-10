@@ -100,7 +100,7 @@ Do NOT attempt a blind submission. Instead, flag the entry as `pvr-enabled-needs
 
 Rewrite `memory/security-watchlist.md` with updated `last-checked` and `status` for every entry. Status values: `pvr-disabled` | `pvr-enabled-pending-submit` | `submitted` | `not-found` | `access-denied` | `pvr-enabled-needs-reresearch`.
 
-Remove entries where `status: submitted` AND the submission happened more than 30 days ago (they're done; lifecycle tracking is handled by `pvr-triage-monitor` from there).
+Remove entries where `status: submitted` AND the submission happened more than 30 days ago (they're done; lifecycle tracking is handled by `pvr-triage` from there).
 
 ### 5. Decide whether to notify
 

@@ -194,4 +194,4 @@ None. Uses local file reads and `gh` CLI (authenticated via GITHUB_TOKEN in work
 
 ## Sandbox Note
 
-No external network calls in the main logic. `gh pr list` uses the `gh` CLI which handles auth internally (no curl + token pattern needed). WebSearch not required — narrative context comes from `memory/topics/market-context.md` if a `market-context-refresh` skill has populated it.
+No external network calls in the main logic. `gh pr list` uses the `gh` CLI which handles auth internally (no curl + token pattern needed). WebSearch not required — narrative context comes from `memory/topics/market-context.md` if a `market-context` skill has populated it.

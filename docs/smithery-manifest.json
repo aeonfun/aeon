@@ -146,7 +146,7 @@
           "description": "[Aeon · Productivity] Compare current progress against goals stored in MEMORY.md (cron: 0 18 * * *)"
         },
         {
-          "name": "aeon-hacker-news-digest",
+          "name": "aeon-hn-digest",
           "description": "[Aeon · Research] Top HN stories filtered by keywords relevant to your interests (cron: 0 7 * * *)"
         },
         {
@@ -170,7 +170,7 @@
           "description": "[Aeon · Research] Top tweets from tracked X lists in the past 24 hours (cron: 0 17 * * *)"
         },
         {
-          "name": "aeon-market-context-refresh",
+          "name": "aeon-market-context",
           "description": "[Aeon · Crypto] Fetch live crypto macro data and update memory/topics/market-context.md (cron: 0 13 * * *)"
         },
         {
@@ -194,7 +194,7 @@
           "description": "[Aeon · Crypto] Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak (cron: 30 13 * * *)"
         },
         {
-          "name": "aeon-on-chain-monitor",
+          "name": "aeon-onchain-monitor",
           "description": "[Aeon · Crypto] Monitor blockchain addresses and contracts for notable activity (cron: 0 12 * * *)"
         },
         {
@@ -306,11 +306,11 @@
           "description": "[Aeon · Productivity] Diagnose and fix failing or degraded skills automatically (on-demand)"
         },
         {
-          "name": "aeon-skill-security-scan",
+          "name": "aeon-skill-scan",
           "description": "[Aeon · Dev] Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run (cron: 0 16 * * 1)"
         },
         {
-          "name": "aeon-skill-update-check",
+          "name": "aeon-skill-update",
           "description": "[Aeon · Productivity] Check imported skills for upstream changes and security regressions since the version in skills.lock (cron: 0 19 * * 0)"
         },
         {
@@ -398,7 +398,7 @@
           "description": "[Aeon · Productivity] Weekly narrative of everything shipped — features, fixes, and momentum, written as a compelling update (cron: 0 9 * * 1)"
         },
         {
-          "name": "aeon-workflow-security-audit",
+          "name": "aeon-workflow-audit",
           "description": "[Aeon · Dev] Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. (cron: 0 16 * * 0)"
         },
         {

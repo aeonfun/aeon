@@ -1,6 +1,6 @@
 ---
 name: Wallet Digest
-description: Lightweight balance-and-activity summary across tracked wallets. Sibling to on-chain-monitor — balances-only, no per-transfer decode.
+description: Lightweight balance-and-activity summary across tracked wallets. Sibling to onchain-monitor — balances-only, no per-transfer decode.
 var: ""
 tags: [crypto]
 ---
@@ -8,16 +8,16 @@ tags: [crypto]
 
 If `${var}` is set, only check the wallet with that label.
 
-This skill is the **lite alternative** to `on-chain-monitor`. Both read the same config file (`memory/on-chain-watches.yml`). The difference:
+This skill is the **lite alternative** to `onchain-monitor`. Both read the same config file (`memory/on-chain-watches.yml`). The difference:
 
-| | `wallet-digest` (this skill) | `on-chain-monitor` |
+| | `wallet-digest` (this skill) | `onchain-monitor` |
 |---|---|---|
 | Output | Per-wallet balance + delta + tx count | Full decoded transfer list with USD, counterparty labels, tags |
 | Cost | One JSON-RPC `eth_getBalance` + one `eth_getLogs` per wallet | Alchemy/Etherscan v2 multi-call + CoinGecko USD enrichment |
 | Use it for | Daily "is anything moving?" summary | Detailed transfer-level alerting and whale-tracking |
 | Frequency | Daily or hourly | Every 10–30 min |
 
-If you want full decoded transfers with USD values and counterparty tags, use `on-chain-monitor`. Use this skill for a quick "balances and tx counts" digest.
+If you want full decoded transfers with USD values and counterparty tags, use `onchain-monitor`. Use this skill for a quick "balances and tx counts" digest.
 
 ## Config
 
@@ -68,7 +68,7 @@ curl -m 10 -s -X POST "${rpc_url}" -H "Content-Type: application/json" \
   -d '{"jsonrpc":"2.0","method":"eth_getLogs","params":[{"fromBlock":"'"$FROM"'","toBlock":"latest","address":"'"$address"'"}],"id":1}'
 ```
 
-Count the returned logs as a rough activity proxy (this is balance/event count, not a full transfer decode — that's `on-chain-monitor`'s job).
+Count the returned logs as a rough activity proxy (this is balance/event count, not a full transfer decode — that's `onchain-monitor`'s job).
 
 **c) Compare balance to last logged value** in `memory/logs/` (grep for prior `Balance:` lines under this wallet's label). Compute delta. Flag if `|delta| >= threshold`.
 
@@ -83,7 +83,7 @@ Change: +/- Z ETH since last check (flagged if above threshold)
 Events: N in last ~256 blocks
 ```
 
-If a wallet shows a delta above its threshold, add a one-line `Notable:` flag pointing the operator at `on-chain-monitor` for the full transfer decode.
+If a wallet shows a delta above its threshold, add a one-line `Notable:` flag pointing the operator at `onchain-monitor` for the full transfer decode.
 
 ### 3. Notify
 

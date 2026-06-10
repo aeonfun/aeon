@@ -59,7 +59,7 @@ The change manifest is embedded here so it travels with the skill — operators 
 | `./notify "message"` interface | bash | Operator-facing CLI; documented in CLAUDE.md |
 | `memory/` directory layout (`MEMORY.md`, `logs/`, `topics/`, `issues/`) | filesystem | File-based memory is the project's identity; layout is documented in CLAUDE.md |
 | `articles/${skill}-${today}.md` output convention | per-skill | Consumed by chains, dashboard, syndicate-article — too many readers to break |
-| `memory/watched-repos.md` format (`- owner/repo` per line) | filesystem | Read by repo-pulse, repo-actions, fork-fleet, star-momentum-alert |
+| `memory/watched-repos.md` format (`- owner/repo` per line) | filesystem | Read by repo-pulse, repo-actions, fork-fleet, star-momentum |
 | `gh api` and `gh pr create` usage in skills | bash | GitHub CLI is stable; sandbox workaround for env-var-in-headers |
 | `${today}` template variable | SKILL.md prose | Substituted by the runner; no plan to change |
 
@@ -310,7 +310,7 @@ Cap message at ~3500 chars (Telegram safe limit). If exceeded, drop the Custom s
 
 - **Never auto-mutate the fork.** The skill is read-only. It does not edit `aeon.yml`, does not open a PR, does not pull upstream. The upgrade decision belongs to the operator.
 - **Never invent v4 details.** The Manifest is the only source of truth. Operators update the Manifest when the maintainer posts v4 changes; the skill reports against whatever the Manifest currently says. If the Manifest is stale, the report is stale, but it is never wrong-by-fabrication.
-- **Custom-skill detection is heuristic.** A skill present under `skills/` with no `install:` in `skills.json` is treated as custom. False positives (the fork removed and re-added an upstream skill manually) are tagged `manual` so the operator notices; false negatives (the fork edited an upstream skill in place) are caught by `skill-update-check`, not here.
+- **Custom-skill detection is heuristic.** A skill present under `skills/` with no `install:` in `skills.json` is treated as custom. False positives (the fork removed and re-added an upstream skill manually) are tagged `manual` so the operator notices; false negatives (the fork edited an upstream skill in place) are caught by `skill-update`, not here.
 - **Idempotent.** Same-day reruns overwrite the article. The log line is appended (multiple runs visible if the operator re-dispatches during an upgrade).
 - **One notification max per run.** Even if remote-mode audits multiple targets in sequence (not currently supported by `var` syntax — one slug per run), each invocation produces at most one notify call.
 - **Manifest evolves; skill body does not.** When the v4 announcement lands, the Manifest tables in this file are the only edit surface. The Steps and Constraints stay stable so operators can regenerate the article without merging upstream changes to skill prose.

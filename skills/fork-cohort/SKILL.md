@@ -6,7 +6,7 @@ tags: [meta, community]
 ---
 > **${var}** — Optional `owner/repo` to scope the parent repo. If empty, infers parent from the current repo's `parent.full_name` (or, on a non-fork, uses the current repo as parent).
 
-Today is ${today}. Bucket every fork of the parent repo by *current activation stage* — not by code divergence (`fork-fleet` already does that), not by who's contributing (`fork-contributor-leaderboard` already does that), but by **whether the fork is actually running right now**.
+Today is ${today}. Bucket every fork of the parent repo by *current activation stage* — not by code divergence (`fork-fleet` already does that), not by who's contributing (`contributor-leaderboard` already does that), but by **whether the fork is actually running right now**.
 
 This closes the visibility gap. `fork-fleet` reads pushed_at and unique commits — both hide silent abandonment, because a fork can have great code yet zero scheduled runs (workflows disabled, secrets unset, fork created and forgotten). The ground truth for "is this Aeon instance alive?" is GitHub Actions run history on the fork itself.
 

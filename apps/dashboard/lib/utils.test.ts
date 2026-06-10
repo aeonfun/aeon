@@ -19,9 +19,10 @@ describe("displayName", () => {
 
   it("handles special abbreviations", () => {
     assert.equal(displayName("pr-review"), "PR Review");
-    // "hacker" is not abbreviated by displayName; "hn" (as in hn-digest) is
-    assert.equal(displayName("hacker-news-digest"), "Hacker News Digest");
-    assert.equal(displayName("ai-framework-watch"), "AI Framework Watch");
+    // hn/lp/pvr are upper-cased abbreviations; bare words are title-cased
+    assert.equal(displayName("hn-digest"), "HN Digest");
+    assert.equal(displayName("lp-lock"), "LP Lock");
+    assert.equal(displayName("pvr-triage"), "PVR Triage");
   });
 
   it("handles single-word slugs", () => {

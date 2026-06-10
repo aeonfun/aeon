@@ -2,7 +2,7 @@ import { DAYS } from './constants'
 import type { Run } from './types'
 
 export function displayName(slug: string): string {
-  const special: Record<string, string> = { pr: 'PR', hn: 'HN', rss: 'RSS', defi: 'DeFi', ai: 'AI', x: 'X', mcp: 'MCP' }
+  const special: Record<string, string> = { pr: 'PR', hn: 'HN', rss: 'RSS', defi: 'DeFi', ai: 'AI', x: 'X', mcp: 'MCP', lp: 'LP', pvr: 'PVR', api: 'API' }
   return slug.split('-').map(w => special[w] || (w[0]?.toUpperCase() + w.slice(1))).join(' ')
 }
 

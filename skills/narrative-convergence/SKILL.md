@@ -26,18 +26,18 @@ The signal-category map is **operator-editable** and lives in `memory/topics/sig
 # Signal Categories
 
 ## Housekeeping (excluded — no external signals)
-config-validator, janitor, run-frequency-guard, batch-health, heartbeat, memory-flush,
-memory-structural-dedupe, skill-evals, skill-health, skill-repair, self-review, reflect,
+config-validator, janitor, frequency-guard, batch-health, heartbeat, memory-flush,
+memory-dedupe, skill-evals, skill-health, skill-repair, self-review, reflect,
 spend-monitor, cost-report, fleet-scorecard, fleet-control, repo-scanner, narrative-convergence
 
 ## Signal categories (skill → category)
 | Category | Skills |
 |----------|--------|
-| market | market-context-refresh, token-pick, token-movers, rwa-pulse, defi-monitor |
+| market | market-context, token-pick, token-movers, rwa-pulse, defi-monitor |
 | social | tweet-roundup, list-digest, narrative-tracker, remix-tweets, refresh-x |
 | ecosystem | github-issues, github-trending, project-lens, builder-map, external-feature, milestone-tracker |
 | sector | mcp-pulse, compute-pulse, x402-monitor, agent-displacement, pm-pulse |
-| security | vuln-scanner, vuln-tracker, disclosure-tracker, pvr-watchlist, pvr-triage-monitor |
+| security | vuln-scanner, vuln-tracker, disclosure-tracker, pvr-watchlist, pvr-triage |
 | research | paper-pick, article, idea-validator, idea-pipeline |
 | opportunity | startup-idea, deal-flow, launch-radar |
 ```

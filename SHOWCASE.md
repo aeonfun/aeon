@@ -12,7 +12,7 @@
 
 ## Active forks
 
-A snapshot of the operators currently running their own Aeon instance. "Active" means the fork pushed within the last 30 days. Source: scheduled `fork-contributor-leaderboard` and `skill-leaderboard` runs against the GitHub forks API.
+A snapshot of the operators currently running their own Aeon instance. "Active" means the fork pushed within the last 30 days. Source: scheduled `contributor-leaderboard` and `skill-leaderboard` runs against the GitHub forks API.
 
 | Fork | Skills enabled | What it focuses on |
 |------|---------------:|--------------------|
@@ -24,11 +24,11 @@ A snapshot of the operators currently running their own Aeon instance. "Active" 
 | [pezetel/aeon](https://github.com/pezetel/aeon) | 2 | `heartbeat` + `github-trending` — a focused dev-pulse instance. The first fork to break `github-trending` out of the long tail. |
 | [UIZorrot/aeon](https://github.com/UIZorrot/aeon) | 1 | Careful Finance fork - uses Aeon/GitHub Actions as the scheduled market-analysis layer behind a public DeFi-yield and perp-arb ChatUI. |
 
-The full ranking — including the per-week skill-divergence buckets and the contributor leaderboard — is regenerated every Sunday by the `fork-skill-digest` and `fork-contributor-leaderboard` skills, with the latest output published to [`articles/`](articles/).
+The full ranking — including the per-week skill-divergence buckets and the contributor leaderboard — is regenerated every Sunday by the `fork-digest` and `contributor-leaderboard` skills, with the latest output published to [`articles/`](articles/).
 
 ### What forks teach upstream
 
-The fleet is **infrastructure-first**: 18 of 24 active forks run only `heartbeat`. Of the rest, the most common second skills are `github-trending`, `morning-brief`, and the crypto cluster (`token-alert`, `token-movers`, `token-report`). When two or more forks independently flip the same default, the `fork-skill-digest` skill flags it as a `DEFAULT_FLIP` candidate and surfaces it for upstream consideration.
+The fleet is **infrastructure-first**: 18 of 24 active forks run only `heartbeat`. Of the rest, the most common second skills are `github-trending`, `morning-brief`, and the crypto cluster (`token-alert`, `token-movers`, `token-report`). When two or more forks independently flip the same default, the `fork-digest` skill flags it as a `DEFAULT_FLIP` candidate and surfaces it for upstream consideration.
 
 If you're spinning up a new fork, the leaderboard is the cheapest map of what other operators have already validated.
 
@@ -68,6 +68,6 @@ If you need an agent you watch, pick one of the others. If you need an agent tha
 
 ## Add yourself
 
-Running an Aeon fork that should be on this page? Open a PR adding a row to the **Active forks** table. The `fork-skill-digest` and `fork-contributor-leaderboard` skills automatically pick up active forks from the GitHub API; this page links the human-readable summary.
+Running an Aeon fork that should be on this page? Open a PR adding a row to the **Active forks** table. The `fork-digest` and `contributor-leaderboard` skills automatically pick up active forks from the GitHub API; this page links the human-readable summary.
 
 For the comparison table, corrections from maintainers of the listed frameworks are welcome — open an issue or a PR.

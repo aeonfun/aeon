@@ -14,7 +14,7 @@ The skill answers a question the existing health stack cannot: a chained skill t
 
 Aeon's reliability story has three layers — `heartbeat` (per-run pulse), `skill-analytics` (per-skill ranking over time), `skill-health` (per-skill failure detection) — and one gap. None of them catches the case where a producer skill's last successful run was N days ago and a downstream consumer is still happily reading the cached file as if it were fresh. The output of `tweet-allocator` looks normal. The output of `repo-pulse` looks normal. The aggregate verdict from `operator-scorecard` looks normal. The only signal something is wrong is that the upstream `articles/token-report-*.md` mtime drifted past its freshness window — and nobody is looking.
 
-This skill looks. It's a watchdog for **silent staleness**, not for failures. It does not duplicate `skill-health`'s job (which catches consecutive failures by reading run history) or `skill-update-check`'s job (which catches upstream SKILL.md drift in imported skills). Its scope is narrow: file-on-disk freshness vs the consumer that's about to read it.
+This skill looks. It's a watchdog for **silent staleness**, not for failures. It does not duplicate `skill-health`'s job (which catches consecutive failures by reading run history) or `skill-update`'s job (which catches upstream SKILL.md drift in imported skills). Its scope is narrow: file-on-disk freshness vs the consumer that's about to read it.
 
 ## Config
 

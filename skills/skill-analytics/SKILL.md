@@ -110,7 +110,7 @@ Pick the strongest single claim, in priority:
 
 ### 9. Significance gate
 
-**Notify only if `anomaly_count >= 1`.** Silent run = correct (no anomalies in fleet) = no notification. Following the autoresearch-evolution / fork-skill-digest pattern: noisy skills break trust faster than missing pings.
+**Notify only if `anomaly_count >= 1`.** Silent run = correct (no anomalies in fleet) = no notification. Following the autoresearch-evolution / fork-digest pattern: noisy skills break trust faster than missing pings.
 
 If gate says skip, still write the article and JSON spec, and log `SKILL_ANALYTICS_QUIET` (no anomalies). The dashboard widget refreshes regardless; only the push notification is gated.
 
