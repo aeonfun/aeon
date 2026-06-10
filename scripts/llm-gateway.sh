@@ -121,29 +121,53 @@ JSON
 #   anthropic  pay-as-you-go Anthropic API (ANTHROPIC_API_KEY)
 #   openrouter bankr usepod venice surplus  — gateway keys
 #
-# `claude` and `anthropic` both route via the `direct` path; we drop the other
-# credential so the chosen one wins deterministically when both happen to be set.
-# `direct` is the implicit final fallback (errors later if no usable key).
+# `claude` and `anthropic` are NATIVE direct-API tiers (handled by the case
+# below). `direct` is the implicit final fallback (errors later if no usable key).
+aeon_present() {  # is the secret for provider $1 set?
+  case "$1" in
+    claude)     [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ] ;;
+    anthropic)  [ -n "${ANTHROPIC_API_KEY:-}" ] ;;
+    openrouter) [ -n "${OPENROUTER_API_KEY:-}" ] ;;
+    bankr)      [ -n "${BANKR_LLM_KEY:-}" ] ;;
+    usepod)     [ -n "${USEPOD_TOKEN:-}" ] ;;
+    venice)     [ -n "${VENICE_API_KEY:-}" ] ;;
+    surplus)    [ -n "${SURPLUS_API_KEY:-}" ] ;;
+    *) false ;;
+  esac
+}
 if [ -z "${GATEWAY:-}" ] || [ "${GATEWAY}" = "auto" ]; then
-  resolved=""
+  # Ordered list of every provider whose secret is set (priority via GATEWAY_ORDER).
+  AEON_CANDIDATES=""
   for provider in ${GATEWAY_ORDER:-claude anthropic openrouter bankr usepod venice surplus}; do
-    case "$provider" in
-      claude)     if [ -n "${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then resolved="direct";     unset ANTHROPIC_API_KEY;       fi ;;
-      anthropic)  if [ -n "${ANTHROPIC_API_KEY:-}" ];       then resolved="direct";     unset CLAUDE_CODE_OAUTH_TOKEN; fi ;;
-      openrouter) if [ -n "${OPENROUTER_API_KEY:-}" ];      then resolved="openrouter"; fi ;;
-      bankr)      if [ -n "${BANKR_LLM_KEY:-}" ];           then resolved="bankr";      fi ;;
-      usepod)     if [ -n "${USEPOD_TOKEN:-}" ];            then resolved="usepod";     fi ;;
-      venice)     if [ -n "${VENICE_API_KEY:-}" ];          then resolved="venice";     fi ;;
-      surplus)    if [ -n "${SURPLUS_API_KEY:-}" ];         then resolved="surplus";    fi ;;
-    esac
-    if [ -n "$resolved" ]; then break; fi
+    if aeon_present "$provider"; then AEON_CANDIDATES="${AEON_CANDIDATES:+$AEON_CANDIDATES }$provider"; fi
   done
-  GATEWAY="${resolved:-direct}"
+  [ -z "$AEON_CANDIDATES" ] && AEON_CANDIDATES="direct"
+  # List mode (RUN, not sourced): print the cascade order and stop. aeon.yml's
+  # Run step uses this to fail over from one provider to the next on any failure.
+  if [ -n "${AEON_LIST_CANDIDATES:-}" ]; then printf '%s\n' "$AEON_CANDIDATES"; exit 0; fi
+  # Single-shot: set up the first present provider (preserves prior behavior).
+  GATEWAY="${AEON_CANDIDATES%% *}"
   echo "::notice::gateway=auto resolved to '${GATEWAY}'"
 fi
 
 # --- route ------------------------------------------------------------------
 case "${GATEWAY:-direct}" in
+
+  claude)  # NATIVE — Claude Code subscription (OAuth token)
+    require_secret CLAUDE_CODE_OAUTH_TOKEN
+    unset ANTHROPIC_API_KEY   # prefer the subscription token over a pay-go key
+    echo "::notice::Using Claude Code subscription (CLAUDE_CODE_OAUTH_TOKEN)"
+    ;;
+
+  anthropic)  # NATIVE — pay-as-you-go Anthropic API key (or compatible endpoint)
+    require_secret ANTHROPIC_API_KEY
+    unset CLAUDE_CODE_OAUTH_TOKEN
+    if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
+      echo "::notice::Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
+    else
+      echo "::notice::Using direct Anthropic API (ANTHROPIC_API_KEY)"
+    fi
+    ;;
 
   bankr)  # NATIVE — unchanged from aeon's existing behavior
     require_secret BANKR_LLM_KEY

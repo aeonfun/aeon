@@ -313,13 +313,21 @@ jobs:
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"
 
           # --- AI Gateway routing ---
+          # provider: auto → cascade through every provider whose key is set, in
+          # priority order, failing over to the next on ANY failure. An explicit
+          # provider pins a single one (no failover). Setup runs per-attempt in the
+          # run loop below, so a dead/credit-less provider is skipped, not fatal.
+          BASE_MODEL="$MODEL"
+          GW="${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
           GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
           GATEWAY="${GATEWAY:-auto}"
-          echo "Gateway: $GATEWAY"
-
-          echo "GATEWAY=$GATEWAY" >> "$GITHUB_OUTPUT"
-
-          source "${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
+          if [ "$GATEWAY" = "auto" ]; then
+            CANDIDATES=$(AEON_LIST_CANDIDATES=1 bash "$GW")
+          else
+            CANDIDATES="$GATEWAY"   # explicit pin → single provider, no failover
+          fi
+          echo "Gateway: $GATEWAY  |  cascade order: $CANDIDATES"
+          echo "GATEWAY=${CANDIDATES%% *}" >> "$GITHUB_OUTPUT"   # provisional; overwritten with the winner below
 
           # Generate notify script in workspace (Claude calls: ./notify "message")
           # Messages are saved to .pending-notify/ for reliable post-run delivery
@@ -522,14 +530,37 @@ jobs:
           Use this variable (override the default in the skill file):
           var=$VAR"
           fi
-          if ! CLAUDE_OUTPUT=$(echo "$PROMPT" | claude -p - \
-            --model "$MODEL" --allowedTools "$ALLOWED" \
-            "${MCP_FLAGS[@]}" --output-format json 2>&1); then
-            echo "::error::Claude CLI failed. Output: $CLAUDE_OUTPUT"
+          # Cascade: try each provider in priority order; on ANY failure fall over
+          # to the next. Each attempt runs in a subshell so provider setup (env +
+          # any claude-code-router sidecar) is isolated and torn down on exit. The
+          # gateway script's notices go to stderr (>&2) so only Claude's JSON is captured.
+          CLAUDE_OK=0
+          USED_GATEWAY=""
+          for cand in $CANDIDATES; do
+            echo "::notice::Routing attempt via '$cand'"
+            # No `set -e` here: the gateway script signals a hard setup failure with
+            # an explicit `exit 1` (which exits this subshell → fall over), and on
+            # success the subshell's status is Claude's own exit code. A benign
+            # non-zero from a trailing test in the gateway script is harmless — we
+            # only fall over on an explicit exit or a failed Claude call.
+            if CLAUDE_OUTPUT=$(
+              GATEWAY="$cand"
+              MODEL="$BASE_MODEL"
+              source "$GW" >&2
+              echo "$PROMPT" | claude -p - --model "$MODEL" --allowedTools "$ALLOWED" "${MCP_FLAGS[@]}" --output-format json 2>&1
+            ); then
+              USED_GATEWAY="$cand"; CLAUDE_OK=1; break
+            fi
+            echo "::warning::provider '$cand' failed — $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 160 | tr '\n' ' ')"
+          done
+          if [ "$CLAUDE_OK" != "1" ]; then
+            echo "::error::All gateway providers failed ($CANDIDATES). Last output: $CLAUDE_OUTPUT"
             # Save error signature for quality tracking (cron-state step reads this)
             echo "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
             exit 1
           fi
+          [ "$USED_GATEWAY" != "${CANDIDATES%% *}" ] && echo "::notice::Skill ran via fallback provider '$USED_GATEWAY'"
+          echo "GATEWAY=$USED_GATEWAY" >> "$GITHUB_OUTPUT"
 
           # Extract and print the text result so logs still show skill output
           RESULT_TEXT=$(echo "$CLAUDE_OUTPUT" | jq -r '.result // empty')
