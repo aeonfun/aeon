@@ -57,9 +57,9 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-![Skills](./assets/skills-aeon-193.jpg)
+![Skills](./assets/skills-aeon-197.jpg)
 
-**196 skills across 8 categories.** Every skill is independently installable, schedulable, and chainable.
+**197 skills across 8 categories.** Every skill is independently installable, schedulable, and chainable.
 
 | Category | Count | Examples |
 |----------|-------|----------|
