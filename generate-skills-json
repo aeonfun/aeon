@@ -55,7 +55,7 @@ get_category() {
     monitor-polymarket|monitor-kalshi|polymarket-comments|unlock-monitor) echo "crypto" ;;
     treasury-info) echo "crypto" ;;
     aixbt-pulse|compute-pulse|pm-intel|pm-manipulation|pm-pulse|polymarket|rwa-pulse) echo "crypto" ;;
-    wallet-digest|x402-monitor|liquidpad-launch) echo "crypto" ;;
+    wallet-digest|x402-monitor|liquidpad-launch|ctrl) echo "crypto" ;;
     base-mcp) echo "crypto" ;;
     # Onchain Security (Hound pack + forensics)
     rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
