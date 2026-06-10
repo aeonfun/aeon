@@ -8,7 +8,7 @@ interface TopBarProps {
   repo: string
   model: string
   gateway: GatewayProvider
-  authStatus: { authenticated: boolean } | null
+  hasModelKey: boolean
   authLoading: boolean
   pulling: boolean
   syncing: boolean
@@ -20,7 +20,7 @@ interface TopBarProps {
   onSync: () => void
 }
 
-export function TopBar({ skill, view, repo, model, gateway, authStatus, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onPull, onSync }: TopBarProps) {
+export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onPull, onSync }: TopBarProps) {
   const dept = skill ? (CATEGORY_BY_KEY[skill.category || 'meta'] || null) : null
   const modelOptions = MODELS
 
@@ -43,7 +43,7 @@ export function TopBar({ skill, view, repo, model, gateway, authStatus, authLoad
         {gateway !== 'direct' && gateway !== 'auto' && (
           <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-eva-orange uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
         )}
-        {authStatus && !authStatus.authenticated && (
+        {!hasModelKey && (
           <button onClick={onSetupAuth} disabled={authLoading} className="btn-solid-sm disabled:opacity-50">
             {authLoading ? '…' : 'Auth'}
           </button>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import type { Skill, Run, Secret, SkillOutput, GatewayProvider, UploadFile, AnalyticsData } from '../lib/types'
-import { MODELS } from '../lib/constants'
+import { MODELS, AUTH_SECRETS } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -47,7 +47,6 @@ export default function Dashboard() {
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
 
   const [showImport, setShowImport] = useState(false)
-  const [authStatus, setAuthStatus] = useState<{ authenticated: boolean } | null>(null)
   const [authLoading, setAuthLoading] = useState(false)
   const [showAuthModal, setShowAuthModal] = useState(false)
 
@@ -64,7 +63,6 @@ export default function Dashboard() {
   const fetchData = useCallback(async () => {
     try { const [sr, rr, secr] = await Promise.all([fetch('/api/skills'), fetch('/api/runs'), fetch('/api/secrets')]); if (sr.ok) { const d = await sr.json(); setSkills(d.skills); if (d.model) setModel(d.model); if (d.gateway?.provider) setGateway(d.gateway.provider); if (d.repo) setRepo(d.repo) }; if (rr.ok) setRuns((await rr.json()).runs); if (secr.ok) { const d = await secr.json(); if (d.secrets) setSecrets(d.secrets) } } catch (e: unknown) { setError(e instanceof Error ? e.message : 'Failed to connect') } finally { setLoading(false) }
     try { const r = await fetch('/api/sync'); if (r.ok) { const d = await r.json(); setHasChanges(d.hasChanges); if (typeof d.behind === 'number') setBehind(d.behind) } } catch {}
-    try { const r = await fetch('/api/auth'); if (r.ok) setAuthStatus(await r.json()) } catch {}
     // Preload MCP servers so each skill's "MCP servers" panel can show install state.
     try { const r = await fetch('/api/mcp'); if (r.ok) { const d = await r.json(); setMcpServers(d.servers || {}); setMcpLoaded(true) } } catch {}
   }, [])
@@ -84,7 +82,7 @@ export default function Dashboard() {
   const deleteSkill = async (n: string) => { setBusy(b => ({ ...b, [`d-${n}`]: true })); try { const r = await fetch('/api/skills', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n }) }); if (r.ok) { setSkills(s => s.filter(x => x.name !== n)); setSelectedSkill(null); flash(`${displayName(n)} removed`); setHasChanges(true) } } finally { setBusy(b => ({ ...b, [`d-${n}`]: false })) } }
   const syncToGithub = async () => { setSyncing(true); try { const r = await fetch('/api/sync', { method: 'POST' }); if (r.ok) { flash('Synced'); setHasChanges(false) } } finally { setSyncing(false) } }
   const pullFromGithub = async () => { setPulling(true); try { const r = await fetch('/api/outputs', { method: 'POST' }); if (r.ok) { flash('Pulled'); setFeedKey(k => k + 1); fetchData() } } finally { setPulling(false) } }
-  const setupAuth = async (auth?: string | { key: string, baseUrl?: string, provider?: string }) => { setAuthLoading(true); try { const body = typeof auth === 'string' ? { key: auth } : (auth || {}); const r = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (r.ok) { flash('Authenticated'); setAuthStatus({ authenticated: true }); setShowAuthModal(false); fetchData() } else { const d = await r.json().catch(() => ({} as { error?: string })); const msg = typeof d?.error === 'string' ? d.error : (auth ? 'Auth failed' : 'Auto-setup failed'); if (!auth) setShowAuthModal(true); flash(msg) } } finally { setAuthLoading(false) } }
+  const setupAuth = async (auth?: string | { key: string, baseUrl?: string, provider?: string }) => { setAuthLoading(true); try { const body = typeof auth === 'string' ? { key: auth } : (auth || {}); const r = await fetch('/api/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (r.ok) { flash('Authenticated'); setShowAuthModal(false); fetchData() } else { const d = await r.json().catch(() => ({} as { error?: string })); const msg = typeof d?.error === 'string' ? d.error : (auth ? 'Auth failed' : 'Auto-setup failed'); if (!auth) setShowAuthModal(true); flash(msg) } } finally { setAuthLoading(false) } }
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, value }) }); if (r.ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n }) }); if (r.ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
@@ -98,6 +96,9 @@ export default function Dashboard() {
 
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
+  // Any model/provider key set means Aeon can authenticate — the "Auth" CTA hides.
+  // Derived from live `secrets` so it reacts the instant a key is saved or removed.
+  const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
   const enabledCount = skills.filter(s => s.enabled).length
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 
@@ -122,7 +123,7 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar
           skill={skill} view={view} repo={repo} model={model} gateway={gateway}
-          authStatus={authStatus} authLoading={authLoading}
+          hasModelKey={hasModelKey} authLoading={authLoading}
           pulling={pulling} syncing={syncing} hasChanges={hasChanges} behind={behind}
           onSetupAuth={() => setShowAuthModal(true)} onUpdateModel={updateModel}
           onPull={pullFromGithub} onSync={syncToGithub}
