@@ -22,7 +22,7 @@ Install any skill into your own agent:
 | `article` | Research trending topics and write a publication-ready article | Daily 2 PM UTC |
 | `digest` | Generate and send a digest on a configurable topic | Daily 2 PM UTC |
 | `rss-digest` | Fetch, summarize, and deliver RSS feed highlights | Daily 7 AM UTC |
-| `hacker-news-digest` | Top HN stories filtered by your interests | Daily 7 AM UTC |
+| `hn-digest` | Top HN stories filtered by your interests | Daily 7 AM UTC |
 | `hn-digest` | Top Hacker News stories filtered by interests | Daily 7 AM UTC |
 | `paper-digest` | Find and summarize new papers matching tracked research interests | Daily 7 AM UTC |
 | `paper-pick` | Find the one paper most worth reading from arXiv and Semantic Scholar | Daily 2 PM UTC |
@@ -61,7 +61,7 @@ Install any skill into your own agent:
 | `token-movers` | Top movers, losers, and trending coins from CoinGecko | Daily 12 PM UTC |
 | `trending-coins` | Top trending and most searched coins on CoinGecko | Daily 12 PM UTC |
 | `wallet-digest` | Summarize recent wallet activity across tracked addresses | Daily 12 PM UTC |
-| `on-chain-monitor` | Monitor blockchain addresses and contracts for notable activity | Daily 12 PM UTC |
+| `onchain-monitor` | Monitor blockchain addresses and contracts for notable activity | Daily 12 PM UTC |
 | `defi-monitor` | Check pool health, positions, and yield rates for tracked protocols | Daily 12 PM UTC |
 | `defi-overview` | Overview of DeFi activity from DeFiLlama | Daily 12 PM UTC |
 | `polymarket` | Trending and top markets on Polymarket — volume, new markets, movers | Daily 12 PM UTC |

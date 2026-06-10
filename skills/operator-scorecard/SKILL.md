@@ -59,7 +59,7 @@ a. **Stars + forks delta.** Sum every `articles/repo-pulse-*.md` file with date 
 
 If the file format doesn't contain the canonical fields, fall back to scanning `memory/logs/*.md` for `## Repo Pulse` blocks (older format). If both fail for a given repo: `stars_added=null`, mark `growth_source=partial`.
 
-b. **New contributors.** Parse the most recent `articles/fork-contributor-leaderboard-*.md` if it falls in the window. Extract the count of rows in the `## Top Contributors` table whose `Change` column shows `NEW` or `↑NEW` (first-time appearance this week). If no leaderboard in window: `new_contributors=null`.
+b. **New contributors.** Parse the most recent `articles/contributor-leaderboard-*.md` if it falls in the window. Extract the count of rows in the `## Top Contributors` table whose `Change` column shows `NEW` or `↑NEW` (first-time appearance this week). If no leaderboard in window: `new_contributors=null`.
 
 c. **Notable mentions.** Scan `articles/repo-article-*.md` and `articles/project-lens-*.md` filenames in window for any title containing milestones-language (regex `(milestone|launch|hit \d+|featured|HN|Show HN|Hacker News)`). If found, capture up to 2 titles for the `Notable` line. Otherwise omit.
 
@@ -129,7 +129,7 @@ ${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date i
 - repo-pulse: ${N daily articles in window}
 - tweet-allocator: ${N daily articles in window} · total: $${total_distributed}
 - token-report: ${article_path or "missing this window"}
-- fork-contributor-leaderboard: ${article_path or "no leaderboard run in window"}
+- contributor-leaderboard: ${article_path or "no leaderboard run in window"}
 
 ---
 *Companion to skill-analytics (per-skill ranking) and heartbeat (per-run pulse). This skill answers the operator-level question those two don't: "given everything that happened, was this week worth it?" Methodology: every number is sourced from another skill's article — this skill measures nothing itself.*

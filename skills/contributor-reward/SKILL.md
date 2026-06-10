@@ -1,17 +1,17 @@
 ---
 name: contributor-reward
-description: Closes the contributor flywheel — turns the fork-contributor-leaderboard ranking into a tier-priced rewards plan, writes it into memory/distributions.yml, and hands off to distribute-tokens for the actual on-chain send
+description: Closes the contributor flywheel — turns the contributor-leaderboard ranking into a tier-priced rewards plan, writes it into memory/distributions.yml, and hands off to distribute-tokens for the actual on-chain send
 var: ""
 tags: [community, crypto]
 ---
 
 > **${var}** — Optional override. Pass `dry-run` to print the plan without writing to `memory/distributions.yml` or sending a notification. Pass an explicit ISO week (e.g. `2026-W17`) to force-process that week instead of the most recent leaderboard. Empty = process the most recent leaderboard.
 
-Today is ${today}. Closes the loop from `fork-contributor-leaderboard` to `distribute-tokens`: read this week's contributor ranking, price each eligible contributor against a tier table, write a labelled list into `memory/distributions.yml`, and notify the operator with a one-command run line. Humans still gate the actual send (`distribute-tokens` execution stays a manual or chained step) — this skill's job is plan generation, not money movement.
+Today is ${today}. Closes the loop from `contributor-leaderboard` to `distribute-tokens`: read this week's contributor ranking, price each eligible contributor against a tier table, write a labelled list into `memory/distributions.yml`, and notify the operator with a one-command run line. Humans still gate the actual send (`distribute-tokens` execution stays a manual or chained step) — this skill's job is plan generation, not money movement.
 
 ## Why this design
 
-The fork-contributor-leaderboard already names the people moving the project. The distribute-tokens skill already moves tokens with idempotency, balance preflight, and dry-run. The gap was the wiring between them: a contributor's score on Sunday's leaderboard had no path to a wallet credit. This skill is the wiring — and only the wiring.
+The contributor-leaderboard already names the people moving the project. The distribute-tokens skill already moves tokens with idempotency, balance preflight, and dry-run. The gap was the wiring between them: a contributor's score on Sunday's leaderboard had no path to a wallet credit. This skill is the wiring — and only the wiring.
 
 It deliberately stops short of executing transfers because (a) `distribute-tokens` is the only sanctioned transfer path and re-implementing it here would fragment the idempotency state, and (b) keeping a human-visible diff on `memory/distributions.yml` between plan and execution is the cheapest possible audit trail when real money is involved. The plan lands in git; the operator (or a chained step) runs `distribute-tokens contributors-${ISO_WEEK}` next.
 
@@ -35,7 +35,7 @@ Default `token: USDC` on Base, matching `distribute-tokens` defaults. Operator c
 
 No new config files. Reads:
 
-- `articles/fork-contributor-leaderboard-${MOST_RECENT}.md` — the source-of-truth ranking
+- `articles/contributor-leaderboard-${MOST_RECENT}.md` — the source-of-truth ranking
 - `memory/state/contributor-reward-state.json` — idempotency + first-PR-bonus history (created on first run)
 - `memory/distributions.yml` — the file `distribute-tokens` reads (created/updated by this skill)
 
@@ -47,14 +47,14 @@ No new secrets. No new external API calls. No curl. All work is local file I/O p
 
 - If `${var}` starts with `dry-run`, set `MODE=dry-run`. Strip the `dry-run` prefix; remainder (if any) is treated as the week override.
 - Otherwise `MODE=execute`.
-- If the remaining var matches `^\d{4}-W\d{2}$`, set `TARGET_WEEK=${var}` and `LEADERBOARD_GLOB="articles/fork-contributor-leaderboard-*.md"` (will pick the latest file regardless of date — operator is asserting they know which file maps to that week).
+- If the remaining var matches `^\d{4}-W\d{2}$`, set `TARGET_WEEK=${var}` and `LEADERBOARD_GLOB="articles/contributor-leaderboard-*.md"` (will pick the latest file regardless of date — operator is asserting they know which file maps to that week).
 - Otherwise compute `TARGET_WEEK` from today: `TARGET_WEEK=$(date -u +%G-W%V)` (ISO-8601 week-numbering year + week — `%G/%V` not `%Y/%U`, so Monday-anchored weeks roll over correctly across years).
 
 ### 2. Find and validate the source leaderboard article
 
-- `LEADERBOARD_FILE=$(ls -1t articles/fork-contributor-leaderboard-*.md 2>/dev/null | head -1)`
+- `LEADERBOARD_FILE=$(ls -1t articles/contributor-leaderboard-*.md 2>/dev/null | head -1)`
 - If no file → log `CONTRIBUTOR_REWARD_NO_LEADERBOARD` to `memory/logs/${today}.md`, exit silently (no notify). The leaderboard skill is the upstream dependency; if it didn't run, this skill has nothing to do.
-- Compute the file's age in days from its filename suffix (`fork-contributor-leaderboard-YYYY-MM-DD.md`). If age > 8 days → log `CONTRIBUTOR_REWARD_STALE_LEADERBOARD — last leaderboard ${age}d old`, notify the operator that the upstream leaderboard hasn't run, exit. Don't reward against a fortnight-old ranking.
+- Compute the file's age in days from its filename suffix (`contributor-leaderboard-YYYY-MM-DD.md`). If age > 8 days → log `CONTRIBUTOR_REWARD_STALE_LEADERBOARD — last leaderboard ${age}d old`, notify the operator that the upstream leaderboard hasn't run, exit. Don't reward against a fortnight-old ranking.
 
 ### 3. Parse the Top Contributors table
 
@@ -79,7 +79,7 @@ If zero rows extracted (leaderboard format drift) → log `CONTRIBUTOR_REWARD_PA
     "2026-W17": {
       "written_at": "2026-04-26T09:00:00Z",
       "label": "contributors-2026-W17",
-      "leaderboard_file": "articles/fork-contributor-leaderboard-2026-04-26.md",
+      "leaderboard_file": "articles/contributor-leaderboard-2026-04-26.md",
       "rewards": [
         { "login": "alice_dev", "rank": 1, "score": 47, "amount": "25", "first_pr_bonus": false },
         { "login": "bob_builder", "rank": 2, "score": 31, "amount": "20", "first_pr_bonus": true }
@@ -148,7 +148,7 @@ Compute the new list block:
 
 ```yaml
   contributors-${TARGET_WEEK}:
-    description: "Weekly contributor rewards for ${TARGET_WEEK} (auto-generated from fork-contributor-leaderboard)"
+    description: "Weekly contributor rewards for ${TARGET_WEEK} (auto-generated from contributor-leaderboard)"
     token: USDC
     amount: "5"
     recipients:
@@ -247,7 +247,7 @@ Pure local file I/O — no curl, no auth-bearing headers, no env-var-expansion. 
 
 ## Future iterations
 
-- Wire as a chain (`fork-contributor-leaderboard → contributor-reward → distribute-tokens dry-run`) once the operator is comfortable with end-to-end automation. The pieces exist; the chain wiring is a one-line `aeon.yml` change.
+- Wire as a chain (`contributor-leaderboard → contributor-reward → distribute-tokens dry-run`) once the operator is comfortable with end-to-end automation. The pieces exist; the chain wiring is a one-line `aeon.yml` change.
 - Add a Bankr Agent API "wallet-linked?" pre-filter so contributors without linked wallets are flagged in the notification (prevents distribute-tokens from logging RESOLVE_FAILED rows on every run).
 - Tier table should become operator-configurable via `memory/contributor-reward-config.yml` once the first month of runs reveals the right curve. Hardcoded for v1.
 

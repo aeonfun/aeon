@@ -66,9 +66,9 @@ For each article:
 |---|---|
 | `article` | `article`, `research-brief`, `repo-article`, `technical-explainer`, `deep-research`, `project-lens`, `paper-pick`, `idea-capture` |
 | `changelog` | `changelog`, `push-recap`, `code-health`, `repo-actions`, `repo-pulse` |
-| `crypto` | `token-report`, `token-alert`, `token-movers`, `token-pick`, `defi-overview`, `defi-monitor`, `treasury-info`, `on-chain-monitor`, `polymarket`, `kalshi`, `market-context`, `narrative-tracker`, `unlock-monitor` |
+| `crypto` | `token-report`, `token-alert`, `token-movers`, `token-pick`, `defi-overview`, `defi-monitor`, `treasury-info`, `onchain-monitor`, `polymarket`, `kalshi`, `market-context`, `narrative-tracker`, `unlock-monitor` |
 | `digest` | `digest`, `rss-digest`, `hacker-news`, `reddit-digest`, `telegram-digest`, `farcaster-digest`, `vibecoding-digest`, `agent-buzz`, `list-digest`, `tweet-roundup`, `channel-recap` |
-| `security` | `security-digest`, `vuln-scanner`, `workflow-security-audit`, `skill-security-scan` |
+| `security` | `security-digest`, `vuln-scanner`, `workflow-audit`, `skill-scan` |
 | `repo` | `repo-scanner`, `vercel-projects`, `github-monitor`, `github-issues`, `github-trending`, `github-releases`, `star-milestone`, `external-feature` |
 | `social` | `write-tweet`, `reply-maker`, `remix-tweets`, `refresh-x`, `fetch-tweets`, `syndicate-article` |
 | `governance` | `deal-flow`, `reg-monitor`, `paper-digest` |
@@ -166,7 +166,7 @@ Body:
 ## Added posts
 | Date | Category | Title | Source file |
 |---|---|---|---|
-| 2026-04-11 | security | Workflow Security Audit — 2026-04-11 | workflow-security-audit-2026-04-11.md |
+| 2026-04-11 | security | Workflow Security Audit — 2026-04-11 | workflow-audit-2026-04-11.md |
 
 ## Updated posts
 (same columns)
@@ -225,7 +225,7 @@ Append to `memory/logs/${today}.md`:
 - Jekyll post filenames must start with `YYYY-MM-DD-` and end with `.md`. The `<hash4>` suffix on the slug keeps the filename stable across title edits — critical because Jekyll URLs derive from the filename slug (`permalink: /articles/:year/:month/:day/:title/`), and renaming a post changes its URL.
 - Never delete posts from `docs/_posts/`. Orphan detection only records.
 - YAML titles with colons/quotes must be escaped. A title like `"Can't Stop": Why …` must render as a valid single YAML string; the escape routine in 4i is mandatory.
-- The `workflow-security-audit-*` articles map to the `security` category in the new map (they used to default to `article`).
+- The `workflow-audit-*` articles map to the `security` category in the new map (they used to default to `article`).
 - Use `./notify` for notifications (fan-out to Telegram/Discord/Slack); never call channel-specific scripts directly.
 - `${var}` semantics: empty = sync all; set = sync a single filename (must exist under `articles/`).
 

@@ -5,7 +5,7 @@
  * Exposes all Aeon skills as MCP tools so any Claude Desktop or Claude Code
  * user can invoke them directly from their Claude interface.
  *
- * Tool naming: aeon-{slug} (e.g. aeon-article, aeon-hacker-news-digest)
+ * Tool naming: aeon-{slug} (e.g. aeon-article, aeon-hn-digest)
  * Each tool accepts a single optional `var` argument (the skill's variable input).
  *
  * Skill execution: spawns `claude -p -` with the skill prompt, exactly as

@@ -156,16 +156,16 @@ flowchart LR
 flowchart LR
     subgraph research ["Research & Content"]
         agent-displacement[agent-displacement]
-        ai-framework-watch[ai-framework-watch]
+        framework-watch[framework-watch]
         article[article]
         article-queue[article-queue]
         beat-tracker[beat-tracker]
         channel-recap[channel-recap]
-        competitor-launch-radar[competitor-launch-radar]
+        competitor-radar[competitor-radar]
         deep-research[deep-research]
         digest[digest]
         fetch-tweets[fetch-tweets]
-        hacker-news-digest[hacker-news-digest]
+        hn-digest[hn-digest]
         huggingface-trending[huggingface-trending]
         last30[last30]
         launch-radar[launch-radar]
@@ -191,7 +191,7 @@ flowchart LR
     update-gallery[update-gallery]:::external
 
     routine -.-> paper-pick
-    routine -.-> hacker-news-digest
+    routine -.-> hn-digest
     article -..-> syndicate-article
     article -..-> rss-feed
     article -..-> update-gallery
@@ -200,16 +200,16 @@ flowchart LR
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
     classDef external fill:none,stroke:#bbb,stroke-dasharray:3 3,color:#888
     click agent-displacement "../skills/agent-displacement/SKILL.md"
-    click ai-framework-watch "../skills/ai-framework-watch/SKILL.md"
+    click framework-watch "../skills/framework-watch/SKILL.md"
     click article "../skills/article/SKILL.md"
     click article-queue "../skills/article-queue/SKILL.md"
     click beat-tracker "../skills/beat-tracker/SKILL.md"
     click channel-recap "../skills/channel-recap/SKILL.md"
-    click competitor-launch-radar "../skills/competitor-launch-radar/SKILL.md"
+    click competitor-radar "../skills/competitor-radar/SKILL.md"
     click deep-research "../skills/deep-research/SKILL.md"
     click digest "../skills/digest/SKILL.md"
     click fetch-tweets "../skills/fetch-tweets/SKILL.md"
-    click hacker-news-digest "../skills/hacker-news-digest/SKILL.md"
+    click hn-digest "../skills/hn-digest/SKILL.md"
     click huggingface-trending "../skills/huggingface-trending/SKILL.md"
     click last30 "../skills/last30/SKILL.md"
     click launch-radar "../skills/launch-radar/SKILL.md"
@@ -249,20 +249,20 @@ flowchart LR
         ecosystem-pulse[ecosystem-pulse]
         fork-cohort[fork-cohort]
         fork-fleet[fork-fleet]
-        fork-release-tracker[fork-release-tracker]
+        fork-release[fork-release]
         github-issues[github-issues]
         github-monitor[github-monitor]
         github-releases[github-releases]
         github-trending[github-trending]
         issue-triage[issue-triage]
-        pr-merge-queue[pr-merge-queue]
+        pr-merge[pr-merge]
         pr-review[pr-review]
-        pr-skill-triage[pr-skill-triage]
+        skill-triage[skill-triage]
         pr-tracker[pr-tracker]
         pr-triage[pr-triage]
         project-lens[project-lens]
         push-recap[push-recap]
-        pvr-triage-monitor[pvr-triage-monitor]
+        pvr-triage[pvr-triage]
         pvr-watchlist[pvr-watchlist]
         repo-actions[repo-actions]
         repo-article[repo-article]
@@ -274,7 +274,7 @@ flowchart LR
         star-milestone[star-milestone]
         vercel-projects[vercel-projects]
         vuln-tracker[vuln-tracker]
-        workflow-security-audit[workflow-security-audit]
+        workflow-audit[workflow-audit]
     end
 
     routine[routine]:::external
@@ -300,20 +300,20 @@ flowchart LR
     click ecosystem-pulse "../skills/ecosystem-pulse/SKILL.md"
     click fork-cohort "../skills/fork-cohort/SKILL.md"
     click fork-fleet "../skills/fork-fleet/SKILL.md"
-    click fork-release-tracker "../skills/fork-release-tracker/SKILL.md"
+    click fork-release "../skills/fork-release/SKILL.md"
     click github-issues "../skills/github-issues/SKILL.md"
     click github-monitor "../skills/github-monitor/SKILL.md"
     click github-releases "../skills/github-releases/SKILL.md"
     click github-trending "../skills/github-trending/SKILL.md"
     click issue-triage "../skills/issue-triage/SKILL.md"
-    click pr-merge-queue "../skills/pr-merge-queue/SKILL.md"
+    click pr-merge "../skills/pr-merge/SKILL.md"
     click pr-review "../skills/pr-review/SKILL.md"
-    click pr-skill-triage "../skills/pr-skill-triage/SKILL.md"
+    click skill-triage "../skills/skill-triage/SKILL.md"
     click pr-tracker "../skills/pr-tracker/SKILL.md"
     click pr-triage "../skills/pr-triage/SKILL.md"
     click project-lens "../skills/project-lens/SKILL.md"
     click push-recap "../skills/push-recap/SKILL.md"
-    click pvr-triage-monitor "../skills/pvr-triage-monitor/SKILL.md"
+    click pvr-triage "../skills/pvr-triage/SKILL.md"
     click pvr-watchlist "../skills/pvr-watchlist/SKILL.md"
     click repo-actions "../skills/repo-actions/SKILL.md"
     click repo-article "../skills/repo-article/SKILL.md"
@@ -325,7 +325,7 @@ flowchart LR
     click star-milestone "../skills/star-milestone/SKILL.md"
     click vercel-projects "../skills/vercel-projects/SKILL.md"
     click vuln-tracker "../skills/vuln-tracker/SKILL.md"
-    click workflow-security-audit "../skills/workflow-security-audit/SKILL.md"
+    click workflow-audit "../skills/workflow-audit/SKILL.md"
     click routine "../skills/routine/SKILL.md"
     click external-feature "../skills/external-feature/SKILL.md"
     click vuln-scanner "../skills/vuln-scanner/SKILL.md"
@@ -341,21 +341,21 @@ flowchart LR
         compute-pulse[compute-pulse]
         defi-monitor[defi-monitor]
         defi-overview[defi-overview]
-        fear-divergence-scout[fear-divergence-scout]
+        fear-divergence[fear-divergence]
         liquidpad-launch[liquidpad-launch]
-        market-context-refresh[market-context-refresh]
+        market-context[market-context]
         monitor-kalshi[monitor-kalshi]
         monitor-polymarket[monitor-polymarket]
         monitor-runners[monitor-runners]
         narrative-tracker[narrative-tracker]
-        on-chain-monitor[on-chain-monitor]
+        onchain-monitor[onchain-monitor]
         picks-tracker[picks-tracker]
         pm-intel[pm-intel]
         pm-manipulation[pm-manipulation]
         pm-pulse[pm-pulse]
         polymarket[polymarket]
         polymarket-comments[polymarket-comments]
-        price-threshold-alert[price-threshold-alert]
+        price-alert[price-alert]
         rwa-pulse[rwa-pulse]
         token-alert[token-alert]
         token-movers[token-movers]
@@ -370,8 +370,8 @@ flowchart LR
     routine[routine]:::external
 
     routine -.-> token-movers
-    market-context-refresh -..-> token-pick
-    market-context-refresh -..-> narrative-tracker
+    market-context -..-> token-pick
+    market-context -..-> narrative-tracker
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
@@ -381,21 +381,21 @@ flowchart LR
     click compute-pulse "../skills/compute-pulse/SKILL.md"
     click defi-monitor "../skills/defi-monitor/SKILL.md"
     click defi-overview "../skills/defi-overview/SKILL.md"
-    click fear-divergence-scout "../skills/fear-divergence-scout/SKILL.md"
+    click fear-divergence "../skills/fear-divergence/SKILL.md"
     click liquidpad-launch "../skills/liquidpad-launch/SKILL.md"
-    click market-context-refresh "../skills/market-context-refresh/SKILL.md"
+    click market-context "../skills/market-context/SKILL.md"
     click monitor-kalshi "../skills/monitor-kalshi/SKILL.md"
     click monitor-polymarket "../skills/monitor-polymarket/SKILL.md"
     click monitor-runners "../skills/monitor-runners/SKILL.md"
     click narrative-tracker "../skills/narrative-tracker/SKILL.md"
-    click on-chain-monitor "../skills/on-chain-monitor/SKILL.md"
+    click onchain-monitor "../skills/onchain-monitor/SKILL.md"
     click picks-tracker "../skills/picks-tracker/SKILL.md"
     click pm-intel "../skills/pm-intel/SKILL.md"
     click pm-manipulation "../skills/pm-manipulation/SKILL.md"
     click pm-pulse "../skills/pm-pulse/SKILL.md"
     click polymarket "../skills/polymarket/SKILL.md"
     click polymarket-comments "../skills/polymarket-comments/SKILL.md"
-    click price-threshold-alert "../skills/price-threshold-alert/SKILL.md"
+    click price-alert "../skills/price-alert/SKILL.md"
     click rwa-pulse "../skills/rwa-pulse/SKILL.md"
     click token-alert "../skills/token-alert/SKILL.md"
     click token-movers "../skills/token-movers/SKILL.md"
@@ -421,13 +421,13 @@ flowchart LR
         honeypot-check[honeypot-check]
         investigation-report[investigation-report]
         linked-wallets[linked-wallets]
-        lp-lock-check[lp-lock-check]
+        lp-lock[lp-lock]
         rug-scan[rug-scan]
         tx-explain[tx-explain]
         vigil[vigil]
         vigil-revoke[vigil-revoke]
         wallet-profile[wallet-profile]
-        wallet-risk-audit[wallet-risk-audit]
+        wallet-risk[wallet-risk]
     end
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
@@ -441,13 +441,13 @@ flowchart LR
     click honeypot-check "../skills/honeypot-check/SKILL.md"
     click investigation-report "../skills/investigation-report/SKILL.md"
     click linked-wallets "../skills/linked-wallets/SKILL.md"
-    click lp-lock-check "../skills/lp-lock-check/SKILL.md"
+    click lp-lock "../skills/lp-lock/SKILL.md"
     click rug-scan "../skills/rug-scan/SKILL.md"
     click tx-explain "../skills/tx-explain/SKILL.md"
     click vigil "../skills/vigil/SKILL.md"
     click vigil-revoke "../skills/vigil-revoke/SKILL.md"
     click wallet-profile "../skills/wallet-profile/SKILL.md"
-    click wallet-risk-audit "../skills/wallet-risk-audit/SKILL.md"
+    click wallet-risk "../skills/wallet-risk/SKILL.md"
 ```
 
 ### Social & Writing (18)
@@ -461,12 +461,12 @@ flowchart LR
         engagement-act[engagement-act]
         farcaster-digest[farcaster-digest]
         mention-radar[mention-radar]
-        product-hunt-launch[product-hunt-launch]
+        product-hunt[product-hunt]
         refresh-x[refresh-x]
         remix-tweets[remix-tweets]
         reply-maker[reply-maker]
         schedule-ads[schedule-ads]
-        show-hn-draft[show-hn-draft]
+        show-hn[show-hn]
         skill-spotlight[skill-spotlight]
         syndicate-article[syndicate-article]
         thread-formatter[thread-formatter]
@@ -488,12 +488,12 @@ flowchart LR
     click engagement-act "../skills/engagement-act/SKILL.md"
     click farcaster-digest "../skills/farcaster-digest/SKILL.md"
     click mention-radar "../skills/mention-radar/SKILL.md"
-    click product-hunt-launch "../skills/product-hunt-launch/SKILL.md"
+    click product-hunt "../skills/product-hunt/SKILL.md"
     click refresh-x "../skills/refresh-x/SKILL.md"
     click remix-tweets "../skills/remix-tweets/SKILL.md"
     click reply-maker "../skills/reply-maker/SKILL.md"
     click schedule-ads "../skills/schedule-ads/SKILL.md"
-    click show-hn-draft "../skills/show-hn-draft/SKILL.md"
+    click show-hn "../skills/show-hn/SKILL.md"
     click skill-spotlight "../skills/skill-spotlight/SKILL.md"
     click syndicate-article "../skills/syndicate-article/SKILL.md"
     click thread-formatter "../skills/thread-formatter/SKILL.md"
@@ -512,7 +512,7 @@ flowchart LR
         routine[routine]
         deal-flow[deal-flow]
         ops-recap[ops-recap]
-        follow-up-patrol[follow-up-patrol]
+        followup-patrol[followup-patrol]
         goal-tracker[goal-tracker]
         idea-capture[idea-capture]
         idea-pipeline[idea-pipeline]
@@ -530,7 +530,7 @@ flowchart LR
     end
 
     github-issues[github-issues]:::external
-    hacker-news-digest[hacker-news-digest]:::external
+    hn-digest[hn-digest]:::external
     paper-pick[paper-pick]:::external
     token-movers[token-movers]:::external
 
@@ -538,7 +538,7 @@ flowchart LR
     routine -.-> token-movers
     routine -.-> paper-pick
     routine -.-> github-issues
-    routine -.-> hacker-news-digest
+    routine -.-> hn-digest
 
     classDef default fill:#f5f5f5,stroke:#bbb,color:#888
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
@@ -547,7 +547,7 @@ flowchart LR
     click routine "../skills/routine/SKILL.md"
     click deal-flow "../skills/deal-flow/SKILL.md"
     click ops-recap "../skills/ops-recap/SKILL.md"
-    click follow-up-patrol "../skills/follow-up-patrol/SKILL.md"
+    click followup-patrol "../skills/followup-patrol/SKILL.md"
     click goal-tracker "../skills/goal-tracker/SKILL.md"
     click idea-capture "../skills/idea-capture/SKILL.md"
     click idea-pipeline "../skills/idea-pipeline/SKILL.md"
@@ -563,7 +563,7 @@ flowchart LR
     click retrospective "../skills/retrospective/SKILL.md"
     click shiplog "../skills/shiplog/SKILL.md"
     click github-issues "../skills/github-issues/SKILL.md"
-    click hacker-news-digest "../skills/hacker-news-digest/SKILL.md"
+    click hn-digest "../skills/hn-digest/SKILL.md"
     click paper-pick "../skills/paper-pick/SKILL.md"
     click token-movers "../skills/token-movers/SKILL.md"
 ```
@@ -573,28 +573,28 @@ flowchart LR
 ```mermaid
 flowchart LR
     subgraph meta ["Meta / Agent"]
-        api-health-probe[api-health-probe]
-        atrium-catalog-watcher[atrium-catalog-watcher]
+        api-health[api-health]
+        atrium-watch[atrium-watch]
         batch-health[batch-health]
         capabilities-map[capabilities-map]
         config-validator[config-validator]
         contributor-spotlight[contributor-spotlight]
         cost-report[cost-report]
-        fleet-skill-adoption[fleet-skill-adoption]
+        skill-adoption[skill-adoption]
         fleet-state[fleet-state]
-        fork-contributor-leaderboard[fork-contributor-leaderboard]
-        fork-first-run-alert[fork-first-run-alert]
-        fork-health-score[fork-health-score]
-        fork-skill-digest[fork-skill-digest]
-        fork-skill-gap[fork-skill-gap]
+        contributor-leaderboard[contributor-leaderboard]
+        fork-firstrun[fork-firstrun]
+        fork-health[fork-health]
+        fork-digest[fork-digest]
+        skill-gap[skill-gap]
         heartbeat["heartbeat · 0 8,14,20 * * *"]
         janitor[janitor]
         memory-flush[memory-flush]
-        memory-structural-dedupe[memory-structural-dedupe]
+        memory-dedupe[memory-dedupe]
         onboard[onboard]
         operator-scorecard[operator-scorecard]
         rss-feed[rss-feed]
-        run-frequency-guard[run-frequency-guard]
+        frequency-guard[frequency-guard]
         self-review[self-review]
         signal-verdict[signal-verdict]
         skill-analytics[skill-analytics]
@@ -602,11 +602,11 @@ flowchart LR
         skill-freshness[skill-freshness]
         skill-graph[skill-graph]
         skill-leaderboard[skill-leaderboard]
-        skill-security-scan[skill-security-scan]
-        skill-update-check[skill-update-check]
+        skill-scan[skill-scan]
+        skill-update[skill-update]
         sparkleware-catalog[sparkleware-catalog]
         spend-monitor[spend-monitor]
-        star-momentum-alert[star-momentum-alert]
+        star-momentum[star-momentum]
         update-gallery[update-gallery]
     end
 
@@ -621,28 +621,28 @@ flowchart LR
     classDef enabled fill:#fff,stroke:#000,stroke-width:2px,color:#000
     classDef external fill:none,stroke:#bbb,stroke-dasharray:3 3,color:#888
     class heartbeat enabled
-    click api-health-probe "../skills/api-health-probe/SKILL.md"
-    click atrium-catalog-watcher "../skills/atrium-catalog-watcher/SKILL.md"
+    click api-health "../skills/api-health/SKILL.md"
+    click atrium-watch "../skills/atrium-watch/SKILL.md"
     click batch-health "../skills/batch-health/SKILL.md"
     click capabilities-map "../skills/capabilities-map/SKILL.md"
     click config-validator "../skills/config-validator/SKILL.md"
     click contributor-spotlight "../skills/contributor-spotlight/SKILL.md"
     click cost-report "../skills/cost-report/SKILL.md"
-    click fleet-skill-adoption "../skills/fleet-skill-adoption/SKILL.md"
+    click skill-adoption "../skills/skill-adoption/SKILL.md"
     click fleet-state "../skills/fleet-state/SKILL.md"
-    click fork-contributor-leaderboard "../skills/fork-contributor-leaderboard/SKILL.md"
-    click fork-first-run-alert "../skills/fork-first-run-alert/SKILL.md"
-    click fork-health-score "../skills/fork-health-score/SKILL.md"
-    click fork-skill-digest "../skills/fork-skill-digest/SKILL.md"
-    click fork-skill-gap "../skills/fork-skill-gap/SKILL.md"
+    click contributor-leaderboard "../skills/contributor-leaderboard/SKILL.md"
+    click fork-firstrun "../skills/fork-firstrun/SKILL.md"
+    click fork-health "../skills/fork-health/SKILL.md"
+    click fork-digest "../skills/fork-digest/SKILL.md"
+    click skill-gap "../skills/skill-gap/SKILL.md"
     click heartbeat "../skills/heartbeat/SKILL.md"
     click janitor "../skills/janitor/SKILL.md"
     click memory-flush "../skills/memory-flush/SKILL.md"
-    click memory-structural-dedupe "../skills/memory-structural-dedupe/SKILL.md"
+    click memory-dedupe "../skills/memory-dedupe/SKILL.md"
     click onboard "../skills/onboard/SKILL.md"
     click operator-scorecard "../skills/operator-scorecard/SKILL.md"
     click rss-feed "../skills/rss-feed/SKILL.md"
-    click run-frequency-guard "../skills/run-frequency-guard/SKILL.md"
+    click frequency-guard "../skills/frequency-guard/SKILL.md"
     click self-review "../skills/self-review/SKILL.md"
     click signal-verdict "../skills/signal-verdict/SKILL.md"
     click skill-analytics "../skills/skill-analytics/SKILL.md"
@@ -650,11 +650,11 @@ flowchart LR
     click skill-freshness "../skills/skill-freshness/SKILL.md"
     click skill-graph "../skills/skill-graph/SKILL.md"
     click skill-leaderboard "../skills/skill-leaderboard/SKILL.md"
-    click skill-security-scan "../skills/skill-security-scan/SKILL.md"
-    click skill-update-check "../skills/skill-update-check/SKILL.md"
+    click skill-scan "../skills/skill-scan/SKILL.md"
+    click skill-update "../skills/skill-update/SKILL.md"
     click sparkleware-catalog "../skills/sparkleware-catalog/SKILL.md"
     click spend-monitor "../skills/spend-monitor/SKILL.md"
-    click star-momentum-alert "../skills/star-momentum-alert/SKILL.md"
+    click star-momentum "../skills/star-momentum/SKILL.md"
     click update-gallery "../skills/update-gallery/SKILL.md"
     click article "../skills/article/SKILL.md"
     click skill-health "../skills/skill-health/SKILL.md"
@@ -670,7 +670,7 @@ Skills that aggregate output from multiple sources:
 
 | Hub | Consumes |
 |-----|----------|
-| `routine` | `token-movers`, `paper-pick`, `github-issues`, `hacker-news-digest` (example chain in `aeon.yml`) |
+| `routine` | `token-movers`, `paper-pick`, `github-issues`, `hn-digest` (example chain in `aeon.yml`) |
 | `priority-brief` | Memory, logs, goals |
 | `ops-recap` | Day's logs, cron-state |
 
@@ -678,7 +678,7 @@ Skills that aggregate output from multiple sources:
 
 | Provider | Writes to | Consumed by |
 |----------|-----------|-------------|
-| `market-context-refresh` | `memory/topics/market-context.md` | `token-pick`, `narrative-tracker` |
+| `market-context` | `memory/topics/market-context.md` | `token-pick`, `narrative-tracker` |
 | All skills | `memory/cron-state.json` | `heartbeat`, `skill-health`, `skill-repair`, `self-improve`, `autoresearch` |
 | Content skills | `articles/*.md` | `syndicate-article`, `rss-feed`, `update-gallery` |
 

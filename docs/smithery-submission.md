@@ -62,19 +62,19 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-github-releases` | Dev | Track new releases from key AI, crypto, and infra repos |
 | `aeon-github-trending` | Dev | Top 10 trending repos on GitHub right now |
 | `aeon-goal-tracker` | Productivity | Compare current progress against goals stored in MEMORY.md |
-| `aeon-hacker-news-digest` | Research | Top HN stories filtered by keywords relevant to your interests |
+| `aeon-hn-digest` | Research | Top HN stories filtered by keywords relevant to your interests |
 | `aeon-heartbeat` | Productivity | Proactive ambient check — surface anything worth attention |
 | `aeon-idea-capture` | Productivity | Quick note capture triggered via Telegram — stores to memory |
 | `aeon-issue-triage` | Dev | Label and prioritize new GitHub issues on watched repos |
 | `aeon-last30` | Research | Cross-platform social research — what people are actually saying about a topic across Reddit, X, HN, Polymarket, and the web over the last 30 days |
 | `aeon-list-digest` | Research | Top tweets from tracked X lists in the past 24 hours |
-| `aeon-market-context-refresh` | Crypto | Fetch live crypto macro data and update memory/topics/market-context.md |
+| `aeon-market-context` | Crypto | Fetch live crypto macro data and update memory/topics/market-context.md |
 | `aeon-monitor-kalshi` | Crypto | Monitor specific Kalshi prediction markets for 24h price moves, volume changes, and top events |
 | `aeon-monitor-polymarket` | Crypto | Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments |
 | `aeon-monitor-runners` | Crypto | Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal |
 | `aeon-priority-brief` | Productivity | Aggregated briefing — digests, priorities, and what's ahead |
 | `aeon-narrative-tracker` | Crypto | Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak |
-| `aeon-on-chain-monitor` | Crypto | Monitor blockchain addresses and contracts for notable activity |
+| `aeon-onchain-monitor` | Crypto | Monitor blockchain addresses and contracts for notable activity |
 | `aeon-paper-digest` | Research | Find and summarize new papers matching tracked research interests |
 | `aeon-paper-pick` | Research | Find the one paper most worth reading from Hugging Face Papers |
 | `aeon-polymarket-comments` | Crypto | Top trending Polymarket markets and the most interesting comments from them |
@@ -102,8 +102,8 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-skill-health` | Productivity | Audit skill quality metrics, detect API degradation, and report health trends |
 | `aeon-skill-leaderboard` | Productivity | Ranking of which skills are most popular across all active forks |
 | `aeon-skill-repair` | Productivity | Diagnose and fix failing or degraded skills automatically |
-| `aeon-skill-security-scan` | Dev | Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run |
-| `aeon-skill-update-check` | Productivity | Check imported skills for upstream changes and security regressions since the version in skills.lock |
+| `aeon-skill-scan` | Dev | Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run |
+| `aeon-skill-update` | Productivity | Check imported skills for upstream changes and security regressions since the version in skills.lock |
 | `aeon-smithery-manifest` | Productivity | Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server |
 | `aeon-spawn-instance` | Dev | Clone this Aeon agent into a new GitHub repo — fork, configure skills, register in fleet |
 | `aeon-star-milestone` | Dev | Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a highlight reel of recent work |
@@ -125,7 +125,7 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-vuln-scanner` | Dev | Fork trending repos, audit for security vulnerabilities, and PR fixes |
 | `aeon-retrospective` | Productivity | Synthesize the week's logs into a structured retrospective |
 | `aeon-shiplog` | Productivity | Narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
-| `aeon-workflow-security-audit` | Dev | Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. |
+| `aeon-workflow-audit` | Dev | Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. |
 | `aeon-write-tweet` | Social | Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs |
 
 ## Install instructions for end users

@@ -64,7 +64,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | Category | Count | Examples |
 |----------|-------|----------|
 | 🧬 **Core** | 15 | `skill-repair`, `autoresearch`, `spawn-instance`, `vuln-scanner` |
-| 📚 **Research & Content** | 28 | `deep-research`, `paper-digest`, `hacker-news-digest` |
+| 📚 **Research & Content** | 28 | `deep-research`, `paper-digest`, `hn-digest` |
 | 💻 **Dev & Code** | 37 | `pr-review`, `github-monitor`, `auto-merge` |
 | 📈 **Crypto & Markets** | 29 | `token-alert`, `defi-monitor`, `polymarket`, `base-mcp` |
 | 🛡️ **Onchain Security** | 15 | `rug-scan`, `contract-audit`, `honeypot-check` |
@@ -78,13 +78,13 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | Category | Skills |
 |----------|--------|
 | **Core** (15) | `autoresearch`,`contributor-reward`,`create-skill`,`deploy-prototype`,`distribute-tokens`,`external-feature`,`feature`,`fleet-control`,`fleet-scorecard`,`self-improve`,`skill-evals`,`skill-health`,`skill-repair`,`spawn-instance`,`vuln-scanner` |
-| **Research & Content** (28) | `agent-displacement`,`ai-framework-watch`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`competitor-launch-radar`,`deep-research`,`digest`,`fetch-tweets`,`hacker-news-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
-| **Dev & Code** (37) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release-tracker`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge-queue`,`pr-review`,`pr-skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage-monitor`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-security-audit` |
-| **Crypto & Markets** (29) | `aixbt-pulse`,`base-mcp`,`compute-pulse`,`defi-monitor`,`defi-overview`,`fear-divergence-scout`,`liquidpad-launch`,`market-context-refresh`,`monitor-kalshi`,`monitor-polymarket`,`monitor-runners`,`narrative-tracker`,`on-chain-monitor`,`picks-tracker`,`pm-intel`,`pm-manipulation`,`pm-pulse`,`polymarket`,`polymarket-comments`,`price-threshold-alert`,`rwa-pulse`,`token-alert`,`token-movers`,`token-pick`,`token-report`,`treasury-info`,`unlock-monitor`,`wallet-digest`,`x402-monitor` |
-| **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock-check`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk-audit` |
-| **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt-launch`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn-draft`,`skill-spotlight`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
-| **Productivity** (19) | `action-converter`,`routine`,`deal-flow`,`ops-recap`,`follow-up-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`priority-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`retrospective`,`shiplog` |
-| **Meta / Agent** (35) | `api-health-probe`,`atrium-catalog-watcher`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`fleet-skill-adoption`,`fleet-state`,`fork-contributor-leaderboard`,`fork-first-run-alert`,`fork-health-score`,`fork-skill-digest`,`fork-skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-structural-dedupe`,`onboard`,`operator-scorecard`,`run-frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-security-scan`,`skill-update-check`,`sparkleware-catalog`,`spend-monitor`,`star-momentum-alert`,`update-gallery` |
+| **Research & Content** (28) | `agent-displacement`,`framework-watch`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`competitor-radar`,`deep-research`,`digest`,`fetch-tweets`,`hn-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
+| **Dev & Code** (37) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-entrants`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release`,`github-issues`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge`,`pr-review`,`skill-triage`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`smithery-manifest`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-audit` |
+| **Crypto & Markets** (29) | `aixbt-pulse`,`base-mcp`,`compute-pulse`,`defi-monitor`,`defi-overview`,`fear-divergence`,`liquidpad-launch`,`market-context`,`monitor-kalshi`,`monitor-polymarket`,`monitor-runners`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-intel`,`pm-manipulation`,`pm-pulse`,`polymarket`,`polymarket-comments`,`price-alert`,`rwa-pulse`,`token-alert`,`token-movers`,`token-pick`,`token-report`,`treasury-info`,`unlock-monitor`,`wallet-digest`,`x402-monitor` |
+| **Onchain Security** (15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk` |
+| **Social & Writing** (18) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn`,`skill-spotlight`,`syndicate-article`,`thread-formatter`,`thread-writer`,`tweet-roundup`,`write-tweet` |
+| **Productivity** (19) | `action-converter`,`routine`,`deal-flow`,`ops-recap`,`followup-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`priority-brief`,`note-taking`,`reflect`,`reg-monitor`,`startup-idea`,`tool-builder`,`v4-readiness`,`retrospective`,`shiplog` |
+| **Meta / Agent** (35) | `api-health`,`atrium-watch`,`batch-health`,`capabilities-map`,`config-validator`,`contributor-spotlight`,`cost-report`,`skill-adoption`,`fleet-state`,`contributor-leaderboard`,`fork-firstrun`,`fork-health`,`fork-digest`,`skill-gap`,`heartbeat`,`janitor`,`memory-flush`,`memory-dedupe`,`onboard`,`operator-scorecard`,`frequency-guard`,`rss-feed`,`self-review`,`signal-verdict`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-graph`,`skill-leaderboard`,`skill-scan`,`skill-update`,`sparkleware-catalog`,`spend-monitor`,`star-momentum`,`update-gallery` |
 
 Full descriptions: [`skills.json`](skills.json) — or run `./add-skill aaronjmars/aeon --list`.
 Dependency graph: [`docs/skill-graph.md`](docs/skill-graph.md) — a visual map of how skills connect.
@@ -263,9 +263,9 @@ chains:
     schedule: "0 7 * * *"
     on_error: fail-fast       # or: continue
     steps:
-      - parallel: [token-movers, hacker-news-digest]  # run concurrently
+      - parallel: [token-movers, hn-digest]  # run concurrently
       - skill: priority-brief                          # runs after parallel group
-        consume: [token-movers, hacker-news-digest]   # gets their outputs injected
+        consume: [token-movers, hn-digest]   # gets their outputs injected
 ```
 
 Each step runs as a separate workflow dispatch; outputs are saved to `.outputs/{skill}.md` and injected into downstream steps that `consume:` them. `fail-fast` aborts on any failure, `continue` keeps going.

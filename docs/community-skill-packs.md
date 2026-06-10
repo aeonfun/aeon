@@ -158,7 +158,7 @@ The two skills land in `skills/arxiv-watcher` and `skills/citation-graph`, with 
 
 ## Trust model
 
-`install-skill-pack` runs the same security scanner as `./add-skill` (`skills/skill-security-scan/scan.sh`). Behavior:
+`install-skill-pack` runs the same security scanner as `./add-skill` (`skills/skill-scan/scan.sh`). Behavior:
 
 - **Trusted source** (listed in `skills/security/trusted-sources.txt` as either `owner` or `owner/repo`) — the deep content scan is skipped. Format validation still applies.
 - **Untrusted source, clean scan** — install proceeds.

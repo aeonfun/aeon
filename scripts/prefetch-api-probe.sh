@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# API provider health probe — only executes for the api-health-probe skill; no-ops for all others.
+# API provider health probe — only executes for the api-health skill; no-ops for all others.
 # Writes .api-probe/status.json (one entry per provider) so the skill can check API health
 # without making network calls from inside the sandbox.
 #
@@ -7,7 +7,7 @@
 set -euo pipefail
 
 SKILL="${1:-}"
-[ "$SKILL" = "api-health-probe" ] || exit 0
+[ "$SKILL" = "api-health" ] || exit 0
 
 mkdir -p .api-probe
 CHECKED_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
