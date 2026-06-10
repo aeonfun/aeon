@@ -43,7 +43,7 @@ This skill is **a one-shot meta-tool**. It is registered `workflow_dispatch` onl
 | `aeon.yml` | `enabled: true|false` per skill. Surfaces "X of the rows you're about to review are currently enabled" in the PR description so the operator knows the priority order. | Local file |
 | `memory/topics/capabilities-sweep-state.json` | Per-skill last_run, last_status, last_proposed_capabilities. Used to skip skills whose proposal hasn't changed since the prior run (no point re-opening a PR that's a no-op). | Local file |
 
-No network calls beyond `gh pr list` (duplicate-PR guard) and `gh pr create` at the end. No new secrets. `gh` uses `GH_TOKEN` per the standard auth path.
+No network calls beyond `gh pr list` (duplicate-PR guard), the `git push` of the sweep branch, and `gh pr create` at the end. No new secrets. `gh` uses `GH_TOKEN` per the standard auth path.
 
 Writes:
 - `articles/capabilities-sweep-${today}.md` — full human-readable proposal table (every non-error run, including `NO_CHANGES`)
@@ -52,7 +52,7 @@ Writes:
 - `memory/topics/capabilities-sweep-state.json` — per-skill last_run / last_status / last_proposed_capabilities
 - `memory/logs/${today}.md` — one log block per run
 - One GitHub PR via `gh pr create` (skipped on `dry-run`)
-- Notification via `./notify` — full message on any run that opens a PR (`OK`, `PROPOSE_ONLY`); one-line messages on `PR_EXISTS`, `NO_TAXONOMY`, `HEURISTIC_DRIFT` (see the exit taxonomy)
+- Notification via `./notify` — full message on any run that opens a PR (`OK`, `PROPOSE_ONLY`); one-line messages on `PR_EXISTS`, `NO_TAXONOMY`, `HEURISTIC_DRIFT`, `STATE_CORRUPT` (see the exit taxonomy)
 
 ## The locked taxonomy
 
@@ -164,7 +164,9 @@ mkdir -p memory/topics articles .outputs
 EOF
 ```
 
-If `jq empty` fails on the state file, back it up to `.bak`, reset to the empty template, set `STATE_WAS_CORRUPT=true`. Continue — a corrupt state simply means every skill looks "never proposed before" and will be re-evaluated. The next clean run resets the watermark.
+If `jq empty` fails on the state file, or it parses but the top-level shape is unrecognizable (`jq -e 'has("per_skill") and (.per_skill | type == "object")'` fails), back it up to `.bak`, reset to the empty template, set `STATE_WAS_CORRUPT=true`. Continue — a corrupt state simply means every skill looks "never proposed before" and will be re-evaluated. The next clean run resets the watermark.
+
+If the recovery itself fails — the `.bak` copy or the template rewrite cannot be written — exit `CAPABILITIES_SWEEP_STATE_CORRUPT` (one-line failure notify per the exit taxonomy; no PR, no other writes). A filesystem that won't accept the reset won't accept step 7's persist either, and a sweep whose results can't be recorded silently breaks the `NO_CHANGES` dedup on the next dispatch.
 
 ### 1. Parse var
 
@@ -278,6 +280,7 @@ Human-readable article: articles/capabilities-sweep-${today}.md
 High-confidence rows: ${H} pre-applied to SKILL.md frontmatter.
 Low-confidence rows: ${L} listed in PR description for operator decision.
 "
+git push -u origin chore/capabilities-sweep-phase-2-${today}
 ```
 
 PR body must include:
@@ -325,7 +328,7 @@ Manifest: .outputs/capabilities-sweep-proposals.json
 Article: articles/capabilities-sweep-${today}.md
 ```
 
-Suppress notify on `NO_CHANGES`, `DRY_RUN`, `STATE_CORRUPT`, `BAD_VAR` — exactly the statuses the exit taxonomy below marks "No". `NO_TAXONOMY` and `HEURISTIC_DRIFT` send a one-line failure instead of the full message; `PR_EXISTS` sends a one-line message with the existing PR URL. Send the full message above on every run that successfully opens a PR (`OK`, `PROPOSE_ONLY`).
+Suppress notify on `NO_CHANGES`, `DRY_RUN`, `BAD_VAR` — exactly the statuses the exit taxonomy below marks "No". `NO_TAXONOMY`, `HEURISTIC_DRIFT`, and `STATE_CORRUPT` (recovery failed — routine corruption is recovered in step 0 and never reaches here) send a one-line failure instead of the full message; `PR_EXISTS` sends a one-line message with the existing PR URL. Send the full message above on every run that successfully opens a PR (`OK`, `PROPOSE_ONLY`).
 
 ### 9. Log
 
@@ -358,7 +361,7 @@ Append to `memory/logs/${today}.md`:
 | `CAPABILITIES_SWEEP_PROPOSE_ONLY` | Every row downgraded to `needs-review`; PR opened with zero pre-applied edits | Yes |
 | `CAPABILITIES_SWEEP_NO_TAXONOMY` | `docs/CAPABILITIES.md` missing or unparseable | Yes (one-line failure) |
 | `CAPABILITIES_SWEEP_HEURISTIC_DRIFT` | One or more rules produced a value not in the locked taxonomy | Yes (one-line failure) |
-| `CAPABILITIES_SWEEP_STATE_CORRUPT` | State JSON unreadable, recreated; silent recovery | No |
+| `CAPABILITIES_SWEEP_STATE_CORRUPT` | State JSON corrupt **and** the step-0 recovery failed (`.bak` copy or template rewrite unwritable) — routine corruption is recovered silently in step 0 and the run continues under its normal exit status | Yes (one-line failure) |
 | `CAPABILITIES_SWEEP_BAD_VAR` | `${var}` parse failed | No |
 
 ## Design notes (do not edit without reading)
@@ -374,10 +377,10 @@ Append to `memory/logs/${today}.md`:
 
 ## Sandbox Note
 
-All work is local-file. The only outbound calls are `gh pr list` (duplicate-PR guard), `gh pr create`, and `./notify`, all already sandbox-safe per CLAUDE.md pattern 2 (gh handles `GH_TOKEN` internally) and pattern 3 (notify reads `$1`, no expansion in the body of this skill). No `WebFetch`, no `curl`, no `${today_minus_N}` phantom variables — only `${today}` is interpolated.
+All work is local-file. The only outbound calls are `gh pr list` (duplicate-PR guard), the `git push` of the sweep branch, `gh pr create`, and `./notify`, all already sandbox-safe per CLAUDE.md pattern 2 (gh handles `GH_TOKEN` internally) and pattern 3 (notify reads `$1`, no expansion in the body of this skill). No `WebFetch`, no `curl`, no `${today_minus_N}` phantom variables — only `${today}` is interpolated.
 
 ## Required Env Vars
 
-- `GH_TOKEN` (or `GITHUB_TOKEN` in CI) — provided by the runner; needed by `gh pr list` / `gh pr create` only.
+- `GH_TOKEN` (or `GITHUB_TOKEN` in CI) — provided by the runner; needed by `gh pr list` / the `git push` to origin / `gh pr create` only.
 
 No third-party API keys. No on-chain reads. No file writes outside `skills/<slug>/SKILL.md` (in-place frontmatter splice), `articles/`, `.outputs/`, and `memory/`.
