@@ -151,7 +151,7 @@ jobs:
           SECRETS=$(grep -oE '\$\{?[A-Z][A-Z0-9_]{2,}\}?' "$SKILL_FILE" 2>/dev/null | \
             sed 's/[${}]//g' | \
             grep -E '_(API_KEY|KEY|TOKEN|SECRET|WEBHOOK_URL)$' | \
-            grep -vE '^(GITHUB_TOKEN|GH_TOKEN|ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN|BANKR_LLM_KEY|OPENROUTER_API_KEY|USEPOD_TOKEN|VENICE_API_KEY|SURPLUS_API_KEY|TELEGRAM_|DISCORD_|SLACK_)' | \
+            grep -vE '^(GITHUB_TOKEN|GH_TOKEN|ANTHROPIC_API_KEY|CLAUDE_CODE_OAUTH_TOKEN|BANKR_LLM_KEY|OPENROUTER_API_KEY|USEPOD_TOKEN|VENICE_API_KEY|SURPLUS_API_KEY|BEAMR_API_KEY|BEAMR_BASE_URL|TELEGRAM_|DISCORD_|SLACK_)' | \
             sort -u) || true
 
           [ -z "$SECRETS" ] && exit 0
@@ -259,6 +259,8 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          BEAMR_BASE_URL: ${{ secrets.BEAMR_BASE_URL }}
+          BEAMR_API_KEY: ${{ secrets.BEAMR_API_KEY }}
           # Optional gateway model overrides + sidecar debug (defaults live in scripts/llm-gateway.sh)
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
@@ -269,6 +271,7 @@ jobs:
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
+          BEAMR_MODEL: ${{ vars.BEAMR_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           GITHUB_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
@@ -654,6 +657,8 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          BEAMR_BASE_URL: ${{ secrets.BEAMR_BASE_URL }}
+          BEAMR_API_KEY: ${{ secrets.BEAMR_API_KEY }}
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
@@ -663,6 +668,7 @@ jobs:
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
+          BEAMR_MODEL: ${{ vars.BEAMR_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
@@ -779,6 +785,8 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          BEAMR_BASE_URL: ${{ secrets.BEAMR_BASE_URL }}
+          BEAMR_API_KEY: ${{ secrets.BEAMR_API_KEY }}
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
@@ -788,6 +796,7 @@ jobs:
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
+          BEAMR_MODEL: ${{ vars.BEAMR_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
         run: |
           # GATEWAY may be empty when the Run step failed early — the script

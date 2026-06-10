@@ -12,6 +12,7 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'USEPOD_TOKEN', group: 'Core', description: 'UsePod proxy token — routes Claude through api.usepod.ai (token embedded in the base URL)' },
   { name: 'VENICE_API_KEY', group: 'Core', description: 'Venice API key — routes Claude through api.venice.ai via a local translator. Create at venice.ai/settings/api' },
   { name: 'SURPLUS_API_KEY', group: 'Core', description: 'Surplus Intelligence API key (inf_...) — routes Claude through surplusintelligence.ai via a local translator' },
+  { name: 'BEAMR_BASE_URL', group: 'Core', description: 'BEAMR router deployment URL (e.g. https://your-beamr.vercel.app) — routes Claude through your BEAMR instance, which picks the cheapest provider per call and settles in USDC on Base over x402. Self-hostable; bridged via a local translator' },
   { name: 'TELEGRAM_BOT_TOKEN', group: 'Telegram', description: 'Bot token from @BotFather' },
   { name: 'TELEGRAM_CHAT_ID', group: 'Telegram', description: 'Your chat ID' },
   { name: 'DISCORD_BOT_TOKEN', group: 'Discord', description: 'Discord bot token' },
@@ -55,6 +56,7 @@ const GATEWAY_SECRETS: Record<string, string> = {
   USEPOD_TOKEN: 'usepod',
   VENICE_API_KEY: 'venice',
   SURPLUS_API_KEY: 'surplus',
+  BEAMR_BASE_URL: 'beamr',
 }
 
 // Valid env var name pattern

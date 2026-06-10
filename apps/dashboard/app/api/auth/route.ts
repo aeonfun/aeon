@@ -17,7 +17,7 @@ export async function GET() {
     const hasApiKey = secrets.includes('ANTHROPIC_API_KEY')
     const hasOauth = secrets.includes('CLAUDE_CODE_OAUTH_TOKEN')
     const hasBankr = secrets.includes('BANKR_LLM_KEY')
-    const hasGateway = ['BANKR_LLM_KEY', 'OPENROUTER_API_KEY', 'USEPOD_TOKEN', 'VENICE_API_KEY', 'SURPLUS_API_KEY']
+    const hasGateway = ['BANKR_LLM_KEY', 'OPENROUTER_API_KEY', 'USEPOD_TOKEN', 'VENICE_API_KEY', 'SURPLUS_API_KEY', 'BEAMR_BASE_URL']
       .some((name) => secrets.includes(name))
     let hasBaseUrl = false
 

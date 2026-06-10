@@ -652,6 +652,8 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          BEAMR_BASE_URL: ${{ secrets.BEAMR_BASE_URL }}
+          BEAMR_API_KEY: ${{ secrets.BEAMR_API_KEY }}
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}
@@ -661,6 +663,7 @@ jobs:
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
+          BEAMR_MODEL: ${{ vars.BEAMR_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}
           GITHUB_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}

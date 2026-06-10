@@ -6,7 +6,7 @@
 # call in the same shell. Place at: scripts/llm-gateway.sh
 #
 # Inputs already present in the step environment:
-#   $GATEWAY                    direct | bankr | openrouter | usepod | surplus | venice
+#   $GATEWAY                    direct | bankr | openrouter | usepod | surplus | venice | beamr
 #   $MODEL                      aeon's resolved model id (may be rewritten here)
 #   <PROVIDER> secret           the secret for the selected gateway (see below)
 #   vars.ANTHROPIC_BASE_URL     optional Anthropic-compatible endpoint (direct path)
@@ -165,6 +165,18 @@ case "${GATEWAY:-direct}" in
       "https://api.venice.ai/api/v1/chat/completions" \
       "$VENICE_API_KEY" "${VENICE_MODEL:-claude-opus-4-6}" "${VENICE_CLEANCACHE:+cleancache}"
     echo "::notice::Routing through Venice via claude-code-router (${VENICE_MODEL:-claude-opus-4-6})"
+    ;;
+
+  beamr)  # SIDECAR — OpenAI-compatible BEAMR router. BEAMR classifies each call,
+          # routes it to the cheapest capable provider, and settles that single
+          # call in USDC on Base over x402. BEAMR is self-hostable, so the routing
+          # trigger is your deployment URL (BEAMR_BASE_URL), not a key prefix;
+          # BEAMR_API_KEY is optional (only if your deployment is auth-gated).
+    require_secret BEAMR_BASE_URL
+    start_ccr_sidecar beamr \
+      "${BEAMR_BASE_URL%/}/api/v1/chat/completions" \
+      "${BEAMR_API_KEY:-x402}" "${BEAMR_MODEL:-auto}"
+    echo "::notice::Routing through BEAMR via claude-code-router (${BEAMR_MODEL:-auto})"
     ;;
 
   direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint. Unchanged.

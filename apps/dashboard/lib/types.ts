@@ -20,9 +20,9 @@ export interface GhRunJson {
   jobs: Array<{ name: string; status: string; conclusion: string | null }>
 }
 
-export type GatewayProvider = 'direct' | 'bankr' | 'openrouter' | 'usepod' | 'venice' | 'surplus'
+export type GatewayProvider = 'direct' | 'bankr' | 'openrouter' | 'usepod' | 'venice' | 'surplus' | 'beamr'
 
-export const GATEWAY_PROVIDERS: GatewayProvider[] = ['direct', 'bankr', 'openrouter', 'usepod', 'venice', 'surplus']
+export const GATEWAY_PROVIDERS: GatewayProvider[] = ['direct', 'bankr', 'openrouter', 'usepod', 'venice', 'surplus', 'beamr']
 
 export interface UploadFile { path: string; content: string }
 

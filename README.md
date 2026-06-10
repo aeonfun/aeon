@@ -39,7 +39,7 @@ cd aeon && ./aeon
 
 Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
-1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus) — routed automatically.
+1. **Authenticate** — connect your Claude Pro/Max subscription, or paste an API key: Anthropic, Anthropic-compatible, or a [gateway key](#llm-gateways) (Bankr, OpenRouter, UsePod, Venice, Surplus, BEAMR) — routed automatically.
 2. **Add a channel** — [Telegram, Discord, or Slack](#notifications) so Aeon can talk to you.
 3. **Pick skills** — toggle what you want, set schedules. Each skill shows the API keys and MCP servers it needs, with one-click setup.
 4. **Run** — hit **Run now** on any skill to try it immediately; API keys and `var` values apply directly, no push needed. When you change config (schedules, toggles), **Push** commits it to GitHub in one click so Actions runs it on cron.
@@ -217,7 +217,7 @@ Set **one** of these — not both:
 claude setup-token   # opens browser → prints sk-ant-oat01-... (valid 1 year)
 ```
 
-The dashboard's Authenticate modal handles both — and routes gateway keys (Bankr `bk_…`, OpenRouter `sk-or-…`, Surplus `inf_…`, or Venice/UsePod via the dropdown) automatically (see [LLM Gateways](#llm-gateways)).
+The dashboard's Authenticate modal handles both — and routes gateway keys (Bankr `bk_…`, OpenRouter `sk-or-…`, Surplus `inf_…`, or Venice/UsePod/BEAMR via the dropdown) automatically (see [LLM Gateways](#llm-gateways)).
 
 ### Notifications
 
@@ -356,8 +356,9 @@ Route Claude Code through an alternative gateway instead of the direct Anthropic
 | [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | dropdown | passthrough | Solana marketplace; token is embedded in the base URL, keep it secret |
 | [Venice](https://venice.ai) | `VENICE_API_KEY` | dropdown | up to Opus 4.6 | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar |
 | [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | `inf_…` prefix | Opus 4.8 | Settles in USDC on Base — fund the wallet + `approve()` once before use; sidecar-bridged |
+| BEAMR ([x402](https://github.com/coinbase/x402)) | `BEAMR_BASE_URL` | dropdown | router (`auto`) | Self-hostable router — classifies each call and routes to the cheapest capable provider, settling per call in USDC on Base over x402. Point at your own deployment; sidecar-bridged |
 
-Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`). Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
+Optional model overrides (repo **variables**, consumed by `scripts/llm-gateway.sh`): `OPENROUTER_MODEL` / `_SONNET` / `_HAIKU` (defaults `anthropic/claude-opus-4.8` etc.), `USEPOD_MODEL` / `_SONNET` / `_HAIKU`, `VENICE_MODEL` (default `claude-opus-4-6`), `SURPLUS_MODEL` (default `claude-opus-4.8`), `BEAMR_MODEL` (default `auto` — lets BEAMR's router pick) + optional `BEAMR_API_KEY` if your deployment is auth-gated. Sidecar debugging: set `CCR_LOG=true`; `VENICE_CLEANCACHE=1` works around Venice's prompt-cache block limit.
 
 ### Soul
 
