@@ -22,8 +22,7 @@ Install any skill into your own agent:
 | `article` | Research trending topics and write a publication-ready article | Daily 2 PM UTC |
 | `digest` | Generate and send a digest on a configurable topic | Daily 2 PM UTC |
 | `rss-digest` | Fetch, summarize, and deliver RSS feed highlights | Daily 7 AM UTC |
-| `hn-digest` | Top HN stories filtered by your interests | Daily 7 AM UTC |
-| `hn-digest` | Top Hacker News stories filtered by interests | Daily 7 AM UTC |
+| `hn-digest` | Top Hacker News stories filtered by your interests | Daily 7 AM UTC |
 | `paper-digest` | Find and summarize new papers matching tracked research interests | Daily 7 AM UTC |
 | `paper-pick` | Find the one paper most worth reading from arXiv and Semantic Scholar | Daily 2 PM UTC |
 | `tweet-digest` | Aggregate and summarize tweets from tracked accounts | Daily 7 AM UTC |
