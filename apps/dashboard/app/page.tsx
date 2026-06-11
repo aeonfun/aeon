@@ -12,7 +12,7 @@ import { TopBar } from '../components/TopBar'
 import { HQOverview } from '../components/HQOverview'
 import { SkillDetail } from '../components/SkillDetail'
 import { SecretsPanel } from '../components/SecretsPanel'
-import { StrategyPanel } from '../components/StrategyPanel'
+import { StrategyPanel, type StrategySources } from '../components/StrategyPanel'
 import { SoulPanel, type SoulFile, type SoulSources } from '../components/SoulPanel'
 import { McpPanel } from '../components/McpPanel'
 import { RightPanel } from '../components/RightPanel'
@@ -54,6 +54,7 @@ export default function Dashboard() {
   const [strategy, setStrategy] = useState('')
   const [strategyLoaded, setStrategyLoaded] = useState(false)
   const [strategySaving, setStrategySaving] = useState(false)
+  const [strategyBuilding, setStrategyBuilding] = useState(false)
   const [mcpServers, setMcpServers] = useState<Record<string, Record<string, unknown>>>({})
   const [mcpLoaded, setMcpLoaded] = useState(false)
   const [mcpSaving, setMcpSaving] = useState(false)
@@ -103,6 +104,7 @@ export default function Dashboard() {
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const r = await fetch('/api/secrets', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n }) }); if (r.ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const r = await fetch('/api/strategy', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setStrategy(content); flashSynced('Strategy saved', d) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
+  const buildStrategy = async (sources: StrategySources) => { setStrategyBuilding(true); try { const r = await fetch('/api/strategy/build', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...sources, model }) }); if (r.ok) { flash('Strategy-builder started'); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json().catch(() => ({} as { error?: string })); flash(d.error || 'Build failed to dispatch') } } finally { setStrategyBuilding(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const r = await fetch('/api/mcp', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ servers }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setMcpServers(servers); flashSynced('MCP servers saved', d) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
   const saveSoul = async (file: SoulFile, content: string) => { setSoulSaving(true); try { const r = await fetch('/api/soul', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file, content }) }); if (r.ok) { const d = await r.json().catch(() => ({})); if (file === 'soul') setSoul(content); else setSoulStyle(content); flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, d) } else { flash('Save failed') } } finally { setSoulSaving(false) } }
   const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const r = await fetch('/api/soul/build', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...sources, model }) }); if (r.ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json().catch(() => ({} as { error?: string })); flash(d.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
@@ -153,7 +155,7 @@ export default function Dashboard() {
             <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
-            <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} onSave={saveStrategy} />
+            <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} building={strategyBuilding} onSave={saveStrategy} onBuild={buildStrategy} />
           )}
           {view === 'mcp' && !selectedSkill && (
             <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
