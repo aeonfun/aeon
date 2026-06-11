@@ -1,7 +1,6 @@
 ---
 name: Deal Flow
 description: Funding round tracker across configurable verticals
-var: ""
 tags: [research]
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: disclosure-tracker
 description: Audit of the pending vulnerability disclosure queue — tracks draft advisories in memory/pending-disclosures/, alerts on aging CRITICAL/HIGH findings.
-var: ""
 tags: [security, meta]
 ---
 

@@ -1,7 +1,6 @@
 ---
 name: PR Tracker
 description: Track status of cross-repo PRs opened by this aeon instance — merges, stale open, and closures
-var: ""
 tags: [meta, github]
 ---
 

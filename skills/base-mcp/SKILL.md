@@ -1,7 +1,6 @@
 ---
 name: Base MCP
 description: Access a Base Account via the Base MCP server (mcp.base.org) — wallet, portfolio, sending, swapping, signing, x402 payments, batched contract calls, and transaction history across supported chains.
-var: ""
 tags: [crypto, onchain]
 mcp: [base]
 version: 0.1.0

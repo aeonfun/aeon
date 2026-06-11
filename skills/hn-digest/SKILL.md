@@ -97,7 +97,12 @@ Hard constraints:
 - every entry has both *Why it matters* and (*HN take* OR *Author claim*) — no headline-only entries
 - no marketing language; if a comment quote runs >220 chars, trim with ellipsis
 
-Send via `./notify "$(cat digest.md)"` (or pipe directly).
+Write the message to a file first, then send with `-f` (never `./notify "$(cat ...)"` — the sandbox trips on long multi-line argv and silently drops to `.pending-notify/`, ISS-009):
+
+```bash
+mkdir -p .pending-notify-temp
+./notify -f .pending-notify-temp/hn-digest-${today}.md
+```
 
 ## 6. Persist and log
 

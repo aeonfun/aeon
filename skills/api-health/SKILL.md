@@ -1,7 +1,6 @@
 ---
 name: API Health
 description: Pre-batch API provider health check — detects credit exhaustion or auth failure for every configured provider key before the scheduled batch runs, giving the operator a window to act before skills degrade
-var: ""
 tags: [meta, health, infra]
 schedule: "30 6 * * *"
 ---

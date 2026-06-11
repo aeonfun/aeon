@@ -88,8 +88,10 @@ Notes:
 ### 4. Send the tweet to Telegram (or configured channels)
 
 ```bash
-./notify "$(cat .outputs/skill-spotlight.md)"
+./notify -f .outputs/skill-spotlight.md
 ```
+
+Use `-f` (not `./notify "$(cat ...)"`) — the post is multi-line, and passing it as argv trips the sandbox ("Unhandled node type: string"), silently dropping the send to `.pending-notify/` (ISS-009). The `-f` flag reads the file inside the script, so argv stays short.
 
 If the file exceeds 4000 characters, trim bullets (drop the weakest first) until it fits. Telegram caps single messages at 4096.
 

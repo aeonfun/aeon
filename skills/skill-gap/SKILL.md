@@ -233,6 +233,8 @@ Evict entries whose `last_seen` is more than 35 days old (covers ~5 missed weekl
 
 ### 10. Append to memory log
 
+Append to `memory/logs/${today}.md`:
+
 ```
 ## skill-gap
 - Status: FORK_SKILL_GAP_OK | FORK_SKILL_GAP_QUIET | FORK_SKILL_GAP_NO_ACTIVE | FORK_SKILL_GAP_API_FAIL | FORK_SKILL_GAP_BAD_VAR | FORK_SKILL_GAP_PARENT_CHANGED | FORK_SKILL_GAP_DRY_RUN

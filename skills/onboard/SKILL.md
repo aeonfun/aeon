@@ -81,8 +81,10 @@ Hard cap the message at ~3500 chars (Telegram's safe limit). If exceeded, drop t
 ### 4. Send via `./notify`
 
 ```bash
-./notify "$(cat .outputs/onboard-message.md)"
+./notify -f .outputs/onboard-message.md
 ```
+
+Use `-f` (not `./notify "$(cat ...)"`) — the message is multi-line, and passing it as argv trips the sandbox ("Unhandled node type: string"), silently dropping the send to `.pending-notify/` (ISS-009). The `-f` flag reads the file inside the script, so argv stays short.
 
 `./notify` fans out to every configured channel. If no channel is configured, it silently no-ops — but in that case the checklist itself flagged it under "❌ Failing", so the operator will see it next time they check Actions logs.
 

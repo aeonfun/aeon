@@ -1,7 +1,6 @@
 ---
 name: milestone-tracker
 description: Progress tracking for key product and growth milestones — celebrates crossings, alerts on approaches, surfaces stalls
-var: ""
 tags: [meta, projects]
 ---
 

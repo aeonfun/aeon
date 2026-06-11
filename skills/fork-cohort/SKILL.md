@@ -226,6 +226,8 @@ Write `memory/topics/fork-cohort-state.json`:
 
 ### 10. Append to memory log
 
+Append to `memory/logs/${today}.md`:
+
 ```
 ## fork-cohort
 - Status: FORK_COHORT_OK | FORK_COHORT_NO_FORKS | FORK_COHORT_API_FAIL
