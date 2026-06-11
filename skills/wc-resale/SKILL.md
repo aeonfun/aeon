@@ -1,6 +1,6 @@
 ---
 name: wc-resale
-description: Resale-ticket price tracker for the FIFA World Cup 2026 — get-in (cheapest) and median secondary-market prices per match for a host city, venue, or fixture, with drop/spike alerts above 20%. var picks the target (e.g. "toronto").
+description: Resale-ticket price tracker for the FIFA World Cup 2026 — get-in (cheapest) and median secondary-market prices per match for a host city, venue, or fixture. Sends a price digest every run, leading with ≥20% drop/spike/thin-market alerts. var picks the target (e.g. "toronto").
 var: ""
 tags: [sports, tickets, tracker]
 ---
@@ -90,29 +90,31 @@ Write `articles/wc-resale-${today}.md`:
 - An **anomalies** section spelling out each DROP/SPIKE/THIN MARKET with the % move and the two-sided context (is it a real buying window or just a category/currency artifact?).
 - A **sources** list — every marketplace URL you read, so a reader can verify. Cite or it didn't happen.
 
-### 6. Notify (only on a real signal)
+### 6. Notify (digest every run)
 
-If the verdict is `DROP`, `SPIKE`, or `THIN MARKET`, send a notification. Stay **silent** on STEADY/NEW-only days — the 20% gate protects channel signal.
+**Always send a notification** — this skill delivers a price digest on every run, quiet or not. Lead with the verdict so a quiet day reads in one glance: on `STEADY`/`NEW` it's a clean price snapshot; on `DROP`/`SPIKE`/`THIN MARKET` it leads with the move and the context. The ≥20% gate still governs the *verdict*, it no longer gates whether you send.
 
 Write the message to a file first, then send (never `./notify "$(cat ...)"` — ISS-009):
 ```bash
 mkdir -p .pending-notify-temp
 ./notify -f .pending-notify-temp/wc-resale-${today}.md
 ```
-Voice: Aaron's — punchy, lowercase, position first. Keep under ~700 chars. Example shape:
+Voice: Aaron's — punchy, lowercase, position first. Keep under ~700 chars. Shape:
 ```
 wc resale — ${target} — ${today}
 
-verdict: {DROP|SPIKE|THIN}
+verdict: {STEADY|NEW|DROP|SPIKE|THIN}
 
-{match}: get-in ${get_in} ({+/-X%} since {last_date})
-{one line of context — real window or noise?}
+cheapest: {match} — get-in ${get_in}{ (±X% since {last_date}) — omit on NEW}
+{up to 4 more matches, one per line: {match} ${get_in}{ ±X%}}
 
-{other flagged match, if any}
+{IF DROP/SPIKE/THIN — one line per flagged match:}
+► {flagged match}: {±X%} — {real buying window or noise?}
 
-source: {marketplace} (+1 more)
+source: {marketplace} (+N more)
 full: https://github.com/aaronjmars/aeon/blob/main/articles/wc-resale-${today}.md
 ```
+Only **skip** the send if the report is genuinely empty (no upcoming matches for the target) — in that case log the skip instead of sending a blank digest.
 
 ### 7. Update memory
 
@@ -139,7 +141,7 @@ full: https://github.com/aaronjmars/aeon/blob/main/articles/wc-resale-${today}.m
 
 ## Constraints
 
-- **Don't spam.** The 20% gate exists to protect channel signal — don't lower it below 15%.
+- **Digest every run, but stay tight.** The skill notifies on every run — keep it a glanceable snapshot (≤700 chars), never a wall of text. The ≥20% gate still defines the DROP/SPIKE/THIN *verdict* (don't lower it below 15%); it just no longer decides whether to send.
 - **Always cite.** Every price needs a marketplace + URL. An unverifiable number is worse than `unavailable`.
 - **Two sources beat one.** Prefer corroborated get-ins; flag single-source figures as such.
 - **Normalize currency.** Report USD, but always show the original currency for CAD/MXN venues so the number is auditable.
