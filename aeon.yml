@@ -258,6 +258,8 @@ skills:
   thread-writer: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — write a 5–10 tweet thread in the operator's voice on a topic/URL; picks the sharpest recent signal from memory if var empty
   # Social
   mention-radar: { enabled: false, schedule: "25 7 2/2 * *", model: "claude-sonnet-4-6", var: "" } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
+  # Sports
+  wc-resale: { enabled: false, schedule: "0 13 * * *", var: "" } # daily/on-demand — FIFA World Cup 2026 resale ticket price tracker (get-in + median per match, ≥20% drop/spike/thin-market alerts). var: host city / venue / fixture (e.g. "toronto"); empty → Final + nearest upcoming match. WebSearch/WebFetch only, no secrets.
 
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
