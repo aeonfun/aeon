@@ -46,6 +46,7 @@ When consolidating memory (reflect, memory-flush), move detail into topic files 
 ## Tools
 
 - **`./notify "message"`** — Send to all configured notification channels (Telegram, Discord, Slack, json-render). Skips unconfigured channels silently.
+  - **For multi-line content: use `./notify -f path/to/file.md`** (read from file; `--file` also works). Do NOT use `./notify "$(cat file.md)"` — the sandbox trips on long multi-line argv with "Unhandled node type: string" and the call silently falls back to `.pending-notify/`. The `-f` flag reads the file inside the script, so argv stays short.
 - **`./notify-jsonrender <skill_name> <markdown>`** — Convert skill output to a json-render spec and write to `apps/dashboard/outputs/`. Called automatically by `./notify` when `JSONRENDER_ENABLED=true`.
 - **`./scripts/skill-runs [--hours N] [--full] [--json] [--failures]`** — Audit recent GitHub Actions skill runs. Shows counts, pass/fail rates, anomalies.
 - Use Claude Code's built-in **WebSearch** and **WebFetch** for web searches and URL fetching.

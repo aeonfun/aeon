@@ -339,7 +339,22 @@ jobs:
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash
           set -euo pipefail
-          MSG="$1"
+
+          # Usage:
+          #   ./notify "message"           — inline arg (short messages only; multi-line OK)
+          #   ./notify -f path/to/file.md  — read message from file (safe for any length/content)
+          #   ./notify --file path/to/file — same as -f
+          # Prefer -f for anything with embedded newlines: Claude's sandbox trips on
+          #   ./notify "$(cat file)" with "Unhandled node type: string".
+          if [ "${1:-}" = "-f" ] || [ "${1:-}" = "--file" ]; then
+            if [ -z "${2:-}" ] || [ ! -f "$2" ]; then
+              echo "notify: -f requires an existing file path" >&2
+              exit 2
+            fi
+            MSG=$(cat "$2")
+          else
+            MSG="${1:-}"
+          fi
 
           # Suppress obvious diagnostic probes (short messages containing test/trace/ping/debug/hello).
           # Claude sometimes issues these to verify the notify script works — they should not reach channels.
