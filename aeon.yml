@@ -13,7 +13,7 @@ skills:
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
   reddit-digest: { enabled: false, schedule: "0 7 * * *" }
-  telegram-digest: { enabled: false, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # digest from tracked Telegram channels
+  telegram-digest: { enabled: false, schedule: "30 7 * * *" } # digest from tracked Telegram channels
 
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: false, schedule: "0 9 * * *" }
@@ -22,7 +22,6 @@ skills:
     {
       enabled: false,
       schedule: "workflow_dispatch",
-      model: "claude-sonnet-4-6",
       var: ""
     } # workflow_dispatch only — structured triage receipt for inbound PRs that introduce/modify SKILL.md files. Runs skill-scan against each SKILL.md, enumerates required secrets, checks cron slot conflicts vs existing aeon.yml, surfaces quality signals (description, step count, notify call, tags). Posts ONE structured comment per (PR, head_sha). var: PR_NUMBER on aaronjmars/aeon. Gated notify (BLOCK or COMMENT_FAILED only).
   pr-review: { enabled: false, schedule: "0 9 * * *" }
@@ -35,7 +34,6 @@ skills:
     {
       enabled: false,
       schedule: "30 9 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily — curated trending HF models/datasets/spaces with "why notable" lines, momentum tags, and bucket clustering. Set var to one of {models, datasets, spaces} to scope.
 
@@ -65,23 +63,22 @@ skills:
   vigil-revoke: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet:spender:token (triplet of 0x40-hex addresses) — revoke a single live ERC-20 approval on Base via Bankr. Confirms live allowance, submits approve(spender, 0), waits for receipt. Operator-initiated only — pairs with wallet-risk + approval-audit. Requires BANKR_API_KEY (read-write, Wallet API). No auto-retry, no bulk, no scheduled cron.
   vigil: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet or token address on Base — keyless read-only onchain security scan (approvals, honeypot, rugpull indicators, contract-safety score) via VIGIL API. Pairs with vigil-revoke for the write action.
 
-  monitor-polymarket: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # monitor specific markets for 24h price moves and volume changes
-  monitor-kalshi: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # monitor Kalshi prediction markets for 24h price moves and volume
+  monitor-polymarket: { enabled: false, schedule: "30 12 * * *" } # monitor specific markets for 24h price moves and volume changes
+  monitor-kalshi: { enabled: false, schedule: "0 13 * * *" } # monitor Kalshi prediction markets for 24h price moves and volume
   monitor-runners: { enabled: false, schedule: "0 12 * * *" }
   token-pick: { enabled: false, schedule: "0 12 * * *" }
-  token-report: { enabled: false, schedule: "30 12 * * *", model: "claude-sonnet-4-6" } # daily token price/volume from GeckoTerminal
+  token-report: { enabled: false, schedule: "30 12 * * *" } # daily token price/volume from GeckoTerminal
   price-alert:
     {
       enabled: false,
       schedule: "*/30 * * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
-  market-context: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # fetch live crypto macro data, update memory
+  market-context: { enabled: false, schedule: "0 13 * * *" } # fetch live crypto macro data, update memory
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   polymarket-comments: { enabled: false, schedule: "0 13 * * *" } # top comments from trending Polymarket markets
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
-  aixbt-pulse: { enabled: false, schedule: "0 9,21 * * *", model: "claude-sonnet-4-6" } # twice daily — AIXBT free grounding endpoint: cross-domain market pulse (crypto/macro/tradfi/geopolitics) with taxonomy refresh
+  aixbt-pulse: { enabled: false, schedule: "0 9,21 * * *" } # twice daily — AIXBT free grounding endpoint: cross-domain market pulse (crypto/macro/tradfi/geopolitics) with taxonomy refresh
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
@@ -108,7 +105,6 @@ skills:
     {
       enabled: false,
       schedule: "10 10 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily — project next milestone crossing date from 14-day repo-pulse history; alert only when projected date lands in 7-14d window on Tue/Wed/Thu (Show HN dispatch slot)
   project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
@@ -116,7 +112,6 @@ skills:
     {
       enabled: false,
       schedule: "0 15 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # catalog all GitHub repos — set var to username
 
@@ -156,14 +151,13 @@ skills:
     {
       enabled: false,
       schedule: "30 15 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # cross-post latest article to Dev.to
 
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: false, schedule: "0 18 * * *" }
   skill-health: { enabled: false, schedule: "0 18 * * *" }
-  skill-analytics: { enabled: false, schedule: "30 18 * * 3", model: "claude-sonnet-4-6" } # Wednesday — fleet-level skill-run analytics: ranked run counts, exit-taxonomy distribution, anomaly flags (significance-gated)
+  skill-analytics: { enabled: false, schedule: "30 18 * * 3" } # Wednesday — fleet-level skill-run analytics: ranked run counts, exit-taxonomy distribution, anomaly flags (significance-gated)
 
   self-improve: { enabled: false, schedule: "0 18 1/2 * *" } # every other day — improve agent skills/prompts/config
   reflect: { enabled: false, schedule: "0 18 * * *" }
@@ -172,22 +166,20 @@ skills:
   startup-idea: { enabled: false, schedule: "0 18 * * *" }
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
-  ops-recap: { enabled: false, schedule: "0 21 * * *", model: "claude-sonnet-4-6" } # end-of-day ops summary
+  ops-recap: { enabled: false, schedule: "0 21 * * *" } # end-of-day ops summary
   vercel-projects:
     {
       enabled: false,
       schedule: "0 18 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday — catalog Vercel projects
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
-  cost-report: { enabled: false, schedule: "0 7 * * 1", model: "claude-sonnet-4-6" } # weekly API cost breakdown by skill and model
+  cost-report: { enabled: false, schedule: "0 7 * * 1" } # weekly API cost breakdown by skill and model
   spend-monitor:
     {
       enabled: false,
       schedule: "0 12 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily 12:00 UTC — API spend watchdog: running weekly cost vs WEEKLY_BUDGET_CAP (default $200), OK/WATCH/WARN/ALERT tiers, silent under 50%. Daily complement to cost-report. Pass var to override the cap.
 
@@ -196,152 +188,132 @@ skills:
     {
       enabled: false,
       schedule: "30 8 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
   atrium-watch:
     {
       enabled: false,
       schedule: "0 12 * * 5",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Friday 12:00 UTC — weekly diff of the Atrium marketplace catalog (atriumhermes.tech/.well-known/skills/index.json) against the prior snapshot. Reports added / removed skills since last run, attributes each `added` row to its `./install-from-atrium <name>` install command. Supply-side complement to sparkleware-catalog (curated skill-packs.json) and skill-update (installed-skill drift). Read-only against the Atrium endpoint. Gated notify (added/removed only; description renames surface in the article). Pass dry-run to skip notify. ATRIUM_HOST env override honored.
   competitor-radar:
     {
       enabled: false,
       schedule: "0 10 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 10:00 UTC — weekly scan of Product Hunt RSS + HN Algolia for NEW AI-agent-framework launches outside the 9-framework cohort tracked by framework-watch. Classifies framework/mcp/product, LRU-200 dedup, gated notify (QUIET on zero entrants). Pass dry-run to skip notify.
   ecosystem-entrants:
     {
       enabled: false,
       schedule: "45 11 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 11:45 UTC — weekly diff of ECOSYSTEM.md against the prior snapshot. Reports added / removed / updated entries since last run, attributes added rows to a merged PR when one can be found in the last 14 days. Pairs with ecosystem-pulse (liveness, 11:00 UTC) as the first-touch signal for new entrants. Read-only against ECOSYSTEM.md. Gated notify (added/removed only; updates surface in the article). Pass dry-run to skip notify. First run is a baseline (no diff fired).
   ecosystem-links:
     {
       enabled: false,
       schedule: "55 11 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 11:55 UTC — weekly URL-health audit of every link in ECOSYSTEM.md. GitHub URLs checked for archived/disabled via `gh api repos/...`; web URLs checked with `curl -sI --location` + WebFetch fallback; buckets OK/ARCHIVED/MOVED/DEAD/INCONCLUSIVE/XONLY/OTHER. INCONCLUSIVE never single-shots to DEAD — two consecutive INCONCLUSIVE runs are required (sandbox-aware). Notifies on transitions into DEAD/ARCHIVED/MOVED and on recoveries back to OK. Closes the three-skill ecosystem loop with ecosystem-entrants (arrivals, 11:45) and ecosystem-pulse (liveness, 11:00). Read-only against ECOSYSTEM.md. Pass dry-run to skip notify.
   ecosystem-pulse:
     {
       enabled: false,
       schedule: "0 11 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 11:00 UTC — weekly liveness check of ECOSYSTEM.md projects: resolves each to a GitHub repo (operator map + strict search), reports stars/forks/last-push buckets (ACTIVE/RECENT/COLD/X-only) + releases in 7d window, WoW transitions. Read-only against ECOSYSTEM.md. Gated notify (QUIET when no releases/transitions/entrants). Pass dry-run to skip notify.
   sparkleware-catalog:
     {
       enabled: false,
       schedule: "0 9 * * 2",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Tuesday 09:00 UTC — weekly enriched export of skill-packs.json: joins the curated registry to live GitHub signals (stars, last-push, live skills-pack.json manifest count) and writes machine-readable skill-packs-catalog.json (repo root) for external tools like Sparkleware (Issue #244). Read-only against skill-packs.json. Gated notify (only registry composition / reachability changes; star+drift refresh silently). Pass dry-run to skip notify.
   fleet-state:
     {
       enabled: false,
       schedule: "0 8 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
   fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
-  fork-cohort: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
+  fork-cohort: { enabled: false, schedule: "0 19 * * 0" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
   fork-release:
     {
       enabled: false,
       schedule: "30 19 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday 19:30 UTC — weekly scan: celebrate when any fork cuts a tagged GitHub release in the last 7 days. Silent on quiet weeks. Pass dry-run to skip notify, or owner/repo to override parent.
   contributor-spotlight:
     {
       enabled: false,
       schedule: "0 20 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday 20:00 UTC — weekly recognition post: pick one POWER fork from the latest fork-cohort run and convert it into a named human moment (operator handle, enabled stack, diverged work, 30d commits). 4-week dedup. Pass dry-run to skip notify, or owner/repo to override the auto-pick.
   fork-firstrun:
     {
       enabled: false,
       schedule: "30 20 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily 20:30 UTC — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh (≤8d), live-fallback otherwise. Persistent seen-list (LRU 500), bot allowlist suppressed from alerts. Per-fork alert when 1–3 new activators; batch notification at 4+ to avoid spam. Pass dry-run to skip notify, or owner/repo to override parent.
-  skill-evals: { enabled: false, schedule: "0 6 * * 0", model: "claude-sonnet-4-6" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
-  skill-update: { enabled: false, schedule: "0 19 * * 0", model: "claude-sonnet-4-6" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
+  skill-evals: { enabled: false, schedule: "0 6 * * 0" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
+  skill-update: { enabled: false, schedule: "0 19 * * 0" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
-  fleet-scorecard: { enabled: false, schedule: "0 13 * * *", model: "claude-sonnet-4-6" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
+  fleet-scorecard: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
   retrospective: { enabled: false, schedule: "0 19 * * 1" }
   shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
-  skill-leaderboard: { enabled: false, schedule: "0 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank popular skills across forks
-  contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0", model: "claude-sonnet-4-6" } # Sunday — rank community contributors across forks and upstream PRs
+  skill-leaderboard: { enabled: false, schedule: "0 17 * * 0" } # Sunday — rank popular skills across forks
+  contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0" } # Sunday — rank community contributors across forks and upstream PRs
   contributor-reward:
     {
       enabled: false,
       schedule: "30 9 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
   operator-scorecard:
     {
       enabled: false,
       schedule: "30 10 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
   followup-patrol:
     {
       enabled: false,
       schedule: "0 11 * * 2",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Tuesday 11:00 UTC — escalation audit: parses MEMORY.md follow-up/next-priorities section + issue tracker, ages items, alerts on CRITICAL/HIGH operator items (>21d/>14d). Catch-all for the open-loop backlog. Pass var to filter.
-  fork-digest: { enabled: false, schedule: "30 18 * * 0", model: "claude-sonnet-4-6" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
+  fork-digest: { enabled: false, schedule: "30 18 * * 0" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   skill-gap:
     {
       enabled: false,
       schedule: "0 21 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday 21:00 UTC — per-fork table of upstream skills the fork hasn't adopted; gates on fork-cohort POWER+ACTIVE set when fresh, falls back to live API otherwise. Pass dry-run to skip notify, or owner/repo to override parent.
   skill-adoption:
     {
       enabled: false,
       schedule: "0 22 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday 22:00 UTC — fleet skill-adoption leaderboard: per-slug count of POWER+ACTIVE forks with each upstream skill enabled:true in aeon.yml. Top-15 most-adopted + bottom-15 least-adopted (excludes freshly-shipped + dispatch-only), zero-adoption set, WoW deltas on adoption %. Reuses fork-cohort state when fresh; gated notify (QUIET when top-10 unchanged). Pass dry-run to skip notify, or owner/repo to override parent.
   fork-health:
     {
       enabled: false,
       schedule: "45 10 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 10:45 UTC — weekly per-fork health tier (ACTIVE/WARM/STALE/QUIET) from push recency + enabled skill count + 30d PR throughput. Top-10 ACTIVE leaderboard + fleet ACTIVE ratio; reuses fork-cohort state when fresh. Gated notify (QUIET when ratio steady and no top-10 churn / ≥3 tier transitions). Pass dry-run to skip notify, or owner/repo to override parent.
   capabilities-map:
     {
       enabled: false,
       schedule: "30 11 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 11:30 UTC — weekly read-only audit of installed skills' capability coverage: maps every enabled/disabled skill against the locked 6-value taxonomy in docs/CAPABILITIES.md (PR #268/#304), flags any tier with zero enabled coverage as an actionable gap, counts undeclared-enabled skills as a separate informational row. Reads skills.json + aeon.yml + skill-packs.json + per-skill SKILL.md frontmatter; gated notify (gap deltas + first run only). Pass dry-run to skip notify.
   capabilities-sweep:
     {
       enabled: false,
       schedule: "workflow_dispatch",
-      model: "claude-sonnet-4-6",
       var: ""
     } # workflow_dispatch only — Phase 2 one-shot sweep that closes the ~174-skill (undeclared) backlog the Phase 1 sweep (PR #322) left in capabilities-map. Walks every skills/*/SKILL.md, skips already-declared, pattern-infers a capabilities: array from the body against the locked 6-value taxonomy (read_only / external_api / writes_external_host / onchain_writes / agent_messaging / sends_notifications), pre-applies high-confidence rows (≥2 corroborating signals OR a single unambiguous on-chain-write / agent-messaging signal) to SKILL.md frontmatter, lists low-confidence rows in the PR description for operator decision. Opens one PR with the whole sweep (operator's review burden = one matrix, not ~174 micro-edits). Idempotent rerun (state in memory/topics/capabilities-sweep-state.json). var tokens: dry-run / propose-only / slug=<one>. Heuristic drift vs docs/CAPABILITIES.md is a fatal exit, not a warning — drift means the doc moved and the rules need updating before a safe rerun.
   wallet-risk:
     {
       enabled: false,
       schedule: "15 11 * * 1",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Monday 11:15 UTC — weekly risk audit of this agent's own Base wallets (.x402books/wallets.json): live ERC-20 approvals (unlimited flagged + known-safe-spender downgrade), per-token honeypot simulation. First scheduled consumer of the HoundFlow approval-audit + honeypot-check pair (workflow_dispatch-only otherwise). Gated notify (HIGH only / new MEDIUM transitions / first-run baseline). Pass dry-run to skip notify, an address to scope to one wallet, or a role (treasury/deployer/other).
   workflow-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
@@ -350,17 +322,15 @@ skills:
     {
       enabled: false,
       schedule: "0 8 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
-  smithery-manifest: { enabled: false, schedule: "0 6 1/7 * *", model: "claude-sonnet-4-6" } # weekly — refresh docs/smithery-manifest.json + smithery.yaml + smithery-submission.md from skills.json + aeon-mcp; PR + notify only on diff
+  smithery-manifest: { enabled: false, schedule: "0 6 1/7 * *" } # weekly — refresh docs/smithery-manifest.json + smithery.yaml + smithery-submission.md from skills.json + aeon-mcp; PR + notify only on diff
   show-hn: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft Show HN post + r/MachineLearning + r/selfhosted variants from live repo state, ready for the operator to paste at launch time. Set var to one of {show-hn, r/MachineLearning, r/selfhosted} to regenerate that single variant.
   product-hunt: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft the full Product Hunt launch asset pack (tagline 60ch / description 260ch / first comment 500ch / maker comment 500ch / six 80ch feature bullets) from live repo state. Set var to one of {tagline, description, first-comment, maker-comment, bullets} to regenerate that single section only.
   v4-readiness:
     {
       enabled: false,
       schedule: "workflow_dispatch",
-      model: "claude-sonnet-4-6",
       var: ""
     } # one-shot — per-fork v4 upgrade readiness checklist. Reads aeon.yml + skills.json + MEMORY.md against an embedded v4 change manifest; emits Safe / Review / Custom / Action breakdown. Pass dry-run to skip notify, or owner/repo to audit a fork remotely.
 
@@ -369,7 +339,6 @@ skills:
     {
       enabled: false,
       schedule: "0 8 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily 08:00 UTC — schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn from skills/schedule-ads/config.yaml; launches PAUSED by default
   create-campaign: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — provision Meta campaigns/ad sets on AdManage.ai (PAUSED) and write IDs back so schedule-ads can launch into them
@@ -380,37 +349,35 @@ skills:
 
   # --- Ported from derivative instances (PR #219) ---
   # Markets & crypto
-  polymarket: { enabled: false, schedule: "45 12 * * *", model: "claude-sonnet-4-6" } # trending/top Polymarket markets globally — complement to monitor-polymarket
+  polymarket: { enabled: false, schedule: "45 12 * * *" } # trending/top Polymarket markets globally — complement to monitor-polymarket
   wallet-digest: { enabled: false, schedule: "30 12 * * *" } # balances-only activity summary across tracked wallets; sibling to onchain-monitor
-  pm-pulse: { enabled: false, schedule: "0 13 * * 1", model: "claude-sonnet-4-6" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
-  pm-intel: { enabled: false, schedule: "30 13 * * 1", model: "claude-sonnet-4-6" } # Monday — competitive intel on the prediction-market ecosystem
-  pm-manipulation: { enabled: false, schedule: "15 13 * * *", model: "claude-sonnet-4-6" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
-  rwa-pulse: { enabled: false, schedule: "0 12 * * 1", model: "claude-sonnet-4-6" } # Monday — RWA tokenization momentum: launches, TVL, institutional adoption, regulation
-  compute-pulse: { enabled: false, schedule: "0 11 * * 6", model: "claude-sonnet-4-6" } # Saturday — AI compute market: GPU/hardware deals, inference pricing, decentralized-compute tokens
+  pm-pulse: { enabled: false, schedule: "0 13 * * 1" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
+  pm-intel: { enabled: false, schedule: "30 13 * * 1" } # Monday — competitive intel on the prediction-market ecosystem
+  pm-manipulation: { enabled: false, schedule: "15 13 * * *" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
+  rwa-pulse: { enabled: false, schedule: "0 12 * * 1" } # Monday — RWA tokenization momentum: launches, TVL, institutional adoption, regulation
+  compute-pulse: { enabled: false, schedule: "0 11 * * 6" } # Saturday — AI compute market: GPU/hardware deals, inference pricing, decentralized-compute tokens
   x402-monitor:
     {
       enabled: false,
       schedule: "0 12 * * 2",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Tuesday — protocol ecosystem velocity (defaults to x402; set memory/topics/tracked-protocol.md)
-  mcp-pulse: { enabled: false, schedule: "0 10 * * 5", model: "claude-sonnet-4-6" } # Friday 10:00 UTC — MCP ecosystem tracker: new servers, npm/GitHub adoption velocity, protocol evolution, thesis check. Pairs with x402-monitor for full agent-infra coverage (tool-calls + payments).
+  mcp-pulse: { enabled: false, schedule: "0 10 * * 5" } # Friday 10:00 UTC — MCP ecosystem tracker: new servers, npm/GitHub adoption velocity, protocol evolution, thesis check. Pairs with x402-monitor for full agent-infra coverage (tool-calls + payments).
 
   # Research & content
-  agent-displacement: { enabled: false, schedule: "0 11 * * 0", model: "claude-sonnet-4-6" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
-  launch-radar: { enabled: false, schedule: "30 10 * * 1", model: "claude-sonnet-4-6" } # Monday — scan PH/HN/GitHub Trending for launches matching the startup-idea backlog
-  topic-momentum: { enabled: false, schedule: "30 6 * * 1", model: "claude-sonnet-4-6" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
+  agent-displacement: { enabled: false, schedule: "0 11 * * 0" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
+  launch-radar: { enabled: false, schedule: "30 10 * * 1" } # Monday — scan PH/HN/GitHub Trending for launches matching the startup-idea backlog
+  topic-momentum: { enabled: false, schedule: "30 6 * * 1" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
   narrative-convergence:
     {
       enabled: false,
       schedule: "0 13 * * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
   tweet-digest: { enabled: false, schedule: "0 17 * * *", var: "" } # daily — account-based digest of tracked X accounts; sibling to fetch-tweets/tweet-roundup
 
   # Dev & repo
-  builder-map: { enabled: false, schedule: "0 10 * * 2", model: "claude-sonnet-4-6" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
+  builder-map: { enabled: false, schedule: "0 10 * * 2" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
   pr-tracker: { enabled: false, schedule: "30 9 * * *" } # daily — status of cross-repo PRs opened by this instance (merge/stale/closed)
   pr-merge: { enabled: false, schedule: "45 9 * * *", var: "" } # daily 09:45 UTC — operator-facing morning digest of every open PR on the target repo (default aaronjmars/aeon), bucketed by touched-file risk tier (FAST_TRACK/SKILL_PASS/INFRA_REVIEW/SKILL_WARN_OR_BLOCK/CORE_REVIEW/UNKNOWN), each skill-PR scanned via skill-scan/scan.sh, gated re-notify on head SHA. var: dry-run [owner/repo]
   repo-revive: { enabled: false, schedule: "0 10 * * 6" } # Saturday — one targeted improvement to reactivate the top dormant watched repo
@@ -427,8 +394,8 @@ skills:
   skill-spotlight: { enabled: false, schedule: "workflow_dispatch", var: "" } # picks one skill from a rotation queue (memory/topics/skill-spotlight.md), writes a paste-ready feature tweet in the "Aeon skill spotlight 🌟" format, then dispatches the picked skill so its own ./notify delivers the live outcome. Two notifications per run: tweet draft + skill result. Set var=<skill-name> to override the queue. Recommended enabled cron: "0 8 * * *".
 
   # Ideas & productivity
-  idea-pipeline: { enabled: false, schedule: "0 18 * * 1", model: "claude-sonnet-4-6" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
-  idea-validator: { enabled: false, schedule: "30 18 * * 1", model: "claude-sonnet-4-6" } # Monday — screen the startup-idea backlog, score viability
+  idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
+  idea-validator: { enabled: false, schedule: "30 18 * * 1" } # Monday — screen the startup-idea backlog, score viability
   milestone-tracker: { enabled: false, schedule: "0 19 * * 1" } # Monday — progress on key product/growth milestones; crossings, approaches, stalls
   note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — save a note (Supernotes card or memory/notes/)
 
@@ -439,24 +406,23 @@ skills:
   janitor: { enabled: false, schedule: "30 5 * * 0" } # Sunday — clean stale .notify-*, .pending-notify-temp/, expired .outputs/ artifacts
   memory-flush: { enabled: false, schedule: "30 21 * * *" } # daily — promote important recent log entries into MEMORY.md
   memory-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows + duplicate H2 headings in MEMORY.md
-  self-review: { enabled: false, schedule: "30 19 * * 0", model: "claude-sonnet-4-6" } # Sunday — audit what the agent did, what failed, what to improve
-  signal-verdict: { enabled: false, schedule: "0 8 * * 1", model: "claude-sonnet-4-6" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
+  self-review: { enabled: false, schedule: "30 19 * * 0" } # Sunday — audit what the agent did, what failed, what to improve
+  signal-verdict: { enabled: false, schedule: "0 8 * * 1" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
   skill-enabler: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — flip skills enabled:true by slug list, validate, commit + open PR
 
   # --- Ported from aeon-aaron ---
   # Infra & health
-  api-health: { enabled: false, schedule: "30 6 * * *", model: "claude-sonnet-4-6" } # daily 06:30 UTC — pre-batch health probe of every configured API provider key (credit exhaustion / auth failure / outage) via scripts/prefetch-api-probe.sh; files/updates issues; notifies only on degradation or recovery
+  api-health: { enabled: false, schedule: "30 6 * * *" } # daily 06:30 UTC — pre-batch health probe of every configured API provider key (credit exhaustion / auth failure / outage) via scripts/prefetch-api-probe.sh; files/updates issues; notifies only on degradation or recovery
   # Markets & crypto
-  fear-divergence: { enabled: false, schedule: "30 7 * * *", model: "claude-sonnet-4-6" } # daily 07:30 UTC — conditional: fires only when Fear & Greed < 25; surfaces assets diverging from the BTC drawdown with narrative catalysts from memory; silent skip otherwise. Reads market-context.md (enable market-context first).
-  picks-tracker: { enabled: false, schedule: "0 9 * * 0", model: "claude-sonnet-4-6" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
+  fear-divergence: { enabled: false, schedule: "30 7 * * *" } # daily 07:30 UTC — conditional: fires only when Fear & Greed < 25; surfaces assets diverging from the BTC drawdown with narrative catalysts from memory; silent skip otherwise. Reads market-context.md (enable market-context first).
+  picks-tracker: { enabled: false, schedule: "0 9 * * 0" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
   # Content pipeline
-  beat-tracker: { enabled: false, schedule: "0 9 * * 3", model: "claude-sonnet-4-6" } # Wednesday 09:00 UTC — persistent beat counts per news storyline; alerts when a thread hits 3 beats (article-ready). Event-level complement to topic-momentum + narrative-tracker.
-  article-queue: { enabled: false, schedule: "0 11 * * 0", model: "claude-sonnet-4-6" } # Sunday 11:00 UTC — synthesizes beat-tracker + topic-momentum + narrative-tracker into a ranked queue at memory/topics/article-queue.md that the article skill picks up via MEMORY.md
+  beat-tracker: { enabled: false, schedule: "0 9 * * 3" } # Wednesday 09:00 UTC — persistent beat counts per news storyline; alerts when a thread hits 3 beats (article-ready). Event-level complement to topic-momentum + narrative-tracker.
+  article-queue: { enabled: false, schedule: "0 11 * * 0" } # Sunday 11:00 UTC — synthesizes beat-tracker + topic-momentum + narrative-tracker into a ranked queue at memory/topics/article-queue.md that the article skill picks up via MEMORY.md
   content-performance:
     {
       enabled: false,
       schedule: "0 10 * * 0",
-      model: "claude-sonnet-4-6",
       var: ""
     } # Sunday 10:00 UTC — weekly engagement analysis of the operator's X account (topics, formats, breakouts); feeds article-queue/topic-momentum. var: X handle (no @); falls back to soul/SOUL.md. XAI_API_KEY optional (WebSearch fallback).
   thread-writer: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — write a 5–10 tweet thread in the operator's voice on a topic/URL; picks the sharpest recent signal from memory if var empty
@@ -465,7 +431,6 @@ skills:
     {
       enabled: false,
       schedule: "25 7 2/2 * *",
-      model: "claude-sonnet-4-6",
       var: ""
     } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
   # Sports
@@ -517,7 +482,7 @@ chains:
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # Bankr gateway also supports: gemini-3-pro, gemini-3-flash, gpt-5.2, kimi-k2.5, qwen3-coder
-model: claude-opus-4-8
+model: claude-sonnet-4-6
 
 # AI Gateway — route Claude Code requests through an LLM provider.
 #
