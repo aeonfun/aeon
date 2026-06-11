@@ -118,21 +118,27 @@ jobs:
               CURRENT_SKILL=""
               continue
             fi
-            # Multi-line format
-            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+):\ *$ ]]; then
+            # Multi-line format — covers both block-mapping (name: then 4-space
+            # fields) and split flow maps an editor/formatter may produce (name:
+            # then a lone "{", then deeper-indented "enabled:"/"schedule:" fields,
+            # then "}"). The optional trailing "{" also catches "name: {" on one
+            # line. Field regexes accept 3+ spaces so 4- and 6-space indents both
+            # parse — otherwise a reformatted *enabled* skill silently loses its
+            # schedule and is never dispatched (the default below is enabled=true).
+            if [[ "$line" =~ ^\ \ ([a-zA-Z0-9_-]+):\ *\{?\ *$ ]]; then
               CURRENT_SKILL="${BASH_REMATCH[1]}"
               SKILL_ORDER+=("$CURRENT_SKILL")
               SKILL_ENABLED["$CURRENT_SKILL"]="true"
               SKILL_SCHEDULE["$CURRENT_SKILL"]=""
               SKILL_VAR["$CURRENT_SKILL"]=""
             fi
-            if [[ "$line" =~ ^\ \ \ \ enabled:\ *false ]] && [ -n "$CURRENT_SKILL" ]; then
+            if [[ "$line" =~ ^\ \ \ +enabled:\ *false ]] && [ -n "$CURRENT_SKILL" ]; then
               SKILL_ENABLED["$CURRENT_SKILL"]="false"
             fi
-            if [[ "$line" =~ ^\ \ \ \ schedule:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
+            if [[ "$line" =~ ^\ \ \ +schedule:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
               SKILL_SCHEDULE["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
             fi
-            if [[ "$line" =~ ^\ \ \ \ var:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
+            if [[ "$line" =~ ^\ \ \ +var:\ *\"([^\"]+)\" ]] && [ -n "$CURRENT_SKILL" ]; then
               SKILL_VAR["$CURRENT_SKILL"]="${BASH_REMATCH[1]}"
             fi
           done < aeon.yml
