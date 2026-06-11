@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execSync } from 'child_process'
 import { resolve } from 'path'
-import { getFileContent, getDirectory, updateFile } from '@/lib/github'
+import { getFileContent, getDirectory, updateFile, commitAndPush } from '@/lib/github'
 import {
   parseConfig,
   updateSkillInConfig,
@@ -101,6 +101,7 @@ export async function PATCH(request: Request) {
       })
     }
 
+    let sync: { synced: boolean; reason?: string } = { synced: true }
     if (updated !== content) {
       const msg = model
         ? `chore: set model to ${model}`
@@ -108,9 +109,10 @@ export async function PATCH(request: Request) {
           ? `chore: ${jsonrenderEnabled ? 'enable' : 'disable'} json-render channel`
           : `chore: update ${name} config`
       await updateFile('aeon.yml', updated, sha, msg)
+      sync = commitAndPush(['aeon.yml'], msg)
     }
 
-    return NextResponse.json({ ok: true })
+    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: msg }, { status: 500 })
@@ -134,7 +136,10 @@ export async function DELETE(request: Request) {
       }
     } catch { /* config cleanup is best-effort */ }
 
-    return NextResponse.json({ ok: true })
+    // One commit for both the removed skill dir and the aeon.yml cleanup.
+    const sync = commitAndPush(['aeon.yml', `skills/${name}`], `chore: remove ${name} skill`)
+
+    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: msg }, { status: 500 })

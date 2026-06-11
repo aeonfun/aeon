@@ -1,4 +1,5 @@
 import { readFile, writeFile, readdir, mkdir, rm } from 'fs/promises'
+import { execFileSync } from 'child_process'
 import { join } from 'path'
 import { REPO_ROOT } from './gh'
 
@@ -10,6 +11,46 @@ interface GitHubContentEntry { name: string; type: 'file' | 'dir' | 'symlink' | 
 
 export function isLocal() {
   return !process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO
+}
+
+/**
+ * Local-mode auto-sync. After a dashboard edit writes a file to disk, stage
+ * exactly those paths, commit, and push so the change lands on GitHub
+ * immediately — otherwise scheduled runs (which read committed `main`) never see
+ * it. Hosted mode already commits through the Contents API, so this is a no-op
+ * there. Best-effort and never throws: the file is already saved locally, so a
+ * failed push degrades to { synced: false } (surfaced to the UI) rather than
+ * failing the request. Only the given paths are committed, so unrelated
+ * working-tree changes are left untouched.
+ */
+export function commitAndPush(paths: string[], message: string): { synced: boolean; reason?: string } {
+  if (isLocal() === false) return { synced: true } // hosted mode: edit already committed via API
+  const git = (...args: string[]) =>
+    execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
+  const errMsg = (e: unknown) => (e instanceof Error ? e.message : String(e)).slice(0, 200)
+  try {
+    git('add', '--', ...paths) // stages content changes AND deletions under these paths
+    let staged = true
+    try { git('diff', '--cached', '--quiet', '--', ...paths); staged = false } catch { staged = true }
+    if (!staged) return { synced: true } // nothing changed in these paths
+    git('commit', '-m', message, '--', ...paths)
+    try {
+      git('push')
+    } catch {
+      // Most likely behind origin/main (e.g. an Actions bot commit). Rebase onto
+      // the remote and retry once; abort cleanly if it conflicts.
+      try {
+        git('pull', '--rebase', '--autostash')
+        git('push')
+      } catch (e) {
+        try { git('rebase', '--abort') } catch { /* not mid-rebase */ }
+        return { synced: false, reason: errMsg(e) }
+      }
+    }
+    return { synced: true }
+  } catch (e) {
+    return { synced: false, reason: errMsg(e) }
+  }
 }
 
 function getConfig() {

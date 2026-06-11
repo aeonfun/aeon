@@ -6,6 +6,7 @@ import {
   createFile,
   updateFile,
   getDirectory,
+  commitAndPush,
 } from '@/lib/github'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
@@ -95,7 +96,12 @@ export async function POST(request: Request) {
         installed.push(name)
       }
 
-      return NextResponse.json({ installed, failed })
+      // Push the new skill dirs + aeon.yml to GitHub in one commit (local mode).
+      const sync: { synced: boolean; reason?: string } = installed.length
+        ? commitAndPush(['aeon.yml', ...installed.map(n => `skills/${n}`)], `feat: import ${installed.join(', ')}`)
+        : { synced: true }
+
+      return NextResponse.json({ installed, failed, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
