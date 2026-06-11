@@ -4,7 +4,7 @@ import { displayName } from '../lib/utils'
 
 interface TopBarProps {
   skill: Skill | null
-  view: 'hq' | 'secrets' | 'strategy' | 'mcp'
+  view: 'hq' | 'secrets' | 'strategy' | 'mcp' | 'soul'
   repo: string
   model: string
   gateway: GatewayProvider
@@ -28,7 +28,7 @@ export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoa
     <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-between px-5 shrink-0 bg-aeon-bg">
       <div className="flex items-center gap-3 min-w-0 flex-1">
         <span className="font-display text-lg uppercase tracking-wide text-aeon-fg truncate">
-          {skill ? displayName(skill.name) : view === 'secrets' ? 'Settings' : view === 'strategy' ? 'Strategy' : view === 'mcp' ? 'MCP' : `${repo ? repo.split('/').pop() : 'Aeon'} HQ`}
+          {skill ? displayName(skill.name) : view === 'secrets' ? 'Settings' : view === 'strategy' ? 'Strategy' : view === 'mcp' ? 'MCP' : view === 'soul' ? 'Soul' : `${repo ? repo.split('/').pop() : 'Aeon'} HQ`}
         </span>
         {skill && dept && (
           <span

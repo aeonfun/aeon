@@ -13,13 +13,14 @@ import { HQOverview } from '../components/HQOverview'
 import { SkillDetail } from '../components/SkillDetail'
 import { SecretsPanel } from '../components/SecretsPanel'
 import { StrategyPanel } from '../components/StrategyPanel'
+import { SoulPanel, type SoulFile, type SoulSources } from '../components/SoulPanel'
 import { McpPanel } from '../components/McpPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
 
 export default function Dashboard() {
-  const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp'>('hq')
+  const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
   // Shared with the sidebar's category chips — HQ category cards toggle it too.
@@ -56,6 +57,11 @@ export default function Dashboard() {
   const [mcpServers, setMcpServers] = useState<Record<string, Record<string, unknown>>>({})
   const [mcpLoaded, setMcpLoaded] = useState(false)
   const [mcpSaving, setMcpSaving] = useState(false)
+  const [soul, setSoul] = useState('')
+  const [soulStyle, setSoulStyle] = useState('')
+  const [soulLoaded, setSoulLoaded] = useState(false)
+  const [soulSaving, setSoulSaving] = useState(false)
+  const [soulBuilding, setSoulBuilding] = useState(false)
 
   const flash = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
   // Config writes auto-commit+push in local mode (no-op in hosted mode). Reflect
@@ -80,6 +86,7 @@ export default function Dashboard() {
   useEffect(() => { setFeedLoading(true); fetch('/api/outputs').then(r => r.ok ? r.json() : { outputs: [] }).then(d => setOutputs(d.outputs || [])).finally(() => setFeedLoading(false)) }, [feedKey])
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
   useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() : null).then(d => { if (d) { setMcpServers(d.servers || {}); setMcpLoaded(true) } }).catch(() => {}) } }, [view, mcpLoaded])
+  useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() : null).then(d => { if (d) { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) } }).catch(() => {}) } }, [view, soulLoaded])
 
   const toggleSkill = async (n: string, en: boolean) => { setBusy(b => ({ ...b, [n]: true })); try { const r = await fetch('/api/skills', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, enabled: en }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setSkills(s => s.map(sk => sk.name === n ? { ...sk, enabled: en } : sk)); flashSynced(`${displayName(n)} ${en ? 'on duty' : 'off duty'}`, d) } } finally { setBusy(b => ({ ...b, [n]: false })) } }
   const runSkill = async (n: string, v?: string, sm?: string) => { setBusy(b => ({ ...b, [`r-${n}`]: true })); try { const r = await fetch(`/api/skills/${n}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ var: v || '', model: sm || model }) }); if (r.ok) { flash(`${displayName(n)} started`); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json(); flash(d.error || 'Failed') } } finally { setBusy(b => ({ ...b, [`r-${n}`]: false })) } }
@@ -96,6 +103,8 @@ export default function Dashboard() {
   const importSkill = async (files: UploadFile[], name?: string) => { const r = await fetch('/api/upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ files, name }) }); if (r.ok) { const d = await r.json(); flash(`${displayName(d.name)} hired`); fetchData() } }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const r = await fetch('/api/strategy', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setStrategy(content); flashSynced('Strategy saved', d) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const r = await fetch('/api/mcp', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ servers }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setMcpServers(servers); flashSynced('MCP servers saved', d) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
+  const saveSoul = async (file: SoulFile, content: string) => { setSoulSaving(true); try { const r = await fetch('/api/soul', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file, content }) }); if (r.ok) { const d = await r.json().catch(() => ({})); if (file === 'soul') setSoul(content); else setSoulStyle(content); flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, d) } else { flash('Save failed') } } finally { setSoulSaving(false) } }
+  const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const r = await fetch('/api/soul/build', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...sources, model }) }); if (r.ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json().catch(() => ({} as { error?: string })); flash(d.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
 
   // Jump from a skill's API-keys panel straight to Settings → Access Keys,
   // scrolled to the chosen key with its input open and ready to paste.
@@ -146,6 +155,9 @@ export default function Dashboard() {
           )}
           {view === 'mcp' && !selectedSkill && (
             <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
+          )}
+          {view === 'soul' && !selectedSkill && (
+            <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} onSave={saveSoul} onBuild={buildSoul} />
           )}
           {view === 'hq' && !selectedSkill && (
             <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />

@@ -126,6 +126,31 @@ case "$SKILL" in
       "\"allowed_x_handles\": [\"${ACCOUNT}\"]"
     ;;
 
+  soul-builder)
+    # Read a wide, diverse sample of an account to model its identity + voice.
+    # var may be a structured brief ("x=handle | name=... | links=...") or a bare
+    # handle (back-compat). Only the X handle is prefetched here; name/links are
+    # gathered in-skill via WebSearch/WebFetch (sandbox-safe built-ins).
+    RAW="${VAR:-}"
+    case "$RAW" in
+      *x=*) ACCOUNT=$(printf '%s' "$RAW" | sed -n 's/.*x=\([^|]*\).*/\1/p') ;;
+      *=*)  ACCOUNT="" ;;
+      *)    ACCOUNT="$RAW" ;;
+    esac
+    ACCOUNT=$(printf '%s' "$ACCOUNT" | tr -d ' ')
+    ACCOUNT="${ACCOUNT#@}"
+    ACCOUNT="${ACCOUNT##*x.com/}"; ACCOUNT="${ACCOUNT##*twitter.com/}"; ACCOUNT="${ACCOUNT%%/*}"
+    if [ -z "$ACCOUNT" ]; then
+      echo "xai-prefetch: soul-builder has no X handle in var, skipping X prefetch (name/links handled in-skill via web search)"
+      exit 0
+    fi
+    SOUL_FROM=$(date -u -d "365 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-365d +%Y-%m-%d)
+    xai_search "soul-builder.json" \
+      "Profile the X account @${ACCOUNT} so an AI can learn to think and write like this person. Return TWO things. FIRST, the account profile: display name, bio, and a one-paragraph read on who they are and what they post about. SECOND, a diverse sample of 40 of their own original posts (not retweets) from ${SOUL_FROM} to ${TODAY} — deliberately mix topics, tones, and engagement levels (include quiet posts, not just viral ones), and include some opinionated takes, some reactions, and some longer posts. For each post: the full text, date posted, like/retweet/reply counts, and the direct link (https://x.com/${ACCOUNT}/status/ID). Return the profile first, then a numbered list of posts." \
+      "$SOUL_FROM" "$TODAY" \
+      "\"allowed_x_handles\": [\"${ACCOUNT}\"]"
+    ;;
+
   tweet-roundup)
     if [ -n "$VAR" ]; then
       # Single topic override

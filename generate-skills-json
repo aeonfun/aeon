@@ -65,7 +65,7 @@ get_category() {
     write-tweet|reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
     show-hn|syndicate-article|product-hunt) echo "social" ;;
     schedule-ads|create-campaign) echo "social" ;;
-    engagement-act|skill-spotlight|thread-formatter) echo "social" ;;
+    engagement-act|skill-spotlight|thread-formatter|soul-builder) echo "social" ;;
     # Productivity
     priority-brief|routine|ops-recap|retrospective|shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
