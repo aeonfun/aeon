@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, updateFile, createFile } from '@/lib/github'
+import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
 
 const FILE = 'STRATEGY.md'
 
@@ -33,7 +33,8 @@ export async function PUT(request: Request) {
     } else {
       await createFile(FILE, body.content, 'chore: add STRATEGY.md from dashboard')
     }
-    return NextResponse.json({ ok: true })
+    const sync = commitAndPush([FILE], 'chore: update STRATEGY.md from dashboard')
+    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: msg }, { status: 500 })

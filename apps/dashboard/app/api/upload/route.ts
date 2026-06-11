@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createFile, getFileContent, updateFile } from '@/lib/github'
+import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/github'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
@@ -150,7 +150,9 @@ export async function POST(request: Request) {
     const allContent = files.map(f => f.content).join('\n')
     const detectedSecrets = detectSecretsFromContent(allContent)
 
-    return NextResponse.json({ name: skillName, filesWritten, detectedSecrets })
+    const sync = commitAndPush(['aeon.yml', `skills/${skillName}`], `feat: upload ${skillName} skill`)
+
+    return NextResponse.json({ name: skillName, filesWritten, detectedSecrets, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({ error: msg }, { status: 500 })
