@@ -84,7 +84,7 @@ export function StrategyPanel({ content, loading, saving, onSave }: StrategyPane
               </div>
             </div>
             <p className="mt-3 text-[11px] text-primary-35 font-mono">
-              Save writes STRATEGY.md — then hit <span className="text-primary-70">Push</span> in the top bar to commit it to GitHub.
+              Save writes STRATEGY.md and syncs to GitHub automatically.
             </p>
           </>
         )}

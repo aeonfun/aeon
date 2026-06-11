@@ -62,6 +62,7 @@ export default function Dashboard() {
   const [soulLoaded, setSoulLoaded] = useState(false)
   const [soulSaving, setSoulSaving] = useState(false)
   const [soulBuilding, setSoulBuilding] = useState(false)
+  const [soulInstalling, setSoulInstalling] = useState<string | null>(null)
 
   const flash = (msg: string) => { setToast(msg); setTimeout(() => setToast(''), 3000) }
   // Config writes auto-commit+push in local mode (no-op in hosted mode). Reflect
@@ -105,6 +106,7 @@ export default function Dashboard() {
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const r = await fetch('/api/mcp', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ servers }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setMcpServers(servers); flashSynced('MCP servers saved', d) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
   const saveSoul = async (file: SoulFile, content: string) => { setSoulSaving(true); try { const r = await fetch('/api/soul', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ file, content }) }); if (r.ok) { const d = await r.json().catch(() => ({})); if (file === 'soul') setSoul(content); else setSoulStyle(content); flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, d) } else { flash('Save failed') } } finally { setSoulSaving(false) } }
   const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const r = await fetch('/api/soul/build', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...sources, model }) }); if (r.ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json().catch(() => ({} as { error?: string })); flash(d.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
+  const installSoulExample = async (key: string) => { setSoulInstalling(key); try { const r = await fetch('/api/soul/examples', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ example: key }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setSoul(d.soul || ''); setSoulStyle(d.style || ''); setSoulLoaded(true); flashSynced(`Installed ${key} soul`, d) } else { const d = await r.json().catch(() => ({} as { error?: string })); flash(d.error || 'Install failed') } } finally { setSoulInstalling(null) } }
 
   // Jump from a skill's API-keys panel straight to Settings → Access Keys,
   // scrolled to the chosen key with its input open and ready to paste.
@@ -157,7 +159,7 @@ export default function Dashboard() {
             <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
           )}
           {view === 'soul' && !selectedSkill && (
-            <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} onSave={saveSoul} onBuild={buildSoul} />
+            <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
           )}
           {view === 'hq' && !selectedSkill && (
             <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />

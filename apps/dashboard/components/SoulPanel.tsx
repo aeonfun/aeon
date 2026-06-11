@@ -6,6 +6,7 @@ import { SOUL_SCAFFOLD, STYLE_SCAFFOLD, ARCHETYPES } from '../lib/soul-templates
 
 export type SoulFile = 'soul' | 'style'
 export interface SoulSources { handle: string; name: string; links: string }
+interface SoulExample { key: string; label: string; blurb: string }
 
 interface SoulPanelProps {
   soul: string
@@ -13,8 +14,10 @@ interface SoulPanelProps {
   loading: boolean
   saving: boolean
   building: boolean
+  installing: string | null
   onSave: (file: SoulFile, content: string) => void
   onBuild: (sources: SoulSources) => void
+  onInstallExample: (key: string) => void
 }
 
 const EXAMPLES_URL = 'https://github.com/aaronjmars/soul.md/tree/main/examples'
@@ -31,7 +34,7 @@ function isBlank(md: string): boolean {
 
 const SOFT_LIMIT = 6000
 
-export function SoulPanel({ soul, style, loading, saving, building, onSave, onBuild }: SoulPanelProps) {
+export function SoulPanel({ soul, style, loading, saving, building, installing, onSave, onBuild, onInstallExample }: SoulPanelProps) {
   const [active, setActive] = useState<SoulFile>('soul')
   const [soulDraft, setSoulDraft] = useState(soul)
   const [styleDraft, setStyleDraft] = useState(style)
@@ -39,9 +42,18 @@ export function SoulPanel({ soul, style, loading, saving, building, onSave, onBu
   const [name, setName] = useState('')
   const [links, setLinks] = useState('')
   const [showTemplates, setShowTemplates] = useState(false)
+  const [examples, setExamples] = useState<SoulExample[]>([])
 
   useEffect(() => { setSoulDraft(soul) }, [soul])
   useEffect(() => { setStyleDraft(style) }, [style])
+  // Ready-made souls from the soul.md gallery — installable into soul/ in one click.
+  useEffect(() => { fetch('/api/soul/examples').then(r => r.ok ? r.json() : { examples: [] }).then(d => setExamples(d.examples || [])).catch(() => {}) }, [])
+
+  const installExample = (ex: SoulExample) => {
+    if (installing) return
+    if (!window.confirm(`Install ${ex.label}'s soul? This overwrites soul/SOUL.md and soul/STYLE.md on your repo.`)) return
+    onInstallExample(ex.key)
+  }
 
   const content = active === 'soul' ? soul : style
   const draft = active === 'soul' ? soulDraft : styleDraft
@@ -224,6 +236,33 @@ export function SoulPanel({ soul, style, loading, saving, building, onSave, onBu
                 </button>
               ))}
             </div>
+
+            {/* Install a ready-made real soul straight into the repo */}
+            {examples.length > 0 && (
+              <div className="pt-3 mt-1 border-t border-[rgba(250,250,250,0.08)]">
+                <p className="text-[11px] text-primary-50 font-mono mb-2">
+                  Or install a real soul from the gallery — writes SOUL.md + STYLE.md + examples to{' '}
+                  <span className="text-primary-80">soul/</span> and syncs to GitHub.
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {examples.map(ex => (
+                    <div key={ex.key} className="border border-[rgba(250,250,250,0.12)] px-3 py-2.5 flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <div className="text-[12px] text-primary-100 font-medium truncate">{ex.label}</div>
+                        {ex.blurb && <div className="text-[10px] text-primary-40 font-mono leading-snug">{ex.blurb}</div>}
+                      </div>
+                      <button
+                        onClick={() => installExample(ex)}
+                        disabled={!!installing}
+                        className="shrink-0 text-[10px] font-mono uppercase tracking-[0.14em] px-2.5 py-1.5 border border-aeon-red/50 text-aeon-red hover:bg-aeon-red/10 transition-colors disabled:opacity-40 cursor-target"
+                      >
+                        {installing === ex.key ? 'Installing…' : 'Install'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -257,8 +296,7 @@ export function SoulPanel({ soul, style, loading, saving, building, onSave, onBu
               </div>
             </div>
             <p className="mt-3 text-[11px] text-primary-35 font-mono">
-              Save writes <span className="text-primary-70">soul/{active === 'soul' ? 'SOUL.md' : 'STYLE.md'}</span> — then hit{' '}
-              <span className="text-primary-70">Push</span> in the top bar to commit it to GitHub.
+              Save writes <span className="text-primary-70">soul/{active === 'soul' ? 'SOUL.md' : 'STYLE.md'}</span> and syncs to GitHub automatically.
             </p>
           </>
         )}
