@@ -393,15 +393,28 @@ A gateway is wired through five files, all following the existing pattern — so
 
 Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown) and run any skill — the workflow log prints `::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
 
+### Strategy
+
+`STRATEGY.md` is Aeon's north-star — your overarching goal, top priorities, audience, and hard constraints. It's imported into `CLAUDE.md`, so it rides along in the context of **every** skill run: when a choice isn't otherwise determined, the strategy breaks the tie ("showcase real output over new features", "depth over breadth"). Keep it tight (it costs tokens every run) and specific (a vague strategy can't break a tie).
+
+Set it three ways from the dashboard's **Strategy** tab:
+
+- **Write it** — edit `STRATEGY.md` inline; Save commits and pushes automatically.
+- **Templates** — start from a blank scaffold or one of five archetypes (Indie SaaS, Open-source maintainer, Researcher/Writer, Crypto/Agent, Creator) and fill in the bracketed bits.
+- **Build it** — give the `strategy-builder` skill a one-line goal (and optionally a repo or links). It reads your brief plus the repo README and `memory/MEMORY.md`, then drafts a tight north-star / priorities / audience / constraints strategy and commits it. No API key needed; runs as a GitHub Action, so hit **Pull** when it finishes.
+
 ### Soul
 
-By default Aeon has no personality. To make it write and respond like you:
+By default Aeon has no personality. The **Soul** tab gives it one — `soul/SOUL.md` (identity, worldview, opinions) and `soul/STYLE.md` (voice, vocabulary) are read on every run, so notifications and content sound like you. Four ways to set it:
 
-1. Fork [soul.md](https://github.com/aaronjmars/soul.md) and fill in `SOUL.md` (identity, worldview), `STYLE.md` (voice, vocabulary), and `examples/good-outputs.md` (10–20 calibration samples)
-2. Copy into your Aeon repo under `soul/`
-3. Add an `## Identity` section at the top of `CLAUDE.md` telling Aeon to read and embody them
+- **Write it** — edit SOUL.md / STYLE.md inline; Save commits and pushes.
+- **Templates** — start from a blank scaffold or an archetype (Founder, Researcher, Creator).
+- **Install a real soul** — one click pulls a complete example (Karpathy, Garry Tan, Steipete, Vivian Balakrishnan) from the [soul.md](https://github.com/aaronjmars/soul.md) gallery into your `soul/`.
+- **Build from your handle** — give the `soul-builder` skill any of an X handle, your full name (web search), or links (LinkedIn, site, blog, GitHub). It reads them and drafts SOUL.md + STYLE.md + voice examples in your style. Set `XAI_API_KEY` for the richest read of your actual X timeline — it falls back to web search without it.
 
-Every skill reads `CLAUDE.md`, so identity propagates automatically. **Quality check:** soul files work when they're specific enough to be wrong. *"I think most AI safety discourse is galaxy-brained cope"* is useful; *"I have nuanced views on AI safety"* is not.
+Prefer files? Fork [soul.md](https://github.com/aaronjmars/soul.md), fill in `SOUL.md` / `STYLE.md` / `examples/good-outputs.md` (10–20 calibration samples), and drop them under `soul/` — same result. The `## Voice` section of `CLAUDE.md` reads them automatically, so identity propagates to every skill.
+
+**Quality check:** soul files work when they're specific enough to be wrong. *"I think most AI safety discourse is galaxy-brained cope"* is useful; *"I have nuanced views on AI safety"* is not.
 
 ### Publishing (GitHub Pages & RSS)
 
@@ -512,6 +525,7 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 
 ```
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
+STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
 skills.json              ← machine-readable skill catalog (197 skills)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
