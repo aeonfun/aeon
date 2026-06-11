@@ -43,6 +43,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2054906494626455553/ff1PHBKF_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
 | <img src="https://pbs.twimg.com/profile_images/2056261441192419328/X6pFHgHc_400x400.jpg" width="36" height="36" alt="Gitlawb Terminal logo"> | Gitlawb Terminal | [@terminalgitlawb](https://x.com/terminalgitlawb) |
 | <img src="https://pbs.twimg.com/profile_images/2061386184820162560/t1py10Vb_400x400.jpg" width="36" height="36" alt="HivemindOS logo"> | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
+| <img src="https://pbs.twimg.com/profile_images/2050846114472202240/fOvJsybI_400x400.jpg" width="36" height="36" alt="Hivra logo"> | Hivra | [@HivraOS](https://x.com/HivraOS) |
 | <img src="https://pbs.twimg.com/profile_images/2060061798691221509/dGZFzJ5e_400x400.jpg" width="36" height="36" alt="Hound Flow logo"> | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
 | <img src="https://pbs.twimg.com/profile_images/2057685123068534784/gu-mFTdW_400x400.jpg" width="36" height="36" alt="Hunch logo"> | Hunch | [@playhunchxyz](https://x.com/playhunchxyz) |
 | <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
