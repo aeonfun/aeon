@@ -118,9 +118,10 @@ The response is `{ "workflow": { "id", "name", "status", "created_at" } }`. The 
 
 ### 4. Optional pre-flight — check vault state
 
-Before sending the user to sign, surface the vault preview so they know whether a deploy is included and how much ETH to fund:
+`${USER_WALLET}` below is the operator's connected wallet address (the vault owner, a `0x…` address) — read it from `memory/` or ask the user once. Before sending them to sign, surface the vault preview so they know whether a deploy is included and how much ETH to fund:
 
 ```bash
+USER_WALLET="0x..."   # the operator's wallet (vault owner)
 curl -s "https://ctrl.build/api/mcp/vault-status?wallet=${USER_WALLET}" | jq '{
   vaultExists, vaultAddress, predictedVaultAddress,
   ethBalance: .balances.ethDecimal,
@@ -185,9 +186,26 @@ curl -s "https://ctrl.build/api/mcp/execution-logs?workflow_id=${WID}" | jq '.lo
 
 Use these to write a one-line health line in a follow-up notify ("3 executions in last 24h, last trigger 2h ago, vault balance 0.034 ETH").
 
+## Withdrawing from the vault
+
+To pull funds back out of the vault, `POST /api/mcp/vault-withdraw`. Like activate, the agent never signs — it returns an EIP-5792 `transactions[]` batch + a `signUrl` the user opens in their wallet. `token` defaults to `ETH`; pass `WETH` or a `0x` token address for other assets; omit `amount` to withdraw the full balance.
+
+```bash
+curl -s -X POST "https://ctrl.build/api/mcp/vault-withdraw" \
+  -H "Content-Type: application/json" \
+  -d "{ \"wallet\": \"${USER_WALLET}\", \"token\": \"ETH\", \"amount\": \"0.05\" }" \
+  | jq '{ vaultAddress, amount, signUrl }'
+```
+
+Notify the user with the returned `signUrl` — they sign one transaction and the funds land back in their wallet.
+
+## Surfaces
+
+This skill uses CTRL's **anonymous REST API** (`/api/mcp/*`, no key) — the canonical surface for wallet-native agents, since the wallet signature at activate-time is the trust boundary. CTRL also runs a key-gated JSON-RPC MCP server at the same base for desktop clients (Cursor, Claude Desktop) where tool execution needs an `sk_ctrl_` key; both drive identical workflows. For an aeon skill, stick with REST.
+
 ## Sandbox note
 
-`/api/mcp/block-catalog`, `/api/mcp/workflows` (POST), `/api/mcp/vault-status`, and `/api/mcp/execution-logs` are public over HTTPS with no auth headers. If outbound `curl` is blocked, retry the same URL/body via WebFetch — no header forwarding to worry about. `/api/mcp/activate/<id>` is NOT public — never try to call it from the agent; it requires a wallet-authenticated session and is what the landing page invokes for the user.
+`/api/mcp/block-catalog`, `/api/mcp/workflows` (POST), `/api/mcp/vault-status`, and `/api/mcp/execution-logs` are public over HTTPS with no auth headers. `/api/mcp/activate/<id>` is NOT public — never try to call it from the agent; it requires a wallet-authenticated session and is what the landing page invokes for the user.
 
 ## Constraints
 
