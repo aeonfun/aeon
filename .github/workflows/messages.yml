@@ -61,8 +61,12 @@ jobs:
           NOW_ISO=$(date -u +%FT%TZ)
           NOW_EPOCH=$(date -u +%s)
 
-          # Previous hour for catch-up (GitHub Actions cron can miss windows)
+          # Previous two hours for catch-up. GitHub Actions throttles the */5 tick
+          # to 71-97min gaps under load; a 1h lookback gives :40-:59 slots only
+          # ~65-80min of tolerance, so trailing-minute slots get dropped. A 2h
+          # lookback gives every slot >=120min of tolerance.
           PREV_HOUR=$(( (HOUR + 23) % 24 ))
+          PREV2_HOUR=$(( (HOUR + 22) % 24 ))
 
           # Cron field matcher — supports: *, N, N-M (ranges), N,M (lists), */N, N/step, N-M/step (steps)
           cron_match() {
@@ -172,22 +176,30 @@ jobs:
                 SHOULD_RUN=true
               fi
             fi
-            # Catch-up: schedule matched previous hour but was missed.
+            # Catch-up: schedule matched one of the previous two hours but was missed.
             # Only catch up when last dispatch predates the scheduled fire time —
-            # prevents the same skill from firing twice when a tick also lands in PREV_HOUR+1.
-            if [ "$SHOULD_RUN" = "false" ] && cron_match "$C_HOUR" "$PREV_HOUR"; then
-              if [[ "$C_MIN" =~ ^[0-9]+$ ]]; then
-                SCHED_EPOCH=$(date -u -d "$(date -u +%Y-%m-%d) ${PREV_HOUR}:$(printf '%02d' "$C_MIN"):00 UTC" +%s 2>/dev/null || echo 0)
-                [ "$LAST_DISPATCH_EPOCH" -lt "$SCHED_EPOCH" ] && SHOULD_RUN=true
-              else
-                SHOULD_RUN=true
-              fi
+            # prevents the same skill from firing twice when later ticks still match.
+            if [ "$SHOULD_RUN" = "false" ]; then
+              for CATCHUP_HOUR in "$PREV_HOUR" "$PREV2_HOUR"; do
+                cron_match "$C_HOUR" "$CATCHUP_HOUR" || continue
+                if [[ "$C_MIN" =~ ^[0-9]+$ ]]; then
+                  SCHED_EPOCH=$(date -u -d "$(date -u +%Y-%m-%d) ${CATCHUP_HOUR}:$(printf '%02d' "$C_MIN"):00 UTC" +%s 2>/dev/null || echo 0)
+                  # Lookback hour wrapped past midnight — scheduled fire was yesterday
+                  [ "$SCHED_EPOCH" -gt "$NOW_EPOCH" ] && SCHED_EPOCH=$((SCHED_EPOCH - 86400))
+                  [ "$LAST_DISPATCH_EPOCH" -lt "$SCHED_EPOCH" ] && SHOULD_RUN=true
+                else
+                  SHOULD_RUN=true
+                fi
+                [ "$SHOULD_RUN" = "true" ] && break
+              done
             fi
 
             [ "$SHOULD_RUN" = "false" ] && continue
 
             # --- Dedup: skip if dispatched recently ---
-            DEDUP_WINDOW=90
+            # 150 (was 90): must exceed the 2h catch-up lookback so schedules with
+            # non-numeric minute fields can't re-fire on successive ticks.
+            DEDUP_WINDOW=150
             if [[ "$C_MIN" == */* ]]; then
               INTERVAL="${C_MIN#*/}"
               DEDUP_WINDOW=$((INTERVAL * 2 + 5))
