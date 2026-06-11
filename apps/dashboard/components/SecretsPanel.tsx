@@ -68,6 +68,10 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
     }
   }
 
+  // Claude Code auth is an either/or pair (OAuth token or API key). Once either
+  // is set, auth is satisfied — so the OAuth "Connect" button is redundant.
+  const claudeAuthSet = secrets.some(s => s.either === 'auth' && s.isSet)
+
   const handleSave = (name: string) => {
     if (!secretValue.trim()) return
     if (name === 'TELEGRAM_BOT_TOKEN') setSessionBotToken(secretValue.trim())
@@ -158,7 +162,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                       </div>
                     </div>
                     <div className="flex gap-1.5 shrink-0">
-                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow — signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
+                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow — signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors">Remove</button>}
                     </div>
