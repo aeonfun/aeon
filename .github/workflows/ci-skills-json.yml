@@ -1,0 +1,56 @@
+name: ci-skills-json
+
+# Proposal #455: skills.json is the canonical catalog (dashboard, ./add-skill,
+# and downstream consumers all read it). It must be regenerated from
+# skills/*/SKILL.md + aeon.yml via ./generate-skills-json. This workflow fails
+# any PR that changes a generator input without committing the regenerated
+# manifest, so catalog drift can't ship silently (cf. #456, #445).
+#
+# Same shape/permissions as ci-capabilities-parity.yml (Issue #301).
+#
+# Two non-obvious requirements:
+#   - fetch-depth: 0 — generate-skills-json derives each skill's `sha`/`updated`
+#     from `git log --follow`; a shallow checkout collapses that history and
+#     yields a bogus diff for skills last touched before the fetched commit.
+#   - the `generated` timestamp is rewritten on every run (date -u ...), so the
+#     committed and regenerated manifests are compared with that one field
+#     normalized out — otherwise every PR would false-fail.
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'aeon.yml'
+      - 'generate-skills-json'
+      - 'skills.json'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'aeon.yml'
+      - 'generate-skills-json'
+      - 'skills.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # required: per-skill sha/updated come from git log --follow
+      - name: Regenerate skills.json and diff (ignoring the generated timestamp)
+        run: |
+          set -euo pipefail
+          norm() { sed -E 's/"generated":"[^"]*"/"generated":""/' "$1"; }
+          norm skills.json > /tmp/skills.committed.json
+          ./generate-skills-json
+          norm skills.json > /tmp/skills.regenerated.json
+          if ! diff -u /tmp/skills.committed.json /tmp/skills.regenerated.json; then
+            echo "::error::skills.json is stale — run ./generate-skills-json and commit the result (the 'generated' timestamp is ignored by this check)."
+            exit 1
+          fi
+          echo "skills-json: OK — committed manifest matches a fresh regen (generated-timestamp aside)."
