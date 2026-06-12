@@ -8,13 +8,15 @@ name: ci-skills-json
 #
 # Same shape/permissions as ci-capabilities-parity.yml (Issue #301).
 #
-# Two non-obvious requirements:
-#   - fetch-depth: 0 — generate-skills-json derives each skill's `sha`/`updated`
-#     from `git log --follow`; a shallow checkout collapses that history and
-#     yields a bogus diff for skills last touched before the fetched commit.
-#   - the `generated` timestamp is rewritten on every run (date -u ...), so the
-#     committed and regenerated manifests are compared with that one field
-#     normalized out — otherwise every PR would false-fail.
+# The comparison normalizes out three non-semantic fields so the gate enforces
+# only real catalog drift (category / name / description / schedule / requires /
+# etc.) — the #454/#456 class — and never false-fails on git/clock churn:
+#   - `generated` — a fresh UTC timestamp on every run.
+#   - per-skill `sha` and `updated` — derived from `git log`, so they change each
+#     time a skill PR is squash-merged (the squash rewrites the commit). Without
+#     normalizing them, every squash-merge would false-fail the *next* skills PR.
+# fetch-depth: 0 is retained so the generator still resolves full per-skill
+# history; these git-derived values are normalized out of the diff regardless.
 
 on:
   pull_request:
@@ -41,16 +43,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0          # required: per-skill sha/updated come from git log --follow
-      - name: Regenerate skills.json and diff (ignoring the generated timestamp)
+          fetch-depth: 0          # full history for the generator; git-derived fields are normalized out of the diff
+      - name: Regenerate skills.json and diff (ignoring timestamp + per-skill sha/updated)
         run: |
           set -euo pipefail
-          norm() { sed -E 's/"generated":"[^"]*"/"generated":""/' "$1"; }
+          # Blank the generated timestamp and the per-skill git-derived sha/updated
+          # (which churn on every squash-merge) before comparing — the gate only
+          # enforces semantic catalog fields.
+          norm() {
+            sed -E -e 's/"generated":"[^"]*"/"generated":""/' \
+                   -e 's/"sha":"[^"]*"/"sha":""/g' \
+                   -e 's/"updated":"[^"]*"/"updated":""/g' "$1"
+          }
           norm skills.json > /tmp/skills.committed.json
           ./generate-skills-json
           norm skills.json > /tmp/skills.regenerated.json
           if ! diff -u /tmp/skills.committed.json /tmp/skills.regenerated.json; then
-            echo "::error::skills.json is stale — run ./generate-skills-json and commit the result (the 'generated' timestamp is ignored by this check)."
+            echo "::error::skills.json is stale — run ./generate-skills-json and commit the result (the 'generated' timestamp and per-skill sha/updated are ignored by this check)."
             exit 1
           fi
-          echo "skills-json: OK — committed manifest matches a fresh regen (generated-timestamp aside)."
+          echo "skills-json: OK — committed manifest matches a fresh regen (timestamp + per-skill sha/updated aside)."
