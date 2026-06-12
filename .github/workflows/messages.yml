@@ -677,6 +677,7 @@ jobs:
           USEPOD_MODEL_SONNET: ${{ vars.USEPOD_MODEL_SONNET }}
           USEPOD_MODEL_HAIKU: ${{ vars.USEPOD_MODEL_HAIKU }}
           VENICE_MODEL: ${{ vars.VENICE_MODEL }}
+          VENICE_BASE_URL: ${{ vars.VENICE_BASE_URL }}
           VENICE_CLEANCACHE: ${{ vars.VENICE_CLEANCACHE }}
           SURPLUS_MODEL: ${{ vars.SURPLUS_MODEL }}
           CCR_LOG: ${{ vars.CCR_LOG }}

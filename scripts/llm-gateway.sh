@@ -227,6 +227,9 @@ case "${GATEWAY:-direct}" in
     # only for models Venice is known to carry (dash-form, date suffix stripped);
     # anything else keeps the safe opus-4-6 default. VENICE_MODEL overrides.
     # (Confirm/extend the allowlist when Venice is live-validated.)
+    # VENICE_BASE_URL (repo variable) points the sidecar at any Venice-compatible
+    # endpoint — a self-hosted relay, a billing proxy, a regional mirror — same
+    # override pattern as VENICE_MODEL. Defaults to Venice's public API.
     venice_model="${VENICE_MODEL:-}"
     if [ -z "$venice_model" ]; then
       m="$(printf '%s' "${MODEL:-}" | sed -E 's/-[0-9]{8}$//')"
@@ -236,9 +239,9 @@ case "${GATEWAY:-direct}" in
       esac
     fi
     start_ccr_sidecar venice \
-      "https://api.venice.ai/api/v1/chat/completions" \
+      "${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions}" \
       "$VENICE_API_KEY" "$venice_model" "${VENICE_CLEANCACHE:+cleancache}"
-    echo "::notice::Routing through Venice via claude-code-router (${venice_model})"
+    echo "::notice::Routing through Venice via claude-code-router (${venice_model} @ ${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions})"
     ;;
 
   direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint. Unchanged.
