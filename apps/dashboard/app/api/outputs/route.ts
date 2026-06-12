@@ -6,6 +6,14 @@ import { execSync } from 'child_process'
 const OUTPUTS_DIR = join(process.cwd(), 'outputs')
 const REPO_ROOT = resolve(process.cwd(), '..', '..')
 
+// Filenames stamp time as 2026-06-12T14-30-00Z (colons are illegal in paths).
+// Convert back to ISO 2026-06-12T14:30:00Z so `new Date()` can parse it —
+// otherwise the feed renders "NaNd ago".
+function fileTsToIso(ts: string): string {
+  const m = ts.match(/^(\d{4}-\d{2}-\d{2})T(\d{2})-(\d{2})-(\d{2})Z$/)
+  return m ? `${m[1]}T${m[2]}:${m[3]}:${m[4]}Z` : ts
+}
+
 export async function GET() {
   try {
     const files = await readdir(OUTPUTS_DIR).catch(() => [] as string[])
@@ -27,7 +35,7 @@ export async function GET() {
           return {
             filename,
             skill: tsMatch ? tsMatch[1] : base,
-            timestamp: tsMatch ? tsMatch[2] : '',
+            timestamp: tsMatch ? fileTsToIso(tsMatch[2]) : '',
             spec,
           }
         } catch {

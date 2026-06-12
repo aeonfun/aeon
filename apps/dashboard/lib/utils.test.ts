@@ -191,6 +191,12 @@ describe("timeAgo", () => {
     const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
     assert.equal(timeAgo(threeDaysAgo), "3d ago");
   });
+
+  it("returns empty string for unparseable timestamps (no 'NaNd ago')", () => {
+    // The filename time format (hyphens, not colons) is not a valid Date input.
+    assert.equal(timeAgo("2026-06-12T14-30-00Z"), "");
+    assert.equal(timeAgo(""), "");
+  });
 });
 
 // ── getSkillStatus ────────────────────────────────────────────────────

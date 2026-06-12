@@ -47,7 +47,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             <img src="/android-chrome-192x192.png" alt="" />
           </span>
           <div className="min-w-0">
-            <div className="font-display text-lg leading-tight uppercase tracking-tight text-aeon-fg truncate">
+            <div className="font-display text-sm leading-tight uppercase tracking-tight text-aeon-fg truncate">
               {repo ? repo.split('/').pop() : 'Aeon'} HQ
             </div>
             <div className="text-[10px] text-primary-40 font-mono uppercase tracking-[0.18em]">
