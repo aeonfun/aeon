@@ -70,7 +70,7 @@ get_category() {
     priority-brief|routine|ops-recap|retrospective|shiplog) echo "productivity" ;;
     goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
     deal-flow|reg-monitor|reflect|followup-patrol|v4-readiness) echo "productivity" ;;
-    idea-pipeline|idea-validator|milestone-tracker|note-taking|strategy-builder) echo "productivity" ;;
+    idea-pipeline|idea-validator|milestone-tracker|note-taking|strategy-builder|wc-resale) echo "productivity" ;;
     # Meta / Agent
     heartbeat|spend-monitor|cost-report|skill-leaderboard|skill-update) echo "meta" ;;
     rss-feed|update-gallery|onboard|operator-scorecard) echo "meta" ;;
