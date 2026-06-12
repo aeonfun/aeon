@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import type { Skill, Run, Secret, SkillOutput, GatewayProvider, UploadFile, AnalyticsData } from '../lib/types'
 import { MODELS, AUTH_SECRETS } from '../lib/constants'
 import { displayName } from '../lib/utils'
@@ -25,6 +25,7 @@ export default function Dashboard() {
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
   // Shared with the sidebar's category chips — HQ category cards toggle it too.
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
+  const mainScrollRef = useRef<HTMLDivElement>(null)
 
   const [skills, setSkills] = useState<Skill[]>([])
   const [runs, setRuns] = useState<Run[]>([])
@@ -89,6 +90,9 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
   useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() : null).then(d => { if (d) { setMcpServers(d.servers || {}); setMcpLoaded(true) } }).catch(() => {}) } }, [view, mcpLoaded])
   useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() : null).then(d => { if (d) { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) } }).catch(() => {}) } }, [view, soulLoaded])
+  // Reset the main content scroll to the top whenever the active view or the
+  // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
+  useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
 
   const toggleSkill = async (n: string, en: boolean) => { setBusy(b => ({ ...b, [n]: true })); try { const r = await fetch('/api/skills', { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: n, enabled: en }) }); if (r.ok) { const d = await r.json().catch(() => ({})); setSkills(s => s.map(sk => sk.name === n ? { ...sk, enabled: en } : sk)); flashSynced(`${displayName(n)} ${en ? 'on duty' : 'off duty'}`, d) } } finally { setBusy(b => ({ ...b, [n]: false })) } }
   const runSkill = async (n: string, v?: string, sm?: string) => { if (!secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))) { flash('No provider key set — add one in Settings before running skills'); return } setBusy(b => ({ ...b, [`r-${n}`]: true })); try { const r = await fetch(`/api/skills/${n}/run`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ var: v || '', model: sm || model }) }); if (r.ok) { flash(`${displayName(n)} started`); for (const d of [2000, 5000, 10000]) setTimeout(refreshRuns, d) } else { const d = await r.json(); flash(d.error || 'Failed') } } finally { setBusy(b => ({ ...b, [`r-${n}`]: false })) } }
@@ -153,7 +157,7 @@ export default function Dashboard() {
           onPull={pullFromGithub} onSync={syncToGithub}
         />
 
-        <div className="flex-1 overflow-y-auto p-[var(--space-lg)]">
+        <div ref={mainScrollRef} className="flex-1 overflow-y-auto p-[var(--space-lg)]">
           {view === 'secrets' && !selectedSkill && (
             <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} />
           )}
