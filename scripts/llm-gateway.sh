@@ -204,22 +204,41 @@ case "${GATEWAY:-direct}" in
     echo "::notice::Routing through UsePod (Anthropic-native marketplace)"
     ;;
 
-  surplus)  # SIDECAR — OpenAI-compatible; carries Opus 4.8
+  surplus)  # SIDECAR — OpenAI-compatible (dot-form ids); carries the full catalog
     require_secret SURPLUS_API_KEY
+    # The sidecar pins ONE model across every ccr slot, so derive it from aeon's
+    # resolved $MODEL (the UI / aeon.yml choice) instead of hardcoding one. Surplus
+    # uses dot-form ids: drop any trailing -YYYYMMDD date, then convert each
+    # <digit>-<digit> to <digit>.<digit>. SURPLUS_MODEL overrides; opus-4.8 is the
+    # fallback when $MODEL is unset.
+    surplus_model="${SURPLUS_MODEL:-$(printf '%s' "${MODEL:-claude-opus-4-8}" | sed -E 's/-[0-9]{8}$//; s/([0-9])-([0-9])/\1.\2/g')}"
     start_ccr_sidecar surplus \
       "https://www.surplusintelligence.ai/api/inference/v1/chat/completions" \
-      "$SURPLUS_API_KEY" "${SURPLUS_MODEL:-claude-opus-4.8}"
-    echo "::notice::Routing through Surplus via claude-code-router (${SURPLUS_MODEL:-claude-opus-4.8})"
+      "$SURPLUS_API_KEY" "$surplus_model"
+    echo "::notice::Routing through Surplus via claude-code-router (${surplus_model})"
     ;;
 
-  venice)  # SIDECAR — OpenAI-compatible; tops out ~Opus 4.6 (dash format)
+  venice)  # SIDECAR — OpenAI-compatible (dash-form ids); tops out ~Opus 4.6
     require_secret VENICE_API_KEY
     # Set VENICE_CLEANCACHE=1 to add the cleancache transformer (1h TTL, avoids
     # the shared 4-block prompt-cache limit) if you hit cache errors.
+    # The sidecar pins ONE model, so track aeon's $MODEL — but Venice's catalog
+    # caps at ~Opus 4.6, so a newer $MODEL (opus 4.7/4.8, fable) would 404. Derive
+    # only for models Venice is known to carry (dash-form, date suffix stripped);
+    # anything else keeps the safe opus-4-6 default. VENICE_MODEL overrides.
+    # (Confirm/extend the allowlist when Venice is live-validated.)
+    venice_model="${VENICE_MODEL:-}"
+    if [ -z "$venice_model" ]; then
+      m="$(printf '%s' "${MODEL:-}" | sed -E 's/-[0-9]{8}$//')"
+      case "$m" in
+        claude-opus-4-6|claude-sonnet-4-6|claude-haiku-4-5) venice_model="$m" ;;
+        *) venice_model="claude-opus-4-6" ;;
+      esac
+    fi
     start_ccr_sidecar venice \
       "https://api.venice.ai/api/v1/chat/completions" \
-      "$VENICE_API_KEY" "${VENICE_MODEL:-claude-opus-4-6}" "${VENICE_CLEANCACHE:+cleancache}"
-    echo "::notice::Routing through Venice via claude-code-router (${VENICE_MODEL:-claude-opus-4-6})"
+      "$VENICE_API_KEY" "$venice_model" "${VENICE_CLEANCACHE:+cleancache}"
+    echo "::notice::Routing through Venice via claude-code-router (${venice_model})"
     ;;
 
   direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint. Unchanged.
