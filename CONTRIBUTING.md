@@ -1,0 +1,100 @@
+# Contributing to Aeon
+
+Thanks for helping make Aeon the default way people run autonomous agents. This guide collects the conventions already used across the repo so you don't have to reverse-engineer them from existing PRs.
+
+Most contributions fall into one of four buckets — **a new skill**, **a new LLM gateway**, a **community skill pack** listing, or a **core fix** (dashboard, scripts, workflows, docs). Each has its own checklist below.
+
+## Before you start
+
+- **Fork or use the template.** This repo is a public template — click **Use this template** (or `gh repo fork aaronjmars/aeon --clone`). Run your own instance as a fork; open PRs back here for changes that benefit everyone.
+- **Branch from `main`.** Never push to `main`. Use a descriptive branch name (`feat/...`, `fix/...`, `docs/...`).
+- **One change per PR.** A focused 20-line fix lands faster than a 500-line bundle. Don't mix a new skill with an unrelated refactor.
+- **PRs are squash-merged.** Write a clear PR title — it becomes the commit subject on `main`. Squashing also rewrites per-skill commit hashes, which is why the CI gate below normalizes them.
+
+## Contributing a skill
+
+A skill is a single `skills/<name>/SKILL.md` prompt file plus a registration in `aeon.yml`. The fastest paths:
+
+```bash
+./new-from-template <template> <skill-name>   # scaffold from skill-templates/
+./add-skill <owner/repo> <skill> [skill...]   # import from any GitHub repo
+```
+
+You can also describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon implement it and open the PR.
+
+### Frontmatter contract
+
+Every `SKILL.md` opens with YAML frontmatter. The full contract lives in [`skill-templates/TEMPLATE.md`](skill-templates/TEMPLATE.md); the essentials:
+
+```yaml
+---
+name: my-skill
+description: One-line description of what this skill does
+var: ""
+tags: [dev, crypto]
+requires: [XAI_API_KEY, COINGECKO_API_KEY?]   # bare = required · `?` = works better with
+mcp: [base]                                    # MCP servers, same two tiers
+---
+```
+
+- `requires:` is the **single source of truth** the dashboard reads to show which skill needs which key. Use the exact env-var name. A bare name is required; a trailing `?` means the skill still runs without it (degraded). Omit `requires:` (or use `[]`) for skills that only need the built-in Claude + GitHub tokens.
+- `mcp:` declares [MCP servers](README.md#mcp-servers-in-skill-runs) the skill calls, with the same two-tier semantics. Slugs reference `apps/dashboard/lib/mcp-catalog.ts`.
+- Match the names to the registry in [`apps/dashboard/app/api/secrets/route.ts`](apps/dashboard/app/api/secrets/route.ts) so the dashboard can describe the key and link where to get it.
+
+### Write the skill body
+
+- **Be explicit and self-contained.** A skill runs unattended — spell out the steps, the data sources, and what to do on failure.
+- **Add a "Sandbox note".** GitHub Actions blocks `$ENV_VAR` expansion in `curl` headers and may block outbound network from bash. Use the right fallback: a WebFetch fallback for keyless public APIs, a `scripts/prefetch-*.sh` cache for auth'd APIs, or `gh api` for GitHub. See [`CLAUDE.md`](CLAUDE.md#sandbox-limitations).
+- **Notify through `./notify`** — never call a channel API directly. It fans out to every configured channel and silently skips the rest.
+- **Don't monkey-patch Aeon internals.** A skill should be a prompt, not a patch to the runner, scheduler, or dashboard.
+
+### Regenerate the catalog
+
+`skills.json` is the canonical machine-readable catalog (the dashboard, `./add-skill`, and downstream consumers all read it). It is **generated**, never hand-edited:
+
+```bash
+./generate-skills-json   # then commit the result
+```
+
+The `ci-skills-json` workflow fails any PR that touches `skills/**`, `aeon.yml`, `generate-skills-json`, or `skills.json` without committing a fresh regen. The check normalizes out the `generated` timestamp and per-skill `sha`/`updated`, so only real catalog drift fails it.
+
+## Contributing an LLM gateway
+
+A gateway is wired through **five files**, all following the existing pattern — copy an entry of the same tier (**native**: already speaks the Anthropic API; **sidecar**: OpenAI-compatible, bridged per run). The exact checklist is in the README: [Adding a gateway](README.md#adding-a-gateway).
+
+1. `apps/dashboard/lib/types.ts` — add the slug to the `GatewayProvider` union and `GATEWAY_PROVIDERS`.
+2. `apps/dashboard/lib/auth-provider.mjs` — add `slug: { label, secretName, prefixes }`.
+3. `apps/dashboard/app/api/secrets/route.ts` — list the secret in `BUILTIN_SECRETS` and map it in `GATEWAY_SECRETS`.
+4. `scripts/llm-gateway.sh` — add a `case` branch and register the slug + secret in the auto-resolver order.
+5. `.github/workflows/aeon.yml` (and `messages.yml`) — pass the new secret into the run's `env:`.
+
+Then add a row to the gateway table in the README. Verify the loop end to end: paste a key in the dashboard and run any skill — the log should print `::notice:: gateway=auto resolved to <slug>`.
+
+## Listing a community skill pack
+
+Skill packs are third-party skill collections in their own repos, installable as one bundle. To list yours in the README's [Community skill packs](README.md#community-skill-packs) table, open a PR that:
+
+- Adds a README table row linking to your public repo, with the skill count and a one-line description.
+- Adds a matching entry to [`skill-packs.json`](skill-packs.json) — the machine-readable mirror.
+- Confirms the pack has a `skills-pack.json` manifest, a clear license, and a per-skill `SKILL.md`.
+
+Packs must not monkey-patch Aeon internals or depend on private endpoints. Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
+
+## Continuous integration
+
+Two locking gates run on every PR. Both are fast and only trigger on the paths they protect:
+
+| Gate | Triggers on | What it enforces |
+|------|-------------|------------------|
+| `ci-skills-json` | `skills/**`, `aeon.yml`, `generate-skills-json`, `skills.json` | `skills.json` matches a fresh `./generate-skills-json` |
+| `ci-capabilities-parity` | `install-skill-pack`, `docs/CAPABILITIES.md`, the parity script | the capabilities taxonomy stays in sync across its sources |
+
+If `ci-capabilities-parity` fails, you changed one side of the taxonomy without the other — run `bash scripts/check-capabilities-parity.sh` locally to see the diff.
+
+## Reporting bugs and requesting features
+
+Open an issue. For a bug, include the skill name, the relevant (redacted) `memory/logs/` entry, whether the failure was an API or sandbox issue, and whether notifications came through. For a feature you'd like Aeon to build itself, label the issue `ai-build`.
+
+## License
+
+By contributing, you agree that your contributions are licensed under the repository's [LICENSE](LICENSE).
