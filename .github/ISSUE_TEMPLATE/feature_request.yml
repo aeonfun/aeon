@@ -1,0 +1,66 @@
+name: ✨ Feature request
+description: Propose a new skill, gateway, dashboard improvement, or core change.
+title: "[feat]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea. Aeon grows mostly by adding **skills** and **gateways** — both have documented patterns (see the README and `CONTRIBUTING.md`). Tell us what should exist and why; if it's a skill, a rough schedule and `var` shape help a lot.
+  - type: dropdown
+    id: type
+    attributes:
+      label: What kind of feature?
+      options:
+        - "New skill"
+        - "New LLM gateway"
+        - "Dashboard / setup UI"
+        - "Core / runtime (notify, chains, memory, cron)"
+        - "Docs"
+        - "Other"
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should Aeon be able to do that it can't today?
+      placeholder: A skill that posts a weekly digest of new forks and merged external PRs.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does it solve?
+      description: Who benefits and how? What's painful or impossible right now?
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Proposed approach (optional)
+      description: Data sources / APIs, how it'd integrate, any design thoughts. If it touches secrets, list which ones.
+  - type: input
+    id: skill-shape
+    attributes:
+      label: If it's a skill — schedule & var
+      description: Roughly how often should it run, and what would its `var` input be? Leave blank if not a skill.
+      placeholder: "weekly (Mon 13:00 UTC), var: owner/repo"
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you be willing to open a PR?
+      description: No obligation — this just helps us know whether to pick it up.
+      options:
+        - "No"
+        - "Maybe, with guidance"
+        - "Yes"
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched [existing issues](https://github.com/aaronjmars/aeon/issues) and this isn't already requested.
+          required: true

@@ -1,0 +1,99 @@
+name: 🐞 Bug report
+description: A skill failed, the dashboard misbehaved, or a run didn't do what it should.
+title: "[bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Aeon runs unattended, so the details below are what make a report actionable — especially **which skill**, **where it ran** (cron vs. dashboard vs. local), and **whether the failure was an API error or a sandbox limitation**. "It failed" without those is hard to act on.
+
+        ⚠️ **Never paste secrets.** Redact API keys, tokens, wallet addresses, and chat IDs from logs before posting.
+  - type: input
+    id: skill
+    attributes:
+      label: Which skill (or area)?
+      description: The skill name from `aeon.yml` (e.g. `token-report`, `feature`, `deep-research`). Use `dashboard`, `runtime`, or `gateway` if it's not a single skill.
+      placeholder: token-report
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Describe the bug. What did the run produce, or fail to produce?
+      placeholder: The skill logged FETCH_FAIL and sent no notification.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: A token report notification with the latest price and treasury balance.
+    validations:
+      required: true
+  - type: dropdown
+    id: failure-type
+    attributes:
+      label: Failure type
+      description: If you know it, this routes the issue fastest. Sandbox limitations (blocked outbound network, `$ENV_VAR` not expanding in curl headers) are a distinct class from API errors.
+      options:
+        - "Not sure"
+        - "API error (rate limit, auth, 4xx/5xx from an external service)"
+        - "Sandbox limitation (blocked network / env var not expanding in bash)"
+        - "Config (missing secret, wrong var, schedule)"
+        - "Output format (notification malformed, file not written)"
+        - "Dashboard / setup UI"
+        - "Other"
+    validations:
+      required: true
+  - type: dropdown
+    id: run-context
+    attributes:
+      label: Where did it run?
+      options:
+        - "GitHub Actions (scheduled / cron)"
+        - "Run now (dashboard)"
+        - "Local (./aeon)"
+        - "Other / not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce / what triggered it
+      description: How can a maintainer hit this? Include the `var` value if you set one, and what you'd changed recently.
+      placeholder: |
+        1. Enabled `token-report` on the default 6h schedule
+        2. Run now from the dashboard
+        3. Run completes but no notification arrives
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste the failing chunk of the Actions run log or the `memory/logs/YYYY-MM-DD.md` entry. **Redact secrets first.** This is automatically formatted as code.
+      render: shell
+  - type: dropdown
+    id: notification
+    attributes:
+      label: Did you receive a notification?
+      options:
+        - "Not applicable"
+        - "Yes, but it was wrong/empty"
+        - "No notification at all"
+        - "Yes, as expected (but something else is wrong)"
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Node version (`node -v`) and OS, if relevant (mostly for local `./aeon` or dashboard bugs).
+      placeholder: "node v20.11, macOS 14.5"
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched [existing issues](https://github.com/aaronjmars/aeon/issues) and this isn't a duplicate.
+          required: true
+        - label: I removed all secrets (API keys, tokens, wallet/chat IDs) from the logs and text above.
+          required: true
