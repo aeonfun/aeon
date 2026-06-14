@@ -135,6 +135,31 @@ export async function createFile(path: string, content: string, message: string)
   return res.json()
 }
 
+/**
+ * Write a file, updating it in place when it already exists and creating it
+ * otherwise, then sync via commitAndPush. Returns commitAndPush's result
+ * ({ synced, reason }) so routes can spread it — best-effort/local-mode-only,
+ * never throws from the sync step.
+ */
+export async function saveFile(
+  path: string,
+  content: string,
+  opts: { updateMsg: string; createMsg: string },
+): Promise<{ synced: boolean; reason?: string }> {
+  let sha: string | undefined
+  try {
+    sha = (await getFileContent(path)).sha
+  } catch {
+    // File doesn't exist yet — create it
+  }
+  if (sha) {
+    await updateFile(path, content, sha, opts.updateMsg)
+  } else {
+    await createFile(path, content, opts.createMsg)
+  }
+  return commitAndPush([path], sha ? opts.updateMsg : opts.createMsg)
+}
+
 export async function getDirectory(path: string): Promise<Array<{ name: string; type: string; path: string }>> {
   if (isLocal()) {
     const fullPath = join(REPO_ROOT, path)
@@ -154,35 +179,36 @@ export async function getDirectory(path: string): Promise<Array<{ name: string; 
     headers: authHeaders(token),
     cache: 'no-store',
   })
-  if (!res.ok) return []
+  if (res.status === 404) return [] // legitimately-absent path
+  if (!res.ok) throw new Error(`GitHub API ${res.status} listing ${path}`)
   const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
   return Array.isArray(data) ? data : []
 }
 
 // --- Remote repo helpers (for importing skills) ---
 
+function remoteAuthHeaders(): Record<string, string> {
+  return {
+    Accept: 'application/vnd.github+json',
+    ...(process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {}),
+  }
+}
+
 export async function getRemoteDirectory(remoteRepo: string, path: string): Promise<Array<{ name: string; type: string }>> {
   // Always uses GitHub API (remote repo)
-  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' }
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`
-  }
   const url = path
     ? `${GITHUB_API}/repos/${remoteRepo}/contents/${path}`
     : `${GITHUB_API}/repos/${remoteRepo}/contents`
-  const res = await fetch(url, { headers, cache: 'no-store' })
-  if (!res.ok) return []
+  const res = await fetch(url, { headers: remoteAuthHeaders(), cache: 'no-store' })
+  if (res.status === 404) return [] // legitimately-absent path
+  if (!res.ok) throw new Error(`GitHub API ${res.status} listing ${path}`)
   const data = (await res.json()) as GitHubContentEntry[] | GitHubContentFile
   return Array.isArray(data) ? data : []
 }
 
 export async function getRemoteFileContent(remoteRepo: string, path: string): Promise<string | null> {
-  const headers: Record<string, string> = { Accept: 'application/vnd.github+json' }
-  if (process.env.GITHUB_TOKEN) {
-    headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`
-  }
   const res = await fetch(`${GITHUB_API}/repos/${remoteRepo}/contents/${path}`, {
-    headers,
+    headers: remoteAuthHeaders(),
     cache: 'no-store',
   })
   if (!res.ok) return null
