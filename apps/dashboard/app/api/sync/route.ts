@@ -17,7 +17,11 @@ export async function GET() {
       run('git fetch origin main')
       const behindStr = run('git rev-list --count HEAD..origin/main')
       behind = parseInt(behindStr) || 0
-    } catch { /* ignore fetch failures */ }
+    } catch (e) {
+      // Offline / no remote / auth prompt — leave behind at 0 but make the
+      // failure diagnosable instead of silently reporting "in sync".
+      console.warn(`[sync] git fetch failed; "behind" count may be stale: ${e instanceof Error ? e.message : e}`)
+    }
     return NextResponse.json({ hasChanges, changedFiles, behind })
   } catch (error: unknown) {
     return errorResponse(error, 'Failed to check status')
