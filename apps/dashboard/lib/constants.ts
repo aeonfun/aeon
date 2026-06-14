@@ -9,8 +9,8 @@ export const MODELS = [
 // Secret names that authenticate Aeon's model access: Claude's own credentials
 // (OAuth token or Anthropic key) plus the gateway-provider keys that route
 // Claude through a third party. Setting any one means the agent can run, so the
-// top-bar "Auth" call-to-action hides once at least one is present. Mirrors the
-// hasApiKey/hasOauth/hasGateway check in app/api/auth/route.ts.
+// top-bar "Auth" call-to-action hides once at least one is present. The client
+// derives auth state from /api/secrets by testing membership in this list.
 export const AUTH_SECRETS = [
   'CLAUDE_CODE_OAUTH_TOKEN',
   'ANTHROPIC_API_KEY',
