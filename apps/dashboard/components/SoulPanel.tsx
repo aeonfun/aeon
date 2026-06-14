@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { SOUL_SCAFFOLD, STYLE_SCAFFOLD, ARCHETYPES } from '../lib/soul-templates'
+import { editorCls } from '../lib/utils'
 
 export type SoulFile = 'soul' | 'style'
 export interface SoulSources { handle: string; name: string; links: string }
@@ -276,7 +277,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
               spellCheck={false}
               rows={26}
               placeholder={active === 'soul' ? SOUL_SCAFFOLD : STYLE_SCAFFOLD}
-              className="w-full bg-aeon-bg text-aeon-fg text-[13px] leading-relaxed px-4 py-3 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors resize-y"
+              className={editorCls}
             />
             <div className="flex items-center justify-between mt-3">
               <span className={`text-[11px] font-mono ${overLimit ? 'text-eva-orange' : 'text-primary-35'}`}>

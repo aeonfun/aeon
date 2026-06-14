@@ -26,7 +26,8 @@ GATEWAY = os.environ.get("A2A_GATEWAY_URL", "http://localhost:41241")
 
 
 def _call_aeon(skill_id: str, var: str) -> str:
-    """Call Aeon to execute a specified skill with provided variable."""
+    """Dispatch the skill, then block-poll tasks/get until it completes
+    (5s interval, ~10 min cap), returning the first artifact's text."""
     task_id = str(uuid.uuid4())
     requests.post(
         GATEWAY,
@@ -65,7 +66,6 @@ class AeonPRReviewTool(BaseTool):
     gateway_url: str = Field(default=GATEWAY)
 
     def _run(self, repo: str) -> str:
-        """Run the Aeon tool to review pull requests for a given repository."""
         return _call_aeon("aeon-pr-review", repo)
 
 
