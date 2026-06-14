@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/github'
+import { errorResponse } from '@/lib/http'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
@@ -154,7 +155,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ name: skillName, filesWritten, detectedSecrets, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

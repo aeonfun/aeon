@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { resolve } from 'path'
-
-const REPO_ROOT = resolve(process.cwd(), '..', '..')
+import { REPO_ROOT } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
+import { normLinks, sanitizeModel } from '@/lib/dispatch'
 
 // Dispatch the strategy-builder skill with a brief. A dedicated route (not the
 // generic /api/skills/[name]/run) because the goal is free text and repo/links
@@ -20,15 +20,6 @@ function normRepo(raw: unknown): string {
   return REPO_RE.test(r) ? r : ''
 }
 
-function normLinks(raw: unknown): string[] {
-  if (typeof raw !== 'string') return []
-  return raw
-    .split(/[\s,]+/).map(s => s.trim()).filter(Boolean)
-    .map(s => (/^https?:\/\//i.test(s) ? s : `https://${s}`))
-    .filter(s => { try { const u = new URL(s); return u.protocol === 'http:' || u.protocol === 'https:' } catch { return false } })
-    .slice(0, 6)
-}
-
 function normGoal(raw: unknown): string {
   if (typeof raw !== 'string') return ''
   // single-line, delimiter-safe, bounded — STRATEGY.md must stay tight anyway.
@@ -42,7 +33,7 @@ export async function POST(request: Request) {
     const goal = normGoal(body.goal)
     const repo = normRepo(body.repo)
     const links = normLinks(body.links)
-    const model = typeof body.model === 'string' ? body.model.replace(/[^a-zA-Z0-9_-]/g, '') : ''
+    const model = sanitizeModel(body.model)
 
     if (!goal && !repo && links.length === 0) {
       return NextResponse.json({ error: 'Give at least one input (goal, repo, or links).' }, { status: 400 })
@@ -62,7 +53,6 @@ export async function POST(request: Request) {
     execFileSync('gh', args, { stdio: 'pipe', cwd: REPO_ROOT })
     return NextResponse.json({ ok: true, brief: { goal: goal || null, repo: repo || null, links } })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to dispatch strategy-builder'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to dispatch strategy-builder')
   }
 }

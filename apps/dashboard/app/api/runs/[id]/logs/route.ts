@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
 import type { GhRunJson } from '@/lib/types'
 
 type GhRunView = Pick<GhRunJson, 'status' | 'conclusion' | 'displayTitle' | 'jobs'>
@@ -103,7 +104,6 @@ export async function GET(
       summary: summaryLines.length > 0 ? summaryLines.join('\n') : '',
     })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to fetch logs'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to fetch logs')
   }
 }

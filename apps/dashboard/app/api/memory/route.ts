@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { listLogs, listTopics, listIssues, readMemoryIndex } from '@/lib/memory'
+import { errorResponse } from '@/lib/http'
 
 export async function GET() {
   try {
@@ -32,7 +33,6 @@ export async function GET() {
       ],
     })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

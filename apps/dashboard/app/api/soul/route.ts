@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
+import { getFileContent, saveFile } from '@/lib/github'
+import { errorResponse, syncResult } from '@/lib/http'
 
 // The two operator-editable soul files. examples/ and data/ are populated by the
 // soul-builder skill, not hand-edited here, so the tab edits just these two.
@@ -32,23 +33,12 @@ export async function PUT(request: Request) {
     }
     const path = FILES[key]
 
-    // GitHub's API needs the current sha to update; create it when absent.
-    // (Local mode ignores the sha.)
-    let sha = ''
-    try {
-      sha = (await getFileContent(path)).sha
-    } catch {
-      // new file
-    }
-    if (sha) {
-      await updateFile(path, body.content, sha, `chore: update ${path} from dashboard`)
-    } else {
-      await createFile(path, body.content, `chore: add ${path} from dashboard`)
-    }
-    const sync = commitAndPush([path], `chore: update ${path} from dashboard`)
-    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    const sync = await saveFile(path, body.content, {
+      updateMsg: `chore: update ${path} from dashboard`,
+      createMsg: `chore: add ${path} from dashboard`,
+    })
+    return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

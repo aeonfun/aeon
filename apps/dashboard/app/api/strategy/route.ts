@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
+import { getFileContent, saveFile } from '@/lib/github'
+import { errorResponse, syncResult } from '@/lib/http'
 
 const FILE = 'STRATEGY.md'
 
@@ -20,23 +21,12 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'content (string) required' }, { status: 400 })
     }
 
-    // GitHub's API needs the current sha to update an existing file; when the
-    // file doesn't exist yet, create it instead. (Local mode ignores the sha.)
-    let sha = ''
-    try {
-      sha = (await getFileContent(FILE)).sha
-    } catch {
-      // new file
-    }
-    if (sha) {
-      await updateFile(FILE, body.content, sha, 'chore: update STRATEGY.md from dashboard')
-    } else {
-      await createFile(FILE, body.content, 'chore: add STRATEGY.md from dashboard')
-    }
-    const sync = commitAndPush([FILE], 'chore: update STRATEGY.md from dashboard')
-    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    const sync = await saveFile(FILE, body.content, {
+      updateMsg: 'chore: update STRATEGY.md from dashboard',
+      createMsg: 'chore: add STRATEGY.md from dashboard',
+    })
+    return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

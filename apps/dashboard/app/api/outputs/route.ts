@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server'
 import { readdir, readFile } from 'fs/promises'
-import { join, resolve } from 'path'
+import { join } from 'path'
 import { execSync } from 'child_process'
+import { REPO_ROOT } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
 
 const OUTPUTS_DIR = join(process.cwd(), 'outputs')
-const REPO_ROOT = resolve(process.cwd(), '..', '..')
 
 // Filenames stamp time as 2026-06-12T14-30-00Z (colons are illegal in paths).
 // Convert back to ISO 2026-06-12T14:30:00Z so `new Date()` can parse it —
@@ -63,7 +64,6 @@ export async function POST() {
     }
     return NextResponse.json({ ok: true })
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : 'Pull failed'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(e, 'Pull failed')
   }
 }

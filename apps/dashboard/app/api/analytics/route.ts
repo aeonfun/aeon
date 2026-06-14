@@ -3,6 +3,7 @@ import { execFileSync } from 'child_process'
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
 import type { SkillMetrics, Insight, GhRunJson } from '@/lib/types'
 
 type RunRecord = Pick<GhRunJson, 'name' | 'status' | 'conclusion' | 'createdAt' | 'updatedAt'>
@@ -167,7 +168,6 @@ export async function GET() {
       },
     })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to load analytics'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to load analytics')
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
+import { errorResponse, syncResult } from '@/lib/http'
 import type { McpServers } from '@/lib/types'
 
 const FILE = '.mcp.json'
@@ -39,9 +40,8 @@ export async function PUT(request: Request) {
       await createFile(FILE, content, 'chore: add .mcp.json from dashboard')
     }
     const sync = commitAndPush([FILE], 'chore: update .mcp.json from dashboard')
-    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { readTopic } from '@/lib/memory'
+import { errorResponse } from '@/lib/http'
 
 export async function GET(
   _request: Request,
@@ -16,7 +17,6 @@ export async function GET(
     }
     return NextResponse.json(topic)
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to read topic'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to read topic')
   }
 }

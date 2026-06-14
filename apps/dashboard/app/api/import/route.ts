@@ -8,6 +8,7 @@ import {
   getDirectory,
   commitAndPush,
 } from '@/lib/github'
+import { errorResponse } from '@/lib/http'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 
@@ -106,7 +107,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

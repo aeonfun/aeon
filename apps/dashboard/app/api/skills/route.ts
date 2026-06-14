@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execSync } from 'child_process'
-import { resolve } from 'path'
+import { REPO_ROOT } from '@/lib/gh'
+import { errorResponse, syncResult } from '@/lib/http'
 import { getFileContent, getDirectory, updateFile, commitAndPush } from '@/lib/github'
 import {
   parseConfig,
@@ -16,7 +17,7 @@ import type { Skill } from '@/lib/types'
 function getRepoSlug(): string {
   if (process.env.GITHUB_REPO) return process.env.GITHUB_REPO
   try {
-    const url = execSync('git remote get-url origin', { stdio: 'pipe', cwd: resolve(process.cwd(), '..', '..') }).toString().trim()
+    const url = execSync('git remote get-url origin', { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
     const m = url.match(/github\.com[/:]([\w.-]+\/[\w.-]+?)(?:\.git)?$/)
     return m ? m[1] : ''
   } catch {
@@ -73,8 +74,7 @@ export async function GET() {
     const repo = getRepoSlug()
     return NextResponse.json({ skills, model: config.model, gateway: config.gateway, repo, jsonrenderEnabled: config.jsonrenderEnabled })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }
 
@@ -112,10 +112,9 @@ export async function PATCH(request: Request) {
       sync = commitAndPush(['aeon.yml'], msg)
     }
 
-    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }
 
@@ -139,9 +138,8 @@ export async function DELETE(request: Request) {
     // One commit for both the removed skill dir and the aeon.yml cleanup.
     const sync = commitAndPush(['aeon.yml', `skills/${name}`], `chore: remove ${name} skill`)
 
-    return NextResponse.json({ ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    return NextResponse.json(syncResult(sync))
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Unknown error'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Unknown error')
   }
 }

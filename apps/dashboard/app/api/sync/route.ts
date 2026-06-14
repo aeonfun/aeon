@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execSync } from 'child_process'
-import { resolve } from 'path'
-
-const REPO_ROOT = resolve(process.cwd(), '..', '..')
+import { REPO_ROOT } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
 
 function run(cmd: string) {
   return execSync(cmd, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
@@ -21,8 +20,7 @@ export async function GET() {
     } catch { /* ignore fetch failures */ }
     return NextResponse.json({ hasChanges, changedFiles, behind })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to check status'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to check status')
   }
 }
 
@@ -53,7 +51,6 @@ export async function POST() {
 
     return NextResponse.json({ ok: true, message: 'Pushed to GitHub' })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to sync'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to sync')
   }
 }

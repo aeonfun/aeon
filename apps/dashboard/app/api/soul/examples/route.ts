@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getRemoteDirectory, getRemoteFileContent, createFile, commitAndPush } from '@/lib/github'
+import { errorResponse } from '@/lib/http'
 
 // One-click install of a ready-made soul from the soul.md examples gallery into
 // the operator's own repo. GET lists the available example people; POST copies
@@ -55,7 +56,6 @@ export async function POST(request: Request) {
     const sync = commitAndPush(paths, msg)
     return NextResponse.json({ ok: true, soul, style: style || '', synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to install example'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to install example')
   }
 }

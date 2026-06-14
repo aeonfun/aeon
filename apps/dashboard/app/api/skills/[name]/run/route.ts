@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { resolve } from 'path'
-
-const REPO_ROOT = resolve(process.cwd(), '..', '..')
+import { REPO_ROOT } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
+import { sanitizeModel } from '@/lib/dispatch'
 
 export async function POST(
   request: Request,
@@ -25,7 +25,7 @@ export async function POST(
         skillVar = body.var.replace(/[^a-zA-Z0-9_ .\-/#@]/g, '')
       }
       if (body.model && typeof body.model === 'string') {
-        model = body.model.replace(/[^a-zA-Z0-9_\-]/g, '')
+        model = sanitizeModel(body.model)
       }
     } catch { /* no body is fine */ }
 
@@ -37,7 +37,6 @@ export async function POST(
 
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to trigger run'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to trigger run')
   }
 }

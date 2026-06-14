@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { listLogs, readLog } from '@/lib/memory'
+import { errorResponse } from '@/lib/http'
 
 export async function GET(request: Request) {
   try {
@@ -20,7 +21,6 @@ export async function GET(request: Request) {
     const logs = await listLogs()
     return NextResponse.json({ count: logs.length, logs })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to read logs'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to read logs')
   }
 }

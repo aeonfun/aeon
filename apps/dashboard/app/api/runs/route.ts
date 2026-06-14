@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { REPO_ROOT, ghArgsRepo } from '@/lib/gh'
+import { errorResponse } from '@/lib/http'
 import type { GhRunJson } from '@/lib/types'
 
 type GhRunListItem = Pick<GhRunJson, 'databaseId' | 'name' | 'status' | 'conclusion' | 'createdAt' | 'url' | 'displayTitle' | 'event'>
@@ -29,7 +30,6 @@ export async function GET() {
       }))
     return NextResponse.json({ runs })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to list runs'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to list runs')
   }
 }

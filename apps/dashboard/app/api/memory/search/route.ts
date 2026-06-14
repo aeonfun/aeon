@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { searchMemory, type SearchHit } from '@/lib/memory'
+import { errorResponse } from '@/lib/http'
 
 const VALID_SOURCES: SearchHit['source'][] = ['memory', 'topic', 'log', 'issue']
 
@@ -34,7 +35,6 @@ export async function GET(request: Request) {
       hits,
     })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Search failed'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Search failed')
   }
 }

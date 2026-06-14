@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 import { syncGatewayProvider } from '@/lib/gateway'
+import { errorResponse } from '@/lib/http'
 import type { Secret } from '@/lib/types'
 
 const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
@@ -127,8 +128,7 @@ export async function POST(request: Request) {
     if (GATEWAY_SECRET_NAMES.has(name)) await syncGatewayProvider()
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to set secret'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to set secret')
   }
 }
 
@@ -150,7 +150,6 @@ export async function DELETE(request: Request) {
     if (GATEWAY_SECRET_NAMES.has(name)) await syncGatewayProvider()
     return NextResponse.json({ ok: true })
   } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : 'Failed to delete secret'
-    return NextResponse.json({ error: msg }, { status: 500 })
+    return errorResponse(error, 'Failed to delete secret')
   }
 }
