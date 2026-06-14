@@ -1,12 +1,4 @@
-export interface SkillKeyRef {
-  key: string       // env-var name, e.g. "XAI_API_KEY"
-  optional: boolean // true when the skill degrades gracefully without it (declared with a trailing `?`)
-}
-
-export interface SkillMcpRef {
-  slug: string      // MCP server slug from the catalog, e.g. "base"
-  optional: boolean // true when the skill works better with it but doesn't require it (trailing `?`)
-}
+import type { SkillKeyRef, SkillMcpRef } from './types'
 
 export interface Frontmatter {
   name: string

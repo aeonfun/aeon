@@ -28,6 +28,11 @@ export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', 'bankr', 
 
 export interface UploadFile { path: string; content: string }
 
+// `.mcp.json` server map. A server's shape varies by transport (http/stdio),
+// so each entry is an open record; consumers narrow fields as needed.
+export type McpServer = Record<string, unknown>
+export type McpServers = Record<string, McpServer>
+
 export interface SkillMetrics {
   name: string
   total: number

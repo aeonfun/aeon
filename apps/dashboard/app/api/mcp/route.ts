@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getFileContent, updateFile, createFile, commitAndPush } from '@/lib/github'
+import type { McpServers } from '@/lib/types'
 
 const FILE = '.mcp.json'
-
-type McpServers = Record<string, unknown>
 
 export async function GET() {
   try {

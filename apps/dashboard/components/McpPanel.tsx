@@ -4,10 +4,7 @@ import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { inputCls } from '../lib/utils'
 import { MCP_CATALOG } from '../lib/mcp-catalog'
-import type { Secret } from '../lib/types'
-
-type McpServer = Record<string, unknown>
-type McpServers = Record<string, McpServer>
+import type { Secret, McpServer, McpServers } from '../lib/types'
 
 // One-click starters — public HTTP MCP servers that install with no token.
 const FEATURED = MCP_CATALOG
