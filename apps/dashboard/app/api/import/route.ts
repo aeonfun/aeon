@@ -66,6 +66,12 @@ export async function POST(request: Request) {
       }
       const installed: string[] = []
       const failed: string[] = []
+      // Skills whose files were created but whose aeon.yml enable step threw.
+      // They land on disk but aren't enabled — report them honestly rather than
+      // counting them as a clean install.
+      const partial: Array<{ name: string; configError: string }> = []
+      // Every skill we actually wrote files for, so the commit covers them all.
+      const written: string[] = []
 
       for (const name of skillNames) {
         const content =
@@ -82,6 +88,7 @@ export async function POST(request: Request) {
           content,
           `feat: import ${name} skill from ${repo}`,
         )
+        written.push(name)
 
         // Add to aeon.yml
         try {
@@ -90,19 +97,23 @@ export async function POST(request: Request) {
           if (updated !== config.content) {
             await updateFile('aeon.yml', updated, config.sha, `chore: add ${name} to config`)
           }
-        } catch {
-          // Config update failed — skill file was still created
+          installed.push(name)
+        } catch (e: unknown) {
+          // The aeon.yml write is a real GitHub-API/file-IO boundary that can
+          // throw; the skill file is already created, so keep it — but surface
+          // the failure instead of swallowing it and reporting a clean install.
+          const configError = e instanceof Error ? e.message : 'Failed to update aeon.yml'
+          console.error(`import: failed to add ${name} to aeon.yml:`, e)
+          partial.push({ name, configError })
         }
-
-        installed.push(name)
       }
 
       // Push the new skill dirs + aeon.yml to GitHub in one commit (local mode).
-      const sync: { synced: boolean; reason?: string } = installed.length
-        ? commitAndPush(['aeon.yml', ...installed.map(n => `skills/${n}`)], `feat: import ${installed.join(', ')}`)
+      const sync: { synced: boolean; reason?: string } = written.length
+        ? commitAndPush(['aeon.yml', ...written.map(n => `skills/${n}`)], `feat: import ${written.join(', ')}`)
         : { synced: true }
 
-      return NextResponse.json({ installed, failed, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+      return NextResponse.json({ installed, partial, failed, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })

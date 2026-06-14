@@ -3,9 +3,17 @@ import { readdir, readFile } from 'fs/promises'
 import { join } from 'path'
 import { execSync } from 'child_process'
 import { REPO_ROOT } from '@/lib/gh'
-import { errorResponse } from '@/lib/http'
+import { errorResponse, isRecord } from '@/lib/http'
+import type { SkillOutput } from '@/lib/types'
 
 const OUTPUTS_DIR = join(process.cwd(), 'outputs')
+
+// A json-render spec must at least name a root element and carry an elements
+// map. Element props are intentionally loose (SpecNode coerces per-field
+// downstream), so don't validate beyond the container shape here.
+function isSpec(v: unknown): v is SkillOutput['spec'] {
+  return isRecord(v) && typeof v.root === 'string' && isRecord(v.elements)
+}
 
 // Filenames stamp time as 2026-06-12T14-30-00Z (colons are illegal in paths).
 // Convert back to ISO 2026-06-12T14:30:00Z so `new Date()` can parse it —
@@ -29,7 +37,10 @@ export async function GET() {
       jsonFiles.slice(0, 100).map(async (filename) => {
         try {
           const raw = await readFile(join(OUTPUTS_DIR, filename), 'utf-8')
-          const spec = JSON.parse(raw)
+          const spec = JSON.parse(raw) as unknown
+          // Skip specs missing root/elements — they render empty downstream
+          // anyway, so drop them at the source instead of emitting a broken item.
+          if (!isSpec(spec)) return null
           // Parse skill name and timestamp from filename: <skill>-<timestamp>.json
           const base = filename.replace('.json', '')
           const tsMatch = base.match(/^(.+?)-(\d{4}-\d{2}-\d{2}T.+Z)$/)

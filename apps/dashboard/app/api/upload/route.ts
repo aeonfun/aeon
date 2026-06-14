@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/github'
-import { errorResponse } from '@/lib/http'
+import { errorResponse, isRecord } from '@/lib/http'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
@@ -22,6 +22,13 @@ function extractSkillName(content: string): string {
   // Slugify the frontmatter name: "Fleet Scorecard" → "fleet-scorecard"
   const { name } = parseFrontmatter(content)
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+// Validate a single element of an untrusted `files` array. We only require the
+// two fields this route actually reads (path, content); extra fields are kept,
+// so valid uploads carrying additional metadata still pass.
+function isUploadFile(v: unknown): v is UploadFile {
+  return isRecord(v) && typeof v.path === 'string' && typeof v.content === 'string'
 }
 
 function isSkillFile(path: string): boolean {
@@ -85,11 +92,14 @@ function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } 
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json() as { files?: UploadFile[]; name?: string }
-    const files = body.files
-    const overrideName = body.name
+    const body = await request.json() as unknown
+    const rawFiles = isRecord(body) && Array.isArray(body.files) ? body.files : []
+    const overrideName = isRecord(body) && typeof body.name === 'string' ? body.name : undefined
+    // Drop any element that isn't a well-formed { path, content } before it
+    // reaches createFile / the secret scanner.
+    const files = rawFiles.filter(isUploadFile)
 
-    if (!files || files.length === 0) {
+    if (files.length === 0) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 })
     }
 
@@ -137,14 +147,21 @@ export async function POST(request: Request) {
     }
 
     // Add to aeon.yml if not already present
+    let configUpdated = true
+    let configError: string | undefined
     try {
       const config = await getFileContent('aeon.yml')
       const updated = addSkillToConfig(config.content, skillName)
       if (updated !== config.content) {
         await updateFile('aeon.yml', updated, config.sha, `chore: add ${skillName} to config`)
       }
-    } catch {
-      // Config update failed — skill files were still created
+    } catch (e: unknown) {
+      // The aeon.yml write is a real GitHub-API/file-IO boundary that can throw;
+      // the skill files are already on disk, so don't fail the whole upload —
+      // but surface it instead of swallowing it silently.
+      configUpdated = false
+      configError = e instanceof Error ? e.message : 'Failed to update aeon.yml'
+      console.error(`upload: failed to add ${skillName} to aeon.yml:`, e)
     }
 
     // Detect secrets referenced in skill content
@@ -153,7 +170,15 @@ export async function POST(request: Request) {
 
     const sync = commitAndPush(['aeon.yml', `skills/${skillName}`], `feat: upload ${skillName} skill`)
 
-    return NextResponse.json({ name: skillName, filesWritten, detectedSecrets, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+    return NextResponse.json({
+      name: skillName,
+      filesWritten,
+      detectedSecrets,
+      configUpdated,
+      ...(configError ? { configError } : {}),
+      synced: sync.synced,
+      ...(sync.reason ? { syncError: sync.reason } : {}),
+    })
   } catch (error: unknown) {
     return errorResponse(error, 'Unknown error')
   }

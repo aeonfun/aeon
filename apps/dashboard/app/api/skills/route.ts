@@ -127,18 +127,27 @@ export async function DELETE(request: Request) {
 
     await deleteDirectory(`skills/${name}`, `chore: delete ${name} skill`)
 
+    let configUpdated = true
+    let configError: string | undefined
     try {
       const { content, sha } = await getFileContent('aeon.yml')
       const updated = removeSkillFromConfig(content, name)
       if (updated !== content) {
         await updateFile('aeon.yml', updated, sha, `chore: remove ${name} from config`)
       }
-    } catch { /* config cleanup is best-effort */ }
+    } catch (e: unknown) {
+      // The aeon.yml write is a real GitHub-API/file-IO boundary that can throw;
+      // the skill dir is already deleted, so don't fail the request — but surface
+      // it instead of swallowing it silently and reporting a clean removal.
+      configUpdated = false
+      configError = e instanceof Error ? e.message : 'Failed to update aeon.yml'
+      console.error(`skills DELETE: failed to remove ${name} from aeon.yml:`, e)
+    }
 
     // One commit for both the removed skill dir and the aeon.yml cleanup.
     const sync = commitAndPush(['aeon.yml', `skills/${name}`], `chore: remove ${name} skill`)
 
-    return NextResponse.json(syncResult(sync))
+    return NextResponse.json({ ...syncResult(sync), configUpdated, ...(configError ? { configError } : {}) })
   } catch (error: unknown) {
     return errorResponse(error, 'Unknown error')
   }
