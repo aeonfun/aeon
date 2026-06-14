@@ -1,3 +1,5 @@
+import { GATEWAY_SLUGS, type GatewaySlug } from './gateway-registry'
+
 export interface SkillKeyRef { key: string; optional: boolean }
 export interface SkillMcpRef { slug: string; optional: boolean }
 export interface Skill { name: string; description: string; tags: string[]; category: string; enabled: boolean; schedule: string; var: string; model: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
@@ -21,10 +23,11 @@ export interface GhRunJson {
 }
 
 // `auto` resolves the provider at run time from whichever secret is set
-// (see scripts/llm-gateway.sh). The rest pin a single provider explicitly.
-export type GatewayProvider = 'auto' | 'direct' | 'bankr' | 'openrouter' | 'usepod' | 'venice' | 'surplus'
+// (see scripts/llm-gateway.sh); `direct` is no gateway. Named providers come from
+// the gateway registry — add new ones there, not here.
+export type GatewayProvider = 'auto' | 'direct' | GatewaySlug
 
-export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', 'bankr', 'openrouter', 'usepod', 'venice', 'surplus']
+export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', ...GATEWAY_SLUGS]
 
 export interface UploadFile { path: string; content: string }
 

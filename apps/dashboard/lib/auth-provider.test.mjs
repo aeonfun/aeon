@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 
-import { normalizeAuthConfig } from './auth-provider.mjs'
+import { normalizeAuthConfig } from './auth-provider.ts'
 
 test('stores Anthropic-compatible API keys in ANTHROPIC_API_KEY', () => {
   const config = normalizeAuthConfig({

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { execFileSync, execSync } from 'child_process'
 import { ghAvailable, ghArgsRepo } from '@/lib/gh'
-import { normalizeAuthConfig } from '@/lib/auth-provider.mjs'
+import { normalizeAuthConfig } from '@/lib/auth-provider'
 import { syncGatewayProvider } from '@/lib/gateway'
 
 export async function POST(request: Request) {

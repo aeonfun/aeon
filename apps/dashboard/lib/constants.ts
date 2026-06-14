@@ -1,3 +1,5 @@
+import { GATEWAY_SECRET_NAMES } from './gateway-registry'
+
 export const MODELS = [
   { id: 'claude-opus-4-8', label: 'Opus 4.8' },
   { id: 'claude-fable-5', label: 'Fable 5' },
@@ -11,15 +13,7 @@ export const MODELS = [
 // Claude through a third party. Setting any one means the agent can run, so the
 // top-bar "Auth" call-to-action hides once at least one is present. The client
 // derives auth state from /api/secrets by testing membership in this list.
-export const AUTH_SECRETS = [
-  'CLAUDE_CODE_OAUTH_TOKEN',
-  'ANTHROPIC_API_KEY',
-  'BANKR_LLM_KEY',
-  'OPENROUTER_API_KEY',
-  'USEPOD_TOKEN',
-  'VENICE_API_KEY',
-  'SURPLUS_API_KEY',
-]
+export const AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', ...GATEWAY_SECRET_NAMES]
 
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },

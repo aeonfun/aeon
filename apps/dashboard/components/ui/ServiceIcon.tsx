@@ -1,6 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { GATEWAY_REGISTRY } from '@/lib/gateway-registry'
+
+// LLM-gateway domains derive from the single registry so a new provider doesn't
+// need a hand-added row here.
+const GATEWAY_DOMAINS: Record<string, string> = Object.fromEntries(
+  Object.values(GATEWAY_REGISTRY).map((p) => [p.secretName, p.domain] as [string, string]),
+)
 
 // Maps each credential / group to the brand domain whose logo we show. Logos
 // come from DuckDuckGo's privacy-respecting favicon service (no domain list
@@ -9,14 +16,10 @@ import { useState } from 'react'
 // service has no favicon (or the request fails) we fall back to a glyph or a
 // monochrome initials badge so every row still carries a mark.
 const DOMAINS: Record<string, string> = {
-  // Core — auth + LLM gateways
+  // Core — Claude-native auth (LLM-gateway domains spread in from the registry)
   CLAUDE_CODE_OAUTH_TOKEN: 'claude.ai',
   ANTHROPIC_API_KEY: 'anthropic.com',
-  BANKR_LLM_KEY: 'bankr.bot',
-  OPENROUTER_API_KEY: 'openrouter.ai',
-  USEPOD_TOKEN: 'usepod.ai',
-  VENICE_API_KEY: 'venice.ai',
-  SURPLUS_API_KEY: 'surplusintelligence.ai',
+  ...GATEWAY_DOMAINS,
   // Channels
   TELEGRAM_BOT_TOKEN: 'telegram.org',
   TELEGRAM_CHAT_ID: 'telegram.org',
