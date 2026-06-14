@@ -4,36 +4,6 @@ import { ghAvailable, ghArgsRepo } from '@/lib/gh'
 import { normalizeAuthConfig } from '@/lib/auth-provider.mjs'
 import { syncGatewayProvider } from '@/lib/gateway'
 
-export async function GET() {
-  try {
-    if (!ghAvailable()) {
-      return NextResponse.json({ authenticated: false, error: 'gh CLI not authenticated' })
-    }
-
-    const out = execFileSync('gh', ['secret', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
-      stdio: 'pipe',
-    }).toString().trim()
-    const secrets = out ? out.split('\n').filter(Boolean) : []
-    const hasApiKey = secrets.includes('ANTHROPIC_API_KEY')
-    const hasOauth = secrets.includes('CLAUDE_CODE_OAUTH_TOKEN')
-    const hasBankr = secrets.includes('BANKR_LLM_KEY')
-    const hasGateway = ['BANKR_LLM_KEY', 'OPENROUTER_API_KEY', 'USEPOD_TOKEN', 'VENICE_API_KEY', 'SURPLUS_API_KEY']
-      .some((name) => secrets.includes(name))
-    let hasBaseUrl = false
-
-    try {
-      const vars = execFileSync('gh', ['variable', 'list', ...ghArgsRepo(), '--json', 'name', '-q', '.[].name'], {
-        stdio: 'pipe',
-      }).toString().trim()
-      hasBaseUrl = vars ? vars.split('\n').includes('ANTHROPIC_BASE_URL') : false
-    } catch {}
-
-    return NextResponse.json({ authenticated: hasApiKey || hasOauth || hasGateway, hasApiKey, hasOauth, hasBankr, hasGateway, hasBaseUrl })
-  } catch {
-    return NextResponse.json({ authenticated: false })
-  }
-}
-
 export async function POST(request: Request) {
   try {
     if (!ghAvailable()) {
@@ -54,7 +24,7 @@ export async function POST(request: Request) {
         input: config.key,
         stdio: ['pipe', 'pipe', 'pipe'],
       })
-      await syncGatewayProvider('auto')
+      await syncGatewayProvider()
       return NextResponse.json({ ok: true, method: config.method, secret: config.secretName, baseUrl: Boolean(config.baseUrl), gateway: config.gateway })
     }
 
@@ -89,7 +59,7 @@ export async function POST(request: Request) {
       stdio: ['pipe', 'pipe', 'pipe'],
     })
 
-    await syncGatewayProvider('auto')
+    await syncGatewayProvider()
     return NextResponse.json({ ok: true, method: 'oauth' })
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : 'Failed to setup auth'
