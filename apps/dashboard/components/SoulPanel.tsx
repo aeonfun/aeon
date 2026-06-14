@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { SOUL_SCAFFOLD, STYLE_SCAFFOLD, ARCHETYPES } from '../lib/soul-templates'
 import { editorCls } from '../lib/utils'
+import type { SoulSources } from '../lib/types'
 
 export type SoulFile = 'soul' | 'style'
-export interface SoulSources { handle: string; name: string; links: string }
+export type { SoulSources }
 interface SoulExample { key: string; label: string; blurb: string }
 
 interface SoulPanelProps {

@@ -3,6 +3,7 @@ import { execFileSync } from 'child_process'
 import { REPO_ROOT } from '@/lib/gh'
 import { errorResponse } from '@/lib/http'
 import { normLinks, sanitizeModel } from '@/lib/dispatch'
+import type { StrategySources } from '@/lib/types'
 
 // Dispatch the strategy-builder skill with a brief. A dedicated route (not the
 // generic /api/skills/[name]/run) because the goal is free text and repo/links
@@ -28,7 +29,7 @@ function normGoal(raw: unknown): string {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as { goal?: string; repo?: string; links?: string; model?: string }
+    const body = (await request.json()) as Partial<StrategySources> & { model?: string }
 
     const goal = normGoal(body.goal)
     const repo = normRepo(body.repo)

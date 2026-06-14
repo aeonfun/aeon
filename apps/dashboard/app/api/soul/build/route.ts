@@ -3,6 +3,7 @@ import { execFileSync } from 'child_process'
 import { REPO_ROOT } from '@/lib/gh'
 import { errorResponse } from '@/lib/http'
 import { normLinks, sanitizeModel } from '@/lib/dispatch'
+import type { SoulSources } from '@/lib/types'
 
 // Dispatch the soul-builder skill with a multi-source brief. A dedicated route
 // (rather than the generic /api/skills/[name]/run) because soul sources include
@@ -22,7 +23,7 @@ function normHandle(raw: unknown): string {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as { handle?: string; name?: string; links?: string; model?: string }
+    const body = (await request.json()) as Partial<SoulSources> & { model?: string }
 
     const handle = normHandle(body.handle)
     const name = typeof body.name === 'string' && NAME_RE.test(body.name.trim()) ? body.name.trim() : ''

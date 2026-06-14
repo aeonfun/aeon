@@ -28,6 +28,11 @@ export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', 'bankr', 
 
 export interface UploadFile { path: string; content: string }
 
+// Client→server build briefs. The panels collect them; the build routes accept
+// them as Partial (every field is untrusted/optional on the wire).
+export interface SoulSources { handle: string; name: string; links: string }
+export interface StrategySources { goal: string; repo: string; links: string }
+
 // `.mcp.json` server map. A server's shape varies by transport (http/stdio),
 // so each entry is an open record; consumers narrow fields as needed.
 export type McpServer = Record<string, unknown>

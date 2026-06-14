@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { STRATEGY_SCAFFOLD, ARCHETYPES } from '../lib/strategy-templates'
 import { editorCls } from '../lib/utils'
+import type { StrategySources } from '../lib/types'
 
-export interface StrategySources { goal: string; repo: string; links: string }
+export type { StrategySources }
 
 interface StrategyPanelProps {
   content: string
