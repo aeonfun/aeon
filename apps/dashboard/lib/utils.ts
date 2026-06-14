@@ -6,6 +6,13 @@ export function displayName(slug: string): string {
   return slug.split('-').map(w => special[w] || (w[0]?.toUpperCase() + w.slice(1))).join(' ')
 }
 
+// Narrowing guard for a non-null, non-array object — the building block for
+// validating untrusted JSON bodies / parsed files before reading fields off
+// them. Lives here (not lib/http) so client components can use it too.
+export function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
 export function initials(slug: string): string {
   const words = slug.split('-')
   return words.length === 1 ? words[0].slice(0, 2).toUpperCase() : (words[0][0] + words[1][0]).toUpperCase()

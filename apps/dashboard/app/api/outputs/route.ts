@@ -3,7 +3,8 @@ import { readdir, readFile } from 'fs/promises'
 import { join } from 'path'
 import { execSync } from 'child_process'
 import { REPO_ROOT } from '@/lib/gh'
-import { errorResponse, isRecord } from '@/lib/http'
+import { errorResponse } from '@/lib/http'
+import { isRecord } from '@/lib/utils'
 import type { SkillOutput } from '@/lib/types'
 
 const OUTPUTS_DIR = join(process.cwd(), 'outputs')

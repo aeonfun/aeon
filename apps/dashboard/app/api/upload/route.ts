@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/github'
-import { errorResponse, isRecord } from '@/lib/http'
+import { errorResponse } from '@/lib/http'
+import { isRecord } from '@/lib/utils'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'

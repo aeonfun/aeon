@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { inputCls } from '../lib/utils'
+import { inputCls, isRecord } from '../lib/utils'
 
 interface TelegramChatIdHelperProps {
   // Bot token saved earlier in this session — secrets are write-only on GitHub,
@@ -38,13 +38,16 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
     setStatus(null)
     try {
       const res = await fetch(getUpdatesUrl)
-      const data = await res.json() as { ok: boolean; description?: string; result?: TgUpdate[] }
-      if (!data.ok) {
-        setStatus({ ok: false, msg: data.description ?? 'Telegram rejected the token — double-check it.' })
+      const data: unknown = await res.json()
+      if (!isRecord(data) || data.ok !== true) {
+        const msg = isRecord(data) && typeof data.description === 'string'
+          ? data.description
+          : 'Telegram rejected the token — double-check it.'
+        setStatus({ ok: false, msg })
         return
       }
       // Latest update wins — scan backwards for anything with a chat id.
-      const updates = data.result ?? []
+      const updates: TgUpdate[] = Array.isArray(data.result) ? (data.result as TgUpdate[]) : []
       for (let i = updates.length - 1; i >= 0; i--) {
         const id = chatIdFrom(updates[i])
         if (id !== undefined) {

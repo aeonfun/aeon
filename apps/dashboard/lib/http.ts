@@ -20,12 +20,3 @@ export function errorResponse(error: unknown, fallback = 'Unknown error', status
 export function syncResult(sync: { synced: boolean; reason?: string }) {
   return { ok: true, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) }
 }
-
-/**
- * Narrowing guard for an unknown value that is a non-null, non-array object.
- * The building block for validating untrusted JSON bodies / parsed files at API
- * boundaries before reading fields off them.
- */
-export function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-}
