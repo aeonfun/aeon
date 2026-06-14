@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getRemoteDirectory, getRemoteFileContent, createFile, commitAndPush } from '@/lib/github'
 import { errorResponse } from '@/lib/http'
+import { displayName } from '@/lib/utils'
 
 // One-click install of a ready-made soul from the soul.md examples gallery into
 // the operator's own repo. GET lists the available example people; POST copies
@@ -15,16 +16,12 @@ const BLURBS: Record<string, string> = {
   'vivian-balakrishnan': "Singapore's foreign minister — measured, statesmanlike",
 }
 
-function humanize(slug: string): string {
-  return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-}
-
 export async function GET() {
   try {
     const entries = await getRemoteDirectory(SOURCE_REPO, 'examples')
     const examples = entries
       .filter(e => e.type === 'dir' && !e.name.startsWith('_') && !e.name.startsWith('.'))
-      .map(d => ({ key: d.name, label: humanize(d.name), blurb: BLURBS[d.name] || '' }))
+      .map(d => ({ key: d.name, label: displayName(d.name), blurb: BLURBS[d.name] || '' }))
     return NextResponse.json({ examples })
   } catch {
     return NextResponse.json({ examples: [] })
