@@ -34,11 +34,14 @@ function trustTone(level?: string): string {
 export function PacksPanel({ firstParty, community, loading, busy, onTogglePack, onSelectSkill }: PacksPanelProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
 
-  const totalSkills = firstParty.reduce((n, p) => n + p.total, 0)
-  const onDuty = firstParty.reduce((n, p) => n + p.enabled, 0)
+  // Hide declared-but-empty packs (e.g. the Lab catch-all when nothing is
+  // unsorted) so the grid only shows packs that actually have skills.
+  const visiblePacks = firstParty.filter(p => p.total > 0)
+  const totalSkills = visiblePacks.reduce((n, p) => n + p.total, 0)
+  const onDuty = visiblePacks.reduce((n, p) => n + p.enabled, 0)
 
   const stats = [
-    { label: 'Packs', value: firstParty.length },
+    { label: 'Packs', value: visiblePacks.length },
     { label: 'Skills', value: totalSkills },
     { label: 'On duty', value: onDuty, tone: 'text-eva-green' },
     { label: 'Community', value: community.length },
@@ -83,7 +86,7 @@ export function PacksPanel({ firstParty, community, loading, busy, onTogglePack,
       {/* First-party packs */}
       <Section index="01" label="Your packs">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
-          {firstParty.map(pack => {
+          {visiblePacks.map(pack => {
             const isCore = pack.key === 'core'
             const allOn = pack.enabled === pack.total && pack.total > 0
             const open = expanded === pack.key

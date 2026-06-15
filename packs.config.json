@@ -89,6 +89,13 @@
       "description": "Aeon's instrumentation: skill analytics/health/graphing, capability mapping, spend monitoring, memory housekeeping, fork health, and registry tooling.",
       "color": "#9CA3AF",
       "category": "meta"
+    },
+    {
+      "key": "lab",
+      "name": "Lab",
+      "description": "Unsorted skills — freshly authored or imported skills whose category isn't a known pack yet. Triage these into a real pack by setting their category. Catch-all: keeps adding a skill from ever breaking the catalog.",
+      "color": "#71717A",
+      "category": "other"
     }
   ]
 }

@@ -66,11 +66,18 @@ for slug, s in skills.items():
     if key:
         assigned[slug] = key
 
-# validation — every skill must belong to exactly one pack
+# 4) catch-all — any skill whose category has no pack (freshly authored or
+# imported skills land here as category 'other') goes to the catch-all pack
+# (the one claiming category 'other'), so adding a skill never breaks the
+# catalog. Without a catch-all declared, an unassigned skill is a hard error.
+catch_all = cat_to_pack.get("other")
 unassigned = sorted(set(skills) - set(assigned))
 if unassigned:
-    sys.exit(f"ERROR: {len(unassigned)} skill(s) not assigned to any pack "
-             f"(add to a pack/core or give their category a pack): {unassigned}")
+    if not catch_all:
+        sys.exit(f"ERROR: {len(unassigned)} skill(s) not assigned to any pack and "
+                 f"no catch-all pack (category 'other') is declared: {unassigned}")
+    for slug in unassigned:
+        assigned[slug] = catch_all
 
 def skill_entry(slug):
     s = skills[slug]
