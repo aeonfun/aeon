@@ -81,7 +81,7 @@ injection — see the `## Security` section of [`CLAUDE.md`](CLAUDE.md).
 - Skills are instructed to **never exfiltrate** environment variables, secrets,
   or file contents to an external URL.
 - The default `GITHUB_TOKEN` is scoped to the running repo only. Cross-repo
-  skills (`feature`, `external-feature`, `pr-review`, …) use an optional
+  skills (`github-monitor`, `pr-review`, `issue-triage`, `external-feature`) use an optional
   fine-grained `GH_GLOBAL` token whose scope **you** choose — grant it the least
   access those skills need. See [Cross-repo access](README.md#cross-repo-access).
 - Run your live instance as a **private fork** so `memory/`, `articles/`, and any
