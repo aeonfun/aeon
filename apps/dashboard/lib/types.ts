@@ -4,6 +4,39 @@ export interface SkillKeyRef { key: string; optional: boolean }
 export interface SkillMcpRef { slug: string; optional: boolean }
 export interface Skill { name: string; description: string; tags: string[]; category: string; enabled: boolean; schedule: string; var: string; model: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
 export interface Run { id: number; workflow: string; status: string; conclusion: string | null; created_at: string; url: string }
+
+// --- Skill packs ---
+// A skill inside a first-party pack, joined with its live enabled state from
+// aeon.yml. `slug` is the skill dir name; `name` is the display name.
+export interface PackSkill { slug: string; name: string; description: string; category: string; enabled: boolean }
+// First-party pack (from packs.json) with live counts computed by /api/packs.
+export interface Pack {
+  key: string
+  name: string
+  description: string
+  color: string
+  category: string | null
+  default_enabled: string[]
+  skills: PackSkill[]
+  total: number
+  enabled: number
+}
+// Community pack (from skill-packs.json), browse-only in the dashboard.
+export interface CommunityPack {
+  repo: string
+  path?: string
+  name: string
+  description: string
+  author: string
+  license?: string
+  homepage?: string
+  category: string
+  trust_level?: string
+  skills: string[]
+  secrets_required?: string[]
+  capabilities?: string[]
+  installedCount: number
+}
 export interface Secret { name: string; group: string; description: string; isSet: boolean; either?: string }
 export interface SkillOutput { filename: string; skill: string; timestamp: string; spec: { root: string; state?: Record<string, unknown>; elements: Record<string, SpecElement> } }
 export interface SpecElement { type: string; props?: Record<string, unknown>; children?: string[] }
@@ -92,6 +125,12 @@ export interface SkillsResponse {
 // GET /api/runs
 export interface RunsResponse {
   runs: Run[]
+}
+
+// GET /api/packs
+export interface PacksResponse {
+  firstParty: Pack[]
+  community: CommunityPack[]
 }
 
 // GET /api/secrets

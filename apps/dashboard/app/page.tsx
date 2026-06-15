@@ -5,7 +5,7 @@ import type {
   Skill, Run, Secret, SkillOutput, GatewayProvider, UploadFile, AnalyticsData,
   SkillsResponse, RunsResponse, SecretsResponse, SyncStatusResponse, McpResponse,
   OutputsResponse, StrategyResponse, SoulResponse, SyncResult, SoulExampleResponse,
-  UploadResponse, ErrorResponse,
+  UploadResponse, ErrorResponse, PacksResponse,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
 import { MODELS, AUTH_SECRETS } from '../lib/constants'
@@ -21,12 +21,13 @@ import { SecretsPanel } from '../components/SecretsPanel'
 import { StrategyPanel, type StrategySources } from '../components/StrategyPanel'
 import { SoulPanel, type SoulFile, type SoulSources } from '../components/SoulPanel'
 import { McpPanel } from '../components/McpPanel'
+import { PacksPanel } from '../components/PacksPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
 
 export default function Dashboard() {
-  const [view, setView] = useState<'hq' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
+  const [view, setView] = useState<'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
   // Shared with the sidebar's category chips — HQ category cards toggle it too.
@@ -53,6 +54,9 @@ export default function Dashboard() {
   const [outputs, setOutputs] = useState<SkillOutput[]>([])
   const [feedLoading, setFeedLoading] = useState(false)
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
+
+  const [packs, setPacks] = useState<PacksResponse | null>(null)
+  const [packsLoaded, setPacksLoaded] = useState(false)
 
   const [showImport, setShowImport] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
@@ -96,6 +100,7 @@ export default function Dashboard() {
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
   useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() as Promise<McpResponse> : null).then(d => { if (d) { setMcpServers(d.servers || {}); setMcpLoaded(true) } }).catch(() => {}) } }, [view, mcpLoaded])
   useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() as Promise<SoulResponse> : null).then(d => { if (d) { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) } }).catch(() => {}) } }, [view, soulLoaded])
+  useEffect(() => { if (view === 'packs' && !packsLoaded) { fetch('/api/packs').then(r => r.ok ? r.json() as Promise<PacksResponse> : null).then(d => { if (d) { setPacks(d); setPacksLoaded(true) } }).catch(() => {}) } }, [view, packsLoaded])
   // Reset the main content scroll to the top whenever the active view or the
   // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
   useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
@@ -116,6 +121,23 @@ export default function Dashboard() {
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string) => { const { ok, data } = await postJson<UploadResponse>('/api/upload', { files, name }); if (ok) { flash(`${displayName(data.name)} hired`); fetchData() } }
+  // Bulk enable/disable every skill in a first-party pack. Optimistically mirror
+  // the change into both the packs view and the skills roster so the sidebar/HQ
+  // stay in sync without a full refetch.
+  const togglePack = async (key: string, enabled: boolean) => {
+    setBusy(b => ({ ...b, [`pack-${key}`]: true }))
+    try {
+      const pk = packs?.firstParty.find(p => p.key === key)
+      const slugs = new Set(pk?.skills.map(s => s.slug) ?? [])
+      const { ok, data } = await patchJson<SyncResult & { changed?: string[] }>('/api/packs', { pack: key, enabled })
+      if (ok) {
+        setSkills(s => s.map(x => slugs.has(x.name) ? { ...x, enabled } : x))
+        setPacks(p => p ? { ...p, firstParty: p.firstParty.map(fp => fp.key === key ? { ...fp, skills: fp.skills.map(s => ({ ...s, enabled })), enabled: enabled ? fp.total : 0 } : fp) } : p)
+        const n = data.changed?.length ?? 0
+        flashSynced(`${pk?.name ?? key} · ${enabled ? 'enabled' : 'disabled'} ${n} skill${n === 1 ? '' : 's'}`, data)
+      } else { flash('Pack update failed') }
+    } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [`pack-${key}`]: false })) }
+  }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/strategy', { content }); if (ok) { setStrategy(content); flashSynced('Strategy saved', data) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const buildStrategy = async (sources: StrategySources) => { setStrategyBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/strategy/build', { ...sources, model }); if (ok) { flash('Strategy-builder started'); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setStrategyBuilding(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/mcp', { servers }); if (ok) { setMcpServers(servers); flashSynced('MCP servers saved', data) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
@@ -178,6 +200,9 @@ export default function Dashboard() {
           )}
           {view === 'hq' && !selectedSkill && (
             <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />
+          )}
+          {view === 'packs' && !selectedSkill && (
+            <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} loading={!packsLoaded} busy={busy} onTogglePack={togglePack} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} />
           )}
           {skill && (
             <SkillDetail
