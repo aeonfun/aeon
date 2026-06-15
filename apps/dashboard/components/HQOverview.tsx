@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import type { Skill, Run } from '../lib/types'
-import { CATEGORIES } from '../lib/constants'
+import { PACKS } from '../lib/constants'
 import { timeAgo } from '../lib/utils'
 import { Scramble, Flip, VelocityMarquee } from './ui/Animated'
 
@@ -39,15 +39,15 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
     card.style.setProperty('--my', `${e.clientY - r.top}px`)
   }
 
-  const cats = CATEGORIES
-    .map(c => ({ ...c, skills: skills.filter(s => (s.category || 'meta') === c.key) }))
+  const cats = PACKS
+    .map(c => ({ ...c, skills: skills.filter(s => (s.pack || 'lab') === c.key) }))
     .filter(c => c.skills.length)
 
   const stats: { label: string; value: number; tone?: string }[] = [
     { label: 'Team', value: skills.length },
     { label: 'On duty', value: enabledCount, tone: 'text-eva-green' },
     { label: 'Working', value: workingCount, tone: 'text-eva-orange' },
-    { label: 'Categories', value: cats.length },
+    { label: 'Packs', value: cats.length },
   ]
 
   return (
@@ -66,7 +66,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
             <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} categor{cats.length === 1 ? 'y' : 'ies'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle — waiting for the next cron tick.'}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle — waiting for the next cron tick.'}
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
         </dl>
       </section>
 
-      <Section index="01" label="Categories">
+      <Section index="01" label="Packs">
         <ul
           ref={spotRef}
           onMouseMove={onMove}
@@ -154,7 +154,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
       >
         {Array.from({ length: 2 }).map((_, k) => (
           <span key={k} aria-hidden={k === 1 ? 'true' : undefined} className="inline-block px-7">
-            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ON DUTY <i className="not-italic text-aeon-red">★</i> {cats.length} CATEGORIES <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
+            AEON HQ <i className="not-italic text-aeon-red">★</i> {enabledCount} ON DUTY <i className="not-italic text-aeon-red">★</i> {cats.length} PACKS <i className="not-italic text-aeon-red">★</i> {runs.length} RUNS LOGGED <i className="not-italic text-aeon-red">★</i> NO BABYSITTING <i className="not-italic text-aeon-red">★</i>
           </span>
         ))}
       </VelocityMarquee>

@@ -1,16 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import type { Pack, CommunityPack } from '../lib/types'
+import type { Pack, CommunityPack, Skill } from '../lib/types'
 import { displayName } from '../lib/utils'
 
 interface PacksPanelProps {
   firstParty: Pack[]
   community: CommunityPack[]
+  skills: Skill[]
   loading: boolean
   busy: Record<string, boolean>
-  onTogglePack: (key: string, enabled: boolean) => void
+  onToggleSkill: (slug: string, enabled: boolean) => void
   onSelectSkill: (slug: string) => void
+  onShowPack: (key: string) => void
 }
 
 function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
@@ -31,12 +33,17 @@ function trustTone(level?: string): string {
   return 'text-primary-40 border-[rgba(250,250,250,0.18)]'
 }
 
-export function PacksPanel({ firstParty, community, loading, busy, onTogglePack, onSelectSkill }: PacksPanelProps) {
+export function PacksPanel({ firstParty, community, skills, loading, busy, onToggleSkill, onSelectSkill, onShowPack }: PacksPanelProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
 
-  // Hide declared-but-empty packs (e.g. the Lab catch-all when nothing is
-  // unsorted) so the grid only shows packs that actually have skills.
-  const visiblePacks = firstParty.filter(p => p.total > 0)
+  // Live enabled state comes from the skills roster (single source of truth), so
+  // toggling a skill updates the counts here instantly. Hide declared-but-empty
+  // packs (e.g. the Lab catch-all when nothing is unsorted).
+  const enabledBySlug = new Map(skills.map(s => [s.name, s.enabled]))
+  const visiblePacks = firstParty.filter(p => p.total > 0).map(p => {
+    const members = p.skills.map(s => ({ ...s, enabled: enabledBySlug.get(s.slug) ?? false }))
+    return { ...p, skills: members, enabled: members.filter(m => m.enabled).length }
+  })
   const totalSkills = visiblePacks.reduce((n, p) => n + p.total, 0)
   const onDuty = visiblePacks.reduce((n, p) => n + p.enabled, 0)
 
@@ -70,7 +77,7 @@ export function PacksPanel({ firstParty, community, loading, busy, onTogglePack,
             PACKS
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Curated bundles of skills. Enable a whole pack at once, or open it to pick individual members. Core ships enabled; everything else is opt-in.
+            Curated bundles of skills. Open a pack to see what's inside, then switch on the ones you want — enabling is per-skill. Core is always present; everything else is opt-in.
           </p>
         </div>
         <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">
@@ -88,9 +95,7 @@ export function PacksPanel({ firstParty, community, loading, busy, onTogglePack,
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {visiblePacks.map(pack => {
             const isCore = pack.key === 'core'
-            const allOn = pack.enabled === pack.total && pack.total > 0
             const open = expanded === pack.key
-            const working = busy[`pack-${pack.key}`]
             return (
               <div key={pack.key} className="bg-aeon-bg flex flex-col">
                 <div className="px-6 py-5 flex flex-col gap-3 flex-1">
@@ -109,37 +114,43 @@ export function PacksPanel({ firstParty, community, loading, busy, onTogglePack,
                   <p className="text-xs text-primary-70 leading-relaxed">{pack.description}</p>
 
                   <div className="mt-auto flex items-center gap-2 pt-2">
-                    {!isCore && (
-                      <button
-                        onClick={() => onTogglePack(pack.key, !allOn)}
-                        disabled={working}
-                        className={`text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target disabled:opacity-50 ${allOn ? 'text-eva-red border-eva-red/40 hover:bg-eva-red/10' : 'text-eva-green border-eva-green/40 hover:bg-eva-green/10'}`}
-                      >
-                        {working ? '…' : allOn ? 'Disable all' : 'Enable all'}
-                      </button>
-                    )}
                     <button
                       onClick={() => setExpanded(open ? null : pack.key)}
                       className="text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
                     >
                       {open ? 'Hide' : `${pack.total} skill${pack.total === 1 ? '' : 's'}`}
                     </button>
+                    <button
+                      onClick={() => onShowPack(pack.key)}
+                      title="Filter the sidebar roster to this pack"
+                      className="text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
+                    >
+                      In sidebar →
+                    </button>
                   </div>
                 </div>
 
                 {open && (
                   <div className="border-t border-[rgba(250,250,250,0.08)] divide-y divide-[rgba(250,250,250,0.06)]">
-                    {pack.skills.map(s => (
-                      <button
-                        key={s.slug}
-                        onClick={() => onSelectSkill(s.slug)}
-                        className="w-full flex items-center gap-2.5 px-6 py-2 hover:bg-aeon-panel transition-colors text-left"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: s.enabled ? pack.color : 'rgba(250,250,250,0.18)' }} />
-                        <span className="text-xs text-primary-100 truncate flex-1">{displayName(s.slug)}</span>
-                        <span className={`text-[9px] font-mono uppercase tracking-[0.14em] ${s.enabled ? 'text-eva-green' : 'text-primary-35'}`}>{s.enabled ? 'on' : 'off'}</span>
-                      </button>
-                    ))}
+                    {pack.skills.map(s => {
+                      const sb = busy[s.slug]
+                      return (
+                        <div key={s.slug} className="w-full flex items-center gap-2.5 px-6 py-2 hover:bg-aeon-panel transition-colors">
+                          <button
+                            onClick={() => onToggleSkill(s.slug, !s.enabled)}
+                            disabled={sb}
+                            title={s.enabled ? 'Disable skill' : 'Enable skill'}
+                            className={`text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border shrink-0 w-9 text-center transition-colors cursor-target disabled:opacity-50 ${s.enabled ? 'text-eva-green border-eva-green/40 hover:bg-eva-green/10' : 'text-primary-40 border-[rgba(250,250,250,0.16)] hover:text-primary-70'}`}
+                          >
+                            {sb ? '…' : s.enabled ? 'on' : 'off'}
+                          </button>
+                          <button onClick={() => onSelectSkill(s.slug)} className="flex items-center gap-2.5 flex-1 min-w-0 text-left cursor-target">
+                            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: s.enabled ? pack.color : 'rgba(250,250,250,0.18)' }} />
+                            <span className="text-xs text-primary-100 truncate">{displayName(s.slug)}</span>
+                          </button>
+                        </div>
+                      )
+                    })}
                   </div>
                 )}
               </div>

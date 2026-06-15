@@ -60,7 +60,7 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ![Skills](./assets/skills-aeon-197.jpg)
 
-**182 skills, grouped into 9 installable packs.** A small **core** ships present; everything else is opt-in — browse and enable a whole pack from the dashboard's **Packs** view, or pick individual skills. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
+**182 skills, grouped into 9 packs.** A small **core** ships present; everything else is opt-in — browse packs in the dashboard's **Packs** view and switch on the individual skills you want (a pack is a lens, not a bulk switch). Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
 
 | Pack | Key | Skills | Examples |
 |------|-----|--------|----------|

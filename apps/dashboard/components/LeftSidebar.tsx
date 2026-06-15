@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret } from '../lib/types'
-import { CATEGORIES } from '../lib/constants'
+import { PACKS } from '../lib/constants'
 import { displayName, initials, getSkillStatus, statusDot } from '../lib/utils'
 
 interface LeftSidebarProps {
@@ -41,12 +41,14 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   // "Available" = runnable out of the box: every declared key is optional.
   const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional)
 
-  // How many skills survive the active filters — drives the empty-state hint so
-  // the default enabled-only roster never looks broken when little is on duty.
+  // `categoryFilter` holds a PACK key — the sidebar groups by pack. Picking a
+  // pack reveals ALL its skills (enabled + disabled) so you can switch them on in
+  // context; with no pack selected the roster stays focused on enabled skills.
+  const effectiveEnabledOnly = enabledOnly && !categoryFilter
   const matchesFilters = (s: Skill) => {
-    if (categoryFilter && (s.category || 'meta') !== categoryFilter) return false
+    if (categoryFilter && (s.pack || 'lab') !== categoryFilter) return false
     if (skillSearch && !(displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase()))) return false
-    if (enabledOnly && !s.enabled) return false
+    if (effectiveEnabledOnly && !s.enabled) return false
     if (availableOnly && !needsNoKey(s)) return false
     return true
   }
@@ -125,13 +127,14 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-amber" />
             Available
           </button>
-          {CATEGORIES.map(cat => {
+          {PACKS.map(cat => {
+            if (!skills.some(s => (s.pack || 'lab') === cat.key)) return null
             const active = categoryFilter === cat.key
             return (
               <button
                 key={cat.key}
                 onClick={() => setCategoryFilter(active ? null : cat.key)}
-                title={cat.label}
+                title={`${cat.label} — show this pack's skills`}
                 className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${active ? '' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
                 style={active ? { color: cat.color, borderColor: cat.color, backgroundColor: cat.color + '1A' } : undefined}
               >
@@ -142,12 +145,12 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           })}
         </div>
 
-        {CATEGORIES.map(cat => {
+        {PACKS.map(cat => {
           if (categoryFilter && cat.key !== categoryFilter) return null
-          const catSkills = skills.filter(s => (s.category || 'meta') === cat.key)
+          const catSkills = skills.filter(s => (s.pack || 'lab') === cat.key)
           if (!catSkills.length) return null
           const searched = skillSearch ? catSkills.filter(s => displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase())) : catSkills
-          const enabledFiltered = enabledOnly ? searched.filter(s => s.enabled) : searched
+          const enabledFiltered = effectiveEnabledOnly ? searched.filter(s => s.enabled) : searched
           const filtered = availableOnly ? enabledFiltered.filter(needsNoKey) : enabledFiltered
           if (!filtered.length) return null
           const en = filtered.filter(s => s.enabled).length

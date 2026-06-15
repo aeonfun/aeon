@@ -1,5 +1,5 @@
 import type { Skill, GatewayProvider } from '../lib/types'
-import { MODELS, CATEGORY_BY_KEY } from '../lib/constants'
+import { MODELS, PACK_BY_KEY } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
 interface TopBarProps {
@@ -21,7 +21,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onPull, onSync }: TopBarProps) {
-  const dept = skill ? (CATEGORY_BY_KEY[skill.category || 'meta'] || null) : null
+  const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
   const modelOptions = MODELS
 
   return (

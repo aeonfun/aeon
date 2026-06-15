@@ -2,7 +2,7 @@ import { GATEWAY_SLUGS, type GatewaySlug } from './gateway-registry'
 
 export interface SkillKeyRef { key: string; optional: boolean }
 export interface SkillMcpRef { slug: string; optional: boolean }
-export interface Skill { name: string; description: string; tags: string[]; category: string; enabled: boolean; schedule: string; var: string; model: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
+export interface Skill { name: string; description: string; tags: string[]; category: string; pack: string; enabled: boolean; schedule: string; var: string; model: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
 export interface Run { id: number; workflow: string; status: string; conclusion: string | null; created_at: string; url: string }
 
 // --- Skill packs ---

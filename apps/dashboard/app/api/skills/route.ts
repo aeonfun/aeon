@@ -43,6 +43,15 @@ export async function GET() {
       for (const s of catalog.skills ?? []) categoryBySlug[s.slug] = s.category
     } catch { /* catalog optional — categories default to meta */ }
 
+    // Canonical slug → pack map from packs.json (the grouping the UI uses).
+    // Falls back to 'lab' (the catch-all) for any skill not yet in a pack.
+    const packBySlug: Record<string, string> = {}
+    try {
+      const { content: packsRaw } = await getFileContent('packs.json')
+      const packs = JSON.parse(packsRaw) as { packs?: Array<{ key: string; skills?: Array<{ slug: string }> }> }
+      for (const p of packs.packs ?? []) for (const s of p.skills ?? []) packBySlug[s.slug] = p.key
+    } catch { /* packs.json optional — packs default to lab */ }
+
     const meta = await Promise.all(
       dirNames.map(async (name) => {
         try {
@@ -65,6 +74,7 @@ export async function GET() {
         requires: m.requires,
         mcp: m.mcp,
         category: categoryBySlug[m.name] || 'meta',
+        pack: packBySlug[m.name] || 'lab',
         enabled: config.skills[m.name]?.enabled ?? false,
         schedule: config.skills[m.name]?.schedule || '0 12 * * *',
         var: config.skills[m.name]?.var || '',

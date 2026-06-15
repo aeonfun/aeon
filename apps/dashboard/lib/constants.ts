@@ -37,3 +37,23 @@ export const CATEGORIES: { key: string; label: string; short: string; color: str
 
 export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
   Object.fromEntries(CATEGORIES.map(c => [c.key, { label: c.label, color: c.color }]))
+
+// First-party packs — the organizing unit across the dashboard (sidebar groups,
+// HQ cards, Packs view). Mirrors packs.json / packs.config.json (key, color).
+// A skill's pack comes from its `pack` field (joined from packs.json in
+// /api/skills); `lab` is the catch-all for uncategorized skills.
+export const PACKS: { key: string; label: string; short: string; color: string }[] = [
+  { key: 'core',         label: 'Core',                  short: 'Core',         color: '#E5484D' },
+  { key: 'fleet',        label: 'Fleet & Replication',   short: 'Fleet',        color: '#30A46C' },
+  { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
+  { key: 'dev',          label: 'Dev & Code',             short: 'Dev',          color: '#3B82F6' },
+  { key: 'markets',      label: 'Crypto & Markets',       short: 'Markets',      color: '#FF6B1A' },
+  { key: 'hound',        label: 'Hound — Onchain Security', short: 'Hound',      color: '#EAB308' },
+  { key: 'social',       label: 'Social & Writing',       short: 'Social',       color: '#EC4899' },
+  { key: 'productivity', label: 'Productivity',           short: 'Productivity', color: '#06B6D4' },
+  { key: 'agent-ops',    label: 'Agent Ops',              short: 'Ops',          color: '#9CA3AF' },
+  { key: 'lab',          label: 'Lab',                    short: 'Lab',          color: '#71717A' },
+]
+
+export const PACK_BY_KEY: Record<string, { label: string; color: string }> =
+  Object.fromEntries(PACKS.map(p => [p.key, { label: p.label, color: p.color }]))

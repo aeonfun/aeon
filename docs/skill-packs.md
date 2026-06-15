@@ -2,8 +2,9 @@
 
 Aeon ships **180+ skills**, but most forks only ever run a handful. Packs make
 that manageable: a small **core** is always present, and everything else is
-grouped into **packs** you enable when you want them — and browse, install, and
-bulk-toggle from the dashboard.
+grouped into **packs** you browse from the dashboard — open a pack to see what's
+inside, then switch on the individual skills you want. A pack is a lens for
+discovery, not a bulk on-switch; enabling is always per-skill.
 
 There are two kinds:
 
@@ -128,9 +129,13 @@ both manifests (CI enforces they're fresh).
 The **Packs** view (`/api/packs`):
 
 - **Your packs** — first-party pack cards with live "X / Y on duty" counts.
-  Enable/disable a whole pack at once, or expand it to toggle individual members
-  (Core can't be bulk-disabled). Bulk toggle writes every member's `enabled` to
-  `aeon.yml` in a single commit.
+  Expand a card to see its skills and switch them **on individually** (an inline
+  toggle per skill), or hit **In sidebar →** to filter the left roster to that
+  pack and enable them in context. There is no bulk "enable pack" — a pack is a
+  lens, not a switch.
+- The **left sidebar** groups the roster by pack and defaults to showing only
+  enabled skills; pick a pack chip to reveal all of its skills (enabled or not)
+  so you can turn them on.
 - **Community packs** — browse the registry with author, trust level, required
   secrets/capabilities, and a copy-paste `./install-skill-pack <repo>` command.
 
