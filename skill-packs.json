@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-08",
+  "updated": "2026-06-16",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -253,6 +253,18 @@
       "category": "memory",
       "trust_level": "community",
       "skills": ["mneme-remember", "mneme-recall", "mneme-entity", "mneme-relate", "mneme-find", "mneme-dream", "mneme-watch", "mneme-ask"]
+    },
+    {
+      "repo": "rajkaria/hunch",
+      "path": "aeon-skill-pack",
+      "name": "Hunch Prediction Markets",
+      "description": "Crowd-conviction signal, market discovery, and autonomous x402 betting on PlayHunch - onchain prediction markets on Base. Unlike monitor-only market packs, hunch-bet lets the agent take a real position: simulate-by-default, $1-$10, settlement opt-in with a funded Base wallet, USDC payout + onchain proof.",
+      "author": "rajkaria",
+      "license": "MIT",
+      "homepage": "https://www.playhunch.xyz/agents",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["hunch-intel", "hunch-markets", "hunch-bet"]
     }
   ]
 }
