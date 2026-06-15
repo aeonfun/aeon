@@ -16,7 +16,7 @@ export function isLocal() {
 /**
  * Local-mode auto-sync. After a dashboard edit writes a file to disk, stage
  * exactly those paths, commit, and push so the change lands on GitHub
- * immediately — otherwise scheduled runs (which read committed `main`) never see
+ * immediately - otherwise scheduled runs (which read committed `main`) never see
  * it. Hosted mode already commits through the Contents API, so this is a no-op
  * there. Best-effort and never throws: the file is already saved locally, so a
  * failed push degrades to { synced: false } (surfaced to the UI) rather than
@@ -120,7 +120,7 @@ export async function createFile(path: string, content: string, message: string)
     const existing = await getFileContent(path)
     return updateFile(path, content, existing.sha, message)
   } catch {
-    // File doesn't exist — create it
+    // File doesn't exist - create it
   }
   const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${path}`, {
     method: 'PUT',
@@ -138,7 +138,7 @@ export async function createFile(path: string, content: string, message: string)
 /**
  * Write a file, updating it in place when it already exists and creating it
  * otherwise, then sync via commitAndPush. Returns commitAndPush's result
- * ({ synced, reason }) so routes can spread it — best-effort/local-mode-only,
+ * ({ synced, reason }) so routes can spread it - best-effort/local-mode-only,
  * never throws from the sync step.
  */
 export async function saveFile(
@@ -150,7 +150,7 @@ export async function saveFile(
   try {
     sha = (await getFileContent(path)).sha
   } catch {
-    // File doesn't exist yet — create it
+    // File doesn't exist yet - create it
   }
   if (sha) {
     await updateFile(path, content, sha, opts.updateMsg)

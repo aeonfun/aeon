@@ -65,7 +65,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
             One file every skill reads. It&apos;s imported into{' '}
             <span className="font-mono text-primary-100">CLAUDE.md</span>, so it sits in the context of
-            every run — keep it tight: a north-star, a few priorities, the hard constraints.
+            every run - keep it tight: a north-star, a few priorities, the hard constraints.
             Build it from your goal, start from a template, or write it by hand.
           </p>
         </div>
@@ -78,9 +78,9 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
         </div>
         <p className="text-[12px] text-primary-50 font-mono leading-relaxed mb-4">
-          <span className="text-primary-80">Every field is optional — give just one.</span>{' '}
+          <span className="text-primary-80">Every field is optional - give just one.</span>{' '}
           The <span className="text-primary-80">strategy-builder</span> agent reads what you give it (plus your repo
-          README + memory), then drafts a tight STRATEGY.md — one north-star, a few priorities, the constraints —
+          README + memory), then drafts a tight STRATEGY.md - one north-star, a few priorities, the constraints —
           committed straight to <span className="text-primary-80">STRATEGY.md</span>.
         </p>
 
@@ -89,7 +89,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
             <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">Goal / project <span className="text-primary-30">· what you&apos;re building + what winning looks like</span></span>
             <textarea
               value={goal} onChange={(e) => setGoal(e.target.value)} rows={3} spellCheck={false}
-              placeholder="e.g. Growing my open-source agent framework — I want active contributors and a reputation for reliability, not just stars."
+              placeholder="e.g. Growing my open-source agent framework - I want active contributors and a reputation for reliability, not just stars."
               className={`${inputCls} w-full resize-y leading-relaxed`}
             />
           </label>
@@ -104,7 +104,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
               />
             </label>
             <label className="flex flex-col gap-1">
-              <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">Links <span className="text-primary-30">· product, site, deck — comma separated</span></span>
+              <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">Links <span className="text-primary-30">· product, site, deck - comma separated</span></span>
               <input
                 type="text" value={links} onChange={(e) => setLinks(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') build() }}
@@ -122,11 +122,11 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
           >
             {building ? 'Dispatching…' : 'Build my strategy'}
           </button>
-          <span className="text-[10px] text-primary-35 font-mono">Any one field is enough — all optional.</span>
+          <span className="text-[10px] text-primary-35 font-mono">Any one field is enough - all optional.</span>
         </div>
 
         <p className="mt-3 text-[11px] text-primary-35 font-mono leading-relaxed">
-          Runs as a GitHub Action — watch the feed for <span className="text-primary-70">strategy-builder</span>, then hit{' '}
+          Runs as a GitHub Action - watch the feed for <span className="text-primary-70">strategy-builder</span>, then hit{' '}
           <span className="text-primary-70">Pull</span> in the top bar to load the result. No API key needed.
         </p>
       </section>
@@ -147,12 +147,12 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
           </button>
         </div>
 
-        {/* Template picker — two per row */}
+        {/* Template picker - two per row */}
         {showTemplates && (
           <div className="mb-4 border border-[rgba(250,250,250,0.10)] bg-aeon-panel p-4 space-y-3">
             <p className="text-[11px] text-primary-50 font-mono">
               Start from a scaffold, or an archetype that shows the shape of a sharp strategy.
-              Replaces the current editor content — edit the bracketed bits to make it yours.
+              Replaces the current editor content - edit the bracketed bits to make it yours.
             </p>
             <div className="grid grid-cols-2 gap-2">
               <button
@@ -190,7 +190,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
             />
             <div className="flex items-center justify-between mt-3">
               <span className={`text-[11px] font-mono ${overLimit ? 'text-eva-orange' : 'text-primary-35'}`}>
-                {chars} chars{overLimit ? ` · over ~${SOFT_LIMIT}, trim it — this loads every run` : ''}
+                {chars} chars{overLimit ? ` · over ~${SOFT_LIMIT}, trim it - this loads every run` : ''}
               </span>
               <div className="flex items-center gap-2">
                 {dirty && (

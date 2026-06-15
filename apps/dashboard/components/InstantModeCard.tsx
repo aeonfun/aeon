@@ -5,7 +5,7 @@ import { inputCls } from '../lib/utils'
 
 interface InstantModeCardProps {
   repo: string
-  // Bot token saved earlier in this session — secrets are write-only on GitHub,
+  // Bot token saved earlier in this session - secrets are write-only on GitHub,
   // so this is the only chance to pre-fill it for the setWebhook step.
   sessionBotToken?: string
 }
@@ -27,7 +27,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
   // Classic-token page supports prefilling scope + description; fine-grained doesn't.
   const patUrl = 'https://github.com/settings/tokens/new?scopes=repo&description=aeon-telegram-webhook'
 
-  // Accept a bare subdomain, a host, or a full URL — normalize to https://host.
+  // Accept a bare subdomain, a host, or a full URL - normalize to https://host.
   const trimmedWorker = workerUrl.trim().replace(/\/+$/, '')
   const fullWorkerUrl = trimmedWorker
     ? trimmedWorker.startsWith('http') ? trimmedWorker
@@ -41,11 +41,11 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
       await navigator.clipboard.writeText(text)
       setCopied(key)
       setTimeout(() => setCopied(null), 1500)
-    } catch { /* clipboard blocked — the value is visible to copy manually */ }
+    } catch { /* clipboard blocked - the value is visible to copy manually */ }
   }
 
   // Telegram's API allows CORS, so the webhook can be registered straight from
-  // the browser — same trick as the chat-ID helper. The token never leaves the
+  // the browser - same trick as the chat-ID helper. The token never leaves the
   // page except to api.telegram.org.
   const registerWebhook = async () => {
     if (!botToken.trim() || !fullWorkerUrl) return
@@ -55,10 +55,10 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
       const res = await fetch(`https://api.telegram.org/bot${botToken.trim()}/setWebhook?url=${encodeURIComponent(fullWorkerUrl)}`)
       const data = await res.json() as { ok: boolean; description?: string }
       setWhStatus(data.ok
-        ? { ok: true, msg: 'Webhook set — replies now arrive in ~1s. The poller backs off automatically.' }
-        : { ok: false, msg: data.description ?? 'Telegram rejected the request — double-check the token.' })
+        ? { ok: true, msg: 'Webhook set - replies now arrive in ~1s. The poller backs off automatically.' }
+        : { ok: false, msg: data.description ?? 'Telegram rejected the request - double-check the token.' })
     } catch {
-      setWhStatus({ ok: false, msg: 'Could not reach api.telegram.org from the browser — copy the curl command below instead.' })
+      setWhStatus({ ok: false, msg: 'Could not reach api.telegram.org from the browser - copy the curl command below instead.' })
     } finally {
       setWhBusy(false)
     }
@@ -74,8 +74,8 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
           </div>
           <div className="text-[11px] text-primary-40 font-mono">
             {enabled
-              ? 'One-time setup, about 5 minutes — three steps below.'
-              : 'Aeon polls every 5 min — flip to Yes for ~1s replies via your own Cloudflare Worker.'}
+              ? 'One-time setup, about 5 minutes - three steps below.'
+              : 'Aeon polls every 5 min - flip to Yes for ~1s replies via your own Cloudflare Worker.'}
           </div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
@@ -97,13 +97,13 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
       {enabled && (
         <div className="mt-3 pt-4 border-t border-[rgba(250,250,250,0.08)] space-y-5">
           <p className="text-[13px] text-primary-70 leading-relaxed">
-            Replies aren&apos;t instant — by design. Aeon runs on GitHub Actions and polls Telegram every{' '}
+            Replies aren&apos;t instant - by design. Aeon runs on GitHub Actions and polls Telegram every{' '}
             <span className="text-primary-100">5 minutes</span>; it&apos;s built for autonomous background work,
             not real-time chat. For <span className="text-primary-100">~1-second</span> replies, deploy a tiny
-            Cloudflare Worker webhook into your own account — no shared infrastructure.
+            Cloudflare Worker webhook into your own account - no shared infrastructure.
           </p>
 
-          {/* 1 — deploy */}
+          {/* 1 - deploy */}
           <div>
             <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-2">1 · Deploy the Worker</div>
             <a href={deployUrl} target="_blank" rel="noopener noreferrer" className="inline-block">
@@ -115,7 +115,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
             </p>
           </div>
 
-          {/* 2 — variables */}
+          {/* 2 - variables */}
           <div>
             <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-2">2 · Fill the variables in the deploy wizard</div>
             <ul className="text-[12px] font-mono text-primary-70 space-y-1.5">
@@ -139,7 +139,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
               <li>
                 <span className="text-primary-100">GITHUB_TOKEN</span>{' '}
                 <a href={patUrl} target="_blank" rel="noopener noreferrer"
-                  title="Opens GitHub's token page with the repo scope and a name prefilled — generate and copy"
+                  title="Opens GitHub's token page with the repo scope and a name prefilled - generate and copy"
                   className="text-[10px] text-eva-orange/80 hover:text-eva-orange transition-colors">create token ↗</a>
               </li>
             </ul>
@@ -149,7 +149,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
             </p>
           </div>
 
-          {/* 3 — register */}
+          {/* 3 - register */}
           <div>
             <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-primary-40 mb-2">3 · Point Telegram at the Worker</div>
             <div className="flex flex-col sm:flex-row gap-2">
@@ -182,7 +182,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
 
           <p className="text-[11px] text-primary-40 leading-relaxed">
             Once the webhook is live, the poller detects it (<span className="font-mono">getWebhookInfo</span>) and
-            skips Telegram automatically — no double-processing. Full guide:{' '}
+            skips Telegram automatically - no double-processing. Full guide:{' '}
             <span className="font-mono text-primary-70">apps/webhook/README.md</span>.
           </p>
         </div>

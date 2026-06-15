@@ -32,7 +32,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)
-  // credential it declares isn't set — flagged inline so the operator sees it
+  // credential it declares isn't set - flagged inline so the operator sees it
   // without opening each skill.
   const setSecretNames = new Set(secrets.filter(s => s.isSet).map(s => s.name))
   const missingRequiredKeys = (s: Skill) =>
@@ -41,7 +41,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
   // "Available" = runnable out of the box: every declared key is optional.
   const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional)
 
-  // `categoryFilter` holds a PACK key — the sidebar groups by pack. Picking a
+  // `categoryFilter` holds a PACK key - the sidebar groups by pack. Picking a
   // pack reveals ALL its skills (enabled + disabled) so you can switch them on in
   // context; with no pack selected the roster stays focused on enabled skills.
   const effectiveEnabledOnly = enabledOnly && !categoryFilter
@@ -134,7 +134,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
               <button
                 key={cat.key}
                 onClick={() => setCategoryFilter(active ? null : cat.key)}
-                title={`${cat.label} — show this pack's skills`}
+                title={`${cat.label} - show this pack's skills`}
                 className={`text-[10px] font-mono uppercase tracking-[0.1em] px-2 py-1 border flex items-center gap-1.5 transition-colors ${active ? '' : 'text-primary-40 border-[rgba(250,250,250,0.12)] hover:text-primary-70 hover:border-[rgba(250,250,250,0.22)]'}`}
                 style={active ? { color: cat.color, borderColor: cat.color, backgroundColor: cat.color + '1A' } : undefined}
               >

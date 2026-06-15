@@ -33,7 +33,7 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
           <h2 className="font-display text-xl">Authenticate</h2>
           <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">&times;</button>
         </div>
-        <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or pick your key&apos;s provider and paste it below. Routing is automatic — at run time Aeon uses whichever provider keys are set, in priority order.</p>
+        <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or pick your key&apos;s provider and paste it below. Routing is automatic - at run time Aeon uses whichever provider keys are set, in priority order.</p>
         <button onClick={() => onAuth()} disabled={loading} className="w-full bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity disabled:opacity-50">
           {loading ? '...' : 'Use Claude Subscription'}
         </button>

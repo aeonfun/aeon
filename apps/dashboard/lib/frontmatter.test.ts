@@ -1,5 +1,5 @@
 /**
- * Tests for apps/dashboard/lib/frontmatter.ts — SKILL.md frontmatter parsing.
+ * Tests for apps/dashboard/lib/frontmatter.ts - SKILL.md frontmatter parsing.
  *
  * Run with:  node --import tsx --test apps/dashboard/lib/frontmatter.test.ts
  */
@@ -42,7 +42,7 @@ tags: [crypto]
   it("provides empty description when no frontmatter description", () => {
     // When description is absent, the fallback picks the first non-heading
     // non-`---` line from the entire content (including frontmatter).
-    // This is known behavior — the description won't be empty, but it
+    // This is known behavior - the description won't be empty, but it
     // picks "name: ..." as the first qualifying line.
     const content = `---
 name: Test Skill

@@ -22,7 +22,7 @@ export const DAYS = [
 ]
 
 // Canonical 8 skill categories. Mirrors get_category() in generate-skills-json
-// and the `category` field baked into skills.json — the single source of truth.
+// and the `category` field baked into skills.json - the single source of truth.
 // Ordered for display (Core first); every skill maps to exactly one key.
 export const CATEGORIES: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',             label: 'Core',               short: 'Core',         color: '#E5484D' },
@@ -38,7 +38,7 @@ export const CATEGORIES: { key: string; label: string; short: string; color: str
 export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
   Object.fromEntries(CATEGORIES.map(c => [c.key, { label: c.label, color: c.color }]))
 
-// First-party packs — the organizing unit across the dashboard (sidebar groups,
+// First-party packs - the organizing unit across the dashboard (sidebar groups,
 // HQ cards, Packs view). Mirrors packs.json / packs.config.json (key, color).
 // A skill's pack comes from its `pack` field (joined from packs.json in
 // /api/skills); `lab` is the catch-all for uncategorized skills.

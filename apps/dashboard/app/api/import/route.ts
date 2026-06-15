@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       const installed: string[] = []
       const failed: string[] = []
       // Skills whose files were created but whose aeon.yml enable step threw.
-      // They land on disk but aren't enabled — report them honestly rather than
+      // They land on disk but aren't enabled - report them honestly rather than
       // counting them as a clean install.
       const partial: Array<{ name: string; configError: string }> = []
       // Every skill we actually wrote files for, so the commit covers them all.
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
           installed.push(name)
         } catch (e: unknown) {
           // The aeon.yml write is a real GitHub-API/file-IO boundary that can
-          // throw; the skill file is already created, so keep it — but surface
+          // throw; the skill file is already created, so keep it - but surface
           // the failure instead of swallowing it and reporting a clean install.
           const configError = e instanceof Error ? e.message : 'Failed to update aeon.yml'
           console.error(`import: failed to add ${name} to aeon.yml:`, e)

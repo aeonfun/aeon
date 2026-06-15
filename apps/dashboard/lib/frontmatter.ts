@@ -53,7 +53,7 @@ export function parseFrontmatter(content: string): Frontmatter {
   const tags = parseList(block.match(/tags:\s*\[([^\]]*)\]/)?.[1])
 
   // `requires:` declares the third-party credentials a skill needs to function.
-  // Format mirrors `tags:` — an inline list of env-var names. A trailing `?`
+  // Format mirrors `tags:` - an inline list of env-var names. A trailing `?`
   // marks a key as optional (the skill still runs without it, just degraded /
   // rate-limited). Names reference the central credential registry surfaced in
   // the dashboard's Settings → Access Keys vault.

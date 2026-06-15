@@ -30,7 +30,7 @@ export default function Dashboard() {
   const [view, setView] = useState<'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
   const [secretFocus, setSecretFocus] = useState<string | null>(null)
-  // Shared with the sidebar's category chips — HQ category cards toggle it too.
+  // Shared with the sidebar's category chips - HQ category cards toggle it too.
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null)
   const mainScrollRef = useRef<HTMLDivElement>(null)
 
@@ -59,7 +59,7 @@ export default function Dashboard() {
   const [packsLoaded, setPacksLoaded] = useState(false)
   // Which packs are *visible* across the dashboard. A pack is a visibility lens:
   // by default only Core shows everywhere; enabling a pack reveals its skills in
-  // the sidebar + HQ. Pure client-side view preference — it never changes what
+  // the sidebar + HQ. Pure client-side view preference - it never changes what
   // runs (that's the per-skill `enabled` toggle in aeon.yml). Persisted below.
   const [enabledPacks, setEnabledPacks] = useState<string[]>(['core'])
 
@@ -114,7 +114,7 @@ export default function Dashboard() {
   useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
 
   const toggleSkill = async (n: string, en: boolean) => { setBusy(b => ({ ...b, [n]: true })); try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, enabled: en }); if (ok) { setSkills(s => s.map(sk => sk.name === n ? { ...sk, enabled: en } : sk)); flashSynced(`${displayName(n)} ${en ? 'on duty' : 'off duty'}`, data) } else { flash(`${displayName(n)} update failed`) } } catch { flash('Network error') } finally { setBusy(b => ({ ...b, [n]: false })) } }
-  const runSkill = async (n: string, v?: string, sm?: string) => { if (!secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))) { flash('No provider key set — add one in Settings before running skills'); return } setBusy(b => ({ ...b, [`r-${n}`]: true })); try { const { ok, data } = await postJson<ErrorResponse>(`/api/skills/${n}/run`, { var: v || '', model: sm || model }); if (ok) { flash(`${displayName(n)} started`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Failed') } } finally { setBusy(b => ({ ...b, [`r-${n}`]: false })) } }
+  const runSkill = async (n: string, v?: string, sm?: string) => { if (!secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))) { flash('No provider key set - add one in Settings before running skills'); return } setBusy(b => ({ ...b, [`r-${n}`]: true })); try { const { ok, data } = await postJson<ErrorResponse>(`/api/skills/${n}/run`, { var: v || '', model: sm || model }); if (ok) { flash(`${displayName(n)} started`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Failed') } } finally { setBusy(b => ({ ...b, [`r-${n}`]: false })) } }
   const updateSchedule = async (n: string, s: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, schedule: s }); if (ok) { setSkills(sk => sk.map(x => x.name === n ? { ...x, schedule: s } : x)); flashSynced('Shift updated', data) } } catch {} }
   const updateVar = async (n: string, v: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, var: v }); if (ok) { setSkills(s => s.map(x => x.name === n ? { ...x, var: v } : x)); flashSynced('Brief updated', data) } } catch {} }
   const updateSkillModel = async (n: string, m: string) => { try { const { ok, data } = await patchJson<SyncResult>('/api/skills', { name: n, skillModel: m }); if (ok) { setSkills(s => s.map(x => x.name === n ? { ...x, model: m } : x)); flashSynced('Capability updated', data) } } catch {} }
@@ -124,7 +124,7 @@ export default function Dashboard() {
   // Pull rebases origin/main onto the working tree, so the whole dashboard can be
   // stale afterward. Refetch core data + the feed, and drop cached panel state so
   // strategy/soul/mcp/analytics reload from the freshly-pulled files.
-  const pullFromGithub = async () => { setPulling(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/outputs'); if (ok) { flash('Pulled — refreshing'); setAnalyticsData(null); setStrategyLoaded(false); setMcpLoaded(false); setSoulLoaded(false); setFeedKey(k => k + 1); await fetchData() } else { flash(data.error || 'Pull failed') } } finally { setPulling(false) } }
+  const pullFromGithub = async () => { setPulling(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/outputs'); if (ok) { flash('Pulled - refreshing'); setAnalyticsData(null); setStrategyLoaded(false); setMcpLoaded(false); setSoulLoaded(false); setFeedKey(k => k + 1); await fetchData() } else { flash(data.error || 'Pull failed') } } finally { setPulling(false) } }
   const setupAuth = async (auth?: string | { key: string, baseUrl?: string, provider?: string }) => { setAuthLoading(true); try { const body = typeof auth === 'string' ? { key: auth } : (auth || {}); const { ok, data } = await postJson<ErrorResponse>('/api/auth', body); if (ok) { flash('Authenticated'); setShowAuthModal(false); fetchData() } else { const msg = typeof data?.error === 'string' ? data.error : (auth ? 'Auth failed' : 'Auto-setup failed'); if (!auth) setShowAuthModal(true); flash(msg) } } finally { setAuthLoading(false) } }
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
@@ -156,7 +156,7 @@ export default function Dashboard() {
 
   // --- Derived ---
   const skill = selectedSkill ? skills.find(s => s.name === selectedSkill) || null : null
-  // Any model/provider key set means Aeon can authenticate — the "Auth" CTA hides.
+  // Any model/provider key set means Aeon can authenticate - the "Auth" CTA hides.
   // Derived from live `secrets` so it reacts the instant a key is saved or removed.
   const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
   // Skills visible across the dashboard = those in an enabled pack (Core always

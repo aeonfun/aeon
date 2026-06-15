@@ -1,5 +1,5 @@
 /**
- * Tests for apps/dashboard/lib/utils.ts — cron parsing, display names, and time helpers.
+ * Tests for apps/dashboard/lib/utils.ts - cron parsing, display names, and time helpers.
  *
  * Run with:  node --import tsx --test apps/dashboard/lib/utils.test.ts
  */
@@ -163,7 +163,7 @@ describe("buildCron", () => {
 
   it("builds a daily cron with specific days", () => {
     const cron = buildCron("time", 9, "m", 9, 0, "AM", [1, 3, 5]);
-    // 9 AM local — we just verify the cron structure
+    // 9 AM local - we just verify the cron structure
     assert.ok(cron.includes("*"));
     assert.ok(cron.includes("1,3,5"));
   });

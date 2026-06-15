@@ -66,11 +66,11 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
             <span className="text-aeon-red"><Scramble text="HQ" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle — waiting for the next cron tick.'}
+            {enabledCount} skill{enabledCount === 1 ? '' : 's'} on duty across {cats.length} pack{cats.length === 1 ? '' : 's'}. {workingCount > 0 ? `${workingCount} currently working.` : 'Idle - waiting for the next cron tick.'}
           </p>
         </div>
 
-        {/* Stats strip — large editorial counters */}
+        {/* Stats strip - large editorial counters */}
         <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">
           {stats.map((s, i) => (
             <div

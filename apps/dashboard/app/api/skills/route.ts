@@ -41,7 +41,7 @@ export async function GET() {
       const { content: catalogRaw } = await getFileContent('skills.json')
       const catalog = JSON.parse(catalogRaw) as { skills?: Array<{ slug: string; category: string }> }
       for (const s of catalog.skills ?? []) categoryBySlug[s.slug] = s.category
-    } catch { /* catalog optional — categories default to meta */ }
+    } catch { /* catalog optional - categories default to meta */ }
 
     // Canonical slug → pack map from packs.json (the grouping the UI uses).
     // Falls back to 'lab' (the catch-all) for any skill not yet in a pack.
@@ -50,7 +50,7 @@ export async function GET() {
       const { content: packsRaw } = await getFileContent('packs.json')
       const packs = JSON.parse(packsRaw) as { packs?: Array<{ key: string; skills?: Array<{ slug: string }> }> }
       for (const p of packs.packs ?? []) for (const s of p.skills ?? []) packBySlug[s.slug] = p.key
-    } catch { /* packs.json optional — packs default to lab */ }
+    } catch { /* packs.json optional - packs default to lab */ }
 
     const meta = await Promise.all(
       dirNames.map(async (name) => {
@@ -147,7 +147,7 @@ export async function DELETE(request: Request) {
       }
     } catch (e: unknown) {
       // The aeon.yml write is a real GitHub-API/file-IO boundary that can throw;
-      // the skill dir is already deleted, so don't fail the request — but surface
+      // the skill dir is already deleted, so don't fail the request - but surface
       // it instead of swallowing it silently and reporting a clean removal.
       configUpdated = false
       configError = e instanceof Error ? e.message : 'Failed to update aeon.yml'

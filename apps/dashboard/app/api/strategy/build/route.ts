@@ -7,7 +7,7 @@ import type { StrategySources } from '@/lib/types'
 
 // Dispatch the strategy-builder skill with a brief. A dedicated route (not the
 // generic /api/skills/[name]/run) because the goal is free text and repo/links
-// carry URLs — the generic route strips ':'/'/' and most punctuation from var.
+// carry URLs - the generic route strips ':'/'/' and most punctuation from var.
 // execFileSync uses argv (no shell), so the composed value is passed safely.
 
 const REPO_RE = /^[\w.-]+\/[\w.-]+$/
@@ -23,7 +23,7 @@ function normRepo(raw: unknown): string {
 
 function normGoal(raw: unknown): string {
   if (typeof raw !== 'string') return ''
-  // single-line, delimiter-safe, bounded — STRATEGY.md must stay tight anyway.
+  // single-line, delimiter-safe, bounded - STRATEGY.md must stay tight anyway.
   return raw.replace(/[\r\n\t]+/g, ' ').replace(/\s*\|\s*/g, ' / ').replace(/\s{2,}/g, ' ').trim().slice(0, 600)
 }
 

@@ -80,7 +80,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
             PACKS
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Curated bundles of skills. By default you only see <span className="text-aeon-fg">Core</span> — enable a pack to reveal its skills across the sidebar and HQ. Enabling a pack changes what you <span className="text-aeon-fg">see</span>, not what runs; switch individual skills on to put them on duty.
+            Curated bundles of skills. By default you only see <span className="text-aeon-fg">Core</span> - enable a pack to reveal its skills across the sidebar and HQ. Enabling a pack changes what you <span className="text-aeon-fg">see</span>, not what runs; switch individual skills on to put them on duty.
           </p>
         </div>
         <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">

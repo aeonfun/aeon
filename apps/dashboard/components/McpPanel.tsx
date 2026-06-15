@@ -6,7 +6,7 @@ import { inputCls } from '../lib/utils'
 import { MCP_CATALOG } from '../lib/mcp-catalog'
 import type { Secret, McpServer, McpServers } from '../lib/types'
 
-// One-click starters — public HTTP MCP servers that install with no token.
+// One-click starters - public HTTP MCP servers that install with no token.
 const FEATURED = MCP_CATALOG
 
 interface McpPanelProps {
@@ -47,7 +47,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const [draft, setDraft] = useState<McpServers>(servers)
   useEffect(() => { setDraft(servers) }, [servers])
 
-  // Per-row token entry — set an existing server's referenced secret inline,
+  // Per-row token entry - set an existing server's referenced secret inline,
   // exactly like a credential row in Settings (paste value → Set → saved to GH).
   const [secretDraft, setSecretDraft] = useState<Record<string, string>>({})
   const isSecretSet = (n: string) => secrets.some(s => s.name === n && s.isSet)
@@ -88,7 +88,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
       server = { type: 'http', url: url.trim() }
       if (bearerToken.trim()) {
         // The token IS the secret. Derive its var from the server name, store
-        // the value on GH, and reference it in .mcp.json — no name to type.
+        // the value on GH, and reference it in .mcp.json - no name to type.
         const varName = tokenVar(slug)
         server.headers = { Authorization: `Bearer \${${varName}}` }
         onSetSecret(varName, bearerToken.trim())
@@ -106,7 +106,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const isMcpToken = (r: string) => /^MCP_[A-Z0-9_]+_TOKEN$/.test(r)
 
   // One-click install a featured server: add it to .mcp.json and persist
-  // immediately (same as Save). No token needed — these are public endpoints.
+  // immediately (same as Save). No token needed - these are public endpoints.
   const isFeaturedInstalled = (url: string) => Object.values(draft).some(s => s.url === url)
   const installFeatured = (f: typeof FEATURED[number]) => {
     if (isFeaturedInstalled(f.url)) return
@@ -119,7 +119,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const removeServer = (n: string) => {
     const next = { ...draft }; delete next[n]
     // Any MCP token this server owned that nothing else references is now orphaned
-    // on GitHub — delete it so removing a server actually removes its credentials.
+    // on GitHub - delete it so removing a server actually removes its credentials.
     // Only touch panel-minted MCP_*_TOKEN secrets, never shared/builtin ones.
     const stillUsed = new Set(Object.values(next).flatMap(refsOf))
     const orphans = refsOf(draft[n]).filter(r => isMcpToken(r) && !stillUsed.has(r) && isSecretSet(r))
@@ -143,7 +143,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
             <span className="text-aeon-red"><Scramble text="SERVERS" delay={160} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Servers your skills can <span className="text-primary-100">call</span> during a run — GitHub, a database,
+            Servers your skills can <span className="text-primary-100">call</span> during a run - GitHub, a database,
             a paid API. Saved to <span className="font-mono text-primary-100">.mcp.json</span> and loaded on every run.
           </p>
         </div>
@@ -215,7 +215,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                                     <span className="text-[10px] font-mono text-primary-40">setting…</span>
                                   ) : (
                                     <>
-                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token — saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors cursor-target" />
+                                      <input type="password" value={secretDraft[r] ?? ''} onChange={e => setSecretDraft(d => ({ ...d, [r]: e.target.value }))} onKeyDown={e => e.key === 'Enter' && saveRowSecret(r)} placeholder="paste bearer token - saved to GitHub & wired in" className="flex-1 min-w-0 bg-aeon-bg border border-[rgba(250,250,250,0.10)] px-2 py-1 text-[11px] font-mono text-primary-100 outline-none focus:border-eva-orange transition-colors cursor-target" />
                                       <button onClick={() => saveRowSecret(r)} disabled={!(secretDraft[r] ?? '').trim()} className="bg-eva-green text-white text-[10px] px-3 py-1 font-mono hover:opacity-90 disabled:opacity-40 shrink-0 transition-opacity">Set</button>
                                     </>
                                   )}
@@ -250,7 +250,7 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
                   {transport === 'http' ? (
                     <>
                       <input value={url} onChange={e => setUrl(e.target.value)} placeholder="https://mcp.example.com/v1" className={inputCls} />
-                      <input type="password" value={bearerToken} onChange={e => setBearerToken(e.target.value)} placeholder="bearer token (optional) — paste it, saved to GitHub & wired in" className={inputCls} />
+                      <input type="password" value={bearerToken} onChange={e => setBearerToken(e.target.value)} placeholder="bearer token (optional) - paste it, saved to GitHub & wired in" className={inputCls} />
                       {bearerToken.trim() && slugify(name) && (
                         <p className="text-[10px] font-mono text-primary-40 px-0.5">→ stored as secret <span className="text-primary-70">{tokenVar(slugify(name))}</span>, referenced from this server in <span className="text-primary-70">.mcp.json</span></p>
                       )}
@@ -274,12 +274,12 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
             {/* Footer: secrets reminder + save */}
             {allRefs.some(r => !isSecretSet(r)) && (
               <p className="mt-5 text-[11px] text-primary-40 leading-relaxed">
-                <span className="text-eva-orange">Secrets:</span> paste each unset token in the box on its server above — it saves straight to GitHub
+                <span className="text-eva-orange">Secrets:</span> paste each unset token in the box on its server above - it saves straight to GitHub
                 and the runner wires it into every run automatically. Until set, runs skip MCP rather than fail.
               </p>
             )}
             <div className="flex items-center justify-between mt-4">
-              <span className="text-[11px] font-mono text-primary-35">writes .mcp.json — then Push to commit</span>
+              <span className="text-[11px] font-mono text-primary-35">writes .mcp.json - then Push to commit</span>
               <div className="flex items-center gap-2">
                 {dirty && <button onClick={() => setDraft(servers)} className="text-[11px] text-primary-40 font-mono px-2 py-2 hover:text-primary-70 transition-colors">Revert</button>}
                 <button onClick={() => onSave(draft)} disabled={!dirty || saving}

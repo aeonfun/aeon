@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Dela_Gothic_One, Inter, Space_Mono } from 'next/font/google'
 import './globals.css'
 
-// Chunky uppercase display face — the signature voice of aeon.fun.
+// Chunky uppercase display face - the signature voice of aeon.fun.
 const dela = Dela_Gothic_One({
   weight: '400',
   subsets: ['latin'],

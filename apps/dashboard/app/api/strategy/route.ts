@@ -9,7 +9,7 @@ export async function GET() {
     const { content, sha } = await getFileContent(FILE)
     return NextResponse.json({ exists: true, content, sha })
   } catch {
-    // Not created yet — the editor can bootstrap it on first save.
+    // Not created yet - the editor can bootstrap it on first save.
     return NextResponse.json({ exists: false, content: '', sha: '' })
   }
 }

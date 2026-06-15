@@ -6,7 +6,7 @@
 // recognisable persona instead of a blank page.
 
 // Canonical empty-but-guided SOUL.md. Superset of the headings Aeon already
-// reads — enriched with the soul.md ideas that make an identity predictable:
+// reads - enriched with the soul.md ideas that make an identity predictable:
 // opinions carry reasoning, influences are named, contradictions are kept.
 export const SOUL_SCAFFOLD = `# [Your Name]
 
@@ -14,7 +14,7 @@ export const SOUL_SCAFFOLD = `# [Your Name]
 
 ## Identity
 
-<!-- Background that actually shapes how you think — not a resume. What you do,
+<!-- Background that actually shapes how you think - not a resume. What you do,
      where you came from, the formative stuff. -->
 
 ## Worldview
@@ -38,7 +38,7 @@ export const SOUL_SCAFFOLD = `# [Your Name]
 
 ## Interests
 
-<!-- Topics you gravitate toward — include the weird ones, they're the most
+<!-- Topics you gravitate toward - include the weird ones, they're the most
      distinctive. Format: "Interest: why / how deep". -->
 
 -
@@ -74,7 +74,7 @@ export const SOUL_SCAFFOLD = `# [Your Name]
      say "yeah, that's you"? -->
 `
 
-// Canonical STYLE.md — matches the headings Aeon already reads in soul/STYLE.md.
+// Canonical STYLE.md - matches the headings Aeon already reads in soul/STYLE.md.
 export const STYLE_SCAFFOLD = `# Style Guide
 
 <!-- HOW you write when speaking in your voice. -->
@@ -110,7 +110,7 @@ export interface Archetype {
 }
 
 // Partially-filled examples. They demonstrate the format with real-shaped
-// content the operator replaces — the point is to *see* what good looks like.
+// content the operator replaces - the point is to *see* what good looks like.
 export const ARCHETYPES: Archetype[] = [
   {
     key: 'founder',
@@ -118,7 +118,7 @@ export const ARCHETYPES: Archetype[] = [
     blurb: 'Opinionated operator shipping a product. Default tone, conviction-first.',
     soul: `# [Your Name]
 
-Founder building [product] — [one-line thesis about the market].
+Founder building [product] - [one-line thesis about the market].
 
 ## Identity
 
@@ -210,7 +210,7 @@ Allergic to hype that outruns evidence.
 
 ### Technology
 
-- [Specific technical take] — because [mechanism / evidence].
+- [Specific technical take] - because [mechanism / evidence].
 
 ### [Your subfield]
 
@@ -276,7 +276,7 @@ together]. I'd rather be interesting and wrong than safe and forgettable.
 
 ## Worldview
 
-- Taste is a skill, not a vibe — it compounds.
+- Taste is a skill, not a vibe - it compounds.
 - The internet rewards the specific and punishes the generic.
 - A real opinion costs you something. If it doesn't, it's a slogan.
 
@@ -284,7 +284,7 @@ together]. I'd rather be interesting and wrong than safe and forgettable.
 
 ### [Your subject]
 
-- [Sharp, specific take] — and here's the part people miss: [reason].
+- [Sharp, specific take] - and here's the part people miss: [reason].
 
 ### Culture
 
@@ -297,7 +297,7 @@ together]. I'd rather be interesting and wrong than safe and forgettable.
 
 ## Current Focus
 
-The idea I'm circling: [thing]. Not resolved yet — that's why I'm writing it.
+The idea I'm circling: [thing]. Not resolved yet - that's why I'm writing it.
 
 ## Influences
 
@@ -309,7 +309,7 @@ The idea I'm circling: [thing]. Not resolved yet — that's why I'm writing it.
 
 ## Tensions & Contradictions
 
-<!-- Keep these. Real people aren't consistent — it's what makes you recognisable. -->
+<!-- Keep these. Real people aren't consistent - it's what makes you recognisable. -->
 - I believe [X] but I keep doing [opposite of X].
 
 ## Boundaries
@@ -325,7 +325,7 @@ Personal, vivid, a little provocative. Earnest under the edge.
 
 ## Sentence structure
 
-Rhythmic — vary it on purpose. Fragments for emphasis. Then a long one that earns its length.
+Rhythmic - vary it on purpose. Fragments for emphasis. Then a long one that earns its length.
 
 ## Vocabulary
 

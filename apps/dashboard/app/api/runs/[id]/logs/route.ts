@@ -28,7 +28,7 @@ export async function GET(
     ).toString()
     const info: GhRunView = JSON.parse(infoRaw)
 
-    // Get logs — use --log-failed for failed runs, --log for completed
+    // Get logs - use --log-failed for failed runs, --log for completed
     let logs = ''
     try {
       const logFlag = info.conclusion === 'failure' ? '--log-failed' : '--log'
@@ -40,7 +40,7 @@ export async function GET(
       }).toString()
     } catch {
       // Log fetch can fail for in-progress runs
-      logs = '(Logs not available yet — run may still be in progress)'
+      logs = '(Logs not available yet - run may still be in progress)'
     }
 
     // Extract the interesting part: the "Run" step output from Claude

@@ -1,5 +1,5 @@
 /**
- * Tests for apps/dashboard/lib/config.ts — YAML config parsing and manipulation.
+ * Tests for apps/dashboard/lib/config.ts - YAML config parsing and manipulation.
  *
  * Run with:  node --import tsx --test apps/dashboard/lib/config.test.ts
  *

@@ -6,7 +6,7 @@ export function displayName(slug: string): string {
   return slug.split('-').map(w => special[w] || (w[0]?.toUpperCase() + w.slice(1))).join(' ')
 }
 
-// Narrowing guard for a non-null, non-array object — the building block for
+// Narrowing guard for a non-null, non-array object - the building block for
 // validating untrusted JSON bodies / parsed files before reading fields off
 // them. Lives here (not lib/http) so client components can use it too.
 export function isRecord(value: unknown): value is Record<string, unknown> {
@@ -25,7 +25,7 @@ export function localToUtc24(localH: number): number { return ((localH - getUtcO
 export function parseCron(cron: string) {
   const [m, h, , , dow] = (cron ?? '').split(' ')
   // Schedules that aren't 5-field crons (e.g. "workflow_dispatch") have no
-  // minute/hour fields — fall back to a daily 9 AM default so the editor renders
+  // minute/hour fields - fall back to a daily 9 AM default so the editor renders
   // instead of crashing on undefined.includes().
   if (m === undefined || h === undefined) {
     return { mode: 'time' as const, hour12: 9, minute: 0, ampm: 'AM' as 'AM' | 'PM', days: [-1] }
@@ -53,7 +53,7 @@ export function buildCron(mode: 'interval' | 'time', iv: number, iu: 'm' | 'h', 
 
 export function timeAgo(date: string): string {
   const t = new Date(date).getTime()
-  // Unparseable/empty timestamps would yield "NaNd ago" — show nothing instead.
+  // Unparseable/empty timestamps would yield "NaNd ago" - show nothing instead.
   if (Number.isNaN(t)) return ''
   const s = Math.floor((Date.now() - t) / 1000)
   if (s < 60) return 'just now'; if (s < 3600) return `${Math.floor(s / 60)}m ago`

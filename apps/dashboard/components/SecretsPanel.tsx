@@ -69,7 +69,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
   }
 
   // Claude Code auth is an either/or pair (OAuth token or API key). Once either
-  // is set, auth is satisfied — so the OAuth "Connect" button is redundant.
+  // is set, auth is satisfied - so the OAuth "Connect" button is redundant.
   const claudeAuthSet = secrets.some(s => s.either === 'auth' && s.isSet)
 
   const handleSave = (name: string) => {
@@ -97,7 +97,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
             <span className="text-aeon-red"><Scramble text="KEYS" delay={180} /></span>
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Set a secret, the channel turns on. Unset secrets are silently skipped — every channel is opt-in.
+            Set a secret, the channel turns on. Unset secrets are silently skipped - every channel is opt-in.
           </p>
         </div>
       </section>
@@ -130,7 +130,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                           href="https://t.me/BotFather"
                           target="_blank"
                           rel="noopener noreferrer"
-                          title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) — it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
+                          title="Opens BotFather in Telegram. Send /newbot and follow the prompts (or /token for an existing bot) - it replies with the bot token, e.g. 123456789:AAxx... Paste that here."
                           className="inline-block text-[10px] font-mono text-eva-orange/80 hover:text-eva-orange transition-colors mt-1"
                         >
                           Get one from @BotFather ↗
@@ -162,7 +162,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                       </div>
                     </div>
                     <div className="flex gap-1.5 shrink-0">
-                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow — signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
+                      {secret.name === 'CLAUDE_CODE_OAUTH_TOKEN' && !claudeAuthSet && <button onClick={onConnectClaude} disabled={connecting} title="Run the Claude Code OAuth flow - signs in with your Claude Pro/Max plan, no API key or manual token needed." className="text-[11px] text-aeon-bg bg-aeon-fg font-mono px-2.5 py-1 hover:opacity-90 transition-opacity disabled:opacity-50">{connecting ? '…' : 'Connect'}</button>}
                       {!secret.isSet && editingSecret !== secret.name && <button onClick={() => { setEditingSecret(secret.name); setSecretValue('') }} className="text-[11px] text-primary-40 font-mono hover:text-eva-orange transition-colors px-2 py-1">Set</button>}
                       {secret.isSet && <button onClick={() => onDelete(secret.name)} disabled={!!busy[`sec-${secret.name}`]} className="text-[11px] text-eva-red/50 hover:text-eva-red font-mono px-2 py-1 transition-colors">Remove</button>}
                     </div>

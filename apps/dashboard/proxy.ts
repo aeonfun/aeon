@@ -8,7 +8,7 @@ import { gateRequest } from "@/lib/security/api-gate";
  *
  * The dashboard's `/api/*` routes (skills/[name]/run, secrets,
  * auth) write GitHub secrets and trigger GitHub Actions on the
- * operator's behalf — they assume "the OS user owns localhost", so
+ * operator's behalf - they assume "the OS user owns localhost", so
  * any path that delivers a forged request to the loopback socket
  * (DNS rebinding, browser cross-origin POST) is an
  * unauthenticated-write surface without this gate.
@@ -26,7 +26,7 @@ export function proxy(req: NextRequest) {
 
 export const config = {
   // Run on every `/api/*` route. The static page tree, RSC payloads,
-  // and `outputs/` static assets are not the attack surface — they
+  // and `outputs/` static assets are not the attack surface - they
   // don't have side effects worth gating, and refusing the document
   // would just produce a confusing UX during a rebinding probe.
   matcher: ["/api/:path*"],

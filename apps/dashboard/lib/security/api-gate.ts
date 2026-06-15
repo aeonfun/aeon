@@ -8,16 +8,16 @@
  * `http://localhost:5555` via `./aeon`. The `/api/*` routes hold the
  * keys to the GitHub Actions kingdom for this repo:
  *
- *   - `POST /api/skills/[name]/run`        — triggers `gh workflow run aeon.yml`
- *   - `POST/DELETE /api/secrets`           — sets/deletes any GitHub secret
- *   - `POST /api/auth`                     — writes `CLAUDE_CODE_OAUTH_TOKEN`
+ *   - `POST /api/skills/[name]/run`        - triggers `gh workflow run aeon.yml`
+ *   - `POST/DELETE /api/secrets`           - sets/deletes any GitHub secret
+ *   - `POST /api/auth`                     - writes `CLAUDE_CODE_OAUTH_TOKEN`
  *
  * None of these have any application-level authentication today: the
  * implicit assumption is "the dashboard only listens on localhost, so the
  * filesystem-level user boundary is the auth boundary." Two failure
  * modes break that assumption:
  *
- *   1. **DNS rebinding** — a malicious page loaded in the operator's own
+ *   1. **DNS rebinding** - a malicious page loaded in the operator's own
  *      browser at `attacker.example` flips DNS to `127.0.0.1` and POSTs
  *      to `/api/secrets`. The browser dials the loopback IP but sends
  *      `Host: attacker.example`. Without a Host-header gate, the request
@@ -25,7 +25,7 @@
  *      secret in the repo (incl. `ANTHROPIC_API_KEY`,
  *      `CLAUDE_CODE_OAUTH_TOKEN`, `GH_GLOBAL`).
  *
- *   2. **Cross-origin CSRF** — a malicious page on any origin can
+ *   2. **Cross-origin CSRF** - a malicious page on any origin can
  *      `fetch("http://localhost:5555/api/skills/foo/run", { method: "POST",
  *      mode: "no-cors", body: "{}" })` and the browser will deliver it.
  *      No-cors POSTs with `Content-Type: text/plain` skip preflight, so
@@ -33,9 +33,9 @@
  *
  * The validator answers both with two independent checks:
  *
- *   - `assertLoopbackHost` — `Host` must be a loopback variant (or an
+ *   - `assertLoopbackHost` - `Host` must be a loopback variant (or an
  *      operator-extended allowlist entry). Defeats #1.
- *   - `assertSameOriginIfWriting` — for non-`GET`/`HEAD`, `Origin` (or
+ *   - `assertSameOriginIfWriting` - for non-`GET`/`HEAD`, `Origin` (or
  *      `Referer` fallback) must resolve to the same loopback set.
  *      Defeats #2.
  *
@@ -95,7 +95,7 @@ export type GateOptions = {
  * Returns true iff `headerHost` resolves to a loopback variant, an
  * operator-extended allowlist entry, or `allowAny` is enabled.
  *
- * An empty/null host is treated as not allowed — HTTP/1.1 requires
+ * An empty/null host is treated as not allowed - HTTP/1.1 requires
  * a Host header, so a missing one is anomalous.
  */
 export function isAllowedHost(
@@ -121,7 +121,7 @@ export function isAllowedHost(
  *
  * `Origin` is preferred; modern browsers send it on every fetch /
  * XHR / form POST. `Referer` is a fallback for old clients that omit
- * `Origin`. A request with neither header is rejected — that
+ * `Origin`. A request with neither header is rejected - that
  * combination doesn't happen from a real browser making a cross-origin
  * request to a state-changing endpoint.
  */
@@ -169,7 +169,7 @@ export function gateRequest(req: {
           "The Aeon dashboard API accepts loopback Hosts only (127.0.0.1, localhost, ::1) by default. " +
           "If you're fronting the dashboard at a non-loopback hostname (LAN, Tailscale, .local), add it to " +
           "AEON_DASHBOARD_ALLOWED_HOSTS (comma-separated). For trusted reverse-proxy setups that terminate " +
-          "Host upstream, set AEON_DASHBOARD_ALLOW_ANY_HOST=1 — this disables the gate, do not use it on a " +
+          "Host upstream, set AEON_DASHBOARD_ALLOW_ANY_HOST=1 - this disables the gate, do not use it on a " +
           "public origin without an authenticating proxy in front.",
       }),
       {

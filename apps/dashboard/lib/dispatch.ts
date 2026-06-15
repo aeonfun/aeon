@@ -1,5 +1,5 @@
 // Shared input normalisers for the skill-dispatch routes (soul-builder,
-// strategy-builder, generic skill run). Pure helpers — no I/O, no side effects.
+// strategy-builder, generic skill run). Pure helpers - no I/O, no side effects.
 
 /**
  * Normalise a free-text list of links: split on whitespace/commas, prepend

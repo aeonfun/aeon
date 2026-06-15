@@ -1,5 +1,5 @@
 // Starter content for the Strategy tab. STRATEGY.md is the operator's north-star
-// — it's imported into CLAUDE.md, so it rides along in *every* skill run. That
+// - it's imported into CLAUDE.md, so it rides along in *every* skill run. That
 // means two things: keep it tight (it costs tokens each run), and make it
 // specific (a vague strategy can't break a tie). The scaffold below mirrors the
 // real STRATEGY.md sections; the archetypes show a filled, specific strategy for
@@ -25,7 +25,7 @@ export const STRATEGY_SCAFFOLD = `# Strategy
 
 ## Hard constraints
 
-<!-- Lines never to cross — budget, tone, topics to avoid, compliance. -->
+<!-- Lines never to cross - budget, tone, topics to avoid, compliance. -->
 
 -
 
@@ -42,7 +42,7 @@ export interface StrategyArchetype {
   content: string
 }
 
-// Filled, specific strategies — bracketed bits are the only parts to personalise.
+// Filled, specific strategies - bracketed bits are the only parts to personalise.
 export const ARCHETYPES: StrategyArchetype[] = [
   {
     key: 'indie-saas',
@@ -56,13 +56,13 @@ Weekly active users who complete the core action at least twice.
 
 ## Priorities
 
-1. Ship the smallest thing that proves people will pay — talk to users every week.
+1. Ship the smallest thing that proves people will pay - talk to users every week.
 2. One distribution channel done well before adding a second.
 3. Retention over acquisition: fix why people leave before pouring more in the top.
 
 ## Audience
 
-[Your target user] — busy, skeptical, already tolerating a workaround today.
+[Your target user] - busy, skeptical, already tolerating a workaround today.
 
 ## Hard constraints
 
@@ -87,7 +87,7 @@ Monthly active contributors (not just stars) on [project].
 
 ## Priorities
 
-1. Make the first contribution effortless — docs, good-first-issues, fast review.
+1. Make the first contribution effortless - docs, good-first-issues, fast review.
 2. Reliability over features: a broken main branch costs trust you can't rebuy.
 3. Tell the project's story where developers actually are (HN, the right subreddits).
 
@@ -114,7 +114,7 @@ Developers evaluating [project] in five minutes, and contributors deciding wheth
 
 ## North-star metric
 
-Reach of work that holds up — citations, saves, and reuse by people you respect.
+Reach of work that holds up - citations, saves, and reuse by people you respect.
 
 ## Priorities
 
@@ -124,7 +124,7 @@ Reach of work that holds up — citations, saves, and reuse by people you respec
 
 ## Audience
 
-Technical peers and practitioners in [field] — assume they're smart and short on time.
+Technical peers and practitioners in [field] - assume they're smart and short on time.
 
 ## Hard constraints
 
@@ -151,7 +151,7 @@ Active [agents / integrations / users] doing real onchain actions weekly.
 
 1. Ship usable onchain features over roadmap theater.
 2. Security and honesty: one rug or overclaim erases months of trust.
-3. Narrative that matches reality — distribution where crypto builders gather.
+3. Narrative that matches reality - distribution where crypto builders gather.
 
 ## Audience
 
@@ -176,17 +176,17 @@ Crypto-native builders and operators who can tell a demo from a product.
 
 ## North-star metric
 
-Engaged followers in [niche] who reply, share, and show up — not raw follower count.
+Engaged followers in [niche] who reply, share, and show up - not raw follower count.
 
 ## Priorities
 
 1. Consistency: post on a cadence you can sustain for a year.
 2. One sharp idea per post over watered-down takes.
-3. Reply and build in public — distribution is a conversation, not a broadcast.
+3. Reply and build in public - distribution is a conversation, not a broadcast.
 
 ## Audience
 
-[Niche] on X — people who'd recognize a real take from filler.
+[Niche] on X - people who'd recognize a real take from filler.
 
 ## Hard constraints
 

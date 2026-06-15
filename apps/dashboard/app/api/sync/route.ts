@@ -18,7 +18,7 @@ export async function GET() {
       const behindStr = run('git rev-list --count HEAD..origin/main')
       behind = parseInt(behindStr) || 0
     } catch (e) {
-      // Offline / no remote / auth prompt — leave behind at 0 but make the
+      // Offline / no remote / auth prompt - leave behind at 0 but make the
       // failure diagnosable instead of silently reporting "in sync".
       console.warn(`[sync] git fetch failed; "behind" count may be stale: ${e instanceof Error ? e.message : e}`)
     }
@@ -47,7 +47,7 @@ export async function POST() {
       run('git push')
     } catch (e: unknown) {
       const pushErr = e instanceof Error ? e.message : 'Push failed'
-      // Commit succeeded but push failed — still useful feedback
+      // Commit succeeded but push failed - still useful feedback
       return NextResponse.json({
         error: `Committed locally but push failed: ${pushErr.slice(0, 200)}`,
       }, { status: 500 })

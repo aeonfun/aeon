@@ -63,7 +63,7 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
           <div className="mt-[var(--space-md)] space-y-3">
             <input type="text" value={uploadName} onChange={(e) => setUploadName(e.target.value)} placeholder="team-member-name" className={inputCls} />
             <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} className={inputCls} title="Pack the skill joins">
-              <option value="">Pack — auto (Lab until sorted)</option>
+              <option value="">Pack - auto (Lab until sorted)</option>
               {PACK_CATEGORIES.map(c => (
                 <option key={c.key} value={c.key}>{c.label}</option>
               ))}

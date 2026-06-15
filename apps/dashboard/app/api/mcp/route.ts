@@ -13,7 +13,7 @@ export async function GET() {
       const parsed = JSON.parse(content) as { mcpServers?: McpServers }
       servers = parsed.mcpServers ?? {}
     } catch (e) {
-      // Malformed JSON — return raw so the operator can see/fix it, and log so
+      // Malformed JSON - return raw so the operator can see/fix it, and log so
       // the broken file isn't indistinguishable from an empty server list.
       console.warn(`[mcp] .mcp.json is not valid JSON; returning raw for repair: ${e instanceof Error ? e.message : e}`)
     }

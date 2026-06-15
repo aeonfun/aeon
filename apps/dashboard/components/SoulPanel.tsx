@@ -24,7 +24,7 @@ interface SoulPanelProps {
 
 const EXAMPLES_URL = 'https://github.com/aaronjmars/soul.md/tree/main/examples'
 
-// Strip HTML comments, headings and whitespace — what's left is real authored
+// Strip HTML comments, headings and whitespace - what's left is real authored
 // content. Empty ⇒ still the scaffold, so badge it "template".
 function isBlank(md: string): boolean {
   return md
@@ -48,7 +48,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
 
   useEffect(() => { setSoulDraft(soul) }, [soul])
   useEffect(() => { setStyleDraft(style) }, [style])
-  // Ready-made souls from the soul.md gallery — installable into soul/ in one click.
+  // Ready-made souls from the soul.md gallery - installable into soul/ in one click.
   useEffect(() => { fetch('/api/soul/examples').then(r => r.ok ? r.json() : { examples: [] }).then(d => setExamples(d.examples || [])).catch(() => {}) }, [])
 
   const installExample = (ex: SoulExample) => {
@@ -103,7 +103,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             Who Aeon speaks as. Every content skill reads{' '}
             <span className="font-mono text-primary-100">soul/SOUL.md</span> and{' '}
             <span className="font-mono text-primary-100">soul/STYLE.md</span> to match your voice.
-            Build it from your handle, name, or links — start from a template, or write it by hand.
+            Build it from your handle, name, or links - start from a template, or write it by hand.
           </p>
         </div>
       </section>
@@ -115,9 +115,9 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
           <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
         </div>
         <p className="text-[12px] text-primary-50 font-mono leading-relaxed mb-4">
-          <span className="text-primary-80">Every field is optional — give just one, or stack all three.</span>{' '}
+          <span className="text-primary-80">Every field is optional - give just one, or stack all three.</span>{' '}
           The <span className="text-primary-80">soul-builder</span> agent reads whatever you provide, then drafts
-          SOUL.md, STYLE.md and voice examples — committed straight to <span className="text-primary-80">soul/</span>.
+          SOUL.md, STYLE.md and voice examples - committed straight to <span className="text-primary-80">soul/</span>.
           More signal → sharper soul.
         </p>
 
@@ -140,13 +140,13 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             <input
               type="text" value={name} onChange={(e) => setName(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') build() }}
-              placeholder="Jane Doe — founder of …" spellCheck={false}
+              placeholder="Jane Doe - founder of …" spellCheck={false}
               className={`${inputCls} w-full`}
             />
           </label>
 
           <label className="flex flex-col gap-1 sm:col-span-2">
-            <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">Links <span className="text-primary-30">· LinkedIn, website, blog, Substack, GitHub — comma separated</span></span>
+            <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-primary-40">Links <span className="text-primary-30">· LinkedIn, website, blog, Substack, GitHub - comma separated</span></span>
             <input
               type="text" value={links} onChange={(e) => setLinks(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') build() }}
@@ -163,11 +163,11 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
           >
             {building ? 'Dispatching…' : 'Build my soul'}
           </button>
-          <span className="text-[10px] text-primary-35 font-mono">Any one field is enough — all optional.</span>
+          <span className="text-[10px] text-primary-35 font-mono">Any one field is enough - all optional.</span>
         </div>
 
         <p className="mt-3 text-[11px] text-primary-35 font-mono leading-relaxed">
-          Runs as a GitHub Action — watch the feed for <span className="text-primary-70">soul-builder</span>, then hit{' '}
+          Runs as a GitHub Action - watch the feed for <span className="text-primary-70">soul-builder</span>, then hit{' '}
           <span className="text-primary-70">Pull</span> in the top bar to load the result. X reads are richest with{' '}
           <span className="text-primary-70">XAI_API_KEY</span> set; name + links use web search and work without it.
         </p>
@@ -204,7 +204,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
           </button>
         </div>
 
-        {/* Template picker — two per row */}
+        {/* Template picker - two per row */}
         {showTemplates && (
           <div className="mb-4 border border-[rgba(250,250,250,0.10)] bg-aeon-panel p-4 space-y-3">
             <div className="flex items-start justify-between gap-3">
@@ -243,7 +243,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
             {examples.length > 0 && (
               <div className="pt-3 mt-1 border-t border-[rgba(250,250,250,0.08)]">
                 <p className="text-[11px] text-primary-50 font-mono mb-2">
-                  Or install a real soul from the gallery — writes SOUL.md + STYLE.md + examples to{' '}
+                  Or install a real soul from the gallery - writes SOUL.md + STYLE.md + examples to{' '}
                   <span className="text-primary-80">soul/</span> and syncs to GitHub.
                 </p>
                 <div className="grid grid-cols-2 gap-2">

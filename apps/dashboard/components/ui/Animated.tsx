@@ -20,7 +20,7 @@ const useIsoLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 /* ──────────────────────────────────────────────────────────
-   SCRAMBLE — headline letters decode from random glyphs.
+   SCRAMBLE - headline letters decode from random glyphs.
    ────────────────────────────────────────────────────────── */
 const GLYPHS = 'ABCDEFGHKNOPRSTUVXYZ0123456789#/'
 
@@ -117,7 +117,7 @@ export function Scramble({
 }
 
 /* ──────────────────────────────────────────────────────────
-   FLIP — odometer reel that rolls each digit up to its value
+   FLIP - odometer reel that rolls each digit up to its value
    when scrolled into view.
    ────────────────────────────────────────────────────────── */
 function Reel({ digit, delay }: { digit: number; delay: number }) {
@@ -206,7 +206,7 @@ export function Flip({
 }
 
 /* ──────────────────────────────────────────────────────────
-   VELOCITY MARQUEE — scrolls left continuously; scroll input
+   VELOCITY MARQUEE - scrolls left continuously; scroll input
    boosts speed and momentarily drags it the other way.
    ────────────────────────────────────────────────────────── */
 export function VelocityMarquee({

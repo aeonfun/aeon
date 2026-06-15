@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     const body = await request.json() as unknown
     const rawFiles = isRecord(body) && Array.isArray(body.files) ? body.files : []
     const overrideName = isRecord(body) && typeof body.name === 'string' ? body.name : undefined
-    // Optional pack category — injected into the uploaded SKILL.md frontmatter so
+    // Optional pack category - injected into the uploaded SKILL.md frontmatter so
     // the skill lands in the right pack. Ignored unless it's a known category.
     const rawCategory = isRecord(body) && typeof body.category === 'string' ? body.category : undefined
     const category = rawCategory && (SKILL_CATEGORIES as readonly string[]).includes(rawCategory) ? rawCategory : undefined

@@ -234,7 +234,7 @@ function buildSnippet(lines: string[], hitLine: number, needle: string): string 
   const start = Math.max(0, hitLine - 1)
   const end = Math.min(lines.length, hitLine + 2)
   const window = lines.slice(start, end).join('\n').trim()
-  // Bold-ish marker for the matched substring — callers can render plain text.
+  // Bold-ish marker for the matched substring - callers can render plain text.
   if (!needle) return window.slice(0, 400)
   const re = new RegExp(needle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'ig')
   return window.replace(re, m => `**${m}**`).slice(0, 400)
@@ -258,7 +258,7 @@ export async function searchMemory(
     const lines = doc.content.split('\n')
     const lower = doc.content.toLowerCase()
 
-    // Document-level frequency per term — used for ranking.
+    // Document-level frequency per term - used for ranking.
     let totalMatches = 0
     let distinctTerms = 0
     for (const term of terms) {

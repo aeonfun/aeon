@@ -7,7 +7,7 @@ import type { SoulSources } from '@/lib/types'
 
 // Dispatch the soul-builder skill with a multi-source brief. A dedicated route
 // (rather than the generic /api/skills/[name]/run) because soul sources include
-// URLs — the generic route strips ':' and '/' from var for injection safety.
+// URLs - the generic route strips ':' and '/' from var for injection safety.
 // Here we validate each field ourselves and pass a composed var. execFileSync
 // uses argv (no shell), so URL characters are safe; the validation below is to
 // keep the brief well-formed, not to defend a shell.

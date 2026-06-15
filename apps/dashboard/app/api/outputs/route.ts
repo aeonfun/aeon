@@ -39,7 +39,7 @@ export async function GET() {
         try {
           const raw = await readFile(join(OUTPUTS_DIR, filename), 'utf-8')
           const spec = JSON.parse(raw) as unknown
-          // Skip specs missing root/elements — they render empty downstream
+          // Skip specs missing root/elements - they render empty downstream
           // anyway, so drop them at the source instead of emitting a broken item.
           if (!isSpec(spec)) return null
           // Parse skill name and timestamp from filename: <skill>-<timestamp>.json

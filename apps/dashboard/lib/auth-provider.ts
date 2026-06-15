@@ -3,9 +3,9 @@ import { GATEWAY_REGISTRY, type GatewaySlug } from './gateway-registry'
 // Gateway providers route Claude Code at a FIXED (non-custom) base URL: each maps
 // the pasted key/token to its own repo secret, and the workflow then wires
 // ANTHROPIC_BASE_URL (or spins up a claude-code-router sidecar) based on whichever
-// secret is set. Routing stays on `auto` — the provider is resolved at run time
+// secret is set. Routing stays on `auto` - the provider is resolved at run time
 // (scripts/llm-gateway.sh), not pinned on paste. A custom baseUrl is rejected for
-// all of them — the base URL is fixed per provider and set by scripts/llm-gateway.sh.
+// all of them - the base URL is fixed per provider and set by scripts/llm-gateway.sh.
 
 const str = (v: unknown): string => (v ? String(v) : '')
 

@@ -1,5 +1,5 @@
 // Client-only transport helpers shared by the dashboard's mutation handlers.
-// Keep this module free of server-only imports — it runs in the browser.
+// Keep this module free of server-only imports - it runs in the browser.
 //
 // Each handler in app/page.tsx still owns its own optimistic state updates
 // (setSkills / flash / toast); these helpers cover only the repetitive

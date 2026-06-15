@@ -10,10 +10,10 @@ const SOURCE_REPO = 'aaronjmars/soul.md'
 
 // Short blurbs for the known examples; unknown ones still list with just a name.
 const BLURBS: Record<string, string> = {
-  karpathy: 'AI researcher & educator — builds from scratch, Software 2.0',
-  'garry-tan': 'YC president — founder-first, optimistic, direct',
-  steipete: 'Indie Apple-platform dev — sharp, technical, opinionated',
-  'vivian-balakrishnan': "Singapore's foreign minister — measured, statesmanlike",
+  karpathy: 'AI researcher & educator - builds from scratch, Software 2.0',
+  'garry-tan': 'YC president - founder-first, optimistic, direct',
+  steipete: 'Indie Apple-platform dev - sharp, technical, opinionated',
+  'vivian-balakrishnan': "Singapore's foreign minister - measured, statesmanlike",
 }
 
 export async function GET() {

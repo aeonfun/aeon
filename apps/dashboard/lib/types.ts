@@ -57,7 +57,7 @@ export interface GhRunJson {
 
 // `auto` resolves the provider at run time from whichever secret is set
 // (see scripts/llm-gateway.sh); `direct` is no gateway. Named providers come from
-// the gateway registry — add new ones there, not here.
+// the gateway registry - add new ones there, not here.
 export type GatewayProvider = 'auto' | 'direct' | GatewaySlug
 
 export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', ...GATEWAY_SLUGS]
@@ -179,7 +179,7 @@ export interface SyncResult {
   syncError?: string
 }
 
-// POST /api/soul/examples — syncResult plus the installed file contents on
+// POST /api/soul/examples - syncResult plus the installed file contents on
 // success, or { error } on the not-found / failure paths.
 export interface SoulExampleResponse extends SyncResult {
   soul?: string

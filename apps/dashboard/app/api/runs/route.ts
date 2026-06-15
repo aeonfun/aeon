@@ -17,7 +17,7 @@ export async function GET() {
     const runs = raw
       // Aeon skill activity fires on workflow_dispatch (dashboard "Run") or
       // schedule (cron). Repo CI (push / pull_request) and fork-maintenance
-      // runs (upstream sync) are noise — keep them out of the feed and runs list.
+      // runs (upstream sync) are noise - keep them out of the feed and runs list.
       .filter((r) => r.event !== 'push' && r.event !== 'pull_request')
       .filter((r) => r.name !== 'Sync from upstream')
       .map((r) => ({
