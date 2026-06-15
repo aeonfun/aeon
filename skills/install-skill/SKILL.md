@@ -58,13 +58,13 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ```
    Read the output. Note: how many installed, how many were **skipped/blocked** by the security scan, any **`secrets_required`** warnings, and any declared **capabilities**. Trusted sources will say "skipping deep security scan". If everything was blocked and nothing installed, exit `INSTALL_SKILL_BLOCKED`, notify the operator that the source tripped HIGH-severity findings and that they can review and re-run `./install-skill-pack ${var} --force` from a local clone if they trust it. Then stop.
 
-5. **Regenerate the catalog** so the dashboard and packs view pick up the new skills:
+5. **Confirm the catalog regenerated.** `./install-skill-pack` already regenerates **both** `skills.json` and `packs.json` at the end of a successful install — `packs.json` is what routes the new skills into the dashboard's always-visible **Installed** pack, so it must not be skipped. Re-run them yourself only as a safety net (idempotent), and verify both files actually changed before committing — a `skills.json` bump without a matching `packs.json` bump means the skill will be invisible:
    ```bash
-   ./generate-skills-json
-   ./generate-packs-json
+   ./generate-skills-json && ./generate-packs-json
+   git status --short skills.json packs.json   # both should be listed
    ```
 
-6. **Commit, open a PR, and auto-merge it** — never push to `main` directly; the PR is the audit trail and CI gate. Stage the installed skill dirs plus the touched manifests (`aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL:
+6. **Commit, open a PR, and auto-merge it** — never push to `main` directly; the PR is the audit trail and CI gate. Stage **all** install changes so no manifest is missed — `git add -A` (the install touched only skill dirs + `aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL:
    ```bash
    PR_URL=$(gh pr create --title "feat: install ${REPO_NAME} community pack" --body "$(cat <<'BODY'
    Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable — skills land **disabled**, so nothing runs until enabled.

@@ -805,6 +805,24 @@ else
 fi
 
 if [[ "$DRY_RUN" == "false" ]] && [[ $INSTALLED -gt 0 ]]; then
+  # Deterministically regenerate the catalog so it can never go stale on the
+  # caller. The incremental update_skills_json above is a fast path; this is the
+  # source of truth. Critically it refreshes packs.json — generate-packs-json
+  # reads skills.lock (written above) and routes the new skills into the
+  # synthetic "installed" pack the dashboard surfaces. Leaving this to a caller's
+  # follow-up command is exactly how an install lands skills.json-but-not-
+  # packs.json and the skill never appears. Best-effort: warn, don't abort.
+  if [[ -x "$ROOT_DIR/generate-skills-json" ]]; then
+    "$ROOT_DIR/generate-skills-json" >/dev/null 2>&1 \
+      && echo "  catalog: skills.json regenerated" \
+      || echo "  warning: skills.json regen failed — run ./generate-skills-json"
+  fi
+  if [[ -x "$ROOT_DIR/generate-packs-json" ]] && command -v python3 >/dev/null 2>&1; then
+    "$ROOT_DIR/generate-packs-json" >/dev/null 2>&1 \
+      && echo "  catalog: packs.json regenerated (installed pack)" \
+      || echo "  warning: packs.json regen failed — run ./generate-packs-json"
+  fi
+
   echo ""
   echo "Enable skills in aeon.yml to schedule them, or run manually:"
   echo "  Read skills/<name>/SKILL.md and execute its steps."
