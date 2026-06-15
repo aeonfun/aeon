@@ -254,6 +254,26 @@ else
     "Run 'gh auth login' and rerun ./onboard to verify."
 fi
 
+# --- 6b. Actions may open & auto-merge PRs --------------------------------
+# install-skill ships each install as an auto-merged PR, which the in-Actions
+# GITHUB_TOKEN can only do when this repo setting is on. It defaults off on a
+# fresh fork and does not inherit — so a fork that never clicked the dashboard
+# "Install" button (which sets it automatically) would strand installs on a
+# branch. Surface it here for the CLI/cron path.
+
+if [[ -n "$REPO_SLUG" ]] && command -v gh >/dev/null 2>&1 && gh auth status >/dev/null 2>&1; then
+  pr_perm=$(gh api "repos/$REPO_SLUG/actions/permissions/workflow" --jq '.can_approve_pull_request_reviews' 2>/dev/null || echo "unknown")
+  if [[ "$pr_perm" == "true" ]]; then
+    emit pass "Actions can open PRs" "create-and-approve-PRs enabled" ""
+  elif [[ "$pr_perm" == "false" ]]; then
+    emit warn "Actions can open PRs" "disabled — install-skill can't open/merge its PR, so installs strand on a branch" \
+      "gh api -X PUT repos/$REPO_SLUG/actions/permissions/workflow -f default_workflow_permissions=write -F can_approve_pull_request_reviews=true  (the dashboard Install button sets this for you)"
+  else
+    emit warn "Actions can open PRs" "could not query the setting" \
+      "Check Settings → Actions → General → Workflow permissions → 'Allow GitHub Actions to create and approve pull requests'."
+  fi
+fi
+
 # --- 7. local memory log evidence -----------------------------------------
 
 if compgen -G "memory/logs/*.md" > /dev/null 2>&1; then

@@ -160,9 +160,11 @@ export default function Dashboard() {
   // Derived from live `secrets` so it reacts the instant a key is saved or removed.
   const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
   // Skills visible across the dashboard = those in an enabled pack (Core always
-  // on). The sidebar + HQ render this; the Packs view keeps the full roster so
-  // you can enable more. Counts track what's visible, so the UI stays consistent.
-  const visibleSkills = skills.filter(s => enabledPacks.includes(s.pack || 'lab'))
+  // on), plus anything you installed from a community repo (the synthetic
+  // `installed` pack — you added it on purpose, so it's never hidden behind the
+  // pack lens). The sidebar + HQ render this; the Packs view keeps the full
+  // roster so you can enable more. Counts track what's visible for consistency.
+  const visibleSkills = skills.filter(s => s.pack === 'installed' || enabledPacks.includes(s.pack || 'lab'))
   const enabledCount = visibleSkills.filter(s => s.enabled).length
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 

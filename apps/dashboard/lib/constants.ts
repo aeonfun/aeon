@@ -44,6 +44,9 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // /api/skills); `lab` is the catch-all for uncategorized skills.
 export const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',         label: 'Core',                  short: 'Core',         color: '#E5484D' },
+  // Skills installed from community repos (skills.lock). Synthetic pack emitted
+  // by generate-packs-json; always visible, never hidden behind the pack lens.
+  { key: 'installed',    label: 'Installed',             short: 'Installed',    color: '#A1A1AA' },
   { key: 'fleet',        label: 'Fleet & Replication',   short: 'Fleet',        color: '#30A46C' },
   { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
   { key: 'dev',          label: 'Dev & Code',             short: 'Dev',          color: '#3B82F6' },
