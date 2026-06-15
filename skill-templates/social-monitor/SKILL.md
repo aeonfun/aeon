@@ -1,5 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
+category: social
 description: Mention/keyword sweep on social platforms for [REPLACE: KEYWORDS] — trends, sentiment, top posts
 var: ""
 tags: [social]

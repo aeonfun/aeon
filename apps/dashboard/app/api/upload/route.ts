@@ -3,7 +3,7 @@ import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/git
 import { errorResponse } from '@/lib/http'
 import { isRecord } from '@/lib/utils'
 import { addSkillToConfig } from '@/lib/config'
-import { parseFrontmatter } from '@/lib/frontmatter'
+import { parseFrontmatter, setFrontmatterCategory, SKILL_CATEGORIES } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
 
 function detectSecretsFromContent(content: string): string[] {
@@ -96,6 +96,10 @@ export async function POST(request: Request) {
     const body = await request.json() as unknown
     const rawFiles = isRecord(body) && Array.isArray(body.files) ? body.files : []
     const overrideName = isRecord(body) && typeof body.name === 'string' ? body.name : undefined
+    // Optional pack category — injected into the uploaded SKILL.md frontmatter so
+    // the skill lands in the right pack. Ignored unless it's a known category.
+    const rawCategory = isRecord(body) && typeof body.category === 'string' ? body.category : undefined
+    const category = rawCategory && (SKILL_CATEGORIES as readonly string[]).includes(rawCategory) ? rawCategory : undefined
     // Drop any element that isn't a well-formed { path, content } before it
     // reaches createFile / the secret scanner.
     const files = rawFiles.filter(isUploadFile)
@@ -139,9 +143,14 @@ export async function POST(request: Request) {
         relativePath = 'SKILL.md'
       }
 
+      // Stamp the chosen category onto the skill's SKILL.md frontmatter.
+      const content = (category && relativePath === 'SKILL.md')
+        ? setFrontmatterCategory(file.content, category)
+        : file.content
+
       await createFile(
         `skills/${skillName}/${relativePath}`,
-        file.content,
+        content,
         `feat: upload ${skillName} skill`,
       )
       filesWritten++

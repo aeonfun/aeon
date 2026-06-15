@@ -1,5 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
+category: dev
 description: First-touch review of newly opened PRs on [REPLACE: WATCHED_REPO] — verdict + welcoming comment + label
 var: ""
 tags: [dev]

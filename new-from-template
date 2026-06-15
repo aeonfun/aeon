@@ -30,6 +30,9 @@ Options:
   --list             List available templates and exit
   --tokens           Print the replacement tokens used by <template> and exit
   --var KEY=VALUE    Provide a value for [REPLACE: KEY]. Repeatable.
+  --category KEY     Pack the skill belongs to (sets the SKILL.md `category:`).
+                     One of: research dev crypto onchain-security social
+                     productivity meta. Defaults to the template's own category.
   --help, -h         Show this help
 
 Examples:
@@ -164,8 +167,25 @@ set_var() {
 }
 set_var "SKILL_NAME" "$SKILL_NAME"
 
+CATEGORY=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --category)
+      if [[ $# -lt 2 ]]; then
+        echo "--category requires a value." >&2
+        exit 1
+      fi
+      CATEGORY="$2"
+      case "$CATEGORY" in
+        research|dev|crypto|onchain-security|social|productivity|meta) ;;
+        *)
+          echo "Invalid --category '$CATEGORY'. One of: research dev crypto onchain-security social productivity meta." >&2
+          echo "(core and fleet are curated in packs.config.json, not set here.)" >&2
+          exit 1
+          ;;
+      esac
+      shift 2
+      ;;
     --var)
       if [[ $# -lt 2 ]]; then
         echo "--var requires a KEY=VALUE argument." >&2
@@ -215,6 +235,29 @@ done
 
 sed "${sed_args[@]}" "$TEMPLATE_FILE" > "$DEST_FILE"
 
+# Apply --category to the new skill's frontmatter (templates ship a default;
+# this overrides it). Replaces the `category:` line if present, else inserts it
+# right after `name:`. The category routes the skill into its pack (packs.json).
+if [[ -n "$CATEGORY" ]]; then
+  CATEGORY="$CATEGORY" python3 - "$DEST_FILE" <<'PY'
+import os, re, sys
+cat = os.environ["CATEGORY"]
+path = sys.argv[1]
+lines = open(path).read().split("\n")
+if lines and lines[0].strip() == "---":
+    end = next((i for i in range(1, len(lines)) if lines[i].strip() == "---"), None)
+    if end is not None:
+        block = lines[1:end]
+        ci = next((j for j, l in enumerate(block) if re.match(r"^category:", l)), None)
+        if ci is not None:
+            block[ci] = f"category: {cat}"
+        else:
+            ni = next((j for j, l in enumerate(block) if re.match(r"^name:", l)), None)
+            block.insert((ni + 1) if ni is not None else 0, f"category: {cat}")
+        open(path, "w").write("\n".join(["---"] + block + ["---"] + lines[end + 1:]))
+PY
+fi
+
 # Detect any tokens that remain unreplaced
 remaining=$(grep -oE '\[REPLACE: [A-Z0-9_]+\]' "$DEST_FILE" | sort -u || true)
 
@@ -232,6 +275,9 @@ fi
 # Report
 echo ""
 echo "✓ Created skills/$SKILL_NAME/SKILL.md from template '$TEMPLATE'."
+if [[ -n "$CATEGORY" ]]; then
+  echo "✓ Category set to '$CATEGORY' (regenerate the catalog with ./generate-skills-json && ./generate-packs-json to slot it into its pack)."
+fi
 if [[ "$registered" == "true" ]]; then
   echo "✓ Registered in aeon.yml (disabled, schedule: 0 12 * * *)."
 else

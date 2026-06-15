@@ -1,5 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
+category: crypto
 description: Price and volume tracker for [REPLACE: TOKEN_SYMBOL] with anomaly alerts above [REPLACE: ALERT_THRESHOLD_PCT]% movement
 var: ""
 tags: [crypto]

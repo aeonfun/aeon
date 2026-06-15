@@ -51,8 +51,9 @@ When assigning a skill to a pack, the generator applies, in order:
 1. **The `core` allowlist** — an explicit slug list in `packs.config.json`.
 2. **Explicit packs** — packs that list their own `skills` (e.g. `fleet`).
 3. **Category packs** — packs that claim a `category`; they take that category's
-   remaining skills (category comes from `skills.json`, see
-   [`generate-skills-json`](../generate-skills-json)).
+   remaining skills. A skill's category is declared in its `SKILL.md`
+   frontmatter (`category:`) — the single source of truth, read by
+   [`generate-skills-json`](../generate-skills-json) into `skills.json`.
 4. **The Lab catch-all** — anything still unassigned (a freshly authored or
    imported skill whose category isn't a known pack) lands in **Lab**, so adding
    a skill never breaks the catalog. Triage it into a real pack later.
@@ -89,19 +90,33 @@ Edit the `core.skills` allowlist in `packs.config.json` to change it.
 
 ## Adding a skill to a pack
 
-1. **Author the skill** with [`./new-from-template`](../new-from-template) or the
-   `create-skill` skill (see [CONTRIBUTING.md](../CONTRIBUTING.md)).
-2. **Give it a pack** by making sure its category maps to the right pack:
-   - For a **category pack** (research, dev, crypto→Markets, onchain-security→
-     Hound, social, productivity, meta→Agent Ops): add the slug to the matching
-     branch of `get_category()` in `generate-skills-json`.
-   - For **Core**, **Fleet**, or any explicit pack: add the slug to that pack's
-     list (or `core.skills`) in `packs.config.json`.
-3. **Regenerate**: `./generate-skills-json && ./generate-packs-json`, and commit
-   both manifests (CI enforces they're fresh).
+A skill's pack is one frontmatter line. Set `category:` in its `SKILL.md` to one
+of the **category packs** — `research`, `dev`, `crypto` (→ Markets),
+`onchain-security` (→ Hound), `social`, `productivity`, `meta` (→ Agent Ops):
 
-> Skip step 2 and the skill still works — it just lands in **Lab** until you
-> triage it. The dashboard surfaces Lab so unsorted skills don't get lost.
+```yaml
+---
+name: My Skill
+category: dev
+description: ...
+---
+```
+
+The authoring tools set it for you:
+
+- **`./new-from-template <tmpl> <name> --category dev`** — stamps the category
+  (templates also ship a sensible default).
+- **`create-skill`** — chooses a category as part of its design step.
+- **Dashboard → Hire (import)** — a Pack dropdown writes the category onto the
+  uploaded `SKILL.md`.
+
+Then **regenerate**: `./generate-skills-json && ./generate-packs-json`, and commit
+both manifests (CI enforces they're fresh).
+
+> **Core** and **Fleet** aren't category-selectable — they're curated in
+> `packs.config.json` (the `core.skills` allowlist / the `fleet` skill list).
+> And a skill with no/unknown category still works — it just lands in **Lab**
+> until you triage it. The dashboard surfaces Lab so unsorted skills don't get lost.
 
 ---
 
@@ -132,9 +147,6 @@ enable its skills from the dashboard's Packs view.
 
 Planned follow-ups (not yet shipped):
 
-- **Category in frontmatter** — move `category` from the `get_category()` map in
-  `generate-skills-json` into each `SKILL.md`'s frontmatter, so "add a skill to a
-  pack" is a one-line frontmatter edit and the central map can retire.
-- **`--pack` authoring** — a pack/category selector in `new-from-template`,
-  `create-skill`, and the dashboard's import flow.
 - **README/CONTRIBUTING** — fold first-party packs into the main catalog docs.
+- **Lint gate** — optionally fail CI on a `SKILL.md` with no `category:` (today
+  it degrades to Lab rather than failing).

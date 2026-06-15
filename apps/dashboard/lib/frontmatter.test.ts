@@ -6,7 +6,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { parseFrontmatter } from "./frontmatter";
+import { parseFrontmatter, setFrontmatterCategory } from "./frontmatter";
 
 // ── parseFrontmatter ─────────────────────────────────────────────────
 
@@ -163,5 +163,44 @@ ${longLine}`;
     // The description fallback picks from body after frontmatter
     const result = parseFrontmatter(content);
     assert.ok(result.description.length <= 120, `description was ${result.description.length} chars`);
+  });
+
+  it("parses the category field when present", () => {
+    const content = `---\nname: Foo\ncategory: crypto\ndescription: y\n---\nbody`;
+    assert.equal(parseFrontmatter(content).category, "crypto");
+  });
+
+  it("returns empty category when absent", () => {
+    const content = `---\nname: Foo\ndescription: y\n---\nbody`;
+    assert.equal(parseFrontmatter(content).category, "");
+  });
+});
+
+// ── setFrontmatterCategory ───────────────────────────────────────────
+
+describe("setFrontmatterCategory", () => {
+  it("inserts category right after name when absent", () => {
+    const content = `---\nname: Foo Bar\ndescription: does things\ntags: [x]\n---\nbody`;
+    const out = setFrontmatterCategory(content, "dev");
+    assert.equal(parseFrontmatter(out).category, "dev");
+    // body is preserved untouched
+    assert.ok(out.endsWith("\nbody"));
+    // inserted immediately after name:
+    const lines = out.split("\n");
+    assert.equal(lines[1], "name: Foo Bar");
+    assert.equal(lines[2], "category: dev");
+  });
+
+  it("replaces an existing category in place", () => {
+    const content = `---\nname: Foo\ncategory: research\ndescription: y\n---\nbody`;
+    const out = setFrontmatterCategory(content, "crypto");
+    assert.equal(parseFrontmatter(out).category, "crypto");
+    // no duplicate category line
+    assert.equal((out.match(/^category:/gm) || []).length, 1);
+  });
+
+  it("returns content unchanged when there is no frontmatter block", () => {
+    const content = `no frontmatter here\njust text`;
+    assert.equal(setFrontmatterCategory(content, "dev"), content);
   });
 });

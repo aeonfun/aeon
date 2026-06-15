@@ -1,5 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
+category: research
 description: Digest of the most interesting new posts on [REPLACE: TOPIC] from RSS feeds and the open web
 var: ""
 tags: [research]

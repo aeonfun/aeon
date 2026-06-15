@@ -3,16 +3,21 @@
 import { useState, useRef } from 'react'
 import type { UploadFile } from '../lib/types'
 import { inputCls } from '../lib/utils'
+import { CATEGORIES } from '../lib/constants'
 
 interface ImportModalProps {
   onClose: () => void
-  onImport: (files: UploadFile[], name?: string) => Promise<void>
+  onImport: (files: UploadFile[], name?: string, category?: string) => Promise<void>
 }
+
+// Author-selectable pack categories (core/fleet are curated, not chosen here).
+const PACK_CATEGORIES = CATEGORIES.filter(c => c.key !== 'core')
 
 export function ImportModal({ onClose, onImport }: ImportModalProps) {
   const [uploadFiles, setUploadFiles] = useState<UploadFile[]>([])
   const [uploadDragOver, setUploadDragOver] = useState(false)
   const [uploadName, setUploadName] = useState('')
+  const [uploadCategory, setUploadCategory] = useState('')
   const [importLoading, setImportLoading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -34,7 +39,7 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
     if (!uploadFiles.length) return
     setImportLoading(true)
     try {
-      await onImport(uploadFiles, uploadName || undefined)
+      await onImport(uploadFiles, uploadName || undefined, uploadCategory || undefined)
       onClose()
     } finally {
       setImportLoading(false)
@@ -57,6 +62,12 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
         {uploadFiles.length > 0 && (
           <div className="mt-[var(--space-md)] space-y-3">
             <input type="text" value={uploadName} onChange={(e) => setUploadName(e.target.value)} placeholder="team-member-name" className={inputCls} />
+            <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} className={inputCls} title="Pack the skill joins">
+              <option value="">Pack — auto (Lab until sorted)</option>
+              {PACK_CATEGORIES.map(c => (
+                <option key={c.key} value={c.key}>{c.label}</option>
+              ))}
+            </select>
             <button onClick={handleUpload} disabled={importLoading} className="w-full bg-aeon-fg text-aeon-bg text-sm py-3 font-mono uppercase tracking-[2px] hover:opacity-90 transition-opacity disabled:opacity-50">{importLoading ? 'Hiring...' : 'Add to Team'}</button>
           </div>
         )}

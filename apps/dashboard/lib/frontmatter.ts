@@ -2,10 +2,33 @@ import type { SkillKeyRef, SkillMcpRef } from './types'
 
 export interface Frontmatter {
   name: string
+  category: string
   description: string
   tags: string[]
   requires: SkillKeyRef[]
   mcp: SkillMcpRef[]
+}
+
+// The pack categories a skill's frontmatter may declare. `core`/`fleet` are
+// curated in packs.config.json, so they aren't author-selectable here.
+export const SKILL_CATEGORIES = ['research', 'dev', 'crypto', 'onchain-security', 'social', 'productivity', 'meta'] as const
+
+// Insert or replace the frontmatter `category:` line. Returns content unchanged
+// when there's no `--- ... ---` block. Mirrors the backfill: replace in place if
+// present, else add right after `name:` (or at the top of the block).
+export function setFrontmatterCategory(content: string, category: string): string {
+  const m = content.match(/^(---\s*\n)([\s\S]*?)(\n---)/)
+  if (!m) return content
+  const [, open, body, close] = m
+  const lines = body.split('\n')
+  const ci = lines.findIndex(l => /^category:/.test(l))
+  if (ci !== -1) {
+    lines[ci] = `category: ${category}`
+  } else {
+    const ni = lines.findIndex(l => /^name:/.test(l))
+    lines.splice(ni === -1 ? 0 : ni + 1, 0, `category: ${category}`)
+  }
+  return open + lines.join('\n') + close + content.slice(m[0].length)
 }
 
 // Parse a SKILL.md's leading `--- ... ---` block. When `description:` is absent,
@@ -14,6 +37,7 @@ export function parseFrontmatter(content: string): Frontmatter {
   const block = content.match(/^---\s*\n([\s\S]*?)\n---/)?.[1] ?? ''
 
   const name = unquote(block.match(/name:\s*(.+)/)?.[1] ?? '')
+  const category = unquote(block.match(/^category:\s*(.+)/m)?.[1] ?? '')
 
   let description = unquote(block.match(/description:\s*(.+)/)?.[1] ?? '')
   if (!description) {
@@ -52,7 +76,7 @@ export function parseFrontmatter(content: string): Frontmatter {
     })
     .filter(r => /^[a-z][a-z0-9-]+$/.test(r.slug))
 
-  return { name, description, tags, requires, mcp }
+  return { name, category, description, tags, requires, mcp }
 }
 
 function parseList(inner: string | undefined): string[] {

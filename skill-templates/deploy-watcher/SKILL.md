@@ -1,5 +1,6 @@
 ---
 name: [REPLACE: SKILL_NAME]
+category: dev
 description: Watch Vercel deploys for [REPLACE: VERCEL_PROJECT] — alert on [REPLACE: ALERT_ON] in the last [REPLACE: LOOKBACK_HOURS] hours
 var: ""
 tags: [dev]
