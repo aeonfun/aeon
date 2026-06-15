@@ -14,6 +14,7 @@ interface HQOverviewProps {
   categoryFilter: string | null
   onCategoryClick: (key: string) => void
   onViewRun: (run: Run) => void
+  onOpenPacks: () => void
 }
 
 function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
@@ -28,7 +29,7 @@ function Section({ index, label, children }: { index: string; label: string; chi
   )
 }
 
-export function HQOverview({ skills, runs, enabledCount, workingCount, categoryFilter, onCategoryClick, onViewRun }: HQOverviewProps) {
+export function HQOverview({ skills, runs, enabledCount, workingCount, categoryFilter, onCategoryClick, onViewRun, onOpenPacks }: HQOverviewProps) {
   const spotRef = useRef<HTMLUListElement>(null)
 
   const onMove = (e: React.MouseEvent<HTMLUListElement>) => {
@@ -121,6 +122,21 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
               </li>
             )
           })}
+          <li className="spotlight relative overflow-hidden bg-aeon-bg transition-colors hover:bg-aeon-panel-2 flex">
+            <button
+              onClick={onOpenPacks}
+              title="Browse all packs and enable more skills"
+              className="group w-full px-6 py-5 flex items-center gap-5 text-left cursor-pointer"
+            >
+              <span className="font-display leading-none text-primary-35 shrink-0 transition-colors group-hover:text-aeon-red" style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}>
+                +
+              </span>
+              <div className="min-w-0">
+                <div className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">Add more</div>
+                <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">Browse all packs</div>
+              </div>
+            </button>
+          </li>
         </ul>
       </Section>
 

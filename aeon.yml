@@ -120,6 +120,7 @@ skills:
   base-mcp: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — Base Account access via the Base MCP server (mcp.base.org)
   autoresearch: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
   create-skill: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot skill creator — set var to a description prompt
+  install-skill: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — install a community skill pack and open a PR; var: owner/repo [skill...]
 
   # --- X / social (5 PM UTC) ---
   fetch-tweets: { enabled: false, schedule: "0 17 * * *" }

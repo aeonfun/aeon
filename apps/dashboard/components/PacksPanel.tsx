@@ -14,6 +14,7 @@ interface PacksPanelProps {
   onTogglePack: (key: string) => void
   onToggleSkill: (slug: string, enabled: boolean) => void
   onSelectSkill: (slug: string) => void
+  onInstallPack: (repo: string) => Promise<void> | void
 }
 
 function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
@@ -34,8 +35,23 @@ function trustTone(level?: string): string {
   return 'text-primary-40 border-[rgba(250,250,250,0.18)]'
 }
 
-export function PacksPanel({ firstParty, community, skills, enabledPacks, loading, busy, onTogglePack, onToggleSkill, onSelectSkill }: PacksPanelProps) {
+export function PacksPanel({ firstParty, community, skills, enabledPacks, loading, busy, onTogglePack, onToggleSkill, onSelectSkill, onInstallPack }: PacksPanelProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [copied, setCopied] = useState<string | null>(null)
+  const [installing, setInstalling] = useState<string | null>(null)
+
+  const handleCopy = async (repo: string) => {
+    try {
+      await navigator.clipboard.writeText(`./install-skill-pack ${repo}`)
+      setCopied(repo)
+      setTimeout(() => setCopied(c => (c === repo ? null : c)), 1500)
+    } catch { /* clipboard blocked — the command is still shown in the tooltip */ }
+  }
+
+  const handleInstall = async (repo: string) => {
+    setInstalling(repo)
+    try { await onInstallPack(repo) } finally { setInstalling(null) }
+  }
 
   // Live enabled state comes from the skills roster (single source of truth), so
   // toggling a skill updates the counts here instantly. Hide declared-but-empty
@@ -168,7 +184,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
       {/* Community packs */}
       <Section index="02" label="Community packs">
         <p className="text-xs text-primary-50 leading-relaxed mb-4">
-          Maintained by the community in external repos. Install from a terminal in your fork, then enable the skills here.
+          Maintained by the community in external repos. Hit <span className="text-aeon-fg">Install pack</span> to run the security-scanned installer and open a PR — or copy the command to run it yourself. Skills land disabled; enable them here after merging.
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {community.map(pack => {
@@ -197,10 +213,26 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                     ))}
                   </div>
                 ) : null}
-                <div className="mt-auto flex items-center gap-3 pt-2">
-                  <code className="flex-1 text-[10px] font-mono text-primary-50 bg-aeon-panel px-2 py-1.5 border border-[rgba(250,250,250,0.08)] truncate" title={`./install-skill-pack ${pack.repo}`}>
-                    ./install-skill-pack {pack.repo}
-                  </code>
+                <div className="mt-auto flex items-center gap-2 pt-2">
+                  <button
+                    onClick={() => handleInstall(pack.repo)}
+                    disabled={installing === pack.repo}
+                    title={`Install into your fork — runs the install-skill skill (security-scanned) and opens a PR for review. Skills land disabled.`}
+                    className="flex-1 text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target text-aeon-fg border-[rgba(250,250,250,0.25)] hover:border-aeon-red hover:text-aeon-red disabled:opacity-50 disabled:cursor-default"
+                  >
+                    {installing === pack.repo ? 'Installing…' : installed ? 'Reinstall' : 'Install pack'}
+                  </button>
+                  <button
+                    onClick={() => handleCopy(pack.repo)}
+                    title={`Copy: ./install-skill-pack ${pack.repo}`}
+                    className="shrink-0 px-2 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
+                  >
+                    {copied === pack.repo ? (
+                      <span className="text-[10px] font-mono uppercase tracking-[0.14em] text-eva-green">copied</span>
+                    ) : (
+                      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25" /></svg>
+                    )}
+                  </button>
                   {pack.homepage && (
                     <a href={pack.homepage} target="_blank" rel="noopener noreferrer" className="shrink-0 text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target">site ↗</a>
                   )}

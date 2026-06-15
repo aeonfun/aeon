@@ -8,6 +8,7 @@
     "default_enabled": ["heartbeat", "digest"],
     "skills": [
       "create-skill",
+      "install-skill",
       "self-improve",
       "skill-health",
       "skill-repair",
