@@ -74,7 +74,7 @@ When assigning a skill to a pack, the generator applies, in order:
 | **Research & Content** | Digests, deep research, trend/framework tracking. | 26 |
 | **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 34 |
 | **Crypto & Markets** | Token/DeFi/prediction-market monitoring, narrative tracking. | 23 |
-| **Hound — Onchain Security** | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 15 |
+| **Onchain Security** | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 15 |
 | **Social & Writing** | Tweets/threads, replies, syndication, campaigns, engagement. | 17 |
 | **Productivity** | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 16 |
 | **Agent Ops** | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 30 |

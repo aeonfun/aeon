@@ -48,7 +48,7 @@ export const PACKS: { key: string; label: string; short: string; color: string }
   { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
   { key: 'dev',          label: 'Dev & Code',             short: 'Dev',          color: '#3B82F6' },
   { key: 'markets',      label: 'Crypto & Markets',       short: 'Markets',      color: '#FF6B1A' },
-  { key: 'hound',        label: 'Hound — Onchain Security', short: 'Hound',      color: '#EAB308' },
+  { key: 'hound',        label: 'Onchain Security',        short: 'Onchain',    color: '#EAB308' },
   { key: 'social',       label: 'Social & Writing',       short: 'Social',       color: '#EC4899' },
   { key: 'productivity', label: 'Productivity',           short: 'Productivity', color: '#06B6D4' },
   { key: 'agent-ops',    label: 'Agent Ops',              short: 'Ops',          color: '#9CA3AF' },

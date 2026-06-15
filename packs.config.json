@@ -63,7 +63,7 @@
     },
     {
       "key": "hound",
-      "name": "Hound — Onchain Security",
+      "name": "Onchain Security",
       "description": "On-chain forensics and risk: rug/honeypot/LP-lock checks, contract and approval audits, deployer tracing, fund-flow and wallet clustering.",
       "color": "#EAB308",
       "category": "onchain-security"
