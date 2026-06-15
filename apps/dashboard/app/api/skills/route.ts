@@ -43,13 +43,18 @@ export async function GET() {
       for (const s of catalog.skills ?? []) categoryBySlug[s.slug] = s.category
     } catch { /* catalog optional - categories default to meta */ }
 
-    // Canonical slug → pack map from packs.json (the grouping the UI uses).
-    // Falls back to 'lab' (the catch-all) for any skill not yet in a pack.
+    // Canonical slug → pack (key + display name) map from packs.json (the
+    // grouping the UI uses). The name lets the roster label community packs
+    // (installed from another repo) by their real name. Falls back to 'lab'.
     const packBySlug: Record<string, string> = {}
+    const packNameBySlug: Record<string, string> = {}
     try {
       const { content: packsRaw } = await getFileContent('packs.json')
-      const packs = JSON.parse(packsRaw) as { packs?: Array<{ key: string; skills?: Array<{ slug: string }> }> }
-      for (const p of packs.packs ?? []) for (const s of p.skills ?? []) packBySlug[s.slug] = p.key
+      const packs = JSON.parse(packsRaw) as { packs?: Array<{ key: string; name?: string; skills?: Array<{ slug: string }> }> }
+      for (const p of packs.packs ?? []) for (const s of p.skills ?? []) {
+        packBySlug[s.slug] = p.key
+        packNameBySlug[s.slug] = p.name ?? p.key
+      }
     } catch { /* packs.json optional - packs default to lab */ }
 
     const meta = await Promise.all(
@@ -75,6 +80,7 @@ export async function GET() {
         mcp: m.mcp,
         category: categoryBySlug[m.name] || 'meta',
         pack: packBySlug[m.name] || 'lab',
+        packName: packNameBySlug[m.name] || '',
         enabled: config.skills[m.name]?.enabled ?? false,
         schedule: config.skills[m.name]?.schedule || '0 12 * * *',
         var: config.skills[m.name]?.var || '',

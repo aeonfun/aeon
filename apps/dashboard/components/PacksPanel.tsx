@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import type { Pack, CommunityPack, Skill } from '../lib/types'
 import { displayName } from '../lib/utils'
+import { FIRST_PARTY_KEYS } from '../lib/constants'
 
 interface PacksPanelProps {
   firstParty: Pack[]
@@ -57,9 +58,10 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
   // toggling a skill updates the counts here instantly. Hide declared-but-empty
   // packs (e.g. the Lab catch-all when nothing is unsorted).
   const enabledBySlug = new Map(skills.map(s => [s.name, s.enabled]))
-  // Core and the synthetic `installed` pack are always shown (not togglable):
-  // Core is load-bearing, and installed skills are ones you added on purpose.
-  const isPackOn = (key: string) => key === 'core' || key === 'installed' || enabledPacks.includes(key)
+  // Core and community packs (anything not first-party — installed from another
+  // repo) are always shown, not togglable: Core is load-bearing, and community
+  // skills are ones you added on purpose.
+  const isPackOn = (key: string) => key === 'core' || !FIRST_PARTY_KEYS.has(key) || enabledPacks.includes(key)
   const visiblePacks = firstParty.filter(p => p.total > 0).map(p => {
     const members = p.skills.map(s => ({ ...s, enabled: enabledBySlug.get(s.slug) ?? false }))
     return { ...p, skills: members, enabled: members.filter(m => m.enabled).length }
@@ -116,8 +118,8 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {visiblePacks.map(pack => {
             const isCore = pack.key === 'core'
-            const isInstalled = pack.key === 'installed'
-            const isLocked = isCore || isInstalled
+            const isCommunity = !FIRST_PARTY_KEYS.has(pack.key)
+            const isLocked = isCore || isCommunity
             const on = isPackOn(pack.key)
             const open = expanded === pack.key
             return (
@@ -129,7 +131,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                       <div className="flex items-center gap-2">
                         <span className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{pack.name}</span>
                         {isCore && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border border-aeon-red/40 text-aeon-red">core</span>}
-                        {isInstalled && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border border-primary-40 text-primary-70">installed</span>}
+                        {isCommunity && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border border-primary-40 text-primary-70">installed</span>}
                       </div>
                       <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
                         {pack.total} skill{pack.total === 1 ? '' : 's'}
@@ -143,7 +145,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                     <button
                       onClick={() => onTogglePack(pack.key)}
                       disabled={isLocked}
-                      title={isInstalled ? 'Skills you installed are always shown' : isCore ? 'Core is always shown' : on ? 'Hide this pack’s skills from the dashboard' : 'Reveal this pack’s skills across the sidebar and HQ'}
+                      title={isCommunity ? 'Skills you installed are always shown' : isCore ? 'Core is always shown' : on ? 'Hide this pack’s skills from the dashboard' : 'Reveal this pack’s skills across the sidebar and HQ'}
                       className={`text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target disabled:cursor-default ${on ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-50 border-[rgba(250,250,250,0.18)] hover:text-primary-100 hover:border-[rgba(250,250,250,0.3)]'}`}
                     >
                       {isLocked ? 'Always on' : on ? '✓ Enabled' : 'Enable pack'}

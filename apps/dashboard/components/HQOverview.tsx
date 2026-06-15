@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import type { Skill, Run } from '../lib/types'
-import { PACKS } from '../lib/constants'
+import { packGroups } from '../lib/constants'
 import { timeAgo } from '../lib/utils'
 import { Scramble, Flip, VelocityMarquee } from './ui/Animated'
 
@@ -40,7 +40,7 @@ export function HQOverview({ skills, runs, enabledCount, workingCount, categoryF
     card.style.setProperty('--my', `${e.clientY - r.top}px`)
   }
 
-  const cats = PACKS
+  const cats = packGroups(skills)
     .map(c => ({ ...c, skills: skills.filter(s => (s.pack || 'lab') === c.key) }))
     .filter(c => c.skills.length)
 

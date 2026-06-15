@@ -44,9 +44,6 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // /api/skills); `lab` is the catch-all for uncategorized skills.
 export const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',         label: 'Core',                  short: 'Core',         color: '#E5484D' },
-  // Skills installed from community repos (skills.lock). Synthetic pack emitted
-  // by generate-packs-json; always visible, never hidden behind the pack lens.
-  { key: 'installed',    label: 'Installed',             short: 'Installed',    color: '#A1A1AA' },
   { key: 'fleet',        label: 'Fleet & Replication',   short: 'Fleet',        color: '#30A46C' },
   { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
   { key: 'dev',          label: 'Dev & Code',             short: 'Dev',          color: '#3B82F6' },
@@ -60,3 +57,38 @@ export const PACKS: { key: string; label: string; short: string; color: string }
 
 export const PACK_BY_KEY: Record<string, { label: string; color: string }> =
   Object.fromEntries(PACKS.map(p => [p.key, { label: p.label, color: p.color }]))
+
+// The fixed set of first-party pack keys. Any pack key NOT in here is a
+// community pack (installed from another repo — see generate-packs-json's
+// `installed` pack and install-skill's per-source community packs). Community
+// packs are always shown; the Core-only visibility lens only governs
+// first-party packs.
+export const FIRST_PARTY_KEYS = new Set(PACKS.map(p => p.key))
+
+const COMMUNITY_COLOR = '#A1A1AA'
+
+export interface PackGroup { key: string; label: string; short: string; color: string; community: boolean }
+
+// Build the ordered roster/HQ group list from whatever packs the given skills
+// actually belong to — driven by data, not a hardcoded list, so a skill in a
+// community pack (`installed`, or a per-source pack like `antfleet-pr-review`)
+// renders instead of vanishing. Order: Core, then community packs (the things
+// you installed, surfaced up top), then the rest of the first-party packs.
+// Community labels come from the skill's joined `packName` (falling back to the
+// key). Only packs that actually contain skills appear.
+export function packGroups(skills: { pack?: string; packName?: string }[]): PackGroup[] {
+  const present = new Set(skills.map(s => s.pack || 'lab'))
+  const firstParty = PACKS.filter(p => present.has(p.key))
+    .map(p => ({ key: p.key, label: p.label, short: p.short, color: p.color, community: false }))
+  const core = firstParty.filter(g => g.key === 'core')
+  const restFirstParty = firstParty.filter(g => g.key !== 'core')
+  const community = [...present]
+    .filter(k => !FIRST_PARTY_KEYS.has(k))
+    .sort()
+    .map(k => {
+      const named = skills.find(s => (s.pack || 'lab') === k && s.packName)
+      const label = named?.packName || k
+      return { key: k, label, short: label, color: COMMUNITY_COLOR, community: true }
+    })
+  return [...core, ...community, ...restFirstParty]
+}

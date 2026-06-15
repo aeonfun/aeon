@@ -8,7 +8,7 @@ import type {
   UploadResponse, ErrorResponse, PacksResponse,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
-import { MODELS, AUTH_SECRETS, PACK_BY_KEY } from '../lib/constants'
+import { MODELS, AUTH_SECRETS, PACK_BY_KEY, FIRST_PARTY_KEYS } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -159,12 +159,16 @@ export default function Dashboard() {
   // Any model/provider key set means Aeon can authenticate - the "Auth" CTA hides.
   // Derived from live `secrets` so it reacts the instant a key is saved or removed.
   const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
-  // Skills visible across the dashboard = those in an enabled pack (Core always
-  // on), plus anything you installed from a community repo (the synthetic
-  // `installed` pack — you added it on purpose, so it's never hidden behind the
-  // pack lens). The sidebar + HQ render this; the Packs view keeps the full
-  // roster so you can enable more. Counts track what's visible for consistency.
-  const visibleSkills = skills.filter(s => s.pack === 'installed' || enabledPacks.includes(s.pack || 'lab'))
+  // Skills visible across the dashboard = first-party skills whose pack is
+  // enabled (Core always on), PLUS every community skill — anything in a pack
+  // that isn't first-party was installed from another repo on purpose, so it's
+  // never hidden behind the pack lens regardless of its pack key (`installed`,
+  // or a per-source pack like `antfleet-pr-review`). The sidebar + HQ render
+  // this; the Packs view keeps the full roster so you can enable more.
+  const visibleSkills = skills.filter(s => {
+    const k = s.pack || 'lab'
+    return FIRST_PARTY_KEYS.has(k) ? enabledPacks.includes(k) : true
+  })
   const enabledCount = visibleSkills.filter(s => s.enabled).length
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 
