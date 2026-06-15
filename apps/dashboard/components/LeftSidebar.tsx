@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { Skill, Run, Secret } from '../lib/types'
-import { PACKS } from '../lib/constants'
+import { packGroups } from '../lib/constants'
 import { displayName, initials, getSkillStatus, statusDot } from '../lib/utils'
 
 interface LeftSidebarProps {
@@ -127,8 +127,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             <span className="w-1.5 h-1.5 rounded-full shrink-0 bg-eva-amber" />
             Available
           </button>
-          {PACKS.map(cat => {
-            if (!skills.some(s => (s.pack || 'lab') === cat.key)) return null
+          {packGroups(skills).map(cat => {
             const active = categoryFilter === cat.key
             return (
               <button
@@ -145,7 +144,7 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
           })}
         </div>
 
-        {PACKS.map(cat => {
+        {packGroups(skills).map(cat => {
           if (categoryFilter && cat.key !== categoryFilter) return null
           const catSkills = skills.filter(s => (s.pack || 'lab') === cat.key)
           if (!catSkills.length) return null
