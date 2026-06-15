@@ -1,0 +1,30 @@
+name: ci-skill-category
+
+# Every skill must declare a valid `category:` in its SKILL.md frontmatter —
+# category is the single source of truth for which pack a skill joins
+# (docs/skill-packs.md). A missing or typo'd category would silently dump the
+# skill into the Lab catch-all instead of its intended pack, so this gate fails
+# the PR instead. Same shape as ci-skills-json / ci-packs-json.
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'scripts/check-skill-categories.sh'
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'scripts/check-skill-categories.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Every SKILL.md declares a valid category
+        run: bash scripts/check-skill-categories.sh
