@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { execFileSync } from 'child_process'
-import { REPO_ROOT } from '@/lib/gh'
+import { REPO_ROOT, ensureActionsCanOpenPRs } from '@/lib/gh'
 import { errorResponse } from '@/lib/http'
 import { sanitizeModel } from '@/lib/dispatch'
 
@@ -28,6 +28,12 @@ export async function POST(
         model = sanitizeModel(body.model)
       }
     } catch { /* no body is fine */ }
+
+    // install-skill installs a community pack and ships it as an auto-merged PR
+    // — which the in-Actions GITHUB_TOKEN can only do if this repo's Actions
+    // PR-creation setting is on. It isn't on a fresh fork and doesn't inherit,
+    // so guarantee it from the operator's (admin) local gh before dispatching.
+    if (name === 'install-skill') ensureActionsCanOpenPRs()
 
     const args = ['workflow', 'run', 'aeon.yml', '-f', `skill=${name}`]
     if (skillVar) args.push('-f', `var=${skillVar}`)

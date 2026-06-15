@@ -1,7 +1,7 @@
 ---
 name: Install Skill
 category: core
-description: Install a community skill pack into this fork from a GitHub repo and ship it as a PR
+description: Install a community skill pack into this fork from a GitHub repo and ship it as an auto-merged PR
 var: ""
 tags: [dev, meta, packs]
 ---
@@ -18,7 +18,7 @@ If `${var}` is empty, exit `INSTALL_SKILL_NO_VAR`:
 ```
 Then stop.
 
-Today is ${today}. Your task is to install the community skill pack named in `${var}` into **this** fork and open a PR — **never commit directly to `main`**. This is the dashboard "Install" button's backend: the operator clicked it on a Community Pack card, so be fast, safe, and honest about what landed.
+Today is ${today}. Your task is to install the community skill pack named in `${var}` into **this** fork and ship it as a PR that **auto-merges** — so the skills land on `main` (and show up in the dashboard) with no manual step. **Never commit directly to `main`**: the change still flows through a reviewable, CI-gated PR — it just merges itself. This is the dashboard "Install" button's backend: the operator clicked it on a Community Pack card, so be fast, safe, and honest about what landed. The safety gate is real but unchanged: every skill is security-scanned and lands **disabled**, so nothing executes until the operator sets secrets and flips `enabled: true`.
 
 ## How installation works (so you can explain it and trust the output)
 
@@ -37,6 +37,8 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ./notify "install-skill aborted: \"${var}\" is not owner/repo format"
    ```
    Then stop. Never pass `--force` or `--yes` unless the operator explicitly included it in `${var}` — the security gate stays on by default.
+
+   **Opt-out flag:** if `${var}` contains `--no-merge`, the operator wants a PR they'll merge themselves — strip that token here (do **not** forward it to `./install-skill-pack`, which would reject it) and skip the auto-merge in step 6 (open the PR and stop at the notify with the review link).
 
 2. **Preview first (dry run).** See what would land before writing anything:
    ```bash
@@ -62,10 +64,10 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ./generate-packs-json
    ```
 
-6. **Commit and open a PR** — never push to `main`. Stage the installed skill dirs plus the touched manifests (`aeon.yml`, `skills.json`, `skills.lock`, `packs.json`) and commit, then:
+6. **Commit, open a PR, and auto-merge it** — never push to `main` directly; the PR is the audit trail and CI gate. Stage the installed skill dirs plus the touched manifests (`aeon.yml`, `skills.json`, `skills.lock`, `packs.json`), commit, push the branch, then open the PR and capture its URL:
    ```bash
-   gh pr create --title "feat: install ${REPO_NAME} community pack" --body "$(cat <<'BODY'
-   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard).
+   PR_URL=$(gh pr create --title "feat: install ${REPO_NAME} community pack" --body "$(cat <<'BODY'
+   Installs the **<pack name>** community pack from `${var}` (clicked from the dashboard). Auto-merges once mergeable — skills land **disabled**, so nothing runs until enabled.
 
    ## Skills installed
    - `<slug>` — <one-line description>
@@ -80,14 +82,20 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
    ## Provenance
    Recorded in skills.lock (source repo, branch, commit SHA).
    BODY
-   )"
+   )")
    ```
-   Fill the placeholders from the install output. All installed skills land **disabled** — say so in the PR so the operator knows they must enable them.
-
-7. **Notify** one concise line with the result and PR link, e.g.:
+   Fill the placeholders from the install output. Then merge it (unless `--no-merge` was passed in step 1). Prefer queued auto-merge so CI gates it; fall back to an immediate squash-merge when the repo doesn't have auto-merge enabled:
    ```bash
-   ./notify "Installed ${REPO_NAME} (<N> skills) — review & merge: <pr-url>. Skills land disabled; enable in aeon.yml after setting any required secrets."
+   gh pr merge "$PR_URL" --squash --delete-branch --auto \
+     || gh pr merge "$PR_URL" --squash --delete-branch
    ```
+   If **both** merge attempts fail, the repo's "Allow GitHub Actions to create and approve pull requests" setting is likely still off (the dashboard normally enables it before dispatching this skill; a cron/CLI run may not have). Don't error — leave the PR open and tell the operator to merge it (and to run `./onboard`, which enables the setting). All installed skills land **disabled** — say so in the PR so the operator knows they must enable them.
+
+7. **Notify** one concise line with the result. On auto-merge success, point the operator at the dashboard (new skills sit in their pack — enable that pack in the **Packs** view to see them):
+   ```bash
+   ./notify "Installed & merged ${REPO_NAME} (<N> skills) to main — they land disabled in the <pack> pack; enable the pack in the dashboard, set any required secrets, then flip enabled: true."
+   ```
+   If you opened a PR without merging (`--no-merge`, or the merge was blocked), say so instead and include the review link: `"Installed ${REPO_NAME} (<N> skills) — review & merge: <pr-url>. Skills land disabled."`
 
 ## Exit taxonomy
 
@@ -95,7 +103,7 @@ Your job is to drive that script, regenerate the catalog, and wrap the result in
 - `INSTALL_SKILL_BAD_VAR` — first token isn't `owner/repo`.
 - `INSTALL_SKILL_FETCH_FAILED` — repo/tarball couldn't be fetched or pack has 0 skills.
 - `INSTALL_SKILL_BLOCKED` — every skill was blocked by the security scan (nothing installed).
-- Success — PR opened with the installed skills.
+- Success — PR opened and auto-merged to `main` (or left open when `--no-merge` was passed or the merge was blocked by the Actions PR setting).
 
 ## Sandbox note
 
