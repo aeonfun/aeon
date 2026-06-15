@@ -37,7 +37,6 @@
         "distribute-tokens",
         "deploy-prototype",
         "external-feature",
-        "feature",
         "vuln-scanner"
       ]
     },

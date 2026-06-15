@@ -1,6 +1,6 @@
 # Skill packs
 
-Aeon ships **200+ skills**, but most forks only ever run a handful. Packs make
+Aeon ships **180+ skills**, but most forks only ever run a handful. Packs make
 that manageable: a small **core** is always present, and everything else is
 grouped into **packs** you enable when you want them — and browse, install, and
 bulk-toggle from the dashboard.
@@ -62,14 +62,14 @@ When assigning a skill to a pack, the generator applies, in order:
 | Pack | What's in it | ~count |
 |---|---|---|
 | **Core** | Self-evolution, self-healing, memory/liveness, setup, cost guardrail, + two default outputs. Always present. | 13 |
-| **Fleet & Replication** | Spawn/coordinate sub-agents, scorecards, feature rollout, on-chain distribute/reward, vuln scanning. | 9 |
-| **Research & Content** | Digests, deep research, trend/framework tracking. | 27 |
-| **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 37 |
-| **Crypto & Markets** | Token/DeFi/prediction-market monitoring, narrative tracking. | 31 |
+| **Fleet & Replication** | Spawn/coordinate sub-agents, scorecards, feature rollout, on-chain distribute/reward, vuln scanning. | 8 |
+| **Research & Content** | Digests, deep research, trend/framework tracking. | 26 |
+| **Dev & Code** | PR/issue triage, review, merges, releases, repo health, ecosystem mapping. | 34 |
+| **Crypto & Markets** | Token/DeFi/prediction-market monitoring, narrative tracking. | 23 |
 | **Hound — Onchain Security** | Rug/honeypot/LP checks, contract & approval audits, deployer/fund-flow tracing. | 15 |
-| **Social & Writing** | Tweets/threads, replies, syndication, campaigns, engagement. | 19 |
-| **Productivity** | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 19 |
-| **Agent Ops** | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 32 |
+| **Social & Writing** | Tweets/threads, replies, syndication, campaigns, engagement. | 17 |
+| **Productivity** | Routines, goal/idea capture, retrospectives, deal flow, follow-ups. | 16 |
+| **Agent Ops** | Skill analytics/health/graphing, capability mapping, spend, memory housekeeping, fork health. | 30 |
 | **Lab** | Catch-all for unsorted skills. Hidden in the UI until something lands in it. | 0 |
 
 ### Core — what every fork ships with
