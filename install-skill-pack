@@ -679,7 +679,8 @@ update_skills_json() {
   local slug="$1"
   local desc="$2"
   local category="$3"
-  local schedule="$4"
+  # NB: schedule is intentionally not written here — it's per-deployment config
+  # that lives in aeon.yml, not in the canonical catalog (matches generate-skills-json).
   [[ ! -f "$SKILLS_JSON" ]] && return 0
   local sha7="unknown"
   if [[ -f "$SKILLS_LOCK" ]]; then
@@ -694,13 +695,12 @@ update_skills_json() {
     --arg name "$slug" \
     --arg description "$desc" \
     --arg category "${category:-research}" \
-    --arg schedule "$schedule" \
     --arg sha "$sha7" \
     --arg updated "$today" \
     --arg install "$install_cmd" \
     --arg source_repo "$REPO" \
     --arg pack "$PACK_LABEL" \
-    '{slug: $slug, name: $name, description: $description, category: $category, schedule: $schedule, var: "", files: 0, sha: $sha, updated: $updated, install: $install, source_repo: $source_repo, pack: $pack}')
+    '{slug: $slug, name: $name, description: $description, category: $category, var: "", files: 0, sha: $sha, updated: $updated, install: $install, source_repo: $source_repo, pack: $pack}')
   jq --argjson entry "$entry" \
     '.skills = ([.skills[] | select(.slug != $entry.slug)] + [$entry]) | .total = (.skills | length) | .generated = (now | strftime("%Y-%m-%dT%H:%M:%SZ"))' \
     "$SKILLS_JSON" > "${SKILLS_JSON}.tmp" && mv "${SKILLS_JSON}.tmp" "$SKILLS_JSON"
@@ -792,7 +792,7 @@ for i in "${!SLUGS[@]}"; do
   INSTALLED=$((INSTALLED + 1))
 
   record_provenance "$slug" "$rel_path"
-  update_skills_json "$slug" "$desc" "$category" "$schedule"
+  update_skills_json "$slug" "$desc" "$category"
   add_to_aeon_yml "$slug" "$schedule" "$default_enabled"
 done
 

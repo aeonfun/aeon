@@ -2,15 +2,19 @@ name: ci-skills-json
 
 # Proposal #455: skills.json is the canonical catalog (dashboard, ./add-skill,
 # and downstream consumers all read it). It must be regenerated from
-# skills/*/SKILL.md + aeon.yml via ./generate-skills-json. This workflow fails
-# any PR that changes a generator input without committing the regenerated
-# manifest, so catalog drift can't ship silently (cf. #456, #445).
+# skills/*/SKILL.md via ./generate-skills-json. This workflow fails any PR that
+# changes a generator input without committing the regenerated manifest, so
+# catalog drift can't ship silently (cf. #456, #445).
+#
+# Note: the catalog is deliberately decoupled from aeon.yml — schedules are
+# per-deployment operator config and are NOT mirrored into skills.json, so this
+# gate does not trigger on (and never false-fails over) aeon.yml schedule edits.
 #
 # Same shape/permissions as ci-capabilities-parity.yml (Issue #301).
 #
 # The comparison normalizes out three non-semantic fields so the gate enforces
-# only real catalog drift (category / name / description / schedule / requires /
-# etc.) — the #454/#456 class — and never false-fails on git/clock churn:
+# only real catalog drift (category / name / description / requires / etc.) —
+# the #454/#456 class — and never false-fails on git/clock churn:
 #   - `generated` — a fresh UTC timestamp on every run.
 #   - per-skill `sha` and `updated` — derived from `git log`, so they change each
 #     time a skill PR is squash-merged (the squash rewrites the commit). Without
@@ -22,14 +26,12 @@ on:
   pull_request:
     paths:
       - 'skills/**'
-      - 'aeon.yml'
       - 'generate-skills-json'
       - 'skills.json'
   push:
     branches: [main]
     paths:
       - 'skills/**'
-      - 'aeon.yml'
       - 'generate-skills-json'
       - 'skills.json'
   workflow_dispatch:

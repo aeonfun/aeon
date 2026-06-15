@@ -8,26 +8,22 @@ set -eo pipefail
 #   ./generate-skills-json --pretty     Pretty-print the output
 #
 # The manifest enables one-command skill installation and marketplace discovery.
-# Each entry includes: name, slug, description, category, default var, schedule,
+# Each entry includes: name, slug, description, category, default var,
 # required secrets, and install command.
+#
+# The catalog describes the *skill* (from skills/<slug>/SKILL.md + git), never
+# per-deployment operator config. Schedules live in aeon.yml — the source of
+# truth the dashboard reads live — and are deliberately NOT mirrored here, so
+# editing a schedule (or an upstream sync) can't make this manifest go stale.
 
 ROOT="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$ROOT/skills"
-AEON_YML="$ROOT/aeon.yml"
 OUTPUT="$ROOT/skills.json"
 
 PRETTY=false
 if [[ "${1:-}" == "--pretty" ]]; then
   PRETTY=true
 fi
-
-# Extract schedule for a skill from aeon.yml
-get_schedule() {
-  local slug="$1"
-  grep -E "^  ${slug}:" "$AEON_YML" 2>/dev/null \
-    | sed -n 's/.*schedule: *"\([^"]*\)".*/\1/p' \
-    || echo ""
-}
 
 # Count files in skill directory (excluding SKILL.md)
 count_files() {
@@ -106,7 +102,6 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   mcp_json+="]"
 
   # Get metadata
-  schedule=$(get_schedule "$slug")
   extra_files=$(count_files "$skill_dir")
   sha=$(get_skill_sha "$slug")
   updated=$(get_skill_updated "$slug")
@@ -123,7 +118,7 @@ for skill_dir in "$SKILLS_DIR"/*/; do
     echo -n ',' >> "$OUTPUT"
   fi
 
-  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"schedule\":\"$schedule\",\"var\":\"$var\",\"requires\":$requires_json,\"mcp\":$mcp_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
+  echo -n "{\"slug\":\"$slug\",\"name\":\"$name\",\"description\":\"$description\",\"category\":\"$category\",\"var\":\"$var\",\"requires\":$requires_json,\"mcp\":$mcp_json,\"files\":$extra_files,\"sha\":\"$sha\",\"updated\":\"$updated\",\"install\":\"./add-skill aaronjmars/aeon $slug\"}" >> "$OUTPUT"
 
   TOTAL=$((TOTAL + 1))
 done
