@@ -79,6 +79,27 @@ if unassigned:
     for slug in unassigned:
         assigned[slug] = catch_all
 
+# 5) community installs override everything above. Anything recorded in
+# skills.lock was deliberately installed from another repo — it must NOT be
+# folded into a first-party category pack (where the Core-only visibility lens
+# would hide it). Pull it into a synthetic, always-visible "installed" pack so
+# the dashboard surfaces it as yours. Runs LAST so it overrides whatever
+# first-party pack claimed the slug by category. No skills.lock (the upstream
+# case) → no override → packs.json is byte-identical to before.
+installed_src = {}  # slug -> source_repo
+lock_path = os.path.join(root, "skills.lock")
+if os.path.exists(lock_path):
+    try:
+        with open(lock_path) as f:
+            lock = json.load(f)
+    except (ValueError, OSError):
+        lock = []
+    for rec in lock or []:
+        slug = rec.get("skill_name")
+        if slug in skills:
+            installed_src[slug] = rec.get("source_repo", "")
+            assigned[slug] = "installed"
+
 def skill_entry(slug):
     s = skills[slug]
     return {"slug": slug, "name": s["name"],
@@ -98,6 +119,24 @@ out_packs = [pack_out("core", core["name"], core["description"], core["color"],
 for p in config["packs"]:
     out_packs.append(pack_out(p["key"], p["name"], p["description"], p["color"],
                               p.get("category"), p.get("default_enabled", [])))
+
+# Append the synthetic "installed" pack only when something was installed, so
+# the upstream manifest (no skills.lock) is unchanged. Each entry carries its
+# source_repo so the dashboard can show where it came from.
+if installed_src:
+    inst_skills = []
+    for sl in members("installed"):
+        e = skill_entry(sl)
+        e["source_repo"] = installed_src.get(sl, "")
+        inst_skills.append(e)
+    out_packs.append({
+        "key": "installed", "name": "Installed",
+        "description": "Skills you installed from community repos (recorded in "
+                       "skills.lock). Always shown; never folded into a "
+                       "first-party pack.",
+        "color": "#A1A1AA", "category": None, "kind": "community",
+        "default_enabled": [], "skills": inst_skills,
+    })
 
 result = {
     "version": "1.0",
