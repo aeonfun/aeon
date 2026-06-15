@@ -1,0 +1,113 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# generate-packs-json — Build packs.json (first-party pack catalog) from
+# packs.config.json + skills.json.
+#
+# Usage:
+#   ./generate-packs-json            Generate packs.json at repo root (compact)
+#   ./generate-packs-json --pretty   Pretty-print the output
+#
+# packs.json is the catalog the dashboard reads to group skills into installable
+# first-party packs. Membership is derived deterministically; every skill in
+# skills.json must land in exactly one pack or this script exits non-zero.
+# Community (external-repo) packs live separately in skill-packs.json.
+#
+# Precedence when assigning a skill to a pack:
+#   1. the `core` allowlist in packs.config.json
+#   2. packs that list explicit `skills`
+#   3. packs that claim a `category` (take that category's remaining skills)
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+
+PRETTY=false
+if [[ "${1:-}" == "--pretty" ]]; then
+  PRETTY=true
+fi
+
+PRETTY="$PRETTY" python3 - "$ROOT" <<'PY'
+import json, os, sys, datetime
+
+root = sys.argv[1]
+pretty = os.environ.get("PRETTY") == "true"
+
+with open(os.path.join(root, "packs.config.json")) as f:
+    config = json.load(f)
+with open(os.path.join(root, "skills.json")) as f:
+    catalog = json.load(f)
+
+skills = {s["slug"]: s for s in catalog["skills"]}
+assigned = {}  # slug -> pack key
+
+def claim(slug, key):
+    if slug not in skills:
+        sys.exit(f"ERROR: pack '{key}' lists unknown skill '{slug}' (not in skills.json)")
+    if slug in assigned:
+        sys.exit(f"ERROR: skill '{slug}' claimed by both '{assigned[slug]}' and '{key}'")
+    assigned[slug] = key
+
+# 1) core allowlist
+core = config["core"]
+for slug in core["skills"]:
+    claim(slug, "core")
+
+# 2) explicit-membership packs
+for p in config["packs"]:
+    for slug in p.get("skills", []):
+        claim(slug, p["key"])
+
+# 3) category packs — claim each category's remaining skills
+cat_to_pack = {p["category"]: p["key"] for p in config["packs"]
+               if p.get("category") and not p.get("skills")}
+for slug, s in skills.items():
+    if slug in assigned:
+        continue
+    key = cat_to_pack.get(s.get("category"))
+    if key:
+        assigned[slug] = key
+
+# validation — every skill must belong to exactly one pack
+unassigned = sorted(set(skills) - set(assigned))
+if unassigned:
+    sys.exit(f"ERROR: {len(unassigned)} skill(s) not assigned to any pack "
+             f"(add to a pack/core or give their category a pack): {unassigned}")
+
+def skill_entry(slug):
+    s = skills[slug]
+    return {"slug": slug, "name": s["name"],
+            "description": s["description"], "category": s["category"]}
+
+def members(key):
+    return sorted(sl for sl, k in assigned.items() if k == key)
+
+def pack_out(key, name, description, color, category, default_enabled):
+    return {"key": key, "name": name, "description": description,
+            "color": color, "category": category, "kind": "first-party",
+            "default_enabled": default_enabled,
+            "skills": [skill_entry(sl) for sl in members(key)]}
+
+out_packs = [pack_out("core", core["name"], core["description"], core["color"],
+                      "core", core.get("default_enabled", []))]
+for p in config["packs"]:
+    out_packs.append(pack_out(p["key"], p["name"], p["description"], p["color"],
+                              p.get("category"), p.get("default_enabled", [])))
+
+result = {
+    "version": "1.0",
+    "generated": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "repo": catalog.get("repo", "aaronjmars/aeon"),
+    "total_packs": len(out_packs),
+    "total_skills": len(assigned),
+    "packs": out_packs,
+}
+
+out = os.path.join(root, "packs.json")
+with open(out, "w") as f:
+    if pretty:
+        json.dump(result, f, indent=2)
+    else:
+        json.dump(result, f, separators=(",", ":"))
+    f.write("\n")
+
+print(f"Generated {out} with {len(out_packs)} packs / {len(assigned)} skills")
+PY

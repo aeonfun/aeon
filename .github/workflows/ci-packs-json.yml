@@ -1,0 +1,51 @@
+name: ci-packs-json
+
+# packs.json is the canonical FIRST-PARTY pack catalog (the dashboard groups
+# skills into installable packs from it). It is generated from packs.config.json
+# + skills.json via ./generate-packs-json and must be committed in sync. This
+# workflow fails any PR that changes a generator input without committing the
+# regenerated manifest, so pack drift can't ship silently.
+#
+# The generator also enforces structural invariants (every skill lands in exactly
+# one pack; no dup claims; no unknown slugs), so a stale-input PR that would leave
+# a skill unassigned fails here too. Same shape as ci-skills-json.yml; the only
+# normalized-out field is the `generated` timestamp.
+
+on:
+  pull_request:
+    paths:
+      - 'packs.config.json'
+      - 'skills.json'
+      - 'generate-packs-json'
+      - 'packs.json'
+  push:
+    branches: [main]
+    paths:
+      - 'packs.config.json'
+      - 'skills.json'
+      - 'generate-packs-json'
+      - 'packs.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Regenerate packs.json and diff (ignoring timestamp)
+        run: |
+          set -euo pipefail
+          norm() {
+            sed -E -e 's/"generated":"[^"]*"/"generated":""/' "$1"
+          }
+          norm packs.json > /tmp/packs.committed.json
+          ./generate-packs-json
+          norm packs.json > /tmp/packs.regenerated.json
+          if ! diff -u /tmp/packs.committed.json /tmp/packs.regenerated.json; then
+            echo "::error::packs.json is stale — run ./generate-packs-json and commit the result (the 'generated' timestamp is ignored by this check)."
+            exit 1
+          fi
+          echo "packs-json: OK — committed manifest matches a fresh regen (timestamp aside)."

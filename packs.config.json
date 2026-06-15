@@ -1,0 +1,94 @@
+{
+  "version": "1.0",
+  "description": "Hand-authored source of truth for FIRST-PARTY skill packs. `generate-packs-json` reads this + skills.json and emits packs.json (the catalog the dashboard reads). Community packs live separately in skill-packs.json. Every skill in skills.json must land in exactly one pack here, or the generator fails. Membership precedence: (1) the `core` allowlist, (2) packs that list explicit `skills`, (3) packs that claim a `category`'s remainder.",
+  "core": {
+    "name": "Core",
+    "description": "The load-bearing set every Aeon fork ships with: self-evolution (author + improve skills), self-healing (health/repair/evals), memory + liveness, setup, a cost guardrail, and two broadly-useful default outputs. Always present; not installable/removable as a pack.",
+    "color": "#E5484D",
+    "default_enabled": ["heartbeat", "digest"],
+    "skills": [
+      "create-skill",
+      "self-improve",
+      "skill-health",
+      "skill-repair",
+      "skill-evals",
+      "autoresearch",
+      "config-validator",
+      "heartbeat",
+      "onboard",
+      "cost-report",
+      "reflect",
+      "digest",
+      "priority-brief"
+    ]
+  },
+  "packs": [
+    {
+      "key": "fleet",
+      "name": "Fleet & Replication",
+      "description": "Multi-agent autonomy: spawn and coordinate sub-agents, score the fleet, roll out features, distribute and reward on-chain, and scan for vulnerabilities. Power-user automation a fresh fork doesn't need on day one.",
+      "color": "#30A46C",
+      "category": null,
+      "skills": [
+        "spawn-instance",
+        "fleet-control",
+        "fleet-scorecard",
+        "contributor-reward",
+        "distribute-tokens",
+        "deploy-prototype",
+        "external-feature",
+        "feature",
+        "vuln-scanner"
+      ]
+    },
+    {
+      "key": "research",
+      "name": "Research & Content",
+      "description": "Digests, deep research, trend and framework tracking, paper/HN/RSS/Reddit/Telegram summaries — turn a firehose of sources into signal.",
+      "color": "#8B5CF6",
+      "category": "research"
+    },
+    {
+      "key": "dev",
+      "name": "Dev & Code",
+      "description": "GitHub and repo automation: PR/issue triage, review, merges, releases, changelogs, repo health and ecosystem mapping.",
+      "color": "#3B82F6",
+      "category": "dev"
+    },
+    {
+      "key": "markets",
+      "name": "Crypto & Markets",
+      "description": "Token, DeFi, and prediction-market monitoring: price/volume alerts, on-chain activity, narrative tracking, and market context.",
+      "color": "#FF6B1A",
+      "category": "crypto"
+    },
+    {
+      "key": "hound",
+      "name": "Hound — Onchain Security",
+      "description": "On-chain forensics and risk: rug/honeypot/LP-lock checks, contract and approval audits, deployer tracing, fund-flow and wallet clustering.",
+      "color": "#EAB308",
+      "category": "onchain-security"
+    },
+    {
+      "key": "social",
+      "name": "Social & Writing",
+      "description": "Drafting and distribution: tweets/threads, replies, syndication, campaigns, and engagement.",
+      "color": "#EC4899",
+      "category": "social"
+    },
+    {
+      "key": "productivity",
+      "name": "Productivity",
+      "description": "Personal ops: routines, goal/idea capture and validation, retrospectives, deal flow, and follow-ups.",
+      "color": "#06B6D4",
+      "category": "productivity"
+    },
+    {
+      "key": "agent-ops",
+      "name": "Agent Ops",
+      "description": "Aeon's instrumentation: skill analytics/health/graphing, capability mapping, spend monitoring, memory housekeeping, fork health, and registry tooling.",
+      "color": "#9CA3AF",
+      "category": "meta"
+    }
+  ]
+}
