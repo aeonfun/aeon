@@ -100,9 +100,21 @@ export default function Dashboard() {
   }, [])
   const refreshRuns = useCallback(async () => { try { const r = await fetch('/api/runs'); if (r.ok) setRuns((await r.json() as RunsResponse).runs) } catch {} }, [])
   useEffect(() => { fetchData() }, [fetchData])
-  // Restore the operator's enabled-pack selection from a prior visit (Core is
-  // always on, so it's merged in even if absent from storage).
-  useEffect(() => { try { const raw = localStorage.getItem('aeon.enabledPacks'); if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) setEnabledPacks(Array.from(new Set(['core', ...arr.filter((k: unknown): k is string => typeof k === 'string')]))) } } catch {} }, [])
+  // Restore the operator's enabled-pack selection from a prior visit, scoped to
+  // THIS repo (Core is always on). Per-repo keying so testing multiple forks on
+  // the same localhost doesn't bleed one fork's pack selection into another — a
+  // fresh fork starts Core-only. Runs once the repo is known.
+  const restoredRepoRef = useRef<string | null>(null)
+  useEffect(() => {
+    if (!repo || restoredRepoRef.current === repo) return
+    restoredRepoRef.current = repo
+    let saved: string[] = []
+    try {
+      const raw = localStorage.getItem(`aeon.enabledPacks:${repo}`)
+      if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) saved = arr.filter((k: unknown): k is string => typeof k === 'string') }
+    } catch {}
+    setEnabledPacks(Array.from(new Set(['core', ...saved])))
+  }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
   useEffect(() => { setFeedLoading(true); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : { outputs: [] }).then(d => setOutputs(d.outputs || [])).finally(() => setFeedLoading(false)) }, [feedKey])
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
@@ -137,7 +149,7 @@ export default function Dashboard() {
     setEnabledPacks(prev => {
       const has = prev.includes(key)
       const next = has ? prev.filter(k => k !== key) : [...prev, key]
-      try { localStorage.setItem('aeon.enabledPacks', JSON.stringify(next.filter(k => k !== 'core'))) } catch {}
+      try { if (repo) localStorage.setItem(`aeon.enabledPacks:${repo}`, JSON.stringify(next.filter(k => k !== 'core'))) } catch {}
       flash(`${PACK_BY_KEY[key]?.label || key} ${has ? 'hidden' : 'revealed'}`)
       return next
     })
