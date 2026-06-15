@@ -24,11 +24,11 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
-  // Default the roster to the active team — only enabled skills. With packs, the
-  // full 180+ catalog is browsed/enabled from the Packs view, so the sidebar
-  // starts focused on what's actually on duty. Toggle "Enabled" off (or "All")
-  // to see the rest.
-  const [enabledOnly, setEnabledOnly] = useState(true)
+  // The roster only ever holds skills from *enabled packs* (Core by default —
+  // the parent filters before passing `skills`), so it's already focused. We
+  // show all of those skills (enabled or not); "Enabled" is an opt-in filter,
+  // off by default, to narrow to what's actually on duty.
+  const [enabledOnly, setEnabledOnly] = useState(false)
   const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)

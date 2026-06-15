@@ -8,11 +8,12 @@ interface PacksPanelProps {
   firstParty: Pack[]
   community: CommunityPack[]
   skills: Skill[]
+  enabledPacks: string[]
   loading: boolean
   busy: Record<string, boolean>
+  onTogglePack: (key: string) => void
   onToggleSkill: (slug: string, enabled: boolean) => void
   onSelectSkill: (slug: string) => void
-  onShowPack: (key: string) => void
 }
 
 function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
@@ -33,25 +34,27 @@ function trustTone(level?: string): string {
   return 'text-primary-40 border-[rgba(250,250,250,0.18)]'
 }
 
-export function PacksPanel({ firstParty, community, skills, loading, busy, onToggleSkill, onSelectSkill, onShowPack }: PacksPanelProps) {
+export function PacksPanel({ firstParty, community, skills, enabledPacks, loading, busy, onTogglePack, onToggleSkill, onSelectSkill }: PacksPanelProps) {
   const [expanded, setExpanded] = useState<string | null>(null)
 
   // Live enabled state comes from the skills roster (single source of truth), so
   // toggling a skill updates the counts here instantly. Hide declared-but-empty
   // packs (e.g. the Lab catch-all when nothing is unsorted).
   const enabledBySlug = new Map(skills.map(s => [s.name, s.enabled]))
+  const isPackOn = (key: string) => key === 'core' || enabledPacks.includes(key)
   const visiblePacks = firstParty.filter(p => p.total > 0).map(p => {
     const members = p.skills.map(s => ({ ...s, enabled: enabledBySlug.get(s.slug) ?? false }))
     return { ...p, skills: members, enabled: members.filter(m => m.enabled).length }
   })
   const totalSkills = visiblePacks.reduce((n, p) => n + p.total, 0)
   const onDuty = visiblePacks.reduce((n, p) => n + p.enabled, 0)
+  const packsOn = visiblePacks.filter(p => isPackOn(p.key)).length
 
   const stats = [
     { label: 'Packs', value: visiblePacks.length },
+    { label: 'Enabled', value: packsOn, tone: 'text-eva-green' },
     { label: 'Skills', value: totalSkills },
     { label: 'On duty', value: onDuty, tone: 'text-eva-green' },
-    { label: 'Community', value: community.length },
   ]
 
   if (loading) {
@@ -77,7 +80,7 @@ export function PacksPanel({ firstParty, community, skills, loading, busy, onTog
             PACKS
           </h1>
           <p className="mt-4 max-w-xl text-sm text-primary-70 leading-relaxed">
-            Curated bundles of skills. Open a pack to see what's inside, then switch on the ones you want — enabling is per-skill. Core is always present; everything else is opt-in.
+            Curated bundles of skills. By default you only see <span className="text-aeon-fg">Core</span> — enable a pack to reveal its skills across the sidebar and HQ. Enabling a pack changes what you <span className="text-aeon-fg">see</span>, not what runs; switch individual skills on to put them on duty.
           </p>
         </div>
         <dl className="relative z-10 grid grid-cols-2 sm:grid-cols-4 border-t border-[rgba(250,250,250,0.10)]">
@@ -95,19 +98,21 @@ export function PacksPanel({ firstParty, community, skills, loading, busy, onTog
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[rgba(250,250,250,0.10)] border border-[rgba(250,250,250,0.10)]">
           {visiblePacks.map(pack => {
             const isCore = pack.key === 'core'
+            const on = isPackOn(pack.key)
             const open = expanded === pack.key
             return (
               <div key={pack.key} className="bg-aeon-bg flex flex-col">
                 <div className="px-6 py-5 flex flex-col gap-3 flex-1">
                   <div className="flex items-start gap-3">
-                    <span className="mt-1 w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: pack.color }} />
+                    <span className="mt-1 w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: on ? pack.color : 'rgba(250,250,250,0.18)' }} />
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="font-display uppercase tracking-wide text-aeon-fg text-base leading-tight">{pack.name}</span>
                         {isCore && <span className="text-[9px] font-mono uppercase tracking-[0.14em] px-1.5 py-0.5 border border-aeon-red/40 text-aeon-red">core</span>}
                       </div>
                       <div className="text-[11px] text-primary-40 font-mono mt-1 uppercase tracking-[0.14em]">
-                        {pack.enabled} / {pack.total} on duty
+                        {pack.total} skill{pack.total === 1 ? '' : 's'}
+                        {pack.enabled > 0 && <span className="text-eva-green"> · {pack.enabled} on duty</span>}
                       </div>
                     </div>
                   </div>
@@ -115,17 +120,18 @@ export function PacksPanel({ firstParty, community, skills, loading, busy, onTog
 
                   <div className="mt-auto flex items-center gap-2 pt-2">
                     <button
+                      onClick={() => onTogglePack(pack.key)}
+                      disabled={isCore}
+                      title={isCore ? 'Core is always shown' : on ? 'Hide this pack’s skills from the dashboard' : 'Reveal this pack’s skills across the sidebar and HQ'}
+                      className={`text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target disabled:cursor-default ${on ? 'text-eva-green border-eva-green/50 bg-eva-green/10' : 'text-primary-50 border-[rgba(250,250,250,0.18)] hover:text-primary-100 hover:border-[rgba(250,250,250,0.3)]'}`}
+                    >
+                      {isCore ? 'Always on' : on ? '✓ Enabled' : 'Enable pack'}
+                    </button>
+                    <button
                       onClick={() => setExpanded(open ? null : pack.key)}
                       className="text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
                     >
-                      {open ? 'Hide' : `${pack.total} skill${pack.total === 1 ? '' : 's'}`}
-                    </button>
-                    <button
-                      onClick={() => onShowPack(pack.key)}
-                      title="Filter the sidebar roster to this pack"
-                      className="text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
-                    >
-                      In sidebar →
+                      {open ? 'Hide skills' : 'View skills'}
                     </button>
                   </div>
                 </div>

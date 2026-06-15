@@ -8,7 +8,7 @@ import type {
   UploadResponse, ErrorResponse, PacksResponse,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
-import { MODELS, AUTH_SECRETS } from '../lib/constants'
+import { MODELS, AUTH_SECRETS, PACK_BY_KEY } from '../lib/constants'
 import { displayName } from '../lib/utils'
 import TargetCursor from '../components/ui/TargetCursor'
 import { LoadingScreen } from '../components/LoadingScreen'
@@ -57,6 +57,11 @@ export default function Dashboard() {
 
   const [packs, setPacks] = useState<PacksResponse | null>(null)
   const [packsLoaded, setPacksLoaded] = useState(false)
+  // Which packs are *visible* across the dashboard. A pack is a visibility lens:
+  // by default only Core shows everywhere; enabling a pack reveals its skills in
+  // the sidebar + HQ. Pure client-side view preference — it never changes what
+  // runs (that's the per-skill `enabled` toggle in aeon.yml). Persisted below.
+  const [enabledPacks, setEnabledPacks] = useState<string[]>(['core'])
 
   const [showImport, setShowImport] = useState(false)
   const [authLoading, setAuthLoading] = useState(false)
@@ -95,6 +100,9 @@ export default function Dashboard() {
   }, [])
   const refreshRuns = useCallback(async () => { try { const r = await fetch('/api/runs'); if (r.ok) setRuns((await r.json() as RunsResponse).runs) } catch {} }, [])
   useEffect(() => { fetchData() }, [fetchData])
+  // Restore the operator's enabled-pack selection from a prior visit (Core is
+  // always on, so it's merged in even if absent from storage).
+  useEffect(() => { try { const raw = localStorage.getItem('aeon.enabledPacks'); if (raw) { const arr = JSON.parse(raw); if (Array.isArray(arr)) setEnabledPacks(Array.from(new Set(['core', ...arr.filter((k: unknown): k is string => typeof k === 'string')]))) } } catch {} }, [])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
   useEffect(() => { setFeedLoading(true); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : { outputs: [] }).then(d => setOutputs(d.outputs || [])).finally(() => setFeedLoading(false)) }, [feedKey])
   useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
@@ -121,10 +129,19 @@ export default function Dashboard() {
   const saveSecret = async (n: string, value: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await postJson('/api/secrets', { name: n, value }); if (ok) { setSecrets(s => { const e = s.some(x => x.name === n); if (e) return s.map(x => x.name === n ? { ...x, isSet: true } : x); return [...s, { name: n, group: 'Skill Keys', description: 'Custom', isSet: true }] }); flash(`${n} saved`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const deleteSecret = async (n: string) => { setBusy(b => ({ ...b, [`sec-${n}`]: true })); try { const { ok } = await del('/api/secrets', { name: n }); if (ok) { setSecrets(s => s.map(x => x.name === n ? { ...x, isSet: false } : x)); flash(`${n} removed`) } } finally { setBusy(b => ({ ...b, [`sec-${n}`]: false })) } }
   const importSkill = async (files: UploadFile[], name?: string, category?: string) => { const { ok, data } = await postJson<UploadResponse>('/api/upload', { files, name, category }); if (ok) { flash(`${displayName(data.name)} hired`); fetchData() } }
-  // From the Packs view: filter the sidebar roster to a pack and jump to HQ so
-  // you can scan and enable its skills in context. (Enabling is per-skill via the
-  // existing toggleSkill — a pack is a lens, not a bulk switch.)
-  const showPack = (key: string) => { setSelectedSkill(null); setCategoryFilter(key); setView('hq') }
+  // Enable/disable a pack's *visibility* (not its skills). Core is always on.
+  // Toggling reveals or hides the pack's skills across the sidebar + HQ; it's a
+  // view preference, persisted to localStorage, with zero effect on what runs.
+  const togglePack = (key: string) => {
+    if (key === 'core') return
+    setEnabledPacks(prev => {
+      const has = prev.includes(key)
+      const next = has ? prev.filter(k => k !== key) : [...prev, key]
+      try { localStorage.setItem('aeon.enabledPacks', JSON.stringify(next.filter(k => k !== 'core'))) } catch {}
+      flash(`${PACK_BY_KEY[key]?.label || key} ${has ? 'hidden' : 'revealed'}`)
+      return next
+    })
+  }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/strategy', { content }); if (ok) { setStrategy(content); flashSynced('Strategy saved', data) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const buildStrategy = async (sources: StrategySources) => { setStrategyBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/strategy/build', { ...sources, model }); if (ok) { flash('Strategy-builder started'); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setStrategyBuilding(false) } }
   const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/mcp', { servers }); if (ok) { setMcpServers(servers); flashSynced('MCP servers saved', data) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
@@ -142,7 +159,11 @@ export default function Dashboard() {
   // Any model/provider key set means Aeon can authenticate — the "Auth" CTA hides.
   // Derived from live `secrets` so it reacts the instant a key is saved or removed.
   const hasModelKey = secrets.some(s => s.isSet && AUTH_SECRETS.includes(s.name))
-  const enabledCount = skills.filter(s => s.enabled).length
+  // Skills visible across the dashboard = those in an enabled pack (Core always
+  // on). The sidebar + HQ render this; the Packs view keeps the full roster so
+  // you can enable more. Counts track what's visible, so the UI stays consistent.
+  const visibleSkills = skills.filter(s => enabledPacks.includes(s.pack || 'lab'))
+  const enabledCount = visibleSkills.filter(s => s.enabled).length
   const workingCount = runs.filter(r => r.status === 'in_progress').length
 
   if (loading) return <LoadingScreen />
@@ -156,7 +177,7 @@ export default function Dashboard() {
       <LeftSidebar
         view={view} setView={(v) => { setView(v); setSelectedSkill(null) }}
         selectedSkill={selectedSkill} setSelectedSkill={setSelectedSkill}
-        skills={skills} runs={runs} secrets={secrets} repo={repo}
+        skills={visibleSkills} runs={runs} secrets={secrets} repo={repo}
         enabledCount={enabledCount} workingCount={workingCount}
         categoryFilter={categoryFilter} setCategoryFilter={setCategoryFilter}
         onSkillSelect={(name) => { setSelectedSkill(name); setView('hq') }}
@@ -186,10 +207,10 @@ export default function Dashboard() {
             <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
           )}
           {view === 'hq' && !selectedSkill && (
-            <HQOverview skills={skills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />
+            <HQOverview skills={visibleSkills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} />
           )}
           {view === 'packs' && !selectedSkill && (
-            <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} skills={skills} loading={!packsLoaded} busy={busy} onToggleSkill={toggleSkill} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onShowPack={showPack} />
+            <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} skills={skills} enabledPacks={enabledPacks} loading={!packsLoaded} busy={busy} onTogglePack={togglePack} onToggleSkill={toggleSkill} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} />
           )}
           {skill && (
             <SkillDetail

@@ -1,16 +1,19 @@
 # Skill packs
 
 Aeon ships **180+ skills**, but most forks only ever run a handful. Packs make
-that manageable: a small **core** is always present, and everything else is
-grouped into **packs** you browse from the dashboard — open a pack to see what's
-inside, then switch on the individual skills you want. A pack is a lens for
-discovery, not a bulk on-switch; enabling is always per-skill.
+that manageable: by default the dashboard shows only the small **core** set —
+everything else is grouped into **packs** that stay hidden until you enable them.
+**Enabling a pack reveals its skills** across the sidebar and HQ. That's a
+visibility switch (a per-browser preference), not a run switch — to actually put
+a skill on duty you still flip its own on/off toggle. Enabling is always
+per-skill.
 
 There are two kinds:
 
 - **First-party packs** — maintained in this repo. Defined as *data*, not
-  separate repos: a skill's pack is derived from its category. "Installing" a
-  first-party pack just enables its skills in `aeon.yml` — nothing is downloaded.
+  separate repos: a skill's pack is derived from its category. Enabling a
+  first-party pack just **reveals** its skills in the dashboard — nothing is
+  downloaded, and nothing runs until you turn individual skills on.
 - **Community packs** — maintained by others in external repos, listed in
   [`skill-packs.json`](../skill-packs.json) and installed with
   [`./install-skill-pack`](../install-skill-pack).
@@ -126,16 +129,19 @@ both manifests (CI enforces they're fresh).
 
 ## In the dashboard
 
+By default the dashboard shows only **Core** — its skills appear in the sidebar
+and HQ, and nothing else does. Enable packs to reveal more.
+
 The **Packs** view (`/api/packs`):
 
-- **Your packs** — first-party pack cards with live "X / Y on duty" counts.
-  Expand a card to see its skills and switch them **on individually** (an inline
-  toggle per skill), or hit **In sidebar →** to filter the left roster to that
-  pack and enable them in context. There is no bulk "enable pack" — a pack is a
-  lens, not a switch.
-- The **left sidebar** groups the roster by pack and defaults to showing only
-  enabled skills; pick a pack chip to reveal all of its skills (enabled or not)
-  so you can turn them on.
+- **Your packs** — a card per first-party pack. Hit **Enable pack** to reveal
+  that pack's skills across the sidebar and HQ (**Core** is always on). It's a
+  visibility toggle, stored per-browser, that never changes what runs. **View
+  skills** expands the card to list the pack's skills, each with its own on/off
+  toggle to actually put it on duty.
+- The **left sidebar** and **HQ** only show skills from enabled packs, grouped by
+  pack. The sidebar's **Enabled** chip is an optional filter (off by default)
+  that narrows the roster to skills on duty.
 - **Community packs** — browse the registry with author, trust level, required
   secrets/capabilities, and a copy-paste `./install-skill-pack <repo>` command.
 
