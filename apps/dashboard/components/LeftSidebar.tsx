@@ -24,7 +24,11 @@ interface LeftSidebarProps {
 
 export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secrets, repo, enabledCount, workingCount, categoryFilter, setCategoryFilter, onSkillSelect, onShowImport }: LeftSidebarProps) {
   const [skillSearch, setSkillSearch] = useState('')
-  const [enabledOnly, setEnabledOnly] = useState(false)
+  // Default the roster to the active team — only enabled skills. With packs, the
+  // full 180+ catalog is browsed/enabled from the Packs view, so the sidebar
+  // starts focused on what's actually on duty. Toggle "Enabled" off (or "All")
+  // to see the rest.
+  const [enabledOnly, setEnabledOnly] = useState(true)
   const [availableOnly, setAvailableOnly] = useState(false)
 
   // A skill is "key-blocked" when it's enabled but a required (non-optional)
@@ -36,6 +40,17 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
 
   // "Available" = runnable out of the box: every declared key is optional.
   const needsNoKey = (s: Skill) => (s.requires ?? []).every(r => r.optional)
+
+  // How many skills survive the active filters — drives the empty-state hint so
+  // the default enabled-only roster never looks broken when little is on duty.
+  const matchesFilters = (s: Skill) => {
+    if (categoryFilter && (s.category || 'meta') !== categoryFilter) return false
+    if (skillSearch && !(displayName(s.name).toLowerCase().includes(skillSearch.toLowerCase()) || s.name.includes(skillSearch.toLowerCase()))) return false
+    if (enabledOnly && !s.enabled) return false
+    if (availableOnly && !needsNoKey(s)) return false
+    return true
+  }
+  const visibleCount = skills.filter(matchesFilters).length
 
   return (
     <div className="w-[240px] border-r border-[rgba(250,250,250,0.10)] flex flex-col shrink-0 bg-aeon-panel">
@@ -171,6 +186,22 @@ export function LeftSidebar({ view, setView, selectedSkill, skills, runs, secret
             </div>
           )
         })}
+
+        {visibleCount === 0 && (
+          <div className="px-4 py-10 text-center">
+            <p className="text-[11px] font-mono uppercase tracking-[0.14em] text-primary-40">
+              {enabledOnly ? 'No skills on duty' : 'No skills match'}
+            </p>
+            {enabledOnly && (
+              <button
+                onClick={() => setEnabledOnly(false)}
+                className="mt-2 text-[10px] font-mono uppercase tracking-[0.14em] text-primary-50 hover:text-eva-orange transition-colors cursor-target"
+              >
+                Show all skills
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
