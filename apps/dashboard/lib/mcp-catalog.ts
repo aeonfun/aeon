@@ -40,6 +40,13 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     logo: 'https://pbs.twimg.com/profile_images/2047719472455438336/CFrEyoNZ_400x400.jpg',
     description: 'BlueAgent - the AI founder console for Base builders: idea, build, audit, ship, and raise, from concept to deployment.',
   },
+  {
+    slug: 'robinhood-trading',
+    name: 'Robinhood Trading',
+    url: 'https://agent.robinhood.com/mcp/trading',
+    logo: 'https://pbs.twimg.com/profile_images/1844399977482813442/1fTlYz2c_400x400.png',
+    description: 'Robinhood Agentic Trading - read your portfolio, buying power, positions, and order history, and place trades from your agent. Remote HTTP MCP with OAuth; trades execute in a dedicated Agentic brokerage account you authorize. You are responsible for every order your agent places.',
+  },
 ]
 
 export const MCP_BY_SLUG: Record<string, McpCatalogEntry> =
