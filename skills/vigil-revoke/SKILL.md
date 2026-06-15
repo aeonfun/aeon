@@ -1,5 +1,6 @@
 ---
 name: VIGIL Approval Revoker
+category: onchain-security
 description: Revoke a single live ERC-20 approval on Base via Bankr. Confirms the approval is live, then submits `approve(spender, 0)` and waits for receipt. workflow_dispatch only — `var` is the `wallet:spender:token` triplet returned by VIGIL / approval-audit / wallet-risk. Closes the detection→revoke loop that VIGIL PR #323 explicitly split out.
 var: ""
 tags: [crypto, security, base, defi]

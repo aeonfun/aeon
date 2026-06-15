@@ -1,5 +1,6 @@
 ---
 name: Schedule Ads
+category: social
 description: Schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn via the AdManage.ai API, driven by a declarative config file. Launches PAUSED by default — never auto-activates live spend.
 schedule: "0 8 * * *"
 commits: true

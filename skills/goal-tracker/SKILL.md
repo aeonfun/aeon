@@ -1,5 +1,6 @@
 ---
 name: Goal Tracker
+category: productivity
 description: Compare current progress against goals with quantified status, velocity, trend, and a concrete next action per goal
 var: ""
 tags: [meta]

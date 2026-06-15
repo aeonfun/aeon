@@ -1,5 +1,6 @@
 ---
 name: Wallet Risk
+category: onchain-security
 description: Risk audit of this agent's own Base wallets — live ERC-20 approvals (unlimited flagged), honeypot simulation on every token with a live approval, severity-tiered findings. Keyless via Base RPC. First scheduled consumer of the HoundFlow security pack against `.x402books/wallets.json`.
 var: ""
 tags: [crypto, security, base, meta]

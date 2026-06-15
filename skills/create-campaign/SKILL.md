@@ -1,5 +1,6 @@
 ---
 name: Create Campaign
+category: social
 description: Provision Meta campaigns and ad sets on AdManage.ai from a declarative config. Runs on-demand — creates entities PAUSED, writes the returned IDs back into state so schedule-ads can launch into them.
 commits: true
 permissions:

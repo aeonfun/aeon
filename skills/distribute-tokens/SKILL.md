@@ -1,5 +1,6 @@
 ---
 name: Distribute Tokens
+category: core
 description: Send tokens to a list of contributors via Bankr Wallet API with per-recipient idempotency, two-phase resolve→execute, dry-run, and recovery from partial runs
 var: ""
 tags: [crypto]

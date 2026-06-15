@@ -1,5 +1,6 @@
 ---
 name: Atrium Watch
+category: meta
 description: Diff of the Atrium marketplace catalog at https://atriumhermes.tech/.well-known/skills/index.json against the prior snapshot — surfaces newly-published skills, removed skills, and updated descriptions. Supply-side complement to sparkleware-catalog (curated skill-packs.json registry) and skill-update (version drift of installed skills).
 var: ""
 tags: [dev, community]

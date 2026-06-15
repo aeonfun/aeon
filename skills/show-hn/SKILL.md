@@ -1,5 +1,6 @@
 ---
 name: Show HN
+category: social
 description: Draft a Show HN post (plus shorter Reddit r/MachineLearning + r/selfhosted variants) from the live repo state — README, SHOWCASE, recent repo-articles + project-lens, real autonomous behavior examples from logs, and current stars/forks/skill counts. Operator pastes; agent writes.
 var: ""
 tags: [dev]

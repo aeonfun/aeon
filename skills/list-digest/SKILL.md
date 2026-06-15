@@ -1,5 +1,6 @@
 ---
 name: List Digest
+category: research
 description: Cross-list narrative resonance + signal-scored top tweets from tracked X lists in the past 24 hours
 var: ""
 tags: [social]

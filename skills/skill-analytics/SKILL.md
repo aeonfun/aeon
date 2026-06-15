@@ -1,5 +1,6 @@
 ---
 name: skill-analytics
+category: meta
 description: Fleet-level skill-run analytics — ranks skills by 7d run count, surfaces success rates, exit-taxonomy distribution, and anomaly flags (significance-gated)
 var: ""
 tags: [meta]

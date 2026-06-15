@@ -1,5 +1,6 @@
 ---
 name: fleet-state
+category: meta
 description: Fleet-state digest — synthesises fork-cohort, contributor-spotlight, and fork-release into one "state of the fleet" narrative
 var: ""
 tags: [meta, community]

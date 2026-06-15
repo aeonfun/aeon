@@ -1,5 +1,6 @@
 ---
 name: Tweet Digest
+category: research
 description: Account-based digest of recent tweets from tracked X/Twitter accounts. Sibling to fetch-tweets (keyword) and tweet-roundup (topic).
 var: ""
 tags: [social]

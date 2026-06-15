@@ -1,5 +1,6 @@
 ---
 name: Agent Buzz
+category: social
 description: Curated AI-agent tweets, clustered into narratives with insight summaries
 var: ""
 tags: [social]

@@ -1,5 +1,6 @@
 ---
 name: LP Lock
+category: onchain-security
 description: Resolve a token's main liquidity pool on Base and classify whether its LP is burned/locked or removable (rug-pull risk). Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]

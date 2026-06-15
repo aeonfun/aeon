@@ -1,5 +1,6 @@
 ---
 name: topic-momentum
+category: research
 description: Content-gap scanner — cross-references rising narrative signals (narrative-tracker, tweet-roundup, paper-pick, etc.) against recent article history and surfaces the top 3 uncovered angles to write next.
 var: ""
 tags: [content, meta]

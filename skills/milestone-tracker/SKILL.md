@@ -1,5 +1,6 @@
 ---
 name: milestone-tracker
+category: productivity
 description: Progress tracking for key product and growth milestones — celebrates crossings, alerts on approaches, surfaces stalls
 tags: [meta, projects]
 ---

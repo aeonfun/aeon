@@ -1,5 +1,6 @@
 ---
 name: Framework Watch
+category: research
 description: Competitive-intelligence digest on the AI agent framework space — momentum, releases, breaking changes across a curated watchlist
 var: ""
 tags: [research, dev]

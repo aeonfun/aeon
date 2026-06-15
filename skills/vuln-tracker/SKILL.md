@@ -1,5 +1,6 @@
 ---
 name: Vuln Tracker
+category: dev
 description: Status check on every PR / advisory / queued draft produced by vuln-scanner — surfaces merges, stale opens, maintainer responses needing reply, and queued-too-long carve-outs
 tags: [meta, security, github]
 depends_on: [vuln-scanner]

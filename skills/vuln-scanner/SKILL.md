@@ -1,5 +1,6 @@
 ---
 name: Vuln Scanner
+category: core
 description: Audit trending repos for real security vulnerabilities and disclose responsibly via PVR or dependency PRs
 var: ""
 tags: [dev, security]

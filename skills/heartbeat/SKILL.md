@@ -1,5 +1,6 @@
 ---
 name: Heartbeat
+category: meta
 description: Proactive ambient check — surface anything worth attention
 var: ""
 tags: [meta]

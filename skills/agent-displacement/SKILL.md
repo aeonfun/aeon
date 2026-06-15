@@ -1,5 +1,6 @@
 ---
 name: agent-displacement
+category: research
 description: Tracker of AI agent substitution signals — which roles, companies, and industries show real headcount displacement. Named roles + real deployments only.
 schedule: "0 11 * * 0"
 commits: true

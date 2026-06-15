@@ -1,5 +1,6 @@
 ---
 name: repo-article
+category: dev
 description: Thesis-driven article about a watched repo — falsifiable claim, cited evidence, self-edit quality gate
 var: ""
 tags: [dev, content]

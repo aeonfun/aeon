@@ -1,5 +1,6 @@
 ---
 name: GitHub Trending
+category: dev
 description: Curated trending GitHub repos — clustered, filtered, and labeled by momentum
 var: ""
 tags: [dev]

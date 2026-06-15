@@ -1,5 +1,6 @@
 ---
 name: Deal Flow
+category: productivity
 description: Funding round tracker across configurable verticals
 tags: [research]
 ---

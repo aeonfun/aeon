@@ -1,5 +1,6 @@
 ---
 name: Idea Capture
+category: productivity
 description: Quick note capture triggered via Telegram — restates, triages, logs, and echoes back for confirmation
 var: ""
 tags: [creative]

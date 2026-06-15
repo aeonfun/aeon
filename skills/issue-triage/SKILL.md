@@ -1,5 +1,6 @@
 ---
 name: Issue Triage
+category: dev
 description: Decision-ready triage — classify, dedupe, and emit a verdict + next action per new GitHub issue
 var: ""
 tags: [dev]

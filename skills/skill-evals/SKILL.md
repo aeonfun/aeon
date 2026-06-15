@@ -1,5 +1,6 @@
 ---
 name: Skill Evals
+category: core
 description: Validate skill outputs against assertions, diff vs prior eval to flag regressions, file issues for new failures, and queue concrete fixes
 var: ""
 tags: [meta]

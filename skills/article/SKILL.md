@@ -1,5 +1,6 @@
 ---
 name: Article
+category: research
 description: Research trending topics and write a publication-ready article
 var: ""
 tags: [content]

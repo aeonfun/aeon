@@ -1,5 +1,6 @@
 ---
 name: ecosystem-pulse
+category: dev
 description: Liveness check of the projects listed in ECOSYSTEM.md — stars/forks/last-commit recency + new releases for any project that can be matched to a GitHub repo
 var: ""
 tags: [research, dev]

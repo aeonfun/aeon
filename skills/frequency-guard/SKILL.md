@@ -1,5 +1,6 @@
 ---
 name: Frequency Guard
+category: meta
 description: Per-skill run-count watchdog — checks if any capped skills exceeded their configured daily limit and alerts on breach
 tags: [meta]
 ---

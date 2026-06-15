@@ -1,5 +1,6 @@
 ---
 name: Deployer Trace
+category: onchain-security
 description: Map every contract deployed by an address on Base, link reused patterns, and surface serial-rug signals. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]

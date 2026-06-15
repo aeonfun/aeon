@@ -1,5 +1,6 @@
 ---
 name: pm-pulse
+category: crypto
 description: Prediction-market & coordination-market tracker — volume on tracked platforms, new mechanism designs, reflexive market launches, regulatory moves
 tags: [crypto, prediction-markets, research]
 ---

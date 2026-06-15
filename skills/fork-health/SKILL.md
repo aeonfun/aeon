@@ -1,5 +1,6 @@
 ---
 name: Fork Health
+category: meta
 description: Per-fork health tier synthesizing push recency + enabled skill count + 30d PR activity into ACTIVE/WARM/STALE/QUIET buckets; fleet health ratio + top-10 ACTIVE table; silent when nothing moves
 var: ""
 tags: [meta, community]

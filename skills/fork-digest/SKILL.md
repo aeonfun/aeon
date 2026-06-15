@@ -1,5 +1,6 @@
 ---
 name: Fork Digest
+category: meta
 description: Cross-fork customization digest — surfaces where the fleet's enable/disable/var/model decisions diverge from upstream defaults
 var: ""
 tags: [meta]

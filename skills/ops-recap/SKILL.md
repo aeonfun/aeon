@@ -1,5 +1,6 @@
 ---
 name: Ops Recap
+category: productivity
 description: Operational summary — what Aeon shipped, what failed, what needs follow-up
 var: ""
 tags: [meta]

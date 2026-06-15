@@ -1,5 +1,6 @@
 ---
 name: Skill Update
+category: meta
 description: Check imported skills for upstream changes and security regressions since the version in skills.lock
 var: ""
 tags: [dev, security]

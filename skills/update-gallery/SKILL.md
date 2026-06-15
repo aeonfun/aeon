@@ -1,5 +1,6 @@
 ---
 name: Update Gallery
+category: meta
 description: Publish new or changed articles to the GitHub Pages gallery with change detection, silent on no-op weeks
 var: ""
 tags: [content]

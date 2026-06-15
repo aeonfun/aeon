@@ -1,5 +1,6 @@
 ---
 name: Reddit Digest
+category: research
 description: Detect cross-subreddit narratives — stories surfacing in multiple unrelated subs at once
 var: ""
 tags: [news]

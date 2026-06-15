@@ -1,5 +1,6 @@
 ---
 name: project-lens
+category: dev
 description: Write an article about the project through a surprising lens — connecting it to current events, trends, philosophy, or comparable projects
 var: ""
 tags: [content, dev]

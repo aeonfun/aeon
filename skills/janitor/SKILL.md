@@ -1,5 +1,6 @@
 ---
 name: Janitor
+category: meta
 description: Cleanup of accumulated temp files — .notify-* root-level files, .pending-notify-temp/, and stale .outputs/ chain artifacts older than their TTL
 tags: [meta]
 ---

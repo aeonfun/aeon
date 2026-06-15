@@ -1,5 +1,6 @@
 ---
 name: Priority Brief
+category: productivity
 description: Priority-driven briefing — the 3 things to focus on, why now, and what moved
 var: ""
 tags: [meta]

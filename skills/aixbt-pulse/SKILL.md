@@ -1,5 +1,6 @@
 ---
 name: AIXBT Pulse
+category: crypto
 description: Cross-domain market pulse from AIXBT's free grounding endpoint — crypto, macro, tradfi, geopolitics. Refreshes taxonomy references (clusters, chains) as a bonus.
 schedule: "0 9,21 * * *"
 commits: true

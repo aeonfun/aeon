@@ -21,73 +21,6 @@ if [[ "${1:-}" == "--pretty" ]]; then
   PRETTY=true
 fi
 
-# Map skill slugs to categories (compatible with Bash 3.2+)
-get_category() {
-  local slug="$1"
-  case "$slug" in
-    # Core — the load-bearing set: self-evolution & self-healing, fleet /
-    # self-replication, autonomous real-world action. Matched first.
-    autoresearch|create-skill|skill-health|skill-repair|skill-evals|self-improve) echo "core" ;;
-    spawn-instance|fleet-control|fleet-scorecard|contributor-reward|distribute-tokens) echo "core" ;;
-    external-feature|deploy-prototype|vuln-scanner) echo "core" ;;
-    # Research & Content
-    article|digest|rss-digest|hn-digest|paper-digest|paper-pick) echo "research" ;;
-    list-digest|research-brief|fetch-tweets|reddit-digest|security-digest) echo "research" ;;
-    deep-research|last30|technical-explainer|telegram-digest|channel-recap|vibecoding-digest) echo "research" ;;
-    huggingface-trending) echo "research" ;;
-    narrative-convergence) echo "research" ;;
-    agent-displacement|framework-watch|launch-radar|topic-momentum|tweet-digest) echo "research" ;;
-    mcp-pulse) echo "research" ;;
-    # Dev & Code
-    pr-review|pr-triage|github-monitor|github-releases|github-trending) echo "dev" ;;
-    issue-triage|auto-merge|changelog|code-health|search-skill) echo "dev" ;;
-    auto-workflow|push-recap|repo-pulse|repo-article|repo-actions) echo "dev" ;;
-    repo-scanner|project-lens) echo "dev" ;;
-    workflow-audit|vercel-projects) echo "dev" ;;
-    fork-fleet|fork-cohort|star-milestone) echo "dev" ;;
-    builder-map|disclosure-tracker|ecosystem-links|ecosystem-pulse) echo "dev" ;;
-    fork-release|pr-merge|skill-triage|pr-tracker) echo "dev" ;;
-    pvr-triage|pvr-watchlist|repo-revive|vuln-tracker) echo "dev" ;;
-    # Crypto & Markets
-    token-movers|token-pick|price-alert) echo "crypto" ;;
-    onchain-monitor|defi-overview|market-context|narrative-tracker) echo "crypto" ;;
-    monitor-polymarket|monitor-kalshi|unlock-monitor) echo "crypto" ;;
-    treasury-info) echo "crypto" ;;
-    aixbt-pulse|compute-pulse|pm-manipulation|pm-pulse|rwa-pulse) echo "crypto" ;;
-    x402-monitor|liquidpad-launch|ctrl|beamr-route) echo "crypto" ;;
-    base-mcp) echo "crypto" ;;
-    # Onchain Security (Hound pack + forensics)
-    rug-scan|contract-audit|wallet-profile|deployer-trace|tx-explain|holder-concentration) echo "onchain-security" ;;
-    approval-audit|fund-flow|honeypot-check|investigation-report|linked-wallets) echo "onchain-security" ;;
-    lp-lock|vigil|vigil-revoke|wallet-risk) echo "onchain-security" ;;
-    # Social
-    reply-maker|remix-tweets|refresh-x|tweet-roundup|agent-buzz|farcaster-digest) echo "social" ;;
-    show-hn|syndicate-article|product-hunt) echo "social" ;;
-    schedule-ads|create-campaign) echo "social" ;;
-    engagement-act|skill-spotlight|soul-builder) echo "social" ;;
-    # Productivity
-    priority-brief|routine|ops-recap|retrospective|shiplog) echo "productivity" ;;
-    goal-tracker|idea-capture|action-converter|tool-builder|startup-idea) echo "productivity" ;;
-    deal-flow|reg-monitor|reflect|followup-patrol) echo "productivity" ;;
-    idea-pipeline|idea-validator|milestone-tracker|strategy-builder) echo "productivity" ;;
-    # Meta / Agent
-    heartbeat|spend-monitor|cost-report|skill-leaderboard|skill-update) echo "meta" ;;
-    rss-feed|update-gallery|onboard|operator-scorecard) echo "meta" ;;
-    batch-health|config-validator|janitor|memory-dedupe) echo "meta" ;;
-    frequency-guard|self-review|signal-verdict|skill-analytics|skill-enabler) echo "meta" ;;
-    skill-freshness|skill-graph|skill-scan|star-momentum) echo "meta" ;;
-    atrium-watch|capabilities-map|sparkleware-catalog) echo "meta" ;;
-    contributor-spotlight|skill-adoption|fleet-state) echo "meta" ;;
-    contributor-leaderboard|fork-firstrun|fork-health|fork-digest|skill-gap) echo "meta" ;;
-    # Ported from aeon-aaron (PR #343)
-    beat-tracker|article-queue) echo "research" ;;
-    fear-divergence|picks-tracker) echo "crypto" ;;
-    content-performance|thread-writer|mention-radar) echo "social" ;;
-    api-health) echo "meta" ;;
-    *) echo "other" ;;
-  esac
-}
-
 # Extract schedule for a skill from aeon.yml
 get_schedule() {
   local slug="$1"
@@ -133,6 +66,12 @@ for skill_dir in "$SKILLS_DIR"/*/; do
   description=$(awk '/^---$/{n++; next} n==1 && /^description:/{sub(/^description: */, ""); print; exit}' "$skill_file")
   var=$(awk '/^---$/{n++; next} n==1 && /^var:/{sub(/^var: */, ""); gsub(/"/, ""); print; exit}' "$skill_file")
 
+  # Category is declared in each SKILL.md frontmatter — the single source of
+  # truth. A skill with no category falls back to "other"; the packs generator
+  # parks those in the Lab catch-all rather than failing.
+  category=$(awk '/^---$/{n++; next} n==1 && /^category:/{sub(/^category: */, ""); gsub(/"/, ""); print; exit}' "$skill_file")
+  [[ -z "$category" ]] && category="other"
+
   # requires: [KEY, KEY2?]  →  [{"key":"KEY","optional":false},{"key":"KEY2","optional":true}]
   # `?` suffix marks a "works better" (optional) credential; bare names are required.
   requires_raw=$(awk '/^---$/{n++; next} n==1 && /^requires:/{sub(/^requires: *\[/, ""); sub(/\].*/, ""); print; exit}' "$skill_file")
@@ -168,7 +107,6 @@ for skill_dir in "$SKILLS_DIR"/*/; do
 
   # Get metadata
   schedule=$(get_schedule "$slug")
-  category=$(get_category "$slug")
   extra_files=$(count_files "$skill_dir")
   sha=$(get_skill_sha "$slug")
   updated=$(get_skill_updated "$slug")

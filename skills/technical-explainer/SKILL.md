@@ -1,5 +1,6 @@
 ---
 name: Technical Explainer
+category: research
 description: Generate a visual technical explanation of a recent topic using Replicate for the hero image
 var: ""
 tags: [content]

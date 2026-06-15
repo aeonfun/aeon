@@ -1,5 +1,6 @@
 ---
 name: compute-pulse
+category: crypto
 description: Tracker for the AI compute market — GPU/hardware deals, inference pricing trends, decentralized compute token signals, and lab vs hyperscaler dynamics.
 schedule: "0 11 * * 6"
 commits: true

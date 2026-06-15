@@ -1,5 +1,6 @@
 ---
 name: Holder Concentration
+category: onchain-security
 description: Analyze token holder distribution on Base — top-N share, HHI concentration, LP/lock/burn exclusions, and whale clusters. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]

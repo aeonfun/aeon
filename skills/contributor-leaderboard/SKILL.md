@@ -1,5 +1,6 @@
 ---
 name: Contributor Leaderboard
+category: meta
 description: Ranking of developers contributing to the fork fleet and back upstream
 var: ""
 tags: [meta, community]

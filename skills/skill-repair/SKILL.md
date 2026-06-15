@@ -1,5 +1,6 @@
 ---
 name: Skill Repair
+category: core
 description: Diagnose and fix failing or degraded skills automatically — systemic-first triage, per-category playbooks, verification plan
 var: ""
 tags: [meta, dev]

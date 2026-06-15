@@ -1,5 +1,6 @@
 ---
 name: RSS Digest
+category: research
 description: Fetch, summarize, and deliver RSS feed highlights
 var: ""
 tags: [news]

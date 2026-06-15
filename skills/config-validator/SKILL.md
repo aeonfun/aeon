@@ -1,5 +1,6 @@
 ---
 name: Config Validator
+category: meta
 description: Validate aeon.yml and .github/workflows/aeon.yml for structural invariants that have caused past outages — checkout step ordering, duplicate skill keys, missing skill files
 tags: [meta, dev]
 ---

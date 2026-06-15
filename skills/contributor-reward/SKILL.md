@@ -1,5 +1,6 @@
 ---
 name: contributor-reward
+category: core
 description: Closes the contributor flywheel — turns the contributor-leaderboard ranking into a tier-priced rewards plan, writes it into memory/distributions.yml, and hands off to distribute-tokens for the actual on-chain send
 var: ""
 tags: [community, crypto]

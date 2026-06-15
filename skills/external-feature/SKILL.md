@@ -1,5 +1,6 @@
 ---
 name: External Feature
+category: core
 description: Proactively enhance watched repos — fix issues, add features, improve code
 var: ""
 tags: [dev, build]

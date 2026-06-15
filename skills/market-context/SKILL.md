@@ -1,5 +1,6 @@
 ---
 name: Market Context
+category: crypto
 description: Fetch live crypto macro data and update memory/topics/market-context.md
 schedule: "0 10 * * *"
 commits: true

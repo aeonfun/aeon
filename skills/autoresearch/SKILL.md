@@ -1,5 +1,6 @@
 ---
 name: Autoresearch
+category: core
 description: Evolve a skill by generating variations, evaluating them, and updating the best version
 var: ""
 tags: [meta, dev]

@@ -1,5 +1,6 @@
 ---
 name: syndicate-article
+category: social
 description: Cross-post articles to Dev.to and Farcaster with hook-driven copy and click-optimized metadata
 var: ""
 tags: [content, growth]

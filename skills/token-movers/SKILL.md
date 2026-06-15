@@ -1,5 +1,6 @@
 ---
 name: Token Movers
+category: crypto
 description: Top movers, losers, and trending coins from CoinGecko — with signal enrichment and pump-risk flags
 var: ""
 tags: [crypto]

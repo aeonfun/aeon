@@ -1,5 +1,6 @@
 ---
 name: RSS Feed Generator
+category: meta
 description: Generate an Atom XML feed from articles, validate it, and notify only when it actually changes
 var: ""
 tags: [content]

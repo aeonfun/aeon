@@ -1,5 +1,6 @@
 ---
 name: Unlock Monitor
+category: crypto
 description: Token unlock and vesting tracker — quantify supply pressure via absorption ratio, classify cliff vs linear, deliver one-line market reads
 schedule: "0 10 * * 1"
 commits: true

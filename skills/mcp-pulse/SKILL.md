@@ -1,5 +1,6 @@
 ---
 name: mcp-pulse
+category: research
 description: Tracker for the Model Context Protocol (MCP) ecosystem — new server implementations, adoption velocity, npm/GitHub signals, and protocol evolution. Thesis check — is MCP becoming the default tool-call rail for agents?
 schedule: "0 10 * * 5"
 commits: true

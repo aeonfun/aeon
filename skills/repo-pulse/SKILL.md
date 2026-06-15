@@ -1,5 +1,6 @@
 ---
 name: repo-pulse
+category: dev
 description: Report on new stars, forks, and releases for watched repos — with notable-stargazer enrichment and a one-line growth verdict
 var: ""
 tags: [dev]

@@ -1,5 +1,6 @@
 ---
 name: Skill Adoption
+category: meta
 description: Fleet skill-adoption leaderboard — per-slug count of how many POWER+ACTIVE forks have each upstream skill enabled, top-15 most-adopted and bottom-15 least-adopted by fleet penetration, silent when nothing moves
 var: ""
 tags: [meta, community]

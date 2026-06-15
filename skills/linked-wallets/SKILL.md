@@ -1,5 +1,6 @@
 ---
 name: Linked Wallets
+category: onchain-security
 description: Cluster addresses likely controlled by the same entity on Base via shared-funder and co-spend heuristics. Keyless — no explorer key needed.
 var: ""
 tags: [crypto, security, base]

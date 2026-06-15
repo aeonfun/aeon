@@ -1,5 +1,6 @@
 ---
 name: Fork Release
+category: dev
 description: Scan that celebrates when any fork of the parent repo cuts a tagged GitHub release. Silent when no fork releases in the window.
 var: ""
 tags: [meta, community]

@@ -1,5 +1,6 @@
 ---
 name: skill-leaderboard
+category: meta
 description: Ranking of which skills are most popular across CONFIGURED Aeon forks (excludes untouched templates)
 var: ""
 tags: [meta]

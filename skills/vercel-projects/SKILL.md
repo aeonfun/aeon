@@ -1,5 +1,6 @@
 ---
 name: Vercel Projects
+category: dev
 description: Triage Vercel deploy fleet — verdict, errored-first, what-changed since last snapshot
 var: ""
 tags: [dev, meta]

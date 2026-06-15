@@ -1,5 +1,6 @@
 ---
 name: Channel Recap
+category: research
 description: Recap article from a public Telegram channel — rank posts by engagement, expand on the best
 var: ""
 tags: [content]

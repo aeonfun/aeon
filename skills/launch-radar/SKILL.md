@@ -1,5 +1,6 @@
 ---
 name: launch-radar
+category: research
 description: Competitive scan — searches ProductHunt, HN Show HN, and GitHub Trending for product launches matching the operator's startup idea backlog. Flags when someone ships an idea from the list.
 var: ""
 tags: [meta, creative, ideas]

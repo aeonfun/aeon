@@ -1,5 +1,6 @@
 ---
 name: pvr-watchlist
+category: dev
 description: Probe of repos on the security watchlist — check if private vulnerability reporting has been enabled, notify when status flips, re-submit any queued advisories or flag for re-research when draft was lost
 var: ""
 tags: [security, meta]

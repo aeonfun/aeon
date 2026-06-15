@@ -1,5 +1,6 @@
 ---
 name: VIGIL Security Scanner
+category: onchain-security
 description: Onchain security scanner on Base — scan token approvals, detect honeypots, analyze contracts for rugpull indicators, and score contract safety. Keyless read-only scanning via VIGIL API. Revoke actions require Bankr auth and are gated separately.
 var: ""
 tags: [crypto, security, base, defi]

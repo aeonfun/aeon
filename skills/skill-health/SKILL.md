@@ -1,5 +1,6 @@
 ---
 name: Skill Health
+category: core
 description: Audit skill metrics, file/resolve issues in memory/issues/, and notify on state change only
 var: ""
 tags: [meta]

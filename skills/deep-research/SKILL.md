@@ -1,5 +1,6 @@
 ---
 name: Deep Research
+category: research
 description: Exhaustive multi-source synthesis on any topic with explicit source credibility tiering and per-finding confidence — analyst-grade, not aggregator-grade
 var: ""
 tags: [research]

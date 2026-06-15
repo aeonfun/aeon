@@ -1,5 +1,6 @@
 ---
 name: Skill Dependency Graph
+category: meta
 description: Generate a navigable Mermaid dependency map of all skills with change detection, per-category drill-downs, and enabled overlay
 var: ""
 tags: [meta, dev]

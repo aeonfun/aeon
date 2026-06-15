@@ -1,5 +1,6 @@
 ---
 name: PR Review
+category: dev
 description: Auto-review open PRs with severity-tagged findings, inline comments, and a one-line verdict
 var: ""
 tags: [dev]

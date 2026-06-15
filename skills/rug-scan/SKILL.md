@@ -1,5 +1,6 @@
 ---
 name: Rug Scan
+category: onchain-security
 description: Assess rug-pull risk for any token on Base — ownership, mint/freeze powers, LP lock, and holder concentration rolled into one risk verdict. Keyless via Etherscan v2 + Base RPC.
 var: ""
 tags: [crypto, security, base]

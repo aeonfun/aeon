@@ -1,5 +1,6 @@
 ---
 name: fork-cohort
+category: dev
 description: Fork-activation cohort tracker — buckets every fork by recent run activity (COLD / STALE / ACTIVE / POWER) with deltas since the prior snapshot
 var: ""
 tags: [meta, community]

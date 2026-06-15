@@ -1,5 +1,6 @@
 ---
 name: operator-scorecard
+category: meta
 description: Plain-language synthesis of agent health + community growth + economic activity — answers "was it worth it?" in one notification
 var: ""
 tags: [meta, productivity]

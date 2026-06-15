@@ -1,5 +1,6 @@
 ---
 name: Retrospective
+category: productivity
 description: KALM retrospective grounded in objective metrics, with closed-loop tracking of prior actions and SMART next actions
 var: ""
 tags: [meta]

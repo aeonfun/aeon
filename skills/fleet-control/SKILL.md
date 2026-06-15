@@ -1,5 +1,6 @@
 ---
 name: Fleet Control
+category: core
 description: Monitor managed Aeon instances — check health, dispatch skills, aggregate status
 var: ""
 tags: [dev]

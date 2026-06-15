@@ -1,5 +1,6 @@
 ---
 name: Tweet Roundup
+category: social
 description: Gist of the latest tweets on configurable topics
 var: ""
 tags: [social]

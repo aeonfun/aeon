@@ -1,5 +1,6 @@
 ---
 name: Engagement Act
+category: social
 description: Turn flagged engagement opportunities into ready-to-post replies — read recent logs, draft specific responses, send as copy-paste-ready output
 schedule: "30 9 * * *"
 commits: false

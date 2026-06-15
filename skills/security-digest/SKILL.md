@@ -1,5 +1,6 @@
 ---
 name: Security Digest
+category: research
 description: Lead with confirmed exploitation (CISA KEV), enrich with EPSS, filter GitHub Advisories to your tracked stack, output one action per item
 var: ""
 tags: [news, dev]

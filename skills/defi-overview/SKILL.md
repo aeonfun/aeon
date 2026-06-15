@@ -1,5 +1,6 @@
 ---
 name: DeFi Overview
+category: crypto
 description: DeFi read — regime verdict, biggest movers with "why it matters", sustainable vs incentive yields, fees fundamentals
 var: ""
 tags: [crypto]

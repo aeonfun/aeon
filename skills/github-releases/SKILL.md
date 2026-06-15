@@ -1,5 +1,6 @@
 ---
 name: GitHub Releases
+category: dev
 description: Upgrade-triage digest of new releases across watched AI/infra/crypto repos
 schedule: "0 8 * * *"
 commits: false

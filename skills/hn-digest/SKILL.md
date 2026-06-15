@@ -1,5 +1,6 @@
 ---
 name: HN Digest
+category: research
 description: Top HN stories filtered by interests, with comment-mined insights and themed clustering
 var: ""
 tags: [research]

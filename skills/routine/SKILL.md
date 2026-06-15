@@ -1,5 +1,6 @@
 ---
 name: Routine
+category: productivity
 description: Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run
 var: ""
 tags: [news]

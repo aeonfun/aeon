@@ -1,5 +1,6 @@
 ---
 name: Product Hunt
+category: social
 description: Draft the full Product Hunt launch asset package (tagline, description, first comment, maker comment, six-bullet feature list) from live repo state — operator reviews and submits.
 var: ""
 tags: [dev]

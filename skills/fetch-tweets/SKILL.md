@@ -1,5 +1,6 @@
 ---
 name: Fetch Tweets
+category: research
 description: Search X/Twitter for tweets about a token, keyword, username, or topic — clustered by sub-narrative
 var: ""
 tags: [social]

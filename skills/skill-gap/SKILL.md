@@ -1,5 +1,6 @@
 ---
 name: Skill Gap
+category: meta
 description: Cross-fork skill adoption digest — per-fork table of upstream skills the fork hasn't enabled, top forks by gap size called out, silent when gaps are small
 var: ""
 tags: [meta, community]

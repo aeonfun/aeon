@@ -1,5 +1,6 @@
 ---
 name: fork-fleet
+category: dev
 description: Inventory active Aeon forks, detect diverged work, surface upstream contribution candidates
 var: ""
 tags: [dev]

@@ -1,5 +1,6 @@
 ---
 name: batch-health
+category: meta
 description: Post-batch audit — checks whether all enabled scheduled skills fired in their expected window, alerts on silent misses, files issues on batch-level outages
 tags: [meta, reliability]
 ---

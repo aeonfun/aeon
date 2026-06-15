@@ -1,5 +1,6 @@
 ---
 name: Refresh X
+category: social
 description: Fetch a tracked X/Twitter account's latest tweets, cluster them, and save a decision-ready gist to memory
 var: ""
 tags: [social]

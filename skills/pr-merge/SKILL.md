@@ -1,5 +1,6 @@
 ---
 name: PR Merge
+category: dev
 description: Survey of open external PRs across watched repos — buckets each PR by touched-file risk tier (FAST_TRACK / INFRA_REVIEW / SKILL_PASS / SKILL_WARN_OR_BLOCK / CORE_REVIEW), runs skill-scan on every SKILL.md PR, emits one structured digest so the operator can clear the safest candidates first
 var: ""
 tags: [dev, community]

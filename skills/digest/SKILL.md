@@ -1,5 +1,6 @@
 ---
 name: Digest
+category: research
 description: Generate and send a digest on a configurable topic
 var: ""
 tags: [content]

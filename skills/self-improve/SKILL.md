@@ -1,5 +1,6 @@
 ---
 name: self-improve
+category: core
 description: Improve the agent itself — better skills, prompts, workflows, and config based on recent performance
 var: ""
 tags: [meta]

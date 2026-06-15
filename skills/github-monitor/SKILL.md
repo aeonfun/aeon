@@ -1,5 +1,6 @@
 ---
 name: GitHub Monitor
+category: dev
 description: Watch repos for stale PRs, new issues, and new releases — tiered by urgency with concrete next actions
 var: ""
 tags: [dev]

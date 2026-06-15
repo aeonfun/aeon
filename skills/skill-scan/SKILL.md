@@ -1,5 +1,6 @@
 ---
 name: Skill Scan
+category: meta
 description: Audit skills, workflows, and companion scripts for injection, exfiltration, traversal, and prompt-override risks with delta tracking, baseline suppression, issue filing, and per-finding remediation
 var: ""
 tags: [dev]

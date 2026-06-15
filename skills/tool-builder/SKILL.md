@@ -1,5 +1,6 @@
 ---
 name: Tool Builder
+category: productivity
 description: Build automation scripts from action-converter suggestions and recurring manual tasks
 var: ""
 tags: [dev, build]

@@ -1,5 +1,6 @@
 ---
 name: content-performance
+category: social
 description: Operator tweet performance tracker — engagement metrics, top formats, topic resonance; closes the content feedback loop in the article/tweet production pipeline
 schedule: "0 10 * * 0"
 commits: true

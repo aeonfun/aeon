@@ -1,5 +1,6 @@
 ---
 name: skill-freshness
+category: meta
 description: Audit every enabled skill's upstream file dependencies for staleness — flags chained skills about to consume yesterday's article or a long-dead topic file
 var: ""
 tags: [meta, dev]

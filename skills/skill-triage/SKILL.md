@@ -1,5 +1,6 @@
 ---
 name: Skill Triage
+category: dev
 description: Structured triage for inbound PRs that introduce or modify SKILL.md files — security scan per skill, required-secrets enumeration, cron slot-conflict check, basic quality signals, posted as one PR comment. The receipt that turns a 10-minute manual skill-PR review into a 10-second human decision
 var: ""
 tags: [dev, community]

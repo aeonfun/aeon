@@ -1,5 +1,6 @@
 ---
 name: Self Review
+category: meta
 description: Audit of what the agent did, what failed, and what to improve
 var: ""
 tags: [meta]

@@ -1,5 +1,6 @@
 ---
 name: onboard
+category: meta
 description: One-shot setup validator — runs every check from the ./onboard CLI inside the workflow and sends the resulting checklist to the configured notification channel
 var: ""
 tags: [meta]

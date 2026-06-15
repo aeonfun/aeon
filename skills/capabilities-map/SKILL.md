@@ -1,5 +1,6 @@
 ---
 name: capabilities-map
+category: meta
 description: Read-only audit of installed skills' capability coverage — maps every enabled/disabled skill against the locked 6-value taxonomy in docs/CAPABILITIES.md, flags any capability tier with zero enabled coverage as an actionable gap
 var: ""
 tags: [dev, community]

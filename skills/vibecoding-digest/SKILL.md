@@ -1,5 +1,6 @@
 ---
 name: Vibecoding Digest
+category: research
 description: Decision-ready pulse of r/vibecoding — ranked by signal score, narrative-clustered, with a one-line verdict and tools leaderboard
 var: ""
 tags: [content]

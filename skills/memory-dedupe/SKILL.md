@@ -1,5 +1,6 @@
 ---
 name: Memory Dedupe
+category: meta
 description: Detect and collapse structural duplicate rows in MEMORY.md — sections like Recent Articles and Skills Built that accumulate multiple content blocks across memory-flush cycles. Companion to scripts/memory-dedupe (topic-pointer dedup); this handles section-level row accumulation and duplicate H2 headings (the same section heading appearing 2+ times in the file).
 var: ""
 tags: [meta, memory]

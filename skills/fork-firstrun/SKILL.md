@@ -1,5 +1,6 @@
 ---
 name: Fork Firstrun
+category: meta
 description: Named alert when a fork completes its first ever workflow run — catches the activation moment that slower fork-cohort snapshots would miss
 var: ""
 tags: [meta, community]

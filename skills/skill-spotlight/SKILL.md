@@ -1,5 +1,6 @@
 ---
 name: Skill Spotlight
+category: social
 description: Pick one skill from a rotation, ship a paste-ready feature tweet spotlighting it, then dispatch the picked skill so the chosen channel also gets the live outcome
 var: ""
 tags: [meta, social, content]

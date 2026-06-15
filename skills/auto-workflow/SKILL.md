@@ -1,5 +1,6 @@
 ---
 name: Auto-Workflow Builder
+category: dev
 description: Analyze a URL and generate a tailored aeon.yml schedule with skill suggestions
 var: ""
 tags: [meta, dev]

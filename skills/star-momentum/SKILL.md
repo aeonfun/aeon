@@ -1,5 +1,6 @@
 ---
 name: Star Momentum
+category: meta
 description: Project the date a watched repo crosses its next star milestone — alert only when projected date lands inside the Show HN dispatch window (7-14 days out, Tue/Wed/Thu)
 var: ""
 tags: [meta, growth]

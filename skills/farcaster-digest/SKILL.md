@@ -1,5 +1,6 @@
 ---
 name: Farcaster Digest
+category: social
 description: Clustered, signal-scored digest of Farcaster casts with conversation-shape lead and insight-first editorial notes
 var: ""
 tags: [crypto, social]

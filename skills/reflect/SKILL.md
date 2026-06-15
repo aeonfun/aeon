@@ -1,5 +1,6 @@
 ---
 name: Reflect
+category: productivity
 description: Review recent activity, consolidate memory, and prune stale entries
 var: ""
 tags: [meta]

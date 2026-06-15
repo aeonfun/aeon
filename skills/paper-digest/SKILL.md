@@ -1,5 +1,6 @@
 ---
 name: Paper Digest
+category: research
 description: Find and summarize new papers matching tracked research interests
 var: ""
 tags: [research]

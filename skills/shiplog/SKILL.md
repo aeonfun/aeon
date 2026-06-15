@@ -1,5 +1,6 @@
 ---
 name: Shiplog
+category: productivity
 description: Narrative of everything shipped — features, fixes, and momentum, written as a compelling update
 var: ""
 tags: [content]

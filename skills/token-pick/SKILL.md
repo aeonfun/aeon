@@ -1,5 +1,6 @@
 ---
 name: Token Pick
+category: crypto
 description: One token recommendation and one prediction market pick — scored, quantified, with a skip branch when signals are weak
 var: ""
 tags: [crypto]

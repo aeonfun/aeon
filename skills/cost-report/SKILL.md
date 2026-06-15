@@ -1,5 +1,6 @@
 ---
 name: cost-report
+category: meta
 description: API cost report — computes dollar costs from token usage, flags anomalies, forecasts burn, and prescribes concrete optimizations
 var: ""
 tags: [meta]

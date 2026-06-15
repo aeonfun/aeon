@@ -1,5 +1,6 @@
 ---
 name: Followup Patrol
+category: productivity
 description: Escalation audit — parses the follow-up / open-loop section of MEMORY.md plus the issue tracker, computes item ages, and alerts on items hitting urgency thresholds so nothing rots unattended
 var: ""
 tags: [meta, ops, memory]
