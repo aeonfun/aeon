@@ -58,21 +58,19 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-![Skills](./assets/skills-aeon-197.jpg)
-
 **182 skills, grouped into 9 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
 
-| Pack | Key | Skills | Examples |
-|------|-----|--------|----------|
-| 🧬 **Core** - self-evolution, healing, memory; always present | `core` | 13 | `skill-repair`, `autoresearch`, `create-skill` |
-| 🛰️ **Fleet & Replication** | `fleet` | 8 | `spawn-instance`, `deploy-prototype`, `vuln-scanner` |
-| 📚 **Research & Content** | `research` | 26 | `deep-research`, `paper-digest`, `hn-digest` |
-| 💻 **Dev & Code** | `dev` | 34 | `pr-review`, `github-monitor`, `auto-merge` |
-| 📈 **Crypto & Markets** | `markets` | 23 | `token-movers`, `defi-overview`, `base-mcp` |
-| 🛡️ **Onchain Security** | `hound` | 15 | `rug-scan`, `contract-audit`, `honeypot-check` |
-| ✍️ **Social & Writing** | `social` | 17 | `thread-writer`, `reply-maker`, `remix-tweets` |
-| ✅ **Productivity** | `productivity` | 16 | `priority-brief`, `retrospective`, `goal-tracker` |
-| 🤖 **Agent Ops** | `agent-ops` | 30 | `heartbeat`, `cost-report`, `config-validator` |
+| Pack                                                          | Key            | Skills | Examples                                             |
+| ------------------------------------------------------------- | -------------- | ------ | ---------------------------------------------------- |
+| 🧬 **Core** - self-evolution, healing, memory; always present | `core`         | 13     | `skill-repair`, `autoresearch`, `create-skill`       |
+| 🛰️ **Fleet & Replication**                                    | `fleet`        | 8      | `spawn-instance`, `deploy-prototype`, `vuln-scanner` |
+| 📚 **Research & Content**                                     | `research`     | 26     | `deep-research`, `paper-digest`, `hn-digest`         |
+| 💻 **Dev & Code**                                             | `dev`          | 34     | `pr-review`, `github-monitor`, `auto-merge`          |
+| 📈 **Crypto & Markets**                                       | `markets`      | 23     | `token-movers`, `defi-overview`, `base-mcp`          |
+| 🛡️ **Onchain Security**                                       | `hound`        | 15     | `rug-scan`, `contract-audit`, `honeypot-check`       |
+| ✍️ **Social & Writing**                                       | `social`       | 17     | `thread-writer`, `reply-maker`, `remix-tweets`       |
+| ✅ **Productivity**                                           | `productivity` | 16     | `priority-brief`, `retrospective`, `goal-tracker`    |
+| 🤖 **Agent Ops**                                              | `agent-ops`    | 30     | `heartbeat`, `cost-report`, `config-validator`       |
 
 <details>
 <summary><strong>Full catalog (all 182 skills by pack)</strong></summary>
