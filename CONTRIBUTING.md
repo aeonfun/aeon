@@ -16,8 +16,8 @@ Most contributions fall into one of four buckets — **a new skill**, **a new LL
 A skill is a single `skills/<name>/SKILL.md` prompt file plus a registration in `aeon.yml`. The fastest paths:
 
 ```bash
-./new-from-template <template> <skill-name>   # scaffold from skill-templates/
-./add-skill <owner/repo> <skill> [skill...]   # import from any GitHub repo
+./new-from-template <template> <skill-name> --category <pack>   # scaffold from skill-templates/
+./add-skill <owner/repo> <skill> [skill...]                     # import from any GitHub repo
 ```
 
 You can also describe one to the `create-skill` skill, or label a GitHub issue `ai-build` and let Aeon implement it and open the PR.
@@ -29,6 +29,7 @@ Every `SKILL.md` opens with YAML frontmatter. The full contract lives in [`skill
 ```yaml
 ---
 name: my-skill
+category: dev                                  # the pack this skill joins
 description: One-line description of what this skill does
 var: ""
 tags: [dev, crypto]
@@ -37,6 +38,7 @@ mcp: [base]                                    # MCP servers, same two tiers
 ---
 ```
 
+- `category:` is the **single source of truth** for which [pack](docs/skill-packs.md) the skill belongs to. Use one of `research` `dev` `crypto` `onchain-security` `social` `productivity` `meta`. (`core` and `fleet` are curated in [`packs.config.json`](packs.config.json), not set here.) Omit it and the skill lands in the **Lab** catch-all until triaged. `./new-from-template ... --category <pack>` and the dashboard import dropdown set it for you.
 - `requires:` is the **single source of truth** the dashboard reads to show which skill needs which key. Use the exact env-var name. A bare name is required; a trailing `?` means the skill still runs without it (degraded). Omit `requires:` (or use `[]`) for skills that only need the built-in Claude + GitHub tokens.
 - `mcp:` declares [MCP servers](README.md#mcp-servers-in-skill-runs) the skill calls, with the same two-tier semantics. Slugs reference `apps/dashboard/lib/mcp-catalog.ts`.
 - Match the names to the registry in [`apps/dashboard/app/api/secrets/route.ts`](apps/dashboard/app/api/secrets/route.ts) so the dashboard can describe the key and link where to get it.
@@ -50,13 +52,15 @@ mcp: [base]                                    # MCP servers, same two tiers
 
 ### Regenerate the catalog
 
-`skills.json` is the canonical machine-readable catalog (the dashboard, `./add-skill`, and downstream consumers all read it). It is **generated**, never hand-edited:
+`skills.json` (the skill catalog) and `packs.json` (the [pack](docs/skill-packs.md) catalog the dashboard reads) are both **generated**, never hand-edited. After adding or recategorizing a skill, regenerate both:
 
 ```bash
-./generate-skills-json   # then commit the result
+./generate-skills-json   # skill catalog (reads each SKILL.md's category:)
+./generate-packs-json    # pack catalog (groups skills by category + packs.config.json)
+# then commit both results
 ```
 
-The `ci-skills-json` workflow fails any PR that touches `skills/**`, `aeon.yml`, `generate-skills-json`, or `skills.json` without committing a fresh regen. The check normalizes out the `generated` timestamp and per-skill `sha`/`updated`, so only real catalog drift fails it.
+The `ci-skills-json` and `ci-packs-json` workflows fail any PR that leaves either manifest stale. They normalize out the `generated` timestamp (and `ci-skills-json` also the per-skill `sha`/`updated`), so only real catalog drift fails them. `ci-packs-json` also fails if a skill ends up unassigned to any pack with no Lab catch-all declared.
 
 ## Contributing an LLM gateway
 
@@ -82,14 +86,16 @@ Packs must not monkey-patch Aeon internals or depend on private endpoints. Full 
 
 ## Continuous integration
 
-Two locking gates run on every PR. Both are fast and only trigger on the paths they protect:
+Locking gates run on every PR. All are fast and only trigger on the paths they protect:
 
 | Gate | Triggers on | What it enforces |
 |------|-------------|------------------|
 | `ci-skills-json` | `skills/**`, `aeon.yml`, `generate-skills-json`, `skills.json` | `skills.json` matches a fresh `./generate-skills-json` |
+| `ci-packs-json` | `packs.config.json`, `skills.json`, `generate-packs-json`, `packs.json` | `packs.json` matches a fresh `./generate-packs-json` |
+| `ci-skill-category` | `skills/**`, the category-check script | every `SKILL.md` declares a valid `category:` |
 | `ci-capabilities-parity` | `install-skill-pack`, `docs/CAPABILITIES.md`, the parity script | the capabilities taxonomy stays in sync across its sources |
 
-If `ci-capabilities-parity` fails, you changed one side of the taxonomy without the other — run `bash scripts/check-capabilities-parity.sh` locally to see the diff.
+Run the checks locally before pushing: `bash scripts/check-skill-categories.sh` (categories) and `bash scripts/check-capabilities-parity.sh` (taxonomy). If `ci-packs-json` or `ci-skills-json` fails, you changed a generator input without committing the regen — run `./generate-skills-json && ./generate-packs-json`.
 
 ## Reporting bugs and requesting features
 

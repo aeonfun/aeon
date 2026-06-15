@@ -36,6 +36,9 @@ skills.json         ──┘                                 (generated)      (
   live enabled/installed state is joined at request time by `/api/packs`.
 - **[`ci-packs-json.yml`](../.github/workflows/ci-packs-json.yml)** — fails any
   PR that leaves `packs.json` stale, exactly like `ci-skills-json`.
+- **[`ci-skill-category.yml`](../.github/workflows/ci-skill-category.yml)** — fails
+  any PR where a `SKILL.md` is missing a valid `category:`
+  (`bash scripts/check-skill-categories.sh` runs it locally).
 
 Regenerate after any change to the config or to `skills.json`:
 
@@ -143,10 +146,10 @@ enable its skills from the dashboard's Packs view.
 
 ---
 
-## Roadmap
+## Status
 
-Planned follow-ups (not yet shipped):
-
-- **README/CONTRIBUTING** — fold first-party packs into the main catalog docs.
-- **Lint gate** — optionally fail CI on a `SKILL.md` with no `category:` (today
-  it degrades to Lab rather than failing).
+The pack system is fully shipped: the data layer + three CI gates
+(`ci-skills-json`, `ci-packs-json`, `ci-skill-category`), the dashboard **Packs**
+view, frontmatter-driven categories, and `--category` authoring. README and
+CONTRIBUTING document it. New skills declare `category:` (or use `--category`);
+the **Lab** catch-all keeps anything uncategorized from breaking the catalog.
