@@ -15,7 +15,14 @@ interface PacksPanelProps {
   onTogglePack: (key: string) => void
   onToggleSkill: (slug: string, enabled: boolean) => void
   onSelectSkill: (slug: string) => void
-  onInstallPack: (repo: string) => Promise<void> | void
+  onInstallPack: (arg: string) => Promise<void> | void
+}
+
+// A pack's skills can live in a subdirectory of its repo (declared via `path` in
+// skill-packs.json). Forward it as a `--path` flag so both the one-click install
+// and the copyable command point the installer at the right manifest. See #492.
+function installArg(pack: CommunityPack): string {
+  return pack.path ? `${pack.repo} --path ${pack.path}` : pack.repo
 }
 
 function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
@@ -41,17 +48,17 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
   const [copied, setCopied] = useState<string | null>(null)
   const [installing, setInstalling] = useState<string | null>(null)
 
-  const handleCopy = async (repo: string) => {
+  const handleCopy = async (pack: CommunityPack) => {
     try {
-      await navigator.clipboard.writeText(`./install-skill-pack ${repo}`)
-      setCopied(repo)
-      setTimeout(() => setCopied(c => (c === repo ? null : c)), 1500)
+      await navigator.clipboard.writeText(`./install-skill-pack ${installArg(pack)}`)
+      setCopied(pack.repo)
+      setTimeout(() => setCopied(c => (c === pack.repo ? null : c)), 1500)
     } catch { /* clipboard blocked — the command is still shown in the tooltip */ }
   }
 
-  const handleInstall = async (repo: string) => {
-    setInstalling(repo)
-    try { await onInstallPack(repo) } finally { setInstalling(null) }
+  const handleInstall = async (pack: CommunityPack) => {
+    setInstalling(pack.repo)
+    try { await onInstallPack(installArg(pack)) } finally { setInstalling(null) }
   }
 
   // Live enabled state comes from the skills roster (single source of truth), so
@@ -222,7 +229,7 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                 ) : null}
                 <div className="mt-auto flex items-center gap-2 pt-2">
                   <button
-                    onClick={() => handleInstall(pack.repo)}
+                    onClick={() => handleInstall(pack)}
                     disabled={installing === pack.repo}
                     title={`Install into your fork — runs the install-skill skill (security-scanned) and opens a PR for review. Skills land disabled.`}
                     className="flex-1 text-[10px] font-mono uppercase tracking-[0.14em] px-3 py-1.5 border transition-colors cursor-target text-aeon-fg border-[rgba(250,250,250,0.25)] hover:border-aeon-red hover:text-aeon-red disabled:opacity-50 disabled:cursor-default"
@@ -230,8 +237,8 @@ export function PacksPanel({ firstParty, community, skills, enabledPacks, loadin
                     {installing === pack.repo ? 'Installing…' : installed ? 'Reinstall' : 'Install pack'}
                   </button>
                   <button
-                    onClick={() => handleCopy(pack.repo)}
-                    title={`Copy: ./install-skill-pack ${pack.repo}`}
+                    onClick={() => handleCopy(pack)}
+                    title={`Copy: ./install-skill-pack ${installArg(pack)}`}
                     className="shrink-0 px-2 py-1.5 border border-[rgba(250,250,250,0.12)] text-primary-50 hover:text-primary-100 hover:border-[rgba(250,250,250,0.22)] transition-colors cursor-target"
                   >
                     {copied === pack.repo ? (
