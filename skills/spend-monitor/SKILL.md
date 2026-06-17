@@ -39,11 +39,6 @@ First read `aeon.yml` and find the `gateway.provider` value. Use the matching ta
 | claude-opus-4-7 | $5.00 | $25.00 |
 | claude-sonnet-4-6 | $3.00 | $15.00 |
 | claude-haiku-4-5-20251001 | $0.80 | $4.00 |
-| gemini-3-pro | $1.25 | $10.00 |
-| gemini-3-flash | $0.15 | $0.60 |
-| gpt-5.2 | $2.50 | $10.00 |
-| kimi-k2.5 | $1.00 | $4.00 |
-| qwen3-coder | $0.50 | $2.00 |
 
 For Bankr, treat cache read/write as zero cost.
 For any unlisted model, default to Opus pricing (conservative estimate).

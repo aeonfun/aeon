@@ -19,11 +19,6 @@ on:
           - claude-fable-5
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
-          - gemini-3-pro
-          - gemini-3-flash
-          - gpt-5.2
-          - kimi-k2.5
-          - qwen3-coder
       var:
         description: 'Variable (e.g. AI, bitcoin, owner/repo)'
         required: false
