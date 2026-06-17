@@ -82,6 +82,14 @@ Skill packs are third-party skill collections in their own repos, installable as
 - Adds a matching entry to [`skill-packs.json`](skill-packs.json) — the machine-readable mirror.
 - Confirms the pack has a `skills-pack.json` manifest, a clear license, and a per-skill `SKILL.md`.
 
+Before opening the PR, run the local pre-flight validator against your pack directory — it checks the same structural invariants `install-skill-pack` enforces (valid manifest, slugs, paths, capability taxonomy, present `SKILL.md`s) plus the publishing-checklist items, so you catch problems before a reviewer does:
+
+```bash
+./scripts/validate-pack.sh /path/to/your-pack-dir      # add --path <subdir> if skills-pack.json is nested
+```
+
+It exits `0` when the pack is valid (warnings are advisory) and `1` on any blocking error.
+
 Packs must not monkey-patch Aeon internals or depend on private endpoints. Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
 ## Continuous integration

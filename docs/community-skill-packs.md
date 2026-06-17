@@ -175,7 +175,8 @@ The operator is always the trust boundary. The install script does not auto-trus
 3. Skills follow Aeon's `SKILL.md` conventions (frontmatter `name:`, `description:`, etc.).
 4. `skills-pack.json` declares every skill the pack intends to install. Skills present in `skills/` but missing from the manifest are not installed.
 5. Optional but encouraged: a `README.md` that names each skill, explains scheduling assumptions, and lists any required environment variables.
-6. Open a PR against `aaronjmars/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `skill-packs.json` (the machine-readable registry — see schema below).
+6. Run `./scripts/validate-pack.sh /path/to/your-pack-dir` (from an Aeon checkout) to pre-flight the pack locally — it runs the same structural invariants `install-skill-pack` enforces (valid `skills-pack.json`, clean slugs, no `..` in paths, present per-skill `SKILL.md`, locked-taxonomy capabilities) and exits non-zero on any blocking error. Add `--path <subdir>` if `skills-pack.json` is nested.
+7. Open a PR against `aaronjmars/aeon` that does **two** things in one diff: adds a row to the **Community Skill Packs** table in the project README, AND adds a matching entry to `skill-packs.json` (the machine-readable registry — see schema below).
 
 ---
 
