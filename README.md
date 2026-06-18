@@ -494,6 +494,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [aeon-skill-pack-mneme](https://github.com/mnemedb/aeon-skill-pack-mneme) | 8 | Mneme as Aeon's persistent memory layer - vector recall across runs, entity/relation graph, live Base chain streams, async LLM "dream" reflections, and schema-aware /chat. One `MNEME_API_KEY`, zero infra. |
 | [Hunch Prediction Markets](https://github.com/rajkaria/hunch/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Crowd-conviction signal, market discovery, and **x402 betting** on PlayHunch - onchain prediction markets on Base. Unlike monitor-only packs, hunch-bet places real positions (simulate-by-default, $1-$10, USDC payout + onchain proof) |
 | [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Pump Fun GO bounty discovery + vetting, and the content tools to win them (voice tones, images, video direction). x402 on Solana or Base. |
+| [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 

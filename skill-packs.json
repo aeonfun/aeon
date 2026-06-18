@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-17",
+  "updated": "2026-06-18",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -276,6 +276,20 @@
       "category": "crypto",
       "trust_level": "community",
       "skills": ["clawhunter-bounties", "clawhunter-content-studio"]
+    },
+    {
+      "repo": "SpartanLabsXyz/aeon-skill-pack-polymarket",
+      "path": "aeon-skill-pack",
+      "name": "Polymarket Trader by Simmer",
+      "description": "Signal, market discovery, and real position-taking on Polymarket - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders on live Polymarket liquidity: simulate-by-default, live opt-in, bounded. The wired Simmer MCP also exposes Simmer's full catalog of ready-to-run Polymarket strategies (copytrading, market-making, signal-sniping) via list_skills.",
+      "author": "simmer",
+      "license": "MIT",
+      "homepage": "https://simmer.markets",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["polymarket-intel", "polymarket-markets", "polymarket-trade"],
+      "secrets_required": ["SIMMER_API_KEY"],
+      "capabilities": ["external_api", "writes_external_host", "onchain_writes", "sends_notifications"]
     }
   ]
 }
