@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-16",
+  "updated": "2026-06-17",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -265,6 +265,19 @@
       "category": "crypto",
       "trust_level": "community",
       "skills": ["hunch-intel", "hunch-markets", "hunch-bet"]
+    },
+    {
+      "repo": "clawhunter/clawhunter-skills",
+      "name": "clawhunter-skills",
+      "description": "Discover and vet Pump Fun GO bounties, and produce the content to win them — voice tones from real X accounts, logo-grounded images, Veo/Kling video direction. Paid tools settle via x402 (USDC on Solana or Base).",
+      "author": "clawhunter",
+      "license": "MIT",
+      "homepage": "https://clawhunter.fun",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["clawhunter-bounties", "clawhunter-content-studio"],
+      "secrets_required": [],
+      "capabilities": ["external_api"]
     }
   ]
 }
