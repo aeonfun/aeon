@@ -459,14 +459,18 @@ If the secrets aren't set, both steps no-op - fully backward compatible. If Flee
 
 > Aeon's **built-in (first-party) packs** - Core, Fleet, Research, Dev, Markets, Hound, Social, Productivity, Agent Ops - live in this repo and are enabled from the dashboard's **Packs** view; see [`docs/skill-packs.md`](docs/skill-packs.md). The packs below are **community** collections in their own repos.
 
-Third-party skill collections in their own repos, installable as one bundle:
+Third-party skill collections in their own repos, installable as one bundle - two ways:
+
+**One-click (dashboard).** Open the **Packs** view, scroll to **Community packs**, and hit **Install pack** on any card. That runs the security-scanned installer in the background and ships an **auto-merging PR**, so the skills land on `main` (and show up across the dashboard) with no manual step. Want to merge it yourself instead? The card's copy button hands you the exact CLI command below.
+
+**CLI.**
 
 ```bash
 ./install-skill-pack baseddevoloper/aeon-skill-pack-vvvkernel
 ./install-skill-pack --list      # browse the registry (skill-packs.json)
 ```
 
-The script reads the pack's `skills-pack.json` manifest, runs the security scanner on each `SKILL.md`, and copies approved skills into `skills/` (disabled in `aeon.yml`, provenance in `skills.lock`). Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
+Either way the installer reads the pack's `skills-pack.json` manifest, runs the security scanner on each `SKILL.md`, and copies approved skills into `skills/` - **disabled** in `aeon.yml` (nothing runs until you set the pack's secrets and flip `enabled: true`), with provenance recorded in `skills.lock`. Full schema and trust model: [`docs/community-skill-packs.md`](docs/community-skill-packs.md).
 
 | Pack | Skills | Description |
 |------|--------|-------------|
