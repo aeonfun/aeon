@@ -275,9 +275,7 @@
       "homepage": "https://clawhunter.fun",
       "category": "crypto",
       "trust_level": "community",
-      "skills": ["clawhunter-bounties", "clawhunter-content-studio"],
-      "secrets_required": [],
-      "capabilities": ["external_api"]
+      "skills": ["clawhunter-bounties", "clawhunter-content-studio"]
     }
   ]
 }
