@@ -49,6 +49,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
 | <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
 | <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
+| <img src="https://signedlogbook.com/logbook-pfp-blue.png" width="36" height="36" alt="logbook logo"> | logbook | [@logbookonbase](https://x.com/logbookonbase) · [signedlogbook.com](https://signedlogbook.com) |
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
 | <img src="https://pbs.twimg.com/profile_images/2060426975718592517/Jdj2fOzg_400x400.jpg" width="36" height="36" alt="MiroShark logo"> | MiroShark | [@miroshark_](https://x.com/miroshark_) |
