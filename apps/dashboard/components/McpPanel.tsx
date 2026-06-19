@@ -106,12 +106,17 @@ export function McpPanel({ servers, loading, saving, secrets, busy, onSave, onSe
   const isMcpToken = (r: string) => /^MCP_[A-Z0-9_]+_TOKEN$/.test(r)
 
   // One-click install a featured server: add it to .mcp.json and persist
-  // immediately (same as Save). No token needed - these are public endpoints.
+  // immediately (same as Save). Public / OAuth / x402 servers need no token; a
+  // server with `authSecret` installs with an `Authorization: Bearer ${VAR}`
+  // header, and the per-row paste-token box below collects the key (runs skip
+  // MCP with a warning until it's set, same as any unset ref).
   const isFeaturedInstalled = (url: string) => Object.values(draft).some(s => s.url === url)
   const installFeatured = (f: typeof FEATURED[number]) => {
     if (isFeaturedInstalled(f.url)) return
     const slug = draft[f.slug] ? `${f.slug}-mcp` : f.slug
-    const next = { ...draft, [slug]: { type: 'http', url: f.url } }
+    const server: McpServer = { type: f.transport ?? 'http', url: f.url }
+    if (f.authSecret) server.headers = { Authorization: `Bearer \${${f.authSecret}}` }
+    const next = { ...draft, [slug]: server }
     setDraft(next)
     onSave(next)
   }
