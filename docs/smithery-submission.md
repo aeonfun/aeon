@@ -56,7 +56,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-fetch-tweets` | Research | Search X/Twitter for tweets by keyword, username, or both |
 | `aeon-fleet-control` | Dev | Monitor managed Aeon instances — check health, dispatch skills, aggregate status |
 | `aeon-fork-fleet` | Dev | Inventory active Aeon forks, detect diverged work, surface upstream contribution candidates |
-| `aeon-github-issues` | Dev | Check all your repos for new open issues in the last 24 hours |
 | `aeon-github-monitor` | Dev | Watch repos for stale PRs, new issues, and new releases |
 | `aeon-github-releases` | Dev | Track new releases from key AI, crypto, and infra repos |
 | `aeon-github-trending` | Dev | Top 10 trending repos on GitHub right now |
@@ -70,13 +69,11 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-market-context` | Crypto | Fetch live crypto macro data and update memory/topics/market-context.md |
 | `aeon-monitor-kalshi` | Crypto | Monitor specific Kalshi prediction markets for 24h price moves, volume changes, and top events |
 | `aeon-monitor-polymarket` | Crypto | Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments |
-| `aeon-monitor-runners` | Crypto | Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal |
 | `aeon-priority-brief` | Productivity | Aggregated briefing — digests, priorities, and what's ahead |
 | `aeon-narrative-tracker` | Crypto | Track rising, peaking, and fading crypto/tech narratives — identify the stories manufacturing reality before they peak |
 | `aeon-onchain-monitor` | Crypto | Monitor blockchain addresses and contracts for notable activity |
 | `aeon-paper-digest` | Research | Find and summarize new papers matching tracked research interests |
 | `aeon-paper-pick` | Research | Find the one paper most worth reading from Hugging Face Papers |
-| `aeon-polymarket-comments` | Crypto | Top trending Polymarket markets and the most interesting comments from them |
 | `aeon-pr-review` | Dev | Auto-review open PRs on watched repos and post summary comments |
 | `aeon-pr-triage` | Dev | First-touch triage for external pull requests — verdict + label + welcoming comment within minutes of open |
 | `aeon-project-lens` | Dev | Write an article about the project through a surprising lens — connecting it to current events, trends, philosophy, or comparable projects |
@@ -103,13 +100,11 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-skill-repair` | Productivity | Diagnose and fix failing or degraded skills automatically |
 | `aeon-skill-scan` | Dev | Audit imported skills for shell injection, secret exfiltration, path traversal, and prompt injection before they run |
 | `aeon-skill-update` | Productivity | Check imported skills for upstream changes and security regressions since the version in skills.lock |
-| `aeon-smithery-manifest` | Productivity | Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server |
 | `aeon-spawn-instance` | Dev | Clone this Aeon agent into a new GitHub repo — fork, configure skills, register in fleet |
 | `aeon-star-milestone` | Dev | Announces when a watched repo crosses a star-count milestone (100, 150, 200, 250, 500, 1000, ...) with a highlight reel of recent work |
 | `aeon-startup-idea` | Productivity | 2 startup ideas tailored to the user's skills, interests, and context |
 | `aeon-technical-explainer` | Research | Generate a visual technical explanation of a recent topic using Replicate for the hero image |
 | `aeon-telegram-digest` | Research | Digest of recent posts from tracked public Telegram channels |
-| `aeon-thread-formatter` | Social | Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste |
 | `aeon-token-movers` | Crypto | Top movers, losers, and trending coins from CoinGecko |
 | `aeon-token-pick` | Crypto | One token recommendation and one prediction market pick based on live data |
 | `aeon-tool-builder` | Productivity | Build automation scripts from action-converter suggestions and recurring manual tasks |
@@ -123,7 +118,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-retrospective` | Productivity | Synthesize the week's logs into a structured retrospective |
 | `aeon-shiplog` | Productivity | Narrative of everything shipped — features, fixes, and momentum, written as a compelling update |
 | `aeon-workflow-audit` | Dev | Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. |
-| `aeon-write-tweet` | Social | Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs |
 
 ## Install instructions for end users
 

@@ -74,15 +74,6 @@
       "required_patterns": ["feed|article|post|item"],
       "forbidden_patterns": ["\\$\\{var\\}", "\\[TODO\\]"]
     },
-    "polymarket": {
-      "output_pattern": "articles/polymarket-*.md",
-      "min_words": 100,
-      "required_patterns": ["market|Market|probability|volume"],
-      "forbidden_patterns": ["\\$\\{var\\}", "\\[TODO\\]"],
-      "numeric_checks": [
-        { "label": "probability", "pattern": "([\\d.]+)%", "min": 0, "max": 100 }
-      ]
-    },
     "skill-health": {
       "output_pattern": "articles/skill-health-*.md",
       "min_words": 80,

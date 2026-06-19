@@ -122,10 +122,6 @@
           "description": "[Aeon · Dev] Inventory active Aeon forks, detect diverged work, surface upstream contribution candidates (cron: 0 10 * * 1)"
         },
         {
-          "name": "aeon-github-issues",
-          "description": "[Aeon · Dev] Check all your repos for new open issues in the last 24 hours (cron: 0 9 * * *)"
-        },
-        {
           "name": "aeon-github-monitor",
           "description": "[Aeon · Dev] Watch repos for stale PRs, new issues, and new releases (cron: 0 9 * * *)"
         },
@@ -178,10 +174,6 @@
           "description": "[Aeon · Crypto] Monitor specific prediction markets for 24h price moves, volume changes, and fresh comments (cron: 30 12 * * *)"
         },
         {
-          "name": "aeon-monitor-runners",
-          "description": "[Aeon · Crypto] Find the top 5 tokens that ran hardest in the past 24h across major chains using GeckoTerminal (cron: 0 12 * * *)"
-        },
-        {
           "name": "aeon-priority-brief",
           "description": "[Aeon · Productivity] Aggregated daily briefing — digests, priorities, and what's ahead (cron: 0 7 * * *)"
         },
@@ -200,10 +192,6 @@
         {
           "name": "aeon-paper-pick",
           "description": "[Aeon · Research] Find the one paper you should read today from Hugging Face Papers (cron: 0 14 * * *)"
-        },
-        {
-          "name": "aeon-polymarket-comments",
-          "description": "[Aeon · Crypto] Top trending Polymarket markets and the most interesting comments from them (cron: 0 13 * * *)"
         },
         {
           "name": "aeon-pr-review",
@@ -310,10 +298,6 @@
           "description": "[Aeon · Productivity] Check imported skills for upstream changes and security regressions since the version in skills.lock (cron: 0 19 * * 0)"
         },
         {
-          "name": "aeon-smithery-manifest",
-          "description": "[Aeon · Productivity] Auto-generate Smithery + MCP Registry submission docs from skills.json and the aeon-mcp server (cron: 0 6 1/7 * *)"
-        },
-        {
           "name": "aeon-spawn-instance",
           "description": "[Aeon · Dev] Clone this Aeon agent into a new GitHub repo — fork, configure skills, register in fleet (on-demand)"
         },
@@ -332,10 +316,6 @@
         {
           "name": "aeon-telegram-digest",
           "description": "[Aeon · Research] Digest of recent posts from tracked public Telegram channels (cron: 30 7 * * *)"
-        },
-        {
-          "name": "aeon-thread-formatter",
-          "description": "[Aeon · Social] Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste (cron: 30 17 * * *)"
         },
         {
           "name": "aeon-token-movers",
@@ -388,10 +368,6 @@
         {
           "name": "aeon-workflow-audit",
           "description": "[Aeon · Dev] Audit .github/workflows/ for script injection, over-permissioning, unverified actions, and secret exposure. Auto-fixes critical findings and opens a PR. (cron: 0 16 * * 0)"
-        },
-        {
-          "name": "aeon-write-tweet",
-          "description": "[Aeon · Social] Generate 10 tweet drafts across 5 size tiers (2 variations each) on a topic from today's outputs (cron: 0 17 * * *)"
         }
       ],
       "totalSkills": 95,

@@ -13,7 +13,7 @@ Today is ${today}. Convert the most recent `fork-cohort` output into one named r
 
 `fork-cohort` (PR #152) identifies POWER and ACTIVE forks weekly but produces a data table — not a recognition. `contributor-leaderboard` ranks contributors by upstream PRs but doesn't see what's happening inside a fork. Neither closes the loop between *we have fork data* and *we do something social with it*.
 
-contributor-spotlight is the social loop: one fork operator per week gets a named callout — their handle, their fork, the skills they enabled, their star count, a one-line "keep shipping" close. That's the flywheel — operators who feel seen attract other operators. This is also formatted to feed `thread-formatter` directly, so the post is a tweetable artifact, not just a Telegram blip.
+contributor-spotlight is the social loop: one fork operator per week gets a named callout — their handle, their fork, the skills they enabled, their star count, a one-line "keep shipping" close. That's the flywheel — operators who feel seen attract other operators. This is also formatted to feed `thread-writer` directly, so the post is a tweetable artifact, not just a Telegram blip.
 
 ## Config
 
@@ -295,4 +295,4 @@ Uses `gh api` for all GitHub queries — handles auth internally, no env-var-in-
 
 - **`fork-cohort`** (Sunday 19:00 UTC) — produces the source data this skill picks from. Run order matters: schedule contributor-spotlight one hour later (Sunday 20:00 UTC) so today's cohort is fresh.
 - **`contributor-leaderboard`** (Sunday 17:30 UTC) — adjacent recognition skill ranked by upstream-PR contribution. Spotlight focuses on fork-internal work; leaderboard focuses on upstream-PR work. Together they cover both directions of the contributor flywheel.
-- **`thread-formatter`** (when run after this skill) — can pick up the spotlight as the day's top event and reformat into a 5-tweet thread, turning the recognition into a tweetable artifact.
+- **`thread-writer`** (when run after this skill) — can pick up the spotlight as the day's top event and reformat into a 5-tweet thread, turning the recognition into a tweetable artifact.

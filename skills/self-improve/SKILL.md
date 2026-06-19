@@ -48,7 +48,7 @@ Read the last 2 days of memory/logs/ for recent errors, failures, and quality is
 
    Do NOT:
    - Rewrite entire skills from scratch
-   - Add new features (that's build-skill's job)
+   - Add new features (that's create-skill's job)
    - Change the core architecture
    - Modify secrets or environment variables
 

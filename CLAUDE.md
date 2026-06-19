@@ -41,7 +41,7 @@ After completing any task, append a log entry to `memory/logs/YYYY-MM-DD.md` wit
   - **Categories:** `config`, `api-change`, `rate-limit`, `timeout`, `sandbox-limitation`, `permanent-limitation`, `prompt-bug`, `missing-secret`, `quality-regression`, `output-format`, `optimization`, `unknown`
   - Health skills (skill-health, skill-evals, heartbeat, self-review) **file** issues. Repair skills (skill-repair, autoresearch) **close** them.
 
-When consolidating memory (reflect, memory-flush), move detail into topic files rather than cramming everything into MEMORY.md.
+When consolidating memory (reflect), move detail into topic files rather than cramming everything into MEMORY.md.
 
 ## Tools
 

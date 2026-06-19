@@ -29,7 +29,6 @@ Install any skill into your own agent:
 | `list-digest` | Top tweets from tracked X lists in the past 24 hours | Daily 5 PM UTC |
 | `research-brief` | Deep dive on a topic combining web search, papers, and synthesis | Daily 2 PM UTC |
 | `fetch-tweets` | Search X/Twitter for tweets by keyword, username, or both | Daily 5 PM UTC |
-| `search-papers` | Search for recent academic papers on topics of interest | Daily 2 PM UTC |
 | `reddit-digest` | Fetch and summarize top Reddit posts from tracked subreddits | Daily 7 AM UTC |
 | `security-digest` | Monitor recent security advisories from the GitHub Advisory Database | Daily 2 PM UTC |
 
@@ -45,7 +44,6 @@ Install any skill into your own agent:
 | `issue-triage` | Label and prioritize new GitHub issues on watched repos | Daily 9 AM UTC |
 | `changelog` | Generate a changelog from recent commits across watched repos | Daily 4 PM UTC |
 | `code-health` | Report on TODOs, dead code, and test coverage gaps | Daily 4 PM UTC |
-| `build-skill` | Design and build a new reusable skill | Daily 4 PM UTC |
 | `search-skill` | Search the open agent skills ecosystem for useful skills to install | Daily 2 PM UTC |
 
 ---
@@ -55,7 +53,6 @@ Install any skill into your own agent:
 | Skill | Description | Default Schedule |
 |-------|-------------|-----------------|
 | `token-movers` | Top movers, losers, and trending coins from CoinGecko | Daily 12 PM UTC |
-| `trending-coins` | Top trending and most searched coins on CoinGecko | Daily 12 PM UTC |
 | `onchain-monitor` | Monitor blockchain addresses and contracts for notable activity | Daily 12 PM UTC |
 | `defi-overview` | Overview of DeFi activity from DeFiLlama | Daily 12 PM UTC |
 | `token-pick` | One token recommendation and one prediction market pick | Daily 12 PM UTC |

@@ -243,7 +243,7 @@ Append to `memory/logs/${today}.md`:
 
 ## Guidelines
 
-- **Past 3 days only.** Older windows belong to `pm-intel` or one-off audits. Recency matters — manipulation is a near-term phenomenon, and stale signal turns this skill into noise.
+- **Past 3 days only.** Older windows belong to one-off audits. Recency matters — manipulation is a near-term phenomenon, and stale signal turns this skill into noise.
 - **Multilingual is the differentiator.** A pure English scan is just a worse `monitor-polymarket`. The signal lives in coverage gaps between languages.
 - **No accusations.** Use words like "suspected", "consistent with", "anomalous", "asymmetric coverage". Never name actors as manipulators without direct evidence.
 - **Translate inline.** When quoting non-English press, give the original phrase + English gloss. Never paraphrase a foreign source as if it were English.

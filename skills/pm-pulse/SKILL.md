@@ -224,6 +224,6 @@ Append:
 ## Output feeds
 
 - `article` skill — PM Pulse data feeds coordination-markets and regulatory articles
-- `monitor-polymarket` / `polymarket-comments` — paired with this skill's macro signal
+- `monitor-polymarket` — paired with this skill's macro signal
 - `topic-momentum` — PM/coordination signal now has dedicated weekly data
 - `weekly-newsletter` — regulatory moves and volume milestones slot into the infra section
