@@ -1,7 +1,7 @@
 """
 OpenAI Agents SDK ↔ Aeon A2A example.
 
-Registers `aeon-token-report` as a function tool the Agent can call when
+Registers `aeon-token-movers` as a function tool the Agent can call when
 the user asks about a crypto token. The Agent decides when to call it,
 extracts the symbol/address from the prompt, and returns the report.
 
@@ -56,20 +56,20 @@ def _call_aeon(skill_id: str, var: str) -> str:
 
 
 @function_tool
-def aeon_token_report(token: str) -> str:
-    """Generate a full Aeon token report for a crypto token."""
-    return _call_aeon("aeon-token-report", token)
+def aeon_token_movers(token: str) -> str:
+    """Generate an Aeon token-movers report (price, movers, signals) for a crypto token."""
+    return _call_aeon("aeon-token-movers", token)
 
 
 crypto_analyst = Agent(
     name="crypto-analyst",
     instructions=(
         "You are a crypto analyst. When the user asks about a token's price, "
-        "stats, or fundamentals, call `aeon_token_report` with the token "
+        "stats, or fundamentals, call `aeon_token_movers` with the token "
         "symbol or address, then summarise the key numbers in two sentences "
         "and append the full report below."
     ),
-    tools=[aeon_token_report],
+    tools=[aeon_token_movers],
 )
 
 

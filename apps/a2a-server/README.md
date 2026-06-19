@@ -101,7 +101,7 @@ Each client below is < 100 lines and calls a real skill end-to-end. Set `A2A_GAT
 | LangChain | [`examples/a2a/langchain_client.py`](../../examples/a2a/langchain_client.py) | `aeon-fetch-tweets` wrapped as a LangChain `Tool` |
 | AutoGen | [`examples/a2a/autogen_workflow.py`](../../examples/a2a/autogen_workflow.py) | `aeon-deep-research` as an `AssistantAgent` function tool |
 | CrewAI | [`examples/a2a/crewai_task.py`](../../examples/a2a/crewai_task.py) | `aeon-pr-review` as a CrewAI `BaseTool` |
-| OpenAI Agents SDK | [`examples/a2a/openai_agents_client.py`](../../examples/a2a/openai_agents_client.py) | `aeon-token-report` as a `@function_tool` |
+| OpenAI Agents SDK | [`examples/a2a/openai_agents_client.py`](../../examples/a2a/openai_agents_client.py) | `aeon-token-movers` as a `@function_tool` |
 
 See [`examples/README.md`](../../examples/README.md) for the full catalog (MCP stdio and Claude Desktop clients live there too).
 
