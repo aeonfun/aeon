@@ -65,7 +65,7 @@ export const MCP_CATALOG: McpCatalogEntry[] = [
     slug: 'litebeam',
     name: 'Litebeam',
     url: 'https://mcp.litebeam.xyz',
-    logo: 'https://litebeam.xyz/litebeam.svg',
+    logo: 'https://pbs.twimg.com/profile_images/2065063781042954241/zcTqmW5j_400x400.jpg',
     description: 'Litebeam — one MCP connection to every microservice. An AI-microservice routing layer: discover and call paid services through a single endpoint, settled from your agent\'s wallet (managed Litebeam wallet or BYO via x402), with budget controls and HITL approvals.',
     transport: 'sse',
     authSecret: 'LITEBEAM_API_KEY',
