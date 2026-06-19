@@ -7,7 +7,7 @@ Aeon ships an [A2A gateway](../apps/a2a-server/) and an [MCP server](../apps/mcp
 | [`a2a/langchain_client.py`](a2a/langchain_client.py) | LangChain | `aeon-fetch-tweets` | Wrap a skill as a `langchain.tools.Tool` |
 | [`a2a/autogen_workflow.py`](a2a/autogen_workflow.py) | AutoGen | `aeon-deep-research` | Function tool inside a multi-agent chat |
 | [`a2a/crewai_task.py`](a2a/crewai_task.py) | CrewAI | `aeon-pr-review` | Subclass `BaseTool`, hand to a Crew agent |
-| [`a2a/openai_agents_client.py`](a2a/openai_agents_client.py) | OpenAI Agents SDK | `aeon-token-report` | `@function_tool` decorator pattern |
+| [`a2a/openai_agents_client.py`](a2a/openai_agents_client.py) | OpenAI Agents SDK | `aeon-token-movers` | `@function_tool` decorator pattern |
 | [`mcp/test_connection.py`](mcp/test_connection.py) | MCP (stdio) | `aeon-cost-report` (default) | List + invoke any `aeon-*` tool |
 | [`mcp/claude_desktop_config.json`](mcp/claude_desktop_config.json) | Claude Desktop | — | Drop-in config snippet |
 
@@ -44,7 +44,7 @@ You should see the full list of `aeon-*` tools followed by a real `aeon-cost-rep
 `skills.json` at the repo root is the source of truth — every entry is callable as `aeon-<slug>` from MCP and as `skillId: "aeon-<slug>"` from A2A. Some good first calls:
 
 - `aeon-cost-report` — fast, no external API needed, safe to run anywhere
-- `aeon-token-report` (`var=AEON`) — public DexScreener data, no secrets required
+- `aeon-token-movers` (`var=AEON`) — public CoinGecko data, no secrets required
 - `aeon-deep-research` (`var="your topic"`) — long-running; expect 5–10 min
 - `aeon-fetch-tweets` (`var="your topic"`) — needs `XAI_API_KEY` in the Aeon repo's environment
 
