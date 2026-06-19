@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-18",
+  "updated": "2026-06-19",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -290,6 +290,19 @@
       "skills": ["polymarket-intel", "polymarket-markets", "polymarket-trade"],
       "secrets_required": ["SIMMER_API_KEY"],
       "capabilities": ["external_api", "writes_external_host", "onchain_writes", "sends_notifications"]
+    },
+    {
+      "repo": "Tholynceus/lens-skill-pack",
+      "name": "LENS Skill Pack",
+      "description": "Read the on-chain deployer wallet behind any X profile and flag rug/scam token devs on Base. Resolves the deployer behind a handle and returns a CLEAR/CAUTION/STOP verdict via the public LENS API. Bios lie, chains don't.",
+      "author": "lnsx_io",
+      "license": "MIT",
+      "homepage": "https://lnsx.io",
+      "category": "crypto",
+      "trust_level": "community",
+      "skills": ["lens-scan"],
+      "secrets_required": [],
+      "capabilities": ["read_only", "external_api"]
     }
   ]
 }
