@@ -340,6 +340,8 @@ Aeon skills work outside GitHub Actions too - locally via `claude -p -`, identic
 ./add-a2a --print-config     # LangChain/Python client examples
 ```
 
+Endpoints, env vars, the agent-card schema, and a copy-paste JSON-RPC client are in [`apps/a2a-server/README.md`](apps/a2a-server/README.md).
+
 Working client scripts for every supported stack (LangChain, AutoGen, CrewAI, OpenAI Agents SDK, MCP stdio, Claude Desktop) live in [`examples/`](examples/) - each <100 lines, calling a real skill end-to-end. Start with [`examples/README.md`](examples/README.md).
 
 ### Cross-repo access
