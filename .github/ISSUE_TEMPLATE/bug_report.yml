@@ -13,7 +13,7 @@ body:
     id: skill
     attributes:
       label: Which skill (or area)?
-      description: The skill name from `aeon.yml` (e.g. `token-movers`, `feature`, `deep-research`). Use `dashboard`, `runtime`, or `gateway` if it's not a single skill.
+      description: The skill name from `aeon.yml` (e.g. `token-movers`, `pr-review`, `deep-research`). Use `dashboard`, `runtime`, or `gateway` if it's not a single skill.
       placeholder: token-movers
     validations:
       required: true

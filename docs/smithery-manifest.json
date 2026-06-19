@@ -82,10 +82,6 @@
           "description": "[Aeon · Research] Exhaustive multi-source synthesis on any topic using full-context ingestion — far beyond a digest (on-demand)"
         },
         {
-          "name": "aeon-defi-monitor",
-          "description": "[Aeon · Crypto] Check pool health, positions, and yield rates for tracked protocols (cron: 0 12 * * *)"
-        },
-        {
           "name": "aeon-defi-overview",
           "description": "[Aeon · Crypto] Daily overview of DeFi activity from DeFiLlama — TVL changes, top chains, top protocols (cron: 0 12 * * *)"
         },
@@ -340,10 +336,6 @@
         {
           "name": "aeon-thread-formatter",
           "description": "[Aeon · Social] Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste (cron: 30 17 * * *)"
-        },
-        {
-          "name": "aeon-token-alert",
-          "description": "[Aeon · Crypto] Notify on price or volume anomalies for tracked tokens (cron: 0 12 * * *)"
         },
         {
           "name": "aeon-token-movers",

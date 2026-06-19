@@ -279,4 +279,4 @@ None. Uses `gh` CLI (GITHUB_TOKEN via workflow), WebFetch, WebSearch. No additio
 
 - `article` skill — Compute Pulse data feeds compute/infra articles
 - `digest` / `weekly-newsletter` — compute developments slot into the agent-infra or DePIN section
-- `defi-monitor` / `token-pick` — DePIN token signals cross-reference with broader token picks
+- `defi-overview` / `token-pick` — DePIN token signals cross-reference with broader token picks

@@ -28,7 +28,7 @@ The full ranking — including the per-week skill-divergence buckets and the con
 
 ### What forks teach upstream
 
-The fleet is **infrastructure-first**: 18 of 24 active forks run only `heartbeat`. Of the rest, the most common second skills are `github-trending`, `morning-brief`, and the crypto cluster (`token-alert`, `token-movers`). When two or more forks independently flip the same default, the `fork-digest` skill flags it as a `DEFAULT_FLIP` candidate and surfaces it for upstream consideration.
+The fleet is **infrastructure-first**: 18 of 24 active forks run only `heartbeat`. Of the rest, the most common second skills are `github-trending`, `morning-brief`, and the crypto cluster (`token-movers`, `price-alert`). When two or more forks independently flip the same default, the `fork-digest` skill flags it as a `DEFAULT_FLIP` candidate and surfaces it for upstream consideration.
 
 If you're spinning up a new fork, the leaderboard is the cheapest map of what other operators have already validated.
 

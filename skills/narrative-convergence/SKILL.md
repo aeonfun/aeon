@@ -34,7 +34,7 @@ spend-monitor, cost-report, fleet-scorecard, fleet-control, repo-scanner, narrat
 ## Signal categories (skill → category)
 | Category | Skills |
 |----------|--------|
-| market | market-context, token-pick, token-movers, rwa-pulse, defi-monitor |
+| market | market-context, token-pick, token-movers, rwa-pulse, defi-overview |
 | social | tweet-roundup, list-digest, narrative-tracker, remix-tweets, refresh-x |
 | ecosystem | github-issues, github-trending, project-lens, builder-map, external-feature, milestone-tracker |
 | sector | mcp-pulse, compute-pulse, x402-monitor, agent-displacement, pm-pulse |

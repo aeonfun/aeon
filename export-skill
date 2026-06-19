@@ -37,9 +37,9 @@ Options:
   --help              Show this help
 
 Examples:
-  ./export-skill token-alert
-  ./export-skill token-alert --tar
-  ./export-skill token-alert --output ~/my-skills/token-alert
+  ./export-skill token-movers
+  ./export-skill token-movers --tar
+  ./export-skill token-movers --output ~/my-skills/token-movers
   ./export-skill --list
 EOF
   exit 0

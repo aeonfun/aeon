@@ -122,7 +122,7 @@ Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into
 ./add-skill aaronjmars/aeon --list        # browse the built-in catalog
 ./add-skill BankrBot/skills bankr hydrex  # install from any GitHub repo
 ./add-skill BankrBot/skills --all         # install everything from a repo
-./export-skill token-alert                # package one for standalone use
+./export-skill token-movers               # package one for standalone use
 ```
 
 Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `enabled: true` to activate. You can also:

@@ -46,7 +46,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-routine` | Productivity | Combined briefing — token movers, tweet roundup, paper pick, GitHub issues, and HN digest in one run |
 | `aeon-deal-flow` | Productivity | Funding round tracker across configurable verticals |
 | `aeon-deep-research` | Research | Exhaustive multi-source synthesis on any topic using full-context ingestion — far beyond a digest |
-| `aeon-defi-monitor` | Crypto | Check pool health, positions, and yield rates for tracked protocols |
 | `aeon-defi-overview` | Crypto | Overview of DeFi activity from DeFiLlama — TVL changes, top chains, top protocols |
 | `aeon-deploy-prototype` | Dev | Generate a small app or tool and deploy it live to Vercel via API |
 | `aeon-digest` | Research | Generate and send a digest on a configurable topic |
@@ -111,7 +110,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-technical-explainer` | Research | Generate a visual technical explanation of a recent topic using Replicate for the hero image |
 | `aeon-telegram-digest` | Research | Digest of recent posts from tracked public Telegram channels |
 | `aeon-thread-formatter` | Social | Score the day's events from memory/logs and format the top one as a 5-tweet thread ready to paste |
-| `aeon-token-alert` | Crypto | Notify on price or volume anomalies for tracked tokens |
 | `aeon-token-movers` | Crypto | Top movers, losers, and trending coins from CoinGecko |
 | `aeon-token-pick` | Crypto | One token recommendation and one prediction market pick based on live data |
 | `aeon-tool-builder` | Productivity | Build automation scripts from action-converter suggestions and recurring manual tasks |

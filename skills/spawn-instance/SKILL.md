@@ -73,7 +73,7 @@ Read `memory/instances.json`. If it doesn't exist, create it with `{"instances":
       "purpose": "monitor DeFi protocols and token movements",
       "created": "2026-04-20",
       "status": "pending_secrets",
-      "skills_enabled": ["token-movers", "defi-monitor", "heartbeat"],
+      "skills_enabled": ["token-movers", "defi-overview", "heartbeat"],
       "parent": "OWNER/aeon"
     }
   ]

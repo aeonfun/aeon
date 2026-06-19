@@ -9,7 +9,7 @@ capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Wallet address (`0x...`) on Base to profile. Required. If empty, log `WALLET_PROFILE_NO_TARGET` and exit cleanly (no notify).
 
-Behavioral profiling, not a balance digest (Aeon's `wallet-digest` covers balances). Answers: how old is this wallet, how does it behave, where did its funds come from, and does anything look risky? Runs keyless on public endpoints.
+Behavioral profiling, not a balance digest (Aeon's `treasury-info` covers balances). Answers: how old is this wallet, how does it behave, where did its funds come from, and does anything look risky? Runs keyless on public endpoints.
 
 Read `memory/known-addresses.yml` (if present) for counterparty labels and the last 2 days of `memory/logs/` for prior flags.
 

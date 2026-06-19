@@ -101,7 +101,7 @@ Where `<slug>` matches `update-gallery`'s Jekyll post filename convention: title
 
 a. **Derive tags** (max 4, Dev.to hard limit) from the filename slug:
    - `repo-article`, `article` → `ai, github, automation, agents`
-   - `token-alert`, `defi-overview`, `defi-monitor` → `crypto, defi, blockchain, trading`
+   - `defi-overview` → `crypto, defi, blockchain, trading`
    - `changelog`, `push-recap`, `shiplog` → `opensource, devops, changelog, github`
    - `digest`, `rss-digest`, `hacker-news` → `news, tech, ai, digest`
    - `deep-research`, `research-brief`, `paper-pick` → `research, ai, machinelearning, papers`

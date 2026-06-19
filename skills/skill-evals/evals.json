@@ -83,15 +83,6 @@
         { "label": "probability", "pattern": "([\\d.]+)%", "min": 0, "max": 100 }
       ]
     },
-    "token-alert": {
-      "output_pattern": "articles/token-alert-*.md",
-      "min_words": 50,
-      "required_patterns": ["AEON|aeon|token|Token|price|Price"],
-      "forbidden_patterns": ["\\$\\{var\\}", "\\[TODO\\]"],
-      "numeric_checks": [
-        { "label": "price", "pattern": "\\$([\\d.]+)", "min": 0, "max": 1000000 }
-      ]
-    },
     "skill-health": {
       "output_pattern": "articles/skill-health-*.md",
       "min_words": 80,
