@@ -135,7 +135,7 @@ Installed skills land in `skills/` and are added to `aeon.yml` disabled - flip `
 
 ## Why "the most autonomous"?
 
-Most agent tools put you in the driver's seat - approve this tool call, review this diff, confirm this action. Aeon is built for the work you want *done* while you're not there: briefings, market monitoring, PR reviews, research digests, security scans.
+Most agent tools put you in the driver's seat - approve this tool call, review this diff, confirm this action. Aeon is built for the work you want *done* while you're not there: briefings, market monitoring, PR reviews, research digests.
 
 |  | Aeon | Claude Code | Hermes | OpenClaw |
 |--|------|------------|--------|---------|
@@ -497,6 +497,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [Hunch Prediction Markets](https://github.com/rajkaria/hunch/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Crowd-conviction signal, market discovery, and **x402 betting** on PlayHunch - onchain prediction markets on Base. Unlike monitor-only packs, hunch-bet places real positions (simulate-by-default, $1-$10, USDC payout + onchain proof) |
 | [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Pump Fun GO bounty discovery + vetting, and the content tools to win them (voice tones, images, video direction). x402 on Solana or Base. |
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
+| [lens-skill-pack](https://github.com/Tholynceus/lens-skill-pack) | 1 | Read the deployer wallet behind any X profile and flag rug/scam token devs on Base - resolves the dev behind a handle and returns a CLEAR/CAUTION/STOP verdict via the public LENS API |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
