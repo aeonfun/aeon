@@ -202,7 +202,7 @@ Options: `claude-opus-4-8`, `claude-fable-5`, `claude-opus-4-7`, `claude-sonnet-
 
 ```yaml
 skills:
-  token-report: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" }
+  token-movers: { enabled: true, schedule: "30 12 * * *", model: "claude-sonnet-4-6" }
 ```
 
 ### Authentication

@@ -13,8 +13,8 @@ body:
     id: skill
     attributes:
       label: Which skill (or area)?
-      description: The skill name from `aeon.yml` (e.g. `token-report`, `feature`, `deep-research`). Use `dashboard`, `runtime`, or `gateway` if it's not a single skill.
-      placeholder: token-report
+      description: The skill name from `aeon.yml` (e.g. `token-movers`, `feature`, `deep-research`). Use `dashboard`, `runtime`, or `gateway` if it's not a single skill.
+      placeholder: token-movers
     validations:
       required: true
   - type: textarea
@@ -64,7 +64,7 @@ body:
       label: Steps to reproduce / what triggered it
       description: How can a maintainer hit this? Include the `var` value if you set one, and what you'd changed recently.
       placeholder: |
-        1. Enabled `token-report` on the default 6h schedule
+        1. Enabled `token-movers` on the default 6h schedule
         2. Run now from the dashboard
         3. Run completes but no notification arrives
   - type: textarea

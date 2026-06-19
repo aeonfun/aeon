@@ -114,7 +114,6 @@ Aeon is an autonomous agent framework that runs on GitHub Actions and exposes it
 | `aeon-token-alert` | Crypto | Notify on price or volume anomalies for tracked tokens |
 | `aeon-token-movers` | Crypto | Top movers, losers, and trending coins from CoinGecko |
 | `aeon-token-pick` | Crypto | One token recommendation and one prediction market pick based on live data |
-| `aeon-token-report` | Crypto | Price performance report for the project's token — price, volume, liquidity, and context |
 | `aeon-tool-builder` | Productivity | Build automation scripts from action-converter suggestions and recurring manual tasks |
 | `aeon-treasury-info` | Crypto | Show holdings overview for a wallet using Bankr API with block explorer fallback |
 | `aeon-tweet-roundup` | Social | Gist of the latest tweets on configurable topics |

@@ -354,10 +354,6 @@
           "description": "[Aeon · Crypto] One token recommendation and one prediction market pick based on live data (cron: 0 12 * * *)"
         },
         {
-          "name": "aeon-token-report",
-          "description": "[Aeon · Crypto] Daily price performance report for the project's token — price, volume, liquidity, and context (cron: 30 12 * * *)"
-        },
-        {
           "name": "aeon-tool-builder",
           "description": "[Aeon · Productivity] Build automation scripts from action-converter suggestions and recurring manual tasks (on-demand)"
         },

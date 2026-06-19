@@ -360,7 +360,6 @@ flowchart LR
         token-alert[token-alert]
         token-movers[token-movers]
         token-pick[token-pick]
-        token-report[token-report]
         treasury-info[treasury-info]
         unlock-monitor[unlock-monitor]
         wallet-digest[wallet-digest]
@@ -400,7 +399,6 @@ flowchart LR
     click token-alert "../skills/token-alert/SKILL.md"
     click token-movers "../skills/token-movers/SKILL.md"
     click token-pick "../skills/token-pick/SKILL.md"
-    click token-report "../skills/token-report/SKILL.md"
     click treasury-info "../skills/treasury-info/SKILL.md"
     click unlock-monitor "../skills/unlock-monitor/SKILL.md"
     click wallet-digest "../skills/wallet-digest/SKILL.md"
