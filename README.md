@@ -333,6 +333,8 @@ Aeon skills work outside GitHub Actions too - locally via `claude -p -`, identic
 ./add-mcp --uninstall        # remove
 ```
 
+Tool naming, the `var` argument, Claude Desktop config, and a test client are in [`apps/mcp-server/README.md`](apps/mcp-server/README.md).
+
 **Any AI agent (A2A)** - [Google's A2A protocol](https://google.github.io/A2A/) lets LangChain, AutoGen, CrewAI, OpenAI Agents SDK, and Vertex AI invoke skills via HTTP:
 
 ```bash
