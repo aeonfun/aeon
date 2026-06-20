@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "updated": "2026-06-18",
+  "updated": "2026-06-20",
   "description": "Machine-readable registry of community skill packs installable via ./install-skill-pack. Mirrors the human-readable table in README.md.",
   "packs": [
     {
@@ -290,6 +290,20 @@
       "skills": ["polymarket-intel", "polymarket-markets", "polymarket-trade"],
       "secrets_required": ["SIMMER_API_KEY"],
       "capabilities": ["external_api", "writes_external_host", "onchain_writes", "sends_notifications"]
+    },
+    {
+      "repo": "CharonAI-code/charon",
+      "path": "skills/aeon",
+      "name": "Charon for AEON",
+      "description": "Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management.",
+      "author": "CharonAI-code",
+      "license": "MIT",
+      "homepage": "https://charon.codes",
+      "category": "dev",
+      "trust_level": "community",
+      "skills": ["charon-setup", "charon-policy"],
+      "secrets_required": [],
+      "capabilities": ["external_api", "writes_external_host"]
     }
   ]
 }

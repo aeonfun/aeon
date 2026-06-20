@@ -497,6 +497,7 @@ Either way the installer reads the pack's `skills-pack.json` manifest, runs the 
 | [Hunch Prediction Markets](https://github.com/rajkaria/hunch/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Crowd-conviction signal, market discovery, and **x402 betting** on PlayHunch - onchain prediction markets on Base. Unlike monitor-only packs, hunch-bet places real positions (simulate-by-default, $1-$10, USDC payout + onchain proof) |
 | [clawhunter-skills](https://github.com/clawhunter/clawhunter-skills) | 2 | Pump Fun GO bounty discovery + vetting, and the content tools to win them (voice tones, images, video direction). x402 on Solana or Base. |
 | [Polymarket Trader by Simmer](https://github.com/SpartanLabsXyz/aeon-skill-pack-polymarket/tree/main/aeon-skill-pack) (`--path aeon-skill-pack`) | 3 | Signal, discovery, and real position-taking on **Polymarket** - the deepest prediction-market venue - powered by Simmer. Unlike monitor-only packs, polymarket-trade places actual orders (simulate-by-default, live opt-in, bounded) |
+| [Charon for AEON](https://github.com/CharonAI-code/charon/tree/main/skills/aeon) (`--path skills/aeon`) | 2 | Repo-local policy enforcement for AEON runs, with guided setup and natural-language policy management |
 
 **To list a pack here**, open a PR adding a row. Guidelines:
 
