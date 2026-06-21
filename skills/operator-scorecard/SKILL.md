@@ -12,7 +12,7 @@ Today is ${today}. Synthesize the last 7 days of agent activity into a single pl
 
 ## Why this exists
 
-Every signal needed to answer that question already lives in the repo — `skill-analytics` ranks pass rates, `heartbeat` issues per-run verdicts, `tweet-allocator` totals weekly $AEON spend, `token-report` tracks 7d price delta, `repo-pulse` records star/fork deltas. But each lives in its own article, on its own cadence, in its own format. A new operator (or a returning one) opens five files to assemble the weekly picture. This skill assembles it once on Monday morning and pushes it to the notification channel so the picture is delivered, not fetched.
+Every signal needed to answer that question already lives in the repo — `skill-analytics` ranks pass rates, `heartbeat` issues per-run verdicts, `tweet-allocator` totals weekly $AEON spend, `repo-pulse` records star/fork deltas. But each lives in its own article, on its own cadence, in its own format. A new operator (or a returning one) opens four files to assemble the weekly picture. This skill assembles it once on Monday morning and pushes it to the notification channel so the picture is delivered, not fetched.
 
 It is deliberately a synthesis skill, not a measurement skill — every number it prints is sourced from a file another skill already wrote. It introduces zero new APIs, zero new secrets, zero new cron-state. If an upstream skill didn't run, the matching paragraph degrades gracefully ("no data this week") rather than fabricating numbers.
 
@@ -23,7 +23,6 @@ No new config. No new secrets. Reads:
 - `articles/skill-analytics-*.md` — most recent file in window for fleet pass rate + anomaly count
 - `articles/heartbeat-*.md` (or `memory/logs/*.md` heartbeat sections) — P0–P3 verdict tally
 - `articles/tweet-allocator-*.md` — weekly distributed totals + recipient counts
-- `articles/token-report-*.md` — most recent for price + 7d delta
 - `articles/repo-pulse-*.md` — daily star/fork delta entries summed across the window
 - `memory/MEMORY.md` — last consolidation date + "Skills Built" recent rows for the activity-pulse line
 - `memory/issues/INDEX.md` (optional) — open issue count if present
@@ -75,14 +74,9 @@ a. **$AEON distributed.** Sum every `articles/tweet-allocator-*.md` in the windo
 
 If `articles/distribute-tokens-*.md` exists in the window, also tally any explicit on-chain payouts there. Report both as `$AEON distributed: $X.XX (Y recipients via tweet-allocator + Z via distribute-tokens)`.
 
-b. **Token 7d performance.** Parse the most recent `articles/token-report-*.md`. Extract `Price`, `7d` delta, `30d` delta, `Verdict` (e.g. CONSOLIDATING, BREAKING_OUT, FADING). The skill quotes the `7d` number directly — no math.
-
-If no token-report in window: `economic_source=partial`, omit token line and report only $AEON distributed.
-
-c. **Compute economic verdict (paragraph 3):**
-- `OK` if `total_distributed > 0` AND `token_7d_pct >= -10`
-- `WATCH` if `total_distributed > 0` AND `token_7d_pct >= -25`
-- `DEGRADED` if `total_distributed == 0` (week with $0 spend on community = silent loop) OR `token_7d_pct < -25`
+b. **Compute economic verdict (paragraph 3):**
+- `OK` if `total_distributed > 0`
+- `DEGRADED` if `total_distributed == 0` (week with $0 spend on community = silent loop)
 
 ### 5. Roll up to the overall verdict
 
@@ -115,7 +109,7 @@ ${watched_repo_1} added ${stars_1} stars and ${forks_1} forks. ${watched_repo_2}
 
 ## Economic activity
 
-$AEON distributed: $${total_distributed} across ${recipient_count} recipient(s) via tweet-allocator${distribute_tokens_addendum_or_omit}. Token closed at ${token_price} (${token_7d_pct}% 7d, ${token_30d_pct}% 30d). Verdict on the chart this week: ${token_verdict}.
+$AEON distributed: $${total_distributed} across ${recipient_count} recipient(s) via tweet-allocator${distribute_tokens_addendum_or_omit}.
 
 **Verdict:** ${economic_verdict}
 
@@ -129,7 +123,6 @@ ${bullet list of up to 3 entries from MEMORY.md "Skills Built" rows where date i
 - heartbeat: ${N runs found in memory/logs}
 - repo-pulse: ${N daily articles in window}
 - tweet-allocator: ${N daily articles in window} · total: $${total_distributed}
-- token-report: ${article_path or "missing this window"}
 - contributor-leaderboard: ${article_path or "no leaderboard run in window"}
 
 ---

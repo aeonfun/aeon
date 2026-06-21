@@ -8,7 +8,7 @@ tags: [research, dev]
 
 > **${var}** — Optional. `dry-run` skips notify (state still updates and article still writes). Empty = normal run.
 
-Today is ${today}. `ECOSYSTEM.md` lists the projects, agents, and products building on top of Aeon (merged in #220). Today there is no skill that asks the obvious follow-up question: **are those projects actually shipping?** `fork-cohort` buckets Aeon *forks* by activation stage; `contributor-spotlight` recognises who pushes code to Aeon *itself*; `competitor-radar` watches *new* entrants on Product Hunt / HN. None of them watch the projects already in `ECOSYSTEM.md`. This skill closes that gap: a weekly Monday scan that reads `ECOSYSTEM.md`, matches each project to a GitHub repo where it can, and reports stars / forks / last-commit recency plus any new releases in the 7-day window.
+Today is ${today}. `ECOSYSTEM.md` lists the projects, agents, and products building on top of Aeon (merged in #220). Today there is no skill that asks the obvious follow-up question: **are those projects actually shipping?** `fork-cohort` buckets Aeon *forks* by activation stage; `contributor-spotlight` recognises who pushes code to Aeon *itself*; `launch-radar` watches *new* entrants on Product Hunt / HN. None of them watch the projects already in `ECOSYSTEM.md`. This skill closes that gap: a weekly Monday scan that reads `ECOSYSTEM.md`, matches each project to a GitHub repo where it can, and reports stars / forks / last-commit recency plus any new releases in the 7-day window.
 
 Read `memory/MEMORY.md` for context.
 Read the last 8 days of `memory/logs/` for prior-run context.
@@ -400,4 +400,4 @@ If `gh` is entirely unavailable (no token, CLI missing), every repo lookup fails
 
 ## Why weekly, Monday 11:00 UTC
 
-Project shipping cadence is measured in days-to-weeks, not hours — a daily pulse would 7× the API load and the notification clock for almost no extra signal (most projects don't ship daily). Monday 11:00 UTC slots the ecosystem read just after the rest of the Monday-morning intelligence stack: `fleet-state` (08:00) → `framework-watch` (08:30) → `competitor-radar` (10:00) → `ecosystem-pulse` (11:00). The operator reads fork health, known-cohort momentum, new entrants, and finally "are the projects built on us alive?" in one sitting.
+Project shipping cadence is measured in days-to-weeks, not hours — a daily pulse would 7× the API load and the notification clock for almost no extra signal (most projects don't ship daily). Monday 11:00 UTC slots the ecosystem read just after the rest of the Monday-morning intelligence stack: `fleet-state` (08:00) → `framework-watch` (08:30) → `launch-radar` (10:30) → `ecosystem-pulse` (11:00). The operator reads fork health, known-cohort momentum, new entrants, and finally "are the projects built on us alive?" in one sitting.

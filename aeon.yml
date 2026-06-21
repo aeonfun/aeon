@@ -196,7 +196,7 @@ skills:
       enabled: false,
       schedule: "55 11 * * 1",
       var: ""
-    } # Monday 11:55 UTC — weekly URL-health audit of every link in ECOSYSTEM.md. GitHub URLs checked for archived/disabled via `gh api repos/...`; web URLs checked with `curl -sI --location` + WebFetch fallback; buckets OK/ARCHIVED/MOVED/DEAD/INCONCLUSIVE/XONLY/OTHER. INCONCLUSIVE never single-shots to DEAD — two consecutive INCONCLUSIVE runs are required (sandbox-aware). Notifies on transitions into DEAD/ARCHIVED/MOVED and on recoveries back to OK. Closes the three-skill ecosystem loop with ecosystem-entrants (arrivals, 11:45) and ecosystem-pulse (liveness, 11:00). Read-only against ECOSYSTEM.md. Pass dry-run to skip notify.
+    } # Monday 11:55 UTC — weekly URL-health audit of every link in ECOSYSTEM.md. GitHub URLs checked for archived/disabled via `gh api repos/...`; web URLs checked with `curl -sI --location` + WebFetch fallback; buckets OK/ARCHIVED/MOVED/DEAD/INCONCLUSIVE/XONLY/OTHER. INCONCLUSIVE never single-shots to DEAD — two consecutive INCONCLUSIVE runs are required (sandbox-aware). Notifies on transitions into DEAD/ARCHIVED/MOVED and on recoveries back to OK. Pairs with ecosystem-pulse (liveness, 11:00) on the Monday ecosystem loop. Read-only against ECOSYSTEM.md. Pass dry-run to skip notify.
   ecosystem-pulse:
     {
       enabled: false,

@@ -17,7 +17,7 @@ If `soul/SOUL.md` and `soul/STYLE.md` exist and are populated, read them and mat
 
 ## Why this skill exists
 
-`.x402books/wallets.json` (PR #273, merged 2026-05-29) advertises this fork's agent wallets to the x402books ecosystem — treasury + deployer addresses on Base, by role. The `token-report` skill consumes this file for the daily treasury ETH balance line (PR #306, 2026-05-31).
+`.x402books/wallets.json` (PR #273, merged 2026-05-29) advertises this fork's agent wallets to the x402books ecosystem — treasury + deployer addresses on Base, by role.
 
 What none of the existing skills do: tell the operator whether those same wallets are **exposed to drain risk**. The HoundFlow pack ships six keyless onchain investigation skills (`approval-audit`, `honeypot-check`, `lp-lock`, `linked-wallets`, `fund-flow`, `investigation-report`) — all `workflow_dispatch` only, no scheduled consumer. They've been live since 2026-05-28 with no automatic runner.
 

@@ -195,7 +195,7 @@ Operators need to provision these env vars before enabling any of these skills:
 ### Cron slot warnings
 
 - `skills/foo/SKILL.md` schedule `0 14 * * *` **CONFLICTS** with existing `article` slot.
-- `skills/baz/SKILL.md` schedule `5 9 * * 1` is **ADJACENT** to existing `competitor-radar` (`0 10 * * 1`).
+- `skills/baz/SKILL.md` schedule `5 9 * * 1` is **ADJACENT** to existing `shiplog` (`0 9 * * 1`).
 
 (omit if all `OK`)
 

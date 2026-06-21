@@ -7,21 +7,21 @@ tags: [crypto]
 ---
 > **${var}** — Optional. Pass one or more `target_price` levels (comma-separated USD numbers, scientific notation allowed) to fire a one-time alert when the price crosses any of them. Empty = only ATH and sharp-move gates run. Pass `dry-run` to skip notify (state still updates).
 
-Today is ${today}. `token-report` produces a daily verdict at a fixed hour. `repo-pulse` reports star/fork deltas once a day. Neither tells the operator "the price just hit a new high" or "the token moved 28% in the last hour" — both are events that warrant attention the moment they happen, not 14 hours later in the daily digest. This skill closes that window.
+Today is ${today}. `repo-pulse` reports star/fork deltas once a day, and the other scheduled digests run at fixed hours. None of them tell the operator "the price just hit a new high" or "the token moved 28% in the last hour" — both are events that warrant attention the moment they happen, not 14 hours later in a daily digest. This skill closes that window.
 
 ## Why this exists
 
-The daily token-report is a calm summary. Real moves need real-time signal. Three classes of move are worth a same-day ping:
+Scheduled daily digests are calm summaries. Real moves need real-time signal. Three classes of move are worth a same-day ping:
 - **New all-time high.** The single most narrative-shaping price event a token can have. Worth marking on the timeline regardless of size.
 - **Sharp 1h moves (±20%).** Either a buyer wave or a liquidation cascade — both change what the operator does next (post about it, watch for follow-through, check the chart).
 - **Operator-set target crossings.** The operator may want to know when price clears $X (often a personal stretch goal or a level tied to a tweet/launch). One alert per target per direction.
 
-Everything else is noise the daily report handles.
+Everything else is noise not worth a same-day ping.
 
 ## Config
 
 Reads:
-- `memory/MEMORY.md` "Tracked Token" section — same contract/chain the token-report skill uses. If absent, exit silently.
+- `memory/MEMORY.md` "Tracked Token" section — the tracked token's contract/chain. If absent, exit silently.
 - `memory/topics/price-alert-state.json` — last-known ATH, last-alert timestamps per event type, target-crossing history. Created with defaults on first run.
 
 Writes:
@@ -263,5 +263,5 @@ DexScreener is keyless and public — curl works in unrestricted runners. The sa
 - **Liquid-pool selection only.** The deepest-liquidity pair on the configured chain wins. Don't compute prices from blended pool averages — the deepest pool's `priceUsd` is the canonical mark.
 - **State writes are atomic + validated.** Every state write goes through a tmpfile + `jq empty` validation step. Corrupt writes restore from `.bak`.
 - **Read-only across `memory/logs/`.** This skill never modifies past log files. It only appends to today's.
-- **Targets are absolute USD, not percentages.** This avoids ambiguity ("20% from where?"). If operators want move-from-now alerts they have token-report and the sharp-move gate.
+- **Targets are absolute USD, not percentages.** This avoids ambiguity ("20% from where?"). If operators want move-from-now alerts they have the sharp-move gate.
 - **Idempotent under same-minute reruns.** Same-minute reruns with identical price input produce identical state and zero new notifications (every gate dedup-suppressed).

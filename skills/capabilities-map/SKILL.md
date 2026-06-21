@@ -477,6 +477,6 @@ Drop any line whose list is empty. On the first (baseline) run that *is* assessa
 
 ## Why Monday 11:30 UTC
 
-The Monday intelligence stack covers operator/fleet health at 08:00 (`fleet-state`), 08:30 (`framework-watch`), 10:00 (`competitor-radar`), 10:30 (`operator-scorecard`), 10:45 (`fork-health`), 11:00 (`ecosystem-pulse`). This skill takes the 11:30 slot — directly after `ecosystem-pulse` and before the noon token stack. The pairing is intentional: `ecosystem-pulse` reports external project liveness; `capabilities-map` reports internal skill-footprint coverage. Both are weekly read-only audits the operator can scrub Monday morning to start the week with full surface visibility.
+The Monday intelligence stack covers operator/fleet health at 08:00 (`fleet-state`), 08:30 (`framework-watch`), 10:30 (`operator-scorecard`), 10:45 (`fork-health`), 11:00 (`ecosystem-pulse`). This skill takes the 11:30 slot — directly after `ecosystem-pulse` and before the noon token stack. The pairing is intentional: `ecosystem-pulse` reports external project liveness; `capabilities-map` reports internal skill-footprint coverage. Both are weekly read-only audits the operator can scrub Monday morning to start the week with full surface visibility.
 
 Weekly, not daily: declared-capability movement happens on a pack-PR cadence (days to weeks), and enabling/disabling skills is a deliberate operator action — a daily run would mostly emit `QUIET` and burn the log block without surfacing anything new.

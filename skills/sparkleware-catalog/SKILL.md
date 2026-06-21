@@ -284,4 +284,4 @@ The data source *is* the authenticated GitHub API, so there is no keyless public
 
 ## Why Tuesday 09:00 UTC
 
-The Monday intelligence stack is already busy: `fleet-state` (08:00), `competitor-radar` (10:00), `ecosystem-pulse` (11:00). This skill takes the first quiet weekday slot afterward — Tuesday 09:00 UTC — so the enriched catalog refreshes early in the week without contending for the Monday window. Weekly, not daily: registry composition changes on a human-PR cadence (days to weeks), and pack repos don't churn fast enough that a daily crawl would surface anything the weekly run misses.
+The Monday intelligence stack is already busy: `fleet-state` (08:00), `framework-watch` (08:30), `ecosystem-pulse` (11:00). This skill takes the first quiet weekday slot afterward — Tuesday 09:00 UTC — so the enriched catalog refreshes early in the week without contending for the Monday window. Weekly, not daily: registry composition changes on a human-PR cadence (days to weeks), and pack repos don't churn fast enough that a daily crawl would surface anything the weekly run misses.

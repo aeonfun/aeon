@@ -29,7 +29,7 @@ body:
     id: expected
     attributes:
       label: What did you expect to happen?
-      placeholder: A token report notification with the latest price and treasury balance.
+      placeholder: A market-movers digest with the day's top gainers and losers.
     validations:
       required: true
   - type: dropdown

@@ -1,14 +1,14 @@
 ---
 name: ecosystem-links
 category: dev
-description: Link-health audit of ECOSYSTEM.md — checks every GitHub repo for archived/disabled state and every project URL for HTTP 4xx/5xx or redirect chains, surfacing dead/archived/moved entries before a casual reader stumbles into one. Closes the three-skill ecosystem loop with ecosystem-entrants (arrivals) and ecosystem-pulse (liveness).
+description: Link-health audit of ECOSYSTEM.md — checks every GitHub repo for archived/disabled state and every project URL for HTTP 4xx/5xx or redirect chains, surfacing dead/archived/moved entries before a casual reader stumbles into one. Pairs with ecosystem-pulse (liveness) on the Monday ecosystem loop.
 var: ""
 tags: [research, dev]
 ---
 
 > **${var}** — Optional. `dry-run` skips notify (state still updates and article still writes). Empty = normal run.
 
-Today is ${today}. `ECOSYSTEM.md` is the curated catalog of projects, agents, and products building on top of Aeon — 30+ entries today, growing in irregular bursts. `ecosystem-pulse` measures activity for projects that already resolve to a GitHub repo. `ecosystem-entrants` reports week-over-week arrivals and departures. Neither catches entries whose URLs have gone 404, whose GitHub repo got archived, or whose custom domain lapsed. The first time a casual visitor clicks an ecosystem row and hits a dead page, the catalog stops being trustworthy.
+Today is ${today}. `ECOSYSTEM.md` is the curated catalog of projects, agents, and products building on top of Aeon — 30+ entries today, growing in irregular bursts. `ecosystem-pulse` measures activity for projects that already resolve to a GitHub repo. It does not catch entries whose URLs have gone 404, whose GitHub repo got archived, or whose custom domain lapsed. The first time a casual visitor clicks an ecosystem row and hits a dead page, the catalog stops being trustworthy.
 
 This skill closes that gap. It is a weekly Monday URL-health audit of every link in `ECOSYSTEM.md` — GitHub repos, X handles, custom project domains, anything in the links column. Read-only against `ECOSYSTEM.md`; curation stays a human PR decision per the file's own "Add your project" rules.
 
@@ -16,15 +16,14 @@ Read `memory/MEMORY.md` for context.
 Read the last 8 days of `memory/logs/` for prior-run context.
 Read `soul/SOUL.md` + `soul/STYLE.md` if populated to match voice in the notification and article.
 
-## Why a separate skill from ecosystem-pulse and ecosystem-entrants
+## Why a separate skill from ecosystem-pulse
 
 | Skill | Question answered | Cadence | Slot |
 |-------|-------------------|---------|------|
 | `ecosystem-pulse` | "Are listed projects shipping this week?" | Weekly (Mon 11:00 UTC) | Liveness of *known-good* GitHub repos |
-| `ecosystem-entrants` | "What was added to ECOSYSTEM.md this week?" | Weekly (Mon 11:45 UTC) | First-touch of new entries |
 | **`ecosystem-links`** | **"Do every row's URLs still resolve?"** | **Weekly (Mon 11:55 UTC)** | **URL validity across the full catalog** |
 
-The three skills compose into a closed feedback loop on the ecosystem catalog: arrivals → liveness → link integrity. Together they catch the three failure modes a static list can hide: a project that landed and was never noticed, a project that listed and then went silent, and a project whose URLs went stale. Building any of them into the others would entangle three different questions (binary added/removed vs. gradated activity vs. binary URL state) — keeping each skill structurally simple is the point.
+The two skills compose into a feedback loop on the ecosystem catalog: liveness → link integrity. Together they catch two failure modes a static list can hide: a project that listed and then went silent, and a project whose URLs went stale. Building one into the other would entangle two different questions (gradated activity vs. binary URL state) — keeping each skill structurally simple is the point.
 
 `ecosystem-pulse` already calls `gh api repos/{owner}/{repo}` for projects that resolve to a GitHub repo. It does **not** check `archived` or `disabled` flags (it cares about `pushed_at` recency), and it never touches the non-GitHub URLs in the row. `ecosystem-links` fills the URL-validity gap without re-doing pulse's recency work.
 
@@ -119,7 +118,7 @@ Invariants:
 - `project` is recorded per URL even though the same URL can appear under multiple rows — for those, `project` lists the first project that introduced the URL (display-only field; not a join key).
 - `first_seen` is the date this URL first appeared in any run — never overwritten. `last_seen` is the most recent run where the URL was present in `ECOSYSTEM.md` — overwritten every run that sees it. `last_ok` is the most recent run where the URL was in bucket `OK` — overwritten on success only, retained on failure so the operator can see "this has been broken since X".
 - `inconclusive_streak` counts consecutive runs that ended in `INCONCLUSIVE` for this URL — reset to 0 on any non-INCONCLUSIVE result. When this counter hits 2, the next INCONCLUSIVE run reclassifies the URL to `DEAD` (see Buckets table).
-- A URL whose `last_seen` is more than 28 days old is **pruned** from state (matches `ecosystem-entrants` pruning policy — a URL that was removed and then re-added much later is treated as a fresh entry; the operator's question on re-add is "does this work?" not "did it come back?").
+- A URL whose `last_seen` is more than 28 days old is **pruned** from state (a URL that was removed and then re-added much later is treated as a fresh entry; the operator's question on re-add is "does this work?" not "did it come back?").
 - A URL whose row is removed from `ECOSYSTEM.md` is **not** reported as DEAD — its row left the catalog, so its status is no longer a curation concern. Pruning is silent.
 
 ## Steps
@@ -144,7 +143,7 @@ If `jq empty memory/topics/ecosystem-links-state.json` fails (corrupt JSON from 
 
 If `ECOSYSTEM.md` does not exist at the repo root → log `ECOSYSTEM_LINKS_NO_ECOSYSTEM_FILE`, write a one-line notification (`ecosystem-links: ECOSYSTEM.md not found at repo root`), exit. The file is the floor — if it's missing the skill has no signal to compute on.
 
-Apply the same parser shape as `ecosystem-entrants` so the two skills can never disagree on what counts as a row:
+Apply the same parser shape as `ecosystem-pulse` so the two skills can never disagree on what counts as a row:
 
 - Read every line that begins with `| ` and contains at least 2 `|` separators after the leading one.
 - Reject the header line and the divider line.
@@ -382,7 +381,7 @@ Append to `memory/logs/${today}.md`:
 - **Per-host rate-limit (1.5s gap) is conservative on purpose.** ECOSYSTEM.md will hit 100+ entries before the budget becomes a real bottleneck. At today's ~30 entries with 1–3 web URLs each and ~3 entries per host max, the worst-case rate budget is well under the 8-minute total cap. If/when the catalog grows past ~150 web URLs the cap can be re-evaluated.
 - **`STATE_CORRUPT` is recoverable, not silent.** A fresh state file post-corruption means transitions cannot be computed this run, but the snapshot itself is still real data. If the snapshot contains URLs in DEAD/ARCHIVED/MOVED, the operator gets a single explicit `(post-state-corruption baseline)` notification listing them — same severity as a baseline-run notification, distinct flag in the body. Going silent post-corruption is the wrong default: a corrupted state file shouldn't suppress signals that exist in the current parse.
 - **Read-only against `ECOSYSTEM.md`.** Curation is a human PR decision per the file's own "Add your project" rules. This skill never edits the ecosystem list itself.
-- **Pairs with but does not gate `ecosystem-pulse` or `ecosystem-entrants`.** All three run on Monday morning in non-overlapping minute slots; a slow ecosystem-links never blocks the other two from running on schedule.
+- **Pairs with but does not gate `ecosystem-pulse`.** Both run on Monday morning in non-overlapping minute slots; a slow ecosystem-links never blocks ecosystem-pulse from running on schedule.
 
 ## Sandbox Note
 
