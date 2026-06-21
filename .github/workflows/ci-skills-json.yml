@@ -43,7 +43,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0          # full history for the generator; git-derived fields are normalized out of the diff
       - name: Regenerate skills.json and diff (ignoring timestamp + per-skill sha/updated)
