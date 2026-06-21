@@ -33,6 +33,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2062754968852221952/QcEP9JKW_400x400.jpg" width="36" height="36" alt="Charon logo"> | Charon | [@Charon_AI](https://x.com/Charon_AI) |
 | <img src="https://pbs.twimg.com/profile_images/2027296134939684866/eTsFmewn_400x400.jpg" width="36" height="36" alt="Claw Harbor logo"> | Claw Harbor | [@ClawHarbor](https://x.com/ClawHarbor) |
 | <img src="https://pbs.twimg.com/profile_images/2045511364072873985/r7zESZco_400x400.jpg" width="36" height="36" alt="ClawBank logo"> | ClawBank | [@ClawBankHQ](https://x.com/ClawBankHQ) |
+| <img src="https://pbs.twimg.com/profile_images/2062582278920777728/MSpcDfF-_400x400.jpg" width="36" height="36" alt="ClawHunter logo"> | ClawHunter | [@clawhuntersol](https://x.com/clawhuntersol) |
 | <img src="https://pbs.twimg.com/profile_images/2058054817516548096/e0qPRxNW_400x400.jpg" width="36" height="36" alt="Clerk logo"> | Clerk | [@agent_clerk](https://x.com/agent_clerk) |
 | <img src="https://pbs.twimg.com/profile_images/2039705524166660096/mcVkmNR3_400x400.jpg" width="36" height="36" alt="Cobot logo"> | Cobot | [@cobotgg](https://x.com/cobotgg) |
 | <img src="https://pbs.twimg.com/profile_images/2039734967681597440/Hh_-fXR8_400x400.jpg" width="36" height="36" alt="CTRL logo"> | CTRL | [@CTRL_automation](https://x.com/CTRL_automation) |
@@ -42,13 +43,16 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056356306726887424/2DrOBX8R_400x400.jpg" width="36" height="36" alt="GitBounty logo"> | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
 | <img src="https://pbs.twimg.com/profile_images/2066546446187540480/PUnUtIXg_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
 | <img src="https://pbs.twimg.com/profile_images/2056261441192419328/X6pFHgHc_400x400.jpg" width="36" height="36" alt="Gitlawb Terminal logo"> | Gitlawb Terminal | [@terminalgitlawb](https://x.com/terminalgitlawb) |
+| <img src="https://pbs.twimg.com/profile_images/2065134999163080704/IGp7PE1Q_400x400.jpg" width="36" height="36" alt="Glim.sh logo"> | Glim.sh | [@glim_sh](https://x.com/glim_sh) |
 | <img src="https://pbs.twimg.com/profile_images/2061386184820162560/t1py10Vb_400x400.jpg" width="36" height="36" alt="HivemindOS logo"> | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
 | <img src="https://pbs.twimg.com/profile_images/2050846114472202240/fOvJsybI_400x400.jpg" width="36" height="36" alt="Hivra logo"> | Hivra | [@HivraOS](https://x.com/HivraOS) |
 | <img src="https://pbs.twimg.com/profile_images/2060061798691221509/dGZFzJ5e_400x400.jpg" width="36" height="36" alt="Hound Flow logo"> | Hound Flow | [@HoundFlow_](https://x.com/HoundFlow_) · [houndflow.com](https://houndflow.com) |
 | <img src="https://pbs.twimg.com/profile_images/2057685123068534784/gu-mFTdW_400x400.jpg" width="36" height="36" alt="Hunch logo"> | Hunch | [@playhunchxyz](https://x.com/playhunchxyz) |
 | <img src="https://pbs.twimg.com/profile_images/2056990489669185536/mjxaxm39_400x400.jpg" width="36" height="36" alt="LawbWorld logo"> | LawbWorld | [@LawbWorld](https://x.com/LawbWorld) |
+| <img src="https://pbs.twimg.com/profile_images/2065880577148882944/eljgIBzJ_400x400.jpg" width="36" height="36" alt="Lens logo"> | Lens | [@lnsx_io](https://x.com/lnsx_io) |
 | <img src="https://pbs.twimg.com/profile_images/2044050121852366850/v70sEXCF_400x400.jpg" width="36" height="36" alt="LiquidPad logo"> | LiquidPad | [@LiquidPadBot](https://x.com/LiquidPadBot) · [liquidpad.site](https://www.liquidpad.site) |
 | <img src="https://pbs.twimg.com/profile_images/2046582343587037184/TxgtMxAh_400x400.jpg" width="36" height="36" alt="Liq logo"> | Liq | [@liquid_launcher](https://x.com/liquid_launcher) |
+| <img src="https://pbs.twimg.com/profile_images/2065063781042954241/zcTqmW5j_400x400.jpg" width="36" height="36" alt="LiteBeam logo"> | LiteBeam | [@Litebeam_xyz](https://x.com/Litebeam_xyz) |
 | <img src="https://signedlogbook.com/logbook-pfp-blue.png" width="36" height="36" alt="logbook logo"> | logbook | [@logbookonbase](https://x.com/logbookonbase) · [signedlogbook.com](https://signedlogbook.com) |
 | <img src="https://pbs.twimg.com/profile_images/2059995800902537220/IngKmW55_400x400.jpg" width="36" height="36" alt="MANAGR logo"> | MANAGR | [@USICAI](https://x.com/USICAI) |
 | <img src="https://pbs.twimg.com/profile_images/2030743130421751808/w4Yi3fC7_400x400.jpg" width="36" height="36" alt="Mei logo"> | Mei | [@MeiMighty1](https://x.com/MeiMighty1) |
@@ -70,6 +74,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2056693584452300802/i6yxFLgW_400x400.jpg" width="36" height="36" alt="SAM logo"> | SAM | [@prmrsamm](https://x.com/prmrsamm) |
 | <img src="https://pbs.twimg.com/profile_images/2056009745040121856/SkTibyEJ_400x400.jpg" width="36" height="36" alt="Sentysis logo"> | Sentysis | [@Sentysislabs](https://x.com/Sentysislabs) |
 | <img src="https://pbs.twimg.com/profile_images/2056291951084032000/QJiBIXV-_400x400.jpg" width="36" height="36" alt="Signa logo"> | Signa | [@Signa_Agent](https://x.com/Signa_Agent) · [signaagent.xyz](https://www.signaagent.xyz) |
+| <img src="https://pbs.twimg.com/profile_images/2064718491668889600/S23rFUM6_400x400.jpg" width="36" height="36" alt="Simmer logo"> | Simmer | [@simmer_markets](https://x.com/simmer_markets) |
 | <img src="https://pbs.twimg.com/profile_images/2051334344053252096/Hhd6H4Id_400x400.jpg" width="36" height="36" alt="Solvr logo"> | Solvr | [@solvrbot](https://x.com/solvrbot) |
 | <img src="https://sparkleware.fun/logo.png" width="36" height="36" alt="Sparkleware logo"> | Sparkleware | [@sparklewarefun](https://x.com/sparklewarefun) · [sparkleware.fun](https://sparkleware.fun) |
 | <img src="https://pbs.twimg.com/profile_images/2059512048598548480/T3S4MoZ4_400x400.jpg" width="36" height="36" alt="Spoon logo"> | Spoon | [@Spoonautobot](https://x.com/Spoonautobot) |
