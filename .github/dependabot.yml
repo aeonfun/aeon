@@ -1,0 +1,70 @@
+# Dependabot keeps Aeon's dependencies current and auditable.
+# Aeon runs autonomous code with access to operator secrets and executes
+# community-pack skills on a cron, so silent npm vulns and mutable-tag action
+# hijacks are a real risk. Each ecosystem below opens at most a few PRs per week,
+# routed to the maintainer.
+version: 2
+updates:
+  # GitHub Actions across all workflow files (currently floating @v4/@v5 tags).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aaronjmars"
+    commit-message:
+      prefix: "chore(actions)"
+
+  # Next.js dashboard — the largest npm surface (Next 16, React 19, tailwind).
+  - package-ecosystem: "npm"
+    directory: "/apps/dashboard"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aaronjmars"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # MCP server — exposes Aeon skills as Claude tools.
+  - package-ecosystem: "npm"
+    directory: "/apps/mcp-server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aaronjmars"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # A2A protocol gateway.
+  - package-ecosystem: "npm"
+    directory: "/apps/a2a-server"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aaronjmars"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+
+  # Cloudflare Worker that relays Telegram messages to a fork.
+  - package-ecosystem: "npm"
+    directory: "/apps/webhook"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    assignees:
+      - "aaronjmars"
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
