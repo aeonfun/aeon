@@ -14,7 +14,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction - it'll use 197 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction - it'll use 183 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -58,11 +58,11 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-**182 skills, grouped into 9 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
+**183 skills, grouped into 9 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
 
 | Pack                                                          | Key            | Skills | Examples                                             |
 | ------------------------------------------------------------- | -------------- | ------ | ---------------------------------------------------- |
-| 🧬 **Core** - self-evolution, healing, memory; always present | `core`         | 13     | `skill-repair`, `autoresearch`, `create-skill`       |
+| 🧬 **Core** - self-evolution, healing, memory; always present | `core`         | 14     | `skill-repair`, `autoresearch`, `create-skill`       |
 | 🛰️ **Fleet & Replication**                                    | `fleet`        | 8      | `spawn-instance`, `deploy-prototype`, `vuln-scanner` |
 | 📚 **Research & Content**                                     | `research`     | 26     | `deep-research`, `paper-digest`, `hn-digest`         |
 | 💻 **Dev & Code**                                             | `dev`          | 34     | `pr-review`, `github-monitor`, `auto-merge`          |
@@ -73,11 +73,11 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 | 🤖 **Agent Ops**                                              | `agent-ops`    | 30     | `heartbeat`, `cost-report`, `config-validator`       |
 
 <details>
-<summary><strong>Full catalog (all 182 skills by pack)</strong></summary>
+<summary><strong>Full catalog (all 183 skills by pack)</strong></summary>
 
 | Pack | Skills |
 |------|--------|
-| **Core** (`core`, 13) | `autoresearch`,`config-validator`,`cost-report`,`create-skill`,`digest`,`heartbeat`,`onboard`,`priority-brief`,`reflect`,`self-improve`,`skill-evals`,`skill-health`,`skill-repair` |
+| **Core** (`core`, 14) | `autoresearch`,`config-validator`,`cost-report`,`create-skill`,`digest`,`heartbeat`,`install-skill`,`onboard`,`priority-brief`,`reflect`,`self-improve`,`skill-evals`,`skill-health`,`skill-repair` |
 | **Fleet & Replication** (`fleet`, 8) | `contributor-reward`,`deploy-prototype`,`distribute-tokens`,`external-feature`,`fleet-control`,`fleet-scorecard`,`spawn-instance`,`vuln-scanner` |
 | **Research & Content** (`research`, 26) | `agent-displacement`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`deep-research`,`fetch-tweets`,`framework-watch`,`hn-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
 | **Dev & Code** (`dev`, 34) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`fork-release`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge`,`pr-review`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`skill-triage`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-audit` |
@@ -542,7 +542,7 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-skills.json              ← machine-readable skill catalog (182 skills, category per skill)
+skills.json              ← machine-readable skill catalog (183 skills, category per skill)
 packs.config.json        ← first-party pack definitions (core allowlist + pack list)
 packs.json               ← generated pack catalog the dashboard reads (9 packs)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
@@ -558,7 +558,7 @@ packs.json               ← generated pack catalog the dashboard reads (9 packs
 ./new-from-template      ← scaffold a skill from a template (--category sets its pack)
 docs/                    ← GitHub Pages site (articles, activity log, memory)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file (182 total; `category:` = its pack)
+skills/                  ← each skill is a SKILL.md prompt file (183 total; `category:` = its pack)
 workflow-templates/      ← GitHub Agentic Workflow templates (.md)
 skill-templates/         ← templates for building your own skills
 apps/                    ← standalone sub-projects, each with its own package.json
