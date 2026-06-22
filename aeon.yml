@@ -53,6 +53,7 @@ skills:
   honeypot-check: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — honeypot / sell-restriction check
   approval-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet address — live token-approval audit
   contract-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: contract address — powers/ownership/proxy audit
+  phylax-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: skill ref (owner/repo/<name>), raw SKILL.md URL, or local path — pre-install ALLOW/WARN/DENY verdict for an external skill
   wallet-profile: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet address — behavioral profile
   deployer-trace: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: deployer/token address — serial-rug detection
   tx-explain: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: tx hash — plain-English decode
