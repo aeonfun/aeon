@@ -63,6 +63,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2050098727512322048/bS61Qs6N_400x400.jpg" width="36" height="36" alt="NoelClaw logo"> | NoelClaw | [@noelclawfun](https://x.com/noelclawfun) |
 | <img src="https://pbs.twimg.com/profile_images/2067718393411579904/PzuiIBSz_400x400.jpg" width="36" height="36" alt="NÜMETAL logo"> | NÜMETAL | [@numetalxyz](https://x.com/numetalxyz) |
 | <img src="https://pbs.twimg.com/profile_images/2004910939959967744/wr7-zpVh_400x400.jpg" width="36" height="36" alt="PancakeSwap logo"> | PancakeSwap | [@PancakeSwap](https://x.com/PancakeSwap) |
+| <img src="https://pbs.twimg.com/profile_images/2069016731025354752/HSERdcJZ_400x400.png" width="36" height="36" alt="Phylax logo"> | Phylax | [@usephylax](https://x.com/usephylax) |
 | <img src="https://pbs.twimg.com/profile_images/1725595719086530560/n--iy1A9_400x400.jpg" width="36" height="36" alt="Powerloom logo"> | Powerloom | [@Powerloom](https://x.com/Powerloom) |
 | <img src="https://pbs.twimg.com/profile_images/1858962630796603393/iIb9x5CQ_400x400.jpg" width="36" height="36" alt="Precog logo"> | Precog | [@precogmarkets](https://x.com/precogmarkets) |
 | <img src="https://pbs.twimg.com/profile_images/2059296486391717888/QL10hnaj_400x400.jpg" width="36" height="36" alt="Prism logo"> | Prism | [@prism_lp](https://x.com/prism_lp) |
