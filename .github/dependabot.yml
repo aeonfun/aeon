@@ -1,70 +1,92 @@
 # Dependabot keeps Aeon's dependencies current and auditable.
 # Aeon runs autonomous code with access to operator secrets and executes
 # community-pack skills on a cron, so silent npm vulns and mutable-tag action
-# hijacks are a real risk. Each ecosystem below opens at most a few PRs per week,
-# routed to the maintainer.
+# hijacks are a real risk.
+#
+# Noise control (Aeon is a template — a clean Actions tab matters):
+#   - grouped: each ecosystem opens ONE combined PR per cycle, not one-per-dep.
+#     Fewer PRs => fewer merges => fewer re-scan cascades (every push to main
+#     makes Dependabot re-evaluate all ecosystems, which is what spammed the tab).
+#   - monthly: a template doesn't need weekly version churn.
+#   - real CVEs are handled out-of-band by Dependabot *security* updates
+#     (repo Settings -> Code security), which only fire on an actual advisory.
 version: 2
 updates:
   # GitHub Actions across all workflow files (currently floating @v4/@v5 tags).
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     assignees:
       - "aaronjmars"
     commit-message:
       prefix: "chore(actions)"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   # Next.js dashboard — the largest npm surface (Next 16, React 19, tailwind).
   - package-ecosystem: "npm"
     directory: "/apps/dashboard"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     assignees:
       - "aaronjmars"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
+    groups:
+      dashboard:
+        patterns:
+          - "*"
 
   # MCP server — exposes Aeon skills as Claude tools.
   - package-ecosystem: "npm"
     directory: "/apps/mcp-server"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     assignees:
       - "aaronjmars"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
+    groups:
+      mcp-server:
+        patterns:
+          - "*"
 
   # A2A protocol gateway.
   - package-ecosystem: "npm"
     directory: "/apps/a2a-server"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     assignees:
       - "aaronjmars"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
+    groups:
+      a2a-server:
+        patterns:
+          - "*"
 
   # Cloudflare Worker that relays Telegram messages to a fork.
   - package-ecosystem: "npm"
     directory: "/apps/webhook"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     open-pull-requests-limit: 5
     assignees:
       - "aaronjmars"
     commit-message:
       prefix: "chore(deps)"
       prefix-development: "chore(deps-dev)"
+    groups:
+      webhook:
+        patterns:
+          - "*"
