@@ -8,7 +8,8 @@ import {
   getDirectory,
   commitAndPush,
 } from '@/lib/github'
-import { errorResponse } from '@/lib/http'
+import type { CommitResult } from '@/lib/github'
+import { errorResponse, syncFields } from '@/lib/http'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter } from '@/lib/frontmatter'
 
@@ -109,11 +110,11 @@ export async function POST(request: Request) {
       }
 
       // Push the new skill dirs + aeon.yml to GitHub in one commit (local mode).
-      const sync: { synced: boolean; reason?: string } = written.length
+      const sync: CommitResult = written.length
         ? commitAndPush(['aeon.yml', ...written.map(n => `skills/${n}`)], `feat: import ${written.join(', ')}`)
         : { synced: true }
 
-      return NextResponse.json({ installed, partial, failed, synced: sync.synced, ...(sync.reason ? { syncError: sync.reason } : {}) })
+      return NextResponse.json({ installed, partial, failed, ...syncFields(sync) })
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 })

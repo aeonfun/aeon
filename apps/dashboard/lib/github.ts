@@ -9,6 +9,11 @@ const GITHUB_API = 'https://api.github.com'
 interface GitHubContentFile { content: string; sha: string; encoding: string }
 interface GitHubContentEntry { name: string; type: 'file' | 'dir' | 'symlink' | 'submodule'; path: string }
 
+// Outcome of the local-mode git commit+push. `reason` is set only when the push
+// failed (surfaced to the UI as `syncError`). Distinct from the wire-level
+// SyncResult in lib/types.ts, which is the client-facing JSON response body.
+export interface CommitResult { synced: boolean; reason?: string }
+
 export function isLocal() {
   return !process.env.GITHUB_TOKEN || !process.env.GITHUB_REPO
 }
@@ -23,7 +28,7 @@ export function isLocal() {
  * failing the request. Only the given paths are committed, so unrelated
  * working-tree changes are left untouched.
  */
-export function commitAndPush(paths: string[], message: string): { synced: boolean; reason?: string } {
+export function commitAndPush(paths: string[], message: string): CommitResult {
   if (isLocal() === false) return { synced: true } // hosted mode: edit already committed via API
   const git = (...args: string[]) =>
     execFileSync('git', args, { stdio: 'pipe', cwd: REPO_ROOT }).toString().trim()
@@ -145,7 +150,7 @@ export async function saveFile(
   path: string,
   content: string,
   opts: { updateMsg: string; createMsg: string },
-): Promise<{ synced: boolean; reason?: string }> {
+): Promise<CommitResult> {
   let sha: string | undefined
   try {
     sha = (await getFileContent(path)).sha

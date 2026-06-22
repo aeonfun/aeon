@@ -11,6 +11,7 @@ import {
   removeSkillFromConfig,
 } from '@/lib/config'
 import { deleteDirectory } from '@/lib/github'
+import type { CommitResult } from '@/lib/github'
 import { parseFrontmatter } from '@/lib/frontmatter'
 import type { Skill } from '@/lib/types'
 
@@ -117,7 +118,7 @@ export async function PATCH(request: Request) {
       })
     }
 
-    let sync: { synced: boolean; reason?: string } = { synced: true }
+    let sync: CommitResult = { synced: true }
     if (updated !== content) {
       const msg = model
         ? `chore: set model to ${model}`

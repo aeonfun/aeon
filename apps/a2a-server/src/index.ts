@@ -481,7 +481,7 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise
       return;
     }
 
-    const task = result as Task;
+    const task = result;
     res.writeHead(200, {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",
@@ -530,7 +530,7 @@ async function handleRequest(req: IncomingMessage, res: ServerResponse): Promise
           json(res, 200, { jsonrpc: "2.0", id: rpc.id, error: r.error });
           return;
         }
-        const { _subscribers: _, ...safe } = r as Task;
+        const { _subscribers: _, ...safe } = r;
         json(res, 200, { jsonrpc: "2.0", id: rpc.id, result: safe });
         return;
       }

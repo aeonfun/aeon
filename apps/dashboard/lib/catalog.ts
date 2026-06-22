@@ -19,5 +19,3 @@ export const catalog = defineCatalog(schema, {
   },
   actions: {},
 });
-
-export const CATALOG_PROMPT = catalog.prompt();

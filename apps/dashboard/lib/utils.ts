@@ -13,6 +13,12 @@ export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
+// Normalise an arbitrary string into a slug: lowercase, non-alphanumeric runs
+// collapsed to single hyphens, leading/trailing hyphens trimmed.
+export function slugify(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
 export function initials(slug: string): string {
   const words = slug.split('-')
   return words.length === 1 ? words[0].slice(0, 2).toUpperCase() : (words[0][0] + words[1][0]).toUpperCase()

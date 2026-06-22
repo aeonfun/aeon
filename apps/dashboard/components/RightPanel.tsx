@@ -4,18 +4,21 @@ import { useEffect, useState } from 'react'
 import type { Run, SkillOutput, AnalyticsData } from '../lib/types'
 import { timeAgo } from '../lib/utils'
 import { SpecNode } from './SpecNode'
+import { PanelError } from './PanelError'
 
 interface RightPanelProps {
   runs: Run[]
   outputs: SkillOutput[]
   feedLoading: boolean
+  feedError: boolean
   analyticsData: AnalyticsData | null
+  analyticsError: boolean
   onViewRun: (run: Run) => void
   onRefresh: () => void
   onFetchAnalytics: () => void
 }
 
-export function RightPanel({ runs, outputs, feedLoading, analyticsData, onViewRun, onRefresh, onFetchAnalytics }: RightPanelProps) {
+export function RightPanel({ runs, outputs, feedLoading, feedError, analyticsData, analyticsError, onViewRun, onRefresh, onFetchAnalytics }: RightPanelProps) {
   const [rightTab, setRightTab] = useState<'feed' | 'runs' | 'analytics'>('feed')
   const [selectedRun, setSelectedRun] = useState<Run | null>(null)
   const [runLogs, setRunLogs] = useState('')
@@ -87,6 +90,7 @@ export function RightPanel({ runs, outputs, feedLoading, analyticsData, onViewRu
         {/* Feed */}
         {rightTab === 'feed' && (
           feedLoading ? <div className="flex justify-center py-12"><div className="w-2 h-2 rounded-full bg-eva-orange animate-pulse" /></div> :
+          feedError ? <PanelError label="the feed" onRetry={onRefresh} /> :
           outputs.length > 0 ? (
           <div className="space-y-3 p-3">
             {outputs.map(o => (
@@ -160,6 +164,7 @@ export function RightPanel({ runs, outputs, feedLoading, analyticsData, onViewRu
 
         {/* Analytics */}
         {rightTab === 'analytics' && (
+          analyticsError ? <PanelError label="analytics" onRetry={onFetchAnalytics} /> :
           !analyticsData ? <div className="flex justify-center py-12"><div className="w-2 h-2 rounded-full bg-eva-orange animate-pulse" /></div> : (
             <div className="p-3 space-y-4">
               <div className="grid grid-cols-2 gap-[var(--space-xs)]">

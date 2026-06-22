@@ -169,7 +169,7 @@ case "${GATEWAY:-direct}" in
     fi
     ;;
 
-  bankr)  # NATIVE — unchanged from aeon's existing behavior
+  bankr)  # NATIVE — Bankr Gateway (Anthropic-compatible base URL)
     require_secret BANKR_LLM_KEY
     export ANTHROPIC_BASE_URL="https://llm.bankr.bot"
     export ANTHROPIC_AUTH_TOKEN="$BANKR_LLM_KEY"
@@ -244,7 +244,7 @@ case "${GATEWAY:-direct}" in
     echo "::notice::Routing through Venice via claude-code-router (${venice_model} @ ${VENICE_BASE_URL:-https://api.venice.ai/api/v1/chat/completions})"
     ;;
 
-  direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint. Unchanged.
+  direct|"")  # NATIVE — Anthropic API or an Anthropic-compatible endpoint
     if [ -n "${ANTHROPIC_BASE_URL:-}" ]; then
       echo "::notice::Using Anthropic-compatible API at ${ANTHROPIC_BASE_URL}"
     else

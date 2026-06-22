@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { Skill, Run, Secret, SkillMcpRef } from '../lib/types'
+import type { Skill, Run, Secret, SkillMcpRef, McpServers } from '../lib/types'
 import { MODELS, CATEGORY_BY_KEY } from '../lib/constants'
 import { MCP_BY_SLUG } from '../lib/mcp-catalog'
 import { displayName, getSkillStatus, cronLabel, statusDot, inputCls } from '../lib/utils'
@@ -14,7 +14,7 @@ interface SkillDetailProps {
   runs: Run[]
   model: string
   secrets: Secret[]
-  mcpServers: Record<string, Record<string, unknown>>
+  mcpServers: McpServers
   busy: Record<string, boolean>
   onToggle: (name: string, enabled: boolean) => void
   onRun: (name: string, v?: string, m?: string) => void
