@@ -25,6 +25,7 @@ import { PacksPanel } from '../components/PacksPanel'
 import { RightPanel } from '../components/RightPanel'
 import { ImportModal } from '../components/ImportModal'
 import { AuthModal } from '../components/AuthModal'
+import { PanelError } from '../components/PanelError'
 
 export default function Dashboard() {
   const [view, setView] = useState<'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'>('hq')
@@ -53,10 +54,13 @@ export default function Dashboard() {
 
   const [outputs, setOutputs] = useState<SkillOutput[]>([])
   const [feedLoading, setFeedLoading] = useState(false)
+  const [feedError, setFeedError] = useState(false)
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
+  const [analyticsError, setAnalyticsError] = useState(false)
 
   const [packs, setPacks] = useState<PacksResponse | null>(null)
   const [packsLoaded, setPacksLoaded] = useState(false)
+  const [packsError, setPacksError] = useState(false)
   // Which packs are *visible* across the dashboard. A pack is a visibility lens:
   // by default only Core shows everywhere; enabling a pack reveals its skills in
   // the sidebar + HQ. Pure client-side view preference - it never changes what
@@ -69,14 +73,17 @@ export default function Dashboard() {
 
   const [strategy, setStrategy] = useState('')
   const [strategyLoaded, setStrategyLoaded] = useState(false)
+  const [strategyError, setStrategyError] = useState(false)
   const [strategySaving, setStrategySaving] = useState(false)
   const [strategyBuilding, setStrategyBuilding] = useState(false)
   const [mcpServers, setMcpServers] = useState<McpServers>({})
   const [mcpLoaded, setMcpLoaded] = useState(false)
+  const [mcpError, setMcpError] = useState(false)
   const [mcpSaving, setMcpSaving] = useState(false)
   const [soul, setSoul] = useState('')
   const [soulStyle, setSoulStyle] = useState('')
   const [soulLoaded, setSoulLoaded] = useState(false)
+  const [soulError, setSoulError] = useState(false)
   const [soulSaving, setSoulSaving] = useState(false)
   const [soulBuilding, setSoulBuilding] = useState(false)
   const [soulInstalling, setSoulInstalling] = useState<string | null>(null)
@@ -116,11 +123,11 @@ export default function Dashboard() {
     setEnabledPacks(Array.from(new Set(['core', ...saved])))
   }, [repo])
   useEffect(() => { const id = setInterval(refreshRuns, 10_000); return () => clearInterval(id) }, [refreshRuns])
-  useEffect(() => { setFeedLoading(true); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : { outputs: [] }).then(d => setOutputs(d.outputs || [])).finally(() => setFeedLoading(false)) }, [feedKey])
-  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : null).then(d => { if (d) { setStrategy(d.content || ''); setStrategyLoaded(true) } }).catch(() => {}) } }, [view, strategyLoaded])
-  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() as Promise<McpResponse> : null).then(d => { if (d) { setMcpServers(d.servers || {}); setMcpLoaded(true) } }).catch(() => {}) } }, [view, mcpLoaded])
-  useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() as Promise<SoulResponse> : null).then(d => { if (d) { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) } }).catch(() => {}) } }, [view, soulLoaded])
-  useEffect(() => { if (view === 'packs' && !packsLoaded) { fetch('/api/packs').then(r => r.ok ? r.json() as Promise<PacksResponse> : null).then(d => { if (d) { setPacks(d); setPacksLoaded(true) } }).catch(() => {}) } }, [view, packsLoaded])
+  useEffect(() => { setFeedLoading(true); setFeedError(false); fetch('/api/outputs').then(r => r.ok ? r.json() as Promise<OutputsResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setOutputs(d.outputs || [])).catch(() => setFeedError(true)).finally(() => setFeedLoading(false)) }, [feedKey])
+  useEffect(() => { if (view === 'strategy' && !strategyLoaded) { fetch('/api/strategy').then(r => r.ok ? r.json() as Promise<StrategyResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setStrategy(d.content || ''); setStrategyLoaded(true) }).catch(() => { setStrategyError(true); setStrategyLoaded(true) }) } }, [view, strategyLoaded])
+  useEffect(() => { if (view === 'mcp' && !mcpLoaded) { fetch('/api/mcp').then(r => r.ok ? r.json() as Promise<McpResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setMcpServers(d.servers || {}); setMcpLoaded(true) }).catch(() => { setMcpError(true); setMcpLoaded(true) }) } }, [view, mcpLoaded])
+  useEffect(() => { if (view === 'soul' && !soulLoaded) { fetch('/api/soul').then(r => r.ok ? r.json() as Promise<SoulResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setSoul(d.soul?.content || ''); setSoulStyle(d.style?.content || ''); setSoulLoaded(true) }).catch(() => { setSoulError(true); setSoulLoaded(true) }) } }, [view, soulLoaded])
+  useEffect(() => { if (view === 'packs' && !packsLoaded) { fetch('/api/packs').then(r => r.ok ? r.json() as Promise<PacksResponse> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => { setPacks(d); setPacksLoaded(true) }).catch(() => { setPacksError(true); setPacksLoaded(true) }) } }, [view, packsLoaded])
   // Reset the main content scroll to the top whenever the active view or the
   // selected skill changes, so each screen (Soul, Strategy, a skill, …) opens at the top.
   useEffect(() => { mainScrollRef.current?.scrollTo({ top: 0 }) }, [view, selectedSkill])
@@ -216,19 +223,27 @@ export default function Dashboard() {
             <SecretsPanel secrets={secrets} skills={skills} busy={busy} repo={repo} focusKey={secretFocus} onFocusHandled={() => setSecretFocus(null)} onSave={saveSecret} onDelete={deleteSecret} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onConnectClaude={() => setupAuth()} connecting={authLoading} />
           )}
           {view === 'strategy' && !selectedSkill && (
-            <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} building={strategyBuilding} onSave={saveStrategy} onBuild={buildStrategy} />
+            strategyError
+              ? <PanelError label="strategy" onRetry={() => { setStrategyError(false); setStrategyLoaded(false) }} />
+              : <StrategyPanel content={strategy} loading={!strategyLoaded} saving={strategySaving} building={strategyBuilding} onSave={saveStrategy} onBuild={buildStrategy} />
           )}
           {view === 'mcp' && !selectedSkill && (
-            <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
+            mcpError
+              ? <PanelError label="MCP servers" onRetry={() => { setMcpError(false); setMcpLoaded(false) }} />
+              : <McpPanel servers={mcpServers} loading={!mcpLoaded} saving={mcpSaving} secrets={secrets} busy={busy} onSave={saveMcp} onSetSecret={saveSecret} onDeleteSecret={deleteSecret} />
           )}
           {view === 'soul' && !selectedSkill && (
-            <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
+            soulError
+              ? <PanelError label="soul" onRetry={() => { setSoulError(false); setSoulLoaded(false) }} />
+              : <SoulPanel soul={soul} style={soulStyle} loading={!soulLoaded} saving={soulSaving} building={soulBuilding} installing={soulInstalling} onSave={saveSoul} onBuild={buildSoul} onInstallExample={installSoulExample} />
           )}
           {view === 'hq' && !selectedSkill && (
             <HQOverview skills={visibleSkills} runs={runs} enabledCount={enabledCount} workingCount={workingCount} categoryFilter={categoryFilter} onCategoryClick={(key) => setCategoryFilter(categoryFilter === key ? null : key)} onViewRun={() => {}} onOpenPacks={() => setView('packs')} />
           )}
           {view === 'packs' && !selectedSkill && (
-            <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} skills={skills} enabledPacks={enabledPacks} loading={!packsLoaded} busy={busy} onTogglePack={togglePack} onToggleSkill={toggleSkill} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onInstallPack={(arg) => runSkill('install-skill', arg)} />
+            packsError
+              ? <PanelError label="packs" onRetry={() => { setPacksError(false); setPacksLoaded(false) }} />
+              : <PacksPanel firstParty={packs?.firstParty ?? []} community={packs?.community ?? []} skills={skills} enabledPacks={enabledPacks} loading={!packsLoaded} busy={busy} onTogglePack={togglePack} onToggleSkill={toggleSkill} onSelectSkill={(name) => { setSelectedSkill(name); setView('hq') }} onInstallPack={(arg) => runSkill('install-skill', arg)} />
           )}
           {skill && (
             <SkillDetail
@@ -243,10 +258,10 @@ export default function Dashboard() {
       </div>
 
       <RightPanel
-        runs={runs} outputs={outputs} feedLoading={feedLoading} analyticsData={analyticsData}
+        runs={runs} outputs={outputs} feedLoading={feedLoading} feedError={feedError} analyticsData={analyticsData} analyticsError={analyticsError}
         onViewRun={() => {}}
-        onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null) }}
-        onFetchAnalytics={() => { if (!analyticsData) fetch('/api/analytics').then(r => r.ok ? r.json() as Promise<AnalyticsData> : null).then(d => { if (d) setAnalyticsData(d) }) }}
+        onRefresh={() => { fetchData(); setFeedKey(k => k + 1); setAnalyticsData(null); setAnalyticsError(false) }}
+        onFetchAnalytics={() => { if (!analyticsData) { setAnalyticsError(false); fetch('/api/analytics').then(r => r.ok ? r.json() as Promise<AnalyticsData> : Promise.reject(new Error(`HTTP ${r.status}`))).then(d => setAnalyticsData(d)).catch(() => setAnalyticsError(true)) } }}
       />
 
       {showImport && <ImportModal onClose={() => setShowImport(false)} onImport={importSkill} />}
