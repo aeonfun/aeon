@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createFile, getFileContent, updateFile, commitAndPush } from '@/lib/github'
-import { errorResponse } from '@/lib/http'
-import { isRecord } from '@/lib/utils'
+import { errorResponse, syncFields } from '@/lib/http'
+import { isRecord, slugify } from '@/lib/utils'
 import { addSkillToConfig } from '@/lib/config'
 import { parseFrontmatter, setFrontmatterCategory, SKILL_CATEGORIES } from '@/lib/frontmatter'
 import type { UploadFile } from '@/lib/types'
@@ -22,7 +22,7 @@ function detectSecretsFromContent(content: string): string[] {
 function extractSkillName(content: string): string {
   // Slugify the frontmatter name: "Fleet Scorecard" → "fleet-scorecard"
   const { name } = parseFrontmatter(content)
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+  return slugify(name)
 }
 
 // Validate a single element of an untrusted `files` array. We only require the
@@ -56,14 +56,14 @@ function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } 
   if (dotSkillFile) {
     const parts = dotSkillFile.path.split('/')
     const fileName = parts[parts.length - 1]
-    const name = stripSkillExt(fileName).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    const name = slugify(stripSkillExt(fileName))
 
     if (parts.length === 1) {
       // Single file: "my-skill.skill"
       return { name, prefix: '' }
     }
     // In a folder: "folder/my-skill.skill"
-    const folderName = stripSkillExt(parts[0]).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+    const folderName = slugify(stripSkillExt(parts[0]))
     return { name: folderName || name, prefix: parts.slice(0, -1).join('/') + '/' }
   }
 
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
     }
 
     const { name: derivedName, prefix } = deriveSkillName(files)
-    const skillName = overrideName?.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || derivedName
+    const skillName = slugify(overrideName?.trim() ?? '') || derivedName
 
     if (!skillName) {
       return NextResponse.json({
@@ -186,8 +186,7 @@ export async function POST(request: Request) {
       detectedSecrets,
       configUpdated,
       ...(configError ? { configError } : {}),
-      synced: sync.synced,
-      ...(sync.reason ? { syncError: sync.reason } : {}),
+      ...syncFields(sync),
     })
   } catch (error: unknown) {
     return errorResponse(error, 'Unknown error')

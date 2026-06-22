@@ -5,7 +5,7 @@ import type {
   Skill, Run, Secret, SkillOutput, GatewayProvider, UploadFile, AnalyticsData,
   SkillsResponse, RunsResponse, SecretsResponse, SyncStatusResponse, McpResponse,
   OutputsResponse, StrategyResponse, SoulResponse, SyncResult, SoulExampleResponse,
-  UploadResponse, ErrorResponse, PacksResponse,
+  UploadResponse, ErrorResponse, PacksResponse, McpServers,
 } from '../lib/types'
 import { postJson, putJson, patchJson, del, scheduleRunRefresh } from '../lib/api-client'
 import { MODELS, AUTH_SECRETS, PACK_BY_KEY, FIRST_PARTY_KEYS } from '../lib/constants'
@@ -71,7 +71,7 @@ export default function Dashboard() {
   const [strategyLoaded, setStrategyLoaded] = useState(false)
   const [strategySaving, setStrategySaving] = useState(false)
   const [strategyBuilding, setStrategyBuilding] = useState(false)
-  const [mcpServers, setMcpServers] = useState<Record<string, Record<string, unknown>>>({})
+  const [mcpServers, setMcpServers] = useState<McpServers>({})
   const [mcpLoaded, setMcpLoaded] = useState(false)
   const [mcpSaving, setMcpSaving] = useState(false)
   const [soul, setSoul] = useState('')
@@ -156,7 +156,7 @@ export default function Dashboard() {
   }
   const saveStrategy = async (content: string) => { setStrategySaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/strategy', { content }); if (ok) { setStrategy(content); flashSynced('Strategy saved', data) } else { flash('Save failed') } } finally { setStrategySaving(false) } }
   const buildStrategy = async (sources: StrategySources) => { setStrategyBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/strategy/build', { ...sources, model }); if (ok) { flash('Strategy-builder started'); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setStrategyBuilding(false) } }
-  const saveMcp = async (servers: Record<string, Record<string, unknown>>) => { setMcpSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/mcp', { servers }); if (ok) { setMcpServers(servers); flashSynced('MCP servers saved', data) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
+  const saveMcp = async (servers: McpServers) => { setMcpSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/mcp', { servers }); if (ok) { setMcpServers(servers); flashSynced('MCP servers saved', data) } else { flash('Save failed') } } finally { setMcpSaving(false) } }
   const saveSoul = async (file: SoulFile, content: string) => { setSoulSaving(true); try { const { ok, data } = await putJson<SyncResult>('/api/soul', { file, content }); if (ok) { if (file === 'soul') setSoul(content); else setSoulStyle(content); flashSynced(`${file === 'soul' ? 'SOUL.md' : 'STYLE.md'} saved`, data) } else { flash('Save failed') } } finally { setSoulSaving(false) } }
   const buildSoul = async (sources: SoulSources) => { setSoulBuilding(true); try { const { ok, data } = await postJson<ErrorResponse>('/api/soul/build', { ...sources, model }); if (ok) { const label = sources.handle ? `@${sources.handle}` : sources.name || 'your links'; flash(`Soul-builder started for ${label}`); scheduleRunRefresh(refreshRuns) } else { flash(data.error || 'Build failed to dispatch') } } finally { setSoulBuilding(false) } }
   const installSoulExample = async (key: string) => { setSoulInstalling(key); try { const { ok, data } = await postJson<SoulExampleResponse>('/api/soul/examples', { example: key }); if (ok) { setSoul(data.soul || ''); setSoulStyle(data.style || ''); setSoulLoaded(true); flashSynced(`Installed ${key} soul`, data) } else { flash(data.error || 'Install failed') } } finally { setSoulInstalling(null) } }

@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import type { UploadFile } from '../lib/types'
-import { inputCls } from '../lib/utils'
+import { inputCls, slugify } from '../lib/utils'
 import { CATEGORIES } from '../lib/constants'
 
 interface ImportModalProps {
@@ -25,13 +25,13 @@ export function ImportModal({ onClose, onImport }: ImportModalProps) {
     const files: UploadFile[] = []
     for (let i = 0; i < fl.length; i++) {
       const f = fl[i]
-      files.push({ path: (f as { webkitRelativePath?: string }).webkitRelativePath || f.name, content: await f.text() })
+      files.push({ path: f.webkitRelativePath || f.name, content: await f.text() })
     }
     setUploadFiles(files)
     const sf = files.find(f => { const l = f.path.toLowerCase(); return l === 'skill.md' || l.endsWith('/skill.md') || l.endsWith('.skill') })
     if (sf) {
       const fm = sf.content.match(/^---\s*\n([\s\S]*?)\n---/)
-      if (fm) { const n = fm[1].match(/name:\s*(.+)/); if (n) { const slug = n[1].trim().replace(/^['"]|['"]$/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); if (slug) setUploadName(slug) } }
+      if (fm) { const n = fm[1].match(/name:\s*(.+)/); if (n) { const slug = slugify(n[1].trim().replace(/^['"]|['"]$/g, '')); if (slug) setUploadName(slug) } }
     }
   }
 

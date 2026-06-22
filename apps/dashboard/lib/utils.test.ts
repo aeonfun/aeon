@@ -6,7 +6,7 @@
 import { describe, it } from "node:test";
 import { strict as assert } from "node:assert";
 
-import { displayName, initials, parseCron, cronLabel, buildCron, timeAgo, getSkillStatus, localToUtc24 } from "./utils";
+import { displayName, initials, parseCron, cronLabel, buildCron, timeAgo, getSkillStatus, localToUtc24, slugify } from "./utils";
 import type { Run } from "./types";
 
 // ── displayName ──────────────────────────────────────────────────────
@@ -57,6 +57,28 @@ describe("initials", () => {
   it("is case insensitive for output", () => {
     // initials returns uppercase regardless of input
     assert.equal(initials("test-skill"), "TS");
+  });
+});
+
+// ── slugify ───────────────────────────────────────────────────────────
+
+describe("slugify", () => {
+  it("lowercases and hyphenates", () => {
+    assert.equal(slugify("Fleet Scorecard"), "fleet-scorecard");
+  });
+
+  it("collapses non-alphanumeric runs into a single hyphen", () => {
+    assert.equal(slugify("a  --  b__c"), "a-b-c");
+  });
+
+  it("trims leading and trailing hyphens", () => {
+    assert.equal(slugify("  Hello! "), "hello");
+    assert.equal(slugify("--x--"), "x");
+  });
+
+  it("returns empty string for input with no alphanumerics", () => {
+    assert.equal(slugify("!!!"), "");
+    assert.equal(slugify(""), "");
   });
 });
 
