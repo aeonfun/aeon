@@ -47,6 +47,8 @@ Open [http://localhost:5555](http://localhost:5555) and follow the four steps:
 
 That's it - Aeon now runs unattended. On a public repo, GitHub Actions minutes are **free**. Run `./onboard` anytime to verify your setup.
 
+Dashboard views, local dev, env vars, and remote access are documented in [`apps/dashboard/README.md`](apps/dashboard/README.md).
+
 <details>
 <summary><strong>No admin rights / can't install <code>gh</code>?</strong></summary>
 
