@@ -23,7 +23,7 @@ Or run this app directly:
 ```bash
 cd apps/dashboard
 npm install
-npm run dev              # next dev — http://localhost:5555 (set PORT to override)
+npm run dev              # next dev on :3000 (./aeon runs it on :5555)
 npm run build            # next build (production)
 npm run test             # node --test over lib/**/*.test.{ts,mjs}
 ```
