@@ -8,8 +8,10 @@
 // pre-merge CI) does not have to re-derive them from inline snippets.
 //
 // Checks:
-//   1. Checkout ordering  — .github/workflows/aeon.yml must have a checkout step,
-//      unconditional and ahead of any conditional step (checkout-ordering class).
+//   1. Checkout ordering  — .github/workflows/aeon.yml must check out the repo
+//      before the skill-run step, with a checkout whose condition covers the run
+//      step's (unconditional, or the same if:), so the repo is never absent when
+//      Run executes (checkout-ordering class).
 //   2. Duplicate skill keys — a shadowed key in aeon.yml silently disables a skill
 //      (duplicate-key class).
 //   3. Skill-reference integrity — every skill named in aeon.yml resolves to a real
@@ -40,58 +42,106 @@ function pass(line) { out.push(line); }
 function fail(line) { out.push(line); failed = true; }
 
 // ---------------------------------------------------------------------------
-// Check 1 — checkout ordering (mirrors skills/config-validator/SKILL.md step 1).
-// The if-detection deliberately matches the established skill check so this
-// shared validator reports identically to the inline fallback it replaces.
+// Check 1 — checkout ordering.
+// The run workflow has no single unconditional checkout by design: it checks out
+// on the issues path ("Early checkout", if: issues) and again on the scheduled
+// path ("Checkout repo", if: mode != ''), and the two steps that run before either
+// checkout only read GitHub context — they never touch repo files. So the real
+// invariant is not "checkout is unconditional and first" but: the skill-run step
+// (id: run / name "Run") must be preceded by a checkout whose condition COVERS the
+// run step's — i.e. the checkout is unconditional, or carries the exact same if:
+// — so the repo can never be absent while Run executes. analyzeCheckout() is pure
+// (takes the workflow YAML text) so it can be unit-tested against fixtures.
 // ---------------------------------------------------------------------------
-function checkCheckoutOrdering() {
-  if (!fs.existsSync(WORKFLOW)) {
-    fail('FAIL: run workflow not found at .github/workflows/aeon.yml');
-    return;
-  }
-  const lines = fs.readFileSync(WORKFLOW, 'utf8').split('\n');
-
+function parseSteps(text) {
+  const lines = text.split('\n');
   let inSteps = false;
   const steps = [];
   let cur = null;
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    const trimmed = line.trim();
 
     if (/^\s{4,6}steps:/.test(line)) { inSteps = true; continue; }
     if (!inSteps) continue;
-    if (/^\s{4,6}[a-z]/.test(line) && !/^\s{6,}/.test(line) && i > 0) { inSteps = false; continue; }
+    // dedent back to a job-/top-level key (<=4 spaces) ends the steps block
+    if (/^ {0,4}[A-Za-z]/.test(line)) { inSteps = false; cur = null; continue; }
 
     if (/^\s{6}- /.test(line)) {
       if (cur) steps.push(cur);
-      cur = { lineNum: i + 1, name: null, hasIf: false, isCheckout: false };
+      cur = { lineNum: i + 1, name: null, id: null, isCheckout: false, ifCond: null };
+      const nm = line.match(/^\s{6}-\s+name:\s*(.+?)\s*$/);
+      if (nm) cur.name = nm[1].replace(/["']/g, '');
     }
-    if (cur) {
-      if (/name:/.test(trimmed)) cur.name = trimmed.replace(/^name:\s*/, '').replace(/["']/g, '');
-      if (/uses:\s*actions\/checkout/.test(trimmed)) cur.isCheckout = true;
-      if (/Early checkout/.test(trimmed)) cur.isCheckout = true;
-      if (/^\s{6}if:/.test(line)) cur.hasIf = true;
-    }
+    if (!cur) continue;
+
+    // step-body fields live at 8 spaces (one level under the "- " marker); anchoring
+    // to that indent avoids matching `name=`/`if [ ... ]` inside run: shell blocks.
+    let m;
+    if ((m = line.match(/^\s{8}name:\s*(.+?)\s*$/))) cur.name = m[1].replace(/["']/g, '');
+    if ((m = line.match(/^\s{8}id:\s*(.+?)\s*$/))) cur.id = m[1].replace(/["']/g, '');
+    if (/^\s{8}uses:\s*actions\/checkout/.test(line)) cur.isCheckout = true;
+    if ((m = line.match(/^\s{8}if:\s*(.+?)\s*$/)) && cur.ifCond === null) cur.ifCond = m[1];
   }
   if (cur) steps.push(cur);
 
-  const checkoutIdx = steps.findIndex((s) => s.isCheckout);
-  if (checkoutIdx === -1) {
-    fail('FAIL: No checkout step (actions/checkout or Early checkout) found in jobs.run.steps');
+  // a step named "... checkout" (e.g. "Early checkout") is a checkout too
+  steps.forEach((s) => { if (s.name && /checkout/i.test(s.name)) s.isCheckout = true; });
+  return steps;
+}
+
+const normCond = (c) => (c == null ? null : c.trim().replace(/\s+/g, ' '));
+
+// Pure: returns { ok, line } for the checkout-ordering invariant.
+function analyzeCheckout(text) {
+  const steps = parseSteps(text);
+
+  const checkouts = steps.filter((s) => s.isCheckout);
+  if (checkouts.length === 0) {
+    return { ok: false, line: 'FAIL: no checkout step (actions/checkout) found in jobs.run.steps' };
+  }
+
+  const runIdx = steps.findIndex((s) => s.id === 'run' || (s.name && /^run$/i.test(s.name.trim())));
+  if (runIdx === -1) {
+    return { ok: false, line: 'FAIL: could not locate the skill-run step (expected `id: run` or a step named "Run") — checkout-ordering cannot be verified' };
+  }
+  const runStep = steps[runIdx];
+  const runCond = normCond(runStep.ifCond);
+
+  // A preceding checkout "covers" Run if it is unconditional, or shares Run's exact
+  // condition, so it can never be skipped in a run where Run itself executes.
+  const covering = checkouts.find((s) => {
+    if (steps.indexOf(s) >= runIdx) return false;
+    const c = normCond(s.ifCond);
+    return c === null || c === runCond;
+  });
+
+  if (covering) {
+    const how = covering.ifCond == null
+      ? 'unconditional'
+      : 'condition matches the run step (if: ' + covering.ifCond + ')';
+    return { ok: true, line: 'PASS checkout: a checkout (line ' + covering.lineNum + ') precedes the skill-run step (line ' + runStep.lineNum + ') and is ' + how };
+  }
+
+  const preceding = checkouts.find((s) => steps.indexOf(s) < runIdx);
+  if (!preceding) {
+    return { ok: false, line: 'FAIL: skill-run step (line ' + runStep.lineNum + ') has no checkout step before it — repo would be absent when Run executes' };
+  }
+  return {
+    ok: false,
+    line: 'FAIL: the checkout before the skill-run step (line ' + preceding.lineNum + ', if: ' + (preceding.ifCond || 'none')
+      + ') does not cover the run step condition (if: ' + (runStep.ifCond || 'none')
+      + ') — checkout could be skipped while Run executes',
+  };
+}
+
+function checkCheckoutOrdering() {
+  if (!fs.existsSync(WORKFLOW)) {
+    fail('FAIL: run workflow not found at .github/workflows/aeon.yml');
     return;
   }
-  const cs = steps[checkoutIdx];
-  if (cs.hasIf) {
-    fail('FAIL: Checkout step at line ' + cs.lineNum + ' has an if: condition — must be unconditional');
-    return;
-  }
-  const firstConditional = steps.findIndex((s) => s.hasIf);
-  if (firstConditional !== -1 && firstConditional < checkoutIdx) {
-    fail('FAIL: Checkout step appears after a conditional step at line ' + steps[firstConditional].lineNum);
-    return;
-  }
-  pass('PASS checkout: checkout step is unconditional and first (line ' + cs.lineNum + ')');
+  const res = analyzeCheckout(fs.readFileSync(WORKFLOW, 'utf8'));
+  (res.ok ? pass : fail)(res.line);
 }
 
 // ---------------------------------------------------------------------------
@@ -221,4 +271,6 @@ function main() {
   process.exit(0);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { analyzeCheckout, parseSteps };
