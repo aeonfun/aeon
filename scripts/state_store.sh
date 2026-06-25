@@ -19,13 +19,22 @@ REPO_ARGS=(); [ -n "${GH_REPO:-}" ] && REPO_ARGS=(--repo "$GH_REPO")
 
 _ensure() {
   local title="${1:?title required}" n
-  n=$(gh issue list "${REPO_ARGS[@]}" --state open --search "\"$title\" in:title" \
+  # Search open OR closed. The ledger deliberately lives *closed* so it never
+  # clutters the repo's open-issues list. Commenting on and reading a closed
+  # issue still work (only *locking* an issue blocks comments) — so a closed
+  # issue is a perfectly good append-only store, just an invisible one.
+  n=$(gh issue list "${REPO_ARGS[@]}" --state all --search "\"$title\" in:title" \
         --json number,title --jq "map(select(.title==\"$title\")) | .[0].number // empty" 2>/dev/null || true)
   if [ -z "$n" ]; then
     local url
     url=$(gh issue create "${REPO_ARGS[@]}" --title "$title" \
           --body "Append-only Aeon state store (hardening §3). Machine-managed; do not edit by hand.")
     n=$(printf '%s' "$url" | grep -oE '[0-9]+$')
+    # Close it on creation so it stays out of the open-issues view. Appends still
+    # land on the closed issue; it never needs to be reopened.
+    if [ -n "$n" ]; then
+      gh issue close "$n" "${REPO_ARGS[@]}" >/dev/null 2>&1 || true
+    fi
   fi
   printf '%s' "$n"
 }
