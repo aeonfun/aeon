@@ -8,20 +8,20 @@ tags: [meta, dev]
 Today is ${today}. Your task is to validate the structural correctness of `aeon.yml` and `.github/workflows/aeon.yml`.
 
 This skill exists because two incident classes have caused major outages:
-- **Checkout-ordering class**: `Early checkout` step missing or conditionally gated — can cause every skill to fail in a single run.
+- **Checkout-ordering class**: a repo-using step (the skill `Run`) executes without the repo checked out — checkout missing, ordered after `Run`, or gated behind a condition the run step does not share — can cause every skill to fail in a single run.
 - **Duplicate-key class**: duplicate YAML keys in `aeon.yml` — silently disable any skill whose key is shadowed.
 
-The same checks also run as a pre-merge CI workflow at `.github/workflows/ci-config-validate.yml` (via `scripts/validate-config.js`) — that workflow blocks PRs that break these invariants. This skill is the **weekly safety net** for state that drifts on `main` outside of PRs (manual edits, scheduled rewrites, post-process commits). Run all checks. Report findings. Alert if any fail.
+`scripts/validate-config.js` is the shared validator for these invariants (wiring it into a pre-merge CI workflow is a follow-up — adding the workflow needs a `workflows`-scoped token). This skill is the **weekly safety net** for state that drifts on `main` outside of PRs (manual edits, scheduled rewrites, post-process commits). Run all checks. Report findings. Alert if any fail.
 
 ### Fast path — invoke the shared validator
 
-The fastest, most consistent way to run all three checks is the shared script the CI workflow uses:
+The fastest, most consistent way to run all three checks is the shared script:
 
 ```bash
 node scripts/validate-config.js
 ```
 
-Exit code 0 = CLEAN (no notification needed). Non-zero exit + `FAIL[*]:` lines on stdout = ISSUES (skip to step 4).
+Exit code 0 = CLEAN (no notification needed). Non-zero exit + `FAIL:` lines on stdout = ISSUES (skip to step 4).
 
 If the script is unavailable for any reason, fall back to the manual checks in steps 1–3.
 
@@ -31,64 +31,25 @@ If the script is unavailable for any reason, fall back to the manual checks in s
 
 Read `.github/workflows/aeon.yml`.
 
-Find the `jobs.run.steps` array. Verify:
+The canonical check is `scripts/validate-config.js` (the Fast path above). To keep a
+second copy of the parser from drifting from the script, this manual fallback is a
+*description* of the invariant, not a duplicate parser.
 
-a. A step named `Early checkout` (or `uses: actions/checkout`) exists.
-b. That step has **no** `if:` condition — it must run unconditionally.
-c. That step is positioned **before** any step that has an `if:` condition.
+Find the `jobs.run.steps` array and verify the repo is always checked out before it
+is used:
 
-Use node inline to parse and check:
+a. At least one checkout step (`uses: actions/checkout`, e.g. `Early checkout` /
+   `Checkout repo`) exists.
+b. The skill-run step (`id: run`, named `Run`) is preceded by a checkout whose `if:`
+   **covers** it — the checkout is unconditional, or carries the *same* `if:`
+   condition as the run step — so the repo can never be missing when `Run` executes.
 
-```bash
-node -e "
-const fs = require('fs');
-const text = fs.readFileSync('.github/workflows/aeon.yml', 'utf8');
-const lines = text.split('\n');
-
-let inSteps = false, stepDepth = 0;
-let steps = [], cur = null, lineNum = 0;
-
-for (let i = 0; i < lines.length; i++) {
-  const line = lines[i];
-  const trimmed = line.trim();
-
-  if (/^\s{4,6}steps:/.test(line)) { inSteps = true; continue; }
-  if (!inSteps) continue;
-  if (/^\s{4,6}[a-z]/.test(line) && !/^\s{6,}/.test(line) && i > 0) { inSteps = false; continue; }
-
-  if (/^\s{6}- /.test(line)) {
-    if (cur) steps.push(cur);
-    cur = { lineNum: i + 1, name: null, hasIf: false, isCheckout: false };
-  }
-  if (cur) {
-    if (/name:/.test(trimmed)) cur.name = trimmed.replace(/^name:\s*/, '').replace(/[\"']/g, '');
-    if (/uses:\s*actions\/checkout/.test(trimmed)) cur.isCheckout = true;
-    if (/Early checkout/.test(trimmed)) cur.isCheckout = true;
-    if (/^\s{6}if:/.test(line)) cur.hasIf = true;
-  }
-}
-if (cur) steps.push(cur);
-
-let issues = [];
-const checkoutIdx = steps.findIndex(s => s.isCheckout);
-if (checkoutIdx === -1) {
-  issues.push('FAIL: No checkout step (actions/checkout or Early checkout) found in jobs.run.steps');
-} else {
-  const cs = steps[checkoutIdx];
-  if (cs.hasIf) {
-    issues.push('FAIL: Checkout step at line ' + cs.lineNum + ' has an if: condition — must be unconditional');
-  }
-  const firstConditional = steps.findIndex(s => s.hasIf);
-  if (firstConditional !== -1 && firstConditional < checkoutIdx) {
-    issues.push('FAIL: Checkout step appears after a conditional step at line ' + steps[firstConditional].lineNum);
-  }
-  if (issues.length === 0) {
-    console.log('PASS checkout: Early checkout is unconditional and first (line ' + cs.lineNum + ')');
-  }
-}
-if (issues.length > 0) { issues.forEach(i => console.log(i)); process.exit(1); }
-"
-```
+The run workflow has no single unconditional checkout by design: it checks out on the
+issues path (`Early checkout`, `if: github.event_name == 'issues'`) and again on the
+scheduled path (`Checkout repo`, `if: steps.work.outputs.mode != ''`), and the steps
+before either checkout only read GitHub context — they never touch repo files. A FAIL
+is: no checkout precedes `Run`, or the preceding checkout's `if:` does not cover the
+run step's.
 
 If the check fails, record the finding. Continue to next check regardless.
 
