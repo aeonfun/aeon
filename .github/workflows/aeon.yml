@@ -51,7 +51,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  issues: read
+  issues: write   # write (was read) for Issues-as-state append (§3) + votable health Issues (§7); harmless when STATE_BACKEND / HEALTH_ISSUES unset
   actions: read
 
 env:
@@ -238,6 +238,24 @@ jobs:
           fi
           echo "::notice::Fleet Watcher ALLOWED skill '$SKILL' (audit: $AUDIT_REF, ref: $REF)"
 
+      # Materialize cron state (Issues backend, opt-in) — hardening §3 reader cutover.
+      # With STATE_BACKEND=issues, runs APPEND immutable events to a pinned Issue
+      # (conflict-free, no commit/rebase). But readers (heartbeat, skill-health,
+      # prune_skills.py …) still read memory/cron-state.json — so before the skill runs,
+      # fold the Issue's events back into that file: readers work UNCHANGED and see a
+      # fresh projection, not stale committed state. Commit results drops the projection
+      # afterward so it isn't committed. No-op when STATE_BACKEND is unset.
+      - name: Materialize cron state (Issues backend)
+        if: steps.work.outputs.mode != '' && vars.STATE_BACKEND == 'issues'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh materialize "aeon:cron-state" memory/cron-state.json; then
+            echo "cron-state projected from the Issues backend; readers see fresh state"
+          else
+            echo "::warning::could not materialize cron-state from the Issue; readers use the committed file"
+          fi
+
       - name: Run
         id: run
         if: steps.work.outputs.mode != ''
@@ -340,12 +358,16 @@ jobs:
           cp scripts/notify.sh ./notify
           chmod +x ./notify
 
-          ALLOWED="Read,Write,Edit,Glob,Grep,WebFetch,WebSearch"
-          ALLOWED="$ALLOWED,Bash(curl:*),Bash(gh:*),Bash(git:*),Bash(jq:*)"
-          ALLOWED="$ALLOWED,Bash(./notify:*),Bash(./notify-jsonrender:*)"
-          ALLOWED="$ALLOWED,Bash(mkdir:*),Bash(ls:*),Bash(cat:*),Bash(chmod:*)"
-          ALLOWED="$ALLOWED,Bash(date:*),Bash(echo:*),Bash(node:*),Bash(npm:*),Bash(npx:*)"
-          ALLOWED="$ALLOWED,Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(sort:*),Bash(grep:*)"
+          # Capability tier (hardening §6): the toolset is resolved per-skill from
+          # scripts/skill_mode.sh. Default is `write` (backward compatible — a superset
+          # of the previous static list, additionally granting Bash(python3/python:*)
+          # the helper scripts need). A skill with `mode: read-only` frontmatter gets a
+          # toolset with no Write/Edit/git/gh, so it physically cannot mutate the repo;
+          # the post-run read-only guard reverts any stray redirected writes.
+          SKILL_MODE=$(bash scripts/skill_mode.sh mode "${{ steps.skill.outputs.name }}")
+          ALLOWED=$(bash scripts/skill_mode.sh allowed-tools "$SKILL_MODE")
+          echo "SKILL_MODE=$SKILL_MODE" >> "$GITHUB_ENV"
+          echo "Capability mode: $SKILL_MODE"
 
           # MCP (opt-in): when a project .mcp.json exists, load it for this run
           # and allow each server's tools. No-op when the file is absent, so
@@ -645,6 +667,7 @@ jobs:
           fi
 
           echo "QUALITY_SCORE=$SCORE" >> "$GITHUB_OUTPUT"
+          echo "FLAGS=$FLAGS" >> "$GITHUB_OUTPUT"   # consumed by the votable-health step (§7)
 
           # Write skill health file with rolling history
           mkdir -p memory/skill-health
@@ -812,12 +835,38 @@ jobs:
             ./"$script" || echo "::notice::$(basename "$script") failed (non-fatal)"
           done
 
+      - name: Read-only capability guard
+        if: steps.work.outputs.mode != '' && env.SKILL_MODE == 'read-only'
+        run: |
+          # read-only skills (mode: read-only) get no Write/Edit/git/gh, so they can't
+          # mutate the repo. Two jobs here: (1) record the run-log entry on their behalf
+          # (they couldn't), (2) revert any code/config that slipped through a shell
+          # redirection. State/memory/outputs/articles are preserved for the commit step.
+          SKILL="${{ steps.skill.outputs.name }}"
+          TODAY=$(date -u +%Y-%m-%d)
+          mkdir -p memory/logs
+          printf '\n## %s (read-only)\nRan %s UTC.\n' "$SKILL" "$(date -u +%FT%TZ)" >> "memory/logs/${TODAY}.md"
+          CODE_PATHS="skills .github apps/a2a-server apps/mcp-server apps/webhook apps/dashboard/app apps/dashboard/lib apps/dashboard/components scripts skill-templates workflow-templates docs *.md *.json *.yml aeon add-skill add-mcp add-a2a export-skill new-from-template onboard install-skill-pack install-from-atrium generate-skills-json generate-packs-json notify-jsonrender"
+          git checkout -- $CODE_PATHS 2>/dev/null || true
+          git clean -fd -- skills scripts skill-templates workflow-templates .github 2>/dev/null || true
+          echo "read-only guard: logged run + reverted code/config writes for $SKILL"
+
       - name: Commit results
         if: steps.work.outputs.mode != ''
+        env:
+          STATE_BACKEND: ${{ vars.STATE_BACKEND }}
         run: |
           git config user.name "aeonframework"
           git config user.email "aeonframework@proton.me"
           rm -f ./notify .notify-sent-hashes  # Remove generated notify script + dedup log before committing
+
+          # Issues-as-state (hardening §3): cron-state.json was materialized from the
+          # pinned Issue for this run's readers — it's a projection, not source of truth.
+          # Drop the working-tree change so it isn't committed (that churn is exactly
+          # what the Issues backend exists to avoid). No-op when STATE_BACKEND is unset.
+          if [ "${STATE_BACKEND:-}" = "issues" ]; then
+            git checkout -- memory/cron-state.json 2>/dev/null || rm -f memory/cron-state.json
+          fi
 
           CURRENT_BRANCH=$(git branch --show-current)
           LABEL="${{ steps.work.outputs.label }}"
@@ -883,6 +932,9 @@ jobs:
 
       - name: Update cron state
         if: always() && steps.skill.outputs.name != ''
+        env:
+          STATE_BACKEND: ${{ vars.STATE_BACKEND }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           SKILL="${{ steps.skill.outputs.name }}"
           RUN_OUTCOME="${{ steps.run.outcome }}"
@@ -901,6 +953,23 @@ jobs:
           ERROR_SIG=""
           if [ "$CRON_STATUS" = "failed" ] && [ -f /tmp/skill-error.txt ]; then
             ERROR_SIG=$(cat /tmp/skill-error.txt)
+          fi
+
+          # Issues-as-state (hardening §3) — opt-in via repo var STATE_BACKEND=issues.
+          # Append an IMMUTABLE event to the state Issue (conflict-free) and skip the
+          # file-commit + 5x rebase-retry below entirely. Readers fold via
+          # scripts/state_store.sh read (materialized into cron-state.json pre-run).
+          # Default (unset) keeps the file path unchanged.
+          if [ "${STATE_BACKEND:-}" = "issues" ]; then
+            EVENT=$(jq -cn --arg s "$SKILL" --arg st "$CRON_STATUS" --arg ts "$NOW_ISO" \
+              --argjson q "${QUALITY_SCORE:-0}" --arg err "$ERROR_SIG" \
+              '{skill:$s,status:$st,ts:$ts,quality_score:$q,error:$err}')
+            ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh ensure "aeon:cron-state" 2>/dev/null || true)
+            if [ -n "$ISSUE" ] && GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh append "$ISSUE" "$EVENT"; then
+              echo "cron state appended to issue #$ISSUE (no commit, no rebase)"
+              exit 0
+            fi
+            echo "::warning::Issues-as-state append failed; falling back to file path"
           fi
 
           # Function: apply quality metrics update to STATE
@@ -998,3 +1067,29 @@ jobs:
             sleep "$i"
           done
           echo "::warning::Failed to commit cron state (non-fatal)"
+
+      # Votable health Issues (hardening §7) — opt-in via repo var HEALTH_ISSUES=1.
+      # On a regression (low score / failure flag / failed run) post to the skill's
+      # per-skill health Issue; humans 👍/👎 it to set repair priority. Silent on clean
+      # runs (no Issue spam). Off by default = zero new issues on forks.
+      - name: Health regression to votable Issue (opt-in)
+        if: always() && steps.skill.outputs.name != '' && vars.HEALTH_ISSUES == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SKILL="${{ steps.skill.outputs.name }}"
+          SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"; [ -z "$SCORE" ] && SCORE=0
+          FLAGS='${{ steps.analyze.outputs.FLAGS }}'; [ -z "$FLAGS" ] && FLAGS='[]'
+          if [ "${{ steps.run.outcome }}" != "success" ]; then SCORE=1; FLAGS='["run_failed"]'; fi
+          REC=$(jq -cn --arg s "$SKILL" --argjson sc "$SCORE" --argjson fl "$FLAGS" '{skill:$s,score:$sc,flags:$fl}')
+          NEEDS=$(printf '%s' "$REC" | python3 -c "import sys,json; sys.path.insert(0,'scripts'); import health_triage as h; print('yes' if h.needs_comment(json.load(sys.stdin)) else 'no')" 2>/dev/null || echo no)
+          if [ "$NEEDS" = "yes" ]; then
+            ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh ensure "$SKILL" 2>/dev/null || true)
+            if [ -n "$ISSUE" ]; then
+              GH_REPO="$GITHUB_REPOSITORY" bash scripts/health_issue.sh comment "$ISSUE" \
+                "⚠️ Regression — score $SCORE, flags $FLAGS ($(date -u +%FT%TZ)). 👍/👎 to set repair priority." \
+                && echo "health regression -> issue #$ISSUE"
+            fi
+          else
+            echo "no regression for $SKILL; health issue silent"
+          fi

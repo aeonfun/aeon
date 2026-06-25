@@ -283,11 +283,26 @@ jobs:
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
+          STATE_BACKEND: ${{ vars.STATE_BACKEND }}
         run: |
           CHAIN="${{ inputs.chain }}"
           NOW_ISO=$(date -u +%FT%TZ)
           STATUS="${CHAIN_STATUS:-failed}"
           STATE_FILE="memory/cron-state.json"
+
+          # Issues backend (hardening §3): append the chain event to the shared state
+          # Issue (same store the main workflow uses) instead of committing the file —
+          # keeps chain state in one place and off the rebase loop. No-op when unset.
+          if [ "${STATE_BACKEND:-}" = "issues" ]; then
+            EVENT=$(jq -cn --arg s "chain:$CHAIN" --arg st "$STATUS" --arg ts "$NOW_ISO" \
+              '{skill:$s,status:$st,ts:$ts}')
+            ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh ensure "aeon:cron-state" 2>/dev/null || true)
+            if [ -n "$ISSUE" ] && GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh append "$ISSUE" "$EVENT"; then
+              echo "chain state appended to issue #$ISSUE (no commit, no rebase)"
+              exit 0
+            fi
+            echo "::warning::Issues-as-state append failed; falling back to file path"
+          fi
 
           git checkout main 2>/dev/null || true
           git pull --rebase origin main 2>/dev/null || true
