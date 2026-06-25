@@ -21,6 +21,13 @@ set -euo pipefail
 
 # Tools every tier gets: read, search, notify, and read-only/local shell helpers.
 # curl stays (network is the *other* axis, governed by egress:, not by mode).
+#
+# NOTE: `gh` is intentionally NOT in the read-only base — even `gh api` GET reads are
+# excluded, because `gh` is also a write vector (issue/PR/commit/dispatch) and the tool
+# grammar is coarse (Bash(gh:*) is all-or-nothing). A read-only skill that needs GitHub
+# data should fetch it with WebFetch/curl against api.github.com, or stay `mode: write`.
+# (Known degraders today: github-trending + security-digest use `gh api` only as a
+# fallback behind a WebFetch/curl primary, so they degrade gracefully, not break.)
 BASE_TOOLS="Read,Glob,Grep,WebFetch,WebSearch"
 BASE_TOOLS="$BASE_TOOLS,Bash(curl:*),Bash(jq:*)"
 BASE_TOOLS="$BASE_TOOLS,Bash(./notify:*),Bash(./notify-jsonrender:*)"
