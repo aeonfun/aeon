@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Hugging Face Trending
 category: research
 description: Curated trending Hugging Face models, datasets, and spaces — filtered, clustered, and labeled with a "why notable" line per pick

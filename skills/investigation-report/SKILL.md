@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Investigation Report
 category: onchain-security
 description: One-shot composite investigation of a Base token — runs rug-scan, contract-audit, deployer-trace and holder-concentration and merges them into a single report with an at-a-glance verdict. Keyless core; a Basescan key deepens it.

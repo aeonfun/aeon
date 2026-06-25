@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Approval Audit
 category: onchain-security
 description: List a wallet's live ERC-20 token approvals on Base and flag unlimited / risky spender grants. Keyless via Base RPC (eth_getLogs + eth_call) — no explorer key needed.

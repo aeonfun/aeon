@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Paper Pick
 category: research
 description: Find the one paper most worth reading from Hugging Face Papers

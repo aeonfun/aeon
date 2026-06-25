@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Fund Flow
 category: onchain-security
 description: Trace where funds move to (or came from) across multiple hops from a Base address and render a Mermaid flow graph. Keyless — no explorer key needed.

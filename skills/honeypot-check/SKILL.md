@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Honeypot Check
 category: onchain-security
 description: Detect un-sellable / restricted (honeypot) tokens on Base by simulating a real holder's sell via eth_call. Keyless — no explorer key needed.

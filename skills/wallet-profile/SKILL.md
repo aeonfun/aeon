@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Wallet Profile
 category: onchain-security
 description: Behavioral profile of any wallet on Base — age, activity class (bot/whale/sniper/trader), funding source, top counterparties, and risk flags. Keyless via Etherscan v2 + Base RPC.

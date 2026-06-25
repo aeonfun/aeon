@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: BEAMR Route
 category: crypto
 description: Route a prompt through a BEAMR x402 gateway and report the answer + onchain receipt

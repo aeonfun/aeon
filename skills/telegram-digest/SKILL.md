@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Telegram Digest
 category: research
 description: Cross-channel digest of public Telegram posts — ranked by signal, clustered by narrative, not by channel

@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Contract Audit
 category: onchain-security
 description: Audit any contract on Base — verification, proxy/upgradeability, ownership/admin roles, and mint/freeze/pause/drain powers as a live capability matrix. Keyless via Etherscan v2 + Base RPC.

@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: Tx Explain
 category: onchain-security
 description: Decode any Base transaction into a plain-English story — method, token movements, swaps/approvals, counterparties, and suspicious-approval flags. Keyless via Base RPC + Etherscan v2.

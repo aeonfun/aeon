@@ -1,4 +1,5 @@
 ---
+mode: read-only
 name: GitHub Trending
 category: dev
 description: Curated trending GitHub repos — clustered, filtered, and labeled by momentum
