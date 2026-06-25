@@ -290,18 +290,21 @@ jobs:
           STATUS="${CHAIN_STATUS:-failed}"
           STATE_FILE="memory/cron-state.json"
 
-          # Issues backend (hardening §3): append the chain event to the shared state
-          # Issue (same store the main workflow uses) instead of committing the file —
-          # keeps chain state in one place and off the rebase loop. No-op when unset.
-          if [ "${STATE_BACKEND:-}" = "issues" ]; then
+          # Issues backend (hardening §3) — STATE_BACKEND tri-state, matching aeon.yml:
+          # dual (DEFAULT) appends the chain event to the shared state Issue AND keeps
+          # committing the file; issues appends + skips the file/rebase path; file is the
+          # legacy escape hatch. Append failure falls through to the file either way.
+          BACKEND="${STATE_BACKEND:-dual}"
+          if [ "$BACKEND" != "file" ]; then
             EVENT=$(jq -cn --arg s "chain:$CHAIN" --arg st "$STATUS" --arg ts "$NOW_ISO" \
               '{skill:$s,status:$st,ts:$ts}')
             ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh ensure "aeon:cron-state" 2>/dev/null || true)
             if [ -n "$ISSUE" ] && GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh append "$ISSUE" "$EVENT"; then
-              echo "chain state appended to issue #$ISSUE (no commit, no rebase)"
-              exit 0
+              echo "chain state appended to issue #$ISSUE (backend=$BACKEND)"
+              if [ "$BACKEND" = "issues" ]; then echo "(issues mode: skipping file commit)"; exit 0; fi
+            else
+              echo "::warning::Issues-as-state append failed (backend=$BACKEND); file path records this run"
             fi
-            echo "::warning::Issues-as-state append failed; falling back to file path"
           fi
 
           git checkout main 2>/dev/null || true

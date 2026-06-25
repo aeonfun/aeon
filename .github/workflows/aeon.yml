@@ -955,21 +955,29 @@ jobs:
             ERROR_SIG=$(cat /tmp/skill-error.txt)
           fi
 
-          # Issues-as-state (hardening §3) — opt-in via repo var STATE_BACKEND=issues.
-          # Append an IMMUTABLE event to the state Issue (conflict-free) and skip the
-          # file-commit + 5x rebase-retry below entirely. Readers fold via
-          # scripts/state_store.sh read (materialized into cron-state.json pre-run).
-          # Default (unset) keeps the file path unchanged.
-          if [ "${STATE_BACKEND:-}" = "issues" ]; then
+          # Issues-as-state (hardening §3). STATE_BACKEND tri-state:
+          #   dual   (DEFAULT) — append the run event to the pinned state Issue AND keep
+          #                      committing cron-state.json. Readers are unchanged and
+          #                      there is zero staleness risk; the Issue is built up and
+          #                      proven live. This is the dual-write transition.
+          #   issues          — append + SKIP the file-commit/rebase loop (churn-free end
+          #                      state). Requires the pre-run materialize step's reader
+          #                      cutover; flip to this once dual-write is proven.
+          #   file            — legacy file-only escape hatch (no Issue writes).
+          # Append failures never lose data: in dual/issues the file path still records
+          # the run (issues mode only exits early on a SUCCESSFUL append).
+          BACKEND="${STATE_BACKEND:-dual}"
+          if [ "$BACKEND" != "file" ]; then
             EVENT=$(jq -cn --arg s "$SKILL" --arg st "$CRON_STATUS" --arg ts "$NOW_ISO" \
               --argjson q "${QUALITY_SCORE:-0}" --arg err "$ERROR_SIG" \
               '{skill:$s,status:$st,ts:$ts,quality_score:$q,error:$err}')
             ISSUE=$(GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh ensure "aeon:cron-state" 2>/dev/null || true)
             if [ -n "$ISSUE" ] && GH_REPO="$GITHUB_REPOSITORY" bash scripts/state_store.sh append "$ISSUE" "$EVENT"; then
-              echo "cron state appended to issue #$ISSUE (no commit, no rebase)"
-              exit 0
+              echo "cron state appended to issue #$ISSUE (backend=$BACKEND)"
+              if [ "$BACKEND" = "issues" ]; then echo "(issues mode: skipping file commit + rebase)"; exit 0; fi
+            else
+              echo "::warning::Issues-as-state append failed (backend=$BACKEND); file path records this run"
             fi
-            echo "::warning::Issues-as-state append failed; falling back to file path"
           fi
 
           # Function: apply quality metrics update to STATE
@@ -1068,12 +1076,12 @@ jobs:
           done
           echo "::warning::Failed to commit cron state (non-fatal)"
 
-      # Votable health Issues (hardening §7) — opt-in via repo var HEALTH_ISSUES=1.
+      # Votable health Issues (hardening §7) — ON by default; opt out with HEALTH_ISSUES=0.
       # On a regression (low score / failure flag / failed run) post to the skill's
       # per-skill health Issue; humans 👍/👎 it to set repair priority. Silent on clean
-      # runs (no Issue spam). Off by default = zero new issues on forks.
-      - name: Health regression to votable Issue (opt-in)
-        if: always() && steps.skill.outputs.name != '' && vars.HEALTH_ISSUES == '1'
+      # runs (no Issue spam), so a healthy fleet creates zero issues.
+      - name: Health regression to votable Issue
+        if: always() && steps.skill.outputs.name != '' && vars.HEALTH_ISSUES != '0'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
