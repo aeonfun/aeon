@@ -1081,10 +1081,16 @@ jobs:
       # per-skill health Issue; humans 👍/👎 it to set repair priority. Silent on clean
       # runs (no Issue spam), so a healthy fleet creates zero issues.
       - name: Health regression to votable Issue
-        if: always() && steps.skill.outputs.name != '' && vars.HEALTH_ISSUES != '0'
+        if: always() && steps.skill.outputs.name != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # §7 is default-ON; disable only with repo var HEALTH_ISSUES=0. The toggle is
+          # checked HERE in bash, NOT in the step `if:`. A GitHub Actions `if:` comparison
+          # like `vars.HEALTH_ISSUES != '0'` does numeric coercion, and an UNSET var (null)
+          # coerces to 0 — so `!= '0'` is FALSE when unset, silently skipping the step by
+          # default (the opposite of "default-on"). Bash string comparison has no such trap.
+          if [ "${{ vars.HEALTH_ISSUES }}" = "0" ]; then echo "votable health disabled (HEALTH_ISSUES=0)"; exit 0; fi
           SKILL="${{ steps.skill.outputs.name }}"
           SCORE="${{ steps.analyze.outputs.QUALITY_SCORE }}"; [ -z "$SCORE" ] && SCORE=0
           FLAGS='${{ steps.analyze.outputs.FLAGS }}'; [ -z "$FLAGS" ] && FLAGS='[]'
