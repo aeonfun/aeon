@@ -12,6 +12,9 @@ on:
 permissions:
   contents: write
   actions: write
+  issues: write   # §3 issues-as-state: the chain's append (state_store.sh ensure/comment)
+                  # calls the Issues API; without this it 403s and only the file path records
+                  # chain events (and in `issues` mode they'd be lost from the ledger entirely).
 
 concurrency:
   group: aeon-chain-${{ inputs.chain }}
@@ -60,7 +63,7 @@ jobs:
               sleep 5
               run_id=$(gh run list --workflow=aeon.yml -L 10 \
                 --json databaseId,displayTitle,createdAt \
-                -q "[.[] | select(.displayTitle | test(\"skill: ${skill}(\"; \"i\")) | select(.createdAt >= \"${before_ts}\")] | .[0].databaseId" \
+                -q "[.[] | select(.displayTitle | test(\"skill: ${skill}( |\$)\"; \"i\")) | select(.createdAt >= \"${before_ts}\")] | .[0].databaseId" \
                 2>/dev/null || true)
               [ -n "$run_id" ] && [ "$run_id" != "null" ] && break
               run_id=""
