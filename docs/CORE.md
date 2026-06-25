@@ -64,6 +64,8 @@ Backpressure: if 3+ improvement PRs are already open, it exits without creating 
 
 `skill-health` / `skill-evals` **detect** → file issue → `skill-repair` **fixes** → PR → merge → cron-state recovers → `skill-health` **resolves** the issue. `CLAUDE.md` codifies the contract: **health skills file issues, repair skills close them.**
 
+**Votable health** runs alongside this loop. Whenever a skill regresses (Haiku score 1–2 or a failure flag), the run appends a `⚠️ Regression …` comment to a per-skill GitHub Issue titled `health: <skill>` — silent on clean runs, so no spam. A human 👍/👎 on that issue sets repair priority (`health_triage.prioritize` ranks open items by votes, then severity), so `self-improve` / `skill-repair` fix what people care about and what's worst, first. On by default; disable with the repo variable `HEALTH_ISSUES=0`. State itself rides an append-only Issue too — see [Durable state](https://github.com/aaronjmars/aeon#durable-state-without-the-churn) (`STATE_BACKEND`).
+
 ---
 
 ## 🛰️ Fleet / self-replication

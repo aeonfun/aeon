@@ -77,6 +77,21 @@ No runtime gating — the install proceeds for any allow-listed combination. Cap
 
 ---
 
+## Runtime enforcement: the `mode:` write tier
+
+`capabilities` (above) is a documentation surface — it never blocks a run. The one capability axis Aeon **does** enforce at runtime is *write* access, declared per skill in SKILL.md frontmatter:
+
+```yaml
+mode: read-only   # read repo + fetch web + ./notify; no repo mutation
+mode: write       # default — full Write / Edit / git / gh / python3
+```
+
+A `read-only` skill runs with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so it **physically cannot** commit, push, edit code, or open a PR — the runtime counterpart of declaring `read_only` above. A post-run guard records the skill's run-log on its behalf and reverts any code/config a shell redirection slipped through, while preserving its real output (memory, `.outputs/`, articles). `write` is the default and a strict superset (it adds `python3`). Resolution and the exact tool sets live in [`scripts/skill_mode.sh`](../scripts/skill_mode.sh).
+
+Rule of thumb: a skill that declares `capabilities: [read_only, sends_notifications]` should also carry `mode: read-only` — the documentation surface and the runtime gate should agree.
+
+---
+
 ## Adding a new capability
 
 The taxonomy is intentionally narrow. New values must:

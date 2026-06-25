@@ -110,6 +110,8 @@ Every skill output is automatically scored 1–5 by Haiku after each run. Scores
 
 Health skills file issues, repair skills close them. `heartbeat` is the only skill enabled by default: nothing to report → silent; something needs attention → one notification. Deep dive: [`docs/CORE.md`](docs/CORE.md).
 
+**Votable health** (on by default — set the repo variable `HEALTH_ISSUES=0` to turn it off): when a skill regresses (a Haiku score of 1–2 or a failure flag), the loop opens or comments on a per-skill GitHub Issue titled `health: <skill>`; clean runs stay silent, so there's no issue spam. 👍/👎 the issue and `self-improve` / `skill-repair` triage the most-voted, worst-scoring skills first — a visible, conflict-free repair queue you can steer.
+
 ### It replicates
 
 Aeon can spawn and manage copies of itself. `spawn-instance` forks the repo into a new specialized instance (`var: "crypto-tracker: monitor DeFi protocols"`), selects relevant skills, and registers it in `memory/instances.json` - no secrets propagated, billing stays isolated. `fleet-control` health-checks and dispatches across instances; `fleet-scorecard` tracks fleet economics.
@@ -255,6 +257,29 @@ The dashboard surfaces this as an **API keys** panel on each skill (set/unset st
 ## Advanced
 
 Everything below is optional - Aeon runs fine without any of it.
+
+### Capability tiers (read-only skills)
+
+A skill declares its write blast-radius in SKILL.md frontmatter:
+
+```yaml
+mode: read-only   # may read the repo, fetch the web, and ./notify — but cannot mutate the repo
+mode: write       # full access (the default): adds Write / Edit / git / gh / python3
+```
+
+`read-only` runs the skill with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so a research-and-notify skill **physically can't** commit, push, edit code, or open a PR. Its legitimate output (memory, `.outputs/`, articles) is still saved on its behalf by a post-run guard — which also reverts any stray code/config a shell redirection slipped through. `write` is the default and a strict superset. Use `read-only` for pure read-and-notify skills; keep `write` for anything that writes code or scratch files. This is the *runtime* enforcement of the install-time [`capabilities:`](docs/CAPABILITIES.md) hint.
+
+### Durable state without the churn
+
+Per-skill execution state (`memory/cron-state.json` — status, success rate, quality) is **dual-written** by default: each run commits the file *and* appends an immutable event to a machine-managed, append-only GitHub Issue (`aeon:cron-state`, kept closed so it never clutters your issue list). Canonical state is a pure fold of that issue's comments, so concurrent runs never race — no rewrite, force-push, or rebase-retry. Switch with the repo variable **`STATE_BACKEND`**:
+
+| `STATE_BACKEND` | Behaviour |
+|---|---|
+| unset / `dual` (default) | append to the Issue **and** commit the file — the file stays authoritative, so the Issue path can never stale a reader |
+| `issues` | append only; a pre-run *materialize* step projects the Issue → file so readers are unchanged, and the file is left uncommitted (zero state churn) |
+| `file` | legacy file-only |
+
+Chains record to the same ledger.
 
 ### Skill chaining
 
