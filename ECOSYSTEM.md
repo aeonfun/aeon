@@ -18,6 +18,7 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 |------|---------|-------|
 | <img src="https://pbs.twimg.com/profile_images/2061062812626014209/g2f04VCK_400x400.jpg" width="36" height="36" alt="Aeon City logo"> | Aeon City | [@aeoncityhub](https://x.com/aeoncityhub) |
 | <img src="https://pbs.twimg.com/profile_images/2056143519824166912/W2VGsyMX_400x400.jpg" width="36" height="36" alt="aeonbook logo"> | aeonbook | [@aeonbook_](https://x.com/aeonbook_) |
+| <img src="https://pbs.twimg.com/profile_images/2070127551788527616/gL60uVZj_400x400.jpg" width="36" height="36" alt="AeThree logo"> | AeThree | [@aethree_xyz](https://x.com/aethree_xyz) · [aethree.xyz](https://www.aethree.xyz) |
 | <img src="https://pbs.twimg.com/profile_images/2030575047644188673/vaJqbpck_400x400.jpg" width="36" height="36" alt="Amper logo"> | Amper | [@helloamper](https://x.com/helloamper) |
 | <img src="https://pbs.twimg.com/profile_images/2055896281751633920/NeawiT3G_400x400.png" width="36" height="36" alt="AntFleet logo"> | AntFleet | [@AntFleetDev](https://x.com/AntFleetDev) |
 | <img src="https://atriumhermes.tech/atrium-mark.jpg" width="36" height="36" alt="Atrium logo"> | Atrium | [@atriumhermes](https://x.com/atriumhermes) · [atriumhermes.tech](https://atriumhermes.tech) |
