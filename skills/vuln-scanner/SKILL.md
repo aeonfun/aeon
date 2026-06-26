@@ -160,8 +160,13 @@ EOF
 #### 5b. Private Vulnerability Report (code flaws, verified secrets, contract bugs)
 
 ```bash
-gh api -X POST "/repos/$REPO/security-advisories" \
-  -H "X-GitHub-Api-Version: 2026-03-10" \
+# Private third-party reporting uses the /reports endpoint. Do NOT use the bare
+# /security-advisories endpoint — that *creates* an advisory and requires
+# admin/security-manager rights on the target repo, so it returns 403 on any repo
+# you don't own. Classic `repo` scope is sufficient for /reports;
+# `repository_advisories:write` is NOT required for third-party reporting.
+gh api -X POST "/repos/$REPO/security-advisories/reports" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
   -f summary="<short title>" \
   -f description="$(cat <<'EOF'
 ## Summary
@@ -187,9 +192,15 @@ EOF
   -F cwe_ids='["CWE-89"]'  # adjust per finding
 ```
 
-If `gh api` returns 404/403 on the advisories endpoint, PVR is disabled. Do **not** fall back to a public issue or PR. Instead:
-- Check `SECURITY.md` for a private contact. If present, draft an email/form submission and save to `.pending-disclosure/<repo>-<timestamp>.md` with body text — do not auto-send.
-- If no contact exists, log "no safe channel — skipped" and move on. Document your findings in the local report (step 7) but do not publish them.
+**Pass large report bodies via `--input <file>`, not a long inline heredoc** — a multi-line `-f description="$(cat …)"` can trip the sandbox ("Unhandled node type: string"). Write the JSON payload (`{summary, description, severity, cwe_ids}`) to a temp file and `gh api -X POST … --input payload.json`.
+
+Read the HTTP response code and branch accordingly. **Never** fall back to a public issue or a code-fix PR for an *unpatched* flaw (that publishes a zero-day):
+- **`201`** → reported. Record the report/advisory id and link it in the local report.
+- **`403 "Repository does not have private vulnerability reporting enabled"`** → PVR is OFF on the repo. This is **not** a token-scope problem (classic `repo` scope is enough). **Critically: the GitHub advisory web form (`/security/advisories/new`) is the SAME PVR backend — it returns `404` to external reporters when PVR is off. Do NOT stage that URL as the channel even if `SECURITY.md` recommends it** (a `SECURITY.md` that only says "use the advisory form" is *not* a usable channel when PVR is disabled — confirmed on agent-reach and world-of-claudecraft, 2026-06-19). Resolve an **out-of-band** private contact instead, in this order: (1) `SECURITY.md` email / portal / vendor PSIRT; (2) README contact (email / Discord / X); (3) package metadata — `pyproject.toml` / `setup.py` author, `package.json` `author` + `bugs`; (4) the maintainer/owner's git commit email or GitHub profile. Stage a maintainer-ready report at `.pending-disclosure/<repo>-<timestamp>.md` with the resolved contact (`status: pending-operator-send`) — do not auto-send. Only if no out-of-band contact exists anywhere, log "no safe channel — skipped".
+- **`5xx`** (GitHub API error on `/reports`, **PVR enabled**) → the API path is broken for this repo/token; do **not** retry-spam it. The web form `https://github.com/<repo>/security/advisories/new` is a different *frontend* to the same PVR backend and usually works when the API 5xxs **on a PVR-enabled repo** — stage the report in `.pending-disclosure/` and have the operator file it there. (Contrast the `403` case above: when PVR is *disabled* the form `404`s too, so it is **not** a fallback there — route to an out-of-band contact instead.)
+- Any other failure → stage in `.pending-disclosure/` and surface to the operator; never publish.
+
+**Dependency-bump PRs (step 5a) are the only public channel.** Hardening-class code findings (e.g. DNS-rebinding / Host-Origin allowlists) *may* be offered as a neutral public PR at operator discretion, but high-severity exploitable flaws (RCE, auth bypass, secret exposure, sandbox/guardrail escape) must stay on a private channel.
 
 #### 5c. Proposed code patch (optional, paired with 5b)
 
@@ -253,7 +264,7 @@ General sandbox rules: use **WebFetch** as a fallback for any plain URL fetch. F
 
 ## Environment variables
 
-- `GH_TOKEN` / `GITHUB_TOKEN` — required. Needs `repo` + `repository_advisories:write` scopes for PVR.
+- `GH_TOKEN` / `GITHUB_TOKEN` — required. Classic `repo` scope is sufficient, **including** private vulnerability reporting via the `/reports` endpoint (step 5b). `repository_advisories:write` is only needed to *manage advisories on repos you own* — it is **not** required to report to third-party repos, and its absence is not the reason a report fails (see step 5b for the real failure modes: PVR-disabled `403`, or GitHub API `5xx`).
 
 ## Guidelines
 
