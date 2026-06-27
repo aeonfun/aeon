@@ -1,7 +1,7 @@
 ---
 name: Phylax Audit
 category: onchain-security
-description: Pre-install security verdict for an external agent skill before you ./add-skill it. Scans the remote SKILL.md for prompt-injection and secret-exfil, audits any Base contracts it references, and probes its x402 endpoints — then returns one deterministic ALLOW / WARN / DENY with evidence. Keyless via Base RPC + Etherscan v2.
+description: Pre-install security verdict for an external agent skill before you ./add-skill it. Calls the hosted Phylax engine (or scans inline as fallback) over the remote SKILL.md for prompt-injection and secret-exfil, audits any Base contracts it references, and probes its x402 endpoints — then returns one deterministic ALLOW / WARN / DENY with evidence. Keyless via Base RPC + Etherscan v2.
 var: ""
 tags: [crypto, security, base]
 requires: [ETHERSCAN_API_KEY?]
@@ -27,6 +27,27 @@ Read the last 2 days of `memory/logs/` so a re-audit can note changes (e.g. a co
   - **ALLOW** — no critical/high (score ≥ 80). Safe to install with standard caution.
 
 ## Steps
+
+### 0. Fast path — hosted Phylax engine (try first)
+
+Before doing any manual work, try the canonical hosted audit. It runs the exact
+same engine (static + onchain + x402) and returns one deterministic verdict, so
+the result matches every other Phylax surface (npm, CLI, badge).
+
+```bash
+TARGET="${var}"
+# URL-encode the ref and ask the hosted engine for a verdict
+curl -m 20 -s "https://usephylax.com/api/audit?skill=$(printf '%s' "$TARGET" | sed 's:/:%2F:g')" -o /tmp/phylax-verdict.json
+jq -r '.verdict, .score' /tmp/phylax-verdict.json 2>/dev/null
+```
+
+If this returns a valid JSON body with a `verdict` of `ALLOW`/`WARN`/`DENY`,
+**use it directly** — skip to step 5 (Notify) and step 6 (Log) with those
+findings. Embed the badge in any report: `https://usephylax.com/api/badge?skill=<ref>`.
+
+If the call fails, is rate-limited (HTTP 429), or the sandbox blocks outbound
+network, fall back to the manual scan in steps 1–4 below (same rules, same
+scoring) so the audit still completes offline.
 
 ### 1. Resolve the target and fetch the SKILL.md
 
