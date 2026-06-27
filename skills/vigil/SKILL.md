@@ -1,14 +1,14 @@
 ---
 name: VIGIL Security Scanner
 category: onchain-security
-description: Onchain security scanner on Base — scan token approvals, detect honeypots, analyze contracts for rugpull indicators, and score contract safety. Keyless read-only scanning via VIGIL API. Revoke actions require Bankr auth and are gated separately.
+description: Onchain security scanner on Base — 17 read-only tools: scan approvals, detect honeypots, owner-modifiable tax, dangerous owner permissions, scam clones, liquidity locks, simulate approvals, and a multi-source consensus verdict. Keyless via VIGIL API. Revoke actions require Bankr auth and are gated separately.
 var: ""
 tags: [crypto, security, base, defi]
 capabilities: [external_api, sends_notifications]
 ---
 > **${var}** — Wallet address (`0x...`) or token contract address on Base to scan. Required. If empty, log `VIGIL_NO_TARGET` and exit cleanly (no notify).
 
-VIGIL is an onchain security scanner for DeFi traders on Base. It provides nine read-only scanning tools and one write action (revoke) that requires explicit Bankr authentication.
+VIGIL is an onchain security scanner for DeFi traders on Base. It provides 17 read-only scanning tools and one write action (revoke) that requires explicit Bankr authentication.
 
 **Read-only tools (this skill):**
 1. Approval Scanner — list all ERC-20/ERC-721 approvals, flag unlimited allowances
@@ -20,9 +20,19 @@ VIGIL is an onchain security scanner for DeFi traders on Base. It provides nine 
 7. Token Market — price, liquidity, 24h volume, and pool age via DexScreener (no API key)
 8. Deployer Check — contract verification, name, and deployer reputation via Basescan
 9. Batch Scan — score multiple tokens in one call, ranked by risk
+10. Consensus — multi-source verdict: 6 independent signals vote, risk escalates only when multiple agree (false-positive guard)
+11. Liquidity Lock — detect if DEX LP is locked / burned / unlocked / unknown (rug vector); missing data is never reported as safe
+12. Tax Scanner — flag punishing or owner-modifiable buy/sell/transfer tax (the "0% now, 99% later" trap)
+13. Ownership Scanner — who controls the contract: mint, pause, blacklist, reclaim ownership, modify balances, selfdestruct (a renounced owner neutralizes these)
+14. Clone Detector — flag copy-paste scam clones by bytecode fingerprint, cross-checked against the scam DB
+15. Approval Simulator — risk-assess a spender BEFORE you sign ("what could it do if I approve it?")
+16. Scam Check — community scam reports for a token
+17. Sentinel Status — autonomous watchlist + monitoring loop config
 
 **Write action (separate, not included here):**
-10. Approval Revoker — revoke dangerous approvals via Bankr transaction signing. This is a state-changing onchain transaction and is NOT part of this read-only skill.
+- Approval Revoker — revoke dangerous approvals via Bankr transaction signing. This is a state-changing onchain transaction and is NOT part of this read-only skill (see the `vigil-revoke` skill).
+
+Several premium tools (scan_token, consensus, deployer_check, token_market, batch_scan, wallet_report) optionally settle a few cents of USDC per call via x402 on Base — keyless, no account. Core safety checks stay free.
 
 Read the last 2 days of `memory/logs/` so a repeat scan can note newly-granted or newly-revoked approvals.
 
@@ -141,6 +151,46 @@ vigil_call vigil_deployer_check '{"contract": "'"$TARGET"'", "chain": "base"}'
 ```bash
 vigil_call vigil_batch_scan '{"tokens": ["'"$TARGET"'"], "chain": "base"}'
 ```
+
+### 11. Multi-source consensus verdict (token)
+
+```bash
+vigil_call vigil_consensus '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+### 12. Liquidity lock (rug vector)
+
+```bash
+vigil_call vigil_liquidity_lock '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+### 13. Trade-tax surface (modifiable tax trap)
+
+```bash
+vigil_call vigil_check_tax '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+### 14. Owner permissions (mint/pause/blacklist/selfdestruct)
+
+```bash
+vigil_call vigil_check_ownership '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+### 15. Clone detector (copy-paste scam clusters)
+
+```bash
+vigil_call vigil_detect_clone '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+### 16. Community scam reports
+
+```bash
+vigil_call vigil_check_scam '{"token": "'"$TARGET"'", "chain": "base"}'
+```
+
+> `vigil_simulate_approval` (risk-assess a spender before signing) takes a
+> `spender` + `token` pair, so call it when auditing a specific approval:
+> `vigil_call vigil_simulate_approval '{"spender":"0x...","token":"'"$TARGET"'","amount":"unlimited","chain":"base"}'`
 
 ## Output Format
 
