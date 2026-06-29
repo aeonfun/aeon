@@ -42,7 +42,7 @@ export const CATEGORY_BY_KEY: Record<string, { label: string; color: string }> =
 // HQ cards, Packs view). Mirrors packs.json / packs.config.json (key, color).
 // A skill's pack comes from its `pack` field (joined from packs.json in
 // /api/skills); `lab` is the catch-all for uncategorized skills.
-export const PACKS: { key: string; label: string; short: string; color: string }[] = [
+const PACKS: { key: string; label: string; short: string; color: string }[] = [
   { key: 'core',         label: 'Core',                  short: 'Core',         color: '#E5484D' },
   { key: 'fleet',        label: 'Fleet & Replication',   short: 'Fleet',        color: '#30A46C' },
   { key: 'research',     label: 'Research & Content',     short: 'Research',     color: '#8B5CF6' },
