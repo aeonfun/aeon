@@ -61,8 +61,9 @@ Resolution rules:
 
 1. **Check frontmatter `status:` first** — map the literal value to a state:
    - `superseded-upstream` → `superseded-upstream`
-   - `submitted`, `submitted-via-pvr`, `disclosed-via-pr-{N}` → `submitted` or `covered-by-pr`
-   - `pending-operator-send`, `queued for operator manual send`, any string mentioning "operator" → `operator-todo`
+   - `submitted`, `submitted-via-pvr`, `disclosed-via-pr-{N}`, `email-sent` → `submitted` or `covered-by-pr`
+   - `pending-operator-send` **with `auto_send: true`** → `pending` (the `disclosure-emailer` will send it autonomously — not a human task)
+   - `pending-operator-send` (without `auto_send: true`), `queued for operator manual send`, `email-failed`, any string mentioning "operator" → `operator-todo`
    - `pending`, blank, or missing → fall through to rule 2
 
 2. **Cross-reference `memory/topics/pr-status.md`** (if present) — grep for the `{repo}` slug (frontmatter `repo:` or filename) in the Open section and Recent Merges section. If a row exists with a `fix(security)` or `chore(security)` title against that repo, opened on or after the draft's `detected_at` / `reconstructed_at` / filed-date, classify as `covered-by-pr` and capture the PR number / title for the summary. If `memory/topics/pr-status.md` doesn't exist, skip this lookup and fall to rule 3.
@@ -209,7 +210,15 @@ Set by `vuln-scanner` / operator / cleanup chores. Drives step 2.5 classificatio
 
 - (blank or missing) — pending; tracker falls through to PR-tracker cross-ref
 - `pending` — same as blank
-- `pending-operator-send` / `queued for operator manual send` — operator-todo
+- `pending-operator-send` **with `auto_send: true`** — queued for autonomous send by
+  `disclosure-emailer`; classify as `pending` (NOT operator-todo). It should flip to
+  `email-sent` within a day; if it lingers armed-but-unsent, that means `RESEND_API_KEY`
+  isn't configured — surface it once so the operator wires up Resend.
+- `pending-operator-send` **with `auto_send: false`/absent** / `queued for operator manual send` — operator-todo (human must send; e.g. non-email contact or AI-report ban)
+- `email-sent` — sent by `disclosure-emailer` via Resend; awaiting maintainer reply.
+  Treat like `submitted` (informational, cleanup candidate, **never** an escalation).
+- `email-failed` — `disclosure-emailer` gave up after repeated send failures (bad
+  address / Resend error). **operator-todo** — the contact needs fixing or a manual send.
 - `submitted` / `submitted-via-pvr` — submitted, awaiting maintainer
 - `disclosed-via-pr-<N>` — covered-by-pr, draft can be archived
 - `superseded-upstream` — bypass is already fixed in upstream; draft is dead

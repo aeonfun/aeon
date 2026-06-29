@@ -74,11 +74,14 @@ ls memory/pending-disclosures/${SLUG}*.md 2>/dev/null
 
 **b) If a draft exists and status is not `shipped`:**
 
-Attempt auto-submission via PVR API:
+Attempt auto-submission via the PVR **`/reports`** endpoint (NOT the bare
+`/security-advisories` endpoint — that *creates* an advisory and needs
+admin/security-manager rights on the target repo, so it `403`s on any repo you
+don't own). Classic `repo` scope is sufficient.
 
 ```bash
-gh api "repos/${REPO}/security-advisories" \
-  --method POST \
+gh api -X POST "repos/${REPO}/security-advisories/reports" \
+  -H "X-GitHub-Api-Version: 2022-11-28" \
   --input <draft-content-as-json>
 ```
 
@@ -87,11 +90,13 @@ Build the JSON body from the draft file fields:
 - `description` → full advisory body
 - `severity` → from `**Severity:**` field
 - `cwe_ids` → array from `**CWE:**` field (e.g. `["CWE-639"]`)
-- `vulnerabilities` → array with `{ "package": { "ecosystem": "other", "name": "$REPO" } }`
+- `vulnerabilities` → **MANDATORY, non-empty** — `[{ "package": { "ecosystem": "<pip|npm|go|…|other>", "name": "<pkg>" } }]`. ⚠️ Omitting it makes the endpoint return **HTTP 500 (empty body)**, not a clean error (the docs wrongly mark it optional). This is the #1 PVR-submission failure; always include it. See `vuln-scanner` step 5b.
 
 If the POST returns 201: mark draft as `status: submitted`, update `memory/vuln-scanned.json` channel to `pvr-submitted`, and note in the watchlist row `status: submitted`.
 
-If the POST returns 403 (scope still missing): keep status as `pvr-enabled-pending-submit`. Notify operator to submit manually via the GitHub web form.
+If the POST returns **500 (empty body)**: the `vulnerabilities` array is almost certainly missing/empty — add it and re-POST once before treating it as a real failure.
+
+If the POST returns 403 (PVR disabled / scope): keep status as `pvr-enabled-pending-submit`. Notify operator to submit manually via the GitHub web form.
 
 **c) If no draft exists (draft was lost):**
 
