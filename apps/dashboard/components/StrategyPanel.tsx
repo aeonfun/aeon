@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { STRATEGY_SCAFFOLD, ARCHETYPES } from '../lib/strategy-templates'
-import { editorCls } from '../lib/utils'
+import { editorCls, panelInputCls } from '../lib/utils'
 import type { StrategySources } from '../lib/types'
 
 export type { StrategySources }
@@ -44,8 +44,6 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
 
   const canBuild = (goal.trim().length > 0 || repo.trim().length > 0 || links.trim().length > 0) && !building
   const build = () => { if (canBuild) onBuild({ goal: goal.trim(), repo: repo.trim(), links: links.trim() }) }
-
-  const inputCls = 'bg-aeon-bg text-aeon-fg text-[13px] px-3 py-2.5 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target'
 
   return (
     <div className="max-w-5xl mx-auto pb-16 space-y-8">
@@ -90,7 +88,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
             <textarea
               value={goal} onChange={(e) => setGoal(e.target.value)} rows={3} spellCheck={false}
               placeholder="e.g. Growing my open-source agent framework - I want active contributors and a reputation for reliability, not just stars."
-              className={`${inputCls} w-full resize-y leading-relaxed`}
+              className={`${panelInputCls} w-full resize-y leading-relaxed`}
             />
           </label>
           <div className="grid sm:grid-cols-2 gap-2">
@@ -100,7 +98,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
                 type="text" value={repo} onChange={(e) => setRepo(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') build() }}
                 placeholder="owner/repo" spellCheck={false}
-                className={`${inputCls} w-full`}
+                className={`${panelInputCls} w-full`}
               />
             </label>
             <label className="flex flex-col gap-1">
@@ -109,7 +107,7 @@ export function StrategyPanel({ content, loading, saving, building, onSave, onBu
                 type="text" value={links} onChange={(e) => setLinks(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') build() }}
                 placeholder="yoursite.com, …" spellCheck={false}
-                className={`${inputCls} w-full`}
+                className={`${panelInputCls} w-full`}
               />
             </label>
           </div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Scramble } from './ui/Animated'
 import { SOUL_SCAFFOLD, STYLE_SCAFFOLD, ARCHETYPES } from '../lib/soul-templates'
-import { editorCls } from '../lib/utils'
+import { editorCls, panelInputCls } from '../lib/utils'
 import type { SoulSources } from '../lib/types'
 
 export type SoulFile = 'soul' | 'style'
@@ -82,8 +82,6 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
   const canBuild = (cleanHandle.length > 0 || name.trim().length > 0 || links.trim().length > 0) && !building
   const build = () => { if (canBuild) onBuild({ handle: cleanHandle, name: name.trim(), links: links.trim() }) }
 
-  const inputCls = 'bg-aeon-bg text-aeon-fg text-[13px] px-3 py-2.5 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target'
-
   return (
     <div className="max-w-5xl mx-auto pb-16 space-y-8">
       {/* Hero */}
@@ -141,7 +139,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
               type="text" value={name} onChange={(e) => setName(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') build() }}
               placeholder="Jane Doe - founder of …" spellCheck={false}
-              className={`${inputCls} w-full`}
+              className={`${panelInputCls} w-full`}
             />
           </label>
 
@@ -151,7 +149,7 @@ export function SoulPanel({ soul, style, loading, saving, building, installing, 
               type="text" value={links} onChange={(e) => setLinks(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter') build() }}
               placeholder="linkedin.com/in/jane, janedoe.com, jane.substack.com" spellCheck={false}
-              className={`${inputCls} w-full`}
+              className={`${panelInputCls} w-full`}
             />
           </label>
         </div>

@@ -81,4 +81,8 @@ export function statusDot(color: string) {
 
 export const inputCls = "w-full bg-aeon-bg text-aeon-fg text-xs px-3 py-2 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target"
 
+// Larger input variant shared by the Soul/Strategy builder panels (no w-full —
+// the panels append their own width/resize utilities at each call site).
+export const panelInputCls = "bg-aeon-bg text-aeon-fg text-[13px] px-3 py-2.5 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors placeholder:text-primary-35 cursor-target"
+
 export const editorCls = "w-full bg-aeon-bg text-aeon-fg text-[13px] leading-relaxed px-4 py-3 border border-[rgba(250,250,250,0.10)] outline-none font-mono focus:border-aeon-red transition-colors resize-y"

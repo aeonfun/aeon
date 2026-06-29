@@ -5,6 +5,7 @@ import type { Skill, Run } from '../lib/types'
 import { packGroups } from '../lib/constants'
 import { timeAgo } from '../lib/utils'
 import { Scramble, Flip, VelocityMarquee } from './ui/Animated'
+import { Section } from './ui/Section'
 
 interface HQOverviewProps {
   skills: Skill[]
@@ -15,18 +16,6 @@ interface HQOverviewProps {
   onCategoryClick: (key: string) => void
   onViewRun: (run: Run) => void
   onOpenPacks: () => void
-}
-
-function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
-  return (
-    <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-      <div className="flex items-center gap-3 mb-5">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">{index} / {label}</span>
-        <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-      </div>
-      {children}
-    </section>
-  )
 }
 
 export function HQOverview({ skills, runs, enabledCount, workingCount, categoryFilter, onCategoryClick, onViewRun, onOpenPacks }: HQOverviewProps) {

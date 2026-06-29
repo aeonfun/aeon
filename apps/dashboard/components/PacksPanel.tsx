@@ -4,6 +4,7 @@ import { useState } from 'react'
 import type { Pack, CommunityPack, Skill } from '../lib/types'
 import { displayName } from '../lib/utils'
 import { FIRST_PARTY_KEYS } from '../lib/constants'
+import { Section } from './ui/Section'
 
 interface PacksPanelProps {
   firstParty: Pack[]
@@ -23,18 +24,6 @@ interface PacksPanelProps {
 // and the copyable command point the installer at the right manifest. See #492.
 function installArg(pack: CommunityPack): string {
   return pack.path ? `${pack.repo} --path ${pack.path}` : pack.repo
-}
-
-function Section({ index, label, children }: { index: string; label: string; children: React.ReactNode }) {
-  return (
-    <section className="border-t border-[rgba(250,250,250,0.10)] pt-6">
-      <div className="flex items-center gap-3 mb-5">
-        <span className="font-display text-[13px] tracking-[0.18em] text-aeon-red">{index} / {label}</span>
-        <span className="flex-1 h-px bg-[rgba(250,250,250,0.10)]" />
-      </div>
-      {children}
-    </section>
-  )
 }
 
 function trustTone(level?: string): string {
