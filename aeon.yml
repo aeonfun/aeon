@@ -372,6 +372,7 @@ skills:
   janitor: { enabled: false, schedule: "30 5 * * 0" } # Sunday — clean stale .notify-*, .pending-notify-temp/, expired .outputs/ artifacts
   memory-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows + duplicate H2 headings in MEMORY.md
   self-review: { enabled: false, schedule: "30 19 * * 0" } # Sunday — audit what the agent did, what failed, what to improve
+  self-repair-ledger: { enabled: false, schedule: "30 8 * * 0", var: "" } # Sunday 08:30 UTC — public dated ledger of every skill the agent wrote/reviewed/merged/pruned, each repair's red run → green run. Writes REPAIR-LEDGER.md + repair-ledger.json at repo root (auto-committed, like docs/status.md). depends_on: skill-repair, skill-health. On a 2-week trial from first run.
   signal-verdict: { enabled: false, schedule: "0 8 * * 1" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
   skill-enabler: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — flip skills enabled:true by slug list, validate, commit + open PR
 
