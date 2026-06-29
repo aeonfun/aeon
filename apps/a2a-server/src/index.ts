@@ -320,7 +320,7 @@ function isRecord(v: unknown): v is Record<string, unknown> {
   return typeof v === "object" && v !== null && !Array.isArray(v);
 }
 function isA2AMessage(v: unknown): v is A2AMessage {
-  return isRecord(v) && Array.isArray((v as { parts?: unknown }).parts);
+  return isRecord(v) && Array.isArray(v.parts);
 }
 
 function handleTasksSend(params: Record<string, unknown>): RpcResult<Task> {
