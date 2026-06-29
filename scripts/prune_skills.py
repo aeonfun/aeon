@@ -70,7 +70,6 @@ def find_siblings(target, records):
 def main():
     # Best-effort assembly from the repo; advisory output only.
     import os
-    import glob
     try:
         import yaml
     except ImportError:
