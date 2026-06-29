@@ -411,8 +411,6 @@ skills:
   defi-monitor: { enabled: false, schedule: "0 */6 * * *" } # every 6h — pool health / positions / yield for tracked protocols (config in memory)
   wallet-digest: { enabled: false, schedule: "0 8 * * *" } # daily — balance + activity across tracked wallets; sibling to onchain-monitor
   token-report: { enabled: false, schedule: "30 7 * * *", var: "" } # daily 07:30 — price/volume/liquidity report for the configured token (var=contract[:chain] or memory/token-report.md). No-op until configured. Optional ALCHEMY_API_KEY/XAI_API_KEY/BASE_RPC_URL.
-  polymarket: { enabled: false, schedule: "15 14 * * *" } # daily — global trending Polymarket markets (volume leaders, movers). Sibling to monitor-polymarket (specific markets).
-  polymarket-comments: { enabled: false, schedule: "45 14 * * *" } # daily — top trending markets + their most interesting comments
 
   # Dev & repo
   docs-sync: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday — merged product PRs → website changelog PR. Config in memory/docs-sync.md (product_repo/website_repo). Requires GH_GLOBAL (cross-repo write). No-op until configured.
@@ -429,14 +427,12 @@ skills:
 
   # Self-maintenance / meta
   memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md
-  ecosystem-entrants: { enabled: false, schedule: "45 11 * * 1" } # Monday — diff ECOSYSTEM.md vs last run → newly added/removed projects
-  smithery-manifest: { enabled: false, schedule: "0 6 * * 1" } # Monday — generate Smithery + MCP-Registry submission docs from skills.json + aeon-mcp
 
   # Utilities / on-demand
   note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — append a timestamped note to a local memory/notes/ file (no external service)
   capabilities-sweep: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — infer a capabilities: block for every skill missing one
-  v4-readiness: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — per-fork v4 upgrade-readiness checklist (reads aeon.yml/skills.json vs upstream)
 
+  send-email: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — compose + send a 1:1 email to a named recipient via Resend (general sibling of disclosure-emailer). var: "to=… | subject=… | about=…"
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
 
