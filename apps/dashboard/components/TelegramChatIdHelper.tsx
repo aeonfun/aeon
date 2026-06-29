@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { inputCls, isRecord } from '../lib/utils'
+import type { TelegramStatus } from '../lib/types'
 
 interface TelegramChatIdHelperProps {
   // Bot token saved earlier in this session - secrets are write-only on GitHub,
@@ -22,7 +23,7 @@ export function TelegramChatIdHelper({ defaultToken, onFound }: TelegramChatIdHe
   const [open, setOpen] = useState(false)
   const [token, setToken] = useState('')
   const [busy, setBusy] = useState(false)
-  const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null)
+  const [status, setStatus] = useState<TelegramStatus | null>(null)
 
   useEffect(() => { if (defaultToken) setToken(defaultToken) }, [defaultToken])
 

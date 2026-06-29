@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { inputCls } from '../lib/utils'
+import type { TelegramStatus } from '../lib/types'
 
 interface InstantModeCardProps {
   repo: string
@@ -18,7 +19,7 @@ export function InstantModeCard({ repo, sessionBotToken }: InstantModeCardProps)
   const [botToken, setBotToken] = useState('')
   const [workerUrl, setWorkerUrl] = useState('')
   const [whBusy, setWhBusy] = useState(false)
-  const [whStatus, setWhStatus] = useState<{ ok: boolean; msg: string } | null>(null)
+  const [whStatus, setWhStatus] = useState<TelegramStatus | null>(null)
 
   useEffect(() => { if (sessionBotToken) setBotToken(sessionBotToken) }, [sessionBotToken])
 
