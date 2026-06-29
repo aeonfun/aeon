@@ -445,8 +445,6 @@ body::before {
   height: 1px;
   background: var(--aeon-rule);
 }
-.corner-markers { position: relative; }
-.corner-marker { display: none; } /* coral glow + hairline rules replace these */
 
 /* ──────────────────────────────────────────────────────────
    SHARED MOTION - smooth, consistent ease on interactive surfaces
