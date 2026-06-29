@@ -401,6 +401,42 @@ skills:
     } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
   # Sports
 
+  # --- Ported from derivative instances (2026-06-29) ---
+  # Security (pairs with vuln-scanner ↑ channel 5d)
+  disclosure-emailer: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 — auto-send armed (auto_send:true) out-of-band disclosure emails via Resend; the send runs in scripts/postprocess-email.sh. Needs RESEND_* secrets. Only emails the plain-text EMAIL-BODY block; operator notes never leave the repo.
+  inbox-triage: { enabled: false, schedule: "30 11 * * *" } # daily 11:30 — GitHub notification-inbox triage (maintainer replies to disclosures/advisories/mentions)
+
+  # Markets & crypto
+  monitor-runners: { enabled: false, schedule: "0 13 * * *" } # daily — top-5 runner tokens 24h across major chains (GeckoTerminal, keyless)
+  defi-monitor: { enabled: false, schedule: "0 */6 * * *" } # every 6h — pool health / positions / yield for tracked protocols (config in memory)
+  wallet-digest: { enabled: false, schedule: "0 8 * * *" } # daily — balance + activity across tracked wallets; sibling to onchain-monitor
+  token-report: { enabled: false, schedule: "30 7 * * *", var: "" } # daily 07:30 — price/volume/liquidity report for the configured token (var=contract[:chain] or memory/token-report.md). No-op until configured. Optional ALCHEMY_API_KEY/XAI_API_KEY/BASE_RPC_URL.
+  polymarket: { enabled: false, schedule: "15 14 * * *" } # daily — global trending Polymarket markets (volume leaders, movers). Sibling to monitor-polymarket (specific markets).
+  polymarket-comments: { enabled: false, schedule: "45 14 * * *" } # daily — top trending markets + their most interesting comments
+
+  # Dev & repo
+  docs-sync: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday — merged product PRs → website changelog PR. Config in memory/docs-sync.md (product_repo/website_repo). Requires GH_GLOBAL (cross-repo write). No-op until configured.
+  github-issues: { enabled: false, schedule: "0 8 * * *" } # daily — ranked digest of new open issues across the operator's repos
+  competitor-radar: { enabled: false, schedule: "0 10 * * 1" } # Monday — PH+HN scan for new launches in the operator's category; cohort from framework-watch / memory/competitor-radar.md
+  feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # Saturday — autonomous: build one feature per watched repo (opens PRs). Powerful; keep disabled until trusted.
+
+  # Research & content
+  write-tweet: { enabled: false, schedule: "0 21 * * *", var: "" } # daily 21:00 (after content) — 10 tweet drafts × 5 size tiers on a topic from recent outputs. Requires XAI_API_KEY.
+  bd-radar: { enabled: false, schedule: "20 7 * * *", var: "" } # daily 07:20 — BD radar: who's building/forking/integrating/mentioning your products → ranked leads. Products from memory/products.md. Quiet unless high-intent.
+
+  # Product / ops (config: memory/products.md)
+  product-pulse: { enabled: false, schedule: "15 7 * * *" } # daily 07:15 — state of your products: GitHub health across your repo family + X follower/engagement deltas
+
+  # Self-maintenance / meta
+  memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md
+  ecosystem-entrants: { enabled: false, schedule: "45 11 * * 1" } # Monday — diff ECOSYSTEM.md vs last run → newly added/removed projects
+  smithery-manifest: { enabled: false, schedule: "0 6 * * 1" } # Monday — generate Smithery + MCP-Registry submission docs from skills.json + aeon-mcp
+
+  # Utilities / on-demand
+  note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — append a timestamped note to a local memory/notes/ file (no external service)
+  capabilities-sweep: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — infer a capabilities: block for every skill missing one
+  v4-readiness: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — per-fork v4 upgrade-readiness checklist (reads aeon.yml/skills.json vs upstream)
+
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
 

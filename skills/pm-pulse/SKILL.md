@@ -1,7 +1,7 @@
 ---
 name: pm-pulse
 category: crypto
-description: Prediction-market & coordination-market tracker — volume on tracked platforms, new mechanism designs, reflexive market launches, regulatory moves
+description: Prediction-market & coordination-market tracker — volume, new mechanism designs, regulatory moves, plus competitive intel on what platforms ship and who's entering
 tags: [crypto, prediction-markets, research]
 ---
 
@@ -109,6 +109,38 @@ From results:
 - Note the mechanism design novelty (reflexive? AMM? futarchy? opinion market?)
 - Star count as proxy for developer traction
 
+### 5b. Competitive intelligence — platforms, new entrants, oracle/resolution
+
+Beyond volume and protocol launches, track what the platforms themselves are *shipping* and who is entering the market. This is product-level competitive intelligence, not individual-market price tracking (that's `monitor-polymarket`'s job).
+
+**Per-platform product intel.** For each platform in the configured list:
+
+```
+WebSearch: "<platform>" new feature OR product OR launch ${year}
+```
+
+For the top two platforms by configured priority (or, lacking priority info, the first two in the list), also WebFetch their homepages and scan for new market categories, product-copy changes, or new sections. Note what each platform is shipping.
+
+**New entrants and funding.**
+
+```
+WebSearch: prediction market startup funding seed OR Series ${year}
+WebSearch: coordination market OR "reflexive market" startup launch ${year}
+```
+
+For each new entrant: what they do, who funded them, and how they differ from the incumbents. Cross-check against `known_protocols` so a genuinely new name is flagged (and feeds step 5's new-launch signal).
+
+**Oracle and resolution-layer changes.**
+
+```
+WebSearch: prediction market oracle UMA resolution dispute ${year}
+WebSearch: prediction market AMM OR LMSR OR oracle mechanism ${year}
+```
+
+Note any change to how markets are created, resolved, or have liquidity provided — the resolution layer constrains which mechanism designs are viable.
+
+**Synthesis verdict.** In one opinionated paragraph answer: what are incumbents still *not* doing that a new entrant could (product gap)? Is anyone new entering (threat/opportunity)? Is the environment opening or closing for permissionless PM creation (regulatory window)? Any resolution-layer change worth noting (oracle/infra)? If `soul/SOUL.md` defines a thesis or angle, apply it; otherwise write a neutral one-paragraph read. Quiet weeks are useful signal — say "all quiet" explicitly. One opinionated paragraph beats five neutral bullets.
+
 ### 6. Score the week
 
 | Signal | Points |
@@ -122,6 +154,9 @@ From results:
 | Regulatory setback (bill stalling, enforcement, market shutdown) | +2 (flag as negative) |
 | Academic mechanism design paper or significant blog post | +1 |
 | Developer integration / API adoption by new platform | +1 |
+| Incumbent platform ships a notable new product / feature / market category | +1 |
+| Oracle / resolution-layer change (UMA dispute, new oracle, resolution-mechanism change) | +2 |
+| New entrant raising or launching against the incumbents (threat/opportunity) | +2 |
 
 **Momentum levels:**
 - 0–2: quiet week
@@ -135,6 +170,7 @@ Rewrite with:
 - Updated `*Last run: ${today}*`
 - Updated `Key Stats` (platform volume, new protocols)
 - Updated `Known Protocols` (add newly discovered)
+- A `## Competitive Intel` section (create it if absent) when step 5b surfaces a material change — note what each tracked platform shipped, any new entrant, and any oracle/resolution change. Update existing entries rather than duplicating.
 - Appended entry to `Signal Log`:
   ```
   - ${today}: [top development in one line] / momentum: [level]
@@ -174,6 +210,13 @@ new mechanisms ({count}):
 {end}
 {end}
 
+{IF competitive_intel}
+competitive:
+{forEach top 2–3 platform/entrant/oracle items}
+- {platform or entrant}: {what shipped / what's new / how they differ}
+{end}
+{end}
+
 {IF notable_signals}
 signals:
 {forEach top 2–3 news items}
@@ -181,12 +224,16 @@ signals:
 {end}
 {end}
 
+{IF synthesis}
+read: {one-line opinionated synthesis — gap, threat, regulatory window, or "all quiet"}
+{end}
+
 {IF quiet_week}
 quiet week. incumbents still running.
 {end}
 ```
 
-Keep total under 900 chars. Do NOT use `./notify "$(cat ...)"` — write the file first, pass the path.
+Keep total under 1200 chars (the competitive + read lines widen the budget slightly over the old 900). If tight, the `read:` synthesis line and the `competitive:` block are the first to trim — momentum, regulatory, and volume are the must-haves. Do NOT use `./notify "$(cat ...)"` — write the file first, pass the path.
 
 If momentum score is 0 and no regulatory news and no new protocols: log `PM_PULSE_OK: quiet` and skip notification.
 
@@ -200,6 +247,9 @@ Append:
 - **Volume (7d):** {summary or N/A}
 - **Regulatory developments:** {count} ({top item if any})
 - **New protocols/mechanisms:** {count}
+- **Competitive intel:** {platforms shipping / new entrants / oracle changes — one line, or "quiet"}
+- **New entrants:** {names or "none"}
+- **Synthesis:** {one-line read or "all quiet"}
 - **Momentum score:** {score} ({level})
 - **Notification:** sent / skipped (quiet)
 - PM_PULSE_OK
@@ -220,6 +270,7 @@ Append:
 - **Academic mechanism design** — futarchy implementations, LS-LMSR improvements, new AMM structures for PMs.
 - **Funding rounds** — who's getting capitalized and at what valuation signals institutional conviction.
 - **Regulatory setbacks** — enforcement actions, market shutdowns, bill stalling.
+- **Competitive / product moves** — what incumbents ship (new categories, features), who's entering, and resolution-layer changes (oracle disputes, new resolution mechanisms). Product-level intel, not individual-market prices.
 
 ## Output feeds
 

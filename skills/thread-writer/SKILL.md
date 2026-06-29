@@ -1,11 +1,11 @@
 ---
 name: Thread Writer
 category: social
-description: Write a tweetstorm/thread (5–10 tweets) in the operator's voice on a given topic, grounded in memory and research
+description: Write a tweetstorm/thread (5–10 tweets) in the operator's voice on a given topic — or, with no topic, auto-pick the day's highest-signal event from memory and logs
 var: ""
 tags: [social, content]
 ---
-> **${var}** — Topic, thesis, or URL to thread on (e.g. "prediction markets are broken", "https://arxiv.org/..."). If empty, picks the sharpest idea from recent memory and logs.
+> **${var}** — Topic, thesis, or URL to thread on (e.g. "prediction markets are broken", "https://arxiv.org/..."). If empty, auto-picks the day's highest-signal event from memory and logs (see Topic Selection).
 
 Read `memory/MEMORY.md` and the last 7 days of `memory/logs/` for context. Use recent signals — notable market moves, paper picks, tweet roundup discourse — as raw material if no topic is set.
 
@@ -21,10 +21,36 @@ If soul is absent, use a clear, direct, plain-spoken tone — but the anti-patte
 
 ## Topic Selection
 
-If `${var}` is set, use it. Otherwise pick the sharpest, most threadable idea from:
+**If `${var}` is set**, use it as the topic (keyword, thesis, or URL). Skip scoring and go straight to research and drafting. Pick the sharpest angle from:
 - Today's `memory/logs/${today}.md` — article thesis, paper finding, market signal
 - `memory/MEMORY.md` notable signals — anything with reflexivity, contradiction, or structural insight
 - A connection between two recent findings that most people aren't seeing
+
+**If `${var}` is empty**, auto-pick the day's highest-signal event. Every run produces something worth amplifying — a feature shipped, a price move, a milestone crossed, a notable tweet — and most of it dies unposted. Read `memory/logs/${today}.md` end-to-end, score the events that actually happened, and thread the single highest-scoring one.
+
+### Auto-pick scoring (empty-var mode)
+
+Walk today's log section by section. Per section, extract at most one candidate event (first-match-wins) and score it:
+
+| Signal | Score | Detection cue |
+|---|---:|---|
+| New feature / skill shipped — PR opened on a watched repo | +6 | log sections named `feature`, `external-feature`, `create-skill`, `tool-builder`; a bullet mentioning `PR:` or a PR number on a watched repo |
+| Star milestone crossed (any multiple of 50 — 50, 100, 150, …) | +5 | repo-pulse `stargazers_count=N` where `N % 50 == 0`, or a star-milestone skill ran today |
+| Token price move ≥ 15% (absolute, 24h) | +5 | token-report `24h` / `Price:` line in that range |
+| Token price move 10–14.99% (absolute, 24h) | +3 | same line, 10–14.99% range |
+| Skill built / shipped today | +4 | a `## <skill-name>` section whose body says "shipped"/"merged" or links a PR on the watched repo |
+| New high-engagement tweet (≥ 20 likes OR ≥ 5 RTs) on the operator's tracked handle/token | +3 | fetch-tweets log lines with `Likes:` ≥ 20 or `RTs:` ≥ 5, filtered to the operator's configured handles/token |
+| New fork by a recognizable contributor (not the agent / operator) | +2 | repo-pulse `New forks (24h):` ≥ 1, fork owner not the operator |
+| Notable PR merged on a watched repo (not authored by the agent / operator) | +3 | push-recap log mentioning a PR whose author isn't the operator |
+| New leaderboard / fork-fleet anomaly worth narrating | +2 | skill-analytics or fork-cohort log with a non-empty anomaly section |
+
+If one event hits multiple signals (e.g. star milestone + price move on the same day), score each separately and take the **highest single-event score** — never sum across unrelated events to clear a threshold.
+
+Tiebreakers (highest score wins, then): newest event (latest log section) → event with a concrete URL attached (PR, tweet, article) → alphabetical by section name.
+
+If the top candidate scores **< 3**, there's no thread worth forcing on a quiet day — note it in the log and exit without notifying or drafting. If today's log is missing or empty, do the same.
+
+The configured handles, tracked token, and watched repos come from `soul/` and `memory/` (the operator's tracked-handle/token notes) — never hardcode them.
 
 Good thread topics:
 - A structural critique of something (oracle incentives, prediction market design, DeFi primitives)
