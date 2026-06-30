@@ -490,8 +490,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
           DISCORD_CHANNEL_ID: ${{ secrets.DISCORD_CHANNEL_ID }}
+          DISCORD_ALLOWED_AUTHOR_ID: ${{ vars.DISCORD_ALLOWED_AUTHOR_ID || secrets.DISCORD_ALLOWED_AUTHOR_ID }}
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
           SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          SLACK_ALLOWED_USER_ID: ${{ vars.SLACK_ALLOWED_USER_ID || secrets.SLACK_ALLOWED_USER_ID }}
         run: |
           MESSAGES='[]'
 
@@ -547,8 +549,13 @@ jobs:
             for ((i=0; i<COUNT; i++)); do
               CONTENT=$(echo "$RESPONSE" | jq -r ".[$i].content // empty")
               IS_BOT=$(echo "$RESPONSE" | jq -r ".[$i].author.bot // false")
+              AUTHOR_ID=$(echo "$RESPONSE" | jq -r ".[$i].author.id // empty")
               MSG_ID=$(echo "$RESPONSE" | jq -r ".[$i].id // empty")
               HAS_CHECK=$(echo "$RESPONSE" | jq -r "[.[$i].reactions[]? | select(.emoji.name == \"✅\") | .me] | any")
+
+              if [ -n "${DISCORD_ALLOWED_AUTHOR_ID:-}" ] && [ "$AUTHOR_ID" != "$DISCORD_ALLOWED_AUTHOR_ID" ]; then
+                continue
+              fi
 
               if [ -n "$CONTENT" ] && [ "$IS_BOT" != "true" ] && [ "$HAS_CHECK" != "true" ]; then
                 curl -s -X PUT -H "Authorization: Bot $DISCORD_BOT_TOKEN" \
@@ -569,7 +576,12 @@ jobs:
               TEXT=$(echo "$RESPONSE" | jq -r ".messages[$i].text // empty")
               TS=$(echo "$RESPONSE" | jq -r ".messages[$i].ts // empty")
               BOT_ID=$(echo "$RESPONSE" | jq -r ".messages[$i].bot_id // empty")
+              USER_ID=$(echo "$RESPONSE" | jq -r ".messages[$i].user // empty")
               HAS_CHECK=$(echo "$RESPONSE" | jq -r ".messages[$i].reactions[]? | select(.name == \"white_check_mark\") | .name // empty")
+
+              if [ -n "${SLACK_ALLOWED_USER_ID:-}" ] && [ "$USER_ID" != "$SLACK_ALLOWED_USER_ID" ]; then
+                continue
+              fi
 
               if [ -n "$TEXT" ] && [ -z "$BOT_ID" ] && [ -z "$HAS_CHECK" ]; then
                 curl -s -X POST -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
@@ -609,9 +621,10 @@ jobs:
         env:
           _INPUT_MESSAGE: ${{ inputs.message }}
           _INPUT_SOURCE: ${{ inputs.source }}
+          _PAYLOAD_MESSAGE: ${{ toJson(github.event.client_payload.message) }}
         run: |
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
-            MESSAGE=$(echo '${{ toJson(github.event.client_payload.message) }}' | jq -r '.')
+            MESSAGE=$(printf '%s' "$_PAYLOAD_MESSAGE" | jq -r '.')
             TYPE="${{ github.event.action }}"
             SOURCE="webhook"
             case "$TYPE" in

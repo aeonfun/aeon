@@ -41,6 +41,24 @@ function stripSkillExt(name: string): string {
   return name.replace(/\.skill$/i, '')
 }
 
+/** Reject path traversal in untrusted upload paths. */
+function sanitizeRelativePath(relativePath: string): string | null {
+  if (!relativePath || relativePath.startsWith('/') || relativePath.includes('..')) {
+    return null
+  }
+  const parts = relativePath.split('/').filter((p) => p && p !== '.')
+  if (parts.some((p) => p === '..')) return null
+  return parts.join('/')
+}
+
+function assertSkillDestPath(skillName: string, relativePath: string): string | null {
+  const safe = sanitizeRelativePath(relativePath)
+  if (!safe) return null
+  const dest = `skills/${skillName}/${safe}`
+  if (!dest.startsWith(`skills/${skillName}/`)) return null
+  return dest
+}
+
 function deriveSkillName(files: UploadFile[]): { name: string; prefix: string } {
   // First try SKILL.md
   const skillFile = files.find(f =>
@@ -143,13 +161,18 @@ export async function POST(request: Request) {
         relativePath = 'SKILL.md'
       }
 
+      const destPath = assertSkillDestPath(skillName, relativePath)
+      if (!destPath) {
+        return NextResponse.json({ error: 'Invalid file path' }, { status: 400 })
+      }
+
       // Stamp the chosen category onto the skill's SKILL.md frontmatter.
       const content = (category && relativePath === 'SKILL.md')
         ? setFrontmatterCategory(file.content, category)
         : file.content
 
       await createFile(
-        `skills/${skillName}/${relativePath}`,
+        destPath,
         content,
         `feat: upload ${skillName} skill`,
       )

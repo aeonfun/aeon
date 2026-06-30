@@ -12,6 +12,7 @@
  * Required vars/secrets (the deploy wizard prompts for them; see .dev.vars.example):
  *   TELEGRAM_BOT_TOKEN        bot token from @BotFather
  *   TELEGRAM_CHAT_ID          the only chat allowed to command the agent
+ *   TELEGRAM_WEBHOOK_SECRET   shared secret for setWebhook(secret_token) — required
  *   GITHUB_REPO               "owner/repo" of your Aeon fork
  *   GITHUB_TOKEN              GitHub PAT — fine-grained with Contents: read/write
  *                             and Actions: read/write on your fork (or classic `repo`)
@@ -23,10 +24,10 @@ export default {
       return new Response("aeon telegram webhook: ok", { status: 200 });
     }
 
-    // Reject forged requests when a shared secret is configured. Telegram echoes
-    // the secret passed to setWebhook(secret_token) in this header on every call.
+    // Reject forged requests — require a shared secret on every call. Telegram
+    // echoes the secret passed to setWebhook(secret_token) in this header.
     if (
-      env.TELEGRAM_WEBHOOK_SECRET &&
+      !env.TELEGRAM_WEBHOOK_SECRET ||
       request.headers.get("x-telegram-bot-api-secret-token") !== env.TELEGRAM_WEBHOOK_SECRET
     ) {
       return new Response("forbidden", { status: 403 });

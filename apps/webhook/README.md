@@ -35,6 +35,7 @@ them via the CLI:
 ```bash
 npx wrangler secret put TELEGRAM_BOT_TOKEN        # bot token from @BotFather
 npx wrangler secret put TELEGRAM_CHAT_ID          # your chat id (only this chat is allowed)
+npx wrangler secret put TELEGRAM_WEBHOOK_SECRET   # shared secret for webhook verification (required)
 npx wrangler secret put GITHUB_REPO               # owner/repo of your Aeon fork
 npx wrangler secret put GITHUB_TOKEN              # GitHub PAT (see scopes below)
 ```
@@ -54,7 +55,7 @@ Settings → Variables and secrets.
 Register your Worker URL as the bot's webhook:
 
 ```bash
-curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://aeon-telegram-webhook.<your-subdomain>.workers.dev"
+curl "https://api.telegram.org/bot<YOUR_BOT_TOKEN>/setWebhook?url=https://aeon-telegram-webhook.<your-subdomain>.workers.dev&secret_token=<YOUR_WEBHOOK_SECRET>"
 ```
 
 Verify it took:

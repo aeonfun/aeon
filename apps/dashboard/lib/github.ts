@@ -114,6 +114,9 @@ export async function updateFile(path: string, content: string, sha: string, _me
 }
 
 export async function createFile(path: string, content: string, message: string): Promise<unknown> {
+  if (path.startsWith('/') || path.includes('..')) {
+    throw new Error(`invalid path: ${path}`)
+  }
   if (isLocal()) {
     const fullPath = join(REPO_ROOT, path)
     await mkdir(join(fullPath, '..'), { recursive: true })

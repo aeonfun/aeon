@@ -4,5 +4,6 @@
 # (gitignored) and fill in.
 TELEGRAM_BOT_TOKEN=        # paste from @BotFather
 TELEGRAM_CHAT_ID=
+TELEGRAM_WEBHOOK_SECRET=   # random string; pass same value to setWebhook secret_token
 GITHUB_REPO=owner/your-aeon-fork
 GITHUB_TOKEN=
