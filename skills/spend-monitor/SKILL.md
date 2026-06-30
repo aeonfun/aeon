@@ -29,6 +29,7 @@ First read `aeon.yml` and find the `gateway.provider` value. Use the matching ta
 | Model | Input | Output | Cache Read | Cache Write |
 |-------|-------|--------|------------|-------------|
 | claude-opus-4-7 | $15.00 | $75.00 | $1.50 | $18.75 |
+| claude-sonnet-5 | $3.00 | $15.00 | $0.30 | $3.75 |
 | claude-sonnet-4-6 | $3.00 | $15.00 | $0.30 | $3.75 |
 | claude-haiku-4-5-20251001 | $0.80 | $4.00 | $0.08 | $1.00 |
 
@@ -37,10 +38,12 @@ First read `aeon.yml` and find the `gateway.provider` value. Use the matching ta
 | Model | Input | Output |
 |-------|-------|--------|
 | claude-opus-4-7 | $5.00 | $25.00 |
+| claude-sonnet-5 | $3.00 | $15.00 |
 | claude-sonnet-4-6 | $3.00 | $15.00 |
 | claude-haiku-4-5-20251001 | $0.80 | $4.00 |
 
 For Bankr, treat cache read/write as zero cost.
+> `claude-sonnet-5` launched with introductory pricing of $2.00 input / $10.00 output per million tokens through 2026-08-31; the rates above are the post-intro standard. They overstate (never understate) spend during the intro window — fine for a budget watchdog, but adjust if reconciling exact bills before that date.
 For any unlisted model, default to Opus pricing (conservative estimate).
 
 ## Steps

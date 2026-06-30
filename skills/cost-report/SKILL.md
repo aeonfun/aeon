@@ -20,6 +20,7 @@ First read `aeon.yml` and find the `gateway.provider` value. Use the matching ta
 | Model | Input | Output | Cache Read | Cache Write |
 |-------|-------|--------|------------|-------------|
 | claude-opus-4-7 | $15.00 | $75.00 | $1.50 | $18.75 |
+| claude-sonnet-5 | $3.00 | $15.00 | $0.30 | $3.75 |
 | claude-sonnet-4-6 | $3.00 | $15.00 | $0.30 | $3.75 |
 | claude-haiku-4-5-20251001 | $0.80 | $4.00 | $0.08 | $1.00 |
 
@@ -28,10 +29,12 @@ First read `aeon.yml` and find the `gateway.provider` value. Use the matching ta
 | Model | Input | Output |
 |-------|-------|--------|
 | claude-opus-4-7 | $5.00 | $25.00 |
+| claude-sonnet-5 | $3.00 | $15.00 |
 | claude-sonnet-4-6 | $3.00 | $15.00 |
 | claude-haiku-4-5-20251001 | $0.80 | $4.00 |
 
 Bankr does not expose cache read/write pricing separately. Treat cache columns as $0 for Bankr rows.
+> `claude-sonnet-5` launched with introductory pricing of $2.00 input / $10.00 output per million tokens through 2026-08-31; the rates above are the post-intro standard. They overstate (never understate) spend during the intro window — flag this in the "Pricing drift" callout if Sonnet 5 usage is material and you need exact intro-window costs.
 
 If a CSV row references a model not in the active table, treat it as an **unknown model**: price it at Opus rates (conservative), add it to the "Pricing drift" callout in the report so rates can be updated, and continue. Do not crash.
 
