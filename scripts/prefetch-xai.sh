@@ -254,6 +254,60 @@ case "$SKILL" in
     fi
     ;;
 
+  shiplog)
+    # Cadence-agnostic ship recap. Three best-effort windows over the last 7 days
+    # (the skill itself narrows to its "since last run" slice from these caches):
+    #   1) the operator's own posts (ships + commentary, originals vs RTs)
+    #   2) the product accounts' posts (launches, the marquee security-merge brag)
+    #   3) ecosystem scouts mentioning the products (features, rankings)
+    # Handles are config-driven from memory/products.md; each window is non-fatal and
+    # skipped when its config is absent, so the skill degrades to GitHub-only / WebFetch.
+    SEVEN_DAYS_AGO=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
+
+    PRODUCTS_FILE="memory/products.md"
+    OP=""; PRODUCT_HANDLES=""; SCOUTS=""
+    if [ -f "$PRODUCTS_FILE" ] && ! grep -qi "unconfigured template" "$PRODUCTS_FILE"; then
+      ALL_HANDLES=$(grep -iE '(^|[*[:space:]-])handles:' "$PRODUCTS_FILE" | grep -oE '@[A-Za-z0-9_]{2,15}' | tr -d '@')
+      if [ -n "$ALL_HANDLES" ]; then
+        # operator = the founder handle (recurs across every product block); products = the rest
+        OP=$(printf '%s\n' "$ALL_HANDLES" | sort | uniq -c | sort -rn | awk 'NR==1{print $2}')
+        PRODUCT_HANDLES=$(printf '%s\n' "$ALL_HANDLES" | grep -v "^${OP}$" | awk '!seen[$0]++' | paste -sd, -)
+      fi
+      SCOUTS=$(grep -iE '(^|[*[:space:]-])scouts:' "$PRODUCTS_FILE" | grep -oE '@[A-Za-z0-9_]{2,15}' | tr -d '@' | awk '!seen[$0]++' | paste -sd, -)
+    fi
+    OP="${X_HANDLE:-$OP}"; OP="${OP#@}"
+    if [ -z "$OP" ] && [ -f soul/SOUL.md ]; then
+      OP=$(grep -oE '@[A-Za-z0-9_]{2,15}' soul/SOUL.md | head -1 | tr -d '@')
+    fi
+
+    if [ -z "$OP" ] && [ -z "$PRODUCT_HANDLES" ]; then
+      echo "xai-prefetch: shiplog — no operator/product handles in memory/products.md (unconfigured), skipping X prefetch"
+    else
+      if [ -n "$OP" ]; then
+        xai_search "shiplog-operator.json" \
+          "Search X for all posts by @${OP} from ${SEVEN_DAYS_AGO} to ${TODAY}. Return every post — originals, replies, quotes, and retweets (mark retweets, which start with 'RT @'). For each: full text, date/time, engagement (likes, retweets, replies, views), and the direct link (https://x.com/${OP}/status/ID). I care most about what was shipped or announced. Return as a chronological list." \
+          "$SEVEN_DAYS_AGO" "$TODAY" \
+          "\"allowed_x_handles\": [\"${OP}\"]" || true
+      fi
+      if [ -n "$PRODUCT_HANDLES" ]; then
+        HANDLES_JSON=$(printf '%s' "$PRODUCT_HANDLES" | awk -F, '{for(i=1;i<=NF;i++){printf (i>1?", ":"") "\"" $i "\""}}')
+        HANDLES_AT=$(printf '%s' "$PRODUCT_HANDLES" | sed 's/,/, @/g; s/^/@/')
+        xai_search "shiplog-projects.json" \
+          "Search X for posts by ${HANDLES_AT} from ${SEVEN_DAYS_AGO} to ${TODAY}. Return every original post (skip pure retweets). For each: @handle, full text, date/time, engagement (likes, retweets, replies, views), and the direct link. Highlight launches, shipped features, milestones, and any 'merged by' / security-fix announcements naming another project. Return grouped by account." \
+          "$SEVEN_DAYS_AGO" "$TODAY" \
+          "\"allowed_x_handles\": [${HANDLES_JSON}]" || true
+      fi
+      if [ -n "$SCOUTS" ]; then
+        SCOUTS_AT=$(printf '%s' "$SCOUTS" | sed 's/,/, @/g; s/^/@/')
+        xai_search "shiplog-ecosystem.json" \
+          "Search X from ${SEVEN_DAYS_AGO} to ${TODAY} for posts by ${SCOUTS_AT} mentioning @${OP}'s products (${HANDLES_AT:-the products}) — especially recaps, rankings, or shoutouts. For each: @handle of the poster, follower count if visible, full text or a one-line summary, date, and the post link. Return the 10 most notable." \
+          "$SEVEN_DAYS_AGO" "$TODAY" || true
+      else
+        echo "xai-prefetch: shiplog — no scouts: line in memory/products.md, skipping ecosystem window"
+      fi
+    fi
+    ;;
+
   *)
     echo "xai-prefetch: no prefetch defined for skill '$SKILL'"
     ;;
