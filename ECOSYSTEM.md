@@ -25,7 +25,6 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://coin-images.coingecko.com/coins/images/102173323/large/autonomopoly.jpg?1779000184" width="36" height="36" alt="Autonomopoly logo"> | Autonomopoly | [GeckoTerminal](https://www.geckoterminal.com/base/pools/0x84771828f44fcfbaae08e271ff74e272cc2934a3348ec724a475941185ce4eb9) |
 | <img src="https://pbs.twimg.com/profile_images/2063611600771092482/LwifcR7-_400x400.jpg" width="36" height="36" alt="Azzle logo"> | Azzle | [@azzleAI](https://x.com/azzleAI) |
 | <img src="https://pbs.twimg.com/profile_images/1951545493936545792/AriqgxQN_400x400.jpg" width="36" height="36" alt="Bankr logo"> | Bankr | [@bankrbot](https://x.com/bankrbot) |
-| <img src="https://pbs.twimg.com/profile_images/2054481928422862848/7AOz3CwK_400x400.jpg" width="36" height="36" alt="Bankrsynth logo"> | Bankrsynth | [@bankrsynth](https://x.com/bankrsynth) |
 | <img src="https://pbs.twimg.com/profile_images/2056801122858196992/FNUojvPG_400x400.jpg" width="36" height="36" alt="BaseHouse logo"> | BaseHouse | [@basehouse_org](https://x.com/basehouse_org) |
 | <img src="https://pbs.twimg.com/profile_images/2021187758547664896/7tdqvR2z_400x400.jpg" width="36" height="36" alt="Baseline logo"> | Baseline | [@BaselineMarkets](https://x.com/BaselineMarkets) |
 | <img src="https://pbs.twimg.com/profile_images/2026627252511977474/r8GGxl52_400x400.jpg" width="36" height="36" alt="Bean logo"> | Bean | [@minebean_](https://x.com/minebean_) |
@@ -38,11 +37,11 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2058054817516548096/e0qPRxNW_400x400.jpg" width="36" height="36" alt="Clerk logo"> | Clerk | [@agent_clerk](https://x.com/agent_clerk) |
 | <img src="https://pbs.twimg.com/profile_images/2039705524166660096/mcVkmNR3_400x400.jpg" width="36" height="36" alt="Cobot logo"> | Cobot | [@cobotgg](https://x.com/cobotgg) |
 | <img src="https://pbs.twimg.com/profile_images/2039734967681597440/Hh_-fXR8_400x400.jpg" width="36" height="36" alt="CTRL logo"> | CTRL | [@CTRL_automation](https://x.com/CTRL_automation) |
-| <img src="https://pbs.twimg.com/profile_images/2027218104896413696/CT-6cMVN_400x400.jpg" width="36" height="36" alt="DarkSol logo"> | DarkSol | [@Darks0l_](https://x.com/Darks0l_) |
+| <img src="https://pbs.twimg.com/profile_images/2070145040882544640/P8NilHgr_400x400.jpg" width="36" height="36" alt="DarkSol logo"> | DarkSol | [@Darks0l_](https://x.com/Darks0l_) |
 | <img src="https://pbs.twimg.com/profile_images/2057284361066569728/K5ZhxKXY_400x400.png" width="36" height="36" alt="Echo Oracle logo"> | Echo Oracle | [@BuiltByEcho](https://x.com/BuiltByEcho) · [builtbyecho.xyz](https://www.builtbyecho.xyz/) |
 | <img src="https://pbs.twimg.com/profile_images/2057534847216988160/SDVPe4rG_400x400.jpg" width="36" height="36" alt="GitBlock logo"> | GitBlock | [@gitblock_](https://x.com/gitblock_) |
 | <img src="https://pbs.twimg.com/profile_images/2056356306726887424/2DrOBX8R_400x400.jpg" width="36" height="36" alt="GitBounty logo"> | GitBounty | [@Gitlawbounty](https://x.com/Gitlawbounty) |
-| <img src="https://pbs.twimg.com/profile_images/2066546446187540480/PUnUtIXg_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
+| <img src="https://pbs.twimg.com/profile_images/2069099785936891904/fbvZqtoT_400x400.jpg" width="36" height="36" alt="GitKernal logo"> | GitKernal | [@gitkernal](https://x.com/gitkernal) |
 | <img src="https://pbs.twimg.com/profile_images/2056261441192419328/X6pFHgHc_400x400.jpg" width="36" height="36" alt="Gitlawb Terminal logo"> | Gitlawb Terminal | [@terminalgitlawb](https://x.com/terminalgitlawb) |
 | <img src="https://pbs.twimg.com/profile_images/2065134999163080704/IGp7PE1Q_400x400.jpg" width="36" height="36" alt="Glim.sh logo"> | Glim.sh | [@glim_sh](https://x.com/glim_sh) |
 | <img src="https://pbs.twimg.com/profile_images/2061386184820162560/t1py10Vb_400x400.jpg" width="36" height="36" alt="HivemindOS logo"> | HivemindOS | [@thehivemindos](https://x.com/thehivemindos) · [hivemindos.liamvisionary.com](https://hivemindos.liamvisionary.com) |
@@ -87,9 +86,9 @@ These are the projects we know of that run Aeon, extend it, or integrate with th
 | <img src="https://pbs.twimg.com/profile_images/2029609210124849155/xjVy8biJ_400x400.jpg" width="36" height="36" alt="Vexor logo"> | Vexor | [@Vexora_x](https://x.com/Vexora_x) |
 | <img src="https://pbs.twimg.com/profile_images/2061833048958668800/Oq_tc1Vc_400x400.jpg" width="36" height="36" alt="VIGIL logo"> | VIGIL | [@vigilcodes](https://x.com/vigilcodes) · [vigil.codes](https://vigil.codes) |
 | <img src="https://pbs.twimg.com/profile_images/2056369895009357824/RE6XcseT_400x400.jpg" width="36" height="36" alt="Wake logo"> | Wake | [@WakeOnBase](https://x.com/WakeOnBase) |
-| <img src="https://pbs.twimg.com/profile_images/2054330548374458368/uIcsLhXO_400x400.jpg" width="36" height="36" alt="x402Books logo"> | x402Books | [@x402Books](https://x.com/x402Books) |
 | <img src="https://pbs.twimg.com/profile_images/2048455587537768448/Xm5di5kf_400x400.jpg" width="36" height="36" alt="XergAI logo"> | XergAI | [@xerg_AI](https://x.com/xerg_AI) |
 | <img src="https://pbs.twimg.com/profile_images/2057305586904023040/jaDCPSZQ_400x400.jpg" width="36" height="36" alt="zer0 logo"> | zer0 | [@atzer0_BOT](https://x.com/atzer0_BOT) |
+| <img src="https://pbs.twimg.com/profile_images/2069030252672581632/9wesnS2T_400x400.jpg" width="36" height="36" alt="Zetta logo"> | Zetta | [@zettaaidotco](https://x.com/zettaaidotco) |
 
 ---
 
