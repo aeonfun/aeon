@@ -1,237 +1,203 @@
 ---
 name: Shiplog
 category: productivity
-description: Narrative of everything shipped — features, fixes, and momentum, written as a compelling update
+description: Recap of everything shipped since the last run — cross-repo PRs and commits, security fixes merged into other people's repos, star deltas, and X + ecosystem traction — synthesized into a digest article AND a ready-to-post shiplog in the operator's voice. Cadence-agnostic: schedule it daily, weekly, or on-demand.
 var: ""
-tags: [content]
+requires: [XAI_API_KEY?, GH_GLOBAL?]
+tags: [content, social]
 ---
-> **${var}** — Optional theme filter (e.g. `dashboard`, `security`, `ai`). If set, narrows analysis to commits/PRs/issues whose messages or changed-file paths match the theme (case-insensitive). If empty, covers everything shipped this week.
+> **${var}** — Optional, space-separated flags:
+> - `since:YYYY-MM-DD` — override the window start (default: when this skill last ran).
+> - `days:N` — window = last N days.
+> - `dry-run` — render to stdout; write no article, no state, no notify.
+> - `owner/repo` — narrow GitHub coverage to that one repo.
+> - any other word — focus/theme filter (a product name or keyword).
+>
+> Empty = everything shipped since the last run, across all configured repos.
 
-<!-- autoresearch: variation B — sharper output via thesis-first writing, theme-cap, status taxonomy, theme filter that actually uses ${var}, and HTTPS URL fix -->
+Produce two artifacts:
+1. **Digest** — a themed, human-readable recap of everything that shipped + traction (the article).
+2. **Shiplog post** — a tight, bulleted, ready-to-post version in the operator's voice, every project @-tagged (the notification).
 
-Read `memory/MEMORY.md` and the last 7 days of `memory/logs/` for context.
-Read `memory/watched-repos.md` for repos to cover. If empty or missing, exit with `SHIPLOG_NO_REPOS` (notify + log, no article).
+This is **cadence-agnostic**: the window is always "since the last run" (`memory/state/shiplog-last.json`), so the `aeon.yml` schedule alone decides whether this is a daily, weekly, or on-demand recap. One skill, any frequency.
 
-## Idempotency
+Read `STRATEGY.md`, `memory/MEMORY.md`, and the last 7 days of `memory/logs/` for context. Read `soul/SOUL.md` + `soul/STYLE.md` before writing any output — the shiplog post must sound like the operator, not a changelog bot. **If `soul/` is empty, use a clear, direct, neutral voice** (drop the signature flourishes below).
 
-If `articles/shiplog-${today}.md` already exists, exit with `SHIPLOG_ALREADY_RAN_TODAY` — no commit, no notify, no overwrite. One shiplog per day.
+## Config — all derived, nothing hardcoded
+
+```
+operator        = gh api user --jq .login            # the authenticated operator (PR-author search)
+product_handles = memory/products.md `handles:` lines (@x)        # product X accounts to read
+flagship_repos  = memory/products.md `repos:` tagged (public)     # the star / north-star story
+watched_repos   = memory/watched-repos.md, else products.md repos: # everything shipped across
+ecosystem_scouts= memory/products.md `scouts:` line (optional)    # recap accounts to scan for features
+star_state      = memory/state/shiplog-stars.json    # snapshot for week-over-week star deltas
+```
+
+If neither `watched-repos.md` nor `products.md` yields a repo, exit `SHIPLOG_NO_REPOS` (notify + log, no article). Sections whose config is absent (X handles, scouts) are **skipped gracefully**, not failed.
 
 ## Steps
 
-### 1. Compute the 7-day window
+### 1. Compute the window — "since last run"
 
 ```bash
-SINCE=$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)
+STATE="memory/state/shiplog-last.json"
+NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 TODAY=$(date -u +%Y-%m-%d)
+LAST=""
+[ -f "$STATE" ] && LAST=$(jq -r '.last_run_at // empty' "$STATE" 2>/dev/null)
+SINCE="${LAST:-$(date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-7d +%Y-%m-%dT%H:%M:%SZ)}"
+SINCE_DATE="${SINCE%%T*}"
 ```
 
-Use `$SINCE` for ALL time filtering — never substitute "since midnight Monday" or similar drift-prone shortcuts.
+- `since:YYYY-MM-DD` in `${var}` → `SINCE` = that date at `T00:00:00Z`; `days:N` → N days ago. These override the state file.
+- Use `$SINCE` for ALL time filtering — never substitute "since Monday" or other drift-prone shortcuts. The window is `[$SINCE, $NOW)`; state the span (`$SINCE_DATE → $TODAY`) in the output.
+- **Idempotency is the state file** (step 8 advances it each run, so windows never overlap). No once-per-day lock — a back-to-back re-run just yields an empty window → `SHIPLOG_NOTHING_NEW`. Write the digest to `articles/shiplog-${TODAY}.md`; if that name exists and there's genuinely new activity since the last run, use `articles/shiplog-${TODAY}-2.md` rather than clobbering.
 
-### 2. Gather raw shipping data per repo
+### 2. GitHub activity (the bytes)
 
-For each `REPO` in `memory/watched-repos.md`, collect from these endpoints. Track success/failure of each in a `sources` map (`commits`, `prs`, `releases`, `issues`, `open_prs`) — on a single endpoint failure log `fail` and continue, do NOT abort the whole skill.
+Cross-repo PR/commit visibility needs the global token — the built-in `GITHUB_TOKEN` only sees this repo. Prefer `GH_GLOBAL` when set:
 
 ```bash
-# Commits — last 7 days, first-line of message + author + date
-gh api "repos/${REPO}/commits" -X GET -f since="$SINCE" \
-  --jq '.[] | {sha: .sha[0:7], full_sha: .sha, message: (.commit.message | split("\n")[0]), author: .commit.author.name, date: .commit.author.date}' \
-  --paginate
-
-# Merged PRs this week (with body excerpt for substance)
-gh api "repos/${REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
-  --jq "[.[] | select(.merged_at != null) | select(.merged_at > \"$SINCE\") | {number, title, user: .user.login, merged_at, labels: [.labels[].name], body: (.body // \"\" | .[0:400])}]"
-
-# Releases this week
-gh api "repos/${REPO}/releases" \
-  --jq "[.[] | select(.published_at != null and .published_at > \"$SINCE\") | {tag_name, name, published_at, body: (.body // \"\" | .[0:400])}]"
-
-# Issues closed this week — excludes PRs (which appear in /issues by default)
-gh api "repos/${REPO}/issues" -X GET -f state=closed -f sort=updated -f direction=desc -f since="$SINCE" \
-  --jq "[.[] | select(.pull_request == null) | select(.closed_at > \"$SINCE\") | {number, title, user: .user.login, labels: [.labels[].name]}]"
-
-# Open PRs (top 10 by updated) — feeds the "What's Nearly Here" section
-gh api "repos/${REPO}/pulls" -X GET -f state=open -f sort=updated -f direction=desc \
-  --jq '[.[0:10] | .[] | {number, title, user: .user.login, draft, updated_at}]'
+GHT="${GH_GLOBAL:-$GITHUB_TOKEN}"   # gh reads GH_TOKEN from env; falls back to the repo-scoped token
+OPERATOR=$(GH_TOKEN="$GHT" gh api user --jq .login 2>/dev/null)
 ```
 
-Also read this week's `articles/push-recap-*.md` (if any exist) — they already contain digested diff context and save you re-fetching everything.
+Track success/failure per source in a `sources` map; on a single endpoint failure log `fail` and continue — never abort the whole skill.
 
-### 3. Classify the week's signal
+**a) Operator PRs across all repos in the window** (grouped by repo + totals):
+```bash
+GH_TOKEN="$GHT" gh search prs --author "$OPERATOR" --created ">=$SINCE_DATE" \
+  --json number,title,repository,state,createdAt,url --limit 100 \
+  --jq 'group_by(.repository.nameWithOwner)[] | {repo: .[0].repository.nameWithOwner, count: length,
+         prs: [.[] | {date: .createdAt[0:10], state, number, title}]}'
+```
+If 100 rows come back, note the result may be truncated.
 
-Compute:
-- `total_commits` = all commits in window
-- `substantive_commits` = commits whose first-line message does NOT start with `chore:`, `docs:`, `style:`, `ci:`, `build:`, `test:`, `refactor:`, `Merge`, or `Revert`
-- `total_prs_merged`, `total_releases`, `total_issues_closed`
+**b) Flagship headline numbers** — for each `flagship_repos` entry, count commits + merged PRs in the window (the numbers the audience cares about):
+```bash
+for REPO in $FLAGSHIP_REPOS; do
+  GH_TOKEN="$GHT" gh api "repos/${REPO}/commits" -X GET -f since="$SINCE" \
+    --jq "\"$REPO commits: \" + ([.[] | .sha] | length | tostring)" 2>/dev/null
+  GH_TOKEN="$GHT" gh api "repos/${REPO}/pulls" -X GET -f state=closed -f sort=updated -f direction=desc \
+    --jq "\"$REPO merged PRs: \" + ([.[] | select(.merged_at != null and .merged_at > \"$SINCE\")] | length | tostring)" 2>/dev/null
+done
+```
 
-Branch on signal:
+**c) The security flex** — PRs the operator landed in repos they do NOT own (the "a project merged a fix from us" candidates). Filter the Step-2a result to external repos whose title matches a security keyword (`security|ssrf|cve|credential|sandbox|escape|injection|vuln|redos|xss|toctou|path traversal|prototype pollution|deserial`). Merged ones are the marquee story — if it's a named org (not a random fork), that's a headline bullet.
+
+**d) Star delta** (north-star metric — flagships only, they're public):
+```bash
+mkdir -p memory/state
+for REPO in $FLAGSHIP_REPOS; do
+  GH_TOKEN="$GHT" gh api "repos/${REPO}" --jq '.stargazers_count'   # current total for $REPO
+done
+```
+Read the prior snapshot `memory/state/shiplog-stars.json` (if present): `delta = current_total − last_total` per repo. After computing, overwrite the snapshot with `{ "<repo>": {"count": N, "date": "${TODAY}"}, ... }`. If no prior snapshot exists, report totals only and note "no baseline yet — deltas start next run." Do NOT fabricate a delta.
+
+### 3. X activity (read the prefetch cache — there is no x-mcp in the sandbox)
+
+If `XAI_API_KEY` is set, `scripts/prefetch-xai.sh shiplog` runs before this skill and writes caches. Parse each with the standard idiom:
+```bash
+jq -r '.output[] | select(.type == "message") | .content[] | select(.type == "output_text") | .text' .xai-cache/<file>.json
+```
+- `.xai-cache/shiplog-operator.json` — the operator's posts this window. Separate **original posts** from **RTs** (RT text starts with `RT @`). RTs are amplification, not ships.
+- `.xai-cache/shiplog-projects.json` — product-account posts (launches, announcements, the marquee security-merge brag).
+- Note the bangers (sort by likes/views) — one or two feed the digest's narrative section.
+
+**Fallback** (cache missing/empty, or `XAI_API_KEY` unset): WebFetch the public `https://x.com/<handle>` profiles from `product_handles` — no auth, bypasses the sandbox. Mark `x_source=webfetch`. If unavailable or no handles configured, set `x_source=none` and write the GitHub-only shiplog (note the gap) — never abort.
+
+### 4. Ecosystem + traction sweep (best-effort — skip gracefully)
+
+- **Ecosystem mentions** — `.xai-cache/shiplog-ecosystem.json` (recap/scout accounts mentioning your products this window → recaps, rankings, partner shares). Confirm any handle is real before @-mentioning (a wrong tag in a public post is worse than none). Capture follower counts for the flex ("featured by @X (Nk)"). Skip entirely if no `scouts:` configured.
+- **Product traction** (OpenRouter / x402 / analytics) — only if a source is configured for the product. If you have an app/server id, WebFetch its page; otherwise say "no product-traction sources wired yet" and move on. Keep any number exactly as measured — don't round 79 → ~80.
+
+### 5. Classify the window
 
 | Condition | Status | Action |
 |-----------|--------|--------|
-| `total_commits == 0` AND `total_prs_merged == 0` AND `total_releases == 0` | `SHIPLOG_QUIET_WEEK` | Notify only — no article. Skip to step 7. |
-| `substantive_commits < 3` AND `total_releases == 0` | `SHIPLOG_LIGHT_WEEK` | Short-form 300–500 word article (template below). |
-| Otherwise | `SHIPLOG_OK` | Full 800–1200 word article. |
+| 0 PRs AND 0 flagship commits AND no notable X | `SHIPLOG_NOTHING_NEW` | Notify-optional — no article. Skip to Step 8, **still advance state.** |
+| < 3 substantive ships total | `SHIPLOG_LIGHT` | Short post (3-bullet form). |
+| Otherwise | `SHIPLOG_OK` | Full digest + post. |
 
-If `${var}` is set: filter `substantive_commits` and merged PRs by theme — keep items whose message OR changed-file paths contain `${var}` (case-insensitive). If the filtered set is empty, status becomes `SHIPLOG_NO_THEME_MATCH` — notify and exit, no article.
+If `${var}` narrows to one repo/project and nothing matched, status `SHIPLOG_NO_MATCH` — notify and exit (still advance state).
 
-### 4. Score and pick themes (cap = 3)
+### 6. Synthesize + write the article
 
-For each substantive commit/PR, compute a signal score:
-- Lines changed (capped at 500): +0.5 per 100 lines
-- File diversity: +1 if files span ≥3 directories
-- Reviewer/comment diversity on PRs: +1 if ≥2 distinct non-author commenters
-- Release association: +2 if commit appears in a release this week
-- Label boost: +1 if labeled `feature`, `enhancement`, `breaking`, or `security`
+**Output handling — no PR.** This is a content skill: write the article straight to `articles/` and let the workflow's commit step push it to `main` (same as the `article` skill). Do **not** create a branch or open a pull request — `CLAUDE.md`'s "branch + PR, never push to main" rule is for source-code changes, not generated articles.
 
-Cluster top-scored items into themes by file-path overlap and shared keywords (extract dominant nouns from commit messages and PR titles). **Cap at 3 themes.** Each theme MUST:
-- Name a concrete user-facing capability change (not "refactored X internals")
-- Reference ≥1 specific commit `(sha)` or PR `(#N)`
-- Be describable in one short paragraph (2–4 sentences)
+Write the **digest** to `articles/shiplog-${TODAY}.md`: themed "what shipped" sections, a **By-the-numbers** line (PRs · commits · star deltas), traction/ecosystem, and the gaps you hit. Then append the **ready-to-post shiplog** using this template — load `soul/STYLE.md` first so the register matches (if `soul/` is empty, write a plain, direct post and drop the `⭐` sign-off):
 
-**Drop themes that fail these gates rather than padding to 3.** Two strong themes beats three weak ones.
+```
+<product(s)> shiplog ⭐ <span: month day → day>
 
-### 5. Pull diff stats for the top items
+shipped ~<N> PRs + <M> commits this window. the bytes:
 
-For the top 5 commits by signal score:
+- <punchy ship 1>: <one-line what+why>. <@handles of projects involved>
+- <punchy ship 2>: ...
+- <punchy ship 3>: ...
+- security: fixes into other people's repos (<types>) — even got one merged into <@MarqueeOrg>'s <repo>
 
+traction:
+- <product> <total> ⭐ (+<delta> this window)
+- featured by <@scout> (<followers>) "<quote>" + ranked #<rank> <list>
+
+⭐
+```
+
+- **Tag every project** with a handle you verified. If you couldn't confidently resolve one, leave it untagged and say which is missing.
+- Keep numbers exactly as measured. If a flex (a security merge, a milestone) landed just outside the window, keep it but flag the date.
+- Also draft two variants below the post: a tight thread (hook + one tweet per ship) and a 3-bullet short version.
+
+### 7. (folded into 6)
+
+### 8. Advance the state file
+
+Unless `dry-run`, record this run so the next one starts where this ended:
 ```bash
-gh api "repos/${REPO}/commits/${FULL_SHA}" \
-  --jq '{files: [.files[] | {filename, status, additions, deletions}], stats: .stats}'
+mkdir -p memory/state
+HEAD_SHA=$(git rev-parse HEAD 2>/dev/null || echo "")
+jq -n --arg at "$NOW" --arg sha "$HEAD_SHA" --arg win "$SINCE" \
+  '{last_run_at:$at, last_commit_sha:$sha, window_start:$win}' > memory/state/shiplog-last.json
 ```
+Advance on **every** completed run — including `SHIPLOG_NOTHING_NEW` / `SHIPLOG_LIGHT` / `SHIPLOG_NO_MATCH` — so the window always moves forward. The workflow auto-commits it (no `git` here). On `dry-run`, do NOT write it.
 
-Use `additions + deletions` and the changed-file list to write substance into theme paragraphs — quote real file names where relevant ("the change touches `apps/dashboard/lib/runs.ts` and the workflow runner").
-
-### 6. Write the article
-
-Write to `articles/shiplog-${TODAY}.md`. Use the template matching the status from step 3.
-
-**`SHIPLOG_OK` (full):**
-
-```markdown
-# Week in Review: [4–8 word title that names the thesis]
-
-*${TODAY} — Weekly shipping update*
-
-> [ONE sentence — the thesis. Must name a concrete capability/direction change in the project this week. Not "we shipped a lot." Not "exciting progress."]
-
-## What Shipped
-
-### [Theme 1 — verb-led title naming the capability change]
-[2–4 sentences. Lead with the user-facing change, then how it works, then why it matters. Reference (sha) or (#PR). Plain language — translate commit-speak into "what a colleague would understand over coffee."]
-
-### [Theme 2]
-[Same treatment]
-
-### [Theme 3 — only if it earns its place per the gates in step 4]
-
-## Fixes & Polish
-- [Bullet — only the user-noticeable ones, max 6 bullets, each one specific with a (sha) or (#PR)]
-
-## What's Nearly Here
-[1–3 sentences pulled from open PRs that look close to merging — name them by title and #N. Skip the entire section if no open PR is close.]
-
----
-
-**Stats:** N commits · M PRs merged · K issues closed · +X / −Y lines · contributors: [names]
-**Sources:** [repo URL] · commits=[ok|fail] · prs=[ok|fail] · releases=[ok|fail] · issues=[ok|fail] · open_prs=[ok|fail]
-```
-
-**`SHIPLOG_LIGHT_WEEK` (short, 300–500 words):**
-
-```markdown
-# Week in Review: A Quieter Week
-
-*${TODAY}*
-
-> [ONE sentence — what little did happen, framed honestly. Don't pretend this was a big week.]
-
-## What Shipped
-- [3–6 specific bullets, each with (sha) or (#PR). No padding, no recycled commit messages.]
-
----
-**Stats:** N commits · M PRs · +X / −Y
-```
-
-**Hard rules for both forms:**
-- Only include a "Momentum Check" section if a prior `articles/shiplog-*.md` (or legacy `articles/weekly-shiplog-*.md`) exists from 7–14 days ago to compare against. If none exists, omit the section — do not invent a baseline.
-- Cite every concrete claim with `(sha)` or `(#PR)`. Anything uncitable goes.
-- If you would write "the team continued working on X," delete that sentence.
-- **Banned phrases:** "exciting", "robust", "leveraging", "unlocks", "in this fast-moving space", "we're thrilled", "stay tuned".
-
-### 7. Notify
-
-Build the article URL from `gh` (do NOT use `git remote get-url origin` — it returns SSH form on some setups):
+### 9. Notify
 
 ```bash
 REPO_URL=$(gh repo view --json url -q .url)
 ARTICLE_URL="${REPO_URL}/blob/main/articles/shiplog-${TODAY}.md"
 ```
 
-Send via `./notify` based on status:
+Write the ready-to-post shiplog to a **gitignored** temp file — `.xai-cache/shiplog-notify.md` (the `.xai-cache/` dir is gitignored and sandbox-writable, so the temp never lands in a commit) — and send it with `./notify -f .xai-cache/shiplog-notify.md` (NOT `./notify "$(cat …)"` — long multi-line argv trips the sandbox). Append `${ARTICLE_URL}` as the last line. For `SHIPLOG_NOTHING_NEW` / `SHIPLOG_NO_MATCH`, send a one-line status instead of the post (or stay silent on sub-daily cadences).
 
-**`SHIPLOG_OK` / `SHIPLOG_LIGHT_WEEK`:**
-
-```
-*Shiplog — ${TODAY}*
-
-[Thesis sentence from the article — verbatim]
-
-Themes:
-- [Theme 1 title — ≤12 words]
-- [Theme 2 title — ≤12 words]
-- [Theme 3 title — only if exists]
-
-N commits · M PRs · +X / −Y
-${ARTICLE_URL}
-```
-
-**`SHIPLOG_QUIET_WEEK`:**
-
-```
-*Shiplog — ${TODAY}*
-SHIPLOG_QUIET_WEEK — 0 commits, 0 PRs merged, 0 releases in the last 7 days. No article written.
-```
-
-**`SHIPLOG_NO_THEME_MATCH`:**
-
-```
-*Shiplog — ${TODAY}*
-SHIPLOG_NO_THEME_MATCH — no shipping matched theme "${var}" this week. No article written.
-```
-
-**`SHIPLOG_NO_REPOS`:**
-
-```
-*Shiplog — ${TODAY}*
-SHIPLOG_NO_REPOS — memory/watched-repos.md is empty or missing. Add a repo to enable this skill.
-```
-
-**`SHIPLOG_ALREADY_RAN_TODAY`:** silent — no notify, no commit. Just log and exit.
-
-### 8. Log
+### 10. Log
 
 Append to `memory/logs/${TODAY}.md`:
-
 ```
 ### shiplog
-- Status: SHIPLOG_OK | SHIPLOG_LIGHT_WEEK | SHIPLOG_QUIET_WEEK | SHIPLOG_NO_THEME_MATCH | SHIPLOG_NO_REPOS | SHIPLOG_ALREADY_RAN_TODAY
-- Theme filter: ${var:-none}
-- Repos covered: [list]
-- Commits / PRs merged / Issues closed: N / M / K
-- Themes: [theme 1 title; theme 2 title; theme 3 title]
-- Sources: commits=ok|fail, prs=ok|fail, releases=ok|fail, issues=ok|fail, open_prs=ok|fail
+- Status: SHIPLOG_OK | SHIPLOG_LIGHT | SHIPLOG_NOTHING_NEW | SHIPLOG_NO_MATCH | SHIPLOG_NO_REPOS
+- Window: ${SINCE_DATE} → ${TODAY}  (var: ${var:-none})
+- PRs / flagship commits: N / M   ·   external-security PRs: K
+- Stars: <repo> <total> (+d) … [or: no baseline yet]
+- X source: xai-cache | webfetch | none
 - Article: articles/shiplog-${TODAY}.md (if written)
-- Notify URL: ${ARTICLE_URL} (if applicable)
+- State advanced to: ${NOW} (unless dry-run)
+- Sources: prs=ok|fail · commits=ok|fail · stars=ok|fail · x=ok|fail · ecosystem=ok|fail
 ```
 
 ## Sandbox note
 
-The sandbox may block outbound `curl`. `gh` CLI handles auth internally and is the preferred path here — every API call above uses `gh api`. If a `gh api` call fails for transient reasons, retry once with a smaller `--paginate` page size. For non-API web fetches (e.g. external mention search), use **WebFetch** as the fallback per `CLAUDE.md`.
+- **GitHub**: every call uses `gh` (auth handled internally) — never curl the GitHub API. For cross-repo reach, prefer `GH_TOKEN="${GH_GLOBAL:-$GITHUB_TOKEN}"`; with only the built-in token you'll see this repo plus public repos, which still covers public flagships.
+- **X**: the sandbox blocks `curl api.x.ai` (the auth header can't expand `$XAI_API_KEY`). Primary path is the prefetch cache (`scripts/prefetch-xai.sh shiplog` → `.xai-cache/shiplog-*.json`); fallback is WebFetch against the public `x.com/<handle>` profiles. Never curl api.x.ai from the skill body.
+- **Never abort on a single source failure** — note the gap in the digest and still write + notify.
 
 ## Constraints
 
-- One shiplog per day — always check for an existing `articles/shiplog-${today}.md` first.
-- Themes name capability changes, not refactors. Drop weak themes rather than pad to 3.
-- The thesis sentence is mandatory; it must come from the actual data, not boilerplate.
-- Never invent activity that isn't in the raw data — every claim needs a `(sha)` or `(#PR)`.
-- The notify URL must be the GitHub web URL via `gh repo view --json url`, not the SSH remote.
-- Banned phrases (see step 6) are non-negotiable — they signal stock-newsletter output.
+- The window is **always** "since last run" (state file) unless `${var}` overrides it — never hardcode 7 days except as the first-run default. Always advance `memory/state/shiplog-last.json` on a real run, even a quiet one.
+- Content, not code: write the article to `articles/` and let the workflow commit it to `main`. Never open a per-run PR for the shiplog.
+- Every concrete claim traces to real data — a PR `(#N)`, a commit, a measured number, or a cached tweet. No invented activity, no fabricated star deltas.
+- RTs are amplification, not ships — narrative/ecosystem only, never "the bytes".
+- Verify a handle before @-mentioning it; an unverified tag stays untagged.
+- Voice from `soul/`; neutral and direct if `soul/` is empty. No hype adjectives, no hashtags.
+- The notify URL is the GitHub web URL via `gh repo view --json url`, not the SSH remote.

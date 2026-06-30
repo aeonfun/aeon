@@ -242,7 +242,7 @@ skills:
   fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
   fleet-scorecard: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
   retrospective: { enabled: false, schedule: "0 19 * * 1" }
-  shiplog: { enabled: false, schedule: "0 9 * * 1" } # Monday — narrative of everything shipped last week
+  shiplog: { enabled: false, schedule: "0 9 * * 1" } # everything shipped SINCE THE LAST RUN (memory/state/shiplog-last.json) — cross-repo PRs/commits, security fixes merged into others' repos, star deltas, X/ecosystem traction → digest article + ready-to-post shiplog in the operator's voice. Cadence-agnostic: this schedule just sets frequency (daily/weekly/on-demand). Config: memory/products.md + memory/watched-repos.md. Optional XAI_API_KEY (X traction) + GH_GLOBAL (cross-repo reach). var: since:DATE | days:N | dry-run | owner/repo | <theme>.
   skill-leaderboard: { enabled: false, schedule: "0 17 * * 0" } # Sunday — rank popular skills across forks
   contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0" } # Sunday — rank community contributors across forks and upstream PRs
   contributor-reward:
@@ -433,7 +433,6 @@ skills:
   capabilities-sweep: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — infer a capabilities: block for every skill missing one
 
   send-email: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — compose + send a 1:1 email to a named recipient via Resend (general sibling of disclosure-emailer). var: "to=… | subject=… | about=…"
-  daily-shiplog: { enabled: false, schedule: "0 23 * * *", var: "" } # daily 23:00 UTC — 24h ship recap across GitHub (+ optional X/traction) → digest + ready-to-post shiplog in the operator's voice. Config: memory/products.md. Sibling of shiplog (weekly).
   idea-forge: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday 09:00 UTC — weekly business-idea engine: zeitgeist × your capability surface (memory/products.md + installed skills + STRATEGY.md) → 3-5 timing-scored wedges (why-now / smallest cut / kill-criterion).
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
