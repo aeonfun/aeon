@@ -1,17 +1,31 @@
 ---
 name: Reply Maker
 category: social
-description: Generate two reply options for 5 tweets from tracked X accounts or topics
-var: ""
-tags: [social]
-requires: [XAI_API_KEY]
+description: Draft copy-paste-ready X replies — either two reply options per reply-worthy tweet from tracked accounts/topics/lists (default), or (from-logs mode) ready-to-post responses to engagement opportunities flagged in recent logs
+var: "empty = auto-discover reply-worthy tweets and draft two options each; @handle / numeric X list ID / topic = scope the drafting to that; from-logs (or --from-logs [@handle|project]) = turn flagged engagement opps from recent logs into ready-to-post replies"
+commits: false
+permissions: []
+tags: [social, meta]
+requires: [XAI_API_KEY?]
 ---
 <!-- autoresearch: variation B — sharper output via specificity gates, anti-sycophancy lint, post-write self-edit, and skip-gate for low-leverage tweets -->
 
-> **${var}** — Focus on a specific topic, @handle, or X list ID. If empty, searches for reply-worthy tweets across your areas of interest using recent logs and memory.
+> **${var}** — selects the mode and scope:
+> - **empty** → **Mode A (Reply Drafting):** auto-discover reply-worthy tweets across your areas of interest (from recent logs + memory) and draft two reply options for each.
+> - **`@handle` / numeric X list ID / topic** → **Mode A (Reply Drafting)** scoped to that handle, list, or topic.
+> - **`from-logs`** (or **`--from-logs`**, optionally followed by an `@handle` or project name to narrow the scan) → **Mode B (From-Logs Engagement):** scan recent logs for flagged engagement opportunities and turn them into copy-paste-ready responses.
 
-Read `memory/MEMORY.md` for context.
-Read the last 2 days of `memory/logs/` for recent list-digest, tweet-roundup, and prior reply-maker outputs.
+## Preamble (both modes)
+
+Read `memory/MEMORY.md` for context on active projects and open engagement follow-ups.
+
+Then read `memory/logs/` — the window depends on the mode:
+- **Mode A:** the last 2 days of `memory/logs/` for recent `list-digest`, `tweet-roundup`, and prior `reply-maker` outputs (used as a candidate pool and for reply de-duplication).
+- **Mode B:** the last 7 days of `memory/logs/` for engagement opportunities flagged by other skills (`project-pulse`, `refresh-x`, `reply-maker`, `channel-recap`) or noted in MEMORY.md "Known Follow-ups".
+
+**Parse `${var}` to pick the branch** (trim whitespace, compare case-insensitively):
+- If `${var}` is `from-logs` or `--from-logs` — optionally followed by a whitespace-separated `@handle` or project name — run **Mode B (From-Logs Engagement)**. Treat any trailing token as an optional filter that narrows the opportunity scan to that handle/project.
+- Otherwise run **Mode A (Reply Drafting)**, treating `${var}` as the scope: empty, `@handle`, numeric X list ID, or a topic string.
 
 ## Voice
 
@@ -19,15 +33,21 @@ If soul files exist (`soul/SOUL.md`, `soul/STYLE.md`, `soul/examples/`), read th
 
 If no soul files exist (or the bodies are empty placeholders), write replies that are:
 - Direct and substantive — no fluff, no sycophancy
-- Under 280 characters each
+- Under 280 characters each (X replies; DMs and GitHub comments may run longer — see Mode B)
 - Opinionated but grounded in specifics
 - The kind of reply that adds to the conversation, not noise
 
-## Steps
+Either way, when responding to someone who cosigned/mentioned/attributed the operator (Mode B): **acknowledge without groveling** — no "thanks so much for the kind words!", just the actual response.
 
-### 1. Gather candidate tweets
+---
 
-Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-leverage reply window — algorithm rewards early replies, and the OP is still likely to engage back). **Recency fallback:** if the 6h window yields fewer than 3 candidates after the skip gate, widen to **12h** and retry before failing the run.
+# Mode A — Reply Drafting
+
+Generate **two reply options** for **5 reply-worthy tweets** from tracked X accounts, a list, or a topic.
+
+### A1. Gather candidate tweets
+
+Goal: assemble **10–15 candidates** posted in the **last 6 hours** (the high-leverage reply window — the algorithm rewards early replies, and the OP is still likely to engage back). **Recency fallback:** if the 6h window yields fewer than 3 candidates after the skip gate, widen to **12h** and retry before failing the run.
 
 For every candidate, capture: `@handle`, full tweet text, tweet URL, `posted_at` (ISO), engagement counts (likes, replies, retweets if available), and a one-line **why-this-tweet** note.
 
@@ -70,7 +90,7 @@ curl -s -X POST "https://api.x.ai/v1/responses" \
 
 The memory logs are the most reliable source since they're already fetched — prefer them over retrying a blocked API.
 
-### 2. Filter and select 5 tweets
+### A2. Filter and select 5 tweets
 
 Apply the **skip gate** first. **Discard** any candidate that is:
 - Pure self-promo (launching a product, "buy my course", subscribe links)
@@ -87,7 +107,7 @@ From the survivors, **rank by leverage** = `recency × take-strength × room-to-
 
 Pick the **top 5**. If fewer than 5 survive the gate, output what you have and add `REPLY_MAKER_DEGRADED` to the notification subject line.
 
-### 3. Generate two replies per tweet
+### A3. Generate two replies per tweet
 
 For each of the 5 selected tweets, draft **two reply options** with distinct angles:
 
@@ -118,9 +138,9 @@ For each draft reply, score 1–5 on each:
 - **Non-sycophantic**: passes the banned-phrase list?
 - **Voice-matched**: sounds like the soul files (or neutral-direct if no soul)?
 
-If any score is < 4, **rewrite that reply once** before moving on. If the rewrite still scores < 4, drop that tweet from the list and pull the next-ranked candidate from step 2.
+If any score is < 4, **rewrite that reply once** before moving on. If the rewrite still scores < 4, drop that tweet from the list and pull the next-ranked candidate from step A2.
 
-### 4. Notify
+### A4. Notify
 
 Send via `./notify` with this format (link first so the operator can open the source quickly):
 
@@ -141,10 +161,93 @@ source-status: xai=ok|fail|skip, memory=N, websearch=ok|fail|skip
 
 If zero candidates survive the skip gate from any source, send a single `REPLY_MAKER_EMPTY — [one-line reason]` notification and stop.
 
-### 5. Log to `memory/logs/${today}.md`
+### A5. Log
+
+Append to `memory/logs/${today}.md` under the shared `### reply-maker` heading (see **Log** below), using the **Mode A** template.
+
+---
+
+# Mode B — From-Logs Engagement
+
+Turn flagged engagement opportunities from recent logs into ready-to-post replies — read the last 7 days of logs, draft specific responses, send as copy-paste-ready output. **This mode makes no outbound API calls and ignores the `.xai-cache/reply-maker.json` prefetch** — it works purely from local `memory/` files.
+
+**Projects-of-interest list:** if `memory/topics/projects-of-interest.md` exists, treat the project names listed there as the things to watch for mentions, cosigns, attributions, and fork moments. If the file is missing or empty, fall back to any project names that appear in recent logs or in MEMORY.md. If a filter token was passed (`from-logs @handle` or `from-logs <project>`), narrow the scan to opportunities involving that handle/project.
+
+### B1. Collect unactioned engagement opportunities
+
+Read `memory/logs/` for the last 7 days. Look for:
+- Log entries flagging engagement opps (e.g. "Engagement opps: N flagged" with N > 0) — extract the named handles/accounts
+- Any person who cosigned, mentioned, or attributed one of the operator's projects-of-interest
+- GitHub attribution or fork moments not yet acknowledged
+- Entries in MEMORY.md "Known Follow-ups" explicitly flagging engagement opps
+- Cosigns or mentions surfaced in `refresh-x`, `reply-maker`, or `channel-recap` runs
+
+Build a list: `{ person/account, context, what_they_did, link_if_known, days_ago }`
+
+### B2. Filter and prioritize
+
+Apply these rules:
+- Drop any opp older than 14 days — window is likely closed
+- De-dupe: skip opps where recent logs already show "replied to @X" or "acknowledged" for that handle
+- Rank by: recency (fresher first) × leverage (high-follower or influential account first)
+- Cap at 5 opportunities
+
+### B3. Draft ready-to-post responses
+
+For each opportunity:
+- **Type**: X reply / X DM / GitHub comment / X post
+- **Target**: @handle or URL
+- **Draft text**: exact text, ready to copy-paste
+- Keep under 280 chars for X replies; longer is fine for DMs or GitHub comments
+- Voice: if `soul/SOUL.md` and `soul/STYLE.md` are populated, match that voice; otherwise use a clear, direct, neutral tone. Either way: acknowledge without groveling, no "thanks so much for the kind words!" — just the actual response.
+
+### B4. Check for staleness
+
+If any opportunity is 5+ days old, prepend `aging` to that entry in the output.
+
+### B5. Skip if empty
+
+If after filtering there are zero unactioned opps, log `ENGAGEMENT_ACT_SKIP: no unactioned opps` (under the `### reply-maker` heading) and exit **without sending a notification**.
+
+### B6. Write output to a temp file, then send via `./notify -f`
 
 ```
-## Reply Maker
+*Reply Maker (from-logs) — ${today}*
+
+*1. @handle* (N days ago) — [one-line summary of what they did]
+link: [URL or "no link found"]
+type: [X reply / X post / DM / GitHub comment]
+draft: "[ready-to-post text]"
+
+*2. @handle* ...
+
+[if any opps are 5+ days old:]
+some opps aging — act or drop
+```
+
+Write this to `/tmp/reply-maker-from-logs.md` then run `./notify -f /tmp/reply-maker-from-logs.md`.
+
+### B7. Log
+
+Append to `memory/logs/${today}.md` under the shared `### reply-maker` heading (see **Log** below), using the **Mode B** template.
+
+---
+
+## Banned sycophancy phrases
+
+Edit this list as tastes change — any draft reply (either mode) containing one of these (openings or closings) must be rewritten:
+
+- Openings: "Great point", "Love this", "100%", "This 👆", "Couldn't agree more", "So well said", "💯"
+- Closings: "Curious to hear your thoughts!" (engagement-hook noise)
+
+## Log
+
+Append one entry to `memory/logs/${today}.md` under a single `### reply-maker` heading, with a `**Mode:**` discriminator line naming which branch ran.
+
+**Mode A (reply drafting):**
+```
+### reply-maker
+- **Mode:** A (reply drafting)
 - **Var:** ${var:-<empty>}
 - **Candidates collected:** N
 - **Survived skip gate:** N
@@ -154,20 +257,25 @@ If zero candidates survive the skip gate from any source, send a single `REPLY_M
 - **Notification:** sent | degraded | empty
 - **Tweet URLs:** [list, for future-day dedup]
 ```
-
 The `Tweet URLs` line is what tomorrow's run reads to avoid duplicate replies — keep it consistent.
 
-## Banned sycophancy phrases
-
-Edit this list as tastes change — any draft reply containing one of these (openings or closings) must be rewritten:
-
-- Openings: "Great point", "Love this", "100%", "This 👆", "Couldn't agree more", "So well said", "💯"
-- Closings: "Curious to hear your thoughts!" (engagement-hook noise)
+**Mode B (from-logs engagement):**
+```
+### reply-maker
+- **Mode:** B (from-logs engagement)
+- **Opps found:** N unactioned (scanned last 7 days of logs)
+- **Drafted:** N responses
+- **Handles:** @handle1, @handle2, …
+- **Notification sent:** yes
+- ENGAGEMENT_ACT_OK
+```
+If skipped: `ENGAGEMENT_ACT_SKIP: <reason>` (still under `### reply-maker`).
 
 ## Sandbox note
 
-The sandbox blocks outbound curl with `$XAI_API_KEY` in headers — always read the pre-fetched `.xai-cache/reply-maker.json` (populated by `scripts/prefetch-xai.sh`) or fall through to the memory/WebSearch fallback chain. Do not attempt direct curl to `api.x.ai` at runtime. Use **WebFetch** for any non-auth URL fetches.
+- **Mode A:** the sandbox blocks outbound curl with `$XAI_API_KEY` in headers — always read the pre-fetched `.xai-cache/reply-maker.json` (populated by `scripts/prefetch-xai.sh`) or fall through to the memory/WebSearch fallback chain. Do not attempt direct curl to `api.x.ai` at runtime. Use **WebFetch** for any non-auth URL fetches.
+- **Mode B:** reads only local `memory/` files. No outbound network calls needed — no curl, no API. `./notify -f` handles delivery reliably even when the sandbox blocks curl (it writes to `.pending-notify/` as a fallback).
 
 ## Environment Variables Required
 
-- `XAI_API_KEY` — X.AI API key for Grok x_search (optional — falls back to WebSearch + memory logs)
+- `XAI_API_KEY` — X.AI API key for Grok x_search (**Mode A only, optional** — falls back to WebSearch + memory logs). **Mode B requires no environment variables** and uses only built-in memory files and `./notify`.

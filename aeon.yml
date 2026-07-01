@@ -11,7 +11,7 @@ skills:
   hn-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
-  reddit-digest: { enabled: false, schedule: "0 7 * * *" }
+  reddit-digest: { enabled: false, schedule: "0 7 * * *", var: "" } # cross-sub narrative scan or single-sub deep digest. var: empty=narratives(memory/subreddits.yml) | <sub[,sub]> | vibecoding[:week] | <sub>:month
   telegram-digest: { enabled: false, schedule: "30 7 * * *" } # digest from tracked Telegram channels
 
   # --- Mid-morning (9 AM UTC) ---
@@ -26,14 +26,8 @@ skills:
   pr-review: { enabled: false, schedule: "0 9 * * *" }
   auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
   github-monitor: { enabled: false, schedule: "0 9 * * *" }
-  github-trending: { enabled: false, schedule: "0 9 * * *" }
+  github-trending: { enabled: false, schedule: "0 9 * * *", var: "" } # trending repos + Hugging Face Hub. var: empty=GitHub | <lang> | hf | hf:{models,datasets,spaces}
   github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
-  huggingface-trending:
-    {
-      enabled: false,
-      schedule: "30 9 * * *",
-      var: ""
-    } # daily — curated trending HF models/datasets/spaces with "why notable" lines, momentum tags, and bucket clustering. Set var to one of {models, datasets, spaces} to scope.
 
   # --- Midday (12 PM UTC) ---
   token-movers: { enabled: false, schedule: "0 12 * * *", var: "" } # market-movers scan + single-token deep report. var: empty=movers (CoinGecko) | geckoterminal[:chain]=on-chain runners | category:<slug> | <address|symbol|token:sym>=single-token report. Optional COINGECKO/ALCHEMY/XAI/BASE_RPC keys.
@@ -75,8 +69,7 @@ skills:
   article: { enabled: false, schedule: "0 14 * * *" }
   technical-explainer: { enabled: false, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
   digest: { enabled: false, schedule: "0 14 * * *" }
-  research-brief: { enabled: false, schedule: "0 14 * * *" }
-  deep-research: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand only — set var to research topic
+  deep-research: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: research topic; prefix `shallow:` (or `depth=shallow`) for a fast cited brief, else deep multi-source synthesis
   last30: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
   paper-pick: { enabled: false, schedule: "0 14 * * *" }
   search-skill: { enabled: false, schedule: "0 14 * * *" }
@@ -122,12 +115,11 @@ skills:
   fetch-tweets: { enabled: false, schedule: "0 17 * * *" }
   refresh-x: { enabled: false, schedule: "0 17 * * *" }
   list-digest: { enabled: false, schedule: "0 17 * * *" }
-  reply-maker: { enabled: false, schedule: "0 17 * * *" }
+  reply-maker: { enabled: false, schedule: "0 17 * * *", var: "" } # draft X replies. var: empty=discover reply-worthy tweets | @handle | <listID> | <topic> | from-logs (reply to flagged log opportunities). Optional XAI_API_KEY.
   remix-tweets: { enabled: false, schedule: "30 17 * * *" } # 10 rephrased versions of random past tweets
   tweet-roundup: { enabled: false, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
   agent-buzz: { enabled: false, schedule: "30 17 * * *" } # top AI agent tweets by influence
   farcaster-digest: { enabled: false, schedule: "0 17 * * *" } # trending Farcaster casts
-  vibecoding-digest: { enabled: false, schedule: "30 17 * * *" } # r/vibecoding trending posts
   channel-recap: { enabled: false, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
   # --- Gallery update (Sunday 6 PM UTC, after content week) ---
@@ -142,7 +134,7 @@ skills:
     } # cross-post latest article to Dev.to
 
   # --- Evening / meta (6 PM UTC) ---
-  goal-tracker: { enabled: false, schedule: "0 18 * * *" }
+  goal-tracker: { enabled: false, schedule: "0 18 * * *", var: "" } # progress vs goals + milestone threshold alerts. var: empty=combined | goals | milestones | <goal>
   strategy-builder: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — draft STRATEGY.md (north-star / priorities / audience / constraints) from a brief + repo README + memory. var: bare goal text, or structured brief "repo=owner/repo | links=url1,url2 | goal=free text". Powers the dashboard Strategy → Build my strategy button. No API key needed.
   skill-health: { enabled: false, schedule: "0 18 * * *" }
   skill-analytics: { enabled: false, schedule: "30 18 * * 3" } # Wednesday — fleet-level skill-run analytics: ranked run counts, exit-taxonomy distribution, anomaly flags (significance-gated)
@@ -302,7 +294,7 @@ skills:
 
   # Research & content
   agent-displacement: { enabled: false, schedule: "0 11 * * 0" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
-  launch-radar: { enabled: false, schedule: "30 10 * * 1" } # Monday — scan PH/HN/GitHub Trending for launches matching the startup-idea backlog
+  launch-radar: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — new-launch radar. var: empty/backlog[:cat]=scan vs startup-idea backlog | category[:slug][:dry-run]=competitor new-entrant scan (PH/HN)
   topic-momentum: { enabled: false, schedule: "30 6 * * 1" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
   narrative-convergence:
     {
@@ -324,13 +316,9 @@ skills:
   pvr-watchlist: { enabled: false, schedule: "0 16 * * 6" } # Saturday — probe watchlist repos for private-vuln-reporting status, re-submit queued advisories
   pvr-triage: { enabled: false, schedule: "30 16 * * 6" } # Saturday — lifecycle check on submitted private vuln reports (accept/reject/aging >30d)
 
-  # Social
-  engagement-act: { enabled: false, schedule: "30 9 * * *" } # daily — turn flagged engagement opportunities into copy-paste-ready replies
-
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
   idea-validator: { enabled: false, schedule: "30 18 * * 1" } # Monday — screen the startup-idea backlog, score viability
-  milestone-tracker: { enabled: false, schedule: "0 19 * * 1" } # Monday — progress on key product/growth milestones; crossings, approaches, stalls
 
   # Self-maintenance / meta
   batch-health: { enabled: false, schedule: "30 8 * * *" } # daily — verify enabled morning-batch skills fired; alert on silent misses
@@ -374,7 +362,6 @@ skills:
   # Dev & repo
   docs-sync: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday — merged product PRs → website changelog PR. Config in memory/docs-sync.md (product_repo/website_repo). Requires GH_GLOBAL (cross-repo write). No-op until configured.
   github-issues: { enabled: false, schedule: "0 8 * * *" } # daily — ranked digest of new open issues across the operator's repos
-  competitor-radar: { enabled: false, schedule: "0 10 * * 1" } # Monday — PH+HN scan for new launches in the operator's category; cohort from framework-watch / memory/competitor-radar.md
   feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # Saturday — autonomous: build one feature per watched repo (opens PRs). Powerful; keep disabled until trusted.
 
   # Research & content
