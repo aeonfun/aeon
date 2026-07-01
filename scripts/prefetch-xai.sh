@@ -110,14 +110,22 @@ case "$SKILL" in
       "Search X for all tweets posted by @${ACCOUNT} from ${YESTERDAY} to ${TODAY}. Return every tweet — not just popular ones. For each: the full tweet text, date/time posted, engagement stats (likes, retweets, replies), and the direct link (https://x.com/${ACCOUNT}/status/ID). If it was a reply, note who it was replying to. If it was a quote tweet, include what was quoted. Return as a chronological list."
     ;;
 
-  remix-tweets)
-    # Fetch older tweets from an account for remixing
-    ACCOUNT="${VAR:-}"
-    if [ -z "$ACCOUNT" ]; then
-      echo "xai-prefetch: remix-tweets requires var (X handle), skipping"
+  write-tweet)
+    # Only the `remix` format needs an X prefetch (older tweets to remix).
+    # drafts/thread use built-in WebSearch or fetch live, so skip otherwise.
+    FIRST=$(printf '%s' "${VAR:-}" | awk '{print tolower($1)}')
+    if [ "$FIRST" != "remix" ]; then
+      echo "xai-prefetch: write-tweet var='${VAR:-}' is not remix format — no X prefetch needed"
       exit 0
     fi
+    # The remix branch resolves its handle from $X_HANDLE (then soul/SOUL.md in-skill).
+    ACCOUNT=$(printf '%s' "${X_HANDLE:-}" | tr -d ' ')
     ACCOUNT="${ACCOUNT#@}"
+    if [ -z "$ACCOUNT" ]; then
+      echo "xai-prefetch: write-tweet remix has no \$X_HANDLE — skipping X prefetch (skill resolves handle from soul/SOUL.md or aborts)"
+      exit 0
+    fi
+    # Default remix window: 30–180 days ago. Custom windows resolve live in-skill.
     FROM_DATE=$(date -u -d "180 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-180d +%Y-%m-%d)
     TO_DATE_REMIX=$(date -u -d "30 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-30d +%Y-%m-%d)
     xai_search "remix-tweets.json" \

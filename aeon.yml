@@ -7,7 +7,6 @@
 skills:
   # --- Morning aggregation (7 AM UTC) ---
   priority-brief: { enabled: false, schedule: "0 7 * * *" }
-  rss-digest: { enabled: false, schedule: "0 7 * * *" }
   hn-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
@@ -66,22 +65,19 @@ skills:
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
 
   # --- Afternoon (2 PM UTC) ---
-  article: { enabled: false, schedule: "0 14 * * *" }
-  technical-explainer: { enabled: false, schedule: "30 14 * * *" } # visual technical explanation with AI-generated hero image
-  digest: { enabled: false, schedule: "0 14 * * *" }
+  article: { enabled: false, schedule: "0 14 * * *", var: "" } # long-form article. var: empty=standard | repo:<owner/repo> | lens:<topic>; append --visual for a Replicate hero image (angles fold in repo-article/project-lens/technical-explainer)
+  digest: { enabled: false, schedule: "0 14 * * *", var: "" } # topic digest across web + X + RSS. var: empty=web | <topic> | rss[:<topic>] | "<topic> +rss" (RSS feeds from memory/feeds.yml)
   deep-research: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: research topic; prefix `shallow:` (or `depth=shallow`) for a fast cited brief, else deep multi-source synthesis
   last30: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — cross-platform 30-day social research
   paper-pick: { enabled: false, schedule: "0 14 * * *" }
   search-skill: { enabled: false, schedule: "0 14 * * *" }
 
   security-digest: { enabled: false, schedule: "0 14 * * *" }
-  idea-capture: { enabled: false, schedule: "0 14 * * *" }
   deal-flow: { enabled: false, schedule: "0 14 * * 1" } # weekly funding round tracker
   reg-monitor: { enabled: false, schedule: "0 14 * * 3" } # regulatory developments tracker
 
   # --- Repo intelligence (3 PM UTC) ---
   push-recap: { enabled: false, schedule: "0 15 * * *" }
-  repo-article: { enabled: false, schedule: "0 15 * * *" }
   repo-actions: { enabled: false, schedule: "0 15 * * *" }
   repo-pulse: { enabled: false, schedule: "0 15 * * *" }
   star-milestone: { enabled: false, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
@@ -91,7 +87,6 @@ skills:
       schedule: "10 10 * * *",
       var: ""
     } # daily — project next milestone crossing date from 14-day repo-pulse history; alert only when projected date lands in 7-14d window on Tue/Wed/Thu (Show HN dispatch slot)
-  project-lens: { enabled: false, schedule: "30 15 * * 1,3,5" } # articles through rotating analytical lenses
   repo-scanner:
     {
       enabled: false,
@@ -102,7 +97,7 @@ skills:
   # --- Late afternoon (4 PM UTC) ---
   skill-scan: { enabled: false, schedule: "0 16 * * 1" }
   code-health: { enabled: false, schedule: "0 16 * * *" }
-  changelog: { enabled: false, schedule: "0 16 * * *" }
+  changelog: { enabled: false, schedule: "0 16 * * *", var: "" } # changelog from recent commits/PRs. var: empty/owner/repo=in-repo | push-to:owner/website-repo=cross-repo changelog PR (needs GH_GLOBAL)
   external-feature: { enabled: false, schedule: "30 16 * * *", var: "" } # proactively enhance watched repos — set var to owner/repo or owner/repo#N
   vuln-scanner: { enabled: false, schedule: "0 16 * * 6", var: "" } # Saturday — audit repos for security vulns, PR fixes
   deploy-prototype: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
@@ -116,14 +111,11 @@ skills:
   refresh-x: { enabled: false, schedule: "0 17 * * *" }
   list-digest: { enabled: false, schedule: "0 17 * * *" }
   reply-maker: { enabled: false, schedule: "0 17 * * *", var: "" } # draft X replies. var: empty=discover reply-worthy tweets | @handle | <listID> | <topic> | from-logs (reply to flagged log opportunities). Optional XAI_API_KEY.
-  remix-tweets: { enabled: false, schedule: "30 17 * * *" } # 10 rephrased versions of random past tweets
   tweet-roundup: { enabled: false, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
   agent-buzz: { enabled: false, schedule: "30 17 * * *" } # top AI agent tweets by influence
   farcaster-digest: { enabled: false, schedule: "0 17 * * *" } # trending Farcaster casts
   channel-recap: { enabled: false, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
-  # --- Gallery update (Sunday 6 PM UTC, after content week) ---
-  update-gallery: { enabled: false, schedule: "0 18 * * 0" }
 
   # --- Content distribution (runs 30 min after article-generating skills) ---
   syndicate-article:
@@ -131,7 +123,7 @@ skills:
       enabled: false,
       schedule: "30 15 * * *",
       var: ""
-    } # cross-post latest article to Dev.to
+    } # distribute latest article across channels. var: empty=all | comma-list of {gallery,devto,farcaster} | gallery[,file=<name>]. Optional DEVTO_API_KEY, NEYNAR_API_KEY/NEYNAR_SIGNER_UUID.
 
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: false, schedule: "0 18 * * *", var: "" } # progress vs goals + milestone threshold alerts. var: empty=combined | goals | milestones | <goal>
@@ -295,7 +287,6 @@ skills:
   # Research & content
   agent-displacement: { enabled: false, schedule: "0 11 * * 0" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
   launch-radar: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — new-launch radar. var: empty/backlog[:cat]=scan vs startup-idea backlog | category[:slug][:dry-run]=competitor new-entrant scan (PH/HN)
-  topic-momentum: { enabled: false, schedule: "30 6 * * 1" } # Monday — content-gap scan: top 3 uncovered angles vs recent article history
   narrative-convergence:
     {
       enabled: false,
@@ -332,15 +323,13 @@ skills:
   fear-divergence: { enabled: false, schedule: "30 7 * * *" } # daily 07:30 UTC — conditional: fires only when Fear & Greed < 25; surfaces assets diverging from the BTC drawdown with narrative catalysts from memory; silent skip otherwise. Reads market-context.md (enable market-context first).
   picks-tracker: { enabled: false, schedule: "0 9 * * 0" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
   # Content pipeline
-  beat-tracker: { enabled: false, schedule: "0 9 * * 3" } # Wednesday 09:00 UTC — persistent beat counts per news storyline; alerts when a thread hits 3 beats (article-ready). Event-level complement to topic-momentum + narrative-tracker.
-  article-queue: { enabled: false, schedule: "0 11 * * 0" } # Sunday 11:00 UTC — synthesizes beat-tracker + topic-momentum + narrative-tracker into a ranked queue at memory/topics/article-queue.md that the article skill picks up via MEMORY.md
+  article-queue: { enabled: false, schedule: "0 11 * * 0", var: "" } # Sunday — content planner: ranks content-gap signals + tracks multi-beat storylines into memory/topics/article-queue.md (folds in topic-momentum + beat-tracker; article skill picks it up via MEMORY.md). var: empty=combined | gaps | beats
   content-performance:
     {
       enabled: false,
       schedule: "0 10 * * 0",
       var: ""
     } # Sunday 10:00 UTC — weekly engagement analysis of the operator's X account (topics, formats, breakouts); feeds article-queue/topic-momentum. var: X handle (no @); falls back to soul/SOUL.md. XAI_API_KEY optional (WebSearch fallback).
-  thread-writer: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — write a 5–10 tweet thread in the operator's voice on a topic/URL; picks the sharpest recent signal from memory if var empty
   soul-builder: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build a SOUL from any mix of sources (X handle, full name, links), drafting soul/SOUL.md + STYLE.md + examples so every content skill speaks in that voice. var: bare X handle, or structured brief "x=handle | name=Full Name | links=url1,url2". Powers the dashboard Soul → Build my soul button. XAI_API_KEY optional (name/links use built-in WebSearch/WebFetch).
   # Social
   mention-radar:
@@ -360,12 +349,11 @@ skills:
   wallet-digest: { enabled: false, schedule: "0 8 * * *" } # daily — balance + activity across tracked wallets; sibling to onchain-monitor
 
   # Dev & repo
-  docs-sync: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday — merged product PRs → website changelog PR. Config in memory/docs-sync.md (product_repo/website_repo). Requires GH_GLOBAL (cross-repo write). No-op until configured.
   github-issues: { enabled: false, schedule: "0 8 * * *" } # daily — ranked digest of new open issues across the operator's repos
   feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # Saturday — autonomous: build one feature per watched repo (opens PRs). Powerful; keep disabled until trusted.
 
   # Research & content
-  write-tweet: { enabled: false, schedule: "0 21 * * *", var: "" } # daily 21:00 (after content) — 10 tweet drafts × 5 size tiers on a topic from recent outputs. Requires XAI_API_KEY.
+  write-tweet: { enabled: false, schedule: "0 21 * * *", var: "" } # tweet studio. var: empty=drafts (10×5 tiers) | thread [topic] | remix [window]. Optional XAI_API_KEY (required for remix).
   bd-radar: { enabled: false, schedule: "20 7 * * *", var: "" } # daily 07:20 — BD radar: who's building/forking/integrating/mentioning your products → ranked leads. Products from memory/products.md. Quiet unless high-intent.
 
   # Product / ops (config: memory/products.md)
@@ -375,7 +363,7 @@ skills:
   memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md
 
   # Utilities / on-demand
-  note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — append a timestamped note to a local memory/notes/ file (no external service)
+  note-taking: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — capture + triage a note (PARA bucket, tags, recurring-theme detection) to memory/notes/. var: note text, optional source:<channel> prefix
   capabilities-sweep: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — infer a capabilities: block for every skill missing one
 
   send-email: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — compose + send a 1:1 email to a named recipient via Resend (general sibling of disclosure-emailer). var: "to=… | subject=… | about=…"
