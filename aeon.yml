@@ -22,11 +22,10 @@ skills:
       schedule: "workflow_dispatch",
       var: ""
     } # workflow_dispatch only — structured triage receipt for inbound PRs that introduce/modify SKILL.md files. Runs skill-scan against each SKILL.md, enumerates required secrets, checks cron slot conflicts vs existing aeon.yml, surfaces quality signals (description, step count, notify call, tags). Posts ONE structured comment per (PR, head_sha). var: PR_NUMBER on aaronjmars/aeon. Gated notify (BLOCK or COMMENT_FAILED only).
-  pr-review: { enabled: false, schedule: "0 9 * * *" }
+  pr-review: { enabled: false, schedule: "0 9 * * *", var: "" } # var: empty/owner/repo=per-PR review (posts comments) | --survey [dry-run] [owner/repo]=risk-tiered PR triage digest (folds in pr-merge)
   auto-merge: { enabled: false, schedule: "0 14 * * *" } # merge green PRs daily at 2 PM UTC; max 3 per run
-  github-monitor: { enabled: false, schedule: "0 9 * * *" }
+  github-monitor: { enabled: false, schedule: "0 9 * * *", var: "" } # watch your repos. var: empty=combined monitor (PRs/issues/releases) | issues | releases | prs | owner/repo (folds in github-issues/github-releases/pr-tracker)
   github-trending: { enabled: false, schedule: "0 9 * * *", var: "" } # trending repos + Hugging Face Hub. var: empty=GitHub | <lang> | hf | hf:{models,datasets,spaces}
-  github-releases: { enabled: false, schedule: "30 9 * * *" } # track new releases from watched repos
 
   # --- Midday (12 PM UTC) ---
   token-movers: { enabled: false, schedule: "0 12 * * *", var: "" } # market-movers scan + single-token deep report. var: empty=movers (CoinGecko) | geckoterminal[:chain]=on-chain runners | category:<slug> | <address|symbol|token:sym>=single-token report. Optional COINGECKO/ALCHEMY/XAI/BASE_RPC keys.
@@ -82,8 +81,7 @@ skills:
   skill-scan: { enabled: false, schedule: "0 16 * * 1" }
   code-health: { enabled: false, schedule: "0 16 * * *" }
   changelog: { enabled: false, schedule: "0 16 * * *", var: "" } # changelog from recent commits/PRs. var: empty/owner/repo=in-repo | push-to:owner/website-repo=cross-repo changelog PR (needs GH_GLOBAL)
-  external-feature: { enabled: false, schedule: "30 16 * * *", var: "" } # proactively enhance watched repos — set var to owner/repo or owner/repo#N
-  vuln-scanner: { enabled: false, schedule: "0 16 * * 6", var: "" } # Saturday — audit repos for security vulns, PR fixes
+  vuln-scanner: { enabled: false, schedule: "0 16 * * 6", var: "" } # security scan + disclose. var: empty/owner/repo=scan | resubmit[:owner/repo]=PVR re-submit | disclose=queue armed emails (folds in pvr-watchlist/disclosure-emailer). RESEND_* for email.
   deploy-prototype: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build app and deploy to Vercel
   base-mcp: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — Base Account access via the Base MCP server (mcp.base.org)
   autoresearch: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — set var to skill name to evolve
@@ -140,18 +138,12 @@ skills:
       schedule: "30 8 * * 1",
       var: ""
     } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
-  ecosystem-links:
-    {
-      enabled: false,
-      schedule: "55 11 * * 1",
-      var: ""
-    } # Monday 11:55 UTC — weekly URL-health audit of every link in ECOSYSTEM.md. GitHub URLs checked for archived/disabled via `gh api repos/...`; web URLs checked with `curl -sI --location` + WebFetch fallback; buckets OK/ARCHIVED/MOVED/DEAD/INCONCLUSIVE/XONLY/OTHER. INCONCLUSIVE never single-shots to DEAD — two consecutive INCONCLUSIVE runs are required (sandbox-aware). Notifies on transitions into DEAD/ARCHIVED/MOVED and on recoveries back to OK. Pairs with ecosystem-pulse (liveness, 11:00) on the Monday ecosystem loop. Read-only against ECOSYSTEM.md. Pass dry-run to skip notify.
   ecosystem-pulse:
     {
       enabled: false,
       schedule: "0 11 * * 1",
       var: ""
-    } # Monday 11:00 UTC — weekly liveness check of ECOSYSTEM.md projects: resolves each to a GitHub repo (operator map + strict search), reports stars/forks/last-push buckets (ACTIVE/RECENT/COLD/X-only) + releases in 7d window, WoW transitions. Read-only against ECOSYSTEM.md. Gated notify (QUIET when no releases/transitions/entrants). Pass dry-run to skip notify.
+    } # Monday — one ECOSYSTEM.md pass: project liveness (stars/forks/last-push buckets + 7d releases + WoW transitions) AND link-health (URL audit, buckets OK/ARCHIVED/MOVED/DEAD/…, folds in ecosystem-links). var: empty=both | liveness | links | dry-run
   fleet-state:
     {
       enabled: false,
@@ -263,15 +255,9 @@ skills:
 
   # Dev & repo
   builder-map: { enabled: false, schedule: "0 10 * * 2" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
-  pr-tracker: { enabled: false, schedule: "30 9 * * *" } # daily — status of cross-repo PRs opened by this instance (merge/stale/closed)
-  pr-merge: { enabled: false, schedule: "45 9 * * *", var: "" } # daily 09:45 UTC — operator-facing morning digest of every open PR on the target repo (default aaronjmars/aeon), bucketed by touched-file risk tier (FAST_TRACK/SKILL_PASS/INFRA_REVIEW/SKILL_WARN_OR_BLOCK/CORE_REVIEW/UNKNOWN), each skill-PR scanned via skill-scan/scan.sh, gated re-notify on head SHA. var: dry-run [owner/repo]
-  repo-revive: { enabled: false, schedule: "0 10 * * 6" } # Saturday — one targeted improvement to reactivate the top dormant watched repo
 
   # Security
-  disclosure-tracker: { enabled: false, schedule: "15 16 * * *" } # daily — audit pending disclosure queue, alert on aging CRITICAL/HIGH advisories
-  vuln-tracker: { enabled: false, schedule: "30 16 * * *" } # daily — status of vuln-scanner PRs/advisories/queued drafts
-  pvr-watchlist: { enabled: false, schedule: "0 16 * * 6" } # Saturday — probe watchlist repos for private-vuln-reporting status, re-submit queued advisories
-  pvr-triage: { enabled: false, schedule: "30 16 * * 6" } # Saturday — lifecycle check on submitted private vuln reports (accept/reject/aging >30d)
+  vuln-tracker: { enabled: false, schedule: "30 16 * * *", var: "" } # daily lifecycle poll: vuln-scanner PR/advisory status + PVR triage + disclosure-queue aging (folds in pvr-triage/disclosure-tracker). var: empty=full | pvr | queue | prs | <GHSA-id>
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
@@ -307,12 +293,10 @@ skills:
 
   # --- Ported from derivative instances (2026-06-29) ---
   # Security (pairs with vuln-scanner ↑ channel 5d)
-  disclosure-emailer: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 — auto-send armed (auto_send:true) out-of-band disclosure emails via Resend; the send runs in scripts/postprocess-email.sh. Needs RESEND_* secrets. Only emails the plain-text EMAIL-BODY block; operator notes never leave the repo.
   inbox-triage: { enabled: false, schedule: "30 11 * * *" } # daily 11:30 — GitHub notification-inbox triage (maintainer replies to disclosures/advisories/mentions)
 
   # Dev & repo
-  github-issues: { enabled: false, schedule: "0 8 * * *" } # daily — ranked digest of new open issues across the operator's repos
-  feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # Saturday — autonomous: build one feature per watched repo (opens PRs). Powerful; keep disabled until trusted.
+  feature: { enabled: false, schedule: "0 10 * * 6", var: "" } # build a feature + open PR. var: watched (default) | external:<owner/repo> | dormant[:<owner/repo>], append --fix-issues (folds in external-feature/repo-revive). GH_GLOBAL for external.
 
   # Research & content
   write-tweet: { enabled: false, schedule: "0 21 * * *", var: "" } # tweet studio. var: empty=drafts (10×5 tiers) | thread [topic] | remix [window]. Optional XAI_API_KEY (required for remix).
