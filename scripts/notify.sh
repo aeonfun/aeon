@@ -28,6 +28,11 @@ TITLE=""
 SEVERITY="info"
 LINK=""
 MSG=""
+BUTTONS_JSON=""     # --buttons: JSON array-of-arrays -> Telegram inline_keyboard
+FORCE_REPLY=""      # --force-reply: prompt the user's next message as a reply
+PLACEHOLDER=""      # --placeholder: input_field_placeholder for force_reply
+CONTEXT=""          # --context "skill::intent": marker the poller reads back on reply
+MUTE_KEY=""         # --mute-key "skill:arg": suppress if muted/snoozed (memory/*.log)
 have_body=false
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -37,12 +42,24 @@ while [ $# -gt 0 ]; do
         exit 2
       fi
       MSG=$(cat "$2"); have_body=true; shift 2 ;;
-    --title)    TITLE="${2:-}"; shift 2 ;;
-    --severity) SEVERITY="${2:-info}"; shift 2 ;;
-    --link)     LINK="${2:-}"; shift 2 ;;
-    *)          if [ "$have_body" = false ]; then MSG="$1"; have_body=true; fi; shift ;;
+    --title)       TITLE="${2:-}"; shift 2 ;;
+    --severity)    SEVERITY="${2:-info}"; shift 2 ;;
+    --link)        LINK="${2:-}"; shift 2 ;;
+    --buttons)     BUTTONS_JSON="${2:-}"; shift 2 ;;
+    --force-reply) FORCE_REPLY=1; shift ;;
+    --placeholder) PLACEHOLDER="${2:-}"; shift 2 ;;
+    --context)     CONTEXT="${2:-}"; shift 2 ;;
+    --mute-key)    MUTE_KEY="${2:-}"; shift 2 ;;
+    *)             if [ "$have_body" = false ]; then MSG="$1"; have_body=true; fi; shift ;;
   esac
 done
+
+# Context marker — baked into the visible body so the poller can recover which
+# skill/intent a force_reply answer belongs to (Telegram carries it back in
+# reply_to_message.text). See scripts/telegram-route.sh `reply` mode.
+if [ -n "$CONTEXT" ]; then
+  MSG=$(printf '[%s] %s' "$CONTEXT" "$MSG")
+fi
 
 # Normalize severity
 SEVERITY=$(printf '%s' "$SEVERITY" | tr '[:upper:]' '[:lower:]')
@@ -54,6 +71,29 @@ if [ -n "${NOTIFY_MIN_SEVERITY:-}" ]; then
   if [ "$(rank "$SEVERITY")" -lt "$(rank "$(printf '%s' "$NOTIFY_MIN_SEVERITY" | tr '[:upper:]' '[:lower:]')")" ]; then
     echo "notify: severity '$SEVERITY' below NOTIFY_MIN_SEVERITY, skipping" >&2
     exit 0
+  fi
+fi
+
+# Snooze / mute gate — a skill that fires alerts passes --mute-key "skill:arg";
+# button taps write memory/mutes.log ("skill:arg") and memory/snoozes.log
+# ("skill:arg:until_epoch") via scripts/telegram-route.sh. Skip the send when the
+# key is muted, or snoozed with an "until" still in the future.
+if [ -n "$MUTE_KEY" ]; then
+  if [ -f memory/mutes.log ] && grep -qxF "$MUTE_KEY" memory/mutes.log; then
+    echo "notify: '$MUTE_KEY' muted, skipping" >&2
+    exit 0
+  fi
+  if [ -f memory/snoozes.log ]; then
+    NOW_EPOCH=$(date -u +%s)
+    while IFS= read -r _sz_line; do
+      case "$_sz_line" in "$MUTE_KEY":*) ;; *) continue ;; esac
+      _sz_until="${_sz_line##*:}"
+      [[ "$_sz_until" =~ ^[0-9]+$ ]] || continue
+      if [ "$_sz_until" -gt "$NOW_EPOCH" ]; then
+        echo "notify: '$MUTE_KEY' snoozed until $_sz_until, skipping" >&2
+        exit 0
+      fi
+    done < memory/snoozes.log
   fi
 fi
 
@@ -104,26 +144,65 @@ printf '%s' "$PLAIN" > ".pending-notify/${TS}.md"
 
 DELIVERED=false
 
+# Build reply_markup once (Telegram-only). Inline buttons and force_reply are
+# mutually exclusive per message, so --buttons wins if both are somehow set.
+# Attached to the LAST chunk so it renders under the full (possibly chunked) text.
+REPLY_MARKUP="null"
+if [ -n "$BUTTONS_JSON" ]; then
+  REPLY_MARKUP=$(jq -n --argjson kb "$BUTTONS_JSON" '{inline_keyboard:$kb}' 2>/dev/null || echo "null")
+  [ -z "$REPLY_MARKUP" ] && REPLY_MARKUP="null"
+  if [ "$REPLY_MARKUP" = "null" ]; then
+    echo "notify: --buttons is not valid JSON, ignoring" >&2
+  fi
+elif [ -n "$FORCE_REPLY" ]; then
+  REPLY_MARKUP=$(jq -n --arg p "$PLACEHOLDER" \
+    '{force_reply:true} + (if $p != "" then {input_field_placeholder:$p} else {} end)')
+fi
+
 # Telegram — fence-safe chunks (parse_mode Markdown, fallback to none)
 if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
   TG_CHUNKS_B64=$(printf '%s' "$MSG" | python3 "$FMT" telegram --title "$TITLE" --severity "$SEVERITY" || true)
+  # Materialize chunks so we know which one is last (gets the reply_markup).
+  TG_CHUNKS=()
   while IFS= read -r TG_CHUNK_B64; do
     [ -z "$TG_CHUNK_B64" ] && continue
-    TG_MSG=$(printf '%s' "$TG_CHUNK_B64" | base64 -d)
+    TG_CHUNKS+=("$TG_CHUNK_B64")
+  done <<< "$TG_CHUNKS_B64"
+  TG_LAST=$(( ${#TG_CHUNKS[@]} - 1 ))
+  for TG_I in "${!TG_CHUNKS[@]}"; do
+    TG_MSG=$(printf '%s' "${TG_CHUNKS[$TG_I]}" | base64 -d)
+    # reply_markup rides only on the last chunk.
+    if [ "$TG_I" -eq "$TG_LAST" ] && [ "$REPLY_MARKUP" != "null" ]; then
+      TG_RM="$REPLY_MARKUP"
+    else
+      TG_RM="null"
+    fi
+    TG_PAYLOAD=$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" --argjson rm "$TG_RM" \
+      '{chat_id:$chat, text:$text, parse_mode:"Markdown"} + (if $rm then {reply_markup:$rm} else {} end)')
+
+    # Dry-run (tests): record the payload instead of sending. No network.
+    if [ "${NOTIFY_DRY_RUN:-}" = "1" ]; then
+      mkdir -p .pending-notify
+      printf '%s\n' "$TG_PAYLOAD" >> .pending-notify/tg-payload.jsonl
+      DELIVERED=true
+      continue
+    fi
+
     TG_RESULT=$(curl -s -w "\n%{http_code}" -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-      -H "Content-Type: application/json" \
-      -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id:$chat,text:$text,parse_mode:"Markdown"}')" 2>/dev/null) || true
+      -H "Content-Type: application/json" -d "$TG_PAYLOAD" 2>/dev/null) || true
     TG_HTTP=$(echo "$TG_RESULT" | tail -1)
     TG_OK=$(echo "$TG_RESULT" | sed '$d' | jq -r '.ok // false' 2>/dev/null || echo "false")
     if [ "$TG_HTTP" = "200" ] && [ "$TG_OK" = "true" ]; then
       DELIVERED=true
     else
+      # Fallback without parse_mode (Markdown parse errors) — keep the reply_markup.
+      TG_FALLBACK=$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" --argjson rm "$TG_RM" \
+        '{chat_id:$chat, text:$text} + (if $rm then {reply_markup:$rm} else {} end)')
       curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
-        -H "Content-Type: application/json" \
-        -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$TG_MSG" '{chat_id:$chat,text:$text}')" > /dev/null 2>&1 && DELIVERED=true || true
+        -H "Content-Type: application/json" -d "$TG_FALLBACK" > /dev/null 2>&1 && DELIVERED=true || true
     fi
     sleep 0.3
-  done <<< "$TG_CHUNKS_B64"
+  done
 fi
 
 # Discord — rich embeds, one POST per embed

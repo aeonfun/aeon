@@ -76,6 +76,62 @@ else
 fi
 rm -f "$tmp"
 
+# --- interactive flags (Telegram dry-run; NOTIFY_DRY_RUN records the payload
+#     instead of sending, so these assert reply_markup with no network) ---
+ROOT="$(pwd)"
+ABS_NOTIFY="$ROOT/scripts/notify.sh"
+
+# 7. --buttons attaches an inline_keyboard to the Telegram payload
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$NOTIFY" "Alert body long enough to clear the probe filter here" \
+  --buttons '[[{"text":"Snooze","callback_data":"snooze:x:y:60"}]]' >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.reply_markup.inline_keyboard[0][0].callback_data=="snooze:x:y:60"' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "--buttons attaches inline_keyboard"
+else
+  bad "--buttons attaches inline_keyboard"
+fi
+
+# 8. --force-reply + --context set force_reply and prefix the [skill::intent] marker
+reset
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$NOTIFY" "Which repository should I track for you" \
+  --force-reply --placeholder "owner/repo" --context "github-monitor::add-repo" >/dev/null 2>&1
+if [ -f "$WORK/tg-payload.jsonl" ] && \
+   jq -e '.reply_markup.force_reply==true' "$WORK/tg-payload.jsonl" >/dev/null 2>&1 && \
+   jq -e '.text|startswith("[github-monitor::add-repo]")' "$WORK/tg-payload.jsonl" >/dev/null 2>&1; then
+  pass "--force-reply + --context set marker and force_reply"
+else
+  bad "--force-reply + --context set marker and force_reply"
+fi
+
+# 9-11. --mute-key gate. Isolated cwd so the repo's memory/ is never touched.
+MK="$(mktemp -d)"; mkdir -p "$MK/memory"; cd "$MK" || exit 1
+
+# 9. muted key suppresses the send
+rm -rf .pending-notify .notify-sent-hashes; echo "token-movers:BTC" > memory/mutes.log; : > memory/snoozes.log
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$ABS_NOTIFY" "BTC alert that should be muted away entirely" --mute-key "token-movers:BTC" >/dev/null 2>&1
+[ ! -f .pending-notify/tg-payload.jsonl ] && pass "--mute-key muted suppresses" || bad "--mute-key muted suppresses"
+
+# 10. future snooze suppresses
+rm -rf .pending-notify .notify-sent-hashes; : > memory/mutes.log
+printf 'token-movers:ETH:%s\n' "$(( $(date -u +%s) + 3600 ))" > memory/snoozes.log
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$ABS_NOTIFY" "ETH alert snoozed for an hour from now" --mute-key "token-movers:ETH" >/dev/null 2>&1
+[ ! -f .pending-notify/tg-payload.jsonl ] && pass "--mute-key future snooze suppresses" || bad "--mute-key future snooze suppresses"
+
+# 11. expired snooze delivers
+rm -rf .pending-notify .notify-sent-hashes
+printf 'token-movers:SOL:%s\n' "$(( $(date -u +%s) - 10 ))" > memory/snoozes.log
+TELEGRAM_BOT_TOKEN=x TELEGRAM_CHAT_ID=123 NOTIFY_DRY_RUN=1 \
+  bash "$ABS_NOTIFY" "SOL alert should deliver since snooze expired" --mute-key "token-movers:SOL" >/dev/null 2>&1
+[ -f .pending-notify/tg-payload.jsonl ] && pass "--mute-key expired snooze delivers" || bad "--mute-key expired snooze delivers"
+
+cd "$ROOT" || exit 1
+rm -rf "$MK"
+
 reset
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"

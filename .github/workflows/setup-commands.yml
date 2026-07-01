@@ -1,0 +1,106 @@
+name: Setup Telegram Commands
+
+# Pushes the bot's slash-command list (the `/` autocomplete menu) to Telegram and
+# points the message-field menu button at it. Idempotent — safe to re-run anytime.
+#
+# Runs on demand (Actions tab → Run workflow) and automatically whenever aeon.yml
+# changes on main, so the menu never drifts from the set of enabled skills.
+# No-ops silently on forks without TELEGRAM_BOT_TOKEN configured.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['aeon.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Push command list + menu button
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import os, re, json, urllib.request, urllib.error
+
+          token = os.environ.get("TELEGRAM_BOT_TOKEN", "").strip()
+          if not token:
+              print("TELEGRAM_BOT_TOKEN not set — skipping (this is fine on forks without Telegram).")
+              raise SystemExit(0)
+
+          try:
+              import yaml
+          except ImportError:
+              os.system("pip install --quiet pyyaml")
+              import yaml
+
+          cfg = yaml.safe_load(open("aeon.yml")) or {}
+          skills = cfg.get("skills") or {}
+
+          # Telegram command constraints: name is 1-32 chars, lowercase a-z, 0-9, _.
+          def cmd_name(skill):
+              return re.sub(r"[^a-z0-9_]", "", skill.lower().replace("-", "_"))[:32]
+
+          def skill_description(skill):
+              path = f"skills/{skill}/SKILL.md"
+              try:
+                  text = open(path, encoding="utf-8").read()
+              except OSError:
+                  return skill
+              m = re.match(r"^---\n(.*?)\n---", text, re.DOTALL)
+              if m:
+                  try:
+                      fm = yaml.safe_load(m.group(1)) or {}
+                      desc = fm.get("description")
+                      if desc:
+                          return str(desc)
+                  except yaml.YAMLError:
+                      pass
+              return skill
+
+          # Reserved built-ins first, then every enabled skill.
+          commands = [
+              {"command": "start",    "description": "Introduction and how to run skills"},
+              {"command": "help",     "description": "How to use Aeon over Telegram"},
+              {"command": "settings", "description": "List currently enabled skills"},
+          ]
+          reserved = {"start", "help", "settings"}
+          for name, meta in skills.items():
+              if not (isinstance(meta, dict) and meta.get("enabled")):
+                  continue
+              c = cmd_name(name)
+              if not c or c in reserved:
+                  continue
+              reserved.add(c)
+              commands.append({"command": c, "description": skill_description(name)[:256]})
+
+          # Telegram caps setMyCommands at 100.
+          if len(commands) > 100:
+              print(f"::warning::{len(commands)} commands exceeds Telegram's 100 limit — truncating.")
+              commands = commands[:100]
+
+          def api(method, payload):
+              req = urllib.request.Request(
+                  f"https://api.telegram.org/bot{token}/{method}",
+                  data=json.dumps(payload).encode(),
+                  headers={"Content-Type": "application/json"},
+              )
+              try:
+                  with urllib.request.urlopen(req) as r:
+                      print(method, "->", r.read().decode())
+              except urllib.error.HTTPError as e:
+                  print(f"::error::{method} failed: {e.code} {e.read().decode()}")
+                  raise SystemExit(1)
+
+          print(f"Pushing {len(commands)} commands ({len(commands)-3} skills + 3 reserved)…")
+          api("setMyCommands", {"commands": commands})
+          # Show the commands menu next to the message field (default type; explicit here).
+          api("setChatMenuButton", {"menu_button": {"type": "commands"}})
+          PY

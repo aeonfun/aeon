@@ -235,7 +235,7 @@ Set the secret → channel activates. No code changes needed.
 | Slack | `SLACK_WEBHOOK_URL` | `SLACK_BOT_TOKEN` + `SLACK_CHANNEL_ID` |
 | Email | `SENDGRID_API_KEY` + `NOTIFY_EMAIL_TO` | - |
 
-**Telegram:** Create a bot with @BotFather → get token + chat ID.
+**Telegram:** Create a bot with @BotFather → get token + chat ID. Then run the **Setup Telegram Commands** workflow (Actions tab) to get slash-command autocomplete (`/skillname` dispatches instantly, no LLM), inline snooze/mute/re-run buttons on notifications, deep links, and stateless follow-up questions. Full guide: [docs/telegram-commands.md](docs/telegram-commands.md).
 **Discord:** Outbound: Channel → Integrations → Webhooks → Create. Inbound: discord.com/developers → bot → add `channels:history` scope → copy token + channel ID.
 **Slack:** api.slack.com → Create App → Incoming Webhooks → install → copy URL. Inbound: add `channels:history`, `reactions:write` scopes → copy bot token + channel ID.
 **Email:** sendgrid.com/settings/api_keys → Create API Key (Mail Send permission) → add as `SENDGRID_API_KEY`, set `NOTIFY_EMAIL_TO`. Optional repo variables: `NOTIFY_EMAIL_FROM` (default `aeon@notifications.aeon.bot`), `NOTIFY_EMAIL_SUBJECT_PREFIX` (default `[Aeon]`).
@@ -465,7 +465,7 @@ Replies aren't instant by default - Aeon runs on GitHub Actions and polls Telegr
 
 The deploy wizard prompts for the four variables (`TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GITHUB_REPO`, `GITHUB_TOKEN`) and stores them as encrypted Worker secrets, so the Worker comes out configured - then point your bot at it with `setWebhook`. The dashboard walks through all three steps with one-click webhook registration: **Settings → Credentials → Telegram → ⚡ Instant replies**. The button needs a **public** source repo - on a private fork, mirror `apps/webhook/` to a small public repo and point the button URL there.
 
-Full guide: [`apps/webhook/README.md`](apps/webhook/README.md). The poller detects an active webhook (`getWebhookInfo`) and skips Telegram polling automatically, so the two never conflict.
+Full guide: [`apps/webhook/README.md`](apps/webhook/README.md). The poller detects an active webhook (`getWebhookInfo`) and skips Telegram polling automatically, so the two never conflict. The Worker also routes slash commands, button taps, and reply follow-ups (see [docs/telegram-commands.md](docs/telegram-commands.md)) — **redeploy it after updating** to pick those up.
 
 ### Remote dashboard access
 

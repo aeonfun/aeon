@@ -115,6 +115,26 @@ Formatting rules:
 - Only include the `Notable` section if at least one signal earned `[TRENDING+UP]`, `[BREAKOUT]`, `[CAPITULATION]`, or `[PUMP-RISK]`.
 - If a coin appeared in the last 2 days of logs with the same direction and similar magnitude, skip it unless it now has a new tag (e.g. yesterday's winner is now [CAPITULATION]).
 
+### 7b. Interactive controls (reference pattern for Telegram)
+
+This skill is the reference for Aeon's snooze/mute buttons (see
+[`docs/telegram-commands.md`](../../docs/telegram-commands.md)). Attach Snooze/Mute
+buttons to the digest and pass **`--mute-key`** so a tapped Snooze/Mute actually
+suppresses future sends — `notify` skips the send when the key is muted or snoozed
+into the future, so no extra logic is needed here:
+
+```bash
+KEY="token-movers:all"     # or token-movers:<SYMBOL> when ${var} is one token
+./notify -f report.md \
+  --mute-key "$KEY" \
+  --buttons "[[{\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:${KEY}:86400\"},
+               {\"text\":\"Mute\",\"callback_data\":\"mute:${KEY}\"}]]"
+```
+
+Keep `callback_data` short (≤64 bytes): use a bare symbol like `BTC`, never a name
+with spaces. For a single-token **[PUMP-RISK]** you may also send a dedicated alert
+keyed to that symbol (`--mute-key "token-movers:SYMBOL"`) so it can be muted on its own.
+
 ### 8. Log
 
 Append to `memory/logs/${today}.md`:

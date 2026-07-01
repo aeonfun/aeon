@@ -15,7 +15,10 @@ on:
         required: false
         type: string
   repository_dispatch:
-    types: [telegram-message, discord-message, slack-message, cron-tick]
+    # Message types -> the heavy `run` job (Claude interprets). Routing types
+    # (from the instant-mode webhook, pre-classified) -> the lightweight `route`
+    # job (no LLM). cron-tick -> the `tick` scheduler.
+    types: [telegram-message, discord-message, slack-message, cron-tick, telegram-command, telegram-callback, telegram-reply]
 
 permissions:
   contents: write
@@ -506,35 +509,83 @@ jobs:
             if [ -n "$WEBHOOK_URL" ]; then
               echo "Telegram webhook active — skipping poll (instant mode delivers via repository_dispatch)"
             else
-              RESPONSE=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?timeout=0&allowed_updates=%5B%22message%22%5D")
+              # Fetch messages AND callback_query taps. allowed_updates now includes
+              # callback_query; the offset ack below advances past BOTH kinds, so
+              # button presses can't reprocess in a loop every tick.
+              RESPONSE=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?timeout=0&allowed_updates=%5B%22message%22%2C%22callback_query%22%5D")
               COUNT=$(echo "$RESPONSE" | jq '.result | length')
               MAX_UPDATE_ID=""
-              TG_MESSAGES='[]'
+              TG_MESSAGES='[]'    # plain text -> Claude (existing behaviour)
+              TG_COMMANDS='[]'    # /slash commands and /start deep links
+              TG_REPLIES='[]'     # answers to force_reply prompts
+              TG_CALLBACKS='[]'   # inline-button taps
 
               for ((i=0; i<COUNT; i++)); do
+                MAX_UPDATE_ID=$(echo "$RESPONSE" | jq -r ".result[$i].update_id // empty")
+
+                # Callback query (inline button tap)
+                CB_DATA=$(echo "$RESPONSE" | jq -r ".result[$i].callback_query.data // empty")
+                if [ -n "$CB_DATA" ]; then
+                  CB_CHAT=$(echo "$RESPONSE" | jq -r ".result[$i].callback_query.message.chat.id // empty")
+                  CB_ID=$(echo "$RESPONSE" | jq -r ".result[$i].callback_query.id // empty")
+                  # Stop the client's spinner immediately (safe pre-ack — no action taken yet).
+                  [ -n "$CB_ID" ] && curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery" -d "callback_query_id=$CB_ID" >/dev/null 2>&1 || true
+                  if [ "$CB_CHAT" = "$TELEGRAM_CHAT_ID" ]; then
+                    TG_CALLBACKS=$(echo "$TG_CALLBACKS" | jq --arg d "$CB_DATA" '. + [$d]')
+                    echo "Telegram callback: $CB_DATA"
+                  fi
+                  continue
+                fi
+
+                # Message
                 TEXT=$(echo "$RESPONSE" | jq -r ".result[$i].message.text // empty")
                 CHAT=$(echo "$RESPONSE" | jq -r ".result[$i].message.chat.id // empty")
-                UPDATE_ID=$(echo "$RESPONSE" | jq -r ".result[$i].update_id // empty")
+                [ -z "$TEXT" ] && continue
+                [ "$CHAT" != "$TELEGRAM_CHAT_ID" ] && continue
 
-                if [ -n "$TEXT" ] && [ "$CHAT" = "$TELEGRAM_CHAT_ID" ]; then
+                REPLY_TO=$(echo "$RESPONSE" | jq -r ".result[$i].message.reply_to_message.text // empty")
+                if [[ "$REPLY_TO" =~ \[[a-zA-Z0-9_-]+::[a-zA-Z0-9_-]+\] ]]; then
+                  TG_REPLIES=$(echo "$TG_REPLIES" | jq --arg r "$REPLY_TO" --arg t "$TEXT" '. + [{reply_to:$r, text:$t}]')
+                  echo "Telegram reply -> $REPLY_TO"
+                elif [[ "$TEXT" == /* ]]; then
+                  TG_COMMANDS=$(echo "$TG_COMMANDS" | jq --arg t "$TEXT" '. + [$t]')
+                  echo "Telegram command: $TEXT"
+                else
                   TG_MESSAGES=$(echo "$TG_MESSAGES" | jq --arg src "telegram" --arg txt "$TEXT" '. + [{source: $src, text: $txt}]')
                   echo "Telegram: $TEXT"
                 fi
-                MAX_UPDATE_ID="$UPDATE_ID"
               done
 
-              # Acknowledge updates BEFORE queuing them for dispatch, and only
-              # enqueue once Telegram confirms the offset advanced (ok:true) — a
-              # re-poll then can't re-read them. If the ack fails, leave the
-              # messages pending for the next tick rather than dispatch updates
-              # that could be re-read and processed twice.
+              # Acknowledge updates BEFORE acting on them, and only proceed once
+              # Telegram confirms the offset advanced (ok:true) — a re-poll then
+              # can't re-read them. If the ack fails, leave everything pending for
+              # the next tick rather than risk double-processing.
               if [ -n "$MAX_UPDATE_ID" ]; then
                 ACK_OK=$(curl -s "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=$((MAX_UPDATE_ID + 1))" | jq -r '.ok // false')
                 if [ "$ACK_OK" = "true" ]; then
+                  # Plain text -> Claude via the shared MESSAGES dispatch path.
                   MESSAGES=$(echo "$MESSAGES" | jq --argjson tg "$TG_MESSAGES" '. + $tg')
+                  # Commands / replies / callbacks -> the shared router, no LLM.
+                  # Any memory/*.log writes are committed at the end of this step.
+                  N=$(echo "$TG_COMMANDS" | jq 'length')
+                  for ((j=0; j<N; j++)); do
+                    CMD_TEXT=$(echo "$TG_COMMANDS" | jq -r ".[$j]")
+                    bash scripts/telegram-route.sh command "$CMD_TEXT" || echo "::warning::route command failed: $CMD_TEXT"
+                  done
+                  N=$(echo "$TG_REPLIES" | jq 'length')
+                  for ((j=0; j<N; j++)); do
+                    R_TO=$(echo "$TG_REPLIES" | jq -r ".[$j].reply_to")
+                    R_TX=$(echo "$TG_REPLIES" | jq -r ".[$j].text")
+                    bash scripts/telegram-route.sh reply "$R_TO" "$R_TX" || echo "::warning::route reply failed"
+                  done
+                  N=$(echo "$TG_CALLBACKS" | jq 'length')
+                  for ((j=0; j<N; j++)); do
+                    CB=$(echo "$TG_CALLBACKS" | jq -r ".[$j]")
+                    bash scripts/telegram-route.sh callback "$CB" || echo "::warning::route callback failed: $CB"
+                  done
                 else
-                  PENDING=$(echo "$TG_MESSAGES" | jq 'length')
-                  [ "$PENDING" -gt 0 ] && echo "::warning::Telegram offset ack failed — leaving $PENDING message(s) pending to avoid double-processing"
+                  PENDING=$(( $(echo "$TG_MESSAGES" | jq 'length') + $(echo "$TG_COMMANDS" | jq 'length') + $(echo "$TG_REPLIES" | jq 'length') + $(echo "$TG_CALLBACKS" | jq 'length') ))
+                  [ "$PENDING" -gt 0 ] && echo "::warning::Telegram offset ack failed — leaving $PENDING update(s) pending to avoid double-processing"
                 fi
               fi
             fi
@@ -610,8 +661,82 @@ jobs:
             echo "No new messages"
           fi
 
+          # Persist any snooze/mute/save writes made by inline callback routing.
+          git add memory/snoozes.log memory/mutes.log memory/saved.md 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(telegram): record snooze/mute/save from button taps"
+            for k in 1 2 3; do
+              if git pull --rebase origin main 2>/dev/null && git push origin HEAD 2>/dev/null; then break; fi
+              git rebase --abort 2>/dev/null || true
+              sleep "$k"
+            done
+          fi
+
+  route:
+    # Instant-mode path: the Cloudflare Worker pre-classifies an update and relays
+    # it here via repository_dispatch. This job routes it with NO LLM (fast, cheap),
+    # mirroring what the poller does inline. See scripts/telegram-route.sh.
+    if: >-
+      github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-command","telegram-callback","telegram-reply"]'), github.event.action)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v7
+        with:
+          token: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
+
+      - name: Configure git identity
+        run: |
+          git config user.name "aeonframework"
+          git config user.email "aeonframework@proton.me"
+
+      - name: Route update
+        env:
+          GH_TOKEN: ${{ secrets.GH_GLOBAL || secrets.GITHUB_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          _ACTION: ${{ github.event.action }}
+          # Payload fields via env (not template interpolation) so untrusted text
+          # can never break out into the shell. Each is JSON-encoded by toJSON.
+          _P_TEXT: ${{ toJSON(github.event.client_payload.text) }}
+          _P_DATA: ${{ toJSON(github.event.client_payload.data) }}
+          _P_REPLY_TO: ${{ toJSON(github.event.client_payload.reply_to_text) }}
+          _P_CHAT_ID: ${{ toJSON(github.event.client_payload.chat_id) }}
+        run: |
+          CHAT_ID=$(printf '%s' "$_P_CHAT_ID" | jq -r 'tostring' 2>/dev/null || echo "null")
+          # Defence in depth — the Worker already gates on chat id; re-check here.
+          if [ -n "${TELEGRAM_CHAT_ID:-}" ] && [ "$CHAT_ID" != "null" ] && [ "$CHAT_ID" != "$TELEGRAM_CHAT_ID" ]; then
+            echo "::warning::route: chat_id '$CHAT_ID' is not the owner — ignoring"
+            exit 0
+          fi
+          TEXT=$(printf '%s' "$_P_TEXT" | jq -r 'if . == null then "" else . end')
+          DATA=$(printf '%s' "$_P_DATA" | jq -r 'if . == null then "" else . end')
+          REPLY_TO=$(printf '%s' "$_P_REPLY_TO" | jq -r 'if . == null then "" else . end')
+          case "$_ACTION" in
+            telegram-command)  bash scripts/telegram-route.sh command  "$TEXT" ;;
+            telegram-callback) bash scripts/telegram-route.sh callback "$DATA" ;;
+            telegram-reply)    bash scripts/telegram-route.sh reply    "$REPLY_TO" "$TEXT" ;;
+          esac
+
+      - name: Commit memory changes
+        run: |
+          git add memory/snoozes.log memory/mutes.log memory/saved.md 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(telegram): record snooze/mute/save from button tap"
+            for k in 1 2 3; do
+              if git pull --rebase origin main 2>/dev/null && git push origin HEAD 2>/dev/null; then break; fi
+              git rebase --abort 2>/dev/null || true
+              sleep "$k"
+            done
+          fi
+
   run:
-    if: github.event_name == 'repository_dispatch' || (github.event_name == 'workflow_dispatch' && inputs.message != '')
+    # Only plain messages reach Claude. Pre-classified routing dispatches
+    # (telegram-command/-callback/-reply) go to the `route` job instead.
+    if: >-
+      (github.event_name == 'repository_dispatch' && contains(fromJSON('["telegram-message","discord-message","slack-message"]'), github.event.action))
+      || (github.event_name == 'workflow_dispatch' && inputs.message != '')
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -722,11 +847,32 @@ jobs:
           cat > ./notify << 'NOTIFY_SCRIPT'
           #!/usr/bin/env bash
           set -euo pipefail
-          MSG="$1"
+          # Conversational-reply notify. Supports the same interactive flags as the
+          # canonical scripts/notify.sh (--buttons / --force-reply / --placeholder /
+          # --context) so Claude can attach buttons or ask a force_reply follow-up.
+          MSG=""; BUTTONS_JSON=""; FORCE_REPLY=""; PLACEHOLDER=""; CONTEXT=""; have_body=false
+          while [ $# -gt 0 ]; do
+            case "$1" in
+              --buttons)     BUTTONS_JSON="${2:-}"; shift 2 ;;
+              --force-reply) FORCE_REPLY=1; shift ;;
+              --placeholder) PLACEHOLDER="${2:-}"; shift 2 ;;
+              --context)     CONTEXT="${2:-}"; shift 2 ;;
+              --title|--severity|--link|--mute-key) shift 2 ;;
+              -f|--file|--body) MSG=$(cat "${2:-/dev/null}" 2>/dev/null || true); have_body=true; shift 2 ;;
+              *) if [ "$have_body" = false ]; then MSG="$1"; have_body=true; fi; shift ;;
+            esac
+          done
+          [ -n "$CONTEXT" ] && MSG="[$CONTEXT] $MSG"
+          RM="null"
+          if [ -n "$BUTTONS_JSON" ]; then
+            RM=$(jq -n --argjson kb "$BUTTONS_JSON" '{inline_keyboard:$kb}' 2>/dev/null || echo null)
+          elif [ -n "$FORCE_REPLY" ]; then
+            RM=$(jq -n --arg p "$PLACEHOLDER" '{force_reply:true} + (if $p!="" then {input_field_placeholder:$p} else {} end)')
+          fi
           if [ -n "${TELEGRAM_BOT_TOKEN:-}" ] && [ -n "${TELEGRAM_CHAT_ID:-}" ]; then
             curl -sf -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
               -H "Content-Type: application/json" \
-              -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$MSG" '{chat_id: $chat, text: $text, parse_mode: "Markdown"}')" > /dev/null || true
+              -d "$(jq -n --arg chat "$TELEGRAM_CHAT_ID" --arg text "$MSG" --argjson rm "$RM" '{chat_id: $chat, text: $text, parse_mode: "Markdown"} + (if $rm then {reply_markup: $rm} else {} end)')" > /dev/null || true
           fi
           if [ -n "${DISCORD_WEBHOOK_URL:-}" ]; then
             curl -sf -X POST "$DISCORD_WEBHOOK_URL" \

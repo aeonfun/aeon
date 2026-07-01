@@ -33,6 +33,8 @@ jobs:
         run: python3 scripts/tests/test_notify_format.py
       - name: notify integration tests
         run: bash scripts/tests/test_notify.sh
+      - name: telegram router tests
+        run: bash scripts/tests/test_telegram_route.sh
       - name: log compaction tests
         run: python3 scripts/tests/test_compact_logs.py
       - name: output verifier tests

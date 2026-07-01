@@ -1,9 +1,14 @@
 # Aeon Telegram webhook — instant mode
 
 Default polling checks Telegram every 5 minutes. Deploy this Cloudflare Worker as
-a Telegram webhook to drop that to **~1 second**: the Worker relays each message
-to your Aeon fork via a GitHub `repository_dispatch`, which fires the
+a Telegram webhook to drop that to **~1 second**: the Worker classifies each update
+and relays it to your Aeon fork via a GitHub `repository_dispatch`, which fires the
 **Messages & Scheduler** workflow immediately.
+
+It routes the full inbound feature set — slash commands, inline-button taps, and
+reply follow-ups — not just plain messages (see
+[`docs/telegram-commands.md`](../../docs/telegram-commands.md)). **Redeploy the
+Worker** (`npx wrangler deploy`) after updating `src/worker.js` to pick up changes.
 
 Each user deploys it into **their own** Cloudflare account. There's no shared
 relay and no credential custody — your bot token and GitHub PAT live only in your
@@ -87,10 +92,14 @@ retries).
 
 ```
 Telegram → POST update → Worker
-  ├─ verify method
-  ├─ ignore (200) anything not a text message from TELEGRAM_CHAT_ID
-  └─ POST repository_dispatch {event_type: telegram-message, client_payload:{message,…}}
-       → GitHub Actions: Messages & Scheduler `run` job acts on it (~1s)
+  ├─ verify method + secret token
+  ├─ callback_query (button tap) → answerCallbackQuery → dispatch telegram-callback
+  ├─ ignore (200) anything not from TELEGRAM_CHAT_ID (private chats get "This bot is private.")
+  ├─ reply to a [skill::intent] prompt   → dispatch telegram-reply
+  ├─ /slash command or /start deep link  → dispatch telegram-command
+  └─ plain text                          → dispatch telegram-message
+       → GitHub Actions: `route` job (commands/callbacks/replies, no LLM) or
+         `run` job (plain text → Claude) acts on it (~1s)
 ```
 
-The Worker source is [`src/worker.js`](src/worker.js) — ~30 lines, no build step.
+The Worker source is [`src/worker.js`](src/worker.js) — small, no build step.
