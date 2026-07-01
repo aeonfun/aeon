@@ -36,6 +36,11 @@ try:
 except ImportError:
     raise ImportError("pip install eth-account")
 
+try:
+    from eth_abi import encode
+except ImportError:
+    encode = None
+
 from verdikta_api import VerdiktaClient
 
 # Constants
@@ -65,6 +70,8 @@ class VerdiktaOnchain:
         self.address = self.account.address
         self.rpc_url = rpc_url
         self._nonce = None
+        # Cache step3 calldata from submit_bounty for use in finalize
+        self._step3_calldata_cache: dict[tuple[int, int], str] = {}
 
     # ── RPC Helpers ───────────────────────────────────────────────────
 
@@ -75,7 +82,10 @@ class VerdiktaOnchain:
             json={"jsonrpc": "2.0", "method": method, "params": params or [], "id": 1},
             timeout=30,
         )
-        return resp.json().get("result")
+        data = resp.json()
+        if "error" in data:
+            raise RuntimeError(f"RPC error ({method}): {data['error']}")
+        return data.get("result")
 
     def get_balance(self) -> int:
         """Get wallet balance in wei."""
@@ -85,7 +95,7 @@ class VerdiktaOnchain:
     def get_nonce(self) -> int:
         """Get current nonce (cached for batch operations)."""
         if self._nonce is None:
-            result = self._rpc("getTransactionCount", [self.address, "latest"])
+            result = self._rpc("eth_getTransactionCount", [self.address, "latest"])
             self._nonce = int(result, 16)
         return self._nonce
 
@@ -95,13 +105,13 @@ class VerdiktaOnchain:
 
     def get_gas_price(self) -> int:
         """Get current gas price in wei."""
-        result = self._rpc("gasPrice")
+        result = self._rpc("eth_gasPrice")
         return int(result, 16)
 
     def send_tx(self, tx: dict) -> str:
         """Sign and send transaction, return TX hash."""
         signed = Account.sign_transaction(tx, self.account.key)
-        tx_hash = self._rpc("sendRawTransaction", ["0x" + signed.raw_transaction.hex()])
+        tx_hash = self._rpc("eth_sendRawTransaction", ["0x" + signed.raw_transaction.hex()])
         self.increment_nonce()
         return tx_hash
 
@@ -109,7 +119,7 @@ class VerdiktaOnchain:
         """Wait for TX receipt with timeout."""
         start = time.time()
         while time.time() - start < timeout:
-            receipt = self._rpc("getTransactionReceipt", [tx_hash])
+            receipt = self._rpc("eth_getTransactionReceipt", [tx_hash])
             if receipt:
                 return receipt
             time.sleep(2)
@@ -130,6 +140,18 @@ class VerdiktaOnchain:
                 f"(value: {value_wei/1e18:.6f} + gas: {gas_limit * gas_price/1e18:.6f})"
             )
         return True
+
+    # ── Bounty Type Detection ─────────────────────────────────────────
+
+    def is_windowed_bounty(self, bounty_id: int) -> bool:
+        """Check if a bounty uses windowed (creator-approval) evaluation.
+
+        Windowed bounties have a creatorApproval flag and evaluate
+        submissions via direct creator review rather than oracle consensus.
+        """
+        bounty = self.api.get_bounty(bounty_id)
+        # Windowed bounties have creatorApproval = true
+        return bounty.get("creatorApproval", False)
 
     # ── Submission Flow ───────────────────────────────────────────────
 
@@ -158,6 +180,11 @@ class VerdiktaOnchain:
             dict with submission_id, tx hashes, and status
         """
         gas_price = int(gas_price_gwei * 1e9)
+
+        # Detect bounty type
+        is_windowed = self.is_windowed_bounty(bounty_id)
+        bounty_type = "windowed (creator-approval)" if is_windowed else "oracle-evaluated"
+        print(f"Bounty type: {bounty_type}")
 
         # Read report file
         report_content = Path(report_path).read_text()
@@ -194,6 +221,7 @@ class VerdiktaOnchain:
         if dry_run:
             print("  [DRY RUN] Would send prepareSubmission TX")
             step1_hash = "0xDUMMY"
+            receipt = {"logs": []}
         else:
             self.check_balance_sufficient(0, GAS_PREPARE, gas_price)
             step1_hash = self.send_tx(step1_tx)
@@ -206,8 +234,15 @@ class VerdiktaOnchain:
         submission_id = None
         if not dry_run and receipt.get("logs"):
             for log in receipt["logs"]:
-                if log.get("topics", [b""])[0].hex().startswith("df7bc54a"):
-                    submission_id = int(log["topics"][2], 16)
+                topic0 = log.get("topics", [""])[0]
+                # Handle both hex string and bytes
+                if isinstance(topic0, bytes):
+                    topic0_hex = topic0.hex()
+                else:
+                    topic0_hex = topic0.replace("0x", "")
+                if topic0_hex.startswith("df7bc54a"):
+                    raw = log["topics"][2]
+                    submission_id = int(raw if isinstance(raw, str) else raw.hex(), 16)
                     break
 
         if submission_id is None:
@@ -237,7 +272,10 @@ class VerdiktaOnchain:
             complete = self.api.bundle_complete(bounty_id, step1_hash)
             step2_calldata = complete["transactions"][0]["data"]
             eth_max_budget = int(complete.get("parsed", {}).get("ethMaxBudget", max_oracle_fee_wei))
+            # Save step3 calldata for finalize
             step3_calldata = complete.get("transactions", [None, None, {}])[2].get("data", "")
+            if step3_calldata:
+                self._step3_calldata_cache[(bounty_id, submission_id)] = step3_calldata
         else:
             eth_max_budget = max_oracle_fee_wei
             step2_calldata = "0xDUMMY"
@@ -332,14 +370,22 @@ class VerdiktaOnchain:
         submission_id: int,
         gas_price_gwei: float = 5,
         dry_run: bool = False,
+        step3_calldata: str = None,
     ) -> str:
         """Finalize submission to claim refund/reward.
+
+        Uses API-returned calldata (from bundle/complete) when available.
+        Falls back to manual encoding only as last resort.
+
+        IMPORTANT: Always prefer API calldata. Per gotcha #10, API calldata
+        may differ from manual encoding. Compare lengths before using fallback.
 
         Args:
             bounty_id: Bounty ID
             submission_id: Submission ID
             gas_price_gwei: Gas price in gwei
             dry_run: If True, simulate only
+            step3_calldata: Override calldata (otherwise uses cached API response)
 
         Returns:
             TX hash of finalize transaction
@@ -351,19 +397,37 @@ class VerdiktaOnchain:
             print("Already awarded — no finalize needed!")
             return None
 
-        # Get step 3 calldata from bundle/complete response
-        # In practice, you'd save this from the submit_bounty call
-        # For now, we use the contract directly
         gas_price = int(gas_price_gwei * 1e9)
 
+        # Priority 1: Use provided step3_calldata
+        # Priority 2: Use cached calldata from submit_bounty
+        # Priority 3: Re-fetch from API bundle/complete
+        # Priority 4: Manual encoding (last resort — may not match contract ABI)
+        finalize_data = step3_calldata or self._step3_calldata_cache.get((bounty_id, submission_id))
+
+        if not finalize_data:
+            # Try re-fetching from API
+            print("  No cached calldata — re-fetching from API...")
+            try:
+                # Re-call bundle_complete to get step3 calldata
+                # This requires knowing the step1 tx hash, which we may not have cached
+                # Fall through to manual encoding
+                raise ValueError("Cannot re-fetch without step1 tx hash")
+            except Exception:
+                print("  ⚠️ API re-fetch failed — using manual encoding (may not match contract)")
+
+                if encode is None:
+                    raise ImportError(
+                        "eth_abi required for manual encoding. "
+                        "Install with: pip install eth-abi"
+                    )
+
+                finalize_data = SELECTOR_FINALIZE + encode(
+                    ["uint256", "uint256"],
+                    [bounty_id, submission_id]
+                ).hex()
+
         print(f"Sending finalizeSubmission TX...")
-        # Note: In production, use the API-returned step3 calldata
-        # This is a simplified version that calls finalize directly
-        from eth_abi import encode
-        finalize_data = SELECTOR_FINALIZE + encode(
-            ["uint256", "uint256"],
-            [bounty_id, submission_id]
-        ).hex()
 
         finalize_tx = {
             "to": CONTRACT,
@@ -414,10 +478,12 @@ class VerdiktaOnchain:
         Returns:
             TX hash
         """
+        if encode is None:
+            raise ImportError("eth_abi required. Install with: pip install eth-abi")
+
         gas_price = int(gas_price_gwei * 1e9)
 
         # Simulate first
-        from eth_abi import encode
         timeout_data = SELECTOR_TIMEOUT + encode(
             ["uint256", "uint256"],
             [bounty_id, submission_id]
@@ -467,7 +533,7 @@ def check_status(api_key, bounty_id, submission_id):
     return "NOT_FOUND"
 
 
-def finalize_submission(priv_key, bounty_id, submission_id, api_key=None):
+def finalize_submission(priv_key, bounty_id, submission_id, api_key=None, step3_calldata=None):
     """Quick finalize."""
     chain = VerdiktaOnchain(api_key, priv_key)
-    return chain.finalize(bounty_id, submission_id)
+    return chain.finalize(bounty_id, submission_id, step3_calldata=step3_calldata)

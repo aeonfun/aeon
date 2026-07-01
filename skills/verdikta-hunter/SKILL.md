@@ -30,21 +30,37 @@ Automate the full Verdikta bounty hunting lifecycle: discover open bounties, eva
 
 ## Outputs
 
-- Bounty submission with on-chain TX hash
+- Bounty submission with on-chain TX hashes (`step1_tx`, `step2_tx`)
 - Evaluation score and status
 - ETH earnings to wallet
+
+## Bounty Types
+
+### Oracle-Evaluated (default)
+Two AI models (GPT-5.2 + Claude) evaluate your report independently. Final score = average of both weighted scores. Requires on-chain submission + oracle prepay.
+
+### Windowed (Creator-Approval)
+Bounty creator reviews submissions directly. No oracle prepay needed. Detected via `creatorApproval: true` on the bounty object. Use `filter_bounties(bounty_type="windowed")` to target these.
 
 ## Steps
 
 ### 1. Discover Open Bounties
 
 ```python
-from verdikta_api import list_open_bounties, get_rubric
+from verdikta_api import VerdiktaClient
 
-bounties = list_open_bounties(api_key)
+client = VerdiktaClient(api_key)
+bounties = client.filter_bounties(
+    min_bounty_eth=0.001,
+    max_threshold=85,
+    max_submissions=5,
+    min_deadline_hours=24,     # At least 24h left
+    bounty_type="oracle",      # or "windowed" or None for all
+)
 for b in bounties:
-    rubric = get_rubric(api_key, b["jobId"])
-    print(f"#{b['jobId']} | {b['bountyAmount']} ETH | threshold: {b['threshold']}%")
+    rubric = b.get("_rubric", {})
+    btype = "WINDOWED" if b["_is_windowed"] else "ORACLE"
+    print(f"#{b['jobId']} [{btype}] | {b['bountyAmount']} ETH | threshold: {b['threshold']}%")
     for c in rubric["criteria"]:
         must = "MUST-PASS" if c.get("must") else f"weight {c.get('weight')}"
         print(f"  [{must}] {c['id']}: {c['description'][:80]}")
@@ -63,30 +79,49 @@ Write a markdown report addressing every rubric criterion. For `must: true` crit
 ### 3. Submit On-Chain
 
 ```python
-from verdikta_onchain import submit_bounty
+from verdikta_onchain import VerdiktaOnchain
 
-result = submit_bounty(
-    api_key=api_key,
-    priv_key=wallet_key,
+chain = VerdiktaOnchain(api_key=api_key, priv_key=wallet_key)
+
+# Dry run first to validate
+result = chain.submit_bounty(
     bounty_id=bounty_id,
     report_path="report.md",
     alpha=200,
     max_oracle_fee_wei=300000000000000,  # 0.0003 ETH
+    dry_run=True,  # Simulate without sending TXs
+)
+
+# Real submission
+result = chain.submit_bounty(
+    bounty_id=bounty_id,
+    report_path="report.md",
+    alpha=200,
+    max_oracle_fee_wei=300000000000000,
+    dry_run=False,
 )
 print(f"Submission ID: {result['submission_id']}")
-print(f"TX Hash: {result['tx_hash']}")
+print(f"Step 1 TX: {result['step1_tx']}")   # prepareSubmission
+print(f"Step 2 TX: {result['step2_tx']}")   # startPreparedSubmission
 ```
 
 ### 4. Monitor and Finalize
 
 ```python
-from verdikta_onchain import check_status, finalize_submission
+# Poll until evaluated
+status = chain.poll_until_evaluated(
+    bounty_id=bounty_id,
+    submission_id=result['submission_id'],
+    timeout=600,
+    interval=30,
+)
 
-status = check_status(api_key, bounty_id, submission_id)
-if status == "EVALUATED_PASSED":
-    finalize_submission(priv_key, bounty_id, submission_id)
-elif status == "EVALUATED_FAILED":
-    finalize_submission(priv_key, bounty_id, submission_id)  # reclaim ETH
+# Finalize to claim refund (uses cached API calldata automatically)
+if status in ("EVALUATED_PASSED", "EVALUATED_FAILED"):
+    tx_hash = chain.finalize(bounty_id, result['submission_id'])
+    print(f"Finalize TX: {tx_hash}")
+elif status == "WINNER":
+    print("Bounty awarded — payment auto-sent to wallet!")
 ```
 
 ## Key Gotchas
@@ -109,18 +144,22 @@ elif status == "EVALUATED_FAILED":
 
 9. **Two-model evaluation** — GPT-5.2 and Claude both evaluate. Final score = average of both weighted scores.
 
-10. **API calldata may be buggy** — always compare API-returned calldata length vs manual encoding. Use API calldata when lengths match.
+10. **API calldata may differ from manual encoding** — always prefer API-returned calldata (from bundle/complete). Manual `eth_abi.encode` is a last-resort fallback; compare calldata lengths before using it.
+
+11. **Use dry_run=True first** — simulate the full flow without sending TXs. Catches upload errors, missing calldata, and balance issues before committing gas.
+
+12. **Windowed bounties skip oracle** — if `creatorApproval: true`, the creator reviews directly. No oracle prepay needed, but approval may take longer. Finalize still required to reclaim escrow.
 
 ## API Reference
 
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/jobs?status=OPEN` | GET | List open bounties |
-| `/api/jobs/:id` | GET | Bounty detail |
+| `/api/jobs/:id` | GET | Bounty detail (includes `creatorApproval` flag) |
 | `/api/jobs/:id/rubric` | GET | Evaluation rubric |
 | `/api/jobs/:id/submit/bundle` | POST | Upload + prepare (bundle) |
-| `/api/jobs/:id/submit/bundle/complete` | POST | Get step 2 calldata |
-| `/api/jobs/:id/submissions/confirm` | POST | Confirm submission |
+| `/api/jobs/:id/submit/bundle/complete` | POST | Get step 2 calldata + ethMaxBudget |
+| `/api/jobs/:id/submissions/confirm` | POST | Confirm submission (MANDATORY) |
 | `/api/jobs/:id/submissions` | GET | Check submission status |
 | `/api/jobs/:id/submissions/:subId/evaluation` | GET | Get evaluation report |
 

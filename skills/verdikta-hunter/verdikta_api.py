@@ -8,6 +8,7 @@ Usage:
 """
 
 import requests
+from datetime import datetime, timezone
 from typing import Optional
 
 BASE_URL = "https://bounties.verdikta.org/api"
@@ -51,7 +52,7 @@ class VerdiktaClient:
         return data.get("jobs", [])
 
     def get_bounty(self, bounty_id: int) -> dict:
-        """Get full bounty detail including submissions."""
+        """Get full bounty detail including submissions and metadata."""
         data = self._get(f"/jobs/{bounty_id}")
         return data.get("job", data)
 
@@ -66,6 +67,8 @@ class VerdiktaClient:
         max_threshold: int = 100,
         max_submissions: int = 999,
         keywords: list[str] = None,
+        min_deadline_hours: float = 0,
+        bounty_type: str = None,
     ) -> list[dict]:
         """Filter open bounties by criteria.
 
@@ -74,12 +77,18 @@ class VerdiktaClient:
             max_threshold: Maximum score threshold (easier to pass)
             max_submissions: Maximum existing submissions (less competition)
             keywords: Keywords to match in title/description
+            min_deadline_hours: Minimum hours until deadline (filters out
+                bounties closing soon). 0 = no deadline filter.
+            bounty_type: Filter by evaluation type:
+                None = all types, "windowed" = creator-approval only,
+                "oracle" = oracle-evaluated only
 
         Returns:
             Filtered list of bounties with rubric summary appended.
         """
         bounties = self.list_open_bounties()
         results = []
+        now = datetime.now(timezone.utc)
 
         for b in bounties:
             bounty_eth = float(b.get("bountyAmount", 0))
@@ -93,6 +102,28 @@ class VerdiktaClient:
             if sub_count > max_submissions:
                 continue
 
+            # Deadline filtering
+            if min_deadline_hours > 0:
+                deadline_str = b.get("deadline") or b.get("expiresAt")
+                if deadline_str:
+                    try:
+                        deadline = datetime.fromisoformat(deadline_str.replace("Z", "+00:00"))
+                        hours_left = (deadline - now).total_seconds() / 3600
+                        if hours_left < min_deadline_hours:
+                            continue
+                        b["_hours_until_deadline"] = round(hours_left, 1)
+                    except (ValueError, TypeError):
+                        pass  # Skip deadline filter if unparseable
+
+            # Bounty type filtering (windowed vs oracle-evaluated)
+            if bounty_type:
+                is_windowed = b.get("creatorApproval", False)
+                if bounty_type == "windowed" and not is_windowed:
+                    continue
+                if bounty_type == "oracle" and is_windowed:
+                    continue
+
+            # Keywords
             if keywords:
                 text = (b.get("title", "") + " " + b.get("description", "")).lower()
                 if not any(kw.lower() in text for kw in keywords):
@@ -111,6 +142,9 @@ class VerdiktaClient:
                 }
             except Exception:
                 b["_rubric"] = {"must_pass": 0, "weighted": 0, "criteria": []}
+
+            # Tag bounty type for downstream use
+            b["_is_windowed"] = b.get("creatorApproval", False)
 
             results.append(b)
 

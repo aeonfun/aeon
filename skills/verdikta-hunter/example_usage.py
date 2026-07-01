@@ -3,10 +3,10 @@
 Example: Autonomous Verdikta bounty hunting.
 
 Demonstrates the full workflow:
-1. Discover open bounties
+1. Discover open bounties (with deadline + type filtering)
 2. Filter by criteria
 3. Check rubric
-4. Submit a report
+4. Submit a report (with dry-run first)
 5. Monitor evaluation
 6. Finalize to claim reward
 """
@@ -30,13 +30,16 @@ def discover_bounties():
         min_bounty_eth=0.001,
         max_threshold=85,       # Easier thresholds
         max_submissions=5,      # Less competition
+        min_deadline_hours=24,  # At least 24h left
     )
 
     for b in bounties[:10]:
         rubric = b.get("_rubric", {})
-        print(f"#{b['jobId']} | {b['bountyAmount']} ETH | threshold: {b['threshold']}%")
+        btype = "WINDOWED" if b["_is_windowed"] else "ORACLE"
+        deadline = f"{b.get('_hours_until_deadline', '?')}h left"
+        print(f"#{b['jobId']} [{btype}] | {b['bountyAmount']} ETH | threshold: {b['threshold']}%")
         print(f"  {b['title'][:70]}")
-        print(f"  Submissions: {b['submissionCount']} | Must-pass: {rubric['must_pass']} | Weighted: {rubric['weighted']}")
+        print(f"  Submissions: {b['submissionCount']} | Must-pass: {rubric['must_pass']} | Weighted: {rubric['weighted']} | Deadline: {deadline}")
 
         # Show rubric criteria
         for c in rubric.get("criteria", []):
@@ -65,7 +68,7 @@ def check_rubric(bounty_id: int):
 
 
 def submit_to_bounty(bounty_id: int, report_path: str):
-    """Submit a report to a bounty."""
+    """Submit a report to a bounty (with dry-run first)."""
     chain = VerdiktaOnchain(API_KEY, PRIV_KEY)
 
     # Check balance first
@@ -76,14 +79,31 @@ def submit_to_bounty(bounty_id: int, report_path: str):
         print("⚠️ Low balance — may not cover oracle prepay + gas")
         print("  Consider reducing gas_price_gwei or topping up wallet")
 
-    # Submit
+    # Detect bounty type
+    is_windowed = chain.is_windowed_bounty(bounty_id)
+    print(f"Bounty type: {'windowed (creator-approval)' if is_windowed else 'oracle-evaluated'}")
+
+    # Step 1: Dry run to validate
+    print("\n--- DRY RUN ---")
+    dry_result = chain.submit_bounty(
+        bounty_id=bounty_id,
+        report_path=report_path,
+        alpha=200,
+        max_oracle_fee_wei=300_000_000_000_000,
+        gas_price_gwei=5,
+        dry_run=True,
+    )
+    print(f"  Dry run passed! submission_id={dry_result['submission_id']}")
+
+    # Step 2: Real submission
+    print("\n--- LIVE SUBMISSION ---")
     result = chain.submit_bounty(
         bounty_id=bounty_id,
         report_path=report_path,
-        alpha=200,              # Quality focus
-        max_oracle_fee_wei=300_000_000_000_000,  # 0.0003 ETH
+        alpha=200,
+        max_oracle_fee_wei=300_000_000_000_000,
         gas_price_gwei=5,
-        dry_run=False,          # Set True to simulate
+        dry_run=False,
     )
 
     print(f"\nSubmission result:")
