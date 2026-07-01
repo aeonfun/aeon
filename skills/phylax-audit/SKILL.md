@@ -39,6 +39,10 @@ an **ALLOW** matches every other Phylax surface (npm, CLI, badge).
 ```bash
 TARGET="${var}"
 ENCODED=$(printf '%s' "$TARGET" | jq -sRr @uri)
+# Delete any prior verdict first, so a stale file from a *different* skill's
+# audit can never be read here — e.g. when the sandbox blocks outbound network
+# and the curl below never writes, jq must find no file and fall through.
+rm -f /tmp/phylax-verdict.json
 HTTP_CODE=$(curl -m 20 -s -w "%{http_code}" \
   "https://usephylax.com/api/audit?skill=${ENCODED}" \
   -o /tmp/phylax-verdict.json)
@@ -48,7 +52,7 @@ HTTP_CODE=$(curl -m 20 -s -w "%{http_code}" \
 
 ```json
 {
-  "skill": "owner/repo@slug",
+  "skill": "https://raw.githubusercontent.com/owner/repo/HEAD/skills/<name>/SKILL.md",
   "verdict": "ALLOW",
   "score": 100,
   "findings": [
@@ -60,21 +64,25 @@ HTTP_CODE=$(curl -m 20 -s -w "%{http_code}" \
 }
 ```
 
-`findings[]` fields: `id` (rule ID), `severity` (`critical`|`high`|`medium`|`low`), `evidence` (proof string), `ref` (optional line reference).
+`findings[]` fields: `id` (rule ID), `severity` (`critical`|`high`|`medium`|`low`), `evidence` (proof string), `ref` (optional line reference). `.skill` echoes the **resolved source** the engine actually audited — a raw `https://…/SKILL.md` URL for a GitHub ref, or the raw URL verbatim when you passed one — so it embeds `owner/repo` and can be matched back to `$TARGET`.
 
-**Validation** — accept the fast path **only** when ALL of:
+**Validation** — accept the fast path **only** when ALL of (every check is folded into the `jq -e` gate below, so `HTTP_CODE` and the target binding can't be skipped):
 
 - `HTTP_CODE` is `200` and the body is valid JSON
-- `.verdict`, `.score`, and `.findings` are present; `.findings` is an array
+- `.skill` binds to the requested target — it equals `$TARGET` (raw-URL form) or contains it (`owner/repo` form). This is what stops a stale verdict from *another* skill's audit being trusted for this one.
+- `.verdict`, `.score`, `.findings`, and `.skill` are present; `.findings` is an array
 - `.verdict` is exactly `ALLOW`
 - `.score` ≥ 80
 - `.findings` contains **no** `critical` or `high` severity entries (score↔band consistency)
 
 ```bash
-jq -e '
+jq -e --arg code "$HTTP_CODE" --arg target "$TARGET" '
+  $code == "200" and
   (.verdict | type) == "string" and
   (.score | type) == "number" and
   (.findings | type) == "array" and
+  (.skill | type) == "string" and
+  ((.skill == $target) or (.skill | contains($target))) and
   .verdict == "ALLOW" and
   .score >= 80 and
   ([.findings[]? | select(.severity == "critical" or .severity == "high")] | length) == 0
@@ -83,7 +91,7 @@ jq -e '
 
 If validation passes → **skip steps 1–5** and go to **step 7 (Log)** with `verdict=ALLOW`, `score`, and `findings=[]` (step 6 Notify is silent on ALLOW). Embed the badge in the log: `https://usephylax.com/api/badge?skill=<ref>`.
 
-If `verdict` is `WARN` or `DENY`, validation fails, `HTTP_CODE` is not 200 (including 429 rate-limit), or the sandbox blocks outbound network → **do not trust the fast path**. Continue with the inline scan in steps 1–4 so WARN/DENY carry per-finding evidence in steps 6–7.
+If `verdict` is `WARN` or `DENY`, validation fails, `HTTP_CODE` is not 200 (including 429 rate-limit), or the sandbox blocks outbound network → **do not trust the fast path**. Continue with the inline scan in steps 1–5 so WARN/DENY carry per-finding evidence in steps 6–7.
 
 ### 1. Resolve the target and fetch the SKILL.md
 
