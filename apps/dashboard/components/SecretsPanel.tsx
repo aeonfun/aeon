@@ -7,6 +7,7 @@ import { Scramble } from './ui/Animated'
 import { ServiceIcon } from './ui/ServiceIcon'
 import { linkify } from './ui/Linkify'
 import { InstantModeCard } from './InstantModeCard'
+import { TelegramCommandsCard } from './TelegramCommandsCard'
 import { TelegramChatIdHelper } from './TelegramChatIdHelper'
 
 // Logo shown next to each credential group's header. Brand groups use their
@@ -176,6 +177,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                   )}
                 </div>
               ))}
+              {group === 'Telegram' && <TelegramCommandsCard sessionBotToken={sessionBotToken} />}
               {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
             </div>
           </section>
