@@ -59,22 +59,6 @@ updates:
         patterns:
           - "*"
 
-  # A2A protocol gateway.
-  - package-ecosystem: "npm"
-    directory: "/apps/a2a-server"
-    schedule:
-      interval: "monthly"
-    open-pull-requests-limit: 5
-    assignees:
-      - "aaronjmars"
-    commit-message:
-      prefix: "chore(deps)"
-      prefix-development: "chore(deps-dev)"
-    groups:
-      a2a-server:
-        patterns:
-          - "*"
-
   # Cloudflare Worker that relays Telegram messages to a fork.
   - package-ecosystem: "npm"
     directory: "/apps/webhook"

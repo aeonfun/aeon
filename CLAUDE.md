@@ -13,7 +13,7 @@ One skill run, end to end:
 4. **Act** — read memory, fetch/compute, write files or open a PR (write mode only), and report via `./notify`.
 5. **After** — on success the workflow runs `scripts/postprocess-*.sh` (deferred network side-effects), converts feed output via `./notify-jsonrender`, and reverts stray writes from read-only skills. You append a log to `memory/logs/`.
 
-A self-healing loop runs on top: **health skills** (`skill-health`, `skill-evals`) score runs and file issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/a2a-server`, `apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
+A self-healing loop runs on top: **health skills** (`skill-health`, `skill-evals`) score runs and file issues; **repair skills** (`skill-repair`) fix them by PR. Alternate entry points (`apps/mcp-server`, `apps/webhook`) launch the same skill prompt — behaviour is entry-point-agnostic. Config is managed by the dashboard (`apps/dashboard`) and pushed to GitHub as repo secrets/vars.
 
 ## Strategy
 

@@ -65,6 +65,8 @@ REGISTRY_FILE="$ROOT_DIR/skill-packs.json"
 REGISTRY_URL="https://raw.githubusercontent.com/aaronjmars/aeon/main/skill-packs.json"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
+# shellcheck source=scripts/lib/skill-install.sh
+. "$ROOT_DIR/scripts/lib/skill-install.sh"
 
 # Locked capability taxonomy. Adding a value requires a separate PR that also
 # updates docs/CAPABILITIES.md + the skills-pack.json schema reference. Keep
@@ -288,22 +290,7 @@ PACK_LABEL="$REPO_NAME"
 
 echo "Fetching $REPO ($BRANCH)..."
 
-TARBALL_URL="https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz"
-if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
-  TARBALL_URL="https://github.com/$REPO/archive/refs/tags/$BRANCH.tar.gz"
-  if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
-    echo "Failed to fetch $REPO (branch/tag: $BRANCH)" >&2
-    exit 1
-  fi
-fi
-
-tar -xzf "$TMP_DIR/repo.tar.gz" -C "$TMP_DIR" 2>/dev/null
-
-REPO_ROOT=$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
-if [[ -z "$REPO_ROOT" ]]; then
-  echo "Failed to extract repository" >&2
-  exit 1
-fi
+REPO_ROOT=$(skill_fetch_repo "$REPO" "$BRANCH" "$TMP_DIR") || exit 1
 
 PACK_DIR="$REPO_ROOT"
 if [[ -n "$SUBPATH" ]]; then
@@ -525,23 +512,8 @@ if [[ ${#REQUESTED_SLUGS[@]} -gt 0 ]]; then
 fi
 
 # Check trusted-sources for the pack repo.
-is_trusted_source() {
-  local repo="$1"
-  local owner="${repo%%/*}"
-  [[ -f "$TRUSTED_FILE" ]] || return 1
-  while IFS= read -r line; do
-    line="${line%%#*}"
-    line="${line// /}"
-    [[ -z "$line" ]] && continue
-    if [[ "$line" == "$repo" ]] || [[ "$line" == "$owner" ]]; then
-      return 0
-    fi
-  done < "$TRUSTED_FILE"
-  return 1
-}
-
 TRUSTED_SOURCE=false
-if is_trusted_source "$REPO"; then
+if skill_is_trusted "$REPO" "$TRUSTED_FILE"; then
   TRUSTED_SOURCE=true
   echo "Source $REPO is trusted — skipping deep security scan."
 fi
@@ -645,20 +617,11 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 1
 fi
 
-ensure_lock_initialized() {
-  if [[ ! -f "$SKILLS_LOCK" ]] || [[ ! -s "$SKILLS_LOCK" ]]; then
-    echo "[]" > "$SKILLS_LOCK"
-  fi
-}
-
 record_provenance() {
   local slug="$1"
   local source_path="$2"
-  ensure_lock_initialized
   local commit_sha
   commit_sha=$(gh api "repos/$REPO/commits" -f path="$source_path/SKILL.md" --jq '.[0].sha' 2>/dev/null || echo "unknown")
-  local imported_at
-  imported_at=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
   local entry
   entry=$(jq -n \
     --arg name "$slug" \
@@ -666,12 +629,10 @@ record_provenance() {
     --arg path "$source_path/SKILL.md" \
     --arg branch "$BRANCH" \
     --arg sha "$commit_sha" \
-    --arg at "$imported_at" \
+    --arg at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     --arg pack "$PACK_LABEL" \
     '{skill_name: $name, source_repo: $repo, source_path: $path, branch: $branch, commit_sha: $sha, imported_at: $at, pack: $pack}')
-  jq --argjson entry "$entry" \
-    '[.[] | select(.skill_name != $entry.skill_name)] + [$entry]' \
-    "$SKILLS_LOCK" > "${SKILLS_LOCK}.tmp" && mv "${SKILLS_LOCK}.tmp" "$SKILLS_LOCK"
+  skill_lock_upsert "$SKILLS_LOCK" "$entry"
   echo "    -> skills.lock updated (sha: ${commit_sha:0:7})"
 }
 
@@ -708,31 +669,9 @@ update_skills_json() {
 }
 
 add_to_aeon_yml() {
-  local slug="$1"
-  local schedule="$2"
-  local default_enabled="$3"
-  [[ ! -f "$AEON_YML" ]] && return 0
-  # Already present?
-  if grep -q "^  $slug:" "$AEON_YML" 2>/dev/null; then
-    echo "    -> already in aeon.yml"
-    return 0
-  fi
-  local enabled_val="false"
+  local slug="$1" schedule="$2" default_enabled="$3" enabled_val="false"
   [[ "$default_enabled" == "true" ]] && enabled_val="true"
-  local entry_line="  $slug: { enabled: $enabled_val, schedule: \"$schedule\" }"
-  if grep -q "^  # --- Fallback" "$AEON_YML"; then
-    awk -v entry="$entry_line" \
-      '/^  # --- Fallback/ { print entry }  { print }' \
-      "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
-  else
-    # No fallback marker — append before any non-skill block (chains:, etc).
-    awk -v entry="$entry_line" '
-      /^[a-z]+:/ && NR > 1 && !inserted { print entry; inserted=1 }
-      { print }
-      END { if (!inserted) print entry }
-    ' "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
-  fi
-  echo "    -> added to aeon.yml (enabled: $enabled_val, schedule: \"$schedule\")"
+  skill_add_to_aeon_yml "$AEON_YML" "$slug" "$enabled_val" "$schedule"
 }
 
 for i in "${!SLUGS[@]}"; do

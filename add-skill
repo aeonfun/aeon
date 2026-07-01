@@ -14,8 +14,11 @@ set -euo pipefail
 #   ./add-skill BankrBot/skills --all                Install everything
 #   ./add-skill BankrBot/skills bankr hydrex veil    Install multiple skills
 
-SKILLS_DIR="$(cd "$(dirname "$0")" && pwd)/skills"
-AEON_YML="$(cd "$(dirname "$0")" && pwd)/aeon.yml"
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILLS_DIR="$ROOT_DIR/skills"
+AEON_YML="$ROOT_DIR/aeon.yml"
+# shellcheck source=scripts/lib/skill-install.sh
+. "$ROOT_DIR/scripts/lib/skill-install.sh"
 TMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TMP_DIR"' EXIT
 
@@ -77,25 +80,7 @@ REPO="${REPO%.git}"
 
 echo "Fetching skill index from $REPO ($BRANCH)..."
 
-# Download repo as tarball
-TARBALL_URL="https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz"
-if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
-  # Try as tag
-  TARBALL_URL="https://github.com/$REPO/archive/refs/tags/$BRANCH.tar.gz"
-  if ! curl -sfL "$TARBALL_URL" -o "$TMP_DIR/repo.tar.gz" 2>/dev/null; then
-    echo "Failed to fetch $REPO (branch/tag: $BRANCH)" >&2
-    exit 1
-  fi
-fi
-
-tar -xzf "$TMP_DIR/repo.tar.gz" -C "$TMP_DIR" 2>/dev/null
-
-# Find the extracted directory
-REPO_DIR=$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -1)
-if [[ -z "$REPO_DIR" ]]; then
-  echo "Failed to extract repository" >&2
-  exit 1
-fi
+REPO_DIR=$(skill_fetch_repo "$REPO" "$BRANCH" "$TMP_DIR") || exit 1
 
 # Find all skills (directories containing SKILL.md)
 AVAILABLE=()
@@ -153,8 +138,8 @@ if [[ ${#SKILL_NAMES[@]} -eq 0 ]]; then
 fi
 
 # Security scanning
-SCANNER="$(cd "$(dirname "$0")" && pwd)/skills/skill-scan/scan.sh"
-TRUSTED_FILE="$(cd "$(dirname "$0")" && pwd)/skills/security/trusted-sources.txt"
+SCANNER="$ROOT_DIR/skills/skill-scan/scan.sh"
+TRUSTED_FILE="$ROOT_DIR/skills/security/trusted-sources.txt"
 FORCE_INSTALL=false
 
 # Check for --force flag (already parsed, but check env)
@@ -164,25 +149,8 @@ for arg in "${SKILL_NAMES[@]}"; do
   fi
 done
 
-# Check if source repo is trusted
-is_trusted() {
-  local repo="$1"
-  local owner="${repo%%/*}"
-  if [[ -f "$TRUSTED_FILE" ]]; then
-    while IFS= read -r line; do
-      line="${line%%#*}"
-      line="${line// /}"
-      [[ -z "$line" ]] && continue
-      if [[ "$line" == "$repo" ]] || [[ "$line" == "$owner" ]]; then
-        return 0
-      fi
-    done < "$TRUSTED_FILE"
-  fi
-  return 1
-}
-
 TRUSTED_SOURCE=false
-if is_trusted "$REPO"; then
+if skill_is_trusted "$REPO" "$TRUSTED_FILE"; then
   TRUSTED_SOURCE=true
   echo "Source $REPO is trusted — skipping deep security scan."
 fi
@@ -209,7 +177,7 @@ for skill in "${SKILL_NAMES[@]}"; do
     if ! "$SCANNER" "$src/SKILL.md" 2>/dev/null; then
       if [[ "$FORCE_INSTALL" == "true" ]]; then
         echo "  ⚠ SECURITY ISSUES DETECTED — installing anyway (--force)"
-        echo "  $(date -u '+%Y-%m-%dT%H:%M:%SZ') FORCE_INSTALL: $skill from $REPO" >> "$(cd "$(dirname "$0")" && pwd)/memory/logs/security.log"
+        skill_log_force_install "$ROOT_DIR/memory/logs/security.log" "$skill" "$REPO"
       else
         echo "  ✗ BLOCKED: $skill has security issues. Use --force to override."
         FAILED=$((FAILED + 1))
@@ -233,45 +201,23 @@ for skill in "${SKILL_NAMES[@]}"; do
   INSTALLED=$((INSTALLED + 1))
 
   # Record provenance in skills.lock
-  LOCK_FILE="$(cd "$(dirname "$0")" && pwd)/skills.lock"
   SKILL_REMOTE_PATH="skills/$skill/SKILL.md"
   COMMIT_SHA=$(gh api "repos/$REPO/commits" -f path="$SKILL_REMOTE_PATH" --jq '.[0].sha' 2>/dev/null || echo "unknown")
-  IMPORTED_AT=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 
-  # Initialize lock file if missing or empty
-  if [[ ! -f "$LOCK_FILE" ]] || [[ ! -s "$LOCK_FILE" ]]; then
-    echo "[]" > "$LOCK_FILE"
-  fi
-
-  # Build new entry and upsert into lock file (replace existing entry for this skill)
   NEW_ENTRY=$(jq -n \
     --arg name "$skill" \
     --arg repo "$REPO" \
     --arg path "$SKILL_REMOTE_PATH" \
     --arg branch "$BRANCH" \
     --arg sha "$COMMIT_SHA" \
-    --arg at "$IMPORTED_AT" \
+    --arg at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     '{skill_name: $name, source_repo: $repo, source_path: $path, branch: $branch, commit_sha: $sha, imported_at: $at}')
 
-  jq --argjson entry "$NEW_ENTRY" \
-    '[.[] | select(.skill_name != $entry.skill_name)] + [$entry]' \
-    "$LOCK_FILE" > "${LOCK_FILE}.tmp" && mv "${LOCK_FILE}.tmp" "$LOCK_FILE"
-
+  skill_lock_upsert "$ROOT_DIR/skills.lock" "$NEW_ENTRY"
   echo "    -> provenance recorded in skills.lock (sha: ${COMMIT_SHA:0:7})"
 
-  # Add to aeon.yml if not already present
-  if ! grep -q "^  $skill:" "$AEON_YML" 2>/dev/null; then
-    # Insert before the heartbeat entry (fallback section)
-    if grep -q "heartbeat:" "$AEON_YML"; then
-      # Cross-platform insert (awk works on both macOS and Linux, unlike sed -i)
-      awk -v entry="  $skill: { enabled: false, schedule: \"0 12 * * *\" }" \
-        '/^  # --- Fallback/ { print entry }  { print }' \
-        "$AEON_YML" > "${AEON_YML}.tmp" && mv "${AEON_YML}.tmp" "$AEON_YML"
-      echo "    -> added to aeon.yml (disabled, schedule: 0 12 * * *)"
-    fi
-  else
-    echo "    -> already in aeon.yml"
-  fi
+  # Add to aeon.yml (disabled by default) if not already present
+  skill_add_to_aeon_yml "$AEON_YML" "$skill" false "0 12 * * *"
 done
 
 echo ""

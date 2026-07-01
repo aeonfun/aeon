@@ -18,10 +18,9 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
-import { readFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
-import { spawnSync } from "child_process";
+import { type Skill, loadSkills, runSkill } from "./skill-executor.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,34 +28,7 @@ const __dirname = dirname(__filename);
 // apps/mcp-server/dist/index.js → apps/mcp-server/ → apps/ → repo root
 const REPO_ROOT = join(__dirname, "..", "..", "..");
 
-interface Skill {
-  slug: string;
-  name: string;
-  description: string;
-  category: string;
-  schedule: string;
-  var: string;
-}
-
-interface SkillsManifest {
-  version: string;
-  repo: string;
-  skills: Skill[];
-}
-
-function loadSkills(): Skill[] {
-  const manifestPath = join(REPO_ROOT, "skills.json");
-  if (!existsSync(manifestPath)) {
-    process.stderr.write(
-      `[aeon-mcp] skills.json not found at ${manifestPath}\n`
-    );
-    return [];
-  }
-  const manifest: SkillsManifest = JSON.parse(
-    readFileSync(manifestPath, "utf-8")
-  );
-  return manifest.skills ?? [];
-}
+const LOG_PREFIX = "[aeon-mcp]";
 
 function skillToToolName(slug: string): string {
   return `aeon-${slug}`;
@@ -124,59 +96,6 @@ function categoryName(category: string): string {
   return labels[category] ?? category;
 }
 
-async function runSkill(slug: string, varValue: string): Promise<string> {
-  const skillFile = join(REPO_ROOT, "skills", slug, "SKILL.md");
-  if (!existsSync(skillFile)) {
-    return [
-      `Error: skill '${slug}' not found.`,
-      `Expected SKILL.md at: ${skillFile}`,
-      `Make sure you're running the MCP server from inside an Aeon repo clone.`,
-    ].join("\n");
-  }
-
-  const today = new Date().toISOString().split("T")[0];
-  let prompt = `Today is ${today}. Read and execute the skill defined in skills/${slug}/SKILL.md`;
-
-  if (varValue.trim()) {
-    prompt += `\n\nUse this variable (override the default in the skill file):\nvar=${varValue.trim()}`;
-  }
-
-  process.stderr.write(`[aeon-mcp] Running skill: ${slug}${varValue ? ` (var=${varValue})` : ""}\n`);
-
-  const result = spawnSync("claude", ["-p", "-", "--output-format", "json"], {
-    input: prompt,
-    cwd: REPO_ROOT,
-    timeout: 600_000, // 10 minutes — same as GitHub Actions timeout
-    maxBuffer: 10 * 1024 * 1024, // 10 MB
-    encoding: "utf-8",
-  });
-
-  if (result.error) {
-    const msg = (result.error as NodeJS.ErrnoException).code === "ENOENT"
-      ? `'claude' command not found. Install it with: npm install -g @anthropic-ai/claude-code`
-      : `Failed to spawn claude: ${result.error.message}`;
-    return `Error: ${msg}`;
-  }
-
-  if (result.status !== 0) {
-    const output = (result.stderr || result.stdout || "").trim();
-    return `Skill '${slug}' failed (exit ${result.status}):\n${output}`;
-  }
-
-  const stdout = (result.stdout || "").trim();
-  if (!stdout) {
-    return `Skill '${slug}' produced no output.`;
-  }
-
-  // The claude CLI with --output-format json wraps result in { result: "..." }
-  try {
-    const parsed = JSON.parse(stdout) as { result?: string };
-    return parsed.result ?? stdout;
-  } catch {
-    return stdout;
-  }
-}
-
 // ---- Server setup ----
 
 const server = new Server(
@@ -184,11 +103,11 @@ const server = new Server(
   { capabilities: { tools: {} } }
 );
 
-const skills = loadSkills();
+const skills = loadSkills(REPO_ROOT, LOG_PREFIX);
 const tools = buildTools(skills);
 
 process.stderr.write(
-  `[aeon-mcp] Loaded ${skills.length} skills from ${REPO_ROOT}\n`
+  `${LOG_PREFIX} Loaded ${skills.length} skills from ${REPO_ROOT}\n`
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools }));
@@ -212,7 +131,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   const varArg = request.params.arguments?.var;
   const varValue = typeof varArg === "string" ? varArg : "";
-  const output = await runSkill(slug, varValue);
+  const output = runSkill(REPO_ROOT, slug, varValue, LOG_PREFIX);
 
   return {
     content: [{ type: "text" as const, text: output }],

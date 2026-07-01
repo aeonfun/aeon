@@ -23,6 +23,8 @@ ROOT="$(cd "$(dirname "$0")" && pwd)"
 SKILLS_DIR="$ROOT/skills"
 SCANNER="$ROOT/skills/skill-scan/scan.sh"
 LOCK_FILE="$ROOT/skills.lock"
+# shellcheck source=scripts/lib/skill-install.sh
+. "$ROOT/scripts/lib/skill-install.sh"
 
 die() { echo "error: $*" >&2; exit 1; }
 command -v curl >/dev/null || die "missing dependency: curl"
@@ -52,10 +54,9 @@ echo "Fetching $URL"
 TMP="$(mktemp -d)"; trap 'rm -rf "$TMP"' EXIT
 curl -fsS "$URL" -o "$TMP/SKILL.md" || die "could not fetch (check id/name at $WELLKNOWN/index.json)"
 
-fm() { sed -n '/^---$/,/^---$/p' "$TMP/SKILL.md" | grep -E "^[[:space:]]*$1:" | head -1 | sed "s/^[[:space:]]*$1:[[:space:]]*//; s/\"//g"; }
-SLUG="$(fm name | tr '[:upper:] ' '[:lower:]-')"
+SLUG="$(skill_fm "$TMP/SKILL.md" name | tr '[:upper:] ' '[:lower:]-')"
 [[ -n "$SLUG" ]] || die "SKILL.md has no name: in frontmatter"
-CID="$(fm cid)"; SKILL_ID="$(fm skill_id)"
+CID="$(skill_fm "$TMP/SKILL.md" cid)"; SKILL_ID="$(skill_fm "$TMP/SKILL.md" skill_id)"
 
 # ── security scan (Aeon's own; honor --force exactly like ./add-skill) ────────
 if [[ -x "$SCANNER" ]]; then
@@ -63,8 +64,7 @@ if [[ -x "$SCANNER" ]]; then
   if ! "$SCANNER" "$TMP/SKILL.md" 2>/dev/null; then
     if [[ "$FORCE" == "true" ]]; then
       echo "  ⚠ SECURITY ISSUES DETECTED — installing anyway (--force)"
-      mkdir -p "$ROOT/memory/logs"
-      echo "  $(date -u '+%Y-%m-%dT%H:%M:%SZ') FORCE_INSTALL: $SLUG from atrium:$SKILL_ID" >> "$ROOT/memory/logs/security.log"
+      skill_log_force_install "$ROOT/memory/logs/security.log" "$SLUG" "atrium:$SKILL_ID"
     else
       die "BLOCKED: $SLUG has security issues. Re-run with --force to override."
     fi
@@ -80,13 +80,11 @@ mkdir -p "$DEST"; cp "$TMP/SKILL.md" "$DEST/SKILL.md"
 
 # ── provenance in skills.lock (same schema as ./add-skill; CID is the content hash) ──
 if command -v jq >/dev/null; then
-  [[ -s "$LOCK_FILE" ]] || echo "[]" > "$LOCK_FILE"
   ENTRY="$(jq -n --arg name "$SLUG" --arg repo "atrium:$SKILL_ID" \
     --arg path "$WELLKNOWN/by-id/$SKILL_ID/SKILL.md" --arg branch "base-mainnet" \
     --arg sha "$CID" --arg at "$(date -u '+%Y-%m-%dT%H:%M:%SZ')" \
     '{skill_name:$name, source_repo:$repo, source_path:$path, branch:$branch, commit_sha:$sha, imported_at:$at}')"
-  jq --argjson e "$ENTRY" '[.[] | select(.skill_name != $e.skill_name)] + [$e]' \
-    "$LOCK_FILE" > "$LOCK_FILE.tmp" && mv "$LOCK_FILE.tmp" "$LOCK_FILE"
+  skill_lock_upsert "$LOCK_FILE" "$ENTRY"
   echo "    -> provenance recorded in skills.lock (cid: ${CID:0:12}…)"
 fi
 

@@ -6,7 +6,7 @@ Expose every Aeon skill as a [Model Context Protocol](https://modelcontextprotoc
 
 The server reads `skills.json` at the repo root and advertises each skill as an MCP tool over stdio. When Claude calls a tool, it spawns `claude -p -` against the matching `skills/<slug>/SKILL.md`, waits for the run to finish (same ~10-minute budget as Actions), and hands the skill's output back as the tool result. It's the bridge that turns "Aeon runs on a schedule in CI" into "Aeon is a set of tools inside my Claude session."
 
-It's the local, push-button sibling of the [A2A gateway](../a2a-server/README.md): MCP is for **Claude clients**, A2A is for **any agent framework over HTTP**. Both spawn the same skill prompt, so behaviour is identical across all three entry points (cron, Claude, remote agent).
+It's the local, push-button way to run any skill from a Claude client. It spawns the same skill prompt the GitHub Actions runner uses, so behaviour is identical across entry points (cron and Claude).
 
 ## Quickstart
 

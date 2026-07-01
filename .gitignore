@@ -23,6 +23,11 @@
 # Skill provenance lock (per-repo, not committed)
 skills.lock
 
+# Per-fork agent wallets — advertised to the x402books ecosystem. Each operator
+# creates their own from .x402books/wallets.json.example; never commit real
+# addresses upstream (a pulled-in wallets.json misattributes fork activity).
+.x402books/wallets.json
+
 # Scratch / temp files
 tmp_*
 *.tmp

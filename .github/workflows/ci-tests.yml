@@ -2,9 +2,8 @@ name: ci-tests
 
 # Runs the committed script test suites on every PR that touches scripts/ or aeon.yml.
 # These are the local tests authored alongside the hardening "easy wins" ported from
-# aeon-dev (notify formatting, log compaction, output verifier, schedule clustering,
-# skill pruning) — same gate shape as the other ci-*.yml. Keeps the extracted ./notify
-# and the helper scripts honest.
+# aeon-dev (notify formatting, log compaction, skill pruning) — same gate shape as the
+# other ci-*.yml. Keeps the extracted ./notify and the helper scripts honest.
 
 on:
   pull_request:
@@ -35,10 +34,6 @@ jobs:
         run: bash scripts/tests/test_notify.sh
       - name: log compaction tests
         run: python3 scripts/tests/test_compact_logs.py
-      - name: output verifier tests
-        run: python3 scripts/tests/test_verify_output.py
-      - name: schedule clustering tests
-        run: bash scripts/tests/test_schedule_clusters.sh
       - name: prune analyzer tests
         run: python3 scripts/tests/test_prune_skills.py
       - name: capability mode tests

@@ -350,7 +350,7 @@ Then just **set the secret** (dashboard MCP tab inline, Settings → Add Credent
 
 Notes: scope is global (`.mcp.json` applies to every skill); add `"alwaysLoad": true` to force a server's tools into context every run; stdio servers run as local processes in the runner, HTTP/SSE servers are reached over the network.
 
-### Use Aeon's skills from Claude or any agent (MCP & A2A)
+### Use Aeon's skills from Claude (MCP)
 
 Aeon skills work outside GitHub Actions too - locally via `claude -p -`, identical to Actions. API keys are read from your environment or a `.env` file in the repo root.
 
@@ -364,16 +364,7 @@ Aeon skills work outside GitHub Actions too - locally via `claude -p -`, identic
 
 Tool naming, the `var` argument, Claude Desktop config, and a test client are in [`apps/mcp-server/README.md`](apps/mcp-server/README.md).
 
-**Any AI agent (A2A)** - [Google's A2A protocol](https://google.github.io/A2A/) lets LangChain, AutoGen, CrewAI, OpenAI Agents SDK, and Vertex AI invoke skills via HTTP:
-
-```bash
-./add-a2a                    # starts on port 41241
-./add-a2a --print-config     # LangChain/Python client examples
-```
-
-Endpoints, env vars, the agent-card schema, and a copy-paste JSON-RPC client are in [`apps/a2a-server/README.md`](apps/a2a-server/README.md).
-
-Working client scripts for every supported stack (LangChain, AutoGen, CrewAI, OpenAI Agents SDK, MCP stdio, Claude Desktop) live in [`examples/`](examples/) - each <100 lines, calling a real skill end-to-end. Start with [`examples/README.md`](examples/README.md).
+Working client scripts (MCP stdio, Claude Desktop) live in [`examples/`](examples/) - each calling a real skill end-to-end. Start with [`examples/README.md`](examples/README.md).
 
 ### Cross-repo access
 
@@ -580,7 +571,6 @@ packs.json               ← generated pack catalog the dashboard reads (9 packs
 ./notify-jsonrender      ← convert skill output to dashboard feed cards via Haiku
 ./add-skill              ← import skills from GitHub repos (with security scanning)
 ./add-mcp                ← register Aeon as an MCP server for Claude Desktop/Code
-./add-a2a                ← start the A2A protocol gateway for external agents
 ./export-skill           ← package skills for standalone distribution
 ./generate-skills-json   ← regenerate skills.json from SKILL.md files
 ./generate-packs-json    ← regenerate packs.json from packs.config.json + skills.json
@@ -593,7 +583,6 @@ skill-templates/         ← templates for building your own skills
 apps/                    ← standalone sub-projects, each with its own package.json
   dashboard/             ← local web UI (Next.js + json-render feed)
   mcp-server/            ← MCP server - exposes skills as Claude tools
-  a2a-server/            ← A2A protocol gateway - exposes skills to any agent framework
   webhook/               ← Telegram instant-mode Cloudflare Worker (~1s delivery)
 memory/
   MEMORY.md              ← goals, active topics, pointers

@@ -50,7 +50,7 @@ Aeon is one of many ways to build agentic systems. Here's where it sits next to 
 | **Setup floor** | `git clone` + secrets | `pip install` + write code | `pip install` + write code | Docker or hosted account | `pip install` + write code |
 | **Hosting cost** | Free on public repos (Actions minutes) | Pay for compute | Pay for compute | Self-host or pay SaaS | Pay for compute |
 | **Operator role** | Configure once, walk away | Build & run orchestration | Build & run crews | Build & maintain workflows | Build & run graphs |
-| **External integration** | MCP server + A2A gateway | Function-calling agents | Tool-use API | 400+ pre-built integrations | Tool-use API |
+| **External integration** | MCP server | Function-calling agents | Tool-use API | 400+ pre-built integrations | Tool-use API |
 
 ### One-line summary
 
