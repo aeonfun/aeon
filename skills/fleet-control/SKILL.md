@@ -366,7 +366,7 @@ Write a terse daily pulse to `/tmp/scorecard-notify.md` and send it with `./noti
 
 #### 7. Memory log
 
-Append the scorecard entry under the consolidated `### fleet-control` heading in `memory/logs/${today}.md` (see **Log** section), noting the headline numbers (so future skills like self-review/reflect see it).
+Append the scorecard entry under the consolidated `### fleet-control` heading in `memory/logs/${today}.md` (see **Log** section), noting the headline numbers (so future skills like self-improve/reflect see it).
 
 ### Scorecard notes
 - Numbers come only from the prefetched files — never invent or estimate figures yourself.

@@ -155,24 +155,24 @@ If no open PRs across all repos, log `PR_REVIEW_OK` and end.
 
 *(This is the former `pr-merge` skill, folded in verbatim. It surveys the queue and buckets by blast radius; it does **not** merge anything — `auto-merge` owns the actual-merge action behind its own author-allowlist + size-cap + branch-protection policy. This branch is the decision-support layer that lives *before* auto-merge, sized for the much larger pool of PRs auto-merge's safety policy intentionally skips.)*
 
-Today is ${today}. The open-PR queue on `aaronjmars/aeon` has crossed the threshold where a human reviewer working alone falls behind: yesterday (June 1) eighteen PRs were merged in a single 37-minute Monday catch-up window, but on every prior weekend day they stacked up untouched. As community skill packs become the primary contribution model and external contributors keep landing skill PRs every other day, the queue's *steady-state* size will keep climbing — `skill-triage` evaluates one inbound skill PR at a time, but no skill answers the operator's actual morning question: *"of the N open PRs right now, which N1 can I merge in one click and which N2 need real review?"*
+Today is ${today}. The open-PR queue on `aaronjmars/aeon` has crossed the threshold where a human reviewer working alone falls behind: yesterday (June 1) eighteen PRs were merged in a single 37-minute Monday catch-up window, but on every prior weekend day they stacked up untouched. As community skill packs become the primary contribution model and external contributors keep landing skill PRs every other day, the queue's *steady-state* size will keep climbing — `skill-scan` evaluates one inbound skill PR at a time, but no skill answers the operator's actual morning question: *"of the N open PRs right now, which N1 can I merge in one click and which N2 need real review?"*
 
-This branch is that answer. It surveys every open PR on a target repo, categorises each by the files it touches, runs `skills/skill-scan/scan.sh` against every changed `SKILL.md` (same scanner `skill-triage` reuses verbatim), and emits one structured Telegram digest with four risk buckets sorted by PR age. The operator can fire-and-forget the FAST_TRACK bucket, glance at SKILL_PASS, and budget real attention for INFRA_REVIEW + SKILL_WARN_OR_BLOCK + CORE_REVIEW.
+This branch is that answer. It surveys every open PR on a target repo, categorises each by the files it touches, runs `skills/skill-scan/scan.sh` against every changed `SKILL.md` (same scanner `skill-scan` reuses verbatim), and emits one structured Telegram digest with four risk buckets sorted by PR age. The operator can fire-and-forget the FAST_TRACK bucket, glance at SKILL_PASS, and budget real attention for INFRA_REVIEW + SKILL_WARN_OR_BLOCK + CORE_REVIEW.
 
 Read `memory/MEMORY.md` for context.
 Read the last 8 days of `memory/logs/` for prior-run context (skip if dispatched).
 Read `soul/SOUL.md` + `soul/STYLE.md` if populated to match voice in the notification.
 
-## Why a separate branch from pr-triage / skill-triage / auto-merge
+## Why a separate branch from pr-triage / skill-scan / auto-merge
 
 | Skill | Scope | Action |
 |-------|-------|--------|
 | `pr-triage` | Per external PR, first-touch | Welcomes + labels + leaves a verdict comment |
-| `skill-triage` | One skill-PR (workflow_dispatch var=PR_NUMBER) | Posts a structured per-skill security/secrets/conflict comment |
+| `skill-scan` | One skill-PR (workflow_dispatch var=PR_NUMBER) | Posts a structured per-skill security/secrets/conflict comment |
 | `auto-merge` | All bot-authored PRs that pass a strict safety policy | Merges if CLEAN |
 | **`pr-review --survey`** | **All open PRs across the watched-repos queue** | **One operator-facing digest sorted by risk + age — no per-PR comment, no merge action** |
 
-The four compose. `pr-triage` runs once per PR open; `skill-triage` runs on demand per skill PR; `auto-merge` runs against the bot subset; this survey branch is the **morning brief** over everything else — the open backlog the operator still has to think about. Building a fifth verdict layer into any of the existing three would either bloat their per-PR cost or skip the operator-overview question entirely.
+The four compose. `pr-triage` runs once per PR open; `skill-scan` runs on demand per skill PR; `auto-merge` runs against the bot subset; this survey branch is the **morning brief** over everything else — the open backlog the operator still has to think about. Building a fifth verdict layer into any of the existing three would either bloat their per-PR cost or skip the operator-overview question entirely.
 
 ## Inputs
 
@@ -181,7 +181,7 @@ The four compose. `pr-triage` runs once per PR open; `skill-triage` runs on dema
 | `gh api repos/{repo}/pulls?state=open&per_page=100 --paginate` | Open PR list with author, draft state, base ref, age, mergeable state, head SHA, statusCheckRollup summary, labels | `GH_TOKEN` |
 | `gh api repos/{repo}/pulls/{N}/files?per_page=100 --paginate` | Per-PR list of changed file paths + status (added/modified/removed) — the only signal we trust for bucketing | `GH_TOKEN` |
 | `gh api repos/{repo}/contents/{path}?ref={head_sha}` | Each changed `SKILL.md` body — fed to `scan.sh` for PASS/WARN/BLOCK verdict | `GH_TOKEN` |
-| `skills/skill-scan/scan.sh` (local) | Scanner reused verbatim (no fork, no shadow copy) — same source `skill-triage` reuses | Local script |
+| `skills/skill-scan/scan.sh` (local) | Scanner reused verbatim (no fork, no shadow copy) — same source `skill-scan` reuses | Local script |
 | `memory/watched-repos.md` (local) | Read only the `## Trusted Authors` section — those authors' PRs surface in a separate `TRUSTED_AUTHOR` row that bypasses the FAST_TRACK / CORE_REVIEW buckets | Local file |
 
 No new secrets. GitHub access via `gh` CLI (`GH_TOKEN`) per CLAUDE.md.
@@ -269,7 +269,7 @@ bash skills/skill-scan/scan.sh "/tmp/pr-merge-scan-${PR_NUMBER}-$(echo ${PATH} |
 
 The scan output's first HIGH/MEDIUM/PASS verdict line is taken as the per-file verdict. PR-level verdict is the **worst** across all scanned files: any HIGH → `BLOCK`; otherwise any MEDIUM → `WARN`; otherwise `PASS`.
 
-If `scan.sh` itself errors (missing, non-executable, non-zero exit without a verdict line) → tag the PR `scan_verdict=scan_error`, bucket `UNKNOWN`, do **not** infer PASS from silence. The scanner is the same path `skill-triage` relies on; a broken scanner is a fleet-wide problem the operator must know about.
+If `scan.sh` itself errors (missing, non-executable, non-zero exit without a verdict line) → tag the PR `scan_verdict=scan_error`, bucket `UNKNOWN`, do **not** infer PASS from silence. The scanner is the same path `skill-scan` relies on; a broken scanner is a fleet-wide problem the operator must know about.
 
 A PR can touch `skills/*/SKILL.md` AND `skills/*/scan.sh` AND `aeon.yml` at the same time. The bucket precedence in step 4 routes it to CORE_REVIEW regardless of the scan verdict — but **still run the scan** and record the verdict in the state file. A CORE_REVIEW PR with a BLOCK scan verdict deserves a second escalation line in the notification.
 
@@ -419,11 +419,11 @@ Append to `memory/logs/${today}.md` under the shared `### pr-review` heading wit
 ## Design notes (SURVEY branch — do not edit without reading)
 
 - **File-bucket precedence is conservative on purpose.** A PR touching both `aeon.yml` and `skills/x/SKILL.md` is CORE_REVIEW. Routing it to SKILL_PASS because the scan passed would understate the blast radius — the executor-config change is the dominant signal. First-match-wins in step 4 encodes this; do not "improve" by softening to per-file majority voting.
-- **Scan errors do NOT default to PASS.** `scan_error` → bucket `UNKNOWN`. The whole point of the scanner is to catch HIGH findings before merge; a silent PASS on a broken scanner is the failure mode the skill exists to prevent. Same rule `skill-triage` follows.
+- **Scan errors do NOT default to PASS.** `scan_error` → bucket `UNKNOWN`. The whole point of the scanner is to catch HIGH findings before merge; a silent PASS on a broken scanner is the failure mode the skill exists to prevent. Same rule `skill-scan` follows.
 - **FAST_TRACK is not "ignore."** It's the bucket the operator should merge **first**, not the bucket the operator should *skip*. A FAST_TRACK PR sitting open for 14 days is still a contributor experience problem; the digest still surfaces it (just without a notification).
 - **TRUSTED_AUTHOR bypasses every other bucket.** A bot PR touching `aeon.yml` is still a `auto-merge`-handled PR — listing it under CORE_REVIEW would suggest the operator should look, but `auto-merge`'s policy already gates this. The split keeps the operator's mental model: this digest is *the queue you have to think about*, not *everything that's open*.
-- **Re-notification is gated on head SHA, not on date.** A queue that grows by one PR per day shouldn't re-notify yesterday's whole queue every morning. State carries `last_notified_head_sha` per PR; a force-push or rebase reopens the review surface and is the only thing that re-notifies. Same dedup pattern `skill-triage` uses.
-- **No auto-merge action, no PR comments, no labels.** This branch is operator-facing only. If a comment-on-PR layer is wanted, that is the default REVIEW branch / `pr-triage` / `skill-triage` territory and should grow there.
+- **Re-notification is gated on head SHA, not on date.** A queue that grows by one PR per day shouldn't re-notify yesterday's whole queue every morning. State carries `last_notified_head_sha` per PR; a force-push or rebase reopens the review surface and is the only thing that re-notifies. Same dedup pattern `skill-scan` uses.
+- **No auto-merge action, no PR comments, no labels.** This branch is operator-facing only. If a comment-on-PR layer is wanted, that is the default REVIEW branch / `pr-triage` / `skill-scan` territory and should grow there.
 - **`memory/watched-repos.md` is read for `## Trusted Authors` only** (in this branch). The branch does not iterate every watched repo by default because the digest format only renders cleanly for one repo at a time and the operator's morning question ("what's safe to merge on aeon today") is per-repo. Multi-repo support is the `${var}` override path.
 
 ---

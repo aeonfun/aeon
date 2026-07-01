@@ -58,7 +58,7 @@ Then run the arm(s) selected by `scope`, and finish with the shared **Notify** a
 
 Audit the lifecycle status of every disclosure `vuln-scanner` has produced. Without a follow-up loop, three things rot silently:
 
-- **Merged-but-uncelebrated wins** — landed fixes never reach self-review / retrospective without manual aggregation.
+- **Merged-but-uncelebrated wins** — landed fixes never reach self-improve / retrospective without manual aggregation.
 - **Maintainer questions on open PRs** — a maintainer comments asking for clarification; if the bot doesn't see it, the PR ages out.
 - **Queued drafts past their disclosure window** — entries with `channel: "skipped"` (no-safe-channel) vanish into `vuln-scanned.json` with no recurring re-probe.
 

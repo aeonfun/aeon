@@ -1,23 +1,43 @@
 ---
 name: Skill Update
 category: meta
-description: Check imported skills for upstream changes and security regressions since the version in skills.lock
+description: Two-branch skill-fleet audit — (drift) imported skills' upstream SKILL.md changes and security regressions vs skills.lock, and (freshness) enabled skills' on-disk file dependencies going stale. Branch selected by ${var}.
 var: ""
-tags: [dev, security]
+tags: [dev, security, meta]
 cron: "0 19 * * 0"
 ---
-> **${var}** — Skill name to check. If empty, checks all skills tracked in `skills.lock`. Special form `accept:{skill_name}` advances the lock for that skill to the current upstream SHA after re-running the security scan (use only after manual review of the diff).
+> **${var}** — Branch selector, form `branch[:arg]`. **Empty** → unified default: run BOTH audits (drift over every skill in `skills.lock` + freshness over every enabled skill in `aeon.yml`). **`drift`** → drift audit only (all tracked); **`drift:{skill}`** → drift scoped to one locked skill. **`accept:{skill}`** → drift ACCEPT mode: advance the lock for that skill to the current upstream SHA after re-running the security scan (use only after manual review of the diff). **`freshness`** → freshness audit only (all enabled consumers); **`freshness:{skill}`** → freshness scoped to one consumer; **`freshness:dry-run`** → freshness audit with the notification suppressed (article + log still write). A bare non-keyword token is applied as a scope to BOTH branches (drift if it's in `skills.lock`, freshness if it's enabled in `aeon.yml`).
 
 <!-- autoresearch: variation B — sharper output: priority verdict + decision-ready triage + enabled/disabled cross-reference -->
 
-Today is ${today}. Audit imported skills for upstream changes since installation, classify each by drift size × security verdict × downstream impact (whether the skill is enabled in `aeon.yml`), and lead with a one-line verdict so the operator knows what to act on. The goal is decision-ready triage, not a flat catalog of SHAs.
+Today is ${today}. This skill audits the Aeon skill fleet along two independent axes, selected by `${var}`:
 
-## Steps
+- **drift** — imported skills whose upstream `SKILL.md` has changed or regressed since the SHA pinned in `skills.lock`. Classifies each by drift size × security verdict × downstream impact (whether the skill is enabled in `aeon.yml`), leads with a one-line verdict so the operator knows what to act on, and can advance the lock (ACCEPT mode) only after a fresh security re-scan. The goal is decision-ready triage, not a flat catalog of SHAs.
+- **freshness** — enabled skills whose on-disk file dependencies (`articles/`, `.outputs/`, `memory/topics/`, `memory/state/`) have gone stale, so a chained consumer is about to read yesterday's article or a long-dead topic file. A watchdog for **silent staleness**, not for failures: a chained skill that runs on schedule with no API errors and a 100% pass rate can still silently act on stale upstream data if the producer skill failed earlier and nothing replaced its output. None of `heartbeat` (per-run pulse), `skill-analytics` (per-skill ranking), or `skill-health` (per-skill failure detection) catches this — the only signal is that the upstream file's mtime drifted past its freshness window, and nobody is looking. This branch looks.
+
+The two branches are complementary and non-overlapping: `drift` reaches upstream over `gh api` and watches imported-skill `SKILL.md` content; `freshness` is pure local file I/O and watches producer→consumer file mtimes. Empty `${var}` runs both, each self-gating its own notification.
+
+## Preamble (every run)
+
+1. Read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` — drop anything already reported so the same signal isn't re-emitted.
+2. Parse `${var}` into a branch + scope/mode:
+   - empty → `BRANCH=both`, unscoped.
+   - `accept:{skill}` → `BRANCH=drift`, `MODE=accept`, `TARGET={skill}` (skips drift detection; jump straight to drift step 9).
+   - `drift` / `drift:{skill}` → `BRANCH=drift`, `MODE=audit`, `TARGET={skill|all}`.
+   - `freshness` / `freshness:{arg}` → `BRANCH=freshness`; if `{arg}` begins with `dry-run` set `MODE=dry-run` and treat the remainder as a scope override, otherwise `MODE=execute` and `{arg}` (if present) is a single-consumer scope.
+   - any other bare token `{t}` → `BRANCH=both`, applied as a scope: the drift branch filters `skills.lock` to `{t}` and the freshness branch scopes to consumer `{t}` (each branch emits its own NO_MATCH log line if `{t}` isn't in its domain).
+3. Dispatch per `BRANCH`. When `BRANCH=both`, run **drift** first, then **freshness**; each writes its own article and self-gates its own notify; both contribute to the single consolidated log block (`## Log`).
+
+---
+
+## Branch: drift (upstream drift + security regressions)
+
+Reaches upstream over `gh api`; classifies each imported skill by drift size × security verdict × downstream impact and leads with a one-line verdict.
 
 ### 1. Preflight + scope
 
 - Read `skills.lock` at the repo root.
-  - If missing or empty: log `SKILL_UPDATE_CHECK_NO_LOCK: skills.lock not found — no imported skills tracked` to `memory/logs/${today}.md` and stop. Do NOT notify.
+  - If missing or empty: log `SKILL_UPDATE_CHECK_NO_LOCK: skills.lock not found — no imported skills tracked` to `memory/logs/${today}.md` and stop this branch. Do NOT notify.
   - Each entry has the shape:
     ```json
     {
@@ -29,8 +49,8 @@ Today is ${today}. Audit imported skills for upstream changes since installation
       "imported_at": "2026-04-01T12:00:00Z"
     }
     ```
-- If `${var}` starts with `accept:`, parse the skill name suffix and switch to ACCEPT mode (jump to step 9). Skip drift detection.
-- If `${var}` is non-empty (and not `accept:...`), filter the lock to that one entry. If no match, log `SKILL_UPDATE_CHECK_NO_MATCH: ${var} not in skills.lock` and stop.
+- If `MODE=accept` (from `${var}` starting with `accept:`), parse the skill name suffix and switch to ACCEPT mode (jump to step 9). Skip drift detection.
+- If a drift scope is set (`drift:{skill}` or a bare token applied to this branch), filter the lock to that one entry. If no match, log `SKILL_UPDATE_CHECK_NO_MATCH: ${var} not in skills.lock` and stop this branch.
 - Read `aeon.yml` and build a set `ENABLED` of skill names where the entry has `enabled: true`. This drives the priority calculation in step 5.
 
 ### 2. Per-skill drift detection
@@ -241,25 +261,7 @@ Steps:
    Re-enable in aeon.yml if needed.
    ```
 
-### 10. Log to `memory/logs/${today}.md`
-
-```
-## skill-update
-- Mode: AUDIT | ACCEPT
-- Tracked: N (enabled in aeon.yml: M)
-- Up-to-date: N, Changed: N (critical: a, high: b, medium: c, low: d), Unreachable: N, Missing-upstream: N
-- Source-status: gh_api={ok|...}, scanner={present|missing}
-- Critical/high (one line each): {skill — reason}
-- Report: articles/skill-update-${today}.md
-```
-
-## Sandbox note
-
-The sandbox may block outbound `curl`. Prefer `gh api` for all GitHub calls — it handles auth via `GITHUB_TOKEN` and works inside the sandbox. If `gh api` itself fails, fall back to **WebFetch** for the same URL (the equivalent REST endpoint, e.g. `https://api.github.com/repos/{repo}/commits?path={path}&per_page=1`) and parse the JSON response.
-
-For the SKILL.md content fetch in step 4, the raw accept header is critical — never rely on `--jq '.content' | base64 -d` because GitHub's base64 response is line-wrapped and decode failures silently corrupt the security scan input.
-
-## Constraints
+### Drift-branch constraints
 
 - **Never advance `commit_sha` automatically.** Only ACCEPT mode advances, only one skill at a time, only after a fresh security re-scan.
 - **Never overwrite a locked SKILL.md until the fetched upstream copy has cleared the security scanner.** ACCEPT mode runs `skills/skill-scan/scan.sh` against the fetched file before any write. On scanner FAIL (HIGH finding) or SCANNER_ERROR (scanner missing, exit 2, `jq` missing, or JSON parse failure), the locked copy is preserved and the verdict is recorded to `memory/topics/skill-update-blocked.md`.
@@ -270,4 +272,298 @@ For the SKILL.md content fetch in step 4, the raw accept header is critical — 
 - Do not change `branch` field automatically even if the upstream default branch has been renamed; report it as a flag and let the operator decide.
 - No new env vars. Uses existing `GITHUB_TOKEN` via `gh api`.
 
-Write the complete report. No TODOs or placeholders.
+---
+
+## Branch: freshness (file-dependency staleness)
+
+Pure local file I/O. Walks every enabled skill in `aeon.yml`, parses the file dependencies it declares (explicit `chains: consume:` edges + implicit `articles/`, `.outputs/`, `memory/topics/`, `memory/state/` references inside each `SKILL.md`), checks the on-disk freshness of each dependency against a per-class threshold, and surfaces a single decision-ready report: which enabled consumer is about to read a file older than its expected freshness window. It does not duplicate `skill-health`'s job (consecutive failures via run history) or the drift branch's job (imported-skill SKILL.md drift). Its scope is narrow: file-on-disk freshness vs the consumer that's about to read it.
+
+### Config
+
+No new secrets. No new env vars. No new state file beyond `memory/topics/skill-freshness-state.json` for prior-run dedup.
+
+Reads:
+- `aeon.yml` — enabled skill list, `chains:` blocks (steps, consume, parallel), per-skill `schedule` (used to derive expected freshness windows).
+- Every `skills/*/SKILL.md` whose corresponding `aeon.yml` entry has `enabled: true` — for implicit file-reference extraction.
+- `articles/`, `.outputs/`, `memory/topics/`, `memory/state/` — directory listings + mtimes only (no content reads beyond what's needed for fingerprinting).
+
+Writes:
+- `articles/skill-freshness-${today}.md` — the report.
+- `memory/topics/skill-freshness-state.json` — fingerprint + last-verdict for run-to-run dedup.
+- `memory/logs/${today}.md` — log block (consolidated under the shared `## Log` heading).
+
+No outbound HTTP. No `gh api` calls. No env-var-in-headers. Pure local file I/O.
+
+### Freshness thresholds
+
+The threshold for a dependency depends on its path class:
+
+| Path class | Threshold | Rationale |
+|------------|-----------|-----------|
+| `articles/{skill}-*.md` | 28 hours | Daily skills run once per day; 28h gives a 4h grace window for clock skew + run delays. |
+| `articles/{skill}-*.md` produced by a weekly skill (cron starts with `0 _ * * 0`-`6` only) | 8 days (192h) | Weekly producers have a 24h grace window. |
+| `.outputs/{skill}.md` (chain runner outputs) | 4 hours | Chain steps run minutes apart; a 4h-old `.outputs/` file is a stale chain run. |
+| `memory/topics/{name}.md` | 7 days (168h) | Topic files are reference material, edited on memory-flush cycles (~weekly). |
+| `memory/state/{name}.json` | 30 days (720h) | State files are append/update-on-write; 30 days is a "skill hasn't run at all" signal. |
+
+Per-class thresholds are computed at runtime — not hardcoded per dependency. The skill discovers the producer's schedule from `aeon.yml` and picks the daily-vs-weekly bucket automatically.
+
+**Severity bands per dependency:**
+- `OK` — file mtime within threshold.
+- `WARN` — file mtime past threshold but ≤ 2× threshold.
+- `STALE` — file mtime past 2× threshold (real degradation, not a one-day blip).
+- `MISSING` — referenced file does not exist on disk at all.
+
+`MISSING` only fires for **explicit** dependencies (`chains: consume:` entries + canonical `articles/{producer}-${today}.md` patterns). Implicit grep-discovered references that simply never existed are not flagged — many SKILL.md files mention paths in pseudocode or comments that aren't real reads.
+
+### 1. Parse var and resolve scope
+
+- If `MODE=dry-run` (from `freshness:dry-run` in the preamble) → skip the notification (article still writes, log still appends). A remaining token after `dry-run` is treated as a scope override.
+- Otherwise `MODE=execute`.
+- If a single-consumer scope is set (from `freshness:{skill}` or a bare token applied to this branch) that matches an `aeon.yml` skill key → `SCOPE=single`, `SCOPED_SKILL=$scope`. If it doesn't match any key, log `SKILL_FRESHNESS_NO_MATCH: ${var} not in aeon.yml` and exit this branch (no notify, no article).
+- Otherwise `SCOPE=fleet` and audit every enabled skill.
+
+### 2. Load enabled-skill list and build the producer index
+
+Parse `aeon.yml`. Build two maps:
+
+- `ENABLED` — set of skill names where `enabled: true`. (Skills with `enabled: false` are not audited as consumers — their dependencies don't matter until they're turned on. They CAN appear as producers though, and their freshness is still tracked since other consumers may depend on them.)
+- `PRODUCER_CADENCE` — map skill_name → `daily` | `weekly` | `on_demand` derived from the cron expression:
+  - cron with `* * *` in days/months/weekdays → `daily`
+  - cron whose weekday field matches `^[0-6]$` (single weekday) → `weekly`
+  - `workflow_dispatch` or empty → `on_demand` (skipped from freshness audit; on-demand outputs have no expected cadence)
+
+### 3. Gather explicit dependencies (`chains: consume:`)
+
+Walk `aeon.yml` `chains:` blocks. For each step with a `consume: [...]` list, the consuming skill depends on `.outputs/{producer}.md` for each named producer. Record these as **explicit** edges with class `outputs` (4h threshold).
+
+Also record any step with `parallel: [...]` followed by a downstream `consume:` reference as the same class.
+
+### 4. Gather implicit dependencies (grep over enabled SKILL.md files)
+
+For each skill in `ENABLED`, read its `SKILL.md` and extract every reference to:
+
+```
+articles/[a-zA-Z0-9_-]+(-\$\{today\}|-[0-9]{4}-[0-9]{2}-[0-9]{2})?\.md
+\.outputs/[a-zA-Z0-9_-]+\.md
+memory/topics/[a-zA-Z0-9_.-]+\.md
+memory/state/[a-zA-Z0-9_.-]+\.json
+```
+
+Filter out:
+- References inside fenced code blocks marked `bash` or `text` that are clearly examples (e.g. `# example: articles/foo-2026-01-01.md`).
+- References to the consumer's own output paths (a producer self-reading its prior file is not a freshness gap; that's its own state-keeping). Detected when the producer prefix matches the consuming skill name.
+- References inside the comment marker `<!-- skill-freshness:ignore -->` and the next line (escape hatch for SKILL.md authors who cite a path in prose without actually reading it).
+
+Each surviving reference becomes an **implicit** edge with the appropriate path class.
+
+### 5. Resolve canonical "today's article" patterns
+
+For every `articles/{producer}-${today}.md` reference (or the date-suffixed equivalent), resolve to the actual most-recent file on disk: `ls -1t articles/{producer}-*.md 2>/dev/null | head -1`. Record the resolved path AND the producer's expected cadence (from step 2's `PRODUCER_CADENCE` map).
+
+If no file matches the pattern at all, record as `MISSING` (only counted if the producer has cadence `daily` or `weekly` — `on_demand` producers may legitimately have never run).
+
+### 6. Score each dependency
+
+For every (consumer, dependency) pair:
+
+```
+mtime_age_hours = (now - file.mtime) in hours
+threshold_hours = lookup_threshold(path_class, producer_cadence)
+
+severity = OK     if mtime_age_hours <= threshold_hours
+         | WARN   if mtime_age_hours <= 2 * threshold_hours
+         | STALE  if mtime_age_hours >  2 * threshold_hours
+         | MISSING if file does not exist (and edge is explicit OR pattern-canonical)
+```
+
+Aggregate per-consumer:
+
+```
+consumer_verdict = WORST severity across all its dependencies
+```
+
+`MISSING > STALE > WARN > OK` for the rollup.
+
+### 7. Roll up to the fleet verdict
+
+```
+fleet_verdict = WORST consumer_verdict across all enabled consumers
+```
+
+Translation to exit status:
+
+| fleet_verdict | exit_status |
+|--------------|-------------|
+| OK across the board | `FRESHNESS_OK` |
+| At least one WARN, no STALE / MISSING | `FRESHNESS_WARN` |
+| At least one STALE OR MISSING | `FRESHNESS_STALE` |
+
+### 8. Dedup vs prior run
+
+Compute a stable verdict fingerprint: `sha1sum` of the sorted list of `consumer:dep:severity` triples (excluding `OK` rows — only flagged rows count toward the fingerprint).
+
+Compare against `memory/topics/skill-freshness-state.json` `last_flagged_fingerprint`. If identical AND today's `fleet_verdict` is the same as `last_verdict`:
+- Article still writes (idempotent same-day overwrite).
+- `memory/topics/skill-freshness-state.json` updates the `last_run_at` timestamp.
+- Notify is **suppressed** with status `FRESHNESS_NO_CHANGE` — no point pinging the operator about the same stale file two days running. The state expires after 7 days; if nothing has changed for a week, the next run will re-emit the notification as a periodic reminder.
+
+If different (a new flag appeared, an old one cleared, or the verdict band changed): notify normally.
+
+### 9. Write the article
+
+Path: `articles/skill-freshness-${today}.md`. Overwrite if exists.
+
+```markdown
+# Skill Freshness — ${today}
+
+**Verdict:** ${verdict_emoji} ${fleet_verdict} — ${one_line_summary}
+
+*Audited ${enabled_count} enabled skills · ${dependency_count} dependencies checked · ${flagged_count} flagged*
+
+## Flagged dependencies
+
+| Consumer | Dependency | Class | Age | Severity |
+|----------|-----------|-------|-----|----------|
+| ${consumer} | `${path}` | ${class} | ${age_human} | ${severity_emoji} ${severity} |
+| ... | | | | |
+
+(Sorted by severity desc, then consumer name. Omit OK rows entirely — they are noise.)
+
+## What this means per consumer
+
+For every consumer whose verdict ≠ OK, one paragraph:
+
+> **${consumer}** — depends on ${N} files; ${flagged_count} flagged. Worst: `${worst_path}` last updated ${age} ago (threshold ${threshold}h, class ${class}). The producer `${producer}` last successful run: ${producer_last_run_or_unknown}. Suggested action: ${one_line_suggestion}.
+
+`one_line_suggestion` is a small lookup:
+- `MISSING` + producer is `daily`/`weekly` → "Check `${producer}` run history with `./scripts/skill-runs --skill ${producer} --hours 168`."
+- `STALE` → "Verify `${producer}` is still on schedule; if so, the producer ran but did not write a new article."
+- `WARN` → "Monitor — one missed run, expected to clear on next producer cadence."
+
+## Healthy consumers
+
+A one-line per consumer with verdict OK: `- ${consumer} — ${dep_count} deps, all fresh.`
+
+Cap at 8 entries; collapse the rest into `+ N more all-fresh consumers.` to keep the article scannable.
+
+## Source status
+
+- `aeon.yml`: ${parsed_skill_count} entries, ${enabled_count} enabled
+- Implicit references discovered: ${implicit_count}
+- Explicit `chains: consume:` edges: ${explicit_count}
+- Files not yet on disk (skipped — implicit references that never existed): ${ignored_count}
+
+---
+*Companion to `skill-health` (per-skill failure detection) and `heartbeat` (per-run pulse). This skill catches the silent-staleness gap those two cannot: a consumer reading a stale file with no API errors and a 100% pass rate. Methodology: every age and threshold is computed from on-disk mtimes — this skill measures nothing it does not also report.*
+```
+
+### 10. Persist state
+
+Write `memory/topics/skill-freshness-state.json`:
+
+```json
+{
+  "last_run_at": "${ISO timestamp}",
+  "last_verdict": "${fleet_verdict}",
+  "last_flagged_fingerprint": "${sha1}",
+  "consumer_count": ${enabled_count},
+  "dependency_count": ${dependency_count},
+  "flagged_count": ${flagged_count},
+  "first_seen_at": {
+    "${consumer}:${path}": "${ISO timestamp}"
+  }
+}
+```
+
+`first_seen_at` records when each currently-flagged dep first crossed its threshold. Reused on the next run to detect "this has been stale for >7 days" — escalate one severity band in that case (WARN → STALE if persistent).
+
+Cap `first_seen_at` to 200 entries; drop oldest by timestamp.
+
+### 11. Send notification
+
+If `MODE == dry-run`: skip notify, log `FRESHNESS_DRY_RUN`, exit this branch.
+
+If `fleet_verdict == FRESHNESS_OK`: log `FRESHNESS_OK`, **do not notify** (no news is good news; a green daily ping is noise).
+
+If `fleet_verdict ∈ {WARN, STALE}` AND fingerprint changed since last run: notify.
+
+If fingerprint identical to last run AND last run was within 7 days: log `FRESHNESS_NO_CHANGE`, **do not notify**.
+
+Notification body:
+
+```
+*Skill Freshness — ${today}*
+${verdict_emoji} ${fleet_verdict} — ${flagged_count} of ${dependency_count} deps flagged across ${affected_consumer_count} of ${enabled_count} enabled consumers
+
+Worst:
+- ${consumer_1} ← ${path_1} (${age_1} old, class ${class_1}, sev ${sev_1})
+- ${consumer_2} ← ${path_2} (${age_2} old, class ${class_2}, sev ${sev_2})
+- ${consumer_3} ← ${path_3} (${age_3} old, class ${class_3}, sev ${sev_3})
+
+Action: ${one_line_action_for_worst_consumer}
+Full: articles/skill-freshness-${today}.md
+```
+
+Cap message at ~3500 chars. Drop "Worst" entries 4+ if exceeded.
+
+### Freshness exit taxonomy
+
+| Status | Meaning | Notify? |
+|--------|---------|---------|
+| `FRESHNESS_OK` | every enabled consumer's deps are fresh | No (silence is the signal) |
+| `FRESHNESS_WARN` | at least one dep past 1× threshold but no STALE/MISSING | Yes (only on fingerprint change) |
+| `FRESHNESS_STALE` | at least one dep past 2× threshold OR a canonical-pattern dep MISSING | Yes (only on fingerprint change) |
+| `FRESHNESS_NO_CHANGE` | flagged set identical to prior run, last run < 7 days ago | No (re-emits after 7d) |
+| `FRESHNESS_DRY_RUN` | `var=freshness:dry-run` mode | No (article still writes) |
+| `SKILL_FRESHNESS_NO_MATCH` | scope named a skill not in aeon.yml | No |
+
+### Freshness-branch constraints
+
+- **Read-only across producers.** This branch never re-runs a producer to refresh its output, never deletes stale files, never edits another skill's SKILL.md. It reports; the operator (or `skill-repair`) acts.
+- **Enabled consumers only.** A skill with `enabled: false` does not need its dependencies audited — it isn't going to consume them. This keeps the report scoped to what's actually live in the schedule.
+- **Implicit dependencies are best-effort.** Grep-based discovery is heuristic. False positives are tolerated (consumer paragraph clarifies why); false negatives are accepted (an explicit `chains: consume:` edge is the source of truth for chain runs). The goal is to surface the worst-case staleness, not to prove formally complete coverage.
+- **Per-class thresholds, not per-skill.** The threshold for `articles/skill-analytics-*.md` is the same as for `articles/repo-pulse-*.md`: the path class drives the window, derived from the producer's cadence in `aeon.yml`. This keeps the table maintainable as the fleet grows.
+- **Fingerprint-based dedup.** A stale file flagged today and still stale tomorrow does not re-notify. The 7-day re-emit window handles the case where a chronic stale file has been forgotten about.
+- **No issue filing.** Anomalies surface in the verdict and the article. Persistence and resolution belong to `skill-health`. This branch is read-only across `memory/issues/`.
+- **Idempotent.** Same-day reruns overwrite the article and state file. The log entry appends one block per run.
+
+---
+
+## Log
+
+Append to `memory/logs/${today}.md` under ONE `### skill-update` heading (the health loop parses this shape). Lead with a discriminator line naming which branch(es) ran, then include the field block(s) for the branch(es) that executed. When `BRANCH=both`, include both field blocks under the single heading.
+
+```
+### skill-update
+- Branch: {drift | freshness | both}
+
+# --- include when the drift branch ran ---
+- Drift mode: AUDIT | ACCEPT
+- Tracked: N (enabled in aeon.yml: M)
+- Up-to-date: N, Changed: N (critical: a, high: b, medium: c, low: d), Unreachable: N, Missing-upstream: N
+- Source-status: gh_api={ok|...}, scanner={present|missing}
+- Critical/high (one line each): {skill — reason}
+- Drift report: articles/skill-update-${today}.md
+
+# --- include when the freshness branch ran ---
+- Freshness verdict: ${verdict_emoji} ${fleet_verdict}
+- Freshness audited: ${enabled_count} enabled consumers · ${dependency_count} deps · ${flagged_count} flagged
+- Freshness worst: ${consumer_with_worst_severity} — ${worst_path} (${worst_age} old, ${worst_severity})
+- Freshness article: articles/skill-freshness-${today}.md
+- Freshness notification: ${yes | no — FRESHNESS_OK | no — FRESHNESS_NO_CHANGE | no — dry-run}
+- Freshness status: ${FRESHNESS_OK|FRESHNESS_WARN|FRESHNESS_STALE|FRESHNESS_NO_CHANGE|FRESHNESS_DRY_RUN}
+```
+
+## Sandbox note
+
+**Drift branch:** the sandbox may block outbound `curl`. Prefer `gh api` for all GitHub calls — it handles auth via `GITHUB_TOKEN` and works inside the sandbox. If `gh api` itself fails, fall back to **WebFetch** for the same URL (the equivalent REST endpoint, e.g. `https://api.github.com/repos/{repo}/commits?path={path}&per_page=1`) and parse the JSON response. For the SKILL.md content fetch in drift step 4, the raw accept header is critical — never rely on `--jq '.content' | base64 -d` because GitHub's base64 response is line-wrapped and decode failures silently corrupt the security scan input.
+
+**Freshness branch:** pure local file I/O — no curl, no `gh api`, no env-var-in-headers, no prefetch script. Every read is a directory listing or an mtime call; every write is to `articles/`, `memory/topics/`, or `memory/logs/`. Works in the GitHub Actions sandbox without any of the network workarounds the drift branch needs. The only outbound call is `./notify` itself, which is already sandbox-safe (postprocess-notify pattern).
+
+## Global constraints
+
+- **One skill, two independent branches.** The drift branch (`gh api`, `skills.lock`, imported-skill SKILL.md drift + security) and the freshness branch (local file mtimes, `aeon.yml` consumer dependencies) share no state and never block one another. In `BRANCH=both`, a failure or early-exit in one branch does not prevent the other from running or logging.
+- Per-branch constraints above (drift-branch constraints, freshness-branch constraints) apply in full to their respective branches.
+- Write complete reports/articles. No TODOs or placeholders in any output.
+- Cadence note: the frontmatter `cron` (`0 19 * * 0`, weekly) suits the drift branch's slow-moving upstream signal. The freshness branch benefits from a daily cadence; the operator can schedule a second `aeon.yml` entry with `var=freshness` on a daily cron if they want faster staleness detection — this SKILL.md does not itself modify scheduling.

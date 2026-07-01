@@ -28,7 +28,7 @@ The signal-category map is **operator-editable** and lives in `memory/topics/sig
 
 ## Housekeeping (excluded — no external signals)
 config-validator, janitor, frequency-guard, batch-health, heartbeat, memory-flush,
-memory-dedupe, skill-evals, skill-health, skill-repair, self-review, reflect,
+memory-dedupe, skill-evals, skill-health, skill-repair, self-improve, reflect,
 spend-monitor, cost-report, fleet-scorecard, fleet-control, repo-scanner, narrative-convergence
 
 ## Signal categories (skill → category)
