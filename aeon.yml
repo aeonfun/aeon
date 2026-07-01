@@ -36,21 +36,11 @@ skills:
   defi-overview: { enabled: false, schedule: "0 12 * * *", var: "" } # one-pass DeFi read: tracked-protocol positions + macro context (regime verdict, movers, yields, fees, F&G, prediction markets; refreshes memory/topics/market-context.md). var: empty=full | positions[:label] | macro | <chain/protocol focus>. Optional COINGECKO_API_KEY.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
-  rug-scan: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — rug-pull risk verdict
-  investigation-report: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — composite rug+audit+deployer+holders report
-  fund-flow: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: address — trace multi-hop fund movement (Mermaid graph)
-  linked-wallets: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: address — cluster same-entity wallets (shared-funder + co-spend)
-  lp-lock: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — LP lock / rug-pull risk check
-  honeypot-check: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — honeypot / sell-restriction check
-  approval-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet address — live token-approval audit
-  contract-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: contract address — powers/ownership/proxy audit
+  investigation-report: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: <token-address> [--checks=rug,contract,deployer,holders,honeypot,lp] [--depth=quick|deep] — composite investigation (folds in rug-scan/contract-audit/deployer-trace/holder-concentration/honeypot-check/lp-lock). read-only
+  wallet-profile: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: [mode] <address> — profile(default)|balances|risk|approvals|cluster|trace (folds in wallet-digest/wallet-risk/approval-audit/linked-wallets/fund-flow). read-only
   phylax-audit: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: skill ref (owner/repo/<name>), raw SKILL.md URL, or local path — pre-install ALLOW/WARN/DENY verdict for an external skill
-  wallet-profile: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet address — behavioral profile
-  deployer-trace: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: deployer/token address — serial-rug detection
   tx-explain: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: tx hash — plain-English decode
-  holder-concentration: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — distribution/HHI analysis
-  vigil-revoke: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet:spender:token (triplet of 0x40-hex addresses) — revoke a single live ERC-20 approval on Base via Bankr. Confirms live allowance, submits approve(spender, 0), waits for receipt. Operator-initiated only — pairs with wallet-risk + approval-audit. Requires BANKR_API_KEY (read-write, Wallet API). No auto-retry, no bulk, no scheduled cron.
-  vigil: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: wallet or token address on Base — keyless read-only onchain security scan (17 tools: approvals, honeypot, tax, ownership, clone, liquidity lock, multi-source consensus, safety score) via VIGIL API. Pairs with vigil-revoke for the write action.
+  vigil: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: <address on Base> keyless read-only security scan | --revoke wallet:spender:token = revoke one ERC-20 approval via Bankr (write; needs BANKR_API_KEY). Folds in vigil-revoke.
   ctrl: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: natural-language workflow (e.g. "DCA 0.005 ETH into USDC weekly") — compiles a trigger→action graph into a CTRL V3 vault on Base via the live /api/mcp REST API, hands the user a one-shot signUrl. Agent never signs; the wallet signs an EIP-5792 batch once, the keeper executes after under per-swap/per-day caps. Operator-initiated only. No API key needed (anonymous create; wallet signature is the trust boundary).
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", var: "" } # prediction-market monitor (Polymarket + Kalshi) — 24h moves, volume, comments, conviction alerts. var: empty=both | polymarket | kalshi | polymarket:<slug> | kalshi:<ticker>
@@ -228,12 +218,6 @@ skills:
       schedule: "30 11 * * 1",
       var: ""
     } # Monday 11:30 UTC — weekly read-only audit of installed skills' capability coverage: maps every enabled/disabled skill against the locked 6-value taxonomy in docs/CAPABILITIES.md (PR #268/#304), flags any tier with zero enabled coverage as an actionable gap, counts undeclared-enabled skills as a separate informational row. Reads skills.json + aeon.yml + skill-packs.json + per-skill SKILL.md frontmatter; gated notify (gap deltas + first run only). Pass dry-run to skip notify.
-  wallet-risk:
-    {
-      enabled: false,
-      schedule: "15 11 * * 1",
-      var: ""
-    } # Monday 11:15 UTC — weekly risk audit of this agent's own Base wallets (.x402books/wallets.json): live ERC-20 approvals (unlimited flagged + known-safe-spender downgrade), per-token honeypot simulation. First scheduled consumer of the HoundFlow approval-audit + honeypot-check pair (workflow_dispatch-only otherwise). Gated notify (HIGH only / new MEDIUM transitions / first-run baseline). Pass dry-run to skip notify, an address to scope to one wallet, or a role (treasury/deployer/other).
   workflow-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   skill-graph: { enabled: false, schedule: "0 17 * * 0" } # Sunday — regenerate skill dependency map
   skill-freshness:
@@ -261,18 +245,14 @@ skills:
   # Markets & crypto
   pm-pulse: { enabled: false, schedule: "0 13 * * 1" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
   pm-manipulation: { enabled: false, schedule: "15 13 * * *" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
-  rwa-pulse: { enabled: false, schedule: "0 12 * * 1" } # Monday — RWA tokenization momentum: launches, TVL, institutional adoption, regulation
-  compute-pulse: { enabled: false, schedule: "0 11 * * 6" } # Saturday — AI compute market: GPU/hardware deals, inference pricing, decentralized-compute tokens
   x402-monitor:
     {
       enabled: false,
       schedule: "0 12 * * 2",
       var: ""
-    } # Tuesday — protocol ecosystem velocity (defaults to x402; set memory/topics/tracked-protocol.md)
-  mcp-pulse: { enabled: false, schedule: "0 10 * * 5" } # Friday 10:00 UTC — MCP ecosystem tracker: new servers, npm/GitHub adoption velocity, protocol evolution, thesis check. Pairs with x402-monitor for full agent-infra coverage (tool-calls + payments).
+    } # Tuesday — protocol/vertical ecosystem velocity. var: empty=x402 default | rwa | compute | mcp | agent-displacement | <stanza in memory/topics/tracked-protocol.md>
 
   # Research & content
-  agent-displacement: { enabled: false, schedule: "0 11 * * 0" } # Sunday — AI-agent headcount-displacement signals (named roles + real deployments)
   launch-radar: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — new-launch radar. var: empty/backlog[:cat]=scan vs startup-idea backlog | category[:slug][:dry-run]=competitor new-entrant scan (PH/HN)
   narrative-convergence:
     {
@@ -329,9 +309,6 @@ skills:
   # Security (pairs with vuln-scanner ↑ channel 5d)
   disclosure-emailer: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 — auto-send armed (auto_send:true) out-of-band disclosure emails via Resend; the send runs in scripts/postprocess-email.sh. Needs RESEND_* secrets. Only emails the plain-text EMAIL-BODY block; operator notes never leave the repo.
   inbox-triage: { enabled: false, schedule: "30 11 * * *" } # daily 11:30 — GitHub notification-inbox triage (maintainer replies to disclosures/advisories/mentions)
-
-  # Markets & crypto
-  wallet-digest: { enabled: false, schedule: "0 8 * * *" } # daily — balance + activity across tracked wallets; sibling to onchain-monitor
 
   # Dev & repo
   github-issues: { enabled: false, schedule: "0 8 * * *" } # daily — ranked digest of new open issues across the operator's repos
