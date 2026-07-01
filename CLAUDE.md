@@ -59,7 +59,7 @@ When consolidating memory (reflect), move detail into topic files rather than cr
 - **`./scripts/skill-runs [--hours N] [--full] [--json] [--failures]`** — Audit recent GitHub Actions skill runs (counts, pass/fail rates, anomalies). Needs `gh` + `jq`.
 - **WebSearch** / **WebFetch** — built-in Claude tools for search and URL fetching; they bypass the bash sandbox, so prefer them over `curl` for reads.
 
-**json-render feed:** when `JSONRENDER_ENABLED=true` **and** `SKILL_NAME` is set, `./notify` queues your output at `apps/dashboard/outputs/.pending-${SKILL_NAME}.md`; a post-run workflow step then converts it via `./notify-jsonrender`. Running `./aeon` locally instead uses the json-render MCP tool to render specs live.
+**json-render feed:** when `JSONRENDER_ENABLED=true` **and** `SKILL_NAME` is set, `./notify` queues your output at `apps/dashboard/outputs/.pending-${SKILL_NAME}.md`; a post-run workflow step then converts it into a rendered spec via `./notify-jsonrender`, which the dashboard feed displays. (`./aeon` itself only launches the dashboard web app — it does not run skills.)
 
 ## Capability mode
 
