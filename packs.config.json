@@ -32,8 +32,6 @@
       "skills": [
         "spawn-instance",
         "fleet-control",
-        "fleet-scorecard",
-        "contributor-reward",
         "distribute-tokens",
         "deploy-prototype",
         "vuln-scanner"

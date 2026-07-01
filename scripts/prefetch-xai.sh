@@ -230,51 +230,56 @@ case "$SKILL" in
     esac
     ;;
 
-  content-performance)
-    SEVEN_DAYS_AGO=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
-    HANDLE="${VAR:-}"
-    if [ -z "$HANDLE" ] && [ -f soul/SOUL.md ]; then
-      HANDLE=$(grep -oE '@[A-Za-z0-9_]{2,15}' soul/SOUL.md | head -1 | tr -d '@')
-    fi
-    if [ -z "$HANDLE" ]; then
-      echo "xai-prefetch: content-performance — no handle (var empty, none found in soul/SOUL.md), skipping"
-    else
-      xai_search "content-performance.json" \
-        "Search X for all public tweets posted by @${HANDLE} between ${SEVEN_DAYS_AGO} and ${TODAY}. Include original tweets, replies, and quote tweets. For each tweet return: the full text (up to 150 chars), date posted (YYYY-MM-DD), like count, retweet count, quote tweet count, and reply count. Return up to 25 tweets sorted by total engagement (likes + retweets*2 + quotes*3) descending. If fewer tweets exist in the window, return all of them." \
-        "$SEVEN_DAYS_AGO" "$TODAY" \
-        "\"allowed_x_handles\": [\"${HANDLE}\"]"
-    fi
-    ;;
+  product-pulse)
+    # product-pulse absorbed repo-pulse (gh, no prefetch), content-performance
+    # (X 7-day tweets) and vercel-projects (Vercel REST). Parse facet + arg and
+    # stage the canonical .xai-cache/product-pulse-*.json each facet reads.
+    FACET=$(printf '%s' "${VAR:-}" | awk '{print tolower($1)}')
+    ARG=$(printf '%s' "${VAR:-}" | awk '{print $2}')
+    case "$FACET" in dry-run | "") FACET=all ;; esac
 
-  vercel-projects)
-    # Pre-fetch Vercel API data (requires auth — can't be done in sandbox)
-    if [ -z "${VERCEL_TOKEN:-}" ]; then
-      echo "xai-prefetch: VERCEL_TOKEN not set, skipping vercel-projects"
-    else
-      echo "xai-prefetch: fetching vercel-projects.json ..."
-      TEAM_PARAM=""
-      [ -n "$VAR" ] && TEAM_PARAM="&teamId=$VAR"
-      PROJECTS=$(curl -s --max-time 30 "https://api.vercel.com/v9/projects?limit=100${TEAM_PARAM}" \
-        -H "Authorization: Bearer $VERCEL_TOKEN" 2>&1) || {
-        echo "::warning::xai-prefetch: FAILED vercel-projects (curl error)"
-      }
-      if [ -n "$PROJECTS" ] && echo "$PROJECTS" | jq empty 2>/dev/null; then
-        echo "$PROJECTS" > ".xai-cache/vercel-projects.json"
-        echo "xai-prefetch: saved vercel-projects.json"
-
-        # Pre-fetch latest deployment for each project
-        PROJECT_IDS=$(echo "$PROJECTS" | jq -r '.projects[]?.id // empty' 2>/dev/null)
-        DEPLOYS="[]"
-        for PID in $PROJECT_IDS; do
-          DEP=$(curl -s --max-time 15 "https://api.vercel.com/v6/deployments?projectId=${PID}&limit=1&target=production" \
-            -H "Authorization: Bearer $VERCEL_TOKEN" 2>/dev/null) || continue
-          DEPLOYS=$(echo "$DEPLOYS" | jq --arg pid "$PID" --argjson dep "$DEP" '. + [{"projectId": $pid, "deployment": $dep}]' 2>/dev/null) || continue
-        done
-        echo "$DEPLOYS" > ".xai-cache/vercel-deployments.json"
-        echo "xai-prefetch: saved vercel-deployments.json"
+    # all facet — X followers/posts per tracked handle → product-pulse-x.json
+    if [ "$FACET" = "all" ] && [ -f memory/products.md ]; then
+      HANDLES=$(grep -oE '@[A-Za-z0-9_]{2,15}' memory/products.md | tr -d '@' | sort -u | paste -sd, -)
+      if [ -n "$HANDLES" ]; then
+        xai_search "product-pulse-x.json" \
+          "For each of these X/Twitter handles (${HANDLES}), return the current follower count and total post count, one line each as 'handle|followers|posts'. Use the most recent public data."
       else
-        echo "::warning::xai-prefetch: vercel-projects response invalid"
+        echo "xai-prefetch: product-pulse all-facet — no @handles in memory/products.md, skipping X prefetch"
       fi
+    fi
+
+    # content facet — one handle's 7-day tweets → product-pulse-content.json
+    if [ "$FACET" = "content" ]; then
+      SEVEN_DAYS_AGO=$(date -u -d "7 days ago" +%Y-%m-%d 2>/dev/null || date -u -v-7d +%Y-%m-%d)
+      HANDLE="$ARG"
+      if [ -z "$HANDLE" ] && [ -f soul/SOUL.md ]; then
+        HANDLE=$(grep -oE '@[A-Za-z0-9_]{2,15}' soul/SOUL.md | head -1 | tr -d '@')
+      fi
+      if [ -z "$HANDLE" ]; then
+        echo "xai-prefetch: product-pulse content facet — no handle (arg empty, none in soul/SOUL.md), skipping"
+      else
+        xai_search "product-pulse-content.json" \
+          "Search X for all public tweets posted by @${HANDLE} between ${SEVEN_DAYS_AGO} and ${TODAY}. Include original tweets, replies, and quote tweets. For each tweet return: the full text (up to 150 chars), date posted (YYYY-MM-DD), like count, retweet count, quote tweet count, and reply count. Return up to 25 tweets sorted by total engagement (likes + retweets*2 + quotes*3) descending. If fewer tweets exist in the window, return all of them." \
+          "$SEVEN_DAYS_AGO" "$TODAY" \
+          "\"allowed_x_handles\": [\"${HANDLE}\"]"
+      fi
+    fi
+
+    # all + deploys facets — Vercel projects (auth) → product-pulse-deploys.json
+    if { [ "$FACET" = "all" ] || [ "$FACET" = "deploys" ]; } && [ -n "${VERCEL_TOKEN:-}" ]; then
+      TEAM_PARAM=""
+      [ "$FACET" = "deploys" ] && [ -n "$ARG" ] && TEAM_PARAM="&teamId=$ARG"
+      PROJECTS=$(curl -s --max-time 30 "https://api.vercel.com/v9/projects?limit=100${TEAM_PARAM}" \
+        -H "Authorization: Bearer $VERCEL_TOKEN" 2>&1) || echo "::warning::xai-prefetch: FAILED product-pulse-deploys (curl error)"
+      if [ -n "$PROJECTS" ] && echo "$PROJECTS" | jq empty 2>/dev/null; then
+        echo "$PROJECTS" > ".xai-cache/product-pulse-deploys.json"
+        echo "xai-prefetch: saved product-pulse-deploys.json"
+      else
+        echo "::warning::xai-prefetch: product-pulse-deploys response invalid"
+      fi
+    elif [ "$FACET" = "all" ] || [ "$FACET" = "deploys" ]; then
+      echo "xai-prefetch: product-pulse deploys — VERCEL_TOKEN not set, skipping"
     fi
     ;;
 

@@ -1,18 +1,38 @@
 ---
 name: Fleet Control
 category: core
-description: Monitor managed Aeon instances — check health, dispatch skills, aggregate status
+description: Operate managed Aeon instances registered in memory/instances.json — health-check, dispatch skills, and full status snapshots (control view), plus a fleet-wide scorecard of runs, tokens (OpenRouter shape), est. cost and reliability with day-over-day deltas and alerts (scorecard view)
 var: ""
-tags: [dev]
+tags: [dev, meta, fleet, report, cost]
 cron: "0 9,15 * * *"
 ---
 <!-- autoresearch: variation B — sharper output: verdict line + delta vs prior + per-instance action column + state-change-gated notify -->
 
-> **${var}** — Command. Empty (or unrecognized) → Health Check (default). `status` → full Status Mode. `dispatch <instance|*> <skill> [var=<value>]` → trigger a skill on one child or all healthy/degraded children.
+> **${var}** — Command / view selector. Empty (or unrecognized) → **Health Check** (default control view). `status` → full **Status Mode** (control view). `dispatch <instance|*> <skill> [var=<value>]` → **Dispatch Mode**: trigger a skill on one child or all healthy/degraded children (control view). `scorecard` → **Scorecard Mode**: fleet-wide runs/tokens/cost/reliability scorecard with day-over-day deltas + alerts (scorecard view).
 
-Today is ${today}. Operate the fleet of Aeon instances registered in `memory/instances.json`. Output is **decision-ready**: every run leads with a verdict, then a delta vs prior check, then per-instance lines that name the next concrete action.
+Today is ${today}. Operate the fleet of Aeon instances registered in `memory/instances.json`. The **control view** (health/status/dispatch) is **decision-ready**: every run leads with a verdict, then a delta vs prior check, then per-instance lines that name the next concrete action. The **scorecard view** publishes the daily fleet-wide cost/reliability scorecard.
 
-## Pre-flight (every mode)
+The fleet is **discovered at runtime, never hardcoded**: it is this repo ("self") plus every non-archived entry in `memory/instances.json` (the registry `fleet-control` and `spawn-instance` maintain). With zero managed instances the scorecard simply covers the single self repo — still useful.
+
+## Shared preamble (every run)
+
+1. **Read memory** — read `memory/MEMORY.md` for high-level context and scan the last ~3 days of `memory/logs/` for recent activity; don't re-report a signal already logged there.
+
+2. **Voice** — if `soul/SOUL.md` and `soul/STYLE.md` exist and are populated, read them and match the operator's voice in every notification. If they are empty templates or absent, use a clear, direct, neutral tone — terse, lowercase, no fluff.
+
+3. **Parse `${var}` → mode**:
+   - empty / unrecognized → **Health Check Mode** (control view; default)
+   - exactly `status` → **Status Mode** (control view)
+   - starts with `dispatch ` → **Dispatch Mode** (control view)
+   - exactly `scorecard` → **Scorecard Mode** (scorecard view)
+
+4. **Route**:
+   - **Health Check / Status / Dispatch** → run the **Control-view pre-flight** below, then the matching mode section. These modes make live `gh` calls.
+   - **Scorecard** → skip the control-view pre-flight entirely (it needs no `gh` and no live network — it reads prefetched files) and jump straight to **Scorecard Mode**.
+
+---
+
+## Control-view pre-flight (health / status / dispatch only)
 
 1. **Verify gh auth** — `gh auth status` must succeed. If not, log `FLEET_NO_AUTH` to `memory/logs/${today}.md` and notify `Fleet Control: gh auth missing — check GITHUB_TOKEN secret.` Stop.
 
@@ -32,14 +52,9 @@ Today is ${today}. Operate the fleet of Aeon instances registered in `memory/ins
    }
    ```
 
-5. **Parse var → mode**:
-   - empty / unrecognized → **Health Check Mode**
-   - exactly `status` → **Status Mode**
-   - starts with `dispatch ` → **Dispatch Mode**
-
 ---
 
-## Health Check Mode (default)
+## Health Check Mode (default — control view)
 
 For each registered instance, skip rows with `archived: true` from per-instance work (count them separately). Run the three calls per instance in parallel using `&` + `wait` and write each to `/tmp/fleet/${SAFE}.{repo,runs,cron}.json`:
 
@@ -95,9 +110,10 @@ For each instance compute a **next_action** (one short imperative phrase):
 
 **Update the state file** — write the current per-instance health snapshot to `memory/state/fleet-control-state.json`. Update `last_full_summary_date` to today **only when this run notifies**. Increment `consecutive_unreachable` for unreachable instances; reset to 0 otherwise.
 
-**Log** to `memory/logs/${today}.md`:
+**Log** to `memory/logs/${today}.md` (under the consolidated heading — see **Log** section):
 ```
-## fleet-control (health check)
+### fleet-control
+- Mode: health check
 - Verdict: [FLEET_OK | NEEDS_ATTENTION:N]
 - Sizes: total=N, healthy=N, warning=N, degraded=N, stale=N, pending=N, unreachable=N, archived=N
 - Deltas: [list NEW/DEGRADED/RECOVERED/DROPPED, or "none"]
@@ -137,7 +153,7 @@ Cap the per-instance list at 12 lines; if more, append `...and N more — see me
 
 ---
 
-## Dispatch Mode
+## Dispatch Mode (control view)
 
 Parse var: `dispatch <instance|*> <skill> [var=<value>]`.
 
@@ -175,7 +191,8 @@ Collect per-target outcomes: `dispatched | missing_skill | api_failed:<code>` (w
 
 **Log**:
 ```
-## fleet-control (dispatch)
+### fleet-control
+- Mode: dispatch
 - Command: dispatch <inst|*> <skill> [var=...]
 - Targets: N
 - Dispatched: N | missing_skill: N | api_failed: N
@@ -198,7 +215,7 @@ If 0 dispatched out of N targets, the verdict line reads `Fleet Dispatch: 0/${N}
 
 ---
 
-## Status Mode
+## Status Mode (control view)
 
 Generate the comprehensive snapshot, but make it scannable.
 
@@ -255,7 +272,8 @@ gh=ok · rate_remaining=N · registry=N instances · prior_status=<filename or "
 
 **Log**:
 ```
-## fleet-control (status)
+### fleet-control
+- Mode: status
 - Article: articles/fleet-status-${today}.md
 - Verdict: <line>
 - Sizes: total=N, healthy=N, ...
@@ -272,19 +290,122 @@ Article: articles/fleet-status-${today}.md
 
 ---
 
+## Scorecard Mode (scorecard view)
+
+Publish the daily **fleet scorecard** to `memory/scorecard.md` and append a trend row to `memory/scorecard-history.csv`. (Ran daily at 13:00 UTC as its own dispatch when this skill is scheduled with `var: scorecard`.)
+
+All data has already been gathered by `scripts/prefetch-fleet-scorecard.sh` (which ran outside the sandbox with network/`gh` access). **This mode needs no network or `gh`** — work only from the prefetched files below.
+
+### Inputs (prefetched — read these)
+
+- `/tmp/fleet-scorecard/scorecard-body.md` — the computed markdown tables (Fleet totals, Per-repo, Top skills by cost, Least reliable skills). These numbers are authoritative — **do not recompute or alter them.**
+- `/tmp/fleet-scorecard/metrics.json` — today's key totals: `total_runs, total_failures, generations, prompt_tokens, cached_tokens, completion_tokens, total_tokens, est_cost_usd, cache_discount_usd`.
+
+If `/tmp/fleet-scorecard/scorecard-body.md` is missing or empty, the prefetch failed or resolved an empty fleet — write a one-line note to `/tmp/skill-result.txt` saying so and stop (do not overwrite the existing scorecard, do not notify).
+
+### Steps
+
+#### 1. Load today's metrics and yesterday's baseline
+
+- Read `/tmp/fleet-scorecard/metrics.json` (today).
+- Read the **last row** of `memory/scorecard-history.csv` if it exists (the previous run's metrics) to compute deltas. If the file doesn't exist yet, this is the first run — deltas are "—".
+
+#### 2. Compute day-over-day deltas
+
+For `total_runs`, `total_failures`, `generations`, `total_tokens`, `est_cost_usd`, `cache_discount_usd`, compute `today − previous`. Format as signed (e.g. `+312 runs`, `+$148`, `+5 failures`). These are cumulative all-time figures, so deltas show the last ~24h of activity.
+
+#### 3. Build the Alerts block
+
+Scan the computed tables in `scorecard-body.md` and flag:
+- Any skill in **"Least reliable skills (last 14d)"** with **fail rate ≥ 25%** (call it out by name + repo + rate). That table is already windowed to 14 days, so long-resolved incidents won't trigger false alarms — anything listed there is a *current* problem worth surfacing.
+- Any **cost spike**: `est_cost_usd` delta > 1.5× the median daily delta from history (if ≥7 history rows exist), or just note the day's cost increase otherwise.
+- If `total_failures` rose by **more than 10** since yesterday, flag it.
+- If no issues, write `✅ No anomalies — fleet healthy.`
+
+#### 4. Write `memory/scorecard.md`
+
+Structure (overwrite the file):
+
+```
+# 🛰️ Aeon Fleet Scorecard — as of ${today}
+
+_Auto-generated daily by skills/fleet-control (scorecard view). Tokens reported OpenRouter-style (cached_tokens ⊆ prompt_tokens)._
+
+## Since last update (~24h)
+| Metric | Δ |
+|---|---:|
+| Runs | <signed> |
+| Failures | <signed> |
+| Generations | <signed> |
+| Total tokens | <signed, humanized> |
+| Est. cost | <signed $> |
+| Cache discount | <signed $> |
+
+## Alerts
+<the alerts block from step 3>
+
+<PASTE the full contents of /tmp/fleet-scorecard/scorecard-body.md verbatim here>
+
+---
+_Sources: GitHub Actions run history + each repo's `memory/token-usage.csv`. Fleet resolved from memory/instances.json + self. Cost = Anthropic list price (estimate)._
+```
+
+#### 5. Append the trend row
+
+Append one line to `memory/scorecard-history.csv` (create with a header if it doesn't exist):
+
+```
+date,total_runs,total_failures,generations,prompt_tokens,cached_tokens,completion_tokens,total_tokens,est_cost_usd,cache_discount_usd
+```
+
+Use `${today}` for the date and the values straight from `metrics.json`. **Append, never rewrite** prior rows.
+
+#### 6. Notify
+
+Write a terse daily pulse to `/tmp/scorecard-notify.md` and send it with `./notify -f /tmp/scorecard-notify.md`. One short paragraph — today's totals (runs, est. cost, total tokens), the headline deltas, and any alert. Example shape: _"fleet at 12.5k runs, ~$7.8k notional. +312 runs / +$148 since yesterday. cost-report still failing (88% fail). caching saved ~$43k."_ Also copy this text to `/tmp/skill-result.txt` so the framework captures it.
+
+#### 7. Memory log
+
+Append the scorecard entry under the consolidated `### fleet-control` heading in `memory/logs/${today}.md` (see **Log** section), noting the headline numbers (so future skills like self-review/reflect see it).
+
+### Scorecard notes
+- Numbers come only from the prefetched files — never invent or estimate figures yourself.
+- The scorecard is cumulative/all-time; the deltas are what make the daily run useful.
+- GitHub Actions retains runs ~90 days, so the run history is a rolling window; the token CSVs are the durable record committed in each repo.
+
+---
+
+## Log
+
+All modes append under **one** `### fleet-control` heading in `memory/logs/${today}.md`, with a `- Mode:` discriminator line (the health loop parses this shape). Use the per-mode block shown in each mode section above. For **Scorecard Mode** use:
+```
+### fleet-control
+- Mode: scorecard
+- Scorecard: memory/scorecard.md updated — <total_runs> runs, ~$<est_cost_usd> notional, <total_tokens humanized>
+- Deltas: <+runs> / <+$cost> since yesterday
+- Alerts: <alert summary or "none">
+```
+
 ## Exit taxonomy
 
 Every run logs exactly one of these to memory:
-- `FLEET_CONTROL_OK` — health/status/dispatch completed normally
-- `FLEET_EMPTY` — no instances in registry (silent stop)
-- `FLEET_NO_AUTH` — gh auth missing
-- `FLEET_RATE_LIMITED:remaining=N` — abandoned to preserve quota
+- `FLEET_CONTROL_OK` — health/status/dispatch/scorecard completed normally
+- `FLEET_EMPTY` — no instances in registry (silent stop; control view)
+- `FLEET_NO_AUTH` — gh auth missing (control view)
+- `FLEET_RATE_LIMITED:remaining=N` — abandoned to preserve quota (control view)
 - `FLEET_DISPATCH_OK:N/M` — dispatched N of M targets
 - `FLEET_DISPATCH_FAILED:<reason>` — dispatch produced 0 dispatches
+- `FLEET_SCORECARD_EMPTY` — prefetch missing/empty; scorecard skipped without overwriting or notifying
 
 ## Sandbox note
 
-Always use `gh api` over raw curl (handles auth and the sandbox env-var-in-headers issue). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
+**Control view (health / status / dispatch):** always use `gh api` over raw curl (handles auth and the sandbox env-var-in-headers issue). All cross-repo calls go through `gh api` or `gh workflow run`. No outbound HTTP needed beyond what `gh` does internally.
+
+**Scorecard view:** needs no network inside the sandbox — all `gh`/API work happens in `scripts/prefetch-fleet-scorecard.sh`, which runs in the workflow's prefetch phase with `gh` auth and stages its output under `/tmp/fleet-scorecard/`. If the prefetch's cross-repo reads fail for a managed instance, it's almost always the GitHub token scope (the token needs read access to that instance's repo; self is always readable). The prefetch degrades gracefully — a repo it can't read is simply absent from the tables rather than crashing the run.
+
+## Required env vars
+
+None for the skill itself. `scripts/prefetch-fleet-scorecard.sh` uses `GH_TOKEN`/`GITHUB_TOKEN` (provided by the workflow) and reads `GITHUB_REPOSITORY` to resolve "self". The control view relies on the workflow-provided `GITHUB_TOKEN` for its live `gh` calls.
 
 ## Constraints
 
@@ -293,6 +414,11 @@ Always use `gh api` over raw curl (handles auth and the sandbox env-var-in-heade
 - Never write secrets to logs or notifications.
 - Cap notification length at ~30 lines; truncate the per-instance list with `...and N more` when needed.
 - Health Check stays silent when nothing changed mid-day — the daily-rollup path handles the recurring "is everything fine?" question without spam.
+- Scorecard Mode never overwrites `memory/scorecard.md` when the prefetch is missing/empty, and appends (never rewrites) prior rows in `memory/scorecard-history.csv`.
 - Do not change the skill's tags, var semantics, or schedule without strong justification.
 
 Write complete, working code. No TODOs or placeholders.
+
+## Output
+
+After completing any task, end with a `## Summary` listing what you did, files created/modified, and any follow-up actions needed.

@@ -31,7 +31,7 @@ skills:
   token-movers: { enabled: false, schedule: "0 12 * * *", var: "" } # market-movers scan + single-token deep report. var: empty=movers (CoinGecko) | geckoterminal[:chain]=on-chain runners | category:<slug> | <address|symbol|token:sym>=single-token report. Optional COINGECKO/ALCHEMY/XAI/BASE_RPC keys.
   onchain-monitor: { enabled: false, schedule: "0 12 * * *" }
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
-  distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
+  distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand contributor rewards. var: empty/<label>=distribute (send) | plan[:week]=compute reward plan | all[:week]=plan+send | dry-run (folds in contributor-reward). BANKR_API_KEY for send.
   defi-overview: { enabled: false, schedule: "0 12 * * *", var: "" } # one-pass DeFi read: tracked-protocol positions + macro context (regime verdict, movers, yields, fees, F&G, prediction markets; refreshes memory/topics/market-context.md). var: empty=full | positions[:label] | macro | <chain/protocol focus>. Optional COINGECKO_API_KEY.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
@@ -67,15 +67,13 @@ skills:
 
   # --- Repo intelligence (3 PM UTC) ---
   push-recap: { enabled: false, schedule: "0 15 * * *" }
-  repo-actions: { enabled: false, schedule: "0 15 * * *" }
-  repo-pulse: { enabled: false, schedule: "0 15 * * *" }
   star-milestone: { enabled: false, schedule: "15 15 * * *", var: "" } # daily — star milestone crossings + next-milestone projection & Show HN launch-window alert (folds in star-momentum). var: empty=all | owner/repo | dry-run
   repo-scanner:
     {
       enabled: false,
       schedule: "0 15 * * 0",
       var: ""
-    } # catalog all GitHub repos — set var to username
+    } # GitHub fleet intel: repo catalog + per-repo action ideas + who's-building map (folds in repo-actions/builder-map). var: empty/<owner>=full | catalog[:owner] | actions[:focus] | builders
 
   # --- Late afternoon (4 PM UTC) ---
   skill-scan: { enabled: false, schedule: "0 16 * * 1" }
@@ -115,12 +113,6 @@ skills:
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
   ops-recap: { enabled: false, schedule: "0 21 * * *" } # end-of-day ops summary
-  vercel-projects:
-    {
-      enabled: false,
-      schedule: "0 18 * * 0",
-      var: ""
-    } # Sunday — catalog Vercel projects
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
   cost-report: { enabled: false, schedule: "0 7 * * 1" } # weekly API cost breakdown by skill and model
@@ -144,14 +136,7 @@ skills:
       schedule: "0 11 * * 1",
       var: ""
     } # Monday — one ECOSYSTEM.md pass: project liveness (stars/forks/last-push buckets + 7d releases + WoW transitions) AND link-health (URL audit, buckets OK/ARCHIVED/MOVED/DEAD/…, folds in ecosystem-links). var: empty=both | liveness | links | dry-run
-  fleet-state:
-    {
-      enabled: false,
-      schedule: "0 8 * * 1",
-      var: ""
-    } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
-  fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
-  fork-cohort: { enabled: false, schedule: "0 19 * * 0" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
+  fork-fleet: { enabled: false, schedule: "0 10 * * 1", var: "" } # fork divergence: code (unique commits/skills) + config (aeon.yml vs upstream defaults; folds in fork-digest). var: empty=both | code | config | fork=owner/repo | repo=owner/repo
   fork-events:
     {
       enabled: false,
@@ -161,18 +146,10 @@ skills:
   skill-evals: { enabled: false, schedule: "0 6 * * 0" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
   skill-update: { enabled: false, schedule: "0 19 * * 0" } # Sunday 7 PM UTC — check imported skills for upstream changes and security regressions
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
-  fleet-control: { enabled: false, schedule: "0 9,15 * * *" } # fleet health checks twice daily, dispatch via var
-  fleet-scorecard: { enabled: false, schedule: "0 13 * * *" } # daily 13:00 UTC — fleet-wide scorecard (self + every non-archived repo in memory/instances.json): runs, tokens (OpenRouter shape), est. cost, reliability, day-over-day deltas + alerts. Reads scripts/prefetch-fleet-scorecard.sh output.
+  fleet-control: { enabled: false, schedule: "0 9,15 * * *", var: "" } # managed child instances. var: empty=health check | status | dispatch <inst|*> <skill> [var=…] | scorecard (fleet-wide runs/tokens/cost/reliability; folds in fleet-scorecard)
   retrospective: { enabled: false, schedule: "0 19 * * 1" }
   shiplog: { enabled: false, schedule: "0 9 * * 1" } # everything shipped SINCE THE LAST RUN (memory/state/shiplog-last.json) — cross-repo PRs/commits, security fixes merged into others' repos, star deltas, X/ecosystem traction → digest article + ready-to-post shiplog in the operator's voice. Cadence-agnostic: this schedule just sets frequency (daily/weekly/on-demand). Config: memory/products.md + memory/watched-repos.md. Optional XAI_API_KEY (X traction) + GH_GLOBAL (cross-repo reach). var: since:DATE | days:N | dry-run | owner/repo | <theme>.
-  skill-leaderboard: { enabled: false, schedule: "0 17 * * 0" } # Sunday — rank popular skills across forks
   contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0" } # Sunday — rank community contributors across forks and upstream PRs
-  contributor-reward:
-    {
-      enabled: false,
-      schedule: "30 9 * * 1",
-      var: ""
-    } # Monday — turn Sunday's leaderboard into a tier-priced rewards plan in memory/distributions.yml; pass dry-run to preview
   operator-scorecard:
     {
       enabled: false,
@@ -185,25 +162,18 @@ skills:
       schedule: "0 11 * * 2",
       var: ""
     } # Tuesday 11:00 UTC — escalation audit: parses MEMORY.md follow-up/next-priorities section + issue tracker, ages items, alerts on CRITICAL/HIGH operator items (>21d/>14d). Catch-all for the open-loop backlog. Pass var to filter.
-  fork-digest: { enabled: false, schedule: "30 18 * * 0" } # Sunday — divergence digest: where the configured fleet disagrees with upstream defaults
   skill-gap:
     {
       enabled: false,
       schedule: "0 21 * * 0",
       var: ""
-    } # Sunday 21:00 UTC — per-fork table of upstream skills the fork hasn't adopted; gates on fork-cohort POWER+ACTIVE set when fresh, falls back to live API otherwise. Pass dry-run to skip notify, or owner/repo to override parent.
-  skill-adoption:
-    {
-      enabled: false,
-      schedule: "0 22 * * 0",
-      var: ""
-    } # Sunday 22:00 UTC — fleet skill-adoption leaderboard: per-slug count of POWER+ACTIVE forks with each upstream skill enabled:true in aeon.yml. Top-15 most-adopted + bottom-15 least-adopted (excludes freshly-shipped + dispatch-only), zero-adoption set, WoW deltas on adoption %. Reuses fork-cohort state when fresh; gated notify (QUIET when top-10 unchanged). Pass dry-run to skip notify, or owner/repo to override parent.
+    } # Sunday — fleet skill intelligence: per-fork adoption gaps + adoption leaderboard + configured-fork ranking (folds in skill-adoption + skill-leaderboard). var: empty=all | gaps | adoption | leaderboard | dry-run | owner/repo
   fork-health:
     {
       enabled: false,
       schedule: "45 10 * * 1",
       var: ""
-    } # Monday 10:45 UTC — weekly per-fork health tier (ACTIVE/WARM/STALE/QUIET) from push recency + enabled skill count + 30d PR throughput. Top-10 ACTIVE leaderboard + fleet ACTIVE ratio; reuses fork-cohort state when fresh. Gated notify (QUIET when ratio steady and no top-10 churn / ≥3 tier transitions). Pass dry-run to skip notify, or owner/repo to override parent.
+    } # Monday — fork intelligence: per-fork health tier + activation-stage cohort buckets + state-of-the-fleet narrative (folds in fork-cohort + fleet-state). var: empty=health | cohort | fleet | dry-run | owner/repo
   capabilities-map:
     {
       enabled: false,
@@ -253,9 +223,6 @@ skills:
       var: ""
     } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
 
-  # Dev & repo
-  builder-map: { enabled: false, schedule: "0 10 * * 2" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
-
   # Security
   vuln-tracker: { enabled: false, schedule: "30 16 * * *", var: "" } # daily lifecycle poll: vuln-scanner PR/advisory status + PVR triage + disclosure-queue aging (folds in pvr-triage/disclosure-tracker). var: empty=full | pvr | queue | prs | <GHSA-id>
 
@@ -275,12 +242,6 @@ skills:
   picks-tracker: { enabled: false, schedule: "0 9 * * 0" } # Sunday 09:00 UTC — 30-day retrospective scoring token + prediction-market picks from logs against current prices; W/H/L + hit rate; honest record-keeping. Pairs with token-pick / monitor-polymarket.
   # Content pipeline
   article-queue: { enabled: false, schedule: "0 11 * * 0", var: "" } # Sunday — content planner: ranks content-gap signals + tracks multi-beat storylines into memory/topics/article-queue.md (folds in topic-momentum + beat-tracker; article skill picks it up via MEMORY.md). var: empty=combined | gaps | beats
-  content-performance:
-    {
-      enabled: false,
-      schedule: "0 10 * * 0",
-      var: ""
-    } # Sunday 10:00 UTC — weekly engagement analysis of the operator's X account (topics, formats, breakouts); feeds article-queue/topic-momentum. var: X handle (no @); falls back to soul/SOUL.md. XAI_API_KEY optional (WebSearch fallback).
   soul-builder: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build a SOUL from any mix of sources (X handle, full name, links), drafting soul/SOUL.md + STYLE.md + examples so every content skill speaks in that voice. var: bare X handle, or structured brief "x=handle | name=Full Name | links=url1,url2". Powers the dashboard Soul → Build my soul button. XAI_API_KEY optional (name/links use built-in WebSearch/WebFetch).
   # Social
   mention-radar:
@@ -303,7 +264,7 @@ skills:
   bd-radar: { enabled: false, schedule: "20 7 * * *", var: "" } # daily 07:20 — BD radar: who's building/forking/integrating/mentioning your products → ranked leads. Products from memory/products.md. Quiet unless high-intent.
 
   # Product / ops (config: memory/products.md)
-  product-pulse: { enabled: false, schedule: "15 7 * * *" } # daily 07:15 — state of your products: GitHub health across your repo family + X follower/engagement deltas
+  product-pulse: { enabled: false, schedule: "15 7 * * *", var: "" } # product health: repo growth + X engagement + Vercel deploy fleet (folds in repo-pulse/content-performance/vercel-projects). var: empty/all | repo[:owner/repo] | content[:handle] | deploys[:team] | dry-run. Optional XAI/VERCEL keys.
 
   # Self-maintenance / meta
   memory-flush: { enabled: false, schedule: "30 23 * * *" } # daily — promote important recent log entries into MEMORY.md

@@ -30,7 +30,10 @@
 set -uo pipefail
 
 SKILL="${1:-}"
-[ "$SKILL" != "fleet-scorecard" ] && exit 0   # only run when this skill is dispatched
+VAR="${2:-}"
+# fleet-scorecard was folded into fleet-control as its `scorecard` view — only
+# stage the (expensive) fleet data when that view is dispatched (var=scorecard).
+{ [ "$SKILL" = "fleet-control" ] && [ "$VAR" = "scorecard" ]; } || exit 0
 
 DIR=/tmp/fleet-scorecard
 mkdir -p "$DIR"
