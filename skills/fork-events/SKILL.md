@@ -1,7 +1,7 @@
 ---
-name: Fork Firstrun
+name: Fork Events
 category: meta
-description: Named alert when a fork completes its first ever workflow run — catches the activation moment that slower fork-cohort snapshots would miss
+description: Same-day named alert when a fork first runs — catches the activation moment the day it happens, which slower fork-cohort snapshots would miss
 var: ""
 tags: [meta, community]
 ---
@@ -233,8 +233,8 @@ Write atomically (`tmp + mv`).
 Append to `memory/logs/${today}.md`:
 
 ```
-## fork-firstrun
-- **Skill**: fork-firstrun
+## fork-events
+- **Skill**: fork-events
 - **Parent**: {PARENT_REPO}
 - **Source**: cohort-cache (age Nd) | live-fallback
 - **Active forks scanned**: N

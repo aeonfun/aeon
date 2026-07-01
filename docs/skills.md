@@ -73,7 +73,6 @@ Install any skill into your own agent:
 | Skill | Description | Default Schedule |
 |-------|-------------|-----------------|
 | `priority-brief` | Aggregated daily briefing — digests, priorities, and what's ahead | Daily 7 AM UTC |
-| `routine` | Morning briefing combining token movers, tweets, papers, issues, HN | Daily 7 AM UTC |
 | `retrospective` | Synthesize the week's logs into a structured retrospective | Mondays 7 PM UTC |
 | `goal-tracker` | Compare current progress against goals stored in MEMORY.md | Daily 6 PM UTC |
 | `idea-capture` | Quick note capture triggered via Telegram | Daily 2 PM UTC |
@@ -83,7 +82,6 @@ Install any skill into your own agent:
 | `reflect` | Review recent activity, consolidate memory, prune stale entries | Daily 6 PM UTC |
 | `skill-health` | Check which scheduled skills haven't run recently | Daily 6 PM UTC |
 | `self-review` | Audit of what Aeon did, what failed, and what to improve | Daily 6 PM UTC |
-| `rss-feed` | Generate an Atom XML feed from articles in the repo | Daily 5:30 PM UTC |
 | `update-gallery` | Sync articles to GitHub Pages gallery with proper Jekyll frontmatter | Weekly Sunday 6 PM UTC |
 
 ---

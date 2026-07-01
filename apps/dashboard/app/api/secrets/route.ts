@@ -36,7 +36,6 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype, vercel-projects). Create at vercel.com/account/settings/tokens' },
   { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - image/diagram generation (technical-explainer). Get one at replicate.com/account/api-tokens' },
   { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - emailed digests (priority-brief, retrospective). Create at resend.com' },
-  { name: 'LIQUIDPAD_API_KEY', group: 'Skill Keys', description: 'Liquidpad API key - token-launch skill (liquidpad-launch). From www.liquidpad.site' },
   { name: 'ADMANAGE_API_KEY', group: 'Skill Keys', description: 'AdManage API key - ad campaign skills (schedule-ads, create-campaign). From admanage.ai/api-docs' },
   { name: 'SUPERNOTES_API_KEY', group: 'Skill Keys', description: 'Supernotes API key - note-taking skill. Create one under Settings → API at supernotes.app' },
   { name: 'CONGRESS_GOV_API_KEY', group: 'Skill Keys', description: 'Congress.gov API key - regulatory monitoring (reg-monitor). Sign up at api.congress.gov/sign-up' },
@@ -45,8 +44,6 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'NEYNAR_SIGNER_UUID', group: 'Skill Keys', description: 'Neynar managed signer UUID - required to publish Farcaster casts' },
   { name: 'GH_GLOBAL', group: 'Skill Keys', description: 'GitHub PAT with cross-repo access - cross-repo skills & deploys. Create one at github.com/settings/tokens' },
   { name: 'BASE_RPC_URL', group: 'Skill Keys', description: 'Custom Base RPC endpoint - onchain Base skills (fund-flow, honeypot-check, vigil-revoke). Optional: a public RPC is used by default; set a paid endpoint to lift rate limits. Find a provider at docs.base.org/chain/node-providers' },
-  { name: 'BEAMR_GATEWAY_URL', group: 'Skill Keys', description: 'BEAMR inference-gateway URL - the beamr-route skill pays per call over x402 (USDC on Base) and returns the answer + onchain receipt.' },
-  { name: 'BEAMR_PAYER_KEY', group: 'Skill Keys', description: 'Payer wallet private key (0x...) for the beamr-route skill - fund a DEDICATED low-balance wallet with USDC on Base; per-call spend is capped by the BEAMR_MAX_PAY_USDC variable.' },
 ]
 
 const BUILTIN_NAMES = new Set(BUILTIN_SECRETS.map(s => s.name))

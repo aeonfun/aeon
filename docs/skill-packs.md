@@ -88,7 +88,7 @@ self-improving*, plus a couple of broadly useful default outputs. Of these,
 on-demand.
 
 `create-skill`, `self-improve`, `skill-health`, `skill-repair`, `skill-evals`,
-`autoresearch`, `config-validator`, `heartbeat`, `onboard`, `cost-report`,
+`autoresearch`, `heartbeat`, `onboard`, `cost-report`,
 `reflect`, `digest`, `priority-brief`.
 
 Edit the `core.skills` allowlist in `packs.config.json` to change it.

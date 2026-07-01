@@ -67,7 +67,7 @@ No server. No daemon. If GitHub Actions is up, Aeon is up.
 `thread-writer` · `reply-maker` · `refresh-x`
 
 ### Productivity & Meta
-`priority-brief` · `routine` · `retrospective` · `goal-tracker` · `idea-capture` · `action-converter` · `startup-idea` · `heartbeat` · `reflect` · `skill-health` · `self-review` · `rss-feed` · `update-gallery`
+`priority-brief` · `retrospective` · `goal-tracker` · `idea-capture` · `action-converter` · `startup-idea` · `heartbeat` · `reflect` · `skill-health` · `self-review` · `update-gallery`
 
 <p><a href="/skills">Browse the full skill catalog →</a></p>
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
-// validate-config.js — Shared structural validator for aeon.yml and the run
-// workflow. This is the "fast path" the config-validator skill invokes
-// (skills/config-validator/SKILL.md): one deterministic pass over the three
-// invariant classes that have caused full outages, so the skill (and any future
-// pre-merge CI) does not have to re-derive them from inline snippets.
+// validate-config.js — Deterministic structural validator for aeon.yml and the
+// run workflow. One pass over the three invariant classes that have caused full
+// outages; run in CI (and callable from any skill) so they don't have to be
+// re-derived from inline snippets. Replaces the former config-validator skill.
 //
 // Checks:
 //   1. Checkout ordering  — .github/workflows/aeon.yml must check out the repo
@@ -22,9 +21,9 @@
 //      whole skills: block (enabled or not, inline `{ }` or multi-line) AND every
 //      skill wired into a chains: pipeline (parallel / skill / consume).
 //
-// Output contract (consumed by config-validator):
-//   - Exit 0 + only PASS lines  => CLEAN  (no notification)
-//   - Exit 1 + FAIL: / WARN: lines on stdout => ISSUES (skill notifies)
+// Output contract:
+//   - Exit 0 + only PASS lines  => CLEAN
+//   - Exit 1 + FAIL: / WARN: lines on stdout => ISSUES
 //
 // Reads local files only — no network, no dependencies.
 

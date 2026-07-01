@@ -7,7 +7,6 @@
 skills:
   # --- Morning aggregation (7 AM UTC) ---
   priority-brief: { enabled: false, schedule: "0 7 * * *" }
-  routine: { enabled: false, schedule: "0 7 * * *" }
   rss-digest: { enabled: false, schedule: "0 7 * * *" }
   hn-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
@@ -42,7 +41,6 @@ skills:
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: distribution list label
   defi-overview: { enabled: false, schedule: "0 12 * * *" }
-  liquidpad-launch: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: token concept (≥6 chars, or JSON {name,symbol,theme}); deploys a token on Base via LiquidPad through a prefetch/postprocess shim. Requires LIQUIDPAD_API_KEY (read by the shim, not the skill). Set LIQUIDPAD_DRY_RUN=1 to simulate.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
   rug-scan: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: token address — rug-pull risk verdict
@@ -74,7 +72,6 @@ skills:
   market-context: { enabled: false, schedule: "0 13 * * *" } # fetch live crypto macro data, update memory
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
-  aixbt-pulse: { enabled: false, schedule: "0 9,21 * * *" } # twice daily — AIXBT free grounding endpoint: cross-domain market pulse (crypto/macro/tradfi/geopolitics) with taxonomy refresh
 
   # --- Afternoon (2 PM UTC) ---
   article: { enabled: false, schedule: "0 14 * * *" }
@@ -135,9 +132,6 @@ skills:
   vibecoding-digest: { enabled: false, schedule: "30 17 * * *" } # r/vibecoding trending posts
   channel-recap: { enabled: false, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
-  # --- Feed generation (5:30 PM UTC, after content skills) ---
-  rss-feed: { enabled: false, schedule: "30 17 * * *" }
-
   # --- Gallery update (Sunday 6 PM UTC, after content week) ---
   update-gallery: { enabled: false, schedule: "0 18 * * 0" }
 
@@ -186,12 +180,6 @@ skills:
       schedule: "30 8 * * 1",
       var: ""
     } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
-  atrium-watch:
-    {
-      enabled: false,
-      schedule: "0 12 * * 5",
-      var: ""
-    } # Friday 12:00 UTC — weekly diff of the Atrium marketplace catalog (atriumhermes.tech/.well-known/skills/index.json) against the prior snapshot. Reports added / removed skills since last run, attributes each `added` row to its `./install-from-atrium <name>` install command. Supply-side complement to sparkleware-catalog (curated skill-packs.json) and skill-update (installed-skill drift). Read-only against the Atrium endpoint. Gated notify (added/removed only; description renames surface in the article). Pass dry-run to skip notify. ATRIUM_HOST env override honored.
   ecosystem-links:
     {
       enabled: false,
@@ -204,12 +192,6 @@ skills:
       schedule: "0 11 * * 1",
       var: ""
     } # Monday 11:00 UTC — weekly liveness check of ECOSYSTEM.md projects: resolves each to a GitHub repo (operator map + strict search), reports stars/forks/last-push buckets (ACTIVE/RECENT/COLD/X-only) + releases in 7d window, WoW transitions. Read-only against ECOSYSTEM.md. Gated notify (QUIET when no releases/transitions/entrants). Pass dry-run to skip notify.
-  sparkleware-catalog:
-    {
-      enabled: false,
-      schedule: "0 9 * * 2",
-      var: ""
-    } # Tuesday 09:00 UTC — weekly enriched export of skill-packs.json: joins the curated registry to live GitHub signals (stars, last-push, live skills-pack.json manifest count) and writes machine-readable skill-packs-catalog.json (repo root) for external tools like Sparkleware (Issue #244). Read-only against skill-packs.json. Gated notify (only registry composition / reachability changes; star+drift refresh silently). Pass dry-run to skip notify.
   fleet-state:
     {
       enabled: false,
@@ -218,19 +200,7 @@ skills:
     } # Monday 08:00 UTC — weekly synthesis of fork-cohort + fork-release + contributor-spotlight into one fleet-state digest with WoW deltas + 12-week trend. Quiet weeks suppress notify. Pass dry-run to skip notify, or owner/repo to override parent.
   fork-fleet: { enabled: false, schedule: "0 10 * * 1" } # fork fleet scan — inventory active forks, detect diverged work
   fork-cohort: { enabled: false, schedule: "0 19 * * 0" } # Sunday 19:00 UTC — bucket every fork by activation stage (COLD/STALE/ACTIVE/POWER) using GitHub Actions run history; week-over-week deltas; gated notify
-  fork-release:
-    {
-      enabled: false,
-      schedule: "30 19 * * 0",
-      var: ""
-    } # Sunday 19:30 UTC — weekly scan: celebrate when any fork cuts a tagged GitHub release in the last 7 days. Silent on quiet weeks. Pass dry-run to skip notify, or owner/repo to override parent.
-  contributor-spotlight:
-    {
-      enabled: false,
-      schedule: "0 20 * * 0",
-      var: ""
-    } # Sunday 20:00 UTC — weekly recognition post: pick one POWER fork from the latest fork-cohort run and convert it into a named human moment (operator handle, enabled stack, diverged work, 30d commits). 4-week dedup. Pass dry-run to skip notify, or owner/repo to override the auto-pick.
-  fork-firstrun:
+  fork-events:
     {
       enabled: false,
       schedule: "30 20 * * *",
@@ -358,7 +328,6 @@ skills:
 
   # Social
   engagement-act: { enabled: false, schedule: "30 9 * * *" } # daily — turn flagged engagement opportunities into copy-paste-ready replies
-  skill-spotlight: { enabled: false, schedule: "workflow_dispatch", var: "" } # picks one skill from a rotation queue (memory/topics/skill-spotlight.md), writes a paste-ready feature tweet in the "Aeon skill spotlight 🌟" format, then dispatches the picked skill so its own ./notify delivers the live outcome. Two notifications per run: tweet draft + skill result. Set var=<skill-name> to override the queue. Recommended enabled cron: "0 8 * * *".
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
@@ -367,13 +336,7 @@ skills:
 
   # Self-maintenance / meta
   batch-health: { enabled: false, schedule: "30 8 * * *" } # daily — verify enabled morning-batch skills fired; alert on silent misses
-  frequency-guard: { enabled: false, schedule: "0 23 * * *" } # daily — watchdog for capped skills exceeding their per-day run limit
-  config-validator: { enabled: false, schedule: "30 16 * * 0" } # Sunday — lint aeon.yml + workflow for structural invariants (checkout order, dup keys, missing files)
-  janitor: { enabled: false, schedule: "30 5 * * 0" } # Sunday — clean stale .notify-*, .pending-notify-temp/, expired .outputs/ artifacts
-  memory-dedupe: { enabled: false, schedule: "10 6 2/2 * *" } # every other day — collapse duplicate section rows + duplicate H2 headings in MEMORY.md
   self-review: { enabled: false, schedule: "30 19 * * 0" } # Sunday — audit what the agent did, what failed, what to improve
-  self-repair-ledger: { enabled: false, schedule: "30 8 * * 0", var: "" } # Sunday 08:30 UTC — public dated ledger of every skill the agent wrote/reviewed/merged/pruned, each repair's red run → green run. Writes REPAIR-LEDGER.md + repair-ledger.json at repo root (auto-committed, like docs/status.md). depends_on: skill-repair, skill-health. On a 2-week trial from first run.
-  signal-verdict: { enabled: false, schedule: "0 8 * * 1" } # Monday — verify tracker skills produce citable signals; surface uncited trackers
   skill-enabler: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — flip skills enabled:true by slug list, validate, commit + open PR
 
   # --- Ported from aeon-aaron ---

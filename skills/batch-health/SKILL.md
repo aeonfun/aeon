@@ -9,7 +9,7 @@ Today is ${today}. Cross-reference what was scheduled to run this morning agains
 
 ## Goal
 
-`frequency-guard` catches skills running *too often*. Nothing catches when they go *silent* (example: a historical batch outage where multiple even-day skills missed the morning window and no alert fired). This skill closes that gap.
+Scheduled skills can silently stop firing and nothing notices (example: a historical batch outage where multiple even-day skills missed the morning window and no alert fired). This skill closes that gap.
 
 Runs at 08:00 UTC daily — after the 06:00–07:30 UTC batch window completes. Skills scheduled at 07:31+ are excluded from the expected list (transient cron drift could leave them in flight when we audit). Output: OK if everything ran, WARN for 1-2 isolated misses, OUTAGE for 3+ missing skills.
 
