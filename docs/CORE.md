@@ -84,23 +84,23 @@ Three modes via `var`: **Health Check** (default), **Status** (`status`), **Disp
 
 Dispatch mode lets the parent trigger a skill on one child — or all healthy / degraded children at once. State-change-gated notify; bails on missing `gh` auth or low rate limit.
 
-### [`fleet-scorecard`](../skills/fleet-scorecard/SKILL.md) — fleet economics · daily 13:00
+### [`fleet-control`](../skills/fleet-control/SKILL.md) `scorecard` — fleet economics · daily 13:00
 
-Discovers the fleet at runtime (self + every non-archived instance — never hardcoded). All data is gathered by `scripts/prefetch-fleet-scorecard.sh` *outside* the sandbox, so the skill just reads `/tmp/fleet-scorecard/*` and writes the report — no network needed.
+The **scorecard view** of `fleet-control` (run with `var: scorecard`; folded in the former standalone `fleet-scorecard`). Discovers the fleet at runtime (self + every non-archived instance — never hardcoded). All data is gathered by `scripts/prefetch-fleet-scorecard.sh` *outside* the sandbox, so the skill just reads `/tmp/fleet-scorecard/*` and writes the report — no network needed.
 
 Aggregates runs / failures / generations / tokens / est. cost / cache discount (tokens in OpenRouter shape, cached ⊆ prompt), builds an Alerts block (any skill with ≥25% fail rate over 14d, cost spikes > 1.5× median daily delta, failure jumps > 10), writes `memory/scorecard.md` and appends a trend row to `scorecard-history.csv`.
 
-### [`contributor-reward`](../skills/contributor-reward/SKILL.md) → [`distribute-tokens`](../skills/distribute-tokens/SKILL.md) — the pay-your-contributors flywheel
+### [`distribute-tokens`](../skills/distribute-tokens/SKILL.md) — the pay-your-contributors flywheel
 
-`contributor-reward` (Mon 09:30) reads the latest fork-contributor leaderboard, scores each contributor against a tier table (rank 1 = 25 USDC … rank 5 = 5, +5 first-PR bonus tracked once-ever per login, eligibility floor score ≥10 + must have an @handle), and writes the plan into `memory/distributions.yml` with a one-command run line. It deliberately **stops short of sending** — keeping a human-visible git diff as the audit trail.
+`distribute-tokens` owns the whole flywheel as two phases you can run alone or chained (`var`: empty/`<label>` = send, `plan:` = plan only, `all:` = plan-then-send). The **plan phase** reads the latest `contributor-leaderboard` ranking, scores each contributor against a tier table (rank 1 = 25 USDC … rank 5 = 5, +5 first-PR bonus tracked once-ever per login, eligibility floor score ≥10 + must have an @handle), and writes the plan into `memory/distributions.yml` with a one-command run line. It deliberately **stops short of sending** — keeping a human-visible git diff as the audit trail. (This phase folded in the former standalone `contributor-reward` skill.)
 
-`distribute-tokens` then does the actual on-chain send via the Bankr Wallet API with serious money-safety engineering: two-phase RESOLVE → EXECUTE (validate config / key / balance, resolve @handles → addresses, build plan; then send), per-recipient idempotency key + txHash so nothing double-sends across re-runs, dry-run mode, and recovery from partial runs. Wallet API for transfers only; read-only keys → 403 guard.
+The **send phase** (the default, empty `var`) does the actual on-chain send via the Bankr Wallet API with serious money-safety engineering: two-phase RESOLVE → EXECUTE (validate config / key / balance, resolve @handles → addresses, build plan; then send), per-recipient idempotency key + txHash so nothing double-sends across re-runs, dry-run mode, and recovery from partial runs. Wallet API for transfers only; read-only keys → 403 guard.
 
 ---
 
 ## 🤖 Autonomous real-world action
 
-### [`external-feature`](../skills/external-feature/SKILL.md) / [`feature`](../skills/feature/SKILL.md) — ships code to watched repos unprompted
+### [`feature`](../skills/feature/SKILL.md) — ships code to watched repos unprompted
 
 **Input:** `owner/repo`, `owner/repo#N`, or empty (auto-pick)
 

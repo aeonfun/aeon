@@ -25,8 +25,8 @@ menu populates and the message-field menu button points at it:
    (`.github/workflows/setup-commands.yml`).
 2. It also re-runs automatically on any push to `aeon.yml`, so the menu never drifts.
 
-Command names can only use `a-z`, `0-9`, `_` — so a skill dir `research-brief`
-becomes `/research_brief`. The router inverts `_`→`-` when it dispatches.
+Command names can only use `a-z`, `0-9`, `_` — so a skill dir `deep-research`
+becomes `/deep_research`. The router inverts `_`→`-` when it dispatches.
 
 - `/skillname [args]` dispatches the skill instantly (no Claude call). `args` become
   the skill's `var`, e.g. `/article quantum computing`.

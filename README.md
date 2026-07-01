@@ -14,7 +14,7 @@
 
 <p align="center">
   <strong>The most autonomous agent framework.</strong><br>
-  Give it a direction - it'll use 183 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
+  Give it a direction - it'll use 102 skills (deep research, PR reviews, market monitoring, Vercel deploys…) to get it done. No approval loops. No babysitting. Configure once, forget forever.
 </p>
 
 <p align="center">
@@ -60,34 +60,36 @@ Grab the `gh_*_macOS_arm64.zip` (or your platform's binary) from [github.com/cli
 
 ## What Aeon can do
 
-**168 skills, grouped into 9 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
+**102 skills, grouped into 10 packs.** By default the dashboard shows only the small **core** set; everything else is hidden until you **enable its pack** in the **Packs** view - a visibility switch that reveals a pack's skills across the UI without running anything. Putting a skill on duty stays a per-skill toggle. Every skill is independently installable, schedulable, and chainable. How packs work: [`docs/skill-packs.md`](docs/skill-packs.md).
 
-| Pack                                                          | Key            | Skills | Examples                                             |
-| ------------------------------------------------------------- | -------------- | ------ | ---------------------------------------------------- |
-| 🧬 **Core** - self-evolution, healing, memory; always present | `core`         | 13     | `skill-repair`, `autoresearch`, `create-skill`       |
-| 🛰️ **Fleet & Replication**                                    | `fleet`        | 8      | `spawn-instance`, `deploy-prototype`, `vuln-scanner` |
-| 📚 **Research & Content**                                     | `research`     | 26     | `deep-research`, `paper-digest`, `hn-digest`         |
-| 💻 **Dev & Code**                                             | `dev`          | 33     | `pr-review`, `github-monitor`, `auto-merge`          |
-| 📈 **Crypto & Markets**                                       | `markets`      | 20     | `token-movers`, `defi-overview`, `base-mcp`          |
-| 🛡️ **Onchain Security**                                       | `hound`        | 15     | `rug-scan`, `contract-audit`, `honeypot-check`       |
-| ✍️ **Social & Writing**                                       | `social`       | 16     | `thread-writer`, `reply-maker`, `remix-tweets`       |
-| ✅ **Productivity**                                           | `productivity` | 15     | `priority-brief`, `retrospective`, `goal-tracker`    |
-| 🤖 **Agent Ops**                                              | `agent-ops`    | 22     | `heartbeat`, `cost-report`, `capabilities-map`       |
+| Pack | Key | Skills | Examples |
+| --- | --- | --- | --- |
+| 🧬 **Core** - self-evolution, healing, memory; always present | `core` | 12 | `autoresearch`, `cost-report`, `create-skill` |
+| 🛰️ **Fleet & Replication** | `fleet` | 5 | `deploy-prototype`, `distribute-tokens`, `fleet-control` |
+| 📚 **Research & Content** | `research` | 16 | `deep-research`, `paper-digest`, `hn-digest` |
+| 💻 **Dev & Code** | `dev` | 18 | `pr-review`, `github-monitor`, `auto-merge` |
+| 📈 **Crypto & Markets** | `markets` | 16 | `token-movers`, `defi-overview`, `base-mcp` |
+| 🛡️ **Onchain Security** | `hound` | 4 | `investigation-report`, `tx-explain`, `vigil` |
+| ✍️ **Social & Writing** | `social` | 8 | `write-tweet`, `reply-maker`, `syndicate-article` |
+| ✅ **Productivity** | `productivity` | 11 | `goal-tracker`, `deal-flow`, `strategy-builder` |
+| 🤖 **Agent Ops** | `agent-ops` | 12 | `operator-scorecard`, `capabilities-map`, `skill-scan` |
+| 🧪 **Lab** - unsorted; freshly authored/imported skills awaiting a pack | `lab` | 0 | _(empty — add via `category:`)_ |
 
 <details>
-<summary><strong>Full catalog (all 168 skills by pack)</strong></summary>
+<summary><strong>Full catalog (all 102 skills by pack)</strong></summary>
 
 | Pack | Skills |
 |------|--------|
-| **Core** (`core`, 13) | `autoresearch`,`cost-report`,`create-skill`,`digest`,`heartbeat`,`install-skill`,`onboard`,`priority-brief`,`reflect`,`self-improve`,`skill-evals`,`skill-health`,`skill-repair` |
-| **Fleet & Replication** (`fleet`, 8) | `contributor-reward`,`deploy-prototype`,`distribute-tokens`,`external-feature`,`fleet-control`,`fleet-scorecard`,`spawn-instance`,`vuln-scanner` |
-| **Research & Content** (`research`, 26) | `agent-displacement`,`article`,`article-queue`,`beat-tracker`,`channel-recap`,`deep-research`,`fetch-tweets`,`framework-watch`,`hn-digest`,`huggingface-trending`,`last30`,`launch-radar`,`list-digest`,`mcp-pulse`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`research-brief`,`rss-digest`,`security-digest`,`technical-explainer`,`telegram-digest`,`topic-momentum`,`tweet-digest`,`vibecoding-digest` |
-| **Dev & Code** (`dev`, 33) | `auto-merge`,`auto-workflow`,`builder-map`,`changelog`,`code-health`,`disclosure-tracker`,`ecosystem-links`,`ecosystem-pulse`,`fork-cohort`,`fork-fleet`,`github-monitor`,`github-releases`,`github-trending`,`issue-triage`,`pr-merge`,`pr-review`,`pr-tracker`,`pr-triage`,`project-lens`,`push-recap`,`pvr-triage`,`pvr-watchlist`,`repo-actions`,`repo-article`,`repo-pulse`,`repo-revive`,`repo-scanner`,`search-skill`,`skill-triage`,`star-milestone`,`vercel-projects`,`vuln-tracker`,`workflow-audit` |
-| **Crypto & Markets** (`markets`, 20) | `base-mcp`,`compute-pulse`,`ctrl`,`defi-overview`,`fear-divergence`,`market-context`,`monitor-kalshi`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`pm-pulse`,`price-alert`,`rwa-pulse`,`token-movers`,`token-pick`,`treasury-info`,`unlock-monitor`,`x402-monitor` |
-| **Onchain Security** (`hound`, 15) | `approval-audit`,`contract-audit`,`deployer-trace`,`fund-flow`,`holder-concentration`,`honeypot-check`,`investigation-report`,`linked-wallets`,`lp-lock`,`rug-scan`,`tx-explain`,`vigil`,`vigil-revoke`,`wallet-profile`,`wallet-risk` |
-| **Social & Writing** (`social`, 16) | `agent-buzz`,`content-performance`,`create-campaign`,`engagement-act`,`farcaster-digest`,`mention-radar`,`product-hunt`,`refresh-x`,`remix-tweets`,`reply-maker`,`schedule-ads`,`show-hn`,`soul-builder`,`syndicate-article`,`thread-writer`,`tweet-roundup` |
-| **Productivity** (`productivity`, 15) | `action-converter`,`deal-flow`,`followup-patrol`,`goal-tracker`,`idea-capture`,`idea-pipeline`,`idea-validator`,`milestone-tracker`,`ops-recap`,`reg-monitor`,`retrospective`,`shiplog`,`startup-idea`,`strategy-builder`,`tool-builder` |
-| **Agent Ops** (`agent-ops`, 22) | `api-health`,`batch-health`,`capabilities-map`,`contributor-leaderboard`,`fleet-state`,`fork-digest`,`fork-events`,`fork-health`,`operator-scorecard`,`self-review`,`skill-adoption`,`skill-analytics`,`skill-enabler`,`skill-freshness`,`skill-gap`,`skill-graph`,`skill-leaderboard`,`skill-scan`,`skill-update`,`spend-monitor`,`star-momentum`,`update-gallery` |
+| **Core** (`core`, 12) | `autoresearch`,`cost-report`,`create-skill`,`digest`,`heartbeat`,`install-skill`,`onboard`,`reflect`,`self-improve`,`skill-evals`,`skill-health`,`skill-repair` |
+| **Fleet & Replication** (`fleet`, 5) | `deploy-prototype`,`distribute-tokens`,`fleet-control`,`spawn-instance`,`vuln-scanner` |
+| **Research & Content** (`research`, 16) | `article`,`article-queue`,`bd-radar`,`deep-research`,`fetch-tweets`,`framework-watch`,`hn-digest`,`idea-forge`,`last30`,`launch-radar`,`narrative-convergence`,`paper-digest`,`paper-pick`,`reddit-digest`,`security-digest`,`telegram-digest` |
+| **Dev & Code** (`dev`, 18) | `auto-merge`,`auto-workflow`,`changelog`,`code-health`,`ecosystem-pulse`,`feature`,`fork-fleet`,`github-monitor`,`github-trending`,`inbox-triage`,`issue-triage`,`pr-review`,`pr-triage`,`repo-scanner`,`search-skill`,`star-milestone`,`vuln-tracker`,`workflow-audit` |
+| **Crypto & Markets** (`markets`, 16) | `base-mcp`,`ctrl`,`defi-overview`,`fear-divergence`,`monitor-polymarket`,`narrative-tracker`,`onchain-monitor`,`picks-tracker`,`pm-manipulation`,`pm-pulse`,`price-alert`,`token-movers`,`token-pick`,`treasury-info`,`unlock-monitor`,`x402-monitor` |
+| **Onchain Security** (`hound`, 4) | `investigation-report`,`tx-explain`,`vigil`,`wallet-profile` |
+| **Social & Writing** (`social`, 8) | `farcaster-digest`,`mention-radar`,`product-hunt`,`reply-maker`,`schedule-ads`,`soul-builder`,`syndicate-article`,`write-tweet` |
+| **Productivity** (`productivity`, 11) | `action-converter`,`deal-flow`,`followup-patrol`,`goal-tracker`,`idea-pipeline`,`note-taking`,`reg-monitor`,`send-email`,`shiplog`,`strategy-builder`,`tool-builder` |
+| **Agent Ops** (`agent-ops`, 12) | `api-health`,`batch-health`,`capabilities-map`,`contributor-leaderboard`,`fork-events`,`fork-health`,`memory-flush`,`operator-scorecard`,`product-pulse`,`skill-gap`,`skill-scan`,`skill-update` |
+| **Lab** (`lab`, 0) | _(empty)_ |
 
 Authoritative source: [`skills.json`](skills.json) + [`packs.json`](packs.json), the dashboard **Packs** view, or `./add-skill aaronjmars/aeon --list`. A skill's pack comes from its `category:` frontmatter - see [`docs/skill-packs.md`](docs/skill-packs.md).
 Dependency graph: [`docs/skill-graph.md`](docs/skill-graph.md) - a visual map of how skills connect.
@@ -289,12 +291,12 @@ Chain skills so outputs flow between them. Chains run as separate GitHub Actions
 
 ```yaml
 chains:
-  brief-pipeline:
+  digest-pipeline:
     schedule: "0 7 * * *"
     on_error: fail-fast       # or: continue
     steps:
       - parallel: [token-movers, hn-digest]  # run concurrently
-      - skill: priority-brief                          # runs after parallel group
+      - skill: digest                          # runs after parallel group
         consume: [token-movers, hn-digest]   # gets their outputs injected
 ```
 
@@ -562,9 +564,9 @@ Private repos: Free plan = 2,000 min/mo, Pro/Team = 3,000 + $0.008/min overage. 
 CLAUDE.md                ← agent identity (auto-loaded by Claude Code)
 STRATEGY.md              ← north-star: goal, priorities, audience, constraints (rides along every run)
 aeon.yml                 ← skill schedules, chains, reactive triggers, enabled flags
-skills.json              ← machine-readable skill catalog (183 skills, category per skill)
+skills.json              ← machine-readable skill catalog (102 skills, category per skill)
 packs.config.json        ← first-party pack definitions (core allowlist + pack list)
-packs.json               ← generated pack catalog the dashboard reads (9 packs)
+packs.json               ← generated pack catalog the dashboard reads (10 packs)
 ./aeon                   ← launch the local dashboard (Next.js on port 5555)
 ./onboard                ← validate the fork's setup (secrets, workflows, channels)
 ./notify                 ← multi-channel notifications (Telegram, Discord, Slack, Email, json-render)
@@ -577,7 +579,7 @@ packs.json               ← generated pack catalog the dashboard reads (9 packs
 ./new-from-template      ← scaffold a skill from a template (--category sets its pack)
 docs/                    ← GitHub Pages site (articles, activity log, memory)
 soul/                    ← optional identity files (SOUL.md, STYLE.md, examples/, data/)
-skills/                  ← each skill is a SKILL.md prompt file (183 total; `category:` = its pack)
+skills/                  ← each skill is a SKILL.md prompt file (102 total; `category:` = its pack)
 workflow-templates/      ← GitHub Agentic Workflow templates (.md)
 skill-templates/         ← templates for building your own skills
 apps/                    ← standalone sub-projects, each with its own package.json

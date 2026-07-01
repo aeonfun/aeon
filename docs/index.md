@@ -55,19 +55,19 @@ No server. No daemon. If GitHub Actions is up, Aeon is up.
 <h2 class="section-header">Skills by Category</h2>
 
 ### Research & Content
-`article` · `digest` · `rss-digest` · `hn-digest` · `paper-digest` · `paper-pick` · `tweet-digest` · `list-digest` · `research-brief` · `fetch-tweets` · `reddit-digest` · `security-digest`
+`article` · `digest` · `hn-digest` · `paper-digest` · `paper-pick` · `deep-research` · `fetch-tweets` · `reddit-digest` · `telegram-digest` · `framework-watch` · `security-digest`
 
 ### Dev & Code
 `pr-review` · `github-monitor` · `github-trending` · `issue-triage` · `changelog` · `code-health` · `auto-merge` · `create-skill` · `search-skill`
 
 ### Crypto & Markets
-`token-movers` · `token-pick` · `price-alert` · `onchain-monitor` · `defi-overview` · `treasury-info` · `monitor-polymarket` · `monitor-kalshi` · `unlock-monitor`
+`token-movers` · `token-pick` · `price-alert` · `onchain-monitor` · `defi-overview` · `treasury-info` · `monitor-polymarket` · `narrative-tracker` · `unlock-monitor`
 
 ### Social & Writing
-`thread-writer` · `reply-maker` · `refresh-x`
+`write-tweet` · `reply-maker` · `syndicate-article` · `product-hunt` · `mention-radar` · `schedule-ads` · `farcaster-digest`
 
 ### Productivity & Meta
-`priority-brief` · `retrospective` · `goal-tracker` · `idea-capture` · `action-converter` · `startup-idea` · `heartbeat` · `reflect` · `skill-health` · `self-review` · `update-gallery`
+`goal-tracker` · `action-converter` · `deal-flow` · `strategy-builder` · `tool-builder` · `heartbeat` · `reflect` · `skill-health` · `operator-scorecard` · `capabilities-map`
 
 <p><a href="/skills">Browse the full skill catalog →</a></p>
 

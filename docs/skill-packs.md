@@ -89,7 +89,7 @@ on-demand.
 
 `create-skill`, `self-improve`, `skill-health`, `skill-repair`, `skill-evals`,
 `autoresearch`, `heartbeat`, `onboard`, `cost-report`,
-`reflect`, `digest`, `priority-brief`.
+`reflect`, `digest`.
 
 Edit the `core.skills` allowlist in `packs.config.json` to change it.
 
