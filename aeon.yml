@@ -11,7 +11,7 @@ skills:
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
   reddit-digest: { enabled: false, schedule: "0 7 * * *", var: "" } # cross-sub narrative scan or single-sub deep digest. var: empty=narratives(memory/subreddits.yml) | <sub[,sub]> | vibecoding[:week] | <sub>:month
-  telegram-digest: { enabled: false, schedule: "30 7 * * *" } # digest from tracked Telegram channels
+  telegram-digest: { enabled: false, schedule: "30 7 * * *", var: "" } # public Telegram intel. var: empty=multi-channel digest (channels.md) | <channel>=single-channel recap article
 
   # --- Mid-morning (9 AM UTC) ---
   issue-triage: { enabled: false, schedule: "0 9 * * *" }
@@ -80,13 +80,7 @@ skills:
   push-recap: { enabled: false, schedule: "0 15 * * *" }
   repo-actions: { enabled: false, schedule: "0 15 * * *" }
   repo-pulse: { enabled: false, schedule: "0 15 * * *" }
-  star-milestone: { enabled: false, schedule: "15 15 * * *" } # daily — announce when watched repos cross star-count milestones
-  star-momentum:
-    {
-      enabled: false,
-      schedule: "10 10 * * *",
-      var: ""
-    } # daily — project next milestone crossing date from 14-day repo-pulse history; alert only when projected date lands in 7-14d window on Tue/Wed/Thu (Show HN dispatch slot)
+  star-milestone: { enabled: false, schedule: "15 15 * * *", var: "" } # daily — star milestone crossings + next-milestone projection & Show HN launch-window alert (folds in star-momentum). var: empty=all | owner/repo | dry-run
   repo-scanner:
     {
       enabled: false,
@@ -107,14 +101,9 @@ skills:
   install-skill: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — install a community skill pack and open a PR; var: owner/repo [skill...]
 
   # --- X / social (5 PM UTC) ---
-  fetch-tweets: { enabled: false, schedule: "0 17 * * *" }
-  refresh-x: { enabled: false, schedule: "0 17 * * *" }
-  list-digest: { enabled: false, schedule: "0 17 * * *" }
+  fetch-tweets: { enabled: false, schedule: "0 17 * * *", var: "" } # curate X/Twitter. var: keyword:<q> | topic:<t> | account:<handle> (empty=digest tracked accounts) | list:<ids>[|topic] | agent-buzz[:<t>]. Optional XAI_API_KEY.
   reply-maker: { enabled: false, schedule: "0 17 * * *", var: "" } # draft X replies. var: empty=discover reply-worthy tweets | @handle | <listID> | <topic> | from-logs (reply to flagged log opportunities). Optional XAI_API_KEY.
-  tweet-roundup: { enabled: false, schedule: "0 17 * * *", var: "" } # latest tweets on configurable topics
-  agent-buzz: { enabled: false, schedule: "30 17 * * *" } # top AI agent tweets by influence
   farcaster-digest: { enabled: false, schedule: "0 17 * * *" } # trending Farcaster casts
-  channel-recap: { enabled: false, schedule: "0 17 * * 0", var: "" } # weekly — recap from Telegram channel (set var to channel username)
 
 
   # --- Content distribution (runs 30 min after article-generating skills) ---
@@ -135,7 +124,6 @@ skills:
   reflect: { enabled: false, schedule: "0 18 * * *" }
 
   action-converter: { enabled: false, schedule: "0 18 * * *" }
-  startup-idea: { enabled: false, schedule: "0 18 * * *" }
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
   ops-recap: { enabled: false, schedule: "0 21 * * *" } # end-of-day ops summary
@@ -254,8 +242,7 @@ skills:
       schedule: "0 8 * * *",
       var: ""
     } # daily 08:00 UTC — audit enabled skills' upstream file dependencies for staleness; pass dry-run to skip notify; per-class thresholds (articles 28h / .outputs 4h / topics 7d / state 30d); fingerprint-based dedup, 7d re-emit window
-  show-hn: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft Show HN post + r/MachineLearning + r/selfhosted variants from live repo state, ready for the operator to paste at launch time. Set var to one of {show-hn, r/MachineLearning, r/selfhosted} to regenerate that single variant.
-  product-hunt: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — draft the full Product Hunt launch asset pack (tagline 60ch / description 260ch / first comment 500ch / maker comment 500ch / six 80ch feature bullets) from live repo state. Set var to one of {tagline, description, first-comment, maker-comment, bullets} to regenerate that single section only.
+  product-hunt: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot launch copy from live repo state. var: empty/producthunt=full PH asset pack | producthunt:<section> | showhn=Show HN post | reddit[:<sub>]=Reddit variants
 
   # --- Paid ads (AdManage.ai) ---
   schedule-ads:
@@ -293,7 +280,6 @@ skills:
       schedule: "0 13 * * *",
       var: ""
     } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
-  tweet-digest: { enabled: false, schedule: "0 17 * * *", var: "" } # daily — account-based digest of tracked X accounts; sibling to fetch-tweets/tweet-roundup
 
   # Dev & repo
   builder-map: { enabled: false, schedule: "0 10 * * 2" } # Tuesday — who's building on watched repos (forks, ecosystem repos, announcements)
@@ -309,7 +295,6 @@ skills:
 
   # Ideas & productivity
   idea-pipeline: { enabled: false, schedule: "0 18 * * 1" } # Monday — execution-gap audit: top 3 backlog ideas to build this week
-  idea-validator: { enabled: false, schedule: "30 18 * * 1" } # Monday — screen the startup-idea backlog, score viability
 
   # Self-maintenance / meta
   batch-health: { enabled: false, schedule: "30 8 * * *" } # daily — verify enabled morning-batch skills fired; alert on silent misses
@@ -367,7 +352,7 @@ skills:
   capabilities-sweep: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot — infer a capabilities: block for every skill missing one
 
   send-email: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — compose + send a 1:1 email to a named recipient via Resend (general sibling of disclosure-emailer). var: "to=… | subject=… | about=…"
-  idea-forge: { enabled: false, schedule: "0 9 * * 1", var: "" } # Monday 09:00 UTC — weekly business-idea engine: zeitgeist × your capability surface (memory/products.md + installed skills + STRATEGY.md) → 3-5 timing-scored wedges (why-now / smallest cut / kill-criterion).
+  idea-forge: { enabled: false, schedule: "0 9 * * 1", var: "" } # weekly business-idea engine. var: empty/generate=timing-scored wedges | validate[:theme]=viability screen | memo[:theme]=2 evidence-backed memos
   # --- Fallback (must be last) ---
   heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
 

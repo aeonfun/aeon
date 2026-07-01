@@ -97,19 +97,6 @@ xai_search() {
 
 case "$SKILL" in
 
-  refresh-x)
-    # Fetch recent tweets from a specific account
-    # Set var to the X handle (without @). Default: reads from aeon.yml or MEMORY.md
-    ACCOUNT="${VAR:-}"
-    if [ -z "$ACCOUNT" ]; then
-      echo "xai-prefetch: refresh-x requires var (X handle), skipping"
-      exit 0
-    fi
-    ACCOUNT="${ACCOUNT#@}"
-    xai_search "refresh-x.json" \
-      "Search X for all tweets posted by @${ACCOUNT} from ${YESTERDAY} to ${TODAY}. Return every tweet — not just popular ones. For each: the full tweet text, date/time posted, engagement stats (likes, retweets, replies), and the direct link (https://x.com/${ACCOUNT}/status/ID). If it was a reply, note who it was replying to. If it was a quote tweet, include what was quoted. Return as a chronological list."
-    ;;
-
   write-tweet)
     # Only the `remix` format needs an X prefetch (older tweets to remix).
     # drafts/thread use built-in WebSearch or fetch live, so skip otherwise.
@@ -159,16 +146,6 @@ case "$SKILL" in
       "\"allowed_x_handles\": [\"${ACCOUNT}\"]"
     ;;
 
-  tweet-roundup)
-    if [ -n "$VAR" ]; then
-      # Single topic override
-      xai_search "roundup-var.json" \
-        "Search X for the latest popular tweets about: ${VAR} from ${YESTERDAY} to ${TODAY}. Return the 3-5 most interesting or viral tweets. For each: 1) the @handle, 2) a one-line summary, 3) the tweet permalink (https://x.com/username/status/ID)."
-    else
-      echo "xai-prefetch: tweet-roundup has no var, skipping (set var to a topic)"
-    fi
-    ;;
-
   narrative-tracker)
     xai_search "narratives.json" \
       "Search X for the dominant crypto and tech narratives being discussed from ${THREE_DAYS_AGO} to ${TODAY}. What themes are builders, VCs, and influential accounts pushing? What narratives are gaining momentum vs losing steam? Look for: new meta-narratives, narrative shifts, contrarian takes gaining traction, and consensus views being challenged. Return 10-15 distinct narrative threads with representative tweets (include @handle and link)." \
@@ -206,12 +183,51 @@ case "$SKILL" in
     ;;
 
   fetch-tweets)
-    if [ -n "$VAR" ]; then
-      xai_search "fetch-tweets.json" \
-        "Search X for the latest tweets about: ${VAR} from ${YESTERDAY} to ${TODAY}. Return the 10 most interesting tweets. For each: @handle, full tweet text, date, engagement stats (likes, retweets, replies), and the direct link (https://x.com/username/status/ID)."
-    else
-      echo "xai-prefetch: fetch-tweets has no var, skipping"
-    fi
+    # Consolidated X prefetch for the fetch-tweets hub (absorbed tweet-digest,
+    # tweet-roundup, list-digest, refresh-x, agent-buzz). Parse "<source>:<arg>"
+    # with shape inference, then prefetch the keyword / topic / single-account
+    # modes (the ones refresh-x + tweet-roundup + keyword prefetched). list,
+    # agent-buzz and account-digest run live in-skill (no prefetch pre-merge).
+    RAW="${VAR:-}"
+    SRC="${RAW%%:*}"; ARG="${RAW#*:}"; [ "$ARG" = "$RAW" ] && ARG=""   # no colon → ARG empty
+    case "$SRC" in
+      keyword) MODE=keyword ;;
+      topic)   MODE=topic ;;
+      account) MODE=account ;;
+      list|agent-buzz|"") MODE=skip ;;                 # list/agent-buzz/empty resolve live in-skill
+      *)  ARG="$RAW"                                    # no recognised prefix → infer from shape
+          if printf '%s' "$RAW" | grep -Eq '^[0-9,]+$'; then MODE=skip
+          elif printf '%s' "$RAW" | grep -Eq '^@?[A-Za-z0-9_]{1,15}$'; then MODE=account
+          else MODE=keyword; fi ;;
+    esac
+    case "$MODE" in
+      keyword)
+        xai_search "fetch-tweets.json" \
+          "Search X for the latest tweets about: ${ARG} from ${YESTERDAY} to ${TODAY}. Return the 10 most interesting tweets. For each: @handle, full tweet text, date, engagement stats (likes, retweets, replies), and the direct link (https://x.com/username/status/ID)."
+        ;;
+      topic)
+        if [ -n "$ARG" ]; then
+          xai_search "fetch-tweets-topic.json" \
+            "Search X for the latest popular tweets about: ${ARG} from ${YESTERDAY} to ${TODAY}. Return the 3-5 most interesting or viral tweets. For each: 1) the @handle, 2) a one-line summary, 3) the tweet permalink (https://x.com/username/status/ID)."
+        else
+          echo "xai-prefetch: fetch-tweets topic list resolved in-skill (MEMORY.md/defaults) — running live"
+        fi
+        ;;
+      account)
+        ACCOUNT="${ARG#@}"
+        if [ -z "$ACCOUNT" ]; then
+          echo "xai-prefetch: fetch-tweets account-digest (all tracked handles) runs live in-skill"
+        else
+          xai_search "fetch-tweets-account.json" \
+            "Search X for all tweets posted by @${ACCOUNT} from ${YESTERDAY} to ${TODAY}. Return every tweet — not just popular ones. For each: the full tweet text, date/time posted, engagement stats (likes, retweets, replies), and the direct link (https://x.com/${ACCOUNT}/status/ID). If it was a reply, note who it was replying to. If it was a quote tweet, include what was quoted. Return as a chronological list." \
+            "$YESTERDAY" "$TODAY" \
+            "\"allowed_x_handles\": [\"${ACCOUNT}\"]"
+        fi
+        ;;
+      skip)
+        echo "xai-prefetch: fetch-tweets var='${RAW}' → list/agent-buzz/empty mode runs live in-skill (no prefetch)"
+        ;;
+    esac
     ;;
 
   content-performance)
