@@ -236,7 +236,7 @@ Walk today's log section by section. Per section, extract at most one candidate 
 | Skill built / shipped today | +4 | a `## <skill-name>` section whose body says "shipped"/"merged" or links a PR on the watched repo |
 | New high-engagement tweet (≥ 20 likes OR ≥ 5 RTs) on the operator's tracked handle/token | +3 | fetch-tweets log lines with `Likes:` ≥ 20 or `RTs:` ≥ 5, filtered to the operator's configured handles/token |
 | New fork by a recognizable contributor (not the agent / operator) | +2 | repo-pulse `New forks (24h):` ≥ 1, fork owner not the operator |
-| Notable PR merged on a watched repo (not authored by the agent / operator) | +3 | push-recap log mentioning a PR whose author isn't the operator |
+| Notable PR merged on a watched repo (not authored by the agent / operator) | +3 | operator-scorecard (push) log mentioning a PR whose author isn't the operator |
 | New leaderboard / fork-fleet anomaly worth narrating | +2 | skill-health (analytics view) or fork-health (cohort lens) log with a non-empty anomaly section |
 
 If one event hits multiple signals (e.g. star milestone + price move on the same day), score each separately and take the **highest single-event score** — never sum across unrelated events to clear a threshold.

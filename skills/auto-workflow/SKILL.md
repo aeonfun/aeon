@@ -93,7 +93,7 @@ Use this hint table — but **only emit skills whose slug exists in `skills.json
 
 | Category | Hint skills | Requires signal |
 |----------|-------------|----------------|
-| github-repo | github-monitor, github-issues, github-releases, pr-review, push-recap, repo-pulse, repo-article, code-health | `owner/repo` resolves via `gh api` |
+| github-repo | github-monitor, github-issues, github-releases, pr-review, operator-scorecard, repo-pulse, repo-article, code-health | `owner/repo` resolves via `gh api` |
 | github-org | github-monitor, repo-pulse, repo-scanner | `owner` resolves as Organization or User with ≥5 repos |
 | x-account | fetch-tweets, tweet-roundup, list-digest, refresh-x | `x_handle` extracted |
 | blog-or-news | rss-digest, digest, article | ≥1 `feed_url` OR dated articles |

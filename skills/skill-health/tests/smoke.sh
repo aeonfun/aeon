@@ -37,7 +37,7 @@ KNOWN_SECRETS=(
 )
 
 # Canary skills for dry-run structural checks
-CANARY_SKILLS=(heartbeat token-movers push-recap)
+CANARY_SKILLS=(heartbeat token-movers operator-scorecard)
 
 # Colors (disabled if not a terminal or CI)
 if [[ -t 1 ]] && [[ "${CI:-false}" != "true" ]]; then

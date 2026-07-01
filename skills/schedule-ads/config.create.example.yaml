@@ -1,7 +1,8 @@
-# skills/create-campaign/config.yaml
+# skills/schedule-ads/config.create.yaml
 #
-# Copy to `config.yaml` (same dir) and fill in.
-# The skill only reads `config.yaml`, never this example.
+# Config for the `create` branch of schedule-ads (the former create-campaign flow).
+# Copy to `config.create.yaml` (same dir) and fill in.
+# The `create` branch only reads `config.create.yaml`, never this example.
 #
 # Provisions Meta campaigns + ad sets. PAUSED by default. Idempotent —
 # entries already in .admanage-state/campaigns.json are skipped.

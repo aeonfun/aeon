@@ -112,7 +112,7 @@ For each skill, parse the frontmatter `description:` and `tags:` lines. Classify
 Rules:
 - **Cap at 8** content skills. Rank by keyword density in description against purpose; tie-break by name.
 - **Always include `heartbeat`** if the file `skills/heartbeat/SKILL.md` exists (health monitoring).
-- If the purpose doesn't match any theme, fall back to `[priority-brief, reflect, heartbeat]` (filtered against existence).
+- If the purpose doesn't match any theme, fall back to `[reflect, heartbeat]` (filtered against existence).
 - **Validate every candidate** — drop any skill where `skills/${skill}/SKILL.md` doesn't exist; log each drop as `SPAWN_DROPPED_SKILL: ${skill}`.
 - If the final list is empty (no content skills survive), exit `SPAWN_NO_SKILLS`, notify, and **stop**.
 

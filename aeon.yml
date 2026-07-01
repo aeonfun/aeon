@@ -6,7 +6,6 @@
 
 skills:
   # --- Morning aggregation (7 AM UTC) ---
-  priority-brief: { enabled: false, schedule: "0 7 * * *" }
   hn-digest: { enabled: false, schedule: "0 7 * * *" } # top HN stories filtered by MEMORY.md interests
   paper-digest: { enabled: false, schedule: "0 7 * * *" }
 
@@ -59,7 +58,6 @@ skills:
   reg-monitor: { enabled: false, schedule: "0 14 * * 3" } # regulatory developments tracker
 
   # --- Repo intelligence (3 PM UTC) ---
-  push-recap: { enabled: false, schedule: "0 15 * * *" }
   star-milestone: { enabled: false, schedule: "15 15 * * *", var: "" } # daily — star milestone crossings + next-milestone projection & Show HN launch-window alert (folds in star-momentum). var: empty=all | owner/repo | dry-run
   repo-scanner:
     {
@@ -99,21 +97,14 @@ skills:
   skill-health: { enabled: false, schedule: "0 18 * * *", var: "" } # self-healing health audit + analytics. var: empty=health (files/resolves issues) | <skill>=single | analytics[:hours]=fleet run/pass-rate metrics (folds in skill-analytics)
 
   self-improve: { enabled: false, schedule: "0 18 1/2 * *", var: "" } # every other day — improve the agent, or audit it. var: empty/improve[:focus]=propose+apply one fix | audit[:focus]=review what ran/failed (folds in self-review)
-  reflect: { enabled: false, schedule: "0 18 * * *" }
+  reflect: { enabled: false, schedule: "0 18 * * *", var: "" } # daily — memory hygiene (consolidate + prune). var: empty=reflect | retro[ <area>]=KALM retrospective w/ metrics + closed-loop action tracking + SMART actions (folds in retrospective); trailing token filters to an area
 
   action-converter: { enabled: false, schedule: "0 18 * * *" }
   tool-builder: { enabled: false, schedule: "reactive", var: "" } # reactive — build automation scripts from recurring tasks
   skill-repair: { enabled: false, schedule: "reactive", var: "" } # reactive — auto-fix failing skills
-  ops-recap: { enabled: false, schedule: "0 21 * * *" } # end-of-day ops summary
 
   # --- Cost tracking (Monday 7 AM UTC, weekly) ---
-  cost-report: { enabled: false, schedule: "0 7 * * 1" } # weekly API cost breakdown by skill and model
-  spend-monitor:
-    {
-      enabled: false,
-      schedule: "0 12 * * *",
-      var: ""
-    } # daily 12:00 UTC — API spend watchdog: running weekly cost vs WEEKLY_BUDGET_CAP (default $200), OK/WATCH/WARN/ALERT tiers, silent under 50%. Daily complement to cost-report. Pass var to override the cap.
+  cost-report: { enabled: false, schedule: "0 7 * * 1", var: "" } # weekly API cost breakdown by skill/model + anomalies + burn forecast + optimizations. var: empty=full report (7d) | N=report over last N days | watch=budget watchdog (weekly cost vs WEEKLY_BUDGET_CAP def $200, OK/WATCH/WARN/ALERT, silent <50%; folds in spend-monitor) | watch:<cap>=override cap
 
   # --- Weekly (Monday only) ---
   framework-watch:
@@ -139,7 +130,6 @@ skills:
   skill-update: { enabled: false, schedule: "0 19 * * 0", var: "" } # skill-fleet audit. var: empty=both | drift[:skill]=upstream drift/security vs skills.lock | accept:<skill> | freshness[:skill|dry-run]=stale file deps (folds in skill-freshness)
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *", var: "" } # managed child instances. var: empty=health check | status | dispatch <inst|*> <skill> [var=…] | scorecard (fleet-wide runs/tokens/cost/reliability; folds in fleet-scorecard)
-  retrospective: { enabled: false, schedule: "0 19 * * 1" }
   shiplog: { enabled: false, schedule: "0 9 * * 1" } # everything shipped SINCE THE LAST RUN (memory/state/shiplog-last.json) — cross-repo PRs/commits, security fixes merged into others' repos, star deltas, X/ecosystem traction → digest article + ready-to-post shiplog in the operator's voice. Cadence-agnostic: this schedule just sets frequency (daily/weekly/on-demand). Config: memory/products.md + memory/watched-repos.md. Optional XAI_API_KEY (X traction) + GH_GLOBAL (cross-repo reach). var: since:DATE | days:N | dry-run | owner/repo | <theme>.
   contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0" } # Sunday — rank community contributors across forks and upstream PRs
   operator-scorecard:
@@ -147,7 +137,7 @@ skills:
       enabled: false,
       schedule: "30 10 * * 1",
       var: ""
-    } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict)
+    } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict). var: empty=scorecard (7d) | dry-run=no notify | N=window N hours | ops[ DATE]=end-of-day ops recap (shipped/failed/follow-up) | push[ owner/repo]=diff-deep-dive push recap (folds in ops-recap + push-recap)
   followup-patrol:
     {
       enabled: false,
@@ -181,8 +171,7 @@ skills:
       enabled: false,
       schedule: "0 8 * * *",
       var: ""
-    } # daily 08:00 UTC — schedule paid ads across Meta/TikTok/Snapchat/Pinterest/LinkedIn from skills/schedule-ads/config.yaml; launches PAUSED by default
-  create-campaign: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — provision Meta campaigns/ad sets on AdManage.ai (PAUSED) and write IDs back so schedule-ads can launch into them
+    } # daily 08:00 UTC — paid ads via AdManage.ai. var: empty=schedule ad launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn from config.yaml (PAUSED by default) | create=provision Meta campaigns/ad sets on-demand from config.create.yaml (PAUSED, IDs written back to state so the schedule branch can launch into them; folds in create-campaign)
 
   # --- Utilities ---
   auto-workflow: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand aeon.yml builder. var: <url[,url]>=analyze→enablement plan | enable:<slugs>=flip enabled:true (validate, commit, PR); enable:dry-run:<slugs> (folds in skill-enabler)
@@ -258,7 +247,7 @@ skills:
   send-email: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — compose + send a 1:1 email to a named recipient via Resend (general sibling of disclosure-emailer). var: "to=… | subject=… | about=…"
   idea-forge: { enabled: false, schedule: "0 9 * * 1", var: "" } # weekly business-idea engine. var: empty/generate=timing-scored wedges | validate[:theme]=viability screen | memo[:theme]=2 evidence-backed memos
   # --- Fallback (must be last) ---
-  heartbeat: { enabled: true, schedule: "0 8,14,20 * * *" }
+  heartbeat: { enabled: true, schedule: "0 8,14,20 * * *", var: "" } # ambient fleet-health check (default) — surfaces anything worth attention. var: empty=ambient check | <area>=ambient focused on that area | brief[:<area>]=priority brief (3 things to focus on, why now, what moved; folds in priority-brief)
 
 # Reactive triggers — event-driven skill dispatch based on cron-state.json conditions.
 # Skills with schedule: "reactive" are never cron-matched. Instead, the scheduler

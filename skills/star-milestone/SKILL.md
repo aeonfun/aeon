@@ -474,4 +474,4 @@ Phase B — momentum:
 - **Read-only across past `memory/logs/`.** Phase B never edits past log files; it parses them. Today's log is the only target it appends to.
 - **Article writes regardless.** Even on `NO_ALERTS` (or `DRY_RUN`) the momentum article still writes — operators or other skills may read it for projection context without a notification firing.
 - **Idempotent.** Same-day reruns overwrite the article and the state's `last_run_at`; per-`(repo, milestone)` `alerted_at` timestamps and the `dispatched` map persist so re-runs never double-fire a notification or a dispatch.
-- **Preserve milestones.md format.** Other skills (e.g. retrospective) may parse this file — append, don't restructure.
+- **Preserve milestones.md format.** Other skills (e.g. reflect's retro) may parse this file — append, don't restructure.

@@ -395,7 +395,7 @@ Compare this run's matrix against `state`:
 - **entered_undeclared_baseline** — `COVERAGE_ASSESSABLE` is false this run AND `state.last_status != "CAPABILITIES_MAP_UNDECLARED_BASELINE"` (the instance just dropped to — or started in — an all-undeclared state).
 - **became_assessable** — `COVERAGE_ASSESSABLE` is true this run AND `state.last_status == "CAPABILITIES_MAP_UNDECLARED_BASELINE"` (the first enabled declaration just landed; coverage analysis is now live — worth one ping).
 
-`notify_worthy = first_run OR new_gaps OR recovered_gaps OR newly_undeclared_skills OR entered_undeclared_baseline OR became_assessable`. (`newly_declared_skills` alone does **not** notify — declarations land all week as packs ship updates; surfacing every one would re-create the noise problem the gated `cost-report → spend-monitor` pair was built to avoid. Declaration *progress* lives in the article counts and the log block.) When `COVERAGE_ASSESSABLE` is false, the gap-driven triggers (`new_gaps` / `recovered_gaps`) are inert because `GAP_SET` was suppressed to empty in step A6 — so a persistently-unannotated instance fires **once** on `entered_undeclared_baseline`, then goes `QUIET` each week until a declaration lands, rather than re-crying gaps every Monday.
+`notify_worthy = first_run OR new_gaps OR recovered_gaps OR newly_undeclared_skills OR entered_undeclared_baseline OR became_assessable`. (`newly_declared_skills` alone does **not** notify — declarations land all week as packs ship updates; surfacing every one would re-create the noise problem the gated `cost-report` watch-branch (formerly the standalone `spend-monitor`) was built to avoid. Declaration *progress* lives in the article counts and the log block.) When `COVERAGE_ASSESSABLE` is false, the gap-driven triggers (`new_gaps` / `recovered_gaps`) are inert because `GAP_SET` was suppressed to empty in step A6 — so a persistently-unannotated instance fires **once** on `entered_undeclared_baseline`, then goes `QUIET` each week until a declaration lands, rather than re-crying gaps every Monday.
 
 ### A9. Decide terminal status and notification policy
 
@@ -435,7 +435,7 @@ Write `memory/topics/capabilities-map-state.json` (keep one rolling `.bak`; rest
   },
   "gap_set": ["onchain_writes"],
   "undeclared_count": 120,
-  "declared_skills": ["spend-monitor", "sparkleware-catalog", "ecosystem-pulse", "..."]
+  "declared_skills": ["cost-report", "sparkleware-catalog", "ecosystem-pulse", "..."]
 }
 ```
 

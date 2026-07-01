@@ -23,10 +23,10 @@
       "required_patterns": ["commit|feat|fix|change"],
       "forbidden_patterns": ["\\$\\{var\\}", "\\[TODO\\]", "PLACEHOLDER"]
     },
-    "push-recap": {
-      "output_pattern": "articles/push-recap-*.md",
-      "min_words": 80,
-      "required_patterns": ["commit|push|branch|merge"],
+    "operator-scorecard": {
+      "output_pattern": "articles/operator-scorecard-*.md",
+      "min_words": 100,
+      "required_patterns": ["health|growth|economic|verdict|OK|WATCH|DEGRADED"],
       "forbidden_patterns": ["\\$\\{var\\}", "\\[TODO\\]"]
     },
     "fork-fleet": {
