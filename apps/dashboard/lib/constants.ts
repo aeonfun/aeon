@@ -17,11 +17,13 @@ export const GROK_MODELS = [
   { id: 'grok-build', label: 'Grok Build' },
 ]
 
-// Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway);
-// `grok` = Grok Build (own X-account/API-key auth, own model list above).
+// Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway),
+// labelled "Anthropic" in the UI; `grok` = Grok Build (own X-account/API-key
+// auth, own model list above), labelled "Grok". The `id`s are the on-disk
+// harness values (aeon.yml `harness:`) and never change — only the labels do.
 export const HARNESSES = [
-  { id: 'claude', label: 'Claude Code' },
-  { id: 'grok', label: 'Grok Build' },
+  { id: 'claude', label: 'Anthropic' },
+  { id: 'grok', label: 'Grok' },
 ] as const
 
 export function modelsForHarness(harness: string) {
