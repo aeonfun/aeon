@@ -80,8 +80,10 @@ grep -qx -- "--no-auto-update" "$ARGS_FILE" && pass "passes --no-auto-update" ||
 grep -qx -- "--no-subagents" "$ARGS_FILE" && pass "passes --no-subagents" || bad "passes --no-subagents"
 grep -qx -- "--model" "$ARGS_FILE" && grep -qx "grok-composer-2.5-fast" "$ARGS_FILE" \
   && pass "passes --model for a real grok model" || bad "passes --model"
-grep -qx -- "--permission-mode" "$ARGS_FILE" && grep -qx "dontAsk" "$ARGS_FILE" \
+grep -qx -- "--permission-mode" "$ARGS_FILE" && grep -qx "bypassPermissions" "$ARGS_FILE" \
   && pass "passes permission flags from skill_mode" || bad "passes permission flags"
+# compat preamble is appended to grok's system prompt via --rules
+grep -qx -- "--rules" "$ARGS_FILE" && pass "passes --rules compat preamble" || bad "passes --rules compat preamble"
 
 # 4b. --model is OMITTED for a leftover claude-* id or empty (grok uses its default)
 echo "p" | GROK_FAKE_OUT='{"text":"x"}' MODEL=claude-sonnet-4-6 SKILL_MODE=write XAI_API_KEY=xai-test bash "$R" >/dev/null 2>&1

@@ -68,19 +68,27 @@ write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 # Bash/Edit/Read/Grep/Write/MCPTool/WebFetch, plus a `--permission-mode`.
 # Bash rules use a space-glob — `Bash(git *)` — not Claude's colon `Bash(git:*)`.
 #
-# Deny-by-default, honestly: grok currently wires `--permission-mode` for
-# `bypassPermissions` only (per grok's permissions docs), so the flag alone does
-# NOT enforce dontAsk. What actually gives us deny-by-default is that we always
-# run HEADLESS (`grok -p`): a tool that is neither on grok's read-class fast path
-# nor named by an explicit `--allow` rule has no TTY to prompt, so it is refused.
-# We still pass `--permission-mode dontAsk` (harmless, and future-proof if grok
-# wires the flag), but the enforcement is the explicit allowlist below + the
-# read-only sandbox — not the mode string. So the allowlist must be exhaustive.
+# Permission mode: we pass `--permission-mode bypassPermissions` — the ONE mode
+# grok actually wires headlessly (per grok's permissions docs + our testing). It
+# APPROVES every tool call instead of refusing ones we didn't explicitly allowlist.
+# That is deliberate and load-bearing: skills are authored for Claude Code and WILL
+# reach for tools we never pre-listed (a `gh api` read, a Claude built-in). Under
+# the old refuse-a-non-allowlisted-tool behavior (headless `dontAsk`), grok aborted
+# the ENTIRE turn — stopReason=Cancelled, empty/partial output — which is exactly
+# how Claude-authored skills failed on grok. Approving-all makes grok DEGRADE like
+# Claude (a missing/failed tool returns an error the model routes around) instead
+# of Cancelling. Paired with the --rules compat preamble in run-grok.sh.
 #
-# We mirror the SAME capability intent as BASE_TOOLS / WRITE_TOOLS above, so a
-# skill behaves identically on either harness: read-only gets no Edit and no
-# git/gh/python; write adds them. read-only additionally runs under grok's
-# `--sandbox read-only` profile as defense-in-depth (matches the post-run guard).
+# Consequence: the `--allow` rules below are now ADVISORY (additive grants, redundant
+# under bypass) — kept only to document each tier's intended capability, NOT as the
+# guard. The REAL guarantee that a read-only skill can't mutate is grok's OS-level
+# `--sandbox read-only` profile (added below) plus the workflow's post-run stray-write
+# revert. NEVER add `--deny` rules here: a denied tool can re-trigger the very
+# turn-abort we are removing.
+#
+# We still mirror the SAME capability intent as BASE_TOOLS / WRITE_TOOLS above, so
+# the intent reads identically on either harness: read-only documents no Edit and no
+# git/gh/python; write adds them.
 #
 # Output: one argv token per line, so run-grok.sh can read it with
 #   mapfile -t GROK_ARGS < <(skill_mode.sh grok-args "$MODE")
@@ -94,13 +102,16 @@ GROK_WRITE_BASH="gh git python3 python"
 
 grok_args() {
   local mode="$1"
-  # Non-listed tools have no headless approval path → refused. Allowlist is exhaustive.
-  printf '%s\n' --permission-mode dontAsk
+  # bypassPermissions = approve every tool call (the one mode grok wires headlessly),
+  # so a Claude-authored skill reaching for a non-allowlisted tool degrades instead of
+  # Cancelling the turn. The allow rules below are advisory; --sandbox + the post-run
+  # revert are the read-only guard. See the block comment above.
+  printf '%s\n' --permission-mode bypassPermissions
   if [ "$mode" = "read-only" ]; then
     printf '%s\n' --sandbox read-only
   fi
-  # Always-allowed read/search categories (grok auto-approves read_file/grep/
-  # web_search too, but being explicit is harmless and self-documenting).
+  # Advisory grants (redundant under bypass) that document each tier's capability:
+  # read/search/web everywhere; Edit + git/gh/python added on the write tier below.
   printf '%s\n' --allow Read --allow Grep --allow WebFetch
   local cmd
   for cmd in $GROK_BASE_BASH; do printf '%s\n' --allow "Bash($cmd *)"; done

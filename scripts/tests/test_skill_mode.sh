@@ -44,13 +44,15 @@ echo "$RT" | grep -q "Read" && echo "$RT" | grep -q "WebFetch" \
   && echo "$RT" | grep -q "Bash(curl:\*)" && echo "$RT" | grep -q "Bash(./notify:\*)" \
   && pass "read-only tier keeps read/web/curl/notify" || bad "read-only tier keeps read/web/curl/notify"
 
-# grok-args: write tier maps to grok grammar with mutation tools + dontAsk
+# grok-args: write tier maps to grok grammar with mutation tools + bypassPermissions
 # (-F fixed-string for the Bash(cmd *) tokens — the literal * is not a regex here)
 GW=$(bash "$M" grok-args write)
-echo "$GW" | grep -qx -- "--permission-mode" && echo "$GW" | grep -qx "dontAsk" \
+echo "$GW" | grep -qx -- "--permission-mode" && echo "$GW" | grep -qx "bypassPermissions" \
   && echo "$GW" | grep -qx "Edit" && echo "$GW" | grep -Fqx "Bash(git *)" \
   && echo "$GW" | grep -Fqx "Bash(gh *)" \
-  && pass "grok write tier: dontAsk + Edit/git/gh (space-glob)" || bad "grok write tier: dontAsk + Edit/git/gh"
+  && pass "grok write tier: bypassPermissions + Edit/git/gh (space-glob)" || bad "grok write tier: bypassPermissions + Edit/git/gh"
+# never emit --deny (a denied tool can re-trigger the turn-abort bypass removes)
+if echo "$GW" | grep -qx -- "--deny"; then bad "grok args must not emit --deny"; else pass "grok args emit no --deny"; fi
 # grok write must NOT be sandboxed read-only
 if echo "$GW" | grep -qx -- "--sandbox"; then bad "grok write tier must not set --sandbox"; else pass "grok write tier has no --sandbox"; fi
 

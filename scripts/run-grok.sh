@@ -35,6 +35,8 @@
 #   GROK_CHECK            1/true/yes/on: append a self-verification loop → --check
 #   GROK_JSON_SCHEMA      JSON Schema string → --json-schema (structured output;
 #                         reliably honoured only by grok-build, not composer)
+#   GROK_COMPAT_RULES     override the Claude→grok compatibility preamble appended
+#                         to grok's system prompt via --rules (default below, §3d)
 #
 # MCP: grok discovers the project .mcp.json natively (no flag needed); this script
 # only adds `--allow MCPTool(<server>__*)` so the model may call those tools.
@@ -213,6 +215,35 @@ esac
 # JSON text — both are handled by the normalizer below.
 if [ -n "${GROK_JSON_SCHEMA:-}" ]; then RUN_FLAGS+=(--json-schema "$GROK_JSON_SCHEMA"); fi
 
+# --- 3d. Claude→grok compatibility preamble (--rules) -----------------------
+# Every Aeon skill is authored for the Claude Code harness: its data-fetch steps name
+# Claude's tools (WebFetch), assume Claude's sandbox-bypass patterns, and lean on
+# `gh api`. Rather than reimplement ~100 skills for grok, we append ONE standing
+# ruleset to grok's system prompt (`--rules`) that (a) translates those idioms to
+# grok's tools and (b) — the load-bearing part — tells grok to ROUTE AROUND a
+# missing/failed tool instead of giving up. That give-up-and-Cancel behavior is what
+# turned Claude-authored runs into empty/partial non-answers (see run history). This
+# is skill-agnostic (fix once, applies to every skill) and cheap (~a few hundred
+# tokens/run). It pairs with --permission-mode bypassPermissions from skill_mode.sh:
+# bypass stops the hard turn-abort, these rules stop the soft "I'll try other ways" give-up.
+# Override/extend via GROK_COMPAT_RULES in the environment.
+GROK_COMPAT_RULES="${GROK_COMPAT_RULES:-$(cat <<'RULES'
+This skill was authored for the Claude Code harness. Adapt its instructions to your
+own tools; do not abort when something does not match one-to-one:
+- Tool names are Claude's. Map them: when a skill says "WebFetch", use your web
+  fetch/search tools; when it says to curl a URL the sandbox blocks, fetch the same
+  URL with your web tools instead.
+- When a skill relies on the gh CLI (e.g. `gh api`) and gh is unavailable, call the
+  GitHub REST API directly over the web (https://api.github.com/...) — public for reads.
+- If any tool is missing, denied, or returns unusable content, do NOT stop or end the
+  turn. Try another route and finish the task; only surface a failure after you have
+  exhausted the alternatives the skill names.
+- Never end a run having produced only planning or commentary. Deliver the skill's
+  actual output — the notify/file/log it specifies, or its defined error signal — and
+  never emit interim narration as the result.
+RULES
+)}"
+
 # --- 4. run -----------------------------------------------------------------
 PROMPT="$(cat)"
 out_file="$(mktemp)"; err_file="$(mktemp)"
@@ -231,6 +262,7 @@ grok -p "$PROMPT" \
   ${MODEL_FLAG[@]+"${MODEL_FLAG[@]}"} \
   --output-format json \
   --no-auto-update \
+  --rules "$GROK_COMPAT_RULES" \
   ${SUBAGENT_FLAG[@]+"${SUBAGENT_FLAG[@]}"} \
   ${RUN_FLAGS[@]+"${RUN_FLAGS[@]}"} \
   ${MCP_ALLOW[@]+"${MCP_ALLOW[@]}"} \
