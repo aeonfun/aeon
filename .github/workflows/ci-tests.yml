@@ -46,5 +46,7 @@ jobs:
         run: python3 scripts/tests/test_state_reduce.py
       - name: health triage tests
         run: python3 scripts/tests/test_health_triage.py
+      - name: verdikta postprocess fund-safety tests
+        run: python3 scripts/tests/test_verdikta_postprocess.py
       - name: validate-config unit tests
         run: node --test scripts/validate-config.test.js

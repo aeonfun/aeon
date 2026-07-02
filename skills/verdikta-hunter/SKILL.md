@@ -24,7 +24,7 @@ Earn ETH from [Verdikta](https://bounties.verdikta.org) bounties on Base: open b
 | `VERDIKTA_API_KEY` | secret | required | Bot API key (`X-Bot-API-Key`) from `POST https://bounties.verdikta.org/api/bots/register` |
 | `VERDIKTA_WALLET_KEY` | secret | — | Private key of a **dedicated** Base hot wallet. Only needed to submit (`hunt`); discover/settle-only and `dry-run` work without it |
 | `VERDIKTA_MAX_SPEND_ETH` | repo var | `0.0005` | **Hard client-side cap** on the ETH value of any single transaction the postprocess script will sign, regardless of what the API returns |
-| `VERDIKTA_MAX_SUBMISSIONS_PER_DAY` | repo var | `2` | Daily cap on new submissions (tracked in `memory/state/verdikta-hunter.json`) |
+| `VERDIKTA_MAX_SUBMISSIONS_PER_DAY` | repo var | `5` | Daily cap on new submissions (tracked in `memory/state/verdikta-hunter.json`) |
 | `VERDIKTA_RPC_URL` | repo var | `https://mainnet.base.org` | Base JSON-RPC endpoint |
 
 ### Fund safety — read before enabling

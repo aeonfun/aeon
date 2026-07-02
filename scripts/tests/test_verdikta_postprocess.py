@@ -1,0 +1,218 @@
+#!/usr/bin/env python3
+"""Unit tests for the fund-safety envelope in scripts/postprocess-verdikta.sh.
+
+Run: python3 scripts/tests/test_verdikta_postprocess.py
+
+The embedded Python helper is extracted from the shell script and exercised
+against a scripted fake bounty API + fake Base RPC. `eth_account` and
+`requests` are stubbed (stdlib-only — CI installs neither), signing returns
+inspectable fake bytes, and nothing touches the network. These tests pin the
+guarantees the skill's review hinged on:
+
+  - transactions are refused unless `to` == the pinned BountyEscrow contract
+    and chainId == 8453, and value <= VERDIKTA_MAX_SPEND_ETH
+  - the start value must equal the API's parsed.ethMaxBudget
+  - a cap refusal after the prepare tx leaves a PREPARED_INCOMPLETE state
+    entry so the next run cannot double-submit
+  - dry-run hits only /submit/dry-run: no RPC calls, no signing, no state
+  - the happy path calls bundle -> complete -> confirm in order, broadcasts
+    exactly two txs, and records state + daily spend count
+"""
+import json
+import os
+import re
+import sys
+import tempfile
+import types
+import unittest
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+SCRIPT = ROOT / "scripts" / "postprocess-verdikta.sh"
+
+ESCROW = "0x2Ae271f5E86bee449a36B943414b7C1a7b39772D"
+PREPAY_OK = 240_000_000_000_000    # 0.00024 ETH — realistic worst-case prepay
+PREPAY_OVER = 600_000_000_000_000  # 0.0006 ETH — over the 0.0005 default cap
+
+
+# ── stub third-party deps before the helper loads ─────────────────────
+def _no_net(*a, **k):
+    raise AssertionError("network reached without a stub")
+
+
+fake_requests = types.ModuleType("requests")
+fake_requests.request = _no_net
+fake_requests.post = _no_net
+sys.modules["requests"] = fake_requests
+
+
+class _FakeSigned:
+    def __init__(self, payload):
+        self.raw_transaction = b"\x02" + payload
+
+
+class _FakeAccount:
+    address = "0x00000000000000000000000000000000DeaDBeef"
+    key = b"\x01" * 32
+
+    @staticmethod
+    def sign_transaction(tx, key):
+        # encode the tx dict so tests can decode exactly what was signed
+        return _FakeSigned(json.dumps({k: str(v) for k, v in tx.items()}).encode())
+
+    @staticmethod
+    def from_key(_):
+        return _FakeAccount()
+
+
+fake_eth = types.ModuleType("eth_account")
+fake_eth.Account = _FakeAccount
+sys.modules["eth_account"] = fake_eth
+
+os.environ.update({
+    "VERDIKTA_API_KEY": "test-key-not-real",
+    "VERDIKTA_RPC_URL": "http://fake-rpc.invalid",
+    "VERDIKTA_MAX_SPEND_ETH": "0.0005",
+    "VERDIKTA_MAX_GAS_GWEI": "3",
+})
+
+_match = re.search(r"<<'PYEOF'\n(.*?)\nPYEOF", SCRIPT.read_text(), re.S)
+helper = types.ModuleType("vk_helper")
+exec(compile(_match.group(1), str(SCRIPT) + " <embedded helper>", "exec"), helper.__dict__)
+
+
+class FakeBackend:
+    """Scripted bounty API + Base JSON-RPC."""
+
+    def __init__(self, prepay=PREPAY_OK, escrow=ESCROW, chain_id=8453, start_value=None):
+        self.prepay, self.escrow, self.chain_id = prepay, escrow, chain_id
+        self.start_value = prepay if start_value is None else start_value
+        self.api_calls, self.rpc_calls, self.sent_raw = [], [], []
+
+    def api(self, method, path, **kw):
+        self.api_calls.append(path)
+        if path.endswith("/submit/dry-run"):
+            return {"success": True}
+        if path.endswith("/submit/bundle"):
+            return {"hunterCid": "QmTest", "transactions": [
+                {"to": self.escrow, "data": "0xab", "value": "0",
+                 "chainId": self.chain_id, "gasLimit": 1000000}]}
+        if path.endswith("/submit/bundle/complete"):
+            return {"parsed": {"submissionId": 7, "evalWallet": "0x" + "11" * 20,
+                               "ethMaxBudget": str(self.prepay)},
+                    "transactions": [
+                        {"to": self.escrow, "data": "0xcd", "value": str(self.start_value),
+                         "chainId": self.chain_id, "gasLimit": 4000000}]}
+        if path.endswith("/submissions/confirm"):
+            return {"success": True}
+        if path.endswith("/finalize"):
+            return {"transaction": {"to": self.escrow, "data": "0xef", "value": "0",
+                                    "chainId": self.chain_id, "gasLimit": 300000}}
+        raise AssertionError(f"unexpected API call {method} {path}")
+
+    def rpc(self, method, params):
+        self.rpc_calls.append(method)
+        return {
+            "eth_gasPrice": hex(10_000_000),
+            "eth_getBalance": hex(5_000_000_000_000_000),
+            "eth_getTransactionCount": hex(len(self.sent_raw)),
+            "eth_getTransactionReceipt": {"status": "0x1"},
+        }.get(method) or self._send(params)
+
+    def _send(self, params):
+        self.sent_raw.append(params[0])
+        return "0x" + f"{len(self.sent_raw):064x}"
+
+    def signed_tx(self, i):
+        """Decode what sign_transaction actually received for broadcast i."""
+        return json.loads(bytes.fromhex(self.sent_raw[i][2:])[1:].decode())
+
+
+def make_request(dry_run=False):
+    files_dir = Path(".pending-verdikta/files/97")
+    files_dir.mkdir(parents=True, exist_ok=True)
+    (files_dir / "report.md").write_text("# test\n")
+    return {"action": "submit", "jobId": 97, "files": ["report.md"], "dryRun": dry_run}
+
+
+class VerdiktaGuardTests(unittest.TestCase):
+    def setUp(self):
+        self._old_cwd = os.getcwd()
+        self._tmp = tempfile.TemporaryDirectory()
+        os.chdir(self._tmp.name)
+        self.acct = _FakeAccount()
+
+    def tearDown(self):
+        os.chdir(self._old_cwd)
+        self._tmp.cleanup()
+
+    def _install(self, backend):
+        helper.api, helper.rpc = backend.api, backend.rpc
+        return backend
+
+    def _state(self):
+        return json.loads(Path("memory/state/verdikta-hunter.json").read_text())
+
+    def test_happy_path(self):
+        be = self._install(FakeBackend())
+        helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(be.api_calls, ["/jobs/97/submit/bundle",
+                                        "/jobs/97/submit/bundle/complete",
+                                        "/jobs/97/submissions/confirm"])
+        self.assertEqual(len(be.sent_raw), 2)
+        start = be.signed_tx(1)
+        self.assertEqual(start["to"].lower(), ESCROW.lower())
+        self.assertEqual(int(start["value"]), PREPAY_OK)
+        self.assertEqual(int(start["chainId"]), 8453)
+        state = self._state()
+        self.assertEqual(state["submissions"]["97:7"]["status"], "PENDING_EVALUATION")
+        self.assertNotIn("97:?", state["submissions"])
+        self.assertEqual(sum(state["daily"].values()), 1)
+
+    def test_overcap_prepay_refused_after_prepare(self):
+        be = self._install(FakeBackend(prepay=PREPAY_OVER))
+        with self.assertRaises(helper.CapRefused):
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(len(be.sent_raw), 1)  # prepare only — start never signed
+        self.assertNotIn("/jobs/97/submissions/confirm", be.api_calls)
+        # provisional entry must survive so the next run can't double-submit
+        self.assertEqual(self._state()["submissions"]["97:?"]["status"],
+                         "PREPARED_INCOMPLETE")
+
+    def test_wrong_destination_refused_before_any_tx(self):
+        be = self._install(FakeBackend(escrow="0x" + "99" * 20))
+        with self.assertRaises(helper.CapRefused):
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(be.sent_raw, [])
+
+    def test_wrong_chain_refused_before_any_tx(self):
+        be = self._install(FakeBackend(chain_id=1))
+        with self.assertRaises(helper.CapRefused):
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(be.sent_raw, [])
+
+    def test_start_value_must_match_parsed_budget(self):
+        be = self._install(FakeBackend(start_value=PREPAY_OK + 1))
+        with self.assertRaises(helper.CapRefused):
+            helper.do_submit(make_request(), self.acct, Path(".pending-verdikta"))
+        self.assertEqual(len(be.sent_raw), 1)  # prepare only
+
+    def test_dry_run_touches_nothing(self):
+        be = self._install(FakeBackend())
+        helper.do_submit(make_request(dry_run=True), None, Path(".pending-verdikta"))
+        self.assertEqual(be.api_calls, ["/jobs/97/submit/dry-run"])
+        self.assertEqual(be.rpc_calls, [])
+        self.assertFalse(Path("memory/state/verdikta-hunter.json").exists())
+
+    def test_finalize(self):
+        be = self._install(FakeBackend())
+        helper.do_finalize({"action": "finalize", "jobId": 97, "submissionId": 7},
+                           self.acct)
+        self.assertEqual(be.api_calls, ["/jobs/97/submissions/7/finalize"])
+        self.assertEqual(len(be.sent_raw), 1)
+        self.assertEqual(int(be.signed_tx(0)["value"]), 0)
+        self.assertEqual(self._state()["submissions"]["97:7"]["status"], "FINALIZED")
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

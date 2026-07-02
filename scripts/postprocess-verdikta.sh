@@ -11,7 +11,7 @@
 #     chainId != 8453 (Base)
 #   - never signs a tx whose value exceeds VERDIKTA_MAX_SPEND_ETH (default 0.0005)
 #   - at most ONE new submission per run; VERDIKTA_MAX_SUBMISSIONS_PER_DAY per
-#     UTC day (default 2), tracked in memory/state/verdikta-hunter.json
+#     UTC day (default 5), tracked in memory/state/verdikta-hunter.json
 #   - balance preflight (value + gas) before every tx; receipts checked for revert
 set -euo pipefail
 
@@ -31,7 +31,7 @@ fi
 export VERDIKTA_MAX_SPEND_ETH="${VERDIKTA_MAX_SPEND_ETH:-0.0005}"
 export VERDIKTA_MAX_GAS_GWEI="${VERDIKTA_MAX_GAS_GWEI:-3}"
 export VERDIKTA_RPC_URL="${VERDIKTA_RPC_URL:-https://mainnet.base.org}"
-MAX_PER_DAY="${VERDIKTA_MAX_SUBMISSIONS_PER_DAY:-2}"
+MAX_PER_DAY="${VERDIKTA_MAX_SUBMISSIONS_PER_DAY:-5}"
 TODAY=$(date -u +%Y-%m-%d)
 
 python3 -c "import eth_account, requests" 2>/dev/null || {
