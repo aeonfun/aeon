@@ -15,6 +15,11 @@ export const GATEWAY_REGISTRY = {
   usepod: { label: 'UsePod', secretName: 'USEPOD_TOKEN', prefixes: [], domain: 'usepod.ai' },
   venice: { label: 'Venice', secretName: 'VENICE_API_KEY', prefixes: [], domain: 'venice.ai' },
   surplus: { label: 'Surplus Intelligence', secretName: 'SURPLUS_API_KEY', prefixes: ['inf_'], domain: 'surplusintelligence.ai' },
+  // Grok (xAI) as a GATEWAY: Claude Code routed at xAI's Anthropic-compatible
+  // api.x.ai. Reuses the XAI_API_KEY secret (xAI keys are prefixed `xai-`). This
+  // is separate from the grok CLI *harness* (harness: grok), which runs the grok
+  // binary itself — see lib/config.ts Harness + scripts/run-grok.sh.
+  grok: { label: 'Grok (xAI)', secretName: 'XAI_API_KEY', prefixes: ['xai-'], domain: 'x.ai' },
 } as const
 
 export type GatewaySlug = keyof typeof GATEWAY_REGISTRY

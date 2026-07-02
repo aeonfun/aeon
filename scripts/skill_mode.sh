@@ -17,6 +17,9 @@
 # Usage:
 #   scripts/skill_mode.sh mode <skill-name>     -> prints read-only | write
 #   scripts/skill_mode.sh allowed-tools <mode>  -> prints the --allowedTools string
+#   scripts/skill_mode.sh grok-args <mode>      -> prints grok CLI permission flags,
+#                                                  one argv token per line (for the
+#                                                  Grok Build harness; see run-grok.sh)
 set -euo pipefail
 
 # Tools every tier gets: read, search, notify, and read-only/local shell helpers.
@@ -59,6 +62,46 @@ resolve_mode() {
 # Write tier = base tools + the repo-mutation tools.
 write_tools() { echo "$BASE_TOOLS,$WRITE_TOOLS"; }
 
+# --- Grok Build harness permission mapping ----------------------------------
+# The grok CLI uses a DIFFERENT permission grammar from Claude Code's
+# --allowedTools: `--permission-mode dontAsk` (silently deny anything not
+# explicitly allowed — the exact analogue of Claude's `-p` allowlist) plus
+# `--allow`/`--deny` rules over categories Bash/Edit/Read/Grep/MCPTool/WebFetch.
+# Bash rules use a space-glob — `Bash(git *)` — not Claude's colon `Bash(git:*)`.
+#
+# We mirror the SAME capability intent as BASE_TOOLS / WRITE_TOOLS above, so a
+# skill behaves identically on either harness: read-only gets no Edit and no
+# git/gh/python; write adds them. read-only additionally runs under grok's
+# `--sandbox read-only` profile as defense-in-depth (matches the post-run guard).
+#
+# Output: one argv token per line, so run-grok.sh can read it with
+#   mapfile -t GROK_ARGS < <(skill_mode.sh grok-args "$MODE")
+# and pass "${GROK_ARGS[@]}" straight through (a Bash rule's embedded space is
+# preserved because each whole line becomes one array element).
+
+# Bash command globs allowed on every tier (mirror BASE_TOOLS' Bash(...:*) set).
+GROK_BASE_BASH="curl jq ./notify ./notify-jsonrender mkdir ls cat chmod date echo node npm npx head tail wc sort grep"
+# Additional Bash command globs for the write tier (mirror WRITE_TOOLS).
+GROK_WRITE_BASH="gh git python3 python"
+
+grok_args() {
+  local mode="$1"
+  # Non-listed tools are auto-denied by dontAsk — the allowlist is exhaustive.
+  printf '%s\n' --permission-mode dontAsk
+  if [ "$mode" = "read-only" ]; then
+    printf '%s\n' --sandbox read-only
+  fi
+  # Always-allowed read/search categories (grok auto-approves read_file/grep/
+  # web_search too, but being explicit is harmless and self-documenting).
+  printf '%s\n' --allow Read --allow Grep --allow WebFetch
+  local cmd
+  for cmd in $GROK_BASE_BASH; do printf '%s\n' --allow "Bash($cmd *)"; done
+  if [ "$mode" != "read-only" ]; then
+    printf '%s\n' --allow Edit
+    for cmd in $GROK_WRITE_BASH; do printf '%s\n' --allow "Bash($cmd *)"; done
+  fi
+}
+
 case "${1:-}" in
   mode)          resolve_mode "${2:?skill name required}" ;;
   allowed-tools)
@@ -66,5 +109,10 @@ case "${1:-}" in
       read-only|readonly|read_only) echo "$BASE_TOOLS" ;;
       *)                            write_tools ;;
     esac ;;
-  *) echo "usage: skill_mode.sh {mode <skill>|allowed-tools <mode>}" >&2; exit 2 ;;
+  grok-args)
+    case "${2:-write}" in
+      read-only|readonly|read_only) grok_args read-only ;;
+      *)                            grok_args write ;;
+    esac ;;
+  *) echo "usage: skill_mode.sh {mode <skill>|allowed-tools <mode>|grok-args <mode>}" >&2; exit 2 ;;
 esac

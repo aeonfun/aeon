@@ -9,12 +9,31 @@ export const MODELS = [
   { id: 'claude-haiku-4-5-20251001', label: 'Haiku 4.5' },
 ]
 
+// Models offered when the Grok Build (`grok`) harness is selected. Grok also
+// accepts custom OpenAI-compatible models via ~/.grok/config.toml, but these are
+// the first-party coding models surfaced in the picker.
+export const GROK_MODELS = [
+  { id: 'grok-build-0.1', label: 'Grok Build 0.1' },
+]
+
+// Harnesses (agent CLIs). `claude` = Claude Code (default, uses the AI Gateway);
+// `grok` = Grok Build (own X-account/API-key auth, own model list above).
+export const HARNESSES = [
+  { id: 'claude', label: 'Claude Code' },
+  { id: 'grok', label: 'Grok Build' },
+] as const
+
+export function modelsForHarness(harness: string) {
+  return harness === 'grok' ? GROK_MODELS : MODELS
+}
+
 // Secret names that authenticate Aeon's model access: Claude's own credentials
-// (OAuth token or Anthropic key) plus the gateway-provider keys that route
-// Claude through a third party. Setting any one means the agent can run, so the
-// top-bar "Auth" call-to-action hides once at least one is present. The client
-// derives auth state from /api/secrets by testing membership in this list.
-export const AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', ...GATEWAY_SECRET_NAMES]
+// (OAuth token or Anthropic key), the gateway-provider keys that route Claude
+// through a third party (incl. XAI_API_KEY via the grok gateway), and the grok
+// harness's X-account OAuth session (GROK_CREDENTIALS). Setting any one means the
+// agent can run, so the top-bar "Auth" call-to-action hides once at least one is
+// present. The client derives auth state from /api/secrets by testing membership.
+export const AUTH_SECRETS = ['CLAUDE_CODE_OAUTH_TOKEN', 'ANTHROPIC_API_KEY', 'GROK_CREDENTIALS', ...GATEWAY_SECRET_NAMES]
 
 export const DAYS = [
   { label: 'All', value: -1 }, { label: 'Mon', value: 1 }, { label: 'Tue', value: 2 },

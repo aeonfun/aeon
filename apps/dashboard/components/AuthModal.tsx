@@ -5,7 +5,8 @@ import { inputCls } from '../lib/utils'
 
 // Key providers selectable in the picker. Anthropic submits no provider, so
 // the backend still prefix-detects (Anthropic-compatible keys, OAuth tokens);
-// every gateway is selected explicitly.
+// every gateway is selected explicitly. `grok` here is the GATEWAY path (Claude
+// Code → xAI); the grok CLI *harness* is connected via "Connect X account" below.
 const PROVIDER_OPTIONS = [
   { value: '', label: 'Anthropic (or compatible)' },
   { value: 'bankr', label: 'Bankr' },
@@ -13,15 +14,20 @@ const PROVIDER_OPTIONS = [
   { value: 'usepod', label: 'UsePod' },
   { value: 'venice', label: 'Venice' },
   { value: 'surplus', label: 'Surplus Intelligence' },
+  { value: 'grok', label: 'Grok (xAI) — gateway' },
 ]
 
 interface AuthModalProps {
   loading: boolean
+  grokLoading?: boolean
   onClose: () => void
   onAuth: (payload?: { key: string, baseUrl?: string, provider?: string }) => void
+  // Connect the grok harness: no arg captures the local X-account OAuth session
+  // (GROK_CREDENTIALS); a key stores it as XAI_API_KEY.
+  onGrokAuth: (payload?: { key: string }) => void
 }
 
-export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
+export function AuthModal({ loading, grokLoading, onClose, onAuth, onGrokAuth }: AuthModalProps) {
   const [authKey, setAuthKey] = useState('')
   const [provider, setProvider] = useState('')
   const submit = () => authKey.trim() && onAuth({ key: authKey.trim(), ...(provider ? { provider } : {}) })
@@ -47,6 +53,14 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
         </select>
         <input type="password" value={authKey} onChange={(e) => setAuthKey(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && submit()} placeholder="API key" className={`${inputCls} mb-[var(--space-md)]`} />
         <button onClick={submit} disabled={!authKey.trim() || loading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">{loading ? '...' : 'Save API Key'}</button>
+
+        <div className="my-[var(--space-md)] border-t border-[rgba(250,250,250,0.10)]" />
+        <p className="text-xs text-primary-50 font-mono mb-[var(--space-sm)]">
+          <span className="text-eva-orange">Grok Build harness</span> — run skills with the grok CLI on your X account. First run <code className="text-primary-70">grok login --device-auth</code> in a terminal, then connect to capture the session for CI.
+        </p>
+        <button onClick={() => onGrokAuth()} disabled={grokLoading} className="w-full bg-aeon-panel text-aeon-fg border border-[rgba(250,250,250,0.14)] text-sm py-3 font-mono uppercase tracking-[2px] hover:border-eva-orange transition-colors disabled:opacity-50">
+          {grokLoading ? '...' : 'Connect X account'}
+        </button>
       </div>
     </div>
   )

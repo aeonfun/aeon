@@ -3,6 +3,8 @@
 # Enable skills by setting enabled: true. Multiple skills at the same time run in parallel.
 # Set var: "value" to pass a default parameter to the skill.
 # Set model: "claude-sonnet-4-6" per skill to override the default model (cost optimization).
+# Set harness: "grok" per skill to run it through the Grok Build CLI instead of the
+# default Claude Code harness (see the top-level `harness:` key below).
 
 skills:
   # --- Morning aggregation (7 AM UTC) ---
@@ -291,17 +293,30 @@ chains:
 
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-5, claude-sonnet-4-6, claude-haiku-4-5-20251001
+# (Grok Build harness models: grok-build-0.1)
 model: claude-sonnet-4-6
+
+# Agent harness — which coding-agent CLI runs your skills.
+#   claude (default) — Claude Code (`claude -p`); uses the AI Gateway below.
+#   grok             — Grok Build (`grok`); logs in with your X account
+#                      (GROK_CREDENTIALS, captured in the dashboard) or an
+#                      XAI_API_KEY. Bypasses the gateway (grok has its own auth).
+# Override per-skill with `harness: "grok"` in the skill entry, or per-run via
+# the workflow_dispatch `harness` input. Default stays claude — everything
+# already configured keeps working unchanged.
+harness: claude
 
 # AI Gateway — route Claude Code requests through an LLM provider.
 #
 # provider: auto (default) resolves at RUN TIME from whichever provider secret
 # is set, in priority order — no need to re-pin when you add/remove a key:
 #   claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
-#   openrouter → bankr → usepod → venice → surplus → direct (fallback)
+#   openrouter → bankr → usepod → venice → surplus → grok → direct (fallback)
 # Override the order with the repo variable GATEWAY_ORDER (space-separated).
 #
-# Or PIN one explicitly: direct | bankr | openrouter | usepod | venice | surplus.
+# Or PIN one explicitly: direct | bankr | openrouter | usepod | venice | surplus | grok.
+# grok routes Claude Code at xAI's Anthropic-compatible api.x.ai (XAI_API_KEY) —
+# this is the gateway path; to run the grok CLI itself, set `harness: grok` above.
 # For Anthropic-compatible endpoints (direct), set repo variable ANTHROPIC_BASE_URL
 # + secret ANTHROPIC_API_KEY. Example: https://api.deepseek.com/anthropic
 # Bankr docs: https://docs.bankr.bot/llm-gateway/overview

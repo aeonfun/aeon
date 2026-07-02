@@ -44,6 +44,31 @@ echo "$RT" | grep -q "Read" && echo "$RT" | grep -q "WebFetch" \
   && echo "$RT" | grep -q "Bash(curl:\*)" && echo "$RT" | grep -q "Bash(./notify:\*)" \
   && pass "read-only tier keeps read/web/curl/notify" || bad "read-only tier keeps read/web/curl/notify"
 
+# grok-args: write tier maps to grok grammar with mutation tools + dontAsk
+# (-F fixed-string for the Bash(cmd *) tokens — the literal * is not a regex here)
+GW=$(bash "$M" grok-args write)
+echo "$GW" | grep -qx -- "--permission-mode" && echo "$GW" | grep -qx "dontAsk" \
+  && echo "$GW" | grep -qx "Edit" && echo "$GW" | grep -Fqx "Bash(git *)" \
+  && echo "$GW" | grep -Fqx "Bash(gh *)" \
+  && pass "grok write tier: dontAsk + Edit/git/gh (space-glob)" || bad "grok write tier: dontAsk + Edit/git/gh"
+# grok write must NOT be sandboxed read-only
+if echo "$GW" | grep -qx -- "--sandbox"; then bad "grok write tier must not set --sandbox"; else pass "grok write tier has no --sandbox"; fi
+
+# grok-args: read-only tier is sandboxed and drops Edit/git/gh
+GR=$(bash "$M" grok-args read-only)
+echo "$GR" | grep -qx -- "--sandbox" && echo "$GR" | grep -qx "read-only" \
+  && pass "grok read-only tier sets --sandbox read-only" || bad "grok read-only tier sets --sandbox read-only"
+if echo "$GR" | grep -qx "Edit" || echo "$GR" | grep -Fqx "Bash(git *)" || echo "$GR" | grep -Fqx "Bash(gh *)"; then
+  bad "grok read-only tier drops Edit/git/gh"
+else
+  pass "grok read-only tier drops Edit/git/gh"
+fi
+echo "$GR" | grep -qx "Read" && echo "$GR" | grep -Fqx "Bash(curl *)" && echo "$GR" | grep -Fqx "Bash(./notify *)" \
+  && pass "grok read-only tier keeps Read/curl/notify" || bad "grok read-only tier keeps Read/curl/notify"
+# unknown mode → write tier (no sandbox)
+GB=$(bash "$M" grok-args banana)
+if echo "$GB" | grep -qx -- "--sandbox"; then bad "grok unknown mode falls back to write (no sandbox)"; else pass "grok unknown mode falls back to write"; fi
+
 echo "---"
 [ "$fail" = "0" ] && echo "ALL PASS" || echo "SOME FAILED"
 exit "$fail"

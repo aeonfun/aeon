@@ -1,12 +1,13 @@
 import { parseDocument, isMap, isPair, isScalar } from 'yaml'
-import { GATEWAY_PROVIDERS } from './types'
-import type { GatewayProvider } from './types'
+import { GATEWAY_PROVIDERS, HARNESSES } from './types'
+import type { GatewayProvider, Harness } from './types'
 
 export interface SkillConfig {
   enabled: boolean
   schedule: string
   var: string
   model: string
+  harness: string
 }
 
 interface GatewayConfig {
@@ -16,6 +17,7 @@ interface GatewayConfig {
 export interface AeonConfig {
   skills: Record<string, SkillConfig>
   model: string
+  harness: Harness
   gateway: GatewayConfig
   jsonrenderEnabled: boolean
 }
@@ -39,12 +41,15 @@ export function parseConfig(raw: string): AeonConfig {
           schedule: String(getMapValue(val, 'schedule') ?? ''),
           var: String(getMapValue(val, 'var') ?? ''),
           model: String(getMapValue(val, 'model') ?? ''),
+          harness: String(getMapValue(val, 'harness') ?? ''),
         }
       }
     }
   }
 
   const model = String(doc.get('model') ?? 'claude-sonnet-4-6')
+  const harnessRaw = String(doc.get('harness') ?? 'claude')
+  const harness: Harness = HARNESSES.includes(harnessRaw as Harness) ? (harnessRaw as Harness) : 'claude'
 
   let gateway: GatewayConfig = { provider: 'auto' }
   const gatewayNode = doc.get('gateway')
@@ -62,7 +67,7 @@ export function parseConfig(raw: string): AeonConfig {
     }
   }
 
-  return { skills, model, gateway, jsonrenderEnabled }
+  return { skills, model, harness, gateway, jsonrenderEnabled }
 }
 
 /**
@@ -100,6 +105,15 @@ export function updateSkillInConfig(
       skillNode.delete('model')
     }
   }
+  if (typeof updates.harness === 'string') {
+    // Only `grok` is worth pinning per-skill; anything else (incl. 'claude')
+    // clears the override so the skill inherits the top-level default.
+    if (updates.harness === 'grok') {
+      skillNode.set('harness', updates.harness)
+    } else {
+      skillNode.delete('harness')
+    }
+  }
 
   return doc.toString()
 }
@@ -110,6 +124,15 @@ export function updateSkillInConfig(
 export function updateModelInConfig(raw: string, model: string): string {
   const doc = parseDocument(raw)
   doc.set('model', model)
+  return doc.toString()
+}
+
+/**
+ * Update the top-level agent harness (claude | grok).
+ */
+export function updateHarnessInConfig(raw: string, harness: Harness): string {
+  const doc = parseDocument(raw)
+  doc.set('harness', harness)
   return doc.toString()
 }
 

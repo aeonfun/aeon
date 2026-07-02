@@ -1,5 +1,5 @@
-import type { Skill, GatewayProvider } from '../lib/types'
-import { MODELS, PACK_BY_KEY } from '../lib/constants'
+import type { Skill, GatewayProvider, Harness } from '../lib/types'
+import { PACK_BY_KEY, HARNESSES, modelsForHarness } from '../lib/constants'
 import { displayName } from '../lib/utils'
 
 interface TopBarProps {
@@ -7,6 +7,7 @@ interface TopBarProps {
   view: 'hq' | 'packs' | 'secrets' | 'strategy' | 'mcp' | 'soul'
   repo: string
   model: string
+  harness: Harness
   gateway: GatewayProvider
   hasModelKey: boolean
   authLoading: boolean
@@ -16,13 +17,14 @@ interface TopBarProps {
   behind: number
   onSetupAuth: () => void
   onUpdateModel: (m: string) => void
+  onUpdateHarness: (h: string) => void
   onPull: () => void
   onSync: () => void
 }
 
-export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onPull, onSync }: TopBarProps) {
+export function TopBar({ skill, view, repo, model, harness, gateway, hasModelKey, authLoading, pulling, syncing, hasChanges, behind, onSetupAuth, onUpdateModel, onUpdateHarness, onPull, onSync }: TopBarProps) {
   const dept = skill ? (PACK_BY_KEY[skill.pack || 'lab'] || null) : null
-  const modelOptions = MODELS
+  const modelOptions = modelsForHarness(harness)
 
   return (
     <div className="h-14 border-b border-[rgba(250,250,250,0.10)] flex items-center justify-between px-5 shrink-0 bg-aeon-bg">
@@ -40,7 +42,7 @@ export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoa
         )}
       </div>
       <div className="flex items-center gap-2">
-        {gateway !== 'direct' && gateway !== 'auto' && (
+        {harness !== 'grok' && gateway !== 'direct' && gateway !== 'auto' && (
           <span className="text-[10px] font-mono px-2 py-0.5 bg-aeon-red/10 text-eva-orange uppercase tracking-[0.18em] border border-aeon-red/30">{gateway}</span>
         )}
         {!hasModelKey && (
@@ -48,6 +50,16 @@ export function TopBar({ skill, view, repo, model, gateway, hasModelKey, authLoa
             {authLoading ? '…' : 'Auth'}
           </button>
         )}
+        <select
+          value={harness}
+          onChange={(e) => onUpdateHarness(e.target.value)}
+          title="Agent harness"
+          className="bg-aeon-panel text-primary-70 text-[11px] font-mono uppercase tracking-[0.14em] px-3 h-[32px] border border-[rgba(250,250,250,0.10)] outline-none cursor-pointer hover:border-[rgba(250,250,250,0.22)] transition-colors"
+        >
+          {HARNESSES.map((h) => (
+            <option key={h.id} value={h.id} className="bg-aeon-panel text-aeon-fg">{h.label}</option>
+          ))}
+        </select>
         <select
           value={model}
           onChange={(e) => onUpdateModel(e.target.value)}

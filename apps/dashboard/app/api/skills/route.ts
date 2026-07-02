@@ -7,9 +7,12 @@ import {
   parseConfig,
   updateSkillInConfig,
   updateModelInConfig,
+  updateHarnessInConfig,
   updateJsonrenderInConfig,
   removeSkillFromConfig,
 } from '@/lib/config'
+import { HARNESSES } from '@/lib/types'
+import type { Harness } from '@/lib/types'
 import { deleteDirectory } from '@/lib/github'
 import type { CommitResult } from '@/lib/github'
 import { parseFrontmatter } from '@/lib/frontmatter'
@@ -86,10 +89,11 @@ export async function GET() {
         schedule: config.skills[m.name]?.schedule || '0 12 * * *',
         var: config.skills[m.name]?.var || '',
         model: config.skills[m.name]?.model || '',
+        harness: config.skills[m.name]?.harness || '',
       }))
 
     const repo = getRepoSlug()
-    return NextResponse.json({ skills, model: config.model, gateway: config.gateway, repo, jsonrenderEnabled: config.jsonrenderEnabled })
+    return NextResponse.json({ skills, model: config.model, harness: config.harness, gateway: config.gateway, repo, jsonrenderEnabled: config.jsonrenderEnabled })
   } catch (error: unknown) {
     return errorResponse(error, 'Unknown error')
   }
@@ -97,7 +101,7 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const { name, enabled, schedule, var: skillVar, model, skillModel, jsonrenderEnabled } = await request.json() as { name?: string; enabled?: boolean; schedule?: string; var?: string; model?: string; skillModel?: string; jsonrenderEnabled?: boolean }
+    const { name, enabled, schedule, var: skillVar, model, skillModel, harness, skillHarness, jsonrenderEnabled } = await request.json() as { name?: string; enabled?: boolean; schedule?: string; var?: string; model?: string; skillModel?: string; harness?: string; skillHarness?: string; jsonrenderEnabled?: boolean }
     const { content, sha } = await getFileContent('aeon.yml')
     let updated = content
 
@@ -109,12 +113,18 @@ export async function PATCH(request: Request) {
       updated = updateModelInConfig(updated, model)
     }
 
-    if (name && (typeof enabled === 'boolean' || typeof schedule === 'string' || typeof skillVar === 'string' || typeof skillModel === 'string')) {
+    // Top-level harness switch (claude | grok). Ignore unknown values.
+    if (typeof harness === 'string' && HARNESSES.includes(harness as Harness)) {
+      updated = updateHarnessInConfig(updated, harness as Harness)
+    }
+
+    if (name && (typeof enabled === 'boolean' || typeof schedule === 'string' || typeof skillVar === 'string' || typeof skillModel === 'string' || typeof skillHarness === 'string')) {
       updated = updateSkillInConfig(updated, name, {
         ...(typeof enabled === 'boolean' ? { enabled } : {}),
         ...(typeof schedule === 'string' && schedule ? { schedule } : {}),
         ...(typeof skillVar === 'string' ? { var: skillVar } : {}),
         ...(typeof skillModel === 'string' ? { model: skillModel } : {}),
+        ...(typeof skillHarness === 'string' ? { harness: skillHarness } : {}),
       })
     }
 
@@ -122,9 +132,11 @@ export async function PATCH(request: Request) {
     if (updated !== content) {
       const msg = model
         ? `chore: set model to ${model}`
-        : typeof jsonrenderEnabled === 'boolean'
-          ? `chore: ${jsonrenderEnabled ? 'enable' : 'disable'} json-render channel`
-          : `chore: update ${name} config`
+        : harness
+          ? `chore: set harness to ${harness}`
+          : typeof jsonrenderEnabled === 'boolean'
+            ? `chore: ${jsonrenderEnabled ? 'enable' : 'disable'} json-render channel`
+            : `chore: update ${name} config`
       await updateFile('aeon.yml', updated, sha, msg)
       sync = commitAndPush(['aeon.yml'], msg)
     }

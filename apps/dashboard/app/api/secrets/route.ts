@@ -14,6 +14,7 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'USEPOD_TOKEN', group: 'Core', description: "UsePod proxy token - routes Claude through UsePod's gateway (token embedded in the base URL). Get one at usepod.ai" },
   { name: 'VENICE_API_KEY', group: 'Core', description: 'Venice API key - routes Claude through api.venice.ai via a local translator. Create at venice.ai/settings/api' },
   { name: 'SURPLUS_API_KEY', group: 'Core', description: 'Surplus Intelligence API key (inf_...) - routes Claude through surplusintelligence.ai via a local translator' },
+  { name: 'GROK_CREDENTIALS', group: 'Core', description: 'Grok Build (grok CLI) X-account OAuth session - base64 of your ~/.grok login, captured by "Connect X account" in AUTH. Lets the grok harness (harness: grok) run in CI on your SuperGrok / X Premium+ entitlement. Alternative: set XAI_API_KEY instead.' },
   { name: 'TELEGRAM_BOT_TOKEN', group: 'Telegram', description: 'Bot token from @BotFather' },
   { name: 'TELEGRAM_CHAT_ID', group: 'Telegram', description: 'Your chat ID' },
   { name: 'DISCORD_BOT_TOKEN', group: 'Discord', description: 'Discord bot token' },
@@ -27,7 +28,7 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   // Skill Keys - third-party API keys individual skills call. Each is opt-in:
   // unset means the skills that need it skip rather than fail. Names below are
   // the exact env vars referenced across skills/ (verified by global scan).
-  { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI / Grok API key - tweet & X-analysis skills. Create at console.x.ai' },
+  { name: 'XAI_API_KEY', group: 'Skill Keys', description: 'xAI / Grok API key (xai-...) - triple-duty: (1) tweet & X-analysis skills, (2) the Grok gateway (routes Claude Code at api.x.ai), (3) API-key auth for the grok harness. Create at console.x.ai' },
   { name: 'COINGECKO_API_KEY', group: 'Skill Keys', description: 'CoinGecko API key - crypto price/market skills. Get one at coingecko.com/en/api' },
   { name: 'ALCHEMY_API_KEY', group: 'Skill Keys', description: 'Alchemy API key - on-chain RPC/data skills. Create at dashboard.alchemy.com' },
   { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key - on-chain skills (tx-explain, rug-scan, holder-concentration); lifts rate limits. Get one at etherscan.io/apis' },

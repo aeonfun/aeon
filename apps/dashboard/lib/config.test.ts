@@ -13,6 +13,7 @@ import {
   parseConfig,
   updateSkillInConfig,
   updateModelInConfig,
+  updateHarnessInConfig,
   updateGatewayInConfig,
   updateJsonrenderInConfig,
   removeSkillFromConfig,
@@ -171,6 +172,51 @@ describe("updateModelInConfig", () => {
     const updated = updateModelInConfig(FULL_YAML, "claude-haiku-4-5-20251001");
     const config = parseConfig(updated);
     assert.equal(config.model, "claude-haiku-4-5-20251001");
+  });
+});
+
+// ── harness (parse + update) ─────────────────────────────────────────
+
+describe("harness config", () => {
+  it("defaults harness to claude when absent", () => {
+    assert.equal(parseConfig(MINIMAL_YAML).harness, "claude");
+  });
+
+  it("parses an explicit grok harness", () => {
+    const yaml = `skills: {}\n\nharness: grok\n`;
+    assert.equal(parseConfig(yaml).harness, "grok");
+  });
+
+  it("falls back to claude for an unknown harness value", () => {
+    const yaml = `skills: {}\n\nharness: bogus\n`;
+    assert.equal(parseConfig(yaml).harness, "claude");
+  });
+
+  it("parses a per-skill harness override", () => {
+    const yaml = `skills:\n  digest: { enabled: true, schedule: "0 9 * * *", harness: "grok" }\n`;
+    assert.equal(parseConfig(yaml).skills["digest"].harness, "grok");
+  });
+
+  it("updateHarnessInConfig sets the top-level harness", () => {
+    const updated = updateHarnessInConfig(MINIMAL_YAML, "grok");
+    assert.equal(parseConfig(updated).harness, "grok");
+  });
+
+  it("updateHarnessInConfig flips back to claude", () => {
+    const grok = updateHarnessInConfig(MINIMAL_YAML, "grok");
+    const updated = updateHarnessInConfig(grok, "claude");
+    assert.equal(parseConfig(updated).harness, "claude");
+  });
+
+  it("updateSkillInConfig pins grok per-skill", () => {
+    const updated = updateSkillInConfig(MINIMAL_YAML, "heartbeat", { harness: "grok" });
+    assert.equal(parseConfig(updated).skills["heartbeat"].harness, "grok");
+  });
+
+  it("updateSkillInConfig clears the per-skill override when set to claude", () => {
+    const yaml = `skills:\n  heartbeat: { enabled: true, schedule: "0 12 * * *", harness: "grok" }\n`;
+    const updated = updateSkillInConfig(yaml, "heartbeat", { harness: "claude" });
+    assert.equal(parseConfig(updated).skills["heartbeat"].harness, "");
   });
 });
 

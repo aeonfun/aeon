@@ -378,18 +378,18 @@ The built-in `GITHUB_TOKEN` is scoped to this repo only. For `github-monitor`, `
   <img src="assets/providers.png" alt="Seven AI providers supported: Claude subscription, Anthropic API, OpenRouter, Bankr, UsePod, Venice, Surplus" width="640" />
 </p>
 
-Aeon can power Claude Code **seven** ways. Two are **direct** to Anthropic; the other five route through a **gateway**. You add a credential in the dashboard's Authenticate modal - paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below.
+Aeon can power Claude Code **eight** ways. Two are **direct** to Anthropic; the other six route through a **gateway**. You add a credential in the dashboard's Authenticate modal - paste it and the provider is detected from its prefix (or picked from the dropdown) and saved as the secret below. (Separately, the [Grok Build harness](#harnesses) runs the `grok` CLI instead of Claude Code — that's a different axis from the gateways here.)
 
 **Routing is automatic.** `aeon.yml` ships `gateway: { provider: auto }`, and each run resolves the live provider from *whichever secrets are set*, in priority order - so adding or removing a key changes routing with no re-config:
 
 ```
 claude (CLAUDE_CODE_OAUTH_TOKEN) → anthropic (ANTHROPIC_API_KEY) →
-openrouter → bankr → usepod → venice → surplus → direct (fallback)
+openrouter → bankr → usepod → venice → surplus → grok → direct (fallback)
 ```
 
 It runs as a **cascade**: the highest-priority provider whose key is set goes first, and on **any** failure (no credits, rate limit, outage, dud response) the run automatically falls over to the next provider whose key is set - so a dead provider degrades gracefully instead of failing the run, and it only errors out if *every* provider fails. The log prints `Routing attempt via '<provider>'` per hop (and `ran via fallback provider …` when it recovers).
 
-Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus` explicitly.
+Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated names), or pin a single provider (which disables failover) by setting `gateway.provider` to `direct`/`bankr`/`openrouter`/`usepod`/`venice`/`surplus`/`grok` explicitly.
 
 **Direct (`provider: direct`)** - the official Anthropic API, no middleman:
 
@@ -407,18 +407,49 @@ Override the order with the repo variable **`GATEWAY_ORDER`** (space-separated n
 | <img src="https://icons.duckduckgo.com/ip3/usepod.ai.ico" width="16" valign="middle"> [UsePod](https://usepod.ai) | `USEPOD_TOKEN` | Solana marketplace; token is embedded in the base URL, keep it secret |
 | <img src="https://icons.duckduckgo.com/ip3/venice.ai.ico" width="16" valign="middle"> [Venice](https://venice.ai) | `VENICE_API_KEY` | Privacy-first; OpenAI-compatible, bridged via a per-run [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar. Point it at any Venice-compatible endpoint with the `VENICE_BASE_URL` repo variable |
 | <img src="https://icons.duckduckgo.com/ip3/surplusintelligence.ai.ico" width="16" valign="middle"> [Surplus](https://surplusintelligence.ai) | `SURPLUS_API_KEY` | Routed via The Bridge; settles in USDC on Base - fund the wallet + `approve()` once before use |
+| <img src="https://icons.duckduckgo.com/ip3/x.ai.ico" width="16" valign="middle"> [Grok (xAI)](https://x.ai/api) | `XAI_API_KEY` | Anthropic-native passthrough to `api.x.ai` (`grok-build-0.1`); the `xai-…` key is auto-detected. Same key also powers the [grok harness](#harnesses) |
 
 #### Adding a gateway
 
-A gateway is wired through five files, all following the existing pattern - so copy an entry of the same **tier**. There are two: **native** (the provider already speaks the Anthropic API - just point `ANTHROPIC_BASE_URL` at it, like Bankr/OpenRouter/UsePod) and **sidecar** (OpenAI-compatible - bridged per run by a [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar, like Venice/Surplus).
+A gateway is wired through a handful of files, all following the existing pattern - so copy an entry of the same **tier**. There are two: **native** (the provider already speaks the Anthropic API - just point `ANTHROPIC_BASE_URL` at it, like Bankr/OpenRouter/UsePod/Grok) and **sidecar** (OpenAI-compatible - bridged per run by a [claude-code-router](https://github.com/musistudio/claude-code-router) sidecar, like Venice/Surplus).
 
-1. **`apps/dashboard/lib/types.ts`** - add the slug to the `GatewayProvider` union and the `GATEWAY_PROVIDERS` array.
-2. **`apps/dashboard/lib/auth-provider.mjs`** - add `slug: { label, secretName, prefixes }` (empty `prefixes: []` = dropdown-only, no auto-detect).
-3. **`apps/dashboard/app/api/secrets/route.ts`** - list the secret in `BUILTIN_SECRETS` and map `SECRET_NAME → slug` in `GATEWAY_SECRETS` so the dashboard recognises it as a gateway key (and keeps `aeon.yml` on `auto`).
-4. **`scripts/llm-gateway.sh`** - add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`), **and** add the slug + its secret to the auto-resolver's default order so it's picked up automatically.
+1. **`apps/dashboard/lib/gateway-registry.ts`** - add `slug: { label, secretName, prefixes, domain }` (empty `prefixes: []` = dropdown-only, no auto-detect). This is the **single source of truth**: it auto-flows to the `GatewayProvider` union (`lib/types.ts`), `AUTH_SECRETS` (`lib/constants.ts`), the secrets route's gateway-key detection, the auth key-prefix detection (`lib/auth-provider.ts`), and the service-icon domain.
+2. **`apps/dashboard/components/AuthModal.tsx`** - add the slug to `PROVIDER_OPTIONS` (this dropdown list is **not** registry-derived).
+3. **`apps/dashboard/app/api/secrets/route.ts`** - add a `BUILTIN_SECRETS` row (description only) so the secret shows in Settings.
+4. **`scripts/llm-gateway.sh`** - add an `aeon_present()` case, add the slug to the auto-resolver's default `GATEWAY_ORDER`, and add a `case` branch (a **native** provider exports `ANTHROPIC_BASE_URL` + the auth token; a **sidecar** provider calls `start_ccr_sidecar <slug> <openai-url> <key> <model>`).
 5. **`.github/workflows/aeon.yml`** - pass the new secret (and any `*_MODEL` override **variables**) into the run's `env:` (also `messages.yml`), so the resolver can see it.
 
 Then add a row to the gateway table above. To verify the full loop: paste a key in the dashboard (prefix should auto-detect, or pick it from the dropdown) and run any skill - the workflow log prints `::notice:: gateway=auto resolved to <slug>` followed by `::notice:: Routing through …`.
+
+### Harnesses
+
+The **harness** is the coding-agent CLI that actually runs your skills. It's a separate axis from the gateways above (which only swap the *model* behind Claude Code):
+
+| Harness | CLI | Auth | Models |
+|---------|-----|------|--------|
+| `claude` (default) | [Claude Code](https://github.com/anthropics/claude-code) (`claude -p`) | `CLAUDE_CODE_OAUTH_TOKEN` / `ANTHROPIC_API_KEY` / any gateway above | `claude-*` |
+| `grok` | [Grok Build](https://x.ai/cli) (`grok -p`) | **X account** (`GROK_CREDENTIALS`) or `XAI_API_KEY` | `grok-build-0.1` |
+
+Everything already configured keeps running on `claude` — the harness is fully additive and defaults to Claude Code. Select it globally in the dashboard top bar, per-run via the workflow-dispatch **Harness** input, or per-skill / globally in `aeon.yml`:
+
+```yaml
+harness: claude          # global default (top-level)
+
+skills:
+  digest: { enabled: true, schedule: "0 9 * * *", harness: "grok" }   # per-skill override
+```
+
+**Logging in with your X account (for CI).** Grok Build's browser login can't run headlessly, so you log in once locally and Aeon reuses the session:
+
+1. Install + log in locally: `npm i -g @xai-official/grok && grok login --device-auth` (requires a **SuperGrok** or **X Premium+** entitlement).
+2. In the dashboard's Authenticate modal, click **Connect X account** — it captures your `~/.grok` session and stores it as the `GROK_CREDENTIALS` repo secret.
+3. Each Actions run restores that session into `~/.grok` (via `scripts/run-grok.sh`) before invoking `grok`.
+
+Prefer no browser flow? Set **`XAI_API_KEY`** instead (also powers the Grok gateway) and grok authenticates with the API key directly.
+
+Capability mode carries over unchanged: a `mode: read-only` skill maps to grok's `--sandbox read-only --permission-mode dontAsk` with a read-only allowlist; `write` adds `Edit` + `git`/`gh`/`python` — the same drops as on Claude Code (`scripts/skill_mode.sh grok-args`). Grok reads **`AGENTS.md`** (generated from `CLAUDE.md` + `STRATEGY.md` by `scripts/gen-agents-md.js`) as its standing instructions, so behaviour matches. MCP on the grok harness is not yet wired (fast-follow).
+
+> **Requirements & caveats:** Grok Build needs a SuperGrok / X Premium+ subscription (OAuth) or xAI API credits (`XAI_API_KEY`) — there's no free tier. The captured OAuth session can expire; if unattended grok runs start failing on auth, re-run **Connect X account**.
 
 ### Strategy
 

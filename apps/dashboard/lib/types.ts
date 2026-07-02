@@ -2,7 +2,7 @@ import { GATEWAY_SLUGS, type GatewaySlug } from './gateway-registry'
 
 export interface SkillKeyRef { key: string; optional: boolean }
 export interface SkillMcpRef { slug: string; optional: boolean }
-export interface Skill { name: string; description: string; tags: string[]; category: string; pack: string; packName: string; enabled: boolean; schedule: string; var: string; model: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
+export interface Skill { name: string; description: string; tags: string[]; category: string; pack: string; packName: string; enabled: boolean; schedule: string; var: string; model: string; harness: string; requires: SkillKeyRef[]; mcp: SkillMcpRef[] }
 export interface Run { id: number; workflow: string; status: string; conclusion: string | null; created_at: string; url: string }
 // Result of a Telegram setup probe (webhook registration / chat-id lookup), shown inline in the Telegram credential helpers.
 export interface TelegramStatus { ok: boolean; msg: string }
@@ -64,6 +64,11 @@ export type GatewayProvider = 'auto' | 'direct' | GatewaySlug
 
 export const GATEWAY_PROVIDERS: GatewayProvider[] = ['auto', 'direct', ...GATEWAY_SLUGS]
 
+// Which agent CLI runs skills. `claude` = Claude Code (default, uses the gateway
+// above); `grok` = Grok Build CLI (own auth, own models). See scripts/run-grok.sh.
+export type Harness = 'claude' | 'grok'
+export const HARNESSES: Harness[] = ['claude', 'grok']
+
 export interface UploadFile { path: string; content: string }
 
 // Client→server build briefs. The panels collect them; the build routes accept
@@ -119,6 +124,7 @@ export interface AnalyticsData {
 export interface SkillsResponse {
   skills: Skill[]
   model?: string
+  harness?: Harness
   gateway?: { provider: GatewayProvider }
   repo?: string
   jsonrenderEnabled?: boolean

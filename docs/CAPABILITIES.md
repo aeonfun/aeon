@@ -88,6 +88,8 @@ mode: write       # default — full Write / Edit / git / gh / python3
 
 A `read-only` skill runs with a restricted Claude Code `--allowedTools` set (`Write`, `Edit`, `Bash(git:*)`, `Bash(gh:*)` are dropped), so it **physically cannot** commit, push, edit code, or open a PR — the runtime counterpart of declaring `read_only` above. A post-run guard records the skill's run-log on its behalf and reverts any code/config a shell redirection slipped through, while preserving its real output (memory, `.outputs/`, articles). `write` is the default and a strict superset (it adds `python3`). Resolution and the exact tool sets live in [`scripts/skill_mode.sh`](../scripts/skill_mode.sh).
 
+The same `mode:` maps onto the **Grok Build harness** (`harness: grok`) via `scripts/skill_mode.sh grok-args`: `read-only` → `--sandbox read-only --permission-mode dontAsk` with a read-only allowlist (no `Edit`, no `git`/`gh`/`python`); `write` adds `Edit` + `Bash(git *)`/`Bash(gh *)`/`python`. `dontAsk` (silently deny anything not explicitly allowed) is grok's analogue of Claude Code's `-p` allowlist, so a skill's blast radius is identical on either harness. The post-run guard is harness-agnostic and still applies as defense-in-depth.
+
 Rule of thumb: a skill that declares `capabilities: [read_only, sends_notifications]` should also carry `mode: read-only` — the documentation surface and the runtime gate should agree.
 
 ---

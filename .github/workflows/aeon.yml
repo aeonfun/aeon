@@ -20,6 +20,16 @@ on:
           - claude-sonnet-5
           - claude-sonnet-4-6
           - claude-haiku-4-5-20251001
+          - grok-build-0.1
+      harness:
+        description: 'Agent harness'
+        required: false
+        type: choice
+        default: '(config default)'
+        options:
+          - '(config default)'
+          - claude
+          - grok
       var:
         description: 'Variable (e.g. AI, bitcoin, owner/repo)'
         required: false
@@ -36,6 +46,10 @@ on:
         type: string
       model:
         description: 'Model override'
+        required: false
+        type: string
+      harness:
+        description: 'Agent harness override (claude | grok)'
         required: false
         type: string
       var:
@@ -300,6 +314,7 @@ jobs:
           NOTIFY_EMAIL_FROM: ${{ vars.NOTIFY_EMAIL_FROM || 'aeon@notifications.aeon.bot' }}
           NOTIFY_EMAIL_SUBJECT_PREFIX: ${{ vars.NOTIFY_EMAIL_SUBJECT_PREFIX || '[Aeon]' }}
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          GROK_CREDENTIALS: ${{ secrets.GROK_CREDENTIALS }}
           COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
           ALCHEMY_API_KEY: ${{ secrets.ALCHEMY_API_KEY }}
           BANKR_API_KEY: ${{ secrets.BANKR_API_KEY }}
@@ -315,6 +330,7 @@ jobs:
           SKILL_VAR: ${{ inputs.var }}
           SKILL_NAME: ${{ steps.skill.outputs.name }}
           INPUT_MODEL: ${{ inputs.model }}
+          INPUT_HARNESS: ${{ inputs.harness }}
         run: |
           TODAY=$(date -u +%Y-%m-%d)
           export SKILL_NAME
@@ -328,7 +344,26 @@ jobs:
           else
             MODEL="${CONFIG_MODEL:-claude-opus-4-8}"
           fi
-          echo "Using model: $MODEL"
+
+          # --- Harness resolution (which agent CLI runs the skill) ---
+          # Same 3-tier precedence as model: workflow_dispatch input → per-skill
+          # `harness:` in aeon.yml → top-level `harness:` → claude (default).
+          CONFIG_HARNESS=$(grep -E '^harness:' aeon.yml | sed 's/^harness: *//' | tr -d ' ')
+          SKILL_HARNESS=$(grep "^  ${SKILL_NAME}:" aeon.yml | sed -n 's/.*harness: *"\([^"]*\)".*/\1/p')
+          if [ -n "${INPUT_HARNESS:-}" ] && [ "$INPUT_HARNESS" != "(config default)" ]; then
+            HARNESS="$INPUT_HARNESS"
+          elif [ -n "$SKILL_HARNESS" ]; then
+            HARNESS="$SKILL_HARNESS"
+          else
+            HARNESS="${CONFIG_HARNESS:-claude}"
+          fi
+          if [ "$HARNESS" != "grok" ]; then HARNESS="claude"; fi   # unknown value → safe default (use `if`, not `&&`, under set -e)
+          # On the grok harness a claude-* model id is meaningless — fall back to
+          # grok's default unless an explicit grok model was chosen.
+          if [ "$HARNESS" = "grok" ]; then
+            case "$MODEL" in claude-*|"") MODEL="grok-build-0.1" ;; esac
+          fi
+          echo "Using harness: $HARNESS  |  model: $MODEL"
           echo "SKILL_MODEL=$MODEL" >> "$GITHUB_OUTPUT"
 
           # --- AI Gateway routing ---
@@ -336,17 +371,25 @@ jobs:
           # priority order, failing over to the next on ANY failure. An explicit
           # provider pins a single one (no failover). Setup runs per-attempt in the
           # run loop below, so a dead/credit-less provider is skipped, not fatal.
+          # The Grok Build harness has its own auth and does NOT use the gateway.
           BASE_MODEL="$MODEL"
           GW="${GITHUB_WORKSPACE}/scripts/llm-gateway.sh"
-          GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
-          GATEWAY="${GATEWAY:-auto}"
-          if [ "$GATEWAY" = "auto" ]; then
-            CANDIDATES=$(AEON_LIST_CANDIDATES=1 bash "$GW")
+          if [ "$HARNESS" = "grok" ]; then
+            # Set the post-run scorer's routing hint: route its `claude -p` scoring
+            # call to xAI (Anthropic-compatible) when an API key is present, else
+            # direct (scoring then just no-ops gracefully if no Anthropic creds).
+            if [ -n "${XAI_API_KEY:-}" ]; then echo "GATEWAY=grok" >> "$GITHUB_OUTPUT"; else echo "GATEWAY=direct" >> "$GITHUB_OUTPUT"; fi
           else
-            CANDIDATES="$GATEWAY"   # explicit pin → single provider, no failover
+            GATEWAY=$(grep -A1 '^gateway:' aeon.yml | grep 'provider:' | sed 's/.*provider:[[:space:]]*//' | sed "s/[\"' ]//g" || true)
+            GATEWAY="${GATEWAY:-auto}"
+            if [ "$GATEWAY" = "auto" ]; then
+              CANDIDATES=$(AEON_LIST_CANDIDATES=1 bash "$GW")
+            else
+              CANDIDATES="$GATEWAY"   # explicit pin → single provider, no failover
+            fi
+            echo "Gateway: $GATEWAY  |  cascade order: $CANDIDATES"
+            echo "GATEWAY=${CANDIDATES%% *}" >> "$GITHUB_OUTPUT"   # provisional; overwritten with the winner below
           fi
-          echo "Gateway: $GATEWAY  |  cascade order: $CANDIDATES"
-          echo "GATEWAY=${CANDIDATES%% *}" >> "$GITHUB_OUTPUT"   # provisional; overwritten with the winner below
 
           # Generate notify script in workspace (Claude calls: ./notify "message")
           # Messages are saved to .pending-notify/ for reliable post-run delivery
@@ -425,37 +468,60 @@ jobs:
           Use this variable (override the default in the skill file):
           var=$VAR"
           fi
-          # Cascade: try each provider in priority order; on ANY failure fall over
-          # to the next. Each attempt runs in a subshell so provider setup (env +
-          # any claude-code-router sidecar) is isolated and torn down on exit. The
-          # gateway script's notices go to stderr (>&2) so only Claude's JSON is captured.
+          # Harness split: the grok path is a single guarded branch; the entire
+          # claude cascade below is unchanged. Both set CLAUDE_OUTPUT to a JSON
+          # envelope with .result / .usage.*, so everything downstream is shared.
           CLAUDE_OK=0
-          USED_GATEWAY=""
-          for cand in $CANDIDATES; do
-            echo "::notice::Routing attempt via '$cand'"
-            # No `set -e` here: the gateway script signals a hard setup failure with
-            # an explicit `exit 1` (which exits this subshell → fall over), and on
-            # success the subshell's status is Claude's own exit code. A benign
-            # non-zero from a trailing test in the gateway script is harmless — we
-            # only fall over on an explicit exit or a failed Claude call.
+          if [ "$HARNESS" = "grok" ]; then
+            # --- Grok Build harness ---
+            # run-grok.sh installs/pins the grok CLI, restores the X-account OAuth
+            # session (or uses XAI_API_KEY), maps SKILL_MODE to grok's permission
+            # flags, runs `grok -p`, and emits the SAME normalized JSON envelope
+            # Claude Code's --output-format json produces. Its stdout is the JSON;
+            # diagnostics go to stderr (the step log), so capture stdout only.
             if CLAUDE_OUTPUT=$(
-              GATEWAY="$cand"
-              MODEL="$BASE_MODEL"
-              source "$GW" >&2
-              echo "$PROMPT" | claude -p - --model "$MODEL" --allowedTools "$ALLOWED" "${MCP_FLAGS[@]}" --output-format json 2>&1
+              export MODEL="$BASE_MODEL" SKILL_MODE
+              echo "$PROMPT" | bash "${GITHUB_WORKSPACE}/scripts/run-grok.sh"
             ); then
-              USED_GATEWAY="$cand"; CLAUDE_OK=1; break
+              CLAUDE_OK=1
             fi
-            echo "::warning::provider '$cand' failed — $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 160 | tr '\n' ' ')"
-          done
-          if [ "$CLAUDE_OK" != "1" ]; then
-            echo "::error::All gateway providers failed ($CANDIDATES). Last output: $CLAUDE_OUTPUT"
-            # Save error signature for quality tracking (cron-state step reads this)
-            echo "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
-            exit 1
+            if [ "$CLAUDE_OK" != "1" ]; then
+              echo "::error::grok harness failed. Last output: $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 200 | tr '\n' ' ')"
+              printf '%s' "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              exit 1
+            fi
+          else
+            # Cascade: try each provider in priority order; on ANY failure fall over
+            # to the next. Each attempt runs in a subshell so provider setup (env +
+            # any claude-code-router sidecar) is isolated and torn down on exit. The
+            # gateway script's notices go to stderr (>&2) so only Claude's JSON is captured.
+            USED_GATEWAY=""
+            for cand in $CANDIDATES; do
+              echo "::notice::Routing attempt via '$cand'"
+              # No `set -e` here: the gateway script signals a hard setup failure with
+              # an explicit `exit 1` (which exits this subshell → fall over), and on
+              # success the subshell's status is Claude's own exit code. A benign
+              # non-zero from a trailing test in the gateway script is harmless — we
+              # only fall over on an explicit exit or a failed Claude call.
+              if CLAUDE_OUTPUT=$(
+                GATEWAY="$cand"
+                MODEL="$BASE_MODEL"
+                source "$GW" >&2
+                echo "$PROMPT" | claude -p - --model "$MODEL" --allowedTools "$ALLOWED" "${MCP_FLAGS[@]}" --output-format json 2>&1
+              ); then
+                USED_GATEWAY="$cand"; CLAUDE_OK=1; break
+              fi
+              echo "::warning::provider '$cand' failed — $(printf '%s' "$CLAUDE_OUTPUT" | tail -c 160 | tr '\n' ' ')"
+            done
+            if [ "$CLAUDE_OK" != "1" ]; then
+              echo "::error::All gateway providers failed ($CANDIDATES). Last output: $CLAUDE_OUTPUT"
+              # Save error signature for quality tracking (cron-state step reads this)
+              echo "$CLAUDE_OUTPUT" | tail -c 500 | tr '\n' ' ' | cut -c1-200 > /tmp/skill-error.txt
+              exit 1
+            fi
+            [ "$USED_GATEWAY" != "${CANDIDATES%% *}" ] && echo "::notice::Skill ran via fallback provider '$USED_GATEWAY'"
+            echo "GATEWAY=$USED_GATEWAY" >> "$GITHUB_OUTPUT"
           fi
-          [ "$USED_GATEWAY" != "${CANDIDATES%% *}" ] && echo "::notice::Skill ran via fallback provider '$USED_GATEWAY'"
-          echo "GATEWAY=$USED_GATEWAY" >> "$GITHUB_OUTPUT"
 
           # Extract and print the text result so logs still show skill output
           RESULT_TEXT=$(echo "$CLAUDE_OUTPUT" | jq -r '.result // empty')
@@ -580,6 +646,7 @@ jobs:
           USEPOD_TOKEN: ${{ secrets.USEPOD_TOKEN }}
           VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           SURPLUS_API_KEY: ${{ secrets.SURPLUS_API_KEY }}
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}   # grok gateway: score grok-harness output via xAI
           OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           OPENROUTER_MODEL_SONNET: ${{ vars.OPENROUTER_MODEL_SONNET }}
           OPENROUTER_MODEL_HAIKU: ${{ vars.OPENROUTER_MODEL_HAIKU }}

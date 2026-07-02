@@ -1,0 +1,36 @@
+name: ci-agents-md
+
+# AGENTS.md is the Grok Build (grok) harness's standing instructions, generated
+# from CLAUDE.md + STRATEGY.md by scripts/gen-agents-md.js. This workflow fails
+# any PR that edits either source (or the generator) without regenerating
+# AGENTS.md, so the two harnesses can't silently drift apart.
+#
+# Regenerate locally with: node scripts/gen-agents-md.js
+
+on:
+  pull_request:
+    paths:
+      - 'CLAUDE.md'
+      - 'STRATEGY.md'
+      - 'AGENTS.md'
+      - 'scripts/gen-agents-md.js'
+      - '.github/workflows/ci-agents-md.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'CLAUDE.md'
+      - 'STRATEGY.md'
+      - 'AGENTS.md'
+      - 'scripts/gen-agents-md.js'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check AGENTS.md is regenerated from CLAUDE.md + STRATEGY.md
+        run: node scripts/gen-agents-md.js --check

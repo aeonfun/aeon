@@ -40,6 +40,8 @@ jobs:
         run: python3 scripts/tests/test_prune_skills.py
       - name: capability mode tests
         run: bash scripts/tests/test_skill_mode.sh
+      - name: grok harness runner tests
+        run: bash scripts/tests/test_run_grok.sh
       - name: state reducer tests
         run: python3 scripts/tests/test_state_reduce.py
       - name: health triage tests
