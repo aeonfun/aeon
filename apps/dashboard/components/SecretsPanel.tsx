@@ -180,7 +180,7 @@ export function SecretsPanel({ secrets, skills, busy, repo, focusKey, onFocusHan
                   )}
                 </div>
               ))}
-              {group === 'Telegram' && <TelegramCommandsCard sessionBotToken={sessionBotToken} />}
+              {group === 'Telegram' && <TelegramCommandsCard tokenSet={secrets.some(s => s.name === 'TELEGRAM_BOT_TOKEN' && s.isSet)} />}
               {group === 'Telegram' && <InstantModeCard repo={repo} sessionBotToken={sessionBotToken} />}
             </div>
           </section>

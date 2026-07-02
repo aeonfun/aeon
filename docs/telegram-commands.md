@@ -18,12 +18,20 @@ loop for commands, buttons, or replies.
 
 ## 1. Slash commands & the `/` menu
 
-Push your enabled skills to Telegram as slash commands so the `/` autocomplete
-menu populates and the message-field menu button points at it:
+Your enabled skills become Telegram slash commands so the `/` autocomplete menu
+populates and the message-field menu button points at it. Registration is automatic:
 
-1. Actions tab → **Setup Telegram Commands** → **Run workflow**
+1. **On first setup** — saving `TELEGRAM_BOT_TOKEN` in the dashboard dispatches the
+   registration workflow for you (POST `/api/secrets` → `setup-commands.yml`). No manual step.
+2. **Re-sync after toggling skills** — the dashboard's **Re-register commands** button
+   (Credentials → Telegram) POSTs to `/api/telegram/commands`, which re-runs the same
+   workflow. It reuses the stored token server-side — nothing to paste.
+3. It also re-runs automatically on any push to `aeon.yml`, and can be run by hand from
+   the Actions tab → **Setup Telegram Commands** → **Run workflow**
    (`.github/workflows/setup-commands.yml`).
-2. It also re-runs automatically on any push to `aeon.yml`, so the menu never drifts.
+
+Every path reads `TELEGRAM_BOT_TOKEN` server-side (where secrets are readable) and calls
+`setMyCommands` + `setChatMenuButton` — identical result, no browser token handling.
 
 Command names can only use `a-z`, `0-9`, `_` — so a skill dir `deep-research`
 becomes `/deep_research`. The router inverts `_`→`-` when it dispatches.
