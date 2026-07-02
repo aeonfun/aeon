@@ -38,12 +38,7 @@ skills:
 
   monitor-polymarket: { enabled: false, schedule: "30 12 * * *", var: "" } # prediction-market monitor (Polymarket + Kalshi) — 24h moves, volume, comments, conviction alerts. var: empty=both | polymarket | kalshi | polymarket:<slug> | kalshi:<ticker>
   token-pick: { enabled: false, schedule: "0 12 * * *" }
-  price-alert:
-    {
-      enabled: false,
-      schedule: "*/30 * * * *",
-      var: ""
-    } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
+  price-alert: { enabled: false, schedule: "*/30 * * * *", var: "" } # every 30 minutes — fire on tracked-token ATH, ±20% 1h move, or operator-set target crossing (var=target_price,target_price2,...). Silent on normal runs. Set var=dry-run to skip notify.
   narrative-tracker: { enabled: false, schedule: "30 13 * * *" } # track rising/peaking/fading narratives
   unlock-monitor: { enabled: false, schedule: "0 10 * * 1" } # weekly token unlock/vesting tracker
 
@@ -61,12 +56,7 @@ skills:
 
   # --- Repo intelligence (3 PM UTC) ---
   star-milestone: { enabled: false, schedule: "15 15 * * *", var: "" } # daily — star milestone crossings + next-milestone projection & Show HN launch-window alert (folds in star-momentum). var: empty=all | owner/repo | dry-run
-  repo-scanner:
-    {
-      enabled: false,
-      schedule: "0 15 * * 0",
-      var: ""
-    } # GitHub fleet intel: repo catalog + per-repo action ideas + who's-building map (folds in repo-actions/builder-map). var: empty/<owner>=full | catalog[:owner] | actions[:focus] | builders
+  repo-scanner: { enabled: false, schedule: "0 15 * * 0", var: "" } # GitHub fleet intel: repo catalog + per-repo action ideas + who's-building map (folds in repo-actions/builder-map). var: empty/<owner>=full | catalog[:owner] | actions[:focus] | builders
 
   # --- Late afternoon (4 PM UTC) ---
   skill-scan: { enabled: false, schedule: "0 16 * * 1", var: "" } # skill security scanner. var: empty/repo[:slug]=in-repo corpus | pr:<N>=inbound skill-PR triage | external-preinstall:<ref>=pre-install ALLOW/WARN/DENY (folds in skill-triage/phylax-audit)
@@ -84,14 +74,8 @@ skills:
   reply-maker: { enabled: false, schedule: "0 17 * * *", var: "" } # draft X replies. var: empty=discover reply-worthy tweets | @handle | <listID> | <topic> | from-logs (reply to flagged log opportunities). Optional XAI_API_KEY.
   farcaster-digest: { enabled: false, schedule: "0 17 * * *" } # trending Farcaster casts
 
-
   # --- Content distribution (runs 30 min after article-generating skills) ---
-  syndicate-article:
-    {
-      enabled: false,
-      schedule: "30 15 * * *",
-      var: ""
-    } # distribute latest article across channels. var: empty=all | comma-list of {gallery,devto,farcaster} | gallery[,file=<name>]. Optional DEVTO_API_KEY, NEYNAR_API_KEY/NEYNAR_SIGNER_UUID.
+  syndicate-article: { enabled: false, schedule: "30 15 * * *", var: "" } # distribute latest article across channels. var: empty=all | comma-list of {gallery,devto,farcaster} | gallery[,file=<name>]. Optional DEVTO_API_KEY, NEYNAR_API_KEY/NEYNAR_SIGNER_UUID.
 
   # --- Evening / meta (6 PM UTC) ---
   goal-tracker: { enabled: false, schedule: "0 18 * * *", var: "" } # progress vs goals + milestone threshold alerts. var: empty=combined | goals | milestones | <goal>
@@ -109,71 +93,26 @@ skills:
   cost-report: { enabled: false, schedule: "0 7 * * 1", var: "" } # weekly API cost breakdown by skill/model + anomalies + burn forecast + optimizations. var: empty=full report (7d) | N=report over last N days | watch=budget watchdog (weekly cost vs WEEKLY_BUDGET_CAP def $200, OK/WATCH/WARN/ALERT, silent <50%; folds in spend-monitor) | watch:<cap>=override cap
 
   # --- Weekly (Monday only) ---
-  framework-watch:
-    {
-      enabled: false,
-      schedule: "30 8 * * 1",
-      var: ""
-    } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
-  ecosystem-pulse:
-    {
-      enabled: false,
-      schedule: "0 11 * * 1",
-      var: ""
-    } # Monday — one ECOSYSTEM.md pass: project liveness (stars/forks/last-push buckets + 7d releases + WoW transitions) AND link-health (URL audit, buckets OK/ARCHIVED/MOVED/DEAD/…, folds in ecosystem-links). var: empty=both | liveness | links | dry-run
+  framework-watch: { enabled: false, schedule: "30 8 * * 1", var: "" } # Monday 08:30 UTC — weekly competitive-intelligence digest across 9 AI agent frameworks (anchor + 8 peers). Momentum signals, 7d/30d star deltas, release listings, breaking-change flags. Set var to a watchlist slug (e.g. langgraph) for a single-framework deep dive.
+  ecosystem-pulse: { enabled: false, schedule: "0 11 * * 1", var: "" } # Monday — one ECOSYSTEM.md pass: project liveness (stars/forks/last-push buckets + 7d releases + WoW transitions) AND link-health (URL audit, buckets OK/ARCHIVED/MOVED/DEAD/…, folds in ecosystem-links). var: empty=both | liveness | links | dry-run
   fork-fleet: { enabled: false, schedule: "0 10 * * 1", var: "" } # fork divergence: code (unique commits/skills) + config (aeon.yml vs upstream defaults; folds in fork-digest). var: empty=both | code | config | fork=owner/repo | repo=owner/repo
-  fork-events:
-    {
-      enabled: false,
-      schedule: "30 20 * * *",
-      var: ""
-    } # daily 20:30 UTC — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh (≤8d), live-fallback otherwise. Persistent seen-list (LRU 500), bot allowlist suppressed from alerts. Per-fork alert when 1–3 new activators; batch notification at 4+ to avoid spam. Pass dry-run to skip notify, or owner/repo to override parent.
+  fork-events: { enabled: false, schedule: "30 20 * * *", var: "" } # daily 20:30 UTC — named same-day alert the first time a fork completes a workflow run. Reads fork-cohort cache when fresh (≤8d), live-fallback otherwise. Persistent seen-list (LRU 500), bot allowlist suppressed from alerts. Per-fork alert when 1–3 new activators; batch notification at 4+ to avoid spam. Pass dry-run to skip notify, or owner/repo to override parent.
   skill-evals: { enabled: false, schedule: "0 6 * * 0" } # Sunday 6 AM UTC — output quality assertions across all tracked skills
   skill-update: { enabled: false, schedule: "0 19 * * 0", var: "" } # skill-fleet audit. var: empty=both | drift[:skill]=upstream drift/security vs skills.lock | accept:<skill> | freshness[:skill|dry-run]=stale file deps (folds in skill-freshness)
   spawn-instance: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — var: "name: purpose"
   fleet-control: { enabled: false, schedule: "0 9,15 * * *", var: "" } # managed child instances. var: empty=health check | status | dispatch <inst|*> <skill> [var=…] | scorecard (fleet-wide runs/tokens/cost/reliability; folds in fleet-scorecard)
   shiplog: { enabled: false, schedule: "0 9 * * 1" } # everything shipped SINCE THE LAST RUN (memory/state/shiplog-last.json) — cross-repo PRs/commits, security fixes merged into others' repos, star deltas, X/ecosystem traction → digest article + ready-to-post shiplog in the operator's voice. Cadence-agnostic: this schedule just sets frequency (daily/weekly/on-demand). Config: memory/products.md + memory/watched-repos.md. Optional XAI_API_KEY (X traction) + GH_GLOBAL (cross-repo reach). var: since:DATE | days:N | dry-run | owner/repo | <theme>.
   contributor-leaderboard: { enabled: false, schedule: "30 17 * * 0" } # Sunday — rank community contributors across forks and upstream PRs
-  operator-scorecard:
-    {
-      enabled: false,
-      schedule: "30 10 * * 1",
-      var: ""
-    } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict). var: empty=scorecard (7d) | dry-run=no notify | N=window N hours | ops[ DATE]=end-of-day ops recap (shipped/failed/follow-up) | push[ owner/repo]=diff-deep-dive push recap (folds in ops-recap + push-recap)
-  followup-patrol:
-    {
-      enabled: false,
-      schedule: "0 11 * * 2",
-      var: ""
-    } # Tuesday 11:00 UTC — escalation audit: parses MEMORY.md follow-up/next-priorities section + issue tracker, ages items, alerts on CRITICAL/HIGH operator items (>21d/>14d). Catch-all for the open-loop backlog. Pass var to filter.
-  skill-gap:
-    {
-      enabled: false,
-      schedule: "0 21 * * 0",
-      var: ""
-    } # Sunday — fleet skill intelligence: per-fork adoption gaps + adoption leaderboard + configured-fork ranking (folds in skill-adoption + skill-leaderboard). var: empty=all | gaps | adoption | leaderboard | dry-run | owner/repo
-  fork-health:
-    {
-      enabled: false,
-      schedule: "45 10 * * 1",
-      var: ""
-    } # Monday — fork intelligence: per-fork health tier + activation-stage cohort buckets + state-of-the-fleet narrative (folds in fork-cohort + fleet-state). var: empty=health | cohort | fleet | dry-run | owner/repo
-  capabilities-map:
-    {
-      enabled: false,
-      schedule: "30 11 * * 1",
-      var: ""
-    } # Monday — capability coverage matrix (default, non-mutating) + backfill sweep + Mermaid dependency graph. var: empty/dry-run=coverage audit | sweep[:slug=…|propose-only]=backfill capabilities: frontmatter (PR) | graph[:path]=regen docs/skill-graph.md (folds in capabilities-sweep + skill-graph)
+  operator-scorecard: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — weekly plain-language scorecard: agent health + community growth + economic activity (worst-of-three OK/WATCH/DEGRADED verdict). var: empty=scorecard (7d) | dry-run=no notify | N=window N hours | ops[ DATE]=end-of-day ops recap (shipped/failed/follow-up) | push[ owner/repo]=diff-deep-dive push recap (folds in ops-recap + push-recap)
+  followup-patrol: { enabled: false, schedule: "0 11 * * 2", var: "" } # Tuesday 11:00 UTC — escalation audit: parses MEMORY.md follow-up/next-priorities section + issue tracker, ages items, alerts on CRITICAL/HIGH operator items (>21d/>14d). Catch-all for the open-loop backlog. Pass var to filter.
+  skill-gap: { enabled: false, schedule: "0 21 * * 0", var: "" } # Sunday — fleet skill intelligence: per-fork adoption gaps + adoption leaderboard + configured-fork ranking (folds in skill-adoption + skill-leaderboard). var: empty=all | gaps | adoption | leaderboard | dry-run | owner/repo
+  fork-health: { enabled: false, schedule: "45 10 * * 1", var: "" } # Monday — fork intelligence: per-fork health tier + activation-stage cohort buckets + state-of-the-fleet narrative (folds in fork-cohort + fleet-state). var: empty=health | cohort | fleet | dry-run | owner/repo
+  capabilities-map: { enabled: false, schedule: "30 11 * * 1", var: "" } # Monday — capability coverage matrix (default, non-mutating) + backfill sweep + Mermaid dependency graph. var: empty/dry-run=coverage audit | sweep[:slug=…|propose-only]=backfill capabilities: frontmatter (PR) | graph[:path]=regen docs/skill-graph.md (folds in capabilities-sweep + skill-graph)
   workflow-audit: { enabled: false, schedule: "0 16 * * 0" } # Sunday — scan workflows for injection vectors
   product-hunt: { enabled: false, schedule: "workflow_dispatch", var: "" } # one-shot launch copy from live repo state. var: empty/producthunt=full PH asset pack | producthunt:<section> | showhn=Show HN post | reddit[:<sub>]=Reddit variants
 
   # --- Paid ads (AdManage.ai) ---
-  schedule-ads:
-    {
-      enabled: false,
-      schedule: "0 8 * * *",
-      var: ""
-    } # daily 08:00 UTC — paid ads via AdManage.ai. var: empty=schedule ad launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn from config.yaml (PAUSED by default) | create=provision Meta campaigns/ad sets on-demand from config.create.yaml (PAUSED, IDs written back to state so the schedule branch can launch into them; folds in create-campaign)
+  schedule-ads: { enabled: false, schedule: "0 8 * * *", var: "" } # daily 08:00 UTC — paid ads via AdManage.ai. var: empty=schedule ad launches across Meta/TikTok/Snapchat/Pinterest/LinkedIn from config.yaml (PAUSED by default) | create=provision Meta campaigns/ad sets on-demand from config.create.yaml (PAUSED, IDs written back to state so the schedule branch can launch into them; folds in create-campaign)
 
   # --- Utilities ---
   auto-workflow: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand aeon.yml builder. var: <url[,url]>=analyze→enablement plan | enable:<slugs>=flip enabled:true (validate, commit, PR); enable:dry-run:<slugs> (folds in skill-enabler)
@@ -183,21 +122,11 @@ skills:
   # Markets & crypto
   pm-pulse: { enabled: false, schedule: "0 13 * * 1" } # Monday — prediction/coordination-market volume, new mechanisms, regulatory moves
   pm-manipulation: { enabled: false, schedule: "15 13 * * *" } # daily — flag suspected PM manipulation from 3-day price/volume/comment + local-press anomalies
-  x402-monitor:
-    {
-      enabled: false,
-      schedule: "0 12 * * 2",
-      var: ""
-    } # Tuesday — protocol/vertical ecosystem velocity. var: empty=x402 default | rwa | compute | mcp | agent-displacement | <stanza in memory/topics/tracked-protocol.md>
+  x402-monitor: { enabled: false, schedule: "0 12 * * 2", var: "" } # Tuesday — protocol/vertical ecosystem velocity. var: empty=x402 default | rwa | compute | mcp | agent-displacement | <stanza in memory/topics/tracked-protocol.md>
 
   # Research & content
   launch-radar: { enabled: false, schedule: "30 10 * * 1", var: "" } # Monday — new-launch radar. var: empty/backlog[:cat]=scan vs startup-idea backlog | category[:slug][:dry-run]=competitor new-entrant scan (PH/HN)
-  narrative-convergence:
-    {
-      enabled: false,
-      schedule: "0 13 * * *",
-      var: ""
-    } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
+  narrative-convergence: { enabled: false, schedule: "0 13 * * *", var: "" } # daily 13:00 UTC — cross-skill convergence detector: entities/themes surfaced by 3+ independent skill categories in 48h = high-confidence write opportunities. Category map in memory/topics/signal-categories.md. Pass var to filter.
 
   # Security
   vuln-tracker: { enabled: false, schedule: "30 16 * * *", var: "" } # daily lifecycle poll: vuln-scanner PR/advisory status + PVR triage + disclosure-queue aging (folds in pvr-triage/disclosure-tracker). var: empty=full | pvr | queue | prs | <GHSA-id>
@@ -218,12 +147,7 @@ skills:
   article-queue: { enabled: false, schedule: "0 11 * * 0", var: "" } # Sunday — content planner: ranks content-gap signals + tracks multi-beat storylines into memory/topics/article-queue.md (folds in topic-momentum + beat-tracker; article skill picks it up via MEMORY.md). var: empty=combined | gaps | beats
   soul-builder: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand — build a SOUL from any mix of sources (X handle, full name, links), drafting soul/SOUL.md + STYLE.md + examples so every content skill speaks in that voice. var: bare X handle, or structured brief "x=handle | name=Full Name | links=url1,url2". Powers the dashboard Soul → Build my soul button. XAI_API_KEY optional (name/links use built-in WebSearch/WebFetch).
   # Social
-  mention-radar:
-    {
-      enabled: false,
-      schedule: "25 7 2/2 * *",
-      var: ""
-    } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
+  mention-radar: { enabled: false, schedule: "25 7 2/2 * *", var: "" } # every other day — external web/social mentions of the operator's projects (discovery/confusion/friction/competitor taxonomy + engagement opportunities). var: comma-separated project names; falls back to MEMORY.md / memory/topics/projects.md
   # Sports
 
   # --- Ported from derivative instances (2026-06-29) ---
@@ -294,7 +218,7 @@ chains:
 # Default model for all skills. Override per-run via workflow_dispatch.
 # Options: claude-opus-4-8, claude-fable-5, claude-sonnet-5, claude-sonnet-4-6, claude-haiku-4-5-20251001
 # (Grok Build harness models: grok-composer-2.5-fast [default], grok-build)
-model: claude-sonnet-4-6
+model: grok-composer-2.5-fast
 
 # Agent harness — which coding-agent CLI runs your skills.
 #   claude (default) — Claude Code (`claude -p`); uses the AI Gateway below.
@@ -304,7 +228,7 @@ model: claude-sonnet-4-6
 # Override per-skill with `harness: "grok"` in the skill entry, or per-run via
 # the workflow_dispatch `harness` input. Default stays claude — everything
 # already configured keeps working unchanged.
-harness: claude
+harness: grok
 
 # AI Gateway — route Claude Code requests through an LLM provider.
 #
