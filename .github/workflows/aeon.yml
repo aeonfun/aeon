@@ -13,9 +13,14 @@ on:
         required: false
         type: choice
         default: '(config default)'
+        # Keep in sync with the dashboard's MODELS/GROK_MODELS (apps/dashboard/lib/
+        # constants.ts): the dashboard dispatches `-f model=<id>` and this is a
+        # `choice` input, so any id it offers that's missing here is rejected with
+        # HTTP 422 at dispatch time.
         options:
           - '(config default)'
           - claude-opus-4-8
+          - claude-opus-4-7
           - claude-fable-5
           - claude-sonnet-5
           - claude-sonnet-4-6
