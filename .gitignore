@@ -12,12 +12,14 @@
 # Caches (regenerated per run)
 .xai-cache/
 .bankr-cache/
+.verdikta-cache/
 .pending-notify/
 .pending-replicate/
 .pending-supernotes/
 .pending-deploy/
 .pending-devto/
 .pending-farcaster/
+.pending-verdikta/
 .tg_cache/
 
 # Skill provenance lock (per-repo, not committed)

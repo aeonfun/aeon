@@ -28,6 +28,7 @@ skills:
   treasury-info: { enabled: false, schedule: "0 12 * * *" }
   distribute-tokens: { enabled: false, schedule: "workflow_dispatch", var: "" } # on-demand contributor rewards. var: empty/<label>=distribute (send) | plan[:week]=compute reward plan | all[:week]=plan+send | dry-run (folds in contributor-reward). BANKR_API_KEY for send.
   defi-overview: { enabled: false, schedule: "0 12 * * *", var: "" } # one-pass DeFi read: tracked-protocol positions + macro context (regime verdict, movers, yields, fees, F&G, prediction markets; refreshes memory/topics/market-context.md). var: empty=full | positions[:label] | macro | <chain/protocol focus>. Optional COINGECKO_API_KEY.
+  verdikta-hunter: { enabled: false, schedule: "workflow_dispatch", var: "" } # Verdikta AI-judged bounties on Base. var: empty=discover+settle (no new spend) | hunt[:jobId]=write report + queue hard-capped on-chain submission (executed post-run by scripts/postprocess-verdikta.sh, cap VERDIKTA_MAX_SPEND_ETH) | dry-run[:jobId]=validate only. Needs VERDIKTA_API_KEY; VERDIKTA_WALLET_KEY (dedicated hot wallet) to submit.
 
   # --- Hound onchain investigation (on-demand; var = address / tx hash) ---
   investigation-report: { enabled: false, schedule: "workflow_dispatch", var: "" } # var: <token-address> [--checks=rug,contract,deployer,holders,honeypot,lp] [--depth=quick|deep] — composite investigation (folds in rug-scan/contract-audit/deployer-trace/holder-concentration/honeypot-check/lp-lock). read-only

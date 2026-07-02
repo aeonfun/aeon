@@ -34,6 +34,8 @@ const BUILTIN_SECRETS: Omit<Secret, 'isSet'>[] = [
   { name: 'ETHERSCAN_API_KEY', group: 'Skill Keys', description: 'Etherscan multichain (V2) API key - on-chain skills (tx-explain, rug-scan, holder-concentration); lifts rate limits. Get one at etherscan.io/apis' },
   { name: 'BASESCAN_KEY', group: 'Skill Keys', description: 'Basescan API key - Base on-chain skills (fund-flow, linked-wallets, investigation-report). Get one at basescan.org/myapikey' },
   { name: 'BANKR_API_KEY', group: 'Skill Keys', description: 'Bankr Wallet API key (X-API-Key) - token distribution & treasury skills (distribute-tokens, vigil, treasury-info). Enable at bankr.bot/api-keys' },
+  { name: 'VERDIKTA_API_KEY', group: 'Skill Keys', description: 'Verdikta bounty bot API key (X-Bot-API-Key) - bounty hunting (verdikta-hunter). Register via POST bounties.verdikta.org/api/bots/register' },
+  { name: 'VERDIKTA_WALLET_KEY', group: 'Skill Keys', description: 'Private key of a DEDICATED low-balance Base hot wallet - verdikta-hunter on-chain submissions only. Every tx is pinned to the BountyEscrow contract and hard-capped by the VERDIKTA_MAX_SPEND_ETH repo var (default 0.0005). Never reuse a wallet holding real funds' },
   { name: 'VERCEL_TOKEN', group: 'Skill Keys', description: 'Vercel access token - deploy skills (deploy-prototype, vercel-projects). Create at vercel.com/account/settings/tokens' },
   { name: 'REPLICATE_API_TOKEN', group: 'Skill Keys', description: 'Replicate API token - image/diagram generation (technical-explainer). Get one at replicate.com/account/api-tokens' },
   { name: 'RESEND_API_KEY', group: 'Skill Keys', description: 'Resend API key - emailed digests (priority-brief, retrospective). Create at resend.com' },
