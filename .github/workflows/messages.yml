@@ -661,10 +661,11 @@ jobs:
             echo "No new messages"
           fi
 
-          # Persist any snooze/mute/save writes made by inline callback routing.
-          git add memory/snoozes.log memory/mutes.log memory/saved.md 2>/dev/null || true
+          # Persist any snooze/mute/save writes + a "Schedule weekly" aeon.yml edit
+          # made by inline callback routing.
+          git add memory/snoozes.log memory/mutes.log memory/saved.md aeon.yml 2>/dev/null || true
           if ! git diff --cached --quiet; then
-            git commit -m "chore(telegram): record snooze/mute/save from button taps"
+            git commit -m "chore(telegram): record snooze/mute/save/schedule from button taps"
             for k in 1 2 3; do
               if git pull --rebase origin main 2>/dev/null && git push origin HEAD 2>/dev/null; then break; fi
               git rebase --abort 2>/dev/null || true
@@ -721,9 +722,9 @@ jobs:
 
       - name: Commit memory changes
         run: |
-          git add memory/snoozes.log memory/mutes.log memory/saved.md 2>/dev/null || true
+          git add memory/snoozes.log memory/mutes.log memory/saved.md aeon.yml 2>/dev/null || true
           if ! git diff --cached --quiet; then
-            git commit -m "chore(telegram): record snooze/mute/save from button tap"
+            git commit -m "chore(telegram): record snooze/mute/save/schedule from button tap"
             for k in 1 2 3; do
               if git pull --rebase origin main 2>/dev/null && git push origin HEAD 2>/dev/null; then break; fi
               git rebase --abort 2>/dev/null || true

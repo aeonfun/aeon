@@ -137,16 +137,7 @@ Reviewed N, skipped K (drafts: x, bots: y, dup-SHA: z, bot-reviewed-recently: w)
 - owner/repo#123: [verdict] — N critical, M issues
 ```
 
-**Interactive controls (Telegram).** When the run was scoped to a **single repo** (`${var}=owner/repo`), attach a Re-review + Open-PRs row so the operator can re-run after a fix lands or jump straight to the queue (see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)):
-
-```bash
-REPO="owner/repo"     # the single-repo scope this run reviewed
-./notify -f review.md --buttons "[[
-  {\"text\":\"Re-review\",\"callback_data\":\"run:pr-review:${REPO}\"},
-  {\"text\":\"Open PRs\",\"url\":\"https://github.com/${REPO}/pulls\"}]]"
-```
-
-Omit the buttons on an all-repos run — a single Re-review button can't name which repo. Keep `callback_data` ≤64 bytes (a repo slug is well within budget).
+**Telegram summary.** When the run was scoped to a **single repo** (`${var}=owner/repo`), send a Telegram summary of the review with `./notify -f review.md` so the operator sees the verdict at a glance. Skip it on an all-repos run.
 
 If every PR was skipped, do not notify — just log.
 
@@ -394,19 +385,6 @@ Full digest: articles/pr-merge-${today}.md
 Keep under 900 chars. Drop any bucket row whose count is zero. Drop the "oldest in queue" line if `open_count == 0`. The `⚠️ HIGH security finding` / `⚠️ touches aeon.yml` annotations are appended only to PRs the operator has not been notified about on this head SHA — repeat-rendering them would dilute the alert signal.
 
 Send via `./notify "$MSG"` (single positional argument — the heredoc-built message; aeon's `./notify` accepts a positional argument or `-f file`, this branch uses positional to keep the message inline with the other locals computed in this step, and keeps it under 900 chars).
-
-**Interactive controls (Telegram).** Attach Snooze/Mute + Open-queue buttons so the operator can quiet this repo's morning digest once triaged, and jump to the PR list in one tap (see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)):
-
-```bash
-KEY="pr-review:${TARGET_REPO}"
-./notify "$MSG" \
-  ${MUTEABLE:+--mute-key "$KEY"} \
-  --buttons "[[{\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:${KEY}:86400\"},
-               {\"text\":\"Mute\",\"callback_data\":\"mute:${KEY}\"},
-               {\"text\":\"Open queue\",\"url\":\"https://github.com/${TARGET_REPO}/pulls\"}]]"
-```
-
-Pass **`--mute-key`** only when the body carries **no** SKILL_WARN_OR_BLOCK / CORE_REVIEW escalation (set `MUTEABLE=1` in that case, empty otherwise): a security finding or an executor-blast-radius PR must still reach the operator even on a muted repo, and `notify` would otherwise swallow it. Routine FAST_TRACK/INFRA digests honour the mute. Snooze is time-boxed (auto-expires), so it's always safe to offer. Keep `callback_data` ≤64 bytes — for an unusually long repo slug, drop the Snooze/Mute row (keep Open queue) rather than truncate the key.
 
 ### 10. Log (SURVEY branch)
 

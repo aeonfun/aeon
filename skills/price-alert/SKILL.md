@@ -195,29 +195,10 @@ If `MODE == dry-run`: build the messages, log the planned notifications, but ski
 
 Cap each message at ~2500 chars; price-alert messages are short by nature and shouldn't approach this.
 
-#### Interactive controls (Telegram)
+#### Send the alert
 
-Every alert notification carries snooze/mute controls plus a one-tap deep report, so a chatty
-token can be quieted without a config edit (see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)).
-Pass **`--mute-key "price-alert:$SYMBOL"`** so a tapped Snooze/Mute actually suppresses future
-alerts — `notify` skips the send when that key is muted or snoozed into the future, no skill-side
-logic required. Build each gate's message to a file and send it like this:
-
-```bash
-KEY="price-alert:$SYMBOL"          # $SYMBOL resolved from the tracked token (a bare ticker)
-./notify -f alert.md \
-  --mute-key "$KEY" \
-  --buttons "[[{\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:${KEY}:86400\"},
-               {\"text\":\"Mute\",\"callback_data\":\"mute:${KEY}\"},
-               {\"text\":\"Deep report\",\"callback_data\":\"run:token-movers:${SYMBOL}\"}]]"
-```
-
-- The **Deep report** button re-dispatches `token-movers` in single-token mode on the same symbol
-  (`run:token-movers:$SYMBOL`) — one tap from "it moved" to a full report.
-- The mute-key is shared across all three gates, so muting a token silences its ATH, sharp-move,
-  and target pings together — the intended "quiet this token" behaviour. State still advances, so
-  the moment the operator unmutes, dedup clocks are already correct.
-- Keep `callback_data` ≤64 bytes: `$SYMBOL` is a bare ticker, never a name with spaces.
+Build each firing gate's message to a file and send it with `./notify -f alert.md` (one send per
+gate). State still advances even on a deduped run, so the dedup clocks stay correct.
 
 #### Set-a-target follow-up (force-reply)
 

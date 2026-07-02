@@ -182,11 +182,7 @@ Native ETH/MATIC/etc. use `simple/price?ids=ethereum,matic-network,...`. If Coin
 
 ### 4. Filter
 
-**Per-watch mute gate (Telegram).** First, if a watch is muted or snoozed via a Telegram button, drop **all** of its events (note `muted`/`snoozed` in the step-7 log and skip it in the notification). This is what the per-watch Mute/Snooze buttons in step 6 act on — no `--mute-key` needed because suppression is per-watch, not per-message:
-- muted if `memory/mutes.log` contains a line exactly `onchain-monitor:<label>` (or the global `onchain-monitor:all`);
-- snoozed if `memory/snoozes.log` has `onchain-monitor:<label>:<until_epoch>` (or `onchain-monitor:all:<until_epoch>`) with `until_epoch` still in the future.
-
-Then drop an individual event if any of:
+Drop an individual event if any of:
 - `value_usd < threshold_usd` (watch config, default $1000)
 - `value_usd < $0.10` (hard dust floor — prevents airdrop / phishing spam)
 - `tx_hash` already present in this watch's `alerted_tx` (cross-run dedup)
@@ -227,17 +223,7 @@ TL;DR: My Wallet sent $1.2M USDC to Binance 14 (biggest move on any watch in 30d
 
 Cap the notification body at 10 events; if more survived, append `+N more — see memory/logs/${today}.md`. The `./notify` call should use the explorer URL for each chain (`etherscan.io`, `basescan.org`, `arbiscan.io`, `optimistic.etherscan.io`, `polygonscan.com`).
 
-**Interactive controls (Telegram).** Attach a per-watch Mute button for each watch that appears in the message, plus a Snooze 24h for the busiest watch, so a chatty address can be quieted in one tap (suppression is honoured in step 4 — see [`docs/telegram-commands.md`](../../docs/telegram-commands.md)):
-
-```bash
-# one row per watch present in the message; the busiest watch also gets a Snooze.
-# key each button on the EXACT label string step 4 checks against memory/mutes.log.
-./notify -f alert.md --buttons "[[
-  {\"text\":\"Mute My Wallet\",\"callback_data\":\"mute:onchain-monitor:My Wallet\"},
-  {\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:onchain-monitor:My Wallet:86400\"}]]"
-```
-
-Rules: `callback_data` must stay ≤64 bytes — `mute:onchain-monitor:` already spends 21 bytes, so keep watch `label`s short (rename a long label in the config). A label must not contain `:` (the router splits `callback_data` on it). If more than ~3 watches fired, attach Mute buttons for the top 3 by event count and rely on the log for the rest.
+Send the alert with `./notify -f alert.md`.
 
 ### 7. Persist state and log
 

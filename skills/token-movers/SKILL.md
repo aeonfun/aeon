@@ -161,7 +161,7 @@ Append to `memory/logs/${today}.md`:
 - Notable: [any PUMP-RISK / BREAKOUT / CAPITULATION signals]
 ```
 
-Then go to **Interactive controls** and **stop** (do not run the GeckoTerminal path).
+Then go to **Send the digest** and **stop** (do not run the GeckoTerminal path).
 
 ## Source: geckoterminal — on-chain runners
 
@@ -347,27 +347,11 @@ Append to `memory/logs/${TODAY}.md`:
 
 If a token appears as a runner on **3 days in a row**, flag it in `memory/MEMORY.md` under "Active topics" — sustained multi-day runners are worth a deeper look.
 
-Then go to **Interactive controls** and **stop**.
+Then go to **Send the digest** and **stop**.
 
-## Interactive controls (Telegram snooze/mute — both movers sources)
+## Send the digest
 
-This skill is the reference for Aeon's snooze/mute buttons (see
-[`docs/telegram-commands.md`](../../docs/telegram-commands.md)). Attach Snooze/Mute
-buttons to the movers digest and pass **`--mute-key`** so a tapped Snooze/Mute
-actually suppresses future sends — `notify` skips the send when the key is muted or
-snoozed into the future, so no extra logic is needed here:
-
-```bash
-KEY="token-movers:all"     # or token-movers:<SYMBOL> when the run is scoped to one token/chain
-./notify -f report.md \
-  --mute-key "$KEY" \
-  --buttons "[[{\"text\":\"Snooze 24h\",\"callback_data\":\"snooze:${KEY}:86400\"},
-               {\"text\":\"Mute\",\"callback_data\":\"mute:${KEY}\"}]]"
-```
-
-Keep `callback_data` short (≤64 bytes): use a bare symbol like `BTC`, never a name
-with spaces. For a single-token **[PUMP-RISK]** you may also send a dedicated alert
-keyed to that symbol (`--mute-key "token-movers:SYMBOL"`) so it can be muted on its own.
+Send the movers digest with `./notify -f report.md`, then make the deep-dive offer below.
 
 ### Deep-dive offer (force-reply — movers runs only)
 
@@ -639,8 +623,6 @@ Chart: https://www.geckoterminal.com/${network}/pools/POOL_ADDRESS
 ```
 
 The `Treasury:` line is included ONLY when step 2b populated treasury_eth_total > 0. Omit the line entirely on `treasury=skip` / `treasury=fetch_fail` runs — silence beats a misleading number.
-
-You may attach the same Telegram snooze/mute controls as the movers branch, keyed to the token: `--mute-key "token-movers:$TOKEN_SYMBOL"`.
 
 **Skip rules:**
 - `TOKEN_REPORT_NO_CONFIG` (no token configured): log only, **no notification, no article**.

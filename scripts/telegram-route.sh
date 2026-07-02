@@ -13,8 +13,9 @@
 #   reply    "<reply_to_text>" "<user text>"  reply to a force_reply prompt
 #
 # Side effects: dispatches skills via `gh workflow run aeon.yml`, appends to
-# memory/{snoozes,mutes}.log or memory/saved.md (the CALLER commits those), and
-# sends canned replies via the Telegram Bot API. Never mutates the repo history.
+# memory/{snoozes,mutes}.log or memory/saved.md, edits a skill's schedule in
+# aeon.yml on a `schedule` callback (the CALLER commits all of these), and sends
+# canned replies via the Telegram Bot API. Never mutates the repo history.
 #
 # Security: every inbound is already owner-gated (TELEGRAM_CHAT_ID) by the caller.
 # Defence in depth lives here too — a skill name must match ^[a-z0-9-]+$ AND resolve
@@ -29,7 +30,7 @@ set -uo pipefail
 MODE="${1:-}"
 
 TG_API="https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN:-}"
-CALLBACK_ACTIONS="run snooze mute save dismiss"
+CALLBACK_ACTIONS="run snooze mute save dismiss schedule"
 
 # --- helpers ---------------------------------------------------------------
 
@@ -66,6 +67,68 @@ dispatch_skill() {
   else
     gh workflow run aeon.yml -f skill="$skill" >/dev/null 2>&1
   fi
+}
+
+# Schedule a skill from a "Schedule weekly" button tap: enable it and set a weekly
+# cron in aeon.yml (the CALLER commits aeon.yml). $1 skill, $2 cadence (weekly|daily).
+# Edits only the one inline `name: { ... }` line, preserving every other field and
+# trailing comment; the write is atomic (temp + os.replace) so a symlinked aeon.yml
+# in the test sandbox is swapped for a private copy rather than written through.
+schedule_skill() {
+  local skill="${1//_/-}" cadence="${2:-weekly}" cron
+  if ! [[ "$skill" =~ ^[a-z0-9-]+$ ]] || [ ! -d "skills/$skill" ]; then
+    log "schedule: unknown skill '$skill'"
+    send_tg "Can't schedule an unknown skill."
+    return 1
+  fi
+  case "$cadence" in
+    daily)  cron="0 9 * * *" ;;
+    weekly|*) cron="0 9 * * 1"; cadence="weekly" ;;
+  esac
+  AEON_SKILL="$skill" AEON_CRON="$cron" python3 - <<'PY'
+import os, re, sys
+skill = os.environ['AEON_SKILL']; cron = os.environ['AEON_CRON']; path = 'aeon.yml'
+try:
+    text = open(path).read()
+except OSError:
+    sys.exit(4)
+lines = text.split('\n')
+# Match only the inline flow-map form: `  <skill>: { ... } [# comment]`
+inline = re.compile(r'^(\s{2})(' + re.escape(skill) + r'):\s*\{(.*?)\}(.*)$')
+done = False
+for i, ln in enumerate(lines):
+    m = inline.match(ln)
+    if not m:
+        continue
+    indent, name, body, rest = m.groups()
+    if re.search(r'enabled:\s*\w+', body):
+        body = re.sub(r'enabled:\s*\w+', 'enabled: true', body, count=1)
+    else:
+        body = ' enabled: true,' + body
+    if re.search(r'schedule:\s*"[^"]*"', body):
+        body = re.sub(r'schedule:\s*"[^"]*"', 'schedule: "%s"' % cron, body, count=1)
+    else:
+        body = body.rstrip()
+        sep = ',' if body.strip() else ''
+        body = '%s%s schedule: "%s"' % (body, sep, cron)
+    lines[i] = '%s%s: {%s}%s' % (indent, name, body, rest)
+    done = True
+    break
+if not done:
+    sys.exit(3)  # skill not found in the editable inline form
+tmp = path + '.tmp'
+with open(tmp, 'w') as fh:
+    fh.write('\n'.join(lines))
+os.replace(tmp, path)
+PY
+  local rc=$?
+  if [ "$rc" -ne 0 ]; then
+    log "schedule: could not edit aeon.yml for '$skill' (rc=$rc)"
+    send_tg "Couldn't schedule /${skill//-/_} automatically — set its schedule from the dashboard."
+    return 1
+  fi
+  log "scheduled $skill $cadence ($cron)"
+  send_tg "📅 Scheduled /${skill//-/_} to run weekly (Mondays 09:00 UTC). Adjust or turn it off anytime from the dashboard."
 }
 
 # Best-effort list of enabled skills for /settings. yaml if available, grep fallback.
@@ -138,6 +201,10 @@ route_callback() {
   case "$action" in
     run)
       dispatch_skill "$skill" "$arg1"
+      ;;
+    schedule)
+      # "Schedule weekly" quick-action. arg1 = cadence keyword (weekly|daily).
+      schedule_skill "$skill" "${arg1:-weekly}"
       ;;
     snooze)
       if ! [[ "${arg2:-}" =~ ^[0-9]+$ ]]; then log "snooze needs numeric seconds"; return 1; fi
