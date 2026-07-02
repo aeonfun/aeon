@@ -3,11 +3,13 @@
 import { useState } from 'react'
 import { inputCls } from '../lib/utils'
 
-// Claude Code auth: a Claude subscription token (one-click), or a gateway/
-// Anthropic-compatible key. Anthropic submits no provider, so the backend still
-// prefix-detects (Anthropic-compatible keys, OAuth tokens); every gateway is
-// selected explicitly. `grok` here is the GATEWAY path (Claude Code → xAI); the
-// grok CLI *harness* has its own modal (GrokAuthModal → "Connect X account").
+// Anthropic (Claude Code) auth: a Claude subscription token (one-click), or a
+// gateway/Anthropic-compatible key. Anthropic submits no provider, so the backend
+// still prefix-detects (Anthropic-compatible keys, OAuth tokens); every gateway is
+// selected explicitly. The grok gateway (Claude Code → xAI) is intentionally NOT a
+// menu option — the grok CLI has its own harness + modal (GrokAuthModal → "Connect
+// X account"); an `xai-`-prefixed key pasted under "Anthropic (or compatible)" is
+// still prefix-detected and routed to the xAI gateway.
 const PROVIDER_OPTIONS = [
   { value: '', label: 'Anthropic (or compatible)' },
   { value: 'bankr', label: 'Bankr' },
@@ -15,7 +17,6 @@ const PROVIDER_OPTIONS = [
   { value: 'usepod', label: 'UsePod' },
   { value: 'venice', label: 'Venice' },
   { value: 'surplus', label: 'Surplus Intelligence' },
-  { value: 'grok', label: 'Grok (xAI) — gateway' },
 ]
 
 interface AuthModalProps {
@@ -33,7 +34,7 @@ export function AuthModal({ loading, onClose, onAuth }: AuthModalProps) {
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30 backdrop-blur-sm">
       <div className="bg-aeon-panel border border-[rgba(250,250,250,0.10)] w-full max-w-sm mx-4 p-[var(--space-lg)] shadow-2xl">
         <div className="flex items-center justify-between mb-[var(--space-sm)]">
-          <h2 className="font-display text-xl">Claude Code</h2>
+          <h2 className="font-display text-xl">Anthropic</h2>
           <button onClick={onClose} className="text-primary-35 hover:text-primary-100 text-lg">&times;</button>
         </div>
         <p className="text-xs text-primary-50 font-mono mb-[var(--space-md)]">Connect a Claude subscription token, or pick your key&apos;s provider and paste it below. Routing is automatic - at run time Aeon uses whichever provider keys are set, in priority order.</p>
